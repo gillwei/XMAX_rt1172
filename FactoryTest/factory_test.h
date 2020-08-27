@@ -90,6 +90,15 @@ typedef uint8 IOP_SYC_MODE_TYPE; enum
     SYC_MODE_CNT = SYC_MODE_INVALID,
     };
 
+typedef uint8 IOP_REQ_AUTO_BURN_IN_TYPE; enum
+    {
+    IOP_REQ_AUTO_BURN_IN_MODE,
+    IOP_REQ_AUTO_BURN_IN_TIME,
+
+    IOP_REQ_AUTO_BURN_IN_INVALID,
+    IOP_REQ_AUTO_BURN_IN_CNT = IOP_REQ_AUTO_BURN_IN_INVALID,
+    };
+
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
 --------------------------------------------------------------------*/

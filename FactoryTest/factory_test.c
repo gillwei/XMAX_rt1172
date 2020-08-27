@@ -46,8 +46,6 @@ extern "C"{
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define IOP_VIM_MAX_DATA_SIZE   (200)
-
 #define NULL_PTR                ( ( void * ) 0 )
 #define FT_CAN_DLC              ( 8 )
 
@@ -65,10 +63,8 @@ extern "C"{
 #define BIT_24_DATA_LEN         ( 3 )
 #define BIT_16_DATA_LEN         ( 2 )
 #define BIT_8_DATA_LEN          ( 1 )
-#define BURN_IN_TASK_TIME       ( 500 )
-#define BURN_IN_QUAL_TIME       ( 8 * 60 * 60 )
-#define BURN_IN_QUAL_TEMP       ( 60 * 1000 )
 
+#define IOP_VIM_MAX_DATA_SIZE   ( 200 )
 #define IOP_MAX_QUEUE_SIZE      ( 100 )
 #define IOP_QUEUE_INVALID       ( -1 )
 
@@ -80,6 +76,14 @@ extern "C"{
 
 #define IOP_PRODUCT_HW_ID       ( 0 )
 #define IOP_PRODUCT_SKU_ID      ( 1 )
+
+#define BURN_IN_TASK_TIME       ( 1000 )
+#define BURN_IN_QUAL_DFT_TIME   ( 8 * 60 * 60 )
+#define BURN_IN_QUAL_TEMP       ( 60 * 1000 )
+#define BURN_IN_QUAL_MIN_TIME   ( 1 * 60 * 60 )
+#define BURN_IN_QUAL_MAX_TIME   ( BURN_IN_QUAL_DFT_TIME )
+#define BURN_IN_SUCCESS         ( 0 )
+#define BURN_IN_FAIL            ( 1 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -119,10 +123,17 @@ static uint32_t       esn_id              = 0;
 static uint32_t       EEPM_esn_id         = 0;
 static IOP_esn_op     esn_operation       = IOP_ESN_OP_INVALID;
 
-
 //temp RX data
 static uint8_t      canRxData[8];
 static bool         canRxFlag = FALSE;
+
+//Burn-in
+IOP_BurnIn_op_stage_type            burnInStage            = IOP_BURNIN_STAGE_NOT_START;
+static boolean                      burnInResult           = BURN_IN_FAIL;
+static uint32_t                     burnInTime             = 0;
+static uint32_t                     burnInTargetTime       = BURN_IN_QUAL_DFT_TIME;
+static IOP_set_BurnIn_state_type    burnInState            = IOP_BURNIN_STATE_NONE;
+
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -201,6 +212,11 @@ static void factory_test_task
     void* arg
     );
 
+static void IOP_BurnIn_Task
+    (
+    void* arg
+    );
+
 static void esn_read_cb
     (
     bool    status,
@@ -222,6 +238,31 @@ static void get_sku_id
     (
     uint8 * sku_id_data
     );
+
+static void burnin_result_read_cb
+    (
+    bool    status,
+    void*   data
+    );
+
+static void burnin_result_write_cb
+    (
+    bool    status,
+    void*   data
+    );
+
+static void burnin_start_write_cb
+    (
+    bool    status,
+    void*   data
+    );
+
+static void burnin_start_read_cb
+    (
+    bool    status,
+    void*   data
+    );
+
 /*********************************************************************
 *
 * @public
@@ -238,6 +279,10 @@ void FACTORY_init
     )
 {
 factory_create_task();
+if( EEPM_get_start_burn_in( burnin_start_read_cb ) == pdFALSE )
+    {
+    PRINTF("EEPM_get_start_burn_in fail\n\r");
+    }
 }
 
 /*********************************************************************
@@ -254,7 +299,15 @@ static void factory_create_task
     void
     )
 {
-if( pdPASS == xTaskCreate( factory_test_task, "factory_test_task", configMINIMAL_STACK_SIZE*2, NULL, ( tskIDLE_PRIORITY + 4 ), NULL ) )
+if( pdPASS == xTaskCreate( factory_test_task, "factory_test_task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 4 ), NULL ) )
+    {
+    PRINTF("%s ok\r\n", __FUNCTION__ );
+    }
+else
+    {
+    PRINTF("%s fail\r\n", __FUNCTION__ );
+    }
+if( pdPASS == xTaskCreate( IOP_BurnIn_Task, "IOP_BurnIn_Task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 3 ), NULL ) )
     {
     PRINTF("%s ok\r\n", __FUNCTION__ );
     }
@@ -511,6 +564,11 @@ switch ( IOPInstId )
         iopToCanData( IOP_BT_ADDR_DATA, iopData, data_len );
         break;
 
+    case IOP_AUTO_BURN_IN:
+        memcpy( &iopData[0], data_ptr, data_len );
+        iopToCanData( IOP_AUTO_BURN_IN, iopData, data_len );
+        break;
+
     default:
         iopToCanData( IOP_INV_INST_ID, iopData, 0 );
         break;
@@ -639,6 +697,50 @@ switch( inst_id )
                 }
                 break;
 
+            case IOP_REQ_AUTO_BURN_IN:
+                {
+                uint8_t iop_data[2] = { data[2], E_NOT_OK };
+                switch( data[2] ) // Request type
+                    {
+                    case IOP_REQ_AUTO_BURN_IN_MODE: // set mode
+                        {
+                        if( EEPM_set_start_burn_in( data[3], burnin_start_write_cb ) == pdFALSE )
+                            {
+                            PRINTF("EEPM_set_start_burn_in fail\n\r");
+                            }
+                        else
+                            {
+                            burnInResult = BURN_IN_FAIL;
+                            EEPM_set_burn_in_result( burnInResult, burnin_result_write_cb );
+                            }
+                        }
+                        break;
+
+                    case IOP_REQ_AUTO_BURN_IN_TIME: // set time
+                        {
+                        uint32_t req_burnin_time = 0;
+
+                        req_burnin_time = ( data[3] ) +
+                                          ( data[4] << SHIFT_ONE_BYTE ) +
+                                          ( data[5] << SHIFT_TWO_BYTES ) +
+                                          ( data[6] << SHIFT_THREE_BYTES );
+
+                        if( req_burnin_time >= BURN_IN_QUAL_MIN_TIME && req_burnin_time <= BURN_IN_QUAL_MAX_TIME )
+                            {
+                            burnInTargetTime = req_burnin_time;
+                            iop_data[1] = E_OK;
+                            }
+                        packageIopToCanData( &iop_data, sizeof( iop_data ) );
+                        }
+                        break;
+
+                    default:
+                        packageIopToCanData( &iop_data, sizeof( iop_data ) );
+                        break;
+                    }
+                }
+                break;
+
             default:
                 IOPDone = true;
                 break;
@@ -744,6 +846,16 @@ switch( inst_id )
         {
 
         IOPDone = true;
+        }
+        break;
+
+    // Check burn in state
+    case IOP_AUTO_BURN_IN:
+        {
+        if( EEPM_get_burn_in_result( burnin_result_read_cb ) == pdFALSE )
+            {
+            PRINTF("EEPM_get_burn_in_result fail\n\r");
+            }
         }
         break;
 
@@ -1153,6 +1265,176 @@ getGPIOValue( PORT_8, 26, &sku_id_data[0] ); // SKU_ID3
 getGPIOValue( PORT_8, 22, &sku_id_data[1] ); // SKU_ID2
 getGPIOValue( PORT_8, 20, &sku_id_data[2] ); // SKU_ID1
 getGPIOValue( PORT_8, 19, &sku_id_data[3] ); // SKU_ID0
+}
+
+/*********************************************************************
+*
+* @private
+* burnin_result_read_cb
+*
+* @brief callback function for burn in result read operation.
+*
+*********************************************************************/
+static void burnin_result_read_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+if( status == TRUE )
+    {
+    memcpy( &burnInResult, data, BIT_8_DATA_LEN );
+    packageIopToCanData( &burnInResult, BIT_8_DATA_LEN );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* burnin_result_write_cb
+*
+* @brief callback function for burn in result read operation.
+*
+*********************************************************************/
+static void burnin_result_write_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+if( status == TRUE )
+    {
+    PRINTF( "write burninresult = %d\r\n", (uint8 *)data );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* burnin_start_read_cb
+*
+* @brief callback function for burn in start flags read operation.
+*
+*********************************************************************/
+static void burnin_start_read_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+if( status == TRUE )
+    {
+    memcpy( &burnInState, data, BIT_8_DATA_LEN );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* burnin_start_write_cb
+*
+* @brief callback function for burn in start flags write operation.
+*
+*********************************************************************/
+static void burnin_start_write_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+if( status == TRUE )
+    {
+    uint8_t iop_data[2] ;
+    memcpy( &burnInState, data, BIT_8_DATA_LEN );
+    PRINTF( "write burnin start flag = %d\r\n", burnInState );
+
+    iop_data[0] = IOP_REQ_AUTO_BURN_IN_MODE;
+    iop_data[1] = burnInState;
+    packageIopToCanData( &iop_data, sizeof( iop_data ) );
+    }
+}
+
+
+
+
+/*********************************************************************
+*
+* @private
+* IOP_BurnIn_Task
+*
+* @brief This task manages the burn in related operation and write/read
+* burn in parameter to control the overall burn in stage in factory
+*
+*********************************************************************/
+static void IOP_BurnIn_Task
+    (
+    void* arg
+    )
+
+{
+static int32_t curr_burnInVimTemp = 0;
+
+while( TRUE )
+    {
+    if( IOP_BURNIN_STATE_SET == burnInState )
+        {
+        burnInStage = IOP_BURNIN_STAGE_START;
+        burnInState = IOP_BURNIN_STATE_VALID;
+        // TODO: Call EW API to go to burn in page
+        }
+    else if( IOP_BURNIN_STATE_NONE == burnInState )
+        {
+        burnInStage = IOP_BURNIN_STAGE_NOT_START;
+        }
+
+    switch( burnInStage )
+        {
+        case IOP_BURNIN_STAGE_NOT_START:
+            {
+            }
+            break;
+        case IOP_BURNIN_STAGE_START:
+            {
+            curr_burnInVimTemp = PERIPHERAL_adc_get_pcba_ntc_converted();
+            if( curr_burnInVimTemp >= BURN_IN_QUAL_TEMP )
+                {
+                burnInStage = IOP_BURNIN_STAGE_RUNNING;
+                // TODO: Call EW API to start show time
+                }
+            }
+            break;
+        case IOP_BURNIN_STAGE_RUNNING:
+            {
+            curr_burnInVimTemp = PERIPHERAL_adc_get_pcba_ntc_converted();
+            if( curr_burnInVimTemp >= BURN_IN_QUAL_TEMP )
+                {
+                burnInTime++;
+                if( burnInTime >= burnInTargetTime )
+                    {
+                    burnInResult = BURN_IN_SUCCESS;
+                    EEPM_set_burn_in_result( burnInResult, burnin_result_write_cb );
+                    burnInState = IOP_BURNIN_STATE_NONE;
+                    EEPM_set_start_burn_in( FALSE, burnin_start_write_cb );
+                    burnInStage = IOP_BURNIN_STAGE_PASS;
+                    }
+                }
+            else
+                {
+                burnInTime = 0;
+                }
+            }
+            break;
+        case IOP_BURNIN_STAGE_FAIL:
+        case IOP_BURNIN_STAGE_PASS:
+            {
+
+            }
+            break;
+
+        }
+    vTaskDelay( pdMS_TO_TICKS( BURN_IN_TASK_TIME ) );
+    }
+vTaskDelete( NULL );
 }
 
 /*********************************************************************
