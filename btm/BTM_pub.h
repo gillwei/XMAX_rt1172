@@ -159,6 +159,12 @@ void BTM_connection_info_update
     const uint8_t* connection_info
     );
 
+void BTM_get_connection_info
+    (
+    bool*     current_connection_status,
+    uint16_t* connection_handle
+    );
+
 #ifdef __cplusplus
 }
 #endif

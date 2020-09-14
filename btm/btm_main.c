@@ -32,6 +32,7 @@
 #include "fsl_gpio.h"
 #include "GRM_pub_prj.h"
 #include "factory_test.h"
+#include "bt_spp_iap2.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -54,7 +55,7 @@ typedef struct
     uint8_t   device_name[BT_DEVICE_NAME_LEN];        /**< the Bluetooth device name */
     uint8_t   device_address[BT_DEVICE_ADDRESS_LEN];  /**< the Bluetooth device address */
     bool      is_connected;                           /**< is connected flag */
-    uint8_t   connection_handle[2];                   /**< connection handle */
+    uint16_t  connection_handle;                      /**< connection handle */
     } bt_device_info;
 
 typedef enum
@@ -76,7 +77,7 @@ typedef struct
     {
     message_type  type;
     uint8_t       device_address[BT_DEVICE_ADDRESS_LEN];
-    uint8_t       connection_handle[2];
+    uint16_t      connection_handle;
     } message_object;
 
 /** BR/EDR Discoverable modes */
@@ -394,20 +395,22 @@ start_timeout_timer();
 *********************************************************************/
 static void disconnect_device
     (
-    const uint8_t* connection_handle
+    const uint16_t connection_handle
     )
 {
+uint8_t connection_handle_bytes[2];
 
-PRINTF( "%s: connection handle:%02x %02x\r\n", __FUNCTION__, connection_handle[0], connection_handle[1] );
+PRINTF( "%s: connection handle:%04x\r\n", __FUNCTION__, connection_handle );
+connection_handle_bytes[0] = 0xff & (uint8_t)(paired_device_list[0].connection_handle);
+connection_handle_bytes[1] = (uint8_t)( paired_device_list[0].connection_handle >> 8 );
 
 // Here assume the disconnect always success
 paired_device_list[0].is_connected = false;
-paired_device_list[0].connection_handle[0] = 0;
-paired_device_list[0].connection_handle[1] = 0;
+paired_device_list[0].connection_handle = 0;
 
 // disconnect device through HCI command
-HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DISCONNECT, connection_handle, sizeof( uint16_t ) );
-HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, connection_handle, sizeof( uint16_t ) );
+HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DISCONNECT, &(connection_handle_bytes[0]), sizeof( uint16_t ) );
+HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, &(connection_handle_bytes[0]), sizeof( uint16_t ) );
 }
 
 /*********************************************************************
@@ -649,8 +652,29 @@ void BTM_connection_info_update
     )
 {
 paired_device_list[0].is_connected = connection_is_up;
-paired_device_list[0].connection_handle[0] = connection_info[BT_DEVICE_ADDRESS_LEN];
-paired_device_list[0].connection_handle[1] = connection_info[BT_DEVICE_ADDRESS_LEN + 1];
+paired_device_list[0].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
+paired_device_list[0].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_get_connection_info
+*
+* Get current connection status
+*
+* @param connection_is_up  BTC connection status
+* @param connection_info   BTC connection handle 2 bytes
+*
+*********************************************************************/
+void BTM_get_connection_info
+    (
+    bool*     current_connection_status,
+    uint16_t* connection_handle
+    )
+{
+memcpy( current_connection_status, &(paired_device_list[0].is_connected), sizeof( bool ) );
+memcpy( connection_handle, &(paired_device_list[0].connection_handle), sizeof( uint16_t ) );
 }
 
 /*********************************************************************
@@ -973,7 +997,7 @@ int BTM_disconnect_paired_device
 {
 message_object msg_obj;
 msg_obj.type = MSG_DISCONNECT_DEVICE;
-memcpy( msg_obj.connection_handle, paired_device_list[paired_device_idx].connection_handle, sizeof( uint16_t ) );
+msg_obj.connection_handle = paired_device_list[paired_device_idx].connection_handle;
 send_message( msg_obj );
 return ERR_NONE;
 }
