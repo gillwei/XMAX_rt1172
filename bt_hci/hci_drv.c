@@ -23,6 +23,8 @@
 #include "fsl_gpio.h"
 #include "BTM_pub.h"
 #include "GRM_pub_prj.h"
+#include "pin_mux.h"
+#include "factory_test.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -62,6 +64,11 @@ AT_BOARDSDRAM_SECTION( uint8_t hci_tx_data[HCI_TX_BUFFER_SIZE] );
 #define UPDATE_TICK_PERIOD_MS        pdMS_TO_TICKS( UPDATE_TIMER_PERIOD_MS )
 #define UPDATE_TIMER_TWO_SECONDS     ( 2000 / UPDATE_TIMER_PERIOD_MS )
 #define UPDATE_TIMER_THREE_SECONDS   ( 3000 / UPDATE_TIMER_PERIOD_MS )
+
+#define RESPONSE_TIMER_PERIOD_MS     50
+#define RESPONSE_TICK_PERIOD_MS      pdMS_TO_TICKS( RESPONSE_TIMER_PERIOD_MS )
+#define RESPONSE_TIMER_TWO_SECONDS   ( 2000 / RESPONSE_TICK_PERIOD_MS )
+#define AUTH_CHIP_RESULT_FAIL        0
 
 /*--------------------------------------------------------------------
                                 TYPES
@@ -121,6 +128,21 @@ typedef struct tagHCI_STATUS_TYPE               //!< HCI channel status structur
     uint8_t                 flags;              //!< error flags
     } hci_status_t;
 
+typedef enum
+    {
+    IOP_COMMAND_STATE_IDLE,
+    IOP_COMMAND_STATE_WAIT_FOR_RESPONSE
+    } IOP_command_state_struct;
+
+typedef enum
+    {
+    LE_TRANSMIT_LOW_CH,
+    LE_TRANSMIT_MID_CH,
+    LE_TRANSMIT_HI_CH,
+    LE_TRANSMIT_END
+    } LE_transmit_channel;
+
+
 /*--------------------------------------------------------------------
                             VARIABLES
 --------------------------------------------------------------------*/
@@ -134,6 +156,14 @@ static uint16_t               tx_command_opcode;
 static init_update_state_t    init_update_state;
 static TimerHandle_t          xUpdateTimer = NULL;
 static uint16_t               update_timer_count;
+static bool                   LE_transmit_cmd_called = false;
+static TimerHandle_t          xRespTimer = NULL;
+static IOP_command_state_struct  iop_command_state;
+static uint16_t               resp_timer_count;
+static const uint8_t          allow_connection_const_data[3] = { 0x02, 0x00, 0x02 };
+static const uint8_t          le_low_ch_cmd_data[3] = { 0x00, 0x37, 0x04 };
+static const uint8_t          le_mid_ch_cmd_data[3] = { 0x13, 0x37, 0x04 };
+static const uint8_t          le_hi_ch_cmd_data[3] = { 0x27, 0x37, 0x04 };
 
 /*--------------------------------------------------------------------
                             PROCEDURES
@@ -165,6 +195,11 @@ static void UpdateTimerCallback
     TimerHandle_t xTimer
     );
 
+static void RespTimerCallback
+    (
+    TimerHandle_t xTimer
+    );
+
 /*********************************************************************
 *
 * @public
@@ -180,7 +215,7 @@ void HCI_init
 {
 rx_buffer_handle = circular_buffer_init( "HCI task_rx", hci_rx_data, HCI_RX_BUFFER_SIZE );
 #if HCI_TX_QUEUE_ENABLE
-tx_buffer_handle = circular_buffer_init( "HCI task_tx", hci_tx_data, HCI_TX_BUFFER_SIZE );
+    tx_buffer_handle = circular_buffer_init( "HCI task_tx", hci_tx_data, HCI_TX_BUFFER_SIZE );
 #endif
 tx_command_opcode = 0;
 
@@ -191,9 +226,19 @@ xUpdateTimer = xTimerCreate( "UpdateTimer",           /* A text name, purely to 
                              pdTRUE,                  /* This is a one shot timer, so xAutoReload is set to pdFALSE. */
                              ( void * ) 0,            /* The ID is not used, so can be set to anything. */
                              UpdateTimerCallback      /* The callback function */
-                        );
+                           );
+
+xRespTimer = xTimerCreate( "WaitResponseTimer",           /* A text name, purely to help debugging. */
+                           RESPONSE_TICK_PERIOD_MS,   /* The timer period, in this case 5000ms (5s). */
+                           pdTRUE,                  /* This is a one shot timer, so xAutoReload is set to pdFALSE. */
+                           ( void * ) 0,            /* The ID is not used, so can be set to anything. */
+                           RespTimerCallback      /* The callback function */
+                         );
+
 update_timer_count = 1;
+resp_timer_count   = 0;
 init_update_state = INIT_STATE_REQUEST_VERSION;
+iop_command_state = IOP_COMMAND_STATE_IDLE;
 xTimerStart( xUpdateTimer, 0 );
 create_task();
 }
@@ -202,7 +247,7 @@ create_task();
 *
 * MCU hardware reset 89820
 *
-* Use MCU reset pin reset 89820
+* Pull MCU BT_RST_N pin low and high to reset 89820
 *
 *********************************************************************/
 void HCI_reset_BT
@@ -210,14 +255,133 @@ void HCI_reset_BT
     void
     )
 {
-//gpio_pin_config_t rst_new_config = {kGPIO_DigitalOutput, 1, kGPIO_NoIntmode};
+GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
+vTaskDelay( pdMS_TO_TICKS( BT_RESET_GPIO_DELAY ) );
+GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
+vTaskDelay( pdMS_TO_TICKS( BT_RESET_RECONFIG_DELAY ) );
+}
 
-// Reset 89820
-//GPIO_PinInit(GPIO9, 7U, &rst_new_config);
+/*********************************************************************
+*
+* BT power off
+*
+* Pull MCU BT_RST_N pin low
+*
+*********************************************************************/
+void HCI_BT_off
+    (
+    void
+    )
+{
 GPIO_PinWrite( GPIO9, 7, 0 );
-vTaskDelay( pdMS_TO_TICKS( 2 ) ); // delay 2 ms
-GPIO_PinWrite( GPIO9, 7, 1 );
-vTaskDelay( pdMS_TO_TICKS( 50 ) );
+}
+
+/*********************************************************************
+*
+* BT power on
+*
+* Pull MCU BT_RST_N pin high and send dummy message to UART for wake up
+* 89820 chip
+*
+*********************************************************************/
+void HCI_BT_on
+    (
+    void
+    )
+{
+BaseType_t result;
+uint8_t dummy_data_for_wakeup[2] = { 0, 0 };
+GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
+vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
+result = HCI_wiced_send_command( HCI_CONTROL_COMMAND_SET_VISIBILITY, &(dummy_data_for_wakeup[0]), sizeof( dummy_data_for_wakeup ) );
+PRINTF( "%s:%d\n\r", __FUNCTION__, result );
+}
+
+
+/*********************************************************************
+*
+* Set BT chip into test mode
+*
+* Send three standard HCI commands and set BT chip into test mode
+*
+*********************************************************************/
+void HCI_set_test_mode
+    (
+    void
+    )
+{
+// Set parser to standard HCI for retreive DUT command response
+BT_UPDATE_setParserStatus( PARSER_STANDARD_HCI );
+
+BT_UPDATE_standard_send_command( OPCODE_RESET, NULL, 0 );
+vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
+BT_UPDATE_standard_send_command( OPCODE_ALLOW_CONNECTION, allow_connection_const_data, sizeof( allow_connection_const_data ) );
+}
+
+/*********************************************************************
+*
+* Get BT chip into test mode
+*
+* If Set DUT mode command receive correct response, return get DUT
+* mode true
+*
+*********************************************************************/
+bool HCI_get_test_mode_state
+    (
+    void
+    )
+{
+bool test_mode_state = getBTDUTModeState();
+return test_mode_state;
+}
+
+/*********************************************************************
+*
+* HCI LE transmit
+*
+* Send LE continuous transmit command
+*
+*********************************************************************/
+void HCI_LE_transmit_cmd
+    (
+    uint8_t* data
+    )
+{
+
+if( false == LE_transmit_cmd_called )
+    {
+    PRINTF( "%s cmd RECEIVED\n\r", __FUNCTION__ );
+    LE_transmit_cmd_called = true;
+    HCI_BT_off();
+    HCI_BT_on();
+    vTaskDelay( pdMS_TO_TICKS( RESET_WAIT_MS ) );
+    BT_UPDATE_standard_send_command( OPCODE_RESET, NULL, 0 );
+    vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
+    }
+
+if( LE_TRANSMIT_LOW_CH == *data )
+    {
+    BT_UPDATE_standard_send_command( OPCODE_LE_TX, le_low_ch_cmd_data, sizeof( le_low_ch_cmd_data ) );
+    }
+else if( LE_TRANSMIT_MID_CH == *data )
+    {
+    BT_UPDATE_standard_send_command( OPCODE_LE_TX, le_mid_ch_cmd_data, sizeof( le_mid_ch_cmd_data ) );
+    }
+else if( LE_TRANSMIT_HI_CH == *data )
+    {
+    BT_UPDATE_standard_send_command( OPCODE_LE_TX, le_hi_ch_cmd_data, sizeof( le_hi_ch_cmd_data ) );
+    }
+else if( LE_TRANSMIT_END == *data )
+    {
+    BT_UPDATE_standard_send_command( OPCODE_LE_END, NULL, 0 );
+    vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
+    HCI_BT_off();
+    HCI_BT_on();
+    vTaskDelay( pdMS_TO_TICKS( RESET_WAIT_MS ) );
+    LE_transmit_cmd_called = false;
+    PRINTF( "%s cmd TEST END\n\r", __FUNCTION__ );
+    }
+
 }
 
 /*********************************************************************
@@ -624,7 +788,6 @@ while( true )
             PRINTF("No BT update since flag off\n\r");
         #endif
         }
-
     }
 
 vTaskDelete( NULL );
@@ -725,6 +888,28 @@ if( update_timer_count >= 1 )
 
 /*********************************************************************
 *
+* Response timer callback
+*
+* This timer use to wait for response of BT chip
+*
+*********************************************************************/
+static void RespTimerCallback
+    (
+    TimerHandle_t xTimerHandle
+    )
+{
+// Wait for response timeout, means no receive chip version and timer not stop, return fail
+if( resp_timer_count >= RESPONSE_TIMER_TWO_SECONDS )
+    {
+    hci_wait_for_resp_stop();
+    receive_auth_chip_ver( AUTH_CHIP_RESULT_FAIL );
+    }
+
+resp_timer_count++;
+}
+
+/*********************************************************************
+*
 * Create HCI task and event group
 *
 *********************************************************************/
@@ -738,6 +923,38 @@ BaseType_t result = xTaskCreate( task_main, HCI_TASK_NAME, HCI_TASK_STACK_SIZE, 
 
 configASSERT( pdPASS == result );
 }
+
+/*********************************************************************
+*
+* @public
+* HCI_wait_for_resp_start
+*
+*
+*********************************************************************/
+void HCI_wait_for_resp_start
+    (
+    void
+    )
+{
+xTimerStart( xRespTimer, 0 );
+}
+
+/*********************************************************************
+*
+* @private
+* hci_wait_for_resp_stop
+*
+*
+*********************************************************************/
+void hci_wait_for_resp_stop
+    (
+    void
+    )
+{
+xTimerStop( xRespTimer, 0 );
+resp_timer_count = 0;
+}
+
 
 /*********************************************************************
 *

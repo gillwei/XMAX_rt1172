@@ -15,16 +15,27 @@
 extern "C" {
 #endif
 
-#define GARMIN_SW_MAJOR_VER   0x01
-#define GARMIN_SW_MINOR_VER   0x02
-#define BT_UPDATE_ON          false
+/*--------------------------------------------------------------------
+                           GENERAL INCLUDES
+--------------------------------------------------------------------*/
+#include "HCI_pub.h"
 
-typedef enum tagBT_PARSER_TYPE                  //!< HCI receive state machine states
-    {
-    PARSER_WICED_HCI,
-    PARSER_STANDARD_HCI
-    } bt_parser_t;
+/*--------------------------------------------------------------------
+                           LITERAL CONSTANTS
+--------------------------------------------------------------------*/
+#define GARMIN_SW_MAJOR_VER      0x01
+#define GARMIN_SW_MINOR_VER      0x02
+#define BT_UPDATE_ON             false
 
+#define OPCODE_ALLOW_CONNECTION  0x0C05
+#define OPCODE_LE_TX             0x201E
+#define OPCODE_LE_END            0x201F
+
+#define RESET_WAIT_MS            1000
+
+/*--------------------------------------------------------------------
+                                 TYPES
+--------------------------------------------------------------------*/
 typedef enum tagINIT_UPDATE_STATE                //!< check the BT have newest FW or update
     {
     INIT_STATE_SUSPEND,
@@ -33,6 +44,25 @@ typedef enum tagINIT_UPDATE_STATE                //!< check the BT have newest F
     INIT_STATE_UPDATE
     } init_update_state_t;
 
+/*--------------------------------------------------------------------
+                           PROJECT INCLUDES
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                           MEMORY CONSTANTS
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                               VARIABLES
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                                MACROS
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                              PROCEDURES
+--------------------------------------------------------------------*/
 init_update_state_t getBTInitUpdateState
     (
     void
@@ -97,6 +127,17 @@ void UINT32_to_UINT8_arry
     const uint32_t var_uint32,
     uint8_t * uint8_arry
     );
+
+void hci_wait_for_resp_stop
+    (
+    void
+    );
+
+bool getBTDUTModeState
+    (
+    void
+    );
+
 
 #ifdef __cplusplus
 }

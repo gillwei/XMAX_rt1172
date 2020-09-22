@@ -26,6 +26,7 @@
 #include "stdio.h"
 #include "display_support.h"
 #include "BTM_pub.h"
+#include "hci_control_api.h"
 
 #define INIT_BYTE_1                0x04
 #define INIT_BYTE_2                0x0E
@@ -37,8 +38,9 @@
 #define OPCODE_WRITERAM            0xFC4C
 #define OPCODE_READRAM             0xFC4D
 #define OPCODE_LAUNCH              0xFC4E
-#define OPCODE_RESET               0x0C03
 #define OPCODE_ERASE               0xFFCE
+#define OPCODE_SCAN_ENABLE         0x0C1A
+#define OPCODE_DUT_MODE            0x1803
 #define BT_MINIDRIVER_ADDR         0x270400
 #define BT_STATIC_SECTION_ADDR     0x500000
 #define BT_FLASH_ADDR              0x501400
@@ -55,8 +57,7 @@ extern uint32_t __base_BOARD_FLASH_BTFW;
 #define ERASE_CONST_ADDR           0xFCBEEEEF
 #define ORIGINAL_BAUD_RATE         3000000
 #define UPDATE_BAUD_RATE           115200
-#define COMMON_CMD_WAIT_MS         30
-#define AFTER_RESET_WAIT_MS        2000
+#define SCAN_ENABLE_DATA           3
 
 /*--------------------------------------------------------------------
                                 TYPES
@@ -132,6 +133,8 @@ static uint8_t            static_section[93] = { 0x42, 0x52, 0x43, 0x4D, 0x63, 0
                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x01, 0x10, 0x00, 0x04, 0x27, 0x00, 0x4F, 0xF4, 0xB0, 0x01, 0x03, 0x20,\
                                                  0x08, 0x60, 0x70, 0x47, 0x00, 0x00, 0x06, 0x01, 0x04, 0x01, 0x04, 0x27, 0x00, 0xFE, 0x00, 0x00, 0xEB };
 static uint32_t           download_flash_addr;
+static bool               BT_DUT_mode_state = false;
+static bool               BT_update_status = false;
 
 /*--------------------------------------------------------------------
                             PROCEDURES
@@ -325,6 +328,8 @@ uint8_t*           l_p_hci_buffer;
 uint8_t            l_valid_pkt = false;
 uint8_t  const**   l_pp_hci_buffer;
 update_pkt_store_t*   l_p_pkt_store;
+uint8_t            write_scan_enable_data = SCAN_ENABLE_DATA;
+uint8_t            dummy_data_for_wakeup[2] = { 0x0, 0x0 };
 
 l_p_hci_buffer  = &( l_hci_buffer[0] );
 l_pp_hci_buffer = (uint8_t const**) &( l_p_hci_buffer );
@@ -343,6 +348,28 @@ while( l_num_bytes > 0 )
         switch( update_state )
             {
             case UPDATE_STATE_SUSPEND:
+                if( OPCODE_ALLOW_CONNECTION == l_p_pkt_store->opcode )
+                    {
+                    BT_UPDATE_standard_send_command( OPCODE_SCAN_ENABLE, &write_scan_enable_data, sizeof( uint8_t ) );
+                    }
+                else if( OPCODE_SCAN_ENABLE == l_p_pkt_store->opcode )
+                    {
+                    BT_UPDATE_standard_send_command( OPCODE_DUT_MODE, NULL, 0 );
+                    }
+                else if( OPCODE_DUT_MODE == l_p_pkt_store->opcode )
+                    {
+                    BT_DUT_mode_state = true;
+                    BT_UPDATE_setParserStatus( PARSER_WICED_HCI );
+                    }
+                else if( OPCODE_COMMIT_ADDR == l_p_pkt_store->opcode )
+                    {
+                    BT_UPDATE_setParserStatus( PARSER_WICED_HCI );
+                    HCI_reset_BT();
+                    vTaskDelay( pdMS_TO_TICKS( BT_RESET_RECONFIG_DELAY ) );
+                    HCI_wiced_send_command( HCI_CONTROL_COMMAND_SET_VISIBILITY, &(dummy_data_for_wakeup[0]), sizeof( dummy_data_for_wakeup ) );
+                    }
+                break;
+
             case UPDATE_STATE_INIT:
             case UPDATE_STATE_DOWNLOAD_MINIDRIVER:
                 // Do nothing for debug
@@ -437,11 +464,11 @@ IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_LPUART7_RTS_B, /* GPIO_AD_B1_05 is configure
 
 PERIPHERAL_uart_port_reconfig( true, true, ORIGINAL_BAUD_RATE );
 
-vTaskDelay( pdMS_TO_TICKS( AFTER_RESET_WAIT_MS ) );
+vTaskDelay( pdMS_TO_TICKS( BT_AFTER_RESET_DELAY ) );
 
 // Read BT chip address, if not all 0xFF(means already commit address), do factory commit BD address
-BTM_IOP_read_local_device_address();
 BTM_get_local_device_address( &(bd_addr[0]) );
+
 for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
     {
     if( 0xff != bd_addr[i] )
@@ -464,6 +491,8 @@ if( BOARD_is_tft_connected() == TFT_CONNECTED )
     {
     EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_FINISH, sw_ver );
     }
+BT_update_status = false;
+update_state = UPDATE_STATE_SUSPEND;
 }
 
 /*********************************************************************
@@ -541,6 +570,7 @@ while( flash_write_count < ( flash_buf_info.buffer_size / MAX_UPDATE_DATA_LENGTH
     }
     download_flash_addr  += MAX_UPDATE_DATA_LENGTH;
     BT_UPDATE_standard_send_command( OPCODE_WRITERAM, write_flash_cmd, sizeof( write_flash_cmd ) );
+
     flash_write_count++;
     flash_buf_info.write_addr += MAX_UPDATE_DATA_LENGTH;
     vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
@@ -675,6 +705,51 @@ return parser_status;
 
 /*********************************************************************
 *
+* Set BT parser status
+*
+* For outside function set BT parser status
+*
+*********************************************************************/
+void BT_UPDATE_setParserStatus
+    (
+    bt_parser_t config_parser_status
+    )
+{
+parser_status = config_parser_status;
+}
+
+/*********************************************************************
+*
+* Get BT DUT mode state
+*
+* For production test get BT DUT mode state
+*
+*********************************************************************/
+bool getBTDUTModeState
+    (
+    void
+    )
+{
+return BT_DUT_mode_state;
+}
+
+/*********************************************************************
+*
+* Get BT update status
+*
+* For production IOP get bd address test get BT update status
+*
+*********************************************************************/
+bool BT_UPDATE_get_BT_update_status
+    (
+    void
+    )
+{
+return BT_update_status;
+}
+
+/*********************************************************************
+*
 * BT update initialization
 *
 * Initiate BT update, make cyw989820 into download mode
@@ -693,6 +768,7 @@ uint32_t     addr_val_uint32;
 uint32_t     md_last_sec_size;
 char         sw_ver[SW_VERSION_LENGTH] = { 0 };
 
+BT_update_status = true;
 sprintf( sw_ver, "%c.%c", GARMIN_SW_MAJOR_VER, GARMIN_SW_MINOR_VER );
 if( BOARD_is_tft_connected() == TFT_CONNECTED )
     {

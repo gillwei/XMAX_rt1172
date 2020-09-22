@@ -28,8 +28,10 @@
 #endif
 #include "hci_control_api.h"
 #include "HCI_pub.h"
+#include "BT_UPDATE_pub.h"
 #include "fsl_gpio.h"
 #include "GRM_pub_prj.h"
+#include "factory_test.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -98,6 +100,7 @@ typedef enum
 /*--------------------------------------------------------------------
                            MEMORY CONSTANTS
 --------------------------------------------------------------------*/
+const uint8_t bd_addr_default[BT_DEVICE_ADDRESS_LEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 
 /*--------------------------------------------------------------------
                                VARIABLES
@@ -1050,9 +1053,27 @@ return ERR_NONE;
 * @public
 * BTM_set_local_device_address
 *
-* Send command to read 89820 BT address
+* When receive 89820 return local device address, update local address also
 *
 * @param device_name The pointer to the pointer to the device address.
+*
+*********************************************************************/
+int BTM_set_local_device_address
+    (
+    uint8_t* device_address
+    )
+{
+memcpy( local_device_address, device_address, BT_DEVICE_ADDRESS_LEN );
+return ERR_NONE;
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_IOP_read_local_device_address
+*
+* Read BT module device address
+*
 *
 *********************************************************************/
 int BTM_IOP_read_local_device_address
@@ -1061,13 +1082,16 @@ int BTM_IOP_read_local_device_address
     )
 {
 PRINTF( "%s\n\r", __FUNCTION__ );
-
-if( pdTRUE != EEPM_get_bd_address( &eeprom_read_bd_address_callback ) )
+// If the last set bd address are all 0xff, then don't ask BT chip bd address
+// Send local bd address for IOP
+if( 0 == memcmp( local_device_address, bd_addr_default, BT_DEVICE_ADDRESS_LEN ) )
     {
-    PRINTF( "EEPM_get_bd_address get_BT_en false\r\n");
+    sent_iop_bd_address();
     }
-
-vTaskDelay( pdMS_TO_TICKS( 50 ) );
+else
+    {
+    HCI_wiced_send_command( HCI_CONTROL_COMMAND_READ_LOCAL_BDA, NULL, 0 );
+    }
 
 return ERR_NONE;
 }
@@ -1088,46 +1112,51 @@ int BTM_IOP_set_local_device_address
     uint8_t* bd_addr
     )
 {
-uint8_t reset_cmd[4] = { 0x01, 0x03, 0x0C, 0x0 };
-uint8_t factory_commit_addr_cmd[11] = { 0x01, 0x10, 0xFC, 0x07, 0, 0, 0, 0, 0, 0, 0 };
+uint8_t factory_commit_addr_cmd[BT_DEVICE_ADDRESS_LEN + 1] = { 0 };
 uint8_t bd_addr_rev[BT_DEVICE_ADDRESS_LEN];
-
-PRINTF( "%s ", __FUNCTION__  );
-for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
-    {
-    PRINTF( " %02x", local_device_address[i]  );
-    }
-PRINTF("\r\n");
 
 for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
     {
     bd_addr_rev[i] = bd_addr[BT_DEVICE_ADDRESS_LEN - 1 - i];
     }
 
-memcpy( &factory_commit_addr_cmd[4], &bd_addr_rev[0], BT_DEVICE_ADDRESS_LEN );
-
-PERIPHERAL_uart_tx_data( sizeof( reset_cmd ), reset_cmd );
-vTaskDelay( pdMS_TO_TICKS( 50 ) );
-PERIPHERAL_uart_tx_data( sizeof( factory_commit_addr_cmd ), factory_commit_addr_cmd );
-vTaskDelay( pdMS_TO_TICKS( 50 ) );
-
-if( pdTRUE == EEPM_set_bd_address( bd_addr, bd_addr_write_cb ) )
+PRINTF( "%s ", __FUNCTION__  );
+for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
     {
-    PERIPHERAL_uart_tx_data( sizeof( reset_cmd ), reset_cmd );
-    vTaskDelay( pdMS_TO_TICKS( 50 ) );
-    PERIPHERAL_uart_tx_data( sizeof( factory_commit_addr_cmd ), factory_commit_addr_cmd );
-    vTaskDelay( pdMS_TO_TICKS( 50 ) );
+    PRINTF( " %02x", bd_addr_rev[i]  );
+    }
+PRINTF("\r\n");
 
-    HCI_reset_BT();
-
-    PERIPHERAL_uart_tx_data( sizeof( reset_cmd ), reset_cmd );
-    vTaskDelay( pdMS_TO_TICKS( 100 ) );
+/* If BD address set to ALL 0xFF, then update BT firmware and return */
+if( 0 == memcmp( bd_addr_rev, bd_addr_default, BT_DEVICE_ADDRESS_LEN ) )
+    {
+    if( pdTRUE == EEPM_set_bd_address( bd_addr_rev, bd_addr_write_cb ) )
+        {
+        BTM_set_local_device_address( bd_addr_rev );
+        BT_UPDATE_received();
+        }
+    else
+        {
+        PRINTF("EEPM_set_bd_address fail\n\r");
+        }
     }
 else
     {
-    PRINTF("EEPM_set_bd_address fail\n\r");
-    }
+    memcpy( &factory_commit_addr_cmd[0], &bd_addr[0], BT_DEVICE_ADDRESS_LEN );
 
+    if( pdTRUE == EEPM_set_bd_address( bd_addr_rev, bd_addr_write_cb ) )
+        {
+        BTM_set_local_device_address( bd_addr_rev );
+        BT_UPDATE_standard_send_command( OPCODE_RESET, NULL, 0 );
+        BT_UPDATE_setParserStatus( PARSER_STANDARD_HCI );
+        vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
+        BT_UPDATE_standard_send_command( OPCODE_COMMIT_ADDR, factory_commit_addr_cmd, sizeof( factory_commit_addr_cmd ) );
+        }
+    else
+        {
+        PRINTF("EEPM_set_bd_address fail\n\r");
+        }
+    }
 return ERR_NONE;
 }
 

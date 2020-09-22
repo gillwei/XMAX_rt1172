@@ -7,6 +7,7 @@
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
+
 /*--------------------------------------------------------------------
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
@@ -20,14 +21,23 @@
 #include "BT_UPDATE_pub.h"
 #include "JPEGPARSER_pub.h"
 #include "EW_pub.h"
+#include "factory_test.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define AUTH_CHIP_VER_LENGTH  8
+#define AUTH_CHIP_VER_ARRY (const uint8_t [])  { 0x07, 0x01, 0x03, 0x00, 0x00, 0x00, 0x03, 0x00 }
 
 /*--------------------------------------------------------------------
                                 TYPES
 --------------------------------------------------------------------*/
+/** MFI chip return result */
+typedef enum
+    {
+    AUTH_CHIP_RETURN_FAIL,
+    AUTH_CHIP_RETURN_SUCCESS
+    } auth_chip_return_result_t;
 
 /*--------------------------------------------------------------------
                               PROCEDURES
@@ -109,6 +119,8 @@ switch( cmd_opcode )
     case HCI_CONTROL_EVENT_READ_LOCAL_BDA:
         PRINTF( "BD addr: %02x:%02x:%02x:%02x:%02x:%02x\n\r",
                  (int)p_data[5], (int)p_data[4], (int)p_data[3], (int)p_data[2], (int)p_data[1], (int)p_data[0] );
+        BTM_set_local_device_address( (uint8_t *)p_data );
+        sent_iop_bd_address();
         break;
 
     case HCI_CONTROL_EVENT_DEVICE_STARTED:
@@ -206,6 +218,7 @@ void hci_iap2_event_handler
     )
 {
 bool connection_is_up = false;
+auth_chip_return_result_t auth_ver_result = AUTH_CHIP_RETURN_FAIL;
 
 switch( cmd_opcode )
     {
@@ -232,6 +245,19 @@ switch( cmd_opcode )
         BTM_notify_EW_connection_status( BT_CONNECTION_FAIL );
         break;
 
+    case HCI_CONTROL_IAP2_EVENT_AUTH_CHIP_INFO:
+        if( 0 == memcmp( AUTH_CHIP_VER_ARRY, p_data, AUTH_CHIP_VER_LENGTH ) )
+            {
+            auth_ver_result = AUTH_CHIP_RETURN_SUCCESS;
+            }
+        else
+            {
+            auth_ver_result = AUTH_CHIP_RETURN_FAIL;
+            PRINTF( "ERROR: chip version compare fail\r\n" );
+            }
+        hci_wait_for_resp_stop();
+        receive_auth_chip_ver( auth_ver_result );
+        break;
     default:
         break;
     }

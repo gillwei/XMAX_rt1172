@@ -131,6 +131,16 @@ void FACTORY_init
     void
     );
 
+void receive_auth_chip_ver
+    (
+    uint8_t result
+    );
+
+void sent_iop_bd_address
+    (
+    void
+    );
+
 #ifdef __cplusplus
 }
 #endif

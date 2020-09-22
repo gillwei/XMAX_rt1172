@@ -15,16 +15,28 @@ extern "C" {
 /*--------------------------------------------------------------------
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
-//#include "FreeRTOSConfig.h"
 #include "fsl_common.h"
 #include "PERIPHERAL_pub.h"
+
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define OPCODE_RESET             0x0C03
+#define OPCODE_COMMIT_ADDR       0xFC10
+#define COMMON_CMD_WAIT_MS       30
+#define BT_MIN_WAIT_DELAY        50
+#define BT_RESET_RECONFIG_DELAY  100
+#define BT_RESET_GPIO_DELAY      2
+#define BT_AFTER_RESET_DELAY     1000
 
 /*--------------------------------------------------------------------
                         TYPES
 --------------------------------------------------------------------*/
+typedef enum tagBT_PARSER_TYPE                  //!< HCI receive state machine states
+    {
+    PARSER_WICED_HCI,
+    PARSER_STANDARD_HCI
+    } bt_parser_t;
 
 /*--------------------------------------------------------------------
                         PROJECT INCLUDES
@@ -102,6 +114,36 @@ void hci_avrc_event_handler
     const uint16_t opcode,
     const uint16_t length,
     const uint8_t* data
+    );
+
+void HCI_BT_off
+    (
+    void
+    );
+
+void HCI_BT_on
+    (
+    void
+    );
+
+void HCI_set_test_mode
+    (
+    void
+    );
+
+bool HCI_get_test_mode_state
+    (
+    void
+    );
+
+void HCI_LE_transmit_cmd
+    (
+    uint8_t* data
+    );
+
+void HCI_wait_for_resp_start
+    (
+    void
     );
 
 #ifdef __cplusplus

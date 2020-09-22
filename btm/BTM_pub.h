@@ -108,6 +108,11 @@ int BTM_get_local_device_address
     uint8_t* device_address
     );
 
+int BTM_set_local_device_address
+    (
+    uint8_t* device_address
+    );
+
 int BTM_IOP_set_local_device_address
     (
     uint8_t* bd_addr

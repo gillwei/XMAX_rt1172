@@ -42,6 +42,7 @@ extern "C"{
 #include "HCI_pub.h"
 #include "BTM_pub.h"
 #include "hci_control_api.h"
+#include "BT_UPDATE_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -133,6 +134,8 @@ static boolean                      burnInResult           = BURN_IN_FAIL;
 static uint32_t                     burnInTime             = 0;
 static uint32_t                     burnInTargetTime       = BURN_IN_QUAL_DFT_TIME;
 static IOP_set_BurnIn_state_type    burnInState            = IOP_BURNIN_STATE_NONE;
+
+static const uint8_t default_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -531,6 +534,11 @@ switch ( IOPInstId )
         iopToCanData( IOP_CMND_DATA, iopData, data_len );
         break;
 
+    case IOP_EVNT_DATA:
+        memcpy( &iopData[0], data_ptr, data_len );
+        iopToCanData( IOP_EVNT_DATA, iopData, data_len );
+        break;
+
     case IOP_HWM_TIME_DATA:
         memcpy( &iopData[0], data_ptr, data_len );
         iopToCanData( IOP_HWM_TIME_DATA, iopData, data_len );
@@ -559,6 +567,11 @@ switch ( IOPInstId )
     case IOP_AUTO_BURN_IN:
         memcpy( &iopData[0], data_ptr, data_len );
         iopToCanData( IOP_AUTO_BURN_IN, iopData, data_len );
+        break;
+
+    case IOP_MFI_INST_RESPONSE:
+        memcpy( &iopData[0], data_ptr, data_len );
+        iopToCanData( IOP_MFI_INST_RESPONSE, iopData, data_len );
         break;
 
     default:
@@ -645,46 +658,55 @@ switch( inst_id )
 
             case IOP_BT_GET_BDADDR:
                 {
-                uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = {0};
-
-                BTM_IOP_read_local_device_address();
-                IOPInstId = IOP_BT_ADDR_DATA;
-                BTM_get_local_device_address( &(bd_addr[0]) );
-                packageIopToCanData( &bd_addr, sizeof( bd_addr ) );
+                uint8_t dummy_bd_address[BT_DEVICE_ADDRESS_LEN] = {0};
+                if( BT_UPDATE_get_BT_update_status() )
+                    {
+                    IOPInstId = IOP_BT_ADDR_DATA;
+                    packageIopToCanData( &dummy_bd_address, sizeof( dummy_bd_address ) );
+                    }
+                else
+                    {
+                    BTM_IOP_read_local_device_address();
+                    }
+                IOPDone = true;
                 }
                 break;
 
             case IOP_BT_POWER_ON:
                 {
-
+                HCI_BT_on();
                 IOPDone = true;
                 }
                 break;
 
             case IOP_BT_POWER_OFF:
                 {
-
+                HCI_BT_off();
                 IOPDone = true;
                 }
                 break;
 
             case IOP_BT_SET_TEST_MODE:
                 {
-
+                HCI_set_test_mode();
                 IOPDone = true;
                 }
                 break;
 
             case IOP_BT_GET_TEST_MODE:
                 {
-
-                IOPDone = true;
+                uint8_t resp_data[8] = { 0x8C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  };
+                bool bt_test_mode = false;
+                bt_test_mode = HCI_get_test_mode_state();
+                IOPInstId = IOP_EVNT_DATA;
+                resp_data[2] =  bt_test_mode;
+                packageIopToCanData( &resp_data, sizeof( resp_data ) );
                 }
                 break;
 
             case IOP_BT_CLEAR_PAIRINGS:
                 {
-
+                BTM_unpair_paired_device( 0 );
                 IOPDone = true;
                 }
                 break;
@@ -826,7 +848,14 @@ switch( inst_id )
 
     case IOP_BT_SET_BDADDR:
         {
-        if( BT_DEVICE_ADDRESS_LEN == size )
+        uint8_t temp_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+        BTM_get_local_device_address( temp_bd_addr );
+        // Check the BD address have not been set, or set bd address are default address
+        if( ( BT_DEVICE_ADDRESS_LEN == size ) && ( 0 == memcmp( default_bd_addr, temp_bd_addr, BT_DEVICE_ADDRESS_LEN ) ) )
+            {
+            BTM_IOP_set_local_device_address( data );
+            }
+        else if ( ( BT_DEVICE_ADDRESS_LEN == size ) && ( 0 == memcmp( default_bd_addr, data, BT_DEVICE_ADDRESS_LEN ) ) )
             {
             BTM_IOP_set_local_device_address( data );
             }
@@ -836,7 +865,15 @@ switch( inst_id )
 
     case IOP_BT_TX_CARRIER_FREQ:
         {
+        HCI_LE_transmit_cmd( data );
+        IOPDone = true;
+        }
+        break;
 
+    case IOP_MFI_START_COPROCESSOR_TEST:
+        {
+        HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_GET_AUTH_CHIP_INFO, NULL, 0 );
+        HCI_wait_for_resp_start();
         IOPDone = true;
         }
         break;
@@ -1475,6 +1512,50 @@ void ft_hook_receive
 {
 memcpy( &canRxData, &p_rmd->data[0], 8 );
 canRxFlag = TRUE;
+}
+
+/*********************************************************************
+*
+* @public
+* receive_auth_chip_ver
+*
+* @brief receive authenticate chip information result and send IOP
+*
+*********************************************************************/
+void receive_auth_chip_ver
+    (
+    uint8_t result
+    )
+{
+IOPInstId = IOP_MFI_INST_RESPONSE;
+packageIopToCanData( &result, sizeof( uint8_t ) );
+}
+
+
+/*********************************************************************
+*
+* @public
+* sent_iop_bd_address
+*
+* @brief receive bd address result from BT chip and send IOP
+*
+*********************************************************************/
+void sent_iop_bd_address
+    (
+    void
+    )
+{
+uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = {0};
+uint8_t bd_addr_rev[BT_DEVICE_ADDRESS_LEN] = {0};
+
+BTM_get_local_device_address( &(bd_addr[0]) );
+for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+    {
+    bd_addr_rev[i] = bd_addr[BT_DEVICE_ADDRESS_LEN - 1 - i];
+    }
+
+IOPInstId = IOP_BT_ADDR_DATA;
+packageIopToCanData( &bd_addr_rev, sizeof( bd_addr_rev ) );
 }
 
 #ifdef __cplusplus

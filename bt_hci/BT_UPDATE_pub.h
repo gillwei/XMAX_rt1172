@@ -16,6 +16,7 @@ extern "C" {
 #endif
 
 #include "FreeRTOS.h"
+#include "HCI_pub.h"
 
 /*--------------------------------------------------------------------
                             PROCEDURES
@@ -28,6 +29,16 @@ BaseType_t BT_UPDATE_standard_send_command
     );
 
 void BT_UPDATE_received
+    (
+    void
+    );
+
+void BT_UPDATE_setParserStatus
+    (
+    bt_parser_t config_parser_status
+    );
+
+bool BT_UPDATE_get_BT_update_status
     (
     void
     );
