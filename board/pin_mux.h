@@ -47,6 +47,17 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_TFT_ASIL_GPIO_PIN                                      4U   /*!< GPIO pin number */
 #define BOARD_INITPINS_TFT_ASIL_GPIO_PIN_MASK                         (1U << 4U)   /*!< GPIO pin mask */
 
+/* WAKEUP (coord T8), IGN_WAKE */
+/* Routed pin properties */
+#define BOARD_INITPINS_IGN_WAKE_PERIPHERAL                                GPIO13   /*!< Peripheral name */
+#define BOARD_INITPINS_IGN_WAKE_SIGNAL                                   gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_IGN_WAKE_CHANNEL                                       0U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_IGN_WAKE_GPIO                                      GPIO13   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_IGN_WAKE_GPIO_PIN                                      0U   /*!< GPIO pin number */
+#define BOARD_INITPINS_IGN_WAKE_GPIO_PIN_MASK                         (1U << 0U)   /*!< GPIO pin mask */
+
 /* PMIC_ON_REQ (coord U9), SYS_EN */
 /* Routed pin properties */
 #define BOARD_INITPINS_SYS_EN_PERIPHERAL                                  GPIO13   /*!< Peripheral name */
@@ -58,6 +69,39 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_SYS_EN_GPIO_PIN                                        1U   /*!< GPIO pin number */
 #define BOARD_INITPINS_SYS_EN_GPIO_PIN_MASK                           (1U << 1U)   /*!< GPIO pin mask */
 
+/* GPIO_SNVS_07 (coord R9), IGN_WAKE_GPIO */
+/* Routed pin properties */
+#define BOARD_INITPINS_IGN_WAKE_GPIO_PERIPHERAL                           GPIO13   /*!< Peripheral name */
+#define BOARD_INITPINS_IGN_WAKE_GPIO_SIGNAL                              gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_IGN_WAKE_GPIO_CHANNEL                                 10U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_IGN_WAKE_GPIO_GPIO                                 GPIO13   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_IGN_WAKE_GPIO_GPIO_PIN                                10U   /*!< GPIO pin number */
+#define BOARD_INITPINS_IGN_WAKE_GPIO_GPIO_PIN_MASK                   (1U << 10U)   /*!< GPIO pin mask */
+
+/* GPIO_AD_11 (coord P16), 5V_CAN_PGOOD */
+/* Routed pin properties */
+#define BOARD_INITPINS_CAN_PGOOD_PERIPHERAL                                GPIO9   /*!< Peripheral name */
+#define BOARD_INITPINS_CAN_PGOOD_SIGNAL                                  gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_CAN_PGOOD_CHANNEL                                     10U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_CAN_PGOOD_GPIO                                      GPIO9   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_CAN_PGOOD_GPIO_PIN                                    10U   /*!< GPIO pin number */
+#define BOARD_INITPINS_CAN_PGOOD_GPIO_PIN_MASK                       (1U << 10U)   /*!< GPIO pin mask */
+
+/* GPIO_AD_27 (coord N16), 5V_CAN_EN */
+/* Routed pin properties */
+#define BOARD_INITPINS_CAN_EN_PERIPHERAL                                   GPIO9   /*!< Peripheral name */
+#define BOARD_INITPINS_CAN_EN_SIGNAL                                     gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_CAN_EN_CHANNEL                                        26U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_CAN_EN_GPIO                                         GPIO9   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_CAN_EN_GPIO_PIN                                       26U   /*!< GPIO pin number */
+#define BOARD_INITPINS_CAN_EN_GPIO_PIN_MASK                          (1U << 26U)   /*!< GPIO pin mask */
+
 /* GPIO_SD_B2_01 (coord J14), DEBUG_LED */
 /* Routed pin properties */
 #define BOARD_INITPINS_DEBUG_LED_PERIPHERAL                               GPIO10   /*!< Peripheral name */
@@ -68,6 +112,17 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_DEBUG_LED_GPIO                                     GPIO10   /*!< GPIO peripheral base pointer */
 #define BOARD_INITPINS_DEBUG_LED_GPIO_PIN                                    10U   /*!< GPIO pin number */
 #define BOARD_INITPINS_DEBUG_LED_GPIO_PIN_MASK                       (1U << 10U)   /*!< GPIO pin mask */
+
+/* GPIO_AD_28 (coord L17), CAN_STBY */
+/* Routed pin properties */
+#define BOARD_INITPINS_CAN_STBY_PERIPHERAL                                 GPIO9   /*!< Peripheral name */
+#define BOARD_INITPINS_CAN_STBY_SIGNAL                                   gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_CAN_STBY_CHANNEL                                      27U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_CAN_STBY_GPIO                                       GPIO9   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_CAN_STBY_GPIO_PIN                                     27U   /*!< GPIO pin number */
+#define BOARD_INITPINS_CAN_STBY_GPIO_PIN_MASK                        (1U << 27U)   /*!< GPIO pin mask */
 
 /* GPIO_EMC_B2_04 (coord M1), HW_ID1 */
 /* Routed pin properties */

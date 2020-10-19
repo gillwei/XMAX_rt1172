@@ -42,9 +42,10 @@ static const unsigned int _StringsDefault0[] =
 
 /* Constant values used in this 'C' module only. */
 static const XColor _Const0000 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XPoint _Const0001 = { 0, 0 };
-static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0003 = {{ 0, 0 }, { 0, 0 }};
+static const XColor _Const0001 = { 0xFF, 0x76, 0x5A, 0xFF };
+static const XPoint _Const0002 = { 0, 0 };
+static const XStringRes _Const0003 = { _StringsDefault0, 0x0002 };
+static const XRect _Const0004 = {{ 0, 0 }, { 0, 0 }};
 
 /* Initializer for the class 'Views::Rectangle' */
 void ViewsRectangle__Init( ViewsRectangle _this, XObject aLink, XHandle aArg )
@@ -183,7 +184,7 @@ void ViewsText__Init( ViewsText _this, XObject aLink, XHandle aArg )
   _this->ColorBL = _Const0000;
   _this->ColorBR = _Const0000;
   _this->ColorTR = _Const0000;
-  _this->ColorTL = _Const0000;
+  _this->ColorTL = _Const0001;
   _this->Alignment = ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertCenter;
   _this->Opacity = 255;
 }
@@ -548,7 +549,7 @@ void ViewsText_reparseSlot( ViewsText _this, XObject sender )
   else
     _this->flowString = 0;
 
-  _this->textSize = _Const0001;
+  _this->textSize = _Const0002;
 
   if ((( _this->Ellipsis && ( EwCompString( _this->flowString, 0 ) != 0 )) && !_this->AutoSize ) 
       && ( _this->Font != 0 ))
@@ -620,8 +621,8 @@ void ViewsText_reparseSlot( ViewsText _this, XObject sender )
       if ( clipF )
       {
         XInt32 len = EwGetStringChar( res, inxF );
-        tmp = EwShareString( EwConcatString( EwConcatString( EwLoadString( &_Const0002 ), 
-        EwStringMiddle( res, inxF, len )), EwLoadString( &_Const0002 )));
+        tmp = EwShareString( EwConcatString( EwConcatString( EwLoadString( &_Const0003 ), 
+        EwStringMiddle( res, inxF, len )), EwLoadString( &_Const0003 )));
         tmp = EwSetStringChar( tmp, 0, (XChar)( len + 2 ));
         inxF = inxF + len;
 
@@ -647,7 +648,7 @@ void ViewsText_reparseSlot( ViewsText _this, XObject sender )
       {
         XInt32 len = EwGetStringChar( res, inxL );
         XString tmp2 = EwShareString( EwConcatString( EwConcatString( EwLoadString( 
-          &_Const0002 ), EwStringMiddle( res, inxL, len )), EwLoadString( &_Const0002 )));
+          &_Const0003 ), EwStringMiddle( res, inxL, len )), EwLoadString( &_Const0003 )));
         tmp2 = EwSetStringChar( tmp2, 0, (XChar)( len + 2 ));
         tmp2 = EwSetStringChar( tmp2, 1, 0xFEFF );
 
@@ -818,6 +819,19 @@ void ViewsText_reparseSlot( ViewsText _this, XObject sender )
   EwPostSignal( EwNewSlot( _this, ViewsText_preOnUpdateSlot ), ((XObject)_this ));
 }
 
+/* 'C' function for method : 'Views::Text.OnSetColorTL()' */
+void ViewsText_OnSetColorTL( ViewsText _this, XColor value )
+{
+  if ( !EwCompColor( value, _this->ColorTL ))
+    return;
+
+  _this->ColorTL = value;
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+}
+
 /* 'C' function for method : 'Views::Text.OnSetString()' */
 void ViewsText_OnSetString( ViewsText _this, XString value )
 {
@@ -840,6 +854,23 @@ void ViewsText_OnSetFont( ViewsText _this, ResourcesFont value )
   _this->flowString = 0;
   _this->reparsed = 0;
   EwPostSignal( EwNewSlot( _this, ViewsText_preReparseSlot ), ((XObject)_this ));
+}
+
+/* 'C' function for method : 'Views::Text.OnSetColor()' */
+void ViewsText_OnSetColor( ViewsText _this, XColor value )
+{
+  if ((( !EwCompColor( value, _this->ColorTL ) && !EwCompColor( value, _this->ColorTR )) 
+      && !EwCompColor( value, _this->ColorBL )) && !EwCompColor( value, _this->ColorBR ))
+    return;
+
+  _this->ColorTL = value;
+  _this->ColorTR = value;
+  _this->ColorBL = value;
+  _this->ColorBR = value;
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
 }
 
 /* The method IsBaseDirectionRTL() returns 'true' if the text specified in @String 
@@ -904,13 +935,13 @@ XRect ViewsText_GetContentArea( ViewsText _this )
   XRect rs;
 
   if ( !EwCompString( _this->String, 0 ) || ( _this->Font == 0 ))
-    return _Const0003;
+    return _Const0004;
 
   if ( !_this->reparsed )
     EwSignal( EwNewSlot( _this, ViewsText_reparseSlot ), ((XObject)_this ));
 
   if ( !EwCompString( _this->flowString, 0 ))
-    return _Const0003;
+    return _Const0004;
 
   leading = _this->Font->Leading;
   rh = ( _this->Font->Ascent + _this->Font->Descent ) + _this->Font->Leading;
@@ -921,7 +952,7 @@ XRect ViewsText_GetContentArea( ViewsText _this )
     rh = _this->RowDistance;
   }
 
-  if ( !EwCompPoint( _this->textSize, _Const0001 ))
+  if ( !EwCompPoint( _this->textSize, _Const0002 ))
     _this->textSize.X = ResourcesFont_GetFlowTextAdvance( _this->Font, _this->flowString );
 
   _this->textSize.Y = (( EwGetStringChar( _this->flowString, 0 ) * rh ) - leading );

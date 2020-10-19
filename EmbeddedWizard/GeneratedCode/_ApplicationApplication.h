@@ -106,6 +106,12 @@
 EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( Rectangle,       ViewsRectangle )
   EW_OBJECT  ( Text,            ViewsText )
+  EW_OBJECT  ( Text1,           ViewsText )
+  EW_OBJECT  ( Text2,           ViewsText )
+  EW_OBJECT  ( Rectangle1,      ViewsRectangle )
+  EW_OBJECT  ( Rectangle2,      ViewsRectangle )
+  EW_OBJECT  ( Text3,           ViewsText )
+  EW_OBJECT  ( Rectangle3,      ViewsRectangle )
 EW_END_OF_FIELDS( ApplicationApplication )
 
 /* Virtual Method Table (VMT) for the class : 'Application::Application' */

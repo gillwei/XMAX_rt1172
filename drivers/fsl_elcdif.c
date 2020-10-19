@@ -143,6 +143,7 @@ void ELCDIF_RgbModeInit(LCDIF_Type *base, const elcdif_rgb_mode_config_t *config
 
     base->CUR_BUF  = config->bufferAddr;
     base->NEXT_BUF = config->bufferAddr;
+    // base->CTRL2    = LCDIF_CTRL2_EVEN_LINE_PATTERN(0b101) | LCDIF_CTRL2_ODD_LINE_PATTERN(0b101);
 }
 
 /*!

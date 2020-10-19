@@ -197,7 +197,7 @@ static void BOARD_InitLcdifClock(void)
      * the RK055AHD091 pixel clock should be 62MHz.
      */
 
-    CLOCK_InitVideoPllWithFreq( 93 );
+    CLOCK_InitVideoPllWithFreq( 89 );
 
     const clock_root_config_t lcdifv2ClockConfig = {
         .clockOff = false,
@@ -208,8 +208,6 @@ static void BOARD_InitLcdifClock(void)
     };
 
     CLOCK_SetRootClock(kCLOCK_Root_Lcdifv2, &lcdifv2ClockConfig);
-
-    // mipiDsiDpiClkFreq_Hz = CLOCK_GetRootClockFreq(kCLOCK_Root_Lcdifv2);
 }
 
 static void BOARD_InitMipiDsiClock(void)

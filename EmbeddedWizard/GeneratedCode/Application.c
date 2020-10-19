@@ -35,16 +35,30 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000016, /* ratio 127.27 % */
-  0xB8001300, 0x80090452, 0x24D80032, 0x4006F004, 0x23100008, 0x00080802, 0x00000000
+  0x00000040, /* ratio 93.75 % */
+  0xB8000D00, 0x800A4452, 0x00880022, 0x60608858, 0x0C002391, 0x64E84422, 0x0E038021,
+  0x02600085, 0x8B41CAA0, 0x01221C09, 0x1B000650, 0x00DE0093, 0x65B16108, 0x00000040,
+  0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 270 }};
-static const XRect _Const0001 = {{ 0, 0 }, { 480, 272 }};
-static const XColor _Const0002 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0003 = {{ 140, 100 }, { 340, 150 }};
+static const XRect _Const0001 = {{ 0, 0 }, { 250, 270 }};
+static const XColor _Const0002 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const0003 = {{ 50, 30 }, { 190, 80 }};
 static const XStringRes _Const0004 = { _StringsDefault0, 0x0002 };
+static const XColor _Const0005 = { 0xFF, 0x00, 0x00, 0xFF };
+static const XRect _Const0006 = {{ 40, 110 }, { 200, 160 }};
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0008 };
+static const XColor _Const0008 = { 0x00, 0xFF, 0x00, 0xFF };
+static const XRect _Const0009 = {{ 50, 180 }, { 190, 230 }};
+static const XStringRes _Const000A = { _StringsDefault0, 0x0010 };
+static const XColor _Const000B = { 0x00, 0x00, 0xFF, 0xFF };
+static const XRect _Const000C = {{ 250, 0 }, { 480, 90 }};
+static const XRect _Const000D = {{ 250, 90 }, { 480, 180 }};
+static const XRect _Const000E = {{ 300, 110 }, { 440, 160 }};
+static const XStringRes _Const000F = { _StringsDefault0, 0x0017 };
+static const XRect _Const0010 = {{ 250, 180 }, { 480, 270 }};
 
 /* Initializer for the class 'Application::Application' */
 void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, XHandle aArg )
@@ -58,6 +72,12 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   /* ... then construct all embedded objects */
   ViewsRectangle__Init( &_this->Rectangle, &_this->_XObject, 0 );
   ViewsText__Init( &_this->Text, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Text1, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Text2, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->Rectangle1, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->Rectangle2, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Text3, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->Rectangle3, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( ApplicationApplication );
@@ -68,9 +88,34 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0002 );
   CoreRectView__OnSetBounds( &_this->Text, _Const0003 );
   ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const0004 ));
+  ViewsText_OnSetColor( &_this->Text, _Const0005 );
+  CoreRectView__OnSetBounds( &_this->Text1, _Const0006 );
+  ViewsText_OnSetString( &_this->Text1, EwLoadString( &_Const0007 ));
+  ViewsText_OnSetColor( &_this->Text1, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->Text2, _Const0009 );
+  ViewsText_OnSetString( &_this->Text2, EwLoadString( &_Const000A ));
+  ViewsText_OnSetColor( &_this->Text2, _Const000B );
+  CoreRectView__OnSetBounds( &_this->Rectangle1, _Const000C );
+  ViewsRectangle_OnSetColor( &_this->Rectangle1, _Const0005 );
+  CoreRectView__OnSetBounds( &_this->Rectangle2, _Const000D );
+  ViewsRectangle_OnSetColor( &_this->Rectangle2, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->Text3, _Const000E );
+  ViewsText_OnSetColorTL( &_this->Text3, _Const0002 );
+  ViewsText_OnSetString( &_this->Text3, EwLoadString( &_Const000F ));
+  CoreRectView__OnSetBounds( &_this->Rectangle3, _Const0010 );
+  ViewsRectangle_OnSetColor( &_this->Rectangle3, _Const000B );
   CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Rectangle ), 0 );
   CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Text ), 0 );
+  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Text1 ), 0 );
+  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Text2 ), 0 );
+  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Rectangle1 ), 0 );
+  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Rectangle2 ), 0 );
+  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Text3 ), 0 );
+  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Rectangle3 ), 0 );
   ViewsText_OnSetFont( &_this->Text, EwLoadResource( &ApplicationFont, ResourcesFont ));
+  ViewsText_OnSetFont( &_this->Text1, EwLoadResource( &ApplicationFont, ResourcesFont ));
+  ViewsText_OnSetFont( &_this->Text2, EwLoadResource( &ApplicationFont, ResourcesFont ));
+  ViewsText_OnSetFont( &_this->Text3, EwLoadResource( &ApplicationFont, ResourcesFont ));
 }
 
 /* Re-Initializer for the class 'Application::Application' */
@@ -82,6 +127,12 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->Rectangle );
   ViewsText__ReInit( &_this->Text );
+  ViewsText__ReInit( &_this->Text1 );
+  ViewsText__ReInit( &_this->Text2 );
+  ViewsRectangle__ReInit( &_this->Rectangle1 );
+  ViewsRectangle__ReInit( &_this->Rectangle2 );
+  ViewsText__ReInit( &_this->Text3 );
+  ViewsRectangle__ReInit( &_this->Rectangle3 );
 }
 
 /* Finalizer method for the class 'Application::Application' */
@@ -93,6 +144,12 @@ void ApplicationApplication__Done( ApplicationApplication _this )
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->Rectangle );
   ViewsText__Done( &_this->Text );
+  ViewsText__Done( &_this->Text1 );
+  ViewsText__Done( &_this->Text2 );
+  ViewsRectangle__Done( &_this->Rectangle1 );
+  ViewsRectangle__Done( &_this->Rectangle2 );
+  ViewsText__Done( &_this->Text3 );
+  ViewsRectangle__Done( &_this->Rectangle3 );
 
   /* Don't forget to deinitialize the super class ... */
   CoreRoot__Done( &_this->_Super );

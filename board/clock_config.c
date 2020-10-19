@@ -85,7 +85,7 @@ void BOARD_BootClockRUN(void)
     CLOCK_SetRootClock(kCLOCK_Root_M7_Systick, &rootCfg);
 
 #if defined(CONSUMER_SERIES)
-    CLOCK_InitArmPllWithFreq(1000);
+    CLOCK_InitArmPllWithFreq(800);
 #elif defined(AUTOMOTIVE_SERIES) || defined(INDUSTRIAL_SERIES)
     CLOCK_InitArmPllWithFreq(800);
 #endif

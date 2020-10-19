@@ -16,16 +16,16 @@ pin_labels:
 - {pin_num: C15, pin_signal: GPIO_SD_B1_02, label: TFT_CONNECTED, identifier: TFT_CONNECTED}
 - {pin_num: M17, pin_signal: GPIO_AD_29, label: TFT_BL_PWM, identifier: TFT_BL_PWM}
 - {pin_num: D15, pin_signal: GPIO_SD_B1_01, label: TFT_ASIL, identifier: TFT_ASIL}
-- {pin_num: L17, pin_signal: GPIO_AD_28, label: CAN_STBY}
-- {pin_num: R9, pin_signal: GPIO_SNVS_07, label: IGN_WAKE_GPIO}
+- {pin_num: L17, pin_signal: GPIO_AD_28, label: CAN_STBY, identifier: CAN_STBY}
+- {pin_num: R9, pin_signal: GPIO_SNVS_07, label: IGN_WAKE_GPIO, identifier: IGN_WAKE_GPIO}
 - {pin_num: T17, pin_signal: GPIO_AD_07, label: VBATT_SENSE}
 - {pin_num: R17, pin_signal: GPIO_AD_10, label: VDD_3.3V_PGOOD}
-- {pin_num: P16, pin_signal: GPIO_AD_11, label: '''5V_CAN_PGOOD'''}
+- {pin_num: P16, pin_signal: GPIO_AD_11, label: 5V_CAN_PGOOD, identifier: CAN_PGOOD}
 - {pin_num: R16, pin_signal: GPIO_AD_09, label: VDD_3.3VON_PGOOD}
 - {pin_num: M13, pin_signal: GPIO_AD_04, label: WDOG_B}
 - {pin_num: P6, pin_signal: GPIO_LPSR_02, label: BOOT_MODE0}
 - {pin_num: T7, pin_signal: GPIO_LPSR_03, label: BOOT_MODE1}
-- {pin_num: N16, pin_signal: GPIO_AD_27, label: 5V_CAN_EN}
+- {pin_num: N16, pin_signal: GPIO_AD_27, label: 5V_CAN_EN, identifier: d;VDD5V_CAN_EN;CAN_EN}
 - {pin_num: J14, pin_signal: GPIO_SD_B2_01, label: DEBUG_LED, identifier: DEBUG_LED}
 - {pin_num: N12, pin_signal: GPIO_AD_00, label: BT_UART_TX}
 - {pin_num: R14, pin_signal: GPIO_AD_01, label: BT_UART_RX}
@@ -54,7 +54,7 @@ pin_labels:
 - {pin_num: F16, pin_signal: GPIO_SD_B2_11, label: FLEXSPI_D3}
 - {pin_num: U9, pin_signal: PMIC_ON_REQ, label: SYS_EN, identifier: SYS_EN}
 - {pin_num: T9, pin_signal: PMIC_STBY_REQ, label: PMIC_STBY_REQ}
-- {pin_num: T8, pin_signal: WAKEUP, label: IGN_WAKE}
+- {pin_num: T8, pin_signal: WAKEUP, label: IGN_WAKE, identifier: IGN_WAKE}
 - {pin_num: E13, pin_signal: GPIO_DISP_B1_00, label: TFT_RGB_CLK}
 - {pin_num: D13, pin_signal: GPIO_DISP_B1_01, label: TFT_RGB_DE, identifier: LCDIF_ENABLE}
 - {pin_num: D11, pin_signal: GPIO_DISP_B1_02, label: TFT_RGB_HSYNC}
@@ -174,18 +174,18 @@ BOARD_InitPins:
   - {pin_num: N12, peripheral: LPUART7, signal: TXD, pin_signal: GPIO_AD_00}
   - {pin_num: C15, peripheral: GPIO10, signal: 'gpio_io, 05', pin_signal: GPIO_SD_B1_02, direction: INPUT}
   - {pin_num: D15, peripheral: GPIO10, signal: 'gpio_io, 04', pin_signal: GPIO_SD_B1_01, direction: INPUT}
-  - {pin_num: T8, peripheral: GPIO13, signal: 'gpio_io, 00', pin_signal: WAKEUP}
+  - {pin_num: T8, peripheral: GPIO13, signal: 'gpio_io, 00', pin_signal: WAKEUP, direction: INPUT}
   - {pin_num: T9, peripheral: GPIO13, signal: 'gpio_io, 02', pin_signal: PMIC_STBY_REQ}
   - {pin_num: U9, peripheral: GPIO13, signal: 'gpio_io, 01', pin_signal: PMIC_ON_REQ, direction: OUTPUT, gpio_init_state: 'true'}
-  - {pin_num: R9, peripheral: GPIO13, signal: 'gpio_io, 10', pin_signal: GPIO_SNVS_07}
+  - {pin_num: R9, peripheral: GPIO13, signal: 'gpio_io, 10', pin_signal: GPIO_SNVS_07, direction: INPUT}
   - {pin_num: T17, peripheral: ADC1, signal: 'B, 1_0', pin_signal: GPIO_AD_07}
   - {pin_num: R17, peripheral: GPIO9, signal: 'gpio_io, 09', pin_signal: GPIO_AD_10}
   - {pin_num: R16, peripheral: GPIO9, signal: 'gpio_io, 08', pin_signal: GPIO_AD_09}
-  - {pin_num: P16, peripheral: GPIO9, signal: 'gpio_io, 10', pin_signal: GPIO_AD_11}
+  - {pin_num: P16, peripheral: GPIO9, signal: 'gpio_io, 10', pin_signal: GPIO_AD_11, direction: INPUT}
   - {pin_num: M13, peripheral: WDOG1, signal: wdog_wdog_b, pin_signal: GPIO_AD_04}
-  - {pin_num: N16, peripheral: GPIO9, signal: 'gpio_io, 26', pin_signal: GPIO_AD_27}
+  - {pin_num: N16, peripheral: GPIO9, signal: 'gpio_io, 26', pin_signal: GPIO_AD_27, identifier: CAN_EN, direction: OUTPUT, gpio_init_state: 'true'}
   - {pin_num: J14, peripheral: GPIO10, signal: 'gpio_io, 10', pin_signal: GPIO_SD_B2_01, direction: OUTPUT}
-  - {pin_num: L17, peripheral: GPIO9, signal: 'gpio_io, 27', pin_signal: GPIO_AD_28}
+  - {pin_num: L17, peripheral: GPIO9, signal: 'gpio_io, 27', pin_signal: GPIO_AD_28, direction: OUTPUT}
   - {pin_num: F14, peripheral: LPSPI4, signal: PCS1, pin_signal: GPIO_SD_B2_04}
   - {pin_num: M1, peripheral: GPIO8, signal: 'gpio_io, 14', pin_signal: GPIO_EMC_B2_04, direction: INPUT}
   - {pin_num: N1, peripheral: GPIO8, signal: 'gpio_io, 15', pin_signal: GPIO_EMC_B2_05, direction: INPUT}
@@ -243,6 +243,8 @@ BOARD_InitPins:
   - {pin_num: H5, peripheral: SEMC, signal: 'DATA, 04', pin_signal: GPIO_EMC_B1_04}
   - {pin_num: J5, peripheral: SEMC, signal: semc_cas, pin_signal: GPIO_EMC_B1_24}
   - {pin_num: E6, peripheral: SEMC, signal: 'CS, 0', pin_signal: GPIO_EMC_B1_29}
+  - {pin_num: T7, peripheral: SRC, signal: 'BOOT_MODE, 01', pin_signal: GPIO_LPSR_03}
+  - {pin_num: P6, peripheral: SRC, signal: 'BOOT_MODE, 00', pin_signal: GPIO_LPSR_02}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -327,6 +329,33 @@ void BOARD_InitPins(void) {
   /* Initialize GPIO functionality on GPIO_EMC_B2_16 (pin P2) */
   GPIO_PinInit(GPIO8, 26U, &SKU_ID3_config);
 
+  /* GPIO configuration of CAN_PGOOD on GPIO_AD_11 (pin P16) */
+  gpio_pin_config_t CAN_PGOOD_config = {
+      .direction = kGPIO_DigitalInput,
+      .outputLogic = 0U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_AD_11 (pin P16) */
+  GPIO_PinInit(GPIO9, 10U, &CAN_PGOOD_config);
+
+  /* GPIO configuration of CAN_EN on GPIO_AD_27 (pin N16) */
+  gpio_pin_config_t CAN_EN_config = {
+      .direction = kGPIO_DigitalOutput,
+      .outputLogic = 1U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_AD_27 (pin N16) */
+  GPIO_PinInit(GPIO9, 26U, &CAN_EN_config);
+
+  /* GPIO configuration of CAN_STBY on GPIO_AD_28 (pin L17) */
+  gpio_pin_config_t CAN_STBY_config = {
+      .direction = kGPIO_DigitalOutput,
+      .outputLogic = 0U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_AD_28 (pin L17) */
+  GPIO_PinInit(GPIO9, 27U, &CAN_STBY_config);
+
   /* GPIO configuration of TFT_BL_PWM on GPIO_AD_29 (pin M17) */
   gpio_pin_config_t TFT_BL_PWM_config = {
       .direction = kGPIO_DigitalOutput,
@@ -381,6 +410,15 @@ void BOARD_InitPins(void) {
   /* Initialize GPIO functionality on GPIO_SD_B2_01 (pin J14) */
   GPIO_PinInit(GPIO10, 10U, &DEBUG_LED_config);
 
+  /* GPIO configuration of IGN_WAKE on WAKEUP_DIG (pin T8) */
+  gpio_pin_config_t IGN_WAKE_config = {
+      .direction = kGPIO_DigitalInput,
+      .outputLogic = 0U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on WAKEUP_DIG (pin T8) */
+  GPIO_PinInit(GPIO13, 0U, &IGN_WAKE_config);
+
   /* GPIO configuration of SYS_EN on PMIC_ON_REQ_DIG (pin U9) */
   gpio_pin_config_t SYS_EN_config = {
       .direction = kGPIO_DigitalOutput,
@@ -389,6 +427,15 @@ void BOARD_InitPins(void) {
   };
   /* Initialize GPIO functionality on PMIC_ON_REQ_DIG (pin U9) */
   GPIO_PinInit(GPIO13, 1U, &SYS_EN_config);
+
+  /* GPIO configuration of IGN_WAKE_GPIO on GPIO_SNVS_07_DIG (pin R9) */
+  gpio_pin_config_t IGN_WAKE_GPIO_config = {
+      .direction = kGPIO_DigitalInput,
+      .outputLogic = 0U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_SNVS_07_DIG (pin R9) */
+  GPIO_PinInit(GPIO13, 10U, &IGN_WAKE_GPIO_config);
 
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_00_LPUART7_TXD,          /* GPIO_AD_00 is configured as LPUART7_TXD */
@@ -622,6 +669,12 @@ void BOARD_InitPins(void) {
       IOMUXC_GPIO_SD_B2_04_LPSPI4_PCS1,       /* GPIO_SD_B2_04 is configured as LPSPI4_PCS1 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
+      IOMUXC_GPIO_LPSR_02_SRC_BOOT_MODE00,    /* GPIO_LPSR_02 is configured as SRC_BOOT_MODE00 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_LPSR_03_SRC_BOOT_MODE01,    /* GPIO_LPSR_03 is configured as SRC_BOOT_MODE01 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
       IOMUXC_GPIO_LPSR_06_LPUART12_TXD,       /* GPIO_LPSR_06 is configured as LPUART12_TXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
@@ -647,34 +700,34 @@ void BOARD_InitPins(void) {
 BOARD_InitLcdifPins:
 - options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
 - pin_list:
-  - {pin_num: E13, peripheral: LCDIF, signal: lcdif_clk, pin_signal: GPIO_DISP_B1_00, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: E10, peripheral: LCDIF, signal: 'lcdif_data, 00', pin_signal: GPIO_DISP_B1_04, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: C11, peripheral: LCDIF, signal: 'lcdif_data, 01', pin_signal: GPIO_DISP_B1_05, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: D10, peripheral: LCDIF, signal: 'lcdif_data, 02', pin_signal: GPIO_DISP_B1_06, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: E12, peripheral: LCDIF, signal: 'lcdif_data, 03', pin_signal: GPIO_DISP_B1_07, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: A15, peripheral: LCDIF, signal: 'lcdif_data, 04', pin_signal: GPIO_DISP_B1_08, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: C13, peripheral: LCDIF, signal: 'lcdif_data, 05', pin_signal: GPIO_DISP_B1_09, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: B14, peripheral: LCDIF, signal: 'lcdif_data, 06', pin_signal: GPIO_DISP_B1_10, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: A14, peripheral: LCDIF, signal: 'lcdif_data, 07', pin_signal: GPIO_DISP_B1_11, pull_down_pull_up_config: Pull_Up}
-  - {pin_num: E8, peripheral: LCDIF, signal: 'lcdif_data, 08', pin_signal: GPIO_DISP_B2_00, pull_up_down_config: Pull_Up}
-  - {pin_num: F8, peripheral: LCDIF, signal: 'lcdif_data, 09', pin_signal: GPIO_DISP_B2_01, pull_up_down_config: Pull_Up}
-  - {pin_num: E9, peripheral: LCDIF, signal: 'lcdif_data, 10', pin_signal: GPIO_DISP_B2_02, pull_up_down_config: Pull_Up}
-  - {pin_num: D7, peripheral: LCDIF, signal: 'lcdif_data, 11', pin_signal: GPIO_DISP_B2_03, pull_up_down_config: Pull_Up}
-  - {pin_num: C7, peripheral: LCDIF, signal: 'lcdif_data, 12', pin_signal: GPIO_DISP_B2_04, pull_up_down_config: Pull_Up}
-  - {pin_num: C9, peripheral: LCDIF, signal: 'lcdif_data, 13', pin_signal: GPIO_DISP_B2_05, pull_up_down_config: Pull_Up}
-  - {pin_num: C6, peripheral: LCDIF, signal: 'lcdif_data, 14', pin_signal: GPIO_DISP_B2_06, pull_up_down_config: Pull_Up}
-  - {pin_num: D6, peripheral: LCDIF, signal: 'lcdif_data, 15', pin_signal: GPIO_DISP_B2_07, pull_up_down_config: Pull_Up}
-  - {pin_num: B5, peripheral: LCDIF, signal: 'lcdif_data, 16', pin_signal: GPIO_DISP_B2_08, pull_up_down_config: Pull_Up}
-  - {pin_num: D8, peripheral: LCDIF, signal: 'lcdif_data, 17', pin_signal: GPIO_DISP_B2_09, pull_up_down_config: Pull_Up}
-  - {pin_num: D9, peripheral: LCDIF, signal: 'lcdif_data, 18', pin_signal: GPIO_DISP_B2_10, pull_up_down_config: Pull_Up}
-  - {pin_num: A6, peripheral: LCDIF, signal: 'lcdif_data, 19', pin_signal: GPIO_DISP_B2_11, pull_up_down_config: Pull_Up}
-  - {pin_num: B6, peripheral: LCDIF, signal: 'lcdif_data, 20', pin_signal: GPIO_DISP_B2_12, pull_up_down_config: Pull_Up}
-  - {pin_num: A5, peripheral: LCDIF, signal: 'lcdif_data, 21', pin_signal: GPIO_DISP_B2_13, pull_up_down_config: Pull_Up}
-  - {pin_num: A7, peripheral: LCDIF, signal: 'lcdif_data, 22', pin_signal: GPIO_DISP_B2_14, pull_up_down_config: Pull_Up}
-  - {pin_num: A4, peripheral: LCDIF, signal: 'lcdif_data, 23', pin_signal: GPIO_DISP_B2_15}
-  - {pin_num: D11, peripheral: LCDIF, signal: lcdif_hsync, pin_signal: GPIO_DISP_B1_02}
-  - {pin_num: E11, peripheral: LCDIF, signal: lcdif_vsync, pin_signal: GPIO_DISP_B1_03}
-  - {pin_num: D13, peripheral: LCDIF, signal: lcdif_enable, pin_signal: GPIO_DISP_B1_01}
+  - {pin_num: E13, peripheral: LCDIF, signal: lcdif_clk, pin_signal: GPIO_DISP_B1_00, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
+  - {pin_num: E10, peripheral: LCDIF, signal: 'lcdif_data, 00', pin_signal: GPIO_DISP_B1_04, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
+  - {pin_num: C11, peripheral: LCDIF, signal: 'lcdif_data, 01', pin_signal: GPIO_DISP_B1_05, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
+  - {pin_num: D10, peripheral: LCDIF, signal: 'lcdif_data, 02', pin_signal: GPIO_DISP_B1_06, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
+  - {pin_num: E12, peripheral: LCDIF, signal: 'lcdif_data, 03', pin_signal: GPIO_DISP_B1_07, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
+  - {pin_num: A15, peripheral: LCDIF, signal: 'lcdif_data, 04', pin_signal: GPIO_DISP_B1_08, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
+  - {pin_num: C13, peripheral: LCDIF, signal: 'lcdif_data, 05', pin_signal: GPIO_DISP_B1_09, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
+  - {pin_num: B14, peripheral: LCDIF, signal: 'lcdif_data, 06', pin_signal: GPIO_DISP_B1_10, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
+  - {pin_num: A14, peripheral: LCDIF, signal: 'lcdif_data, 07', pin_signal: GPIO_DISP_B1_11, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
+  - {pin_num: E8, peripheral: LCDIF, signal: 'lcdif_data, 08', pin_signal: GPIO_DISP_B2_00, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: F8, peripheral: LCDIF, signal: 'lcdif_data, 09', pin_signal: GPIO_DISP_B2_01, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: E9, peripheral: LCDIF, signal: 'lcdif_data, 10', pin_signal: GPIO_DISP_B2_02, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: D7, peripheral: LCDIF, signal: 'lcdif_data, 11', pin_signal: GPIO_DISP_B2_03, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: C7, peripheral: LCDIF, signal: 'lcdif_data, 12', pin_signal: GPIO_DISP_B2_04, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: C9, peripheral: LCDIF, signal: 'lcdif_data, 13', pin_signal: GPIO_DISP_B2_05, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: C6, peripheral: LCDIF, signal: 'lcdif_data, 14', pin_signal: GPIO_DISP_B2_06, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: D6, peripheral: LCDIF, signal: 'lcdif_data, 15', pin_signal: GPIO_DISP_B2_07, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: B5, peripheral: LCDIF, signal: 'lcdif_data, 16', pin_signal: GPIO_DISP_B2_08, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: D8, peripheral: LCDIF, signal: 'lcdif_data, 17', pin_signal: GPIO_DISP_B2_09, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: D9, peripheral: LCDIF, signal: 'lcdif_data, 18', pin_signal: GPIO_DISP_B2_10, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: A6, peripheral: LCDIF, signal: 'lcdif_data, 19', pin_signal: GPIO_DISP_B2_11, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: B6, peripheral: LCDIF, signal: 'lcdif_data, 20', pin_signal: GPIO_DISP_B2_12, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: A5, peripheral: LCDIF, signal: 'lcdif_data, 21', pin_signal: GPIO_DISP_B2_13, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: A7, peripheral: LCDIF, signal: 'lcdif_data, 22', pin_signal: GPIO_DISP_B2_14, pull_up_down_config: Pull_Up, drive_strength: Normal}
+  - {pin_num: D11, peripheral: LCDIF, signal: lcdif_hsync, pin_signal: GPIO_DISP_B1_02, pdrv_config: Normal_Driver}
+  - {pin_num: E11, peripheral: LCDIF, signal: lcdif_vsync, pin_signal: GPIO_DISP_B1_03, pdrv_config: Normal_Driver}
+  - {pin_num: D13, peripheral: LCDIF, signal: lcdif_enable, pin_signal: GPIO_DISP_B1_01, pdrv_config: Normal_Driver}
+  - {pin_num: A4, peripheral: LCDIF, signal: 'lcdif_data, 23', pin_signal: GPIO_DISP_B2_15, drive_strength: Normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -773,151 +826,173 @@ void BOARD_InitLcdifPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_00_VIDEO_MUX_LCDIF_CLK,  /* GPIO_DISP_B1_00 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high driver
+      0x06U);                                 /* PDRV Field: normal driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_DISP_B1_01_VIDEO_MUX_LCDIF_ENABLE,  /* GPIO_DISP_B1_01 PAD functional properties : */
+      0x0AU);                                 /* PDRV Field: normal driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_DISP_B1_02_VIDEO_MUX_LCDIF_HSYNC,  /* GPIO_DISP_B1_02 PAD functional properties : */
+      0x0AU);                                 /* PDRV Field: normal driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_DISP_B1_03_VIDEO_MUX_LCDIF_VSYNC,  /* GPIO_DISP_B1_03 PAD functional properties : */
+      0x0AU);                                 /* PDRV Field: normal driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_04_VIDEO_MUX_LCDIF_DATA00,  /* GPIO_DISP_B1_04 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high driver
+      0x06U);                                 /* PDRV Field: normal driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_05_VIDEO_MUX_LCDIF_DATA01,  /* GPIO_DISP_B1_05 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high driver
+      0x06U);                                 /* PDRV Field: normal driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_06_VIDEO_MUX_LCDIF_DATA02,  /* GPIO_DISP_B1_06 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high driver
+      0x06U);                                 /* PDRV Field: normal driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_07_VIDEO_MUX_LCDIF_DATA03,  /* GPIO_DISP_B1_07 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high driver
+      0x06U);                                 /* PDRV Field: normal driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_08_VIDEO_MUX_LCDIF_DATA04,  /* GPIO_DISP_B1_08 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high driver
+      0x06U);                                 /* PDRV Field: normal driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_09_VIDEO_MUX_LCDIF_DATA05,  /* GPIO_DISP_B1_09 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high driver
+      0x06U);                                 /* PDRV Field: normal driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_10_VIDEO_MUX_LCDIF_DATA06,  /* GPIO_DISP_B1_10 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high driver
+      0x06U);                                 /* PDRV Field: normal driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B1_11_VIDEO_MUX_LCDIF_DATA07,  /* GPIO_DISP_B1_11 PAD functional properties : */
-      0x04U);                                 /* PDRV Field: high driver
+      0x06U);                                 /* PDRV Field: normal driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_00_VIDEO_MUX_LCDIF_DATA08,  /* GPIO_DISP_B2_00 PAD functional properties : */
-      0x0AU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x08U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_01_VIDEO_MUX_LCDIF_DATA09,  /* GPIO_DISP_B2_01 PAD functional properties : */
-      0x0AU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x08U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_02_VIDEO_MUX_LCDIF_DATA10,  /* GPIO_DISP_B2_02 PAD functional properties : */
-      0x0AU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x08U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_03_VIDEO_MUX_LCDIF_DATA11,  /* GPIO_DISP_B2_03 PAD functional properties : */
-      0x0AU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x08U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_04_VIDEO_MUX_LCDIF_DATA12,  /* GPIO_DISP_B2_04 PAD functional properties : */
-      0x0AU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x08U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_05_VIDEO_MUX_LCDIF_DATA13,  /* GPIO_DISP_B2_05 PAD functional properties : */
-      0x0AU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x08U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_06_VIDEO_MUX_LCDIF_DATA14,  /* GPIO_DISP_B2_06 PAD functional properties : */
-      0x0EU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x0CU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_07_VIDEO_MUX_LCDIF_DATA15,  /* GPIO_DISP_B2_07 PAD functional properties : */
-      0x0EU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x0CU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_08_VIDEO_MUX_LCDIF_DATA16,  /* GPIO_DISP_B2_08 PAD functional properties : */
-      0x0EU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x0CU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_09_VIDEO_MUX_LCDIF_DATA17,  /* GPIO_DISP_B2_09 PAD functional properties : */
-      0x0EU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x0CU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_10_VIDEO_MUX_LCDIF_DATA18,  /* GPIO_DISP_B2_10 PAD functional properties : */
-      0x0EU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x0CU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_11_VIDEO_MUX_LCDIF_DATA19,  /* GPIO_DISP_B2_11 PAD functional properties : */
-      0x0EU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x0CU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_12_VIDEO_MUX_LCDIF_DATA20,  /* GPIO_DISP_B2_12 PAD functional properties : */
-      0x0EU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x0CU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_13_VIDEO_MUX_LCDIF_DATA21,  /* GPIO_DISP_B2_13 PAD functional properties : */
-      0x0EU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x0CU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_DISP_B2_14_VIDEO_MUX_LCDIF_DATA22,  /* GPIO_DISP_B2_14 PAD functional properties : */
-      0x0EU);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x0CU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
+                                                 Pull / Keep Select Field: Pull Enable
+                                                 Pull Up / Down Config. Field: Weak pull up
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_DISP_B2_15_VIDEO_MUX_LCDIF_DATA23,  /* GPIO_DISP_B2_15 PAD functional properties : */
+      0x0CU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */

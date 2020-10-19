@@ -32,9 +32,6 @@
     #define BUILD_TYPE "debug"
 #endif
 
-#define EXAMPLE_LED_GPIO BOARD_USER_LED_GPIO
-#define EXAMPLE_LED_GPIO_PIN BOARD_USER_LED_GPIO_PIN
-
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -58,12 +55,8 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+static void led_task( void* arg );
 
-static void led_task
-    (
-    void* arg
-    );
-extern void boot_sdram_config(void);
 /*********************************************************************
 *
 * @public
@@ -83,11 +76,9 @@ BOARD_InitBootPins();
 BOARD_BootClockRUN();
 BOARD_InitDebugConsole();
 
-boot_sdram_config();
-
 PRINTF( "%s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE );
 
-// EW_init();
+EW_init();
 
 xTaskCreate( led_task, "led_task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 4 ), NULL );
 
@@ -103,7 +94,7 @@ static void led_task
 {
 while( true )
     {
-    GPIO_PortToggle( EXAMPLE_LED_GPIO, 1u << EXAMPLE_LED_GPIO_PIN );
+    GPIO_PortToggle( BOARD_USER_LED_GPIO, 1u << BOARD_USER_LED_GPIO_PIN );
     PRINTF("The LED is blinking.\r\n");
     vTaskDelay( pdMS_TO_TICKS( 500 ) );
     }

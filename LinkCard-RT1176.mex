@@ -29,16 +29,16 @@
                <pin_label pin_num="C15" pin_signal="GPIO_SD_B1_02" label="TFT_CONNECTED" identifier="TFT_CONNECTED"/>
                <pin_label pin_num="M17" pin_signal="GPIO_AD_29" label="TFT_BL_PWM" identifier="TFT_BL_PWM"/>
                <pin_label pin_num="D15" pin_signal="GPIO_SD_B1_01" label="TFT_ASIL" identifier="TFT_ASIL"/>
-               <pin_label pin_num="L17" pin_signal="GPIO_AD_28" label="CAN_STBY"/>
-               <pin_label pin_num="R9" pin_signal="GPIO_SNVS_07" label="IGN_WAKE_GPIO"/>
+               <pin_label pin_num="L17" pin_signal="GPIO_AD_28" label="CAN_STBY" identifier="CAN_STBY"/>
+               <pin_label pin_num="R9" pin_signal="GPIO_SNVS_07" label="IGN_WAKE_GPIO" identifier="IGN_WAKE_GPIO"/>
                <pin_label pin_num="T17" pin_signal="GPIO_AD_07" label="VBATT_SENSE"/>
                <pin_label pin_num="R17" pin_signal="GPIO_AD_10" label="VDD_3.3V_PGOOD"/>
-               <pin_label pin_num="P16" pin_signal="GPIO_AD_11" label="&apos;5V_CAN_PGOOD&apos;"/>
+               <pin_label pin_num="P16" pin_signal="GPIO_AD_11" label="5V_CAN_PGOOD" identifier="CAN_PGOOD"/>
                <pin_label pin_num="R16" pin_signal="GPIO_AD_09" label="VDD_3.3VON_PGOOD"/>
                <pin_label pin_num="M13" pin_signal="GPIO_AD_04" label="WDOG_B"/>
                <pin_label pin_num="P6" pin_signal="GPIO_LPSR_02" label="BOOT_MODE0"/>
                <pin_label pin_num="T7" pin_signal="GPIO_LPSR_03" label="BOOT_MODE1"/>
-               <pin_label pin_num="N16" pin_signal="GPIO_AD_27" label="5V_CAN_EN"/>
+               <pin_label pin_num="N16" pin_signal="GPIO_AD_27" label="5V_CAN_EN" identifier="d;VDD5V_CAN_EN;CAN_EN"/>
                <pin_label pin_num="J14" pin_signal="GPIO_SD_B2_01" label="DEBUG_LED" identifier="DEBUG_LED"/>
                <pin_label pin_num="N12" pin_signal="GPIO_AD_00" label="BT_UART_TX"/>
                <pin_label pin_num="R14" pin_signal="GPIO_AD_01" label="BT_UART_RX"/>
@@ -67,7 +67,7 @@
                <pin_label pin_num="F16" pin_signal="GPIO_SD_B2_11" label="FLEXSPI_D3"/>
                <pin_label pin_num="U9" pin_signal="PMIC_ON_REQ" label="SYS_EN" identifier="SYS_EN"/>
                <pin_label pin_num="T9" pin_signal="PMIC_STBY_REQ" label="PMIC_STBY_REQ"/>
-               <pin_label pin_num="T8" pin_signal="WAKEUP" label="IGN_WAKE"/>
+               <pin_label pin_num="T8" pin_signal="WAKEUP" label="IGN_WAKE" identifier="IGN_WAKE"/>
                <pin_label pin_num="E13" pin_signal="GPIO_DISP_B1_00" label="TFT_RGB_CLK"/>
                <pin_label pin_num="D13" pin_signal="GPIO_DISP_B1_01" label="TFT_RGB_DE" identifier="LCDIF_ENABLE"/>
                <pin_label pin_num="D11" pin_signal="GPIO_DISP_B1_02" label="TFT_RGB_HSYNC"/>
@@ -95,7 +95,7 @@
                <pin_label pin_num="B6" pin_signal="GPIO_DISP_B2_12" label="TFT_RGB_R4"/>
                <pin_label pin_num="A5" pin_signal="GPIO_DISP_B2_13" label="TFT_RGB_R5"/>
                <pin_label pin_num="A7" pin_signal="GPIO_DISP_B2_14" label="TFT_RGB_R6"/>
-               <pin_label pin_num="A4" pin_signal="GPIO_DISP_B2_15" label="TFT_RGB_R7"/>
+               <pin_label pin_num="A4" pin_signal="GPIO_DISP_B2_15" label="TFT_RGB_R7" identifier=""/>
                <pin_label pin_num="F3" pin_signal="GPIO_EMC_B1_00" label="SDRAM_SEMC_D0"/>
                <pin_label pin_num="F2" pin_signal="GPIO_EMC_B1_01" label="SDRAM_SEMC_D1"/>
                <pin_label pin_num="G4" pin_signal="GPIO_EMC_B1_02" label="SDRAM_SEMC_D2"/>
@@ -200,6 +200,11 @@
                         <data>true</data>
                      </feature>
                   </dependency>
+                  <dependency resourceType="Peripheral" resourceId="SRC" description="Peripheral SRC is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
                      <feature name="enabled" evaluation="equal" configuration="cm7">
                         <data>true</data>
@@ -239,7 +244,11 @@
                         <pin_feature name="direction" value="INPUT"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="GPIO13" signal="gpio_io, 00" pin_num="T8" pin_signal="WAKEUP"/>
+                  <pin peripheral="GPIO13" signal="gpio_io, 00" pin_num="T8" pin_signal="WAKEUP">
+                     <pin_features>
+                        <pin_feature name="direction" value="INPUT"/>
+                     </pin_features>
+                  </pin>
                   <pin peripheral="GPIO13" signal="gpio_io, 02" pin_num="T9" pin_signal="PMIC_STBY_REQ"/>
                   <pin peripheral="GPIO13" signal="gpio_io, 01" pin_num="U9" pin_signal="PMIC_ON_REQ">
                      <pin_features>
@@ -247,19 +256,37 @@
                         <pin_feature name="gpio_init_state" value="true"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="GPIO13" signal="gpio_io, 10" pin_num="R9" pin_signal="GPIO_SNVS_07"/>
+                  <pin peripheral="GPIO13" signal="gpio_io, 10" pin_num="R9" pin_signal="GPIO_SNVS_07">
+                     <pin_features>
+                        <pin_feature name="direction" value="INPUT"/>
+                     </pin_features>
+                  </pin>
                   <pin peripheral="ADC1" signal="B, 1_0" pin_num="T17" pin_signal="GPIO_AD_07"/>
                   <pin peripheral="GPIO9" signal="gpio_io, 09" pin_num="R17" pin_signal="GPIO_AD_10"/>
                   <pin peripheral="GPIO9" signal="gpio_io, 08" pin_num="R16" pin_signal="GPIO_AD_09"/>
-                  <pin peripheral="GPIO9" signal="gpio_io, 10" pin_num="P16" pin_signal="GPIO_AD_11"/>
+                  <pin peripheral="GPIO9" signal="gpio_io, 10" pin_num="P16" pin_signal="GPIO_AD_11">
+                     <pin_features>
+                        <pin_feature name="direction" value="INPUT"/>
+                     </pin_features>
+                  </pin>
                   <pin peripheral="WDOG1" signal="wdog_wdog_b" pin_num="M13" pin_signal="GPIO_AD_04"/>
-                  <pin peripheral="GPIO9" signal="gpio_io, 26" pin_num="N16" pin_signal="GPIO_AD_27"/>
+                  <pin peripheral="GPIO9" signal="gpio_io, 26" pin_num="N16" pin_signal="GPIO_AD_27">
+                     <pin_features>
+                        <pin_feature name="identifier" value="CAN_EN"/>
+                        <pin_feature name="direction" value="OUTPUT"/>
+                        <pin_feature name="gpio_init_state" value="true"/>
+                     </pin_features>
+                  </pin>
                   <pin peripheral="GPIO10" signal="gpio_io, 10" pin_num="J14" pin_signal="GPIO_SD_B2_01">
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="GPIO9" signal="gpio_io, 27" pin_num="L17" pin_signal="GPIO_AD_28"/>
+                  <pin peripheral="GPIO9" signal="gpio_io, 27" pin_num="L17" pin_signal="GPIO_AD_28">
+                     <pin_features>
+                        <pin_feature name="direction" value="OUTPUT"/>
+                     </pin_features>
+                  </pin>
                   <pin peripheral="LPSPI4" signal="PCS1" pin_num="F14" pin_signal="GPIO_SD_B2_04"/>
                   <pin peripheral="GPIO8" signal="gpio_io, 14" pin_num="M1" pin_signal="GPIO_EMC_B2_04">
                      <pin_features>
@@ -363,6 +390,8 @@
                   <pin peripheral="SEMC" signal="DATA, 04" pin_num="H5" pin_signal="GPIO_EMC_B1_04"/>
                   <pin peripheral="SEMC" signal="semc_cas" pin_num="J5" pin_signal="GPIO_EMC_B1_24"/>
                   <pin peripheral="SEMC" signal="CS, 0" pin_num="E6" pin_signal="GPIO_EMC_B1_29"/>
+                  <pin peripheral="SRC" signal="BOOT_MODE, 01" pin_num="T7" pin_signal="GPIO_LPSR_03"/>
+                  <pin peripheral="SRC" signal="BOOT_MODE, 00" pin_num="P6" pin_signal="GPIO_LPSR_02"/>
                </pins>
             </function>
             <function name="BOARD_InitLcdifPins">
@@ -393,127 +422,167 @@
                   <pin peripheral="LCDIF" signal="lcdif_clk" pin_num="E13" pin_signal="GPIO_DISP_B1_00">
                      <pin_features>
                         <pin_feature name="pull_down_pull_up_config" value="Pull_Up"/>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 00" pin_num="E10" pin_signal="GPIO_DISP_B1_04">
                      <pin_features>
                         <pin_feature name="pull_down_pull_up_config" value="Pull_Up"/>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 01" pin_num="C11" pin_signal="GPIO_DISP_B1_05">
                      <pin_features>
                         <pin_feature name="pull_down_pull_up_config" value="Pull_Up"/>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 02" pin_num="D10" pin_signal="GPIO_DISP_B1_06">
                      <pin_features>
                         <pin_feature name="pull_down_pull_up_config" value="Pull_Up"/>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 03" pin_num="E12" pin_signal="GPIO_DISP_B1_07">
                      <pin_features>
                         <pin_feature name="pull_down_pull_up_config" value="Pull_Up"/>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 04" pin_num="A15" pin_signal="GPIO_DISP_B1_08">
                      <pin_features>
                         <pin_feature name="pull_down_pull_up_config" value="Pull_Up"/>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 05" pin_num="C13" pin_signal="GPIO_DISP_B1_09">
                      <pin_features>
                         <pin_feature name="pull_down_pull_up_config" value="Pull_Up"/>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 06" pin_num="B14" pin_signal="GPIO_DISP_B1_10">
                      <pin_features>
                         <pin_feature name="pull_down_pull_up_config" value="Pull_Up"/>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 07" pin_num="A14" pin_signal="GPIO_DISP_B1_11">
                      <pin_features>
                         <pin_feature name="pull_down_pull_up_config" value="Pull_Up"/>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 08" pin_num="E8" pin_signal="GPIO_DISP_B2_00">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 09" pin_num="F8" pin_signal="GPIO_DISP_B2_01">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 10" pin_num="E9" pin_signal="GPIO_DISP_B2_02">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 11" pin_num="D7" pin_signal="GPIO_DISP_B2_03">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 12" pin_num="C7" pin_signal="GPIO_DISP_B2_04">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 13" pin_num="C9" pin_signal="GPIO_DISP_B2_05">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 14" pin_num="C6" pin_signal="GPIO_DISP_B2_06">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 15" pin_num="D6" pin_signal="GPIO_DISP_B2_07">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 16" pin_num="B5" pin_signal="GPIO_DISP_B2_08">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 17" pin_num="D8" pin_signal="GPIO_DISP_B2_09">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 18" pin_num="D9" pin_signal="GPIO_DISP_B2_10">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 19" pin_num="A6" pin_signal="GPIO_DISP_B2_11">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 20" pin_num="B6" pin_signal="GPIO_DISP_B2_12">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 21" pin_num="A5" pin_signal="GPIO_DISP_B2_13">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LCDIF" signal="lcdif_data, 22" pin_num="A7" pin_signal="GPIO_DISP_B2_14">
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="LCDIF" signal="lcdif_data, 23" pin_num="A4" pin_signal="GPIO_DISP_B2_15"/>
-                  <pin peripheral="LCDIF" signal="lcdif_hsync" pin_num="D11" pin_signal="GPIO_DISP_B1_02"/>
-                  <pin peripheral="LCDIF" signal="lcdif_vsync" pin_num="E11" pin_signal="GPIO_DISP_B1_03"/>
-                  <pin peripheral="LCDIF" signal="lcdif_enable" pin_num="D13" pin_signal="GPIO_DISP_B1_01"/>
+                  <pin peripheral="LCDIF" signal="lcdif_hsync" pin_num="D11" pin_signal="GPIO_DISP_B1_02">
+                     <pin_features>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="LCDIF" signal="lcdif_vsync" pin_num="E11" pin_signal="GPIO_DISP_B1_03">
+                     <pin_features>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="LCDIF" signal="lcdif_enable" pin_num="D13" pin_signal="GPIO_DISP_B1_01">
+                     <pin_features>
+                        <pin_feature name="pdrv_config" value="Normal_Driver"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="LCDIF" signal="lcdif_data, 23" pin_num="A4" pin_signal="GPIO_DISP_B2_15">
+                     <pin_features>
+                        <pin_feature name="drive_strength" value="Normal"/>
+                     </pin_features>
+                  </pin>
                </pins>
             </function>
          </functions_list>
@@ -894,13 +963,16 @@
                         <command type="write_value" address="IOMUXC_SW_PAD_CTL_PAD_GPIO_SD_B2_04" value="0x08" value_width="4"/>
                         <command type="write_value" address="IOMUXC_SW_PAD_CTL_PAD_GPIO_SD_B2_05" value="0x08" value_width="4"/>
                         <command type="write_value" address="SEMC_MCR" value="0x10000004" value_width="4"/>
-                        <command type="write_value" address="SEMC_BMCR0" value="0x81" value_width="4"/>
-                        <command type="write_value" address="SEMC_BMCR1" value="0x81" value_width="4"/>
-                        <command type="write_value" address="SEMC_BR0" value="0x8000001D" value_width="4"/>
-                        <command type="write_value" address="SEMC_SDRAMCR0" value="0b111100110110" value_width="4"/>
-                        <command type="write_value" address="SEMC_SDRAMCR1" value="0x772A22" value_width="4"/>
-                        <command type="write_value" address="SEMC_SDRAMCR2" value="0x10A0D" value_width="4"/>
-                        <command type="write_value" address="SEMC_SDRAMCR3" value="0x21210408" value_width="4"/>
+                        <command type="write_value" address="SEMC_BMCR0" value="0x30524" value_width="4"/>
+                        <command type="write_value" address="SEMC_BMCR1" value="0x6030524" value_width="4"/>
+                        <command type="write_value" address="SEMC_BR0" value="0x80000019" value_width="4"/>
+                        <command type="write_value" address="SEMC_BR1" value="0x82000019" value_width="4"/>
+                        <command type="write_value" address="SEMC_BR2" value="0x84000019" value_width="4"/>
+                        <command type="write_value" address="SEMC_BR3" value="0x86000019" value_width="4"/>
+                        <command type="write_value" address="SEMC_SDRAMCR0" value="0xF35" value_width="4"/>
+                        <command type="write_value" address="SEMC_SDRAMCR1" value="0x652922" value_width="4"/>
+                        <command type="write_value" address="SEMC_SDRAMCR2" value="0x10920" value_width="4"/>
+                        <command type="write_value" address="SEMC_SDRAMCR3" value="0x50210A08" value_width="4"/>
                         <command type="write_value" address="SEMC_IPCR0" value="0x80000000" value_width="4"/>
                         <command type="write_value" address="SEMC_IPCR1" value="0x02" value_width="4"/>
                         <command type="write_value" address="SEMC_IPCR2" value="0x00" value_width="4"/>
@@ -933,7 +1005,7 @@
                         <command type="nop"/>
                         <command type="nop"/>
                         <command type="write_value" address="SEMC_INTR" value="0x03" value_width="4"/>
-                        <command type="write_value" address="SEMC_SDRAMCR3" value="0x21210409" value_width="4"/>
+                        <command type="write_value" address="SEMC_SDRAMCR3" value="0x50210A09" value_width="4"/>
                      </commands>
                   </command_group>
                </command_groups>

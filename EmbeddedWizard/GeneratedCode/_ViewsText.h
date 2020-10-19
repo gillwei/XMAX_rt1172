@@ -217,11 +217,17 @@ void ViewsText_preReparseSlot( ViewsText _this, XObject sender );
 /* 'C' function for method : 'Views::Text.reparseSlot()' */
 void ViewsText_reparseSlot( ViewsText _this, XObject sender );
 
+/* 'C' function for method : 'Views::Text.OnSetColorTL()' */
+void ViewsText_OnSetColorTL( ViewsText _this, XColor value );
+
 /* 'C' function for method : 'Views::Text.OnSetString()' */
 void ViewsText_OnSetString( ViewsText _this, XString value );
 
 /* 'C' function for method : 'Views::Text.OnSetFont()' */
 void ViewsText_OnSetFont( ViewsText _this, ResourcesFont value );
+
+/* 'C' function for method : 'Views::Text.OnSetColor()' */
+void ViewsText_OnSetColor( ViewsText _this, XColor value );
 
 /* The method IsBaseDirectionRTL() returns 'true' if the text specified in @String 
    starts with an RTL (right-to-left) character. This implies the base direction 
