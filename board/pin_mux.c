@@ -163,8 +163,8 @@ BOARD_InitPins:
   - {pin_num: P8, peripheral: LPUART12, signal: TXD, pin_signal: GPIO_LPSR_06}
   - {pin_num: R8, peripheral: LPUART12, signal: RXD, pin_signal: GPIO_LPSR_07}
   - {pin_num: J15, peripheral: LPSPI4, signal: SCK, pin_signal: GPIO_SD_B2_00}
-  - {pin_num: K16, peripheral: LPI2C1, signal: SCL, pin_signal: GPIO_AD_32}
-  - {pin_num: H17, peripheral: LPI2C1, signal: SDA, pin_signal: GPIO_AD_33}
+  - {pin_num: K16, peripheral: LPI2C1, signal: SCL, pin_signal: GPIO_AD_32, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, open_drain: Enable}
+  - {pin_num: H17, peripheral: LPI2C1, signal: SDA, pin_signal: GPIO_AD_33, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, open_drain: Enable}
   - {pin_num: K17, peripheral: CAN2, signal: TX, pin_signal: GPIO_AD_30}
   - {pin_num: J17, peripheral: CAN2, signal: RX, pin_signal: GPIO_AD_31}
   - {pin_num: H13, peripheral: LPSPI4, signal: SOUT, pin_signal: GPIO_SD_B2_02}
@@ -493,10 +493,10 @@ void BOARD_InitPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_32_LPI2C1_SCL,           /* GPIO_AD_32 is configured as LPI2C1_SCL */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_32 */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_33_LPI2C1_SDA,           /* GPIO_AD_33 is configured as LPI2C1_SDA */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_33 */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_EMC_B1_00_SEMC_DATA00,      /* GPIO_EMC_B1_00 is configured as SEMC_DATA00 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
@@ -692,6 +692,20 @@ void BOARD_InitPins(void) {
   IOMUXC_SetPinMux(
       IOMUXC_WAKEUP_DIG_GPIO13_IO00,          /* WAKEUP_DIG is configured as GPIO13_IO00 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_32_LPI2C1_SCL,           /* GPIO_AD_32 PAD functional properties : */
+      0x1AU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull up
+                                                 Open Drain Field: Enabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_33_LPI2C1_SDA,           /* GPIO_AD_33 PAD functional properties : */
+      0x1AU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull up
+                                                 Open Drain Field: Enabled */
 }
 
 

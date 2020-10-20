@@ -22,7 +22,8 @@
 #include "clock_config.h"
 
 #include "EW_pub.h"
-
+#include "PERIPHERAL_pub.h"
+#include "EEPM_pub.h"
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -79,7 +80,8 @@ BOARD_InitDebugConsole();
 PRINTF( "%s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE );
 
 EW_init();
-
+PERIPHERAL_init();
+EEPM_init();
 xTaskCreate( led_task, "led_task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 4 ), NULL );
 
 vTaskStartScheduler();

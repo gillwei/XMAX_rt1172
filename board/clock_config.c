@@ -147,7 +147,7 @@ void BOARD_BootClockRUN(void)
 
     /* Configure Lpi2c1 using Osc48MDiv2 */
     rootCfg.mux = kCLOCK_LPI2C1_ClockRoot_MuxOscRc48MDiv2;
-    rootCfg.div = 1;
+    rootCfg.div = 2;
     CLOCK_SetRootClock(kCLOCK_Root_Lpi2c1, &rootCfg);
 
     /* Configure Lpi2c5 using Osc48MDiv2 */

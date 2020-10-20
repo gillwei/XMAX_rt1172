@@ -1,0 +1,495 @@
+/*******************************************************************************
+*@ File eep_intf.c
+*@ Brief eeprom interface
+*
+*
+* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+********************************************************************************/
+
+#ifdef __cplusplus
+extern "C"{
+#endif
+
+/*--------------------------------------------------------------------
+                        GENERAL INCLUDES
+--------------------------------------------------------------------*/
+#include "EEP_prv.h"
+#include "EEPM_pub.h"
+#include "PERIPHERAL_pub.h"
+#include "fsl_debug_console.h"
+/*--------------------------------------------------------------------
+                        Definitions
+--------------------------------------------------------------------*/
+#define EEPROM_SUB_ADDR_SIZE                 ( 0x02 )
+
+//id page
+#define EEPROM_ID_PAGE_I2C_DEV_ADDR          ( 0x58 )
+
+//id page lock
+#define EEPROM_ID_PAGE_LOCK_SUB_ADDR         ( 0x0400 )
+
+//mem page
+#define EEPROM_MEM_PAGE_I2C_DEV_ADDR         ( 0x50 )
+#define ESN_START_SUB_ADDR                   ( 0x0000 )
+#define BT_EN_START_SUB_ADDR                 ( ESN_START_SUB_ADDR + ESN_LENGTH )
+#define BT_AUTO_CONN_START_SUB_ADDR          ( BT_EN_START_SUB_ADDR + BT_EN_LENGTH )
+#define LAST_PAGE_START_SUB_ADDR             ( BT_AUTO_CONN_START_SUB_ADDR + BT_AUTO_CONN_LENGTH )
+#define LANGUAGE_START_SUB_ADDR              ( LAST_PAGE_START_SUB_ADDR + LAST_PAGE_LENGTH )
+#define START_BURN_IN_START_SUB_ADDR         ( LANGUAGE_START_SUB_ADDR + LANGUAGE_LENGTH )
+#define BURN_IN_RESULT_START_SUB_ADDR        ( START_BURN_IN_START_SUB_ADDR + START_BURN_IN_LENGTH )
+#define BD_ADDRESS_START_SUB_ADDR            ( BURN_IN_RESULT_START_SUB_ADDR + BURN_IN_RESULT_LENGTH )
+
+/*--------------------------------------------------------------------
+                        LITERAL CONSTANTS
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                        TYPES
+--------------------------------------------------------------------*/
+typedef struct
+    {
+    uint16_t start_addr;
+    uint16_t length;
+    }eeprom_block_config_type;
+
+/*--------------------------------------------------------------------
+                        PROJECT INCLUDES
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                        MEMORY CONSTANTS
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                        VARIABLES
+--------------------------------------------------------------------*/
+eeprom_block_config_type block_config_list[EEPM_BLOCK_CONFIG_CNT] = \
+{
+    { ESN_START_SUB_ADDR,            ESN_LENGTH },                      //EEPROM_BLOCK_CONFIG_ESN
+    { BT_EN_START_SUB_ADDR,          BT_EN_LENGTH },                    //EEPROM_BLOCK_CONFIG_BT_EN
+    { BT_AUTO_CONN_START_SUB_ADDR,   BT_AUTO_CONN_LENGTH },             //EEPROM_BLOCK_CONFIG_BT_AUTO_CONN
+    { LAST_PAGE_START_SUB_ADDR,      LAST_PAGE_LENGTH },                //EEPROM_BLOCK_CONFIG_LAST_PAGE
+    { EEPROM_ID_PAGE_LOCK_SUB_ADDR,  EEPROM_ID_PAGE_LOCK_DATA_LENGTH }, //EEPM_BLOCK_CONFIG_ID_PAGE_LOCK
+    { LANGUAGE_START_SUB_ADDR,       LANGUAGE_LENGTH },                 //EEPM_BLOCK_CONFIG_LANGUAGE
+    { START_BURN_IN_START_SUB_ADDR,  START_BURN_IN_LENGTH },            //EEPM_BLOCK_CONFIG_START_BURN_IN
+    { BURN_IN_RESULT_START_SUB_ADDR, BURN_IN_RESULT_LENGTH },           //EEPM_BLOCK_CONFIG_BURN_IN_RESULT
+    { BD_ADDRESS_START_SUB_ADDR,     BD_ADDRESS_LENGTH },               //EEPM_BLOCK_CONFIG_BD_ADDRESS
+};
+
+
+/*--------------------------------------------------------------------
+                        PROTOTYPES
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                        PROCEDURES
+--------------------------------------------------------------------*/
+
+
+/*================================================================================================*/
+/**
+@brief   eep_set_ESN_number
+@details eep_set_ESN_number
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_set_ESN_number
+    (
+    uint32_t* number_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           (uint8_t*)number_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_ESN].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_ESN].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_ESN_number
+@details eep_get_ESN_number
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_get_ESN_number
+    (
+    uint32_t* number_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          (uint8_t*)number_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_ESN].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_ESN].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_id_page_lock
+@details eep_set_id_page_lock
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_set_id_page_lock
+    (
+    uint8_t* is_lock,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_ID_PAGE_I2C_DEV_ADDR,
+                           (uint8_t*)is_lock,
+                           block_config_list[EEPM_BLOCK_CONFIG_ID_PAGE_LOCK].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_ID_PAGE_LOCK].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+/*================================================================================================*/
+/**
+@brief   eep_set_BT_en
+@details eep_set_BT_en
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_BT_en
+    (
+    uint8_t* is_en_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           is_en_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_BT_EN].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_BT_EN].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_BT_en
+@details eep_get_BT_en
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_get_BT_en
+    (
+    uint8_t* is_en_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          is_en_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_BT_EN].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_BT_EN].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_BT_auto_conn
+@details eep_set_BT_auto_conn
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_BT_auto_conn
+    (
+    uint8_t* is_auto_conn_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           is_auto_conn_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_BT_auto_conn
+@details eep_get_BT_auto_conn
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_get_BT_auto_conn
+    (
+    uint8_t* is_auto_conn_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          is_auto_conn_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+/*================================================================================================*/
+/**
+@brief   eep_set_last_page
+@details eep_set_last_page
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_last_page
+    (
+    uint8_t* page_num_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           page_num_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_LAST_PAGE].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_LAST_PAGE].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_last_page
+@details eep_get_last_page
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_get_last_page
+    (
+    uint8_t* page_num_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          page_num_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_LAST_PAGE].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_LAST_PAGE].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_language
+@details eep_set_language
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_set_language
+    (
+    uint8_t* language_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          language_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_LANGUAGE].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_LANGUAGE].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_language
+@details eep_get_language
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_get_language
+    (
+    uint8_t* language_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          language_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_LANGUAGE].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_LANGUAGE].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_start_burn_in
+@details eep_set_start_burn_in
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_set_start_burn_in
+    (
+    uint8_t* start_burn_in_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          start_burn_in_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_START_BURN_IN].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_START_BURN_IN].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_start_burn_in
+@details eep_get_start_burn_in
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_get_start_burn_in
+    (
+    uint8_t* start_burn_in_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          start_burn_in_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_START_BURN_IN].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_START_BURN_IN].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_burn_in_result
+@details eep_set_burn_in_result
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_set_burn_in_result
+    (
+    uint8_t* burn_in_result_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          burn_in_result_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_RESULT].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_RESULT].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_burn_in_result
+@details eep_get_burn_in_result
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_get_burn_in_result
+    (
+    uint8_t* burn_in_result_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          burn_in_result_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_RESULT].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_RESULT].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_bd_address
+@details eep_set_bd_address
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_bd_address
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           bd_addr_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_BD_ADDRESS].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_BD_ADDRESS].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_bd_address
+@details eep_get_bd_address
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_get_bd_address
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          bd_addr_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_BD_ADDRESS].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_BD_ADDRESS].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+#ifdef __cplusplus
+}
+#endif
+
