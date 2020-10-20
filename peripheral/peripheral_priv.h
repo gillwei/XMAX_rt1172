@@ -65,10 +65,10 @@ void i2c_init
     void
     );
 
-/*void pwm_init
+void pwm_init
     (
     void
-    );*/
+    );
 
 #ifdef __cplusplus
 }

@@ -205,6 +205,11 @@
                         <data>true</data>
                      </feature>
                   </dependency>
+                  <dependency resourceType="Peripheral" resourceId="FLEXIO2" description="Peripheral FLEXIO2 is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
                      <feature name="enabled" evaluation="equal" configuration="cm7">
                         <data>true</data>
@@ -352,12 +357,6 @@
                         <pin_feature name="gpio_init_state" value="true"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="GPIO9" signal="gpio_io, 28" pin_num="M17" pin_signal="GPIO_AD_29">
-                     <pin_features>
-                        <pin_feature name="direction" value="OUTPUT"/>
-                        <pin_feature name="gpio_init_state" value="true"/>
-                     </pin_features>
-                  </pin>
                   <pin peripheral="GPIO10" signal="gpio_io, 06" pin_num="B17" pin_signal="GPIO_SD_B1_03">
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
@@ -406,6 +405,11 @@
                   <pin peripheral="SEMC" signal="CS, 0" pin_num="E6" pin_signal="GPIO_EMC_B1_29"/>
                   <pin peripheral="SRC" signal="BOOT_MODE, 01" pin_num="T7" pin_signal="GPIO_LPSR_03"/>
                   <pin peripheral="SRC" signal="BOOT_MODE, 00" pin_num="P6" pin_signal="GPIO_LPSR_02"/>
+                  <pin peripheral="FLEXIO2" signal="IO, 29" pin_num="M17" pin_signal="GPIO_AD_29">
+                     <pin_features>
+                        <pin_feature name="direction" value="OUTPUT"/>
+                     </pin_features>
+                  </pin>
                </pins>
             </function>
             <function name="BOARD_InitLcdifPins">

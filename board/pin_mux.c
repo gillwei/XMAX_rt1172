@@ -200,7 +200,6 @@ BOARD_InitPins:
   - {pin_num: R15, peripheral: GPIO9, signal: 'gpio_io, 07', pin_signal: GPIO_AD_08}
   - {pin_num: P13, peripheral: GPIO9, signal: 'gpio_io, 04', pin_signal: GPIO_AD_05}
   - {pin_num: B16, peripheral: GPIO10, signal: 'gpio_io, 03', pin_signal: GPIO_SD_B1_00, direction: OUTPUT, gpio_init_state: 'true'}
-  - {pin_num: M17, peripheral: GPIO9, signal: 'gpio_io, 28', pin_signal: GPIO_AD_29, direction: OUTPUT, gpio_init_state: 'true'}
   - {pin_num: B17, peripheral: GPIO10, signal: 'gpio_io, 06', pin_signal: GPIO_SD_B1_03, direction: OUTPUT}
   - {pin_num: B1, peripheral: SEMC, signal: 'ADDR, 05', pin_signal: GPIO_EMC_B1_14}
   - {pin_num: K1, peripheral: SEMC, signal: semc_rdy, pin_signal: GPIO_EMC_B1_40}
@@ -245,6 +244,7 @@ BOARD_InitPins:
   - {pin_num: E6, peripheral: SEMC, signal: 'CS, 0', pin_signal: GPIO_EMC_B1_29}
   - {pin_num: T7, peripheral: SRC, signal: 'BOOT_MODE, 01', pin_signal: GPIO_LPSR_03}
   - {pin_num: P6, peripheral: SRC, signal: 'BOOT_MODE, 00', pin_signal: GPIO_LPSR_02}
+  - {pin_num: M17, peripheral: FLEXIO2, signal: 'IO, 29', pin_signal: GPIO_AD_29, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -355,15 +355,6 @@ void BOARD_InitPins(void) {
   };
   /* Initialize GPIO functionality on GPIO_AD_28 (pin L17) */
   GPIO_PinInit(GPIO9, 27U, &CAN_STBY_config);
-
-  /* GPIO configuration of TFT_BL_PWM on GPIO_AD_29 (pin M17) */
-  gpio_pin_config_t TFT_BL_PWM_config = {
-      .direction = kGPIO_DigitalOutput,
-      .outputLogic = 1U,
-      .interruptMode = kGPIO_NoIntmode
-  };
-  /* Initialize GPIO functionality on GPIO_AD_29 (pin M17) */
-  GPIO_PinInit(GPIO9, 28U, &TFT_BL_PWM_config);
 
   /* GPIO configuration of TFT_BL_EN on GPIO_SD_B1_00 (pin B16) */
   gpio_pin_config_t TFT_BL_EN_config = {
@@ -483,7 +474,7 @@ void BOARD_InitPins(void) {
       IOMUXC_GPIO_AD_28_GPIO9_IO27,           /* GPIO_AD_28 is configured as GPIO9_IO27 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_29_GPIO9_IO28,           /* GPIO_AD_29 is configured as GPIO9_IO28 */
+      IOMUXC_GPIO_AD_29_FLEXIO2_D29,          /* GPIO_AD_29 is configured as FLEXIO2_D29 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_30_FLEXCAN2_TX,          /* GPIO_AD_30 is configured as FLEXCAN2_TX */

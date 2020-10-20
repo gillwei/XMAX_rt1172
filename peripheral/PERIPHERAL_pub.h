@@ -85,11 +85,11 @@ int PERIPHERAL_adc_get_tft_ntc
     (
     void
     );
-
+*/
 void PERIPHERAL_pwm_set_display_dutycycle
     (
     uint8_t duty_cycle
-    );*/
+    );
 
 void PERIPHERAL_init
     (
