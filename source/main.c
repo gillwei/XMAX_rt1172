@@ -24,6 +24,8 @@
 #include "EW_pub.h"
 #include "PERIPHERAL_pub.h"
 #include "EEPM_pub.h"
+#include "CAN_nim_ctrl.h"
+
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -83,6 +85,7 @@ EW_init();
 PERIPHERAL_init();
 EEPM_init();
 xTaskCreate( led_task, "led_task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 4 ), NULL );
+vCAN_nim_create_task();
 
 vTaskStartScheduler();
 

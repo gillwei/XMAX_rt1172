@@ -165,8 +165,8 @@ BOARD_InitPins:
   - {pin_num: J15, peripheral: LPSPI4, signal: SCK, pin_signal: GPIO_SD_B2_00}
   - {pin_num: K16, peripheral: LPI2C1, signal: SCL, pin_signal: GPIO_AD_32, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, open_drain: Enable}
   - {pin_num: H17, peripheral: LPI2C1, signal: SDA, pin_signal: GPIO_AD_33, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, open_drain: Enable}
-  - {pin_num: K17, peripheral: CAN2, signal: TX, pin_signal: GPIO_AD_30}
-  - {pin_num: J17, peripheral: CAN2, signal: RX, pin_signal: GPIO_AD_31}
+  - {pin_num: K17, peripheral: CAN2, signal: TX, pin_signal: GPIO_AD_30, pull_up_down_config: Pull_Down, pull_keeper_select: Pull}
+  - {pin_num: J17, peripheral: CAN2, signal: RX, pin_signal: GPIO_AD_31, pull_up_down_config: Pull_Up, pull_keeper_select: Pull}
   - {pin_num: H13, peripheral: LPSPI4, signal: SOUT, pin_signal: GPIO_SD_B2_02}
   - {pin_num: R13, peripheral: LPUART7, signal: CTS_B, pin_signal: GPIO_AD_02}
   - {pin_num: P15, peripheral: LPUART7, signal: RTS_B, pin_signal: GPIO_AD_03}
@@ -683,6 +683,20 @@ void BOARD_InitPins(void) {
   IOMUXC_SetPinMux(
       IOMUXC_WAKEUP_DIG_GPIO13_IO00,          /* WAKEUP_DIG is configured as GPIO13_IO00 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_30_FLEXCAN2_TX,          /* GPIO_AD_30 PAD functional properties : */
+      0x06U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Enable
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_31_FLEXCAN2_RX,          /* GPIO_AD_31 PAD functional properties : */
+      0x0EU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Enable
+                                                 Pull Up / Down Config. Field: Weak pull up
+                                                 Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_32_LPI2C1_SCL,           /* GPIO_AD_32 PAD functional properties : */
       0x1AU);                                 /* Slew Rate Field: Slow Slew Rate

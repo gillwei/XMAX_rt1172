@@ -246,8 +246,18 @@
                         <pin_feature name="open_drain" value="Enable"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="CAN2" signal="TX" pin_num="K17" pin_signal="GPIO_AD_30"/>
-                  <pin peripheral="CAN2" signal="RX" pin_num="J17" pin_signal="GPIO_AD_31"/>
+                  <pin peripheral="CAN2" signal="TX" pin_num="K17" pin_signal="GPIO_AD_30">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Down"/>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="CAN2" signal="RX" pin_num="J17" pin_signal="GPIO_AD_31">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                     </pin_features>
+                  </pin>
                   <pin peripheral="LPSPI4" signal="SOUT" pin_num="H13" pin_signal="GPIO_SD_B2_02"/>
                   <pin peripheral="LPUART7" signal="CTS_B" pin_num="R13" pin_signal="GPIO_AD_02"/>
                   <pin peripheral="LPUART7" signal="RTS_B" pin_num="P15" pin_signal="GPIO_AD_03"/>
