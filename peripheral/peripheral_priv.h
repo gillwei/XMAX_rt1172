@@ -16,9 +16,9 @@ extern "C" {
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
 #include "board.h"
-//#include "fsl_lpuart_edma.h"
+#include "fsl_lpuart_edma.h"
 #if defined(FSL_FEATURE_SOC_DMAMUX_COUNT) && FSL_FEATURE_SOC_DMAMUX_COUNT
-    //#include "fsl_dmamux.h"
+    #include "fsl_dmamux.h"
 #endif
 #include "pin_mux.h"
 #include "clock_config.h"
@@ -50,12 +50,12 @@ extern "C" {
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
-/*void uart_init
+void uart_init
     (
     void
     );
 
-void adc_init
+/*void adc_init
     (
     void
     );*/

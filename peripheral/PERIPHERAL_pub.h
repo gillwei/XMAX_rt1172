@@ -48,9 +48,9 @@ extern "C" {
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
-/*BaseType_t PERIPHERAL_uart_tx_data
+BaseType_t PERIPHERAL_uart_tx_data
     (
-    uint16_t const len,
+    uint32_t const len,
     uint8_t  const* const data_ptr
     );
 
@@ -61,7 +61,7 @@ void PERIPHERAL_uart_port_reconfig
     uint32_t baud_rate
     );
 
-int PERIPHERAL_adc_get_board_ver
+/*int PERIPHERAL_adc_get_board_ver
     (
     void
     );

@@ -261,8 +261,18 @@
                   <pin peripheral="LPSPI4" signal="SOUT" pin_num="H13" pin_signal="GPIO_SD_B2_02"/>
                   <pin peripheral="LPUART7" signal="CTS_B" pin_num="R13" pin_signal="GPIO_AD_02"/>
                   <pin peripheral="LPUART7" signal="RTS_B" pin_num="P15" pin_signal="GPIO_AD_03"/>
-                  <pin peripheral="LPUART7" signal="RXD" pin_num="R14" pin_signal="GPIO_AD_01"/>
-                  <pin peripheral="LPUART7" signal="TXD" pin_num="N12" pin_signal="GPIO_AD_00"/>
+                  <pin peripheral="LPUART7" signal="RXD" pin_num="R14" pin_signal="GPIO_AD_01">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Down"/>
+                        <pin_feature name="pull_keeper_select" value="Keeper"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="LPUART7" signal="TXD" pin_num="N12" pin_signal="GPIO_AD_00">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Down"/>
+                        <pin_feature name="pull_keeper_select" value="Keeper"/>
+                     </pin_features>
+                  </pin>
                   <pin peripheral="GPIO10" signal="gpio_io, 05" pin_num="C15" pin_signal="GPIO_SD_B1_02">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
