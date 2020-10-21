@@ -73,7 +73,6 @@
 #include "ew_bsp_clock.h"
 #include "ew_bsp_event.h"
 #include "ew_bsp_display.h"
-//#include "ew_bsp_touch.h"
 
 #include "DeviceDriver.h"
 
@@ -89,8 +88,6 @@
 #define EW_TASK_PRIORITY   ( tskIDLE_PRIORITY + 2 )
 #define EW_TASK_STACK_SIZE ( 4 * 1024 )
 #define EW_TASK_NAME       "ew_task"
-
-#define EW_MEM_POOL_SIZE   ( 8 * 1024 * 1024 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -179,11 +176,6 @@ int EwInit( void )
   EwPrint( "Initialize Display...                        " );
   CHECK_HANDLE( EwBspDisplayInit( &DisplayInfo ));
 
-  /* initialize touchscreen */
-  // EwPrint( "Initialize Touch Driver...                   " );
-  // EwBspTouchInit( DisplayInfo.DisplayWidth, DisplayInfo.DisplayHeight );
-  // EwPrint( "[OK]\n" );
-
   #if EW_MEMORY_POOL_SIZE > 0
   /* initialize heap manager */
   EwPrint( "Initialize Memory Manager...                 " );
@@ -217,7 +209,7 @@ int EwInit( void )
   CHECK_HANDLE( Viewport );
 
   /* initialize your device driver(s) that provide data for your GUI */
-  // DeviceDriver_Initialize();
+  DeviceDriver_Initialize();
 
   return 1;
 }

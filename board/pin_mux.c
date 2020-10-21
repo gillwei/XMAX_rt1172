@@ -199,7 +199,6 @@ BOARD_InitPins:
   - {pin_num: P17, peripheral: ADC1, signal: 'A, 1_3', pin_signal: GPIO_AD_12}
   - {pin_num: R15, peripheral: GPIO9, signal: 'gpio_io, 07', pin_signal: GPIO_AD_08}
   - {pin_num: P13, peripheral: GPIO9, signal: 'gpio_io, 04', pin_signal: GPIO_AD_05}
-  - {pin_num: B16, peripheral: GPIO10, signal: 'gpio_io, 03', pin_signal: GPIO_SD_B1_00, direction: OUTPUT, gpio_init_state: 'true'}
   - {pin_num: B17, peripheral: GPIO10, signal: 'gpio_io, 06', pin_signal: GPIO_SD_B1_03, direction: OUTPUT}
   - {pin_num: B1, peripheral: SEMC, signal: 'ADDR, 05', pin_signal: GPIO_EMC_B1_14}
   - {pin_num: K1, peripheral: SEMC, signal: semc_rdy, pin_signal: GPIO_EMC_B1_40}
@@ -245,6 +244,7 @@ BOARD_InitPins:
   - {pin_num: T7, peripheral: SRC, signal: 'BOOT_MODE, 01', pin_signal: GPIO_LPSR_03}
   - {pin_num: P6, peripheral: SRC, signal: 'BOOT_MODE, 00', pin_signal: GPIO_LPSR_02}
   - {pin_num: M17, peripheral: FLEXIO2, signal: 'IO, 29', pin_signal: GPIO_AD_29, direction: OUTPUT}
+  - {pin_num: B16, peripheral: GPIO10, signal: 'gpio_io, 03', pin_signal: GPIO_SD_B1_00, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -359,7 +359,7 @@ void BOARD_InitPins(void) {
   /* GPIO configuration of TFT_BL_EN on GPIO_SD_B1_00 (pin B16) */
   gpio_pin_config_t TFT_BL_EN_config = {
       .direction = kGPIO_DigitalOutput,
-      .outputLogic = 1U,
+      .outputLogic = 0U,
       .interruptMode = kGPIO_NoIntmode
   };
   /* Initialize GPIO functionality on GPIO_SD_B1_00 (pin B16) */

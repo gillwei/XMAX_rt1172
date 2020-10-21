@@ -371,12 +371,6 @@
                   <pin peripheral="ADC1" signal="A, 1_3" pin_num="P17" pin_signal="GPIO_AD_12"/>
                   <pin peripheral="GPIO9" signal="gpio_io, 07" pin_num="R15" pin_signal="GPIO_AD_08"/>
                   <pin peripheral="GPIO9" signal="gpio_io, 04" pin_num="P13" pin_signal="GPIO_AD_05"/>
-                  <pin peripheral="GPIO10" signal="gpio_io, 03" pin_num="B16" pin_signal="GPIO_SD_B1_00">
-                     <pin_features>
-                        <pin_feature name="direction" value="OUTPUT"/>
-                        <pin_feature name="gpio_init_state" value="true"/>
-                     </pin_features>
-                  </pin>
                   <pin peripheral="GPIO10" signal="gpio_io, 06" pin_num="B17" pin_signal="GPIO_SD_B1_03">
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
@@ -426,6 +420,11 @@
                   <pin peripheral="SRC" signal="BOOT_MODE, 01" pin_num="T7" pin_signal="GPIO_LPSR_03"/>
                   <pin peripheral="SRC" signal="BOOT_MODE, 00" pin_num="P6" pin_signal="GPIO_LPSR_02"/>
                   <pin peripheral="FLEXIO2" signal="IO, 29" pin_num="M17" pin_signal="GPIO_AD_29">
+                     <pin_features>
+                        <pin_feature name="direction" value="OUTPUT"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="GPIO10" signal="gpio_io, 03" pin_num="B16" pin_signal="GPIO_SD_B1_00">
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
                      </pin_features>
@@ -850,6 +849,7 @@
                   <setting id="ANADIG_PLL_ARM_PLL_CTRL_POWERUP_CFG" value="Enabled" locked="false"/>
                   <setting id="ANADIG_PLL_PLL_AUDIO_CTRL0_POWERUP_CFG" value="Enabled" locked="false"/>
                   <setting id="ANADIG_PLL_PLL_VIDEO_CTRL0_POWERUP_CFG" value="Enabled" locked="false"/>
+                  <setting id="CCM.CLOCK_ROOT13.MUX.sel" value="ANADIG_OSC.OSC_24M" locked="false"/>
                   <setting id="CCM.CLOCK_ROOT69.DIV.scale" value="129" locked="false"/>
                   <setting id="CCM.CLOCK_ROOT69.MUX.sel" value="ANADIG_PLL.PLL_VIDEO_CLK" locked="false"/>
                </clock_settings>

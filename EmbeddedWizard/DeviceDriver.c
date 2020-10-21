@@ -48,6 +48,11 @@
 #include "ew_bsp_inout.h"
 #include "ew_bsp_clock.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+#include "fsl_gpio.h"
+#include "pin_mux.h"
+
 /*
    Include the generated header file to access the device class, for example to
    access the class 'DeviceClass' from the unit 'Application' include the
@@ -131,11 +136,15 @@ void DeviceDriver_Initialize( void )
      hardware, to open needed devices, to open communication channels, etc.
   */
 
+  /* configure Backlight time sequence */
+  vTaskDelay( 200 ); // T4 min timeout after RESET
+  GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN, 1 );
+
   /* configure LED */
-  EwBspInOutInitLed();
+  // EwBspInOutInitLed();
 
   /* Configure interrupt for hardware button */
-  EwBspInOutInitButton( HardButtonIsrCallback );
+  // EwBspInOutInitButton( HardButtonIsrCallback );
 
 
 #ifdef _ApplicationDeviceClass_

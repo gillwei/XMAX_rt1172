@@ -212,17 +212,6 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_SKU_ID1_GPIO_PIN                                      20U   /*!< GPIO pin number */
 #define BOARD_INITPINS_SKU_ID1_GPIO_PIN_MASK                         (1U << 20U)   /*!< GPIO pin mask */
 
-/* GPIO_SD_B1_00 (coord B16), TFT_BL_EN */
-/* Routed pin properties */
-#define BOARD_INITPINS_TFT_BL_EN_PERIPHERAL                               GPIO10   /*!< Peripheral name */
-#define BOARD_INITPINS_TFT_BL_EN_SIGNAL                                  gpio_io   /*!< Signal name */
-#define BOARD_INITPINS_TFT_BL_EN_CHANNEL                                      3U   /*!< Signal channel */
-
-/* Symbols to be used with GPIO driver */
-#define BOARD_INITPINS_TFT_BL_EN_GPIO                                     GPIO10   /*!< GPIO peripheral base pointer */
-#define BOARD_INITPINS_TFT_BL_EN_GPIO_PIN                                     3U   /*!< GPIO pin number */
-#define BOARD_INITPINS_TFT_BL_EN_GPIO_PIN_MASK                        (1U << 3U)   /*!< GPIO pin mask */
-
 /* GPIO_SD_B1_03 (coord B17), TFT_RESET */
 /* Routed pin properties */
 #define BOARD_INITPINS_TFT_RESET_PERIPHERAL                               GPIO10   /*!< Peripheral name */
@@ -239,6 +228,17 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_TFT_BL_PWM_PERIPHERAL                             FLEXIO2   /*!< Peripheral name */
 #define BOARD_INITPINS_TFT_BL_PWM_SIGNAL                                      IO   /*!< Signal name */
 #define BOARD_INITPINS_TFT_BL_PWM_CHANNEL                                    29U   /*!< Signal channel */
+
+/* GPIO_SD_B1_00 (coord B16), TFT_BL_EN */
+/* Routed pin properties */
+#define BOARD_INITPINS_TFT_BL_EN_PERIPHERAL                               GPIO10   /*!< Peripheral name */
+#define BOARD_INITPINS_TFT_BL_EN_SIGNAL                                  gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_TFT_BL_EN_CHANNEL                                      3U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_TFT_BL_EN_GPIO                                     GPIO10   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_TFT_BL_EN_GPIO_PIN                                     3U   /*!< GPIO pin number */
+#define BOARD_INITPINS_TFT_BL_EN_GPIO_PIN_MASK                        (1U << 3U)   /*!< GPIO pin mask */
 
 
 /*!
