@@ -61,16 +61,6 @@ void PERIPHERAL_uart_port_reconfig
     uint32_t baud_rate
     );
 
-/*int PERIPHERAL_adc_get_board_ver
-    (
-    void
-    );
-
-int PERIPHERAL_adc_get_sku_code
-    (
-    void
-    );
-
 int PERIPHERAL_adc_get_pcba_ntc
     (
     void
@@ -85,7 +75,7 @@ int PERIPHERAL_adc_get_tft_ntc
     (
     void
     );
-*/
+
 void PERIPHERAL_pwm_set_display_dutycycle
     (
     uint8_t duty_cycle

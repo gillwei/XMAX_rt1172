@@ -66,7 +66,7 @@ void PERIPHERAL_init
     )
 {
 uart_init();
-//adc_init();
+adc_init();
 i2c_init();
 pwm_init();
 }

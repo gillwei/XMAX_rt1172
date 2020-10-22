@@ -55,10 +55,10 @@ void uart_init
     void
     );
 
-/*void adc_init
+void adc_init
     (
     void
-    );*/
+    );
 
 void i2c_init
     (
