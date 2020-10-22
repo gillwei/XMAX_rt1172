@@ -1,40 +1,27 @@
 /*********************************************************************
 * @file
-* main.c
+* RTC_pub.h
 *
-* The main file of LinkCard mcu application.
+* @brief
+* real time clock module - public API
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
+#ifndef RTC_PUB_H
+#define RTC_PUB_H
+
+#ifdef __cplusplus
+extern "C"{
+#endif
 
 /*--------------------------------------------------------------------
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
-
-#include "board.h"
-#include "fsl_debug_console.h"
-#include "fsl_gpio.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
-
-#include "pin_mux.h"
-#include "clock_config.h"
-
-#include "EW_pub.h"
-#include "PERIPHERAL_pub.h"
-#include "EEPM_pub.h"
-#include "CAN_nim_ctrl.h"
-#include "RTC_pub.h"
+#include "fsl_snvs_lp.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#ifdef NDEBUG
-    #define BUILD_TYPE "release"
-#else
-    #define BUILD_TYPE "debug"
-#endif
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -59,52 +46,24 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-static void led_task( void* arg );
-
-/*********************************************************************
-*
-* @public
-* main
-*
-* The main function of the LinkCard mcu application.
-*
-*********************************************************************/
-int main
+void RTC_init
     (
     void
-    )
-{
-/* Board pin, clock, debug console init */
-BOARD_ConfigMPU();
-BOARD_InitBootPins();
-BOARD_BootClockRUN();
-BOARD_InitDebugConsole();
+    );
 
-PRINTF( "%s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE );
-
-EW_init();
-PERIPHERAL_init();
-EEPM_init();
-RTC_init();
-
-vCAN_nim_create_task();
-
-xTaskCreate( led_task, "led_task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 4 ), NULL );
-vTaskStartScheduler();
-
-return 0;
-}
-
-static void led_task
+status_t RTC_set_DateTime
     (
-    void* arg
-    )
-{
-while( true )
-    {
-    GPIO_PortToggle( BOARD_USER_LED_GPIO, 1u << BOARD_USER_LED_GPIO_PIN );
-    PRINTF("The LED is blinking.\r\n");
-    vTaskDelay( pdMS_TO_TICKS( 500 ) );
-    }
-vTaskDelete( NULL );
+    snvs_lp_srtc_datetime_t * datetime
+    );
+
+void RTC_get_DateTime
+    (
+    snvs_lp_srtc_datetime_t * datetime
+    );
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif /* RTC_PUB_H */
+

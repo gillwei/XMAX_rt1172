@@ -1,8 +1,8 @@
 /*********************************************************************
 * @file
-* main.c
+* rtc_main.c
 *
-* The main file of LinkCard mcu application.
+* Brief Real Time Clock interface for RTC read/write.
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
@@ -10,31 +10,17 @@
 /*--------------------------------------------------------------------
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
-
-#include "board.h"
 #include "fsl_debug_console.h"
-#include "fsl_gpio.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
+#include "board.h"
 
 #include "pin_mux.h"
 #include "clock_config.h"
 
-#include "EW_pub.h"
-#include "PERIPHERAL_pub.h"
-#include "EEPM_pub.h"
-#include "CAN_nim_ctrl.h"
 #include "RTC_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#ifdef NDEBUG
-    #define BUILD_TYPE "release"
-#else
-    #define BUILD_TYPE "debug"
-#endif
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -59,52 +45,76 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-static void led_task( void* arg );
 
 /*********************************************************************
 *
 * @public
-* main
+* RTC_init
 *
-* The main function of the LinkCard mcu application.
+* @brief Initializes the LP RTC parameter
 *
 *********************************************************************/
-int main
+void RTC_init
     (
     void
     )
 {
-/* Board pin, clock, debug console init */
-BOARD_ConfigMPU();
-BOARD_InitBootPins();
-BOARD_BootClockRUN();
-BOARD_InitDebugConsole();
+snvs_lp_srtc_datetime_t srtcDate;
+snvs_lp_srtc_config_t snvsSrtcConfig;
 
-PRINTF( "%s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE );
+/* Init SNVS_LP */
+SNVS_LP_SRTC_GetDefaultConfig( &snvsSrtcConfig );
+SNVS_LP_SRTC_Init( SNVS, &snvsSrtcConfig );
 
-EW_init();
-PERIPHERAL_init();
-EEPM_init();
-RTC_init();
+PRINTF( "%s ok\r\n", __FUNCTION__ );
 
-vCAN_nim_create_task();
+/* Set a start date time and start RT */
+srtcDate.year   = 2022U;
+srtcDate.month  = 1U;
+srtcDate.day    = 1U;
+srtcDate.hour   = 0U;
+srtcDate.minute = 0;
+srtcDate.second = 0;
 
-xTaskCreate( led_task, "led_task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 4 ), NULL );
-vTaskStartScheduler();
-
-return 0;
+/* Set SRTC time to default time and date and start the SRTC */
+SNVS_LP_SRTC_SetDatetime( SNVS, &srtcDate );
+SNVS_LP_SRTC_StartTimer( SNVS );
 }
 
-static void led_task
+/*********************************************************************
+*
+* @public
+* RTC_set_DateTime
+*
+* @brief set the RTC with specified datetime
+*
+* @param datetime pointer of specified datetime value
+*
+*********************************************************************/
+status_t RTC_set_DateTime
     (
-    void* arg
+    snvs_lp_srtc_datetime_t * datetime
     )
 {
-while( true )
-    {
-    GPIO_PortToggle( BOARD_USER_LED_GPIO, 1u << BOARD_USER_LED_GPIO_PIN );
-    PRINTF("The LED is blinking.\r\n");
-    vTaskDelay( pdMS_TO_TICKS( 500 ) );
-    }
-vTaskDelete( NULL );
+status_t ret;
+ret = SNVS_LP_SRTC_SetDatetime( SNVS, datetime );
+return ret;
+}
+
+/*********************************************************************
+*
+* @public
+* RTC_get_DateTime
+*
+* @brief get the RTC datetime
+*
+* @param datetime pointer of returned datetime
+*
+*********************************************************************/
+void RTC_get_DateTime
+    (
+    snvs_lp_srtc_datetime_t * datetime
+    )
+{
+SNVS_LP_SRTC_GetDatetime( SNVS, datetime );
 }
