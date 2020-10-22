@@ -1,41 +1,26 @@
 /*********************************************************************
 * @file
-* main.c
+* WDG_pub.h
 *
-* The main file of LinkCard mcu application.
+* @brief
+* watchdog timer module - public API
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
+#ifndef WDG_PUB_H
+#define WDG_PUB_H
+
+#ifdef __cplusplus
+extern "C"{
+#endif
 
 /*--------------------------------------------------------------------
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
 
-#include "board.h"
-#include "fsl_debug_console.h"
-#include "fsl_gpio.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
-
-#include "pin_mux.h"
-#include "clock_config.h"
-
-#include "EW_pub.h"
-#include "PERIPHERAL_pub.h"
-#include "EEPM_pub.h"
-#include "CAN_nim_ctrl.h"
-#include "RTC_pub.h"
-#include "WDG_pub.h"
-
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#ifdef NDEBUG
-    #define BUILD_TYPE "release"
-#else
-    #define BUILD_TYPE "debug"
-#endif
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -60,53 +45,14 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-static void led_task( void* arg );
-
-/*********************************************************************
-*
-* @public
-* main
-*
-* The main function of the LinkCard mcu application.
-*
-*********************************************************************/
-int main
+void WDG_init
     (
     void
-    )
-{
-/* Board pin, clock, debug console init */
-BOARD_ConfigMPU();
-BOARD_InitBootPins();
-BOARD_BootClockRUN();
-BOARD_InitDebugConsole();
+    );
 
-PRINTF( "%s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE );
-
-EW_init();
-PERIPHERAL_init();
-EEPM_init();
-RTC_init();
-WDG_init();
-
-vCAN_nim_create_task();
-
-xTaskCreate( led_task, "led_task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 4 ), NULL );
-vTaskStartScheduler();
-
-return 0;
+#ifdef __cplusplus
 }
+#endif
 
-static void led_task
-    (
-    void* arg
-    )
-{
-while( true )
-    {
-    GPIO_PortToggle( BOARD_USER_LED_GPIO, 1u << BOARD_USER_LED_GPIO_PIN );
-    PRINTF("The LED is blinking.\r\n");
-    vTaskDelay( pdMS_TO_TICKS( 500 ) );
-    }
-vTaskDelete( NULL );
-}
+#endif /* WDG_PUB_H */
+

@@ -35,7 +35,7 @@
                <pin_label pin_num="R17" pin_signal="GPIO_AD_10" label="VDD_3.3V_PGOOD"/>
                <pin_label pin_num="P16" pin_signal="GPIO_AD_11" label="5V_CAN_PGOOD" identifier="CAN_PGOOD"/>
                <pin_label pin_num="R16" pin_signal="GPIO_AD_09" label="VDD_3.3VON_PGOOD"/>
-               <pin_label pin_num="M13" pin_signal="GPIO_AD_04" label="WDOG_B"/>
+               <pin_label pin_num="M13" pin_signal="GPIO_AD_04" label="WDOG_B" identifier="WDOG_B"/>
                <pin_label pin_num="P6" pin_signal="GPIO_LPSR_02" label="BOOT_MODE0"/>
                <pin_label pin_num="T7" pin_signal="GPIO_LPSR_03" label="BOOT_MODE1"/>
                <pin_label pin_num="N16" pin_signal="GPIO_AD_27" label="5V_CAN_EN" identifier="d;VDD5V_CAN_EN;CAN_EN"/>
@@ -190,11 +190,6 @@
                         <data>true</data>
                      </feature>
                   </dependency>
-                  <dependency resourceType="Peripheral" resourceId="WDOG1" description="Peripheral WDOG1 is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
-                     <feature name="initialized" evaluation="equal">
-                        <data>true</data>
-                     </feature>
-                  </dependency>
                   <dependency resourceType="Peripheral" resourceId="SEMC" description="Peripheral SEMC is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
@@ -308,7 +303,6 @@
                         <pin_feature name="direction" value="INPUT"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="WDOG1" signal="wdog_wdog_b" pin_num="M13" pin_signal="GPIO_AD_04"/>
                   <pin peripheral="GPIO9" signal="gpio_io, 26" pin_num="N16" pin_signal="GPIO_AD_27">
                      <pin_features>
                         <pin_feature name="identifier" value="CAN_EN"/>
@@ -425,6 +419,11 @@
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO10" signal="gpio_io, 03" pin_num="B16" pin_signal="GPIO_SD_B1_00">
+                     <pin_features>
+                        <pin_feature name="direction" value="OUTPUT"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="GPIO9" signal="gpio_io, 03" pin_num="M13" pin_signal="GPIO_AD_04">
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
                      </pin_features>

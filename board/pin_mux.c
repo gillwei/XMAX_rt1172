@@ -22,7 +22,7 @@ pin_labels:
 - {pin_num: R17, pin_signal: GPIO_AD_10, label: VDD_3.3V_PGOOD}
 - {pin_num: P16, pin_signal: GPIO_AD_11, label: 5V_CAN_PGOOD, identifier: CAN_PGOOD}
 - {pin_num: R16, pin_signal: GPIO_AD_09, label: VDD_3.3VON_PGOOD}
-- {pin_num: M13, pin_signal: GPIO_AD_04, label: WDOG_B}
+- {pin_num: M13, pin_signal: GPIO_AD_04, label: WDOG_B, identifier: WDOG_B}
 - {pin_num: P6, pin_signal: GPIO_LPSR_02, label: BOOT_MODE0}
 - {pin_num: T7, pin_signal: GPIO_LPSR_03, label: BOOT_MODE1}
 - {pin_num: N16, pin_signal: GPIO_AD_27, label: 5V_CAN_EN, identifier: d;VDD5V_CAN_EN;CAN_EN}
@@ -182,7 +182,6 @@ BOARD_InitPins:
   - {pin_num: R17, peripheral: GPIO9, signal: 'gpio_io, 09', pin_signal: GPIO_AD_10}
   - {pin_num: R16, peripheral: GPIO9, signal: 'gpio_io, 08', pin_signal: GPIO_AD_09}
   - {pin_num: P16, peripheral: GPIO9, signal: 'gpio_io, 10', pin_signal: GPIO_AD_11, direction: INPUT}
-  - {pin_num: M13, peripheral: WDOG1, signal: wdog_wdog_b, pin_signal: GPIO_AD_04}
   - {pin_num: N16, peripheral: GPIO9, signal: 'gpio_io, 26', pin_signal: GPIO_AD_27, identifier: CAN_EN, direction: OUTPUT, gpio_init_state: 'true'}
   - {pin_num: J14, peripheral: GPIO10, signal: 'gpio_io, 10', pin_signal: GPIO_SD_B2_01, direction: OUTPUT}
   - {pin_num: L17, peripheral: GPIO9, signal: 'gpio_io, 27', pin_signal: GPIO_AD_28, direction: OUTPUT}
@@ -245,6 +244,7 @@ BOARD_InitPins:
   - {pin_num: P6, peripheral: SRC, signal: 'BOOT_MODE, 00', pin_signal: GPIO_LPSR_02}
   - {pin_num: M17, peripheral: FLEXIO2, signal: 'IO, 29', pin_signal: GPIO_AD_29, direction: OUTPUT}
   - {pin_num: B16, peripheral: GPIO10, signal: 'gpio_io, 03', pin_signal: GPIO_SD_B1_00, direction: OUTPUT}
+  - {pin_num: M13, peripheral: GPIO9, signal: 'gpio_io, 03', pin_signal: GPIO_AD_04, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -328,6 +328,15 @@ void BOARD_InitPins(void) {
   };
   /* Initialize GPIO functionality on GPIO_EMC_B2_16 (pin P2) */
   GPIO_PinInit(GPIO8, 26U, &SKU_ID3_config);
+
+  /* GPIO configuration of WDOG_B on GPIO_AD_04 (pin M13) */
+  gpio_pin_config_t WDOG_B_config = {
+      .direction = kGPIO_DigitalOutput,
+      .outputLogic = 0U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_AD_04 (pin M13) */
+  GPIO_PinInit(GPIO9, 3U, &WDOG_B_config);
 
   /* GPIO configuration of CAN_PGOOD on GPIO_AD_11 (pin P16) */
   gpio_pin_config_t CAN_PGOOD_config = {
@@ -441,7 +450,7 @@ void BOARD_InitPins(void) {
       IOMUXC_GPIO_AD_03_LPUART7_RTS_B,        /* GPIO_AD_03 is configured as LPUART7_RTS_B */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_04_WDOG1_B,              /* GPIO_AD_04 is configured as WDOG1_B */
+      IOMUXC_GPIO_AD_04_GPIO9_IO03,           /* GPIO_AD_04 is configured as GPIO9_IO03 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_05_GPIO9_IO04,           /* GPIO_AD_05 is configured as GPIO9_IO04 */
