@@ -1,54 +1,31 @@
 /*********************************************************************
 * @file
-* main.c
+* navilite_event_injection.c
 *
-* The main file of LinkCard mcu application.
+* @brief
+* NAVILITE module - event injection
 *
-* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+* Copyright 2021 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 
 /*--------------------------------------------------------------------
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
-
-#include "board.h"
-#include "fsl_debug_console.h"
-#include "fsl_gpio.h"
 #include "FreeRTOS.h"
+#include "event_groups.h"
+#include "limits.h"
+#include "task.h"
 #include "semphr.h"
-
-#include "pin_mux.h"
-#include "clock_config.h"
-
+#include "ewrte.h"
+#include "fsl_debug_console.h"
+#include "NAVILITE_pub_protocol.h"
 #include "EW_pub.h"
-#include "PERIPHERAL_pub.h"
-#include "EEPM_pub.h"
-#include "CAN_nim_ctrl.h"
-#include "RTC_pub.h"
-#include "WDG_pub.h"
-#include "display_support.h"
-#include "PM_pub.h"
-#include "factory_test.h"
-#include "VI_pub.h"
+#include "navilite_prv.h"
 #include "NAVILITE_pub.h"
-#include "NAVI_pub.h"
-#include "JPEG_pub.h"
-#include "TEST_pub.h"
-#include "HCI_pub.h"
-#include "BTM_pub.h"
-#include "BC_pub.h"
-#include "MM_pub.h"
-#include "QR_pub.h"
-#include "WEA_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#ifdef NDEBUG
-    #define BUILD_TYPE "release"
-#else
-    #define BUILD_TYPE "debug"
-#endif
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -61,12 +38,11 @@
 /*--------------------------------------------------------------------
                            MEMORY CONSTANTS
 --------------------------------------------------------------------*/
-#define GET_BOOT_RESET_FLAGS ( IOMUXC_SNVS_GPR->GPR32 )
-#define Enter_SNVS_Mode_Flag ( 1 << 1 ) // use bit 1 of GPR32
 
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
+extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -76,73 +52,46 @@
                               PROCEDURES
 --------------------------------------------------------------------*/
 
-
 /*********************************************************************
 *
 * @public
-* main
-*
-* The main function of the LinkCard mcu application.
+* NAVILITE_event_injection for fake data mode
 *
 *********************************************************************/
-int main
+void NAVILITE_event_injection
     (
     void
     )
 {
-/* Board pin, clock, debug console init */
-BOARD_ConfigMPU();
-BOARD_InitBootPins();
-BOARD_BootClockRUN();
-BOARD_InitDebugConsole();
+// Sample Data for 4 cycles
+static int timer_counter = 0;
+static uint8_t* sample_road_name[] = { (uint8_t*)"新台五路一段", (uint8_t*)"東麻布1丁目8番", (uint8_t*)"中油林口工三加油站(24)(自助)", (uint8_t*)"Eastern Wood Road" };
+static uint32_t sample_eta_value[] = { (uint32_t)140, (uint32_t)160, (uint32_t)170, (uint32_t)190 };
+uint32_t tmp_eta_val = 0;
+uint8_t* tmp_str = NULL;
 
-PRINTF( "%s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE );
+timer_counter++;
 
-if( GET_BOOT_RESET_FLAGS & IOMUXC_SNVS_GPR_GPR32_GPR( Enter_SNVS_Mode_Flag ) )
+PRINTF( "\r\nDemo Events Injection Run\r\n" );
+tmp_str = sample_road_name[timer_counter % 4];
+
+if( navilite_content_update_callbacks.callback_func_currentroadname )
     {
-    PRINTF( "Boot from SNVS\r\n" );
-    IOMUXC_SNVS_GPR->GPR32 &= ~IOMUXC_SNVS_GPR_GPR32_GPR( Enter_SNVS_Mode_Flag );
-    SNVS_LP_SRTC_StartTimer( SNVS );
-    }
-else
-    {
-    PRINTF( "Boot from Power on\r\n" );
-    RTC_init();
+    navilite_content_update_callbacks.callback_func_currentroadname( tmp_str, strlen( (const char*)tmp_str ) );
     }
 
-if( BOARD_is_tft_connected() == TFT_CONNECTED )
+tmp_eta_val = (uint32_t)sample_eta_value[timer_counter % 4];
+
+if( navilite_content_update_callbacks.callback_func_eta )
     {
-    BOARD_InitLcdifPins();
-    EW_init();
-    display_monitor_init();
+    navilite_content_update_callbacks.callback_func_eta( tmp_eta_val );
     }
-else
+
+if( timer_counter > 1024 )
     {
-    PRINTF( "TFT is not connected, EW will not be initialized \r\n" );
+    timer_counter = 0;
     }
-PERIPHERAL_init();
-PM_init();
-EEPM_init();
-WDG_init();
-HCI_init();
-FACTORY_init();
-BTM_init();
-BC_init();
-VI_init();
-JPEG_init();
-NAVI_init();
-MM_init();
-QR_init();
-WEA_init();
-#if( UNIT_TEST_ENABLE )
-    TEST_init();
-#endif
 
-vCAN_nim_create_task();
-
-NAVILITE_init();
-
-vTaskStartScheduler();
-
-return 0;
+// @TODO: image update due to large image will occupy the ROM size
+//        we can make this work when HOP is enabled to use the prebuilt image data
 }

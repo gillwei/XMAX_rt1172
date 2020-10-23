@@ -38,6 +38,7 @@ void JPEG_notify_rgb_loaded( void );
 buffer_info* JPEG_take_rgb( void );
 void JPEG_give_rgb( void );
 bool JPEG_is_rgb_ready( void );
+bool JPEG_is_valid( uint8_t*, uint16_t );
 
 #ifdef __cplusplus
 }

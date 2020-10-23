@@ -35,7 +35,7 @@
 #define BYTE_PER_PIXEL      ( 3 )
 #define DEFAULT_SCALE_NUM   ( 8 )
 
-#define JPEG_BUFFER_SIZE_BYTE ( 30 * 1024 )
+#define JPEG_BUFFER_SIZE_BYTE ( 65 * 1024 )
 #define JPEG_BUFFER_NUM       ( 2 )
 #define RGB_BUFFER_SIZE_BYTE  ( FRAME_BUFFER_WIDTH * FRAME_BUFFER_HEIGHT * BYTE_PER_PIXEL )
 #define RGB_BUF_TAKE_SEMAPHORE_TIMEOUT_MS ( 1000 )
@@ -354,6 +354,28 @@ uint32_t JPEG_get_jpeg_buffer_size
     )
 {
 return JPEG_BUFFER_SIZE_BYTE;
+}
+
+/*********************************************************************
+*
+* @public
+* JPEG_is_valid
+*
+* Simple check if data content is valid JPEG format with less effort
+* @param data data pointer of image
+* @param size size of image
+* @return true if data content is valid JPEG format
+*         false if not valid JPEG format
+*********************************************************************/
+bool JPEG_is_valid
+    (
+    uint8_t* data,
+    uint16_t size
+    )
+{
+int soi_check =  ( data[0] == 0xff && data[1] == 0xd8 );
+int eoi_check = ( data[size - 2] == 0xff && data[size - 1] == 0xd9 );
+return ( soi_check && eoi_check );
 }
 
 /*********************************************************************

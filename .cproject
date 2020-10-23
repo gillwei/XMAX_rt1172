@@ -164,6 +164,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/vi}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/jpeg}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/jpeg/libjpeg/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/navilite}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/navi}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/test}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt_hci}&quot;"/>
@@ -261,6 +262,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLite}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLiteKernel}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLiteKernel/rtos}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/navilite}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display/fbdev}&quot;"/>
@@ -542,6 +544,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nanopb"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="navi"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="osek-canbus/client_diag/src"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="navilite"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="osek-canbus/driver/src"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="osek-canbus/service/src"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="peripheral"/>
@@ -722,6 +725,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/vi}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/jpeg}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/jpeg/libjpeg/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/navilite}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/navi}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/test}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt_hci}&quot;"/>
@@ -989,6 +993,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nanopb"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="navi"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="osek-canbus/client_diag/src"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="navilite"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="osek-canbus/driver/src"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="osek-canbus/service/src"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="peripheral"/>

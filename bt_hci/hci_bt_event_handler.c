@@ -20,7 +20,6 @@
 #include "hci_prv.h"
 #include "HCI_pub.h"
 #include "BT_UPDATE_pub.h"
-#include "JPEGPARSER_pub.h"
 #include "EW_pub.h"
 #include "factory_test.h"
 #include "task.h"

@@ -14,7 +14,6 @@
 #include <BT_UPDATE_pub.h>
 #include <HCI_pub.h>
 #include "hci_prv.h"
-#include "JPEGPARSER_pub.h"
 #include "fsl_debug_console.h"
 #include "circular_buffer.h"
 #include "event_groups.h"
