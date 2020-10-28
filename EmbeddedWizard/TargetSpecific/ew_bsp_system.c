@@ -58,9 +58,6 @@ void EwBspSystemInit( void )
   /* Init board hardware. */
   BOARD_ConfigMPU();
   BOARD_BootClockRUN();
-  BOARD_InitLpuartPins();
-  BOARD_InitMipiPanelPins();
-  BOARD_MIPIPanelTouch_I2C_Init();
   BOARD_InitDebugConsole();
 
 

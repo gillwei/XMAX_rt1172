@@ -27,6 +27,7 @@
 #include "CAN_nim_ctrl.h"
 #include "RTC_pub.h"
 #include "WDG_pub.h"
+#include "display_support.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -83,7 +84,15 @@ BOARD_InitDebugConsole();
 
 PRINTF( "%s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE );
 
-EW_init();
+if( BOARD_is_tft_connected() == TFT_CONNECTED )
+    {
+    EW_init();
+    display_monitor_init();
+    }
+else
+    {
+    PRINTF( "TFT is not connected, EW will not be initialized \r\n" );
+    }
 PERIPHERAL_init();
 EEPM_init();
 RTC_init();
