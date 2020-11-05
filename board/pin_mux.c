@@ -178,7 +178,7 @@ BOARD_InitPins:
   - {pin_num: T9, peripheral: GPIO13, signal: 'gpio_io, 02', pin_signal: PMIC_STBY_REQ}
   - {pin_num: U9, peripheral: GPIO13, signal: 'gpio_io, 01', pin_signal: PMIC_ON_REQ, direction: OUTPUT, gpio_init_state: 'true'}
   - {pin_num: R9, peripheral: GPIO13, signal: 'gpio_io, 10', pin_signal: GPIO_SNVS_07, direction: INPUT}
-  - {pin_num: T17, peripheral: ADC1, signal: 'B, 1_0', pin_signal: GPIO_AD_07}
+  - {pin_num: T17, peripheral: ADC1, signal: 'B, 1_0', pin_signal: GPIO_AD_07, pull_keeper_select: Keeper}
   - {pin_num: R17, peripheral: GPIO9, signal: 'gpio_io, 09', pin_signal: GPIO_AD_10}
   - {pin_num: R16, peripheral: GPIO9, signal: 'gpio_io, 08', pin_signal: GPIO_AD_09}
   - {pin_num: P16, peripheral: GPIO9, signal: 'gpio_io, 10', pin_signal: GPIO_AD_11, direction: INPUT}
@@ -194,8 +194,8 @@ BOARD_InitPins:
   - {pin_num: N2, peripheral: GPIO8, signal: 'gpio_io, 19', pin_signal: GPIO_EMC_B2_09, direction: INPUT}
   - {pin_num: P2, peripheral: GPIO8, signal: 'gpio_io, 26', pin_signal: GPIO_EMC_B2_16, direction: INPUT}
   - {pin_num: R2, peripheral: GPIO8, signal: 'gpio_io, 20', pin_signal: GPIO_EMC_B2_10, direction: INPUT}
-  - {pin_num: N17, peripheral: ADC1, signal: 'A, 1_5', pin_signal: GPIO_AD_16}
-  - {pin_num: P17, peripheral: ADC1, signal: 'A, 1_3', pin_signal: GPIO_AD_12}
+  - {pin_num: N17, peripheral: ADC1, signal: 'A, 1_5', pin_signal: GPIO_AD_16, pull_keeper_select: Keeper}
+  - {pin_num: P17, peripheral: ADC1, signal: 'A, 1_3', pin_signal: GPIO_AD_12, pull_keeper_select: Keeper}
   - {pin_num: R15, peripheral: GPIO9, signal: 'gpio_io, 07', pin_signal: GPIO_AD_08}
   - {pin_num: P13, peripheral: GPIO9, signal: 'gpio_io, 04', pin_signal: GPIO_AD_05}
   - {pin_num: B17, peripheral: GPIO10, signal: 'gpio_io, 06', pin_signal: GPIO_SD_B1_03, direction: OUTPUT}
@@ -703,6 +703,27 @@ void BOARD_InitPins(void) {
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_01_LPUART7_RXD,          /* GPIO_AD_01 PAD functional properties : */
+      0x02U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_07_GPIO_MUX3_IO06,       /* GPIO_AD_07 PAD functional properties : */
+      0x02U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_12_GPIO_MUX3_IO11,       /* GPIO_AD_12 PAD functional properties : */
+      0x02U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_16_GPIO_MUX3_IO15,       /* GPIO_AD_16 PAD functional properties : */
       0x02U);                                 /* Slew Rate Field: Slow Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz

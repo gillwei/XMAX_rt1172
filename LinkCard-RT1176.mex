@@ -296,7 +296,11 @@
                         <pin_feature name="direction" value="INPUT"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="ADC1" signal="B, 1_0" pin_num="T17" pin_signal="GPIO_AD_07"/>
+                  <pin peripheral="ADC1" signal="B, 1_0" pin_num="T17" pin_signal="GPIO_AD_07">
+                     <pin_features>
+                        <pin_feature name="pull_keeper_select" value="Keeper"/>
+                     </pin_features>
+                  </pin>
                   <pin peripheral="GPIO9" signal="gpio_io, 09" pin_num="R17" pin_signal="GPIO_AD_10"/>
                   <pin peripheral="GPIO9" signal="gpio_io, 08" pin_num="R16" pin_signal="GPIO_AD_09"/>
                   <pin peripheral="GPIO9" signal="gpio_io, 10" pin_num="P16" pin_signal="GPIO_AD_11">
@@ -362,8 +366,16 @@
                         <pin_feature name="direction" value="INPUT"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="ADC1" signal="A, 1_5" pin_num="N17" pin_signal="GPIO_AD_16"/>
-                  <pin peripheral="ADC1" signal="A, 1_3" pin_num="P17" pin_signal="GPIO_AD_12"/>
+                  <pin peripheral="ADC1" signal="A, 1_5" pin_num="N17" pin_signal="GPIO_AD_16">
+                     <pin_features>
+                        <pin_feature name="pull_keeper_select" value="Keeper"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="ADC1" signal="A, 1_3" pin_num="P17" pin_signal="GPIO_AD_12">
+                     <pin_features>
+                        <pin_feature name="pull_keeper_select" value="Keeper"/>
+                     </pin_features>
+                  </pin>
                   <pin peripheral="GPIO9" signal="gpio_io, 07" pin_num="R15" pin_signal="GPIO_AD_08"/>
                   <pin peripheral="GPIO9" signal="gpio_io, 04" pin_num="P13" pin_signal="GPIO_AD_05"/>
                   <pin peripheral="GPIO10" signal="gpio_io, 06" pin_num="B17" pin_signal="GPIO_SD_B1_03">
