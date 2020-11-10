@@ -174,7 +174,7 @@ BOARD_InitPins:
   - {pin_num: N12, peripheral: LPUART7, signal: TXD, pin_signal: GPIO_AD_00, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper}
   - {pin_num: C15, peripheral: GPIO10, signal: 'gpio_io, 05', pin_signal: GPIO_SD_B1_02, direction: INPUT}
   - {pin_num: D15, peripheral: GPIO10, signal: 'gpio_io, 04', pin_signal: GPIO_SD_B1_01, direction: INPUT}
-  - {pin_num: T8, peripheral: GPIO13, signal: 'gpio_io, 00', pin_signal: WAKEUP, direction: INPUT}
+  - {pin_num: T8, peripheral: GPIO13, signal: 'gpio_io, 00', pin_signal: WAKEUP, direction: INPUT, gpio_interrupt: kGPIO_IntFallingEdge}
   - {pin_num: T9, peripheral: GPIO13, signal: 'gpio_io, 02', pin_signal: PMIC_STBY_REQ}
   - {pin_num: U9, peripheral: GPIO13, signal: 'gpio_io, 01', pin_signal: PMIC_ON_REQ, direction: OUTPUT, gpio_init_state: 'true'}
   - {pin_num: R9, peripheral: GPIO13, signal: 'gpio_io, 10', pin_signal: GPIO_SNVS_07, direction: INPUT}
@@ -414,10 +414,12 @@ void BOARD_InitPins(void) {
   gpio_pin_config_t IGN_WAKE_config = {
       .direction = kGPIO_DigitalInput,
       .outputLogic = 0U,
-      .interruptMode = kGPIO_NoIntmode
+      .interruptMode = kGPIO_IntFallingEdge
   };
   /* Initialize GPIO functionality on WAKEUP_DIG (pin T8) */
   GPIO_PinInit(GPIO13, 0U, &IGN_WAKE_config);
+  /* Enable GPIO pin interrupt on WAKEUP_DIG (pin T8) */
+  GPIO_PortEnableInterrupts(GPIO13, 1U << 0U);
 
   /* GPIO configuration of SYS_EN on PMIC_ON_REQ_DIG (pin U9) */
   gpio_pin_config_t SYS_EN_config = {

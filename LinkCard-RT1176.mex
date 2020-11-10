@@ -281,6 +281,7 @@
                   <pin peripheral="GPIO13" signal="gpio_io, 00" pin_num="T8" pin_signal="WAKEUP">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="gpio_interrupt" value="kGPIO_IntFallingEdge"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO13" signal="gpio_io, 02" pin_num="T9" pin_signal="PMIC_STBY_REQ"/>

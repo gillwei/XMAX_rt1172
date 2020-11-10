@@ -1,0 +1,486 @@
+/*********************************************************************
+* @file
+* pm_main.c
+*
+* @brief
+* power management module
+*
+* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+*********************************************************************/
+
+#ifdef __cplusplus
+extern "C"{
+#endif
+
+/*--------------------------------------------------------------------
+                        GENERAL INCLUDES
+--------------------------------------------------------------------*/
+#include "PM_pub.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "fsl_iomuxc.h"
+#include "fsl_lpuart.h"
+#include "fsl_debug_console.h"
+#include "fsl_soc_src.h"
+#include "timers.h"
+#include "fsl_gpc.h"
+#include "pin_mux.h"
+/*--------------------------------------------------------------------
+                        Definitions
+--------------------------------------------------------------------*/
+#define GPC_CPU_MODE_CTRL GPC_CPU_MODE_CTRL_0
+
+#define WAKEUP_GPIO                     GPIO13
+#define WAKEUP_GPIO_PIN                 ( 0U )
+#define WAKEUP_IRQ                      GPIO13_Combined_0_31_IRQn
+#define WAKEUP_IRQ_HANDLER              GPIO13_Combined_0_31_IRQHandler
+
+#define TASK_TIME_DELAY                 ( 100 )
+#define GO_TO_SLEEP_TIME_MS             ( 5000 )
+#define GO_TO_SLEEP_COUNTER             ( GO_TO_SLEEP_TIME_MS / TASK_TIME_DELAY )
+
+#define MAX_MODULE_NUMBER               ( 10 )
+#define MAX_MODULE_NAME                 ( 32 )
+/*--------------------------------------------------------------------
+                        LITERAL CONSTANTS
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                        TYPES
+--------------------------------------------------------------------*/
+typedef struct
+    {
+    char name[MAX_MODULE_NAME];
+    void ( *callback_func_ptr ) ( bool );
+    bool is_registered;
+    }pm_callback_type;
+/*--------------------------------------------------------------------
+                        PROJECT INCLUDES
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                        MEMORY CONSTANTS
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                        VARIABLES
+--------------------------------------------------------------------*/
+static int              register_cb_index    = 0;
+static int              unregister_cb_number = 0;
+static TickType_t       task_delay           = pdMS_TO_TICKS( TASK_TIME_DELAY );
+static pm_callback_type module_cb[MAX_MODULE_NUMBER];
+static bool             start_snvs    = false;
+
+/*--------------------------------------------------------------------
+                        PROTOTYPES
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                        PROCEDURES
+--------------------------------------------------------------------*/
+
+static void set_wakeup_config
+    (
+    void
+    );
+
+static void enter_snvs
+    (
+    void
+    );
+
+static void snvs_pre_handler
+    (
+    void
+    );
+
+static void pm_main
+    (
+    void* arg
+    );
+
+static void pm_create_task
+    (
+    void
+    );
+
+static bool go_to_snvs_timeout
+    (
+    volatile bool
+    );
+
+static void disable_all_wakeup_source
+    (
+    GPC_CPU_MODE_CTRL_Type *base
+    );
+
+static void enable_wakeup_source
+    (
+    uint32_t irq
+    );
+
+static void disable_wakeup_source
+    (
+    uint32_t irq
+    );
+
+static void notify_pm_callback
+    (
+    bool is_ign_on
+    );
+
+/*================================================================================================*/
+/**
+@brief   enable_wakeup_source
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void enable_wakeup_source
+    (
+    uint32_t irq
+    )
+{
+GPC_CM_EnableIrqWakeup( GPC_CPU_MODE_CTRL, irq, true );
+}
+
+/*================================================================================================*/
+/**
+@brief   disable_wakeup_source
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void disable_wakeup_source
+    (
+    uint32_t irq
+    )
+{
+GPC_CM_EnableIrqWakeup( GPC_CPU_MODE_CTRL, irq, false );
+}
+/*================================================================================================*/
+/**
+@brief   WAKEUP_IRQ_HANDLER
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void WAKEUP_IRQ_HANDLER
+    (
+    void
+    )
+{
+if( ( 1U << WAKEUP_GPIO_PIN ) & GPIO_GetPinsInterruptFlags( WAKEUP_GPIO ) )
+    {
+    GPIO_DisableInterrupts( WAKEUP_GPIO, 1U << WAKEUP_GPIO_PIN );
+    GPIO_ClearPinsInterruptFlags( WAKEUP_GPIO, 1U << WAKEUP_GPIO_PIN );
+    disable_wakeup_source( WAKEUP_IRQ );
+    }
+SDK_ISR_EXIT_BARRIER;
+}
+
+/*================================================================================================*/
+/**
+@brief   PM_init
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void PM_init
+    (
+    void
+    )
+{
+pm_create_task();
+}
+
+/*================================================================================================*/
+/**
+@brief   PM_register_callback
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void PM_register_callback
+    (
+    const char* const    name,
+    void ( *func_ptr ) ( bool )
+    )
+{
+strcpy( module_cb[register_cb_index].name , name );
+module_cb[register_cb_index].callback_func_ptr = func_ptr;
+module_cb[register_cb_index].is_registered = true;
+register_cb_index++;
+}
+
+/*================================================================================================*/
+/**
+@brief   PM_unregister_callback
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void PM_unregister_callback
+    (
+    const char* const    moduleName
+    )
+{
+for( int idx = 0; idx < register_cb_index; idx++ )
+    {
+    if( !strcmp( moduleName, module_cb[idx].name ) )
+        {
+        if( module_cb[idx].is_registered  )
+            {
+            taskENTER_CRITICAL();
+            module_cb[idx].is_registered = false;
+            unregister_cb_number++;
+            taskEXIT_CRITICAL();
+            }
+        }
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   PM_system_reset
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void PM_system_reset
+    (
+    void
+    )
+{
+NVIC_SystemReset();
+}
+
+/*================================================================================================*/
+/**
+@brief   pm_create_task
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void pm_create_task
+    (
+    void
+    )
+{
+if( pdPASS == xTaskCreate( pm_main, "pm_main", ( configMINIMAL_STACK_SIZE ), NULL, ( tskIDLE_PRIORITY + 1 ), NULL ) )
+    {
+    PRINTF("%s ok\r\n", __FUNCTION__ );
+    }
+else
+    {
+    PRINTF("%s fail\r\n", __FUNCTION__ );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   notify_pm_callback
+@detail
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void notify_pm_callback
+    (
+    volatile bool ign_status
+    )
+{
+for( int idx = 0; idx < register_cb_index; idx++ )
+    {
+    module_cb[idx].callback_func_ptr( ign_status );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   go_to_snvs_timeout
+@detail
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static bool go_to_snvs_timeout
+    (
+    volatile bool ign_status
+    )
+{
+static int count          = 0;
+if( !start_snvs )
+    {
+    if( !ign_status )
+        {
+        count = 0;
+        start_snvs = false;
+        }
+    else
+        {
+        count++;
+        if( GO_TO_SLEEP_COUNTER == count )
+            {
+            count = 0;
+            start_snvs = true;
+            }
+        }
+    }
+return start_snvs;
+}
+
+/*================================================================================================*/
+/**
+@brief   pm_main
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void pm_main
+    (
+    void* arg
+    )
+{
+volatile bool pre_ign_status = GPIO_ReadPinInput( WAKEUP_GPIO, WAKEUP_GPIO_PIN );
+volatile bool ign_status;
+
+while( true )
+    {
+    ign_status = GPIO_ReadPinInput( WAKEUP_GPIO, WAKEUP_GPIO_PIN );
+
+    if( pre_ign_status != ign_status )
+        {
+        notify_pm_callback( ign_status );
+        }
+    pre_ign_status = ign_status;
+
+    if( go_to_snvs_timeout( ign_status ) )
+        {
+        //Final Check
+        if( GPIO_ReadPinInput( WAKEUP_GPIO, WAKEUP_GPIO_PIN ) )
+            {
+            set_wakeup_config();
+            snvs_pre_handler();
+            enter_snvs();
+            }
+        else
+            {
+            start_snvs = false;
+            }
+        }
+    vTaskDelay( task_delay );
+    }
+vTaskDelete( NULL );
+}
+
+/*================================================================================================*/
+/**
+@brief   disable_all_wakeup_source
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void disable_all_wakeup_source
+    (
+    GPC_CPU_MODE_CTRL_Type *base
+    )
+{
+uint8_t i;
+for( i = 0; i < GPC_CPU_MODE_CTRL_CM_IRQ_WAKEUP_MASK_COUNT; i++ )
+    {
+    base->CM_IRQ_WAKEUP_MASK[i] |= 0xFFFFFFFF;
+    }
+}
+/*================================================================================================*/
+/**
+@brief   set_wakeup_config
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void set_wakeup_config
+    (
+    void
+    )
+{
+GPIO_ClearPinsInterruptFlags( WAKEUP_GPIO, 1U << WAKEUP_GPIO_PIN );
+GPIO_EnableInterrupts( WAKEUP_GPIO, 1U << WAKEUP_GPIO_PIN );
+EnableIRQ( WAKEUP_IRQ );
+disable_all_wakeup_source( GPC_CPU_MODE_CTRL );
+enable_wakeup_source( WAKEUP_IRQ );
+}
+
+/*================================================================================================*/
+/**
+@brief   snvs_pre_handler
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void snvs_pre_handler
+    (
+    void
+    )
+{
+PRINTF("Now shutting down the system...\r\n");
+}
+
+/*================================================================================================*/
+/**
+@brief   enter_snvs
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void enter_snvs
+    (
+    void
+    )
+{
+//Set PINs low for power saving
+//GPIO_PinWrite( BOARD_INITPINS_CAN_EN_GPIO, BOARD_INITPINS_CAN_EN_GPIO_PIN, 0 );
+//GPIO_PinWrite( BOARD_INITPINS_SYS_EN_GPIO, BOARD_INITPINS_SYS_EN_GPIO_PIN, 0 );
+SNVS->LPCR |= SNVS_LPCR_TOP_MASK;
+}
+
+#ifdef __cplusplus
+}
+#endif

@@ -28,6 +28,7 @@
 #include "RTC_pub.h"
 #include "WDG_pub.h"
 #include "display_support.h"
+#include "PM_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -94,6 +95,7 @@ else
     PRINTF( "TFT is not connected, EW will not be initialized \r\n" );
     }
 PERIPHERAL_init();
+PM_init();
 EEPM_init();
 RTC_init();
 WDG_init();

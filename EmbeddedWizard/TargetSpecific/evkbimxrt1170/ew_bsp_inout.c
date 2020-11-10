@@ -32,8 +32,6 @@
 #include "ewconfig.h"
 #include "ew_bsp_inout.h"
 
-#define EwBspGGpioIrqHandler BOARD_USER_BUTTON_IRQ_HANDLER
-
 static TButtonCallback        ButtonCallback = NULL;
 
 
