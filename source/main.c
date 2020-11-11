@@ -108,6 +108,7 @@ else
 
 if( BOARD_is_tft_connected() == TFT_CONNECTED )
     {
+    BOARD_InitLcdifPins();
     EW_init();
     display_monitor_init();
     }

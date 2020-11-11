@@ -26,6 +26,7 @@ extern "C"{
 #include "fsl_gpc.h"
 #include "pin_mux.h"
 #include "GRM_pub_prj.h"
+#include "display_support.h"
 /*--------------------------------------------------------------------
                         Definitions
 --------------------------------------------------------------------*/
@@ -488,6 +489,7 @@ static void snvs_pre_handler
     )
 {
 PRINTF("Now shutting down the system...\r\n");
+display_pre_handler();
 }
 
 /*================================================================================================*/

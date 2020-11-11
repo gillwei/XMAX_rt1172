@@ -212,6 +212,17 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_SKU_ID1_GPIO_PIN                                      20U   /*!< GPIO pin number */
 #define BOARD_INITPINS_SKU_ID1_GPIO_PIN_MASK                         (1U << 20U)   /*!< GPIO pin mask */
 
+/* GPIO_AD_08 (coord R15), BT_RST_N */
+/* Routed pin properties */
+#define BOARD_INITPINS_BT_RST_N_PERIPHERAL                                 GPIO9   /*!< Peripheral name */
+#define BOARD_INITPINS_BT_RST_N_SIGNAL                                   gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_BT_RST_N_CHANNEL                                       7U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_BT_RST_N_GPIO                                       GPIO9   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_BT_RST_N_GPIO_PIN                                      7U   /*!< GPIO pin number */
+#define BOARD_INITPINS_BT_RST_N_GPIO_PIN_MASK                         (1U << 7U)   /*!< GPIO pin mask */
+
 /* GPIO_SD_B1_03 (coord B17), TFT_RESET */
 /* Routed pin properties */
 #define BOARD_INITPINS_TFT_RESET_PERIPHERAL                               GPIO10   /*!< Peripheral name */

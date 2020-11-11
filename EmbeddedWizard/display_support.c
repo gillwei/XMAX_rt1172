@@ -22,6 +22,9 @@
 
 #include "display_support.h"
 #include "GRM_pub_prj.h"
+#include "PM_pub.h"
+#include "PERIPHERAL_pub.h"
+
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -42,6 +45,7 @@
 #define STD_LOW                 ( 0u ) /* Physical state 0V */
 
 #define MIN_DELAY_START_TIME    ( 2000 )
+#define T4_TIMEOUT_AFTER_RESET  ( 200 )
 #define FAULT_MONITOR_DURATION  ( 10 )
 
 /*--------------------------------------------------------------------
@@ -87,6 +91,7 @@ const dc_fb_t g_dc = {
     .config  = &s_dcFbLcdifv2Config,
 };
 
+static bool pm_status = PM_IGN_ON;
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -107,6 +112,16 @@ static void display_monitor_create_task
 static void display_monitor_task
     (
     void* arg
+    );
+
+static void display_pm_handler
+    (
+    bool ign_status
+    );
+
+static void control_TFT_BL_EN
+    (
+    uint8_t on_off
     );
 
 /*********************************************************************
@@ -284,9 +299,35 @@ void display_monitor_init
     void
     )
 {
+PM_register_callback( "display", display_pm_handler );
 display_monitor_create_task();
 }
 
+/*********************************************************************
+*
+* @private
+* display_pm_handler
+*
+* @brief registed callback for listening the pm status change
+*
+*********************************************************************/
+static void display_pm_handler
+    (
+    bool ign_status
+    )
+{
+if( ign_status == PM_IGN_ON ) // IGN_ON
+    {
+    PERIPHERAL_pwm_set_display_dutycycle( 50 ); // TODO: set to current dutycycle in EEPROM in the future
+    control_TFT_BL_EN( STD_HIGH );
+    }
+else // IGN_OFF
+    {
+    PERIPHERAL_pwm_set_display_dutycycle( 0 );
+    control_TFT_BL_EN( STD_LOW );
+    }
+pm_status = ign_status;
+}
 
 /*********************************************************************
 *
@@ -327,21 +368,58 @@ static void display_monitor_task
 {
 static uint32_t asil_pin_status = 0;
 
-vTaskDelay( 200 ); // T4 min timeout after RESET
-GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN, 1 );
+vTaskDelay( T4_TIMEOUT_AFTER_RESET );
+GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN, STD_HIGH );
 
 /* Wait until display initialization done */
 vTaskDelay( MIN_DELAY_START_TIME );
 while( true )
     {
-    asil_pin_status = GPIO_PinRead( BOARD_INITPINS_TFT_ASIL_GPIO, BOARD_INITPINS_TFT_ASIL_GPIO_PIN );
-    if( asil_pin_status == STD_HIGH )
+    if( pm_status == PM_IGN_ON )
         {
-        /* Perform system reset */
-        PRINTF( "ASIL fault detected, perfrom system reset\r\n" );
-        NVIC_SystemReset();
+        asil_pin_status = GPIO_PinRead( BOARD_INITPINS_TFT_ASIL_GPIO, BOARD_INITPINS_TFT_ASIL_GPIO_PIN );
+        if( asil_pin_status == STD_HIGH )
+            {
+            /* Perform system reset */
+            PRINTF( "ASIL fault detected, perfrom system reset\r\n" );
+            NVIC_SystemReset();
+            }
         }
     vTaskDelay( FAULT_MONITOR_DURATION );
     }
 vTaskDelete( NULL );
+}
+
+/*********************************************************************
+*
+* @private
+* control_TFT_BL_EN
+*
+* @brief Function to control the TFT_BL_EN pin.
+*        0: LED off
+*        1: LED on
+*
+*********************************************************************/
+static void control_TFT_BL_EN
+    (
+    uint8_t on_off
+    )
+{
+GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN, on_off );
+}
+
+/*********************************************************************
+*
+* @public
+* display_pre_handler
+*
+* @brief handle display related pins
+*
+*********************************************************************/
+void display_pre_handler
+    (
+    void
+    )
+{
+GPIO_WritePinOutput( BOARD_INITPINS_TFT_RESET_GPIO, BOARD_INITPINS_TFT_RESET_GPIO_PIN, STD_HIGH );  // RESET off
 }

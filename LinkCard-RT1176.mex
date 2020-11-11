@@ -19,10 +19,10 @@
       <pins name="Pins" version="8.0" enabled="true" update_project_code="true">
          <generated_project_files>
             <file path="board/pin_mux.c" update_enabled="true"/>
-            <file path="board/pin_mux.h" update_enabled="false"/>
+            <file path="board/pin_mux.h" update_enabled="true"/>
          </generated_project_files>
          <pins_profile>
-            <processor_version>0.0.4</processor_version>
+            <processor_version>0.8.1</processor_version>
             <power_domains/>
             <pin_labels>
                <pin_label pin_num="B15" pin_signal="GPIO_SD_B1_04" label="TFT_RESET" identifier="TFT_RESET"/>
@@ -459,7 +459,7 @@
             <function name="BOARD_InitLcdifPins">
                <description>Configures pin routing and optionally pin electrical features.</description>
                <options>
-                  <callFromInitBoot>true</callFromInitBoot>
+                  <callFromInitBoot>false</callFromInitBoot>
                   <coreID>cm7</coreID>
                   <enableClock>true</enableClock>
                </options>
@@ -883,7 +883,10 @@
          </clock_configurations>
       </clocks>
       <dcdx name="DCDx" version="3.0" enabled="true" update_project_code="true">
-         <generated_project_files/>
+         <generated_project_files>
+            <file path="board/dcd.c" update_enabled="true"/>
+            <file path="board/dcd.h" update_enabled="true"/>
+         </generated_project_files>
          <dcdx_profile>
             <processor_version>0.8.1</processor_version>
             <output_format>c_array</output_format>

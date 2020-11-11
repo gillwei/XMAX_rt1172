@@ -10,7 +10,7 @@ product: Pins v8.0
 processor: MIMXRT1176xxxxx
 package_id: MIMXRT1176AVM8A
 mcu_data: ksdk2_0
-processor_version: 0.0.4
+processor_version: 0.8.1
 pin_labels:
 - {pin_num: B15, pin_signal: GPIO_SD_B1_04, label: TFT_RESET, identifier: TFT_RESET}
 - {pin_num: C15, pin_signal: GPIO_SD_B1_02, label: TFT_CONNECTED, identifier: TFT_CONNECTED}
@@ -151,7 +151,6 @@ pin_labels:
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
     BOARD_InitPins();
-    BOARD_InitLcdifPins();
 }
 
 /*
@@ -774,7 +773,7 @@ void BOARD_InitPins(void) {
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitLcdifPins:
-- options: {callFromInitBoot: 'true', coreID: cm7, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
 - pin_list:
   - {pin_num: E13, peripheral: LCDIF, signal: lcdif_clk, pin_signal: GPIO_DISP_B1_00, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
   - {pin_num: E10, peripheral: LCDIF, signal: 'lcdif_data, 00', pin_signal: GPIO_DISP_B1_04, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}

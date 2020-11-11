@@ -71,6 +71,11 @@ void display_monitor_init
     void
     );
 
+void display_pre_handler
+    (
+    void
+    );
+
 #ifdef __cplusplus
 }
 #endif
