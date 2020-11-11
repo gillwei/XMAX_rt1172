@@ -23,34 +23,10 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
+#include "CAN_nim_ctrl.h"
 
 /*--------------------------------------------------------------------
                             MACROS
---------------------------------------------------------------------*/
-#define EXAMPLE_CAN CAN2
-
-#define RX_MESSAGE_BUFFER_NUM (9)
-#define TX_MESSAGE_BUFFER_NUM (8)
-#define DLC (8)
-#define USE_IMPROVED_TIMING_CONFIG (1)
-#define DEMO_FORCE_CAN_SRC_OSC (1)
-
-#define SET_CAN_QUANTUM 0
-#define PSEG1 3
-#define PSEG2 2
-#define PROPSEG 1
-
-/* Select OSC24Mhz as master flexcan clock source */
-#define FLEXCAN_CLOCK_SOURCE_SELECT (1U)
-/* Clock divider for master flexcan clock source */
-#define FLEXCAN_CLOCK_SOURCE_DIVIDER (1U)
-/* Get frequency of flexcan clock */
-#define EXAMPLE_CAN_CLK_FREQ ((CLOCK_GetRootClockFreq(kCLOCK_Root_Can2) / 100000U) * 100000U)
-/* Fix MISRA_C-2012 Rule 17.7. */
-#define LOG_INFO (void)PRINTF
-
-/*--------------------------------------------------------------------
-                            TYPES
 --------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------
@@ -63,12 +39,114 @@ volatile bool wakenUp    = false;
 flexcan_mb_transfer_t txXfer, rxXfer;
 flexcan_frame_t frame;
 
-uint32_t txIdentifier = 0x5B2;
-uint32_t rxIdentifier = 0x5A1;
+uint32_t txIdentifier = 0x690;
+uint32_t rxIdentifier = 0x691;
 
 /*--------------------------------------------------------------------
                             PROCEDURES
 --------------------------------------------------------------------*/
+can_ret_code_t
+can_hw_receive_rx_mb
+    (
+    CAN_Type              * const p_flexcan_hw_regs, //!< [in] ptr to FlexCAN H/W registers
+    can_rmd_t             * const p_rmd,             //!< [in, out] ptr to receive message write buffer
+    uint8                   const rx_mb_index        //!< [in] Index of FlexCAN receive Message Buffer
+    )
+{
+can_ret_code_t       l_ret_code       = CAN_RC_EMPTY;
+uint32               cs_temp          = 0;
+uint32               rx_code          = 0;
+uint8                l_dlc_data       = 0;
+uint8                l_index          = 0;
+uint64               l_mask           = 0;
+
+/*------------------------------------------------------
+Read CS field of Rx Message Buffer to lock Message Buffer.
+------------------------------------------------------*/
+cs_temp = p_flexcan_hw_regs->MB[rx_mb_index].CS;
+
+/*------------------------------------------------------
+Get Rx Message Buffer Code field.
+------------------------------------------------------*/
+rx_code = ( cs_temp & CAN_CS_CODE_MASK ) >> CAN_CS_CODE_SHIFT;
+
+/*------------------------------------------------------
+Check to see if Rx Message Buffer is full.
+------------------------------------------------------*/
+if( ( (uint32)FLEXCAN_RXMB_FULL == rx_code ) || ( (uint32)FLEXCAN_RXMB_OVERRUN == rx_code ) )
+    {
+    /*------------------------------------------------------
+    Store Message ID.
+    ------------------------------------------------------*/
+    p_rmd->identifier   = p_flexcan_hw_regs->MB[rx_mb_index].ID & ( CAN_ID_EXT_MASK | CAN_ID_STD_MASK );
+    p_rmd->identifier   = (( p_rmd->identifier ) >> CAN_ID_STD_SHIFT );
+
+    /*------------------------------------------------------
+    Get the message ID format
+    ------------------------------------------------------*/
+    p_rmd->format       = ( cs_temp & CAN_CS_IDE_MASK ) != 0U ? (uint8)CAN_EXTENDED_MSG_TYPE : (uint8)CAN_STANDARD_MSG_TYPE;
+
+    /*------------------------------------------------------
+    Get the message type.
+    ------------------------------------------------------*/
+    p_rmd->type         = ( cs_temp & CAN_CS_RTR_MASK ) != 0U ? (uint8)CAN_REMOTE_MSG_TYPE : (uint8)CAN_DATA_MSG_TYPE;
+
+    /*------------------------------------------------------
+    Get the message length.
+    ------------------------------------------------------*/
+    p_rmd->dlc          = (uint8)( ( cs_temp & CAN_CS_DLC_MASK ) >> CAN_CS_DLC_SHIFT );
+
+    /*------------------------------------------------------
+    Get the time stamp.
+    ------------------------------------------------------*/
+    p_rmd->timestamp    = (uint16)( ( cs_temp & CAN_CS_TIME_STAMP_MASK ) >> CAN_CS_TIME_STAMP_SHIFT );
+
+    /*------------------------------------------------------
+    Store Message Buffer Number
+    ------------------------------------------------------*/
+    p_rmd->vector       = rx_mb_index;
+
+    /*------------------------------------------------------
+    Store Message Payload.
+    ------------------------------------------------------*/
+    l_dlc_data = p_rmd->dlc;
+    l_index    = l_dlc_data;
+    switch( l_dlc_data )
+        {
+        case 8: p_rmd->data[--l_index] = (uint8)( p_flexcan_hw_regs->MB[rx_mb_index].WORD1 );
+        case 7: p_rmd->data[--l_index] = (uint8)( p_flexcan_hw_regs->MB[rx_mb_index].WORD1 >> SHIFT_ONE_BYTE    );
+        case 6: p_rmd->data[--l_index] = (uint8)( p_flexcan_hw_regs->MB[rx_mb_index].WORD1 >> SHIFT_TWO_BYTES   );
+        case 5: p_rmd->data[--l_index] = (uint8)( p_flexcan_hw_regs->MB[rx_mb_index].WORD1 >> SHIFT_THREE_BYTES );
+        case 4: p_rmd->data[--l_index] = (uint8)( p_flexcan_hw_regs->MB[rx_mb_index].WORD0 );
+        case 3: p_rmd->data[--l_index] = (uint8)( p_flexcan_hw_regs->MB[rx_mb_index].WORD0 >> SHIFT_ONE_BYTE    );
+        case 2: p_rmd->data[--l_index] = (uint8)( p_flexcan_hw_regs->MB[rx_mb_index].WORD0 >> SHIFT_TWO_BYTES   );
+        case 1: p_rmd->data[--l_index] = (uint8)( p_flexcan_hw_regs->MB[rx_mb_index].WORD0 >> SHIFT_THREE_BYTES );
+
+        default:
+            break;
+        }
+
+    /*------------------------------------------------------
+    Read free-running timer to unlock Rx Message Buffer.
+    ------------------------------------------------------*/
+    (void)p_flexcan_hw_regs->TIMER;
+
+    l_ret_code = CAN_RC_SUCCESS;
+    }
+else
+    {
+    (void)p_flexcan_hw_regs->TIMER;
+
+    l_ret_code = CAN_RC_FAIL;
+    }
+
+l_mask = ( 1 << rx_mb_index );
+
+p_flexcan_hw_regs->IFLAG1 = (uint32)( l_mask & CAN_HEX_32_FF );
+p_flexcan_hw_regs->IFLAG2 = (uint32)( l_mask >> 32 );
+
+return l_ret_code ;
+}
 
 static void flexcan_callback(CAN_Type *base, flexcan_handle_t *handle, status_t status, uint32_t result, void *userData)
 {
@@ -154,6 +232,7 @@ mbConfig.type   = kFLEXCAN_FrameTypeData;
 mbConfig.id     = FLEXCAN_ID_STD(rxIdentifier);
 FLEXCAN_SetRxMbConfig(EXAMPLE_CAN, RX_MESSAGE_BUFFER_NUM, &mbConfig, true);
 FLEXCAN_SetTxMbConfig(EXAMPLE_CAN, TX_MESSAGE_BUFFER_NUM, true);
+FLEXCAN_EnableMbInterrupts( EXAMPLE_CAN, ( 1 << RX_MESSAGE_BUFFER_NUM ) );
 }
 
 /*!*******************************************************************
@@ -208,9 +287,6 @@ CAN_nim_start_up();
 
 while(1)
     {
-    FLEXCAN_TransferSendBlocking(EXAMPLE_CAN, 8, &frame);
-
-    /* Start receive data through Rx Message Buffer. */
     rxXfer.mbIdx = (uint8_t)RX_MESSAGE_BUFFER_NUM;
     rxXfer.frame = &frame;
 
@@ -222,6 +298,11 @@ while(1)
     frame.dataByte5 = 0x55;
     frame.dataByte6 = 0x55;
     frame.dataByte7 = 0x55;
+
+    /*--------------------------------------------------
+    Use this api to send Factory test frames....
+    --------------------------------------------------*/
+    FLEXCAN_TransferSendBlocking(EXAMPLE_CAN, 8, &frame);
 
     vTaskDelayUntil( &last_time, 1000 );
     }

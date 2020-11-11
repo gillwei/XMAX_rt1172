@@ -7,6 +7,7 @@
  */
 
 #include "fsl_flexcan.h"
+#include "CAN_nim_ctrl.h"
 
 /*******************************************************************************
  * Definitions
@@ -3488,6 +3489,13 @@ void CAN1_DriverIRQHandler(void)
 void CAN2_DriverIRQHandler(void)
 {
     assert(NULL != s_flexcanHandle[2]);
+    can_rmd_t  l_rx_frame;
+
+    can_hw_receive_rx_mb( EXAMPLE_CAN, &l_rx_frame, RX_MESSAGE_BUFFER_NUM );
+
+    /*--------------------------------------------------
+    TBD Add Factory test hook api....
+    --------------------------------------------------*/
 
     s_flexcanIsr(CAN2, s_flexcanHandle[2]);
     SDK_ISR_EXIT_BARRIER;
