@@ -1,33 +1,39 @@
-/*******************************************************************************
-*@ File BT_UPDATE_pub.h
-*@ Brief BT update public header file
+/*********************************************************************
+* @file
+* BT_UPDATE_pub.h
 *
+* @brief
+* BT HCI updater - public API
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
-********************************************************************************/
+*********************************************************************/
+
 #ifndef BT_UPDATE_PUB_H
 #define BT_UPDATE_PUB_H
 
-#include "fsl_common.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#define BT_UPDATE_ON false
+#include "FreeRTOS.h"
+
 /*--------------------------------------------------------------------
                             PROCEDURES
 --------------------------------------------------------------------*/
-bool getBTUpdateStatus
+BaseType_t BT_UPDATE_standard_send_command
+    (
+    const uint16_t command,
+    const uint8_t* payload,
+    const uint8_t  len
+    );
+
+void BT_UPDATE_received
     (
     void
     );
 
-void parseUpdatePkt
-    (
-    uint8_t* l_hci_buffer,
-    uint32_t length
-    );
+#ifdef __cplusplus
+}
+#endif
 
-void bt_update_init
-    (
-    void
-    );
-
-#endif /* BT_UPDATE_pub.H_ */
+#endif /* BT_UPDATE_PUB_H */

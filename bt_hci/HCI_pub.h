@@ -61,11 +61,6 @@ void HCI_notify_received
     uint32_t size
     );
 
-void BT_update_received
-    (
-    void
-    );
-
 #if HCI_TX_QUEUE_ENABLE
 void HCI_notify_transmit
     (
@@ -80,11 +75,6 @@ BaseType_t HCI_wiced_send_command
     const uint16_t command,
     const uint8_t* payload,
     const uint16_t len
-    );
-
-void uart_int_work
-    (
-    void
     );
 
 void HCI_avrc_play

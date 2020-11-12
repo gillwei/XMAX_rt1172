@@ -143,6 +143,17 @@ int BTM_get_sw_version
     uint8_t* return_bt_sw_version
     );
 
+void BTM_pairing_info_update
+    (
+    const uint8_t *pairing_info
+    );
+
+void BTM_connection_info_update
+    (
+    const bool     connection_is_up,
+    const uint8_t* connection_info
+    );
+
 #ifdef __cplusplus
 }
 #endif

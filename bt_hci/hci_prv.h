@@ -1,15 +1,29 @@
-/*
- * hci_prv.h
- *
- *  Created on: Aug 14, 2020
- *      Author: WeiGill
- */
+/*********************************************************************
+* @file
+* hci_prv.h
+*
+* @brief
+* BT HCI driver - private API
+*
+* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+*********************************************************************/
 
-#ifndef HCI_PRV_H_
-#define HCI_PRV_H_
+#ifndef HCI_PRV_H
+#define HCI_PRV_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define GARMIN_SW_MAJOR_VER   0x01
 #define GARMIN_SW_MINOR_VER   0x02
+#define BT_UPDATE_ON          false
+
+typedef enum tagBT_PARSER_TYPE                  //!< HCI receive state machine states
+    {
+    PARSER_WICED_HCI,
+    PARSER_STANDARD_HCI
+    } bt_parser_t;
 
 typedef enum tagINIT_UPDATE_STATE                //!< check the BT have newest FW or update
     {
@@ -62,15 +76,30 @@ void initBTUpdateCheck
     void
     );
 
-void BTM_pairing_info_update
+bt_parser_t getBTParserStatus
     (
-    const uint8_t *pairing_info
+    void
     );
 
-void BTM_connection_info_update
+void parseUpdatePkt
     (
-    const bool     connection_is_up,
-    const uint8_t* connection_info
+    uint8_t* l_hci_buffer,
+    uint32_t length
     );
 
-#endif /* HCI_PRV_H_ */
+void bt_update_init
+    (
+    void
+    );
+
+void UINT32_to_UINT8_arry
+    (
+    const uint32_t var_uint32,
+    uint8_t * uint8_arry
+    );
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* HCI_PRV_H */

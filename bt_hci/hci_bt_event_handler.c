@@ -1,10 +1,12 @@
-/*
- * hci_bt_event_handler.c
- *
- *  Created on: Aug 14, 2020
- *      Author: WeiGill
- */
-
+/*********************************************************************
+* @file  hci_bt_event_handler.c
+* @brief Handles WICED HCI received events
+*
+* This file includes the functions that handle the received BT WICED
+* HCI events
+*
+* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+*********************************************************************/
 /*--------------------------------------------------------------------
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
@@ -15,6 +17,7 @@
 #include "BTM_pub.h"
 #include "hci_prv.h"
 #include "HCI_pub.h"
+#include "BT_UPDATE_pub.h"
 #include "JPEGPARSER_pub.h"
 #include "EW_pub.h"
 
@@ -63,7 +66,7 @@ switch( opcode )
             if( ( bt_sw_version[0] < GARMIN_SW_MAJOR_VER ) || ( ( GARMIN_SW_MAJOR_VER == bt_sw_version[0] ) && ( GARMIN_SW_MINOR_VER > bt_sw_version[1] ) ) )
                 {
                 PRINTF( "Current BT FW is older than MCU BT version:%d.%d. BT update\n\r", bt_sw_version[0], bt_sw_version[1] );
-                BT_update_received();
+                BT_UPDATE_received();
                 }
             else
                 {

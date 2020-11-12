@@ -8,14 +8,6 @@
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 
-/*********************************************************************
-*
-* @defgroup hci_drv Garmin HCI Protocol Driver
-* @ingroup mw_comps
-* @{
-*
-*********************************************************************/
-
 /*--------------------------------------------------------------------
                           GENERAL INCLUDES
 --------------------------------------------------------------------*/
@@ -563,7 +555,7 @@ static void task_main
     )
 {
 EventBits_t    event_bits;
-uint8_t        update_status;
+bt_parser_t    task_parser_status;
 
 while( true )
     {
@@ -588,10 +580,10 @@ while( true )
             uint32_t  size = 0;
             // Get data from circular buffer
             circular_buffer_get_head( &rx_buffer_handle, &data, &size );
-            update_status = getBTUpdateStatus();
+            task_parser_status = getBTParserStatus();
 
-            // Process data, check if now is BT download ongoing
-            if ( update_status != true )
+            // Process data, check if now is HCI standard packet mode
+            if( task_parser_status != PARSER_STANDARD_HCI )
                 {
                 GetUartHciData( data, size );
                 }
@@ -604,33 +596,33 @@ while( true )
             }
         }
 
-#if HCI_TX_QUEUE_ENABLE
-    if( EVENT_HCI_DATA_TX == ( event_bits & EVENT_HCI_DATA_TX ) )
-        {
-        while( circular_buffer_get_data_size( &tx_buffer_handle ) > 0 )
+    #if HCI_TX_QUEUE_ENABLE
+        if( EVENT_HCI_DATA_TX == ( event_bits & EVENT_HCI_DATA_TX ) )
             {
-            uint8_t*  data = NULL;
-            uint32_t  size = 0;
-            // Get data from circular buffer
-            circular_buffer_get_head( &tx_buffer_handle, &data, &size );
+            while( circular_buffer_get_data_size( &tx_buffer_handle ) > 0 )
+                {
+                uint8_t*  data = NULL;
+                uint32_t  size = 0;
+                // Get data from circular buffer
+                circular_buffer_get_head( &tx_buffer_handle, &data, &size );
 
-            // Process data
-            HCI_wiced_send_command( tx_command_opcode, data, size );
+                // Process data
+                HCI_wiced_send_command( tx_command_opcode, data, size );
 
-            // Move the data head after process
-            circular_buffer_move_head( &tx_buffer_handle, size );
+                // Move the data head after process
+                circular_buffer_move_head( &tx_buffer_handle, size );
+                }
             }
-        }
-#endif
+    #endif
 
 
     if( EVENT_BT_UPDATE_RECEIVED == ( event_bits & EVENT_BT_UPDATE_RECEIVED ) )
         {
-#if BT_UPDATE_ON
-        bt_update_init();
-#else
-        PRINTF("No BT update since flag off\n\r");
-#endif
+        #if BT_UPDATE_ON
+            bt_update_init();
+        #else
+            PRINTF("No BT update since flag off\n\r");
+        #endif
         }
 
     }
@@ -662,7 +654,7 @@ xEventGroupSetBits( event_group, EVENT_HCI_DATA_RECEIVED );
 * Initialize BT update work
 *
 *********************************************************************/
-void BT_update_received
+void BT_UPDATE_received
     (
     void
     )
@@ -717,7 +709,7 @@ if( ( UPDATE_TIMER_TWO_SECONDS == update_timer_count ) && ( INIT_STATE_REQUEST_V
 if( ( UPDATE_TIMER_THREE_SECONDS == update_timer_count ) && ( INIT_STATE_REQUEST_VERSION == init_update_state ) )
     {
     PRINTF( "No version feedback. Do BT update.\n\r" );
-    BT_update_received();
+    BT_UPDATE_received();
     xTimerStop( xTimerHandle, 0 );
     }
 else if( ( UPDATE_TIMER_THREE_SECONDS == update_timer_count ) && ( INIT_STATE_GET_VERSION == init_update_state ) )
