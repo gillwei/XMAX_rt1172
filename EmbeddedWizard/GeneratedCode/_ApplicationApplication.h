@@ -18,8 +18,8 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 9.30
-* Profile  : iMX_RT
+* Version  : 10.00
+* Profile  : Profile
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -33,19 +33,18 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x0009001E
+#if EW_RTE_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x0009001E
+#if EW_GFX_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
 #include "_CoreRoot.h"
 #include "_CoreTimer.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Application::Application */
 #ifndef _ApplicationApplication_
@@ -95,6 +94,12 @@
 #define _CoreView_
 #endif
 
+/* Forward declaration of the class Effects::Fader */
+#ifndef _EffectsFader_
+  EW_DECLARE_CLASS( EffectsFader )
+#define _EffectsFader_
+#endif
+
 /* Forward declaration of the class Graphics::Canvas */
 #ifndef _GraphicsCanvas_
   EW_DECLARE_CLASS( GraphicsCanvas )
@@ -104,20 +109,17 @@
 
 /* This is the root component of the entire GUI application. */
 EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
-  EW_OBJECT  ( Rectangle,       ViewsRectangle )
-  EW_OBJECT  ( Text,            ViewsText )
-  EW_OBJECT  ( Text1,           ViewsText )
-  EW_OBJECT  ( Text2,           ViewsText )
-  EW_OBJECT  ( Rectangle1,      ViewsRectangle )
-  EW_OBJECT  ( Rectangle2,      ViewsRectangle )
-  EW_OBJECT  ( Text3,           ViewsText )
-  EW_OBJECT  ( Rectangle3,      ViewsRectangle )
+  EW_OBJECT  ( RectangleLeft,   ViewsRectangle )
+  EW_OBJECT  ( RectangleMiddle, ViewsRectangle )
+  EW_OBJECT  ( RectangleRight,  ViewsRectangle )
+  EW_OBJECT  ( Timer,           CoreTimer )
 EW_END_OF_FIELDS( ApplicationApplication )
 
 /* Virtual Method Table (VMT) for the class : 'Application::Application' */
 EW_DEFINE_METHODS( ApplicationApplication, CoreRoot )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
+  EW_METHOD( GetRoot,           CoreRoot )( CoreRoot _this )
   EW_METHOD( Draw,              void )( CoreRoot _this, GraphicsCanvas aCanvas, 
     XRect aClip, XPoint aOffset, XInt32 aOpacity, XBool aBlend )
   EW_METHOD( CursorHitTest,     CoreCursorHit )( CoreGroup _this, XRect aArea, XInt32 
@@ -130,11 +132,18 @@ EW_DEFINE_METHODS( ApplicationApplication, CoreRoot )
   EW_METHOD( ChangeViewState,   void )( CoreRoot _this, XSet aSetState, XSet aClearState )
   EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
   EW_METHOD( OnSetFocus,        void )( CoreRoot _this, CoreView value )
+  EW_METHOD( OnSetBuffered,     void )( CoreRoot _this, XBool value )
+  EW_METHOD( OnSetOpacity,      void )( CoreRoot _this, XInt32 value )
+  EW_METHOD( IsCurrentDialog,   XBool )( CoreRoot _this )
+  EW_METHOD( IsActiveDialog,    XBool )( CoreRoot _this, XBool aRecursive )
   EW_METHOD( DispatchEvent,     XObject )( CoreRoot _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreRoot _this, CoreEvent aEvent, XSet 
     aFilter )
   EW_METHOD( InvalidateArea,    void )( CoreRoot _this, XRect aArea )
 EW_END_OF_METHODS( ApplicationApplication )
+
+/* 'C' function for method : 'Application::Application.Slot()' */
+void ApplicationApplication_Slot( ApplicationApplication _this, XObject sender );
 
 #ifdef __cplusplus
   }

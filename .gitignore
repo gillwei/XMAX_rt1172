@@ -2,6 +2,7 @@
 /Release/
 /.settings/
 cscope.out
+ncscope.out
 *.ews
 *.bak
 *.launch

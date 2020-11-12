@@ -18,8 +18,8 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 9.30
-* Profile  : iMX_RT
+* Version  : 10.00
+* Profile  : Profile
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -33,45 +33,16 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x0009001E
+#if EW_RTE_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x0009001E
+#if EW_GFX_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
-
-/* The definition Views::TextAlignment determines the set of constraints to apply 
-   on text rows and blocks if their size differ from the size of the view where 
-   the text is shown. Depending on the active constraints the text rows can be aligned 
-   horizontally and text blocks vertically. */
-typedef enum
-{
-  ViewsTextAlignmentAlignHorzLeft       = 0x00000001,
-  ViewsTextAlignmentAlignHorzCenter     = 0x00000002,
-  ViewsTextAlignmentAlignHorzRight      = 0x00000004,
-  ViewsTextAlignmentAlignVertTop        = 0x00000008,
-  ViewsTextAlignmentAlignVertCenter     = 0x00000010,
-  ViewsTextAlignmentAlignVertBottom     = 0x00000020,
-  ViewsTextAlignmentAlignHorzJustified  = 0x00000040,
-  ViewsTextAlignmentAlignHorzAuto       = 0x00000080
-} ViewsTextAlignment;
-
-/* The definition Views::Orientation determines the possible options to control 
-   the orientation of the content displayed in the Views::Image, Views::Group and 
-   Views::Text views. Depending on the selected option the view displays the content 
-   rotated. */
-typedef enum
-{
-  ViewsOrientationNormal                = 0,
-  ViewsOrientationRotated_90            = 1,
-  ViewsOrientationRotated_180           = 2,
-  ViewsOrientationRotated_270           = 3
-} ViewsOrientation;
 
 #ifdef __cplusplus
   }

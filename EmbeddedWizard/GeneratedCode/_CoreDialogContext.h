@@ -18,8 +18,8 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 9.30
-* Profile  : iMX_RT
+* Version  : 10.00
+* Profile  : Profile
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x0009001E
+#if EW_RTE_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x0009001E
+#if EW_GFX_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -54,10 +54,21 @@
 #define _CoreGroup_
 #endif
 
+/* Forward declaration of the class Effects::Transition */
+#ifndef _EffectsTransition_
+  EW_DECLARE_CLASS( EffectsTransition )
+#define _EffectsTransition_
+#endif
+
 
 /* Deklaration of class : 'Core::DialogContext' */
 EW_DEFINE_FIELDS( CoreDialogContext, XObject )
   EW_VARIABLE( group,           CoreGroup )
+  EW_VARIABLE( next,            CoreDialogContext )
+  EW_VARIABLE( dismissTransition, EffectsTransition )
+  EW_VARIABLE( restoreTransition, EffectsTransition )
+  EW_VARIABLE( overlayTransition, EffectsTransition )
+  EW_VARIABLE( overrideRestoreTransition, EffectsTransition )
 EW_END_OF_FIELDS( CoreDialogContext )
 
 /* Virtual Method Table (VMT) for the class : 'Core::DialogContext' */

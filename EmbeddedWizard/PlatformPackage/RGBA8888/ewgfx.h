@@ -155,7 +155,7 @@
 #endif
 
 /* The current version of the Graphics Engine. */
-#define EW_GFX_VERSION 0x0009001E
+#define EW_GFX_VERSION 0x000A0000
 
 
 /******************************************************************************
@@ -374,6 +374,9 @@ typedef struct
 *     the glyph cache.
 *   Handle   - Reference to the opened font resource. Used to find and load
 *     glyphs.
+*   Name     - The name of the respective font resource within Embedded Wizard
+*     project. This information is used to display error messages if glyphs
+*     are missing.
 *
 ******************************************************************************/
 typedef struct
@@ -385,6 +388,7 @@ typedef struct
   char              Reserved[2];
   unsigned long     Tag;
   unsigned long     Handle;
+  const char*       Name;
 } XFont;
 
 

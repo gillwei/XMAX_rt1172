@@ -18,8 +18,8 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 9.30
-* Profile  : iMX_RT
+* Version  : 10.00
+* Profile  : Profile
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x0009001E
+#if EW_RTE_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x0009001E
+#if EW_GFX_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -70,6 +70,12 @@
 #ifndef _CoreOutline_
   EW_DECLARE_CLASS( CoreOutline )
 #define _CoreOutline_
+#endif
+
+/* Forward declaration of the class Core::Root */
+#ifndef _CoreRoot_
+  EW_DECLARE_CLASS( CoreRoot )
+#define _CoreRoot_
 #endif
 
 /* Forward declaration of the class Core::View */
@@ -111,6 +117,7 @@ EW_END_OF_FIELDS( CoreView )
 EW_DEFINE_METHODS( CoreView, XObject )
   EW_METHOD( initLayoutContext, void )( CoreView _this, XRect aBounds, CoreOutline 
     aOutline )
+  EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
   EW_METHOD( Draw,              void )( CoreView _this, GraphicsCanvas aCanvas, 
     XRect aClip, XPoint aOffset, XInt32 aOpacity, XBool aBlend )
   EW_METHOD( CursorHitTest,     CoreCursorHit )( CoreView _this, XRect aArea, XInt32 
@@ -126,6 +133,16 @@ void CoreView_initLayoutContext( CoreView _this, XRect aBounds, CoreOutline aOut
 
 /* Wrapper function for the virtual method : 'Core::View.initLayoutContext()' */
 void CoreView__initLayoutContext( void* _this, XRect aBounds, CoreOutline aOutline );
+
+/* The method GetRoot() delivers the application object, this view belongs to. The 
+   application object represents the entire screen of the GUI application. Thus 
+   in the views hierarchy, the application object serves as the root view.
+   This method can fail and return null if the view still doesn't belong to any 
+   owner group. */
+CoreRoot CoreView_GetRoot( CoreView _this );
+
+/* Wrapper function for the virtual method : 'Core::View.GetRoot()' */
+CoreRoot CoreView__GetRoot( void* _this );
 
 /* The method Draw() is invoked automatically if parts of the view should be redrawn 
    on the screen. This can occur when e.g. the view has been moved or the appearance 

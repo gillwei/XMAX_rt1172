@@ -18,8 +18,8 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 9.30
-* Profile  : iMX_RT
+* Version  : 10.00
+* Profile  : Profile
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x0009001E
+#if EW_RTE_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x0009001E
+#if EW_GFX_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -71,6 +71,7 @@ EW_END_OF_FIELDS( CoreTimer )
 
 /* Virtual Method Table (VMT) for the class : 'Core::Timer' */
 EW_DEFINE_METHODS( CoreTimer, XObject )
+  EW_METHOD( Trigger,           void )( CoreTimer _this )
 EW_END_OF_METHODS( CoreTimer )
 
 /* 'C' function for method : 'Core::Timer.Done()' */
@@ -96,7 +97,7 @@ XUInt32 CoreTimer_GetCurrentTime( CoreTimer _this );
    to the slot method stored in the @OnTrigger property. */
 void CoreTimer_Trigger( CoreTimer _this );
 
-/* Wrapper function for the non virtual method : 'Core::Timer.Trigger()' */
+/* Wrapper function for the virtual method : 'Core::Timer.Trigger()' */
 void CoreTimer__Trigger( void* _this );
 
 /* The following define announces the presence of the method Core::Timer.Trigger(). */

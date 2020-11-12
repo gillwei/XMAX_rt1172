@@ -58,6 +58,18 @@ Platform Specific Release Notes (Version History of GFX and RTE):
   The following section contains additonal platform specific changes, related to
   Graphics Engine (GFX) or Runtime Environment (RTE):
 
+* Version 10.00
+  - Enhancement of Runtime Environment to support int64 datatypes.
+  - Additional math functions added to Runtime Environment.
+  - EwGetTime() has been changed to return int64 instead of uint32.
+  - Bugfix in EwStringToUtf8(). Character codes greater that 0x07FF were encoded
+    incorrectly in UTF-8.
+  - New function EwRegisterFlashAreaReader() added to Runtime Environment.
+    With this function the user can register callback to be used when
+    decompressing bitmap/font pixel data from not directly accessible Flash
+    memory. The callback has to load the Flash memory in blocks and return a
+    pointer to the loaded memory address.
+
 * Version 9.30
   - The Runtime Environment contains now an own optimized memory manager that
     is tailored for GUI applications on resource constraint embedded systems.
@@ -101,12 +113,12 @@ Test and Verification Notes:
 ----------------------------
 This Platform Package Release was tested on the following environments:
 
-Version          : 9.30
+Version          : 10.00
 Platform Package : iMX_RT_VGLite - RGBA8888 / RGB565
 Chipset          : i.MXRT1176
-Hardware         : IMXRT1170-EVK
+Hardware         : IMXRT1170-EVK REV C (B0 chip)
 Operating System : FreeRTOS
-Software Tree    : MCUXpresso SDK V2.6.1
+Software Tree    : MCUXpresso SDK V2.8.1
 Compiler/Toolset : GCC / IAR / Keil / MCUXpresso
-Test Result      : o.k. - 03/04/20 - msy/mli
+Test Result      : o.k. - 08/11/20 - msy/mli
 

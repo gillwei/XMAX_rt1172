@@ -44,12 +44,18 @@
 *   EwStrLen
 *   EwMathSin
 *   EwMathCos
+*   EwMathTan
 *   EwMathArcSin
 *   EwMathArcCos
+*   EwMathArcTan
+*   EwMathArcTan2
 *   EwMathSqrt
 *   EwMathRandInt32
 *   EwMathRandFloat
 *   EwMathPow
+*   EwMathExp
+*   EwMathLog
+*   EwMathLog10
 *   EwMathRound
 *   EwMathFloor
 *   EwMathCeil
@@ -274,7 +280,7 @@ unsigned long EwGetTicks( void )
 *   Returns the number of seconds elapsed since midnight 1.1.1970.
 *
 *******************************************************************************/
-unsigned long EwGetTime( void )
+XInt64 EwGetTime( void )
 {
   return EwBspClockGetTime();
 }
@@ -563,6 +569,28 @@ XFloat EwMathCos( XFloat aAngle )
 
 /*******************************************************************************
 * FUNCTION:
+*   EwMathTan
+*
+* DESCRIPTION:
+*   The function EwMathTan() implements the Chora math_tan() function. 
+*
+* ARGUMENTS:
+*   aAngle - An angle in degree.
+*
+* RETURN VALUE:
+*   Returns the determinated tangent value.
+*
+*******************************************************************************/
+XFloat EwMathTan( XFloat aAngle )
+{
+  static const float factor = (float)( 3.1415926535 / 180.0 );
+
+  return tanf( aAngle * factor );
+}
+
+
+/*******************************************************************************
+* FUNCTION:
 *   EwMathArcSin
 *
 * DESCRIPTION:
@@ -609,6 +637,50 @@ XFloat EwMathArcCos( XFloat aValue )
 
 /*******************************************************************************
 * FUNCTION:
+*   EwMathArcTan
+*
+* DESCRIPTION:
+*   The function EwMathArcTan() implements the Chora math_atan() function. 
+*
+* ARGUMENTS:
+*   aValue - Value to calculate the arc tangent.
+*
+* RETURN VALUE:
+*   Returns the determinated angle in the range -90 .. +90 degress.
+*
+*******************************************************************************/
+XFloat EwMathArcTan( XFloat aValue )
+{
+  static const float factor = (float)( 180.0 / 3.1415926535 );
+
+  return atanf( aValue ) * factor;
+}
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathArcTan2
+*
+* DESCRIPTION:
+*   The function EwMathArcTan2() implements the Chora math_atan2() function. 
+*
+* ARGUMENTS:
+*   aY, aX - Values representing the y- and x-coordinates.
+*
+* RETURN VALUE:
+*   Returns the determinated angle in the range -180 .. +180 degress.
+*
+*******************************************************************************/
+XFloat EwMathArcTan2( XFloat aY, XFloat aX )
+{
+  static const float factor = (float)( 180.0 / 3.1415926535 );
+
+  return atan2f( aY, aX ) * factor;
+}
+
+
+/*******************************************************************************
+* FUNCTION:
 *   EwMathSqrt
 *
 * DESCRIPTION:
@@ -647,6 +719,69 @@ XFloat EwMathSqrt( XFloat aValue )
 XFloat EwMathPow( XFloat aA, XFloat aB )
 {
   return powf( aA, aB );
+}
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathExp
+*
+* DESCRIPTION:
+*   The function EwMathExp() implements the Chora math_exp() function. It
+*   calculates the base 'e' exponential function of the given value aValue.
+*
+* ARGUMENTS:
+*   aValue - The value to calculate the e ^ aValue
+*
+* RETURN VALUE:
+*   Returns the determinated exponential value of aValue.
+*
+*******************************************************************************/
+XFloat EwMathExp( XFloat aValue )
+{
+  return expf( aValue );
+}
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathLog
+*
+* DESCRIPTION:
+*   The function EwMathLog() implements the Chora math_log() function. It
+*   calculates the natural (base 'e') logarithm of the given value aValue.
+*
+* ARGUMENTS:
+*   aValue - The value to calculate the base 'e' logarithm.
+*
+* RETURN VALUE:
+*   Returns the determinated logarithm value of aValue.
+*
+*******************************************************************************/
+XFloat EwMathLog( XFloat aValue )
+{
+  return logf( aValue );
+}
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathLog10
+*
+* DESCRIPTION:
+*   The function EwMathLog10() implements the Chora math_log10() function. It
+*   calculates the common (base 10) logarithm of the given value aValue.
+*
+* ARGUMENTS:
+*   aValue - The value to calculate the base 10 logarithm.
+*
+* RETURN VALUE:
+*   Returns the determinated logarithm value of aValue.
+*
+*******************************************************************************/
+XFloat EwMathLog10( XFloat aValue )
+{
+  return log10f( aValue );
 }
 
 

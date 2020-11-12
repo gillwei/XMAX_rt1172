@@ -1,0 +1,78 @@
+﻿$version 10.00
+
+// This is the root component of the entire GUI application.
+$rect <20,20,220,60>
+$output false
+class Application : Core::Root
+{
+  $rect <510,0,710,40>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle RectangleLeft
+  {
+    preset Bounds = <0,0,160,272>;
+    preset Color = #FF0000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle RectangleMiddle
+  {
+    preset Bounds = <160,0,320,272>;
+    preset Color = #00FF00FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle RectangleRight
+  {
+    preset Bounds = <320,0,480,272>;
+    preset Color = #0000FFFF;
+  }
+
+  $rect <510,50,710,90>
+  object Core::Timer Timer
+  {
+    preset OnTrigger = Slot;
+    preset Period = 2000;
+    preset Enabled = true;
+  }
+
+  $rect <510,100,710,140>
+  slot Slot
+  {
+    if( GetRoot().IsCurrentDialog() )
+    {
+      GetRoot().PresentDialog( new Application::BlackWhite, Effects::SlideLeftCentered, null, null, null, null, null, null, null, false );
+    }
+    else
+    {
+      var Core::Group aGroup = this.GetDialogAtIndex( 0 );
+      if( null != aGroup )
+      {
+        GetRoot().DismissDialog( aGroup, null, null, null, null, null, false );
+      }
+    }
+  }
+}
+
+$rect <240,20,440,60>
+$output false
+class BlackWhite : Core::Group
+{
+  $rect <0,290,200,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle RectangleMiddle
+  {
+    preset Bounds = <0,0,480,136>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle RectangleMiddle1
+  {
+    preset Bounds = <0,136,480,272>;
+    preset Color = #FFFFFFFF;
+  }
+}

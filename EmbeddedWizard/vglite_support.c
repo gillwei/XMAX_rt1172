@@ -12,11 +12,13 @@
 #include "vg_lite.h"
 #include "vg_lite_platform.h"
 #include "display_support.h"
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define MAX_CONTIGUOUS_SIZE 0x200000
-#define VG_LITE_COMMAND_BUFFER_SIZE (256 << 10)
+#define MAX_CONTIGUOUS_SIZE         ( 0x100000 )
+#define VG_LITE_COMMAND_BUFFER_SIZE ( 64 << 10 )
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -24,14 +26,10 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-
 static uint32_t registerMemBase = 0x41800000;
 static uint32_t gpu_mem_base    = 0x0;
 
-//AT_NONCACHEABLE_SECTION_ALIGN(static volatile uint8_t contiguous_mem[MAX_CONTIGUOUS_SIZE], FRAME_BUFFER_ALIGN);
-
-#define contiguous_mem 0x80e00000
-
+AT_NONCACHEABLE_SECTION_ALIGN(static volatile uint8_t contiguous_mem[MAX_CONTIGUOUS_SIZE], 32);
 
 /*******************************************************************************
  * Code

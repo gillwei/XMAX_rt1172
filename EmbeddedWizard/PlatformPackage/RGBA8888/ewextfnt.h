@@ -130,7 +130,9 @@ typedef struct
 *     the kerning is limited to +/- 127 pixel.
 *   DefChar       - Code of the character to use instead of missing 
 *     characters.
-
+*   Name          - The name of the respective font resource within Embedded 
+*     Wizard project. This information is used to display error messages if 
+*     glyphs are missing.
 *
 *******************************************************************************/
 typedef struct XFntRes
@@ -146,7 +148,7 @@ typedef struct XFntRes
   const unsigned int*  KerningCodes;
   const unsigned char* KerningValues;
   unsigned short       DefChar;
-  char                 Reserved[2];
+  const char*          Name;
 } XFntRes;
 
 
@@ -185,7 +187,8 @@ typedef struct XFntRes
     ____##aName,                                                               \
     _kc_##aName,                                                               \
     _kv_##aName,                                                               \
-    aDefChar                                                                   \
+    aDefChar,                                                                  \
+    #aName                                                                     \
   };                                                                           \
   const XFntGlyphRes ___##aName[] =                                            \
   {
@@ -210,13 +213,13 @@ typedef struct XFntRes
 
 #define EW_FONT_KERNING_CODES( aName )                                         \
   };                                                                           \
-  EW_FONT_PIXEL_PRAGMA const unsigned int _kc_##aName[] =                      \
+  const unsigned int _kc_##aName[] =                                           \
   {
 
 #define EW_FONT_KERNING_VALUES( aName )                                        \
     0                                                                          \
   };                                                                           \
-  EW_FONT_PIXEL_PRAGMA const unsigned char _kv_##aName[] =                     \
+  const unsigned char _kv_##aName[] =                                          \
   {
 
 #define EW_END_OF_FONT_RES( aName )                                            \

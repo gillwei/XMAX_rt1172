@@ -18,8 +18,8 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 9.30
-* Profile  : iMX_RT
+* Version  : 10.00
+* Profile  : Profile
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x0009001E
+#if EW_RTE_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x0009001E
+#if EW_GFX_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -50,12 +50,6 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Resources::Font */
-#ifndef _ResourcesFont_
-  EW_DECLARE_CLASS( ResourcesFont )
-#define _ResourcesFont_
-#endif
-
 
 /* The class Graphics::Canvas provides a drawing destination for all graphics operations. 
    It is like a bitmap which can be modified by calling the methods of this canvas 
@@ -65,14 +59,11 @@
    to the of the underlying Graphics Engine.
    Since the canvas inherits from the Resources::Bitmap class it can be handled 
    as an ordinary bitmap. It can e.g. be assigned to a Views::Image view and thus 
-   be displayed on the screen.
-   Usually, you should avoid using this class. It is intended for internal usage. 
-   Only in some few cases, if you plan to develop your own view classes you probably 
-   will need to invoke this class methods in order to draw your view. */
+   be displayed on the screen. */
 EW_DEFINE_FIELDS( GraphicsCanvas, ResourcesBitmap )
-  EW_PROPERTY( OnDraw,          XSlot )
+  EW_VARIABLE( OnDraw,          XSlot )
   EW_VARIABLE( InvalidArea,     XRect )
-  EW_PROPERTY( DstFrameNr,      XInt32 )
+  EW_VARIABLE( DstFrameNr,      XInt32 )
   EW_VARIABLE( attached,        XBool )
 EW_END_OF_FIELDS( GraphicsCanvas )
 
@@ -117,33 +108,6 @@ GraphicsCanvas GraphicsCanvas__AttachBitmap( void* _this, XHandle aBitmap );
 
 /* The following define announces the presence of the method Graphics::Canvas.AttachBitmap(). */
 #define _GraphicsCanvas__AttachBitmap_
-
-/* The method DrawText() draws the text row passed in the parameter aString into 
-   the canvas. The font to draw the text is passed in the parameter aFont. The parameter 
-   aOffset determines within aString the sign to start the drawing operation. If 
-   aOffset is zero, the operation starts with the first sign. The parameter aCount 
-   determines the max. number of following sigs to draw. If aCount is -1, all signs 
-   until the end of the string are drawn. 
-   The area to draw the text is determined by the parameter aDstRect. The parameter 
-   aOrientation controls the rotation of the text. The parameter aSrcPos determines 
-   the base line position of the text relative to a corner of aDstRect, which by 
-   taking in account the specified text orientation serves as the origin for the 
-   draw operation. For example, if the parameter aOrientation is Views::Orientation.Rotated_270, 
-   the text is drawn aSrcPos pixel relative to the bottom-right corner of aDstRect. 
-   The parameter aMinWidth determines the min. width in pixel of the drawn text 
-   row regardless of the specified rotation. If necessary the space signs within 
-   the text will be stretched to fill this area. The parameters aColorTL, aColorTR, 
-   aColorBL, aColorBR determine the colors at the corresponding corners of the aDstRect 
-   area.
-   The parameter aClip limits the drawing operation. Pixel lying outside this area 
-   remain unchanged. The last aBlend parameter controls the mode how drawn pixel 
-   are combined with the pixel already existing in the destination bitmap. If aBlend 
-   is 'true', the drawn pixel are alpha-blended with the background, otherwise the 
-   drawn pixel will overwrite the old content. */
-void GraphicsCanvas_DrawText( GraphicsCanvas _this, XRect aClip, ResourcesFont aFont, 
-  XString aString, XInt32 aOffset, XInt32 aCount, XRect aDstRect, XPoint aSrcPos, 
-  XInt32 aMinWidth, XEnum aOrientation, XColor aColorTL, XColor aColorTR, XColor 
-  aColorBR, XColor aColorBL, XBool aBlend );
 
 /* The method CopyBitmap() copies an area of a aBitmap into the canvas. The bitmap 
    is specified in the parameter aBitmap. In case of a multi-frame bitmap the desired 

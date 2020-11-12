@@ -18,8 +18,8 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 9.30
-* Profile  : iMX_RT
+* Version  : 10.00
+* Profile  : Profile
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x0009001E
+#if EW_RTE_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x0009001E
+#if EW_GFX_VERSION != 0x000A0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -109,6 +109,12 @@
 #ifndef _CoreView_
   EW_DECLARE_CLASS( CoreView )
 #define _CoreView_
+#endif
+
+/* Forward declaration of the class Effects::Fader */
+#ifndef _EffectsFader_
+  EW_DECLARE_CLASS( EffectsFader )
+#define _EffectsFader_
 #endif
 
 /* Forward declaration of the class Graphics::Canvas */
@@ -197,6 +203,7 @@ EW_END_OF_FIELDS( CoreRoot )
 EW_DEFINE_METHODS( CoreRoot, CoreGroup )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
+  EW_METHOD( GetRoot,           CoreRoot )( CoreRoot _this )
   EW_METHOD( Draw,              void )( CoreRoot _this, GraphicsCanvas aCanvas, 
     XRect aClip, XPoint aOffset, XInt32 aOpacity, XBool aBlend )
   EW_METHOD( CursorHitTest,     CoreCursorHit )( CoreGroup _this, XRect aArea, XInt32 
@@ -209,11 +216,22 @@ EW_DEFINE_METHODS( CoreRoot, CoreGroup )
   EW_METHOD( ChangeViewState,   void )( CoreRoot _this, XSet aSetState, XSet aClearState )
   EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
   EW_METHOD( OnSetFocus,        void )( CoreRoot _this, CoreView value )
+  EW_METHOD( OnSetBuffered,     void )( CoreRoot _this, XBool value )
+  EW_METHOD( OnSetOpacity,      void )( CoreRoot _this, XInt32 value )
+  EW_METHOD( IsCurrentDialog,   XBool )( CoreRoot _this )
+  EW_METHOD( IsActiveDialog,    XBool )( CoreRoot _this, XBool aRecursive )
   EW_METHOD( DispatchEvent,     XObject )( CoreRoot _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreRoot _this, CoreEvent aEvent, XSet 
     aFilter )
   EW_METHOD( InvalidateArea,    void )( CoreRoot _this, XRect aArea )
 EW_END_OF_METHODS( CoreRoot )
+
+/* The method GetRoot() delivers the application object, this view belongs to. The 
+   application object represents the entire screen of the GUI application. Thus 
+   in the views hierarchy, the application object serves as the root view.
+   This method can fail and return null if the view still doesn't belong to any 
+   owner group. */
+CoreRoot CoreRoot_GetRoot( CoreRoot _this );
 
 /* The method Draw() is invoked automatically if parts of the view should be redrawn 
    on the screen. This can occur when e.g. the view has been moved or the appearance 
@@ -259,6 +277,36 @@ void CoreRoot_ChangeViewState( CoreRoot _this, XSet aSetState, XSet aClearState 
 
 /* 'C' function for method : 'Core::Root.OnSetFocus()' */
 void CoreRoot_OnSetFocus( CoreRoot _this, CoreView value );
+
+/* 'C' function for method : 'Core::Root.OnSetBuffered()' */
+void CoreRoot_OnSetBuffered( CoreRoot _this, XBool value );
+
+/* 'C' function for method : 'Core::Root.OnSetOpacity()' */
+void CoreRoot_OnSetOpacity( CoreRoot _this, XInt32 value );
+
+/* The method IsCurrentDialog() returns 'true' if 'this' component and all of its 
+   owners do actually act as active dialogs (see the method @IsActiveDialog()) and 
+   there are no further subordinated dialogs existing in context of 'this' component. 
+   In other words, 'this' component is absolutely the top-most dialog of all dialogs 
+   shown actually in the GUI application, so all user interactions are primarily 
+   directed to 'this' dialog.
+   If the component has not been presented, it has been dismissed, other dialog 
+   has been presented in meantime overlying 'this' component, the owner of the component 
+   is not itself an active dialog, or there is other dialog presented in context 
+   of 'this' component, the method returns 'false'. */
+XBool CoreRoot_IsCurrentDialog( CoreRoot _this );
+
+/* The method IsActiveDialog() returns 'true' if 'this' component does actually 
+   act as a dialog (see the method @IsDialog()) and it is the current (top-most) 
+   dialog in context of its owner component. If the parameter aRecursive is 'true', 
+   the owner in context of which 'this' component actually exists and all superior 
+   owners have also to be active dialogs or the owner has to be the application 
+   root component.
+   If the component is not a dialog, or other dialog has been presented in the meantime 
+   overlying 'this' component, the method returns 'false'. Similarly, if the parameter 
+   aRecursive is 'true' and the owner of the component is itself not an active dialog, 
+   the method returns 'false'. */
+XBool CoreRoot_IsActiveDialog( CoreRoot _this, XBool aRecursive );
 
 /* The method DispatchEvent() feeds the component with the event passed in the parameter 
    aEvent and propagates it along the so-called focus path. This focus path leads 

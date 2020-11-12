@@ -18,8 +18,7 @@
 *
 * DESCRIPTION:
 *   This header file contains Graphics Engine configuration parameters and the
-*   adaptation for the VGLite graphics subsystem running in the RGBA8888 color
-*   format.
+*   adaptation for the target specific graphics subsystem.
 *
 *******************************************************************************/
 
@@ -32,21 +31,26 @@
   {
 #endif
 
-
-/* Following macros allow to enable/disable the redirection to VGLite API.
-   These are essentoal to workaround the errors in VGLite API:
-
-   EW_USE_VGLITE - If 1, the VGLite functionality is used. If 0, all drawing
-     operations are performed via SW except the final blit, which is executed
-     by VGLite.
-
-   EW_USE_COPY_MODE - If 1, the rotation/perspective warp operations with
-     disabled alpha-blending are performed via VGLite. If 0, the operations are
-     executed by SW. */
-#ifndef EW_USE_VGLITE
-  #define EW_USE_VGLITE                   1
+/*
+  EW_USE_GRAPHICS_ACCELERATOR - Flag to switch on/off the usage of the graphics
+  accelerator within the target.
+  Per default, the usage of the graphics accelerator is enabled. To switch off
+  the graphics accelerator, please set the macro EW_USE_GRAPHICS_ACCELERATOR to
+  0 within your makefile. This can be achieved by using the compiler flag
+  -DEW_USE_GRAPHICS_ACCELERATOR=0
+*/
+#ifndef EW_USE_GRAPHICS_ACCELERATOR
+  #define EW_USE_GRAPHICS_ACCELERATOR 1
 #endif
 
+#if EW_USE_GRAPHICS_ACCELERATOR == 0
+  #undef EW_USE_GRAPHICS_ACCELERATOR
+#endif
+
+/*
+  EW_USE_COPY_MODE - If 1, the rotation/perspective warp operations with
+  disabled alpha-blending are performed via VGLite. If 0, the operations are
+  executed by SW. */
 #ifndef EW_USE_COPY_MODE
   #define EW_USE_COPY_MODE                1
 #endif
@@ -55,7 +59,7 @@
    order (bit31) A..R..G..B (bit0). If your graphics hardware supports other
    color channel order, you can define the following macros in your make file. */
 #ifndef EW_COLOR_CHANNEL_BIT_OFFSET_RED
-  #define EW_COLOR_CHANNEL_BIT_OFFSET_RED     0
+  #define EW_COLOR_CHANNEL_BIT_OFFSET_RED    16
 #endif
 
 #ifndef EW_COLOR_CHANNEL_BIT_OFFSET_GREEN
@@ -63,7 +67,7 @@
 #endif
 
 #ifndef EW_COLOR_CHANNEL_BIT_OFFSET_BLUE
-  #define EW_COLOR_CHANNEL_BIT_OFFSET_BLUE   16
+  #define EW_COLOR_CHANNEL_BIT_OFFSET_BLUE    0
 #endif
 
 #ifndef EW_COLOR_CHANNEL_BIT_OFFSET_ALPHA
@@ -71,21 +75,11 @@
 #endif
 
 
-/* Only RGBA or BGRA pixel storage is supported */
-#if EW_COLOR_CHANNEL_BIT_OFFSET_ALPHA != 24
-  #error Wrong color channels order. VGLite supports RGBA or BGRA only.
-#endif
-
-#if EW_COLOR_CHANNEL_BIT_OFFSET_GREEN != 8
-  #error Wrong color channels order. VGLite supports RGBA or BGRA only.
-#endif
-
-
-
 /* The RGB565 Platform Package uses a screen color format when drawing into the
    framebuffer - internally created buffers will use the RGBA8888 color format
    in order to achive best quality and to support alpha channel. */
 #define EW_USE_PIXEL_FORMAT_SCREEN
+
 
 /* The following macros override the default color channel allocation to the
    order (bit15) R..G..B (bit0). If your graphics hardware supports other
@@ -107,34 +101,12 @@
 #define EW_PREMULTIPLY_COLOR_CHANNELS         1
 
 
-/* The following macros exist for debugging purpose only. Please avoid the
-   usage of these macros in the release version. They are intended to simplify
-   the bring up phase on a new target system.
-
-   EW_PRINT_GFX_TASK_DETAILS determines whether this VGLite driver should
-   log the performed operations and their parameters or not. If set 0, nothing
-   is logged. This is typical for the release version. If set 1, all performed
-   drawing operations are logged.
-*/
-#ifndef EW_PRINT_GFX_TASK_DETAILS
-  #define EW_PRINT_GFX_TASK_DETAILS    0
-#endif
-
-
-/* If not explicitly specified, assume following default number of tasks,
-   which can wait for execution in a so-called 'issue'. Large number of
-   tasks can promote the automatic elimination of drawing tasks. */
-#ifndef EW_MAX_ISSUE_TASKS
-  #define EW_MAX_ISSUE_TASKS 250
-#endif
-
-
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteInitGfx
+*   GfxInitGfx
 *
 * DESCRIPTION:
-*   The function VGLiteInitGfx is called from the Graphics Engine during the
+*   The function GfxInitGfx is called from the Graphics Engine during the
 *   initialization in order to make target specific configurations of the
 *   Graphics Engine
 *
@@ -145,7 +117,7 @@
 *   If successful, returns != 0.
 *
 *******************************************************************************/
-int VGLiteInitGfx
+int GfxInitGfx
 (
   void*             aArgs
 );
@@ -153,31 +125,31 @@ int VGLiteInitGfx
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteInitViewport
+*   GfxInitViewport
 *
 * DESCRIPTION:
-*   The function VGLiteInitViewport is called from the Graphics Engine,
+*   The function GfxInitViewport is called from the Graphics Engine,
 *   to create a new viewport on the target. The function uses the given
-*   buffers passed in the arguments aDisplay1, aDisplay2 and aDisplay3.
+*   buffers passed in the arguments aDisplay1 and aDisplay2.
 *
 * ARGUMENTS:
 *   aWidth,
-*   aHeight       - Size of the viewport in pixel.
+*   aHeight       - Size of the application in pixel.
 *   aExtentX,
-*   aExtentY,
+*   aExtentY      - not used.
 *   aExtentWidth,
-*   aExtentHeight - not used.
+*   aExtentHeight - Size of the physical or virtual framebuffer in pixel.
 *   aOrient       - not used.
 *   aOpacity      - not used.
-*   aDisplay1     - Address of the VGLite framebuffer object.
-*   aDisplay2     - not used.
+*   aDisplay1     - Address of the framebuffer / scratch-pad buffer.
+*   aDisplay2     - Address of the back-buffer in case of double-buffering.
 *   aDisplay3     - not used.
 *
 * RETURN VALUE:
 *   Handle of the surface descriptor (viewport).
 *
 *******************************************************************************/
-unsigned long VGLiteInitViewport
+unsigned long GfxInitViewport
 (
   int               aWidth,
   int               aHeight,
@@ -195,11 +167,11 @@ unsigned long VGLiteInitViewport
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteDoneViewport
+*   GfxDoneViewport
 *
 * DESCRIPTION:
-*   The function VGLiteDoneViewport is called from the Graphics Engine, to
-*   release a previously created viewport on the VGLite target.
+*   The function GfxDoneViewport is called from the Graphics Engine, to
+*   release a previously created viewport on the target.
 *
 * ARGUMENTS:
 *   aHandle - Handle of the surface descriptor (viewport).
@@ -208,7 +180,7 @@ unsigned long VGLiteInitViewport
 *   None
 *
 *******************************************************************************/
-void VGLiteDoneViewport
+void GfxDoneViewport
 (
   unsigned long     aHandle
 );
@@ -216,10 +188,10 @@ void VGLiteDoneViewport
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteBeginUpdate
+*   GfxBeginUpdate
 *
 * DESCRIPTION:
-*   The function VGLiteBeginUpdate is called from the Graphics Engine, to
+*   The function GfxBeginUpdate is called from the Graphics Engine, to
 *   initiate the screen update cycle.
 *
 * ARGUMENTS:
@@ -229,7 +201,7 @@ void VGLiteDoneViewport
 *   Handle of the destination surface, used for all drawing operations.
 *
 *******************************************************************************/
-unsigned long VGLiteBeginUpdate
+unsigned long GfxBeginUpdate
 (
   unsigned long     aHandle
 );
@@ -237,10 +209,10 @@ unsigned long VGLiteBeginUpdate
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteEndUpdate
+*   GfxEndUpdate
 *
 * DESCRIPTION:
-*   The function VGLiteEndUpdate is called from the Graphics Engine, to
+*   The function GfxEndUpdate is called from the Graphics Engine, to
 *   finalize the screen update cycle.
 *
 * ARGUMENTS:
@@ -255,7 +227,7 @@ unsigned long VGLiteBeginUpdate
 *   None
 *
 *******************************************************************************/
-void VGLiteEndUpdate
+void GfxEndUpdate
 (
   unsigned long     aHandle,
   int               aX,
@@ -266,19 +238,19 @@ void VGLiteEndUpdate
 
 
 /* Redirect the following operations to the functions within this module */
-#define EwGfxInit            VGLiteInitGfx
-#define EwGfxInitViewport    VGLiteInitViewport
-#define EwGfxDoneViewport    VGLiteDoneViewport
-#define EwGfxBeginUpdate     VGLiteBeginUpdate
-#define EwGfxEndUpdate       VGLiteEndUpdate
+#define EwGfxInit            GfxInitGfx
+#define EwGfxInitViewport    GfxInitViewport
+#define EwGfxDoneViewport    GfxDoneViewport
+#define EwGfxBeginUpdate     GfxBeginUpdate
+#define EwGfxEndUpdate       GfxEndUpdate
 
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteCreateSurface
+*   GfxCreateSurface
 *
 * DESCRIPTION:
-*   The function VGLiteCreateSurface() reserves pixel memory for a new surface
+*   The function GfxCreateSurface() reserves pixel memory for a new surface
 *   with the given size and color format. The function returns a handle to the
 *   new surface.
 *
@@ -295,7 +267,7 @@ void VGLiteEndUpdate
 *   If the creation is failed, the function should return 0.
 *
 *******************************************************************************/
-unsigned long VGLiteCreateSurface
+unsigned long GfxCreateSurface
 (
   int               aFormat,
   int               aWidth,
@@ -305,11 +277,40 @@ unsigned long VGLiteCreateSurface
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteDestroySurface
+*   GfxCreateConstSurface
 *
 * DESCRIPTION:
-*   The function VGLiteDestroySurface() frees the resources of the given surface.
-*   This function is a counterpart to VGLiteCreateSurface().
+*   The function GfxCreateConstSurface() creates a surface structure
+*   that refers to a constant pixel memory. The function returns a handle to the
+*   new surface.
+*
+* ARGUMENTS:
+*   aFormat - Color format of the surface. (See EW_PIXEL_FORMAT_XXX).
+*   aWidth,
+*   aHeight - Size of the surface in pixel.
+*   aMemory - Pointer to constant pixel memory.
+*
+* RETURN VALUE:
+*   The function returns a handle to the created surface.
+*   If the creation is failed, the function should return 0.
+*
+*******************************************************************************/
+unsigned long GfxCreateConstSurface
+(
+  int               aFormat,
+  int               aWidth,
+  int               aHeight,
+  XSurfaceMemory*   aMemory
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   GfxDestroySurface
+*
+* DESCRIPTION:
+*   The function GfxDestroySurface() frees the resources of the given surface.
+*   This function is a counterpart to GfxCreateSurface().
 *
 * ARGUMENTS:
 *   aHandle - Handle to the surface to free.
@@ -318,7 +319,7 @@ unsigned long VGLiteCreateSurface
 *   None
 *
 *******************************************************************************/
-void VGLiteDestroySurface
+void GfxDestroySurface
 (
   unsigned long     aHandle
 );
@@ -326,21 +327,17 @@ void VGLiteDestroySurface
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteLockSurface
+*   GfxLockSurface
 *
 * DESCRIPTION:
-*   The function VGLiteLockSurface() provides a direct access to the pixel
-*   memory of the given surface. The function returns a lock object containing
-*   pointers to memory, where the caller can read/write the surface pixel
-*   values. Additional pitch values also returned in the object allow the caller
-*   to calculate the desired pixel addresses.
-*
-*   When finished the access cycle, the function VGLiteUnlockSurface() should be
-*   used in order to release the lock, update the affected surface, flush CPU
-*   caches, etc.
+*   The function GfxLockSurface() provides a direct access to the pixel memory of
+*   the given surface. The function returns a lock object containing pointers to
+*   memory, where the caller can read/write the surface pixel values. Additional
+*   pitch values also returned in the object allow the caller to calculate the
+*   desired pixel addresses.
 *
 * ARGUMENTS:
-*   aSurfaceHandle - Handle to the surface to obtain the direct memory access.
+*   aHandle     - Handle to the surface to obtain the direct memory access.
 *   aX, aY,
 *   aWidth,
 *   aHeight     - Area within the surface affected by the access operation.
@@ -379,9 +376,9 @@ void VGLiteDestroySurface
 *   case).
 *
 *******************************************************************************/
-unsigned long VGLiteLockSurface
+unsigned long GfxLockSurface
 (
-  unsigned long     aSurfaceHandle,
+  unsigned long     aHandle,
   int               aX,
   int               aY,
   int               aWidth,
@@ -398,12 +395,12 @@ unsigned long VGLiteLockSurface
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteUnlockSurface
+*   GfxUnlockSurface
 *
 * DESCRIPTION:
-*   The function VGLiteUnlockSurface() has the job to unlock the given surface
-*   and if necessary free any temporary used resources. This function is a
-*   counterpart to VGLiteLockSurface().
+*   The function GfxUnlockSurface() has the job to unlock the given surface and
+*   if necessary free any temporary used resources.
+*   This function is a counterpart to GfxLockSurface().
 *
 * ARGUMENTS:
 *   aSurfaceHandle - Handle to the surface to release the direct memory access.
@@ -429,7 +426,7 @@ unsigned long VGLiteLockSurface
 *   None
 *
 *******************************************************************************/
-void VGLiteUnlockSurface
+void GfxUnlockSurface
 (
   unsigned long     aSurfaceHandle,
   unsigned long     aLockHandle,
@@ -445,32 +442,34 @@ void VGLiteUnlockSurface
 
 
 /* Macros to redirect the Graphics Engine operations to the above functions. */
-#define EwGfxCreateNativeSurface      VGLiteCreateSurface
-#define EwGfxDestroyNativeSurface     VGLiteDestroySurface
-#define EwGfxLockNativeSurface        VGLiteLockSurface
-#define EwGfxUnlockNativeSurface      VGLiteUnlockSurface
-#define EwGfxCreateAlpha8Surface      VGLiteCreateSurface
-#define EwGfxDestroyAlpha8Surface     VGLiteDestroySurface
-#define EwGfxLockAlpha8Surface        VGLiteLockSurface
-#define EwGfxUnlockAlpha8Surface      VGLiteUnlockSurface
-#define EwGfxCreateIndex8Surface      VGLiteCreateSurface
-#define EwGfxDestroyIndex8Surface     VGLiteDestroySurface
-#define EwGfxLockIndex8Surface        VGLiteLockSurface
-#define EwGfxUnlockIndex8Surface      VGLiteUnlockSurface
-#define EwGfxCreateRGB565Surface      VGLiteCreateSurface
-#define EwGfxDestroyRGB565Surface     VGLiteDestroySurface
-#define EwGfxLockRGB565Surface        VGLiteLockSurface
-#define EwGfxUnlockRGB565Surface      VGLiteUnlockSurface
-#define EwGfxLockScreenSurface        VGLiteLockSurface
-#define EwGfxUnlockScreenSurface      VGLiteUnlockSurface
+#define EwGfxCreateNativeSurface      GfxCreateSurface
+// #define EwGfxCreateConstNativeSurface GfxCreateConstSurface
+#define EwGfxDestroyNativeSurface     GfxDestroySurface
+#define EwGfxLockNativeSurface        GfxLockSurface
+#define EwGfxUnlockNativeSurface      GfxUnlockSurface
+#define EwGfxCreateAlpha8Surface      GfxCreateSurface
+#define EwGfxDestroyAlpha8Surface     GfxDestroySurface
+#define EwGfxLockAlpha8Surface        GfxLockSurface
+#define EwGfxUnlockAlpha8Surface      GfxUnlockSurface
+#define EwGfxCreateIndex8Surface      GfxCreateSurface
+#define EwGfxDestroyIndex8Surface     GfxDestroySurface
+#define EwGfxLockIndex8Surface        GfxLockSurface
+#define EwGfxUnlockIndex8Surface      GfxUnlockSurface
+#define EwGfxCreateRGB565Surface      GfxCreateSurface
+// #define EwGfxCreateConstRGB565Surface GfxCreateConstSurface
+#define EwGfxDestroyRGB565Surface     GfxDestroySurface
+#define EwGfxLockRGB565Surface        GfxLockSurface
+#define EwGfxUnlockRGB565Surface      GfxUnlockSurface
+#define EwGfxLockScreenSurface        GfxLockSurface
+#define EwGfxUnlockScreenSurface      GfxUnlockSurface
 
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteLineDriver
+*   GfxLineDriver
 *
 * DESCRIPTION:
-*  The function VGLiteLineDriver() will be called when a line should be drawn.
+*  The function GfxLineDriver() will be called when a line should be drawn.
 *  The function draws the line by using VGLite functionality.
 *
 * ARGUMENTS:
@@ -486,7 +485,7 @@ void VGLiteUnlockSurface
 *   None
 *
 *******************************************************************************/
-void VGLiteLineDriver
+void GfxLineDriver
 (
   unsigned long     aDstHandle,
   int               aDstX1,
@@ -501,35 +500,45 @@ void VGLiteLineDriver
   unsigned long*    aColors
 );
 
-/* Redirect the line drawing to this VGLite module */
-#if EW_USE_VGLITE
-  #define EwGfxDrawLineGradient             VGLiteLineDriver
-  #define EwGfxDrawLineGradientBlend        VGLiteLineDriver
-  #define EwGfxScreenDrawLineGradient       VGLiteLineDriver
-  #define EwGfxScreenDrawLineGradientBlend  VGLiteLineDriver
+/* Macros to redirect the Graphics Engine operations to the above function. */
+#ifdef EW_USE_GRAPHICS_ACCELERATOR
+  #define EwGfxDrawLineSolid                GfxLineDriver
+  #define EwGfxDrawLineSolidBlend           GfxLineDriver
+//  #define EwGfxDrawLineGradient             GfxLineDriver // gradients in copy mode not supported
+  #define EwGfxDrawLineGradientBlend        GfxLineDriver
+  #define EwGfxScreenDrawLineSolid          GfxLineDriver
+  #define EwGfxScreenDrawLineSolidBlend     GfxLineDriver
+//  #define EwGfxScreenDrawLineGradient       GfxLineDriver // gradients in copy mode not supported
+  #define EwGfxScreenDrawLineGradientBlend  GfxLineDriver
 #endif
 
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteFillDriver
+*   GfxFillDriver
 *
 * DESCRIPTION:
-*  The function VGLiteFillDriver() will be called to fill an area of the surface
-*  represented by aDstHandle with a color. The operation is done by VGLite.
+*   The function GfxFillDriver is called from the Graphics Engine, when a
+*   rectangular area should be filled by using the graphics hardware.
 *
 * ARGUMENTS:
-*   aDstHandle - Handle to the surface to fill the area.
-*   aDstX, aDstY,
-*   aWidth, aHeight - Area to fill.
-*   aBlend - != 0 if the operation should be performed with alpha-blending.
-*   aColors - Colors to fill the area.
+*   aDstHandle  - Handle to the destination surface (native/screen color format).
+*      See the function CreateSurface().
+*   aDstX,
+*   aDstY       - Origin of the area to fill (relative to the top-left corner
+*      of the destination surface).
+*   aWidth,
+*   aHeight     - Size of the area to fill.
+*   aBlend      - != 0 if the operation should be performed with alpha blending.
+*   aColors     - Array with 4 RGBA8888 color values. The four color values do
+*     correspond to the four corners of the area: top-left, top-right, bottom-
+*     right and bottom-left.
 *
 * RETURN VALUE:
 *   None
 *
 *******************************************************************************/
-void VGLiteFillDriver
+void GfxFillDriver
 (
   unsigned long     aDstHandle,
   int               aDstX,
@@ -541,48 +550,60 @@ void VGLiteFillDriver
 );
 
 
-/* Redirect the fill area operations to this VGLite module */
-#if EW_USE_VGLITE
-  #define EwGfxFillSolid                    VGLiteFillDriver
-  #define EwGfxFillSolidBlend               VGLiteFillDriver
-  #define EwGfxFillGradient                 VGLiteFillDriver
-  #define EwGfxFillGradientBlend            VGLiteFillDriver
-  #define EwGfxFillLinearGradient           VGLiteFillDriver
-  #define EwGfxFillLinearGradientBlend      VGLiteFillDriver
+/* Macros to redirect the Graphics Engine operations to the above functions. */
+#ifdef EW_USE_GRAPHICS_ACCELERATOR
+  #define EwGfxFillSolid                    GfxFillDriver
+  #define EwGfxFillSolidBlend               GfxFillDriver
+  #define EwGfxFillLinearGradient           GfxFillDriver
+  #define EwGfxFillLinearGradientBlend      GfxFillDriver
+//  #define EwGfxFillGradient                 GfxFillDriver // complex gradients not supported
+//  #define EwGfxFillGradientBlend            GfxFillDriver // complex gradients not supported
 
-  #define EwGfxScreenFillSolid              VGLiteFillDriver
-  #define EwGfxScreenFillSolidBlend         VGLiteFillDriver
-  #define EwGfxScreenFillGradient           VGLiteFillDriver
-  #define EwGfxScreenFillGradientBlend      VGLiteFillDriver
-  #define EwGfxScreenLinearGradient         VGLiteFillDriver
-  #define EwGfxScreenLinearGradientBlend    VGLiteFillDriver
+  #define EwGfxScreenFillSolid              GfxFillDriver
+  #define EwGfxScreenFillSolidBlend         GfxFillDriver
+  #define EwGfxScreenFillLinearGradient     GfxFillDriver
+  #define EwGfxScreenFillLinearGradientBlend GfxFillDriver
+//  #define EwGfxScreenFillGradient           GfxFillDriver // complex gradients not supported
+//  #define EwGfxScreenFillGradientBlend      GfxFillDriver // complex gradients not supported
 #endif
 
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteCopyDriver
+*   GfxCopyDriver
 *
 * DESCRIPTION:
-*  The function VGLiteCopyDriver() will be called to copy an area from the
-*  aSrcHandle surface to the surface aDstHandle. The operation is done by
-*  VGLite.
+*   The function GfxCopyDriver is called from the Graphics Engine, when a
+*   rectangular bitmap area should be copied by using the graphics hardware.
 *
 * ARGUMENTS:
-*   aDstHandle - Handle to the destination surface.
-*   aSrcHandle - Handle to the source surface.
-*   aDstX, aDstY - Position within the destination surface where to copy the
-*     source surface.
-*   aSrcX, aSrcY,
-*   aWidth, aHeight - Area within the source surface to copy.
-*   aBlend - != 0 if the operation should be performed with alpha-blending.
-*   aColors - Colors to additionally modulate the copied source pixel.
+*   aDstHandle  - Handle to the destination surface (native/screen color format).
+*      See the function CreateSurface().
+*   aSrcHandle  - Handle to the source surface (native/index8/alpha8/rgb565 color
+*      format). See the function CreateSurface().
+*   aDstX,
+*   aDstY       - Origin of the area to fill with the copied source surface
+*     pixel (relative to the top-left corner of the destination surface).
+*   aWidth,
+*   aHeight     - Size of the area to fill with the copied source surface pixel.
+*   aSrcX,
+*   aSrcY       - Origin of the area to copy from the source surface.
+*   aBlend      - != 0 if the operation should be performed with alpha blending.
+*   aColors     - Array with 4 color values. These four values do correspond
+*     to the four corners of the area: top-left, top-right, bottom-right and
+*     bottom-left.
+*     In case of an alpha8 source surface if all colors are equal, the solid
+*     variant of the operation is assumed.
+*     In case of native and index8 source surfaces if all colors are equal but
+*     their alpha value < 255, the solid variant of the operation is assumed.
+*     In case of native and index8 source surfaces if all colors are equal and
+*     their alpha value == 255, the variant without any modulation is assumed.
 *
 * RETURN VALUE:
 *   None
 *
 *******************************************************************************/
-void VGLiteCopyDriver
+void GfxCopyDriver
 (
   unsigned long     aDstHandle,
   unsigned long     aSrcHandle,
@@ -597,44 +618,44 @@ void VGLiteCopyDriver
 );
 
 
-/* Redirect the copy surface operations to this VGLite module */
-#if EW_USE_VGLITE
-  #define EwGfxCopyNative                 VGLiteCopyDriver
-  #define EwGfxCopyNativeBlend            VGLiteCopyDriver
-  #define EwGfxCopyNativeSolid            VGLiteCopyDriver
-  #define EwGfxCopyNativeSolidBlend       VGLiteCopyDriver
-  #define EwGfxCopyIndex8                 VGLiteCopyDriver
-  #define EwGfxCopyIndex8Blend            VGLiteCopyDriver
-  #define EwGfxCopyIndex8Solid            VGLiteCopyDriver
-  #define EwGfxCopyIndex8SolidBlend       VGLiteCopyDriver
-  #define EwGfxCopyAlpha8Solid            VGLiteCopyDriver
-  #define EwGfxCopyAlpha8SolidBlend       VGLiteCopyDriver
-  #define EwGfxCopyRGB565                 VGLiteCopyDriver
-  #define EwGfxCopyRGB565Solid            VGLiteCopyDriver
-  #define EwGfxCopyRGB565SolidBlend       VGLiteCopyDriver
+/* Macros to redirect the Graphics Engine operations to the above function. */
+#ifdef EW_USE_GRAPHICS_ACCELERATOR
+  #define EwGfxCopyNative                 GfxCopyDriver
+  #define EwGfxCopyNativeBlend            GfxCopyDriver
+  #define EwGfxCopyNativeSolid            GfxCopyDriver
+  #define EwGfxCopyNativeSolidBlend       GfxCopyDriver
+  #define EwGfxCopyIndex8                 GfxCopyDriver
+  #define EwGfxCopyIndex8Blend            GfxCopyDriver
+  #define EwGfxCopyIndex8Solid            GfxCopyDriver
+  #define EwGfxCopyIndex8SolidBlend       GfxCopyDriver
+  #define EwGfxCopyAlpha8Solid            GfxCopyDriver
+  #define EwGfxCopyAlpha8SolidBlend       GfxCopyDriver
+  #define EwGfxCopyRGB565                 GfxCopyDriver
+  #define EwGfxCopyRGB565Solid            GfxCopyDriver
+  #define EwGfxCopyRGB565SolidBlend       GfxCopyDriver
 
-  #define EwGfxScreenCopyNative           VGLiteCopyDriver
-  #define EwGfxScreenCopyNativeBlend      VGLiteCopyDriver
-  #define EwGfxScreenCopyNativeSolid      VGLiteCopyDriver
-  #define EwGfxScreenCopyNativeSolidBlend VGLiteCopyDriver
-  #define EwGfxScreenCopyIndex8           VGLiteCopyDriver
-  #define EwGfxScreenCopyIndex8Blend      VGLiteCopyDriver
-  #define EwGfxScreenCopyIndex8Solid      VGLiteCopyDriver
-  #define EwGfxScreenCopyIndex8SolidBlend VGLiteCopyDriver
-  #define EwGfxScreenCopyAlpha8Solid      VGLiteCopyDriver
-  #define EwGfxScreenCopyAlpha8SolidBlend VGLiteCopyDriver
-  #define EwGfxScreenCopyRGB565           VGLiteCopyDriver
-  #define EwGfxScreenCopyRGB565Solid      VGLiteCopyDriver
-  #define EwGfxScreenCopyRGB565SolidBlend VGLiteCopyDriver
+  #define EwGfxScreenCopyNative           GfxCopyDriver
+  #define EwGfxScreenCopyNativeBlend      GfxCopyDriver
+  #define EwGfxScreenCopyNativeSolid      GfxCopyDriver
+  #define EwGfxScreenCopyNativeSolidBlend GfxCopyDriver
+  #define EwGfxScreenCopyIndex8           GfxCopyDriver
+  #define EwGfxScreenCopyIndex8Blend      GfxCopyDriver
+  #define EwGfxScreenCopyIndex8Solid      GfxCopyDriver
+  #define EwGfxScreenCopyIndex8SolidBlend GfxCopyDriver
+  #define EwGfxScreenCopyAlpha8Solid      GfxCopyDriver
+  #define EwGfxScreenCopyAlpha8SolidBlend GfxCopyDriver
+  #define EwGfxScreenCopyRGB565           GfxCopyDriver
+  #define EwGfxScreenCopyRGB565Solid      GfxCopyDriver
+  #define EwGfxScreenCopyRGB565SolidBlend GfxCopyDriver
 #endif
 
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLiteWarpDriver
+*   GfxWarpDriver
 *
 * DESCRIPTION:
-*  The function VGLiteWarpDriver() will be called to warp a source surface area.
+*  The function GfxWarpDriver() will be called to warp a source surface area.
 *  The operation is done by VGLite.
 *
 * ARGUMENTS:
@@ -655,7 +676,7 @@ void VGLiteCopyDriver
 *   None
 *
 *******************************************************************************/
-void VGLiteWarpDriver
+void GfxWarpDriver
 (
   unsigned long     aDstHandle,
   unsigned long     aSrcHandle,
@@ -685,217 +706,214 @@ void VGLiteWarpDriver
 );
 
 
-/* Redirect the warp surface operations to this VGLite module */
-#if EW_USE_VGLITE
+/* Macros to redirect the Graphics Engine operations to the above function. */
+#ifdef EW_USE_GRAPHICS_ACCELERATOR
   #if EW_USE_COPY_MODE
-    #define EwGfxWarpPerspNative                      VGLiteWarpDriver
-    #define EwGfxWarpPerspNativeFilter                VGLiteWarpDriver
+    #define EwGfxWarpPerspNative                      GfxWarpDriver
+    #define EwGfxWarpPerspNativeFilter                GfxWarpDriver
   #endif
-  #define EwGfxWarpPerspNativeBlend                   VGLiteWarpDriver
-  #define EwGfxWarpPerspNativeFilterBlend             VGLiteWarpDriver
-
-  #if EW_USE_COPY_MODE
-    #define EwGfxWarpPerspNativeSolid                 VGLiteWarpDriver
-    #define EwGfxWarpPerspNativeFilterSolid           VGLiteWarpDriver
-  #endif
-  #define EwGfxWarpPerspNativeSolidBlend              VGLiteWarpDriver
-  #define EwGfxWarpPerspNativeFilterSolidBlend        VGLiteWarpDriver
+  #define EwGfxWarpPerspNativeBlend                   GfxWarpDriver
+  #define EwGfxWarpPerspNativeFilterBlend             GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxWarpPerspIndex8                      VGLiteWarpDriver
-    #define EwGfxWarpPerspIndex8Filter                VGLiteWarpDriver
+    #define EwGfxWarpPerspNativeSolid                 GfxWarpDriver
+    #define EwGfxWarpPerspNativeFilterSolid           GfxWarpDriver
   #endif
-  #define EwGfxWarpPerspIndex8Blend                   VGLiteWarpDriver
-  #define EwGfxWarpPerspIndex8FilterBlend             VGLiteWarpDriver
+  #define EwGfxWarpPerspNativeSolidBlend              GfxWarpDriver
+  #define EwGfxWarpPerspNativeFilterSolidBlend        GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxWarpPerspIndex8Solid                 VGLiteWarpDriver
-    #define EwGfxWarpPerspIndex8FilterSolid           VGLiteWarpDriver
+    #define EwGfxWarpPerspIndex8                      GfxWarpDriver
+    #define EwGfxWarpPerspIndex8Filter                GfxWarpDriver
   #endif
-  #define EwGfxWarpPerspIndex8SolidBlend              VGLiteWarpDriver
-  #define EwGfxWarpPerspIndex8FilterSolidBlend        VGLiteWarpDriver
+  #define EwGfxWarpPerspIndex8Blend                   GfxWarpDriver
+  #define EwGfxWarpPerspIndex8FilterBlend             GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxWarpPerspAlpha8Solid                 VGLiteWarpDriver
-    #define EwGfxWarpPerspAlpha8FilterSolid           VGLiteWarpDriver
+    #define EwGfxWarpPerspIndex8Solid                 GfxWarpDriver
+    #define EwGfxWarpPerspIndex8FilterSolid           GfxWarpDriver
   #endif
-  #define EwGfxWarpPerspAlpha8SolidBlend              VGLiteWarpDriver
-  #define EwGfxWarpPerspAlpha8FilterSolidBlend        VGLiteWarpDriver
-
-  #define EwGfxWarpPerspRGB565                        VGLiteWarpDriver
-  #define EwGfxWarpPerspRGB565Filter                  VGLiteWarpDriver
+  #define EwGfxWarpPerspIndex8SolidBlend              GfxWarpDriver
+  #define EwGfxWarpPerspIndex8FilterSolidBlend        GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxWarpPerspRGB565Solid                 VGLiteWarpDriver
-    #define EwGfxWarpPerspRGB565FilterSolid           VGLiteWarpDriver
+    #define EwGfxWarpPerspAlpha8Solid                 GfxWarpDriver
+    #define EwGfxWarpPerspAlpha8FilterSolid           GfxWarpDriver
   #endif
-  #define EwGfxWarpPerspRGB565SolidBlend              VGLiteWarpDriver
-  #define EwGfxWarpPerspRGB565FilterSolidBlend        VGLiteWarpDriver
+  #define EwGfxWarpPerspAlpha8SolidBlend              GfxWarpDriver
+  #define EwGfxWarpPerspAlpha8FilterSolidBlend        GfxWarpDriver
+
+  #define EwGfxWarpPerspRGB565                        GfxWarpDriver
+  #define EwGfxWarpPerspRGB565Filter                  GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxWarpAffineNative                     VGLiteWarpDriver
-    #define EwGfxWarpAffineNativeFilter               VGLiteWarpDriver
+    #define EwGfxWarpPerspRGB565Solid                 GfxWarpDriver
+    #define EwGfxWarpPerspRGB565FilterSolid           GfxWarpDriver
   #endif
-  #define EwGfxWarpAffineNativeBlend                  VGLiteWarpDriver
-  #define EwGfxWarpAffineNativeFilterBlend            VGLiteWarpDriver
+  #define EwGfxWarpPerspRGB565SolidBlend              GfxWarpDriver
+  #define EwGfxWarpPerspRGB565FilterSolidBlend        GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxWarpAffineNativeSolid                VGLiteWarpDriver
-    #define EwGfxWarpAffineNativeFilterSolid          VGLiteWarpDriver
+    #define EwGfxWarpAffineNative                     GfxWarpDriver
+    #define EwGfxWarpAffineNativeFilter               GfxWarpDriver
   #endif
-  #define EwGfxWarpAffineNativeSolidBlend             VGLiteWarpDriver
-  #define EwGfxWarpAffineNativeFilterSolidBlend       VGLiteWarpDriver
+  #define EwGfxWarpAffineNativeBlend                  GfxWarpDriver
+  #define EwGfxWarpAffineNativeFilterBlend            GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxWarpAffineIndex8                     VGLiteWarpDriver
-    #define EwGfxWarpAffineIndex8Filter               VGLiteWarpDriver
+    #define EwGfxWarpAffineNativeSolid                GfxWarpDriver
+    #define EwGfxWarpAffineNativeFilterSolid          GfxWarpDriver
   #endif
-
-  #define EwGfxWarpAffineIndex8Blend                  VGLiteWarpDriver
-  #define EwGfxWarpAffineIndex8FilterBlend            VGLiteWarpDriver
+  #define EwGfxWarpAffineNativeSolidBlend             GfxWarpDriver
+  #define EwGfxWarpAffineNativeFilterSolidBlend       GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxWarpAffineIndex8Solid                VGLiteWarpDriver
-    #define EwGfxWarpAffineIndex8FilterSolid          VGLiteWarpDriver
+    #define EwGfxWarpAffineIndex8                     GfxWarpDriver
+    #define EwGfxWarpAffineIndex8Filter               GfxWarpDriver
   #endif
-  #define EwGfxWarpAffineIndex8SolidBlend             VGLiteWarpDriver
-  #define EwGfxWarpAffineIndex8FilterSolidBlend       VGLiteWarpDriver
+
+  #define EwGfxWarpAffineIndex8Blend                  GfxWarpDriver
+  #define EwGfxWarpAffineIndex8FilterBlend            GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxWarpAffineAlpha8Solid                VGLiteWarpDriver
-    #define EwGfxWarpAffineAlpha8FilterSolid          VGLiteWarpDriver
+    #define EwGfxWarpAffineIndex8Solid                GfxWarpDriver
+    #define EwGfxWarpAffineIndex8FilterSolid          GfxWarpDriver
   #endif
-  #define EwGfxWarpAffineAlpha8SolidBlend             VGLiteWarpDriver
-  #define EwGfxWarpAffineAlpha8FilterSolidBlend       VGLiteWarpDriver
-
-  #define EwGfxWarpAffineRGB565                       VGLiteWarpDriver
-  #define EwGfxWarpAffineRGB565Filter                 VGLiteWarpDriver
-  #define EwGfxWarpAffineRGB565Solid                  VGLiteWarpDriver
-  #define EwGfxWarpAffineRGB565FilterSolid            VGLiteWarpDriver
-
-  #define EwGfxScaleNative                            VGLiteWarpDriver
-  #define EwGfxScaleNativeFilter                      VGLiteWarpDriver
-  #define EwGfxScaleNativeSolid                       VGLiteWarpDriver
-  #define EwGfxScaleNativeFilterSolid                 VGLiteWarpDriver
-  #define EwGfxScaleIndex8                            VGLiteWarpDriver
-  #define EwGfxScaleIndex8Filter                      VGLiteWarpDriver
-  #define EwGfxScaleIndex8Solid                       VGLiteWarpDriver
-  #define EwGfxScaleIndex8FilterSolid                 VGLiteWarpDriver
-  #define EwGfxScaleAlpha8Solid                       VGLiteWarpDriver
-  #define EwGfxScaleAlpha8FilterSolid                 VGLiteWarpDriver
-  #define EwGfxScaleRGB565Solid                       VGLiteWarpDriver
-  #define EwGfxScaleRGB565FilterSolid                 VGLiteWarpDriver
+  #define EwGfxWarpAffineIndex8SolidBlend             GfxWarpDriver
+  #define EwGfxWarpAffineIndex8FilterSolidBlend       GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxScreenWarpPerspNative                      VGLiteWarpDriver
-    #define EwGfxScreenWarpPerspNativeFilter                VGLiteWarpDriver
+    #define EwGfxWarpAffineAlpha8Solid                GfxWarpDriver
+    #define EwGfxWarpAffineAlpha8FilterSolid          GfxWarpDriver
   #endif
-  #define EwGfxScreenWarpPerspNativeBlend                   VGLiteWarpDriver
-  #define EwGfxScreenWarpPerspNativeFilterBlend             VGLiteWarpDriver
+  #define EwGfxWarpAffineAlpha8SolidBlend             GfxWarpDriver
+  #define EwGfxWarpAffineAlpha8FilterSolidBlend       GfxWarpDriver
+
+  #define EwGfxWarpAffineRGB565                       GfxWarpDriver
+  #define EwGfxWarpAffineRGB565Filter                 GfxWarpDriver
+  #define EwGfxWarpAffineRGB565Solid                  GfxWarpDriver
+  #define EwGfxWarpAffineRGB565FilterSolid            GfxWarpDriver
+
+  #define EwGfxScaleNative                            GfxWarpDriver
+  #define EwGfxScaleNativeFilter                      GfxWarpDriver
+  #define EwGfxScaleNativeSolid                       GfxWarpDriver
+  #define EwGfxScaleNativeFilterSolid                 GfxWarpDriver
+  #define EwGfxScaleIndex8                            GfxWarpDriver
+  #define EwGfxScaleIndex8Filter                      GfxWarpDriver
+  #define EwGfxScaleIndex8Solid                       GfxWarpDriver
+  #define EwGfxScaleIndex8FilterSolid                 GfxWarpDriver
+  #define EwGfxScaleAlpha8Solid                       GfxWarpDriver
+  #define EwGfxScaleAlpha8FilterSolid                 GfxWarpDriver
+  #define EwGfxScaleRGB565Solid                       GfxWarpDriver
+  #define EwGfxScaleRGB565FilterSolid                 GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxScreenWarpPerspNativeSolid                 VGLiteWarpDriver
-    #define EwGfxScreenWarpPerspNativeFilterSolid           VGLiteWarpDriver
+    #define EwGfxScreenWarpPerspNative                      GfxWarpDriver
+    #define EwGfxScreenWarpPerspNativeFilter                GfxWarpDriver
   #endif
-  #define EwGfxScreenWarpPerspNativeSolidBlend              VGLiteWarpDriver
-  #define EwGfxScreenWarpPerspNativeFilterSolidBlend        VGLiteWarpDriver
+  #define EwGfxScreenWarpPerspNativeBlend                   GfxWarpDriver
+  #define EwGfxScreenWarpPerspNativeFilterBlend             GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxScreenWarpPerspIndex8                      VGLiteWarpDriver
-    #define EwGfxScreenWarpPerspIndex8Filter                VGLiteWarpDriver
+    #define EwGfxScreenWarpPerspNativeSolid                 GfxWarpDriver
+    #define EwGfxScreenWarpPerspNativeFilterSolid           GfxWarpDriver
   #endif
-  #define EwGfxScreenWarpPerspIndex8Blend                   VGLiteWarpDriver
-  #define EwGfxScreenWarpPerspIndex8FilterBlend             VGLiteWarpDriver
+  #define EwGfxScreenWarpPerspNativeSolidBlend              GfxWarpDriver
+  #define EwGfxScreenWarpPerspNativeFilterSolidBlend        GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxScreenWarpPerspIndex8Solid                 VGLiteWarpDriver
-    #define EwGfxScreenWarpPerspIndex8FilterSolid           VGLiteWarpDriver
+    #define EwGfxScreenWarpPerspIndex8                      GfxWarpDriver
+    #define EwGfxScreenWarpPerspIndex8Filter                GfxWarpDriver
   #endif
-  #define EwGfxScreenWarpPerspIndex8SolidBlend              VGLiteWarpDriver
-  #define EwGfxScreenWarpPerspIndex8FilterSolidBlend        VGLiteWarpDriver
+  #define EwGfxScreenWarpPerspIndex8Blend                   GfxWarpDriver
+  #define EwGfxScreenWarpPerspIndex8FilterBlend             GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxScreenWarpPerspAlpha8Solid                 VGLiteWarpDriver
-    #define EwGfxScreenWarpPerspAlpha8FilterSolid           VGLiteWarpDriver
+    #define EwGfxScreenWarpPerspIndex8Solid                 GfxWarpDriver
+    #define EwGfxScreenWarpPerspIndex8FilterSolid           GfxWarpDriver
   #endif
-  #define EwGfxScreenWarpPerspAlpha8SolidBlend              VGLiteWarpDriver
-  #define EwGfxScreenWarpPerspAlpha8FilterSolidBlend        VGLiteWarpDriver
-
-  #define EwGfxScreenWarpPerspRGB565                        VGLiteWarpDriver
-  #define EwGfxScreenWarpPerspRGB565Filter                  VGLiteWarpDriver
+  #define EwGfxScreenWarpPerspIndex8SolidBlend              GfxWarpDriver
+  #define EwGfxScreenWarpPerspIndex8FilterSolidBlend        GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxScreenWarpPerspRGB565Solid                 VGLiteWarpDriver
-    #define EwGfxScreenWarpPerspRGB565FilterSolid           VGLiteWarpDriver
+    #define EwGfxScreenWarpPerspAlpha8Solid                 GfxWarpDriver
+    #define EwGfxScreenWarpPerspAlpha8FilterSolid           GfxWarpDriver
   #endif
-  #define EwGfxScreenWarpPerspRGB565SolidBlend              VGLiteWarpDriver
-  #define EwGfxScreenWarpPerspRGB565FilterSolidBlend        VGLiteWarpDriver
+  #define EwGfxScreenWarpPerspAlpha8SolidBlend              GfxWarpDriver
+  #define EwGfxScreenWarpPerspAlpha8FilterSolidBlend        GfxWarpDriver
+
+  #define EwGfxScreenWarpPerspRGB565                        GfxWarpDriver
+  #define EwGfxScreenWarpPerspRGB565Filter                  GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxScreenWarpAffineNative                     VGLiteWarpDriver
-    #define EwGfxScreenWarpAffineNativeFilter               VGLiteWarpDriver
+    #define EwGfxScreenWarpPerspRGB565Solid                 GfxWarpDriver
+    #define EwGfxScreenWarpPerspRGB565FilterSolid           GfxWarpDriver
   #endif
-  #define EwGfxScreenWarpAffineNativeBlend                  VGLiteWarpDriver
-  #define EwGfxScreenWarpAffineNativeFilterBlend            VGLiteWarpDriver
+  #define EwGfxScreenWarpPerspRGB565SolidBlend              GfxWarpDriver
+  #define EwGfxScreenWarpPerspRGB565FilterSolidBlend        GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxScreenWarpAffineNativeSolid                VGLiteWarpDriver
-    #define EwGfxScreenWarpAffineNativeFilterSolid          VGLiteWarpDriver
+    #define EwGfxScreenWarpAffineNative                     GfxWarpDriver
+    #define EwGfxScreenWarpAffineNativeFilter               GfxWarpDriver
   #endif
-  #define EwGfxScreenWarpAffineNativeSolidBlend             VGLiteWarpDriver
-  #define EwGfxScreenWarpAffineNativeFilterSolidBlend       VGLiteWarpDriver
+  #define EwGfxScreenWarpAffineNativeBlend                  GfxWarpDriver
+  #define EwGfxScreenWarpAffineNativeFilterBlend            GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxScreenWarpAffineIndex8                     VGLiteWarpDriver
-    #define EwGfxScreenWarpAffineIndex8Filter               VGLiteWarpDriver
+    #define EwGfxScreenWarpAffineNativeSolid                GfxWarpDriver
+    #define EwGfxScreenWarpAffineNativeFilterSolid          GfxWarpDriver
   #endif
-
-  #define EwGfxScreenWarpAffineIndex8Blend                  VGLiteWarpDriver
-  #define EwGfxScreenWarpAffineIndex8FilterBlend            VGLiteWarpDriver
+  #define EwGfxScreenWarpAffineNativeSolidBlend             GfxWarpDriver
+  #define EwGfxScreenWarpAffineNativeFilterSolidBlend       GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxScreenWarpAffineIndex8Solid                VGLiteWarpDriver
-    #define EwGfxScreenWarpAffineIndex8FilterSolid          VGLiteWarpDriver
+    #define EwGfxScreenWarpAffineIndex8                     GfxWarpDriver
+    #define EwGfxScreenWarpAffineIndex8Filter               GfxWarpDriver
   #endif
-  #define EwGfxScreenWarpAffineIndex8SolidBlend             VGLiteWarpDriver
-  #define EwGfxScreenWarpAffineIndex8FilterSolidBlend       VGLiteWarpDriver
+
+  #define EwGfxScreenWarpAffineIndex8Blend                  GfxWarpDriver
+  #define EwGfxScreenWarpAffineIndex8FilterBlend            GfxWarpDriver
 
   #if EW_USE_COPY_MODE
-    #define EwGfxScreenWarpAffineAlpha8Solid                VGLiteWarpDriver
-    #define EwGfxScreenWarpAffineAlpha8FilterSolid          VGLiteWarpDriver
+    #define EwGfxScreenWarpAffineIndex8Solid                GfxWarpDriver
+    #define EwGfxScreenWarpAffineIndex8FilterSolid          GfxWarpDriver
   #endif
-  #define EwGfxScreenWarpAffineAlpha8SolidBlend             VGLiteWarpDriver
-  #define EwGfxScreenWarpAffineAlpha8FilterSolidBlend       VGLiteWarpDriver
+  #define EwGfxScreenWarpAffineIndex8SolidBlend             GfxWarpDriver
+  #define EwGfxScreenWarpAffineIndex8FilterSolidBlend       GfxWarpDriver
 
-  #define EwGfxScreenWarpAffineRGB565                       VGLiteWarpDriver
-  #define EwGfxScreenWarpAffineRGB565Filter                 VGLiteWarpDriver
-  #define EwGfxScreenWarpAffineRGB565Solid                  VGLiteWarpDriver
-  #define EwGfxScreenWarpAffineRGB565FilterSolid            VGLiteWarpDriver
+  #if EW_USE_COPY_MODE
+    #define EwGfxScreenWarpAffineAlpha8Solid                GfxWarpDriver
+    #define EwGfxScreenWarpAffineAlpha8FilterSolid          GfxWarpDriver
+  #endif
+  #define EwGfxScreenWarpAffineAlpha8SolidBlend             GfxWarpDriver
+  #define EwGfxScreenWarpAffineAlpha8FilterSolidBlend       GfxWarpDriver
 
-  #define EwGfxScreenScaleNative                            VGLiteWarpDriver
-  #define EwGfxScreenScaleNativeFilter                      VGLiteWarpDriver
-  #define EwGfxScreenScaleNativeSolid                       VGLiteWarpDriver
-  #define EwGfxScreenScaleNativeFilterSolid                 VGLiteWarpDriver
-  #define EwGfxScreenScaleIndex8                            VGLiteWarpDriver
-  #define EwGfxScreenScaleIndex8Filter                      VGLiteWarpDriver
-  #define EwGfxScreenScaleIndex8Solid                       VGLiteWarpDriver
-  #define EwGfxScreenScaleIndex8FilterSolid                 VGLiteWarpDriver
-  #define EwGfxScreenScaleAlpha8Solid                       VGLiteWarpDriver
-  #define EwGfxScreenScaleAlpha8FilterSolid                 VGLiteWarpDriver
-  #define EwGfxScreenScaleRGB565Solid                       VGLiteWarpDriver
-  #define EwGfxScreenScaleRGB565FilterSolid                 VGLiteWarpDriver
+  #define EwGfxScreenWarpAffineRGB565                       GfxWarpDriver
+  #define EwGfxScreenWarpAffineRGB565Filter                 GfxWarpDriver
+  #define EwGfxScreenWarpAffineRGB565Solid                  GfxWarpDriver
+  #define EwGfxScreenWarpAffineRGB565FilterSolid            GfxWarpDriver
 
-
-
+  #define EwGfxScreenScaleNative                            GfxWarpDriver
+  #define EwGfxScreenScaleNativeFilter                      GfxWarpDriver
+  #define EwGfxScreenScaleNativeSolid                       GfxWarpDriver
+  #define EwGfxScreenScaleNativeFilterSolid                 GfxWarpDriver
+  #define EwGfxScreenScaleIndex8                            GfxWarpDriver
+  #define EwGfxScreenScaleIndex8Filter                      GfxWarpDriver
+  #define EwGfxScreenScaleIndex8Solid                       GfxWarpDriver
+  #define EwGfxScreenScaleIndex8FilterSolid                 GfxWarpDriver
+  #define EwGfxScreenScaleAlpha8Solid                       GfxWarpDriver
+  #define EwGfxScreenScaleAlpha8FilterSolid                 GfxWarpDriver
+  #define EwGfxScreenScaleRGB565Solid                       GfxWarpDriver
+  #define EwGfxScreenScaleRGB565FilterSolid                 GfxWarpDriver
 #endif
 
 
 /*******************************************************************************
 * FUNCTION:
-*   VGLitePolygonDriver
+*   GfxPolygonDriver
 *
 * DESCRIPTION:
-*  The function VGLitePolygonDriver() will be called to fill polygon area within
+*  The function GfxPolygonDriver() will be called to fill polygon area within
 *  the surface aDstHandle with a color. The operation is done by VGLite.
 *
 * ARGUMENTS:
@@ -914,7 +932,7 @@ void VGLiteWarpDriver
 *   None
 *
 *******************************************************************************/
-void VGLitePolygonDriver
+void GfxPolygonDriver
 (
   unsigned long     aDstHandle,
   int*              aPaths,
@@ -929,17 +947,17 @@ void VGLitePolygonDriver
 );
 
 
-/* Redirect the fill polygon area operations to this VGLite module */
-#if EW_USE_VGLITE
-  #define EwGfxPolygonLinearGradient                   VGLitePolygonDriver
-  #define EwGfxPolygonAntialiasedLinearGradient        VGLitePolygonDriver
-  #define EwGfxPolygonLinearGradientBlend              VGLitePolygonDriver
-  #define EwGfxPolygonAntialiasedLinearGradientBlend   VGLitePolygonDriver
+/* Macros to redirect the Graphics Engine operations to the above function. */
+#ifdef EW_USE_GRAPHICS_ACCELERATOR
+  #define EwGfxPolygonLinearGradient                   GfxPolygonDriver
+  #define EwGfxPolygonAntialiasedLinearGradient        GfxPolygonDriver
+  #define EwGfxPolygonLinearGradientBlend              GfxPolygonDriver
+  #define EwGfxPolygonAntialiasedLinearGradientBlend   GfxPolygonDriver
 
-  #define EwGfxScreenPolygonLinearGradient                   VGLitePolygonDriver
-  #define EwGfxScreenPolygonAntialiasedLinearGradient        VGLitePolygonDriver
-  #define EwGfxScreenPolygonLinearGradientBlend              VGLitePolygonDriver
-  #define EwGfxScreenPolygonAntialiasedLinearGradientBlend   VGLitePolygonDriver
+  #define EwGfxScreenPolygonLinearGradient                   GfxPolygonDriver
+  #define EwGfxScreenPolygonAntialiasedLinearGradient        GfxPolygonDriver
+  #define EwGfxScreenPolygonLinearGradientBlend              GfxPolygonDriver
+  #define EwGfxScreenPolygonAntialiasedLinearGradientBlend   GfxPolygonDriver
 #endif
 
 
@@ -950,4 +968,4 @@ void VGLitePolygonDriver
 #endif /* EWEXTGFX_H */
 
 
-/* pba */
+/* pba, msy */

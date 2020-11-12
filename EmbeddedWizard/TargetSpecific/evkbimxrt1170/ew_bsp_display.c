@@ -27,9 +27,6 @@
 *
 *******************************************************************************/
 
-#include <vg_lite.h>
-#include <vg_lite_util.h>
-
 #include "ewrte.h"
 #include "ewgfx.h"
 #include "ewextgfx.h"
@@ -38,10 +35,8 @@
 #include "ew_bsp_display.h"
 #include "ew_bsp_clock.h"
 
-
 #include "display_support.h"
 #include "vglite_support.h"
-#include "vg_lite_matrix.h"
 
 #include "fsl_dc_fb.h"
 #include "fsl_fbdev.h"
@@ -52,12 +47,14 @@
   #define EW_BSP_DISPLAY_PIXEL_FORMAT kVIDEO_PixelFormatXRGB8888
 #elif ( EW_FRAME_BUFFER_COLOR_FORMAT == EW_FRAME_BUFFER_COLOR_FORMAT_RGB565 )
   #define EW_BSP_DISPLAY_PIXEL_FORMAT kVIDEO_PixelFormatRGB565
-#elif ( EW_FRAME_BUFFER_COLOR_FORMAT == EW_FRAME_BUFFER_COLOR_FORMAT_RGB888 )
-  #define EW_BSP_DISPLAY_PIXEL_FORMAT kVIDEO_PixelFormatRGB888
 #else
   #error "selected EW_FRAME_BUFFER_COLOR_FORMAT not supported"
 #endif
 
+AT_BOARDSDRAM_SECTION( uint8_t FRAME_BUFFER_ADDR[FRAME_BUFFER_SIZE] );
+#if( EW_USE_DOUBLE_BUFFER == 1 )
+    AT_BOARDSDRAM_SECTION( uint8_t DOUBLE_BUFFER_ADDR[FRAME_BUFFER_SIZE] );
+#endif
 
 static fbdev_t         g_fbdev;
 static fbdev_fb_info_t g_fbInfo;
@@ -83,28 +80,27 @@ extern const dc_fb_t   g_dc;
 int EwBspDisplayInit( XDisplayInfo* aDisplayInfo )
 {
   status_t        status;
-  void *          buffer;
-  vg_lite_error_t error = VG_LITE_SUCCESS;
+  void*           buffer;
 
   status = BOARD_PrepareVGLiteController();
   if ( status != kStatus_Success )
   {
-    EwPrint("PBOARD_PrepareVGLiteController failed\n");
+    EwPrint( "EwBspDisplayInit: BOARD_PrepareVGLiteController failed.\n" );
     return 0;
   }
 
   status = BOARD_PrepareDisplayController();
   if ( status != kStatus_Success )
   {
-    EwPrint( "BOARD_PrepareDisplayController failed\n" );
+    EwPrint( "EwBspDisplayInit: BOARD_PrepareDisplayController failed.\n" );
     return 0;
   }
-    
+
   status = FBDEV_Open( &g_fbdev, &g_dc, 0);
   if ( status != kStatus_Success )
   {
-    EwPrint( "FBDEV_Open failed\n" );
-    return error;
+    EwPrint( "EwBspDisplayInit: FBDEV_Open failed.\n" );
+    return 0;
   }
 
   g_fbInfo.bufInfo.pixelFormat = EW_BSP_DISPLAY_PIXEL_FORMAT;
@@ -112,35 +108,22 @@ int EwBspDisplayInit( XDisplayInfo* aDisplayInfo )
   g_fbInfo.bufInfo.height      = FRAME_BUFFER_HEIGHT;
   g_fbInfo.bufInfo.strideBytes = FRAME_BUFFER_WIDTH * FRAME_BUFFER_DEPTH;
   g_fbInfo.bufferCount         = 2;
-  g_fbInfo.buffers[ 0 ]        = ( void * ) FRAME_BUFFER_ADDR;
-  g_fbInfo.buffers[ 1 ]        = ( void * ) DOUBLE_BUFFER_ADDR;
+  g_fbInfo.buffers[ 0 ]        = (void*)FRAME_BUFFER_ADDR;
+  g_fbInfo.buffers[ 1 ]        = (void*)DOUBLE_BUFFER_ADDR;
 
-
-  
   status = FBDEV_SetFrameBufferInfo( &g_fbdev, &g_fbInfo );
   if ( status != kStatus_Success )
   {
-    EwPrint( "FBDEV_SetFrameBufferInfo failed\n" );
-    return error;
-  }
-
-
-  buffer = FBDEV_GetFrameBuffer(&g_fbdev, 0);
-  memset( buffer, 0, FRAME_BUFFER_SIZE );
-  L1CACHE_CleanDCacheByRange( (uint32_t)buffer, FRAME_BUFFER_SIZE );
-  FBDEV_SetFrameBuffer(&g_fbdev, buffer, 0);  
-
-  FBDEV_Enable( &g_fbdev );
-
-
-  // Initialize vg_lite.
-  error = vg_lite_init(256, 256);
-  if (error)
-  {
-    EwPrint( "vg_lite_init\n" );
-    vg_lite_close();
+    EwPrint( "EwBspDisplayInit: FBDEV_SetFrameBufferInfo failed.\n" );
     return 0;
   }
+
+  buffer = FBDEV_GetFrameBuffer( &g_fbdev, 0 );
+  memset( buffer, 0, FRAME_BUFFER_SIZE );
+  L1CACHE_CleanDCacheByRange( (uint32_t)buffer, FRAME_BUFFER_SIZE );
+  FBDEV_SetFrameBuffer( &g_fbdev, buffer, 0 );
+
+  FBDEV_Enable( &g_fbdev );
 
   /* return the current display configuration */
   if ( aDisplayInfo )
@@ -176,9 +159,6 @@ int EwBspDisplayInit( XDisplayInfo* aDisplayInfo )
 void EwBspDisplayDone( void )
 {
   /* close display */
-
-  /* De-initialize the VGLite drwaing context */
-  vg_lite_close();
 }
 
 
@@ -236,7 +216,7 @@ void EwBspDisplayWaitForCompletion( void )
 
     CPU_LOAD_SET_IDLE();
 
-    FBDEV_GetFrameBuffer(&g_fbdev, 0);
+    FBDEV_GetFrameBuffer( &g_fbdev, 0 );
 
     CPU_LOAD_SET_ACTIVE();
 
@@ -271,7 +251,7 @@ void EwBspDisplayWaitForCompletion( void )
 *******************************************************************************/
 void EwBspDisplayCommitBuffer( void* aAddress, int aX, int aY, int aWidth, int aHeight )
 {
-  FBDEV_SetFrameBuffer(&g_fbdev, aAddress, 0);
+  FBDEV_SetFrameBuffer( &g_fbdev, aAddress, 0 );
 }
 
 

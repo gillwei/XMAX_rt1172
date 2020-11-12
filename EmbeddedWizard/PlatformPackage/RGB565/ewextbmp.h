@@ -245,7 +245,7 @@ typedef struct XBmpRes
 
 #define EW_BITMAP_MAPPING( aName, aLangId )                                    \
   };                                                                           \
-  EW_BITMAP_PIXEL_PRAGMA static const unsigned short _fm_##aName##aLangId[] =  \
+  static const unsigned short _fm_##aName##aLangId[] =                         \
   {
   
 #define EW_BITMAP_PIXEL( aName, aLangId )                                      \
@@ -962,12 +962,12 @@ typedef struct XBmpRes
 
 #define EW_BITMAP_CLUT( aName, aLangId )                                       \
   };                                                                           \
-  EW_BITMAP_PIXEL_PRAGMA const unsigned int _cl_##aName##aLangId[] =           \
+  const unsigned int _cl_##aName##aLangId[] =                                  \
   {
 
 #define EW_BITMAP_CLUT_EMPTY( aName, aLangId )                                 \
   };                                                                           \
-  EW_BITMAP_PIXEL_PRAGMA const unsigned int _cl_##aName##aLangId[] =           \
+  const unsigned int _cl_##aName##aLangId[] =                                  \
   {                                                                            \
     0
 

@@ -30,7 +30,6 @@
 #ifndef EWCONFIG_H
 #define EWCONFIG_H
 
-
 /* ******************************************************************************
    Following macros configure the application.
 
@@ -119,25 +118,17 @@
 #define FRAME_BUFFER_HEIGHT             272
 
 /* calculated addresses for framebuffer(s) */
-#define FRAME_BUFFER_ADDR     SDRAM_BASE_ADDR
 #define FRAME_BUFFER_SIZE     FRAME_BUFFER_WIDTH * FRAME_BUFFER_HEIGHT * FRAME_BUFFER_DEPTH
 
-
 #if EW_USE_DOUBLE_BUFFER == 1
-
-  #define DOUBLE_BUFFER_ADDR  (FRAME_BUFFER_ADDR + FRAME_BUFFER_SIZE)
-  #define DOUBLE_BUFFER_SIZE  FRAME_BUFFER_SIZE
-
+    #define DOUBLE_BUFFER_SIZE  FRAME_BUFFER_SIZE
 #else
-
-  #define DOUBLE_BUFFER_ADDR  0
-  #define DOUBLE_BUFFER_SIZE  0
-  #define NUMBER_OF_FIELDS    3
-
+    #define DOUBLE_BUFFER_ADDR  0
+    #define DOUBLE_BUFFER_SIZE  0
+    #define NUMBER_OF_FIELDS    3
 #endif
 
 #define EW_USE_GRAPHICS_ACCELERATOR     1
-
 
 /* ******************************************************************************
    Following macros configure the memory area used for the Embedded Wizard heap
@@ -159,12 +150,10 @@
    EW_EXTRA_POOL_SECTION, EW_EXTRA_POOL_ADDR and EW_EXTRA_POOL_SIZE - These
    macros are used to define a second (additional) memory pool.
    **************************************************************************** */
-#define EW_MEMORY_POOL_ADDR      (FRAME_BUFFER_ADDR + FRAME_BUFFER_SIZE + DOUBLE_BUFFER_SIZE)
-#define EW_MEMORY_POOL_SIZE      SDRAM_SIZE_BYTES - FRAME_BUFFER_SIZE - DOUBLE_BUFFER_SIZE
+#define EW_MEMORY_POOL_SIZE      ( 8*1024*1024 )
 
 #define EW_EXTRA_POOL_ADDR       0
 #define EW_EXTRA_POOL_SIZE       0
-
 
 /* ******************************************************************************
    Following macros configure advance aspects of an Embedded Wizard application
@@ -219,7 +208,6 @@
 // #define EW_PRINT_PERF_COUNTERS
 // #define EW_USE_IMMEDIATE_GARBAGE_COLLECTION
 
-
 /* ******************************************************************************
    Following macros configure the size of diverse caches and buffers. Generally,
    the larger a cache or buffer, the better the performance of the application.
@@ -267,9 +255,9 @@
    **************************************************************************** */
 #define EW_MAX_STRING_CACHE_SIZE      0x4000
 #define EW_MAX_SURFACE_CACHE_SIZE   0x800000
-#define EW_MAX_GLYPH_SURFACE_WIDTH       256
-#define EW_MAX_GLYPH_SURFACE_HEIGHT      256
-#define EW_MAX_ISSUE_TASKS               100
+#define EW_MAX_GLYPH_SURFACE_WIDTH       512
+#define EW_MAX_GLYPH_SURFACE_HEIGHT      512
+#define EW_MAX_ISSUE_TASKS               256
 
 
 /* ******************************************************************************
@@ -332,14 +320,13 @@
    with the value 0 disables this function causing the off-screen surfaces to be
    released immediately if not needed anymore.
    **************************************************************************** */
-#define EW_LAZY_LOAD_BITMAPS                              0
-#define EW_LAZY_LOAD_BITMAPS_IF_ANIMATED_ONLY             0
-#define EW_DISCARD_BITMAPS                                0
-#define EW_DISCARD_BITMAPS_IF_ANIMATED_ONLY               0
+#define EW_LAZY_LOAD_BITMAPS                              1
+#define EW_LAZY_LOAD_BITMAPS_IF_ANIMATED_ONLY             1
+#define EW_DISCARD_BITMAPS                                1
+#define EW_DISCARD_BITMAPS_IF_ANIMATED_ONLY               1
 #define EW_DISCARD_BITMAPS_IF_NOT_USED_IN_CURRENT_UPDATE  0
 #define EW_DISCARD_BITMAPS_IF_NOT_USED_IN_RECENT_UPDATES  0
 #define EW_CACHE_OFFSCREEN_SURFACES                       0
-
 
 /* ******************************************************************************
    Following macro removes functionality dedicated to verify the correct function
@@ -355,7 +342,6 @@
    may affect the performance if the applications uses arrays extensively.
    **************************************************************************** */
 // #define EW_DONT_CHECK_INDEX
-
 
 /* ******************************************************************************
    Following macros removes function blocks from the Graphics Engine reducing so
@@ -396,7 +382,6 @@
 //#define EW_DONT_USE_BIDI_FUNCTIONS
 //#define EW_DONT_USE_INDEX8_SURFACES
 //#define EW_DONT_USE_RGB565_SURFACES
-
 
 #endif /* EWCONFIG_H */
 

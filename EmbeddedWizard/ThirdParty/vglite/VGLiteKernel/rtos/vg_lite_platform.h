@@ -2,7 +2,7 @@
 *
 *    The MIT License (MIT)
 *
-*    Copyright (c) 2014 - 2019 Vivante Corporation
+*    Copyright (c) 2014 - 2020 Vivante Corporation
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a
 *    copy of this software and associated documentation files (the "Software"),
@@ -30,23 +30,19 @@
 #include "stdint.h"
 #include "stdlib.h"
 
-#ifndef NULL
-#define	NULL	((void *)0)
-#endif
-
 #define _BAREMETAL 0
 
 /*!
- @brief Initialize the hardware mem setting.
- */
+@brief Initialize the hardware mem setting.
+*/
 void vg_lite_init_mem(uint32_t register_mem_base,
-          uint32_t gpu_mem_base,
-          volatile void * contiguous_mem_base,
-          uint32_t contiguous_mem_size);
+                      uint32_t gpu_mem_base,
+                      volatile void * contiguous_mem_base,
+                      uint32_t contiguous_mem_size);
 
 /*!
- @brief The hardware IRQ handler.
- */
-void vg_lite_IRQHandler();
+@brief The hardware IRQ handler.
+*/
+void vg_lite_IRQHandler(void);
 
 #endif

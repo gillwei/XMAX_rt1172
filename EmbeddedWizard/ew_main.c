@@ -66,7 +66,7 @@
 *******************************************************************************/
 
 #include "ewconfig.h"
-#include "ewmain.h"
+#include "ew_main.h"
 #include "Core.h"
 #include "Graphics.h"
 
@@ -86,7 +86,7 @@
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define EW_TASK_PRIORITY   ( TASK_PRIO_EMBEDDED_WIZARD )
-#define EW_TASK_STACK_SIZE ( 4 * 1024 )
+#define EW_TASK_STACK_SIZE ( 2048 )
 #define EW_TASK_NAME       "ew_task"
 
 /*--------------------------------------------------------------------
@@ -107,16 +107,16 @@
 
 /* memory pool */
 #ifdef EW_MEMORY_POOL_SECTION
-  EW_MEMORY_POOL_SECTION static unsigned long
-    EwMemory[ EW_MEMORY_POOL_SIZE / sizeof( unsigned long )];
-  #define EW_MEMORY_POOL_ADDR EwMemory
+    EW_MEMORY_POOL_SECTION static unsigned long EwMemory[ EW_MEMORY_POOL_SIZE / sizeof( unsigned long )];
+    #define EW_MEMORY_POOL_ADDR EwMemory
 #endif
 
 /* optional second memory pool */
 #ifdef EW_EXTRA_POOL_SECTION
-  EW_EXTRA_POOL_SECTION static unsigned long
-    EwExtraMemory[ EW_EXTRA_POOL_SIZE / sizeof( unsigned long )];
-  #define EW_EXTRA_POOL_ADDR EwExtraMemory
+    EW_EXTRA_POOL_SECTION static unsigned long EwExtraMemory[ EW_EXTRA_POOL_SIZE / sizeof( unsigned long )];
+    #define EW_EXTRA_POOL_ADDR EwExtraMemory
+#else
+    AT_BOARDSDRAM_SECTION( uint8_t EW_MEMORY_POOL_ADDR[EW_MEMORY_POOL_SIZE] );
 #endif
 
 static CoreRoot     RootObject;
@@ -137,8 +137,6 @@ static XDisplayInfo DisplayInfo;
 
 /* helper functions used within this module */
 static void EwUpdate( XViewport* aViewport, CoreRoot aApplication );
-static XEnum EwGetKeyCommand( void );
-
 
 /*--------------------------------------------------------------------
                               PROCEDURES
@@ -191,7 +189,6 @@ int EwInit( void )
 
   /* initialize the Graphics Engine and Runtime Environment */
   EwPrint( "Initialize Graphics Engine...                " );
-  EwConfigGraphicsEngine();
   CHECK_HANDLE( EwInitGraphicsEngine( 0 ));
 
   /* create the applications root object ... */
@@ -213,7 +210,6 @@ int EwInit( void )
 
   return 1;
 }
-
 
 /*******************************************************************************
 * FUNCTION:
@@ -253,7 +249,6 @@ void EwDone( void )
   #endif
 
   EwPrint( "Deinitialize Touch Driver...                 " );
-  // EwBspTouchDone();
   EwPrint( "[OK]\n" );
 
   /* deinitialize display */
@@ -288,71 +283,42 @@ void EwDone( void )
 *******************************************************************************/
 int EwProcess( void )
 {
-  int          timers  = 0;
-  int          signals = 0;
-  int          events  = 0;
-  int          devices = 0;
-  XEnum        cmd     = CoreKeyCodeNoKey;
-  // int          noOfTouch;
-  // XTouchEvent* touchEvent;
-  // int          touch;
-  // int          finger;
-  // XPoint       touchPos;
+int     timers  = 0;
+int     signals = 0;
+int     events  = 0;
+int     devices = 0;
+XEnum   cmd     = CoreKeyCodeNoKey;
 
-  /* process data of your device driver(s) and update the GUI
-     application by setting properties or by triggering events */
-  devices = DeviceDriver_ProcessData();
+/* process data of your device driver(s) and update the GUI
+   application by setting properties or by triggering events */
+devices = DeviceDriver_ProcessData();
 
-  /* receive keyboard inputs */
-  cmd = EwGetKeyCommand();
-
-  if ( cmd != CoreKeyCodeNoKey )
-  {
-    if ( cmd == CoreKeyCodePower )
-      return 0;
+/* receive keyboard inputs */
+if( cmd != CoreKeyCodeNoKey )
+    {
+    if( cmd == CoreKeyCodePower )
+        {
+        return 0;
+        }
 
     /* feed the application with a 'press' and 'release' event */
     events |= CoreRoot__DriveKeyboardHitting( RootObject, cmd, 0, 1 );
     events |= CoreRoot__DriveKeyboardHitting( RootObject, cmd, 0, 0 );
-  }
+    }
 
-  // /* receive (multi-) touch inputs and provide it to the application */
-  // noOfTouch = EwBspTouchGetEvents( &touchEvent );
+/* process expired timers */
+timers = EwProcessTimers();
 
-  // if ( noOfTouch > 0 )
-  // {
-  //   for ( touch = 0; touch < noOfTouch; touch++ )
-  //   {
-  //     /* get data out of the touch event */
-  //     finger     = touchEvent[ touch ].Finger;
-  //     touchPos.X = touchEvent[ touch ].XPos;
-  //     touchPos.Y = touchEvent[ touch ].YPos;
+/* process the pending signals */
+signals = EwProcessSignals();
 
-  //     /* begin of touch cycle */
-  //     if ( touchEvent[ touch ].State == EW_BSP_TOUCH_DOWN )
-  //       events |= CoreRoot__DriveMultiTouchHitting(  RootObject, 1, finger, touchPos );
-
-  //     /* movement during touch cycle */
-  //     else if ( touchEvent[ touch ].State == EW_BSP_TOUCH_MOVE )
-  //       events |= CoreRoot__DriveMultiTouchMovement( RootObject, finger, touchPos );
-
-  //     /* end of touch cycle */
-  //     else if ( touchEvent[ touch ].State == EW_BSP_TOUCH_UP )
-  //       events |= CoreRoot__DriveMultiTouchHitting(  RootObject, 0, finger, touchPos );
-  //   }
-  // }
-
-  /* process expired timers */
-  timers = EwProcessTimers();
-
-  /* process the pending signals */
-  signals = EwProcessSignals();
-
-  /* refresh the screen, if something has changed and draw its content */
-  if ( devices || timers || signals || events )
-  {
-    if ( CoreRoot__DoesNeedUpdate( RootObject ))
-      EwUpdate( Viewport, RootObject );
+/* refresh the screen, if something has changed and draw its content */
+if( devices || timers || signals || events )
+    {
+    if( CoreRoot__DoesNeedUpdate( RootObject ) )
+        {
+        EwUpdate( Viewport, RootObject );
+        }
 
     /* just for debugging purposes: check the memory structure */
     EwVerifyHeap();
@@ -362,23 +328,22 @@ int EwProcess( void )
 
     /* print current memory statistic to console interface */
     #ifdef EW_PRINT_MEMORY_USAGE
-      EwPrintProfilerStatistic( 0 );
+        EwPrintProfilerStatistic( 0 );
     #endif
 
     /* evaluate memory pools and print report */
     #ifdef EW_DUMP_HEAP
-      EwDumpHeap( 0 );
+        EwDumpHeap( 0 );
     #endif
-  }
-  else
-  {
+    }
+else
+    {
     /* otherwise sleep/suspend the UI application until a certain event occurs or a timer expires... */
     EwBspEventWait( EwNextTimerExpiration());
-  }
+    }
 
-  return 1;
+return 1;
 }
-
 
 /*******************************************************************************
 * FUNCTION:
@@ -445,43 +410,6 @@ static void EwUpdate( XViewport* aViewport, CoreRoot aApplication )
   }
 }
 
-
-/*******************************************************************************
-* FUNCTION:
-*   EwGetKeyCommand
-*
-* DESCRIPTION:
-*   The function EwGetKeyCommand reads the next key code from the console and
-*   translates it into an Embedded Wizard key code. The mapping between the key
-*   code from the console and the resulting Embedded Wizard key code can be
-*   adapted to the needs of your application.
-*
-* ARGUMENTS:
-*   None
-*
-* RETURN VALUE:
-*   Returns the next EmWi key code or CoreKeyCodeNoKey if no key code available.
-*
-*******************************************************************************/
-static XEnum EwGetKeyCommand( void )
-{
-  #if EW_USE_TERMINAL_INPUT == 1
-    switch ( EwBspConsoleGetCharacter())
-    {
-      case 0x65 : EwPrint("Key 'Exit' pressed\n");  return CoreKeyCodeExit;
-      case 0x38 : EwPrint("Key 'Up' pressed\n");    return CoreKeyCodeUp;
-      case 0x32 : EwPrint("Key 'Down' pressed\n");  return CoreKeyCodeDown;
-      case 0x36 : EwPrint("Key 'Right' pressed\n"); return CoreKeyCodeRight;
-      case 0x34 : EwPrint("Key 'Left' pressed\n");  return CoreKeyCodeLeft;
-      case 0x35 : EwPrint("Key 'OK' pressed\n");    return CoreKeyCodeOk;
-      case 0x6D : EwPrint("Key 'Menu' pressed\n");  return CoreKeyCodeMenu;
-      case 0x70 : EwPrint("Key 'Power' pressed\n"); return CoreKeyCodePower;
-    }
-  #endif
-  return CoreKeyCodeNoKey;
-}
-
-
 /*******************************************************************************
 * FUNCTION:
 *   EwPrintSystemInfo
@@ -499,57 +427,57 @@ static XEnum EwGetKeyCommand( void )
 *******************************************************************************/
 void EwPrintSystemInfo( void )
 {
-  EwPrint( "---------------------------------------------\n" );
-  EwPrint( "Target system                                %s      \n", PLATFORM_STRING );
-  EwPrint( "Color format                                 %s      \n", EW_FRAME_BUFFER_COLOR_FORMAT_STRING );
-  #if EW_MEMORY_POOL_SIZE > 0
-  EwPrint( "MemoryPool address                           0x%08X  \n", EW_MEMORY_POOL_ADDR );
-  EwPrint( "MemoryPool size                              %u bytes\n", EW_MEMORY_POOL_SIZE );
-  #endif
-  #if EW_EXTRA_POOL_SIZE > 0
-  EwPrint( "ExtraPool address                            0x%08X  \n", EW_EXTRA_POOL_ADDR );
-  EwPrint( "ExtraPool size                               %u bytes\n", EW_EXTRA_POOL_SIZE );
-  #endif
-  #if EW_USE_SCRATCHPAD_BUFFER == 1
-  EwPrint( "Scratch-pad buffer address                   0x%08X  \n", DisplayInfo.FrameBuffer );
-  EwPrint( "Scratch-pad buffer size                      %u pixel\n", DisplayInfo.BufferWidth * DisplayInfo.BufferHeight );
-  #else
-  EwPrint( "Framebuffer address                          0x%08X  \n", DisplayInfo.FrameBuffer );
-  #endif
-  #if EW_USE_DOUBLE_BUFFER == 1
-  EwPrint( "Doublebuffer address                         0x%08X  \n", DisplayInfo.DoubleBuffer );
-  #endif
-  #if EW_USE_OFFSCREEN_BUFFER == 1
-  EwPrint( "Off-screen buffer                            used    \n" );
-  #endif
-  EwPrint( "Framebuffer size                             %u x %u \n", DisplayInfo.BufferWidth, DisplayInfo.BufferHeight );
-  EwPrint( "EwScreenSize                                 %d x %d \n", EwScreenSize.X, EwScreenSize.Y );
-  EwPrint( "Graphics accelerator                         %s      \n", GRAPHICS_ACCELERATOR_STRING );
-  EwPrint( "Vector graphics support                      %s      \n", VECTOR_GRAPHICS_SUPPORT_STRING );
-  EwPrint( "Warp function support                        %s      \n", WARP_FUNCTION_SUPPORT_STRING );
-  EwPrint( "Index8 bitmap resource format                %s      \n", INDEX8_SURFACE_SUPPORT_STRING );
-  EwPrint( "RGB565 bitmap resource format                %s      \n", RGB565_SURFACE_SUPPORT_STRING );
-  EwPrint( "Bidirectional text support                   %s      \n", BIDI_TEXT_SUPPORT_STRING );
-  EwPrint( "Operating system                             %s      \n", OPERATING_SYSTEM_STRING );
-  EwPrint( "External flash device                        %s      \n", EXTERNAL_FLASH_STRING );
-  #ifdef EW_BITMAP_PIXEL_SECTION_NAME
-  EwPrint( "Linker section for bitmap pixel data         %s      \n", EW_STRINGIZE( EW_BITMAP_PIXEL_SECTION_NAME ));
-  #endif
-  #ifdef EW_FONT_PIXEL_SECTION_NAME
-  EwPrint( "Linker section for font pixel data           %s      \n", EW_STRINGIZE( EW_FONT_PIXEL_SECTION_NAME ));
-  #endif
-  EwPrint( "Toolchain                                    %s      \n", TOOLCHAIN_STRING );
-  #ifdef COMPILER_VERSION_STRING
-  EwPrint( "C-Compiler version                           %s      \n", COMPILER_VERSION_STRING );
-  #endif
-  EwPrint( "Build date and time                          %s, %s  \n", __DATE__, __TIME__ );
-  EwPrint( "Runtime Environment (RTE) version            %u.%02u \n", EW_RTE_VERSION >> 16, EW_RTE_VERSION & 0xFF );
-  EwPrint( "Graphics Engine (GFX) version                %u.%02u \n", EW_GFX_VERSION >> 16, EW_GFX_VERSION & 0xFF );
-  EwPrint( "Max surface cache size                       %u bytes\n", EW_MAX_SURFACE_CACHE_SIZE );
-  EwPrint( "Glyph cache size                             %u x %u \n", EW_MAX_GLYPH_SURFACE_WIDTH, EW_MAX_GLYPH_SURFACE_HEIGHT );
-  EwPrint( "Max issue tasks                              %u      \n", EW_MAX_ISSUE_TASKS );
-  EwPrint( "Surface rotation                             %u      \n", EW_SURFACE_ROTATION );
-  EwPrint( "---------------------------------------------\n" );
+EwPrint( "---------------------------------------------\n" );
+EwPrint( "Target system                                %s      \n", PLATFORM_STRING );
+EwPrint( "Color format                                 %s      \n", EW_FRAME_BUFFER_COLOR_FORMAT_STRING );
+#if EW_MEMORY_POOL_SIZE > 0
+EwPrint( "MemoryPool address                           0x%08X  \n", EW_MEMORY_POOL_ADDR );
+EwPrint( "MemoryPool size                              %u bytes\n", EW_MEMORY_POOL_SIZE );
+#endif
+#if EW_EXTRA_POOL_SIZE > 0
+EwPrint( "ExtraPool address                            0x%08X  \n", EW_EXTRA_POOL_ADDR );
+EwPrint( "ExtraPool size                               %u bytes\n", EW_EXTRA_POOL_SIZE );
+#endif
+#if EW_USE_SCRATCHPAD_BUFFER == 1
+EwPrint( "Scratch-pad buffer address                   0x%08X  \n", DisplayInfo.FrameBuffer );
+EwPrint( "Scratch-pad buffer size                      %u pixel\n", DisplayInfo.BufferWidth * DisplayInfo.BufferHeight );
+#else
+EwPrint( "Framebuffer address                          0x%08X  \n", DisplayInfo.FrameBuffer );
+#endif
+#if EW_USE_DOUBLE_BUFFER == 1
+EwPrint( "Doublebuffer address                         0x%08X  \n", DisplayInfo.DoubleBuffer );
+#endif
+#if EW_USE_OFFSCREEN_BUFFER == 1
+EwPrint( "Off-screen buffer                            used    \n" );
+#endif
+EwPrint( "Framebuffer size                             %u x %u \n", DisplayInfo.BufferWidth, DisplayInfo.BufferHeight );
+EwPrint( "EwScreenSize                                 %d x %d \n", EwScreenSize.X, EwScreenSize.Y );
+EwPrint( "Graphics accelerator                         %s      \n", GRAPHICS_ACCELERATOR_STRING );
+EwPrint( "Vector graphics support                      %s      \n", VECTOR_GRAPHICS_SUPPORT_STRING );
+EwPrint( "Warp function support                        %s      \n", WARP_FUNCTION_SUPPORT_STRING );
+EwPrint( "Index8 bitmap resource format                %s      \n", INDEX8_SURFACE_SUPPORT_STRING );
+EwPrint( "RGB565 bitmap resource format                %s      \n", RGB565_SURFACE_SUPPORT_STRING );
+EwPrint( "Bidirectional text support                   %s      \n", BIDI_TEXT_SUPPORT_STRING );
+EwPrint( "Operating system                             %s      \n", OPERATING_SYSTEM_STRING );
+EwPrint( "External flash device                        %s      \n", EXTERNAL_FLASH_STRING );
+#ifdef EW_BITMAP_PIXEL_SECTION_NAME
+EwPrint( "Linker section for bitmap pixel data         %s      \n", EW_STRINGIZE( EW_BITMAP_PIXEL_SECTION_NAME ));
+#endif
+#ifdef EW_FONT_PIXEL_SECTION_NAME
+EwPrint( "Linker section for font pixel data           %s      \n", EW_STRINGIZE( EW_FONT_PIXEL_SECTION_NAME ));
+#endif
+EwPrint( "Toolchain                                    %s      \n", TOOLCHAIN_STRING );
+#ifdef COMPILER_VERSION_STRING
+EwPrint( "C-Compiler version                           %s      \n", COMPILER_VERSION_STRING );
+#endif
+EwPrint( "Build date and time                          %s, %s  \n", __DATE__, __TIME__ );
+EwPrint( "Runtime Environment (RTE) version            %u.%02u \n", EW_RTE_VERSION >> 16, EW_RTE_VERSION & 0xFF );
+EwPrint( "Graphics Engine (GFX) version                %u.%02u \n", EW_GFX_VERSION >> 16, EW_GFX_VERSION & 0xFF );
+EwPrint( "Max surface cache size                       %u bytes\n", EW_MAX_SURFACE_CACHE_SIZE );
+EwPrint( "Glyph cache size                             %u x %u \n", EW_MAX_GLYPH_SURFACE_WIDTH, EW_MAX_GLYPH_SURFACE_HEIGHT );
+EwPrint( "Max issue tasks                              %u      \n", EW_MAX_ISSUE_TASKS );
+EwPrint( "Surface rotation                             %u      \n", EW_SURFACE_ROTATION );
+EwPrint( "---------------------------------------------\n" );
 }
 /* msy, mli */
 
@@ -610,7 +538,6 @@ else
     EwPrint( "[FAIL]\n" );
     }
 }
-
 
 /*********************************************************************
 *

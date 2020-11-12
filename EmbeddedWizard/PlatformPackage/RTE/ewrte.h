@@ -38,7 +38,7 @@
 #endif
 
 /* The current version of the Runtime Environment. */
-#define EW_RTE_VERSION 0x0009001E
+#define EW_RTE_VERSION 0x000A0000
 
 
 /* Assigning zero (0) to the EW_PRINT_MEMORY_USAGE macro should turn it off
@@ -654,9 +654,12 @@ typedef struct _XClassVariant XClassVariant;
     &__vmt_##aSuperClass,                                                      \
     _vof_##aClass,                                                             \
     sizeof( struct _obj_##aClass ),                                            \
-    { (int)&((aClass)0)->aGCInfo0, (int)&((aClass)0)->aGCInfo1,                \
-      (int)&((aClass)0)->aGCInfo2, (int)&((aClass)0)->aGCInfo3,                \
-      (int)&((aClass)0)->aGCInfo4, (int)&((aClass)0)->aGCInfo5 },              \
+    { (int)(unsigned long)&((aClass)0)->aGCInfo0,                              \
+      (int)(unsigned long)&((aClass)0)->aGCInfo1,                              \
+      (int)(unsigned long)&((aClass)0)->aGCInfo2,                              \
+      (int)(unsigned long)&((aClass)0)->aGCInfo3,                              \
+      (int)(unsigned long)&((aClass)0)->aGCInfo4,                              \
+      (int)(unsigned long)&((aClass)0)->aGCInfo5 },                            \
     aClass##__Init,                                                            \
     aClass##__ReInit,                                                          \
     aClass##__Done,
@@ -1692,10 +1695,14 @@ int EwIsMemory
 *  XInt16     - 16 bit signed integer. Stores values in range -32768 .. +32767.
 *  XInt32     - 32 bit signed integer. Stores values in range -2^31.. 
 *    (+2^31 - 1).
+*  XInt64     - 64 bit signed integer. Stores values in range -2^63.. 
+*    (+2^63 - 1).
 *  XUInt8     - 8 bit unsigned integer. Stores values in range 0 .. +255.
 *  XUInt16    - 16 bit unsigned integer. Stores values in range 0 .. +65535.
 *  XUInt32    - 32 bit unsigned integer. Stores values in range 0 .. 
 *    (+2^32 - 1).
+*  XUInt64    - 64 bit unsigned integer. Stores values in range 0 .. 
+*    (+2^64 - 1).
 *  XBool      - 8 bit Boolean. Stores 0 (zero) if the boolean value is 'false'
 *    or not 0 if the value is 'true'.
 *  XEnum      - 32 bit enumeration. An enumeration can store an 'one of...' 
@@ -1711,33 +1718,37 @@ int EwIsMemory
 *
 ******************************************************************************/
 #if defined __LP64__ || defined _LP64
-  typedef signed char    XInt8;
-  typedef signed short   XInt16;
-  typedef signed int     XInt32;
-  typedef unsigned char  XUInt8;
-  typedef unsigned short XUInt16;
-  typedef unsigned int   XUInt32;
-  typedef char           XBool;
-  typedef unsigned int   XEnum;
-  typedef unsigned int   XSet;
-  typedef float          XFloat;
-  typedef unsigned short XChar;
-  typedef int            XLangId;
-  typedef unsigned int   XStylesSet;
+  typedef signed char        XInt8;
+  typedef signed short       XInt16;
+  typedef signed int         XInt32;
+  typedef signed long        XInt64;
+  typedef unsigned char      XUInt8;
+  typedef unsigned short     XUInt16;
+  typedef unsigned int       XUInt32;
+  typedef unsigned long      XUInt64;
+  typedef char               XBool;
+  typedef unsigned int       XEnum;
+  typedef unsigned int       XSet;
+  typedef float              XFloat;
+  typedef unsigned short     XChar;
+  typedef int                XLangId;
+  typedef unsigned int       XStylesSet;
 #else
-  typedef signed char    XInt8;
-  typedef signed short   XInt16;
-  typedef signed long    XInt32;
-  typedef unsigned char  XUInt8;
-  typedef unsigned short XUInt16;
-  typedef unsigned long  XUInt32;
-  typedef char           XBool;
-  typedef unsigned long  XEnum;
-  typedef unsigned long  XSet;
-  typedef float          XFloat;
-  typedef unsigned short XChar;
-  typedef int            XLangId;
-  typedef unsigned long  XStylesSet;
+  typedef signed char        XInt8;
+  typedef signed short       XInt16;
+  typedef signed long        XInt32;
+  typedef signed long long   XInt64;
+  typedef unsigned char      XUInt8;
+  typedef unsigned short     XUInt16;
+  typedef unsigned long      XUInt32;
+  typedef unsigned long long XUInt64;
+  typedef char               XBool;
+  typedef unsigned long      XEnum;
+  typedef unsigned long      XSet;
+  typedef float              XFloat;
+  typedef unsigned short     XChar;
+  typedef int                XLangId;
+  typedef unsigned long      XStylesSet;
 #endif
 
 
@@ -1858,11 +1869,11 @@ typedef struct
 
 /******************************************************************************
 * TYPE: 
-*   XVariantOfInt8,   XVariantOfInt16,  XVariantOfInt16,  XVariantOfUInt8, 
-*   XVariantOfUInt16, XVariantOfUInt32, XVariantOfBool,   XVariantOfEnum, 
-*   XVariantOfSet,    XVariantOfFloat,  XVariantOfChar,   XVariantOfColor,
-*   XVariantOfPoint,  XVariantOfRect,   XVariantOfString, XVariantOfLanguage,
-*   XVariantOfStylesSet
+*   XVariantOfInt8,   XVariantOfInt16,    XVariantOfInt32,    XVariantOfUInt8, 
+*   XVariantOfUInt16, XVariantOfUInt32,   XVariantOfInt64,    XVariantOfUInt64, 
+*   XVariantOfBool,   XVariantOfEnum,     XVariantOfSet,      XVariantOfFloat, 
+*   XVariantOfChar,   XVariantOfColor,    XVariantOfPoint,    XVariantOfRect,   
+*   XVariantOfString, XVariantOfLanguage, XVariantOfStylesSet
 *
 * DESCRIPTION:
 *   The XVariantOfXXX type definitions support the multilanguage constants.
@@ -1903,6 +1914,12 @@ typedef struct
 typedef struct
 {
   int               LangId;
+  XInt64            Value;
+} XVariantOfInt64;
+
+typedef struct
+{
+  int               LangId;
   XUInt8            Value;
 } XVariantOfUInt8;
 
@@ -1917,6 +1934,12 @@ typedef struct
   int               LangId;
   XUInt32           Value;
 } XVariantOfUInt32;
+
+typedef struct
+{
+  int               LangId;
+  XUInt64           Value;
+} XVariantOfUInt64;
 
 typedef struct
 {
@@ -2451,6 +2474,26 @@ XFloat EwMathCos
 
 /*******************************************************************************
 * FUNCTION:
+*   EwMathTan
+*
+* DESCRIPTION:
+*   The function EwMathTan() implements the Chora math_tan() function. 
+*
+* ARGUMENTS:
+*   aAngle - An angle in degree.
+*
+* RETURN VALUE:
+*   Returns the determinated tangent value.
+*
+*******************************************************************************/
+XFloat EwMathTan
+(
+  XFloat            aAngle
+);
+
+
+/*******************************************************************************
+* FUNCTION:
 *   EwMathArcSin
 *
 * DESCRIPTION:
@@ -2488,6 +2531,47 @@ XFloat EwMathArcSin
 XFloat EwMathArcCos
 (
   XFloat            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathArcTan
+*
+* DESCRIPTION:
+*   The function EwMathArcTan() implements the Chora math_atan() function. 
+*
+* ARGUMENTS:
+*   aValue - Value to calculate the arc tangent.
+*
+* RETURN VALUE:
+*   Returns the determinated angle in the range -90 .. +90 degress.
+*
+*******************************************************************************/
+XFloat EwMathArcTan
+(
+  XFloat            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathArcTan2
+*
+* DESCRIPTION:
+*   The function EwMathArcTan2() implements the Chora math_atan2() function. 
+*
+* ARGUMENTS:
+*   aY, aX - Values representing the y- and x-coordinates.
+*
+* RETURN VALUE:
+*   Returns the determinated angle in the range -180 .. +180 degress.
+*
+*******************************************************************************/
+XFloat EwMathArcTan2
+(
+  XFloat            aY,
+  XFloat            aX
 );
 
 
@@ -2532,6 +2616,69 @@ XFloat EwMathPow
 (
   XFloat            aA,
   XFloat            aB
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathExp
+*
+* DESCRIPTION:
+*   The function EwMathExp() implements the Chora math_exp() function. It
+*   calculates the base 'e' exponential function of the given value aValue.
+*
+* ARGUMENTS:
+*   aValue - The value to calculate the e ^ aValue
+*
+* RETURN VALUE:
+*   Returns the determinated exponential value of aValue.
+*
+*******************************************************************************/
+XFloat EwMathExp
+(
+  XFloat            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathLog
+*
+* DESCRIPTION:
+*   The function EwMathLog() implements the Chora math_log() function. It
+*   calculates the natural (base 'e') logarithm of the given value aValue.
+*
+* ARGUMENTS:
+*   aValue - The value to calculate the base 'e' logarithm.
+*
+* RETURN VALUE:
+*   Returns the determinated logarithm value of aValue.
+*
+*******************************************************************************/
+XFloat EwMathLog
+(
+  XFloat            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathLog10
+*
+* DESCRIPTION:
+*   The function EwMathLog10() implements the Chora math_log10() function. It
+*   calculates the common (base 10) logarithm of the given value aValue.
+*
+* ARGUMENTS:
+*   aValue - The value to calculate the base 10 logarithm.
+*
+* RETURN VALUE:
+*   Returns the determinated logarithm value of aValue.
+*
+*******************************************************************************/
+XFloat EwMathLog10
+(
+  XFloat            aValue
 );
 
 
@@ -2638,6 +2785,727 @@ XFloat EwMathFloor
 *
 *******************************************************************************/
 XFloat EwMathCeil
+(
+  XFloat            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetInt32Min
+*
+* DESCRIPTION:
+*   The function EwGetInt32Min() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XInt32 values.
+*
+*******************************************************************************/
+XInt32 EwGetInt32Min
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetUInt32Min
+*
+* DESCRIPTION:
+*   The function EwGetUInt32Min() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XUInt32 values.
+*
+*******************************************************************************/
+XUInt32 EwGetUInt32Min
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetInt64Min
+*
+* DESCRIPTION:
+*   The function EwGetInt64Min() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XInt64 values.
+*
+*******************************************************************************/
+XInt64 EwGetInt64Min
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetUInt64Min
+*
+* DESCRIPTION:
+*   The function EwGetUInt64Min() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XUInt64 values.
+*
+*******************************************************************************/
+XUInt64 EwGetUInt64Min
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetFloatMin
+*
+* DESCRIPTION:
+*   The function EwGetFloatMin() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XFloat values.
+*
+*******************************************************************************/
+XFloat EwGetFloatMin
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetColorMin
+*
+* DESCRIPTION:
+*   The function EwGetColorMin() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XColor values.
+*
+*******************************************************************************/
+XColor EwGetColorMin
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetPointMin
+*
+* DESCRIPTION:
+*   The function EwGetPointMin() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XPoint values.
+*
+*******************************************************************************/
+XPoint EwGetPointMin
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetRectMin
+*
+* DESCRIPTION:
+*   The function EwGetRectMin() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XRect values.
+*
+*******************************************************************************/
+XRect EwGetRectMin
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetInt32Max
+*
+* DESCRIPTION:
+*   The function EwGetInt32Max() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XInt32 values.
+*
+*******************************************************************************/
+XInt32 EwGetInt32Max
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetUInt32Max
+*
+* DESCRIPTION:
+*   The function EwGetUInt32Max() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XUInt32 values.
+*
+*******************************************************************************/
+XUInt32 EwGetUInt32Max
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetInt64Max
+*
+* DESCRIPTION:
+*   The function EwGetInt64Max() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XInt64 values.
+*
+*******************************************************************************/
+XInt64 EwGetInt64Max
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetUInt64Max
+*
+* DESCRIPTION:
+*   The function EwGetUInt64Max() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XUInt64 values.
+*
+*******************************************************************************/
+XUInt64 EwGetUInt64Max
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetFloatMax
+*
+* DESCRIPTION:
+*   The function EwGetFloatMax() implements the Chora math_min() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the minimum.
+*
+* RETURN VALUE:
+*   Returns the minimum of the given aCount XFloat values.
+*
+*******************************************************************************/
+XFloat EwGetFloatMax
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetColorMax
+*
+* DESCRIPTION:
+*   The function EwGetColorMax() implements the Chora math_max() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the maximum.
+*
+* RETURN VALUE:
+*   Returns the maximum of the given aCount XColor values.
+*
+*******************************************************************************/
+XColor EwGetColorMax
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetPointMax
+*
+* DESCRIPTION:
+*   The function EwGetPointMax() implements the Chora math_max() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the maximum.
+*
+* RETURN VALUE:
+*   Returns the maximum of the given aCount XPoint values.
+*
+*******************************************************************************/
+XPoint EwGetPointMax
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetRectMax
+*
+* DESCRIPTION:
+*   The function EwGetRectMax() implements the Chora math_max() function. 
+*
+* ARGUMENTS:
+*   aCount - Number of values to estimate the maximum.
+*
+* RETURN VALUE:
+*   Returns the maximum of the given aCount XRect values.
+*
+*******************************************************************************/
+XRect EwGetRectMax
+(
+  int               aCount,
+  ...
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetInt32Abs
+*
+* DESCRIPTION:
+*   The function EwGetInt32Abs() implements the Chora int8.abs, int16.abs, 
+*   int32.abs instant properties.
+*
+* ARGUMENTS:
+*   aValue - A value to calculate its absolute value.
+*
+* RETURN VALUE:
+*   Returns the absolute value of aValue.
+*
+*******************************************************************************/
+XInt32 EwGetInt32Abs
+(
+  XInt32            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetInt64Abs
+*
+* DESCRIPTION:
+*   The function EwGetInt64Abs() implements the Chora int8.abs, int16.abs, 
+*   int64.abs instant properties.
+*
+* ARGUMENTS:
+*   aValue - A value to calculate its absolute value.
+*
+* RETURN VALUE:
+*   Returns the absolute value of aValue.
+*
+*******************************************************************************/
+XInt64 EwGetInt64Abs
+(
+  XInt64            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetFloatAbs
+*
+* DESCRIPTION:
+*   The function EwGetFloatAbs() implements the Chora float.abs instant property. 
+*
+* ARGUMENTS:
+*   aValue - A value to calculate its absolute value.
+*
+* RETURN VALUE:
+*   Returns the absolute value of aValue.
+*
+*******************************************************************************/
+XFloat EwGetFloatAbs
+(
+  XFloat            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetPointAbs
+*
+* DESCRIPTION:
+*   The function EwGetPointAbs() implements the Chora point.abs instant 
+*   property.
+*
+* ARGUMENTS:
+*   aValue - A value to calculate its absolute value.
+*
+* RETURN VALUE:
+*   Returns the absolute value of aValue.
+*
+*******************************************************************************/
+XPoint EwGetPointAbs
+(
+  XPoint            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetRectAbs
+*
+* DESCRIPTION:
+*   The function EwGetRectAbs() implements the Chora rect.abs instant 
+*   property.
+*
+* ARGUMENTS:
+*   aValue - A value to calculate its absolute value.
+*
+* RETURN VALUE:
+*   Returns the absolute value of aValue.
+*
+*******************************************************************************/
+XRect EwGetRectAbs
+(
+  XRect             aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetInt32UAbs
+*
+* DESCRIPTION:
+*   The function EwGetInt32UAbs() implements the Chora int8.uabs, int16.uabs, 
+*   int32.uabs instant properties.
+*
+* ARGUMENTS:
+*   aValue - A value to calculate its absolute value.
+*
+* RETURN VALUE:
+*   Returns the absolute value of aValue.
+*
+*******************************************************************************/
+XUInt32 EwGetInt32UAbs
+(
+  XInt32            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetInt64UAbs
+*
+* DESCRIPTION:
+*   The function EwGetInt64UAbs() implements the Chora int8.uabs, int16.uabs, 
+*   int64.uabs instant properties.
+*
+* ARGUMENTS:
+*   aValue - A value to calculate its absolute value.
+*
+* RETURN VALUE:
+*   Returns the absolute value of aValue.
+*
+*******************************************************************************/
+XUInt64 EwGetInt64UAbs
+(
+  XInt64            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwNewFloatNaN
+*
+* DESCRIPTION:
+*   The function EwNewFloatNaN() return the value corresponding to float NAN.
+*
+*   EwNewFloatNaN() implements the Chora instant constructor: 
+*   'float_nan()'.
+*
+* ARGUMENTS:
+*   None
+*
+* RETURN VALUE:
+*   Returns the initialized float value.
+*
+*******************************************************************************/
+XFloat EwNewFloatNaN
+( 
+  void
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwNewFloatInfP
+*
+* DESCRIPTION:
+*   The function EwNewFloatInfP() return the value corresponding to float +INF.
+*
+*   EwNewFloatInfP() implements the Chora instant constructor: 
+*   'float_infp()'.
+*
+* ARGUMENTS:
+*   None
+*
+* RETURN VALUE:
+*   Returns the initialized float value.
+*
+*******************************************************************************/
+XFloat EwNewFloatInfP
+( 
+  void
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwNewFloatInfN
+*
+* DESCRIPTION:
+*   The function EwNewFloatInfN() return the value corresponding to float -INF.
+*
+*   EwNewFloatInfN() implements the Chora instant constructor: 
+*   'float_infn()'.
+*
+* ARGUMENTS:
+*   None
+*
+* RETURN VALUE:
+*   Returns the initialized float value.
+*
+*******************************************************************************/
+XFloat EwNewFloatInfN
+( 
+  void
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwIsFloatNaN
+*
+* DESCRIPTION:
+*   The function EwIsFloatNaN() implements the Chora float.isnan instant 
+*   property.
+*
+* ARGUMENTS:
+*   aValue - A value to test whether it is 'not a number'.
+*
+* RETURN VALUE:
+*   Returns != 0 if the given value is not a number.
+*
+*******************************************************************************/
+XBool EwIsFloatNaN
+(
+  XFloat            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwIsFloatInf
+*
+* DESCRIPTION:
+*   The function EwIsFloatInf() implements the Chora float.isinf instant 
+*   property.
+*
+* ARGUMENTS:
+*   aValue - A value to test whether it is a positive/negative infinite value.
+*
+* RETURN VALUE:
+*   Returns != 0 if the given value is +/- infinite.
+*
+*******************************************************************************/
+XBool EwIsFloatInf
+(
+  XFloat            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwIsFloatInfP
+*
+* DESCRIPTION:
+*   The function EwIsFloatInfP() implements the Chora float.isinfp instant 
+*   property.
+*
+* ARGUMENTS:
+*   aValue - A value to test whether it is a positive infinite value.
+*
+* RETURN VALUE:
+*   Returns != 0 if the given value is + infinite.
+*
+*******************************************************************************/
+XBool EwIsFloatInfP
+(
+  XFloat            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwIsFloatInfN
+*
+* DESCRIPTION:
+*   The function EwIsFloatInfN() implements the Chora float.isinfn instant 
+*   property.
+*
+* ARGUMENTS:
+*   aValue - A value to test whether it is a negative infinite value.
+*
+* RETURN VALUE:
+*   Returns != 0 if the given value is - infinite.
+*
+*******************************************************************************/
+XBool EwIsFloatInfN
+(
+  XFloat            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathLength
+*
+* DESCRIPTION:
+*   The function EwMathLength() implements the Chora math_length() built-in
+*   function intended to calculate the length of a given vector.
+*
+* ARGUMENTS:
+*   aX, aY : The size of the vector in X and Y direction.
+*
+* RETURN VALUE:
+*   Returns the length of the vector.
+*
+*******************************************************************************/
+XFloat EwMathLength
+(
+  XFloat            aX,
+  XFloat            aY
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathLengthPoint
+*
+* DESCRIPTION:
+*   The function EwMathLengthPoint() implements the Chora math_length() built-
+*   in function intended to calculate the length of a given vector.
+*
+* ARGUMENTS:
+*   aPoint : The size of the vector in X and Y direction.
+*
+* RETURN VALUE:
+*   Returns the length of the vector.
+*
+*******************************************************************************/
+XFloat EwMathLengthPoint
+(
+  XPoint            aPoint
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathTrunc
+*
+* DESCRIPTION:
+*   The function EwMathTrunc() implements the Chora math_trunc() built-in 
+*   function intended to calculate the integer part of a given number by 
+*   removing the fractional digits.
+*
+* ARGUMENTS:
+*   aValue : The value to calculate the integer part.
+*
+* RETURN VALUE:
+*   Returns the integer part of the number.
+*
+*******************************************************************************/
+XFloat EwMathTrunc
+(
+  XFloat            aValue
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwMathFract
+*
+* DESCRIPTION:
+*   The function EwMathFract() implements the Chora math_fract() built-in 
+*   function intended to calculate the fractional part of the given number.
+*
+* ARGUMENTS:
+*   aValue : The value to calculate the fractional part.
+*
+* RETURN VALUE:
+*   Returns the fractional part of the number.
+*
+*******************************************************************************/
+XFloat EwMathFract
 (
   XFloat            aValue
 );
@@ -2968,6 +3836,27 @@ int EwCompColor
 
 /*******************************************************************************
 * FUNCTION:
+*   EwIsColorNull
+*
+* DESCRIPTION:
+*   The function EwIsColorNull() returns != 0 if the given color aColor does
+*   contain the value #00000000. Otherwise the function returns 0.
+*
+* ARGUMENTS:
+*   aColor - Color to verify.
+*
+* RETURN VALUE:
+*   Returns != 0 if the color is #00000000.
+*
+*******************************************************************************/
+XBool EwIsColorNull
+( 
+  XColor            aColor
+);
+
+
+/*******************************************************************************
+* FUNCTION:
 *   EwGetVariantOfColor
 *
 * DESCRIPTION:
@@ -3043,6 +3932,27 @@ int EwCompPoint
 ( 
   XPoint            aPoint1, 
   XPoint            aPoint2 
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwIsPointNull
+*
+* DESCRIPTION:
+*   The function EwIsPointNull() returns != 0 if the given point aPoint does
+*   contain the value <0,0>. Otherwise the function returns 0.
+*
+* ARGUMENTS:
+*   aPoint - Point to verify.
+*
+* RETURN VALUE:
+*   Returns != 0 if the point is <0,0>.
+*
+*******************************************************************************/
+XBool EwIsPointNull
+( 
+  XPoint            aPoint
 );
 
 
@@ -3279,6 +4189,27 @@ int EwCompRect
 ( 
   XRect             aRect1, 
   XRect             aRect2 
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwIsRectNull
+*
+* DESCRIPTION:
+*   The function EwIsRectNull() returns != 0 if the given rectangle aRect does
+*   contain the value <0,0,0,0>. Otherwise the function returns 0.
+*
+* ARGUMENTS:
+*   aRect - Rectangle to verify.
+*
+* RETURN VALUE:
+*   Returns != 0 if the rectangle is <0,0,0,0>.
+*
+*******************************************************************************/
+XBool EwIsRectNull
+( 
+  XRect             aRect
 );
 
 
@@ -3803,6 +4734,58 @@ XRect EwSetRectY2
 
 /*******************************************************************************
 * FUNCTION:
+*   EwSetRectX
+*
+* DESCRIPTION:
+*   The function EwSetRectX() changes the X origin of the given rectangle to 
+*   the value aX.
+*
+*   EwSetRectX() implements the write access to the Chora instant property 
+*   'rect.x'.
+*
+* ARGUMENTS:
+*   aRect - The rectangle to change the origin.
+*   aX    - The new value for the rectangles origin X.
+*
+* RETURN VALUE:
+*   Returns a new rectangle with the changed origin.
+*
+*******************************************************************************/
+XRect EwSetRectX
+( 
+  XRect             aRect, 
+  XInt32            aX 
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwSetRectY
+*
+* DESCRIPTION:
+*   The function EwSetRectY() changes the Y origin of the given rectangle to 
+*   the value aY.
+*
+*   EwSetRectY() implements the write access to the Chora instant property 
+*   'rect.y'.
+*
+* ARGUMENTS:
+*   aRect - The rectangle to change the origin.
+*   aY    - The new value for the rectangles origin Y.
+*
+* RETURN VALUE:
+*   Returns a new rectangle with the changed origin.
+*
+*******************************************************************************/
+XRect EwSetRectY
+( 
+  XRect             aRect, 
+  XInt32            aY 
+);
+
+
+/*******************************************************************************
+* FUNCTION:
 *   EwSetRectW
 *
 * DESCRIPTION:
@@ -3992,6 +4975,28 @@ int EwCompRef
 
 /*******************************************************************************
 * FUNCTION:
+*   EwIsRefNull
+*
+* DESCRIPTION:
+*   The function EwIsRefNull() returns != 0 if the given reference aRef does 
+*   not refer any valid property (it is NULL). Otherwise the function returns
+*   0.
+*
+* ARGUMENTS:
+*   aRef - Reference to verify.
+*
+* RETURN VALUE:
+*   Returns != 0 if the reference is NULL.
+*
+*******************************************************************************/
+XBool EwIsRefNull
+( 
+  XRef              aRef
+);
+
+
+/*******************************************************************************
+* FUNCTION:
 *   EwOnGetInt8
 *
 * DESCRIPTION:
@@ -4059,6 +5064,28 @@ XInt32 EwOnGetInt32
 );
 
 
+/*******************************************************************************
+* FUNCTION:
+*   EwOnGetInt64
+*
+* DESCRIPTION:
+*   The function EwOnGetInt64() will be called in order to read an int64 
+*   property referenced by the aRef argument. The access to the property will
+*   be done by calling the properties own OnGet() method. The value returned 
+*   from the OnGet() method will be passed back to the caller.
+*
+* ARGUMENTS:
+*   aRef - Reference to an int64 property.
+*
+* RETURN VALUE:
+*   Returns the value of the property referenced by aRef.
+*
+*******************************************************************************/
+XInt64 EwOnGetInt64
+( 
+  XRef              aRef 
+);
+
 
 /*******************************************************************************
 * FUNCTION:
@@ -4124,6 +5151,29 @@ XUInt16 EwOnGetUInt16
 *
 *******************************************************************************/
 XUInt32 EwOnGetUInt32
+( 
+  XRef              aRef 
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwOnGetUInt64
+*
+* DESCRIPTION:
+*   The function EwOnGetUInt64() will be called in order to read an uint64 
+*   property referenced by the aRef argument. The access to the property will 
+*   be done by calling the properties own OnGet() method. The value returned 
+*   from the OnGet() method will be passed back to the caller.
+*
+* ARGUMENTS:
+*   aRef - Reference to an uint64 property.
+*
+* RETURN VALUE:
+*   Returns the value of the property referenced by aRef.
+*
+*******************************************************************************/
+XUInt64 EwOnGetUInt64
 ( 
   XRef              aRef 
 );
@@ -4548,6 +5598,30 @@ void EwOnSetInt32
 
 /*******************************************************************************
 * FUNCTION:
+*   EwOnSetInt64
+*
+* DESCRIPTION:
+*   The function EwOnSetInt64() will be called in order to assign a value to an
+*   int64 property referenced by the aRef argument. The access to the property 
+*   will be done by calling the properties own OnSet() method.
+*
+* ARGUMENTS:
+*   aRef   - Reference to an int64 property.
+*   aValue - The value to be assigned to the property.
+*
+* RETURN VALUE:
+*   None
+*
+*******************************************************************************/
+void EwOnSetInt64
+( 
+  XRef              aRef, 
+  XInt64            aValue 
+);
+
+
+/*******************************************************************************
+* FUNCTION:
 *   EwOnSetUInt8
 *
 * DESCRIPTION:
@@ -4615,6 +5689,30 @@ void EwOnSetUInt32
 ( 
   XRef              aRef, 
   XUInt32           aValue 
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwOnSetUInt64
+*
+* DESCRIPTION:
+*   The function EwOnSetUInt64() will be called in order to assign a value to an
+*   uint64 property referenced by the aRef argument. The access to the property 
+*   will be done by calling the properties own OnSet() method.
+*
+* ARGUMENTS:
+*   aRef   - Reference to an uint64 property.
+*   aValue - The value to be assigned to the property.
+*
+* RETURN VALUE:
+*   None
+*
+*******************************************************************************/
+void EwOnSetUInt64
+( 
+  XRef              aRef, 
+  XUInt64           aValue 
 );
 
 
@@ -5028,6 +6126,27 @@ int EwCompSlot
 ( 
   XSlot             aSlot1, 
   XSlot             aSlot2 
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwIsSlotNull
+*
+* DESCRIPTION:
+*   The function EwIsSlotNull() returns != 0 if the given slot aSlot does not
+*   refer any valid slot (it is NULL). Otherwise the function returns 0.
+*
+* ARGUMENTS:
+*   aSlot - Slot to verify.
+*
+* RETURN VALUE:
+*   Returns != 0 if the slot is NULL.
+*
+*******************************************************************************/
+XBool EwIsSlotNull
+( 
+  XSlot             aSlot 
 );
 
 
@@ -5609,10 +6728,10 @@ XLangId EwGetLanguage
 *   aLangId - The ID of the desired language.
 *
 * RETURN VALUE:
-*   None
+*   Returns the assigned aLangId value.
 *
 *******************************************************************************/
-void EwSetLanguage
+XLangId EwSetLanguage
 ( 
   XLangId           aLangId 
 );
@@ -5651,10 +6770,10 @@ XStylesSet EwGetStyles
 *   aStylesSet - The new styles set.
 *
 * RETURN VALUE:
-*   None
+*   Returns the assigned aStylesSet value.
 *
 *******************************************************************************/
-void EwSetStyles
+XStylesSet EwSetStyles
 ( 
   XStylesSet        aStylesSet
 );
@@ -5860,6 +6979,34 @@ XInt32 EwGetVariantOfInt32
 
 /*******************************************************************************
 * FUNCTION:
+*   EwGetVariantOfInt64
+*
+* DESCRIPTION:
+*   The function EwGetVariantOfInt64() will be called to determinate a value
+*   of a multilingual/multivariant constant depending on the currently selected
+*   language and the styles set.
+*
+*   If the currently selected language could not be found in the multilingual
+*   constant, the function returns the value corresponding to the default 
+*   language (LangId == 0). In case of a multivariant constant, the function
+*   evaluates the variants in order to find one, which fits the styles currently
+*   active in the styles set.
+*
+* ARGUMENTS:
+*   aVariants - A pointer to the constant containing multiple int64 values.
+*
+* RETURN VALUE:
+*   Returns the determinated int64 value.
+*
+*******************************************************************************/
+XInt64 EwGetVariantOfInt64
+( 
+  const XVariant* aConstant
+);
+
+
+/*******************************************************************************
+* FUNCTION:
 *   EwGetVariantOfUInt8
 *
 * DESCRIPTION:
@@ -5937,6 +7084,34 @@ XUInt16 EwGetVariantOfUInt16
 *
 *******************************************************************************/
 XUInt32 EwGetVariantOfUInt32
+( 
+  const XVariant* aConstant
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetVariantOfUInt64
+*
+* DESCRIPTION:
+*   The function EwGetVariantOfUInt64() will be called to determinate a value
+*   of a multilingual/multivariant constant depending on the currently selected
+*   language and the styles set.
+*
+*   If the currently selected language could not be found in the multilingual
+*   constant, the function returns the value corresponding to the default 
+*   language (LangId == 0). In case of a multivariant constant, the function
+*   evaluates the variants in order to find one, which fits the styles currently
+*   active in the styles set.
+*
+* ARGUMENTS:
+*   aVariants - A pointer to the constant containing multiple uint64 values.
+*
+* RETURN VALUE:
+*   Returns the determinated uint64 value.
+*
+*******************************************************************************/
+XUInt64 EwGetVariantOfUInt64
 ( 
   const XVariant* aConstant
 );
@@ -6188,6 +7363,72 @@ XString EwNewStringUInt
 XString EwNewStringInt
 ( 
   XInt32            aValue, 
+  XInt32            aCount,
+  XInt32            aRadix
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwNewStringUInt64
+*
+* DESCRIPTION:
+*   The function EwNewStringUInt64() converts the given unsigned number aValue 
+*   in a string and returns the result. The function adds leading zeros '0' 
+*   until the resulted string has reached the length given in the aCount 
+*   argument.
+*
+*   EwNewStringUInt64() implements the Chora instant constructor: 
+*   'string(aValue,aNoOfDigits)'.
+*
+* ARGUMENTS:
+*   aValue - Unsigned 64 bit value to be converted to string.
+*   aCount - Desired length of the resulted string.
+*   aRadix - Controls the format of the resulting string. This parameter can
+*     assume values 2, 8, 10 or 16. Accordingly the number is converted in a
+*     binary, octal, decimal or hexadecimal notation.
+*
+* RETURN VALUE:
+*   Returns a string containing the given number aValue converted in notation
+*   according to the parameter aRadix.
+*
+*******************************************************************************/
+XString EwNewStringUInt64
+( 
+  XUInt64           aValue, 
+  XInt32            aCount,
+  XInt32            aRadix
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwNewStringInt64
+*
+* DESCRIPTION:
+*   The function EwNewStringInt64() converts the given signed number aValue in a
+*   string and returns the result. The function adds leading zeros '0' until the
+*   resulted string has reached the length given in the aCount argument. If the
+*   number is negative, the function adds '-' minus sign.
+*
+*   EwNewStringInt() implements the Chora instant constructor: 
+*   'string(aValue,aNoOfDigits,aRadix)'.
+*
+* ARGUMENTS:
+*   aValue - Signed 64 bit value to be converted to string.
+*   aCount - Desired length of the resulted string.
+*   aRadix - Controls the format of the resulting string. This parameter can
+*     assume values 2, 8, 10 or 16. Accordingly the number is converted in a
+*     binary, octal, decimal or hexadecimal notation.
+*
+* RETURN VALUE:
+*   Returns a string containing the given number aValue converted in notation
+*   according to the parameter aRadix.
+*
+*******************************************************************************/
+XString EwNewStringInt64
+( 
+  XInt64            aValue, 
   XInt32            aCount,
   XInt32            aRadix
 );
@@ -6507,6 +7748,27 @@ XString EwSetStringChar
 *
 *******************************************************************************/
 XInt32 EwGetStringLength
+( 
+  XString           aString 
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwIsStringEmpty
+*
+* DESCRIPTION:
+*   The function EwIsStringEmpty() returns != 0 if the string aString does not
+*   contain any characters. If the string is not empty, the function returns 0.
+*
+* ARGUMENTS:
+*   aString - The string to verify.
+*
+* RETURN VALUE:
+*   Returns != 0 if the string is empty.
+*
+*******************************************************************************/
+XBool EwIsStringEmpty
 ( 
   XString           aString 
 );
@@ -6848,6 +8110,90 @@ XUInt32 EwStringParseUInt32
 ( 
   XString           aString,
   XUInt32           aDefault, 
+  XInt32            aRadix
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwStringParseInt64
+*
+* DESCRIPTION:
+*   The function EwStringParseInt64() parses the string interpreting its content
+*   as an integral number. The number can be prefixed by an optional +/- sign.
+*   Whitespace signs lying at the begin of the string are skipped over.
+*
+*   The function parses the numbers according to the notation resulting from the
+*   parameter aRadix. In this manner strings with binary, octal, decimal or even
+*   hexadecimal notation can be read.
+*
+*   Generally the function tries to read as many signs as possible. If the end of
+*   the string or an unexpected sign is found, the function stops and returns the
+*   already read number as signed integer value. If the string is invalid (it
+*   doesn't contain any expected digit or letter), the value passed in the
+*   parameter aDefault is returned instead.
+*
+*   EwStringParseInt64() implements the Chora instant method: 
+*   'string.parse_int64(aDefault,aRadix)'
+*
+* ARGUMENTS:
+*   aString  - The string to parse its content.
+*   aDefault - Value to return if the string doesn't contain a valid number.
+*   aRadix   - Determines the format of the number in the string. This parameter
+*     can assume values 2, 8, 10 or 16. Accordingly the string content is assumed
+*     as being a number with binary, octal, decimal or hexadecimal notation.
+*
+* RETURN VALUE:
+*   Returns the parsed number value as signed integer or the value from the
+*   parameter aDefault if the string doesn't contain a valid number.
+*
+*******************************************************************************/
+XInt64 EwStringParseInt64
+( 
+  XString           aString,
+  XInt64            aDefault, 
+  XInt32            aRadix
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwStringParseUInt64
+*
+* DESCRIPTION:
+*   The function EwStringParseUInt64() parses the string interpreting its content
+*   as an integral number. The number can be prefixed by an optional +/- sign.
+*   Whitespace signs lying at the begin of the string are skipped over.
+*
+*   The function parses the numbers according to the notation resulting from the
+*   parameter aRadix. In this manner strings with binary, octal, decimal or even
+*   hexadecimal notation can be read.
+*
+*   Generally the function tries to read as many signs as possible. If the end of
+*   the string or an unexpected sign is found, the function stops and returns the
+*   already read number as unsigned integer value. If the string is invalid (it
+*   doesn't contain any expected digit or letter), the value passed in the 
+*   parameter aDefault is returned instead.
+*
+*   EwStringParseUInt64() implements the Chora instant method: 
+*   'string.parse_uint64(aDefault,aRadix)'
+*
+* ARGUMENTS:
+*   aString  - The string to parse its content.
+*   aDefault - Value to return if the string doesn't contain a valid number.
+*   aRadix   - Determines the format of the number in the string. This parameter
+*     can assume values 2, 8, 10 or 16. Accordingly the string content is assumed
+*     as being a number with binary, octal, decimal or hexadecimal notation.
+*
+* RETURN VALUE:
+*   Returns the parsed number value as unsigned integer or the value from the
+*   parameter aDefault if the string doesn't contain a valid number.
+*
+*******************************************************************************/
+XUInt64 EwStringParseUInt64
+( 
+  XString           aString,
+  XUInt64           aDefault, 
   XInt32            aRadix
 );
 
@@ -7401,6 +8747,94 @@ void EwAdaptByteOrder4
 
 
 /*******************************************************************************
+* TYPE: 
+*   XFlashAreaReaderProc
+*
+* DESCRIPTION:
+*   The XFlashAreaReaderProc type defines a prototype for user function to read
+*   data stored in external Flash memory, not intended to be directly accessed 
+*   by the CPU. Embedded Wizard invokes this function during the decompression
+*   of bitmap or font data automatically to 'map' the Flash contents into the
+*   CPU address space. In this way, the not directly accessible Flash data can
+*   be processed by Embedded Wizard.
+*
+*   The implementation of this function should:
+*
+*   1. Calculate from the given address the corresponding page within the Flash
+*      memory.
+*
+*   2. Load this complete page into an internal, static buffer. For optimization
+*      purpose the function can read (or cache) several pages simultanously.
+*
+*   3. Estimate the memory cell within the internal buffer corresponding to the
+*      originally given address.
+*
+*   4. Return a pointer to the estimated memory cell so that the caller can use
+*      it to read the data as if the Flash memory would be accessible by the CPU.
+*
+*   In order to be used, the user's own implemented reader function has to be
+*   registered by Embedded Wizard Runtime Environment by invoking the function
+*   EwRegisterFlashAreaReader().
+*
+* ARGUMENTS:
+*   aAddress - The address to load the corresponding area from the Flash.
+*
+* RETURN VALUE:
+*   Returns the address of the location in an internal buffer corresponding to
+*   the original aAddress from the Flash. If the loading fails or aAddress does
+*   not lie within the Flash memory, the function should return aAddress without
+*   any changes on it.
+*   
+*******************************************************************************/
+typedef const void* (*XFlashAreaReaderProc)
+(
+  const void*       aAddress
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwRegisterFlashAreaReader
+*
+* DESCRIPTION:
+*   The function EwRegisterFlashAreaReader() registers a specified memory area
+*   as belonging to Flash memory not intended to be directly addressed by the
+*   CPU. In order to access this Flash memory, the respective Flash pages need
+*   to be loaded first into internal buffer. This 'reading' operation has to be
+*   handled by external function, specified in the first parameter aReaderProc.
+*   The implementation of the function is up to the user.
+*   
+*   Embedded Wizard allows only one reader to be registered at the same time.
+*   Invoking the function EwRegisterFlashAreaReader() twice with different
+*   start/end addresses reports an error. In order to remove the previously 
+*   registered reader, invoke the function with the previously specified start
+*   and end addresses and NULL in the aReaderProc parameter.
+*
+*   This function should be invoked before invoking EwInitGraphicsEngine().
+*
+* ARGUMENTS:
+*   aReaderProc   - User implemented function to read Flash memory areas into
+*     internal buffers. See the description for XFlashAreaReaderProc.
+*   aStartAddress - Start address of the Flash area to take in account.
+*   aEndAddress   - End address of the Flash area to take in account.
+*   aBlockSize    - Size of of the page or block, the function will read from
+*     the Flash memory. The value is expressed in bytes and it should by a
+*     power of two value (e.g. 512, 1024, ... 4096, etc.)
+*
+* RETURN VALUE:
+*   None
+*
+*******************************************************************************/
+void EwRegisterFlashAreaReader
+(
+  XFlashAreaReaderProc aReaderProc, 
+  void*                aStartAddress,
+  void*                aEndAddress,
+  int                  aBlockSize
+);
+
+
+/*******************************************************************************
 * FUNCTION:
 *   EwFormatUIntToAnsiString
 *
@@ -7413,7 +8847,7 @@ void EwAdaptByteOrder4
 *
 * ARGUMENTS:
 *   aBuf   - Buffer to store the resulting string.
-*   aValue - Unsigned 32 bit value to be converted to string.
+*   aValue - Unsigned value to be converted to string.
 *   aCount - Desired length of the resulted string.
 *   aRadix - Controls the format of the resulting string. This parameter can
 *     assume values 2, 8, 10 or 16. Accordingly the number is converted in a
@@ -7451,7 +8885,8 @@ int EwFormatUIntToAnsiString
 *   sign.
 *
 * ARGUMENTS:
-*   aValue - Signed 32 bit value to be converted to string.
+*   aBuf   - Buffer to store the resulting string.
+*   aValue - Signed value to be converted to string.
 *   aCount - Desired length of the resulted string.
 *   aRadix - Controls the format of the resulting string. This parameter can
 *     assume values 2, 8, 10 or 16. Accordingly the number is converted in a
@@ -7469,6 +8904,82 @@ int EwFormatIntToAnsiString
 ( 
   char*             aBuf,
   long              aValue, 
+  int               aCount,
+  int               aRadix,
+  int               aUpper,
+  int               aSign
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwFormatUInt64ToAnsiString
+*
+* DESCRIPTION:
+*   The function EwFormatUInt64ToAnsiString() converts the given unsigned number
+*   aValue in an Ansi string and stores the results in the buffer aBuf. The
+*   function adds leading zeros '0' until the resulted string has reached the
+*   length given in the aCount argument. If the paramneter aSign is != 0, an
+*   additional '+' sign will prefix the formatted number.
+*
+* ARGUMENTS:
+*   aBuf   - Buffer to store the resulting string.
+*   aValue - Unsigned 64 bit value to be converted to string.
+*   aCount - Desired length of the resulted string.
+*   aRadix - Controls the format of the resulting string. This parameter can
+*     assume values 2, 8, 10 or 16. Accordingly the number is converted in a
+*     binary, octal, decimal or hexadecimal notation.
+*   aUpper - If != 0, use upper case signs for hex digits.
+*   aSign  - If != 0, instructs the function to prefix the number with the 
+*     '+' sign.
+*
+* RETURN VALUE:
+*   Returns the length of the resulting string. The string within aBuf is not
+*   zero terminated.
+*
+*******************************************************************************/
+int EwFormatUInt64ToAnsiString
+( 
+  char*             aBuf,
+  XUInt64           aValue, 
+  int               aCount,
+  int               aRadix,
+  int               aUpper,
+  int               aSign
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwFormatInt64ToAnsiString
+*
+* DESCRIPTION:
+*   The function EwFormatInt64ToAnsiString() converts the given signed number 
+*   aValue in an Ansi string and stores the results in the buffer aBuf. The
+*   function adds leading zeros '0' until the resulted string has reached the
+*   length given in the aCount argument. If the number is negative or aSign is
+*   != 0, the function prefix the formatted number with the '+' or '-' minus
+*   sign.
+*
+* ARGUMENTS:
+*   aValue - Signed 64 bit value to be converted to string.
+*   aCount - Desired length of the resulted string.
+*   aRadix - Controls the format of the resulting string. This parameter can
+*     assume values 2, 8, 10 or 16. Accordingly the number is converted in a
+*     binary, octal, decimal or hexadecimal notation.
+*   aUpper - If != 0, use upper case signs for hex digits.
+*   aSign  - If != 0, instructs the function to prefix the number with the 
+*     '+' sign even if the number is positive.
+*
+* RETURN VALUE:
+*   Returns the length of the resulting string. The string within aBuf is not
+*   zero terminated.
+*
+*******************************************************************************/
+int EwFormatInt64ToAnsiString
+( 
+  char*             aBuf,
+  XInt64            aValue, 
   int               aCount,
   int               aRadix,
   int               aUpper,
@@ -7496,6 +9007,8 @@ int EwFormatIntToAnsiString
 *     after the decimal point. If this parameter is < 0, the value specifies
 *     the maximum number of digits. Any final '0' (zero) signs are removed
 *     in this case.
+*   aSign      - If != 0, instructs the function to prefix the number with the
+*     '+' sign even if the number is positive.
 *
 * RETURN VALUE:
 *   Returns the length of the resulting string. The string within aBuf is not
@@ -7535,6 +9048,8 @@ int EwFormatFloatToAnsiString
 *     following escape sequences are supported:
 *       %i - print a signed integer value (int8, int16, int32)
 *       %u - print an unsigned integer value (uint8, uint16, uint32)
+*       %I - print a signed 64-bit integer value (int64)
+*       %U - print an unsigned 64-bit integer value (uint64)
 *       %b - print a boolean value (bool)
 *       %c - print a character (char)
 *       %s - print a string value (string)
@@ -7591,17 +9106,24 @@ void EwThrow
 * FUNCTION:
 *   EwError
 *   EwErrorS
+*   EwErrorSD
 *   EwErrorPD
 *   EwErrorDD
+*   EwErrorPDS
 *
 * DESCRIPTION:
 *   These functions are intended to format and report fatal runtime error
 *   messages. Depending on the version of the used function, the reported
 *   message will additionally include following information:
 *
-*     ErrorS()  - ANSI C string enclosed between two ""
-*     ErrorPD() - pointer in hex-notation and signed decimal number
-*     ErrorDD() - two signed decimal numbers
+*     ErrorS()   - ANSI C string enclosed between two ""
+*     ErrorSD()  - ANSI C string enclosed between two "" and signed decimal 
+*                  number
+*     ErrorPD()  - pointer in hex-notation and signed decimal number
+*     ErrorDD()  - two signed decimal numbers
+*     ErrorSD()  - ANSI C string enclosed between two "" and one decimal number
+*     ErrorPDS() - pointer in hex-notation, signed decimal number and ANSI C 
+*                  string enclosed between two ""
 *
 *   The functions report the message by calling the function EwPrint().
 *
@@ -7635,11 +9157,26 @@ void EwErrorPD
   int               aSignedDecimal
 );
 
+void EwErrorSD
+(
+  int               aCode,
+  const char*       aString,
+  int               aSignedDecimal
+);
+
 void EwErrorDD
 (
   int               aCode,
   int               aSignedDecimal1,
   int               aSignedDecimal2
+);
+
+void EwErrorPDS
+(
+  int               aCode,
+  const void*       aPointer,
+  int               aSignedDecimal,
+  const char*       aString
 );
 
 
@@ -7653,6 +9190,11 @@ void EwErrorDD
 *   following escape sequences are supported:
 *
 *     %d, %u, %p, %f, %s, %X, %x, %c
+*
+*   The escape sequences %d, %u, %X, %x can additionally be prefixed by the 
+*   double 'll' sign identifying a 64-bit operand:
+*
+*     %lld, %llu, %llX, %llx
 *
 *   The escape sequences %d, %u, %X, %x can additionally be prefixed by a sign
 *   and number specifying the desired length of the resulting string:
@@ -8126,7 +9668,7 @@ unsigned long EwGetTicks
 *   Returns the number of seconds elapsed since midnight 1.1.1970. 
 *
 *******************************************************************************/
-unsigned long EwGetTime
+XInt64 EwGetTime
 ( 
   void 
 );

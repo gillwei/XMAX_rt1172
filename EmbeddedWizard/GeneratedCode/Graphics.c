@@ -18,8 +18,8 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 9.30
-* Profile  : iMX_RT
+* Version  : 10.00
+* Profile  : Profile
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -27,9 +27,7 @@
 #include "ewlocale.h"
 #include "_GraphicsCanvas.h"
 #include "_ResourcesBitmap.h"
-#include "_ResourcesFont.h"
 #include "Graphics.h"
-#include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
@@ -48,9 +46,10 @@ static const unsigned int _StringsDefault0[] =
 /* Constant values used in this 'C' module only. */
 static const XPoint _Const0000 = { 0, 0 };
 static const XStringRes _Const0001 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0002 = {{ 0, 0 }, { 0, 0 }};
-static const XStringRes _Const0003 = { _StringsDefault0, 0x003F };
-static const XStringRes _Const0004 = { _StringsDefault0, 0x0073 };
+static const XColor _Const0002 = { 0x00, 0x00, 0x00, 0x00 };
+static const XRect _Const0003 = {{ 0, 0 }, { 0, 0 }};
+static const XStringRes _Const0004 = { _StringsDefault0, 0x003F };
+static const XStringRes _Const0005 = { _StringsDefault0, 0x0073 };
 
 /* Initializer for the class 'Graphics::Canvas' */
 void GraphicsCanvas__Init( GraphicsCanvas _this, XObject aLink, XHandle aArg )
@@ -157,6 +156,18 @@ void GraphicsCanvas_Update( GraphicsCanvas _this )
     }
 
     _this->InvalidArea = EwNewRect2Point( _Const0000, _this->Super1.FrameSize );
+
+    if ( !!_this->Super1.bitmap )
+    {
+      XInt32 dstFrameNr = _this->DstFrameNr;
+
+      for ( _this->DstFrameNr = _this->Super1.NoOfFrames - 1; _this->DstFrameNr 
+           >= 0; _this->DstFrameNr-- )
+        GraphicsCanvas_FillRectangle( _this, _this->InvalidArea, _this->InvalidArea, 
+        _Const0002, _Const0002, _Const0002, _Const0002, 0 );
+
+      _this->DstFrameNr = dstFrameNr;
+    }
   }
 
   if ( !EwIsRectEmpty( _this->InvalidArea ))
@@ -164,7 +175,7 @@ void GraphicsCanvas_Update( GraphicsCanvas _this )
     if (( _this->Super1.FrameSize.X > 0 ) && ( _this->Super1.FrameSize.Y > 0 ))
       EwSignal( _this->OnDraw, ((XObject)_this ));
 
-    _this->InvalidArea = _Const0002;
+    _this->InvalidArea = _Const0003;
   }
 }
 
@@ -176,7 +187,7 @@ GraphicsCanvas GraphicsCanvas_DetachBitmap( GraphicsCanvas _this )
 {
   if ( !_this->attached )
   {
-    EwThrow( EwLoadString( &_Const0003 ));
+    EwThrow( EwLoadString( &_Const0004 ));
     return 0;
   }
 
@@ -207,7 +218,7 @@ GraphicsCanvas GraphicsCanvas_AttachBitmap( GraphicsCanvas _this, XHandle aBitma
 
   if ( _this->Super1.bitmap != 0 )
   {
-    EwThrow( EwLoadString( &_Const0004 ));
+    EwThrow( EwLoadString( &_Const0005 ));
     return 0;
   }
 
@@ -238,74 +249,6 @@ GraphicsCanvas GraphicsCanvas_AttachBitmap( GraphicsCanvas _this, XHandle aBitma
 GraphicsCanvas GraphicsCanvas__AttachBitmap( void* _this, XHandle aBitmap )
 {
   return GraphicsCanvas_AttachBitmap((GraphicsCanvas)_this, aBitmap );
-}
-
-/* The method DrawText() draws the text row passed in the parameter aString into 
-   the canvas. The font to draw the text is passed in the parameter aFont. The parameter 
-   aOffset determines within aString the sign to start the drawing operation. If 
-   aOffset is zero, the operation starts with the first sign. The parameter aCount 
-   determines the max. number of following sigs to draw. If aCount is -1, all signs 
-   until the end of the string are drawn. 
-   The area to draw the text is determined by the parameter aDstRect. The parameter 
-   aOrientation controls the rotation of the text. The parameter aSrcPos determines 
-   the base line position of the text relative to a corner of aDstRect, which by 
-   taking in account the specified text orientation serves as the origin for the 
-   draw operation. For example, if the parameter aOrientation is Views::Orientation.Rotated_270, 
-   the text is drawn aSrcPos pixel relative to the bottom-right corner of aDstRect. 
-   The parameter aMinWidth determines the min. width in pixel of the drawn text 
-   row regardless of the specified rotation. If necessary the space signs within 
-   the text will be stretched to fill this area. The parameters aColorTL, aColorTR, 
-   aColorBL, aColorBR determine the colors at the corresponding corners of the aDstRect 
-   area.
-   The parameter aClip limits the drawing operation. Pixel lying outside this area 
-   remain unchanged. The last aBlend parameter controls the mode how drawn pixel 
-   are combined with the pixel already existing in the destination bitmap. If aBlend 
-   is 'true', the drawn pixel are alpha-blended with the background, otherwise the 
-   drawn pixel will overwrite the old content. */
-void GraphicsCanvas_DrawText( GraphicsCanvas _this, XRect aClip, ResourcesFont aFont, 
-  XString aString, XInt32 aOffset, XInt32 aCount, XRect aDstRect, XPoint aSrcPos, 
-  XInt32 aMinWidth, XEnum aOrientation, XColor aColorTL, XColor aColorTR, XColor 
-  aColorBR, XColor aColorBL, XBool aBlend )
-{
-  XInt32 orient;
-  XInt32 dstFrameNo;
-  XHandle dstBitmap;
-  XHandle srcFont;
-  XRect tempRect;
-
-  if ( _this->Super1.bitmap == 0 )
-    ResourcesBitmap__Update( _this );
-
-  if ( _this->Super1.bitmap == 0 )
-    return;
-
-  if ( aOffset < 0 )
-    aOffset = 0;
-
-  if ((( aFont == 0 ) || ( aFont->font == 0 )) || (( aOffset > 0 ) && ( aOffset 
-      >= EwGetStringLength( aString ))))
-    return;
-
-  orient = 0;
-
-  if ( aOrientation == ViewsOrientationRotated_90 )
-    orient = 90;
-  else
-    if ( aOrientation == ViewsOrientationRotated_180 )
-      orient = 180;
-    else
-      if ( aOrientation == ViewsOrientationRotated_270 )
-        orient = 270;
-
-  dstFrameNo = _this->DstFrameNr;
-  dstBitmap = _this->Super1.bitmap;
-  srcFont = aFont->font;
-  tempRect = aClip;
-  {
-    EwDrawText((XBitmap*)dstBitmap, (XFont*)srcFont, aString + aOffset, aCount,
-                dstFrameNo, tempRect, aDstRect, aSrcPos, aMinWidth, orient, aColorTL, aColorTR,
-                aColorBR, aColorBL, aBlend );
-  }
 }
 
 /* The method CopyBitmap() copies an area of a aBitmap into the canvas. The bitmap 

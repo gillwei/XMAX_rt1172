@@ -454,6 +454,30 @@ void EwFntClose
 
 /*******************************************************************************
 * FUNCTION:
+*   EwFntGetResourceName
+*
+* DESCRIPTION:
+*   The function EwFntGetResourceName() will be called by the Graphics Engine in
+*   order to query the name of the corresponding font resource member. This name
+*   is used to display error messages and warnings.
+*
+*   The function should return a pointer to a zero terminated char string.
+*
+* ARGUMENTS:
+*   aResource - Descriptor of the font resource to query its name.
+*
+* RETURN VALUE:
+*   If sucessful, the function returns the pointer to the char string.
+*
+*******************************************************************************/
+const char* EwFntGetResourceName
+(
+  const struct XFntRes*  aResource
+);
+
+
+/*******************************************************************************
+* FUNCTION:
 *   EwFntGetMetrics
 *
 * DESCRIPTION:

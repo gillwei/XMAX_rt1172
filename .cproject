@@ -92,6 +92,32 @@
 									<listOptionValue builtIn="false" value="FSL_RTOS_BM"/>
 									<listOptionValue builtIn="false" value="FSL_RTOS_FREE_RTOS"/>
 									<listOptionValue builtIn="false" value="USE_SDRAM"/>
+									<listOptionValue builtIn="false" value="VG_RESOLVE_ENGINE=0"/>
+									<listOptionValue builtIn="false" value="VG_PE_COLOR_KEY=0"/>
+									<listOptionValue builtIn="false" value="VG_IM_INDEX_FORMAT=0"/>
+									<listOptionValue builtIn="false" value="VG_AYUV_INPUT_OUTPUT=0"/>
+									<listOptionValue builtIn="false" value="VG_DOUBLE_IMAGE=0"/>
+									<listOptionValue builtIn="false" value="VG_RECTANGLE_STRIP_MODE=0"/>
+									<listOptionValue builtIn="false" value="VG_MMU=0"/>
+									<listOptionValue builtIn="false" value="VG_IM_FILTER=0"/>
+									<listOptionValue builtIn="false" value="VG_IM_YUV_PACKET=1"/>
+									<listOptionValue builtIn="false" value="VG_IM_YUV_PLANAR=0"/>
+									<listOptionValue builtIn="false" value="VG_PE_YUV_PACKET=1"/>
+									<listOptionValue builtIn="false" value="VG_TARGET_TILED=1"/>
+									<listOptionValue builtIn="false" value="VG_COMMAND_CALL=1"/>
+									<listOptionValue builtIn="false" value="VG_SHARE_BUFFER_IM_16K=0"/>
+									<listOptionValue builtIn="false" value="VG_OFFLINE_MODE=0"/>
+									<listOptionValue builtIn="false" value="VG_RESOLUTION_2880=0"/>
+									<listOptionValue builtIn="false" value="VG_PE_PREMULTIPLY=0"/>
+									<listOptionValue builtIn="false" value="VG_POST_CONVERTER=0"/>
+									<listOptionValue builtIn="false" value="VG_PRE_CONVERTER=0"/>
+									<listOptionValue builtIn="false" value="VG_RENDER_BY_MESH=0"/>
+									<listOptionValue builtIn="false" value="VG_TARGET_FAST_CLEAR=0"/>
+									<listOptionValue builtIn="false" value="VG_BUFFER_NUMBER_OF_TARGET=0"/>
+									<listOptionValue builtIn="false" value="VG_VIDEO_CLEAR_CONTROL=0"/>
+									<listOptionValue builtIn="false" value="VG_VIDEO_CONTROL=0"/>
+									<listOptionValue builtIn="false" value="DVGLITE_TST_FIRMWARE=0"/>
+									<listOptionValue builtIn="false" value="VG_LITE_SYS_GPU_CTRL=0"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.undef.symbol.1911431933" name="Undefined symbols (-U)" superClass="gnu.c.compiler.option.preprocessor.undef.symbol" useByScannerDiscovery="false"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.compiler.option.include.paths.744810943" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
@@ -114,7 +140,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/GeneratedCode}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/PlatformPackage/RTE}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/PlatformPackage/RGBA8888}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite_patch/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLite}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLiteKernel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLiteKernel/rtos}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display/fbdev}&quot;"/>
@@ -189,7 +218,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/GeneratedCode}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/PlatformPackage/RTE}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/PlatformPackage/RGBA8888}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite_patch/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLite}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLiteKernel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLiteKernel/rtos}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display/fbdev}&quot;"/>
@@ -281,11 +313,9 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.link.option.libs.225482663" name="Libraries (-l)" superClass="gnu.c.link.option.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="ewrte-m7-gcc"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="ewgfx-m7-gcc"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="vg_lite"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.link.option.paths.218230396" name="Library search path (-L)" superClass="gnu.c.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/PlatformPackage/RTE}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite_patch/lib/ARMGCC}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/PlatformPackage/RGBA8888}&quot;"/>
 								</option>
 								<option id="gnu.c.link.option.ldflags.1049583242" name="Linker flags" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false"/>
@@ -457,6 +487,32 @@
 									<listOptionValue builtIn="false" value="FSL_RTOS_BM"/>
 									<listOptionValue builtIn="false" value="FSL_RTOS_FREE_RTOS"/>
 									<listOptionValue builtIn="false" value="USE_SDRAM"/>
+									<listOptionValue builtIn="false" value="VG_RESOLVE_ENGINE=0"/>
+									<listOptionValue builtIn="false" value="VG_PE_COLOR_KEY=0"/>
+									<listOptionValue builtIn="false" value="VG_IM_INDEX_FORMAT=0"/>
+									<listOptionValue builtIn="false" value="VG_AYUV_INPUT_OUTPUT=0"/>
+									<listOptionValue builtIn="false" value="VG_DOUBLE_IMAGE=0"/>
+									<listOptionValue builtIn="false" value="VG_RECTANGLE_STRIP_MODE=0"/>
+									<listOptionValue builtIn="false" value="VG_MMU=0"/>
+									<listOptionValue builtIn="false" value="VG_IM_FILTER=0"/>
+									<listOptionValue builtIn="false" value="VG_IM_YUV_PACKET=1"/>
+									<listOptionValue builtIn="false" value="VG_IM_YUV_PLANAR=0"/>
+									<listOptionValue builtIn="false" value="VG_PE_YUV_PACKET=1"/>
+									<listOptionValue builtIn="false" value="VG_TARGET_TILED=1"/>
+									<listOptionValue builtIn="false" value="VG_COMMAND_CALL=1"/>
+									<listOptionValue builtIn="false" value="VG_SHARE_BUFFER_IM_16K=0"/>
+									<listOptionValue builtIn="false" value="VG_OFFLINE_MODE=0"/>
+									<listOptionValue builtIn="false" value="VG_RESOLUTION_2880=0"/>
+									<listOptionValue builtIn="false" value="VG_PE_PREMULTIPLY=0"/>
+									<listOptionValue builtIn="false" value="VG_POST_CONVERTER=0"/>
+									<listOptionValue builtIn="false" value="VG_PRE_CONVERTER=0"/>
+									<listOptionValue builtIn="false" value="VG_RENDER_BY_MESH=0"/>
+									<listOptionValue builtIn="false" value="VG_TARGET_FAST_CLEAR=0"/>
+									<listOptionValue builtIn="false" value="VG_BUFFER_NUMBER_OF_TARGET=0"/>
+									<listOptionValue builtIn="false" value="VG_VIDEO_CLEAR_CONTROL=0"/>
+									<listOptionValue builtIn="false" value="VG_VIDEO_CONTROL=0"/>
+									<listOptionValue builtIn="false" value="DVGLITE_TST_FIRMWARE=0"/>
+									<listOptionValue builtIn="false" value="VG_LITE_SYS_GPU_CTRL=0"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.undef.symbol.1850691244" name="Undefined symbols (-U)" superClass="gnu.c.compiler.option.preprocessor.undef.symbol" useByScannerDiscovery="false"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.compiler.option.include.paths.1386906073" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
@@ -479,7 +535,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/GeneratedCode}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/PlatformPackage/RTE}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/PlatformPackage/RGBA8888}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite_patch/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLite}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLiteKernel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLiteKernel/rtos}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display/fbdev}&quot;"/>
@@ -543,14 +602,6 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/component/lists}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/device}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/component/uart}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/drivers}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/device}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/component/serial_manager}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/CMSIS}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/component/lists}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/utilities}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/component/uart}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/xip}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/board}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/}&quot;"/>
@@ -562,12 +613,15 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/GeneratedCode}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/PlatformPackage/RTE}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/PlatformPackage/RGBA8888}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite_patch/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display/fbdev}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display/dc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/video/display/dc/lcdifv2}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLite}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLiteKernel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/ThirdParty/vglite/VGLiteKernel/rtos}&quot;"/>
 								</option>
 								<option id="gnu.both.asm.option.warnings.nowarn.570199198" name="Suppress warnings (-W)" superClass="gnu.both.asm.option.warnings.nowarn"/>
 								<option id="gnu.both.asm.option.version.1565920940" name="Announce version (-v)" superClass="gnu.both.asm.option.version"/>
@@ -633,15 +687,17 @@
 							</tool>
 							<tool id="com.crt.advproject.link.exe.release.2096266142" name="MCU Linker" superClass="com.crt.advproject.link.exe.release">
 								<option id="com.crt.advproject.link.thumb.1207835281" name="Thumb mode" superClass="com.crt.advproject.link.thumb" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.memory.load.image.1594634812" name="Plain load image" superClass="com.crt.advproject.link.memory.load.image" value="" valueType="string"/>
-								<option defaultValue="com.crt.advproject.heapAndStack.mcuXpressoStyle" id="com.crt.advproject.link.memory.heapAndStack.style.2089708954" name="Heap and Stack placement" superClass="com.crt.advproject.link.memory.heapAndStack.style" valueType="enumerated"/>
-								<option id="com.crt.advproject.link.memory.heapAndStack.982933313" name="Heap and Stack options" superClass="com.crt.advproject.link.memory.heapAndStack" value="&amp;Heap:Default;Post Data;Default&amp;Stack:Default;End;Default" valueType="string"/>
-								<option id="com.crt.advproject.link.memory.data.952757187" name="Global data placement" superClass="com.crt.advproject.link.memory.data" value="" valueType="string"/>
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.crt.advproject.link.memory.sections.412198061" name="Extra linker script input sections" superClass="com.crt.advproject.link.memory.sections" valueType="stringList">
-									<listOptionValue builtIn="false" value="isd=*(NonCacheable.init);region=SRAM_DTC_cm7;type=.data"/>
-									<listOptionValue builtIn="false" value="isd=*(NonCacheable);region=SRAM_DTC_cm7;type=.bss"/>
+								<option id="com.crt.advproject.link.memory.load.image.1594634812" name="Plain load image" superClass="com.crt.advproject.link.memory.load.image" useByScannerDiscovery="false" value="false;" valueType="string"/>
+								<option defaultValue="com.crt.advproject.heapAndStack.mcuXpressoStyle" id="com.crt.advproject.link.memory.heapAndStack.style.2089708954" name="Heap and Stack placement" superClass="com.crt.advproject.link.memory.heapAndStack.style" useByScannerDiscovery="false" valueType="enumerated"/>
+								<option id="com.crt.advproject.link.memory.heapAndStack.982933313" name="Heap and Stack options" superClass="com.crt.advproject.link.memory.heapAndStack" useByScannerDiscovery="false" value="&amp;Heap:BOARD_SDRAM_HEAP;Post Data;0x200000&amp;Stack:Default;End;0x2000" valueType="string"/>
+								<option id="com.crt.advproject.link.memory.data.952757187" name="Global data placement" superClass="com.crt.advproject.link.memory.data" useByScannerDiscovery="false" value="Default" valueType="string"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.crt.advproject.link.memory.sections.412198061" name="Extra linker script input sections" superClass="com.crt.advproject.link.memory.sections" useByScannerDiscovery="false" valueType="stringList">
+									<listOptionValue builtIn="false" value="isd=*(NonCacheable.init);region=NCACHE_REGION;type=.data"/>
+									<listOptionValue builtIn="false" value="isd=*(NonCacheable);region=NCACHE_REGION;type=.bss"/>
+									<listOptionValue builtIn="false" value="isd=*(BoardSdram.init);region=BOARD_SDRAM;type=.data"/>
+									<listOptionValue builtIn="false" value="isd=*(BoardSdram);region=BOARD_SDRAM;type=.bss"/>
 								</option>
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" id="com.crt.advproject.link.gcc.multicore.master.userobjs.1685969224" name="Slave Objects (not visible)" superClass="com.crt.advproject.link.gcc.multicore.master.userobjs" valueType="userObjs"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" id="com.crt.advproject.link.gcc.multicore.master.userobjs.1685969224" name="Slave Objects (not visible)" superClass="com.crt.advproject.link.gcc.multicore.master.userobjs" useByScannerDiscovery="false" valueType="userObjs"/>
 								<option id="com.crt.advproject.link.arch.1085562068" name="Architecture" superClass="com.crt.advproject.link.arch" value="com.crt.advproject.link.target.cm7" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.gcc.multicore.slave.1599143490" name="Multicore configuration" superClass="com.crt.advproject.link.gcc.multicore.slave"/>
 								<option id="gnu.c.link.option.nostart.1951306448" name="Do not use standard start files (-nostartfiles)" superClass="gnu.c.link.option.nostart"/>
@@ -652,7 +708,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.link.option.libs.1391179949" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="ewgfx-m7-gcc"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="ewrte-m7-gcc"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="vg_lite"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.link.option.paths.2969475" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/EmbeddedWizard/PlatformPackage/RTE}&quot;"/>
@@ -679,8 +734,8 @@
 								<option id="com.crt.advproject.link.gcc.lto.optmization.level.1282013191" name="Link-time optimization level" superClass="com.crt.advproject.link.gcc.lto.optmization.level"/>
 								<option id="com.crt.advproject.link.fpu.667812135" name="Floating point" superClass="com.crt.advproject.link.fpu" value="com.crt.advproject.link.fpu.fpv5dp.hard" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.manage.1120138426" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.516737181" name="Linker script" superClass="com.crt.advproject.link.script" value="&quot;LinkCard-RT1176_Release.ld&quot;" valueType="string"/>
-								<option id="com.crt.advproject.link.scriptdir.1753644981" name="Script path" superClass="com.crt.advproject.link.scriptdir"/>
+								<option id="com.crt.advproject.link.script.516737181" name="Linker script" superClass="com.crt.advproject.link.script" useByScannerDiscovery="false" value="&quot;LinkCard-RT1176_Release.ld&quot;" valueType="string"/>
+								<option id="com.crt.advproject.link.scriptdir.1753644981" name="Script path" superClass="com.crt.advproject.link.scriptdir" useByScannerDiscovery="false" value="" valueType="string"/>
 								<option id="com.crt.advproject.link.crpenable.1876986945" name="Enable automatic placement of Code Read Protection field in image" superClass="com.crt.advproject.link.crpenable"/>
 								<option id="com.crt.advproject.link.flashconfigenable.250618892" name="Enable automatic placement of Flash Configuration field in image" superClass="com.crt.advproject.link.flashconfigenable" value="true" valueType="boolean"/>
 								<option id="com.crt.advproject.link.ecrp.1161471068" name="Enhanced CRP" superClass="com.crt.advproject.link.ecrp"/>
