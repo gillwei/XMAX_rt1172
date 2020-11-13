@@ -29,6 +29,7 @@
 #include "display_support.h"
 #include "PM_pub.h"
 #include "factory_test.h"
+#include "VI_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -100,6 +101,7 @@ EEPM_init();
 RTC_init();
 WDG_init();
 FACTORY_init();
+VI_init();
 
 vCAN_nim_create_task();
 vTaskStartScheduler();

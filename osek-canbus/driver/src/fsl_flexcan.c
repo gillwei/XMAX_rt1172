@@ -9,6 +9,7 @@
 #include "fsl_flexcan.h"
 #include "CAN_nim_ctrl.h"
 #include "factory_test.h"
+#include "VI_pub.h"
 
 /*******************************************************************************
  * Definitions
@@ -3520,25 +3521,25 @@ void CAN2_DriverIRQHandler(void)
         if( l_up_hk != ( l_hk_rx_frame.data[0] & ( 1 << 7 ) ) )
             {
             l_up_hk  = ( l_hk_rx_frame.data[0] & ( 1 << 7 ) );
-            //VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_1_RXSIG_HANDLE, l_up_hk );
+            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_1_RXSIG_HANDLE, l_up_hk );
             }
 
         if( l_dn_hk != ( l_hk_rx_frame.data[0] & ( 1 << 6 ) ) )
             {
             l_dn_hk  = ( l_hk_rx_frame.data[0] & ( 1 << 6 ) );
-            //VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_2_RXSIG_HANDLE, l_dn_hk );
+            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_2_RXSIG_HANDLE, l_dn_hk );
             }
 
         if( l_slct_hk != ( l_hk_rx_frame.data[0] & ( 1 << 3 ) ) )
             {
             l_slct_hk  = ( l_hk_rx_frame.data[0] & ( 1 << 3 ) );
-            //VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_5_RXSIG_HANDLE, l_slct_hk );
+            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_5_RXSIG_HANDLE, l_slct_hk );
             }
 
         if( l_hm_hk != ( l_hk_rx_frame.data[0] & ( 1 << 2 ) ) )
             {
             l_hm_hk  = ( l_hk_rx_frame.data[0] & ( 1 << 2 ) );
-            //VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, l_hm_hk );
+            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, l_hm_hk );
             }
         }
 
