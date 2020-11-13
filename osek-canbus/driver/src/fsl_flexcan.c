@@ -8,6 +8,7 @@
 
 #include "fsl_flexcan.h"
 #include "CAN_nim_ctrl.h"
+#include "factory_test.h"
 
 /*******************************************************************************
  * Definitions
@@ -3506,6 +3507,7 @@ void CAN2_DriverIRQHandler(void)
         /*--------------------------------------------------
         TBD Add Factory test hook api....
         --------------------------------------------------*/
+        ft_hook_receive( &l_rx_frame );
 
         }
 

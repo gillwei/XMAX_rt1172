@@ -1,48 +1,94 @@
 /*********************************************************************
 * @file
-* main.c
+* factory_test.h
 *
-* The main file of LinkCard mcu application.
+* @brief
+* factory test - public API
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
+#ifndef FACTORY_TEST_H
+#define FACTORY_TEST_H
+
+#ifdef __cplusplus
+extern "C"{
+#endif
 
 /*--------------------------------------------------------------------
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
 
-#include "board.h"
-#include "fsl_debug_console.h"
-#include "fsl_gpio.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
-
-#include "pin_mux.h"
-#include "clock_config.h"
-
-#include "EW_pub.h"
-#include "PERIPHERAL_pub.h"
-#include "EEPM_pub.h"
-#include "CAN_nim_ctrl.h"
-#include "RTC_pub.h"
-#include "WDG_pub.h"
-#include "display_support.h"
-#include "PM_pub.h"
-#include "factory_test.h"
-
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#ifdef NDEBUG
-    #define BUILD_TYPE "release"
-#else
-    #define BUILD_TYPE "debug"
-#endif
+#define firstCanDataLength  6
+#define otherCanDataLength  7
+
+#define ADC_CHANNEL_NUM_TFT_TEMP      ( 5U )                       // ADC1_CH5A TFT TEMP
+#define ADC_CHANNEL_NUM_PCBA_TEMP     ( 3U )                       // ADC1_CH3A PCBA TEMP
+#define ADC_CHANNEL_NUM_VBATT_SEN     ( 0U )                       // ADC1_CH0B VBATT SENSE
 
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
+
+typedef uint8 IOP_set_BurnIn_state_type; enum
+    {
+    IOP_BURNIN_STATE_NONE,
+    IOP_BURNIN_STATE_SET,
+    IOP_BURNIN_STATE_VALID,
+
+    IOP_BURNIN_STATE_CNT
+    };
+
+typedef uint8 IOP_BurnIn_op_stage_type; enum
+    {
+    IOP_BURNIN_STAGE_NOT_START,
+    IOP_BURNIN_STAGE_START,
+    IOP_BURNIN_STAGE_RUNNING,
+    IOP_BURNIN_STAGE_FAIL,
+    IOP_BURNIN_STAGE_PASS,
+
+    IOP_BURNIN_STAGE_CNT
+    };
+
+typedef uint8 IOP_esn_op; enum
+    {
+    IOP_ESN_OP_WRITE,
+    IOP_ESN_OP_READ,
+
+    IOP_ESN_OP_INVALID,
+    IOP_ESN_OP_CNT = IOP_ESN_OP_INVALID,
+    };
+
+typedef enum
+    {
+    PORT_0,
+    PORT_1,
+    PORT_2,
+    PORT_3,
+    PORT_4,
+    PORT_5,
+    PORT_6,
+    PORT_7,
+    PORT_8,
+    PORT_9,
+    PORT_10,
+    PORT_11,
+    PORT_12,
+    PORT_13,
+
+    PORT_MAX,
+    } t_Port;
+
+typedef uint8 IOP_SYC_MODE_TYPE; enum
+    {
+    SYC_MODE_NORMAL = 0,
+    SYC_MODE_TEST   = 3,
+
+    SYC_MODE_INVALID,
+    SYC_MODE_CNT = SYC_MODE_INVALID,
+    };
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -63,63 +109,21 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-static void led_task( void* arg );
 
-/*********************************************************************
-*
-* @public
-* main
-*
-* The main function of the LinkCard mcu application.
-*
-*********************************************************************/
-int main
+void ft_hook_receive
+    (
+    // can_hw_inst_t       const hw_inst, //!< [in] CAN hardware instance
+    can_rmd_t   const * const p_rmd    //!< [in] pointer to received message
+    );
+
+void FACTORY_init
     (
     void
-    )
-{
-/* Board pin, clock, debug console init */
-BOARD_ConfigMPU();
-BOARD_InitBootPins();
-BOARD_BootClockRUN();
-BOARD_InitDebugConsole();
+    );
 
-PRINTF( "%s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE );
-
-if( BOARD_is_tft_connected() == TFT_CONNECTED )
-    {
-    EW_init();
-    display_monitor_init();
-    }
-else
-    {
-    PRINTF( "TFT is not connected, EW will not be initialized \r\n" );
-    }
-PERIPHERAL_init();
-PM_init();
-EEPM_init();
-RTC_init();
-WDG_init();
-FACTORY_init();
-
-vCAN_nim_create_task();
-
-xTaskCreate( led_task, "led_task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 4 ), NULL );
-vTaskStartScheduler();
-
-return 0;
+#ifdef __cplusplus
 }
+#endif
 
-static void led_task
-    (
-    void* arg
-    )
-{
-while( true )
-    {
-    GPIO_PortToggle( BOARD_USER_LED_GPIO, 1u << BOARD_USER_LED_GPIO_PIN );
-    PRINTF("The LED is blinking.\r\n");
-    vTaskDelay( pdMS_TO_TICKS( 500 ) );
-    }
-vTaskDelete( NULL );
-}
+#endif /* FACTORY_TEST_H */
+

@@ -32,9 +32,9 @@
                <pin_label pin_num="L17" pin_signal="GPIO_AD_28" label="CAN_STBY" identifier="CAN_STBY"/>
                <pin_label pin_num="R9" pin_signal="GPIO_SNVS_07" label="IGN_WAKE_GPIO" identifier="IGN_WAKE_GPIO"/>
                <pin_label pin_num="T17" pin_signal="GPIO_AD_07" label="VBATT_SENSE"/>
-               <pin_label pin_num="R17" pin_signal="GPIO_AD_10" label="VDD_3.3V_PGOOD"/>
+               <pin_label pin_num="R17" pin_signal="GPIO_AD_10" label="VDD_3.3V_PGOOD" identifier="VDD_3V3_PGOOD"/>
                <pin_label pin_num="P16" pin_signal="GPIO_AD_11" label="5V_CAN_PGOOD" identifier="CAN_PGOOD"/>
-               <pin_label pin_num="R16" pin_signal="GPIO_AD_09" label="VDD_3.3VON_PGOOD"/>
+               <pin_label pin_num="R16" pin_signal="GPIO_AD_09" label="VDD_3.3VON_PGOOD" identifier="VDD_3V3ON_PGOOD"/>
                <pin_label pin_num="M13" pin_signal="GPIO_AD_04" label="WDOG_B" identifier="WDOG_B"/>
                <pin_label pin_num="P6" pin_signal="GPIO_LPSR_02" label="BOOT_MODE0"/>
                <pin_label pin_num="T7" pin_signal="GPIO_LPSR_03" label="BOOT_MODE1"/>
@@ -301,8 +301,16 @@
                         <pin_feature name="pull_keeper_select" value="Keeper"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="GPIO9" signal="gpio_io, 09" pin_num="R17" pin_signal="GPIO_AD_10"/>
-                  <pin peripheral="GPIO9" signal="gpio_io, 08" pin_num="R16" pin_signal="GPIO_AD_09"/>
+                  <pin peripheral="GPIO9" signal="gpio_io, 09" pin_num="R17" pin_signal="GPIO_AD_10">
+                     <pin_features>
+                        <pin_feature name="direction" value="INPUT"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="GPIO9" signal="gpio_io, 08" pin_num="R16" pin_signal="GPIO_AD_09">
+                     <pin_features>
+                        <pin_feature name="direction" value="INPUT"/>
+                     </pin_features>
+                  </pin>
                   <pin peripheral="GPIO9" signal="gpio_io, 10" pin_num="P16" pin_signal="GPIO_AD_11">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>

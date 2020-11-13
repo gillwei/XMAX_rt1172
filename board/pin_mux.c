@@ -19,9 +19,9 @@ pin_labels:
 - {pin_num: L17, pin_signal: GPIO_AD_28, label: CAN_STBY, identifier: CAN_STBY}
 - {pin_num: R9, pin_signal: GPIO_SNVS_07, label: IGN_WAKE_GPIO, identifier: IGN_WAKE_GPIO}
 - {pin_num: T17, pin_signal: GPIO_AD_07, label: VBATT_SENSE}
-- {pin_num: R17, pin_signal: GPIO_AD_10, label: VDD_3.3V_PGOOD}
+- {pin_num: R17, pin_signal: GPIO_AD_10, label: VDD_3.3V_PGOOD, identifier: VDD_3V3_PGOOD}
 - {pin_num: P16, pin_signal: GPIO_AD_11, label: 5V_CAN_PGOOD, identifier: CAN_PGOOD}
-- {pin_num: R16, pin_signal: GPIO_AD_09, label: VDD_3.3VON_PGOOD}
+- {pin_num: R16, pin_signal: GPIO_AD_09, label: VDD_3.3VON_PGOOD, identifier: VDD_3V3ON_PGOOD}
 - {pin_num: M13, pin_signal: GPIO_AD_04, label: WDOG_B, identifier: WDOG_B}
 - {pin_num: P6, pin_signal: GPIO_LPSR_02, label: BOOT_MODE0}
 - {pin_num: T7, pin_signal: GPIO_LPSR_03, label: BOOT_MODE1}
@@ -179,8 +179,8 @@ BOARD_InitPins:
   - {pin_num: U9, peripheral: GPIO13, signal: 'gpio_io, 01', pin_signal: PMIC_ON_REQ, direction: OUTPUT, gpio_init_state: 'true'}
   - {pin_num: R9, peripheral: GPIO13, signal: 'gpio_io, 10', pin_signal: GPIO_SNVS_07, direction: INPUT}
   - {pin_num: T17, peripheral: ADC1, signal: 'B, 1_0', pin_signal: GPIO_AD_07, pull_keeper_select: Keeper}
-  - {pin_num: R17, peripheral: GPIO9, signal: 'gpio_io, 09', pin_signal: GPIO_AD_10}
-  - {pin_num: R16, peripheral: GPIO9, signal: 'gpio_io, 08', pin_signal: GPIO_AD_09}
+  - {pin_num: R17, peripheral: GPIO9, signal: 'gpio_io, 09', pin_signal: GPIO_AD_10, direction: INPUT}
+  - {pin_num: R16, peripheral: GPIO9, signal: 'gpio_io, 08', pin_signal: GPIO_AD_09, direction: INPUT}
   - {pin_num: P16, peripheral: GPIO9, signal: 'gpio_io, 10', pin_signal: GPIO_AD_11, direction: INPUT}
   - {pin_num: N16, peripheral: GPIO9, signal: 'gpio_io, 26', pin_signal: GPIO_AD_27, identifier: CAN_EN, direction: OUTPUT, gpio_init_state: 'true'}
   - {pin_num: J14, peripheral: GPIO10, signal: 'gpio_io, 10', pin_signal: GPIO_SD_B2_01, direction: OUTPUT}
@@ -337,6 +337,24 @@ void BOARD_InitPins(void) {
   };
   /* Initialize GPIO functionality on GPIO_AD_04 (pin M13) */
   GPIO_PinInit(GPIO9, 3U, &WDOG_B_config);
+
+  /* GPIO configuration of VDD_3V3ON_PGOOD on GPIO_AD_09 (pin R16) */
+  gpio_pin_config_t VDD_3V3ON_PGOOD_config = {
+      .direction = kGPIO_DigitalInput,
+      .outputLogic = 0U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_AD_09 (pin R16) */
+  GPIO_PinInit(GPIO9, 8U, &VDD_3V3ON_PGOOD_config);
+
+  /* GPIO configuration of VDD_3V3_PGOOD on GPIO_AD_10 (pin R17) */
+  gpio_pin_config_t VDD_3V3_PGOOD_config = {
+      .direction = kGPIO_DigitalInput,
+      .outputLogic = 0U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_AD_10 (pin R17) */
+  GPIO_PinInit(GPIO9, 9U, &VDD_3V3_PGOOD_config);
 
   /* GPIO configuration of CAN_PGOOD on GPIO_AD_11 (pin P16) */
   gpio_pin_config_t CAN_PGOOD_config = {

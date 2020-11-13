@@ -80,6 +80,28 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_IGN_WAKE_GPIO_GPIO_PIN                                10U   /*!< GPIO pin number */
 #define BOARD_INITPINS_IGN_WAKE_GPIO_GPIO_PIN_MASK                   (1U << 10U)   /*!< GPIO pin mask */
 
+/* GPIO_AD_10 (coord R17), VDD_3.3V_PGOOD */
+/* Routed pin properties */
+#define BOARD_INITPINS_VDD_3V3_PGOOD_PERIPHERAL                            GPIO9   /*!< Peripheral name */
+#define BOARD_INITPINS_VDD_3V3_PGOOD_SIGNAL                              gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_VDD_3V3_PGOOD_CHANNEL                                  9U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_VDD_3V3_PGOOD_GPIO                                  GPIO9   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_VDD_3V3_PGOOD_GPIO_PIN                                 9U   /*!< GPIO pin number */
+#define BOARD_INITPINS_VDD_3V3_PGOOD_GPIO_PIN_MASK                    (1U << 9U)   /*!< GPIO pin mask */
+
+/* GPIO_AD_09 (coord R16), VDD_3.3VON_PGOOD */
+/* Routed pin properties */
+#define BOARD_INITPINS_VDD_3V3ON_PGOOD_PERIPHERAL                          GPIO9   /*!< Peripheral name */
+#define BOARD_INITPINS_VDD_3V3ON_PGOOD_SIGNAL                            gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_VDD_3V3ON_PGOOD_CHANNEL                                8U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_VDD_3V3ON_PGOOD_GPIO                                GPIO9   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_VDD_3V3ON_PGOOD_GPIO_PIN                               8U   /*!< GPIO pin number */
+#define BOARD_INITPINS_VDD_3V3ON_PGOOD_GPIO_PIN_MASK                  (1U << 8U)   /*!< GPIO pin mask */
+
 /* GPIO_AD_11 (coord P16), 5V_CAN_PGOOD */
 /* Routed pin properties */
 #define BOARD_INITPINS_CAN_PGOOD_PERIPHERAL                                GPIO9   /*!< Peripheral name */
