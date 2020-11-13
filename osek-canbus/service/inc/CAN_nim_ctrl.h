@@ -25,6 +25,7 @@ extern "C" {
 --------------------------------------------------------------------*/
 #define EXAMPLE_CAN CAN2
 
+#define HK_RX_MESSAGE_BUFFER_NUM (7)
 #define RX_MESSAGE_BUFFER_NUM (9)
 #define TX_MESSAGE_BUFFER_NUM (8)
 #define DLC (8)
@@ -44,6 +45,12 @@ extern "C" {
 #define EXAMPLE_CAN_CLK_FREQ ((CLOCK_GetRootClockFreq(kCLOCK_Root_Can2) / 100000U) * 100000U)
 /* Fix MISRA_C-2012 Rule 17.7. */
 #define LOG_INFO (void)PRINTF
+
+
+#define IL_CAN0_FUNC_SW_1_RXSIG_HANDLE                  0x0000
+#define IL_CAN0_FUNC_SW_2_RXSIG_HANDLE                  0x000A
+#define IL_CAN0_FUNC_SW_5_RXSIG_HANDLE                  0x000D
+#define IL_CAN0_FUNC_SW_6_RXSIG_HANDLE                  0x000E
 
 /*--------------------------------------------------------------------
                             TYPES
@@ -166,6 +173,11 @@ typedef struct tagCAN_RMD_TYPE                  //<! receive message data struct
 /*--------------------------------------------------------------------
                             PROCEDURES
 --------------------------------------------------------------------*/
+uint64_t flexcan_GetMbStatus
+    (
+    CAN_Type      *p_flexcan_regs
+    );
+
 void vCAN_nim_create_task
     (
     void

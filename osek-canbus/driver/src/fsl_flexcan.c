@@ -3489,13 +3489,56 @@ void CAN1_DriverIRQHandler(void)
 void CAN2_DriverIRQHandler(void)
 {
     assert(NULL != s_flexcanHandle[2]);
-    can_rmd_t  l_rx_frame;
+    can_rmd_t       l_rx_frame;
+    can_rmd_t       l_hk_rx_frame;
+    uint64          l_iflag   = 0;
+    uint64          l_u64flag = 1;
+    static uint8    l_up_hk   = 0;
+    static uint8    l_dn_hk   = 0;
+    static uint8    l_slct_hk = 0;
+    static uint8    l_hm_hk   = 0;
 
-    can_hw_receive_rx_mb( EXAMPLE_CAN, &l_rx_frame, RX_MESSAGE_BUFFER_NUM );
+    l_iflag = flexcan_GetMbStatus( EXAMPLE_CAN );
 
-    /*--------------------------------------------------
-    TBD Add Factory test hook api....
-    --------------------------------------------------*/
+    if( 0U != ( l_iflag & ( l_u64flag << RX_MESSAGE_BUFFER_NUM ) ) )
+        {
+        can_hw_receive_rx_mb( EXAMPLE_CAN, &l_rx_frame, RX_MESSAGE_BUFFER_NUM );
+        /*--------------------------------------------------
+        TBD Add Factory test hook api....
+        --------------------------------------------------*/
+
+        }
+
+    if( 0U != ( l_iflag & ( l_u64flag << HK_RX_MESSAGE_BUFFER_NUM ) ) )
+        {
+        can_hw_receive_rx_mb( EXAMPLE_CAN, &l_hk_rx_frame, HK_RX_MESSAGE_BUFFER_NUM );
+        /*--------------------------------------------------
+        TBD Add Hard key hook api....
+        --------------------------------------------------*/
+        if( l_up_hk != ( l_hk_rx_frame.data[0] & ( 1 << 7 ) ) )
+            {
+            l_up_hk  = ( l_hk_rx_frame.data[0] & ( 1 << 7 ) );
+            //VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_1_RXSIG_HANDLE, l_up_hk );
+            }
+
+        if( l_dn_hk != ( l_hk_rx_frame.data[0] & ( 1 << 6 ) ) )
+            {
+            l_dn_hk  = ( l_hk_rx_frame.data[0] & ( 1 << 6 ) );
+            //VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_2_RXSIG_HANDLE, l_dn_hk );
+            }
+
+        if( l_slct_hk != ( l_hk_rx_frame.data[0] & ( 1 << 3 ) ) )
+            {
+            l_slct_hk  = ( l_hk_rx_frame.data[0] & ( 1 << 3 ) );
+            //VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_5_RXSIG_HANDLE, l_slct_hk );
+            }
+
+        if( l_hm_hk != ( l_hk_rx_frame.data[0] & ( 1 << 2 ) ) )
+            {
+            l_hm_hk  = ( l_hk_rx_frame.data[0] & ( 1 << 2 ) );
+            //VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, l_hm_hk );
+            }
+        }
 
     s_flexcanIsr(CAN2, s_flexcanHandle[2]);
     SDK_ISR_EXIT_BARRIER;

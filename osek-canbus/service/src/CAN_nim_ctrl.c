@@ -41,10 +41,20 @@ flexcan_frame_t frame;
 
 uint32_t txIdentifier = 0x690;
 uint32_t rxIdentifier = 0x691;
+uint32_t hk_rxIdentifier = 0x5A1;
 
 /*--------------------------------------------------------------------
                             PROCEDURES
 --------------------------------------------------------------------*/
+uint64_t flexcan_GetMbStatus
+    (
+    CAN_Type      *p_flexcan_regs
+    )
+{
+uint64_t tempflag = (uint64_t)p_flexcan_regs->IFLAG1;
+return ( tempflag | ( ( (uint64_t)p_flexcan_regs->IFLAG2 ) << 32 ) );
+}
+
 can_ret_code_t
 can_hw_receive_rx_mb
     (
@@ -192,6 +202,10 @@ void CAN_nim_init
 {
 flexcan_config_t        flexcanConfig;
 flexcan_rx_mb_config_t  mbConfig;
+flexcan_rx_mb_config_t  hk_mbConfig;
+
+
+FLEXCAN_EnterFreezeMode(EXAMPLE_CAN);
 
 /*Clock setting for FLEXCAN*/
 clock_root_config_t rootCfg = {0};
@@ -218,21 +232,27 @@ else
     LOG_INFO("No found Improved Timing Configuration. Just used default configuration\r\n\r\n");
     }
 
-FLEXCAN_Init( CAN2, &flexcanConfig, EXAMPLE_CAN_CLK_FREQ);
+FLEXCAN_Init( CAN2, &flexcanConfig, EXAMPLE_CAN_CLK_FREQ );
 
 /* Create FlexCAN handle structure and set call back function. */
 FLEXCAN_TransferCreateHandle(EXAMPLE_CAN, &flexcanHandle, flexcan_callback, NULL);
-
-/* Set Rx Masking mechanism. */
-FLEXCAN_SetRxMbGlobalMask(EXAMPLE_CAN, FLEXCAN_RX_MB_STD_MASK(rxIdentifier, 0, 0));
+FLEXCAN_SetTxMbConfig(EXAMPLE_CAN, TX_MESSAGE_BUFFER_NUM, true);
 
 /* Setup Rx Message Buffer. */
 mbConfig.format = kFLEXCAN_FrameFormatStandard;
 mbConfig.type   = kFLEXCAN_FrameTypeData;
 mbConfig.id     = FLEXCAN_ID_STD(rxIdentifier);
 FLEXCAN_SetRxMbConfig(EXAMPLE_CAN, RX_MESSAGE_BUFFER_NUM, &mbConfig, true);
-FLEXCAN_SetTxMbConfig(EXAMPLE_CAN, TX_MESSAGE_BUFFER_NUM, true);
 FLEXCAN_EnableMbInterrupts( EXAMPLE_CAN, ( 1 << RX_MESSAGE_BUFFER_NUM ) );
+
+/* Setup Rx Message Buffer. */
+hk_mbConfig.format = kFLEXCAN_FrameFormatStandard;
+hk_mbConfig.type   = kFLEXCAN_FrameTypeData;
+hk_mbConfig.id     = FLEXCAN_ID_STD(hk_rxIdentifier);
+FLEXCAN_SetRxMbConfig(EXAMPLE_CAN, HK_RX_MESSAGE_BUFFER_NUM, &hk_mbConfig, true);
+FLEXCAN_EnableMbInterrupts( EXAMPLE_CAN, ( 1 << HK_RX_MESSAGE_BUFFER_NUM ) );
+
+FLEXCAN_ExitFreezeMode(EXAMPLE_CAN);
 }
 
 /*!*******************************************************************
