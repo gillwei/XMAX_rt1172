@@ -1,0 +1,86 @@
+﻿$version 10.00
+
+// This is a font resource.
+$rect <20,20,230,60>
+$output false
+resource Resources::Font FontNotoSansCjkJp86
+{
+  attr fontname FontName = Noto Sans CJK JP Medium;
+  attr fontheight Height = 86;
+  attr fontquality Quality = High;
+  attr fontranges Ranges = 0x20-0xFF;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontheightmode HeightMode = Compatible;
+  attr fontrowdistance RowDistance;
+}
+
+// This is a font resource.
+$rect <20,70,230,110>
+$output false
+resource Resources::Font FontNotoSansCjkJp36
+{
+  attr fontname FontName = Noto Sans CJK JP Medium;
+  attr fontheight Height = 36;
+  attr fontquality Quality = High;
+  attr fontranges Ranges = 0x20-0xFF;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontheightmode HeightMode = Compatible;
+  attr fontrowdistance RowDistance;
+}
+
+// This is a font resource.
+$rect <20,120,230,160>
+$output false
+resource Resources::Font FontNotoSansCjkJp32
+{
+  attr fontname FontName = Noto Sans CJK JP Medium;
+  attr fontheight Height = 32;
+  attr fontquality Quality = High;
+  attr fontranges Ranges = 0x20-0xFF;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontheightmode HeightMode = Compatible;
+  attr fontrowdistance RowDistance;
+}
+
+// This is a font resource.
+$rect <20,219,230,259>
+$output false
+resource Resources::Font FontNotoSansCjkJp24
+{
+  attr fontname FontName = Noto Sans CJK JP Medium;
+  attr fontheight Height = 24;
+  attr fontquality Quality = High;
+  attr fontranges Ranges = 0x20-0xFF;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontheightmode HeightMode = Compatible;
+  attr fontrowdistance RowDistance;
+}
+
+// This is a font resource.
+$rect <20,270,230,310>
+$output false
+resource Resources::Font FontNotoSansCjkJp20
+{
+  attr fontname FontName = Noto Sans CJK JP Medium;
+  attr fontheight Height = 20;
+  attr fontquality Quality = High;
+  attr fontranges Ranges = 0x20-0xFF;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontheightmode HeightMode = Compatible;
+  attr fontrowdistance RowDistance;
+}

@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -206,6 +206,7 @@ EW_DEFINE_METHODS( CoreRoot, CoreGroup )
   EW_METHOD( GetRoot,           CoreRoot )( CoreRoot _this )
   EW_METHOD( Draw,              void )( CoreRoot _this, GraphicsCanvas aCanvas, 
     XRect aClip, XPoint aOffset, XInt32 aOpacity, XBool aBlend )
+  EW_METHOD( HandleEvent,       XObject )( CoreView _this, CoreEvent aEvent )
   EW_METHOD( CursorHitTest,     CoreCursorHit )( CoreGroup _this, XRect aArea, XInt32 
     aFinger, XInt32 aStrikeCount, CoreView aDedicatedView, XSet aRetargetReason )
   EW_METHOD( ArrangeView,       XPoint )( CoreRectView _this, XRect aBounds, XEnum 
@@ -217,13 +218,31 @@ EW_DEFINE_METHODS( CoreRoot, CoreGroup )
   EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
   EW_METHOD( OnSetFocus,        void )( CoreRoot _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreRoot _this, XBool value )
+  EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
+  EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreRoot _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreRoot _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreRoot _this, XBool aRecursive )
+  EW_METHOD( DismissDialog,     void )( CoreGroup _this, CoreGroup aDialogGroup, 
+    EffectsTransition aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, 
+    EffectsTransition aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, 
+    XBool aCombine )
   EW_METHOD( DispatchEvent,     XObject )( CoreRoot _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreRoot _this, CoreEvent aEvent, XSet 
     aFilter )
+  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreRoot _this, XRect aArea )
+  EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
+  EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
+    aFilter )
+  EW_METHOD( FindSiblingView,   CoreView )( CoreGroup _this, CoreView aView, XSet 
+    aFilter )
+  EW_METHOD( RestackTop,        void )( CoreGroup _this, CoreView aView )
+  EW_METHOD( Restack,           void )( CoreGroup _this, CoreView aView, XInt32 
+    aOrder )
+  EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
+  EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
+    aOrder )
 EW_END_OF_METHODS( CoreRoot )
 
 /* The method GetRoot() delivers the application object, this view belongs to. The 
@@ -599,6 +618,114 @@ XBool CoreRoot__DriveMultiTouchHitting( void* _this, XBool aDown, XInt32 aFinger
 
 /* The following define announces the presence of the method Core::Root.DriveMultiTouchHitting(). */
 #define _CoreRoot__DriveMultiTouchHitting_
+
+/* The method RetargetCursorWithReason() changes the currently active cursor event 
+   target view. Usually, the target view is determined when the user presses the 
+   finger on the touch screen. Once determined, the target view remains active until 
+   the user has released the finger. In the meantime the framework will provide 
+   this target view with all cursor events. This entire cycle is called 'grab cycle'. 
+   The method RetargetCursorWithReason() allows you to select a new target view 
+   without the necessity to wait until the user has released the touch screen and 
+   thus has finalized the grab cycle.
+   Except the additional parameter aRetargetReason, this method works similarly 
+   to @RetargetCursor(). At first the method asks the new potential target view 
+   aNewTarget whether it or one of its sub-views is willing to continue processing 
+   the cursor events for the gesture specified in aRetargetReason. If successful, 
+   the method hands over the cursor event flow to this determined view. If there 
+   is no view willing to handle these events, the method hands over the event flow 
+   directly to the view specified in the parameter aFallbackTarget. If no willing 
+   view could be found and no fall-back view was given, the current grab cycle is 
+   finalized as if the user had released the touch screen.
+   Unlike the method @DeflectCursor() this RetargetCursorWithReason() method performs 
+   the cursor hit test for all views of the new potential target. This is as if 
+   the user had tapped the screen and the framework tries to determine the view 
+   affected by this interaction. This search operation is limited to views at the 
+   current cursor position. Unlike @RetargetCursor(), this method limits additionally 
+   to candidates willing to handle the gesture specified in the parameter aRetargetReason.
+   When switching the target view, the framework provides the old and the new target 
+   views with cursor events. The old view will receive a Core::CursorEvent with 
+   variables Down == 'false' and AutoDeflected == 'true' - this simulates the release 
+   operations. The new target view will receive a Core::CursorEvent with the variable 
+   Down == 'true' as if it had been just touched by the user.
+   If the application is running within a multi-touch environment, the invocation 
+   of the RetargetCursor() method does affect the event flow corresponding only 
+   to the finger which has lastly generated touch events. */
+void CoreRoot_RetargetCursorWithReason( CoreRoot _this, CoreView aNewTarget, CoreView 
+  aFallbackTarget, XSet aRetargetReason );
+
+/* The method RetargetCursor() changes the currently active cursor event target 
+   view. Usually, the target view is determined when the user presses the finger 
+   on the touch screen. Once determined, the target view remains active until the 
+   user has released the finger. In the meantime the framework will provide this 
+   target view with all cursor events. This entire cycle is called 'grab cycle'. 
+   The method RetargetCursor() allows you to select a new target view without the 
+   necessity to wait until the user has released the touch screen and thus has finalized 
+   the grab cycle.
+   At first the method asks the new potential target view aNewTarget whether it 
+   or one of its sub-views is willing to handle the cursor events. If successful, 
+   the method hands over the cursor event flow to this determined view. If there 
+   is no view willing to handle these events, the method hands over the event flow 
+   directly to the view specified in the parameter aFallbackTarget. If no willing 
+   view could be found and no fall-back view was given, the current grab cycle is 
+   finalized as if the user had released the touch screen.
+   Unlike the method @DeflectCursor() this RetargetCursor() method performs the 
+   cursor hit test for all views of the new potential target. This is as if the 
+   user had tapped the screen and the framework tries to determine the view affected 
+   by this interaction. This search operation is limited to views at the current 
+   cursor position.
+   When switching the target view, the framework provides the old and the new target 
+   views with cursor events. The old view will receive a Core::CursorEvent with 
+   variables Down == 'false' and AutoDeflected == 'true' - this simulates the release 
+   operations. The new target view will receive a Core::CursorEvent with the variable 
+   Down == 'true' as if it had been just touched by the user.
+   If the application is running within a multi-touch environment, the invocation 
+   of the RetargetCursor() method does affect the event flow corresponding only 
+   to the finger which has lastly generated touch events.
+   Please note the alternative version of this method @RetargetCursorWithReason(). */
+void CoreRoot_RetargetCursor( CoreRoot _this, CoreView aNewTarget, CoreView aFallbackTarget );
+
+/* The method DeflectCursor() changes the currently active cursor event target view. 
+   Usually, the target view is determined when the user presses the finger on the 
+   touch screen. Once determined, the target view remains active until the user 
+   has released the finger. In the meantime the framework will provide this target 
+   view with all cursor events. This entire cycle is called 'grab cycle'. The method 
+   DeflectCursor() allows you to select a new target view without the necessity 
+   to wait until the user has released the touch screen and thus has finalized the 
+   grab cycle.
+   Unlike the method @RetargetCursor() this @DeflectCursor() method hands over the 
+   cursor event flow to the new target regardless its position or state. If no new 
+   target view has been specified, the current grab cycle is finalized as if the 
+   user had released the touch screen.
+   When switching the target view, the framework provides the old and the new target 
+   views with cursor events. The old view will receive a Core::CursorEvent with 
+   variables Down == 'false' and AutoDeflected == 'true' - this simulates the release 
+   operations. The new target view will receive a Core::CursorEvent with the variable 
+   Down == 'true' as if it had been just touched by the user.
+   If the application is running within a multi-touch environment, the invocation 
+   of the DeflectCursor() method does affect the event flow corresponding only to 
+   the finger which has lastly generated touch events. */
+void CoreRoot_DeflectCursor( CoreRoot _this, CoreView aNewTarget, XPoint aHitOffset );
+
+/* The method EndModal() terminates the modal state of the given GUI component aGroup. 
+   Usually, this forces the framework to restore the origin user input event flow 
+   unless there are other components on the modal stack. In this case the event 
+   flow is redirected to the next component on this stack.
+   Whether a GUI component is currently modal or not is reflected in its state Core::ViewState.Modal. 
+   This state can be evaluated in the implementation of the @UpdateViewState() method. 
+   For example, the method may highlight the component if it has obtained the modal 
+   state, etc. */
+void CoreRoot_EndModal( CoreRoot _this, CoreGroup aGroup );
+
+/* The method BeginModal() initiates the modal state of the given GUI component 
+   aGroup. Usually, this forces the framework to limit all user inputs to this component 
+   and its sub-views. If there is already another modal GUI component active, this 
+   method puts this component on the modal stack and redirects its user inputs events 
+   to the new component.
+   Whether a GUI component is currently modal or not is reflected in its state Core::ViewState.Modal. 
+   This state can be evaluated in the implementation of the @UpdateViewState() method. 
+   For example, the method may highlight the component if it has obtained the modal 
+   state, etc. */
+void CoreRoot_BeginModal( CoreRoot _this, CoreGroup aGroup );
 
 #ifdef __cplusplus
   }

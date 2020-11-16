@@ -19,13 +19,15 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
 
 #include "ewlocale.h"
 #include "_ResourcesBitmap.h"
+#include "_ResourcesExternBitmap.h"
+#include "_ResourcesFont.h"
 #include "Resources.h"
 
 /* Compressed strings for the language 'Default'. */
@@ -177,5 +179,318 @@ EW_DEFINE_CLASS( ResourcesBitmap, CoreResource, _None, _None, _None, _None, _Non
   ResourcesBitmap_OnSetFrameSize,
   ResourcesBitmap_Update,
 EW_END_OF_CLASS( ResourcesBitmap )
+
+/* Initializer for the class 'Resources::ExternBitmap' */
+void ResourcesExternBitmap__Init( ResourcesExternBitmap _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  ResourcesBitmap__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( ResourcesExternBitmap );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( ResourcesExternBitmap );
+
+  /* Call the user defined constructor */
+  ResourcesExternBitmap_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Resources::ExternBitmap' */
+void ResourcesExternBitmap__ReInit( ResourcesExternBitmap _this )
+{
+  /* At first re-initialize the super class ... */
+  ResourcesBitmap__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'Resources::ExternBitmap' */
+void ResourcesExternBitmap__Done( ResourcesExternBitmap _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( ResourcesBitmap );
+
+  /* Don't forget to deinitialize the super class ... */
+  ResourcesBitmap__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Resources::ExternBitmap.Init()' */
+void ResourcesExternBitmap_Init( ResourcesExternBitmap _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  _this->Super1.Mutable = 1;
+}
+
+/* 'C' function for method : 'Resources::ExternBitmap.OnSetName()' */
+void ResourcesExternBitmap_OnSetName( ResourcesExternBitmap _this, XString value )
+{
+  if ( !EwCompString( _this->Name, value ))
+    return;
+
+  _this->Name = EwShareString( value );
+  EwPostSignal( EwNewSlot( _this, ResourcesExternBitmap_load ), ((XObject)_this ));
+}
+
+/* 'C' function for method : 'Resources::ExternBitmap.load()' */
+void ResourcesExternBitmap_load( ResourcesExternBitmap _this, XObject sender )
+{
+  XString name;
+  XHandle handle;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( _this->Super1.bitmap != 0 )
+  {
+    XHandle handle = _this->Super1.bitmap;
+    EwFreeBitmap((XBitmap*)handle );
+    _this->Super1.bitmap = 0;
+    _this->Super1.FrameSize = _Const0000;
+    _this->Super1.FrameDelay = 0;
+    _this->Super1.NoOfFrames = 1;
+    _this->Super1.Animated = 0;
+  }
+
+  name = _this->Name;
+  handle = 0;
+  {
+    extern XBitmap* EwLoadExternBitmap( XString aName );
+    handle = (XHandle)EwLoadExternBitmap( name );
+  }
+  _this->Super1.bitmap = handle;
+
+  if ( _this->Super1.bitmap != 0 )
+  {
+    XInt32 noOfFrames = 1;
+    XPoint frameSize = _Const0000;
+    XInt32 frameDelay = 0;
+    handle = _this->Super1.bitmap;
+    {
+      XBitmap* bmp = (XBitmap*)handle;
+
+      noOfFrames = bmp->NoOfVirtFrames;
+      frameSize  = bmp->FrameSize;
+      frameDelay = bmp->FrameDelay;
+    }
+    _this->Super1.NoOfFrames = noOfFrames;
+    _this->Super1.FrameSize = frameSize;
+    _this->Super1.FrameDelay = frameDelay;
+    _this->Super1.Animated = (XBool)(( _this->Super1.FrameDelay > 0 ) && ( _this->Super1.NoOfFrames 
+    > 1 ));
+  }
+
+  EwNotifyObjObservers((XObject)_this, 0 );
+}
+
+/* Variants derived from the class : 'Resources::ExternBitmap' */
+EW_DEFINE_CLASS_VARIANTS( ResourcesExternBitmap )
+EW_END_OF_CLASS_VARIANTS( ResourcesExternBitmap )
+
+/* Virtual Method Table (VMT) for the class : 'Resources::ExternBitmap' */
+EW_DEFINE_CLASS( ResourcesExternBitmap, ResourcesBitmap, Name, Name, Name, Name, 
+                 Name, _None, "Resources::ExternBitmap" )
+  ResourcesBitmap_OnSetFrameSize,
+  ResourcesBitmap_Update,
+EW_END_OF_CLASS( ResourcesExternBitmap )
+
+/* Initializer for the class 'Resources::Font' */
+void ResourcesFont__Init( ResourcesFont _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  CoreResource__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( ResourcesFont );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( ResourcesFont );
+
+  /* Call the user defined constructor */
+  ResourcesFont_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Resources::Font' */
+void ResourcesFont__ReInit( ResourcesFont _this )
+{
+  /* At first re-initialize the super class ... */
+  CoreResource__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'Resources::Font' */
+void ResourcesFont__Done( ResourcesFont _this )
+{
+  /* Call the user defined destructor of the class */
+  ResourcesFont_Done( _this );
+
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( CoreResource );
+
+  /* Don't forget to deinitialize the super class ... */
+  CoreResource__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Resources::Font.Done()' */
+void ResourcesFont_Done( ResourcesFont _this )
+{
+  XHandle handle;
+
+  if ( _this->font == 0 )
+    return;
+
+  handle = _this->font;
+  EwFreeFont((XFont*)handle );
+  _this->font = 0;
+  _this->Ascent = 0;
+  _this->Descent = 0;
+  _this->Leading = 0;
+}
+
+/* 'C' function for method : 'Resources::Font.Init()' */
+void ResourcesFont_Init( ResourcesFont _this, XHandle aArg )
+{
+  XHandle handle;
+  XInt32 ascent;
+  XInt32 descent;
+  XInt32 leading;
+
+  if ( aArg == 0 )
+    return;
+
+  handle = 0;
+  ascent = 0;
+  descent = 0;
+  leading = 0;
+  {
+    /* aArg is a pointer to a memory where the font resource is stored. */
+    XFont* font = EwLoadFont((const XFntRes*)aArg );
+
+    /* After the font has been loaded query its ascent and descent. */
+    if ( font )
+    {
+      ascent  = font->Ascent;
+      descent = font->Descent;
+      leading = font->Leading;
+    }
+
+    handle = (XHandle)(void*)font;
+  }
+  _this->font = handle;
+  _this->Ascent = ascent;
+  _this->Descent = descent;
+  _this->Leading = leading;
+}
+
+/* 'C' function for method : 'Resources::Font.GetFlowTextAdvance()' */
+XInt32 ResourcesFont_GetFlowTextAdvance( ResourcesFont _this, XString aFlowString )
+{
+  XHandle handle;
+  XInt32 advance;
+
+  if ( _this->font == 0 )
+    return 0;
+
+  handle = _this->font;
+  advance = 0;
+  advance = EwGetFlowTextAdvance((XFont*)handle, aFlowString );
+  return advance;
+}
+
+/* 'C' function for method : 'Resources::Font.ParseFlowString()' */
+XString ResourcesFont_ParseFlowString( ResourcesFont _this, XString aString, XInt32 
+  aOffset, XInt32 aWidth, XInt32 aMaxNoOfRows, XHandle aBidi )
+{
+  XHandle handle;
+  XString result;
+
+  if ( aOffset < 0 )
+    aOffset = 0;
+
+  if (( _this->font == 0 ) || (( aOffset > 0 ) && ( aOffset >= EwGetStringLength( 
+      aString ))))
+    return 0;
+
+  handle = _this->font;
+  result = 0;
+  result = EwParseFlowString((XFont*)handle, aString + aOffset, aWidth, aMaxNoOfRows, aBidi );
+  return result;
+}
+
+/* The method GetTextAdvance() calculates the horizontal advance in pixel of a text 
+   row to print with this font. This value is calculated by the sum of advance values 
+   of all affected glyphs. The text is passed in the parameter aString. The parameter 
+   aOffset determines within aString the sign to start the calculation. If aOffset 
+   is zero, the calculation starts with the first sign. The parameter aCount determines 
+   the max. number of following sigs to calculate the advance value. If aCount is 
+   -1, all signs until the end of the string will be evaluated. */
+XInt32 ResourcesFont_GetTextAdvance( ResourcesFont _this, XString aString, XInt32 
+  aOffset, XInt32 aCount )
+{
+  XHandle handle;
+  XInt32 advance;
+
+  if ( aOffset < 0 )
+    aOffset = 0;
+
+  if (( _this->font == 0 ) || (( aOffset > 0 ) && ( aOffset >= EwGetStringLength( 
+      aString ))))
+    return 0;
+
+  handle = _this->font;
+  advance = 0;
+  advance = EwGetTextAdvance((XFont*)handle, aString + aOffset, aCount );
+  return advance;
+}
+
+/* Default onget method for the property 'Leading' */
+XInt32 ResourcesFont_OnGetLeading( ResourcesFont _this )
+{
+  return _this->Leading;
+}
+
+/* Wrapper function for the non virtual method : 'Resources::Font.OnGetLeading()' */
+XInt32 ResourcesFont__OnGetLeading( void* _this )
+{
+  return ResourcesFont_OnGetLeading((ResourcesFont)_this );
+}
+
+/* Default onget method for the property 'Descent' */
+XInt32 ResourcesFont_OnGetDescent( ResourcesFont _this )
+{
+  return _this->Descent;
+}
+
+/* Wrapper function for the non virtual method : 'Resources::Font.OnGetDescent()' */
+XInt32 ResourcesFont__OnGetDescent( void* _this )
+{
+  return ResourcesFont_OnGetDescent((ResourcesFont)_this );
+}
+
+/* Default onget method for the property 'Ascent' */
+XInt32 ResourcesFont_OnGetAscent( ResourcesFont _this )
+{
+  return _this->Ascent;
+}
+
+/* Wrapper function for the non virtual method : 'Resources::Font.OnGetAscent()' */
+XInt32 ResourcesFont__OnGetAscent( void* _this )
+{
+  return ResourcesFont_OnGetAscent((ResourcesFont)_this );
+}
+
+/* Variants derived from the class : 'Resources::Font' */
+EW_DEFINE_CLASS_VARIANTS( ResourcesFont )
+EW_END_OF_CLASS_VARIANTS( ResourcesFont )
+
+/* Virtual Method Table (VMT) for the class : 'Resources::Font' */
+EW_DEFINE_CLASS( ResourcesFont, CoreResource, _None, _None, _None, _None, _None, 
+                 _None, "Resources::Font" )
+EW_END_OF_CLASS( ResourcesFont )
+
+/* Include a file containing the bitmap resource : 'Resources::WhiteBitmapStripe' */
+#include "_ResourcesWhiteBitmapStripe.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resources::WhiteBitmapStripe' */
+EW_RES_WITHOUT_VARIANTS( ResourcesWhiteBitmapStripe )
 
 /* Embedded Wizard */

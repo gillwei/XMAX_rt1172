@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -1320,7 +1320,7 @@ void EffectsVisibilityFader_OnEnd( EffectsVisibilityFader _this )
 
   if (( !_this->Super1.Visible && _this->Super1.RemoveIfHidden ) && ( _this->Super1.Group->Super2.Owner 
       != 0 ))
-    CoreGroup_Remove( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
+    CoreGroup__Remove( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
 }
 
 /* The method OnStart() is invoked automatically just in the moment, when the fader 
@@ -1347,11 +1347,11 @@ void EffectsVisibilityFader_OnStart( EffectsVisibilityFader _this )
       == 0 ))
   {
     CoreGroup_OnSetVisible( _this->Super1.Group, 0 );
-    CoreGroup_Add( _this->Super1.Owner, ((CoreView)_this->Super1.Group ), 0 );
+    CoreGroup__Add( _this->Super1.Owner, ((CoreView)_this->Super1.Group ), 0 );
   }
 
   if ( _this->Super1.Visible && _this->Super1.RestackTopmost )
-    CoreGroup_RestackTop( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
+    CoreGroup__RestackTop( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
 
   if ( _this->Super1.Visible && _this->Super1.AssignFocus )
     CoreGroup__OnSetFocus( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
@@ -1464,7 +1464,7 @@ void EffectsPositionFader_OnEnd( EffectsPositionFader _this )
 
   if (( !_this->Super1.Visible && _this->Super1.RemoveIfHidden ) && ( _this->Super1.Group->Super2.Owner 
       != 0 ))
-    CoreGroup_Remove( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
+    CoreGroup__Remove( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
 
   if ( _this->Buffered )
     CoreGroup__OnSetBuffered( _this->Super1.Group, _this->wasBuffered );
@@ -1526,11 +1526,11 @@ void EffectsPositionFader_OnStart( EffectsPositionFader _this )
       == 0 ))
   {
     CoreGroup_OnSetVisible( _this->Super1.Group, 0 );
-    CoreGroup_Add( _this->Super1.Owner, ((CoreView)_this->Super1.Group ), 0 );
+    CoreGroup__Add( _this->Super1.Owner, ((CoreView)_this->Super1.Group ), 0 );
   }
 
   if ( _this->Super1.Visible && _this->Super1.RestackTopmost )
-    CoreGroup_RestackTop( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
+    CoreGroup__RestackTop( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
 
   if ( _this->Super1.Visible && _this->Super1.AssignFocus )
     CoreGroup__OnSetFocus( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
@@ -2570,34 +2570,5 @@ void EffectsShowHideCentered__Init( EffectsShowHideTransition _this )
 /* Table with links to derived variants of the auto object : 'Effects::ShowHideCentered' */
 EW_DEFINE_AUTOOBJECT_VARIANTS( EffectsShowHideCentered )
 EW_END_OF_AUTOOBJECT_VARIANTS( EffectsShowHideCentered )
-
-/* The global autoobject Effects::SlideLeftCentered represents the fade-in/out operation 
-   affecting the position and the opacity of the given GUI component. When using 
-   the transition for the fade-in operation, the GUI component slides from the right 
-   edge of its owner component and continues moving horizontally until it reaches 
-   the owner's center position. When using the transition for the fade-out operation, 
-   the component slides to the left until it leaves the visible area of its owner 
-   component. Additionally, while the transitions are performed, the opacity of 
-   the GUI component fades-in or fades-out accordingly. This transition is thus 
-   ideal wherever one GUI component should smoothly slide-in/out in context of another 
-   component. The duration of the transition is configured per default to take 500 
-   ms and the timing is configured to start fast and then slow down the animation 
-   (FastIn_EaseOut).
-   This object exists for your convenience permitting you to simply refer the transition 
-   wherever it is required in your implementation without having to take care of 
-   the creation and configuration of the object. If you require the transition to 
-   run with other configuration (e.g. other timing parameters), create a copy of 
-   this object and adapt its properties accordingly. */
-EW_DEFINE_AUTOOBJECT( EffectsSlideLeftCentered, EffectsSlideTransition )
-
-/* Initializer for the auto object 'Effects::SlideLeftCentered' */
-void EffectsSlideLeftCentered__Init( EffectsSlideTransition _this )
-{
-  _this->Direction = CoreDirectionLeft;
-}
-
-/* Table with links to derived variants of the auto object : 'Effects::SlideLeftCentered' */
-EW_DEFINE_AUTOOBJECT_VARIANTS( EffectsSlideLeftCentered )
-EW_END_OF_AUTOOBJECT_VARIANTS( EffectsSlideLeftCentered )
 
 /* Embedded Wizard */

@@ -1,0 +1,245 @@
+﻿$version 10.00
+
+// This is the root component of the entire GUI application.
+$rect <20,20,220,60>
+$output false
+class Application : Core::Root
+{
+  $rect <10,290,200,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <10,340,200,380>
+  inherited method Init()
+  {
+    ShowDisclaimer();
+  }
+
+  $rect <230,290,440,330>
+  slot ProcKeyHoldSlot
+  {
+    var Core::KeyPressHandler handler = ( Core::KeyPressHandler ) sender;
+    switch( handler.Code )
+    {
+      case Core::KeyCode.Down: SwitchPageOfDirection( Enum::Direction.Next );
+      case Core::KeyCode.Up: SwitchPageOfDirection( Enum::Direction.Previous );
+      case Core::KeyCode.Ok:;
+      default:;
+    }
+  }
+
+  $rect <350,430,560,470>
+  method void SwitchPageOfDirection( arg Enum::Direction aDirection )
+  {
+    switch( aDirection )
+    {
+      case Enum::Direction.Previous: PageIdx = PageIdx - 1;
+      case Enum::Direction.Next: PageIdx = PageIdx + 1;
+      default:;
+    }
+
+    if( PageIdx < 0 )
+    {
+      PageIdx = 0;
+    }
+    else if( PageIdx >= PageClassList.size )
+    {
+      PageIdx = PageClassList.size - 1;
+    }
+
+    SwitchToPage( PageIdx );
+
+  }
+
+  $rect <580,430,780,470>
+  property int32 PageIdx = 0;
+
+  $rect <40,490,270,530>
+  slot OnDisclaimerAcceptedSlot
+  {
+    var Components::DisclaimerView Disclaimer = ( Components::DisclaimerView )sender;
+    if( null != Disclaimer )
+    {
+      GetRoot().EndModal( Disclaimer );
+      GetRoot().Remove( Disclaimer );
+    }
+
+    StatusBar.StackingPriority = 1;
+    SwitchToPage( 0 );
+
+  }
+
+  $rect <20,20,160,60>
+  object Navigation::Main Navigation
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Visible = true;
+    preset PassKeyHold = ProcKeyHoldSlot;
+  }
+
+  $rect <40,430,270,470>
+  method void ShowDisclaimer()
+  {
+    var Components::DisclaimerView Disclaimer = new Components::DisclaimerView;
+    Disclaimer.OnYesClicked = OnDisclaimerAcceptedSlot;
+    GetRoot().Add( Disclaimer, 0 );
+    GetRoot().BeginModal( Disclaimer );
+  }
+
+  // For disclaimer
+  note group Note
+  {
+    attr Bounds = <10,390,300,550>;
+  }
+
+  $rect <580,490,780,530>
+  array class PageClassList[ 3 ] =
+  (
+    Default[0] = Settings::Main;
+    Default[1] = Navigation::Main;
+    Default[2] = Media::Main;
+  );
+
+  $rect <350,490,560,530>
+  method void SwitchToPage( arg int32 aPageIdx )
+  {
+    var class PageClass = PageClassList[aPageIdx];
+    if( Settings::Main == PageClass )
+    {
+      var Settings::Main View = new Settings::Main;
+      if( null != View )
+      {
+        View.PassKeyHold = ProcKeyHoldSlot;
+        SwitchToDialog( View, null, null, null, null, null, null, null, null, null, false );
+      }
+    }
+    else if( Media::Main == PageClass )
+    {
+      var Media::Main View = new Media::Main;
+      if( null != View )
+      {
+        View.PassKeyHold = ProcKeyHoldSlot;
+        SwitchToDialog( View, null, null, null, null, null, null, null, null, null, false );
+      }
+    }
+    else if( Navigation::Main == PageClass )
+    {
+      SwitchToDialog( Navigation, null, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
+  // For switching page
+  note group Note1
+  {
+    attr Bounds = <330,390,800,550>;
+  }
+
+  // Factory Test
+  note group Note2
+  {
+    attr Bounds = <10,570,320,820>;
+  }
+
+  $rect <40,760,290,800>
+  var Factory::DisplayManual DisplayTestPage;
+
+  $rect <40,610,290,650>
+  object Core::SystemEventHandler FactoryTestEventHandler
+  {
+    preset OnEvent = OnFactoryTestEventSlot;
+    preset Event = DeviceInterface::SystemDevice.FactoryTestSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <40,660,290,700>
+  slot OnFactoryTestEventSlot
+  {
+    var Factory::TestContext TestContext = ( Factory::TestContext )FactoryTestEventHandler.Context;
+    if( null != TestContext )
+    {
+      switch( TestContext.TestItem )
+      {
+        case Enum::FactoryTest.Display:
+        {
+          StatusBarVisible = false;
+          if( null == DisplayTestPage )
+          {
+            DisplayTestPage = new Factory::DisplayManual;
+            PresentDialog( DisplayTestPage, null, null, null, null, null, null, null, null, false );
+          }
+          DisplayTestPage.PatternIdx = TestContext.Data;
+        }
+        case Enum::FactoryTest.Quit:
+        {
+          if( null != DisplayTestPage )
+          {
+            DismissDialog( DisplayTestPage, null, null, null, OnTestDimissedSlot, null, false );
+          }
+          StatusBarVisible = true;
+        }
+        default:;
+      }
+    }
+  }
+
+  $rect <40,710,290,750>
+  slot OnTestDimissedSlot
+  {
+    if( null != DisplayTestPage )
+    {
+      DisplayTestPage = null;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Components::StatusBar StatusBar
+  {
+    preset Bounds = <0,0,480,32>;
+  }
+
+  // For status bar
+  note group Note3
+  {
+    attr Bounds = <330,570,620,730>;
+  }
+
+  $rect <360,620,590,660>
+  property bool StatusBarVisible = true;
+
+  $rect <360,670,590,710>
+  onset StatusBarVisible
+  {
+    if ( pure StatusBarVisible != value )
+    {
+      pure StatusBarVisible = value;
+      StatusBar.Visible = value;
+      trace "StatusBar Visible: ", value;
+    }
+  }
+
+  // BT FW Update
+  note group Note4
+  {
+    attr Bounds = <660,570,930,730>;
+  }
+
+  $rect <690,620,910,660>
+  object Core::PropertyObserver BtFwStatusObserver
+  {
+    preset OnEvent = OnBtFwStatusUpdteSlot;
+    preset Outlet = ^DeviceInterface::BluetoothDevice.BtFwStatus;
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <690,670,910,710>
+  slot OnBtFwStatusUpdteSlot
+  {
+    if( Enum::BtFwStatus.UPDATE_START == DeviceInterface::BluetoothDevice.BtFwStatus )
+    {
+      var Settings::BtFwUpdateDialog BtFwDialog = new Settings::BtFwUpdateDialog;
+      GetRoot().Add( BtFwDialog, 0 );
+      GetRoot().BeginModal( BtFwDialog );
+    }
+  }
+}

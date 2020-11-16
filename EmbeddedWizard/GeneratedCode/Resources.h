@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -43,6 +43,11 @@
 #endif
 
 #include "_ResourcesBitmap.h"
+#include "_ResourcesExternBitmap.h"
+#include "_ResourcesFont.h"
+
+/* Bitmap resource : 'Resources::WhiteBitmapStripe' */
+EW_DECLARE_BITMAP_RES( ResourcesWhiteBitmapStripe )
 
 #ifdef __cplusplus
   }

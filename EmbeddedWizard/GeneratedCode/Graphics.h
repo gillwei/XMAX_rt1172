@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -43,6 +43,17 @@
 #endif
 
 #include "_GraphicsCanvas.h"
+
+/* The definition Graphics::Edges enumerates the parts of a free scalable frame. 
+   It is used to determine, which parts should be drawn. */
+typedef enum
+{
+  GraphicsEdgesLeft                     = 0x00000001,
+  GraphicsEdgesTop                      = 0x00000002,
+  GraphicsEdgesRight                    = 0x00000004,
+  GraphicsEdgesBottom                   = 0x00000008,
+  GraphicsEdgesInterior                 = 0x00000010
+} GraphicsEdges;
 
 #ifdef __cplusplus
   }

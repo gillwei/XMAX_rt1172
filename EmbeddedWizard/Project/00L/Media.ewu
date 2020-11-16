@@ -1,0 +1,370 @@
+﻿$version 10.00
+
+$rect <30,20,270,60>
+$output false
+class Main : Components::BaseComponent
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <10,450,210,490>
+  inherited method Init()
+  {
+    DeviceInterface::MediaManagerDevice.IsInit = true;
+    DeviceInterface::MediaManagerDevice.GetPlayerInfo();
+    DeviceInterface::MediaManagerDevice.GetPlaybackInfo();
+    DeviceInterface::MediaManagerDevice.GetTrackInfo();
+    DeviceInterface::MediaManagerDevice.IsInit = false;
+    if( "" !=DeviceInterface::MediaManagerDevice.Title )
+    {
+    signal OnPlaybackTimeUpdateSlot;
+    }
+  }
+
+  $rect <520,50,720,90>
+  inherited slot OnLongKeyPressed
+  {
+    signal PassKeyHold, sender;
+  }
+
+  $rect <520,150,720,190>
+  inherited method OnShortDownKeyPressed()
+  {
+    var int32 NextFocusIdx = FocusIdx + 1;
+    if( NextFocusIdx >= FocusList.size )
+      {
+      NextFocusIdx = FocusList.size - 1;
+      }
+
+    if( FocusIdx != NextFocusIdx )
+      {
+      FocusIdx = NextFocusIdx;
+      Focus = FocusList[NextFocusIdx];
+      }
+  }
+
+  $rect <520,100,720,140>
+  inherited method OnShortUpKeyPressed()
+  {
+    var int32 NextFocusIdx = FocusIdx - 1;
+    if( NextFocusIdx < 0 )
+      {
+      NextFocusIdx = 0;
+      }
+
+    if( FocusIdx != NextFocusIdx )
+      {
+      FocusIdx = NextFocusIdx;
+      Focus = FocusList[NextFocusIdx];
+      }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Title
+  {
+    preset Bounds = <80,36,410,76>;
+    preset Ellipsis = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PlayPauseButton
+  {
+    preset Bounds = <200,200,290,250>;
+    preset OnRelease = OnPlayPauseSlot;
+    preset IconFrameActive = 1;
+    preset IconFrameDefault = 0;
+    preset IconFrame = -1;
+    preset Icon = Resource::IconMediaPlayPause;
+    preset Label = "";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PrevTrackButton
+  {
+    preset Bounds = <80,200,170,250>;
+    preset OnRelease = OnPrevTrackSlot;
+    preset IconFrameActive = 1;
+    preset IconFrame = 0;
+    preset Icon = Resource::IconMediaPrevious;
+    preset Label = "";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton NextTrackButton
+  {
+    preset Bounds = <310,200,400,250>;
+    preset OnRelease = OnNextTrackSlot;
+    preset IconFrameActive = 1;
+    preset IconFrame = 0;
+    preset Icon = Resource::IconMediaNext;
+    preset Label = "";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <520,250,720,290>
+  array Core::View FocusList[ 3 ] =
+  (
+    Default[0] = PrevTrackButton;
+    Default[1] = PlayPauseButton;
+    Default[2] = NextTrackButton;
+  );
+
+  $rect <520,200,720,240>
+  var int32 FocusIdx = 1;
+
+  $rect <20,20,160,60>
+  object Views::Text Artist
+  {
+    preset Bounds = <80,80,410,120>;
+    preset Ellipsis = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Album
+  {
+    preset Bounds = <80,121,410,161>;
+    preset Ellipsis = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <270,290,470,330>
+  slot OnPlayPauseSlot
+  {
+    if( 0 == Track.PlaybackState )
+      {
+      DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.Play );
+      }
+      else
+      {
+      DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.Pause );
+      }
+  }
+
+  $rect <270,330,470,370>
+  slot OnPrevTrackSlot
+  {
+    ChangeTrack();
+    DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.PrevTrack );
+  }
+
+  $rect <270,370,470,410>
+  slot OnNextTrackSlot
+  {
+    ChangeTrack();
+    DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.NextTrack );
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::HorizontalSlider PlayProgress
+  {
+    preset Bounds = <90,150,400,200>;
+    preset Outlet;
+    preset StepSize = 1;
+    preset CurrentValue = 0;
+    preset Appearance = WidgetSet::HorizontalSlider_Small;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ElapsedTimeSec
+  {
+    preset Bounds = <10,160,80,190>;
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text RemainTimeSec
+  {
+    preset Bounds = <400,160,470,190>;
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Media::Track Track
+  {
+    preset Visible = false;
+    preset Artist;
+    preset Title;
+    preset Album;
+    preset OnTrackInfoUpdate = SetTrackInfo;
+    preset RemainTimeSec;
+    preset ElapsedTimeSec;
+  }
+
+  $rect <270,410,470,450>
+  slot SetTrackInfo
+  {
+    Title.String = Track.Title;
+    Album.String = Track.Album;
+    Artist.String = Track.Artist;
+  }
+
+  $rect <530,310,730,350>
+  method void ChangeTrack()
+  {
+    // Reset if next/previous track command is issued.
+    Track.ResetTrackInfo();
+    Track.IsTrackInfoReset = false;
+  }
+
+  $rect <540,370,740,410>
+  object Core::SystemEventHandler PlaybackTimeEventHandler
+  {
+    preset OnEvent = OnPlaybackTimeUpdateSlot;
+    preset Event = DeviceInterface::MediaManagerDevice.NotifyPlayBackTimeChangedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <740,370,1010,410>
+  slot OnPlaybackTimeUpdateSlot
+  {
+    ElapsedTimeSec.String = FormatTimeText( DeviceInterface::MediaManagerDevice.ElapsedTimeSec );
+    RemainTimeSec.String = "-" + FormatTimeText( DeviceInterface::MediaManagerDevice.RemainTimeSec );
+    if( 0 != DeviceInterface::MediaManagerDevice.DurationTimeSec )
+    {
+    PlayProgress.CurrentValue = (DeviceInterface::MediaManagerDevice.ElapsedTimeSec * 100) / DeviceInterface::MediaManagerDevice.DurationTimeSec;
+    }
+  }
+
+  $rect <10,490,210,530>
+  method string FormatTimeText( arg int32 TimeSec )
+  {
+    var int32 Hour = TimeSec / 3600;
+    var int32 Minute = ( TimeSec / 60 ) % 60;
+    var int32 Second = TimeSec % 60;
+    var string TimeText = "";
+
+    if( Hour > 0)
+    {
+      TimeText = string( Hour ) + ":";
+    }
+    TimeText = TimeText + string( Minute ) + ":";
+    if( Second < 10 )
+    {
+      TimeText = TimeText + "0";
+    }
+    TimeText = TimeText + string( Second );
+    return TimeText;
+  }
+}
+
+$rect <40,70,240,110>
+$output false
+class Track : Core::Group
+{
+  $rect <10,230,210,270>
+  inherited property Bounds = <0,0,300,200>;
+
+  $rect <370,10,570,50>
+  property string Artist;
+
+  $rect <370,50,570,90>
+  property string Title;
+
+  $rect <370,90,570,130>
+  property string Album;
+
+  $rect <590,10,820,50>
+  property slot OnTrackInfoUpdate;
+
+  $rect <10,310,210,350>
+  method void ResetTrackInfo()
+  {
+    IsTrackInfoReset = true;
+  }
+
+  $rect <10,270,210,310>
+  var bool IsTrackInfoReset = false;
+
+  $rect <890,10,1090,50>
+  object Core::PropertyObserver TitleObserver
+  {
+    preset OnEvent = OnTrackInfoUpdateSlot;
+    preset Outlet = ^DeviceInterface::MediaManagerDevice.Title;
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <1130,90,1450,130>
+  slot OnTrackInfoUpdateSlot
+  {
+    if( !IsTrackInfoReset )
+    {
+      if( sender == TitleObserver )
+      {
+        Title = DeviceInterface::MediaManagerDevice.Title;
+      }
+      else if( sender == AlbumObserver)
+      {
+        Album = DeviceInterface::MediaManagerDevice.Album;
+      }
+      else if( sender == ArtistObserver )
+      {
+        Artist = DeviceInterface::MediaManagerDevice.Artist;
+      }
+      else if( sender == PlayStateObserver)
+      {
+        PlaybackState = DeviceInterface::MediaManagerDevice.PlaybackState;
+      }
+      postsignal OnTrackInfoUpdate;
+    }
+  }
+
+  $rect <890,50,1090,90>
+  object Core::PropertyObserver AlbumObserver
+  {
+    preset OnEvent = OnTrackInfoUpdateSlot;
+    preset Outlet = ^DeviceInterface::MediaManagerDevice.Album;
+  }
+
+  $rect <890,90,1090,130>
+  object Core::PropertyObserver ArtistObserver
+  {
+    preset OnEvent = OnTrackInfoUpdateSlot;
+    preset Outlet = ^DeviceInterface::MediaManagerDevice.Artist;
+  }
+
+  $rect <370,240,570,280>
+  property int32 RemainTimeSec = 0;
+
+  $rect <370,200,570,240>
+  property int32 ElapsedTimeSec;
+
+  $rect <370,360,570,400>
+  property int32 PlaybackState = 0;
+
+  $rect <370,400,570,440>
+  onset PlaybackState
+  {
+    // Remember the property's new value.
+    pure PlaybackState = value;
+  }
+
+  $rect <890,130,1090,170>
+  object Core::PropertyObserver PlayStateObserver
+  {
+    preset OnEvent = OnTrackInfoUpdateSlot;
+    preset Outlet = ^DeviceInterface::MediaManagerDevice.PlaybackState;
+  }
+}

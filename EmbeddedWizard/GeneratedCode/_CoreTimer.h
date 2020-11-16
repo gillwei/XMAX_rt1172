@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -82,6 +82,9 @@ void CoreTimer_restart( CoreTimer _this, XInt32 aBegin, XInt32 aPeriod );
 
 /* 'C' function for method : 'Core::Timer.OnSetPeriod()' */
 void CoreTimer_OnSetPeriod( CoreTimer _this, XInt32 value );
+
+/* 'C' function for method : 'Core::Timer.OnSetBegin()' */
+void CoreTimer_OnSetBegin( CoreTimer _this, XInt32 value );
 
 /* 'C' function for method : 'Core::Timer.OnSetEnabled()' */
 void CoreTimer_OnSetEnabled( CoreTimer _this, XBool value );

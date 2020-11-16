@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -42,9 +42,12 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsStatusBar.h"
+#include "_CorePropertyObserver.h"
 #include "_CoreRoot.h"
+#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_ViewsRectangle.h"
+#include "_NavigationMain.h"
 
 /* Forward declaration of the class Application::Application */
 #ifndef _ApplicationApplication_
@@ -100,6 +103,12 @@
 #define _EffectsFader_
 #endif
 
+/* Forward declaration of the class Factory::DisplayManual */
+#ifndef _FactoryDisplayManual_
+  EW_DECLARE_CLASS( FactoryDisplayManual )
+#define _FactoryDisplayManual_
+#endif
+
 /* Forward declaration of the class Graphics::Canvas */
 #ifndef _GraphicsCanvas_
   EW_DECLARE_CLASS( GraphicsCanvas )
@@ -109,10 +118,14 @@
 
 /* This is the root component of the entire GUI application. */
 EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
-  EW_OBJECT  ( RectangleLeft,   ViewsRectangle )
-  EW_OBJECT  ( RectangleMiddle, ViewsRectangle )
-  EW_OBJECT  ( RectangleRight,  ViewsRectangle )
-  EW_OBJECT  ( Timer,           CoreTimer )
+  EW_VARIABLE( DisplayTestPage, FactoryDisplayManual )
+  EW_OBJECT  ( Navigation,      NavigationMain )
+  EW_OBJECT  ( FactoryTestEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( StatusBar,       ComponentsStatusBar )
+  EW_OBJECT  ( BtFwStatusObserver, CorePropertyObserver )
+  EW_PROPERTY( PageIdx,         XInt32 )
+  EW_ARRAY   ( PageClassList,   XClass, [3])
+  EW_PROPERTY( StatusBarVisible, XBool )
 EW_END_OF_FIELDS( ApplicationApplication )
 
 /* Virtual Method Table (VMT) for the class : 'Application::Application' */
@@ -122,6 +135,7 @@ EW_DEFINE_METHODS( ApplicationApplication, CoreRoot )
   EW_METHOD( GetRoot,           CoreRoot )( CoreRoot _this )
   EW_METHOD( Draw,              void )( CoreRoot _this, GraphicsCanvas aCanvas, 
     XRect aClip, XPoint aOffset, XInt32 aOpacity, XBool aBlend )
+  EW_METHOD( HandleEvent,       XObject )( CoreView _this, CoreEvent aEvent )
   EW_METHOD( CursorHitTest,     CoreCursorHit )( CoreGroup _this, XRect aArea, XInt32 
     aFinger, XInt32 aStrikeCount, CoreView aDedicatedView, XSet aRetargetReason )
   EW_METHOD( ArrangeView,       XPoint )( CoreRectView _this, XRect aBounds, XEnum 
@@ -133,17 +147,73 @@ EW_DEFINE_METHODS( ApplicationApplication, CoreRoot )
   EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
   EW_METHOD( OnSetFocus,        void )( CoreRoot _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreRoot _this, XBool value )
+  EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
+  EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreRoot _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreRoot _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreRoot _this, XBool aRecursive )
+  EW_METHOD( DismissDialog,     void )( CoreGroup _this, CoreGroup aDialogGroup, 
+    EffectsTransition aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, 
+    EffectsTransition aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, 
+    XBool aCombine )
   EW_METHOD( DispatchEvent,     XObject )( CoreRoot _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreRoot _this, CoreEvent aEvent, XSet 
     aFilter )
+  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreRoot _this, XRect aArea )
+  EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
+  EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
+    aFilter )
+  EW_METHOD( FindSiblingView,   CoreView )( CoreGroup _this, CoreView aView, XSet 
+    aFilter )
+  EW_METHOD( RestackTop,        void )( CoreGroup _this, CoreView aView )
+  EW_METHOD( Restack,           void )( CoreGroup _this, CoreView aView, XInt32 
+    aOrder )
+  EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
+  EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
+    aOrder )
 EW_END_OF_METHODS( ApplicationApplication )
 
-/* 'C' function for method : 'Application::Application.Slot()' */
-void ApplicationApplication_Slot( ApplicationApplication _this, XObject sender );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void ApplicationApplication_Init( ApplicationApplication _this, XHandle aArg );
+
+/* 'C' function for method : 'Application::Application.ProcKeyHoldSlot()' */
+void ApplicationApplication_ProcKeyHoldSlot( ApplicationApplication _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Application::Application.SwitchPageOfDirection()' */
+void ApplicationApplication_SwitchPageOfDirection( ApplicationApplication _this, 
+  XEnum aDirection );
+
+/* 'C' function for method : 'Application::Application.OnDisclaimerAcceptedSlot()' */
+void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Application::Application.ShowDisclaimer()' */
+void ApplicationApplication_ShowDisclaimer( ApplicationApplication _this );
+
+/* 'C' function for method : 'Application::Application.SwitchToPage()' */
+void ApplicationApplication_SwitchToPage( ApplicationApplication _this, XInt32 aPageIdx );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Application::Application.OnTestDimissedSlot()' */
+void ApplicationApplication_OnTestDimissedSlot( ApplicationApplication _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Application::Application.OnSetStatusBarVisible()' */
+void ApplicationApplication_OnSetStatusBarVisible( ApplicationApplication _this, 
+  XBool value );
+
+/* This slot method is executed when the associated property observer 'PropertyObserver' 
+   is notified. */
+void ApplicationApplication_OnBtFwStatusUpdteSlot( ApplicationApplication _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }

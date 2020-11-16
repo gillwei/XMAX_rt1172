@@ -19,13 +19,13 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
 
-#ifndef _ApplicationBlackWhite_H
-#define _ApplicationBlackWhite_H
+#ifndef _SettingsReset_H
+#define _SettingsReset_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,14 +42,10 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_CoreGroup.h"
-#include "_ViewsRectangle.h"
-
-/* Forward declaration of the class Application::BlackWhite */
-#ifndef _ApplicationBlackWhite_
-  EW_DECLARE_CLASS( ApplicationBlackWhite )
-#define _ApplicationBlackWhite_
-#endif
+#include "_ComponentsBaseComponent.h"
+#include "_CoreKeyPressHandler.h"
+#include "_CorePropertyObserver.h"
+#include "_CoreTimer.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -57,10 +53,10 @@
 #define _CoreDialogContext_
 #endif
 
-/* Forward declaration of the class Core::KeyPressHandler */
-#ifndef _CoreKeyPressHandler_
-  EW_DECLARE_CLASS( CoreKeyPressHandler )
-#define _CoreKeyPressHandler_
+/* Forward declaration of the class Core::Group */
+#ifndef _CoreGroup_
+  EW_DECLARE_CLASS( CoreGroup )
+#define _CoreGroup_
 #endif
 
 /* Forward declaration of the class Core::LayoutContext */
@@ -93,20 +89,34 @@
 #define _GraphicsCanvas_
 #endif
 
+/* Forward declaration of the class Settings::InProgress */
+#ifndef _SettingsInProgress_
+  EW_DECLARE_CLASS( SettingsInProgress )
+#define _SettingsInProgress_
+#endif
 
-/* Deklaration of class : 'Application::BlackWhite' */
-EW_DEFINE_FIELDS( ApplicationBlackWhite, CoreGroup )
-  EW_OBJECT  ( RectangleMiddle, ViewsRectangle )
-  EW_OBJECT  ( RectangleMiddle1, ViewsRectangle )
-EW_END_OF_FIELDS( ApplicationBlackWhite )
+/* Forward declaration of the class Settings::Reset */
+#ifndef _SettingsReset_
+  EW_DECLARE_CLASS( SettingsReset )
+#define _SettingsReset_
+#endif
 
-/* Virtual Method Table (VMT) for the class : 'Application::BlackWhite' */
-EW_DEFINE_METHODS( ApplicationBlackWhite, CoreGroup )
+
+/* Deklaration of class : 'Settings::Reset' */
+EW_DEFINE_FIELDS( SettingsReset, ComponentsBaseComponent )
+  EW_VARIABLE( BusyDialog,      SettingsInProgress )
+  EW_OBJECT  ( SystemRebootCountDownTimer, CoreTimer )
+  EW_OBJECT  ( ResetResultObserver, CorePropertyObserver )
+EW_END_OF_FIELDS( SettingsReset )
+
+/* Virtual Method Table (VMT) for the class : 'Settings::Reset' */
+EW_DEFINE_METHODS( SettingsReset, ComponentsBaseComponent )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
   EW_METHOD( Draw,              void )( CoreGroup _this, GraphicsCanvas aCanvas, 
     XRect aClip, XPoint aOffset, XInt32 aOpacity, XBool aBlend )
+  EW_METHOD( HandleEvent,       XObject )( CoreView _this, CoreEvent aEvent )
   EW_METHOD( CursorHitTest,     CoreCursorHit )( CoreGroup _this, XRect aArea, XInt32 
     aFinger, XInt32 aStrikeCount, CoreView aDedicatedView, XSet aRetargetReason )
   EW_METHOD( ArrangeView,       XPoint )( CoreRectView _this, XRect aBounds, XEnum 
@@ -118,19 +128,65 @@ EW_DEFINE_METHODS( ApplicationBlackWhite, CoreGroup )
   EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
+  EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
+  EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
+  EW_METHOD( DismissDialog,     void )( CoreGroup _this, CoreGroup aDialogGroup, 
+    EffectsTransition aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, 
+    EffectsTransition aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, 
+    XBool aCombine )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
+  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
-EW_END_OF_METHODS( ApplicationBlackWhite )
+  EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
+  EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
+    aFilter )
+  EW_METHOD( FindSiblingView,   CoreView )( CoreGroup _this, CoreView aView, XSet 
+    aFilter )
+  EW_METHOD( RestackTop,        void )( CoreGroup _this, CoreView aView )
+  EW_METHOD( Restack,           void )( CoreGroup _this, CoreView aView, XInt32 
+    aOrder )
+  EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
+  EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
+    aOrder )
+  EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
+  EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
+EW_END_OF_METHODS( SettingsReset )
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsReset_Init( SettingsReset _this, XHandle aArg );
+
+/* 'C' function for method : 'Settings::Reset.OnAllResetYesSlot()' */
+void SettingsReset_OnAllResetYesSlot( SettingsReset _this, XObject sender );
+
+/* 'C' function for method : 'Settings::Reset.OnAllResetNoSlot()' */
+void SettingsReset_OnAllResetNoSlot( SettingsReset _this, XObject sender );
+
+/* 'C' function for method : 'Settings::Reset.OnSystemRebootTriggeredSlot()' */
+void SettingsReset_OnSystemRebootTriggeredSlot( SettingsReset _this, XObject sender );
+
+/* 'C' function for method : 'Settings::Reset.ShowResetCompleteDialog()' */
+void SettingsReset_ShowResetCompleteDialog( SettingsReset _this );
+
+/* 'C' function for method : 'Settings::Reset.StartFactoryReset()' */
+void SettingsReset_StartFactoryReset( SettingsReset _this );
+
+/* This slot method is executed when the associated property observer 'PropertyObserver' 
+   is notified. */
+void SettingsReset_OnResetCompleteSlot( SettingsReset _this, XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _ApplicationBlackWhite_H */
+#endif /* _SettingsReset_H */
 
 /* Embedded Wizard */

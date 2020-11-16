@@ -1,0 +1,303 @@
+﻿$version 10.00
+
+$rect <20,20,260,60>
+$output false
+class Main : Components::BaseComponent
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <230,440,430,480>
+  inherited slot OnLongKeyPressed
+  {
+    signal PassKeyHold, sender;
+  }
+
+  $rect <230,340,430,380>
+  inherited method OnShortDownKeyPressed()
+  {
+  }
+
+  $rect <230,290,430,330>
+  inherited method OnShortUpKeyPressed()
+  {
+  }
+
+  $rect <230,390,430,430>
+  inherited method OnShortEnterKeyPressed()
+  {
+    var Application::Application App = ( Application::Application )GetRoot();
+    App.StatusBarVisible = false;
+
+    var Navigation::YMC Pictures = new Navigation::YMC;
+    PresentDialog( Pictures, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Background
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <510,10,750,50>
+  var int32 MapFrameIdx = 0;
+
+  $rect <510,60,750,100>
+  object Core::SystemEventHandler MapUpdateEventHandler
+  {
+    preset OnEvent = OnMapUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.MapUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <510,110,750,150>
+  slot OnMapUpdateSlot
+  {
+    MapFrameIdx = MapFrameIdx + 1;
+    Resource::ExternBitmap.Name = "Map" + string( MapFrameIdx );
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image MapImage
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Alignment = Views::ImageAlignment[AlignHorzRight, AlignVertBottom];
+    preset Bitmap = Resource::ExternBitmap;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image TbTBgImage
+  {
+    preset Bounds = <0,33,120,210>;
+    preset Alignment = Views::ImageAlignment[ScaleToFill];
+    preset Bitmap = Resource::TbTBg;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ArrivalBgImage
+  {
+    preset Bounds = <0,210,120,272>;
+    preset Bitmap = Resource::ArrivalBg;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image TbtImage
+  {
+    preset Bounds = <10,40,110,110>;
+    preset Alignment = Views::ImageAlignment[ScaleToFit];
+    preset Bitmap = Resource::IconTbT;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DistanceText
+  {
+    preset Bounds = <0,117,70,147>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "123";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text RoadText
+  {
+    preset Bounds = <0,149,120,199>;
+    preset WrapText = true;
+    preset String = "Minquan West Road";
+    preset Font = Fonts::FontNotoSansCjkJp24;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ArrivalText
+  {
+    preset Bounds = <4,210,114,240>;
+    preset String = "Arrival Time";
+    preset Font = Fonts::FontNotoSansCjkJp20;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TimeText
+  {
+    preset Bounds = <8,240,68,268>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "10:15";
+    preset Font = Fonts::FontNotoSansCjkJp24;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text AmPmText
+  {
+    preset Bounds = <73,240,113,270>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "am";
+    preset Font = Fonts::FontNotoSansCjkJp20;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text RoadText1
+  {
+    preset Bounds = <77,120,107,150>;
+    preset WrapText = false;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "m";
+    preset Font = Fonts::FontNotoSansCjkJp24;
+  }
+}
+
+$rect <20,70,260,110>
+$output false
+class YMC : Components::BaseComponent
+{
+  $rect <0,290,200,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <510,60,710,100>
+  inherited method OnShortDownKeyPressed()
+  {
+    var int32 NextIdx = PictureIdx + 1;
+    if( NextIdx >= 9 )
+    {
+      NextIdx = 0;
+    }
+    PictureIdx = NextIdx;
+  }
+
+  $rect <510,10,710,50>
+  inherited method OnShortUpKeyPressed()
+  {
+    var int32 PreviousIdx = PictureIdx - 1;
+    if( PreviousIdx < 0 )
+    {
+      PreviousIdx = 9 - 1;
+    }
+    PictureIdx = PreviousIdx;
+  }
+
+  $rect <510,110,710,150>
+  inherited method OnShortEnterKeyPressed()
+  {
+    var Navigation::Garmin GarminScreen = new Navigation::Garmin;
+    Owner.SwitchToDialog( GarminScreen, null, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Bitmap = Resource::YmcNaviDay;
+  }
+
+  $rect <510,160,710,200>
+  property int32 PictureIdx = 0;
+
+  $rect <510,210,710,250>
+  onset PictureIdx
+  {
+    if( pure PictureIdx != value )
+    {
+      pure PictureIdx = value;
+      switch( PictureIdx )
+      {
+        case 0: Image.Bitmap = Resource::YmcNaviDay;
+        case 1: Image.Bitmap = Resource::YmcNaviNight;
+        case 2: Image.Bitmap = Resource::YmcRouteDay;
+        case 3: Image.Bitmap = Resource::YmcRouteNight;
+        case 4: Image.Bitmap = Resource::YmcTurnList;
+        case 5: Image.Bitmap = Resource::YmcNextTurnDay;
+        case 6: Image.Bitmap = Resource::YmcNextTurnNight;
+        case 7: Image.Bitmap = Resource::YmcTbTDay;
+        case 8: Image.Bitmap = Resource::YmcTbTNight;
+        default:;
+      }
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <2,0,82,30>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "YMC";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+}
+
+$rect <20,120,260,160>
+$output false
+class Garmin : Components::BaseComponent
+{
+  $rect <0,290,200,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <510,60,710,100>
+  inherited method OnShortDownKeyPressed()
+  {
+    var int32 NextIdx = PictureIdx + 1;
+    if( NextIdx >= 9 )
+    {
+      NextIdx = 0;
+    }
+    PictureIdx = NextIdx;
+  }
+
+  $rect <510,10,710,50>
+  inherited method OnShortUpKeyPressed()
+  {
+    var int32 PreviousIdx = PictureIdx - 1;
+    if( PreviousIdx < 0 )
+    {
+      PreviousIdx = 9 - 1;
+    }
+    PictureIdx = PreviousIdx;
+  }
+
+  $rect <510,110,710,150>
+  inherited method OnShortEnterKeyPressed()
+  {
+    var Application::Application App = ( Application::Application )GetRoot();
+    App.StatusBarVisible = true;
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Bitmap = Resource::GrmnNaviDay;
+  }
+
+  $rect <510,160,710,200>
+  property int32 PictureIdx = 0;
+
+  $rect <510,210,710,250>
+  onset PictureIdx
+  {
+    if( pure PictureIdx != value )
+    {
+      pure PictureIdx = value;
+      switch( PictureIdx )
+      {
+        case 0: Image.Bitmap = Resource::GrmnNaviDay;
+        case 1: Image.Bitmap = Resource::GrmnNaviNight;
+        case 2: Image.Bitmap = Resource::GrmnRouteDay;
+        case 3: Image.Bitmap = Resource::GrmnRouteNight;
+        case 4: Image.Bitmap = Resource::GrmnTurnList;
+        case 5: Image.Bitmap = Resource::GrmnNextTurnDay;
+        case 6: Image.Bitmap = Resource::GrmnNextTurnNight;
+        case 7: Image.Bitmap = Resource::GrmnTbTDay;
+        case 8: Image.Bitmap = Resource::GrmnTbTNight;
+        default:;
+      }
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <2,0,102,30>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "Garmin";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+}

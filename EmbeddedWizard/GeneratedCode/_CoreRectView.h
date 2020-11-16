@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -85,6 +85,7 @@ EW_DEFINE_METHODS( CoreRectView, CoreView )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
   EW_METHOD( Draw,              void )( CoreView _this, GraphicsCanvas aCanvas, 
     XRect aClip, XPoint aOffset, XInt32 aOpacity, XBool aBlend )
+  EW_METHOD( HandleEvent,       XObject )( CoreView _this, CoreEvent aEvent )
   EW_METHOD( CursorHitTest,     CoreCursorHit )( CoreView _this, XRect aArea, XInt32 
     aFinger, XInt32 aStrikeCount, CoreView aDedicatedView, XSet aRetargetReason )
   EW_METHOD( ArrangeView,       XPoint )( CoreRectView _this, XRect aBounds, XEnum 

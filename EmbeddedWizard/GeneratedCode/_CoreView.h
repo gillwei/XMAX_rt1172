@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -120,6 +120,7 @@ EW_DEFINE_METHODS( CoreView, XObject )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
   EW_METHOD( Draw,              void )( CoreView _this, GraphicsCanvas aCanvas, 
     XRect aClip, XPoint aOffset, XInt32 aOpacity, XBool aBlend )
+  EW_METHOD( HandleEvent,       XObject )( CoreView _this, CoreEvent aEvent )
   EW_METHOD( CursorHitTest,     CoreCursorHit )( CoreView _this, XRect aArea, XInt32 
     aFinger, XInt32 aStrikeCount, CoreView aDedicatedView, XSet aRetargetReason )
   EW_METHOD( ArrangeView,       XPoint )( CoreView _this, XRect aBounds, XEnum aFormation )
@@ -133,6 +134,12 @@ void CoreView_initLayoutContext( CoreView _this, XRect aBounds, CoreOutline aOut
 
 /* Wrapper function for the virtual method : 'Core::View.initLayoutContext()' */
 void CoreView__initLayoutContext( void* _this, XRect aBounds, CoreOutline aOutline );
+
+/* 'C' function for method : 'Core::View.OnSetStackingPriority()' */
+void CoreView_OnSetStackingPriority( CoreView _this, XInt32 value );
+
+/* 'C' function for method : 'Core::View.OnSetLayout()' */
+void CoreView_OnSetLayout( CoreView _this, XSet value );
 
 /* The method GetRoot() delivers the application object, this view belongs to. The 
    application object represents the entire screen of the GUI application. Thus 
@@ -191,6 +198,9 @@ void CoreView__Draw( void* _this, GraphicsCanvas aCanvas, XRect aClip, XPoint aO
    need to invoke it directly. However you can prepare and post new events by using 
    the methods DispatchEvent() and BroadcastEvent() of the application class Core::Root. */
 XObject CoreView_HandleEvent( CoreView _this, CoreEvent aEvent );
+
+/* Wrapper function for the virtual method : 'Core::View.HandleEvent()' */
+XObject CoreView__HandleEvent( void* _this, CoreEvent aEvent );
 
 /* The method CursorHitTest() is invoked automatically in order to determine whether 
    the view is interested in the receipt of cursor events or not. This method will 

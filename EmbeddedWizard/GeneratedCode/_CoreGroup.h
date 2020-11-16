@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -212,6 +212,7 @@ EW_DEFINE_FIELDS( CoreGroup, CoreRectView )
   EW_VARIABLE( pendingFader,    EffectsFader )
   EW_PROPERTY( Focus,           CoreView )
   EW_PROPERTY( Opacity,         XInt32 )
+  EW_PROPERTY( Enabled,         XBool )
 EW_END_OF_FIELDS( CoreGroup )
 
 /* Virtual Method Table (VMT) for the class : 'Core::Group' */
@@ -221,6 +222,7 @@ EW_DEFINE_METHODS( CoreGroup, CoreRectView )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
   EW_METHOD( Draw,              void )( CoreGroup _this, GraphicsCanvas aCanvas, 
     XRect aClip, XPoint aOffset, XInt32 aOpacity, XBool aBlend )
+  EW_METHOD( HandleEvent,       XObject )( CoreView _this, CoreEvent aEvent )
   EW_METHOD( CursorHitTest,     CoreCursorHit )( CoreGroup _this, XRect aArea, XInt32 
     aFinger, XInt32 aStrikeCount, CoreView aDedicatedView, XSet aRetargetReason )
   EW_METHOD( ArrangeView,       XPoint )( CoreRectView _this, XRect aBounds, XEnum 
@@ -232,13 +234,31 @@ EW_DEFINE_METHODS( CoreGroup, CoreRectView )
   EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
+  EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
+  EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
+  EW_METHOD( DismissDialog,     void )( CoreGroup _this, CoreGroup aDialogGroup, 
+    EffectsTransition aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, 
+    EffectsTransition aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, 
+    XBool aCombine )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
+  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
+  EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
+  EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
+    aFilter )
+  EW_METHOD( FindSiblingView,   CoreView )( CoreGroup _this, CoreView aView, XSet 
+    aFilter )
+  EW_METHOD( RestackTop,        void )( CoreGroup _this, CoreView aView )
+  EW_METHOD( Restack,           void )( CoreGroup _this, CoreView aView, XInt32 
+    aOrder )
+  EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
+  EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
+    aOrder )
 EW_END_OF_METHODS( CoreGroup )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -356,6 +376,18 @@ void CoreGroup_OnSetBuffered( CoreGroup _this, XBool value );
 /* Wrapper function for the virtual method : 'Core::Group.OnSetBuffered()' */
 void CoreGroup__OnSetBuffered( void* _this, XBool value );
 
+/* 'C' function for method : 'Core::Group.OnGetEnabled()' */
+XBool CoreGroup_OnGetEnabled( CoreGroup _this );
+
+/* Wrapper function for the virtual method : 'Core::Group.OnGetEnabled()' */
+XBool CoreGroup__OnGetEnabled( void* _this );
+
+/* 'C' function for method : 'Core::Group.OnSetEnabled()' */
+void CoreGroup_OnSetEnabled( CoreGroup _this, XBool value );
+
+/* Wrapper function for the virtual method : 'Core::Group.OnSetEnabled()' */
+void CoreGroup__OnSetEnabled( void* _this, XBool value );
+
 /* 'C' function for method : 'Core::Group.OnSetOpacity()' */
 void CoreGroup_OnSetOpacity( CoreGroup _this, XInt32 value );
 
@@ -397,15 +429,6 @@ XBool CoreGroup_IsActiveDialog( CoreGroup _this, XBool aRecursive );
 
 /* Wrapper function for the virtual method : 'Core::Group.IsActiveDialog()' */
 XBool CoreGroup__IsActiveDialog( void* _this, XBool aRecursive );
-
-/* The method GetDialogAtIndex() returns the dialog component stored at position 
-   aIndex on the dialog stack of 'this' component. The dialog lying top-most (the 
-   current dialog in context of 'this' component) has the index 0. The dialog next 
-   below has the index 1, and so far. The total number of dialogs managed by this 
-   component can be asked by the method @CountDialogs().
-   If the passed index is negative or the desired dialog doesn't exist, the method 
-   returns 'null'. To present a dialog use the method @PresentDialog() or @SwitchToDialog(). */
-CoreGroup CoreGroup_GetDialogAtIndex( CoreGroup _this, XInt32 aIndex );
 
 /* The method SwitchToDialog() schedules an operation to show in context of 'this' 
    component another component passed in the parameter aDialogGroup. The operation 
@@ -510,6 +533,11 @@ void CoreGroup_SwitchToDialog( CoreGroup _this, CoreGroup aDialogGroup, EffectsT
    with last prepared but not yet started operation. In this manner several independent 
    transitions can run simultaneously. */
 void CoreGroup_DismissDialog( CoreGroup _this, CoreGroup aDialogGroup, EffectsTransition 
+  aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, EffectsTransition 
+  aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, XBool aCombine );
+
+/* Wrapper function for the virtual method : 'Core::Group.DismissDialog()' */
+void CoreGroup__DismissDialog( void* _this, CoreGroup aDialogGroup, EffectsTransition 
   aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, EffectsTransition 
   aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, XBool aCombine );
 
@@ -659,6 +687,9 @@ void CoreGroup_UpdateLayout( CoreGroup _this, XPoint aSize );
    you can request its invocation by using the method @InvalidateViewState(). */
 void CoreGroup_UpdateViewState( CoreGroup _this, XSet aState );
 
+/* Wrapper function for the virtual method : 'Core::Group.UpdateViewState()' */
+void CoreGroup__UpdateViewState( void* _this, XSet aState );
+
 /* The method InvalidateViewState() declares the state of this component as changed, 
    so its visual aspect possibly doesn't reflect its current state anymore. To update 
    the visual aspect, the framework will invoke the @UpdateViewState() method. */
@@ -671,6 +702,27 @@ void CoreGroup_InvalidateArea( CoreGroup _this, XRect aArea );
 /* Wrapper function for the virtual method : 'Core::Group.InvalidateArea()' */
 void CoreGroup__InvalidateArea( void* _this, XRect aArea );
 
+/* The method CountViews() returns the total number of views belonging to this component. 
+   In case of an empty component without any views, 0 is returned. */
+XInt32 CoreGroup_CountViews( CoreGroup _this );
+
+/* Wrapper function for the virtual method : 'Core::Group.CountViews()' */
+XInt32 CoreGroup__CountViews( void* _this );
+
+/* The method FindNextView() searches for the view lying in front of the view specified 
+   in the parameter aView - aView itself will be excluded from the search operation. 
+   This allows you to enumerate all affected views, view by view from the background 
+   to the front. If the parameter aView == null, the search operations will start 
+   with the view lying in the background of the component.
+   The additional parameter aFilter can be used to limit the search operation to 
+   special views only, e.g. to visible and touchable views.
+   If there is no other view lying above the start view aView, the method returns 
+   'null'. */
+CoreView CoreGroup_FindNextView( CoreGroup _this, CoreView aView, XSet aFilter );
+
+/* Wrapper function for the virtual method : 'Core::Group.FindNextView()' */
+CoreView CoreGroup__FindNextView( void* _this, CoreView aView, XSet aFilter );
+
 /* The method FindSiblingView() searches for a sibling view of the view specified 
    in the parameter aView - aView itself will be excluded from the search operation.
    The method combines the functionality of @FindNextView() and @FindPrevView() 
@@ -681,6 +733,9 @@ void CoreGroup__InvalidateArea( void* _this, XRect aArea );
    'null'. In contrast to other find methods, FindSiblingView() will fail, if it 
    has been invoked with aView == 'null'. */
 CoreView CoreGroup_FindSiblingView( CoreGroup _this, CoreView aView, XSet aFilter );
+
+/* Wrapper function for the virtual method : 'Core::Group.FindSiblingView()' */
+CoreView CoreGroup__FindSiblingView( void* _this, CoreView aView, XSet aFilter );
 
 /* The method FadeGroup() schedules an operation to fade-in or fade-out the GUI 
    component passed in the parameter aGroup in context of 'this' GUI component. 
@@ -716,6 +771,28 @@ void CoreGroup_FadeGroup( CoreGroup _this, CoreGroup aGroup, EffectsFader aFader
    view can cause this outline to update its automatic row or column formation. */
 void CoreGroup_RestackTop( CoreGroup _this, CoreView aView );
 
+/* Wrapper function for the virtual method : 'Core::Group.RestackTop()' */
+void CoreGroup__RestackTop( void* _this, CoreView aView );
+
+/* The method Restack() changes the Z-order of views in the component. Depending 
+   on the parameter aOrder the method will elevate or lower the given view aView. 
+   If aOrder is negative, the view will be lowered to the background. If aOrder 
+   is positive, the view will be elevated to the foreground. If aOrder == 0, no 
+   modification will take place.
+   The absolute value of aOrder determines the maximum number of sibling views the 
+   view has to skip over in order to reach its new Z-order. The effective stacking 
+   position of the view can additionally be affected by the value of the view's 
+   property @StackingPriority. Concrete, the view is prevented from being arranged 
+   in front of any sibling view configured with a higher @StackingPriority value. 
+   Similarly the view can't be arranged behind any sibling view having lower @StackingPriority 
+   value.
+   Please note, changing the Z-order of views within a component containing a Core::Outline 
+   view can cause this outline to update its automatic row or column formation. */
+void CoreGroup_Restack( CoreGroup _this, CoreView aView, XInt32 aOrder );
+
+/* Wrapper function for the virtual method : 'Core::Group.Restack()' */
+void CoreGroup__Restack( void* _this, CoreView aView, XInt32 aOrder );
+
 /* The method Remove() removes the given view aView from the component. After this 
    operation the view doesn't belong anymore to the component - the view is not 
    visible and it can't receive any events.
@@ -725,6 +802,9 @@ void CoreGroup_RestackTop( CoreGroup _this, CoreView aView );
    the framework will automatically select other sibling view, which will be able 
    to react to keyboard events. */
 void CoreGroup_Remove( CoreGroup _this, CoreView aView );
+
+/* Wrapper function for the virtual method : 'Core::Group.Remove()' */
+void CoreGroup__Remove( void* _this, CoreView aView );
 
 /* The method Add() inserts the given view aView into this component and places 
    it at a Z-order position resulting primarily from the parameter aOrder. The parameter 
@@ -741,6 +821,9 @@ void CoreGroup_Remove( CoreGroup _this, CoreView aView );
    Please note, adding of views to a component containing a Core::Outline view can 
    cause this outline to update its automatic row or column formation. */
 void CoreGroup_Add( CoreGroup _this, CoreView aView, XInt32 aOrder );
+
+/* Wrapper function for the virtual method : 'Core::Group.Add()' */
+void CoreGroup__Add( void* _this, CoreView aView, XInt32 aOrder );
 
 /* Default onget method for the property 'Opacity' */
 XInt32 CoreGroup_OnGetOpacity( CoreGroup _this );

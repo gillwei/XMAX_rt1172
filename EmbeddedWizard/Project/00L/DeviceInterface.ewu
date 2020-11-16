@@ -1,0 +1,930 @@
+﻿$version 10.00
+
+$rect <270,20,470,60>
+inline Inline
+{
+  #include <stddef.h>
+  #include <stdlib.h>
+  #include "ew_priv.h"
+  #include "EEPM_pub.h"
+  #include "PERIPHERAL_pub.h"
+  /* uncomment these lines when integrating media manager
+  #include "MM_pub_ams_type.h"
+  #include "MM_pub.h"
+  */
+
+}
+
+$rect <20,20,220,60>
+$output false
+class SystemDeviceClass : Templates::DeviceClass
+{
+  // Interface to get system info
+  note group Note1
+  {
+    attr Bounds = <10,10,910,280>;
+  }
+
+  $rect <250,70,450,110>
+  property string SoftwareVersion;
+
+  $rect <470,70,670,110>
+  property bool IsDebugBuild;
+
+  $rect <470,120,670,160>
+  onget IsDebugBuild
+  {
+    $if( !$prototyper )
+      var bool is_debug_build;
+      native( is_debug_build )
+      {
+        is_debug_build = ew_is_debug_build();
+      }
+      return is_debug_build;
+    $else
+      return true;
+    $endif
+  }
+
+  // Interfaces for factory test
+  note group Note3
+  {
+    attr Bounds = <10,300,520,460>;
+  }
+
+  $rect <40,390,240,430>
+  $output true
+  method void QuitTest()
+  {
+    var Factory::TestContext TestContext = new Factory::TestContext;
+    TestContext.TestItem = Enum::FactoryTest.Quit;
+    FactoryTestSystemEvent.Trigger( TestContext, false );
+  }
+
+  $rect <250,340,490,380>
+  object Core::SystemEvent FactoryTestSystemEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <40,340,240,380>
+  $output true
+  method void TestDisplayPattern( arg int32 aIdx )
+  {
+    var Factory::TestContext TestContext = new Factory::TestContext;
+    TestContext.TestItem = Enum::FactoryTest.Display;
+    TestContext.Data = aIdx - 1;
+    FactoryTestSystemEvent.Trigger( TestContext, false );
+  }
+
+  $rect <30,220,230,260>
+  $output true
+  method void NotifyEsnRead( arg string aESN )
+  {
+    ESN = aESN;
+  }
+
+  $rect <30,70,230,110>
+  property string ESN;
+
+  $rect <30,120,230,160>
+  onset ESN
+  {
+    if( pure ESN != value )
+    {
+      pure ESN = value;
+      notifyobservers ^ESN;
+    }
+
+  }
+
+  $rect <30,170,230,210>
+  onget ESN
+  {
+    $if( !$prototyper )
+      if( "" == pure ESN )
+      {
+        native
+        {
+           ew_get_esn();
+        }
+      }
+    $endif
+
+    return pure ESN;
+  }
+
+  $rect <250,120,450,160>
+  onget SoftwareVersion
+  {
+    $if !$prototyper
+      var string software_version = "";
+
+      if( "" == pure SoftwareVersion )
+      {
+        native( software_version )
+        {
+           char version[8];
+           ew_get_software_version( version );
+           software_version = EwNewStringAnsi( version );
+        }
+
+        pure SoftwareVersion = software_version;
+      }
+    $endif
+
+    return pure SoftwareVersion;
+  }
+
+  $rect <690,70,890,110>
+  property string RtcTime;
+
+  $rect <690,120,890,160>
+  onget RtcTime
+  {
+    $if !$prototyper
+      var string rtc_time = "";
+
+      native( rtc_time )
+      {
+         char rtc_time_str[8];
+         ew_get_rtc_time( rtc_time_str );
+         rtc_time = EwNewStringAnsi( rtc_time_str );
+      }
+
+      return rtc_time;
+    $else
+      return pure RtcTime;
+    $endif
+  }
+
+  $rect <30,520,250,560>
+  method void ResetToFactoryDefault()
+  {
+    FactoryResetTimer.Enabled = true;
+    $if !$prototyper
+      native
+      {
+        ew_reset_to_factory_default();
+      }
+    $endif
+  }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <30,570,250,610>
+  $output true
+  method void NotifyFactoryResetComplete()
+  {
+    FactoryResetTimer.Enabled = false;
+    notifyobservers ^FactoryResetComplete;
+  }
+
+  // Device Interface for Factory Reset
+  note group Note4
+  {
+    attr Bounds = <10,480,580,690>;
+  }
+
+  $rect <270,520,520,560>
+  object Core::Timer FactoryResetTimer
+  {
+    preset OnTrigger = OnFactoryResetTimeoutSlot;
+    preset Period = 2000;
+    preset Enabled = false;
+  }
+
+  $rect <270,570,520,610>
+  slot OnFactoryResetTimeoutSlot
+  {
+    FactoryResetTimer.Enabled = false;
+    NotifyFactoryResetComplete();
+  }
+
+  $rect <270,620,520,660>
+  method void RebootSystem()
+  {
+    $if !$prototyper
+      native
+      {
+        ew_reboot_system();
+      }
+    $endif
+  }
+
+  $rect <30,620,250,660>
+  property bool FactoryResetComplete = false;
+
+  $rect <40,710,240,750>
+  method void SetBrightness( arg int32 aBrightness )
+  {
+    $if !$prototyper
+      native( aBrightness )
+      {
+        PERIPHERAL_pwm_set_display_dutycycle( aBrightness );
+      }
+    $else
+    // suppress warning
+    if( 0 == aBrightness )
+    {
+      // empty body
+    }
+    $endif
+  }
+
+  $rect <270,710,470,750>
+  property int32 BrightnessLevel = 7;
+
+  $rect <250,170,450,210>
+  property string BtSoftwareVersion;
+
+  $rect <250,220,450,260>
+  onget BtSoftwareVersion
+  {
+    $if !$prototyper
+      var string bt_sw_version = "";
+
+      if( "" == pure BtSoftwareVersion )
+      {
+        native( bt_sw_version )
+        {
+           char version[8];
+           ew_get_bt_software_version( version );
+           bt_sw_version = EwNewStringAnsi( version );
+        }
+
+        pure BtSoftwareVersion = bt_sw_version;
+      }
+    $endif
+
+    return pure BtSoftwareVersion;
+  }
+}
+
+$rect <20,70,220,110>
+autoobject DeviceInterface::SystemDeviceClass SystemDevice;
+
+$rect <20,130,230,170>
+$output false
+class NavigationDeviceClass : Templates::DeviceClass
+{
+  // This object represents an individual system event.
+  $rect <20,90,220,130>
+  object Core::SystemEvent MapUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,40,220,80>
+  $output true
+  method void NotifyMapUpdate()
+  {
+    MapUpdateEvent.Trigger( null, true );
+  }
+}
+
+$rect <20,180,230,220>
+autoobject DeviceInterface::NavigationDeviceClass NavigationDevice;
+
+$rect <20,240,260,280>
+$output false
+class MediaManagerDeviceClass : Templates::DeviceClass
+{
+  $rect <30,20,230,60>
+  property string Title;
+
+  $rect <30,60,230,100>
+  onset Title
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure Title == value && !IsInit )
+      return;
+
+    // Remember the property's new value.
+    pure Title = value;
+
+    // Notify all associated property observers.
+    notifyobservers ^Title;
+  }
+
+  $rect <250,20,450,60>
+  property string Album;
+
+  $rect <250,60,450,100>
+  onset Album
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure Album == value && !IsInit )
+      return;
+
+    // Remember the property's new value.
+    pure Album = value;
+
+    // Notify all associated property observers.
+    notifyobservers ^Album;
+  }
+
+  $rect <480,20,680,60>
+  property string Artist;
+
+  $rect <480,60,680,100>
+  onset Artist
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure Artist == value && !IsInit )
+      return;
+
+    // Remember the property's new value.
+    pure Artist = value;
+
+    // Notify all associated property observers.
+    notifyobservers ^Artist;
+  }
+
+  $rect <720,60,920,100>
+  property int32 DurationTimeSec = 0;
+
+  $rect <760,470,980,510>
+  method void SendRemoteCommand( arg Enum::CommandType cmd_type )
+  {
+    var int32 cmd_idx;
+
+    switch( cmd_type )
+    {
+      case Enum::CommandType.Play: cmd_idx = 0;
+      case Enum::CommandType.Pause: cmd_idx = 1;
+      case Enum::CommandType.NextTrack: cmd_idx = 2;
+      case Enum::CommandType.PrevTrack: cmd_idx = 3;
+      default:cmd_idx = 14; // according to AMS spec, only 14 commands so that we set index to 14 in case no command is matched.
+    }
+
+    $if !$prototyper
+    // suppress warning
+    if( cmd_idx )
+    {
+      // empty body
+    }
+    /* TODO: uncomment these lines when integrating with media manager
+    native( cmd_idx )
+    {
+      ams_remote_command cmd;
+      switch( cmd_idx )
+      {
+        case 0:
+          cmd = AMS_REMOTE_COMMAND_PLAY;
+          break;
+        case 1:
+          cmd = AMS_REMOTE_COMMAND_PAUSE;
+          break;
+        case 2:
+          cmd = AMS_REMOTE_COMMAND_NEXT_TRACK;
+          break;
+        case 3:
+          cmd = AMS_REMOTE_COMMAND_PREVIOUS_TRACK;
+          break;
+        default:
+          break;
+      }
+      ew_send_command( cmd );
+    }
+    */
+    $endif
+  }
+
+  $rect <720,20,920,60>
+  property int32 ElapsedTimeSec = 0;
+
+  // An interface to set/get data from device
+  note group Note1
+  {
+    attr Bounds = <10,430,1040,550>;
+  }
+
+  $rect <30,120,230,160>
+  property int32 PlaybackState = 0;
+
+  $rect <30,160,230,200>
+  onset PlaybackState
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure PlaybackState == value && !IsInit )
+      return;
+
+    // Remember the property's new value.
+    pure PlaybackState = value;
+
+    // Notify all associated property observers.
+    notifyobservers ^PlaybackState;
+  }
+
+  $rect <250,120,450,160>
+  property string PlayerName;
+
+  $rect <250,160,450,200>
+  onset PlayerName
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure PlayerName == value && !IsInit )
+      return;
+
+    // Remember the property's new value.
+    pure PlayerName = value;
+  }
+
+  $rect <350,240,550,280>
+  $output true
+  method void NotifyTitleChanged( arg string aTitle )
+  {
+    trace "NotifyTitleChanged: " + aTitle;
+    Title = aTitle;
+  }
+
+  $rect <350,320,550,360>
+  $output true
+  method void NotifyArtistChanged( arg string aArtist )
+  {
+    trace "NotifyArtistChanged: " + aArtist;
+    Artist = aArtist;
+  }
+
+  $rect <350,280,550,320>
+  $output true
+  method void NotifyAlbumChanged( arg string aAlbum )
+  {
+    trace "NotifyAlbumChanged: " + aAlbum;
+    Album = aAlbum;
+  }
+
+  $rect <50,470,250,510>
+  method void GetPlayerInfo()
+  {
+    var string p_name = "";
+    var int32 p_state = 0;
+    $if !$prototyper
+    /* TODO: uncomment these lines when integrating with media manager
+    native ( p_name, p_state )
+    {
+      mm_media_player_obj mp_state;
+      mp_state = ew_get_media_player_state();
+      p_name = EwNewStringAnsi( mp_state.str.player_name );
+      p_state = mp_state.playback_state;
+    }
+    */
+    $endif
+    PlayerName = p_name;
+    PlaybackState = p_state;
+  }
+
+  $rect <270,470,470,510>
+  method void GetPlaybackInfo()
+  {
+    var int32 ela_time = 0;
+    var int32 dur = 0;
+    $if !$prototyper
+    /* TODO: uncomment these lines when integrating with media manager
+    native ( ela_time, dur )
+    {
+      mm_media_player_obj mp_state;
+      mp_state = ew_get_media_player_state();
+      ela_time = mp_state.current_elapsed_time_sec;
+      dur = mp_state.duration_sec;
+    }
+    */
+    $endif
+    ElapsedTimeSec = ela_time;
+    DurationTimeSec = dur;
+  }
+
+  $rect <500,470,700,510>
+  method void GetTrackInfo()
+  {
+    var string media_artist = "";
+    var string media_album = "";
+    var string media_title = "";
+    $if !$prototyper
+    /* TODO: uncomment these lines when integrating with media manager
+    native ( media_artist, media_album, media_title )
+    {
+      mm_media_player_obj mp_state;
+      mp_state = ew_get_media_player_state();
+      media_artist = EwNewStringUtf8( ( const unsigned char* )mp_state.str.track_artist, ( int )strlen( mp_state.str.track_artist ) );
+      media_album = EwNewStringUtf8( ( const unsigned char* )mp_state.str.track_album, ( int )strlen( mp_state.str.track_album ) );
+      media_title = EwNewStringUtf8( ( const unsigned char* )mp_state.str.track_title, ( int )strlen( mp_state.str.track_title ) );
+    }
+    */
+    $endif
+    Artist = media_artist;
+    Album = media_album;
+    Title = media_title;
+  }
+
+  $rect <480,130,680,170>
+  var bool IsInit = false;
+
+  $rect <350,360,610,400>
+  $output true
+  method void NotifyPlayerStateChanged( arg int32 aPlaybackState )
+  {
+    trace "NotifyPlayerStateChanged: ", aPlaybackState;
+    PlaybackState = aPlaybackState;
+  }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <30,280,320,320>
+  $output true
+  method void NotifyPlayBackTimeChanged( arg int32 aElapsedTimeSec, arg int32 aDurationTimeSec, arg int32 aRemainTimeSec )
+  {
+    trace "ElapsedTime: ", aElapsedTimeSec;
+    trace "Duration: ", aDurationTimeSec;
+    trace "Remain time: ", aDurationTimeSec;
+    ElapsedTimeSec = aElapsedTimeSec;
+    DurationTimeSec = aDurationTimeSec;
+    RemainTimeSec = aRemainTimeSec;
+
+    NotifyPlayBackTimeChangedSystemEvent.Trigger( null, false );
+  }
+
+  $rect <30,240,320,280>
+  object Core::SystemEvent NotifyPlayBackTimeChangedSystemEvent;
+
+  $rect <720,100,920,140>
+  property int32 RemainTimeSec;
+}
+
+$rect <20,290,220,330>
+autoobject DeviceInterface::MediaManagerDeviceClass MediaManagerDevice;
+
+$rect <20,360,220,400>
+$output false
+class BluetoothDeviceClass : Templates::DeviceClass
+{
+  // BT related properties
+  note group Note1
+  {
+    attr Bounds = <10,10,1600,260>;
+  }
+
+  // Interfaces to react to BT system events
+  note group Note2
+  {
+    attr Bounds = <9,280,840,451>;
+  }
+
+  // Interfaces to perform BT operations on device
+  note group Note3
+  {
+    attr Bounds = <10,470,840,690>;
+  }
+
+  $rect <290,510,503,550>
+  method void GetPairedDeviceAtItem( arg int32 aItemNo )
+  {
+    $if !$prototyper
+      var string DevName;
+      var bool   IsConnected;
+
+      native( aItemNo, DevName, IsConnected )
+      {
+        uint8_t* device_name;
+        bool     is_connected;
+        ew_bt_get_paired_device_at_index( aItemNo, &device_name, &is_connected );
+        DevName = EwNewStringAnsi( ( char* )device_name );
+        IsConnected = is_connected;
+      }
+      PairedDeviceObj.DeviceName = DevName;
+      PairedDeviceObj.IsConnected = IsConnected;
+    $else
+      if( aItemNo > 0 )
+      {
+        // empty body to suppress warning
+      }
+    $endif
+  }
+
+  $rect <520,331,810,371>
+  object Core::SystemEvent PasskeyGeneratedSystemEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <40,331,280,371>
+  $output true
+  method void NotifyPasskeyGenerated( arg string aPasskey )
+  {
+    trace "NotifyPasskeyGenerated: ", aPasskey;
+    Passkey = aPasskey;
+    PasskeyGeneratedSystemEvent.Trigger( null, false );
+  }
+
+  $rect <300,331,500,371>
+  var string Passkey;
+
+  $rect <520,391,810,431>
+  object Core::SystemEvent ConnectionResultSystemEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <40,391,280,431>
+  $output true
+  method void NotifyConnectionResult( arg Enum::BtResult aResult )
+  {
+    ConnectionResult = aResult;
+    ConnectionResultSystemEvent.Trigger( null, false );
+  }
+
+  $rect <300,391,500,431>
+  property Enum::BtResult ConnectionResult = Enum::BtResult.FAIL;
+
+  $rect <250,50,450,90>
+  property bool Discoverable = false;
+
+  $rect <250,100,450,140>
+  onset Discoverable
+  {
+    if( pure Discoverable != value )
+    {
+      pure Discoverable = value;
+      $if !$prototyper
+        native
+        {
+          ew_bt_set_discoverable( ( bool )value );
+        }
+      $endif
+    }
+  }
+
+  $rect <250,150,450,190>
+  onget Discoverable
+  {
+    $if !$prototyper
+      var bool IsDiscoverable = false;
+      native( IsDiscoverable )
+      {
+        IsDiscoverable = ew_bt_get_discoverable();
+      }
+      return IsDiscoverable;
+    $else
+      return pure Discoverable;
+    $endif
+  }
+
+  $rect <30,50,240,90>
+  property bool BluetoothEnable = false;
+
+  $rect <30,100,240,140>
+  onset BluetoothEnable
+  {
+    trace "OnSetBluetoothEnable ", value;
+    if( pure BluetoothEnable != value )
+    {
+      pure BluetoothEnable = value;
+      $if !$prototyper
+        native
+        {
+          ew_bt_set_enable( ( bool )value );
+        }
+      $endif
+    }
+  }
+
+  $rect <30,150,240,190>
+  onget BluetoothEnable
+  {
+    return pure BluetoothEnable;
+
+  }
+
+  $rect <460,50,660,90>
+  property bool AutoConnect;
+
+  $rect <460,100,660,140>
+  onset AutoConnect
+  {
+    pure AutoConnect = value;
+    $if !$prototyper
+      native
+      {
+        ew_bt_set_autoconnect( ( bool )value );
+      }
+    $endif
+  }
+
+  $rect <460,150,660,190>
+  onget AutoConnect
+  {
+    $if !$prototyper
+      var bool IsAutoConnect = false;
+      native( IsAutoConnect )
+      {
+        IsAutoConnect = ew_bt_get_autoconnect();
+      }
+      return IsAutoConnect;
+    $else
+      return pure AutoConnect;
+    $endif
+  }
+
+  $rect <670,50,880,90>
+  property int32 PairedDeviceNum;
+
+  $rect <670,100,880,140>
+  onget PairedDeviceNum
+  {
+    $if !$prototyper
+      var int32 PairedDevNum = 0;
+      native( PairedDevNum )
+      {
+        PairedDevNum = ew_bt_get_paired_device_num();
+      }
+      return PairedDevNum;
+    $else
+      return pure PairedDeviceNum;
+    $endif
+
+  }
+
+  $rect <40,630,260,670>
+  method void UnpairDevice( arg int32 aPairedDeviceIndex )
+  {
+    $if !$prototyper
+      native ( aPairedDeviceIndex )
+      {
+        ew_bt_unpair_paired_device( aPairedDeviceIndex );
+      }
+    $endif
+  }
+
+  $rect <290,570,503,610>
+  object DeviceInterface::BluetoothPairedDeviceInfo PairedDeviceObj;
+
+  $rect <30,200,240,240>
+  method void GetBluetoothEnable()
+  {
+    $if !$prototyper
+      var bool enable = false;
+      native( enable )
+      {
+        enable = ew_bt_get_enable();
+      }
+      BluetoothEnable = enable;
+    $endif
+  }
+
+  $rect <1108,50,1338,90>
+  property string LocalDeviceName;
+
+  $rect <1108,100,1338,140>
+  onget LocalDeviceName
+  {
+    $if !$prototyper
+      var string DevName = "";
+      native( DevName )
+      {
+        uint8_t* device_name;
+        ew_bt_get_local_device_name( &device_name );
+        DevName = EwNewStringAnsi( ( char* )device_name );
+      }
+      return DevName;
+    $else
+      return pure LocalDeviceName;
+    $endif
+  }
+
+  $rect <1350,50,1580,90>
+  property string LocalDeviceAddress;
+
+  $rect <1350,100,1580,140>
+  onget LocalDeviceAddress
+  {
+    $if !$prototyper
+      var string DeviceAddr = "";
+      native( DeviceAddr )
+      {
+        uint8_t dev_addr[BT_DEVICE_ADDRESS_LEN + 1];
+        ew_bt_get_local_device_address( dev_addr );
+        dev_addr[BT_DEVICE_ADDRESS_LEN + 1] = NULL;
+        DeviceAddr = EwNewStringAnsi( dev_addr );
+      }
+      return DeviceAddr;
+    $else
+      return pure LocalDeviceAddress;
+    $endif
+  }
+
+  $rect <40,510,260,550>
+  method void ConnectPairedDevice( arg int32 aPairedDeviceIndex )
+  {
+    $if !$prototyper
+      native ( aPairedDeviceIndex )
+      {
+        ew_bt_connect_paired_device( aPairedDeviceIndex );
+      }
+    $else
+      // suppress warning
+      if( aPairedDeviceIndex > 0 )
+      {
+        // empty body
+      }
+    $endif
+  }
+
+  $rect <290,630,490,670>
+  method bool IsBlePairedDevice( arg int32 aPairedDeviceIndex )
+  {
+    var bool IsBlePairedDevice = false;
+    $if !$prototyper
+      native ( aPairedDeviceIndex, IsBlePairedDevice )
+      {
+        IsBlePairedDevice = ew_bt_is_ble_paired_device( aPairedDeviceIndex );
+      }
+    $else
+      // suppress warning
+      if( "" == aPairedDeviceIndex )
+      {
+        // empty body
+      }
+    $endif
+    return IsBlePairedDevice;
+  }
+
+  $rect <40,570,260,610>
+  method void DisconnectPairedDevice( arg int32 aPairedDeviceIndex )
+  {
+    $if !$prototyper
+      native ( aPairedDeviceIndex )
+      {
+        ew_bt_disconnect_paired_device( aPairedDeviceIndex );
+      }
+    $endif
+  }
+
+  $rect <891,50,1091,90>
+  property bool IsMaxPairedDevice;
+
+  $rect <891,100,1091,140>
+  onget IsMaxPairedDevice
+  {
+    $if !$prototyper
+      var bool is_max_paired_device = false;
+      native( is_max_paired_device )
+      {
+        is_max_paired_device = ew_bt_is_max_paired_device_num();
+      }
+      return is_max_paired_device;
+    $else
+      return pure IsMaxPairedDevice;
+    $endif
+  }
+
+  $rect <40,806,240,846>
+  property Enum::BtFwStatus BtFwStatus;
+
+  $rect <40,860,240,900>
+  onset BtFwStatus
+  {
+    if ( pure BtFwStatus != value )
+    {
+      pure BtFwStatus = value;
+      notifyobservers ^BtFwStatus;
+    }
+
+  }
+
+  $rect <40,750,240,790>
+  $output true
+  method void NotifyBtFwStatus( arg Enum::BtFwStatus status, arg string version )
+  {
+    trace "NotifyBtFWStatus: ", status;
+    trace "BtFwVer: ", version;
+
+    BtFwStatus = status;
+  }
+
+  // Interfaces to BT firmware update
+  note group Note4
+  {
+    attr Bounds = <10,710,320,920>;
+  }
+
+  $rect <530,510,750,550>
+  property bool RefreshPairedDeviceList;
+
+  $rect <530,570,730,610>
+  onset RefreshPairedDeviceList
+  {
+    pure RefreshPairedDeviceList = value;
+    notifyobservers ^RefreshPairedDeviceList;
+  }
+}
+
+$rect <20,400,220,440>
+autoobject DeviceInterface::BluetoothDeviceClass BluetoothDevice;
+
+$rect <20,440,220,480>
+$output false
+class BluetoothPairedDeviceInfo
+{
+  $rect <20,10,220,50>
+  var string DeviceName;
+
+  $rect <20,60,220,100>
+  var bool IsConnected;
+}

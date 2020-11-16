@@ -1,0 +1,290 @@
+﻿$version 10.00
+
+$rect <20,20,260,60>
+$output false
+class BaseComponent : Core::Group
+{
+  $rect <44,55,244,95>
+  object Core::KeyPressHandler KeyHandler
+  {
+    preset OnRelease = OnKeyReleaseSlot;
+    preset OnPress = OnKeyPressSlot;
+    preset OnHold = OnKeyHoldSlot;
+  }
+
+  $rect <44,110,244,150>
+  slot OnKeyPressSlot
+  {
+    trace "OnKeyPressSlot", KeyHandler.Code;
+    switch( KeyHandler.Code )
+    {
+      case Core::KeyCode.Down:;
+      case Core::KeyCode.Up:;
+      case Core::KeyCode.Ok:;
+      case Core::KeyCode.Home:;
+      default:;
+    }
+
+
+  }
+
+  $rect <44,165,244,205>
+  slot OnKeyHoldSlot
+  {
+    trace "OnKeyHoldSlot", KeyHandler.Code;
+    if( 1 == KeyHandler.RepetitionCount )
+    {
+      signal OnLongKeyPressed, KeyHandler;
+    }
+
+  }
+
+  $rect <44,215,244,255>
+  slot OnKeyReleaseSlot
+  {
+    trace "OnKeyReleaseSlot", KeyHandler.Code;
+    if( !KeyHandler.Repetition )
+    {
+      switch( KeyHandler.Code )
+      {
+        case Core::KeyCode.Down: OnShortDownKeyPressed();
+        case Core::KeyCode.Up: OnShortUpKeyPressed();
+        case Core::KeyCode.Ok: OnShortEnterKeyPressed();
+        case Core::KeyCode.Home: OnShortHomeKeyPressed();
+        default:;
+      }
+    }
+  }
+
+  $rect <474,165,674,205>
+  property slot PassKeyHold;
+
+  $rect <264,165,464,205>
+  slot OnLongKeyPressed
+  {
+  }
+
+  $rect <474,111,674,151>
+  method void OnShortDownKeyPressed()
+  {
+  }
+
+  $rect <264,111,464,151>
+  method void OnShortUpKeyPressed()
+  {
+  }
+
+  $rect <264,215,464,255>
+  method void OnShortEnterKeyPressed()
+  {
+  }
+
+  $rect <50,430,260,470>
+  slot OnSlideEffectCompletedSlot
+  {
+    IsSlideEffectPresenting = false;
+  }
+
+  $rect <280,430,490,470>
+  var bool IsSlideEffectPresenting = false;
+
+  // Key Handle
+  note group Note5
+  {
+    attr Bounds = <20,10,730,280>;
+  }
+
+  // Slide Effect
+  note group Note6
+  {
+    attr Bounds = <20,320,730,490>;
+  }
+
+  $rect <50,370,250,410>
+  method void SlideInDialog( arg Core::Group aView )
+  {
+    if( null != aView &&
+        IsCurrentDialog() &&
+        false == IsSlideEffectPresenting )
+    {
+      IsSlideEffectPresenting = true;
+      PresentDialog( aView, Effect::LeftSlideTransition, null, null, null, null, null, OnSlideEffectCompletedSlot, null, false );
+    }
+
+
+
+  }
+
+  $rect <280,370,480,410>
+  method void SlideOutDialog( arg Core::Group aView )
+  {
+    if( null != aView &&
+        false == IsSlideEffectPresenting )
+    {
+      IsSlideEffectPresenting = true;
+      Owner.DismissDialog( this, Effect::RightSlideTransition, null, null, OnSlideEffectCompletedSlot, null, false );
+    }
+  }
+
+  $rect <471,214,671,254>
+  method void OnShortHomeKeyPressed()
+  {
+  }
+}
+
+$rect <20,140,260,180>
+$output false
+class DisclaimerView : Components::BaseComponent
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <30,30,440,200>;
+    preset WrapText = true;
+    preset String = "Fail to pay attention while riding could result in death or serious injury. Always concentrate on riding by keeping your eyes and mind on road. Read your owner's manual.";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PushButton
+  {
+    preset Bounds = <150,200,330,260>;
+    preset OnActivate = OnAcceptedSlot;
+    preset Label = "Accept";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <240,290,440,330>
+  slot OnAcceptedSlot
+  {
+    signal OnYesClicked, this;
+  }
+
+  $rect <240,350,440,390>
+  property slot OnYesClicked;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle1
+  {
+    preset Bounds = <0,0,480,32>;
+    preset Color = #ED962BFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image IconWarning
+  {
+    preset Bounds = <174,0,204,30>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter, ScaleToFit];
+    preset Bitmap = Resource::IconWarning;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text WarningText
+  {
+    preset Bounds = <221,0,431,30>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "Warning";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Color = #000000FF;
+    preset Visible = true;
+  }
+}
+
+$rect <20,80,260,120>
+$output false
+class StatusBar : Core::Group
+{
+  $rect <0,70,200,110>
+  inherited property Bounds = <0,0,480,32>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Background
+  {
+    preset Bounds = <0,0,480,32>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TitleText
+  {
+    preset Bounds = <50,0,420,30>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <-1,25,479,35>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::ListDivider;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image IconWarning
+  {
+    preset Bounds = <174,0,204,30>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter, ScaleToFit];
+    preset Bitmap = Resource::IconWarning;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TimeText
+  {
+    preset Bounds = <2,0,80,30>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Color = #FFFFFFFF;
+    preset Visible = true;
+  }
+
+  $rect <220,70,420,110>
+  object Core::Timer GetRtcTimer
+  {
+    preset OnTrigger = OnGetRtcTimeSlot;
+    preset Enabled = true;
+  }
+
+  $rect <220,120,420,160>
+  slot OnGetRtcTimeSlot
+  {
+    TimeText.String = DeviceInterface::SystemDevice.RtcTime;
+  }
+}
+
+$rect <20,200,260,240>
+$output false
+class PushButton : WidgetSet::PushButton
+{
+  $rect <10,80,210,120>
+  inherited object KeyHandler
+  {
+    preset OnHold = OnKeyHoldSlot;
+  }
+
+  $rect <10,130,210,170>
+  slot OnKeyHoldSlot
+  {
+    if( 1 == KeyHandler.RepetitionCount )
+    {
+      signal PassKeyHold, KeyHandler;
+    }
+  }
+
+  $rect <10,180,210,220>
+  property slot PassKeyHold;
+}

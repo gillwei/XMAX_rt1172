@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -57,6 +57,7 @@
 
 /* Deklaration of class : 'Core::ModalContext' */
 EW_DEFINE_FIELDS( CoreModalContext, XObject )
+  EW_VARIABLE( next,            CoreModalContext )
   EW_VARIABLE( group,           CoreGroup )
 EW_END_OF_FIELDS( CoreModalContext )
 

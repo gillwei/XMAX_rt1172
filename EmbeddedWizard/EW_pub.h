@@ -14,10 +14,14 @@
 extern "C" {
 #endif
 
-// #include "Enum.h"
+#include "Enum.h"
 #include "Core.h"
-// #include "MM_pub_ams_type.h"
-// #include "BTM_pub.h"
+/* TODO: uncomment following line when integrating with media manaber
+#include "MM_pub_ams_type.h"
+*/
+/* TODO: uncomment following line when integrating with bluetooth manaber
+#include "BTM_pub.h"
+*/
 
 typedef enum
     {
@@ -26,24 +30,23 @@ typedef enum
     } key_state;
 
 void EW_init( void );
-// void EW_notify_navi_map_update( void );
-// void EW_notify_engine_speed_changed( int speed );
-// void EW_send_key_event( CoreKeyCode code, key_state state );
-// void EW_clear_key_state( void );
-// void EW_notify_text_ready( const char* str );
-// void EW_notify_image_ready( void );
-// void EW_notify_scene_changed( void );
-// void EW_notify_title_changed( void );
-// void EW_notify_album_changed( void );
-// void EW_notify_artist_changed( void );
-// void EW_notify_playback_time_changed( void );
-// void EW_notify_playback_state_changed( void );
-// void EW_test_display_pattern( int index );
-// void EW_quit_test( void );
+void EW_notify_navi_map_update( void );
+void EW_notify_engine_speed_changed( int speed );
+void EW_send_key_event( CoreKeyCode code, key_state state );
+void EW_clear_key_state( void );
+void EW_notify_title_changed( void );
+void EW_notify_album_changed( void );
+void EW_notify_artist_changed( void );
+void EW_notify_playback_time_changed( void );
+void EW_notify_playback_state_changed( void );
+void EW_test_display_pattern( int index );
+void EW_quit_test( void );
 
-// void EW_notify_bt_connection_result( const bt_connection_result_type result );
-// void EW_notify_bt_passkey_generated( const char* pin );
-// void EW_notify_bt_fw_update_status( EnumBtFwStatus status, char* version );
+/* TODO: uncomment following line when integrating with bluetooth manaber
+void EW_notify_bt_connection_result( const bt_connection_result_type result );
+*/
+void EW_notify_bt_passkey_generated( const char* pin );
+void EW_notify_bt_fw_update_status( EnumBtFwStatus status, char* version );
 
 #ifdef __cplusplus
 }

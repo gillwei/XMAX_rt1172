@@ -73,6 +73,7 @@
 #include "ew_bsp_clock.h"
 #include "ew_bsp_event.h"
 #include "ew_bsp_display.h"
+#include "ew_priv.h"
 
 #include "DeviceDriver.h"
 
@@ -82,6 +83,7 @@
 #include "fsl_common.h"
 #include "FRTOS_pub.h"
 #include "GRM_pub_prj.h"
+
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -287,13 +289,33 @@ int     timers  = 0;
 int     signals = 0;
 int     events  = 0;
 int     devices = 0;
-XEnum   cmd     = CoreKeyCodeNoKey;
+ew_key_event key_event;
+
+//XEnum   cmd     = CoreKeyCodeNoKey;
 
 /* process data of your device driver(s) and update the GUI
    application by setting properties or by triggering events */
 devices = DeviceDriver_ProcessData();
 
+key_event = ew_get_key_event();
+if( CoreKeyCodeNoKey != key_event.code )
+    {
+    switch( key_event.state )
+        {
+        case KEY_STATE_PRESS:
+            events |= CoreRoot__DriveKeyboardHitting( RootObject, key_event.code, 0, 1 );
+            break;
+        case KEY_STATE_RELEASE:
+            events |= CoreRoot__DriveKeyboardHitting( RootObject, key_event.code, 0, 0 );
+            break;
+        default:
+            EwPrint( "undefined key state: %d\r\n", key_event.state );
+            break;
+        }
+    }
+
 /* receive keyboard inputs */
+#if 0
 if( cmd != CoreKeyCodeNoKey )
     {
     if( cmd == CoreKeyCodePower )
@@ -305,6 +327,7 @@ if( cmd != CoreKeyCodeNoKey )
     events |= CoreRoot__DriveKeyboardHitting( RootObject, cmd, 0, 1 );
     events |= CoreRoot__DriveKeyboardHitting( RootObject, cmd, 0, 0 );
     }
+#endif
 
 /* process expired timers */
 timers = EwProcessTimers();
@@ -553,6 +576,6 @@ void EW_init
     )
 {
 create_task();
-// ew_key_init();
+ew_key_init();
 }
 

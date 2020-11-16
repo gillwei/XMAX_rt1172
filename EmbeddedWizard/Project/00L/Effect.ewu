@@ -1,0 +1,15 @@
+$version 9.30
+
+$rect <20,80,270,120>
+$output false
+autoobject Effects::SlideTransition RightSlideTransition
+{
+  preset Direction = Core::Direction.Right;
+}
+
+$rect <20,20,270,60>
+$output false
+autoobject Effects::SlideTransition LeftSlideTransition
+{
+  preset Direction = Core::Direction.Left;
+}

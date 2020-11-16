@@ -1,0 +1,74 @@
+﻿$version 10.00
+
+$rect <30,20,230,60>
+$output false
+enum Direction
+{
+  $rect <10,10,210,50>
+  item Previous;
+
+  $rect <220,10,420,50>
+  item Next;
+}
+
+$rect <30,70,230,110>
+$output false
+enum FactoryTest
+{
+  $rect <10,10,210,50>
+  item Quit;
+
+  $rect <10,60,210,100>
+  item Display;
+}
+
+$rect <30,130,230,170>
+$output false
+enum CommandType
+{
+  $rect <10,10,210,50>
+  item Play;
+
+  $rect <220,10,420,50>
+  item Pause;
+
+  $rect <430,10,630,50>
+  item NextTrack;
+
+  $rect <650,10,850,50>
+  item PrevTrack;
+}
+
+$rect <30,190,230,230>
+$output false
+enum BtResult
+{
+  $rect <10,10,210,50>
+  item SUCCESS;
+
+  $rect <10,60,210,100>
+  item FAIL;
+
+  $rect <10,110,210,150>
+  item TIMEOUT;
+
+  $rect <10,160,210,200>
+  item LOST;
+}
+
+$rect <30,240,230,280>
+$output false
+enum BtFwStatus
+{
+  $rect <10,10,210,50>
+  item NO_UPDATE;
+
+  $rect <10,60,210,100>
+  item UPDATE_START;
+
+  $rect <10,110,210,150>
+  item UPDATE_ABORT;
+
+  $rect <10,160,210,200>
+  item UPDATE_FINISH;
+}

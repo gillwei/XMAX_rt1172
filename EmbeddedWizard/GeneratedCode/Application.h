@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -43,7 +43,6 @@
 #endif
 
 #include "_ApplicationApplication.h"
-#include "_ApplicationBlackWhite.h"
 
 #ifdef __cplusplus
   }

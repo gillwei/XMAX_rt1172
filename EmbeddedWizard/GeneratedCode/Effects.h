@@ -19,7 +19,7 @@
 * the original template file!
 *
 * Version  : 10.00
-* Profile  : Profile
+* Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
 *******************************************************************************/
@@ -127,25 +127,6 @@ EW_DECLARE_AUTOOBJECT( EffectsEffectTimer, EffectsEffectTimerClass )
    run with other configuration (e.g. to show the GUI component at the end instead 
    of the start phase), create a copy of this object and adapt its properties accordingly. */
 EW_DECLARE_AUTOOBJECT( EffectsShowHideCentered, EffectsShowHideTransition )
-
-/* The global autoobject Effects::SlideLeftCentered represents the fade-in/out operation 
-   affecting the position and the opacity of the given GUI component. When using 
-   the transition for the fade-in operation, the GUI component slides from the right 
-   edge of its owner component and continues moving horizontally until it reaches 
-   the owner's center position. When using the transition for the fade-out operation, 
-   the component slides to the left until it leaves the visible area of its owner 
-   component. Additionally, while the transitions are performed, the opacity of 
-   the GUI component fades-in or fades-out accordingly. This transition is thus 
-   ideal wherever one GUI component should smoothly slide-in/out in context of another 
-   component. The duration of the transition is configured per default to take 500 
-   ms and the timing is configured to start fast and then slow down the animation 
-   (FastIn_EaseOut).
-   This object exists for your convenience permitting you to simply refer the transition 
-   wherever it is required in your implementation without having to take care of 
-   the creation and configuration of the object. If you require the transition to 
-   run with other configuration (e.g. other timing parameters), create a copy of 
-   this object and adapt its properties accordingly. */
-EW_DECLARE_AUTOOBJECT( EffectsSlideLeftCentered, EffectsSlideTransition )
 
 #ifdef __cplusplus
   }

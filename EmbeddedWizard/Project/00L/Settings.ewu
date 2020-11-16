@@ -1,0 +1,2317 @@
+﻿$version 10.00
+
+$rect <20,10,260,50>
+$output false
+class Main : Menu::BaseMenuView
+{
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <230,300,430,340>
+  inherited slot OnLongKeyPressed
+  {
+    signal PassKeyHold, sender;
+  }
+
+  $rect <510,10,710,50>
+  inherited method LoadItemClass()
+  {
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+      ItemClass = Menu::ItemRightArrow;
+    }
+    return ItemClass;
+  }
+
+  $rect <510,60,710,100>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    if( aItemNo < ItemTitleArray.size )
+    {
+      Title = ItemTitleArray[aItemNo];
+    }
+    return Title;
+  }
+
+  $rect <510,110,710,150>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    switch( aItemNo )
+    {
+      case 0: SlideInDialog( new Settings::Connection );
+      case 1: SlideInDialog( new Settings::SystemMenu );
+      default:;
+    }
+
+  }
+
+  $rect <730,60,930,100>
+  array string ItemTitleArray[ 2 ] =
+  (
+    Default[0] = "Connections";
+    Default[1] = "System";
+  );
+
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <10,32,470,272>;
+    preset PassKeyHold = OnLongKeyPressed;
+    preset NoOfItems = 2;
+  }
+
+  $reorder SlideInDialog 4
+  $reorder LoadItemClass 4
+  $reorder LoadItemTitle 4
+  $reorder OnItemActivate 4
+  $reorder Rectangle 4
+  $reorder LoadItemChecked 4
+  $reorder ItemTitleArray 4
+  $reorder Menu 4
+}
+
+$rect <50,70,290,110>
+$output false
+class Connection : Menu::BaseMenuView
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <230,290,430,330>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: SlideOutDialog( this );
+        default:;
+      }
+    }
+
+  }
+
+  $rect <510,20,710,60>
+  inherited method LoadItemClass()
+  {
+    var class ClassType = null;
+    if( aItemNo < ItemClassArray.size )
+      {
+      ClassType = ItemClassArray[aItemNo];
+      }
+    return ClassType;
+  }
+
+  $rect <510,70,710,110>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+      {
+      title = ItemTitleArray[aItemNo];
+      }
+    return title;
+  }
+
+  $rect <510,120,710,160>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    switch( aItemNo )
+    {
+      case 0: SlideInDialog( new Settings::Bluetooth );
+      case 1:;
+      default :;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <10,32,470,272>;
+    preset PassKeyHold = OnLongKeyPressed;
+  }
+
+  $rect <730,20,930,60>
+  array class ItemClassArray[ 1 ] =
+  (
+    Default[0] = Menu::ItemRightArrow;
+  );
+
+  $rect <730,70,930,110>
+  array string ItemTitleArray[ 1 ] =
+  (
+    Default[0] = "Bluetooth";
+  );
+}
+
+$rect <80,130,320,170>
+$output false
+class Bluetooth : Menu::BaseMenuView
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <240,290,420,330>
+  inherited method Init()
+  {
+    DeviceInterface::BluetoothDevice.GetBluetoothEnable();
+  }
+
+  $rect <520,270,720,310>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: SlideOutDialog( this );
+        default:;
+      }
+    }
+
+  }
+
+  $rect <520,20,720,60>
+  inherited method LoadItemClass()
+  {
+    var class ClassType = null;
+    if( aItemNo < ItemClassArray.size )
+      {
+      ClassType = ItemClassArray[aItemNo];
+      }
+    return ClassType;
+  }
+
+  $rect <520,70,720,110>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+      {
+      title = ItemTitleArray[aItemNo];
+      }
+    return title;
+  }
+
+  $rect <520,220,720,260>
+  inherited method OnItemActivate()
+  {
+    var bool IsChecked = false;
+    var Menu::ItemCheckbox CheckBoxItem = ( Menu::ItemCheckbox )aMenuItem;
+    if( null != CheckBoxItem )
+    {
+      IsChecked = CheckBoxItem.CheckBoxButton.Checked;
+    }
+
+    switch( aItemNo )
+    {
+      case 0:
+      {
+        DeviceInterface::BluetoothDevice.BluetoothEnable = IsChecked;
+        Menu.InvalidateItems( 1, 4 );
+      }
+      case 1:
+      {
+        if( DeviceInterface::BluetoothDevice.IsMaxPairedDevice )
+        {
+          var Settings::BtMaxPairedDevice MaxPairedDevDialog = new Settings::BtMaxPairedDevice;
+          MaxPairedDevDialog.ToRemovePairedDevice = ShowPairedDeviceListSlot;
+          PresentDialog( MaxPairedDevDialog, null, null, null, null, null, null, null, null, false );
+        }
+        else
+        {
+          PresentDialog( new Settings::BtDiscovarable, null, null, null, null, null, null, null, null, false );
+        }
+      }
+      case 2: signal ShowPairedDeviceListSlot;
+      case 3: DeviceInterface::BluetoothDevice.AutoConnect = IsChecked;
+      default:;
+    }
+  }
+
+  $rect <520,120,720,160>
+  inherited method LoadItemChecked()
+  {
+    var bool IsChecked = false;
+    switch( aItemNo )
+    {
+      case 0: IsChecked = DeviceInterface::BluetoothDevice.BluetoothEnable;
+      case 3: IsChecked = DeviceInterface::BluetoothDevice.AutoConnect;
+      default:;
+    }
+    return IsChecked;
+  }
+
+  $rect <520,170,720,210>
+  inherited method LoadItemEnabled()
+  {
+    var bool ItemEnabled = true;
+    if( aItemNo > 0 )
+    {
+      ItemEnabled = DeviceInterface::BluetoothDevice.BluetoothEnable;
+    }
+    return ItemEnabled;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <10,32,470,272>;
+    preset PassKeyHold = OnLongKeyPressed;
+    preset NoOfItems = 4;
+  }
+
+  $rect <740,20,940,60>
+  array class ItemClassArray[ 4 ] =
+  (
+    Default[0] = Menu::ItemCheckbox;
+    Default[1] = Menu::ItemBase;
+    Default[2] = Menu::ItemRightArrow;
+    Default[3] = Menu::ItemCheckbox;
+  );
+
+  $rect <740,70,940,110>
+  array string ItemTitleArray[ 4 ] =
+  (
+    Default[0] = "Bluetooth";
+    Default[1] = "Make system discoverable";
+    Default[2] = "Paired Device List";
+    Default[3] = "Bluetooth auto connect";
+  );
+
+  $rect <740,120,940,160>
+  var bool IsBtEnabled = false;
+
+  $rect <230,350,480,390>
+  slot ShowPairedDeviceListSlot
+  {
+    PresentDialog( new Settings::BtPairedDeviceList, null, null, null, null, null, null, null, null, false );
+  }
+}
+
+// System Settings UI
+note group Note
+{
+  attr Bounds = <460,20,1420,560>;
+}
+
+$rect <480,230,680,270>
+$output false
+class SystemMenu : Menu::BaseMenuView
+{
+  $rect <50,310,250,350>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <530,220,730,260>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: SlideOutDialog( this );
+        default:;
+      }
+    }
+  }
+
+  $rect <530,120,730,160>
+  inherited method LoadItemClass()
+  {
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+      if( aItemNo != 2 )
+      {
+      ItemClass = Menu::ItemBase;
+      }
+      else
+      {
+      ItemClass = Menu::ItemRightArrow;
+      }
+    }
+    return ItemClass;
+  }
+
+  $rect <530,70,730,110>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    if( aItemNo < SystemMenu.size )
+    {
+    Title = SystemMenu[aItemNo];
+    }
+    return Title;
+  }
+
+  $rect <530,170,730,210>
+  inherited method OnItemActivate()
+  {
+    trace "OnItemActivate:", aItemNo;
+
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    switch( aItemNo )
+    {
+      case 0:
+        PresentDialog( new Settings::SystemInfo, null, null, null, null, null, null, null, null, false );
+      case 1:
+        PresentDialog( new Settings::DisplayBrightness, null, null, null, null, null, null, null, null, false );
+      case 2:
+        PresentDialog( new Settings::Reset, null, null, null, null, null, null, null, null, false );
+      default :;
+    }
+  }
+
+  $rect <530,20,730,60>
+  array string SystemMenu[ 3 ] =
+  (
+    Default[0] = "System information";
+    Default[1] = "Display Brightness";
+    Default[2] = "All reset";
+  );
+
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <10,32,470,272>;
+    preset PassKeyHold = OnLongKeyPressed;
+    preset NoOfItems = 3;
+  }
+}
+
+$rect <710,270,910,310>
+$output false
+class LegalMenu : Menu::BaseMenuView
+{
+  $rect <20,290,220,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <520,200,720,240>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: SlideOutDialog( this );
+        default:;
+      }
+    }
+  }
+
+  $rect <520,150,720,190>
+  inherited method LoadItemClass()
+  {
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+    ItemClass = Menu::ItemRightArrow;
+    }
+    return ItemClass;
+  }
+
+  $rect <520,60,720,100>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    if( aItemNo < LegalMenu.size )
+    {
+    Title = LegalMenu[aItemNo];
+    }
+    return Title;
+  }
+
+  $rect <520,100,720,140>
+  inherited method OnItemActivate()
+  {
+    trace "OnItemActivate:", aItemNo;
+
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    switch( aItemNo )
+    {
+    case 0:
+      SlideInDialog( new Settings::TermsOfService );
+    case 1:
+      SlideInDialog( new Settings::OpenSourceLicenses );
+    default :;
+    }
+  }
+
+  $rect <520,10,720,50>
+  array string LegalMenu[ 3 ] =
+  (
+    Default[0] = "Terms of Service";
+    Default[1] = "Open source licenses";
+    Default[2] = "";
+  );
+
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <10,32,470,272>;
+    preset PassKeyHold = OnLongKeyPressed;
+    preset NoOfItems = 2;
+  }
+}
+
+$rect <710,130,910,170>
+$output false
+class SystemInfo : Menu::BaseMenuView
+{
+  $rect <520,10,720,50>
+  inherited method Init()
+  {
+    EsnText.String = DeviceInterface::SystemDevice.ESN;
+    SoftwareVersionText.String = DeviceInterface::SystemDevice.SoftwareVersion;
+    BtSwVersionText.String = DeviceInterface::SystemDevice.BtSoftwareVersion;
+
+    // show development button only for debug build
+    if( DeviceInterface::SystemDevice.IsDebugBuild )
+    {
+      DevButton.Enabled = true;
+      DevButton.Visible = true;
+      Focus = DevButton;
+    }
+
+  }
+
+  $rect <280,290,480,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <520,110,720,150>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: SlideOutDialog( this );
+        default:;
+      }
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ESN
+  {
+    preset Bounds = <106,50,357,80>;
+    preset String = "Eletronic Serial Number";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text SoftwareVersionTitle
+  {
+    preset Bounds = <120,120,340,145>;
+    preset String = "Software Version";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text EsnText
+  {
+    preset Bounds = <130,80,330,110>;
+    preset String = "1234565";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text SoftwareVersionText
+  {
+    preset Bounds = <150,150,310,180>;
+    preset String = DeviceInterface::SystemDevice.SoftwareVersion;
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <20,20,160,60>
+  object Components::PushButton DevButton
+  {
+    preset Bounds = <400,190,470,260>;
+    preset Enabled = false;
+    preset Visible = false;
+    preset OnRelease = OnDevButtonReleaseSlot;
+    preset Icon = Resource::Development;
+    preset Label = "";
+    preset Appearance = UIConfig::PushButtonConfig;
+    preset PassKeyHold = OnLongKeyPressed;
+  }
+
+  $rect <520,170,750,210>
+  slot OnDevButtonReleaseSlot
+  {
+    PresentDialog( new Development::Main, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <520,230,720,270>
+  object Core::PropertyObserver EsnObserver
+  {
+    preset OnEvent = OnEsnReceivedSlot;
+    preset Outlet = ^DeviceInterface::SystemDevice.ESN;
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <520,280,720,320>
+  slot OnEsnReceivedSlot
+  {
+    EsnText.String = DeviceInterface::SystemDevice.ESN;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text BtSwVersionTitle
+  {
+    preset Bounds = <120,190,340,215>;
+    preset String = "BT Software Version";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text BtSwVersionText
+  {
+    preset Bounds = <150,220,310,250>;
+    preset String = DeviceInterface::SystemDevice.SoftwareVersion;
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+}
+
+$rect <950,70,1150,110>
+$output false
+class SoftwareUpdate : Menu::BaseMenuView
+{
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <520,250,720,290>
+  inherited slot OnLongKeyPressed
+  {
+    // Important!
+    // Depends on whether there is a Home Key or not. Currently we assume home key exists,
+    // in future, we may need to change implementation depends on the situation.
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Home: SlideOutDialog( this );
+        default:;
+      }
+    }
+  }
+
+  $rect <520,140,720,180>
+  inherited method OnShortDownKeyPressed()
+  {
+    var int32 NextFocusIdx = FocusIdx + 1;
+    if( NextFocusIdx >= FocusList.size )
+      {
+      NextFocusIdx = FocusList.size - 1;
+      }
+
+    if( FocusIdx != NextFocusIdx )
+      {
+      FocusIdx = NextFocusIdx;
+      Focus = FocusList[NextFocusIdx];
+      }
+  }
+
+  $rect <520,80,720,120>
+  inherited method OnShortUpKeyPressed()
+  {
+    var int32 NextFocusIdx = FocusIdx - 1;
+    if( NextFocusIdx < 0 )
+      {
+      NextFocusIdx = 0;
+      }
+
+    if( FocusIdx != NextFocusIdx )
+      {
+      FocusIdx = NextFocusIdx;
+      Focus = FocusList[NextFocusIdx];
+      }
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton ButtonNo
+  {
+    preset Bounds = <290,200,440,250>;
+    preset IconFrameActive = -1;
+    preset IconFrame = 0;
+    preset Label = "No";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton ButtonYes
+  {
+    preset Bounds = <40,203,190,253>;
+    preset OnRelease = OnUpdate;
+    preset IconFrameActive = -1;
+    preset IconFrame = 0;
+    preset Label = "Yes";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <90,80,370,150>;
+    preset String = "Update system?";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <520,200,720,240>
+  slot OnUpdate
+  {
+    SlideInDialog( new Settings::InProgress );
+  }
+
+  $rect <520,20,720,60>
+  var int32 FocusIdx = 1;
+
+  $rect <740,20,940,60>
+  array Core::View FocusList[ 2 ] =
+  (
+    Default[0] = ButtonYes;
+    Default[1] = ButtonNo;
+  );
+}
+
+$rect <950,130,1150,170>
+$output false
+class SoftwareUpdateError : Menu::BaseMenuView
+{
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <40,70,410,220>;
+    preset String = "System cannot execute software update.\nSoftware update cannot be executed\nwhile driving.";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+}
+
+$rect <1170,70,1370,110>
+$output false
+class SoftwareUpdateRetry : Menu::BaseMenuView
+{
+  $rect <20,300,220,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Text Message
+  {
+    preset Bounds = <30,50,440,180>;
+    preset String = "Failed\n.Confirmed USB connection.Please make sure you've\ninserted USB and the update file is in the USB\ndevice.";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton RetryButton
+  {
+    preset Bounds = <140,200,320,250>;
+    preset OnRelease = OnRetry;
+    preset Label = "Retry";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <520,30,720,70>
+  slot OnRetry
+  {
+    SlideOutDialog( this );
+  }
+}
+
+$rect <1170,130,1370,170>
+$output false
+class SoftwareUpdateCompleted : Menu::BaseMenuView
+{
+  $rect <0,290,200,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <100,95,360,170>;
+    preset String = "Completed.";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+}
+
+$rect <940,340,1140,380>
+$output false
+class AllReset : Menu::BaseMenuView
+{
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <510,310,710,350>
+  inherited slot OnLongKeyPressed
+  {
+    // Important!
+    // Depends on whether there is a Home Key or not. Currently we assume home key exists,
+    // in future, we may need to change implementation depends on the situation.
+
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        // Return to previous page = press No. Therefore, post signl OnNo.
+        case Core::KeyCode.Home: postsignal OnNo;
+        default:;
+      }
+    }
+  }
+
+  $rect <520,130,720,170>
+  inherited method OnShortDownKeyPressed()
+  {
+    var int32 NextFocusIdx = FocusIdx + 1;
+    if( NextFocusIdx >= FocusList.size )
+      {
+      NextFocusIdx = FocusList.size - 1;
+      }
+
+    if( FocusIdx != NextFocusIdx )
+      {
+      FocusIdx = NextFocusIdx;
+      Focus = FocusList[NextFocusIdx];
+      }
+  }
+
+  $rect <520,80,720,120>
+  inherited method OnShortUpKeyPressed()
+  {
+    var int32 NextFocusIdx = FocusIdx - 1;
+    if( NextFocusIdx < 0 )
+      {
+      NextFocusIdx = 0;
+      }
+
+    if( FocusIdx != NextFocusIdx )
+      {
+      FocusIdx = NextFocusIdx;
+      Focus = FocusList[NextFocusIdx];
+      }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <30,45,450,180>;
+    preset String = "Reset LinkCard to factory settings?";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton ButtonNo
+  {
+    preset Bounds = <260,190,410,240>;
+    preset OnRelease = OnButtonNo;
+    preset Label = "No";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton ButtonYes
+  {
+    preset Bounds = <40,190,190,240>;
+    preset OnRelease = OnButtonYes;
+    preset Label = "Yes";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <520,190,720,230>
+  slot OnButtonYes
+  {
+    //TODO: Check BLE record exist or not -> UpdateBLEStatus method. If no, switch to Error page.
+    postsignal OnYes;
+  }
+
+  $rect <510,250,710,290>
+  slot OnButtonNo
+  {
+    postsignal OnNo;
+  }
+
+  $rect <520,20,720,60>
+  property slot OnYes;
+
+  $rect <750,20,950,60>
+  property slot OnNo;
+
+  $rect <750,70,950,110>
+  method bool UpdateBLEStatus()
+  {
+    // TODO return true if BLE record exist
+    // If not, switich to error page.
+    return true;
+  }
+
+  $rect <970,20,1170,60>
+  var int32 FocusIdx = 1;
+
+  $rect <1190,20,1390,60>
+  array Core::View FocusList[ 2 ] =
+  (
+    Default[0] = ButtonYes;
+    Default[1] = ButtonNo;
+  );
+}
+
+$rect <940,390,1140,430>
+$output false
+class AllResetPairingDevice : Menu::BaseMenuView
+{
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <530,80,730,120>
+  inherited method Init()
+  {
+    // TO DO: read BLE record here.
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PushButton
+  {
+    preset Bounds = <150,190,300,240>;
+    preset OnRelease = OnButtonOk;
+    preset Label = "OK";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <530,140,730,180>
+  slot OnButtonOk
+  {
+    postsignal OnOK;
+  }
+
+  $rect <530,20,730,60>
+  property slot OnOK;
+
+  $reorder LoadItemChecked 1
+}
+
+$rect <940,440,1140,480>
+$output false
+class InProgress : Menu::BaseMenuView
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <110,100,350,150>;
+    preset String = "Please wait...";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+}
+
+$rect <1160,350,1360,390>
+$output false
+class AllResetCompleted : Menu::BaseMenuView
+{
+  $rect <510,170,710,210>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <100,95,360,170>;
+    preset String = "Completed.";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  // TODO: Inform system to reboot.
+  note legend Note
+  {
+    attr Bounds = <530,10,870,150>;
+  }
+}
+
+$rect <710,190,910,230>
+$output false
+class Inspection : Menu::BaseMenuView
+{
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <530,90,730,130>
+  inherited object KeyHandler;
+
+  $rect <530,140,730,180>
+  inherited slot OnKeyPressSlot
+  {
+    switch( KeyHandler.Code )
+    {
+      case Core::KeyCode.Up:
+        ArrowUp.IconFrame = 1;
+      case Core::KeyCode.Down:
+        ArrowDown.IconFrame = 1;
+      case Core::KeyCode.Ok:
+        ArrowEnter.IconFrame = 1;
+      case Core::KeyCode.Home:
+        Home.IconFrame = 1;
+      default:;
+    }
+  }
+
+  $rect <530,200,730,240>
+  inherited slot OnKeyReleaseSlot
+  {
+    switch( KeyHandler.Code )
+    {
+      case Core::KeyCode.Up:
+        ArrowUp.IconFrame = 0;
+      case Core::KeyCode.Down:
+        ArrowDown.IconFrame = 0;
+      case Core::KeyCode.Ok:
+        ArrowEnter.IconFrame = 0;
+      case Core::KeyCode.Home:
+        Home.IconFrame = 0;
+      default:;
+    }
+  }
+
+  $rect <530,30,730,70>
+  inherited slot OnLongKeyPressed
+  {
+    // Important!
+    // Depends on whether there is a Home Key or not. Currently we assume home key exists,
+    // in future, we may need to change implementation depends on the situation.
+
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Home: Owner.DismissDialog( this, null, null, null, null, null, false );
+        default:;
+      }
+    }
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton ArrowUp
+  {
+    preset Bounds = <38,46,128,96>;
+    preset IconFrameActive = 1;
+    preset IconFrame = 0;
+    preset Icon = Resource::InspectionArrowUp;
+    preset Label = "";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton ArrowEnter
+  {
+    preset Bounds = <40,99,130,149>;
+    preset IconFrameActive = 1;
+    preset IconFrame = 0;
+    preset Icon = Resource::InspectionArrowEnter;
+    preset Label = "";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton ArrowDown
+  {
+    preset Bounds = <38,146,128,196>;
+    preset IconFrameActive = 1;
+    preset IconFrame = 0;
+    preset Icon = Resource::InspectionArrowDown;
+    preset Label = "";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton Home
+  {
+    preset Bounds = <35,199,125,249>;
+    preset Icon = Resource::InspectionHome;
+    preset Label = "";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image
+  {
+    preset Bounds = <156,70,203,120>;
+    preset Bitmap = Resource::iconBT;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Connection1
+  {
+    preset Bounds = <226,67,346,117>;
+    preset FrameNumber = 3;
+    preset Bitmap = Resource::InspectionConnection;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider1
+  {
+    preset Bounds = <160,101,480,131>;
+    preset Bitmap = Resource::InspectionDivider;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image2
+  {
+    preset Bounds = <156,123,210,168>;
+    preset Bitmap = Resource::iconCAN;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PushButton
+  {
+    preset Bounds = <152,202,202,246>;
+    preset Icon = Resource::iconExit;
+    preset Label = "";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Text1
+  {
+    preset Bounds = <187,211,257,241>;
+    preset String = "EXIT";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image4
+  {
+    preset Bounds = <349,69,459,119>;
+    preset Bitmap = Resource::InspectionStatus;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image6
+  {
+    preset Bounds = <349,123,459,173>;
+    preset FrameNumber = 2;
+    preset Bitmap = Resource::InspectionStatus;
+  }
+}
+
+$rect <940,270,1140,310>
+$output false
+class TermsOfService : Menu::BaseMenuView
+{
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <500,20,700,60>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: SlideOutDialog( this );
+        default:;
+      }
+    }
+  }
+}
+
+$rect <1170,270,1370,310>
+$output false
+class OpenSourceLicenses : Menu::BaseMenuView
+{
+  $rect <0,300,200,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <530,30,730,70>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: SlideOutDialog( this );
+        default:;
+      }
+    }
+  }
+}
+
+$rect <1160,400,1360,440>
+$output false
+class AllResetFailed : Menu::BaseMenuView
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <10,40,470,220>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignHorzLeft, AlignVertCenter];
+    preset String = "System cannot execute all reset.\nAll reset cannot be executed while driving.";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <510,10,700,50>
+  object Core::Timer CountDownTimer
+  {
+    preset OnTrigger = OnFailedReturnEvent;
+    preset Period = 5000;
+    preset Enabled = true;
+  }
+
+  $rect <510,60,710,100>
+  slot OnFailedReturnEvent
+  {
+    CountDownTimer.Enabled = false;
+    postsignal OnFailed;
+  }
+
+  $rect <720,10,920,50>
+  property slot OnFailed;
+
+  // TODO: Based on CAN message, Abort signal will be delivered.
+  // In this case, we show this page and go back to system settings page.
+  note group Note
+  {
+    attr Bounds = <540,190,1120,280>;
+  }
+}
+
+$rect <720,380,920,420>
+$output false
+class Reset : Components::BaseComponent
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <520,10,720,50>
+  inherited method Init()
+  {
+    var Settings::AllReset all_reset = new Settings::AllReset;
+
+    all_reset.OnYes = OnAllResetYesSlot;
+    all_reset.OnNo = OnAllResetNoSlot;
+    PresentDialog( all_reset, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <520,60,720,100>
+  slot OnAllResetYesSlot
+  {
+    StartFactoryReset();
+
+  }
+
+  $rect <520,110,720,150>
+  slot OnAllResetNoSlot
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <520,160,720,200>
+  slot OnAllResetPairingDeviceOK
+  {
+    StartFactoryReset();
+  }
+
+  $rect <520,210,720,250>
+  slot OnAllResetFailed
+  {
+    var Core::Group dialog = (Core::Group)sender;
+    DismissDialog( dialog, null, null, null, null, null, false );
+    SlideOutDialog( this );
+  }
+
+  $rect <520,260,720,300>
+  slot OnAllResetFinished
+  {
+    var Settings::AllResetCompleted all_reset_completed = new Settings::AllResetCompleted;
+    var Core::Group dialog = (Core::Group)sender;
+
+    DismissDialog( dialog, null, null, null, null, null, false );
+    PresentDialog( all_reset_completed, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <520,520,790,560>
+  object Core::Timer SystemRebootCountDownTimer
+  {
+    preset OnTrigger = OnSystemRebootTriggeredSlot;
+    preset Period = 2000;
+  }
+
+  $rect <520,570,790,610>
+  slot OnSystemRebootTriggeredSlot
+  {
+    trace "OnSystemRebootTriggered";
+    SystemRebootCountDownTimer.Enabled = false;
+    DeviceInterface::SystemDevice.RebootSystem();
+  }
+
+  $rect <520,460,790,500>
+  method void ShowResetCompleteDialog()
+  {
+    if( null != BusyDialog )
+    {
+      DismissDialog( BusyDialog, null, null, null, null, null, false );
+      BusyDialog = null;
+    }
+    var Settings::AllResetCompleted AllResetCompletedDialog = new Settings::AllResetCompleted;
+    PresentDialog( AllResetCompletedDialog, null, null, null, null, null, null, null, null, false );
+    SystemRebootCountDownTimer.Enabled = true;
+  }
+
+  $rect <810,310,1010,350>
+  var Settings::InProgress BusyDialog;
+
+  $rect <520,310,720,350>
+  method void StartFactoryReset()
+  {
+    trace "StartFactoryReset";
+    BusyDialog = new Settings::InProgress;
+    PresentDialog( BusyDialog, null, null, null, null, null, null, null, null, false );
+    DeviceInterface::SystemDevice.ResetToFactoryDefault();
+  }
+
+  $rect <520,360,720,400>
+  object Core::PropertyObserver ResetResultObserver
+  {
+    preset OnEvent = OnResetCompleteSlot;
+    preset Outlet = ^DeviceInterface::SystemDevice.FactoryResetComplete;
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <520,410,720,450>
+  slot OnResetCompleteSlot
+  {
+    ShowResetCompleteDialog();
+  }
+}
+
+$rect <710,500,910,540>
+$output false
+class DisplayBrightness : Menu::BaseMenuView
+{
+  $rect <10,290,190,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <10,390,190,430>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+    trace "aState", aState;
+    var Application::Application App = ( Application::Application )GetRoot();
+    trace "app: ", App;
+    if( null != App )
+    {
+      if( aState.contains( Core::ViewState[ Dialog ] ) )
+      {
+        App.StatusBarVisible = false;
+      }
+      else
+      {
+        App.StatusBarVisible = true;
+      }
+    }
+  }
+
+  $rect <10,340,190,380>
+  inherited method Init()
+  {
+    BrightnessLevel = DeviceInterface::SystemDevice.BrightnessLevel;
+
+  }
+
+  $rect <500,10,700,50>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: SlideOutDialog( this );
+        default:;
+      }
+    }
+  }
+
+  $rect <500,60,700,100>
+  inherited method OnShortDownKeyPressed()
+  {
+    var int32 NextBrightnessLevel = BrightnessLevel - 1;
+    if( 0 <= NextBrightnessLevel )
+    {
+      BrightnessLevel = NextBrightnessLevel;
+    }
+    else
+    {
+      ShowLevelText();
+    }
+  }
+
+  $rect <500,110,700,150>
+  inherited method OnShortUpKeyPressed()
+  {
+    var int32 NextBrightnessLevel = BrightnessLevel + 1;
+    if( BrightnessList.size > NextBrightnessLevel )
+    {
+      BrightnessLevel = NextBrightnessLevel;
+    }
+    else
+    {
+      ShowLevelText();
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image CheckerboardImage
+  {
+    preset Bounds = <0,0,480,272>;
+    preset FrameNumber = 1;
+    preset Bitmap = Resource::DisplayTest;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text LevelText
+  {
+    preset Bounds = <432,2,482,22>;
+    preset WrapText = true;
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <500,210,700,250>
+  property int32 BrightnessLevel = -1;
+
+  $rect <500,260,700,300>
+  onset BrightnessLevel
+  {
+    if( pure BrightnessLevel != value )
+    {
+      pure BrightnessLevel = value;
+      LevelText.String = string( BrightnessLevel );
+      ShowLevelText();
+      if( DeviceInterface::SystemDevice.BrightnessLevel != value )
+      {
+        DeviceInterface::SystemDevice.BrightnessLevel = value;
+      }
+      DeviceInterface::SystemDevice.SetBrightness( BrightnessList[BrightnessLevel] );
+    }
+  }
+
+  $rect <500,160,700,200>
+  array int32 BrightnessList[ 11 ] =
+  (
+    Default[0] = 1;
+    Default[1] = 3;
+    Default[2] = 6;
+    Default[3] = 11;
+    Default[4] = 18;
+    Default[5] = 27;
+    Default[6] = 38;
+    Default[7] = 50;
+    Default[8] = 65;
+    Default[9] = 81;
+    Default[10] = 100;
+  );
+
+  $rect <500,310,700,350>
+  object Core::Timer HideLevelTimer
+  {
+    preset OnTrigger = OnHideLevelSlot;
+  }
+
+  $rect <500,360,700,400>
+  slot OnHideLevelSlot
+  {
+    HideLevelTimer.Enabled = false;
+    LevelText.Visible = false;
+  }
+
+  $rect <500,410,700,450>
+  method void ShowLevelText()
+  {
+    LevelText.Visible = true;
+    HideLevelTimer.Enabled = true;
+  }
+}
+
+$rect <120,190,360,230>
+$output false
+class BtDiscovarable : Components::BaseComponent
+{
+  $rect <0,290,180,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <0,350,180,390>
+  inherited method Init()
+  {
+    DeviceInterface::BluetoothDevice.Discoverable = true;
+    DeviceNameText.String = DeviceInterface::BluetoothDevice.LocalDeviceName;
+    CountDownTimer.Enabled = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DiscoverableText
+  {
+    preset Bounds = <60,34,410,110>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = "Now discoverable by other Bluetooth devices.";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <20,20,160,60>
+  object Components::PushButton NoButton
+  {
+    preset Bounds = <160,200,300,250>;
+    preset OnActivate = OnCancelSlot;
+    preset Label = "Cancel";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <200,290,400,330>
+  slot OnCancelSlot
+  {
+    CountDownTimer.Enabled = false;
+    DeviceInterface::BluetoothDevice.Discoverable = false;
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TimeLeftText
+  {
+    preset Bounds = <130,153,280,193>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = "Time left:";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text NameText
+  {
+    preset Bounds = <120,113,240,153>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = "Name:";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <500,50,720,90>
+  object Core::Timer CountDownTimer
+  {
+    preset OnTrigger = UpdateCountDownTimeSlot;
+    preset Period = 1000;
+    preset Enabled = false;
+  }
+
+  $rect <500,100,720,140>
+  slot UpdateCountDownTimeSlot
+  {
+    if( CountDownTimeSec > 0)
+    {
+      CountDownTimeSec = CountDownTimeSec - 1;
+      var int32 Second = CountDownTimeSec % 60;
+      var string SecondStr;
+      if( Second < 10 )
+      {
+        SecondStr = "0" + string( Second );
+      }
+      else
+      {
+        SecondStr = string( Second );
+      }
+      RemainTimeText.String = string( CountDownTimeSec / 60 ) + ":" + SecondStr;
+    }
+    else
+    {
+      postsignal OnCancelSlot;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text RemainTimeText
+  {
+    preset Bounds = <260,153,340,193>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = "3:00";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <500,0,720,40>
+  var int32 CountDownTimeSec = 180;
+
+  $rect <20,20,160,60>
+  object Views::Text DeviceNameText
+  {
+    preset Bounds = <230,113,400,153>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = DeviceInterface::BluetoothDevice.LocalDeviceName;
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+}
+
+$rect <160,250,400,290>
+$output false
+class BtConnectionResult : Components::BaseComponent
+{
+  $rect <0,290,200,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <510,110,710,150>
+  property int32 Result = -1;
+
+  $rect <510,160,710,200>
+  onset Result
+  {
+    if( pure Result != value )
+    {
+      pure Result = value;
+      switch( value )
+      {
+        case 0: Text.String = "Bluetooth\n\"" + DeviceName + "\"\n connected.";
+        case 1:
+        {
+          Text.String = DeviceName + " is no longer connected to the vehicle. Pair it again.";
+          Text.Alignment = Views::TextAlignment[AlignHorzLeft];
+        }
+        case 2: Text.String = "Bluetooth\n\"" + DeviceName + "\"\n connection failed.";
+        default: Text.String = "";
+      }
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <40,40,440,230>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <510,10,710,50>
+  property string DeviceName;
+
+  $rect <510,230,780,270>
+  object Core::SystemEventHandler ConnectionResultHandler
+  {
+    preset OnEvent = OnConnectionResultReceivedSlot;
+    preset Event = DeviceInterface::BluetoothDevice.ConnectionResultSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <510,280,780,320>
+  slot OnConnectionResultReceivedSlot
+  {
+    ConnectingText.Visible = false;
+    var Enum::BtResult ConnectionResult = DeviceInterface::BluetoothDevice.ConnectionResult;
+    switch( ConnectionResult )
+    {
+      case Enum::BtResult.SUCCESS: Text.String = "Bluetooth\n\"" + DeviceName + "\"\n connected.";
+      case Enum::BtResult.TIMEOUT:
+      {
+        Text.String = DeviceName + " is no longer connected to the vehicle. Pair it again.";
+        Text.Alignment = Views::TextAlignment[AlignHorzLeft];
+      }
+      case Enum::BtResult.FAIL: Text.String = "Bluetooth\n\"" + DeviceName + "\"\n connection failed.";
+      default: Text.String = "";
+    }
+    CloseDialogTimer.Enabled = true;
+  }
+
+  $rect <510,340,710,380>
+  object Core::Timer CloseDialogTimer
+  {
+    preset OnTrigger = OnCloseDialogSlot;
+    preset Period = 2000;
+  }
+
+  $rect <510,390,710,430>
+  slot OnCloseDialogSlot
+  {
+    CloseDialogTimer.Enabled = false;
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+    DeviceInterface::BluetoothDevice.RefreshPairedDeviceList = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ConnectingText
+  {
+    preset Bounds = <30,90,460,140>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "Connecting ";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <510,60,710,100>
+  onset DeviceName
+  {
+    if( pure DeviceName != value )
+    {
+      pure DeviceName = value;
+      ConnectingText.String = "Connecting \"" + value + "\"";
+    }
+  }
+}
+
+$rect <160,310,400,350>
+$output false
+class BtMaxPairedDevice : Components::BaseComponent
+{
+  $rect <0,290,200,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <210,290,410,330>
+  inherited method OnShortDownKeyPressed()
+  {
+    if( YesButton == Focus )
+    {
+      Focus = NoButton;
+    }
+  }
+
+  $rect <210,340,410,380>
+  inherited method OnShortUpKeyPressed()
+  {
+    if( NoButton == Focus )
+    {
+      Focus = YesButton;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <20,70,460,150>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = "Max number of devices reached. Remove one from paired device list?";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <20,20,160,60>
+  object Components::PushButton NoButton
+  {
+    preset Bounds = <250,190,390,240>;
+    preset OnActivate = OnYesNoSlot;
+    preset Label = "No";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object Components::PushButton YesButton
+  {
+    preset Bounds = <100,190,240,240>;
+    preset OnActivate = OnYesNoSlot;
+    preset Label = "Yes";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <420,290,620,330>
+  slot OnYesNoSlot
+  {
+    if( YesButton == sender )
+    {
+      postsignal ToRemovePairedDevice;
+    }
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+
+  }
+
+  $rect <420,340,630,380>
+  property slot ToRemovePairedDevice;
+}
+
+$rect <160,370,400,410>
+$output false
+class BtPairDevice : Components::BaseComponent
+{
+  $rect <0,290,200,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <210,290,410,330>
+  inherited method OnShortDownKeyPressed()
+  {
+    if( YesButton == Focus )
+    {
+      Focus = NoButton;
+    }
+  }
+
+  $rect <210,340,410,380>
+  inherited method OnShortUpKeyPressed()
+  {
+    if( NoButton == Focus )
+    {
+      Focus = YesButton;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Components::PushButton NoButton
+  {
+    preset Bounds = <260,210,400,260>;
+    preset OnActivate = OnYesNoSlot;
+    preset Label = "No";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object Components::PushButton YesButton
+  {
+    preset Bounds = <110,210,250,260>;
+    preset OnActivate = OnYesNoSlot;
+    preset Label = "Yes";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+
+  $rect <420,290,620,330>
+  slot OnYesNoSlot
+  {
+    if( YesButton == sender )
+    {
+      //Owner.SwitchToDialog( aDialogGroup, null, null, null, null, null, null, null, null, null, false );
+    }
+    else
+    {
+      Owner.DismissDialog( this, null, null, null, null, null, false );
+    }
+
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ToPairText
+  {
+    preset Bounds = <100,20,360,60>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = "To pair with";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text MakeSureText
+  {
+    preset Bounds = <10,100,470,140>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = "Make sure it is showing this passkey";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DeviceNameText
+  {
+    preset Bounds = <100,60,360,100>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text PasskeyText
+  {
+    preset Bounds = <100,140,360,180>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <0,340,200,380>
+  property string DeviceName;
+
+  $rect <0,390,200,430>
+  onset DeviceName
+  {
+    if( pure DeviceName != value )
+    {
+      pure DeviceName = value;
+      DeviceNameText.String = value;
+    }
+  }
+
+  $rect <510,10,740,50>
+  object Core::SystemEventHandler PasskeyEventHandler
+  {
+    preset OnEvent = OnPasskeyGeneratedSlot;
+    preset Event = DeviceInterface::BluetoothDevice.PasskeyGeneratedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <510,60,740,100>
+  slot OnPasskeyGeneratedSlot
+  {
+    trace "OnPasskeyGeneratedSlot", DeviceInterface::BluetoothDevice.Passkey;
+    PasskeyText.String = DeviceInterface::BluetoothDevice.Passkey;
+  }
+}
+
+$rect <120,430,360,470>
+$output false
+class BtPairedDeviceList : Menu::BaseMenuView
+{
+  $rect <10,290,190,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <200,290,420,330>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+
+    trace "PairedDeviceList, UpdateViewState: ", aState;
+    if( aState.contains( Core::ViewState[ Dialog ] ) &&
+        !aState.contains( Core::ViewState[ PendingFader ] ) )
+    {
+      UpdatePairedDeviceNum();
+    }
+  }
+
+  $rect <520,268,720,308>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: Owner.DismissDialog( this, null, null, null, null, null, false );
+        default:;
+      }
+    }
+
+  }
+
+  $rect <520,20,720,60>
+  inherited method LoadItemClass()
+  {
+    //to suppress warning
+    if( aItemNo >= 0 )
+    {
+      // empty body
+    }
+    return Menu::ItemBtPairedDevice;
+  }
+
+  $rect <520,70,720,110>
+  inherited method LoadItemTitle()
+  {
+    // suppress warning
+    if( aItemNo > 0 )
+    {
+      // empty body
+    }
+
+    var string Title;
+    if( PairedDeviceNum > 0 )
+    {
+      DeviceInterface::BluetoothDevice.GetPairedDeviceAtItem( aItemNo );
+      Title = DeviceInterface::BluetoothDevice.PairedDeviceObj.DeviceName;
+    }
+    else
+    {
+      Title = "No Data";
+    }
+    return Title;
+  }
+
+  $rect <520,218,720,258>
+  inherited method OnItemActivate()
+  {
+    // suppress warning
+    if( aItemNo >= 0 )
+    {
+      // empty body
+    }
+
+    var Menu::ItemBtPairedDevice BtDeviceItem = ( Menu::ItemBtPairedDevice )aMenuItem;
+    if( null != BtDeviceItem )
+    {
+      var Settings::BtPairedDeviceOperation Dialog = new Settings::BtPairedDeviceOperation;
+      Dialog.PairedDeviceIndex = aItemNo;
+      Dialog.DeviceName = BtDeviceItem.Title.String;
+      PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
+    }
+
+  }
+
+  $rect <520,120,720,160>
+  inherited method LoadItemConnected()
+  {
+    // suppress warning
+    if( aItemNo > 0 )
+    {
+      // empty body
+    }
+
+    var bool result = false;
+    if( PairedDeviceNum > 0 )
+    {
+      result = DeviceInterface::BluetoothDevice.PairedDeviceObj.IsConnected;
+    }
+    return result;
+  }
+
+  $rect <520,170,720,210>
+  inherited method LoadItemValid()
+  {
+    // suppress warning
+    if( aItemNo > 0 )
+    {
+      // empty body
+    }
+
+    if( PairedDeviceNum > 0 )
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <10,32,470,272>;
+    preset PassKeyHold = OnLongKeyPressed;
+    preset NoOfItems = 0;
+    preset Focusable = false;
+  }
+
+  $rect <200,340,420,380>
+  var int32 PairedDeviceNum;
+
+  $rect <200,390,420,430>
+  method void UpdatePairedDeviceNum()
+  {
+    trace "UpdatePairedDeviceNum";
+    PairedDeviceNum = DeviceInterface::BluetoothDevice.PairedDeviceNum;
+    if( PairedDeviceNum > 0 )
+    {
+      Menu.NoOfItems = PairedDeviceNum;
+      Menu.Focusable = true;
+      Menu.InvalidateItems( 0, PairedDeviceNum - 1 );
+    }
+    else
+    {
+      Menu.NoOfItems = 1;
+      Menu.Focusable = false;
+      Menu.InvalidateItems( 0, 0 );
+    }
+  }
+
+  $rect <520,320,720,360>
+  object Core::PropertyObserver RefreshListObserver
+  {
+    preset OnEvent = OnRefreshListSlot;
+    preset Outlet = ^DeviceInterface::BluetoothDevice.RefreshPairedDeviceList;
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <530,370,730,410>
+  slot OnRefreshListSlot
+  {
+    UpdatePairedDeviceNum();
+  }
+}
+
+$rect <160,490,400,530>
+$output false
+class BtPairedDeviceOperation : Menu::BaseMenuView
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <230,290,430,330>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: SlideOutDialog( this );
+        default:;
+      }
+    }
+
+  }
+
+  $rect <510,20,710,60>
+  inherited method LoadItemClass()
+  {
+    // to suppress warning
+    if( aItemNo >= 0 )
+    {
+      // empty body
+    }
+    return Menu::ItemBase;
+
+  }
+
+  $rect <510,70,710,110>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+      {
+      title = ItemTitleArray[aItemNo];
+      }
+    return title;
+  }
+
+  $rect <510,120,710,160>
+  inherited method OnItemActivate()
+  {
+    switch( aItemNo )
+    {
+      case 0:
+      {
+        DeviceInterface::BluetoothDevice.UnpairDevice( PairedDeviceIndex );
+        if( DeviceInterface::BluetoothDevice.IsBlePairedDevice( PairedDeviceIndex ) )
+        {
+          var Settings::BtDeleteBleDevice Dialog = new Settings::BtDeleteBleDevice;
+          Dialog.DeviceName = DeviceName;
+          Owner.SwitchToDialog( Dialog, null, null, null, null, null, null, null, null, null, false );
+          Owner.InvalidateViewState();
+        }
+        else
+        {
+          Owner.DismissDialog( this, null, null, null, null, null, false );
+        }
+      }
+      case 1:
+      {
+        var Settings::BtConnectionResult Dialog = new Settings::BtConnectionResult;
+        Dialog.DeviceName = DeviceName;
+        Owner.SwitchToDialog( Dialog, null, null, null, null, null, null, null, null, null, false );
+        DeviceInterface::BluetoothDevice.ConnectPairedDevice( PairedDeviceIndex );
+      }
+      case 2:
+      {
+        DeviceInterface::BluetoothDevice.DisconnectPairedDevice( PairedDeviceIndex );
+        Owner.DismissDialog( this, null, null, null, null, null, false );
+        DeviceInterface::BluetoothDevice.RefreshPairedDeviceList = true;
+      }
+      default: trace "", aMenuItem; // suppress warning;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <10,32,470,272>;
+    preset PassKeyHold = OnLongKeyPressed;
+    preset NoOfItems = 3;
+  }
+
+  $rect <730,70,930,110>
+  array string ItemTitleArray[ 3 ] =
+  (
+    Default[0] = "Delete Pairing";
+    Default[1] = "Connect";
+    Default[2] = "Disconnect";
+  );
+
+  $rect <10,350,210,390>
+  property int32 PairedDeviceIndex;
+
+  $rect <10,400,210,440>
+  property string DeviceName;
+}
+
+$rect <190,550,430,590>
+$output false
+class BtDeleteBleDevice : Components::BaseComponent
+{
+  $rect <0,290,180,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <0,340,180,380>
+  inherited method Init()
+  {
+    Text.String = DialogString1 + DeviceName + DialogString2;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <40,50,440,200>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <510,10,690,50>
+  property string DeviceName;
+
+  $rect <510,70,690,110>
+  var string DialogString1 = "Please delete the pairing record on your";
+
+  $rect <510,130,690,170>
+  var string DialogString2 = ", otherwise, you may not be able to reconnect with LinkCard in the future.";
+
+  $rect <190,290,390,330>
+  slot OnOkSlot
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+    DeviceInterface::BluetoothDevice.RefreshPairedDeviceList = true;
+  }
+
+  $rect <20,20,160,60>
+  object Components::PushButton NoButton
+  {
+    preset Bounds = <150,210,290,260>;
+    preset OnActivate = OnOkSlot;
+    preset Label = "OK";
+    preset Appearance = UIConfig::PushButtonConfig;
+  }
+}
+
+$rect <120,620,320,660>
+$output false
+class BtFwUpdateDialog : Core::Group
+{
+  $rect <10,300,230,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text StatusText
+  {
+    preset Bounds = <80,60,380,210>;
+    preset WrapText = true;
+    preset String = "Updating BT firmware, please wait...";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Color = #FFFFFFFF;
+  }
+
+  $rect <10,350,240,390>
+  object Core::PropertyObserver BtFwStatusObserver
+  {
+    preset OnEvent = OnBtFwStatusUpdateSlot;
+    preset Outlet = ^DeviceInterface::BluetoothDevice.BtFwStatus;
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <10,400,240,440>
+  slot OnBtFwStatusUpdateSlot
+  {
+    switch( DeviceInterface::BluetoothDevice.BtFwStatus )
+    {
+      case Enum::BtFwStatus.UPDATE_FINISH:
+      {
+        StatusText.String = "Update BT firmware complete";
+        RemoveDialogTimer.Enabled = true;
+      }
+      case Enum::BtFwStatus.UPDATE_ABORT:
+      {
+        StatusText.String = "Update BT firmware fail";
+        RemoveDialogTimer.Enabled = true;
+      }
+      default:;
+    }
+  }
+
+  $rect <260,300,460,340>
+  object Core::Timer RemoveDialogTimer
+  {
+    preset OnTrigger = OnRemoveDialogSlot;
+    preset Period = 2000;
+  }
+
+  $rect <260,352,460,392>
+  slot OnRemoveDialogSlot
+  {
+    GetRoot().EndModal( this );
+    GetRoot().Remove( this );
+  }
+}

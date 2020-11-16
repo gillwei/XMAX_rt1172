@@ -1,0 +1,84 @@
+﻿$version 10.00
+
+$rect <20,10,260,50>
+$output false
+class Main : Menu::BaseMenuView
+{
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <230,300,430,340>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: Owner.DismissDialog( this, null, null, null, null, null, false );
+        default:;
+      }
+    }
+  }
+
+  $rect <510,10,710,50>
+  inherited method LoadItemClass()
+  {
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+      ItemClass = Menu::ItemRightArrow;
+    }
+    return ItemClass;
+  }
+
+  $rect <510,60,710,100>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    if( aItemNo < ItemTitleArray.size )
+    {
+      Title = ItemTitleArray[aItemNo];
+    }
+    return Title;
+  }
+
+  $rect <510,110,710,150>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    switch( aItemNo )
+    {
+      case 0: SlideInDialog( new Factory::Main );
+      default:;
+    }
+
+  }
+
+  $rect <730,60,930,100>
+  array string ItemTitleArray[ 1 ] =
+  (
+    Default[0] = "Factory Test";
+  );
+
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <10,32,470,272>;
+    preset PassKeyHold = OnLongKeyPressed;
+    preset NoOfItems = ItemTitleArray.size;
+  }
+
+  $reorder SlideInDialog 4
+  $reorder LoadItemClass 4
+  $reorder LoadItemTitle 4
+  $reorder OnItemActivate 4
+  $reorder Rectangle 4
+  $reorder LoadItemChecked 4
+  $reorder ItemTitleArray 4
+  $reorder Menu 4
+}

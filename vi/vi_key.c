@@ -150,12 +150,12 @@ if( CoreKeyCodeNoKey != press_key_code )
     {
     current_key_code = press_key_code;
     press_key_code   = CoreKeyCodeNoKey;
-    //EW_send_key_event( current_key_code, KEY_STATE_PRESS );
+    EW_send_key_event( current_key_code, KEY_STATE_PRESS );
     }
 
 if( CoreKeyCodeNoKey != release_key_code )
     {
-    //EW_send_key_event( current_key_code, KEY_STATE_RELEASE );
+    EW_send_key_event( current_key_code, KEY_STATE_RELEASE );
     current_key_code = CoreKeyCodeNoKey;
     release_key_code = CoreKeyCodeNoKey;
     }
