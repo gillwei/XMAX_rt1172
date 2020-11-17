@@ -50,6 +50,11 @@ void WDG_init
     void
     );
 
+void WDG_switch
+    (
+    bool wdg_flag
+    );
+
 #ifdef __cplusplus
 }
 #endif

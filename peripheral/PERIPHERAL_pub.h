@@ -61,7 +61,22 @@ void PERIPHERAL_uart_port_reconfig
     uint32_t baud_rate
     );
 
+int PERIPHERAL_adc_get_tft_ntc
+    (
+    void
+    );
+
+int PERIPHERAL_adc_get_tft_ntc_converted
+    (
+    void
+    );
+
 int PERIPHERAL_adc_get_pcba_ntc
+    (
+    void
+    );
+
+int PERIPHERAL_adc_get_pcba_ntc_converted
     (
     void
     );
@@ -71,7 +86,7 @@ int PERIPHERAL_adc_get_vbatt
     void
     );
 
-int PERIPHERAL_adc_get_tft_ntc
+int PERIPHERAL_adc_get_vbatt_converted
     (
     void
     );

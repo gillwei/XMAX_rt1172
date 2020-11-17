@@ -37,7 +37,7 @@
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
-
+static bool watchdog_enable_flag = true;
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -69,6 +69,22 @@ void WDG_init
     )
 {
 watchdog_create_task();
+}
+
+/*********************************************************************
+*
+* @public
+* WDG_switch
+*
+* @brief switch if we need to generate the pulse
+*
+*********************************************************************/
+void WDG_switch
+    (
+    bool wdg_flag
+    )
+{
+watchdog_enable_flag = wdg_flag;
 }
 
 
@@ -111,7 +127,10 @@ static void watchdog_task
 {
 while( true )
     {
-    GPIO_PortToggle( BOARD_INITPINS_WDOG_B_GPIO, BOARD_INITPINS_WDOG_B_GPIO_PIN_MASK );
+    if( watchdog_enable_flag )
+        {
+        GPIO_PortToggle( BOARD_INITPINS_WDOG_B_GPIO, BOARD_INITPINS_WDOG_B_GPIO_PIN_MASK );
+        }
     vTaskDelay( pdMS_TO_TICKS( 1000 ) );
     }
 vTaskDelete( NULL );

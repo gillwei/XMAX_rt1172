@@ -27,6 +27,7 @@ extern "C"{
 #include "EW_pub.h"
 #include "EEPM_pub.h"
 #include "RTC_pub.h"
+#include "WDG_pub.h"
 
 #include "can_cfg.h"
 #include "can_drv.h"
@@ -45,37 +46,40 @@ extern "C"{
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define IOP_VIM_MAX_DATA_SIZE       (200)
+#define IOP_VIM_MAX_DATA_SIZE   (200)
 
-#define FT_CAN_DLC         ( 8 )
+#define NULL_PTR                ( ( void * ) 0 )
+#define FT_CAN_DLC              ( 8 )
 
-#define E_OK               ( 0 )
-#define E_NOT_OK           ( 1 )
+#define E_OK                    ( 0 )
+#define E_NOT_OK                ( 1 )
 
-#define STD_HIGH           ( 1u ) /* Physical state 5V or 3.3V */
-#define STD_LOW            ( 0u ) /* Physical state 0V */
+#define STD_HIGH                ( 1u ) /* Physical state 5V or 3.3V */
+#define STD_LOW                 ( 0u ) /* Physical state 0V */
 
-#define DATA_INVALID       ( 0xFFFF )
-#define DATA_INVALID_BYTE  ( 0xFF )
+#define DATA_INVALID_BYTE       ( 0xFF )
+#define DATA_INVALID_2BYTES     ( 0xFFFF )
+#define DATA_INVALID_4BYTES     ( 0xFFFFFFFF )
 
-#define BIT_32_DATA_LEN    ( 4 )
-#define BIT_24_DATA_LEN    ( 3 )
-#define BIT_16_DATA_LEN    ( 2 )
-#define BIT_8_DATA_LEN     ( 1 )
-#define BURN_IN_TASK_TIME  ( 500 )
-#define BURN_IN_QUAL_TIME  ( 8 * 60 * 60 )
-#define BURN_IN_QUAL_TEMP  ( 60 * 1000 )
+#define BIT_32_DATA_LEN         ( 4 )
+#define BIT_24_DATA_LEN         ( 3 )
+#define BIT_16_DATA_LEN         ( 2 )
+#define BIT_8_DATA_LEN          ( 1 )
+#define BURN_IN_TASK_TIME       ( 500 )
+#define BURN_IN_QUAL_TIME       ( 8 * 60 * 60 )
+#define BURN_IN_QUAL_TEMP       ( 60 * 1000 )
 
-#define IOP_MAX_QUEUE_SIZE ( 100 )
-#define IOP_QUEUE_INVALID  ( -1 )
+#define IOP_MAX_QUEUE_SIZE      ( 100 )
+#define IOP_QUEUE_INVALID       ( -1 )
 
-#define ESN_REWRITE_ID     ( 0xFFFFFFFF )
-#define ASCII_BYTE_OFFSET  ( 0x30 )
-#define LOW_BYTE_MASK      ( 0x00FF )
-#define MAX_PIN_NUM        ( 32 )
+#define ESN_REWRITE_ID          ( 0xFFFFFFFF )
+#define ASCII_BYTE_OFFSET       ( 0x30 )
+#define ASCII_BYTE_DOT          ( 0x2E ) // .
+#define LOW_BYTE_MASK           ( 0x00FF )
+#define MAX_PIN_NUM             ( 32 )
 
-#define IOP_PRODUCT_HW_ID  ( 0 )
-#define IOP_PRODUCT_SKU_ID ( 1 )
+#define IOP_PRODUCT_HW_ID       ( 0 )
+#define IOP_PRODUCT_SKU_ID      ( 1 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -93,7 +97,7 @@ extern "C"{
                                VARIABLES
 --------------------------------------------------------------------*/
 static uint16_t const product_id = 0x0F70;
-static char const product_string[] = { "IXWW22 v Board Version:  006-B3952-00 " };
+static char const product_string[] = { "IXWW22 v Board Version:   006-B3952-00 " };
 
 
 static uint8_t  recordSequenceId;
@@ -209,6 +213,15 @@ static void esn_write_cb
     void*   data
     );
 
+static uint8 get_hw_id
+    (
+    uint8 * hw_id_data
+    );
+
+static void get_sku_id
+    (
+    uint8 * sku_id_data
+    );
 /*********************************************************************
 *
 * @public
@@ -681,7 +694,7 @@ switch( inst_id )
                 break;
             case SYC_MODE_TEST:
                 {
-
+                WDG_switch( false ); // Disable WDG pulse, this will result to hardware reset
                 }
                 break;
             }
@@ -690,28 +703,30 @@ switch( inst_id )
         }
     case IOP_PRODUCT_RQST_EXTEND:
         {
-        uint8_t   iop_Data[48];
+        uint8_t   iop_Data[49];
         uint16_t  sw_version;
         uint8_t   sw_version_ascii[5];
-        uint8_t   hw_version;
+        uint8_t   hw_version[2];
 
         sw_version          = SW_VERSION;
         sw_version_ascii[0] = ASCII_BYTE_OFFSET + ( SW_VERSION / 1000 );
         sw_version_ascii[1] = ASCII_BYTE_OFFSET + ( SW_VERSION % 1000 / 100 );
-        sw_version_ascii[2] = 0x2E; // .
+        sw_version_ascii[2] = ASCII_BYTE_DOT;
         sw_version_ascii[3] = ASCII_BYTE_OFFSET + ( SW_VERSION % 100 / 10 );
         sw_version_ascii[4] = ASCII_BYTE_OFFSET + ( SW_VERSION % 10 );
-        hw_version          = ASCII_BYTE_OFFSET + 1; //TODO: Change to get function in 1172.
+        hw_version[0]       = ASCII_BYTE_OFFSET + ( get_hw_id( NULL_PTR ) / 10 );
+        hw_version[1]       = ASCII_BYTE_OFFSET + ( get_hw_id( NULL_PTR ) % 10 );
 
         memcpy( &iop_Data[0],  &product_id, sizeof( product_id ) );
         memcpy( &iop_Data[2],  &sw_version, sizeof( sw_version ) );
         memcpy( &iop_Data[4],  &product_string[0], 8 );
         memcpy( &iop_Data[12], &sw_version_ascii, sizeof( sw_version_ascii ) );
         memcpy( &iop_Data[17], &product_string[8], 16 );
-        memcpy( &iop_Data[33], &hw_version, sizeof( hw_version ) );
-        memcpy( &iop_Data[34], &product_string[24], 14 );
+        memcpy( &iop_Data[33], &hw_version[0], sizeof( hw_version[0] ) );
+        memcpy( &iop_Data[34], &hw_version[1], sizeof( hw_version[1] ) );
+        memcpy( &iop_Data[35], &product_string[25], 14 );
 
-        packageIopToCanData( &iop_Data[0], 48 );
+        packageIopToCanData( &iop_Data[0], sizeof( iop_Data ) );
         }
         break;
 
@@ -784,10 +799,11 @@ switch( IOPSubId )
 
     case IOP_VIM_PKT_ADC_CHANNEL_CMD:
         {
-        uint16_t voltage = 0;
+        uint16_t voltage = DATA_INVALID_2BYTES;
+        int32_t  temperature = DATA_INVALID_4BYTES;
         uint8_t  adc_instance = data[0];
         uint8_t  adc_channel  = data[1];
-        uint8_t  rtn_arry[6]  = { 0, IOP_VIM_PKT_ADC_CHANNEL_DATA, data[0], data[1], 0, 0 };
+        uint8_t  rtn_arry[8]  = { 0, IOP_VIM_PKT_ADC_CHANNEL_DATA, data[0], data[1], 0, 0, 0, 0 };
 
         if( adc_instance == 1 ) // ADC1
             {
@@ -797,22 +813,27 @@ switch( IOPSubId )
                     voltage = PERIPHERAL_adc_get_vbatt();
                     break;
                 case ADC_CHANNEL_NUM_PCBA_TEMP:
-                    voltage = PERIPHERAL_adc_get_pcba_ntc();
+                    temperature = PERIPHERAL_adc_get_pcba_ntc_converted();
                     break;
                 case ADC_CHANNEL_NUM_TFT_TEMP:
-                    voltage = PERIPHERAL_adc_get_tft_ntc();
+                    temperature = PERIPHERAL_adc_get_tft_ntc_converted();
                     break;
                 default:
-                    voltage = DATA_INVALID;
                     break;
                 }
             }
-        else
+        if( voltage != DATA_INVALID_2BYTES )
             {
-            voltage = DATA_INVALID;
+            rtn_arry[4] = voltage & LOW_BYTE_MASK;
+            rtn_arry[5] = voltage >> SHIFT_ONE_BYTE;
             }
-        rtn_arry[4] = voltage >> SHIFT_ONE_BYTE;
-        rtn_arry[5] = voltage & LOW_BYTE_MASK;
+        else if( temperature != DATA_INVALID_4BYTES )
+            {
+            rtn_arry[4] = ( temperature & 0x000000FF );
+            rtn_arry[5] = ( temperature & 0x0000FF00 ) >> SHIFT_ONE_BYTE;
+            rtn_arry[6] = ( temperature & 0x00FF0000 ) >> SHIFT_TWO_BYTES;
+            rtn_arry[7] = ( temperature & 0xFF000000 ) >> SHIFT_THREE_BYTES;
+            }
         packageIopToCanData( &rtn_arry, sizeof( rtn_arry ) );
         }
         break;
@@ -846,20 +867,14 @@ switch( IOPSubId )
             {
             case IOP_PRODUCT_HW_ID:
                 {
-                getGPIOValue( PORT_8, 18, &rtn_arry[3] ); // HW_ID3
-                getGPIOValue( PORT_8, 15, &rtn_arry[4] ); // HW_ID2
-                getGPIOValue( PORT_8, 14, &rtn_arry[5] ); // HW_ID1
-                getGPIOValue( PORT_8, 13, &rtn_arry[6] ); // HW_ID0
+                get_hw_id( &rtn_arry[3] );
                 packageIopToCanData( &rtn_arry, sizeof( rtn_arry ) );
                 }
                 break;
 
             case IOP_PRODUCT_SKU_ID:
                 {
-                getGPIOValue( PORT_8, 26, &rtn_arry[3] ); // SKU_ID3
-                getGPIOValue( PORT_8, 22, &rtn_arry[4] ); // SKU_ID2
-                getGPIOValue( PORT_8, 20, &rtn_arry[5] ); // SKU_ID1
-                getGPIOValue( PORT_8, 19, &rtn_arry[6] ); // SKU_ID0
+                get_sku_id( &rtn_arry[3] );
                 packageIopToCanData( &rtn_arry, sizeof( rtn_arry ) );
                 }
                 break;
@@ -1091,6 +1106,53 @@ static void esn_write_cb
 {
 IOPInstId = IOP_UNIT_ID_DATA;
 packageIopToCanData( &esn_id, BIT_32_DATA_LEN );
+}
+
+/*********************************************************************
+*
+* @private
+* get_hw_id
+*
+* @brief get HW_ID depends on the gpio input
+*
+*********************************************************************/
+static uint8 get_hw_id
+    (
+    uint8 * hw_id_data
+    )
+{
+uint8 hw_id_dec = 0;
+
+getGPIOValue( PORT_8, 18, &hw_id_data[0] ); // HW_ID3
+getGPIOValue( PORT_8, 15, &hw_id_data[1] ); // HW_ID2
+getGPIOValue( PORT_8, 14, &hw_id_data[2] ); // HW_ID1
+getGPIOValue( PORT_8, 13, &hw_id_data[3] ); // HW_ID0
+
+hw_id_dec = ( hw_id_data[0] << BIT_24_DATA_LEN ) +
+            ( hw_id_data[1] << BIT_16_DATA_LEN ) +
+            ( hw_id_data[2] << BIT_8_DATA_LEN  ) +
+            ( hw_id_data[3] );
+
+return hw_id_dec;
+}
+
+/*********************************************************************
+*
+* @private
+* get_sku_id
+*
+* @brief get SKU_ID depends on the gpio input
+*
+*********************************************************************/
+static void get_sku_id
+    (
+    uint8 * sku_id_data
+    )
+{
+getGPIOValue( PORT_8, 26, &sku_id_data[0] ); // SKU_ID3
+getGPIOValue( PORT_8, 22, &sku_id_data[1] ); // SKU_ID2
+getGPIOValue( PORT_8, 20, &sku_id_data[2] ); // SKU_ID1
+getGPIOValue( PORT_8, 19, &sku_id_data[3] ); // SKU_ID0
 }
 
 /*********************************************************************
