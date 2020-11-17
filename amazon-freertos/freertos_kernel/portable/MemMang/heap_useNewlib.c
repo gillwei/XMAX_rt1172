@@ -9,7 +9,7 @@
  *
  * \author Dave Nadler
  * \date 2-July-2017
- * \version 11-Sep-2019 malloc accounting, comments, newlib version check
+ * \version 23-Sep-2019 malloc accounting, comments, newlib version check
  *
  * \see http://www.nadler.com/embedded/newlibAndFreeRTOS.html
  * \see https://sourceware.org/newlib/libc.html#Reentrancy
@@ -56,11 +56,11 @@
 #include <stddef.h>
 
 #include "newlib.h"
-#if (__NEWLIB__ != 3) || (__NEWLIB_MINOR__ != 0)
-  #warning "This wrapper was verified for newlib version 3.0.0; please ensure newlib's external requirements for malloc-family are unchanged!"
+#if (__NEWLIB__ != 3) || (__NEWLIB_MINOR__ != 1)
+  #warning "This wrapper was verified for newlib version 3.1.0; please ensure newlib's external requirements for malloc-family are unchanged!"
 #endif
 
-#include "freeRTOS.h" // defines public interface we're implementing here
+#include "FreeRTOS.h" // defines public interface we're implementing here
 #if !defined(configUSE_NEWLIB_REENTRANT) ||  (configUSE_NEWLIB_REENTRANT!=1)
   #warning "#define configUSE_NEWLIB_REENTRANT 1 // Required for thread-safety of newlib sprintf, strtok, etc..."
   // If you're *REALLY* sure you don't need FreeRTOS's newlib reentrancy support, remove this warning...
@@ -109,6 +109,7 @@ char * sbrk(int incr) {
         }
         #elif 1 // safest default when user doesn't explicitly code configUSE_MALLOC_FAILED_HOOK
             // If you want to alert debugger or halt...
+            // WARNING: bkpt instruction may prevent watchdog operation...
             while(1) { __asm("bkpt #0"); }; // Stop in GUI as if at a breakpoint (if debugging, otherwise loop forever)
         #else
             // If you prefer to believe your application will gracefully trap out-of-memory...
