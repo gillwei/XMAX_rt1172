@@ -33,9 +33,7 @@
 #endif
 
 #include "ewgfx.h"
-/* TODO: uncomment these lines when integrating with libjpeg
 #include "JPEG_pub.h"
-*/
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -77,7 +75,6 @@
 * @return XBitmap
 *
 *********************************************************************/
-#if 0 // TODO: uncomment these lines when integrating with libjpeg
 static XBitmap* load_external_map
     (
     void
@@ -143,7 +140,6 @@ for( y = 0; y < image_height; y++, dest += ofs )
 EwUnlockBitmap( lock );
 return bitmap;
 }
-#endif
 
 /*********************************************************************
 *
@@ -262,10 +258,8 @@ EwPrint( "%s %s\n", __FUNCTION__, name );
 
 if( !strncmp( name, "Map", 3 ) )
     {
-    /* TODO: uncomment these lines when integrating with libjpeg
     bitmap = load_external_map();
     JPEG_notify_rgb_loaded();
-    */
     }
 else if( !strncmp( name, "DisplayFlicker", 14 ) )
     {

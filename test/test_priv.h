@@ -20,6 +20,8 @@ void test_factory_int( void );
 void test_factory_proc( void );
 void test_burnin_int( void );
 void test_burnin_proc( void );
+void test_jpeg_int( void );
+void test_jpeg_proc( void );
 
 #ifdef __cplusplus
 }

@@ -1,9 +1,9 @@
 /*********************************************************************
 * @file
-* test_main.c
+* test_jpeg.c
 *
 * @brief
-* Test module - main
+* Test module - JPEG
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
@@ -14,18 +14,18 @@
 #include "FreeRTOS.h"
 #include "event_groups.h"
 #include "task.h"
-#include "semphr.h"
-#include "ewrte.h"
 #include "fsl_debug_console.h"
-#include <TEST_pub.h>
-#include <test_priv.h>
+#include "EW_pub.h"
+#include "JPEG_pub.h"
+#include "TEST_pub.h"
+#include "test_priv.h"
+#include "test_jpeg.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define TEST_TASK_PRIORITY   ( tskIDLE_PRIORITY )
-#define TEST_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 2 )
-#define TEST_TASK_NAME       "test_task"
+#define TEST_JPEG_PERIOD_MS     ( 1000 )
+
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -42,8 +42,9 @@
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
-#if( UNIT_TEST_ENABLE )
-    static const int TEST_TASK_DELAY_TICKS = pdMS_TO_TICKS( TEST_TICK_PERIOD_MS );
+#if( UNIT_TEST_JPEG )
+    static const int TEST_JPEG_TICK_COUNT = ( TEST_JPEG_PERIOD_MS / TEST_TICK_PERIOD_MS );
+    static int test_jpeg_tick = 0;
 #endif
 
 /*--------------------------------------------------------------------
@@ -53,83 +54,94 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-#if( UNIT_TEST_ENABLE )
+#if( UNIT_TEST_JPEG )
     /*********************************************************************
     *
-    * @private
-    * task_main
+    * @public
+    * TEST_jpeg_decode_done
     *
-    * Main loop of the test task
+    * Callback from JPEG module when JPEG decode is done
     *
     *********************************************************************/
-    static void task_main
+    void TEST_jpeg_decode_done
         (
-        void* arg
+        int result
         )
     {
-    while( true )
+    if( RESULT_SUCCESS == result )
         {
-        #if( UNIT_TEST_FACTORY )
-            test_factory_proc();
-        #endif
-
-        #if( UNIT_TEST_BURNIN )
-            test_burnin_proc();
-        #endif
-
-        #if( UNIT_TEST_JPEG )
-            test_jpeg_proc();
-        #endif
-
-        vTaskDelay( TEST_TASK_DELAY_TICKS );
+        buffer_info* rgb_buffer_info = JPEG_get_rgb();
+        PRINTF( "%s ok, size %dx%d\r\n", __FUNCTION__, rgb_buffer_info->image_width, rgb_buffer_info->image_height );
+        EW_notify_navi_map_update();
         }
-
-    vTaskDelete( NULL );
+    else
+        {
+        PRINTF( "%s fail %d\r\n", __FUNCTION__, result );
+        }
     }
 
     /*********************************************************************
     *
     * @private
-    * create_task
+    * test_jpeg_test_decode
     *
-    * Create test task
+    * Test JPEG decode with the jpeg data in the flash
     *
     *********************************************************************/
-    static void create_task
+    void test_jpeg_test_decode
         (
         void
         )
     {
-    BaseType_t result = xTaskCreate( task_main, TEST_TASK_NAME, TEST_TASK_STACK_SIZE, NULL, TEST_TASK_PRIORITY, NULL );
-    configASSERT( pdPASS == result );
+    PRINTF( "%s\r\n", __FUNCTION__ );
+    uint8_t* jpeg_buf = JPEG_get_jpeg_buffer();
+    if( NULL != jpeg_buf )
+        {
+        memcpy( jpeg_buf, jpeg_test_data, JPEG_TEST_DATA_SIZE );
+        JPEG_notify_received( JPEG_TEST_DATA_SIZE, jpeg_buf, &TEST_jpeg_decode_done );
+        }
+    else
+        {
+        PRINTF( "JPEG buffer not available\r\n" );
+        }
     }
 
     /*********************************************************************
     *
-    * @private
-    * TEST_init
+    * @public
+    * test_jpeg_proc
     *
-    * Init test module.
+    * Test module - proc jpeg test
     *
     *********************************************************************/
-    void TEST_init
+    void test_jpeg_proc
         (
         void
         )
     {
-    create_task();
+    if( test_jpeg_tick == 0 )
+        {
+        test_jpeg_tick = TEST_JPEG_TICK_COUNT;
+        test_jpeg_test_decode();
+        }
+    test_jpeg_tick--;
+    }
 
-    #if( UNIT_TEST_FACTORY )
-        test_factory_int();
-    #endif
-
-    #if( UNIT_TEST_BURNIN )
-        test_burnin_int();
-    #endif
-
-    #if( UNIT_TEST_JPEG )
-        test_jpeg_int();
-    #endif
+    /*********************************************************************
+    *
+    * @public
+    * test_jpeg_int
+    *
+    * Test module - init jpeg test
+    *
+    *********************************************************************/
+    void test_jpeg_int
+        (
+        void
+        )
+    {
+    return;
     }
 #endif
+
 
