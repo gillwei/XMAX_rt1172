@@ -5,7 +5,7 @@
 * @brief
 * Bluetooth module - main
 *
-* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+* Copyright 2020-2021 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 
 /*--------------------------------------------------------------------
@@ -124,6 +124,8 @@ static uint8_t local_device_address[BT_DEVICE_ADDRESS_LEN]; /* local MAC address
 static bt_device_info paired_device_list[BT_MAX_PAIRED_DEVICE_NUM];
 static uint8_t bt_sw_version[BT_SW_VERSION_LEN];            /* BT SW Major version and Minor version  */
 static uint8_t connect_request_bd_addrress_rev[BT_DEVICE_NAME_LEN]; /* connect command device address */
+
+static bt_connection_info_update_cb bt_conn_info_cb_array[BT_INFO_CB_MAX_NUM]; /* bt connection info callback array */
 
 typedef struct
     {
@@ -769,12 +771,21 @@ else if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_in
              paired_device_list[i].connection_path_type = connection_path;
 
              EW_notify_bt_paired_device_status_changed();
-             return;
+             break;
              }
-        // TODO clear the rest connect status except for connect device
         }
-    PRINTF( "ERROR: Connected device not in paired list\r\n" );
     }
+
+// fire callbacks defined by users
+for( int i = 0; i < BT_INFO_CB_MAX_NUM; i++ )
+    {
+    if( bt_conn_info_cb_array[i] != NULL )
+        {
+        PRINTF( "BTM user-defined callback invoked!(%d)\r\n", i );
+        ( bt_conn_info_cb_array[i] )( connection_is_up, connection_info, connection_path );
+        }
+    }
+
 }
 
 /*********************************************************************
@@ -797,6 +808,75 @@ void BTM_get_connection_info
 memcpy( current_connection_status, &(paired_device_list[0].is_connected), sizeof( bool ) );
 memcpy( connection_handle, &(paired_device_list[0].connection_handle), sizeof( uint16_t ) );
 }
+
+/*********************************************************************
+*
+* @public
+* BTM_add_connection_info_callback
+*
+* add user-defined callback for listening the bt connection status update
+*
+* @param bt_connection_info_update_cb user callback pointer
+*
+*********************************************************************/
+bool BTM_add_connection_info_callback
+    (
+    bt_connection_info_update_cb bt_info_cb
+    )
+{
+int i = 0;
+
+for( i = 0; i < BT_INFO_CB_MAX_NUM; i++ )
+    {
+    // check if there exists same callback, if yes, return false
+    if( bt_conn_info_cb_array[i] == bt_info_cb )
+        {
+        PRINTF( "This callback already added! skip\r\n" );
+        return false;
+        }
+    // if no, find a free slot to add this callback
+    else if( bt_conn_info_cb_array[i] == NULL )
+        {
+        PRINTF( "This callback added successfuly!\r\n" );
+        bt_conn_info_cb_array[i] = bt_info_cb;
+        return true;
+        }
+    }
+
+PRINTF( "not able to add this callback!" );
+return false;
+}
+
+#if SW_MODULE_DISABLE_FUNCTION
+    /*********************************************************************
+    *
+    * @public
+    * BTM_remove_connection_info_callback
+    *
+    * remove user-defined callback for listening the bt connection status update
+    *
+    * @param bt_connection_info_update_cb user callback pointer
+    *
+    *********************************************************************/
+    bool BTM_remove_connection_info_callback
+        (
+        bt_connection_info_update_cb bt_info_cb
+        )
+    {
+    int i = 0;
+    for( i = 0;i < BT_INFO_CB_MAX_NUM; i++ )
+    {
+        if( bt_conn_info_cb_array[i] == bt_info_cb )
+        {
+            PRINTF( "This callback removed successfully!\r\n" );
+            bt_conn_info_cb_array[i] = NULL;
+            return true;
+        }
+    }
+    PRINTF( "this callback doesn't exists, skip removing" );
+    return false;
+    }
+#endif
 
 /*********************************************************************
 *

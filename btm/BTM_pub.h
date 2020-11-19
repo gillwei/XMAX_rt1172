@@ -5,7 +5,7 @@
 * @brief
 * Bluetooth Manager - public API
 *
-* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+* Copyright 2020-2021 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 #ifndef BTM_PUB_H
 #define BTM_PUB_H
@@ -14,15 +14,27 @@
 extern "C"{
 #endif
 
+/*--------------------------------------------------------------------
+                           GENERAL INCLUDES
+--------------------------------------------------------------------*/
 #include <stdbool.h>
 #include <stdint.h>
 #include "HCI_pub.h"
+#include "hci_prv.h"
 
+/*--------------------------------------------------------------------
+                           LITERAL CONSTANTS
+--------------------------------------------------------------------*/
 #define BT_DEVICE_NAME_LEN          ( 32 )
 #define BT_DEVICE_ADDRESS_LEN       ( 6 )
 #define BT_PIN_CODE_LEN             ( 6 )
 #define BT_SW_VERSION_LEN           ( 2 )
+#define BT_INFO_CB_MAX_NUM          ( 20 )
+#define SW_MODULE_DISABLE_FUNCTION  FALSE
 
+/*--------------------------------------------------------------------
+                                 TYPES
+--------------------------------------------------------------------*/
 typedef enum
     {
     BT_CONNECTION_SUCCESS,
@@ -31,6 +43,13 @@ typedef enum
     BT_CONNECTION_LOST,
     } bt_connection_result_type;
 
+typedef void ( *bt_connection_info_update_cb )( const bool connection_is_up,
+        const uint8_t* connection_info, bt_connection_path_type conn_path );
+
+
+/*--------------------------------------------------------------------
+                              PROCEDURES
+--------------------------------------------------------------------*/
 void BTM_init
     (
     void
@@ -75,6 +94,18 @@ bool BTM_get_discoverable_state
     (
     void
     );
+
+bool BTM_add_connection_info_callback
+    (
+    bt_connection_info_update_cb bt_info_callback
+    );
+
+#if SW_MODULE_DISABLE_FUNCTION
+    bool BTM_remove_connection_info_callback
+        (
+        bt_connection_info_update_cb bt_info_callback
+        );
+#endif
 
 bool BTM_is_max_paired_device_num
     (
