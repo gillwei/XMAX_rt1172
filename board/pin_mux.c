@@ -10,7 +10,7 @@ product: Pins v8.0
 processor: MIMXRT1176xxxxx
 package_id: MIMXRT1176AVM8A
 mcu_data: ksdk2_0
-processor_version: 0.8.1
+processor_version: 0.0.4
 pin_labels:
 - {pin_num: B15, pin_signal: GPIO_SD_B1_04, label: TFT_RESET, identifier: TFT_RESET}
 - {pin_num: C15, pin_signal: GPIO_SD_B1_02, label: TFT_CONNECTED, identifier: TFT_CONNECTED}
@@ -131,7 +131,7 @@ pin_labels:
 - {pin_num: N17, pin_signal: GPIO_AD_16, label: TFT_TEMPERATURE}
 - {pin_num: P17, pin_signal: GPIO_AD_12, label: PCBA_TEMPERATURE}
 - {pin_num: P13, pin_signal: GPIO_AD_05, label: BT_WAKE_HOST}
-- {pin_num: R15, pin_signal: GPIO_AD_08, label: BT_RST_N}
+- {pin_num: R15, pin_signal: GPIO_AD_08, label: BT_RST_N, identifier: BT_RST_N}
 - {pin_num: F14, pin_signal: GPIO_SD_B2_04, label: TFT_SPI_CSB}
 - {pin_num: B16, pin_signal: GPIO_SD_B1_00, label: TFT_BL_EN, identifier: TFT_BL_EN}
 - {pin_num: B17, pin_signal: GPIO_SD_B1_03, label: TFT_RESET, identifier: TFT_RESET}
@@ -170,7 +170,7 @@ BOARD_InitPins:
   - {pin_num: R13, peripheral: LPUART7, signal: CTS_B, pin_signal: GPIO_AD_02}
   - {pin_num: P15, peripheral: LPUART7, signal: RTS_B, pin_signal: GPIO_AD_03}
   - {pin_num: R14, peripheral: LPUART7, signal: RXD, pin_signal: GPIO_AD_01, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper}
-  - {pin_num: N12, peripheral: LPUART7, signal: TXD, pin_signal: GPIO_AD_00, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper}
+  - {pin_num: N12, peripheral: LPUART7, signal: TXD, pin_signal: GPIO_AD_00, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, drive_strength: Normal}
   - {pin_num: C15, peripheral: GPIO10, signal: 'gpio_io, 05', pin_signal: GPIO_SD_B1_02, direction: INPUT}
   - {pin_num: D15, peripheral: GPIO10, signal: 'gpio_io, 04', pin_signal: GPIO_SD_B1_01, direction: INPUT}
   - {pin_num: T8, peripheral: GPIO13, signal: 'gpio_io, 00', pin_signal: WAKEUP, direction: INPUT, gpio_interrupt: kGPIO_IntFallingEdge}
@@ -193,7 +193,7 @@ BOARD_InitPins:
   - {pin_num: R2, peripheral: GPIO8, signal: 'gpio_io, 20', pin_signal: GPIO_EMC_B2_10, direction: INPUT}
   - {pin_num: N17, peripheral: ADC1, signal: 'A, 1_5', pin_signal: GPIO_AD_16, pull_keeper_select: Keeper}
   - {pin_num: P17, peripheral: ADC1, signal: 'A, 1_3', pin_signal: GPIO_AD_12, pull_keeper_select: Keeper}
-  - {pin_num: R15, peripheral: GPIO9, signal: 'gpio_io, 07', pin_signal: GPIO_AD_08}
+  - {pin_num: R15, peripheral: GPIO9, signal: 'gpio_io, 07', pin_signal: GPIO_AD_08, direction: OUTPUT, gpio_init_state: 'true', pull_up_down_config: Pull_Up}
   - {pin_num: P13, peripheral: GPIO9, signal: 'gpio_io, 04', pin_signal: GPIO_AD_05}
   - {pin_num: B17, peripheral: GPIO10, signal: 'gpio_io, 06', pin_signal: GPIO_SD_B1_03, direction: OUTPUT}
   - {pin_num: B1, peripheral: SEMC, signal: 'ADDR, 05', pin_signal: GPIO_EMC_B1_14}
@@ -335,6 +335,15 @@ void BOARD_InitPins(void) {
   };
   /* Initialize GPIO functionality on GPIO_AD_04 (pin M13) */
   GPIO_PinInit(GPIO9, 3U, &WDOG_B_config);
+
+  /* GPIO configuration of BT_RST_N on GPIO_AD_08 (pin R15) */
+  gpio_pin_config_t BT_RST_N_config = {
+      .direction = kGPIO_DigitalOutput,
+      .outputLogic = 1U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_AD_08 (pin R15) */
+  GPIO_PinInit(GPIO9, 7U, &BT_RST_N_config);
 
   /* GPIO configuration of VDD_3V3ON_PGOOD on GPIO_AD_09 (pin R16) */
   gpio_pin_config_t VDD_3V3ON_PGOOD_config = {
@@ -691,8 +700,8 @@ void BOARD_InitPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_00_LPUART7_TXD,          /* GPIO_AD_00 PAD functional properties : */
-      0x02U);                                 /* Slew Rate Field: Slow Slew Rate
-                                                 Drive Strength Field: high driver
+      0x00U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: normal driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled */
@@ -709,6 +718,13 @@ void BOARD_InitPins(void) {
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_08_GPIO9_IO07,           /* GPIO_AD_08 PAD functional properties : */
+      0x0EU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Enable
+                                                 Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_12_GPIO_MUX3_IO11,       /* GPIO_AD_12 PAD functional properties : */

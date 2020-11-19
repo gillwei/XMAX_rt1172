@@ -20,8 +20,9 @@ extern "C"{
 //#include "JPEGPARSER_pub.h"
 #include "PERIPHERAL_pub.h"
 #include "peripheral_priv.h"
-//#include <HCI_pub.h>
+#include <HCI_pub.h>
 #include "GRM_pub_prj.h"
+
 /*--------------------------------------------------------------------
                         Definitions
 --------------------------------------------------------------------*/
@@ -422,7 +423,7 @@ while( true )
             {
             rxDataSize = tmpTail - uart_data.rxHead;
 
-            //HCI_notify_received( &uart_data.rx_buffer_ptr[uart_data.rxHead], rxDataSize );
+            HCI_notify_received( &uart_data.rx_buffer_ptr[uart_data.rxHead], rxDataSize );
             uart_data.rxHead = tmpTail;
             }
         else
@@ -430,8 +431,8 @@ while( true )
             rxDataSize = UART_RX_BUFFER_NOM_SIZE - uart_data.rxHead;
 
             /* Notify HCI task for receive event */
-            //HCI_notify_received( &uart_data.rx_buffer_ptr[uart_data.rxHead], rxDataSize );
-            //HCI_notify_received( uart_data.rx_buffer_ptr, tmpTail );
+            HCI_notify_received( &uart_data.rx_buffer_ptr[uart_data.rxHead], rxDataSize );
+            HCI_notify_received( uart_data.rx_buffer_ptr, tmpTail );
 
             rxDataSize += tmpTail;
             uart_data.rxHead = tmpTail;

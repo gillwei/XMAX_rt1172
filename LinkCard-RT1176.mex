@@ -19,10 +19,10 @@
       <pins name="Pins" version="8.0" enabled="true" update_project_code="true">
          <generated_project_files>
             <file path="board/pin_mux.c" update_enabled="true"/>
-            <file path="board/pin_mux.h" update_enabled="true"/>
+            <file path="board/pin_mux.h" update_enabled="false"/>
          </generated_project_files>
          <pins_profile>
-            <processor_version>0.8.1</processor_version>
+            <processor_version>0.0.4</processor_version>
             <power_domains/>
             <pin_labels>
                <pin_label pin_num="B15" pin_signal="GPIO_SD_B1_04" label="TFT_RESET" identifier="TFT_RESET"/>
@@ -144,7 +144,7 @@
                <pin_label pin_num="N17" pin_signal="GPIO_AD_16" label="TFT_TEMPERATURE"/>
                <pin_label pin_num="P17" pin_signal="GPIO_AD_12" label="PCBA_TEMPERATURE"/>
                <pin_label pin_num="P13" pin_signal="GPIO_AD_05" label="BT_WAKE_HOST"/>
-               <pin_label pin_num="R15" pin_signal="GPIO_AD_08" label="BT_RST_N"/>
+               <pin_label pin_num="R15" pin_signal="GPIO_AD_08" label="BT_RST_N" identifier="BT_RST_N"/>
                <pin_label pin_num="F14" pin_signal="GPIO_SD_B2_04" label="TFT_SPI_CSB"/>
                <pin_label pin_num="B16" pin_signal="GPIO_SD_B1_00" label="TFT_BL_EN" identifier="TFT_BL_EN"/>
                <pin_label pin_num="B17" pin_signal="GPIO_SD_B1_03" label="TFT_RESET" identifier="TFT_RESET"/>
@@ -270,6 +270,7 @@
                      <pin_features>
                         <pin_feature name="pull_up_down_config" value="Pull_Down"/>
                         <pin_feature name="pull_keeper_select" value="Keeper"/>
+                        <pin_feature name="drive_strength" value="Normal"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO10" signal="gpio_io, 05" pin_num="C15" pin_signal="GPIO_SD_B1_02">
@@ -377,7 +378,13 @@
                         <pin_feature name="pull_keeper_select" value="Keeper"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="GPIO9" signal="gpio_io, 07" pin_num="R15" pin_signal="GPIO_AD_08"/>
+                  <pin peripheral="GPIO9" signal="gpio_io, 07" pin_num="R15" pin_signal="GPIO_AD_08">
+                     <pin_features>
+                        <pin_feature name="direction" value="OUTPUT"/>
+                        <pin_feature name="gpio_init_state" value="true"/>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up"/>
+                     </pin_features>
+                  </pin>
                   <pin peripheral="GPIO9" signal="gpio_io, 04" pin_num="P13" pin_signal="GPIO_AD_05"/>
                   <pin peripheral="GPIO10" signal="gpio_io, 06" pin_num="B17" pin_signal="GPIO_SD_B1_03">
                      <pin_features>
@@ -876,10 +883,7 @@
          </clock_configurations>
       </clocks>
       <dcdx name="DCDx" version="3.0" enabled="true" update_project_code="true">
-         <generated_project_files>
-            <file path="board/dcd.c" update_enabled="true"/>
-            <file path="board/dcd.h" update_enabled="true"/>
-         </generated_project_files>
+         <generated_project_files/>
          <dcdx_profile>
             <processor_version>0.8.1</processor_version>
             <output_format>c_array</output_format>

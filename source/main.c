@@ -33,6 +33,7 @@
 #include "NAVI_pub.h"
 #include "JPEG_pub.h"
 #include "TEST_pub.h"
+#include "HCI_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -103,6 +104,7 @@ PM_init();
 EEPM_init();
 RTC_init();
 WDG_init();
+HCI_init();
 FACTORY_init();
 VI_init();
 JPEG_init();
@@ -113,6 +115,7 @@ NAVI_init();
 #endif
 
 vCAN_nim_create_task();
+
 vTaskStartScheduler();
 
 return 0;
