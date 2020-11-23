@@ -33,7 +33,7 @@
 
 #define DISPLAY_FLEXIO_CLOCK_FREQUENCY          BOARD_BOOTCLOCKRUN_FLEXIO2_CLK_ROOT
 /* FLEXIO output PWM frequency */
-#define DISPLAY_FLEXIO_FREQUENCY                ( 30000U )
+#define DISPLAY_FLEXIO_FREQUENCY                ( 20000U )
 
 #define MIN_DUTY_CYCLE_VALUE                    ( 0 )
 #define MAX_DUTY_CYCLE_VALUE                    ( 100 )
