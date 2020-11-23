@@ -25,6 +25,7 @@
 #include "EW_pub.h"
 #include "stdio.h"
 #include "display_support.h"
+#include "BTM_pub.h"
 
 #define INIT_BYTE_1                0x04
 #define INIT_BYTE_2                0x0E
@@ -367,8 +368,8 @@ static void download_finish
     )
 {
 char  sw_ver[8];
-//uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = {0};
-//bool  bd_addr_set = false;
+uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = {0};
+bool  bd_addr_set = false;
 
 sprintf( sw_ver, "%c.%c", GARMIN_SW_MAJOR_VER, GARMIN_SW_MINOR_VER );
 
@@ -391,21 +392,21 @@ PERIPHERAL_uart_port_reconfig( true, true, 3000000 );
 
 vTaskDelay( pdMS_TO_TICKS( 2000 ) ); // delay 2000 ms
 
-//BTM_IOP_read_local_device_address();
-//BTM_get_local_device_address( &(bd_addr[0]) );
-//for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
-//    {
-//    if( 0xff != bd_addr[i] )
-//        {
-//        bd_addr_set = true;
-//        break;
-//        }
-//    }
-//if( bd_addr_set )
-//    {
-//    BTM_IOP_set_local_device_address( bd_addr );
-//    }
-//
+BTM_IOP_read_local_device_address();
+BTM_get_local_device_address( &(bd_addr[0]) );
+for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+    {
+    if( 0xff != bd_addr[i] )
+        {
+        bd_addr_set = true;
+        break;
+        }
+    }
+if( bd_addr_set )
+    {
+    BTM_IOP_set_local_device_address( bd_addr );
+    }
+
 if( BOARD_is_tft_connected() == TFT_CONNECTED )
     {
     EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_FINISH, sw_ver );

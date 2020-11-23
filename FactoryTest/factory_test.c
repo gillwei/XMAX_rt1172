@@ -39,9 +39,9 @@ extern "C"{
 #include "IOP_pub_vim_inst_prj.h"
 
 #include "factory_test.h"
-// #include "HCI_pub.h"
-// #include "BTM_pub.h"
-// #include "hci_control_api.h"
+ #include "HCI_pub.h"
+ #include "BTM_pub.h"
+ #include "hci_control_api.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -653,12 +653,12 @@ switch( inst_id )
 
             case IOP_BT_GET_BDADDR:
                 {
-                // uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = {0};
+                uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = {0};
 
-                // BTM_IOP_read_local_device_address();
-                // IOPInstId = IOP_BT_ADDR_DATA;
-                // BTM_get_local_device_address( &(bd_addr[0]) );
-                // packageIopToCanData( &bd_addr, sizeof( bd_addr ) );
+                BTM_IOP_read_local_device_address();
+                IOPInstId = IOP_BT_ADDR_DATA;
+                BTM_get_local_device_address( &(bd_addr[0]) );
+                packageIopToCanData( &bd_addr, sizeof( bd_addr ) );
                 }
                 break;
 
@@ -834,11 +834,11 @@ switch( inst_id )
 
     case IOP_BT_SET_BDADDR:
         {
-        // if( BT_DEVICE_ADDRESS_LEN == size )
-        //     {
-        //     BTM_IOP_set_local_device_address( data );
-        //     }
-        // IOPDone = true;
+        if( BT_DEVICE_ADDRESS_LEN == size )
+            {
+            BTM_IOP_set_local_device_address( data );
+            }
+        IOPDone = true;
         }
         break;
 
@@ -1009,8 +1009,8 @@ switch( IOPSubId )
 
     case IOP_BT_SET_TO_ACTIVE:
         {
-        // BTM_set_discoverable_state( true );
-        // IOPDone = true;
+        BTM_set_discoverable_state( true );
+        IOPDone = true;
         }
         break;
 

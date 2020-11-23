@@ -12,7 +12,7 @@
 #include "FreeRTOS.h"
 #include "hci_control_api.h"
 #include "fsl_debug_console.h"
-//#include "BTM_pub.h"
+#include "BTM_pub.h"
 #include "hci_prv.h"
 #include "HCI_pub.h"
 #include "JPEGPARSER_pub.h"
@@ -59,7 +59,7 @@ switch( opcode )
             setBTInitUpdateState( INIT_STATE_GET_VERSION );
             bt_sw_version[0] = p_data[0];
             bt_sw_version[1] = p_data[1];
-            //BTM_update_sw_version( bt_sw_version );
+            BTM_update_sw_version( bt_sw_version );
             if( ( bt_sw_version[0] < GARMIN_SW_MAJOR_VER ) || ( ( GARMIN_SW_MAJOR_VER == bt_sw_version[0] ) && ( GARMIN_SW_MINOR_VER > bt_sw_version[1] ) ) )
                 {
                 PRINTF( "Current BT FW is older than MCU BT version:%d.%d. BT update\n\r", bt_sw_version[0], bt_sw_version[1] );
@@ -74,7 +74,7 @@ switch( opcode )
         break;
 
     case HCI_CONTROL_MISC_EVENT_READ_PAIR_INFO:
-        //BTM_pairing_info_update( p_data );
+        BTM_pairing_info_update( p_data );
         break;
 
     default:
@@ -137,9 +137,9 @@ void hci_spp_event_handler
     const uint32_t data_len
     )
 {
-//bool connection_is_up = false;
-//uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-//uint8_t bd_addr_rev[BT_DEVICE_ADDRESS_LEN] = { 0 };
+bool connection_is_up = false;
+uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+uint8_t bd_addr_rev[BT_DEVICE_ADDRESS_LEN] = { 0 };
 
 switch( cmd_opcode )
     {
@@ -148,34 +148,34 @@ switch( cmd_opcode )
         break;
 
     case HCI_CONTROL_SPP_EVENT_CONNECTED:
-//        connection_is_up = true;
-//        BTM_notify_EW_connection_status( BT_CONNECTION_SUCCESS );
-//        BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
+        connection_is_up = true;
+        BTM_notify_EW_connection_status( BT_CONNECTION_SUCCESS );
+        BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
         break;
 
     case HCI_CONTROL_SPP_EVENT_DISCONNECTED:
-   //     connection_is_up = false;
-       // BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
+        connection_is_up = false;
+        BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
         break;
 
     case HCI_CONTROL_SPP_EVENT_CONNECTION_FAILED:
-       // BTM_get_paired_device_addr( 0, &bd_addr[0] );
-//        for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
-//            {
-//            bd_addr_rev[i] = bd_addr[BT_DEVICE_ADDRESS_LEN - 1 - i];
-//            }
+        BTM_get_paired_device_addr( 0, &bd_addr[0] );
+        for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+            {
+            bd_addr_rev[i] = bd_addr[BT_DEVICE_ADDRESS_LEN - 1 - i];
+            }
         // Use reversed BT address for connect
-        //HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_CONNECT, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
+        HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_CONNECT, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
         break;
 
     case HCI_CONTROL_SPP_EVENT_SERVICE_NOT_FOUND:
-//        BTM_get_paired_device_addr( 0, &bd_addr[0] );
-//        for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
-//            {
-//            bd_addr_rev[i] = bd_addr[BT_DEVICE_ADDRESS_LEN - 1 - i];
-//            }
-        // Use reversed BT address for connect
-        //HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_CONNECT, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
+        BTM_get_paired_device_addr( 0, &bd_addr[0] );
+        for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+            {
+            bd_addr_rev[i] = bd_addr[BT_DEVICE_ADDRESS_LEN - 1 - i];
+            }
+        //Use reversed BT address for connect
+        HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_CONNECT, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
         break;
 
     default:
@@ -202,7 +202,7 @@ void hci_iap2_event_handler
     const uint32_t data_len
     )
 {
-//bool connection_is_up = false;
+bool connection_is_up = false;
 
 switch( cmd_opcode )
     {
@@ -211,22 +211,22 @@ switch( cmd_opcode )
         break;
 
     case HCI_CONTROL_IAP2_EVENT_CONNECTED:
-//        connection_is_up = true;
-//        BTM_notify_EW_connection_status( BT_CONNECTION_SUCCESS );
-//        BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
+        connection_is_up = true;
+        BTM_notify_EW_connection_status( BT_CONNECTION_SUCCESS );
+        BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
         break;
 
     case HCI_CONTROL_IAP2_EVENT_DISCONNECTED:
-//        connection_is_up = false;
-        //BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
+        connection_is_up = false;
+        BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
         break;
 
     case HCI_CONTROL_IAP2_EVENT_CONNECTION_FAILED:
-        //BTM_notify_EW_connection_status( BT_CONNECTION_FAIL );
+        BTM_notify_EW_connection_status( BT_CONNECTION_FAIL );
         break;
 
     case HCI_CONTROL_IAP2_EVENT_SERVICE_NOT_FOUND:
-       // BTM_notify_EW_connection_status( BT_CONNECTION_FAIL );
+        BTM_notify_EW_connection_status( BT_CONNECTION_FAIL );
         break;
 
     default:

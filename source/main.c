@@ -34,6 +34,7 @@
 #include "JPEG_pub.h"
 #include "TEST_pub.h"
 #include "HCI_pub.h"
+#include "BTM_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -106,6 +107,7 @@ RTC_init();
 WDG_init();
 HCI_init();
 FACTORY_init();
+BTM_init();
 VI_init();
 JPEG_init();
 NAVI_init();

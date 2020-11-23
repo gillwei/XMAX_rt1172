@@ -29,8 +29,8 @@
 #include "hci_control_api.h"
 #include "PERIPHERAL_pub.h"
 #include "fsl_gpio.h"
+#include "BTM_pub.h"
 #include "GRM_pub_prj.h"
-//#include "BTM_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
