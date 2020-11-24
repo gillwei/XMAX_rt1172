@@ -288,7 +288,7 @@ static void pm_create_task
     void
     )
 {
-if( pdPASS == xTaskCreate( pm_main, "pm_main", ( configMINIMAL_STACK_SIZE ), NULL, ( tskIDLE_PRIORITY + 1 ), NULL ) )
+if( pdPASS == xTaskCreate( pm_main, "pm_main", ( configMINIMAL_STACK_SIZE ), NULL, ( tskIDLE_PRIORITY + 6 ), NULL ) )
     {
     PRINTF("%s ok\r\n", __FUNCTION__ );
     }
@@ -475,10 +475,11 @@ static void enter_snvs
     void
     )
 {
-//Set PINs low for power saving
-//GPIO_PinWrite( BOARD_INITPINS_CAN_EN_GPIO, BOARD_INITPINS_CAN_EN_GPIO_PIN, 0 );
-//GPIO_PinWrite( BOARD_INITPINS_SYS_EN_GPIO, BOARD_INITPINS_SYS_EN_GPIO_PIN, 0 );
-SNVS->LPCR |= SNVS_LPCR_TOP_MASK;
+IOMUXC_SNVS_GPR->GPR37 |= IOMUXC_SNVS_GPR_GPR37_SNVS_TAMPER_PUE_MASK;
+SNVS->LPCR |= SNVS_LPCR_TOP(1);
+while( true )
+    {
+    }
 }
 
 #ifdef __cplusplus

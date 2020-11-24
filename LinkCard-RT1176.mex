@@ -30,7 +30,6 @@
                <pin_label pin_num="M17" pin_signal="GPIO_AD_29" label="TFT_BL_PWM" identifier="TFT_BL_PWM"/>
                <pin_label pin_num="D15" pin_signal="GPIO_SD_B1_01" label="TFT_ASIL" identifier="TFT_ASIL"/>
                <pin_label pin_num="L17" pin_signal="GPIO_AD_28" label="CAN_STBY" identifier="CAN_STBY"/>
-               <pin_label pin_num="R9" pin_signal="GPIO_SNVS_07" label="IGN_WAKE_GPIO" identifier="IGN_WAKE_GPIO"/>
                <pin_label pin_num="T17" pin_signal="GPIO_AD_07" label="VBATT_SENSE"/>
                <pin_label pin_num="R17" pin_signal="GPIO_AD_10" label="VDD_3.3V_PGOOD" identifier="VDD_3V3_PGOOD"/>
                <pin_label pin_num="P16" pin_signal="GPIO_AD_11" label="5V_CAN_PGOOD" identifier="CAN_PGOOD"/>
@@ -205,6 +204,11 @@
                         <data>true</data>
                      </feature>
                   </dependency>
+                  <dependency resourceType="Peripheral" resourceId="SNVS" description="Peripheral SNVS is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
                      <feature name="enabled" evaluation="equal" configuration="cm7">
                         <data>true</data>
@@ -285,17 +289,6 @@
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO13" signal="gpio_io, 02" pin_num="T9" pin_signal="PMIC_STBY_REQ"/>
-                  <pin peripheral="GPIO13" signal="gpio_io, 01" pin_num="U9" pin_signal="PMIC_ON_REQ">
-                     <pin_features>
-                        <pin_feature name="direction" value="OUTPUT"/>
-                        <pin_feature name="gpio_init_state" value="true"/>
-                     </pin_features>
-                  </pin>
-                  <pin peripheral="GPIO13" signal="gpio_io, 10" pin_num="R9" pin_signal="GPIO_SNVS_07">
-                     <pin_features>
-                        <pin_feature name="direction" value="INPUT"/>
-                     </pin_features>
-                  </pin>
                   <pin peripheral="ADC1" signal="B, 1_0" pin_num="T17" pin_signal="GPIO_AD_07">
                      <pin_features>
                         <pin_feature name="pull_keeper_select" value="Keeper"/>
@@ -447,6 +440,11 @@
                   <pin peripheral="GPIO9" signal="gpio_io, 03" pin_num="M13" pin_signal="GPIO_AD_04">
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="SNVS" signal="snvs_lp_pmic_on_req" pin_num="U9" pin_signal="PMIC_ON_REQ">
+                     <pin_features>
+                        <pin_feature name="identifier" value=""/>
                      </pin_features>
                   </pin>
                </pins>

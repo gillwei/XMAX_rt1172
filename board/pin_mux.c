@@ -17,7 +17,6 @@ pin_labels:
 - {pin_num: M17, pin_signal: GPIO_AD_29, label: TFT_BL_PWM, identifier: TFT_BL_PWM}
 - {pin_num: D15, pin_signal: GPIO_SD_B1_01, label: TFT_ASIL, identifier: TFT_ASIL}
 - {pin_num: L17, pin_signal: GPIO_AD_28, label: CAN_STBY, identifier: CAN_STBY}
-- {pin_num: R9, pin_signal: GPIO_SNVS_07, label: IGN_WAKE_GPIO, identifier: IGN_WAKE_GPIO}
 - {pin_num: T17, pin_signal: GPIO_AD_07, label: VBATT_SENSE}
 - {pin_num: R17, pin_signal: GPIO_AD_10, label: VDD_3.3V_PGOOD, identifier: VDD_3V3_PGOOD}
 - {pin_num: P16, pin_signal: GPIO_AD_11, label: 5V_CAN_PGOOD, identifier: CAN_PGOOD}
@@ -176,8 +175,6 @@ BOARD_InitPins:
   - {pin_num: D15, peripheral: GPIO10, signal: 'gpio_io, 04', pin_signal: GPIO_SD_B1_01, direction: INPUT}
   - {pin_num: T8, peripheral: GPIO13, signal: 'gpio_io, 00', pin_signal: WAKEUP, direction: INPUT, gpio_interrupt: kGPIO_IntFallingEdge}
   - {pin_num: T9, peripheral: GPIO13, signal: 'gpio_io, 02', pin_signal: PMIC_STBY_REQ}
-  - {pin_num: U9, peripheral: GPIO13, signal: 'gpio_io, 01', pin_signal: PMIC_ON_REQ, direction: OUTPUT, gpio_init_state: 'true'}
-  - {pin_num: R9, peripheral: GPIO13, signal: 'gpio_io, 10', pin_signal: GPIO_SNVS_07, direction: INPUT}
   - {pin_num: T17, peripheral: ADC1, signal: 'B, 1_0', pin_signal: GPIO_AD_07, pull_keeper_select: Keeper}
   - {pin_num: R17, peripheral: GPIO9, signal: 'gpio_io, 09', pin_signal: GPIO_AD_10, direction: INPUT}
   - {pin_num: R16, peripheral: GPIO9, signal: 'gpio_io, 08', pin_signal: GPIO_AD_09, direction: INPUT}
@@ -245,6 +242,7 @@ BOARD_InitPins:
   - {pin_num: M17, peripheral: FLEXIO2, signal: 'IO, 29', pin_signal: GPIO_AD_29, direction: OUTPUT}
   - {pin_num: B16, peripheral: GPIO10, signal: 'gpio_io, 03', pin_signal: GPIO_SD_B1_00, direction: OUTPUT}
   - {pin_num: M13, peripheral: GPIO9, signal: 'gpio_io, 03', pin_signal: GPIO_AD_04, direction: OUTPUT}
+  - {pin_num: U9, peripheral: SNVS, signal: snvs_lp_pmic_on_req, pin_signal: PMIC_ON_REQ, identifier: ''}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -438,24 +436,6 @@ void BOARD_InitPins(void) {
   GPIO_PinInit(GPIO13, 0U, &IGN_WAKE_config);
   /* Enable GPIO pin interrupt on WAKEUP_DIG (pin T8) */
   GPIO_PortEnableInterrupts(GPIO13, 1U << 0U);
-
-  /* GPIO configuration of SYS_EN on PMIC_ON_REQ_DIG (pin U9) */
-  gpio_pin_config_t SYS_EN_config = {
-      .direction = kGPIO_DigitalOutput,
-      .outputLogic = 1U,
-      .interruptMode = kGPIO_NoIntmode
-  };
-  /* Initialize GPIO functionality on PMIC_ON_REQ_DIG (pin U9) */
-  GPIO_PinInit(GPIO13, 1U, &SYS_EN_config);
-
-  /* GPIO configuration of IGN_WAKE_GPIO on GPIO_SNVS_07_DIG (pin R9) */
-  gpio_pin_config_t IGN_WAKE_GPIO_config = {
-      .direction = kGPIO_DigitalInput,
-      .outputLogic = 0U,
-      .interruptMode = kGPIO_NoIntmode
-  };
-  /* Initialize GPIO functionality on GPIO_SNVS_07_DIG (pin R9) */
-  GPIO_PinInit(GPIO13, 10U, &IGN_WAKE_GPIO_config);
 
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_00_LPUART7_TXD,          /* GPIO_AD_00 is configured as LPUART7_TXD */
@@ -701,10 +681,7 @@ void BOARD_InitPins(void) {
       IOMUXC_GPIO_LPSR_07_LPUART12_RXD,       /* GPIO_LPSR_07 is configured as LPUART12_RXD */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SNVS_07_DIG_GPIO13_IO10,    /* GPIO_SNVS_07_DIG is configured as GPIO13_IO10 */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-  IOMUXC_SetPinMux(
-      IOMUXC_PMIC_ON_REQ_DIG_GPIO13_IO01,     /* PMIC_ON_REQ_DIG is configured as GPIO13_IO01 */
+      IOMUXC_PMIC_ON_REQ_DIG_SNVS_LP_PMIC_ON_REQ,  /* PMIC_ON_REQ_DIG is configured as SNVS_LP_PMIC_ON_REQ */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_PMIC_STBY_REQ_DIG_GPIO13_IO02,   /* PMIC_STBY_REQ_DIG is configured as GPIO13_IO02 */
