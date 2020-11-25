@@ -66,22 +66,6 @@ void EwBspEventWait( int aTimeout )
   {
     CPU_LOAD_SET_IDLE();
 
-    /* save the thread ID for signaling */
-    if ( ThreadId == 0 )
-      ThreadId = xTaskGetCurrentTaskHandle();
-
-    /* Important note: Within this template, the timeout value is limited to
-       10 ms in order to ensure that the UI application is continuously working,
-       e.g. to get new touch values or to receive data from a device driver.
-       This makes the usage of this template very simple.
-       If you want to implement a completely event driven system, you can use
-       the given timeout without limiting it. In this case you have to ensure
-       that the touch driver or your device drivers are resuming the UI task
-       by calling TriggerSystemEvent().
-    */
-    if ( aTimeout > 10 )
-      aTimeout = 10;
-
     xTaskNotifyWait( 0, OS_SIGNAL_WAKEUP_UI, NULL, aTimeout / portTICK_PERIOD_MS );
 
     CPU_LOAD_SET_ACTIVE();
@@ -111,6 +95,14 @@ void EwBspEventTrigger( void )
   xTaskNotify( ThreadId, OS_SIGNAL_WAKEUP_UI, eSetBits );
 }
 
+/*********************************************************************
+*
+* @private
+* EwBspEventSetTaskHandle
+*
+* Set the task handle of the Embedded Wizard task
+*
+*********************************************************************/
 void EwBspEventSetTaskHandle
     (
     TaskHandle_t ew_task_handle

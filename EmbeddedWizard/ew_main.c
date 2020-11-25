@@ -75,8 +75,6 @@
 #include "ew_bsp_display.h"
 #include "ew_priv.h"
 
-#include "DeviceDriver.h"
-
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
@@ -208,7 +206,7 @@ int EwInit( void )
   CHECK_HANDLE( Viewport );
 
   /* initialize your device driver(s) that provide data for your GUI */
-  DeviceDriver_Initialize();
+  ew_device_interface_init();
 
   return 1;
 }
@@ -231,7 +229,7 @@ int EwInit( void )
 void EwDone( void )
 {
   /* deinitialize your device driver(s) */
-  DeviceDriver_Deinitialize();
+  ew_device_interface_deinit();
 
   /* destroy the applications root object and release unused resources and memory */
   EwPrint( "Shutting down Application...                 " );
@@ -291,11 +289,9 @@ int     events  = 0;
 int     devices = 0;
 ew_key_event key_event;
 
-//XEnum   cmd     = CoreKeyCodeNoKey;
-
 /* process data of your device driver(s) and update the GUI
    application by setting properties or by triggering events */
-devices = DeviceDriver_ProcessData();
+devices = ew_device_interface_process();
 
 key_event = ew_get_key_event();
 if( CoreKeyCodeNoKey != key_event.code )
@@ -313,21 +309,6 @@ if( CoreKeyCodeNoKey != key_event.code )
             break;
         }
     }
-
-/* receive keyboard inputs */
-#if 0
-if( cmd != CoreKeyCodeNoKey )
-    {
-    if( cmd == CoreKeyCodePower )
-        {
-        return 0;
-        }
-
-    /* feed the application with a 'press' and 'release' event */
-    events |= CoreRoot__DriveKeyboardHitting( RootObject, cmd, 0, 1 );
-    events |= CoreRoot__DriveKeyboardHitting( RootObject, cmd, 0, 0 );
-    }
-#endif
 
 /* process expired timers */
 timers = EwProcessTimers();
@@ -362,7 +343,7 @@ if( devices || timers || signals || events )
 else
     {
     /* otherwise sleep/suspend the UI application until a certain event occurs or a timer expires... */
-    EwBspEventWait( EwNextTimerExpiration());
+    EwBspEventWait( EwNextTimerExpiration() );
     }
 
 return 1;

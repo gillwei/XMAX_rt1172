@@ -327,6 +327,9 @@ static void display_monitor_task
 {
 static uint32_t asil_pin_status = 0;
 
+vTaskDelay( 200 ); // T4 min timeout after RESET
+GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN, 1 );
+
 /* Wait until display initialization done */
 vTaskDelay( MIN_DELAY_START_TIME );
 while( true )

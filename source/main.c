@@ -30,6 +30,7 @@
 #include "PM_pub.h"
 #include "factory_test.h"
 #include "VI_pub.h"
+#include "TEST_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -102,6 +103,10 @@ RTC_init();
 WDG_init();
 FACTORY_init();
 VI_init();
+
+#if( UNIT_TEST_ENABLE )
+    TEST_init();
+#endif
 
 vCAN_nim_create_task();
 vTaskStartScheduler();
