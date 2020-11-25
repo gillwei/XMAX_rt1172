@@ -25,6 +25,7 @@ extern "C"{
 #include "timers.h"
 #include "fsl_gpc.h"
 #include "pin_mux.h"
+#include "GRM_pub_prj.h"
 /*--------------------------------------------------------------------
                         Definitions
 --------------------------------------------------------------------*/
@@ -288,7 +289,7 @@ static void pm_create_task
     void
     )
 {
-if( pdPASS == xTaskCreate( pm_main, "pm_main", ( configMINIMAL_STACK_SIZE ), NULL, ( tskIDLE_PRIORITY + 6 ), NULL ) )
+if( pdPASS == xTaskCreate( pm_main, "pm_main", ( configMINIMAL_STACK_SIZE ), NULL, TASK_PRIO_PM, NULL ) )
     {
     PRINTF("%s ok\r\n", __FUNCTION__ );
     }

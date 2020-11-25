@@ -21,7 +21,7 @@ extern "C"{
 #include "PERIPHERAL_pub.h"
 #include "peripheral_priv.h"
 //#include <HCI_pub.h>
-
+#include "GRM_pub_prj.h"
 /*--------------------------------------------------------------------
                         Definitions
 --------------------------------------------------------------------*/
@@ -159,7 +159,7 @@ void uart_create_task
     void
     )
 {
-if( pdPASS == xTaskCreate( uart_main, "uart_main", ( configMINIMAL_STACK_SIZE * 4 ), NULL, ( tskIDLE_PRIORITY + 3 ), &uartTaskHandle ) )
+if( pdPASS == xTaskCreate( uart_main, "uart_main", ( configMINIMAL_STACK_SIZE * 4 ), NULL, TASK_PRIO_UART, &uartTaskHandle ) )
     {
     PRINTF("%s ok\r\n", __FUNCTION__ );
     }

@@ -17,7 +17,7 @@
 #include "pin_mux.h"
 
 #include "WDG_pub.h"
-
+#include "GRM_pub_prj.h"
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -102,7 +102,7 @@ static void watchdog_create_task
     void
     )
 {
-if( pdPASS == xTaskCreate( watchdog_task, "watchdog_task", configMINIMAL_STACK_SIZE, NULL, ( tskIDLE_PRIORITY + 2 ), NULL ) )
+if( pdPASS == xTaskCreate( watchdog_task, "watchdog_task", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_WATCH_DOG, NULL ) )
     {
     PRINTF("%s ok\r\n", __FUNCTION__ );
     }

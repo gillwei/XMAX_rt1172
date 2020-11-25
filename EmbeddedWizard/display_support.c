@@ -21,7 +21,7 @@
 #include "fsl_gpio.h"
 
 #include "display_support.h"
-
+#include "GRM_pub_prj.h"
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -302,7 +302,7 @@ static void display_monitor_create_task
     void
     )
 {
-if( pdPASS == xTaskCreate( display_monitor_task, "display_monitor_task", configMINIMAL_STACK_SIZE, NULL, ( tskIDLE_PRIORITY + 5 ), NULL ) )
+if( pdPASS == xTaskCreate( display_monitor_task, "display_monitor_task", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_DISPLAY, NULL ) )
     {
     PRINTF("%s ok\r\n", __FUNCTION__ );
     }

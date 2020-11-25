@@ -81,11 +81,11 @@
 #include "semphr.h"
 #include "fsl_common.h"
 #include "FRTOS_pub.h"
-
+#include "GRM_pub_prj.h"
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define EW_TASK_PRIORITY   ( tskIDLE_PRIORITY + 2 )
+#define EW_TASK_PRIORITY   ( TASK_PRIO_EMBEDDED_WIZARD )
 #define EW_TASK_STACK_SIZE ( 4 * 1024 )
 #define EW_TASK_NAME       "ew_task"
 

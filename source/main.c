@@ -15,7 +15,6 @@
 #include "fsl_debug_console.h"
 #include "fsl_gpio.h"
 #include "FreeRTOS.h"
-#include "task.h"
 #include "semphr.h"
 
 #include "pin_mux.h"
@@ -63,7 +62,7 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-static void led_task( void* arg );
+
 
 /*********************************************************************
 *
@@ -103,23 +102,7 @@ WDG_init();
 FACTORY_init();
 
 vCAN_nim_create_task();
-
-xTaskCreate( led_task, "led_task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 4 ), NULL );
 vTaskStartScheduler();
 
 return 0;
-}
-
-static void led_task
-    (
-    void* arg
-    )
-{
-while( true )
-    {
-    GPIO_PortToggle( BOARD_USER_LED_GPIO, 1u << BOARD_USER_LED_GPIO_PIN );
-    PRINTF("The LED is blinking.\r\n");
-    vTaskDelay( pdMS_TO_TICKS( 500 ) );
-    }
-vTaskDelete( NULL );
 }

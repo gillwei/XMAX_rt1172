@@ -20,7 +20,7 @@ extern "C"{
 #include "fsl_debug_console.h"
 #include "PERIPHERAL_pub.h"
 #include "peripheral_priv.h"
-
+#include "GRM_pub_prj.h"
 /*--------------------------------------------------------------------
                         Definitions
 --------------------------------------------------------------------*/
@@ -179,7 +179,7 @@ static void i2c_create_task
     void
     )
 {
-if( pdPASS == xTaskCreate( i2c_main, "i2c_main", ( configMINIMAL_STACK_SIZE * 4 ), NULL, ( tskIDLE_PRIORITY + 3 ), NULL ) )
+if( pdPASS == xTaskCreate( i2c_main, "i2c_main", ( configMINIMAL_STACK_SIZE * 4 ), NULL, TASK_PRIO_I2C, NULL ) )
     {
     PRINTF("%s ok\r\n", __FUNCTION__ );
     }

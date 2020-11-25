@@ -299,7 +299,7 @@ static void factory_create_task
     void
     )
 {
-if( pdPASS == xTaskCreate( factory_test_task, "factory_test_task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 4 ), NULL ) )
+if( pdPASS == xTaskCreate( factory_test_task, "factory_test_task", configMINIMAL_STACK_SIZE * 2, NULL, TASK_PRIO_FAC_TEST, NULL ) )
     {
     PRINTF("%s ok\r\n", __FUNCTION__ );
     }
@@ -307,7 +307,7 @@ else
     {
     PRINTF("%s fail\r\n", __FUNCTION__ );
     }
-if( pdPASS == xTaskCreate( IOP_BurnIn_Task, "IOP_BurnIn_Task", configMINIMAL_STACK_SIZE * 2, NULL, ( tskIDLE_PRIORITY + 3 ), NULL ) )
+if( pdPASS == xTaskCreate( IOP_BurnIn_Task, "IOP_BurnIn_Task", configMINIMAL_STACK_SIZE * 2, NULL, TASK_PRIO_BURN_IN, NULL ) )
     {
     PRINTF("%s ok\r\n", __FUNCTION__ );
     }
