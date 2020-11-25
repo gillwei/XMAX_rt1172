@@ -1,9 +1,9 @@
 /*********************************************************************
 * @file
-* test_main.c
+* test_burnin.c
 *
 * @brief
-* Test module - main
+* Test module - Unit test for burn-in UI flow
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
@@ -14,18 +14,19 @@
 #include "FreeRTOS.h"
 #include "event_groups.h"
 #include "task.h"
-#include "semphr.h"
-#include "ewrte.h"
 #include "fsl_debug_console.h"
-#include <TEST_pub.h>
-#include <test_priv.h>
+#include "EW_pub.h"
+#include "TEST_pub.h"
+#include "test_priv.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define TEST_TASK_PRIORITY   ( tskIDLE_PRIORITY )
-#define TEST_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 2 )
-#define TEST_TASK_NAME       "test_task"
+#define TEST_BURN_IN_PROC_MS                ( 1000 )
+#define TEST_BURN_IN_INIT_DELAY_SEC         ( 3 )    // time to wait before start burn-in
+#define TEST_BURN_IN_START_SEC              ( 1810 ) // start time of burning
+#define TEST_BURN_IN_DURATION_SEC           ( 25 )   // duration of burn-in test
+#define TEST_BURN_IN_RESULT                 ( true )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -42,8 +43,10 @@
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
-#if( UNIT_TEST_ENABLE )
-    static const int TEST_TASK_DELAY_TICKS = pdMS_TO_TICKS( TEST_TICK_PERIOD_MS );
+#if( UNIT_TEST_BURNIN )
+    static const int TEST_BURN_IN_TICK_COUNT = ( TEST_BURN_IN_PROC_MS / TEST_TICK_PERIOD_MS );
+    static uint32_t test_burn_in_tick = 0;
+    static uint32_t test_burn_in_time_sec = 0;
 #endif
 
 /*--------------------------------------------------------------------
@@ -53,75 +56,76 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-#if( UNIT_TEST_ENABLE )
+#if( UNIT_TEST_BURNIN )
     /*********************************************************************
     *
     * @private
-    * task_main
+    * test_burnin_flow
     *
-    * Main loop of the test task
+    * Test factory display pattern
     *
     *********************************************************************/
-    static void task_main
+    void test_burnin_flow
         (
-        void* arg
+        void
         )
     {
-    while( true )
+    test_burn_in_time_sec++;
+    if( TEST_BURN_IN_INIT_DELAY_SEC == test_burn_in_time_sec )
         {
-        #if( UNIT_TEST_FACTORY )
-            test_factory_proc();
-        #endif
-
-        #if( UNIT_TEST_BURNIN )
-            test_burnin_proc();
-        #endif
-
-        vTaskDelay( TEST_TASK_DELAY_TICKS );
+        EW_start_burn_in();
+        test_burn_in_time_sec = TEST_BURN_IN_START_SEC;
         }
-
-    vTaskDelete( NULL );
+    else if( ( TEST_BURN_IN_START_SEC + TEST_BURN_IN_DURATION_SEC ) > test_burn_in_time_sec )
+        {
+        EW_update_burn_in_time( test_burn_in_time_sec - TEST_BURN_IN_INIT_DELAY_SEC );
+        }
+    else if( ( TEST_BURN_IN_START_SEC + TEST_BURN_IN_DURATION_SEC ) == test_burn_in_time_sec )
+        {
+        EW_show_burn_in_result( TEST_BURN_IN_RESULT );
+        }
+    else
+        {
+        // empty
+        }
     }
 
     /*********************************************************************
     *
     * @private
-    * create_task
+    * test_burnin_proc
     *
-    * Create test task
+    * Test module - proc unit test for factory test
     *
     *********************************************************************/
-    static void create_task
+    void test_burnin_proc
         (
         void
         )
     {
-    BaseType_t result = xTaskCreate( task_main, TEST_TASK_NAME, TEST_TASK_STACK_SIZE, NULL, TEST_TASK_PRIORITY, NULL );
-    configASSERT( pdPASS == result );
+    if( test_burn_in_tick == 0 )
+        {
+        test_burn_in_tick = TEST_BURN_IN_TICK_COUNT;
+        test_burnin_flow();
+        }
+    test_burn_in_tick--;
     }
 
     /*********************************************************************
     *
     * @private
-    * TEST_init
+    * test_burnin_int
     *
-    * Init test module.
+    * Test module - init unit test for factory test
     *
     *********************************************************************/
-    void TEST_init
+    void test_burnin_int
         (
         void
         )
     {
-    create_task();
-
-    #if( UNIT_TEST_FACTORY )
-        test_factory_int();
-    #endif
-
-    #if( UNIT_TEST_BURNIN )
-        test_burnin_int();
-    #endif
+    return;
     }
 #endif
+
 

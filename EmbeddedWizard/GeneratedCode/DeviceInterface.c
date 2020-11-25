@@ -39,31 +39,34 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x000001CC, /* ratio 56.52 % */
-  0xB8002F00, 0x8009C452, 0x00E80037, 0x0CC00348, 0xA8003C80, 0x80084C2C, 0x0032800D,
-  0x03400086, 0x37000C20, 0x045CCE00, 0x0E800640, 0xA8002000, 0xE0B030C4, 0x1D0C8A41,
-  0x40020C42, 0x73004C0E, 0xE8E46A28, 0x8C48A411, 0x54A64F25, 0x41A09029, 0x3E630A84,
-  0xA2D34004, 0x00750018, 0xB1B8C9B4, 0x2390C7E3, 0x0954A283, 0xA3CB43A0, 0x80026537,
-  0x442AD152, 0x50A7368C, 0xE310A8F4, 0xB33EAB4E, 0x12AADC9A, 0x6522CB42, 0x29C1C23D,
-  0xA9C32257, 0x6D728518, 0xD40892D0, 0xBE93569A, 0x6EB82904, 0xA723294B, 0x3208647A,
-  0x73C062A5, 0xF0D80287, 0xB162A5F5, 0xCCE63D64, 0xC42466B9, 0xA2412323, 0x31B72C4D,
-  0x9F049600, 0x518B555C, 0x51B290A1, 0x5A44BF6B, 0x8F482F15, 0xD4622D4F, 0x6F33A15C,
-  0x2B6F10A5, 0x80103234, 0x0F6C855A, 0xA0CD74E7, 0xCC0072A5, 0x32B000EF, 0xAE6BA6D2,
-  0x00020200, 0x00000000
+  0x00000222, /* ratio 55.68 % */
+  0xB8002500, 0x000A6452, 0x00C2003A, 0x80107390, 0x16750010, 0x20037002, 0x540044C9,
+  0x30019400, 0x000021A7, 0x04160619, 0x1BC00680, 0x421C7700, 0x22D14894, 0x3B1B8CC5,
+  0x91A29422, 0x0D364AE3, 0xF1000075, 0x9105C011, 0x4C364C4E, 0x800CC003, 0x1001183C,
+  0xE3738845, 0x2F099210, 0x0649A99E, 0x1F9E4E80, 0x8A150031, 0xA451A890, 0xB5762441,
+  0x4969F089, 0x6EA71485, 0xE7B57AAC, 0x4F41824F, 0x200AFD8E, 0x2B314E2C, 0x1B3000DB,
+  0xAB552D35, 0xD8767B3B, 0xD169572A, 0x00A000A3, 0xE910A9C0, 0x11068646, 0x14E8442A,
+  0x6A005A2A, 0xFC0DB001, 0x22C88211, 0xB1C2A38B, 0x512936B9, 0x7EDB1BBD, 0xC892206C,
+  0x0D93864A, 0x1AA8A49F, 0x34826780, 0x4855EA37, 0xB1CF2294, 0x056301A8, 0xD0F081B0,
+  0x2B1548C3, 0x4D71D8EC, 0x6A47A44D, 0x951C7C52, 0x3DE166B2, 0x727C12B5, 0x8446E0D1,
+  0xFC46710F, 0x4970B42E, 0xE21514D0, 0x4019CA6D, 0x1173E305, 0x6468443F, 0xD5C88020,
+  0xCDAC7657, 0x007CE440, 0x4564A5F5, 0xD6D50C4D, 0x01010013, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XStringRes _Const0000 = { _StringsDefault0, 0x0002 };
-static const XStringRes _Const0001 = { _StringsDefault0, 0x0019 };
-static const XStringRes _Const0002 = { _StringsDefault0, 0x0031 };
-static const XStringRes _Const0003 = { _StringsDefault0, 0x0048 };
-static const XStringRes _Const0004 = { _StringsDefault0, 0x0065 };
-static const XStringRes _Const0005 = { _StringsDefault0, 0x0075 };
-static const XStringRes _Const0006 = { _StringsDefault0, 0x0082 };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x0092 };
+static const XStringRes _Const0001 = { _StringsDefault0, 0x0014 };
+static const XStringRes _Const0002 = { _StringsDefault0, 0x002D };
+static const XStringRes _Const0003 = { _StringsDefault0, 0x0044 };
+static const XStringRes _Const0004 = { _StringsDefault0, 0x005C };
+static const XStringRes _Const0005 = { _StringsDefault0, 0x0073 };
+static const XStringRes _Const0006 = { _StringsDefault0, 0x0090 };
+static const XStringRes _Const0007 = { _StringsDefault0, 0x00A0 };
 static const XStringRes _Const0008 = { _StringsDefault0, 0x00AD };
-static const XStringRes _Const0009 = { _StringsDefault0, 0x00C5 };
-static const XStringRes _Const000A = { _StringsDefault0, 0x00DA };
+static const XStringRes _Const0009 = { _StringsDefault0, 0x00BD };
+static const XStringRes _Const000A = { _StringsDefault0, 0x00D8 };
+static const XStringRes _Const000B = { _StringsDefault0, 0x00F0 };
+static const XStringRes _Const000C = { _StringsDefault0, 0x0105 };
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
@@ -316,6 +319,75 @@ XString DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( DeviceInterface
   return _this->BtSoftwareVersion;
 }
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.StartBurnInTest()' */
+void DeviceInterfaceSystemDeviceClass_StartBurnInTest( DeviceInterfaceSystemDeviceClass _this )
+{
+  FactoryTestContext TestContext;
+
+  EwTrace( "%s", EwLoadString( &_Const0000 ));
+  TestContext = EwNewObject( FactoryTestContext, 0 );
+  TestContext->TestItem = EnumFactoryTestBurnInStart;
+  CoreSystemEvent_Trigger( &_this->FactoryTestSystemEvent, ((XObject)TestContext ), 
+  0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.StartBurnInTest()' */
+void DeviceInterfaceSystemDeviceClass__StartBurnInTest( void* _this )
+{
+  DeviceInterfaceSystemDeviceClass_StartBurnInTest((DeviceInterfaceSystemDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.UpdateBurnInTestTime()' */
+void DeviceInterfaceSystemDeviceClass_UpdateBurnInTestTime( DeviceInterfaceSystemDeviceClass _this, 
+  XUInt32 aTimeSec )
+{
+  FactoryTestContext TestContext = EwNewObject( FactoryTestContext, 0 );
+
+  TestContext->TestItem = EnumFactoryTestBurnInTimeUpdate;
+  TestContext->Data = (XInt32)aTimeSec;
+  CoreSystemEvent_Trigger( &_this->FactoryTestSystemEvent, ((XObject)TestContext ), 
+  0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.UpdateBurnInTestTime()' */
+void DeviceInterfaceSystemDeviceClass__UpdateBurnInTestTime( void* _this, XUInt32 
+  aTimeSec )
+{
+  DeviceInterfaceSystemDeviceClass_UpdateBurnInTestTime((DeviceInterfaceSystemDeviceClass)_this
+  , aTimeSec );
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ShowBurnInTestResult()' */
+void DeviceInterfaceSystemDeviceClass_ShowBurnInTestResult( DeviceInterfaceSystemDeviceClass _this, 
+  XBool aResult )
+{
+  FactoryTestContext TestContext;
+
+  EwTrace( "%s%b", EwLoadString( &_Const0001 ), aResult );
+  TestContext = EwNewObject( FactoryTestContext, 0 );
+  TestContext->TestItem = EnumFactoryTestBurnInResult;
+
+  if ( aResult )
+  {
+    TestContext->Data = 1;
+  }
+  else
+  {
+    TestContext->Data = 0;
+  }
+
+  CoreSystemEvent_Trigger( &_this->FactoryTestSystemEvent, ((XObject)TestContext ), 
+  0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.ShowBurnInTestResult()' */
+void DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult( void* _this, XBool 
+  aResult )
+{
+  DeviceInterfaceSystemDeviceClass_ShowBurnInTestResult((DeviceInterfaceSystemDeviceClass)_this
+  , aResult );
+}
+
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this )
 {
@@ -562,7 +634,7 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetPlayerName( DeviceInterfaceMedi
 void DeviceInterfaceMediaManagerDeviceClass_NotifyTitleChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aTitle )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0000 ), aTitle ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0002 ), aTitle ));
   DeviceInterfaceMediaManagerDeviceClass_OnSetTitle( _this, aTitle );
 }
 
@@ -578,7 +650,7 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyTitleChanged( void* _this, XS
 void DeviceInterfaceMediaManagerDeviceClass_NotifyArtistChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aArtist )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0001 ), aArtist ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0003 ), aArtist ));
   DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( _this, aArtist );
 }
 
@@ -594,7 +666,7 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyArtistChanged( void* _this, X
 void DeviceInterfaceMediaManagerDeviceClass_NotifyAlbumChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aAlbum )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0002 ), aAlbum ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0004 ), aAlbum ));
   DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum( _this, aAlbum );
 }
 
@@ -642,7 +714,7 @@ void DeviceInterfaceMediaManagerDeviceClass_GetTrackInfo( DeviceInterfaceMediaMa
 void DeviceInterfaceMediaManagerDeviceClass_NotifyPlayerStateChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XInt32 aPlaybackState )
 {
-  EwTrace( "%s%i", EwLoadString( &_Const0003 ), aPlaybackState );
+  EwTrace( "%s%i", EwLoadString( &_Const0005 ), aPlaybackState );
   DeviceInterfaceMediaManagerDeviceClass_OnSetPlaybackState( _this, aPlaybackState );
 }
 
@@ -659,9 +731,9 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged( void* _th
 void DeviceInterfaceMediaManagerDeviceClass_NotifyPlayBackTimeChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XInt32 aElapsedTimeSec, XInt32 aDurationTimeSec, XInt32 aRemainTimeSec )
 {
-  EwTrace( "%s%i", EwLoadString( &_Const0004 ), aElapsedTimeSec );
-  EwTrace( "%s%i", EwLoadString( &_Const0005 ), aDurationTimeSec );
-  EwTrace( "%s%i", EwLoadString( &_Const0006 ), aDurationTimeSec );
+  EwTrace( "%s%i", EwLoadString( &_Const0006 ), aElapsedTimeSec );
+  EwTrace( "%s%i", EwLoadString( &_Const0007 ), aDurationTimeSec );
+  EwTrace( "%s%i", EwLoadString( &_Const0008 ), aDurationTimeSec );
   _this->ElapsedTimeSec = aElapsedTimeSec;
   _this->DurationTimeSec = aDurationTimeSec;
   _this->RemainTimeSec = aRemainTimeSec;
@@ -794,7 +866,7 @@ void DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceAtItem( DeviceInterfaceB
 void DeviceInterfaceBluetoothDeviceClass_NotifyPasskeyGenerated( DeviceInterfaceBluetoothDeviceClass _this, 
   XString aPasskey )
 {
-  EwTrace( "%s%s", EwLoadString( &_Const0007 ), aPasskey );
+  EwTrace( "%s%s", EwLoadString( &_Const0009 ), aPasskey );
   _this->Passkey = EwShareString( aPasskey );
   CoreSystemEvent_Trigger( &_this->PasskeyGeneratedSystemEvent, 0, 0 );
 }
@@ -839,7 +911,7 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( DeviceInterfaceBluet
 void DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this, 
   XBool value )
 {
-  EwTrace( "%s%b", EwLoadString( &_Const0008 ), value );
+  EwTrace( "%s%b", EwLoadString( &_Const000A ), value );
 
   if ( _this->BluetoothEnable != value )
   {
@@ -981,8 +1053,8 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( DeviceInterfaceBluetoo
 void DeviceInterfaceBluetoothDeviceClass_NotifyBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this, 
   XEnum status, XString version )
 {
-  EwTrace( "%s%e", EwLoadString( &_Const0009 ), status );
-  EwTrace( "%s%s", EwLoadString( &_Const000A ), version );
+  EwTrace( "%s%e", EwLoadString( &_Const000B ), status );
+  EwTrace( "%s%s", EwLoadString( &_Const000C ), version );
   DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( _this, status );
 }
 

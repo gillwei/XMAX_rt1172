@@ -86,6 +86,9 @@ EW_END_OF_METHODS( CoreSystemEventHandler )
 /* 'C' function for method : 'Core::SystemEventHandler.onEvent()' */
 void CoreSystemEventHandler_onEvent( CoreSystemEventHandler _this, XObject sender );
 
+/* 'C' function for method : 'Core::SystemEventHandler.OnSetEnabled()' */
+void CoreSystemEventHandler_OnSetEnabled( CoreSystemEventHandler _this, XBool value );
+
 /* 'C' function for method : 'Core::SystemEventHandler.OnSetEvent()' */
 void CoreSystemEventHandler_OnSetEvent( CoreSystemEventHandler _this, CoreSystemEvent 
   value );

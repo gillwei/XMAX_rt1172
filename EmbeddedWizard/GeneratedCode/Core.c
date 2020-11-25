@@ -9294,6 +9294,23 @@ void CoreSystemEventHandler_onEvent( CoreSystemEventHandler _this, XObject sende
   _this->Context = 0;
 }
 
+/* 'C' function for method : 'Core::SystemEventHandler.OnSetEnabled()' */
+void CoreSystemEventHandler_OnSetEnabled( CoreSystemEventHandler _this, XBool value )
+{
+  if ( _this->Enabled == value )
+    return;
+
+  if (( _this->Event != 0 ) && _this->Enabled )
+    EwDetachObjObserver( EwNewSlot( _this, CoreSystemEventHandler_onEvent ), (XObject)_this->Event, 
+      0 );
+
+  _this->Enabled = value;
+
+  if (( _this->Event != 0 ) && _this->Enabled )
+    EwAttachObjObserver( EwNewSlot( _this, CoreSystemEventHandler_onEvent ), (XObject)_this->Event, 
+      0 );
+}
+
 /* 'C' function for method : 'Core::SystemEventHandler.OnSetEvent()' */
 void CoreSystemEventHandler_OnSetEvent( CoreSystemEventHandler _this, CoreSystemEvent 
   value )

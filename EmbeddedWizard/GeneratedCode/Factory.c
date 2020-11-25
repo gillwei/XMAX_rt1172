@@ -28,8 +28,10 @@
 #include "_ApplicationApplication.h"
 #include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
+#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_FactoryDisplayAutoRun.h"
 #include "_FactoryDisplayManual.h"
 #include "_FactoryMain.h"
@@ -38,38 +40,53 @@
 #include "_MenuVerticalMenu.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesExternBitmap.h"
+#include "_ResourcesFont.h"
 #include "_ViewsBorder.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+#include "_ViewsText.h"
 #include "Core.h"
+#include "DeviceInterface.h"
+#include "Enum.h"
 #include "Factory.h"
+#include "Fonts.h"
 #include "Resource.h"
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000076, /* ratio 81.36 % */
-  0xB8002300, 0x80088452, 0x00E60034, 0x0D800380, 0xF2003080, 0xF0D23000, 0x00318020,
-  0x032800D6, 0x8F800E40, 0xB4160613, 0x43A190A8, 0x00411288, 0xC9A00140, 0x006E0043,
-  0x30E979D4, 0x150047C5, 0x58441A44, 0x004A22B2, 0x9106592A, 0x800E8009, 0x48014037,
-  0xE6D31A21, 0x01019BCD, 0x00000000
+  0x000000DC, /* ratio 72.73 % */
+  0xB8001700, 0x00060452, 0x2A0E3A83, 0x20D0684C, 0x06110000, 0x20022116, 0x0039800D,
+  0x036000E0, 0x3C800C20, 0xAC6C8C00, 0x800C6008, 0x00CA0035, 0x8010F390, 0x00428904,
+  0xC00959D4, 0x3524800D, 0xE9C91401, 0x9548CC51, 0x04240064, 0xC48092D1, 0x128D0F84,
+  0x80E00874, 0x82002844, 0xB5329800, 0x228253A5, 0xD264E2A5, 0x8A448272, 0xE46A3116,
+  0x512411E8, 0x749A0014, 0x23D339CC, 0x2B2D14C7, 0x7629257C, 0x67005964, 0x4004CAA3,
+  0xBC1BC007, 0xB5ECA400, 0xCB65B709, 0x00000080, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XColor _Const0001 = { 0xFF, 0xFF, 0xFF, 0xFF };
 static const XRect _Const0002 = {{ 120, 68 }, { 360, 204 }};
-static const XColor _Const0003 = { 0xFF, 0x00, 0x00, 0xFF };
-static const XColor _Const0004 = { 0x00, 0xFF, 0x00, 0xFF };
-static const XColor _Const0005 = { 0x00, 0x00, 0xFF, 0xFF };
-static const XColor _Const0006 = { 0x00, 0x00, 0x00, 0xFF };
-static const XColor _Const0007 = { 0x80, 0x80, 0x80, 0xFF };
-static const XStringRes _Const0008 = { _StringsDefault0, 0x0002 };
-static const XStringRes _Const0009 = { _StringsDefault0, 0x0013 };
-static const XStringRes _Const000A = { _StringsDefault0, 0x0026 };
-static const XRect _Const000B = {{ 10, 32 }, { 470, 272 }};
-static const XColor _Const000C = { 0xBA, 0xBA, 0xBA, 0xFF };
-static const XColor _Const000D = { 0x40, 0x40, 0x40, 0xFF };
+static const XRect _Const0003 = {{ 78, 15 }, { 405, 99 }};
+static const XStringRes _Const0004 = { _StringsDefault0, 0x0002 };
+static const XColor _Const0005 = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0006 = {{ 125, 126 }, { 343, 225 }};
+static const XColor _Const0007 = { 0xFF, 0x00, 0x00, 0xFF };
+static const XColor _Const0008 = { 0x00, 0xFF, 0x00, 0xFF };
+static const XColor _Const0009 = { 0x00, 0x00, 0xFF, 0xFF };
+static const XColor _Const000A = { 0x80, 0x80, 0x80, 0xFF };
+static const XStringRes _Const000B = { _StringsDefault0, 0x000D };
+static const XStringRes _Const000C = { _StringsDefault0, 0x001E };
+static const XStringRes _Const000D = { _StringsDefault0, 0x0030 };
+static const XStringRes _Const000E = { _StringsDefault0, 0x0034 };
+static const XStringRes _Const000F = { _StringsDefault0, 0x0038 };
+static const XStringRes _Const0010 = { _StringsDefault0, 0x003F };
+static const XStringRes _Const0011 = { _StringsDefault0, 0x0046 };
+static const XStringRes _Const0012 = { _StringsDefault0, 0x0059 };
+static const XRect _Const0013 = {{ 10, 32 }, { 470, 272 }};
+static const XColor _Const0014 = { 0xBA, 0xBA, 0xBA, 0xFF };
+static const XColor _Const0015 = { 0x40, 0x40, 0x40, 0xFF };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -106,6 +123,9 @@ void FactoryDisplayAutoRun__Init( FactoryDisplayAutoRun _this, XObject aLink, XH
   ViewsRectangle__Init( &_this->FullScreen, &_this->_XObject, 0 );
   ViewsRectangle__Init( &_this->CenterBlock, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->ImagePattern, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->BurnInTimeText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->BurnInResultText, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->FactoryTestEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( FactoryDisplayAutoRun );
@@ -122,12 +142,30 @@ void FactoryDisplayAutoRun__Init( FactoryDisplayAutoRun _this, XObject aLink, XH
   ViewsRectangle_OnSetColor( &_this->CenterBlock, _Const0001 );
   CoreRectView__OnSetBounds( &_this->ImagePattern, _Const0000 );
   ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
+  CoreRectView__OnSetBounds( &_this->BurnInTimeText, _Const0003 );
+  ViewsText_OnSetString( &_this->BurnInTimeText, EwLoadString( &_Const0004 ));
+  ViewsText_OnSetColor( &_this->BurnInTimeText, _Const0005 );
+  ViewsText_OnSetVisible( &_this->BurnInTimeText, 0 );
+  CoreRectView__OnSetBounds( &_this->BurnInResultText, _Const0006 );
+  ViewsText_OnSetString( &_this->BurnInResultText, 0 );
+  ViewsText_OnSetColor( &_this->BurnInResultText, _Const0005 );
+  ViewsText_OnSetVisible( &_this->BurnInResultText, 0 );
+  CoreSystemEventHandler_OnSetEnabled( &_this->FactoryTestEventHandler, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->FullScreen ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->CenterBlock ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ImagePattern ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->BurnInTimeText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->BurnInResultText ), 0 );
   _this->TimerNextPattern.OnTrigger = EwNewSlot( _this, FactoryDisplayAutoRun_OnTimerNextPatternSlot );
   ViewsImage_OnSetBitmap( &_this->ImagePattern, EwLoadResource( &ResourceDisplayTest, 
   ResourcesBitmap ));
+  ViewsText_OnSetFont( &_this->BurnInTimeText, EwLoadResource( &FontsNotoSansCjkJpMedium40pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->BurnInResultText, EwLoadResource( &FontsNotoSansCjkJpMedium40pt, 
+  ResourcesFont ));
+  _this->FactoryTestEventHandler.OnEvent = EwNewSlot( _this, FactoryDisplayAutoRun_OnFactoryTestEventReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->FactoryTestEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->FactoryTestSystemEvent );
 
   /* Call the user defined constructor */
   FactoryDisplayAutoRun_Init( _this, aArg );
@@ -144,6 +182,9 @@ void FactoryDisplayAutoRun__ReInit( FactoryDisplayAutoRun _this )
   ViewsRectangle__ReInit( &_this->FullScreen );
   ViewsRectangle__ReInit( &_this->CenterBlock );
   ViewsImage__ReInit( &_this->ImagePattern );
+  ViewsText__ReInit( &_this->BurnInTimeText );
+  ViewsText__ReInit( &_this->BurnInResultText );
+  CoreSystemEventHandler__ReInit( &_this->FactoryTestEventHandler );
 }
 
 /* Finalizer method for the class 'Factory::DisplayAutoRun' */
@@ -157,6 +198,9 @@ void FactoryDisplayAutoRun__Done( FactoryDisplayAutoRun _this )
   ViewsRectangle__Done( &_this->FullScreen );
   ViewsRectangle__Done( &_this->CenterBlock );
   ViewsImage__Done( &_this->ImagePattern );
+  ViewsText__Done( &_this->BurnInTimeText );
+  ViewsText__Done( &_this->BurnInResultText );
+  CoreSystemEventHandler__Done( &_this->FactoryTestEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_Super );
@@ -201,18 +245,18 @@ void FactoryDisplayAutoRun_DisplayPattern( FactoryDisplayAutoRun _this, XInt32 a
   {
     case 0 :
     {
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0003 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0007 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
     }
     break;
 
     case 1 :
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0004 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0008 );
     break;
 
     case 2 :
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0005 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0009 );
     break;
 
     case 3 :
@@ -220,11 +264,11 @@ void FactoryDisplayAutoRun_DisplayPattern( FactoryDisplayAutoRun _this, XInt32 a
     break;
 
     case 4 :
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0006 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0005 );
     break;
 
     case 5 :
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0007 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const000A );
     break;
 
     case 6 :
@@ -251,7 +295,7 @@ void FactoryDisplayAutoRun_DisplayPattern( FactoryDisplayAutoRun _this, XInt32 a
     case 10 :
     {
       ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceExternBitmap, ResourcesExternBitmap ), 
-      EwLoadString( &_Const0008 ));
+      EwLoadString( &_Const000B ));
       ViewsImage_OnSetBitmap( &_this->ImagePattern, ((ResourcesBitmap)EwGetAutoObject( 
       &ResourceExternBitmap, ResourcesExternBitmap )));
       ViewsImage_OnSetFrameNumber( &_this->ImagePattern, 0 );
@@ -291,6 +335,99 @@ void FactoryDisplayAutoRun_OnTimerNextPatternSlot( FactoryDisplayAutoRun _this,
   }
 
   FactoryDisplayAutoRun_OnSetPatternIdx( _this, Idx );
+}
+
+/* 'C' function for method : 'Factory::DisplayAutoRun.OnSetBurnInEnabled()' */
+void FactoryDisplayAutoRun_OnSetBurnInEnabled( FactoryDisplayAutoRun _this, XBool 
+  value )
+{
+  EwTrace( "%s%b", EwLoadString( &_Const000C ), value );
+
+  if ( _this->BurnInEnabled != value )
+  {
+    _this->BurnInEnabled = value;
+    ViewsText_OnSetVisible( &_this->BurnInTimeText, value );
+    ViewsText_OnSetVisible( &_this->BurnInResultText, value );
+    CoreSystemEventHandler_OnSetEnabled( &_this->FactoryTestEventHandler, value );
+  }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void FactoryDisplayAutoRun_OnFactoryTestEventReceivedSlot( FactoryDisplayAutoRun _this, 
+  XObject sender )
+{
+  FactoryTestContext TestContext;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  TestContext = EwCastObject( _this->FactoryTestEventHandler.Context, FactoryTestContext );
+
+  if ( TestContext != 0 )
+  {
+    switch ( TestContext->TestItem )
+    {
+      case EnumFactoryTestBurnInTimeUpdate :
+      {
+        FactoryDisplayAutoRun_UpdateBurnInTime( _this, TestContext->Data );
+      }
+      break;
+
+      case EnumFactoryTestBurnInResult :
+      {
+        FactoryDisplayAutoRun_ShowBurnInTestResult( _this, TestContext->Data );
+      }
+      break;
+
+      default : 
+        ;
+    }
+  }
+}
+
+/* 'C' function for method : 'Factory::DisplayAutoRun.UpdateBurnInTime()' */
+void FactoryDisplayAutoRun_UpdateBurnInTime( FactoryDisplayAutoRun _this, XInt32 
+  aTimeSec )
+{
+  XInt32 hour = aTimeSec / 3600;
+  XInt32 minute = ( aTimeSec / 60 ) % 60;
+  XInt32 second = aTimeSec % 60;
+  XString time_str;
+
+  time_str = EwConcatString( EwNewStringInt( hour, 0, 10 ), EwLoadString( &_Const000D ));
+
+  if ( minute < 10 )
+  {
+    time_str = EwConcatString( time_str, EwLoadString( &_Const000E ));
+  }
+
+  time_str = EwConcatString( time_str, EwConcatString( EwNewStringInt( minute, 0, 
+  10 ), EwLoadString( &_Const000D )));
+
+  if ( second < 10 )
+  {
+    time_str = EwConcatStringChar( time_str, '0' );
+  }
+
+  time_str = EwConcatString( time_str, EwNewStringInt( second, 0, 10 ));
+  ViewsText_OnSetString( &_this->BurnInTimeText, time_str );
+}
+
+/* 'C' function for method : 'Factory::DisplayAutoRun.ShowBurnInTestResult()' */
+void FactoryDisplayAutoRun_ShowBurnInTestResult( FactoryDisplayAutoRun _this, XInt32 
+  aResult )
+{
+  if ( !!aResult )
+  {
+    ViewsText_OnSetString( &_this->BurnInResultText, EwLoadString( &_Const000F ));
+    ViewsText_OnSetColor( &_this->BurnInResultText, _Const0008 );
+  }
+  else
+  {
+    ViewsText_OnSetString( &_this->BurnInResultText, EwLoadString( &_Const0010 ));
+    ViewsText_OnSetColor( &_this->BurnInResultText, _Const0007 );
+  }
 }
 
 /* Variants derived from the class : 'Factory::DisplayAutoRun' */
@@ -353,9 +490,9 @@ void FactoryMain__Init( FactoryMain _this, XObject aLink, XHandle aArg )
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0009 ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const000A ));
-  CoreRectView__OnSetBounds( &_this->Menu, _Const000B );
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0011 ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0012 ));
+  CoreRectView__OnSetBounds( &_this->Menu, _Const0013 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 2 );
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
   _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
@@ -589,7 +726,7 @@ void FactoryDisplayManual__Init( FactoryDisplayManual _this, XObject aLink, XHan
   CoreRectView__OnSetBounds( _this, _Const0000 );
   _this->TotalPatternNum = 17;
   CoreRectView__OnSetBounds( &_this->FullScreen, _Const0000 );
-  ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0006 );
+  ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0005 );
   CoreRectView__OnSetBounds( &_this->CenterBlock, _Const0002 );
   ViewsRectangle_OnSetColor( &_this->CenterBlock, _Const0001 );
   ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
@@ -700,7 +837,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 1 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0006 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0005 );
     }
     break;
 
@@ -718,7 +855,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0003 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0007 );
     }
     break;
 
@@ -727,7 +864,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0004 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0008 );
     }
     break;
 
@@ -736,7 +873,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0005 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0009 );
     }
     break;
 
@@ -754,7 +891,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0006 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0005 );
     }
     break;
 
@@ -763,7 +900,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const000C );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0014 );
     }
     break;
 
@@ -772,7 +909,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 1 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0007 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const000A );
     }
     break;
 
@@ -781,7 +918,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0007 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const000A );
     }
     break;
 
@@ -800,7 +937,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const000C );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0014 );
     }
     break;
 
@@ -834,7 +971,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
     case 15 :
     {
       ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceExternBitmap, ResourcesExternBitmap ), 
-      EwLoadString( &_Const0008 ));
+      EwLoadString( &_Const000B ));
       ViewsImage_OnSetBitmap( &_this->ImagePattern, ((ResourcesBitmap)EwGetAutoObject( 
       &ResourceExternBitmap, ResourcesExternBitmap )));
       ViewsImage_OnSetFrameNumber( &_this->ImagePattern, 0 );
@@ -847,7 +984,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const000D );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0015 );
     }
     break;
 

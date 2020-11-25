@@ -51,4 +51,10 @@ EW_RES_WITHOUT_VARIANTS( FontsFontNotoSansCjkJp24 )
 /* Table with links to derived variants of the font resource : 'Fonts::FontNotoSansCjkJp20' */
 EW_RES_WITHOUT_VARIANTS( FontsFontNotoSansCjkJp20 )
 
+/* Include a file containing the font resource : 'Fonts::NotoSansCjkJpMedium40pt' */
+#include "_FontsNotoSansCjkJpMedium40pt.h"
+
+/* Table with links to derived variants of the font resource : 'Fonts::NotoSansCjkJpMedium40pt' */
+EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkJpMedium40pt )
+
 /* Embedded Wizard */

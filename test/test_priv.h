@@ -18,6 +18,8 @@ extern "C"{
 
 void test_factory_int( void );
 void test_factory_proc( void );
+void test_burnin_int( void );
+void test_burnin_proc( void );
 
 #ifdef __cplusplus
 }

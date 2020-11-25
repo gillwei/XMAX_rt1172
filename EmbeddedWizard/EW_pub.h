@@ -14,6 +14,7 @@
 extern "C" {
 #endif
 
+#include <stdbool.h>
 #include "Enum.h"
 #include "Core.h"
 /* TODO: uncomment following line when integrating with media manaber
@@ -39,8 +40,12 @@ void EW_notify_album_changed( void );
 void EW_notify_artist_changed( void );
 void EW_notify_playback_time_changed( void );
 void EW_notify_playback_state_changed( void );
+
 void EW_test_display_pattern( int index );
 void EW_quit_test( void );
+void EW_start_burn_in( void );
+void EW_update_burn_in_time( const uint32_t time_sec );
+void EW_show_burn_in_result( const bool result );
 
 /* TODO: uncomment following line when integrating with bluetooth manaber
 void EW_notify_bt_connection_result( const bt_connection_result_type result );

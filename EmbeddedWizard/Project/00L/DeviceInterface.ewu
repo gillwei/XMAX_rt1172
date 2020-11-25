@@ -49,7 +49,7 @@ class SystemDeviceClass : Templates::DeviceClass
   // Interfaces for factory test
   note group Note3
   {
-    attr Bounds = <10,300,520,460>;
+    attr Bounds = <10,300,910,460>;
   }
 
   $rect <40,390,240,430>
@@ -61,7 +61,7 @@ class SystemDeviceClass : Templates::DeviceClass
     FactoryTestSystemEvent.Trigger( TestContext, false );
   }
 
-  $rect <250,340,490,380>
+  $rect <490,390,710,430>
   object Core::SystemEvent FactoryTestSystemEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
@@ -257,6 +257,44 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
 
     return pure BtSoftwareVersion;
+  }
+
+  $rect <250,340,470,380>
+  $output true
+  method void StartBurnInTest()
+  {
+    trace "StartBurnInTest";
+    var Factory::TestContext TestContext = new Factory::TestContext;
+    TestContext.TestItem = Enum::FactoryTest.BurnInStart;
+    FactoryTestSystemEvent.Trigger( TestContext, false );
+  }
+
+  $rect <250,390,470,430>
+  $output true
+  method void UpdateBurnInTestTime( arg uint32 aTimeSec )
+  {
+    var Factory::TestContext TestContext = new Factory::TestContext;
+    TestContext.TestItem = Enum::FactoryTest.BurnInTimeUpdate;
+    TestContext.Data = ( int32 )aTimeSec;
+    FactoryTestSystemEvent.Trigger( TestContext, false );
+  }
+
+  $rect <499,340,709,380>
+  $output true
+  method void ShowBurnInTestResult( arg bool aResult )
+  {
+    trace "ShowBurnInTestResult: ", aResult;
+    var Factory::TestContext TestContext = new Factory::TestContext;
+    TestContext.TestItem = Enum::FactoryTest.BurnInResult;
+    if( aResult )
+    {
+      TestContext.Data = 1;
+    }
+    else
+    {
+      TestContext.Data = 0;
+    }
+    FactoryTestSystemEvent.Trigger( TestContext, false );
   }
 }
 

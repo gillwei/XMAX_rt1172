@@ -15,11 +15,20 @@ $rect <30,70,230,110>
 $output false
 enum FactoryTest
 {
-  $rect <10,10,210,50>
+  $rect <10,10,220,50>
   item Quit;
 
-  $rect <10,60,210,100>
+  $rect <10,60,220,100>
   item Display;
+
+  $rect <10,110,220,150>
+  item BurnInStart;
+
+  $rect <10,160,220,200>
+  item BurnInTimeUpdate;
+
+  $rect <10,210,220,250>
+  item BurnInResult;
 }
 
 $rect <30,130,230,170>

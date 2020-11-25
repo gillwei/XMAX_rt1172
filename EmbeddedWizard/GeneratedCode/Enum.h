@@ -53,7 +53,10 @@ typedef enum
 typedef enum
 {
   EnumFactoryTestQuit                   = 0,
-  EnumFactoryTestDisplay                = 1
+  EnumFactoryTestDisplay                = 1,
+  EnumFactoryTestBurnInStart            = 2,
+  EnumFactoryTestBurnInTimeUpdate       = 3,
+  EnumFactoryTestBurnInResult           = 4
 } EnumFactoryTest;
 
 /* User defined enumeration: 'Enum::CommandType' */

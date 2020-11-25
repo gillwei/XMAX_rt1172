@@ -54,6 +54,9 @@ EW_DECLARE_FONT_RES( FontsFontNotoSansCjkJp24 )
 /* This is a font resource. */
 EW_DECLARE_FONT_RES( FontsFontNotoSansCjkJp20 )
 
+/* This is a font resource. */
+EW_DECLARE_FONT_RES( FontsNotoSansCjkJpMedium40pt )
+
 #ifdef __cplusplus
   }
 #endif

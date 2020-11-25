@@ -3,14 +3,14 @@
 $rect <50,110,290,150>
 class DisplayAutoRun : Components::BaseComponent
 {
-  $rect <10,290,210,330>
-  inherited property Bounds = <0,0,480,272>;
-
   $rect <20,340,200,380>
   inherited method Init()
   {
     PatternIdx = 0;
   }
+
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
 
   $rect <230,290,430,330>
   inherited slot OnLongKeyPressed
@@ -118,6 +118,114 @@ class DisplayAutoRun : Components::BaseComponent
     preset Bounds = <0,0,480,272>;
     preset Bitmap = Resource::DisplayTest;
     preset Visible = false;
+  }
+
+  $rect <830,10,1030,50>
+  property bool BurnInEnabled = false;
+
+  $rect <830,58,1030,98>
+  onset BurnInEnabled
+  {
+    trace "BurnInEnabled: ", value;
+    if( pure BurnInEnabled != value )
+    {
+      pure BurnInEnabled = value;
+      BurnInTimeText.Visible = value;
+      BurnInResultText.Visible = value;
+      FactoryTestEventHandler.Enabled = value;
+    }
+
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text BurnInTimeText
+  {
+    preset Bounds = <78,15,405,99>;
+    preset String = "00:00:00";
+    preset Font = Fonts::NotoSansCjkJpMedium40pt;
+    preset Color = #000000FF;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text BurnInResultText
+  {
+    preset Bounds = <125,126,343,225>;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium40pt;
+    preset Color = #000000FF;
+    preset Visible = false;
+  }
+
+  $rect <830,106,1100,146>
+  object Core::SystemEventHandler FactoryTestEventHandler
+  {
+    preset OnEvent = OnFactoryTestEventReceivedSlot;
+    preset Enabled = false;
+    preset Event = DeviceInterface::SystemDevice.FactoryTestSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <830,154,1100,194>
+  slot OnFactoryTestEventReceivedSlot
+  {
+    var Factory::TestContext TestContext = ( Factory::TestContext )FactoryTestEventHandler.Context;
+    if( null != TestContext )
+    {
+      switch( TestContext.TestItem )
+      {
+        case Enum::FactoryTest.BurnInTimeUpdate:
+        {
+          UpdateBurnInTime( TestContext.Data );
+        }
+        case Enum::FactoryTest.BurnInResult:
+        {
+          ShowBurnInTestResult( TestContext.Data );
+        }
+        default:;
+      }
+    }
+  }
+
+  $rect <830,202,1040,242>
+  method void UpdateBurnInTime( arg int32 aTimeSec )
+  {
+    var int32 hour   = aTimeSec / 3600;
+    var int32 minute = ( aTimeSec / 60 ) % 60;
+    var int32 second = aTimeSec % 60;
+    var string time_str;
+
+    time_str = string( hour ) + ":";
+    if( minute < 10 )
+    {
+      time_str += "0"; 
+    }
+    time_str += string( minute ) + ":"; 
+
+    if( second < 10 )
+    {
+      time_str += '0'; 
+    }
+    time_str += string( second ); 
+
+    BurnInTimeText.String = time_str;
+
+  }
+
+  $rect <830,250,1040,290>
+  method void ShowBurnInTestResult( arg int32 aResult )
+  {
+    if( aResult )
+    {
+      BurnInResultText.String = "PASS";
+      BurnInResultText.Color = #00FF00FF;
+    }
+    else
+    {
+      BurnInResultText.String = "FAIL";
+      BurnInResultText.Color = #FF0000FF;
+    }
   }
 }
 

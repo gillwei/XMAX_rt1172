@@ -44,9 +44,11 @@
 
 #include "_ComponentsBaseComponent.h"
 #include "_CoreKeyPressHandler.h"
+#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -103,8 +105,12 @@ EW_DEFINE_FIELDS( FactoryDisplayAutoRun, ComponentsBaseComponent )
   EW_OBJECT  ( FullScreen,      ViewsRectangle )
   EW_OBJECT  ( CenterBlock,     ViewsRectangle )
   EW_OBJECT  ( ImagePattern,    ViewsImage )
+  EW_OBJECT  ( BurnInTimeText,  ViewsText )
+  EW_OBJECT  ( BurnInResultText, ViewsText )
+  EW_OBJECT  ( FactoryTestEventHandler, CoreSystemEventHandler )
   EW_PROPERTY( PatternIdx,      XInt32 )
   EW_VARIABLE( TotalPatternNum, XInt32 )
+  EW_PROPERTY( BurnInEnabled,   XBool )
 EW_END_OF_FIELDS( FactoryDisplayAutoRun )
 
 /* Virtual Method Table (VMT) for the class : 'Factory::DisplayAutoRun' */
@@ -176,6 +182,23 @@ void FactoryDisplayAutoRun_OnSetPatternIdx( FactoryDisplayAutoRun _this, XInt32
 /* 'C' function for method : 'Factory::DisplayAutoRun.OnTimerNextPatternSlot()' */
 void FactoryDisplayAutoRun_OnTimerNextPatternSlot( FactoryDisplayAutoRun _this, 
   XObject sender );
+
+/* 'C' function for method : 'Factory::DisplayAutoRun.OnSetBurnInEnabled()' */
+void FactoryDisplayAutoRun_OnSetBurnInEnabled( FactoryDisplayAutoRun _this, XBool 
+  value );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void FactoryDisplayAutoRun_OnFactoryTestEventReceivedSlot( FactoryDisplayAutoRun _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Factory::DisplayAutoRun.UpdateBurnInTime()' */
+void FactoryDisplayAutoRun_UpdateBurnInTime( FactoryDisplayAutoRun _this, XInt32 
+  aTimeSec );
+
+/* 'C' function for method : 'Factory::DisplayAutoRun.ShowBurnInTestResult()' */
+void FactoryDisplayAutoRun_ShowBurnInTestResult( FactoryDisplayAutoRun _this, XInt32 
+  aResult );
 
 #ifdef __cplusplus
   }

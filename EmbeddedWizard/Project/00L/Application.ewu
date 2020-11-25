@@ -5,14 +5,14 @@ $rect <20,20,220,60>
 $output false
 class Application : Core::Root
 {
-  $rect <10,290,200,330>
-  inherited property Bounds = <0,0,480,272>;
-
   $rect <10,340,200,380>
   inherited method Init()
   {
     ShowDisclaimer();
   }
+
+  $rect <10,290,200,330>
+  inherited property Bounds = <0,0,480,272>;
 
   $rect <230,290,440,330>
   slot ProcKeyHoldSlot
@@ -168,6 +168,12 @@ class Application : Core::Root
             PresentDialog( DisplayTestPage, null, null, null, null, null, null, null, null, false );
           }
           DisplayTestPage.PatternIdx = TestContext.Data;
+        }
+        case Enum::FactoryTest.BurnInStart:
+        {
+          var Factory::DisplayAutoRun DisplayAutoRunDialog = new Factory::DisplayAutoRun;
+          DisplayAutoRunDialog.BurnInEnabled = true;
+          PresentDialog( DisplayAutoRunDialog, null, null, null, null, null, null, null, null, false );
         }
         case Enum::FactoryTest.Quit:
         {

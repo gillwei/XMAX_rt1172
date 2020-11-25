@@ -36,6 +36,7 @@
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
+#include "_FactoryDisplayAutoRun.h"
 #include "_FactoryDisplayManual.h"
 #include "_FactoryTestContext.h"
 #include "_MediaMain.h"
@@ -309,6 +310,16 @@ void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this
         }
 
         FactoryDisplayManual_OnSetPatternIdx( _this->DisplayTestPage, TestContext->Data );
+      }
+      break;
+
+      case EnumFactoryTestBurnInStart :
+      {
+        FactoryDisplayAutoRun DisplayAutoRunDialog = EwNewObject( FactoryDisplayAutoRun, 
+          0 );
+        FactoryDisplayAutoRun_OnSetBurnInEnabled( DisplayAutoRunDialog, 1 );
+        CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)DisplayAutoRunDialog ), 
+        0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
       }
       break;
 

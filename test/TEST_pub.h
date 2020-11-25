@@ -15,7 +15,8 @@ extern "C"{
 #endif
 
 #define UNIT_TEST_FACTORY       ( 0 )
-#define UNIT_TEST_ENABLE        ( UNIT_TEST_FACTORY )
+#define UNIT_TEST_BURNIN        ( 0 )
+#define UNIT_TEST_ENABLE        ( UNIT_TEST_FACTORY | UNIT_TEST_BURNIN )
 
 void TEST_init( void );
 

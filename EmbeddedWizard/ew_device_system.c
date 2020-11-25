@@ -51,12 +51,30 @@
     static int ew_notify_factory_reset_complete( void );
 #endif
 
+#ifdef _DeviceInterfaceSystemDeviceClass__StartBurnInTest_
+    static int ew_start_burn_in_test( void );
+#endif
+
+#ifdef _DeviceInterfaceSystemDeviceClass__UpdateBurnInTestTime_
+    static int ew_update_burn_in_test_time( void );
+#endif
+
+#ifdef _DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult_
+    static int ew_show_burn_in_test_result( void );
+#endif
+
 #define ESN_STR_MAX_LEN             ( 10 )
 #define INVALID_ESN                 ( 0xFFFFFFFF )
 
 #define DEFAULT_LAST_PAGE_INDEX     ( 0 )
 #define DEFAULT_LANGUAGE            ( 0 )
 #define FACTORY_RESET_NUM           ( 2 )
+
+#define FACTORY_TEST_EVENT_DISP_PATTERN         ( 1 << 0 )
+#define FACTORY_TEST_EVENT_DISP_QUIT            ( 1 << 1 )
+#define FACTORY_TEST_EVENT_BURNIN_START         ( 1 << 2 )
+#define FACTORY_TEST_EVENT_BURNIN_TIME_UPDATE   ( 1 << 3 )
+#define FACTORY_TEST_EVENT_BURNIN_RESULT        ( 1 << 4 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -87,14 +105,25 @@
             ew_system_notify_esn,
         #endif
         #ifdef _DeviceInterfaceSystemDeviceClass__NotifyFactoryResetComplete_
-            ew_notify_factory_reset_complete
+            ew_notify_factory_reset_complete,
+        #endif
+        #ifdef _DeviceInterfaceSystemDeviceClass__StartBurnInTest_
+            ew_start_burn_in_test,
+        #endif
+        #ifdef _DeviceInterfaceSystemDeviceClass__UpdateBurnInTestTime_
+            ew_update_burn_in_test_time,
+        #endif
+        #ifdef _DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult_
+            ew_show_burn_in_test_result
         #endif
         };
     const int num_of_system_func = sizeof( system_function_lookup_table )/sizeof( system_device_function* );
 
-    static int is_quit_test = 0;
-    static int is_display_test_requested = 0;
-    static int display_test_pattern_index = 0;
+    static int      factory_test_event = 0;
+    static int      factory_test_disp_pattern_idx = 0;
+    static bool     factory_test_burn_in_result = false;
+    static uint32_t factory_test_burn_in_time_sec = 0;
+
     static int is_esn_read = 0;
     static int is_factory_reset_complete = 0;
     static int factory_reset_count = 0;
@@ -354,10 +383,10 @@ XBool ew_is_debug_build
         )
     {
     int need_update = 0;
-    if( is_display_test_requested )
+    if( factory_test_event & FACTORY_TEST_EVENT_DISP_PATTERN )
         {
-        is_display_test_requested = 0;
-        DeviceInterfaceSystemDeviceClass__TestDisplayPattern( device_object, display_test_pattern_index );
+        factory_test_event &= ~FACTORY_TEST_EVENT_DISP_PATTERN;
+        DeviceInterfaceSystemDeviceClass__TestDisplayPattern( device_object, factory_test_disp_pattern_idx );
         need_update = 1;
         }
     return need_update;
@@ -379,10 +408,85 @@ XBool ew_is_debug_build
         )
     {
     int need_update = 0;
-    if( is_quit_test )
+    if( factory_test_event & FACTORY_TEST_EVENT_DISP_QUIT )
         {
-        is_quit_test = 0;
+        factory_test_event &= ~FACTORY_TEST_EVENT_DISP_QUIT;
         DeviceInterfaceSystemDeviceClass_QuitTest( device_object );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_start_burn_in_test
+*
+* Notify EW GUI to start burn in test
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceSystemDeviceClass__StartBurnInTest_
+    static int ew_start_burn_in_test
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( factory_test_event & FACTORY_TEST_EVENT_BURNIN_START )
+        {
+        factory_test_event &= ~FACTORY_TEST_EVENT_BURNIN_START;
+        DeviceInterfaceSystemDeviceClass_StartBurnInTest( device_object );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_start_burn_in_test
+*
+* Notify EW GUI to update burn in test time
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceSystemDeviceClass__UpdateBurnInTestTime_
+    static int ew_update_burn_in_test_time
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( factory_test_event & FACTORY_TEST_EVENT_BURNIN_TIME_UPDATE )
+        {
+        factory_test_event &= ~FACTORY_TEST_EVENT_BURNIN_TIME_UPDATE;
+        DeviceInterfaceSystemDeviceClass_UpdateBurnInTestTime( device_object, factory_test_burn_in_time_sec );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_start_burn_in_test
+*
+* Notify EW GUI to update burn in test time
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult_
+    static int ew_show_burn_in_test_result
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( factory_test_event & FACTORY_TEST_EVENT_BURNIN_RESULT )
+        {
+        factory_test_event &= ~FACTORY_TEST_EVENT_BURNIN_RESULT;
+        DeviceInterfaceSystemDeviceClass_ShowBurnInTestResult( device_object, factory_test_burn_in_result );
         need_update = 1;
         }
     return need_update;
@@ -596,8 +700,8 @@ void EW_test_display_pattern
     )
 {
 #ifdef _DeviceInterfaceSystemDeviceClass_
-    display_test_pattern_index = index;
-    is_display_test_requested = 1;
+    factory_test_disp_pattern_idx = index;
+    factory_test_event |= FACTORY_TEST_EVENT_DISP_PATTERN;
     EwBspEventTrigger();
 #endif
 }
@@ -616,8 +720,70 @@ void EW_quit_test
     )
 {
 #ifdef _DeviceInterfaceSystemDeviceClass_
-    is_quit_test = 1;
+    factory_test_event |= FACTORY_TEST_EVENT_DISP_QUIT;
     EwBspEventTrigger();
 #endif
 }
 
+/*********************************************************************
+*
+* @public
+* EW_start_burn_in
+*
+* Start Embedded Wizard burn-in UI
+*
+*********************************************************************/
+void EW_start_burn_in
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceSystemDeviceClass_
+    factory_test_event |= FACTORY_TEST_EVENT_BURNIN_START;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_update_burn_in_time
+*
+* Update burn in test time
+*
+* @param time_sec The burn-in time in second
+*
+*********************************************************************/
+void EW_update_burn_in_time
+    (
+    const uint32_t time_sec
+    )
+{
+#ifdef _DeviceInterfaceSystemDeviceClass_
+    factory_test_burn_in_time_sec = time_sec;
+    factory_test_event |= FACTORY_TEST_EVENT_BURNIN_TIME_UPDATE;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_show_burn_in_result
+*
+* Show burn-in test result
+*
+* @param result The burn-in test result
+*
+*********************************************************************/
+void EW_show_burn_in_result
+    (
+    const bool result
+    )
+{
+#ifdef _DeviceInterfaceSystemDeviceClass_
+    factory_test_burn_in_result = result;
+    factory_test_event |= FACTORY_TEST_EVENT_BURNIN_RESULT;
+    EwBspEventTrigger();
+#endif
+}

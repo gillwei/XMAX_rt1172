@@ -84,3 +84,20 @@ resource Resources::Font FontNotoSansCjkJp20
   attr fontheightmode HeightMode = Compatible;
   attr fontrowdistance RowDistance;
 }
+
+// This is a font resource.
+$rect <20,360,280,400>
+$output false
+resource Resources::Font NotoSansCjkJpMedium40pt
+{
+  attr fontname FontName = Noto Sans CJK JP Medium;
+  attr fontheight Height = 80;
+  attr fontquality Quality = High;
+  attr fontranges Ranges = .\glyph\glyph-burnin.txt;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontheightmode HeightMode = Popular;
+  attr fontrowdistance RowDistance;
+}

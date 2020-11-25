@@ -141,6 +141,37 @@ void DeviceInterfaceSystemDeviceClass_SetBrightness( DeviceInterfaceSystemDevice
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetBtSoftwareVersion()' */
 XString DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( DeviceInterfaceSystemDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.StartBurnInTest()' */
+void DeviceInterfaceSystemDeviceClass_StartBurnInTest( DeviceInterfaceSystemDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.StartBurnInTest()' */
+void DeviceInterfaceSystemDeviceClass__StartBurnInTest( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.StartBurnInTest(). */
+#define _DeviceInterfaceSystemDeviceClass__StartBurnInTest_
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.UpdateBurnInTestTime()' */
+void DeviceInterfaceSystemDeviceClass_UpdateBurnInTestTime( DeviceInterfaceSystemDeviceClass _this, 
+  XUInt32 aTimeSec );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.UpdateBurnInTestTime()' */
+void DeviceInterfaceSystemDeviceClass__UpdateBurnInTestTime( void* _this, XUInt32 
+  aTimeSec );
+
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.UpdateBurnInTestTime(). */
+#define _DeviceInterfaceSystemDeviceClass__UpdateBurnInTestTime_
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ShowBurnInTestResult()' */
+void DeviceInterfaceSystemDeviceClass_ShowBurnInTestResult( DeviceInterfaceSystemDeviceClass _this, 
+  XBool aResult );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.ShowBurnInTestResult()' */
+void DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult( void* _this, XBool 
+  aResult );
+
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.ShowBurnInTestResult(). */
+#define _DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult_
+
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );
 
