@@ -863,11 +863,11 @@ switch( inst_id )
         {
         if( data[0] == 0 )
             {
-            // EW_quit_test();
+            EW_quit_test();
             }
         else
             {
-            // EW_test_display_pattern( data[0] );
+            EW_test_display_pattern( data[0] );
             }
         IOPDone = true;
         }
