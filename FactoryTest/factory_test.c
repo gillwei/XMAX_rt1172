@@ -1380,7 +1380,7 @@ while( TRUE )
         {
         burnInStage = IOP_BURNIN_STAGE_START;
         burnInState = IOP_BURNIN_STATE_VALID;
-        // TODO: Call EW API to go to burn in page
+        EW_start_burn_in();
         }
     else if( IOP_BURNIN_STATE_NONE == burnInState )
         {
@@ -1399,7 +1399,6 @@ while( TRUE )
             if( curr_burnInVimTemp >= BURN_IN_QUAL_TEMP )
                 {
                 burnInStage = IOP_BURNIN_STAGE_RUNNING;
-                // TODO: Call EW API to start show time
                 }
             }
             break;
@@ -1409,6 +1408,7 @@ while( TRUE )
             if( curr_burnInVimTemp >= BURN_IN_QUAL_TEMP )
                 {
                 burnInTime++;
+                EW_update_burn_in_time( burnInTime );
                 if( burnInTime >= burnInTargetTime )
                     {
                     burnInResult = BURN_IN_SUCCESS;
@@ -1416,6 +1416,7 @@ while( TRUE )
                     burnInState = IOP_BURNIN_STATE_NONE;
                     EEPM_set_start_burn_in( FALSE, burnin_start_write_cb );
                     burnInStage = IOP_BURNIN_STAGE_PASS;
+                    EW_show_burn_in_result( true );
                     }
                 }
             else
