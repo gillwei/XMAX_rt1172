@@ -625,7 +625,7 @@ void BTM_notify_EW_connection_status
     )
 {
 stop_timeout_timer();
-//EW_notify_bt_connection_result( bt_connection_type );
+EW_notify_bt_connection_result( bt_connection_type );
 }
 
 /*********************************************************************

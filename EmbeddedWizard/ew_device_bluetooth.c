@@ -74,10 +74,7 @@
 
     static int  is_bt_passkey_received = 0;
     static int  is_bt_connection_result_updated = 0;
-    /* TODO: uncomment these lines when integrating with bluetooth manager
     static char bt_passkey[BT_PIN_CODE_LEN + 1] = "";
-    */
-    static char bt_passkey[7] = "";
     static EnumBtResult bt_connection_result = 0;
 
     static int  is_notify_bt_fw_status = 0;
@@ -277,9 +274,7 @@ void ew_bt_get_local_device_name
     uint8_t** device_name
     )
 {
-/* TODO: uncomment these lines when integrating with bluetooth manager
 BTM_get_local_device_name( device_name );
-*/
 }
 
 /*********************************************************************
@@ -295,9 +290,7 @@ void ew_bt_get_local_device_address
     uint8_t* device_address
     )
 {
-/* TODO: uncomment these lines when integrating with bluetooth manager
 BTM_get_local_device_address( device_address );
-*/
 }
 
 /*********************************************************************
@@ -315,10 +308,7 @@ bool ew_bt_is_max_paired_device_num
     void
     )
 {
-/* TODO: uncomment these lines when integrating with bluetooth manager
 return BTM_is_max_paired_device_num();
-*/
-return false;
 }
 
 /*********************************************************************
@@ -336,10 +326,7 @@ int ew_bt_get_paired_device_num
     void
     )
 {
-/* TODO: uncomment these lines when integrating with bluetooth manager
 return BTM_get_paired_device_num();
-*/
-return 0;
 }
 
 /*********************************************************************
@@ -361,9 +348,7 @@ void ew_bt_get_paired_device_at_index
     bool*     is_connected
     )
 {
-/* TODO: uncomment these lines when integrating with bluetooth manager
 BTM_get_paired_device_info( paired_device_idx, device_name, is_connected );
-*/
 }
 
 /*********************************************************************
@@ -398,9 +383,7 @@ void ew_bt_connect_paired_device
     const int paired_device_idx
     )
 {
-/* TODO: uncomment these lines when integrating with bluetooth manager
 BTM_connect_paired_device( paired_device_idx );
-*/
 }
 
 /*********************************************************************
@@ -418,9 +401,7 @@ void ew_bt_disconnect_paired_device
     const int paired_device_idx
     )
 {
-/* TODO: uncomment these lines when integrating with bluetooth manager
 BTM_disconnect_paired_device( paired_device_idx );
-*/
 }
 
 /*********************************************************************
@@ -438,9 +419,7 @@ void ew_bt_unpair_paired_device
     const int paired_device_idx
     )
 {
-/* TODO: uncomment these lines when integrating with bluetooth manager
 BTM_unpair_paired_device( paired_device_idx );
-*/
 }
 
 /*********************************************************************
@@ -459,9 +438,7 @@ void ew_bt_set_enable
     bool state
     )
 {
-/* TODO: uncomment these lines when integrating with bluetooth manager
 BTM_set_enable_state( state );
-*/
 }
 
 /*********************************************************************
@@ -481,12 +458,10 @@ bool ew_bt_get_enable
     )
 {
 bool result = false;
-/* TODO: uncomment these lines when integrating with bluetooth manager
 if( BTM_get_enable_state() > 0 )
     {
     result = true;
     }
-*/
 return result;
 }
 
@@ -507,9 +482,7 @@ void ew_bt_set_discoverable
     bool state
     )
 {
-/* TODO: uncomment these lines when integrating with bluetooth manager
 BTM_set_discoverable_state( ( int )state );
-*/
 }
 
 /*********************************************************************
@@ -529,12 +502,10 @@ bool ew_bt_get_discoverable
     )
 {
 bool result = false;
-/* TODO: uncomment these lines when integrating with bluetooth manager
 if( BTM_get_discoverable_state() > 0 )
     {
     result = true;
     }
-*/
 return result;
 }
 
@@ -554,9 +525,7 @@ void ew_bt_set_autoconnect
     bool state
     )
 {
-/* TODO: uncomment these lines when integrating with bluetooth manager
 BTM_set_autoconnect_state( ( int )state );
-*/
 }
 
 /*********************************************************************
@@ -576,12 +545,10 @@ bool ew_bt_get_autoconnect
     )
 {
 bool result = false;
-/* TODO: uncomment these lines when integrating with bluetooth manager
 if( BTM_get_autoconnect_state() > 0 )
     {
     result = true;
     }
-*/
 return result;
 }
 
@@ -601,10 +568,8 @@ void EW_notify_bt_passkey_generated
     )
 {
 #ifdef _DeviceInterfaceBluetoothDeviceClass_
-    /* TODO: uncomment these lines when integrating with bluetooth manager
     memcpy( bt_passkey, passkey, BT_PIN_CODE_LEN );
     bt_passkey[BT_PIN_CODE_LEN] = '\0';
-    */
     is_bt_passkey_received = 1;
     EwBspEventTrigger();
 #endif
@@ -620,7 +585,6 @@ void EW_notify_bt_passkey_generated
 * @param result The BT connection result of bt_connection_result_type
 *
 *********************************************************************/
-/* TODO: uncomment following line when integrating with bluetooth manaber
 void EW_notify_bt_connection_result
     (
     const bt_connection_result_type result
@@ -646,7 +610,6 @@ void EW_notify_bt_connection_result
     EwBspEventTrigger();
 #endif
 }
-*/
 
 /*********************************************************************
 *
