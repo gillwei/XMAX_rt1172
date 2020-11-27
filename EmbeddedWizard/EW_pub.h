@@ -17,9 +17,7 @@ extern "C" {
 #include <stdbool.h>
 #include "Enum.h"
 #include "Core.h"
-/* TODO: uncomment following line when integrating with media manager
 #include "MM_pub_ams_type.h"
-*/
 #include "BTM_pub.h"
 
 typedef enum

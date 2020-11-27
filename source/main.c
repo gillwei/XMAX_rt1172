@@ -35,6 +35,7 @@
 #include "TEST_pub.h"
 #include "HCI_pub.h"
 #include "BTM_pub.h"
+#include "MM_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -111,6 +112,7 @@ BTM_init();
 VI_init();
 JPEG_init();
 NAVI_init();
+MM_init();
 
 #if( UNIT_TEST_ENABLE )
     TEST_init();

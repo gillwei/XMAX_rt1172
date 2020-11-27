@@ -535,7 +535,7 @@ while( l_num_bytes > 0 )
                 break;
 
             case HCI_CONTROL_GROUP_AVRC_CONTROLLER:
-                //hci_avrc_event_handler( l_p_pkt_store->opcode, l_p_pkt_store->length, &l_p_pkt_store->data[0] );
+                hci_avrc_event_handler( l_p_pkt_store->opcode, l_p_pkt_store->length, &l_p_pkt_store->data[0] );
                 break;
 
             default:

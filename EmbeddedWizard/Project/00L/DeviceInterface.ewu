@@ -400,10 +400,9 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     {
       // empty body
     }
-    /* TODO: uncomment these lines when integrating with media manager
     native( cmd_idx )
     {
-      ams_remote_command cmd;
+      ams_remote_command cmd = AMS_REMOTE_COMMAND_CNT;
       switch( cmd_idx )
       {
         case 0:
@@ -423,7 +422,6 @@ class MediaManagerDeviceClass : Templates::DeviceClass
       }
       ew_send_command( cmd );
     }
-    */
     $endif
   }
 
@@ -497,7 +495,6 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     var string p_name = "";
     var int32 p_state = 0;
     $if !$prototyper
-    /* TODO: uncomment these lines when integrating with media manager
     native ( p_name, p_state )
     {
       mm_media_player_obj mp_state;
@@ -505,7 +502,6 @@ class MediaManagerDeviceClass : Templates::DeviceClass
       p_name = EwNewStringAnsi( mp_state.str.player_name );
       p_state = mp_state.playback_state;
     }
-    */
     $endif
     PlayerName = p_name;
     PlaybackState = p_state;
@@ -517,7 +513,6 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     var int32 ela_time = 0;
     var int32 dur = 0;
     $if !$prototyper
-    /* TODO: uncomment these lines when integrating with media manager
     native ( ela_time, dur )
     {
       mm_media_player_obj mp_state;
@@ -525,7 +520,6 @@ class MediaManagerDeviceClass : Templates::DeviceClass
       ela_time = mp_state.current_elapsed_time_sec;
       dur = mp_state.duration_sec;
     }
-    */
     $endif
     ElapsedTimeSec = ela_time;
     DurationTimeSec = dur;
@@ -538,7 +532,6 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     var string media_album = "";
     var string media_title = "";
     $if !$prototyper
-    /* TODO: uncomment these lines when integrating with media manager
     native ( media_artist, media_album, media_title )
     {
       mm_media_player_obj mp_state;
@@ -547,7 +540,6 @@ class MediaManagerDeviceClass : Templates::DeviceClass
       media_album = EwNewStringUtf8( ( const unsigned char* )mp_state.str.track_album, ( int )strlen( mp_state.str.track_album ) );
       media_title = EwNewStringUtf8( ( const unsigned char* )mp_state.str.track_title, ( int )strlen( mp_state.str.track_title ) );
     }
-    */
     $endif
     Artist = media_artist;
     Album = media_album;

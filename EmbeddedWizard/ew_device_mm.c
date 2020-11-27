@@ -19,10 +19,8 @@
 #include "DeviceInterface.h"
 #include <string.h>
 #include <stdbool.h>
-/* TODO: uncomment these lines when integrating with media manager
 #include "MM_pub.h"
 #include "MM_pub_ams_type.h"
-*/
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -216,11 +214,9 @@ int need_update = 0;
 if( is_title_changed )
     {
     is_title_changed = 0;
-    /* TODO: uncomment these lines when integrating with media manager
     mm_media_player_obj media_player = MM_get_media_player_state();
     XString xstring_title = EwNewStringUtf8( ( const unsigned char* )media_player.str.track_title, ( int )strlen( media_player.str.track_title ) );
     DeviceInterfaceMediaManagerDeviceClass__NotifyTitleChanged( device_object, xstring_title );
-    */
     need_update = 1;
     }
 return need_update;
@@ -245,11 +241,9 @@ int need_update = 0;
 if( is_album_changed )
     {
     is_album_changed = 0;
-    /* TODO: uncomment these lines when integrating with media manager
     mm_media_player_obj media_player = MM_get_media_player_state();
     XString xstring_album = EwNewStringUtf8( ( const unsigned char* )media_player.str.track_album, ( int )strlen( media_player.str.track_album ) );
     DeviceInterfaceMediaManagerDeviceClass__NotifyAlbumChanged( device_object, xstring_album );
-    */
     need_update = 1;
     }
 return need_update;
@@ -274,11 +268,9 @@ int need_update = 0;
 if( is_artist_changed )
     {
     is_artist_changed = 0;
-    /* TODO: uncomment these lines when integrating with media manager
     mm_media_player_obj media_player = MM_get_media_player_state();
     XString xstring_artist = EwNewStringUtf8( ( const unsigned char* )media_player.str.track_artist, ( int )strlen( media_player.str.track_artist ) );
     DeviceInterfaceMediaManagerDeviceClass__NotifyArtistChanged( device_object, xstring_artist );
-    */
     need_update = 1;
     }
 return need_update;
@@ -303,11 +295,9 @@ int need_update = 0;
 if( is_playback_time_changed )
     {
     is_playback_time_changed = 0;
-    /* TODO: uncomment these lines when integrating with media manager
     mm_media_player_obj media_player = MM_get_media_player_state();
     uint32_t remain_time_sec = ( media_player.duration_sec - media_player.current_elapsed_time_sec );
     DeviceInterfaceMediaManagerDeviceClass__NotifyPlayBackTimeChanged( device_object, media_player.current_elapsed_time_sec, media_player.duration_sec, remain_time_sec );
-    */
     need_update = 1;
     }
 return need_update;
@@ -332,10 +322,8 @@ int need_update = 0;
 if( is_playback_state_changed )
     {
     is_playback_state_changed = 0;
-    /* TODO: uncomment these lines when integrating with media manager
     mm_media_player_obj media_player = MM_get_media_player_state();
     DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged( device_object, media_player.playback_state );
-    */
     need_update = 1;
     }
 return need_update;
@@ -351,7 +339,6 @@ return need_update;
 * @return media player state data.
 *
 *********************************************************************/
-/* TODO: uncomment these lines when integrating with media manager
 mm_media_player_obj ew_get_media_player_state
     (
     void
@@ -359,7 +346,6 @@ mm_media_player_obj ew_get_media_player_state
 {
 return MM_get_media_player_state();
 }
-*/
 
 /*********************************************************************
 *
@@ -371,7 +357,6 @@ return MM_get_media_player_state();
 * @param command Ams remote command type.
 *
 *********************************************************************/
-/* TODO: uncomment these lines when integrating with media manager
 void ew_send_command
     (
     ams_remote_command command
@@ -382,7 +367,6 @@ if( !MM_send_command( command ) )
     EwPrint( "Send command Failed in MM_send_command\r\n" );
     }
 }
-*/
 
 /*********************************************************************
 *

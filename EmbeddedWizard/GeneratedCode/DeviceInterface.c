@@ -606,6 +606,28 @@ void DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( DeviceInterfaceMe
 
   if ( !!cmd_idx )
     ;
+
+  {
+    ams_remote_command cmd = AMS_REMOTE_COMMAND_CNT;
+    switch( cmd_idx )
+    {
+      case 0:
+        cmd = AMS_REMOTE_COMMAND_PLAY;
+        break;
+      case 1:
+        cmd = AMS_REMOTE_COMMAND_PAUSE;
+        break;
+      case 2:
+        cmd = AMS_REMOTE_COMMAND_NEXT_TRACK;
+        break;
+      case 3:
+        cmd = AMS_REMOTE_COMMAND_PREVIOUS_TRACK;
+        break;
+      default:
+        break;
+    }
+    ew_send_command( cmd );
+  }
 }
 
 /* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.OnSetPlaybackState()' */
@@ -684,6 +706,12 @@ void DeviceInterfaceMediaManagerDeviceClass_GetPlayerInfo( DeviceInterfaceMediaM
   XString p_name = 0;
   XInt32 p_state = 0;
 
+  {
+    mm_media_player_obj mp_state;
+    mp_state = ew_get_media_player_state();
+    p_name = EwNewStringAnsi( mp_state.str.player_name );
+    p_state = mp_state.playback_state;
+  }
   DeviceInterfaceMediaManagerDeviceClass_OnSetPlayerName( _this, p_name );
   DeviceInterfaceMediaManagerDeviceClass_OnSetPlaybackState( _this, p_state );
 }
@@ -694,6 +722,12 @@ void DeviceInterfaceMediaManagerDeviceClass_GetPlaybackInfo( DeviceInterfaceMedi
   XInt32 ela_time = 0;
   XInt32 dur = 0;
 
+  {
+    mm_media_player_obj mp_state;
+    mp_state = ew_get_media_player_state();
+    ela_time = mp_state.current_elapsed_time_sec;
+    dur = mp_state.duration_sec;
+  }
   _this->ElapsedTimeSec = ela_time;
   _this->DurationTimeSec = dur;
 }
@@ -705,6 +739,13 @@ void DeviceInterfaceMediaManagerDeviceClass_GetTrackInfo( DeviceInterfaceMediaMa
   XString media_album = 0;
   XString media_title = 0;
 
+  {
+    mm_media_player_obj mp_state;
+    mp_state = ew_get_media_player_state();
+    media_artist = EwNewStringUtf8( ( const unsigned char* )mp_state.str.track_artist, ( int )strlen( mp_state.str.track_artist ) );
+    media_album = EwNewStringUtf8( ( const unsigned char* )mp_state.str.track_album, ( int )strlen( mp_state.str.track_album ) );
+    media_title = EwNewStringUtf8( ( const unsigned char* )mp_state.str.track_title, ( int )strlen( mp_state.str.track_title ) );
+  }
   DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( _this, media_artist );
   DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum( _this, media_album );
   DeviceInterfaceMediaManagerDeviceClass_OnSetTitle( _this, media_title );
