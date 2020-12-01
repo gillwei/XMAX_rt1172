@@ -476,6 +476,8 @@ static void enter_snvs
     void
     )
 {
+/* set SNVS flag on SNVS_GPR32 bit 1 for future check */
+IOMUXC_SNVS_GPR->GPR32 |= IOMUXC_SNVS_GPR_GPR32_GPR( 1 << 1 );
 IOMUXC_SNVS_GPR->GPR37 |= IOMUXC_SNVS_GPR_GPR37_SNVS_TAMPER_PUE_MASK;
 SNVS->LPCR |= SNVS_LPCR_TOP(1);
 while( true )

@@ -57,6 +57,8 @@
 /*--------------------------------------------------------------------
                            MEMORY CONSTANTS
 --------------------------------------------------------------------*/
+#define GET_BOOT_RESET_FLAGS ( IOMUXC_SNVS_GPR->GPR32 )
+#define Enter_SNVS_Mode_Flag ( 1 << 1 ) // use bit 1 of GPR32
 
 /*--------------------------------------------------------------------
                                VARIABLES
@@ -92,6 +94,18 @@ BOARD_InitDebugConsole();
 
 PRINTF( "%s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE );
 
+if( GET_BOOT_RESET_FLAGS & IOMUXC_SNVS_GPR_GPR32_GPR( Enter_SNVS_Mode_Flag ) )
+    {
+    PRINTF( "Boot from SNVS\r\n" );
+    IOMUXC_SNVS_GPR->GPR32 &= ~IOMUXC_SNVS_GPR_GPR32_GPR( Enter_SNVS_Mode_Flag );
+    SNVS_LP_SRTC_StartTimer( SNVS );
+    }
+else
+    {
+    PRINTF( "Boot from Power on\r\n" );
+    RTC_init();
+    }
+
 if( BOARD_is_tft_connected() == TFT_CONNECTED )
     {
     EW_init();
@@ -104,7 +118,6 @@ else
 PERIPHERAL_init();
 PM_init();
 EEPM_init();
-RTC_init();
 WDG_init();
 HCI_init();
 FACTORY_init();
