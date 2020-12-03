@@ -45,7 +45,12 @@ CAN bus support
 /*------------------------------------------------------
 CAN bus Debug
 ------------------------------------------------------*/
-#define DEBUG_CAN_SUPPORT   FALSE
+#define DEBUG_TX_CAN_SUPPORT   FALSE
+
+/*------------------------------------------------------
+CAN bus Debug
+------------------------------------------------------*/
+#define DEBUG_RX_CAN_SUPPORT   FALSE
 
 /*------------------------------------------------------
 CAN Hardware N_As Transmit Timeout

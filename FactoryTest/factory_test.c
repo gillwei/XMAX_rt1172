@@ -29,19 +29,22 @@ extern "C"{
 #include "RTC_pub.h"
 #include "WDG_pub.h"
 
+#include "can_defs.h"
 #include "can_cfg.h"
 #include "can_drv.h"
 #include "can_dll_prv_par.h"
-// #include "CAN_nim_ctrl.h"
-#include "fsl_flexcan.h"
+#include "CAN_nim_ctrl.h"
+#include "can_flexcan.h"
+#include "can_flexcan_fcfg.h"
+
 #include "IOP_pub_inst.h"
 #include "IOP_pub_cmnd.h"
 #include "IOP_pub_vim_inst_prj.h"
 
 #include "factory_test.h"
- #include "HCI_pub.h"
- #include "BTM_pub.h"
- #include "hci_control_api.h"
+#include "HCI_pub.h"
+#include "BTM_pub.h"
+#include "hci_control_api.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -489,8 +492,8 @@ flexcan_frame_t frame;
 uint8_t temp_can_data[8] = { 0 };
 
 frame.id     = FLEXCAN_ID_STD( FT_REP_CAN_ID );
-frame.format = ( uint8_t )kFLEXCAN_FrameFormatStandard;
-frame.type   = ( uint8_t )kFLEXCAN_FrameTypeData;
+frame.format = ( uint8_t )CAN_STANDARD_MSG_TYPE;
+frame.type   = ( uint8_t )CAN_DATA_MSG_TYPE;
 frame.length = ( uint8_t )8;
 
 if( !queueIsEmpty() )
@@ -504,7 +507,8 @@ if( !queueIsEmpty() )
     frame.dataByte5 = temp_can_data[5];
     frame.dataByte6 = temp_can_data[6];
     frame.dataByte7 = temp_can_data[7];
-    FLEXCAN_TransferSendBlocking( CAN2, 8, &frame );
+
+    //FLEXCAN_TransferSendBlocking( CAN2, 8, &frame );
     if( iopDataHead == iopDataTail )
         {
         iopDataHead = IOP_QUEUE_INVALID;

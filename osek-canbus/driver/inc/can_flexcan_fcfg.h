@@ -76,85 +76,119 @@ FlexCAN Rx FIFO Filter helper macro.
 #define FLEXCAN_RX_FIFO_EXT_FILTER_TYPE_C_LOW(id)               FLEXCAN_RX_FIFO_EXT_MASK_TYPE_C_LOW(id)            //!<Extend Rx FIFO Filter helper macro Type C lower part helper macro.
 
 /*----------------------------------------------------------
-Message Buffer Receive ID
+Message Buffer Receive IDs
 ----------------------------------------------------------*/
-#define ID0_FUNCSW_STATUS_CAN0_ID       0x5A1
-#define CAN0_RX0_ID_STANDARD            FLEXCAN_ID_STD(ID0_FUNCSW_STATUS_CAN0_ID)
+#define RX_MB_DEF_MSK                   0x3FFFFFFF
+#define RX_MB_DEF_MSK_BIT(x)            ( ~( 1 << ( CAN_ID_STD_SHIFT + (x) ) ) )
 
-#define ID1_VEHICLE_INFO_CAN0_ID        0x5AA
-#define CAN0_RX1_ID_STANDARD            FLEXCAN_ID_STD(ID1_VEHICLE_INFO_CAN0_ID)
+#define RX0_ECU_INDCT_STAT              0x209
+#define CAN0_RX0_ECU_INDCT_STAT_STD     FLEXCAN_ID_STD(RX0_ECU_INDCT_STAT)
 
-#define ID2_FUNC_CNTRL_CAN0_ID          0x5AB
-#define CAN0_RX2_ID_STANDARD            FLEXCAN_ID_STD(ID2_FUNC_CNTRL_CAN0_ID)
+#define RX1_ECU_COM_DATA                0x350
+#define CAN0_RX1_ECU_COM_DATA_STD       FLEXCAN_ID_STD(RX1_ECU_COM_DATA)
 
-#define ID3_CLK_DATE_REQ_CAN0_ID        0x5AC
-#define CAN0_RX3_ID_STANDARD            FLEXCAN_ID_STD(ID3_CLK_DATE_REQ_CAN0_ID)
+#define RX2_RES_SUPPORT                 0x582
+#define CAN0_RX2_RES_SUPPORT_STD        FLEXCAN_ID_STD(RX2_RES_SUPPORT)
 
-#define ID4_UNIT_INFO_CAN0_ID           0x5AD
-#define CAN0_RX4_ID_STANDARD            FLEXCAN_ID_STD(ID4_UNIT_INFO_CAN0_ID)
+#define RX3_BRGTHNSS_CTRL               0x583
+#define CAN0_RX3_BRGTHNSS_CTRL_STD      FLEXCAN_ID_STD(RX3_BRGTHNSS_CTRL)
 
-#define ID5_REQ_SCRN_TRNSTN_CAN0_ID     0x5AE
-#define CAN0_RX5_ID_STANDARD            FLEXCAN_ID_STD(ID5_REQ_SCRN_TRNSTN_CAN0_ID)
+#define RX4_RES_MT_FUNC_CNT             0x585
+#define CAN0_RX4_RES_MT_FUNC_CNT_STD    FLEXCAN_ID_STD(RX4_RES_MT_FUNC_CNT)
 
-#define ID6_RES_REPRGRM_INFO_CAN0_ID    0x5AF
-#define CAN0_RX6_ID_STANDARD            FLEXCAN_ID_STD(ID6_RES_REPRGRM_INFO_CAN0_ID)
+#define RX5_VEHICLE_INFO                0x5A0
+#define CAN0_RX5_VEHICLE_INFO_STD       FLEXCAN_ID_STD(RX5_VEHICLE_INFO)
 
-#define ID7_RES_SCRN_TRNSTN2_CAN0_ID    0x5B1
-#define CAN0_RX7_ID_STANDARD            FLEXCAN_ID_STD(ID7_RES_SCRN_TRNSTN2_CAN0_ID)
+#define RX6_FUNCSW_STAT                 0x5A1
+#define CAN0_RX6_FUNCSW_STAT_STD        FLEXCAN_ID_STD(RX6_FUNCSW_STAT)
 
-#define NM_LOOP_BACK_RX_CAN_ID          0x226
-#define CAN0_RX8_ID_STANDARD            FLEXCAN_ID_STD(NM_LOOP_BACK_RX_CAN_ID)
+#define RX7_FUEL_RATE                   0x5A6
+#define CAN0_RX7_FUEL_RATE_STD          FLEXCAN_ID_STD(RX7_FUEL_RATE)
 
-#define TP_DIAG_ID_REQ_LINKCARD_CAN_ID  0x763
-#define CAN0_RX9_ID_STANDARD            FLEXCAN_ID_STD(TP_DIAG_ID_REQ_LINKCARD_CAN_ID)
+#define RX8_ODO_TRIP                    0x5A7
+#define CAN0_RX8_ODO_TRIP_STD           FLEXCAN_ID_STD(RX8_ODO_TRIP)
 
-#define TP_DIAG_ID_REQ_FUNC_CAN_ID      0x7FF
-#define CAN0_RX10_ID_STANDARD           FLEXCAN_ID_STD(TP_DIAG_ID_REQ_FUNC_CAN_ID)
+#define RX9_RES_RPRGRM_INFO             0x5AF
+#define CAN0_RX9_RES_RPRGRM_INFO_STD    FLEXCAN_ID_STD(RX9_RES_RPRGRM_INFO)
 
-#define TP_CAN0_ID_LINKCARD_FCF_CAN_ID  0x2C5
-#define CAN0_RX11_ID_STANDARD           FLEXCAN_ID_STD(TP_CAN0_ID_LINKCARD_FCF_CAN_ID)
+#define RXA_VEHICLE_INFO_2              0x5BA
+#define CAN0_RXA_VEHICLE_INFO_2_STD     FLEXCAN_ID_STD(RXA_VEHICLE_INFO_2)
 
-#define FT_REQ_LINKCARD_CAN_ID          0x691
-#define CAN0_RX12_ID_STANDARD           FLEXCAN_ID_STD(FT_REQ_LINKCARD_CAN_ID)
+#define RXB_VEHICLE_INFO_3              0x5BB
+#define CAN0_RXB_VEHICLE_INFO_3_STD     FLEXCAN_ID_STD(RXB_VEHICLE_INFO_3)
+
+#define RXC_VEHICLE_INFO_4              0x5BC
+#define CAN0_RXC_VEHICLE_INFO_4_STD     FLEXCAN_ID_STD(RXC_VEHICLE_INFO_4)
+
+#define RXD_MAINT_TRIP                  0x5BD
+#define CAN0_RXD_MAINT_TRIP_STD         FLEXCAN_ID_STD(RXD_MAINT_TRIP)
+
+#define RXE_HEATER_STAT                 0x5BE
+#define CAN0_RXE_HEATER_STAT_STD        FLEXCAN_ID_STD(RXE_HEATER_STAT)
+
+#define RXF_FACT_INSP_NS                0x5D5
+#define CAN0_RXF_FACT_INSP_NS_STD       FLEXCAN_ID_STD(RXF_FACT_INSP_NS)
+
+#define RXF_FACT_INSP2_GA               0x691
+#define CAN0_RXF_FACT_INSP2_GA_STD      FLEXCAN_ID_STD(RXF_FACT_INSP2_GA)
+
+#define RX_NM_AND_LP_BK                 0x226
+#define CAN0_RX_NM_AND_LP_BK_STD        FLEXCAN_ID_STD(RX_NM_AND_LP_BK)
+
+#define RX_DAIG_SEG1_MSK0               (RX_MB_DEF_MSK     & RX_MB_DEF_MSK_BIT(0) )
+#define RX_DAIG_SEG1_MSK1               (RX_DAIG_SEG1_MSK0 & RX_MB_DEF_MSK_BIT(1) )
+#define RX_DAIG_SEG1_MSK                (RX_DAIG_SEG1_MSK1 & RX_MB_DEF_MSK_BIT(2) )
+#define RX_DAIG_SEG1                    0x4C8
+#define CAN0_RX_DAIG_SEG1_STD           FLEXCAN_ID_STD(RX_DAIG_SEG1)
+
+#define RX_DAIG_SEG2_MSK0               (RX_MB_DEF_MSK     & RX_MB_DEF_MSK_BIT(0) )
+#define RX_DAIG_SEG2_MSK1               (RX_DAIG_SEG2_MSK0 & RX_MB_DEF_MSK_BIT(1) )
+#define RX_DAIG_SEG2_MSK                (RX_DAIG_SEG2_MSK1 & RX_MB_DEF_MSK_BIT(2) )
+#define RX_DAIG_SEG2                    0x4E8
+#define CAN0_RX_DAIG_SEG2_STD           FLEXCAN_ID_STD(RX_DAIG_SEG2)
+
+#define RX_DAIG_SEG3_MSK1               (RX_MB_DEF_MSK     & RX_MB_DEF_MSK_BIT(1) )
+#define RX_DAIG_SEG3_MSK                (RX_DAIG_SEG3_MSK1 & RX_MB_DEF_MSK_BIT(2) )
+#define RX_DAIG_SEG3                    0x4D9
+#define CAN0_RX_DAIG_SEG3_STD           FLEXCAN_ID_STD(RX_DAIG_SEG3)
+
+#define RX_DAIG_SEG4_MSK1               (RX_MB_DEF_MSK     & RX_MB_DEF_MSK_BIT(1) )
+#define RX_DAIG_SEG4_MSK                (RX_DAIG_SEG4_MSK1 & RX_MB_DEF_MSK_BIT(2) )
+#define RX_DAIG_SEG4                    0x4DA
+#define CAN0_RX_DAIG_SEG4_STD           FLEXCAN_ID_STD(RX_DAIG_SEG4)
+
+#define RX_DAIG_SEG5_MSK0               (RX_MB_DEF_MSK     & RX_MB_DEF_MSK_BIT(0) )
+#define RX_DAIG_SEG5_MSK1               (RX_DAIG_SEG5_MSK0 & RX_MB_DEF_MSK_BIT(1) )
+#define RX_DAIG_SEG5_MSK2               (RX_DAIG_SEG5_MSK1 & RX_MB_DEF_MSK_BIT(2) )
+#define RX_DAIG_SEG5_MSK                (RX_DAIG_SEG5_MSK2 & RX_MB_DEF_MSK_BIT(3) )
+#define RX_DAIG_SEG5_YDT                0x7C0
+#define CAN0_RX_DAIG_SEG5_YDT_STD       FLEXCAN_ID_STD(RX_DAIG_SEG5_YDT)
+
+#define RX_DAIG_SEG6_MSK0               (RX_MB_DEF_MSK     & RX_MB_DEF_MSK_BIT(0) )
+#define RX_DAIG_SEG6_MSK1               (RX_DAIG_SEG6_MSK0 & RX_MB_DEF_MSK_BIT(1) )
+#define RX_DAIG_SEG6_MSK2               (RX_DAIG_SEG6_MSK1 & RX_MB_DEF_MSK_BIT(2) )
+#define RX_DAIG_SEG6_MSK                (RX_DAIG_SEG6_MSK2 & RX_MB_DEF_MSK_BIT(3) )
+#define RX_DAIG_SEG6_YDT                0x7D0
+#define CAN0_RX_DAIG_SEG6_YDT_STD       FLEXCAN_ID_STD(RX_DAIG_SEG6_YDT)
+
+#define RX_DAIG_SEG7_MSK0               (RX_MB_DEF_MSK     & RX_MB_DEF_MSK_BIT(0) )
+#define RX_DAIG_SEG7_MSK1               (RX_DAIG_SEG7_MSK0 & RX_MB_DEF_MSK_BIT(1) )
+#define RX_DAIG_SEG7_MSK2               (RX_DAIG_SEG7_MSK1 & RX_MB_DEF_MSK_BIT(2) )
+#define RX_DAIG_SEG7_MSK                (RX_DAIG_SEG7_MSK2 & RX_MB_DEF_MSK_BIT(3) )
+#define RX_DAIG_SEG7_YDT                0x7E0
+#define CAN0_RX_DAIG_SEG7_YDT_STD       FLEXCAN_ID_STD(RX_DAIG_SEG7_YDT)
 
 /*----------------------------------------------------------
-Message Buffer Transmit ID
+Message Buffer Transmit IDs
 ----------------------------------------------------------*/
-#define ID0_FUNC_INFO_CAN0_ID           0x5B2
-#define CAN0_TX0_ID_STANDARD            FLEXCAN_ID_STD(ID0_FUNC_INFO_CAN0_ID)
+#define TX0_REQ_MT_FUNC_CNT             0x584
+#define CAN0_TX0_REQ_MT_FUNC_CNT_STD    FLEXCAN_ID_STD(TX0_REQ_MT_FUNC_CNT)
 
-#define ID1_REQ_REPRGRM_INFO_CAN0_ID    0x5B3
-#define CAN0_TX1_ID_STANDARD            FLEXCAN_ID_STD(ID1_REQ_REPRGRM_INFO_CAN0_ID)
+#define TX_DIAG_RELATED                 0x4D1
+#define CAN0_TX_DIAG_RELATED_STD        FLEXCAN_ID_STD(TX_DIAG_RELATED)
 
-#define ID2_RES_SCRN_TRNSTN_CAN0_ID     0x5B4
-#define CAN0_TX2_ID_STANDARD            FLEXCAN_ID_STD(ID2_RES_SCRN_TRNSTN_CAN0_ID)
-
-#define ID3_SYS_INFO_CAN0_ID            0x5B5
-#define CAN0_TX3_ID_STANDARD            FLEXCAN_ID_STD(ID3_SYS_INFO_CAN0_ID)
-
-#define ID4_PHONE_INFO_CAN0_ID          0x5B6
-#define CAN0_TX4_ID_STANDARD            FLEXCAN_ID_STD(ID4_PHONE_INFO_CAN0_ID)
-
-#define ID5_INDICTR_STATUS_CAN0_ID      0x5B7
-#define CAN0_TX5_ID_STANDARD            FLEXCAN_ID_STD(ID5_INDICTR_STATUS_CAN0_ID)
-
-#define ID6_CLK_DATE_RES_CAN0_ID        0x5B8
-#define CAN0_TX6_ID_STANDARD            FLEXCAN_ID_STD(ID6_CLK_DATE_RES_CAN0_ID)
-
-#define ID7_REQ_SCRN_TRNSTN2_CAN0_ID    0x5B9
-#define CAN0_TX7_ID_STANDARD            FLEXCAN_ID_STD(ID7_REQ_SCRN_TRNSTN2_CAN0_ID)
-
-#define NM_LOOP_BACK_TX_CAN_ID          0x226
-#define CAN0_TX8_ID_STANDARD            FLEXCAN_ID_STD(NM_LOOP_BACK_TX_CAN_ID)
-
-#define TP_DIAG_ID_REP_CAN_ID           0x663
-#define CAN0_TX9_ID_STANDARD            FLEXCAN_ID_STD(TP_DIAG_ID_REP_CAN_ID)
-
-#define TP_CAN0_ID_SFFFFCF_CAN_ID       0x305
-#define CAN0_TX10_ID_STANDARD           FLEXCAN_ID_STD(TP_CAN0_ID_SFFFFCF_CAN_ID)
-
-#define FT_RESP_LINKCARD_CAN_ID         0x690
-#define CAN0_TX11_ID_STANDARD           FLEXCAN_ID_STD(FT_RESP_LINKCARD_CAN_ID)
+#define TX_NM_AND_LP_BK                 0x226
+#define CAN0_TX_NM_AND_LP_BK_STD        FLEXCAN_ID_STD(TX_NM_AND_LP_BK)
 
 #ifdef __cplusplus
 }

@@ -184,6 +184,7 @@ typedef struct tagFLEXCAN_CONFIG_TYPE
     bool enableIndividMask;               //!<Enable or Disable Rx Individual Mask.
     bool disableSelfReception;            //!<Enable or Disable Self Reflection.
     bool enableListenOnlyMode;            //!<Enable or Disable Listen Only Mode.
+    bool enableDoze;                      //!<Enable or Disable Doze Mode.
     flexcan_timing_config_t timingConfig; //!<Protocol timing .
 
     } flexcan_config_t;
@@ -204,6 +205,7 @@ FlexCAN Receive Message Buffer configuration structure
 typedef struct tagFLEXCAN_RX_MB_CONFIG_TYPE
     {
     uint32_t id;                   //!<CAN Message Buffer Frame Identifier, should be set using FLEXCAN_ID_EXT() or FLEXCAN_ID_STD() macro.
+    uint32_t idmsk;                //!<CAN Message Buffer Frame Identifier filter,
     flexcan_frame_format_t format; //!<CAN Frame Identifier format(Standard of Extend).
     flexcan_frame_type_t   type;   //!<CAN Frame Type(Data or Remote).
 
@@ -224,7 +226,6 @@ FlexCAN Hardware Initialization
 ----------------------------------------------------------*/
 typedef struct tagCCAN_HW_INIT_T
     {
-    flexcan_config_t        flexcan_Config;
     flexcan_tx_mb_config_t  mb_tx_config;
     flexcan_rx_mb_config_t  mb_rx_config[CAN_HMB_RX_ALL];
 

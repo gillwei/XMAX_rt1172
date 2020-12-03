@@ -11,7 +11,9 @@
 
 /*!*******************************************************************
 *
-* @defgroup can_stack_nim_cfg CAN Stack NIM Layer IXWW22 Application Configuration
+* @defgroup can_stack_nim_cfg CAN Stack NIM Layer IXWW22 Application
+* Configuration
+*
 * @ingroup  can_stack_nim
 * @{
 *
@@ -25,12 +27,8 @@ extern "C" {
 #endif
 
 /*--------------------------------------------------------------------
-                            MACROS
+                           LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-/*------------------------------------------------------
-Network Interface Manager Task initial Period
-------------------------------------------------------*/
-#define CAN_NIM_TASK_PERIOD_MS                  (5)
 
 /*------------------------------------------------------
 Interaction Layer Task Period
@@ -43,14 +41,9 @@ Network Management Layer Task Period
 #define NM_TASK_PERIOD_MS                       (10)
 
 /*------------------------------------------------------
-Transport Layer Task Period
-------------------------------------------------------*/
-#define TP_TASK_PERIOD_MS                       (5)
-
-/*------------------------------------------------------
-Diagnostic Layer Task Period
-------------------------------------------------------*/
-#define DIAG_TASK_PERIOD_MS                     (5)
+CAN Task Container Tick Divide
+/------------------------------------------------------*/
+#define  CAN_NIM_TASK_COUNT_INIT                (2)
 
 #ifdef __cplusplus
 }
@@ -63,3 +56,4 @@ Diagnostic Layer Task Period
 * @}
 *
 *********************************************************************/
+

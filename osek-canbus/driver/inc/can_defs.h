@@ -167,11 +167,16 @@ Maximum CAN Frame Data Length (per the protocol)
 /*------------------------------------------------------
 Message Buffer
 ------------------------------------------------------*/
-#define CAN_HMB_TX_ALL                  (8 + 1 + 2 + 1)     //!<For CAN frame transmitting,One more MB for Loopback test in Network Management Layer and two for Diag and SF FF CF and one for factory test
-#define CAN_HMB_RX_ALL                  (8 + 1 + 3 + 1)     //!<For CAN frame receiving one more for NM and 3 for Diag and FCF
-#define CAN_HMB_ALL                     (25)            //!<The total is 64, but used in this project 23
-#define CAN_HMB_TX_START                CAN_HMB_RX_ALL  //!<Tx Message Buffers flow Rx Message Buffers
-#define CAN_HMB_TX_MAX                  (CAN_HMB_TX_START + CAN_HMB_TX_ALL)
+
+#define CAN_HMB_RX_APP                  (17 + 1)
+#define CAN_HMB_RX_DIAG_START           CAN_HMB_RX_APP
+#define CAN_HMB_RX_DIAG_ALL             (7)
+#define CAN_HMB_RX_ALL                  (17 + 1 + 7)                    //!<For CAN frame receiving(17 for App,5 for Diag and one for NM)
+#define CAN_HMB_TX_ALL                  (CAN_HMB_ALL - CAN_HMB_RX_ALL)  //!<For CAN frame transmitting,others except Rx MBs
+
+#define CAN_HMB_ALL                     (64)                            //!<The total MBs is 64
+#define CAN_HMB_TX_START                CAN_HMB_RX_ALL                  //!<Tx Message Buffers flows Rx Message Boxes
+#define CAN_HMB_TX_MAX                  CAN_HMB_ALL
 
 #define CAN_RXMSG_FIFO_1                (0x80u)
 #define CAN_RXMSG_REMOTE                (0x02u)
@@ -270,24 +275,24 @@ typedef struct tagCAN_RMD_TYPE                  //<! receive message data struct
 /*------------------------------------------------------
 FlexCAN frame type.
 ------------------------------------------------------*/
-// typedef enum tagFLEXCAN_FRAME_TYPE
-//     {
-//     CAN_DATA_MSG_TYPE   = 0x0U, //!<Data frame type attribute.
-//     CAN_REMOTE_MSG_TYPE = 0x1U, //!<Remote frame type attribute.
+typedef enum tagFLEXCAN_FRAME_TYPE
+    {
+    CAN_DATA_MSG_TYPE   = 0x0U, //!<Data frame type attribute.
+    CAN_REMOTE_MSG_TYPE = 0x1U, //!<Remote frame type attribute.
 
-//     } flexcan_frame_type_t;
+    } flexcan_frame_type_t;
 
 /*------------------------------------------------------
 FlexCAN frame format.
 Standard <=> 11 Bit CAN Identifier
 Extended <=> 29 Bit CAN Identifier
 ------------------------------------------------------*/
-// typedef enum tagFLEXCAN_FRAME_FORMAT_TYPE
-//     {
-//     CAN_STANDARD_MSG_TYPE = 0x0U, //!<Standard frame format attribute.
-//     CAN_EXTENDED_MSG_TYPE = 0x1U, //!<Extend frame format attribute.
+typedef enum tagFLEXCAN_FRAME_FORMAT_TYPE
+    {
+    CAN_STANDARD_MSG_TYPE = 0x0U, //!<Standard frame format attribute.
+    CAN_EXTENDED_MSG_TYPE = 0x1U, //!<Extend frame format attribute.
 
-//     } flexcan_frame_format_t;
+    } flexcan_frame_format_t;
 
 /*--------------------------------------------------------------------
                             Software Driver Layer

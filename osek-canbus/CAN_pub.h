@@ -34,6 +34,12 @@ typedef enum tagIL_RX_FRM_INDEX_TYPE //!< Interaction Layer receive frames index
     IL_RX_FRM_INDEX_ERRORS
     }il_rx_frm_index_t;
 
+
+#define IL_CAN0_FUNC_SW_1_RXSIG_HANDLE                  0x0000
+#define IL_CAN0_FUNC_SW_2_RXSIG_HANDLE                  0x000A
+#define IL_CAN0_FUNC_SW_5_RXSIG_HANDLE                  0x000D
+#define IL_CAN0_FUNC_SW_6_RXSIG_HANDLE                  0x000E
+
 #ifdef __cplusplus
 }
 #endif

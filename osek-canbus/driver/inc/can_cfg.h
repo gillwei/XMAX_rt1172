@@ -61,7 +61,7 @@
     Description:    CAN Bit Timing Parameters
 
 --------------------------------------------------------------------*/
-#define CAN2_SRC_CLK_HZ             (40000000)
+#define CAN2_SRC_CLK_HZ             (24000000)
 #define CAN2_BIT_RATE_BPS           (500000)
 
 #define CAN2_PREDIVIDER_INIT        (0) //!<will be re-calculated
