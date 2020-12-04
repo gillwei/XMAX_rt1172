@@ -4,49 +4,72 @@ $rect <10,10,250,50>
 $output false
 class ItemBase : Core::Group
 {
-  $rect <0,80,190,115>
-  inherited property Bounds = <0,0,440,60>;
+  $rect <0,105,190,145>
+  inherited property Bounds = <0,0,480,74>;
 
-  $rect <474,115,674,155>
+  $rect <474,140,674,180>
   inherited method UpdateViewState()
   {
     super( aState );
 
     if( FocusFrameFlashTimer.Enabled )
     {
-      FocusFrame.FrameNumber = 1;
+      HighlightRect.Visible = true;
     }
     else if( aState.contains( Core::ViewState[Focused] ) )
     {
       if( Focusable )
       {
-      FocusFrame.FrameNumber = 0;
-      FocusFrame.Visible = true;
+        HighlightRect.Visible = false;
       }
     }
     else
     {
-      FocusFrame.Visible = false;
+      HighlightRect.Visible = false;
     }
   }
 
-  $rect <20,20,160,60>
-  object Views::Rectangle Background
+  $rect <0,255,190,295>
+  inherited onset Enabled
   {
-    preset Bounds = <0,0,440,60>;
-    preset Color = #000000FF;
+    if( pure Enabled != value )
+    {
+      pure Enabled = value;
+      if( value )
+      {
+        Title.Color = #FFFFFFFF;
+      }
+      else
+      {
+        Title.Color = #646464FF;
+      }
+    }
   }
 
   // Keyboard events
   note group Note2
   {
-    attr Bounds = <210,75,430,350>;
+    attr Bounds = <210,100,430,375>;
+  }
+
+  // State management
+  note group Note4
+  {
+    attr Bounds = <450,100,700,195>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle HighlightRect
+  {
+    preset Bounds = <18,0,435,74>;
+    preset Color = #FFFFFFFF;
+    preset Visible = false;
   }
 
   // This key handler reacts to key press events. When the user presses the key specified \
   // in the property 'Filter' of the key handler, the handler is activated and the \
   // method '@onPressKey' is called.
-  $rect <220,115,420,155>
+  $rect <220,140,420,180>
   object Core::KeyPressHandler KeyHandler
   {
     preset OnRelease = OnEnterReleaseSlot;
@@ -57,7 +80,7 @@ class ItemBase : Core::Group
 
   // This internal slot method is called when the '@KeyHandler' is activated (when \
   // the user has pressed the key specified in the property 'Filter' of the key handler).
-  $rect <220,170,420,210>
+  $rect <220,195,420,235>
   slot OnEnterReleaseSlot
   {
     trace "OnEnterRelease, repetition: ", KeyHandler.Repetition;
@@ -76,36 +99,30 @@ class ItemBase : Core::Group
     }
   }
 
-  // State management
-  note group Note4
-  {
-    attr Bounds = <450,75,700,170>;
-  }
-
   $rect <20,20,160,60>
   object Views::Image ListDivider
   {
-    preset Bounds = <0,53,440,63>;
+    preset Bounds = <0,72,480,74>;
     preset Alignment = Views::ImageAlignment[ScaleToFit];
-    preset Bitmap = Resource::ListDivider;
+    preset Bitmap = Resource::ListDivider3;
   }
 
   // The property 'OnActivate' can refer to a slot method, which will receive a signal \
   // as soon as the user has activated (pressed and released) the item. Thereupon \
   // the method's logic will be executed.
-  $rect <0,130,190,170>
+  $rect <0,155,190,195>
   property slot OnActivate = null;
 
   // Focus frame flash effect
   note group Note3
   {
-    attr Bounds = <450,210,700,350>;
+    attr Bounds = <450,235,700,375>;
   }
 
   // This timer object is used to flash the item when the user has tapped it very \
   // quickly or the item has been activated with the keyboard. This is just a visual \
   // feedback effect.
-  $rect <460,250,690,290>
+  $rect <460,275,690,315>
   object Core::Timer FocusFrameFlashTimer
   {
     preset OnTrigger = OnFocusFrameFlashTimer;
@@ -115,7 +132,7 @@ class ItemBase : Core::Group
 
   // This internal slot method is called when the '@FlashTimer' is expired. It ends \
   // the short flash feedback effect.
-  $rect <460,300,690,340>
+  $rect <460,325,690,365>
   slot OnFocusFrameFlashTimer
   {
     // The feedback flash timer is finished. Request the item to update its
@@ -126,7 +143,7 @@ class ItemBase : Core::Group
     postsignal OnActivate;
   }
 
-  $rect <0,180,190,220>
+  $rect <0,205,190,245>
   method void SetTitle( arg string aTitle )
   {
     if( Title.String != aTitle )
@@ -139,63 +156,38 @@ class ItemBase : Core::Group
   object Views::Text Title
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
-    preset Bounds = <20,10,380,50>;
+    preset Bounds = <37,1,417,69>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::FontNotoSansCjkJp36;
     preset Color = #FFFFFFFF;
   }
 
-  $rect <20,20,160,60>
-  object Views::Frame FocusFrame
-  {
-    preset Bounds = <0,0,440,60>;
-    preset Bitmap = Resource::FocusFrame;
-    preset Visible = false;
-  }
-
   // This internal slot method is called when the '@KeyHandler' is activated (when \
   // the user has pressed the key specified in the property 'Filter' of the key handler).
-  $rect <220,230,420,270>
+  $rect <220,255,420,295>
   slot OnEnterHoldSlot
   {
     trace "OnEnterHold: ", KeyHandler.RepetitionCount;
     postsignal OnEnterHold, KeyHandler;
   }
 
-  $rect <220,290,420,330>
+  $rect <220,315,420,355>
   property slot OnEnterHold;
 
-  $rect <0,230,190,270>
-  inherited onset Enabled
-  {
-    if( pure Enabled != value )
-    {
-      pure Enabled = value;
-      if( value )
-      {
-        Title.Color = #FFFFFFFF;
-      }
-      else
-      {
-        Title.Color = #646464FF;
-      }
-    }
-  }
-
-  $rect <0,370,200,410>
+  $rect <0,395,200,435>
   property bool Focusable = true;
 
-  $rect <0,410,200,450>
+  $rect <0,435,200,475>
   onset Focusable
   {
     if( pure Focusable != value )
     {
       pure Focusable = value;
-      FocusFrame.Visible = value;
     }
   }
 
+  $reorder Init 1
   $reorder OnSetOpacity 1
   $reorder OnGetEmbedded 1
   $reorder OnSetEmbedded 1
@@ -226,7 +218,6 @@ class ItemBase : Core::Group
   $reorder UpdateViewState 1
   $reorder InvalidateViewState 1
   $reorder InvalidateArea 1
-  $reorder Init 1
   $reorder GetIndexOfView 1
   $reorder GetViewAtIndex 1
   $reorder CountViews 1
@@ -251,61 +242,42 @@ class ItemBase : Core::Group
   $reorder Embedded 2
   $reorder AlphaBlended 2
   $reorder Visible 2
-  $reorder Background 2
-  $reorder Note2 2
-  $reorder KeyHandler 2
-  $reorder OnEnterReleaseSlot 2
-  $reorder Note4 2
-  $reorder ListDivider 2
-  $reorder OnActivate 2
-  $reorder Note3 2
-  $reorder FocusFrameFlashTimer 2
-  $reorder OnFocusFrameFlashTimer 2
-  $reorder SetTitle 2
-  $reorder Title 2
-  $reorder FocusFrame 2
-  $reorder OnEnterHoldSlot 2
-  $reorder OnEnterHold 2
   $reorder Enabled 1
 }
 
 $rect <80,60,320,100>
 $output false
-class ItemRightArrow : Menu::ItemBase
+class ItemBaseLower : Menu::ItemBase
 {
-  $rect <10,90,200,130>
-  inherited onset Enabled
-  {
-    if( pure Enabled != value )
-    {
-      super( value );
+  $rect <10,90,210,130>
+  inherited property Bounds = <0,0,480,56>;
 
-      if( value )
-      {
-        IconRight.FrameNumber = 0;
-      }
-      else
-      {
-        IconRight.FrameNumber = 1;
-      }
-    }
+  $rect <20,20,160,60>
+  inherited object HighlightRect
+  {
+    preset Bounds = <18,0,435,54>;
   }
 
   $rect <20,20,160,60>
-  object Views::Image IconRight
+  inherited object ListDivider
   {
-    preset Bounds = <396,11,433,48>;
-    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter, ScaleToFit];
-    preset Bitmap = Resource::ListIconNext;
+    preset Bounds = <0,54,480,56>;
+    preset Bitmap = Resource::ListDivider4;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Title
+  {
+    preset Bounds = <37,9,417,43>;
   }
 }
 
-$rect <10,260,250,300>
+$rect <10,360,250,400>
 $output false
 class VerticalMenu : Components::BaseComponent
 {
   $rect <6,290,206,330>
-  inherited property Bounds = <0,0,460,240>;
+  inherited property Bounds = <0,0,480,236>;
 
   $rect <220,410,420,450>
   inherited slot OnLongKeyPressed
@@ -327,6 +299,7 @@ class VerticalMenu : Components::BaseComponent
           MenuList.SelectedItem = NextItemIdx;
           MenuList.EnsureVisible( MenuList.SelectedItem, false, null, null );
           Scrollbar.ViewIdx = MenuList.SelectedItem;
+          MoveFocusFrame();
         }
       }
     }
@@ -343,26 +316,20 @@ class VerticalMenu : Components::BaseComponent
         MenuList.SelectedItem = PrevItemIdx;
         MenuList.EnsureVisible( MenuList.SelectedItem, false, null, null );
         Scrollbar.ViewIdx = MenuList.SelectedItem;
+        MoveFocusFrame();
       }
     }
   }
 
   $rect <20,20,160,60>
-  object Views::Rectangle Background
-  {
-    preset Bounds = <0,0,480,240>;
-    preset Color = #000000FF;
-  }
-
-  $rect <20,20,160,60>
   object Core::VerticalList MenuList
   {
-    preset Bounds = <0,0,440,240>;
+    preset Bounds = <0,2,435,224>;
     preset Focus = null;
     preset OnLoadItem = OnLoadItemSlot;
     preset SelectedItem = 0;
-    preset ItemHeight = 60;
-    preset NoOfItems = 1;
+    preset ItemHeight = 74;
+    preset NoOfItems;
     preset ItemClass = Menu::ItemWrapper;
   }
 
@@ -386,14 +353,12 @@ class VerticalMenu : Components::BaseComponent
         Item.Focusable = Focusable;
       }
 
-      if( Menu::ItemCheckbox == Item.ItemClass )
+      if( Menu::ItemCheckbox == Item.ItemClass ||
+          Menu::ItemCheckboxLower == Item.ItemClass ||
+          Menu::ItemCheckMark == Item.ItemClass ||
+          Menu::ItemCheckMarkLower == Item.ItemClass )
       {
         Item.Checked = OwnerMenu.LoadItemChecked( ItemNo );
-      }
-      else if( Menu::ItemBtPairedDevice == Item.ItemClass )
-      {
-        Item.Connected = OwnerMenu.LoadItemConnected( ItemNo );
-        Item.Valid = OwnerMenu.LoadItemValid( ItemNo );
       }
 
       Item.Bounds.size = point( MenuList.Bounds.w, MenuList.ItemHeight );
@@ -422,7 +387,7 @@ class VerticalMenu : Components::BaseComponent
   }
 
   $rect <490,10,690,50>
-  property int32 NoOfItems;
+  property int32 NoOfItems = 0;
 
   $rect <490,60,690,100>
   onset NoOfItems
@@ -432,13 +397,22 @@ class VerticalMenu : Components::BaseComponent
       pure NoOfItems = value;
       MenuList.NoOfItems = value;
       Scrollbar.ListItems = value;
+      if( 0 == NoOfItems )
+      {
+        FocusFrame.Visible = false;
+      }
+      else
+      {
+        FocusFrame.Visible = true;
+      }
     }
   }
 
   $rect <20,20,160,60>
   object Menu::Scrollbar Scrollbar
   {
-    preset Bounds = <450,0,460,240>;
+    preset Bounds = <470,2,480,226>;
+    preset Visible = false;
     preset PageItems = 4;
   }
 
@@ -451,20 +425,78 @@ class VerticalMenu : Components::BaseComponent
 
   $rect <0,410,200,450>
   property bool Focusable = true;
+
+  $rect <0,470,200,510>
+  property int32 ItemHeight = 74;
+
+  $rect <0,510,200,550>
+  onset ItemHeight
+  {
+    if( pure ItemHeight != value )
+    {
+      pure ItemHeight = value;
+      MenuList.ItemHeight = value;
+      FocusFrame.Bounds.y2 = 2 + ItemHeight;
+
+      UpdateListHeight();
+    }
+
+  }
+
+  $rect <0,570,210,610>
+  property int32 ItemNumPerPage = 3;
+
+  $rect <20,20,160,60>
+  object Views::Border FocusFrame
+  {
+    preset Bounds = <18,0,435,76>;
+    preset Width = 3;
+    preset Color = #0072FFFF;
+  }
+
+  // Note:
+  //
+  // For the case of 3 rows/page, the height of each row is 74px, and the total height \
+  // is 222px.
+  // For the case of 4 rows/page, the height of each row is 56px, and the total height \
+  // is 224px.
+  note group Note2
+  {
+    attr Bounds = <720,10,1460,150>;
+  }
+
+  $rect <220,470,420,510>
+  method void MoveFocusFrame()
+  {
+    var int32 SelectedRow = MenuList.SelectedItem % ItemNumPerPage;
+    var rect FocusFrameRect = FocusFrame.Bounds;
+    FocusFrameRect.y1 = ItemHeight * SelectedRow;
+    FocusFrameRect.y2 = 2 + ItemHeight * ( SelectedRow + 1 );
+    FocusFrame.Bounds = FocusFrameRect;
+  }
+
+  $rect <0,610,210,650>
+  onset ItemNumPerPage
+  {
+    if( pure ItemNumPerPage != value )
+    {
+      pure ItemNumPerPage = value;
+      UpdateListHeight();
+    }
+
+  }
+
+  $rect <220,519,420,559>
+  method void UpdateListHeight()
+  {
+    MenuList.Bounds.y2 = MenuList.Bounds.y1 + ItemHeight * ItemNumPerPage;
+  }
 }
 
 $rect <80,110,320,150>
 $output false
 class ItemCheckbox : Menu::ItemBase
 {
-  $rect <200,80,400,120>
-  inherited slot OnEnterReleaseSlot
-  {
-    super( sender );
-    CheckBoxButton.Checked = !CheckBoxButton.Checked;
-
-  }
-
   $rect <0,170,190,210>
   inherited onset Enabled
   {
@@ -475,41 +507,52 @@ class ItemCheckbox : Menu::ItemBase
     }
   }
 
+  $rect <200,80,400,120>
+  inherited slot OnEnterReleaseSlot
+  {
+    super( sender );
+    CheckBoxButton.Checked = !CheckBoxButton.Checked;
+
+  }
+
+  $rect <20,20,160,60>
+  inherited object Title
+  {
+    preset Bounds = <37,1,386,69>;
+  }
+
   $rect <20,20,160,60>
   object WidgetSet::ToggleButton CheckBoxButton
   {
-    preset Bounds = <392,15,422,45>;
+    preset Bounds = <394,10,444,60>;
     preset Enabled = true;
     preset Checked = false;
     preset IconFrame = 0;
     preset Label = "";
-    preset Appearance = UIConfig::ToggleButtonConfig;
+    preset Appearance = UIConfig::CheckBoxConfig;
   }
 
   $rect <0,80,200,120>
-  property bool Checked;
+  property bool Checked = false;
 
   $rect <0,120,200,160>
   onset Checked
   {
-    // The value doesn't change - nothing to do.
-    if ( pure Checked == value )
-      return;
-
-    // Remember the property's new value.
-    pure Checked = value;
-    CheckBoxButton.Checked = value;
-
+    if( pure Checked != value )
+    {
+      pure Checked = value;
+      CheckBoxButton.Checked = value;
+    }
   }
 }
 
 // This is a GUI component.
-$rect <10,210,250,250>
+$rect <10,310,250,350>
 $output false
 class ItemWrapper : Core::Group
 {
-  $rect <0,80,200,120>
-  inherited property Bounds = <0,0,400,60>;
+  $rect <0,84,200,124>
+  inherited property Bounds = <0,0,480,74>;
 
   $rect <480,410,660,450>
   inherited onget Enabled
@@ -526,7 +569,7 @@ class ItemWrapper : Core::Group
 
       var Core::View view = FindNextView( null, Core::ViewState[] );
 
-      var Menu::ItemRightArrow ItemRight = ( Menu::ItemRightArrow )view;
+      var Menu::ItemBaseLower ItemRight = ( Menu::ItemBaseLower )view;
       if( null != ItemRight )
       {
         ItemRight.Enabled = value;
@@ -616,7 +659,7 @@ class ItemWrapper : Core::Group
     attr Bounds = <20,250,890,470>;
   }
 
-  // For checkbox menu item
+  // For ItemCheckbox and ItemCheckMark
   note group Note7
   {
     attr Bounds = <20,500,530,650>;
@@ -632,10 +675,18 @@ class ItemWrapper : Core::Group
     {
       pure Checked = value;
       var Core::View view = FindNextView( null, Core::ViewState[] );
-      var Menu::ItemCheckbox Checkbox = ( Menu::ItemCheckbox )view;
-      if( Checkbox != null )
+      var Menu::ItemCheckbox CheckboxMenuItem = ( Menu::ItemCheckbox )view;
+      if( CheckboxMenuItem != null )
       {
-        Checkbox.Checked = value;
+        CheckboxMenuItem.Checked = value;
+      }
+      else
+      {
+        var Menu::ItemCheckMark CheckMarkMenuItem = ( Menu::ItemCheckMark)view;
+        if( null != CheckMarkMenuItem )
+        {
+          CheckMarkMenuItem.Checked = value;
+        }
       }
     }
   }
@@ -651,30 +702,6 @@ class ItemWrapper : Core::Group
   // the method's logic will be executed.
   $rect <220,190,420,230>
   property slot OnEnterHold = null;
-
-  // For BT paired device item
-  note group Note8
-  {
-    attr Bounds = <20,680,520,830>;
-  }
-
-  $rect <50,720,250,760>
-  property bool Connected;
-
-  $rect <50,770,250,810>
-  onset Connected
-  {
-    if( pure Connected != value )
-    {
-      pure Connected = value;
-      var Core::View view = FindNextView( null, Core::ViewState[] );
-      var Menu::ItemBtPairedDevice PairedDevice = ( Menu::ItemBtPairedDevice )view;
-      if( null != PairedDevice )
-      {
-        PairedDevice.Connected = value;
-      }
-    }
-  }
 
   $rect <670,290,870,330>
   property bool Focusable = true;
@@ -693,27 +720,9 @@ class ItemWrapper : Core::Group
       }
     }
   }
-
-  $rect <270,720,470,760>
-  property bool Valid = true;
-
-  $rect <270,770,470,810>
-  onset Valid
-  {
-    if( pure Valid != value )
-    {
-      pure Valid = value;
-      var Core::View view = FindNextView( null, Core::ViewState[] );
-      var Menu::ItemBtPairedDevice PairedDevice = ( Menu::ItemBtPairedDevice )view;
-      if( null != PairedDevice )
-      {
-        PairedDevice.Valid = value;
-      }
-    }
-  }
 }
 
-$rect <350,10,550,50>
+$rect <510,10,710,50>
 $output false
 class Scrollbar : Core::Group
 {
@@ -822,7 +831,7 @@ class Scrollbar : Core::Group
   }
 }
 
-$rect <350,60,590,100>
+$rect <510,60,750,100>
 $output false
 class BaseMenuView : Components::BaseComponent
 {
@@ -861,10 +870,17 @@ class BaseMenuView : Components::BaseComponent
   }
 
   $rect <20,20,160,60>
-  object Views::Rectangle Rectangle
+  object Views::Rectangle BlackBG
   {
-    preset Bounds = <0,0,480,272>;
+    preset Bounds = <0,32,480,182>;
     preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image MainBottomBG
+  {
+    preset Bounds = <0,182,480,272>;
+    preset Bitmap = Resource::MainBG;
   }
 
   // For general menu item
@@ -898,78 +914,336 @@ class BaseMenuView : Components::BaseComponent
     }
     return true;
   }
+}
 
-  // For BT paired device item
-  note group Note8
+$rect <140,260,380,300>
+$output false
+class ItemCheckMarkLower : Menu::ItemCheckMark
+{
+  $rect <0,80,200,120>
+  inherited property Bounds = <0,0,480,56>;
+
+  $rect <20,20,160,60>
+  inherited object HighlightRect
   {
-    attr Bounds = <520,380,780,550>;
+    preset Bounds = <18,0,435,54>;
   }
 
-  $rect <550,430,750,470>
-  method bool LoadItemConnected( arg int32 aItemNo )
+  $rect <20,20,160,60>
+  inherited object ListDivider
   {
-    if( aItemNo >= 0 )
-    {
-      // empty body to suppress warning
-    }
-    return false;
+    preset Bounds = <0,54,480,56>;
+    preset Bitmap = Resource::ListDivider4;
   }
 
-  $rect <550,490,750,530>
-  method bool LoadItemValid( arg int32 aItemNo )
+  $rect <20,20,160,60>
+  inherited object Title
   {
-    if( aItemNo >= 0 )
-    {
-      // empty body to suppress warning
-    }
-    return false;
+    preset Bounds = <37,9,367,43>;
+    preset Ellipsis = true;
+    preset String = "";
+  }
+
+  $rect <20,20,160,60>
+  inherited object CheckMark
+  {
+    preset Bounds = <371,2,421,52>;
+    preset Visible = false;
   }
 }
 
-$rect <80,160,320,200>
+$rect <140,160,380,200>
 $output false
-class ItemBtPairedDevice : Menu::ItemBase
+class ItemCheckboxLower : Menu::ItemCheckbox
+{
+  $rect <0,70,200,110>
+  inherited property Bounds = <0,0,480,56>;
+
+  $rect <20,20,160,60>
+  inherited object HighlightRect
+  {
+    preset Bounds = <18,0,435,54>;
+  }
+
+  $rect <20,20,160,60>
+  inherited object ListDivider
+  {
+    preset Bounds = <0,54,480,56>;
+    preset Bitmap = Resource::ListDivider4;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Title
+  {
+    preset Bounds = <37,9,367,43>;
+    preset WrapText = true;
+  }
+
+  $rect <20,20,160,60>
+  inherited object CheckBoxButton
+  {
+    preset Bounds = <371,2,421,52>;
+  }
+
+  $reorder Checked 3
+  $reorder OnSetChecked 3
+}
+
+$rect <860,10,1060,50>
+$output false
+class PushButton : Core::Group
+{
+  $rect <10,60,210,100>
+  inherited property Bounds = <0,0,150,40>;
+
+  $rect <470,10,670,50>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+
+    if( FocusFrameFlashTimer.Enabled )
+    {
+      Background.Visible = true;
+      Background.Color = #FFFFFFCD; // 0xCD = 205 : 80% alpha
+    }
+    else if( aState.contains( Core::ViewState[Focused] ) )
+    {
+      Background.Visible = false;
+
+      if( Focusable )
+      {
+        FocusBorder.Color = #0072FFFF;
+        FocusBorder.Width = 3;
+      }
+    }
+    else
+    {
+      Background.Visible = false;
+      FocusBorder.Color = #727171FF;
+      FocusBorder.Width = 2;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Background
+  {
+    preset Bounds = <0,0,150,40>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TitleText
+  {
+    preset Bounds = <0,4,150,38>;
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <10,110,210,150>
+  property string Title = "";
+
+  $rect <10,150,210,190>
+  onset Title
+  {
+    if( pure Title != value )
+    {
+      pure Title = value;
+      TitleText.String = value;
+    }
+  }
+
+  $rect <250,60,450,100>
+  object Core::KeyPressHandler KeyHandler
+  {
+    preset OnRelease = OnEnterReleaseSlot;
+    preset Filter = Core::KeyCode.Ok;
+  }
+
+  $rect <250,110,450,150>
+  slot OnEnterReleaseSlot
+  {
+    trace "OnEnterRelease, repetition: ", KeyHandler.Repetition;
+
+    if( false == KeyHandler.Repetition && Focusable )
+    {
+      InvalidateViewState();
+
+      if( FocusFrameFlashTimer.Enabled )
+      {
+        postsignal OnActivate;
+        FocusFrameFlashTimer.Enabled = false;
+      }
+
+      FocusFrameFlashTimer.Enabled = true;
+    }
+  }
+
+  $rect <470,60,670,100>
+  object Core::Timer FocusFrameFlashTimer
+  {
+    preset OnTrigger = OnFocusFrameFlashTimer;
+    preset Period = 0;
+    preset Begin = 100;
+  }
+
+  $rect <470,110,670,150>
+  slot OnFocusFrameFlashTimer
+  {
+    // The feedback flash timer is finished. Request the item to update its
+    // appearance. The update will occur in the UpdateViewState() method.
+    InvalidateViewState();
+
+    // With the end of the feedback flash effect the item is activated.
+    postsignal OnActivate;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Border FocusBorder
+  {
+    preset Bounds = <0,0,150,40>;
+    preset Width = 3;
+    preset Color = #0072FFFF;
+  }
+
+  $rect <10,210,210,250>
+  property bool Focusable = true;
+
+  $rect <10,250,210,290>
+  onset Focusable
+  {
+    trace "OnSetFocusable: ", value;
+    if( pure Focusable != value )
+    {
+      pure Focusable = value;
+      if( value )
+      {
+        FocusBorder.Color = #0072FFFF;
+      }
+      else
+      {
+        FocusBorder.Color = #727171FF;
+      }
+    }
+  }
+
+  $rect <250,170,450,210>
+  property slot OnActivate;
+}
+
+$rect <860,60,1080,100>
+$output false
+class UpDownPushButtonSet : Components::BaseComponent
+{
+  $rect <0,120,200,160>
+  inherited property Bounds = <0,0,150,83>;
+
+  $rect <2,210,230,250>
+  inherited method OnShortDownKeyPressed()
+  {
+    Focus = DownButton;
+  }
+
+  $rect <0,170,230,210>
+  inherited method OnShortUpKeyPressed()
+  {
+    Focus = UpButton;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::PushButton UpButton
+  {
+    preset Bounds = <0,0,150,40>;
+    preset Title = "Cancel";
+    preset OnActivate = OnActivateSlot;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::PushButton DownButton
+  {
+    preset Bounds = <0,43,150,83>;
+    preset Title = "OK";
+    preset OnActivate = OnActivateSlot;
+  }
+
+  $rect <0,370,200,410>
+  slot OnActivateSlot
+  {
+    if( DownButton == sender )
+    {
+      postsignal OnDownButtonReleased;
+    }
+    else if( UpButton == sender )
+    {
+      postsignal OnUpButtonReleased;
+    }
+    else
+    {
+      // empty body
+    }
+  }
+
+  $rect <2,260,220,300>
+  property slot OnUpButtonReleased;
+
+  $rect <2,300,220,340>
+  property slot OnDownButtonReleased;
+
+  $rect <340,170,540,210>
+  property string UpButtonTitle = "Cancel";
+
+  $rect <340,210,540,250>
+  onset UpButtonTitle
+  {
+    if( pure UpButtonTitle != value )
+    {
+      pure UpButtonTitle = value;
+      UpButton.TitleText.String = value;
+    }
+  }
+
+  $rect <340,260,540,300>
+  property string DownButtonTitle = "OK";
+
+  $rect <340,300,550,340>
+  onset DownButtonTitle
+  {
+    if( pure DownButtonTitle != value )
+    {
+      pure DownButtonTitle = value;
+      DownButton.TitleText.String = value;
+    }
+  }
+}
+
+$rect <80,210,320,250>
+$output false
+class ItemCheckMark : Menu::ItemBase
 {
   $rect <20,20,160,60>
   inherited object Title
   {
-    preset Bounds = <20,10,370,50>;
+    preset Bounds = <37,1,364,69>;
   }
 
   $rect <0,80,200,120>
-  property bool Connected;
+  property bool Checked = false;
 
-  $rect <0,130,200,170>
-  onset Connected
+  $rect <0,120,200,160>
+  onset Checked
   {
-    if( pure Connected != value )
+    if( pure Checked != value )
     {
-      pure Connected = value;
-      CheckBoxButton.Checked = value;
+      pure Checked = value;
+      CheckMark.Visible = value;
     }
   }
 
   $rect <20,20,160,60>
-  object WidgetSet::ToggleButton CheckBoxButton
+  object Views::Image CheckMark
   {
-    preset Bounds = <392,15,422,45>;
-    preset Enabled = true;
-    preset Checked = false;
-    preset IconFrame = 0;
-    preset Label = "";
-    preset Appearance = UIConfig::ToggleButtonConfig;
-  }
-
-  $rect <220,80,420,120>
-  property bool Valid = true;
-
-  $rect <220,130,420,170>
-  onset Valid
-  {
-    if( pure Valid != value )
-    {
-      pure Valid = value;
-      CheckBoxButton.Visible = value;
-    }
+    preset Bounds = <371,9,421,59>;
+    preset FrameNumber = 1;
+    preset Bitmap = Resource::CheckMark;
+    preset Visible = false;
   }
 }

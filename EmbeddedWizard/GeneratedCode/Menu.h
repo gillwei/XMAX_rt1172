@@ -44,11 +44,15 @@
 
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
-#include "_MenuItemBtPairedDevice.h"
+#include "_MenuItemBaseLower.h"
+#include "_MenuItemCheckMark.h"
+#include "_MenuItemCheckMarkLower.h"
 #include "_MenuItemCheckbox.h"
-#include "_MenuItemRightArrow.h"
+#include "_MenuItemCheckboxLower.h"
 #include "_MenuItemWrapper.h"
+#include "_MenuPushButton.h"
 #include "_MenuScrollbar.h"
+#include "_MenuUpDownPushButtonSet.h"
 #include "_MenuVerticalMenu.h"
 
 #ifdef __cplusplus

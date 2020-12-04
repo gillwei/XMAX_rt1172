@@ -1,4 +1,4 @@
-$version 9.30
+﻿$version 10.00
 
 $rect <30,30,270,70>
 $output false
@@ -18,7 +18,7 @@ autoobject WidgetSet::PushButtonConfig PushButtonConfig
 
 $rect <30,90,270,130>
 $output false
-autoobject WidgetSet::ToggleButtonConfig ToggleButtonConfig
+autoobject WidgetSet::ToggleButtonConfig CheckBoxConfig
 {
   preset KeyCode = Core::KeyCode.NoKey;
   preset FaceOnFrameActive = 1;

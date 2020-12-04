@@ -42,9 +42,6 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-/* Bitmap resource : 'Resource::FocusFrame' */
-EW_DECLARE_BITMAP_RES( ResourceFocusFrame )
-
 /* Bitmap resource : 'Resource::IconMediaPlayPause' */
 EW_DECLARE_BITMAP_RES( ResourceIconMediaPlayPause )
 
@@ -53,12 +50,6 @@ EW_DECLARE_BITMAP_RES( ResourceIconMediaPrevious )
 
 /* Bitmap resource : 'Resource::IconMediaNext' */
 EW_DECLARE_BITMAP_RES( ResourceIconMediaNext )
-
-/* Bitmap resource : 'Resource::ListIconNext' */
-EW_DECLARE_BITMAP_RES( ResourceListIconNext )
-
-/* Bitmap resource : 'Resource::ListDivider' */
-EW_DECLARE_BITMAP_RES( ResourceListDivider )
 
 /* Bitmap resource : 'Resource::CheckboxNormal' */
 EW_DECLARE_BITMAP_RES( ResourceCheckboxNormal )
@@ -137,6 +128,21 @@ EW_DECLARE_BITMAP_RES( ResourceGrmnTbTNight )
 
 /* Bitmap resource : 'Resource::GrmnTurnList' */
 EW_DECLARE_BITMAP_RES( ResourceGrmnTurnList )
+
+/* Bitmap resource : 'Resource::MainBG' */
+EW_DECLARE_BITMAP_RES( ResourceMainBG )
+
+/* Bitmap resource : 'Resource::ListDivider4' */
+EW_DECLARE_BITMAP_RES( ResourceListDivider4 )
+
+/* Bitmap resource : 'Resource::ListDivider3' */
+EW_DECLARE_BITMAP_RES( ResourceListDivider3 )
+
+/* Bitmap resource : 'Resource::FocusFrame' */
+EW_DECLARE_BITMAP_RES( ResourceFocusFrame )
+
+/* Bitmap resource : 'Resource::CheckMark' */
+EW_DECLARE_BITMAP_RES( ResourceCheckMark )
 
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_

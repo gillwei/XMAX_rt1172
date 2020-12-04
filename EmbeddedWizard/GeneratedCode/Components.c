@@ -26,6 +26,7 @@
 
 #include "ewlocale.h"
 #include "_ComponentsBaseComponent.h"
+#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDisclaimerView.h"
 #include "_ComponentsPushButton.h"
 #include "_ComponentsStatusBar.h"
@@ -84,9 +85,11 @@ static const XRect _Const000B = {{ 174, 0 }, { 204, 30 }};
 static const XRect _Const000C = {{ 221, 0 }, { 431, 30 }};
 static const XStringRes _Const000D = { _StringsDefault0, 0x00EB };
 static const XRect _Const000E = {{ 50, 0 }, { 420, 30 }};
-static const XRect _Const000F = {{ -1, 25 }, { 479, 35 }};
+static const XRect _Const000F = {{ 0, 30 }, { 480, 32 }};
 static const XRect _Const0010 = {{ 2, 0 }, { 80, 30 }};
 static const XColor _Const0011 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const0012 = {{ 0, 182 }, { 480, 272 }};
+static const XRect _Const0013 = {{ 0, 32 }, { 480, 182 }};
 
 /* Initializer for the class 'Components::BaseComponent' */
 void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink, XHandle aArg )
@@ -546,7 +549,7 @@ void ComponentsStatusBar__Init( ComponentsStatusBar _this, XObject aLink, XHandl
   CoreGroup__Add( _this, ((CoreView)&_this->TimeText ), 0 );
   ViewsText_OnSetFont( &_this->TitleText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
   ResourcesFont ));
-  ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceListDivider, 
+  ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceListDivider4, 
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->IconWarning, EwLoadResource( &ResourceIconWarning, 
   ResourcesBitmap ));
@@ -718,5 +721,99 @@ EW_DEFINE_CLASS( ComponentsPushButton, WidgetSetPushButton, PassKeyHold, PassKey
   CoreGroup_Remove,
   CoreGroup_Add,
 EW_END_OF_CLASS( ComponentsPushButton )
+
+/* Initializer for the class 'Components::BaseMainBG' */
+void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( ComponentsBaseMainBG );
+
+  /* ... then construct all embedded objects */
+  ViewsImage__Init( &_this->MainBottomBG, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->BlackBG, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( ComponentsBaseMainBG );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const0003 );
+  CoreRectView__OnSetBounds( &_this->MainBottomBG, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->BlackBG, _Const0013 );
+  ViewsRectangle_OnSetColor( &_this->BlackBG, _Const0004 );
+  CoreGroup__Add( _this, ((CoreView)&_this->MainBottomBG ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->BlackBG ), 0 );
+  ViewsImage_OnSetBitmap( &_this->MainBottomBG, EwLoadResource( &ResourceMainBG, 
+  ResourcesBitmap ));
+}
+
+/* Re-Initializer for the class 'Components::BaseMainBG' */
+void ComponentsBaseMainBG__ReInit( ComponentsBaseMainBG _this )
+{
+  /* At first re-initialize the super class ... */
+  ComponentsBaseComponent__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsImage__ReInit( &_this->MainBottomBG );
+  ViewsRectangle__ReInit( &_this->BlackBG );
+}
+
+/* Finalizer method for the class 'Components::BaseMainBG' */
+void ComponentsBaseMainBG__Done( ComponentsBaseMainBG _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+
+  /* Finalize all embedded objects */
+  ViewsImage__Done( &_this->MainBottomBG );
+  ViewsRectangle__Done( &_this->BlackBG );
+
+  /* Don't forget to deinitialize the super class ... */
+  ComponentsBaseComponent__Done( &_this->_Super );
+}
+
+/* Variants derived from the class : 'Components::BaseMainBG' */
+EW_DEFINE_CLASS_VARIANTS( ComponentsBaseMainBG )
+EW_END_OF_CLASS_VARIANTS( ComponentsBaseMainBG )
+
+/* Virtual Method Table (VMT) for the class : 'Components::BaseMainBG' */
+EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, MainBottomBG, MainBottomBG, 
+                 MainBottomBG, MainBottomBG, _None, _None, "Components::BaseMainBG" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnLongKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyPressed,
+  ComponentsBaseComponent_OnShortUpKeyPressed,
+  ComponentsBaseComponent_OnShortEnterKeyPressed,
+EW_END_OF_CLASS( ComponentsBaseMainBG )
 
 /* Embedded Wizard */

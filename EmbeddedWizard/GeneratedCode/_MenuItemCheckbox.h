@@ -45,7 +45,6 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreTimer.h"
 #include "_MenuItemBase.h"
-#include "_ViewsFrame.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -153,12 +152,12 @@ EW_DEFINE_METHODS( MenuItemCheckbox, MenuItemBase )
   EW_METHOD( OnEnterReleaseSlot, void )( MenuItemCheckbox _this, XObject sender )
 EW_END_OF_METHODS( MenuItemCheckbox )
 
+/* 'C' function for method : 'Menu::ItemCheckbox.OnSetEnabled()' */
+void MenuItemCheckbox_OnSetEnabled( MenuItemCheckbox _this, XBool value );
+
 /* This internal slot method is called when the '@KeyHandler' is activated (when 
    the user has pressed the key specified in the property 'Filter' of the key handler). */
 void MenuItemCheckbox_OnEnterReleaseSlot( MenuItemCheckbox _this, XObject sender );
-
-/* 'C' function for method : 'Menu::ItemCheckbox.OnSetEnabled()' */
-void MenuItemCheckbox_OnSetEnabled( MenuItemCheckbox _this, XBool value );
 
 /* 'C' function for method : 'Menu::ItemCheckbox.OnSetChecked()' */
 void MenuItemCheckbox_OnSetChecked( MenuItemCheckbox _this, XBool value );

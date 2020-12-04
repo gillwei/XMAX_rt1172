@@ -63,11 +63,11 @@ void UIConfigPushButtonConfig__Init( WidgetSetPushButtonConfig _this )
 EW_DEFINE_AUTOOBJECT_VARIANTS( UIConfigPushButtonConfig )
 EW_END_OF_AUTOOBJECT_VARIANTS( UIConfigPushButtonConfig )
 
-/* User defined auto object: 'UIConfig::ToggleButtonConfig' */
-EW_DEFINE_AUTOOBJECT( UIConfigToggleButtonConfig, WidgetSetToggleButtonConfig )
+/* User defined auto object: 'UIConfig::CheckBoxConfig' */
+EW_DEFINE_AUTOOBJECT( UIConfigCheckBoxConfig, WidgetSetToggleButtonConfig )
 
-/* Initializer for the auto object 'UIConfig::ToggleButtonConfig' */
-void UIConfigToggleButtonConfig__Init( WidgetSetToggleButtonConfig _this )
+/* Initializer for the auto object 'UIConfig::CheckBoxConfig' */
+void UIConfigCheckBoxConfig__Init( WidgetSetToggleButtonConfig _this )
 {
   WidgetSetToggleButtonConfig_OnSetKeyCode( _this, CoreKeyCodeNoKey );
   WidgetSetToggleButtonConfig_OnSetFaceOnFrameActive( _this, 1 );
@@ -92,8 +92,8 @@ void UIConfigToggleButtonConfig__Init( WidgetSetToggleButtonConfig _this )
   ResourcesBitmap ));
 }
 
-/* Table with links to derived variants of the auto object : 'UIConfig::ToggleButtonConfig' */
-EW_DEFINE_AUTOOBJECT_VARIANTS( UIConfigToggleButtonConfig )
-EW_END_OF_AUTOOBJECT_VARIANTS( UIConfigToggleButtonConfig )
+/* Table with links to derived variants of the auto object : 'UIConfig::CheckBoxConfig' */
+EW_DEFINE_AUTOOBJECT_VARIANTS( UIConfigCheckBoxConfig )
+EW_END_OF_AUTOOBJECT_VARIANTS( UIConfigCheckBoxConfig )
 
 /* Embedded Wizard */

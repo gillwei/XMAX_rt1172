@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _MenuItemRightArrow_H
-#define _MenuItemRightArrow_H
+#ifndef _MenuItemCheckMarkLower_H
+#define _MenuItemCheckMarkLower_H
 
 #ifdef __cplusplus
   extern "C"
@@ -44,8 +44,7 @@
 
 #include "_CoreKeyPressHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuItemBase.h"
-#include "_ViewsFrame.h"
+#include "_MenuItemCheckMark.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -92,20 +91,19 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemRightArrow */
-#ifndef _MenuItemRightArrow_
-  EW_DECLARE_CLASS( MenuItemRightArrow )
-#define _MenuItemRightArrow_
+/* Forward declaration of the class Menu::ItemCheckMarkLower */
+#ifndef _MenuItemCheckMarkLower_
+  EW_DECLARE_CLASS( MenuItemCheckMarkLower )
+#define _MenuItemCheckMarkLower_
 #endif
 
 
-/* Deklaration of class : 'Menu::ItemRightArrow' */
-EW_DEFINE_FIELDS( MenuItemRightArrow, MenuItemBase )
-  EW_OBJECT  ( IconRight,       ViewsImage )
-EW_END_OF_FIELDS( MenuItemRightArrow )
+/* Deklaration of class : 'Menu::ItemCheckMarkLower' */
+EW_DEFINE_FIELDS( MenuItemCheckMarkLower, MenuItemCheckMark )
+EW_END_OF_FIELDS( MenuItemCheckMarkLower )
 
-/* Virtual Method Table (VMT) for the class : 'Menu::ItemRightArrow' */
-EW_DEFINE_METHODS( MenuItemRightArrow, MenuItemBase )
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemCheckMarkLower' */
+EW_DEFINE_METHODS( MenuItemCheckMarkLower, MenuItemCheckMark )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -124,7 +122,7 @@ EW_DEFINE_METHODS( MenuItemRightArrow, MenuItemBase )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
-  EW_METHOD( OnSetEnabled,      void )( MenuItemRightArrow _this, XBool value )
+  EW_METHOD( OnSetEnabled,      void )( MenuItemBase _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
@@ -149,15 +147,12 @@ EW_DEFINE_METHODS( MenuItemRightArrow, MenuItemBase )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnEnterReleaseSlot, void )( MenuItemBase _this, XObject sender )
-EW_END_OF_METHODS( MenuItemRightArrow )
-
-/* 'C' function for method : 'Menu::ItemRightArrow.OnSetEnabled()' */
-void MenuItemRightArrow_OnSetEnabled( MenuItemRightArrow _this, XBool value );
+EW_END_OF_METHODS( MenuItemCheckMarkLower )
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _MenuItemRightArrow_H */
+#endif /* _MenuItemCheckMarkLower_H */
 
 /* Embedded Wizard */

@@ -30,7 +30,7 @@
 #include "_CoreView.h"
 #include "_DevelopmentMain.h"
 #include "_FactoryMain.h"
-#include "_MenuItemRightArrow.h"
+#include "_MenuItemBaseLower.h"
 #include "_MenuVerticalMenu.h"
 #include "Core.h"
 #include "Development.h"
@@ -46,7 +46,7 @@ static const unsigned int _StringsDefault0[] =
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XStringRes _Const0001 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0002 = {{ 10, 32 }, { 470, 272 }};
+static const XRect _Const0002 = {{ 0, 36 }, { 480, 272 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -89,7 +89,8 @@ void DevelopmentMain__Init( DevelopmentMain _this, XObject aLink, XHandle aArg )
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0001 ));
   CoreRectView__OnSetBounds( &_this->Menu, _Const0002 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 1 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
+  MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
+  CoreGroup__Add( _this, ((CoreView)&_this->Menu ), -2 );
   _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
 }
 
@@ -148,7 +149,7 @@ XClass DevelopmentMain_LoadItemClass( DevelopmentMain _this, XInt32 aItemNo )
 
   if ( aItemNo >= 0 )
   {
-    ItemClass = EW_CLASS( MenuItemRightArrow );
+    ItemClass = EW_CLASS( MenuItemBaseLower );
   }
 
   return ItemClass;
@@ -231,8 +232,6 @@ EW_DEFINE_CLASS( DevelopmentMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, Item
   DevelopmentMain_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemConnected,
-  MenuBaseMenuView_LoadItemValid,
 EW_END_OF_CLASS( DevelopmentMain )
 
 /* Embedded Wizard */

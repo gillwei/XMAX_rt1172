@@ -46,6 +46,7 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CorePropertyObserver.h"
 #include "_MenuBaseMenuView.h"
+#include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 
@@ -164,8 +165,6 @@ EW_DEFINE_METHODS( SettingsSystemInfo, MenuBaseMenuView )
     MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemConnected, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemValid,     XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSystemInfo )
 
 /* The method Init() is invoked automatically after the component has been created. 

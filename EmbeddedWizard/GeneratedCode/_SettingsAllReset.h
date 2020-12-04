@@ -44,9 +44,10 @@
 
 #include "_CoreKeyPressHandler.h"
 #include "_MenuBaseMenuView.h"
+#include "_MenuUpDownPushButtonSet.h"
+#include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-#include "_WidgetSetPushButton.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -99,13 +100,10 @@
 
 /* Deklaration of class : 'Settings::AllReset' */
 EW_DEFINE_FIELDS( SettingsAllReset, MenuBaseMenuView )
-  EW_ARRAY   ( FocusList,       CoreView, [2])
   EW_PROPERTY( OnYes,           XSlot )
   EW_PROPERTY( OnNo,            XSlot )
   EW_OBJECT  ( Text,            ViewsText )
-  EW_OBJECT  ( ButtonNo,        WidgetSetPushButton )
-  EW_OBJECT  ( ButtonYes,       WidgetSetPushButton )
-  EW_VARIABLE( FocusIdx,        XInt32 )
+  EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
 EW_END_OF_FIELDS( SettingsAllReset )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::AllReset' */
@@ -153,8 +151,8 @@ EW_DEFINE_METHODS( SettingsAllReset, MenuBaseMenuView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( SettingsAllReset _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( SettingsAllReset _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( SettingsAllReset _this )
+  EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -162,18 +160,10 @@ EW_DEFINE_METHODS( SettingsAllReset, MenuBaseMenuView )
     MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemConnected, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemValid,     XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsAllReset )
 
 /* 'C' function for method : 'Settings::AllReset.OnLongKeyPressed()' */
 void SettingsAllReset_OnLongKeyPressed( SettingsAllReset _this, XObject sender );
-
-/* 'C' function for method : 'Settings::AllReset.OnShortDownKeyPressed()' */
-void SettingsAllReset_OnShortDownKeyPressed( SettingsAllReset _this );
-
-/* 'C' function for method : 'Settings::AllReset.OnShortUpKeyPressed()' */
-void SettingsAllReset_OnShortUpKeyPressed( SettingsAllReset _this );
 
 /* 'C' function for method : 'Settings::AllReset.OnButtonYes()' */
 void SettingsAllReset_OnButtonYes( SettingsAllReset _this, XObject sender );

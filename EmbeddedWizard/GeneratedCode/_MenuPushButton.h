@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _MenuItemBase_H
-#define _MenuItemBase_H
+#ifndef _MenuPushButton_H
+#define _MenuPushButton_H
 
 #ifdef __cplusplus
   extern "C"
@@ -45,7 +45,7 @@
 #include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreTimer.h"
-#include "_ViewsImage.h"
+#include "_ViewsBorder.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 
@@ -85,27 +85,27 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBase */
-#ifndef _MenuItemBase_
-  EW_DECLARE_CLASS( MenuItemBase )
-#define _MenuItemBase_
+/* Forward declaration of the class Menu::PushButton */
+#ifndef _MenuPushButton_
+  EW_DECLARE_CLASS( MenuPushButton )
+#define _MenuPushButton_
 #endif
 
 
-/* Deklaration of class : 'Menu::ItemBase' */
-EW_DEFINE_FIELDS( MenuItemBase, CoreGroup )
+/* Deklaration of class : 'Menu::PushButton' */
+EW_DEFINE_FIELDS( MenuPushButton, CoreGroup )
   EW_PROPERTY( OnActivate,      XSlot )
-  EW_PROPERTY( OnEnterHold,     XSlot )
-  EW_OBJECT  ( HighlightRect,   ViewsRectangle )
+  EW_OBJECT  ( Background,      ViewsRectangle )
+  EW_OBJECT  ( TitleText,       ViewsText )
   EW_OBJECT  ( KeyHandler,      CoreKeyPressHandler )
-  EW_OBJECT  ( ListDivider,     ViewsImage )
   EW_OBJECT  ( FocusFrameFlashTimer, CoreTimer )
-  EW_OBJECT  ( Title,           ViewsText )
+  EW_OBJECT  ( FocusBorder,     ViewsBorder )
+  EW_PROPERTY( Title,           XString )
   EW_PROPERTY( Focusable,       XBool )
-EW_END_OF_FIELDS( MenuItemBase )
+EW_END_OF_FIELDS( MenuPushButton )
 
-/* Virtual Method Table (VMT) for the class : 'Menu::ItemBase' */
-EW_DEFINE_METHODS( MenuItemBase, CoreGroup )
+/* Virtual Method Table (VMT) for the class : 'Menu::PushButton' */
+EW_DEFINE_METHODS( MenuPushButton, CoreGroup )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -124,7 +124,7 @@ EW_DEFINE_METHODS( MenuItemBase, CoreGroup )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
-  EW_METHOD( OnSetEnabled,      void )( MenuItemBase _this, XBool value )
+  EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
@@ -135,7 +135,7 @@ EW_DEFINE_METHODS( MenuItemBase, CoreGroup )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
-  EW_METHOD( UpdateViewState,   void )( MenuItemBase _this, XSet aState )
+  EW_METHOD( UpdateViewState,   void )( MenuPushButton _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
@@ -148,8 +148,7 @@ EW_DEFINE_METHODS( MenuItemBase, CoreGroup )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnEnterReleaseSlot, void )( MenuItemBase _this, XObject sender )
-EW_END_OF_METHODS( MenuItemBase )
+EW_END_OF_METHODS( MenuPushButton )
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
    component has been changed. This method can be overridden and filled with logic 
@@ -165,36 +164,21 @@ EW_END_OF_METHODS( MenuItemBase )
    state 'on' or 'off' and change accordingly the location of the slider, etc.
    Usually, this method will be invoked automatically by the framework. Optionally 
    you can request its invocation by using the method @InvalidateViewState(). */
-void MenuItemBase_UpdateViewState( MenuItemBase _this, XSet aState );
+void MenuPushButton_UpdateViewState( MenuPushButton _this, XSet aState );
 
-/* 'C' function for method : 'Menu::ItemBase.OnSetEnabled()' */
-void MenuItemBase_OnSetEnabled( MenuItemBase _this, XBool value );
+/* 'C' function for method : 'Menu::PushButton.OnSetTitle()' */
+void MenuPushButton_OnSetTitle( MenuPushButton _this, XString value );
 
-/* This internal slot method is called when the '@KeyHandler' is activated (when 
-   the user has pressed the key specified in the property 'Filter' of the key handler). */
-void MenuItemBase_OnEnterReleaseSlot( MenuItemBase _this, XObject sender );
+/* 'C' function for method : 'Menu::PushButton.OnEnterReleaseSlot()' */
+void MenuPushButton_OnEnterReleaseSlot( MenuPushButton _this, XObject sender );
 
-/* Wrapper function for the virtual method : 'Menu::ItemBase.OnEnterReleaseSlot()' */
-void MenuItemBase__OnEnterReleaseSlot( void* _this, XObject sender );
-
-/* This internal slot method is called when the '@FlashTimer' is expired. It ends 
-   the short flash feedback effect. */
-void MenuItemBase_OnFocusFrameFlashTimer( MenuItemBase _this, XObject sender );
-
-/* 'C' function for method : 'Menu::ItemBase.SetTitle()' */
-void MenuItemBase_SetTitle( MenuItemBase _this, XString aTitle );
-
-/* This internal slot method is called when the '@KeyHandler' is activated (when 
-   the user has pressed the key specified in the property 'Filter' of the key handler). */
-void MenuItemBase_OnEnterHoldSlot( MenuItemBase _this, XObject sender );
-
-/* 'C' function for method : 'Menu::ItemBase.OnSetFocusable()' */
-void MenuItemBase_OnSetFocusable( MenuItemBase _this, XBool value );
+/* 'C' function for method : 'Menu::PushButton.OnFocusFrameFlashTimer()' */
+void MenuPushButton_OnFocusFrameFlashTimer( MenuPushButton _this, XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _MenuItemBase_H */
+#endif /* _MenuPushButton_H */
 
 /* Embedded Wizard */

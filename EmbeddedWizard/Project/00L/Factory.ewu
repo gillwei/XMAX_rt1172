@@ -261,12 +261,12 @@ class Main : Menu::BaseMenuView
   $rect <510,10,710,50>
   inherited method LoadItemClass()
   {
-    var class ItemClass = null;
+    // suppress warning
     if( aItemNo >= 0 )
     {
-      ItemClass = Menu::ItemBase;
+      // empty body
     }
-    return ItemClass;
+    return Menu::ItemBaseLower;
   }
 
   $rect <510,60,710,100>
@@ -316,16 +316,16 @@ class Main : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Menu::VerticalMenu Menu
   {
-    preset Bounds = <10,32,470,272>;
+    preset Bounds = <0,36,480,272>;
     preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = ItemTitleArray.size;
+    preset ItemHeight = 56;
   }
 
   $reorder SlideInDialog 4
   $reorder LoadItemClass 4
   $reorder LoadItemTitle 4
   $reorder OnItemActivate 4
-  $reorder Rectangle 4
   $reorder LoadItemChecked 4
   $reorder ItemTitleArray 4
   $reorder Menu 4

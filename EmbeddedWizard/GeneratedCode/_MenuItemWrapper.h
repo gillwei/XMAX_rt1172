@@ -99,9 +99,7 @@ EW_DEFINE_FIELDS( MenuItemWrapper, CoreGroup )
   EW_PROPERTY( OnEnterHold,     XSlot )
   EW_PROPERTY( Title,           XString )
   EW_PROPERTY( ItemClass,       XClass )
-  EW_PROPERTY( Valid,           XBool )
   EW_PROPERTY( Focusable,       XBool )
-  EW_PROPERTY( Connected,       XBool )
   EW_PROPERTY( Checked,         XBool )
 EW_END_OF_FIELDS( MenuItemWrapper )
 
@@ -172,14 +170,8 @@ void MenuItemWrapper_OnSetChecked( MenuItemWrapper _this, XBool value );
 /* 'C' function for method : 'Menu::ItemWrapper.OnEnterHoldSlot()' */
 void MenuItemWrapper_OnEnterHoldSlot( MenuItemWrapper _this, XObject sender );
 
-/* 'C' function for method : 'Menu::ItemWrapper.OnSetConnected()' */
-void MenuItemWrapper_OnSetConnected( MenuItemWrapper _this, XBool value );
-
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetFocusable()' */
 void MenuItemWrapper_OnSetFocusable( MenuItemWrapper _this, XBool value );
-
-/* 'C' function for method : 'Menu::ItemWrapper.OnSetValid()' */
-void MenuItemWrapper_OnSetValid( MenuItemWrapper _this, XBool value );
 
 #ifdef __cplusplus
   }

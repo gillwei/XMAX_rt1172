@@ -46,7 +46,9 @@
 #include "_CorePropertyObserver.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuVerticalMenu.h"
+#include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -107,6 +109,7 @@
 EW_DEFINE_FIELDS( SettingsBtPairedDeviceList, MenuBaseMenuView )
   EW_OBJECT  ( Menu,            MenuVerticalMenu )
   EW_OBJECT  ( RefreshListObserver, CorePropertyObserver )
+  EW_OBJECT  ( NoDataText,      ViewsText )
   EW_VARIABLE( PairedDeviceNum, XInt32 )
 EW_END_OF_FIELDS( SettingsBtPairedDeviceList )
 
@@ -165,12 +168,9 @@ EW_DEFINE_METHODS( SettingsBtPairedDeviceList, MenuBaseMenuView )
     aItemNo )
   EW_METHOD( OnItemActivate,    void )( SettingsBtPairedDeviceList _this, XInt32 
     aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemChecked,   XBool )( SettingsBtPairedDeviceList _this, XInt32 
+    aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemConnected, XBool )( SettingsBtPairedDeviceList _this, XInt32 
-    aItemNo )
-  EW_METHOD( LoadItemValid,     XBool )( SettingsBtPairedDeviceList _this, XInt32 
-    aItemNo )
 EW_END_OF_METHODS( SettingsBtPairedDeviceList )
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -206,12 +206,8 @@ XString SettingsBtPairedDeviceList_LoadItemTitle( SettingsBtPairedDeviceList _th
 void SettingsBtPairedDeviceList_OnItemActivate( SettingsBtPairedDeviceList _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Settings::BtPairedDeviceList.LoadItemConnected()' */
-XBool SettingsBtPairedDeviceList_LoadItemConnected( SettingsBtPairedDeviceList _this, 
-  XInt32 aItemNo );
-
-/* 'C' function for method : 'Settings::BtPairedDeviceList.LoadItemValid()' */
-XBool SettingsBtPairedDeviceList_LoadItemValid( SettingsBtPairedDeviceList _this, 
+/* 'C' function for method : 'Settings::BtPairedDeviceList.LoadItemChecked()' */
+XBool SettingsBtPairedDeviceList_LoadItemChecked( SettingsBtPairedDeviceList _this, 
   XInt32 aItemNo );
 
 /* 'C' function for method : 'Settings::BtPairedDeviceList.UpdatePairedDeviceNum()' */

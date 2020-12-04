@@ -142,6 +142,12 @@ EW_END_OF_METHODS( ViewsBorder )
 void ViewsBorder_Draw( ViewsBorder _this, GraphicsCanvas aCanvas, XRect aClip, XPoint 
   aOffset, XInt32 aOpacity, XBool aBlend );
 
+/* 'C' function for method : 'Views::Border.OnSetWidth()' */
+void ViewsBorder_OnSetWidth( ViewsBorder _this, XInt32 value );
+
+/* 'C' function for method : 'Views::Border.OnSetColor()' */
+void ViewsBorder_OnSetColor( ViewsBorder _this, XColor value );
+
 /* 'C' function for method : 'Views::Border.OnSetVisible()' */
 void ViewsBorder_OnSetVisible( ViewsBorder _this, XBool value );
 

@@ -132,7 +132,7 @@ class BaseComponent : Core::Group
   }
 }
 
-$rect <20,140,260,180>
+$rect <20,200,260,240>
 $output false
 class DisclaimerView : Components::BaseComponent
 {
@@ -201,7 +201,7 @@ class DisclaimerView : Components::BaseComponent
   }
 }
 
-$rect <20,80,260,120>
+$rect <20,140,260,180>
 $output false
 class StatusBar : Core::Group
 {
@@ -227,9 +227,9 @@ class StatusBar : Core::Group
   $rect <20,20,160,60>
   object Views::Image Divider
   {
-    preset Bounds = <-1,25,479,35>;
+    preset Bounds = <0,30,480,32>;
     preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
-    preset Bitmap = Resource::ListDivider;
+    preset Bitmap = Resource::ListDivider4;
   }
 
   $rect <20,20,160,60>
@@ -266,7 +266,7 @@ class StatusBar : Core::Group
   }
 }
 
-$rect <20,200,260,240>
+$rect <20,260,260,300>
 $output false
 class PushButton : WidgetSet::PushButton
 {
@@ -287,4 +287,26 @@ class PushButton : WidgetSet::PushButton
 
   $rect <10,180,210,220>
   property slot PassKeyHold;
+}
+
+$rect <60,70,300,110>
+$output false
+class BaseMainBG : Components::BaseComponent
+{
+  $rect <0,280,200,320>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Image MainBottomBG
+  {
+    preset Bounds = <0,182,480,272>;
+    preset Bitmap = Resource::MainBG;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle BlackBG
+  {
+    preset Bounds = <0,32,480,182>;
+    preset Color = #000000FF;
+  }
 }

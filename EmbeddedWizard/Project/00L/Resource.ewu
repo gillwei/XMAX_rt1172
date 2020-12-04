@@ -1,18 +1,6 @@
 ﻿$version 10.00
 
-$rect <30,20,230,60>
-$output false
-resource Resources::Bitmap FocusFrame
-{
-  attr bitmapfile FileName = .\Res\listbtn_frame.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <70,70>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <250,20,450,60>
+$rect <250,190,450,230>
 $output false
 resource Resources::Bitmap IconMediaPlayPause
 {
@@ -24,7 +12,7 @@ resource Resources::Bitmap IconMediaPlayPause
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,70,450,110>
+$rect <250,240,450,280>
 $output false
 resource Resources::Bitmap IconMediaPrevious
 {
@@ -36,7 +24,7 @@ resource Resources::Bitmap IconMediaPrevious
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,120,450,160>
+$rect <250,290,450,330>
 $output false
 resource Resources::Bitmap IconMediaNext
 {
@@ -48,19 +36,7 @@ resource Resources::Bitmap IconMediaNext
   attr bitmapmode Mode = Default;
 }
 
-$rect <460,20,660,60>
-$output false
-resource Resources::Bitmap ListIconNext
-{
-  attr bitmapfile FileName = .\Res\list_icon_next.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <37, 37>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <30,180,230,220>
+$rect <30,350,230,390>
 $output false
 resource Resources::Bitmap IconBtDevice
 {
@@ -72,31 +48,19 @@ resource Resources::Bitmap IconBtDevice
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,230,230,270>
-$output false
-resource Resources::Bitmap ListDivider
-{
-  attr bitmapfile FileName = .\Res\list_divider.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <30,280,230,320>
+$rect <540,50,740,90>
 $output false
 resource Resources::Bitmap CheckboxNormal
 {
-  attr bitmapfile FileName = .\Res\checkbox_normal.png;
+  attr bitmapfile FileName = .\Res\menu\ml_checkbox_normal.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <30,30>;
+  attr framesize FrameSize = <50,50>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,420,230,460>
+$rect <30,590,230,630>
 $output false
 resource Resources::Bitmap IconWarning
 {
@@ -108,7 +72,7 @@ resource Resources::Bitmap IconWarning
   attr bitmapmode Mode = Default;
 }
 
-$rect <270,180,470,220>
+$rect <270,350,470,390>
 $output false
 resource Resources::Bitmap InspectionArrowDown
 {
@@ -120,7 +84,7 @@ resource Resources::Bitmap InspectionArrowDown
   attr bitmapmode Mode = Default;
 }
 
-$rect <270,230,470,270>
+$rect <270,400,470,440>
 $output false
 resource Resources::Bitmap InspectionArrowRight
 {
@@ -132,7 +96,7 @@ resource Resources::Bitmap InspectionArrowRight
   attr bitmapmode Mode = Default;
 }
 
-$rect <270,280,470,320>
+$rect <270,450,470,490>
 $output false
 resource Resources::Bitmap InspectionArrowUp
 {
@@ -144,7 +108,7 @@ resource Resources::Bitmap InspectionArrowUp
   attr bitmapmode Mode = Default;
 }
 
-$rect <490,180,690,220>
+$rect <490,350,690,390>
 $output false
 resource Resources::Bitmap InspectionArrowLeft
 {
@@ -156,7 +120,7 @@ resource Resources::Bitmap InspectionArrowLeft
   attr bitmapmode Mode = Default;
 }
 
-$rect <490,230,690,270>
+$rect <490,400,690,440>
 $output false
 resource Resources::Bitmap InspectionArrowEnter
 {
@@ -168,7 +132,7 @@ resource Resources::Bitmap InspectionArrowEnter
   attr bitmapmode Mode = Default;
 }
 
-$rect <480,280,680,320>
+$rect <480,450,680,490>
 $output false
 resource Resources::Bitmap InspectionConnection
 {
@@ -180,7 +144,7 @@ resource Resources::Bitmap InspectionConnection
   attr bitmapmode Mode = Default;
 }
 
-$rect <260,330,460,370>
+$rect <260,500,460,540>
 $output false
 resource Resources::Bitmap InspectionHome
 {
@@ -192,7 +156,7 @@ resource Resources::Bitmap InspectionHome
   attr bitmapmode Mode = Default;
 }
 
-$rect <730,180,930,220>
+$rect <730,350,930,390>
 $output false
 resource Resources::Bitmap iconBT
 {
@@ -204,7 +168,7 @@ resource Resources::Bitmap iconBT
   attr bitmapmode Mode = Default;
 }
 
-$rect <730,220,930,260>
+$rect <730,390,930,430>
 $output false
 resource Resources::Bitmap iconWifi
 {
@@ -216,7 +180,7 @@ resource Resources::Bitmap iconWifi
   attr bitmapmode Mode = Default;
 }
 
-$rect <730,270,930,310>
+$rect <730,440,930,480>
 $output false
 resource Resources::Bitmap iconSignal
 {
@@ -228,7 +192,7 @@ resource Resources::Bitmap iconSignal
   attr bitmapmode Mode = Default;
 }
 
-$rect <730,320,930,360>
+$rect <730,490,930,530>
 $output false
 resource Resources::Bitmap iconExit
 {
@@ -240,7 +204,7 @@ resource Resources::Bitmap iconExit
   attr bitmapmode Mode = Default;
 }
 
-$rect <940,170,1140,210>
+$rect <940,340,1140,380>
 $output false
 resource Resources::Bitmap iconCAN
 {
@@ -252,7 +216,7 @@ resource Resources::Bitmap iconCAN
   attr bitmapmode Mode = Default;
 }
 
-$rect <940,220,1140,260>
+$rect <940,390,1140,430>
 $output false
 resource Resources::Bitmap InspectionDivider
 {
@@ -264,7 +228,7 @@ resource Resources::Bitmap InspectionDivider
   attr bitmapmode Mode = Default;
 }
 
-$rect <930,270,1130,310>
+$rect <930,440,1130,480>
 $output false
 resource Resources::Bitmap InspectionStatus
 {
@@ -276,7 +240,7 @@ resource Resources::Bitmap InspectionStatus
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,480,230,520>
+$rect <30,650,230,690>
 $output false
 resource Resources::Bitmap progress
 {
@@ -288,7 +252,7 @@ resource Resources::Bitmap progress
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,530,230,570>
+$rect <30,700,230,740>
 $output false
 resource Resources::Bitmap Development
 {
@@ -300,19 +264,19 @@ resource Resources::Bitmap Development
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,330,230,370>
+$rect <540,90,740,130>
 $output false
 resource Resources::Bitmap CheckboxDisable
 {
-  attr bitmapfile FileName = .\Res\checkbox_disable.png;
+  attr bitmapfile FileName = .\Res\menu\ml_checkbox_grayout.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <30,30>;
+  attr framesize FrameSize = <50,50>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,650,280,690>
+$rect <30,820,280,860>
 $output false
 resource Resources::Bitmap DisplayTest
 {
@@ -324,23 +288,23 @@ resource Resources::Bitmap DisplayTest
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,700,280,740>
+$rect <30,870,280,910>
 $output false
 autoobject Resources::ExternBitmap ExternBitmap;
 
 // Factory Test - Display
 note group Note5
 {
-  attr Bounds = <10,600,300,760>;
+  attr Bounds = <10,770,300,930>;
 }
 
 // Navigation
 note group Note1
 {
-  attr Bounds = <10,780,490,940>;
+  attr Bounds = <10,950,490,1110>;
 }
 
-$rect <40,830,240,870>
+$rect <40,1000,240,1040>
 $output false
 resource Resources::Bitmap TbTBg
 {
@@ -352,7 +316,7 @@ resource Resources::Bitmap TbTBg
   attr bitmapmode Mode = Default;
 }
 
-$rect <40,880,240,920>
+$rect <40,1050,240,1090>
 $output false
 resource Resources::Bitmap IconTbT
 {
@@ -364,7 +328,7 @@ resource Resources::Bitmap IconTbT
   attr bitmapmode Mode = Default;
 }
 
-$rect <260,830,460,870>
+$rect <260,1000,460,1040>
 $output false
 resource Resources::Bitmap ArrivalBg
 {
@@ -379,10 +343,10 @@ resource Resources::Bitmap ArrivalBg
 // Navigation - YMC design
 note group Note2
 {
-  attr Bounds = <10,950,1100,1110>;
+  attr Bounds = <10,1120,1100,1280>;
 }
 
-$rect <40,990,240,1030>
+$rect <40,1160,240,1200>
 $output false
 resource Resources::Bitmap YmcNaviDay
 {
@@ -394,7 +358,7 @@ resource Resources::Bitmap YmcNaviDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <40,1040,240,1080>
+$rect <40,1210,240,1250>
 $output false
 resource Resources::Bitmap YmcNaviNight
 {
@@ -406,7 +370,7 @@ resource Resources::Bitmap YmcNaviNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,990,450,1030>
+$rect <250,1160,450,1200>
 $output false
 resource Resources::Bitmap YmcRouteDay
 {
@@ -418,7 +382,7 @@ resource Resources::Bitmap YmcRouteDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,1040,450,1080>
+$rect <250,1210,450,1250>
 $output false
 resource Resources::Bitmap YmcRouteNight
 {
@@ -430,7 +394,7 @@ resource Resources::Bitmap YmcRouteNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <460,990,660,1030>
+$rect <460,1160,660,1200>
 $output false
 resource Resources::Bitmap YmcNextTurnDay
 {
@@ -442,7 +406,7 @@ resource Resources::Bitmap YmcNextTurnDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <460,1040,660,1080>
+$rect <460,1210,660,1250>
 $output false
 resource Resources::Bitmap YmcNextTurnNight
 {
@@ -454,7 +418,7 @@ resource Resources::Bitmap YmcNextTurnNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <670,990,870,1030>
+$rect <670,1160,870,1200>
 $output false
 resource Resources::Bitmap YmcTbTDay
 {
@@ -466,7 +430,7 @@ resource Resources::Bitmap YmcTbTDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <670,1040,870,1080>
+$rect <670,1210,870,1250>
 $output false
 resource Resources::Bitmap YmcTbTNight
 {
@@ -478,7 +442,7 @@ resource Resources::Bitmap YmcTbTNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,990,1080,1030>
+$rect <880,1160,1080,1200>
 $output false
 resource Resources::Bitmap YmcTurnList
 {
@@ -493,10 +457,10 @@ resource Resources::Bitmap YmcTurnList
 // Navigation - Garmin design
 note group Note3
 {
-  attr Bounds = <10,1130,1100,1290>;
+  attr Bounds = <10,1300,1100,1460>;
 }
 
-$rect <40,1170,240,1210>
+$rect <40,1340,240,1380>
 $output false
 resource Resources::Bitmap GrmnNaviDay
 {
@@ -508,7 +472,7 @@ resource Resources::Bitmap GrmnNaviDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <40,1220,240,1260>
+$rect <40,1390,240,1430>
 $output false
 resource Resources::Bitmap GrmnNaviNight
 {
@@ -520,7 +484,7 @@ resource Resources::Bitmap GrmnNaviNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,1170,450,1210>
+$rect <250,1340,450,1380>
 $output false
 resource Resources::Bitmap GrmnRouteDay
 {
@@ -532,7 +496,7 @@ resource Resources::Bitmap GrmnRouteDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,1220,450,1260>
+$rect <250,1390,450,1430>
 $output false
 resource Resources::Bitmap GrmnRouteNight
 {
@@ -544,7 +508,7 @@ resource Resources::Bitmap GrmnRouteNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <460,1170,660,1210>
+$rect <460,1340,660,1380>
 $output false
 resource Resources::Bitmap GrmnNextTurnDay
 {
@@ -556,7 +520,7 @@ resource Resources::Bitmap GrmnNextTurnDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <460,1220,660,1260>
+$rect <460,1390,660,1430>
 $output false
 resource Resources::Bitmap GrmnNextTurnNight
 {
@@ -568,7 +532,7 @@ resource Resources::Bitmap GrmnNextTurnNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <670,1170,870,1210>
+$rect <670,1340,870,1380>
 $output false
 resource Resources::Bitmap GrmnTbTDay
 {
@@ -580,7 +544,7 @@ resource Resources::Bitmap GrmnTbTDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <670,1220,870,1260>
+$rect <670,1390,870,1430>
 $output false
 resource Resources::Bitmap GrmnTbTNight
 {
@@ -592,13 +556,79 @@ resource Resources::Bitmap GrmnTbTNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,1170,1080,1210>
+$rect <880,1340,1080,1380>
 $output false
 resource Resources::Bitmap GrmnTurnList
 {
   attr bitmapfile FileName = .\Res\navi_screen\Garmin\LC Navi – List View_UX.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <20,0,220,40>
+$output false
+resource Resources::Bitmap MainBG
+{
+  attr bitmapfile FileName = .\Res\common\main_bg_bottom.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <330,90,530,130>
+$output false
+resource Resources::Bitmap ListDivider4
+{
+  attr bitmapfile FileName = .\Res\menu\menulist_l4.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <330,50,530,90>
+$output false
+resource Resources::Bitmap ListDivider3
+{
+  attr bitmapfile FileName = .\Res\menu\menulist_l3.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// Menu
+note group Note4
+{
+  attr Bounds = <310,0,760,180>;
+}
+
+$rect <20,190,220,230>
+$output false
+resource Resources::Bitmap FocusFrame
+{
+  attr bitmapfile FileName = .\Res\listbtn_frame.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <70,70>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <540,130,740,170>
+$output false
+resource Resources::Bitmap CheckMark
+{
+  attr bitmapfile FileName = .\Res\menu\ml_checkmark.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;

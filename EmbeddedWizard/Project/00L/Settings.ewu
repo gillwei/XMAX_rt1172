@@ -19,7 +19,7 @@ class Main : Menu::BaseMenuView
     var class ItemClass = null;
     if( aItemNo >= 0 )
     {
-      ItemClass = Menu::ItemRightArrow;
+      ItemClass = Menu::ItemBase;
     }
     return ItemClass;
   }
@@ -62,7 +62,7 @@ class Main : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Menu::VerticalMenu Menu
   {
-    preset Bounds = <10,32,470,272>;
+    preset Bounds = <0,36,480,272>;
     preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 2;
   }
@@ -71,10 +71,7 @@ class Main : Menu::BaseMenuView
   $reorder LoadItemClass 4
   $reorder LoadItemTitle 4
   $reorder OnItemActivate 4
-  $reorder Rectangle 4
   $reorder LoadItemChecked 4
-  $reorder ItemTitleArray 4
-  $reorder Menu 4
 }
 
 $rect <50,70,290,110>
@@ -104,9 +101,9 @@ class Connection : Menu::BaseMenuView
   {
     var class ClassType = null;
     if( aItemNo < ItemClassArray.size )
-      {
+    {
       ClassType = ItemClassArray[aItemNo];
-      }
+    }
     return ClassType;
   }
 
@@ -140,14 +137,15 @@ class Connection : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Menu::VerticalMenu Menu
   {
-    preset Bounds = <10,32,470,272>;
+    preset Bounds = <0,36,480,272>;
     preset PassKeyHold = OnLongKeyPressed;
+    preset NoOfItems = 1;
   }
 
   $rect <730,20,930,60>
   array class ItemClassArray[ 1 ] =
   (
-    Default[0] = Menu::ItemRightArrow;
+    Default[0] = Menu::ItemBase;
   );
 
   $rect <730,70,930,110>
@@ -161,16 +159,16 @@ $rect <80,130,320,170>
 $output false
 class Bluetooth : Menu::BaseMenuView
 {
-  $rect <10,290,210,330>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <240,290,420,330>
+  $rect <230,290,410,330>
   inherited method Init()
   {
     DeviceInterface::BluetoothDevice.GetBluetoothEnable();
   }
 
-  $rect <520,270,720,310>
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <520,320,720,360>
   inherited slot OnLongKeyPressed
   {
     var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
@@ -185,18 +183,18 @@ class Bluetooth : Menu::BaseMenuView
 
   }
 
-  $rect <520,20,720,60>
+  $rect <520,70,720,110>
   inherited method LoadItemClass()
   {
     var class ClassType = null;
     if( aItemNo < ItemClassArray.size )
-      {
+    {
       ClassType = ItemClassArray[aItemNo];
-      }
+    }
     return ClassType;
   }
 
-  $rect <520,70,720,110>
+  $rect <520,120,720,160>
   inherited method LoadItemTitle()
   {
     var string title = "";
@@ -207,7 +205,7 @@ class Bluetooth : Menu::BaseMenuView
     return title;
   }
 
-  $rect <520,220,720,260>
+  $rect <520,270,720,310>
   inherited method OnItemActivate()
   {
     var bool IsChecked = false;
@@ -243,7 +241,7 @@ class Bluetooth : Menu::BaseMenuView
     }
   }
 
-  $rect <520,120,720,160>
+  $rect <520,170,720,210>
   inherited method LoadItemChecked()
   {
     var bool IsChecked = false;
@@ -256,7 +254,7 @@ class Bluetooth : Menu::BaseMenuView
     return IsChecked;
   }
 
-  $rect <520,170,720,210>
+  $rect <520,220,720,260>
   inherited method LoadItemEnabled()
   {
     var bool ItemEnabled = true;
@@ -270,21 +268,23 @@ class Bluetooth : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Menu::VerticalMenu Menu
   {
-    preset Bounds = <10,32,470,272>;
+    preset Bounds = <0,36,480,272>;
     preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 4;
+    preset ItemHeight = 56;
+    preset ItemNumPerPage = 4;
   }
 
-  $rect <740,20,940,60>
+  $rect <740,70,940,110>
   array class ItemClassArray[ 4 ] =
   (
-    Default[0] = Menu::ItemCheckbox;
-    Default[1] = Menu::ItemBase;
-    Default[2] = Menu::ItemRightArrow;
-    Default[3] = Menu::ItemCheckbox;
+    Default[0] = Menu::ItemCheckboxLower;
+    Default[1] = Menu::ItemBaseLower;
+    Default[2] = Menu::ItemBaseLower;
+    Default[3] = Menu::ItemCheckboxLower;
   );
 
-  $rect <740,70,940,110>
+  $rect <740,120,940,160>
   array string ItemTitleArray[ 4 ] =
   (
     Default[0] = "Bluetooth";
@@ -293,13 +293,19 @@ class Bluetooth : Menu::BaseMenuView
     Default[3] = "Bluetooth auto connect";
   );
 
-  $rect <740,120,940,160>
+  $rect <740,170,940,210>
   var bool IsBtEnabled = false;
 
   $rect <230,350,480,390>
   slot ShowPairedDeviceListSlot
   {
     PresentDialog( new Settings::BtPairedDeviceList, null, null, null, null, null, null, null, null, false );
+  }
+
+  // [SET 17]
+  note group Note
+  {
+    attr Bounds = <520,0,720,50>;
   }
 }
 
@@ -333,19 +339,13 @@ class SystemMenu : Menu::BaseMenuView
   $rect <530,120,730,160>
   inherited method LoadItemClass()
   {
-    var class ItemClass = null;
+    // suppress warning
     if( aItemNo >= 0 )
     {
-      if( aItemNo != 2 )
-      {
-      ItemClass = Menu::ItemBase;
-      }
-      else
-      {
-      ItemClass = Menu::ItemRightArrow;
-      }
+      // empty body
     }
-    return ItemClass;
+
+    return Menu::ItemBase;
   }
 
   $rect <530,70,730,110>
@@ -392,7 +392,7 @@ class SystemMenu : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Menu::VerticalMenu Menu
   {
-    preset Bounds = <10,32,470,272>;
+    preset Bounds = <0,36,480,272>;
     preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 3;
   }
@@ -425,7 +425,7 @@ class LegalMenu : Menu::BaseMenuView
     var class ItemClass = null;
     if( aItemNo >= 0 )
     {
-    ItemClass = Menu::ItemRightArrow;
+    ItemClass = Menu::ItemBaseLower;
     }
     return ItemClass;
   }
@@ -790,65 +790,15 @@ class AllReset : Menu::BaseMenuView
     }
   }
 
-  $rect <520,130,720,170>
-  inherited method OnShortDownKeyPressed()
-  {
-    var int32 NextFocusIdx = FocusIdx + 1;
-    if( NextFocusIdx >= FocusList.size )
-      {
-      NextFocusIdx = FocusList.size - 1;
-      }
-
-    if( FocusIdx != NextFocusIdx )
-      {
-      FocusIdx = NextFocusIdx;
-      Focus = FocusList[NextFocusIdx];
-      }
-  }
-
-  $rect <520,80,720,120>
-  inherited method OnShortUpKeyPressed()
-  {
-    var int32 NextFocusIdx = FocusIdx - 1;
-    if( NextFocusIdx < 0 )
-      {
-      NextFocusIdx = 0;
-      }
-
-    if( FocusIdx != NextFocusIdx )
-      {
-      FocusIdx = NextFocusIdx;
-      Focus = FocusList[NextFocusIdx];
-      }
-  }
-
   $rect <20,20,160,60>
   object Views::Text Text
   {
-    preset Bounds = <30,45,450,180>;
+    preset Bounds = <10,45,470,169>;
     preset String = "Reset LinkCard to factory settings?";
     preset Font = Fonts::FontNotoSansCjkJp32;
   }
 
-  $rect <20,20,160,60>
-  object WidgetSet::PushButton ButtonNo
-  {
-    preset Bounds = <260,190,410,240>;
-    preset OnRelease = OnButtonNo;
-    preset Label = "No";
-    preset Appearance = UIConfig::PushButtonConfig;
-  }
-
-  $rect <20,20,160,60>
-  object WidgetSet::PushButton ButtonYes
-  {
-    preset Bounds = <40,190,190,240>;
-    preset OnRelease = OnButtonYes;
-    preset Label = "Yes";
-    preset Appearance = UIConfig::PushButtonConfig;
-  }
-
-  $rect <520,190,720,230>
+  $rect <510,200,710,240>
   slot OnButtonYes
   {
     //TODO: Check BLE record exist or not -> UpdateBLEStatus method. If no, switch to Error page.
@@ -878,12 +828,13 @@ class AllReset : Menu::BaseMenuView
   $rect <970,20,1170,60>
   var int32 FocusIdx = 1;
 
-  $rect <1190,20,1390,60>
-  array Core::View FocusList[ 2 ] =
-  (
-    Default[0] = ButtonYes;
-    Default[1] = ButtonNo;
-  );
+  $rect <20,20,160,60>
+  object Menu::UpDownPushButtonSet UpDownPushButtonSet
+  {
+    preset Bounds = <165,176,315,259>;
+    preset OnUpButtonReleased = OnButtonNo;
+    preset OnDownButtonReleased = OnButtonYes;
+  }
 }
 
 $rect <940,390,1140,430>
@@ -1214,9 +1165,6 @@ $rect <720,380,920,420>
 $output false
 class Reset : Components::BaseComponent
 {
-  $rect <10,290,210,330>
-  inherited property Bounds = <0,0,480,272>;
-
   $rect <520,10,720,50>
   inherited method Init()
   {
@@ -1226,6 +1174,9 @@ class Reset : Components::BaseComponent
     all_reset.OnNo = OnAllResetNoSlot;
     PresentDialog( all_reset, null, null, null, null, null, null, null, null, false );
   }
+
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
 
   $rect <520,60,720,100>
   slot OnAllResetYesSlot
@@ -1471,11 +1422,8 @@ class DisplayBrightness : Menu::BaseMenuView
 
 $rect <120,190,360,230>
 $output false
-class BtDiscovarable : Components::BaseComponent
+class BtDiscovarable : Components::BaseMainBG
 {
-  $rect <0,290,180,330>
-  inherited property Bounds = <0,0,480,272>;
-
   $rect <0,350,180,390>
   inherited method Init()
   {
@@ -1484,12 +1432,8 @@ class BtDiscovarable : Components::BaseComponent
     CountDownTimer.Enabled = true;
   }
 
-  $rect <20,20,160,60>
-  object Views::Rectangle Rectangle
-  {
-    preset Bounds = <0,0,480,272>;
-    preset Color = #000000FF;
-  }
+  $rect <0,290,180,330>
+  inherited property Bounds = <0,0,480,272>;
 
   $rect <20,20,160,60>
   object Views::Text DiscoverableText
@@ -1499,15 +1443,6 @@ class BtDiscovarable : Components::BaseComponent
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "Now discoverable by other Bluetooth devices.";
     preset Font = Fonts::FontNotoSansCjkJp36;
-  }
-
-  $rect <20,20,160,60>
-  object Components::PushButton NoButton
-  {
-    preset Bounds = <160,200,300,250>;
-    preset OnActivate = OnCancelSlot;
-    preset Label = "Cancel";
-    preset Appearance = UIConfig::PushButtonConfig;
   }
 
   $rect <200,290,400,330>
@@ -1592,6 +1527,14 @@ class BtDiscovarable : Components::BaseComponent
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = DeviceInterface::BluetoothDevice.LocalDeviceName;
     preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::PushButton PushButton
+  {
+    preset Bounds = <165,219,315,259>;
+    preset Title = "Cancel";
+    preset OnActivate = OnCancelSlot;
   }
 }
 
@@ -1710,35 +1653,10 @@ class BtConnectionResult : Components::BaseComponent
 
 $rect <160,310,400,350>
 $output false
-class BtMaxPairedDevice : Components::BaseComponent
+class BtMaxPairedDevice : Components::BaseMainBG
 {
   $rect <0,290,200,330>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <210,290,410,330>
-  inherited method OnShortDownKeyPressed()
-  {
-    if( YesButton == Focus )
-    {
-      Focus = NoButton;
-    }
-  }
-
-  $rect <210,340,410,380>
-  inherited method OnShortUpKeyPressed()
-  {
-    if( NoButton == Focus )
-    {
-      Focus = YesButton;
-    }
-  }
-
-  $rect <20,20,160,60>
-  object Views::Rectangle Rectangle
-  {
-    preset Bounds = <0,0,480,272>;
-    preset Color = #000000FF;
-  }
 
   $rect <20,20,160,60>
   object Views::Text Text
@@ -1751,41 +1669,35 @@ class BtMaxPairedDevice : Components::BaseComponent
   }
 
   $rect <20,20,160,60>
-  object Components::PushButton NoButton
+  object Menu::UpDownPushButtonSet UpDownPushButtonSet
   {
-    preset Bounds = <250,190,390,240>;
-    preset OnActivate = OnYesNoSlot;
-    preset Label = "No";
-    preset Appearance = UIConfig::PushButtonConfig;
+    preset Bounds = <165,176,315,259>;
+    preset OnUpButtonReleased = OnYesSlot;
+    preset OnDownButtonReleased = OnNoSlot;
+    preset UpButtonTitle = "Yes";
+    preset DownButtonTitle = "No";
   }
 
-  $rect <20,20,160,60>
-  object Components::PushButton YesButton
+  $rect <210,290,410,330>
+  slot OnYesSlot
   {
-    preset Bounds = <100,190,240,240>;
-    preset OnActivate = OnYesNoSlot;
-    preset Label = "Yes";
-    preset Appearance = UIConfig::PushButtonConfig;
-  }
-
-  $rect <420,290,620,330>
-  slot OnYesNoSlot
-  {
-    if( YesButton == sender )
-    {
-      postsignal ToRemovePairedDevice;
-    }
+    postsignal ToRemovePairedDevice;
     Owner.DismissDialog( this, null, null, null, null, null, false );
-
   }
 
-  $rect <420,340,630,380>
+  $rect <210,390,420,430>
   property slot ToRemovePairedDevice;
+
+  $rect <210,330,410,370>
+  slot OnNoSlot
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
 }
 
 $rect <160,370,400,410>
 $output false
-class BtPairDevice : Components::BaseComponent
+class BtPairDevice : Components::BaseMainBG
 {
   $rect <0,290,200,330>
   inherited property Bounds = <0,0,480,272>;
@@ -1806,31 +1718,6 @@ class BtPairDevice : Components::BaseComponent
     {
       Focus = YesButton;
     }
-  }
-
-  $rect <20,20,160,60>
-  object Views::Rectangle Rectangle
-  {
-    preset Bounds = <0,0,480,272>;
-    preset Color = #000000FF;
-  }
-
-  $rect <20,20,160,60>
-  object Components::PushButton NoButton
-  {
-    preset Bounds = <260,210,400,260>;
-    preset OnActivate = OnYesNoSlot;
-    preset Label = "No";
-    preset Appearance = UIConfig::PushButtonConfig;
-  }
-
-  $rect <20,20,160,60>
-  object Components::PushButton YesButton
-  {
-    preset Bounds = <110,210,250,260>;
-    preset OnActivate = OnYesNoSlot;
-    preset Label = "Yes";
-    preset Appearance = UIConfig::PushButtonConfig;
   }
 
   $rect <420,290,620,330>
@@ -1850,7 +1737,7 @@ class BtPairDevice : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Text ToPairText
   {
-    preset Bounds = <100,20,360,60>;
+    preset Bounds = <101,34,361,74>;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "To pair with";
@@ -1860,7 +1747,7 @@ class BtPairDevice : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Text MakeSureText
   {
-    preset Bounds = <10,100,470,140>;
+    preset Bounds = <9,103,469,143>;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "Make sure it is showing this passkey";
@@ -1870,7 +1757,7 @@ class BtPairDevice : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Text DeviceNameText
   {
-    preset Bounds = <100,60,360,100>;
+    preset Bounds = <99,70,359,110>;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "";
@@ -1880,7 +1767,7 @@ class BtPairDevice : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Text PasskeyText
   {
-    preset Bounds = <100,140,360,180>;
+    preset Bounds = <104,138,364,178>;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "";
@@ -1915,6 +1802,14 @@ class BtPairDevice : Components::BaseComponent
     trace "OnPasskeyGeneratedSlot", DeviceInterface::BluetoothDevice.Passkey;
     PasskeyText.String = DeviceInterface::BluetoothDevice.Passkey;
   }
+
+  $rect <20,20,160,60>
+  object Menu::UpDownPushButtonSet UpDownPushButtonSet
+  {
+    preset Bounds = <165,176,315,259>;
+    preset OnUpButtonReleased = OnYesNoSlot;
+    preset OnDownButtonReleased = OnYesNoSlot;
+  }
 }
 
 $rect <120,430,360,470>
@@ -1929,7 +1824,6 @@ class BtPairedDeviceList : Menu::BaseMenuView
   {
     super( aState );
 
-    trace "PairedDeviceList, UpdateViewState: ", aState;
     if( aState.contains( Core::ViewState[ Dialog ] ) &&
         !aState.contains( Core::ViewState[ PendingFader ] ) )
     {
@@ -1937,7 +1831,7 @@ class BtPairedDeviceList : Menu::BaseMenuView
     }
   }
 
-  $rect <520,268,720,308>
+  $rect <520,220,720,260>
   inherited slot OnLongKeyPressed
   {
     var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
@@ -1960,7 +1854,7 @@ class BtPairedDeviceList : Menu::BaseMenuView
     {
       // empty body
     }
-    return Menu::ItemBtPairedDevice;
+    return Menu::ItemCheckMarkLower;
   }
 
   $rect <520,70,720,110>
@@ -1978,14 +1872,11 @@ class BtPairedDeviceList : Menu::BaseMenuView
       DeviceInterface::BluetoothDevice.GetPairedDeviceAtItem( aItemNo );
       Title = DeviceInterface::BluetoothDevice.PairedDeviceObj.DeviceName;
     }
-    else
-    {
-      Title = "No Data";
-    }
+
     return Title;
   }
 
-  $rect <520,218,720,258>
+  $rect <520,170,720,210>
   inherited method OnItemActivate()
   {
     // suppress warning
@@ -1994,7 +1885,7 @@ class BtPairedDeviceList : Menu::BaseMenuView
       // empty body
     }
 
-    var Menu::ItemBtPairedDevice BtDeviceItem = ( Menu::ItemBtPairedDevice )aMenuItem;
+    var Menu::ItemCheckMarkLower BtDeviceItem = ( Menu::ItemCheckMarkLower )aMenuItem;
     if( null != BtDeviceItem )
     {
       var Settings::BtPairedDeviceOperation Dialog = new Settings::BtPairedDeviceOperation;
@@ -2002,11 +1893,10 @@ class BtPairedDeviceList : Menu::BaseMenuView
       Dialog.DeviceName = BtDeviceItem.Title.String;
       PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
     }
-
   }
 
-  $rect <520,120,720,160>
-  inherited method LoadItemConnected()
+  $rect <517,118,717,158>
+  inherited method LoadItemChecked()
   {
     // suppress warning
     if( aItemNo > 0 )
@@ -2022,57 +1912,40 @@ class BtPairedDeviceList : Menu::BaseMenuView
     return result;
   }
 
-  $rect <520,170,720,210>
-  inherited method LoadItemValid()
-  {
-    // suppress warning
-    if( aItemNo > 0 )
-    {
-      // empty body
-    }
-
-    if( PairedDeviceNum > 0 )
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
   $rect <20,20,160,60>
   object Menu::VerticalMenu Menu
   {
-    preset Bounds = <10,32,470,272>;
+    preset Bounds = <0,36,480,272>;
     preset PassKeyHold = OnLongKeyPressed;
-    preset NoOfItems = 0;
+    preset NoOfItems = 1;
     preset Focusable = false;
+    preset ItemHeight = 56;
   }
 
   $rect <200,340,420,380>
-  var int32 PairedDeviceNum;
+  var int32 PairedDeviceNum = 0;
 
   $rect <200,390,420,430>
   method void UpdatePairedDeviceNum()
   {
-    trace "UpdatePairedDeviceNum";
     PairedDeviceNum = DeviceInterface::BluetoothDevice.PairedDeviceNum;
+    Menu.NoOfItems = PairedDeviceNum;
+
     if( PairedDeviceNum > 0 )
     {
-      Menu.NoOfItems = PairedDeviceNum;
       Menu.Focusable = true;
       Menu.InvalidateItems( 0, PairedDeviceNum - 1 );
+      NoDataText.Visible = false;
     }
     else
     {
-      Menu.NoOfItems = 1;
       Menu.Focusable = false;
       Menu.InvalidateItems( 0, 0 );
+      NoDataText.Visible = true;
     }
   }
 
-  $rect <520,320,720,360>
+  $rect <520,272,720,312>
   object Core::PropertyObserver RefreshListObserver
   {
     preset OnEvent = OnRefreshListSlot;
@@ -2081,10 +1954,18 @@ class BtPairedDeviceList : Menu::BaseMenuView
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <530,370,730,410>
+  $rect <520,322,720,362>
   slot OnRefreshListSlot
   {
     UpdatePairedDeviceNum();
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text NoDataText
+  {
+    preset Bounds = <10,50,470,236>;
+    preset String = "No data";
+    preset Font = Fonts::FontNotoSansCjkJp36;
   }
 }
 
@@ -2195,23 +2076,16 @@ class BtPairedDeviceOperation : Menu::BaseMenuView
 
 $rect <190,550,430,590>
 $output false
-class BtDeleteBleDevice : Components::BaseComponent
+class BtDeleteBleDevice : Components::BaseMainBG
 {
-  $rect <0,290,180,330>
-  inherited property Bounds = <0,0,480,272>;
-
   $rect <0,340,180,380>
   inherited method Init()
   {
     Text.String = DialogString1 + DeviceName + DialogString2;
   }
 
-  $rect <20,20,160,60>
-  object Views::Rectangle Rectangle
-  {
-    preset Bounds = <0,0,480,272>;
-    preset Color = #000000FF;
-  }
+  $rect <0,290,180,330>
+  inherited property Bounds = <0,0,480,272>;
 
   $rect <20,20,160,60>
   object Views::Text Text
@@ -2240,12 +2114,11 @@ class BtDeleteBleDevice : Components::BaseComponent
   }
 
   $rect <20,20,160,60>
-  object Components::PushButton NoButton
+  object Menu::PushButton PushButton
   {
-    preset Bounds = <150,210,290,260>;
+    preset Bounds = <165,219,315,259>;
+    preset Title = "OK";
     preset OnActivate = OnOkSlot;
-    preset Label = "OK";
-    preset Appearance = UIConfig::PushButtonConfig;
   }
 }
 

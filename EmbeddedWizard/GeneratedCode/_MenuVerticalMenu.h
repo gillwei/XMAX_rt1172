@@ -46,7 +46,7 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreVerticalList.h"
 #include "_MenuScrollbar.h"
-#include "_ViewsRectangle.h"
+#include "_ViewsBorder.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -99,10 +99,12 @@
 
 /* Deklaration of class : 'Menu::VerticalMenu' */
 EW_DEFINE_FIELDS( MenuVerticalMenu, ComponentsBaseComponent )
-  EW_OBJECT  ( Background,      ViewsRectangle )
   EW_OBJECT  ( MenuList,        CoreVerticalList )
   EW_OBJECT  ( Scrollbar,       MenuScrollbar )
+  EW_OBJECT  ( FocusFrame,      ViewsBorder )
   EW_PROPERTY( NoOfItems,       XInt32 )
+  EW_PROPERTY( ItemHeight,      XInt32 )
+  EW_PROPERTY( ItemNumPerPage,  XInt32 )
   EW_PROPERTY( Focusable,       XBool )
 EW_END_OF_FIELDS( MenuVerticalMenu )
 
@@ -178,6 +180,18 @@ void MenuVerticalMenu_OnSetNoOfItems( MenuVerticalMenu _this, XInt32 value );
 /* 'C' function for method : 'Menu::VerticalMenu.InvalidateItems()' */
 void MenuVerticalMenu_InvalidateItems( MenuVerticalMenu _this, XInt32 aFirstItem, 
   XInt32 aLastItem );
+
+/* 'C' function for method : 'Menu::VerticalMenu.OnSetItemHeight()' */
+void MenuVerticalMenu_OnSetItemHeight( MenuVerticalMenu _this, XInt32 value );
+
+/* 'C' function for method : 'Menu::VerticalMenu.MoveFocusFrame()' */
+void MenuVerticalMenu_MoveFocusFrame( MenuVerticalMenu _this );
+
+/* 'C' function for method : 'Menu::VerticalMenu.OnSetItemNumPerPage()' */
+void MenuVerticalMenu_OnSetItemNumPerPage( MenuVerticalMenu _this, XInt32 value );
+
+/* 'C' function for method : 'Menu::VerticalMenu.UpdateListHeight()' */
+void MenuVerticalMenu_UpdateListHeight( MenuVerticalMenu _this );
 
 #ifdef __cplusplus
   }

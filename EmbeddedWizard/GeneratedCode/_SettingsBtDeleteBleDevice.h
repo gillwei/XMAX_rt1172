@@ -42,9 +42,10 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
-#include "_ComponentsPushButton.h"
+#include "_ComponentsBaseMainBG.h"
 #include "_CoreKeyPressHandler.h"
+#include "_MenuPushButton.h"
+#include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 
@@ -98,17 +99,16 @@
 
 
 /* Deklaration of class : 'Settings::BtDeleteBleDevice' */
-EW_DEFINE_FIELDS( SettingsBtDeleteBleDevice, ComponentsBaseComponent )
-  EW_OBJECT  ( Rectangle,       ViewsRectangle )
+EW_DEFINE_FIELDS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG )
   EW_OBJECT  ( Text,            ViewsText )
-  EW_OBJECT  ( NoButton,        ComponentsPushButton )
+  EW_OBJECT  ( PushButton,      MenuPushButton )
   EW_PROPERTY( DeviceName,      XString )
   EW_VARIABLE( DialogString1,   XString )
   EW_VARIABLE( DialogString2,   XString )
 EW_END_OF_FIELDS( SettingsBtDeleteBleDevice )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::BtDeleteBleDevice' */
-EW_DEFINE_METHODS( SettingsBtDeleteBleDevice, ComponentsBaseComponent )
+EW_DEFINE_METHODS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )

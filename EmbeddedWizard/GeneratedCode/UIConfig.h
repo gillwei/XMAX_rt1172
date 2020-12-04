@@ -57,8 +57,8 @@
 /* User defined auto object: 'UIConfig::PushButtonConfig' */
 EW_DECLARE_AUTOOBJECT( UIConfigPushButtonConfig, WidgetSetPushButtonConfig )
 
-/* User defined auto object: 'UIConfig::ToggleButtonConfig' */
-EW_DECLARE_AUTOOBJECT( UIConfigToggleButtonConfig, WidgetSetToggleButtonConfig )
+/* User defined auto object: 'UIConfig::CheckBoxConfig' */
+EW_DECLARE_AUTOOBJECT( UIConfigCheckBoxConfig, WidgetSetToggleButtonConfig )
 
 #ifdef __cplusplus
   }

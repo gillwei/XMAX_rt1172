@@ -42,10 +42,11 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
-#include "_ComponentsPushButton.h"
+#include "_ComponentsBaseMainBG.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreTimer.h"
+#include "_MenuPushButton.h"
+#include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 
@@ -99,20 +100,19 @@
 
 
 /* Deklaration of class : 'Settings::BtDiscovarable' */
-EW_DEFINE_FIELDS( SettingsBtDiscovarable, ComponentsBaseComponent )
-  EW_OBJECT  ( Rectangle,       ViewsRectangle )
+EW_DEFINE_FIELDS( SettingsBtDiscovarable, ComponentsBaseMainBG )
   EW_OBJECT  ( DiscoverableText, ViewsText )
-  EW_OBJECT  ( NoButton,        ComponentsPushButton )
   EW_OBJECT  ( TimeLeftText,    ViewsText )
   EW_OBJECT  ( NameText,        ViewsText )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
   EW_OBJECT  ( RemainTimeText,  ViewsText )
   EW_OBJECT  ( DeviceNameText,  ViewsText )
+  EW_OBJECT  ( PushButton,      MenuPushButton )
   EW_VARIABLE( CountDownTimeSec, XInt32 )
 EW_END_OF_FIELDS( SettingsBtDiscovarable )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::BtDiscovarable' */
-EW_DEFINE_METHODS( SettingsBtDiscovarable, ComponentsBaseComponent )
+EW_DEFINE_METHODS( SettingsBtDiscovarable, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )

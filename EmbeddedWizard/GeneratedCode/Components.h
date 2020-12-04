@@ -43,6 +43,7 @@
 #endif
 
 #include "_ComponentsBaseComponent.h"
+#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDisclaimerView.h"
 #include "_ComponentsPushButton.h"
 #include "_ComponentsStatusBar.h"

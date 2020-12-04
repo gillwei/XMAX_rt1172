@@ -44,6 +44,7 @@
 
 #include "_ComponentsBaseComponent.h"
 #include "_CoreKeyPressHandler.h"
+#include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 
 /* Forward declaration of the class Core::DialogContext */
@@ -103,7 +104,8 @@
 
 /* Deklaration of class : 'Menu::BaseMenuView' */
 EW_DEFINE_FIELDS( MenuBaseMenuView, ComponentsBaseComponent )
-  EW_OBJECT  ( Rectangle,       ViewsRectangle )
+  EW_OBJECT  ( BlackBG,         ViewsRectangle )
+  EW_OBJECT  ( MainBottomBG,    ViewsImage )
 EW_END_OF_FIELDS( MenuBaseMenuView )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::BaseMenuView' */
@@ -160,8 +162,6 @@ EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseComponent )
     MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemConnected, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemValid,     XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( MenuBaseMenuView )
 
 /* 'C' function for method : 'Menu::BaseMenuView.LoadItemClass()' */
@@ -195,18 +195,6 @@ XBool MenuBaseMenuView_LoadItemEnabled( MenuBaseMenuView _this, XInt32 aItemNo )
 
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemEnabled()' */
 XBool MenuBaseMenuView__LoadItemEnabled( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemConnected()' */
-XBool MenuBaseMenuView_LoadItemConnected( MenuBaseMenuView _this, XInt32 aItemNo );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemConnected()' */
-XBool MenuBaseMenuView__LoadItemConnected( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemValid()' */
-XBool MenuBaseMenuView_LoadItemValid( MenuBaseMenuView _this, XInt32 aItemNo );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemValid()' */
-XBool MenuBaseMenuView__LoadItemValid( void* _this, XInt32 aItemNo );
 
 #ifdef __cplusplus
   }

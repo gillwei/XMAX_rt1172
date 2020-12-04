@@ -28,12 +28,6 @@
 #include "_ResourcesExternBitmap.h"
 #include "Resource.h"
 
-/* Include a file containing the bitmap resource : 'Resource::FocusFrame' */
-#include "_ResourceFocusFrame.h"
-
-/* Table with links to derived variants of the bitmap resource : 'Resource::FocusFrame' */
-EW_RES_WITHOUT_VARIANTS( ResourceFocusFrame )
-
 /* Include a file containing the bitmap resource : 'Resource::IconMediaPlayPause' */
 #include "_ResourceIconMediaPlayPause.h"
 
@@ -51,18 +45,6 @@ EW_RES_WITHOUT_VARIANTS( ResourceIconMediaPrevious )
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconMediaNext' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconMediaNext )
-
-/* Include a file containing the bitmap resource : 'Resource::ListIconNext' */
-#include "_ResourceListIconNext.h"
-
-/* Table with links to derived variants of the bitmap resource : 'Resource::ListIconNext' */
-EW_RES_WITHOUT_VARIANTS( ResourceListIconNext )
-
-/* Include a file containing the bitmap resource : 'Resource::ListDivider' */
-#include "_ResourceListDivider.h"
-
-/* Table with links to derived variants of the bitmap resource : 'Resource::ListDivider' */
-EW_RES_WITHOUT_VARIANTS( ResourceListDivider )
 
 /* Include a file containing the bitmap resource : 'Resource::CheckboxNormal' */
 #include "_ResourceCheckboxNormal.h"
@@ -232,5 +214,35 @@ EW_RES_WITHOUT_VARIANTS( ResourceGrmnTbTNight )
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::GrmnTurnList' */
 EW_RES_WITHOUT_VARIANTS( ResourceGrmnTurnList )
+
+/* Include a file containing the bitmap resource : 'Resource::MainBG' */
+#include "_ResourceMainBG.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::MainBG' */
+EW_RES_WITHOUT_VARIANTS( ResourceMainBG )
+
+/* Include a file containing the bitmap resource : 'Resource::ListDivider4' */
+#include "_ResourceListDivider4.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ListDivider4' */
+EW_RES_WITHOUT_VARIANTS( ResourceListDivider4 )
+
+/* Include a file containing the bitmap resource : 'Resource::ListDivider3' */
+#include "_ResourceListDivider3.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ListDivider3' */
+EW_RES_WITHOUT_VARIANTS( ResourceListDivider3 )
+
+/* Include a file containing the bitmap resource : 'Resource::FocusFrame' */
+#include "_ResourceFocusFrame.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::FocusFrame' */
+EW_RES_WITHOUT_VARIANTS( ResourceFocusFrame )
+
+/* Include a file containing the bitmap resource : 'Resource::CheckMark' */
+#include "_ResourceCheckMark.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::CheckMark' */
+EW_RES_WITHOUT_VARIANTS( ResourceCheckMark )
 
 /* Embedded Wizard */

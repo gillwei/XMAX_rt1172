@@ -36,7 +36,7 @@
 #include "_FactoryDisplayManual.h"
 #include "_FactoryMain.h"
 #include "_FactoryTestContext.h"
-#include "_MenuItemBase.h"
+#include "_MenuItemBaseLower.h"
 #include "_MenuVerticalMenu.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesExternBitmap.h"
@@ -84,7 +84,7 @@ static const XStringRes _Const000F = { _StringsDefault0, 0x0038 };
 static const XStringRes _Const0010 = { _StringsDefault0, 0x003F };
 static const XStringRes _Const0011 = { _StringsDefault0, 0x0046 };
 static const XStringRes _Const0012 = { _StringsDefault0, 0x0059 };
-static const XRect _Const0013 = {{ 10, 32 }, { 470, 272 }};
+static const XRect _Const0013 = {{ 0, 36 }, { 480, 272 }};
 static const XColor _Const0014 = { 0xBA, 0xBA, 0xBA, 0xFF };
 static const XColor _Const0015 = { 0x40, 0x40, 0x40, 0xFF };
 
@@ -494,7 +494,8 @@ void FactoryMain__Init( FactoryMain _this, XObject aLink, XHandle aArg )
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0012 ));
   CoreRectView__OnSetBounds( &_this->Menu, _Const0013 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 2 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
+  MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
+  CoreGroup__Add( _this, ((CoreView)&_this->Menu ), -2 );
   _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
 }
 
@@ -593,19 +594,13 @@ void FactoryMain_OnLongKeyPressed( FactoryMain _this, XObject sender )
 /* 'C' function for method : 'Factory::Main.LoadItemClass()' */
 XClass FactoryMain_LoadItemClass( FactoryMain _this, XInt32 aItemNo )
 {
-  XClass ItemClass;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  ItemClass = 0;
-
   if ( aItemNo >= 0 )
-  {
-    ItemClass = EW_CLASS( MenuItemBase );
-  }
+    ;
 
-  return ItemClass;
+  return EW_CLASS( MenuItemBaseLower );
 }
 
 /* 'C' function for method : 'Factory::Main.LoadItemTitle()' */
@@ -700,8 +695,6 @@ EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, ItemTitl
   FactoryMain_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemConnected,
-  MenuBaseMenuView_LoadItemValid,
 EW_END_OF_CLASS( FactoryMain )
 
 /* Initializer for the class 'Factory::DisplayManual' */

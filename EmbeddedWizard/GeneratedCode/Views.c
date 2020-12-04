@@ -557,6 +557,39 @@ void ViewsBorder_Draw( ViewsBorder _this, GraphicsCanvas aCanvas, XRect aClip, X
     aBlend );
 }
 
+/* 'C' function for method : 'Views::Border.OnSetWidth()' */
+void ViewsBorder_OnSetWidth( ViewsBorder _this, XInt32 value )
+{
+  if ( value < 0 )
+    value = 0;
+
+  if ( value == _this->Width )
+    return;
+
+  _this->Width = value;
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+}
+
+/* 'C' function for method : 'Views::Border.OnSetColor()' */
+void ViewsBorder_OnSetColor( ViewsBorder _this, XColor value )
+{
+  if ((( !EwCompColor( value, _this->ColorTL ) && !EwCompColor( value, _this->ColorTR )) 
+      && !EwCompColor( value, _this->ColorBL )) && !EwCompColor( value, _this->ColorBR ))
+    return;
+
+  _this->ColorTL = value;
+  _this->ColorTR = value;
+  _this->ColorBL = value;
+  _this->ColorBR = value;
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+}
+
 /* 'C' function for method : 'Views::Border.OnSetVisible()' */
 void ViewsBorder_OnSetVisible( ViewsBorder _this, XBool value )
 {

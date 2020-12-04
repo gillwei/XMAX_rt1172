@@ -45,6 +45,7 @@
 #include "_CoreKeyPressHandler.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuVerticalMenu.h"
+#include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 
 /* Forward declaration of the class Core::DialogContext */
@@ -162,8 +163,6 @@ EW_DEFINE_METHODS( DevelopmentMain, MenuBaseMenuView )
     aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemConnected, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemValid,     XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( DevelopmentMain )
 
 /* 'C' function for method : 'Development::Main.OnLongKeyPressed()' */

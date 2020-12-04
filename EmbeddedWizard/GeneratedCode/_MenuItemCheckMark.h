@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _MenuItemBtPairedDevice_H
-#define _MenuItemBtPairedDevice_H
+#ifndef _MenuItemCheckMark_H
+#define _MenuItemCheckMark_H
 
 #ifdef __cplusplus
   extern "C"
@@ -45,11 +45,9 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreTimer.h"
 #include "_MenuItemBase.h"
-#include "_ViewsFrame.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-#include "_WidgetSetToggleButton.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -93,22 +91,21 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBtPairedDevice */
-#ifndef _MenuItemBtPairedDevice_
-  EW_DECLARE_CLASS( MenuItemBtPairedDevice )
-#define _MenuItemBtPairedDevice_
+/* Forward declaration of the class Menu::ItemCheckMark */
+#ifndef _MenuItemCheckMark_
+  EW_DECLARE_CLASS( MenuItemCheckMark )
+#define _MenuItemCheckMark_
 #endif
 
 
-/* Deklaration of class : 'Menu::ItemBtPairedDevice' */
-EW_DEFINE_FIELDS( MenuItemBtPairedDevice, MenuItemBase )
-  EW_OBJECT  ( CheckBoxButton,  WidgetSetToggleButton )
-  EW_PROPERTY( Valid,           XBool )
-  EW_PROPERTY( Connected,       XBool )
-EW_END_OF_FIELDS( MenuItemBtPairedDevice )
+/* Deklaration of class : 'Menu::ItemCheckMark' */
+EW_DEFINE_FIELDS( MenuItemCheckMark, MenuItemBase )
+  EW_OBJECT  ( CheckMark,       ViewsImage )
+  EW_PROPERTY( Checked,         XBool )
+EW_END_OF_FIELDS( MenuItemCheckMark )
 
-/* Virtual Method Table (VMT) for the class : 'Menu::ItemBtPairedDevice' */
-EW_DEFINE_METHODS( MenuItemBtPairedDevice, MenuItemBase )
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemCheckMark' */
+EW_DEFINE_METHODS( MenuItemCheckMark, MenuItemBase )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -152,19 +149,15 @@ EW_DEFINE_METHODS( MenuItemBtPairedDevice, MenuItemBase )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnEnterReleaseSlot, void )( MenuItemBase _this, XObject sender )
-EW_END_OF_METHODS( MenuItemBtPairedDevice )
+EW_END_OF_METHODS( MenuItemCheckMark )
 
-/* 'C' function for method : 'Menu::ItemBtPairedDevice.OnSetConnected()' */
-void MenuItemBtPairedDevice_OnSetConnected( MenuItemBtPairedDevice _this, XBool 
-  value );
-
-/* 'C' function for method : 'Menu::ItemBtPairedDevice.OnSetValid()' */
-void MenuItemBtPairedDevice_OnSetValid( MenuItemBtPairedDevice _this, XBool value );
+/* 'C' function for method : 'Menu::ItemCheckMark.OnSetChecked()' */
+void MenuItemCheckMark_OnSetChecked( MenuItemCheckMark _this, XBool value );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _MenuItemBtPairedDevice_H */
+#endif /* _MenuItemCheckMark_H */
 
 /* Embedded Wizard */

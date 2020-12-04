@@ -42,9 +42,10 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
-#include "_ComponentsPushButton.h"
+#include "_ComponentsBaseMainBG.h"
 #include "_CoreKeyPressHandler.h"
+#include "_MenuUpDownPushButtonSet.h"
+#include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 
@@ -98,16 +99,14 @@
 
 
 /* Deklaration of class : 'Settings::BtMaxPairedDevice' */
-EW_DEFINE_FIELDS( SettingsBtMaxPairedDevice, ComponentsBaseComponent )
+EW_DEFINE_FIELDS( SettingsBtMaxPairedDevice, ComponentsBaseMainBG )
   EW_PROPERTY( ToRemovePairedDevice, XSlot )
-  EW_OBJECT  ( Rectangle,       ViewsRectangle )
   EW_OBJECT  ( Text,            ViewsText )
-  EW_OBJECT  ( NoButton,        ComponentsPushButton )
-  EW_OBJECT  ( YesButton,       ComponentsPushButton )
+  EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
 EW_END_OF_FIELDS( SettingsBtMaxPairedDevice )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::BtMaxPairedDevice' */
-EW_DEFINE_METHODS( SettingsBtMaxPairedDevice, ComponentsBaseComponent )
+EW_DEFINE_METHODS( SettingsBtMaxPairedDevice, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -151,19 +150,17 @@ EW_DEFINE_METHODS( SettingsBtMaxPairedDevice, ComponentsBaseComponent )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( SettingsBtMaxPairedDevice _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( SettingsBtMaxPairedDevice _this )
+  EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsBtMaxPairedDevice )
 
-/* 'C' function for method : 'Settings::BtMaxPairedDevice.OnShortDownKeyPressed()' */
-void SettingsBtMaxPairedDevice_OnShortDownKeyPressed( SettingsBtMaxPairedDevice _this );
+/* 'C' function for method : 'Settings::BtMaxPairedDevice.OnYesSlot()' */
+void SettingsBtMaxPairedDevice_OnYesSlot( SettingsBtMaxPairedDevice _this, XObject 
+  sender );
 
-/* 'C' function for method : 'Settings::BtMaxPairedDevice.OnShortUpKeyPressed()' */
-void SettingsBtMaxPairedDevice_OnShortUpKeyPressed( SettingsBtMaxPairedDevice _this );
-
-/* 'C' function for method : 'Settings::BtMaxPairedDevice.OnYesNoSlot()' */
-void SettingsBtMaxPairedDevice_OnYesNoSlot( SettingsBtMaxPairedDevice _this, XObject 
+/* 'C' function for method : 'Settings::BtMaxPairedDevice.OnNoSlot()' */
+void SettingsBtMaxPairedDevice_OnNoSlot( SettingsBtMaxPairedDevice _this, XObject 
   sender );
 
 #ifdef __cplusplus
