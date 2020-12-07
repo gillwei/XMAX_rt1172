@@ -36,9 +36,11 @@ extern "C"{
 #define WAKEUP_IRQ                      GPIO13_Combined_0_31_IRQn
 #define WAKEUP_IRQ_HANDLER              GPIO13_Combined_0_31_IRQHandler
 
-#define TASK_TIME_DELAY                 ( 100 )
-#define GO_TO_SLEEP_TIME_MS             ( 5000 )
+#define TASK_TIME_DELAY                 ( 10 )
+#define GO_TO_SLEEP_TIME_MS             ( 40 )
 #define GO_TO_SLEEP_COUNTER             ( GO_TO_SLEEP_TIME_MS / TASK_TIME_DELAY )
+#define FORCE_SLEEP_TIME_MS             ( 100 )
+#define FORCE_SLEEP_COUNTER             ( FORCE_SLEEP_TIME_MS / TASK_TIME_DELAY )
 
 #define MAX_MODULE_NUMBER               ( 10 )
 #define MAX_MODULE_NAME                 ( 32 )
@@ -108,6 +110,11 @@ static void pm_create_task
 static bool go_to_snvs_timeout
     (
     volatile bool
+    );
+
+static bool force_snvs_timeout
+    (
+    void
     );
 
 static void disable_all_wakeup_source
@@ -337,7 +344,7 @@ static bool go_to_snvs_timeout
 static int count          = 0;
 if( !start_snvs )
     {
-    if( !ign_status )
+    if( ign_status == PM_IGN_ON )
         {
         count = 0;
         start_snvs = false;
@@ -357,6 +364,34 @@ return start_snvs;
 
 /*================================================================================================*/
 /**
+@brief   force_snvs_timeout
+@details
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static bool force_snvs_timeout
+    (
+    void
+    )
+{
+static int count = 0;
+static bool force_snvs    = false;
+if( !force_snvs )
+    {
+    count++;
+    if( FORCE_SLEEP_COUNTER == count )
+        {
+        count = 0;
+        force_snvs = true;
+        }
+    }
+return force_snvs;
+}
+
+/*================================================================================================*/
+/**
 @brief   pm_main
 @details
 
@@ -369,31 +404,25 @@ static void pm_main
     void* arg
     )
 {
-volatile bool pre_ign_status = GPIO_ReadPinInput( WAKEUP_GPIO, WAKEUP_GPIO_PIN );
 volatile bool ign_status;
+static bool pm_notified = false;
 
 while( true )
     {
     ign_status = GPIO_ReadPinInput( WAKEUP_GPIO, WAKEUP_GPIO_PIN );
 
-    if( pre_ign_status != ign_status )
-        {
-        notify_pm_callback( ign_status );
-        }
-    pre_ign_status = ign_status;
-
     if( go_to_snvs_timeout( ign_status ) )
         {
-        //Final Check
-        if( GPIO_ReadPinInput( WAKEUP_GPIO, WAKEUP_GPIO_PIN ) )
+        if( pm_notified == false )
+            {
+            notify_pm_callback( ign_status );
+            pm_notified = true;
+            }
+        if( force_snvs_timeout() )
             {
             set_wakeup_config();
             snvs_pre_handler();
             enter_snvs();
-            }
-        else
-            {
-            start_snvs = false;
             }
         }
     vTaskDelay( task_delay );
