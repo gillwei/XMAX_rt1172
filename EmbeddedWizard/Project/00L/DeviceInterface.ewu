@@ -296,6 +296,9 @@ class SystemDeviceClass : Templates::DeviceClass
     }
     FactoryTestSystemEvent.Trigger( TestContext, false );
   }
+
+  $rect <470,170,670,210>
+  var bool IsHopperTestMode = false;
 }
 
 $rect <20,70,220,110>

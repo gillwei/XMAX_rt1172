@@ -319,8 +319,13 @@ void SettingsMain_OnItemActivate( SettingsMain _this, XInt32 aItemNo, MenuItemBa
   switch ( aItemNo )
   {
     case 0 :
-      ComponentsBaseComponent_SlideInDialog((ComponentsBaseComponent)_this, ((CoreGroup)EwNewObject( 
-      SettingsConnection, 0 )));
+    {
+      if ( !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode )
+      {
+        ComponentsBaseComponent_SlideInDialog((ComponentsBaseComponent)_this, ((CoreGroup)EwNewObject( 
+        SettingsConnection, 0 )));
+      }
+    }
     break;
 
     case 1 :
@@ -1136,8 +1141,11 @@ void SettingsSystemInfo_OnMagicKeyReleaseSlot( SettingsSystemInfo _this, XObject
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( DevelopmentMain, 
-  0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  if ( !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode )
+  {
+    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( DevelopmentMain, 
+    0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
 }
 
 /* This slot method is executed when the associated property observer 'PropertyObserver' 
@@ -1601,7 +1609,15 @@ void SettingsReset_OnAllResetYesSlot( SettingsReset _this, XObject sender )
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  SettingsReset_StartFactoryReset( _this );
+  if ( !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode )
+  {
+    SettingsReset_StartFactoryReset( _this );
+  }
+  else
+  {
+    CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, 
+    EwNullSlot, EwNullSlot, 0 );
+  }
 }
 
 /* 'C' function for method : 'Settings::Reset.OnAllResetNoSlot()' */

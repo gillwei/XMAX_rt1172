@@ -25,10 +25,13 @@ class Main : Menu::BaseMenuView
   inherited method LoadItemClass()
   {
     var class ItemClass = null;
-    if( aItemNo >= 0 )
+    switch (aItemNo )
     {
-      ItemClass = Menu::ItemBaseLower;
+      case 0: ItemClass = Menu::ItemBaseLower;
+      case 1: ItemClass = Menu::ItemCheckboxLower;
+      default: ItemClass = Menu::ItemBaseLower;
     }
+
     return ItemClass;
   }
 
@@ -43,7 +46,7 @@ class Main : Menu::BaseMenuView
     return Title;
   }
 
-  $rect <510,110,710,150>
+  $rect <510,160,710,200>
   inherited method OnItemActivate()
   {
     if( null == aMenuItem )
@@ -54,15 +57,29 @@ class Main : Menu::BaseMenuView
     switch( aItemNo )
     {
       case 0: SlideInDialog( new Factory::Main );
+      case 1: DeviceInterface::SystemDevice.IsHopperTestMode = !DeviceInterface::SystemDevice.IsHopperTestMode;
       default:;
     }
 
   }
 
+  $rect <510,110,710,150>
+  inherited method LoadItemChecked()
+  {
+    var bool IsChecked = false;
+    switch( aItemNo )
+    {
+      case 1: IsChecked = DeviceInterface::SystemDevice.IsHopperTestMode;
+      default:;
+    }
+    return IsChecked;
+  }
+
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 1 ] =
+  array string ItemTitleArray[ 2 ] =
   (
     Default[0] = "Factory Test";
+    Default[1] = "Hopper Test Mode";
   );
 
   $rect <20,20,160,60>

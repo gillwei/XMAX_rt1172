@@ -106,7 +106,7 @@
 /* Deklaration of class : 'Development::Main' */
 EW_DEFINE_FIELDS( DevelopmentMain, MenuBaseMenuView )
   EW_OBJECT  ( Menu,            MenuVerticalMenu )
-  EW_ARRAY   ( ItemTitleArray,  XString, [1])
+  EW_ARRAY   ( ItemTitleArray,  XString, [2])
 EW_END_OF_FIELDS( DevelopmentMain )
 
 /* Virtual Method Table (VMT) for the class : 'Development::Main' */
@@ -161,7 +161,7 @@ EW_DEFINE_METHODS( DevelopmentMain, MenuBaseMenuView )
   EW_METHOD( LoadItemTitle,     XString )( DevelopmentMain _this, XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( DevelopmentMain _this, XInt32 aItemNo, MenuItemBase 
     aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentMain _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( DevelopmentMain )
 
@@ -177,6 +177,9 @@ XString DevelopmentMain_LoadItemTitle( DevelopmentMain _this, XInt32 aItemNo );
 /* 'C' function for method : 'Development::Main.OnItemActivate()' */
 void DevelopmentMain_OnItemActivate( DevelopmentMain _this, XInt32 aItemNo, MenuItemBase 
   aMenuItem );
+
+/* 'C' function for method : 'Development::Main.LoadItemChecked()' */
+XBool DevelopmentMain_LoadItemChecked( DevelopmentMain _this, XInt32 aItemNo );
 
 #ifdef __cplusplus
   }

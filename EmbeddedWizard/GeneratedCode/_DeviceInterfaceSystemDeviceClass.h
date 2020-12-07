@@ -61,6 +61,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
   EW_PROPERTY( BrightnessLevel, XInt32 )
+  EW_VARIABLE( IsHopperTestMode, XBool )
   EW_PROPERTY( FactoryResetComplete, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceSystemDeviceClass )
 

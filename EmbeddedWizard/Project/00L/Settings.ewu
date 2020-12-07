@@ -45,7 +45,13 @@ class Main : Menu::BaseMenuView
 
     switch( aItemNo )
     {
-      case 0: SlideInDialog( new Settings::Connection );
+      case 0:
+      {
+        if( !DeviceInterface::SystemDevice.IsHopperTestMode )
+        {
+          SlideInDialog( new Settings::Connection );
+        }
+      }
       case 1: SlideInDialog( new Settings::SystemMenu );
       default:;
     }
@@ -542,7 +548,10 @@ class SystemInfo : Menu::BaseMenuView
   $rect <520,280,740,320>
   slot OnMagicKeyReleaseSlot
   {
-    PresentDialog( new Development::Main, null, null, null, null, null, null, null, null, false );
+    if( !DeviceInterface::SystemDevice.IsHopperTestMode )
+    {
+      PresentDialog( new Development::Main, null, null, null, null, null, null, null, null, false );
+    }
   }
 
   $rect <520,120,720,160>
@@ -1166,8 +1175,14 @@ class Reset : Components::BaseComponent
   $rect <520,60,720,100>
   slot OnAllResetYesSlot
   {
-    StartFactoryReset();
-
+    if( !DeviceInterface::SystemDevice.IsHopperTestMode )
+    {
+      StartFactoryReset();
+    }
+    else
+    {
+      Owner.DismissDialog( this, null, null, null, null, null, false );
+    }
   }
 
   $rect <520,110,720,150>

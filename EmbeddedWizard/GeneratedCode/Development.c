@@ -29,24 +29,29 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreView.h"
 #include "_DevelopmentMain.h"
+#include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_FactoryMain.h"
 #include "_MenuItemBaseLower.h"
+#include "_MenuItemCheckboxLower.h"
 #include "_MenuVerticalMenu.h"
 #include "Core.h"
 #include "Development.h"
+#include "DeviceInterface.h"
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000022, /* ratio 117.65 % */
+  0x00000048, /* ratio 88.89 % */
   0xB8001F00, 0x8008C452, 0x00C60030, 0x0DE003A0, 0xF2003900, 0x80010000, 0x0032800A,
-  0xC0042CE6, 0x808023B1, 0x00000000
+  0xC0042CE6, 0x22C0C271, 0x80021A48, 0xC3E2F233, 0x6A4D1589, 0x89B14864, 0x39263248,
+  0x101004CA, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XStringRes _Const0001 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0002 = {{ 0, 36 }, { 480, 272 }};
+static const XStringRes _Const0002 = { _StringsDefault0, 0x0011 };
+static const XRect _Const0003 = {{ 0, 36 }, { 480, 272 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -87,8 +92,9 @@ void DevelopmentMain__Init( DevelopmentMain _this, XObject aLink, XHandle aArg )
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0001 ));
-  CoreRectView__OnSetBounds( &_this->Menu, _Const0002 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 1 );
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0002 ));
+  CoreRectView__OnSetBounds( &_this->Menu, _Const0003 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 2 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
   _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
@@ -147,9 +153,18 @@ XClass DevelopmentMain_LoadItemClass( DevelopmentMain _this, XInt32 aItemNo )
 
   ItemClass = 0;
 
-  if ( aItemNo >= 0 )
+  switch ( aItemNo )
   {
-    ItemClass = EW_CLASS( MenuItemBaseLower );
+    case 0 :
+      ItemClass = EW_CLASS( MenuItemBaseLower );
+    break;
+
+    case 1 :
+      ItemClass = EW_CLASS( MenuItemCheckboxLower );
+    break;
+
+    default : 
+      ItemClass = EW_CLASS( MenuItemBaseLower );
   }
 
   return ItemClass;
@@ -160,9 +175,9 @@ XString DevelopmentMain_LoadItemTitle( DevelopmentMain _this, XInt32 aItemNo )
 {
   XString Title = 0;
 
-  if ( aItemNo < 1 )
+  if ( aItemNo < 2 )
   {
-    Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 1 )];
+    Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 2 )];
   }
 
   return Title;
@@ -182,9 +197,37 @@ void DevelopmentMain_OnItemActivate( DevelopmentMain _this, XInt32 aItemNo, Menu
       FactoryMain, 0 )));
     break;
 
+    case 1 :
+      EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode 
+      = (XBool)!EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode;
+    break;
+
     default : 
       ;
   }
+}
+
+/* 'C' function for method : 'Development::Main.LoadItemChecked()' */
+XBool DevelopmentMain_LoadItemChecked( DevelopmentMain _this, XInt32 aItemNo )
+{
+  XBool IsChecked;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsChecked = 0;
+
+  switch ( aItemNo )
+  {
+    case 1 :
+      IsChecked = EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode;
+    break;
+
+    default : 
+      ;
+  }
+
+  return IsChecked;
 }
 
 /* Variants derived from the class : 'Development::Main' */
@@ -230,7 +273,7 @@ EW_DEFINE_CLASS( DevelopmentMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, Item
   DevelopmentMain_LoadItemClass,
   DevelopmentMain_LoadItemTitle,
   DevelopmentMain_OnItemActivate,
-  MenuBaseMenuView_LoadItemChecked,
+  DevelopmentMain_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
 EW_END_OF_CLASS( DevelopmentMain )
 
