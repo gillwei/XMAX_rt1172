@@ -495,7 +495,7 @@ void FactoryMain__Init( FactoryMain _this, XObject aLink, XHandle aArg )
   CoreRectView__OnSetBounds( &_this->Menu, _Const0013 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 2 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Menu ), -2 );
+  CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
   _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
 }
 

@@ -128,19 +128,6 @@ void DeviceInterfaceSystemDeviceClass__Done( DeviceInterfaceSystemDeviceClass _t
   TemplatesDeviceClass__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetIsDebugBuild()' */
-XBool DeviceInterfaceSystemDeviceClass_OnGetIsDebugBuild( DeviceInterfaceSystemDeviceClass _this )
-{
-  XBool is_debug_build;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  is_debug_build = 0;
-  is_debug_build = ew_is_debug_build();
-  return is_debug_build;
-}
-
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.QuitTest()' */
 void DeviceInterfaceSystemDeviceClass_QuitTest( DeviceInterfaceSystemDeviceClass _this )
 {

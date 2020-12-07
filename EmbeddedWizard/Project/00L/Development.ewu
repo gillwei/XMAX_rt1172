@@ -79,6 +79,6 @@ class Main : Menu::BaseMenuView
   $reorder LoadItemTitle 4
   $reorder OnItemActivate 4
   $reorder LoadItemChecked 4
-  $reorder ItemTitleArray 4
-  $reorder Menu 4
+  $reorder ItemTitleArray 1
+  $reorder Menu 1
 }

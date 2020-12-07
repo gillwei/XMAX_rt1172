@@ -26,7 +26,6 @@
 
 #include "ewlocale.h"
 #include "_ApplicationApplication.h"
-#include "_ComponentsPushButton.h"
 #include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CorePropertyObserver.h"
@@ -68,7 +67,6 @@
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-#include "_WidgetSetPushButtonConfig.h"
 #include "_WidgetSetToggleButton.h"
 #include "Core.h"
 #include "DeviceInterface.h"
@@ -76,7 +74,6 @@
 #include "Fonts.h"
 #include "Resource.h"
 #include "Settings.h"
-#include "UIConfig.h"
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
@@ -148,64 +145,63 @@ static const XStringRes _Const000F = { _StringsDefault0, 0x00D0 };
 static const XRect _Const0010 = {{ 130, 80 }, { 330, 110 }};
 static const XStringRes _Const0011 = { _StringsDefault0, 0x00E3 };
 static const XRect _Const0012 = {{ 150, 150 }, { 310, 180 }};
-static const XRect _Const0013 = {{ 400, 190 }, { 470, 260 }};
-static const XRect _Const0014 = {{ 120, 190 }, { 340, 215 }};
-static const XStringRes _Const0015 = { _StringsDefault0, 0x00ED };
-static const XRect _Const0016 = {{ 150, 220 }, { 310, 250 }};
-static const XRect _Const0017 = {{ 10, 45 }, { 470, 169 }};
-static const XStringRes _Const0018 = { _StringsDefault0, 0x0103 };
-static const XRect _Const0019 = {{ 165, 176 }, { 315, 259 }};
-static const XRect _Const001A = {{ 110, 100 }, { 350, 150 }};
-static const XStringRes _Const001B = { _StringsDefault0, 0x0129 };
-static const XRect _Const001C = {{ 100, 95 }, { 360, 170 }};
-static const XStringRes _Const001D = { _StringsDefault0, 0x013A };
-static const XStringRes _Const001E = { _StringsDefault0, 0x0147 };
-static const XStringRes _Const001F = { _StringsDefault0, 0x0161 };
-static const XRect _Const0020 = {{ 432, 2 }, { 482, 22 }};
-static const XStringRes _Const0021 = { _StringsDefault0, 0x0175 };
-static const XStringRes _Const0022 = { _StringsDefault0, 0x017E };
-static const XRect _Const0023 = {{ 60, 34 }, { 410, 110 }};
-static const XStringRes _Const0024 = { _StringsDefault0, 0x0186 };
-static const XRect _Const0025 = {{ 130, 153 }, { 280, 193 }};
-static const XStringRes _Const0026 = { _StringsDefault0, 0x01B5 };
-static const XRect _Const0027 = {{ 120, 113 }, { 240, 153 }};
-static const XStringRes _Const0028 = { _StringsDefault0, 0x01C2 };
-static const XRect _Const0029 = {{ 260, 153 }, { 340, 193 }};
-static const XStringRes _Const002A = { _StringsDefault0, 0x01CA };
-static const XRect _Const002B = {{ 230, 113 }, { 400, 153 }};
-static const XRect _Const002C = {{ 165, 219 }, { 315, 259 }};
-static const XStringRes _Const002D = { _StringsDefault0, 0x01D1 };
-static const XStringRes _Const002E = { _StringsDefault0, 0x01DA };
-static const XStringRes _Const002F = { _StringsDefault0, 0x01DE };
-static const XColor _Const0030 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0031 = {{ 40, 40 }, { 440, 230 }};
-static const XRect _Const0032 = {{ 30, 90 }, { 460, 140 }};
-static const XStringRes _Const0033 = { _StringsDefault0, 0x01E2 };
-static const XStringRes _Const0034 = { _StringsDefault0, 0x01F0 };
-static const XStringRes _Const0035 = { _StringsDefault0, 0x01FE };
-static const XStringRes _Const0036 = { _StringsDefault1, 0x0002 };
-static const XStringRes _Const0037 = { _StringsDefault1, 0x003B };
-static const XStringRes _Const0038 = { _StringsDefault1, 0x0053 };
-static const XStringRes _Const0039 = { _StringsDefault1, 0x0062 };
-static const XRect _Const003A = {{ 20, 70 }, { 460, 150 }};
-static const XStringRes _Const003B = { _StringsDefault1, 0x0066 };
-static const XStringRes _Const003C = { _StringsDefault1, 0x00AB };
-static const XStringRes _Const003D = { _StringsDefault1, 0x00B1 };
-static const XRect _Const003E = {{ 10, 50 }, { 470, 236 }};
-static const XStringRes _Const003F = { _StringsDefault1, 0x00B6 };
-static const XRect _Const0040 = {{ 10, 32 }, { 470, 272 }};
-static const XStringRes _Const0041 = { _StringsDefault1, 0x00C0 };
-static const XStringRes _Const0042 = { _StringsDefault1, 0x00D1 };
-static const XStringRes _Const0043 = { _StringsDefault1, 0x00DB };
-static const XRect _Const0044 = {{ 40, 50 }, { 440, 200 }};
-static const XStringRes _Const0045 = { _StringsDefault1, 0x00E8 };
-static const XStringRes _Const0046 = { _StringsDefault1, 0x0113 };
-static const XStringRes _Const0047 = { _StringsDefault1, 0x0160 };
-static const XRect _Const0048 = {{ 80, 60 }, { 380, 210 }};
-static const XStringRes _Const0049 = { _StringsDefault1, 0x0165 };
-static const XColor _Const004A = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XStringRes _Const004B = { _StringsDefault1, 0x018C };
-static const XStringRes _Const004C = { _StringsDefault1, 0x01AA };
+static const XRect _Const0013 = {{ 120, 190 }, { 340, 215 }};
+static const XStringRes _Const0014 = { _StringsDefault0, 0x00ED };
+static const XRect _Const0015 = {{ 150, 220 }, { 310, 250 }};
+static const XRect _Const0016 = {{ 10, 45 }, { 470, 169 }};
+static const XStringRes _Const0017 = { _StringsDefault0, 0x0103 };
+static const XRect _Const0018 = {{ 165, 176 }, { 315, 259 }};
+static const XRect _Const0019 = {{ 110, 100 }, { 350, 150 }};
+static const XStringRes _Const001A = { _StringsDefault0, 0x0129 };
+static const XRect _Const001B = {{ 100, 95 }, { 360, 170 }};
+static const XStringRes _Const001C = { _StringsDefault0, 0x013A };
+static const XStringRes _Const001D = { _StringsDefault0, 0x0147 };
+static const XStringRes _Const001E = { _StringsDefault0, 0x0161 };
+static const XRect _Const001F = {{ 432, 2 }, { 482, 22 }};
+static const XStringRes _Const0020 = { _StringsDefault0, 0x0175 };
+static const XStringRes _Const0021 = { _StringsDefault0, 0x017E };
+static const XRect _Const0022 = {{ 60, 34 }, { 410, 110 }};
+static const XStringRes _Const0023 = { _StringsDefault0, 0x0186 };
+static const XRect _Const0024 = {{ 130, 153 }, { 280, 193 }};
+static const XStringRes _Const0025 = { _StringsDefault0, 0x01B5 };
+static const XRect _Const0026 = {{ 120, 113 }, { 240, 153 }};
+static const XStringRes _Const0027 = { _StringsDefault0, 0x01C2 };
+static const XRect _Const0028 = {{ 260, 153 }, { 340, 193 }};
+static const XStringRes _Const0029 = { _StringsDefault0, 0x01CA };
+static const XRect _Const002A = {{ 230, 113 }, { 400, 153 }};
+static const XRect _Const002B = {{ 165, 219 }, { 315, 259 }};
+static const XStringRes _Const002C = { _StringsDefault0, 0x01D1 };
+static const XStringRes _Const002D = { _StringsDefault0, 0x01DA };
+static const XStringRes _Const002E = { _StringsDefault0, 0x01DE };
+static const XColor _Const002F = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0030 = {{ 40, 40 }, { 440, 230 }};
+static const XRect _Const0031 = {{ 30, 90 }, { 460, 140 }};
+static const XStringRes _Const0032 = { _StringsDefault0, 0x01E2 };
+static const XStringRes _Const0033 = { _StringsDefault0, 0x01F0 };
+static const XStringRes _Const0034 = { _StringsDefault0, 0x01FE };
+static const XStringRes _Const0035 = { _StringsDefault1, 0x0002 };
+static const XStringRes _Const0036 = { _StringsDefault1, 0x003B };
+static const XStringRes _Const0037 = { _StringsDefault1, 0x0053 };
+static const XStringRes _Const0038 = { _StringsDefault1, 0x0062 };
+static const XRect _Const0039 = {{ 20, 70 }, { 460, 150 }};
+static const XStringRes _Const003A = { _StringsDefault1, 0x0066 };
+static const XStringRes _Const003B = { _StringsDefault1, 0x00AB };
+static const XStringRes _Const003C = { _StringsDefault1, 0x00B1 };
+static const XRect _Const003D = {{ 10, 50 }, { 470, 236 }};
+static const XStringRes _Const003E = { _StringsDefault1, 0x00B6 };
+static const XRect _Const003F = {{ 10, 32 }, { 470, 272 }};
+static const XStringRes _Const0040 = { _StringsDefault1, 0x00C0 };
+static const XStringRes _Const0041 = { _StringsDefault1, 0x00D1 };
+static const XStringRes _Const0042 = { _StringsDefault1, 0x00DB };
+static const XRect _Const0043 = {{ 40, 50 }, { 440, 200 }};
+static const XStringRes _Const0044 = { _StringsDefault1, 0x00E8 };
+static const XStringRes _Const0045 = { _StringsDefault1, 0x0113 };
+static const XStringRes _Const0046 = { _StringsDefault1, 0x0160 };
+static const XRect _Const0047 = {{ 80, 60 }, { 380, 210 }};
+static const XStringRes _Const0048 = { _StringsDefault1, 0x0165 };
+static const XColor _Const0049 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XStringRes _Const004A = { _StringsDefault1, 0x018C };
+static const XStringRes _Const004B = { _StringsDefault1, 0x01AA };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -1009,10 +1005,10 @@ void SettingsSystemInfo__Init( SettingsSystemInfo _this, XObject aLink, XHandle 
   ViewsText__Init( &_this->SoftwareVersionTitle, &_this->_XObject, 0 );
   ViewsText__Init( &_this->EsnText, &_this->_XObject, 0 );
   ViewsText__Init( &_this->SoftwareVersionText, &_this->_XObject, 0 );
-  ComponentsPushButton__Init( &_this->DevButton, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->EsnObserver, &_this->_XObject, 0 );
   ViewsText__Init( &_this->BtSwVersionTitle, &_this->_XObject, 0 );
   ViewsText__Init( &_this->BtSwVersionText, &_this->_XObject, 0 );
+  CoreKeyPressHandler__Init( &_this->MagicKeyHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( SettingsSystemInfo );
@@ -1028,20 +1024,16 @@ void SettingsSystemInfo__Init( SettingsSystemInfo _this, XObject aLink, XHandle 
   CoreRectView__OnSetBounds( &_this->SoftwareVersionText, _Const0012 );
   ViewsText_OnSetString( &_this->SoftwareVersionText, DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
-  CoreRectView__OnSetBounds( &_this->DevButton, _Const0013 );
-  CoreGroup__OnSetEnabled( &_this->DevButton, 0 );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->DevButton, 0 );
-  WidgetSetPushButton_OnSetLabel((WidgetSetPushButton)&_this->DevButton, 0 );
-  CoreRectView__OnSetBounds( &_this->BtSwVersionTitle, _Const0014 );
-  ViewsText_OnSetString( &_this->BtSwVersionTitle, EwLoadString( &_Const0015 ));
-  CoreRectView__OnSetBounds( &_this->BtSwVersionText, _Const0016 );
+  CoreRectView__OnSetBounds( &_this->BtSwVersionTitle, _Const0013 );
+  ViewsText_OnSetString( &_this->BtSwVersionTitle, EwLoadString( &_Const0014 ));
+  CoreRectView__OnSetBounds( &_this->BtSwVersionText, _Const0015 );
   ViewsText_OnSetString( &_this->BtSwVersionText, DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
+  _this->MagicKeyHandler.Filter = CoreKeyCodeF9;
   CoreGroup__Add( _this, ((CoreView)&_this->ESN ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->SoftwareVersionTitle ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->EsnText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->SoftwareVersionText ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->DevButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BtSwVersionTitle ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BtSwVersionText ), 0 );
   ViewsText_OnSetFont( &_this->ESN, EwLoadResource( &FontsFontNotoSansCjkJp32, ResourcesFont ));
@@ -1051,12 +1043,6 @@ void SettingsSystemInfo__Init( SettingsSystemInfo _this, XObject aLink, XHandle 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->SoftwareVersionText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
   ResourcesFont ));
-  _this->DevButton.Super1.OnRelease = EwNewSlot( _this, SettingsSystemInfo_OnDevButtonReleaseSlot );
-  WidgetSetPushButton_OnSetIcon((WidgetSetPushButton)&_this->DevButton, EwLoadResource( 
-  &ResourceDevelopment, ResourcesBitmap ));
-  WidgetSetPushButton_OnSetAppearance((WidgetSetPushButton)&_this->DevButton, EwGetAutoObject( 
-  &UIConfigPushButtonConfig, WidgetSetPushButtonConfig ));
-  _this->DevButton.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
   _this->EsnObserver.OnEvent = EwNewSlot( _this, SettingsSystemInfo_OnEsnReceivedSlot );
   CorePropertyObserver_OnSetOutlet( &_this->EsnObserver, EwNewRef( EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), DeviceInterfaceSystemDeviceClass_OnGetESN, 
@@ -1065,6 +1051,7 @@ void SettingsSystemInfo__Init( SettingsSystemInfo _this, XObject aLink, XHandle 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->BtSwVersionText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
   ResourcesFont ));
+  _this->MagicKeyHandler.OnRelease = EwNewSlot( _this, SettingsSystemInfo_OnMagicKeyReleaseSlot );
 
   /* Call the user defined constructor */
   SettingsSystemInfo_Init( _this, aArg );
@@ -1081,10 +1068,10 @@ void SettingsSystemInfo__ReInit( SettingsSystemInfo _this )
   ViewsText__ReInit( &_this->SoftwareVersionTitle );
   ViewsText__ReInit( &_this->EsnText );
   ViewsText__ReInit( &_this->SoftwareVersionText );
-  ComponentsPushButton__ReInit( &_this->DevButton );
   CorePropertyObserver__ReInit( &_this->EsnObserver );
   ViewsText__ReInit( &_this->BtSwVersionTitle );
   ViewsText__ReInit( &_this->BtSwVersionText );
+  CoreKeyPressHandler__ReInit( &_this->MagicKeyHandler );
 }
 
 /* Finalizer method for the class 'Settings::SystemInfo' */
@@ -1098,10 +1085,10 @@ void SettingsSystemInfo__Done( SettingsSystemInfo _this )
   ViewsText__Done( &_this->SoftwareVersionTitle );
   ViewsText__Done( &_this->EsnText );
   ViewsText__Done( &_this->SoftwareVersionText );
-  ComponentsPushButton__Done( &_this->DevButton );
   CorePropertyObserver__Done( &_this->EsnObserver );
   ViewsText__Done( &_this->BtSwVersionTitle );
   ViewsText__Done( &_this->BtSwVersionText );
+  CoreKeyPressHandler__Done( &_this->MagicKeyHandler );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -1121,14 +1108,6 @@ void SettingsSystemInfo_Init( SettingsSystemInfo _this, XHandle aArg )
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
   ViewsText_OnSetString( &_this->BtSwVersionText, DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
-
-  if ( DeviceInterfaceSystemDeviceClass_OnGetIsDebugBuild( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-      DeviceInterfaceSystemDeviceClass )))
-  {
-    CoreGroup__OnSetEnabled( &_this->DevButton, 1 );
-    CoreGroup_OnSetVisible((CoreGroup)&_this->DevButton, 1 );
-    CoreGroup__OnSetFocus( _this, ((CoreView)&_this->DevButton ));
-  }
 }
 
 /* 'C' function for method : 'Settings::SystemInfo.OnLongKeyPressed()' */
@@ -1150,8 +1129,8 @@ void SettingsSystemInfo_OnLongKeyPressed( SettingsSystemInfo _this, XObject send
   }
 }
 
-/* 'C' function for method : 'Settings::SystemInfo.OnDevButtonReleaseSlot()' */
-void SettingsSystemInfo_OnDevButtonReleaseSlot( SettingsSystemInfo _this, XObject 
+/* 'C' function for method : 'Settings::SystemInfo.OnMagicKeyReleaseSlot()' */
+void SettingsSystemInfo_OnMagicKeyReleaseSlot( SettingsSystemInfo _this, XObject 
   sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
@@ -1237,9 +1216,9 @@ void SettingsAllReset__Init( SettingsAllReset _this, XObject aLink, XHandle aArg
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->Text, _Const0017 );
-  ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const0018 ));
-  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0019 );
+  CoreRectView__OnSetBounds( &_this->Text, _Const0016 );
+  ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const0017 ));
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0018 );
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
   ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp32, 
@@ -1374,8 +1353,8 @@ void SettingsInProgress__Init( SettingsInProgress _this, XObject aLink, XHandle 
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->Text, _Const001A );
-  ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const001B ));
+  CoreRectView__OnSetBounds( &_this->Text, _Const0019 );
+  ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const001A ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp36, 
   ResourcesFont ));
@@ -1468,8 +1447,8 @@ void SettingsAllResetCompleted__Init( SettingsAllResetCompleted _this, XObject a
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->Text, _Const001C );
-  ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const001D ));
+  CoreRectView__OnSetBounds( &_this->Text, _Const001B );
+  ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const001C ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp32, 
   ResourcesFont ));
@@ -1641,7 +1620,7 @@ void SettingsReset_OnSystemRebootTriggeredSlot( SettingsReset _this, XObject sen
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s", EwLoadString( &_Const001E ));
+  EwTrace( "%s", EwLoadString( &_Const001D ));
   CoreTimer_OnSetEnabled( &_this->SystemRebootCountDownTimer, 0 );
   DeviceInterfaceSystemDeviceClass_RebootSystem( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass ));
@@ -1668,7 +1647,7 @@ void SettingsReset_ShowResetCompleteDialog( SettingsReset _this )
 /* 'C' function for method : 'Settings::Reset.StartFactoryReset()' */
 void SettingsReset_StartFactoryReset( SettingsReset _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const001F ));
+  EwTrace( "%s", EwLoadString( &_Const001E ));
   _this->BusyDialog = EwNewObject( SettingsInProgress, 0 );
   CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)_this->BusyDialog ), 0, 
   0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -1750,7 +1729,7 @@ void SettingsDisplayBrightness__Init( SettingsDisplayBrightness _this, XObject a
   CoreRectView__OnSetBounds( _this, _Const0000 );
   CoreRectView__OnSetBounds( &_this->CheckerboardImage, _Const0000 );
   ViewsImage_OnSetFrameNumber( &_this->CheckerboardImage, 1 );
-  CoreRectView__OnSetBounds( &_this->LevelText, _Const0020 );
+  CoreRectView__OnSetBounds( &_this->LevelText, _Const001F );
   ViewsText_OnSetWrapText( &_this->LevelText, 1 );
   ViewsText_OnSetString( &_this->LevelText, 0 );
   _this->BrightnessLevel = -1;
@@ -1824,9 +1803,9 @@ void SettingsDisplayBrightness_UpdateViewState( SettingsDisplayBrightness _this,
   ApplicationApplication App;
 
   CoreGroup_UpdateViewState((CoreGroup)_this, aState );
-  EwTrace( "%s%t", EwLoadString( &_Const0021 ), aState );
+  EwTrace( "%s%t", EwLoadString( &_Const0020 ), aState );
   App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
-  EwTrace( "%s%*", EwLoadString( &_Const0022 ), App );
+  EwTrace( "%s%*", EwLoadString( &_Const0021 ), App );
 
   if ( App != 0 )
   {
@@ -2016,37 +1995,37 @@ void SettingsBtDiscovarable__Init( SettingsBtDiscovarable _this, XObject aLink, 
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->DiscoverableText, _Const0023 );
+  CoreRectView__OnSetBounds( &_this->DiscoverableText, _Const0022 );
   ViewsText_OnSetWrapText( &_this->DiscoverableText, 1 );
   ViewsText_OnSetAlignment( &_this->DiscoverableText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertTop );
-  ViewsText_OnSetString( &_this->DiscoverableText, EwLoadString( &_Const0024 ));
-  CoreRectView__OnSetBounds( &_this->TimeLeftText, _Const0025 );
+  ViewsText_OnSetString( &_this->DiscoverableText, EwLoadString( &_Const0023 ));
+  CoreRectView__OnSetBounds( &_this->TimeLeftText, _Const0024 );
   ViewsText_OnSetWrapText( &_this->TimeLeftText, 1 );
   ViewsText_OnSetAlignment( &_this->TimeLeftText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertTop );
-  ViewsText_OnSetString( &_this->TimeLeftText, EwLoadString( &_Const0026 ));
-  CoreRectView__OnSetBounds( &_this->NameText, _Const0027 );
+  ViewsText_OnSetString( &_this->TimeLeftText, EwLoadString( &_Const0025 ));
+  CoreRectView__OnSetBounds( &_this->NameText, _Const0026 );
   ViewsText_OnSetWrapText( &_this->NameText, 1 );
   ViewsText_OnSetAlignment( &_this->NameText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertTop );
-  ViewsText_OnSetString( &_this->NameText, EwLoadString( &_Const0028 ));
+  ViewsText_OnSetString( &_this->NameText, EwLoadString( &_Const0027 ));
   CoreTimer_OnSetPeriod( &_this->CountDownTimer, 1000 );
   CoreTimer_OnSetEnabled( &_this->CountDownTimer, 0 );
-  CoreRectView__OnSetBounds( &_this->RemainTimeText, _Const0029 );
+  CoreRectView__OnSetBounds( &_this->RemainTimeText, _Const0028 );
   ViewsText_OnSetWrapText( &_this->RemainTimeText, 1 );
   ViewsText_OnSetAlignment( &_this->RemainTimeText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertTop );
-  ViewsText_OnSetString( &_this->RemainTimeText, EwLoadString( &_Const002A ));
+  ViewsText_OnSetString( &_this->RemainTimeText, EwLoadString( &_Const0029 ));
   _this->CountDownTimeSec = 180;
-  CoreRectView__OnSetBounds( &_this->DeviceNameText, _Const002B );
+  CoreRectView__OnSetBounds( &_this->DeviceNameText, _Const002A );
   ViewsText_OnSetWrapText( &_this->DeviceNameText, 1 );
   ViewsText_OnSetAlignment( &_this->DeviceNameText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DeviceNameText, DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceName( 
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )));
-  CoreRectView__OnSetBounds( &_this->PushButton, _Const002C );
-  MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &_Const002D ));
+  CoreRectView__OnSetBounds( &_this->PushButton, _Const002B );
+  MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &_Const002C ));
   CoreGroup__Add( _this, ((CoreView)&_this->DiscoverableText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->TimeLeftText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NameText ), 0 );
@@ -2150,7 +2129,7 @@ void SettingsBtDiscovarable_UpdateCountDownTimeSlot( SettingsBtDiscovarable _thi
 
     if ( Second < 10 )
     {
-      SecondStr = EwConcatString( EwLoadString( &_Const002E ), EwNewStringInt( Second, 
+      SecondStr = EwConcatString( EwLoadString( &_Const002D ), EwNewStringInt( Second, 
       0, 10 ));
     }
     else
@@ -2159,7 +2138,7 @@ void SettingsBtDiscovarable_UpdateCountDownTimeSlot( SettingsBtDiscovarable _thi
     }
 
     ViewsText_OnSetString( &_this->RemainTimeText, EwConcatString( EwConcatString( 
-    EwNewStringInt( _this->CountDownTimeSec / 60, 0, 10 ), EwLoadString( &_Const002F )), 
+    EwNewStringInt( _this->CountDownTimeSec / 60, 0, 10 ), EwLoadString( &_Const002E )), 
     SecondStr ));
   }
   else
@@ -2233,16 +2212,16 @@ void SettingsBtConnectionResult__Init( SettingsBtConnectionResult _this, XObject
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   CoreRectView__OnSetBounds( &_this->Rectangle, _Const0000 );
-  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0030 );
-  CoreRectView__OnSetBounds( &_this->Text, _Const0031 );
+  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const002F );
+  CoreRectView__OnSetBounds( &_this->Text, _Const0030 );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
   ViewsText_OnSetAlignment( &_this->Text, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString( &_this->Text, 0 );
   CoreTimer_OnSetPeriod( &_this->CloseDialogTimer, 2000 );
-  CoreRectView__OnSetBounds( &_this->ConnectingText, _Const0032 );
+  CoreRectView__OnSetBounds( &_this->ConnectingText, _Const0031 );
   ViewsText_OnSetAlignment( &_this->ConnectingText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ConnectingText, EwLoadString( &_Const0033 ));
+  ViewsText_OnSetString( &_this->ConnectingText, EwLoadString( &_Const0032 ));
   CoreGroup__Add( _this, ((CoreView)&_this->Rectangle ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ConnectingText ), 0 );
@@ -2304,20 +2283,20 @@ void SettingsBtConnectionResult_OnConnectionResultReceivedSlot( SettingsBtConnec
   {
     case EnumBtResultSUCCESS :
       ViewsText_OnSetString( &_this->Text, EwConcatString( EwConcatString( EwLoadString( 
-      &_Const0034 ), _this->DeviceName ), EwLoadString( &_Const0035 )));
+      &_Const0033 ), _this->DeviceName ), EwLoadString( &_Const0034 )));
     break;
 
     case EnumBtResultTIMEOUT :
     {
       ViewsText_OnSetString( &_this->Text, EwConcatString( _this->DeviceName, EwLoadString( 
-      &_Const0036 )));
+      &_Const0035 )));
       ViewsText_OnSetAlignment( &_this->Text, ViewsTextAlignmentAlignHorzLeft );
     }
     break;
 
     case EnumBtResultFAIL :
       ViewsText_OnSetString( &_this->Text, EwConcatString( EwConcatString( EwLoadString( 
-      &_Const0034 ), _this->DeviceName ), EwLoadString( &_Const0037 )));
+      &_Const0033 ), _this->DeviceName ), EwLoadString( &_Const0036 )));
     break;
 
     default : 
@@ -2349,7 +2328,7 @@ void SettingsBtConnectionResult_OnSetDeviceName( SettingsBtConnectionResult _thi
   {
     _this->DeviceName = EwShareString( value );
     ViewsText_OnSetString( &_this->ConnectingText, EwConcatString( EwConcatString( 
-    EwLoadString( &_Const0038 ), value ), EwLoadString( &_Const0039 )));
+    EwLoadString( &_Const0037 ), value ), EwLoadString( &_Const0038 )));
   }
 }
 
@@ -2413,15 +2392,15 @@ void SettingsBtMaxPairedDevice__Init( SettingsBtMaxPairedDevice _this, XObject a
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->Text, _Const003A );
+  CoreRectView__OnSetBounds( &_this->Text, _Const0039 );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
   ViewsText_OnSetAlignment( &_this->Text, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertTop );
-  ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const003B ));
-  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0019 );
+  ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const003A ));
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0018 );
   MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
-  &_Const003C ));
+  &_Const003B ));
   MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
-  &_Const003D ));
+  &_Const003C ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
   ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp36, 
@@ -2543,8 +2522,8 @@ void SettingsBtPairedDeviceList__Init( SettingsBtPairedDeviceList _this, XObject
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 1 );
   _this->Menu.Focusable = 0;
   MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
-  CoreRectView__OnSetBounds( &_this->NoDataText, _Const003E );
-  ViewsText_OnSetString( &_this->NoDataText, EwLoadString( &_Const003F ));
+  CoreRectView__OnSetBounds( &_this->NoDataText, _Const003D );
+  ViewsText_OnSetString( &_this->NoDataText, EwLoadString( &_Const003E ));
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), 0 );
   _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
@@ -2802,11 +2781,11 @@ void SettingsBtPairedDeviceOperation__Init( SettingsBtPairedDeviceOperation _thi
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->Menu, _Const0040 );
+  CoreRectView__OnSetBounds( &_this->Menu, _Const003F );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 3 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0041 ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0042 ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0043 ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0040 ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0041 ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0042 ));
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
   _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
 }
@@ -3004,14 +2983,14 @@ void SettingsBtDeleteBleDevice__Init( SettingsBtDeleteBleDevice _this, XObject a
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->Text, _Const0044 );
+  CoreRectView__OnSetBounds( &_this->Text, _Const0043 );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
   ViewsText_OnSetAlignment( &_this->Text, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString( &_this->Text, 0 );
-  _this->DialogString1 = EwShareString( EwLoadString( &_Const0045 ));
-  _this->DialogString2 = EwShareString( EwLoadString( &_Const0046 ));
-  CoreRectView__OnSetBounds( &_this->PushButton, _Const002C );
-  MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &_Const0047 ));
+  _this->DialogString1 = EwShareString( EwLoadString( &_Const0044 ));
+  _this->DialogString2 = EwShareString( EwLoadString( &_Const0045 ));
+  CoreRectView__OnSetBounds( &_this->PushButton, _Const002B );
+  MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &_Const0046 ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );
   ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp36, 
@@ -3135,11 +3114,11 @@ void SettingsBtFwUpdateDialog__Init( SettingsBtFwUpdateDialog _this, XObject aLi
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   CoreRectView__OnSetBounds( &_this->Rectangle, _Const0000 );
-  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0030 );
-  CoreRectView__OnSetBounds( &_this->StatusText, _Const0048 );
+  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const002F );
+  CoreRectView__OnSetBounds( &_this->StatusText, _Const0047 );
   ViewsText_OnSetWrapText( &_this->StatusText, 1 );
-  ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0049 ));
-  ViewsText_OnSetColor( &_this->StatusText, _Const004A );
+  ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0048 ));
+  ViewsText_OnSetColor( &_this->StatusText, _Const0049 );
   CoreTimer_OnSetPeriod( &_this->RemoveDialogTimer, 2000 );
   CoreGroup__Add( _this, ((CoreView)&_this->Rectangle ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->StatusText ), 0 );
@@ -3193,14 +3172,14 @@ void SettingsBtFwUpdateDialog_OnBtFwStatusUpdateSlot( SettingsBtFwUpdateDialog _
   {
     case EnumBtFwStatusUPDATE_FINISH :
     {
-      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const004B ));
+      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const004A ));
       CoreTimer_OnSetEnabled( &_this->RemoveDialogTimer, 1 );
     }
     break;
 
     case EnumBtFwStatusUPDATE_ABORT :
     {
-      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const004C ));
+      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const004B ));
       CoreTimer_OnSetEnabled( &_this->RemoveDialogTimer, 1 );
     }
     break;

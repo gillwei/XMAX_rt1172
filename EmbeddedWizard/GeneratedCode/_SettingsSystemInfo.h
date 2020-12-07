@@ -42,7 +42,6 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsPushButton.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CorePropertyObserver.h"
 #include "_MenuBaseMenuView.h"
@@ -105,10 +104,10 @@ EW_DEFINE_FIELDS( SettingsSystemInfo, MenuBaseMenuView )
   EW_OBJECT  ( SoftwareVersionTitle, ViewsText )
   EW_OBJECT  ( EsnText,         ViewsText )
   EW_OBJECT  ( SoftwareVersionText, ViewsText )
-  EW_OBJECT  ( DevButton,       ComponentsPushButton )
   EW_OBJECT  ( EsnObserver,     CorePropertyObserver )
   EW_OBJECT  ( BtSwVersionTitle, ViewsText )
   EW_OBJECT  ( BtSwVersionText, ViewsText )
+  EW_OBJECT  ( MagicKeyHandler, CoreKeyPressHandler )
 EW_END_OF_FIELDS( SettingsSystemInfo )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SystemInfo' */
@@ -175,8 +174,8 @@ void SettingsSystemInfo_Init( SettingsSystemInfo _this, XHandle aArg );
 /* 'C' function for method : 'Settings::SystemInfo.OnLongKeyPressed()' */
 void SettingsSystemInfo_OnLongKeyPressed( SettingsSystemInfo _this, XObject sender );
 
-/* 'C' function for method : 'Settings::SystemInfo.OnDevButtonReleaseSlot()' */
-void SettingsSystemInfo_OnDevButtonReleaseSlot( SettingsSystemInfo _this, XObject 
+/* 'C' function for method : 'Settings::SystemInfo.OnMagicKeyReleaseSlot()' */
+void SettingsSystemInfo_OnMagicKeyReleaseSlot( SettingsSystemInfo _this, XObject 
   sender );
 
 /* This slot method is executed when the associated property observer 'PropertyObserver' 

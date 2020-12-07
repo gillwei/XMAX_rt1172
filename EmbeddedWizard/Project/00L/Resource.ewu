@@ -252,18 +252,6 @@ resource Resources::Bitmap progress
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,700,230,740>
-$output false
-resource Resources::Bitmap Development
-{
-  attr bitmapfile FileName = .\Res\development.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
 $rect <540,90,740,130>
 $output false
 resource Resources::Bitmap CheckboxDisable

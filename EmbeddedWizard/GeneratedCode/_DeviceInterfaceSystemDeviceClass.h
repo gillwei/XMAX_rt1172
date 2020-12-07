@@ -68,9 +68,6 @@ EW_END_OF_FIELDS( DeviceInterfaceSystemDeviceClass )
 EW_DEFINE_METHODS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
 EW_END_OF_METHODS( DeviceInterfaceSystemDeviceClass )
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetIsDebugBuild()' */
-XBool DeviceInterfaceSystemDeviceClass_OnGetIsDebugBuild( DeviceInterfaceSystemDeviceClass _this );
-
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.QuitTest()' */
 void DeviceInterfaceSystemDeviceClass_QuitTest( DeviceInterfaceSystemDeviceClass _this );
 

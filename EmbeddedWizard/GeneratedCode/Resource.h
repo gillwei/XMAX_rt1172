@@ -57,9 +57,6 @@ EW_DECLARE_BITMAP_RES( ResourceCheckboxNormal )
 /* Bitmap resource : 'Resource::IconWarning' */
 EW_DECLARE_BITMAP_RES( ResourceIconWarning )
 
-/* Bitmap resource : 'Resource::Development' */
-EW_DECLARE_BITMAP_RES( ResourceDevelopment )
-
 /* Bitmap resource : 'Resource::CheckboxDisable' */
 EW_DECLARE_BITMAP_RES( ResourceCheckboxDisable )
 

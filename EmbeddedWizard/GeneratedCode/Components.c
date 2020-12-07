@@ -28,7 +28,6 @@
 #include "_ComponentsBaseComponent.h"
 #include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDisclaimerView.h"
-#include "_ComponentsPushButton.h"
 #include "_ComponentsStatusBar.h"
 #include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
@@ -638,89 +637,6 @@ EW_DEFINE_CLASS( ComponentsStatusBar, CoreGroup, Background, Background, Backgro
   CoreGroup_Remove,
   CoreGroup_Add,
 EW_END_OF_CLASS( ComponentsStatusBar )
-
-/* Initializer for the class 'Components::PushButton' */
-void ComponentsPushButton__Init( ComponentsPushButton _this, XObject aLink, XHandle aArg )
-{
-  /* At first initialize the super class ... */
-  WidgetSetPushButton__Init( &_this->_Super, aLink, aArg );
-
-  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ComponentsPushButton );
-
-  /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ComponentsPushButton );
-
-  /* ... and initialize objects, variables, properties, etc. */
-  _this->Super1.KeyHandler.OnHold = EwNewSlot( _this, ComponentsPushButton_OnKeyHoldSlot );
-}
-
-/* Re-Initializer for the class 'Components::PushButton' */
-void ComponentsPushButton__ReInit( ComponentsPushButton _this )
-{
-  /* At first re-initialize the super class ... */
-  WidgetSetPushButton__ReInit( &_this->_Super );
-}
-
-/* Finalizer method for the class 'Components::PushButton' */
-void ComponentsPushButton__Done( ComponentsPushButton _this )
-{
-  /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( WidgetSetPushButton );
-
-  /* Don't forget to deinitialize the super class ... */
-  WidgetSetPushButton__Done( &_this->_Super );
-}
-
-/* 'C' function for method : 'Components::PushButton.OnKeyHoldSlot()' */
-void ComponentsPushButton_OnKeyHoldSlot( ComponentsPushButton _this, XObject sender )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  if ( 1 == _this->Super1.KeyHandler.RepetitionCount )
-  {
-    EwSignal( _this->PassKeyHold, ((XObject)&_this->Super1.KeyHandler ));
-  }
-}
-
-/* Variants derived from the class : 'Components::PushButton' */
-EW_DEFINE_CLASS_VARIANTS( ComponentsPushButton )
-EW_END_OF_CLASS_VARIANTS( ComponentsPushButton )
-
-/* Virtual Method Table (VMT) for the class : 'Components::PushButton' */
-EW_DEFINE_CLASS( ComponentsPushButton, WidgetSetPushButton, PassKeyHold, PassKeyHold, 
-                 _None, _None, _None, _None, "Components::PushButton" )
-  CoreRectView_initLayoutContext,
-  CoreView_GetRoot,
-  CoreGroup_Draw,
-  CoreView_HandleEvent,
-  CoreGroup_CursorHitTest,
-  CoreRectView_ArrangeView,
-  CoreRectView_MoveView,
-  CoreRectView_GetExtent,
-  CoreGroup_ChangeViewState,
-  WidgetSetPushButton_OnSetBounds,
-  CoreGroup_OnSetFocus,
-  CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
-  CoreGroup_OnSetEnabled,
-  CoreGroup_OnSetOpacity,
-  CoreGroup_IsCurrentDialog,
-  CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
-  CoreGroup_DispatchEvent,
-  CoreGroup_BroadcastEvent,
-  WidgetSetPushButton_UpdateViewState,
-  CoreGroup_InvalidateArea,
-  CoreGroup_CountViews,
-  CoreGroup_FindNextView,
-  CoreGroup_FindSiblingView,
-  CoreGroup_RestackTop,
-  CoreGroup_Restack,
-  CoreGroup_Remove,
-  CoreGroup_Add,
-EW_END_OF_CLASS( ComponentsPushButton )
 
 /* Initializer for the class 'Components::BaseMainBG' */
 void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHandle aArg )

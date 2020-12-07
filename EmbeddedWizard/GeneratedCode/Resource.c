@@ -58,12 +58,6 @@ EW_RES_WITHOUT_VARIANTS( ResourceCheckboxNormal )
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconWarning' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconWarning )
 
-/* Include a file containing the bitmap resource : 'Resource::Development' */
-#include "_ResourceDevelopment.h"
-
-/* Table with links to derived variants of the bitmap resource : 'Resource::Development' */
-EW_RES_WITHOUT_VARIANTS( ResourceDevelopment )
-
 /* Include a file containing the bitmap resource : 'Resource::CheckboxDisable' */
 #include "_ResourceCheckboxDisable.h"
 
