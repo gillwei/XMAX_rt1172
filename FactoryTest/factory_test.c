@@ -48,8 +48,8 @@ extern "C"{
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define FACTORY_TASK_PERIOD_MS  ( 10 )
 #define NULL_PTR                ( ( void * ) 0 )
-#define FT_CAN_DLC              ( 8 )
 
 #define E_OK                    ( 0 )
 #define E_NOT_OK                ( 1 )
@@ -86,6 +86,11 @@ extern "C"{
 #define BURN_IN_QUAL_MAX_TIME   ( BURN_IN_QUAL_DFT_TIME )
 #define BURN_IN_SUCCESS         ( 0 )
 #define BURN_IN_FAIL            ( 1 )
+
+#define CANID_TEST_SEND_MS      ( 500 )
+#define CANID_TEST_SEND_CNT     ( CANID_TEST_SEND_MS / FACTORY_TASK_PERIOD_MS )
+#define CANID_TEST_MAX_TIME_MS  ( CANID_TEST_SEND_MS * ( sizeof( CAN_test_ID ) / sizeof( CAN_test_ID[0] ) ) )
+#define CANID_TEST_MAX_TIME_CNT ( CANID_TEST_MAX_TIME_MS / FACTORY_TASK_PERIOD_MS )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -125,10 +130,6 @@ static uint32_t       esn_id              = 0;
 static uint32_t       EEPM_esn_id         = 0;
 static IOP_esn_op     esn_operation       = IOP_ESN_OP_INVALID;
 
-//temp RX data
-static uint8_t      canRxData[8];
-static bool         canRxFlag = FALSE;
-
 //Burn-in
 IOP_BurnIn_op_stage_type            burnInStage            = IOP_BURNIN_STAGE_NOT_START;
 static boolean                      burnInResult           = BURN_IN_FAIL;
@@ -137,6 +138,10 @@ static uint32_t                     burnInTargetTime       = BURN_IN_QUAL_DFT_TI
 static IOP_set_BurnIn_state_type    burnInState            = IOP_BURNIN_STATE_NONE;
 
 static const uint8_t default_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+
+//CAN ID test
+static boolean CAN_ID_test_flag = FALSE;
+static uint32_t CAN_test_ID[]   = { 0x4C0, 0x100, 0x200, 0x400, 0x110, 0x220, 0x440, 0x480, 0x111, 0x222, 0x444, 0x488, 0x4C7 };
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -219,6 +224,11 @@ static void factory_test_task
 static void IOP_BurnIn_Task
     (
     void* arg
+    );
+
+static void sendCanTestData
+    (
+    void
     );
 
 static void esn_read_cb
@@ -305,19 +315,19 @@ static void factory_create_task
 {
 if( pdPASS == xTaskCreate( factory_test_task, "factory_test_task", configMINIMAL_STACK_SIZE * 2, NULL, TASK_PRIO_FAC_TEST, NULL ) )
     {
-    PRINTF("%s ok\r\n", __FUNCTION__ );
+    PRINTF("%s ok\r\n", "factory_test_task" );
     }
 else
     {
-    PRINTF("%s fail\r\n", __FUNCTION__ );
+    PRINTF("%s fail\r\n", "factory_test_task" );
     }
 if( pdPASS == xTaskCreate( IOP_BurnIn_Task, "IOP_BurnIn_Task", configMINIMAL_STACK_SIZE * 2, NULL, TASK_PRIO_BURN_IN, NULL ) )
     {
-    PRINTF("%s ok\r\n", __FUNCTION__ );
+    PRINTF("%s ok\r\n", "IOP_BurnIn_Task" );
     }
 else
     {
-    PRINTF("%s fail\r\n", __FUNCTION__ );
+    PRINTF("%s fail\r\n", "IOP_BurnIn_Task" );
     }
 }
 
@@ -489,10 +499,10 @@ void sendCanData
     void
     )
 {
-can_tmd_t l_p_tmd =
+static can_tmd_t l_p_tmd =
     {
     .identifier = TX7_FACT_INSP1_GA_CAN0_ID,
-    .dlc        = FT_CAN_DLC,
+    .dlc        = IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_LEN,
     .handle     = IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_HANDLE,
     .options    = CAN_TXMSG_STANDARD
     };
@@ -500,7 +510,7 @@ can_tmd_t l_p_tmd =
 if( !queueIsEmpty() )
     {
     l_p_tmd.p_data = (uint8_t *)&iopDataQueue[iopDataHead];
-    can_hw_transmit( CAN_CONTROLLER_2, &l_p_tmd ); // TODO: Change to upper layer transmit API.
+    can_transmit( CAN_CONTROLLER_2, &l_p_tmd );
     if( iopDataHead == iopDataTail )
         {
         iopDataHead = IOP_QUEUE_INVALID;
@@ -647,6 +657,13 @@ switch( inst_id )
                 {
 
                 IOPDone = true;
+                }
+                break;
+
+            case IOP_TEST_CAN:
+                {
+                CAN_ID_test_flag = data[2];
+                packageIopToCanData( &data[0], BIT_24_DATA_LEN );
                 }
                 break;
 
@@ -1468,6 +1485,51 @@ while( TRUE )
 vTaskDelete( NULL );
 }
 
+static void sendCanTestData
+    (
+    void
+    )
+{
+static uint8_t test_count   = 0;
+static uint16_t test_period_counter = 0;
+static uint8_t l_tx_data[8] = { 0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55 };
+static can_tmd_t l_p_tmd =
+    {
+    .dlc        = IL_CAN0_TX_DIAG_RELATED_TXFRM_LEN,
+    .handle     = IL_CAN0_TX_DIAG_RELATED_TXFRM_HANDLE,
+    .options    = CAN_TXMSG_STANDARD,
+    .p_data     = l_tx_data,
+    };
+
+if( CAN_ID_test_flag )
+    {
+    l_p_tmd.identifier = CAN_test_ID[test_count];
+    if( test_period_counter % CANID_TEST_SEND_CNT == 0 )
+        {
+        test_count ++;
+        if( test_period_counter < CANID_TEST_MAX_TIME_CNT )
+            {
+            can_transmit( CAN_CONTROLLER_2, &l_p_tmd );
+            }
+        else
+            {
+            CAN_ID_test_flag = false;
+            test_period_counter = 0;
+            }
+        }
+    if( test_count == ( sizeof( CAN_test_ID ) / sizeof( CAN_test_ID[0] ) ) )
+        {
+        test_count = 0;
+        }
+    test_period_counter ++;
+    }
+else
+    {
+    test_count = 0;
+    test_period_counter = 0;
+    }
+}
+
 /*********************************************************************
 *
 * @private
@@ -1484,16 +1546,12 @@ static void factory_test_task
 {
 while( true )
     {
-    if( canRxFlag )
-        {
-        CanToIopParser( (uint8_t *)&canRxData );
-        canRxFlag = FALSE;
-        }
-
     /* Periodically send CAN data that stored in the queue */
     sendCanData();
 
-    vTaskDelay( pdMS_TO_TICKS( 10 ) );
+    sendCanTestData();
+
+    vTaskDelay( pdMS_TO_TICKS( FACTORY_TASK_PERIOD_MS ) );
     }
 vTaskDelete( NULL );
 }
@@ -1511,8 +1569,7 @@ void ft_hook_receive
     can_rmd_t   const * const p_rmd    //!< [in] pointer to received message
     )
 {
-memcpy( &canRxData, &p_rmd->data[0], 8 );
-canRxFlag = TRUE;
+CanToIopParser( &p_rmd->data[0] );
 }
 
 /*********************************************************************
