@@ -141,7 +141,6 @@ int EwBspDisplayInit( XDisplayInfo* aDisplayInfo )
   return 1;
 }
 
-
 /*******************************************************************************
 * FUNCTION:
 *   EwBspDisplayDone
@@ -158,9 +157,10 @@ int EwBspDisplayInit( XDisplayInfo* aDisplayInfo )
 *******************************************************************************/
 void EwBspDisplayDone( void )
 {
-  /* close display */
+/* close display */
+FBDEV_Disable( &g_fbdev );
+FBDEV_Close( &g_fbdev );
 }
-
 
 /*******************************************************************************
 * FUNCTION:

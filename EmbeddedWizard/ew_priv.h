@@ -18,6 +18,16 @@ extern "C" {
 #include <stdint.h>
 #include "EW_pub.h"
 
+// save Home index and Meter setting into the last page in EEPROM
+// the first 4 bits are of meter setting
+// the last 4 bits are of Home index
+#define LAST_PAGE_HOME_SHIFT    ( 0 )
+#define LAST_PAGE_METER_SHIFT   ( 4 )
+
+#define IGN_OFF_TASK_CLOSE_DISPLAY      ( 1 << 0 )
+#define IGN_OFF_TASK_WRITE_LAST_PAGE    ( 1 << 1 )
+#define IGN_OFF_TASK_ALL                ( IGN_OFF_TASK_CLOSE_DISPLAY | IGN_OFF_TASK_WRITE_LAST_PAGE )
+
 typedef struct
     {
     CoreKeyCode code;
@@ -41,6 +51,10 @@ void ew_get_software_version( char* version );
 void ew_get_bt_software_version( char* version );
 void ew_get_esn( void );
 void ew_get_rtc_time( char* datetime );
+
+void ew_power_init( void );
+int  ew_power_ignition_status( void );
+void ew_power_update_ignoff_task_status( uint32_t task );
 
 XBool ew_is_debug_build( void );
 void ew_reset_to_factory_default( void );

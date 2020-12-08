@@ -81,6 +81,7 @@
 #include "fsl_common.h"
 #include "FRTOS_pub.h"
 #include "GRM_pub_prj.h"
+#include "PM_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -208,6 +209,8 @@ int EwInit( void )
   /* initialize your device driver(s) that provide data for your GUI */
   ew_device_interface_init();
 
+  ew_power_init();
+
   return 1;
 }
 
@@ -253,8 +256,9 @@ void EwDone( void )
 
   /* deinitialize display */
   EwBspDisplayDone();
-}
 
+  ew_power_update_ignoff_task_status( IGN_OFF_TASK_CLOSE_DISPLAY );
+}
 
 /*******************************************************************************
 * FUNCTION:
@@ -287,6 +291,7 @@ int     timers  = 0;
 int     signals = 0;
 int     events  = 0;
 int     devices = 0;
+int     keep_processing = 1;
 ew_key_event key_event;
 
 /* process data of your device driver(s) and update the GUI
@@ -346,7 +351,12 @@ else
     EwBspEventWait( EwNextTimerExpiration() );
     }
 
-return 1;
+if( PM_IGN_OFF == ew_power_ignition_status() )
+    {
+    keep_processing = 0;
+    }
+
+return keep_processing;
 }
 
 /*******************************************************************************
