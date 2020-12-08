@@ -29,13 +29,10 @@ extern "C"{
 #include "RTC_pub.h"
 #include "WDG_pub.h"
 
-#include "can_defs.h"
 #include "can_cfg.h"
 #include "can_drv.h"
+#include "can_hw.h"
 #include "can_dll_prv_par.h"
-#include "CAN_nim_ctrl.h"
-#include "can_flexcan.h"
-#include "can_flexcan_fcfg.h"
 
 #include "IOP_pub_inst.h"
 #include "IOP_pub_cmnd.h"
@@ -488,27 +485,18 @@ void sendCanData
     void
     )
 {
-flexcan_frame_t frame;
-uint8_t temp_can_data[8] = { 0 };
-
-frame.id     = FLEXCAN_ID_STD( FT_REP_CAN_ID );
-frame.format = ( uint8_t )CAN_STANDARD_MSG_TYPE;
-frame.type   = ( uint8_t )CAN_DATA_MSG_TYPE;
-frame.length = ( uint8_t )8;
+can_tmd_t l_p_tmd =
+    {
+    .identifier = FT_REP_CAN_ID,
+    .dlc        = FT_CAN_DLC,
+    .handle     = FT_REP_TXFRM_HANDLE,
+    .options    = CAN_TXMSG_STANDARD
+    };
 
 if( !queueIsEmpty() )
     {
-    memcpy( &temp_can_data, &iopDataQueue[iopDataHead], 8 );
-    frame.dataByte0 = temp_can_data[0];
-    frame.dataByte1 = temp_can_data[1];
-    frame.dataByte2 = temp_can_data[2];
-    frame.dataByte3 = temp_can_data[3];
-    frame.dataByte4 = temp_can_data[4];
-    frame.dataByte5 = temp_can_data[5];
-    frame.dataByte6 = temp_can_data[6];
-    frame.dataByte7 = temp_can_data[7];
-
-    //FLEXCAN_TransferSendBlocking( CAN2, 8, &frame );
+    l_p_tmd.p_data = (uint8_t *)&iopDataQueue[iopDataHead];
+    can_hw_transmit( CAN_CONTROLLER_2, &l_p_tmd ); // TODO: Change to uppler layer transmit API.
     if( iopDataHead == iopDataTail )
         {
         iopDataHead = IOP_QUEUE_INVALID;
