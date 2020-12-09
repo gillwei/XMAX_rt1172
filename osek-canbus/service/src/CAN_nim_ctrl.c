@@ -23,13 +23,13 @@
 #include "can_dll.h"
 #include "can_nm.h"
 
-#include "can_il.h"
-#include "can_il_par.h"
-#include "can_il_enum.h"
+//#include "can_il.h"
+//#include "can_il_par.h"
+//#include "can_il_enum.h"
 
 #include "can_tp.h"
 #include "can_svcs.h"
-#include "can_nim_signals.h"
+//#include "can_nim_signals.h"
 #include "can_nim_cfg.h"
 #include "CAN_nim_ctrl.h"
 #include "can_flexcan_fcfg.h"
@@ -39,6 +39,9 @@
 #include "task.h"
 #include "CAN_nim_ctrl.h"
 #include "GRM_pub_prj.h"
+
+#include "factory_test.h"
+#include "VI_pub.h"
 
 /*--------------------------------------------------------------------
                             MACROS
@@ -115,6 +118,14 @@ CAN_nim_task
 can_hw_inst_t   l_i_hw_inst;
 uint32_t        last_time = xTaskGetTickCount();
 
+can_ret_code_t  l_ret_code  = CAN_RC_NOT_AVAILABLE;
+can_rmd_t       l_test_rmd;
+static uint8    l_up_hk     = 0;
+static uint8    l_dn_hk     = 0;
+static uint8    l_slct_hk   = 0;
+static uint8    l_hm_hk     = 0;
+uint8_t         l_data_idx  = 0;
+
 #if( DEBUG_TX_CAN_SUPPORT )
     uint32_t const  l_tx_id_table[] = { 0x584, 0x57A, 0x581, 0x5B1, 0x5B3, 0x5BF, 0x5CA, 0x690 };
     uint32_t const  l_tx_id_len[]   = { 3, 2, 1, 1, 2, 5, 2, 8 };
@@ -131,23 +142,23 @@ CAN_nim_start_up();
 
 while(1)
     {
-#if( DEBUG_TX_CAN_SUPPORT )
-    if( ( ( l_test_tick++ ) % 1000 ) == 0 )
-        {
-        /*------------------------------------------------------
-        Test case
-        ------------------------------------------------------*/
-        for( l_tx_index = 0; l_tx_index < 8; l_tx_index++ )
+    #if( DEBUG_TX_CAN_SUPPORT )
+        if( ( ( l_test_tick++ ) % 100 ) == 0 )
             {
-            l_tmd_sample[l_tx_index].dlc        = l_tx_id_len[l_tx_index];
-            l_tmd_sample[l_tx_index].p_data     = l_tx_data;
-            l_tmd_sample[l_tx_index].handle     = 0;
-            l_tmd_sample[l_tx_index].options    = 0;
-            l_tmd_sample[l_tx_index].identifier = l_tx_id_table[l_tx_index];
-            can_hw_transmit( 0, &l_tmd_sample[l_tx_index] );
+            /*------------------------------------------------------
+            Test case
+            ------------------------------------------------------*/
+            for( l_tx_index = 0; l_tx_index < 8; l_tx_index++ )
+                {
+                l_tmd_sample[l_tx_index].dlc        = l_tx_id_len[l_tx_index];
+                l_tmd_sample[l_tx_index].p_data     = l_tx_data;
+                l_tmd_sample[l_tx_index].handle     = 0;
+                l_tmd_sample[l_tx_index].options    = 0;
+                l_tmd_sample[l_tx_index].identifier = l_tx_id_table[l_tx_index];
+                can_transmit( 0, &l_tmd_sample[l_tx_index] );
+                }
             }
-        }
-#endif
+    #endif
 
     /*------------------------------------------------------
     Service all the CAN stack layers for each hardware
@@ -205,10 +216,67 @@ while(1)
             can_nim_task_count[l_i_hw_inst] = CAN_NIM_TASK_COUNT_INIT;
             }
 
+            l_ret_code = can_receive( l_i_hw_inst, &l_test_rmd );
+
+            /*------------------------------------------------------
+            Handle factory test Frame
+            ------------------------------------------------------*/
+            if( l_test_rmd.identifier == RXF_FACT_INSP2_GA )
+                {
+                ft_hook_receive( &l_test_rmd );
+                }
+
+            /*------------------------------------------------------
+            Handle hard key frame
+            ------------------------------------------------------*/
+            if( l_test_rmd.identifier == RX6_FUNCSW_STAT )
+                {
+                /*--------------------------------------------------
+                TBD Add Hard key hook api....
+                --------------------------------------------------*/
+                if( l_up_hk != ( l_test_rmd.data[0] & ( 1 << 7 ) ) )
+                    {
+                    l_up_hk  = ( l_test_rmd.data[0] & ( 1 << 7 ) );
+                    VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_1_RXSIG_HANDLE, l_up_hk );
+                    }
+
+                if( l_dn_hk != ( l_test_rmd.data[0] & ( 1 << 6 ) ) )
+                    {
+                    l_dn_hk  = ( l_test_rmd.data[0] & ( 1 << 6 ) );
+                    VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_2_RXSIG_HANDLE, l_dn_hk );
+                    }
+
+                if( l_slct_hk != ( l_test_rmd.data[0] & ( 1 << 3 ) ) )
+                    {
+                    l_slct_hk  = ( l_test_rmd.data[0] & ( 1 << 3 ) );
+                    VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_5_RXSIG_HANDLE, l_slct_hk );
+                    }
+
+                if( l_hm_hk != ( l_test_rmd.data[0] & ( 1 << 2 ) ) )
+                    {
+                    l_hm_hk  = ( l_test_rmd.data[0] & ( 1 << 2 ) );
+                    VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, l_hm_hk );
+                    }
+                }
+
+        #if( DEBUG_RX_CAN_SUPPORT )
+            if( l_ret_code == CAN_RC_SUCCESS )
+                {
+                l_ret_code  = CAN_RC_NOT_AVAILABLE;
+
+                PRINTF( "\r\nID:%x DATA: ", l_test_rmd.identifier );
+                for( l_data_idx = 0; l_data_idx < l_test_rmd.dlc; l_data_idx++ )
+                    {
+                    PRINTF( "%x ", l_test_rmd.data[l_data_idx] );
+                    }
+                PRINTF( "\r\n\r\n" );
+                }
+        #endif
+
         /*------------------------------------------------------
         Low Level CAN driver Periodic Task
         ------------------------------------------------------*/
-        //can_periodic( l_i_hw_inst );
+        can_periodic( l_i_hw_inst );
         }
 
     vTaskDelayUntil( &last_time, 5 );

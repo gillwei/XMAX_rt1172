@@ -39,9 +39,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "factory_test.h"
-#include "VI_pub.h"
-
 /*--------------------------------------------------------------------
                             MACROS
 --------------------------------------------------------------------*/
@@ -74,9 +71,6 @@
 #define FLT_CONF_ERR_ACTIVE             0
 #define FLT_CONF_ERR_PASSIVE            1
 #define FLT_CONF_ERR_BUSOFF_MIN         2
-
-#define HARD_KEY_MESSAGE_INDEX          6
-#define FACTORY_TEST_MESSAGE_INDEX      16
 
 /*------------------------------------------------------
 Array of FlexCAN IRQ number.
@@ -2011,14 +2005,8 @@ can_hw_init_rx_mbs
     )
 {
 uint8_t  l_index             = 0;
-uint8_t  l_rx_mb_num         = 0;
 uint64_t l_u64Msk            = 1;
 uint32_t l_idmsk             = 0;
-
-/*------------------------------------------------------
-Get Message Buffer configuration data
-------------------------------------------------------*/
-l_rx_mb_num = CAN_HMB_RX_ALL;
 
 /*------------------------------------------------------
 Set all the APP Message Buffers.
@@ -2855,7 +2843,7 @@ if( 0U != ( l_esr_status & (uint32_t)FLEXCAN_TXWARNING_INT_FLAG ) )
         {
         if( l_tx_err_cnt >= CAN_ERROR_WARNING_COUNT )
             {
-            //can_hook_exception( hw_inst, CAN_EX_TX_ERROR_WARNING );
+            can_hook_exception( hw_inst, CAN_EX_TX_ERROR_WARNING );
             }
         }
     }
@@ -2871,7 +2859,7 @@ if ( 0U != ( l_esr_status & (uint32_t)FLEXCAN_RXWARNING_INT_FLAG ) )
         {
         if( l_rx_err_cnt >= CAN_ERROR_WARNING_COUNT )
             {
-            //( hw_inst, CAN_EX_RX_ERROR_WARNING );
+            can_hook_exception( hw_inst, CAN_EX_RX_ERROR_WARNING );
             }
         }
     }
@@ -2898,7 +2886,7 @@ if( 0 != ( can_hw_error_status[hw_inst] & CAN_HW_ERR_TX_PASSIVE ) )
             ------------------------------------------------------*/
             can_hw_error_status[hw_inst] |= ( ~CAN_HW_ERR_TX_ACTIVE );
 
-            //can_hook_exception( hw_inst, CAN_EX_TX_ERROR_ACTIVE );
+            can_hook_exception( hw_inst, CAN_EX_TX_ERROR_ACTIVE );
             }
         }
     }
@@ -2922,7 +2910,7 @@ if( 0 != ( can_hw_error_status[hw_inst] & CAN_HW_ERR_RX_PASSIVE ) )
             ------------------------------------------------------*/
             can_hw_error_status[hw_inst] |= ( ~CAN_HW_ERR_RX_ACTIVE );
 
-            //can_hook_exception( hw_inst, CAN_EX_RX_ERROR_ACTIVE );
+            can_hook_exception( hw_inst, CAN_EX_RX_ERROR_ACTIVE );
             }
         }
     }
@@ -2941,13 +2929,13 @@ if( l_flt_conf == FLT_CONF_ERR_PASSIVE )
             {
             can_hw_error_status[hw_inst] |= CAN_HW_ERR_TX_PASSIVE;
 
-            //can_hook_exception( hw_inst, CAN_EX_TX_ERROR_PASSIVE );
+            can_hook_exception( hw_inst, CAN_EX_TX_ERROR_PASSIVE );
             }
         if( l_rx_err_cnt >= CAN_ERROR_PASSIVE_COUNT )
             {
             can_hw_error_status[hw_inst] |= CAN_HW_ERR_RX_PASSIVE;
 
-            //can_hook_exception( hw_inst, CAN_EX_RX_ERROR_PASSIVE );
+            can_hook_exception( hw_inst, CAN_EX_RX_ERROR_PASSIVE );
             }
         }
     }
@@ -2976,7 +2964,7 @@ if( ( l_esr_status & FLEXCAN_BUSOFF_INT_FLAG ) != 0 )
         /*------------------------------------------------------
         Notify the application
         ------------------------------------------------------*/
-        //can_hook_exception( hw_inst, CAN_EX_BUSOFF );
+        can_hook_exception( hw_inst, CAN_EX_BUSOFF );
         }
     }
 }
@@ -3056,7 +3044,7 @@ l_tx_mb_timout_idx  = tx_mb_index - CAN_HMB_TX_START;
 l_tx_handle         = can_hw_tx_msg_handle[hw_inst][l_tx_mb_timout_idx];
 can_hw_tx_msg_handle[hw_inst][l_tx_mb_timout_idx]     = 0;
 can_hw_tx_timeout[hw_inst].active[l_tx_mb_timout_idx] = FALSE;
-//can_hook_transmit( hw_inst, l_tx_handle, tx_mb_index, l_tx_ok );
+can_hook_transmit( hw_inst, l_tx_handle, tx_mb_index, l_tx_ok );
 }
 
 /*!*******************************************************************
@@ -3080,81 +3068,24 @@ can_hw_rx_mb_isr_hndlr
     )
 {
 can_ret_code_t      l_ret_code   = CAN_RC_FALSE;
-//can_rmd_t          *l_p_rmd    = NULL;
+can_rmd_t          *l_p_rmd      = NULL;
 can_hmb_mask_t      l_u64flag    = 1;
-can_rmd_t           l_test_rmd;
-uint8_t             l_data_idx   = 0;
-
-static uint8    l_up_hk   = 0;
-static uint8    l_dn_hk   = 0;
-static uint8    l_slct_hk = 0;
-static uint8    l_hm_hk   = 0;
 
 /*------------------------------------------------------
 Get Pointer to Next Entry in the Receive Queue
 ------------------------------------------------------*/
-//l_p_rmd = can_hook_get_rmd_ptr( hw_inst );
+l_p_rmd = can_hook_get_rmd_ptr( hw_inst );
 
 /*------------------------------------------------------
 Check for Available Space in the Receive Queue
 (NULL Returned Pointer indicates none available)
 ------------------------------------------------------*/
-//if( l_p_rmd != NULL )
+if( l_p_rmd != NULL )
     {
     /*------------------------------------------------------
     Find Message to deal with.
     ------------------------------------------------------*/
-    l_ret_code = can_hw_receive_rx_mb( p_flexcan_hw_regs, &l_test_rmd, rx_mb_index );
-
-    /*------------------------------------------------------
-    Handle factory test Frame
-    ------------------------------------------------------*/
-    if( rx_mb_index == FACTORY_TEST_MESSAGE_INDEX )
-        {
-        ft_hook_receive( &l_test_rmd );
-        }
-
-    /*------------------------------------------------------
-    Handle hard key frame
-    ------------------------------------------------------*/
-    if( rx_mb_index == HARD_KEY_MESSAGE_INDEX )
-        {
-        /*--------------------------------------------------
-        TBD Add Hard key hook api....
-        --------------------------------------------------*/
-        if( l_up_hk != ( l_test_rmd.data[0] & ( 1 << 7 ) ) )
-            {
-            l_up_hk  = ( l_test_rmd.data[0] & ( 1 << 7 ) );
-            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_1_RXSIG_HANDLE, l_up_hk );
-            }
-
-        if( l_dn_hk != ( l_test_rmd.data[0] & ( 1 << 6 ) ) )
-            {
-            l_dn_hk  = ( l_test_rmd.data[0] & ( 1 << 6 ) );
-            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_2_RXSIG_HANDLE, l_dn_hk );
-            }
-
-        if( l_slct_hk != ( l_test_rmd.data[0] & ( 1 << 3 ) ) )
-            {
-            l_slct_hk  = ( l_test_rmd.data[0] & ( 1 << 3 ) );
-            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_5_RXSIG_HANDLE, l_slct_hk );
-            }
-
-        if( l_hm_hk != ( l_test_rmd.data[0] & ( 1 << 2 ) ) )
-            {
-            l_hm_hk  = ( l_test_rmd.data[0] & ( 1 << 2 ) );
-            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, l_hm_hk );
-            }
-        }
-
-#if( DEBUG_RX_CAN_SUPPORT )
-    PRINTF( "ID:%x DATA: ", l_test_rmd.identifier );
-    for( l_data_idx = 0; l_data_idx < l_test_rmd.dlc; l_data_idx++ )
-        {
-        PRINTF( "%x ", l_test_rmd.data[l_data_idx] );
-        }
-    PRINTF( "\r\n\r\n" );
-#endif
+    l_ret_code = can_hw_receive_rx_mb( p_flexcan_hw_regs, l_p_rmd, rx_mb_index );
 
     /*------------------------------------------------------
     Check for Message Successfully Received
@@ -3169,17 +3100,17 @@ Check for Available Space in the Receive Queue
         /*--------------------------------------------------
         Notify the Driver layer of a message reception
         --------------------------------------------------*/
-        //can_hook_receive( hw_inst, rx_mb_index, l_p_rmd );
+        can_hook_receive( hw_inst, rx_mb_index, l_p_rmd );
         }
     }
-//else
+else
     {
     /*------------------------------------------------------
     The Driver Layer is unable to accept the received
     message so just flush it. (The Driver layer sets the
     software receive queue overrun error status bit).
     ------------------------------------------------------*/
-    //can_hw_rx_flush( hw_inst );
+    can_hw_rx_flush( hw_inst );
     }
 
 flexcan_ClearMbStatusFlags( p_flexcan_hw_regs, l_u64flag << rx_mb_index );
