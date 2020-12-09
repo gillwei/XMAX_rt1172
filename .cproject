@@ -880,7 +880,7 @@
 			<resource resourceType="PROJECT" workspacePath="/LinkCard-RT1176"/>
 		</configuration>
 		<configuration configurationName="Release">
-			<resource resourceType="PROJECT" workspacePath="/evkmimxrt1170_igpio_led_output_cm7"/>
+			<resource resourceType="PROJECT" workspacePath="/LinkCard-RT1176"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
