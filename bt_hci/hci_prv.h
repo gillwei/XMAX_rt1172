@@ -138,6 +138,10 @@ bool getBTDUTModeState
     void
     );
 
+void hci_recovery_reset_BT
+    (
+    void
+    );
 
 #ifdef __cplusplus
 }

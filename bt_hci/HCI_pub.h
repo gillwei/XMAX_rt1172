@@ -26,7 +26,7 @@ extern "C" {
 #define COMMON_CMD_WAIT_MS       30
 #define BT_MIN_WAIT_DELAY        50
 #define BT_RESET_RECONFIG_DELAY  100
-#define BT_RESET_GPIO_DELAY      2
+#define BT_RESET_GPIO_DELAY      50
 #define BT_AFTER_RESET_DELAY     1000
 
 /*--------------------------------------------------------------------
@@ -62,7 +62,7 @@ void HCI_init
     void
     );
 
-void HCI_reset_BT
+void HCI_normal_reset_BT
     (
     void
     );

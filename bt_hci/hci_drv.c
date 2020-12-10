@@ -25,6 +25,7 @@
 #include "GRM_pub_prj.h"
 #include "pin_mux.h"
 #include "factory_test.h"
+#include "fsl_iomuxc.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -51,6 +52,7 @@ HCI Task Parameters
     #define EVENT_HCI_DATA_TX             ( 1 << 1 )
 #endif
 #define EVENT_BT_UPDATE_RECEIVED      ( 1 << 2 )
+#define EVENT_HCI_RESET      ( 1 << 3 )
 
 #define HCI_RX_BUFFER_SIZE  ( 32 * 1024 )
 AT_NONCACHEABLE_SECTION(uint8_t hci_rx_data[HCI_RX_BUFFER_SIZE]);
@@ -62,6 +64,7 @@ AT_BOARDSDRAM_SECTION( uint8_t hci_tx_data[HCI_TX_BUFFER_SIZE] );
 
 #define UPDATE_TIMER_PERIOD_MS       50
 #define UPDATE_TICK_PERIOD_MS        pdMS_TO_TICKS( UPDATE_TIMER_PERIOD_MS )
+#define UPDATE_TIMER_RESET_500MS     ( 500 / UPDATE_TIMER_PERIOD_MS )
 #define UPDATE_TIMER_TWO_SECONDS     ( 2000 / UPDATE_TIMER_PERIOD_MS )
 #define UPDATE_TIMER_THREE_SECONDS   ( 3000 / UPDATE_TIMER_PERIOD_MS )
 
@@ -69,6 +72,8 @@ AT_BOARDSDRAM_SECTION( uint8_t hci_tx_data[HCI_TX_BUFFER_SIZE] );
 #define RESPONSE_TICK_PERIOD_MS      pdMS_TO_TICKS( RESPONSE_TIMER_PERIOD_MS )
 #define RESPONSE_TIMER_TWO_SECONDS   ( 2000 / RESPONSE_TICK_PERIOD_MS )
 #define AUTH_CHIP_RESULT_FAIL        0
+#define ORIGINAL_BAUD_RATE           3000000
+#define RECOVERY_MODE_BAUD_RATE      115200
 
 /*--------------------------------------------------------------------
                                 TYPES
@@ -200,6 +205,11 @@ static void RespTimerCallback
     TimerHandle_t xTimer
     );
 
+static void hci_init_BT_module
+    (
+    void
+    );
+
 /*********************************************************************
 *
 * @public
@@ -245,16 +255,62 @@ create_task();
 
 /*********************************************************************
 *
-* MCU hardware reset 89820
+* MCU hardware reset 89820 into Normal mode
 *
-* Pull MCU BT_RST_N pin low and high to reset 89820
+* Pull BT_UART_RTS up and Pull MCU BT_RST_N pin low and high
+* to reset 89820
 *
 *********************************************************************/
-void HCI_reset_BT
+void HCI_normal_reset_BT
     (
     void
     )
 {
+gpio_pin_config_t uart_cts_config = {kGPIO_DigitalOutput, 0, kGPIO_NoIntmode};
+
+PERIPHERAL_uart_port_reconfig( false, false, ORIGINAL_BAUD_RATE );
+
+// Reconfigure BT UART RTS to GPIO9_IO02
+IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_GPIO9_IO02,    /* GPIO_AD_03 is configured as GPIO9_IO02 */
+                  0U);                             /* Software Input On Field: Input Path is determined by functionality */
+GPIO_PinInit( GPIO9, 2U, &uart_cts_config );
+GPIO_PinWrite( GPIO9, 2, 1 );
+
+GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
+vTaskDelay( pdMS_TO_TICKS( BT_RESET_GPIO_DELAY ) );
+GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
+vTaskDelay( pdMS_TO_TICKS( BT_RESET_RECONFIG_DELAY ) );
+
+// Reconfigure GPIO1_IO21 to BT UART RTS
+IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_LPUART7_RTS_B, /* GPIO_AD_B1_05 is configured as GPIO1_IO21 */
+                  0U);                                /* Software Input On Field: Input Path is determined by functionality */
+
+PERIPHERAL_uart_port_reconfig( true, true, ORIGINAL_BAUD_RATE );
+}
+
+/*********************************************************************
+*
+* MCU hardware reset 89820 into Recovery mode
+*
+* Pull BT_UART_RTS down and Pull MCU BT_RST_N pin low and high
+* to reset 89820
+*
+*********************************************************************/
+void hci_recovery_reset_BT
+    (
+    void
+    )
+{
+gpio_pin_config_t uart_cts_config = {kGPIO_DigitalOutput, 0, kGPIO_NoIntmode};
+
+PERIPHERAL_uart_port_reconfig( false, false, RECOVERY_MODE_BAUD_RATE );
+
+// Reconfigure BT UART RTS to GPIO9_IO02
+IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_GPIO9_IO02,    /* GPIO_AD_03 is configured as GPIO9_IO02 */
+                  0U);                             /* Software Input On Field: Input Path is determined by functionality */
+GPIO_PinInit( GPIO9, 2U, &uart_cts_config );
+GPIO_PinWrite( GPIO9, 2, 0 );
+
 GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
 vTaskDelay( pdMS_TO_TICKS( BT_RESET_GPIO_DELAY ) );
 GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
@@ -265,7 +321,7 @@ vTaskDelay( pdMS_TO_TICKS( BT_RESET_RECONFIG_DELAY ) );
 *
 * BT power off
 *
-* Pull MCU BT_RST_N pin low
+* Pull MCU BT_UART_RTS low and pull BT_RST_N pin low
 *
 *********************************************************************/
 void HCI_BT_off
@@ -273,15 +329,24 @@ void HCI_BT_off
     void
     )
 {
-GPIO_PinWrite( GPIO9, 7, 0 );
+gpio_pin_config_t uart_cts_config = {kGPIO_DigitalOutput, 0, kGPIO_NoIntmode};
+
+PERIPHERAL_uart_port_reconfig( false, false, ORIGINAL_BAUD_RATE );
+
+// Reconfigure BT UART RTS to GPIO9_IO02
+IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_GPIO9_IO02,    /* GPIO_AD_03 is configured as GPIO9_IO02 */
+                  0U);                             /* Software Input On Field: Input Path is determined by functionality */
+GPIO_PinInit( GPIO9, 2U, &uart_cts_config );
+GPIO_PinWrite( GPIO9, 2, 1 );
+
+GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
 }
 
 /*********************************************************************
 *
 * BT power on
 *
-* Pull MCU BT_RST_N pin high and send dummy message to UART for wake up
-* 89820 chip
+* Pull MCU BT_RST_N pin high and reconfigure the BT_UART_RTS
 *
 *********************************************************************/
 void HCI_BT_on
@@ -289,12 +354,14 @@ void HCI_BT_on
     void
     )
 {
-BaseType_t result;
-uint8_t dummy_data_for_wakeup[2] = { 0, 0 };
 GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
-vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
-result = HCI_wiced_send_command( HCI_CONTROL_COMMAND_SET_VISIBILITY, &(dummy_data_for_wakeup[0]), sizeof( dummy_data_for_wakeup ) );
-PRINTF( "%s:%d\n\r", __FUNCTION__, result );
+vTaskDelay( pdMS_TO_TICKS( BT_RESET_RECONFIG_DELAY ) );
+
+// Reconfigure GPIO1_IO21 to BT UART RTS
+IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_LPUART7_RTS_B, /* GPIO_AD_B1_05 is configured as GPIO1_IO21 */
+                  0U);                                /* Software Input On Field: Input Path is determined by functionality */
+
+PERIPHERAL_uart_port_reconfig( true, true, ORIGINAL_BAUD_RATE );
 }
 
 
@@ -310,7 +377,7 @@ void HCI_set_test_mode
     void
     )
 {
-// Set parser to standard HCI for retreive DUT command response
+// Set parser to standard HCI for retrieve DUT command response
 BT_UPDATE_setParserStatus( PARSER_STANDARD_HCI );
 
 BT_UPDATE_standard_send_command( OPCODE_RESET, NULL, 0 );
@@ -352,9 +419,6 @@ if( false == LE_transmit_cmd_called )
     {
     PRINTF( "%s cmd RECEIVED\n\r", __FUNCTION__ );
     LE_transmit_cmd_called = true;
-    HCI_BT_off();
-    HCI_BT_on();
-    vTaskDelay( pdMS_TO_TICKS( RESET_WAIT_MS ) );
     BT_UPDATE_standard_send_command( OPCODE_RESET, NULL, 0 );
     vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
     }
@@ -375,9 +439,7 @@ else if( LE_TRANSMIT_END == *data )
     {
     BT_UPDATE_standard_send_command( OPCODE_LE_END, NULL, 0 );
     vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
-    HCI_BT_off();
-    HCI_BT_on();
-    vTaskDelay( pdMS_TO_TICKS( RESET_WAIT_MS ) );
+    HCI_normal_reset_BT();
     LE_transmit_cmd_called = false;
     PRINTF( "%s cmd TEST END\n\r", __FUNCTION__ );
     }
@@ -729,7 +791,7 @@ while( true )
 #if HCI_TX_QUEUE_ENABLE
                     EVENT_HCI_DATA_RECEIVED | EVENT_HCI_DATA_TX,
 #else
-                    EVENT_HCI_DATA_RECEIVED | EVENT_BT_UPDATE_RECEIVED,
+                    EVENT_HCI_DATA_RECEIVED | EVENT_BT_UPDATE_RECEIVED | EVENT_HCI_RESET,
 #endif
                     pdTRUE,         /* clear on exit */
                     pdFALSE,        /* Don't wait for both bits, either bit unblock task. */
@@ -788,6 +850,12 @@ while( true )
             PRINTF("No BT update since flag off\n\r");
         #endif
         }
+
+    if( EVENT_HCI_RESET == ( event_bits & EVENT_HCI_RESET ) )
+        {
+        hci_init_BT_module();
+        }
+
     }
 
 vTaskDelete( NULL );
@@ -859,6 +927,10 @@ static void UpdateTimerCallback
     )
 {
 uint8_t    sw_version[6] = { 0x19, 0x03, 0xFF, 0x01, 0x00, 0x01 };
+if( UPDATE_TIMER_RESET_500MS == update_timer_count )
+    {
+    xEventGroupSetBits( event_group, EVENT_HCI_RESET );
+    }
 
 // After boot 2 seconds, request SW version
 if( ( UPDATE_TIMER_TWO_SECONDS == update_timer_count ) && ( INIT_STATE_REQUEST_VERSION == init_update_state ) )
@@ -955,6 +1027,20 @@ xTimerStop( xRespTimer, 0 );
 resp_timer_count = 0;
 }
 
+/*********************************************************************
+*
+* @private
+* hci_init_BT_module
+*
+*
+*********************************************************************/
+void hci_init_BT_module
+    (
+    void
+    )
+{
+HCI_normal_reset_BT();
+}
 
 /*********************************************************************
 *

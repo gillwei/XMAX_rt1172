@@ -27,6 +27,7 @@
 #include "display_support.h"
 #include "BTM_pub.h"
 #include "hci_control_api.h"
+#include "pin_mux.h"
 
 #define INIT_BYTE_1                0x04
 #define INIT_BYTE_2                0x0E
@@ -329,7 +330,6 @@ uint8_t            l_valid_pkt = false;
 uint8_t  const**   l_pp_hci_buffer;
 update_pkt_store_t*   l_p_pkt_store;
 uint8_t            write_scan_enable_data = SCAN_ENABLE_DATA;
-uint8_t            dummy_data_for_wakeup[2] = { 0x0, 0x0 };
 
 l_p_hci_buffer  = &( l_hci_buffer[0] );
 l_pp_hci_buffer = (uint8_t const**) &( l_p_hci_buffer );
@@ -364,9 +364,7 @@ while( l_num_bytes > 0 )
                 else if( OPCODE_COMMIT_ADDR == l_p_pkt_store->opcode )
                     {
                     BT_UPDATE_setParserStatus( PARSER_WICED_HCI );
-                    HCI_reset_BT();
-                    vTaskDelay( pdMS_TO_TICKS( BT_RESET_RECONFIG_DELAY ) );
-                    HCI_wiced_send_command( HCI_CONTROL_COMMAND_SET_VISIBILITY, &(dummy_data_for_wakeup[0]), sizeof( dummy_data_for_wakeup ) );
+                    HCI_normal_reset_BT();
                     }
                 break;
 
@@ -449,22 +447,10 @@ sprintf( sw_ver, "%c.%c", GARMIN_SW_MAJOR_VER, GARMIN_SW_MINOR_VER );
 
 update_state = UPDATE_STATE_DOWNLOAD_FINISH;
 
-// Set LPUART7_RTS back
-GPIO_PinWrite( GPIO9, 2, 1 );
-vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
-
 parser_status = PARSER_WICED_HCI;
 
 // Reset 89820
-HCI_reset_BT();
-
-// Reconfigure GPIO1_IO21 to BT UART RTS
-IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_LPUART7_RTS_B, /* GPIO_AD_B1_05 is configured as GPIO1_IO21 */
-                  0U);                                /* Software Input On Field: Input Path is determined by functionality */
-
-PERIPHERAL_uart_port_reconfig( true, true, ORIGINAL_BAUD_RATE );
-
-vTaskDelay( pdMS_TO_TICKS( BT_AFTER_RESET_DELAY ) );
+HCI_normal_reset_BT();
 
 // Read BT chip address, if not all 0xFF(means already commit address), do factory commit BD address
 BTM_get_local_device_address( &(bd_addr[0]) );
@@ -778,22 +764,10 @@ if( BOARD_is_tft_connected() == TFT_CONNECTED )
 md_write_count = 0;
 flash_write_count = 0;
 
-gpio_pin_config_t uart_cts_config = {kGPIO_DigitalOutput, 0, kGPIO_NoIntmode};
-
 update_state = UPDATE_STATE_INIT;
 parser_status = PARSER_STANDARD_HCI;
 
-// Reconfigure UART & reset cyw989820
-PERIPHERAL_uart_port_reconfig( false, false, UPDATE_BAUD_RATE );
-
-// Reconfigure BT UART RTS to GPIO1_IO21
-IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_GPIO9_IO02,    /* GPIO_AD_B1_05 is configured as GPIO1_IO21 */
-                  0U);                                /* Software Input On Field: Input Path is determined by functionality */
-GPIO_PinInit( GPIO9, 2U, &uart_cts_config );
-GPIO_PinWrite( GPIO9, 2, 0 );
-
-// Reset 89820
-HCI_reset_BT();
+hci_recovery_reset_BT();
 
 // send reset cmd
 BT_UPDATE_standard_send_command( OPCODE_RESET, NULL, 0 );
