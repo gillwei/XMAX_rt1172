@@ -756,16 +756,28 @@ char         sw_ver[SW_VERSION_LENGTH] = { 0 };
 
 BT_update_status = true;
 sprintf( sw_ver, "%c.%c", GARMIN_SW_MAJOR_VER, GARMIN_SW_MINOR_VER );
-if( BOARD_is_tft_connected() == TFT_CONNECTED )
-    {
-    EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_START, sw_ver );
-    }
+
+EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_START, sw_ver );
 
 md_write_count = 0;
 flash_write_count = 0;
 
 update_state = UPDATE_STATE_INIT;
 parser_status = PARSER_STANDARD_HCI;
+
+if( *( (volatile uint32_t *)( MCU_MINIDRIVER_END_ADDR - 4 ) ) != MINIDRIVER_LAST_VAL )
+    {
+    PRINTF("ERROR: MINIDRIVER IS WRONG !\n\r");
+    PRINTF("Last address:%08x, Data:%08x\n\r", *( (volatile uint32_t *)( MCU_MINIDRIVER_END_ADDR - 4 ) ));
+    update_state = UPDATE_STATE_SUSPEND;
+    parser_status = PARSER_WICED_HCI;
+    EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_ABORT, sw_ver );
+    return;
+    }
+else
+    {
+    PRINTF( "MINIDRIVER VERIFY DONE\r\n" );
+    }
 
 hci_recovery_reset_BT();
 
@@ -791,19 +803,6 @@ md_buf_info.write_addr = BT_MINIDRIVER_ADDR;
 md_buf_info.buffer_size = MCU_MINIDRIVER_END_ADDR - MCU_MINIDRIVER_ADDR;
 md_write_count = 0;
 md_last_sec_size = md_buf_info.buffer_size - ( ( md_buf_info.buffer_size / MAX_UPDATE_DATA_LENGTH ) * MAX_UPDATE_DATA_LENGTH );
-
-if( *( (volatile uint32_t *)( MCU_MINIDRIVER_END_ADDR - 4 ) ) != MINIDRIVER_LAST_VAL )
-    {
-    PRINTF("ERROR: MINIDRIVER IS WRONG !\n\r");
-    PRINTF("Last address:%08x, Data:%08x\n\r", *( (volatile uint32_t *)( MCU_MINIDRIVER_END_ADDR - 4 ) ));
-
-    parser_status = PARSER_WICED_HCI;
-    if( BOARD_is_tft_connected() == TFT_CONNECTED )
-        {
-        EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_ABORT, sw_ver );
-        }
-    return;
-    }
 
 while( md_write_count < ( md_buf_info.buffer_size / MAX_UPDATE_DATA_LENGTH ) )
     {

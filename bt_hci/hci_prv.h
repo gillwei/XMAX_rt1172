@@ -25,7 +25,7 @@ extern "C" {
 --------------------------------------------------------------------*/
 #define GARMIN_SW_MAJOR_VER      0x01
 #define GARMIN_SW_MINOR_VER      0x02
-#define BT_UPDATE_ON             false
+#define BT_UPDATE_ON             true
 
 #define OPCODE_ALLOW_CONNECTION  0x0C05
 #define OPCODE_LE_TX             0x201E
