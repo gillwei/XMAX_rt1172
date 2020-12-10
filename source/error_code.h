@@ -20,6 +20,8 @@ extern "C"{
 #define ERR_BUF_OPERATION   ( ERR_TYPE_BUF | 0x02 )
 #define ERR_TYPE_JPEG       ( 0x40000000 )
 #define ERR_JPEG_DECODE     ( ERR_TYPE_JPEG | 0x01 )
+#define ERR_TYPE_BT         ( 0x20000000 )
+#define ERR_BLE_WRITE       ( ERR_TYPE_BT | 0x01 )
 
 #ifdef __cplusplus
 }

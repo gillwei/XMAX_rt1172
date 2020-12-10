@@ -29,6 +29,12 @@ extern "C" {
 #define BT_RESET_GPIO_DELAY      50
 #define BT_AFTER_RESET_DELAY     1000
 
+#define UUID_128BIT_LEN                     ( 16 )
+#define BLE_GATT_CLIENT_CONFIG_NONOE        ( 0x0000 )
+#define BLE_GATT_CLIENT_CONFIG_NOTIFICATION ( 0x0001 )
+#define BLE_GATT_CLIENT_CONFIG_INDICATION   ( 0x0002 )
+#define BLE_GATT_WRITE_REQUEST_DATA_MAX_LEN ( 28 )
+
 /*--------------------------------------------------------------------
                         TYPES
 --------------------------------------------------------------------*/
@@ -45,6 +51,24 @@ typedef enum
     BT_CONN_TYPE_BT_SPP
     } bt_connection_path_type;
 
+typedef enum
+    {
+    BLE_CLIENT_AMS,
+    BLE_CLIENT_ANCS,
+    BLE_CLIENT_TOTAL
+    } ble_client_type;
+
+typedef struct
+    {
+    void ( *ble_connected_callback ) ( void );
+    void ( *ble_disconnected_callback ) ( void );
+    void ( *service_discovered_callback ) ( const uint16_t start_handle, const uint16_t end_handle );
+    void ( *characteristic_discovered_callback ) ( const uint8_t* uuid, const uint16_t value_handle );
+    void ( *descriptor_discovered_callback ) ( const uint16_t descriptor_handle );
+    void ( *discovery_complete_callback ) ( void );
+    void ( *notification_received_callback ) ( const uint16_t handle, const uint8_t* data, const uint16_t length );
+    } ble_client_callback;
+
 /*--------------------------------------------------------------------
                         PROJECT INCLUDES
 --------------------------------------------------------------------*/
@@ -60,6 +84,11 @@ typedef enum
 /*--------------------------------------------------------------------
                         MACROS
 --------------------------------------------------------------------*/
+/* combine two bytes of little endian order to one word */
+#define WORD_LITTLE( byte0, byte1 )                     ( ( byte1 << 8 ) | byte0 )
+
+/* combine four bytes of little endian order to double word */
+#define DWORD_LITTLE( byte0, byte1, byte2, byte3 )      ( ( byte3 << 24 ) | ( byte2 << 16 ) | ( byte1 << 8 ) | byte0 )
 
 /*--------------------------------------------------------------------
                         PROCEDURES
@@ -112,6 +141,24 @@ void HCI_avrc_play_next_track
     );
 
 void HCI_avrc_play_previous_track
+    (
+    void
+    );
+
+int HCI_le_register_client_callback
+    (
+    const ble_client_type      client_type,
+    const ble_client_callback* callback
+    );
+
+int HCI_le_enqueue_gatt_write_request
+    (
+    const uint16_t handle,
+    const uint8_t* data,
+    const uint16_t length
+    );
+
+bool HCI_le_is_connected
     (
     void
     );

@@ -148,9 +148,38 @@ void hci_recovery_reset_BT
     void
     );
 
+void hci_notify_gatt_write_request_queued
+    (
+    void
+    );
+
 void bt_update_get_BT_SW_ver
     (
     uint8_t * read_bt_sw_ver
+    );
+
+void hci_le_proc_gatt_write_request
+    (
+    void
+    );
+
+int hci_gatt_event_received
+    (
+    const uint16_t opcode,
+    const uint8_t* data,
+    const uint16_t length
+    );
+
+int hci_le_event_received
+    (
+    const uint16_t opcode,
+    const uint8_t* data,
+    const uint16_t length
+    );
+
+void hci_le_init
+    (
+    void
     );
 
 #ifdef __cplusplus

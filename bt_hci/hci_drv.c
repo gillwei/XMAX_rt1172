@@ -52,7 +52,8 @@ HCI Task Parameters
     #define EVENT_HCI_DATA_TX             ( 1 << 1 )
 #endif
 #define EVENT_BT_UPDATE_RECEIVED      ( 1 << 2 )
-#define EVENT_HCI_RESET      ( 1 << 3 )
+#define EVENT_HCI_RESET               ( 1 << 3 )
+#define EVENT_PROC_GATT_WRITE_REQUEST ( 1 << 4 )
 
 #define HCI_RX_BUFFER_SIZE  ( 32 * 1024 )
 AT_NONCACHEABLE_SECTION(uint8_t hci_rx_data[HCI_RX_BUFFER_SIZE]);
@@ -251,6 +252,8 @@ init_update_state = INIT_STATE_REQUEST_VERSION;
 iop_command_state = IOP_COMMAND_STATE_IDLE;
 xTimerStart( xUpdateTimer, 0 );
 create_task();
+
+hci_le_init();
 }
 
 /*********************************************************************
@@ -732,6 +735,11 @@ while( l_num_bytes > 0 )
                 break;
 
             case HCI_CONTROL_GROUP_LE:
+                hci_le_event_received( l_p_pkt_store->opcode, &( l_p_pkt_store->data[0] ), l_p_pkt_store->length );
+                break;
+
+            case HCI_CONTROL_GROUP_GATT:
+                hci_gatt_event_received( l_p_pkt_store->opcode, &( l_p_pkt_store->data[0] ), l_p_pkt_store->length );
                 break;
 
             case HCI_CONTROL_GROUP_IAP2:
@@ -789,9 +797,9 @@ while( true )
                     (
                     event_group,    /* The event group handle. */
 #if HCI_TX_QUEUE_ENABLE
-                    EVENT_HCI_DATA_RECEIVED | EVENT_HCI_DATA_TX,
+                    EVENT_HCI_DATA_RECEIVED | EVENT_HCI_DATA_TX | EVENT_PROC_GATT_WRITE_REQUEST,
 #else
-                    EVENT_HCI_DATA_RECEIVED | EVENT_BT_UPDATE_RECEIVED | EVENT_HCI_RESET,
+                    EVENT_HCI_DATA_RECEIVED | EVENT_BT_UPDATE_RECEIVED | EVENT_HCI_RESET | EVENT_PROC_GATT_WRITE_REQUEST,
 #endif
                     pdTRUE,         /* clear on exit */
                     pdFALSE,        /* Don't wait for both bits, either bit unblock task. */
@@ -841,7 +849,6 @@ while( true )
             }
     #endif
 
-
     if( EVENT_BT_UPDATE_RECEIVED == ( event_bits & EVENT_BT_UPDATE_RECEIVED ) )
         {
         #if BT_UPDATE_ON
@@ -856,9 +863,29 @@ while( true )
         hci_init_BT_module();
         }
 
+    if( EVENT_PROC_GATT_WRITE_REQUEST == ( event_bits & EVENT_PROC_GATT_WRITE_REQUEST ) )
+        {
+        hci_le_proc_gatt_write_request();
+        }
     }
 
 vTaskDelete( NULL );
+}
+
+/*********************************************************************
+*
+* @private
+* hci_notify_gatt_write_request_queued
+*
+* Notify BT HCI task the GATT write quest is queued
+*
+*********************************************************************/
+void hci_notify_gatt_write_request_queued
+    (
+    void
+    )
+{
+xEventGroupSetBits( event_group, EVENT_PROC_GATT_WRITE_REQUEST );
 }
 
 /*********************************************************************
