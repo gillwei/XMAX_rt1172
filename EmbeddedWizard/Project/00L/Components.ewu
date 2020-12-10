@@ -417,6 +417,7 @@ class BaseMainBG : Components::BaseComponent
       {
         ChildMenu.Menu.FocusFrame.Visible = false;
         ChildMenu.Menu.HideArrowScrollBar();
+        ChildMenu.Menu.HideScrollbar();
       }
 
       // hide the highlight focus frame of this current menu
@@ -425,6 +426,7 @@ class BaseMainBG : Components::BaseComponent
       {
         CurrentMenu.Menu.FocusFrame.Visible = false;
         CurrentMenu.Menu.HideArrowScrollBar();
+        CurrentMenu.Menu.HideScrollbar();
       }
 
       SlideDirection = Core::Direction.Left;
@@ -476,7 +478,7 @@ class BaseMainBG : Components::BaseComponent
       }
       if( ChildMenu.Menu.ArrowScrollBarVisible )
       {
-        ChildMenu.Menu.ShowArrowScrollBar();
+        ChildMenu.Menu.RestoreArrowScrollBar();
       }
     }
 
@@ -508,15 +510,9 @@ class BaseMainBG : Components::BaseComponent
     var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )OwnerDialog;
     if( null != OwnerMenu )
     {
-      if( 0 < OwnerMenu.Menu.NoOfItems )
-      {
-        OwnerMenu.Menu.FocusFrame.Visible = true;
-      }
-
-      if( OwnerMenu.Menu.ArrowScrollBarVisible )
-      {
-        OwnerMenu.Menu.ShowArrowScrollBar();
-      }
+      OwnerMenu.Menu.RestoreFocusFrame();
+      OwnerMenu.Menu.RestoreArrowScrollBar();
+      OwnerMenu.Menu.RestoreScrollbar();
     }
   }
 

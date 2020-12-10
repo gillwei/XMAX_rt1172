@@ -17,10 +17,12 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "error_code.h"
+#include "Enum.h"
 #include "bc_priv.h"
 #include "bc_ancs_priv.h"
 #include "BC_ancs_pub.h"
 #include "HCI_pub.h"
+#include "NTF_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -164,15 +166,11 @@ static const ble_client_callback ancs_client_callback =
     BC_ancs_notification_received_callback
     };
 
-/* TODO: integrate with notification center
-// callback functions from UI
 static notification_callback_t ancs_notification_callback =
     {
-    BC_ancs_delete_notification_callback,
     BC_ancs_answer_call_callback,
     BC_ancs_decline_call_callback
     };
-*/
 
 static uint32_t ancs_active_call_uid = 0;
 static uid_category_dictionary ancs_uid_category_dictionary[DICTIONARY_SIZE];
@@ -249,12 +247,11 @@ return result;
 * @param uid The unique notification id
 * @param category The pointer to the category id
 *
-* @return The result of looking up category from uid
+* @return Result of looking up category from uid
 * @retVal ERR_NONE Success
 * @retVal ERR_BUF_OPERATION Fail
 *
 *********************************************************************/
-/* TODO: integrate with notification center
 static int get_category_from_dictionary
     (
     const uint32_t uid,
@@ -279,7 +276,6 @@ if( ERR_NONE != result )
     }
 return result;
 }
-*/
 
 /*********************************************************************
 *
@@ -294,7 +290,6 @@ return result;
 * @return The integer of the number string
 *
 *********************************************************************/
-/* TODO: integrate with notification center
 static uint32_t char_to_uint32
     (
     const uint8_t* number_string,
@@ -317,7 +312,6 @@ for( i = 0; i < len; i++ )
     }
 return result;
 }
-*/
 
 /*********************************************************************
 *
@@ -331,7 +325,6 @@ return result;
 * @return The time of notification_time_t type
 *
 *********************************************************************/
-/* TODO: integrate with notification center
 static notification_time_t parse_ancs_date_string
     (
     const uint8_t* date_string
@@ -346,7 +339,6 @@ datetime.minute = ( uint8_t ) char_to_uint32( &date_string[11], 2 );
 datetime.second = ( uint8_t ) char_to_uint32( &date_string[13], 2 );
 return datetime;
 }
-*/
 
 /*********************************************************************
 *
@@ -452,24 +444,17 @@ if( total_data == ANCS_NOTIFICATION_SOURCE_DATA_LENGTH &&
             if( ANCS_CATEGORY_ID_INCOMING_CALL == category_id )
                 {
                 BC_ANCS_PRINTF( "ancs incoming call stopped %d\r\n", notification_uid );
-                /* TODO: integrate with notification center
-                NC_notify_incoming_call_stopped( notification_uid );
-                */
+                NTF_notify_incoming_call_stopped( notification_uid );
                 }
             else if( ancs_active_call_uid == notification_uid )
                 {
                 BC_ANCS_PRINTF( "ancs active call stopped %d\r\n", notification_uid );
-                /* TODO: integrate with notification center
-                NC_notify_active_call_stopped( notification_uid );
-                */
+                NTF_notify_active_call_stopped( notification_uid );
                 ancs_active_call_uid = 0;
                 }
             else
                 {
                 BC_ANCS_PRINTF( "ancs notification deleted %d\r\n", notification_uid );
-                /* TODO: integrate with notification center
-                NC_notify_notification_deleted( notification_uid );
-                */
                 }
             break;
 
@@ -564,9 +549,7 @@ uint32_t attribute_id_flag = 0;
 int      copy_length = 0;
 uint32_t body_length = 0;
 int      i           = ANCS_NOTIFICATION_ATTRIBUTE_RESPONSE_CMD_ID_SIZE + ANCS_NOTIFICATION_ATTRIBUTE_RESPONSE_NOTIFICAION_UID_SIZE;
-/* TODO: integrate with notification center
 uint8_t  category_id = 0;
-*/
 uint8_t  title[NOTIFICATION_TITLE_MAX_LEN];
 uint8_t  subtitle[NOTIFICATION_SUBTITLE_MAX_LEN];
 uint8_t* body = ancs_notification_messsage_buffer;
@@ -574,9 +557,7 @@ uint8_t  datetime[ANCS_DATETIME_LEN];
 uint8_t  positive_action_label[ANCS_LABEL_LEN];
 uint8_t  negative_action_label[ANCS_LABEL_LEN];
 uint8_t  message_size[ANCS_MESSAGE_SIZE_STRING_LEN];
-/* TODO: integrate with notification center
 uint32_t notification_uid = DWORD_LITTLE( data[1], data[2], data[3], data[4] ); // data[0] is CommandID
-*/
 
 while( i < length )
     {
@@ -673,43 +654,33 @@ while( i < length )
     i += ( ANCS_NOTIFICATION_ATTRIBUTE_RESPONSE_ATTR_ID_SIZE + ANCS_NOTIFICATION_ATTRIBUTE_RESPONSE_ATTR_LEN_SIZE + attribute_len );
     }
 
-/* TODO: integrate with notification center
-if( ANCS_CATEGORY_ID_INCOMING_CALL == category_id )
+if( ERR_NONE == get_category_from_dictionary( notification_uid, &category_id ) )
     {
-    NC_notify_incoming_call_started( notification_uid, title );
-    }
-else
-    {
-    if( !memcmp( negative_action_label, "End Call", 8 ) &&
-        !memcmp( body, "Active Call", 11 ) )
+    BC_ANCS_PRINTF( "%s uid: %d, category: %d\r\n", __FUNCTION__, notification_uid, category_id );
+    if( ANCS_CATEGORY_ID_INCOMING_CALL == category_id )
         {
-        ancs_active_call_uid = notification_uid;
-        NC_notify_active_call_started( notification_uid );
+        NTF_notify_incoming_call_started( notification_uid, title );
         }
     else
         {
-        if( attribute_num == 1 &&
-            ( attribute_id_flag & ( 1 << ANCS_NOTIFICATION_ATTR_ID_MESSAGE ) ) )
+        if( !memcmp( negative_action_label, "End Call", 8 ) &&
+            !memcmp( body, "Active Call", 11 ) )
             {
-            nc_notify_full_message_received( notification_uid, body, body_length );
-            }
-        else if( attribute_num > 1 )
-            {
-            notification_category_t category = NOTIFICATION_CATEGORY_MESSAGE;
-            if( ERR_NONE == get_category_from_dictionary( notification_uid, &category_id ) )
-                {
-                BC_ANCS_PRINTF( "%s uid: %d, category: %d\r\n", __FUNCTION__, notification_uid, category_id );
-                }
-            notification_time_t received_time = parse_ancs_date_string( datetime );
-            NC_add_notification( notification_uid, title, body, category, received_time );
+            ancs_active_call_uid = notification_uid;
+            NTF_notify_active_call_started( notification_uid );
             }
         else
             {
-            PRINTF( "Err: %s %d\r\n", __FUNCTION__, attribute_num );
+            EnumNotificationCategory category = EnumNotificationCategoryMESSAGE;
+            if( ANCS_CATEGORY_ID_MISSED_CALL == category_id )
+                {
+                category = EnumNotificationCategoryMISSED_CALL;
+                }
+            notification_time_t received_time = parse_ancs_date_string( datetime );
+            NTF_add_notification( notification_uid, title, subtitle, body, category, received_time );
             }
         }
     }
-*/
 }
 
 /*********************************************************************
@@ -886,9 +857,7 @@ BC_ANCS_PRINTF( "%s\r\n", __FUNCTION__ );
 
 if( ancs_is_discovered )
     {
-    /* TODO: integrate with notification center
-    NC_notify_disconnected( NOTIFICATION_PROTOCOL_ANCS );
-    */
+    NTF_notify_disconnected( NOTIFICATION_PROTOCOL_ANCS );
     ancs_is_discovered = false;
     }
 
@@ -928,9 +897,7 @@ ancs_is_discovered = true;
 ancs_start_handle  = start_handle;
 ancs_end_handle    = end_handle;
 
-/*TODO: integrate with notification center
-NC_notify_connected( NOTIFICATION_PROTOCOL_ANCS, &ancs_notification_callback );
-*/
+NTF_notify_connected( NOTIFICATION_PROTOCOL_ANCS, &ancs_notification_callback );
 }
 
 /*********************************************************************
@@ -1168,24 +1135,6 @@ else
     {
     PRINTF( "Err: %s\r\n", __FUNCTION__ );
     }
-}
-
-/*********************************************************************
-*
-* @public
-* BC_ancs_delete_notification_callback
-*
-* Callback function from UI to delecte the message
-*
-* @param uid Unique notification id
-*
-*********************************************************************/
-void BC_ancs_delete_notification_callback
-    (
-    const uint32_t uid
-    )
-{
-send_action( uid, ANCS_ACTION_ID_NEGATIVE );
 }
 
 /*********************************************************************

@@ -20,6 +20,7 @@ extern "C" {
 #include "EW_pub.h"
 #include "TEST_pub.h"
 #include "BC_motocon_pub_type.h"
+#include "NTF_pub.h"
 
 // save Home index and Meter setting into the last page in EEPROM
 // the first 4 bits are of meter setting
@@ -58,6 +59,7 @@ void ew_request_qrcode( int pixel_per_mod );
 EnumOperationMode ew_get_operation_mode( void );
 void ew_set_operation_mode( EnumOperationMode mode );
 bool ew_is_operation_mode_ready( void );
+int  ew_handle_special_characters( const uint8_t* in_str, uint8_t** out_str );
 
 void ew_power_init( void );
 int  ew_power_ignition_status( void );
@@ -79,6 +81,10 @@ void ew_device_mm_deinit( void );
 int ew_device_mm_proc( void );
 mm_media_player_obj* ew_get_media_player_state( void );
 void ew_send_command( ams_remote_command command );
+
+void ew_device_notification_init( void );
+void ew_device_notification_deinit( void );
+int  ew_device_notification_proc( void );
 
 void ew_device_bluetooth_init( void );
 void ew_device_bluetooth_deinit( void );

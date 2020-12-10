@@ -49,7 +49,6 @@
 #include "_MenuScrollbar.h"
 #include "_MenuVerticalMenu.h"
 #include "_ViewsBorder.h"
-#include "_ViewsImage.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_

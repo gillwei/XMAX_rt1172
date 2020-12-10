@@ -553,6 +553,10 @@ EW_DEFINE_CLASS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView, UnitItemValue, Ite
   MenuBaseMenuView_LoadItemChecked,
   UnitUNT01_UnitSettingMenu_LoadItemEnabled,
   UnitUNT01_UnitSettingMenu_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( UnitUNT01_UnitSettingMenu )
 
 /* Initializer for the class 'Unit::UNT02_MileageSettingMenu' */
@@ -781,6 +785,10 @@ EW_DEFINE_CLASS( UnitUNT02_MileageSettingMenu, MenuBaseMenuView, MileageUpdateSi
   UnitUNT02_MileageSettingMenu_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( UnitUNT02_MileageSettingMenu )
 
 /* Initializer for the class 'Unit::UnitValueClass' */
@@ -1106,6 +1114,10 @@ EW_DEFINE_CLASS( UnitUNT03_FuelSettingMenu, MenuBaseMenuView, FuelUpdateSignal,
   UnitUNT03_FuelSettingMenu_LoadItemChecked,
   UnitUNT03_FuelSettingMenu_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( UnitUNT03_FuelSettingMenu )
 
 /* Initializer for the class 'Unit::UNT04_PressureSettingMenu' */
@@ -1352,6 +1364,10 @@ EW_DEFINE_CLASS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView, PressureUpdate
   UnitUNT04_PressureSettingMenu_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( UnitUNT04_PressureSettingMenu )
 
 /* Initializer for the class 'Unit::UNT05_TemperatureSettingMenu' */
@@ -1580,6 +1596,10 @@ EW_DEFINE_CLASS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView, TempUpdateS
   UnitUNT05_TemperatureSettingMenu_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( UnitUNT05_TemperatureSettingMenu )
 
 /* Embedded Wizard */

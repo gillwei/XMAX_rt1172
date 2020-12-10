@@ -29,11 +29,13 @@
 #include "_CoreTimer.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
+#include "_DeviceInterfaceDateTime.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
 #include "_DeviceInterfaceMotoConContext.h"
 #include "_DeviceInterfaceNaviDataClass.h"
 #include "_DeviceInterfaceNaviTbtDataClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
+#include "_DeviceInterfaceNotificationContext.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
@@ -48,7 +50,7 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x000001B8, /* ratio 58.18 % */
+  0x0000021C, /* ratio 55.56 % */
   0xB8002500, 0x000A6452, 0x00C2003A, 0x80107390, 0x16750010, 0x20037002, 0x540044C9,
   0x30019400, 0x000021A7, 0x04160619, 0x1BC00680, 0x421C7700, 0x22D14894, 0x3B1B8CC5,
   0x91A29422, 0x0D364AE3, 0xF1000075, 0x9104C011, 0xE4D00051, 0x0024C639, 0xA6793532,
@@ -57,8 +59,9 @@ static const unsigned int _StringsDefault0[] =
   0xA9CEED11, 0xD5D64F6D, 0x4E2E752A, 0x00DB2B31, 0xEF764BC0, 0x7B690059, 0x04591042,
   0x70854E00, 0xF8C5F66C, 0x8DE28016, 0x10363F91, 0x43256449, 0x524F7585, 0x2D800D0C,
   0x0D1727C1, 0x10F8446E, 0x46D9C467, 0x4CAD8F05, 0xB0622151, 0x08563F7F, 0xD4AE10DC,
-  0x0C8D0887, 0x21106004, 0x591D95EA, 0x1C891033, 0x5694F280, 0xDD64326A, 0x00404013,
-  0x00000000
+  0x0C8D0887, 0x21106004, 0x591D95EA, 0x1C891033, 0x5694F280, 0xED64326A, 0xB8E0F881,
+  0xAEAAC650, 0x4E215629, 0x22C9CD9C, 0x2F563B0C, 0x7B47BE00, 0x99DEF052, 0x9D260030,
+  0x02A80265, 0xE7D23320, 0x53D4F59B, 0x00000040, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -73,6 +76,8 @@ static const XStringRes _Const0007 = { _StringsDefault0, 0x0096 };
 static const XStringRes _Const0008 = { _StringsDefault0, 0x00A3 };
 static const XStringRes _Const0009 = { _StringsDefault0, 0x00BB };
 static const XStringRes _Const000A = { _StringsDefault0, 0x00D0 };
+static const XStringRes _Const000B = { _StringsDefault0, 0x00DC };
+static const XStringRes _Const000C = { _StringsDefault0, 0x00FA };
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
@@ -87,6 +92,7 @@ static const XStringRes _Const000A = { _StringsDefault0, 0x00D0 };
 #include "BC_motocon_pub.h"
 #include "BC_motocon_pub_type.h"
 #include "BC_ams_pub.h"
+#include "NTF_pub.h"
 #include "TEST_pub.h"
 
 /* Initializer for the class 'DeviceInterface::SystemDeviceClass' */
@@ -2300,6 +2306,10 @@ void DeviceInterfaceNotificationDeviceClass__Init( DeviceInterfaceNotificationDe
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( DeviceInterfaceNotificationDeviceClass );
 
+  /* ... then construct all embedded objects */
+  CoreSystemEvent__Init( &_this->NotificationListUpdatedSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->PhoneCallStateChangedSystemEvent, &_this->_XObject, 0 );
+
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceNotificationDeviceClass );
 }
@@ -2309,6 +2319,10 @@ void DeviceInterfaceNotificationDeviceClass__ReInit( DeviceInterfaceNotification
 {
   /* At first re-initialize the super class ... */
   TemplatesDeviceClass__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  CoreSystemEvent__ReInit( &_this->NotificationListUpdatedSystemEvent );
+  CoreSystemEvent__ReInit( &_this->PhoneCallStateChangedSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NotificationDeviceClass' */
@@ -2316,6 +2330,10 @@ void DeviceInterfaceNotificationDeviceClass__Done( DeviceInterfaceNotificationDe
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( TemplatesDeviceClass );
+
+  /* Finalize all embedded objects */
+  CoreSystemEvent__Done( &_this->NotificationListUpdatedSystemEvent );
+  CoreSystemEvent__Done( &_this->PhoneCallStateChangedSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -2340,13 +2358,142 @@ XBool DeviceInterfaceNotificationDeviceClass__IsPhoneCallStateActive( void* _thi
   return DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive((DeviceInterfaceNotificationDeviceClass)_this );
 }
 
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallStateChanged( DeviceInterfaceNotificationDeviceClass _this )
+{
+  EwTrace( "%s", EwLoadString( &_Const000B ));
+  CoreSystemEvent_Trigger( &_this->PhoneCallStateChangedSystemEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NotificationDeviceClass.NotifyPhoneCallStateChanged()' */
+void DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallStateChanged( void* _this )
+{
+  DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallStateChanged((DeviceInterfaceNotificationDeviceClass)_this );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNotificationDeviceClass_NotifyListUpdated( DeviceInterfaceNotificationDeviceClass _this )
+{
+  EwTrace( "%s", EwLoadString( &_Const000C ));
+  CoreSystemEvent_Trigger( &_this->NotificationListUpdatedSystemEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NotificationDeviceClass.NotifyListUpdated()' */
+void DeviceInterfaceNotificationDeviceClass__NotifyListUpdated( void* _this )
+{
+  DeviceInterfaceNotificationDeviceClass_NotifyListUpdated((DeviceInterfaceNotificationDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetNotificationAtItem()' */
+DeviceInterfaceNotificationContext DeviceInterfaceNotificationDeviceClass_GetNotificationAtItem( DeviceInterfaceNotificationDeviceClass _this, 
+  XUInt32 aItemNo )
+{
+  DeviceInterfaceNotificationContext NotificationItem;
+  XUInt32 Uid;
+  XUInt16 CallRepetition;
+  XUInt32 Category;
+  XString Title;
+  XString Message;
+  XString ReceivedHour;
+  XString ReceivedMinute;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NotificationItem = EwNewObject( DeviceInterfaceNotificationContext, 0 );
+  NotificationItem->ReceivedTime = EwNewObject( DeviceInterfaceDateTime, 0 );
+  Uid = 0;
+  CallRepetition = 0;
+  Category = 0;
+  Title = 0;
+  Message = 0;
+  ReceivedHour = 0;
+  ReceivedMinute = 0;
+  {
+    uint32_t notification_uid;
+    uint16_t call_repetition;
+    uint8_t  notification_title[NOTIFICATION_TITLE_MAX_LEN];
+    uint8_t  notification_message[NOTIFICATION_MESSAGE_MAX_LEN];
+    notification_time_t received_time;
+    EnumNotificationCategory notification_category;
+
+    NTF_get_notification_at_idx( aItemNo, &notification_uid, &call_repetition, notification_title, NOTIFICATION_TITLE_MAX_LEN, notification_message, NOTIFICATION_MESSAGE_MAX_LEN, &notification_category, &received_time );
+
+    Uid = notification_uid;
+    CallRepetition = call_repetition;
+
+    uint8_t *stuffed_str = NULL;
+    int stuffed_str_len = ew_handle_special_characters( notification_title, &stuffed_str );
+    if( stuffed_str_len > 0 && stuffed_str != NULL )
+    {
+      Title = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+    }
+
+    stuffed_str_len = ew_handle_special_characters( notification_message, &stuffed_str );
+    if( stuffed_str_len > 0 && stuffed_str != NULL )
+    {
+      Message = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+    }
+
+    Category = notification_category;
+    ReceivedHour = EwNewStringUInt( received_time.hour, 1, 10 );
+    ReceivedMinute = EwNewStringUInt( received_time.minute, 2, 10 );
+  }
+  NotificationItem->Uid = Uid;
+  NotificationItem->CallRepetition = CallRepetition;
+  NotificationItem->Title = EwShareString( Title );
+  NotificationItem->Message = EwShareString( Message );
+  NotificationItem->Category = (XEnum)Category;
+  NotificationItem->ReceivedTime->Hour = EwShareString( ReceivedHour );
+  NotificationItem->ReceivedTime->Minute = EwShareString( ReceivedMinute );
+  return NotificationItem;
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.OnGetNotificationNum()' */
+XUInt32 DeviceInterfaceNotificationDeviceClass_OnGetNotificationNum( DeviceInterfaceNotificationDeviceClass _this )
+{
+  XUInt32 Num = 0;
+
+  Num = NTF_get_notification_num();
+  _this->NotificationNum = Num;
+  return _this->NotificationNum;
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.DeleteNotificationOfUid()' */
+void DeviceInterfaceNotificationDeviceClass_DeleteNotificationOfUid( DeviceInterfaceNotificationDeviceClass _this, 
+  XUInt32 Uid )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NTF_delete_notification( Uid );
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetBufferIdxOfNotificationUID()' */
+XInt32 DeviceInterfaceNotificationDeviceClass_GetBufferIdxOfNotificationUID( DeviceInterfaceNotificationDeviceClass _this, 
+  XUInt32 Uid )
+{
+  XInt32 Index;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Index = -1;
+  Index = NTF_get_idx_of_notification_uid( Uid );
+  return Index;
+}
+
 /* Variants derived from the class : 'DeviceInterface::NotificationDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNotificationDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNotificationDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::NotificationDeviceClass' */
-EW_DEFINE_CLASS( DeviceInterfaceNotificationDeviceClass, TemplatesDeviceClass, _None, 
-                 _None, _None, _None, _None, _None, "DeviceInterface::NotificationDeviceClass" )
+EW_DEFINE_CLASS( DeviceInterfaceNotificationDeviceClass, TemplatesDeviceClass, NotificationListUpdatedSystemEvent, 
+                 NotificationListUpdatedSystemEvent, NotificationListUpdatedSystemEvent, 
+                 NotificationListUpdatedSystemEvent, NotificationNum, NotificationNum, 
+                 "DeviceInterface::NotificationDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceNotificationDeviceClass )
 
 /* User defined auto object: 'DeviceInterface::NotificationDevice' */
@@ -2400,5 +2547,83 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNaviTbtDataClass )
 EW_DEFINE_CLASS( DeviceInterfaceNaviTbtDataClass, XObject, DistUnit, DistUnit, DistUnit, 
                  DistUnit, DistUnit, IconIdx, "DeviceInterface::NaviTbtDataClass" )
 EW_END_OF_CLASS( DeviceInterfaceNaviTbtDataClass )
+
+/* Initializer for the class 'DeviceInterface::DateTime' */
+void DeviceInterfaceDateTime__Init( DeviceInterfaceDateTime _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceDateTime );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( DeviceInterfaceDateTime );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::DateTime' */
+void DeviceInterfaceDateTime__ReInit( DeviceInterfaceDateTime _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::DateTime' */
+void DeviceInterfaceDateTime__Done( DeviceInterfaceDateTime _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_Super );
+}
+
+/* Variants derived from the class : 'DeviceInterface::DateTime' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceDateTime )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceDateTime )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::DateTime' */
+EW_DEFINE_CLASS( DeviceInterfaceDateTime, XObject, Hour, Hour, Hour, Hour, Hour, 
+                 _None, "DeviceInterface::DateTime" )
+EW_END_OF_CLASS( DeviceInterfaceDateTime )
+
+/* Initializer for the class 'DeviceInterface::NotificationContext' */
+void DeviceInterfaceNotificationContext__Init( DeviceInterfaceNotificationContext _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceNotificationContext );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( DeviceInterfaceNotificationContext );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::NotificationContext' */
+void DeviceInterfaceNotificationContext__ReInit( DeviceInterfaceNotificationContext _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::NotificationContext' */
+void DeviceInterfaceNotificationContext__Done( DeviceInterfaceNotificationContext _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_Super );
+}
+
+/* Variants derived from the class : 'DeviceInterface::NotificationContext' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNotificationContext )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNotificationContext )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::NotificationContext' */
+EW_DEFINE_CLASS( DeviceInterfaceNotificationContext, XObject, ReceivedTime, Title, 
+                 Title, Title, Title, Uid, "DeviceInterface::NotificationContext" )
+EW_END_OF_CLASS( DeviceInterfaceNotificationContext )
 
 /* Embedded Wizard */

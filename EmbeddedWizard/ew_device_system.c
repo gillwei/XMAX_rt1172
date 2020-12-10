@@ -76,6 +76,8 @@
 #define UPDATE_TIME_TASK_STACK_SIZE     ( configMINIMAL_STACK_SIZE )
 #define UPDATE_TIME_PERIOD_MS           ( 500 )
 
+#define EW_STRING_LEN               ( 1024 )
+
 #define ESN_STR_MAX_LEN             ( 10 )
 #define UNIT_ID_LEN                 ( 24 )
 
@@ -159,6 +161,8 @@ static void ew_get_info_from_eeprom( void );
 
 static uint32_t esn;
 static char qr_code[UNIT_ID_LEN + 1];
+
+AT_BOARDSDRAM_SECTION( uint8_t ew_string[EW_STRING_LEN] );
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -609,6 +613,8 @@ RTC_get_DateTime( srtc_datetime );
 * @private
 * ew_is_debug_build
 *
+* Return if the current build is debug build
+*
 * @retVal true if debug build; false if release build
 *
 *********************************************************************/
@@ -622,6 +628,57 @@ XBool ew_is_debug_build
 #else
     return true;
 #endif
+}
+
+/*********************************************************************
+*
+* @private
+* ew_handle_special_characters
+*
+* Stuff '%' before '%', '^', '~'
+*
+* @param in_str Pointer to input string
+* @param out Pointer to output string
+* @return Length of the output string
+*
+*********************************************************************/
+int ew_handle_special_characters
+    (
+    const uint8_t* in_str,
+    uint8_t**      out_str
+    )
+{
+int i = 0;
+int ew_str_idx = 0;
+
+while( 1 )
+    {
+    if( '\0' == in_str[i] )
+        {
+        break;
+        }
+
+    if( ( '%' == in_str[i] ) ||
+        ( '^' == in_str[i] ) ||
+        ( '~' == in_str[i] ) )
+        {
+        ew_string[ew_str_idx++] = '%';
+        }
+    ew_string[ew_str_idx++] = in_str[i++];
+
+    if( EW_STRING_LEN == ew_str_idx )
+        {
+        ew_string[EW_STRING_LEN - 1] = '\0';
+        break;
+        }
+    }
+
+if( 0 < ew_str_idx )
+    {
+    *out_str = ew_string;
+    }
+
+return ew_str_idx;
 }
 
 /*********************************************************************

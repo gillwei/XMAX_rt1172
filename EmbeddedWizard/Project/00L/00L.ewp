@@ -279,3 +279,9 @@ unit SeatHeater_GripWarmer
 {
   attr Directory = .\;
 }
+
+$rect <290,850,490,890>
+unit Notification
+{
+  attr Directory = .\;
+}

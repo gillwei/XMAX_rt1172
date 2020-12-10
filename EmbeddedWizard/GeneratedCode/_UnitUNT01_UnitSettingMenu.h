@@ -223,6 +223,10 @@ EW_DEFINE_METHODS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView )
     aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( UnitUNT01_UnitSettingMenu _this, XInt32 
     aItemNo )
+  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( UnitUNT01_UnitSettingMenu )
 
 /* The method Init() is invoked automatically after the component has been created. 

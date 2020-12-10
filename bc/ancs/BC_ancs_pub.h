@@ -14,10 +14,6 @@
 extern "C"{
 #endif
 
-#define NOTIFICATION_TITLE_MAX_LEN      ( 64 )
-#define NOTIFICATION_SUBTITLE_MAX_LEN   ( 64 )
-#define NOTIFICATION_MESSAGE_MAX_LEN    ( 512 )
-
 #ifdef __cplusplus
 }
 #endif

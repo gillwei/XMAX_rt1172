@@ -225,7 +225,19 @@ class LNC_Main : Components::BaseComponent
         ItemDialog = new Navigation::NAV06_NaviSettingMenu;
         PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
-      case Enum::LauncherItem.NOTIFICATION:;
+      case Enum::LauncherItem.NOTIFICATION:
+      {
+        if( DeviceInterface::BluetoothDevice.IsMotoconConnected() )
+        {
+          ItemDialog = new Notification::NTF01_NotificationList;
+        }
+        else
+        {
+          ItemDialog = new Pop::POP09_BleConnectionErrorUI;
+        }
+
+        PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
+      }
       case Enum::LauncherItem.WEATHER:
       {
         if( DeviceInterface::BluetoothDevice.IsMotoconConnected() )

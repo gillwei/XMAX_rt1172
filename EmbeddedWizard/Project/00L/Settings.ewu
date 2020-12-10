@@ -1471,6 +1471,16 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
     return result;
   }
 
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset DDModeEnabled = true;
+    preset NoOfItems = 0;
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+    preset ArrowScrollBarVisible = true;
+  }
+
   $rect <220,290,440,330>
   var int32 PairedDeviceNum = 0;
 
@@ -1536,17 +1546,6 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
     {
       SlideOutDialog();
     }
-  }
-
-  $rect <20,20,160,60>
-  inherited object Menu
-  {
-    preset DDModeEnabled = true;
-    preset NoOfItems = 0;
-    preset ItemHeight = Menu::ItemHeightSmall;
-    preset ItemNumPerPage = 4;
-    preset ArrowScrollBarVisible = true;
-    preset StatusBarDividerVisible = true;
   }
 
   $reorder LoadItemUnitValue 1

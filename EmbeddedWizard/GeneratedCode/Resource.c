@@ -622,6 +622,12 @@ EW_RES_WITHOUT_VARIANTS( ResourceScaleIndicatorWindowHigh )
 /* Table with links to derived variants of the bitmap resource : 'Resource::ScaleIndicatorBg' */
 EW_RES_WITHOUT_VARIANTS( ResourceScaleIndicatorBg )
 
+/* Include a file containing the bitmap resource : 'Resource::NotificationCategory' */
+#include "_ResourceNotificationCategory.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::NotificationCategory' */
+EW_RES_WITHOUT_VARIANTS( ResourceNotificationCategory )
+
 /* Include a file containing the bitmap resource : 'Resource::ScaleIndicatorBar' */
 #include "_ResourceScaleIndicatorBar.h"
 

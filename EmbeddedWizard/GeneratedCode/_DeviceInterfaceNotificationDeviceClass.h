@@ -42,7 +42,14 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_CoreSystemEvent.h"
 #include "_TemplatesDeviceClass.h"
+
+/* Forward declaration of the class DeviceInterface::NotificationContext */
+#ifndef _DeviceInterfaceNotificationContext_
+  EW_DECLARE_CLASS( DeviceInterfaceNotificationContext )
+#define _DeviceInterfaceNotificationContext_
+#endif
 
 /* Forward declaration of the class DeviceInterface::NotificationDeviceClass */
 #ifndef _DeviceInterfaceNotificationDeviceClass_
@@ -53,6 +60,9 @@
 
 /* Deklaration of class : 'DeviceInterface::NotificationDeviceClass' */
 EW_DEFINE_FIELDS( DeviceInterfaceNotificationDeviceClass, TemplatesDeviceClass )
+  EW_OBJECT  ( NotificationListUpdatedSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( PhoneCallStateChangedSystemEvent, CoreSystemEvent )
+  EW_PROPERTY( NotificationNum, XUInt32 )
 EW_END_OF_FIELDS( DeviceInterfaceNotificationDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::NotificationDeviceClass' */
@@ -68,6 +78,41 @@ XBool DeviceInterfaceNotificationDeviceClass__IsPhoneCallStateActive( void* _thi
 
 /* The following define announces the presence of the method DeviceInterface::NotificationDeviceClass.IsPhoneCallStateActive(). */
 #define _DeviceInterfaceNotificationDeviceClass__IsPhoneCallStateActive_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallStateChanged( DeviceInterfaceNotificationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NotificationDeviceClass.NotifyPhoneCallStateChanged()' */
+void DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallStateChanged( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NotificationDeviceClass.NotifyPhoneCallStateChanged(). */
+#define _DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallStateChanged_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNotificationDeviceClass_NotifyListUpdated( DeviceInterfaceNotificationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NotificationDeviceClass.NotifyListUpdated()' */
+void DeviceInterfaceNotificationDeviceClass__NotifyListUpdated( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NotificationDeviceClass.NotifyListUpdated(). */
+#define _DeviceInterfaceNotificationDeviceClass__NotifyListUpdated_
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetNotificationAtItem()' */
+DeviceInterfaceNotificationContext DeviceInterfaceNotificationDeviceClass_GetNotificationAtItem( DeviceInterfaceNotificationDeviceClass _this, 
+  XUInt32 aItemNo );
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.OnGetNotificationNum()' */
+XUInt32 DeviceInterfaceNotificationDeviceClass_OnGetNotificationNum( DeviceInterfaceNotificationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.DeleteNotificationOfUid()' */
+void DeviceInterfaceNotificationDeviceClass_DeleteNotificationOfUid( DeviceInterfaceNotificationDeviceClass _this, 
+  XUInt32 Uid );
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetBufferIdxOfNotificationUID()' */
+XInt32 DeviceInterfaceNotificationDeviceClass_GetBufferIdxOfNotificationUID( DeviceInterfaceNotificationDeviceClass _this, 
+  XUInt32 Uid );
 
 #ifdef __cplusplus
   }

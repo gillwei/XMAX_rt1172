@@ -98,8 +98,12 @@ EW_DEFINE_FIELDS( MenuItemWrapper, CoreGroup )
   EW_PROPERTY( OnActivate,      XSlot )
   EW_PROPERTY( Title,           XString )
   EW_PROPERTY( ItemValue,       XString )
+  EW_PROPERTY( Message,         XString )
+  EW_PROPERTY( ReceivedTime,    XString )
   EW_PROPERTY( ItemClass,       XClass )
   EW_PROPERTY( Height,          XInt32 )
+  EW_PROPERTY( Uid,             XUInt32 )
+  EW_PROPERTY( Category,        XEnum )
   EW_PROPERTY( DDModeEnabled,   XBool )
   EW_PROPERTY( Focusable,       XBool )
   EW_PROPERTY( Checked,         XBool )
@@ -178,6 +182,18 @@ void MenuItemWrapper_OnSetDDModeEnabled( MenuItemWrapper _this, XBool value );
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetItemValue()' */
 void MenuItemWrapper_OnSetItemValue( MenuItemWrapper _this, XString value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetMessage()' */
+void MenuItemWrapper_OnSetMessage( MenuItemWrapper _this, XString value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetReceivedTime()' */
+void MenuItemWrapper_OnSetReceivedTime( MenuItemWrapper _this, XString value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetCategory()' */
+void MenuItemWrapper_OnSetCategory( MenuItemWrapper _this, XEnum value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetUid()' */
+void MenuItemWrapper_OnSetUid( MenuItemWrapper _this, XUInt32 value );
 
 #ifdef __cplusplus
   }

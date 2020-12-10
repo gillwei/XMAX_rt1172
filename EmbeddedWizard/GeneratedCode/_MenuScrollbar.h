@@ -43,6 +43,7 @@
 #endif
 
 #include "_CoreGroup.h"
+#include "_EffectsRectEffect.h"
 #include "_ViewsLine.h"
 #include "_ViewsRectangle.h"
 
@@ -97,9 +98,9 @@
 
 /* Deklaration of class : 'Menu::Scrollbar' */
 EW_DEFINE_FIELDS( MenuScrollbar, CoreGroup )
-  EW_OBJECT  ( Background,      ViewsRectangle )
   EW_OBJECT  ( Track,           ViewsLine )
   EW_OBJECT  ( Bar,             ViewsRectangle )
+  EW_OBJECT  ( ScrollEffect,    EffectsRectEffect )
   EW_PROPERTY( ViewIdx,         XInt32 )
   EW_PROPERTY( PageItems,       XInt32 )
   EW_PROPERTY( ListItems,       XInt32 )

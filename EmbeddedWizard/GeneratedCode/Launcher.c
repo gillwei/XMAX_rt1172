@@ -40,6 +40,7 @@
 #include "_LauncherLNC_RotaryPlate.h"
 #include "_MediaMED01_MediaUI.h"
 #include "_NavigationNAV06_NaviSettingMenu.h"
+#include "_NotificationNTF01_NotificationList.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
 #include "_PopPOP09_BleConnectionErrorUI.h"
 #include "_ResourcesBitmap.h"
@@ -447,7 +448,22 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
     break;
 
     case EnumLauncherItemNOTIFICATION :
-      ;
+    {
+      if ( DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( EwGetAutoObject( 
+          &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
+      {
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( NotificationNTF01_NotificationList, 
+        0 ));
+      }
+      else
+      {
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_BleConnectionErrorUI, 
+        0 ));
+      }
+
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
+      0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    }
     break;
 
     case EnumLauncherItemWEATHER :

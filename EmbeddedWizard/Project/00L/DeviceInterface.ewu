@@ -15,6 +15,7 @@ inline Inline
   #include "BC_motocon_pub.h"
   #include "BC_motocon_pub_type.h"
   #include "BC_ams_pub.h"
+  #include "NTF_pub.h"
   #include "TEST_pub.h"
 }
 
@@ -1997,11 +1998,146 @@ class NotificationDeviceClass : Templates::DeviceClass
     return IsActive;
   }
 
-  // Phone Call Status
+  // Phone Call
   note group Note1
   {
-    attr Bounds = <10,10,630,110>;
+    attr Bounds = <10,10,720,160>;
   }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <240,60,490,100>
+  $output true
+  method void NotifyPhoneCallStateChanged()
+  {
+    trace "NotifyPhoneCallStateChanged";
+    PhoneCallStateChangedSystemEvent.Trigger( null, false );
+  }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <30,210,230,250>
+  $output true
+  method void NotifyListUpdated()
+  {
+    trace "NotifyListUpdated";
+    NotificationListUpdatedSystemEvent.Trigger( null, false );
+  }
+
+  $rect <30,260,320,300>
+  object Core::SystemEvent NotificationListUpdatedSystemEvent;
+
+  $rect <560,210,770,250>
+  method DeviceInterface::NotificationContext GetNotificationAtItem( arg uint32 aItemNo )
+  {
+    var DeviceInterface::NotificationContext NotificationItem = new DeviceInterface::NotificationContext;
+    NotificationItem.ReceivedTime = new DeviceInterface::DateTime;
+
+    $if !$prototyper
+      var uint32 Uid;
+      var uint16 CallRepetition;
+      var uint32 Category;
+      var string Title = "";
+      var string Message = "";
+      var string ReceivedHour = "";
+      var string ReceivedMinute = "";
+
+      native( aItemNo, Uid, Title, Message, Category, ReceivedHour, ReceivedMinute )
+      {
+        uint32_t notification_uid;
+        uint16_t call_repetition;
+        uint8_t  notification_title[NOTIFICATION_TITLE_MAX_LEN];
+        uint8_t  notification_message[NOTIFICATION_MESSAGE_MAX_LEN];
+        notification_time_t received_time;
+        EnumNotificationCategory notification_category;
+
+        NTF_get_notification_at_idx( aItemNo, &notification_uid, &call_repetition, notification_title, NOTIFICATION_TITLE_MAX_LEN, notification_message, NOTIFICATION_MESSAGE_MAX_LEN, &notification_category, &received_time );
+
+        Uid = notification_uid;
+        CallRepetition = call_repetition;
+
+        uint8_t *stuffed_str = NULL;
+        int stuffed_str_len = ew_handle_special_characters( notification_title, &stuffed_str );
+        if( stuffed_str_len > 0 && stuffed_str != NULL )
+        {
+          Title = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+        }
+
+        stuffed_str_len = ew_handle_special_characters( notification_message, &stuffed_str );
+        if( stuffed_str_len > 0 && stuffed_str != NULL )
+        {
+          Message = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+        }
+
+        Category = notification_category;
+        ReceivedHour = EwNewStringUInt( received_time.hour, 1, 10 );
+        ReceivedMinute = EwNewStringUInt( received_time.minute, 2, 10 );
+      }
+
+      NotificationItem.Uid = Uid;
+      NotificationItem.CallRepetition = CallRepetition;
+      NotificationItem.Title = Title;
+      NotificationItem.Message = Message;
+      NotificationItem.Category = (Enum::NotificationCategory)Category;
+      NotificationItem.ReceivedTime.Hour = ReceivedHour;
+      NotificationItem.ReceivedTime.Minute = ReceivedMinute;
+    $else
+      aItemNo; // suppress warning
+    $endif
+
+    return NotificationItem;
+  }
+
+  $rect <337,210,547,250>
+  property uint32 NotificationNum;
+
+  $rect <337,260,547,300>
+  onget NotificationNum
+  {
+    $if !$prototyper
+      var uint32 Num = 0;
+      native( Num )
+      {
+        Num = NTF_get_notification_num();
+      }
+
+      pure NotificationNum = Num;
+    $endif
+    return pure NotificationNum;
+  }
+
+  // Notification
+  note group Note2
+  {
+    attr Bounds = <10,170,1070,320>;
+  }
+
+  $rect <560,260,770,300>
+  method void DeleteNotificationOfUid( arg uint32 Uid )
+  {
+    $if !$prototyper
+      native( Uid )
+      {
+        NTF_delete_notification( Uid );
+      }
+    $endif
+  }
+
+  $rect <790,210,1050,250>
+  method int32 GetBufferIdxOfNotificationUID( arg uint32 Uid )
+  {
+    var int32 Index = -1;
+    $if !$prototyper
+      native( Uid, Index )
+      {
+        Index = NTF_get_idx_of_notification_uid( Uid );
+      }
+    $endif
+    return Index;
+  }
+
+  $rect <240,110,540,150>
+  object Core::SystemEvent PhoneCallStateChangedSystemEvent;
 }
 
 $rect <290,450,490,490>
@@ -2025,4 +2161,53 @@ class NaviTbtDataClass
 
   $rect <50,260,250,300>
   var int32 Distance;
+}
+
+$rect <290,490,490,530>
+$output false
+class DateTime
+{
+  $rect <70,50,270,90>
+  var string Year;
+
+  $rect <70,100,270,140>
+  var string Month;
+
+  $rect <70,150,270,190>
+  var string Date;
+
+  $rect <70,200,270,240>
+  var string Hour;
+
+  $rect <70,250,270,290>
+  var string Minute;
+
+  $rect <70,300,270,340>
+  var string Second;
+}
+
+$rect <290,530,490,570>
+$output false
+class NotificationContext
+{
+  $rect <10,10,210,50>
+  var uint32 Uid;
+
+  $rect <10,60,210,100>
+  var uint16 CallRepetition;
+
+  $rect <10,110,210,150>
+  var string Title;
+
+  $rect <10,210,210,250>
+  var string Message;
+
+  $rect <10,260,210,300>
+  var Enum::NotificationCategory Category;
+
+  $rect <10,310,210,350>
+  var DeviceInterface::DateTime ReceivedTime;
+
+  $rect <10,160,210,200>
+  var string Subtitle;
 }

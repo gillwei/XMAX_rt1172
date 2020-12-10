@@ -49,7 +49,6 @@
 #include "_MenuArrowScrollBar.h"
 #include "_MenuScrollbar.h"
 #include "_ViewsBorder.h"
-#include "_ViewsImage.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -104,14 +103,15 @@
 EW_DEFINE_FIELDS( MenuVerticalMenu, ComponentsBaseComponent )
   EW_OBJECT  ( MenuList,        CoreVerticalList )
   EW_OBJECT  ( Scrollbar,       MenuScrollbar )
-  EW_OBJECT  ( StatusBarDivider, ViewsImage )
   EW_OBJECT  ( FocusFrame,      ViewsBorder )
   EW_OBJECT  ( ArrowScrollBar,  MenuArrowScrollBar )
   EW_OBJECT  ( PageScrollEffect, EffectsInt32Effect )
   EW_PROPERTY( NoOfItems,       XInt32 )
   EW_PROPERTY( ItemHeight,      XInt32 )
   EW_PROPERTY( ItemNumPerPage,  XInt32 )
-  EW_PROPERTY( StatusBarDividerVisible, XBool )
+  EW_PROPERTY( FocusFrameBounds, XRect )
+  EW_PROPERTY( SelectedItem,    XInt32 )
+  EW_PROPERTY( ScrollbarVisible, XBool )
   EW_PROPERTY( ArrowScrollBarVisible, XBool )
   EW_PROPERTY( Focusable,       XBool )
 EW_END_OF_FIELDS( MenuVerticalMenu )
@@ -240,12 +240,26 @@ void MenuVerticalMenu_OnPageScrolledSlot( MenuVerticalMenu _this, XObject sender
 /* 'C' function for method : 'Menu::VerticalMenu.HideArrowScrollBar()' */
 void MenuVerticalMenu_HideArrowScrollBar( MenuVerticalMenu _this );
 
-/* 'C' function for method : 'Menu::VerticalMenu.ShowArrowScrollBar()' */
-void MenuVerticalMenu_ShowArrowScrollBar( MenuVerticalMenu _this );
+/* 'C' function for method : 'Menu::VerticalMenu.RestoreArrowScrollBar()' */
+void MenuVerticalMenu_RestoreArrowScrollBar( MenuVerticalMenu _this );
 
-/* 'C' function for method : 'Menu::VerticalMenu.OnSetStatusBarDividerVisible()' */
-void MenuVerticalMenu_OnSetStatusBarDividerVisible( MenuVerticalMenu _this, XBool 
-  value );
+/* 'C' function for method : 'Menu::VerticalMenu.OnSetScrollbarVisible()' */
+void MenuVerticalMenu_OnSetScrollbarVisible( MenuVerticalMenu _this, XBool value );
+
+/* 'C' function for method : 'Menu::VerticalMenu.OnSetFocusFrameBounds()' */
+void MenuVerticalMenu_OnSetFocusFrameBounds( MenuVerticalMenu _this, XRect value );
+
+/* 'C' function for method : 'Menu::VerticalMenu.OnSetSelectedItem()' */
+void MenuVerticalMenu_OnSetSelectedItem( MenuVerticalMenu _this, XInt32 value );
+
+/* 'C' function for method : 'Menu::VerticalMenu.HideScrollbar()' */
+void MenuVerticalMenu_HideScrollbar( MenuVerticalMenu _this );
+
+/* 'C' function for method : 'Menu::VerticalMenu.RestoreScrollbar()' */
+void MenuVerticalMenu_RestoreScrollbar( MenuVerticalMenu _this );
+
+/* 'C' function for method : 'Menu::VerticalMenu.RestoreFocusFrame()' */
+void MenuVerticalMenu_RestoreFocusFrame( MenuVerticalMenu _this );
 
 #ifdef __cplusplus
   }

@@ -1135,6 +1135,10 @@ EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, _None, _None
   MenuBaseMenuView_LoadItemChecked,
   NavigationNAV06_NaviSettingMenu_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( NavigationNAV06_NaviSettingMenu )
 
 /* Initializer for the class 'Navigation::NAV08_NaviChageViewMenu' */
@@ -1381,6 +1385,10 @@ EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, CheckMarkU
   NavigationNAV08_NaviChageViewMenu_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( NavigationNAV08_NaviChageViewMenu )
 
 /* User defined constant: 'Navigation::TIMETEXT_WO_NAVI_BOUNDS' */

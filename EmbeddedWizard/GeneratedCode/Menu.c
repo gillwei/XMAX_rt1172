@@ -31,12 +31,14 @@
 #include "_CoreVerticalList.h"
 #include "_CoreView.h"
 #include "_EffectsInt32Effect.h"
+#include "_EffectsRectEffect.h"
 #include "_MenuArrowScrollBar.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
 #include "_MenuItemBaseValue.h"
 #include "_MenuItemCheckMark.h"
 #include "_MenuItemCheckbox.h"
+#include "_MenuItemNotification.h"
 #include "_MenuItemWrapper.h"
 #include "_MenuPushButton.h"
 #include "_MenuScrollbar.h"
@@ -53,6 +55,7 @@
 #include "_WidgetSetToggleButtonConfig.h"
 #include "Core.h"
 #include "Effects.h"
+#include "Enum.h"
 #include "Fonts.h"
 #include "Menu.h"
 #include "Resource.h"
@@ -63,9 +66,11 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000030, /* ratio 100.00 % */
-  0xB8001100, 0x800A8452, 0x00E80034, 0x0CA00360, 0x06098780, 0x20021916, 0x0037000C,
-  0xF85C34C6, 0x89014010, 0xE92C004F, 0x00203248, 0x00000000
+  0x0000006C, /* ratio 81.48 % */
+  0xB8002D00, 0x0009E452, 0x00A60037, 0x4E800328, 0xD80085C2, 0x10D31C40, 0x49001922,
+  0x036C322A, 0x10000740, 0x18224200, 0x800A8458, 0x32251534, 0xE480990C, 0x0E610010,
+  0x50C8A002, 0x2402C862, 0x09092E0D, 0x18412460, 0x047A8000, 0xCF27940A, 0x00000080,
+  0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -79,22 +84,22 @@ static const XRect _Const0006 = {{ 18, 0 }, { 435, 54 }};
 static const XRect _Const0007 = {{ 0, 54 }, { 480, 56 }};
 static const XColor _Const0008 = { 0x64, 0x64, 0x64, 0xFF };
 static const XRect _Const0009 = {{ 0, 0 }, { 480, 236 }};
-static const XRect _Const000A = {{ 0, 2 }, { 435, 224 }};
-static const XRect _Const000B = {{ 470, 2 }, { 480, 226 }};
-static const XRect _Const000C = {{ 0, 0 }, { 480, 2 }};
-static const XRect _Const000D = {{ 18, 0 }, { 435, 76 }};
-static const XColor _Const000E = { 0x00, 0x72, 0xFF, 0xFF };
-static const XRect _Const000F = {{ 441, 5 }, { 473, 221 }};
+static const XRect _Const000A = {{ 0, 2 }, { 444, 224 }};
+static const XRect _Const000B = {{ 453, 6 }, { 463, 214 }};
+static const XRect _Const000C = {{ 18, 0 }, { 435, 76 }};
+static const XColor _Const000D = { 0x00, 0x72, 0xFF, 0xFF };
+static const XRect _Const000E = {{ 441, 5 }, { 473, 221 }};
+static const XStringRes _Const000F = { _StringsDefault0, 0x0002 };
 static const XRect _Const0010 = {{ 37, 1 }, { 386, 69 }};
 static const XRect _Const0011 = {{ 394, 10 }, { 444, 60 }};
 static const XRect _Const0012 = {{ 37, 9 }, { 367, 43 }};
 static const XRect _Const0013 = {{ 371, 2 }, { 421, 52 }};
-static const XStringRes _Const0014 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0015 = {{ 0, 0 }, { 10, 240 }};
-static const XColor _Const0016 = { 0x00, 0x00, 0x00, 0xFF };
-static const XPoint _Const0017 = { 5, 240 };
-static const XPoint _Const0018 = { 5, 0 };
-static const XRect _Const0019 = {{ 0, 50 }, { 10, 80 }};
+static const XStringRes _Const0014 = { _StringsDefault0, 0x0018 };
+static const XRect _Const0015 = {{ 0, 0 }, { 8, 208 }};
+static const XPoint _Const0016 = { 4, 208 };
+static const XPoint _Const0017 = { 4, 0 };
+static const XColor _Const0018 = { 0x88, 0x87, 0x8C, 0xFF };
+static const XRect _Const0019 = {{ 0, 0 }, { 10, 40 }};
 static const XRect _Const001A = {{ 0, 0 }, { 480, 272 }};
 static const XRect _Const001B = {{ 0, 36 }, { 480, 272 }};
 static const XRect _Const001C = {{ 0, 0 }, { 150, 40 }};
@@ -103,9 +108,9 @@ static const XRect _Const001E = {{ 0, 0 }, { 150, 36 }};
 static const XColor _Const001F = { 0xFF, 0xFF, 0xFF, 0xCD };
 static const XColor _Const0020 = { 0x72, 0x71, 0x71, 0xFF };
 static const XRect _Const0021 = {{ 0, 0 }, { 150, 83 }};
-static const XStringRes _Const0022 = { _StringsDefault0, 0x000A };
+static const XStringRes _Const0022 = { _StringsDefault0, 0x0020 };
 static const XRect _Const0023 = {{ 0, 43 }, { 150, 83 }};
-static const XStringRes _Const0024 = { _StringsDefault0, 0x0013 };
+static const XStringRes _Const0024 = { _StringsDefault0, 0x0029 };
 static const XRect _Const0025 = {{ 37, 1 }, { 364, 69 }};
 static const XRect _Const0026 = {{ 371, 9 }, { 421, 59 }};
 static const XRect _Const0027 = {{ 0, 0 }, { 32, 216 }};
@@ -115,6 +120,12 @@ static const XRect _Const002A = {{ 290, 9 }, { 417, 43 }};
 static const XRect _Const002B = {{ 290, 7 }, { 417, 43 }};
 static const XRect _Const002C = {{ 37, 1 }, { 193, 69 }};
 static const XRect _Const002D = {{ 385, 1 }, { 418, 69 }};
+static const XRect _Const002E = {{ 10, 0 }, { 444, 74 }};
+static const XRect _Const002F = {{ 68, 6 }, { 367, 36 }};
+static const XRect _Const0030 = {{ 68, 36 }, { 439, 66 }};
+static const XRect _Const0031 = {{ 376, 8 }, { 439, 38 }};
+static const XStringRes _Const0032 = { _StringsDefault0, 0x002E };
+static const XRect _Const0033 = {{ 13, 11 }, { 63, 61 }};
 
 /* Initializer for the class 'Menu::ItemBase' */
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
@@ -383,7 +394,6 @@ void MenuVerticalMenu__Init( MenuVerticalMenu _this, XObject aLink, XHandle aArg
   /* ... then construct all embedded objects */
   CoreVerticalList__Init( &_this->MenuList, &_this->_XObject, 0 );
   MenuScrollbar__Init( &_this->Scrollbar, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->StatusBarDivider, &_this->_XObject, 0 );
   ViewsBorder__Init( &_this->FocusFrame, &_this->_XObject, 0 );
   MenuArrowScrollBar__Init( &_this->ArrowScrollBar, &_this->_XObject, 0 );
   EffectsInt32Effect__Init( &_this->PageScrollEffect, &_this->_XObject, 0 );
@@ -400,34 +410,28 @@ void MenuVerticalMenu__Init( MenuVerticalMenu _this, XObject aLink, XHandle aArg
   CoreVerticalList_OnSetItemClass( &_this->MenuList, EW_CLASS( MenuItemWrapper ));
   CoreRectView__OnSetBounds( &_this->Scrollbar, _Const000B );
   CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, 0 );
-  MenuScrollbar_OnSetPageItems( &_this->Scrollbar, 4 );
+  MenuScrollbar_OnSetPageItems( &_this->Scrollbar, 3 );
   _this->Focusable = 1;
   _this->ItemHeight = 74;
   _this->ItemNumPerPage = 3;
-  CoreRectView__OnSetBounds( &_this->StatusBarDivider, _Const000C );
-  ViewsImage_OnSetAlignment( &_this->StatusBarDivider, ViewsImageAlignmentAlignVertBottom 
-  | ViewsImageAlignmentScaleToFit );
-  ViewsImage_OnSetVisible( &_this->StatusBarDivider, 0 );
-  CoreRectView__OnSetBounds( &_this->FocusFrame, _Const000D );
+  CoreRectView__OnSetBounds( &_this->FocusFrame, _Const000C );
   ViewsBorder_OnSetWidth( &_this->FocusFrame, 3 );
-  ViewsBorder_OnSetColor( &_this->FocusFrame, _Const000E );
+  ViewsBorder_OnSetColor( &_this->FocusFrame, _Const000D );
   ViewsBorder_OnSetVisible( &_this->FocusFrame, 0 );
-  CoreRectView__OnSetBounds( &_this->ArrowScrollBar, _Const000F );
+  CoreRectView__OnSetBounds( &_this->ArrowScrollBar, _Const000E );
   CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, 0 );
   EffectsEffect_OnSetExponent((EffectsEffect)&_this->PageScrollEffect, 4.190000f );
   EffectsEffect_OnSetTiming((EffectsEffect)&_this->PageScrollEffect, EffectsTimingExp_Out );
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->PageScrollEffect, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->PageScrollEffect, 200 );
   EffectsEffect_OnSetInitialDelay((EffectsEffect)&_this->PageScrollEffect, 50 );
+  _this->SelectedItem = -1;
   CoreGroup__Add( _this, ((CoreView)&_this->MenuList ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Scrollbar ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->StatusBarDivider ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->FocusFrame ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ArrowScrollBar ), 0 );
   CoreGroup__OnSetFocus( &_this->MenuList, 0 );
   _this->MenuList.OnLoadItem = EwNewSlot( _this, MenuVerticalMenu__OnLoadItemSlot );
-  ViewsImage_OnSetBitmap( &_this->StatusBarDivider, EwLoadResource( &ResourceStatusBarDivider, 
-  ResourcesBitmap ));
   _this->PageScrollEffect.Super1.OnFinished = EwNewSlot( _this, MenuVerticalMenu_OnPageScrolledSlot );
   _this->PageScrollEffect.Outlet = EwNewRef( &_this->MenuList, CoreVerticalList_OnGetScrollOffset, 
   CoreVerticalList_OnSetScrollOffset );
@@ -442,7 +446,6 @@ void MenuVerticalMenu__ReInit( MenuVerticalMenu _this )
   /* ... then re-construct all embedded objects */
   CoreVerticalList__ReInit( &_this->MenuList );
   MenuScrollbar__ReInit( &_this->Scrollbar );
-  ViewsImage__ReInit( &_this->StatusBarDivider );
   ViewsBorder__ReInit( &_this->FocusFrame );
   MenuArrowScrollBar__ReInit( &_this->ArrowScrollBar );
   EffectsInt32Effect__ReInit( &_this->PageScrollEffect );
@@ -457,7 +460,6 @@ void MenuVerticalMenu__Done( MenuVerticalMenu _this )
   /* Finalize all embedded objects */
   CoreVerticalList__Done( &_this->MenuList );
   MenuScrollbar__Done( &_this->Scrollbar );
-  ViewsImage__Done( &_this->StatusBarDivider );
   ViewsBorder__Done( &_this->FocusFrame );
   MenuArrowScrollBar__Done( &_this->ArrowScrollBar );
   EffectsInt32Effect__Done( &_this->PageScrollEffect );
@@ -494,6 +496,18 @@ void MenuVerticalMenu_UpdateViewState( MenuVerticalMenu _this, XSet aState )
     }
 
     MenuArrowScrollBar_OnSetNoOfPages( &_this->ArrowScrollBar, NoOfPages );
+  }
+
+  if ( _this->ScrollbarVisible )
+  {
+    if ( _this->ItemNumPerPage < _this->NoOfItems )
+    {
+      CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, 1 );
+    }
+    else
+    {
+      CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, 0 );
+    }
   }
 }
 
@@ -579,6 +593,20 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
       MenuItemWrapper_OnSetItemValue( Item, MenuBaseMenuView__LoadItemBaseValue( 
       OwnerMenu, ItemNo ));
     }
+    else
+      if ( EW_CLASS( MenuItemNotification ) == Item->ItemClass )
+      {
+        MenuItemWrapper_OnSetMessage( Item, MenuBaseMenuView__LoadItemMessage( OwnerMenu, 
+        ItemNo ));
+        MenuItemWrapper_OnSetReceivedTime( Item, MenuBaseMenuView__LoadItemReceivedTime( 
+        OwnerMenu, ItemNo ));
+        MenuItemWrapper_OnSetCategory( Item, MenuBaseMenuView__LoadItemCategory( 
+        OwnerMenu, ItemNo ));
+        MenuItemWrapper_OnSetUid( Item, MenuBaseMenuView__LoadItemUid( OwnerMenu, 
+        ItemNo ));
+      }
+      else
+        ;
 
     CoreRectView__OnSetBounds( Item, EwSetRectSize( Item->Super2.Bounds, EwNewPoint( 
     EwGetRectW( _this->MenuList.Super2.Bounds ), _this->MenuList.ItemHeight )));
@@ -651,7 +679,6 @@ void MenuVerticalMenu_InvalidateItems( MenuVerticalMenu _this, XInt32 aFirstItem
   XInt32 aLastItem )
 {
   CoreVerticalList_InvalidateItems( &_this->MenuList, aFirstItem, aLastItem );
-  MenuScrollbar_OnSetViewIdx( &_this->Scrollbar, 0 );
 }
 
 /* 'C' function for method : 'Menu::VerticalMenu.OnSetItemHeight()' */
@@ -684,6 +711,7 @@ void MenuVerticalMenu_OnSetItemNumPerPage( MenuVerticalMenu _this, XInt32 value 
   if ( _this->ItemNumPerPage != value )
   {
     _this->ItemNumPerPage = value;
+    MenuScrollbar_OnSetPageItems( &_this->Scrollbar, value );
     MenuVerticalMenu_UpdateListHeight( _this );
     CoreGroup_InvalidateViewState((CoreGroup)_this );
   }
@@ -744,20 +772,75 @@ void MenuVerticalMenu_HideArrowScrollBar( MenuVerticalMenu _this )
   CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, 0 );
 }
 
-/* 'C' function for method : 'Menu::VerticalMenu.ShowArrowScrollBar()' */
-void MenuVerticalMenu_ShowArrowScrollBar( MenuVerticalMenu _this )
+/* 'C' function for method : 'Menu::VerticalMenu.RestoreArrowScrollBar()' */
+void MenuVerticalMenu_RestoreArrowScrollBar( MenuVerticalMenu _this )
 {
-  CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, 1 );
+  if ( _this->ArrowScrollBarVisible )
+  {
+    CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, 1 );
+  }
 }
 
-/* 'C' function for method : 'Menu::VerticalMenu.OnSetStatusBarDividerVisible()' */
-void MenuVerticalMenu_OnSetStatusBarDividerVisible( MenuVerticalMenu _this, XBool 
-  value )
+/* 'C' function for method : 'Menu::VerticalMenu.OnSetScrollbarVisible()' */
+void MenuVerticalMenu_OnSetScrollbarVisible( MenuVerticalMenu _this, XBool value )
 {
-  if ( _this->StatusBarDividerVisible != value )
+  if ( _this->ScrollbarVisible != value )
   {
-    _this->StatusBarDividerVisible = value;
-    ViewsImage_OnSetVisible( &_this->StatusBarDivider, value );
+    _this->ScrollbarVisible = value;
+    CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, value );
+  }
+}
+
+/* 'C' function for method : 'Menu::VerticalMenu.OnSetFocusFrameBounds()' */
+void MenuVerticalMenu_OnSetFocusFrameBounds( MenuVerticalMenu _this, XRect value )
+{
+  if ( EwCompRect( _this->FocusFrameBounds, value ))
+  {
+    _this->FocusFrameBounds = value;
+    CoreRectView__OnSetBounds( &_this->FocusFrame, value );
+  }
+}
+
+/* 'C' function for method : 'Menu::VerticalMenu.OnSetSelectedItem()' */
+void MenuVerticalMenu_OnSetSelectedItem( MenuVerticalMenu _this, XInt32 value )
+{
+  EwTrace( "%s%i", EwLoadString( &_Const000F ), value );
+
+  if ( _this->SelectedItem != value )
+  {
+    _this->SelectedItem = value;
+
+    if (( 0 <= value ) && ( _this->MenuList.NoOfItems > value ))
+    {
+      CoreVerticalList_OnSetSelectedItem( &_this->MenuList, value );
+      MenuScrollbar_OnSetViewIdx( &_this->Scrollbar, value );
+      MenuVerticalMenu_SwitchToPageOfSelectedItem( _this );
+      MenuVerticalMenu_MoveFocusFrame( _this );
+    }
+  }
+}
+
+/* 'C' function for method : 'Menu::VerticalMenu.HideScrollbar()' */
+void MenuVerticalMenu_HideScrollbar( MenuVerticalMenu _this )
+{
+  CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, 0 );
+}
+
+/* 'C' function for method : 'Menu::VerticalMenu.RestoreScrollbar()' */
+void MenuVerticalMenu_RestoreScrollbar( MenuVerticalMenu _this )
+{
+  if ( _this->ScrollbarVisible && ( _this->Scrollbar.PageNum > 0 ))
+  {
+    CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, 1 );
+  }
+}
+
+/* 'C' function for method : 'Menu::VerticalMenu.RestoreFocusFrame()' */
+void MenuVerticalMenu_RestoreFocusFrame( MenuVerticalMenu _this )
+{
+  if ( 0 < _this->NoOfItems )
+  {
+    ViewsBorder_OnSetVisible( &_this->FocusFrame, 1 );
   }
 }
 
@@ -982,6 +1065,7 @@ void MenuItemWrapper__Init( MenuItemWrapper _this, XObject aLink, XHandle aArg )
   CoreRectView__OnSetBounds( _this, _Const0000 );
   _this->Title = EwShareString( EwLoadString( &_Const0014 ));
   _this->Focusable = 1;
+  _this->Category = EnumNotificationCategoryTOTAL;
 }
 
 /* Re-Initializer for the class 'Menu::ItemWrapper' */
@@ -1153,6 +1237,78 @@ void MenuItemWrapper_OnSetItemValue( MenuItemWrapper _this, XString value )
   }
 }
 
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetMessage()' */
+void MenuItemWrapper_OnSetMessage( MenuItemWrapper _this, XString value )
+{
+  if ( EwCompString( _this->Message, value ) != 0 )
+  {
+    CoreView view;
+    MenuItemNotification NotificationItem;
+    _this->Message = EwShareString( value );
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    NotificationItem = EwCastObject( view, MenuItemNotification );
+
+    if ( NotificationItem != 0 )
+    {
+      MenuItemNotification_OnSetMessage( NotificationItem, value );
+    }
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetReceivedTime()' */
+void MenuItemWrapper_OnSetReceivedTime( MenuItemWrapper _this, XString value )
+{
+  if ( EwCompString( _this->ReceivedTime, value ) != 0 )
+  {
+    CoreView view;
+    MenuItemNotification NotificationItem;
+    _this->ReceivedTime = EwShareString( value );
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    NotificationItem = EwCastObject( view, MenuItemNotification );
+
+    if ( NotificationItem != 0 )
+    {
+      MenuItemNotification_OnSetReceivedTime( NotificationItem, value );
+    }
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetCategory()' */
+void MenuItemWrapper_OnSetCategory( MenuItemWrapper _this, XEnum value )
+{
+  if ( _this->Category != value )
+  {
+    CoreView view;
+    MenuItemNotification NotificationItem;
+    _this->Category = value;
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    NotificationItem = EwCastObject( view, MenuItemNotification );
+
+    if ( NotificationItem != 0 )
+    {
+      MenuItemNotification_OnSetCategory( NotificationItem, value );
+    }
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetUid()' */
+void MenuItemWrapper_OnSetUid( MenuItemWrapper _this, XUInt32 value )
+{
+  if ( _this->Uid != value )
+  {
+    CoreView view;
+    MenuItemNotification NotificationItem;
+    _this->Uid = value;
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    NotificationItem = EwCastObject( view, MenuItemNotification );
+
+    if ( NotificationItem != 0 )
+    {
+      NotificationItem->Uid = value;
+    }
+  }
+}
+
 /* Variants derived from the class : 'Menu::ItemWrapper' */
 EW_DEFINE_CLASS_VARIANTS( MenuItemWrapper )
 EW_END_OF_CLASS_VARIANTS( MenuItemWrapper )
@@ -1202,25 +1358,28 @@ void MenuScrollbar__Init( MenuScrollbar _this, XObject aLink, XHandle aArg )
   _this->_GCT = EW_CLASS_GCT( MenuScrollbar );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->Background, &_this->_XObject, 0 );
   ViewsLine__Init( &_this->Track, &_this->_XObject, 0 );
   ViewsRectangle__Init( &_this->Bar, &_this->_XObject, 0 );
+  EffectsRectEffect__Init( &_this->ScrollEffect, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( MenuScrollbar );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0015 );
-  CoreRectView__OnSetBounds( &_this->Background, _Const0015 );
-  ViewsRectangle_OnSetColor( &_this->Background, _Const0016 );
-  CoreLineView_OnSetPoint2((CoreLineView)&_this->Track, _Const0017 );
-  CoreLineView_OnSetPoint1((CoreLineView)&_this->Track, _Const0018 );
-  ViewsLine_OnSetWidth( &_this->Track, 3 );
-  ViewsLine_OnSetColor( &_this->Track, _Const0008 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->Track, _Const0016 );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->Track, _Const0017 );
+  ViewsLine_OnSetWidth( &_this->Track, 2 );
+  ViewsLine_OnSetColor( &_this->Track, _Const0018 );
   CoreRectView__OnSetBounds( &_this->Bar, _Const0019 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
+  EffectsEffect_OnSetExponent((EffectsEffect)&_this->ScrollEffect, 4.190000f );
+  EffectsEffect_OnSetTiming((EffectsEffect)&_this->ScrollEffect, EffectsTimingExp_Out );
+  EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->ScrollEffect, 1 );
+  EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->ScrollEffect, 200 );
   CoreGroup__Add( _this, ((CoreView)&_this->Track ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Bar ), 0 );
+  _this->ScrollEffect.Outlet = EwNewRef( &_this->Bar, CoreRectView_OnGetBounds, 
+  CoreRectView__OnSetBounds );
 }
 
 /* Re-Initializer for the class 'Menu::Scrollbar' */
@@ -1230,9 +1389,9 @@ void MenuScrollbar__ReInit( MenuScrollbar _this )
   CoreGroup__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsRectangle__ReInit( &_this->Background );
   ViewsLine__ReInit( &_this->Track );
   ViewsRectangle__ReInit( &_this->Bar );
+  EffectsRectEffect__ReInit( &_this->ScrollEffect );
 }
 
 /* Finalizer method for the class 'Menu::Scrollbar' */
@@ -1242,9 +1401,9 @@ void MenuScrollbar__Done( MenuScrollbar _this )
   _this->_Super._VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
-  ViewsRectangle__Done( &_this->Background );
   ViewsLine__Done( &_this->Track );
   ViewsRectangle__Done( &_this->Bar );
+  EffectsRectEffect__Done( &_this->ScrollEffect );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
@@ -1274,8 +1433,10 @@ void MenuScrollbar_UpdateViewState( MenuScrollbar _this, XSet aState )
     XInt32 BarHeight = (XInt32)((XFloat)EwGetRectH( _this->Super2.Bounds ) / (XFloat)_this->PageNum );
     XInt32 BarTopY = (XInt32)((XFloat)EwGetRectH( _this->Super2.Bounds ) * ((XFloat)CurrentPage 
       / (XFloat)_this->PageNum ));
-    CoreRectView__OnSetBounds( &_this->Bar, EwNewRect( _this->Bar.Super1.Bounds.Point1.X, 
-    BarTopY, _this->Bar.Super1.Bounds.Point2.X, BarTopY + BarHeight ));
+    _this->ScrollEffect.Value1 = _this->Bar.Super1.Bounds;
+    _this->ScrollEffect.Value2 = EwNewRect( _this->Bar.Super1.Bounds.Point1.X, BarTopY, 
+    _this->Bar.Super1.Bounds.Point2.X, BarTopY + BarHeight );
+    EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ScrollEffect, 1 );
   }
 }
 
@@ -1332,6 +1493,8 @@ void MenuScrollbar_UpdatePageNum( MenuScrollbar _this )
       ViewsRectangle_OnSetVisible( &_this->Bar, 1 );
       ViewsLine_OnSetVisible( &_this->Track, 1 );
     }
+    else
+      ;
 }
 
 /* Variants derived from the class : 'Menu::Scrollbar' */
@@ -1339,8 +1502,8 @@ EW_DEFINE_CLASS_VARIANTS( MenuScrollbar )
 EW_END_OF_CLASS_VARIANTS( MenuScrollbar )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::Scrollbar' */
-EW_DEFINE_CLASS( MenuScrollbar, CoreGroup, Background, Background, Background, Background, 
-                 ViewIdx, ViewIdx, "Menu::Scrollbar" )
+EW_DEFINE_CLASS( MenuScrollbar, CoreGroup, Track, Track, Track, Track, ViewIdx, 
+                 ViewIdx, "Menu::Scrollbar" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1535,6 +1698,81 @@ XString MenuBaseMenuView__LoadItemBaseValue( void* _this, XInt32 aItemNo )
   , aItemNo );
 }
 
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemMessage()' */
+XString MenuBaseMenuView_LoadItemMessage( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  if ( aItemNo >= 0 )
+    ;
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemMessage()' */
+XString MenuBaseMenuView__LoadItemMessage( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_VMT->LoadItemMessage((MenuBaseMenuView)_this
+  , aItemNo );
+}
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemReceivedTime()' */
+XString MenuBaseMenuView_LoadItemReceivedTime( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  if ( aItemNo >= 0 )
+    ;
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemReceivedTime()' */
+XString MenuBaseMenuView__LoadItemReceivedTime( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_VMT->LoadItemReceivedTime((MenuBaseMenuView)_this
+  , aItemNo );
+}
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemCategory()' */
+XEnum MenuBaseMenuView_LoadItemCategory( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  if ( aItemNo >= 0 )
+    ;
+
+  return EnumNotificationCategoryMESSAGE;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemCategory()' */
+XEnum MenuBaseMenuView__LoadItemCategory( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_VMT->LoadItemCategory((MenuBaseMenuView)_this
+  , aItemNo );
+}
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemUid()' */
+XUInt32 MenuBaseMenuView_LoadItemUid( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  if ( aItemNo >= 0 )
+    ;
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemUid()' */
+XUInt32 MenuBaseMenuView__LoadItemUid( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_VMT->LoadItemUid((MenuBaseMenuView)_this, aItemNo );
+}
+
 /* Variants derived from the class : 'Menu::BaseMenuView' */
 EW_DEFINE_CLASS_VARIANTS( MenuBaseMenuView )
 EW_END_OF_CLASS_VARIANTS( MenuBaseMenuView )
@@ -1590,6 +1828,10 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, Menu, Menu, Menu, Menu,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( MenuBaseMenuView )
 
 /* Initializer for the class 'Menu::PushButton' */
@@ -1626,7 +1868,7 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
   CoreView_OnSetLayout((CoreView)&_this->FocusBorder, CoreLayoutResizeHorz | CoreLayoutResizeVert );
   CoreRectView__OnSetBounds( &_this->FocusBorder, _Const001C );
   ViewsBorder_OnSetWidth( &_this->FocusBorder, 2 );
-  ViewsBorder_OnSetColor( &_this->FocusBorder, _Const000E );
+  ViewsBorder_OnSetColor( &_this->FocusBorder, _Const000D );
   _this->Focusable = 1;
   _this->ButtonEnabled = 1;
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
@@ -1695,7 +1937,7 @@ void MenuPushButton_UpdateViewState( MenuPushButton _this, XSet aState )
 
       if ( _this->Focusable )
       {
-        ViewsBorder_OnSetColor( &_this->FocusBorder, _Const000E );
+        ViewsBorder_OnSetColor( &_this->FocusBorder, _Const000D );
         ViewsBorder_OnSetWidth( &_this->FocusBorder, 3 );
       }
     }
@@ -2439,5 +2681,180 @@ EW_DEFINE_CLASS( MenuItemBaseValue, MenuItemBase, ItemValueText, ItemValueText,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuItemBaseValue )
+
+/* Initializer for the class 'Menu::ItemNotification' */
+void MenuItemNotification__Init( MenuItemNotification _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuItemBase__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( MenuItemNotification );
+
+  /* ... then construct all embedded objects */
+  ViewsText__Init( &_this->MessageText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->ReceivedTimeText, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->CategoryIcon, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( MenuItemNotification );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( &_this->Super1.HighlightRect, _Const002E );
+  ViewsRectangle_OnSetVisible( &_this->Super1.HighlightRect, 1 );
+  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const002F );
+  CoreView_OnSetLayout((CoreView)&_this->MessageText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
+  CoreRectView__OnSetBounds( &_this->MessageText, _Const0030 );
+  ViewsText_OnSetEllipsis( &_this->MessageText, 1 );
+  ViewsText_OnSetAlignment( &_this->MessageText, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertTop );
+  ViewsText_OnSetString( &_this->MessageText, 0 );
+  ViewsText_OnSetColor( &_this->MessageText, _Const0002 );
+  CoreView_OnSetLayout((CoreView)&_this->ReceivedTimeText, CoreLayoutAlignToLeft 
+  | CoreLayoutAlignToTop );
+  CoreRectView__OnSetBounds( &_this->ReceivedTimeText, _Const0031 );
+  ViewsText_OnSetAlignment( &_this->ReceivedTimeText, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->ReceivedTimeText, EwLoadString( &_Const0032 ));
+  ViewsText_OnSetColor( &_this->ReceivedTimeText, _Const0002 );
+  _this->Category = EnumNotificationCategoryTOTAL;
+  CoreRectView__OnSetBounds( &_this->CategoryIcon, _Const0033 );
+  ViewsImage_OnSetVisible( &_this->CategoryIcon, 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->MessageText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ReceivedTimeText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->CategoryIcon ), 0 );
+  ViewsText_OnSetFont( &_this->Super1.Title, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->MessageText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->ReceivedTimeText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsImage_OnSetBitmap( &_this->CategoryIcon, EwLoadResource( &ResourceNotificationCategory, 
+  ResourcesBitmap ));
+}
+
+/* Re-Initializer for the class 'Menu::ItemNotification' */
+void MenuItemNotification__ReInit( MenuItemNotification _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuItemBase__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsText__ReInit( &_this->MessageText );
+  ViewsText__ReInit( &_this->ReceivedTimeText );
+  ViewsImage__ReInit( &_this->CategoryIcon );
+}
+
+/* Finalizer method for the class 'Menu::ItemNotification' */
+void MenuItemNotification__Done( MenuItemNotification _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( MenuItemBase );
+
+  /* Finalize all embedded objects */
+  ViewsText__Done( &_this->MessageText );
+  ViewsText__Done( &_this->ReceivedTimeText );
+  ViewsImage__Done( &_this->CategoryIcon );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuItemBase__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Menu::ItemNotification.OnSetMessage()' */
+void MenuItemNotification_OnSetMessage( MenuItemNotification _this, XString value )
+{
+  if ( EwCompString( _this->Message, value ) != 0 )
+  {
+    _this->Message = EwShareString( value );
+    ViewsText_OnSetString( &_this->MessageText, _this->Message );
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemNotification.OnSetReceivedTime()' */
+void MenuItemNotification_OnSetReceivedTime( MenuItemNotification _this, XString 
+  value )
+{
+  if ( EwCompString( _this->ReceivedTime, value ) != 0 )
+  {
+    _this->ReceivedTime = EwShareString( value );
+    ViewsText_OnSetString( &_this->ReceivedTimeText, _this->ReceivedTime );
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemNotification.OnSetCategory()' */
+void MenuItemNotification_OnSetCategory( MenuItemNotification _this, XEnum value )
+{
+  if ( _this->Category != value )
+  {
+    _this->Category = value;
+
+    if ( EnumNotificationCategoryMESSAGE == value )
+    {
+      ViewsImage_OnSetFrameNumber( &_this->CategoryIcon, 0 );
+      ViewsImage_OnSetVisible( &_this->CategoryIcon, 1 );
+    }
+    else
+      if ( EnumNotificationCategoryMISSED_CALL == value )
+      {
+        ViewsImage_OnSetFrameNumber( &_this->CategoryIcon, 1 );
+        ViewsImage_OnSetVisible( &_this->CategoryIcon, 1 );
+      }
+      else
+      {
+        ViewsImage_OnSetVisible( &_this->CategoryIcon, 0 );
+      }
+  }
+}
+
+/* Variants derived from the class : 'Menu::ItemNotification' */
+EW_DEFINE_CLASS_VARIANTS( MenuItemNotification )
+EW_END_OF_CLASS_VARIANTS( MenuItemNotification )
+
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemNotification' */
+EW_DEFINE_CLASS( MenuItemNotification, MenuItemBase, MessageText, MessageText, MessageText, 
+                 MessageText, Message, Uid, "Menu::ItemNotification" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  MenuItemBase_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  MenuItemBase_UpdateLayout,
+  MenuItemBase_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  MenuItemBase_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+EW_END_OF_CLASS( MenuItemNotification )
 
 /* Embedded Wizard */

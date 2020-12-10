@@ -2384,6 +2384,18 @@ resource Resources::Bitmap ScaleIndicatorBg
   attr bitmapmode Mode = Default;
 }
 
+$rect <540,1110,740,1150>
+$output false
+resource Resources::Bitmap NotificationCategory
+{
+  attr bitmapfile FileName = .\Res\notification\icon_notification_category.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
 $rect <870,2260,1070,2300>
 $output false
 resource Resources::Bitmap ScaleIndicatorBar
@@ -2394,4 +2406,10 @@ resource Resources::Bitmap ScaleIndicatorBar
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
+}
+
+// Notification
+note group NotificationNote
+{
+  attr Bounds = <520,1070,760,1180>;
 }

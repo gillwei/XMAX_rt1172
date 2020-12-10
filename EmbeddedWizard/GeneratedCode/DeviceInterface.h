@@ -44,11 +44,13 @@
 
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
+#include "_DeviceInterfaceDateTime.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
 #include "_DeviceInterfaceMotoConContext.h"
 #include "_DeviceInterfaceNaviDataClass.h"
 #include "_DeviceInterfaceNaviTbtDataClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
+#include "_DeviceInterfaceNotificationContext.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"

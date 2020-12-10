@@ -510,6 +510,7 @@ class DEV_VehicleSupportedFunction : Menu::BaseMenuView
     preset NoOfItems = ItemTitleArray.size;
     preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
+    preset ScrollbarVisible = false;
   }
 
   $rect <730,60,930,100>

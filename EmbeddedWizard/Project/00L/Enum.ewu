@@ -879,7 +879,7 @@ enum OperationMode
   item TOTAL;
 }
 
-$rect <500,180,700,220>
+$rect <500,170,700,210>
 $output false
 enum NaviTurnStatusType
 {
@@ -913,4 +913,33 @@ enum SeatHeaterGripWarmerLevelType
 
   $rect <430,10,630,50>
   item HIGH;
+}
+
+$rect <500,270,700,310>
+enum NotificationCategory
+{
+  $rect <10,10,210,50>
+  item MESSAGE;
+
+  $rect <10,60,210,100>
+  item MISSED_CALL;
+
+  $rect <10,110,210,150>
+  item TOTAL;
+}
+
+$rect <500,220,700,260>
+enum PhoneCallState
+{
+  $rect <10,10,210,50>
+  item IDLE;
+
+  $rect <10,60,210,100>
+  item INCOMING;
+
+  $rect <10,110,210,150>
+  item ACTIVE;
+
+  $rect <10,160,210,200>
+  item TOTAL;
 }

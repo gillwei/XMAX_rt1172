@@ -2407,6 +2407,36 @@ void ViewsText_OnSetEnableBidiText( ViewsText _this, XBool value )
   EwPostSignal( EwNewSlot( _this, ViewsText_preReparseSlot ), ((XObject)_this ));
 }
 
+/* 'C' function for method : 'Views::Text.OnSetRowDistance()' */
+void ViewsText_OnSetRowDistance( ViewsText _this, XInt32 value )
+{
+  if ( value < 0 )
+    value = 0;
+
+  if ( _this->RowDistance == value )
+    return;
+
+  _this->RowDistance = value;
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+
+  if ( _this->Ellipsis )
+  {
+    _this->flowString = 0;
+    _this->reparsed = 0;
+    EwPostSignal( EwNewSlot( _this, ViewsText_preReparseSlot ), ((XObject)_this ));
+  }
+
+  if ( _this->AutoSize && _this->reparsed )
+    CoreRectView__OnSetBounds( _this, EwMoveRectNeg( ViewsText_GetContentArea( _this ), 
+    _this->ScrollOffset ));
+
+  if ( _this->reparsed )
+    EwPostSignal( EwNewSlot( _this, ViewsText_preOnUpdateSlot ), ((XObject)_this ));
+}
+
 /* The onset method for the property 'Ellipsis' changes the ellipsis mode and forces 
    an update. */
 void ViewsText_OnSetEllipsis( ViewsText _this, XBool value )

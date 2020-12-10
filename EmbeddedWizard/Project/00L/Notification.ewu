@@ -1,0 +1,556 @@
+﻿$version 10.00
+
+$rect <10,20,230,60>
+$output false
+class NTF01_NotificationList : Menu::BaseMenuView
+{
+  $rect <0,290,180,330>
+  inherited method Init()
+  {
+    trace "Init NTF01";
+    postsignal OnNotificationListUpdatedSlot;
+  }
+
+  $rect <520,20,720,60>
+  inherited method LoadItemClass()
+  {
+    aItemNo; // suppress warning
+
+    return Menu::ItemNotification;
+  }
+
+  $rect <520,70,720,110>
+  inherited method LoadItemTitle()
+  {
+    var string Title;
+
+    if( DeviceInterface::NotificationDevice.NotificationNum > 0 )
+    {
+      // Notification buffer is in the chronological order with the oldest at first and the latest at the end.
+      // So it needs to get nofication in the reversed order to show the latest notification on the top of the menu list.
+      var uint32 NotificationIdx = DeviceInterface::NotificationDevice.NotificationNum - aItemNo - 1;
+      NotificationData = DeviceInterface::NotificationDevice.GetNotificationAtItem( NotificationIdx );
+
+      if( 0 < NotificationData.Title.length )
+      {
+        Title = NotificationData.Title;
+      }
+      else if( 0 < NotificationData.Subtitle.length )
+      {
+        Title = NotificationData.Subtitle;
+      }
+      else
+      {
+        Title = "---";
+      }
+
+      // append (call repetition count) at the end of title
+      if( Enum::NotificationCategory.MISSED_CALL == NotificationData.Category &&
+          1 < NotificationData.CallRepetition )
+      {
+        Title += "(" + string( NotificationData.CallRepetition ) + ")";
+      }
+    }
+
+    return Title;
+  }
+
+  $rect <520,170,730,210>
+  inherited method LoadItemReceivedTime()
+  {
+    aItemNo; // suppress warning
+
+    var string ReceivedTime = "";
+    if( DeviceInterface::NotificationDevice.NotificationNum > 0 )
+    {
+      ReceivedTime = NotificationData.ReceivedTime.Hour + ":" + NotificationData.ReceivedTime.Minute;
+    }
+
+    return ReceivedTime;
+  }
+
+  $rect <520,220,730,260>
+  inherited method LoadItemCategory()
+  {
+    aItemNo; // suppress warning
+
+    var Enum::NotificationCategory Category = Enum::NotificationCategory.MESSAGE;
+    if( DeviceInterface::NotificationDevice.NotificationNum > 0 )
+    {
+      Category = NotificationData.Category;
+    }
+
+    return Category;
+  }
+
+  $rect <520,270,730,310>
+  inherited method LoadItemUid()
+  {
+    var uint32 Uid = 0;
+
+    if( 0 < DeviceInterface::NotificationDevice.NotificationNum &&
+        aItemNo < NotificationUID.size )
+    {
+      Uid = NotificationData.Uid;
+      NotificationUID[aItemNo] = NotificationData.Uid;
+    }
+
+    return Uid;
+
+  }
+
+  $rect <520,320,730,360>
+  inherited method OnItemActivate()
+  {
+    aMenuItem; // suppress warning
+
+    if( aItemNo >= 0 )
+    {
+      var Notification::NTF02_NotificationDetail Dialog = new Notification::NTF02_NotificationDetail;
+      var uint32 NotificationIdx = DeviceInterface::NotificationDevice.NotificationNum - aItemNo - 1;
+      Dialog.NotificationData = DeviceInterface::NotificationDevice.GetNotificationAtItem( NotificationIdx );
+      Dialog.OnDismiss = OnNotificationDetailDismissSlot;
+      SlideInDialog( Dialog );
+    }
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset ScrollbarVisible = true;
+    preset FocusFrameBounds = <10,0,444,76>;
+    preset SelectedItem = 0;
+  }
+
+  $rect <520,120,720,160>
+  inherited method LoadItemMessage()
+  {
+    aItemNo; // suppress warning
+
+    var string Message;
+    if( Enum::NotificationCategory.MESSAGE == NotificationData.Category )
+    {
+      if( DeviceInterface::NotificationDevice.NotificationNum > 0 )
+      {
+        Message = NotificationData.Message.left( Notification::LIST_MESSAGE_MAX_LEN );
+      }
+
+      // Set to "---" if no message
+      if( 0 == Message.length )
+      {
+        Message = "---";
+      }
+    }
+    else
+    {
+      // empty for Enum::NotificationCategory.MISSED_CALL
+    }
+
+    return Message;
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <0,390,260,430>
+  slot OnNotificationListUpdatedSlot
+  {
+    var uint32 NotificationNum = DeviceInterface::NotificationDevice.NotificationNum;
+    trace "OnNotificationListUpdatedSlot: ", NotificationNum;
+
+    if( 0 < NotificationNum )
+    {
+      NoDataTimeoutTimer.Enabled = false;
+      NoDataText.Visible = false;
+      Menu.NoOfItems = ( int32 )NotificationNum;
+      Menu.Focusable = true;
+      Menu.InvalidateItems( 0, ( int32 )NotificationNum - 1 );
+
+      // keep the highlight focus on the selected notification after adding new notification or deleting existed notification
+      if( 0 < Menu.NoOfItems )
+      {
+        var uint32 SelectedNotificationUID = NotificationUID[Menu.MenuList.SelectedItem];
+        var int32 BufferIdx = DeviceInterface::NotificationDevice.GetBufferIdxOfNotificationUID( SelectedNotificationUID );
+        trace "Selected NTF UID ", SelectedNotificationUID, " bufIdx: ", BufferIdx;
+        if( 0 <= BufferIdx && BufferIdx < Menu.NoOfItems )
+        {
+          Menu.SelectedItem = Menu.NoOfItems - BufferIdx  - 1;
+        }
+      }
+    }
+    else
+    {
+      if( IsCurrentDialog() )
+      {
+        NoDataTimeoutTimer.Enabled = true;
+      }
+      NoDataText.Visible = true;
+      Menu.NoOfItems = 0;
+      Menu.Focusable = false;
+    }
+  }
+
+  $rect <750,70,950,110>
+  var DeviceInterface::NotificationContext NotificationData;
+
+  $rect <0,340,350,380>
+  object Core::SystemEventHandler NotificationListUpdatedSystemEventHandler
+  {
+    preset OnEvent = OnNotificationListUpdatedSlot;
+    preset Event = DeviceInterface::NotificationDevice.NotificationListUpdatedSystemEvent;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text NoDataText
+  {
+    preset Bounds = <10,50,470,236>;
+    preset String = "No data";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <0,441,200,481>
+  object Core::Timer NoDataTimeoutTimer
+  {
+    preset OnTrigger = OnNoDataTimeoutSlot;
+    preset Period = 0;
+    preset Begin = 2000;
+    preset Enabled = true;
+  }
+
+  $rect <3,490,203,530>
+  slot OnNoDataTimeoutSlot
+  {
+    if( null != Owner && IsCurrentDialog() )
+    {
+      DismissThisDialog();
+    }
+  }
+
+  $rect <750,120,950,160>
+  array uint32 NotificationUID[ 100 ];
+
+  $rect <0,540,260,580>
+  slot OnNotificationDetailDismissSlot
+  {
+    trace "OnNotificationDetailDismissSlot";
+    if( 0 == Menu.NoOfItems )
+    {
+    trace "OnNotificationDetailDismissSlot, Enable";
+      NoDataTimeoutTimer.Enabled = true;
+    }
+  }
+
+  $reorder LoadItemReceivedTime 7
+  $reorder LoadItemCategory 7
+  $reorder LoadItemUid 7
+}
+
+$rect <10,70,230,110>
+$output false
+class NTF02_NotificationDetail : Components::BaseMainBG
+{
+  $rect <10,300,190,340>
+  inherited method Init()
+  {
+    trace "Init NTF02";
+  }
+
+  $rect <250,350,480,390>
+  inherited method OnShortDownKeyActivated()
+  {
+    Scrollbar.ViewIdx = NotificationText.ScrollDownPage();
+  }
+
+  $rect <250,300,480,340>
+  inherited method OnShortUpKeyActivated()
+  {
+    Scrollbar.ViewIdx = NotificationText.ScrollUpPage();
+  }
+
+  $rect <250,450,480,490>
+  inherited method OnShortEnterKeyActivated()
+  {
+    OnShortHomeKeyActivated();
+  }
+
+  $rect <250,400,480,440>
+  inherited method OnShortHomeKeyActivated()
+  {
+    signal OnDismiss;
+    super();
+  }
+
+  $rect <10,350,210,390>
+  inherited property DDModeEnabled = true;
+
+  $rect <10,400,210,440>
+  inherited var SlideOutEffectEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle GrayBG
+  {
+    preset Bounds = <11,44,444,265>;
+    preset Color = #CCCCCCFF;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::Scrollbar Scrollbar
+  {
+    preset Bounds = <453,44,461,252>;
+    preset ViewIdx = 0;
+    preset PageItems = 7;
+    preset ListItems = 1;
+  }
+
+  $rect <510,300,710,340>
+  property DeviceInterface::NotificationContext NotificationData;
+
+  $rect <510,350,710,390>
+  onset NotificationData
+  {
+    if( pure NotificationData != value )
+    {
+      pure NotificationData = value;
+      NotificationText.NotificationData = value;
+      DeviceInterface::NotificationDevice.DeleteNotificationOfUid( NotificationData.Uid );
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Notification::NotificationDetailText NotificationText
+  {
+    preset Bounds = <33,48,439,258>;
+    preset OnLineNumUpdated = OnLineNumUpdatedSlot;
+  }
+
+  $rect <520,150,730,190>
+  slot OnLineNumUpdatedSlot
+  {
+    Scrollbar.ListItems = NotificationText.NoOfLines;
+  }
+
+  $rect <10,450,210,490>
+  property slot OnDismiss;
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,36,480,38>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
+  }
+}
+
+$rect <10,120,230,160>
+$output false
+class NotificationDetailText : Core::Group
+{
+  $rect <430,10,610,50>
+  inherited property Bounds = <0,0,406,210>;
+
+  $rect <20,20,160,60>
+  object Views::Text TitleText
+  {
+    preset Layout = Core::Layout[AlignToLeft, AlignToTop];
+    preset Bounds = <0,0,332,30>;
+    preset Ellipsis = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ReceivedTimeText
+  {
+    preset Layout = Core::Layout[AlignToLeft, AlignToTop];
+    preset Bounds = <343,0,406,30>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text MessageText
+  {
+    preset Layout = Core::Layout[AlignToLeft, AlignToTop];
+    preset Bounds = <0,30,406,1260>;
+    preset RowDistance = 30;
+    preset Ellipsis = true;
+    preset WrapText = true;
+    preset ScrollOffset = <0,0>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #000000FF;
+  }
+
+  $rect <640,210,840,250>
+  property int32 ScrollOffsetY = 0;
+
+  $rect <640,250,840,290>
+  onset ScrollOffsetY
+  {
+    if( pure ScrollOffsetY != value )
+    {
+      pure ScrollOffsetY = value;
+
+      var rect NewBounds = TitleInitBounds;
+      NewBounds.y1 = value;
+      NewBounds.y2 = NewBounds.y1 + TitleInitBounds.h;
+      TitleText.Bounds = NewBounds;
+
+      NewBounds = ReceivedTimeInitBounds;
+      NewBounds.y1 = value;
+      NewBounds.y2 = NewBounds.y1 + ReceivedTimeInitBounds.h;
+      ReceivedTimeText.Bounds = NewBounds;
+
+      NewBounds = MessageInitBounds;
+      NewBounds.y1 = NewBounds.y1 + value;
+      NewBounds.y2 = NewBounds.y1 + MessageInitBounds.h;
+      MessageText.Bounds = NewBounds;
+    }
+  }
+
+  $rect <1070,10,1270,50>
+  var rect TitleInitBounds = <0,0,332,30>;
+
+  $rect <1070,50,1270,90>
+  var rect ReceivedTimeInitBounds = <343,0,406,30>;
+
+  $rect <1070,90,1270,130>
+  var rect MessageInitBounds = <0,30,406,1260>;
+
+  $rect <420,250,620,290>
+  method int32 ScrollDownPage()
+  {
+    if( !ScrollEffect.Enabled )
+    {
+      var int32 NextScrollOffsetY = ScrollOffsetY - Bounds.h;
+      var int32 MaxScrollOffset = NoOfLines * MessageText.RowDistance - Bounds.h;
+      if( MaxScrollOffset < 0 )
+      {
+        MaxScrollOffset = 0;
+      }
+
+      if( NextScrollOffsetY.abs > MaxScrollOffset )
+      {
+        NextScrollOffsetY = -1 * MaxScrollOffset;
+      }
+
+      ScrollEffect.Value1 = ScrollOffsetY;
+      ScrollEffect.Value2 = NextScrollOffsetY;
+      ScrollEffect.Enabled = true;
+
+      LineToScroll = NextScrollOffsetY.abs / MessageText.RowDistance + Notification::DETAIL_TOTAL_LINE_NUM - 1;
+      trace "ScrollDown ", LineToScroll;
+    }
+
+    return LineToScroll;
+  }
+
+  $rect <850,10,1050,50>
+  method void UpdateLineNum()
+  {
+    NoOfLines = MessageText.GetNoOfRows() + 1;
+    signal OnLineNumUpdated;
+  }
+
+  $rect <420,210,620,250>
+  method int32 ScrollUpPage()
+  {
+    if( !ScrollEffect.Enabled &&
+        ScrollOffsetY < 0 )
+    {
+      var int32 NextScrollOffsetY = ScrollOffsetY + Bounds.h;
+      if( NextScrollOffsetY > 0 )
+      {
+        NextScrollOffsetY = 0;
+      }
+
+      ScrollEffect.Value1 = ScrollOffsetY;
+      ScrollEffect.Value2 = NextScrollOffsetY;
+      ScrollEffect.Enabled = true;
+
+      LineToScroll = NextScrollOffsetY.abs / MessageText.RowDistance + Notification::DETAIL_TOTAL_LINE_NUM - 1;
+      trace "ScrollUp ", LineToScroll;
+    }
+
+    return LineToScroll;
+  }
+
+  $rect <860,210,1060,250>
+  object Effects::Int32Effect ScrollEffect
+  {
+    preset OnFinished = null;
+    preset OnAnimate = null;
+    preset Exponent = 4.19;
+    preset Timing = Effects::Timing.Exp_Out;
+    preset NoOfCycles = 1;
+    preset CycleDuration = 200;
+    preset InitialDelay = 0;
+    preset Outlet = ^ScrollOffsetY;
+  }
+
+  $rect <850,50,1050,90>
+  property int32 NoOfLines;
+
+  $rect <860,250,1060,290>
+  property slot OnLineNumUpdated;
+
+  $rect <630,10,830,50>
+  property DeviceInterface::NotificationContext NotificationData;
+
+  $rect <630,50,830,90>
+  onset NotificationData
+  {
+    if( pure NotificationData != value )
+    {
+      pure NotificationData = value;
+
+      TitleText.String = value.Title;
+      if( 0 < value.Title.length )
+      {
+        TitleText.String = value.Title;
+      }
+      else if( 0 < value.Subtitle.length )
+      {
+        TitleText.String = value.Subtitle;
+      }
+      else
+      {
+        TitleText.String = "---";
+      }
+
+      ReceivedTimeText.String = NotificationData.ReceivedTime.Hour + ":" + NotificationData.ReceivedTime.Minute;
+
+      if( Enum::NotificationCategory.MESSAGE == NotificationData.Category )
+      {
+        if( 0 < value.Subtitle.length )
+        {
+          MessageText.String = value.Subtitle + "\n";
+        }
+
+        MessageText.String += value.Message;
+        if( 0 == MessageText.String.length )
+        {
+          MessageText.String = "---";
+        }
+      }
+
+      UpdateLineNum();
+    }
+  }
+
+  $rect <860,290,1060,330>
+  var int32 LineToScroll;
+}
+
+$rect <10,180,240,220>
+$output false
+const int32 LIST_MESSAGE_MAX_LEN = 64;
+
+// Max line number per page in the notification detail
+$rect <10,230,240,270>
+$output false
+const int32 DETAIL_TOTAL_LINE_NUM = 7;

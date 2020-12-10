@@ -186,6 +186,10 @@ EW_DEFINE_METHODS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemEnabled,   XBool )( NavigationNAV06_NaviSettingMenu _this, 
     XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( NavigationNAV06_NaviSettingMenu )
 
 /* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.OnShortHomeKeyActivated()' */

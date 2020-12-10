@@ -429,6 +429,23 @@ typedef enum
   EnumSeatHeaterGripWarmerLevelTypeHIGH = 2
 } EnumSeatHeaterGripWarmerLevelType;
 
+/* User defined enumeration: 'Enum::NotificationCategory' */
+typedef enum
+{
+  EnumNotificationCategoryMESSAGE       = 0,
+  EnumNotificationCategoryMISSED_CALL   = 1,
+  EnumNotificationCategoryTOTAL         = 2
+} EnumNotificationCategory;
+
+/* User defined enumeration: 'Enum::PhoneCallState' */
+typedef enum
+{
+  EnumPhoneCallStateIDLE                = 0,
+  EnumPhoneCallStateINCOMING            = 1,
+  EnumPhoneCallStateACTIVE              = 2,
+  EnumPhoneCallStateTOTAL               = 3
+} EnumPhoneCallState;
+
 #ifdef __cplusplus
   }
 #endif

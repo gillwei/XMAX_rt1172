@@ -321,6 +321,9 @@ EW_DECLARE_BITMAP_RES( ResourceScaleIndicatorWindowHigh )
 /* Bitmap resource : 'Resource::ScaleIndicatorBg' */
 EW_DECLARE_BITMAP_RES( ResourceScaleIndicatorBg )
 
+/* Bitmap resource : 'Resource::NotificationCategory' */
+EW_DECLARE_BITMAP_RES( ResourceNotificationCategory )
+
 /* Bitmap resource : 'Resource::ScaleIndicatorBar' */
 EW_DECLARE_BITMAP_RES( ResourceScaleIndicatorBar )
 

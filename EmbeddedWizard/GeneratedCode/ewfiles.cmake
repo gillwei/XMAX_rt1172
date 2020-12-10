@@ -33,4 +33,5 @@ set(EMWIFILES
 	"Info.c" 
 	"StatusBar.c" 
 	"Open.c" 
-	"SeatHeater_GripWarmer.c")
+	"SeatHeater_GripWarmer.c" 
+	"Notification.c")

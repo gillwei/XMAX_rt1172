@@ -175,6 +175,10 @@ EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseMainBG )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( MenuBaseMenuView )
 
 /* 'C' function for method : 'Menu::BaseMenuView.LoadItemClass()' */
@@ -214,6 +218,30 @@ XString MenuBaseMenuView_LoadItemBaseValue( MenuBaseMenuView _this, XInt32 aItem
 
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemBaseValue()' */
 XString MenuBaseMenuView__LoadItemBaseValue( void* _this, XInt32 aItemNo );
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemMessage()' */
+XString MenuBaseMenuView_LoadItemMessage( MenuBaseMenuView _this, XInt32 aItemNo );
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemMessage()' */
+XString MenuBaseMenuView__LoadItemMessage( void* _this, XInt32 aItemNo );
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemReceivedTime()' */
+XString MenuBaseMenuView_LoadItemReceivedTime( MenuBaseMenuView _this, XInt32 aItemNo );
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemReceivedTime()' */
+XString MenuBaseMenuView__LoadItemReceivedTime( void* _this, XInt32 aItemNo );
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemCategory()' */
+XEnum MenuBaseMenuView_LoadItemCategory( MenuBaseMenuView _this, XInt32 aItemNo );
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemCategory()' */
+XEnum MenuBaseMenuView__LoadItemCategory( void* _this, XInt32 aItemNo );
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemUid()' */
+XUInt32 MenuBaseMenuView_LoadItemUid( MenuBaseMenuView _this, XInt32 aItemNo );
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemUid()' */
+XUInt32 MenuBaseMenuView__LoadItemUid( void* _this, XInt32 aItemNo );
 
 #ifdef __cplusplus
   }

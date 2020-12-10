@@ -80,6 +80,9 @@ void EW_notify_navigating_status_update( void );
 void EW_notify_tbt_list_update( int size );
 void EW_notify_active_tbt_item_update( int index );
 
+void EW_notify_notification_list_updated( void );
+void EW_notify_phone_call_state_changed( void );
+
 #ifdef __cplusplus
 }
 #endif

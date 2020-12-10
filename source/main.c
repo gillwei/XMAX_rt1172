@@ -40,6 +40,7 @@
 #include "MM_pub.h"
 #include "QR_pub.h"
 #include "WEA_pub.h"
+#include "NTF_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -134,6 +135,8 @@ NAVI_init();
 MM_init();
 QR_init();
 WEA_init();
+NTF_init();
+
 #if( UNIT_TEST_ENABLE )
     TEST_init();
 #endif

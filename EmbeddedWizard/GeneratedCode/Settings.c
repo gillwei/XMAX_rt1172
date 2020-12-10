@@ -508,6 +508,10 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, _None, _None,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( SettingsSET01_MainSettingMenu )
 
 /* Initializer for the class 'Settings::SET03_ConnectionSettingMenu' */
@@ -715,6 +719,10 @@ EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, ItemTitl
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( SettingsSET03_ConnectionSettingMenu )
 
 /* Initializer for the class 'Settings::SET04_BtSettingMenu' */
@@ -965,6 +973,10 @@ EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, ItemTitleArray,
   SettingsSET04_BtSettingMenu_LoadItemChecked,
   SettingsSET04_BtSettingMenu_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( SettingsSET04_BtSettingMenu )
 
 /* Initializer for the class 'Settings::SET06_BtcDiscovarable' */
@@ -1874,15 +1886,14 @@ void SettingsSET17_BtcPairedDeviceList__Init( SettingsSET17_BtcPairedDeviceList 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super2.SlideOutEffectEnabled = 1;
-  CoreRectView__OnSetBounds( &_this->NoDataText, _Const000B );
-  ViewsText_OnSetString( &_this->NoDataText, EwLoadString( &_Const001A ));
-  CoreTimer_OnSetBegin( &_this->NoDataTimeoutTimer, 2000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 0 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
-  MenuVerticalMenu_OnSetStatusBarDividerVisible( &_this->Super1.Menu, 1 );
+  CoreRectView__OnSetBounds( &_this->NoDataText, _Const000B );
+  ViewsText_OnSetString( &_this->NoDataText, EwLoadString( &_Const001A ));
+  CoreTimer_OnSetBegin( &_this->NoDataTimeoutTimer, 2000 );
   CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), 0 );
   _this->RefreshListObserver.OnEvent = EwNewSlot( _this, SettingsSET17_BtcPairedDeviceList_OnRefreshListSlot );
   CorePropertyObserver_OnSetOutlet( &_this->RefreshListObserver, EwNewRef( EwGetAutoObject( 
@@ -2117,6 +2128,10 @@ EW_DEFINE_CLASS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView, RefreshLis
   SettingsSET17_BtcPairedDeviceList_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( SettingsSET17_BtcPairedDeviceList )
 
 /* Initializer for the class 'Settings::SET19_BtcPairedDeviceOperation' */
@@ -2373,6 +2388,10 @@ EW_DEFINE_CLASS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView, Devic
   MenuBaseMenuView_LoadItemChecked,
   SettingsSET19_BtcPairedDeviceOperation_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
 EW_END_OF_CLASS( SettingsSET19_BtcPairedDeviceOperation )
 
 /* Initializer for the class 'Settings::SET18_DeleteBleDevice' */

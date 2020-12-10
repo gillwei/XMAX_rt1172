@@ -186,6 +186,10 @@ EW_DEFINE_METHODS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( LoadItemEnabled,   XBool )( SettingsSET19_BtcPairedDeviceOperation _this, 
     XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET19_BtcPairedDeviceOperation )
 
 /* The method Init() is invoked automatically after the component has been created. 
