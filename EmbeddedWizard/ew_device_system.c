@@ -24,6 +24,7 @@
 #include "GRM_pub_prj.h"
 #include "RTC_pub.h"
 #include "PM_pub.h"
+#include "QR_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -58,6 +59,10 @@
 
 #ifdef _DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult_
     static int ew_show_burn_in_test_result( void );
+#endif
+
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_
+    static int ew_qrcode_ready( void );
 #endif
 
 #define ESN_STR_MAX_LEN             ( 10 )
@@ -107,7 +112,10 @@
             ew_update_burn_in_test_time,
         #endif
         #ifdef _DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult_
-            ew_show_burn_in_test_result
+            ew_show_burn_in_test_result,
+        #endif
+        #ifdef _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_
+            ew_qrcode_ready
         #endif
         };
     const int num_of_system_func = sizeof( system_function_lookup_table )/sizeof( system_device_function* );
@@ -119,6 +127,7 @@
 
     static int is_esn_read = 0;
     static int is_factory_reset_complete = 0;
+    static int is_qrcode_ready = 0;
 #endif
 
 static uint32_t esn;
@@ -569,6 +578,49 @@ PM_system_reset();
 
 /*********************************************************************
 *
+* @private
+* ew_request_qrcode
+*
+* Request to generate QR code
+*
+* @param pixel_per_mod Pixel per QR code module
+*
+*********************************************************************/
+void ew_request_qrcode
+    (
+    int pixel_per_mod
+    )
+{
+QR_generate_qrcode( esn, pixel_per_mod );
+}
+
+/*********************************************************************
+*
+* @private
+* ew_qrcode_ready
+*
+* Notify EW GUI that ESN QR code is ready
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_
+    static int ew_qrcode_ready
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_qrcode_ready )
+        {
+        is_qrcode_ready = 0;
+        DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( device_object );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
 * @public
 * EW_test_display_pattern
 *
@@ -667,6 +719,25 @@ void EW_show_burn_in_result
 #ifdef _DeviceInterfaceSystemDeviceClass_
     factory_test_burn_in_result = result;
     factory_test_event |= FACTORY_TEST_EVENT_BURNIN_RESULT;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_qrcode_ready
+*
+* Notify Embedded Wizard QR code is ready.
+*
+*********************************************************************/
+void EW_notify_qrcode_ready
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceSystemDeviceClass_
+    is_qrcode_ready = 1;
     EwBspEventTrigger();
 #endif
 }

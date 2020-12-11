@@ -57,6 +57,7 @@
 #include "_SettingsInProgress.h"
 #include "_SettingsMain.h"
 #include "_SettingsReset.h"
+#include "_SettingsSET30_QRCode.h"
 #include "_SettingsSystemInfo.h"
 #include "_SettingsSystemMenu.h"
 

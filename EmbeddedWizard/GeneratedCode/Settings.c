@@ -46,6 +46,7 @@
 #include "_MenuUpDownPushButtonSet.h"
 #include "_MenuVerticalMenu.h"
 #include "_ResourcesBitmap.h"
+#include "_ResourcesExternBitmap.h"
 #include "_ResourcesFont.h"
 #include "_SettingsAllReset.h"
 #include "_SettingsAllResetCompleted.h"
@@ -62,6 +63,7 @@
 #include "_SettingsInProgress.h"
 #include "_SettingsMain.h"
 #include "_SettingsReset.h"
+#include "_SettingsSET30_QRCode.h"
 #include "_SettingsSystemInfo.h"
 #include "_SettingsSystemMenu.h"
 #include "_ViewsImage.h"
@@ -105,7 +107,7 @@ static const unsigned int _StringsDefault0[] =
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault1[] =
 {
-  0x00000388, /* ratio 51.33 % */
+  0x0000040C, /* ratio 50.97 % */
   0xB8007300, 0x80040452, 0x00E60034, 0xC006E830, 0xD800859B, 0xF0D00438, 0x0032800C,
   0x331C40E4, 0x8C4361B1, 0x045CE91C, 0xC8A20640, 0xA2450687, 0xCED06919, 0x390895C8,
   0x02E8C44A, 0x61001422, 0x8884660E, 0x9CC1A450, 0x6C227316, 0x00001358, 0x888B030C,
@@ -122,7 +124,16 @@ static const unsigned int _StringsDefault1[] =
   0x0004F411, 0x4276C04B, 0x10005552, 0xADC1495A, 0x42441678, 0x44054000, 0x57868D57,
   0xD6915882, 0x61E991A0, 0x0A441E65, 0x4D522736, 0x01E6C260, 0x59225891, 0x3E4D6A9D,
   0x7994A369, 0x6693B975, 0x5A194DF6, 0xA5192372, 0x62479901, 0x69419EB5, 0x4693A942,
-  0xDAA9566D, 0x0449CD55, 0x01016C1B, 0x00000000
+  0xDAA9566D, 0x6449CD55, 0xCD490494, 0xAA795239, 0x429A4685, 0xA588DD87, 0x9A241451,
+  0x399AA325, 0x25A45B5A, 0x4360A43D, 0x54902546, 0x16480014, 0x85E843D6, 0x3741949A,
+  0x46174421, 0xD4953286, 0x74953A15, 0xC1100EA0, 0x00405B06, 0x00000000
+};
+
+/* Compressed strings for the language 'Default'. */
+static const unsigned int _StringsDefault2[] =
+{
+  0x00000010, /* ratio 150.00 % */
+  0xB8000D00, 0x80040452, 0x00DA0031, 0x4010C858, 0x00000040, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -202,6 +213,15 @@ static const XStringRes _Const0048 = { _StringsDefault1, 0x0165 };
 static const XColor _Const0049 = { 0xFF, 0xFF, 0xFF, 0xFF };
 static const XStringRes _Const004A = { _StringsDefault1, 0x018C };
 static const XStringRes _Const004B = { _StringsDefault1, 0x01AA };
+static const XRect _Const004C = {{ 20, 98 }, { 207, 227 }};
+static const XRect _Const004D = {{ 231, 98 }, { 410, 148 }};
+static const XRect _Const004E = {{ 219, 162 }, { 454, 210 }};
+static const XStringRes _Const004F = { _StringsDefault1, 0x01C4 };
+static const XStringRes _Const0050 = { _StringsDefault1, 0x01D6 };
+static const XStringRes _Const0051 = { _StringsDefault1, 0x01EA };
+static const XStringRes _Const0052 = { _StringsDefault1, 0x01F3 };
+static const XStringRes _Const0053 = { _StringsDefault1, 0x01FC };
+static const XStringRes _Const0054 = { _StringsDefault2, 0x0002 };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -1134,6 +1154,13 @@ void SettingsSystemInfo_OnLongKeyPressed( SettingsSystemInfo _this, XObject send
   }
 }
 
+/* 'C' function for method : 'Settings::SystemInfo.OnShortEnterKeyPressed()' */
+void SettingsSystemInfo_OnShortEnterKeyPressed( SettingsSystemInfo _this )
+{
+  CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( SettingsSET30_QRCode, 
+  0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
 /* 'C' function for method : 'Settings::SystemInfo.OnMagicKeyReleaseSlot()' */
 void SettingsSystemInfo_OnMagicKeyReleaseSlot( SettingsSystemInfo _this, XObject 
   sender )
@@ -1198,7 +1225,7 @@ EW_DEFINE_CLASS( SettingsSystemInfo, MenuBaseMenuView, ESN, ESN, ESN, ESN, _None
   SettingsSystemInfo_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyPressed,
   ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
+  SettingsSystemInfo_OnShortEnterKeyPressed,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -3253,5 +3280,210 @@ EW_DEFINE_CLASS( SettingsBtFwUpdateDialog, CoreGroup, Rectangle, Rectangle, Rect
   CoreGroup_Remove,
   CoreGroup_Add,
 EW_END_OF_CLASS( SettingsBtFwUpdateDialog )
+
+/* Initializer for the class 'Settings::SET30_QRCode' */
+void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( SettingsSET30_QRCode );
+
+  /* ... then construct all embedded objects */
+  CoreSystemEventHandler__Init( &_this->QrCodeUpdateEventHandler, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->QrCode, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->PixelText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->QrCodeWidthText, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( SettingsSET30_QRCode );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const0000 );
+  CoreRectView__OnSetBounds( &_this->QrCode, _Const004C );
+  ViewsImage_OnSetAlignment( &_this->QrCode, ViewsImageAlignmentAlignHorzCenter 
+  | ViewsImageAlignmentAlignVertCenter );
+  _this->PixelPerModule = 1;
+  CoreRectView__OnSetBounds( &_this->PixelText, _Const004D );
+  ViewsText_OnSetString( &_this->PixelText, 0 );
+  CoreRectView__OnSetBounds( &_this->QrCodeWidthText, _Const004E );
+  ViewsText_OnSetString( &_this->QrCodeWidthText, 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->QrCode ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->PixelText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->QrCodeWidthText ), 0 );
+  _this->QrCodeUpdateEventHandler.OnEvent = EwNewSlot( _this, SettingsSET30_QRCode_OnQrCodeUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->QrCodeUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->QrCodeSystemEvent );
+  ViewsImage_OnSetBitmap( &_this->QrCode, ((ResourcesBitmap)EwGetAutoObject( &ResourceQrCodeExternBitmap, 
+  ResourcesExternBitmap )));
+  ViewsText_OnSetFont( &_this->PixelText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->QrCodeWidthText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ResourcesFont ));
+
+  /* Call the user defined constructor */
+  SettingsSET30_QRCode_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Settings::SET30_QRCode' */
+void SettingsSET30_QRCode__ReInit( SettingsSET30_QRCode _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuBaseMenuView__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  CoreSystemEventHandler__ReInit( &_this->QrCodeUpdateEventHandler );
+  ViewsImage__ReInit( &_this->QrCode );
+  ViewsText__ReInit( &_this->PixelText );
+  ViewsText__ReInit( &_this->QrCodeWidthText );
+}
+
+/* Finalizer method for the class 'Settings::SET30_QRCode' */
+void SettingsSET30_QRCode__Done( SettingsSET30_QRCode _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+
+  /* Finalize all embedded objects */
+  CoreSystemEventHandler__Done( &_this->QrCodeUpdateEventHandler );
+  ViewsImage__Done( &_this->QrCode );
+  ViewsText__Done( &_this->PixelText );
+  ViewsText__Done( &_this->QrCodeWidthText );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuBaseMenuView__Done( &_this->_Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET30_QRCode_Init( SettingsSET30_QRCode _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  DeviceInterfaceSystemDeviceClass_GetQrCode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), _this->PixelPerModule );
+}
+
+/* 'C' function for method : 'Settings::SET30_QRCode.OnLongKeyPressed()' */
+void SettingsSET30_QRCode_OnLongKeyPressed( SettingsSET30_QRCode _this, XObject 
+  sender )
+{
+  CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
+
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  {
+    switch ( CurrentKeyHandler->Code )
+    {
+      case CoreKeyCodeOk :
+        ComponentsBaseComponent_SlideOutDialog((ComponentsBaseComponent)_this, ((CoreGroup)_this ));
+      break;
+
+      default : 
+        ;
+    }
+  }
+}
+
+/* 'C' function for method : 'Settings::SET30_QRCode.OnShortDownKeyPressed()' */
+void SettingsSET30_QRCode_OnShortDownKeyPressed( SettingsSET30_QRCode _this )
+{
+  if ( _this->PixelPerModule > 1 )
+  {
+    _this->PixelPerModule--;
+    DeviceInterfaceSystemDeviceClass_GetQrCode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+    DeviceInterfaceSystemDeviceClass ), _this->PixelPerModule );
+  }
+  else
+  {
+    EwTrace( "%s", EwLoadString( &_Const004F ));
+  }
+}
+
+/* 'C' function for method : 'Settings::SET30_QRCode.OnShortUpKeyPressed()' */
+void SettingsSET30_QRCode_OnShortUpKeyPressed( SettingsSET30_QRCode _this )
+{
+  if ( _this->PixelPerModule < 4 )
+  {
+    _this->PixelPerModule++;
+    DeviceInterfaceSystemDeviceClass_GetQrCode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+    DeviceInterfaceSystemDeviceClass ), _this->PixelPerModule );
+  }
+  else
+  {
+    EwTrace( "%s", EwLoadString( &_Const0050 ));
+  }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET30_QRCode_OnQrCodeUpdateSlot( SettingsSET30_QRCode _this, XObject 
+  sender )
+{
+  XFloat QrCodeWidth;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
+  ResourcesExternBitmap ), EwConcatString( EwLoadString( &_Const0051 ), EwNewStringInt( 
+  _this->PixelPerModule, 0, 10 )));
+  ViewsText_OnSetString( &_this->PixelText, EwConcatString( EwNewStringInt( _this->PixelPerModule, 
+  0, 10 ), EwLoadString( &_Const0052 )));
+  QrCodeWidth = ( 33 * _this->PixelPerModule ) * 0.019350f;
+  ViewsText_OnSetString( &_this->QrCodeWidthText, EwConcatString( EwConcatString( 
+  EwLoadString( &_Const0053 ), EwNewStringFloat( QrCodeWidth, 0, -1 )), EwLoadString( 
+  &_Const0054 )));
+}
+
+/* Variants derived from the class : 'Settings::SET30_QRCode' */
+EW_DEFINE_CLASS_VARIANTS( SettingsSET30_QRCode )
+EW_END_OF_CLASS_VARIANTS( SettingsSET30_QRCode )
+
+/* Virtual Method Table (VMT) for the class : 'Settings::SET30_QRCode' */
+EW_DEFINE_CLASS( SettingsSET30_QRCode, MenuBaseMenuView, QrCodeUpdateEventHandler, 
+                 QrCodeUpdateEventHandler, QrCodeUpdateEventHandler, QrCodeUpdateEventHandler, 
+                 PixelPerModule, PixelPerModule, "Settings::SET30_QRCode" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  SettingsSET30_QRCode_OnLongKeyPressed,
+  SettingsSET30_QRCode_OnShortDownKeyPressed,
+  SettingsSET30_QRCode_OnShortUpKeyPressed,
+  ComponentsBaseComponent_OnShortEnterKeyPressed,
+  MenuBaseMenuView_LoadItemClass,
+  MenuBaseMenuView_LoadItemTitle,
+  MenuBaseMenuView_OnItemActivate,
+  MenuBaseMenuView_LoadItemChecked,
+  MenuBaseMenuView_LoadItemEnabled,
+EW_END_OF_CLASS( SettingsSET30_QRCode )
 
 /* Embedded Wizard */

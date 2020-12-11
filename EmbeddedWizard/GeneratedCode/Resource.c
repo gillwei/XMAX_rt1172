@@ -239,4 +239,17 @@ EW_RES_WITHOUT_VARIANTS( ResourceFocusFrame )
 /* Table with links to derived variants of the bitmap resource : 'Resource::CheckMark' */
 EW_RES_WITHOUT_VARIANTS( ResourceCheckMark )
 
+/* User defined auto object: 'Resource::QrCodeExternBitmap' */
+EW_DEFINE_AUTOOBJECT( ResourceQrCodeExternBitmap, ResourcesExternBitmap )
+
+/* Initializer for the auto object 'Resource::QrCodeExternBitmap' */
+void ResourceQrCodeExternBitmap__Init( ResourcesExternBitmap _this )
+{
+  EW_UNUSED_ARG( _this );
+}
+
+/* Table with links to derived variants of the auto object : 'Resource::QrCodeExternBitmap' */
+EW_DEFINE_AUTOOBJECT_VARIANTS( ResourceQrCodeExternBitmap )
+EW_END_OF_AUTOOBJECT_VARIANTS( ResourceQrCodeExternBitmap )
+
 /* Embedded Wizard */

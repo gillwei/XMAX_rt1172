@@ -34,6 +34,7 @@
 
 #include "ewgfx.h"
 #include "JPEG_pub.h"
+#include "QR_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -134,6 +135,88 @@ for( y = 0; y < image_height; y++, dest += ofs )
                   ( rgb_buffer[rgb_idx+2] << EW_COLOR_CHANNEL_BIT_OFFSET_BLUE ) |
                   ( alpha << EW_COLOR_CHANNEL_BIT_OFFSET_ALPHA ) );
         rgb_idx += 3;
+        }
+    }
+
+EwUnlockBitmap( lock );
+return bitmap;
+}
+
+/*********************************************************************
+*
+* @private
+* load_external_qrcode
+*
+* Load QR code to XBitmap.
+*
+* @return XBitmap
+*
+*********************************************************************/
+static XBitmap* load_external_qrcode
+    (
+    void
+    )
+{
+XBitmap*      bitmap;
+XPoint        frame_size;
+XRect         bmp_lock_area;
+XBitmapLock*  lock;
+unsigned int* dest;
+int           ofs;
+int           x;
+int           y;
+unsigned int  alpha        = ALPHA_DEFAULT;
+qrcode_buf_handle_struct* buf_handle = QR_get_qrcode_buf();
+uint8_t*      argb_buffer  = buf_handle->addr;
+int           image_width  = buf_handle->image_width;
+int           image_height = buf_handle->image_height;
+
+/* create a new bitmap with the previously determined size */
+frame_size.X = image_width;
+frame_size.Y = image_height;
+bitmap       = EwCreateBitmap( EW_PIXEL_FORMAT_NATIVE, frame_size, 0, 1 );
+
+/* check if enough memory to create the bitmap */
+if( NULL == bitmap )
+    {
+    EwPrint( "%s: Err: create bitmap fail\r\n", __FUNCTION__ );
+    return NULL;
+    }
+
+/* lock the entire bitmap for write operation */
+bmp_lock_area.Point1.X = 0;
+bmp_lock_area.Point1.Y = 0;
+bmp_lock_area.Point2.X = image_width;
+bmp_lock_area.Point2.Y = image_height;
+lock = EwLockBitmap( bitmap, 0, bmp_lock_area, 0, 1 );
+
+/* Get the pointer to the first pixel within the locked bitmap.
+ * In the RGBA8888 format every pixel is a 32-bit value (unsigned int).
+ * Additionally calculate the offset in pixel between the end of one row
+ * and the begin of the next row. */
+dest = ( unsigned int* ) lock->Pixel1;
+ofs  = ( lock->Pitch1Y / 4 ) - image_width;
+
+/* Iterate through the pixel within the locked bitmap area.
+ * Do this row-by-row and column-by-column.
+ * After one row is finished adjust the 'dest' pointer to refer to the next row.
+ * After one column is finished increment the 'dest' pointer only. */
+int pixel_per_mod = QR_pixel_per_mod();
+for( y = 0; y < image_height; y++, dest += ofs )
+    {
+    for( x = 0; x < image_width; x++, dest++ )
+        {
+        if( argb_buffer[( ( y / pixel_per_mod ) * ( image_height / pixel_per_mod ) + ( x / pixel_per_mod ) )] == 0x00 )
+            {
+            *dest = 0x00 | ( alpha << EW_COLOR_CHANNEL_BIT_OFFSET_ALPHA );
+            }
+        else
+            {
+            *dest = ( ( 0xFF << EW_COLOR_CHANNEL_BIT_OFFSET_RED ) |
+                    ( 0xFF << EW_COLOR_CHANNEL_BIT_OFFSET_GREEN ) |
+                    ( 0xFF << EW_COLOR_CHANNEL_BIT_OFFSET_BLUE )  |
+                    ( alpha << EW_COLOR_CHANNEL_BIT_OFFSET_ALPHA ) );
+            }
         }
     }
 
@@ -264,6 +347,10 @@ if( !strncmp( name, "Map", 3 ) )
 else if( !strncmp( name, "DisplayFlicker", 14 ) )
     {
     bitmap = load_display_flicker();
+    }
+else if( !strncmp( name, "QRCode", 6 ) )
+    {
+    bitmap = load_external_qrcode();
     }
 else
     {

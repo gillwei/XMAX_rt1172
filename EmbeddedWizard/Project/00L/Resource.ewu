@@ -621,3 +621,13 @@ resource Resources::Bitmap CheckMark
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
+
+// QR Code
+note group Note6
+{
+  attr Bounds = <350,770,640,930>;
+}
+
+$rect <390,830,590,870>
+$output false
+autoobject Resources::ExternBitmap QrCodeExternBitmap;

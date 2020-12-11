@@ -57,6 +57,7 @@
 EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( FactoryTestSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( FactoryResetTimer, CoreTimer )
+  EW_OBJECT  ( QrCodeSystemEvent, CoreSystemEvent )
   EW_PROPERTY( SoftwareVersion, XString )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
@@ -169,6 +170,20 @@ void DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult( void* _this, XBool
 
 /* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.ShowBurnInTestResult(). */
 #define _DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyQrCodeReady()' */
+void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyQrCodeReady(). */
+#define _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetQrCode()' */
+void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClass _this, 
+  XInt32 pixelnum );
 
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );

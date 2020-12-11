@@ -51,6 +51,7 @@ void ew_get_software_version( char* version );
 void ew_get_bt_software_version( char* version );
 void ew_get_esn( void );
 void ew_get_rtc_time( char* datetime );
+void ew_request_qrcode( int pixel_per_mod );
 
 void ew_power_init( void );
 int  ew_power_ignition_status( void );

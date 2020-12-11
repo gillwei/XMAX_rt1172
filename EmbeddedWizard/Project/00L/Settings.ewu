@@ -513,6 +513,12 @@ class SystemInfo : Menu::BaseMenuView
     }
   }
 
+  $rect <730,50,930,90>
+  inherited method OnShortEnterKeyPressed()
+  {
+    PresentDialog( new Settings::SET30_QRCode, null, null, null, null, null, null, null, null, false );
+  }
+
   $rect <20,20,160,60>
   object Views::Text ESN
   {
@@ -2186,5 +2192,106 @@ class BtFwUpdateDialog : Core::Group
   {
     GetRoot().EndModal( this );
     GetRoot().Remove( this );
+  }
+}
+
+$rect <950,190,1150,230>
+$output false
+class SET30_QRCode : Menu::BaseMenuView
+{
+  $rect <550,20,750,60>
+  inherited method Init()
+  {
+    DeviceInterface::SystemDevice.GetQrCode( PixelPerModule );
+  }
+
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <760,130,960,170>
+  inherited slot OnLongKeyPressed
+  {
+    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
+    if( null != CurrentKeyHandler && null != Owner )
+    {
+      switch( CurrentKeyHandler.Code )
+      {
+        case Core::KeyCode.Ok: SlideOutDialog( this );
+        default:;
+      }
+    }
+  }
+
+  $rect <550,180,750,220>
+  inherited method OnShortDownKeyPressed()
+  {
+    if( PixelPerModule > 1 )
+    {
+      PixelPerModule--;
+      DeviceInterface::SystemDevice.GetQrCode( PixelPerModule );
+    }
+    else
+    {
+      trace "please press up";
+    }
+  }
+
+  $rect <550,130,750,170>
+  inherited method OnShortUpKeyPressed()
+  {
+    if( PixelPerModule < 4 )
+    {
+      PixelPerModule++;
+      DeviceInterface::SystemDevice.GetQrCode( PixelPerModule );
+    }
+    else
+    {
+      trace "please press down";
+    }
+  }
+
+  $rect <550,70,750,110>
+  object Core::SystemEventHandler QrCodeUpdateEventHandler
+  {
+    preset OnEvent = OnQrCodeUpdateSlot;
+    preset Event = DeviceInterface::SystemDevice.QrCodeSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <750,70,950,110>
+  slot OnQrCodeUpdateSlot
+  {
+    Resource::QrCodeExternBitmap.Name = "QRCode" + string( PixelPerModule );
+    PixelText.String = string( PixelPerModule ) + " Pixel";
+    var float QrCodeWidth = 33 * PixelPerModule * 0.01935;
+    QrCodeWidthText.String = "Width: " + string( QrCodeWidth ) + " cm";
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image QrCode
+  {
+    preset Bounds = <20,98,207,227>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::QrCodeExternBitmap;
+  }
+
+  $rect <550,240,750,280>
+  var int32 PixelPerModule = 1;
+
+  $rect <20,20,160,60>
+  object Views::Text PixelText
+  {
+    preset Bounds = <231,98,410,148>;
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text QrCodeWidthText
+  {
+    preset Bounds = <219,162,454,210>;
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
   }
 }

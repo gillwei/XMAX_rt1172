@@ -36,6 +36,7 @@
 #include "HCI_pub.h"
 #include "BTM_pub.h"
 #include "MM_pub.h"
+#include "QR_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -127,6 +128,7 @@ VI_init();
 JPEG_init();
 NAVI_init();
 MM_init();
+QR_init();
 
 #if( UNIT_TEST_ENABLE )
     TEST_init();

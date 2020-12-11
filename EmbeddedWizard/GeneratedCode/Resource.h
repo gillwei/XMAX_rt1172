@@ -150,6 +150,9 @@ EW_DECLARE_BITMAP_RES( ResourceCheckMark )
 /* User defined auto object: 'Resource::ExternBitmap' */
 EW_DECLARE_AUTOOBJECT( ResourceExternBitmap, ResourcesExternBitmap )
 
+/* User defined auto object: 'Resource::QrCodeExternBitmap' */
+EW_DECLARE_AUTOOBJECT( ResourceQrCodeExternBitmap, ResourcesExternBitmap )
+
 #ifdef __cplusplus
   }
 #endif

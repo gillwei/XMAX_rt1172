@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSystemInfo_H
-#define _SettingsSystemInfo_H
+#ifndef _SettingsSET30_QRCode_H
+#define _SettingsSET30_QRCode_H
 
 #ifdef __cplusplus
   extern "C"
@@ -43,7 +43,7 @@
 #endif
 
 #include "_CoreKeyPressHandler.h"
-#include "_CorePropertyObserver.h"
+#include "_CoreSystemEventHandler.h"
 #include "_MenuBaseMenuView.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -91,27 +91,24 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::SystemInfo */
-#ifndef _SettingsSystemInfo_
-  EW_DECLARE_CLASS( SettingsSystemInfo )
-#define _SettingsSystemInfo_
+/* Forward declaration of the class Settings::SET30_QRCode */
+#ifndef _SettingsSET30_QRCode_
+  EW_DECLARE_CLASS( SettingsSET30_QRCode )
+#define _SettingsSET30_QRCode_
 #endif
 
 
-/* Deklaration of class : 'Settings::SystemInfo' */
-EW_DEFINE_FIELDS( SettingsSystemInfo, MenuBaseMenuView )
-  EW_OBJECT  ( ESN,             ViewsText )
-  EW_OBJECT  ( SoftwareVersionTitle, ViewsText )
-  EW_OBJECT  ( EsnText,         ViewsText )
-  EW_OBJECT  ( SoftwareVersionText, ViewsText )
-  EW_OBJECT  ( EsnObserver,     CorePropertyObserver )
-  EW_OBJECT  ( BtSwVersionTitle, ViewsText )
-  EW_OBJECT  ( BtSwVersionText, ViewsText )
-  EW_OBJECT  ( MagicKeyHandler, CoreKeyPressHandler )
-EW_END_OF_FIELDS( SettingsSystemInfo )
+/* Deklaration of class : 'Settings::SET30_QRCode' */
+EW_DEFINE_FIELDS( SettingsSET30_QRCode, MenuBaseMenuView )
+  EW_OBJECT  ( QrCodeUpdateEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( QrCode,          ViewsImage )
+  EW_OBJECT  ( PixelText,       ViewsText )
+  EW_OBJECT  ( QrCodeWidthText, ViewsText )
+  EW_VARIABLE( PixelPerModule,  XInt32 )
+EW_END_OF_FIELDS( SettingsSET30_QRCode )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SystemInfo' */
-EW_DEFINE_METHODS( SettingsSystemInfo, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET30_QRCode' */
+EW_DEFINE_METHODS( SettingsSET30_QRCode, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -154,41 +151,42 @@ EW_DEFINE_METHODS( SettingsSystemInfo, MenuBaseMenuView )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( SettingsSystemInfo _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( SettingsSystemInfo _this )
+  EW_METHOD( OnLongKeyPressed,  void )( SettingsSET30_QRCode _this, XObject sender )
+  EW_METHOD( OnShortDownKeyPressed, void )( SettingsSET30_QRCode _this )
+  EW_METHOD( OnShortUpKeyPressed, void )( SettingsSET30_QRCode _this )
+  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( MenuBaseMenuView _this, XInt32 aItemNo, 
     MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( SettingsSystemInfo )
+EW_END_OF_METHODS( SettingsSET30_QRCode )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void SettingsSystemInfo_Init( SettingsSystemInfo _this, XHandle aArg );
+void SettingsSET30_QRCode_Init( SettingsSET30_QRCode _this, XHandle aArg );
 
-/* 'C' function for method : 'Settings::SystemInfo.OnLongKeyPressed()' */
-void SettingsSystemInfo_OnLongKeyPressed( SettingsSystemInfo _this, XObject sender );
-
-/* 'C' function for method : 'Settings::SystemInfo.OnShortEnterKeyPressed()' */
-void SettingsSystemInfo_OnShortEnterKeyPressed( SettingsSystemInfo _this );
-
-/* 'C' function for method : 'Settings::SystemInfo.OnMagicKeyReleaseSlot()' */
-void SettingsSystemInfo_OnMagicKeyReleaseSlot( SettingsSystemInfo _this, XObject 
+/* 'C' function for method : 'Settings::SET30_QRCode.OnLongKeyPressed()' */
+void SettingsSET30_QRCode_OnLongKeyPressed( SettingsSET30_QRCode _this, XObject 
   sender );
 
-/* This slot method is executed when the associated property observer 'PropertyObserver' 
-   is notified. */
-void SettingsSystemInfo_OnEsnReceivedSlot( SettingsSystemInfo _this, XObject sender );
+/* 'C' function for method : 'Settings::SET30_QRCode.OnShortDownKeyPressed()' */
+void SettingsSET30_QRCode_OnShortDownKeyPressed( SettingsSET30_QRCode _this );
+
+/* 'C' function for method : 'Settings::SET30_QRCode.OnShortUpKeyPressed()' */
+void SettingsSET30_QRCode_OnShortUpKeyPressed( SettingsSET30_QRCode _this );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET30_QRCode_OnQrCodeUpdateSlot( SettingsSET30_QRCode _this, XObject 
+  sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSystemInfo_H */
+#endif /* _SettingsSET30_QRCode_H */
 
 /* Embedded Wizard */
