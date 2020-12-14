@@ -24,9 +24,6 @@
 #include "GRM_pub_prj.h"
 #include "RTC_pub.h"
 #include "PM_pub.h"
-/* TODO: uncomment these lines when integrating with bluetooth manager
-#include "BTM_pub.h"
-*/
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -65,10 +62,6 @@
 
 #define ESN_STR_MAX_LEN             ( 10 )
 #define INVALID_ESN                 ( 0xFFFFFFFF )
-
-#define DEFAULT_LAST_PAGE_INDEX     ( 0 )
-#define DEFAULT_LANGUAGE            ( 0 )
-#define FACTORY_RESET_NUM           ( 2 )
 
 #define FACTORY_TEST_EVENT_DISP_PATTERN         ( 1 << 0 )
 #define FACTORY_TEST_EVENT_DISP_QUIT            ( 1 << 1 )
@@ -126,11 +119,9 @@
 
     static int is_esn_read = 0;
     static int is_factory_reset_complete = 0;
-    static int factory_reset_count = 0;
 #endif
 
 static uint32_t esn;
-void EW_btm_reset_callback( int result );
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -524,100 +515,6 @@ XBool ew_is_debug_build
 /*********************************************************************
 *
 * @private
-* update_factory_reset_status
-*
-* Count the number of items reset, and set is_factory_reset_complete to 1
-* if all items are reset.
-*
-*********************************************************************/
-static void update_factory_reset_status
-    (
-    void
-    )
-{
-factory_reset_count++;
-if( FACTORY_RESET_NUM == factory_reset_count )
-    {
-    is_factory_reset_complete = 1;
-    }
-}
-
-/*********************************************************************
-*
-* @private
-* ew_eeprom_set_last_page_callback
-*
-* The callback function of resetting last page saved in EEPROM
-*
-* @param result True if writing last page to EEPROM succeeded.
-*               False if writing last page to EEPROM failed.
-* @param data The pointer to the value of last page index
-*
-*********************************************************************/
-void ew_eeprom_set_last_page_callback
-    (
-    bool  result,
-    void* data
-    )
-{
-if( !result )
-    {
-    EwPrint( "EW reset last page fail\r\n" );
-    }
-update_factory_reset_status();
-}
-
-/*********************************************************************
-*
-* @private
-* ew_eeprom_set_language_callback
-*
-* The callback function of resetting language saved in EEPROM
-*
-* @param result True if writing last language to EEPROM succeeded.
-*               False if writing last language to EEPROM failed.
-* @param data The pointer to the value of language
-*
-*********************************************************************/
-void ew_eeprom_set_language_callback
-    (
-    bool  result,
-    void* data
-    )
-{
-if( !result )
-    {
-    EwPrint( "EW reset lang fail\r\n" );
-    }
-update_factory_reset_status();
-}
-
-/*********************************************************************
-*
-* @public
-* EW_btm_reset_callback
-*
-* The callback function of resetting BT manager
-*
-* @param result 1: The reset of BT manager successes.
-*               0: The reset of BT manager fails.
-*
-*********************************************************************/
-void EW_btm_reset_callback
-    (
-    int result
-    )
-{
-if( !result )
-    {
-    EwPrint( "EW reset BTM fail\r\n" );
-    }
-update_factory_reset_status();
-}
-
-/*********************************************************************
-*
-* @private
 * ew_notify_factory_reset_complete
 *
 * Notify the factory reset result to EW
@@ -643,29 +540,17 @@ update_factory_reset_status();
 /*********************************************************************
 *
 * @private
-* ew_reset_to_factory_default
+* ew_done_factory_reset
 *
-* Run factory reset
+* Set the flag is_factory_reset_complete when data is reset
 *
 *********************************************************************/
-void ew_reset_to_factory_default
+void ew_done_factory_reset
     (
     void
     )
 {
-if( pdFALSE == EEPM_set_last_page( DEFAULT_LAST_PAGE_INDEX, &ew_eeprom_set_last_page_callback ) )
-    {
-    EwPrint( "reset page false\r\n" );
-    }
-
-if( pdFALSE == EEPM_set_language( DEFAULT_LANGUAGE, &ew_eeprom_set_language_callback ) )
-    {
-    EwPrint( "reset lang false\r\n" );
-    }
-
-/* TODO: uncomment these lines when integrating with bluetooth manager
-BTM_reset_factory_default( &EW_btm_reset_callback );
-*/
+is_factory_reset_complete = 1;
 }
 
 /*********************************************************************
