@@ -198,7 +198,7 @@ BOARD_InitPins:
   - {pin_num: T7, peripheral: SRC, signal: 'BOOT_MODE, 01', pin_signal: GPIO_LPSR_03}
   - {pin_num: P6, peripheral: SRC, signal: 'BOOT_MODE, 00', pin_signal: GPIO_LPSR_02}
   - {pin_num: M17, peripheral: FLEXIO2, signal: 'IO, 29', pin_signal: GPIO_AD_29, direction: OUTPUT}
-  - {pin_num: B16, peripheral: GPIO10, signal: 'gpio_io, 03', pin_signal: GPIO_SD_B1_00, direction: OUTPUT}
+  - {pin_num: B16, peripheral: GPIO10, signal: 'gpio_io, 03', pin_signal: GPIO_SD_B1_00, direction: OUTPUT, gpio_init_state: 'true'}
   - {pin_num: M13, peripheral: GPIO9, signal: 'gpio_io, 03', pin_signal: GPIO_AD_04, direction: OUTPUT}
   - {pin_num: U9, peripheral: SNVS, signal: snvs_lp_pmic_on_req, pin_signal: PMIC_ON_REQ, identifier: ''}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -351,7 +351,7 @@ void BOARD_InitPins(void) {
   /* GPIO configuration of TFT_BL_EN on GPIO_SD_B1_00 (pin B16) */
   gpio_pin_config_t TFT_BL_EN_config = {
       .direction = kGPIO_DigitalOutput,
-      .outputLogic = 0U,
+      .outputLogic = 1U,
       .interruptMode = kGPIO_NoIntmode
   };
   /* Initialize GPIO functionality on GPIO_SD_B1_00 (pin B16) */

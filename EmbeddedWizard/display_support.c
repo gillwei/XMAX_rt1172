@@ -369,7 +369,7 @@ static void display_monitor_task
 static uint32_t asil_pin_status = 0;
 
 vTaskDelay( T4_TIMEOUT_AFTER_RESET );
-GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN, STD_HIGH );
+control_TFT_BL_EN( STD_HIGH );
 
 /* Wait until display initialization done */
 vTaskDelay( MIN_DELAY_START_TIME );
@@ -405,7 +405,7 @@ static void control_TFT_BL_EN
     uint8_t on_off
     )
 {
-GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN, on_off );
+GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN, !on_off );
 }
 
 /*********************************************************************

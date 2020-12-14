@@ -407,6 +407,7 @@
                   <pin peripheral="GPIO10" signal="gpio_io, 03" pin_num="B16" pin_signal="GPIO_SD_B1_00">
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
+                        <pin_feature name="gpio_init_state" value="true"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO9" signal="gpio_io, 03" pin_num="M13" pin_signal="GPIO_AD_04">
