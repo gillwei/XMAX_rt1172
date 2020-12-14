@@ -32,6 +32,7 @@ extern "C"{
 #include "can_cfg.h"
 #include "can_drv.h"
 #include "can_hw.h"
+#include "can_dll_par.h"
 #include "can_dll_prv_par.h"
 
 #include "IOP_pub_inst.h"
@@ -490,16 +491,16 @@ void sendCanData
 {
 can_tmd_t l_p_tmd =
     {
-    .identifier = FT_REP_CAN_ID,
+    .identifier = TX7_FACT_INSP1_GA_CAN0_ID,
     .dlc        = FT_CAN_DLC,
-    .handle     = FT_REP_TXFRM_HANDLE,
+    .handle     = IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_HANDLE,
     .options    = CAN_TXMSG_STANDARD
     };
 
 if( !queueIsEmpty() )
     {
     l_p_tmd.p_data = (uint8_t *)&iopDataQueue[iopDataHead];
-    can_hw_transmit( CAN_CONTROLLER_2, &l_p_tmd ); // TODO: Change to uppler layer transmit API.
+    can_hw_transmit( CAN_CONTROLLER_2, &l_p_tmd ); // TODO: Change to upper layer transmit API.
     if( iopDataHead == iopDataTail )
         {
         iopDataHead = IOP_QUEUE_INVALID;

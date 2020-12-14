@@ -334,7 +334,7 @@ if( l_pp_can_txq != NULL )
         /*----------------------------------------------
         Notify the Application
         ----------------------------------------------*/
-        //TBD can_drv_hook_exception( hw_inst, CAN_EX_TXQ_ERROR );
+        can_drv_hook_exception( hw_inst, CAN_EX_TXQ_ERROR );
         }
     }
 
@@ -357,7 +357,7 @@ if( l_p_can_tmdq != NULL )
         /*----------------------------------------------
         Notify the Application
         ----------------------------------------------*/
-        //TBD can_drv_hook_exception( hw_inst, CAN_EX_TMDQ_ERROR );
+        can_drv_hook_exception( hw_inst, CAN_EX_TMDQ_ERROR );
         }
     }
 }
@@ -720,7 +720,7 @@ if( l_p_can_rxq != NULL )
         ----------------------------------------------*/
         can_error_status[hw_inst] |= CAN_DRV_ERR_RXQ;
 
-        //TBD can_drv_hook_exception( hw_inst, CAN_EX_RXQ_ERROR );
+        can_drv_hook_exception( hw_inst, CAN_EX_RXQ_ERROR );
         }
     }
 }
@@ -829,7 +829,7 @@ switch( init_mode )
             /*----------------------------------------------
             Notify the Application that CAN is On Line
             ----------------------------------------------*/
-            //TBD can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_ONLINE );
+            can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_ONLINE );
             }
         else if( CAN_RC_BUSOFF_INIT_PNDG == l_ret_code )
             {
@@ -837,7 +837,7 @@ switch( init_mode )
             Notify the Application that a deferred CAN
             initialization is in progress.
             ----------------------------------------------*/
-            //TBD can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_DEFERRED_INIT_PNDG );
+            can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_DEFERRED_INIT_PNDG );
             }
         else
             {
@@ -1422,7 +1422,7 @@ then notify the application of successful transmit.
 --------------------------------------------------*/
 if( tx_ok != FALSE )
     {
-    //TBD can_drv_hook_transmit( hw_inst, tx_mb_index, tmh );
+    can_drv_hook_transmit( hw_inst, tx_mb_index, tmh );
     }
 }
 
@@ -1445,7 +1445,7 @@ void can_hook_transmit_timeout
 /*--------------------------------------------------
 Notify the Application
 --------------------------------------------------*/
-//TBD can_drv_hook_transmit_timeout( hw_inst, tmh );
+can_drv_hook_transmit_timeout( hw_inst, tmh );
 }
 
 /*!*******************************************************************
@@ -1476,7 +1476,7 @@ if( 0 == ( can_status[hw_inst] & CAN_DRV_RX_SUSPEND ) )
     /*--------------------------------------------------
     Notify the Application of received message
     --------------------------------------------------*/
-//TBD can_drv_hook_receive( hw_inst, rx_mb_index, p_rmd );
+    can_drv_hook_receive( hw_inst, rx_mb_index, p_rmd );
     }
 }
 
@@ -1607,7 +1607,7 @@ can_hook_wake
 /*------------------------------------------------------
 Notify the application layer
 ------------------------------------------------------*/
-//TBD can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_WAKEUP );
+can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_WAKEUP );
 }
 
 /*!*******************************************************************
@@ -1634,7 +1634,7 @@ can_hook_sleep
 /*------------------------------------------------------
 Notify the application layer
 ------------------------------------------------------*/
-//TBD can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_SLEEP );
+can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_SLEEP );
 }
 
 /*!*******************************************************************
@@ -1664,13 +1664,13 @@ if( CAN_EX_BUSOFF == exception )
     /*--------------------------------------------------
     Notify the application of change in operational mode
     --------------------------------------------------*/
-    //TBD can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_OFFLINE );
+    can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_OFFLINE );
     }
 
 /*------------------------------------------------------
 Notify the application of the exception
 ------------------------------------------------------*/
-//TBD can_drv_hook_exception( hw_inst, exception );
+can_drv_hook_exception( hw_inst, exception );
 }
 
 /*!*******************************************************************
@@ -1695,7 +1695,7 @@ can_hook_deferred_init_busoff_recovery_pndg
 /*--------------------------------------------------
 Notify the application of change in operational mode
 --------------------------------------------------*/
-//TBD can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_DEFERRED_INIT_PNDG );
+can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_DEFERRED_INIT_PNDG );
 }
 
 /*!*******************************************************************
@@ -1719,6 +1719,6 @@ can_hook_init_busoff_recovery
 /*--------------------------------------------------
 Notify the application of change in operational mode
 --------------------------------------------------*/
-//TBD can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_ONLINE );
+can_drv_hook_op_mode( hw_inst, CAN_OP_MODE_ONLINE );
 }
 
