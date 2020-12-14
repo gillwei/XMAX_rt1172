@@ -36,7 +36,7 @@
 
 #define OS_SIGNAL_WAKEUP_UI  0x00000001
 
-static TaskHandle_t ThreadId = 0;
+static TaskHandle_t ew_task_handle = 0;
 
 
 /*******************************************************************************
@@ -90,9 +90,15 @@ void EwBspEventWait( int aTimeout )
 *   None
 *
 *******************************************************************************/
-void EwBspEventTrigger( void )
+void EwBspEventTrigger
+    (
+    void
+    )
 {
-  xTaskNotify( ThreadId, OS_SIGNAL_WAKEUP_UI, eSetBits );
+if( ew_task_handle > 0 )
+    {
+    xTaskNotify( ew_task_handle, OS_SIGNAL_WAKEUP_UI, eSetBits );
+    }
 }
 
 /*********************************************************************
@@ -105,10 +111,10 @@ void EwBspEventTrigger( void )
 *********************************************************************/
 void EwBspEventSetTaskHandle
     (
-    TaskHandle_t ew_task_handle
+    TaskHandle_t handle
     )
 {
-ThreadId = ew_task_handle;
+ew_task_handle = handle;
 }
 
 
