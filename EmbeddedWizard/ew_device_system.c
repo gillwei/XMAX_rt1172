@@ -267,11 +267,9 @@ void ew_get_bt_software_version
     )
 {
 version[0] = '\0';
-/* TODO: uncomment these lines when integrating with bluetooth manager
 uint8_t bt_sw_ver[BT_SW_VERSION_LEN];
 BTM_get_sw_version( bt_sw_ver );
 sprintf( version, "%d.%02d", bt_sw_ver[0], bt_sw_ver[1] );
-*/
 }
 
 /*********************************************************************

@@ -243,17 +243,14 @@ class SystemDeviceClass : Templates::DeviceClass
     $if !$prototyper
       var string bt_sw_version = "";
 
-      if( "" == pure BtSoftwareVersion )
+      native( bt_sw_version )
       {
-        native( bt_sw_version )
-        {
-           char version[8];
-           ew_get_bt_software_version( version );
-           bt_sw_version = EwNewStringAnsi( version );
-        }
-
-        pure BtSoftwareVersion = bt_sw_version;
+         char version[8];
+         ew_get_bt_software_version( version );
+         bt_sw_version = EwNewStringAnsi( version );
       }
+
+      pure BtSoftwareVersion = bt_sw_version;
     $endif
 
     return pure BtSoftwareVersion;

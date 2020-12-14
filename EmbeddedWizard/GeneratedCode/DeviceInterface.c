@@ -293,16 +293,12 @@ XString DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( DeviceInterface
 {
   XString bt_sw_version = 0;
 
-  if ( !EwCompString( 0, _this->BtSoftwareVersion ))
   {
-    {
-      char version[8];
-      ew_get_bt_software_version( version );
-      bt_sw_version = EwNewStringAnsi( version );
-    }
-    _this->BtSoftwareVersion = EwShareString( bt_sw_version );
+    char version[8];
+    ew_get_bt_software_version( version );
+    bt_sw_version = EwNewStringAnsi( version );
   }
-
+  _this->BtSoftwareVersion = EwShareString( bt_sw_version );
   return _this->BtSoftwareVersion;
 }
 
