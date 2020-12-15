@@ -148,7 +148,7 @@ the Transmit Complete Event
 ------------------------------------------------------*/
 if( IL_CAN0_TX_NM_AND_LP_BK_TXFRM_HANDLE == tmh )
     {
-    //TBD nm_hook_transmit( hw_inst, tmh );
+    nm_hook_transmit( hw_inst, tmh );
     }
 else
     {
@@ -308,7 +308,7 @@ if( p_rmd != NULL )
                     /*------------------------------------------------------
                     Dispatch to Network Management Layer
                     ------------------------------------------------------*/
-                    //TBD nm_hook_receive( hw_inst, p_rmd );
+                    nm_hook_receive( hw_inst, p_rmd );
                     break;
 
                 case DLL_RX_TP_FRAME:
@@ -616,7 +616,7 @@ can_drv_hook_receive
 Notify the NM layer of any frame reception for BusOFF
 recovery detection.
 ------------------------------------------------------*/
-//TBD nm_hook_notify_any_can_frame_reception( hw_inst );
+nm_hook_notify_any_can_frame_reception( hw_inst );
 }
 
 /*!*******************************************************************
@@ -658,7 +658,7 @@ else
 Notify the NM layer of any frame transmission for BusOFF
 recovery detection.
 ------------------------------------------------------*/
-//TBD nm_hook_notify_any_can_frame_transmission( hw_inst );
+nm_hook_notify_any_can_frame_transmission( hw_inst );
 
 CAN_IGNORE_PARAMETER( tx_mb_index );
 }
@@ -690,7 +690,7 @@ else if( tmh == IL_CAN0_TX_NM_AND_LP_BK_TXFRM_HANDLE )
     Notify the Network Management Layer of the timeout for
     handling of the SUPERVISION flags and counts.
     ------------------------------------------------------*/
-    //TBD nm_hook_transmit_timeout( hw_inst, tmh );
+    nm_hook_transmit_timeout( hw_inst, tmh );
     }
 else
     {
@@ -724,7 +724,7 @@ can_drv_hook_op_mode
 Call back to the Network Management Layer to process
 operational mode transitions
 ------------------------------------------------------*/
-//TBD nm_hook_op_mode( hw_inst, op_mode );
+nm_hook_op_mode( hw_inst, op_mode );
 }
 
 /*!*******************************************************************
@@ -751,7 +751,7 @@ Management layer
 ------------------------------------------------------*/
 if( CAN_EX_BUSOFF == exception )
     {
-    //TBD nm_hook_bus_off( hw_inst );
+    nm_hook_bus_off( hw_inst );
     }
 }
 

@@ -68,9 +68,17 @@ can_nim_task_count[CAN_NUM_INSTANCES];
 *********************************************************************/
 void CAN_nim_init
     (
-    void
+    can_hw_inst_t   const hw_inst       //!< CAN hardware instance
     )
 {
+if( hw_inst < CAN_NUM_INSTANCES )
+    {
+    /*------------------------------------------------------
+    Initialize the Network Management Layer which in turn
+    initializes the remaining layers of the OSEK CAN Stack
+    ------------------------------------------------------*/
+    nm_init( NM_INIT_MODE_POWER_ON, hw_inst );
+    }
 }
 
 /*!*******************************************************************
@@ -90,7 +98,15 @@ void CAN_nim_start_up
     void
     )
 {
-can_hw_init( 0, CAN_INIT_MODE_COLD, NULL );
+can_hw_inst_t   l_i_hw_inst;
+
+/*------------------------------------------------------
+Initialize all enabled instances of the CAN Stack
+------------------------------------------------------*/
+for( l_i_hw_inst = 0; l_i_hw_inst < CAN_NUM_INSTANCES; l_i_hw_inst++ )
+    {
+    CAN_nim_init( l_i_hw_inst );
+    }
 }
 
 /*!*******************************************************************
@@ -188,7 +204,7 @@ while(1)
                 /*------------------------------------------------------
                 Network Management Layer Periodic Task
                 ------------------------------------------------------*/
-                //nm_task( l_i_hw_inst );
+                nm_task( l_i_hw_inst );
 
                 /*------------------------------------------------------
                 Re-initialize the task container counter
