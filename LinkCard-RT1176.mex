@@ -189,11 +189,6 @@
                         <data>true</data>
                      </feature>
                   </dependency>
-                  <dependency resourceType="Peripheral" resourceId="SEMC" description="Peripheral SEMC is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
-                     <feature name="initialized" evaluation="equal">
-                        <data>true</data>
-                     </feature>
-                  </dependency>
                   <dependency resourceType="Peripheral" resourceId="SRC" description="Peripheral SRC is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
@@ -400,47 +395,6 @@
                         <pin_feature name="direction" value="OUTPUT"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="SEMC" signal="ADDR, 05" pin_num="B1" pin_signal="GPIO_EMC_B1_14"/>
-                  <pin peripheral="SEMC" signal="semc_rdy" pin_num="K1" pin_signal="GPIO_EMC_B1_40"/>
-                  <pin peripheral="SEMC" signal="CSX, 0" pin_num="L1" pin_signal="GPIO_EMC_B1_41"/>
-                  <pin peripheral="SEMC" signal="ADDR, 06" pin_num="C1" pin_signal="GPIO_EMC_B1_15"/>
-                  <pin peripheral="SEMC" signal="DATA, 10" pin_num="D1" pin_signal="GPIO_EMC_B1_32"/>
-                  <pin peripheral="SEMC" signal="DATA, 12" pin_num="E1" pin_signal="GPIO_EMC_B1_34"/>
-                  <pin peripheral="SEMC" signal="DATA, 13" pin_num="F1" pin_signal="GPIO_EMC_B1_35"/>
-                  <pin peripheral="SEMC" signal="DATA, 14" pin_num="G1" pin_signal="GPIO_EMC_B1_36"/>
-                  <pin peripheral="SEMC" signal="DATA, 15" pin_num="H1" pin_signal="GPIO_EMC_B1_37"/>
-                  <pin peripheral="SEMC" signal="DM, 1" pin_num="J1" pin_signal="GPIO_EMC_B1_38"/>
-                  <pin peripheral="SEMC" signal="ADDR, 01" pin_num="A2" pin_signal="GPIO_EMC_B1_10"/>
-                  <pin peripheral="SEMC" signal="ADDR, 10" pin_num="B2" pin_signal="GPIO_EMC_B1_23"/>
-                  <pin peripheral="SEMC" signal="ADDR, 02" pin_num="C2" pin_signal="GPIO_EMC_B1_11"/>
-                  <pin peripheral="SEMC" signal="DATA, 09" pin_num="D2" pin_signal="GPIO_EMC_B1_31"/>
-                  <pin peripheral="SEMC" signal="DATA, 01" pin_num="F2" pin_signal="GPIO_EMC_B1_01"/>
-                  <pin peripheral="SEMC" signal="DATA, 11" pin_num="E2" pin_signal="GPIO_EMC_B1_33"/>
-                  <pin peripheral="SEMC" signal="BA, 0" pin_num="G2" pin_signal="GPIO_EMC_B1_21"/>
-                  <pin peripheral="SEMC" signal="BA, 1" pin_num="H2" pin_signal="GPIO_EMC_B1_22"/>
-                  <pin peripheral="SEMC" signal="ADDR, 00" pin_num="A3" pin_signal="GPIO_EMC_B1_09"/>
-                  <pin peripheral="SEMC" signal="ADDR, 08" pin_num="B3" pin_signal="GPIO_EMC_B1_17"/>
-                  <pin peripheral="SEMC" signal="ADDR, 12" pin_num="C3" pin_signal="GPIO_EMC_B1_20"/>
-                  <pin peripheral="SEMC" signal="ADDR, 07" pin_num="D3" pin_signal="GPIO_EMC_B1_16"/>
-                  <pin peripheral="SEMC" signal="DATA, 08" pin_num="E3" pin_signal="GPIO_EMC_B1_30"/>
-                  <pin peripheral="SEMC" signal="DATA, 00" pin_num="F3" pin_signal="GPIO_EMC_B1_00"/>
-                  <pin peripheral="SEMC" signal="DATA, 07" pin_num="H3" pin_signal="GPIO_EMC_B1_07"/>
-                  <pin peripheral="SEMC" signal="semc_clk" pin_num="J3" pin_signal="GPIO_EMC_B1_26"/>
-                  <pin peripheral="SEMC" signal="ADDR, 09" pin_num="B4" pin_signal="GPIO_EMC_B1_18"/>
-                  <pin peripheral="SEMC" signal="ADDR, 11" pin_num="C4" pin_signal="GPIO_EMC_B1_19"/>
-                  <pin peripheral="SEMC" signal="DATA, 05" pin_num="F4" pin_signal="GPIO_EMC_B1_05"/>
-                  <pin peripheral="SEMC" signal="DATA, 02" pin_num="G4" pin_signal="GPIO_EMC_B1_02"/>
-                  <pin peripheral="SEMC" signal="DATA, 03" pin_num="E4" pin_signal="GPIO_EMC_B1_03"/>
-                  <pin peripheral="SEMC" signal="DATA, 06" pin_num="H4" pin_signal="GPIO_EMC_B1_06"/>
-                  <pin peripheral="SEMC" signal="semc_ras" pin_num="J4" pin_signal="GPIO_EMC_B1_25"/>
-                  <pin peripheral="SEMC" signal="ADDR, 03" pin_num="C5" pin_signal="GPIO_EMC_B1_12"/>
-                  <pin peripheral="SEMC" signal="ADDR, 04" pin_num="D5" pin_signal="GPIO_EMC_B1_13"/>
-                  <pin peripheral="SEMC" signal="semc_we" pin_num="E5" pin_signal="GPIO_EMC_B1_28"/>
-                  <pin peripheral="SEMC" signal="DM, 0" pin_num="F5" pin_signal="GPIO_EMC_B1_08"/>
-                  <pin peripheral="SEMC" signal="semc_cke" pin_num="G5" pin_signal="GPIO_EMC_B1_27"/>
-                  <pin peripheral="SEMC" signal="DATA, 04" pin_num="H5" pin_signal="GPIO_EMC_B1_04"/>
-                  <pin peripheral="SEMC" signal="semc_cas" pin_num="J5" pin_signal="GPIO_EMC_B1_24"/>
-                  <pin peripheral="SEMC" signal="CS, 0" pin_num="E6" pin_signal="GPIO_EMC_B1_29"/>
                   <pin peripheral="SRC" signal="BOOT_MODE, 01" pin_num="T7" pin_signal="GPIO_LPSR_03"/>
                   <pin peripheral="SRC" signal="BOOT_MODE, 00" pin_num="P6" pin_signal="GPIO_LPSR_02"/>
                   <pin peripheral="FLEXIO2" signal="IO, 29" pin_num="M17" pin_signal="GPIO_AD_29">
@@ -907,7 +861,7 @@
                <command_groups>
                   <command_group name="Imported Commands" enabled="true">
                      <commands>
-                        <command type="write_value" address="CCM_CLOCK_ROOT4_CONTROL" value="0x602" value_width="4"/>
+                        <command type="write_value" address="CCM_CLOCK_ROOT4_CONTROL" value="0x703" value_width="4"/>
                         <command type="write_value" address="IOMUXC_SW_MUX_CTL_PAD_GPIO_EMC_B1_00" value="0x00" value_width="4"/>
                         <command type="write_value" address="IOMUXC_SW_MUX_CTL_PAD_GPIO_EMC_B1_01" value="0x00" value_width="4"/>
                         <command type="write_value" address="IOMUXC_SW_MUX_CTL_PAD_GPIO_EMC_B1_02" value="0x00" value_width="4"/>

@@ -42,8 +42,8 @@ const uint8_t dcd_data[] = {
 	/* group: 'Imported Commands' */
 	/* #1.1-142, command header bytes for merged 'Write - value' command */
 	0xCC, 0x04, 0x74, 0x04,
-	/* #1.1, command: write_value, address: CCM_CLOCK_ROOT4_CONTROL, value: 0x602, size: 4 */
-	0x40, 0xCC, 0x02, 0x00, 0x00, 0x00, 0x06, 0x02,
+	/* #1.1, command: write_value, address: CCM_CLOCK_ROOT4_CONTROL, value: 0x703, size: 4 */
+	0x40, 0xCC, 0x02, 0x00, 0x00, 0x00, 0x07, 0x03,
 	/* #1.2, command: write_value, address: IOMUXC_SW_MUX_CTL_PAD_GPIO_EMC_B1_00, value: 0x00, size: 4 */
 	0x40, 0x0E, 0x80, 0x10, 0x00, 0x00, 0x00, 0x00,
 	/* #1.3, command: write_value, address: IOMUXC_SW_MUX_CTL_PAD_GPIO_EMC_B1_01, value: 0x00, size: 4 */
