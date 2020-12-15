@@ -40,7 +40,7 @@ General Configuration Definitions (Applies to All Instantiations)
 /*------------------------------------------------------
 CAN bus support
 ------------------------------------------------------*/
-#define SYC_CAN_SUPPORT     TRUE
+#define SYC_CAN_SUPPORT        TRUE
 
 /*------------------------------------------------------
 CAN bus Debug

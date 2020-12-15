@@ -160,6 +160,14 @@ flexcan_hw_init_t const can2_hw_init_data =
     FlexCAN Receive Message Buffer Initial config
     ------------------------------------------------------*/
     {
+        { CAN0_RX_DAIG_SEG1_STD,        RX_DAIG_SEG1_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
+        { CAN0_RX_DAIG_SEG2_STD,        RX_DAIG_SEG2_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
+        { CAN0_RX_DAIG_SEG3_STD,        RX_DAIG_SEG3_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
+        { CAN0_RX_DAIG_SEG4_STD,        RX_DAIG_SEG4_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
+        { CAN0_RX_DAIG_SEG5_YDT_STD,    RX_DAIG_SEG5_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
+        { CAN0_RX_DAIG_SEG6_YDT_STD,    RX_DAIG_SEG6_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
+        { CAN0_RX_DAIG_SEG7_YDT_STD,    RX_DAIG_SEG7_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
+        { CAN0_RX_NM_AND_LP_BK_STD,     RX_MB_DEF_MSK,    CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
         { CAN0_RX0_ECU_INDCT_STAT_STD,  RX_MB_DEF_MSK,    CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
         { CAN0_RX1_ECU_COM_DATA_STD,    RX_MB_DEF_MSK,    CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
         { CAN0_RX2_RES_SUPPORT_STD,     RX_MB_DEF_MSK,    CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
@@ -177,14 +185,6 @@ flexcan_hw_init_t const can2_hw_init_data =
         { CAN0_RXE_HEATER_STAT_STD,     RX_MB_DEF_MSK,    CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
         { CAN0_RXF_FACT_INSP_NS_STD,    RX_MB_DEF_MSK,    CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
         { CAN0_RXF_FACT_INSP2_GA_STD,   RX_MB_DEF_MSK,    CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
-        { CAN0_RX_NM_AND_LP_BK_STD,     RX_MB_DEF_MSK,    CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
-        { CAN0_RX_DAIG_SEG1_STD,        RX_DAIG_SEG1_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
-        { CAN0_RX_DAIG_SEG2_STD,        RX_DAIG_SEG2_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
-        { CAN0_RX_DAIG_SEG3_STD,        RX_DAIG_SEG3_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
-        { CAN0_RX_DAIG_SEG4_STD,        RX_DAIG_SEG4_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
-        { CAN0_RX_DAIG_SEG5_YDT_STD,    RX_DAIG_SEG5_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
-        { CAN0_RX_DAIG_SEG6_YDT_STD,    RX_DAIG_SEG6_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
-        { CAN0_RX_DAIG_SEG7_YDT_STD,    RX_DAIG_SEG7_MSK, CAN_STANDARD_MSG_TYPE, CAN_DATA_MSG_TYPE },
     },
 };
 
@@ -2027,7 +2027,7 @@ for( l_index = 0; l_index < CAN_HMB_RX_ALL; l_index++ )
 /*------------------------------------------------------
 Set all the Diag Message Buffers.
 ------------------------------------------------------*/
-for( l_index = CAN_HMB_RX_APP; l_index < ( CAN_HMB_RX_APP + CAN_HMB_RX_DIAG_ALL ); l_index++ )
+for( l_index = CAN_HMB_RX_DIAG_START; l_index < ( CAN_HMB_RX_DIAG_ALL ); l_index++ )
     {
     /*------------------------------------------------------
     Init Rx Message Buffers Individual Masks.

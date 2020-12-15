@@ -170,7 +170,7 @@ Message Buffer
 ------------------------------------------------------*/
 
 #define CAN_HMB_RX_APP                  (17 + 1)
-#define CAN_HMB_RX_DIAG_START           CAN_HMB_RX_APP
+#define CAN_HMB_RX_DIAG_START           (0)
 #define CAN_HMB_RX_DIAG_ALL             (7)
 #define CAN_HMB_RX_ALL                  (17 + 1 + 7)                    //!<For CAN frame receiving(17 for App,5 for Diag and one for NM)
 #define CAN_HMB_TX_ALL                  (CAN_HMB_ALL - CAN_HMB_RX_ALL)  //!<For CAN frame transmitting,others except Rx MBs
