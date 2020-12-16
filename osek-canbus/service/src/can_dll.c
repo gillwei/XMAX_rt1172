@@ -32,6 +32,7 @@
 #include "can_dll_prv_par.h"
 
 #include "can_il.h"
+#include "can_il_par.h"
 #include "can_tp.h"
 #include "can_nm.h"
 
@@ -39,12 +40,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "factory_test.h"
-
-#if( DEBUG_RX_CAN_SUPPORT )
-    #include "can_il_par.h"
-    #include "factory_test.h"
-    #include "VI_pub.h"
-#endif
+#include "VI_pub.h"
 
 /*--------------------------------------------------------------------
                             MACROS
@@ -186,14 +182,14 @@ uint8               l_can_id_index;
 uint8               l_can_id_match;
 uint8               l_dispatch_layer;
 
+static uint8    l_up_hk     = 0;
+static uint8    l_dn_hk     = 0;
+static uint8    l_slct_hk   = 0;
+static uint8    l_hm_hk     = 0;
+
 #if( DEBUG_RX_CAN_SUPPORT )
-    static uint8    l_up_hk     = 0;
-    static uint8    l_dn_hk     = 0;
-    static uint8    l_slct_hk   = 0;
-    static uint8    l_hm_hk     = 0;
     uint8_t         l_data_idx  = 0;
 #endif
-
 /*------------------------------------------------------
 Initialize Variables
 ------------------------------------------------------*/
@@ -267,7 +263,6 @@ if( p_rmd != NULL )
                     ------------------------------------------------------*/
                     //TBD il_hook_receive( hw_inst, p_rmd, l_frm_handle );
 
-                #if( DEBUG_RX_CAN_SUPPORT )
                     /*------------------------------------------------------
                     Handle hard key frame
                     ------------------------------------------------------*/
@@ -300,7 +295,6 @@ if( p_rmd != NULL )
                             VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, l_hm_hk );
                             }
                         }
-                #endif
 
                     break;
 
