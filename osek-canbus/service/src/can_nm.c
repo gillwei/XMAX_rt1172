@@ -65,7 +65,7 @@ Time defined in terms of the periodic NM task call
 /*------------------------------------------------------
 Network Management Time Intervals in Milliseconds
 ------------------------------------------------------*/
-#define NM_BUSOFF_RECOVERY_INTERVAL_MS          (1000)
+#define NM_BUSOFF_RECOVERY_INTERVAL_MS          (250)
 #define NM_BUSOFF_RECOVERY_INTERVAL_CNT         NM_TIME_IN_TASK_TICS( NM_BUSOFF_RECOVERY_INTERVAL_MS )
 
 /*--------------------------------------------------------------------
@@ -470,7 +470,7 @@ Disable the transmit timeout feature in the low level
 CAN driver.
 ------------------------------------------------------*/
 //TBD il_disable( hw_inst );
-can_service( hw_inst, 0, CAN_SVC_DISABLE_TX_TIMEOUT );
+//can_service( hw_inst, 0, CAN_SVC_DISABLE_TX_TIMEOUT );
 
 /*------------------------------------------------------
 Check the BusOFF retry counter to determine if immediate

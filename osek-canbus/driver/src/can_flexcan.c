@@ -2567,7 +2567,7 @@ p_can_hw_busoff_recovery_init_vector[hw_inst] = NULL;
 /*------------------------------------------------------
 Default the Transmit Timeout feature to disabled.
 ------------------------------------------------------*/
-can_hw_tx_timeout[hw_inst].enable = FALSE;
+can_hw_tx_timeout[hw_inst].enable = TRUE;
 
 /*------------------------------------------------------
 Make CAN hardware enter Initialization mode
@@ -2754,6 +2754,7 @@ if( can_hw_tx_timeout[hw_inst].enable != FALSE )
                 ------------------------------------------------------*/
                 if( 0 == can_hw_tx_timeout[hw_inst].timer[l_i_tx_index] )
                     {
+                    l_i_tx_index += CAN_HMB_TX_START;
                     can_hw_abort_tx_mb( l_p_flexcan_regs, l_i_tx_index );
                     can_hook_transmit_timeout( hw_inst, l_tmh );
                     }
