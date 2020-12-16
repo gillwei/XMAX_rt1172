@@ -1,7 +1,7 @@
 /***************************************************************************//**
 * \file <hci_control_api.h>
 *
-* Copyright 2020, Cypress Semiconductor Corporation or a subsidiary of
+* Copyright 2016-2020, Cypress Semiconductor Corporation or a subsidiary of
 * Cypress Semiconductor Corporation. All Rights Reserved.
 *
 * This software, including source code, documentation and related
@@ -32,12 +32,12 @@
 * of such system or application assumes all risk of such use and in doing
 * so agrees to indemnify Cypress against all liability.
 *
-*   HCI Control Protocol Definitions
+*	HCI Control Protocol Definitions
 *
 * \brief
-*   This file provides definitions for the WICED HCI Control Interface between an MCU
-*   and an embedded application running on a Cypress BT SoC. Please refer to the WICED
-*   HCI Control Protocol Software User Manual (002-16618) for additional details.
+* 	This file provides definitions for the WICED HCI Control Interface between an MCU
+* 	and an embedded application running on a Cypress BT SoC. Please refer to the WICED
+* 	HCI Control Protocol Software User Manual (002-16618) for additional details.
 *
 * Packets exchanged over the UART between MCU and hci_control applications contain a 5-byte header.
 * -------------------------------------------------------------------------------------------------------
@@ -87,6 +87,7 @@
 #define HCI_CONTROL_GROUP_OTP                                 0x26
 #define HCI_CONTROL_GROUP_MCE                                 0x27
 #define HCI_CONTROL_GROUP_HK                                  0x28
+#define HCI_CONTROL_GROUP_HCI_AUDIO                           0x29
 #define HCI_CONTROL_GROUP_MISC                                0xFF
 
 #define HCI_CONTROL_GROUP(x) ((((x) >> 8)) & 0xff)
@@ -109,6 +110,11 @@
 #define HCI_CONTROL_COMMAND_BOND                            ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x10 )    /* Initiate Bonding with a peer device */
 #define HCI_CONTROL_COMMAND_READ_BUFF_STATS                 ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x11 )    /* Read Buffer statistics */
 #define HCI_CONTROL_COMMAND_SET_LOCAL_NAME                  ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x12 )    /* Set the local name */
+#define HCI_CONTROL_COMMAND_UNBOND_DEVICE                   ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x13 )    /* Unbond (Delete NVRAM Id) a Device (by BdAddr) */
+#define HCI_CONTROL_COMMAND_GET_BONDED_DEVICES              ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x14 )    /* Get Bonded/Paired Device list */
+#define HCI_CONTROL_COMMAND_PIN_REPLY                       ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x15 )    /* PIN Code Reply */
+#define HCI_CONTROL_COMMAND_SSP_REPLY                       ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x16 )    /* SSP Code Reply */
+
 
 /* LE Commands */
 #define HCI_CONTROL_LE_COMMAND_SCAN                         ( ( HCI_CONTROL_GROUP_LE << 8 ) | 0x01 )    /* Start scan */
@@ -273,6 +279,7 @@
 #define HCI_CONTROL_IAP2_COMMAND_GET_AUTH_CHIP_INFO          ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x04 )    /* Send get auth chip info */
 #define HCI_CONTROL_IAP2_COMMAND_GET_AUTH_CHIP_CERTIFICATE   ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x05 )    /* Send get auth chip info */
 #define HCI_CONTROL_IAP2_COMMAND_GET_AUTH_CHIP_SIGNATURE     ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x06 )    /* Send get auth chip info */
+#define HCI_CONTROL_IAP2_COMMAND_SEND_IDENTITY_DATA          ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x07 )    /* Send identity data */
 
 /* Handsfree AG commands */
 #define HCI_CONTROL_AG_COMMAND_CONNECT                      ( ( HCI_CONTROL_GROUP_AG << 8 ) | 0x01 )    /* Establish connection to HF Device */
@@ -287,9 +294,6 @@
 /* Miscellaneous commands */
 #define HCI_CONTROL_MISC_COMMAND_PING                       ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x01 )    /* Ping controller */
 #define HCI_CONTROL_MISC_COMMAND_GET_VERSION                ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x02 )    /* Get SDK Version */
-/* Garmin add Miscellaneous commands */
-#define HCI_CONTROL_MISC_COMMAND_SW_VERSION                 ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x03 )    /* Request Garmin SW version */
-#define HCI_CONTROL_MISC_COMMAND_READ_PAIR_INFO             ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x04 )    /* Request BT send paired device name and address */
 
 /* HID Host commands */
 #define HCI_CONTROL_HIDH_COMMAND_CONNECT                    ( ( HCI_CONTROL_GROUP_HIDH << 8 ) | 0x01 )      /* HIDH Connect */
@@ -612,6 +616,14 @@
 #define HCI_CONTROL_HK_COMMAND_FACTORY_RESET                ( ( HCI_CONTROL_GROUP_HK << 8 ) | 0x04 )    /* Factory reset */
 #define HCI_CONTROL_HK_COMMAND_GET_TOKEN                    ( ( HCI_CONTROL_GROUP_HK << 8 ) | 0x05 )    /* Get software authentication token */
 
+/* HCI Audio commands */
+#define HCI_CONTROL_HCI_AUDIO_COMMAND_GET                   ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x00 ) /* Generic Get command */
+#define HCI_CONTROL_HCI_AUDIO_COMMAND_SET                   ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x01 ) /* Generic Set command */
+#define HCI_CONTROL_HCI_AUDIO_COMMAND_MIC_DATA              ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x02 ) /* Record data from MIC */
+#define HCI_CONTROL_HCI_AUDIO_COMMAND_PUSH_NVRAM_DATA       ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x03 ) /* Push NVRAM data by ID */
+#define HCI_CONTROL_HCI_AUDIO_COMMAND_BT_START              ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x04 ) /* Start BT stack */
+#define HCI_CONTROL_HCI_AUDIO_COMMAND_BUTTON                ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x30 ) /* Button event */
+
 /* General events that the controller can send */
 #define HCI_CONTROL_EVENT_COMMAND_STATUS                    ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x01 )    /* Command status event for the requested operation */
 #define HCI_CONTROL_EVENT_WICED_TRACE                       ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x02 )    /* WICED trace packet */
@@ -630,6 +642,8 @@
 #define HCI_CONTROL_EVENT_READ_BUFFER_STATS                 ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x0F )    /* Read Buffer statistics event */
 #define HCI_CONTROL_EVENT_KEYPRESS_NOTIFICATION             ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x10 )    /* KeyPress notification */
 #define HCI_CONTROL_EVENT_CONNECTION_STATUS                 ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x11 )    /* Connection Status */
+#define HCI_CONTROL_EVENT_PIN_REQUEST                       ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x12 )    /* PIN Code Request */
+#define HCI_CONTROL_EVENT_SSP_REQUEST                       ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0x13 )    /* SSP Code Request */
 
 /* Events for the HFP profile */
 #define HCI_CONTROL_HF_EVENT_OPEN                           ( ( HCI_CONTROL_GROUP_HF << 8 ) | 0x01 )    /* HS connection opened or connection attempt failed  */
@@ -802,6 +816,10 @@
 #define HCI_CONTROL_IAP2_EVENT_AUTH_CHIP_INFO               ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x07 )    /* IAP2 auth chip info */
 #define HCI_CONTROL_IAP2_EVENT_AUTH_CHIP_CERTIFICATE        ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x08 )    /* IAP2 auth chip certificate */
 #define HCI_CONTROL_IAP2_EVENT_AUTH_CHIP_SIGNATURE          ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x09 )    /* IAP2 auth chip signature */
+#define HCI_CONTROL_IAP2_EVENT_RFCOMM_CONNECTED             ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x0A )    /* IAP2 RFCOMM connected*/
+#define HCI_CONTROL_IAP2_EVENT_RFCOMM_DISCONNECTED          ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x0B )    /* IAP2 RFCOMM disconnected */
+#define HCI_CONTROL_IAP2_EVENT_COMMAND_STATUS               ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x0C )    /* Command status event for the requested operation */
+
 
 /* Events for Handsfree AG */
 #define HCI_CONTROL_AG_EVENT_OPEN                           ( ( HCI_CONTROL_GROUP_AG << 8 ) | 0x01 )
@@ -1045,9 +1063,6 @@
 /* Miscellaneous events */
 #define HCI_CONTROL_MISC_EVENT_PING_REPLY                   ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x01 )    /* Ping reply */
 #define HCI_CONTROL_MISC_EVENT_VERSION                      ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x02 )    /* SDK Version */
-/* Garmin add Miscellaneous commands */
-#define HCI_CONTROL_MISC_EVENT_SW_VERSION                 ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x03 )      /* Garmin SW version */
-#define HCI_CONTROL_MISC_EVENT_READ_PAIR_INFO             ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x04 )      /* Paired device name and address */
 
 /* Script events */
 #define HCI_CONTROL_SCRIPT_EVENT_RET_CODE                   ( ( HCI_CONTROL_GROUP_SCRIPT << 8 ) | 0x01 )   /* Script command return code */
@@ -1084,6 +1099,17 @@
 #define HCI_CONTROL_HK_EVENT_UPDATE                         ( ( HCI_CONTROL_GROUP_HK << 8 ) | 0x02 )    /* Characteristic value update */
 #define HCI_CONTROL_HK_EVENT_LIST_ITEM                      ( ( HCI_CONTROL_GROUP_HK << 8 ) | 0x03 )    /* Characteristic list item */
 #define HCI_CONTROL_HK_EVENT_TOKEN_DATA                     ( ( HCI_CONTROL_GROUP_HK << 8 ) | 0x04 )    /* Software token data */
+
+/* HCI Audio events */
+#define HCI_CONTROL_HCI_AUDIO_EVENT_COMMAND_STATUS          ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x01 )    /* Command status event for the requested operation */
+#define HCI_CONTROL_HCI_AUDIO_EVENT_SCO_DATA                ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x02 )    /* SCO data from HFP */
+#define HCI_CONTROL_HCI_AUDIO_EVENT_STREAM_START            ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x03 )    /* Stream start */
+#define HCI_CONTROL_HCI_AUDIO_EVENT_STREAM_STOP             ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x04 )    /* Stream stop */
+#define HCI_CONTROL_HCI_AUDIO_EVENT_STREAM_CONFIG           ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x05 )    /* Stream configure */
+#define HCI_CONTROL_HCI_AUDIO_EVENT_STREAM_VOLUME           ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x06 )    /* Stream volume */
+#define HCI_CONTROL_HCI_AUDIO_EVENT_STREAM_MIC_GAIN         ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x07 )    /* Stream MIC gain */
+#define HCI_CONTROL_HCI_AUDIO_EVENT_WRITE_NVRAM_DATA        ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x08 )    /* Write NVRAM data */
+#define HCI_CONTROL_HCI_AUDIO_EVENT_DELETE_NVRAM_DATA       ( ( HCI_CONTROL_GROUP_HCI_AUDIO << 8 ) | 0x09 )    /* Delete NVRAM data */
 
 /* Status codes returned in HCI_CONTROL_EVENT_COMMAND_STATUS the event */
 #define HCI_CONTROL_STATUS_SUCCESS                          0
@@ -1135,6 +1161,9 @@
 
 /* Max TX packet to be sent over SPP */
 #define HCI_CONTROL_SPP_MAX_TX_BUFFER                       700
+
+/* Max TX packet to be sent over IAP2 */
+#define HCI_CONTROL_IAP2_MAX_TX_BUFFER                       700
 
 /* Max GATT command packet size to be sent over UART */
 #define HCI_CONTROL_GATT_COMMAND_MAX_TX_BUFFER              100

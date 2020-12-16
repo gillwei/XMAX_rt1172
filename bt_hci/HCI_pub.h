@@ -38,6 +38,13 @@ typedef enum tagBT_PARSER_TYPE                  //!< HCI receive state machine s
     PARSER_STANDARD_HCI
     } bt_parser_t;
 
+typedef enum
+    {
+    BT_CONN_TYPE_BT_OTHERS,
+    BT_CONN_TYPE_BT_IAP2,
+    BT_CONN_TYPE_BT_SPP
+    } bt_connection_path_type;
+
 /*--------------------------------------------------------------------
                         PROJECT INCLUDES
 --------------------------------------------------------------------*/

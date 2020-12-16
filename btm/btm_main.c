@@ -27,6 +27,7 @@
     #include "FRTOS_pub.h"
 #endif
 #include "hci_control_api.h"
+#include "hci_control_api_extend.h"
 #include "HCI_pub.h"
 #include "BT_UPDATE_pub.h"
 #include "fsl_gpio.h"
@@ -41,11 +42,12 @@
 #define TASK_STACK_SIZE             ( 256 )
 #define TASK_NAME                   ( "bt_task" )
 #define MSG_QUEUE_LENGTH            ( 10 )
-#define BT_MAX_PAIRED_DEVICE_NUM    ( 1 )
+#define BT_MAX_PAIRED_DEVICE_NUM    ( 8 )
 
 #define EVENT_MSG_RECEIVED          ( 1 << 0 )
 
 #define TIMEOUT_MS                  ( 5000 )
+#define CONNECTION_HANDLE_LENGTH    sizeof( uint16_t )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -56,6 +58,7 @@ typedef struct
     uint8_t   device_address[BT_DEVICE_ADDRESS_LEN];  /**< the Bluetooth device address */
     bool      is_connected;                           /**< is connected flag */
     uint16_t  connection_handle;                      /**< connection handle */
+    bt_connection_path_type  connection_path_type;    /**< connection profile type */
     } bt_device_info;
 
 typedef enum
@@ -71,6 +74,7 @@ typedef enum
     MSG_PAIR_DEVICE,
     MSG_UNPAIR_DEVICE,
     MSG_GET_LOCAL_ADDRESS,
+    MSG_UNPAIR_ALL_DEVICE
     } message_type;
 
 typedef struct
@@ -78,6 +82,7 @@ typedef struct
     message_type  type;
     uint8_t       device_address[BT_DEVICE_ADDRESS_LEN];
     uint16_t      connection_handle;
+    uint8_t       pair_dev_index;
     } message_object;
 
 /** BR/EDR Discoverable modes */
@@ -118,6 +123,7 @@ static uint8_t local_device_address[BT_DEVICE_ADDRESS_LEN]; /* local MAC address
 
 static bt_device_info paired_device_list[BT_MAX_PAIRED_DEVICE_NUM];
 static uint8_t bt_sw_version[BT_SW_VERSION_LEN];            /* BT SW Major version and Minor version  */
+static uint8_t connect_request_bd_addrress_rev[BT_DEVICE_NAME_LEN]; /* connect command device address */
 
 typedef struct
     {
@@ -144,6 +150,11 @@ static TimerHandle_t timeout_timer_handle;
                               PROCEDURES
 --------------------------------------------------------------------*/
 static void disable_discoverable
+    (
+    void
+    );
+
+static int BTM_unpair_all_dev
     (
     void
     );
@@ -370,16 +381,24 @@ EEPM_set_BT_autoconn( 0, NULL );
 *********************************************************************/
 static void connect_device
     (
-    const uint8_t* device_address
+    const uint8_t paired_device_index
     )
 {
-PRINTF( "%s: %s\r\n", __FUNCTION__, device_address );
+PRINTF( "%s: %d Addr:", __FUNCTION__, paired_device_index );
+
 uint8_t bd_addr_rev[BT_DEVICE_ADDRESS_LEN];
 for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
     {
-    bd_addr_rev[i] = device_address[BT_DEVICE_ADDRESS_LEN - 1 - i];
+    bd_addr_rev[i] = paired_device_list[paired_device_index].device_address[BT_DEVICE_ADDRESS_LEN - 1 - i];
+    PRINTF( " %02x", bd_addr_rev[i] );
     }
+PRINTF( "\r\n" );
+
+/*  */
+memcpy( connect_request_bd_addrress_rev, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
+
 HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_CONNECT, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
+
 start_timeout_timer();
 }
 
@@ -395,22 +414,35 @@ start_timeout_timer();
 *********************************************************************/
 static void disconnect_device
     (
-    const uint16_t connection_handle
+    const uint8_t paired_device_index
     )
 {
 uint8_t connection_handle_bytes[2];
 
-PRINTF( "%s: connection handle:%04x\r\n", __FUNCTION__, connection_handle );
-connection_handle_bytes[0] = 0xff & (uint8_t)(paired_device_list[0].connection_handle);
-connection_handle_bytes[1] = (uint8_t)( paired_device_list[0].connection_handle >> 8 );
-
-// Here assume the disconnect always success
-paired_device_list[0].is_connected = false;
-paired_device_list[0].connection_handle = 0;
+connection_handle_bytes[0] = 0xff & (uint8_t)(paired_device_list[paired_device_index].connection_handle);
+connection_handle_bytes[1] = (uint8_t)( paired_device_list[paired_device_index].connection_handle >> 8 );
+PRINTF( "%s: index:%d connect handle:%d connect type:%d\r\n", __FUNCTION__, paired_device_index, paired_device_list[paired_device_index].connection_handle, paired_device_list[paired_device_index].connection_path_type );
 
 // disconnect device through HCI command
-HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DISCONNECT, &(connection_handle_bytes[0]), sizeof( uint16_t ) );
-HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, &(connection_handle_bytes[0]), sizeof( uint16_t ) );
+if( BT_CONN_TYPE_BT_IAP2 == paired_device_list[paired_device_index].connection_path_type )
+    {
+    /* Since we don't receive iAP2 disconnect callback after iAP2 disconnect command
+     * Here we assume the disconnect always success
+     */
+    paired_device_list[paired_device_index].is_connected = false;
+    paired_device_list[paired_device_index].connection_handle = 0;
+    HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, connection_handle_bytes, sizeof( uint16_t ) );
+    }
+else if( BT_CONN_TYPE_BT_SPP == paired_device_list[paired_device_index].connection_path_type )
+    {
+    HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DISCONNECT, connection_handle_bytes, sizeof( uint16_t ) );
+    }
+else if( BT_CONN_TYPE_BT_OTHERS == paired_device_list[paired_device_index].connection_path_type )
+    {
+    HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DISCONNECT, connection_handle_bytes, sizeof( uint16_t ) );
+    HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, connection_handle_bytes, sizeof( uint16_t ) );
+    PRINTF( "ERROR: BT connection path type not exist\r\n" );
+    }
 }
 
 /*********************************************************************
@@ -418,25 +450,64 @@ HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, &(connection_handle
 * @private
 * unpair_device
 *
-* Unpair device.
+* Unpair the specified index device, if the paired index is not the last,
+* need to request BT module for pair device list update
 *
-* @param device_address The pointer to the device address to unpair.
+* @param pair_dev_index The specified unpaired device index
 *
 *********************************************************************/
 static void unpair_device
     (
-    const uint8_t* device_address
+    const uint8_t pair_dev_index
     )
 {
-// unpair device through HCI command
-HCI_wiced_send_command( HCI_CONTROL_COMMAND_UNBOND, device_address, BT_DEVICE_ADDRESS_LEN );
+uint8_t pair_dev_ind_arry[1] = {0};
 
-// Since the unbond command only disconnect SPP connection, need to add disconnect iAP2
-BTM_disconnect_paired_device( 0 );
+pair_dev_ind_arry[0] = pair_dev_index;
 
+// Check the unpaired device is the last one or not
+if( pair_dev_index == ( paired_device_num - 1 ) )
+    {
+    HCI_wiced_send_command( HCI_CONTROL_COMMAND_UNBOND, pair_dev_ind_arry, sizeof( uint8_t ) );
+    memset( &(paired_device_list[pair_dev_index]), 0, sizeof( bt_device_info ) );
+    paired_device_num --;
+    }
+else
+    {
+    // Reset pair device number until BT module update pair device list
+    paired_device_num = 0;
+    for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
+        {
+        memset( &(paired_device_list[i]), 0, sizeof( bt_device_info ) );
+        }
+    // Unpair device through HCI command
+    HCI_wiced_send_command( HCI_CONTROL_COMMAND_UNBOND, pair_dev_ind_arry, sizeof( uint8_t ) );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* unpair_all_device
+*
+* Unpair all paired devices, set MCU paired device list empty,
+* BT module handle the delete linkkey operation
+*
+*********************************************************************/
+static void unpair_all_device
+    (
+    void
+    )
+{
+/* Clear MCU paired device list */
 paired_device_num = 0;
-memset( &paired_device_list[0].device_address, 0, BT_DEVICE_ADDRESS_LEN );
-memset( &paired_device_list[0].device_name, 0, BT_DEVICE_NAME_LEN );
+for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
+    {
+    memset( &(paired_device_list[i]), 0, sizeof( bt_device_info ) );
+    }
+
+/* BT module handle the delete linkkey operation */
+HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_UNPAIR_ALL_DEV, NULL, 0 );
 }
 
 /*********************************************************************
@@ -639,21 +710,65 @@ EW_notify_bt_connection_result( bt_connection_type );
 * @public
 * BTM_connection_info_update
 *
-* Update BT manager connection status and connection handle
+* Update BT manager connection information, including connection status,
+* remote device address, connection handle, and connection type for connected
+* event, also update pair device information
 *
 * @param connection_is_up  BTC connection status
-* @param connection_info   BTC connection handle 2 bytes
-*
+* @param connection_info_length  Indicate the connection information length
+* @param connection_info   BTC connection handle 2 bytes or address/handle 8 bytes
+* @param connection_path   bt spp or bt iap2 if connected
 *********************************************************************/
 void BTM_connection_info_update
     (
-    const bool     connection_is_up,
-    const uint8_t* connection_info
+    const bool                    connection_is_up,
+    const uint32_t                connection_info_length,
+    const uint8_t*                connection_info,
+    const bt_connection_path_type connection_path
     )
 {
-paired_device_list[0].is_connected = connection_is_up;
-paired_device_list[0].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
-paired_device_list[0].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
+PRINTF( "%s:", __FUNCTION__ );
+for( uint32_t i = 0; i < connection_info_length; i++ )
+    {
+    PRINTF( " %02x",connection_info[i] );
+    }
+PRINTF( "\r\n" );
+
+// Received BT disconnected event
+if( ( CONNECTION_HANDLE_LENGTH == connection_info_length ) && ( false == connection_is_up ) )
+    {
+    for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
+        {
+        paired_device_list[i].is_connected = connection_is_up;
+        paired_device_list[i].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
+        paired_device_list[i].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
+        }
+    }
+// Received BT connected event
+else if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) )
+    {
+    uint8_t connect_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+
+    // Change for big endian transfer
+    for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+        {
+        connect_bd_addr[i] = connection_info[BT_DEVICE_ADDRESS_LEN - 1 - i];
+        }
+
+    for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
+        {
+        if( 0 == memcmp( connect_bd_addr, paired_device_list[i].device_address, BT_DEVICE_ADDRESS_LEN ) )
+             {
+             paired_device_list[i].is_connected = connection_is_up;
+             paired_device_list[i].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
+             paired_device_list[i].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
+             paired_device_list[i].connection_path_type = connection_path;
+             return;
+             }
+        // TODO clear the rest connect status except for connect device
+        }
+    PRINTF( "ERROR: Connected device not in paired list\r\n" );
+    }
 }
 
 /*********************************************************************
@@ -684,18 +799,47 @@ memcpy( connection_handle, &(paired_device_list[0].connection_handle), sizeof( u
 *
 * Update BT manager device address and device name
 *
-* @param pairing_info Updated pair device address and name
-*
-*
+* @param  pair_dev_index Updated paired device index
+* @param  pairing_info Updated paired device address and name
 *********************************************************************/
 void BTM_pairing_info_update
     (
+    const uint8_t pair_dev_index,
     const uint8_t *pairing_info
     )
 {
-paired_device_num = 1;
-memcpy( &paired_device_list[0].device_address, &(pairing_info[0]), BT_DEVICE_ADDRESS_LEN );
-memcpy( &paired_device_list[0].device_name, &(pairing_info[BT_DEVICE_ADDRESS_LEN]), BT_DEVICE_NAME_LEN );
+if( BT_MAX_PAIRED_DEVICE_NUM > pair_dev_index )
+    {
+    memcpy( &paired_device_list[pair_dev_index].device_address, &(pairing_info[0]), BT_DEVICE_ADDRESS_LEN );
+    memcpy( &paired_device_list[pair_dev_index].device_name, &(pairing_info[BT_DEVICE_ADDRESS_LEN]), BT_DEVICE_NAME_LEN );
+    }
+
+PRINTF( "%s", __FUNCTION__ );
+for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+    {
+    PRINTF( " %02x", paired_device_list[pair_dev_index].device_address[i] );
+    }
+PRINTF( "\r\n" );
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_pairing_dev_num_update
+*
+* Update BT manager device number
+*
+* @param pair_dev_num Update pair device number
+*
+*
+*********************************************************************/
+void BTM_pairing_dev_num_update
+    (
+    const uint8_t input_pair_dev_num
+    )
+{
+paired_device_num = input_pair_dev_num;
+PRINTF( "%s:%d\n\r", __FUNCTION__, paired_device_num );
 }
 
 /*********************************************************************
@@ -717,7 +861,7 @@ void BTM_reset_factory_default
 reset_status.is_running_factory_reset = true;
 reset_status.factory_reset_callback_func_ptr = callback_func_ptr;
 
-BTM_unpair_paired_device( 0 );
+BTM_unpair_all_dev();
 
 if( pdTRUE != EEPM_set_BT_en( 0, &eeprom_write_BT_enable_callback ) )
     {
@@ -967,15 +1111,9 @@ int BTM_connect_paired_device
     const int paired_device_idx
     )
 {
-PRINTF( "%s\r\n", __FUNCTION__ );
-for( uint8_t i=0; i < BT_DEVICE_ADDRESS_LEN; i++ )
-    {
-    PRINTF( " %02x", paired_device_list[0].device_address[i] );
-    }
-PRINTF("\r\n");
 message_object msg_obj;
 msg_obj.type = MSG_CONNECT_DEVICE;
-memcpy( msg_obj.device_address, paired_device_list[0].device_address, BT_DEVICE_ADDRESS_LEN );
+msg_obj.pair_dev_index = paired_device_idx;
 send_message( msg_obj );
 return ERR_NONE;
 }
@@ -997,7 +1135,7 @@ int BTM_disconnect_paired_device
 {
 message_object msg_obj;
 msg_obj.type = MSG_DISCONNECT_DEVICE;
-msg_obj.connection_handle = paired_device_list[paired_device_idx].connection_handle;
+msg_obj.pair_dev_index = paired_device_idx;
 send_message( msg_obj );
 return ERR_NONE;
 }
@@ -1018,10 +1156,14 @@ int BTM_unpair_paired_device
     )
 {
 int result = ERR_NONE;
+PRINTF( "%s: index:%d\r\n", __FUNCTION__, paired_device_idx );
+
+// We need to disconnect the device before unpair it
+BTM_disconnect_paired_device( paired_device_idx );
 
 message_object msg_obj;
 msg_obj.type = MSG_UNPAIR_DEVICE;
-memcpy( msg_obj.device_address, paired_device_list[paired_device_idx].device_address, BT_DEVICE_ADDRESS_LEN );
+msg_obj.pair_dev_index = (uint8_t)paired_device_idx;
 send_message( msg_obj );
 
 return result;
@@ -1224,6 +1366,53 @@ return ERR_NONE;
 
 /*********************************************************************
 *
+* @public
+* BTM_unpair_all_dev
+*
+* Used for Factory reset to unpair all devices
+*
+*********************************************************************/
+int BTM_unpair_all_dev
+    (
+    void
+    )
+{
+message_object msg_obj;
+
+msg_obj.type = MSG_UNPAIR_ALL_DEVICE;
+send_message( msg_obj );
+return ERR_NONE;
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_get_connect_request_bd_addrress_rev
+*
+* Called for when MCU receive SPP connection fail or Service not found,
+* and need to try do iAP2 connect
+*
+** @param return_connect_bd_addr_rev
+** Copy the current request connect device bd address value to output parameter
+**
+*********************************************************************/
+int BTM_get_connect_request_bd_addrress_rev
+    (
+    uint8_t* return_connect_bd_addr_rev
+    )
+{
+PRINTF( "%s", __FUNCTION__ );
+for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+    {
+    PRINTF( " %02x", connect_request_bd_addrress_rev[i]);
+    }
+PRINTF( "\r\n" );
+memcpy( return_connect_bd_addr_rev, connect_request_bd_addrress_rev, BT_DEVICE_ADDRESS_LEN );
+return ERR_NONE;
+}
+
+/*********************************************************************
+*
 * @private
 * process_message
 *
@@ -1259,13 +1448,16 @@ while( pdPASS == xQueueReceive( message_queue, &msg_obj, 0 ) )
             disable_autoconnect();
             break;
         case MSG_CONNECT_DEVICE:
-            connect_device( msg_obj.device_address );
+            connect_device( msg_obj.pair_dev_index );
             break;
         case MSG_DISCONNECT_DEVICE:
-            disconnect_device( msg_obj.connection_handle );
+            disconnect_device( msg_obj.pair_dev_index );
             break;
         case MSG_UNPAIR_DEVICE:
-            unpair_device( msg_obj.device_address );
+            unpair_device( msg_obj.pair_dev_index );
+            break;
+        case MSG_UNPAIR_ALL_DEVICE:
+            unpair_all_device();
             break;
         default:
             break;
@@ -1352,6 +1544,9 @@ configASSERT( NULL != message_queue );
 
 event_group = xEventGroupCreate();
 configASSERT( NULL != event_group );
+
+// Initialize static parameters
+memset( connect_request_bd_addrress_rev, 0, BT_DEVICE_NAME_LEN );
 
 create_timeout_timer();
 create_task();

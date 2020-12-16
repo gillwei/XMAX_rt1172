@@ -16,6 +16,7 @@ extern "C"{
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "HCI_pub.h"
 
 #define BT_DEVICE_NAME_LEN          ( 32 )
 #define BT_DEVICE_ADDRESS_LEN       ( 6 )
@@ -150,19 +151,32 @@ int BTM_get_sw_version
 
 void BTM_pairing_info_update
     (
+    const uint8_t pair_dev_index,
     const uint8_t *pairing_info
     );
 
 void BTM_connection_info_update
     (
     const bool     connection_is_up,
-    const uint8_t* connection_info
+    const uint32_t  connection_info_length,
+    const uint8_t* connection_info,
+    const bt_connection_path_type connection_path
     );
 
 void BTM_get_connection_info
     (
     bool*     current_connection_status,
     uint16_t* connection_handle
+    );
+
+void BTM_pairing_dev_num_update
+    (
+    const uint8_t input_pair_dev_num
+    );
+
+int BTM_get_connect_request_bd_addrress_rev
+    (
+    uint8_t* return_connect_bd_addr_rev
     );
 
 #ifdef __cplusplus

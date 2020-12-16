@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include "FreeRTOS.h"
 #include "hci_control_api.h"
+#include "hci_control_api_extend.h"
 #include "fsl_debug_console.h"
 #include "BTM_pub.h"
 #include "hci_prv.h"
@@ -22,12 +23,16 @@
 #include "JPEGPARSER_pub.h"
 #include "EW_pub.h"
 #include "factory_test.h"
+#include "task.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define AUTH_CHIP_VER_LENGTH  8
 #define AUTH_CHIP_VER_ARRY (const uint8_t [])  { 0x07, 0x01, 0x03, 0x00, 0x00, 0x00, 0x03, 0x00 }
+
+#define PAIR_DEV_LIST_TOTAL_NUM_BYTE 0
+#define PAIR_DEV_LIST_INDEX_BYTE     1
 
 /*--------------------------------------------------------------------
                                 TYPES
@@ -38,6 +43,11 @@ typedef enum
     AUTH_CHIP_RETURN_FAIL,
     AUTH_CHIP_RETURN_SUCCESS
     } auth_chip_return_result_t;
+
+/*--------------------------------------------------------------------
+                            VARIABLES
+--------------------------------------------------------------------*/
+static bool pair_list_update_status = false;
 
 /*--------------------------------------------------------------------
                               PROCEDURES
@@ -63,6 +73,7 @@ void hci_misc_event_handler
     )
 {
 uint8_t    bt_sw_version[2];
+uint8_t    pair_dev_index[1] = { 0 };
 
 switch( opcode )
     {
@@ -81,13 +92,45 @@ switch( opcode )
             else
                 {
                 PRINTF( "BT FW version is equal or higher:%d.%d.\n\r", bt_sw_version[0], bt_sw_version[1] );
-                HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_READ_PAIR_INFO, NULL, 0 );
+                HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_READ_PAIR_DEV_LIST, pair_dev_index, sizeof( pair_dev_index ) );
                 }
             }
         break;
 
     case HCI_CONTROL_MISC_EVENT_READ_PAIR_INFO:
-        BTM_pairing_info_update( p_data );
+        if( false == pair_list_update_status )
+            {
+            BTM_pairing_info_update( p_data[0], &( p_data[1] ) );
+            }
+        break;
+
+    case HCI_CONTROL_MISC_EVENT_READ_PAIR_DEV_LIST:
+        if( 0 == p_data[PAIR_DEV_LIST_INDEX_BYTE] )
+            {
+            pair_list_update_status = true;
+            }
+
+        /* Sequentially send pair device information to BT manager update pair dev number when
+         * every time receive one pair information until the pair device index is maximum.
+         */
+        if( p_data[PAIR_DEV_LIST_TOTAL_NUM_BYTE] > ( p_data[PAIR_DEV_LIST_INDEX_BYTE] + 1 ) )
+            {
+            BTM_pairing_info_update( p_data[PAIR_DEV_LIST_INDEX_BYTE], &( p_data[PAIR_DEV_LIST_INDEX_BYTE + 1] ) );
+            pair_dev_index[0] = p_data[PAIR_DEV_LIST_INDEX_BYTE] + 1;
+            HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_READ_PAIR_DEV_LIST, pair_dev_index, sizeof( pair_dev_index ) );
+            }
+        /* Pair list information update finished */
+        else if( p_data[PAIR_DEV_LIST_TOTAL_NUM_BYTE] == ( p_data[PAIR_DEV_LIST_INDEX_BYTE] + 1 ) )
+            {
+            BTM_pairing_info_update( p_data[PAIR_DEV_LIST_INDEX_BYTE], &( p_data[PAIR_DEV_LIST_INDEX_BYTE + 1] ) );
+            BTM_pairing_dev_num_update( p_data[PAIR_DEV_LIST_TOTAL_NUM_BYTE] );
+            /* pair list update finished */
+            pair_list_update_status = false;
+            }
+        break;
+
+    case HCI_CONTROL_MISC_EVENT_READ_PAIR_DEV_NUM:
+        BTM_pairing_dev_num_update( p_data[0] );
         break;
 
     default:
@@ -152,8 +195,7 @@ void hci_spp_event_handler
     const uint32_t data_len
     )
 {
-bool connection_is_up = false;
-uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+bool    connection_is_up = false;
 uint8_t bd_addr_rev[BT_DEVICE_ADDRESS_LEN] = { 0 };
 
 switch( cmd_opcode )
@@ -165,31 +207,21 @@ switch( cmd_opcode )
     case HCI_CONTROL_SPP_EVENT_CONNECTED:
         connection_is_up = true;
         BTM_notify_EW_connection_status( BT_CONNECTION_SUCCESS );
-        BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
+        BTM_connection_info_update( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_SPP );
         break;
 
     case HCI_CONTROL_SPP_EVENT_DISCONNECTED:
         connection_is_up = false;
-        BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
+        BTM_connection_info_update( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_SPP );
         break;
 
     case HCI_CONTROL_SPP_EVENT_CONNECTION_FAILED:
-        BTM_get_paired_device_addr( 0, &bd_addr[0] );
-        for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
-            {
-            bd_addr_rev[i] = bd_addr[BT_DEVICE_ADDRESS_LEN - 1 - i];
-            }
-        // Use reversed BT address for connect
+        BTM_get_connect_request_bd_addrress_rev( bd_addr_rev );
         HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_CONNECT, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
         break;
 
     case HCI_CONTROL_SPP_EVENT_SERVICE_NOT_FOUND:
-        BTM_get_paired_device_addr( 0, &bd_addr[0] );
-        for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
-            {
-            bd_addr_rev[i] = bd_addr[BT_DEVICE_ADDRESS_LEN - 1 - i];
-            }
-        //Use reversed BT address for connect
+        BTM_get_connect_request_bd_addrress_rev( bd_addr_rev );
         HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_CONNECT, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
         break;
 
@@ -229,12 +261,12 @@ switch( cmd_opcode )
     case HCI_CONTROL_IAP2_EVENT_CONNECTED:
         connection_is_up = true;
         BTM_notify_EW_connection_status( BT_CONNECTION_SUCCESS );
-        BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
+        BTM_connection_info_update( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_IAP2 );
         break;
 
     case HCI_CONTROL_IAP2_EVENT_DISCONNECTED:
         connection_is_up = false;
-        BTM_connection_info_update( connection_is_up, &( p_data[0] ) );
+        BTM_connection_info_update( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_IAP2 );
         break;
 
     case HCI_CONTROL_IAP2_EVENT_CONNECTION_FAILED:

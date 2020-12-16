@@ -725,7 +725,12 @@ switch( inst_id )
 
             case IOP_BT_CLEAR_PAIRINGS:
                 {
-                BTM_unpair_paired_device( 0 );
+                uint8_t paired_dev_num;
+                paired_dev_num = BTM_get_paired_device_num();
+                for( uint8_t i = 0; i < paired_dev_num; i++ )
+                    {
+                    BTM_unpair_paired_device( i );
+                    }
                 IOPDone = true;
                 }
                 break;
