@@ -87,6 +87,7 @@ extern "C"{
 #define BURN_IN_SUCCESS         ( 0 )
 #define BURN_IN_FAIL            ( 1 )
 
+#define CANID_TEST_MAX_ROUND    ( 3 )
 #define CANID_TEST_SEND_MS      ( 500 )
 #define CANID_TEST_SEND_CNT     ( CANID_TEST_SEND_MS / FACTORY_TASK_PERIOD_MS )
 #define CANID_TEST_MAX_TIME_MS  ( CANID_TEST_SEND_MS * ( sizeof( CAN_test_ID ) / sizeof( CAN_test_ID[0] ) ) )
@@ -1507,7 +1508,7 @@ if( CAN_ID_test_flag )
     if( test_period_counter % CANID_TEST_SEND_CNT == 0 )
         {
         test_count ++;
-        if( test_period_counter < CANID_TEST_MAX_TIME_CNT )
+        if( test_period_counter < CANID_TEST_MAX_TIME_CNT * CANID_TEST_MAX_ROUND )
             {
             can_transmit( CAN_CONTROLLER_2, &l_p_tmd );
             }
