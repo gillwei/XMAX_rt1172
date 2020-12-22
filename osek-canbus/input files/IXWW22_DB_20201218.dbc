@@ -1,0 +1,544 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: Link_Card
+VAL_TABLE_ VT_fact_insp_ns2 1 "BT comm off" 0 "BT comm on" ;
+VAL_TABLE_ VT_Vehicle_info_4_odo_trip_dis 3 "TRIPF" 2 "TRIP2" 1 "TRIP1" 0 "ODO" ;
+VAL_TABLE_ VT_Vehicle_info_4_fuel_rsv 1 "true" 0 "False" ;
+VAL_TABLE_ VT_Vehicle_info_4_low_fuel_wrn 1 "true" 0 "False" ;
+VAL_TABLE_ VT_Vehicle_info_4_ftrip_hrd_rst 1 "Done" 0 "Not yet" ;
+VAL_TABLE_ VT_Vehicle_info_3_clk_adjst 1 "Adjusted" 0 "None" ;
+VAL_TABLE_ VT_func_sw_scrn_layer 1 "Background" 0 "Foreground" ;
+VAL_TABLE_ VT_Dev_ctrl_CHG_Meter 3 "TRIPF" 2 "TRIP2" 1 "TRIP1" 0 "ODO" ;
+VAL_TABLE_ VT_Sys_info_VH_spd_unit 1 "mph" 0 "kmph" ;
+VAL_TABLE_ VT_Sys_info_temp_unit 1 "F_Degree" 0 "C_Degree" ;
+VAL_TABLE_ VT_Sys_info_pressure_unit 2 "kgfpcm2" 1 "Kpa" 0 "psi" ;
+VAL_TABLE_ VT_Sys_info_mileage_unit 1 "mile" 0 "km" ;
+VAL_TABLE_ VT_Sys_info_LC_sys_stat 1 "Ready" 0 "Not ready" ;
+VAL_TABLE_ VT_Sys_info_lang 18 "Malay" 17 "Korean" 16 "Vietnamese" 15 "Thai" 14 "Portuguese(Brazil)" 13 "Polish" 12 "Indonesian" 11 "Hindi" 10 "Finnish" 9 "Greek" 8 "Simplified Chinese" 7 "Traditional Chinese" 6 "Spanish" 5 "Japanese" 4 "Italian" 3 "French" 2 "English" 1 "Deutsch" 0 "None" ;
+VAL_TABLE_ VT_Sys_info_fuel_unit 1 "Gallon" 0 "L" ;
+VAL_TABLE_ VT_Sys_info_fuel_con_unit 2 "lp100km" 1 "MGP" 0 "kmpl" ;
+VAL_TABLE_ VT_Vehicle_info_press_unit 3 "bar" 2 "kgfpcm2" 1 "Kpa" 0 "psi" ;
+VAL_TABLE_ VT_Vehicle_info_mile_unit 1 "mile" 0 "km" ;
+VAL_TABLE_ VT_Vehicle_info_fuel_con_unit 3 "lp100km" 2 "mp1mpgal" 1 "mpg" 0 "kmpl" ;
+VAL_TABLE_ VT_Heater_stat 3 "Hi" 2 "Mid" 1 "Lo" 0 "Off" ;
+VAL_TABLE_ VT_maint_trip_id 3 "Free2" 2 "Free1" 1 "V_belt" 0 "Oil" ;
+VAL_TABLE_ VT_Heater_level_slect 2 "Passenger Seat Heater" 1 "Rider seat heater" 0 "Grip Warner" ;
+VAL_TABLE_ VT_Heater_level_lv 2 "Hi" 1 "Mid" 0 "Lo" ;
+VAL_TABLE_ VT_Heater_lvl_btn_stat_aud 1 "UP" 0 "Down" ;
+VAL_TABLE_ VT_Dev_ctrl_ope 2 "Up" 1 "Down" 0 "NT" ;
+VAL_TABLE_ VT_func_sw_value 1 "ON" 0 "OFF" ;
+
+
+BO_ 551 TX_NM_AND_LP_BK: 8 Link_Card
+ SG_ Nm_and_lpbk_tx : 7|64@0+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 2016 RX_DAIG_SEG7_YDT: 8 Vector__XXX
+ SG_ Daig_seg7_data : 7|64@0+ (1,0) [0|0] ""  Link_Card
+
+BO_ 2000 RX_DAIG_SEG6_YDT: 8 Vector__XXX
+ SG_ Daig_seg6_data : 7|64@0+ (1,0) [0|0] ""  Link_Card
+
+BO_ 550 RX_NM_AND_LP_BK: 8 Vector__XXX
+ SG_ Nm_and_lpbk_rx : 7|64@0+ (1,0) [0|0] ""  Link_Card
+
+BO_ 1242 RX_DAIG_SEG4: 8 Vector__XXX
+ SG_ Daig_seg4_data : 7|64@0+ (1,0) [0|0] ""  Link_Card
+
+BO_ 1241 RX_DAIG_SEG3: 8 Vector__XXX
+ SG_ Daig_seg3_data : 7|64@0+ (1,0) [0|0] ""  Link_Card
+
+BO_ 1256 RX_DAIG_SEG2: 8 Vector__XXX
+ SG_ Daig_seg2_data : 7|64@0+ (1,0) [0|0] ""  Link_Card
+
+BO_ 1224 RX_DAIG_SEG1: 8 Vector__XXX
+ SG_ Daig_seg1_data : 7|64@0+ (1,0) [0|0] ""  Link_Card
+
+BO_ 1984 RX_DAIG_SEG5_YDT: 8 Vector__XXX
+ SG_ Daig_seg5_data : 7|64@0+ (1,0) [0|0] ""  Link_Card
+
+BO_ 1681 RXF_FACT_INSP2_GA: 8 Vector__XXX
+ SG_ Fact_insp2_ga_rx : 7|64@0+ (1,0) [0|1] ""  Link_Card
+
+BO_ 1493 RXF_FACT_INSP_NS: 1 Vector__XXX
+ SG_ Fact_insp_ns2 : 3|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Fact_insp_ns1 : 7|4@0+ (1,0) [0|15] ""  Link_Card
+
+BO_ 1470 RXE_HEATER_STAT: 4 Vector__XXX
+ SG_ Heater_stat_rider_seat_warm_Mid : 23|4@0+ (1,0) [0|15] ""  Link_Card
+ SG_ Heater_stat_rider_seat_warm_Lo : 11|4@0+ (1,0) [0|15] ""  Link_Card
+ SG_ Heater_stat_rider_seat_warm_Hi : 19|4@0+ (1,0) [0|15] ""  Link_Card
+ SG_ Heater_stat_grip_warm_Mid : 3|4@0+ (1,0) [0|15] ""  Link_Card
+ SG_ Heater_stat_grip_warm_Lo : 7|4@0+ (1,0) [0|15] ""  Link_Card
+ SG_ Heater_stat_grip_warm_Hi : 15|4@0+ (1,0) [0|15] ""  Link_Card
+ SG_ Heater_stat_crnt_sh_stat : 29|2@0+ (1,0) [0|3] ""  Link_Card
+ SG_ Heater_stat_crnt_gw_stat : 31|2@0+ (1,0) [0|3] ""  Link_Card
+
+BO_ 1469 RXD_MAINT_TRIP: 8 Vector__XXX
+ SG_ Maint_trip_rsv2 : 63|8@0+ (1,0) [0|256] "" Vector__XXX
+ SG_ Maint_trip_rsv1 : 49|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ Maint_trip_3 : 35|18@0+ (1,0) [0|262143] ""  Link_Card
+ SG_ Maint_trip_2 : 21|18@0+ (1,0) [0|262143] ""  Link_Card
+ SG_ Maint_trip_1 : 7|18@0+ (1,0) [0|262143] ""  Link_Card
+
+BO_ 1468 RXC_VEHICLE_INFO_4: 3 Vector__XXX
+ SG_ Vehicle_info_4_odo_trip_dis : 23|3@0+ (1,0) [0|7] ""  Link_Card
+ SG_ Vehicle_info_4_fuel_rsv : 8|1@0+ (1,0) [0|1] ""  Link_Card
+ SG_ Vehicle_info_4_low_fuel_wrn : 9|1@0+ (1,0) [0|1] ""  Link_Card
+ SG_ Vehicle_info_4_ftrip_hrd_rst : 20|1@0+ (1,0) [0|1] ""  Link_Card
+ SG_ Vehicle_info_4_ftrip : 7|14@0+ (0.1,0) [0|1638.2] ""  Link_Card
+
+BO_ 1467 RXB_VEHICLE_INFO_3: 8 Vector__XXX
+ SG_ Vehicle_info_3_fuel_con : 7|13@0+ (0.1,0) [0|819.1] ""  Link_Card
+ SG_ Vehicle_info_3_cruise : 47|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Vehicle_info_3_coolant : 31|8@0+ (0.625,-30) [-30|129.375] ""  Link_Card
+ SG_ Vehicle_info_3_clk_adjst : 10|1@0+ (1,0) [0|1] ""  Link_Card
+ SG_ Vehicle_info_3_bat : 39|8@0+ (0.0732421875,0) [0|18.6767578125] ""  Link_Card
+ SG_ Vehicle_info_3_air : 23|8@0+ (0.625,-30) [-30|129.375] ""  Link_Card
+
+BO_ 1466 RXA_VEHICLE_INFO_2: 8 Vector__XXX
+ SG_ Vehicle_info_2_spd_real_MT : 32|9@0+ (1,0) [0|511] ""  Link_Card
+ SG_ Vehicle_info_2_spd_real : 16|9@0+ (1,0) [0|511] ""  Link_Card
+ SG_ Vehicle_info_2_aps_ang_tran : 7|16@0+ (0.1220703125,0) [0|125] ""  Link_Card
+
+BO_ 1455 RX9_RES_RPRGRM_INFO: 3 Vector__XXX
+ SG_ Res_reprgrm_svc_ID : 7|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Res_reprgrm_data_2 : 23|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Res_reprgrm_data_1 : 15|8@0+ (1,0) [0|255] ""  Link_Card
+
+BO_ 1447 RX8_ODO_TRIP: 8 Vector__XXX
+ SG_ Odo_trip_odometer : 7|24@0+ (1,0) [0|16777215] ""  Link_Card
+ SG_ Odo_trip2_meter : 43|20@0+ (0.1,0) [0|104857.5] ""  Link_Card
+ SG_ Odo_trip1_meter : 31|20@0+ (0.1,0) [0|104857.5] ""  Link_Card
+
+BO_ 1446 RX7_FUEL_RATE: 8 Vector__XXX
+ SG_ Fuel_rate_range_dist : 39|10@0+ (1,0) [0|1022] ""  Link_Card
+ SG_ Fuel_rate_inst : 7|10@0+ (0.1,0) [0|102.2] ""  Link_Card
+ SG_ Fuel_rate_avg_spd : 55|10@0+ (1,0) [0|1022] ""  Link_Card
+ SG_ Fuel_rate_ave : 23|10@0+ (0.1,0) [0|102.2] ""  Link_Card
+
+BO_ 1441 RX6_FUNCSW_STAT: 3 Vector__XXX
+ SG_ func_sw_scrn_layer : 16|1@0+ (1,0) [0|1] ""  Link_Card
+ SG_ func_sw_6 : 2|1@0+ (1,0) [0|1] ""  Link_Card
+ SG_ func_sw_5 : 3|1@0+ (1,0) [0|1] ""  Link_Card
+ SG_ func_sw_2 : 6|1@0+ (1,0) [0|1] ""  Link_Card
+ SG_ func_sw_1 : 7|1@0+ (1,0) [0|1] ""  Link_Card
+
+BO_ 1413 RX4_RES_MT_FUNC_CNT: 3 Vector__XXX
+ SG_ Res_MT_func_cnt_svc_ID : 7|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Res_MT_func_cnt_data_2 : 23|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Res_MT_func_cnt_data_1 : 15|8@0+ (1,0) [0|255] ""  Link_Card
+
+BO_ 1411 RX3_BRGTHNSS_CTRL: 3 Vector__XXX
+ SG_ Brtnss_ctrl_rsv2 : 23|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ Brtnss_ctrl_TFT_Lv : 10|3@0+ (1,0) [0|7] "" Vector__XXX
+ SG_ Brtnss_ctrl_MT_tft_duty : 7|10@0+ (0.09765625,0) [0|99.90234375] ""  Link_Card
+ SG_ Brtnss_ctrl_lcd_Lv : 13|3@0+ (1,0) [0|7] ""  Link_Card
+
+BO_ 1410 RX2_RES_SUPPORT: 8 Vector__XXX
+ SG_ Res_suppt_data_7 : 63|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Res_suppt_svc_ID : 7|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Res_suppt_data_6 : 55|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Res_suppt_data_5 : 47|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Res_suppt_data_4 : 39|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Res_suppt_data_3 : 31|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Res_suppt_data_2 : 23|8@0+ (1,0) [0|255] ""  Link_Card
+ SG_ Res_suppt_data_1 : 15|8@0+ (1,0) [0|255] ""  Link_Card
+
+BO_ 848 RX1_ECU_COM_DATA: 8 Vector__XXX
+ SG_ Ecu_com_data : 13|2@0+ (1,0) [0|3] ""  Link_Card
+
+BO_ 521 RX0_ECU_INDCT_STAT: 6 Vector__XXX
+ SG_ Ecu_indct_TC_mode : 28|4@0+ (1,0) [0|15] ""  Link_Card
+ SG_ Ecu_indct_EG_Spd : 7|16@0+ (0.390625,0) [0|25599.609375] ""  Link_Card
+
+BO_ 1233 TX_DIAG_RELATED: 8 Link_Card
+ SG_ Daig_seg_data_tx : 7|64@0+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1680 TX7_FACT_INSP1_GA: 8 Link_Card
+ SG_ Fact_insp1_ga_tx : 7|64@0+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1482 TX6_DEV_CTRL: 2 Link_Card
+ SG_ Dev_ctrl_TFT_brghtnss : 13|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ Dev_ctrl_windscrn : 7|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ Dev_ctrl_seat_heater : 1|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ Dev_ctrl_lcd_brghtnss : 5|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ Dev_ctrl_grip_warm : 3|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ Dev_ctrl_CHG_Meter : 15|2@0+ (1,0) [0|3] "" Vector__XXX
+
+BO_ 1471 TX5_CLK_DATA_RES: 5 Link_Card
+ SG_ Clk_Date_Resp_data : 7|40@0+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1459 TX4_REQ_REPRGRM_INFO: 2 Link_Card
+ SG_ Req_reprgrm_PRGSTS : 15|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ Req_reprgrm_LBREPREQ : 7|8@0+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1457 TX3_HEATER_LEVEL: 1 Link_Card
+ SG_ Heater_lvl_slect : 7|3@0+ (1,0) [0|7] "" Vector__XXX
+ SG_ Heater_lvl_Lv : 4|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ Heater_lvl_btn_stat_aud : 2|1@0+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 1409 TX2_REQ_SUPPORT: 1 Link_Card
+ SG_ Req_support_REQGSFL : 7|8@0+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1402 TX1_SYS_INFO: 2 Link_Card
+ SG_ Sys_info_VH_speed_unit : 14|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Sys_info_temp_unit : 11|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Sys_info_pressure_unit : 13|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ Sys_info_mileage_unit : 15|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Sys_info_LC_sys_stat : 7|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Sys_info_lang : 6|5@0+ (1,0) [0|31] "" Vector__XXX
+ SG_ Sys_info_fuel_unit : 9|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ Sys_info_fuel_con_unit : 10|1@0+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 1412 TX0_REQ_MT_FUNC_CNT: 3 Link_Card
+ SG_ Req_MT_func_cnt_data_2 : 23|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ Req_MT_func_cnt_data_1 : 15|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ Req_MT_func_cnt_svc_ID : 7|8@0+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1440 RX5_VEHICLE_INFO: 3 Vector__XXX
+ SG_ Vehicle_info_rsv3 : 22|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Vehicle_info_rsv4 : 16|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ Vehicle_info_rsv2 : 15|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ Vehicle_info_rsv1 : 7|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ Vehicle_info_temp_unit : 19|1@0+ (1,0) [0|1] ""  Link_Card
+ SG_ Vehicle_info_press_unit : 21|2@0+ (1,0) [0|3] ""  Link_Card
+ SG_ Vehicle_info_mile_unit : 23|1@0+ (1,0) [0|1] ""  Link_Card
+ SG_ Vehicle_info_fuel_con_unit : 18|2@0+ (1,0) [0|1] ""  Link_Card
+
+
+
+CM_ SG_ 1441 func_sw_6 ":HOME";
+CM_ SG_ 1441 func_sw_5 ":SELECT";
+CM_ SG_ 1441 func_sw_2 ":DOWN";
+CM_ SG_ 1441 func_sw_1 ":UP";
+BA_DEF_ SG_  "GenSigStartValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgRxTimeoutErr2Rcvry" INT 0 65535;
+BA_DEF_ BO_  "GenMsgRxTimeoutErr2" INT 0 65535;
+BA_DEF_ BO_  "GenMsgTxTimeout" INT 0 65535;
+BA_DEF_ BO_  "GenMsgRxTimeoutErr1Rcvry" INT 0 65535;
+BA_DEF_ SG_  "AdditionalComments" STRING ;
+BA_DEF_ BO_  "TpResponse" ENUM  "No","Yes";
+BA_DEF_ BO_  "TpRequest" ENUM  "No","Yes";
+BA_DEF_ BO_  "NmResponse" ENUM  "No","Yes";
+BA_DEF_ BO_  "NmRequest" ENUM  "No","Yes";
+BA_DEF_ BO_  "MessageType" STRING ;
+BA_DEF_ BO_  "GenMsgRxTimeoutErr1" INT 0 65535;
+BA_DEF_ BO_  "GenMsgStartValue" STRING ;
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 65535;
+BA_DEF_ BO_  "GenMsgPeriodicLossMask" STRING ;
+BA_DEF_ BO_  "GenMsgPeriodicLossValue" STRING ;
+BA_DEF_ BO_  "GenMsgLmin" INT 0 8;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 65535;
+BA_DEF_ BO_  "DiagResponse" ENUM  "No","Yes";
+BA_DEF_ BO_  "DiagRequest" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenMsgRxTimeoutErr2Rcvry" 0;
+BA_DEF_DEF_  "GenMsgRxTimeoutErr2" 0;
+BA_DEF_DEF_  "GenMsgTxTimeout" 0;
+BA_DEF_DEF_  "GenMsgRxTimeoutErr1Rcvry" 1000;
+BA_DEF_DEF_  "AdditionalComments" "";
+BA_DEF_DEF_  "TpResponse" "No";
+BA_DEF_DEF_  "TpRequest" "No";
+BA_DEF_DEF_  "NmResponse" "No";
+BA_DEF_DEF_  "NmRequest" "No";
+BA_DEF_DEF_  "MessageType" "";
+BA_DEF_DEF_  "GenMsgRxTimeoutErr1" 1000;
+BA_DEF_DEF_  "GenMsgStartValue" "";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "GenMsgPeriodicLossMask" "";
+BA_DEF_DEF_  "GenMsgPeriodicLossValue" "";
+BA_DEF_DEF_  "GenMsgLmin" 1;
+BA_DEF_DEF_  "GenMsgDelayTime" 10;
+BA_DEF_DEF_  "DiagResponse" "No";
+BA_DEF_DEF_  "DiagRequest" "No";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenMsgSendType" "none";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_ "GenMsgSendType" BO_ 551 1;
+BA_ "GenMsgDelayTime" BO_ 551 0;
+BA_ "GenMsgLmin" BO_ 551 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 551 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 551 0;
+BA_ "GenMsgTxTimeout" BO_ 551 1000;
+BA_ "GenMsgTxTimeout" BO_ 2016 1000;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 2016 0;
+BA_ "GenMsgRxTimeoutErr1" BO_ 2016 0;
+BA_ "GenMsgLmin" BO_ 2016 8;
+BA_ "GenMsgDelayTime" BO_ 2016 0;
+BA_ "GenMsgSendType" BO_ 2016 1;
+BA_ "GenMsgTxTimeout" BO_ 2000 1000;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 2000 0;
+BA_ "GenMsgRxTimeoutErr1" BO_ 2000 0;
+BA_ "GenMsgLmin" BO_ 2000 8;
+BA_ "GenMsgDelayTime" BO_ 2000 0;
+BA_ "GenMsgSendType" BO_ 2000 1;
+BA_ "GenMsgSendType" BO_ 550 1;
+BA_ "GenMsgDelayTime" BO_ 550 0;
+BA_ "GenMsgLmin" BO_ 550 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 550 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 550 0;
+BA_ "GenMsgTxTimeout" BO_ 550 1000;
+BA_ "GenMsgSendType" BO_ 1242 1;
+BA_ "GenMsgDelayTime" BO_ 1242 0;
+BA_ "GenMsgLmin" BO_ 1242 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1242 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1242 0;
+BA_ "GenMsgTxTimeout" BO_ 1242 1000;
+BA_ "GenMsgSendType" BO_ 1241 1;
+BA_ "GenMsgDelayTime" BO_ 1241 0;
+BA_ "GenMsgLmin" BO_ 1241 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1241 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1241 0;
+BA_ "GenMsgTxTimeout" BO_ 1241 1000;
+BA_ "GenMsgSendType" BO_ 1256 1;
+BA_ "GenMsgDelayTime" BO_ 1256 0;
+BA_ "GenMsgLmin" BO_ 1256 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1256 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1256 0;
+BA_ "GenMsgTxTimeout" BO_ 1256 1000;
+BA_ "GenMsgSendType" BO_ 1224 1;
+BA_ "GenMsgDelayTime" BO_ 1224 0;
+BA_ "GenMsgLmin" BO_ 1224 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1224 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1224 0;
+BA_ "GenMsgTxTimeout" BO_ 1224 1000;
+BA_ "GenMsgSendType" BO_ 1984 1;
+BA_ "GenMsgDelayTime" BO_ 1984 0;
+BA_ "GenMsgLmin" BO_ 1984 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1984 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1984 0;
+BA_ "GenMsgTxTimeout" BO_ 1984 1000;
+BA_ "GenMsgSendType" BO_ 1681 1;
+BA_ "GenMsgDelayTime" BO_ 1681 0;
+BA_ "GenMsgLmin" BO_ 1681 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1681 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1681 0;
+BA_ "GenMsgTxTimeout" BO_ 1681 1000;
+BA_ "GenMsgSendType" BO_ 1493 1;
+BA_ "GenMsgDelayTime" BO_ 1493 0;
+BA_ "GenMsgLmin" BO_ 1493 1;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1493 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1493 0;
+BA_ "GenMsgTxTimeout" BO_ 1493 1000;
+BA_ "GenMsgSendType" BO_ 1470 0;
+BA_ "GenMsgCycleTime" BO_ 1470 100;
+BA_ "GenMsgDelayTime" BO_ 1470 100;
+BA_ "GenMsgLmin" BO_ 1470 4;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1470 200;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1470 100;
+BA_ "GenMsgSendType" BO_ 1469 0;
+BA_ "GenMsgCycleTime" BO_ 1469 100;
+BA_ "GenMsgDelayTime" BO_ 1469 100;
+BA_ "GenMsgLmin" BO_ 1469 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1469 200;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1469 100;
+BA_ "GenMsgSendType" BO_ 1468 0;
+BA_ "GenMsgCycleTime" BO_ 1468 100;
+BA_ "GenMsgDelayTime" BO_ 1468 100;
+BA_ "GenMsgLmin" BO_ 1468 3;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1468 200;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1468 100;
+BA_ "GenMsgSendType" BO_ 1467 0;
+BA_ "GenMsgCycleTime" BO_ 1467 100;
+BA_ "GenMsgDelayTime" BO_ 1467 100;
+BA_ "GenMsgLmin" BO_ 1467 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1467 200;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1467 100;
+BA_ "GenMsgSendType" BO_ 1466 0;
+BA_ "GenMsgCycleTime" BO_ 1466 100;
+BA_ "GenMsgDelayTime" BO_ 1466 100;
+BA_ "GenMsgLmin" BO_ 1466 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1466 200;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1466 100;
+BA_ "GenMsgSendType" BO_ 1455 1;
+BA_ "GenMsgDelayTime" BO_ 1455 0;
+BA_ "GenMsgLmin" BO_ 1455 3;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1455 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1455 0;
+BA_ "GenMsgTxTimeout" BO_ 1455 1000;
+BA_ "GenMsgSendType" BO_ 1447 0;
+BA_ "GenMsgCycleTime" BO_ 1447 100;
+BA_ "GenMsgDelayTime" BO_ 1447 100;
+BA_ "GenMsgLmin" BO_ 1447 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1447 200;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1447 100;
+BA_ "GenMsgSendType" BO_ 1446 0;
+BA_ "GenMsgCycleTime" BO_ 1446 100;
+BA_ "GenMsgDelayTime" BO_ 1446 100;
+BA_ "GenMsgLmin" BO_ 1446 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1446 200;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1446 100;
+BA_ "GenMsgSendType" BO_ 1441 0;
+BA_ "GenMsgCycleTime" BO_ 1441 10;
+BA_ "GenMsgLmin" BO_ 1441 3;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1441 20;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1441 10;
+BA_ "GenMsgRxTimeoutErr2" BO_ 1441 1000;
+BA_ "GenMsgRxTimeoutErr2Rcvry" BO_ 1441 1000;
+BA_ "GenMsgSendType" BO_ 1413 1;
+BA_ "GenMsgDelayTime" BO_ 1413 0;
+BA_ "GenMsgLmin" BO_ 1413 3;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1413 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1413 0;
+BA_ "GenMsgTxTimeout" BO_ 1413 1000;
+BA_ "GenMsgSendType" BO_ 1411 0;
+BA_ "GenMsgCycleTime" BO_ 1411 50;
+BA_ "GenMsgDelayTime" BO_ 1411 50;
+BA_ "GenMsgLmin" BO_ 1411 3;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1411 100;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1411 50;
+BA_ "GenMsgSendType" BO_ 1410 1;
+BA_ "GenMsgDelayTime" BO_ 1410 0;
+BA_ "GenMsgLmin" BO_ 1410 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1410 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1410 0;
+BA_ "GenMsgTxTimeout" BO_ 1410 1000;
+BA_ "GenMsgDelayTime" BO_ 848 100;
+BA_ "GenMsgSendType" BO_ 848 0;
+BA_ "GenMsgCycleTime" BO_ 848 100;
+BA_ "GenMsgLmin" BO_ 848 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 848 200;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 848 100;
+BA_ "GenMsgSendType" BO_ 521 0;
+BA_ "GenMsgCycleTime" BO_ 521 10;
+BA_ "GenMsgLmin" BO_ 521 6;
+BA_ "GenMsgRxTimeoutErr1" BO_ 521 20;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 521 10;
+BA_ "GenMsgSendType" BO_ 1233 1;
+BA_ "GenMsgDelayTime" BO_ 1233 0;
+BA_ "GenMsgLmin" BO_ 1233 8;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1233 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1233 0;
+BA_ "GenMsgTxTimeout" BO_ 1233 1000;
+BA_ "GenMsgLmin" BO_ 1680 8;
+BA_ "GenMsgSendType" BO_ 1680 1;
+BA_ "GenMsgDelayTime" BO_ 1680 0;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1680 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1680 0;
+BA_ "GenMsgTxTimeout" BO_ 1680 1000;
+BA_ "GenMsgTxTimeout" BO_ 1482 1000;
+BA_ "GenMsgSendType" BO_ 1482 0;
+BA_ "GenMsgCycleTime" BO_ 1482 100;
+BA_ "GenMsgDelayTime" BO_ 1482 100;
+BA_ "GenMsgLmin" BO_ 1482 2;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1482 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1482 0;
+BA_ "GenMsgLmin" BO_ 1471 5;
+BA_ "GenMsgSendType" BO_ 1471 1;
+BA_ "GenMsgDelayTime" BO_ 1471 0;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1471 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1471 0;
+BA_ "GenMsgTxTimeout" BO_ 1471 1000;
+BA_ "GenMsgLmin" BO_ 1459 2;
+BA_ "GenMsgSendType" BO_ 1459 1;
+BA_ "GenMsgDelayTime" BO_ 1459 0;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1459 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1459 0;
+BA_ "GenMsgTxTimeout" BO_ 1459 1000;
+BA_ "GenMsgSendType" BO_ 1457 1;
+BA_ "GenMsgDelayTime" BO_ 1457 0;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1457 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1457 0;
+BA_ "GenMsgTxTimeout" BO_ 1457 1000;
+BA_ "GenMsgSendType" BO_ 1409 1;
+BA_ "GenMsgDelayTime" BO_ 1409 0;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1409 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1409 0;
+BA_ "GenMsgTxTimeout" BO_ 1409 1000;
+BA_ "GenMsgTxTimeout" BO_ 1402 1000;
+BA_ "GenMsgDelayTime" BO_ 1402 100;
+BA_ "GenMsgSendType" BO_ 1402 0;
+BA_ "GenMsgCycleTime" BO_ 1402 100;
+BA_ "GenMsgLmin" BO_ 1402 2;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1402 0;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1402 0;
+BA_ "GenMsgDelayTime" BO_ 1412 0;
+BA_ "GenMsgTxTimeout" BO_ 1412 1000;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1412 0;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1412 0;
+BA_ "GenMsgLmin" BO_ 1412 3;
+BA_ "GenMsgSendType" BO_ 1412 1;
+BA_ "GenMsgDelayTime" BO_ 1440 100;
+BA_ "GenMsgRxTimeoutErr1Rcvry" BO_ 1440 100;
+BA_ "GenMsgRxTimeoutErr1" BO_ 1440 200;
+BA_ "GenMsgLmin" BO_ 1440 3;
+BA_ "GenMsgSendType" BO_ 1440 0;
+BA_ "GenMsgCycleTime" BO_ 1440 100;
+BA_ "GenSigStartValue" SG_ 1469 Maint_trip_rsv2 85;
+BA_ "GenSigStartValue" SG_ 1467 Vehicle_info_3_coolant 48;
+BA_ "GenSigStartValue" SG_ 1467 Vehicle_info_3_air 48;
+BA_ "GenSigStartValue" SG_ 1441 func_sw_scrn_layer 1;
+BA_ "GenSigStartValue" SG_ 1411 Brtnss_ctrl_rsv2 85;
+BA_ "GenSigStartValue" SG_ 1409 Req_support_REQGSFL 16;
+BA_ "GenSigStartValue" SG_ 1440 Vehicle_info_rsv2 85;
+BA_ "GenSigStartValue" SG_ 1440 Vehicle_info_rsv1 85;
+VAL_ 1493 Fact_insp_ns2 1 "BT comm off" 0 "BT comm on" ;
+VAL_ 1470 Heater_stat_crnt_sh_stat 3 "Hi" 2 "Mid" 1 "Lo" 0 "Off" ;
+VAL_ 1470 Heater_stat_crnt_gw_stat 3 "Hi" 2 "Mid" 1 "Lo" 0 "Off" ;
+VAL_ 1468 Vehicle_info_4_odo_trip_dis 3 "TRIPF" 2 "TRIP2" 1 "TRIP1" 0 "ODO" ;
+VAL_ 1468 Vehicle_info_4_fuel_rsv 1 "true" 0 "False" ;
+VAL_ 1468 Vehicle_info_4_low_fuel_wrn 1 "true" 0 "False" ;
+VAL_ 1468 Vehicle_info_4_ftrip_hrd_rst 1 "Done" 0 "Not yet" ;
+VAL_ 1467 Vehicle_info_3_clk_adjst 1 "Adjusted" 0 "None" ;
+VAL_ 1441 func_sw_scrn_layer 1 "Background" 0 "Foreground" ;
+VAL_ 1441 func_sw_6 1 "ON" 0 "OFF" ;
+VAL_ 1441 func_sw_5 1 "ON" 0 "OFF" ;
+VAL_ 1441 func_sw_2 1 "ON" 0 "OFF" ;
+VAL_ 1441 func_sw_1 1 "ON" 0 "OFF" ;
+VAL_ 1482 Dev_ctrl_TFT_brghtnss 2 "Up" 1 "Down" 0 "NT" ;
+VAL_ 1482 Dev_ctrl_windscrn 2 "Up" 1 "Down" 0 "NT" ;
+VAL_ 1482 Dev_ctrl_seat_heater 2 "Up" 1 "Down" 0 "NT" ;
+VAL_ 1482 Dev_ctrl_lcd_brghtnss 2 "Up" 1 "Down" 0 "NT" ;
+VAL_ 1482 Dev_ctrl_grip_warm 2 "Up" 1 "Down" 0 "NT" ;
+VAL_ 1482 Dev_ctrl_CHG_Meter 3 "TRIPF" 2 "TRIP2" 1 "TRIP1" 0 "ODO" ;
+VAL_ 1457 Heater_lvl_slect 2 "Passenger Seat Heater" 1 "Rider seat heater" 0 "Grip Warner" ;
+VAL_ 1457 Heater_lvl_Lv 2 "Hi" 1 "Mid" 0 "Lo" ;
+VAL_ 1457 Heater_lvl_btn_stat_aud 1 "UP" 0 "Down" ;
+VAL_ 1402 Sys_info_VH_speed_unit 1 "mph" 0 "kmph" ;
+VAL_ 1402 Sys_info_temp_unit 1 "F_Degree" 0 "C_Degree" ;
+VAL_ 1402 Sys_info_pressure_unit 2 "kgfpcm2" 1 "Kpa" 0 "psi" ;
+VAL_ 1402 Sys_info_mileage_unit 1 "mile" 0 "km" ;
+VAL_ 1402 Sys_info_LC_sys_stat 1 "Ready" 0 "Not ready" ;
+VAL_ 1402 Sys_info_lang 18 "Malay" 17 "Korean" 16 "Vietnamese" 15 "Thai" 14 "Portuguese(Brazil)" 13 "Polish" 12 "Indonesian" 11 "Hindi" 10 "Finnish" 9 "Greek" 8 "Simplified Chinese" 7 "Traditional Chinese" 6 "Spanish" 5 "Japanese" 4 "Italian" 3 "French" 2 "English" 1 "Deutsch" 0 "None" ;
+VAL_ 1402 Sys_info_fuel_unit 1 "Gallon" 0 "L" ;
+VAL_ 1402 Sys_info_fuel_con_unit 2 "lp100km" 1 "MGP" 0 "kmpl" ;
+VAL_ 1440 Vehicle_info_press_unit 3 "bar" 2 "kgfpcm2" 1 "Kpa" 0 "psi" ;
+VAL_ 1440 Vehicle_info_mile_unit 1 "mile" 0 "km" ;
+VAL_ 1440 Vehicle_info_fuel_con_unit 3 "lp100km" 2 "mp1mpgal" 1 "mpg" 0 "kmpl" ;
+
