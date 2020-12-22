@@ -43,7 +43,7 @@
 #endif
 
 #include "_CoreGroup.h"
-#include "_CoreTimer.h"
+#include "_CoreSystemEventHandler.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -104,7 +104,7 @@ EW_DEFINE_FIELDS( ComponentsStatusBar, CoreGroup )
   EW_OBJECT  ( Divider,         ViewsImage )
   EW_OBJECT  ( IconWarning,     ViewsImage )
   EW_OBJECT  ( TimeText,        ViewsText )
-  EW_OBJECT  ( GetRtcTimer,     CoreTimer )
+  EW_OBJECT  ( OnUpdateLocalTimeEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( ComponentsStatusBar )
 
 /* Virtual Method Table (VMT) for the class : 'Components::StatusBar' */
@@ -153,8 +153,9 @@ EW_DEFINE_METHODS( ComponentsStatusBar, CoreGroup )
     aOrder )
 EW_END_OF_METHODS( ComponentsStatusBar )
 
-/* 'C' function for method : 'Components::StatusBar.OnGetRtcTimeSlot()' */
-void ComponentsStatusBar_OnGetRtcTimeSlot( ComponentsStatusBar _this, XObject sender );
+/* 'C' function for method : 'Components::StatusBar.OnUpdateLocalTimeSlot()' */
+void ComponentsStatusBar_OnUpdateLocalTimeSlot( ComponentsStatusBar _this, XObject 
+  sender );
 
 #ifdef __cplusplus
   }

@@ -22,7 +22,7 @@ class SystemDeviceClass : Templates::DeviceClass
   // Interface to get system info
   note group Note1
   {
-    attr Bounds = <10,10,910,280>;
+    attr Bounds = <10,10,970,280>;
   }
 
   $rect <250,70,450,110>
@@ -133,28 +133,6 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
 
     return pure SoftwareVersion;
-  }
-
-  $rect <690,70,890,110>
-  property string RtcTime;
-
-  $rect <690,120,890,160>
-  onget RtcTime
-  {
-    $if !$prototyper
-      var string rtc_time = "";
-
-      native( rtc_time )
-      {
-         char rtc_time_str[8];
-         ew_get_rtc_time( rtc_time_str );
-         rtc_time = EwNewStringAnsi( rtc_time_str );
-      }
-
-      return rtc_time;
-    $else
-      return pure RtcTime;
-    $endif
   }
 
   $rect <30,520,250,560>
@@ -332,12 +310,66 @@ class SystemDeviceClass : Templates::DeviceClass
       }
     $endif
   }
+
+  $rect <680,120,930,160>
+  method void GetLocalTime()
+  {
+    $if !$prototyper
+      var uint16 RtcYear;
+      var uint8 RtcMonth;
+      var uint8 RtcDay;
+      var uint8 RtcHour;
+      var uint8 RtcMinute;
+      var uint8 RtcSecond;
+
+      native( RtcYear, RtcMonth, RtcDay, RtcHour, RtcMinute, RtcSecond )
+      {
+        snvs_lp_srtc_datetime_t srtc_time;
+        ew_get_rtc_time( &srtc_time );
+
+        RtcYear = srtc_time.year;
+        RtcMonth = srtc_time.month;
+        RtcDay = srtc_time.day;
+        RtcHour = srtc_time.hour;
+        RtcMinute = srtc_time.minute;
+        RtcSecond = srtc_time.second;
+      }
+
+      if( null == CurrentLocalTime )
+      {
+        CurrentLocalTime = new DeviceInterface::RtcTime;
+      }
+
+      CurrentLocalTime.Year = RtcYear;
+      CurrentLocalTime.Month = RtcMonth;
+      CurrentLocalTime.Day = RtcDay;
+      CurrentLocalTime.Hour = RtcHour;
+      CurrentLocalTime.Minute = RtcMinute;
+      CurrentLocalTime.Second = RtcSecond;
+    $endif
+  }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <681,70,930,110>
+  $output true
+  method void NotifyUpdateLocalTime()
+  {
+    GetLocalTime();
+    UpdateLocalTimeSystemEvent.Trigger( CurrentLocalTime, false );
+  }
+
+  $rect <680,220,930,260>
+  object Core::SystemEvent UpdateLocalTimeSystemEvent;
+
+  $rect <680,170,930,210>
+  var DeviceInterface::RtcTime CurrentLocalTime;
 }
 
-$rect <20,70,220,110>
+$rect <20,60,220,100>
 autoobject DeviceInterface::SystemDeviceClass SystemDevice;
 
-$rect <20,130,230,170>
+$rect <19,170,229,210>
 $output false
 class NavigationDeviceClass : Templates::DeviceClass
 {
@@ -355,10 +387,10 @@ class NavigationDeviceClass : Templates::DeviceClass
   }
 }
 
-$rect <20,180,230,220>
+$rect <19,210,229,250>
 autoobject DeviceInterface::NavigationDeviceClass NavigationDevice;
 
-$rect <20,240,260,280>
+$rect <19,290,259,330>
 $output false
 class MediaManagerDeviceClass : Templates::DeviceClass
 {
@@ -616,10 +648,10 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   property int32 RemainTimeSec;
 }
 
-$rect <20,290,220,330>
+$rect <19,330,219,370>
 autoobject DeviceInterface::MediaManagerDeviceClass MediaManagerDevice;
 
-$rect <20,360,220,400>
+$rect <19,400,219,440>
 $output false
 class BluetoothDeviceClass : Templates::DeviceClass
 {
@@ -981,10 +1013,10 @@ class BluetoothDeviceClass : Templates::DeviceClass
   }
 }
 
-$rect <20,400,220,440>
+$rect <19,440,219,480>
 autoobject DeviceInterface::BluetoothDeviceClass BluetoothDevice;
 
-$rect <20,440,220,480>
+$rect <19,480,219,520>
 $output false
 class BluetoothPairedDeviceInfo
 {
@@ -993,4 +1025,27 @@ class BluetoothPairedDeviceInfo
 
   $rect <20,60,220,100>
   var bool IsConnected;
+}
+
+$rect <20,100,220,140>
+$output false
+class RtcTime
+{
+  $rect <20,10,220,50>
+  var uint16 Year;
+
+  $rect <20,50,220,90>
+  var uint8 Month;
+
+  $rect <20,90,220,130>
+  var uint8 Day;
+
+  $rect <20,130,220,170>
+  var uint8 Hour;
+
+  $rect <20,170,220,210>
+  var uint8 Minute;
+
+  $rect <20,210,220,250>
+  var uint8 Second;
 }

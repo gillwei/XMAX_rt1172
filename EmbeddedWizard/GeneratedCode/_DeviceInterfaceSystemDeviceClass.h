@@ -46,6 +46,12 @@
 #include "_CoreTimer.h"
 #include "_TemplatesDeviceClass.h"
 
+/* Forward declaration of the class DeviceInterface::RtcTime */
+#ifndef _DeviceInterfaceRtcTime_
+  EW_DECLARE_CLASS( DeviceInterfaceRtcTime )
+#define _DeviceInterfaceRtcTime_
+#endif
+
 /* Forward declaration of the class DeviceInterface::SystemDeviceClass */
 #ifndef _DeviceInterfaceSystemDeviceClass_
   EW_DECLARE_CLASS( DeviceInterfaceSystemDeviceClass )
@@ -55,9 +61,11 @@
 
 /* Deklaration of class : 'DeviceInterface::SystemDeviceClass' */
 EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
+  EW_VARIABLE( CurrentLocalTime, DeviceInterfaceRtcTime )
   EW_OBJECT  ( FactoryTestSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( FactoryResetTimer, CoreTimer )
   EW_OBJECT  ( QrCodeSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( UpdateLocalTimeSystemEvent, CoreSystemEvent )
   EW_PROPERTY( SoftwareVersion, XString )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
@@ -109,9 +117,6 @@ XString DeviceInterfaceSystemDeviceClass_OnGetESN( DeviceInterfaceSystemDeviceCl
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetSoftwareVersion()' */
 XString DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( DeviceInterfaceSystemDeviceClass _this );
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetRtcTime()' */
-XString DeviceInterfaceSystemDeviceClass_OnGetRtcTime( DeviceInterfaceSystemDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ResetToFactoryDefault()' */
 void DeviceInterfaceSystemDeviceClass_ResetToFactoryDefault( DeviceInterfaceSystemDeviceClass _this );
@@ -184,6 +189,19 @@ void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this );
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetQrCode()' */
 void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClass _this, 
   XInt32 pixelnum );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetLocalTime()' */
+void DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this );
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceSystemDeviceClass_NotifyUpdateLocalTime( DeviceInterfaceSystemDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyUpdateLocalTime()' */
+void DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyUpdateLocalTime(). */
+#define _DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime_
 
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );

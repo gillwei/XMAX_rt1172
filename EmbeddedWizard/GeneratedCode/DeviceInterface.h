@@ -46,6 +46,7 @@
 #include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
+#include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 
 /* User defined auto object: 'DeviceInterface::SystemDevice' */

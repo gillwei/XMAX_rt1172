@@ -156,6 +156,7 @@ EW_DEFINE_METHODS( MenuVerticalMenu, ComponentsBaseComponent )
   EW_METHOD( OnShortDownKeyPressed, void )( MenuVerticalMenu _this )
   EW_METHOD( OnShortUpKeyPressed, void )( MenuVerticalMenu _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuVerticalMenu )
 
 /* 'C' function for method : 'Menu::VerticalMenu.OnLongKeyPressed()' */

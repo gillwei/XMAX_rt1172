@@ -719,6 +719,7 @@ EW_DEFINE_CLASS( MenuVerticalMenu, ComponentsBaseComponent, MenuList, MenuList,
   MenuVerticalMenu_OnShortDownKeyPressed,
   MenuVerticalMenu_OnShortUpKeyPressed,
   ComponentsBaseComponent_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
 EW_END_OF_CLASS( MenuVerticalMenu )
 
 /* Initializer for the class 'Menu::ItemCheckbox' */
@@ -1419,6 +1420,7 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseComponent, BlackBG, BlackBG, Bl
   ComponentsBaseComponent_OnShortDownKeyPressed,
   ComponentsBaseComponent_OnShortUpKeyPressed,
   ComponentsBaseComponent_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -1926,6 +1928,7 @@ EW_DEFINE_CLASS( MenuUpDownPushButtonSet, ComponentsBaseComponent, OnUpButtonRel
   MenuUpDownPushButtonSet_OnShortDownKeyPressed,
   MenuUpDownPushButtonSet_OnShortUpKeyPressed,
   ComponentsBaseComponent_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
 EW_END_OF_CLASS( MenuUpDownPushButtonSet )
 
 /* Initializer for the class 'Menu::ItemCheckMark' */

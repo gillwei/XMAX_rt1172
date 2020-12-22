@@ -158,6 +158,7 @@ EW_DEFINE_METHODS( SettingsBluetooth, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( SettingsBluetooth _this, XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( SettingsBluetooth _this, XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( SettingsBluetooth _this, XInt32 aItemNo, 

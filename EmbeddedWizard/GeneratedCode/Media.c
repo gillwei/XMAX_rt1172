@@ -474,6 +474,7 @@ EW_DEFINE_CLASS( MediaMain, ComponentsBaseComponent, FocusList, Rectangle, Recta
   MediaMain_OnShortDownKeyPressed,
   MediaMain_OnShortUpKeyPressed,
   ComponentsBaseComponent_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
 EW_END_OF_CLASS( MediaMain )
 
 /* Initializer for the class 'Media::Track' */

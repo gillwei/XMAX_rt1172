@@ -304,6 +304,7 @@ EW_DEFINE_CLASS( NavigationMain, ComponentsBaseComponent, Background, Background
   NavigationMain_OnShortDownKeyPressed,
   NavigationMain_OnShortUpKeyPressed,
   NavigationMain_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
 EW_END_OF_CLASS( NavigationMain )
 
 /* Initializer for the class 'Navigation::YMC' */
@@ -495,6 +496,7 @@ EW_DEFINE_CLASS( NavigationYMC, ComponentsBaseComponent, Image, Image, Image, Im
   NavigationYMC_OnShortDownKeyPressed,
   NavigationYMC_OnShortUpKeyPressed,
   NavigationYMC_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
 EW_END_OF_CLASS( NavigationYMC )
 
 /* Initializer for the class 'Navigation::Garmin' */
@@ -687,6 +689,7 @@ EW_DEFINE_CLASS( NavigationGarmin, ComponentsBaseComponent, Image, Image, Image,
   NavigationGarmin_OnShortDownKeyPressed,
   NavigationGarmin_OnShortUpKeyPressed,
   NavigationGarmin_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
 EW_END_OF_CLASS( NavigationGarmin )
 
 /* Embedded Wizard */

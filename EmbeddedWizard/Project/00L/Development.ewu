@@ -58,6 +58,7 @@ class Main : Menu::BaseMenuView
     {
       case 0: SlideInDialog( new Factory::Main );
       case 1: DeviceInterface::SystemDevice.IsHopperTestMode = !DeviceInterface::SystemDevice.IsHopperTestMode;
+      case 2: this.PresentDialog( new Development::DEV_RealTimeClock, null, null, null, null, null, null, null, null, false );
       default:;
     }
 
@@ -76,10 +77,11 @@ class Main : Menu::BaseMenuView
   }
 
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 2 ] =
+  array string ItemTitleArray[ 3 ] =
   (
     Default[0] = "Factory Test";
     Default[1] = "Hopper Test Mode";
+    Default[2] = "Real Time Clock";
   );
 
   $rect <20,20,160,60>
@@ -98,4 +100,46 @@ class Main : Menu::BaseMenuView
   $reorder LoadItemChecked 4
   $reorder ItemTitleArray 1
   $reorder Menu 1
+}
+
+$rect <60,60,260,100>
+$output false
+class DEV_RealTimeClock : Components::BaseMainBG
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <220,290,450,330>
+  inherited method OnShortHomeKeyPressed()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <530,120,820,160>
+  slot OnUpdateLocalTimeSlot
+  {
+    var DeviceInterface::RtcTime CurrentTime = ( DeviceInterface::RtcTime )OnUpdateLocalTimeEventHandler.Context;
+    if( null != CurrentTime )
+    {
+      TimeText.String = string( CurrentTime.Year, 4 ) + "/" + string( CurrentTime.Month, 2 ) + "/"+ string( CurrentTime.Day, 2 ) + " "
+                        + string( CurrentTime.Hour, 2 ) + ":" + string( CurrentTime.Minute, 2 ) + ":" + string( CurrentTime.Second, 2 );
+
+    }
+  }
+
+  $rect <530,70,820,110>
+  object Core::SystemEventHandler OnUpdateLocalTimeEventHandler
+  {
+    preset OnEvent = OnUpdateLocalTimeSlot;
+    preset Event = DeviceInterface::SystemDevice.UpdateLocalTimeSystemEvent;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TimeText
+  {
+    preset Bounds = <96,79,390,122>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp36;
+  }
 }

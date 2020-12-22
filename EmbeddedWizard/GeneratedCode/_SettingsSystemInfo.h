@@ -158,6 +158,7 @@ EW_DEFINE_METHODS( SettingsSystemInfo, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( SettingsSystemInfo _this )
+  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( MenuBaseMenuView _this, XInt32 aItemNo, 

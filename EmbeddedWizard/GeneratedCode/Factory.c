@@ -471,6 +471,7 @@ EW_DEFINE_CLASS( FactoryDisplayAutoRun, ComponentsBaseComponent, TimerNextPatter
   ComponentsBaseComponent_OnShortDownKeyPressed,
   ComponentsBaseComponent_OnShortUpKeyPressed,
   ComponentsBaseComponent_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
 EW_END_OF_CLASS( FactoryDisplayAutoRun )
 
 /* Initializer for the class 'Factory::Main' */
@@ -690,6 +691,7 @@ EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, ItemTitl
   ComponentsBaseComponent_OnShortDownKeyPressed,
   ComponentsBaseComponent_OnShortUpKeyPressed,
   ComponentsBaseComponent_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
   FactoryMain_LoadItemClass,
   FactoryMain_LoadItemTitle,
   FactoryMain_OnItemActivate,
@@ -1026,6 +1028,7 @@ EW_DEFINE_CLASS( FactoryDisplayManual, ComponentsBaseComponent, FullScreen, Full
   FactoryDisplayManual_OnShortDownKeyPressed,
   FactoryDisplayManual_OnShortUpKeyPressed,
   ComponentsBaseComponent_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
 EW_END_OF_CLASS( FactoryDisplayManual )
 
 /* Initializer for the class 'Factory::TestContext' */

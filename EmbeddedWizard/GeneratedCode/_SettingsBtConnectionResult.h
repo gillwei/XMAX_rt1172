@@ -156,6 +156,7 @@ EW_DEFINE_METHODS( SettingsBtConnectionResult, ComponentsBaseComponent )
   EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsBtConnectionResult )
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 

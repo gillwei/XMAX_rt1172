@@ -16,6 +16,7 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "fsl_snvs_lp.h"
 #include "EW_pub.h"
 
 // save Home index and Meter setting into the last page in EEPROM
@@ -50,7 +51,7 @@ int ew_device_system_proc( void );
 void ew_get_software_version( char* version );
 void ew_get_bt_software_version( char* version );
 void ew_get_esn( void );
-void ew_get_rtc_time( char* datetime );
+void ew_get_rtc_time( snvs_lp_srtc_datetime_t* srtc_datetime );
 void ew_request_qrcode( int pixel_per_mod );
 
 void ew_power_init( void );

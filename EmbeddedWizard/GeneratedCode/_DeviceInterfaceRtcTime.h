@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef Development_H
-#define Development_H
+#ifndef _DeviceInterfaceRtcTime_H
+#define _DeviceInterfaceRtcTime_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,13 +42,31 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_DevelopmentDEV_RealTimeClock.h"
-#include "_DevelopmentMain.h"
+/* Forward declaration of the class DeviceInterface::RtcTime */
+#ifndef _DeviceInterfaceRtcTime_
+  EW_DECLARE_CLASS( DeviceInterfaceRtcTime )
+#define _DeviceInterfaceRtcTime_
+#endif
+
+
+/* Deklaration of class : 'DeviceInterface::RtcTime' */
+EW_DEFINE_FIELDS( DeviceInterfaceRtcTime, XObject )
+  EW_VARIABLE( Year,            XUInt16 )
+  EW_VARIABLE( Second,          XUInt8 )
+  EW_VARIABLE( Minute,          XUInt8 )
+  EW_VARIABLE( Hour,            XUInt8 )
+  EW_VARIABLE( Day,             XUInt8 )
+  EW_VARIABLE( Month,           XUInt8 )
+EW_END_OF_FIELDS( DeviceInterfaceRtcTime )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::RtcTime' */
+EW_DEFINE_METHODS( DeviceInterfaceRtcTime, XObject )
+EW_END_OF_METHODS( DeviceInterfaceRtcTime )
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* Development_H */
+#endif /* _DeviceInterfaceRtcTime_H */
 
 /* Embedded Wizard */

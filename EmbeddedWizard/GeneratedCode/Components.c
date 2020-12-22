@@ -31,8 +31,9 @@
 #include "_ComponentsStatusBar.h"
 #include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
-#include "_CoreTimer.h"
+#include "_CoreSystemEventHandler.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_EffectsSlideTransition.h"
 #include "_EffectsTransition.h"
@@ -55,7 +56,7 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x000001EA, /* ratio 56.33 % */
+  0x000001F2, /* ratio 56.22 % */
   0xB8002300, 0x0009E452, 0x00960037, 0x0F200328, 0xE4002800, 0x8730042C, 0x00298022,
   0x037800D8, 0x8F800E80, 0x3C160610, 0x43A27098, 0x02331B24, 0x25517320, 0x271F8F47,
   0x50883488, 0x52874321, 0x18646A26, 0x8C4322C6, 0x047E5F1A, 0x11A44AC0, 0xA8D33D00,
@@ -65,7 +66,7 @@ static const unsigned int _StringsDefault0[] =
   0x00C543A7, 0x3CCD72DA, 0xAAD9AB31, 0x94930113, 0x5EA5967B, 0x8A996B00, 0xCD74CA91,
   0x4F508644, 0xF1CA96A7, 0x139360AD, 0x1844F731, 0xB49B4017, 0x95EF4568, 0xCB27B1C8,
   0xF6734CC8, 0xB6B0EDED, 0x115FD159, 0xC2700616, 0xBBDFD322, 0x18D4F71D, 0x910263F9,
-  0x85B6DB93, 0x02A3F4DD, 0x4AA25791, 0xA87B2844, 0x000080FB, 0x00000000
+  0x85B6DB93, 0x02A3F4DD, 0x4AA25791, 0x287B2844, 0x863A9101, 0x00080FCA, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -87,8 +88,9 @@ static const XRect _Const000E = {{ 50, 0 }, { 420, 30 }};
 static const XRect _Const000F = {{ 0, 30 }, { 480, 32 }};
 static const XRect _Const0010 = {{ 2, 0 }, { 80, 30 }};
 static const XColor _Const0011 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const0012 = {{ 0, 182 }, { 480, 272 }};
-static const XRect _Const0013 = {{ 0, 32 }, { 480, 182 }};
+static const XStringRes _Const0012 = { _StringsDefault0, 0x00F5 };
+static const XRect _Const0013 = {{ 0, 182 }, { 480, 272 }};
+static const XRect _Const0014 = {{ 0, 32 }, { 480, 182 }};
 
 /* Initializer for the class 'Components::BaseComponent' */
 void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink, XHandle aArg )
@@ -207,7 +209,7 @@ void ComponentsBaseComponent_OnKeyReleaseSlot( ComponentsBaseComponent _this, XO
       break;
 
       case CoreKeyCodeHome :
-        ComponentsBaseComponent_OnShortHomeKeyPressed( _this );
+        ComponentsBaseComponent__OnShortHomeKeyPressed( _this );
       break;
 
       default : 
@@ -314,6 +316,12 @@ void ComponentsBaseComponent_OnShortHomeKeyPressed( ComponentsBaseComponent _thi
   EW_UNUSED_ARG( _this );
 }
 
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortHomeKeyPressed()' */
+void ComponentsBaseComponent__OnShortHomeKeyPressed( void* _this )
+{
+  ((ComponentsBaseComponent)_this)->_VMT->OnShortHomeKeyPressed((ComponentsBaseComponent)_this );
+}
+
 /* Variants derived from the class : 'Components::BaseComponent' */
 EW_DEFINE_CLASS_VARIANTS( ComponentsBaseComponent )
 EW_END_OF_CLASS_VARIANTS( ComponentsBaseComponent )
@@ -354,6 +362,7 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, PassKeyHold, PassKeyHold, K
   ComponentsBaseComponent_OnShortDownKeyPressed,
   ComponentsBaseComponent_OnShortUpKeyPressed,
   ComponentsBaseComponent_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
 EW_END_OF_CLASS( ComponentsBaseComponent )
 
 /* Initializer for the class 'Components::DisclaimerView' */
@@ -497,6 +506,7 @@ EW_DEFINE_CLASS( ComponentsDisclaimerView, ComponentsBaseComponent, OnYesClicked
   ComponentsBaseComponent_OnShortDownKeyPressed,
   ComponentsBaseComponent_OnShortUpKeyPressed,
   ComponentsBaseComponent_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
 EW_END_OF_CLASS( ComponentsDisclaimerView )
 
 /* Initializer for the class 'Components::StatusBar' */
@@ -514,7 +524,7 @@ void ComponentsStatusBar__Init( ComponentsStatusBar _this, XObject aLink, XHandl
   ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->IconWarning, &_this->_XObject, 0 );
   ViewsText__Init( &_this->TimeText, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->GetRtcTimer, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->OnUpdateLocalTimeEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( ComponentsStatusBar );
@@ -540,7 +550,6 @@ void ComponentsStatusBar__Init( ComponentsStatusBar _this, XObject aLink, XHandl
   ViewsText_OnSetString( &_this->TimeText, 0 );
   ViewsText_OnSetColor( &_this->TimeText, _Const0011 );
   ViewsText_OnSetVisible( &_this->TimeText, 1 );
-  CoreTimer_OnSetEnabled( &_this->GetRtcTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->TitleText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
@@ -554,7 +563,9 @@ void ComponentsStatusBar__Init( ComponentsStatusBar _this, XObject aLink, XHandl
   ResourcesBitmap ));
   ViewsText_OnSetFont( &_this->TimeText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
   ResourcesFont ));
-  _this->GetRtcTimer.OnTrigger = EwNewSlot( _this, ComponentsStatusBar_OnGetRtcTimeSlot );
+  _this->OnUpdateLocalTimeEventHandler.OnEvent = EwNewSlot( _this, ComponentsStatusBar_OnUpdateLocalTimeSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->OnUpdateLocalTimeEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->UpdateLocalTimeSystemEvent );
 }
 
 /* Re-Initializer for the class 'Components::StatusBar' */
@@ -569,7 +580,7 @@ void ComponentsStatusBar__ReInit( ComponentsStatusBar _this )
   ViewsImage__ReInit( &_this->Divider );
   ViewsImage__ReInit( &_this->IconWarning );
   ViewsText__ReInit( &_this->TimeText );
-  CoreTimer__ReInit( &_this->GetRtcTimer );
+  CoreSystemEventHandler__ReInit( &_this->OnUpdateLocalTimeEventHandler );
 }
 
 /* Finalizer method for the class 'Components::StatusBar' */
@@ -584,20 +595,29 @@ void ComponentsStatusBar__Done( ComponentsStatusBar _this )
   ViewsImage__Done( &_this->Divider );
   ViewsImage__Done( &_this->IconWarning );
   ViewsText__Done( &_this->TimeText );
-  CoreTimer__Done( &_this->GetRtcTimer );
+  CoreSystemEventHandler__Done( &_this->OnUpdateLocalTimeEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Components::StatusBar.OnGetRtcTimeSlot()' */
-void ComponentsStatusBar_OnGetRtcTimeSlot( ComponentsStatusBar _this, XObject sender )
+/* 'C' function for method : 'Components::StatusBar.OnUpdateLocalTimeSlot()' */
+void ComponentsStatusBar_OnUpdateLocalTimeSlot( ComponentsStatusBar _this, XObject 
+  sender )
 {
+  DeviceInterfaceRtcTime CurrentTime;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  ViewsText_OnSetString( &_this->TimeText, DeviceInterfaceSystemDeviceClass_OnGetRtcTime( 
-  EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
+  CurrentTime = EwCastObject( _this->OnUpdateLocalTimeEventHandler.Context, DeviceInterfaceRtcTime );
+
+  if ( CurrentTime != 0 )
+  {
+    ViewsText_OnSetString( &_this->TimeText, EwConcatString( EwConcatString( EwNewStringInt( 
+    CurrentTime->Hour, 2, 10 ), EwLoadString( &_Const0012 )), EwNewStringInt( CurrentTime->Minute, 
+    2, 10 )));
+  }
 }
 
 /* Variants derived from the class : 'Components::StatusBar' */
@@ -656,8 +676,8 @@ void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHan
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0003 );
-  CoreRectView__OnSetBounds( &_this->MainBottomBG, _Const0012 );
-  CoreRectView__OnSetBounds( &_this->BlackBG, _Const0013 );
+  CoreRectView__OnSetBounds( &_this->MainBottomBG, _Const0013 );
+  CoreRectView__OnSetBounds( &_this->BlackBG, _Const0014 );
   ViewsRectangle_OnSetColor( &_this->BlackBG, _Const0004 );
   CoreGroup__Add( _this, ((CoreView)&_this->MainBottomBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BlackBG ), 0 );
@@ -730,6 +750,7 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, MainBottomBG, Ma
   ComponentsBaseComponent_OnShortDownKeyPressed,
   ComponentsBaseComponent_OnShortUpKeyPressed,
   ComponentsBaseComponent_OnShortEnterKeyPressed,
+  ComponentsBaseComponent_OnShortHomeKeyPressed,
 EW_END_OF_CLASS( ComponentsBaseMainBG )
 
 /* Embedded Wizard */

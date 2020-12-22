@@ -166,6 +166,7 @@ EW_DEFINE_METHODS( MediaMain, ComponentsBaseComponent )
   EW_METHOD( OnShortDownKeyPressed, void )( MediaMain _this )
   EW_METHOD( OnShortUpKeyPressed, void )( MediaMain _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MediaMain )
 
 /* The method Init() is invoked automatically after the component has been created. 

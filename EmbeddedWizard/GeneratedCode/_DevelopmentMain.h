@@ -106,7 +106,7 @@
 /* Deklaration of class : 'Development::Main' */
 EW_DEFINE_FIELDS( DevelopmentMain, MenuBaseMenuView )
   EW_OBJECT  ( Menu,            MenuVerticalMenu )
-  EW_ARRAY   ( ItemTitleArray,  XString, [2])
+  EW_ARRAY   ( ItemTitleArray,  XString, [3])
 EW_END_OF_FIELDS( DevelopmentMain )
 
 /* Virtual Method Table (VMT) for the class : 'Development::Main' */
@@ -157,6 +157,7 @@ EW_DEFINE_METHODS( DevelopmentMain, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( DevelopmentMain _this, XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( DevelopmentMain _this, XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( DevelopmentMain _this, XInt32 aItemNo, MenuItemBase 

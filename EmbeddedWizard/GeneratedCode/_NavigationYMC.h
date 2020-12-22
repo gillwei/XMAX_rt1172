@@ -151,6 +151,7 @@ EW_DEFINE_METHODS( NavigationYMC, ComponentsBaseComponent )
   EW_METHOD( OnShortDownKeyPressed, void )( NavigationYMC _this )
   EW_METHOD( OnShortUpKeyPressed, void )( NavigationYMC _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( NavigationYMC _this )
+  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( NavigationYMC )
 
 /* 'C' function for method : 'Navigation::YMC.OnShortDownKeyPressed()' */

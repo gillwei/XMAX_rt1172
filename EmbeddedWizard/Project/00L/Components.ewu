@@ -252,17 +252,21 @@ class StatusBar : Core::Group
     preset Visible = true;
   }
 
-  $rect <220,70,420,110>
-  object Core::Timer GetRtcTimer
+  $rect <220,120,510,160>
+  slot OnUpdateLocalTimeSlot
   {
-    preset OnTrigger = OnGetRtcTimeSlot;
-    preset Enabled = true;
+    var DeviceInterface::RtcTime CurrentTime = ( DeviceInterface::RtcTime )OnUpdateLocalTimeEventHandler.Context;
+    if( null != CurrentTime )
+    {
+      TimeText.String = string( CurrentTime.Hour, 2 ) + ":" + string( CurrentTime.Minute, 2 );
+    }
   }
 
-  $rect <220,120,420,160>
-  slot OnGetRtcTimeSlot
+  $rect <220,70,510,110>
+  object Core::SystemEventHandler OnUpdateLocalTimeEventHandler
   {
-    TimeText.String = DeviceInterface::SystemDevice.RtcTime;
+    preset OnEvent = OnUpdateLocalTimeSlot;
+    preset Event = DeviceInterface::SystemDevice.UpdateLocalTimeSystemEvent;
   }
 }
 

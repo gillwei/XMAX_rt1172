@@ -31,6 +31,7 @@
 #include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
+#include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_FactoryTestContext.h"
 #include "DeviceInterface.h"
@@ -95,6 +96,7 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
   CoreSystemEvent__Init( &_this->FactoryTestSystemEvent, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->FactoryResetTimer, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->QrCodeSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->UpdateLocalTimeSystemEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceSystemDeviceClass );
@@ -116,6 +118,7 @@ void DeviceInterfaceSystemDeviceClass__ReInit( DeviceInterfaceSystemDeviceClass 
   CoreSystemEvent__ReInit( &_this->FactoryTestSystemEvent );
   CoreTimer__ReInit( &_this->FactoryResetTimer );
   CoreSystemEvent__ReInit( &_this->QrCodeSystemEvent );
+  CoreSystemEvent__ReInit( &_this->UpdateLocalTimeSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::SystemDeviceClass' */
@@ -128,6 +131,7 @@ void DeviceInterfaceSystemDeviceClass__Done( DeviceInterfaceSystemDeviceClass _t
   CoreSystemEvent__Done( &_this->FactoryTestSystemEvent );
   CoreTimer__Done( &_this->FactoryResetTimer );
   CoreSystemEvent__Done( &_this->QrCodeSystemEvent );
+  CoreSystemEvent__Done( &_this->UpdateLocalTimeSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -222,23 +226,6 @@ XString DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( DeviceInterfaceSy
   }
 
   return _this->SoftwareVersion;
-}
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetRtcTime()' */
-XString DeviceInterfaceSystemDeviceClass_OnGetRtcTime( DeviceInterfaceSystemDeviceClass _this )
-{
-  XString rtc_time;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  rtc_time = 0;
-  {
-    char rtc_time_str[8];
-    ew_get_rtc_time( rtc_time_str );
-    rtc_time = EwNewStringAnsi( rtc_time_str );
-  }
-  return rtc_time;
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ResetToFactoryDefault()' */
@@ -400,6 +387,56 @@ void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClas
   ew_request_qrcode( pixelnum );
 }
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetLocalTime()' */
+void DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this )
+{
+  XUInt16 RtcYear = 0;
+  XUInt8 RtcMonth = 0;
+  XUInt8 RtcDay = 0;
+  XUInt8 RtcHour = 0;
+  XUInt8 RtcMinute = 0;
+  XUInt8 RtcSecond = 0;
+
+  {
+    snvs_lp_srtc_datetime_t srtc_time;
+    ew_get_rtc_time( &srtc_time );
+
+    RtcYear = srtc_time.year;
+    RtcMonth = srtc_time.month;
+    RtcDay = srtc_time.day;
+    RtcHour = srtc_time.hour;
+    RtcMinute = srtc_time.minute;
+    RtcSecond = srtc_time.second;
+  }
+
+  if ( _this->CurrentLocalTime == 0 )
+  {
+    _this->CurrentLocalTime = EwNewObject( DeviceInterfaceRtcTime, 0 );
+  }
+
+  _this->CurrentLocalTime->Year = RtcYear;
+  _this->CurrentLocalTime->Month = RtcMonth;
+  _this->CurrentLocalTime->Day = RtcDay;
+  _this->CurrentLocalTime->Hour = RtcHour;
+  _this->CurrentLocalTime->Minute = RtcMinute;
+  _this->CurrentLocalTime->Second = RtcSecond;
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceSystemDeviceClass_NotifyUpdateLocalTime( DeviceInterfaceSystemDeviceClass _this )
+{
+  DeviceInterfaceSystemDeviceClass_GetLocalTime( _this );
+  CoreSystemEvent_Trigger( &_this->UpdateLocalTimeSystemEvent, ((XObject)_this->CurrentLocalTime ), 
+  0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyUpdateLocalTime()' */
+void DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime( void* _this )
+{
+  DeviceInterfaceSystemDeviceClass_NotifyUpdateLocalTime((DeviceInterfaceSystemDeviceClass)_this );
+}
+
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this )
 {
@@ -418,7 +455,7 @@ EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::SystemDeviceClass' */
-EW_DEFINE_CLASS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass, FactoryTestSystemEvent, 
+EW_DEFINE_CLASS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass, CurrentLocalTime, 
                  FactoryTestSystemEvent, FactoryTestSystemEvent, FactoryTestSystemEvent, 
                  SoftwareVersion, BrightnessLevel, "DeviceInterface::SystemDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceSystemDeviceClass )
@@ -1201,5 +1238,44 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceBluetoothPairedDeviceInfo )
 EW_DEFINE_CLASS( DeviceInterfaceBluetoothPairedDeviceInfo, XObject, DeviceName, 
                  DeviceName, DeviceName, DeviceName, DeviceName, IsConnected, "DeviceInterface::BluetoothPairedDeviceInfo" )
 EW_END_OF_CLASS( DeviceInterfaceBluetoothPairedDeviceInfo )
+
+/* Initializer for the class 'DeviceInterface::RtcTime' */
+void DeviceInterfaceRtcTime__Init( DeviceInterfaceRtcTime _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceRtcTime );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( DeviceInterfaceRtcTime );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::RtcTime' */
+void DeviceInterfaceRtcTime__ReInit( DeviceInterfaceRtcTime _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::RtcTime' */
+void DeviceInterfaceRtcTime__Done( DeviceInterfaceRtcTime _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_Super );
+}
+
+/* Variants derived from the class : 'DeviceInterface::RtcTime' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceRtcTime )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceRtcTime )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::RtcTime' */
+EW_DEFINE_CLASS( DeviceInterfaceRtcTime, XObject, _None, _None, _None, _None, _None, 
+                 _None, "DeviceInterface::RtcTime" )
+EW_END_OF_CLASS( DeviceInterfaceRtcTime )
 
 /* Embedded Wizard */

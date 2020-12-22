@@ -143,6 +143,7 @@ EW_DEFINE_METHODS( ComponentsBaseComponent, CoreGroup )
   EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( ComponentsBaseComponent )
 
 /* 'C' function for method : 'Components::BaseComponent.OnKeyPressSlot()' */
@@ -196,6 +197,9 @@ void ComponentsBaseComponent_SlideOutDialog( ComponentsBaseComponent _this, Core
 
 /* 'C' function for method : 'Components::BaseComponent.OnShortHomeKeyPressed()' */
 void ComponentsBaseComponent_OnShortHomeKeyPressed( ComponentsBaseComponent _this );
+
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortHomeKeyPressed()' */
+void ComponentsBaseComponent__OnShortHomeKeyPressed( void* _this );
 
 #ifdef __cplusplus
   }

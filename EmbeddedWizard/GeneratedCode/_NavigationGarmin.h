@@ -151,6 +151,7 @@ EW_DEFINE_METHODS( NavigationGarmin, ComponentsBaseComponent )
   EW_METHOD( OnShortDownKeyPressed, void )( NavigationGarmin _this )
   EW_METHOD( OnShortUpKeyPressed, void )( NavigationGarmin _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( NavigationGarmin _this )
+  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( NavigationGarmin )
 
 /* 'C' function for method : 'Navigation::Garmin.OnShortDownKeyPressed()' */

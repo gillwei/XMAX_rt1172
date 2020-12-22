@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _NavigationMain_H
-#define _NavigationMain_H
+#ifndef _DevelopmentDEV_RealTimeClock_H
+#define _DevelopmentDEV_RealTimeClock_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,7 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
+#include "_ComponentsBaseMainBG.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_ViewsImage.h"
@@ -79,6 +79,12 @@
 #define _CoreView_
 #endif
 
+/* Forward declaration of the class Development::DEV_RealTimeClock */
+#ifndef _DevelopmentDEV_RealTimeClock_
+  EW_DECLARE_CLASS( DevelopmentDEV_RealTimeClock )
+#define _DevelopmentDEV_RealTimeClock_
+#endif
+
 /* Forward declaration of the class Effects::Fader */
 #ifndef _EffectsFader_
   EW_DECLARE_CLASS( EffectsFader )
@@ -91,32 +97,15 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Navigation::Main */
-#ifndef _NavigationMain_
-  EW_DECLARE_CLASS( NavigationMain )
-#define _NavigationMain_
-#endif
 
-
-/* Deklaration of class : 'Navigation::Main' */
-EW_DEFINE_FIELDS( NavigationMain, ComponentsBaseComponent )
-  EW_OBJECT  ( Background,      ViewsRectangle )
-  EW_OBJECT  ( MapUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( MapImage,        ViewsImage )
-  EW_OBJECT  ( TbTBgImage,      ViewsImage )
-  EW_OBJECT  ( ArrivalBgImage,  ViewsImage )
-  EW_OBJECT  ( TbtImage,        ViewsImage )
-  EW_OBJECT  ( DistanceText,    ViewsText )
-  EW_OBJECT  ( RoadText,        ViewsText )
-  EW_OBJECT  ( ArrivalText,     ViewsText )
+/* Deklaration of class : 'Development::DEV_RealTimeClock' */
+EW_DEFINE_FIELDS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG )
+  EW_OBJECT  ( OnUpdateLocalTimeEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( TimeText,        ViewsText )
-  EW_OBJECT  ( AmPmText,        ViewsText )
-  EW_OBJECT  ( RoadText1,       ViewsText )
-  EW_VARIABLE( MapFrameIdx,     XInt32 )
-EW_END_OF_FIELDS( NavigationMain )
+EW_END_OF_FIELDS( DevelopmentDEV_RealTimeClock )
 
-/* Virtual Method Table (VMT) for the class : 'Navigation::Main' */
-EW_DEFINE_METHODS( NavigationMain, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_RealTimeClock' */
+EW_DEFINE_METHODS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -159,33 +148,24 @@ EW_DEFINE_METHODS( NavigationMain, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( NavigationMain _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( NavigationMain _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( NavigationMain _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( NavigationMain _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( NavigationMain )
+  EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
+  EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyPressed, void )( DevelopmentDEV_RealTimeClock _this )
+EW_END_OF_METHODS( DevelopmentDEV_RealTimeClock )
 
-/* 'C' function for method : 'Navigation::Main.OnLongKeyPressed()' */
-void NavigationMain_OnLongKeyPressed( NavigationMain _this, XObject sender );
+/* 'C' function for method : 'Development::DEV_RealTimeClock.OnShortHomeKeyPressed()' */
+void DevelopmentDEV_RealTimeClock_OnShortHomeKeyPressed( DevelopmentDEV_RealTimeClock _this );
 
-/* 'C' function for method : 'Navigation::Main.OnShortDownKeyPressed()' */
-void NavigationMain_OnShortDownKeyPressed( NavigationMain _this );
-
-/* 'C' function for method : 'Navigation::Main.OnShortUpKeyPressed()' */
-void NavigationMain_OnShortUpKeyPressed( NavigationMain _this );
-
-/* 'C' function for method : 'Navigation::Main.OnShortEnterKeyPressed()' */
-void NavigationMain_OnShortEnterKeyPressed( NavigationMain _this );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationMain_OnMapUpdateSlot( NavigationMain _this, XObject sender );
+/* 'C' function for method : 'Development::DEV_RealTimeClock.OnUpdateLocalTimeSlot()' */
+void DevelopmentDEV_RealTimeClock_OnUpdateLocalTimeSlot( DevelopmentDEV_RealTimeClock _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _NavigationMain_H */
+#endif /* _DevelopmentDEV_RealTimeClock_H */
 
 /* Embedded Wizard */

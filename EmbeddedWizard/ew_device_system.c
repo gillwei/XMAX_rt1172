@@ -20,6 +20,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "FreeRTOS.h"
+#include "task.h"
 #include "EEPM_pub.h"
 #include "GRM_pub_prj.h"
 #include "RTC_pub.h"
@@ -31,6 +33,10 @@
 --------------------------------------------------------------------*/
 #ifdef _DeviceInterfaceSystemDeviceClass_
     typedef int system_device_function( void );
+#endif
+
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime_
+    static int ew_system_update_local_time( void );
 #endif
 
 #ifdef _DeviceInterfaceSystemDeviceClass__TestDisplayPattern_
@@ -65,6 +71,11 @@
     static int ew_qrcode_ready( void );
 #endif
 
+#define UPDATE_TIME_TASK_PRIORITY       ( tskIDLE_PRIORITY )
+#define UPDATE_TIME_TASK_NAME           "time_task"
+#define UPDATE_TIME_TASK_STACK_SIZE     ( configMINIMAL_STACK_SIZE )
+#define UPDATE_TIME_PERIOD_MS           ( 500 )
+
 #define ESN_STR_MAX_LEN             ( 10 )
 #define INVALID_ESN                 ( 0xFFFFFFFF )
 
@@ -77,6 +88,7 @@
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
+static void update_time_task_main( void* arg );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -93,6 +105,9 @@
     static DeviceInterfaceSystemDeviceClass device_object = 0;
     system_device_function* const system_function_lookup_table[] =
         {
+        #ifdef _DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime_
+            ew_system_update_local_time,
+        #endif
         #ifdef _DeviceInterfaceSystemDeviceClass__TestDisplayPattern_
             ew_sytem_test_display_pattern,
         #endif
@@ -124,6 +139,8 @@
     static int      factory_test_disp_pattern_idx = 0;
     static bool     factory_test_burn_in_result = false;
     static uint32_t factory_test_burn_in_time_sec = 0;
+    static int      is_update_time = 0;
+    static TickType_t update_time_period_ticks = pdMS_TO_TICKS( UPDATE_TIME_PERIOD_MS );
 
     static int is_esn_read = 0;
     static int is_factory_reset_complete = 0;
@@ -175,6 +192,11 @@ void ew_device_system_init
        variable to access the driver class during the runtime.
     */
     EwLockObject( device_object );
+
+    // In order to blink the colon mark in the clock of the status bar,
+    // create a task to notify EW with the accurate period of 500ms.
+    BaseType_t result = xTaskCreate( update_time_task_main, UPDATE_TIME_TASK_NAME, UPDATE_TIME_TASK_STACK_SIZE, NULL, UPDATE_TIME_TASK_PRIORITY, NULL );
+    configASSERT( pdPASS == result );
 #endif
 }
 
@@ -231,6 +253,31 @@ int need_update = 0;
         }
 #endif
 return need_update;
+}
+
+/*********************************************************************
+*
+* @private
+* update_time_task_main
+*
+* Main loop of the update time task
+*
+*********************************************************************/
+static void update_time_task_main
+    (
+    void* arg
+    )
+{
+TickType_t last_wake_ticks;
+
+while( 1 )
+    {
+    last_wake_ticks = xTaskGetTickCount();
+    is_update_time = 1;
+    EwBspEventTrigger();
+    vTaskDelayUntil( &last_wake_ticks, update_time_period_ticks );
+    }
+vTaskDelete( NULL );
 }
 
 /*********************************************************************
@@ -333,17 +380,15 @@ if( pdFALSE == EEPM_get_ESN( &read_esn_callback ) )
 *
 * Get RTC time
 *
-* @param datetime The pointer to the char array of datetime.
+* @param srtc_datetime The pointer to the rtc datetime
 *
 *********************************************************************/
 void ew_get_rtc_time
     (
-    char* datetime
+    snvs_lp_srtc_datetime_t* srtc_datetime
     )
 {
-snvs_lp_srtc_datetime_t rtc_time;
-RTC_get_DateTime( &rtc_time );
-sprintf( datetime, "%02d:%02d", rtc_time.hour, rtc_time.minute );
+RTC_get_DateTime( srtc_datetime );
 }
 
 /*********************************************************************
@@ -365,6 +410,31 @@ XBool ew_is_debug_build
     return true;
 #endif
 }
+
+/*********************************************************************
+*
+* @private
+* ew_system_update_local_time
+*
+* Notify EW GUI to update time
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime_
+    static int ew_system_update_local_time
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_update_time )
+        {
+        is_update_time = 0;
+        DeviceInterfaceSystemDeviceClass_NotifyUpdateLocalTime( device_object );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
 
 /*********************************************************************
 *

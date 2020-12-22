@@ -155,6 +155,7 @@ EW_DEFINE_METHODS( FactoryDisplayManual, ComponentsBaseComponent )
   EW_METHOD( OnShortDownKeyPressed, void )( FactoryDisplayManual _this )
   EW_METHOD( OnShortUpKeyPressed, void )( FactoryDisplayManual _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( FactoryDisplayManual )
 
 /* 'C' function for method : 'Factory::DisplayManual.OnLongKeyPressed()' */
