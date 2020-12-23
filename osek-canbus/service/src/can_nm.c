@@ -159,7 +159,7 @@ if( state != l_current_nm_state )
     /*------------------------------------------------------
     notify the application.
     ------------------------------------------------------*/
-    //TBD nm_app_notify_state_change( hw_inst, state );
+    nm_app_notify_state_change( hw_inst, state );
     }
 }
 
@@ -193,7 +193,7 @@ if( ( ( nm_status[hw_inst] & NM_STATUS_NETWORK_BUSOFF ) != 0 ) &&
     driver transmit timeout.
     ------------------------------------------------------*/
     nm_status[hw_inst] &= SYS_MASK8_COMPLEMENT( NM_STATUS_NETWORK_BUSOFF );
-    //TBD nm_app_notify_busoff_recovery( hw_inst );
+    nm_app_notify_busoff_recovery( hw_inst );
     can_service( hw_inst, 0, CAN_SVC_ENABLE_TX_TIMEOUT );
 
     /*------------------------------------------------------
@@ -239,7 +239,7 @@ l_ret_code = can_init( hw_inst, CAN_INIT_MODE_COLD, NULL );
 
 if( ( l_ret_code != CAN_RC_OK ) && ( l_ret_code != CAN_RC_BUSOFF_INIT_PNDG ) )
     {
-    //TBD nm_app_notify_init_failed( hw_inst );
+    nm_app_notify_init_failed( hw_inst );
     l_success = FALSE;
     }
 
@@ -461,7 +461,8 @@ can_util_set_status_bits( &( nm_status[hw_inst] ),
                            ( NM_STATUS_CONTROLLER_BUSOFF |
                              NM_STATUS_NETWORK_BUSOFF ) );
 can_util_clear_status_bits( &( nm_status[hw_inst] ), NM_STATUS_ONLINE );
-//TBD nm_app_notify_busoff( hw_inst );
+
+nm_app_notify_busoff( hw_inst );
 
 /*------------------------------------------------------
 Disable the Interaction Layer and transmission of
@@ -528,7 +529,7 @@ nm_hook_transmit_timeout
 /*------------------------------------------------------
 Tell upper layer the NM CAN has not been transmitted
 ------------------------------------------------------*/
-//TBD nm_app_notify_tx_hw_timeout( hw_inst, tmh );
+nm_app_notify_tx_hw_timeout( hw_inst, tmh );
 }
 
 /*!*******************************************************************
@@ -557,7 +558,7 @@ if( p_rmd->dlc >= IL_CAN0_RX_NM_AND_LP_BK_RXFRM_MIN_LEN )
     /*------------------------------------------------------
     Process the received Loopback frame
     ------------------------------------------------------*/
-    //TBD nm_app_hook_process_receive( hw_inst, p_rmd );
+    nm_app_hook_process_receive( hw_inst, p_rmd );
     }
 }
 

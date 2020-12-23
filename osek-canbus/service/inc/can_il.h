@@ -31,14 +31,31 @@ extern "C" {
 --------------------------------------------------------------------*/
 typedef enum tagIL_RX_FRM_INDEX_TYPE //!< Interaction Layer receive frames index
     {
-    IL_RX_FRM_INDEX_FUNC_SW_STATUS,
-    IL_RX_FRM_INDEX_VEHICLE_INFO,
-    IL_RX_FRM_INDEX_FUNC_CNTRL,
-    IL_RX_FRM_INDEX_CLK_DATE_REQ,
-    IL_RX_FRM_INDEX_UNIT_INFO,
-    IL_RX_FRM_INDEX_REQ_SCREEN_TRANS,
-    IL_RX_FRM_INDEX_RES_REPROGRAM_INFO,
-    IL_RX_FRM_INDEX_REQ_SCREEN_TRANS2,
+    IL_CAN0_RX_DAIG_SEG1_IDX,
+    IL_CAN0_RX_DAIG_SEG2_IDX,
+    IL_CAN0_RX_DAIG_SEG3_IDX,
+    IL_CAN0_RX_DAIG_SEG4_IDX,
+    IL_CAN0_RX_DAIG_SEG5_YDT_IDX,
+    IL_CAN0_RX_DAIG_SEG6_YDT_IDX,
+    IL_CAN0_RX_DAIG_SEG7_YDT_IDX,
+    IL_CAN0_RX_NM_AND_LP_BK_IDX,
+    IL_CAN0_RX0_ECU_INDCT_STAT_IDX,
+    IL_CAN0_RX1_ECU_COM_DATA_IDX,
+    IL_CAN0_RX2_RES_SUPPORT_IDX,
+    IL_CAN0_RX3_BRGTHNSS_CTRL_IDX,
+    IL_CAN0_RX4_RES_MT_FUNC_CNT_IDX,
+    IL_CAN0_RX5_VEHICLE_INFO_IDX,
+    IL_CAN0_RX6_FUNCSW_STAT_IDX,
+    IL_CAN0_RX7_FUEL_RATE_IDX,
+    IL_CAN0_RX8_ODO_TRIP_IDX,
+    IL_CAN0_RX9_RES_RPRGRM_INFO_IDX,
+    IL_CAN0_RXA_VEHICLE_INFO_2_IDX,
+    IL_CAN0_RXB_VEHICLE_INFO_3_IDX,
+    IL_CAN0_RXC_VEHICLE_INFO_4_IDX,
+    IL_CAN0_RXD_MAINT_TRIP_IDX,
+    IL_CAN0_RXE_HEATER_STAT_IDX,
+    IL_CAN0_RXF_FACT_INSP_NS_IDX,
+    IL_CAN0_RXF_FACT_INSP2_GA_IDX,
 
     IL_RX_FRM_INDEX_ERRORS
     }il_rx_frm_index_t;
@@ -136,6 +153,12 @@ void il_suspend
 void il_resume
     (
     can_hw_inst_t           const hw_inst
+    );
+
+boolean il_tx_put_frame_bytes
+    (
+    can_hw_inst_t const   hw_inst,
+    can_tmd_t     const * p_can_tmd
     );
 
 boolean il_tx_put_signal_bytes
@@ -247,16 +270,28 @@ void il_app_notify_tx_timeout
     dll_frm_handle_t        const frm_handle
     );
 
+void il_app_notify_tx_hw_timeout
+    (
+    can_hw_inst_t hw_inst,
+    can_tmh_t     tmh
+    );
+
 void il_app_notify_frame_received
     (
     dll_frm_handle_t        const frm_handle
     );
 
-void il_can_app_notify_sig_changed
+void il_app_notify_sig_received
     (
+    il_sig_handle_t const sig_handle,   //!< [in] signal handle
+    uint8           const num_bytes     //!< [in] signal size in bytes
+    );
+
+void il_app_hook_rx_sig_chngd_handle
+    (
+    il_rx_frm_index_t             msg_index,
     il_sig_handle_t         const sig_handle,
-    uint8_t                 const num_bytes,
-    uint16_t                     *p_sig_val
+    uint8_t                 const num_bytes
     );
 
 void il_app_notify_rx_timeout1

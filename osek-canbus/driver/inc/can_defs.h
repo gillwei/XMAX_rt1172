@@ -535,6 +535,31 @@ typedef struct tagCAN_QINFO_PTRS_TYPE               //!< pointers to all queue i
 
     } can_qinfo_ptrs_t;
 
+/*------------------------------------------------------
+CAN frame ID
+------------------------------------------------------*/
+typedef uint32                  can_msg_id_t;
+
+/*------------------------------------------------------
+CAN frame size
+------------------------------------------------------*/
+typedef uint32                  can_msg_size_t;
+
+/*------------------------------------------------------
+CAN frame data
+------------------------------------------------------*/
+typedef uint8                   can_msg_data_t;
+
+/*------------------------------------------------------
+can message type
+------------------------------------------------------*/
+typedef struct
+    {
+    can_msg_id_t      id;
+    can_msg_size_t    size;
+    can_msg_data_t    data[CAN_MAX_DATA_LENGTH];
+    }__attribute__ ( ( packed ) )can_msg_t;
+
 #ifdef __cplusplus
 }
 #endif

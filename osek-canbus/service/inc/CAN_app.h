@@ -21,9 +21,9 @@
 extern "C" {
 #endif
 
-void vCAN_app_create_task
+void app_task
     (
-    void
+    can_hw_inst_t   const hw_inst
     );
 
 #ifdef __cplusplus

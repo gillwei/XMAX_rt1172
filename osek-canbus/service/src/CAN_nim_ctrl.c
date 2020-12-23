@@ -29,9 +29,10 @@
 
 #include "can_tp.h"
 #include "can_svcs.h"
-//#include "can_nim_signals.h"
+#include "can_nim_signals.h"
 #include "can_nim_cfg.h"
 #include "CAN_nim_ctrl.h"
+#include "CAN_app.h"
 
 #include "fsl_debug_console.h"
 #include "FreeRTOS.h"
@@ -192,6 +193,11 @@ while(1)
             ------------------------------------------------------*/
             can_nim_task_count[l_i_hw_inst] = CAN_NIM_TASK_COUNT_INIT;
             }
+
+        /*------------------------------------------------------
+        High Level CAN App Periodic Task
+        ------------------------------------------------------*/
+        app_task( l_i_hw_inst );
 
         /*------------------------------------------------------
         Low Level CAN driver Periodic Task

@@ -47,8 +47,6 @@
 #include "can_il_prv.h"
 #include "can_il_prv_par.h"
 
-#include "VI_pub.h"
-
 #include "fsl_debug_console.h"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -491,7 +489,6 @@ il_rxfrm_info_t     const * l_p_rxfrm_info;
 il_rxfrm_t          const * l_p_rxfrm;
 uint8                     * l_p_status;
 dll_frm_index_t             l_num_frames;
-dll_frm_handle_t            l_frm_handle;
 uint8                       l_rmd_dlc;
 uint8                       l_i_byte;
 uint8                       l_temp_data[CAN_MAX_DATA_LENGTH];
@@ -575,18 +572,6 @@ if( ( frame_index < l_num_frames ) && ( p_rmd != NULL ) )
         processed in the receive task
         ------------------------------------------------------*/
         can_util_set_status_bits( l_p_status, IL_RX_STATUS_PENDING );
-
-        /*------------------------------------------------------
-        ------------------------------------------------------*/
-        /*------------------------------------------------------
-        Formulate a frame handle for notifications,Notify the
-        CAN application layer
-        ------------------------------------------------------*/
-        l_frm_handle = DLL_FORM_FRAME_HANDLE( frame_index, hw_inst );
-        if( ( l_p_rxfrm->attributes & IL_RX_FRM_ATTR_NOTIFY ) != 0 )
-            {
-            //TBD il_app_notify_frame_received( l_frm_handle );
-            }
         }
     }
 }
@@ -900,7 +885,6 @@ uint8                       l_i_signal;
 uint8                       l_i_byte;
 boolean                     l_sig_value_changed;
 boolean                     l_success;
-uint16_t                    l_sig_val;
 
 /*------------------------------------------------------
 Get the receive frame information including the frame
@@ -979,8 +963,7 @@ for( l_i_signal = 0; l_i_signal < l_num_frame_signals; l_i_signal++ )
                     if( ( ( l_p_rxsig->attributes & IL_RX_SIG_ATTR_NOTIFY_CHANGE ) != 0 ) &&
                           ( notify_enable != FALSE ) )
                         {
-                        //TBD il_can_app_notify_sig_changed( l_sig_handle, l_sig_size, &l_sig_val );
-                        //TBD VI_notify_vehicle_data_changed( frm_index, l_sig_handle, l_sig_val );
+                        il_app_hook_rx_sig_chngd_handle( frm_index, l_sig_handle, l_sig_size );
                         }
                     }
                 }
@@ -994,7 +977,7 @@ for( l_i_signal = 0; l_i_signal < l_num_frame_signals; l_i_signal++ )
         if( ( ( l_p_rxsig->attributes & IL_RX_SIG_ATTR_NOTIFY ) != 0 ) &&
               ( notify_enable != FALSE ) )
             {
-            //TBD il_can_app_notify_sig_received( l_sig_handle, l_sig_size );
+            il_app_notify_sig_received( l_sig_handle, l_sig_size );
             }
         }
     }
@@ -1731,7 +1714,7 @@ boolean
 il_rx_get_uint8_signal
     (
     il_sig_handle_t const sig_handle,   //!< [in] signal handle
-    uint8         * const p_signal      //!< [out] pointer to signal value
+    uint8                *p_signal      //!< [out] pointer to signal value
     )
 {
 boolean     l_success;
@@ -1761,7 +1744,7 @@ boolean
 il_rx_get_uint16_signal
     (
     il_sig_handle_t const sig_handle,   //!< [in] signal handle
-    uint16        * const p_signal      //!< [out] pointer to signal value
+    uint16               *p_signal      //!< [out] pointer to signal value
     )
 {
 uint8       l_bytes[sizeof( uint16 )];
@@ -1795,7 +1778,7 @@ boolean
 il_rx_get_uint32_signal
     (
     il_sig_handle_t const sig_handle,   //!< [in] signal handle
-    uint32        * const p_signal      //!< [out] pointer to signal value
+    uint32               *p_signal      //!< [out] pointer to signal value
     )
 {
 uint8       l_bytes[sizeof( uint32 )];
@@ -2559,7 +2542,7 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
                         ( ( il_status[hw_inst] & IL_STATUS_TX_TIMEOUT_DISABLE ) == 0 ) )
                         {
                         l_frm_handle = DLL_FORM_FRAME_HANDLE( l_i_frm_index, hw_inst );
-                        //TBD il_app_notify_tx_timeout( l_frm_handle );
+                        il_app_notify_tx_timeout( l_frm_handle );
                         can_util_set_status_bits( l_p_status, IL_TX_STATUS_TX_TIMEOUT_NOTIFY );
                         }
 
@@ -2587,7 +2570,7 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         if( ( l_p_txfrm->attributes & IL_TX_FRM_ATTR_NOTIFY ) != 0 )
             {
             l_frm_handle = DLL_FORM_FRAME_HANDLE( l_i_frm_index, hw_inst );
-            //TBD il_app_notify_tx_complete( l_frm_handle );
+            il_app_notify_tx_complete( l_frm_handle );
             can_util_clear_status_bits( l_p_status, IL_TX_STATUS_TXC_NOTIFY );
             }
         }
@@ -2661,9 +2644,9 @@ if( new_frame != FALSE )
                 can_util_clear_status_bits( p_sw_status, IL_RX_STATUS_TIMEOUT2 );
 
                 /*------------------------------------------------------
-                Notify the host(A7) that timeout error2 has recoveried
+                Notify the CAN app that timeout error2 has recoveried
                 ------------------------------------------------------*/
-                //TBD il_app_notify_rx_timeout2( FALSE );
+                il_app_notify_rx_timeout2( FALSE );
                 }
             }
         }
@@ -2865,18 +2848,7 @@ dll_frm_index_t             l_i_frm_index;
 dll_frm_handle_t            l_frm_handle;
 boolean                     l_new_frame;
 boolean                     l_frm_data_changed;
-
-dll_rx_buf_dispatch_t   const * l_p_buf_dispatch;
-dll_rx_filt_dispatch_t  const * l_p_filt_dispatch;
-dll_rx_frm_dispatch_t   const * l_p_frm_dispatch;
-uint8                           l_num_filters;
-can_rmd_t                       l_rmd;
-boolean                         l_time_up;
-uint8                         * l_p_sw_status;
-
-#if( DEBUG_RX_CAN_SUPPORT )
-    uint8_t         l_data_idx  = 0;
-#endif
+uint8                      *l_p_sw_status;
 
 /*------------------------------------------------------
 Get the receive frame information and service all of
@@ -2928,10 +2900,11 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         data changed flags after processing the frame.
         ------------------------------------------------------*/
         process_receive_frame( hw_inst, l_i_frm_index, TRUE, l_frm_data_changed );
+        can_util_clear_status_bits( l_p_frm_status, ( IL_RX_STATUS_PENDING | IL_RX_STATUS_DATA_CHANGED ) );
 
         if( ( l_p_rxfrm->attributes & IL_RX_FRM_ATTR_NOTIFY ) != 0 )
             {
-            //TBD il_can_app_notify_frame_received( l_frm_handle );
+            il_app_notify_frame_received( l_frm_handle );
             }
         }
 
@@ -2979,7 +2952,7 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
             /*------------------------------------------------------
             Notify the CAN app that timeout error2 has happened
             ------------------------------------------------------*/
-            //TBD il_app_notify_rx_timeout2( TRUE );
+            il_app_notify_rx_timeout2( TRUE );
             }
 
         /*------------------------------------------------------
@@ -2990,68 +2963,11 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
             ( *( l_p_per_info->p_per_cnt ) )--;
             if( 0 == *( l_p_per_info->p_per_cnt ) )
                 {
-                l_time_up = TRUE;
-
                 /*------------------------------------------------------
                 Reset the period timer
                 ------------------------------------------------------*/
                 *( l_p_per_info->p_per_cnt ) = l_p_per_info->period;
                 }
-            }
-        }
-
-
-    /*------------------------------------------------------
-    Transmit the received or changed frame
-    IL_RX_STATUS_PENDING and IL_RX_STATUS_DATA_CHANGED for new
-    CAN frame received, l_time_up just for CAN frame that is
-    cyclic
-    ------------------------------------------------------*/
-    if( ( ( *l_p_frm_status & IL_RX_STATUS_PENDING ) != 0 ) ||
-        ( ( *l_p_frm_status & IL_RX_STATUS_DATA_CHANGED ) != 0 ) )
-        {
-        l_time_up = FALSE;
-
-        /*------------------------------------------------------
-        Get the Dispatch Table for this CAN Controller hardware
-        instance and the specific hardware receive buffer in
-        this hardware instance. Also get the number of filters
-        enabled for this specific hardware buffer.
-        ------------------------------------------------------*/
-        l_num_filters = dll_get_rx_buf_dispatch_table( hw_inst, &l_p_buf_dispatch );
-
-        /*------------------------------------------------------
-        Check for valid filters and a valid filter index
-        ------------------------------------------------------*/
-        if( ( l_num_filters    >  0 )  &&
-            ( l_i_frm_index    <  ( l_num_filters ) ) &&
-            ( l_p_buf_dispatch != NULL ) )
-            {
-            /*------------------------------------------------------
-            Get the CAN ID's for this filter index used for transmit
-            thougth rpmsg
-            ------------------------------------------------------*/
-            l_p_filt_dispatch    = &( l_p_buf_dispatch->p_rx_filt_dispatch[l_i_frm_index] );
-            l_p_frm_dispatch     = l_p_filt_dispatch->p_frame_dispatch;
-
-            /*------------------------------------------------------
-            fill the rmd for rpmsg transmission
-            ------------------------------------------------------*/
-            l_rmd.identifier    = l_p_frm_dispatch->identifier;
-            l_rmd.dlc           = l_p_rxfrm->dlc;
-            memcpy( l_rmd.data, l_p_rxfrm->p_data, l_p_rxfrm->dlc );
-
-            #if( DEBUG_RX_CAN_SUPPORT )
-                PRINTF( "\r\nID:%x DATA: ", l_rmd.identifier );
-                for( l_data_idx = 0; l_data_idx < l_rmd.dlc; l_data_idx++ )
-                    {
-                    PRINTF( "%x ", l_rmd.data[l_data_idx] );
-                    }
-                PRINTF( "\r\n\r\n" );
-            #endif
-
-            //TBD il_app_hook_rx_rpmsg_data( hw_inst, &l_rmd,);
-            can_util_clear_status_bits( l_p_frm_status, ( IL_RX_STATUS_PENDING | IL_RX_STATUS_DATA_CHANGED ) );
             }
         }
     }
@@ -3184,7 +3100,7 @@ void il_hook_transmit_timeout
 /*------------------------------------------------------
 Tell upper layer the IL CAN has not been transmitted
 ------------------------------------------------------*/
-//TBD il_app_notify_tx_hw_timeout( hw_inst, tmh );
+il_app_notify_tx_hw_timeout( hw_inst, tmh );
 }
 
 /*!*******************************************************************
@@ -3358,5 +3274,88 @@ if( hw_inst < CAN_NUM_INSTANCES )
     enable_rx_msg_timeouts( hw_inst );
     enable_tx_msg_timeouts( hw_inst );
     }
+}
+
+/*!*******************************************************************
+*
+* @private
+* transmit a CAN frame group
+*
+* This function put a CAN frame into interaction layer memory that are
+* transmitted must all be contained in the specified message frame.
+*
+* @return boolean
+* success (TRUE or FALSE)
+*
+*********************************************************************/
+boolean
+il_tx_put_frame_bytes
+    (
+    can_hw_inst_t const   hw_inst,  //!< CAN hardware instanc
+    can_tmd_t     const * p_can_tmd //!< [in] frame CAN message
+    )
+{
+il_txfrm_info_t     const * l_p_txfrm_info;
+il_txfrm_t          const * l_p_txfrm;
+can_tmd_t           const * l_p_tmd;
+dll_frm_index_t             l_num_frames;
+dll_frm_index_t             l_i_frm_index;
+uint8                       l_dlc;
+boolean                     l_success;
+
+/*------------------------------------------------------
+Initialize the return value
+------------------------------------------------------*/
+l_success = FALSE;
+
+/*------------------------------------------------------
+Get the transmit frame information and initialize all
+of the frames for this CAN hardware instance
+------------------------------------------------------*/
+l_p_txfrm_info = il_get_txfrm_info_ptr( hw_inst );
+l_num_frames   = l_p_txfrm_info->num_frames;
+
+for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
+    {
+    /*------------------------------------------------------
+    Get the pointer to this frame, it's TMD (Transmit Message
+    Data structure)and the frame DLC (Data Length Code)
+    ------------------------------------------------------*/
+    l_p_txfrm    = &( l_p_txfrm_info->p_il_txfrm[l_i_frm_index] );
+    l_p_tmd      = &( l_p_txfrm_info->p_tmd[l_i_frm_index] );
+    l_dlc        = l_p_tmd->dlc;
+
+    if( ( p_can_tmd->identifier == l_p_tmd->identifier ) &&
+        ( p_can_tmd->dlc == l_p_tmd->dlc ) )
+        {
+        /*------------------------------------------------------
+        put the frame data to  transmission array.
+        ------------------------------------------------------*/
+        memcpy( l_p_tmd->p_data, p_can_tmd->p_data, l_dlc );
+
+        #if( CAN_IL_DELAY_EVENT_TO_TICK == FALSE )
+            /*------------------------------------------------------
+            Attempt to transmit the frame immediately. on event frame
+            ------------------------------------------------------*/
+            if( ( l_p_txfrm->attributes & IL_TX_FRM_ATTR_EVENT ) != 0 )
+                {
+                transmit_frame( l_i_frm_index, hw_inst );
+                }
+        #else
+            /*------------------------------------------------------
+            Defer frame transmission at least until the next tick.
+            ------------------------------------------------------*/
+            set_transmit_frame_event_pending( l_i_frm_index, hw_inst );
+        #endif
+
+        /*------------------------------------------------------
+        stop getting the pointer to this frame(has been found)
+        ------------------------------------------------------*/
+        l_success = TRUE;
+        break;
+        }
+    }
+
+return l_success;
 }
 
