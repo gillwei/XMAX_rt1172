@@ -23,9 +23,9 @@
 #include "can_dll.h"
 #include "can_nm.h"
 
-//#include "can_il.h"
-//#include "can_il_par.h"
-//#include "can_il_enum.h"
+#include "can_il.h"
+#include "can_il_par.h"
+#include "can_il_enum.h"
 
 #include "can_tp.h"
 #include "can_svcs.h"
@@ -130,15 +130,6 @@ CAN_nim_task
 can_hw_inst_t   l_i_hw_inst;
 uint32_t        last_time = xTaskGetTickCount();
 
-#if( DEBUG_TX_CAN_SUPPORT )
-    uint32_t const  l_tx_id_table[] = { 0x584, 0x57A, 0x581, 0x5B1, 0x5B3, 0x5BF, 0x5CA, 0x690 };
-    uint32_t const  l_tx_id_len[]   = { 3, 2, 1, 1, 2, 5, 2, 8 };
-    uint8_t         l_tx_data[8]    = { 1, 2, 3, 4, 5, 6, 7, 8 };
-    can_tmd_t       l_tmd_sample[8] = { 0 };
-    uint8_t         l_tx_index      = 0;
-    uint32_t        l_test_tick     = 0;
-#endif
-
 /*------------------------------------------------------
 Starup the CAN hardware and services
 ------------------------------------------------------*/
@@ -146,24 +137,6 @@ CAN_nim_start_up();
 
 while(1)
     {
-    #if( DEBUG_TX_CAN_SUPPORT )
-        if( ( ( l_test_tick++ ) % 100 ) == 0 )
-            {
-            /*------------------------------------------------------
-            Test case
-            ------------------------------------------------------*/
-            for( l_tx_index = 0; l_tx_index < 8; l_tx_index++ )
-                {
-                l_tmd_sample[l_tx_index].dlc        = l_tx_id_len[l_tx_index];
-                l_tmd_sample[l_tx_index].p_data     = l_tx_data;
-                l_tmd_sample[l_tx_index].handle     = 0;
-                l_tmd_sample[l_tx_index].options    = 0;
-                l_tmd_sample[l_tx_index].identifier = l_tx_id_table[l_tx_index];
-                can_transmit( 0, &l_tmd_sample[l_tx_index] );
-                }
-            }
-    #endif
-
     /*------------------------------------------------------
     Service all the CAN stack layers for each hardware
     instance.
@@ -188,8 +161,8 @@ while(1)
                 Task interaction counter contains the Interaction Layer Periodic
                 Receive and Transmit Tasks
                 ------------------------------------------------------*/
-                //il_rx_task( l_i_hw_inst );
-                //il_tx_task( l_i_hw_inst );
+                il_rx_task( l_i_hw_inst );
+                il_tx_task( l_i_hw_inst );
 
                 /*------------------------------------------------------
                 TP Layer Periodic Task

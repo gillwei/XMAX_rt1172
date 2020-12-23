@@ -151,7 +151,7 @@ else
     /*------------------------------------------------------
     Default to an Interaction Layer Message
     ------------------------------------------------------*/
-    //TBD il_hook_transmit( hw_inst, tmh );
+    il_hook_transmit( hw_inst, tmh );
     }
 }
 
@@ -182,14 +182,6 @@ uint8               l_can_id_index;
 uint8               l_can_id_match;
 uint8               l_dispatch_layer;
 
-static uint8    l_up_hk     = 0;
-static uint8    l_dn_hk     = 0;
-static uint8    l_slct_hk   = 0;
-static uint8    l_hm_hk     = 0;
-
-#if( DEBUG_RX_CAN_SUPPORT )
-    uint8_t         l_data_idx  = 0;
-#endif
 /*------------------------------------------------------
 Initialize Variables
 ------------------------------------------------------*/
@@ -261,41 +253,7 @@ if( p_rmd != NULL )
                     /*------------------------------------------------------
                     Dispatch to Interaction Layer
                     ------------------------------------------------------*/
-                    //TBD il_hook_receive( hw_inst, p_rmd, l_frm_handle );
-
-                    /*------------------------------------------------------
-                    Handle hard key frame
-                    ------------------------------------------------------*/
-                    if( p_rmd->identifier == RX6_FUNCSW_STAT_CAN0_ID )
-                        {
-                        /*--------------------------------------------------
-                        TBD Add Hard key hook api....
-                        --------------------------------------------------*/
-                        if( l_up_hk != ( p_rmd->data[0] & ( 1 << 7 ) ) )
-                            {
-                            l_up_hk  = ( p_rmd->data[0] & ( 1 << 7 ) );
-                            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_1_RXSIG_HANDLE, l_up_hk );
-                            }
-
-                        if( l_dn_hk != ( p_rmd->data[0] & ( 1 << 6 ) ) )
-                            {
-                            l_dn_hk  = ( p_rmd->data[0] & ( 1 << 6 ) );
-                            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_2_RXSIG_HANDLE, l_dn_hk );
-                            }
-
-                        if( l_slct_hk != ( p_rmd->data[0] & ( 1 << 3 ) ) )
-                            {
-                            l_slct_hk  = ( p_rmd->data[0] & ( 1 << 3 ) );
-                            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_5_RXSIG_HANDLE, l_slct_hk );
-                            }
-
-                        if( l_hm_hk != ( p_rmd->data[0] & ( 1 << 2 ) ) )
-                            {
-                            l_hm_hk  = ( p_rmd->data[0] & ( 1 << 2 ) );
-                            VI_notify_vehicle_data_changed( 0, IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, l_hm_hk );
-                            }
-                        }
-
+                    il_hook_receive( hw_inst, p_rmd, l_frm_handle );
                     break;
 
                 case DLL_RX_NM_FRAME:
@@ -333,15 +291,6 @@ if( p_rmd != NULL )
             Dispatch to Transport Layer(the filters out of the DLL filter table)
             ------------------------------------------------------*/
             //TBD tp_hook_receive( p_rmd, hw_inst );
-
-            #if( DEBUG_RX_CAN_SUPPORT )
-                PRINTF( "\r\nDiag ID:%x DATA: ", p_rmd->identifier );
-                for( l_data_idx = 0; l_data_idx < p_rmd->dlc; l_data_idx++ )
-                    {
-                    PRINTF( "%x ", p_rmd->data[l_data_idx] );
-                    }
-                PRINTF( "\r\n\r\n" );
-            #endif
             }
         }
     }
@@ -693,7 +642,7 @@ else
     Because of TX Mute functionality this cannot be treated
     the same as a transmit completion.
     ------------------------------------------------------*/
-    //TBD il_hook_transmit_timeout( hw_inst, tmh );
+    il_hook_transmit_timeout( hw_inst, tmh );
     }
 }
 

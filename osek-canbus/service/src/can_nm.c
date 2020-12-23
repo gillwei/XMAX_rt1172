@@ -27,8 +27,8 @@
 #include "can_drv.h"
 #include "can_dll.h"
 #include "can_dll_prv_par.h"
-//#include "can_il.h"
-//#include "can_tp.h"
+#include "can_il.h"
+#include "can_tp.h"
 #include "can_nm.h"
 #include "can_nim_cfg.h"
 
@@ -296,7 +296,7 @@ if( ( NM_INIT_MODE_POWER_ON       == init_mode )     ||
     Initialize the CAN Stack Layers
     ------------------------------------------------------*/
     dll_init( hw_inst );
-    //TBD il_init( hw_inst, l_init_default_signals );
+    il_init( hw_inst, l_init_default_signals );
     //TBD tp_init( hw_inst );
     }
 
@@ -426,8 +426,8 @@ if( CAN_OP_MODE_ONLINE == op_mode )
     Set the nm state and enable IL transmission.
     ------------------------------------------------------*/
     set_nm_state( hw_inst, NM_STATE_NORMAL );
-    //TBD il_enable( hw_inst );
-    //TBD il_resume( hw_inst );
+    il_enable( hw_inst );
+    il_resume( hw_inst );
     }
 }
 
@@ -469,7 +469,7 @@ application messages due to the BusOFF condition.
 Disable the transmit timeout feature in the low level
 CAN driver.
 ------------------------------------------------------*/
-//TBD il_disable( hw_inst );
+il_disable( hw_inst );
 //can_service( hw_inst, 0, CAN_SVC_DISABLE_TX_TIMEOUT );
 
 /*------------------------------------------------------

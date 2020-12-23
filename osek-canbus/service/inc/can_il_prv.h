@@ -6,7 +6,7 @@
 * manage the Interaction Layer transmitted and received frames and
 * signals.
 *
-* Copyright 2018 by Garmin Ltd. or its subsidiaries.
+* Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 
 /*!*******************************************************************
