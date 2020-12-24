@@ -32,18 +32,22 @@ extern "C" {
 #define START_BURN_IN_LENGTH                 ( 1 )
 #define BURN_IN_RESULT_LENGTH                ( 1 )
 #define BD_ADDRESS_LENGTH                    ( 6 )
+#define BURN_IN_TIME_LENGTH                  ( 4 )
+#define BURN_IN_TARGET_TIME_LENGTH           ( 4 )
 
 typedef uint8_t EEPM_block_config_type; enum
     {
-    EEPM_BLOCK_CONFIG_ESN            = 0,
-    EEPM_BLOCK_CONFIG_BT_EN          = 1,
-    EEPM_BLOCK_CONFIG_BT_AUTO_CONN   = 2,
-    EEPM_BLOCK_CONFIG_LAST_PAGE      = 3,
-    EEPM_BLOCK_CONFIG_ID_PAGE_LOCK   = 4,
-    EEPM_BLOCK_CONFIG_LANGUAGE       = 5,
-    EEPM_BLOCK_CONFIG_START_BURN_IN  = 6,
-    EEPM_BLOCK_CONFIG_BURN_IN_RESULT = 7,
-    EEPM_BLOCK_CONFIG_BD_ADDRESS     = 8,
+    EEPM_BLOCK_CONFIG_ESN                   = 0,
+    EEPM_BLOCK_CONFIG_BT_EN                 = 1,
+    EEPM_BLOCK_CONFIG_BT_AUTO_CONN          = 2,
+    EEPM_BLOCK_CONFIG_LAST_PAGE             = 3,
+    EEPM_BLOCK_CONFIG_ID_PAGE_LOCK          = 4,
+    EEPM_BLOCK_CONFIG_LANGUAGE              = 5,
+    EEPM_BLOCK_CONFIG_START_BURN_IN         = 6,
+    EEPM_BLOCK_CONFIG_BURN_IN_RESULT        = 7,
+    EEPM_BLOCK_CONFIG_BD_ADDRESS            = 8,
+    EEPM_BLOCK_CONFIG_BURN_IN_TIME          = 9,
+    EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME   = 10,
 
     EEPM_BLOCK_CONFIG_CNT
     };
@@ -165,6 +169,28 @@ BaseType_t EEPM_set_bd_address
     );
 
 BaseType_t EEPM_get_bd_address
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_burn_in_time
+    (
+    uint32_t burn_in_time,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_burn_in_time
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_burn_in_target_time
+    (
+    uint32_t burn_in_target_time,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_burn_in_target_time
     (
     void (*callback_ptr)(bool, void*)
     );

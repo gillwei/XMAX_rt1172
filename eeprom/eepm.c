@@ -549,6 +549,78 @@ if( NULL != eepm_data[EEPM_BLOCK_CONFIG_BD_ADDRESS].callback_ptr )
 
 /*================================================================================================*/
 /**
+@brief   eepm_burn_in_time_w_callback
+@details eepm_burn_in_time_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_burn_in_time_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_BURN_IN_TIME, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_burn_in_time_r_callback
+@details eepm_burn_in_time_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_burn_in_time_r_callback
+    (
+    status_t status
+    )
+{
+eepm_r_callback( EEPM_BLOCK_CONFIG_BURN_IN_TIME, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_burn_in_target_time_w_callback
+@details eepm_burn_in_target_time_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_burn_in_target_time_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_burn_in_target_time_r_callback
+@details eepm_burn_in_target_time_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_burn_in_target_time_r_callback
+    (
+    status_t status
+    )
+{
+eepm_r_callback( EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME, status );
+}
+
+/*================================================================================================*/
+/**
 @brief   EEPM_init
 @details EEPM_init
 
@@ -1083,6 +1155,133 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_BD_ADDRESS].semaphore, ( TickTyp
     eepm_data[EEPM_BLOCK_CONFIG_BD_ADDRESS].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_BD_ADDRESS].callback_ptr = callback_ptr;
     eep_get_bd_address( read_bd_address, eepm_bd_addr_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_burn_in_time
+@details EEPM_set_burn_in_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_burn_in_time
+    (
+    uint32_t burn_in_time,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TIME].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TIME].write_val = burn_in_time;
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TIME].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TIME].callback_ptr = callback_ptr;
+    eep_set_burn_in_time( &( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TIME].write_val ), eepm_burn_in_time_w_callback );
+    eep_get_burn_in_time( &( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TIME].read_val ), eepm_burn_in_time_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_burn_in_time
+@details EEPM_get_burn_in_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_burn_in_time
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TIME].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TIME].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TIME].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TIME].callback_ptr = callback_ptr;
+    eep_get_burn_in_time( &( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TIME].read_val ), eepm_burn_in_time_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_burn_in_time
+@details EEPM_set_burn_in_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_burn_in_target_time
+    (
+    uint32_t burn_in_target_time,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].write_val = burn_in_target_time;
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].callback_ptr = callback_ptr;
+    eep_set_burn_in_target_time( &( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].write_val ), eepm_burn_in_target_time_w_callback );
+    eep_get_burn_in_target_time( &( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].read_val ), eepm_burn_in_target_time_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_burn_in_time
+@details EEPM_get_burn_in_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_burn_in_target_time
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].callback_ptr = callback_ptr;
+    eep_get_burn_in_target_time( &( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].read_val ), eepm_burn_in_target_time_r_callback );
     }
 else
     {

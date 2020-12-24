@@ -146,6 +146,31 @@ void eep_get_bd_address
     void ( *callback_func_ptr ) ( status_t )
     );
 
+void eep_set_burn_in_time
+    (
+    uint32_t* burn_in_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_get_burn_in_time
+    (
+    uint32_t* burn_in_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_set_burn_in_target_time
+    (
+    uint32_t* burn_in_target_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_get_burn_in_target_time
+    (
+    uint32_t* burn_in_target_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+
 #ifdef __cplusplus
 }
 #endif

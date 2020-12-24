@@ -31,13 +31,15 @@ extern "C"{
 //mem page
 #define EEPROM_MEM_PAGE_I2C_DEV_ADDR         ( 0x50 )
 #define ESN_START_SUB_ADDR                   ( 0x0000 )
-#define BT_EN_START_SUB_ADDR                 ( ESN_START_SUB_ADDR + ESN_LENGTH )
-#define BT_AUTO_CONN_START_SUB_ADDR          ( BT_EN_START_SUB_ADDR + BT_EN_LENGTH )
-#define LAST_PAGE_START_SUB_ADDR             ( BT_AUTO_CONN_START_SUB_ADDR + BT_AUTO_CONN_LENGTH )
-#define LANGUAGE_START_SUB_ADDR              ( LAST_PAGE_START_SUB_ADDR + LAST_PAGE_LENGTH )
-#define START_BURN_IN_START_SUB_ADDR         ( LANGUAGE_START_SUB_ADDR + LANGUAGE_LENGTH )
-#define BURN_IN_RESULT_START_SUB_ADDR        ( START_BURN_IN_START_SUB_ADDR + START_BURN_IN_LENGTH )
-#define BD_ADDRESS_START_SUB_ADDR            ( BURN_IN_RESULT_START_SUB_ADDR + BURN_IN_RESULT_LENGTH )
+#define BT_EN_START_SUB_ADDR                 ( ESN_START_SUB_ADDR               + ESN_LENGTH            )
+#define BT_AUTO_CONN_START_SUB_ADDR          ( BT_EN_START_SUB_ADDR             + BT_EN_LENGTH          )
+#define LAST_PAGE_START_SUB_ADDR             ( BT_AUTO_CONN_START_SUB_ADDR      + BT_AUTO_CONN_LENGTH   )
+#define LANGUAGE_START_SUB_ADDR              ( LAST_PAGE_START_SUB_ADDR         + LAST_PAGE_LENGTH      )
+#define START_BURN_IN_START_SUB_ADDR         ( LANGUAGE_START_SUB_ADDR          + LANGUAGE_LENGTH       )
+#define BURN_IN_RESULT_START_SUB_ADDR        ( START_BURN_IN_START_SUB_ADDR     + START_BURN_IN_LENGTH  )
+#define BD_ADDRESS_START_SUB_ADDR            ( BURN_IN_RESULT_START_SUB_ADDR    + BURN_IN_RESULT_LENGTH )
+#define BURN_IN_TIME_START_SUB_ADDR          ( BD_ADDRESS_START_SUB_ADDR        + BD_ADDRESS_LENGTH     )
+#define BURN_IN_TARGET_TIME_START_SUB_ADDR   ( BURN_IN_TIME_START_SUB_ADDR      + BURN_IN_TIME_LENGTH   )
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
@@ -65,15 +67,17 @@ typedef struct
 --------------------------------------------------------------------*/
 eeprom_block_config_type block_config_list[EEPM_BLOCK_CONFIG_CNT] = \
 {
-    { ESN_START_SUB_ADDR,            ESN_LENGTH },                      //EEPROM_BLOCK_CONFIG_ESN
-    { BT_EN_START_SUB_ADDR,          BT_EN_LENGTH },                    //EEPROM_BLOCK_CONFIG_BT_EN
-    { BT_AUTO_CONN_START_SUB_ADDR,   BT_AUTO_CONN_LENGTH },             //EEPROM_BLOCK_CONFIG_BT_AUTO_CONN
-    { LAST_PAGE_START_SUB_ADDR,      LAST_PAGE_LENGTH },                //EEPROM_BLOCK_CONFIG_LAST_PAGE
-    { EEPROM_ID_PAGE_LOCK_SUB_ADDR,  EEPROM_ID_PAGE_LOCK_DATA_LENGTH }, //EEPM_BLOCK_CONFIG_ID_PAGE_LOCK
-    { LANGUAGE_START_SUB_ADDR,       LANGUAGE_LENGTH },                 //EEPM_BLOCK_CONFIG_LANGUAGE
-    { START_BURN_IN_START_SUB_ADDR,  START_BURN_IN_LENGTH },            //EEPM_BLOCK_CONFIG_START_BURN_IN
-    { BURN_IN_RESULT_START_SUB_ADDR, BURN_IN_RESULT_LENGTH },           //EEPM_BLOCK_CONFIG_BURN_IN_RESULT
-    { BD_ADDRESS_START_SUB_ADDR,     BD_ADDRESS_LENGTH },               //EEPM_BLOCK_CONFIG_BD_ADDRESS
+    { ESN_START_SUB_ADDR,                   ESN_LENGTH                         }, //EEPM_BLOCK_CONFIG_ESN
+    { BT_EN_START_SUB_ADDR,                 BT_EN_LENGTH                       }, //EEPM_BLOCK_CONFIG_BT_EN
+    { BT_AUTO_CONN_START_SUB_ADDR,          BT_AUTO_CONN_LENGTH                }, //EEPM_BLOCK_CONFIG_BT_AUTO_CONN
+    { LAST_PAGE_START_SUB_ADDR,             LAST_PAGE_LENGTH                   }, //EEPM_BLOCK_CONFIG_LAST_PAGE
+    { EEPROM_ID_PAGE_LOCK_SUB_ADDR,         EEPROM_ID_PAGE_LOCK_DATA_LENGTH    }, //EEPM_BLOCK_CONFIG_ID_PAGE_LOCK
+    { LANGUAGE_START_SUB_ADDR,              LANGUAGE_LENGTH                    }, //EEPM_BLOCK_CONFIG_LANGUAGE
+    { START_BURN_IN_START_SUB_ADDR,         START_BURN_IN_LENGTH               }, //EEPM_BLOCK_CONFIG_START_BURN_IN
+    { BURN_IN_RESULT_START_SUB_ADDR,        BURN_IN_RESULT_LENGTH              }, //EEPM_BLOCK_CONFIG_BURN_IN_RESULT
+    { BD_ADDRESS_START_SUB_ADDR,            BD_ADDRESS_LENGTH                  }, //EEPM_BLOCK_CONFIG_BD_ADDRESS
+    { BURN_IN_TIME_START_SUB_ADDR,          BURN_IN_TIME_LENGTH                }, //EEPM_BLOCK_CONFIG_BURN_IN_TIME
+    { BURN_IN_TARGET_TIME_START_SUB_ADDR,   BURN_IN_TARGET_TIME_LENGTH         }, //EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME
 };
 
 
@@ -488,6 +492,102 @@ PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
                           EEPROM_SUB_ADDR_SIZE,
                           callback_func_ptr );
 }
+
+
+/*================================================================================================*/
+/**
+@brief   eep_set_burn_in_time
+@details eep_set_burn_in_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_burn_in_time
+    (
+    uint32_t* burn_in_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           (uint8_t *)burn_in_time_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_TIME].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_TIME].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_burn_in_time
+@details eep_get_burn_in_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_get_burn_in_time
+    (
+    uint32_t* burn_in_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          (uint8_t *)burn_in_time_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_TIME].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_TIME].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_burn_in_time
+@details eep_set_burn_in_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_burn_in_target_time
+    (
+    uint32_t* burn_in_target_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           (uint8_t *)burn_in_target_time_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_burn_in_time
+@details eep_get_burn_in_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+void eep_get_burn_in_target_time
+    (
+    uint32_t* burn_in_target_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          (uint8_t *)burn_in_target_time_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
 
 #ifdef __cplusplus
 }
