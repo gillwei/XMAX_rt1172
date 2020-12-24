@@ -1567,6 +1567,7 @@ vTaskDelete( NULL );
 *********************************************************************/
 void ft_hook_receive
     (
+    can_hw_inst_t       const hw_inst, //!< [in] CAN hardware instance
     can_rmd_t   const * const p_rmd    //!< [in] pointer to received message
     )
 {

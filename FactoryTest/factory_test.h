@@ -122,7 +122,7 @@ typedef uint8 IOP_REQ_AUTO_BURN_IN_TYPE; enum
 
 void ft_hook_receive
     (
-    // can_hw_inst_t       const hw_inst, //!< [in] CAN hardware instance
+    can_hw_inst_t       const hw_inst, //!< [in] CAN hardware instance
     can_rmd_t   const * const p_rmd    //!< [in] pointer to received message
     );
 

@@ -40,7 +40,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "factory_test.h"
-#include "VI_pub.h"
 
 /*--------------------------------------------------------------------
                             MACROS
@@ -274,7 +273,7 @@ if( p_rmd != NULL )
                     /*------------------------------------------------------
                     Dispatch to Factory Test task
                     ------------------------------------------------------*/
-                    ft_hook_receive( p_rmd );
+                    ft_hook_receive( hw_inst, p_rmd );
                     break;
 
                 default:
