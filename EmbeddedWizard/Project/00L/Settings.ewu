@@ -305,7 +305,7 @@ class Bluetooth : Menu::BaseMenuView
   $rect <230,350,480,390>
   slot ShowPairedDeviceListSlot
   {
-    PresentDialog( new Settings::BtPairedDeviceList, null, null, null, null, null, null, null, null, false );
+    PresentDialog( new Settings::SET17_BtPairedDeviceList, null, null, null, null, null, null, null, null, false );
   }
 
   // [SET 17]
@@ -1546,17 +1546,10 @@ class BtDiscovarable : Components::BaseMainBG
 
 $rect <160,250,400,290>
 $output false
-class BtConnectionResult : Components::BaseComponent
+class BtConnectionResult : Components::BaseMainBG
 {
   $rect <0,290,200,330>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <20,20,160,60>
-  object Views::Rectangle Rectangle
-  {
-    preset Bounds = <0,0,480,272>;
-    preset Color = #000000FF;
-  }
 
   $rect <510,110,710,150>
   property int32 Result = -1;
@@ -1820,7 +1813,7 @@ class BtPairDevice : Components::BaseMainBG
 
 $rect <120,430,360,470>
 $output false
-class BtPairedDeviceList : Menu::BaseMenuView
+class SET17_BtPairedDeviceList : Menu::BaseMenuView
 {
   $rect <10,290,190,330>
   inherited property Bounds = <0,0,480,272>;
@@ -1926,6 +1919,7 @@ class BtPairedDeviceList : Menu::BaseMenuView
     preset NoOfItems = 1;
     preset Focusable = false;
     preset ItemHeight = 56;
+    preset ItemNumPerPage = 4;
   }
 
   $rect <200,340,420,380>
@@ -2060,7 +2054,7 @@ class BtPairedDeviceOperation : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Menu::VerticalMenu Menu
   {
-    preset Bounds = <10,32,470,272>;
+    preset Bounds = <0,36,480,272>;
     preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 3;
   }

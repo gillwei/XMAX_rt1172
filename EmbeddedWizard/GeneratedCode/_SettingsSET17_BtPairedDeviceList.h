@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsBtPairedDeviceList_H
-#define _SettingsBtPairedDeviceList_H
+#ifndef _SettingsSET17_BtPairedDeviceList_H
+#define _SettingsSET17_BtPairedDeviceList_H
 
 #ifdef __cplusplus
   extern "C"
@@ -98,23 +98,23 @@
 #define _MenuItemBase_
 #endif
 
-/* Forward declaration of the class Settings::BtPairedDeviceList */
-#ifndef _SettingsBtPairedDeviceList_
-  EW_DECLARE_CLASS( SettingsBtPairedDeviceList )
-#define _SettingsBtPairedDeviceList_
+/* Forward declaration of the class Settings::SET17_BtPairedDeviceList */
+#ifndef _SettingsSET17_BtPairedDeviceList_
+  EW_DECLARE_CLASS( SettingsSET17_BtPairedDeviceList )
+#define _SettingsSET17_BtPairedDeviceList_
 #endif
 
 
-/* Deklaration of class : 'Settings::BtPairedDeviceList' */
-EW_DEFINE_FIELDS( SettingsBtPairedDeviceList, MenuBaseMenuView )
+/* Deklaration of class : 'Settings::SET17_BtPairedDeviceList' */
+EW_DEFINE_FIELDS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView )
   EW_OBJECT  ( Menu,            MenuVerticalMenu )
   EW_OBJECT  ( RefreshListObserver, CorePropertyObserver )
   EW_OBJECT  ( NoDataText,      ViewsText )
   EW_VARIABLE( PairedDeviceNum, XInt32 )
-EW_END_OF_FIELDS( SettingsBtPairedDeviceList )
+EW_END_OF_FIELDS( SettingsSET17_BtPairedDeviceList )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::BtPairedDeviceList' */
-EW_DEFINE_METHODS( SettingsBtPairedDeviceList, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET17_BtPairedDeviceList' */
+EW_DEFINE_METHODS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -144,7 +144,8 @@ EW_DEFINE_METHODS( SettingsBtPairedDeviceList, MenuBaseMenuView )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
-  EW_METHOD( UpdateViewState,   void )( SettingsBtPairedDeviceList _this, XSet aState )
+  EW_METHOD( UpdateViewState,   void )( SettingsSET17_BtPairedDeviceList _this, 
+    XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
@@ -157,22 +158,22 @@ EW_DEFINE_METHODS( SettingsBtPairedDeviceList, MenuBaseMenuView )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( SettingsBtPairedDeviceList _this, XObject 
-    sender )
+  EW_METHOD( OnLongKeyPressed,  void )( SettingsSET17_BtPairedDeviceList _this, 
+    XObject sender )
   EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( SettingsBtPairedDeviceList _this, XInt32 
-    aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( SettingsBtPairedDeviceList _this, XInt32 
-    aItemNo )
-  EW_METHOD( OnItemActivate,    void )( SettingsBtPairedDeviceList _this, XInt32 
-    aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( SettingsBtPairedDeviceList _this, XInt32 
-    aItemNo )
+  EW_METHOD( LoadItemClass,     XClass )( SettingsSET17_BtPairedDeviceList _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( SettingsSET17_BtPairedDeviceList _this, 
+    XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( SettingsSET17_BtPairedDeviceList _this, 
+    XInt32 aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( SettingsSET17_BtPairedDeviceList _this, 
+    XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( SettingsBtPairedDeviceList )
+EW_END_OF_METHODS( SettingsSET17_BtPairedDeviceList )
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
    component has been changed. This method can be overridden and filled with logic 
@@ -188,41 +189,41 @@ EW_END_OF_METHODS( SettingsBtPairedDeviceList )
    state 'on' or 'off' and change accordingly the location of the slider, etc.
    Usually, this method will be invoked automatically by the framework. Optionally 
    you can request its invocation by using the method @InvalidateViewState(). */
-void SettingsBtPairedDeviceList_UpdateViewState( SettingsBtPairedDeviceList _this, 
+void SettingsSET17_BtPairedDeviceList_UpdateViewState( SettingsSET17_BtPairedDeviceList _this, 
   XSet aState );
 
-/* 'C' function for method : 'Settings::BtPairedDeviceList.OnLongKeyPressed()' */
-void SettingsBtPairedDeviceList_OnLongKeyPressed( SettingsBtPairedDeviceList _this, 
+/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.OnLongKeyPressed()' */
+void SettingsSET17_BtPairedDeviceList_OnLongKeyPressed( SettingsSET17_BtPairedDeviceList _this, 
   XObject sender );
 
-/* 'C' function for method : 'Settings::BtPairedDeviceList.LoadItemClass()' */
-XClass SettingsBtPairedDeviceList_LoadItemClass( SettingsBtPairedDeviceList _this, 
+/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.LoadItemClass()' */
+XClass SettingsSET17_BtPairedDeviceList_LoadItemClass( SettingsSET17_BtPairedDeviceList _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::BtPairedDeviceList.LoadItemTitle()' */
-XString SettingsBtPairedDeviceList_LoadItemTitle( SettingsBtPairedDeviceList _this, 
+/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.LoadItemTitle()' */
+XString SettingsSET17_BtPairedDeviceList_LoadItemTitle( SettingsSET17_BtPairedDeviceList _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::BtPairedDeviceList.OnItemActivate()' */
-void SettingsBtPairedDeviceList_OnItemActivate( SettingsBtPairedDeviceList _this, 
+/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.OnItemActivate()' */
+void SettingsSET17_BtPairedDeviceList_OnItemActivate( SettingsSET17_BtPairedDeviceList _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Settings::BtPairedDeviceList.LoadItemChecked()' */
-XBool SettingsBtPairedDeviceList_LoadItemChecked( SettingsBtPairedDeviceList _this, 
+/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.LoadItemChecked()' */
+XBool SettingsSET17_BtPairedDeviceList_LoadItemChecked( SettingsSET17_BtPairedDeviceList _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::BtPairedDeviceList.UpdatePairedDeviceNum()' */
-void SettingsBtPairedDeviceList_UpdatePairedDeviceNum( SettingsBtPairedDeviceList _this );
+/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.UpdatePairedDeviceNum()' */
+void SettingsSET17_BtPairedDeviceList_UpdatePairedDeviceNum( SettingsSET17_BtPairedDeviceList _this );
 
 /* This slot method is executed when the associated property observer 'PropertyObserver' 
    is notified. */
-void SettingsBtPairedDeviceList_OnRefreshListSlot( SettingsBtPairedDeviceList _this, 
+void SettingsSET17_BtPairedDeviceList_OnRefreshListSlot( SettingsSET17_BtPairedDeviceList _this, 
   XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsBtPairedDeviceList_H */
+#endif /* _SettingsSET17_BtPairedDeviceList_H */
 
 /* Embedded Wizard */

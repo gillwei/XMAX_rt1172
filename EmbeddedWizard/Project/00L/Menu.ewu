@@ -279,13 +279,13 @@ class VerticalMenu : Components::BaseComponent
   $rect <6,290,206,330>
   inherited property Bounds = <0,0,480,236>;
 
-  $rect <220,410,420,450>
+  $rect <220,390,440,430>
   inherited slot OnLongKeyPressed
   {
     signal PassKeyHold, sender;
   }
 
-  $rect <220,350,420,390>
+  $rect <220,340,440,380>
   inherited method OnShortDownKeyPressed()
   {
     if( Owner.IsCurrentDialog() )
@@ -297,7 +297,7 @@ class VerticalMenu : Components::BaseComponent
         if( null != Item && Item.Enabled )
         {
           MenuList.SelectedItem = NextItemIdx;
-          MenuList.EnsureVisible( MenuList.SelectedItem, false, null, null );
+          SwitchToPageOfSelectedItem();
           Scrollbar.ViewIdx = MenuList.SelectedItem;
           MoveFocusFrame();
         }
@@ -305,7 +305,7 @@ class VerticalMenu : Components::BaseComponent
     }
   }
 
-  $rect <220,290,420,330>
+  $rect <220,290,440,330>
   inherited method OnShortUpKeyPressed()
   {
     if( Owner.IsCurrentDialog() )
@@ -314,7 +314,7 @@ class VerticalMenu : Components::BaseComponent
       if( PrevItemIdx >= 0 )
       {
         MenuList.SelectedItem = PrevItemIdx;
-        MenuList.EnsureVisible( MenuList.SelectedItem, false, null, null );
+        SwitchToPageOfSelectedItem();
         Scrollbar.ViewIdx = MenuList.SelectedItem;
         MoveFocusFrame();
       }
@@ -335,7 +335,7 @@ class VerticalMenu : Components::BaseComponent
 
   // This method is called by 'VerticalList' every time the list loads or updates \
   // an item.
-  $rect <440,290,640,330>
+  $rect <460,290,660,330>
   slot OnLoadItemSlot
   {
     var int32 ItemNo = MenuList.Item;
@@ -365,7 +365,7 @@ class VerticalMenu : Components::BaseComponent
     }
   }
 
-  $rect <650,290,850,330>
+  $rect <460,340,660,380>
   slot OnItemActivateSlot
   {
     var Menu::ItemBase MenuItem = null;
@@ -416,14 +416,14 @@ class VerticalMenu : Components::BaseComponent
     preset PageItems = 4;
   }
 
-  $rect <0,350,200,390>
+  $rect <0,340,200,380>
   method void InvalidateItems( arg int32 aFirstItem, arg int32 aLastItem )
   {
     MenuList.InvalidateItems( aFirstItem, aLastItem );
     Scrollbar.ViewIdx = 0;
   }
 
-  $rect <0,410,200,450>
+  $rect <0,390,200,430>
   property bool Focusable = true;
 
   $rect <0,470,200,510>
@@ -486,10 +486,22 @@ class VerticalMenu : Components::BaseComponent
 
   }
 
-  $rect <220,519,420,559>
+  $rect <220,510,420,550>
   method void UpdateListHeight()
   {
     MenuList.Bounds.y2 = MenuList.Bounds.y1 + ItemHeight * ItemNumPerPage;
+  }
+
+  $rect <690,290,940,330>
+  method void SwitchToPageOfSelectedItem()
+  {
+    var int32 CurrentPageIdx = MenuList.ScrollOffset / MenuList.Bounds.h;
+    var int32 PageIdxOfSelectedItem = MenuList.SelectedItem / ItemNumPerPage;
+
+    if( CurrentPageIdx != PageIdxOfSelectedItem )
+    {
+      MenuList.ScrollOffset = ( -1 ) * PageIdxOfSelectedItem * MenuList.Bounds.h;
+    }
   }
 }
 

@@ -515,8 +515,7 @@ void MenuVerticalMenu_OnShortDownKeyPressed( MenuVerticalMenu _this )
       if (( Item != 0 ) && CoreGroup__OnGetEnabled( Item ))
       {
         CoreVerticalList_OnSetSelectedItem( &_this->MenuList, NextItemIdx );
-        CoreVerticalList_EnsureVisible( &_this->MenuList, _this->MenuList.SelectedItem, 
-        0, 0, EwNullSlot );
+        MenuVerticalMenu_SwitchToPageOfSelectedItem( _this );
         MenuScrollbar_OnSetViewIdx( &_this->Scrollbar, _this->MenuList.SelectedItem );
         MenuVerticalMenu_MoveFocusFrame( _this );
       }
@@ -534,8 +533,7 @@ void MenuVerticalMenu_OnShortUpKeyPressed( MenuVerticalMenu _this )
     if ( PrevItemIdx >= 0 )
     {
       CoreVerticalList_OnSetSelectedItem( &_this->MenuList, PrevItemIdx );
-      CoreVerticalList_EnsureVisible( &_this->MenuList, _this->MenuList.SelectedItem, 
-      0, 0, EwNullSlot );
+      MenuVerticalMenu_SwitchToPageOfSelectedItem( _this );
       MenuScrollbar_OnSetViewIdx( &_this->Scrollbar, _this->MenuList.SelectedItem );
       MenuVerticalMenu_MoveFocusFrame( _this );
     }
@@ -677,6 +675,19 @@ void MenuVerticalMenu_UpdateListHeight( MenuVerticalMenu _this )
 {
   CoreRectView__OnSetBounds( &_this->MenuList, EwSetRectY2( _this->MenuList.Super2.Bounds, 
   _this->MenuList.Super2.Bounds.Point1.Y + ( _this->ItemHeight * _this->ItemNumPerPage )));
+}
+
+/* 'C' function for method : 'Menu::VerticalMenu.SwitchToPageOfSelectedItem()' */
+void MenuVerticalMenu_SwitchToPageOfSelectedItem( MenuVerticalMenu _this )
+{
+  XInt32 CurrentPageIdx = _this->MenuList.ScrollOffset / EwGetRectH( _this->MenuList.Super2.Bounds );
+  XInt32 PageIdxOfSelectedItem = _this->MenuList.SelectedItem / _this->ItemNumPerPage;
+
+  if ( CurrentPageIdx != PageIdxOfSelectedItem )
+  {
+    CoreVerticalList_OnSetScrollOffset( &_this->MenuList, ( -1 * PageIdxOfSelectedItem ) 
+    * EwGetRectH( _this->MenuList.Super2.Bounds ));
+  }
 }
 
 /* Variants derived from the class : 'Menu::VerticalMenu' */

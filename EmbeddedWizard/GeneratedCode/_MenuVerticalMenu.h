@@ -194,6 +194,9 @@ void MenuVerticalMenu_OnSetItemNumPerPage( MenuVerticalMenu _this, XInt32 value 
 /* 'C' function for method : 'Menu::VerticalMenu.UpdateListHeight()' */
 void MenuVerticalMenu_UpdateListHeight( MenuVerticalMenu _this );
 
+/* 'C' function for method : 'Menu::VerticalMenu.SwitchToPageOfSelectedItem()' */
+void MenuVerticalMenu_SwitchToPageOfSelectedItem( MenuVerticalMenu _this );
+
 #ifdef __cplusplus
   }
 #endif

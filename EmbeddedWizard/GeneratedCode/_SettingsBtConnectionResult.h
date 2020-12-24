@@ -42,10 +42,11 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
+#include "_ComponentsBaseMainBG.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
+#include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 
@@ -99,8 +100,7 @@
 
 
 /* Deklaration of class : 'Settings::BtConnectionResult' */
-EW_DEFINE_FIELDS( SettingsBtConnectionResult, ComponentsBaseComponent )
-  EW_OBJECT  ( Rectangle,       ViewsRectangle )
+EW_DEFINE_FIELDS( SettingsBtConnectionResult, ComponentsBaseMainBG )
   EW_OBJECT  ( Text,            ViewsText )
   EW_OBJECT  ( ConnectionResultHandler, CoreSystemEventHandler )
   EW_OBJECT  ( CloseDialogTimer, CoreTimer )
@@ -109,7 +109,7 @@ EW_DEFINE_FIELDS( SettingsBtConnectionResult, ComponentsBaseComponent )
 EW_END_OF_FIELDS( SettingsBtConnectionResult )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::BtConnectionResult' */
-EW_DEFINE_METHODS( SettingsBtConnectionResult, ComponentsBaseComponent )
+EW_DEFINE_METHODS( SettingsBtConnectionResult, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
