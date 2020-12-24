@@ -35,6 +35,7 @@
 #include "_EffectsInt32Effect.h"
 #include "_EffectsPointEffect.h"
 #include "_EffectsPositionFader.h"
+#include "_EffectsRectEffect.h"
 #include "_EffectsShowHideTransition.h"
 #include "_EffectsSlideTransition.h"
 #include "_EffectsTimingList.h"
@@ -59,10 +60,11 @@ static const unsigned int _StringsDefault0[] =
 
 /* Constant values used in this 'C' module only. */
 static const XPoint _Const0000 = { 100, 100 };
-static const XStringRes _Const0001 = { _StringsDefault0, 0x0002 };
-static const XStringRes _Const0002 = { _StringsDefault0, 0x0044 };
-static const XStringRes _Const0003 = { _StringsDefault0, 0x006C };
-static const XStringRes _Const0004 = { _StringsDefault0, 0x00A9 };
+static const XRect _Const0001 = {{ 0, 0 }, { 100, 100 }};
+static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
+static const XStringRes _Const0003 = { _StringsDefault0, 0x0044 };
+static const XStringRes _Const0004 = { _StringsDefault0, 0x006C };
+static const XStringRes _Const0005 = { _StringsDefault0, 0x00A9 };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -1121,6 +1123,67 @@ EW_DEFINE_CLASS( EffectsPointEffect, EffectsEffect, Outlet, Outlet, Outlet, Valu
                  Value, Value, "Effects::PointEffect" )
   EffectsPointEffect_Animate,
 EW_END_OF_CLASS( EffectsPointEffect )
+
+/* Initializer for the class 'Effects::RectEffect' */
+void EffectsRectEffect__Init( EffectsRectEffect _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  EffectsEffect__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( EffectsRectEffect );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( EffectsRectEffect );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  _this->Value2 = _Const0001;
+}
+
+/* Re-Initializer for the class 'Effects::RectEffect' */
+void EffectsRectEffect__ReInit( EffectsRectEffect _this )
+{
+  /* At first re-initialize the super class ... */
+  EffectsEffect__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'Effects::RectEffect' */
+void EffectsRectEffect__Done( EffectsRectEffect _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( EffectsEffect );
+
+  /* Don't forget to deinitialize the super class ... */
+  EffectsEffect__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Effects::RectEffect.Animate()' */
+void EffectsRectEffect_Animate( EffectsRectEffect _this, XFloat aProgress )
+{
+  XInt32 x1 = _this->Value1.Point1.X;
+  XInt32 y1 = _this->Value1.Point1.Y;
+  XInt32 x2 = _this->Value1.Point2.X;
+  XInt32 y2 = _this->Value1.Point2.Y;
+
+  x1 = x1 + (XInt32)EwMathRound((XFloat)( _this->Value2.Point1.X - x1 ) * aProgress );
+  y1 = y1 + (XInt32)EwMathRound((XFloat)( _this->Value2.Point1.Y - y1 ) * aProgress );
+  x2 = x2 + (XInt32)EwMathRound((XFloat)( _this->Value2.Point2.X - x2 ) * aProgress );
+  y2 = y2 + (XInt32)EwMathRound((XFloat)( _this->Value2.Point2.Y - y2 ) * aProgress );
+  _this->Value = EwNewRect( x1, y1, x2, y2 );
+
+  if ( _this->Outlet.Object != 0 )
+    EwOnSetRect( _this->Outlet, _this->Value );
+}
+
+/* Variants derived from the class : 'Effects::RectEffect' */
+EW_DEFINE_CLASS_VARIANTS( EffectsRectEffect )
+EW_END_OF_CLASS_VARIANTS( EffectsRectEffect )
+
+/* Virtual Method Table (VMT) for the class : 'Effects::RectEffect' */
+EW_DEFINE_CLASS( EffectsRectEffect, EffectsEffect, Outlet, Outlet, Outlet, Value, 
+                 Value, Value, "Effects::RectEffect" )
+  EffectsRectEffect_Animate,
+EW_END_OF_CLASS( EffectsRectEffect )
 
 /* Initializer for the class 'Effects::Fader' */
 void EffectsFader__Init( EffectsFader _this, XObject aLink, XHandle aArg )
@@ -2467,13 +2530,13 @@ void EffectsFaderTask_RemoveFader( EffectsFaderTask _this, EffectsFader aFader )
 
   if ( CoreTask_IsCurrent((CoreTask)_this ))
   {
-    EwThrow( EwLoadString( &_Const0001 ));
+    EwThrow( EwLoadString( &_Const0002 ));
     return;
   }
 
   if ( aFader->task != _this )
   {
-    EwThrow( EwLoadString( &_Const0002 ));
+    EwThrow( EwLoadString( &_Const0003 ));
     return;
   }
 
@@ -2508,13 +2571,13 @@ void EffectsFaderTask_AddFader( EffectsFaderTask _this, EffectsFader aFader )
 
   if ( CoreTask_IsCurrent((CoreTask)_this ))
   {
-    EwThrow( EwLoadString( &_Const0003 ));
+    EwThrow( EwLoadString( &_Const0004 ));
     return;
   }
 
   if ( aFader->task != 0 )
   {
-    EwThrow( EwLoadString( &_Const0004 ));
+    EwThrow( EwLoadString( &_Const0005 ));
     return;
   }
 

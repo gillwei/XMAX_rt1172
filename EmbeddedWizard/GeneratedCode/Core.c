@@ -2001,6 +2001,12 @@ void CoreRectView__OnSetBounds( void* _this, XRect value )
   ((CoreRectView)_this)->_VMT->OnSetBounds((CoreRectView)_this, value );
 }
 
+/* Default onget method for the property 'Bounds' */
+XRect CoreRectView_OnGetBounds( CoreRectView _this )
+{
+  return _this->Bounds;
+}
+
 /* Variants derived from the class : 'Core::RectView' */
 EW_DEFINE_CLASS_VARIANTS( CoreRectView )
 EW_END_OF_CLASS_VARIANTS( CoreRectView )

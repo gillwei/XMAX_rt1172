@@ -22,4 +22,6 @@ set(EMWIFILES
 	"DeviceInterface.c" 
 	"Factory.c" 
 	"Development.c" 
-	"Strings.c")
+	"Strings.c" 
+	"Launcher.c" 
+	"Home.c")

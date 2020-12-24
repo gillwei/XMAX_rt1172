@@ -47,7 +47,6 @@
 #include "_CoreRoot.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_NavigationMain.h"
 
 /* Forward declaration of the class Application::Application */
 #ifndef _ApplicationApplication_
@@ -112,12 +111,9 @@
 
 /* This is the root component of the entire GUI application. */
 EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
-  EW_OBJECT  ( Navigation,      NavigationMain )
   EW_OBJECT  ( FactoryTestEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( StatusBar,       ComponentsStatusBar )
   EW_OBJECT  ( BtFwStatusObserver, CorePropertyObserver )
-  EW_PROPERTY( PageIdx,         XInt32 )
-  EW_ARRAY   ( PageClassList,   XClass, [3])
   EW_PROPERTY( StatusBarVisible, XBool )
 EW_END_OF_FIELDS( ApplicationApplication )
 
@@ -172,23 +168,12 @@ EW_END_OF_METHODS( ApplicationApplication )
    statements. */
 void ApplicationApplication_Init( ApplicationApplication _this, XHandle aArg );
 
-/* 'C' function for method : 'Application::Application.ProcKeyHoldSlot()' */
-void ApplicationApplication_ProcKeyHoldSlot( ApplicationApplication _this, XObject 
-  sender );
-
-/* 'C' function for method : 'Application::Application.SwitchPageOfDirection()' */
-void ApplicationApplication_SwitchPageOfDirection( ApplicationApplication _this, 
-  XEnum aDirection );
-
 /* 'C' function for method : 'Application::Application.OnDisclaimerAcceptedSlot()' */
 void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _this, 
   XObject sender );
 
 /* 'C' function for method : 'Application::Application.ShowDisclaimer()' */
 void ApplicationApplication_ShowDisclaimer( ApplicationApplication _this );
-
-/* 'C' function for method : 'Application::Application.SwitchToPage()' */
-void ApplicationApplication_SwitchToPage( ApplicationApplication _this, XInt32 aPageIdx );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */

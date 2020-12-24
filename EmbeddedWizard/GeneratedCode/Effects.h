@@ -49,6 +49,7 @@
 #include "_EffectsInt32Effect.h"
 #include "_EffectsPointEffect.h"
 #include "_EffectsPositionFader.h"
+#include "_EffectsRectEffect.h"
 #include "_EffectsShowHideTransition.h"
 #include "_EffectsSlideTransition.h"
 #include "_EffectsTimingList.h"

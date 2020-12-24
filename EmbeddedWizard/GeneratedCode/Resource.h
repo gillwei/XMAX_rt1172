@@ -141,6 +141,90 @@ EW_DECLARE_BITMAP_RES( ResourceFocusFrame )
 /* Bitmap resource : 'Resource::CheckMark' */
 EW_DECLARE_BITMAP_RES( ResourceCheckMark )
 
+/* Bitmap resource : 'Resource::LCBase' */
+EW_DECLARE_BITMAP_RES( ResourceLCBase )
+
+/* Bitmap resource : 'Resource::LCBlueline' */
+EW_DECLARE_BITMAP_RES( ResourceLCBlueline )
+
+/* Bitmap resource : 'Resource::IconPhoneSmall' */
+EW_DECLARE_BITMAP_RES( ResourceIconPhoneSmall )
+
+/* Bitmap resource : 'Resource::IconPhoneLarge' */
+EW_DECLARE_BITMAP_RES( ResourceIconPhoneLarge )
+
+/* Bitmap resource : 'Resource::IconMusicSmall' */
+EW_DECLARE_BITMAP_RES( ResourceIconMusicSmall )
+
+/* Bitmap resource : 'Resource::IconMusicLarge' */
+EW_DECLARE_BITMAP_RES( ResourceIconMusicLarge )
+
+/* Bitmap resource : 'Resource::IconTcsSmall' */
+EW_DECLARE_BITMAP_RES( ResourceIconTcsSmall )
+
+/* Bitmap resource : 'Resource::IconTcsLarge' */
+EW_DECLARE_BITMAP_RES( ResourceIconTcsLarge )
+
+/* Bitmap resource : 'Resource::IconOdoTripSmall' */
+EW_DECLARE_BITMAP_RES( ResourceIconOdoTripSmall )
+
+/* Bitmap resource : 'Resource::IconOdoTripLarge' */
+EW_DECLARE_BITMAP_RES( ResourceIconOdoTripLarge )
+
+/* Bitmap resource : 'Resource::IconSettingSmall' */
+EW_DECLARE_BITMAP_RES( ResourceIconSettingSmall )
+
+/* Bitmap resource : 'Resource::IconSettingLarge' */
+EW_DECLARE_BITMAP_RES( ResourceIconSettingLarge )
+
+/* Bitmap resource : 'Resource::IconWeatherSmall' */
+EW_DECLARE_BITMAP_RES( ResourceIconWeatherSmall )
+
+/* Bitmap resource : 'Resource::IconWeatherLarge' */
+EW_DECLARE_BITMAP_RES( ResourceIconWeatherLarge )
+
+/* Bitmap resource : 'Resource::IconNotificationSmall' */
+EW_DECLARE_BITMAP_RES( ResourceIconNotificationSmall )
+
+/* Bitmap resource : 'Resource::IconNotificationLarge' */
+EW_DECLARE_BITMAP_RES( ResourceIconNotificationLarge )
+
+/* Bitmap resource : 'Resource::IconNavigationSmall' */
+EW_DECLARE_BITMAP_RES( ResourceIconNavigationSmall )
+
+/* Bitmap resource : 'Resource::IconNavigationLarge' */
+EW_DECLARE_BITMAP_RES( ResourceIconNavigationLarge )
+
+/* Bitmap resource : 'Resource::IconThemeSmall' */
+EW_DECLARE_BITMAP_RES( ResourceIconThemeSmall )
+
+/* Bitmap resource : 'Resource::IconThemeLarge' */
+EW_DECLARE_BITMAP_RES( ResourceIconThemeLarge )
+
+/* Bitmap resource : 'Resource::IconSeatHeater0Small' */
+EW_DECLARE_BITMAP_RES( ResourceIconSeatHeater0Small )
+
+/* Bitmap resource : 'Resource::IconSeatHeater0Large' */
+EW_DECLARE_BITMAP_RES( ResourceIconSeatHeater0Large )
+
+/* Bitmap resource : 'Resource::IconGripWarmer0Small' */
+EW_DECLARE_BITMAP_RES( ResourceIconGripWarmer0Small )
+
+/* Bitmap resource : 'Resource::IconGripWarmer0Large' */
+EW_DECLARE_BITMAP_RES( ResourceIconGripWarmer0Large )
+
+/* Bitmap resource : 'Resource::StatusBarShadow' */
+EW_DECLARE_BITMAP_RES( ResourceStatusBarShadow )
+
+/* Bitmap resource : 'Resource::IconWindScreenSmall' */
+EW_DECLARE_BITMAP_RES( ResourceIconWindScreenSmall )
+
+/* Bitmap resource : 'Resource::IconWindScreenLarge' */
+EW_DECLARE_BITMAP_RES( ResourceIconWindScreenLarge )
+
+/* Bitmap resource : 'Resource::LCHighlight' */
+EW_DECLARE_BITMAP_RES( ResourceLCHighlight )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

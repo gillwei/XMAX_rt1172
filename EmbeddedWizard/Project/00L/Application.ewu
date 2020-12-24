@@ -20,37 +20,12 @@ class Application : Core::Root
     var Core::KeyPressHandler handler = ( Core::KeyPressHandler ) sender;
     switch( handler.Code )
     {
-      case Core::KeyCode.Down: SwitchPageOfDirection( Enum::Direction.Next );
-      case Core::KeyCode.Up: SwitchPageOfDirection( Enum::Direction.Previous );
+      case Core::KeyCode.Down:;
+      case Core::KeyCode.Up:;
       case Core::KeyCode.Ok:;
       default:;
     }
   }
-
-  $rect <350,430,560,470>
-  method void SwitchPageOfDirection( arg Enum::Direction aDirection )
-  {
-    switch( aDirection )
-    {
-      case Enum::Direction.Previous: PageIdx = PageIdx - 1;
-      case Enum::Direction.Next: PageIdx = PageIdx + 1;
-      default:;
-    }
-
-    if( PageIdx < 0 )
-    {
-      PageIdx = 0;
-    }
-    else if( PageIdx >= PageClassList.size )
-    {
-      PageIdx = PageClassList.size - 1;
-    }
-
-    SwitchToPage( PageIdx );
-  }
-
-  $rect <580,430,780,470>
-  property int32 PageIdx = 0;
 
   $rect <40,490,270,530>
   slot OnDisclaimerAcceptedSlot
@@ -63,15 +38,9 @@ class Application : Core::Root
     }
 
     StatusBar.StackingPriority = 1;
-    SwitchToPage( 0 );
-  }
 
-  $rect <20,20,160,60>
-  object Navigation::Main Navigation
-  {
-    preset Bounds = <0,0,480,272>;
-    preset Visible = true;
-    preset PassKeyHold = ProcKeyHoldSlot;
+    //TODO: switch to the last page saved in EEPROM
+    GetRoot().SwitchToDialog( new Home::HOM11_tachometer, null, null, null, null, null, null, null, null, null, false );
   }
 
   $rect <40,430,270,470>
@@ -87,48 +56,6 @@ class Application : Core::Root
   note group Note
   {
     attr Bounds = <10,390,300,550>;
-  }
-
-  $rect <580,490,780,530>
-  array class PageClassList[ 3 ] =
-  (
-    Default[0] = Settings::Main;
-    Default[1] = Navigation::Main;
-    Default[2] = Media::Main;
-  );
-
-  $rect <350,490,560,530>
-  method void SwitchToPage( arg int32 aPageIdx )
-  {
-    var class PageClass = PageClassList[aPageIdx];
-    if( Settings::Main == PageClass )
-    {
-      var Settings::Main View = new Settings::Main;
-      if( null != View )
-      {
-        View.PassKeyHold = ProcKeyHoldSlot;
-        SwitchToDialog( View, null, null, null, null, null, null, null, null, null, false );
-      }
-    }
-    else if( Media::Main == PageClass )
-    {
-      var Media::Main View = new Media::Main;
-      if( null != View )
-      {
-        View.PassKeyHold = ProcKeyHoldSlot;
-        SwitchToDialog( View, null, null, null, null, null, null, null, null, null, false );
-      }
-    }
-    else if( Navigation::Main == PageClass )
-    {
-      SwitchToDialog( Navigation, null, null, null, null, null, null, null, null, null, false );
-    }
-  }
-
-  // For switching page
-  note group Note1
-  {
-    attr Bounds = <330,390,800,550>;
   }
 
   // Factory Test

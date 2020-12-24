@@ -43,6 +43,7 @@ class BaseComponent : Core::Group
   slot OnKeyReleaseSlot
   {
     trace "OnKeyReleaseSlot", KeyHandler.Code;
+    trace "classof this: ", classof this;
     if( !KeyHandler.Repetition )
     {
       switch( KeyHandler.Code )

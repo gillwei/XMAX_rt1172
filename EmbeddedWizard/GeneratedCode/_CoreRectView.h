@@ -143,6 +143,9 @@ void CoreRectView_OnSetBounds( CoreRectView _this, XRect value );
 /* Wrapper function for the virtual method : 'Core::RectView.OnSetBounds()' */
 void CoreRectView__OnSetBounds( void* _this, XRect value );
 
+/* Default onget method for the property 'Bounds' */
+XRect CoreRectView_OnGetBounds( CoreRectView _this );
+
 #ifdef __cplusplus
   }
 #endif

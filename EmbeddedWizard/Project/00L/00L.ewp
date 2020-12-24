@@ -69,7 +69,7 @@ note group Note3
 // Project Units
 note group Note5
 {
-  attr Bounds = <270,140,740,620>;
+  attr Bounds = <270,140,740,680>;
 }
 
 // This is a profile member for the project. This profile controls the code generation \
@@ -108,7 +108,7 @@ unit Components
   attr Directory = .\;
 }
 
-$rect <293,350,493,390>
+$rect <290,350,490,390>
 unit UIConfig
 {
   attr Directory = .\;
@@ -132,7 +132,7 @@ unit Navigation
   attr Directory = .\;
 }
 
-$rect <293,450,493,490>
+$rect <290,450,490,490>
 unit Menu
 {
   attr Directory = .\;
@@ -150,13 +150,13 @@ unit Fonts
   attr Directory = .\;
 }
 
-$rect <293,400,493,440>
+$rect <290,400,490,440>
 unit Effect
 {
   attr Directory = .\;
 }
 
-$rect <293,300,493,340>
+$rect <290,300,490,340>
 unit Enum
 {
   attr Directory = .\;
@@ -168,13 +168,13 @@ unit DeviceInterface
   attr Directory = .\;
 }
 
-$rect <520,553,720,593>
+$rect <520,550,720,590>
 unit Factory
 {
   attr Directory = .\;
 }
 
-$rect <520,501,720,541>
+$rect <520,500,720,540>
 unit Development
 {
   attr Directory = .\;
@@ -208,8 +208,20 @@ language Spanish;
 $rect <780,440,980,480>
 language TraditionalChinese;
 
-$rect <292,500,492,540>
+$rect <290,500,490,540>
 unit Strings
+{
+  attr Directory = .\;
+}
+
+$rect <290,550,490,590>
+unit Launcher
+{
+  attr Directory = .\;
+}
+
+$rect <290,600,490,640>
+unit Home
 {
   attr Directory = .\;
 }

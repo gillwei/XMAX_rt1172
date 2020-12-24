@@ -1,0 +1,24 @@
+﻿$version 10.00
+
+$rect <10,10,210,50>
+$output false
+class HOM11_tachometer : Components::BaseMainBG
+{
+  $rect <0,280,200,320>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <210,280,430,320>
+  inherited method OnShortEnterKeyPressed()
+  {
+    GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Title
+  {
+    preset Bounds = <72,113,403,156>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = Strings::INF01_tachometer;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+}

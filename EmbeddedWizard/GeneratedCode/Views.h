@@ -48,6 +48,7 @@
 #include "_ViewsLine.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
+#include "_ViewsWallpaper.h"
 
 /* The definition Views::ImageAlignment determines the set of constraints to apply 
    on a bitmap if its size differ from the size of the view where the bitmap is 

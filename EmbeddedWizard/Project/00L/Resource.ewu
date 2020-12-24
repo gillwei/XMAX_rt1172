@@ -1,6 +1,6 @@
 ﻿$version 10.00
 
-$rect <250,190,450,230>
+$rect <242,860,442,900>
 $output false
 resource Resources::Bitmap IconMediaPlayPause
 {
@@ -12,7 +12,7 @@ resource Resources::Bitmap IconMediaPlayPause
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,240,450,280>
+$rect <242,910,442,950>
 $output false
 resource Resources::Bitmap IconMediaPrevious
 {
@@ -24,7 +24,7 @@ resource Resources::Bitmap IconMediaPrevious
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,290,450,330>
+$rect <242,960,442,1000>
 $output false
 resource Resources::Bitmap IconMediaNext
 {
@@ -36,7 +36,7 @@ resource Resources::Bitmap IconMediaNext
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,350,230,390>
+$rect <30,1020,230,1060>
 $output false
 resource Resources::Bitmap IconBtDevice
 {
@@ -48,7 +48,7 @@ resource Resources::Bitmap IconBtDevice
   attr bitmapmode Mode = Default;
 }
 
-$rect <540,50,740,90>
+$rect <540,180,740,220>
 $output false
 resource Resources::Bitmap CheckboxNormal
 {
@@ -60,7 +60,7 @@ resource Resources::Bitmap CheckboxNormal
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,590,230,630>
+$rect <30,1260,230,1300>
 $output false
 resource Resources::Bitmap IconWarning
 {
@@ -72,7 +72,7 @@ resource Resources::Bitmap IconWarning
   attr bitmapmode Mode = Default;
 }
 
-$rect <270,350,470,390>
+$rect <242,1020,442,1060>
 $output false
 resource Resources::Bitmap InspectionArrowDown
 {
@@ -84,7 +84,7 @@ resource Resources::Bitmap InspectionArrowDown
   attr bitmapmode Mode = Default;
 }
 
-$rect <270,400,470,440>
+$rect <242,1070,442,1110>
 $output false
 resource Resources::Bitmap InspectionArrowRight
 {
@@ -96,7 +96,7 @@ resource Resources::Bitmap InspectionArrowRight
   attr bitmapmode Mode = Default;
 }
 
-$rect <270,450,470,490>
+$rect <242,1120,442,1160>
 $output false
 resource Resources::Bitmap InspectionArrowUp
 {
@@ -108,7 +108,7 @@ resource Resources::Bitmap InspectionArrowUp
   attr bitmapmode Mode = Default;
 }
 
-$rect <490,350,690,390>
+$rect <455,1020,655,1060>
 $output false
 resource Resources::Bitmap InspectionArrowLeft
 {
@@ -120,7 +120,7 @@ resource Resources::Bitmap InspectionArrowLeft
   attr bitmapmode Mode = Default;
 }
 
-$rect <490,400,690,440>
+$rect <455,1070,655,1110>
 $output false
 resource Resources::Bitmap InspectionArrowEnter
 {
@@ -132,7 +132,7 @@ resource Resources::Bitmap InspectionArrowEnter
   attr bitmapmode Mode = Default;
 }
 
-$rect <480,450,680,490>
+$rect <455,1120,655,1160>
 $output false
 resource Resources::Bitmap InspectionConnection
 {
@@ -144,7 +144,7 @@ resource Resources::Bitmap InspectionConnection
   attr bitmapmode Mode = Default;
 }
 
-$rect <260,500,460,540>
+$rect <242,1170,442,1210>
 $output false
 resource Resources::Bitmap InspectionHome
 {
@@ -156,7 +156,7 @@ resource Resources::Bitmap InspectionHome
   attr bitmapmode Mode = Default;
 }
 
-$rect <730,350,930,390>
+$rect <667,1020,867,1060>
 $output false
 resource Resources::Bitmap iconBT
 {
@@ -168,7 +168,7 @@ resource Resources::Bitmap iconBT
   attr bitmapmode Mode = Default;
 }
 
-$rect <730,390,930,430>
+$rect <667,1060,867,1100>
 $output false
 resource Resources::Bitmap iconWifi
 {
@@ -180,7 +180,7 @@ resource Resources::Bitmap iconWifi
   attr bitmapmode Mode = Default;
 }
 
-$rect <730,440,930,480>
+$rect <667,1110,867,1150>
 $output false
 resource Resources::Bitmap iconSignal
 {
@@ -192,7 +192,7 @@ resource Resources::Bitmap iconSignal
   attr bitmapmode Mode = Default;
 }
 
-$rect <730,490,930,530>
+$rect <667,1160,867,1200>
 $output false
 resource Resources::Bitmap iconExit
 {
@@ -204,7 +204,7 @@ resource Resources::Bitmap iconExit
   attr bitmapmode Mode = Default;
 }
 
-$rect <940,340,1140,380>
+$rect <880,1020,1080,1060>
 $output false
 resource Resources::Bitmap iconCAN
 {
@@ -216,7 +216,7 @@ resource Resources::Bitmap iconCAN
   attr bitmapmode Mode = Default;
 }
 
-$rect <940,390,1140,430>
+$rect <880,1060,1080,1100>
 $output false
 resource Resources::Bitmap InspectionDivider
 {
@@ -228,7 +228,7 @@ resource Resources::Bitmap InspectionDivider
   attr bitmapmode Mode = Default;
 }
 
-$rect <930,440,1130,480>
+$rect <880,1110,1080,1150>
 $output false
 resource Resources::Bitmap InspectionStatus
 {
@@ -240,7 +240,7 @@ resource Resources::Bitmap InspectionStatus
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,650,230,690>
+$rect <30,1320,230,1360>
 $output false
 resource Resources::Bitmap progress
 {
@@ -252,7 +252,7 @@ resource Resources::Bitmap progress
   attr bitmapmode Mode = Default;
 }
 
-$rect <540,90,740,130>
+$rect <540,220,740,260>
 $output false
 resource Resources::Bitmap CheckboxDisable
 {
@@ -264,7 +264,7 @@ resource Resources::Bitmap CheckboxDisable
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,820,280,860>
+$rect <30,1490,280,1530>
 $output false
 resource Resources::Bitmap DisplayTest
 {
@@ -276,23 +276,23 @@ resource Resources::Bitmap DisplayTest
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,870,280,910>
+$rect <30,1540,280,1580>
 $output false
 autoobject Resources::ExternBitmap ExternBitmap;
 
 // Factory Test - Display
 note group Note5
 {
-  attr Bounds = <10,770,300,930>;
+  attr Bounds = <10,1440,300,1600>;
 }
 
 // Navigation
 note group Note1
 {
-  attr Bounds = <10,950,490,1110>;
+  attr Bounds = <10,1620,490,1780>;
 }
 
-$rect <40,1000,240,1040>
+$rect <40,1670,240,1710>
 $output false
 resource Resources::Bitmap TbTBg
 {
@@ -304,7 +304,7 @@ resource Resources::Bitmap TbTBg
   attr bitmapmode Mode = Default;
 }
 
-$rect <40,1050,240,1090>
+$rect <40,1720,240,1760>
 $output false
 resource Resources::Bitmap IconTbT
 {
@@ -316,7 +316,7 @@ resource Resources::Bitmap IconTbT
   attr bitmapmode Mode = Default;
 }
 
-$rect <260,1000,460,1040>
+$rect <260,1670,460,1710>
 $output false
 resource Resources::Bitmap ArrivalBg
 {
@@ -331,10 +331,10 @@ resource Resources::Bitmap ArrivalBg
 // Navigation - YMC design
 note group Note2
 {
-  attr Bounds = <10,1120,1100,1280>;
+  attr Bounds = <10,1790,1100,1950>;
 }
 
-$rect <40,1160,240,1200>
+$rect <40,1830,240,1870>
 $output false
 resource Resources::Bitmap YmcNaviDay
 {
@@ -346,7 +346,7 @@ resource Resources::Bitmap YmcNaviDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <40,1210,240,1250>
+$rect <40,1880,240,1920>
 $output false
 resource Resources::Bitmap YmcNaviNight
 {
@@ -358,7 +358,7 @@ resource Resources::Bitmap YmcNaviNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,1160,450,1200>
+$rect <250,1830,450,1870>
 $output false
 resource Resources::Bitmap YmcRouteDay
 {
@@ -370,7 +370,7 @@ resource Resources::Bitmap YmcRouteDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,1210,450,1250>
+$rect <250,1880,450,1920>
 $output false
 resource Resources::Bitmap YmcRouteNight
 {
@@ -382,7 +382,7 @@ resource Resources::Bitmap YmcRouteNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <460,1160,660,1200>
+$rect <460,1830,660,1870>
 $output false
 resource Resources::Bitmap YmcNextTurnDay
 {
@@ -394,7 +394,7 @@ resource Resources::Bitmap YmcNextTurnDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <460,1210,660,1250>
+$rect <460,1880,660,1920>
 $output false
 resource Resources::Bitmap YmcNextTurnNight
 {
@@ -406,7 +406,7 @@ resource Resources::Bitmap YmcNextTurnNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <670,1160,870,1200>
+$rect <670,1830,870,1870>
 $output false
 resource Resources::Bitmap YmcTbTDay
 {
@@ -418,7 +418,7 @@ resource Resources::Bitmap YmcTbTDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <670,1210,870,1250>
+$rect <670,1880,870,1920>
 $output false
 resource Resources::Bitmap YmcTbTNight
 {
@@ -430,7 +430,7 @@ resource Resources::Bitmap YmcTbTNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,1160,1080,1200>
+$rect <880,1830,1080,1870>
 $output false
 resource Resources::Bitmap YmcTurnList
 {
@@ -445,10 +445,10 @@ resource Resources::Bitmap YmcTurnList
 // Navigation - Garmin design
 note group Note3
 {
-  attr Bounds = <10,1300,1100,1460>;
+  attr Bounds = <10,1970,1100,2130>;
 }
 
-$rect <40,1340,240,1380>
+$rect <40,2010,240,2050>
 $output false
 resource Resources::Bitmap GrmnNaviDay
 {
@@ -460,7 +460,7 @@ resource Resources::Bitmap GrmnNaviDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <40,1390,240,1430>
+$rect <40,2060,240,2100>
 $output false
 resource Resources::Bitmap GrmnNaviNight
 {
@@ -472,7 +472,7 @@ resource Resources::Bitmap GrmnNaviNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,1340,450,1380>
+$rect <250,2010,450,2050>
 $output false
 resource Resources::Bitmap GrmnRouteDay
 {
@@ -484,7 +484,7 @@ resource Resources::Bitmap GrmnRouteDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,1390,450,1430>
+$rect <250,2060,450,2100>
 $output false
 resource Resources::Bitmap GrmnRouteNight
 {
@@ -496,7 +496,7 @@ resource Resources::Bitmap GrmnRouteNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <460,1340,660,1380>
+$rect <460,2010,660,2050>
 $output false
 resource Resources::Bitmap GrmnNextTurnDay
 {
@@ -508,7 +508,7 @@ resource Resources::Bitmap GrmnNextTurnDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <460,1390,660,1430>
+$rect <460,2060,660,2100>
 $output false
 resource Resources::Bitmap GrmnNextTurnNight
 {
@@ -520,7 +520,7 @@ resource Resources::Bitmap GrmnNextTurnNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <670,1340,870,1380>
+$rect <670,2010,870,2050>
 $output false
 resource Resources::Bitmap GrmnTbTDay
 {
@@ -532,7 +532,7 @@ resource Resources::Bitmap GrmnTbTDay
   attr bitmapmode Mode = Default;
 }
 
-$rect <670,1390,870,1430>
+$rect <670,2060,870,2100>
 $output false
 resource Resources::Bitmap GrmnTbTNight
 {
@@ -544,7 +544,7 @@ resource Resources::Bitmap GrmnTbTNight
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,1340,1080,1380>
+$rect <880,2010,1080,2050>
 $output false
 resource Resources::Bitmap GrmnTurnList
 {
@@ -556,7 +556,7 @@ resource Resources::Bitmap GrmnTurnList
   attr bitmapmode Mode = Default;
 }
 
-$rect <20,0,220,40>
+$rect <20,130,220,170>
 $output false
 resource Resources::Bitmap MainBG
 {
@@ -568,7 +568,7 @@ resource Resources::Bitmap MainBG
   attr bitmapmode Mode = Default;
 }
 
-$rect <330,90,530,130>
+$rect <330,220,530,260>
 $output false
 resource Resources::Bitmap ListDivider4
 {
@@ -580,7 +580,7 @@ resource Resources::Bitmap ListDivider4
   attr bitmapmode Mode = Default;
 }
 
-$rect <330,50,530,90>
+$rect <330,180,530,220>
 $output false
 resource Resources::Bitmap ListDivider3
 {
@@ -595,10 +595,10 @@ resource Resources::Bitmap ListDivider3
 // Menu
 note group Note4
 {
-  attr Bounds = <310,0,760,180>;
+  attr Bounds = <310,130,760,310>;
 }
 
-$rect <20,190,220,230>
+$rect <30,860,230,900>
 $output false
 resource Resources::Bitmap FocusFrame
 {
@@ -610,7 +610,7 @@ resource Resources::Bitmap FocusFrame
   attr bitmapmode Mode = Default;
 }
 
-$rect <540,130,740,170>
+$rect <540,260,740,300>
 $output false
 resource Resources::Bitmap CheckMark
 {
@@ -625,9 +625,501 @@ resource Resources::Bitmap CheckMark
 // QR Code
 note group Note6
 {
-  attr Bounds = <350,770,640,930>;
+  attr Bounds = <350,1440,640,1600>;
 }
 
-$rect <390,830,590,870>
+$rect <390,1500,590,1540>
 $output false
 autoobject Resources::ExternBitmap QrCodeExternBitmap;
+
+// Launcher
+note group Note7
+{
+  attr Bounds = <10,320,1100,770>;
+}
+
+$rect <30,370,230,410>
+$output false
+resource Resources::Bitmap LCBase
+{
+  attr bitmapfile FileName = .\Res\launcher\LC_base.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,413,230,453>
+$output false
+resource Resources::Bitmap LCBlueline
+{
+  attr bitmapfile FileName = .\Res\launcher\LC_blueline.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <242,370,442,410>
+$output false
+resource Resources::Bitmap IconPhoneSmall
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC13_S.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <242,412,442,452>
+$output false
+resource Resources::Bitmap IconPhoneLarge
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC13_L.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <455,370,655,410>
+$output false
+resource Resources::Bitmap IconMusicSmall
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC4_S.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <455,413,655,453>
+$output false
+resource Resources::Bitmap IconMusicLarge
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC4_L.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <667,370,867,410>
+$output false
+resource Resources::Bitmap IconTcsSmall
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC12_S.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <667,413,867,453>
+$output false
+resource Resources::Bitmap IconTcsLarge
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC12_L.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <880,370,1080,410>
+$output false
+resource Resources::Bitmap IconOdoTripSmall
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC1_S.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <880,413,1080,453>
+$output false
+resource Resources::Bitmap IconOdoTripLarge
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC1_L.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,469,230,509>
+$output false
+resource Resources::Bitmap IconSettingSmall
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC6_S.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,510,230,550>
+$output false
+resource Resources::Bitmap IconSettingLarge
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC6_L.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <242,469,442,509>
+$output false
+resource Resources::Bitmap IconWeatherSmall
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC5_S.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <242,510,442,550>
+$output false
+resource Resources::Bitmap IconWeatherLarge
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC5_L.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <455,469,655,509>
+$output false
+resource Resources::Bitmap IconNotificationSmall
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC7_S.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <455,510,655,550>
+$output false
+resource Resources::Bitmap IconNotificationLarge
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC7_L.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <667,469,867,509>
+$output false
+resource Resources::Bitmap IconNavigationSmall
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC3_S.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <667,510,867,550>
+$output false
+resource Resources::Bitmap IconNavigationLarge
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC3_L.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <880,469,1080,509>
+$output false
+resource Resources::Bitmap IconThemeSmall
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC11_S.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <880,510,1080,550>
+$output false
+resource Resources::Bitmap IconThemeLarge
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC11_L.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,570,230,610>
+$output false
+resource Resources::Bitmap IconSeatHeater0Small
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC10_S0.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,610,230,650>
+$output false
+resource Resources::Bitmap IconSeatHeater0Large
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC10_L0.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <242,570,442,610>
+$output false
+resource Resources::Bitmap IconSeatHeater1Small
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC10_S1.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <242,610,442,650>
+$output false
+resource Resources::Bitmap IconSeatHeater1Large
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC10_L1.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <455,570,655,610>
+$output false
+resource Resources::Bitmap IconSeatHeater2Small
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC10_S2.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <455,610,655,650>
+$output false
+resource Resources::Bitmap IconSeatHeater2Large
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC10_L2.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <667,570,867,610>
+$output false
+resource Resources::Bitmap IconSeatHeater3Small
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC10_S3.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <667,610,867,650>
+$output false
+resource Resources::Bitmap IconSeatHeater3Large
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC10_L3.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,670,230,710>
+$output false
+resource Resources::Bitmap IconGripWarmer0Small
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC9_S0.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <42,42>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,710,230,750>
+$output false
+resource Resources::Bitmap IconGripWarmer0Large
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC9_L0.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <70,70>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <242,670,442,710>
+$output false
+resource Resources::Bitmap IconGripWarmer1Small
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC9_S1.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <42,42>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <242,710,442,750>
+$output false
+resource Resources::Bitmap IconGripWarmer1Large
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC9_L1.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <70,70>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <455,670,655,710>
+$output false
+resource Resources::Bitmap IconGripWarmer2Small
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC9_S2.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <42,42>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <455,710,655,750>
+$output false
+resource Resources::Bitmap IconGripWarmer2Large
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC9_L2.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <70,70>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <667,670,867,710>
+$output false
+resource Resources::Bitmap IconGripWarmer3Small
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC10_S3.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <42,42>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <667,710,867,750>
+$output false
+resource Resources::Bitmap IconGripWarmer3Large
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC10_L3.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <70,70>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,60,230,100>
+$output false
+resource Resources::Bitmap StatusBarShadow
+{
+  attr bitmapfile FileName = .\Res\status_bar\status_shadow.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// Status Bar
+note group Note8
+{
+  attr Bounds = <10,10,1100,120>;
+}
+
+$rect <880,570,1080,610>
+$output false
+resource Resources::Bitmap IconWindScreenSmall
+{
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC8_S.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <50,50>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <880,611,1080,651>
+$output false
+resource Resources::Bitmap IconWindScreenLarge
+{
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC8_L.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <78,78>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <-80,440,120,480>
+$output false
+resource Resources::Bitmap LCHighlight
+{
+  attr bitmapfile FileName = .\Res\launcher\LC_push.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}

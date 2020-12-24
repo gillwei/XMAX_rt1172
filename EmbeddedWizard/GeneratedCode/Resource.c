@@ -252,4 +252,172 @@ void ResourceQrCodeExternBitmap__Init( ResourcesExternBitmap _this )
 EW_DEFINE_AUTOOBJECT_VARIANTS( ResourceQrCodeExternBitmap )
 EW_END_OF_AUTOOBJECT_VARIANTS( ResourceQrCodeExternBitmap )
 
+/* Include a file containing the bitmap resource : 'Resource::LCBase' */
+#include "_ResourceLCBase.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::LCBase' */
+EW_RES_WITHOUT_VARIANTS( ResourceLCBase )
+
+/* Include a file containing the bitmap resource : 'Resource::LCBlueline' */
+#include "_ResourceLCBlueline.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::LCBlueline' */
+EW_RES_WITHOUT_VARIANTS( ResourceLCBlueline )
+
+/* Include a file containing the bitmap resource : 'Resource::IconPhoneSmall' */
+#include "_ResourceIconPhoneSmall.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconPhoneSmall' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconPhoneSmall )
+
+/* Include a file containing the bitmap resource : 'Resource::IconPhoneLarge' */
+#include "_ResourceIconPhoneLarge.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconPhoneLarge' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconPhoneLarge )
+
+/* Include a file containing the bitmap resource : 'Resource::IconMusicSmall' */
+#include "_ResourceIconMusicSmall.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconMusicSmall' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconMusicSmall )
+
+/* Include a file containing the bitmap resource : 'Resource::IconMusicLarge' */
+#include "_ResourceIconMusicLarge.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconMusicLarge' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconMusicLarge )
+
+/* Include a file containing the bitmap resource : 'Resource::IconTcsSmall' */
+#include "_ResourceIconTcsSmall.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconTcsSmall' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconTcsSmall )
+
+/* Include a file containing the bitmap resource : 'Resource::IconTcsLarge' */
+#include "_ResourceIconTcsLarge.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconTcsLarge' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconTcsLarge )
+
+/* Include a file containing the bitmap resource : 'Resource::IconOdoTripSmall' */
+#include "_ResourceIconOdoTripSmall.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconOdoTripSmall' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconOdoTripSmall )
+
+/* Include a file containing the bitmap resource : 'Resource::IconOdoTripLarge' */
+#include "_ResourceIconOdoTripLarge.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconOdoTripLarge' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconOdoTripLarge )
+
+/* Include a file containing the bitmap resource : 'Resource::IconSettingSmall' */
+#include "_ResourceIconSettingSmall.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconSettingSmall' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconSettingSmall )
+
+/* Include a file containing the bitmap resource : 'Resource::IconSettingLarge' */
+#include "_ResourceIconSettingLarge.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconSettingLarge' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconSettingLarge )
+
+/* Include a file containing the bitmap resource : 'Resource::IconWeatherSmall' */
+#include "_ResourceIconWeatherSmall.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconWeatherSmall' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconWeatherSmall )
+
+/* Include a file containing the bitmap resource : 'Resource::IconWeatherLarge' */
+#include "_ResourceIconWeatherLarge.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconWeatherLarge' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconWeatherLarge )
+
+/* Include a file containing the bitmap resource : 'Resource::IconNotificationSmall' */
+#include "_ResourceIconNotificationSmall.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconNotificationSmall' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconNotificationSmall )
+
+/* Include a file containing the bitmap resource : 'Resource::IconNotificationLarge' */
+#include "_ResourceIconNotificationLarge.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconNotificationLarge' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconNotificationLarge )
+
+/* Include a file containing the bitmap resource : 'Resource::IconNavigationSmall' */
+#include "_ResourceIconNavigationSmall.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconNavigationSmall' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconNavigationSmall )
+
+/* Include a file containing the bitmap resource : 'Resource::IconNavigationLarge' */
+#include "_ResourceIconNavigationLarge.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconNavigationLarge' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconNavigationLarge )
+
+/* Include a file containing the bitmap resource : 'Resource::IconThemeSmall' */
+#include "_ResourceIconThemeSmall.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconThemeSmall' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconThemeSmall )
+
+/* Include a file containing the bitmap resource : 'Resource::IconThemeLarge' */
+#include "_ResourceIconThemeLarge.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconThemeLarge' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconThemeLarge )
+
+/* Include a file containing the bitmap resource : 'Resource::IconSeatHeater0Small' */
+#include "_ResourceIconSeatHeater0Small.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconSeatHeater0Small' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconSeatHeater0Small )
+
+/* Include a file containing the bitmap resource : 'Resource::IconSeatHeater0Large' */
+#include "_ResourceIconSeatHeater0Large.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconSeatHeater0Large' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconSeatHeater0Large )
+
+/* Include a file containing the bitmap resource : 'Resource::IconGripWarmer0Small' */
+#include "_ResourceIconGripWarmer0Small.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconGripWarmer0Small' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconGripWarmer0Small )
+
+/* Include a file containing the bitmap resource : 'Resource::IconGripWarmer0Large' */
+#include "_ResourceIconGripWarmer0Large.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconGripWarmer0Large' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconGripWarmer0Large )
+
+/* Include a file containing the bitmap resource : 'Resource::StatusBarShadow' */
+#include "_ResourceStatusBarShadow.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::StatusBarShadow' */
+EW_RES_WITHOUT_VARIANTS( ResourceStatusBarShadow )
+
+/* Include a file containing the bitmap resource : 'Resource::IconWindScreenSmall' */
+#include "_ResourceIconWindScreenSmall.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconWindScreenSmall' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconWindScreenSmall )
+
+/* Include a file containing the bitmap resource : 'Resource::IconWindScreenLarge' */
+#include "_ResourceIconWindScreenLarge.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconWindScreenLarge' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconWindScreenLarge )
+
+/* Include a file containing the bitmap resource : 'Resource::LCHighlight' */
+#include "_ResourceLCHighlight.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::LCHighlight' */
+EW_RES_WITHOUT_VARIANTS( ResourceLCHighlight )
+
 /* Embedded Wizard */

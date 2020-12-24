@@ -45,6 +45,45 @@
 /* User defined constant: 'Strings::TOP01_disclaimer' */
 EW_DECLARE_CONST( StringsTOP01_disclaimer )
 
+/* User defined constant: 'Strings::GPW01_grip_warmer' */
+extern const XStringRes StringsGPW01_grip_warmer;
+
+/* User defined constant: 'Strings::INF01_tachometer' */
+extern const XStringRes StringsINF01_tachometer;
+
+/* User defined constant: 'Strings::LNC_theme' */
+extern const XStringRes StringsLNC_theme;
+
+/* User defined constant: 'Strings::LNC_odo_trip' */
+extern const XStringRes StringsLNC_odo_trip;
+
+/* User defined constant: 'Strings::LNC_music' */
+extern const XStringRes StringsLNC_music;
+
+/* User defined constant: 'Strings::LNC_phone' */
+extern const XStringRes StringsLNC_phone;
+
+/* User defined constant: 'Strings::LNC_navigation' */
+extern const XStringRes StringsLNC_navigation;
+
+/* User defined constant: 'Strings::LNC_weather' */
+extern const XStringRes StringsLNC_weather;
+
+/* User defined constant: 'Strings::LNC_notification' */
+extern const XStringRes StringsLNC_notification;
+
+/* User defined constant: 'Strings::LNC_traction_control' */
+extern const XStringRes StringsLNC_traction_control;
+
+/* User defined constant: 'Strings::LNC_seat_heater' */
+extern const XStringRes StringsLNC_seat_heater;
+
+/* User defined constant: 'Strings::LNC_settings' */
+extern const XStringRes StringsLNC_settings;
+
+/* User defined constant: 'Strings::WSC01_wind_screen' */
+extern const XStringRes StringsWSC01_wind_screen;
+
 #ifdef __cplusplus
   }
 #endif

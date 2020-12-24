@@ -29,7 +29,6 @@
 #include "_ComponentsDisclaimerView.h"
 #include "_ComponentsStatusBar.h"
 #include "_CoreGroup.h"
-#include "_CoreKeyPressHandler.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreRoot.h"
 #include "_CoreSystemEventHandler.h"
@@ -39,12 +38,9 @@
 #include "_FactoryDisplayAutoRun.h"
 #include "_FactoryDisplayManual.h"
 #include "_FactoryTestContext.h"
-#include "_MediaMain.h"
-#include "_NavigationMain.h"
+#include "_HomeHOM11_tachometer.h"
 #include "_SettingsBtFwUpdateDialog.h"
-#include "_SettingsMain.h"
 #include "Application.h"
-#include "Core.h"
 #include "DeviceInterface.h"
 #include "Enum.h"
 
@@ -61,27 +57,6 @@ static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XRect _Const0001 = {{ 0, 0 }, { 480, 32 }};
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
 
-#ifndef EW_DONT_CHECK_INDEX
-  /* This function is used to check the indices when accessing an array.
-     If you don't want this verification add the define EW_DONT_CHECK_INDEX
-     to your Makefile or project settings. */
-  static int EwCheckIndex( int aIndex, int aRange, const char* aFile, int aLine )
-  {
-    if (( aIndex < 0 ) || ( aIndex >= aRange ))
-    {
-      EwPrint( "[FATAL ERROR in %s:%d] Array index %d out of bounds %d",
-                aFile, aLine, aIndex, aRange );
-      EwPanic();
-    }
-    return aIndex;
-  }
-
-  #define EwCheckIndex( aIndex, aRange ) \
-    EwCheckIndex( aIndex, aRange, __FILE__, __LINE__ )
-#else
-  #define EwCheckIndex( aIndex, aRange ) aIndex
-#endif
-
 /* Initializer for the class 'Application::Application' */
 void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, XHandle aArg )
 {
@@ -92,7 +67,6 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   _this->_GCT = EW_CLASS_GCT( ApplicationApplication );
 
   /* ... then construct all embedded objects */
-  NavigationMain__Init( &_this->Navigation, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->FactoryTestEventHandler, &_this->_XObject, 0 );
   ComponentsStatusBar__Init( &_this->StatusBar, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->BtFwStatusObserver, &_this->_XObject, 0 );
@@ -102,16 +76,9 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->Navigation, _Const0000 );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->Navigation, 1 );
-  _this->PageClassList[ 0 ] = EW_CLASS( SettingsMain );
-  _this->PageClassList[ 1 ] = EW_CLASS( NavigationMain );
-  _this->PageClassList[ 2 ] = EW_CLASS( MediaMain );
   CoreRectView__OnSetBounds( &_this->StatusBar, _Const0001 );
   _this->StatusBarVisible = 1;
-  CoreGroup__Add( _this, ((CoreView)&_this->Navigation ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->StatusBar ), 0 );
-  _this->Navigation.Super1.PassKeyHold = EwNewSlot( _this, ApplicationApplication_ProcKeyHoldSlot );
   _this->FactoryTestEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnFactoryTestEventSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->FactoryTestEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->FactoryTestSystemEvent );
@@ -131,7 +98,6 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
   CoreRoot__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
-  NavigationMain__ReInit( &_this->Navigation );
   CoreSystemEventHandler__ReInit( &_this->FactoryTestEventHandler );
   ComponentsStatusBar__ReInit( &_this->StatusBar );
   CorePropertyObserver__ReInit( &_this->BtFwStatusObserver );
@@ -144,7 +110,6 @@ void ApplicationApplication__Done( ApplicationApplication _this )
   _this->_Super._VMT = EW_CLASS( CoreRoot );
 
   /* Finalize all embedded objects */
-  NavigationMain__Done( &_this->Navigation );
   CoreSystemEventHandler__Done( &_this->FactoryTestEventHandler );
   ComponentsStatusBar__Done( &_this->StatusBar );
   CorePropertyObserver__Done( &_this->BtFwStatusObserver );
@@ -164,62 +129,6 @@ void ApplicationApplication_Init( ApplicationApplication _this, XHandle aArg )
   ApplicationApplication_ShowDisclaimer( _this );
 }
 
-/* 'C' function for method : 'Application::Application.ProcKeyHoldSlot()' */
-void ApplicationApplication_ProcKeyHoldSlot( ApplicationApplication _this, XObject 
-  sender )
-{
-  CoreKeyPressHandler handler = EwCastObject( sender, CoreKeyPressHandler );
-
-  switch ( handler->Code )
-  {
-    case CoreKeyCodeDown :
-      ApplicationApplication_SwitchPageOfDirection( _this, EnumDirectionNext );
-    break;
-
-    case CoreKeyCodeUp :
-      ApplicationApplication_SwitchPageOfDirection( _this, EnumDirectionPrevious );
-    break;
-
-    case CoreKeyCodeOk :
-      ;
-    break;
-
-    default : 
-      ;
-  }
-}
-
-/* 'C' function for method : 'Application::Application.SwitchPageOfDirection()' */
-void ApplicationApplication_SwitchPageOfDirection( ApplicationApplication _this, 
-  XEnum aDirection )
-{
-  switch ( aDirection )
-  {
-    case EnumDirectionPrevious :
-      _this->PageIdx = _this->PageIdx - 1;
-    break;
-
-    case EnumDirectionNext :
-      _this->PageIdx = _this->PageIdx + 1;
-    break;
-
-    default : 
-      ;
-  }
-
-  if ( _this->PageIdx < 0 )
-  {
-    _this->PageIdx = 0;
-  }
-  else
-    if ( _this->PageIdx >= 3 )
-    {
-      _this->PageIdx = 2;
-    }
-
-  ApplicationApplication_SwitchToPage( _this, _this->PageIdx );
-}
-
 /* 'C' function for method : 'Application::Application.OnDisclaimerAcceptedSlot()' */
 void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _this, 
   XObject sender )
@@ -233,7 +142,8 @@ void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _th
   }
 
   CoreView_OnSetStackingPriority((CoreView)&_this->StatusBar, 1 );
-  ApplicationApplication_SwitchToPage( _this, 0 );
+  CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
+  HomeHOM11_tachometer, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Application::Application.ShowDisclaimer()' */
@@ -244,42 +154,6 @@ void ApplicationApplication_ShowDisclaimer( ApplicationApplication _this )
   Disclaimer->OnYesClicked = EwNewSlot( _this, ApplicationApplication_OnDisclaimerAcceptedSlot );
   CoreGroup__Add( CoreView__GetRoot( _this ), ((CoreView)Disclaimer ), 0 );
   CoreRoot_BeginModal( CoreView__GetRoot( _this ), ((CoreGroup)Disclaimer ));
-}
-
-/* 'C' function for method : 'Application::Application.SwitchToPage()' */
-void ApplicationApplication_SwitchToPage( ApplicationApplication _this, XInt32 aPageIdx )
-{
-  XClass PageClass = _this->PageClassList[ EwCheckIndex( aPageIdx, 3 )];
-
-  if ( EW_CLASS( SettingsMain ) == PageClass )
-  {
-    SettingsMain View = EwNewObject( SettingsMain, 0 );
-
-    if ( View != 0 )
-    {
-      View->Super2.PassKeyHold = EwNewSlot( _this, ApplicationApplication_ProcKeyHoldSlot );
-      CoreGroup_SwitchToDialog((CoreGroup)_this, ((CoreGroup)View ), 0, 0, 0, 0, 
-      0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    }
-  }
-  else
-    if ( EW_CLASS( MediaMain ) == PageClass )
-    {
-      MediaMain View = EwNewObject( MediaMain, 0 );
-
-      if ( View != 0 )
-      {
-        View->Super1.PassKeyHold = EwNewSlot( _this, ApplicationApplication_ProcKeyHoldSlot );
-        CoreGroup_SwitchToDialog((CoreGroup)_this, ((CoreGroup)View ), 0, 0, 0, 
-        0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-      }
-    }
-    else
-      if ( EW_CLASS( NavigationMain ) == PageClass )
-      {
-        CoreGroup_SwitchToDialog((CoreGroup)_this, ((CoreGroup)&_this->Navigation ), 
-        0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-      }
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -396,8 +270,9 @@ EW_DEFINE_CLASS_VARIANTS( ApplicationApplication )
 EW_END_OF_CLASS_VARIANTS( ApplicationApplication )
 
 /* Virtual Method Table (VMT) for the class : 'Application::Application' */
-EW_DEFINE_CLASS( ApplicationApplication, CoreRoot, Navigation, Navigation, Navigation, 
-                 Navigation, PageIdx, PageIdx, "Application::Application" )
+EW_DEFINE_CLASS( ApplicationApplication, CoreRoot, FactoryTestEventHandler, FactoryTestEventHandler, 
+                 FactoryTestEventHandler, FactoryTestEventHandler, StatusBarVisible, 
+                 StatusBarVisible, "Application::Application" )
   CoreRectView_initLayoutContext,
   CoreRoot_GetRoot,
   CoreRoot_Draw,

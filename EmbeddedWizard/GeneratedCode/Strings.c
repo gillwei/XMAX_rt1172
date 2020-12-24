@@ -30,7 +30,7 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000168, /* ratio 57.78 % */
+  0x000002A6, /* ratio 53.69 % */
   0xB8016500, 0x8008C452, 0x00D20030, 0x0EA00360, 0xCA003900, 0x80010000, 0x1337800E,
   0x0839C001, 0x84464F20, 0x744A2D16, 0x45E13153, 0xDE292400, 0x24C68001, 0x21148943,
   0x9263242A, 0x638C99E4, 0x48643A4E, 0x00446633, 0x2C2E1A73, 0x4A615149, 0x82253400,
@@ -38,7 +38,12 @@ static const unsigned int _StringsDefault0[] =
   0xC52831E8, 0xE649189C, 0xE212591C, 0x8F279852, 0xF579A54E, 0x1D314526, 0x29F9AE33,
   0x8CDD6371, 0x7C3A311E, 0x44A3D3FA, 0xF6491CB3, 0x26A6D004, 0x3328A6D2, 0x17096C5A,
   0x34844622, 0xF2957EBB, 0xA664B313, 0x58009F70, 0x802A5249, 0x36295513, 0x21142C49,
-  0x6200AEC3, 0x00080ECB, 0x00000000
+  0x0000AEC3, 0xE4581838, 0x1B9343C8, 0x08E15E29, 0xD8E9B1B1, 0xE15209B3, 0x4625B398,
+  0xFE4BBE8A, 0xF6808006, 0x7F8CCA70, 0x5B405EC6, 0xA2001134, 0xCE18005F, 0x28000939,
+  0x5ED399B1, 0xC2A830ED, 0x139BB19C, 0xB23C6F04, 0x680DD8C4, 0xC768E13B, 0x0AA5CDE4,
+  0x4AFF86D3, 0x92D2B770, 0xDB1441D0, 0x649DF203, 0x98664291, 0x717E1394, 0x73813785,
+  0xD39421B7, 0x34520D81, 0x59168344, 0xB4701436, 0x5119D14D, 0xA1F12000, 0xD74DB748,
+  0x39214FE1, 0x1C505376, 0x62D8E7F6, 0x9104E61E, 0x17856C44, 0x0000405E, 0x00000000
 };
 
 /* Compressed strings for the language 'French'. */
@@ -145,5 +150,44 @@ const XVariantOfString _StringsTOP01_disclaimer[] =
 
 /* Table with links to derived variants of the constant : 'Strings::TOP01_disclaimer' */
 EW_CONST_WITHOUT_VARIANTS( StringsTOP01_disclaimer )
+
+/* User defined constant: 'Strings::GPW01_grip_warmer' */
+const XStringRes StringsGPW01_grip_warmer = { _StringsDefault0, 0x00B4 };
+
+/* User defined constant: 'Strings::INF01_tachometer' */
+const XStringRes StringsINF01_tachometer = { _StringsDefault0, 0x00C2 };
+
+/* User defined constant: 'Strings::LNC_theme' */
+const XStringRes StringsLNC_theme = { _StringsDefault0, 0x00D0 };
+
+/* User defined constant: 'Strings::LNC_odo_trip' */
+const XStringRes StringsLNC_odo_trip = { _StringsDefault0, 0x00D8 };
+
+/* User defined constant: 'Strings::LNC_music' */
+const XStringRes StringsLNC_music = { _StringsDefault0, 0x00E3 };
+
+/* User defined constant: 'Strings::LNC_phone' */
+const XStringRes StringsLNC_phone = { _StringsDefault0, 0x00EB };
+
+/* User defined constant: 'Strings::LNC_navigation' */
+const XStringRes StringsLNC_navigation = { _StringsDefault0, 0x00F3 };
+
+/* User defined constant: 'Strings::LNC_weather' */
+const XStringRes StringsLNC_weather = { _StringsDefault0, 0x0100 };
+
+/* User defined constant: 'Strings::LNC_notification' */
+const XStringRes StringsLNC_notification = { _StringsDefault0, 0x010A };
+
+/* User defined constant: 'Strings::LNC_traction_control' */
+const XStringRes StringsLNC_traction_control = { _StringsDefault0, 0x0119 };
+
+/* User defined constant: 'Strings::LNC_seat_heater' */
+const XStringRes StringsLNC_seat_heater = { _StringsDefault0, 0x012C };
+
+/* User defined constant: 'Strings::LNC_settings' */
+const XStringRes StringsLNC_settings = { _StringsDefault0, 0x013A };
+
+/* User defined constant: 'Strings::WSC01_wind_screen' */
+const XStringRes StringsWSC01_wind_screen = { _StringsDefault0, 0x0145 };
 
 /* Embedded Wizard */

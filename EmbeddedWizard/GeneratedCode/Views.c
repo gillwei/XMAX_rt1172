@@ -37,6 +37,7 @@
 #include "_ViewsLine.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
+#include "_ViewsWallpaper.h"
 #include "Core.h"
 #include "Effects.h"
 #include "Graphics.h"
@@ -1498,6 +1499,245 @@ EW_DEFINE_CLASS( ViewsImage, CoreRectView, timer, OnFinished, startTime, startTi
   CoreView_ChangeViewState,
   CoreRectView_OnSetBounds,
 EW_END_OF_CLASS( ViewsImage )
+
+/* Initializer for the class 'Views::Wallpaper' */
+void ViewsWallpaper__Init( ViewsWallpaper _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  CoreRectView__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( ViewsWallpaper );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( ViewsWallpaper );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  _this->ColorBL = _Const0000;
+  _this->ColorBR = _Const0000;
+  _this->ColorTR = _Const0000;
+  _this->ColorTL = _Const0000;
+  _this->Endless = 1;
+  _this->Opacity = 255;
+}
+
+/* Re-Initializer for the class 'Views::Wallpaper' */
+void ViewsWallpaper__ReInit( ViewsWallpaper _this )
+{
+  /* At first re-initialize the super class ... */
+  CoreRectView__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'Views::Wallpaper' */
+void ViewsWallpaper__Done( ViewsWallpaper _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( CoreRectView );
+
+  /* Don't forget to deinitialize the super class ... */
+  CoreRectView__Done( &_this->_Super );
+}
+
+/* The method Draw() is invoked automatically if parts of the view should be redrawn 
+   on the screen. This can occur when e.g. the view has been moved or the appearance 
+   of the view has changed before.
+   Draw() is invoked automatically by the framework, you never will need to invoke 
+   this method directly. However you can request an invocation of this method by 
+   calling the method InvalidateArea() of the views @Owner. Usually this is also 
+   unnecessary unless you are developing your own view.
+   The passed parameters determine the drawing destination aCanvas and the area 
+   to redraw aClip in the coordinate space of the canvas. The parameter aOffset 
+   contains the displacement between the origin of the views owner and the origin 
+   of the canvas. You will need it to convert views coordinates into these of the 
+   canvas.
+   The parameter aOpacity contains the opacity descended from this view's @Owner. 
+   It lies in range 0 .. 255. If the view implements its own 'Opacity', 'Color', 
+   etc. properties, the Draw() method should calculate the resulting real opacity 
+   by mixing the values of these properties with the one passed in aOpacity parameter.
+   The parameter aBlend contains the blending mode descended from this view's @Owner. 
+   It determines, whether the view should be drawn with alpha-blending active or 
+   not. If aBlend is false, the outputs of the view should overwrite the corresponding 
+   pixel in the drawing destination aCanvas. If aBlend is true, the outputs should 
+   be mixed with the pixel already stored in aCanvas. For this purpose all Graphics 
+   Engine functions provide a parameter to specify the mode for the respective drawing 
+   operation. If the view implements its own 'Blend' property, the Draw() method 
+   should calculate the resulting real blend mode by using logical AND operation 
+   of the value of the property and the one passed in aBlend parameter. */
+void ViewsWallpaper_Draw( ViewsWallpaper _this, GraphicsCanvas aCanvas, XRect aClip, 
+  XPoint aOffset, XInt32 aOpacity, XBool aBlend )
+{
+  XInt32 frameNr = _this->FrameNumber;
+  XColor ctl;
+  XColor ctr;
+  XColor cbr;
+  XColor cbl;
+  XInt32 opacity;
+
+  if ( _this->animFrameNumber >= 0 )
+    frameNr = _this->animFrameNumber;
+
+  if (( _this->Bitmap == 0 ) || ( frameNr >= _this->Bitmap->NoOfFrames ))
+    return;
+
+  ResourcesBitmap__Update( _this->Bitmap );
+  ctl = _this->ColorTL;
+  ctr = _this->ColorTR;
+  cbr = _this->ColorBR;
+  cbl = _this->ColorBL;
+  opacity = ((( aOpacity + 1 ) * _this->Opacity ) >> 8 ) + 1;
+  aBlend = (XBool)( aBlend && (( _this->Super2.viewState & CoreViewStateAlphaBlended ) 
+  == CoreViewStateAlphaBlended ));
+
+  if ( opacity < 256 )
+  {
+    ctl.Alpha = (XUInt8)(( ctl.Alpha * opacity ) >> 8 );
+    ctr.Alpha = (XUInt8)(( ctr.Alpha * opacity ) >> 8 );
+    cbr.Alpha = (XUInt8)(( cbr.Alpha * opacity ) >> 8 );
+    cbl.Alpha = (XUInt8)(( cbl.Alpha * opacity ) >> 8 );
+  }
+
+  GraphicsCanvas_TileBitmap( aCanvas, aClip, _this->Bitmap, frameNr, EwMoveRectPos( 
+  _this->Super1.Bounds, aOffset ), EwNewRect2Point( _Const0002, _this->Bitmap->FrameSize ), 
+  EwNegPoint( _this->ScrollOffset ), ctl, ctr, cbr, cbl, aBlend );
+}
+
+/* 'C' function for method : 'Views::Wallpaper.observerSlot()' */
+void ViewsWallpaper_observerSlot( ViewsWallpaper _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+}
+
+/* 'C' function for method : 'Views::Wallpaper.timerSlot()' */
+void ViewsWallpaper_timerSlot( ViewsWallpaper _this, XObject sender )
+{
+  XInt32 frameNr;
+  XInt32 period;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  frameNr = _this->animFrameNumber;
+  period = 0;
+
+  if ( _this->Bitmap != 0 )
+    period = _this->Bitmap->NoOfFrames * _this->Bitmap->FrameDelay;
+
+  if ((( _this->timer != 0 ) && ( _this->animFrameNumber < 0 )) && ( period > 0 ))
+    _this->startTime = _this->timer->Time - ( _this->FrameNumber * _this->Bitmap->FrameDelay );
+
+  if (( _this->timer != 0 ) && ( period > 0 ))
+  {
+    XInt32 time = (XInt32)( _this->timer->Time - _this->startTime );
+    frameNr = time / _this->Bitmap->FrameDelay;
+
+    if ( time >= period )
+    {
+      frameNr = frameNr % _this->Bitmap->NoOfFrames;
+      _this->startTime = _this->timer->Time - ( time % period );
+
+      if ( !_this->Endless )
+      {
+        frameNr = _this->Bitmap->NoOfFrames - 1;
+        period = 0;
+      }
+    }
+  }
+
+  if ((( frameNr != _this->animFrameNumber ) && ( _this->Super2.Owner != 0 )) && 
+      (( _this->Super2.viewState & CoreViewStateVisible ) == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+
+  _this->animFrameNumber = frameNr;
+
+  if (( period == 0 ) && ( _this->timer != 0 ))
+  {
+    EwDetachObjObserver( EwNewSlot( _this, ViewsWallpaper_timerSlot ), (XObject)_this->timer, 
+      0 );
+    _this->timer = 0;
+    EwSignal( _this->OnFinished, ((XObject)_this ));
+  }
+}
+
+/* 'C' function for method : 'Views::Wallpaper.OnSetAnimated()' */
+void ViewsWallpaper_OnSetAnimated( ViewsWallpaper _this, XBool value )
+{
+  if ( _this->Animated == value )
+    return;
+
+  _this->Animated = value;
+  _this->animFrameNumber = -1;
+
+  if ( !value && ( _this->timer != 0 ))
+  {
+    EwDetachObjObserver( EwNewSlot( _this, ViewsWallpaper_timerSlot ), (XObject)_this->timer, 
+      0 );
+    _this->timer = 0;
+  }
+
+  if ( value )
+  {
+    _this->timer = ((CoreTimer)EwGetAutoObject( &EffectsEffectTimer, EffectsEffectTimerClass ));
+    EwAttachObjObserver( EwNewSlot( _this, ViewsWallpaper_timerSlot ), (XObject)_this->timer, 
+      0 );
+    EwPostSignal( EwNewSlot( _this, ViewsWallpaper_timerSlot ), ((XObject)_this ));
+  }
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+}
+
+/* 'C' function for method : 'Views::Wallpaper.OnSetBitmap()' */
+void ViewsWallpaper_OnSetBitmap( ViewsWallpaper _this, ResourcesBitmap value )
+{
+  if ( value == _this->Bitmap )
+    return;
+
+  if (( _this->Bitmap != 0 ) && _this->Bitmap->Mutable )
+    EwDetachObjObserver( EwNewSlot( _this, ViewsWallpaper_observerSlot ), (XObject)_this->Bitmap, 
+      0 );
+
+  _this->Bitmap = value;
+  _this->animFrameNumber = -1;
+
+  if (( value != 0 ) && value->Mutable )
+    EwAttachObjObserver( EwNewSlot( _this, ViewsWallpaper_observerSlot ), (XObject)value, 
+      0 );
+
+  if ( _this->Animated )
+  {
+    ViewsWallpaper_OnSetAnimated( _this, 0 );
+    ViewsWallpaper_OnSetAnimated( _this, 1 );
+  }
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+}
+
+/* Variants derived from the class : 'Views::Wallpaper' */
+EW_DEFINE_CLASS_VARIANTS( ViewsWallpaper )
+EW_END_OF_CLASS_VARIANTS( ViewsWallpaper )
+
+/* Virtual Method Table (VMT) for the class : 'Views::Wallpaper' */
+EW_DEFINE_CLASS( ViewsWallpaper, CoreRectView, timer, OnFinished, animFrameNumber, 
+                 animFrameNumber, animFrameNumber, animFrameNumber, "Views::Wallpaper" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  ViewsWallpaper_Draw,
+  CoreView_HandleEvent,
+  CoreView_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreView_ChangeViewState,
+  CoreRectView_OnSetBounds,
+EW_END_OF_CLASS( ViewsWallpaper )
 
 /* Initializer for the class 'Views::Text' */
 void ViewsText__Init( ViewsText _this, XObject aLink, XHandle aArg )

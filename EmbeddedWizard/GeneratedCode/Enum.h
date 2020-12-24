@@ -42,13 +42,6 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-/* User defined enumeration: 'Enum::Direction' */
-typedef enum
-{
-  EnumDirectionPrevious                 = 0,
-  EnumDirectionNext                     = 1
-} EnumDirection;
-
 /* User defined enumeration: 'Enum::FactoryTest' */
 typedef enum
 {
@@ -85,6 +78,31 @@ typedef enum
   EnumBtFwStatusUPDATE_ABORT            = 2,
   EnumBtFwStatusUPDATE_FINISH           = 3
 } EnumBtFwStatus;
+
+/* User defined enumeration: 'Enum::RotationDirection' */
+typedef enum
+{
+  EnumRotationDirectionCOUNTER_CLOCKWISE = 0,
+  EnumRotationDirectionCLOCKWISE        = 1
+} EnumRotationDirection;
+
+/* User defined enumeration: 'Enum::LauncherItem' */
+typedef enum
+{
+  EnumLauncherItemPHONE                 = 0,
+  EnumLauncherItemMUSIC                 = 1,
+  EnumLauncherItemODO_TRIP              = 2,
+  EnumLauncherItemTHEME                 = 3,
+  EnumLauncherItemNAVIGATION            = 4,
+  EnumLauncherItemNOTIFICATION          = 5,
+  EnumLauncherItemWEATHER               = 6,
+  EnumLauncherItemSETTINGS              = 7,
+  EnumLauncherItemTRACTION_CONTROL      = 8,
+  EnumLauncherItemSEAT_HEATER           = 9,
+  EnumLauncherItemGRIP_WARMER           = 10,
+  EnumLauncherItemWIND_SCREEN           = 11,
+  EnumLauncherItemTOTAL                 = 12
+} EnumLauncherItem;
 
 #ifdef __cplusplus
   }

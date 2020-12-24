@@ -553,6 +553,47 @@ void GraphicsCanvas_ScaleBitmap( GraphicsCanvas _this, XRect aClip, ResourcesBit
   }
 }
 
+/* The method TileBitmap() fills an area of the canvas with multiple copies of an 
+   area of the bitmap. The bitmap is specified in the parameter aBitmap and the 
+   desired area to copy in aSrcRect. In case of a multi-frame bitmap the desired 
+   frame can be selected in the parameter aFrameNr.
+   The area to fill in canvas is determined by the parameter aDstRect. The optional 
+   aSrcPos parameter determines a displacement of the bitmap tiles within this aDstRect 
+   area. The parameters aColorTL, aColorTR, aColorBL, aColorBR determine the colors 
+   or opacities at the corresponding corners of the aDstRect area.
+   The parameter aClip limits the drawing operation. Pixel lying outside this area 
+   remain unchanged. The last aBlend parameter controls the mode how drawn pixel 
+   are combined with the pixel already existing in the destination bitmap. If aBlend 
+   is 'true', the drawn pixel are alpha-blended with the background, otherwise the 
+   drawn pixel will overwrite the old content. */
+void GraphicsCanvas_TileBitmap( GraphicsCanvas _this, XRect aClip, ResourcesBitmap 
+  aBitmap, XInt32 aFrameNr, XRect aDstRect, XRect aSrcRect, XPoint aSrcPos, XColor 
+  aColorTL, XColor aColorTR, XColor aColorBR, XColor aColorBL, XBool aBlend )
+{
+  XHandle dstBitmap;
+  XHandle srcBitmap;
+  XInt32 dstFrameNr;
+
+  if ( _this->Super1.bitmap == 0 )
+    ResourcesBitmap__Update( _this );
+
+  if ( _this->Super1.bitmap == 0 )
+    return;
+
+  if (((( aBitmap == 0 ) || ( aBitmap->bitmap == 0 )) || ( aFrameNr < 0 )) || ( 
+      aFrameNr >= aBitmap->NoOfFrames ))
+    return;
+
+  dstBitmap = _this->Super1.bitmap;
+  srcBitmap = aBitmap->bitmap;
+  dstFrameNr = _this->DstFrameNr;
+  {
+    EwTileBitmap((XBitmap*)dstBitmap, (XBitmap*)srcBitmap, dstFrameNr, aFrameNr,
+                  aClip, aDstRect, aSrcRect, aSrcPos, aColorTL, aColorTR, aColorBR,
+                  aColorBL, aBlend );
+  }
+}
+
 /* The method CopyBitmap() copies an area of a aBitmap into the canvas. The bitmap 
    is specified in the parameter aBitmap. In case of a multi-frame bitmap the desired 
    frame can be selected in the parameter aFrameNr.

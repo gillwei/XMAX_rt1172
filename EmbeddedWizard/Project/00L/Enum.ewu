@@ -81,3 +81,58 @@ enum BtFwStatus
   $rect <10,160,210,200>
   item UPDATE_FINISH;
 }
+
+$rect <30,340,230,380>
+$output false
+enum RotationDirection
+{
+  $rect <10,10,210,50>
+  item COUNTER_CLOCKWISE;
+
+  $rect <10,60,210,100>
+  item CLOCKWISE;
+}
+
+$rect <30,289,230,329>
+$output false
+enum LauncherItem
+{
+  $rect <10,10,210,50>
+  item PHONE;
+
+  $rect <10,60,210,100>
+  item MUSIC;
+
+  $rect <10,110,210,150>
+  item ODO_TRIP;
+
+  $rect <10,160,210,200>
+  item THEME;
+
+  $rect <10,210,210,250>
+  item NAVIGATION;
+
+  $rect <10,260,210,300>
+  item NOTIFICATION;
+
+  $rect <10,310,210,350>
+  item WEATHER;
+
+  $rect <10,360,210,400>
+  item SETTINGS;
+
+  $rect <10,410,210,450>
+  item TRACTION_CONTROL;
+
+  $rect <10,460,210,500>
+  item SEAT_HEATER;
+
+  $rect <10,510,210,550>
+  item GRIP_WARMER;
+
+  $rect <10,560,210,600>
+  item WIND_SCREEN;
+
+  $rect <10,610,210,650>
+  item TOTAL;
+}
