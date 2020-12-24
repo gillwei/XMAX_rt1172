@@ -24,43 +24,31 @@
 *
 *******************************************************************************/
 
-#ifndef EWLOCALE_H
-#define EWLOCALE_H
+#ifndef Strings_H
+#define Strings_H
 
 #ifdef __cplusplus
   extern "C"
   {
 #endif
 
-/* The 'default' Language. Each project has to contain at least one language brick 
-   called 'Default' */
-enum { Default          = 0 };
+#include "ewrte.h"
+#if EW_RTE_VERSION != 0x000A0000
+  #error Wrong version of Embedded Wizard Runtime Environment.
+#endif
 
-/* Simplified Chinese */
-enum { SimplifiedChinese = 1 };
+#include "ewgfx.h"
+#if EW_GFX_VERSION != 0x000A0000
+  #error Wrong version of Embedded Wizard Graphics Engine.
+#endif
 
-/* French */
-enum { French           = 2 };
-
-/* Italian */
-enum { Italian          = 3 };
-
-/* German */
-enum { German           = 4 };
-
-/* Japanese */
-enum { Japanese         = 5 };
-
-/* Spanish */
-enum { Spanish          = 6 };
-
-/* Traditional Chinese */
-enum { TraditionalChinese = 7 };
+/* User defined constant: 'Strings::TOP01_disclaimer' */
+EW_DECLARE_CONST( StringsTOP01_disclaimer )
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* EWLOCALE_H */
+#endif /* Strings_H */
 
 /* Embedded Wizard */

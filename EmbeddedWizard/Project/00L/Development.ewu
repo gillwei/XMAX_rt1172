@@ -112,7 +112,7 @@ class DEV_RealTimeClock : Components::BaseMainBG
   $rect <220,290,450,330>
   inherited method OnShortHomeKeyPressed()
   {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <530,120,820,160>
@@ -140,6 +140,6 @@ class DEV_RealTimeClock : Components::BaseMainBG
     preset Bounds = <96,79,390,122>;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }

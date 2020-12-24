@@ -21,4 +21,5 @@ EMWIFILES := \
 	Enum.c \
 	DeviceInterface.c \
 	Factory.c \
-	Development.c
+	Development.c \
+	Strings.c

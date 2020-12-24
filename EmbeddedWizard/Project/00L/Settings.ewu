@@ -522,9 +522,9 @@ class SystemInfo : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Views::Text ESN
   {
-    preset Bounds = <106,50,357,80>;
+    preset Bounds = <82,49,369,79>;
     preset String = "Eletronic Serial Number";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -532,23 +532,23 @@ class SystemInfo : Menu::BaseMenuView
   {
     preset Bounds = <120,120,340,145>;
     preset String = "Software Version";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
   object Views::Text EsnText
   {
-    preset Bounds = <130,80,330,110>;
+    preset Bounds = <90,80,362,110>;
     preset String = "1234565";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
   object Views::Text SoftwareVersionText
   {
-    preset Bounds = <150,150,310,180>;
+    preset Bounds = <132,150,328,180>;
     preset String = DeviceInterface::SystemDevice.SoftwareVersion;
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <520,280,740,320>
@@ -578,17 +578,17 @@ class SystemInfo : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Views::Text BtSwVersionTitle
   {
-    preset Bounds = <120,190,340,215>;
+    preset Bounds = <86,190,366,215>;
     preset String = "BT Software Version";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
   object Views::Text BtSwVersionText
   {
-    preset Bounds = <150,220,310,250>;
+    preset Bounds = <110,220,343,250>;
     preset String = DeviceInterface::SystemDevice.SoftwareVersion;
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <520,240,740,280>
@@ -681,7 +681,7 @@ class SoftwareUpdate : Menu::BaseMenuView
   {
     preset Bounds = <90,80,370,150>;
     preset String = "Update system?";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <520,200,720,240>
@@ -711,9 +711,10 @@ class SoftwareUpdateError : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Views::Text Text
   {
-    preset Bounds = <40,70,410,220>;
+    preset Bounds = <15,70,460,220>;
+    preset WrapText = true;
     preset String = "System cannot execute software update.\nSoftware update cannot be executed\nwhile driving.";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }
 
@@ -727,9 +728,10 @@ class SoftwareUpdateRetry : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Views::Text Message
   {
-    preset Bounds = <30,50,440,180>;
-    preset String = "Failed\n.Confirmed USB connection.Please make sure you've\ninserted USB and the update file is in the USB\ndevice.";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Bounds = <7,50,464,194>;
+    preset WrapText = true;
+    preset String = "Failed\nConfirmed USB connection.Please make sure you've inserted USB and the update file is in the USB device.";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -760,7 +762,7 @@ class SoftwareUpdateCompleted : Menu::BaseMenuView
   {
     preset Bounds = <100,95,360,170>;
     preset String = "Completed.";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }
 
@@ -795,7 +797,7 @@ class AllReset : Menu::BaseMenuView
   {
     preset Bounds = <10,45,470,169>;
     preset String = "Reset LinkCard to factory settings?";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <510,200,710,240>
@@ -883,7 +885,7 @@ class InProgress : Menu::BaseMenuView
   {
     preset Bounds = <110,100,350,150>;
     preset String = "Please wait...";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }
 
@@ -899,7 +901,7 @@ class AllResetCompleted : Menu::BaseMenuView
   {
     preset Bounds = <100,95,360,170>;
     preset String = "Completed.";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   // TODO: Inform system to reboot.
@@ -1056,7 +1058,7 @@ class Inspection : Menu::BaseMenuView
   {
     preset Bounds = <187,211,257,241>;
     preset String = "EXIT";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -1130,9 +1132,10 @@ class AllResetFailed : Menu::BaseMenuView
   object Views::Text Text
   {
     preset Bounds = <10,40,470,220>;
+    preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignHorzLeft, AlignVertCenter];
     preset String = "System cannot execute all reset.\nAll reset cannot be executed while driving.";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <510,10,700,50>
@@ -1367,7 +1370,7 @@ class DisplayBrightness : Menu::BaseMenuView
     preset Bounds = <432,2,482,22>;
     preset WrapText = true;
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <500,210,700,250>
@@ -1448,7 +1451,7 @@ class BtDiscovarable : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "Now discoverable by other Bluetooth devices.";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <200,290,400,330>
@@ -1467,7 +1470,7 @@ class BtDiscovarable : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "Time left:";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -1477,7 +1480,7 @@ class BtDiscovarable : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "Name:";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <500,50,720,90>
@@ -1519,7 +1522,7 @@ class BtDiscovarable : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "3:00";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <500,0,720,40>
@@ -1532,7 +1535,7 @@ class BtDiscovarable : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = DeviceInterface::BluetoothDevice.LocalDeviceName;
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -1581,7 +1584,7 @@ class BtConnectionResult : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <510,10,710,50>
@@ -1636,7 +1639,7 @@ class BtConnectionResult : Components::BaseMainBG
     preset Bounds = <30,90,460,140>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "Connecting ";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <510,60,710,100>
@@ -1664,7 +1667,7 @@ class BtMaxPairedDevice : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "Max number of devices reached. Remove one from paired device list?";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -1740,7 +1743,7 @@ class BtPairDevice : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "To pair with";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -1750,7 +1753,7 @@ class BtPairDevice : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "Make sure it is showing this passkey";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -1760,7 +1763,7 @@ class BtPairDevice : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -1770,7 +1773,7 @@ class BtPairDevice : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <0,340,200,380>
@@ -1967,7 +1970,7 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
   {
     preset Bounds = <10,50,470,236>;
     preset String = "No data";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }
 
@@ -2096,7 +2099,7 @@ class BtDeleteBleDevice : Components::BaseMainBG
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <510,10,690,50>
@@ -2144,7 +2147,7 @@ class BtFwUpdateDialog : Core::Group
     preset Bounds = <80,60,380,210>;
     preset WrapText = true;
     preset String = "Updating BT firmware, please wait...";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Color = #FFFFFFFF;
   }
 
@@ -2282,7 +2285,7 @@ class SET30_QRCode : Menu::BaseMenuView
     preset Bounds = <210,85,398,135>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -2291,7 +2294,7 @@ class SET30_QRCode : Menu::BaseMenuView
     preset Bounds = <210,192,442,240>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -2301,6 +2304,6 @@ class SET30_QRCode : Menu::BaseMenuView
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp24;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }

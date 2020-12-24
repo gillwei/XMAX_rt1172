@@ -222,6 +222,9 @@ void ViewsText_reparseSlot( ViewsText _this, XObject sender );
 /* 'C' function for method : 'Views::Text.OnSetEnableBidiText()' */
 void ViewsText_OnSetEnableBidiText( ViewsText _this, XBool value );
 
+/* 'C' function for method : 'Views::Text.OnSetRowDistance()' */
+void ViewsText_OnSetRowDistance( ViewsText _this, XInt32 value );
+
 /* The onset method for the property 'Ellipsis' changes the ellipsis mode and forces 
    an update. */
 void ViewsText_OnSetEllipsis( ViewsText _this, XBool value );

@@ -1,0 +1,506 @@
+$version 10.00
+
+// This file is generated automatically.
+// Generated: 2020/12/25 15:59:48
+
+$output false
+const string GEN_ok =
+(
+  Default = "OK";
+  Japanese = "OK";
+  French = "OK";
+  Spanish = "Vale";
+  Italian = "OK";
+  German = "OK";
+  TraditionalChinese = "\u78ba\u5b9a";
+  SimplifiedChinese = "\u786e\u5b9a";
+);
+
+$output false
+const string GEN_cancel =
+(
+  Default = "Cancel";
+  Japanese = "\u30ad\u30e3\u30f3\u30bb\u30eb";
+  French = "Annuler";
+  Spanish = "Cancelar";
+  Italian = "Annulla";
+  German = "Abbrechen";
+  TraditionalChinese = "\u53d6\u6d88";
+  SimplifiedChinese = "\u53d6\u6d88";
+);
+
+$output false
+const string GEN_yes =
+(
+  Default = "Yes";
+);
+
+$output false
+const string GEN_no =
+(
+  Default = "No";
+);
+
+$output false
+const string GEN_max =
+(
+  Default = "Max";
+);
+
+$output false
+const string GEN_min =
+(
+  Default = "Min";
+);
+
+$output false
+const string GEN_low =
+(
+  Default = "Low";
+);
+
+$output false
+const string GEN_middle =
+(
+  Default = "Mid";
+);
+
+$output false
+const string GEN_hight =
+(
+  Default = "High";
+);
+
+$output false
+const string GEN_reset_question_mark =
+(
+  Default = "Reset?";
+);
+
+$output false
+const string TOP01_warning =
+(
+  Default = "Warning";
+);
+
+$output false
+const string TOP01_disclaimer =
+(
+  Default = "Failure to pay attention while riding could result in death or serious injury.\nAlways concentrate on riding by keeping your eyes and mind on the road.\nRead the Owner's Manual.";
+  Japanese = "\u904b\u8ee2\u4e2d\u306b\u6ce8\u610f\u3092\u6020\u308b\u3068\u3001\u6b7b\u4ea1\u307e\u305f\u306f\u91cd\u50b7\u3092\u8ca0\u3046\u53ef\u80fd\u6027\u304c\u3042\u308a\u307e\u3059\u3002\n\u5e38\u306b\u4ea4\u901a\u72b6\u6cc1\u3092\u6ce8\u8996\u3057\u3001\u904b\u8ee2\u306b\u96c6\u4e2d\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u53d6\u6271\u8aac\u660e\u66f8\u3092\u3054\u78ba\u8a8d\u304f\u3060\u3055\u3044\u3002";
+  French = "Toute inattention lors de la conduite peut entra\u00eener la mort ou des blessures graves. Concentrez-vous toujours sur la conduite en gardant vos yeux et votre esprit sur la route. Lisez votre mode d'emploi.";
+  Spanish = "No prestar atenci\u00f3n mientras se conduce puede producir heridas graves y la muerte. Conc\u00e9ntrese siempre en la conducci\u00f3n y mantenga la vista siempre en la carretera. Lea su manual de usuario.";
+  Italian = "Non prestare attenzione mentre si viaggia pu\u00f2 causare lesioni gravi o decesso. Rimanete sempre concentrati sulla strada. Leggere il Manuale utente.";
+  German = "Unachtsamkeit w\u00e4hrend des Fahrens kann zu Verletzungen oder Tod f\u00fchren. Konzentrieren Sie sich w\u00e4hrend der Fahrt immer auf die Stra\u00dfe. ";
+  TraditionalChinese = "\u672a\u5c08\u5fc3\u9a0e\u4e58\u8eca\u8f1b\u6642\uff0c\u5c07\u53ef\u80fd\u5c0e\u81f4\u91cd\u50b7\u6216\u6b7b\u4ea1\u3002\u9a0e\u4e58\u4e2d\u8acb\u52d9\u5fc5\u4fdd\u6301\u5c08\u6ce8\uff0c\u4e26\u96a8\u6642\u7559\u610f\u5468\u906d\u4e4b\u4ea4\u901a\u72c0\u6cc1\u3002\u8acb\u8a73\u95b1\u8eca\u4e3b\u624b\u518a\u3002";
+  SimplifiedChinese = "\u9a91\u884c\u65f6\u4e0d\u6ce8\u610f\u5b89\u5168\u53ef\u80fd\u4f1a\u5bfc\u81f4\u6b7b\u4ea1\u6216\u91cd\u4f24\u3002\n\u8bf7\u968f\u65f6\u6ce8\u610f\u9053\u8def\u72b6\u51b5\u548c\u5468\u56f4\u7684\u73af\u5883\uff0c\u4e13\u5fc3\u9a91\u884c\u3002\n\u8bf7\u53c2\u9605\u300a\u7528\u6237\u624b\u518c\u300b\u3002";
+);
+
+$output false
+const string BRT01_TFT_display =
+(
+  Default = "TFT display";
+);
+
+$output false
+const string BRT01_digital_meter =
+(
+  Default = "Digital meter";
+);
+
+$output false
+const string CLK01_auto_adjustment =
+(
+  Default = "Auto Adjustment";
+);
+
+$output false
+const string CLK01_manual_adjustment =
+(
+  Default = "Manual Adjustment";
+);
+
+$output false
+const string CLK02_day =
+(
+  Default = "Day";
+);
+
+$output false
+const string CLK02_month =
+(
+  Default = "Month";
+);
+
+$output false
+const string CLK02_year =
+(
+  Default = "Year";
+);
+
+$output false
+const string CLK02_am =
+(
+  Default = "AM";
+);
+
+$output false
+const string CLK02_pm =
+(
+  Default = "PM";
+);
+
+$output false
+const string CLK02_hour =
+(
+  Default = "Hour";
+);
+
+$output false
+const string CLK02_minute =
+(
+  Default = "Min.";
+);
+
+$output false
+const string CLK03_set_clock =
+(
+  Default = "Set Clock?";
+);
+
+$output false
+const string GPW01_grip_warmer =
+(
+  Default = "Grip Warmer";
+);
+
+$output false
+const string HOM11_x1000r_min =
+(
+  Default = "x1000r/min";
+);
+
+$output false
+const string HOM12_avg =
+(
+  Default = "AVG";
+);
+
+$output false
+const string HOM12_avg_fuel =
+(
+  Default = "AVG FUEL";
+);
+
+$output false
+const string HOM13_speed_limit =
+(
+  Default = "SPEED LIMIT";
+);
+
+$output false
+const string HOM03_avg_speed =
+(
+  Default = "AVG SPEED";
+);
+
+$output false
+const string HOM03_avg_fuel =
+(
+  Default = "AVG FUEL";
+);
+
+$output false
+const string HOM03_current_fuel =
+(
+  Default = "CRNT FUEL";
+);
+
+$output false
+const string HOM03_trip_time =
+(
+  Default = "TRIP TIME";
+);
+
+$output false
+const string HOM03_range =
+(
+  Default = "RANGE";
+);
+
+$output false
+const string HOM03_fuel_consumption =
+(
+  Default = "FUEL CONS";
+);
+
+$output false
+const string HOM03_air =
+(
+  Default = "AIR";
+);
+
+$output false
+const string HOM03_coolant =
+(
+  Default = "COOLANT";
+);
+
+$output false
+const string HOM03_battery =
+(
+  Default = "BATTERY";
+);
+
+$output false
+const string HOM03_front_r =
+(
+  Default = "FRONT (R)";
+);
+
+$output false
+const string HOM03_front_l =
+(
+  Default = "FRONT (L)";
+);
+
+$output false
+const string HOM03_front =
+(
+  Default = "FRONT";
+);
+
+$output false
+const string HOM03_rear =
+(
+  Default = "REAR";
+);
+
+$output false
+const string HOM03_cruise =
+(
+  Default = "CRUISE";
+);
+
+$output false
+const string INF01_tachometer =
+(
+  Default = "Tacho meter";
+);
+
+$output false
+const string INF01_echo_meter =
+(
+  Default = "ECO meter";
+);
+
+$output false
+const string INF01_speed_meter =
+(
+  Default = "Speed meter";
+);
+
+$output false
+const string INF26_odo =
+(
+  Default = "ODO";
+);
+
+$output false
+const string INF26_trip_1 =
+(
+  Default = "TRIP 1";
+);
+
+$output false
+const string INF26_trip_2 =
+(
+  Default = "TRIP 2";
+);
+
+$output false
+const string INF26_trip_f =
+(
+  Default = "TRIP F";
+);
+
+$output false
+const string LNC_theme =
+(
+  Default = "Theme";
+);
+
+$output false
+const string LNC_odo_trip =
+(
+  Default = "ODO/TRIP";
+);
+
+$output false
+const string LNC_music =
+(
+  Default = "Music";
+);
+
+$output false
+const string LNC_phone =
+(
+  Default = "Phone";
+);
+
+$output false
+const string LNC_navigation =
+(
+  Default = "Navigation";
+);
+
+$output false
+const string LNC_weather =
+(
+  Default = "Weather";
+);
+
+$output false
+const string LNC_notification =
+(
+  Default = "Notification";
+);
+
+$output false
+const string LNC_traction_control =
+(
+  Default = "Traction Control";
+);
+
+$output false
+const string LNC_seat_heater =
+(
+  Default = "Seat Heater";
+);
+
+$output false
+const string LNC_settings =
+(
+  Default = "Settings";
+);
+
+$output false
+const string MED01_volume_plus =
+(
+  Default = "VOL+";
+);
+
+$output false
+const string MED01_volume_minus =
+(
+  Default = "VOL-";
+);
+
+$output false
+const string MED02_dev_unavailable =
+(
+  Default = "Media device\nunavailable";
+);
+
+$output false
+const string MNT01_oil =
+(
+  Default = "OIL";
+);
+
+$output false
+const string MNT01_v_belt =
+(
+  Default = "V-BELT";
+);
+
+$output false
+const string MNT01_free =
+(
+  Default = "FREE";
+);
+
+$output false
+const string NAV06_stop_navigation =
+(
+  Default = "Stop navigation";
+);
+
+$output false
+const string NAV06_stop_next_stop =
+(
+  Default = "Skip next stop";
+);
+
+$output false
+const string NAV06_go_home =
+(
+  Default = "Go home";
+);
+
+$output false
+const string NAV06_go_to_work =
+(
+  Default = "Go to work";
+);
+
+$output false
+const string NAV06_favorites =
+(
+  Default = "Favorites";
+);
+
+$output false
+const string NAV06_nearby_gas_stations =
+(
+  Default = "Nearby Gas stations";
+);
+
+$output false
+const string NAV06_change_view =
+(
+  Default = "Change view";
+);
+
+$output false
+const string NAV08_default_view =
+(
+  Default = "Default view";
+);
+
+$output false
+const string NAV08_turn_by_turn =
+(
+  Default = "Turn-by-turn";
+);
+
+$output false
+const string NAV08_turn_list =
+(
+  Default = "Turn list";
+);
+
+$output false
+const string POP02_please_check =
+(
+  Default = "Please Check";
+);
+
+$output false
+const string POP02_details =
+(
+  Default = "Details";
+);
+
+$output false
+const string POP03_no_home_location =
+(
+  Default = "Home location is not set.";
+);
+
+$output false
+const string WSC01_wind_screen =
+(
+  Default = "Wind Screen";
+);
+

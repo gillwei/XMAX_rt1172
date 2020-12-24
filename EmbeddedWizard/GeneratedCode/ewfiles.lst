@@ -19,3 +19,4 @@ module Enum                     file "Enum.c";
 module DeviceInterface          file "DeviceInterface.c";
 module Factory                  file "Factory.c";
 module Development              file "Development.c";
+module Strings                  file "Strings.c";

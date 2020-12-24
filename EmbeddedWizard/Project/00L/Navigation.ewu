@@ -96,7 +96,7 @@ class Main : Components::BaseComponent
     preset Bounds = <0,117,70,147>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "123";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -219,7 +219,7 @@ class YMC : Components::BaseComponent
     preset Bounds = <2,0,82,30>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "YMC";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }
 
@@ -298,6 +298,6 @@ class Garmin : Components::BaseComponent
     preset Bounds = <2,0,102,30>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "Garmin";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }

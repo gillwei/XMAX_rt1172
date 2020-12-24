@@ -159,7 +159,7 @@ class ItemBase : Core::Group
     preset Bounds = <37,1,417,69>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Color = #FFFFFFFF;
   }
 
@@ -465,14 +465,13 @@ class VerticalMenu : Components::BaseComponent
   }
 
   // Note:
-  //
   // For the case of 3 rows/page, the height of each row is 74px, and the total height \
   // is 222px.
   // For the case of 4 rows/page, the height of each row is 56px, and the total height \
   // is 224px.
   note group Note2
   {
-    attr Bounds = <720,10,1460,150>;
+    attr Bounds = <720,10,1460,110>;
   }
 
   $rect <220,470,420,510>
@@ -1058,7 +1057,7 @@ class PushButton : Core::Group
   {
     preset Bounds = <0,4,150,38>;
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
   }
 
   $rect <10,110,210,150>

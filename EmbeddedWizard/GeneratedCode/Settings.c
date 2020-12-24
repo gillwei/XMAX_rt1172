@@ -153,16 +153,16 @@ static const XStringRes _Const0008 = { _StringsDefault0, 0x006E };
 static const XStringRes _Const0009 = { _StringsDefault0, 0x0083 };
 static const XStringRes _Const000A = { _StringsDefault0, 0x0098 };
 static const XStringRes _Const000B = { _StringsDefault0, 0x00A4 };
-static const XRect _Const000C = {{ 106, 50 }, { 357, 80 }};
+static const XRect _Const000C = {{ 82, 49 }, { 369, 79 }};
 static const XStringRes _Const000D = { _StringsDefault0, 0x00B6 };
 static const XRect _Const000E = {{ 120, 120 }, { 340, 145 }};
 static const XStringRes _Const000F = { _StringsDefault0, 0x00D0 };
-static const XRect _Const0010 = {{ 130, 80 }, { 330, 110 }};
+static const XRect _Const0010 = {{ 90, 80 }, { 362, 110 }};
 static const XStringRes _Const0011 = { _StringsDefault0, 0x00E3 };
-static const XRect _Const0012 = {{ 150, 150 }, { 310, 180 }};
-static const XRect _Const0013 = {{ 120, 190 }, { 340, 215 }};
+static const XRect _Const0012 = {{ 132, 150 }, { 328, 180 }};
+static const XRect _Const0013 = {{ 86, 190 }, { 366, 215 }};
 static const XStringRes _Const0014 = { _StringsDefault0, 0x00ED };
-static const XRect _Const0015 = {{ 150, 220 }, { 310, 250 }};
+static const XRect _Const0015 = {{ 110, 220 }, { 343, 250 }};
 static const XRect _Const0016 = {{ 10, 45 }, { 470, 169 }};
 static const XStringRes _Const0017 = { _StringsDefault0, 0x0103 };
 static const XRect _Const0018 = {{ 165, 176 }, { 315, 259 }};
@@ -1072,20 +1072,21 @@ void SettingsSystemInfo__Init( SettingsSystemInfo _this, XObject aLink, XHandle 
   CoreGroup__Add( _this, ((CoreView)&_this->SoftwareVersionText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BtSwVersionTitle ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BtSwVersionText ), 0 );
-  ViewsText_OnSetFont( &_this->ESN, EwLoadResource( &FontsFontNotoSansCjkJp32, ResourcesFont ));
-  ViewsText_OnSetFont( &_this->SoftwareVersionTitle, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->ESN, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->EsnText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->SoftwareVersionTitle, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->SoftwareVersionText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->EsnText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->SoftwareVersionText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->EsnObserver.OnEvent = EwNewSlot( _this, SettingsSystemInfo_OnEsnReceivedSlot );
   CorePropertyObserver_OnSetOutlet( &_this->EsnObserver, EwNewRef( EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), DeviceInterfaceSystemDeviceClass_OnGetESN, 
   DeviceInterfaceSystemDeviceClass_OnSetESN ));
-  ViewsText_OnSetFont( &_this->BtSwVersionTitle, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->BtSwVersionTitle, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->BtSwVersionText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->BtSwVersionText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->MagicKeyHandler.OnRelease = EwNewSlot( _this, SettingsSystemInfo_OnMagicKeyReleaseSlot );
 
@@ -1268,7 +1269,7 @@ void SettingsAllReset__Init( SettingsAllReset _this, XObject aLink, XHandle aArg
   CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0018 );
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
-  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->UpDownPushButtonSet.OnUpButtonReleased = EwNewSlot( _this, SettingsAllReset_OnButtonNo );
   _this->UpDownPushButtonSet.OnDownButtonReleased = EwNewSlot( _this, SettingsAllReset_OnButtonYes );
@@ -1404,7 +1405,7 @@ void SettingsInProgress__Init( SettingsInProgress _this, XObject aLink, XHandle 
   CoreRectView__OnSetBounds( &_this->Text, _Const0019 );
   ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const001A ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
-  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
 }
 
@@ -1499,7 +1500,7 @@ void SettingsAllResetCompleted__Init( SettingsAllResetCompleted _this, XObject a
   CoreRectView__OnSetBounds( &_this->Text, _Const001B );
   ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const001C ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
-  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
 }
 
@@ -1807,7 +1808,7 @@ void SettingsDisplayBrightness__Init( SettingsDisplayBrightness _this, XObject a
   CoreGroup__Add( _this, ((CoreView)&_this->LevelText ), 0 );
   ViewsImage_OnSetBitmap( &_this->CheckerboardImage, EwLoadResource( &ResourceDisplayTest, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->LevelText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->LevelText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->HideLevelTimer.OnTrigger = EwNewSlot( _this, SettingsDisplayBrightness_OnHideLevelSlot );
 
@@ -2092,16 +2093,16 @@ void SettingsBtDiscovarable__Init( SettingsBtDiscovarable _this, XObject aLink, 
   CoreGroup__Add( _this, ((CoreView)&_this->RemainTimeText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DeviceNameText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );
-  ViewsText_OnSetFont( &_this->DiscoverableText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->DiscoverableText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->TimeLeftText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->TimeLeftText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->NameText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->NameText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->CountDownTimer.OnTrigger = EwNewSlot( _this, SettingsBtDiscovarable_UpdateCountDownTimeSlot );
-  ViewsText_OnSetFont( &_this->RemainTimeText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->RemainTimeText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->DeviceNameText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->DeviceNameText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->PushButton.OnActivate = EwNewSlot( _this, SettingsBtDiscovarable_OnCancelSlot );
 
@@ -2282,13 +2283,13 @@ void SettingsBtConnectionResult__Init( SettingsBtConnectionResult _this, XObject
   ViewsText_OnSetString( &_this->ConnectingText, EwLoadString( &_Const0031 ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ConnectingText ), 0 );
-  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->ConnectionResultHandler.OnEvent = EwNewSlot( _this, SettingsBtConnectionResult_OnConnectionResultReceivedSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->ConnectionResultHandler, &EwGetAutoObject( 
   &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->ConnectionResultSystemEvent );
   _this->CloseDialogTimer.OnTrigger = EwNewSlot( _this, SettingsBtConnectionResult_OnCloseDialogSlot );
-  ViewsText_OnSetFont( &_this->ConnectingText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->ConnectingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
 }
 
@@ -2459,7 +2460,7 @@ void SettingsBtMaxPairedDevice__Init( SettingsBtMaxPairedDevice _this, XObject a
   &_Const003B ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
-  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->UpDownPushButtonSet.OnUpButtonReleased = EwNewSlot( _this, SettingsBtMaxPairedDevice_OnYesSlot );
   _this->UpDownPushButtonSet.OnDownButtonReleased = EwNewSlot( _this, SettingsBtMaxPairedDevice_OnNoSlot );
@@ -2589,7 +2590,7 @@ void SettingsSET17_BtPairedDeviceList__Init( SettingsSET17_BtPairedDeviceList _t
   CorePropertyObserver_OnSetOutlet( &_this->RefreshListObserver, EwNewRef( EwGetAutoObject( 
   &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList, 
   DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList ));
-  ViewsText_OnSetFont( &_this->NoDataText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->NoDataText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
 }
 
@@ -3055,7 +3056,7 @@ void SettingsBtDeleteBleDevice__Init( SettingsBtDeleteBleDevice _this, XObject a
   MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &_Const0046 ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );
-  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->PushButton.OnActivate = EwNewSlot( _this, SettingsBtDeleteBleDevice_OnOkSlot );
 
@@ -3185,7 +3186,7 @@ void SettingsBtFwUpdateDialog__Init( SettingsBtFwUpdateDialog _this, XObject aLi
   CoreTimer_OnSetPeriod( &_this->RemoveDialogTimer, 2000 );
   CoreGroup__Add( _this, ((CoreView)&_this->Rectangle ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->StatusText ), 0 );
-  ViewsText_OnSetFont( &_this->StatusText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->StatusText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->BtFwStatusObserver.OnEvent = EwNewSlot( _this, SettingsBtFwUpdateDialog_OnBtFwStatusUpdateSlot );
   CorePropertyObserver_OnSetOutlet( &_this->BtFwStatusObserver, EwNewRef( EwGetAutoObject( 
@@ -3348,11 +3349,11 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->QrCodeSystemEvent );
   ViewsImage_OnSetBitmap( &_this->QrCode, ((ResourcesBitmap)EwGetAutoObject( &ResourceQrCodeExternBitmap, 
   ResourcesExternBitmap )));
-  ViewsText_OnSetFont( &_this->PixelText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->PixelText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->QrCodeWidthText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->QrCodeWidthText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->QrCodeContent, EwLoadResource( &FontsFontNotoSansCjkJp24, 
+  ViewsText_OnSetFont( &_this->QrCodeContent, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
 
   /* Call the user defined constructor */

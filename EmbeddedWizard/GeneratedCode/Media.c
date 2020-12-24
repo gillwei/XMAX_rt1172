@@ -170,7 +170,7 @@ void MediaMain__Init( MediaMain _this, XObject aLink, XHandle aArg )
   CoreGroup__Add( _this, ((CoreView)&_this->ElapsedTimeSec ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->RemainTimeSec ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Track ), 0 );
-  ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->PlayPauseButton.OnRelease = EwNewSlot( _this, MediaMain_OnPlayPauseSlot );
   WidgetSetPushButton_OnSetIcon( &_this->PlayPauseButton, EwLoadResource( &ResourceIconMediaPlayPause, 
@@ -190,15 +190,15 @@ void MediaMain__Init( MediaMain _this, XObject aLink, XHandle aArg )
   _this->FocusList[ 0 ] = ((CoreView)&_this->PrevTrackButton );
   _this->FocusList[ 1 ] = ((CoreView)&_this->PlayPauseButton );
   _this->FocusList[ 2 ] = ((CoreView)&_this->NextTrackButton );
-  ViewsText_OnSetFont( &_this->Artist, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->Artist, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->Album, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->Album, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   WidgetSetHorizontalSlider_OnSetAppearance( &_this->PlayProgress, EwGetAutoObject( 
   &WidgetSetHorizontalSlider_Small, WidgetSetHorizontalSliderConfig ));
-  ViewsText_OnSetFont( &_this->ElapsedTimeSec, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->ElapsedTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->RemainTimeSec, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->RemainTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->Track.OnTrackInfoUpdate = EwNewSlot( _this, MediaMain_SetTrackInfo );
   _this->PlaybackTimeEventHandler.OnEvent = EwNewSlot( _this, MediaMain_OnPlaybackTimeUpdateSlot );

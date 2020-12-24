@@ -43,10 +43,10 @@
 #endif
 
 /* This is a font resource. */
-EW_DECLARE_FONT_RES( FontsFontNotoSansCjkJp36 )
+EW_DECLARE_FONT_RES( FontsNotoSansCjkJpMedium24pt )
 
 /* This is a font resource. */
-EW_DECLARE_FONT_RES( FontsFontNotoSansCjkJp32 )
+EW_DECLARE_FONT_RES( FontsNotoSansCjkJpMedium28pt )
 
 /* This is a font resource. */
 EW_DECLARE_FONT_RES( FontsFontNotoSansCjkJp24 )
@@ -55,7 +55,7 @@ EW_DECLARE_FONT_RES( FontsFontNotoSansCjkJp24 )
 EW_DECLARE_FONT_RES( FontsFontNotoSansCjkJp20 )
 
 /* This is a font resource. */
-EW_DECLARE_FONT_RES( FontsNotoSansCjkJpMedium40pt )
+EW_DECLARE_FONT_RES( FontsNotoSansCjkJpMedium80pt )
 
 #ifdef __cplusplus
   }

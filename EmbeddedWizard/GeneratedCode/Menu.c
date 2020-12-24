@@ -154,7 +154,7 @@ void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetBitmap( &_this->ListDivider, EwLoadResource( &ResourceListDivider3, 
   ResourcesBitmap ));
   _this->FocusFrameFlashTimer.OnTrigger = EwNewSlot( _this, MenuItemBase_OnFocusFrameFlashTimer );
-  ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
 }
 
@@ -1642,7 +1642,7 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->TitleText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->FocusBorder ), 0 );
-  ViewsText_OnSetFont( &_this->TitleText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->TitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   _this->KeyHandler.OnRelease = EwNewSlot( _this, MenuPushButton_OnEnterReleaseSlot );
   _this->FocusFrameFlashTimer.OnTrigger = EwNewSlot( _this, MenuPushButton_OnFocusFrameFlashTimer );

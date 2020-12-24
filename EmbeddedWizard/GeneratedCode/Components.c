@@ -50,23 +50,18 @@
 #include "Effect.h"
 #include "Fonts.h"
 #include "Resource.h"
+#include "Strings.h"
 #include "UIConfig.h"
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x000001F2, /* ratio 56.22 % */
+  0x0000009A, /* ratio 72.73 % */
   0xB8002300, 0x0009E452, 0x00960037, 0x0F200328, 0xE4002800, 0x8730042C, 0x00298022,
   0x037800D8, 0x8F800E80, 0x3C160610, 0x43A27098, 0x02331B24, 0x25517320, 0x271F8F47,
-  0x50883488, 0x52874321, 0x18646A26, 0x8C4322C6, 0x047E5F1A, 0x11A44AC0, 0xA8D33D00,
-  0x2531D104, 0x1B483853, 0xD3DA6002, 0x088647A3, 0x88E52A3D, 0x001DE990, 0xDD280068,
-  0xD8A23539, 0x9E116795, 0x65263B29, 0x992C951D, 0xF158644A, 0x4C8F46AD, 0xCB457695,
-  0xA65869B3, 0xAD32251C, 0x56E250C8, 0xE62B6F00, 0xB106A925, 0xCA2E8759, 0xB5F95106,
-  0x00C543A7, 0x3CCD72DA, 0xAAD9AB31, 0x94930113, 0x5EA5967B, 0x8A996B00, 0xCD74CA91,
-  0x4F508644, 0xF1CA96A7, 0x139360AD, 0x1844F731, 0xB49B4017, 0x95EF4568, 0xCB27B1C8,
-  0xF6734CC8, 0xB6B0EDED, 0x115FD159, 0xC2700616, 0xBBDFD322, 0x18D4F71D, 0x910263F9,
-  0x85B6DB93, 0x02A3F4DD, 0x4AA25791, 0x287B2844, 0x863A9101, 0x00080FCA, 0x00000000
+  0x50883488, 0x52874321, 0x18646A26, 0x8C4322C6, 0x047E5F1A, 0x10644090, 0x4E906300,
+  0xA871D384, 0x00579102, 0x308894F4, 0x4333C90D, 0x31D48809, 0x00406BB4, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -75,22 +70,21 @@ static const XStringRes _Const0001 = { _StringsDefault0, 0x0013 };
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0023 };
 static const XRect _Const0003 = {{ 0, 0 }, { 480, 272 }};
 static const XColor _Const0004 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0005 = {{ 30, 30 }, { 440, 200 }};
-static const XStringRes _Const0006 = { _StringsDefault0, 0x0036 };
-static const XRect _Const0007 = {{ 150, 200 }, { 330, 260 }};
-static const XStringRes _Const0008 = { _StringsDefault0, 0x00E2 };
-static const XRect _Const0009 = {{ 0, 0 }, { 480, 32 }};
-static const XColor _Const000A = { 0xED, 0x96, 0x2B, 0xFF };
-static const XRect _Const000B = {{ 174, 0 }, { 204, 30 }};
-static const XRect _Const000C = {{ 221, 0 }, { 431, 30 }};
-static const XStringRes _Const000D = { _StringsDefault0, 0x00EB };
-static const XRect _Const000E = {{ 50, 0 }, { 420, 30 }};
-static const XRect _Const000F = {{ 0, 30 }, { 480, 32 }};
-static const XRect _Const0010 = {{ 2, 0 }, { 80, 30 }};
-static const XColor _Const0011 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XStringRes _Const0012 = { _StringsDefault0, 0x00F5 };
-static const XRect _Const0013 = {{ 0, 182 }, { 480, 272 }};
-static const XRect _Const0014 = {{ 0, 32 }, { 480, 182 }};
+static const XRect _Const0005 = {{ 10, 51 }, { 470, 206 }};
+static const XRect _Const0006 = {{ 150, 200 }, { 330, 260 }};
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0036 };
+static const XRect _Const0008 = {{ 0, 0 }, { 480, 32 }};
+static const XColor _Const0009 = { 0xED, 0x96, 0x2B, 0xFF };
+static const XRect _Const000A = {{ 174, 0 }, { 204, 30 }};
+static const XRect _Const000B = {{ 221, 0 }, { 431, 30 }};
+static const XStringRes _Const000C = { _StringsDefault0, 0x003F };
+static const XRect _Const000D = {{ 50, 0 }, { 420, 30 }};
+static const XRect _Const000E = {{ 0, 30 }, { 480, 32 }};
+static const XRect _Const000F = {{ 2, 0 }, { 80, 30 }};
+static const XColor _Const0010 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XStringRes _Const0011 = { _StringsDefault0, 0x0049 };
+static const XRect _Const0012 = {{ 0, 182 }, { 480, 272 }};
+static const XRect _Const0013 = {{ 0, 32 }, { 480, 182 }};
 
 /* Initializer for the class 'Components::BaseComponent' */
 void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink, XHandle aArg )
@@ -390,20 +384,21 @@ void ComponentsDisclaimerView__Init( ComponentsDisclaimerView _this, XObject aLi
   CoreRectView__OnSetBounds( &_this->Rectangle, _Const0003 );
   ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0004 );
   CoreRectView__OnSetBounds( &_this->Text, _Const0005 );
+  ViewsText_OnSetRowDistance( &_this->Text, 31 );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
-  ViewsText_OnSetString( &_this->Text, EwLoadString( &_Const0006 ));
-  CoreRectView__OnSetBounds( &_this->PushButton, _Const0007 );
-  WidgetSetPushButton_OnSetLabel( &_this->PushButton, EwLoadString( &_Const0008 ));
-  CoreRectView__OnSetBounds( &_this->Rectangle1, _Const0009 );
-  ViewsRectangle_OnSetColor( &_this->Rectangle1, _Const000A );
-  CoreRectView__OnSetBounds( &_this->IconWarning, _Const000B );
+  ViewsText_OnSetString( &_this->Text, EwGetVariantOfString( &StringsTOP01_disclaimer ));
+  CoreRectView__OnSetBounds( &_this->PushButton, _Const0006 );
+  WidgetSetPushButton_OnSetLabel( &_this->PushButton, EwLoadString( &_Const0007 ));
+  CoreRectView__OnSetBounds( &_this->Rectangle1, _Const0008 );
+  ViewsRectangle_OnSetColor( &_this->Rectangle1, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->IconWarning, _Const000A );
   ViewsImage_OnSetAlignment( &_this->IconWarning, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter | ViewsImageAlignmentScaleToFit );
   ViewsImage_OnSetVisible( &_this->IconWarning, 1 );
-  CoreRectView__OnSetBounds( &_this->WarningText, _Const000C );
+  CoreRectView__OnSetBounds( &_this->WarningText, _Const000B );
   ViewsText_OnSetAlignment( &_this->WarningText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->WarningText, EwLoadString( &_Const000D ));
+  ViewsText_OnSetString( &_this->WarningText, EwLoadString( &_Const000C ));
   ViewsText_OnSetColor( &_this->WarningText, _Const0004 );
   ViewsText_OnSetVisible( &_this->WarningText, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->Rectangle ), 0 );
@@ -412,14 +407,14 @@ void ComponentsDisclaimerView__Init( ComponentsDisclaimerView _this, XObject aLi
   CoreGroup__Add( _this, ((CoreView)&_this->Rectangle1 ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->IconWarning ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->WarningText ), 0 );
-  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->PushButton.OnActivate = EwNewSlot( _this, ComponentsDisclaimerView_OnAcceptedSlot );
   WidgetSetPushButton_OnSetAppearance( &_this->PushButton, EwGetAutoObject( &UIConfigPushButtonConfig, 
   WidgetSetPushButtonConfig ));
   ViewsImage_OnSetBitmap( &_this->IconWarning, EwLoadResource( &ResourceIconWarning, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->WarningText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->WarningText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
 }
 
@@ -530,38 +525,38 @@ void ComponentsStatusBar__Init( ComponentsStatusBar _this, XObject aLink, XHandl
   _this->_VMT = EW_CLASS( ComponentsStatusBar );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0009 );
-  CoreRectView__OnSetBounds( &_this->Background, _Const0009 );
+  CoreRectView__OnSetBounds( _this, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->Background, _Const0008 );
   ViewsRectangle_OnSetColor( &_this->Background, _Const0004 );
-  CoreRectView__OnSetBounds( &_this->TitleText, _Const000E );
+  CoreRectView__OnSetBounds( &_this->TitleText, _Const000D );
   ViewsText_OnSetAlignment( &_this->TitleText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->TitleText, 0 );
-  CoreRectView__OnSetBounds( &_this->Divider, _Const000F );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const000E );
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
-  CoreRectView__OnSetBounds( &_this->IconWarning, _Const000B );
+  CoreRectView__OnSetBounds( &_this->IconWarning, _Const000A );
   ViewsImage_OnSetAlignment( &_this->IconWarning, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter | ViewsImageAlignmentScaleToFit );
   ViewsImage_OnSetVisible( &_this->IconWarning, 0 );
-  CoreRectView__OnSetBounds( &_this->TimeText, _Const0010 );
+  CoreRectView__OnSetBounds( &_this->TimeText, _Const000F );
   ViewsText_OnSetAlignment( &_this->TimeText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->TimeText, 0 );
-  ViewsText_OnSetColor( &_this->TimeText, _Const0011 );
+  ViewsText_OnSetColor( &_this->TimeText, _Const0010 );
   ViewsText_OnSetVisible( &_this->TimeText, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->TitleText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->IconWarning ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->TimeText ), 0 );
-  ViewsText_OnSetFont( &_this->TitleText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->TitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceListDivider4, 
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->IconWarning, EwLoadResource( &ResourceIconWarning, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->TimeText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ViewsText_OnSetFont( &_this->TimeText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   _this->OnUpdateLocalTimeEventHandler.OnEvent = EwNewSlot( _this, ComponentsStatusBar_OnUpdateLocalTimeSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->OnUpdateLocalTimeEventHandler, &EwGetAutoObject( 
@@ -615,7 +610,7 @@ void ComponentsStatusBar_OnUpdateLocalTimeSlot( ComponentsStatusBar _this, XObje
   if ( CurrentTime != 0 )
   {
     ViewsText_OnSetString( &_this->TimeText, EwConcatString( EwConcatString( EwNewStringInt( 
-    CurrentTime->Hour, 2, 10 ), EwLoadString( &_Const0012 )), EwNewStringInt( CurrentTime->Minute, 
+    CurrentTime->Hour, 2, 10 ), EwLoadString( &_Const0011 )), EwNewStringInt( CurrentTime->Minute, 
     2, 10 )));
   }
 }
@@ -676,8 +671,8 @@ void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHan
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0003 );
-  CoreRectView__OnSetBounds( &_this->MainBottomBG, _Const0013 );
-  CoreRectView__OnSetBounds( &_this->BlackBG, _Const0014 );
+  CoreRectView__OnSetBounds( &_this->MainBottomBG, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->BlackBG, _Const0013 );
   ViewsRectangle_OnSetColor( &_this->BlackBG, _Const0004 );
   CoreGroup__Add( _this, ((CoreView)&_this->MainBottomBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BlackBG ), 0 );

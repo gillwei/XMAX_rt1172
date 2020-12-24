@@ -73,7 +73,7 @@ class Main : Components::BaseComponent
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -131,7 +131,7 @@ class Main : Components::BaseComponent
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -141,7 +141,7 @@ class Main : Components::BaseComponent
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <270,290,470,330>
@@ -186,7 +186,7 @@ class Main : Components::BaseComponent
   {
     preset Bounds = <10,160,80,190>;
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Visible = true;
   }
 
@@ -195,7 +195,7 @@ class Main : Components::BaseComponent
   {
     preset Bounds = <400,160,470,190>;
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Visible = true;
   }
 

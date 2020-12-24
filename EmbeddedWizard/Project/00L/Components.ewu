@@ -149,10 +149,11 @@ class DisclaimerView : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Text Text
   {
-    preset Bounds = <30,30,440,200>;
+    preset Bounds = <10,51,470,206>;
+    preset RowDistance = 31;
     preset WrapText = true;
-    preset String = "Fail to pay attention while riding could result in death or serious injury. Always concentrate on riding by keeping your eyes and mind on road. Read your owner's manual.";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset String = Strings::TOP01_disclaimer;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
@@ -195,7 +196,7 @@ class DisclaimerView : Components::BaseComponent
     preset Bounds = <221,0,431,30>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "Warning";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
     preset Color = #000000FF;
     preset Visible = true;
   }
@@ -221,7 +222,7 @@ class StatusBar : Core::Group
     preset Bounds = <50,0,420,30>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
   }
 
   $rect <20,20,160,60>
@@ -247,7 +248,7 @@ class StatusBar : Core::Group
     preset Bounds = <2,0,80,30>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp32;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
     preset Color = #FFFFFFFF;
     preset Visible = true;
   }

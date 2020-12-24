@@ -48,7 +48,7 @@ void UIConfigPushButtonConfig__Init( WidgetSetPushButtonConfig _this )
   WidgetSetPushButtonConfig_OnSetLabelColorFocused( _this, _Const0000 );
   WidgetSetPushButtonConfig_OnSetLabelColorDisabled( _this, _Const0000 );
   WidgetSetPushButtonConfig_OnSetLabelColorDefault( _this, _Const0000 );
-  WidgetSetPushButtonConfig_OnSetLabelFont( _this, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  WidgetSetPushButtonConfig_OnSetLabelFont( _this, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   WidgetSetPushButtonConfig_OnSetFaceLayout( _this, CoreLayoutAlignToBottom | CoreLayoutAlignToLeft 
   | CoreLayoutAlignToRight | CoreLayoutAlignToTop | CoreLayoutResizeHorz | CoreLayoutResizeVert );

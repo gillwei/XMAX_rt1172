@@ -9,7 +9,7 @@ autoobject WidgetSet::PushButtonConfig PushButtonConfig
   preset LabelColorFocused = #FFFFFFFF;
   preset LabelColorDisabled = #FFFFFFFF;
   preset LabelColorDefault = #FFFFFFFF;
-  preset LabelFont = Fonts::FontNotoSansCjkJp32;
+  preset LabelFont = Fonts::NotoSansCjkJpMedium28pt;
   preset FaceLayout = Core::Layout[AlignToBottom, AlignToLeft, AlignToRight, AlignToTop, ResizeHorz, ResizeVert];
   preset FaceFrameActive = 1;
   preset FaceActive = Resource::FocusFrame;

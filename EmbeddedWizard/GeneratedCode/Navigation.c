@@ -160,7 +160,7 @@ void NavigationMain__Init( NavigationMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetBitmap( &_this->ArrivalBgImage, EwLoadResource( &ResourceArrivalBg, 
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->TbtImage, EwLoadResource( &ResourceIconTbT, ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->DistanceText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->DistanceText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->RoadText, EwLoadResource( &FontsFontNotoSansCjkJp24, 
   ResourcesFont ));
@@ -332,7 +332,7 @@ void NavigationYMC__Init( NavigationYMC _this, XObject aLink, XHandle aArg )
   CoreGroup__Add( _this, ((CoreView)&_this->Image ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   ViewsImage_OnSetBitmap( &_this->Image, EwLoadResource( &ResourceYmcNaviDay, ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
 }
 
@@ -524,7 +524,7 @@ void NavigationGarmin__Init( NavigationGarmin _this, XObject aLink, XHandle aArg
   CoreGroup__Add( _this, ((CoreView)&_this->Image ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   ViewsImage_OnSetBitmap( &_this->Image, EwLoadResource( &ResourceGrmnNaviDay, ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
 }
 

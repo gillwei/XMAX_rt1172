@@ -1,58 +1,85 @@
 ﻿$version 10.00
 
 // This is a font resource.
-$rect <20,20,230,60>
+$rect <10,10,260,50>
 $output false
-resource Resources::Font FontNotoSansCjkJp86
+resource Resources::Font NotoSansCjkJpMedium24pt
 {
-  attr fontname FontName = Noto Sans CJK JP Medium;
-  attr fontheight Height = 86;
-  attr fontquality Quality = High;
-  attr fontranges Ranges = 0x20-0xFF;
+  attr fontname FontName =
+  (
+    Default = Noto Sans Med;
+    SimplifiedChinese = Noto Sans CJK JP Medium;
+    French = Noto Sans Med;
+    Italian = Noto Sans Med;
+    German = Noto Sans Med;
+    Japanese = Noto Sans CJK JP Medium;
+    Spanish = Noto Sans Med;
+    TraditionalChinese = Noto Sans CJK JP Medium;
+  );
+
+  attr fontheight Height = 24;
+  attr fontquality Quality = Medium;
+  attr fontranges Ranges =
+  (
+    Default = 0x20-0x7E;
+    SimplifiedChinese = 0x3000-0x303F;
+    French = 0x0100-0x017F;
+    Italian = 0xE0-0xEF;
+    German = 0xA0-0xDF;
+    Japanese = 0x3040-0x309F,0x30A0-0x30FF;
+    Spanish = 0xF0-0xFF;
+    TraditionalChinese = 0xFF01-0xFF9F;
+  );
+
   attr fontaspectratio AspectRatio = 1.0;
   attr fontbold Bold = false;
   attr fontitalic Italic = false;
   attr fontkerning Kerning = true;
-  attr fontheightmode HeightMode = Compatible;
+  attr fontheightmode HeightMode = Popular;
   attr fontrowdistance RowDistance;
 }
 
 // This is a font resource.
-$rect <20,70,230,110>
+$rect <10,60,260,100>
 $output false
-resource Resources::Font FontNotoSansCjkJp36
+resource Resources::Font NotoSansCjkJpMedium28pt
 {
-  attr fontname FontName = Noto Sans CJK JP Medium;
-  attr fontheight Height = 36;
-  attr fontquality Quality = High;
-  attr fontranges Ranges = 0x20-0xFF;
+  attr fontname FontName =
+  (
+    Default = Noto Sans Med;
+    SimplifiedChinese = Noto Sans CJK JP Medium;
+    French = Noto Sans Med;
+    Italian = Noto Sans Med;
+    German = Noto Sans Med;
+    Japanese = Noto Sans CJK JP Medium;
+    Spanish = Noto Sans Med;
+    TraditionalChinese = Noto Sans CJK JP Medium;
+  );
+
+  attr fontheight Height = 28;
+  attr fontquality Quality = Medium;
+  attr fontranges Ranges =
+  (
+    Default = 0x20-0x7E;
+    SimplifiedChinese = 0x3000-0x303F;
+    French = 0x0100-0x017F;
+    Italian = 0xE0-0xEF;
+    German = 0xA0-0xDF;
+    Japanese = 0x3040-0x309F,0x30A0-0x30FF;
+    Spanish = 0xF0-0xFF;
+    TraditionalChinese = 0xFF01-0xFF9F;
+  );
+
   attr fontaspectratio AspectRatio = 1.0;
   attr fontbold Bold = false;
   attr fontitalic Italic = false;
   attr fontkerning Kerning = true;
-  attr fontheightmode HeightMode = Compatible;
+  attr fontheightmode HeightMode = Popular;
   attr fontrowdistance RowDistance;
 }
 
 // This is a font resource.
-$rect <20,120,230,160>
-$output false
-resource Resources::Font FontNotoSansCjkJp32
-{
-  attr fontname FontName = Noto Sans CJK JP Medium;
-  attr fontheight Height = 32;
-  attr fontquality Quality = High;
-  attr fontranges Ranges = 0x20-0xFF;
-  attr fontaspectratio AspectRatio = 1.0;
-  attr fontbold Bold = false;
-  attr fontitalic Italic = false;
-  attr fontkerning Kerning = true;
-  attr fontheightmode HeightMode = Compatible;
-  attr fontrowdistance RowDistance;
-}
-
-// This is a font resource.
-$rect <20,219,230,259>
+$rect <330,50,540,90>
 $output false
 resource Resources::Font FontNotoSansCjkJp24
 {
@@ -69,7 +96,7 @@ resource Resources::Font FontNotoSansCjkJp24
 }
 
 // This is a font resource.
-$rect <20,270,230,310>
+$rect <330,100,540,140>
 $output false
 resource Resources::Font FontNotoSansCjkJp20
 {
@@ -86,13 +113,13 @@ resource Resources::Font FontNotoSansCjkJp20
 }
 
 // This is a font resource.
-$rect <20,360,280,400>
+$rect <10,110,270,150>
 $output false
-resource Resources::Font NotoSansCjkJpMedium40pt
+resource Resources::Font NotoSansCjkJpMedium80pt
 {
   attr fontname FontName = Noto Sans CJK JP Medium;
   attr fontheight Height = 80;
-  attr fontquality Quality = High;
+  attr fontquality Quality = Medium;
   attr fontranges Ranges = .\glyph\glyph-burnin.txt;
   attr fontaspectratio AspectRatio = 1.0;
   attr fontbold Bold = false;
@@ -100,4 +127,10 @@ resource Resources::Font NotoSansCjkJpMedium40pt
   attr fontkerning Kerning = true;
   attr fontheightmode HeightMode = Popular;
   attr fontrowdistance RowDistance;
+}
+
+// To be deleted
+note group Note2
+{
+  attr Bounds = <310,10,570,160>;
 }

@@ -37,7 +37,7 @@ unit Views
 
 // The 'default' Language. Each project has to contain at least one language brick \
 // called 'Default'
-$rect <540,70,740,110>
+$rect <780,90,980,130>
 language Default;
 
 // This unit is intended to contain the application class and other GUI components.
@@ -60,15 +60,16 @@ note group Note2
 }
 
 // Languages
+// Default is English.
 note group Note3
 {
-  attr Bounds = <520,20,760,130>;
+  attr Bounds = <760,20,1000,500>;
 }
 
 // Project Units
 note group Note5
 {
-  attr Bounds = <270,140,760,620>;
+  attr Bounds = <270,140,740,620>;
 }
 
 // This is a profile member for the project. This profile controls the code generation \
@@ -175,6 +176,40 @@ unit Factory
 
 $rect <520,501,720,541>
 unit Development
+{
+  attr Directory = .\;
+}
+
+// Simplified Chinese
+$rect <780,390,980,430>
+language SimplifiedChinese;
+
+// French
+$rect <780,139,980,179>
+language French;
+
+// Italian
+$rect <780,189,980,229>
+language Italian;
+
+// German
+$rect <780,239,980,279>
+language German;
+
+// Japanese
+$rect <780,289,980,329>
+language Japanese;
+
+// Spanish
+$rect <780,339,980,379>
+language Spanish;
+
+// Traditional Chinese
+$rect <780,440,980,480>
+language TraditionalChinese;
+
+$rect <292,500,492,540>
+unit Strings
 {
   attr Directory = .\;
 }

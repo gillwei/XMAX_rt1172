@@ -27,17 +27,17 @@
 #include "ewlocale.h"
 #include "Fonts.h"
 
-/* Include a file containing the font resource : 'Fonts::FontNotoSansCjkJp36' */
-#include "_FontsFontNotoSansCjkJp36.h"
+/* Include a file containing the font resource : 'Fonts::NotoSansCjkJpMedium24pt' */
+#include "_FontsNotoSansCjkJpMedium24pt.h"
 
-/* Table with links to derived variants of the font resource : 'Fonts::FontNotoSansCjkJp36' */
-EW_RES_WITHOUT_VARIANTS( FontsFontNotoSansCjkJp36 )
+/* Table with links to derived variants of the font resource : 'Fonts::NotoSansCjkJpMedium24pt' */
+EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkJpMedium24pt )
 
-/* Include a file containing the font resource : 'Fonts::FontNotoSansCjkJp32' */
-#include "_FontsFontNotoSansCjkJp32.h"
+/* Include a file containing the font resource : 'Fonts::NotoSansCjkJpMedium28pt' */
+#include "_FontsNotoSansCjkJpMedium28pt.h"
 
-/* Table with links to derived variants of the font resource : 'Fonts::FontNotoSansCjkJp32' */
-EW_RES_WITHOUT_VARIANTS( FontsFontNotoSansCjkJp32 )
+/* Table with links to derived variants of the font resource : 'Fonts::NotoSansCjkJpMedium28pt' */
+EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkJpMedium28pt )
 
 /* Include a file containing the font resource : 'Fonts::FontNotoSansCjkJp24' */
 #include "_FontsFontNotoSansCjkJp24.h"
@@ -51,10 +51,10 @@ EW_RES_WITHOUT_VARIANTS( FontsFontNotoSansCjkJp24 )
 /* Table with links to derived variants of the font resource : 'Fonts::FontNotoSansCjkJp20' */
 EW_RES_WITHOUT_VARIANTS( FontsFontNotoSansCjkJp20 )
 
-/* Include a file containing the font resource : 'Fonts::NotoSansCjkJpMedium40pt' */
-#include "_FontsNotoSansCjkJpMedium40pt.h"
+/* Include a file containing the font resource : 'Fonts::NotoSansCjkJpMedium80pt' */
+#include "_FontsNotoSansCjkJpMedium80pt.h"
 
-/* Table with links to derived variants of the font resource : 'Fonts::NotoSansCjkJpMedium40pt' */
-EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkJpMedium40pt )
+/* Table with links to derived variants of the font resource : 'Fonts::NotoSansCjkJpMedium80pt' */
+EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkJpMedium80pt )
 
 /* Embedded Wizard */

@@ -323,7 +323,7 @@ void DevelopmentDEV_RealTimeClock__Init( DevelopmentDEV_RealTimeClock _this, XOb
   _this->OnUpdateLocalTimeEventHandler.OnEvent = EwNewSlot( _this, DevelopmentDEV_RealTimeClock_OnUpdateLocalTimeSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->OnUpdateLocalTimeEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->UpdateLocalTimeSystemEvent );
-  ViewsText_OnSetFont( &_this->TimeText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->TimeText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
 }
 
