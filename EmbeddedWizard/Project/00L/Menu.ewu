@@ -397,6 +397,8 @@ class VerticalMenu : Components::BaseComponent
       pure NoOfItems = value;
       MenuList.NoOfItems = value;
       Scrollbar.ListItems = value;
+
+      // set focus frame invisible when there is no item
       if( 0 == NoOfItems )
       {
         FocusFrame.Visible = false;
@@ -404,6 +406,14 @@ class VerticalMenu : Components::BaseComponent
       else
       {
         FocusFrame.Visible = true;
+      }
+
+      // move focus to the item before the last item when the last item is deleted
+      if( MenuList.SelectedItem >= MenuList.NoOfItems )
+      {
+        MenuList.SelectedItem = MenuList.NoOfItems - 1;
+        MoveFocusFrame();
+        SwitchToPageOfSelectedItem();
       }
     }
   }
