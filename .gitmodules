@@ -1,0 +1,3 @@
+[submodule "submodule/cyw89820"]
+	path = submodule/cyw89820
+	url = ssh://gerrit.garmin.com.tw:29418/autooem/products/cypress/cyw89820
