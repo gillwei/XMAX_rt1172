@@ -21,6 +21,11 @@
 extern "C" {
 #endif
 
+void app_init
+    (
+    can_hw_inst_t   const hw_inst
+    );
+
 void app_task
     (
     can_hw_inst_t   const hw_inst

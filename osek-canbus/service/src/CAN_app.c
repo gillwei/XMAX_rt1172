@@ -49,6 +49,7 @@
 #include "task.h"
 
 #include "VI_pub.h"
+#include "CAN_pub.h"
 #include "CAN_app.h"
 
 /*--------------------------------------------------------------------
@@ -59,6 +60,10 @@
 #define LC_RS_NE                        0x10
 #define LC_RS_WR                        0x20
 #define LC_FILL                         0x55
+
+#if( (DEBUG_TX_CAN_SUPPORT)&&(DEBUG_RX_CAN_SUPPORT) )
+    #define CAN_APP_SIG_DEBUG_TICK      200;//!< 200 * 5 = 1000ms
+#endif
 
 /*--------------------------------------------------------------------
                                 TYPES
@@ -85,6 +90,26 @@ can_app_timeout_error2[CAN_NUM_INSTANCES];
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+/*!*******************************************************************
+*
+* @private
+* CAN controller initialization failure notification
+*
+* This function is the callback function that is called by the CAN
+* Stack Network Management layer if the process of initializing the
+* CAN controller hardware in the low level BSP CAN Driver fails.
+*
+*********************************************************************/
+void
+nm_app_notify_init_failed
+    (
+    can_hw_inst_t       const hw_inst
+    )
+{
+PRINTF( "NM init failed \r\n" );
+CAN_IGNORE_PARAMETER( hw_inst );
+}
+
 /*!*******************************************************************
 *
 * @private
@@ -127,108 +152,6 @@ return l_ret_code;
 /*!*******************************************************************
 *
 * @private
-* CAN OnLine notification
-*
-* This function is the callback function that is called by the CAN
-* Stack Network Management Layer when the NM layer changes state.
-*
-*********************************************************************/
-void
-nm_app_notify_state_change
-    (
-    can_hw_inst_t       const hw_inst,
-    nm_state_t          const nm_state
-    )
-{
-PRINTF( "NM state changed,current state: %x \r\n",nm_state );
-CAN_IGNORE_PARAMETER( hw_inst );
-}
-
-/*!*******************************************************************
-*
-* @private
-* CAN BusOFF recovery notification
-*
-* This function is the callback function that is called by the CAN
-* Stack Network Management layer when a CAN bus that was previously
-* faulted (BusOFF) has recovered and resumed normal operation.
-*
-*********************************************************************/
-void
-nm_app_notify_busoff_recovery
-    (
-    can_hw_inst_t       const hw_inst
-    )
-{
-PRINTF( "BusOFF recovery! \r\n" );
-can_app_bus_off[hw_inst] = FALSE;
-CAN_IGNORE_PARAMETER( hw_inst );
-}
-
-/*!*******************************************************************
-*
-* @private
-* CAN BusOFF notification
-*
-* This function is the callback function that is called by the CAN
-* Stack Network Management Layer when a CAN BusOFF event occurs.
-*
-*********************************************************************/
-void
-nm_app_notify_busoff
-    (
-    can_hw_inst_t       const hw_inst
-    )
-{
-PRINTF( "BusOFF! \r\n" );
-can_app_bus_off[hw_inst] = TRUE;
-CAN_IGNORE_PARAMETER( hw_inst );
-}
-
-/*!*******************************************************************
-*
-* @private
-* CAN controller initialization failure notification
-*
-* This function is the callback function that is called by the CAN
-* Stack Network Management layer if the process of initializing the
-* CAN controller hardware in the low level BSP CAN Driver fails.
-*
-*********************************************************************/
-void
-nm_app_notify_init_failed
-    (
-    can_hw_inst_t       const hw_inst
-    )
-{
-PRINTF( "NM init failed \r\n" );
-CAN_IGNORE_PARAMETER( hw_inst );
-}
-
-/*!*******************************************************************
-*
-* @private
-* CAN controller transmission hardware failed notification
-*
-* This function is the callback function that is called by the CAN
-* Stack Network Management layer if the process of CAN frame transmission
-* fail in CAN controller hardware driver(the low level BSP CAN Driver fails).
-*
-*********************************************************************/
-void
-nm_app_notify_tx_hw_timeout
-    (
-    can_hw_inst_t hw_inst,
-    can_tmh_t     tmh
-    )
-{
-PRINTF( "NM Tx HW timeout,Tx message handle: %x\r\n", tmh );
-CAN_IGNORE_PARAMETER( hw_inst );
-}
-
-/*!*******************************************************************
-*
-* @private
 * Network Management layer CAN bus processing
 *
 * This function is the callback function that is called by the CAN
@@ -263,38 +186,83 @@ Handling data
 /*!*******************************************************************
 *
 * @private
-* interaction layer frame handle
+* CAN OnLine notification
 *
-* Put a CAN message which is from app or other component into interation
-* layer frame data structures
-*
-* @return can_ret_code
-* return code indicating success or failure
+* This function is the callback function that is called by the CAN
+* Stack Network Management Layer when the NM layer changes state.
 *
 *********************************************************************/
-static can_ret_code_t
-il_app_tx_data
+void
+nm_app_notify_state_change
     (
-    can_msg_t const * can_msg_tx_p
+    can_hw_inst_t       const hw_inst,
+    nm_state_t          const nm_state
     )
 {
-can_ret_code_t  l_ret_code;
-can_tmd_t       l_can_tmd;
+PRINTF( "NM state changed,current state: %x \r\n",nm_state );
+CAN_IGNORE_PARAMETER( hw_inst );
+}
 
-/*--------------------------------------------------
-fill the transmit structure "Just for NM Loop back frame"
---------------------------------------------------*/
-l_can_tmd.identifier    = can_msg_tx_p->id;
-l_can_tmd.dlc           = can_msg_tx_p->size;
-l_can_tmd.p_data        = can_msg_tx_p->data;
+/*!*******************************************************************
+*
+* @private
+* CAN BusOFF notification
+*
+* This function is the callback function that is called by the CAN
+* Stack Network Management Layer when a CAN BusOFF event occurs.
+*
+*********************************************************************/
+void
+nm_app_notify_busoff
+    (
+    can_hw_inst_t       const hw_inst
+    )
+{
+PRINTF( "BusOFF! \r\n" );
+can_app_bus_off[hw_inst] = TRUE;
+CAN_IGNORE_PARAMETER( hw_inst );
+}
 
-/*--------------------------------------------------
-put the interaction layer frame into the specific
-data structures for this CAN hardware instance
---------------------------------------------------*/
-l_ret_code = il_tx_put_frame_bytes ( CAN_CONTROLLER_2, &l_can_tmd );
+/*!*******************************************************************
+*
+* @private
+* CAN BusOFF recovery notification
+*
+* This function is the callback function that is called by the CAN
+* Stack Network Management layer when a CAN bus that was previously
+* faulted (BusOFF) has recovered and resumed normal operation.
+*
+*********************************************************************/
+void
+nm_app_notify_busoff_recovery
+    (
+    can_hw_inst_t       const hw_inst
+    )
+{
+PRINTF( "BusOFF recovery! \r\n" );
+can_app_bus_off[hw_inst] = FALSE;
+CAN_IGNORE_PARAMETER( hw_inst );
+}
 
-return l_ret_code;
+/*!*******************************************************************
+*
+* @private
+* CAN controller transmission hardware failed notification
+*
+* This function is the callback function that is called by the CAN
+* Stack Network Management layer if the process of CAN frame transmission
+* fail in CAN controller hardware driver(the low level BSP CAN Driver fails).
+*
+*********************************************************************/
+void
+nm_app_notify_tx_hw_timeout
+    (
+    can_hw_inst_t hw_inst,
+    can_tmh_t     tmh
+    )
+{
+PRINTF( "NM Tx HW timeout,Tx message handle: %x\r\n", tmh );
+CAN_IGNORE_PARAMETER( hw_inst );
 }
 
 /*!*******************************************************************
@@ -423,7 +391,7 @@ il_app_notify_frame_received
     dll_frm_handle_t        const frm_handle
     )
 {
-CAN_IGNORE_PARAMETER( frm_handle );
+//TBD
 }
 
 /*!*******************************************************************
@@ -456,10 +424,78 @@ il_app_notify_sig_received
 *
 * This function is the Interaction Layer frame reception signal changed
 * callback notification that is called from the interaction Layer.
+* for IXWW22 the largest signal is 24 bit, so we use the 32bit signal
+* value
 *
 *********************************************************************/
-static void
+void
 il_app_notify_sig_changed
+    (
+    il_sig_handle_t         const sig_handle,
+    uint8_t                 const num_bytes,
+    uint32_t                     *p_sig_val
+    )
+{
+//TBD
+}
+
+/*!*******************************************************************
+*
+* @private
+* signal putting
+*
+* This function is the network interface manager Layer frame transmit
+* signal that is called from the App Layer.
+* for IXWW22 the largest signal is 40 bit, so we use the 64bit signal
+* value
+*
+*********************************************************************/
+void
+il_app_sig_put
+    (
+    il_sig_handle_t         const sig_handle,
+    uint8_t                 const num_bytes,
+    uint64_t                      sig_val
+    )
+{
+/*------------------------------------------------------
+Put the signal value
+------------------------------------------------------*/
+if( sizeof( uint8 ) == num_bytes )
+    {
+    CAN_nim_tx_put_uint8_signal( sig_handle,  (uint8)sig_val );
+    }
+else if( sizeof( uint16 ) == num_bytes )
+    {
+    CAN_nim_tx_put_uint16_signal( sig_handle, (uint16)sig_val );
+    }
+else if( sizeof( uint32 ) == num_bytes )
+    {
+    CAN_nim_tx_put_uint32_signal( sig_handle, (uint32)sig_val );
+    }
+else if( sizeof( uint64 ) == num_bytes )
+    {
+    CAN_nim_tx_put_uint64_signal( sig_handle, (uint64)sig_val );
+    }
+else
+    {
+    //TBD
+    }
+}
+
+/*!*******************************************************************
+*
+* @private
+* signal changed callback getting
+*
+* This function is the Interaction Layer frame reception signal changed
+* callback notification that is called from the interaction Layer.
+* for IXWW22 the largest signal is 24 bit, so we use the 32bit signal
+* value
+*
+*********************************************************************/
+void
+il_app_sig_get
     (
     il_sig_handle_t         const sig_handle,
     uint8_t                 const num_bytes,
@@ -503,7 +539,7 @@ else
 *
 *********************************************************************/
 void
-il_app_hook_rx_sig_chngd_handle
+il_app_hook_sig_changed_handle
     (
     il_rx_frm_index_t             msg_index,
     il_sig_handle_t         const sig_handle,
@@ -512,11 +548,10 @@ il_app_hook_rx_sig_chngd_handle
 {
 uint32_t l_sig_val;
 
-
 /*------------------------------------------------------
 Get the changed signal value
 ------------------------------------------------------*/
-il_app_notify_sig_changed( sig_handle, num_bytes,&l_sig_val );
+il_app_sig_get( sig_handle, num_bytes,&l_sig_val );
 
 switch( msg_index )
     {
@@ -541,10 +576,73 @@ switch( msg_index )
     }
 }
 
+/*!*******************************************************************
+*
+* @private
+* Interaction Layer CAN signal reception handler
+*
+* This function is the Interaction Layer CAN signal reception handler
+* that is called by the CAN Stack when an Interaction Layer CAN signal
+* is received on the CAN bus. This callback is called regardless of
+* whether the CAN signal value has changed from the previously
+* received value. This handler must be enabled as part of
+* configuration of the Garmin OSEK CAN Stack.
+*
+*********************************************************************/
+void
+il_app_hook_sig_received_handle
+    (
+    il_rx_frm_index_t             msg_index,
+    il_sig_handle_t         const sig_handle,
+    uint8_t                 const num_bytes
+    )
+{
+uint32_t l_sig_val;
 
+/*------------------------------------------------------
+Get the changed signal value
+------------------------------------------------------*/
+il_app_sig_get( sig_handle, num_bytes,&l_sig_val );
 
+switch( msg_index )
+    {
+    //TBD unchanged signals handler
 
+    default:
+        break;
+    }
 
+}
+
+/*!*******************************************************************
+*
+* @public
+* CAN application initialization
+*
+* This function is called to init CAN app
+*
+*********************************************************************/
+void app_init
+    (
+    can_hw_inst_t   const hw_inst       //!< [in] CAN hardware instance
+    )
+{
+/*------------------------------------------------------
+CAN application BusOFF Status.
+------------------------------------------------------*/
+can_app_bus_off[CAN_CONTROLLER_2] = FALSE;
+
+/*------------------------------------------------------
+CAN application Timeout error2 Status.
+------------------------------------------------------*/
+can_app_timeout_error2[CAN_CONTROLLER_2] = FALSE;
+
+/*------------------------------------------------------
+CAN application Other paras init
+------------------------------------------------------*/
+//TBD
+
+}
 
 /*!*******************************************************************
 *
@@ -561,6 +659,34 @@ void app_task
     can_hw_inst_t   const hw_inst       //!< [in] CAN hardware instance
     )
 {
+#if( (DEBUG_TX_CAN_SUPPORT)&&(DEBUG_RX_CAN_SUPPORT) )
+static uint8  app_tx_tick = CAN_APP_SIG_DEBUG_TICK;//!< 200 * 5 = 1000ms
+static uint32 app_rx_data = 0;
+
+if( app_tx_tick > 0 )
+    {
+    app_tx_tick--;
+    if( app_tx_tick == 0 )
+        {
+        app_tx_tick = CAN_APP_SIG_DEBUG_TICK;
+        il_app_sig_put( IL_CAN0_HEATER_LVL_SLECT_TXSIG_HANDLE, sizeof(uint8),
+                        IL_VT_HEATER_LVL_SLECT_PASSENGER_SEAT_HEATER );
+
+        il_app_sig_put( IL_CAN0_SYS_INFO_VH_SPEED_UNIT_TXSIG_HANDLE, sizeof(uint8),
+                        IL_VT_SYS_INFO_VH_SPEED_UNIT_MPH );
+
+        il_app_sig_get( IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, sizeof(uint8), &app_rx_data );
+        PRINTF( "Hardkey value:%x\r\n",app_rx_data );
+        }
+    }
+else
+    {
+    app_tx_tick = CAN_APP_SIG_DEBUG_TICK;
+    }
+
+
+#endif
+
 //TBD
 }
 

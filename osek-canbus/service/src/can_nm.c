@@ -31,6 +31,7 @@
 #include "can_tp.h"
 #include "can_nm.h"
 #include "can_nim_cfg.h"
+#include "CAN_app.h"
 
 #include "fsl_debug_console.h"
 #include "FreeRTOS.h"
@@ -295,6 +296,7 @@ if( ( NM_INIT_MODE_POWER_ON       == init_mode )     ||
     /*------------------------------------------------------
     Initialize the CAN Stack Layers
     ------------------------------------------------------*/
+    app_init(hw_inst);
     dll_init( hw_inst );
     il_init( hw_inst, l_init_default_signals );
     //TBD tp_init( hw_inst );

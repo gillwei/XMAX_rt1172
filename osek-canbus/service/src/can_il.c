@@ -963,7 +963,7 @@ for( l_i_signal = 0; l_i_signal < l_num_frame_signals; l_i_signal++ )
                     if( ( ( l_p_rxsig->attributes & IL_RX_SIG_ATTR_NOTIFY_CHANGE ) != 0 ) &&
                           ( notify_enable != FALSE ) )
                         {
-                        il_app_hook_rx_sig_chngd_handle( frm_index, l_sig_handle, l_sig_size );
+                        il_app_hook_sig_changed_handle( frm_index, l_sig_handle, l_sig_size );
                         }
                     }
                 }
