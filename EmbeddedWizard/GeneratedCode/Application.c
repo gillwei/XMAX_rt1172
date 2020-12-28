@@ -300,23 +300,27 @@ void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this
     {
       case EnumFactoryTestDisplay :
       {
+        FactoryDisplayManual FactoryTestDialog;
         ApplicationApplication_OnSetStatusBarVisible( _this, 0 );
+        FactoryTestDialog = EwCastObject( CoreGroup_FindDialogByClass((CoreGroup)_this, 
+        EW_CLASS( FactoryDisplayManual )), FactoryDisplayManual );
 
-        if ( _this->DisplayTestPage == 0 )
+        if ( FactoryTestDialog == 0 )
         {
-          _this->DisplayTestPage = EwNewObject( FactoryDisplayManual, 0 );
-          CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)_this->DisplayTestPage ), 
+          FactoryTestDialog = EwNewObject( FactoryDisplayManual, 0 );
+          CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)FactoryTestDialog ), 
           0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
         }
 
-        FactoryDisplayManual_OnSetPatternIdx( _this->DisplayTestPage, TestContext->Data );
+        FactoryDisplayManual_OnSetPatternIdx( FactoryTestDialog, TestContext->Data );
       }
       break;
 
       case EnumFactoryTestBurnInStart :
       {
-        FactoryDisplayAutoRun DisplayAutoRunDialog = EwNewObject( FactoryDisplayAutoRun, 
-          0 );
+        FactoryDisplayAutoRun DisplayAutoRunDialog;
+        ApplicationApplication_OnSetStatusBarVisible( _this, 0 );
+        DisplayAutoRunDialog = EwNewObject( FactoryDisplayAutoRun, 0 );
         FactoryDisplayAutoRun_OnSetBurnInEnabled( DisplayAutoRunDialog, 1 );
         CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)DisplayAutoRunDialog ), 
         0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -325,13 +329,7 @@ void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this
 
       case EnumFactoryTestQuit :
       {
-        if ( _this->DisplayTestPage != 0 )
-        {
-          CoreGroup__DismissDialog( _this, ((CoreGroup)_this->DisplayTestPage ), 
-          0, 0, 0, EwNewSlot( _this, ApplicationApplication_OnTestDimissedSlot ), 
-          EwNullSlot, 0 );
-        }
-
+        ApplicationApplication_DismissFactoryTestDialog( _this );
         ApplicationApplication_OnSetStatusBarVisible( _this, 1 );
       }
       break;
@@ -339,19 +337,6 @@ void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this
       default : 
         ;
     }
-  }
-}
-
-/* 'C' function for method : 'Application::Application.OnTestDimissedSlot()' */
-void ApplicationApplication_OnTestDimissedSlot( ApplicationApplication _this, XObject 
-  sender )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  if ( _this->DisplayTestPage != 0 )
-  {
-    _this->DisplayTestPage = 0;
   }
 }
 
@@ -385,13 +370,34 @@ void ApplicationApplication_OnBtFwStatusUpdteSlot( ApplicationApplication _this,
   }
 }
 
+/* 'C' function for method : 'Application::Application.DismissFactoryTestDialog()' */
+void ApplicationApplication_DismissFactoryTestDialog( ApplicationApplication _this )
+{
+  CoreGroup FactoryTestDialog = CoreGroup_FindDialogByClass((CoreGroup)_this, EW_CLASS( 
+    FactoryDisplayAutoRun ));
+
+  if ( FactoryTestDialog != 0 )
+  {
+    CoreGroup__DismissDialog( _this, FactoryTestDialog, 0, 0, 0, EwNullSlot, EwNullSlot, 
+    0 );
+  }
+
+  FactoryTestDialog = CoreGroup_FindDialogByClass((CoreGroup)_this, EW_CLASS( FactoryDisplayManual ));
+
+  if ( FactoryTestDialog != 0 )
+  {
+    CoreGroup__DismissDialog( _this, FactoryTestDialog, 0, 0, 0, EwNullSlot, EwNullSlot, 
+    0 );
+  }
+}
+
 /* Variants derived from the class : 'Application::Application' */
 EW_DEFINE_CLASS_VARIANTS( ApplicationApplication )
 EW_END_OF_CLASS_VARIANTS( ApplicationApplication )
 
 /* Virtual Method Table (VMT) for the class : 'Application::Application' */
-EW_DEFINE_CLASS( ApplicationApplication, CoreRoot, DisplayTestPage, Navigation, 
-                 Navigation, Navigation, PageIdx, PageIdx, "Application::Application" )
+EW_DEFINE_CLASS( ApplicationApplication, CoreRoot, Navigation, Navigation, Navigation, 
+                 Navigation, PageIdx, PageIdx, "Application::Application" )
   CoreRectView_initLayoutContext,
   CoreRoot_GetRoot,
   CoreRoot_Draw,

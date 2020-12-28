@@ -47,7 +47,6 @@ class Application : Core::Root
     }
 
     SwitchToPage( PageIdx );
-
   }
 
   $rect <580,430,780,470>
@@ -65,7 +64,6 @@ class Application : Core::Root
 
     StatusBar.StackingPriority = 1;
     SwitchToPage( 0 );
-
   }
 
   $rect <20,20,160,60>
@@ -136,11 +134,8 @@ class Application : Core::Root
   // Factory Test
   note group Note2
   {
-    attr Bounds = <10,570,320,820>;
+    attr Bounds = <10,570,320,780>;
   }
-
-  $rect <40,760,290,800>
-  var Factory::DisplayManual DisplayTestPage;
 
   $rect <40,610,290,650>
   object Core::SystemEventHandler FactoryTestEventHandler
@@ -162,38 +157,28 @@ class Application : Core::Root
         case Enum::FactoryTest.Display:
         {
           StatusBarVisible = false;
-          if( null == DisplayTestPage )
+          var Factory::DisplayManual FactoryTestDialog = ( Factory::DisplayManual )this.FindDialogByClass( Factory::DisplayManual );
+          if( null == FactoryTestDialog )
           {
-            DisplayTestPage = new Factory::DisplayManual;
-            PresentDialog( DisplayTestPage, null, null, null, null, null, null, null, null, false );
+            FactoryTestDialog = new Factory::DisplayManual;
+            PresentDialog( FactoryTestDialog, null, null, null, null, null, null, null, null, false );
           }
-          DisplayTestPage.PatternIdx = TestContext.Data;
+          FactoryTestDialog.PatternIdx = TestContext.Data;
         }
         case Enum::FactoryTest.BurnInStart:
         {
+          StatusBarVisible = false;
           var Factory::DisplayAutoRun DisplayAutoRunDialog = new Factory::DisplayAutoRun;
           DisplayAutoRunDialog.BurnInEnabled = true;
           PresentDialog( DisplayAutoRunDialog, null, null, null, null, null, null, null, null, false );
         }
         case Enum::FactoryTest.Quit:
         {
-          if( null != DisplayTestPage )
-          {
-            DismissDialog( DisplayTestPage, null, null, null, OnTestDimissedSlot, null, false );
-          }
+          DismissFactoryTestDialog();
           StatusBarVisible = true;
         }
         default:;
       }
-    }
-  }
-
-  $rect <40,710,290,750>
-  slot OnTestDimissedSlot
-  {
-    if( null != DisplayTestPage )
-    {
-      DisplayTestPage = null;
     }
   }
 
@@ -246,6 +231,22 @@ class Application : Core::Root
       var Settings::BtFwUpdateDialog BtFwDialog = new Settings::BtFwUpdateDialog;
       GetRoot().Add( BtFwDialog, 0 );
       GetRoot().BeginModal( BtFwDialog );
+    }
+  }
+
+  $rect <40,710,290,750>
+  method void DismissFactoryTestDialog()
+  {
+    var Core::Group FactoryTestDialog = this.FindDialogByClass( Factory::DisplayAutoRun );
+    if( null != FactoryTestDialog )
+    {
+      DismissDialog( FactoryTestDialog, null, null, null, null, null, false );
+    }
+
+    FactoryTestDialog = this.FindDialogByClass( Factory::DisplayManual );
+    if( null != FactoryTestDialog )
+    {
+      DismissDialog( FactoryTestDialog, null, null, null, null, null, false );
     }
   }
 }

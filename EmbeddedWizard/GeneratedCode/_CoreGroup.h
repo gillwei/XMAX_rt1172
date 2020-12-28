@@ -400,6 +400,19 @@ XBool CoreGroup_OnGetVisible( CoreGroup _this );
 /* 'C' function for method : 'Core::Group.OnSetVisible()' */
 void CoreGroup_OnSetVisible( CoreGroup _this, XBool value );
 
+/* The method FindDialogByClass() searches the tree of subordinated components for 
+   the one, which acts actually as a dialog and it is an instance of the specified 
+   class aDialogClass. If there is no dialog presented in context of 'this' component, 
+   'this' component however is itself presented as dialog in context of its owner 
+   and 'this' component is an instance of the specified class, the method returns 
+   'this'. If 'this' component is actually not acting as dialog, there are no subordinated 
+   dialogs inside it and 'this' component does not descend from aDialogClass, the 
+   method returns 'null'.
+   Using the method FindDialogByClass() in context of the application root component 
+   searches the entire set of all dialogs existing actually in the GUI application 
+   (see also @IsDialog()). */
+CoreGroup CoreGroup_FindDialogByClass( CoreGroup _this, XClass aDialogClass );
+
 /* The method IsCurrentDialog() returns 'true' if 'this' component and all of its 
    owners do actually act as active dialogs (see the method @IsActiveDialog()) and 
    there are no further subordinated dialogs existing in context of 'this' component. 

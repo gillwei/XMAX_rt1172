@@ -103,12 +103,6 @@
 #define _EffectsFader_
 #endif
 
-/* Forward declaration of the class Factory::DisplayManual */
-#ifndef _FactoryDisplayManual_
-  EW_DECLARE_CLASS( FactoryDisplayManual )
-#define _FactoryDisplayManual_
-#endif
-
 /* Forward declaration of the class Graphics::Canvas */
 #ifndef _GraphicsCanvas_
   EW_DECLARE_CLASS( GraphicsCanvas )
@@ -118,7 +112,6 @@
 
 /* This is the root component of the entire GUI application. */
 EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
-  EW_VARIABLE( DisplayTestPage, FactoryDisplayManual )
   EW_OBJECT  ( Navigation,      NavigationMain )
   EW_OBJECT  ( FactoryTestEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( StatusBar,       ComponentsStatusBar )
@@ -202,10 +195,6 @@ void ApplicationApplication_SwitchToPage( ApplicationApplication _this, XInt32 a
 void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this, 
   XObject sender );
 
-/* 'C' function for method : 'Application::Application.OnTestDimissedSlot()' */
-void ApplicationApplication_OnTestDimissedSlot( ApplicationApplication _this, XObject 
-  sender );
-
 /* 'C' function for method : 'Application::Application.OnSetStatusBarVisible()' */
 void ApplicationApplication_OnSetStatusBarVisible( ApplicationApplication _this, 
   XBool value );
@@ -214,6 +203,9 @@ void ApplicationApplication_OnSetStatusBarVisible( ApplicationApplication _this,
    is notified. */
 void ApplicationApplication_OnBtFwStatusUpdteSlot( ApplicationApplication _this, 
   XObject sender );
+
+/* 'C' function for method : 'Application::Application.DismissFactoryTestDialog()' */
+void ApplicationApplication_DismissFactoryTestDialog( ApplicationApplication _this );
 
 #ifdef __cplusplus
   }
