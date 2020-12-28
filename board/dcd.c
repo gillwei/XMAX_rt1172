@@ -28,6 +28,26 @@ processor_version: 0.8.1
 output_format: c_array
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* COMMENTS BELOW ARE USED AS SETTINGS FOR DCD DATA */
+#if USE_XMCD
+const uint32_t dcd_data[] = {
+    /*
+    Please check chapter 10.8 in RM_Rev_H
+    0xC010000D: Tag = 0xC, Version = 0
+                Memory Interface: SEMC
+                Instance: 0 - ignored
+                Configuration block type: 0 - Ignored
+                (Handled inside the SDRAM configuration structure)
+                Configuration block size: 13 (4-byte header + 9-byte option block)
+    0xA60001A1: Magic_number = 0xA1
+                Version = 1
+                Config_option: Simplified
+                SDRAM clock: 166MHz
+    0x00004000: SDRAM CS0 size: 16MBytes
+    0x01      : Port_size: 16-bit
+    */
+    0x0, 0x0, 0x0, 0x0, 0xC010000D, 0xA60001A1, 0x00004000, 0x01,
+};
+#else
 const uint8_t dcd_data[] = {
 	/* HEADER */
 	/* Tag */
@@ -394,7 +414,7 @@ const uint8_t dcd_data[] = {
 	0x40, 0x0D, 0x40, 0x4C, 0x50, 0x21, 0x0A, 0x09
 	};
 /* BE CAREFUL MODIFYING THIS SETTINGS - IT IS YAML SETTINGS FOR TOOLS */
-
+#endif
 #else
 const uint8_t dcd_data[] = {0x00};
 #endif /* XIP_BOOT_HEADER_DCD_ENABLE */
