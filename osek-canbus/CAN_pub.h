@@ -21,14 +21,25 @@ extern "C" {
 #include "can_il_par.h"
 #include "can_il.h"
 
-void il_app_sig_put
+void il_app_frm_timeout1_get
+    (
+    il_rx_frm_index_t  msg_index,
+    boolean           *p_timeout_err1
+    );
+
+void il_app_frm_timeout2_get
+    (
+    boolean           *p_timeout_err2
+    );
+
+void nim_app_sig_put
     (
     il_sig_handle_t         const sig_handle,
     uint8_t                 const num_bytes,
     uint64_t                      sig_val
     );
 
-void il_app_sig_get
+void nim_app_sig_get
     (
     il_sig_handle_t         const sig_handle,
     uint8_t                 const num_bytes,

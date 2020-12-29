@@ -99,16 +99,6 @@ At least one type of transmission is pending
                                               IL_TX_STATUS_PERIODIC_PENDING )
 
 /*------------------------------------------------------
-Receive frame status bits
-------------------------------------------------------*/
-#define IL_RX_STATUS_PENDING                (0x1 << 0)
-#define IL_RX_STATUS_DATA_CHANGED           (0x1 << 1)
-#define IL_RX_STATUS_TIMEOUT1               (0x1 << 2)
-#define IL_RX_STATUS_TIMEOUT2               (0x1 << 3)
-#define IL_RX_STATUS_LOSS_NOTIFIED          (0x1 << 4)
-#define IL_RX_STATUS_ABSENT_FAULT           (0x1 << 5)
-
-/*------------------------------------------------------
 Receive Frame Maximum Absent Count
 ------------------------------------------------------*/
 #define IL_RX_MAX_ABSENT_COUNT              (0xFF)

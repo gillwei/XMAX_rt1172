@@ -25,6 +25,18 @@ extern "C" {
 #include "can_defs.h"
 #include "can_dll.h"
 
+/*--------------------------------------------------------------------
+                                MACROS
+--------------------------------------------------------------------*/
+/*------------------------------------------------------
+Receive frame status bits
+------------------------------------------------------*/
+#define IL_RX_STATUS_PENDING                (0x1 << 0)
+#define IL_RX_STATUS_DATA_CHANGED           (0x1 << 1)
+#define IL_RX_STATUS_TIMEOUT1               (0x1 << 2)
+#define IL_RX_STATUS_TIMEOUT2               (0x1 << 3)
+#define IL_RX_STATUS_LOSS_NOTIFIED          (0x1 << 4)
+#define IL_RX_STATUS_ABSENT_FAULT           (0x1 << 5)
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -287,7 +299,21 @@ void il_app_notify_sig_received
     uint8           const num_bytes     //!< [in] signal size in bytes
     );
 
-void il_app_hook_rx_sig_chngd_handle
+void il_app_notify_sig_changed
+    (
+    il_sig_handle_t         const sig_handle,
+    uint8_t                 const num_bytes,
+    uint32_t                     *p_sig_val
+    );
+
+void il_app_hook_sig_changed_handle
+    (
+    il_rx_frm_index_t             msg_index,
+    il_sig_handle_t         const sig_handle,
+    uint8_t                 const num_bytes
+    );
+
+void il_app_hook_sig_received_handle
     (
     il_rx_frm_index_t             msg_index,
     il_sig_handle_t         const sig_handle,

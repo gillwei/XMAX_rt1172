@@ -377,6 +377,60 @@ if( timeout_trig == TRUE )
 /*!*******************************************************************
 *
 * @private
+* receive timeout1 get
+*
+* This function is the Interaction Layer frame reception timeout error1
+* status get
+*
+*********************************************************************/
+void
+il_app_frm_timeout1_get
+    (
+    il_rx_frm_index_t  msg_index,
+    boolean           *p_timeout_err1
+    )
+{
+il_rxfrm_info_t     const *l_p_rxfrm_info;
+uint8                     *l_p_frm_status;
+
+/*------------------------------------------------------
+Get the receive frame information and service all of
+the receive frames for this CAN hardware instance
+------------------------------------------------------*/
+l_p_rxfrm_info = il_get_rxfrm_info_ptr( CAN_CONTROLLER_2 );
+
+/*------------------------------------------------------
+Get the receive frame status
+------------------------------------------------------*/
+l_p_frm_status = &( l_p_rxfrm_info->p_status[msg_index] );
+
+/*------------------------------------------------------
+Get the receive frame timeout error1 status
+------------------------------------------------------*/
+( *p_timeout_err1 ) = ( ( *l_p_frm_status ) & IL_RX_STATUS_TIMEOUT1 );
+}
+
+/*!*******************************************************************
+*
+* @private
+* receive timeout2 get
+*
+* This function is the Interaction Layer frame reception timeout error2
+* status get
+*
+*********************************************************************/
+void
+il_app_frm_timeout2_get
+    (
+    boolean  *p_timeout_err2
+    )
+{
+( *p_timeout_err2 ) = can_app_timeout_error2[CAN_CONTROLLER_2];
+}
+
+/*!*******************************************************************
+*
+* @private
 * Interaction Layer CAN message frame reception notification
 *
 * This function is the Interaction Layer CAN frame reception callback
@@ -451,7 +505,7 @@ il_app_notify_sig_changed
 *
 *********************************************************************/
 void
-il_app_sig_put
+nim_app_sig_put
     (
     il_sig_handle_t         const sig_handle,
     uint8_t                 const num_bytes,
@@ -463,7 +517,7 @@ Put the signal value
 ------------------------------------------------------*/
 if( sizeof( uint8 ) == num_bytes )
     {
-    CAN_nim_tx_put_uint8_signal( sig_handle,  (uint8)sig_val );
+    CAN_nim_tx_put_uint8_signal( sig_handle, (uint8)sig_val );
     }
 else if( sizeof( uint16 ) == num_bytes )
     {
@@ -486,16 +540,17 @@ else
 /*!*******************************************************************
 *
 * @private
-* signal changed callback getting
+* signal getting
 *
-* This function is the Interaction Layer frame reception signal changed
-* callback notification that is called from the interaction Layer.
+* This function is the network interface manager Layer frame transmit
+* signal that is called from the App Layer.
 * for IXWW22 the largest signal is 24 bit, so we use the 32bit signal
 * value
 *
 *********************************************************************/
+
 void
-il_app_sig_get
+nim_app_sig_get
     (
     il_sig_handle_t         const sig_handle,
     uint8_t                 const num_bytes,
@@ -551,7 +606,7 @@ uint32_t l_sig_val;
 /*------------------------------------------------------
 Get the changed signal value
 ------------------------------------------------------*/
-il_app_sig_get( sig_handle, num_bytes,&l_sig_val );
+nim_app_sig_get( sig_handle, num_bytes,&l_sig_val );
 
 switch( msg_index )
     {
@@ -602,7 +657,7 @@ uint32_t l_sig_val;
 /*------------------------------------------------------
 Get the changed signal value
 ------------------------------------------------------*/
-il_app_sig_get( sig_handle, num_bytes,&l_sig_val );
+nim_app_sig_get( sig_handle, num_bytes,&l_sig_val );
 
 switch( msg_index )
     {
@@ -660,8 +715,9 @@ void app_task
     )
 {
 #if( (DEBUG_TX_CAN_SUPPORT)&&(DEBUG_RX_CAN_SUPPORT) )
-static uint8  app_tx_tick = CAN_APP_SIG_DEBUG_TICK;//!< 200 * 5 = 1000ms
-static uint32 app_rx_data = 0;
+static uint8   app_tx_tick = CAN_APP_SIG_DEBUG_TICK;//!< 200 * 5 = 1000ms
+static uint32  app_rx_data = 0;
+static boolean timeout_err = FALSE;
 
 if( app_tx_tick > 0 )
     {
@@ -669,14 +725,38 @@ if( app_tx_tick > 0 )
     if( app_tx_tick == 0 )
         {
         app_tx_tick = CAN_APP_SIG_DEBUG_TICK;
-        il_app_sig_put( IL_CAN0_HEATER_LVL_SLECT_TXSIG_HANDLE, sizeof(uint8),
+        nim_app_sig_put( IL_CAN0_HEATER_LVL_SLECT_TXSIG_HANDLE, sizeof(uint8),
                         IL_VT_HEATER_LVL_SLECT_PASSENGER_SEAT_HEATER );
 
-        il_app_sig_put( IL_CAN0_SYS_INFO_VH_SPEED_UNIT_TXSIG_HANDLE, sizeof(uint8),
+        nim_app_sig_put( IL_CAN0_SYS_INFO_VH_SPEED_UNIT_TXSIG_HANDLE, sizeof(uint8),
                         IL_VT_SYS_INFO_VH_SPEED_UNIT_MPH );
 
-        il_app_sig_get( IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, sizeof(uint8), &app_rx_data );
-        PRINTF( "Hardkey value:%x\r\n",app_rx_data );
+        nim_app_sig_get( IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, sizeof(uint8), &app_rx_data );
+        PRINTF( "Hardkey value:%x\r\n\r\n",app_rx_data );
+
+        il_app_frm_timeout1_get( IL_CAN0_RX3_BRGTHNSS_CTRL_IDX, &timeout_err );
+        PRINTF( "BRGTHNSS_CTRL  timeout_err1:%x\r\n", timeout_err );
+
+        il_app_frm_timeout1_get( IL_CAN0_RX5_VEHICLE_INFO_IDX, &timeout_err );
+        PRINTF( "VEHICLE_INFO   timeout_err1:%x\r\n", timeout_err );
+
+        il_app_frm_timeout1_get( IL_CAN0_RXA_VEHICLE_INFO_2_IDX, &timeout_err );
+        PRINTF( "VEHICLE_INFO_2 timeout_err1:%x\r\n", timeout_err );
+
+        il_app_frm_timeout1_get( IL_CAN0_RXD_MAINT_TRIP_IDX, &timeout_err );
+        PRINTF( "MAINT_TRIP     timeout_err1:%x\r\n", timeout_err );
+
+        il_app_frm_timeout1_get( IL_CAN0_RX8_ODO_TRIP_IDX, &timeout_err );
+        PRINTF( "ODO_TRIP       timeout_err1:%x\r\n", timeout_err );
+
+        il_app_frm_timeout1_get( IL_CAN0_RX7_FUEL_RATE_IDX, &timeout_err );
+        PRINTF( "FUEL_RATE      timeout_err1:%x\r\n", timeout_err );
+
+        il_app_frm_timeout1_get( IL_CAN0_RX6_FUNCSW_STAT_IDX, &timeout_err );
+        PRINTF( "FUNCSW_STAT    timeout_err1:%x\r\n", timeout_err );
+
+        il_app_frm_timeout2_get( &timeout_err );
+        PRINTF( "FUNCSW_STAT    timeout_err2:%x\r\n", timeout_err );
         }
     }
 else
