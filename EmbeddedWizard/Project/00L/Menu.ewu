@@ -1,11 +1,28 @@
 ﻿$version 10.00
 
-$rect <10,10,250,50>
+$rect <230,10,430,50>
 $output false
 class ItemBase : Core::Group
 {
   $rect <0,105,190,145>
   inherited property Bounds = <0,0,480,74>;
+
+  $rect <0,150,190,190>
+  inherited method UpdateLayout()
+  {
+    super( aSize );
+
+    switch( Height )
+    {
+      case Menu::ItemHeightSmall:
+      {
+        Title.Bounds = <37,9,417,43>;
+        HighlightRect.Bounds = <18,0,435,54>;
+        ListDivider.Bounds = <0,54,480,56>;
+      }
+      default:;
+    }
+  }
 
   $rect <474,140,674,180>
   inherited method UpdateViewState()
@@ -29,7 +46,7 @@ class ItemBase : Core::Group
     }
   }
 
-  $rect <0,255,190,295>
+  $rect <730,210,920,250>
   inherited onset Enabled
   {
     if( pure Enabled != value )
@@ -110,7 +127,7 @@ class ItemBase : Core::Group
   // The property 'OnActivate' can refer to a slot method, which will receive a signal \
   // as soon as the user has activated (pressed and released) the item. Thereupon \
   // the method's logic will be executed.
-  $rect <0,155,190,195>
+  $rect <950,260,1140,300>
   property slot OnActivate = null;
 
   // Focus frame flash effect
@@ -143,7 +160,7 @@ class ItemBase : Core::Group
     postsignal OnActivate;
   }
 
-  $rect <0,205,190,245>
+  $rect <730,100,920,140>
   method void SetTitle( arg string aTitle )
   {
     if( Title.String != aTitle )
@@ -175,10 +192,10 @@ class ItemBase : Core::Group
   $rect <220,315,420,355>
   property slot OnEnterHold;
 
-  $rect <0,395,200,435>
+  $rect <950,100,1150,140>
   property bool Focusable = true;
 
-  $rect <0,435,200,475>
+  $rect <950,140,1150,180>
   onset Focusable
   {
     if( pure Focusable != value )
@@ -186,6 +203,9 @@ class ItemBase : Core::Group
       pure Focusable = value;
     }
   }
+
+  $rect <950,210,1150,250>
+  property int32 Height = Menu::ItemHeightTall;
 
   $reorder Init 1
   $reorder OnSetOpacity 1
@@ -245,34 +265,7 @@ class ItemBase : Core::Group
   $reorder Enabled 1
 }
 
-$rect <80,60,320,100>
-$output false
-class ItemBaseLower : Menu::ItemBase
-{
-  $rect <10,90,210,130>
-  inherited property Bounds = <0,0,480,56>;
-
-  $rect <20,20,160,60>
-  inherited object HighlightRect
-  {
-    preset Bounds = <18,0,435,54>;
-  }
-
-  $rect <20,20,160,60>
-  inherited object ListDivider
-  {
-    preset Bounds = <0,54,480,56>;
-    preset Bitmap = Resource::ListDivider4;
-  }
-
-  $rect <20,20,160,60>
-  inherited object Title
-  {
-    preset Bounds = <37,9,417,43>;
-  }
-}
-
-$rect <10,360,250,400>
+$rect <460,110,660,150>
 $output false
 class VerticalMenu : Components::BaseComponent
 {
@@ -328,7 +321,7 @@ class VerticalMenu : Components::BaseComponent
     preset Focus = null;
     preset OnLoadItem = OnLoadItemSlot;
     preset SelectedItem = 0;
-    preset ItemHeight = 74;
+    preset ItemHeight = Menu::ItemHeightTall;
     preset NoOfItems;
     preset ItemClass = Menu::ItemWrapper;
   }
@@ -345,6 +338,7 @@ class VerticalMenu : Components::BaseComponent
       var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )Owner;
       if( null != OwnerMenu )
       {
+        Item.Height = ItemHeight;
         Item.ItemClass = OwnerMenu.LoadItemClass( ItemNo );
         Item.Title = OwnerMenu.LoadItemTitle( ItemNo );
         Item.Enabled = OwnerMenu.LoadItemEnabled( ItemNo );
@@ -354,9 +348,7 @@ class VerticalMenu : Components::BaseComponent
       }
 
       if( Menu::ItemCheckbox == Item.ItemClass ||
-          Menu::ItemCheckboxLower == Item.ItemClass ||
-          Menu::ItemCheckMark == Item.ItemClass ||
-          Menu::ItemCheckMarkLower == Item.ItemClass )
+          Menu::ItemCheckMark == Item.ItemClass )
       {
         Item.Checked = OwnerMenu.LoadItemChecked( ItemNo );
       }
@@ -437,7 +429,7 @@ class VerticalMenu : Components::BaseComponent
   property bool Focusable = true;
 
   $rect <0,470,200,510>
-  property int32 ItemHeight = 74;
+  property int32 ItemHeight = Menu::ItemHeightTall;
 
   $rect <0,510,200,550>
   onset ItemHeight
@@ -514,10 +506,26 @@ class VerticalMenu : Components::BaseComponent
   }
 }
 
-$rect <80,110,320,150>
+$rect <230,60,430,100>
 $output false
 class ItemCheckbox : Menu::ItemBase
 {
+  $rect <0,230,190,270>
+  inherited method UpdateLayout()
+  {
+    super( aSize );
+
+    switch( Height )
+    {
+      case Menu::ItemHeightSmall:
+      {
+        Title.Bounds = <37,9,367,43>;
+        CheckBoxButton.Bounds = <371,2,421,52>;
+      }
+      default:;
+    }
+  }
+
   $rect <0,170,190,210>
   inherited onset Enabled
   {
@@ -568,7 +576,7 @@ class ItemCheckbox : Menu::ItemBase
 }
 
 // This is a GUI component.
-$rect <10,310,250,350>
+$rect <460,60,660,100>
 $output false
 class ItemWrapper : Core::Group
 {
@@ -590,11 +598,12 @@ class ItemWrapper : Core::Group
 
       var Core::View view = FindNextView( null, Core::ViewState[] );
 
-      var Menu::ItemBaseLower ItemRight = ( Menu::ItemBaseLower )view;
-      if( null != ItemRight )
+      var Menu::ItemBase ItemBase = ( Menu::ItemBase )view;
+      if( null != ItemBase )
       {
-        ItemRight.Enabled = value;
+        ItemBase.Enabled = value;
       }
+      /*
       else
       {
         var Menu::ItemCheckbox ItemCheck = ( Menu::ItemCheckbox )view;
@@ -611,6 +620,7 @@ class ItemWrapper : Core::Group
           }
         }
       }
+      */
     }
   }
 
@@ -624,22 +634,23 @@ class ItemWrapper : Core::Group
   $rect <40,350,240,390>
   onset ItemClass
   {
-    if( pure ItemClass == value )
-      return;
-
-    // Remember the property's new value.
-    pure ItemClass = value;
-
-    // Remove the old embedded item, if any ...
-    if( CountViews() > 0 )
+    if( pure ItemClass != value )
     {
-      Remove( FindNextView( null, Core::ViewState[] ) );
-    }
+      // Remember the property's new value.
+      pure ItemClass = value;
 
-    var Menu::ItemBase Item = ( Menu::ItemBase )new value;
-    Item.OnActivate = OnActivateSlot;
-    Item.OnEnterHold = OnEnterHoldSlot;
-    Add( Item, 0 );
+      // Remove the old embedded item, if any ...
+      if( CountViews() > 0 )
+      {
+        Remove( FindNextView( null, Core::ViewState[] ) );
+      }
+
+      var Menu::ItemBase Item = ( Menu::ItemBase )new value;
+      Item.Height = Height;
+      Item.OnActivate = OnActivateSlot;
+      Item.OnEnterHold = OnEnterHoldSlot;
+      Add( Item, 0 );
+    }
   }
 
   // This is a property.
@@ -677,7 +688,7 @@ class ItemWrapper : Core::Group
   // For general menu item
   note group Note6
   {
-    attr Bounds = <20,250,890,470>;
+    attr Bounds = <20,250,1120,470>;
   }
 
   // For ItemCheckbox and ItemCheckMark
@@ -741,9 +752,12 @@ class ItemWrapper : Core::Group
       }
     }
   }
+
+  $rect <890,290,1090,330>
+  property int32 Height;
 }
 
-$rect <510,10,710,50>
+$rect <460,160,660,200>
 $output false
 class Scrollbar : Core::Group
 {
@@ -852,9 +866,9 @@ class Scrollbar : Core::Group
   }
 }
 
-$rect <510,60,750,100>
+$rect <460,10,660,50>
 $output false
-class BaseMenuView : Components::BaseComponent
+class BaseMenuView : Components::BaseMainBG
 {
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
@@ -890,20 +904,6 @@ class BaseMenuView : Components::BaseComponent
 
   }
 
-  $rect <20,20,160,60>
-  object Views::Rectangle BlackBG
-  {
-    preset Bounds = <0,32,480,182>;
-    preset Color = #000000FF;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Image MainBottomBG
-  {
-    preset Bounds = <0,182,480,272>;
-    preset Bitmap = Resource::MainBG;
-  }
-
   // For general menu item
   note group Note6
   {
@@ -935,82 +935,14 @@ class BaseMenuView : Components::BaseComponent
     }
     return true;
   }
+
+  $reorder LoadItemClass 2
+  $reorder LoadItemTitle 2
+  $reorder OnItemActivate 2
+  $reorder BlackBG 1
 }
 
-$rect <140,260,380,300>
-$output false
-class ItemCheckMarkLower : Menu::ItemCheckMark
-{
-  $rect <0,80,200,120>
-  inherited property Bounds = <0,0,480,56>;
-
-  $rect <20,20,160,60>
-  inherited object HighlightRect
-  {
-    preset Bounds = <18,0,435,54>;
-  }
-
-  $rect <20,20,160,60>
-  inherited object ListDivider
-  {
-    preset Bounds = <0,54,480,56>;
-    preset Bitmap = Resource::ListDivider4;
-  }
-
-  $rect <20,20,160,60>
-  inherited object Title
-  {
-    preset Bounds = <37,9,367,43>;
-    preset Ellipsis = true;
-    preset String = "";
-  }
-
-  $rect <20,20,160,60>
-  inherited object CheckMark
-  {
-    preset Bounds = <371,2,421,52>;
-    preset Visible = false;
-  }
-}
-
-$rect <140,160,380,200>
-$output false
-class ItemCheckboxLower : Menu::ItemCheckbox
-{
-  $rect <0,70,200,110>
-  inherited property Bounds = <0,0,480,56>;
-
-  $rect <20,20,160,60>
-  inherited object HighlightRect
-  {
-    preset Bounds = <18,0,435,54>;
-  }
-
-  $rect <20,20,160,60>
-  inherited object ListDivider
-  {
-    preset Bounds = <0,54,480,56>;
-    preset Bitmap = Resource::ListDivider4;
-  }
-
-  $rect <20,20,160,60>
-  inherited object Title
-  {
-    preset Bounds = <37,9,367,43>;
-    preset WrapText = true;
-  }
-
-  $rect <20,20,160,60>
-  inherited object CheckBoxButton
-  {
-    preset Bounds = <371,2,421,52>;
-  }
-
-  $reorder Checked 3
-  $reorder OnSetChecked 3
-}
-
-$rect <860,10,1060,50>
+$rect <690,10,890,50>
 $output false
 class PushButton : Core::Group
 {
@@ -1151,7 +1083,7 @@ class PushButton : Core::Group
   property slot OnActivate;
 }
 
-$rect <860,60,1080,100>
+$rect <690,60,910,100>
 $output false
 class UpDownPushButtonSet : Components::BaseComponent
 {
@@ -1236,10 +1168,26 @@ class UpDownPushButtonSet : Components::BaseComponent
   }
 }
 
-$rect <80,210,320,250>
+$rect <230,110,430,150>
 $output false
 class ItemCheckMark : Menu::ItemBase
 {
+  $rect <220,80,410,120>
+  inherited method UpdateLayout()
+  {
+    super( aSize );
+
+    switch( Height )
+    {
+      case Menu::ItemHeightSmall:
+      {
+        Title.Bounds = <37,9,367,43>;
+        CheckMark.Bounds = <371,2,421,52>;
+      }
+      default:;
+    }
+  }
+
   $rect <20,20,160,60>
   inherited object Title
   {
@@ -1268,3 +1216,11 @@ class ItemCheckMark : Menu::ItemBase
     preset Visible = false;
   }
 }
+
+$rect <10,10,210,50>
+$output false
+const int32 ItemHeightTall = 74;
+
+$rect <10,60,210,100>
+$output false
+const int32 ItemHeightSmall = 56;

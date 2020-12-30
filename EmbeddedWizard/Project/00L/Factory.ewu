@@ -199,18 +199,17 @@ class DisplayAutoRun : Components::BaseComponent
     time_str = string( hour ) + ":";
     if( minute < 10 )
     {
-      time_str += "0"; 
+      time_str += "0";
     }
-    time_str += string( minute ) + ":"; 
+    time_str += string( minute ) + ":";
 
     if( second < 10 )
     {
-      time_str += '0'; 
+      time_str += '0';
     }
-    time_str += string( second ); 
+    time_str += string( second );
 
     BurnInTimeText.String = time_str;
-
   }
 
   $rect <830,250,1040,290>
@@ -266,7 +265,7 @@ class Main : Menu::BaseMenuView
     {
       // empty body
     }
-    return Menu::ItemBaseLower;
+    return Menu::ItemBase;
   }
 
   $rect <510,60,710,100>
@@ -319,7 +318,7 @@ class Main : Menu::BaseMenuView
     preset Bounds = <0,36,480,272>;
     preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = ItemTitleArray.size;
-    preset ItemHeight = 56;
+    preset ItemHeight = Menu::ItemHeightSmall;
   }
 
   $reorder SlideInDialog 4

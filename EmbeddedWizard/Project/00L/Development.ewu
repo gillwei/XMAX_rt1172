@@ -27,9 +27,9 @@ class Main : Menu::BaseMenuView
     var class ItemClass = null;
     switch (aItemNo )
     {
-      case 0: ItemClass = Menu::ItemBaseLower;
-      case 1: ItemClass = Menu::ItemCheckboxLower;
-      default: ItemClass = Menu::ItemBaseLower;
+      case 0: ItemClass = Menu::ItemBase;
+      case 1: ItemClass = Menu::ItemCheckbox;
+      default: ItemClass = Menu::ItemBase;
     }
 
     return ItemClass;
@@ -90,7 +90,7 @@ class Main : Menu::BaseMenuView
     preset Bounds = <0,36,480,272>;
     preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = ItemTitleArray.size;
-    preset ItemHeight = 56;
+    preset ItemHeight = Menu::ItemHeightSmall;
   }
 
   $reorder SlideInDialog 4

@@ -42,7 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
+#include "_ComponentsBaseMainBG.h"
 #include "_CoreKeyPressHandler.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -103,13 +103,11 @@
 
 
 /* Deklaration of class : 'Menu::BaseMenuView' */
-EW_DEFINE_FIELDS( MenuBaseMenuView, ComponentsBaseComponent )
-  EW_OBJECT  ( BlackBG,         ViewsRectangle )
-  EW_OBJECT  ( MainBottomBG,    ViewsImage )
+EW_DEFINE_FIELDS( MenuBaseMenuView, ComponentsBaseMainBG )
 EW_END_OF_FIELDS( MenuBaseMenuView )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::BaseMenuView' */
-EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseComponent )
+EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -139,6 +137,7 @@ EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseComponent )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
+  EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
   EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )

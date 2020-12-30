@@ -2695,7 +2695,7 @@ void CoreGroup_recalculateLayout( CoreGroup _this )
     EwPostSignal( form->OnUpdate, ((XObject)form ));
 
   _this->Super2.viewState = _this->Super2.viewState & ~CoreViewStateUpdatingLayout;
-  CoreGroup_UpdateLayout( _this, EwGetRectSize( groupBounds ));
+  CoreGroup__UpdateLayout( _this, EwGetRectSize( groupBounds ));
 }
 
 /* 'C' function for method : 'Core::Group.updateComponent()' */
@@ -3585,6 +3585,12 @@ void CoreGroup_UpdateLayout( CoreGroup _this, XPoint aSize )
   EW_UNUSED_ARG( aSize );
 }
 
+/* Wrapper function for the virtual method : 'Core::Group.UpdateLayout()' */
+void CoreGroup__UpdateLayout( void* _this, XPoint aSize )
+{
+  ((CoreGroup)_this)->_VMT->UpdateLayout((CoreGroup)_this, aSize );
+}
+
 /* The method UpdateViewState() is invoked automatically after the state of the 
    component has been changed. This method can be overridden and filled with logic 
    to ensure the visual aspect of the component does reflect its current state. 
@@ -4279,6 +4285,7 @@ EW_DEFINE_CLASS( CoreGroup, CoreRectView, first, Opacity, Opacity, Opacity, Opac
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -5853,6 +5860,7 @@ EW_DEFINE_CLASS( CoreRoot, CoreGroup, keyLastTarget, cursorHoldTimer, cursorHold
   CoreGroup_DismissDialog,
   CoreRoot_DispatchEvent,
   CoreRoot_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreRoot_InvalidateArea,
   CoreGroup_CountViews,
@@ -7575,6 +7583,7 @@ EW_DEFINE_CLASS( CoreVerticalList, CoreGroup, itemsPool, OnUpdate, invalidTail,
   CoreGroup_DismissDialog,
   CoreVerticalList_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreVerticalList_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreVerticalList_CountViews,

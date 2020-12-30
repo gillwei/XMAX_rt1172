@@ -36,7 +36,7 @@
 #include "_FactoryDisplayManual.h"
 #include "_FactoryMain.h"
 #include "_FactoryTestContext.h"
-#include "_MenuItemBaseLower.h"
+#include "_MenuItemBase.h"
 #include "_MenuVerticalMenu.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesExternBitmap.h"
@@ -458,6 +458,7 @@ EW_DEFINE_CLASS( FactoryDisplayAutoRun, ComponentsBaseComponent, TimerNextPatter
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -578,7 +579,7 @@ void FactoryMain_OnLongKeyPressed( FactoryMain _this, XObject sender )
 {
   CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
 
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
   {
     switch ( CurrentKeyHandler->Code )
     {
@@ -601,7 +602,7 @@ XClass FactoryMain_LoadItemClass( FactoryMain _this, XInt32 aItemNo )
   if ( aItemNo >= 0 )
     ;
 
-  return EW_CLASS( MenuItemBaseLower );
+  return EW_CLASS( MenuItemBase );
 }
 
 /* 'C' function for method : 'Factory::Main.LoadItemTitle()' */
@@ -678,6 +679,7 @@ EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, ItemTitl
   FactoryMain_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -1015,6 +1017,7 @@ EW_DEFINE_CLASS( FactoryDisplayManual, ComponentsBaseComponent, FullScreen, Full
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,

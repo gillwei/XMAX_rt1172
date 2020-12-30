@@ -34,8 +34,8 @@
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_FactoryMain.h"
-#include "_MenuItemBaseLower.h"
-#include "_MenuItemCheckboxLower.h"
+#include "_MenuItemBase.h"
+#include "_MenuItemCheckbox.h"
 #include "_MenuVerticalMenu.h"
 #include "_ResourcesFont.h"
 #include "_ViewsText.h"
@@ -142,12 +142,12 @@ void DevelopmentMain_OnLongKeyPressed( DevelopmentMain _this, XObject sender )
 {
   CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
 
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
   {
     switch ( CurrentKeyHandler->Code )
     {
       case CoreKeyCodeOk :
-        CoreGroup__DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 
+        CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 
         0, EwNullSlot, EwNullSlot, 0 );
       break;
 
@@ -170,15 +170,15 @@ XClass DevelopmentMain_LoadItemClass( DevelopmentMain _this, XInt32 aItemNo )
   switch ( aItemNo )
   {
     case 0 :
-      ItemClass = EW_CLASS( MenuItemBaseLower );
+      ItemClass = EW_CLASS( MenuItemBase );
     break;
 
     case 1 :
-      ItemClass = EW_CLASS( MenuItemCheckboxLower );
+      ItemClass = EW_CLASS( MenuItemCheckbox );
     break;
 
     default : 
-      ItemClass = EW_CLASS( MenuItemBaseLower );
+      ItemClass = EW_CLASS( MenuItemBase );
   }
 
   return ItemClass;
@@ -276,6 +276,7 @@ EW_DEFINE_CLASS( DevelopmentMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, Item
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -411,6 +412,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG, OnUpdateLoc
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,

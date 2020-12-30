@@ -230,6 +230,7 @@ EW_DEFINE_METHODS( CoreRoot, CoreGroup )
   EW_METHOD( DispatchEvent,     XObject )( CoreRoot _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreRoot _this, CoreEvent aEvent, XSet 
     aFilter )
+  EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
   EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreRoot _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )

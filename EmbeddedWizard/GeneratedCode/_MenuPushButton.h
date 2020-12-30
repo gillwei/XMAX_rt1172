@@ -135,6 +135,7 @@ EW_DEFINE_METHODS( MenuPushButton, CoreGroup )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
+  EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
   EW_METHOD( UpdateViewState,   void )( MenuPushButton _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )

@@ -44,11 +44,8 @@
 
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
-#include "_MenuItemBaseLower.h"
 #include "_MenuItemCheckMark.h"
-#include "_MenuItemCheckMarkLower.h"
 #include "_MenuItemCheckbox.h"
-#include "_MenuItemCheckboxLower.h"
 #include "_MenuItemWrapper.h"
 #include "_MenuPushButton.h"
 #include "_MenuScrollbar.h"

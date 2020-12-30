@@ -144,6 +144,7 @@ EW_DEFINE_METHODS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
+  EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
   EW_METHOD( UpdateViewState,   void )( SettingsSET17_BtPairedDeviceList _this, 
     XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )

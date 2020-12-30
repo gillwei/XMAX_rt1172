@@ -293,6 +293,7 @@ EW_DEFINE_CLASS( ApplicationApplication, CoreRoot, FactoryTestEventHandler, Fact
   CoreGroup_DismissDialog,
   CoreRoot_DispatchEvent,
   CoreRoot_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreRoot_InvalidateArea,
   CoreGroup_CountViews,

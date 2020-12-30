@@ -38,10 +38,8 @@
 #include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_MenuItemBase.h"
-#include "_MenuItemBaseLower.h"
-#include "_MenuItemCheckMarkLower.h"
+#include "_MenuItemCheckMark.h"
 #include "_MenuItemCheckbox.h"
-#include "_MenuItemCheckboxLower.h"
 #include "_MenuPushButton.h"
 #include "_MenuUpDownPushButtonSet.h"
 #include "_MenuVerticalMenu.h"
@@ -302,7 +300,7 @@ void SettingsMain__Done( SettingsMain _this )
 /* 'C' function for method : 'Settings::Main.OnLongKeyPressed()' */
 void SettingsMain_OnLongKeyPressed( SettingsMain _this, XObject sender )
 {
-  EwSignal( _this->Super2.PassKeyHold, sender );
+  EwSignal( _this->Super3.PassKeyHold, sender );
 }
 
 /* 'C' function for method : 'Settings::Main.LoadItemClass()' */
@@ -392,6 +390,7 @@ EW_DEFINE_CLASS( SettingsMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, ItemTit
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -466,7 +465,7 @@ void SettingsConnection_OnLongKeyPressed( SettingsConnection _this, XObject send
 {
   CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
 
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
   {
     switch ( CurrentKeyHandler->Code )
     {
@@ -556,6 +555,7 @@ EW_DEFINE_CLASS( SettingsConnection, MenuBaseMenuView, Menu, Menu, Menu, Menu, I
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -598,10 +598,10 @@ void SettingsBluetooth__Init( SettingsBluetooth _this, XObject aLink, XHandle aA
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 4 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Menu, 4 );
-  _this->ItemClassArray[ 0 ] = EW_CLASS( MenuItemCheckboxLower );
-  _this->ItemClassArray[ 1 ] = EW_CLASS( MenuItemBaseLower );
-  _this->ItemClassArray[ 2 ] = EW_CLASS( MenuItemBaseLower );
-  _this->ItemClassArray[ 3 ] = EW_CLASS( MenuItemCheckboxLower );
+  _this->ItemClassArray[ 0 ] = EW_CLASS( MenuItemCheckbox );
+  _this->ItemClassArray[ 1 ] = EW_CLASS( MenuItemBase );
+  _this->ItemClassArray[ 2 ] = EW_CLASS( MenuItemBase );
+  _this->ItemClassArray[ 3 ] = EW_CLASS( MenuItemCheckbox );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0004 ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0005 ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0006 ));
@@ -654,7 +654,7 @@ void SettingsBluetooth_OnLongKeyPressed( SettingsBluetooth _this, XObject sender
 {
   CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
 
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
   {
     switch ( CurrentKeyHandler->Code )
     {
@@ -834,6 +834,7 @@ EW_DEFINE_CLASS( SettingsBluetooth, MenuBaseMenuView, Menu, Menu, Menu, Menu, It
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -909,7 +910,7 @@ void SettingsSystemMenu_OnLongKeyPressed( SettingsSystemMenu _this, XObject send
 {
   CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
 
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
   {
     switch ( CurrentKeyHandler->Code )
     {
@@ -1006,6 +1007,7 @@ EW_DEFINE_CLASS( SettingsSystemMenu, MenuBaseMenuView, Menu, Menu, Menu, Menu, S
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -1152,7 +1154,7 @@ void SettingsSystemInfo_OnLongKeyPressed( SettingsSystemInfo _this, XObject send
 {
   CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
 
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
   {
     switch ( CurrentKeyHandler->Code )
     {
@@ -1225,6 +1227,7 @@ EW_DEFINE_CLASS( SettingsSystemInfo, MenuBaseMenuView, ESN, ESN, ESN, ESN, _None
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -1305,7 +1308,7 @@ void SettingsAllReset_OnLongKeyPressed( SettingsAllReset _this, XObject sender )
 {
   CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
 
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
   {
     switch ( CurrentKeyHandler->Code )
     {
@@ -1364,6 +1367,7 @@ EW_DEFINE_CLASS( SettingsAllReset, MenuBaseMenuView, OnYes, OnYes, Text, Text, _
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -1459,6 +1463,7 @@ EW_DEFINE_CLASS( SettingsInProgress, MenuBaseMenuView, Text, Text, Text, Text, _
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -1554,6 +1559,7 @@ EW_DEFINE_CLASS( SettingsAllResetCompleted, MenuBaseMenuView, Text, Text, Text,
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -1752,6 +1758,7 @@ EW_DEFINE_CLASS( SettingsReset, ComponentsBaseComponent, BusyDialog, SystemReboo
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -1898,7 +1905,7 @@ void SettingsDisplayBrightness_OnLongKeyPressed( SettingsDisplayBrightness _this
 {
   CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
 
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
   {
     switch ( CurrentKeyHandler->Code )
     {
@@ -2012,6 +2019,7 @@ EW_DEFINE_CLASS( SettingsDisplayBrightness, MenuBaseMenuView, CheckerboardImage,
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   SettingsDisplayBrightness_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -2236,6 +2244,7 @@ EW_DEFINE_CLASS( SettingsBtDiscovarable, ComponentsBaseMainBG, DiscoverableText,
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -2415,6 +2424,7 @@ EW_DEFINE_CLASS( SettingsBtConnectionResult, ComponentsBaseMainBG, Text, Text, T
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -2541,6 +2551,7 @@ EW_DEFINE_CLASS( SettingsBtMaxPairedDevice, ComponentsBaseMainBG, ToRemovePaired
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -2653,12 +2664,12 @@ void SettingsSET17_BtPairedDeviceList_OnLongKeyPressed( SettingsSET17_BtPairedDe
 {
   CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
 
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
   {
     switch ( CurrentKeyHandler->Code )
     {
       case CoreKeyCodeOk :
-        CoreGroup__DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 
+        CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 
         0, EwNullSlot, EwNullSlot, 0 );
       break;
 
@@ -2678,7 +2689,7 @@ XClass SettingsSET17_BtPairedDeviceList_LoadItemClass( SettingsSET17_BtPairedDev
   if ( aItemNo >= 0 )
     ;
 
-  return EW_CLASS( MenuItemCheckMarkLower );
+  return EW_CLASS( MenuItemCheckMark );
 }
 
 /* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.LoadItemTitle()' */
@@ -2706,19 +2717,19 @@ XString SettingsSET17_BtPairedDeviceList_LoadItemTitle( SettingsSET17_BtPairedDe
 void SettingsSET17_BtPairedDeviceList_OnItemActivate( SettingsSET17_BtPairedDeviceList _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  MenuItemCheckMarkLower BtDeviceItem;
+  MenuItemCheckMark BtDeviceItem;
 
   if ( aItemNo >= 0 )
     ;
 
-  BtDeviceItem = EwCastObject( aMenuItem, MenuItemCheckMarkLower );
+  BtDeviceItem = EwCastObject( aMenuItem, MenuItemCheckMark );
 
   if ( BtDeviceItem != 0 )
   {
     SettingsBtPairedDeviceOperation Dialog = EwNewObject( SettingsBtPairedDeviceOperation, 
       0 );
     Dialog->PairedDeviceIndex = aItemNo;
-    Dialog->DeviceName = EwShareString( BtDeviceItem->Super2.Title.String );
+    Dialog->DeviceName = EwShareString( BtDeviceItem->Super1.Title.String );
     CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)Dialog ), 0, 0, 0, 0, 
     0, 0, EwNullSlot, EwNullSlot, 0 );
   }
@@ -2805,6 +2816,7 @@ EW_DEFINE_CLASS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView, Menu, Menu,
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   SettingsSET17_BtPairedDeviceList_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -2881,7 +2893,7 @@ void SettingsBtPairedDeviceOperation_OnLongKeyPressed( SettingsBtPairedDeviceOpe
 {
   CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
 
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
   {
     switch ( CurrentKeyHandler->Code )
     {
@@ -2940,13 +2952,13 @@ void SettingsBtPairedDeviceOperation_OnItemActivate( SettingsBtPairedDeviceOpera
         SettingsBtDeleteBleDevice Dialog = EwNewObject( SettingsBtDeleteBleDevice, 
           0 );
         Dialog->DeviceName = EwShareString( _this->DeviceName );
-        CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)Dialog ), 0, 
+        CoreGroup_SwitchToDialog( _this->Super6.Owner, ((CoreGroup)Dialog ), 0, 
         0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-        CoreGroup_InvalidateViewState( _this->Super5.Owner );
+        CoreGroup_InvalidateViewState( _this->Super6.Owner );
       }
       else
       {
-        CoreGroup__DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 
+        CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 
         0, EwNullSlot, EwNullSlot, 0 );
       }
     }
@@ -2957,7 +2969,7 @@ void SettingsBtPairedDeviceOperation_OnItemActivate( SettingsBtPairedDeviceOpera
       SettingsBtConnectionResult Dialog = EwNewObject( SettingsBtConnectionResult, 
         0 );
       SettingsBtConnectionResult_OnSetDeviceName( Dialog, _this->DeviceName );
-      CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)Dialog ), 0, 0, 
+      CoreGroup_SwitchToDialog( _this->Super6.Owner, ((CoreGroup)Dialog ), 0, 0, 
       0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
       DeviceInterfaceBluetoothDeviceClass_ConnectPairedDevice( EwGetAutoObject( 
       &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), _this->PairedDeviceIndex );
@@ -2968,7 +2980,7 @@ void SettingsBtPairedDeviceOperation_OnItemActivate( SettingsBtPairedDeviceOpera
     {
       DeviceInterfaceBluetoothDeviceClass_DisconnectPairedDevice( EwGetAutoObject( 
       &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), _this->PairedDeviceIndex );
-      CoreGroup__DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 
+      CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 
       0, EwNullSlot, EwNullSlot, 0 );
       DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList( EwGetAutoObject( 
       &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 1 );
@@ -3007,6 +3019,7 @@ EW_DEFINE_CLASS( SettingsBtPairedDeviceOperation, MenuBaseMenuView, Menu, Menu,
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -3141,6 +3154,7 @@ EW_DEFINE_CLASS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG, Text, Text, Te
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -3291,6 +3305,7 @@ EW_DEFINE_CLASS( SettingsBtFwUpdateDialog, CoreGroup, Rectangle, Rectangle, Rect
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -3409,7 +3424,7 @@ void SettingsSET30_QRCode_OnLongKeyPressed( SettingsSET30_QRCode _this, XObject
 {
   CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
 
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super5.Owner != 0 ))
+  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
   {
     switch ( CurrentKeyHandler->Code )
     {
@@ -3504,6 +3519,7 @@ EW_DEFINE_CLASS( SettingsSET30_QRCode, MenuBaseMenuView, QrCodeUpdateEventHandle
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,

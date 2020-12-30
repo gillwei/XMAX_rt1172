@@ -277,17 +277,17 @@ class Bluetooth : Menu::BaseMenuView
     preset Bounds = <0,36,480,272>;
     preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 4;
-    preset ItemHeight = 56;
+    preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
   }
 
   $rect <740,70,940,110>
   array class ItemClassArray[ 4 ] =
   (
-    Default[0] = Menu::ItemCheckboxLower;
-    Default[1] = Menu::ItemBaseLower;
-    Default[2] = Menu::ItemBaseLower;
-    Default[3] = Menu::ItemCheckboxLower;
+    Default[0] = Menu::ItemCheckbox;
+    Default[1] = Menu::ItemBase;
+    Default[2] = Menu::ItemBase;
+    Default[3] = Menu::ItemCheckbox;
   );
 
   $rect <740,120,940,160>
@@ -431,7 +431,7 @@ class LegalMenu : Menu::BaseMenuView
     var class ItemClass = null;
     if( aItemNo >= 0 )
     {
-    ItemClass = Menu::ItemBaseLower;
+    ItemClass = Menu::ItemBase;
     }
     return ItemClass;
   }
@@ -1856,7 +1856,7 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
     {
       // empty body
     }
-    return Menu::ItemCheckMarkLower;
+    return Menu::ItemCheckMark;
   }
 
   $rect <520,70,720,110>
@@ -1887,7 +1887,7 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
       // empty body
     }
 
-    var Menu::ItemCheckMarkLower BtDeviceItem = ( Menu::ItemCheckMarkLower )aMenuItem;
+    var Menu::ItemCheckMark BtDeviceItem = ( Menu::ItemCheckMark )aMenuItem;
     if( null != BtDeviceItem )
     {
       var Settings::BtPairedDeviceOperation Dialog = new Settings::BtPairedDeviceOperation;
@@ -1921,7 +1921,7 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
     preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 1;
     preset Focusable = false;
-    preset ItemHeight = 56;
+    preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
   }
 

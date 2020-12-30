@@ -123,6 +123,7 @@ EW_DEFINE_CLASS( HomeHOM11_tachometer, ComponentsBaseMainBG, Title, Title, Title
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
