@@ -63,16 +63,6 @@ number of bits
 #define IL_DIV_BY_8( _byte )    ( ( _byte ) >> 3 )
 
 /*------------------------------------------------------
-General usage literals for bit and byte manipulation
-------------------------------------------------------*/
-#define IL_NUM_BITS_IN_BYTE                 (8)
-#define IL_FIRST_BYTE_IN_FRAME_DATA         (0)
-#define IL_LAST_BYTE_IN_FRAME_DATA          (7)
-#define IL_FIRST_BIT_IN_BYTE                (7)
-#define IL_LAST_BIT_IN_BYTE                 (0)
-#define IL_FIRST_AND_LAST_NBYTES            (2)
-
-/*------------------------------------------------------
 Signal changed status bit definitions
 ------------------------------------------------------*/
 #define IL_SIG_STATUS_VALUE_CHNGD           (0x1 << 0)

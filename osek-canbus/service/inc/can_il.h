@@ -38,6 +38,16 @@ Receive frame status bits
 #define IL_RX_STATUS_LOSS_NOTIFIED          (0x1 << 4)
 #define IL_RX_STATUS_ABSENT_FAULT           (0x1 << 5)
 
+/*------------------------------------------------------
+General usage literals for bit and byte manipulation
+------------------------------------------------------*/
+#define IL_NUM_BITS_IN_BYTE                 (8)
+#define IL_FIRST_BYTE_IN_FRAME_DATA         (0)
+#define IL_LAST_BYTE_IN_FRAME_DATA          (7)
+#define IL_FIRST_BIT_IN_BYTE                (7)
+#define IL_LAST_BIT_IN_BYTE                 (0)
+#define IL_FIRST_AND_LAST_NBYTES            (2)
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/

@@ -515,26 +515,23 @@ nim_app_sig_put
 /*------------------------------------------------------
 Put the signal value
 ------------------------------------------------------*/
-if( sizeof( uint8 ) == num_bytes )
+uint8       l_bytes[sizeof( uint64 )];
+uint32      l_temp64;
+uint8       l_i_byte;
+
+/*------------------------------------------------------
+Convert the UINT32 value to a byte array and transmit it
+using the byte array function
+------------------------------------------------------*/
+l_temp64 = sig_val;
+
+for( l_i_byte = num_bytes; l_i_byte > 0; l_i_byte-- )
     {
-    CAN_nim_tx_put_uint8_signal( sig_handle, (uint8)sig_val );
+    l_bytes[l_i_byte - 1] = (uint8) l_temp64;
+    l_temp64 = l_temp64 >> IL_NUM_BITS_IN_BYTE;
     }
-else if( sizeof( uint16 ) == num_bytes )
-    {
-    CAN_nim_tx_put_uint16_signal( sig_handle, (uint16)sig_val );
-    }
-else if( sizeof( uint32 ) == num_bytes )
-    {
-    CAN_nim_tx_put_uint32_signal( sig_handle, (uint32)sig_val );
-    }
-else if( sizeof( uint64 ) == num_bytes )
-    {
-    CAN_nim_tx_put_uint64_signal( sig_handle, (uint64)sig_val );
-    }
-else
-    {
-    //TBD
-    }
+
+il_tx_put_signal_bytes( sig_handle, &( l_bytes[0] ), num_bytes );
 }
 
 /*!*******************************************************************
@@ -720,11 +717,21 @@ if( app_tx_tick > 0 )
     if( app_tx_tick == 0 )
         {
         app_tx_tick = CAN_APP_SIG_DEBUG_TICK;
-        nim_app_sig_put( IL_CAN0_HEATER_LVL_SLECT_TXSIG_HANDLE, sizeof(uint8),
-                        IL_VT_HEATER_LVL_SLECT_PASSENGER_SEAT_HEATER );
+        nim_app_sig_put( IL_CAN0_HEATER_LVL_SLECT_TXSIG_HANDLE,
+                         IL_CAN0_HEATER_LVL_SLECT_TXSIG_NBYTES,
+                         IL_VT_HEATER_LVL_SLECT_PASSENGER_SEAT_HEATER );
 
-        nim_app_sig_put( IL_CAN0_SYS_INFO_VH_SPEED_UNIT_TXSIG_HANDLE, sizeof(uint8),
-                        IL_VT_SYS_INFO_VH_SPEED_UNIT_MPH );
+        nim_app_sig_put( IL_CAN0_SYS_INFO_VH_SPEED_UNIT_TXSIG_HANDLE,
+                         IL_CAN0_SYS_INFO_VH_SPEED_UNIT_TXSIG_NBYTES,
+                         IL_VT_SYS_INFO_VH_SPEED_UNIT_MPH );
+
+        nim_app_sig_put( IL_CAN0_CLK_DATE_RESP_DATA_TXSIG_HANDLE,
+                         IL_CAN0_CLK_DATE_RESP_DATA_TXSIG_NBYTES,
+                         app_tx_tick-1 );
+
+        nim_app_sig_put( IL_CAN0_REQ_MT_FUNC_CNT_SVC_ID_TXSIG_HANDLE,
+                         IL_CAN0_REQ_MT_FUNC_CNT_SVC_ID_TXSIG_NBYTES,
+                         0x88 );
 
         nim_app_sig_get( IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, sizeof(uint8), &app_rx_data );
         PRINTF( "Hardkey value:%x\r\n\r\n",app_rx_data );
