@@ -133,7 +133,6 @@ EW_DEFINE_CLASS( HomeHOM11_tachometer, ComponentsBaseMainBG, Title, Title, Title
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   HomeHOM11_tachometer_OnShortEnterKeyActivated,

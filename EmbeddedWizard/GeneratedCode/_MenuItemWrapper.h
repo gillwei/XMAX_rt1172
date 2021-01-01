@@ -96,7 +96,6 @@
 /* This is a GUI component. */
 EW_DEFINE_FIELDS( MenuItemWrapper, CoreGroup )
   EW_PROPERTY( OnActivate,      XSlot )
-  EW_PROPERTY( OnEnterHold,     XSlot )
   EW_PROPERTY( Title,           XString )
   EW_PROPERTY( ItemClass,       XClass )
   EW_PROPERTY( Height,          XInt32 )

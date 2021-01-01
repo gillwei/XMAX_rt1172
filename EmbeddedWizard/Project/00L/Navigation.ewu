@@ -7,12 +7,6 @@ class Main : Components::BaseComponent
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <230,440,430,480>
-  inherited slot OnLongKeyPressed
-  {
-    signal PassKeyHold, sender;
-  }
-
   $rect <230,340,430,380>
   inherited method OnShortDownKeyActivated()
   {

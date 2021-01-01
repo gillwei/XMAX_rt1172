@@ -12,18 +12,10 @@ class DisplayAutoRun : Components::BaseComponent
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <230,290,430,330>
-  inherited slot OnLongKeyPressed
+  $rect <230,290,460,330>
+  inherited method OnShortHomeKeyActivated()
   {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: Owner.DismissDialog( this, null, null, null, null, null, false );
-        default:;
-      }
-    }
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <510,160,710,200>
@@ -243,18 +235,10 @@ class Main : Menu::BaseMenuView
     App.StatusBarVisible = true;
   }
 
-  $rect <230,300,430,340>
-  inherited slot OnLongKeyPressed
+  $rect <230,300,460,340>
+  inherited method OnShortHomeKeyActivated()
   {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: SlideOutDialog( this );
-        default:;
-      }
-    }
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <510,10,710,50>
@@ -316,7 +300,6 @@ class Main : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
-    preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = ItemTitleArray.size;
     preset ItemHeight = Menu::ItemHeightSmall;
   }
@@ -334,21 +317,7 @@ class DisplayManual : Components::BaseComponent
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <230,290,430,330>
-  inherited slot OnLongKeyPressed
-  {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: Owner.DismissDialog( this, null, null, null, null, null, false );
-        default:;
-      }
-    }
-  }
-
-  $rect <230,390,430,430>
+  $rect <230,340,430,380>
   inherited method OnShortDownKeyActivated()
   {
     var int32 NextIdx = PatternIdx + 1;
@@ -359,7 +328,7 @@ class DisplayManual : Components::BaseComponent
     PatternIdx = NextIdx;
   }
 
-  $rect <230,340,430,380>
+  $rect <230,290,430,330>
   inherited method OnShortUpKeyActivated()
   {
     var int32 PreviousIdx = PatternIdx - 1;
@@ -368,6 +337,12 @@ class DisplayManual : Components::BaseComponent
       PreviousIdx = TotalPatternNum - 1;
     }
     PatternIdx = PreviousIdx;
+  }
+
+  $rect <230,390,460,430>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <510,10,710,50>

@@ -219,12 +219,6 @@ void NavigationMain__Done( NavigationMain _this )
   ComponentsBaseComponent__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Navigation::Main.OnLongKeyPressed()' */
-void NavigationMain_OnLongKeyPressed( NavigationMain _this, XObject sender )
-{
-  EwSignal( _this->Super1.PassKeyHold, sender );
-}
-
 /* 'C' function for method : 'Navigation::Main.OnShortDownKeyActivated()' */
 void NavigationMain_OnShortDownKeyActivated( NavigationMain _this )
 {
@@ -301,7 +295,6 @@ EW_DEFINE_CLASS( NavigationMain, ComponentsBaseComponent, Background, Background
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  NavigationMain_OnLongKeyPressed,
   NavigationMain_OnShortDownKeyActivated,
   NavigationMain_OnShortUpKeyActivated,
   NavigationMain_OnShortEnterKeyActivated,
@@ -494,7 +487,6 @@ EW_DEFINE_CLASS( NavigationYMC, ComponentsBaseComponent, Image, Image, Image, Im
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   NavigationYMC_OnShortDownKeyActivated,
   NavigationYMC_OnShortUpKeyActivated,
   NavigationYMC_OnShortEnterKeyActivated,
@@ -688,7 +680,6 @@ EW_DEFINE_CLASS( NavigationGarmin, ComponentsBaseComponent, Image, Image, Image,
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   NavigationGarmin_OnShortDownKeyActivated,
   NavigationGarmin_OnShortUpKeyActivated,
   NavigationGarmin_OnShortEnterKeyActivated,

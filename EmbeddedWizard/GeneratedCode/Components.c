@@ -29,7 +29,6 @@
 #include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDisclaimerView.h"
 #include "_ComponentsStatusBar.h"
-#include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreView.h"
@@ -305,22 +304,6 @@ void ComponentsBaseComponent_OnKeyReleaseSlot( ComponentsBaseComponent _this, XO
   }
 }
 
-/* 'C' function for method : 'Components::BaseComponent.OnLongKeyPressed()' */
-void ComponentsBaseComponent_OnLongKeyPressed( ComponentsBaseComponent _this, XObject 
-  sender )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-  EW_UNUSED_ARG( sender );
-}
-
-/* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongKeyPressed()' */
-void ComponentsBaseComponent__OnLongKeyPressed( void* _this, XObject sender )
-{
-  ((ComponentsBaseComponent)_this)->_VMT->OnLongKeyPressed((ComponentsBaseComponent)_this
-  , sender );
-}
-
 /* 'C' function for method : 'Components::BaseComponent.OnShortDownKeyActivated()' */
 void ComponentsBaseComponent_OnShortDownKeyActivated( ComponentsBaseComponent _this )
 {
@@ -383,19 +366,6 @@ void ComponentsBaseComponent_SlideInDialog( ComponentsBaseComponent _this, CoreG
   }
 }
 
-/* 'C' function for method : 'Components::BaseComponent.SlideOutDialog()' */
-void ComponentsBaseComponent_SlideOutDialog( ComponentsBaseComponent _this, CoreGroup 
-  aView )
-{
-  if (( aView != 0 ) && ( 0 == _this->IsSlideEffectPresenting ))
-  {
-    _this->IsSlideEffectPresenting = 1;
-    CoreGroup__DismissDialog( _this->Super3.Owner, ((CoreGroup)_this ), ((EffectsTransition)EwGetAutoObject( 
-    &EffectRightSlideTransition, EffectsSlideTransition )), 0, 0, EwNewSlot( _this, 
-    ComponentsBaseComponent_OnSlideEffectCompletedSlot ), EwNullSlot, 0 );
-  }
-}
-
 /* 'C' function for method : 'Components::BaseComponent.OnShortHomeKeyActivated()' */
 void ComponentsBaseComponent_OnShortHomeKeyActivated( ComponentsBaseComponent _this )
 {
@@ -442,7 +412,7 @@ EW_DEFINE_CLASS_VARIANTS( ComponentsBaseComponent )
 EW_END_OF_CLASS_VARIANTS( ComponentsBaseComponent )
 
 /* Virtual Method Table (VMT) for the class : 'Components::BaseComponent' */
-EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, PassKeyHold, PassKeyHold, KeyHandler, 
+EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, KeyHandler, KeyHandler, KeyHandler, 
                  KeyHandler, HomeKeyTriggerMode, HomeKeyTriggerMode, "Components::BaseComponent" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
@@ -474,7 +444,6 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, PassKeyHold, PassKeyHold, K
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
@@ -620,7 +589,6 @@ EW_DEFINE_CLASS( ComponentsDisclaimerView, ComponentsBaseComponent, OnYesClicked
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
@@ -866,7 +834,6 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, MainBottomBG, Ma
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,

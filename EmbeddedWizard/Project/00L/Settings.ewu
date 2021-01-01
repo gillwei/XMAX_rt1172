@@ -37,10 +37,10 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
   $rect <10,300,210,340>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <230,300,430,340>
-  inherited slot OnLongKeyPressed
+  $rect <230,300,460,340>
+  inherited method OnShortHomeKeyActivated()
   {
-    signal PassKeyHold, sender;
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <510,60,710,100>
@@ -114,7 +114,6 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
-    preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 9;
   }
 
@@ -160,19 +159,10 @@ class Connection : Menu::BaseMenuView
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <230,290,430,330>
-  inherited slot OnLongKeyPressed
+  $rect <230,290,460,330>
+  inherited method OnShortHomeKeyActivated()
   {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: SlideOutDialog( this );
-        default:;
-      }
-    }
-
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <510,20,710,60>
@@ -217,7 +207,6 @@ class Connection : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
-    preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 1;
   }
 
@@ -247,19 +236,10 @@ class Bluetooth : Menu::BaseMenuView
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <520,320,720,360>
-  inherited slot OnLongKeyPressed
+  $rect <230,400,460,440>
+  inherited method OnShortHomeKeyActivated()
   {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: SlideOutDialog( this );
-        default:;
-      }
-    }
-
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <520,70,720,110>
@@ -348,7 +328,6 @@ class Bluetooth : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
-    preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 4;
     preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
@@ -401,18 +380,10 @@ class SystemMenu : Menu::BaseMenuView
   $rect <50,310,250,350>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <530,220,730,260>
-  inherited slot OnLongKeyPressed
+  $rect <530,270,760,310>
+  inherited method OnShortHomeKeyActivated()
   {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: SlideOutDialog( this );
-        default:;
-      }
-    }
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <530,120,730,160>
@@ -472,7 +443,6 @@ class SystemMenu : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
-    preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 3;
   }
 }
@@ -484,18 +454,10 @@ class LegalMenu : Menu::BaseMenuView
   $rect <20,290,220,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <520,200,720,240>
-  inherited slot OnLongKeyPressed
+  $rect <520,200,750,240>
+  inherited method OnShortHomeKeyActivated()
   {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: SlideOutDialog( this );
-        default:;
-      }
-    }
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <520,150,720,190>
@@ -552,7 +514,6 @@ class LegalMenu : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <10,32,470,272>;
-    preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 2;
   }
 }
@@ -572,24 +533,16 @@ class SystemInfo : Menu::BaseMenuView
   $rect <280,290,480,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <520,50,720,90>
-  inherited slot OnLongKeyPressed
-  {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: SlideOutDialog( this );
-        default:;
-      }
-    }
-  }
-
-  $rect <730,50,930,90>
+  $rect <520,70,750,110>
   inherited method OnShortEnterKeyActivated()
   {
     PresentDialog( new Settings::SET30_QRCode, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <520,110,750,150>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <20,20,160,60>
@@ -624,16 +577,16 @@ class SystemInfo : Menu::BaseMenuView
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <520,280,740,320>
+  $rect <520,210,740,250>
   slot OnMagicKeyReleaseSlot
   {
     if( !DeviceInterface::SystemDevice.IsHopperTestMode )
     {
-      PresentDialog( new Development::Main, null, null, null, null, null, null, null, null, false );
+      PresentDialog( new Development::DEV_Main, null, null, null, null, null, null, null, null, false );
     }
   }
 
-  $rect <520,120,720,160>
+  $rect <520,260,720,300>
   object Core::PropertyObserver EsnObserver
   {
     preset OnEvent = OnEsnReceivedSlot;
@@ -642,7 +595,7 @@ class SystemInfo : Menu::BaseMenuView
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <520,160,720,200>
+  $rect <520,300,720,340>
   slot OnEsnReceivedSlot
   {
     EsnText.String = DeviceInterface::SystemDevice.ESN;
@@ -664,7 +617,7 @@ class SystemInfo : Menu::BaseMenuView
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <520,240,740,280>
+  $rect <520,170,740,210>
   object Core::KeyPressHandler MagicKeyHandler
   {
     preset OnRelease = OnMagicKeyReleaseSlot;
@@ -678,23 +631,6 @@ class SoftwareUpdate : Menu::BaseMenuView
 {
   $rect <10,300,210,340>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <520,250,720,290>
-  inherited slot OnLongKeyPressed
-  {
-    // Important!
-    // Depends on whether there is a Home Key or not. Currently we assume home key exists,
-    // in future, we may need to change implementation depends on the situation.
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Home: SlideOutDialog( this );
-        default:;
-      }
-    }
-  }
 
   $rect <520,140,720,180>
   inherited method OnShortDownKeyActivated()
@@ -845,25 +781,6 @@ class AllReset : Menu::BaseMenuView
 {
   $rect <10,300,210,340>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <510,310,710,350>
-  inherited slot OnLongKeyPressed
-  {
-    // Important!
-    // Depends on whether there is a Home Key or not. Currently we assume home key exists,
-    // in future, we may need to change implementation depends on the situation.
-
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        // Return to previous page = press No. Therefore, post signl OnNo.
-        case Core::KeyCode.Home: postsignal OnNo;
-        default:;
-      }
-    }
-  }
 
   $rect <20,20,160,60>
   object Views::Text Text
@@ -1028,24 +945,6 @@ class Inspection : Menu::BaseMenuView
     }
   }
 
-  $rect <530,30,730,70>
-  inherited slot OnLongKeyPressed
-  {
-    // Important!
-    // Depends on whether there is a Home Key or not. Currently we assume home key exists,
-    // in future, we may need to change implementation depends on the situation.
-
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Home: Owner.DismissDialog( this, null, null, null, null, null, false );
-        default:;
-      }
-    }
-  }
-
   $rect <20,20,160,60>
   object WidgetSet::PushButton ArrowUp
   {
@@ -1156,20 +1055,6 @@ class TermsOfService : Menu::BaseMenuView
 {
   $rect <10,300,210,340>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <500,20,700,60>
-  inherited slot OnLongKeyPressed
-  {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: SlideOutDialog( this );
-        default:;
-      }
-    }
-  }
 }
 
 $rect <1170,270,1370,310>
@@ -1178,20 +1063,6 @@ class OpenSourceLicenses : Menu::BaseMenuView
 {
   $rect <0,300,200,340>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <530,30,730,70>
-  inherited slot OnLongKeyPressed
-  {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: SlideOutDialog( this );
-        default:;
-      }
-    }
-  }
 }
 
 $rect <1160,400,1360,440>
@@ -1357,6 +1228,13 @@ $rect <710,500,910,540>
 $output false
 class DisplayBrightness : Menu::BaseMenuView
 {
+  $rect <10,340,190,380>
+  inherited method Init()
+  {
+    BrightnessLevel = DeviceInterface::SystemDevice.BrightnessLevel;
+
+  }
+
   $rect <10,290,190,330>
   inherited property Bounds = <0,0,480,272>;
 
@@ -1380,27 +1258,6 @@ class DisplayBrightness : Menu::BaseMenuView
     }
   }
 
-  $rect <10,340,190,380>
-  inherited method Init()
-  {
-    BrightnessLevel = DeviceInterface::SystemDevice.BrightnessLevel;
-
-  }
-
-  $rect <500,10,700,50>
-  inherited slot OnLongKeyPressed
-  {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: SlideOutDialog( this );
-        default:;
-      }
-    }
-  }
-
   $rect <500,60,700,100>
   inherited method OnShortDownKeyActivated()
   {
@@ -1415,7 +1272,7 @@ class DisplayBrightness : Menu::BaseMenuView
     }
   }
 
-  $rect <500,110,700,150>
+  $rect <500,10,700,50>
   inherited method OnShortUpKeyActivated()
   {
     var int32 NextBrightnessLevel = BrightnessLevel + 1;
@@ -1427,6 +1284,12 @@ class DisplayBrightness : Menu::BaseMenuView
     {
       ShowLevelText();
     }
+  }
+
+  $rect <500,110,730,150>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <20,20,160,60>
@@ -1906,19 +1769,10 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
     }
   }
 
-  $rect <520,220,720,260>
-  inherited slot OnLongKeyPressed
+  $rect <520,220,750,260>
+  inherited method OnShortHomeKeyActivated()
   {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: Owner.DismissDialog( this, null, null, null, null, null, false );
-        default:;
-      }
-    }
-
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <520,20,720,60>
@@ -1991,7 +1845,6 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
-    preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 1;
     preset Focusable = false;
     preset ItemHeight = Menu::ItemHeightSmall;
@@ -2053,21 +1906,6 @@ class BtPairedDeviceOperation : Menu::BaseMenuView
 {
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <230,290,430,330>
-  inherited slot OnLongKeyPressed
-  {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: SlideOutDialog( this );
-        default:;
-      }
-    }
-
-  }
 
   $rect <510,20,710,60>
   inherited method LoadItemClass()
@@ -2133,7 +1971,6 @@ class BtPairedDeviceOperation : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
-    preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = 3;
   }
 
@@ -2280,20 +2117,6 @@ class SET30_QRCode : Menu::BaseMenuView
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <760,130,960,170>
-  inherited slot OnLongKeyPressed
-  {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: SlideOutDialog( this );
-        default:;
-      }
-    }
-  }
-
   $rect <550,180,750,220>
   inherited method OnShortDownKeyActivated()
   {
@@ -2320,6 +2143,12 @@ class SET30_QRCode : Menu::BaseMenuView
     {
       trace "please press down";
     }
+  }
+
+  $rect <230,290,460,330>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <550,70,750,110>

@@ -134,14 +134,6 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <1240,60,1440,100>
-  property slot PassKeyHold;
-
-  $rect <1240,110,1440,150>
-  slot OnLongKeyPressed
-  {
-  }
-
   $rect <260,110,490,150>
   method void OnShortDownKeyActivated()
   {
@@ -391,29 +383,6 @@ class StatusBar : Core::Group
     preset OnEvent = OnUpdateLocalTimeSlot;
     preset Event = DeviceInterface::SystemDevice.UpdateLocalTimeSystemEvent;
   }
-}
-
-$rect <20,260,260,300>
-$output false
-class PushButton : WidgetSet::PushButton
-{
-  $rect <10,80,210,120>
-  inherited object KeyHandler
-  {
-    preset OnHold = OnKeyHoldSlot;
-  }
-
-  $rect <10,130,210,170>
-  slot OnKeyHoldSlot
-  {
-    if( 1 == KeyHandler.RepetitionCount )
-    {
-      signal PassKeyHold, KeyHandler;
-    }
-  }
-
-  $rect <10,180,210,220>
-  property slot PassKeyHold;
 }
 
 $rect <60,70,300,110>

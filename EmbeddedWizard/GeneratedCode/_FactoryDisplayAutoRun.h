@@ -158,11 +158,10 @@ EW_DEFINE_METHODS( FactoryDisplayAutoRun, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( FactoryDisplayAutoRun _this, XObject sender )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( FactoryDisplayAutoRun _this )
 EW_END_OF_METHODS( FactoryDisplayAutoRun )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -170,9 +169,8 @@ EW_END_OF_METHODS( FactoryDisplayAutoRun )
    statements. */
 void FactoryDisplayAutoRun_Init( FactoryDisplayAutoRun _this, XHandle aArg );
 
-/* 'C' function for method : 'Factory::DisplayAutoRun.OnLongKeyPressed()' */
-void FactoryDisplayAutoRun_OnLongKeyPressed( FactoryDisplayAutoRun _this, XObject 
-  sender );
+/* 'C' function for method : 'Factory::DisplayAutoRun.OnShortHomeKeyActivated()' */
+void FactoryDisplayAutoRun_OnShortHomeKeyActivated( FactoryDisplayAutoRun _this );
 
 /* 'C' function for method : 'Factory::DisplayAutoRun.DisplayPattern()' */
 void FactoryDisplayAutoRun_DisplayPattern( FactoryDisplayAutoRun _this, XInt32 aPatternIdx );

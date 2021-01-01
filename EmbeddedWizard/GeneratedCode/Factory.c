@@ -27,7 +27,6 @@
 #include "ewlocale.h"
 #include "_ApplicationApplication.h"
 #include "_CoreGroup.h"
-#include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
@@ -45,7 +44,6 @@
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-#include "Core.h"
 #include "DeviceInterface.h"
 #include "Enum.h"
 #include "Factory.h"
@@ -217,25 +215,11 @@ void FactoryDisplayAutoRun_Init( FactoryDisplayAutoRun _this, XHandle aArg )
   FactoryDisplayAutoRun_OnSetPatternIdx( _this, 0 );
 }
 
-/* 'C' function for method : 'Factory::DisplayAutoRun.OnLongKeyPressed()' */
-void FactoryDisplayAutoRun_OnLongKeyPressed( FactoryDisplayAutoRun _this, XObject 
-  sender )
+/* 'C' function for method : 'Factory::DisplayAutoRun.OnShortHomeKeyActivated()' */
+void FactoryDisplayAutoRun_OnShortHomeKeyActivated( FactoryDisplayAutoRun _this )
 {
-  CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
-
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super4.Owner != 0 ))
-  {
-    switch ( CurrentKeyHandler->Code )
-    {
-      case CoreKeyCodeOk :
-        CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 
-        0, EwNullSlot, EwNullSlot, 0 );
-      break;
-
-      default : 
-        ;
-    }
-  }
+  CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Factory::DisplayAutoRun.DisplayPattern()' */
@@ -468,11 +452,10 @@ EW_DEFINE_CLASS( FactoryDisplayAutoRun, ComponentsBaseComponent, TimerNextPatter
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  FactoryDisplayAutoRun_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  FactoryDisplayAutoRun_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( FactoryDisplayAutoRun )
 
 /* Initializer for the class 'Factory::Main' */
@@ -498,7 +481,6 @@ void FactoryMain__Init( FactoryMain _this, XObject aLink, XHandle aArg )
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 2 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
-  _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
 }
 
 /* Re-Initializer for the class 'Factory::Main' */
@@ -574,23 +556,11 @@ void FactoryMain_DismissDialog( FactoryMain _this, CoreGroup aDialogGroup, Effec
   ApplicationApplication_OnSetStatusBarVisible( App, 1 );
 }
 
-/* 'C' function for method : 'Factory::Main.OnLongKeyPressed()' */
-void FactoryMain_OnLongKeyPressed( FactoryMain _this, XObject sender )
+/* 'C' function for method : 'Factory::Main.OnShortHomeKeyActivated()' */
+void FactoryMain_OnShortHomeKeyActivated( FactoryMain _this )
 {
-  CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
-
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
-  {
-    switch ( CurrentKeyHandler->Code )
-    {
-      case CoreKeyCodeOk :
-        ComponentsBaseComponent_SlideOutDialog((ComponentsBaseComponent)_this, ((CoreGroup)_this ));
-      break;
-
-      default : 
-        ;
-    }
-  }
+  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Factory::Main.LoadItemClass()' */
@@ -689,11 +659,10 @@ EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, ItemTitl
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  FactoryMain_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  FactoryMain_OnShortHomeKeyActivated,
   FactoryMain_LoadItemClass,
   FactoryMain_LoadItemTitle,
   FactoryMain_OnItemActivate,
@@ -767,27 +736,6 @@ void FactoryDisplayManual__Done( FactoryDisplayManual _this )
   ComponentsBaseComponent__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Factory::DisplayManual.OnLongKeyPressed()' */
-void FactoryDisplayManual_OnLongKeyPressed( FactoryDisplayManual _this, XObject 
-  sender )
-{
-  CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
-
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super4.Owner != 0 ))
-  {
-    switch ( CurrentKeyHandler->Code )
-    {
-      case CoreKeyCodeOk :
-        CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 
-        0, EwNullSlot, EwNullSlot, 0 );
-      break;
-
-      default : 
-        ;
-    }
-  }
-}
-
 /* 'C' function for method : 'Factory::DisplayManual.OnShortDownKeyActivated()' */
 void FactoryDisplayManual_OnShortDownKeyActivated( FactoryDisplayManual _this )
 {
@@ -812,6 +760,13 @@ void FactoryDisplayManual_OnShortUpKeyActivated( FactoryDisplayManual _this )
   }
 
   FactoryDisplayManual_OnSetPatternIdx( _this, PreviousIdx );
+}
+
+/* 'C' function for method : 'Factory::DisplayManual.OnShortHomeKeyActivated()' */
+void FactoryDisplayManual_OnShortHomeKeyActivated( FactoryDisplayManual _this )
+{
+  CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Factory::DisplayManual.OnSetPatternIdx()' */
@@ -1027,11 +982,10 @@ EW_DEFINE_CLASS( FactoryDisplayManual, ComponentsBaseComponent, FullScreen, Full
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  FactoryDisplayManual_OnLongKeyPressed,
   FactoryDisplayManual_OnShortDownKeyActivated,
   FactoryDisplayManual_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  FactoryDisplayManual_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( FactoryDisplayManual )
 
 /* Initializer for the class 'Factory::TestContext' */

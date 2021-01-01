@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_CoreGroup.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreView.h"
@@ -280,12 +281,6 @@ void MediaMain_Init( MediaMain _this, XHandle aArg )
   }
 }
 
-/* 'C' function for method : 'Media::Main.OnLongKeyPressed()' */
-void MediaMain_OnLongKeyPressed( MediaMain _this, XObject sender )
-{
-  EwSignal( _this->Super1.PassKeyHold, sender );
-}
-
 /* 'C' function for method : 'Media::Main.OnShortDownKeyActivated()' */
 void MediaMain_OnShortDownKeyActivated( MediaMain _this )
 {
@@ -320,6 +315,13 @@ void MediaMain_OnShortUpKeyActivated( MediaMain _this )
     CoreGroup__OnSetFocus( _this, _this->FocusList[ EwCheckIndex( NextFocusIdx, 
     3 )]);
   }
+}
+
+/* 'C' function for method : 'Media::Main.OnShortHomeKeyActivated()' */
+void MediaMain_OnShortHomeKeyActivated( MediaMain _this )
+{
+  CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Media::Main.OnPlayPauseSlot()' */
@@ -471,11 +473,10 @@ EW_DEFINE_CLASS( MediaMain, ComponentsBaseComponent, FocusList, Rectangle, Recta
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  MediaMain_OnLongKeyPressed,
   MediaMain_OnShortDownKeyActivated,
   MediaMain_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  MediaMain_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( MediaMain )
 
 /* Initializer for the class 'Media::Track' */

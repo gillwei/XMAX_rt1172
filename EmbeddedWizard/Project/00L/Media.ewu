@@ -4,9 +4,6 @@ $rect <30,20,270,60>
 $output false
 class Main : Components::BaseComponent
 {
-  $rect <10,290,210,330>
-  inherited property Bounds = <0,0,480,272>;
-
   $rect <10,450,210,490>
   inherited method Init()
   {
@@ -21,13 +18,10 @@ class Main : Components::BaseComponent
     }
   }
 
-  $rect <520,50,720,90>
-  inherited slot OnLongKeyPressed
-  {
-    signal PassKeyHold, sender;
-  }
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
 
-  $rect <520,150,720,190>
+  $rect <520,90,750,130>
   inherited method OnShortDownKeyActivated()
   {
     var int32 NextFocusIdx = FocusIdx + 1;
@@ -43,7 +37,7 @@ class Main : Components::BaseComponent
       }
   }
 
-  $rect <520,100,720,140>
+  $rect <520,40,750,80>
   inherited method OnShortUpKeyActivated()
   {
     var int32 NextFocusIdx = FocusIdx - 1;
@@ -57,6 +51,12 @@ class Main : Components::BaseComponent
       FocusIdx = NextFocusIdx;
       Focus = FocusList[NextFocusIdx];
       }
+  }
+
+  $rect <520,140,750,180>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <20,20,160,60>

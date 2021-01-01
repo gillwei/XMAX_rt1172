@@ -42,8 +42,8 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_DevelopmentDEV_Main.h"
 #include "_DevelopmentDEV_RealTimeClock.h"
-#include "_DevelopmentMain.h"
 
 #ifdef __cplusplus
   }

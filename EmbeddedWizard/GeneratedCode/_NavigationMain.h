@@ -160,15 +160,11 @@ EW_DEFINE_METHODS( NavigationMain, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( NavigationMain _this, XObject sender )
   EW_METHOD( OnShortDownKeyActivated, void )( NavigationMain _this )
   EW_METHOD( OnShortUpKeyActivated, void )( NavigationMain _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( NavigationMain _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( NavigationMain )
-
-/* 'C' function for method : 'Navigation::Main.OnLongKeyPressed()' */
-void NavigationMain_OnLongKeyPressed( NavigationMain _this, XObject sender );
 
 /* 'C' function for method : 'Navigation::Main.OnShortDownKeyActivated()' */
 void NavigationMain_OnShortDownKeyActivated( NavigationMain _this );

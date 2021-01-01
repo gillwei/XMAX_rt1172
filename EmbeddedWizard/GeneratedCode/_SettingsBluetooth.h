@@ -155,11 +155,10 @@ EW_DEFINE_METHODS( SettingsBluetooth, MenuBaseMenuView )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( SettingsBluetooth _this, XObject sender )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsBluetooth _this )
   EW_METHOD( LoadItemClass,     XClass )( SettingsBluetooth _this, XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( SettingsBluetooth _this, XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( SettingsBluetooth _this, XInt32 aItemNo, 
@@ -173,8 +172,8 @@ EW_END_OF_METHODS( SettingsBluetooth )
    statements. */
 void SettingsBluetooth_Init( SettingsBluetooth _this, XHandle aArg );
 
-/* 'C' function for method : 'Settings::Bluetooth.OnLongKeyPressed()' */
-void SettingsBluetooth_OnLongKeyPressed( SettingsBluetooth _this, XObject sender );
+/* 'C' function for method : 'Settings::Bluetooth.OnShortHomeKeyActivated()' */
+void SettingsBluetooth_OnShortHomeKeyActivated( SettingsBluetooth _this );
 
 /* 'C' function for method : 'Settings::Bluetooth.LoadItemClass()' */
 XClass SettingsBluetooth_LoadItemClass( SettingsBluetooth _this, XInt32 aItemNo );

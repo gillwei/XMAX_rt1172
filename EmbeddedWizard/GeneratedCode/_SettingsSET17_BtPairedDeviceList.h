@@ -159,12 +159,10 @@ EW_DEFINE_METHODS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( SettingsSET17_BtPairedDeviceList _this, 
-    XObject sender )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET17_BtPairedDeviceList _this )
   EW_METHOD( LoadItemClass,     XClass )( SettingsSET17_BtPairedDeviceList _this, 
     XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( SettingsSET17_BtPairedDeviceList _this, 
@@ -193,9 +191,8 @@ EW_END_OF_METHODS( SettingsSET17_BtPairedDeviceList )
 void SettingsSET17_BtPairedDeviceList_UpdateViewState( SettingsSET17_BtPairedDeviceList _this, 
   XSet aState );
 
-/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.OnLongKeyPressed()' */
-void SettingsSET17_BtPairedDeviceList_OnLongKeyPressed( SettingsSET17_BtPairedDeviceList _this, 
-  XObject sender );
+/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.OnShortHomeKeyActivated()' */
+void SettingsSET17_BtPairedDeviceList_OnShortHomeKeyActivated( SettingsSET17_BtPairedDeviceList _this );
 
 /* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.LoadItemClass()' */
 XClass SettingsSET17_BtPairedDeviceList_LoadItemClass( SettingsSET17_BtPairedDeviceList _this, 

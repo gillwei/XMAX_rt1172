@@ -26,11 +26,10 @@
 
 #include "ewlocale.h"
 #include "_CoreGroup.h"
-#include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreView.h"
+#include "_DevelopmentDEV_Main.h"
 #include "_DevelopmentDEV_RealTimeClock.h"
-#include "_DevelopmentMain.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_FactoryMain.h"
@@ -39,7 +38,6 @@
 #include "_MenuVerticalMenu.h"
 #include "_ResourcesFont.h"
 #include "_ViewsText.h"
-#include "Core.h"
 #include "Development.h"
 #include "DeviceInterface.h"
 #include "Fonts.h"
@@ -87,20 +85,20 @@ static const XStringRes _Const0008 = { _StringsDefault0, 0x003E };
   #define EwCheckIndex( aIndex, aRange ) aIndex
 #endif
 
-/* Initializer for the class 'Development::Main' */
-void DevelopmentMain__Init( DevelopmentMain _this, XObject aLink, XHandle aArg )
+/* Initializer for the class 'Development::DEV_Main' */
+void DevelopmentDEV_Main__Init( DevelopmentDEV_Main _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
   MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DevelopmentMain );
+  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_Main );
 
   /* ... then construct all embedded objects */
   MenuVerticalMenu__Init( &_this->Menu, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DevelopmentMain );
+  _this->_VMT = EW_CLASS( DevelopmentDEV_Main );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -111,11 +109,10 @@ void DevelopmentMain__Init( DevelopmentMain _this, XObject aLink, XHandle aArg )
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 3 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
-  _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
 }
 
-/* Re-Initializer for the class 'Development::Main' */
-void DevelopmentMain__ReInit( DevelopmentMain _this )
+/* Re-Initializer for the class 'Development::DEV_Main' */
+void DevelopmentDEV_Main__ReInit( DevelopmentDEV_Main _this )
 {
   /* At first re-initialize the super class ... */
   MenuBaseMenuView__ReInit( &_this->_Super );
@@ -124,8 +121,8 @@ void DevelopmentMain__ReInit( DevelopmentMain _this )
   MenuVerticalMenu__ReInit( &_this->Menu );
 }
 
-/* Finalizer method for the class 'Development::Main' */
-void DevelopmentMain__Done( DevelopmentMain _this )
+/* Finalizer method for the class 'Development::DEV_Main' */
+void DevelopmentDEV_Main__Done( DevelopmentDEV_Main _this )
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
@@ -137,28 +134,15 @@ void DevelopmentMain__Done( DevelopmentMain _this )
   MenuBaseMenuView__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Development::Main.OnLongKeyPressed()' */
-void DevelopmentMain_OnLongKeyPressed( DevelopmentMain _this, XObject sender )
+/* 'C' function for method : 'Development::DEV_Main.OnShortHomeKeyActivated()' */
+void DevelopmentDEV_Main_OnShortHomeKeyActivated( DevelopmentDEV_Main _this )
 {
-  CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
-
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
-  {
-    switch ( CurrentKeyHandler->Code )
-    {
-      case CoreKeyCodeOk :
-        CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 
-        0, EwNullSlot, EwNullSlot, 0 );
-      break;
-
-      default : 
-        ;
-    }
-  }
+  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
-/* 'C' function for method : 'Development::Main.LoadItemClass()' */
-XClass DevelopmentMain_LoadItemClass( DevelopmentMain _this, XInt32 aItemNo )
+/* 'C' function for method : 'Development::DEV_Main.LoadItemClass()' */
+XClass DevelopmentDEV_Main_LoadItemClass( DevelopmentDEV_Main _this, XInt32 aItemNo )
 {
   XClass ItemClass;
 
@@ -184,8 +168,8 @@ XClass DevelopmentMain_LoadItemClass( DevelopmentMain _this, XInt32 aItemNo )
   return ItemClass;
 }
 
-/* 'C' function for method : 'Development::Main.LoadItemTitle()' */
-XString DevelopmentMain_LoadItemTitle( DevelopmentMain _this, XInt32 aItemNo )
+/* 'C' function for method : 'Development::DEV_Main.LoadItemTitle()' */
+XString DevelopmentDEV_Main_LoadItemTitle( DevelopmentDEV_Main _this, XInt32 aItemNo )
 {
   XString Title = 0;
 
@@ -197,9 +181,9 @@ XString DevelopmentMain_LoadItemTitle( DevelopmentMain _this, XInt32 aItemNo )
   return Title;
 }
 
-/* 'C' function for method : 'Development::Main.OnItemActivate()' */
-void DevelopmentMain_OnItemActivate( DevelopmentMain _this, XInt32 aItemNo, MenuItemBase 
-  aMenuItem )
+/* 'C' function for method : 'Development::DEV_Main.OnItemActivate()' */
+void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItemNo, 
+  MenuItemBase aMenuItem )
 {
   if ( aMenuItem == 0 )
     ;
@@ -226,8 +210,8 @@ void DevelopmentMain_OnItemActivate( DevelopmentMain _this, XInt32 aItemNo, Menu
   }
 }
 
-/* 'C' function for method : 'Development::Main.LoadItemChecked()' */
-XBool DevelopmentMain_LoadItemChecked( DevelopmentMain _this, XInt32 aItemNo )
+/* 'C' function for method : 'Development::DEV_Main.LoadItemChecked()' */
+XBool DevelopmentDEV_Main_LoadItemChecked( DevelopmentDEV_Main _this, XInt32 aItemNo )
 {
   XBool IsChecked;
 
@@ -249,13 +233,13 @@ XBool DevelopmentMain_LoadItemChecked( DevelopmentMain _this, XInt32 aItemNo )
   return IsChecked;
 }
 
-/* Variants derived from the class : 'Development::Main' */
-EW_DEFINE_CLASS_VARIANTS( DevelopmentMain )
-EW_END_OF_CLASS_VARIANTS( DevelopmentMain )
+/* Variants derived from the class : 'Development::DEV_Main' */
+EW_DEFINE_CLASS_VARIANTS( DevelopmentDEV_Main )
+EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_Main )
 
-/* Virtual Method Table (VMT) for the class : 'Development::Main' */
-EW_DEFINE_CLASS( DevelopmentMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, ItemTitleArray, 
-                 _None, "Development::Main" )
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_Main' */
+EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, Menu, Menu, Menu, Menu, 
+                 ItemTitleArray, _None, "Development::DEV_Main" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -286,17 +270,16 @@ EW_DEFINE_CLASS( DevelopmentMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, Item
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  DevelopmentMain_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
-  DevelopmentMain_LoadItemClass,
-  DevelopmentMain_LoadItemTitle,
-  DevelopmentMain_OnItemActivate,
-  DevelopmentMain_LoadItemChecked,
+  DevelopmentDEV_Main_OnShortHomeKeyActivated,
+  DevelopmentDEV_Main_LoadItemClass,
+  DevelopmentDEV_Main_LoadItemTitle,
+  DevelopmentDEV_Main_OnItemActivate,
+  DevelopmentDEV_Main_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-EW_END_OF_CLASS( DevelopmentMain )
+EW_END_OF_CLASS( DevelopmentDEV_Main )
 
 /* Initializer for the class 'Development::DEV_RealTimeClock' */
 void DevelopmentDEV_RealTimeClock__Init( DevelopmentDEV_RealTimeClock _this, XObject aLink, XHandle aArg )
@@ -422,7 +405,6 @@ EW_DEFINE_CLASS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG, OnUpdateLoc
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,

@@ -29,19 +29,6 @@
 #include "Core.h"
 #include "Effect.h"
 
-/* User defined auto object: 'Effect::RightSlideTransition' */
-EW_DEFINE_AUTOOBJECT( EffectRightSlideTransition, EffectsSlideTransition )
-
-/* Initializer for the auto object 'Effect::RightSlideTransition' */
-void EffectRightSlideTransition__Init( EffectsSlideTransition _this )
-{
-  _this->Direction = CoreDirectionRight;
-}
-
-/* Table with links to derived variants of the auto object : 'Effect::RightSlideTransition' */
-EW_DEFINE_AUTOOBJECT_VARIANTS( EffectRightSlideTransition )
-EW_END_OF_AUTOOBJECT_VARIANTS( EffectRightSlideTransition )
-
 /* User defined auto object: 'Effect::LeftSlideTransition' */
 EW_DEFINE_AUTOOBJECT( EffectLeftSlideTransition, EffectsSlideTransition )
 

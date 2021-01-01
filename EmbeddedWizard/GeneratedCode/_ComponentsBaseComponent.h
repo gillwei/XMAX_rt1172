@@ -90,7 +90,6 @@
 
 /* Deklaration of class : 'Components::BaseComponent' */
 EW_DEFINE_FIELDS( ComponentsBaseComponent, CoreGroup )
-  EW_PROPERTY( PassKeyHold,     XSlot )
   EW_OBJECT  ( KeyHandler,      CoreKeyPressHandler )
   EW_PROPERTY( HomeKeyTriggerMode, XEnum )
   EW_PROPERTY( EnterKeyTriggerMode, XEnum )
@@ -148,7 +147,6 @@ EW_DEFINE_METHODS( ComponentsBaseComponent, CoreGroup )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
@@ -166,13 +164,6 @@ void ComponentsBaseComponent_OnKeyHoldSlot( ComponentsBaseComponent _this, XObje
 /* 'C' function for method : 'Components::BaseComponent.OnKeyReleaseSlot()' */
 void ComponentsBaseComponent_OnKeyReleaseSlot( ComponentsBaseComponent _this, XObject 
   sender );
-
-/* 'C' function for method : 'Components::BaseComponent.OnLongKeyPressed()' */
-void ComponentsBaseComponent_OnLongKeyPressed( ComponentsBaseComponent _this, XObject 
-  sender );
-
-/* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongKeyPressed()' */
-void ComponentsBaseComponent__OnLongKeyPressed( void* _this, XObject sender );
 
 /* 'C' function for method : 'Components::BaseComponent.OnShortDownKeyActivated()' */
 void ComponentsBaseComponent_OnShortDownKeyActivated( ComponentsBaseComponent _this );
@@ -198,10 +189,6 @@ void ComponentsBaseComponent_OnSlideEffectCompletedSlot( ComponentsBaseComponent
 
 /* 'C' function for method : 'Components::BaseComponent.SlideInDialog()' */
 void ComponentsBaseComponent_SlideInDialog( ComponentsBaseComponent _this, CoreGroup 
-  aView );
-
-/* 'C' function for method : 'Components::BaseComponent.SlideOutDialog()' */
-void ComponentsBaseComponent_SlideOutDialog( ComponentsBaseComponent _this, CoreGroup 
   aView );
 
 /* 'C' function for method : 'Components::BaseComponent.OnShortHomeKeyActivated()' */

@@ -33,7 +33,7 @@
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
-#include "_DevelopmentMain.h"
+#include "_DevelopmentDEV_Main.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
@@ -240,7 +240,6 @@ void SettingsSET01_MainSettingMenu__Init( SettingsSET01_MainSettingMenu _this, X
   _this->Settings[ 7 ] = EnumMainSettingItemLegalInfo;
   _this->Settings[ 8 ] = EnumMainSettingItemReset;
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
-  _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
 
   /* Call the user defined constructor */
   SettingsSET01_MainSettingMenu_Init( _this, aArg );
@@ -310,11 +309,11 @@ void SettingsSET01_MainSettingMenu_Init( SettingsSET01_MainSettingMenu _this, XH
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, NoOfItems );
 }
 
-/* 'C' function for method : 'Settings::SET01_MainSettingMenu.OnLongKeyPressed()' */
-void SettingsSET01_MainSettingMenu_OnLongKeyPressed( SettingsSET01_MainSettingMenu _this, 
-  XObject sender )
+/* 'C' function for method : 'Settings::SET01_MainSettingMenu.OnShortHomeKeyActivated()' */
+void SettingsSET01_MainSettingMenu_OnShortHomeKeyActivated( SettingsSET01_MainSettingMenu _this )
 {
-  EwSignal( _this->Super3.PassKeyHold, sender );
+  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Settings::SET01_MainSettingMenu.LoadItemClass()' */
@@ -488,11 +487,10 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, Menu, Menu, Me
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  SettingsSET01_MainSettingMenu_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  SettingsSET01_MainSettingMenu_OnShortHomeKeyActivated,
   SettingsSET01_MainSettingMenu_LoadItemClass,
   SettingsSET01_MainSettingMenu_LoadItemTitle,
   SettingsSET01_MainSettingMenu_OnItemActivate,
@@ -522,7 +520,6 @@ void SettingsConnection__Init( SettingsConnection _this, XObject aLink, XHandle 
   _this->ItemClassArray[ 0 ] = EW_CLASS( MenuItemBase );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0002 ));
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
-  _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
 }
 
 /* Re-Initializer for the class 'Settings::Connection' */
@@ -548,23 +545,11 @@ void SettingsConnection__Done( SettingsConnection _this )
   MenuBaseMenuView__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Settings::Connection.OnLongKeyPressed()' */
-void SettingsConnection_OnLongKeyPressed( SettingsConnection _this, XObject sender )
+/* 'C' function for method : 'Settings::Connection.OnShortHomeKeyActivated()' */
+void SettingsConnection_OnShortHomeKeyActivated( SettingsConnection _this )
 {
-  CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
-
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
-  {
-    switch ( CurrentKeyHandler->Code )
-    {
-      case CoreKeyCodeOk :
-        ComponentsBaseComponent_SlideOutDialog((ComponentsBaseComponent)_this, ((CoreGroup)_this ));
-      break;
-
-      default : 
-        ;
-    }
-  }
+  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Settings::Connection.LoadItemClass()' */
@@ -653,11 +638,10 @@ EW_DEFINE_CLASS( SettingsConnection, MenuBaseMenuView, Menu, Menu, Menu, Menu, I
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  SettingsConnection_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  SettingsConnection_OnShortHomeKeyActivated,
   SettingsConnection_LoadItemClass,
   SettingsConnection_LoadItemTitle,
   SettingsConnection_OnItemActivate,
@@ -695,7 +679,6 @@ void SettingsBluetooth__Init( SettingsBluetooth _this, XObject aLink, XHandle aA
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0004 ));
   _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0005 ));
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
-  _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
 
   /* Call the user defined constructor */
   SettingsBluetooth_Init( _this, aArg );
@@ -737,23 +720,11 @@ void SettingsBluetooth_Init( SettingsBluetooth _this, XHandle aArg )
   DeviceInterfaceBluetoothDeviceClass ));
 }
 
-/* 'C' function for method : 'Settings::Bluetooth.OnLongKeyPressed()' */
-void SettingsBluetooth_OnLongKeyPressed( SettingsBluetooth _this, XObject sender )
+/* 'C' function for method : 'Settings::Bluetooth.OnShortHomeKeyActivated()' */
+void SettingsBluetooth_OnShortHomeKeyActivated( SettingsBluetooth _this )
 {
-  CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
-
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
-  {
-    switch ( CurrentKeyHandler->Code )
-    {
-      case CoreKeyCodeOk :
-        ComponentsBaseComponent_SlideOutDialog((ComponentsBaseComponent)_this, ((CoreGroup)_this ));
-      break;
-
-      default : 
-        ;
-    }
-  }
+  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Settings::Bluetooth.LoadItemClass()' */
@@ -932,11 +903,10 @@ EW_DEFINE_CLASS( SettingsBluetooth, MenuBaseMenuView, Menu, Menu, Menu, Menu, It
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  SettingsBluetooth_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  SettingsBluetooth_OnShortHomeKeyActivated,
   SettingsBluetooth_LoadItemClass,
   SettingsBluetooth_LoadItemTitle,
   SettingsBluetooth_OnItemActivate,
@@ -1064,30 +1034,18 @@ void SettingsSystemInfo_Init( SettingsSystemInfo _this, XHandle aArg )
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
 }
 
-/* 'C' function for method : 'Settings::SystemInfo.OnLongKeyPressed()' */
-void SettingsSystemInfo_OnLongKeyPressed( SettingsSystemInfo _this, XObject sender )
-{
-  CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
-
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
-  {
-    switch ( CurrentKeyHandler->Code )
-    {
-      case CoreKeyCodeOk :
-        ComponentsBaseComponent_SlideOutDialog((ComponentsBaseComponent)_this, ((CoreGroup)_this ));
-      break;
-
-      default : 
-        ;
-    }
-  }
-}
-
 /* 'C' function for method : 'Settings::SystemInfo.OnShortEnterKeyActivated()' */
 void SettingsSystemInfo_OnShortEnterKeyActivated( SettingsSystemInfo _this )
 {
   CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( SettingsSET30_QRCode, 
   0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
+/* 'C' function for method : 'Settings::SystemInfo.OnShortHomeKeyActivated()' */
+void SettingsSystemInfo_OnShortHomeKeyActivated( SettingsSystemInfo _this )
+{
+  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Settings::SystemInfo.OnMagicKeyReleaseSlot()' */
@@ -1099,7 +1057,7 @@ void SettingsSystemInfo_OnMagicKeyReleaseSlot( SettingsSystemInfo _this, XObject
 
   if ( !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode )
   {
-    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( DevelopmentMain, 
+    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( DevelopmentDEV_Main, 
     0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
   }
 }
@@ -1152,11 +1110,10 @@ EW_DEFINE_CLASS( SettingsSystemInfo, MenuBaseMenuView, ESN, ESN, ESN, ESN, _None
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  SettingsSystemInfo_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   SettingsSystemInfo_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  SettingsSystemInfo_OnShortHomeKeyActivated,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -1377,7 +1334,6 @@ EW_DEFINE_CLASS( SettingsBtDiscovarable, ComponentsBaseMainBG, DiscoverableText,
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
@@ -1557,7 +1513,6 @@ EW_DEFINE_CLASS( SettingsBtConnectionResult, ComponentsBaseMainBG, Text, Text, T
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
@@ -1684,7 +1639,6 @@ EW_DEFINE_CLASS( SettingsBtMaxPairedDevice, ComponentsBaseMainBG, ToRemovePaired
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
@@ -1719,7 +1673,6 @@ void SettingsSET17_BtPairedDeviceList__Init( SettingsSET17_BtPairedDeviceList _t
   ViewsText_OnSetString( &_this->NoDataText, EwLoadString( &_Const002C ));
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), 0 );
-  _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
   _this->RefreshListObserver.OnEvent = EwNewSlot( _this, SettingsSET17_BtPairedDeviceList_OnRefreshListSlot );
   CorePropertyObserver_OnSetOutlet( &_this->RefreshListObserver, EwNewRef( EwGetAutoObject( 
   &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList, 
@@ -1781,25 +1734,11 @@ void SettingsSET17_BtPairedDeviceList_UpdateViewState( SettingsSET17_BtPairedDev
   }
 }
 
-/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.OnLongKeyPressed()' */
-void SettingsSET17_BtPairedDeviceList_OnLongKeyPressed( SettingsSET17_BtPairedDeviceList _this, 
-  XObject sender )
+/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.OnShortHomeKeyActivated()' */
+void SettingsSET17_BtPairedDeviceList_OnShortHomeKeyActivated( SettingsSET17_BtPairedDeviceList _this )
 {
-  CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
-
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
-  {
-    switch ( CurrentKeyHandler->Code )
-    {
-      case CoreKeyCodeOk :
-        CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 
-        0, EwNullSlot, EwNullSlot, 0 );
-      break;
-
-      default : 
-        ;
-    }
-  }
+  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.LoadItemClass()' */
@@ -1949,11 +1888,10 @@ EW_DEFINE_CLASS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView, Menu, Menu,
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  SettingsSET17_BtPairedDeviceList_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  SettingsSET17_BtPairedDeviceList_OnShortHomeKeyActivated,
   SettingsSET17_BtPairedDeviceList_LoadItemClass,
   SettingsSET17_BtPairedDeviceList_LoadItemTitle,
   SettingsSET17_BtPairedDeviceList_OnItemActivate,
@@ -1984,7 +1922,6 @@ void SettingsBtPairedDeviceOperation__Init( SettingsBtPairedDeviceOperation _thi
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0030 ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0031 ));
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
-  _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
 }
 
 /* Re-Initializer for the class 'Settings::BtPairedDeviceOperation' */
@@ -2008,26 +1945,6 @@ void SettingsBtPairedDeviceOperation__Done( SettingsBtPairedDeviceOperation _thi
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
-}
-
-/* 'C' function for method : 'Settings::BtPairedDeviceOperation.OnLongKeyPressed()' */
-void SettingsBtPairedDeviceOperation_OnLongKeyPressed( SettingsBtPairedDeviceOperation _this, 
-  XObject sender )
-{
-  CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
-
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
-  {
-    switch ( CurrentKeyHandler->Code )
-    {
-      case CoreKeyCodeOk :
-        ComponentsBaseComponent_SlideOutDialog((ComponentsBaseComponent)_this, ((CoreGroup)_this ));
-      break;
-
-      default : 
-        ;
-    }
-  }
 }
 
 /* 'C' function for method : 'Settings::BtPairedDeviceOperation.LoadItemClass()' */
@@ -2152,7 +2069,6 @@ EW_DEFINE_CLASS( SettingsBtPairedDeviceOperation, MenuBaseMenuView, Menu, Menu,
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  SettingsBtPairedDeviceOperation_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
@@ -2287,7 +2203,6 @@ EW_DEFINE_CLASS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG, Text, Text, Te
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
@@ -2541,26 +2456,6 @@ void SettingsSET30_QRCode_Init( SettingsSET30_QRCode _this, XHandle aArg )
   DeviceInterfaceSystemDeviceClass ), _this->PixelPerModule );
 }
 
-/* 'C' function for method : 'Settings::SET30_QRCode.OnLongKeyPressed()' */
-void SettingsSET30_QRCode_OnLongKeyPressed( SettingsSET30_QRCode _this, XObject 
-  sender )
-{
-  CoreKeyPressHandler CurrentKeyHandler = EwCastObject( sender, CoreKeyPressHandler );
-
-  if (( CurrentKeyHandler != 0 ) && ( _this->Super6.Owner != 0 ))
-  {
-    switch ( CurrentKeyHandler->Code )
-    {
-      case CoreKeyCodeOk :
-        ComponentsBaseComponent_SlideOutDialog((ComponentsBaseComponent)_this, ((CoreGroup)_this ));
-      break;
-
-      default : 
-        ;
-    }
-  }
-}
-
 /* 'C' function for method : 'Settings::SET30_QRCode.OnShortDownKeyActivated()' */
 void SettingsSET30_QRCode_OnShortDownKeyActivated( SettingsSET30_QRCode _this )
 {
@@ -2589,6 +2484,13 @@ void SettingsSET30_QRCode_OnShortUpKeyActivated( SettingsSET30_QRCode _this )
   {
     EwTrace( "%s", EwLoadString( &_Const0041 ));
   }
+}
+
+/* 'C' function for method : 'Settings::SET30_QRCode.OnShortHomeKeyActivated()' */
+void SettingsSET30_QRCode_OnShortHomeKeyActivated( SettingsSET30_QRCode _this )
+{
+  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -2652,11 +2554,10 @@ EW_DEFINE_CLASS( SettingsSET30_QRCode, MenuBaseMenuView, QrCodeUpdateEventHandle
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  SettingsSET30_QRCode_OnLongKeyPressed,
   SettingsSET30_QRCode_OnShortDownKeyActivated,
   SettingsSET30_QRCode_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  SettingsSET30_QRCode_OnShortHomeKeyActivated,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,

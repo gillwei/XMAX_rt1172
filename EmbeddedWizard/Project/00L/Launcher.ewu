@@ -657,7 +657,6 @@ class LNC_RotaryPlate : Components::BaseComponent
   $reorder OnKeyPressSlot 1
   $reorder OnKeyHoldSlot 1
   $reorder OnKeyReleaseSlot 1
-  $reorder PassKeyHold 1
   $reorder OnSlideEffectCompletedSlot 1
   $reorder IsSlideEffectPresenting 1
   $reorder SlideInDialog 1

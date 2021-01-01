@@ -253,12 +253,6 @@ class VerticalMenu : Components::BaseComponent
   $rect <6,290,206,330>
   inherited property Bounds = <0,0,480,236>;
 
-  $rect <220,440,440,480>
-  inherited slot OnLongKeyPressed
-  {
-    signal PassKeyHold, sender;
-  }
-
   $rect <220,390,440,430>
   inherited method OnShortDownKeyActivated()
   {
@@ -327,7 +321,6 @@ class VerticalMenu : Components::BaseComponent
         Item.Title = OwnerMenu.LoadItemTitle( ItemNo );
         Item.Enabled = OwnerMenu.LoadItemEnabled( ItemNo );
         Item.OnActivate = OnItemActivateSlot;
-        Item.OnEnterHold = OnLongKeyPressed;
         Item.Focusable = Focusable;
       }
 
@@ -523,7 +516,7 @@ class ItemCheckbox : Menu::ItemBase
   $rect <220,80,450,120>
   inherited method OnShortEnterKeyActivated()
   {
-    super();
+    super();
     CheckBoxButton.Checked = !CheckBoxButton.Checked;
   }
 

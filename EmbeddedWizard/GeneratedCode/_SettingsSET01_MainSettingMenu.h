@@ -156,12 +156,10 @@ EW_DEFINE_METHODS( SettingsSET01_MainSettingMenu, MenuBaseMenuView )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( SettingsSET01_MainSettingMenu _this, XObject 
-    sender )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET01_MainSettingMenu _this )
   EW_METHOD( LoadItemClass,     XClass )( SettingsSET01_MainSettingMenu _this, XInt32 
     aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( SettingsSET01_MainSettingMenu _this, 
@@ -178,9 +176,8 @@ EW_END_OF_METHODS( SettingsSET01_MainSettingMenu )
 void SettingsSET01_MainSettingMenu_Init( SettingsSET01_MainSettingMenu _this, XHandle 
   aArg );
 
-/* 'C' function for method : 'Settings::SET01_MainSettingMenu.OnLongKeyPressed()' */
-void SettingsSET01_MainSettingMenu_OnLongKeyPressed( SettingsSET01_MainSettingMenu _this, 
-  XObject sender );
+/* 'C' function for method : 'Settings::SET01_MainSettingMenu.OnShortHomeKeyActivated()' */
+void SettingsSET01_MainSettingMenu_OnShortHomeKeyActivated( SettingsSET01_MainSettingMenu _this );
 
 /* 'C' function for method : 'Settings::SET01_MainSettingMenu.LoadItemClass()' */
 XClass SettingsSET01_MainSettingMenu_LoadItemClass( SettingsSET01_MainSettingMenu _this, 

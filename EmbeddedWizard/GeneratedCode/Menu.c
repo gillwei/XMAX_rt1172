@@ -341,7 +341,6 @@ EW_DEFINE_CLASS( MenuItemBase, ComponentsBaseComponent, OnActivate, OnActivate,
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   MenuItemBase_OnShortEnterKeyActivated,
@@ -415,12 +414,6 @@ void MenuVerticalMenu__Done( MenuVerticalMenu _this )
   ComponentsBaseComponent__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Menu::VerticalMenu.OnLongKeyPressed()' */
-void MenuVerticalMenu_OnLongKeyPressed( MenuVerticalMenu _this, XObject sender )
-{
-  EwSignal( _this->Super1.PassKeyHold, sender );
-}
-
 /* 'C' function for method : 'Menu::VerticalMenu.OnShortDownKeyActivated()' */
 void MenuVerticalMenu_OnShortDownKeyActivated( MenuVerticalMenu _this )
 {
@@ -488,7 +481,6 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
       CoreGroup__OnSetEnabled( Item, MenuBaseMenuView__LoadItemEnabled( OwnerMenu, 
       ItemNo ));
       Item->OnActivate = EwNewSlot( _this, MenuVerticalMenu_OnItemActivateSlot );
-      Item->OnEnterHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
       MenuItemWrapper_OnSetFocusable( Item, _this->Focusable );
     }
 
@@ -656,7 +648,6 @@ EW_DEFINE_CLASS( MenuVerticalMenu, ComponentsBaseComponent, MenuList, MenuList,
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  MenuVerticalMenu_OnLongKeyPressed,
   MenuVerticalMenu_OnShortDownKeyActivated,
   MenuVerticalMenu_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
@@ -802,7 +793,6 @@ EW_DEFINE_CLASS( MenuItemCheckbox, MenuItemBase, CheckBoxButton, CheckBoxButton,
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   MenuItemCheckbox_OnShortEnterKeyActivated,
@@ -1346,7 +1336,6 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, _None, _None, _None, _N
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
@@ -1696,7 +1685,6 @@ EW_DEFINE_CLASS( MenuUpDownPushButtonSet, ComponentsBaseComponent, OnUpButtonRel
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   MenuUpDownPushButtonSet_OnShortDownKeyActivated,
   MenuUpDownPushButtonSet_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
@@ -1823,7 +1811,6 @@ EW_DEFINE_CLASS( MenuItemCheckMark, MenuItemBase, CheckMark, CheckMark, CheckMar
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnLongKeyPressed,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   MenuItemBase_OnShortEnterKeyActivated,

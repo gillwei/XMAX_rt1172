@@ -175,7 +175,6 @@ EW_DEFINE_METHODS( LauncherLNC_RotaryPlate, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
   EW_METHOD( OnShortDownKeyActivated, void )( LauncherLNC_RotaryPlate _this )
   EW_METHOD( OnShortUpKeyActivated, void )( LauncherLNC_RotaryPlate _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )

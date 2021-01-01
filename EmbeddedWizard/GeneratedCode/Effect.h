@@ -48,9 +48,6 @@
 #define _EffectsSlideTransition_
 #endif
 
-/* User defined auto object: 'Effect::RightSlideTransition' */
-EW_DECLARE_AUTOOBJECT( EffectRightSlideTransition, EffectsSlideTransition )
-
 /* User defined auto object: 'Effect::LeftSlideTransition' */
 EW_DECLARE_AUTOOBJECT( EffectLeftSlideTransition, EffectsSlideTransition )
 

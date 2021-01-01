@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentMain_H
-#define _DevelopmentMain_H
+#ifndef _DevelopmentDEV_Main_H
+#define _DevelopmentDEV_Main_H
 
 #ifdef __cplusplus
   extern "C"
@@ -78,10 +78,10 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::Main */
-#ifndef _DevelopmentMain_
-  EW_DECLARE_CLASS( DevelopmentMain )
-#define _DevelopmentMain_
+/* Forward declaration of the class Development::DEV_Main */
+#ifndef _DevelopmentDEV_Main_
+  EW_DECLARE_CLASS( DevelopmentDEV_Main )
+#define _DevelopmentDEV_Main_
 #endif
 
 /* Forward declaration of the class Effects::Fader */
@@ -103,14 +103,14 @@
 #endif
 
 
-/* Deklaration of class : 'Development::Main' */
-EW_DEFINE_FIELDS( DevelopmentMain, MenuBaseMenuView )
+/* Deklaration of class : 'Development::DEV_Main' */
+EW_DEFINE_FIELDS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_OBJECT  ( Menu,            MenuVerticalMenu )
   EW_ARRAY   ( ItemTitleArray,  XString, [3])
-EW_END_OF_FIELDS( DevelopmentMain )
+EW_END_OF_FIELDS( DevelopmentDEV_Main )
 
-/* Virtual Method Table (VMT) for the class : 'Development::Main' */
-EW_DEFINE_METHODS( DevelopmentMain, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_Main' */
+EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -154,39 +154,38 @@ EW_DEFINE_METHODS( DevelopmentMain, MenuBaseMenuView )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( DevelopmentMain _this, XObject sender )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( DevelopmentMain _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( DevelopmentMain _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( DevelopmentMain _this, XInt32 aItemNo, MenuItemBase 
-    aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentMain _this, XInt32 aItemNo )
+  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_Main _this )
+  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_Main _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_Main _this, XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_Main _this, XInt32 aItemNo, 
+    MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_Main _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( DevelopmentMain )
+EW_END_OF_METHODS( DevelopmentDEV_Main )
 
-/* 'C' function for method : 'Development::Main.OnLongKeyPressed()' */
-void DevelopmentMain_OnLongKeyPressed( DevelopmentMain _this, XObject sender );
+/* 'C' function for method : 'Development::DEV_Main.OnShortHomeKeyActivated()' */
+void DevelopmentDEV_Main_OnShortHomeKeyActivated( DevelopmentDEV_Main _this );
 
-/* 'C' function for method : 'Development::Main.LoadItemClass()' */
-XClass DevelopmentMain_LoadItemClass( DevelopmentMain _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_Main.LoadItemClass()' */
+XClass DevelopmentDEV_Main_LoadItemClass( DevelopmentDEV_Main _this, XInt32 aItemNo );
 
-/* 'C' function for method : 'Development::Main.LoadItemTitle()' */
-XString DevelopmentMain_LoadItemTitle( DevelopmentMain _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_Main.LoadItemTitle()' */
+XString DevelopmentDEV_Main_LoadItemTitle( DevelopmentDEV_Main _this, XInt32 aItemNo );
 
-/* 'C' function for method : 'Development::Main.OnItemActivate()' */
-void DevelopmentMain_OnItemActivate( DevelopmentMain _this, XInt32 aItemNo, MenuItemBase 
-  aMenuItem );
+/* 'C' function for method : 'Development::DEV_Main.OnItemActivate()' */
+void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItemNo, 
+  MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Development::Main.LoadItemChecked()' */
-XBool DevelopmentMain_LoadItemChecked( DevelopmentMain _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_Main.LoadItemChecked()' */
+XBool DevelopmentDEV_Main_LoadItemChecked( DevelopmentDEV_Main _this, XInt32 aItemNo );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentMain_H */
+#endif /* _DevelopmentDEV_Main_H */
 
 /* Embedded Wizard */

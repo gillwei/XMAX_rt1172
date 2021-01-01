@@ -2,23 +2,15 @@
 
 $rect <20,10,260,50>
 $output false
-class Main : Menu::BaseMenuView
+class DEV_Main : Menu::BaseMenuView
 {
   $rect <10,300,210,340>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <230,300,430,340>
-  inherited slot OnLongKeyPressed
+  $rect <240,300,470,340>
+  inherited method OnShortHomeKeyActivated()
   {
-    var Core::KeyPressHandler CurrentKeyHandler = ( Core::KeyPressHandler )sender;
-    if( null != CurrentKeyHandler && null != Owner )
-    {
-      switch( CurrentKeyHandler.Code )
-      {
-        case Core::KeyCode.Ok: Owner.DismissDialog( this, null, null, null, null, null, false );
-        default:;
-      }
-    }
+    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <510,10,710,50>
@@ -88,7 +80,6 @@ class Main : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
-    preset PassKeyHold = OnLongKeyPressed;
     preset NoOfItems = ItemTitleArray.size;
     preset ItemHeight = Menu::ItemHeightSmall;
   }

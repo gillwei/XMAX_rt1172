@@ -160,11 +160,10 @@ EW_DEFINE_METHODS( FactoryMain, MenuBaseMenuView )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( FactoryMain _this, XObject sender )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( FactoryMain _this )
   EW_METHOD( LoadItemClass,     XClass )( FactoryMain _this, XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( FactoryMain _this, XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( FactoryMain _this, XInt32 aItemNo, MenuItemBase 
@@ -215,8 +214,8 @@ void FactoryMain_DismissDialog( FactoryMain _this, CoreGroup aDialogGroup, Effec
   aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, EffectsTransition 
   aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, XBool aCombine );
 
-/* 'C' function for method : 'Factory::Main.OnLongKeyPressed()' */
-void FactoryMain_OnLongKeyPressed( FactoryMain _this, XObject sender );
+/* 'C' function for method : 'Factory::Main.OnShortHomeKeyActivated()' */
+void FactoryMain_OnShortHomeKeyActivated( FactoryMain _this );
 
 /* 'C' function for method : 'Factory::Main.LoadItemClass()' */
 XClass FactoryMain_LoadItemClass( FactoryMain _this, XInt32 aItemNo );

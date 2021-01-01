@@ -156,8 +156,6 @@ EW_DEFINE_METHODS( SettingsBtPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( SettingsBtPairedDeviceOperation _this, XObject 
-    sender )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
@@ -171,10 +169,6 @@ EW_DEFINE_METHODS( SettingsBtPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsBtPairedDeviceOperation )
-
-/* 'C' function for method : 'Settings::BtPairedDeviceOperation.OnLongKeyPressed()' */
-void SettingsBtPairedDeviceOperation_OnLongKeyPressed( SettingsBtPairedDeviceOperation _this, 
-  XObject sender );
 
 /* 'C' function for method : 'Settings::BtPairedDeviceOperation.LoadItemClass()' */
 XClass SettingsBtPairedDeviceOperation_LoadItemClass( SettingsBtPairedDeviceOperation _this, 

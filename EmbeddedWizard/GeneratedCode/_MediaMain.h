@@ -163,11 +163,10 @@ EW_DEFINE_METHODS( MediaMain, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( MediaMain _this, XObject sender )
   EW_METHOD( OnShortDownKeyActivated, void )( MediaMain _this )
   EW_METHOD( OnShortUpKeyActivated, void )( MediaMain _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( MediaMain _this )
 EW_END_OF_METHODS( MediaMain )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -175,14 +174,14 @@ EW_END_OF_METHODS( MediaMain )
    statements. */
 void MediaMain_Init( MediaMain _this, XHandle aArg );
 
-/* 'C' function for method : 'Media::Main.OnLongKeyPressed()' */
-void MediaMain_OnLongKeyPressed( MediaMain _this, XObject sender );
-
 /* 'C' function for method : 'Media::Main.OnShortDownKeyActivated()' */
 void MediaMain_OnShortDownKeyActivated( MediaMain _this );
 
 /* 'C' function for method : 'Media::Main.OnShortUpKeyActivated()' */
 void MediaMain_OnShortUpKeyActivated( MediaMain _this );
+
+/* 'C' function for method : 'Media::Main.OnShortHomeKeyActivated()' */
+void MediaMain_OnShortHomeKeyActivated( MediaMain _this );
 
 /* 'C' function for method : 'Media::Main.OnPlayPauseSlot()' */
 void MediaMain_OnPlayPauseSlot( MediaMain _this, XObject sender );
