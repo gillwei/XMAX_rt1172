@@ -20,30 +20,58 @@ class BaseComponent : Core::Group
     {
       case Core::KeyCode.Up:
       {
-        if( Enum::KeyTriggerMode.ON == UpKeyTriggerMode )
+        if( PassUpKey )
         {
-          OnShortUpKeyActivated();
+          KeyHandler.Continue = true;
+        }
+        else
+        {
+          if( Enum::KeyTriggerMode.ON == UpKeyTriggerMode )
+          {
+            OnShortUpKeyActivated();
+          }
         }
       }
       case Core::KeyCode.Down:
       {
-        if( Enum::KeyTriggerMode.ON == DownKeyTriggerMode )
+        if( PassDownKey )
         {
-          OnShortDownKeyActivated();
+          KeyHandler.Continue = true;
+        }
+        else
+        {
+          if( Enum::KeyTriggerMode.ON == DownKeyTriggerMode )
+          {
+            OnShortDownKeyActivated();
+          }
         }
       }
       case Core::KeyCode.Ok:
       {
-        if( Enum::KeyTriggerMode.ON == EnterKeyTriggerMode )
+        if( PassEnterKey )
         {
-          OnShortEnterKeyActivated();
+          KeyHandler.Continue = true;
+        }
+        else
+        {
+          if( Enum::KeyTriggerMode.ON == EnterKeyTriggerMode )
+          {
+            OnShortEnterKeyActivated();
+          }
         }
       }
       case Core::KeyCode.Home:
       {
-        if( Enum::KeyTriggerMode.ON == HomeKeyTriggerMode )
+        if( PassHomeKey )
         {
-          OnShortHomeKeyActivated();
+          KeyHandler.Continue = true;
+        }
+        else
+        {
+          if( Enum::KeyTriggerMode.ON == HomeKeyTriggerMode )
+          {
+            OnShortHomeKeyActivated();
+          }
         }
       }
       default:;
@@ -106,10 +134,10 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <990,60,1190,100>
+  $rect <1240,60,1440,100>
   property slot PassKeyHold;
 
-  $rect <990,110,1190,150>
+  $rect <1240,110,1440,150>
   slot OnLongKeyPressed
   {
   }
@@ -212,6 +240,18 @@ class BaseComponent : Core::Group
   method void OnLongHomeKeyActivated()
   {
   }
+
+  $rect <990,60,1190,100>
+  property bool PassUpKey = false;
+
+  $rect <990,110,1190,150>
+  property bool PassDownKey = false;
+
+  $rect <991,160,1191,200>
+  property bool PassHomeKey = false;
+
+  $rect <990,210,1190,250>
+  property bool PassEnterKey = false;
 }
 
 $rect <20,200,260,240>

@@ -2,7 +2,7 @@
 
 $rect <230,10,430,50>
 $output false
-class ItemBase : Core::Group
+class ItemBase : Components::BaseComponent
 {
   $rect <0,105,190,145>
   inherited property Bounds = <0,0,480,74>;
@@ -24,7 +24,7 @@ class ItemBase : Core::Group
     }
   }
 
-  $rect <474,140,674,180>
+  $rect <24,245,224,285>
   inherited method UpdateViewState()
   {
     super( aState );
@@ -46,7 +46,7 @@ class ItemBase : Core::Group
     }
   }
 
-  $rect <730,210,920,250>
+  $rect <570,220,760,260>
   inherited onset Enabled
   {
     if( pure Enabled != value )
@@ -63,46 +63,10 @@ class ItemBase : Core::Group
     }
   }
 
-  // Keyboard events
-  note group Note2
+  $rect <310,290,540,330>
+  inherited method OnShortEnterKeyActivated()
   {
-    attr Bounds = <210,100,430,375>;
-  }
-
-  // State management
-  note group Note4
-  {
-    attr Bounds = <450,100,700,195>;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Rectangle HighlightRect
-  {
-    preset Bounds = <18,0,435,74>;
-    preset Color = #FFFFFFFF;
-    preset Visible = false;
-  }
-
-  // This key handler reacts to key press events. When the user presses the key specified \
-  // in the property 'Filter' of the key handler, the handler is activated and the \
-  // method '@onPressKey' is called.
-  $rect <220,140,420,180>
-  object Core::KeyPressHandler KeyHandler
-  {
-    preset OnRelease = OnEnterReleaseSlot;
-    preset OnPress = null;
-    preset Filter = Core::KeyCode.Ok;
-    preset OnHold = OnEnterHoldSlot;
-  }
-
-  // This internal slot method is called when the '@KeyHandler' is activated (when \
-  // the user has pressed the key specified in the property 'Filter' of the key handler).
-  $rect <220,195,420,235>
-  slot OnEnterReleaseSlot
-  {
-    trace "OnEnterRelease, repetition: ", KeyHandler.Repetition;
-
-    if( false == KeyHandler.Repetition && Focusable )
+    if( Focusable )
     {
       InvalidateViewState();
 
@@ -116,6 +80,35 @@ class ItemBase : Core::Group
     }
   }
 
+  $rect <310,140,510,180>
+  inherited property PassUpKey = true;
+
+  $rect <310,190,510,230>
+  inherited property PassDownKey = true;
+
+  $rect <310,240,510,280>
+  inherited property PassHomeKey = true;
+
+  // HardKey Event Handler
+  note group Note2
+  {
+    attr Bounds = <290,100,550,350>;
+  }
+
+  // State management
+  note group Note4
+  {
+    attr Bounds = <0,205,250,300>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle HighlightRect
+  {
+    preset Bounds = <18,0,435,74>;
+    preset Color = #FFFFFFFF;
+    preset Visible = false;
+  }
+
   $rect <20,20,160,60>
   object Views::Image ListDivider
   {
@@ -127,19 +120,19 @@ class ItemBase : Core::Group
   // The property 'OnActivate' can refer to a slot method, which will receive a signal \
   // as soon as the user has activated (pressed and released) the item. Thereupon \
   // the method's logic will be executed.
-  $rect <950,260,1140,300>
+  $rect <790,270,980,310>
   property slot OnActivate = null;
 
   // Focus frame flash effect
   note group Note3
   {
-    attr Bounds = <450,235,700,375>;
+    attr Bounds = <0,310,250,450>;
   }
 
   // This timer object is used to flash the item when the user has tapped it very \
   // quickly or the item has been activated with the keyboard. This is just a visual \
   // feedback effect.
-  $rect <460,275,690,315>
+  $rect <10,350,240,390>
   object Core::Timer FocusFrameFlashTimer
   {
     preset OnTrigger = OnFocusFrameFlashTimer;
@@ -149,7 +142,7 @@ class ItemBase : Core::Group
 
   // This internal slot method is called when the '@FlashTimer' is expired. It ends \
   // the short flash feedback effect.
-  $rect <460,325,690,365>
+  $rect <10,400,240,440>
   slot OnFocusFrameFlashTimer
   {
     // The feedback flash timer is finished. Request the item to update its
@@ -160,7 +153,7 @@ class ItemBase : Core::Group
     postsignal OnActivate;
   }
 
-  $rect <730,100,920,140>
+  $rect <570,110,760,150>
   method void SetTitle( arg string aTitle )
   {
     if( Title.String != aTitle )
@@ -180,22 +173,10 @@ class ItemBase : Core::Group
     preset Color = #FFFFFFFF;
   }
 
-  // This internal slot method is called when the '@KeyHandler' is activated (when \
-  // the user has pressed the key specified in the property 'Filter' of the key handler).
-  $rect <220,255,420,295>
-  slot OnEnterHoldSlot
-  {
-    trace "OnEnterHold: ", KeyHandler.RepetitionCount;
-    postsignal OnEnterHold, KeyHandler;
-  }
-
-  $rect <220,315,420,355>
-  property slot OnEnterHold;
-
-  $rect <950,100,1150,140>
+  $rect <790,110,990,150>
   property bool Focusable = true;
 
-  $rect <950,140,1150,180>
+  $rect <790,150,990,190>
   onset Focusable
   {
     if( pure Focusable != value )
@@ -204,7 +185,7 @@ class ItemBase : Core::Group
     }
   }
 
-  $rect <950,210,1150,250>
+  $rect <790,220,990,260>
   property int32 Height = Menu::ItemHeightTall;
 
   $reorder Init 1
@@ -272,13 +253,13 @@ class VerticalMenu : Components::BaseComponent
   $rect <6,290,206,330>
   inherited property Bounds = <0,0,480,236>;
 
-  $rect <220,390,440,430>
+  $rect <220,440,440,480>
   inherited slot OnLongKeyPressed
   {
     signal PassKeyHold, sender;
   }
 
-  $rect <220,340,440,380>
+  $rect <220,390,440,430>
   inherited method OnShortDownKeyActivated()
   {
     if( Owner.IsCurrentDialog() )
@@ -298,7 +279,7 @@ class VerticalMenu : Components::BaseComponent
     }
   }
 
-  $rect <220,290,440,330>
+  $rect <220,340,440,380>
   inherited method OnShortUpKeyActivated()
   {
     if( Owner.IsCurrentDialog() )
@@ -313,6 +294,9 @@ class VerticalMenu : Components::BaseComponent
       }
     }
   }
+
+  $rect <220,290,440,330>
+  inherited property PassHomeKey = true;
 
   $rect <20,20,160,60>
   object Core::VerticalList MenuList
@@ -466,7 +450,7 @@ class VerticalMenu : Components::BaseComponent
     attr Bounds = <720,10,1460,110>;
   }
 
-  $rect <220,470,420,510>
+  $rect <230,570,430,610>
   method void MoveFocusFrame()
   {
     var int32 SelectedRow = MenuList.SelectedItem % ItemNumPerPage;
@@ -487,7 +471,7 @@ class VerticalMenu : Components::BaseComponent
 
   }
 
-  $rect <220,510,420,550>
+  $rect <230,610,430,650>
   method void UpdateListHeight()
   {
     MenuList.Bounds.y2 = MenuList.Bounds.y1 + ItemHeight * ItemNumPerPage;
@@ -536,12 +520,11 @@ class ItemCheckbox : Menu::ItemBase
     }
   }
 
-  $rect <200,80,400,120>
-  inherited slot OnEnterReleaseSlot
+  $rect <220,80,450,120>
+  inherited method OnShortEnterKeyActivated()
   {
-    super( sender );
+    super();
     CheckBoxButton.Checked = !CheckBoxButton.Checked;
-
   }
 
   $rect <20,20,160,60>
@@ -648,7 +631,6 @@ class ItemWrapper : Core::Group
       var Menu::ItemBase Item = ( Menu::ItemBase )new value;
       Item.Height = Height;
       Item.OnActivate = OnActivateSlot;
-      Item.OnEnterHold = OnEnterHoldSlot;
       Add( Item, 0 );
     }
   }

@@ -150,7 +150,11 @@ EW_DEFINE_METHODS( MenuItemCheckbox, MenuItemBase )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnEnterReleaseSlot, void )( MenuItemCheckbox _this, XObject sender )
+  EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( MenuItemCheckbox _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuItemCheckbox )
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 
@@ -165,9 +169,8 @@ void MenuItemCheckbox_UpdateLayout( MenuItemCheckbox _this, XPoint aSize );
 /* 'C' function for method : 'Menu::ItemCheckbox.OnSetEnabled()' */
 void MenuItemCheckbox_OnSetEnabled( MenuItemCheckbox _this, XBool value );
 
-/* This internal slot method is called when the '@KeyHandler' is activated (when 
-   the user has pressed the key specified in the property 'Filter' of the key handler). */
-void MenuItemCheckbox_OnEnterReleaseSlot( MenuItemCheckbox _this, XObject sender );
+/* 'C' function for method : 'Menu::ItemCheckbox.OnShortEnterKeyActivated()' */
+void MenuItemCheckbox_OnShortEnterKeyActivated( MenuItemCheckbox _this );
 
 /* 'C' function for method : 'Menu::ItemCheckbox.OnSetChecked()' */
 void MenuItemCheckbox_OnSetChecked( MenuItemCheckbox _this, XBool value );

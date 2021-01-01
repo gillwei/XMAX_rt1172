@@ -150,36 +150,64 @@ void ComponentsBaseComponent_OnKeyPressSlot( ComponentsBaseComponent _this, XObj
   {
     case CoreKeyCodeUp :
     {
-      if ( EnumKeyTriggerModeON == _this->UpKeyTriggerMode )
+      if ( _this->PassUpKey )
       {
-        ComponentsBaseComponent__OnShortUpKeyActivated( _this );
+        _this->KeyHandler.Continue = 1;
+      }
+      else
+      {
+        if ( EnumKeyTriggerModeON == _this->UpKeyTriggerMode )
+        {
+          ComponentsBaseComponent__OnShortUpKeyActivated( _this );
+        }
       }
     }
     break;
 
     case CoreKeyCodeDown :
     {
-      if ( EnumKeyTriggerModeON == _this->DownKeyTriggerMode )
+      if ( _this->PassDownKey )
       {
-        ComponentsBaseComponent__OnShortDownKeyActivated( _this );
+        _this->KeyHandler.Continue = 1;
+      }
+      else
+      {
+        if ( EnumKeyTriggerModeON == _this->DownKeyTriggerMode )
+        {
+          ComponentsBaseComponent__OnShortDownKeyActivated( _this );
+        }
       }
     }
     break;
 
     case CoreKeyCodeOk :
     {
-      if ( EnumKeyTriggerModeON == _this->EnterKeyTriggerMode )
+      if ( _this->PassEnterKey )
       {
-        ComponentsBaseComponent__OnShortEnterKeyActivated( _this );
+        _this->KeyHandler.Continue = 1;
+      }
+      else
+      {
+        if ( EnumKeyTriggerModeON == _this->EnterKeyTriggerMode )
+        {
+          ComponentsBaseComponent__OnShortEnterKeyActivated( _this );
+        }
       }
     }
     break;
 
     case CoreKeyCodeHome :
     {
-      if ( EnumKeyTriggerModeON == _this->HomeKeyTriggerMode )
+      if ( _this->PassHomeKey )
       {
-        ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
+        _this->KeyHandler.Continue = 1;
+      }
+      else
+      {
+        if ( EnumKeyTriggerModeON == _this->HomeKeyTriggerMode )
+        {
+          ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
+        }
       }
     }
     break;

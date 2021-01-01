@@ -169,9 +169,6 @@ void MenuItemWrapper_OnActivateSlot( MenuItemWrapper _this, XObject sender );
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetChecked()' */
 void MenuItemWrapper_OnSetChecked( MenuItemWrapper _this, XBool value );
 
-/* 'C' function for method : 'Menu::ItemWrapper.OnEnterHoldSlot()' */
-void MenuItemWrapper_OnEnterHoldSlot( MenuItemWrapper _this, XObject sender );
-
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetFocusable()' */
 void MenuItemWrapper_OnSetFocusable( MenuItemWrapper _this, XBool value );
 

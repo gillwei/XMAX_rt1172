@@ -42,7 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_CoreGroup.h"
+#include "_ComponentsBaseComponent.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
@@ -53,6 +53,12 @@
 #ifndef _CoreDialogContext_
   EW_DECLARE_CLASS( CoreDialogContext )
 #define _CoreDialogContext_
+#endif
+
+/* Forward declaration of the class Core::Group */
+#ifndef _CoreGroup_
+  EW_DECLARE_CLASS( CoreGroup )
+#define _CoreGroup_
 #endif
 
 /* Forward declaration of the class Core::LayoutContext */
@@ -93,11 +99,9 @@
 
 
 /* Deklaration of class : 'Menu::ItemBase' */
-EW_DEFINE_FIELDS( MenuItemBase, CoreGroup )
+EW_DEFINE_FIELDS( MenuItemBase, ComponentsBaseComponent )
   EW_PROPERTY( OnActivate,      XSlot )
-  EW_PROPERTY( OnEnterHold,     XSlot )
   EW_OBJECT  ( HighlightRect,   ViewsRectangle )
-  EW_OBJECT  ( KeyHandler,      CoreKeyPressHandler )
   EW_OBJECT  ( ListDivider,     ViewsImage )
   EW_OBJECT  ( FocusFrameFlashTimer, CoreTimer )
   EW_OBJECT  ( Title,           ViewsText )
@@ -106,7 +110,7 @@ EW_DEFINE_FIELDS( MenuItemBase, CoreGroup )
 EW_END_OF_FIELDS( MenuItemBase )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::ItemBase' */
-EW_DEFINE_METHODS( MenuItemBase, CoreGroup )
+EW_DEFINE_METHODS( MenuItemBase, ComponentsBaseComponent )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -150,7 +154,11 @@ EW_DEFINE_METHODS( MenuItemBase, CoreGroup )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnEnterReleaseSlot, void )( MenuItemBase _this, XObject sender )
+  EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( MenuItemBase _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuItemBase )
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 
@@ -181,12 +189,8 @@ void MenuItemBase_UpdateViewState( MenuItemBase _this, XSet aState );
 /* 'C' function for method : 'Menu::ItemBase.OnSetEnabled()' */
 void MenuItemBase_OnSetEnabled( MenuItemBase _this, XBool value );
 
-/* This internal slot method is called when the '@KeyHandler' is activated (when 
-   the user has pressed the key specified in the property 'Filter' of the key handler). */
-void MenuItemBase_OnEnterReleaseSlot( MenuItemBase _this, XObject sender );
-
-/* Wrapper function for the virtual method : 'Menu::ItemBase.OnEnterReleaseSlot()' */
-void MenuItemBase__OnEnterReleaseSlot( void* _this, XObject sender );
+/* 'C' function for method : 'Menu::ItemBase.OnShortEnterKeyActivated()' */
+void MenuItemBase_OnShortEnterKeyActivated( MenuItemBase _this );
 
 /* This internal slot method is called when the '@FlashTimer' is expired. It ends 
    the short flash feedback effect. */
@@ -194,10 +198,6 @@ void MenuItemBase_OnFocusFrameFlashTimer( MenuItemBase _this, XObject sender );
 
 /* 'C' function for method : 'Menu::ItemBase.SetTitle()' */
 void MenuItemBase_SetTitle( MenuItemBase _this, XString aTitle );
-
-/* This internal slot method is called when the '@KeyHandler' is activated (when 
-   the user has pressed the key specified in the property 'Filter' of the key handler). */
-void MenuItemBase_OnEnterHoldSlot( MenuItemBase _this, XObject sender );
 
 /* 'C' function for method : 'Menu::ItemBase.OnSetFocusable()' */
 void MenuItemBase_OnSetFocusable( MenuItemBase _this, XBool value );
