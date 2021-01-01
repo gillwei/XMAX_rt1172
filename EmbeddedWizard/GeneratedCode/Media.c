@@ -286,8 +286,8 @@ void MediaMain_OnLongKeyPressed( MediaMain _this, XObject sender )
   EwSignal( _this->Super1.PassKeyHold, sender );
 }
 
-/* 'C' function for method : 'Media::Main.OnShortDownKeyPressed()' */
-void MediaMain_OnShortDownKeyPressed( MediaMain _this )
+/* 'C' function for method : 'Media::Main.OnShortDownKeyActivated()' */
+void MediaMain_OnShortDownKeyActivated( MediaMain _this )
 {
   XInt32 NextFocusIdx = _this->FocusIdx + 1;
 
@@ -304,8 +304,8 @@ void MediaMain_OnShortDownKeyPressed( MediaMain _this )
   }
 }
 
-/* 'C' function for method : 'Media::Main.OnShortUpKeyPressed()' */
-void MediaMain_OnShortUpKeyPressed( MediaMain _this )
+/* 'C' function for method : 'Media::Main.OnShortUpKeyActivated()' */
+void MediaMain_OnShortUpKeyActivated( MediaMain _this )
 {
   XInt32 NextFocusIdx = _this->FocusIdx - 1;
 
@@ -472,10 +472,10 @@ EW_DEFINE_CLASS( MediaMain, ComponentsBaseComponent, FocusList, Rectangle, Recta
   CoreGroup_Remove,
   CoreGroup_Add,
   MediaMain_OnLongKeyPressed,
-  MediaMain_OnShortDownKeyPressed,
-  MediaMain_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  MediaMain_OnShortDownKeyActivated,
+  MediaMain_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( MediaMain )
 
 /* Initializer for the class 'Media::Track' */

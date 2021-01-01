@@ -156,10 +156,10 @@ EW_DEFINE_METHODS( SettingsSystemInfo, MenuBaseMenuView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( SettingsSystemInfo _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( SettingsSystemInfo _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( SettingsSystemInfo _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( MenuBaseMenuView _this, XInt32 aItemNo, 
@@ -176,8 +176,8 @@ void SettingsSystemInfo_Init( SettingsSystemInfo _this, XHandle aArg );
 /* 'C' function for method : 'Settings::SystemInfo.OnLongKeyPressed()' */
 void SettingsSystemInfo_OnLongKeyPressed( SettingsSystemInfo _this, XObject sender );
 
-/* 'C' function for method : 'Settings::SystemInfo.OnShortEnterKeyPressed()' */
-void SettingsSystemInfo_OnShortEnterKeyPressed( SettingsSystemInfo _this );
+/* 'C' function for method : 'Settings::SystemInfo.OnShortEnterKeyActivated()' */
+void SettingsSystemInfo_OnShortEnterKeyActivated( SettingsSystemInfo _this );
 
 /* 'C' function for method : 'Settings::SystemInfo.OnMagicKeyReleaseSlot()' */
 void SettingsSystemInfo_OnMagicKeyReleaseSlot( SettingsSystemInfo _this, XObject 

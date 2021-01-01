@@ -514,7 +514,7 @@ class SystemInfo : Menu::BaseMenuView
   }
 
   $rect <730,50,930,90>
-  inherited method OnShortEnterKeyPressed()
+  inherited method OnShortEnterKeyActivated()
   {
     PresentDialog( new Settings::SET30_QRCode, null, null, null, null, null, null, null, null, false );
   }
@@ -624,7 +624,7 @@ class SoftwareUpdate : Menu::BaseMenuView
   }
 
   $rect <520,140,720,180>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
     var int32 NextFocusIdx = FocusIdx + 1;
     if( NextFocusIdx >= FocusList.size )
@@ -640,7 +640,7 @@ class SoftwareUpdate : Menu::BaseMenuView
   }
 
   $rect <520,80,720,120>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
     var int32 NextFocusIdx = FocusIdx - 1;
     if( NextFocusIdx < 0 )
@@ -1329,7 +1329,7 @@ class DisplayBrightness : Menu::BaseMenuView
   }
 
   $rect <500,60,700,100>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
     var int32 NextBrightnessLevel = BrightnessLevel - 1;
     if( 0 <= NextBrightnessLevel )
@@ -1343,7 +1343,7 @@ class DisplayBrightness : Menu::BaseMenuView
   }
 
   $rect <500,110,700,150>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
     var int32 NextBrightnessLevel = BrightnessLevel + 1;
     if( BrightnessList.size > NextBrightnessLevel )
@@ -1705,7 +1705,7 @@ class BtPairDevice : Components::BaseMainBG
   inherited property Bounds = <0,0,480,272>;
 
   $rect <210,290,410,330>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
     if( YesButton == Focus )
     {
@@ -1714,7 +1714,7 @@ class BtPairDevice : Components::BaseMainBG
   }
 
   $rect <210,340,410,380>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
     if( NoButton == Focus )
     {
@@ -2222,7 +2222,7 @@ class SET30_QRCode : Menu::BaseMenuView
   }
 
   $rect <550,180,750,220>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
     if( PixelPerModule > 1 )
     {
@@ -2236,7 +2236,7 @@ class SET30_QRCode : Menu::BaseMenuView
   }
 
   $rect <550,130,750,170>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
     if( PixelPerModule < 4 )
     {

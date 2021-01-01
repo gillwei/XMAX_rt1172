@@ -158,10 +158,10 @@ EW_DEFINE_METHODS( SettingsBtPairedDeviceOperation, MenuBaseMenuView )
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( SettingsBtPairedDeviceOperation _this, XObject 
     sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( SettingsBtPairedDeviceOperation _this, 
     XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( SettingsBtPairedDeviceOperation _this, 

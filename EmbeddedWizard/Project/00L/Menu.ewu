@@ -279,7 +279,7 @@ class VerticalMenu : Components::BaseComponent
   }
 
   $rect <220,340,440,380>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
     if( Owner.IsCurrentDialog() )
     {
@@ -299,7 +299,7 @@ class VerticalMenu : Components::BaseComponent
   }
 
   $rect <220,290,440,330>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
     if( Owner.IsCurrentDialog() )
     {
@@ -1091,13 +1091,13 @@ class UpDownPushButtonSet : Components::BaseComponent
   inherited property Bounds = <0,0,150,83>;
 
   $rect <2,210,230,250>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
     Focus = DownButton;
   }
 
   $rect <0,170,230,210>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
     Focus = UpButton;
   }

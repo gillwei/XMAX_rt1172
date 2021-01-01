@@ -48,6 +48,7 @@
 #include "Core.h"
 #include "DeviceInterface.h"
 #include "Effect.h"
+#include "Enum.h"
 #include "Fonts.h"
 #include "Resource.h"
 #include "Strings.h"
@@ -104,6 +105,10 @@ void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink
   _this->_VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* ... and initialize objects, variables, properties, etc. */
+  _this->UpKeyTriggerMode = EnumKeyTriggerModeON;
+  _this->DownKeyTriggerMode = EnumKeyTriggerModeON;
+  _this->EnterKeyTriggerMode = EnumKeyTriggerModeOFF;
+  _this->HomeKeyTriggerMode = EnumKeyTriggerModeOFF;
   _this->KeyHandler.OnRelease = EwNewSlot( _this, ComponentsBaseComponent_OnKeyReleaseSlot );
   _this->KeyHandler.OnPress = EwNewSlot( _this, ComponentsBaseComponent_OnKeyPressSlot );
   _this->KeyHandler.OnHold = EwNewSlot( _this, ComponentsBaseComponent_OnKeyHoldSlot );
@@ -143,20 +148,40 @@ void ComponentsBaseComponent_OnKeyPressSlot( ComponentsBaseComponent _this, XObj
 
   switch ( _this->KeyHandler.Code )
   {
-    case CoreKeyCodeDown :
-      ;
+    case CoreKeyCodeUp :
+    {
+      if ( EnumKeyTriggerModeON == _this->UpKeyTriggerMode )
+      {
+        ComponentsBaseComponent__OnShortUpKeyActivated( _this );
+      }
+    }
     break;
 
-    case CoreKeyCodeUp :
-      ;
+    case CoreKeyCodeDown :
+    {
+      if ( EnumKeyTriggerModeON == _this->DownKeyTriggerMode )
+      {
+        ComponentsBaseComponent__OnShortDownKeyActivated( _this );
+      }
+    }
     break;
 
     case CoreKeyCodeOk :
-      ;
+    {
+      if ( EnumKeyTriggerModeON == _this->EnterKeyTriggerMode )
+      {
+        ComponentsBaseComponent__OnShortEnterKeyActivated( _this );
+      }
+    }
     break;
 
     case CoreKeyCodeHome :
-      ;
+    {
+      if ( EnumKeyTriggerModeON == _this->HomeKeyTriggerMode )
+      {
+        ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
+      }
+    }
     break;
 
     default : 
@@ -173,9 +198,26 @@ void ComponentsBaseComponent_OnKeyHoldSlot( ComponentsBaseComponent _this, XObje
 
   EwTrace( "%s%e", EwLoadString( &_Const0001 ), _this->KeyHandler.Code );
 
-  if ( 1 == _this->KeyHandler.RepetitionCount )
+  switch ( _this->KeyHandler.Code )
   {
-    EwSignal( EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed ), ((XObject)&_this->KeyHandler ));
+    case CoreKeyCodeUp :
+      ComponentsBaseComponent_OnLongUpKeyActivated( _this );
+    break;
+
+    case CoreKeyCodeDown :
+      ComponentsBaseComponent_OnLongDownKeyActivated( _this );
+    break;
+
+    case CoreKeyCodeOk :
+      ComponentsBaseComponent_OnLongEnterKeyActivated( _this );
+    break;
+
+    case CoreKeyCodeHome :
+      ComponentsBaseComponent_OnLongHomeKeyActivated( _this );
+    break;
+
+    default : 
+      ;
   }
 }
 
@@ -193,20 +235,40 @@ void ComponentsBaseComponent_OnKeyReleaseSlot( ComponentsBaseComponent _this, XO
   {
     switch ( _this->KeyHandler.Code )
     {
-      case CoreKeyCodeDown :
-        ComponentsBaseComponent__OnShortDownKeyPressed( _this );
+      case CoreKeyCodeUp :
+      {
+        if ( EnumKeyTriggerModeOFF == _this->UpKeyTriggerMode )
+        {
+          ComponentsBaseComponent__OnShortUpKeyActivated( _this );
+        }
+      }
       break;
 
-      case CoreKeyCodeUp :
-        ComponentsBaseComponent__OnShortUpKeyPressed( _this );
+      case CoreKeyCodeDown :
+      {
+        if ( EnumKeyTriggerModeOFF == _this->DownKeyTriggerMode )
+        {
+          ComponentsBaseComponent__OnShortDownKeyActivated( _this );
+        }
+      }
       break;
 
       case CoreKeyCodeOk :
-        ComponentsBaseComponent__OnShortEnterKeyPressed( _this );
+      {
+        if ( EnumKeyTriggerModeOFF == _this->EnterKeyTriggerMode )
+        {
+          ComponentsBaseComponent__OnShortEnterKeyActivated( _this );
+        }
+      }
       break;
 
       case CoreKeyCodeHome :
-        ComponentsBaseComponent__OnShortHomeKeyPressed( _this );
+      {
+        if ( EnumKeyTriggerModeOFF == _this->HomeKeyTriggerMode )
+        {
+          ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
+        }
+      }
       break;
 
       default : 
@@ -231,43 +293,43 @@ void ComponentsBaseComponent__OnLongKeyPressed( void* _this, XObject sender )
   , sender );
 }
 
-/* 'C' function for method : 'Components::BaseComponent.OnShortDownKeyPressed()' */
-void ComponentsBaseComponent_OnShortDownKeyPressed( ComponentsBaseComponent _this )
+/* 'C' function for method : 'Components::BaseComponent.OnShortDownKeyActivated()' */
+void ComponentsBaseComponent_OnShortDownKeyActivated( ComponentsBaseComponent _this )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 }
 
-/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortDownKeyPressed()' */
-void ComponentsBaseComponent__OnShortDownKeyPressed( void* _this )
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortDownKeyActivated()' */
+void ComponentsBaseComponent__OnShortDownKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnShortDownKeyPressed((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_VMT->OnShortDownKeyActivated((ComponentsBaseComponent)_this );
 }
 
-/* 'C' function for method : 'Components::BaseComponent.OnShortUpKeyPressed()' */
-void ComponentsBaseComponent_OnShortUpKeyPressed( ComponentsBaseComponent _this )
+/* 'C' function for method : 'Components::BaseComponent.OnShortUpKeyActivated()' */
+void ComponentsBaseComponent_OnShortUpKeyActivated( ComponentsBaseComponent _this )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 }
 
-/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortUpKeyPressed()' */
-void ComponentsBaseComponent__OnShortUpKeyPressed( void* _this )
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortUpKeyActivated()' */
+void ComponentsBaseComponent__OnShortUpKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnShortUpKeyPressed((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_VMT->OnShortUpKeyActivated((ComponentsBaseComponent)_this );
 }
 
-/* 'C' function for method : 'Components::BaseComponent.OnShortEnterKeyPressed()' */
-void ComponentsBaseComponent_OnShortEnterKeyPressed( ComponentsBaseComponent _this )
+/* 'C' function for method : 'Components::BaseComponent.OnShortEnterKeyActivated()' */
+void ComponentsBaseComponent_OnShortEnterKeyActivated( ComponentsBaseComponent _this )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 }
 
-/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortEnterKeyPressed()' */
-void ComponentsBaseComponent__OnShortEnterKeyPressed( void* _this )
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortEnterKeyActivated()' */
+void ComponentsBaseComponent__OnShortEnterKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnShortEnterKeyPressed((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_VMT->OnShortEnterKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnSlideEffectCompletedSlot()' */
@@ -306,17 +368,45 @@ void ComponentsBaseComponent_SlideOutDialog( ComponentsBaseComponent _this, Core
   }
 }
 
-/* 'C' function for method : 'Components::BaseComponent.OnShortHomeKeyPressed()' */
-void ComponentsBaseComponent_OnShortHomeKeyPressed( ComponentsBaseComponent _this )
+/* 'C' function for method : 'Components::BaseComponent.OnShortHomeKeyActivated()' */
+void ComponentsBaseComponent_OnShortHomeKeyActivated( ComponentsBaseComponent _this )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 }
 
-/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortHomeKeyPressed()' */
-void ComponentsBaseComponent__OnShortHomeKeyPressed( void* _this )
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortHomeKeyActivated()' */
+void ComponentsBaseComponent__OnShortHomeKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnShortHomeKeyPressed((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_VMT->OnShortHomeKeyActivated((ComponentsBaseComponent)_this );
+}
+
+/* 'C' function for method : 'Components::BaseComponent.OnLongDownKeyActivated()' */
+void ComponentsBaseComponent_OnLongDownKeyActivated( ComponentsBaseComponent _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+}
+
+/* 'C' function for method : 'Components::BaseComponent.OnLongUpKeyActivated()' */
+void ComponentsBaseComponent_OnLongUpKeyActivated( ComponentsBaseComponent _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+}
+
+/* 'C' function for method : 'Components::BaseComponent.OnLongEnterKeyActivated()' */
+void ComponentsBaseComponent_OnLongEnterKeyActivated( ComponentsBaseComponent _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+}
+
+/* 'C' function for method : 'Components::BaseComponent.OnLongHomeKeyActivated()' */
+void ComponentsBaseComponent_OnLongHomeKeyActivated( ComponentsBaseComponent _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
 }
 
 /* Variants derived from the class : 'Components::BaseComponent' */
@@ -325,7 +415,7 @@ EW_END_OF_CLASS_VARIANTS( ComponentsBaseComponent )
 
 /* Virtual Method Table (VMT) for the class : 'Components::BaseComponent' */
 EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, PassKeyHold, PassKeyHold, KeyHandler, 
-                 KeyHandler, IsSlideEffectPresenting, IsSlideEffectPresenting, "Components::BaseComponent" )
+                 KeyHandler, HomeKeyTriggerMode, HomeKeyTriggerMode, "Components::BaseComponent" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -357,10 +447,10 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, PassKeyHold, PassKeyHold, K
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( ComponentsBaseComponent )
 
 /* Initializer for the class 'Components::DisclaimerView' */
@@ -503,10 +593,10 @@ EW_DEFINE_CLASS( ComponentsDisclaimerView, ComponentsBaseComponent, OnYesClicked
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( ComponentsDisclaimerView )
 
 /* Initializer for the class 'Components::StatusBar' */
@@ -749,10 +839,10 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, MainBottomBG, Ma
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( ComponentsBaseMainBG )
 
 /* Embedded Wizard */

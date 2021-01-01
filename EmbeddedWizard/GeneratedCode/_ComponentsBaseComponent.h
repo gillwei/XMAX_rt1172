@@ -92,6 +92,10 @@
 EW_DEFINE_FIELDS( ComponentsBaseComponent, CoreGroup )
   EW_PROPERTY( PassKeyHold,     XSlot )
   EW_OBJECT  ( KeyHandler,      CoreKeyPressHandler )
+  EW_PROPERTY( HomeKeyTriggerMode, XEnum )
+  EW_PROPERTY( EnterKeyTriggerMode, XEnum )
+  EW_PROPERTY( DownKeyTriggerMode, XEnum )
+  EW_PROPERTY( UpKeyTriggerMode, XEnum )
   EW_VARIABLE( IsSlideEffectPresenting, XBool )
 EW_END_OF_FIELDS( ComponentsBaseComponent )
 
@@ -141,10 +145,10 @@ EW_DEFINE_METHODS( ComponentsBaseComponent, CoreGroup )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( ComponentsBaseComponent )
 
 /* 'C' function for method : 'Components::BaseComponent.OnKeyPressSlot()' */
@@ -166,23 +170,23 @@ void ComponentsBaseComponent_OnLongKeyPressed( ComponentsBaseComponent _this, XO
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongKeyPressed()' */
 void ComponentsBaseComponent__OnLongKeyPressed( void* _this, XObject sender );
 
-/* 'C' function for method : 'Components::BaseComponent.OnShortDownKeyPressed()' */
-void ComponentsBaseComponent_OnShortDownKeyPressed( ComponentsBaseComponent _this );
+/* 'C' function for method : 'Components::BaseComponent.OnShortDownKeyActivated()' */
+void ComponentsBaseComponent_OnShortDownKeyActivated( ComponentsBaseComponent _this );
 
-/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortDownKeyPressed()' */
-void ComponentsBaseComponent__OnShortDownKeyPressed( void* _this );
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortDownKeyActivated()' */
+void ComponentsBaseComponent__OnShortDownKeyActivated( void* _this );
 
-/* 'C' function for method : 'Components::BaseComponent.OnShortUpKeyPressed()' */
-void ComponentsBaseComponent_OnShortUpKeyPressed( ComponentsBaseComponent _this );
+/* 'C' function for method : 'Components::BaseComponent.OnShortUpKeyActivated()' */
+void ComponentsBaseComponent_OnShortUpKeyActivated( ComponentsBaseComponent _this );
 
-/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortUpKeyPressed()' */
-void ComponentsBaseComponent__OnShortUpKeyPressed( void* _this );
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortUpKeyActivated()' */
+void ComponentsBaseComponent__OnShortUpKeyActivated( void* _this );
 
-/* 'C' function for method : 'Components::BaseComponent.OnShortEnterKeyPressed()' */
-void ComponentsBaseComponent_OnShortEnterKeyPressed( ComponentsBaseComponent _this );
+/* 'C' function for method : 'Components::BaseComponent.OnShortEnterKeyActivated()' */
+void ComponentsBaseComponent_OnShortEnterKeyActivated( ComponentsBaseComponent _this );
 
-/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortEnterKeyPressed()' */
-void ComponentsBaseComponent__OnShortEnterKeyPressed( void* _this );
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortEnterKeyActivated()' */
+void ComponentsBaseComponent__OnShortEnterKeyActivated( void* _this );
 
 /* 'C' function for method : 'Components::BaseComponent.OnSlideEffectCompletedSlot()' */
 void ComponentsBaseComponent_OnSlideEffectCompletedSlot( ComponentsBaseComponent _this, 
@@ -196,11 +200,23 @@ void ComponentsBaseComponent_SlideInDialog( ComponentsBaseComponent _this, CoreG
 void ComponentsBaseComponent_SlideOutDialog( ComponentsBaseComponent _this, CoreGroup 
   aView );
 
-/* 'C' function for method : 'Components::BaseComponent.OnShortHomeKeyPressed()' */
-void ComponentsBaseComponent_OnShortHomeKeyPressed( ComponentsBaseComponent _this );
+/* 'C' function for method : 'Components::BaseComponent.OnShortHomeKeyActivated()' */
+void ComponentsBaseComponent_OnShortHomeKeyActivated( ComponentsBaseComponent _this );
 
-/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortHomeKeyPressed()' */
-void ComponentsBaseComponent__OnShortHomeKeyPressed( void* _this );
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortHomeKeyActivated()' */
+void ComponentsBaseComponent__OnShortHomeKeyActivated( void* _this );
+
+/* 'C' function for method : 'Components::BaseComponent.OnLongDownKeyActivated()' */
+void ComponentsBaseComponent_OnLongDownKeyActivated( ComponentsBaseComponent _this );
+
+/* 'C' function for method : 'Components::BaseComponent.OnLongUpKeyActivated()' */
+void ComponentsBaseComponent_OnLongUpKeyActivated( ComponentsBaseComponent _this );
+
+/* 'C' function for method : 'Components::BaseComponent.OnLongEnterKeyActivated()' */
+void ComponentsBaseComponent_OnLongEnterKeyActivated( ComponentsBaseComponent _this );
+
+/* 'C' function for method : 'Components::BaseComponent.OnLongHomeKeyActivated()' */
+void ComponentsBaseComponent_OnLongHomeKeyActivated( ComponentsBaseComponent _this );
 
 #ifdef __cplusplus
   }

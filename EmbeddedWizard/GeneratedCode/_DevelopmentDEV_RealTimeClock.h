@@ -150,14 +150,14 @@ EW_DEFINE_METHODS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( DevelopmentDEV_RealTimeClock _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_RealTimeClock _this )
 EW_END_OF_METHODS( DevelopmentDEV_RealTimeClock )
 
-/* 'C' function for method : 'Development::DEV_RealTimeClock.OnShortHomeKeyPressed()' */
-void DevelopmentDEV_RealTimeClock_OnShortHomeKeyPressed( DevelopmentDEV_RealTimeClock _this );
+/* 'C' function for method : 'Development::DEV_RealTimeClock.OnShortHomeKeyActivated()' */
+void DevelopmentDEV_RealTimeClock_OnShortHomeKeyActivated( DevelopmentDEV_RealTimeClock _this );
 
 /* 'C' function for method : 'Development::DEV_RealTimeClock.OnUpdateLocalTimeSlot()' */
 void DevelopmentDEV_RealTimeClock_OnUpdateLocalTimeSlot( DevelopmentDEV_RealTimeClock _this, 

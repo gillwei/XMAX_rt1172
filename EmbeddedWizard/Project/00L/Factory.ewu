@@ -349,7 +349,7 @@ class DisplayManual : Components::BaseComponent
   }
 
   $rect <230,390,430,430>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
     var int32 NextIdx = PatternIdx + 1;
     if( NextIdx >= TotalPatternNum )
@@ -360,7 +360,7 @@ class DisplayManual : Components::BaseComponent
   }
 
   $rect <230,340,430,380>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
     var int32 PreviousIdx = PatternIdx - 1;
     if( PreviousIdx < 0 )

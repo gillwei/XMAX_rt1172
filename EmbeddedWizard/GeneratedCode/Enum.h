@@ -104,6 +104,13 @@ typedef enum
   EnumLauncherItemTOTAL                 = 12
 } EnumLauncherItem;
 
+/* User defined enumeration: 'Enum::KeyTriggerMode' */
+typedef enum
+{
+  EnumKeyTriggerModeON                  = 0,
+  EnumKeyTriggerModeOFF                 = 1
+} EnumKeyTriggerMode;
+
 #ifdef __cplusplus
   }
 #endif

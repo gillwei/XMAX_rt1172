@@ -149,20 +149,20 @@ EW_DEFINE_METHODS( NavigationYMC, ComponentsBaseComponent )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( NavigationYMC _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( NavigationYMC _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( NavigationYMC _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( NavigationYMC _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( NavigationYMC _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( NavigationYMC _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( NavigationYMC )
 
-/* 'C' function for method : 'Navigation::YMC.OnShortDownKeyPressed()' */
-void NavigationYMC_OnShortDownKeyPressed( NavigationYMC _this );
+/* 'C' function for method : 'Navigation::YMC.OnShortDownKeyActivated()' */
+void NavigationYMC_OnShortDownKeyActivated( NavigationYMC _this );
 
-/* 'C' function for method : 'Navigation::YMC.OnShortUpKeyPressed()' */
-void NavigationYMC_OnShortUpKeyPressed( NavigationYMC _this );
+/* 'C' function for method : 'Navigation::YMC.OnShortUpKeyActivated()' */
+void NavigationYMC_OnShortUpKeyActivated( NavigationYMC _this );
 
-/* 'C' function for method : 'Navigation::YMC.OnShortEnterKeyPressed()' */
-void NavigationYMC_OnShortEnterKeyPressed( NavigationYMC _this );
+/* 'C' function for method : 'Navigation::YMC.OnShortEnterKeyActivated()' */
+void NavigationYMC_OnShortEnterKeyActivated( NavigationYMC _this );
 
 /* 'C' function for method : 'Navigation::YMC.OnSetPictureIdx()' */
 void NavigationYMC_OnSetPictureIdx( NavigationYMC _this, XInt32 value );

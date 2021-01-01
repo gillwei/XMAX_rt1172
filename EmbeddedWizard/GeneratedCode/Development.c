@@ -287,10 +287,10 @@ EW_DEFINE_CLASS( DevelopmentMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, Item
   CoreGroup_Remove,
   CoreGroup_Add,
   DevelopmentMain_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   DevelopmentMain_LoadItemClass,
   DevelopmentMain_LoadItemTitle,
   DevelopmentMain_OnItemActivate,
@@ -353,8 +353,8 @@ void DevelopmentDEV_RealTimeClock__Done( DevelopmentDEV_RealTimeClock _this )
   ComponentsBaseMainBG__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Development::DEV_RealTimeClock.OnShortHomeKeyPressed()' */
-void DevelopmentDEV_RealTimeClock_OnShortHomeKeyPressed( DevelopmentDEV_RealTimeClock _this )
+/* 'C' function for method : 'Development::DEV_RealTimeClock.OnShortHomeKeyActivated()' */
+void DevelopmentDEV_RealTimeClock_OnShortHomeKeyActivated( DevelopmentDEV_RealTimeClock _this )
 {
   CoreGroup__DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
@@ -423,10 +423,10 @@ EW_DEFINE_CLASS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG, OnUpdateLoc
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  DevelopmentDEV_RealTimeClock_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  DevelopmentDEV_RealTimeClock_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( DevelopmentDEV_RealTimeClock )
 
 /* Embedded Wizard */

@@ -110,7 +110,7 @@ class DEV_RealTimeClock : Components::BaseMainBG
   inherited property Bounds = <0,0,480,272>;
 
   $rect <220,290,450,330>
-  inherited method OnShortHomeKeyPressed()
+  inherited method OnShortHomeKeyActivated()
   {
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }

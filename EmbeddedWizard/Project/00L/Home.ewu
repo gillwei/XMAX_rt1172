@@ -7,8 +7,8 @@ class HOM11_tachometer : Components::BaseMainBG
   $rect <0,280,200,320>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <210,280,430,320>
-  inherited method OnShortEnterKeyPressed()
+  $rect <210,280,440,320>
+  inherited method OnShortEnterKeyActivated()
   {
     GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
   }

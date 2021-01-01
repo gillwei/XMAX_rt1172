@@ -153,21 +153,21 @@ EW_DEFINE_METHODS( FactoryDisplayManual, ComponentsBaseComponent )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( FactoryDisplayManual _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( FactoryDisplayManual _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( FactoryDisplayManual _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( FactoryDisplayManual _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( FactoryDisplayManual _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( FactoryDisplayManual )
 
 /* 'C' function for method : 'Factory::DisplayManual.OnLongKeyPressed()' */
 void FactoryDisplayManual_OnLongKeyPressed( FactoryDisplayManual _this, XObject 
   sender );
 
-/* 'C' function for method : 'Factory::DisplayManual.OnShortDownKeyPressed()' */
-void FactoryDisplayManual_OnShortDownKeyPressed( FactoryDisplayManual _this );
+/* 'C' function for method : 'Factory::DisplayManual.OnShortDownKeyActivated()' */
+void FactoryDisplayManual_OnShortDownKeyActivated( FactoryDisplayManual _this );
 
-/* 'C' function for method : 'Factory::DisplayManual.OnShortUpKeyPressed()' */
-void FactoryDisplayManual_OnShortUpKeyPressed( FactoryDisplayManual _this );
+/* 'C' function for method : 'Factory::DisplayManual.OnShortUpKeyActivated()' */
+void FactoryDisplayManual_OnShortUpKeyActivated( FactoryDisplayManual _this );
 
 /* 'C' function for method : 'Factory::DisplayManual.OnSetPatternIdx()' */
 void FactoryDisplayManual_OnSetPatternIdx( FactoryDisplayManual _this, XInt32 value );

@@ -149,20 +149,20 @@ EW_DEFINE_METHODS( NavigationGarmin, ComponentsBaseComponent )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( NavigationGarmin _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( NavigationGarmin _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( NavigationGarmin _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( NavigationGarmin _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( NavigationGarmin _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( NavigationGarmin _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( NavigationGarmin )
 
-/* 'C' function for method : 'Navigation::Garmin.OnShortDownKeyPressed()' */
-void NavigationGarmin_OnShortDownKeyPressed( NavigationGarmin _this );
+/* 'C' function for method : 'Navigation::Garmin.OnShortDownKeyActivated()' */
+void NavigationGarmin_OnShortDownKeyActivated( NavigationGarmin _this );
 
-/* 'C' function for method : 'Navigation::Garmin.OnShortUpKeyPressed()' */
-void NavigationGarmin_OnShortUpKeyPressed( NavigationGarmin _this );
+/* 'C' function for method : 'Navigation::Garmin.OnShortUpKeyActivated()' */
+void NavigationGarmin_OnShortUpKeyActivated( NavigationGarmin _this );
 
-/* 'C' function for method : 'Navigation::Garmin.OnShortEnterKeyPressed()' */
-void NavigationGarmin_OnShortEnterKeyPressed( NavigationGarmin _this );
+/* 'C' function for method : 'Navigation::Garmin.OnShortEnterKeyActivated()' */
+void NavigationGarmin_OnShortEnterKeyActivated( NavigationGarmin _this );
 
 /* 'C' function for method : 'Navigation::Garmin.OnSetPictureIdx()' */
 void NavigationGarmin_OnSetPictureIdx( NavigationGarmin _this, XInt32 value );

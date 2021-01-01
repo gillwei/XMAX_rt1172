@@ -28,7 +28,7 @@ class Main : Components::BaseComponent
   }
 
   $rect <520,150,720,190>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
     var int32 NextFocusIdx = FocusIdx + 1;
     if( NextFocusIdx >= FocusList.size )
@@ -44,7 +44,7 @@ class Main : Components::BaseComponent
   }
 
   $rect <520,100,720,140>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
     var int32 NextFocusIdx = FocusIdx - 1;
     if( NextFocusIdx < 0 )

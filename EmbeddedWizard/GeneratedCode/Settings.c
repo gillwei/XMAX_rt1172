@@ -401,10 +401,10 @@ EW_DEFINE_CLASS( SettingsMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, ItemTit
   CoreGroup_Remove,
   CoreGroup_Add,
   SettingsMain_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   SettingsMain_LoadItemClass,
   SettingsMain_LoadItemTitle,
   SettingsMain_OnItemActivate,
@@ -566,10 +566,10 @@ EW_DEFINE_CLASS( SettingsConnection, MenuBaseMenuView, Menu, Menu, Menu, Menu, I
   CoreGroup_Remove,
   CoreGroup_Add,
   SettingsConnection_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   SettingsConnection_LoadItemClass,
   SettingsConnection_LoadItemTitle,
   SettingsConnection_OnItemActivate,
@@ -845,10 +845,10 @@ EW_DEFINE_CLASS( SettingsBluetooth, MenuBaseMenuView, Menu, Menu, Menu, Menu, It
   CoreGroup_Remove,
   CoreGroup_Add,
   SettingsBluetooth_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   SettingsBluetooth_LoadItemClass,
   SettingsBluetooth_LoadItemTitle,
   SettingsBluetooth_OnItemActivate,
@@ -1018,10 +1018,10 @@ EW_DEFINE_CLASS( SettingsSystemMenu, MenuBaseMenuView, Menu, Menu, Menu, Menu, S
   CoreGroup_Remove,
   CoreGroup_Add,
   SettingsSystemMenu_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   SettingsSystemMenu_LoadItemClass,
   SettingsSystemMenu_LoadItemTitle,
   SettingsSystemMenu_OnItemActivate,
@@ -1168,8 +1168,8 @@ void SettingsSystemInfo_OnLongKeyPressed( SettingsSystemInfo _this, XObject send
   }
 }
 
-/* 'C' function for method : 'Settings::SystemInfo.OnShortEnterKeyPressed()' */
-void SettingsSystemInfo_OnShortEnterKeyPressed( SettingsSystemInfo _this )
+/* 'C' function for method : 'Settings::SystemInfo.OnShortEnterKeyActivated()' */
+void SettingsSystemInfo_OnShortEnterKeyActivated( SettingsSystemInfo _this )
 {
   CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( SettingsSET30_QRCode, 
   0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -1238,10 +1238,10 @@ EW_DEFINE_CLASS( SettingsSystemInfo, MenuBaseMenuView, ESN, ESN, ESN, ESN, _None
   CoreGroup_Remove,
   CoreGroup_Add,
   SettingsSystemInfo_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  SettingsSystemInfo_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  SettingsSystemInfo_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -1378,10 +1378,10 @@ EW_DEFINE_CLASS( SettingsAllReset, MenuBaseMenuView, OnYes, OnYes, Text, Text, _
   CoreGroup_Remove,
   CoreGroup_Add,
   SettingsAllReset_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -1474,10 +1474,10 @@ EW_DEFINE_CLASS( SettingsInProgress, MenuBaseMenuView, Text, Text, Text, Text, _
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -1570,10 +1570,10 @@ EW_DEFINE_CLASS( SettingsAllResetCompleted, MenuBaseMenuView, Text, Text, Text,
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -1769,10 +1769,10 @@ EW_DEFINE_CLASS( SettingsReset, ComponentsBaseComponent, BusyDialog, SystemReboo
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( SettingsReset )
 
 /* Initializer for the class 'Settings::DisplayBrightness' */
@@ -1919,8 +1919,8 @@ void SettingsDisplayBrightness_OnLongKeyPressed( SettingsDisplayBrightness _this
   }
 }
 
-/* 'C' function for method : 'Settings::DisplayBrightness.OnShortDownKeyPressed()' */
-void SettingsDisplayBrightness_OnShortDownKeyPressed( SettingsDisplayBrightness _this )
+/* 'C' function for method : 'Settings::DisplayBrightness.OnShortDownKeyActivated()' */
+void SettingsDisplayBrightness_OnShortDownKeyActivated( SettingsDisplayBrightness _this )
 {
   XInt32 NextBrightnessLevel = _this->BrightnessLevel - 1;
 
@@ -1934,8 +1934,8 @@ void SettingsDisplayBrightness_OnShortDownKeyPressed( SettingsDisplayBrightness 
   }
 }
 
-/* 'C' function for method : 'Settings::DisplayBrightness.OnShortUpKeyPressed()' */
-void SettingsDisplayBrightness_OnShortUpKeyPressed( SettingsDisplayBrightness _this )
+/* 'C' function for method : 'Settings::DisplayBrightness.OnShortUpKeyActivated()' */
+void SettingsDisplayBrightness_OnShortUpKeyActivated( SettingsDisplayBrightness _this )
 {
   XInt32 NextBrightnessLevel = _this->BrightnessLevel + 1;
 
@@ -2030,10 +2030,10 @@ EW_DEFINE_CLASS( SettingsDisplayBrightness, MenuBaseMenuView, CheckerboardImage,
   CoreGroup_Remove,
   CoreGroup_Add,
   SettingsDisplayBrightness_OnLongKeyPressed,
-  SettingsDisplayBrightness_OnShortDownKeyPressed,
-  SettingsDisplayBrightness_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  SettingsDisplayBrightness_OnShortDownKeyActivated,
+  SettingsDisplayBrightness_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -2255,10 +2255,10 @@ EW_DEFINE_CLASS( SettingsBtDiscovarable, ComponentsBaseMainBG, DiscoverableText,
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( SettingsBtDiscovarable )
 
 /* Initializer for the class 'Settings::BtConnectionResult' */
@@ -2435,10 +2435,10 @@ EW_DEFINE_CLASS( SettingsBtConnectionResult, ComponentsBaseMainBG, Text, Text, T
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( SettingsBtConnectionResult )
 
 /* Initializer for the class 'Settings::BtMaxPairedDevice' */
@@ -2562,10 +2562,10 @@ EW_DEFINE_CLASS( SettingsBtMaxPairedDevice, ComponentsBaseMainBG, ToRemovePaired
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( SettingsBtMaxPairedDevice )
 
 /* Initializer for the class 'Settings::SET17_BtPairedDeviceList' */
@@ -2827,10 +2827,10 @@ EW_DEFINE_CLASS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView, Menu, Menu,
   CoreGroup_Remove,
   CoreGroup_Add,
   SettingsSET17_BtPairedDeviceList_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   SettingsSET17_BtPairedDeviceList_LoadItemClass,
   SettingsSET17_BtPairedDeviceList_LoadItemTitle,
   SettingsSET17_BtPairedDeviceList_OnItemActivate,
@@ -3030,10 +3030,10 @@ EW_DEFINE_CLASS( SettingsBtPairedDeviceOperation, MenuBaseMenuView, Menu, Menu,
   CoreGroup_Remove,
   CoreGroup_Add,
   SettingsBtPairedDeviceOperation_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   SettingsBtPairedDeviceOperation_LoadItemClass,
   SettingsBtPairedDeviceOperation_LoadItemTitle,
   SettingsBtPairedDeviceOperation_OnItemActivate,
@@ -3165,10 +3165,10 @@ EW_DEFINE_CLASS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG, Text, Text, Te
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( SettingsBtDeleteBleDevice )
 
 /* Initializer for the class 'Settings::BtFwUpdateDialog' */
@@ -3438,8 +3438,8 @@ void SettingsSET30_QRCode_OnLongKeyPressed( SettingsSET30_QRCode _this, XObject
   }
 }
 
-/* 'C' function for method : 'Settings::SET30_QRCode.OnShortDownKeyPressed()' */
-void SettingsSET30_QRCode_OnShortDownKeyPressed( SettingsSET30_QRCode _this )
+/* 'C' function for method : 'Settings::SET30_QRCode.OnShortDownKeyActivated()' */
+void SettingsSET30_QRCode_OnShortDownKeyActivated( SettingsSET30_QRCode _this )
 {
   if ( _this->PixelPerModule > 1 )
   {
@@ -3453,8 +3453,8 @@ void SettingsSET30_QRCode_OnShortDownKeyPressed( SettingsSET30_QRCode _this )
   }
 }
 
-/* 'C' function for method : 'Settings::SET30_QRCode.OnShortUpKeyPressed()' */
-void SettingsSET30_QRCode_OnShortUpKeyPressed( SettingsSET30_QRCode _this )
+/* 'C' function for method : 'Settings::SET30_QRCode.OnShortUpKeyActivated()' */
+void SettingsSET30_QRCode_OnShortUpKeyActivated( SettingsSET30_QRCode _this )
 {
   if ( _this->PixelPerModule < 4 )
   {
@@ -3530,10 +3530,10 @@ EW_DEFINE_CLASS( SettingsSET30_QRCode, MenuBaseMenuView, QrCodeUpdateEventHandle
   CoreGroup_Remove,
   CoreGroup_Add,
   SettingsSET30_QRCode_OnLongKeyPressed,
-  SettingsSET30_QRCode_OnShortDownKeyPressed,
-  SettingsSET30_QRCode_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  SettingsSET30_QRCode_OnShortDownKeyActivated,
+  SettingsSET30_QRCode_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,

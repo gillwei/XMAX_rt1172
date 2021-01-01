@@ -162,10 +162,10 @@ EW_DEFINE_METHODS( LauncherLNC_Main, ComponentsBaseComponent )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( LauncherLNC_Main _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( LauncherLNC_Main _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( LauncherLNC_Main _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( LauncherLNC_Main _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( LauncherLNC_Main _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( LauncherLNC_Main _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( LauncherLNC_Main _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( LauncherLNC_Main _this )
 EW_END_OF_METHODS( LauncherLNC_Main )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -173,17 +173,17 @@ EW_END_OF_METHODS( LauncherLNC_Main )
    statements. */
 void LauncherLNC_Main_Init( LauncherLNC_Main _this, XHandle aArg );
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortDownKeyPressed()' */
-void LauncherLNC_Main_OnShortDownKeyPressed( LauncherLNC_Main _this );
+/* 'C' function for method : 'Launcher::LNC_Main.OnShortDownKeyActivated()' */
+void LauncherLNC_Main_OnShortDownKeyActivated( LauncherLNC_Main _this );
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortUpKeyPressed()' */
-void LauncherLNC_Main_OnShortUpKeyPressed( LauncherLNC_Main _this );
+/* 'C' function for method : 'Launcher::LNC_Main.OnShortUpKeyActivated()' */
+void LauncherLNC_Main_OnShortUpKeyActivated( LauncherLNC_Main _this );
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortEnterKeyPressed()' */
-void LauncherLNC_Main_OnShortEnterKeyPressed( LauncherLNC_Main _this );
+/* 'C' function for method : 'Launcher::LNC_Main.OnShortEnterKeyActivated()' */
+void LauncherLNC_Main_OnShortEnterKeyActivated( LauncherLNC_Main _this );
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortHomeKeyPressed()' */
-void LauncherLNC_Main_OnShortHomeKeyPressed( LauncherLNC_Main _this );
+/* 'C' function for method : 'Launcher::LNC_Main.OnShortHomeKeyActivated()' */
+void LauncherLNC_Main_OnShortHomeKeyActivated( LauncherLNC_Main _this );
 
 /* 'C' function for method : 'Launcher::LNC_Main.OnCurrentItemChangedSlot()' */
 void LauncherLNC_Main_OnCurrentItemChangedSlot( LauncherLNC_Main _this, XObject 

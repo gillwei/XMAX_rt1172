@@ -154,10 +154,10 @@ EW_DEFINE_METHODS( SettingsDisplayBrightness, MenuBaseMenuView )
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( SettingsDisplayBrightness _this, XObject 
     sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( SettingsDisplayBrightness _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( SettingsDisplayBrightness _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( SettingsDisplayBrightness _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( SettingsDisplayBrightness _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( MenuBaseMenuView _this, XInt32 aItemNo, 
@@ -192,11 +192,11 @@ void SettingsDisplayBrightness_Init( SettingsDisplayBrightness _this, XHandle aA
 void SettingsDisplayBrightness_OnLongKeyPressed( SettingsDisplayBrightness _this, 
   XObject sender );
 
-/* 'C' function for method : 'Settings::DisplayBrightness.OnShortDownKeyPressed()' */
-void SettingsDisplayBrightness_OnShortDownKeyPressed( SettingsDisplayBrightness _this );
+/* 'C' function for method : 'Settings::DisplayBrightness.OnShortDownKeyActivated()' */
+void SettingsDisplayBrightness_OnShortDownKeyActivated( SettingsDisplayBrightness _this );
 
-/* 'C' function for method : 'Settings::DisplayBrightness.OnShortUpKeyPressed()' */
-void SettingsDisplayBrightness_OnShortUpKeyPressed( SettingsDisplayBrightness _this );
+/* 'C' function for method : 'Settings::DisplayBrightness.OnShortUpKeyActivated()' */
+void SettingsDisplayBrightness_OnShortUpKeyActivated( SettingsDisplayBrightness _this );
 
 /* 'C' function for method : 'Settings::DisplayBrightness.OnSetBrightnessLevel()' */
 void SettingsDisplayBrightness_OnSetBrightnessLevel( SettingsDisplayBrightness _this, 

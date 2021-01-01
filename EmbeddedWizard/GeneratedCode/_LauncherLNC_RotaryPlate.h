@@ -176,17 +176,17 @@ EW_DEFINE_METHODS( LauncherLNC_RotaryPlate, ComponentsBaseComponent )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( LauncherLNC_RotaryPlate _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( LauncherLNC_RotaryPlate _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( LauncherLNC_RotaryPlate _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( LauncherLNC_RotaryPlate _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( LauncherLNC_RotaryPlate )
 
-/* 'C' function for method : 'Launcher::LNC_RotaryPlate.OnShortDownKeyPressed()' */
-void LauncherLNC_RotaryPlate_OnShortDownKeyPressed( LauncherLNC_RotaryPlate _this );
+/* 'C' function for method : 'Launcher::LNC_RotaryPlate.OnShortDownKeyActivated()' */
+void LauncherLNC_RotaryPlate_OnShortDownKeyActivated( LauncherLNC_RotaryPlate _this );
 
-/* 'C' function for method : 'Launcher::LNC_RotaryPlate.OnShortUpKeyPressed()' */
-void LauncherLNC_RotaryPlate_OnShortUpKeyPressed( LauncherLNC_RotaryPlate _this );
+/* 'C' function for method : 'Launcher::LNC_RotaryPlate.OnShortUpKeyActivated()' */
+void LauncherLNC_RotaryPlate_OnShortUpKeyActivated( LauncherLNC_RotaryPlate _this );
 
 /* 'C' function for method : 'Launcher::LNC_RotaryPlate.StartIconRotation()' */
 void LauncherLNC_RotaryPlate_StartIconRotation( LauncherLNC_RotaryPlate _this, XEnum 

@@ -469,10 +469,10 @@ EW_DEFINE_CLASS( FactoryDisplayAutoRun, ComponentsBaseComponent, TimerNextPatter
   CoreGroup_Remove,
   CoreGroup_Add,
   FactoryDisplayAutoRun_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( FactoryDisplayAutoRun )
 
 /* Initializer for the class 'Factory::Main' */
@@ -690,10 +690,10 @@ EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, ItemTitl
   CoreGroup_Remove,
   CoreGroup_Add,
   FactoryMain_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   FactoryMain_LoadItemClass,
   FactoryMain_LoadItemTitle,
   FactoryMain_OnItemActivate,
@@ -788,8 +788,8 @@ void FactoryDisplayManual_OnLongKeyPressed( FactoryDisplayManual _this, XObject
   }
 }
 
-/* 'C' function for method : 'Factory::DisplayManual.OnShortDownKeyPressed()' */
-void FactoryDisplayManual_OnShortDownKeyPressed( FactoryDisplayManual _this )
+/* 'C' function for method : 'Factory::DisplayManual.OnShortDownKeyActivated()' */
+void FactoryDisplayManual_OnShortDownKeyActivated( FactoryDisplayManual _this )
 {
   XInt32 NextIdx = _this->PatternIdx + 1;
 
@@ -801,8 +801,8 @@ void FactoryDisplayManual_OnShortDownKeyPressed( FactoryDisplayManual _this )
   FactoryDisplayManual_OnSetPatternIdx( _this, NextIdx );
 }
 
-/* 'C' function for method : 'Factory::DisplayManual.OnShortUpKeyPressed()' */
-void FactoryDisplayManual_OnShortUpKeyPressed( FactoryDisplayManual _this )
+/* 'C' function for method : 'Factory::DisplayManual.OnShortUpKeyActivated()' */
+void FactoryDisplayManual_OnShortUpKeyActivated( FactoryDisplayManual _this )
 {
   XInt32 PreviousIdx = _this->PatternIdx - 1;
 
@@ -1028,10 +1028,10 @@ EW_DEFINE_CLASS( FactoryDisplayManual, ComponentsBaseComponent, FullScreen, Full
   CoreGroup_Remove,
   CoreGroup_Add,
   FactoryDisplayManual_OnLongKeyPressed,
-  FactoryDisplayManual_OnShortDownKeyPressed,
-  FactoryDisplayManual_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  FactoryDisplayManual_OnShortDownKeyActivated,
+  FactoryDisplayManual_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( FactoryDisplayManual )
 
 /* Initializer for the class 'Factory::TestContext' */

@@ -151,17 +151,17 @@ EW_DEFINE_METHODS( MenuUpDownPushButtonSet, ComponentsBaseComponent )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( MenuUpDownPushButtonSet _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( MenuUpDownPushButtonSet _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( MenuUpDownPushButtonSet _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( MenuUpDownPushButtonSet _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuUpDownPushButtonSet )
 
-/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortDownKeyPressed()' */
-void MenuUpDownPushButtonSet_OnShortDownKeyPressed( MenuUpDownPushButtonSet _this );
+/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortDownKeyActivated()' */
+void MenuUpDownPushButtonSet_OnShortDownKeyActivated( MenuUpDownPushButtonSet _this );
 
-/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortUpKeyPressed()' */
-void MenuUpDownPushButtonSet_OnShortUpKeyPressed( MenuUpDownPushButtonSet _this );
+/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortUpKeyActivated()' */
+void MenuUpDownPushButtonSet_OnShortUpKeyActivated( MenuUpDownPushButtonSet _this );
 
 /* 'C' function for method : 'Menu::UpDownPushButtonSet.OnActivateSlot()' */
 void MenuUpDownPushButtonSet_OnActivateSlot( MenuUpDownPushButtonSet _this, XObject 

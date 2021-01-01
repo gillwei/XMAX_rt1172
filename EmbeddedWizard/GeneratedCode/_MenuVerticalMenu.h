@@ -154,20 +154,20 @@ EW_DEFINE_METHODS( MenuVerticalMenu, ComponentsBaseComponent )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( MenuVerticalMenu _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( MenuVerticalMenu _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( MenuVerticalMenu _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( MenuVerticalMenu _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( MenuVerticalMenu _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuVerticalMenu )
 
 /* 'C' function for method : 'Menu::VerticalMenu.OnLongKeyPressed()' */
 void MenuVerticalMenu_OnLongKeyPressed( MenuVerticalMenu _this, XObject sender );
 
-/* 'C' function for method : 'Menu::VerticalMenu.OnShortDownKeyPressed()' */
-void MenuVerticalMenu_OnShortDownKeyPressed( MenuVerticalMenu _this );
+/* 'C' function for method : 'Menu::VerticalMenu.OnShortDownKeyActivated()' */
+void MenuVerticalMenu_OnShortDownKeyActivated( MenuVerticalMenu _this );
 
-/* 'C' function for method : 'Menu::VerticalMenu.OnShortUpKeyPressed()' */
-void MenuVerticalMenu_OnShortUpKeyPressed( MenuVerticalMenu _this );
+/* 'C' function for method : 'Menu::VerticalMenu.OnShortUpKeyActivated()' */
+void MenuVerticalMenu_OnShortUpKeyActivated( MenuVerticalMenu _this );
 
 /* This method is called by 'VerticalList' every time the list loads or updates 
    an item. */

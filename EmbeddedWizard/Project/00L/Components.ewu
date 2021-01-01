@@ -4,7 +4,7 @@ $rect <20,20,260,60>
 $output false
 class BaseComponent : Core::Group
 {
-  $rect <44,55,244,95>
+  $rect <40,57,240,97>
   object Core::KeyPressHandler KeyHandler
   {
     preset OnRelease = OnKeyReleaseSlot;
@@ -12,34 +12,59 @@ class BaseComponent : Core::Group
     preset OnHold = OnKeyHoldSlot;
   }
 
-  $rect <44,110,244,150>
+  $rect <40,110,240,150>
   slot OnKeyPressSlot
   {
     trace "OnKeyPressSlot", KeyHandler.Code;
     switch( KeyHandler.Code )
     {
-      case Core::KeyCode.Down:;
-      case Core::KeyCode.Up:;
-      case Core::KeyCode.Ok:;
-      case Core::KeyCode.Home:;
+      case Core::KeyCode.Up:
+      {
+        if( Enum::KeyTriggerMode.ON == UpKeyTriggerMode )
+        {
+          OnShortUpKeyActivated();
+        }
+      }
+      case Core::KeyCode.Down:
+      {
+        if( Enum::KeyTriggerMode.ON == DownKeyTriggerMode )
+        {
+          OnShortDownKeyActivated();
+        }
+      }
+      case Core::KeyCode.Ok:
+      {
+        if( Enum::KeyTriggerMode.ON == EnterKeyTriggerMode )
+        {
+          OnShortEnterKeyActivated();
+        }
+      }
+      case Core::KeyCode.Home:
+      {
+        if( Enum::KeyTriggerMode.ON == HomeKeyTriggerMode )
+        {
+          OnShortHomeKeyActivated();
+        }
+      }
       default:;
     }
-
-
   }
 
-  $rect <44,165,244,205>
+  $rect <40,160,240,200>
   slot OnKeyHoldSlot
   {
     trace "OnKeyHoldSlot", KeyHandler.Code;
-    if( 1 == KeyHandler.RepetitionCount )
+    switch( KeyHandler.Code )
     {
-      signal OnLongKeyPressed, KeyHandler;
+      case Core::KeyCode.Up: OnLongUpKeyActivated();
+      case Core::KeyCode.Down: OnLongDownKeyActivated();
+      case Core::KeyCode.Ok: OnLongEnterKeyActivated();
+      case Core::KeyCode.Home: OnLongHomeKeyActivated();
+      default:;
     }
-
   }
 
-  $rect <44,215,244,255>
+  $rect <40,210,240,250>
   slot OnKeyReleaseSlot
   {
     trace "OnKeyReleaseSlot", KeyHandler.Code;
@@ -48,35 +73,59 @@ class BaseComponent : Core::Group
     {
       switch( KeyHandler.Code )
       {
-        case Core::KeyCode.Down: OnShortDownKeyPressed();
-        case Core::KeyCode.Up: OnShortUpKeyPressed();
-        case Core::KeyCode.Ok: OnShortEnterKeyPressed();
-        case Core::KeyCode.Home: OnShortHomeKeyPressed();
+        case Core::KeyCode.Up:
+        {
+          if( Enum::KeyTriggerMode.OFF == UpKeyTriggerMode )
+          {
+            OnShortUpKeyActivated();
+          }
+        }
+        case Core::KeyCode.Down:
+        {
+          if( Enum::KeyTriggerMode.OFF == DownKeyTriggerMode )
+          {
+            OnShortDownKeyActivated();
+          }
+        }
+        case Core::KeyCode.Ok:
+        {
+          if( Enum::KeyTriggerMode.OFF == EnterKeyTriggerMode )
+          {
+            OnShortEnterKeyActivated();
+          }
+        }
+        case Core::KeyCode.Home:
+        {
+          if( Enum::KeyTriggerMode.OFF == HomeKeyTriggerMode )
+          {
+            OnShortHomeKeyActivated();
+          }
+        }
         default:;
       }
     }
   }
 
-  $rect <474,165,674,205>
+  $rect <990,60,1190,100>
   property slot PassKeyHold;
 
-  $rect <264,165,464,205>
+  $rect <990,110,1190,150>
   slot OnLongKeyPressed
   {
   }
 
-  $rect <474,111,674,151>
-  method void OnShortDownKeyPressed()
+  $rect <260,110,490,150>
+  method void OnShortDownKeyActivated()
   {
   }
 
-  $rect <264,111,464,151>
-  method void OnShortUpKeyPressed()
+  $rect <260,60,490,100>
+  method void OnShortUpKeyActivated()
   {
   }
 
-  $rect <264,215,464,255>
-  method void OnShortEnterKeyPressed()
+  $rect <260,160,490,200>
+  method void OnShortEnterKeyActivated()
   {
   }
 
@@ -92,7 +141,7 @@ class BaseComponent : Core::Group
   // Key Handle
   note group Note5
   {
-    attr Bounds = <20,10,730,280>;
+    attr Bounds = <20,10,1230,280>;
   }
 
   // Slide Effect
@@ -127,8 +176,40 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <471,214,671,254>
-  method void OnShortHomeKeyPressed()
+  $rect <260,210,490,250>
+  method void OnShortHomeKeyActivated()
+  {
+  }
+
+  $rect <770,60,970,100>
+  property Enum::KeyTriggerMode UpKeyTriggerMode = Enum::KeyTriggerMode.ON;
+
+  $rect <770,110,970,150>
+  property Enum::KeyTriggerMode DownKeyTriggerMode = Enum::KeyTriggerMode.ON;
+
+  $rect <770,160,970,200>
+  property Enum::KeyTriggerMode EnterKeyTriggerMode = Enum::KeyTriggerMode.OFF;
+
+  $rect <770,210,970,250>
+  property Enum::KeyTriggerMode HomeKeyTriggerMode = Enum::KeyTriggerMode.OFF;
+
+  $rect <510,110,740,150>
+  method void OnLongDownKeyActivated()
+  {
+  }
+
+  $rect <510,60,740,100>
+  method void OnLongUpKeyActivated()
+  {
+  }
+
+  $rect <510,160,740,200>
+  method void OnLongEnterKeyActivated()
+  {
+  }
+
+  $rect <510,210,740,250>
+  method void OnLongHomeKeyActivated()
   {
   }
 }

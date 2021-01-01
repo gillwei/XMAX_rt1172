@@ -154,10 +154,10 @@ EW_DEFINE_METHODS( SettingsSET30_QRCode, MenuBaseMenuView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( SettingsSET30_QRCode _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( SettingsSET30_QRCode _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( SettingsSET30_QRCode _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( SettingsSET30_QRCode _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( SettingsSET30_QRCode _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( MenuBaseMenuView _this, XInt32 aItemNo, 
@@ -175,11 +175,11 @@ void SettingsSET30_QRCode_Init( SettingsSET30_QRCode _this, XHandle aArg );
 void SettingsSET30_QRCode_OnLongKeyPressed( SettingsSET30_QRCode _this, XObject 
   sender );
 
-/* 'C' function for method : 'Settings::SET30_QRCode.OnShortDownKeyPressed()' */
-void SettingsSET30_QRCode_OnShortDownKeyPressed( SettingsSET30_QRCode _this );
+/* 'C' function for method : 'Settings::SET30_QRCode.OnShortDownKeyActivated()' */
+void SettingsSET30_QRCode_OnShortDownKeyActivated( SettingsSET30_QRCode _this );
 
-/* 'C' function for method : 'Settings::SET30_QRCode.OnShortUpKeyPressed()' */
-void SettingsSET30_QRCode_OnShortUpKeyPressed( SettingsSET30_QRCode _this );
+/* 'C' function for method : 'Settings::SET30_QRCode.OnShortUpKeyActivated()' */
+void SettingsSET30_QRCode_OnShortUpKeyActivated( SettingsSET30_QRCode _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */

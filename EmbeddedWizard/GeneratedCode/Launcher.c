@@ -249,26 +249,26 @@ void LauncherLNC_Main_Init( LauncherLNC_Main _this, XHandle aArg )
   _this->CurrentItem, _this->NextItem );
 }
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortDownKeyPressed()' */
-void LauncherLNC_Main_OnShortDownKeyPressed( LauncherLNC_Main _this )
+/* 'C' function for method : 'Launcher::LNC_Main.OnShortDownKeyActivated()' */
+void LauncherLNC_Main_OnShortDownKeyActivated( LauncherLNC_Main _this )
 {
-  ComponentsBaseComponent__OnShortDownKeyPressed( &_this->LNC_RotaryPlate );
+  ComponentsBaseComponent__OnShortDownKeyActivated( &_this->LNC_RotaryPlate );
 }
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortUpKeyPressed()' */
-void LauncherLNC_Main_OnShortUpKeyPressed( LauncherLNC_Main _this )
+/* 'C' function for method : 'Launcher::LNC_Main.OnShortUpKeyActivated()' */
+void LauncherLNC_Main_OnShortUpKeyActivated( LauncherLNC_Main _this )
 {
-  ComponentsBaseComponent__OnShortUpKeyPressed( &_this->LNC_RotaryPlate );
+  ComponentsBaseComponent__OnShortUpKeyActivated( &_this->LNC_RotaryPlate );
 }
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortEnterKeyPressed()' */
-void LauncherLNC_Main_OnShortEnterKeyPressed( LauncherLNC_Main _this )
+/* 'C' function for method : 'Launcher::LNC_Main.OnShortEnterKeyActivated()' */
+void LauncherLNC_Main_OnShortEnterKeyActivated( LauncherLNC_Main _this )
 {
   LauncherLNC_RotaryPlate_StartSelectedAnimation( &_this->LNC_RotaryPlate );
 }
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortHomeKeyPressed()' */
-void LauncherLNC_Main_OnShortHomeKeyPressed( LauncherLNC_Main _this )
+/* 'C' function for method : 'Launcher::LNC_Main.OnShortHomeKeyActivated()' */
+void LauncherLNC_Main_OnShortHomeKeyActivated( LauncherLNC_Main _this )
 {
   EffectsEffect_OnSetEnabled((EffectsEffect)&_this->BaseSlideOutEffect, 1 );
   EffectsEffect_OnSetEnabled((EffectsEffect)&_this->RotaryPlateSlideOutEffect, 1 );
@@ -491,10 +491,10 @@ EW_DEFINE_CLASS( LauncherLNC_Main, ComponentsBaseComponent, BaseSlideInEffect, B
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  LauncherLNC_Main_OnShortDownKeyPressed,
-  LauncherLNC_Main_OnShortUpKeyPressed,
-  LauncherLNC_Main_OnShortEnterKeyPressed,
-  LauncherLNC_Main_OnShortHomeKeyPressed,
+  LauncherLNC_Main_OnShortDownKeyActivated,
+  LauncherLNC_Main_OnShortUpKeyActivated,
+  LauncherLNC_Main_OnShortEnterKeyActivated,
+  LauncherLNC_Main_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( LauncherLNC_Main )
 
 /* Initializer for the class 'Launcher::LNC_RotaryPlate' */
@@ -646,14 +646,14 @@ void LauncherLNC_RotaryPlate__Done( LauncherLNC_RotaryPlate _this )
   ComponentsBaseComponent__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Launcher::LNC_RotaryPlate.OnShortDownKeyPressed()' */
-void LauncherLNC_RotaryPlate_OnShortDownKeyPressed( LauncherLNC_RotaryPlate _this )
+/* 'C' function for method : 'Launcher::LNC_RotaryPlate.OnShortDownKeyActivated()' */
+void LauncherLNC_RotaryPlate_OnShortDownKeyActivated( LauncherLNC_RotaryPlate _this )
 {
   LauncherLNC_RotaryPlate_StartIconRotation( _this, EnumRotationDirectionCOUNTER_CLOCKWISE );
 }
 
-/* 'C' function for method : 'Launcher::LNC_RotaryPlate.OnShortUpKeyPressed()' */
-void LauncherLNC_RotaryPlate_OnShortUpKeyPressed( LauncherLNC_RotaryPlate _this )
+/* 'C' function for method : 'Launcher::LNC_RotaryPlate.OnShortUpKeyActivated()' */
+void LauncherLNC_RotaryPlate_OnShortUpKeyActivated( LauncherLNC_RotaryPlate _this )
 {
   LauncherLNC_RotaryPlate_StartIconRotation( _this, EnumRotationDirectionCLOCKWISE );
 }
@@ -974,10 +974,10 @@ EW_DEFINE_CLASS( LauncherLNC_RotaryPlate, ComponentsBaseComponent, Icons, OnIcon
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  LauncherLNC_RotaryPlate_OnShortDownKeyPressed,
-  LauncherLNC_RotaryPlate_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  LauncherLNC_RotaryPlate_OnShortDownKeyActivated,
+  LauncherLNC_RotaryPlate_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( LauncherLNC_RotaryPlate )
 
 /* Initializer for the class 'Launcher::LNC_Base' */

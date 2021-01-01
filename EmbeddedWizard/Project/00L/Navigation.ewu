@@ -14,17 +14,17 @@ class Main : Components::BaseComponent
   }
 
   $rect <230,340,430,380>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
   }
 
   $rect <230,290,430,330>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
   }
 
   $rect <230,390,430,430>
-  inherited method OnShortEnterKeyPressed()
+  inherited method OnShortEnterKeyActivated()
   {
     var Application::Application App = ( Application::Application )GetRoot();
     App.StatusBarVisible = false;
@@ -153,7 +153,7 @@ class YMC : Components::BaseComponent
   inherited property Bounds = <0,0,480,272>;
 
   $rect <510,60,710,100>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
     var int32 NextIdx = PictureIdx + 1;
     if( NextIdx >= 9 )
@@ -164,7 +164,7 @@ class YMC : Components::BaseComponent
   }
 
   $rect <510,10,710,50>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
     var int32 PreviousIdx = PictureIdx - 1;
     if( PreviousIdx < 0 )
@@ -175,7 +175,7 @@ class YMC : Components::BaseComponent
   }
 
   $rect <510,110,710,150>
-  inherited method OnShortEnterKeyPressed()
+  inherited method OnShortEnterKeyActivated()
   {
     var Navigation::Garmin GarminScreen = new Navigation::Garmin;
     Owner.SwitchToDialog( GarminScreen, null, null, null, null, null, null, null, null, null, false );
@@ -231,7 +231,7 @@ class Garmin : Components::BaseComponent
   inherited property Bounds = <0,0,480,272>;
 
   $rect <510,60,710,100>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
     var int32 NextIdx = PictureIdx + 1;
     if( NextIdx >= 9 )
@@ -242,7 +242,7 @@ class Garmin : Components::BaseComponent
   }
 
   $rect <510,10,710,50>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
     var int32 PreviousIdx = PictureIdx - 1;
     if( PreviousIdx < 0 )
@@ -253,7 +253,7 @@ class Garmin : Components::BaseComponent
   }
 
   $rect <510,110,710,150>
-  inherited method OnShortEnterKeyPressed()
+  inherited method OnShortEnterKeyActivated()
   {
     var Application::Application App = ( Application::Application )GetRoot();
     App.StatusBarVisible = true;

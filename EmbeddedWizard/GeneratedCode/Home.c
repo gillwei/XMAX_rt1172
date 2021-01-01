@@ -89,8 +89,8 @@ void HomeHOM11_tachometer__Done( HomeHOM11_tachometer _this )
   ComponentsBaseMainBG__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Home::HOM11_tachometer.OnShortEnterKeyPressed()' */
-void HomeHOM11_tachometer_OnShortEnterKeyPressed( HomeHOM11_tachometer _this )
+/* 'C' function for method : 'Home::HOM11_tachometer.OnShortEnterKeyActivated()' */
+void HomeHOM11_tachometer_OnShortEnterKeyActivated( HomeHOM11_tachometer _this )
 {
   CoreGroup_PresentDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
   LauncherLNC_Main, 0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -134,10 +134,10 @@ EW_DEFINE_CLASS( HomeHOM11_tachometer, ComponentsBaseMainBG, Title, Title, Title
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  HomeHOM11_tachometer_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  HomeHOM11_tachometer_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( HomeHOM11_tachometer )
 
 /* Embedded Wizard */

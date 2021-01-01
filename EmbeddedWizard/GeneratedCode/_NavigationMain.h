@@ -161,23 +161,23 @@ EW_DEFINE_METHODS( NavigationMain, ComponentsBaseComponent )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnLongKeyPressed,  void )( NavigationMain _this, XObject sender )
-  EW_METHOD( OnShortDownKeyPressed, void )( NavigationMain _this )
-  EW_METHOD( OnShortUpKeyPressed, void )( NavigationMain _this )
-  EW_METHOD( OnShortEnterKeyPressed, void )( NavigationMain _this )
-  EW_METHOD( OnShortHomeKeyPressed, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( NavigationMain _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( NavigationMain _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( NavigationMain _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( NavigationMain )
 
 /* 'C' function for method : 'Navigation::Main.OnLongKeyPressed()' */
 void NavigationMain_OnLongKeyPressed( NavigationMain _this, XObject sender );
 
-/* 'C' function for method : 'Navigation::Main.OnShortDownKeyPressed()' */
-void NavigationMain_OnShortDownKeyPressed( NavigationMain _this );
+/* 'C' function for method : 'Navigation::Main.OnShortDownKeyActivated()' */
+void NavigationMain_OnShortDownKeyActivated( NavigationMain _this );
 
-/* 'C' function for method : 'Navigation::Main.OnShortUpKeyPressed()' */
-void NavigationMain_OnShortUpKeyPressed( NavigationMain _this );
+/* 'C' function for method : 'Navigation::Main.OnShortUpKeyActivated()' */
+void NavigationMain_OnShortUpKeyActivated( NavigationMain _this );
 
-/* 'C' function for method : 'Navigation::Main.OnShortEnterKeyPressed()' */
-void NavigationMain_OnShortEnterKeyPressed( NavigationMain _this );
+/* 'C' function for method : 'Navigation::Main.OnShortEnterKeyActivated()' */
+void NavigationMain_OnShortEnterKeyActivated( NavigationMain _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */

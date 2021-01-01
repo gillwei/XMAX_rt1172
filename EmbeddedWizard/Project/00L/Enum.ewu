@@ -136,3 +136,14 @@ enum LauncherItem
   $rect <10,610,210,650>
   item TOTAL;
 }
+
+$rect <260,20,460,60>
+$output false
+enum KeyTriggerMode
+{
+  $rect <10,10,210,50>
+  item ON;
+
+  $rect <10,60,210,100>
+  item OFF;
+}

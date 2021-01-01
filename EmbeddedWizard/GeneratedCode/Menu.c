@@ -445,8 +445,8 @@ void MenuVerticalMenu_OnLongKeyPressed( MenuVerticalMenu _this, XObject sender )
   EwSignal( _this->Super1.PassKeyHold, sender );
 }
 
-/* 'C' function for method : 'Menu::VerticalMenu.OnShortDownKeyPressed()' */
-void MenuVerticalMenu_OnShortDownKeyPressed( MenuVerticalMenu _this )
+/* 'C' function for method : 'Menu::VerticalMenu.OnShortDownKeyActivated()' */
+void MenuVerticalMenu_OnShortDownKeyActivated( MenuVerticalMenu _this )
 {
   if ( CoreGroup__IsCurrentDialog( _this->Super4.Owner ))
   {
@@ -468,8 +468,8 @@ void MenuVerticalMenu_OnShortDownKeyPressed( MenuVerticalMenu _this )
   }
 }
 
-/* 'C' function for method : 'Menu::VerticalMenu.OnShortUpKeyPressed()' */
-void MenuVerticalMenu_OnShortUpKeyPressed( MenuVerticalMenu _this )
+/* 'C' function for method : 'Menu::VerticalMenu.OnShortUpKeyActivated()' */
+void MenuVerticalMenu_OnShortUpKeyActivated( MenuVerticalMenu _this )
 {
   if ( CoreGroup__IsCurrentDialog( _this->Super4.Owner ))
   {
@@ -681,10 +681,10 @@ EW_DEFINE_CLASS( MenuVerticalMenu, ComponentsBaseComponent, MenuList, MenuList,
   CoreGroup_Remove,
   CoreGroup_Add,
   MenuVerticalMenu_OnLongKeyPressed,
-  MenuVerticalMenu_OnShortDownKeyPressed,
-  MenuVerticalMenu_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  MenuVerticalMenu_OnShortDownKeyActivated,
+  MenuVerticalMenu_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( MenuVerticalMenu )
 
 /* Initializer for the class 'Menu::ItemCheckbox' */
@@ -1375,10 +1375,10 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, _None, _None, _None, _N
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  ComponentsBaseComponent_OnShortDownKeyPressed,
-  ComponentsBaseComponent_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -1636,14 +1636,14 @@ void MenuUpDownPushButtonSet__Done( MenuUpDownPushButtonSet _this )
   ComponentsBaseComponent__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortDownKeyPressed()' */
-void MenuUpDownPushButtonSet_OnShortDownKeyPressed( MenuUpDownPushButtonSet _this )
+/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortDownKeyActivated()' */
+void MenuUpDownPushButtonSet_OnShortDownKeyActivated( MenuUpDownPushButtonSet _this )
 {
   CoreGroup__OnSetFocus( _this, ((CoreView)&_this->DownButton ));
 }
 
-/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortUpKeyPressed()' */
-void MenuUpDownPushButtonSet_OnShortUpKeyPressed( MenuUpDownPushButtonSet _this )
+/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortUpKeyActivated()' */
+void MenuUpDownPushButtonSet_OnShortUpKeyActivated( MenuUpDownPushButtonSet _this )
 {
   CoreGroup__OnSetFocus( _this, ((CoreView)&_this->UpButton ));
 }
@@ -1725,10 +1725,10 @@ EW_DEFINE_CLASS( MenuUpDownPushButtonSet, ComponentsBaseComponent, OnUpButtonRel
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  MenuUpDownPushButtonSet_OnShortDownKeyPressed,
-  MenuUpDownPushButtonSet_OnShortUpKeyPressed,
-  ComponentsBaseComponent_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  MenuUpDownPushButtonSet_OnShortDownKeyActivated,
+  MenuUpDownPushButtonSet_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( MenuUpDownPushButtonSet )
 
 /* Initializer for the class 'Menu::ItemCheckMark' */

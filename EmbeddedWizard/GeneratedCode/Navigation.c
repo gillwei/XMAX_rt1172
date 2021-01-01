@@ -225,22 +225,22 @@ void NavigationMain_OnLongKeyPressed( NavigationMain _this, XObject sender )
   EwSignal( _this->Super1.PassKeyHold, sender );
 }
 
-/* 'C' function for method : 'Navigation::Main.OnShortDownKeyPressed()' */
-void NavigationMain_OnShortDownKeyPressed( NavigationMain _this )
+/* 'C' function for method : 'Navigation::Main.OnShortDownKeyActivated()' */
+void NavigationMain_OnShortDownKeyActivated( NavigationMain _this )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 }
 
-/* 'C' function for method : 'Navigation::Main.OnShortUpKeyPressed()' */
-void NavigationMain_OnShortUpKeyPressed( NavigationMain _this )
+/* 'C' function for method : 'Navigation::Main.OnShortUpKeyActivated()' */
+void NavigationMain_OnShortUpKeyActivated( NavigationMain _this )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 }
 
-/* 'C' function for method : 'Navigation::Main.OnShortEnterKeyPressed()' */
-void NavigationMain_OnShortEnterKeyPressed( NavigationMain _this )
+/* 'C' function for method : 'Navigation::Main.OnShortEnterKeyActivated()' */
+void NavigationMain_OnShortEnterKeyActivated( NavigationMain _this )
 {
   ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
   NavigationYMC Pictures;
@@ -302,10 +302,10 @@ EW_DEFINE_CLASS( NavigationMain, ComponentsBaseComponent, Background, Background
   CoreGroup_Remove,
   CoreGroup_Add,
   NavigationMain_OnLongKeyPressed,
-  NavigationMain_OnShortDownKeyPressed,
-  NavigationMain_OnShortUpKeyPressed,
-  NavigationMain_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  NavigationMain_OnShortDownKeyActivated,
+  NavigationMain_OnShortUpKeyActivated,
+  NavigationMain_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( NavigationMain )
 
 /* Initializer for the class 'Navigation::YMC' */
@@ -362,8 +362,8 @@ void NavigationYMC__Done( NavigationYMC _this )
   ComponentsBaseComponent__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Navigation::YMC.OnShortDownKeyPressed()' */
-void NavigationYMC_OnShortDownKeyPressed( NavigationYMC _this )
+/* 'C' function for method : 'Navigation::YMC.OnShortDownKeyActivated()' */
+void NavigationYMC_OnShortDownKeyActivated( NavigationYMC _this )
 {
   XInt32 NextIdx = _this->PictureIdx + 1;
 
@@ -375,8 +375,8 @@ void NavigationYMC_OnShortDownKeyPressed( NavigationYMC _this )
   NavigationYMC_OnSetPictureIdx( _this, NextIdx );
 }
 
-/* 'C' function for method : 'Navigation::YMC.OnShortUpKeyPressed()' */
-void NavigationYMC_OnShortUpKeyPressed( NavigationYMC _this )
+/* 'C' function for method : 'Navigation::YMC.OnShortUpKeyActivated()' */
+void NavigationYMC_OnShortUpKeyActivated( NavigationYMC _this )
 {
   XInt32 PreviousIdx = _this->PictureIdx - 1;
 
@@ -388,8 +388,8 @@ void NavigationYMC_OnShortUpKeyPressed( NavigationYMC _this )
   NavigationYMC_OnSetPictureIdx( _this, PreviousIdx );
 }
 
-/* 'C' function for method : 'Navigation::YMC.OnShortEnterKeyPressed()' */
-void NavigationYMC_OnShortEnterKeyPressed( NavigationYMC _this )
+/* 'C' function for method : 'Navigation::YMC.OnShortEnterKeyActivated()' */
+void NavigationYMC_OnShortEnterKeyActivated( NavigationYMC _this )
 {
   NavigationGarmin GarminScreen = EwNewObject( NavigationGarmin, 0 );
 
@@ -495,10 +495,10 @@ EW_DEFINE_CLASS( NavigationYMC, ComponentsBaseComponent, Image, Image, Image, Im
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  NavigationYMC_OnShortDownKeyPressed,
-  NavigationYMC_OnShortUpKeyPressed,
-  NavigationYMC_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  NavigationYMC_OnShortDownKeyActivated,
+  NavigationYMC_OnShortUpKeyActivated,
+  NavigationYMC_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( NavigationYMC )
 
 /* Initializer for the class 'Navigation::Garmin' */
@@ -555,8 +555,8 @@ void NavigationGarmin__Done( NavigationGarmin _this )
   ComponentsBaseComponent__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Navigation::Garmin.OnShortDownKeyPressed()' */
-void NavigationGarmin_OnShortDownKeyPressed( NavigationGarmin _this )
+/* 'C' function for method : 'Navigation::Garmin.OnShortDownKeyActivated()' */
+void NavigationGarmin_OnShortDownKeyActivated( NavigationGarmin _this )
 {
   XInt32 NextIdx = _this->PictureIdx + 1;
 
@@ -568,8 +568,8 @@ void NavigationGarmin_OnShortDownKeyPressed( NavigationGarmin _this )
   NavigationGarmin_OnSetPictureIdx( _this, NextIdx );
 }
 
-/* 'C' function for method : 'Navigation::Garmin.OnShortUpKeyPressed()' */
-void NavigationGarmin_OnShortUpKeyPressed( NavigationGarmin _this )
+/* 'C' function for method : 'Navigation::Garmin.OnShortUpKeyActivated()' */
+void NavigationGarmin_OnShortUpKeyActivated( NavigationGarmin _this )
 {
   XInt32 PreviousIdx = _this->PictureIdx - 1;
 
@@ -581,8 +581,8 @@ void NavigationGarmin_OnShortUpKeyPressed( NavigationGarmin _this )
   NavigationGarmin_OnSetPictureIdx( _this, PreviousIdx );
 }
 
-/* 'C' function for method : 'Navigation::Garmin.OnShortEnterKeyPressed()' */
-void NavigationGarmin_OnShortEnterKeyPressed( NavigationGarmin _this )
+/* 'C' function for method : 'Navigation::Garmin.OnShortEnterKeyActivated()' */
+void NavigationGarmin_OnShortEnterKeyActivated( NavigationGarmin _this )
 {
   ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
@@ -689,10 +689,10 @@ EW_DEFINE_CLASS( NavigationGarmin, ComponentsBaseComponent, Image, Image, Image,
   CoreGroup_Remove,
   CoreGroup_Add,
   ComponentsBaseComponent_OnLongKeyPressed,
-  NavigationGarmin_OnShortDownKeyPressed,
-  NavigationGarmin_OnShortUpKeyPressed,
-  NavigationGarmin_OnShortEnterKeyPressed,
-  ComponentsBaseComponent_OnShortHomeKeyPressed,
+  NavigationGarmin_OnShortDownKeyActivated,
+  NavigationGarmin_OnShortUpKeyActivated,
+  NavigationGarmin_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
 EW_END_OF_CLASS( NavigationGarmin )
 
 /* Embedded Wizard */

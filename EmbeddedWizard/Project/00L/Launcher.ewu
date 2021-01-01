@@ -24,25 +24,25 @@ class LNC_Main : Components::BaseComponent
   inherited property Bounds = <0,0,480,272>;
 
   $rect <0,370,230,410>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
-    LNC_RotaryPlate.OnShortDownKeyPressed();
+    LNC_RotaryPlate.OnShortDownKeyActivated();
   }
 
   $rect <0,410,230,450>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
-    LNC_RotaryPlate.OnShortUpKeyPressed();
+    LNC_RotaryPlate.OnShortUpKeyActivated();
   }
 
   $rect <0,490,230,530>
-  inherited method OnShortEnterKeyPressed()
+  inherited method OnShortEnterKeyActivated()
   {
     LNC_RotaryPlate.StartSelectedAnimation();
   }
 
   $rect <0,450,230,490>
-  inherited method OnShortHomeKeyPressed()
+  inherited method OnShortHomeKeyActivated()
   {
     BaseSlideOutEffect.Enabled = true;
     RotaryPlateSlideOutEffect.Enabled = true;
@@ -305,13 +305,13 @@ class LNC_RotaryPlate : Components::BaseComponent
   inherited property Bounds = <0,0,134,234>;
 
   $rect <-4,380,220,420>
-  inherited method OnShortDownKeyPressed()
+  inherited method OnShortDownKeyActivated()
   {
     StartIconRotation( Enum::RotationDirection.COUNTER_CLOCKWISE );
   }
 
   $rect <-4,340,220,380>
-  inherited method OnShortUpKeyPressed()
+  inherited method OnShortUpKeyActivated()
   {
     StartIconRotation( Enum::RotationDirection.CLOCKWISE );
   }
