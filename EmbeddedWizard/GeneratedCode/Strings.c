@@ -30,7 +30,7 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x000002A6, /* ratio 53.69 % */
+  0x000003B6, /* ratio 50.53 % */
   0xB8016500, 0x8008C452, 0x00D20030, 0x0EA00360, 0xCA003900, 0x80010000, 0x1337800E,
   0x0839C001, 0x84464F20, 0x744A2D16, 0x45E13153, 0xDE292400, 0x24C68001, 0x21148943,
   0x9263242A, 0x638C99E4, 0x48643A4E, 0x00446633, 0x2C2E1A73, 0x4A615149, 0x82253400,
@@ -43,7 +43,12 @@ static const unsigned int _StringsDefault0[] =
   0x5ED399B1, 0xC2A830ED, 0x139BB19C, 0xB23C6F04, 0x680DD8C4, 0xC768E13B, 0x0AA5CDE4,
   0x4AFF86D3, 0x92D2B770, 0xDB1441D0, 0x649DF203, 0x98664291, 0x717E1394, 0x73813785,
   0xD39421B7, 0x34520D81, 0x59168344, 0xB4701436, 0x5119D14D, 0xA1F12000, 0xD74DB748,
-  0x39214FE1, 0x1C505376, 0x62D8E7F6, 0x9104E61E, 0x17856C44, 0x0000405E, 0x00000000
+  0x39214FE1, 0xF0505376, 0x7EA176D1, 0xA13001A5, 0xE7A5FA49, 0xE51850E2, 0x048B57B4,
+  0x429B7109, 0x5164B537, 0x08B1418C, 0x55B401C0, 0x16429911, 0x6D0176C5, 0xDB954DB6,
+  0x6745BC68, 0x9628541A, 0x4F9197F4, 0x7FE1E412, 0xDD045116, 0x2961B75B, 0x865B8A51,
+  0x6589C157, 0x515D1729, 0x54E82591, 0x08D60C74, 0x31B40500, 0x437DD3F1, 0x9C9249C1,
+  0x675635B7, 0xC4123664, 0x725961D9, 0x8B639FD8, 0x44139879, 0x5E15B112, 0x00010178,
+  0x00000000
 };
 
 /* Compressed strings for the language 'French'. */
@@ -187,7 +192,34 @@ const XStringRes StringsLNC_seat_heater = { _StringsDefault0, 0x012C };
 /* User defined constant: 'Strings::LNC_settings' */
 const XStringRes StringsLNC_settings = { _StringsDefault0, 0x013A };
 
+/* User defined constant: 'Strings::SET01_connection' */
+const XStringRes StringsSET01_connection = { _StringsDefault0, 0x0145 };
+
+/* User defined constant: 'Strings::SET01_clock' */
+const XStringRes StringsSET01_clock = { _StringsDefault0, 0x0152 };
+
+/* User defined constant: 'Strings::SET01_brightness' */
+const XStringRes StringsSET01_brightness = { _StringsDefault0, 0x015A };
+
+/* User defined constant: 'Strings::SET01_unit' */
+const XStringRes StringsSET01_unit = { _StringsDefault0, 0x0167 };
+
+/* User defined constant: 'Strings::SET01_grip_warmer_settings' */
+const XStringRes StringsSET01_grip_warmer_settings = { _StringsDefault0, 0x016E };
+
+/* User defined constant: 'Strings::SET01_seat_heater_settings' */
+const XStringRes StringsSET01_seat_heater_settings = { _StringsDefault0, 0x0185 };
+
+/* User defined constant: 'Strings::SET01_system_info' */
+const XStringRes StringsSET01_system_info = { _StringsDefault0, 0x019C };
+
+/* User defined constant: 'Strings::SET01_legal_info' */
+const XStringRes StringsSET01_legal_info = { _StringsDefault0, 0x01B1 };
+
+/* User defined constant: 'Strings::SET01_reset' */
+const XStringRes StringsSET01_reset = { _StringsDefault0, 0x01C5 };
+
 /* User defined constant: 'Strings::WSC01_wind_screen' */
-const XStringRes StringsWSC01_wind_screen = { _StringsDefault0, 0x0145 };
+const XStringRes StringsWSC01_wind_screen = { _StringsDefault0, 0x01CD };
 
 /* Embedded Wizard */

@@ -2,8 +2,38 @@
 
 $rect <20,10,260,50>
 $output false
-class Main : Menu::BaseMenuView
+class SET01_MainSettingMenu : Menu::BaseMenuView
 {
+  $rect <510,10,690,50>
+  inherited method Init()
+  {
+    var int32 NoOfItems = 7;
+    var int32 ItemIdx = 4;
+    var int32 i = 0;
+
+    if( GripWarmerEnabled )
+    {
+      NoOfItems++;
+      ItemIdx++;
+    }
+
+    if( SeatHeaterEnabled )
+    {
+      NoOfItems++;
+      ItemIdx++;
+    }
+
+    if( NoOfItems < Settings.size )
+    {
+      for( i = 6; i <= 8; i++, ItemIdx++ )
+      {
+        Settings[ItemIdx] = Settings[i];
+      }
+    }
+
+    Menu.NoOfItems = NoOfItems;
+  }
+
   $rect <10,300,210,340>
   inherited property Bounds = <0,0,480,272>;
 
@@ -13,7 +43,7 @@ class Main : Menu::BaseMenuView
     signal PassKeyHold, sender;
   }
 
-  $rect <510,10,710,50>
+  $rect <510,60,710,100>
   inherited method LoadItemClass()
   {
     var class ItemClass = null;
@@ -24,18 +54,27 @@ class Main : Menu::BaseMenuView
     return ItemClass;
   }
 
-  $rect <510,60,710,100>
+  $rect <510,110,710,150>
   inherited method LoadItemTitle()
   {
     var string Title = "";
-    if( aItemNo < ItemTitleArray.size )
+    switch( Settings[aItemNo] )
     {
-      Title = ItemTitleArray[aItemNo];
+      case Enum::MainSettingItem.Connection: Title = Strings::SET01_connection;
+      case Enum::MainSettingItem.Clock: Title = Strings::SET01_clock;
+      case Enum::MainSettingItem.Brightness: Title = Strings::SET01_brightness;
+      case Enum::MainSettingItem.Unit: Title = Strings::SET01_unit;
+      case Enum::MainSettingItem.GripWarmerSettings: Title = Strings::SET01_grip_warmer_settings;
+      case Enum::MainSettingItem.SeatHeaterSettings: Title = Strings::SET01_seat_heater_settings;
+      case Enum::MainSettingItem.SystemInfo: Title = Strings::SET01_system_info;
+      case Enum::MainSettingItem.LegalInfo: Title = Strings::SET01_legal_info;
+      case Enum::MainSettingItem.Reset: Title = Strings::SET01_reset;
+      default:;
     }
     return Title;
   }
 
-  $rect <510,110,710,150>
+  $rect <510,160,710,200>
   inherited method OnItemActivate()
   {
     if( null == aMenuItem )
@@ -43,35 +82,69 @@ class Main : Menu::BaseMenuView
       // empty body to suppress warning
     }
 
-    switch( aItemNo )
+    var Components::BaseComponent Dialog = null;
+
+    switch( Settings[aItemNo] )
     {
-      case 0:
+      case Enum::MainSettingItem.Connection:
       {
         if( !DeviceInterface::SystemDevice.IsHopperTestMode )
         {
-          SlideInDialog( new Settings::Connection );
+          Dialog = new Settings::Connection;
         }
       }
-      case 1: SlideInDialog( new Settings::SystemMenu );
+      case Enum::MainSettingItem.Clock:;
+      case Enum::MainSettingItem.Brightness:;
+      case Enum::MainSettingItem.Unit:;
+      case Enum::MainSettingItem.GripWarmerSettings:;
+      case Enum::MainSettingItem.SeatHeaterSettings:;
+      case Enum::MainSettingItem.SystemInfo: Dialog = new Settings::SystemInfo;
+      case Enum::MainSettingItem.LegalInfo:;
+      case Enum::MainSettingItem.Reset:;
       default:;
     }
 
+    if( null != Dialog )
+    {
+      SlideInDialog( Dialog );
+    }
   }
-
-  $rect <730,60,930,100>
-  array string ItemTitleArray[ 2 ] =
-  (
-    Default[0] = "Connections";
-    Default[1] = "System";
-  );
 
   $rect <20,20,160,60>
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
     preset PassKeyHold = OnLongKeyPressed;
-    preset NoOfItems = 2;
+    preset NoOfItems = 9;
   }
+
+  // TODO:
+  // Remove these temperary variables and get the Seat Heater and Grip Warmer enabled \
+  // status from vehicle information manager directly.
+  note group Note5
+  {
+    attr Bounds = <730,60,1090,310>;
+  }
+
+  $rect <810,240,1010,280>
+  var bool SeatHeaterEnabled = false;
+
+  $rect <810,200,1010,240>
+  var bool GripWarmerEnabled = false;
+
+  $rect <730,10,930,50>
+  array Enum::MainSettingItem Settings[ 9 ] =
+  (
+    Default[0] = Enum::MainSettingItem.Connection;
+    Default[1] = Enum::MainSettingItem.Clock;
+    Default[2] = Enum::MainSettingItem.Brightness;
+    Default[3] = Enum::MainSettingItem.Unit;
+    Default[4] = Enum::MainSettingItem.GripWarmerSettings;
+    Default[5] = Enum::MainSettingItem.SeatHeaterSettings;
+    Default[6] = Enum::MainSettingItem.SystemInfo;
+    Default[7] = Enum::MainSettingItem.LegalInfo;
+    Default[8] = Enum::MainSettingItem.Reset;
+  );
 
   $reorder SlideInDialog 4
   $reorder LoadItemClass 4

@@ -81,6 +81,33 @@ extern const XStringRes StringsLNC_seat_heater;
 /* User defined constant: 'Strings::LNC_settings' */
 extern const XStringRes StringsLNC_settings;
 
+/* User defined constant: 'Strings::SET01_connection' */
+extern const XStringRes StringsSET01_connection;
+
+/* User defined constant: 'Strings::SET01_clock' */
+extern const XStringRes StringsSET01_clock;
+
+/* User defined constant: 'Strings::SET01_brightness' */
+extern const XStringRes StringsSET01_brightness;
+
+/* User defined constant: 'Strings::SET01_unit' */
+extern const XStringRes StringsSET01_unit;
+
+/* User defined constant: 'Strings::SET01_grip_warmer_settings' */
+extern const XStringRes StringsSET01_grip_warmer_settings;
+
+/* User defined constant: 'Strings::SET01_seat_heater_settings' */
+extern const XStringRes StringsSET01_seat_heater_settings;
+
+/* User defined constant: 'Strings::SET01_system_info' */
+extern const XStringRes StringsSET01_system_info;
+
+/* User defined constant: 'Strings::SET01_legal_info' */
+extern const XStringRes StringsSET01_legal_info;
+
+/* User defined constant: 'Strings::SET01_reset' */
+extern const XStringRes StringsSET01_reset;
+
 /* User defined constant: 'Strings::WSC01_wind_screen' */
 extern const XStringRes StringsWSC01_wind_screen;
 

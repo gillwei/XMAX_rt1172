@@ -147,3 +147,35 @@ enum KeyTriggerMode
   $rect <10,60,210,100>
   item OFF;
 }
+
+$rect <260,70,460,110>
+$output false
+enum MainSettingItem
+{
+  $rect <10,10,210,50>
+  item Connection;
+
+  $rect <10,60,210,100>
+  item Clock;
+
+  $rect <10,110,210,150>
+  item Brightness;
+
+  $rect <10,160,210,200>
+  item Unit;
+
+  $rect <10,210,210,250>
+  item GripWarmerSettings;
+
+  $rect <240,10,440,50>
+  item SeatHeaterSettings;
+
+  $rect <240,60,440,100>
+  item SystemInfo;
+
+  $rect <240,110,440,150>
+  item LegalInfo;
+
+  $rect <240,160,440,200>
+  item Reset;
+}

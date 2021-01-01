@@ -70,7 +70,6 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
   EW_PROPERTY( QrCodeText,      XString )
-  EW_PROPERTY( BrightnessLevel, XInt32 )
   EW_VARIABLE( IsHopperTestMode, XBool )
   EW_PROPERTY( FactoryResetComplete, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceSystemDeviceClass )
@@ -119,9 +118,6 @@ XString DeviceInterfaceSystemDeviceClass_OnGetESN( DeviceInterfaceSystemDeviceCl
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetSoftwareVersion()' */
 XString DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( DeviceInterfaceSystemDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ResetToFactoryDefault()' */
-void DeviceInterfaceSystemDeviceClass_ResetToFactoryDefault( DeviceInterfaceSystemDeviceClass _this );
-
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
 void DeviceInterfaceSystemDeviceClass_NotifyFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );
@@ -135,13 +131,6 @@ void DeviceInterfaceSystemDeviceClass__NotifyFactoryResetComplete( void* _this )
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnFactoryResetTimeoutSlot()' */
 void DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot( DeviceInterfaceSystemDeviceClass _this, 
   XObject sender );
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.RebootSystem()' */
-void DeviceInterfaceSystemDeviceClass_RebootSystem( DeviceInterfaceSystemDeviceClass _this );
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetBrightness()' */
-void DeviceInterfaceSystemDeviceClass_SetBrightness( DeviceInterfaceSystemDeviceClass _this, 
-  XInt32 aBrightness );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetBtSoftwareVersion()' */
 XString DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( DeviceInterfaceSystemDeviceClass _this );

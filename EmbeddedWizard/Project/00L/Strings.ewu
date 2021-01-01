@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2020/12/25 15:59:48
+// Generated: 2021/01/01 22:18:48
 
 $output false
 const string GEN_ok =
@@ -496,6 +496,60 @@ $output false
 const string POP03_no_home_location =
 (
   Default = "Home location is not set.";
+);
+
+$output false
+const string SET01_connection =
+(
+  Default = "Connection";
+);
+
+$output false
+const string SET01_clock =
+(
+  Default = "Clock";
+);
+
+$output false
+const string SET01_brightness =
+(
+  Default = "Brightness";
+);
+
+$output false
+const string SET01_unit =
+(
+  Default = "Unit";
+);
+
+$output false
+const string SET01_grip_warmer_settings =
+(
+  Default = "Grip warmer settings";
+);
+
+$output false
+const string SET01_seat_heater_settings =
+(
+  Default = "Seat heater settings";
+);
+
+$output false
+const string SET01_system_info =
+(
+  Default = "System information";
+);
+
+$output false
+const string SET01_legal_info =
+(
+  Default = "Legal information";
+);
+
+$output false
+const string SET01_reset =
+(
+  Default = "Reset";
 );
 
 $output false

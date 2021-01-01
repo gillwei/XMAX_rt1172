@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsReset_H
-#define _SettingsReset_H
+#ifndef _SettingsSET01_MainSettingMenu_H
+#define _SettingsSET01_MainSettingMenu_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,10 +42,11 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
 #include "_CoreKeyPressHandler.h"
-#include "_CorePropertyObserver.h"
-#include "_CoreTimer.h"
+#include "_MenuBaseMenuView.h"
+#include "_MenuVerticalMenu.h"
+#include "_ViewsImage.h"
+#include "_ViewsRectangle.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -89,28 +90,29 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::InProgress */
-#ifndef _SettingsInProgress_
-  EW_DECLARE_CLASS( SettingsInProgress )
-#define _SettingsInProgress_
+/* Forward declaration of the class Menu::ItemBase */
+#ifndef _MenuItemBase_
+  EW_DECLARE_CLASS( MenuItemBase )
+#define _MenuItemBase_
 #endif
 
-/* Forward declaration of the class Settings::Reset */
-#ifndef _SettingsReset_
-  EW_DECLARE_CLASS( SettingsReset )
-#define _SettingsReset_
+/* Forward declaration of the class Settings::SET01_MainSettingMenu */
+#ifndef _SettingsSET01_MainSettingMenu_
+  EW_DECLARE_CLASS( SettingsSET01_MainSettingMenu )
+#define _SettingsSET01_MainSettingMenu_
 #endif
 
 
-/* Deklaration of class : 'Settings::Reset' */
-EW_DEFINE_FIELDS( SettingsReset, ComponentsBaseComponent )
-  EW_VARIABLE( BusyDialog,      SettingsInProgress )
-  EW_OBJECT  ( SystemRebootCountDownTimer, CoreTimer )
-  EW_OBJECT  ( ResetResultObserver, CorePropertyObserver )
-EW_END_OF_FIELDS( SettingsReset )
+/* Deklaration of class : 'Settings::SET01_MainSettingMenu' */
+EW_DEFINE_FIELDS( SettingsSET01_MainSettingMenu, MenuBaseMenuView )
+  EW_OBJECT  ( Menu,            MenuVerticalMenu )
+  EW_ARRAY   ( Settings,        XEnum, [9])
+  EW_VARIABLE( GripWarmerEnabled, XBool )
+  EW_VARIABLE( SeatHeaterEnabled, XBool )
+EW_END_OF_FIELDS( SettingsSET01_MainSettingMenu )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::Reset' */
-EW_DEFINE_METHODS( SettingsReset, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET01_MainSettingMenu' */
+EW_DEFINE_METHODS( SettingsSET01_MainSettingMenu, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -154,41 +156,48 @@ EW_DEFINE_METHODS( SettingsReset, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnLongKeyPressed,  void )( ComponentsBaseComponent _this, XObject sender )
+  EW_METHOD( OnLongKeyPressed,  void )( SettingsSET01_MainSettingMenu _this, XObject 
+    sender )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( SettingsReset )
+  EW_METHOD( LoadItemClass,     XClass )( SettingsSET01_MainSettingMenu _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( SettingsSET01_MainSettingMenu _this, 
+    XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( SettingsSET01_MainSettingMenu _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+EW_END_OF_METHODS( SettingsSET01_MainSettingMenu )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void SettingsReset_Init( SettingsReset _this, XHandle aArg );
+void SettingsSET01_MainSettingMenu_Init( SettingsSET01_MainSettingMenu _this, XHandle 
+  aArg );
 
-/* 'C' function for method : 'Settings::Reset.OnAllResetYesSlot()' */
-void SettingsReset_OnAllResetYesSlot( SettingsReset _this, XObject sender );
+/* 'C' function for method : 'Settings::SET01_MainSettingMenu.OnLongKeyPressed()' */
+void SettingsSET01_MainSettingMenu_OnLongKeyPressed( SettingsSET01_MainSettingMenu _this, 
+  XObject sender );
 
-/* 'C' function for method : 'Settings::Reset.OnAllResetNoSlot()' */
-void SettingsReset_OnAllResetNoSlot( SettingsReset _this, XObject sender );
+/* 'C' function for method : 'Settings::SET01_MainSettingMenu.LoadItemClass()' */
+XClass SettingsSET01_MainSettingMenu_LoadItemClass( SettingsSET01_MainSettingMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::Reset.OnSystemRebootTriggeredSlot()' */
-void SettingsReset_OnSystemRebootTriggeredSlot( SettingsReset _this, XObject sender );
+/* 'C' function for method : 'Settings::SET01_MainSettingMenu.LoadItemTitle()' */
+XString SettingsSET01_MainSettingMenu_LoadItemTitle( SettingsSET01_MainSettingMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::Reset.ShowResetCompleteDialog()' */
-void SettingsReset_ShowResetCompleteDialog( SettingsReset _this );
-
-/* 'C' function for method : 'Settings::Reset.StartFactoryReset()' */
-void SettingsReset_StartFactoryReset( SettingsReset _this );
-
-/* This slot method is executed when the associated property observer 'PropertyObserver' 
-   is notified. */
-void SettingsReset_OnResetCompleteSlot( SettingsReset _this, XObject sender );
+/* 'C' function for method : 'Settings::SET01_MainSettingMenu.OnItemActivate()' */
+void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsReset_H */
+#endif /* _SettingsSET01_MainSettingMenu_H */
 
 /* Embedded Wizard */

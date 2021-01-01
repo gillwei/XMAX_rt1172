@@ -201,7 +201,7 @@ class LNC_Main : Components::BaseComponent
       case Enum::LauncherItem.WEATHER:;
       case Enum::LauncherItem.SETTINGS:
       {
-        ItemDialog = new Settings::Main;
+        ItemDialog = new Settings::SET01_MainSettingMenu;
         PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
       case Enum::LauncherItem.TRACTION_CONTROL:;

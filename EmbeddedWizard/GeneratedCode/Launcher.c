@@ -37,7 +37,7 @@
 #include "_NavigationMain.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
-#include "_SettingsMain.h"
+#include "_SettingsSET01_MainSettingMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -413,7 +413,8 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
 
     case EnumLauncherItemSETTINGS :
     {
-      ItemDialog = ((ComponentsBaseComponent)EwNewObject( SettingsMain, 0 ));
+      ItemDialog = ((ComponentsBaseComponent)EwNewObject( SettingsSET01_MainSettingMenu, 
+      0 ));
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
       0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }

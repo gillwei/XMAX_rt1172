@@ -111,6 +111,20 @@ typedef enum
   EnumKeyTriggerModeOFF                 = 1
 } EnumKeyTriggerMode;
 
+/* User defined enumeration: 'Enum::MainSettingItem' */
+typedef enum
+{
+  EnumMainSettingItemConnection         = 0,
+  EnumMainSettingItemClock              = 1,
+  EnumMainSettingItemBrightness         = 2,
+  EnumMainSettingItemUnit               = 3,
+  EnumMainSettingItemGripWarmerSettings = 4,
+  EnumMainSettingItemSeatHeaterSettings = 5,
+  EnumMainSettingItemSystemInfo         = 6,
+  EnumMainSettingItemLegalInfo          = 7,
+  EnumMainSettingItemReset              = 8
+} EnumMainSettingItem;
+
 #ifdef __cplusplus
   }
 #endif

@@ -42,8 +42,6 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_SettingsAllReset.h"
-#include "_SettingsAllResetCompleted.h"
 #include "_SettingsBluetooth.h"
 #include "_SettingsBtConnectionResult.h"
 #include "_SettingsBtDeleteBleDevice.h"
@@ -52,14 +50,10 @@
 #include "_SettingsBtMaxPairedDevice.h"
 #include "_SettingsBtPairedDeviceOperation.h"
 #include "_SettingsConnection.h"
-#include "_SettingsDisplayBrightness.h"
-#include "_SettingsInProgress.h"
-#include "_SettingsMain.h"
-#include "_SettingsReset.h"
+#include "_SettingsSET01_MainSettingMenu.h"
 #include "_SettingsSET17_BtPairedDeviceList.h"
 #include "_SettingsSET30_QRCode.h"
 #include "_SettingsSystemInfo.h"
-#include "_SettingsSystemMenu.h"
 
 #ifdef __cplusplus
   }
