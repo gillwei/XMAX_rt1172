@@ -53,8 +53,8 @@
 #include "_SettingsBtFwUpdateDialog.h"
 #include "_SettingsBtMaxPairedDevice.h"
 #include "_SettingsBtPairedDeviceOperation.h"
-#include "_SettingsConnection.h"
 #include "_SettingsSET01_MainSettingMenu.h"
+#include "_SettingsSET03_ConnectionSettingMenu.h"
 #include "_SettingsSET17_BtPairedDeviceList.h"
 #include "_SettingsSET30_QRCode.h"
 #include "_SettingsSystemInfo.h"
@@ -403,7 +403,8 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
     {
       if ( !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode )
       {
-        Dialog = ((ComponentsBaseComponent)EwNewObject( SettingsConnection, 0 ));
+        Dialog = ((ComponentsBaseComponent)EwNewObject( SettingsSET03_ConnectionSettingMenu, 
+        0 ));
       }
     }
     break;
@@ -498,32 +499,32 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, Menu, Menu, Me
   MenuBaseMenuView_LoadItemEnabled,
 EW_END_OF_CLASS( SettingsSET01_MainSettingMenu )
 
-/* Initializer for the class 'Settings::Connection' */
-void SettingsConnection__Init( SettingsConnection _this, XObject aLink, XHandle aArg )
+/* Initializer for the class 'Settings::SET03_ConnectionSettingMenu' */
+void SettingsSET03_ConnectionSettingMenu__Init( SettingsSET03_ConnectionSettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
   MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsConnection );
+  _this->_GCT = EW_CLASS_GCT( SettingsSET03_ConnectionSettingMenu );
 
   /* ... then construct all embedded objects */
   MenuVerticalMenu__Init( &_this->Menu, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsConnection );
+  _this->_VMT = EW_CLASS( SettingsSET03_ConnectionSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   CoreRectView__OnSetBounds( &_this->Menu, _Const0001 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 1 );
-  _this->ItemClassArray[ 0 ] = EW_CLASS( MenuItemBase );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0002 ));
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 2 );
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsGEN_bluetooth ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsSET03_y_connect_app_pairing ));
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
 }
 
-/* Re-Initializer for the class 'Settings::Connection' */
-void SettingsConnection__ReInit( SettingsConnection _this )
+/* Re-Initializer for the class 'Settings::SET03_ConnectionSettingMenu' */
+void SettingsSET03_ConnectionSettingMenu__ReInit( SettingsSET03_ConnectionSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
   MenuBaseMenuView__ReInit( &_this->_Super );
@@ -532,8 +533,8 @@ void SettingsConnection__ReInit( SettingsConnection _this )
   MenuVerticalMenu__ReInit( &_this->Menu );
 }
 
-/* Finalizer method for the class 'Settings::Connection' */
-void SettingsConnection__Done( SettingsConnection _this )
+/* Finalizer method for the class 'Settings::SET03_ConnectionSettingMenu' */
+void SettingsSET03_ConnectionSettingMenu__Done( SettingsSET03_ConnectionSettingMenu _this )
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
@@ -545,42 +546,43 @@ void SettingsConnection__Done( SettingsConnection _this )
   MenuBaseMenuView__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Settings::Connection.OnShortHomeKeyActivated()' */
-void SettingsConnection_OnShortHomeKeyActivated( SettingsConnection _this )
+/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.OnShortHomeKeyActivated()' */
+void SettingsSET03_ConnectionSettingMenu_OnShortHomeKeyActivated( SettingsSET03_ConnectionSettingMenu _this )
 {
   CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
 }
 
-/* 'C' function for method : 'Settings::Connection.LoadItemClass()' */
-XClass SettingsConnection_LoadItemClass( SettingsConnection _this, XInt32 aItemNo )
+/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.LoadItemClass()' */
+XClass SettingsSET03_ConnectionSettingMenu_LoadItemClass( SettingsSET03_ConnectionSettingMenu _this, 
+  XInt32 aItemNo )
 {
-  XClass ClassType = 0;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
 
-  if ( aItemNo < 1 )
-  {
-    ClassType = _this->ItemClassArray[ EwCheckIndex( aItemNo, 1 )];
-  }
+  if ( !!aItemNo )
+    ;
 
-  return ClassType;
+  return EW_CLASS( MenuItemBase );
 }
 
-/* 'C' function for method : 'Settings::Connection.LoadItemTitle()' */
-XString SettingsConnection_LoadItemTitle( SettingsConnection _this, XInt32 aItemNo )
+/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.LoadItemTitle()' */
+XString SettingsSET03_ConnectionSettingMenu_LoadItemTitle( SettingsSET03_ConnectionSettingMenu _this, 
+  XInt32 aItemNo )
 {
   XString title = 0;
 
-  if ( aItemNo < 1 )
+  if ( aItemNo < 2 )
   {
-    title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 1 )];
+    title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 2 )];
   }
 
   return title;
 }
 
-/* 'C' function for method : 'Settings::Connection.OnItemActivate()' */
-void SettingsConnection_OnItemActivate( SettingsConnection _this, XInt32 aItemNo, 
-  MenuItemBase aMenuItem )
+/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.OnItemActivate()' */
+void SettingsSET03_ConnectionSettingMenu_OnItemActivate( SettingsSET03_ConnectionSettingMenu _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem )
 {
   if ( aMenuItem == 0 )
     ;
@@ -601,13 +603,13 @@ void SettingsConnection_OnItemActivate( SettingsConnection _this, XInt32 aItemNo
   }
 }
 
-/* Variants derived from the class : 'Settings::Connection' */
-EW_DEFINE_CLASS_VARIANTS( SettingsConnection )
-EW_END_OF_CLASS_VARIANTS( SettingsConnection )
+/* Variants derived from the class : 'Settings::SET03_ConnectionSettingMenu' */
+EW_DEFINE_CLASS_VARIANTS( SettingsSET03_ConnectionSettingMenu )
+EW_END_OF_CLASS_VARIANTS( SettingsSET03_ConnectionSettingMenu )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::Connection' */
-EW_DEFINE_CLASS( SettingsConnection, MenuBaseMenuView, Menu, Menu, Menu, Menu, ItemTitleArray, 
-                 ItemClassArray, "Settings::Connection" )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET03_ConnectionSettingMenu' */
+EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, Menu, Menu, 
+                 Menu, Menu, ItemTitleArray, _None, "Settings::SET03_ConnectionSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -641,13 +643,13 @@ EW_DEFINE_CLASS( SettingsConnection, MenuBaseMenuView, Menu, Menu, Menu, Menu, I
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  SettingsConnection_OnShortHomeKeyActivated,
-  SettingsConnection_LoadItemClass,
-  SettingsConnection_LoadItemTitle,
-  SettingsConnection_OnItemActivate,
+  SettingsSET03_ConnectionSettingMenu_OnShortHomeKeyActivated,
+  SettingsSET03_ConnectionSettingMenu_LoadItemClass,
+  SettingsSET03_ConnectionSettingMenu_LoadItemTitle,
+  SettingsSET03_ConnectionSettingMenu_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-EW_END_OF_CLASS( SettingsConnection )
+EW_END_OF_CLASS( SettingsSET03_ConnectionSettingMenu )
 
 /* Initializer for the class 'Settings::Bluetooth' */
 void SettingsBluetooth__Init( SettingsBluetooth _this, XObject aLink, XHandle aArg )

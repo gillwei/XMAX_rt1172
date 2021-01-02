@@ -9,6 +9,7 @@ GEN_low,Low,,,,,,,
 GEN_middle,Mid,,,,,,,
 GEN_hight,High,,,,,,,
 GEN_reset_question_mark,Reset?,,,,,,,
+GEN_bluetooth,Bluetooth,,,,,,,
 TOP01_warning,Warning,,,,,,,
 TOP01_disclaimer,"Failure to pay attention while riding could result in death or serious injury.
 Always concentrate on riding by keeping your eyes and mind on the road.
@@ -94,4 +95,5 @@ SET01_seat_heater_settings,Seat heater settings,,,,,,,
 SET01_system_info,System information,,,,,,,
 SET01_legal_info,Legal information,,,,,,,
 SET01_reset,Reset,,,,,,,
+SET03_y_connect_app_pairing,Y-connect App pairing,,,,,,,
 WSC01_wind_screen,Wind Screen,,,,,,,

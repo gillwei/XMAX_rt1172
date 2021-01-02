@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsConnection_H
-#define _SettingsConnection_H
+#ifndef _SettingsSET03_ConnectionSettingMenu_H
+#define _SettingsSET03_ConnectionSettingMenu_H
 
 #ifdef __cplusplus
   extern "C"
@@ -96,22 +96,21 @@
 #define _MenuItemBase_
 #endif
 
-/* Forward declaration of the class Settings::Connection */
-#ifndef _SettingsConnection_
-  EW_DECLARE_CLASS( SettingsConnection )
-#define _SettingsConnection_
+/* Forward declaration of the class Settings::SET03_ConnectionSettingMenu */
+#ifndef _SettingsSET03_ConnectionSettingMenu_
+  EW_DECLARE_CLASS( SettingsSET03_ConnectionSettingMenu )
+#define _SettingsSET03_ConnectionSettingMenu_
 #endif
 
 
-/* Deklaration of class : 'Settings::Connection' */
-EW_DEFINE_FIELDS( SettingsConnection, MenuBaseMenuView )
+/* Deklaration of class : 'Settings::SET03_ConnectionSettingMenu' */
+EW_DEFINE_FIELDS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView )
   EW_OBJECT  ( Menu,            MenuVerticalMenu )
-  EW_ARRAY   ( ItemTitleArray,  XString, [1])
-  EW_ARRAY   ( ItemClassArray,  XClass, [1])
-EW_END_OF_FIELDS( SettingsConnection )
+  EW_ARRAY   ( ItemTitleArray,  XString, [2])
+EW_END_OF_FIELDS( SettingsSET03_ConnectionSettingMenu )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::Connection' */
-EW_DEFINE_METHODS( SettingsConnection, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET03_ConnectionSettingMenu' */
+EW_DEFINE_METHODS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -158,32 +157,36 @@ EW_DEFINE_METHODS( SettingsConnection, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsConnection _this )
-  EW_METHOD( LoadItemClass,     XClass )( SettingsConnection _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( SettingsConnection _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( SettingsConnection _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
+  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET03_ConnectionSettingMenu _this )
+  EW_METHOD( LoadItemClass,     XClass )( SettingsSET03_ConnectionSettingMenu _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( SettingsSET03_ConnectionSettingMenu _this, 
+    XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( SettingsSET03_ConnectionSettingMenu _this, 
+    XInt32 aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( SettingsConnection )
+EW_END_OF_METHODS( SettingsSET03_ConnectionSettingMenu )
 
-/* 'C' function for method : 'Settings::Connection.OnShortHomeKeyActivated()' */
-void SettingsConnection_OnShortHomeKeyActivated( SettingsConnection _this );
+/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.OnShortHomeKeyActivated()' */
+void SettingsSET03_ConnectionSettingMenu_OnShortHomeKeyActivated( SettingsSET03_ConnectionSettingMenu _this );
 
-/* 'C' function for method : 'Settings::Connection.LoadItemClass()' */
-XClass SettingsConnection_LoadItemClass( SettingsConnection _this, XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.LoadItemClass()' */
+XClass SettingsSET03_ConnectionSettingMenu_LoadItemClass( SettingsSET03_ConnectionSettingMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::Connection.LoadItemTitle()' */
-XString SettingsConnection_LoadItemTitle( SettingsConnection _this, XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.LoadItemTitle()' */
+XString SettingsSET03_ConnectionSettingMenu_LoadItemTitle( SettingsSET03_ConnectionSettingMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::Connection.OnItemActivate()' */
-void SettingsConnection_OnItemActivate( SettingsConnection _this, XInt32 aItemNo, 
-  MenuItemBase aMenuItem );
+/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.OnItemActivate()' */
+void SettingsSET03_ConnectionSettingMenu_OnItemActivate( SettingsSET03_ConnectionSettingMenu _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsConnection_H */
+#endif /* _SettingsSET03_ConnectionSettingMenu_H */
 
 /* Embedded Wizard */

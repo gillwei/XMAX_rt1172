@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/01/01 22:18:48
+// Generated: 2021/01/02 15:12:04
 
 $output false
 const string GEN_ok =
@@ -75,6 +75,12 @@ $output false
 const string GEN_reset_question_mark =
 (
   Default = "Reset?";
+);
+
+$output false
+const string GEN_bluetooth =
+(
+  Default = "Bluetooth";
 );
 
 $output false
@@ -550,6 +556,12 @@ $output false
 const string SET01_reset =
 (
   Default = "Reset";
+);
+
+$output false
+const string SET03_y_connect_app_pairing =
+(
+  Default = "Y-connect App pairing";
 );
 
 $output false

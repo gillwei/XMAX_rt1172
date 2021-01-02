@@ -42,6 +42,9 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+/* User defined constant: 'Strings::GEN_bluetooth' */
+extern const XStringRes StringsGEN_bluetooth;
+
 /* User defined constant: 'Strings::TOP01_disclaimer' */
 EW_DECLARE_CONST( StringsTOP01_disclaimer )
 
@@ -107,6 +110,9 @@ extern const XStringRes StringsSET01_legal_info;
 
 /* User defined constant: 'Strings::SET01_reset' */
 extern const XStringRes StringsSET01_reset;
+
+/* User defined constant: 'Strings::SET03_y_connect_app_pairing' */
+extern const XStringRes StringsSET03_y_connect_app_pairing;
 
 /* User defined constant: 'Strings::WSC01_wind_screen' */
 extern const XStringRes StringsWSC01_wind_screen;
