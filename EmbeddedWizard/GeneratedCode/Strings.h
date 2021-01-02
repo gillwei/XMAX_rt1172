@@ -114,6 +114,15 @@ extern const XStringRes StringsSET01_reset;
 /* User defined constant: 'Strings::SET03_y_connect_app_pairing' */
 extern const XStringRes StringsSET03_y_connect_app_pairing;
 
+/* User defined constant: 'Strings::SET04_discovery_mode' */
+extern const XStringRes StringsSET04_discovery_mode;
+
+/* User defined constant: 'Strings::SET04_paired_devices' */
+extern const XStringRes StringsSET04_paired_devices;
+
+/* User defined constant: 'Strings::SET04_bt_auto_connect' */
+extern const XStringRes StringsSET04_bt_auto_connect;
+
 /* User defined constant: 'Strings::WSC01_wind_screen' */
 extern const XStringRes StringsWSC01_wind_screen;
 

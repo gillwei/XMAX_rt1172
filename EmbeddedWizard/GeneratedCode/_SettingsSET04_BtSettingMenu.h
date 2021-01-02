@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsBluetooth_H
-#define _SettingsBluetooth_H
+#ifndef _SettingsSET04_BtSettingMenu_H
+#define _SettingsSET04_BtSettingMenu_H
 
 #ifdef __cplusplus
   extern "C"
@@ -96,22 +96,22 @@
 #define _MenuItemBase_
 #endif
 
-/* Forward declaration of the class Settings::Bluetooth */
-#ifndef _SettingsBluetooth_
-  EW_DECLARE_CLASS( SettingsBluetooth )
-#define _SettingsBluetooth_
+/* Forward declaration of the class Settings::SET04_BtSettingMenu */
+#ifndef _SettingsSET04_BtSettingMenu_
+  EW_DECLARE_CLASS( SettingsSET04_BtSettingMenu )
+#define _SettingsSET04_BtSettingMenu_
 #endif
 
 
-/* Deklaration of class : 'Settings::Bluetooth' */
-EW_DEFINE_FIELDS( SettingsBluetooth, MenuBaseMenuView )
+/* Deklaration of class : 'Settings::SET04_BtSettingMenu' */
+EW_DEFINE_FIELDS( SettingsSET04_BtSettingMenu, MenuBaseMenuView )
   EW_OBJECT  ( Menu,            MenuVerticalMenu )
   EW_ARRAY   ( ItemTitleArray,  XString, [4])
   EW_ARRAY   ( ItemClassArray,  XClass, [4])
-EW_END_OF_FIELDS( SettingsBluetooth )
+EW_END_OF_FIELDS( SettingsSET04_BtSettingMenu )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::Bluetooth' */
-EW_DEFINE_METHODS( SettingsBluetooth, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET04_BtSettingMenu' */
+EW_DEFINE_METHODS( SettingsSET04_BtSettingMenu, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -158,47 +158,56 @@ EW_DEFINE_METHODS( SettingsBluetooth, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsBluetooth _this )
-  EW_METHOD( LoadItemClass,     XClass )( SettingsBluetooth _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( SettingsBluetooth _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( SettingsBluetooth _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( SettingsBluetooth _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( SettingsBluetooth _this, XInt32 aItemNo )
-EW_END_OF_METHODS( SettingsBluetooth )
+  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET04_BtSettingMenu _this )
+  EW_METHOD( LoadItemClass,     XClass )( SettingsSET04_BtSettingMenu _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( SettingsSET04_BtSettingMenu _this, XInt32 
+    aItemNo )
+  EW_METHOD( OnItemActivate,    void )( SettingsSET04_BtSettingMenu _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( SettingsSET04_BtSettingMenu _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( SettingsSET04_BtSettingMenu _this, XInt32 
+    aItemNo )
+EW_END_OF_METHODS( SettingsSET04_BtSettingMenu )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void SettingsBluetooth_Init( SettingsBluetooth _this, XHandle aArg );
+void SettingsSET04_BtSettingMenu_Init( SettingsSET04_BtSettingMenu _this, XHandle 
+  aArg );
 
-/* 'C' function for method : 'Settings::Bluetooth.OnShortHomeKeyActivated()' */
-void SettingsBluetooth_OnShortHomeKeyActivated( SettingsBluetooth _this );
+/* 'C' function for method : 'Settings::SET04_BtSettingMenu.OnShortHomeKeyActivated()' */
+void SettingsSET04_BtSettingMenu_OnShortHomeKeyActivated( SettingsSET04_BtSettingMenu _this );
 
-/* 'C' function for method : 'Settings::Bluetooth.LoadItemClass()' */
-XClass SettingsBluetooth_LoadItemClass( SettingsBluetooth _this, XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET04_BtSettingMenu.LoadItemClass()' */
+XClass SettingsSET04_BtSettingMenu_LoadItemClass( SettingsSET04_BtSettingMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::Bluetooth.LoadItemTitle()' */
-XString SettingsBluetooth_LoadItemTitle( SettingsBluetooth _this, XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET04_BtSettingMenu.LoadItemTitle()' */
+XString SettingsSET04_BtSettingMenu_LoadItemTitle( SettingsSET04_BtSettingMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::Bluetooth.OnItemActivate()' */
-void SettingsBluetooth_OnItemActivate( SettingsBluetooth _this, XInt32 aItemNo, 
-  MenuItemBase aMenuItem );
+/* 'C' function for method : 'Settings::SET04_BtSettingMenu.OnItemActivate()' */
+void SettingsSET04_BtSettingMenu_OnItemActivate( SettingsSET04_BtSettingMenu _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Settings::Bluetooth.LoadItemChecked()' */
-XBool SettingsBluetooth_LoadItemChecked( SettingsBluetooth _this, XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET04_BtSettingMenu.LoadItemChecked()' */
+XBool SettingsSET04_BtSettingMenu_LoadItemChecked( SettingsSET04_BtSettingMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::Bluetooth.LoadItemEnabled()' */
-XBool SettingsBluetooth_LoadItemEnabled( SettingsBluetooth _this, XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET04_BtSettingMenu.LoadItemEnabled()' */
+XBool SettingsSET04_BtSettingMenu_LoadItemEnabled( SettingsSET04_BtSettingMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::Bluetooth.ShowPairedDeviceListSlot()' */
-void SettingsBluetooth_ShowPairedDeviceListSlot( SettingsBluetooth _this, XObject 
-  sender );
+/* 'C' function for method : 'Settings::SET04_BtSettingMenu.ShowPairedDeviceListSlot()' */
+void SettingsSET04_BtSettingMenu_ShowPairedDeviceListSlot( SettingsSET04_BtSettingMenu _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsBluetooth_H */
+#endif /* _SettingsSET04_BtSettingMenu_H */
 
 /* Embedded Wizard */

@@ -30,7 +30,7 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x000003FE, /* ratio 51.27 % */
+  0x00000426, /* ratio 51.22 % */
   0xB8001900, 0x00084452, 0x00EA0036, 0x0E800328, 0x1B0F3780, 0xA0034002, 0x4581ACA2,
   0x0308008C, 0x84C1CD20, 0x042CE400, 0xC4224200, 0x02367092, 0xA55243C8, 0xDD0C8743,
   0x5108F448, 0x133BC966, 0x58647E3B, 0x3247A452, 0x699E653A, 0x42A22639, 0x8E7B4084,
@@ -48,8 +48,18 @@ static const unsigned int _StringsDefault0[] =
   0xF1551801, 0x550E4797, 0xC570C174, 0x6C9C7001, 0x1B5755CA, 0x28823557, 0x625A6E14,
   0x4F82E2A4, 0x48D2E771, 0x91257593, 0x09A18499, 0x226A0540, 0x9C75D4C6, 0x8553258D,
   0x6187555A, 0x80500090, 0x0D231311, 0x009F91F8, 0x671A4A00, 0xC0081A83, 0x66A8457B,
-  0x61158D59, 0x00165180, 0x8F5770B4, 0xA6D51523, 0x997D295B, 0x7D1E4712, 0x458A2675,
-  0x66983724, 0x1225162A, 0x677D3143, 0x0000406B, 0x00000000
+  0x61158D59, 0x00165180, 0x8F5770B4, 0xA6D51523, 0x997D295B, 0x7D1E4712, 0x11456675,
+  0x479E4460, 0x4005D54C, 0x54B1B580, 0x51106712, 0x04AB5DF5, 0x692A87B5, 0x6BA6690C,
+  0xF52DF480, 0x0101B1DD, 0x00000000
+};
+
+/* Compressed strings for the language 'Default'. */
+static const unsigned int _StringsDefault1[] =
+{
+  0x00000052, /* ratio 87.80 % */
+  0xB8003300, 0x00084452, 0x00EA0036, 0x0E800328, 0x1B0F3780, 0x00034002, 0x09308004,
+  0x38B44225, 0x001BA226, 0x7476191F, 0x83800008, 0x00AE4581, 0x00120348, 0xA6008A99,
+  0x6728E800, 0x258FCDA1, 0x08080273, 0x00000000
 };
 
 /* Compressed strings for the language 'French'. */
@@ -226,7 +236,16 @@ const XStringRes StringsSET01_reset = { _StringsDefault0, 0x01D1 };
 /* User defined constant: 'Strings::SET03_y_connect_app_pairing' */
 const XStringRes StringsSET03_y_connect_app_pairing = { _StringsDefault0, 0x01D9 };
 
+/* User defined constant: 'Strings::SET04_discovery_mode' */
+const XStringRes StringsSET04_discovery_mode = { _StringsDefault0, 0x01F1 };
+
+/* User defined constant: 'Strings::SET04_paired_devices' */
+const XStringRes StringsSET04_paired_devices = { _StringsDefault0, 0x0202 };
+
+/* User defined constant: 'Strings::SET04_bt_auto_connect' */
+const XStringRes StringsSET04_bt_auto_connect = { _StringsDefault1, 0x0002 };
+
 /* User defined constant: 'Strings::WSC01_wind_screen' */
-const XStringRes StringsWSC01_wind_screen = { _StringsDefault0, 0x01F1 };
+const XStringRes StringsWSC01_wind_screen = { _StringsDefault1, 0x001B };
 
 /* Embedded Wizard */

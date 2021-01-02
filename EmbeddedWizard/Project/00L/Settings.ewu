@@ -197,7 +197,7 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
 
     switch( aItemNo )
     {
-      case 0: SlideInDialog( new Settings::Bluetooth );
+      case 0: SlideInDialog( new Settings::SET04_BtSettingMenu );
       case 1:;
       default :;
     }
@@ -218,9 +218,9 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
   );
 }
 
-$rect <80,130,320,170>
+$rect <20,110,280,150>
 $output false
-class Bluetooth : Menu::BaseMenuView
+class SET04_BtSettingMenu : Menu::BaseMenuView
 {
   $rect <230,290,410,330>
   inherited method Init()
@@ -237,7 +237,7 @@ class Bluetooth : Menu::BaseMenuView
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
-  $rect <520,70,720,110>
+  $rect <490,30,690,70>
   inherited method LoadItemClass()
   {
     var class ClassType = null;
@@ -248,7 +248,7 @@ class Bluetooth : Menu::BaseMenuView
     return ClassType;
   }
 
-  $rect <520,120,720,160>
+  $rect <490,80,690,120>
   inherited method LoadItemTitle()
   {
     var string title = "";
@@ -259,7 +259,7 @@ class Bluetooth : Menu::BaseMenuView
     return title;
   }
 
-  $rect <520,270,720,310>
+  $rect <490,230,690,270>
   inherited method OnItemActivate()
   {
     var bool IsChecked = false;
@@ -295,7 +295,7 @@ class Bluetooth : Menu::BaseMenuView
     }
   }
 
-  $rect <520,170,720,210>
+  $rect <490,130,690,170>
   inherited method LoadItemChecked()
   {
     var bool IsChecked = false;
@@ -308,7 +308,7 @@ class Bluetooth : Menu::BaseMenuView
     return IsChecked;
   }
 
-  $rect <520,220,720,260>
+  $rect <490,180,690,220>
   inherited method LoadItemEnabled()
   {
     var bool ItemEnabled = true;
@@ -328,7 +328,7 @@ class Bluetooth : Menu::BaseMenuView
     preset ItemNumPerPage = 4;
   }
 
-  $rect <740,70,940,110>
+  $rect <710,30,910,70>
   array class ItemClassArray[ 4 ] =
   (
     Default[0] = Menu::ItemCheckbox;
@@ -337,28 +337,22 @@ class Bluetooth : Menu::BaseMenuView
     Default[3] = Menu::ItemCheckbox;
   );
 
-  $rect <740,120,940,160>
+  $rect <710,80,910,120>
   array string ItemTitleArray[ 4 ] =
   (
-    Default[0] = "Bluetooth";
-    Default[1] = "Make system discoverable";
-    Default[2] = "Paired Device List";
-    Default[3] = "Bluetooth auto connect";
+    Default[0] = Strings::GEN_bluetooth;
+    Default[1] = Strings::SET04_discovery_mode;
+    Default[2] = Strings::SET04_paired_devices;
+    Default[3] = Strings::SET04_bt_auto_connect;
   );
 
-  $rect <740,170,940,210>
+  $rect <710,130,910,170>
   var bool IsBtEnabled = false;
 
   $rect <230,350,480,390>
   slot ShowPairedDeviceListSlot
   {
     PresentDialog( new Settings::SET17_BtPairedDeviceList, null, null, null, null, null, null, null, null, false );
-  }
-
-  // [SET 17]
-  note group Note
-  {
-    attr Bounds = <520,0,720,50>;
   }
 }
 
