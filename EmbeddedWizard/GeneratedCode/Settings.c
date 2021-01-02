@@ -223,6 +223,7 @@ void SettingsSET01_MainSettingMenu__Init( SettingsSET01_MainSettingMenu _this, X
   CoreRectView__OnSetBounds( _this, _Const0000 );
   CoreRectView__OnSetBounds( &_this->Menu, _Const0001 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 9 );
+  MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Menu, 1 );
   _this->Settings[ 0 ] = EnumMainSettingItemConnection;
   _this->Settings[ 1 ] = EnumMainSettingItemClock;
   _this->Settings[ 2 ] = EnumMainSettingItemBrightness;

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _MenuVerticalMenu_H
-#define _MenuVerticalMenu_H
+#ifndef _MenuArrowScrollBar_H
+#define _MenuArrowScrollBar_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,12 +42,8 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
-#include "_CoreKeyPressHandler.h"
-#include "_CoreVerticalList.h"
-#include "_MenuArrowScrollBar.h"
-#include "_MenuScrollbar.h"
-#include "_ViewsBorder.h"
+#include "_CoreGroup.h"
+#include "_ViewsImage.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -55,10 +51,10 @@
 #define _CoreDialogContext_
 #endif
 
-/* Forward declaration of the class Core::Group */
-#ifndef _CoreGroup_
-  EW_DECLARE_CLASS( CoreGroup )
-#define _CoreGroup_
+/* Forward declaration of the class Core::KeyPressHandler */
+#ifndef _CoreKeyPressHandler_
+  EW_DECLARE_CLASS( CoreKeyPressHandler )
+#define _CoreKeyPressHandler_
 #endif
 
 /* Forward declaration of the class Core::LayoutContext */
@@ -91,28 +87,23 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::VerticalMenu */
-#ifndef _MenuVerticalMenu_
-  EW_DECLARE_CLASS( MenuVerticalMenu )
-#define _MenuVerticalMenu_
+/* Forward declaration of the class Menu::ArrowScrollBar */
+#ifndef _MenuArrowScrollBar_
+  EW_DECLARE_CLASS( MenuArrowScrollBar )
+#define _MenuArrowScrollBar_
 #endif
 
 
-/* Deklaration of class : 'Menu::VerticalMenu' */
-EW_DEFINE_FIELDS( MenuVerticalMenu, ComponentsBaseComponent )
-  EW_OBJECT  ( MenuList,        CoreVerticalList )
-  EW_OBJECT  ( Scrollbar,       MenuScrollbar )
-  EW_OBJECT  ( FocusFrame,      ViewsBorder )
-  EW_OBJECT  ( ArrowScrollBar,  MenuArrowScrollBar )
-  EW_PROPERTY( NoOfItems,       XInt32 )
-  EW_PROPERTY( ItemHeight,      XInt32 )
-  EW_PROPERTY( ItemNumPerPage,  XInt32 )
-  EW_PROPERTY( ArrowScrollBarVisible, XBool )
-  EW_PROPERTY( Focusable,       XBool )
-EW_END_OF_FIELDS( MenuVerticalMenu )
+/* Deklaration of class : 'Menu::ArrowScrollBar' */
+EW_DEFINE_FIELDS( MenuArrowScrollBar, CoreGroup )
+  EW_OBJECT  ( UpArrowIcon,     ViewsImage )
+  EW_OBJECT  ( DownArrowIcon,   ViewsImage )
+  EW_PROPERTY( CurrentPageIdx,  XInt32 )
+  EW_PROPERTY( NoOfPages,       XInt32 )
+EW_END_OF_FIELDS( MenuArrowScrollBar )
 
-/* Virtual Method Table (VMT) for the class : 'Menu::VerticalMenu' */
-EW_DEFINE_METHODS( MenuVerticalMenu, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'Menu::ArrowScrollBar' */
+EW_DEFINE_METHODS( MenuArrowScrollBar, CoreGroup )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -143,7 +134,7 @@ EW_DEFINE_METHODS( MenuVerticalMenu, ComponentsBaseComponent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
   EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
-  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
+  EW_METHOD( UpdateViewState,   void )( MenuArrowScrollBar _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
@@ -156,57 +147,34 @@ EW_DEFINE_METHODS( MenuVerticalMenu, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( MenuVerticalMenu _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( MenuVerticalMenu _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( MenuVerticalMenu )
+EW_END_OF_METHODS( MenuArrowScrollBar )
 
-/* 'C' function for method : 'Menu::VerticalMenu.OnShortDownKeyActivated()' */
-void MenuVerticalMenu_OnShortDownKeyActivated( MenuVerticalMenu _this );
+/* The method UpdateViewState() is invoked automatically after the state of the 
+   component has been changed. This method can be overridden and filled with logic 
+   to ensure the visual aspect of the component does reflect its current state. 
+   For example, the 'enabled' state of the component can affect its colors (disabled 
+   components may appear pale). In this case the logic of the method should modify 
+   the respective color properties accordingly to the current 'enabled' state. 
+   The current state of the component is passed as a set in the parameter aState. 
+   It reflects the very basic component state like its visibility or the ability 
+   to react to user inputs. Beside this common state, the method can also involve 
+   any other variables used in the component as long as they reflect its current 
+   state. For example, the toggle switch component can take in account its toggle 
+   state 'on' or 'off' and change accordingly the location of the slider, etc.
+   Usually, this method will be invoked automatically by the framework. Optionally 
+   you can request its invocation by using the method @InvalidateViewState(). */
+void MenuArrowScrollBar_UpdateViewState( MenuArrowScrollBar _this, XSet aState );
 
-/* 'C' function for method : 'Menu::VerticalMenu.OnShortUpKeyActivated()' */
-void MenuVerticalMenu_OnShortUpKeyActivated( MenuVerticalMenu _this );
+/* 'C' function for method : 'Menu::ArrowScrollBar.OnSetCurrentPageIdx()' */
+void MenuArrowScrollBar_OnSetCurrentPageIdx( MenuArrowScrollBar _this, XInt32 value );
 
-/* This method is called by 'VerticalList' every time the list loads or updates 
-   an item. */
-void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender );
-
-/* 'C' function for method : 'Menu::VerticalMenu.OnItemActivateSlot()' */
-void MenuVerticalMenu_OnItemActivateSlot( MenuVerticalMenu _this, XObject sender );
-
-/* 'C' function for method : 'Menu::VerticalMenu.OnSetNoOfItems()' */
-void MenuVerticalMenu_OnSetNoOfItems( MenuVerticalMenu _this, XInt32 value );
-
-/* 'C' function for method : 'Menu::VerticalMenu.InvalidateItems()' */
-void MenuVerticalMenu_InvalidateItems( MenuVerticalMenu _this, XInt32 aFirstItem, 
-  XInt32 aLastItem );
-
-/* 'C' function for method : 'Menu::VerticalMenu.OnSetItemHeight()' */
-void MenuVerticalMenu_OnSetItemHeight( MenuVerticalMenu _this, XInt32 value );
-
-/* 'C' function for method : 'Menu::VerticalMenu.MoveFocusFrame()' */
-void MenuVerticalMenu_MoveFocusFrame( MenuVerticalMenu _this );
-
-/* 'C' function for method : 'Menu::VerticalMenu.OnSetItemNumPerPage()' */
-void MenuVerticalMenu_OnSetItemNumPerPage( MenuVerticalMenu _this, XInt32 value );
-
-/* 'C' function for method : 'Menu::VerticalMenu.UpdateListHeight()' */
-void MenuVerticalMenu_UpdateListHeight( MenuVerticalMenu _this );
-
-/* 'C' function for method : 'Menu::VerticalMenu.SwitchToPageOfSelectedItem()' */
-void MenuVerticalMenu_SwitchToPageOfSelectedItem( MenuVerticalMenu _this );
-
-/* 'C' function for method : 'Menu::VerticalMenu.OnSetArrowScrollBarVisible()' */
-void MenuVerticalMenu_OnSetArrowScrollBarVisible( MenuVerticalMenu _this, XBool 
-  value );
+/* 'C' function for method : 'Menu::ArrowScrollBar.OnSetNoOfPages()' */
+void MenuArrowScrollBar_OnSetNoOfPages( MenuArrowScrollBar _this, XInt32 value );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _MenuVerticalMenu_H */
+#endif /* _MenuArrowScrollBar_H */
 
 /* Embedded Wizard */

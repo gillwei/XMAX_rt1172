@@ -1112,7 +1112,7 @@ resource Resources::Bitmap IconWindScreenLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <-80,440,120,480>
+$rect <880,670,1080,710>
 $output false
 resource Resources::Bitmap LCHighlight
 {

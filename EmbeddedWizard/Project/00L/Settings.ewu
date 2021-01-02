@@ -115,6 +115,7 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
   {
     preset Bounds = <0,36,480,272>;
     preset NoOfItems = 9;
+    preset ArrowScrollBarVisible = true;
   }
 
   // TODO:

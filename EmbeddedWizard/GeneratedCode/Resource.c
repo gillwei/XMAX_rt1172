@@ -420,6 +420,12 @@ EW_RES_WITHOUT_VARIANTS( ResourceIconWindScreenLarge )
 /* Table with links to derived variants of the bitmap resource : 'Resource::LCHighlight' */
 EW_RES_WITHOUT_VARIANTS( ResourceLCHighlight )
 
+/* Include a file containing the bitmap resource : 'Resource::PageUpDown' */
+#include "_ResourcePageUpDown.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::PageUpDown' */
+EW_RES_WITHOUT_VARIANTS( ResourcePageUpDown )
+
 /* Include a file containing the bitmap resource : 'Resource::ControlKeyBackground' */
 #include "_ResourceControlKeyBackground.h"
 

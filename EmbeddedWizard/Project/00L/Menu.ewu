@@ -358,7 +358,7 @@ class VerticalMenu : Components::BaseComponent
   $rect <490,10,690,50>
   property int32 NoOfItems = 0;
 
-  $rect <490,60,690,100>
+  $rect <490,50,690,90>
   onset NoOfItems
   {
     if( pure NoOfItems != value )
@@ -375,6 +375,17 @@ class VerticalMenu : Components::BaseComponent
       else
       {
         FocusFrame.Visible = true;
+      }
+
+      // set arrow scroll bar
+      if( ArrowScrollBarVisible && 0 != ItemNumPerPage )
+      {
+        var int32 NoOfPages = value / ItemNumPerPage;
+        if( value > ( NoOfPages * ItemNumPerPage ) )
+        {
+          NoOfPages++;
+        }
+        ArrowScrollBar.NoOfPages = NoOfPages;
       }
 
       // move focus to the item before the last item when the last item is deleted
@@ -473,12 +484,37 @@ class VerticalMenu : Components::BaseComponent
   $rect <690,290,940,330>
   method void SwitchToPageOfSelectedItem()
   {
-    var int32 CurrentPageIdx = MenuList.ScrollOffset / MenuList.Bounds.h;
+    var int32 CurrentPageIdx = ( -1 ) * MenuList.ScrollOffset / MenuList.Bounds.h;
     var int32 PageIdxOfSelectedItem = MenuList.SelectedItem / ItemNumPerPage;
 
     if( CurrentPageIdx != PageIdxOfSelectedItem )
     {
       MenuList.ScrollOffset = ( -1 ) * PageIdxOfSelectedItem * MenuList.Bounds.h;
+    }
+
+    if( ArrowScrollBarVisible )
+    {
+      ArrowScrollBar.CurrentPageIdx = PageIdxOfSelectedItem;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Menu::ArrowScrollBar ArrowScrollBar
+  {
+    preset Bounds = <441,5,473,221>;
+    preset Visible = false;
+  }
+
+  $rect <490,120,730,160>
+  property bool ArrowScrollBarVisible = false;
+
+  $rect <490,160,730,200>
+  onset ArrowScrollBarVisible
+  {
+    if( pure ArrowScrollBarVisible != value )
+    {
+      pure ArrowScrollBarVisible = value;
+      ArrowScrollBar.Visible = value;
     }
   }
 }
@@ -1199,3 +1235,76 @@ const int32 ItemHeightTall = 74;
 $rect <10,60,210,100>
 $output false
 const int32 ItemHeightSmall = 56;
+
+$rect <460,210,660,250>
+$output false
+class ArrowScrollBar : Core::Group
+{
+  $rect <50,10,230,50>
+  inherited property Bounds = <0,0,32,216>;
+
+  $rect <50,50,230,90>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+
+    if( 0 == CurrentPageIdx )
+    {
+      UpArrowIcon.Visible = false;
+    }
+    else
+    {
+      UpArrowIcon.Visible = true;
+    }
+
+    if( ( NoOfPages - 1 ) == CurrentPageIdx )
+    {
+      DownArrowIcon.Visible = false;
+    }
+    else
+    {
+      DownArrowIcon.Visible = true;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image UpArrowIcon
+  {
+    preset Bounds = <0,0,32,32>;
+    preset Bitmap = Resource::PageUpDown;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DownArrowIcon
+  {
+    preset Bounds = <0,184,32,216>;
+    preset FrameNumber = 1;
+    preset Bitmap = Resource::PageUpDown;
+  }
+
+  $rect <250,10,450,50>
+  property int32 CurrentPageIdx;
+
+  $rect <250,50,450,90>
+  onset CurrentPageIdx
+  {
+    if ( pure CurrentPageIdx != value )
+    {
+      pure CurrentPageIdx = value;
+      InvalidateViewState();
+    }
+  }
+
+  $rect <480,10,680,50>
+  property int32 NoOfPages;
+
+  $rect <480,50,680,90>
+  onset NoOfPages
+  {
+    if ( pure NoOfPages != value )
+    {
+      pure NoOfPages = value;
+      InvalidateViewState();
+    }
+  }
+}

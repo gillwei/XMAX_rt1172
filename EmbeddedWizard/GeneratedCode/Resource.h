@@ -225,6 +225,9 @@ EW_DECLARE_BITMAP_RES( ResourceIconWindScreenLarge )
 /* Bitmap resource : 'Resource::LCHighlight' */
 EW_DECLARE_BITMAP_RES( ResourceLCHighlight )
 
+/* Bitmap resource : 'Resource::PageUpDown' */
+EW_DECLARE_BITMAP_RES( ResourcePageUpDown )
+
 /* Bitmap resource : 'Resource::ControlKeyBackground' */
 EW_DECLARE_BITMAP_RES( ResourceControlKeyBackground )
 
