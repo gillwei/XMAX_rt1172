@@ -965,6 +965,15 @@ void EffectsEffect_OnSetCycleDuration( EffectsEffect _this, XInt32 value )
   _this->invCycleDuration = 1.000000f / (XFloat)value;
 }
 
+/* 'C' function for method : 'Effects::Effect.OnSetInitialDelay()' */
+void EffectsEffect_OnSetInitialDelay( EffectsEffect _this, XInt32 value )
+{
+  if ( value < 0 )
+    value = 0;
+
+  _this->InitialDelay = value;
+}
+
 /* 'C' function for method : 'Effects::Effect.OnSetEnabled()' */
 void EffectsEffect_OnSetEnabled( EffectsEffect _this, XBool value )
 {

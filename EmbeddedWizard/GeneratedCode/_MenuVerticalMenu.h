@@ -45,6 +45,7 @@
 #include "_ComponentsBaseComponent.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreVerticalList.h"
+#include "_EffectsInt32Effect.h"
 #include "_MenuArrowScrollBar.h"
 #include "_MenuScrollbar.h"
 #include "_ViewsBorder.h"
@@ -104,6 +105,7 @@ EW_DEFINE_FIELDS( MenuVerticalMenu, ComponentsBaseComponent )
   EW_OBJECT  ( Scrollbar,       MenuScrollbar )
   EW_OBJECT  ( FocusFrame,      ViewsBorder )
   EW_OBJECT  ( ArrowScrollBar,  MenuArrowScrollBar )
+  EW_OBJECT  ( PageScrollEffect, EffectsInt32Effect )
   EW_PROPERTY( NoOfItems,       XInt32 )
   EW_PROPERTY( ItemHeight,      XInt32 )
   EW_PROPERTY( ItemNumPerPage,  XInt32 )
@@ -130,7 +132,6 @@ EW_DEFINE_METHODS( MenuVerticalMenu, ComponentsBaseComponent )
   EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
-  EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
   EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
@@ -202,6 +203,9 @@ void MenuVerticalMenu_SwitchToPageOfSelectedItem( MenuVerticalMenu _this );
 /* 'C' function for method : 'Menu::VerticalMenu.OnSetArrowScrollBarVisible()' */
 void MenuVerticalMenu_OnSetArrowScrollBarVisible( MenuVerticalMenu _this, XBool 
   value );
+
+/* 'C' function for method : 'Menu::VerticalMenu.OnPageScrolledSlot()' */
+void MenuVerticalMenu_OnPageScrolledSlot( MenuVerticalMenu _this, XObject sender );
 
 #ifdef __cplusplus
   }

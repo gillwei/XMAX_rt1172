@@ -122,7 +122,6 @@ EW_DEFINE_METHODS( MenuItemWrapper, CoreGroup )
   EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
-  EW_METHOD( OnGetEnabled,      XBool )( MenuItemWrapper _this )
   EW_METHOD( OnSetEnabled,      void )( MenuItemWrapper _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
@@ -149,9 +148,6 @@ EW_DEFINE_METHODS( MenuItemWrapper, CoreGroup )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
 EW_END_OF_METHODS( MenuItemWrapper )
-
-/* 'C' function for method : 'Menu::ItemWrapper.OnGetEnabled()' */
-XBool MenuItemWrapper_OnGetEnabled( MenuItemWrapper _this );
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetEnabled()' */
 void MenuItemWrapper_OnSetEnabled( MenuItemWrapper _this, XBool value );

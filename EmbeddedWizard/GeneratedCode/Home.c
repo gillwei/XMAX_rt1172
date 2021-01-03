@@ -115,7 +115,6 @@ EW_DEFINE_CLASS( HomeHOM11_tachometer, ComponentsBaseMainBG, Title, Title, Title
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,

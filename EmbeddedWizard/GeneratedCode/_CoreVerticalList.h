@@ -183,7 +183,6 @@ EW_DEFINE_METHODS( CoreVerticalList, CoreGroup )
   EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
-  EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
   EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
@@ -380,23 +379,6 @@ void CoreVerticalList_OnSetNoOfItems( CoreVerticalList _this, XInt32 value );
 /* 'C' function for method : 'Core::VerticalList.OnSetItemClass()' */
 void CoreVerticalList_OnSetItemClass( CoreVerticalList _this, XClass value );
 
-/* The method GetViewForItem() returns the view corresponding to the item with the 
-   number specified in the parameter aItem. The first item has the number 0, the 
-   second 1, and so far.
-   Since this list component manages the views internally within a small cache maintaining 
-   only such views which are visible, the method may return 'null' when asking for 
-   the view corresponding to an item lying outside the visible area of the list. 
-   Similarly, the method returns 'null' when it has been used in context of the 
-   @OnLoadItem slot method. @OnLoadItem is signaled while the list updates and rearranges 
-   its items. Trying to access the views during this phase would interfere with 
-   the update process returning incorrect views. Don't call GetViewForItem() from 
-   @OnLoadItem slot method.
-   Please note, if the list is configured with the property @Endless == 'true', 
-   multiple copies of one and the same item may be displayed on the screen. In such 
-   case the method returns the view corresponding to the first matching item lying 
-   actually within the cache. */
-CoreView CoreVerticalList_GetViewForItem( CoreVerticalList _this, XInt32 aItem );
-
 /* The method InvalidateItems() forces the list to reload one or more items. The 
    index of the item to start the reload operation is specified in the parameter 
    aFirstItem. The parameter aLastItem specifies the index of the last affected 
@@ -405,6 +387,9 @@ CoreView CoreVerticalList_GetViewForItem( CoreVerticalList _this, XInt32 aItem )
    affected item. */
 void CoreVerticalList_InvalidateItems( CoreVerticalList _this, XInt32 aFirstItem, 
   XInt32 aLastItem );
+
+/* Default onget method for the property 'ScrollOffset' */
+XInt32 CoreVerticalList_OnGetScrollOffset( CoreVerticalList _this );
 
 #ifdef __cplusplus
   }

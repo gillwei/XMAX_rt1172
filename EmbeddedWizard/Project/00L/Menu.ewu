@@ -261,13 +261,16 @@ class VerticalMenu : Components::BaseComponent
       var int32 NextItemIdx = MenuList.SelectedItem + 1;
       if( NextItemIdx < MenuList.NoOfItems )
       {
-        var Menu::ItemWrapper Item = ( Menu::ItemWrapper )MenuList.GetViewForItem( NextItemIdx );
-        if( null != Item && Item.Enabled )
+        var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )Owner;
+        if( null != OwnerMenu )
         {
-          MenuList.SelectedItem = NextItemIdx;
-          SwitchToPageOfSelectedItem();
-          Scrollbar.ViewIdx = MenuList.SelectedItem;
-          MoveFocusFrame();
+          if( OwnerMenu.LoadItemEnabled( NextItemIdx ) )
+          {
+            MenuList.SelectedItem = NextItemIdx;
+            SwitchToPageOfSelectedItem();
+            Scrollbar.ViewIdx = MenuList.SelectedItem;
+            MoveFocusFrame();
+          }
         }
       }
     }
@@ -489,12 +492,10 @@ class VerticalMenu : Components::BaseComponent
 
     if( CurrentPageIdx != PageIdxOfSelectedItem )
     {
-      MenuList.ScrollOffset = ( -1 ) * PageIdxOfSelectedItem * MenuList.Bounds.h;
-    }
-
-    if( ArrowScrollBarVisible )
-    {
-      ArrowScrollBar.CurrentPageIdx = PageIdxOfSelectedItem;
+      FocusFrame.Visible = false;
+      PageScrollEffect.Value1 = MenuList.ScrollOffset;
+      PageScrollEffect.Value2 = ( -1 ) * PageIdxOfSelectedItem * MenuList.Bounds.h;
+      PageScrollEffect.Enabled = true;
     }
   }
 
@@ -515,6 +516,30 @@ class VerticalMenu : Components::BaseComponent
     {
       pure ArrowScrollBarVisible = value;
       ArrowScrollBar.Visible = value;
+    }
+  }
+
+  $rect <690,340,940,380>
+  object Effects::Int32Effect PageScrollEffect
+  {
+    preset OnFinished = OnPageScrolledSlot;
+    preset Exponent = 4.19;
+    preset Timing = Effects::Timing.Exp_Out;
+    preset NoOfCycles = 1;
+    preset CycleDuration = 200;
+    preset InitialDelay = 50;
+    preset Outlet = ^MenuList.ScrollOffset;
+  }
+
+  $rect <690,390,940,430>
+  slot OnPageScrolledSlot
+  {
+    FocusFrame.Visible = true;
+
+    if( ArrowScrollBarVisible )
+    {
+      var int32 PageIdxOfSelectedItem = MenuList.SelectedItem / ItemNumPerPage;
+      ArrowScrollBar.CurrentPageIdx = PageIdxOfSelectedItem;
     }
   }
 }

@@ -2800,18 +2800,6 @@ void CoreGroup__OnSetBuffered( void* _this, XBool value )
   ((CoreGroup)_this)->_VMT->OnSetBuffered((CoreGroup)_this, value );
 }
 
-/* 'C' function for method : 'Core::Group.OnGetEnabled()' */
-XBool CoreGroup_OnGetEnabled( CoreGroup _this )
-{
-  return (( _this->Super2.viewState & CoreViewStateEnabled ) == CoreViewStateEnabled );
-}
-
-/* Wrapper function for the virtual method : 'Core::Group.OnGetEnabled()' */
-XBool CoreGroup__OnGetEnabled( void* _this )
-{
-  return ((CoreGroup)_this)->_VMT->OnGetEnabled((CoreGroup)_this );
-}
-
 /* 'C' function for method : 'Core::Group.OnSetEnabled()' */
 void CoreGroup_OnSetEnabled( CoreGroup _this, XBool value )
 {
@@ -4277,7 +4265,6 @@ EW_DEFINE_CLASS( CoreGroup, CoreRectView, first, Opacity, Opacity, Opacity, Opac
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -5852,7 +5839,6 @@ EW_DEFINE_CLASS( CoreRoot, CoreGroup, keyLastTarget, cursorHoldTimer, cursorHold
   CoreGroup_OnSetBounds,
   CoreRoot_OnSetFocus,
   CoreRoot_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreRoot_OnSetOpacity,
   CoreRoot_IsCurrentDialog,
@@ -7426,72 +7412,6 @@ void CoreVerticalList_OnSetItemClass( CoreVerticalList _this, XClass value )
   CoreGroup__InvalidateArea( _this, EwGetRectORect( _this->Super2.Bounds ));
 }
 
-/* The method GetViewForItem() returns the view corresponding to the item with the 
-   number specified in the parameter aItem. The first item has the number 0, the 
-   second 1, and so far.
-   Since this list component manages the views internally within a small cache maintaining 
-   only such views which are visible, the method may return 'null' when asking for 
-   the view corresponding to an item lying outside the visible area of the list. 
-   Similarly, the method returns 'null' when it has been used in context of the 
-   @OnLoadItem slot method. @OnLoadItem is signaled while the list updates and rearranges 
-   its items. Trying to access the views during this phase would interfere with 
-   the update process returning incorrect views. Don't call GetViewForItem() from 
-   @OnLoadItem slot method.
-   Please note, if the list is configured with the property @Endless == 'true', 
-   multiple copies of one and the same item may be displayed on the screen. In such 
-   case the method returns the view corresponding to the first matching item lying 
-   actually within the cache. */
-CoreView CoreVerticalList_GetViewForItem( CoreVerticalList _this, XInt32 aItem )
-{
-  if ( _this->loading )
-    return 0;
-
-  if (( aItem < 0 ) || ( aItem >= _this->NoOfItems ))
-    return 0;
-
-  if ( !_this->Endless )
-  {
-    CoreView view;
-
-    if (( aItem < _this->validHead ) || ( aItem > _this->validTail ))
-      return 0;
-
-    view = _this->Super1.first;
-
-    while ( aItem > _this->validHead )
-    {
-      view = view->next;
-      aItem = aItem - 1;
-    }
-
-    return view;
-  }
-  else
-  {
-    XInt32 validHeadN = _this->validHead;
-    CoreView view;
-
-    if ( validHeadN < 0 )
-      validHeadN = _this->NoOfItems - ( -validHeadN % _this->NoOfItems );
-
-    if ( validHeadN > 0 )
-      validHeadN = validHeadN % _this->NoOfItems;
-
-    view = _this->Super1.first;
-
-    while ( view != 0 )
-    {
-      if (( validHeadN % _this->NoOfItems ) == aItem )
-        return view;
-
-      view = view->next;
-      validHeadN = validHeadN + 1;
-    }
-
-    return 0;
-  }
-}
-
 /* The method InvalidateItems() forces the list to reload one or more items. The 
    index of the item to start the reload operation is specified in the parameter 
    aFirstItem. The parameter aLastItem specifies the index of the last affected 
@@ -7556,6 +7476,12 @@ void CoreVerticalList_InvalidateItems( CoreVerticalList _this, XInt32 aFirstItem
   CoreGroup__InvalidateArea( _this, area );
 }
 
+/* Default onget method for the property 'ScrollOffset' */
+XInt32 CoreVerticalList_OnGetScrollOffset( CoreVerticalList _this )
+{
+  return _this->ScrollOffset;
+}
+
 /* Variants derived from the class : 'Core::VerticalList' */
 EW_DEFINE_CLASS_VARIANTS( CoreVerticalList )
 EW_END_OF_CLASS_VARIANTS( CoreVerticalList )
@@ -7575,7 +7501,6 @@ EW_DEFINE_CLASS( CoreVerticalList, CoreGroup, itemsPool, OnUpdate, invalidTail,
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,

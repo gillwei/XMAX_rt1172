@@ -285,7 +285,6 @@ EW_DEFINE_CLASS( ApplicationApplication, CoreRoot, FactoryTestEventHandler, Fact
   CoreGroup_OnSetBounds,
   CoreRoot_OnSetFocus,
   CoreRoot_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreRoot_OnSetOpacity,
   CoreRoot_IsCurrentDialog,

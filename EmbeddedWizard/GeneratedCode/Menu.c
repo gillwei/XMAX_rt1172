@@ -30,6 +30,7 @@
 #include "_CoreTimer.h"
 #include "_CoreVerticalList.h"
 #include "_CoreView.h"
+#include "_EffectsInt32Effect.h"
 #include "_MenuArrowScrollBar.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
@@ -50,6 +51,7 @@
 #include "_WidgetSetToggleButton.h"
 #include "_WidgetSetToggleButtonConfig.h"
 #include "Core.h"
+#include "Effects.h"
 #include "Fonts.h"
 #include "Menu.h"
 #include "Resource.h"
@@ -328,7 +330,6 @@ EW_DEFINE_CLASS( MenuItemBase, ComponentsBaseComponent, OnActivate, OnActivate,
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   MenuItemBase_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -368,6 +369,7 @@ void MenuVerticalMenu__Init( MenuVerticalMenu _this, XObject aLink, XHandle aArg
   MenuScrollbar__Init( &_this->Scrollbar, &_this->_XObject, 0 );
   ViewsBorder__Init( &_this->FocusFrame, &_this->_XObject, 0 );
   MenuArrowScrollBar__Init( &_this->ArrowScrollBar, &_this->_XObject, 0 );
+  EffectsInt32Effect__Init( &_this->PageScrollEffect, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( MenuVerticalMenu );
@@ -390,12 +392,20 @@ void MenuVerticalMenu__Init( MenuVerticalMenu _this, XObject aLink, XHandle aArg
   ViewsBorder_OnSetColor( &_this->FocusFrame, _Const000D );
   CoreRectView__OnSetBounds( &_this->ArrowScrollBar, _Const000E );
   CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, 0 );
+  EffectsEffect_OnSetExponent((EffectsEffect)&_this->PageScrollEffect, 4.190000f );
+  EffectsEffect_OnSetTiming((EffectsEffect)&_this->PageScrollEffect, EffectsTimingExp_Out );
+  EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->PageScrollEffect, 1 );
+  EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->PageScrollEffect, 200 );
+  EffectsEffect_OnSetInitialDelay((EffectsEffect)&_this->PageScrollEffect, 50 );
   CoreGroup__Add( _this, ((CoreView)&_this->MenuList ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Scrollbar ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->FocusFrame ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ArrowScrollBar ), 0 );
   CoreGroup__OnSetFocus( &_this->MenuList, 0 );
   _this->MenuList.OnLoadItem = EwNewSlot( _this, MenuVerticalMenu_OnLoadItemSlot );
+  _this->PageScrollEffect.Super1.OnFinished = EwNewSlot( _this, MenuVerticalMenu_OnPageScrolledSlot );
+  _this->PageScrollEffect.Outlet = EwNewRef( &_this->MenuList, CoreVerticalList_OnGetScrollOffset, 
+  CoreVerticalList_OnSetScrollOffset );
 }
 
 /* Re-Initializer for the class 'Menu::VerticalMenu' */
@@ -409,6 +419,7 @@ void MenuVerticalMenu__ReInit( MenuVerticalMenu _this )
   MenuScrollbar__ReInit( &_this->Scrollbar );
   ViewsBorder__ReInit( &_this->FocusFrame );
   MenuArrowScrollBar__ReInit( &_this->ArrowScrollBar );
+  EffectsInt32Effect__ReInit( &_this->PageScrollEffect );
 }
 
 /* Finalizer method for the class 'Menu::VerticalMenu' */
@@ -422,6 +433,7 @@ void MenuVerticalMenu__Done( MenuVerticalMenu _this )
   MenuScrollbar__Done( &_this->Scrollbar );
   ViewsBorder__Done( &_this->FocusFrame );
   MenuArrowScrollBar__Done( &_this->ArrowScrollBar );
+  EffectsInt32Effect__Done( &_this->PageScrollEffect );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_Super );
@@ -436,15 +448,17 @@ void MenuVerticalMenu_OnShortDownKeyActivated( MenuVerticalMenu _this )
 
     if ( NextItemIdx < _this->MenuList.NoOfItems )
     {
-      MenuItemWrapper Item = EwCastObject( CoreVerticalList_GetViewForItem( &_this->MenuList, 
-        NextItemIdx ), MenuItemWrapper );
+      MenuBaseMenuView OwnerMenu = EwCastObject( _this->Super4.Owner, MenuBaseMenuView );
 
-      if (( Item != 0 ) && CoreGroup__OnGetEnabled( Item ))
+      if ( OwnerMenu != 0 )
       {
-        CoreVerticalList_OnSetSelectedItem( &_this->MenuList, NextItemIdx );
-        MenuVerticalMenu_SwitchToPageOfSelectedItem( _this );
-        MenuScrollbar_OnSetViewIdx( &_this->Scrollbar, _this->MenuList.SelectedItem );
-        MenuVerticalMenu_MoveFocusFrame( _this );
+        if ( MenuBaseMenuView__LoadItemEnabled( OwnerMenu, NextItemIdx ))
+        {
+          CoreVerticalList_OnSetSelectedItem( &_this->MenuList, NextItemIdx );
+          MenuVerticalMenu_SwitchToPageOfSelectedItem( _this );
+          MenuScrollbar_OnSetViewIdx( &_this->Scrollbar, _this->MenuList.SelectedItem );
+          MenuVerticalMenu_MoveFocusFrame( _this );
+        }
       }
     }
   }
@@ -631,13 +645,11 @@ void MenuVerticalMenu_SwitchToPageOfSelectedItem( MenuVerticalMenu _this )
 
   if ( CurrentPageIdx != PageIdxOfSelectedItem )
   {
-    CoreVerticalList_OnSetScrollOffset( &_this->MenuList, ( -1 * PageIdxOfSelectedItem ) 
-    * EwGetRectH( _this->MenuList.Super2.Bounds ));
-  }
-
-  if ( _this->ArrowScrollBarVisible )
-  {
-    MenuArrowScrollBar_OnSetCurrentPageIdx( &_this->ArrowScrollBar, PageIdxOfSelectedItem );
+    ViewsBorder_OnSetVisible( &_this->FocusFrame, 0 );
+    _this->PageScrollEffect.Value1 = _this->MenuList.ScrollOffset;
+    _this->PageScrollEffect.Value2 = ( -1 * PageIdxOfSelectedItem ) * EwGetRectH( 
+    _this->MenuList.Super2.Bounds );
+    EffectsEffect_OnSetEnabled((EffectsEffect)&_this->PageScrollEffect, 1 );
   }
 }
 
@@ -649,6 +661,21 @@ void MenuVerticalMenu_OnSetArrowScrollBarVisible( MenuVerticalMenu _this, XBool
   {
     _this->ArrowScrollBarVisible = value;
     CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, value );
+  }
+}
+
+/* 'C' function for method : 'Menu::VerticalMenu.OnPageScrolledSlot()' */
+void MenuVerticalMenu_OnPageScrolledSlot( MenuVerticalMenu _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ViewsBorder_OnSetVisible( &_this->FocusFrame, 1 );
+
+  if ( _this->ArrowScrollBarVisible )
+  {
+    XInt32 PageIdxOfSelectedItem = _this->MenuList.SelectedItem / _this->ItemNumPerPage;
+    MenuArrowScrollBar_OnSetCurrentPageIdx( &_this->ArrowScrollBar, PageIdxOfSelectedItem );
   }
 }
 
@@ -671,7 +698,6 @@ EW_DEFINE_CLASS( MenuVerticalMenu, ComponentsBaseComponent, MenuList, MenuList,
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -818,7 +844,6 @@ EW_DEFINE_CLASS( MenuItemCheckbox, MenuItemBase, CheckBoxButton, CheckBoxButton,
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   MenuItemCheckbox_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -877,12 +902,6 @@ void MenuItemWrapper__Done( MenuItemWrapper _this )
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
-}
-
-/* 'C' function for method : 'Menu::ItemWrapper.OnGetEnabled()' */
-XBool MenuItemWrapper_OnGetEnabled( MenuItemWrapper _this )
-{
-  return _this->Super1.Enabled;
 }
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetEnabled()' */
@@ -1014,7 +1033,6 @@ EW_DEFINE_CLASS( MenuItemWrapper, CoreGroup, OnActivate, OnActivate, Title, Titl
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  MenuItemWrapper_OnGetEnabled,
   MenuItemWrapper_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -1195,7 +1213,6 @@ EW_DEFINE_CLASS( MenuScrollbar, CoreGroup, Background, Background, Background, B
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -1363,7 +1380,6 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, _None, _None, _None, _N
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -1569,7 +1585,6 @@ EW_DEFINE_CLASS( MenuPushButton, CoreGroup, OnActivate, OnActivate, Background,
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -1714,7 +1729,6 @@ EW_DEFINE_CLASS( MenuUpDownPushButtonSet, ComponentsBaseComponent, OnUpButtonRel
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -1842,7 +1856,6 @@ EW_DEFINE_CLASS( MenuItemCheckMark, MenuItemBase, CheckMark, CheckMark, CheckMar
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   MenuItemBase_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -1998,7 +2011,6 @@ EW_DEFINE_CLASS( MenuArrowScrollBar, CoreGroup, UpArrowIcon, UpArrowIcon, UpArro
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,

@@ -184,6 +184,9 @@ void EffectsEffect_OnSetNoOfCycles( EffectsEffect _this, XInt32 value );
 /* 'C' function for method : 'Effects::Effect.OnSetCycleDuration()' */
 void EffectsEffect_OnSetCycleDuration( EffectsEffect _this, XInt32 value );
 
+/* 'C' function for method : 'Effects::Effect.OnSetInitialDelay()' */
+void EffectsEffect_OnSetInitialDelay( EffectsEffect _this, XInt32 value );
+
 /* 'C' function for method : 'Effects::Effect.OnSetEnabled()' */
 void EffectsEffect_OnSetEnabled( EffectsEffect _this, XBool value );
 
