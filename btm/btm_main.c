@@ -46,6 +46,7 @@
 
 #define EVENT_MSG_RECEIVED          ( 1 << 0 )
 
+#define AUTOCONNECT_TIMEOUT_MS      ( 15000 )
 #define CONNECTION_HANDLE_LENGTH    sizeof( uint16_t )
 
 #define BTM_TIMER_PERIOD_MS         1000
@@ -154,7 +155,6 @@ typedef enum BTM_DISCOVERABLE_STATE
     {
     BTM_DISCOVERABLE_STATE_NON,
     BTM_DISCOVERABLE_STATE_BTC,
-    BTM_DISCOVERABLE_STATE_BTC_INIT_CONNECTION,
     BTM_DISCOVERABLE_STATE_BLE
     } btm_discoverable_state_t;
 
@@ -183,6 +183,7 @@ static uint8_t local_device_address[BT_DEVICE_ADDRESS_LEN]; /* local MAC address
 static bt_device_info paired_device_list[BT_MAX_PAIRED_DEVICE_NUM];
 static uint8_t bt_sw_version[BT_SW_VERSION_LEN];            /* BT SW Major version and Minor version  */
 static uint8_t connect_request_bd_addrress_rev[BT_DEVICE_NAME_LEN]; /* connect command device address */
+static uint8_t autoconnect_pair_device_index = 0;               /* Record current auto connect paired device index */
 
 static bt_connection_info_update_cb bt_conn_info_cb_array[BT_INFO_CB_MAX_NUM]; /* bt connection info callback array */
 static uint32_t                     ble_pairing_fail_count;
@@ -193,6 +194,7 @@ static uint16_t                     btm_timeout_count;
 static btm_pairing_state_t          btm_pairing_state = BTM_PAIRING_STATE_NON; /* BTC and BLE pairing event state  */
 static btm_discoverable_state_t     btm_discoverable_state = BTM_DISCOVERABLE_STATE_NON; /* BTC and BLE pairing event state  */
 static uint8_t                      connect_device_unpair_idx = 0; /* Used for the Authentication error return, the connect device is now unpaired */
+static TimerHandle_t                autoconnect_timer_handle;
 
 reset_status_type reset_status;
 
@@ -348,6 +350,112 @@ configASSERT( NULL != timeout_timer_handle );
 
 /*********************************************************************
 *
+* @public
+* stop_autoconnect_timer
+*
+* Stop autoconnect timer
+*
+*********************************************************************/
+void stop_autoconnect_timer
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+BaseType_t result = xTimerStop( autoconnect_timer_handle, 0 );
+autoconnect_pair_device_index = 0;
+configASSERT( result == pdPASS );
+}
+
+/*********************************************************************
+*
+* @private
+* start_autoconnect_timer
+*
+* Start sequentially auto connect to the pair devices
+*
+*********************************************************************/
+void start_autoconnect_timer
+    (
+    void
+    )
+{
+PRINTF( "%s and first autoconnect\r\n", __FUNCTION__ );
+
+autoconnect_pair_device_index = 0;
+BTM_connect_paired_device( autoconnect_pair_device_index );
+autoconnect_pair_device_index += 1;
+
+BaseType_t result = xTimerStart( autoconnect_timer_handle, 0 );
+configASSERT( result == pdPASS );
+}
+
+/*********************************************************************
+*
+* @private
+* autoconnect_timer_callback
+*
+* A timer callback function of autoconnect timeout
+*
+* @param timer_handle The handle of autoconnect timer.
+*
+*********************************************************************/
+static void autoconnect_timer_callback
+    (
+    TimerHandle_t timer_handle
+    )
+{
+// If there is no paired device or the BTC is already connected
+if( ( 0 == paired_device_num ) || ( true == btm_btc_connection_status.BTC_is_connected ) )
+    {
+    stop_autoconnect_timer();
+    return;
+    }
+
+/* autoconnect_pair_device_index start from 1 */
+/* When the paired device num is 1 and already did first autoconnect */
+if( autoconnect_pair_device_index == paired_device_num )
+    {
+    autoconnect_pair_device_index = 0;
+    BTM_connect_paired_device( autoconnect_pair_device_index );
+    }
+/* When the autoconnect device is the last one, connect to the device and reset autoconnect device index */
+else if( autoconnect_pair_device_index == ( paired_device_num - 1 ) )
+    {
+    BTM_connect_paired_device( autoconnect_pair_device_index );
+    autoconnect_pair_device_index = 0;
+    }
+else if( autoconnect_pair_device_index < ( paired_device_num - 1 ) )
+    {
+    BTM_connect_paired_device( autoconnect_pair_device_index );
+    autoconnect_pair_device_index += 1;
+    }
+else
+    {
+    PRINTF( "ERROR: autoconnect_pair_device_index:%d paired_device_num:%d\r\n", autoconnect_pair_device_index, paired_device_num );
+    return;
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* create_autoconnect_timer
+*
+* Create the autoconnect timer.
+*
+*********************************************************************/
+static void create_autoconnect_timer
+    (
+    void
+    )
+{
+autoconnect_timer_handle = xTimerCreate( "btm_autoconnect_timer", pdMS_TO_TICKS( AUTOCONNECT_TIMEOUT_MS ), pdTRUE, ( void * ) 0, autoconnect_timer_callback );
+configASSERT( NULL != timeout_timer_handle );
+}
+
+/*********************************************************************
+*
 * @private
 * enable_bt
 *
@@ -359,8 +467,8 @@ static void enable_bt
     void
     )
 {
-is_bt_enable = 1;
-EEPM_set_BT_en( 1, NULL );
+is_bt_enable = true;
+EEPM_set_BT_en( true, NULL );
 }
 
 /*********************************************************************
@@ -376,9 +484,9 @@ static void disable_bt
     void
     )
 {
-if( is_bt_enable != 0 )
+if( is_bt_enable != false )
     {
-    is_bt_enable = 0;
+    is_bt_enable = false;
     EEPM_set_BT_en( 0, NULL );
     }
 
@@ -447,6 +555,7 @@ static void enable_autoconnect
 {
 is_bt_autoconnectable = 1;
 EEPM_set_BT_autoconn( 1, NULL );
+BTM_init_autoconnect();
 }
 
 /*********************************************************************
@@ -464,6 +573,7 @@ static void disable_autoconnect
 {
 is_bt_autoconnectable = 0;
 EEPM_set_BT_autoconn( 0, NULL );
+stop_autoconnect_timer();
 }
 
 /*********************************************************************
@@ -493,7 +603,6 @@ PRINTF( "\r\n" );
 
 connect_device_unpair_idx = paired_device_index;
 memcpy( connect_request_bd_addrress_rev, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
-btm_discoverable_state = BTM_DISCOVERABLE_STATE_BTC_INIT_CONNECTION;
 HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_CONNECT, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
 
 start_btm_timeout_timer( BTM_CONNECT_TIMEOUT );
@@ -735,7 +844,7 @@ static void eeprom_read_BT_enable_callback
 {
 if( result )
     {
-    is_bt_enable = ( 1 == *( int* )data) ? 1 : 0;
+    is_bt_enable = ( true == *( int* )data) ? true : false;
     }
 }
 
@@ -901,19 +1010,21 @@ PRINTF( "\r\n" );
 // Received BT disconnected event
 if( ( CONNECTION_HANDLE_LENGTH == connection_info_length ) && ( false == connection_is_up ) )
     {
+    /* Set BTC connect status false */
+    btm_btc_connection_status.BTC_is_connected = false;
+    btm_btc_connection_status.current_connection_handle = 0;
+
+    /* For previous connected device, set to disconnect and call UI */
     for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
         {
-        paired_device_list[i].is_connected = false;
-        paired_device_list[i].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
-        paired_device_list[i].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
-        /* If the same remote device have connected BTC with LC, set BTC connect flag false */
         if( true == paired_device_list[i].is_connected )
             {
-            btm_btc_connection_status.BTC_is_connected = false;
-            btm_btc_connection_status.current_connection_handle = 0;
-            EW_notify_bt_paired_device_status_changed();
+            paired_device_list[i].is_connected = false;
+            paired_device_list[i].connection_handle = 0;
             }
         }
+    EW_notify_bt_paired_device_status_changed();
+    BTM_init_autoconnect();
     }
 // Received BT connected event
 else if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) )
@@ -921,6 +1032,8 @@ else if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_in
     uint8_t connect_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
 
     // Change for big endian transfer
+    stop_autoconnect_timer();
+
     for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
         {
         connect_bd_addr[i] = connection_info[BT_DEVICE_ADDRESS_LEN - 1 - i];
@@ -1061,7 +1174,7 @@ void BTM_pairing_info_update
     const uint8_t *pairing_info
     )
 {
-if( ( ( BT_MAX_PAIRED_DEVICE_NUM - 1 ) > pair_dev_index ) & ( paired_device_num <= BT_MAX_PAIRED_DEVICE_NUM ) )
+if( ( BT_MAX_PAIRED_DEVICE_NUM > pair_dev_index ) & ( paired_device_num <= BT_MAX_PAIRED_DEVICE_NUM ) )
     {
     memcpy( &paired_device_list[pair_dev_index].device_address, &(pairing_info[0]), BT_DEVICE_ADDRESS_LEN );
     memcpy( &paired_device_list[pair_dev_index].device_name, &(pairing_info[BT_DEVICE_ADDRESS_LEN]), BT_DEVICE_NAME_LEN );
@@ -1758,10 +1871,6 @@ else if( BTM_DISCOVERABLE_STATE_BLE == btm_discoverable_state )
     EW_notify_ble_pairing_state_changed( EnumBlePairingStatePINCODE_GENERATED, numeric_code );
     start_btm_timeout_timer( BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT );
     }
-else if(  BTM_DISCOVERABLE_STATE_BTC_INIT_CONNECTION == btm_discoverable_state  )
-    {
-    BTM_btc_confirm_passkey( true );
-    }
 else
     {
     PRINTF( "ERROR: Receive User Confirm event when not on BT/BLE discoverable state\r\n" );
@@ -1925,6 +2034,26 @@ BTM_notify_EW_connection_status( BT_CONNECTION_AUTHENTICATION_ERR );
 
 /*********************************************************************
 *
+* @public
+* BTM_start_autoconnect
+*
+* Called for when BT is ready and autoconnect button is on
+*
+*********************************************************************/
+int BTM_init_autoconnect
+    (
+    void
+    )
+{
+if( ( true == is_bt_autoconnectable ) && ( false == btm_btc_connection_status.BTC_is_connected ) && ( true == is_bt_enable ) )
+    {
+    start_autoconnect_timer();
+    }
+return ERR_NONE;
+}
+
+/*********************************************************************
+*
 * @private
 * process_message
 *
@@ -2065,9 +2194,13 @@ configASSERT( NULL != event_group );
 
 // Initialize static parameters
 memset( connect_request_bd_addrress_rev, 0, BT_DEVICE_NAME_LEN );
-ble_pairing_fail_count = 0;
 
+ble_pairing_fail_count = 0;
 create_btm_timeout_timer();
+
+autoconnect_pair_device_index = 0;
+create_autoconnect_timer();
+
 create_task();
 }
 

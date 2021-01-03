@@ -252,6 +252,11 @@ void BTM_receive_btc_paired_fail
     const uint32_t data_len
     );
 
+int BTM_init_autoconnect
+    (
+    void
+    );
+
 #ifdef __cplusplus
 }
 #endif

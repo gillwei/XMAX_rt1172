@@ -139,6 +139,7 @@ switch( opcode )
             BTM_pairing_info_update( p_data[PAIR_DEV_LIST_INDEX_BYTE], &( p_data[PAIR_DEV_LIST_INDEX_BYTE + 1] ) );
             /* pair list update finished */
             pair_list_update_status = false;
+            BTM_init_autoconnect();
             }
         break;
 
