@@ -1928,6 +1928,7 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
   $rect <200,390,420,430>
   method void UpdatePairedDeviceNum()
   {
+    trace "UpdatePairedDeviceNum";
     PairedDeviceNum = DeviceInterface::BluetoothDevice.PairedDeviceNum;
     Menu.NoOfItems = PairedDeviceNum;
 
@@ -1957,6 +1958,7 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
   $rect <520,322,720,362>
   slot OnRefreshListSlot
   {
+    trace "OnRefreshListSlot";
     UpdatePairedDeviceNum();
   }
 

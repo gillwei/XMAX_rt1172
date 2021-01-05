@@ -43,6 +43,7 @@ void EW_start_burn_in( void );
 void EW_update_burn_in_time( const uint32_t time_sec );
 void EW_show_burn_in_result( const bool result );
 
+void EW_notify_bt_paired_device_status_changed( void );
 void EW_notify_bt_connection_result( const bt_connection_result_type result );
 void EW_notify_bt_passkey_generated( const char* pin );
 void EW_notify_bt_fw_update_status( EnumBtFwStatus status, char* version );

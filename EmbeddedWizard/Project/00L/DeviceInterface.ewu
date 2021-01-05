@@ -664,7 +664,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
   // Interfaces to react to BT system events
   note group Note2
   {
-    attr Bounds = <9,280,840,451>;
+    attr Bounds = <9,280,1180,451>;
   }
 
   // Interfaces to perform BT operations on device
@@ -1005,11 +1005,20 @@ class BluetoothDeviceClass : Templates::DeviceClass
   $rect <530,510,750,550>
   property bool RefreshPairedDeviceList;
 
-  $rect <530,570,730,610>
+  $rect <530,570,790,610>
   onset RefreshPairedDeviceList
   {
     pure RefreshPairedDeviceList = value;
     notifyobservers ^RefreshPairedDeviceList;
+  }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <820,330,1170,370>
+  $output true
+  method void NotifyPairedDeviceConnectionStatusUpdated()
+  {
+    RefreshPairedDeviceList = true;
   }
 }
 

@@ -107,7 +107,7 @@ static const unsigned int _StringsDefault0[] =
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault1[] =
 {
-  0x0000040C, /* ratio 50.97 % */
+  0x0000042C, /* ratio 50.19 % */
   0xB8007300, 0x80040452, 0x00E60034, 0xC006E830, 0xD800859B, 0xF0D00438, 0x0032800C,
   0x331C40E4, 0x8C4361B1, 0x045CE91C, 0xC8A20640, 0xA2450687, 0xCED06919, 0x390895C8,
   0x02E8C44A, 0x61001422, 0x8884660E, 0x9CC1A450, 0x6C227316, 0x00001358, 0x888B030C,
@@ -115,25 +115,28 @@ static const unsigned int _StringsDefault1[] =
   0x00287520, 0x1A97068B, 0x2D549025, 0x9B492280, 0xB103C560, 0x6D001D61, 0xA9198800,
   0xABC3E0D1, 0x74624B06, 0x42A47319, 0xE6311A83, 0x6312B8E4, 0xA5069AC9, 0xD0FBCC8C,
   0x50BF4625, 0xAAB8032F, 0x835E61F1, 0x4C22B070, 0x48F035BC, 0x465964C2, 0xE450A9D4,
-  0x0C00A30F, 0x1862CD24, 0x4EA48176, 0x4A6D1A26, 0xADCA3730, 0x34E64539, 0x9129211A,
-  0x6A455A91, 0xA77429BE, 0xC1BB8B59, 0x400A8D8A, 0xC606D1A4, 0x9AA6A759, 0x0075B539,
-  0xD4DE922B, 0x66A1539A, 0x2A31ABC1, 0x31A00937, 0x35CDD0C4, 0x9A48873E, 0x258D43E3,
-  0x90055731, 0x8D5DE267, 0x1045C946, 0xA43D100B, 0xDC005F12, 0x04461DA1, 0x43DFD41A,
-  0x57941977, 0x3431FD4E, 0xA97A4F91, 0x5A5ED396, 0x621134A5, 0x963771D4, 0xD8290654,
-  0x31107B53, 0x6B4353A1, 0x4E561000, 0x9504F1F8, 0x0559EE87, 0xFD225DC0, 0xB7575237,
-  0x0004F411, 0x4276C04B, 0x10005552, 0xADC1495A, 0x42441678, 0x44054000, 0x57868D57,
-  0xD6915882, 0x61E991A0, 0x0A441E65, 0x4D522736, 0x01E6C260, 0x59225891, 0x3E4D6A9D,
-  0x7994A369, 0x6693B975, 0x5A194DF6, 0xA5192372, 0x62479901, 0x69419EB5, 0x4693A942,
-  0xDAA9566D, 0x6449CD55, 0xCD490494, 0xAA795239, 0x429A4685, 0xA588DD87, 0x9A241451,
-  0x399AA325, 0x25A45B5A, 0x4360A43D, 0x54902546, 0x16480014, 0x85E843D6, 0x3741949A,
-  0x46174421, 0xD4953286, 0x74953A15, 0xC1100EA0, 0x00405B06, 0x00000000
+  0x0C00A30F, 0x1862CD24, 0x4EA48176, 0x4A6D1A26, 0xADCA3730, 0x34E64539, 0x1560948A,
+  0x064BA100, 0xE853791F, 0x8800C74E, 0x11C9D69C, 0x79BBEE63, 0xFA48528D, 0x8C64AA04,
+  0x64AF6B9C, 0xC8801AC2, 0x8A1FAB29, 0xA9211A34, 0x455A8C74, 0x53AE6E6A, 0xBB8B59A3,
+  0x6A8D8AC1, 0xF703761E, 0x554471E5, 0x07ADA966, 0xDD490AC0, 0x0A4E55A4, 0x6AD82669,
+  0x1267C918, 0x14418D00, 0x41F6739A, 0xA973D685, 0x4951A43D, 0x40055598, 0xA5DD131E,
+  0x11725191, 0xEA4402C4, 0x0017C851, 0xD1879477, 0xF891068A, 0xE5065DD0, 0x0C891395,
+  0x5E93E44D, 0x97B4E5AA, 0x844D2956, 0x8E037F18, 0x31419525, 0x41A2E4F6, 0x06B599E4,
+  0xF4E56100, 0x15504F21, 0x0055A159, 0x899225DC, 0x1B757523, 0x012DDD41, 0x1D4909DB,
+  0x22561C97, 0x109107DD, 0xD1015000, 0x05E1A355, 0xD1A45623, 0x58841C88, 0x8C510835,
+  0xD35489CE, 0x9079B0A0, 0xF5CA9EE6, 0x729C19A7, 0x5E675972, 0x90687280, 0x16867680,
+  0x694648DF, 0xCB9AE870, 0x9CE71A2D, 0x2919D9F5, 0x273A5C69, 0x24125191, 0x0C48E965,
+  0x691A16AA, 0xE5D61D0A, 0xCAA9DA9E, 0xBD9AAB67, 0x25AC9B5A, 0x4363143D, 0x1016C1B0,
+  0x00000000
 };
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault2[] =
 {
-  0x00000010, /* ratio 150.00 % */
-  0xB8000D00, 0x80040452, 0x00DA0031, 0x4010C858, 0x00000040, 0x00000000
+  0x00000048, /* ratio 94.44 % */
+  0xB8001300, 0x000A2452, 0x00860029, 0x0C800378, 0x22003280, 0x0208240A, 0x69001400,
+  0x0879E000, 0x00444D80, 0xB916060A, 0x0021B182, 0x00D0003A, 0x62A001D0, 0x2B220344,
+  0xE6D0018E, 0x0080CDA3, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -200,27 +203,29 @@ static const XStringRes _Const003B = { _StringsDefault1, 0x00B1 };
 static const XRect _Const003C = {{ 10, 50 }, { 470, 236 }};
 static const XStringRes _Const003D = { _StringsDefault1, 0x00B6 };
 static const XStringRes _Const003E = { _StringsDefault1, 0x00C0 };
-static const XStringRes _Const003F = { _StringsDefault1, 0x00D1 };
-static const XStringRes _Const0040 = { _StringsDefault1, 0x00DB };
-static const XRect _Const0041 = {{ 40, 50 }, { 440, 200 }};
-static const XStringRes _Const0042 = { _StringsDefault1, 0x00E8 };
-static const XStringRes _Const0043 = { _StringsDefault1, 0x0113 };
-static const XStringRes _Const0044 = { _StringsDefault1, 0x0160 };
-static const XColor _Const0045 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0046 = {{ 80, 60 }, { 380, 210 }};
-static const XStringRes _Const0047 = { _StringsDefault1, 0x0165 };
-static const XColor _Const0048 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XStringRes _Const0049 = { _StringsDefault1, 0x018C };
-static const XStringRes _Const004A = { _StringsDefault1, 0x01AA };
-static const XRect _Const004B = {{ 20, 98 }, { 207, 227 }};
-static const XRect _Const004C = {{ 231, 98 }, { 410, 148 }};
-static const XRect _Const004D = {{ 219, 162 }, { 454, 210 }};
-static const XStringRes _Const004E = { _StringsDefault1, 0x01C4 };
-static const XStringRes _Const004F = { _StringsDefault1, 0x01D6 };
-static const XStringRes _Const0050 = { _StringsDefault1, 0x01EA };
-static const XStringRes _Const0051 = { _StringsDefault1, 0x01F3 };
-static const XStringRes _Const0052 = { _StringsDefault1, 0x01FC };
-static const XStringRes _Const0053 = { _StringsDefault2, 0x0002 };
+static const XStringRes _Const003F = { _StringsDefault1, 0x00D8 };
+static const XStringRes _Const0040 = { _StringsDefault1, 0x00EC };
+static const XStringRes _Const0041 = { _StringsDefault1, 0x00FD };
+static const XStringRes _Const0042 = { _StringsDefault1, 0x0107 };
+static const XRect _Const0043 = {{ 40, 50 }, { 440, 200 }};
+static const XStringRes _Const0044 = { _StringsDefault1, 0x0114 };
+static const XStringRes _Const0045 = { _StringsDefault1, 0x013F };
+static const XStringRes _Const0046 = { _StringsDefault1, 0x018C };
+static const XColor _Const0047 = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0048 = {{ 80, 60 }, { 380, 210 }};
+static const XStringRes _Const0049 = { _StringsDefault1, 0x0191 };
+static const XColor _Const004A = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XStringRes _Const004B = { _StringsDefault1, 0x01B8 };
+static const XStringRes _Const004C = { _StringsDefault1, 0x01D6 };
+static const XRect _Const004D = {{ 20, 98 }, { 207, 227 }};
+static const XRect _Const004E = {{ 231, 98 }, { 410, 148 }};
+static const XRect _Const004F = {{ 219, 162 }, { 454, 210 }};
+static const XStringRes _Const0050 = { _StringsDefault1, 0x01F0 };
+static const XStringRes _Const0051 = { _StringsDefault1, 0x0202 };
+static const XStringRes _Const0052 = { _StringsDefault2, 0x0002 };
+static const XStringRes _Const0053 = { _StringsDefault2, 0x000B };
+static const XStringRes _Const0054 = { _StringsDefault2, 0x0014 };
+static const XStringRes _Const0055 = { _StringsDefault2, 0x001E };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -2737,6 +2742,7 @@ XBool SettingsSET17_BtPairedDeviceList_LoadItemChecked( SettingsSET17_BtPairedDe
 /* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.UpdatePairedDeviceNum()' */
 void SettingsSET17_BtPairedDeviceList_UpdatePairedDeviceNum( SettingsSET17_BtPairedDeviceList _this )
 {
+  EwTrace( "%s", EwLoadString( &_Const003E ));
   _this->PairedDeviceNum = DeviceInterfaceBluetoothDeviceClass_OnGetPairedDeviceNum( 
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ));
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, _this->PairedDeviceNum );
@@ -2764,6 +2770,7 @@ void SettingsSET17_BtPairedDeviceList_OnRefreshListSlot( SettingsSET17_BtPairedD
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
+  EwTrace( "%s", EwLoadString( &_Const003F ));
   SettingsSET17_BtPairedDeviceList_UpdatePairedDeviceNum( _this );
 }
 
@@ -2834,9 +2841,9 @@ void SettingsBtPairedDeviceOperation__Init( SettingsBtPairedDeviceOperation _thi
   CoreRectView__OnSetBounds( _this, _Const0000 );
   CoreRectView__OnSetBounds( &_this->Menu, _Const0003 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 3 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const003E ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const003F ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0040 ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0040 ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0041 ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0042 ));
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
   _this->Menu.Super1.PassKeyHold = EwNewSlot( _this, ComponentsBaseComponent__OnLongKeyPressed );
 }
@@ -3035,14 +3042,14 @@ void SettingsBtDeleteBleDevice__Init( SettingsBtDeleteBleDevice _this, XObject a
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->Text, _Const0041 );
+  CoreRectView__OnSetBounds( &_this->Text, _Const0043 );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
   ViewsText_OnSetAlignment( &_this->Text, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString( &_this->Text, 0 );
-  _this->DialogString1 = EwShareString( EwLoadString( &_Const0042 ));
-  _this->DialogString2 = EwShareString( EwLoadString( &_Const0043 ));
+  _this->DialogString1 = EwShareString( EwLoadString( &_Const0044 ));
+  _this->DialogString2 = EwShareString( EwLoadString( &_Const0045 ));
   CoreRectView__OnSetBounds( &_this->PushButton, _Const002B );
-  MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &_Const0044 ));
+  MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &_Const0046 ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );
   ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsFontNotoSansCjkJp36, 
@@ -3167,11 +3174,11 @@ void SettingsBtFwUpdateDialog__Init( SettingsBtFwUpdateDialog _this, XObject aLi
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   CoreRectView__OnSetBounds( &_this->Rectangle, _Const0000 );
-  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0045 );
-  CoreRectView__OnSetBounds( &_this->StatusText, _Const0046 );
+  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0047 );
+  CoreRectView__OnSetBounds( &_this->StatusText, _Const0048 );
   ViewsText_OnSetWrapText( &_this->StatusText, 1 );
-  ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0047 ));
-  ViewsText_OnSetColor( &_this->StatusText, _Const0048 );
+  ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0049 ));
+  ViewsText_OnSetColor( &_this->StatusText, _Const004A );
   CoreTimer_OnSetPeriod( &_this->RemoveDialogTimer, 2000 );
   CoreGroup__Add( _this, ((CoreView)&_this->Rectangle ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->StatusText ), 0 );
@@ -3225,14 +3232,14 @@ void SettingsBtFwUpdateDialog_OnBtFwStatusUpdateSlot( SettingsBtFwUpdateDialog _
   {
     case EnumBtFwStatusUPDATE_FINISH :
     {
-      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0049 ));
+      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const004B ));
       CoreTimer_OnSetEnabled( &_this->RemoveDialogTimer, 1 );
     }
     break;
 
     case EnumBtFwStatusUPDATE_ABORT :
     {
-      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const004A ));
+      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const004C ));
       CoreTimer_OnSetEnabled( &_this->RemoveDialogTimer, 1 );
     }
     break;
@@ -3311,13 +3318,13 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->QrCode, _Const004B );
+  CoreRectView__OnSetBounds( &_this->QrCode, _Const004D );
   ViewsImage_OnSetAlignment( &_this->QrCode, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
   _this->PixelPerModule = 1;
-  CoreRectView__OnSetBounds( &_this->PixelText, _Const004C );
+  CoreRectView__OnSetBounds( &_this->PixelText, _Const004E );
   ViewsText_OnSetString( &_this->PixelText, 0 );
-  CoreRectView__OnSetBounds( &_this->QrCodeWidthText, _Const004D );
+  CoreRectView__OnSetBounds( &_this->QrCodeWidthText, _Const004F );
   ViewsText_OnSetString( &_this->QrCodeWidthText, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->QrCode ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PixelText ), 0 );
@@ -3408,7 +3415,7 @@ void SettingsSET30_QRCode_OnShortDownKeyPressed( SettingsSET30_QRCode _this )
   }
   else
   {
-    EwTrace( "%s", EwLoadString( &_Const004E ));
+    EwTrace( "%s", EwLoadString( &_Const0050 ));
   }
 }
 
@@ -3423,7 +3430,7 @@ void SettingsSET30_QRCode_OnShortUpKeyPressed( SettingsSET30_QRCode _this )
   }
   else
   {
-    EwTrace( "%s", EwLoadString( &_Const004F ));
+    EwTrace( "%s", EwLoadString( &_Const0051 ));
   }
 }
 
@@ -3438,14 +3445,14 @@ void SettingsSET30_QRCode_OnQrCodeUpdateSlot( SettingsSET30_QRCode _this, XObjec
   EW_UNUSED_ARG( sender );
 
   ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
-  ResourcesExternBitmap ), EwConcatString( EwLoadString( &_Const0050 ), EwNewStringInt( 
+  ResourcesExternBitmap ), EwConcatString( EwLoadString( &_Const0052 ), EwNewStringInt( 
   _this->PixelPerModule, 0, 10 )));
   ViewsText_OnSetString( &_this->PixelText, EwConcatString( EwNewStringInt( _this->PixelPerModule, 
-  0, 10 ), EwLoadString( &_Const0051 )));
+  0, 10 ), EwLoadString( &_Const0053 )));
   QrCodeWidth = ( 33 * _this->PixelPerModule ) * 0.019350f;
   ViewsText_OnSetString( &_this->QrCodeWidthText, EwConcatString( EwConcatString( 
-  EwLoadString( &_Const0052 ), EwNewStringFloat( QrCodeWidth, 0, -1 )), EwLoadString( 
-  &_Const0053 )));
+  EwLoadString( &_Const0054 ), EwNewStringFloat( QrCodeWidth, 0, -1 )), EwLoadString( 
+  &_Const0055 )));
 }
 
 /* Variants derived from the class : 'Settings::SET30_QRCode' */

@@ -28,6 +28,9 @@
 #ifdef _DeviceInterfaceBluetoothDeviceClass_
     typedef int bluetooth_device_function( void );
 #endif
+#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated_
+    static int ew_bt_notify_paired_device_connection_status_updated( void );
+#endif
 #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPasskeyGenerated_
     static int ew_bt_notify_passkey_generated( void );
 #endif
@@ -59,6 +62,9 @@
     static DeviceInterfaceBluetoothDeviceClass device_object = 0;
     bluetooth_device_function* const bluetooth_function_lookup_table[] =
         {
+        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated_
+            ew_bt_notify_paired_device_connection_status_updated,
+        #endif
         #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPasskeyGenerated_
             ew_bt_notify_passkey_generated,
         #endif
@@ -73,6 +79,7 @@
     const int num_of_bluetooth_func = sizeof( bluetooth_function_lookup_table )/sizeof( bluetooth_device_function* );
 
     static int  is_bt_passkey_received = 0;
+    static int  is_bt_paired_device_status_updated = 0;
     static int  is_bt_connection_result_updated = 0;
     static char bt_passkey[BT_PIN_CODE_LEN + 1] = "";
     static EnumBtResult bt_connection_result = 0;
@@ -182,6 +189,31 @@ int need_update = 0;
 #endif
 return need_update;
 }
+
+/*********************************************************************
+*
+* @private
+* ew_bt_notify_paired_device_connection_status_updated
+*
+* Notify the Bluetooth paired device connection status updated to EW GUI.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated_
+    static int ew_bt_notify_paired_device_connection_status_updated
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_bt_paired_device_status_updated )
+        {
+        is_bt_paired_device_status_updated = 0;
+        DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated( device_object );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
 
 /*********************************************************************
 *
@@ -571,6 +603,25 @@ void EW_notify_bt_passkey_generated
     memcpy( bt_passkey, passkey, BT_PIN_CODE_LEN );
     bt_passkey[BT_PIN_CODE_LEN] = '\0';
     is_bt_passkey_received = 1;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_bt_refresh_paired_device_list
+*
+* Notify EW GUI the status of the Bluetooth paired device is changed
+*
+*********************************************************************/
+void EW_notify_bt_paired_device_status_changed
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceBluetoothDeviceClass_
+    is_bt_paired_device_status_updated = 1;
     EwBspEventTrigger();
 #endif
 }

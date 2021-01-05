@@ -432,6 +432,8 @@ if( BT_CONN_TYPE_BT_IAP2 == paired_device_list[paired_device_index].connection_p
     paired_device_list[paired_device_index].is_connected = false;
     paired_device_list[paired_device_index].connection_handle = 0;
     HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, connection_handle_bytes, sizeof( uint16_t ) );
+
+    EW_notify_bt_paired_device_status_changed();
     }
 else if( BT_CONN_TYPE_BT_SPP == paired_device_list[paired_device_index].connection_path_type )
     {
@@ -743,6 +745,8 @@ if( ( CONNECTION_HANDLE_LENGTH == connection_info_length ) && ( false == connect
         paired_device_list[i].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
         paired_device_list[i].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
         }
+
+    EW_notify_bt_paired_device_status_changed();
     }
 // Received BT connected event
 else if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) )
@@ -763,6 +767,8 @@ else if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_in
              paired_device_list[i].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
              paired_device_list[i].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
              paired_device_list[i].connection_path_type = connection_path;
+
+             EW_notify_bt_paired_device_status_changed();
              return;
              }
         // TODO clear the rest connect status except for connect device
