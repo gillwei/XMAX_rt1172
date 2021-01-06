@@ -45,8 +45,6 @@
 #define BT_MINIDRIVER_ADDR         0x270400
 #define BT_STATIC_SECTION_ADDR     0x500000
 #define BT_FLASH_ADDR              0x501400
-extern uint32_t __base_BOARD_FLASH_BTFW;
-#define FLASH_BT_FW_BASE_ADDR      ( ( uint32_t )( &__base_BOARD_FLASH_BTFW ) )
 #define MCU_MINIDRIVER_ADDR        ( FLASH_BT_FW_BASE_ADDR + 0x00000100 )
 #define MCU_BTFLASH_ADDR           ( FLASH_BT_FW_BASE_ADDR + 0x00010000 )
 #define MCU_MINIDRIVER_END_ADDR    ( FLASH_BT_FW_BASE_ADDR + 0x00003ac0 )
@@ -136,6 +134,7 @@ static uint8_t            static_section[93] = { 0x42, 0x52, 0x43, 0x4D, 0x63, 0
 static uint32_t           download_flash_addr;
 static bool               BT_DUT_mode_state = false;
 static bool               BT_update_status = false;
+static uint8_t            Read_BT_version[BT_SW_VER_LENGTH];
 
 /*--------------------------------------------------------------------
                             PROCEDURES
@@ -440,10 +439,9 @@ static void download_finish
 {
 char    sw_ver[SW_VERSION_LENGTH];
 uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = {0};
-uint8_t bt_sw_ver[BT_SW_VER_LENGTH];
 bool    bd_addr_set = false;
 
-sprintf( sw_ver, "%c.%c", GARMIN_SW_MAJOR_VER, GARMIN_SW_MINOR_VER );
+sprintf( sw_ver, "%c.%c", Read_BT_version[BT_SW_MAJOR_VER_BYTE], Read_BT_version[BT_SW_MINOR_VER_BYTE] );
 
 update_state = UPDATE_STATE_DOWNLOAD_FINISH;
 
@@ -468,15 +466,12 @@ if( bd_addr_set )
     BTM_IOP_set_local_device_address( bd_addr );
     }
 
-// Notify BT update version to UI
-bt_sw_ver[0] = GARMIN_SW_MAJOR_VER;
-bt_sw_ver[1] = GARMIN_SW_MINOR_VER;
-BTM_update_sw_version( bt_sw_ver );
+// Notify UI BT update finished
+EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_FINISH, sw_ver );
 
-if( BOARD_is_tft_connected() == TFT_CONNECTED )
-    {
-    EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_FINISH, sw_ver );
-    }
+// Notify BT update version to UI
+BTM_update_sw_version( Read_BT_version );
+
 BT_update_status = false;
 update_state = UPDATE_STATE_SUSPEND;
 }
@@ -755,7 +750,9 @@ uint32_t     md_last_sec_size;
 char         sw_ver[SW_VERSION_LENGTH] = { 0 };
 
 BT_update_status = true;
-sprintf( sw_ver, "%c.%c", GARMIN_SW_MAJOR_VER, GARMIN_SW_MINOR_VER );
+bt_update_get_BT_SW_ver( Read_BT_version );
+
+sprintf( sw_ver, "%c.%c", Read_BT_version[BT_SW_MAJOR_VER_BYTE], Read_BT_version[BT_SW_MINOR_VER_BYTE] );
 
 EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_START, sw_ver );
 
@@ -919,4 +916,23 @@ uint8_arry[0] = (uint8_t)( var_uint32 & 0xff );
 uint8_arry[1] = (uint8_t)( ( var_uint32 & 0xff00 ) >> 8 );
 uint8_arry[2] = (uint8_t)( ( var_uint32 & 0xff0000 ) >> 16 );
 uint8_arry[3] = (uint8_t)( ( var_uint32 & 0xff000000 ) >> 24 );
+}
+
+/*********************************************************************
+*
+* @public
+* Get BT SW version with 2 uint8 array
+*
+* This function return the uint8 array 2 bytes of BT SW major and minor version
+*
+*********************************************************************/
+void bt_update_get_BT_SW_ver
+    (
+    uint8_t * read_bt_sw_ver
+    )
+{
+uint32_t   BT_FW_start_value = *(volatile uint32_t *)( FLASH_BT_FW_BASE_ADDR );
+
+read_bt_sw_ver[BT_SW_MAJOR_VER_BYTE] = (uint8_t)( BT_FW_start_value & 0xff );
+read_bt_sw_ver[BT_SW_MINOR_VER_BYTE] = (uint8_t)( ( BT_FW_start_value >> 8 ) & 0xff );
 }

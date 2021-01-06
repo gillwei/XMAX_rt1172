@@ -23,8 +23,6 @@ extern "C" {
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define GARMIN_SW_MAJOR_VER      0x01
-#define GARMIN_SW_MINOR_VER      0x02
 #define BT_UPDATE_ON             true
 
 #define OPCODE_ALLOW_CONNECTION  0x0C05
@@ -33,7 +31,12 @@ extern "C" {
 
 #define RESET_WAIT_MS            1000
 
-#define HCI_MAX_DATA_SIZE    240
+#define HCI_MAX_DATA_SIZE        240
+
+extern uint32_t __base_BOARD_FLASH_BTFW;
+#define FLASH_BT_FW_BASE_ADDR    ( ( uint32_t )( &__base_BOARD_FLASH_BTFW ) )
+#define BT_SW_MAJOR_VER_BYTE     0
+#define BT_SW_MINOR_VER_BYTE     1
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -143,6 +146,11 @@ bool getBTDUTModeState
 void hci_recovery_reset_BT
     (
     void
+    );
+
+void bt_update_get_BT_SW_ver
+    (
+    uint8_t * read_bt_sw_ver
     );
 
 #ifdef __cplusplus

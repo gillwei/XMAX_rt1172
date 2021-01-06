@@ -72,8 +72,12 @@ void hci_misc_event_handler
     const uint32_t data_len
     )
 {
-uint8_t    bt_sw_version[2];
+uint8_t    Return_bt_sw_ver[2];
 uint8_t    pair_dev_index[1] = { 0 };
+
+uint8_t    Read_BT_version[2] = { 0 };
+
+bt_update_get_BT_SW_ver( Read_BT_version );
 
 switch( opcode )
     {
@@ -81,17 +85,24 @@ switch( opcode )
         if( INIT_STATE_REQUEST_VERSION == getBTInitUpdateState() )
             {
             setBTInitUpdateState( INIT_STATE_GET_VERSION );
-            bt_sw_version[0] = p_data[0];
-            bt_sw_version[1] = p_data[1];
-            BTM_update_sw_version( bt_sw_version );
-            if( ( bt_sw_version[0] < GARMIN_SW_MAJOR_VER ) || ( ( GARMIN_SW_MAJOR_VER == bt_sw_version[0] ) && ( GARMIN_SW_MINOR_VER > bt_sw_version[1] ) ) )
+            Return_bt_sw_ver[BT_SW_MAJOR_VER_BYTE] = p_data[0];
+            Return_bt_sw_ver[BT_SW_MINOR_VER_BYTE] = p_data[1];
+            BTM_update_sw_version( Return_bt_sw_ver );
+            /* Read BT FW version on MCU flash is not correct */
+            if( ( ( 0xff == Read_BT_version[BT_SW_MAJOR_VER_BYTE] ) && ( 0xff == Read_BT_version[BT_SW_MINOR_VER_BYTE] ) ) || ( ( 0 == Read_BT_version[BT_SW_MAJOR_VER_BYTE] ) && ( 0 == Read_BT_version[BT_SW_MINOR_VER_BYTE] ) ) )
                 {
-                PRINTF( "Current BT FW is older than MCU BT version:%d.%d. BT update\n\r", bt_sw_version[0], bt_sw_version[1] );
+                PRINTF( "Read BT version ERROR: %02x.%02x\r\n", Read_BT_version[BT_SW_MAJOR_VER_BYTE], Read_BT_version[BT_SW_MINOR_VER_BYTE] );
+                }
+            /* BT module return version is lower than BT FW version on MCU flash, do BT update */
+            else if( ( Return_bt_sw_ver[BT_SW_MAJOR_VER_BYTE] < Read_BT_version[BT_SW_MAJOR_VER_BYTE] ) || ( ( Read_BT_version[BT_SW_MAJOR_VER_BYTE] == Return_bt_sw_ver[BT_SW_MAJOR_VER_BYTE] ) && ( Read_BT_version[BT_SW_MINOR_VER_BYTE] > Return_bt_sw_ver[BT_SW_MINOR_VER_BYTE] ) ) )
+                {
+                PRINTF( "Current BT FW is older than MCU BT version:%d.%d. BT update\n\r", Return_bt_sw_ver[BT_SW_MAJOR_VER_BYTE], Return_bt_sw_ver[BT_SW_MINOR_VER_BYTE] );
                 BT_UPDATE_received();
                 }
+            /* BT module return version is equal or higher than BT FW version on MCU flash, not update */
             else
                 {
-                PRINTF( "BT FW version is equal or higher:%d.%d.\n\r", bt_sw_version[0], bt_sw_version[1] );
+                PRINTF( "BT FW version is equal or higher:%d.%d.\n\r", Return_bt_sw_ver[BT_SW_MAJOR_VER_BYTE], Return_bt_sw_ver[BT_SW_MINOR_VER_BYTE] );
                 HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_READ_PAIR_DEV_LIST, pair_dev_index, sizeof( pair_dev_index ) );
                 }
             }
