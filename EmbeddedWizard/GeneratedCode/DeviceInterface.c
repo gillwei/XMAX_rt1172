@@ -365,16 +365,19 @@ void DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult( void* _this, XBool
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this )
+void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this, 
+  XString aQrCodeStr )
 {
   EwTrace( "%s", EwLoadString( &_Const0002 ));
+  _this->QrCodeText = EwShareString( aQrCodeStr );
   CoreSystemEvent_Trigger( &_this->QrCodeSystemEvent, 0, 0 );
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyQrCodeReady()' */
-void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this )
+void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this, XString aQrCodeStr )
 {
-  DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady((DeviceInterfaceSystemDeviceClass)_this );
+  DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady((DeviceInterfaceSystemDeviceClass)_this
+  , aQrCodeStr );
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetQrCode()' */

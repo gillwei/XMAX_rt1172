@@ -288,9 +288,10 @@ class SystemDeviceClass : Templates::DeviceClass
   // about a particular system event.
   $rect <650,520,850,560>
   $output true
-  method void NotifyQrCodeReady()
+  method void NotifyQrCodeReady( arg string aQrCodeStr )
   {
     trace "QR code is ready";
+    QrCodeText = aQrCodeStr;
     QrCodeSystemEvent.Trigger( null, false );
   }
 
@@ -364,6 +365,9 @@ class SystemDeviceClass : Templates::DeviceClass
 
   $rect <680,170,930,210>
   var DeviceInterface::RtcTime CurrentLocalTime;
+
+  $rect <870,570,1070,610>
+  property string QrCodeText;
 }
 
 $rect <20,60,220,100>

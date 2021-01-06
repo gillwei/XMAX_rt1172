@@ -69,6 +69,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( SoftwareVersion, XString )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
+  EW_PROPERTY( QrCodeText,      XString )
   EW_PROPERTY( BrightnessLevel, XInt32 )
   EW_VARIABLE( IsHopperTestMode, XBool )
   EW_PROPERTY( FactoryResetComplete, XBool )
@@ -178,10 +179,11 @@ void DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult( void* _this, XBool
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this );
+void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this, 
+  XString aQrCodeStr );
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyQrCodeReady()' */
-void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this );
+void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this, XString aQrCodeStr );
 
 /* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyQrCodeReady(). */
 #define _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_

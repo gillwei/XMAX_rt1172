@@ -104,6 +104,7 @@ EW_DEFINE_FIELDS( SettingsSET30_QRCode, MenuBaseMenuView )
   EW_OBJECT  ( QrCode,          ViewsImage )
   EW_OBJECT  ( PixelText,       ViewsText )
   EW_OBJECT  ( QrCodeWidthText, ViewsText )
+  EW_OBJECT  ( QrCodeContent,   ViewsText )
   EW_VARIABLE( PixelPerModule,  XInt32 )
 EW_END_OF_FIELDS( SettingsSET30_QRCode )
 

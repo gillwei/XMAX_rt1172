@@ -78,6 +78,7 @@
 
 #define ESN_STR_MAX_LEN             ( 10 )
 #define INVALID_ESN                 ( 0xFFFFFFFF )
+#define UNIT_ID_LEN                 ( 24 )
 
 #define FACTORY_TEST_EVENT_DISP_PATTERN         ( 1 << 0 )
 #define FACTORY_TEST_EVENT_DISP_QUIT            ( 1 << 1 )
@@ -148,6 +149,7 @@ static void update_time_task_main( void* arg );
 #endif
 
 static uint32_t esn;
+static char qr_code[UNIT_ID_LEN + 1];
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -682,7 +684,8 @@ QR_generate_qrcode( esn, pixel_per_mod );
     if( is_qrcode_ready )
         {
         is_qrcode_ready = 0;
-        DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( device_object );
+        XString qrcode_str = EwNewStringAnsi( qr_code );
+        DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( device_object, qrcode_str );
         need_update = 1;
         }
     return need_update;
@@ -803,11 +806,12 @@ void EW_show_burn_in_result
 *********************************************************************/
 void EW_notify_qrcode_ready
     (
-    void
+    const char* qr_code_text
     )
 {
 #ifdef _DeviceInterfaceSystemDeviceClass_
     is_qrcode_ready = 1;
+    strncpy( qr_code, qr_code_text, sizeof( qr_code ) );
     EwBspEventTrigger();
 #endif
 }

@@ -2262,6 +2262,7 @@ class SET30_QRCode : Menu::BaseMenuView
     PixelText.String = string( PixelPerModule ) + " Pixel";
     var float QrCodeWidth = 33 * PixelPerModule * 0.01935;
     QrCodeWidthText.String = "Width: " + string( QrCodeWidth ) + " cm";
+    QrCodeContent.String = "QR Code content:\n" + DeviceInterface::SystemDevice.QrCodeText;
   }
 
   $rect <20,20,160,60>
@@ -2278,16 +2279,28 @@ class SET30_QRCode : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Views::Text PixelText
   {
-    preset Bounds = <231,98,410,148>;
+    preset Bounds = <210,85,398,135>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::FontNotoSansCjkJp32;
   }
 
   $rect <20,20,160,60>
   object Views::Text QrCodeWidthText
   {
-    preset Bounds = <219,162,454,210>;
+    preset Bounds = <210,192,442,240>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::FontNotoSansCjkJp36;
+    preset Font = Fonts::FontNotoSansCjkJp32;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text QrCodeContent
+  {
+    preset Bounds = <210,137,463,192>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::FontNotoSansCjkJp24;
   }
 }

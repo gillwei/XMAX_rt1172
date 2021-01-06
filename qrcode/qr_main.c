@@ -157,7 +157,7 @@ if( qrcode.size > 0 )
                 }
             }
         }
-    EW_notify_qrcode_ready();
+    EW_notify_qrcode_ready( qr_code_text );
     }
 }
 

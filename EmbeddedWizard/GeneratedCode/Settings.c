@@ -133,10 +133,11 @@ static const unsigned int _StringsDefault1[] =
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault2[] =
 {
-  0x00000048, /* ratio 94.44 % */
+  0x00000070, /* ratio 82.14 % */
   0xB8001300, 0x000A2452, 0x00860029, 0x0C800378, 0x22003280, 0x0208240A, 0x69001400,
   0x0879E000, 0x00444D80, 0xB916060A, 0x0021B182, 0x00D0003A, 0x62A001D0, 0x2B220344,
-  0xE6D0018E, 0x0080CDA3, 0x00000000
+  0xE6D0018E, 0x06910523, 0xC8545611, 0x994421D0, 0x39B8010B, 0x4A2871C9, 0x7E3F2196,
+  0x0000080C, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -218,14 +219,16 @@ static const XColor _Const004A = { 0xFF, 0xFF, 0xFF, 0xFF };
 static const XStringRes _Const004B = { _StringsDefault1, 0x01B8 };
 static const XStringRes _Const004C = { _StringsDefault1, 0x01D6 };
 static const XRect _Const004D = {{ 20, 98 }, { 207, 227 }};
-static const XRect _Const004E = {{ 231, 98 }, { 410, 148 }};
-static const XRect _Const004F = {{ 219, 162 }, { 454, 210 }};
-static const XStringRes _Const0050 = { _StringsDefault1, 0x01F0 };
-static const XStringRes _Const0051 = { _StringsDefault1, 0x0202 };
-static const XStringRes _Const0052 = { _StringsDefault2, 0x0002 };
-static const XStringRes _Const0053 = { _StringsDefault2, 0x000B };
-static const XStringRes _Const0054 = { _StringsDefault2, 0x0014 };
-static const XStringRes _Const0055 = { _StringsDefault2, 0x001E };
+static const XRect _Const004E = {{ 210, 85 }, { 398, 135 }};
+static const XRect _Const004F = {{ 210, 192 }, { 442, 240 }};
+static const XRect _Const0050 = {{ 210, 137 }, { 463, 192 }};
+static const XStringRes _Const0051 = { _StringsDefault1, 0x01F0 };
+static const XStringRes _Const0052 = { _StringsDefault1, 0x0202 };
+static const XStringRes _Const0053 = { _StringsDefault2, 0x0002 };
+static const XStringRes _Const0054 = { _StringsDefault2, 0x000B };
+static const XStringRes _Const0055 = { _StringsDefault2, 0x0014 };
+static const XStringRes _Const0056 = { _StringsDefault2, 0x001E };
+static const XStringRes _Const0057 = { _StringsDefault2, 0x0024 };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -3312,6 +3315,7 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
   ViewsImage__Init( &_this->QrCode, &_this->_XObject, 0 );
   ViewsText__Init( &_this->PixelText, &_this->_XObject, 0 );
   ViewsText__Init( &_this->QrCodeWidthText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->QrCodeContent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( SettingsSET30_QRCode );
@@ -3323,20 +3327,32 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
   | ViewsImageAlignmentAlignVertCenter );
   _this->PixelPerModule = 1;
   CoreRectView__OnSetBounds( &_this->PixelText, _Const004E );
+  ViewsText_OnSetAlignment( &_this->PixelText, ViewsTextAlignmentAlignHorzLeft | 
+  ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->PixelText, 0 );
   CoreRectView__OnSetBounds( &_this->QrCodeWidthText, _Const004F );
+  ViewsText_OnSetAlignment( &_this->QrCodeWidthText, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->QrCodeWidthText, 0 );
+  CoreRectView__OnSetBounds( &_this->QrCodeContent, _Const0050 );
+  ViewsText_OnSetWrapText( &_this->QrCodeContent, 1 );
+  ViewsText_OnSetAlignment( &_this->QrCodeContent, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->QrCodeContent, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->QrCode ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PixelText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->QrCodeWidthText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->QrCodeContent ), 0 );
   _this->QrCodeUpdateEventHandler.OnEvent = EwNewSlot( _this, SettingsSET30_QRCode_OnQrCodeUpdateSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->QrCodeUpdateEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->QrCodeSystemEvent );
   ViewsImage_OnSetBitmap( &_this->QrCode, ((ResourcesBitmap)EwGetAutoObject( &ResourceQrCodeExternBitmap, 
   ResourcesExternBitmap )));
-  ViewsText_OnSetFont( &_this->PixelText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->PixelText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->QrCodeWidthText, EwLoadResource( &FontsFontNotoSansCjkJp36, 
+  ViewsText_OnSetFont( &_this->QrCodeWidthText, EwLoadResource( &FontsFontNotoSansCjkJp32, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->QrCodeContent, EwLoadResource( &FontsFontNotoSansCjkJp24, 
   ResourcesFont ));
 
   /* Call the user defined constructor */
@@ -3354,6 +3370,7 @@ void SettingsSET30_QRCode__ReInit( SettingsSET30_QRCode _this )
   ViewsImage__ReInit( &_this->QrCode );
   ViewsText__ReInit( &_this->PixelText );
   ViewsText__ReInit( &_this->QrCodeWidthText );
+  ViewsText__ReInit( &_this->QrCodeContent );
 }
 
 /* Finalizer method for the class 'Settings::SET30_QRCode' */
@@ -3367,6 +3384,7 @@ void SettingsSET30_QRCode__Done( SettingsSET30_QRCode _this )
   ViewsImage__Done( &_this->QrCode );
   ViewsText__Done( &_this->PixelText );
   ViewsText__Done( &_this->QrCodeWidthText );
+  ViewsText__Done( &_this->QrCodeContent );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -3415,7 +3433,7 @@ void SettingsSET30_QRCode_OnShortDownKeyPressed( SettingsSET30_QRCode _this )
   }
   else
   {
-    EwTrace( "%s", EwLoadString( &_Const0050 ));
+    EwTrace( "%s", EwLoadString( &_Const0051 ));
   }
 }
 
@@ -3430,7 +3448,7 @@ void SettingsSET30_QRCode_OnShortUpKeyPressed( SettingsSET30_QRCode _this )
   }
   else
   {
-    EwTrace( "%s", EwLoadString( &_Const0051 ));
+    EwTrace( "%s", EwLoadString( &_Const0052 ));
   }
 }
 
@@ -3445,14 +3463,16 @@ void SettingsSET30_QRCode_OnQrCodeUpdateSlot( SettingsSET30_QRCode _this, XObjec
   EW_UNUSED_ARG( sender );
 
   ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
-  ResourcesExternBitmap ), EwConcatString( EwLoadString( &_Const0052 ), EwNewStringInt( 
+  ResourcesExternBitmap ), EwConcatString( EwLoadString( &_Const0053 ), EwNewStringInt( 
   _this->PixelPerModule, 0, 10 )));
   ViewsText_OnSetString( &_this->PixelText, EwConcatString( EwNewStringInt( _this->PixelPerModule, 
-  0, 10 ), EwLoadString( &_Const0053 )));
+  0, 10 ), EwLoadString( &_Const0054 )));
   QrCodeWidth = ( 33 * _this->PixelPerModule ) * 0.019350f;
   ViewsText_OnSetString( &_this->QrCodeWidthText, EwConcatString( EwConcatString( 
-  EwLoadString( &_Const0054 ), EwNewStringFloat( QrCodeWidth, 0, -1 )), EwLoadString( 
-  &_Const0055 )));
+  EwLoadString( &_Const0055 ), EwNewStringFloat( QrCodeWidth, 0, -1 )), EwLoadString( 
+  &_Const0056 )));
+  ViewsText_OnSetString( &_this->QrCodeContent, EwConcatString( EwLoadString( &_Const0057 ), 
+  EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->QrCodeText ));
 }
 
 /* Variants derived from the class : 'Settings::SET30_QRCode' */
