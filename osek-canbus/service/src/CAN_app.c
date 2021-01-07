@@ -548,7 +548,6 @@ else
 * value
 *
 *********************************************************************/
-
 void
 nim_app_sig_get
     (
@@ -557,32 +556,28 @@ nim_app_sig_get
     uint32_t                     *p_sig_val
     )
 {
-uint8_t  l_sig_val_8  = 0;
-uint16_t l_sig_val_16 = 0;
-uint32_t l_sig_val_32 = 0;
+/*------------------------------------------------------
+Put the signal value
+------------------------------------------------------*/
+uint8       l_bytes[sizeof( uint32 )];
+uint8       l_i_byte = 0;
+uint32      l_temp32 = 0;
 
 /*------------------------------------------------------
-Get the changed signal value
+Get the signal value from memory in bytes
 ------------------------------------------------------*/
-if( sizeof( uint8 ) == num_bytes )
+il_rx_get_signal_bytes( sig_handle, l_bytes, num_bytes );
+
+/*------------------------------------------------------
+Convert the a byte array to UINT32 value
+------------------------------------------------------*/
+for( l_i_byte = num_bytes; l_i_byte > 0; l_i_byte-- )
     {
-    CAN_nim_rx_get_uint8_signal( sig_handle, &l_sig_val_8 );
-    (*p_sig_val) = (uint32)l_sig_val_8;
+    l_temp32 |= l_bytes[l_i_byte - 1];
+    l_temp32  = ( l_temp32 << ( ( l_i_byte - 1  ) * IL_NUM_BITS_IN_BYTE ) );
     }
-else if( sizeof( uint16 ) == num_bytes )
-    {
-    CAN_nim_rx_get_uint16_signal( sig_handle, &l_sig_val_16 );
-    (*p_sig_val) = (uint32)l_sig_val_16;
-    }
-else if( sizeof( uint32 ) == num_bytes )
-    {
-    CAN_nim_rx_get_uint32_signal( sig_handle, &l_sig_val_32 );
-    (*p_sig_val) = l_sig_val_32;
-    }
-else
-    {
-    //TBD
-    }
+
+(*p_sig_val) = l_temp32;
 }
 
 /*!*******************************************************************
