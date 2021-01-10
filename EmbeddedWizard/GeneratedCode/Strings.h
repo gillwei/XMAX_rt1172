@@ -48,8 +48,14 @@ extern const XStringRes StringsGEN_bluetooth;
 /* User defined constant: 'Strings::GEN_three_hyphens' */
 extern const XStringRes StringsGEN_three_hyphens;
 
+/* User defined constant: 'Strings::TOP01_warning' */
+EW_DECLARE_CONST( StringsTOP01_warning )
+
 /* User defined constant: 'Strings::TOP01_disclaimer' */
 EW_DECLARE_CONST( StringsTOP01_disclaimer )
+
+/* User defined constant: 'Strings::TOP01_accept' */
+EW_DECLARE_CONST( StringsTOP01_accept )
 
 /* User defined constant: 'Strings::GPW01_grip_warmer' */
 extern const XStringRes StringsGPW01_grip_warmer;

@@ -229,6 +229,9 @@ void ViewsText_OnSetRowDistance( ViewsText _this, XInt32 value );
    an update. */
 void ViewsText_OnSetEllipsis( ViewsText _this, XBool value );
 
+/* 'C' function for method : 'Views::Text.OnSetAutoSize()' */
+void ViewsText_OnSetAutoSize( ViewsText _this, XBool value );
+
 /* 'C' function for method : 'Views::Text.OnSetWrapText()' */
 void ViewsText_OnSetWrapText( ViewsText _this, XBool value );
 

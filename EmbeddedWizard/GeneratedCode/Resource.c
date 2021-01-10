@@ -227,12 +227,6 @@ EW_RES_WITHOUT_VARIANTS( ResourceListDivider4 )
 /* Table with links to derived variants of the bitmap resource : 'Resource::ListDivider3' */
 EW_RES_WITHOUT_VARIANTS( ResourceListDivider3 )
 
-/* Include a file containing the bitmap resource : 'Resource::FocusFrame' */
-#include "_ResourceFocusFrame.h"
-
-/* Table with links to derived variants of the bitmap resource : 'Resource::FocusFrame' */
-EW_RES_WITHOUT_VARIANTS( ResourceFocusFrame )
-
 /* Include a file containing the bitmap resource : 'Resource::CheckMark' */
 #include "_ResourceCheckMark.h"
 

@@ -26,43 +26,11 @@
 
 #include "ewlocale.h"
 #include "_ResourcesBitmap.h"
-#include "_ResourcesFont.h"
 #include "_WidgetSetHorizontalSliderConfig.h"
-#include "_WidgetSetPushButtonConfig.h"
 #include "_WidgetSetToggleButtonConfig.h"
 #include "Core.h"
-#include "Fonts.h"
 #include "Resource.h"
 #include "UIConfig.h"
-
-/* Constant values used in this 'C' module only. */
-static const XColor _Const0000 = { 0xFF, 0xFF, 0xFF, 0xFF };
-
-/* User defined auto object: 'UIConfig::PushButtonConfig' */
-EW_DEFINE_AUTOOBJECT( UIConfigPushButtonConfig, WidgetSetPushButtonConfig )
-
-/* Initializer for the auto object 'UIConfig::PushButtonConfig' */
-void UIConfigPushButtonConfig__Init( WidgetSetPushButtonConfig _this )
-{
-  WidgetSetPushButtonConfig_OnSetKeyCode( _this, CoreKeyCodeOk );
-  WidgetSetPushButtonConfig_OnSetLabelColorActive( _this, _Const0000 );
-  WidgetSetPushButtonConfig_OnSetLabelColorFocused( _this, _Const0000 );
-  WidgetSetPushButtonConfig_OnSetLabelColorDisabled( _this, _Const0000 );
-  WidgetSetPushButtonConfig_OnSetLabelColorDefault( _this, _Const0000 );
-  WidgetSetPushButtonConfig_OnSetLabelFont( _this, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
-  ResourcesFont ));
-  WidgetSetPushButtonConfig_OnSetFaceLayout( _this, CoreLayoutAlignToBottom | CoreLayoutAlignToLeft 
-  | CoreLayoutAlignToRight | CoreLayoutAlignToTop | CoreLayoutResizeHorz | CoreLayoutResizeVert );
-  WidgetSetPushButtonConfig_OnSetFaceFrameActive( _this, 1 );
-  WidgetSetPushButtonConfig_OnSetFaceActive( _this, EwLoadResource( &ResourceFocusFrame, 
-  ResourcesBitmap ));
-  WidgetSetPushButtonConfig_OnSetFaceFocused( _this, EwLoadResource( &ResourceFocusFrame, 
-  ResourcesBitmap ));
-}
-
-/* Table with links to derived variants of the auto object : 'UIConfig::PushButtonConfig' */
-EW_DEFINE_AUTOOBJECT_VARIANTS( UIConfigPushButtonConfig )
-EW_END_OF_AUTOOBJECT_VARIANTS( UIConfigPushButtonConfig )
 
 /* User defined auto object: 'UIConfig::CheckBoxConfig' */
 EW_DEFINE_AUTOOBJECT( UIConfigCheckBoxConfig, WidgetSetToggleButtonConfig )

@@ -135,9 +135,6 @@ EW_DECLARE_BITMAP_RES( ResourceListDivider4 )
 /* Bitmap resource : 'Resource::ListDivider3' */
 EW_DECLARE_BITMAP_RES( ResourceListDivider3 )
 
-/* Bitmap resource : 'Resource::FocusFrame' */
-EW_DECLARE_BITMAP_RES( ResourceFocusFrame )
-
 /* Bitmap resource : 'Resource::CheckMark' */
 EW_DECLARE_BITMAP_RES( ResourceCheckMark )
 

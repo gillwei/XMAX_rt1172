@@ -26,7 +26,6 @@
 
 #include "ewlocale.h"
 #include "_ApplicationApplication.h"
-#include "_ComponentsDisclaimerView.h"
 #include "_ComponentsStatusBar.h"
 #include "_CoreGroup.h"
 #include "_CorePropertyObserver.h"
@@ -40,6 +39,7 @@
 #include "_FactoryTestContext.h"
 #include "_HomeHOM11_tachometer.h"
 #include "_SettingsBtFwUpdateDialog.h"
+#include "_TopTOP01_Disclaimer.h"
 #include "Application.h"
 #include "DeviceInterface.h"
 #include "Enum.h"
@@ -133,7 +133,7 @@ void ApplicationApplication_Init( ApplicationApplication _this, XHandle aArg )
 void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _this, 
   XObject sender )
 {
-  ComponentsDisclaimerView Disclaimer = EwCastObject( sender, ComponentsDisclaimerView );
+  TopTOP01_Disclaimer Disclaimer = EwCastObject( sender, TopTOP01_Disclaimer );
 
   if ( Disclaimer != 0 )
   {
@@ -149,9 +149,9 @@ void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _th
 /* 'C' function for method : 'Application::Application.ShowDisclaimer()' */
 void ApplicationApplication_ShowDisclaimer( ApplicationApplication _this )
 {
-  ComponentsDisclaimerView Disclaimer = EwNewObject( ComponentsDisclaimerView, 0 );
+  TopTOP01_Disclaimer Disclaimer = EwNewObject( TopTOP01_Disclaimer, 0 );
 
-  Disclaimer->OnYesClicked = EwNewSlot( _this, ApplicationApplication_OnDisclaimerAcceptedSlot );
+  Disclaimer->OnAcceptButtonClicked = EwNewSlot( _this, ApplicationApplication_OnDisclaimerAcceptedSlot );
   CoreGroup__Add( CoreView__GetRoot( _this ), ((CoreView)Disclaimer ), 0 );
   CoreRoot_BeginModal( CoreView__GetRoot( _this ), ((CoreGroup)Disclaimer ));
 }

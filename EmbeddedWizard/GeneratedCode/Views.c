@@ -2444,6 +2444,39 @@ void ViewsText_OnSetEllipsis( ViewsText _this, XBool value )
   EwPostSignal( EwNewSlot( _this, ViewsText_preReparseSlot ), ((XObject)_this ));
 }
 
+/* 'C' function for method : 'Views::Text.OnSetAutoSize()' */
+void ViewsText_OnSetAutoSize( ViewsText _this, XBool value )
+{
+  if ( value == _this->AutoSize )
+    return;
+
+  _this->AutoSize = value;
+
+  if ( value && _this->Ellipsis )
+  {
+    _this->flowString = 0;
+    _this->reparsed = 0;
+    EwPostSignal( EwNewSlot( _this, ViewsText_preReparseSlot ), ((XObject)_this ));
+  }
+
+  if ( value && _this->reparsed )
+  {
+    XPoint padding = EwNewPoint( _this->Padding, 0 );
+
+    if (( _this->Orientation == ViewsOrientationRotated_90 ) || ( _this->Orientation 
+        == ViewsOrientationRotated_270 ))
+    {
+      padding.Y = padding.X;
+      padding.X = 0;
+    }
+
+    _this->Super2.viewState = _this->Super2.viewState | CoreViewStateUpdatingLayout;
+    CoreRectView__OnSetBounds( _this, EwMoveRectNeg( EwInflateRect( ViewsText_GetContentArea( 
+    _this ), padding ), _this->ScrollOffset ));
+    _this->Super2.viewState = _this->Super2.viewState & ~CoreViewStateUpdatingLayout;
+  }
+}
+
 /* 'C' function for method : 'Views::Text.OnSetWrapText()' */
 void ViewsText_OnSetWrapText( ViewsText _this, XBool value )
 {

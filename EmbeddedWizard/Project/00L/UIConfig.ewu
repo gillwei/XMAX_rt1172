@@ -1,22 +1,6 @@
 ﻿$version 10.00
 
-$rect <30,30,270,70>
-$output false
-autoobject WidgetSet::PushButtonConfig PushButtonConfig
-{
-  preset KeyCode = Core::KeyCode.Ok;
-  preset LabelColorActive = #FFFFFFFF;
-  preset LabelColorFocused = #FFFFFFFF;
-  preset LabelColorDisabled = #FFFFFFFF;
-  preset LabelColorDefault = #FFFFFFFF;
-  preset LabelFont = Fonts::NotoSansCjkJpMedium28pt;
-  preset FaceLayout = Core::Layout[AlignToBottom, AlignToLeft, AlignToRight, AlignToTop, ResizeHorz, ResizeVert];
-  preset FaceFrameActive = 1;
-  preset FaceActive = Resource::FocusFrame;
-  preset FaceFocused = Resource::FocusFrame;
-}
-
-$rect <30,90,270,130>
+$rect <10,10,250,50>
 $output false
 autoobject WidgetSet::ToggleButtonConfig CheckBoxConfig
 {
@@ -39,7 +23,7 @@ autoobject WidgetSet::ToggleButtonConfig CheckBoxConfig
   preset FaceOffDefault = Resource::CheckboxNormal;
 }
 
-$rect <30,150,270,190>
+$rect <10,70,250,110>
 $output false
 autoobject WidgetSet::HorizontalSliderConfig HorizontalSliderConfig
 {

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef WidgetSet_H
-#define WidgetSet_H
+#ifndef Top_H
+#define Top_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,16 +42,12 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_WidgetSetHorizontalSlider.h"
-#include "_WidgetSetHorizontalSliderConfig.h"
-#include "_WidgetSetToggleButton.h"
-#include "_WidgetSetToggleButtonConfig.h"
-#include "_WidgetSetWidgetConfig.h"
+#include "_TopTOP01_Disclaimer.h"
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* WidgetSet_H */
+#endif /* Top_H */
 
 /* Embedded Wizard */

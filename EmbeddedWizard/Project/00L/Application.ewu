@@ -30,7 +30,7 @@ class Application : Core::Root
   $rect <40,490,270,530>
   slot OnDisclaimerAcceptedSlot
   {
-    var Components::DisclaimerView Disclaimer = ( Components::DisclaimerView )sender;
+    var Top::TOP01_Disclaimer Disclaimer = ( Top::TOP01_Disclaimer )sender;
     if( null != Disclaimer )
     {
       GetRoot().EndModal( Disclaimer );
@@ -46,8 +46,8 @@ class Application : Core::Root
   $rect <40,430,270,470>
   method void ShowDisclaimer()
   {
-    var Components::DisclaimerView Disclaimer = new Components::DisclaimerView;
-    Disclaimer.OnYesClicked = OnDisclaimerAcceptedSlot;
+    var Top::TOP01_Disclaimer Disclaimer = new Top::TOP01_Disclaimer;
+    Disclaimer.OnAcceptButtonClicked = OnDisclaimerAcceptedSlot;
     GetRoot().Add( Disclaimer, 0 );
     GetRoot().BeginModal( Disclaimer );
   }

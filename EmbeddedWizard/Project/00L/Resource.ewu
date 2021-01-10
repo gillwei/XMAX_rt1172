@@ -36,18 +36,6 @@ resource Resources::Bitmap IconMediaNext
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,1020,230,1060>
-$output false
-resource Resources::Bitmap IconBtDevice
-{
-  attr bitmapfile FileName = .\Res\list_icon_BT_dev.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <35,35>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
 $rect <540,180,740,220>
 $output false
 resource Resources::Bitmap CheckboxNormal
@@ -60,181 +48,13 @@ resource Resources::Bitmap CheckboxNormal
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,1260,230,1300>
+$rect <830,180,1030,220>
 $output false
 resource Resources::Bitmap IconWarning
 {
-  attr bitmapfile FileName = .\Res\icon_warning.png;
+  attr bitmapfile FileName = .\Res\disclaimer\icon_warning.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <242,1020,442,1060>
-$output false
-resource Resources::Bitmap InspectionArrowDown
-{
-  attr bitmapfile FileName = .\Res\inspection_arrow_down.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <45,29>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <242,1070,442,1110>
-$output false
-resource Resources::Bitmap InspectionArrowRight
-{
-  attr bitmapfile FileName = .\Res\inspection_arrow_right.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <29,45>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <242,1120,442,1160>
-$output false
-resource Resources::Bitmap InspectionArrowUp
-{
-  attr bitmapfile FileName = .\Res\inspection_arrow_up.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <45,29>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <455,1020,655,1060>
-$output false
-resource Resources::Bitmap InspectionArrowLeft
-{
-  attr bitmapfile FileName = .\Res\inspection_arrow_left.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <29,45>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <455,1070,655,1110>
-$output false
-resource Resources::Bitmap InspectionArrowEnter
-{
-  attr bitmapfile FileName = .\Res\inspection_enter.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <45,35>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <455,1120,655,1160>
-$output false
-resource Resources::Bitmap InspectionConnection
-{
-  attr bitmapfile FileName = .\Res\inspection_connection_figure.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <59,22>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <242,1170,442,1210>
-$output false
-resource Resources::Bitmap InspectionHome
-{
-  attr bitmapfile FileName = .\Res\inspection_home.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <45,38>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <667,1020,867,1060>
-$output false
-resource Resources::Bitmap iconBT
-{
-  attr bitmapfile FileName = .\Res\inspection_icon_bluetooth.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <47,34>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <667,1060,867,1100>
-$output false
-resource Resources::Bitmap iconWifi
-{
-  attr bitmapfile FileName = .\Res\inspection_icon_wifi.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <47,34>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <667,1110,867,1150>
-$output false
-resource Resources::Bitmap iconSignal
-{
-  attr bitmapfile FileName = .\Res\inspection_icon_phone_signal.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <47,34>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <667,1160,867,1200>
-$output false
-resource Resources::Bitmap iconExit
-{
-  attr bitmapfile FileName = .\Res\inspection_icon_exit.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <47,34>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <880,1020,1080,1060>
-$output false
-resource Resources::Bitmap iconCAN
-{
-  attr bitmapfile FileName = .\Res\inspection_icon_can.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <47,34>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <880,1060,1080,1100>
-$output false
-resource Resources::Bitmap InspectionDivider
-{
-  attr bitmapfile FileName = .\Res\inspection_divider.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <372,2>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <880,1110,1080,1150>
-$output false
-resource Resources::Bitmap InspectionStatus
-{
-  attr bitmapfile FileName = .\Res\inspection_status.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <102,38>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
@@ -596,18 +416,6 @@ resource Resources::Bitmap ListDivider3
 note group Note4
 {
   attr Bounds = <310,130,760,310>;
-}
-
-$rect <30,860,230,900>
-$output false
-resource Resources::Bitmap FocusFrame
-{
-  attr bitmapfile FileName = .\Res\listbtn_frame.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <70,70>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
 }
 
 $rect <540,260,740,300>
@@ -1200,4 +1008,10 @@ resource Resources::Bitmap SeekBar
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
+}
+
+// Disclaimer
+note group Note10
+{
+  attr Bounds = <770,130,1100,310>;
 }

@@ -225,3 +225,9 @@ unit Home
 {
   attr Directory = .\;
 }
+
+$rect <520,600,720,640>
+unit Top
+{
+  attr Directory = .\;
+}

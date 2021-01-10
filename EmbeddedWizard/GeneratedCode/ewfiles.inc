@@ -24,4 +24,5 @@ EMWIFILES := \
 	Development.c \
 	Strings.c \
 	Launcher.c \
-	Home.c
+	Home.c \
+	Top.c

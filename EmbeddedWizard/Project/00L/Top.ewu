@@ -1,0 +1,96 @@
+﻿$version 10.00
+
+$rect <10,10,250,50>
+$output false
+class TOP01_Disclaimer : Components::BaseComponent
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <509,0,689,40>
+  inherited method UpdateLayout()
+  {
+    super( aSize );
+
+    // calculate the margin on the left/right side to make the warning icon and the warning text align horizontal center
+    var int32 WarningIconGapPixel = 3;
+    var int32 TotalWidth = IconWarning.Bounds.w + WarningIconGapPixel + WarningText.GetContentArea().w;
+    var int32 Margin = ( Bounds.w - TotalWidth ) / 2;
+
+    /* adjust the bounds of IconWarning */
+    var int32 Width = IconWarning.Bounds.w;
+    var rect NewBounds = IconWarning.Bounds;
+    NewBounds.x1 = Margin;
+    NewBounds.x2 = NewBounds.x1 + Width;
+    IconWarning.Bounds = NewBounds;
+
+    /* adjust the bounds of WarningText */
+    Width = WarningText.Bounds.w;
+    NewBounds = WarningText.Bounds;
+    NewBounds.x1 = IconWarning.Bounds.x2 + WarningIconGapPixel;
+    NewBounds.x2 = NewBounds.x1 + Width;
+    WarningText.Bounds = NewBounds;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle BlackBackground
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DisclaimerText
+  {
+    preset Bounds = <10,51,470,206>;
+    preset RowDistance = 31;
+    preset WrapText = true;
+    preset String = Strings::TOP01_disclaimer;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <240,290,440,330>
+  slot OnAcceptedSlot
+  {
+    signal OnAcceptButtonClicked, this;
+  }
+
+  $rect <240,340,440,380>
+  property slot OnAcceptButtonClicked;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle TopBar
+  {
+    preset Bounds = <0,0,480,43>;
+    preset Color = #F69500FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image IconWarning
+  {
+    preset Bounds = <155,5,191,41>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter, ScaleToFit];
+    preset Bitmap = Resource::IconWarning;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text WarningText
+  {
+    preset Bounds = <196,4,333,42>;
+    preset AutoSize = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = Strings::TOP01_warning;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Color = #000000FF;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::PushButton AcceptButton
+  {
+    preset Bounds = <165,219,315,259>;
+    preset Title = Strings::TOP01_accept;
+    preset OnActivate = OnAcceptedSlot;
+  }
+}
