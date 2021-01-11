@@ -73,6 +73,7 @@ extern "C"{
 #define ESN_REWRITE_ID          ( 0xFFFFFFFF )
 #define ASCII_BYTE_OFFSET       ( 0x30 )
 #define ASCII_BYTE_DOT          ( 0x2E ) // .
+#define ASCII_BYTE_NEXT_LINE    ( 0x00 )
 #define LOW_BYTE_MASK           ( 0x00FF )
 #define MAX_PIN_NUM             ( 32 )
 
@@ -109,7 +110,9 @@ extern "C"{
                                VARIABLES
 --------------------------------------------------------------------*/
 static uint16_t const product_id = 0x0F70;
-static char const product_string[] = { "IXWW22 v Board Version:   006-B3952-00 " };
+static char const product_string_line1[] = { "IXWW22 v" };
+static char const product_string_line2[] = { "Board Version: " };
+static char const product_string_line3[] = { "VERSYSTEMPARTNUM 006-B3952-00" };
 
 
 static uint8_t  recordSequenceId;
@@ -843,7 +846,7 @@ switch( inst_id )
         }
     case IOP_PRODUCT_RQST_EXTEND:
         {
-        uint8_t   iop_Data[49];
+        uint8_t   iop_Data[66] = { 0 };
         uint16_t  sw_version;
         uint8_t   sw_version_ascii[5];
         uint8_t   hw_version[2];
@@ -859,12 +862,14 @@ switch( inst_id )
 
         memcpy( &iop_Data[0],  &product_id, sizeof( product_id ) );
         memcpy( &iop_Data[2],  &sw_version, sizeof( sw_version ) );
-        memcpy( &iop_Data[4],  &product_string[0], 8 );
+        memcpy( &iop_Data[4],  &product_string_line1, sizeof( product_string_line1 ) );
         memcpy( &iop_Data[12], &sw_version_ascii, sizeof( sw_version_ascii ) );
-        memcpy( &iop_Data[17], &product_string[8], 16 );
+        iop_Data[17] = ASCII_BYTE_NEXT_LINE;
+        memcpy( &iop_Data[18], &product_string_line2, sizeof( product_string_line2 ) );
         memcpy( &iop_Data[33], &hw_version[0], sizeof( hw_version[0] ) );
         memcpy( &iop_Data[34], &hw_version[1], sizeof( hw_version[1] ) );
-        memcpy( &iop_Data[35], &product_string[25], 14 );
+        iop_Data[35] = ASCII_BYTE_NEXT_LINE;
+        memcpy( &iop_Data[36], &product_string_line3, sizeof( product_string_line3 ) );
 
         packageIopToCanData( &iop_Data[0], sizeof( iop_Data ) );
         }
