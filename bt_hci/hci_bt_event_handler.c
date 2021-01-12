@@ -92,6 +92,7 @@ switch( opcode )
             if( ( ( 0xff == Read_BT_version[BT_SW_MAJOR_VER_BYTE] ) && ( 0xff == Read_BT_version[BT_SW_MINOR_VER_BYTE] ) ) || ( ( 0 == Read_BT_version[BT_SW_MAJOR_VER_BYTE] ) && ( 0 == Read_BT_version[BT_SW_MINOR_VER_BYTE] ) ) )
                 {
                 PRINTF( "Read BT version ERROR: %02x.%02x\r\n", Read_BT_version[BT_SW_MAJOR_VER_BYTE], Read_BT_version[BT_SW_MINOR_VER_BYTE] );
+                HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_READ_PAIR_DEV_LIST, pair_dev_index, sizeof( pair_dev_index ) );
                 }
             /* BT module return version is lower than BT FW version on MCU flash, do BT update */
             else if( ( Return_bt_sw_ver[BT_SW_MAJOR_VER_BYTE] < Read_BT_version[BT_SW_MAJOR_VER_BYTE] ) || ( ( Read_BT_version[BT_SW_MAJOR_VER_BYTE] == Return_bt_sw_ver[BT_SW_MAJOR_VER_BYTE] ) && ( Read_BT_version[BT_SW_MINOR_VER_BYTE] > Return_bt_sw_ver[BT_SW_MINOR_VER_BYTE] ) ) )
