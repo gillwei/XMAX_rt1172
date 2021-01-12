@@ -28,6 +28,7 @@
 #include "_CoreGroup.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreView.h"
+#include "_DevelopmentDEV_Bluetooth.h"
 #include "_DevelopmentDEV_Main.h"
 #include "_DevelopmentDEV_RealTimeClock.h"
 #include "_DeviceInterfaceRtcTime.h"
@@ -46,11 +47,13 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000084, /* ratio 75.76 % */
+  0x000000D2, /* ratio 68.57 % */
   0xB8001F00, 0x8008C452, 0x00C60030, 0x0DE003A0, 0xF2003900, 0x80010000, 0x0032800A,
   0xC0042CE6, 0x22C0C271, 0x80021A48, 0xC3E2F233, 0x6A4D1589, 0x89B14864, 0x39263248,
-  0xC528F84A, 0x28364224, 0xD001A62D, 0x21C524C6, 0x543A7000, 0x002386B8, 0x185F1F02,
-  0x22904A45, 0x7445A647, 0x101A9D18, 0x00000000
+  0xC528F84A, 0x28364224, 0xD001A62D, 0x21C524C6, 0x543A7000, 0x802386B8, 0x04851F08,
+  0x24C75005, 0x190E8743, 0x72A9C9A2, 0x1F024723, 0x4AC5185F, 0x8FD5E290, 0x485A8C3A,
+  0x14E2929A, 0xDE366691, 0x23127839, 0x21262B45, 0xD0E9DC6A, 0x01BBD18D, 0x00000001,
+  0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -58,11 +61,15 @@ static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XStringRes _Const0001 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0011 };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x0024 };
-static const XRect _Const0004 = {{ 0, 36 }, { 480, 272 }};
-static const XRect _Const0005 = {{ 96, 79 }, { 390, 122 }};
-static const XStringRes _Const0006 = { _StringsDefault0, 0x0036 };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x003A };
-static const XStringRes _Const0008 = { _StringsDefault0, 0x003E };
+static const XStringRes _Const0004 = { _StringsDefault0, 0x0036 };
+static const XRect _Const0005 = {{ 0, 36 }, { 480, 272 }};
+static const XRect _Const0006 = {{ 96, 79 }, { 390, 122 }};
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0047 };
+static const XStringRes _Const0008 = { _StringsDefault0, 0x004B };
+static const XStringRes _Const0009 = { _StringsDefault0, 0x004F };
+static const XRect _Const000A = {{ 0, 40 }, { 240, 65 }};
+static const XStringRes _Const000B = { _StringsDefault0, 0x0053 };
+static const XRect _Const000C = {{ 247, 40 }, { 356, 65 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -105,9 +112,11 @@ void DevelopmentDEV_Main__Init( DevelopmentDEV_Main _this, XObject aLink, XHandl
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0001 ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0002 ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0003 ));
-  CoreRectView__OnSetBounds( &_this->Menu, _Const0004 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 3 );
+  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0004 ));
+  CoreRectView__OnSetBounds( &_this->Menu, _Const0005 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 4 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
+  MenuVerticalMenu_OnSetItemNumPerPage( &_this->Menu, 4 );
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
 }
 
@@ -153,10 +162,6 @@ XClass DevelopmentDEV_Main_LoadItemClass( DevelopmentDEV_Main _this, XInt32 aIte
 
   switch ( aItemNo )
   {
-    case 0 :
-      ItemClass = EW_CLASS( MenuItemBase );
-    break;
-
     case 1 :
       ItemClass = EW_CLASS( MenuItemCheckbox );
     break;
@@ -173,9 +178,9 @@ XString DevelopmentDEV_Main_LoadItemTitle( DevelopmentDEV_Main _this, XInt32 aIt
 {
   XString Title = 0;
 
-  if ( aItemNo < 3 )
+  if ( aItemNo < 4 )
   {
-    Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 3 )];
+    Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 4 )];
   }
 
   return Title;
@@ -202,6 +207,11 @@ void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItem
 
     case 2 :
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( DevelopmentDEV_RealTimeClock, 
+      0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    break;
+
+    case 3 :
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( DevelopmentDEV_Bluetooth, 
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     break;
 
@@ -301,7 +311,7 @@ void DevelopmentDEV_RealTimeClock__Init( DevelopmentDEV_RealTimeClock _this, XOb
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->TimeText, _Const0005 );
+  CoreRectView__OnSetBounds( &_this->TimeText, _Const0006 );
   ViewsText_OnSetAlignment( &_this->TimeText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->TimeText, 0 );
@@ -361,10 +371,10 @@ void DevelopmentDEV_RealTimeClock_OnUpdateLocalTimeSlot( DevelopmentDEV_RealTime
     ViewsText_OnSetString( &_this->TimeText, EwConcatString( EwConcatString( EwConcatString( 
     EwConcatString( EwConcatString( EwConcatString( EwConcatString( EwConcatString( 
     EwConcatString( EwConcatString( EwNewStringInt( CurrentTime->Year, 4, 10 ), 
-    EwLoadString( &_Const0006 )), EwNewStringInt( CurrentTime->Month, 2, 10 )), 
-    EwLoadString( &_Const0006 )), EwNewStringInt( CurrentTime->Day, 2, 10 )), EwLoadString( 
-    &_Const0007 )), EwNewStringInt( CurrentTime->Hour, 2, 10 )), EwLoadString( &_Const0008 )), 
-    EwNewStringInt( CurrentTime->Minute, 2, 10 )), EwLoadString( &_Const0008 )), 
+    EwLoadString( &_Const0007 )), EwNewStringInt( CurrentTime->Month, 2, 10 )), 
+    EwLoadString( &_Const0007 )), EwNewStringInt( CurrentTime->Day, 2, 10 )), EwLoadString( 
+    &_Const0008 )), EwNewStringInt( CurrentTime->Hour, 2, 10 )), EwLoadString( &_Const0009 )), 
+    EwNewStringInt( CurrentTime->Minute, 2, 10 )), EwLoadString( &_Const0009 )), 
     EwNewStringInt( CurrentTime->Second, 2, 10 )));
   }
 }
@@ -414,5 +424,116 @@ EW_DEFINE_CLASS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG, OnUpdateLoc
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( DevelopmentDEV_RealTimeClock )
+
+/* Initializer for the class 'Development::DEV_Bluetooth' */
+void DevelopmentDEV_Bluetooth__Init( DevelopmentDEV_Bluetooth _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_Bluetooth );
+
+  /* ... then construct all embedded objects */
+  ViewsText__Init( &_this->BtSwVersionTitle, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->BtSwVersionText, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( DevelopmentDEV_Bluetooth );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const0000 );
+  CoreRectView__OnSetBounds( &_this->BtSwVersionTitle, _Const000A );
+  ViewsText_OnSetString( &_this->BtSwVersionTitle, EwLoadString( &_Const000B ));
+  CoreRectView__OnSetBounds( &_this->BtSwVersionText, _Const000C );
+  ViewsText_OnSetAlignment( &_this->BtSwVersionText, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->BtSwVersionText, DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( 
+  EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
+  CoreGroup__Add( _this, ((CoreView)&_this->BtSwVersionTitle ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->BtSwVersionText ), 0 );
+  ViewsText_OnSetFont( &_this->BtSwVersionTitle, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->BtSwVersionText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+}
+
+/* Re-Initializer for the class 'Development::DEV_Bluetooth' */
+void DevelopmentDEV_Bluetooth__ReInit( DevelopmentDEV_Bluetooth _this )
+{
+  /* At first re-initialize the super class ... */
+  ComponentsBaseMainBG__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsText__ReInit( &_this->BtSwVersionTitle );
+  ViewsText__ReInit( &_this->BtSwVersionText );
+}
+
+/* Finalizer method for the class 'Development::DEV_Bluetooth' */
+void DevelopmentDEV_Bluetooth__Done( DevelopmentDEV_Bluetooth _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+
+  /* Finalize all embedded objects */
+  ViewsText__Done( &_this->BtSwVersionTitle );
+  ViewsText__Done( &_this->BtSwVersionText );
+
+  /* Don't forget to deinitialize the super class ... */
+  ComponentsBaseMainBG__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Development::DEV_Bluetooth.OnShortHomeKeyActivated()' */
+void DevelopmentDEV_Bluetooth_OnShortHomeKeyActivated( DevelopmentDEV_Bluetooth _this )
+{
+  CoreGroup__DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
+}
+
+/* Variants derived from the class : 'Development::DEV_Bluetooth' */
+EW_DEFINE_CLASS_VARIANTS( DevelopmentDEV_Bluetooth )
+EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_Bluetooth )
+
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_Bluetooth' */
+EW_DEFINE_CLASS( DevelopmentDEV_Bluetooth, ComponentsBaseMainBG, BtSwVersionTitle, 
+                 BtSwVersionTitle, BtSwVersionTitle, BtSwVersionTitle, _None, _None, 
+                 "Development::DEV_Bluetooth" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  DevelopmentDEV_Bluetooth_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+EW_END_OF_CLASS( DevelopmentDEV_Bluetooth )
 
 /* Embedded Wizard */

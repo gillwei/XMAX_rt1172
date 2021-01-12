@@ -19,7 +19,6 @@ class DEV_Main : Menu::BaseMenuView
     var class ItemClass = null;
     switch (aItemNo )
     {
-      case 0: ItemClass = Menu::ItemBase;
       case 1: ItemClass = Menu::ItemCheckbox;
       default: ItemClass = Menu::ItemBase;
     }
@@ -51,6 +50,7 @@ class DEV_Main : Menu::BaseMenuView
       case 0: SlideInDialog( new Factory::Main );
       case 1: DeviceInterface::SystemDevice.IsHopperTestMode = !DeviceInterface::SystemDevice.IsHopperTestMode;
       case 2: this.PresentDialog( new Development::DEV_RealTimeClock, null, null, null, null, null, null, null, null, false );
+      case 3: this.PresentDialog( new Development::DEV_Bluetooth, null, null, null, null, null, null, null, null, false );
       default:;
     }
 
@@ -69,11 +69,12 @@ class DEV_Main : Menu::BaseMenuView
   }
 
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 3 ] =
+  array string ItemTitleArray[ 4 ] =
   (
     Default[0] = "Factory Test";
     Default[1] = "Hopper Test Mode";
     Default[2] = "Real Time Clock";
+    Default[3] = "Bluetooth Test";
   );
 
   $rect <20,20,160,60>
@@ -82,6 +83,7 @@ class DEV_Main : Menu::BaseMenuView
     preset Bounds = <0,36,480,272>;
     preset NoOfItems = ItemTitleArray.size;
     preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
   }
 
   $reorder SlideInDialog 4
@@ -93,7 +95,7 @@ class DEV_Main : Menu::BaseMenuView
   $reorder Menu 1
 }
 
-$rect <60,60,260,100>
+$rect <20,60,260,100>
 $output false
 class DEV_RealTimeClock : Components::BaseMainBG
 {
@@ -133,4 +135,37 @@ class DEV_RealTimeClock : Components::BaseMainBG
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
+}
+
+$rect <20,110,260,150>
+$output false
+class DEV_Bluetooth : Components::BaseMainBG
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <220,290,450,330>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text BtSwVersionTitle
+  {
+    preset Bounds = <0,40,240,65>;
+    preset String = "BT Software Version";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text BtSwVersionText
+  {
+    preset Bounds = <247,40,356,65>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = DeviceInterface::SystemDevice.BtSoftwareVersion;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $reorder next 1
 }

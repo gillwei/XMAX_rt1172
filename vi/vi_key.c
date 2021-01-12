@@ -25,7 +25,11 @@
 --------------------------------------------------------------------*/
 #define VEHICLE_KEY_LONG_PRESS_TIME_MS      ( 1000 )
 #define VEHICLE_KEY_VALID_PRESS_NUM         ( 1 )    /**< valid number of key pressed at the same time */
-#define MAGIC_KEY_TIME_DURATION_MS          ( 10000 )
+#ifdef NDEBUG
+    #define MAGIC_KEY_TIME_DURATION_MS          ( 10000 )
+#else
+    #define MAGIC_KEY_TIME_DURATION_MS          ( 2000 )
+#endif
 #define MAGIC_KEY_CODE                      ( CoreKeyCodeF9 )
 
 #define KEY_EVENT_FLAG_MAGIC_KEY_START_COUNT    ( 1 << 0 )
