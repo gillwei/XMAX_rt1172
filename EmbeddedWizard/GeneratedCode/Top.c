@@ -201,6 +201,7 @@ EW_DEFINE_CLASS( TopTOP01_Disclaimer, ComponentsBaseComponent, OnAcceptButtonCli
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,

@@ -132,6 +132,15 @@ extern const XStringRes StringsSET04_paired_devices;
 /* User defined constant: 'Strings::SET04_bt_auto_connect' */
 extern const XStringRes StringsSET04_bt_auto_connect;
 
+/* User defined constant: 'Strings::SET19_delete_pairing' */
+extern const XStringRes StringsSET19_delete_pairing;
+
+/* User defined constant: 'Strings::SET19_connect' */
+extern const XStringRes StringsSET19_connect;
+
+/* User defined constant: 'Strings::SET19_disconnect' */
+extern const XStringRes StringsSET19_disconnect;
+
 /* User defined constant: 'Strings::WSC01_wind_screen' */
 extern const XStringRes StringsWSC01_wind_screen;
 

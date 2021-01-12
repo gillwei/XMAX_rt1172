@@ -47,11 +47,11 @@
 #include "_SettingsBtDiscovarable.h"
 #include "_SettingsBtFwUpdateDialog.h"
 #include "_SettingsBtMaxPairedDevice.h"
-#include "_SettingsBtPairedDeviceOperation.h"
 #include "_SettingsSET01_MainSettingMenu.h"
 #include "_SettingsSET03_ConnectionSettingMenu.h"
 #include "_SettingsSET04_BtSettingMenu.h"
 #include "_SettingsSET17_BtPairedDeviceList.h"
+#include "_SettingsSET19_BtPairedDeviceOperation.h"
 #include "_SettingsSET30_QRCode.h"
 #include "_SettingsSystemInfo.h"
 

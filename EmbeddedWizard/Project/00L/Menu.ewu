@@ -52,6 +52,8 @@ class ItemBase : Components::BaseComponent
     if( pure Enabled != value )
     {
       pure Enabled = value;
+      super( value );
+
       if( value )
       {
         Title.Color = #FFFFFFFF;
@@ -66,7 +68,7 @@ class ItemBase : Components::BaseComponent
   $rect <310,290,540,330>
   inherited method OnShortEnterKeyActivated()
   {
-    if( Focusable )
+    if( Focusable && Enabled )
     {
       InvalidateViewState();
 
@@ -264,13 +266,10 @@ class VerticalMenu : Components::BaseComponent
         var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )Owner;
         if( null != OwnerMenu )
         {
-          if( OwnerMenu.LoadItemEnabled( NextItemIdx ) )
-          {
-            MenuList.SelectedItem = NextItemIdx;
-            SwitchToPageOfSelectedItem();
-            Scrollbar.ViewIdx = MenuList.SelectedItem;
-            MoveFocusFrame();
-          }
+          MenuList.SelectedItem = NextItemIdx;
+          SwitchToPageOfSelectedItem();
+          Scrollbar.ViewIdx = MenuList.SelectedItem;
+          MoveFocusFrame();
         }
       }
     }
@@ -640,24 +639,6 @@ class ItemWrapper : Core::Group
       {
         ItemBase.Enabled = value;
       }
-      /*
-      else
-      {
-        var Menu::ItemCheckbox ItemCheck = ( Menu::ItemCheckbox )view;
-        if( null != ItemCheck )
-        {
-          ItemCheck.Enabled = value;
-        }
-        else
-        {
-          var Menu::ItemBase Item = ( Menu::ItemBase )view;
-          if( null != Item )
-          {
-            Item.Enabled = value;
-          }
-        }
-      }
-      */
     }
   }
 

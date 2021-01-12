@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsBtPairedDeviceOperation_H
-#define _SettingsBtPairedDeviceOperation_H
+#ifndef _SettingsSET19_BtPairedDeviceOperation_H
+#define _SettingsSET19_BtPairedDeviceOperation_H
 
 #ifdef __cplusplus
   extern "C"
@@ -96,23 +96,23 @@
 #define _MenuItemBase_
 #endif
 
-/* Forward declaration of the class Settings::BtPairedDeviceOperation */
-#ifndef _SettingsBtPairedDeviceOperation_
-  EW_DECLARE_CLASS( SettingsBtPairedDeviceOperation )
-#define _SettingsBtPairedDeviceOperation_
+/* Forward declaration of the class Settings::SET19_BtPairedDeviceOperation */
+#ifndef _SettingsSET19_BtPairedDeviceOperation_
+  EW_DECLARE_CLASS( SettingsSET19_BtPairedDeviceOperation )
+#define _SettingsSET19_BtPairedDeviceOperation_
 #endif
 
 
-/* Deklaration of class : 'Settings::BtPairedDeviceOperation' */
-EW_DEFINE_FIELDS( SettingsBtPairedDeviceOperation, MenuBaseMenuView )
+/* Deklaration of class : 'Settings::SET19_BtPairedDeviceOperation' */
+EW_DEFINE_FIELDS( SettingsSET19_BtPairedDeviceOperation, MenuBaseMenuView )
   EW_OBJECT  ( Menu,            MenuVerticalMenu )
-  EW_ARRAY   ( ItemTitleArray,  XString, [3])
   EW_PROPERTY( DeviceName,      XString )
   EW_PROPERTY( PairedDeviceIndex, XInt32 )
-EW_END_OF_FIELDS( SettingsBtPairedDeviceOperation )
+  EW_PROPERTY( IsConnected,     XBool )
+EW_END_OF_FIELDS( SettingsSET19_BtPairedDeviceOperation )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::BtPairedDeviceOperation' */
-EW_DEFINE_METHODS( SettingsBtPairedDeviceOperation, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET19_BtPairedDeviceOperation' */
+EW_DEFINE_METHODS( SettingsSET19_BtPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -130,6 +130,7 @@ EW_DEFINE_METHODS( SettingsBtPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
+  EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
   EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
@@ -158,35 +159,43 @@ EW_DEFINE_METHODS( SettingsBtPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET19_BtPairedDeviceOperation _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( SettingsBtPairedDeviceOperation _this, 
+  EW_METHOD( LoadItemClass,     XClass )( SettingsSET19_BtPairedDeviceOperation _this, 
     XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( SettingsBtPairedDeviceOperation _this, 
+  EW_METHOD( LoadItemTitle,     XString )( SettingsSET19_BtPairedDeviceOperation _this, 
     XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( SettingsBtPairedDeviceOperation _this, XInt32 
-    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( OnItemActivate,    void )( SettingsSET19_BtPairedDeviceOperation _this, 
+    XInt32 aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( SettingsBtPairedDeviceOperation )
+  EW_METHOD( LoadItemEnabled,   XBool )( SettingsSET19_BtPairedDeviceOperation _this, 
+    XInt32 aItemNo )
+EW_END_OF_METHODS( SettingsSET19_BtPairedDeviceOperation )
 
-/* 'C' function for method : 'Settings::BtPairedDeviceOperation.LoadItemClass()' */
-XClass SettingsBtPairedDeviceOperation_LoadItemClass( SettingsBtPairedDeviceOperation _this, 
+/* 'C' function for method : 'Settings::SET19_BtPairedDeviceOperation.OnShortHomeKeyActivated()' */
+void SettingsSET19_BtPairedDeviceOperation_OnShortHomeKeyActivated( SettingsSET19_BtPairedDeviceOperation _this );
+
+/* 'C' function for method : 'Settings::SET19_BtPairedDeviceOperation.LoadItemClass()' */
+XClass SettingsSET19_BtPairedDeviceOperation_LoadItemClass( SettingsSET19_BtPairedDeviceOperation _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::BtPairedDeviceOperation.LoadItemTitle()' */
-XString SettingsBtPairedDeviceOperation_LoadItemTitle( SettingsBtPairedDeviceOperation _this, 
+/* 'C' function for method : 'Settings::SET19_BtPairedDeviceOperation.LoadItemTitle()' */
+XString SettingsSET19_BtPairedDeviceOperation_LoadItemTitle( SettingsSET19_BtPairedDeviceOperation _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::BtPairedDeviceOperation.OnItemActivate()' */
-void SettingsBtPairedDeviceOperation_OnItemActivate( SettingsBtPairedDeviceOperation _this, 
+/* 'C' function for method : 'Settings::SET19_BtPairedDeviceOperation.OnItemActivate()' */
+void SettingsSET19_BtPairedDeviceOperation_OnItemActivate( SettingsSET19_BtPairedDeviceOperation _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
+
+/* 'C' function for method : 'Settings::SET19_BtPairedDeviceOperation.LoadItemEnabled()' */
+XBool SettingsSET19_BtPairedDeviceOperation_LoadItemEnabled( SettingsSET19_BtPairedDeviceOperation _this, 
+  XInt32 aItemNo );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsBtPairedDeviceOperation_H */
+#endif /* _SettingsSET19_BtPairedDeviceOperation_H */
 
 /* Embedded Wizard */

@@ -1592,7 +1592,7 @@ class BtPairDevice : Components::BaseMainBG
   }
 }
 
-$rect <120,430,360,470>
+$rect <20,420,260,460>
 $output false
 class SET17_BtPairedDeviceList : Menu::BaseMenuView
 {
@@ -1659,9 +1659,10 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
     var Menu::ItemCheckMark BtDeviceItem = ( Menu::ItemCheckMark )aMenuItem;
     if( null != BtDeviceItem )
     {
-      var Settings::BtPairedDeviceOperation Dialog = new Settings::BtPairedDeviceOperation;
+      var Settings::SET19_BtPairedDeviceOperation Dialog = new Settings::SET19_BtPairedDeviceOperation;
       Dialog.PairedDeviceIndex = aItemNo;
       Dialog.DeviceName = BtDeviceItem.Title.String;
+      Dialog.IsConnected = BtDeviceItem.Checked;
       PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
     }
   }
@@ -1742,12 +1743,18 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
   }
 }
 
-$rect <160,490,400,530>
+$rect <20,470,260,510>
 $output false
-class BtPairedDeviceOperation : Menu::BaseMenuView
+class SET19_BtPairedDeviceOperation : Menu::BaseMenuView
 {
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
+
+  $rect <230,290,460,330>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
 
   $rect <510,20,710,60>
   inherited method LoadItemClass()
@@ -1765,14 +1772,19 @@ class BtPairedDeviceOperation : Menu::BaseMenuView
   inherited method LoadItemTitle()
   {
     var string title = "";
-    if( aItemNo < ItemTitleArray.size )
-      {
-      title = ItemTitleArray[aItemNo];
-      }
+
+    switch( aItemNo )
+    {
+      case 0: title = Strings::SET19_delete_pairing;
+      case 1: title = Strings::SET19_connect;
+      case 2: title = Strings::SET19_disconnect;
+      default:;
+    }
+
     return title;
   }
 
-  $rect <510,120,710,160>
+  $rect <510,170,710,210>
   inherited method OnItemActivate()
   {
     switch( aItemNo )
@@ -1809,6 +1821,22 @@ class BtPairedDeviceOperation : Menu::BaseMenuView
     }
   }
 
+  $rect <510,120,710,160>
+  inherited method LoadItemEnabled()
+  {
+    var bool OptionEnabled = false;
+
+    switch( aItemNo )
+    {
+      case 0: OptionEnabled = true;
+      case 1: OptionEnabled = !IsConnected;
+      case 2: OptionEnabled = IsConnected;
+      default:;
+    }
+
+    return OptionEnabled;
+  }
+
   $rect <20,20,160,60>
   object Menu::VerticalMenu Menu
   {
@@ -1816,19 +1844,14 @@ class BtPairedDeviceOperation : Menu::BaseMenuView
     preset NoOfItems = 3;
   }
 
-  $rect <730,70,930,110>
-  array string ItemTitleArray[ 3 ] =
-  (
-    Default[0] = "Delete Pairing";
-    Default[1] = "Connect";
-    Default[2] = "Disconnect";
-  );
-
   $rect <10,350,210,390>
   property int32 PairedDeviceIndex;
 
   $rect <10,400,210,440>
   property string DeviceName;
+
+  $rect <10,450,210,490>
+  property bool IsConnected = false;
 }
 
 $rect <190,550,430,590>

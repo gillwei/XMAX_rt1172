@@ -253,6 +253,7 @@ void MenuItemBase_OnSetEnabled( MenuItemBase _this, XBool value )
   if ( _this->Super2.Enabled != value )
   {
     _this->Super2.Enabled = value;
+    CoreGroup_OnSetEnabled((CoreGroup)_this, value );
 
     if ( value )
     {
@@ -268,7 +269,7 @@ void MenuItemBase_OnSetEnabled( MenuItemBase _this, XBool value )
 /* 'C' function for method : 'Menu::ItemBase.OnShortEnterKeyActivated()' */
 void MenuItemBase_OnShortEnterKeyActivated( MenuItemBase _this )
 {
-  if ( _this->Focusable )
+  if ( _this->Focusable && CoreGroup__OnGetEnabled( _this ))
   {
     CoreGroup_InvalidateViewState((CoreGroup)_this );
 
@@ -330,6 +331,7 @@ EW_DEFINE_CLASS( MenuItemBase, ComponentsBaseComponent, OnActivate, OnActivate,
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   MenuItemBase_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -452,13 +454,10 @@ void MenuVerticalMenu_OnShortDownKeyActivated( MenuVerticalMenu _this )
 
       if ( OwnerMenu != 0 )
       {
-        if ( MenuBaseMenuView__LoadItemEnabled( OwnerMenu, NextItemIdx ))
-        {
-          CoreVerticalList_OnSetSelectedItem( &_this->MenuList, NextItemIdx );
-          MenuVerticalMenu_SwitchToPageOfSelectedItem( _this );
-          MenuScrollbar_OnSetViewIdx( &_this->Scrollbar, _this->MenuList.SelectedItem );
-          MenuVerticalMenu_MoveFocusFrame( _this );
-        }
+        CoreVerticalList_OnSetSelectedItem( &_this->MenuList, NextItemIdx );
+        MenuVerticalMenu_SwitchToPageOfSelectedItem( _this );
+        MenuScrollbar_OnSetViewIdx( &_this->Scrollbar, _this->MenuList.SelectedItem );
+        MenuVerticalMenu_MoveFocusFrame( _this );
       }
     }
   }
@@ -698,6 +697,7 @@ EW_DEFINE_CLASS( MenuVerticalMenu, ComponentsBaseComponent, MenuList, MenuList,
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -844,6 +844,7 @@ EW_DEFINE_CLASS( MenuItemCheckbox, MenuItemBase, CheckBoxButton, CheckBoxButton,
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   MenuItemCheckbox_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -902,6 +903,12 @@ void MenuItemWrapper__Done( MenuItemWrapper _this )
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnGetEnabled()' */
+XBool MenuItemWrapper_OnGetEnabled( MenuItemWrapper _this )
+{
+  return _this->Super1.Enabled;
 }
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetEnabled()' */
@@ -1033,6 +1040,7 @@ EW_DEFINE_CLASS( MenuItemWrapper, CoreGroup, OnActivate, OnActivate, Title, Titl
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  MenuItemWrapper_OnGetEnabled,
   MenuItemWrapper_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -1213,6 +1221,7 @@ EW_DEFINE_CLASS( MenuScrollbar, CoreGroup, Background, Background, Background, B
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -1380,6 +1389,7 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, _None, _None, _None, _N
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -1585,6 +1595,7 @@ EW_DEFINE_CLASS( MenuPushButton, CoreGroup, OnActivate, OnActivate, Background,
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -1729,6 +1740,7 @@ EW_DEFINE_CLASS( MenuUpDownPushButtonSet, ComponentsBaseComponent, OnUpButtonRel
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -1856,6 +1868,7 @@ EW_DEFINE_CLASS( MenuItemCheckMark, MenuItemBase, CheckMark, CheckMark, CheckMar
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   MenuItemBase_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -2011,6 +2024,7 @@ EW_DEFINE_CLASS( MenuArrowScrollBar, CoreGroup, UpArrowIcon, UpArrowIcon, UpArro
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,

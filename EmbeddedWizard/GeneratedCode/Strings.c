@@ -56,12 +56,13 @@ static const unsigned int _StringsDefault0[] =
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault1[] =
 {
-  0x00000096, /* ratio 77.33 % */
+  0x000000E6, /* ratio 67.83 % */
   0xB8002300, 0x80088452, 0x00E60034, 0x0DE00318, 0xCA003B00, 0x20039000, 0x0010000F,
   0x400434DA, 0x8F802226, 0x01420902, 0x44E0E610, 0x76311D8F, 0x21110894, 0x3F0A8943,
   0x44581866, 0x00360008, 0xB3A478EA, 0x344F21D1, 0x04E64917, 0x4621D3C0, 0x00DD0E86,
-  0x21912A50, 0x680E8FCF, 0x34A9315E, 0x0B298025, 0xA8944A4F, 0x0057A3F4, 0x00000101,
-  0x00000000
+  0x21912A50, 0x0D34904F, 0x9129C44A, 0x708C44A7, 0x88A42284, 0x8F99E950, 0x1CD01400,
+  0xD32951B2, 0x36C14485, 0x21526A88, 0x9B70A5D2, 0x80E8FDA6, 0x4A9315E6, 0x82980253,
+  0x8944A296, 0x0D82C14A, 0x00000008, 0x00000000
 };
 
 /* Compressed strings for the language 'French'. */
@@ -287,7 +288,16 @@ const XStringRes StringsSET04_paired_devices = { _StringsDefault1, 0x0013 };
 /* User defined constant: 'Strings::SET04_bt_auto_connect' */
 const XStringRes StringsSET04_bt_auto_connect = { _StringsDefault1, 0x0024 };
 
+/* User defined constant: 'Strings::SET19_delete_pairing' */
+const XStringRes StringsSET19_delete_pairing = { _StringsDefault1, 0x003D };
+
+/* User defined constant: 'Strings::SET19_connect' */
+const XStringRes StringsSET19_connect = { _StringsDefault1, 0x004E };
+
+/* User defined constant: 'Strings::SET19_disconnect' */
+const XStringRes StringsSET19_disconnect = { _StringsDefault1, 0x0058 };
+
 /* User defined constant: 'Strings::WSC01_wind_screen' */
-const XStringRes StringsWSC01_wind_screen = { _StringsDefault1, 0x003D };
+const XStringRes StringsWSC01_wind_screen = { _StringsDefault1, 0x0065 };
 
 /* Embedded Wizard */

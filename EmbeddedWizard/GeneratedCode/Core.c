@@ -2800,6 +2800,18 @@ void CoreGroup__OnSetBuffered( void* _this, XBool value )
   ((CoreGroup)_this)->_VMT->OnSetBuffered((CoreGroup)_this, value );
 }
 
+/* 'C' function for method : 'Core::Group.OnGetEnabled()' */
+XBool CoreGroup_OnGetEnabled( CoreGroup _this )
+{
+  return (( _this->Super2.viewState & CoreViewStateEnabled ) == CoreViewStateEnabled );
+}
+
+/* Wrapper function for the virtual method : 'Core::Group.OnGetEnabled()' */
+XBool CoreGroup__OnGetEnabled( void* _this )
+{
+  return ((CoreGroup)_this)->_VMT->OnGetEnabled((CoreGroup)_this );
+}
+
 /* 'C' function for method : 'Core::Group.OnSetEnabled()' */
 void CoreGroup_OnSetEnabled( CoreGroup _this, XBool value )
 {
@@ -4265,6 +4277,7 @@ EW_DEFINE_CLASS( CoreGroup, CoreRectView, first, Opacity, Opacity, Opacity, Opac
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
@@ -5839,6 +5852,7 @@ EW_DEFINE_CLASS( CoreRoot, CoreGroup, keyLastTarget, cursorHoldTimer, cursorHold
   CoreGroup_OnSetBounds,
   CoreRoot_OnSetFocus,
   CoreRoot_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreRoot_OnSetOpacity,
   CoreRoot_IsCurrentDialog,
@@ -7501,6 +7515,7 @@ EW_DEFINE_CLASS( CoreVerticalList, CoreGroup, itemsPool, OnUpdate, invalidTail,
   CoreGroup_OnSetBounds,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,

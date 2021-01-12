@@ -597,6 +597,24 @@ const string SET04_bt_auto_connect =
 );
 
 $output false
+const string SET19_delete_pairing =
+(
+  Default = "Delete pairing";
+);
+
+$output false
+const string SET19_connect =
+(
+  Default = "Connect";
+);
+
+$output false
+const string SET19_disconnect =
+(
+  Default = "Disconnect";
+);
+
+$output false
 const string WSC01_wind_screen =
 (
   Default = "Wind Screen";

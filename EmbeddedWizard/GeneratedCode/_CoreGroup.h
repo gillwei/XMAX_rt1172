@@ -234,6 +234,7 @@ EW_DEFINE_METHODS( CoreGroup, CoreRectView )
   EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
+  EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
   EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
@@ -375,6 +376,12 @@ void CoreGroup_OnSetBuffered( CoreGroup _this, XBool value );
 
 /* Wrapper function for the virtual method : 'Core::Group.OnSetBuffered()' */
 void CoreGroup__OnSetBuffered( void* _this, XBool value );
+
+/* 'C' function for method : 'Core::Group.OnGetEnabled()' */
+XBool CoreGroup_OnGetEnabled( CoreGroup _this );
+
+/* Wrapper function for the virtual method : 'Core::Group.OnGetEnabled()' */
+XBool CoreGroup__OnGetEnabled( void* _this );
 
 /* 'C' function for method : 'Core::Group.OnSetEnabled()' */
 void CoreGroup_OnSetEnabled( CoreGroup _this, XBool value );
