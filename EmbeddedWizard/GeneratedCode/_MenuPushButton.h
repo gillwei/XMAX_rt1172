@@ -101,6 +101,7 @@ EW_DEFINE_FIELDS( MenuPushButton, CoreGroup )
   EW_OBJECT  ( FocusFrameFlashTimer, CoreTimer )
   EW_OBJECT  ( FocusBorder,     ViewsBorder )
   EW_PROPERTY( Title,           XString )
+  EW_PROPERTY( ButtonEnabled,   XBool )
   EW_PROPERTY( Focusable,       XBool )
 EW_END_OF_FIELDS( MenuPushButton )
 
@@ -175,6 +176,9 @@ void MenuPushButton_OnEnterReleaseSlot( MenuPushButton _this, XObject sender );
 
 /* 'C' function for method : 'Menu::PushButton.OnFocusFrameFlashTimer()' */
 void MenuPushButton_OnFocusFrameFlashTimer( MenuPushButton _this, XObject sender );
+
+/* 'C' function for method : 'Menu::PushButton.OnSetButtonEnabled()' */
+void MenuPushButton_OnSetButtonEnabled( MenuPushButton _this, XBool value );
 
 #ifdef __cplusplus
   }

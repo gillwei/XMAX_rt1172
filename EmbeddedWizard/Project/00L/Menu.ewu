@@ -1003,6 +1003,7 @@ class PushButton : Core::Group
   $rect <20,20,160,60>
   object Views::Rectangle Background
   {
+    preset Layout = Core::Layout[ResizeHorz, ResizeVert];
     preset Bounds = <0,0,150,40>;
     preset Color = #00000026;
   }
@@ -1010,6 +1011,7 @@ class PushButton : Core::Group
   $rect <20,20,160,60>
   object Views::Text TitleText
   {
+    preset Layout = Core::Layout[ResizeHorz, ResizeVert];
     preset Bounds = <0,4,150,38>;
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -1038,7 +1040,7 @@ class PushButton : Core::Group
   $rect <250,110,450,150>
   slot OnEnterReleaseSlot
   {
-    if( false == KeyHandler.Repetition && Focusable )
+    if( false == KeyHandler.Repetition && Focusable && ButtonEnabled )
     {
       InvalidateViewState();
 
@@ -1079,6 +1081,7 @@ class PushButton : Core::Group
   $rect <20,20,160,60>
   object Views::Border FocusBorder
   {
+    preset Layout = Core::Layout[ResizeHorz, ResizeVert];
     preset Bounds = <0,0,150,40>;
     preset Width = 2;
     preset Color = #0072FFFF;
@@ -1107,6 +1110,27 @@ class PushButton : Core::Group
 
   $rect <250,170,450,210>
   property slot OnActivate;
+
+  $rect <470,170,670,210>
+  property bool ButtonEnabled = true;
+
+  $rect <470,210,670,250>
+  onset ButtonEnabled
+  {
+    if( pure ButtonEnabled != value )
+    {
+      pure ButtonEnabled = value;
+
+      if( value )
+      {
+        TitleText.Color = #FFFFFFFF;
+      }
+      else
+      {
+        TitleText.Color = #646464FF;
+      }
+    }
+  }
 }
 
 $rect <690,60,910,100>
@@ -1131,6 +1155,7 @@ class UpDownPushButtonSet : Components::BaseComponent
   $rect <20,20,160,60>
   object Menu::PushButton UpButton
   {
+    preset Layout = Core::Layout[AlignToLeft, AlignToTop, ResizeHorz];
     preset Bounds = <0,0,150,40>;
     preset Title = "Cancel";
     preset OnActivate = OnActivateSlot;
@@ -1139,6 +1164,7 @@ class UpDownPushButtonSet : Components::BaseComponent
   $rect <20,20,160,60>
   object Menu::PushButton DownButton
   {
+    preset Layout = Core::Layout[AlignToBottom, ResizeHorz];
     preset Bounds = <0,43,150,83>;
     preset Title = "OK";
     preset OnActivate = OnActivateSlot;
@@ -1149,11 +1175,11 @@ class UpDownPushButtonSet : Components::BaseComponent
   {
     if( DownButton == sender )
     {
-      postsignal OnDownButtonReleased;
+      postsignal OnDownButtonActivated;
     }
     else if( UpButton == sender )
     {
-      postsignal OnUpButtonReleased;
+      postsignal OnUpButtonActivated;
     }
     else
     {
@@ -1162,13 +1188,13 @@ class UpDownPushButtonSet : Components::BaseComponent
   }
 
   $rect <2,260,220,300>
-  property slot OnUpButtonReleased;
+  property slot OnUpButtonActivated;
 
   $rect <2,300,220,340>
-  property slot OnDownButtonReleased;
+  property slot OnDownButtonActivated;
 
   $rect <340,170,540,210>
-  property string UpButtonTitle = "Cancel";
+  property string UpButtonTitle = Strings::GEN_cancel;
 
   $rect <340,210,540,250>
   onset UpButtonTitle
@@ -1181,7 +1207,7 @@ class UpDownPushButtonSet : Components::BaseComponent
   }
 
   $rect <340,260,540,300>
-  property string DownButtonTitle = "OK";
+  property string DownButtonTitle = Strings::GEN_ok;
 
   $rect <340,300,550,340>
   onset DownButtonTitle
@@ -1190,6 +1216,32 @@ class UpDownPushButtonSet : Components::BaseComponent
     {
       pure DownButtonTitle = value;
       DownButton.TitleText.String = value;
+    }
+  }
+
+  $rect <650,170,850,210>
+  property bool UpButtonEnabled = true;
+
+  $rect <650,210,850,250>
+  onset UpButtonEnabled
+  {
+    if( pure UpButtonEnabled != value )
+    {
+      pure UpButtonEnabled = value;
+      UpButton.ButtonEnabled = value;
+    }
+  }
+
+  $rect <650,280,850,320>
+  property bool DownButtonEnabled = true;
+
+  $rect <650,320,850,360>
+  onset DownButtonEnabled
+  {
+    if( pure DownButtonEnabled != value )
+    {
+      pure DownButtonEnabled = value;
+      DownButton.ButtonEnabled = value;
     }
   }
 }

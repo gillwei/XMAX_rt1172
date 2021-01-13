@@ -164,6 +164,7 @@ EW_DEFINE_METHODS( MenuVerticalMenu, ComponentsBaseComponent )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuVerticalMenu )
 
 /* The method UpdateViewState() is invoked automatically after the state of the 

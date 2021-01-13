@@ -498,6 +498,7 @@ EW_DEFINE_CLASS( LauncherLNC_Main, ComponentsBaseComponent, BaseSlideInEffect, B
   LauncherLNC_Main_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
 EW_END_OF_CLASS( LauncherLNC_Main )
 
 /* Initializer for the class 'Launcher::LNC_RotaryPlate' */
@@ -982,6 +983,7 @@ EW_DEFINE_CLASS( LauncherLNC_RotaryPlate, ComponentsBaseComponent, Icons, OnIcon
   ComponentsBaseComponent_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
 EW_END_OF_CLASS( LauncherLNC_RotaryPlate )
 
 /* Initializer for the class 'Launcher::LNC_Base' */

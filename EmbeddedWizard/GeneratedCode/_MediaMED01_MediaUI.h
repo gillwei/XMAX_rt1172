@@ -178,6 +178,7 @@ EW_DEFINE_METHODS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_METHOD( OnShortHomeKeyActivated, void )( MediaMED01_MediaUI _this )
   EW_METHOD( OnLongDownKeyActivated, void )( MediaMED01_MediaUI _this )
   EW_METHOD( OnLongUpKeyActivated, void )( MediaMED01_MediaUI _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MediaMED01_MediaUI )
 
 /* The method Init() is invoked automatically after the component has been created. 

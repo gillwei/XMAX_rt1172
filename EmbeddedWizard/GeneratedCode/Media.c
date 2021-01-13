@@ -549,6 +549,7 @@ EW_DEFINE_CLASS( MediaMED01_MediaUI, ComponentsBaseMainBG, HighlightBG, Title, T
   MediaMED01_MediaUI_OnShortHomeKeyActivated,
   MediaMED01_MediaUI_OnLongDownKeyActivated,
   MediaMED01_MediaUI_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
 EW_END_OF_CLASS( MediaMED01_MediaUI )
 
 /* Embedded Wizard */

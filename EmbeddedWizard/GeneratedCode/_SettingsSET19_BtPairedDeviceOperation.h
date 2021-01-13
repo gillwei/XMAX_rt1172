@@ -162,6 +162,7 @@ EW_DEFINE_METHODS( SettingsSET19_BtPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET19_BtPairedDeviceOperation _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( SettingsSET19_BtPairedDeviceOperation _this, 
     XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( SettingsSET19_BtPairedDeviceOperation _this, 

@@ -153,6 +153,7 @@ EW_DEFINE_METHODS( HomeHOM11_tachometer, ComponentsBaseMainBG )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( HomeHOM11_tachometer )
 
 /* 'C' function for method : 'Home::HOM11_tachometer.OnShortEnterKeyActivated()' */

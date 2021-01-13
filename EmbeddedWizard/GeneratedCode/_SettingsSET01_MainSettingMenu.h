@@ -162,6 +162,7 @@ EW_DEFINE_METHODS( SettingsSET01_MainSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET01_MainSettingMenu _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( SettingsSET01_MainSettingMenu _this, XInt32 
     aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( SettingsSET01_MainSettingMenu _this, 

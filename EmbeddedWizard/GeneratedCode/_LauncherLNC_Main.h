@@ -167,6 +167,7 @@ EW_DEFINE_METHODS( LauncherLNC_Main, ComponentsBaseComponent )
   EW_METHOD( OnShortHomeKeyActivated, void )( LauncherLNC_Main _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( LauncherLNC_Main )
 
 /* The method Init() is invoked automatically after the component has been created. 

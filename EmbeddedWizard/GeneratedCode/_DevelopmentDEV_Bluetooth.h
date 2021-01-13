@@ -154,6 +154,7 @@ EW_DEFINE_METHODS( DevelopmentDEV_Bluetooth, ComponentsBaseMainBG )
   EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_Bluetooth _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( DevelopmentDEV_Bluetooth )
 
 /* 'C' function for method : 'Development::DEV_Bluetooth.OnShortHomeKeyActivated()' */

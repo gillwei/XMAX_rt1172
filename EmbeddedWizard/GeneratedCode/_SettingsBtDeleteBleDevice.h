@@ -158,6 +158,7 @@ EW_DEFINE_METHODS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsBtDeleteBleDevice )
 
 /* The method Init() is invoked automatically after the component has been created. 

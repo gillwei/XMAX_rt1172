@@ -615,6 +615,30 @@ const string SET19_disconnect =
 );
 
 $output false
+const string SET28_esn =
+(
+  Default = "Electronic Serial Number";
+);
+
+$output false
+const string SET28_sw_version =
+(
+  Default = "Software version";
+);
+
+$output false
+const string SET28_unit_id =
+(
+  Default = "Unit ID";
+);
+
+$output false
+const string SET28_sw_update =
+(
+  Default = "Software update";
+);
+
+$output false
 const string WSC01_wind_screen =
 (
   Default = "Wind Screen";

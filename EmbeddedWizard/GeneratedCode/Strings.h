@@ -42,6 +42,13 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+/* This file is generated automatically.
+   Generated: 2021/01/21 14:57:08 */
+EW_DECLARE_CONST( StringsGEN_ok )
+
+/* User defined constant: 'Strings::GEN_cancel' */
+EW_DECLARE_CONST( StringsGEN_cancel )
+
 /* User defined constant: 'Strings::GEN_bluetooth' */
 extern const XStringRes StringsGEN_bluetooth;
 
@@ -170,6 +177,18 @@ extern const XStringRes StringsSET19_connect;
 
 /* User defined constant: 'Strings::SET19_disconnect' */
 extern const XStringRes StringsSET19_disconnect;
+
+/* User defined constant: 'Strings::SET28_esn' */
+extern const XStringRes StringsSET28_esn;
+
+/* User defined constant: 'Strings::SET28_sw_version' */
+extern const XStringRes StringsSET28_sw_version;
+
+/* User defined constant: 'Strings::SET28_unit_id' */
+extern const XStringRes StringsSET28_unit_id;
+
+/* User defined constant: 'Strings::SET28_sw_update' */
+extern const XStringRes StringsSET28_sw_update;
 
 /* User defined constant: 'Strings::WSC01_wind_screen' */
 extern const XStringRes StringsWSC01_wind_screen;

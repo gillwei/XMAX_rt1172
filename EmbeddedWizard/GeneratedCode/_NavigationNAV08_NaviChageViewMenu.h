@@ -164,6 +164,7 @@ EW_DEFINE_METHODS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
   EW_METHOD( OnShortHomeKeyActivated, void )( NavigationNAV08_NaviChageViewMenu _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( NavigationNAV08_NaviChageViewMenu _this, 
     XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( NavigationNAV08_NaviChageViewMenu _this, 

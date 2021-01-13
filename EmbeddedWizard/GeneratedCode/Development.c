@@ -286,6 +286,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, Menu, Menu, Menu, Menu,
   DevelopmentDEV_Main_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
   DevelopmentDEV_Main_LoadItemClass,
   DevelopmentDEV_Main_LoadItemTitle,
   DevelopmentDEV_Main_OnItemActivate,
@@ -423,6 +424,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG, OnUpdateLoc
   DevelopmentDEV_RealTimeClock_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
 EW_END_OF_CLASS( DevelopmentDEV_RealTimeClock )
 
 /* Initializer for the class 'Development::DEV_Bluetooth' */
@@ -534,6 +536,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_Bluetooth, ComponentsBaseMainBG, BtSwVersionTitl
   DevelopmentDEV_Bluetooth_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
 EW_END_OF_CLASS( DevelopmentDEV_Bluetooth )
 
 /* Embedded Wizard */

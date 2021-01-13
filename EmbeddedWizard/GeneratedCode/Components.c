@@ -199,6 +199,19 @@ void ComponentsBaseComponent_OnKeyPressSlot( ComponentsBaseComponent _this, XObj
     }
     break;
 
+    case CoreKeyCodeF9 :
+    {
+      if ( _this->PassMagicKey )
+      {
+        _this->KeyHandler.Continue = 1;
+      }
+      else
+      {
+        ComponentsBaseComponent__OnShortMagicKeyActivated( _this );
+      }
+    }
+    break;
+
     default : 
       ;
   }
@@ -407,6 +420,19 @@ void ComponentsBaseComponent_OnLongHomeKeyActivated( ComponentsBaseComponent _th
   EW_UNUSED_ARG( _this );
 }
 
+/* 'C' function for method : 'Components::BaseComponent.OnShortMagicKeyActivated()' */
+void ComponentsBaseComponent_OnShortMagicKeyActivated( ComponentsBaseComponent _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+}
+
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortMagicKeyActivated()' */
+void ComponentsBaseComponent__OnShortMagicKeyActivated( void* _this )
+{
+  ((ComponentsBaseComponent)_this)->_VMT->OnShortMagicKeyActivated((ComponentsBaseComponent)_this );
+}
+
 /* Variants derived from the class : 'Components::BaseComponent' */
 EW_DEFINE_CLASS_VARIANTS( ComponentsBaseComponent )
 EW_END_OF_CLASS_VARIANTS( ComponentsBaseComponent )
@@ -450,6 +476,7 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, KeyHandler, KeyHandler, Key
   ComponentsBaseComponent_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
 EW_END_OF_CLASS( ComponentsBaseComponent )
 
 /* Initializer for the class 'Components::StatusBar' */
@@ -697,6 +724,7 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, MainBottomBG, Ma
   ComponentsBaseComponent_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
 EW_END_OF_CLASS( ComponentsBaseMainBG )
 
 /* Embedded Wizard */

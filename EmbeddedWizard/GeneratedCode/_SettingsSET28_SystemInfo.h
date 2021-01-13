@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSystemInfo_H
-#define _SettingsSystemInfo_H
+#ifndef _SettingsSET28_SystemInfo_H
+#define _SettingsSET28_SystemInfo_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,9 +42,10 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseMainBG.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CorePropertyObserver.h"
-#include "_MenuBaseMenuView.h"
+#include "_MenuUpDownPushButtonSet.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -91,27 +92,25 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::SystemInfo */
-#ifndef _SettingsSystemInfo_
-  EW_DECLARE_CLASS( SettingsSystemInfo )
-#define _SettingsSystemInfo_
+/* Forward declaration of the class Settings::SET28_SystemInfo */
+#ifndef _SettingsSET28_SystemInfo_
+  EW_DECLARE_CLASS( SettingsSET28_SystemInfo )
+#define _SettingsSET28_SystemInfo_
 #endif
 
 
-/* Deklaration of class : 'Settings::SystemInfo' */
-EW_DEFINE_FIELDS( SettingsSystemInfo, MenuBaseMenuView )
+/* Deklaration of class : 'Settings::SET28_SystemInfo' */
+EW_DEFINE_FIELDS( SettingsSET28_SystemInfo, ComponentsBaseMainBG )
   EW_OBJECT  ( ESN,             ViewsText )
   EW_OBJECT  ( SoftwareVersionTitle, ViewsText )
   EW_OBJECT  ( EsnText,         ViewsText )
   EW_OBJECT  ( SoftwareVersionText, ViewsText )
   EW_OBJECT  ( EsnObserver,     CorePropertyObserver )
-  EW_OBJECT  ( BtSwVersionTitle, ViewsText )
-  EW_OBJECT  ( BtSwVersionText, ViewsText )
-  EW_OBJECT  ( MagicKeyHandler, CoreKeyPressHandler )
-EW_END_OF_FIELDS( SettingsSystemInfo )
+  EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
+EW_END_OF_FIELDS( SettingsSET28_SystemInfo )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SystemInfo' */
-EW_DEFINE_METHODS( SettingsSystemInfo, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET28_SystemInfo' */
+EW_DEFINE_METHODS( SettingsSET28_SystemInfo, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -157,41 +156,37 @@ EW_DEFINE_METHODS( SettingsSystemInfo, MenuBaseMenuView )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( SettingsSystemInfo _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSystemInfo _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET28_SystemInfo _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( MenuBaseMenuView _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( SettingsSystemInfo )
+  EW_METHOD( OnShortMagicKeyActivated, void )( SettingsSET28_SystemInfo _this )
+EW_END_OF_METHODS( SettingsSET28_SystemInfo )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void SettingsSystemInfo_Init( SettingsSystemInfo _this, XHandle aArg );
+void SettingsSET28_SystemInfo_Init( SettingsSET28_SystemInfo _this, XHandle aArg );
 
-/* 'C' function for method : 'Settings::SystemInfo.OnShortEnterKeyActivated()' */
-void SettingsSystemInfo_OnShortEnterKeyActivated( SettingsSystemInfo _this );
+/* 'C' function for method : 'Settings::SET28_SystemInfo.OnShortHomeKeyActivated()' */
+void SettingsSET28_SystemInfo_OnShortHomeKeyActivated( SettingsSET28_SystemInfo _this );
 
-/* 'C' function for method : 'Settings::SystemInfo.OnShortHomeKeyActivated()' */
-void SettingsSystemInfo_OnShortHomeKeyActivated( SettingsSystemInfo _this );
-
-/* 'C' function for method : 'Settings::SystemInfo.OnMagicKeyReleaseSlot()' */
-void SettingsSystemInfo_OnMagicKeyReleaseSlot( SettingsSystemInfo _this, XObject 
-  sender );
+/* 'C' function for method : 'Settings::SET28_SystemInfo.OnShortMagicKeyActivated()' */
+void SettingsSET28_SystemInfo_OnShortMagicKeyActivated( SettingsSET28_SystemInfo _this );
 
 /* This slot method is executed when the associated property observer 'PropertyObserver' 
    is notified. */
-void SettingsSystemInfo_OnEsnReceivedSlot( SettingsSystemInfo _this, XObject sender );
+void SettingsSET28_SystemInfo_OnEsnReceivedSlot( SettingsSET28_SystemInfo _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Settings::SET28_SystemInfo.OnUnitIdButtonActivatedSlot()' */
+void SettingsSET28_SystemInfo_OnUnitIdButtonActivatedSlot( SettingsSET28_SystemInfo _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSystemInfo_H */
+#endif /* _SettingsSET28_SystemInfo_H */
 
 /* Embedded Wizard */

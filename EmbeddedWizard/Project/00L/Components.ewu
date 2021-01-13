@@ -74,6 +74,17 @@ class BaseComponent : Core::Group
           }
         }
       }
+      case Core::KeyCode.F9:
+      {
+        if( PassMagicKey )
+        {
+          KeyHandler.Continue = true;
+        }
+        else
+        {
+          OnShortMagicKeyActivated();
+        }
+      }
       default:;
     }
   }
@@ -149,28 +160,28 @@ class BaseComponent : Core::Group
   {
   }
 
-  $rect <50,430,260,470>
+  $rect <50,480,260,520>
   slot OnSlideEffectCompletedSlot
   {
     IsSlideEffectPresenting = false;
   }
 
-  $rect <280,430,490,470>
+  $rect <280,480,490,520>
   var bool IsSlideEffectPresenting = false;
 
   // Key Handle
   note group Note5
   {
-    attr Bounds = <20,10,1230,280>;
+    attr Bounds = <20,10,1230,320>;
   }
 
   // Slide Effect
   note group Note6
   {
-    attr Bounds = <20,320,730,490>;
+    attr Bounds = <20,370,730,540>;
   }
 
-  $rect <50,370,250,410>
+  $rect <50,420,250,460>
   method void SlideInDialog( arg Core::Group aView )
   {
     if( null != aView &&
@@ -185,7 +196,7 @@ class BaseComponent : Core::Group
 
   }
 
-  $rect <280,370,480,410>
+  $rect <280,420,480,460>
   method void SlideOutDialog( arg Core::Group aView )
   {
     if( null != aView &&
@@ -244,6 +255,14 @@ class BaseComponent : Core::Group
 
   $rect <990,210,1190,250>
   property bool PassEnterKey = false;
+
+  $rect <260,260,490,300>
+  method void OnShortMagicKeyActivated()
+  {
+  }
+
+  $rect <990,260,1190,300>
+  property bool PassMagicKey = false;
 }
 
 $rect <20,140,260,180>

@@ -97,12 +97,13 @@
 
 /* Deklaration of class : 'Menu::UpDownPushButtonSet' */
 EW_DEFINE_FIELDS( MenuUpDownPushButtonSet, ComponentsBaseComponent )
-  EW_PROPERTY( OnUpButtonReleased, XSlot )
-  EW_PROPERTY( OnDownButtonReleased, XSlot )
+  EW_PROPERTY( OnUpButtonActivated, XSlot )
+  EW_PROPERTY( OnDownButtonActivated, XSlot )
   EW_OBJECT  ( UpButton,        MenuPushButton )
   EW_OBJECT  ( DownButton,      MenuPushButton )
   EW_PROPERTY( UpButtonTitle,   XString )
   EW_PROPERTY( DownButtonTitle, XString )
+  EW_PROPERTY( DownButtonEnabled, XBool )
 EW_END_OF_FIELDS( MenuUpDownPushButtonSet )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::UpDownPushButtonSet' */
@@ -156,6 +157,7 @@ EW_DEFINE_METHODS( MenuUpDownPushButtonSet, ComponentsBaseComponent )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuUpDownPushButtonSet )
 
 /* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortDownKeyActivated()' */
@@ -175,6 +177,10 @@ void MenuUpDownPushButtonSet_OnSetUpButtonTitle( MenuUpDownPushButtonSet _this,
 /* 'C' function for method : 'Menu::UpDownPushButtonSet.OnSetDownButtonTitle()' */
 void MenuUpDownPushButtonSet_OnSetDownButtonTitle( MenuUpDownPushButtonSet _this, 
   XString value );
+
+/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnSetDownButtonEnabled()' */
+void MenuUpDownPushButtonSet_OnSetDownButtonEnabled( MenuUpDownPushButtonSet _this, 
+  XBool value );
 
 #ifdef __cplusplus
   }

@@ -52,8 +52,8 @@
 #include "_SettingsSET04_BtSettingMenu.h"
 #include "_SettingsSET17_BtPairedDeviceList.h"
 #include "_SettingsSET19_BtPairedDeviceOperation.h"
+#include "_SettingsSET28_SystemInfo.h"
 #include "_SettingsSET30_QRCode.h"
-#include "_SettingsSystemInfo.h"
 
 #ifdef __cplusplus
   }

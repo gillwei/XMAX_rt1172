@@ -98,7 +98,7 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
       case Enum::MainSettingItem.Unit:;
       case Enum::MainSettingItem.GripWarmerSettings:;
       case Enum::MainSettingItem.SeatHeaterSettings:;
-      case Enum::MainSettingItem.SystemInfo: Dialog = new Settings::SystemInfo;
+      case Enum::MainSettingItem.SystemInfo: Dialog = new Settings::SET28_SystemInfo;
       case Enum::MainSettingItem.LegalInfo:;
       case Enum::MainSettingItem.Reset:;
       default:;
@@ -363,80 +363,6 @@ note group Note
   attr Bounds = <460,20,1420,560>;
 }
 
-$rect <480,230,680,270>
-$output false
-class SystemMenu : Menu::BaseMenuView
-{
-  $rect <50,310,250,350>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <530,270,760,310>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
-
-  $rect <530,120,730,160>
-  inherited method LoadItemClass()
-  {
-    // suppress warning
-    if( aItemNo >= 0 )
-    {
-      // empty body
-    }
-
-    return Menu::ItemBase;
-  }
-
-  $rect <530,70,730,110>
-  inherited method LoadItemTitle()
-  {
-    var string Title = "";
-    if( aItemNo < SystemMenu.size )
-    {
-    Title = SystemMenu[aItemNo];
-    }
-    return Title;
-  }
-
-  $rect <530,170,730,210>
-  inherited method OnItemActivate()
-  {
-    trace "OnItemActivate:", aItemNo;
-
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
-
-    switch( aItemNo )
-    {
-      case 0:
-        PresentDialog( new Settings::SystemInfo, null, null, null, null, null, null, null, null, false );
-      case 1:
-        PresentDialog( new Settings::DisplayBrightness, null, null, null, null, null, null, null, null, false );
-      case 2:
-        PresentDialog( new Settings::Reset, null, null, null, null, null, null, null, null, false );
-      default :;
-    }
-  }
-
-  $rect <530,20,730,60>
-  array string SystemMenu[ 3 ] =
-  (
-    Default[0] = "System information";
-    Default[1] = "Display Brightness";
-    Default[2] = "All reset";
-  );
-
-  $rect <20,20,160,60>
-  object Menu::VerticalMenu Menu
-  {
-    preset Bounds = <0,36,480,272>;
-    preset NoOfItems = 3;
-  }
-}
-
 $rect <710,270,910,310>
 $output false
 class LegalMenu : Menu::BaseMenuView
@@ -508,72 +434,62 @@ class LegalMenu : Menu::BaseMenuView
   }
 }
 
-$rect <710,130,910,170>
+$rect <490,70,690,110>
 $output false
-class SystemInfo : Menu::BaseMenuView
+class SET28_SystemInfo : Components::BaseMainBG
 {
   $rect <520,10,720,50>
   inherited method Init()
   {
     EsnText.String = DeviceInterface::SystemDevice.ESN;
     SoftwareVersionText.String = DeviceInterface::SystemDevice.SoftwareVersion;
-    BtSwVersionText.String = DeviceInterface::SystemDevice.BtSoftwareVersion;
   }
 
   $rect <280,290,480,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <520,70,750,110>
-  inherited method OnShortEnterKeyActivated()
-  {
-    PresentDialog( new Settings::SET30_QRCode, null, null, null, null, null, null, null, null, false );
-  }
-
-  $rect <520,110,750,150>
+  $rect <520,60,750,100>
   inherited method OnShortHomeKeyActivated()
   {
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
+  $rect <520,110,750,150>
+  inherited method OnShortMagicKeyActivated()
+  {
+    this.PresentDialog( new Development::DEV_Main, null, null, null, null, null, null, null, null, false );
+  }
+
   $rect <20,20,160,60>
   object Views::Text ESN
   {
-    preset Bounds = <82,49,369,79>;
-    preset String = "Eletronic Serial Number";
+    preset Bounds = <10,46,470,77>;
+    preset String = Strings::SET28_esn;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
   object Views::Text SoftwareVersionTitle
   {
-    preset Bounds = <120,120,340,145>;
-    preset String = "Software Version";
+    preset Bounds = <10,108,470,139>;
+    preset String = Strings::SET28_sw_version;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
   object Views::Text EsnText
   {
-    preset Bounds = <90,80,362,110>;
-    preset String = "1234565";
+    preset Bounds = <10,77,470,108>;
+    preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
   object Views::Text SoftwareVersionText
   {
-    preset Bounds = <132,150,328,180>;
+    preset Bounds = <10,139,470,170>;
     preset String = DeviceInterface::SystemDevice.SoftwareVersion;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <520,210,740,250>
-  slot OnMagicKeyReleaseSlot
-  {
-    if( !DeviceInterface::SystemDevice.IsHopperTestMode )
-    {
-      PresentDialog( new Development::DEV_Main, null, null, null, null, null, null, null, null, false );
-    }
   }
 
   $rect <520,260,720,300>
@@ -592,26 +508,21 @@ class SystemInfo : Menu::BaseMenuView
   }
 
   $rect <20,20,160,60>
-  object Views::Text BtSwVersionTitle
+  object Menu::UpDownPushButtonSet UpDownPushButtonSet
   {
-    preset Bounds = <86,190,366,215>;
-    preset String = "BT Software Version";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Bounds = <95,176,385,259>;
+    preset PassHomeKey = true;
+    preset PassMagicKey = true;
+    preset OnUpButtonActivated = OnUnitIdButtonActivatedSlot;
+    preset UpButtonTitle = Strings::SET28_unit_id;
+    preset DownButtonTitle = Strings::SET28_sw_update;
+    preset DownButtonEnabled = false;
   }
 
-  $rect <20,20,160,60>
-  object Views::Text BtSwVersionText
+  $rect <520,160,760,200>
+  slot OnUnitIdButtonActivatedSlot
   {
-    preset Bounds = <110,220,343,250>;
-    preset String = DeviceInterface::SystemDevice.SoftwareVersion;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <520,170,740,210>
-  object Core::KeyPressHandler MagicKeyHandler
-  {
-    preset OnRelease = OnMagicKeyReleaseSlot;
-    preset Filter = Core::KeyCode.F9;
+    this.PresentDialog( new Settings::SET30_QRCode, null, null, null, null, null, null, null, null, false );
   }
 }
 
@@ -814,8 +725,8 @@ class AllReset : Menu::BaseMenuView
   object Menu::UpDownPushButtonSet UpDownPushButtonSet
   {
     preset Bounds = <165,176,315,259>;
-    preset OnUpButtonReleased = OnButtonNo;
-    preset OnDownButtonReleased = OnButtonYes;
+    preset OnUpButtonActivated = OnButtonNo;
+    preset OnDownButtonActivated = OnButtonYes;
   }
 }
 
@@ -1452,8 +1363,8 @@ class BtMaxPairedDevice : Components::BaseMainBG
   object Menu::UpDownPushButtonSet UpDownPushButtonSet
   {
     preset Bounds = <165,176,315,259>;
-    preset OnUpButtonReleased = OnYesSlot;
-    preset OnDownButtonReleased = OnNoSlot;
+    preset OnUpButtonActivated = OnYesSlot;
+    preset OnDownButtonActivated = OnNoSlot;
     preset UpButtonTitle = "Yes";
     preset DownButtonTitle = "No";
   }
@@ -1587,8 +1498,8 @@ class BtPairDevice : Components::BaseMainBG
   object Menu::UpDownPushButtonSet UpDownPushButtonSet
   {
     preset Bounds = <165,176,315,259>;
-    preset OnUpButtonReleased = OnYesNoSlot;
-    preset OnDownButtonReleased = OnYesNoSlot;
+    preset OnUpButtonActivated = OnYesNoSlot;
+    preset OnDownButtonActivated = OnYesNoSlot;
   }
 }
 
@@ -1969,7 +1880,7 @@ class BtFwUpdateDialog : Core::Group
   }
 }
 
-$rect <950,190,1150,230>
+$rect <490,120,690,160>
 $output false
 class SET30_QRCode : Menu::BaseMenuView
 {
