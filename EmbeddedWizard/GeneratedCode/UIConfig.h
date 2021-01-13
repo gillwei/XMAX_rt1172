@@ -42,6 +42,12 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+/* Forward declaration of the class WidgetSet::HorizontalSliderConfig */
+#ifndef _WidgetSetHorizontalSliderConfig_
+  EW_DECLARE_CLASS( WidgetSetHorizontalSliderConfig )
+#define _WidgetSetHorizontalSliderConfig_
+#endif
+
 /* Forward declaration of the class WidgetSet::PushButtonConfig */
 #ifndef _WidgetSetPushButtonConfig_
   EW_DECLARE_CLASS( WidgetSetPushButtonConfig )
@@ -59,6 +65,9 @@ EW_DECLARE_AUTOOBJECT( UIConfigPushButtonConfig, WidgetSetPushButtonConfig )
 
 /* User defined auto object: 'UIConfig::CheckBoxConfig' */
 EW_DECLARE_AUTOOBJECT( UIConfigCheckBoxConfig, WidgetSetToggleButtonConfig )
+
+/* User defined auto object: 'UIConfig::HorizontalSliderConfig' */
+EW_DECLARE_AUTOOBJECT( UIConfigHorizontalSliderConfig, WidgetSetHorizontalSliderConfig )
 
 #ifdef __cplusplus
   }

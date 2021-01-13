@@ -164,6 +164,8 @@ EW_DEFINE_METHODS( NavigationMain, ComponentsBaseComponent )
   EW_METHOD( OnShortUpKeyActivated, void )( NavigationMain _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( NavigationMain _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( NavigationMain )
 
 /* 'C' function for method : 'Navigation::Main.OnShortDownKeyActivated()' */

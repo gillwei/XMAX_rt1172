@@ -151,6 +151,8 @@ EW_DEFINE_METHODS( ComponentsBaseComponent, CoreGroup )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( ComponentsBaseComponent )
 
 /* 'C' function for method : 'Components::BaseComponent.OnKeyPressSlot()' */
@@ -200,8 +202,14 @@ void ComponentsBaseComponent__OnShortHomeKeyActivated( void* _this );
 /* 'C' function for method : 'Components::BaseComponent.OnLongDownKeyActivated()' */
 void ComponentsBaseComponent_OnLongDownKeyActivated( ComponentsBaseComponent _this );
 
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongDownKeyActivated()' */
+void ComponentsBaseComponent__OnLongDownKeyActivated( void* _this );
+
 /* 'C' function for method : 'Components::BaseComponent.OnLongUpKeyActivated()' */
 void ComponentsBaseComponent_OnLongUpKeyActivated( ComponentsBaseComponent _this );
+
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongUpKeyActivated()' */
+void ComponentsBaseComponent__OnLongUpKeyActivated( void* _this );
 
 /* 'C' function for method : 'Components::BaseComponent.OnLongEnterKeyActivated()' */
 void ComponentsBaseComponent_OnLongEnterKeyActivated( ComponentsBaseComponent _this );

@@ -1,36 +1,36 @@
 ﻿$version 10.00
 
-$rect <242,860,442,900>
+$rect <40,2190,240,2230>
 $output false
 resource Resources::Bitmap IconMediaPlayPause
 {
-  attr bitmapfile FileName = .\Res\icon_playpause.png;
+  attr bitmapfile FileName = .\Res\media\controlicon_play_pause.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <64,44>;
+  attr framesize FrameSize;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
 
-$rect <242,910,442,950>
+$rect <250,2190,450,2230>
 $output false
 resource Resources::Bitmap IconMediaPrevious
 {
-  attr bitmapfile FileName = .\Res\icon_prevTrack.png;
+  attr bitmapfile FileName = .\Res\media\controlicon_track_prev.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <64,44>;
+  attr framesize FrameSize = <94,75>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
 
-$rect <242,960,442,1000>
+$rect <460,2190,660,2230>
 $output false
 resource Resources::Bitmap IconMediaNext
 {
-  attr bitmapfile FileName = .\Res\icon_nextTrack.png;
+  attr bitmapfile FileName = .\Res\media\controlicon_track_next.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <64,44>;
+  attr framesize FrameSize = <94,75>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
@@ -1119,6 +1119,84 @@ resource Resources::Bitmap LCHighlight
   attr bitmapfile FileName = .\Res\launcher\LC_push.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <330,260,530,300>
+$output false
+resource Resources::Bitmap PageUpDown
+{
+  attr bitmapfile FileName = .\Res\menu\ml_arrow.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <32,32>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// Media
+note group Note9
+{
+  attr Bounds = <20,2150,1100,2310>;
+}
+
+$rect <670,2190,880,2230>
+$output false
+resource Resources::Bitmap ControlKeyBackground
+{
+  attr bitmapfile FileName = .\Res\media\controlkey.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <880,2190,1090,2230>
+$output false
+resource Resources::Bitmap IconVolumeDown
+{
+  attr bitmapfile FileName = .\Res\media\controlicon_vol_minus.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <40,2240,240,2280>
+$output false
+resource Resources::Bitmap IconVolumeUp
+{
+  attr bitmapfile FileName = .\Res\media\controlicon_vol_plus.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <250,2240,450,2280>
+$output false
+resource Resources::Bitmap SeekBarDot
+{
+  attr bitmapfile FileName = .\Res\media\timebar_dot.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <460,2240,660,2280>
+$output false
+resource Resources::Bitmap SeekBar
+{
+  attr bitmapfile FileName = .\Res\media\timebar_base.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <344,43>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;

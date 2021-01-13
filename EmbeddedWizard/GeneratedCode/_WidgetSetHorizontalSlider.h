@@ -312,10 +312,6 @@ void WidgetSetHorizontalSlider_onReleaseTouch( WidgetSetHorizontalSlider _this,
 void WidgetSetHorizontalSlider_onPressTouch( WidgetSetHorizontalSlider _this, XObject 
   sender );
 
-/* 'C' function for method : 'WidgetSet::HorizontalSlider.OnSetStepSize()' */
-void WidgetSetHorizontalSlider_OnSetStepSize( WidgetSetHorizontalSlider _this, XInt32 
-  value );
-
 /* 'C' function for method : 'WidgetSet::HorizontalSlider.OnGetCurrentValue()' */
 XInt32 WidgetSetHorizontalSlider_OnGetCurrentValue( WidgetSetHorizontalSlider _this );
 

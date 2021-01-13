@@ -225,6 +225,21 @@ EW_DECLARE_BITMAP_RES( ResourceIconWindScreenLarge )
 /* Bitmap resource : 'Resource::LCHighlight' */
 EW_DECLARE_BITMAP_RES( ResourceLCHighlight )
 
+/* Bitmap resource : 'Resource::ControlKeyBackground' */
+EW_DECLARE_BITMAP_RES( ResourceControlKeyBackground )
+
+/* Bitmap resource : 'Resource::IconVolumeDown' */
+EW_DECLARE_BITMAP_RES( ResourceIconVolumeDown )
+
+/* Bitmap resource : 'Resource::IconVolumeUp' */
+EW_DECLARE_BITMAP_RES( ResourceIconVolumeUp )
+
+/* Bitmap resource : 'Resource::SeekBarDot' */
+EW_DECLARE_BITMAP_RES( ResourceSeekBarDot )
+
+/* Bitmap resource : 'Resource::SeekBar' */
+EW_DECLARE_BITMAP_RES( ResourceSeekBar )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

@@ -408,8 +408,26 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     if ( pure Title == value && !IsInit )
       return;
 
-    // Remember the property's new value.
-    pure Title = value;
+    // Get song title when receiving from media manager or UI initialization.
+    if( IsTitleReceived || IsInit )
+    {
+
+      if( value == "" && IsTitleReceived )
+      {
+        // If received song title is empty, show "---".
+        pure Title = Strings::GEN_three_hyphens;
+      }
+      else
+      {
+        // Remember the property's new value.
+        pure Title = value;
+      }
+    }
+    else
+    {
+      // Fail to receive song title, show "---".
+      pure Title = Strings::GEN_three_hyphens;
+    }
 
     // Notify all associated property observers.
     notifyobservers ^Title;
@@ -425,8 +443,25 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     if ( pure Album == value && !IsInit )
       return;
 
-    // Remember the property's new value.
-    pure Album = value;
+    // Get album when receiving from media manager or UI initialization.
+    if( IsAlbumReceived || IsInit )
+    {
+      if( value == "" && IsAlbumReceived )
+      {
+        // If received album is empty, show "---".
+        pure Album = Strings::GEN_three_hyphens;
+      }
+      else
+      {
+        // Remember the property's new value.
+        pure Album = value;
+      }
+    }
+    else
+    {
+      // Fail to receive album, show "---".
+      pure Album = Strings::GEN_three_hyphens;
+    }
 
     // Notify all associated property observers.
     notifyobservers ^Album;
@@ -442,8 +477,25 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     if ( pure Artist == value && !IsInit )
       return;
 
-    // Remember the property's new value.
-    pure Artist = value;
+    // Get artist when receiving from media manager or UI initialization.
+    if( IsArtistReceived || IsInit )
+    {
+      if( value == "" && IsArtistReceived )
+      {
+        // If received artist is empty, show "---".
+        pure Artist = Strings::GEN_three_hyphens;
+      }
+      else
+      {
+        // Remember the property's new value.
+        pure Artist = value;
+      }
+    }
+    else
+    {
+      // Fail to receive artist, show "---".
+      pure Artist = Strings::GEN_three_hyphens;
+    }
 
     // Notify all associated property observers.
     notifyobservers ^Artist;
@@ -542,6 +594,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   method void NotifyTitleChanged( arg string aTitle )
   {
     trace "NotifyTitleChanged: " + aTitle;
+    IsTitleReceived = true;
     Title = aTitle;
   }
 
@@ -550,6 +603,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   method void NotifyArtistChanged( arg string aArtist )
   {
     trace "NotifyArtistChanged: " + aArtist;
+    IsArtistReceived = true;
     Artist = aArtist;
   }
 
@@ -558,6 +612,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   method void NotifyAlbumChanged( arg string aAlbum )
   {
     trace "NotifyAlbumChanged: " + aAlbum;
+    IsAlbumReceived = true;
     Album = aAlbum;
   }
 
@@ -618,7 +673,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     Title = media_title;
   }
 
-  $rect <480,130,680,170>
+  $rect <720,190,920,230>
   var bool IsInit = false;
 
   $rect <350,360,610,400>
@@ -650,6 +705,15 @@ class MediaManagerDeviceClass : Templates::DeviceClass
 
   $rect <720,100,920,140>
   property int32 RemainTimeSec;
+
+  $rect <720,230,920,270>
+  var bool IsTitleReceived = false;
+
+  $rect <720,270,920,310>
+  var bool IsAlbumReceived = false;
+
+  $rect <720,310,920,350>
+  var bool IsArtistReceived = false;
 }
 
 $rect <19,330,219,370>

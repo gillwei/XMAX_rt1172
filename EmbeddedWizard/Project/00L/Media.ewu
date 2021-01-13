@@ -2,9 +2,9 @@
 
 $rect <30,20,270,60>
 $output false
-class Main : Components::BaseComponent
+class MED01_MediaUI : Components::BaseMainBG
 {
-  $rect <10,450,210,490>
+  $rect <540,200,740,240>
   inherited method Init()
   {
     DeviceInterface::MediaManagerDevice.IsInit = true;
@@ -12,159 +12,104 @@ class Main : Components::BaseComponent
     DeviceInterface::MediaManagerDevice.GetPlaybackInfo();
     DeviceInterface::MediaManagerDevice.GetTrackInfo();
     DeviceInterface::MediaManagerDevice.IsInit = false;
-    if( "" !=DeviceInterface::MediaManagerDevice.Title )
+    if( "" != DeviceInterface::MediaManagerDevice.Title &&
+        Strings::GEN_three_hyphens != DeviceInterface::MediaManagerDevice.Title )
     {
-    signal OnPlaybackTimeUpdateSlot;
+      // Received music previously, update elapsed time & remain time.
+      signal OnPlaybackTimeUpdateSlot;
     }
   }
 
-  $rect <10,290,210,330>
+  $rect <540,40,740,80>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <520,90,750,130>
-  inherited method OnShortDownKeyActivated()
+  $rect <980,260,1210,300>
+  inherited method OnShortEnterKeyActivated()
   {
-    var int32 NextFocusIdx = FocusIdx + 1;
-    if( NextFocusIdx >= FocusList.size )
-      {
-      NextFocusIdx = FocusList.size - 1;
-      }
-
-    if( FocusIdx != NextFocusIdx )
-      {
-      FocusIdx = NextFocusIdx;
-      Focus = FocusList[NextFocusIdx];
-      }
+    StartHighlight( PlayPauseBG );
+    postsignal OnPlayPauseSlot;
   }
 
-  $rect <520,40,750,80>
-  inherited method OnShortUpKeyActivated()
-  {
-    var int32 NextFocusIdx = FocusIdx - 1;
-    if( NextFocusIdx < 0 )
-      {
-      NextFocusIdx = 0;
-      }
-
-    if( FocusIdx != NextFocusIdx )
-      {
-      FocusIdx = NextFocusIdx;
-      Focus = FocusList[NextFocusIdx];
-      }
-  }
-
-  $rect <520,140,750,180>
+  $rect <1210,260,1440,300>
   inherited method OnShortHomeKeyActivated()
   {
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
-  $rect <20,20,160,60>
-  object Views::Rectangle Rectangle
+  $rect <960,40,1160,80>
+  inherited property UpKeyTriggerMode = Enum::KeyTriggerMode.OFF;
+
+  $rect <1170,40,1370,80>
+  inherited property DownKeyTriggerMode = Enum::KeyTriggerMode.OFF;
+
+  $rect <750,260,980,300>
+  inherited method OnLongDownKeyActivated()
   {
-    preset Bounds = <0,0,480,272>;
-    preset Color = #000000FF;
+    StartHighlight( ControlDownBG );
+    postsignal OnPrevTrackSlot;
+  }
+
+  $rect <540,260,750,300>
+  inherited method OnLongUpKeyActivated()
+  {
+    StartHighlight( ControlUpBG );
+    postsignal OnNextTrackSlot;
   }
 
   $rect <20,20,160,60>
   object Views::Text Title
   {
-    preset Bounds = <80,36,410,76>;
+    preset Bounds = <127,69,457,103>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Visible = true;
   }
-
-  $rect <20,20,160,60>
-  object WidgetSet::PushButton PlayPauseButton
-  {
-    preset Bounds = <200,200,290,250>;
-    preset OnRelease = OnPlayPauseSlot;
-    preset IconFrameActive = 1;
-    preset IconFrameDefault = 0;
-    preset IconFrame = -1;
-    preset Icon = Resource::IconMediaPlayPause;
-    preset Label = "";
-    preset Appearance = UIConfig::PushButtonConfig;
-  }
-
-  $rect <20,20,160,60>
-  object WidgetSet::PushButton PrevTrackButton
-  {
-    preset Bounds = <80,200,170,250>;
-    preset OnRelease = OnPrevTrackSlot;
-    preset IconFrameActive = 1;
-    preset IconFrame = 0;
-    preset Icon = Resource::IconMediaPrevious;
-    preset Label = "";
-    preset Appearance = UIConfig::PushButtonConfig;
-  }
-
-  $rect <20,20,160,60>
-  object WidgetSet::PushButton NextTrackButton
-  {
-    preset Bounds = <310,200,400,250>;
-    preset OnRelease = OnNextTrackSlot;
-    preset IconFrameActive = 1;
-    preset IconFrame = 0;
-    preset Icon = Resource::IconMediaNext;
-    preset Label = "";
-    preset Appearance = UIConfig::PushButtonConfig;
-  }
-
-  $rect <520,250,720,290>
-  array Core::View FocusList[ 3 ] =
-  (
-    Default[0] = PrevTrackButton;
-    Default[1] = PlayPauseButton;
-    Default[2] = NextTrackButton;
-  );
-
-  $rect <520,200,720,240>
-  var int32 FocusIdx = 1;
 
   $rect <20,20,160,60>
   object Views::Text Artist
   {
-    preset Bounds = <80,80,410,120>;
+    preset Bounds = <127,114,457,148>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Visible = true;
   }
 
   $rect <20,20,160,60>
   object Views::Text Album
   {
-    preset Bounds = <80,121,410,161>;
+    preset Bounds = <127,153,457,187>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Visible = true;
   }
 
-  $rect <270,290,470,330>
+  $rect <540,320,740,360>
   slot OnPlayPauseSlot
   {
     if( 0 == Track.PlaybackState )
-      {
+    {
       DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.Play );
-      }
-      else
-      {
+    }
+    else
+    {
       DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.Pause );
-      }
+    }
   }
 
-  $rect <270,330,470,370>
+  $rect <750,320,950,360>
   slot OnPrevTrackSlot
   {
     ChangeTrack();
     DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.PrevTrack );
   }
 
-  $rect <270,370,470,410>
+  $rect <960,320,1160,360>
   slot OnNextTrackSlot
   {
     ChangeTrack();
@@ -172,31 +117,23 @@ class Main : Components::BaseComponent
   }
 
   $rect <20,20,160,60>
-  object WidgetSet::HorizontalSlider PlayProgress
-  {
-    preset Bounds = <90,150,400,200>;
-    preset Outlet;
-    preset StepSize = 1;
-    preset CurrentValue = 0;
-    preset Appearance = WidgetSet::HorizontalSlider_Small;
-  }
-
-  $rect <20,20,160,60>
   object Views::Text ElapsedTimeSec
   {
-    preset Bounds = <10,160,80,190>;
+    preset Bounds = <127,226,204,256>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-    preset Visible = true;
+    preset Font = Fonts::NotoSansCjkJpMedium22pt;
+    preset Visible = false;
   }
 
   $rect <20,20,160,60>
   object Views::Text RemainTimeSec
   {
-    preset Bounds = <400,160,470,190>;
+    preset Bounds = <364,226,441,256>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
-    preset Visible = true;
+    preset Visible = false;
   }
 
   $rect <20,20,160,60>
@@ -211,23 +148,26 @@ class Main : Components::BaseComponent
     preset ElapsedTimeSec;
   }
 
-  $rect <270,410,470,450>
+  $rect <1170,320,1370,360>
   slot SetTrackInfo
   {
     Title.String = Track.Title;
-    Album.String = Track.Album;
     Artist.String = Track.Artist;
+    Album.String = Track.Album;
   }
 
-  $rect <530,310,730,350>
+  $rect <750,200,950,240>
   method void ChangeTrack()
   {
     // Reset if next/previous track command is issued.
     Track.ResetTrackInfo();
     Track.IsTrackInfoReset = false;
+    DeviceInterface::MediaManagerDevice.IsTitleReceived = false;
+    DeviceInterface::MediaManagerDevice.IsArtistReceived = false;
+    DeviceInterface::MediaManagerDevice.IsAlbumReceived = false;
   }
 
-  $rect <540,370,740,410>
+  $rect <540,460,780,500>
   object Core::SystemEventHandler PlaybackTimeEventHandler
   {
     preset OnEvent = OnPlaybackTimeUpdateSlot;
@@ -236,18 +176,34 @@ class Main : Components::BaseComponent
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <740,370,1010,410>
+  $rect <800,460,1070,500>
   slot OnPlaybackTimeUpdateSlot
   {
+    if( !ElapsedTimeSec.Visible )
+    {
+      ElapsedTimeSec.Visible = true;
+    }
     ElapsedTimeSec.String = FormatTimeText( DeviceInterface::MediaManagerDevice.ElapsedTimeSec );
-    RemainTimeSec.String = "-" + FormatTimeText( DeviceInterface::MediaManagerDevice.RemainTimeSec );
+
+    if( !RemainTimeSec.Visible )
+    {
+      RemainTimeSec.Visible = true;
+    }
+    RemainTimeSec.String = FormatTimeText( DeviceInterface::MediaManagerDevice.RemainTimeSec );
+
     if( 0 != DeviceInterface::MediaManagerDevice.DurationTimeSec )
     {
-    PlayProgress.CurrentValue = (DeviceInterface::MediaManagerDevice.ElapsedTimeSec * 100) / DeviceInterface::MediaManagerDevice.DurationTimeSec;
+      if( !SeekBar.Visible )
+      {
+        SeekBar.Visible = true;
+      }
+      SeekBar.CurrentValue = ( DeviceInterface::MediaManagerDevice.ElapsedTimeSec * 100 ) / DeviceInterface::MediaManagerDevice.DurationTimeSec;
     }
+
+
   }
 
-  $rect <10,490,210,530>
+  $rect <960,200,1160,240>
   method string FormatTimeText( arg int32 TimeSec )
   {
     var int32 Hour = TimeSec / 3600;
@@ -258,6 +214,10 @@ class Main : Components::BaseComponent
     if( Hour > 0)
     {
       TimeText = string( Hour ) + ":";
+      if( Minute < 10 )
+      {
+        TimeText = TimeText + "0";
+      }
     }
     TimeText = TimeText + string( Minute ) + ":";
     if( Second < 10 )
@@ -267,9 +227,128 @@ class Main : Components::BaseComponent
     TimeText = TimeText + string( Second );
     return TimeText;
   }
+
+  $rect <20,20,160,60>
+  object Views::Image PlayPauseBG
+  {
+    preset Bounds = <0,114,94,189>;
+    preset FrameNumber = 0;
+    preset Bitmap = Resource::ControlKeyBackground;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image PlayPauseButton
+  {
+    preset Bounds = <0,114,94,189>;
+    preset Bitmap = Resource::IconMediaPlayPause;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ControlDownBG
+  {
+    preset Bounds = <0,189,94,264>;
+    preset Bitmap = Resource::ControlKeyBackground;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image PreviousTrackButton
+  {
+    preset Bounds = <0,189,94,264>;
+    preset Bitmap = Resource::IconMediaPrevious;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image VolumeDownButton
+  {
+    preset Bounds = <0,189,94,264>;
+    preset Bitmap = Resource::IconVolumeDown;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ControlUpBG
+  {
+    preset Bounds = <0,39,94,114>;
+    preset Bitmap = Resource::ControlKeyBackground;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image NextTrackButton
+  {
+    preset Bounds = <0,39,94,114>;
+    preset Bitmap = Resource::IconMediaNext;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image VolumeUpButton
+  {
+    preset Bounds = <0,39,94,114>;
+    preset Bitmap = Resource::IconVolumeUp;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::HorizontalSlider SeekBar
+  {
+    preset Bounds = <111,188,455,231>;
+    preset Visible = false;
+    preset CurrentValue = 0;
+    preset Appearance = UIConfig::HorizontalSliderConfig;
+  }
+
+  $rect <540,510,730,550>
+  object Core::Timer HighlightTimer
+  {
+    preset OnTrigger = OnHighlightEndSlot;
+    preset Period = 100;
+    preset Enabled = false;
+  }
+
+  $rect <740,510,1000,550>
+  slot OnHighlightEndSlot
+  {
+    HighlightTimer.Enabled = false;
+    HighlightBG.FrameNumber = 0;
+  }
+
+  $rect <1170,200,1370,240>
+  method void StartHighlight( arg Views::Image aBackground )
+  {
+    aBackground.FrameNumber = 1;
+    HighlightBG = aBackground;
+    HighlightTimer.Enabled = true;
+  }
+
+  $rect <750,40,950,80>
+  property Views::Image HighlightBG;
+
+  // Variables
+  note group Note9
+  {
+    attr Bounds = <520,0,1470,150>;
+  }
+
+  // Methods/Slots
+  note group Note10
+  {
+    attr Bounds = <520,160,1460,390>;
+  }
+
+  // SystemEvents/Others
+  note group Note11
+  {
+    attr Bounds = <520,420,1470,570>;
+  }
+
+  // TODO:
+  // 1. Handle long pressing Home button.
+  // 2. Reception error/success (BLE connected/disconnected).
+  // 3. Volume control.
+  note group Note12
+  {
+    attr Bounds = <20,290,480,450>;
+  }
 }
 
-$rect <40,70,240,110>
+$rect <320,20,520,60>
 $output false
 class Track : Core::Group
 {

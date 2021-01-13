@@ -485,6 +485,8 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, Menu, Menu, Me
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   SettingsSET01_MainSettingMenu_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
   SettingsSET01_MainSettingMenu_LoadItemClass,
   SettingsSET01_MainSettingMenu_LoadItemTitle,
   SettingsSET01_MainSettingMenu_OnItemActivate,
@@ -637,6 +639,8 @@ EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, Menu, Me
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   SettingsSET03_ConnectionSettingMenu_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
   SettingsSET03_ConnectionSettingMenu_LoadItemClass,
   SettingsSET03_ConnectionSettingMenu_LoadItemTitle,
   SettingsSET03_ConnectionSettingMenu_OnItemActivate,
@@ -907,6 +911,8 @@ EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, Menu, Menu, Menu
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   SettingsSET04_BtSettingMenu_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
   SettingsSET04_BtSettingMenu_LoadItemClass,
   SettingsSET04_BtSettingMenu_LoadItemTitle,
   SettingsSET04_BtSettingMenu_OnItemActivate,
@@ -1114,6 +1120,8 @@ EW_DEFINE_CLASS( SettingsSystemInfo, MenuBaseMenuView, ESN, ESN, ESN, ESN, _None
   ComponentsBaseComponent_OnShortUpKeyActivated,
   SettingsSystemInfo_OnShortEnterKeyActivated,
   SettingsSystemInfo_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -1338,6 +1346,8 @@ EW_DEFINE_CLASS( SettingsBtDiscovarable, ComponentsBaseMainBG, DiscoverableText,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( SettingsBtDiscovarable )
 
 /* Initializer for the class 'Settings::BtConnectionResult' */
@@ -1517,6 +1527,8 @@ EW_DEFINE_CLASS( SettingsBtConnectionResult, ComponentsBaseMainBG, Text, Text, T
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( SettingsBtConnectionResult )
 
 /* Initializer for the class 'Settings::BtMaxPairedDevice' */
@@ -1643,6 +1655,8 @@ EW_DEFINE_CLASS( SettingsBtMaxPairedDevice, ComponentsBaseMainBG, ToRemovePaired
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( SettingsBtMaxPairedDevice )
 
 /* Initializer for the class 'Settings::SET17_BtPairedDeviceList' */
@@ -1892,6 +1906,8 @@ EW_DEFINE_CLASS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView, Menu, Menu,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   SettingsSET17_BtPairedDeviceList_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
   SettingsSET17_BtPairedDeviceList_LoadItemClass,
   SettingsSET17_BtPairedDeviceList_LoadItemTitle,
   SettingsSET17_BtPairedDeviceList_OnItemActivate,
@@ -2073,6 +2089,8 @@ EW_DEFINE_CLASS( SettingsBtPairedDeviceOperation, MenuBaseMenuView, Menu, Menu,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
   SettingsBtPairedDeviceOperation_LoadItemClass,
   SettingsBtPairedDeviceOperation_LoadItemTitle,
   SettingsBtPairedDeviceOperation_OnItemActivate,
@@ -2207,6 +2225,8 @@ EW_DEFINE_CLASS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG, Text, Text, Te
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( SettingsBtDeleteBleDevice )
 
 /* Initializer for the class 'Settings::BtFwUpdateDialog' */
@@ -2558,6 +2578,8 @@ EW_DEFINE_CLASS( SettingsSET30_QRCode, MenuBaseMenuView, QrCodeUpdateEventHandle
   SettingsSET30_QRCode_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   SettingsSET30_QRCode_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,

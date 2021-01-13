@@ -153,6 +153,8 @@ EW_DEFINE_METHODS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_RealTimeClock _this )
+  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( DevelopmentDEV_RealTimeClock )
 
 /* 'C' function for method : 'Development::DEV_RealTimeClock.OnShortHomeKeyActivated()' */

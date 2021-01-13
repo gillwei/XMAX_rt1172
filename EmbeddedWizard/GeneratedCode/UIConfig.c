@@ -27,6 +27,7 @@
 #include "ewlocale.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
+#include "_WidgetSetHorizontalSliderConfig.h"
 #include "_WidgetSetPushButtonConfig.h"
 #include "_WidgetSetToggleButtonConfig.h"
 #include "Core.h"
@@ -95,5 +96,25 @@ void UIConfigCheckBoxConfig__Init( WidgetSetToggleButtonConfig _this )
 /* Table with links to derived variants of the auto object : 'UIConfig::CheckBoxConfig' */
 EW_DEFINE_AUTOOBJECT_VARIANTS( UIConfigCheckBoxConfig )
 EW_END_OF_AUTOOBJECT_VARIANTS( UIConfigCheckBoxConfig )
+
+/* User defined auto object: 'UIConfig::HorizontalSliderConfig' */
+EW_DEFINE_AUTOOBJECT( UIConfigHorizontalSliderConfig, WidgetSetHorizontalSliderConfig )
+
+/* Initializer for the auto object 'UIConfig::HorizontalSliderConfig' */
+void UIConfigHorizontalSliderConfig__Init( WidgetSetHorizontalSliderConfig _this )
+{
+  WidgetSetHorizontalSliderConfig_OnSetThumbDefault( _this, EwLoadResource( &ResourceSeekBarDot, 
+  ResourcesBitmap ));
+  WidgetSetHorizontalSliderConfig_OnSetTrackRightFrameDefault( _this, 0 );
+  WidgetSetHorizontalSliderConfig_OnSetTrackRightDefault( _this, EwLoadResource( 
+  &ResourceSeekBar, ResourcesBitmap ));
+  WidgetSetHorizontalSliderConfig_OnSetTrackLeftFrameDefault( _this, 1 );
+  WidgetSetHorizontalSliderConfig_OnSetTrackLeftDefault( _this, EwLoadResource( 
+  &ResourceSeekBar, ResourcesBitmap ));
+}
+
+/* Table with links to derived variants of the auto object : 'UIConfig::HorizontalSliderConfig' */
+EW_DEFINE_AUTOOBJECT_VARIANTS( UIConfigHorizontalSliderConfig )
+EW_END_OF_AUTOOBJECT_VARIANTS( UIConfigHorizontalSliderConfig )
 
 /* Embedded Wizard */

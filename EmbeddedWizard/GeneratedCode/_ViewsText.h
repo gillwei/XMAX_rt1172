@@ -244,6 +244,9 @@ void ViewsText_OnSetFont( ViewsText _this, ResourcesFont value );
 /* 'C' function for method : 'Views::Text.OnSetColor()' */
 void ViewsText_OnSetColor( ViewsText _this, XColor value );
 
+/* 'C' function for method : 'Views::Text.OnGetVisible()' */
+XBool ViewsText_OnGetVisible( ViewsText _this );
+
 /* 'C' function for method : 'Views::Text.OnSetVisible()' */
 void ViewsText_OnSetVisible( ViewsText _this, XBool value );
 

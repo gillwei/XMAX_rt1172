@@ -285,20 +285,6 @@ void WidgetSetPushButton_onReleaseTouch( WidgetSetPushButton _this, XObject send
 /* 'C' function for method : 'WidgetSet::PushButton.onPressTouch()' */
 void WidgetSetPushButton_onPressTouch( WidgetSetPushButton _this, XObject sender );
 
-/* 'C' function for method : 'WidgetSet::PushButton.OnSetIconFrameActive()' */
-void WidgetSetPushButton_OnSetIconFrameActive( WidgetSetPushButton _this, XInt32 
-  value );
-
-/* 'C' function for method : 'WidgetSet::PushButton.OnSetIconFrameDefault()' */
-void WidgetSetPushButton_OnSetIconFrameDefault( WidgetSetPushButton _this, XInt32 
-  value );
-
-/* 'C' function for method : 'WidgetSet::PushButton.OnSetIconFrame()' */
-void WidgetSetPushButton_OnSetIconFrame( WidgetSetPushButton _this, XInt32 value );
-
-/* 'C' function for method : 'WidgetSet::PushButton.OnSetIcon()' */
-void WidgetSetPushButton_OnSetIcon( WidgetSetPushButton _this, ResourcesBitmap value );
-
 /* 'C' function for method : 'WidgetSet::PushButton.OnSetLabel()' */
 void WidgetSetPushButton_OnSetLabel( WidgetSetPushButton _this, XString value );
 

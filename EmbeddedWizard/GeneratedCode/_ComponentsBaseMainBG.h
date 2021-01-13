@@ -151,6 +151,8 @@ EW_DEFINE_METHODS( ComponentsBaseMainBG, ComponentsBaseComponent )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( ComponentsBaseMainBG )
 
 #ifdef __cplusplus

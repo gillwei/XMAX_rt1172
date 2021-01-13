@@ -38,3 +38,14 @@ autoobject WidgetSet::ToggleButtonConfig CheckBoxConfig
   preset FaceOffDisabled = Resource::CheckboxDisable;
   preset FaceOffDefault = Resource::CheckboxNormal;
 }
+
+$rect <30,150,270,190>
+$output false
+autoobject WidgetSet::HorizontalSliderConfig HorizontalSliderConfig
+{
+  preset ThumbDefault = Resource::SeekBarDot;
+  preset TrackRightFrameDefault = 0;
+  preset TrackRightDefault = Resource::SeekBar;
+  preset TrackLeftFrameDefault = 1;
+  preset TrackLeftDefault = Resource::SeekBar;
+}

@@ -187,7 +187,7 @@ class LNC_Main : Components::BaseComponent
       case Enum::LauncherItem.PHONE:;
       case Enum::LauncherItem.MUSIC:
       {
-        ItemDialog = new Media::Main;
+        ItemDialog = new Media::MED01_MediaUI;
         PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
       case Enum::LauncherItem.ODO_TRIP:;

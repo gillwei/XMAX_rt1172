@@ -50,16 +50,6 @@
 #include "_WidgetSetToggleButtonConfig.h"
 #include "_WidgetSetWidgetConfig.h"
 
-/* Bitmap resource used per default by the Widgets customized for the small  size. */
-EW_DECLARE_BITMAP_RES( WidgetSetHorizontalSliderTrackSmall )
-
-/* Bitmap resource used per default by the Widgets customized for the small  size. */
-EW_DECLARE_BITMAP_RES( WidgetSetThumbKnobSmall )
-
-/* This autoobject provides the default customization for the 'horizontal slider' 
-   widget (WidgetSet::HorizontalSlider) in its small size variant. */
-EW_DECLARE_AUTOOBJECT( WidgetSetHorizontalSlider_Small, WidgetSetHorizontalSliderConfig )
-
 #ifdef __cplusplus
   }
 #endif

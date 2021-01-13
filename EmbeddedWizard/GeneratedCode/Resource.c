@@ -420,4 +420,34 @@ EW_RES_WITHOUT_VARIANTS( ResourceIconWindScreenLarge )
 /* Table with links to derived variants of the bitmap resource : 'Resource::LCHighlight' */
 EW_RES_WITHOUT_VARIANTS( ResourceLCHighlight )
 
+/* Include a file containing the bitmap resource : 'Resource::ControlKeyBackground' */
+#include "_ResourceControlKeyBackground.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ControlKeyBackground' */
+EW_RES_WITHOUT_VARIANTS( ResourceControlKeyBackground )
+
+/* Include a file containing the bitmap resource : 'Resource::IconVolumeDown' */
+#include "_ResourceIconVolumeDown.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconVolumeDown' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconVolumeDown )
+
+/* Include a file containing the bitmap resource : 'Resource::IconVolumeUp' */
+#include "_ResourceIconVolumeUp.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconVolumeUp' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconVolumeUp )
+
+/* Include a file containing the bitmap resource : 'Resource::SeekBarDot' */
+#include "_ResourceSeekBarDot.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SeekBarDot' */
+EW_RES_WITHOUT_VARIANTS( ResourceSeekBarDot )
+
+/* Include a file containing the bitmap resource : 'Resource::SeekBar' */
+#include "_ResourceSeekBar.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SeekBar' */
+EW_RES_WITHOUT_VARIANTS( ResourceSeekBar )
+
 /* Embedded Wizard */

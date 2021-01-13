@@ -228,11 +228,11 @@ void ComponentsBaseComponent_OnKeyHoldSlot( ComponentsBaseComponent _this, XObje
   switch ( _this->KeyHandler.Code )
   {
     case CoreKeyCodeUp :
-      ComponentsBaseComponent_OnLongUpKeyActivated( _this );
+      ComponentsBaseComponent__OnLongUpKeyActivated( _this );
     break;
 
     case CoreKeyCodeDown :
-      ComponentsBaseComponent_OnLongDownKeyActivated( _this );
+      ComponentsBaseComponent__OnLongDownKeyActivated( _this );
     break;
 
     case CoreKeyCodeOk :
@@ -386,11 +386,23 @@ void ComponentsBaseComponent_OnLongDownKeyActivated( ComponentsBaseComponent _th
   EW_UNUSED_ARG( _this );
 }
 
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongDownKeyActivated()' */
+void ComponentsBaseComponent__OnLongDownKeyActivated( void* _this )
+{
+  ((ComponentsBaseComponent)_this)->_VMT->OnLongDownKeyActivated((ComponentsBaseComponent)_this );
+}
+
 /* 'C' function for method : 'Components::BaseComponent.OnLongUpKeyActivated()' */
 void ComponentsBaseComponent_OnLongUpKeyActivated( ComponentsBaseComponent _this )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
+}
+
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongUpKeyActivated()' */
+void ComponentsBaseComponent__OnLongUpKeyActivated( void* _this )
+{
+  ((ComponentsBaseComponent)_this)->_VMT->OnLongUpKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnLongEnterKeyActivated()' */
@@ -448,6 +460,8 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, KeyHandler, KeyHandler, Key
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( ComponentsBaseComponent )
 
 /* Initializer for the class 'Components::DisclaimerView' */
@@ -593,6 +607,8 @@ EW_DEFINE_CLASS( ComponentsDisclaimerView, ComponentsBaseComponent, OnYesClicked
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( ComponentsDisclaimerView )
 
 /* Initializer for the class 'Components::StatusBar' */
@@ -838,6 +854,8 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, MainBottomBG, Ma
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( ComponentsBaseMainBG )
 
 /* Embedded Wizard */

@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/01/02 15:13:04
+// Generated: 2021/01/13 21:49:23
 
 $output false
 const string GEN_ok =
@@ -81,6 +81,12 @@ $output false
 const string GEN_bluetooth =
 (
   Default = "Bluetooth";
+);
+
+$output false
+const string GEN_three_hyphens =
+(
+  Default = "---";
 );
 
 $output false
@@ -388,18 +394,6 @@ $output false
 const string LNC_settings =
 (
   Default = "Settings";
-);
-
-$output false
-const string MED01_volume_plus =
-(
-  Default = "VOL+";
-);
-
-$output false
-const string MED01_volume_minus =
-(
-  Default = "VOL-";
 );
 
 $output false

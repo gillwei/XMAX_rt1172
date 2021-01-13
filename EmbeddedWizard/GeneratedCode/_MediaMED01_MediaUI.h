@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _MediaMain_H
-#define _MediaMain_H
+#ifndef _MediaMED01_MediaUI_H
+#define _MediaMED01_MediaUI_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,14 +42,15 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
+#include "_ComponentsBaseMainBG.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_MediaTrack.h"
+#include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 #include "_WidgetSetHorizontalSlider.h"
-#include "_WidgetSetPushButton.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -93,33 +94,37 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Media::Main */
-#ifndef _MediaMain_
-  EW_DECLARE_CLASS( MediaMain )
-#define _MediaMain_
+/* Forward declaration of the class Media::MED01_MediaUI */
+#ifndef _MediaMED01_MediaUI_
+  EW_DECLARE_CLASS( MediaMED01_MediaUI )
+#define _MediaMED01_MediaUI_
 #endif
 
 
-/* Deklaration of class : 'Media::Main' */
-EW_DEFINE_FIELDS( MediaMain, ComponentsBaseComponent )
-  EW_ARRAY   ( FocusList,       CoreView, [3])
-  EW_OBJECT  ( Rectangle,       ViewsRectangle )
+/* Deklaration of class : 'Media::MED01_MediaUI' */
+EW_DEFINE_FIELDS( MediaMED01_MediaUI, ComponentsBaseMainBG )
+  EW_PROPERTY( HighlightBG,     ViewsImage )
   EW_OBJECT  ( Title,           ViewsText )
-  EW_OBJECT  ( PlayPauseButton, WidgetSetPushButton )
-  EW_OBJECT  ( PrevTrackButton, WidgetSetPushButton )
-  EW_OBJECT  ( NextTrackButton, WidgetSetPushButton )
   EW_OBJECT  ( Artist,          ViewsText )
   EW_OBJECT  ( Album,           ViewsText )
-  EW_OBJECT  ( PlayProgress,    WidgetSetHorizontalSlider )
   EW_OBJECT  ( ElapsedTimeSec,  ViewsText )
   EW_OBJECT  ( RemainTimeSec,   ViewsText )
   EW_OBJECT  ( Track,           MediaTrack )
   EW_OBJECT  ( PlaybackTimeEventHandler, CoreSystemEventHandler )
-  EW_VARIABLE( FocusIdx,        XInt32 )
-EW_END_OF_FIELDS( MediaMain )
+  EW_OBJECT  ( PlayPauseBG,     ViewsImage )
+  EW_OBJECT  ( PlayPauseButton, ViewsImage )
+  EW_OBJECT  ( ControlDownBG,   ViewsImage )
+  EW_OBJECT  ( PreviousTrackButton, ViewsImage )
+  EW_OBJECT  ( VolumeDownButton, ViewsImage )
+  EW_OBJECT  ( ControlUpBG,     ViewsImage )
+  EW_OBJECT  ( NextTrackButton, ViewsImage )
+  EW_OBJECT  ( VolumeUpButton,  ViewsImage )
+  EW_OBJECT  ( SeekBar,         WidgetSetHorizontalSlider )
+  EW_OBJECT  ( HighlightTimer,  CoreTimer )
+EW_END_OF_FIELDS( MediaMED01_MediaUI )
 
-/* Virtual Method Table (VMT) for the class : 'Media::Main' */
-EW_DEFINE_METHODS( MediaMain, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'Media::MED01_MediaUI' */
+EW_DEFINE_METHODS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -163,52 +168,64 @@ EW_DEFINE_METHODS( MediaMain, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( MediaMain _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( MediaMain _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( MediaMain _this )
-EW_END_OF_METHODS( MediaMain )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( MediaMED01_MediaUI _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( MediaMED01_MediaUI _this )
+  EW_METHOD( OnLongDownKeyActivated, void )( MediaMED01_MediaUI _this )
+  EW_METHOD( OnLongUpKeyActivated, void )( MediaMED01_MediaUI _this )
+EW_END_OF_METHODS( MediaMED01_MediaUI )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void MediaMain_Init( MediaMain _this, XHandle aArg );
+void MediaMED01_MediaUI_Init( MediaMED01_MediaUI _this, XHandle aArg );
 
-/* 'C' function for method : 'Media::Main.OnShortDownKeyActivated()' */
-void MediaMain_OnShortDownKeyActivated( MediaMain _this );
+/* 'C' function for method : 'Media::MED01_MediaUI.OnShortEnterKeyActivated()' */
+void MediaMED01_MediaUI_OnShortEnterKeyActivated( MediaMED01_MediaUI _this );
 
-/* 'C' function for method : 'Media::Main.OnShortUpKeyActivated()' */
-void MediaMain_OnShortUpKeyActivated( MediaMain _this );
+/* 'C' function for method : 'Media::MED01_MediaUI.OnShortHomeKeyActivated()' */
+void MediaMED01_MediaUI_OnShortHomeKeyActivated( MediaMED01_MediaUI _this );
 
-/* 'C' function for method : 'Media::Main.OnShortHomeKeyActivated()' */
-void MediaMain_OnShortHomeKeyActivated( MediaMain _this );
+/* 'C' function for method : 'Media::MED01_MediaUI.OnLongDownKeyActivated()' */
+void MediaMED01_MediaUI_OnLongDownKeyActivated( MediaMED01_MediaUI _this );
 
-/* 'C' function for method : 'Media::Main.OnPlayPauseSlot()' */
-void MediaMain_OnPlayPauseSlot( MediaMain _this, XObject sender );
+/* 'C' function for method : 'Media::MED01_MediaUI.OnLongUpKeyActivated()' */
+void MediaMED01_MediaUI_OnLongUpKeyActivated( MediaMED01_MediaUI _this );
 
-/* 'C' function for method : 'Media::Main.OnPrevTrackSlot()' */
-void MediaMain_OnPrevTrackSlot( MediaMain _this, XObject sender );
+/* 'C' function for method : 'Media::MED01_MediaUI.OnPlayPauseSlot()' */
+void MediaMED01_MediaUI_OnPlayPauseSlot( MediaMED01_MediaUI _this, XObject sender );
 
-/* 'C' function for method : 'Media::Main.OnNextTrackSlot()' */
-void MediaMain_OnNextTrackSlot( MediaMain _this, XObject sender );
+/* 'C' function for method : 'Media::MED01_MediaUI.OnPrevTrackSlot()' */
+void MediaMED01_MediaUI_OnPrevTrackSlot( MediaMED01_MediaUI _this, XObject sender );
 
-/* 'C' function for method : 'Media::Main.SetTrackInfo()' */
-void MediaMain_SetTrackInfo( MediaMain _this, XObject sender );
+/* 'C' function for method : 'Media::MED01_MediaUI.OnNextTrackSlot()' */
+void MediaMED01_MediaUI_OnNextTrackSlot( MediaMED01_MediaUI _this, XObject sender );
 
-/* 'C' function for method : 'Media::Main.ChangeTrack()' */
-void MediaMain_ChangeTrack( MediaMain _this );
+/* 'C' function for method : 'Media::MED01_MediaUI.SetTrackInfo()' */
+void MediaMED01_MediaUI_SetTrackInfo( MediaMED01_MediaUI _this, XObject sender );
+
+/* 'C' function for method : 'Media::MED01_MediaUI.ChangeTrack()' */
+void MediaMED01_MediaUI_ChangeTrack( MediaMED01_MediaUI _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void MediaMain_OnPlaybackTimeUpdateSlot( MediaMain _this, XObject sender );
+void MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot( MediaMED01_MediaUI _this, XObject 
+  sender );
 
-/* 'C' function for method : 'Media::Main.FormatTimeText()' */
-XString MediaMain_FormatTimeText( MediaMain _this, XInt32 TimeSec );
+/* 'C' function for method : 'Media::MED01_MediaUI.FormatTimeText()' */
+XString MediaMED01_MediaUI_FormatTimeText( MediaMED01_MediaUI _this, XInt32 TimeSec );
+
+/* 'C' function for method : 'Media::MED01_MediaUI.OnHighlightEndSlot()' */
+void MediaMED01_MediaUI_OnHighlightEndSlot( MediaMED01_MediaUI _this, XObject sender );
+
+/* 'C' function for method : 'Media::MED01_MediaUI.StartHighlight()' */
+void MediaMED01_MediaUI_StartHighlight( MediaMED01_MediaUI _this, ViewsImage aBackground );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _MediaMain_H */
+#endif /* _MediaMED01_MediaUI_H */
 
 /* Embedded Wizard */

@@ -158,6 +158,8 @@ EW_DEFINE_METHODS( MenuItemBase, ComponentsBaseComponent )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( MenuItemBase _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuItemBase )
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 

@@ -274,6 +274,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, Menu, Menu, Menu, Menu,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   DevelopmentDEV_Main_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
   DevelopmentDEV_Main_LoadItemClass,
   DevelopmentDEV_Main_LoadItemTitle,
   DevelopmentDEV_Main_OnItemActivate,
@@ -409,6 +411,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG, OnUpdateLoc
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   DevelopmentDEV_RealTimeClock_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( DevelopmentDEV_RealTimeClock )
 
 /* Embedded Wizard */

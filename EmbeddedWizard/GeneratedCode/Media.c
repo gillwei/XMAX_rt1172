@@ -28,237 +28,235 @@
 #include "_CoreGroup.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
-#include "_MediaMain.h"
+#include "_MediaMED01_MediaUI.h"
 #include "_MediaTrack.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
-#include "_ViewsRectangle.h"
+#include "_ViewsImage.h"
 #include "_ViewsText.h"
 #include "_WidgetSetHorizontalSlider.h"
 #include "_WidgetSetHorizontalSliderConfig.h"
-#include "_WidgetSetPushButton.h"
-#include "_WidgetSetPushButtonConfig.h"
 #include "DeviceInterface.h"
 #include "Enum.h"
 #include "Fonts.h"
 #include "Media.h"
 #include "Resource.h"
+#include "Strings.h"
 #include "UIConfig.h"
 #include "Views.h"
-#include "WidgetSet.h"
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x0000001C, /* ratio 100.00 % */
-  0xB8000900, 0x8005A452, 0xEA090283, 0x61200838, 0x230C1811, 0x00000406, 0x00000000
+  0x00000014, /* ratio 120.00 % */
+  0xB8000900, 0x80074452, 0xC2090283, 0x60F0C838, 0x00000040, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
-static const XColor _Const0001 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0002 = {{ 80, 36 }, { 410, 76 }};
-static const XRect _Const0003 = {{ 200, 200 }, { 290, 250 }};
-static const XRect _Const0004 = {{ 80, 200 }, { 170, 250 }};
-static const XRect _Const0005 = {{ 310, 200 }, { 400, 250 }};
-static const XRect _Const0006 = {{ 80, 80 }, { 410, 120 }};
-static const XRect _Const0007 = {{ 80, 121 }, { 410, 161 }};
-static const XRect _Const0008 = {{ 90, 150 }, { 400, 200 }};
-static const XRect _Const0009 = {{ 10, 160 }, { 80, 190 }};
-static const XRect _Const000A = {{ 400, 160 }, { 470, 190 }};
-static const XStringRes _Const000B = { _StringsDefault0, 0x0002 };
-static const XStringRes _Const000C = { _StringsDefault0, 0x0006 };
-static const XStringRes _Const000D = { _StringsDefault0, 0x000A };
-static const XRect _Const000E = {{ 0, 0 }, { 300, 200 }};
+static const XRect _Const0001 = {{ 127, 69 }, { 457, 103 }};
+static const XRect _Const0002 = {{ 127, 114 }, { 457, 148 }};
+static const XRect _Const0003 = {{ 127, 153 }, { 457, 187 }};
+static const XRect _Const0004 = {{ 127, 226 }, { 204, 256 }};
+static const XRect _Const0005 = {{ 364, 226 }, { 441, 256 }};
+static const XRect _Const0006 = {{ 0, 114 }, { 94, 189 }};
+static const XRect _Const0007 = {{ 0, 189 }, { 94, 264 }};
+static const XRect _Const0008 = {{ 0, 39 }, { 94, 114 }};
+static const XRect _Const0009 = {{ 111, 188 }, { 455, 231 }};
+static const XStringRes _Const000A = { _StringsDefault0, 0x0002 };
+static const XStringRes _Const000B = { _StringsDefault0, 0x0006 };
+static const XRect _Const000C = {{ 0, 0 }, { 300, 200 }};
 
-#ifndef EW_DONT_CHECK_INDEX
-  /* This function is used to check the indices when accessing an array.
-     If you don't want this verification add the define EW_DONT_CHECK_INDEX
-     to your Makefile or project settings. */
-  static int EwCheckIndex( int aIndex, int aRange, const char* aFile, int aLine )
-  {
-    if (( aIndex < 0 ) || ( aIndex >= aRange ))
-    {
-      EwPrint( "[FATAL ERROR in %s:%d] Array index %d out of bounds %d",
-                aFile, aLine, aIndex, aRange );
-      EwPanic();
-    }
-    return aIndex;
-  }
-
-  #define EwCheckIndex( aIndex, aRange ) \
-    EwCheckIndex( aIndex, aRange, __FILE__, __LINE__ )
-#else
-  #define EwCheckIndex( aIndex, aRange ) aIndex
-#endif
-
-/* Initializer for the class 'Media::Main' */
-void MediaMain__Init( MediaMain _this, XObject aLink, XHandle aArg )
+/* Initializer for the class 'Media::MED01_MediaUI' */
+void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MediaMain );
+  _this->_GCT = EW_CLASS_GCT( MediaMED01_MediaUI );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->Rectangle, &_this->_XObject, 0 );
   ViewsText__Init( &_this->Title, &_this->_XObject, 0 );
-  WidgetSetPushButton__Init( &_this->PlayPauseButton, &_this->_XObject, 0 );
-  WidgetSetPushButton__Init( &_this->PrevTrackButton, &_this->_XObject, 0 );
-  WidgetSetPushButton__Init( &_this->NextTrackButton, &_this->_XObject, 0 );
   ViewsText__Init( &_this->Artist, &_this->_XObject, 0 );
   ViewsText__Init( &_this->Album, &_this->_XObject, 0 );
-  WidgetSetHorizontalSlider__Init( &_this->PlayProgress, &_this->_XObject, 0 );
   ViewsText__Init( &_this->ElapsedTimeSec, &_this->_XObject, 0 );
   ViewsText__Init( &_this->RemainTimeSec, &_this->_XObject, 0 );
   MediaTrack__Init( &_this->Track, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->PlaybackTimeEventHandler, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->PlayPauseBG, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->PlayPauseButton, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->ControlDownBG, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->PreviousTrackButton, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->VolumeDownButton, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->ControlUpBG, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->NextTrackButton, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->VolumeUpButton, &_this->_XObject, 0 );
+  WidgetSetHorizontalSlider__Init( &_this->SeekBar, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->HighlightTimer, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MediaMain );
+  _this->_VMT = EW_CLASS( MediaMED01_MediaUI );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->Rectangle, _Const0000 );
-  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0001 );
-  CoreRectView__OnSetBounds( &_this->Title, _Const0002 );
+  _this->Super2.UpKeyTriggerMode = EnumKeyTriggerModeOFF;
+  _this->Super2.DownKeyTriggerMode = EnumKeyTriggerModeOFF;
+  CoreRectView__OnSetBounds( &_this->Title, _Const0001 );
   ViewsText_OnSetEllipsis( &_this->Title, 1 );
   ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Title, 0 );
-  CoreRectView__OnSetBounds( &_this->PlayPauseButton, _Const0003 );
-  WidgetSetPushButton_OnSetIconFrameActive( &_this->PlayPauseButton, 1 );
-  WidgetSetPushButton_OnSetIconFrameDefault( &_this->PlayPauseButton, 0 );
-  WidgetSetPushButton_OnSetIconFrame( &_this->PlayPauseButton, -1 );
-  WidgetSetPushButton_OnSetLabel( &_this->PlayPauseButton, 0 );
-  CoreRectView__OnSetBounds( &_this->PrevTrackButton, _Const0004 );
-  WidgetSetPushButton_OnSetIconFrameActive( &_this->PrevTrackButton, 1 );
-  WidgetSetPushButton_OnSetIconFrame( &_this->PrevTrackButton, 0 );
-  WidgetSetPushButton_OnSetLabel( &_this->PrevTrackButton, 0 );
-  CoreRectView__OnSetBounds( &_this->NextTrackButton, _Const0005 );
-  WidgetSetPushButton_OnSetIconFrameActive( &_this->NextTrackButton, 1 );
-  WidgetSetPushButton_OnSetIconFrame( &_this->NextTrackButton, 0 );
-  WidgetSetPushButton_OnSetLabel( &_this->NextTrackButton, 0 );
-  _this->FocusIdx = 1;
-  CoreRectView__OnSetBounds( &_this->Artist, _Const0006 );
+  ViewsText_OnSetVisible( &_this->Title, 1 );
+  CoreRectView__OnSetBounds( &_this->Artist, _Const0002 );
   ViewsText_OnSetEllipsis( &_this->Artist, 1 );
   ViewsText_OnSetAlignment( &_this->Artist, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Artist, 0 );
-  CoreRectView__OnSetBounds( &_this->Album, _Const0007 );
+  ViewsText_OnSetVisible( &_this->Artist, 1 );
+  CoreRectView__OnSetBounds( &_this->Album, _Const0003 );
   ViewsText_OnSetEllipsis( &_this->Album, 1 );
   ViewsText_OnSetAlignment( &_this->Album, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Album, 0 );
-  CoreRectView__OnSetBounds( &_this->PlayProgress, _Const0008 );
-  WidgetSetHorizontalSlider_OnSetStepSize( &_this->PlayProgress, 1 );
-  WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->PlayProgress, 0 );
-  CoreRectView__OnSetBounds( &_this->ElapsedTimeSec, _Const0009 );
+  ViewsText_OnSetVisible( &_this->Album, 1 );
+  CoreRectView__OnSetBounds( &_this->ElapsedTimeSec, _Const0004 );
+  ViewsText_OnSetAlignment( &_this->ElapsedTimeSec, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ElapsedTimeSec, 0 );
-  ViewsText_OnSetVisible( &_this->ElapsedTimeSec, 1 );
-  CoreRectView__OnSetBounds( &_this->RemainTimeSec, _Const000A );
+  ViewsText_OnSetVisible( &_this->ElapsedTimeSec, 0 );
+  CoreRectView__OnSetBounds( &_this->RemainTimeSec, _Const0005 );
+  ViewsText_OnSetAlignment( &_this->RemainTimeSec, ViewsTextAlignmentAlignHorzRight 
+  | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->RemainTimeSec, 0 );
-  ViewsText_OnSetVisible( &_this->RemainTimeSec, 1 );
+  ViewsText_OnSetVisible( &_this->RemainTimeSec, 0 );
   CoreGroup_OnSetVisible((CoreGroup)&_this->Track, 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Rectangle ), 0 );
+  CoreRectView__OnSetBounds( &_this->PlayPauseBG, _Const0006 );
+  ViewsImage_OnSetFrameNumber( &_this->PlayPauseBG, 0 );
+  CoreRectView__OnSetBounds( &_this->PlayPauseButton, _Const0006 );
+  CoreRectView__OnSetBounds( &_this->ControlDownBG, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->PreviousTrackButton, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->VolumeDownButton, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->ControlUpBG, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->NextTrackButton, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->VolumeUpButton, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->SeekBar, _Const0009 );
+  CoreGroup_OnSetVisible((CoreGroup)&_this->SeekBar, 0 );
+  WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->SeekBar, 0 );
+  CoreTimer_OnSetPeriod( &_this->HighlightTimer, 100 );
+  CoreTimer_OnSetEnabled( &_this->HighlightTimer, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->PlayPauseButton ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->PrevTrackButton ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->NextTrackButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Artist ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Album ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->PlayProgress ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ElapsedTimeSec ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->RemainTimeSec ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Track ), 0 );
-  ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  CoreGroup__Add( _this, ((CoreView)&_this->PlayPauseBG ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->PlayPauseButton ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ControlDownBG ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->PreviousTrackButton ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->VolumeDownButton ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ControlUpBG ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NextTrackButton ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->VolumeUpButton ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->SeekBar ), 0 );
+  ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
-  _this->PlayPauseButton.OnRelease = EwNewSlot( _this, MediaMain_OnPlayPauseSlot );
-  WidgetSetPushButton_OnSetIcon( &_this->PlayPauseButton, EwLoadResource( &ResourceIconMediaPlayPause, 
-  ResourcesBitmap ));
-  WidgetSetPushButton_OnSetAppearance( &_this->PlayPauseButton, EwGetAutoObject( 
-  &UIConfigPushButtonConfig, WidgetSetPushButtonConfig ));
-  _this->PrevTrackButton.OnRelease = EwNewSlot( _this, MediaMain_OnPrevTrackSlot );
-  WidgetSetPushButton_OnSetIcon( &_this->PrevTrackButton, EwLoadResource( &ResourceIconMediaPrevious, 
-  ResourcesBitmap ));
-  WidgetSetPushButton_OnSetAppearance( &_this->PrevTrackButton, EwGetAutoObject( 
-  &UIConfigPushButtonConfig, WidgetSetPushButtonConfig ));
-  _this->NextTrackButton.OnRelease = EwNewSlot( _this, MediaMain_OnNextTrackSlot );
-  WidgetSetPushButton_OnSetIcon( &_this->NextTrackButton, EwLoadResource( &ResourceIconMediaNext, 
-  ResourcesBitmap ));
-  WidgetSetPushButton_OnSetAppearance( &_this->NextTrackButton, EwGetAutoObject( 
-  &UIConfigPushButtonConfig, WidgetSetPushButtonConfig ));
-  _this->FocusList[ 0 ] = ((CoreView)&_this->PrevTrackButton );
-  _this->FocusList[ 1 ] = ((CoreView)&_this->PlayPauseButton );
-  _this->FocusList[ 2 ] = ((CoreView)&_this->NextTrackButton );
-  ViewsText_OnSetFont( &_this->Artist, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont( &_this->Artist, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->Album, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont( &_this->Album, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
-  WidgetSetHorizontalSlider_OnSetAppearance( &_this->PlayProgress, EwGetAutoObject( 
-  &WidgetSetHorizontalSlider_Small, WidgetSetHorizontalSliderConfig ));
-  ViewsText_OnSetFont( &_this->ElapsedTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont( &_this->ElapsedTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium22pt, 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->RemainTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  _this->Track.OnTrackInfoUpdate = EwNewSlot( _this, MediaMain_SetTrackInfo );
-  _this->PlaybackTimeEventHandler.OnEvent = EwNewSlot( _this, MediaMain_OnPlaybackTimeUpdateSlot );
+  _this->Track.OnTrackInfoUpdate = EwNewSlot( _this, MediaMED01_MediaUI_SetTrackInfo );
+  _this->PlaybackTimeEventHandler.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->PlaybackTimeEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->NotifyPlayBackTimeChangedSystemEvent );
+  ViewsImage_OnSetBitmap( &_this->PlayPauseBG, EwLoadResource( &ResourceControlKeyBackground, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->PlayPauseButton, EwLoadResource( &ResourceIconMediaPlayPause, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->ControlDownBG, EwLoadResource( &ResourceControlKeyBackground, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->PreviousTrackButton, EwLoadResource( &ResourceIconMediaPrevious, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->VolumeDownButton, EwLoadResource( &ResourceIconVolumeDown, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->ControlUpBG, EwLoadResource( &ResourceControlKeyBackground, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->NextTrackButton, EwLoadResource( &ResourceIconMediaNext, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->VolumeUpButton, EwLoadResource( &ResourceIconVolumeUp, 
+  ResourcesBitmap ));
+  WidgetSetHorizontalSlider_OnSetAppearance( &_this->SeekBar, EwGetAutoObject( &UIConfigHorizontalSliderConfig, 
+  WidgetSetHorizontalSliderConfig ));
+  _this->HighlightTimer.OnTrigger = EwNewSlot( _this, MediaMED01_MediaUI_OnHighlightEndSlot );
 
   /* Call the user defined constructor */
-  MediaMain_Init( _this, aArg );
+  MediaMED01_MediaUI_Init( _this, aArg );
 }
 
-/* Re-Initializer for the class 'Media::Main' */
-void MediaMain__ReInit( MediaMain _this )
+/* Re-Initializer for the class 'Media::MED01_MediaUI' */
+void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsRectangle__ReInit( &_this->Rectangle );
   ViewsText__ReInit( &_this->Title );
-  WidgetSetPushButton__ReInit( &_this->PlayPauseButton );
-  WidgetSetPushButton__ReInit( &_this->PrevTrackButton );
-  WidgetSetPushButton__ReInit( &_this->NextTrackButton );
   ViewsText__ReInit( &_this->Artist );
   ViewsText__ReInit( &_this->Album );
-  WidgetSetHorizontalSlider__ReInit( &_this->PlayProgress );
   ViewsText__ReInit( &_this->ElapsedTimeSec );
   ViewsText__ReInit( &_this->RemainTimeSec );
   MediaTrack__ReInit( &_this->Track );
   CoreSystemEventHandler__ReInit( &_this->PlaybackTimeEventHandler );
+  ViewsImage__ReInit( &_this->PlayPauseBG );
+  ViewsImage__ReInit( &_this->PlayPauseButton );
+  ViewsImage__ReInit( &_this->ControlDownBG );
+  ViewsImage__ReInit( &_this->PreviousTrackButton );
+  ViewsImage__ReInit( &_this->VolumeDownButton );
+  ViewsImage__ReInit( &_this->ControlUpBG );
+  ViewsImage__ReInit( &_this->NextTrackButton );
+  ViewsImage__ReInit( &_this->VolumeUpButton );
+  WidgetSetHorizontalSlider__ReInit( &_this->SeekBar );
+  CoreTimer__ReInit( &_this->HighlightTimer );
 }
 
-/* Finalizer method for the class 'Media::Main' */
-void MediaMain__Done( MediaMain _this )
+/* Finalizer method for the class 'Media::MED01_MediaUI' */
+void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
-  ViewsRectangle__Done( &_this->Rectangle );
   ViewsText__Done( &_this->Title );
-  WidgetSetPushButton__Done( &_this->PlayPauseButton );
-  WidgetSetPushButton__Done( &_this->PrevTrackButton );
-  WidgetSetPushButton__Done( &_this->NextTrackButton );
   ViewsText__Done( &_this->Artist );
   ViewsText__Done( &_this->Album );
-  WidgetSetHorizontalSlider__Done( &_this->PlayProgress );
   ViewsText__Done( &_this->ElapsedTimeSec );
   ViewsText__Done( &_this->RemainTimeSec );
   MediaTrack__Done( &_this->Track );
   CoreSystemEventHandler__Done( &_this->PlaybackTimeEventHandler );
+  ViewsImage__Done( &_this->PlayPauseBG );
+  ViewsImage__Done( &_this->PlayPauseButton );
+  ViewsImage__Done( &_this->ControlDownBG );
+  ViewsImage__Done( &_this->PreviousTrackButton );
+  ViewsImage__Done( &_this->VolumeDownButton );
+  ViewsImage__Done( &_this->ControlUpBG );
+  ViewsImage__Done( &_this->NextTrackButton );
+  ViewsImage__Done( &_this->VolumeUpButton );
+  WidgetSetHorizontalSlider__Done( &_this->SeekBar );
+  CoreTimer__Done( &_this->HighlightTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void MediaMain_Init( MediaMain _this, XHandle aArg )
+void MediaMED01_MediaUI_Init( MediaMED01_MediaUI _this, XHandle aArg )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
@@ -274,58 +272,45 @@ void MediaMain_Init( MediaMain _this, XHandle aArg )
   EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->IsInit 
   = 0;
 
-  if ( EwCompString( 0, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->Title ) 
-      != 0 )
+  if (( EwCompString( 0, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->Title ) 
+      != 0 ) && ( EwCompString( EwLoadString( &StringsGEN_three_hyphens ), EwGetAutoObject( 
+      &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->Title ) 
+      != 0 ))
   {
-    EwSignal( EwNewSlot( _this, MediaMain_OnPlaybackTimeUpdateSlot ), ((XObject)_this ));
+    EwSignal( EwNewSlot( _this, MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot ), ((XObject)_this ));
   }
 }
 
-/* 'C' function for method : 'Media::Main.OnShortDownKeyActivated()' */
-void MediaMain_OnShortDownKeyActivated( MediaMain _this )
+/* 'C' function for method : 'Media::MED01_MediaUI.OnShortEnterKeyActivated()' */
+void MediaMED01_MediaUI_OnShortEnterKeyActivated( MediaMED01_MediaUI _this )
 {
-  XInt32 NextFocusIdx = _this->FocusIdx + 1;
-
-  if ( NextFocusIdx >= 3 )
-  {
-    NextFocusIdx = 2;
-  }
-
-  if ( _this->FocusIdx != NextFocusIdx )
-  {
-    _this->FocusIdx = NextFocusIdx;
-    CoreGroup__OnSetFocus( _this, _this->FocusList[ EwCheckIndex( NextFocusIdx, 
-    3 )]);
-  }
+  MediaMED01_MediaUI_StartHighlight( _this, &_this->PlayPauseBG );
+  EwPostSignal( EwNewSlot( _this, MediaMED01_MediaUI_OnPlayPauseSlot ), ((XObject)_this ));
 }
 
-/* 'C' function for method : 'Media::Main.OnShortUpKeyActivated()' */
-void MediaMain_OnShortUpKeyActivated( MediaMain _this )
+/* 'C' function for method : 'Media::MED01_MediaUI.OnShortHomeKeyActivated()' */
+void MediaMED01_MediaUI_OnShortHomeKeyActivated( MediaMED01_MediaUI _this )
 {
-  XInt32 NextFocusIdx = _this->FocusIdx - 1;
-
-  if ( NextFocusIdx < 0 )
-  {
-    NextFocusIdx = 0;
-  }
-
-  if ( _this->FocusIdx != NextFocusIdx )
-  {
-    _this->FocusIdx = NextFocusIdx;
-    CoreGroup__OnSetFocus( _this, _this->FocusList[ EwCheckIndex( NextFocusIdx, 
-    3 )]);
-  }
-}
-
-/* 'C' function for method : 'Media::Main.OnShortHomeKeyActivated()' */
-void MediaMain_OnShortHomeKeyActivated( MediaMain _this )
-{
-  CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  CoreGroup__DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
 }
 
-/* 'C' function for method : 'Media::Main.OnPlayPauseSlot()' */
-void MediaMain_OnPlayPauseSlot( MediaMain _this, XObject sender )
+/* 'C' function for method : 'Media::MED01_MediaUI.OnLongDownKeyActivated()' */
+void MediaMED01_MediaUI_OnLongDownKeyActivated( MediaMED01_MediaUI _this )
+{
+  MediaMED01_MediaUI_StartHighlight( _this, &_this->ControlDownBG );
+  EwPostSignal( EwNewSlot( _this, MediaMED01_MediaUI_OnPrevTrackSlot ), ((XObject)_this ));
+}
+
+/* 'C' function for method : 'Media::MED01_MediaUI.OnLongUpKeyActivated()' */
+void MediaMED01_MediaUI_OnLongUpKeyActivated( MediaMED01_MediaUI _this )
+{
+  MediaMED01_MediaUI_StartHighlight( _this, &_this->ControlUpBG );
+  EwPostSignal( EwNewSlot( _this, MediaMED01_MediaUI_OnNextTrackSlot ), ((XObject)_this ));
+}
+
+/* 'C' function for method : 'Media::MED01_MediaUI.OnPlayPauseSlot()' */
+void MediaMED01_MediaUI_OnPlayPauseSlot( MediaMED01_MediaUI _this, XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
@@ -342,69 +327,91 @@ void MediaMain_OnPlayPauseSlot( MediaMain _this, XObject sender )
   }
 }
 
-/* 'C' function for method : 'Media::Main.OnPrevTrackSlot()' */
-void MediaMain_OnPrevTrackSlot( MediaMain _this, XObject sender )
+/* 'C' function for method : 'Media::MED01_MediaUI.OnPrevTrackSlot()' */
+void MediaMED01_MediaUI_OnPrevTrackSlot( MediaMED01_MediaUI _this, XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  MediaMain_ChangeTrack( _this );
+  MediaMED01_MediaUI_ChangeTrack( _this );
   DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
   DeviceInterfaceMediaManagerDeviceClass ), EnumCommandTypePrevTrack );
 }
 
-/* 'C' function for method : 'Media::Main.OnNextTrackSlot()' */
-void MediaMain_OnNextTrackSlot( MediaMain _this, XObject sender )
+/* 'C' function for method : 'Media::MED01_MediaUI.OnNextTrackSlot()' */
+void MediaMED01_MediaUI_OnNextTrackSlot( MediaMED01_MediaUI _this, XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  MediaMain_ChangeTrack( _this );
+  MediaMED01_MediaUI_ChangeTrack( _this );
   DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
   DeviceInterfaceMediaManagerDeviceClass ), EnumCommandTypeNextTrack );
 }
 
-/* 'C' function for method : 'Media::Main.SetTrackInfo()' */
-void MediaMain_SetTrackInfo( MediaMain _this, XObject sender )
+/* 'C' function for method : 'Media::MED01_MediaUI.SetTrackInfo()' */
+void MediaMED01_MediaUI_SetTrackInfo( MediaMED01_MediaUI _this, XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
   ViewsText_OnSetString( &_this->Title, _this->Track.Title );
-  ViewsText_OnSetString( &_this->Album, _this->Track.Album );
   ViewsText_OnSetString( &_this->Artist, _this->Track.Artist );
+  ViewsText_OnSetString( &_this->Album, _this->Track.Album );
 }
 
-/* 'C' function for method : 'Media::Main.ChangeTrack()' */
-void MediaMain_ChangeTrack( MediaMain _this )
+/* 'C' function for method : 'Media::MED01_MediaUI.ChangeTrack()' */
+void MediaMED01_MediaUI_ChangeTrack( MediaMED01_MediaUI _this )
 {
   MediaTrack_ResetTrackInfo( &_this->Track );
   _this->Track.IsTrackInfoReset = 0;
+  EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->IsTitleReceived 
+  = 0;
+  EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->IsArtistReceived 
+  = 0;
+  EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->IsAlbumReceived 
+  = 0;
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void MediaMain_OnPlaybackTimeUpdateSlot( MediaMain _this, XObject sender )
+void MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot( MediaMED01_MediaUI _this, XObject 
+  sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  ViewsText_OnSetString( &_this->ElapsedTimeSec, MediaMain_FormatTimeText( _this, 
-  EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->ElapsedTimeSec ));
-  ViewsText_OnSetString( &_this->RemainTimeSec, EwConcatString( EwLoadString( &_Const000B ), 
-  MediaMain_FormatTimeText( _this, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-  DeviceInterfaceMediaManagerDeviceClass )->RemainTimeSec )));
+  if ( !ViewsText_OnGetVisible( &_this->ElapsedTimeSec ))
+  {
+    ViewsText_OnSetVisible( &_this->ElapsedTimeSec, 1 );
+  }
+
+  ViewsText_OnSetString( &_this->ElapsedTimeSec, MediaMED01_MediaUI_FormatTimeText( 
+  _this, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->ElapsedTimeSec ));
+
+  if ( !ViewsText_OnGetVisible( &_this->RemainTimeSec ))
+  {
+    ViewsText_OnSetVisible( &_this->RemainTimeSec, 1 );
+  }
+
+  ViewsText_OnSetString( &_this->RemainTimeSec, MediaMED01_MediaUI_FormatTimeText( 
+  _this, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->RemainTimeSec ));
 
   if ( 0 != EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->DurationTimeSec )
   {
-    WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->PlayProgress, ( EwGetAutoObject( 
+    if ( !CoreGroup_OnGetVisible((CoreGroup)&_this->SeekBar ))
+    {
+      CoreGroup_OnSetVisible((CoreGroup)&_this->SeekBar, 1 );
+    }
+
+    WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->SeekBar, ( EwGetAutoObject( 
     &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->ElapsedTimeSec 
     * 100 ) / EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->DurationTimeSec );
   }
 }
 
-/* 'C' function for method : 'Media::Main.FormatTimeText()' */
-XString MediaMain_FormatTimeText( MediaMain _this, XInt32 TimeSec )
+/* 'C' function for method : 'Media::MED01_MediaUI.FormatTimeText()' */
+XString MediaMED01_MediaUI_FormatTimeText( MediaMED01_MediaUI _this, XInt32 TimeSec )
 {
   XInt32 Hour;
   XInt32 Minute;
@@ -421,28 +428,51 @@ XString MediaMain_FormatTimeText( MediaMain _this, XInt32 TimeSec )
 
   if ( Hour > 0 )
   {
-    TimeText = EwConcatString( EwNewStringInt( Hour, 0, 10 ), EwLoadString( &_Const000C ));
+    TimeText = EwConcatString( EwNewStringInt( Hour, 0, 10 ), EwLoadString( &_Const000A ));
+
+    if ( Minute < 10 )
+    {
+      TimeText = EwConcatString( TimeText, EwLoadString( &_Const000B ));
+    }
   }
 
   TimeText = EwConcatString( EwConcatString( TimeText, EwNewStringInt( Minute, 0, 
-  10 )), EwLoadString( &_Const000C ));
+  10 )), EwLoadString( &_Const000A ));
 
   if ( Second < 10 )
   {
-    TimeText = EwConcatString( TimeText, EwLoadString( &_Const000D ));
+    TimeText = EwConcatString( TimeText, EwLoadString( &_Const000B ));
   }
 
   TimeText = EwConcatString( TimeText, EwNewStringInt( Second, 0, 10 ));
   return TimeText;
 }
 
-/* Variants derived from the class : 'Media::Main' */
-EW_DEFINE_CLASS_VARIANTS( MediaMain )
-EW_END_OF_CLASS_VARIANTS( MediaMain )
+/* 'C' function for method : 'Media::MED01_MediaUI.OnHighlightEndSlot()' */
+void MediaMED01_MediaUI_OnHighlightEndSlot( MediaMED01_MediaUI _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
 
-/* Virtual Method Table (VMT) for the class : 'Media::Main' */
-EW_DEFINE_CLASS( MediaMain, ComponentsBaseComponent, FocusList, Rectangle, Rectangle, 
-                 Rectangle, FocusIdx, FocusIdx, "Media::Main" )
+  CoreTimer_OnSetEnabled( &_this->HighlightTimer, 0 );
+  ViewsImage_OnSetFrameNumber( _this->HighlightBG, 0 );
+}
+
+/* 'C' function for method : 'Media::MED01_MediaUI.StartHighlight()' */
+void MediaMED01_MediaUI_StartHighlight( MediaMED01_MediaUI _this, ViewsImage aBackground )
+{
+  ViewsImage_OnSetFrameNumber( aBackground, 1 );
+  _this->HighlightBG = aBackground;
+  CoreTimer_OnSetEnabled( &_this->HighlightTimer, 1 );
+}
+
+/* Variants derived from the class : 'Media::MED01_MediaUI' */
+EW_DEFINE_CLASS_VARIANTS( MediaMED01_MediaUI )
+EW_END_OF_CLASS_VARIANTS( MediaMED01_MediaUI )
+
+/* Virtual Method Table (VMT) for the class : 'Media::MED01_MediaUI' */
+EW_DEFINE_CLASS( MediaMED01_MediaUI, ComponentsBaseMainBG, HighlightBG, Title, Title, 
+                 Title, _None, _None, "Media::MED01_MediaUI" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -473,11 +503,13 @@ EW_DEFINE_CLASS( MediaMain, ComponentsBaseComponent, FocusList, Rectangle, Recta
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  MediaMain_OnShortDownKeyActivated,
-  MediaMain_OnShortUpKeyActivated,
-  ComponentsBaseComponent_OnShortEnterKeyActivated,
-  MediaMain_OnShortHomeKeyActivated,
-EW_END_OF_CLASS( MediaMain )
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  MediaMED01_MediaUI_OnShortEnterKeyActivated,
+  MediaMED01_MediaUI_OnShortHomeKeyActivated,
+  MediaMED01_MediaUI_OnLongDownKeyActivated,
+  MediaMED01_MediaUI_OnLongUpKeyActivated,
+EW_END_OF_CLASS( MediaMED01_MediaUI )
 
 /* Initializer for the class 'Media::Track' */
 void MediaTrack__Init( MediaTrack _this, XObject aLink, XHandle aArg )
@@ -498,7 +530,7 @@ void MediaTrack__Init( MediaTrack _this, XObject aLink, XHandle aArg )
   _this->_VMT = EW_CLASS( MediaTrack );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const000E );
+  CoreRectView__OnSetBounds( _this, _Const000C );
   _this->TitleObserver.OnEvent = EwNewSlot( _this, MediaTrack_OnTrackInfoUpdateSlot );
   CorePropertyObserver_OnSetOutlet( &_this->TitleObserver, EwNewRef( EwGetAutoObject( 
   &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass ), 

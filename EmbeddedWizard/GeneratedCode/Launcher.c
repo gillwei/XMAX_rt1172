@@ -33,7 +33,7 @@
 #include "_LauncherLNC_Base.h"
 #include "_LauncherLNC_Main.h"
 #include "_LauncherLNC_RotaryPlate.h"
-#include "_MediaMain.h"
+#include "_MediaMED01_MediaUI.h"
 #include "_NavigationMain.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
@@ -381,7 +381,7 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
 
     case EnumLauncherItemMUSIC :
     {
-      ItemDialog = ((ComponentsBaseComponent)EwNewObject( MediaMain, 0 ));
+      ItemDialog = ((ComponentsBaseComponent)EwNewObject( MediaMED01_MediaUI, 0 ));
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
       0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }
@@ -495,6 +495,8 @@ EW_DEFINE_CLASS( LauncherLNC_Main, ComponentsBaseComponent, BaseSlideInEffect, B
   LauncherLNC_Main_OnShortUpKeyActivated,
   LauncherLNC_Main_OnShortEnterKeyActivated,
   LauncherLNC_Main_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( LauncherLNC_Main )
 
 /* Initializer for the class 'Launcher::LNC_RotaryPlate' */
@@ -977,6 +979,8 @@ EW_DEFINE_CLASS( LauncherLNC_RotaryPlate, ComponentsBaseComponent, Icons, OnIcon
   LauncherLNC_RotaryPlate_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( LauncherLNC_RotaryPlate )
 
 /* Initializer for the class 'Launcher::LNC_Base' */

@@ -1,7 +1,7 @@
 ﻿$version 10.00
 
 // This is a font resource.
-$rect <10,10,260,50>
+$rect <10,60,260,100>
 $output false
 resource Resources::Font NotoSansCjkJpMedium24pt
 {
@@ -40,7 +40,7 @@ resource Resources::Font NotoSansCjkJpMedium24pt
 }
 
 // This is a font resource.
-$rect <10,60,260,100>
+$rect <10,110,260,150>
 $output false
 resource Resources::Font NotoSansCjkJpMedium28pt
 {
@@ -113,7 +113,7 @@ resource Resources::Font FontNotoSansCjkJp20
 }
 
 // This is a font resource.
-$rect <10,110,270,150>
+$rect <10,160,270,200>
 $output false
 resource Resources::Font NotoSansCjkJpMedium80pt
 {
@@ -133,4 +133,32 @@ resource Resources::Font NotoSansCjkJpMedium80pt
 note group Note2
 {
   attr Bounds = <310,10,570,160>;
+}
+
+// This is a font resource.
+$rect <10,10,260,50>
+$output false
+resource Resources::Font NotoSansCjkJpMedium22pt
+{
+  attr fontname FontName = Noto Sans Med;
+  attr fontheight Height = 22;
+  attr fontheightmode HeightMode = Popular;
+  attr fontquality Quality = Medium;
+  attr fontranges Ranges =
+  (
+    Default = 0x20-0x7E;
+    SimplifiedChinese = 0x3000-0x303F;
+    French = 0x0100-0x017F;
+    Italian = 0xE0-0xEF;
+    German = 0xA0-0xDF;
+    Japanese = 0x3040-0x309F,0x30A0-0x30FF;
+    Spanish = 0xF0-0xFF;
+    TraditionalChinese = 0xFF01-0xFF9F;
+  );
+
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontrowdistance RowDistance;
 }

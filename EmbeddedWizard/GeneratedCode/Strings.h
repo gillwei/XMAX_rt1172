@@ -45,6 +45,9 @@
 /* User defined constant: 'Strings::GEN_bluetooth' */
 extern const XStringRes StringsGEN_bluetooth;
 
+/* User defined constant: 'Strings::GEN_three_hyphens' */
+extern const XStringRes StringsGEN_three_hyphens;
+
 /* User defined constant: 'Strings::TOP01_disclaimer' */
 EW_DECLARE_CONST( StringsTOP01_disclaimer )
 

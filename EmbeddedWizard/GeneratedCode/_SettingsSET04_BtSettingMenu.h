@@ -159,6 +159,8 @@ EW_DEFINE_METHODS( SettingsSET04_BtSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET04_BtSettingMenu _this )
+  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( SettingsSET04_BtSettingMenu _this, XInt32 
     aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( SettingsSET04_BtSettingMenu _this, XInt32 

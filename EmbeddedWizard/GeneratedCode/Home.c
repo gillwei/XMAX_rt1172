@@ -137,6 +137,8 @@ EW_DEFINE_CLASS( HomeHOM11_tachometer, ComponentsBaseMainBG, Title, Title, Title
   ComponentsBaseComponent_OnShortUpKeyActivated,
   HomeHOM11_tachometer_OnShortEnterKeyActivated,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( HomeHOM11_tachometer )
 
 /* Embedded Wizard */

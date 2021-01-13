@@ -2529,6 +2529,12 @@ void ViewsText_OnSetColor( ViewsText _this, XColor value )
     CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
 }
 
+/* 'C' function for method : 'Views::Text.OnGetVisible()' */
+XBool ViewsText_OnGetVisible( ViewsText _this )
+{
+  return (( _this->Super2.viewState & CoreViewStateVisible ) == CoreViewStateVisible );
+}
+
 /* 'C' function for method : 'Views::Text.OnSetVisible()' */
 void ViewsText_OnSetVisible( ViewsText _this, XBool value )
 {

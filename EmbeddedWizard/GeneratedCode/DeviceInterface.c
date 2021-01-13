@@ -36,6 +36,7 @@
 #include "_FactoryTestContext.h"
 #include "DeviceInterface.h"
 #include "Enum.h"
+#include "Strings.h"
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
@@ -569,7 +570,22 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetTitle( DeviceInterfaceMediaMana
   if ( !EwCompString( _this->Title, value ) && !_this->IsInit )
     return;
 
-  _this->Title = EwShareString( value );
+  if ( _this->IsTitleReceived || _this->IsInit )
+  {
+    if ( !EwCompString( value, 0 ) && _this->IsTitleReceived )
+    {
+      _this->Title = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
+    }
+    else
+    {
+      _this->Title = EwShareString( value );
+    }
+  }
+  else
+  {
+    _this->Title = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
+  }
+
   EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceMediaManagerDeviceClass_OnGetTitle, 
     DeviceInterfaceMediaManagerDeviceClass_OnSetTitle ), 0 );
 }
@@ -581,7 +597,22 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum( DeviceInterfaceMediaMana
   if ( !EwCompString( _this->Album, value ) && !_this->IsInit )
     return;
 
-  _this->Album = EwShareString( value );
+  if ( _this->IsAlbumReceived || _this->IsInit )
+  {
+    if ( !EwCompString( value, 0 ) && _this->IsAlbumReceived )
+    {
+      _this->Album = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
+    }
+    else
+    {
+      _this->Album = EwShareString( value );
+    }
+  }
+  else
+  {
+    _this->Album = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
+  }
+
   EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceMediaManagerDeviceClass_OnGetAlbum, 
     DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum ), 0 );
 }
@@ -593,7 +624,22 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( DeviceInterfaceMediaMan
   if ( !EwCompString( _this->Artist, value ) && !_this->IsInit )
     return;
 
-  _this->Artist = EwShareString( value );
+  if ( _this->IsArtistReceived || _this->IsInit )
+  {
+    if ( !EwCompString( value, 0 ) && _this->IsArtistReceived )
+    {
+      _this->Artist = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
+    }
+    else
+    {
+      _this->Artist = EwShareString( value );
+    }
+  }
+  else
+  {
+    _this->Artist = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
+  }
+
   EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceMediaManagerDeviceClass_OnGetArtist, 
     DeviceInterfaceMediaManagerDeviceClass_OnSetArtist ), 0 );
 }
@@ -682,6 +728,7 @@ void DeviceInterfaceMediaManagerDeviceClass_NotifyTitleChanged( DeviceInterfaceM
   XString aTitle )
 {
   EwTrace( "%s", EwConcatString( EwLoadString( &_Const0003 ), aTitle ));
+  _this->IsTitleReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetTitle( _this, aTitle );
 }
 
@@ -698,6 +745,7 @@ void DeviceInterfaceMediaManagerDeviceClass_NotifyArtistChanged( DeviceInterface
   XString aArtist )
 {
   EwTrace( "%s", EwConcatString( EwLoadString( &_Const0004 ), aArtist ));
+  _this->IsArtistReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( _this, aArtist );
 }
 
@@ -714,6 +762,7 @@ void DeviceInterfaceMediaManagerDeviceClass_NotifyAlbumChanged( DeviceInterfaceM
   XString aAlbum )
 {
   EwTrace( "%s", EwConcatString( EwLoadString( &_Const0005 ), aAlbum ));
+  _this->IsAlbumReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum( _this, aAlbum );
 }
 
