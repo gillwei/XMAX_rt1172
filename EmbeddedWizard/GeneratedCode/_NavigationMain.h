@@ -163,10 +163,15 @@ EW_DEFINE_METHODS( NavigationMain, ComponentsBaseComponent )
   EW_METHOD( OnShortDownKeyActivated, void )( NavigationMain _this )
   EW_METHOD( OnShortUpKeyActivated, void )( NavigationMain _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( NavigationMain _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( NavigationMain _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( NavigationMain )
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void NavigationMain_Init( NavigationMain _this, XHandle aArg );
 
 /* 'C' function for method : 'Navigation::Main.OnShortDownKeyActivated()' */
 void NavigationMain_OnShortDownKeyActivated( NavigationMain _this );
@@ -176,6 +181,9 @@ void NavigationMain_OnShortUpKeyActivated( NavigationMain _this );
 
 /* 'C' function for method : 'Navigation::Main.OnShortEnterKeyActivated()' */
 void NavigationMain_OnShortEnterKeyActivated( NavigationMain _this );
+
+/* 'C' function for method : 'Navigation::Main.OnShortHomeKeyActivated()' */
+void NavigationMain_OnShortHomeKeyActivated( NavigationMain _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */

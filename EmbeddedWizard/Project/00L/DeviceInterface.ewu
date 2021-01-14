@@ -389,6 +389,21 @@ class NavigationDeviceClass : Templates::DeviceClass
   {
     MapUpdateEvent.Trigger( null, true );
   }
+
+  $rect <250,40,450,80>
+  method bool IsMapFrameReady()
+  {
+    $if( !$prototyper )
+      var bool IsMapFrameReady = false;
+      native( IsMapFrameReady )
+      {
+        IsMapFrameReady = ew_navi_is_map_frame_ready();
+      }
+      return IsMapFrameReady;
+    $else
+      return false;
+    $endif
+  }
 }
 
 $rect <19,210,229,250>

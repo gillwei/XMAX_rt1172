@@ -71,6 +71,9 @@ void DeviceInterfaceNavigationDeviceClass__NotifyMapUpdate( void* _this );
 /* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyMapUpdate(). */
 #define _DeviceInterfaceNavigationDeviceClass__NotifyMapUpdate_
 
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsMapFrameReady()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsMapFrameReady( DeviceInterfaceNavigationDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif

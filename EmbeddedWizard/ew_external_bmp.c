@@ -81,7 +81,7 @@ static XBitmap* load_external_map
     void
     )
 {
-XBitmap*      bitmap;
+XBitmap*      bitmap = NULL;
 XPoint        frame_size;
 XRect         bmp_lock_area;
 XBitmapLock*  lock;
@@ -89,56 +89,65 @@ unsigned int* dest;
 int           ofs;
 int           x;
 int           y;
-unsigned int  alpha        = ALPHA_DEFAULT;
-buffer_info*  rgb_info     = JPEG_get_rgb();
-uint8_t*      rgb_buffer   = rgb_info->addr;
-int           image_width  = rgb_info->image_width;
-int           image_height = rgb_info->image_height;
+unsigned int  alpha = ALPHA_DEFAULT;
+buffer_info*  rgb_buffer_handle;
+uint8_t*      rgb_buffer;
+int           image_width;
+int           image_height;
 
-/* create a new bitmap with the previously determined size */
-frame_size.X = image_width;
-frame_size.Y = image_height;
-bitmap       = EwCreateBitmap( EW_PIXEL_FORMAT_NATIVE, frame_size, 0, 1 );
-
-/* check if enough memory to create the bitmap */
-if( NULL == bitmap )
+rgb_buffer_handle = JPEG_take_rgb();
+if( NULL != rgb_buffer_handle )
     {
-    EwPrint( "%s: Err: create bitmap fail\r\n", __FUNCTION__ );
-    return NULL;
-    }
+    rgb_buffer   = rgb_buffer_handle->addr;
+    image_width  = rgb_buffer_handle->image_width;
+    image_height = rgb_buffer_handle->image_height;
 
-/* lock the entire bitmap for write operation */
-bmp_lock_area.Point1.X = 0;
-bmp_lock_area.Point1.Y = 0;
-bmp_lock_area.Point2.X = image_width;
-bmp_lock_area.Point2.Y = image_height;
-lock = EwLockBitmap( bitmap, 0, bmp_lock_area, 0, 1 );
+    /* create a new bitmap with the previously determined size */
+    frame_size.X = image_width;
+    frame_size.Y = image_height;
+    bitmap       = EwCreateBitmap( EW_PIXEL_FORMAT_NATIVE, frame_size, 0, 1 );
 
-/* Get the pointer to the first pixel within the locked bitmap.
- * In the RGBA8888 format every pixel is a 32-bit value (unsigned int).
- * Additionally calculate the offset in pixel between the end of one row
- * and the begin of the next row. */
-dest = ( unsigned int* ) lock->Pixel1;
-ofs  = ( lock->Pitch1Y / 4 ) - image_width;
-
-/* Iterate through the pixel within the locked bitmap area.
- * Do this row-by-row and column-by-column.
- * After one row is finished adjust the 'dest' pointer to refer to the next row.
- * After one column is finished increment the 'dest' pointer only. */
-int rgb_idx = 0;
-for( y = 0; y < image_height; y++, dest += ofs )
-    {
-    for( x = 0; x < image_width; x++, dest++ )
+    /* check if enough memory to create the bitmap */
+    if( NULL == bitmap )
         {
-        *dest = ( ( rgb_buffer[rgb_idx] << EW_COLOR_CHANNEL_BIT_OFFSET_RED ) |
-                  ( rgb_buffer[rgb_idx+1] << EW_COLOR_CHANNEL_BIT_OFFSET_GREEN ) |
-                  ( rgb_buffer[rgb_idx+2] << EW_COLOR_CHANNEL_BIT_OFFSET_BLUE ) |
-                  ( alpha << EW_COLOR_CHANNEL_BIT_OFFSET_ALPHA ) );
-        rgb_idx += 3;
+        EwPrint( "%s: Err: create bitmap fail\r\n", __FUNCTION__ );
+        return NULL;
         }
-    }
 
-EwUnlockBitmap( lock );
+    /* lock the entire bitmap for write operation */
+    bmp_lock_area.Point1.X = 0;
+    bmp_lock_area.Point1.Y = 0;
+    bmp_lock_area.Point2.X = image_width;
+    bmp_lock_area.Point2.Y = image_height;
+    lock = EwLockBitmap( bitmap, 0, bmp_lock_area, 0, 1 );
+
+    /* Get the pointer to the first pixel within the locked bitmap.
+     * In the RGBA8888 format every pixel is a 32-bit value (unsigned int).
+     * Additionally calculate the offset in pixel between the end of one row
+     * and the begin of the next row. */
+    dest = ( unsigned int* ) lock->Pixel1;
+    ofs  = ( lock->Pitch1Y / 4 ) - image_width;
+
+    /* Iterate through the pixel within the locked bitmap area.
+     * Do this row-by-row and column-by-column.
+     * After one row is finished adjust the 'dest' pointer to refer to the next row.
+     * After one column is finished increment the 'dest' pointer only. */
+    int rgb_idx = 0;
+    for( y = 0; y < image_height; y++, dest += ofs )
+        {
+        for( x = 0; x < image_width; x++, dest++ )
+            {
+            *dest = ( ( rgb_buffer[rgb_idx] << EW_COLOR_CHANNEL_BIT_OFFSET_RED ) |
+                      ( rgb_buffer[rgb_idx+1] << EW_COLOR_CHANNEL_BIT_OFFSET_GREEN ) |
+                      ( rgb_buffer[rgb_idx+2] << EW_COLOR_CHANNEL_BIT_OFFSET_BLUE ) |
+                      ( alpha << EW_COLOR_CHANNEL_BIT_OFFSET_ALPHA ) );
+            rgb_idx += 3;
+            }
+        }
+
+    EwUnlockBitmap( lock );
+    JPEG_give_rgb();
+    }
 return bitmap;
 }
 

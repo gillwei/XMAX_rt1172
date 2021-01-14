@@ -19,6 +19,7 @@
 #include "DeviceInterface.h"
 #include <string.h>
 #include <stdbool.h>
+#include "JPEG_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -157,6 +158,24 @@ int need_update = 0;
 #endif
 
 return need_update;
+}
+
+/*********************************************************************
+*
+* @private
+* ew_navi_is_map_frame_ready
+*
+* Check if the map frame of RGB format is ready.
+*
+* @return True if the map frame is ready in the RGB buffer.
+*
+*********************************************************************/
+bool ew_navi_is_map_frame_ready
+    (
+    void
+    )
+{
+return JPEG_is_rgb_ready();
 }
 
 /*********************************************************************

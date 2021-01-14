@@ -35,7 +35,9 @@ uint8_t* JPEG_get_jpeg_buffer( void );
 uint32_t JPEG_get_jpeg_buffer_size( void );
 void JPEG_notify_received( uint32_t jpeg_size, uint8_t* buffer_addr, void ( *callback_func_ptr ) ( int ) );
 void JPEG_notify_rgb_loaded( void );
-buffer_info* JPEG_get_rgb( void );
+buffer_info* JPEG_take_rgb( void );
+void JPEG_give_rgb( void );
+bool JPEG_is_rgb_ready( void );
 
 #ifdef __cplusplus
 }

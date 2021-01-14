@@ -66,6 +66,7 @@ void ew_reboot_system( void );
 void ew_device_navi_init( void );
 void ew_device_navi_deinit( void );
 int ew_device_navi_proc( void );
+bool ew_navi_is_map_frame_ready( void );
 
 void ew_device_mm_init( void );
 void ew_device_mm_deinit( void );

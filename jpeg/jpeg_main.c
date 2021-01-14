@@ -38,6 +38,7 @@
 #define JPEG_BUFFER_SIZE_BYTE ( 30 * 1024 )
 #define JPEG_BUFFER_NUM       ( 2 )
 #define RGB_BUFFER_SIZE_BYTE  ( FRAME_BUFFER_WIDTH * FRAME_BUFFER_HEIGHT * BYTE_PER_PIXEL )
+#define RGB_BUF_TAKE_SEMAPHORE_TIMEOUT_MS ( 1000 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -63,6 +64,7 @@ void        ( *callback_func_ptr ) ( int ); /**< callback function when JPEG dec
 static EventGroupHandle_t event_group = NULL;
 static jpeg_object jpeg_objs[JPEG_BUFFER_NUM];
 static buffer_info rgb_buf_info;
+static SemaphoreHandle_t rgb_buf_semaphore;
 static int writing_buffer_idx = 0;
 static QueueHandle_t queue_written_buffer;
 
@@ -164,20 +166,24 @@ PRINTF( "%s, buf idx %d\r\n", __FUNCTION__, buffer_idx );
 int result = RESULT_SUCCESS;
 jpeg_object* jpeg_obj = &jpeg_objs[buffer_idx];
 
-if( rgb_buf_info.is_buffer_available )
+if( NULL != rgb_buf_semaphore )
     {
-    result = decode_with_libjpeg( jpeg_obj );
-    if( RESULT_SUCCESS == result )
+    if( pdTRUE == xSemaphoreTake( rgb_buf_semaphore, RGB_BUF_TAKE_SEMAPHORE_TIMEOUT_MS ) )
         {
-        rgb_buf_info.image_width  = jpeg_obj->buf_info.image_width;
-        rgb_buf_info.image_height = jpeg_obj->buf_info.image_height;
-        rgb_buf_info.is_buffer_available = false;
+        result = decode_with_libjpeg( jpeg_obj );
+        if( RESULT_SUCCESS == result )
+            {
+            rgb_buf_info.image_width  = jpeg_obj->buf_info.image_width;
+            rgb_buf_info.image_height = jpeg_obj->buf_info.image_height;
+            rgb_buf_info.is_buffer_available = false;
+            }
+        xSemaphoreGive( rgb_buf_semaphore );
         }
-    }
     else
-    {
-    result = RESULT_ERR_BUFFER_NOT_AVAILABLE;
-    PRINTF( "rgb buf not available\r\n" );
+        {
+        result = RESULT_ERR_BUFFER_NOT_AVAILABLE;
+        PRINTF( "rgb buf not available\r\n" );
+        }
     }
 
 jpeg_obj->callback_func_ptr( result );
@@ -290,6 +296,10 @@ memset( &rgb_buf_info, 0, sizeof( rgb_buf_info ) );
 rgb_buf_info.is_buffer_available = true;
 rgb_buf_info.buffer_size         = RGB_BUFFER_SIZE_BYTE;
 rgb_buf_info.addr                = ( void* ) rgb_buffer;
+
+rgb_buf_semaphore = xSemaphoreCreateBinary();
+configASSERT( NULL != rgb_buf_semaphore );
+xSemaphoreGive( rgb_buf_semaphore );
 
 create_written_buffer_idx_queue();
 create_task();
@@ -406,17 +416,59 @@ rgb_buf_info.is_buffer_available = true;
 /*********************************************************************
 *
 * @public
-* JPEG_get_rgb
+* JPEG_take_rgb
 *
-* Get RGB data.
+* Take RGB buffer without waiting for the semaphore
 *
-* @return RGB buffer.
+* @retVal The pointer to the RGB buffer handle if not occupied.
+* @retVal NULL if the RGB buffer is occupied.
+*
 *********************************************************************/
-buffer_info* JPEG_get_rgb
+buffer_info* JPEG_take_rgb
     (
     void
     )
 {
-return &rgb_buf_info;
+buffer_info* get_rgb_buffer_handle = NULL;
+if( pdTRUE == xSemaphoreTake( rgb_buf_semaphore, 0 ) )
+    {
+    get_rgb_buffer_handle = &rgb_buf_info;
+    }
+PRINTF( "%s 0x%x\r\n", __FUNCTION__, get_rgb_buffer_handle );
+return get_rgb_buffer_handle;
+}
+
+/*********************************************************************
+*
+* @public
+* JPEG_give_rgb
+*
+* Give RGB buffer
+*
+*********************************************************************/
+void JPEG_give_rgb
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+xSemaphoreGive( rgb_buf_semaphore );
+}
+
+/*********************************************************************
+*
+* @public
+* JPEG_is_rgb_ready
+*
+* Get RGB data.
+*
+* @return True if rgb data is ready. False if no rgb data.
+*********************************************************************/
+bool JPEG_is_rgb_ready
+    (
+    void
+    )
+{
+return !rgb_buf_info.is_buffer_available;
 }
 

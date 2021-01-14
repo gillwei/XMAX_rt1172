@@ -502,6 +502,19 @@ void DeviceInterfaceNavigationDeviceClass__NotifyMapUpdate( void* _this )
   DeviceInterfaceNavigationDeviceClass_NotifyMapUpdate((DeviceInterfaceNavigationDeviceClass)_this );
 }
 
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsMapFrameReady()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsMapFrameReady( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XBool IsMapFrameReady;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsMapFrameReady = 0;
+  IsMapFrameReady = ew_navi_is_map_frame_ready();
+  return IsMapFrameReady;
+}
+
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )

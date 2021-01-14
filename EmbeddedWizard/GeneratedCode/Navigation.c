@@ -172,6 +172,9 @@ void NavigationMain__Init( NavigationMain _this, XObject aLink, XHandle aArg )
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->RoadText1, EwLoadResource( &FontsFontNotoSansCjkJp24, 
   ResourcesFont ));
+
+  /* Call the user defined constructor */
+  NavigationMain_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'Navigation::Main' */
@@ -219,6 +222,21 @@ void NavigationMain__Done( NavigationMain _this )
   ComponentsBaseComponent__Done( &_this->_Super );
 }
 
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void NavigationMain_Init( NavigationMain _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  if ( DeviceInterfaceNavigationDeviceClass_IsMapFrameReady( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass )))
+  {
+    EwPostSignal( EwNewSlot( _this, NavigationMain_OnMapUpdateSlot ), ((XObject)_this ));
+  }
+}
+
 /* 'C' function for method : 'Navigation::Main.OnShortDownKeyActivated()' */
 void NavigationMain_OnShortDownKeyActivated( NavigationMain _this )
 {
@@ -243,6 +261,13 @@ void NavigationMain_OnShortEnterKeyActivated( NavigationMain _this )
   Pictures = EwNewObject( NavigationYMC, 0 );
   CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)Pictures ), 0, 0, 0, 0, 
   0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
+/* 'C' function for method : 'Navigation::Main.OnShortHomeKeyActivated()' */
+void NavigationMain_OnShortHomeKeyActivated( NavigationMain _this )
+{
+  CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -298,7 +323,7 @@ EW_DEFINE_CLASS( NavigationMain, ComponentsBaseComponent, Background, Background
   NavigationMain_OnShortDownKeyActivated,
   NavigationMain_OnShortUpKeyActivated,
   NavigationMain_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  NavigationMain_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
 EW_END_OF_CLASS( NavigationMain )

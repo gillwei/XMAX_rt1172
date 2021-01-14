@@ -70,8 +70,6 @@
     {
     if( RESULT_SUCCESS == result )
         {
-        buffer_info* rgb_buffer_info = JPEG_get_rgb();
-        PRINTF( "%s ok, size %dx%d\r\n", __FUNCTION__, rgb_buffer_info->image_width, rgb_buffer_info->image_height );
         EW_notify_navi_map_update();
         }
     else
