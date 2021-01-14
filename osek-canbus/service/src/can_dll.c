@@ -252,6 +252,17 @@ if( p_rmd != NULL )
                     /*------------------------------------------------------
                     Dispatch to Interaction Layer
                     ------------------------------------------------------*/
+                    #if(DEBUG_RX_CAN_SUPPORT)
+                        if(p_rmd->identifier == 0x20A)
+                            {
+                            PRINTF("CAR type1\r\n");
+                            }
+                        else if(p_rmd->identifier == 0x209)
+                            {
+                            PRINTF("CAR type2\r\n");
+                            }
+                    #endif
+
                     il_hook_receive( hw_inst, p_rmd, l_frm_handle );
                     break;
 

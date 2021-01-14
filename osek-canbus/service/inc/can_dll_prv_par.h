@@ -35,6 +35,8 @@
 extern "C" {
 #endif
 
+#include "can_dll_par.h"
+
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -122,6 +124,7 @@ IL CAN0 Received Frame ID's
 #define     RXE_HEATER_STAT_CAN0_ID                             (0x5BE)
 #define     RXF_FACT_INSP_NS_CAN0_ID                            (0x5D5)
 #define     RXF_FACT_INSP2_GA_CAN0_ID                           (0x691)
+#define     RXG_ECU_INDCT_STAT1_CAN0_ID                         (0x20A)
 
 
 /*------------------------------------------------------
@@ -153,6 +156,7 @@ IL CAN0 Received Frame Length (in Bytes) Definitions
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_LEN                   (4)
 #define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_LEN                  (1)
 #define     IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_LEN                 (8)
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_LEN               (6)
 
 
 /*------------------------------------------------------
@@ -184,6 +188,7 @@ IL CAN0 Received Minimum Frame Length (in Bytes)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_MIN_LEN               (4)
 #define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_MIN_LEN              (1)
 #define     IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_MIN_LEN             (8)
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_MIN_LEN           (6)
 
 
 /*------------------------------------------------------
@@ -215,8 +220,9 @@ IL CAN0 Received Frame Index Definitions
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_INDEX                 DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXE_HEATER_STAT_RXFRM_HANDLE )
 #define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_INDEX                DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXF_FACT_INSP_NS_RXFRM_HANDLE )
 #define     IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_INDEX               DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_HANDLE )
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_INDEX             DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_HANDLE )
 
-#define     IL_CAN0_RX_NUM_FRAMES                               (0x0019)
+#define     IL_CAN0_RX_NUM_FRAMES                               (0x001A)
 
 /*------------------------------------------------------
 TRANSPORT PROTOCOL LAYER TX FRAME DEFINITIONS
@@ -263,8 +269,9 @@ CAN0 Receive Filter Assignment Macro's
 #define     DLL_CAN0_VCTR22_NUM_IDS                             (1)
 #define     DLL_CAN0_VCTR23_NUM_IDS                             (1)
 #define     DLL_CAN0_VCTR24_NUM_IDS                             (1)
+#define     DLL_CAN0_VCTR25_NUM_IDS                             (1)
 
-#define     DLL_CAN0_NUM_FILT_VCTRS                             (25)
+#define     DLL_CAN0_NUM_FILT_VCTRS                             (26)
 
 #ifdef __cplusplus
 }

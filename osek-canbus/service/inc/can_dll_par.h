@@ -87,6 +87,7 @@ IL CAN0 Received Frame Application Handles
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_HANDLE                (0x0016)
 #define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_HANDLE               (0x0017)
 #define     IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_HANDLE              (0x0018)
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_HANDLE            (0x0019)
 
 #ifdef __cplusplus
 }

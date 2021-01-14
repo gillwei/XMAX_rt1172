@@ -142,38 +142,10 @@ CAN 0 Receive Signal Enumerations (Indexes)
 #define     IL_CAN0_HEATER_STAT_RIDER_SEAT_WARM_MID_RXSIG_INDEX (0x0043)
 #define     IL_CAN0_FACT_INSP_NS1_RXSIG_INDEX                   (0x0044)
 #define     IL_CAN0_FACT_INSP2_GA_RX_RXSIG_INDEX                (0x0045)
+#define     IL_CAN0_ECU_INDCT_EG_SPD1_RXSIG_INDEX               (0x0046)
+#define     IL_CAN0_ECU_INDCT_TC_MODE1_RXSIG_INDEX              (0x0047)
 
-#define     IL_CAN0_RX_NUM_SIGNALS                              (0x0046)
-
-/*------------------------------------------------------
-CAN 0 Receive Frame Enumerations (Indexes)
-------------------------------------------------------*/
-
-#define IL_CAN0_RX_DAIG_SEG1_INDEX                        (0)
-#define IL_CAN0_RX_DAIG_SEG2_INDEX                        (1)
-#define IL_CAN0_RX_DAIG_SEG3_INDEX                        (2)
-#define IL_CAN0_RX_DAIG_SEG4_INDEX                        (3)
-#define IL_CAN0_RX_DAIG_SEG5_YDT_INDEX                    (4)
-#define IL_CAN0_RX_DAIG_SEG6_YDT_INDEX                    (5)
-#define IL_CAN0_RX_DAIG_SEG7_YDT_INDEX                    (6)
-#define IL_CAN0_RX_NM_AND_LP_BK_INDEX                     (7)
-#define IL_CAN0_RX0_ECU_INDCT_STAT_INDEX                  (8)
-#define IL_CAN0_RX1_ECU_COM_DATA_INDEX                    (9)
-#define IL_CAN0_RX2_RES_SUPPORT_INDEX                     (10)
-#define IL_CAN0_RX3_BRGTHNSS_CTRL_INDEX                   (11)
-#define IL_CAN0_RX4_RES_MT_FUNC_CNT_INDEX                 (12)
-#define IL_CAN0_RX5_VEHICLE_INFO_INDEX                    (13)
-#define IL_CAN0_RX6_FUNCSW_STAT_INDEX                     (14)
-#define IL_CAN0_RX7_FUEL_RATE_INDEX                       (15)
-#define IL_CAN0_RX8_ODO_TRIP_INDEX                        (16)
-#define IL_CAN0_RX9_RES_RPRGRM_INFO_INDEX                 (17)
-#define IL_CAN0_RXA_VEHICLE_INFO_2_INDEX                  (18)
-#define IL_CAN0_RXB_VEHICLE_INFO_3_INDEX                  (19)
-#define IL_CAN0_RXC_VEHICLE_INFO_4_INDEX                  (20)
-#define IL_CAN0_RXD_MAINT_TRIP_INDEX                      (21)
-#define IL_CAN0_RXE_HEATER_STAT_INDEX                     (22)
-#define IL_CAN0_RXF_FACT_INSP_NS_INDEX                    (23)
-#define IL_CAN0_RXF_FACT_INSP2_GA_INDEX                   (24)
+#define     IL_CAN0_RX_NUM_SIGNALS                              (0x0048)
 
 #ifdef __cplusplus
 }

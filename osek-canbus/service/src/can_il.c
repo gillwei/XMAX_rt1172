@@ -43,6 +43,7 @@
 
 #include "can_drv.h"
 #include "can_dll.h"
+#include "can_dll_prv_par.h"
 #include "can_il.h"
 #include "can_il_prv.h"
 #include "can_il_prv_par.h"
@@ -2898,7 +2899,7 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         ( ( l_p_rxfrm->attributes   & IL_RX_FRM_ATTR_TIMEOUT ) != 0  )   &&
         ( l_p_per_info != NULL ) )
         {
-        if( l_i_frm_index == IL_CAN0_RX6_FUNCSW_STAT_INDEX )
+        if( l_i_frm_index == IL_CAN0_RX6_FUNCSW_STAT_RXFRM_INDEX )
             {
             rx_hardkey_handle( l_new_frame, l_p_frm_status, l_p_per_info, l_p_rxfrm );
             }
@@ -2951,12 +2952,6 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
             }
         }
     }
-
-/*--------------------------------------------------
-Delay 20ms response to Meter when system is being
-powered up
---------------------------------------------------*/
-//TBD can_app_resp_delay_when_pwrup();
 }
 
 /*!*******************************************************************

@@ -135,6 +135,9 @@ Message Buffer Receive IDs
 #define RX_NM_AND_LP_BK                 0x226
 #define CAN0_RX_NM_AND_LP_BK_STD        FLEXCAN_ID_STD(RX_NM_AND_LP_BK)
 
+#define RXG_ECU_INDCT_STAT1             0x20A
+#define CAN0_RXG_ECU_INDCT_STAT1_STD    FLEXCAN_ID_STD(RXG_ECU_INDCT_STAT1)
+
 #define RX_DAIG_SEG1_MSK0               (RX_MB_DEF_MSK     & RX_MB_DEF_MSK_BIT(0) )
 #define RX_DAIG_SEG1_MSK1               (RX_DAIG_SEG1_MSK0 & RX_MB_DEF_MSK_BIT(1) )
 #define RX_DAIG_SEG1_MSK                (RX_DAIG_SEG1_MSK1 & RX_MB_DEF_MSK_BIT(2) )

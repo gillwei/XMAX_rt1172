@@ -185,6 +185,8 @@ encoded in the Most Significant Nibble of the value.
 #define     IL_CAN0_HEATER_STAT_RIDER_SEAT_WARM_MID_RXSIG_HANDLE (0x0043)
 #define     IL_CAN0_FACT_INSP_NS1_RXSIG_HANDLE                  (0x0044)
 #define     IL_CAN0_FACT_INSP2_GA_RX_RXSIG_HANDLE               (0x0045)
+#define     IL_CAN0_ECU_INDCT_EG_SPD1_RXSIG_HANDLE              (0x0046)
+#define     IL_CAN0_ECU_INDCT_TC_MODE1_RXSIG_HANDLE             (0x0047)
 
 
 /*------------------------------------------------------
@@ -261,6 +263,8 @@ CAN 0 Receive Signal Sizes in Bytes
 #define     IL_CAN0_HEATER_STAT_RIDER_SEAT_WARM_MID_RXSIG_NBYTES (1)
 #define     IL_CAN0_FACT_INSP_NS1_RXSIG_NBYTES                  (1)
 #define     IL_CAN0_FACT_INSP2_GA_RX_RXSIG_NBYTES               (8)
+#define     IL_CAN0_ECU_INDCT_EG_SPD1_RXSIG_NBYTES              (2)
+#define     IL_CAN0_ECU_INDCT_TC_MODE1_RXSIG_NBYTES             (1)
 
 #ifdef __cplusplus
 }

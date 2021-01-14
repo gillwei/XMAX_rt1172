@@ -383,6 +383,19 @@ dll_can0_vctr24_ids[DLL_CAN0_VCTR24_NUM_IDS] =
     };
 
 /*------------------------------------------------------
+CAN0 Receive Filter Vector 25
+------------------------------------------------------*/
+static dll_rx_frm_dispatch_t const
+dll_can0_vctr25_ids[DLL_CAN0_VCTR25_NUM_IDS] =
+    {
+        {
+        RXG_ECU_INDCT_STAT1_CAN0_ID,
+        IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_HANDLE,
+        DLL_RX_IL_FRAME
+        }
+    };
+
+/*------------------------------------------------------
 CAN0 Receive Filter Dispatch Table
 ------------------------------------------------------*/
 static dll_rx_filt_dispatch_t const
@@ -487,6 +500,10 @@ dll_can0_dispatch_filters[DLL_CAN0_NUM_FILT_VCTRS] =
         {
         DLL_CAN0_VCTR24_NUM_IDS,
         dll_can0_vctr24_ids
+        },
+        {
+        DLL_CAN0_VCTR25_NUM_IDS,
+        dll_can0_vctr25_ids
         }
     };
 

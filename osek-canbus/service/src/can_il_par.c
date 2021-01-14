@@ -85,8 +85,8 @@ transmissions
 /*------------------------------------------------------
 CAN0 Periodic TX Frame Timeout (milliseconds)
 ------------------------------------------------------*/
-#define     IL_CAN0_TX1_SYS_INFO_TXFRM_TIMEOUTTX_MS             (100)
-#define     IL_CAN0_TX6_DEV_CTRL_TXFRM_TIMEOUTTX_MS             (100)
+#define     IL_CAN0_TX1_SYS_INFO_TXFRM_TIMEOUTTX_MS             (1000)
+#define     IL_CAN0_TX6_DEV_CTRL_TXFRM_TIMEOUTTX_MS             (1000)
 
 
 /*------------------------------------------------------
@@ -104,6 +104,7 @@ CAN0 Periodic RX Frame Period (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_PER_MS             (100)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_PER_MS                 (100)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_PER_MS                (100)
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_PER_MS            (10)
 
 
 /*------------------------------------------------------
@@ -121,6 +122,7 @@ CAN0 Periodic RX Frame Timeout1 (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_TIMEOUT1_MS        (200)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_TIMEOUT1_MS            (200)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_TIMEOUT1_MS           (200)
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TIMEOUT1_MS       (20)
 
 
 /*------------------------------------------------------
@@ -138,6 +140,7 @@ CAN0 Periodic RX Frame TimeoutErr1 recovery (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_TERR1_RCVRY_MS     (100)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_TERR1_RCVRY_MS         (100)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_TERR1_RCVRY_MS        (100)
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TERR1_RCVRY_MS    (10)
 
 
 /*------------------------------------------------------
@@ -155,6 +158,7 @@ CAN0 Periodic RX Frame Timeout2 (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_TIMEOUT2_MS        (0)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_TIMEOUT2_MS            (0)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_TIMEOUT2_MS           (0)
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TIMEOUT2_MS       (0)
 
 
 /*------------------------------------------------------
@@ -172,6 +176,7 @@ CAN0 Periodic RX Frame TimeoutErr2 recovery (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_TERR2_RCVRY_MS     (0)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_TERR2_RCVRY_MS         (0)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_TERR2_RCVRY_MS        (0)
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TERR2_RCVRY_MS    (0)
 
 
 /*------------------------------------------------------
@@ -954,6 +959,12 @@ il_can0_fact_insp_ns1_rxsig_data[IL_CAN0_FACT_INSP_NS1_RXSIG_NBYTES];
 static uint8
 il_can0_fact_insp2_ga_rx_rxsig_data[IL_CAN0_FACT_INSP2_GA_RX_RXSIG_NBYTES];
 
+static uint8
+il_can0_ecu_indct_eg_spd1_rxsig_data[IL_CAN0_ECU_INDCT_EG_SPD1_RXSIG_NBYTES];
+
+static uint8
+il_can0_ecu_indct_tc_mode1_rxsig_data[IL_CAN0_ECU_INDCT_TC_MODE1_RXSIG_NBYTES];
+
 
 /*------------------------------------------------------
 CAN0 Receive Signal Definitions
@@ -1380,6 +1391,18 @@ il_can0_rxsig_table[IL_CAN0_RX_NUM_SIGNALS] =
         56,     64,
         &il_can0_fact_insp2_ga_rx_rxsig_data[0],
         IL_CAN0_FACT_INSP2_GA_RX_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        8,      16,
+        &il_can0_ecu_indct_eg_spd1_rxsig_data[0],
+        IL_CAN0_ECU_INDCT_EG_SPD1_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        25,     4,
+        &il_can0_ecu_indct_tc_mode1_rxsig_data[0],
+        IL_CAN0_ECU_INDCT_TC_MODE1_RXSIG_NBYTES
         }
     };
 
@@ -1841,6 +1864,22 @@ il_can0_rxf_fact_insp2_ga_rxfrm_sig_list[] =
 
 
 /*------------------------------------------------------
+RXG_ECU_INDCT_STAT1
+------------------------------------------------------*/
+static il_sig_index_t const
+il_can0_rxg_ecu_indct_stat1_rxfrm_sig_list[] =
+    {
+    IL_CAN0_ECU_INDCT_EG_SPD1_RXSIG_INDEX,
+    IL_CAN0_ECU_INDCT_TC_MODE1_RXSIG_INDEX
+    };
+
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_NSIG_BYTES        ( IL_CAN0_ECU_INDCT_EG_SPD1_RXSIG_NBYTES            + \
+                                                                  IL_CAN0_ECU_INDCT_TC_MODE1_RXSIG_NBYTES )
+
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_NSIGS             ( sizeof( il_can0_rxg_ecu_indct_stat1_rxfrm_sig_list ) / sizeof( il_sig_index_t ) )
+
+
+/*------------------------------------------------------
 CAN0 Receive Frame Data
 ------------------------------------------------------*/
 static uint8
@@ -1917,6 +1956,9 @@ il_can0_rxf_fact_insp_ns_rxfrm_data[IL_CAN0_RXF_FACT_INSP_NS_RXFRM_LEN];
 
 static uint8
 il_can0_rxf_fact_insp2_ga_rxfrm_data[IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_LEN];
+
+static uint8
+il_can0_rxg_ecu_indct_stat1_rxfrm_data[IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_LEN];
 
 
 /*------------------------------------------------------
@@ -2022,8 +2064,13 @@ static uint8 const
 il_can0_rxf_fact_insp2_ga_rxfrm_init_data[IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_LEN] =
     { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
 
+static uint8 const
+il_can0_rxg_ecu_indct_stat1_rxfrm_init_data[IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_LEN] =
+    { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
+
+
 /*------------------------------------------------------
-CAN0 Periodic Receive Frame Periodic Counters (Timers)
+CAN0 Periodic Receive Frame Timeout Counters (Timers)
 ------------------------------------------------------*/
 static uint16
 il_can0_rx0_ecu_indct_stat_rxfrm_per_cnt;
@@ -2061,44 +2108,8 @@ il_can0_rxd_maint_trip_rxfrm_per_cnt;
 static uint16
 il_can0_rxe_heater_stat_rxfrm_per_cnt;
 
-/*------------------------------------------------------
-CAN0 Periodic Receive Frame Timeout Counters (Timers)
-------------------------------------------------------*/
 static uint16
-il_can0_rx0_ecu_indct_stat_rxfrm_timeout_cnt;
-
-static uint16
-il_can0_rx1_ecu_com_data_rxfrm_timeout_cnt;
-
-static uint16
-il_can0_rx3_brgthnss_ctrl_rxfrm_timeout_cnt;
-
-static uint16
-il_can0_rx5_vehicle_info_rxfrm_timeout_cnt;
-
-static uint16
-il_can0_rx6_funcsw_stat_rxfrm_timeout_cnt;
-
-static uint16
-il_can0_rx7_fuel_rate_rxfrm_timeout_cnt;
-
-static uint16
-il_can0_rx8_odo_trip_rxfrm_timeout_cnt;
-
-static uint16
-il_can0_rxa_vehicle_info_2_rxfrm_timeout_cnt;
-
-static uint16
-il_can0_rxb_vehicle_info_3_rxfrm_timeout_cnt;
-
-static uint16
-il_can0_rxc_vehicle_info_4_rxfrm_timeout_cnt;
-
-static uint16
-il_can0_rxd_maint_trip_rxfrm_timeout_cnt;
-
-static uint16
-il_can0_rxe_heater_stat_rxfrm_timeout_cnt;
+il_can0_rxg_ecu_indct_stat1_rxfrm_per_cnt;
 
 
 /*------------------------------------------------------
@@ -2139,6 +2150,52 @@ il_can0_rxd_maint_trip_rxfrm_terr_rcvry_cnt;
 
 static uint16
 il_can0_rxe_heater_stat_rxfrm_terr_rcvry_cnt;
+
+static uint16
+il_can0_rxg_ecu_indct_stat1_rxfrm_terr_rcvry_cnt;
+
+
+/*------------------------------------------------------
+CAN0 Periodic Transmit Timeout Counters
+------------------------------------------------------*/
+static uint16
+il_can0_rx0_ecu_indct_stat_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rx1_ecu_com_data_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rx3_brgthnss_ctrl_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rx5_vehicle_info_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rx6_funcsw_stat_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rx7_fuel_rate_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rx8_odo_trip_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rxa_vehicle_info_2_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rxb_vehicle_info_3_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rxc_vehicle_info_4_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rxd_maint_trip_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rxe_heater_stat_rxfrm_timeout_cnt;
+
+static uint16
+il_can0_rxg_ecu_indct_stat1_rxfrm_timeout_cnt;
 
 
 /*------------------------------------------------------
@@ -2300,6 +2357,18 @@ il_can0_rxe_heater_stat_rxfrm_per_info =
     &il_can0_rxe_heater_stat_rxfrm_terr_rcvry_cnt
     };
 
+static il_rx_per_info_t const
+il_can0_rxg_ecu_indct_stat1_rxfrm_per_info =
+    {
+    IL_TIME_IN_TASK_TICS( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_PER_MS ),
+    IL_TIME_IN_TASK_TICS( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TIMEOUT1_MS ),
+    IL_TIME_IN_TASK_TICS( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TIMEOUT2_MS ),
+    IL_TIME_IN_TASK_TICS( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TERR1_RCVRY_MS ),
+    IL_TIME_IN_TASK_TICS( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TERR2_RCVRY_MS ),
+    &il_can0_rxg_ecu_indct_stat1_rxfrm_per_cnt,
+    &il_can0_rxg_ecu_indct_stat1_rxfrm_timeout_cnt,
+    &il_can0_rxg_ecu_indct_stat1_rxfrm_terr_rcvry_cnt
+    };
 
 /*------------------------------------------------------
 CAN0 Receive Frame Table
@@ -2581,6 +2650,17 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_NSIG_BYTES,
         &il_can0_rxf_fact_insp2_ga_rxfrm_data[0],
         NULL
+        },
+        {
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
+        IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_LEN,
+        IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_MIN_LEN,
+        &il_can0_rxg_ecu_indct_stat1_rxfrm_init_data[0],
+        &il_can0_rxg_ecu_indct_stat1_rxfrm_sig_list[0],
+        IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_NSIGS,
+        IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_NSIG_BYTES,
+        &il_can0_rxg_ecu_indct_stat1_rxfrm_data[0],
+        &il_can0_rxg_ecu_indct_stat1_rxfrm_per_info
         }
     };
 
