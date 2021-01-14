@@ -19,6 +19,7 @@
 #include "hci_control_api.h"
 #include "HCI_pub.h"
 #include "hci_prv.h"
+#include "cycfg_gatt_db.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -26,12 +27,16 @@
 #define GATT_WRITE_REQUEST_QUEUE_LENGTH   ( 16 )
 #define GATT_WRITE_REQUEST_HEADER_LENGTH  ( 4 ) /* connection handle 2 bytes, characteristic handle 2 bytes */
 
-#define ENABLE_BLE_DEBUG_LOG    ( 0 )
+#define ENABLE_BLE_DEBUG_LOG    ( 1 )
 #if( ENABLE_BLE_DEBUG_LOG )
     #define BLE_PRINTF  PRINTF
 #else
     #define BLE_PRINTF(fmt, ...)
 #endif
+
+#define CCCD_DATA_FIRST_BYTE_NUM   8
+#define CCCD_DATA_SECOND_BYTE_NUM  9
+#define WRITE_REQUEST_HEADER_NUM   8
 
 /*--------------------------------------------------------------------
                                 TYPES
@@ -43,6 +48,14 @@ typedef struct
     bool     is_discovered;
     const ble_client_callback* callback;
     } ble_client_struct;
+
+typedef struct
+    {
+    uint16_t start_handle;
+    uint16_t end_handle;
+    ble_server_callback* callback;
+    uint16_t connection_id;
+    } ble_server_struct;
 
 typedef struct
     {
@@ -67,12 +80,12 @@ static const char BLE_CLIENT_UUID_TABLE[BLE_CLIENT_TOTAL][UUID_128BIT_LEN] =
     {0xD0, 0x00, 0x2D, 0x12, 0x1E, 0x4B, 0x0F, 0xA4, 0x99, 0x4E, 0xCE, 0xB5, 0x31, 0xF4, 0x05, 0x79}  // ANCS
     };
 
-ble_client_struct ble_clients[BLE_CLIENT_TOTAL];
-static uint16_t connection_handle = 0;
-static bool     is_ble_connected = false;
-
-gatt_write_request_state_struct gatt_write_request_state = GATT_WRITE_REQUEST_STATE_IDLE;
-static QueueHandle_t gatt_write_quest_queue_handle;
+ble_client_struct                ble_clients[BLE_CLIENT_TOTAL];
+ble_server_struct                ble_servers[BLE_SERVER_TOTAL];
+static uint16_t                  connection_handle = 0;
+static bool                      is_ble_connected = false;
+gatt_write_request_state_struct  gatt_write_request_state = GATT_WRITE_REQUEST_STATE_IDLE;
+static QueueHandle_t             gatt_write_quest_queue_handle;
 
 /*--------------------------------------------------------------------
                             PROCEDURES
@@ -160,6 +173,12 @@ for( int i = 0; i < BLE_CLIENT_TOTAL; i++ )
         ble_clients[i].callback->ble_connected_callback();
         }
     }
+
+if( NULL != ble_servers[0].callback &&
+    NULL != ble_servers[0].callback->ble_connected_callback )
+    {
+    ble_servers[0].callback->ble_connected_callback();
+    }
 }
 
 /*********************************************************************
@@ -182,6 +201,12 @@ for( int i = 0; i < BLE_CLIENT_TOTAL; i++ )
         {
         ble_clients[i].callback->ble_disconnected_callback();
         }
+    }
+
+if( NULL != ble_servers[0].callback &&
+    NULL != ble_servers[0].callback->ble_disconnected_callback )
+    {
+    ble_servers[0].callback->ble_disconnected_callback();
     }
 }
 
@@ -248,8 +273,10 @@ int hci_gatt_event_received
     const uint16_t length
     )
 {
-uint16_t handle = 0;
+uint16_t connection_id = 0;
+uint16_t handle = 0; // attribute handle
 int service_idx = 0;
+const char device_name_data[8] = { 'L', 'I', 'N', 'K', 'C', 'A', 'R', 'D' };
 
 switch( opcode )
     {
@@ -347,7 +374,29 @@ switch( opcode )
         break;
 
     case HCI_CONTROL_GATT_EVENT_READ_REQUEST:
-        BLE_PRINTF( "GATT_EVENT_READ_REQUEST\r\n");
+        connection_id = WORD_LITTLE( data[0], data[1] );
+        handle = WORD_LITTLE( data[2], data[3] );
+        BLE_PRINTF( "GATT EVENT_READ_REQUEST, conn:%x, attr handle:%x\r\n", connection_id, handle );
+
+        if( handle >= ble_servers[0].start_handle &&
+            handle <= ble_servers[0].end_handle )
+            {
+            if( handle == HDLC_GAP_DEVICE_NAME_VALUE )
+                {
+                HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_READ_RESPONSE, HDLC_GAP_DEVICE_NAME_VALUE, (uint8_t *)device_name_data, 8 );
+                }
+            else if( NULL != ble_servers[0].callback &&
+                NULL != ble_servers[0].callback->read_request_received_callback )
+                {
+                ble_servers[0].callback->read_request_received_callback( handle );
+                break;
+                }
+            }
+        else
+            {
+            BLE_PRINTF( "ERROR:Can't find Attribute handle\r\n");
+            }
+        break;
         break;
 
     case HCI_CONTROL_GATT_EVENT_READ_RESPONSE:
@@ -355,7 +404,32 @@ switch( opcode )
         break;
 
     case HCI_CONTROL_GATT_EVENT_WRITE_REQUEST:
-        BLE_PRINTF( "GATT_EVENT_WRITE_REQUEST\r\n");
+        connection_id = WORD_LITTLE( data[0], data[1] );
+        handle = WORD_LITTLE( data[2], data[3] );
+        BLE_PRINTF( "GATT EVENT_WRITE_REQUEST, conn:%x, attr handle:%x, len: %d\r\n", connection_id, handle, length );
+        if( handle >= ble_servers[0].start_handle &&
+            handle <= ble_servers[0].end_handle )
+            {
+            // TODO connection ID judgement
+            // Since we can not identify the LE connection as AMS/ANCS or Motocon, here we judge the connection ID
+            // When the APP open CCCD
+            if( ( HDLD_MOTOCONSDK_NOTIFY_CLIENT_CHAR_CONFIG == handle ) && ( 1 == data[CCCD_DATA_FIRST_BYTE_NUM] ) )
+                {
+                ble_servers[0].connection_id = connection_id;
+                BLE_PRINTF( "Connection ID update:%d\r\n", connection_id );
+                }
+
+            if( NULL != ble_servers[0].callback &&
+                NULL != ble_servers[0].callback->write_request_received_callback )
+                {
+                ble_servers[0].callback->write_request_received_callback( handle, &data[WRITE_REQUEST_HEADER_NUM], length - WRITE_REQUEST_HEADER_NUM );
+                break;
+                }
+            }
+        else
+            {
+            BLE_PRINTF( "ERROR:Can't find Attribute handle\r\n");
+            }
         break;
 
     case HCI_CONTROL_GATT_EVENT_WRITE_RESPONSE:
@@ -448,7 +522,53 @@ return result;
 /*********************************************************************
 *
 * @private
-* hhci_le_proc_gatt_write_request
+* HCI_le_send_gatt_server_data
+*
+* Send BLE GATT SERVER read response or notification data
+*
+* @param opcode HCI opcode
+* @param handle The service server handle
+* @param data The pointer to the data buffer
+* @param length The length of the data to send
+* @return The result of success/error.
+*
+*********************************************************************/
+int HCI_le_send_gatt_server_data
+    (
+    const uint16_t opcode,
+    const uint16_t handle,
+    const uint8_t* data,
+    const uint16_t length
+    )
+{
+int result = ERR_NONE;
+uint8_t send_data[4 + length];
+
+BLE_PRINTF( "%s handle: %x, len: %d\r\n", __FUNCTION__, handle, length );
+
+if( ( HCI_CONTROL_GATT_COMMAND_READ_RESPONSE != opcode ) && ( HCI_CONTROL_GATT_COMMAND_NOTIFY != opcode ) )
+    {
+    BLE_PRINTF( "ERROR opcode 0x%x\r\n", opcode );
+    return ERR_BLE_API;
+    }
+
+send_data[0] = ble_servers[0].connection_id & 0xff;
+send_data[1] = ( ble_servers[0].connection_id >> 8 ) & 0xff;
+send_data[2] = handle & 0xff;
+send_data[3] = ( handle >> 8 )& 0xff;
+memcpy( &send_data[4], data, length );
+
+if( pdFALSE == HCI_wiced_send_command( opcode, send_data, 4 + length ) )
+    {
+    result = ERR_BLE_WRITE;
+    }
+return result;
+}
+
+/*********************************************************************
+*
+* @private
+* hci_le_proc_gatt_write_request
 *
 * Get the GATT write request from queue and
 * call send_gatt_write_request() to send to the peer device.
@@ -548,6 +668,27 @@ return ERR_NONE;
 /*********************************************************************
 *
 * @public
+* HCI_le_register_server_callback
+*
+* Register the callback function of the BLE GATT SERVER service
+*
+* @param service_type The BLE GATT SERVER service of ble_service_type
+* @param callback The pointer of the callback struct of ble_service_callback
+*
+*********************************************************************/
+int HCI_le_register_server_callback
+    (
+    ble_server_type service_type,
+    ble_server_callback* callback
+    )
+{
+ble_servers[service_type].callback = callback;
+return ERR_NONE;
+}
+
+/*********************************************************************
+*
+* @public
 * HCI_le_is_connected
 *
 * Get the BLE connection status
@@ -568,6 +709,23 @@ return is_ble_connected;
 /*********************************************************************
 *
 * @private
+* hci_init_server_service
+*
+* Initialize all Server Service variable
+*
+*********************************************************************/
+void hci_init_server_service
+    (
+    void
+    )
+{
+ble_servers[0].start_handle = HDLS_GAP;
+ble_servers[0].end_handle = HDLD_MOTOCONSDK_DDT_CAN_DATA_CLIENT_CHAR_CONFIG;
+}
+
+/*********************************************************************
+*
+* @private
 * hci_le_init
 *
 * Init HCI LE group and GATT group
@@ -580,4 +738,6 @@ void hci_le_init
 {
 gatt_write_quest_queue_handle = xQueueCreate( GATT_WRITE_REQUEST_QUEUE_LENGTH, sizeof( ble_gatt_write_request_struct ) );
 configASSERT( NULL != gatt_write_quest_queue_handle );
+
+hci_init_server_service();
 }

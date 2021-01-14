@@ -24,7 +24,7 @@ extern "C"{
                           LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define ENABLE_MOTOCON_DEBUG_LOG ( 1 )
-#define ENABLE_MOTOCON_HCI_LINK  ( 0 )
+#define ENABLE_MOTOCON_HCI_LINK  ( 1 )
 
 /*--------------------------------------------------------------------
                                 TYPES

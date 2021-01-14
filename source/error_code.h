@@ -23,6 +23,7 @@ extern "C"{
 #define ERR_JPEG_DECODE     ( ERR_TYPE_JPEG | 0x01 )
 #define ERR_TYPE_BT         ( 0x20000000 )
 #define ERR_BLE_WRITE       ( ERR_TYPE_BT | 0x01 )
+#define ERR_BLE_API         ( ERR_TYPE_BT | 0x01 )
 
 #ifdef __cplusplus
 }

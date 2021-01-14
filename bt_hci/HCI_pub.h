@@ -60,6 +60,12 @@ typedef enum
     BLE_CLIENT_TOTAL
     } ble_client_type;
 
+typedef enum
+    {
+    BLE_SERVER_MOTOCONSDK,
+    BLE_SERVER_TOTAL
+    } ble_server_type;
+
 typedef struct
     {
     void ( *ble_connected_callback ) ( void );
@@ -70,6 +76,14 @@ typedef struct
     void ( *discovery_complete_callback ) ( void );
     void ( *notification_received_callback ) ( const uint16_t handle, const uint8_t* data, const uint16_t length );
     } ble_client_callback;
+
+typedef struct
+    {
+    void ( *ble_connected_callback ) ( void );
+    void ( *ble_disconnected_callback ) ( void );
+    void ( *read_request_received_callback ) ( const uint16_t handle );
+    void ( *write_request_received_callback ) ( const uint16_t handle, const uint8_t* data, const uint16_t length );
+    } ble_server_callback;
 
 typedef enum HCI_RESPONSE_TYPE
     {
@@ -145,10 +159,24 @@ BaseType_t HCI_wiced_send_command
     const uint16_t len
     );
 
+int HCI_le_send_gatt_server_data
+    (
+    const uint16_t opcode,
+    const uint16_t handle,
+    const uint8_t* data,
+    const uint16_t length
+    );
+
 int HCI_le_register_client_callback
     (
     const ble_client_type      client_type,
     const ble_client_callback* callback
+    );
+
+int HCI_le_register_server_callback
+    (
+    ble_server_type service_type,
+    ble_server_callback*   callback
     );
 
 int HCI_le_enqueue_gatt_write_request
