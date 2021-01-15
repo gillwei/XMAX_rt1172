@@ -19,6 +19,7 @@
 #include <stdint.h>
 #include "bc_ancs_priv.h"
 #include "bc_ams_priv.h"
+#include "bc_motocon_priv.h"
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -127,4 +128,5 @@ configASSERT( pdPASS == result );
 
 bc_ancs_init();
 bc_ams_init();
+bc_motocon_init();
 }
