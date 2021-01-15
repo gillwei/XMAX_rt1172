@@ -171,8 +171,8 @@ void BOARD_BootClockRUN(void)
     CLOCK_SetRootClock(kCLOCK_Root_Lpspi1, &rootCfg);
 
     /* Configure flexio using Osc48MDiv2 */
-    rootCfg.mux = kCLOCK_FLEXIO2_ClockRoot_MuxOscRc16M;
-    rootCfg.div = 2;
+    rootCfg.mux = kCLOCK_FLEXIO2_ClockRoot_MuxOscRc400M;
+    rootCfg.div = 80;
     CLOCK_SetRootClock(kCLOCK_Root_Flexio2, &rootCfg);
 
     /* Configure emvsim using Osc48MDiv2 */

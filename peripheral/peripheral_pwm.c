@@ -31,9 +31,9 @@
 #define DISPLAY_FLEXIO_OUTPUTPIN                ( 29U )     /* Select FXIO2_D29 as PWM output */
 #define DISPLAY_FLEXIO_TIMER_CH                 ( 0U )      /* Flexio timer0 used */
 
-#define DISPLAY_FLEXIO_CLOCK_FREQUENCY          BOARD_BOOTCLOCKRUN_FLEXIO2_CLK_ROOT
+#define DISPLAY_FLEXIO_CLOCK_FREQUENCY          ( CLOCK_GetRootClockFreq(kCLOCK_Root_Flexio2) )
 /* FLEXIO output PWM frequency */
-#define DISPLAY_FLEXIO_FREQUENCY                ( 20000U )
+#define DISPLAY_FLEXIO_FREQUENCY                ( 27000U ) // TODO:Fix this, should be 20kHz
 
 #define MIN_DUTY_CYCLE_VALUE                    ( 0 )
 #define MAX_DUTY_CYCLE_VALUE                    ( 100 )
