@@ -25,35 +25,43 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_ApplicationApplication.h"
 #include "_CoreGroup.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DevelopmentDEV_Bluetooth.h"
 #include "_DevelopmentDEV_Main.h"
 #include "_DevelopmentDEV_RealTimeClock.h"
+#include "_DevelopmentDEV_TFTBrightness.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_FactoryMain.h"
 #include "_MenuItemBase.h"
 #include "_MenuItemCheckbox.h"
 #include "_MenuVerticalMenu.h"
+#include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
+#include "_ViewsImage.h"
 #include "_ViewsText.h"
+#include "Core.h"
 #include "Development.h"
 #include "DeviceInterface.h"
 #include "Fonts.h"
+#include "Resource.h"
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x000000D2, /* ratio 68.57 % */
+  0x00000120, /* ratio 63.89 % */
   0xB8001F00, 0x8008C452, 0x00C60030, 0x0DE003A0, 0xF2003900, 0x80010000, 0x0032800A,
   0xC0042CE6, 0x22C0C271, 0x80021A48, 0xC3E2F233, 0x6A4D1589, 0x89B14864, 0x39263248,
   0xC528F84A, 0x28364224, 0xD001A62D, 0x21C524C6, 0x543A7000, 0x802386B8, 0x04851F08,
-  0x24C75005, 0x190E8743, 0x72A9C9A2, 0x1F024723, 0x4AC5185F, 0x8FD5E290, 0x485A8C3A,
-  0x14E2929A, 0xDE366691, 0x23127839, 0x21262B45, 0xD0E9DC6A, 0x01BBD18D, 0x00000001,
-  0x00000000
+  0x24C75005, 0x190E8743, 0x72A9C9A2, 0x1F0B4723, 0x48B41A2D, 0x9DC42951, 0x654C0067,
+  0x46AAA6E8, 0xAE31168A, 0xE3E04A34, 0x291FB60B, 0x504B6C72, 0x04AC5187, 0x30057295,
+  0x8D99A445, 0xC49E0E77, 0x498AD148, 0x3A771A88, 0xC131CB2C, 0x197D8447, 0x91886422,
+  0x25C78223, 0x6B95DA49, 0x00406394, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -62,14 +70,18 @@ static const XStringRes _Const0001 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0011 };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x0024 };
 static const XStringRes _Const0004 = { _StringsDefault0, 0x0036 };
-static const XRect _Const0005 = {{ 0, 36 }, { 480, 272 }};
-static const XRect _Const0006 = {{ 96, 79 }, { 390, 122 }};
-static const XStringRes _Const0007 = { _StringsDefault0, 0x0047 };
-static const XStringRes _Const0008 = { _StringsDefault0, 0x004B };
-static const XStringRes _Const0009 = { _StringsDefault0, 0x004F };
-static const XRect _Const000A = {{ 0, 40 }, { 240, 65 }};
-static const XStringRes _Const000B = { _StringsDefault0, 0x0053 };
-static const XRect _Const000C = {{ 247, 40 }, { 356, 65 }};
+static const XStringRes _Const0005 = { _StringsDefault0, 0x0047 };
+static const XRect _Const0006 = {{ 0, 36 }, { 480, 272 }};
+static const XRect _Const0007 = {{ 96, 79 }, { 390, 122 }};
+static const XStringRes _Const0008 = { _StringsDefault0, 0x005D };
+static const XStringRes _Const0009 = { _StringsDefault0, 0x0061 };
+static const XStringRes _Const000A = { _StringsDefault0, 0x0065 };
+static const XRect _Const000B = {{ 0, 40 }, { 240, 65 }};
+static const XStringRes _Const000C = { _StringsDefault0, 0x0069 };
+static const XRect _Const000D = {{ 247, 40 }, { 356, 65 }};
+static const XRect _Const000E = {{ 432, 2 }, { 482, 22 }};
+static const XStringRes _Const000F = { _StringsDefault0, 0x007F };
+static const XStringRes _Const0010 = { _StringsDefault0, 0x0088 };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -113,8 +125,9 @@ void DevelopmentDEV_Main__Init( DevelopmentDEV_Main _this, XObject aLink, XHandl
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0002 ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0003 ));
   _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0004 ));
-  CoreRectView__OnSetBounds( &_this->Menu, _Const0005 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 4 );
+  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const0005 ));
+  CoreRectView__OnSetBounds( &_this->Menu, _Const0006 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 5 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Menu, 4 );
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
@@ -178,9 +191,9 @@ XString DevelopmentDEV_Main_LoadItemTitle( DevelopmentDEV_Main _this, XInt32 aIt
 {
   XString Title = 0;
 
-  if ( aItemNo < 4 )
+  if ( aItemNo < 5 )
   {
-    Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 4 )];
+    Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 5 )];
   }
 
   return Title;
@@ -196,8 +209,8 @@ void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItem
   switch ( aItemNo )
   {
     case 0 :
-      ComponentsBaseComponent_SlideInDialog((ComponentsBaseComponent)_this, ((CoreGroup)EwNewObject( 
-      FactoryMain, 0 )));
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( FactoryMain, 
+      0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     break;
 
     case 1 :
@@ -212,6 +225,11 @@ void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItem
 
     case 3 :
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( DevelopmentDEV_Bluetooth, 
+      0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    break;
+
+    case 4 :
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( DevelopmentDEV_TFTBrightness, 
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     break;
 
@@ -312,7 +330,7 @@ void DevelopmentDEV_RealTimeClock__Init( DevelopmentDEV_RealTimeClock _this, XOb
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->TimeText, _Const0006 );
+  CoreRectView__OnSetBounds( &_this->TimeText, _Const0007 );
   ViewsText_OnSetAlignment( &_this->TimeText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->TimeText, 0 );
@@ -372,10 +390,10 @@ void DevelopmentDEV_RealTimeClock_OnUpdateLocalTimeSlot( DevelopmentDEV_RealTime
     ViewsText_OnSetString( &_this->TimeText, EwConcatString( EwConcatString( EwConcatString( 
     EwConcatString( EwConcatString( EwConcatString( EwConcatString( EwConcatString( 
     EwConcatString( EwConcatString( EwNewStringInt( CurrentTime->Year, 4, 10 ), 
-    EwLoadString( &_Const0007 )), EwNewStringInt( CurrentTime->Month, 2, 10 )), 
-    EwLoadString( &_Const0007 )), EwNewStringInt( CurrentTime->Day, 2, 10 )), EwLoadString( 
-    &_Const0008 )), EwNewStringInt( CurrentTime->Hour, 2, 10 )), EwLoadString( &_Const0009 )), 
-    EwNewStringInt( CurrentTime->Minute, 2, 10 )), EwLoadString( &_Const0009 )), 
+    EwLoadString( &_Const0008 )), EwNewStringInt( CurrentTime->Month, 2, 10 )), 
+    EwLoadString( &_Const0008 )), EwNewStringInt( CurrentTime->Day, 2, 10 )), EwLoadString( 
+    &_Const0009 )), EwNewStringInt( CurrentTime->Hour, 2, 10 )), EwLoadString( &_Const000A )), 
+    EwNewStringInt( CurrentTime->Minute, 2, 10 )), EwLoadString( &_Const000A )), 
     EwNewStringInt( CurrentTime->Second, 2, 10 )));
   }
 }
@@ -445,9 +463,9 @@ void DevelopmentDEV_Bluetooth__Init( DevelopmentDEV_Bluetooth _this, XObject aLi
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->BtSwVersionTitle, _Const000A );
-  ViewsText_OnSetString( &_this->BtSwVersionTitle, EwLoadString( &_Const000B ));
-  CoreRectView__OnSetBounds( &_this->BtSwVersionText, _Const000C );
+  CoreRectView__OnSetBounds( &_this->BtSwVersionTitle, _Const000B );
+  ViewsText_OnSetString( &_this->BtSwVersionTitle, EwLoadString( &_Const000C ));
+  CoreRectView__OnSetBounds( &_this->BtSwVersionText, _Const000D );
   ViewsText_OnSetAlignment( &_this->BtSwVersionText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->BtSwVersionText, DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( 
@@ -538,5 +556,261 @@ EW_DEFINE_CLASS( DevelopmentDEV_Bluetooth, ComponentsBaseMainBG, BtSwVersionTitl
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
 EW_END_OF_CLASS( DevelopmentDEV_Bluetooth )
+
+/* Initializer for the class 'Development::DEV_TFTBrightness' */
+void DevelopmentDEV_TFTBrightness__Init( DevelopmentDEV_TFTBrightness _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_TFTBrightness );
+
+  /* ... then construct all embedded objects */
+  ViewsImage__Init( &_this->CheckerboardImage, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->LevelText, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->HideLevelTimer, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( DevelopmentDEV_TFTBrightness );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const0000 );
+  CoreRectView__OnSetBounds( &_this->CheckerboardImage, _Const0000 );
+  ViewsImage_OnSetFrameNumber( &_this->CheckerboardImage, 1 );
+  CoreRectView__OnSetBounds( &_this->LevelText, _Const000E );
+  ViewsText_OnSetWrapText( &_this->LevelText, 1 );
+  ViewsText_OnSetString( &_this->LevelText, 0 );
+  _this->BrightnessLevel = -1;
+  _this->BrightnessList[ 0 ] = 1;
+  _this->BrightnessList[ 1 ] = 3;
+  _this->BrightnessList[ 2 ] = 6;
+  _this->BrightnessList[ 3 ] = 11;
+  _this->BrightnessList[ 4 ] = 18;
+  _this->BrightnessList[ 5 ] = 27;
+  _this->BrightnessList[ 6 ] = 38;
+  _this->BrightnessList[ 7 ] = 50;
+  _this->BrightnessList[ 8 ] = 65;
+  _this->BrightnessList[ 9 ] = 81;
+  _this->BrightnessList[ 10 ] = 100;
+  CoreGroup__Add( _this, ((CoreView)&_this->CheckerboardImage ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->LevelText ), 0 );
+  ViewsImage_OnSetBitmap( &_this->CheckerboardImage, EwLoadResource( &ResourceDisplayTest, 
+  ResourcesBitmap ));
+  ViewsText_OnSetFont( &_this->LevelText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  _this->HideLevelTimer.OnTrigger = EwNewSlot( _this, DevelopmentDEV_TFTBrightness_OnHideLevelSlot );
+
+  /* Call the user defined constructor */
+  DevelopmentDEV_TFTBrightness_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Development::DEV_TFTBrightness' */
+void DevelopmentDEV_TFTBrightness__ReInit( DevelopmentDEV_TFTBrightness _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuBaseMenuView__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsImage__ReInit( &_this->CheckerboardImage );
+  ViewsText__ReInit( &_this->LevelText );
+  CoreTimer__ReInit( &_this->HideLevelTimer );
+}
+
+/* Finalizer method for the class 'Development::DEV_TFTBrightness' */
+void DevelopmentDEV_TFTBrightness__Done( DevelopmentDEV_TFTBrightness _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+
+  /* Finalize all embedded objects */
+  ViewsImage__Done( &_this->CheckerboardImage );
+  ViewsText__Done( &_this->LevelText );
+  CoreTimer__Done( &_this->HideLevelTimer );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuBaseMenuView__Done( &_this->_Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void DevelopmentDEV_TFTBrightness_Init( DevelopmentDEV_TFTBrightness _this, XHandle 
+  aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  DevelopmentDEV_TFTBrightness_OnSetBrightnessLevel( _this, EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass )->BrightnessLevel );
+}
+
+/* The method UpdateViewState() is invoked automatically after the state of the 
+   component has been changed. This method can be overridden and filled with logic 
+   to ensure the visual aspect of the component does reflect its current state. 
+   For example, the 'enabled' state of the component can affect its colors (disabled 
+   components may appear pale). In this case the logic of the method should modify 
+   the respective color properties accordingly to the current 'enabled' state. 
+   The current state of the component is passed as a set in the parameter aState. 
+   It reflects the very basic component state like its visibility or the ability 
+   to react to user inputs. Beside this common state, the method can also involve 
+   any other variables used in the component as long as they reflect its current 
+   state. For example, the toggle switch component can take in account its toggle 
+   state 'on' or 'off' and change accordingly the location of the slider, etc.
+   Usually, this method will be invoked automatically by the framework. Optionally 
+   you can request its invocation by using the method @InvalidateViewState(). */
+void DevelopmentDEV_TFTBrightness_UpdateViewState( DevelopmentDEV_TFTBrightness _this, 
+  XSet aState )
+{
+  ApplicationApplication App;
+
+  CoreGroup_UpdateViewState((CoreGroup)_this, aState );
+  EwTrace( "%s%t", EwLoadString( &_Const000F ), aState );
+  App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+  EwTrace( "%s%*", EwLoadString( &_Const0010 ), App );
+
+  if ( App != 0 )
+  {
+    if ((( aState & CoreViewStateDialog ) == CoreViewStateDialog ))
+    {
+      ApplicationApplication_OnSetStatusBarVisible( App, 0 );
+    }
+    else
+    {
+      ApplicationApplication_OnSetStatusBarVisible( App, 1 );
+    }
+  }
+}
+
+/* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortDownKeyActivated()' */
+void DevelopmentDEV_TFTBrightness_OnShortDownKeyActivated( DevelopmentDEV_TFTBrightness _this )
+{
+  XInt32 NextBrightnessLevel = _this->BrightnessLevel - 1;
+
+  if ( 0 <= NextBrightnessLevel )
+  {
+    DevelopmentDEV_TFTBrightness_OnSetBrightnessLevel( _this, NextBrightnessLevel );
+  }
+  else
+  {
+    DevelopmentDEV_TFTBrightness_ShowLevelText( _this );
+  }
+}
+
+/* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortUpKeyActivated()' */
+void DevelopmentDEV_TFTBrightness_OnShortUpKeyActivated( DevelopmentDEV_TFTBrightness _this )
+{
+  XInt32 NextBrightnessLevel = _this->BrightnessLevel + 1;
+
+  if ( 11 > NextBrightnessLevel )
+  {
+    DevelopmentDEV_TFTBrightness_OnSetBrightnessLevel( _this, NextBrightnessLevel );
+  }
+  else
+  {
+    DevelopmentDEV_TFTBrightness_ShowLevelText( _this );
+  }
+}
+
+/* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortHomeKeyActivated()' */
+void DevelopmentDEV_TFTBrightness_OnShortHomeKeyActivated( DevelopmentDEV_TFTBrightness _this )
+{
+  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  EwNullSlot, 0 );
+}
+
+/* 'C' function for method : 'Development::DEV_TFTBrightness.OnSetBrightnessLevel()' */
+void DevelopmentDEV_TFTBrightness_OnSetBrightnessLevel( DevelopmentDEV_TFTBrightness _this, 
+  XInt32 value )
+{
+  if ( _this->BrightnessLevel != value )
+  {
+    _this->BrightnessLevel = value;
+    ViewsText_OnSetString( &_this->LevelText, EwNewStringInt( _this->BrightnessLevel, 
+    0, 10 ));
+    DevelopmentDEV_TFTBrightness_ShowLevelText( _this );
+
+    if ( EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->BrightnessLevel 
+        != value )
+    {
+      EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->BrightnessLevel 
+      = value;
+    }
+
+    DeviceInterfaceSystemDeviceClass_SetBrightness( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+    DeviceInterfaceSystemDeviceClass ), _this->BrightnessList[ EwCheckIndex( _this->BrightnessLevel, 
+    11 )]);
+  }
+}
+
+/* 'C' function for method : 'Development::DEV_TFTBrightness.OnHideLevelSlot()' */
+void DevelopmentDEV_TFTBrightness_OnHideLevelSlot( DevelopmentDEV_TFTBrightness _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  CoreTimer_OnSetEnabled( &_this->HideLevelTimer, 0 );
+  ViewsText_OnSetVisible( &_this->LevelText, 0 );
+}
+
+/* 'C' function for method : 'Development::DEV_TFTBrightness.ShowLevelText()' */
+void DevelopmentDEV_TFTBrightness_ShowLevelText( DevelopmentDEV_TFTBrightness _this )
+{
+  ViewsText_OnSetVisible( &_this->LevelText, 1 );
+  CoreTimer_OnSetEnabled( &_this->HideLevelTimer, 1 );
+}
+
+/* Variants derived from the class : 'Development::DEV_TFTBrightness' */
+EW_DEFINE_CLASS_VARIANTS( DevelopmentDEV_TFTBrightness )
+EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_TFTBrightness )
+
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_TFTBrightness' */
+EW_DEFINE_CLASS( DevelopmentDEV_TFTBrightness, MenuBaseMenuView, CheckerboardImage, 
+                 CheckerboardImage, CheckerboardImage, CheckerboardImage, BrightnessLevel, 
+                 BrightnessLevel, "Development::DEV_TFTBrightness" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  DevelopmentDEV_TFTBrightness_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  DevelopmentDEV_TFTBrightness_OnShortDownKeyActivated,
+  DevelopmentDEV_TFTBrightness_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  DevelopmentDEV_TFTBrightness_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  MenuBaseMenuView_LoadItemClass,
+  MenuBaseMenuView_LoadItemTitle,
+  MenuBaseMenuView_OnItemActivate,
+  MenuBaseMenuView_LoadItemChecked,
+  MenuBaseMenuView_LoadItemEnabled,
+EW_END_OF_CLASS( DevelopmentDEV_TFTBrightness )
 
 /* Embedded Wizard */

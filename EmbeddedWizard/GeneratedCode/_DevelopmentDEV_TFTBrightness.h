@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentDEV_Main_H
-#define _DevelopmentDEV_Main_H
+#ifndef _DevelopmentDEV_TFTBrightness_H
+#define _DevelopmentDEV_TFTBrightness_H
 
 #ifdef __cplusplus
   extern "C"
@@ -43,10 +43,11 @@
 #endif
 
 #include "_CoreKeyPressHandler.h"
+#include "_CoreTimer.h"
 #include "_MenuBaseMenuView.h"
-#include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -78,10 +79,10 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::DEV_Main */
-#ifndef _DevelopmentDEV_Main_
-  EW_DECLARE_CLASS( DevelopmentDEV_Main )
-#define _DevelopmentDEV_Main_
+/* Forward declaration of the class Development::DEV_TFTBrightness */
+#ifndef _DevelopmentDEV_TFTBrightness_
+  EW_DECLARE_CLASS( DevelopmentDEV_TFTBrightness )
+#define _DevelopmentDEV_TFTBrightness_
 #endif
 
 /* Forward declaration of the class Effects::Fader */
@@ -96,21 +97,18 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBase */
-#ifndef _MenuItemBase_
-  EW_DECLARE_CLASS( MenuItemBase )
-#define _MenuItemBase_
-#endif
 
+/* Deklaration of class : 'Development::DEV_TFTBrightness' */
+EW_DEFINE_FIELDS( DevelopmentDEV_TFTBrightness, MenuBaseMenuView )
+  EW_OBJECT  ( CheckerboardImage, ViewsImage )
+  EW_OBJECT  ( LevelText,       ViewsText )
+  EW_OBJECT  ( HideLevelTimer,  CoreTimer )
+  EW_PROPERTY( BrightnessLevel, XInt32 )
+  EW_ARRAY   ( BrightnessList,  XInt32, [11])
+EW_END_OF_FIELDS( DevelopmentDEV_TFTBrightness )
 
-/* Deklaration of class : 'Development::DEV_Main' */
-EW_DEFINE_FIELDS( DevelopmentDEV_Main, MenuBaseMenuView )
-  EW_OBJECT  ( Menu,            MenuVerticalMenu )
-  EW_ARRAY   ( ItemTitleArray,  XString, [5])
-EW_END_OF_FIELDS( DevelopmentDEV_Main )
-
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_Main' */
-EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_TFTBrightness' */
+EW_DEFINE_METHODS( DevelopmentDEV_TFTBrightness, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -141,7 +139,8 @@ EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
   EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
-  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
+  EW_METHOD( UpdateViewState,   void )( DevelopmentDEV_TFTBrightness _this, XSet 
+    aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
@@ -154,41 +153,68 @@ EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( DevelopmentDEV_TFTBrightness _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( DevelopmentDEV_TFTBrightness _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_Main _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_TFTBrightness _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_Main _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_Main _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_Main _this, XInt32 aItemNo, 
+  EW_METHOD( LoadItemClass,     XClass )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( MenuBaseMenuView _this, XInt32 aItemNo, 
     MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_Main _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( DevelopmentDEV_Main )
+EW_END_OF_METHODS( DevelopmentDEV_TFTBrightness )
 
-/* 'C' function for method : 'Development::DEV_Main.OnShortHomeKeyActivated()' */
-void DevelopmentDEV_Main_OnShortHomeKeyActivated( DevelopmentDEV_Main _this );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void DevelopmentDEV_TFTBrightness_Init( DevelopmentDEV_TFTBrightness _this, XHandle 
+  aArg );
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemClass()' */
-XClass DevelopmentDEV_Main_LoadItemClass( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* The method UpdateViewState() is invoked automatically after the state of the 
+   component has been changed. This method can be overridden and filled with logic 
+   to ensure the visual aspect of the component does reflect its current state. 
+   For example, the 'enabled' state of the component can affect its colors (disabled 
+   components may appear pale). In this case the logic of the method should modify 
+   the respective color properties accordingly to the current 'enabled' state. 
+   The current state of the component is passed as a set in the parameter aState. 
+   It reflects the very basic component state like its visibility or the ability 
+   to react to user inputs. Beside this common state, the method can also involve 
+   any other variables used in the component as long as they reflect its current 
+   state. For example, the toggle switch component can take in account its toggle 
+   state 'on' or 'off' and change accordingly the location of the slider, etc.
+   Usually, this method will be invoked automatically by the framework. Optionally 
+   you can request its invocation by using the method @InvalidateViewState(). */
+void DevelopmentDEV_TFTBrightness_UpdateViewState( DevelopmentDEV_TFTBrightness _this, 
+  XSet aState );
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemTitle()' */
-XString DevelopmentDEV_Main_LoadItemTitle( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortDownKeyActivated()' */
+void DevelopmentDEV_TFTBrightness_OnShortDownKeyActivated( DevelopmentDEV_TFTBrightness _this );
 
-/* 'C' function for method : 'Development::DEV_Main.OnItemActivate()' */
-void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItemNo, 
-  MenuItemBase aMenuItem );
+/* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortUpKeyActivated()' */
+void DevelopmentDEV_TFTBrightness_OnShortUpKeyActivated( DevelopmentDEV_TFTBrightness _this );
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemChecked()' */
-XBool DevelopmentDEV_Main_LoadItemChecked( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortHomeKeyActivated()' */
+void DevelopmentDEV_TFTBrightness_OnShortHomeKeyActivated( DevelopmentDEV_TFTBrightness _this );
+
+/* 'C' function for method : 'Development::DEV_TFTBrightness.OnSetBrightnessLevel()' */
+void DevelopmentDEV_TFTBrightness_OnSetBrightnessLevel( DevelopmentDEV_TFTBrightness _this, 
+  XInt32 value );
+
+/* 'C' function for method : 'Development::DEV_TFTBrightness.OnHideLevelSlot()' */
+void DevelopmentDEV_TFTBrightness_OnHideLevelSlot( DevelopmentDEV_TFTBrightness _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Development::DEV_TFTBrightness.ShowLevelText()' */
+void DevelopmentDEV_TFTBrightness_ShowLevelText( DevelopmentDEV_TFTBrightness _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentDEV_Main_H */
+#endif /* _DevelopmentDEV_TFTBrightness_H */
 
 /* Embedded Wizard */

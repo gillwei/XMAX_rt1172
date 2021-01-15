@@ -47,10 +47,11 @@ class DEV_Main : Menu::BaseMenuView
 
     switch( aItemNo )
     {
-      case 0: SlideInDialog( new Factory::Main );
+      case 0: this.PresentDialog( new Factory::Main, null, null, null, null, null, null, null, null, false );
       case 1: DeviceInterface::SystemDevice.IsHopperTestMode = !DeviceInterface::SystemDevice.IsHopperTestMode;
       case 2: this.PresentDialog( new Development::DEV_RealTimeClock, null, null, null, null, null, null, null, null, false );
       case 3: this.PresentDialog( new Development::DEV_Bluetooth, null, null, null, null, null, null, null, null, false );
+      case 4: this.PresentDialog( new Development::DEV_TFTBrightness, null, null, null, null, null, null, null, null, false );
       default:;
     }
 
@@ -69,12 +70,13 @@ class DEV_Main : Menu::BaseMenuView
   }
 
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 4 ] =
+  array string ItemTitleArray[ 5 ] =
   (
     Default[0] = "Factory Test";
     Default[1] = "Hopper Test Mode";
     Default[2] = "Real Time Clock";
     Default[3] = "Bluetooth Test";
+    Default[4] = "TFT Brightness Test";
   );
 
   $rect <20,20,160,60>
@@ -168,4 +170,145 @@ class DEV_Bluetooth : Components::BaseMainBG
   }
 
   $reorder next 1
+}
+
+$rect <20,160,260,200>
+$output false
+class DEV_TFTBrightness : Menu::BaseMenuView
+{
+  $rect <10,340,190,380>
+  inherited method Init()
+  {
+    BrightnessLevel = DeviceInterface::SystemDevice.BrightnessLevel;
+
+  }
+
+  $rect <10,290,190,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <10,390,190,430>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+    trace "aState", aState;
+    var Application::Application App = ( Application::Application )GetRoot();
+    trace "app: ", App;
+    if( null != App )
+    {
+      if( aState.contains( Core::ViewState[ Dialog ] ) )
+      {
+        App.StatusBarVisible = false;
+      }
+      else
+      {
+        App.StatusBarVisible = true;
+      }
+    }
+  }
+
+  $rect <500,60,700,100>
+  inherited method OnShortDownKeyActivated()
+  {
+    var int32 NextBrightnessLevel = BrightnessLevel - 1;
+    if( 0 <= NextBrightnessLevel )
+    {
+      BrightnessLevel = NextBrightnessLevel;
+    }
+    else
+    {
+      ShowLevelText();
+    }
+  }
+
+  $rect <500,10,700,50>
+  inherited method OnShortUpKeyActivated()
+  {
+    var int32 NextBrightnessLevel = BrightnessLevel + 1;
+    if( BrightnessList.size > NextBrightnessLevel )
+    {
+      BrightnessLevel = NextBrightnessLevel;
+    }
+    else
+    {
+      ShowLevelText();
+    }
+  }
+
+  $rect <500,110,730,150>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image CheckerboardImage
+  {
+    preset Bounds = <0,0,480,272>;
+    preset FrameNumber = 1;
+    preset Bitmap = Resource::DisplayTest;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text LevelText
+  {
+    preset Bounds = <432,2,482,22>;
+    preset WrapText = true;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <500,210,700,250>
+  property int32 BrightnessLevel = -1;
+
+  $rect <500,260,700,300>
+  onset BrightnessLevel
+  {
+    if( pure BrightnessLevel != value )
+    {
+      pure BrightnessLevel = value;
+      LevelText.String = string( BrightnessLevel );
+      ShowLevelText();
+      if( DeviceInterface::SystemDevice.BrightnessLevel != value )
+      {
+        DeviceInterface::SystemDevice.BrightnessLevel = value;
+      }
+      DeviceInterface::SystemDevice.SetBrightness( BrightnessList[BrightnessLevel] );
+    }
+  }
+
+  $rect <500,160,700,200>
+  array int32 BrightnessList[ 11 ] =
+  (
+    Default[0] = 1;
+    Default[1] = 3;
+    Default[2] = 6;
+    Default[3] = 11;
+    Default[4] = 18;
+    Default[5] = 27;
+    Default[6] = 38;
+    Default[7] = 50;
+    Default[8] = 65;
+    Default[9] = 81;
+    Default[10] = 100;
+  );
+
+  $rect <500,310,700,350>
+  object Core::Timer HideLevelTimer
+  {
+    preset OnTrigger = OnHideLevelSlot;
+  }
+
+  $rect <500,360,700,400>
+  slot OnHideLevelSlot
+  {
+    HideLevelTimer.Enabled = false;
+    LevelText.Visible = false;
+  }
+
+  $rect <500,410,700,450>
+  method void ShowLevelText()
+  {
+    LevelText.Visible = true;
+    HideLevelTimer.Enabled = true;
+  }
 }

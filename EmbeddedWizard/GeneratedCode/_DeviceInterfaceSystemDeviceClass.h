@@ -70,6 +70,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
   EW_PROPERTY( QrCodeText,      XString )
+  EW_PROPERTY( BrightnessLevel, XInt32 )
   EW_VARIABLE( IsHopperTestMode, XBool )
   EW_PROPERTY( FactoryResetComplete, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceSystemDeviceClass )
@@ -131,6 +132,10 @@ void DeviceInterfaceSystemDeviceClass__NotifyFactoryResetComplete( void* _this )
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnFactoryResetTimeoutSlot()' */
 void DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot( DeviceInterfaceSystemDeviceClass _this, 
   XObject sender );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetBrightness()' */
+void DeviceInterfaceSystemDeviceClass_SetBrightness( DeviceInterfaceSystemDeviceClass _this, 
+  XInt32 aBrightness );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetBtSoftwareVersion()' */
 XString DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( DeviceInterfaceSystemDeviceClass _this );

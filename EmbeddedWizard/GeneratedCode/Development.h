@@ -45,6 +45,7 @@
 #include "_DevelopmentDEV_Bluetooth.h"
 #include "_DevelopmentDEV_Main.h"
 #include "_DevelopmentDEV_RealTimeClock.h"
+#include "_DevelopmentDEV_TFTBrightness.h"
 
 #ifdef __cplusplus
   }

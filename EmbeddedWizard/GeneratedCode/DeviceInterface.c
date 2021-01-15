@@ -105,6 +105,7 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
   /* ... and initialize objects, variables, properties, etc. */
   CoreTimer_OnSetPeriod( &_this->FactoryResetTimer, 2000 );
   CoreTimer_OnSetEnabled( &_this->FactoryResetTimer, 0 );
+  _this->BrightnessLevel = 7;
   _this->FactoryResetTimer.OnTrigger = EwNewSlot( _this, DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot );
 }
 
@@ -252,6 +253,16 @@ void DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot( DeviceInterface
 
   CoreTimer_OnSetEnabled( &_this->FactoryResetTimer, 0 );
   DeviceInterfaceSystemDeviceClass_NotifyFactoryResetComplete( _this );
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetBrightness()' */
+void DeviceInterfaceSystemDeviceClass_SetBrightness( DeviceInterfaceSystemDeviceClass _this, 
+  XInt32 aBrightness )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  PERIPHERAL_pwm_set_display_dutycycle( aBrightness );
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetBtSoftwareVersion()' */
@@ -434,7 +445,7 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::SystemDeviceClass' */
 EW_DEFINE_CLASS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass, CurrentLocalTime, 
                  FactoryTestSystemEvent, FactoryTestSystemEvent, FactoryTestSystemEvent, 
-                 SoftwareVersion, IsHopperTestMode, "DeviceInterface::SystemDeviceClass" )
+                 SoftwareVersion, BrightnessLevel, "DeviceInterface::SystemDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceSystemDeviceClass )
 
 /* User defined auto object: 'DeviceInterface::SystemDevice' */
