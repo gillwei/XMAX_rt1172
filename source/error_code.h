@@ -18,6 +18,7 @@ extern "C"{
 #define ERR_TYPE_BUF        ( 0x80000000 )
 #define ERR_BUF_OVERFLOW    ( ERR_TYPE_BUF | 0x01)
 #define ERR_BUF_OPERATION   ( ERR_TYPE_BUF | 0x02 )
+#define ERR_BUF_FULL        ( ERR_TYPE_BUF | 0x03 )
 #define ERR_TYPE_JPEG       ( 0x40000000 )
 #define ERR_JPEG_DECODE     ( ERR_TYPE_JPEG | 0x01 )
 #define ERR_TYPE_BT         ( 0x20000000 )

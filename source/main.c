@@ -35,6 +35,7 @@
 #include "TEST_pub.h"
 #include "HCI_pub.h"
 #include "BTM_pub.h"
+#include "BC_pub.h"
 #include "MM_pub.h"
 #include "QR_pub.h"
 
@@ -124,6 +125,7 @@ WDG_init();
 HCI_init();
 FACTORY_init();
 BTM_init();
+BC_init();
 VI_init();
 JPEG_init();
 NAVI_init();

@@ -29,6 +29,8 @@ extern "C" {
 #define BT_RESET_GPIO_DELAY      50
 #define BT_AFTER_RESET_DELAY     1000
 
+#define HCI_MAX_DATA_SIZE        240
+
 #define UUID_128BIT_LEN                     ( 16 )
 #define BLE_GATT_CLIENT_CONFIG_NONOE        ( 0x0000 )
 #define BLE_GATT_CLIENT_CONFIG_NOTIFICATION ( 0x0001 )

@@ -31,8 +31,6 @@ extern "C" {
 
 #define RESET_WAIT_MS            1000
 
-#define HCI_MAX_DATA_SIZE        240
-
 extern uint32_t __base_BOARD_FLASH_BTFW;
 #define FLASH_BT_FW_BASE_ADDR    ( ( uint32_t )( &__base_BOARD_FLASH_BTFW ) )
 #define BT_SW_MAJOR_VER_BYTE     0
