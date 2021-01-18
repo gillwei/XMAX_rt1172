@@ -95,19 +95,20 @@ static const XPoint _Const0017 = { 5, 0 };
 static const XRect _Const0018 = {{ 0, 50 }, { 10, 80 }};
 static const XRect _Const0019 = {{ 0, 0 }, { 480, 272 }};
 static const XRect _Const001A = {{ 0, 0 }, { 150, 40 }};
-static const XRect _Const001B = {{ 0, 4 }, { 150, 38 }};
-static const XColor _Const001C = { 0xFF, 0xFF, 0xFF, 0xCD };
-static const XColor _Const001D = { 0x72, 0x71, 0x71, 0xFF };
-static const XStringRes _Const001E = { _StringsDefault0, 0x000A };
-static const XRect _Const001F = {{ 0, 0 }, { 150, 83 }};
-static const XStringRes _Const0020 = { _StringsDefault0, 0x0029 };
-static const XRect _Const0021 = {{ 0, 43 }, { 150, 83 }};
-static const XStringRes _Const0022 = { _StringsDefault0, 0x0032 };
-static const XRect _Const0023 = {{ 37, 1 }, { 364, 69 }};
-static const XRect _Const0024 = {{ 371, 9 }, { 421, 59 }};
-static const XRect _Const0025 = {{ 0, 0 }, { 32, 216 }};
-static const XRect _Const0026 = {{ 0, 0 }, { 32, 32 }};
-static const XRect _Const0027 = {{ 0, 184 }, { 32, 216 }};
+static const XColor _Const001B = { 0x00, 0x00, 0x00, 0x26 };
+static const XRect _Const001C = {{ 0, 4 }, { 150, 38 }};
+static const XColor _Const001D = { 0xFF, 0xFF, 0xFF, 0xCD };
+static const XColor _Const001E = { 0x72, 0x71, 0x71, 0xFF };
+static const XStringRes _Const001F = { _StringsDefault0, 0x000A };
+static const XRect _Const0020 = {{ 0, 0 }, { 150, 83 }};
+static const XStringRes _Const0021 = { _StringsDefault0, 0x0029 };
+static const XRect _Const0022 = {{ 0, 43 }, { 150, 83 }};
+static const XStringRes _Const0023 = { _StringsDefault0, 0x0032 };
+static const XRect _Const0024 = {{ 37, 1 }, { 364, 69 }};
+static const XRect _Const0025 = {{ 371, 9 }, { 421, 59 }};
+static const XRect _Const0026 = {{ 0, 0 }, { 32, 216 }};
+static const XRect _Const0027 = {{ 0, 0 }, { 32, 32 }};
+static const XRect _Const0028 = {{ 0, 184 }, { 32, 216 }};
 
 /* Initializer for the class 'Menu::ItemBase' */
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
@@ -1442,14 +1443,14 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const001A );
   CoreRectView__OnSetBounds( &_this->Background, _Const001A );
-  ViewsRectangle_OnSetColor( &_this->Background, _Const0015 );
-  CoreRectView__OnSetBounds( &_this->TitleText, _Const001B );
+  ViewsRectangle_OnSetColor( &_this->Background, _Const001B );
+  CoreRectView__OnSetBounds( &_this->TitleText, _Const001C );
   ViewsText_OnSetString( &_this->TitleText, 0 );
   _this->KeyHandler.Filter = CoreKeyCodeOk;
   CoreTimer_OnSetPeriod( &_this->FocusFrameFlashTimer, 0 );
   CoreTimer_OnSetBegin( &_this->FocusFrameFlashTimer, 100 );
   CoreRectView__OnSetBounds( &_this->FocusBorder, _Const001A );
-  ViewsBorder_OnSetWidth( &_this->FocusBorder, 3 );
+  ViewsBorder_OnSetWidth( &_this->FocusBorder, 2 );
   ViewsBorder_OnSetColor( &_this->FocusBorder, _Const000D );
   _this->Focusable = 1;
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
@@ -1512,13 +1513,12 @@ void MenuPushButton_UpdateViewState( MenuPushButton _this, XSet aState )
 
   if ( _this->FocusFrameFlashTimer.Enabled )
   {
-    ViewsRectangle_OnSetVisible( &_this->Background, 1 );
-    ViewsRectangle_OnSetColor( &_this->Background, _Const001C );
+    ViewsRectangle_OnSetColor( &_this->Background, _Const001D );
   }
   else
     if ((( aState & CoreViewStateFocused ) == CoreViewStateFocused ))
     {
-      ViewsRectangle_OnSetVisible( &_this->Background, 0 );
+      ViewsRectangle_OnSetColor( &_this->Background, _Const001B );
 
       if ( _this->Focusable )
       {
@@ -1528,8 +1528,8 @@ void MenuPushButton_UpdateViewState( MenuPushButton _this, XSet aState )
     }
     else
     {
-      ViewsRectangle_OnSetVisible( &_this->Background, 0 );
-      ViewsBorder_OnSetColor( &_this->FocusBorder, _Const001D );
+      ViewsRectangle_OnSetColor( &_this->Background, _Const001B );
+      ViewsBorder_OnSetColor( &_this->FocusBorder, _Const001E );
       ViewsBorder_OnSetWidth( &_this->FocusBorder, 2 );
     }
 }
@@ -1550,7 +1550,7 @@ void MenuPushButton_OnEnterReleaseSlot( MenuPushButton _this, XObject sender )
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s%b", EwLoadString( &_Const001E ), _this->KeyHandler.Repetition );
+  EwTrace( "%s%b", EwLoadString( &_Const001F ), _this->KeyHandler.Repetition );
 
   if (( 0 == _this->KeyHandler.Repetition ) && _this->Focusable )
   {
@@ -1632,13 +1632,13 @@ void MenuUpDownPushButtonSet__Init( MenuUpDownPushButtonSet _this, XObject aLink
   _this->_VMT = EW_CLASS( MenuUpDownPushButtonSet );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const001F );
+  CoreRectView__OnSetBounds( _this, _Const0020 );
   CoreRectView__OnSetBounds( &_this->UpButton, _Const001A );
-  MenuPushButton_OnSetTitle( &_this->UpButton, EwLoadString( &_Const0020 ));
-  CoreRectView__OnSetBounds( &_this->DownButton, _Const0021 );
-  MenuPushButton_OnSetTitle( &_this->DownButton, EwLoadString( &_Const0022 ));
-  _this->UpButtonTitle = EwShareString( EwLoadString( &_Const0020 ));
-  _this->DownButtonTitle = EwShareString( EwLoadString( &_Const0022 ));
+  MenuPushButton_OnSetTitle( &_this->UpButton, EwLoadString( &_Const0021 ));
+  CoreRectView__OnSetBounds( &_this->DownButton, _Const0022 );
+  MenuPushButton_OnSetTitle( &_this->DownButton, EwLoadString( &_Const0023 ));
+  _this->UpButtonTitle = EwShareString( EwLoadString( &_Const0021 ));
+  _this->DownButtonTitle = EwShareString( EwLoadString( &_Const0023 ));
   CoreGroup__Add( _this, ((CoreView)&_this->UpButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DownButton ), 0 );
   _this->UpButton.OnActivate = EwNewSlot( _this, MenuUpDownPushButtonSet_OnActivateSlot );
@@ -1782,8 +1782,8 @@ void MenuItemCheckMark__Init( MenuItemCheckMark _this, XObject aLink, XHandle aA
   _this->_VMT = EW_CLASS( MenuItemCheckMark );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0023 );
-  CoreRectView__OnSetBounds( &_this->CheckMark, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->CheckMark, _Const0025 );
   ViewsImage_OnSetFrameNumber( &_this->CheckMark, 1 );
   ViewsImage_OnSetVisible( &_this->CheckMark, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->CheckMark ), 0 );
@@ -1911,9 +1911,9 @@ void MenuArrowScrollBar__Init( MenuArrowScrollBar _this, XObject aLink, XHandle 
   _this->_VMT = EW_CLASS( MenuArrowScrollBar );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0025 );
-  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const0026 );
-  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const0027 );
+  CoreRectView__OnSetBounds( _this, _Const0026 );
+  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const0027 );
+  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const0028 );
   ViewsImage_OnSetFrameNumber( &_this->DownArrowIcon, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpArrowIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DownArrowIcon ), 0 );

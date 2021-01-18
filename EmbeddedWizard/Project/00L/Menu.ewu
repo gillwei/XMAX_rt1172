@@ -973,13 +973,11 @@ class PushButton : Core::Group
 
     if( FocusFrameFlashTimer.Enabled )
     {
-      Background.Visible = true;
       Background.Color = #FFFFFFCD; // 0xCD = 205 : 80% alpha
     }
     else if( aState.contains( Core::ViewState[Focused] ) )
     {
-      Background.Visible = false;
-
+      Background.Color = #00000026; // 0x26 = 38 : 15% alpha
       if( Focusable )
       {
         FocusBorder.Color = #0072FFFF;
@@ -988,7 +986,7 @@ class PushButton : Core::Group
     }
     else
     {
-      Background.Visible = false;
+      Background.Color = #00000026;
       FocusBorder.Color = #727171FF;
       FocusBorder.Width = 2;
     }
@@ -998,7 +996,7 @@ class PushButton : Core::Group
   object Views::Rectangle Background
   {
     preset Bounds = <0,0,150,40>;
-    preset Color = #000000FF;
+    preset Color = #00000026;
   }
 
   $rect <20,20,160,60>
@@ -1071,7 +1069,7 @@ class PushButton : Core::Group
   object Views::Border FocusBorder
   {
     preset Bounds = <0,0,150,40>;
-    preset Width = 3;
+    preset Width = 2;
     preset Color = #0072FFFF;
   }
 
