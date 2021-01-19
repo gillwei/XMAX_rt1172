@@ -43,9 +43,14 @@ $rect <30,150,270,190>
 $output false
 autoobject WidgetSet::HorizontalSliderConfig HorizontalSliderConfig
 {
+  preset ThumbFocused = Resource::SeekBarDot;
   preset ThumbDefault = Resource::SeekBarDot;
+  preset TrackRightFrameFocused = 0;
   preset TrackRightFrameDefault = 0;
+  preset TrackRightFocused = Resource::SeekBar;
   preset TrackRightDefault = Resource::SeekBar;
+  preset TrackLeftFrameFocused = 1;
   preset TrackLeftFrameDefault = 1;
+  preset TrackLeftFocused = Resource::SeekBar;
   preset TrackLeftDefault = Resource::SeekBar;
 }

@@ -103,12 +103,20 @@ EW_DEFINE_AUTOOBJECT( UIConfigHorizontalSliderConfig, WidgetSetHorizontalSliderC
 /* Initializer for the auto object 'UIConfig::HorizontalSliderConfig' */
 void UIConfigHorizontalSliderConfig__Init( WidgetSetHorizontalSliderConfig _this )
 {
+  WidgetSetHorizontalSliderConfig_OnSetThumbFocused( _this, EwLoadResource( &ResourceSeekBarDot, 
+  ResourcesBitmap ));
   WidgetSetHorizontalSliderConfig_OnSetThumbDefault( _this, EwLoadResource( &ResourceSeekBarDot, 
   ResourcesBitmap ));
+  WidgetSetHorizontalSliderConfig_OnSetTrackRightFrameFocused( _this, 0 );
   WidgetSetHorizontalSliderConfig_OnSetTrackRightFrameDefault( _this, 0 );
+  WidgetSetHorizontalSliderConfig_OnSetTrackRightFocused( _this, EwLoadResource( 
+  &ResourceSeekBar, ResourcesBitmap ));
   WidgetSetHorizontalSliderConfig_OnSetTrackRightDefault( _this, EwLoadResource( 
   &ResourceSeekBar, ResourcesBitmap ));
+  WidgetSetHorizontalSliderConfig_OnSetTrackLeftFrameFocused( _this, 1 );
   WidgetSetHorizontalSliderConfig_OnSetTrackLeftFrameDefault( _this, 1 );
+  WidgetSetHorizontalSliderConfig_OnSetTrackLeftFocused( _this, EwLoadResource( 
+  &ResourceSeekBar, ResourcesBitmap ));
   WidgetSetHorizontalSliderConfig_OnSetTrackLeftDefault( _this, EwLoadResource( 
   &ResourceSeekBar, ResourcesBitmap ));
 }

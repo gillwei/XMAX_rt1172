@@ -32,7 +32,6 @@
 #include "_CoreView.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
 #include "_MediaMED01_MediaUI.h"
-#include "_MediaTrack.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "_ViewsImage.h"
@@ -68,7 +67,6 @@ static const XRect _Const0008 = {{ 0, 39 }, { 94, 114 }};
 static const XRect _Const0009 = {{ 111, 188 }, { 455, 231 }};
 static const XStringRes _Const000A = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const000B = { _StringsDefault0, 0x0006 };
-static const XRect _Const000C = {{ 0, 0 }, { 300, 200 }};
 
 /* Initializer for the class 'Media::MED01_MediaUI' */
 void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle aArg )
@@ -85,7 +83,6 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   ViewsText__Init( &_this->Album, &_this->_XObject, 0 );
   ViewsText__Init( &_this->ElapsedTimeSec, &_this->_XObject, 0 );
   ViewsText__Init( &_this->RemainTimeSec, &_this->_XObject, 0 );
-  MediaTrack__Init( &_this->Track, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->PlaybackTimeEventHandler, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->PlayPauseBG, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->PlayPauseButton, &_this->_XObject, 0 );
@@ -95,8 +92,12 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   ViewsImage__Init( &_this->ControlUpBG, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->NextTrackButton, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->VolumeUpButton, &_this->_XObject, 0 );
-  WidgetSetHorizontalSlider__Init( &_this->SeekBar, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->HighlightTimer, &_this->_XObject, 0 );
+  CorePropertyObserver__Init( &_this->TitleObserver, &_this->_XObject, 0 );
+  CorePropertyObserver__Init( &_this->AlbumObserver, &_this->_XObject, 0 );
+  CorePropertyObserver__Init( &_this->ArtistObserver, &_this->_XObject, 0 );
+  CorePropertyObserver__Init( &_this->PlayStateObserver, &_this->_XObject, 0 );
+  WidgetSetHorizontalSlider__Init( &_this->SeekBar, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( MediaMED01_MediaUI );
@@ -130,7 +131,6 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->RemainTimeSec, 0 );
   ViewsText_OnSetVisible( &_this->RemainTimeSec, 0 );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->Track, 0 );
   CoreRectView__OnSetBounds( &_this->PlayPauseBG, _Const0006 );
   ViewsImage_OnSetFrameNumber( &_this->PlayPauseBG, 0 );
   CoreRectView__OnSetBounds( &_this->PlayPauseButton, _Const0006 );
@@ -140,17 +140,16 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CoreRectView__OnSetBounds( &_this->ControlUpBG, _Const0008 );
   CoreRectView__OnSetBounds( &_this->NextTrackButton, _Const0008 );
   CoreRectView__OnSetBounds( &_this->VolumeUpButton, _Const0008 );
+  CoreTimer_OnSetPeriod( &_this->HighlightTimer, 100 );
+  CoreTimer_OnSetEnabled( &_this->HighlightTimer, 0 );
   CoreRectView__OnSetBounds( &_this->SeekBar, _Const0009 );
   CoreGroup_OnSetVisible((CoreGroup)&_this->SeekBar, 0 );
   WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->SeekBar, 0 );
-  CoreTimer_OnSetPeriod( &_this->HighlightTimer, 100 );
-  CoreTimer_OnSetEnabled( &_this->HighlightTimer, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Artist ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Album ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ElapsedTimeSec ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->RemainTimeSec ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Track ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PlayPauseBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PlayPauseButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ControlDownBG ), 0 );
@@ -170,7 +169,6 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->RemainTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  _this->Track.OnTrackInfoUpdate = EwNewSlot( _this, MediaMED01_MediaUI_SetTrackInfo );
   _this->PlaybackTimeEventHandler.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->PlaybackTimeEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->NotifyPlayBackTimeChangedSystemEvent );
@@ -190,9 +188,25 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->VolumeUpButton, EwLoadResource( &ResourceIconVolumeUp, 
   ResourcesBitmap ));
+  _this->HighlightTimer.OnTrigger = EwNewSlot( _this, MediaMED01_MediaUI_OnHighlightEndSlot );
+  _this->TitleObserver.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnTrackInfoUpdateSlot );
+  CorePropertyObserver_OnSetOutlet( &_this->TitleObserver, EwNewRef( EwGetAutoObject( 
+  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass ), 
+  DeviceInterfaceMediaManagerDeviceClass_OnGetTitle, DeviceInterfaceMediaManagerDeviceClass_OnSetTitle ));
+  _this->AlbumObserver.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnTrackInfoUpdateSlot );
+  CorePropertyObserver_OnSetOutlet( &_this->AlbumObserver, EwNewRef( EwGetAutoObject( 
+  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass ), 
+  DeviceInterfaceMediaManagerDeviceClass_OnGetAlbum, DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum ));
+  _this->ArtistObserver.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnTrackInfoUpdateSlot );
+  CorePropertyObserver_OnSetOutlet( &_this->ArtistObserver, EwNewRef( EwGetAutoObject( 
+  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass ), 
+  DeviceInterfaceMediaManagerDeviceClass_OnGetArtist, DeviceInterfaceMediaManagerDeviceClass_OnSetArtist ));
+  _this->PlayStateObserver.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnTrackInfoUpdateSlot );
+  CorePropertyObserver_OnSetOutlet( &_this->PlayStateObserver, EwNewRef( EwGetAutoObject( 
+  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass ), 
+  DeviceInterfaceMediaManagerDeviceClass_OnGetPlaybackState, DeviceInterfaceMediaManagerDeviceClass_OnSetPlaybackState ));
   WidgetSetHorizontalSlider_OnSetAppearance( &_this->SeekBar, EwGetAutoObject( &UIConfigHorizontalSliderConfig, 
   WidgetSetHorizontalSliderConfig ));
-  _this->HighlightTimer.OnTrigger = EwNewSlot( _this, MediaMED01_MediaUI_OnHighlightEndSlot );
 
   /* Call the user defined constructor */
   MediaMED01_MediaUI_Init( _this, aArg );
@@ -210,7 +224,6 @@ void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
   ViewsText__ReInit( &_this->Album );
   ViewsText__ReInit( &_this->ElapsedTimeSec );
   ViewsText__ReInit( &_this->RemainTimeSec );
-  MediaTrack__ReInit( &_this->Track );
   CoreSystemEventHandler__ReInit( &_this->PlaybackTimeEventHandler );
   ViewsImage__ReInit( &_this->PlayPauseBG );
   ViewsImage__ReInit( &_this->PlayPauseButton );
@@ -220,8 +233,12 @@ void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
   ViewsImage__ReInit( &_this->ControlUpBG );
   ViewsImage__ReInit( &_this->NextTrackButton );
   ViewsImage__ReInit( &_this->VolumeUpButton );
-  WidgetSetHorizontalSlider__ReInit( &_this->SeekBar );
   CoreTimer__ReInit( &_this->HighlightTimer );
+  CorePropertyObserver__ReInit( &_this->TitleObserver );
+  CorePropertyObserver__ReInit( &_this->AlbumObserver );
+  CorePropertyObserver__ReInit( &_this->ArtistObserver );
+  CorePropertyObserver__ReInit( &_this->PlayStateObserver );
+  WidgetSetHorizontalSlider__ReInit( &_this->SeekBar );
 }
 
 /* Finalizer method for the class 'Media::MED01_MediaUI' */
@@ -236,7 +253,6 @@ void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
   ViewsText__Done( &_this->Album );
   ViewsText__Done( &_this->ElapsedTimeSec );
   ViewsText__Done( &_this->RemainTimeSec );
-  MediaTrack__Done( &_this->Track );
   CoreSystemEventHandler__Done( &_this->PlaybackTimeEventHandler );
   ViewsImage__Done( &_this->PlayPauseBG );
   ViewsImage__Done( &_this->PlayPauseButton );
@@ -246,8 +262,12 @@ void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
   ViewsImage__Done( &_this->ControlUpBG );
   ViewsImage__Done( &_this->NextTrackButton );
   ViewsImage__Done( &_this->VolumeUpButton );
-  WidgetSetHorizontalSlider__Done( &_this->SeekBar );
   CoreTimer__Done( &_this->HighlightTimer );
+  CorePropertyObserver__Done( &_this->TitleObserver );
+  CorePropertyObserver__Done( &_this->AlbumObserver );
+  CorePropertyObserver__Done( &_this->ArtistObserver );
+  CorePropertyObserver__Done( &_this->PlayStateObserver );
+  WidgetSetHorizontalSlider__Done( &_this->SeekBar );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_Super );
@@ -315,7 +335,7 @@ void MediaMED01_MediaUI_OnPlayPauseSlot( MediaMED01_MediaUI _this, XObject sende
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  if ( 0 == _this->Track.PlaybackState )
+  if ( 0 == _this->PlaybackState )
   {
     DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
     DeviceInterfaceMediaManagerDeviceClass ), EnumCommandTypePlay );
@@ -349,22 +369,12 @@ void MediaMED01_MediaUI_OnNextTrackSlot( MediaMED01_MediaUI _this, XObject sende
   DeviceInterfaceMediaManagerDeviceClass ), EnumCommandTypeNextTrack );
 }
 
-/* 'C' function for method : 'Media::MED01_MediaUI.SetTrackInfo()' */
-void MediaMED01_MediaUI_SetTrackInfo( MediaMED01_MediaUI _this, XObject sender )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  ViewsText_OnSetString( &_this->Title, _this->Track.Title );
-  ViewsText_OnSetString( &_this->Artist, _this->Track.Artist );
-  ViewsText_OnSetString( &_this->Album, _this->Track.Album );
-}
-
 /* 'C' function for method : 'Media::MED01_MediaUI.ChangeTrack()' */
 void MediaMED01_MediaUI_ChangeTrack( MediaMED01_MediaUI _this )
 {
-  MediaTrack_ResetTrackInfo( &_this->Track );
-  _this->Track.IsTrackInfoReset = 0;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
   EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->IsTitleReceived 
   = 0;
   EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->IsArtistReceived 
@@ -466,13 +476,43 @@ void MediaMED01_MediaUI_StartHighlight( MediaMED01_MediaUI _this, ViewsImage aBa
   CoreTimer_OnSetEnabled( &_this->HighlightTimer, 1 );
 }
 
+/* This slot method is executed when the associated property observer 'PropertyObserver' 
+   is notified. */
+void MediaMED01_MediaUI_OnTrackInfoUpdateSlot( MediaMED01_MediaUI _this, XObject 
+  sender )
+{
+  if ( sender == ((XObject)&_this->TitleObserver ))
+  {
+    ViewsText_OnSetString( &_this->Title, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+    DeviceInterfaceMediaManagerDeviceClass )->Title );
+  }
+  else
+    if ( sender == ((XObject)&_this->AlbumObserver ))
+    {
+      ViewsText_OnSetString( &_this->Album, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+      DeviceInterfaceMediaManagerDeviceClass )->Album );
+    }
+    else
+      if ( sender == ((XObject)&_this->ArtistObserver ))
+      {
+        ViewsText_OnSetString( &_this->Artist, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+        DeviceInterfaceMediaManagerDeviceClass )->Artist );
+      }
+      else
+        if ( sender == ((XObject)&_this->PlayStateObserver ))
+        {
+          _this->PlaybackState = EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+          DeviceInterfaceMediaManagerDeviceClass )->PlaybackState;
+        }
+}
+
 /* Variants derived from the class : 'Media::MED01_MediaUI' */
 EW_DEFINE_CLASS_VARIANTS( MediaMED01_MediaUI )
 EW_END_OF_CLASS_VARIANTS( MediaMED01_MediaUI )
 
 /* Virtual Method Table (VMT) for the class : 'Media::MED01_MediaUI' */
 EW_DEFINE_CLASS( MediaMED01_MediaUI, ComponentsBaseMainBG, HighlightBG, Title, Title, 
-                 Title, _None, _None, "Media::MED01_MediaUI" )
+                 Title, PlaybackState, PlaybackState, "Media::MED01_MediaUI" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -509,150 +549,5 @@ EW_DEFINE_CLASS( MediaMED01_MediaUI, ComponentsBaseMainBG, HighlightBG, Title, T
   MediaMED01_MediaUI_OnLongDownKeyActivated,
   MediaMED01_MediaUI_OnLongUpKeyActivated,
 EW_END_OF_CLASS( MediaMED01_MediaUI )
-
-/* Initializer for the class 'Media::Track' */
-void MediaTrack__Init( MediaTrack _this, XObject aLink, XHandle aArg )
-{
-  /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
-
-  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MediaTrack );
-
-  /* ... then construct all embedded objects */
-  CorePropertyObserver__Init( &_this->TitleObserver, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->AlbumObserver, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->ArtistObserver, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->PlayStateObserver, &_this->_XObject, 0 );
-
-  /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MediaTrack );
-
-  /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const000C );
-  _this->TitleObserver.OnEvent = EwNewSlot( _this, MediaTrack_OnTrackInfoUpdateSlot );
-  CorePropertyObserver_OnSetOutlet( &_this->TitleObserver, EwNewRef( EwGetAutoObject( 
-  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass ), 
-  DeviceInterfaceMediaManagerDeviceClass_OnGetTitle, DeviceInterfaceMediaManagerDeviceClass_OnSetTitle ));
-  _this->AlbumObserver.OnEvent = EwNewSlot( _this, MediaTrack_OnTrackInfoUpdateSlot );
-  CorePropertyObserver_OnSetOutlet( &_this->AlbumObserver, EwNewRef( EwGetAutoObject( 
-  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass ), 
-  DeviceInterfaceMediaManagerDeviceClass_OnGetAlbum, DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum ));
-  _this->ArtistObserver.OnEvent = EwNewSlot( _this, MediaTrack_OnTrackInfoUpdateSlot );
-  CorePropertyObserver_OnSetOutlet( &_this->ArtistObserver, EwNewRef( EwGetAutoObject( 
-  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass ), 
-  DeviceInterfaceMediaManagerDeviceClass_OnGetArtist, DeviceInterfaceMediaManagerDeviceClass_OnSetArtist ));
-  _this->PlayStateObserver.OnEvent = EwNewSlot( _this, MediaTrack_OnTrackInfoUpdateSlot );
-  CorePropertyObserver_OnSetOutlet( &_this->PlayStateObserver, EwNewRef( EwGetAutoObject( 
-  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass ), 
-  DeviceInterfaceMediaManagerDeviceClass_OnGetPlaybackState, DeviceInterfaceMediaManagerDeviceClass_OnSetPlaybackState ));
-}
-
-/* Re-Initializer for the class 'Media::Track' */
-void MediaTrack__ReInit( MediaTrack _this )
-{
-  /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
-
-  /* ... then re-construct all embedded objects */
-  CorePropertyObserver__ReInit( &_this->TitleObserver );
-  CorePropertyObserver__ReInit( &_this->AlbumObserver );
-  CorePropertyObserver__ReInit( &_this->ArtistObserver );
-  CorePropertyObserver__ReInit( &_this->PlayStateObserver );
-}
-
-/* Finalizer method for the class 'Media::Track' */
-void MediaTrack__Done( MediaTrack _this )
-{
-  /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
-
-  /* Finalize all embedded objects */
-  CorePropertyObserver__Done( &_this->TitleObserver );
-  CorePropertyObserver__Done( &_this->AlbumObserver );
-  CorePropertyObserver__Done( &_this->ArtistObserver );
-  CorePropertyObserver__Done( &_this->PlayStateObserver );
-
-  /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
-}
-
-/* 'C' function for method : 'Media::Track.ResetTrackInfo()' */
-void MediaTrack_ResetTrackInfo( MediaTrack _this )
-{
-  _this->IsTrackInfoReset = 1;
-}
-
-/* This slot method is executed when the associated property observer 'PropertyObserver' 
-   is notified. */
-void MediaTrack_OnTrackInfoUpdateSlot( MediaTrack _this, XObject sender )
-{
-  if ( !_this->IsTrackInfoReset )
-  {
-    if ( sender == ((XObject)&_this->TitleObserver ))
-    {
-      _this->Title = EwShareString( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-      DeviceInterfaceMediaManagerDeviceClass )->Title );
-    }
-    else
-      if ( sender == ((XObject)&_this->AlbumObserver ))
-      {
-        _this->Album = EwShareString( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-        DeviceInterfaceMediaManagerDeviceClass )->Album );
-      }
-      else
-        if ( sender == ((XObject)&_this->ArtistObserver ))
-        {
-          _this->Artist = EwShareString( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-          DeviceInterfaceMediaManagerDeviceClass )->Artist );
-        }
-        else
-          if ( sender == ((XObject)&_this->PlayStateObserver ))
-          {
-            _this->PlaybackState = EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-            DeviceInterfaceMediaManagerDeviceClass )->PlaybackState;
-          }
-
-    EwPostSignal( _this->OnTrackInfoUpdate, ((XObject)_this ));
-  }
-}
-
-/* Variants derived from the class : 'Media::Track' */
-EW_DEFINE_CLASS_VARIANTS( MediaTrack )
-EW_END_OF_CLASS_VARIANTS( MediaTrack )
-
-/* Virtual Method Table (VMT) for the class : 'Media::Track' */
-EW_DEFINE_CLASS( MediaTrack, CoreGroup, OnTrackInfoUpdate, OnTrackInfoUpdate, TitleObserver, 
-                 TitleObserver, Artist, PlaybackState, "Media::Track" )
-  CoreRectView_initLayoutContext,
-  CoreView_GetRoot,
-  CoreGroup_Draw,
-  CoreView_HandleEvent,
-  CoreGroup_CursorHitTest,
-  CoreRectView_ArrangeView,
-  CoreRectView_MoveView,
-  CoreRectView_GetExtent,
-  CoreGroup_ChangeViewState,
-  CoreGroup_OnSetBounds,
-  CoreGroup_OnSetFocus,
-  CoreGroup_OnSetBuffered,
-  CoreGroup_OnSetEnabled,
-  CoreGroup_OnSetOpacity,
-  CoreGroup_IsCurrentDialog,
-  CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
-  CoreGroup_DispatchEvent,
-  CoreGroup_BroadcastEvent,
-  CoreGroup_UpdateLayout,
-  CoreGroup_UpdateViewState,
-  CoreGroup_InvalidateArea,
-  CoreGroup_CountViews,
-  CoreGroup_FindNextView,
-  CoreGroup_FindSiblingView,
-  CoreGroup_RestackTop,
-  CoreGroup_Restack,
-  CoreGroup_Remove,
-  CoreGroup_Add,
-EW_END_OF_CLASS( MediaTrack )
 
 /* Embedded Wizard */

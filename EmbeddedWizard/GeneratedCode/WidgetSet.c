@@ -138,6 +138,17 @@ void WidgetSetHorizontalSliderConfig__Done( WidgetSetHorizontalSliderConfig _thi
   WidgetSetWidgetConfig__Done( &_this->_Super );
 }
 
+/* 'C' function for method : 'WidgetSet::HorizontalSliderConfig.OnSetThumbFocused()' */
+void WidgetSetHorizontalSliderConfig_OnSetThumbFocused( WidgetSetHorizontalSliderConfig _this, 
+  ResourcesBitmap value )
+{
+  if ( _this->ThumbFocused == value )
+    return;
+
+  _this->ThumbFocused = value;
+  EwPostSignal( EwNewSlot( _this, WidgetSetWidgetConfig_onInvalidate ), ((XObject)_this ));
+}
+
 /* 'C' function for method : 'WidgetSet::HorizontalSliderConfig.OnSetThumbDefault()' */
 void WidgetSetHorizontalSliderConfig_OnSetThumbDefault( WidgetSetHorizontalSliderConfig _this, 
   ResourcesBitmap value )
@@ -146,6 +157,17 @@ void WidgetSetHorizontalSliderConfig_OnSetThumbDefault( WidgetSetHorizontalSlide
     return;
 
   _this->ThumbDefault = value;
+  EwPostSignal( EwNewSlot( _this, WidgetSetWidgetConfig_onInvalidate ), ((XObject)_this ));
+}
+
+/* 'C' function for method : 'WidgetSet::HorizontalSliderConfig.OnSetTrackRightFrameFocused()' */
+void WidgetSetHorizontalSliderConfig_OnSetTrackRightFrameFocused( WidgetSetHorizontalSliderConfig _this, 
+  XInt32 value )
+{
+  if ( _this->TrackRightFrameFocused == value )
+    return;
+
+  _this->TrackRightFrameFocused = value;
   EwPostSignal( EwNewSlot( _this, WidgetSetWidgetConfig_onInvalidate ), ((XObject)_this ));
 }
 
@@ -160,6 +182,17 @@ void WidgetSetHorizontalSliderConfig_OnSetTrackRightFrameDefault( WidgetSetHoriz
   EwPostSignal( EwNewSlot( _this, WidgetSetWidgetConfig_onInvalidate ), ((XObject)_this ));
 }
 
+/* 'C' function for method : 'WidgetSet::HorizontalSliderConfig.OnSetTrackRightFocused()' */
+void WidgetSetHorizontalSliderConfig_OnSetTrackRightFocused( WidgetSetHorizontalSliderConfig _this, 
+  ResourcesBitmap value )
+{
+  if ( _this->TrackRightFocused == value )
+    return;
+
+  _this->TrackRightFocused = value;
+  EwPostSignal( EwNewSlot( _this, WidgetSetWidgetConfig_onInvalidate ), ((XObject)_this ));
+}
+
 /* 'C' function for method : 'WidgetSet::HorizontalSliderConfig.OnSetTrackRightDefault()' */
 void WidgetSetHorizontalSliderConfig_OnSetTrackRightDefault( WidgetSetHorizontalSliderConfig _this, 
   ResourcesBitmap value )
@@ -171,6 +204,17 @@ void WidgetSetHorizontalSliderConfig_OnSetTrackRightDefault( WidgetSetHorizontal
   EwPostSignal( EwNewSlot( _this, WidgetSetWidgetConfig_onInvalidate ), ((XObject)_this ));
 }
 
+/* 'C' function for method : 'WidgetSet::HorizontalSliderConfig.OnSetTrackLeftFrameFocused()' */
+void WidgetSetHorizontalSliderConfig_OnSetTrackLeftFrameFocused( WidgetSetHorizontalSliderConfig _this, 
+  XInt32 value )
+{
+  if ( _this->TrackLeftFrameFocused == value )
+    return;
+
+  _this->TrackLeftFrameFocused = value;
+  EwPostSignal( EwNewSlot( _this, WidgetSetWidgetConfig_onInvalidate ), ((XObject)_this ));
+}
+
 /* 'C' function for method : 'WidgetSet::HorizontalSliderConfig.OnSetTrackLeftFrameDefault()' */
 void WidgetSetHorizontalSliderConfig_OnSetTrackLeftFrameDefault( WidgetSetHorizontalSliderConfig _this, 
   XInt32 value )
@@ -179,6 +223,17 @@ void WidgetSetHorizontalSliderConfig_OnSetTrackLeftFrameDefault( WidgetSetHorizo
     return;
 
   _this->TrackLeftFrameDefault = value;
+  EwPostSignal( EwNewSlot( _this, WidgetSetWidgetConfig_onInvalidate ), ((XObject)_this ));
+}
+
+/* 'C' function for method : 'WidgetSet::HorizontalSliderConfig.OnSetTrackLeftFocused()' */
+void WidgetSetHorizontalSliderConfig_OnSetTrackLeftFocused( WidgetSetHorizontalSliderConfig _this, 
+  ResourcesBitmap value )
+{
+  if ( _this->TrackLeftFocused == value )
+    return;
+
+  _this->TrackLeftFocused = value;
   EwPostSignal( EwNewSlot( _this, WidgetSetWidgetConfig_onInvalidate ), ((XObject)_this ));
 }
 

@@ -43,7 +43,6 @@
 #endif
 
 #include "_MediaMED01_MediaUI.h"
-#include "_MediaTrack.h"
 
 #ifdef __cplusplus
   }

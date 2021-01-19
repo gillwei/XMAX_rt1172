@@ -92,7 +92,7 @@ class MED01_MediaUI : Components::BaseMainBG
   $rect <540,320,740,360>
   slot OnPlayPauseSlot
   {
-    if( 0 == Track.PlaybackState )
+    if( 0 == PlaybackState )
     {
       DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.Play );
     }
@@ -136,32 +136,10 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Visible = false;
   }
 
-  $rect <20,20,160,60>
-  object Media::Track Track
-  {
-    preset Visible = false;
-    preset Artist;
-    preset Title;
-    preset Album;
-    preset OnTrackInfoUpdate = SetTrackInfo;
-    preset RemainTimeSec;
-    preset ElapsedTimeSec;
-  }
-
-  $rect <1170,320,1370,360>
-  slot SetTrackInfo
-  {
-    Title.String = Track.Title;
-    Artist.String = Track.Artist;
-    Album.String = Track.Album;
-  }
-
   $rect <750,200,950,240>
   method void ChangeTrack()
   {
     // Reset if next/previous track command is issued.
-    Track.ResetTrackInfo();
-    Track.IsTrackInfoReset = false;
     DeviceInterface::MediaManagerDevice.IsTitleReceived = false;
     DeviceInterface::MediaManagerDevice.IsArtistReceived = false;
     DeviceInterface::MediaManagerDevice.IsAlbumReceived = false;
@@ -285,15 +263,6 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Bitmap = Resource::IconVolumeUp;
   }
 
-  $rect <20,20,160,60>
-  object WidgetSet::HorizontalSlider SeekBar
-  {
-    preset Bounds = <111,188,455,231>;
-    preset Visible = false;
-    preset CurrentValue = 0;
-    preset Appearance = UIConfig::HorizontalSliderConfig;
-  }
-
   $rect <540,510,730,550>
   object Core::Timer HighlightTimer
   {
@@ -302,7 +271,7 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Enabled = false;
   }
 
-  $rect <740,510,1000,550>
+  $rect <800,510,1060,550>
   slot OnHighlightEndSlot
   {
     HighlightTimer.Enabled = false;
@@ -335,7 +304,7 @@ class MED01_MediaUI : Components::BaseMainBG
   // SystemEvents/Others
   note group Note11
   {
-    attr Bounds = <520,420,1470,570>;
+    attr Bounds = <520,420,1460,760>;
   }
 
   // TODO:
@@ -346,37 +315,8 @@ class MED01_MediaUI : Components::BaseMainBG
   {
     attr Bounds = <20,290,480,450>;
   }
-}
 
-$rect <320,20,520,60>
-$output false
-class Track : Core::Group
-{
-  $rect <10,230,210,270>
-  inherited property Bounds = <0,0,300,200>;
-
-  $rect <370,10,570,50>
-  property string Artist;
-
-  $rect <370,50,570,90>
-  property string Title;
-
-  $rect <370,90,570,130>
-  property string Album;
-
-  $rect <590,10,820,50>
-  property slot OnTrackInfoUpdate;
-
-  $rect <10,310,210,350>
-  method void ResetTrackInfo()
-  {
-    IsTrackInfoReset = true;
-  }
-
-  $rect <10,270,210,310>
-  var bool IsTrackInfoReset = false;
-
-  $rect <890,10,1090,50>
+  $rect <540,560,740,600>
   object Core::PropertyObserver TitleObserver
   {
     preset OnEvent = OnTrackInfoUpdateSlot;
@@ -385,65 +325,64 @@ class Track : Core::Group
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <1130,90,1450,130>
+  $rect <800,610,1050,650>
   slot OnTrackInfoUpdateSlot
   {
-    if( !IsTrackInfoReset )
+    if( sender == TitleObserver )
     {
-      if( sender == TitleObserver )
-      {
-        Title = DeviceInterface::MediaManagerDevice.Title;
-      }
-      else if( sender == AlbumObserver)
-      {
-        Album = DeviceInterface::MediaManagerDevice.Album;
-      }
-      else if( sender == ArtistObserver )
-      {
-        Artist = DeviceInterface::MediaManagerDevice.Artist;
-      }
-      else if( sender == PlayStateObserver)
-      {
-        PlaybackState = DeviceInterface::MediaManagerDevice.PlaybackState;
-      }
-      postsignal OnTrackInfoUpdate;
+      Title.String = DeviceInterface::MediaManagerDevice.Title;
+    }
+    else if( sender == AlbumObserver)
+    {
+      Album.String = DeviceInterface::MediaManagerDevice.Album;
+    }
+    else if( sender == ArtistObserver )
+    {
+      Artist.String = DeviceInterface::MediaManagerDevice.Artist;
+    }
+    else if( sender == PlayStateObserver)
+    {
+      PlaybackState = DeviceInterface::MediaManagerDevice.PlaybackState;
     }
   }
 
-  $rect <890,50,1090,90>
+  $rect <540,600,740,640>
   object Core::PropertyObserver AlbumObserver
   {
     preset OnEvent = OnTrackInfoUpdateSlot;
     preset Outlet = ^DeviceInterface::MediaManagerDevice.Album;
   }
 
-  $rect <890,90,1090,130>
+  $rect <540,640,740,680>
   object Core::PropertyObserver ArtistObserver
   {
     preset OnEvent = OnTrackInfoUpdateSlot;
     preset Outlet = ^DeviceInterface::MediaManagerDevice.Artist;
   }
 
-  $rect <370,240,570,280>
-  property int32 RemainTimeSec = 0;
+  $rect <540,680,740,720>
+  object Core::PropertyObserver PlayStateObserver
+  {
+    preset OnEvent = OnTrackInfoUpdateSlot;
+    preset Outlet = ^DeviceInterface::MediaManagerDevice.PlaybackState;
+  }
 
-  $rect <370,200,570,240>
-  property int32 ElapsedTimeSec;
-
-  $rect <370,360,570,400>
+  $rect <540,90,740,130>
   property int32 PlaybackState = 0;
 
-  $rect <370,400,570,440>
+  $rect <750,90,950,130>
   onset PlaybackState
   {
     // Remember the property's new value.
     pure PlaybackState = value;
   }
 
-  $rect <890,130,1090,170>
-  object Core::PropertyObserver PlayStateObserver
+  $rect <20,20,160,60>
+  object WidgetSet::HorizontalSlider SeekBar
   {
-    preset OnEvent = OnTrackInfoUpdateSlot;
-    preset Outlet = ^DeviceInterface::MediaManagerDevice.PlaybackState;
+    preset Bounds = <111,188,455,231>;
+    preset Visible = false;
+    preset CurrentValue = 0;
+    preset Appearance = UIConfig::HorizontalSliderConfig;
   }
 }

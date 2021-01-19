@@ -44,9 +44,9 @@
 
 #include "_ComponentsBaseMainBG.h"
 #include "_CoreKeyPressHandler.h"
+#include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MediaTrack.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -109,7 +109,6 @@ EW_DEFINE_FIELDS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_OBJECT  ( Album,           ViewsText )
   EW_OBJECT  ( ElapsedTimeSec,  ViewsText )
   EW_OBJECT  ( RemainTimeSec,   ViewsText )
-  EW_OBJECT  ( Track,           MediaTrack )
   EW_OBJECT  ( PlaybackTimeEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( PlayPauseBG,     ViewsImage )
   EW_OBJECT  ( PlayPauseButton, ViewsImage )
@@ -119,8 +118,13 @@ EW_DEFINE_FIELDS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_OBJECT  ( ControlUpBG,     ViewsImage )
   EW_OBJECT  ( NextTrackButton, ViewsImage )
   EW_OBJECT  ( VolumeUpButton,  ViewsImage )
-  EW_OBJECT  ( SeekBar,         WidgetSetHorizontalSlider )
   EW_OBJECT  ( HighlightTimer,  CoreTimer )
+  EW_OBJECT  ( TitleObserver,   CorePropertyObserver )
+  EW_OBJECT  ( AlbumObserver,   CorePropertyObserver )
+  EW_OBJECT  ( ArtistObserver,  CorePropertyObserver )
+  EW_OBJECT  ( PlayStateObserver, CorePropertyObserver )
+  EW_OBJECT  ( SeekBar,         WidgetSetHorizontalSlider )
+  EW_PROPERTY( PlaybackState,   XInt32 )
 EW_END_OF_FIELDS( MediaMED01_MediaUI )
 
 /* Virtual Method Table (VMT) for the class : 'Media::MED01_MediaUI' */
@@ -201,9 +205,6 @@ void MediaMED01_MediaUI_OnPrevTrackSlot( MediaMED01_MediaUI _this, XObject sende
 /* 'C' function for method : 'Media::MED01_MediaUI.OnNextTrackSlot()' */
 void MediaMED01_MediaUI_OnNextTrackSlot( MediaMED01_MediaUI _this, XObject sender );
 
-/* 'C' function for method : 'Media::MED01_MediaUI.SetTrackInfo()' */
-void MediaMED01_MediaUI_SetTrackInfo( MediaMED01_MediaUI _this, XObject sender );
-
 /* 'C' function for method : 'Media::MED01_MediaUI.ChangeTrack()' */
 void MediaMED01_MediaUI_ChangeTrack( MediaMED01_MediaUI _this );
 
@@ -220,6 +221,11 @@ void MediaMED01_MediaUI_OnHighlightEndSlot( MediaMED01_MediaUI _this, XObject se
 
 /* 'C' function for method : 'Media::MED01_MediaUI.StartHighlight()' */
 void MediaMED01_MediaUI_StartHighlight( MediaMED01_MediaUI _this, ViewsImage aBackground );
+
+/* This slot method is executed when the associated property observer 'PropertyObserver' 
+   is notified. */
+void MediaMED01_MediaUI_OnTrackInfoUpdateSlot( MediaMED01_MediaUI _this, XObject 
+  sender );
 
 #ifdef __cplusplus
   }
