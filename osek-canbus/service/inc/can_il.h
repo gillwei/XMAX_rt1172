@@ -36,7 +36,7 @@ Receive frame status bits
 #define IL_RX_STATUS_TIMEOUT1               (0x1 << 2)
 #define IL_RX_STATUS_TIMEOUT2               (0x1 << 3)
 #define IL_RX_STATUS_LOSS_NOTIFIED          (0x1 << 4)
-#define IL_RX_STATUS_ABSENT_FAULT           (0x1 << 5)
+#define IL_RX_STATUS_TIMEOUT2_DIS           (0x1 << 5)
 
 /*------------------------------------------------------
 General usage literals for bit and byte manipulation

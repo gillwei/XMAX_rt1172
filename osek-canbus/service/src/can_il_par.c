@@ -146,7 +146,7 @@ CAN0 Periodic RX Frame TimeoutErr1 recovery (milliseconds)
 /*------------------------------------------------------
 CAN0 Periodic RX Frame Timeout2 (milliseconds)
 ------------------------------------------------------*/
-#define     IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_TIMEOUT2_MS        (0)
+#define     IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_TIMEOUT2_MS        (1000)
 #define     IL_CAN0_RX1_ECU_COM_DATA_RXFRM_TIMEOUT2_MS          (0)
 #define     IL_CAN0_RX3_BRGTHNSS_CTRL_RXFRM_TIMEOUT2_MS         (0)
 #define     IL_CAN0_RX5_VEHICLE_INFO_RXFRM_TIMEOUT2_MS          (0)
@@ -158,13 +158,13 @@ CAN0 Periodic RX Frame Timeout2 (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_TIMEOUT2_MS        (0)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_TIMEOUT2_MS            (0)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_TIMEOUT2_MS           (0)
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TIMEOUT2_MS       (0)
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TIMEOUT2_MS       (1000)
 
 
 /*------------------------------------------------------
 CAN0 Periodic RX Frame TimeoutErr2 recovery (milliseconds)
 ------------------------------------------------------*/
-#define     IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_TERR2_RCVRY_MS     (0)
+#define     IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_TERR2_RCVRY_MS     (1000)
 #define     IL_CAN0_RX1_ECU_COM_DATA_RXFRM_TERR2_RCVRY_MS       (0)
 #define     IL_CAN0_RX3_BRGTHNSS_CTRL_RXFRM_TERR2_RCVRY_MS      (0)
 #define     IL_CAN0_RX5_VEHICLE_INFO_RXFRM_TERR2_RCVRY_MS       (0)
@@ -176,7 +176,7 @@ CAN0 Periodic RX Frame TimeoutErr2 recovery (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_TERR2_RCVRY_MS     (0)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_TERR2_RCVRY_MS         (0)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_TERR2_RCVRY_MS        (0)
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TERR2_RCVRY_MS    (0)
+#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TERR2_RCVRY_MS    (1000)
 
 
 /*------------------------------------------------------
@@ -616,7 +616,7 @@ static il_txfrm_t const
 il_can0_txfrm_table[IL_CAN0_TX_NUM_FRAMES] =
     {
         {
-        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY | IL_TX_FRM_ATTR_MUTE_NOTIFY ),
+        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY ),
         &il_can0_tx_diag_related_txfrm_data[0],
         &il_can0_tx_diag_related_txfrm_init_data[0],
         &il_can0_tx_diag_related_txfrm_sig_list[0],
@@ -626,7 +626,7 @@ il_can0_txfrm_table[IL_CAN0_TX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY | IL_TX_FRM_ATTR_MUTE_NOTIFY ),
+        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY ),
         &il_can0_tx_nm_and_lp_bk_txfrm_data[0],
         &il_can0_tx_nm_and_lp_bk_txfrm_init_data[0],
         &il_can0_tx_nm_and_lp_bk_txfrm_sig_list[0],
@@ -636,7 +636,7 @@ il_can0_txfrm_table[IL_CAN0_TX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY | IL_TX_FRM_ATTR_MUTE_NOTIFY ),
+        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY ),
         &il_can0_tx0_req_mt_func_cnt_txfrm_data[0],
         &il_can0_tx0_req_mt_func_cnt_txfrm_init_data[0],
         &il_can0_tx0_req_mt_func_cnt_txfrm_sig_list[0],
@@ -646,7 +646,7 @@ il_can0_txfrm_table[IL_CAN0_TX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_TX_FRM_ATTR_PERIODIC | IL_TX_FRM_ATTR_MIN_DELAY | IL_TX_FRM_ATTR_MUTE_NOTIFY ),
+        ( IL_TX_FRM_ATTR_PERIODIC | IL_TX_FRM_ATTR_MIN_DELAY ),
         &il_can0_tx1_sys_info_txfrm_data[0],
         &il_can0_tx1_sys_info_txfrm_init_data[0],
         &il_can0_tx1_sys_info_txfrm_sig_list[0],
@@ -656,7 +656,7 @@ il_can0_txfrm_table[IL_CAN0_TX_NUM_FRAMES] =
         &il_can0_tx1_sys_info_txfrm_per_info
         },
         {
-        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY | IL_TX_FRM_ATTR_MUTE_NOTIFY ),
+        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY ),
         &il_can0_tx2_req_support_txfrm_data[0],
         &il_can0_tx2_req_support_txfrm_init_data[0],
         &il_can0_tx2_req_support_txfrm_sig_list[0],
@@ -666,7 +666,7 @@ il_can0_txfrm_table[IL_CAN0_TX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY | IL_TX_FRM_ATTR_MUTE_NOTIFY ),
+        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY ),
         &il_can0_tx3_heater_level_txfrm_data[0],
         &il_can0_tx3_heater_level_txfrm_init_data[0],
         &il_can0_tx3_heater_level_txfrm_sig_list[0],
@@ -676,7 +676,7 @@ il_can0_txfrm_table[IL_CAN0_TX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY | IL_TX_FRM_ATTR_MUTE_NOTIFY ),
+        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY ),
         &il_can0_tx4_req_reprgrm_info_txfrm_data[0],
         &il_can0_tx4_req_reprgrm_info_txfrm_init_data[0],
         &il_can0_tx4_req_reprgrm_info_txfrm_sig_list[0],
@@ -686,7 +686,7 @@ il_can0_txfrm_table[IL_CAN0_TX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY | IL_TX_FRM_ATTR_MUTE_NOTIFY ),
+        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY ),
         &il_can0_tx5_clk_data_res_txfrm_data[0],
         &il_can0_tx5_clk_data_res_txfrm_init_data[0],
         &il_can0_tx5_clk_data_res_txfrm_sig_list[0],
@@ -696,7 +696,7 @@ il_can0_txfrm_table[IL_CAN0_TX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_TX_FRM_ATTR_PERIODIC | IL_TX_FRM_ATTR_MIN_DELAY | IL_TX_FRM_ATTR_MUTE_NOTIFY ),
+        ( IL_TX_FRM_ATTR_PERIODIC | IL_TX_FRM_ATTR_MIN_DELAY ),
         &il_can0_tx6_dev_ctrl_txfrm_data[0],
         &il_can0_tx6_dev_ctrl_txfrm_init_data[0],
         &il_can0_tx6_dev_ctrl_txfrm_sig_list[0],
@@ -706,7 +706,7 @@ il_can0_txfrm_table[IL_CAN0_TX_NUM_FRAMES] =
         &il_can0_tx6_dev_ctrl_txfrm_per_info
         },
         {
-        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY | IL_TX_FRM_ATTR_MUTE_NOTIFY ),
+        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY ),
         &il_can0_tx7_fact_insp1_ga_txfrm_data[0],
         &il_can0_tx7_fact_insp1_ga_txfrm_init_data[0],
         &il_can0_tx7_fact_insp1_ga_txfrm_sig_list[0],
@@ -2377,7 +2377,7 @@ static il_rxfrm_t const
 il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
     {
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX_DAIG_SEG1_RXFRM_LEN,
         IL_CAN0_RX_DAIG_SEG1_RXFRM_MIN_LEN,
         &il_can0_rx_daig_seg1_rxfrm_init_data[0],
@@ -2388,7 +2388,7 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX_DAIG_SEG2_RXFRM_LEN,
         IL_CAN0_RX_DAIG_SEG2_RXFRM_MIN_LEN,
         &il_can0_rx_daig_seg2_rxfrm_init_data[0],
@@ -2399,7 +2399,7 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX_DAIG_SEG3_RXFRM_LEN,
         IL_CAN0_RX_DAIG_SEG3_RXFRM_MIN_LEN,
         &il_can0_rx_daig_seg3_rxfrm_init_data[0],
@@ -2410,7 +2410,7 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX_DAIG_SEG4_RXFRM_LEN,
         IL_CAN0_RX_DAIG_SEG4_RXFRM_MIN_LEN,
         &il_can0_rx_daig_seg4_rxfrm_init_data[0],
@@ -2421,7 +2421,7 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX_DAIG_SEG5_YDT_RXFRM_LEN,
         IL_CAN0_RX_DAIG_SEG5_YDT_RXFRM_MIN_LEN,
         &il_can0_rx_daig_seg5_ydt_rxfrm_init_data[0],
@@ -2432,7 +2432,7 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX_DAIG_SEG6_YDT_RXFRM_LEN,
         IL_CAN0_RX_DAIG_SEG6_YDT_RXFRM_MIN_LEN,
         &il_can0_rx_daig_seg6_ydt_rxfrm_init_data[0],
@@ -2443,7 +2443,7 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX_DAIG_SEG7_YDT_RXFRM_LEN,
         IL_CAN0_RX_DAIG_SEG7_YDT_RXFRM_MIN_LEN,
         &il_can0_rx_daig_seg7_ydt_rxfrm_init_data[0],
@@ -2454,7 +2454,7 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX_NM_AND_LP_BK_RXFRM_LEN,
         IL_CAN0_RX_NM_AND_LP_BK_RXFRM_MIN_LEN,
         &il_can0_rx_nm_and_lp_bk_rxfrm_init_data[0],
@@ -2465,7 +2465,7 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_LEN,
         IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_MIN_LEN,
         &il_can0_rx0_ecu_indct_stat_rxfrm_init_data[0],
@@ -2476,7 +2476,7 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         &il_can0_rx0_ecu_indct_stat_rxfrm_per_info
         },
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX1_ECU_COM_DATA_RXFRM_LEN,
         IL_CAN0_RX1_ECU_COM_DATA_RXFRM_MIN_LEN,
         &il_can0_rx1_ecu_com_data_rxfrm_init_data[0],
@@ -2487,7 +2487,7 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         &il_can0_rx1_ecu_com_data_rxfrm_per_info
         },
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX2_RES_SUPPORT_RXFRM_LEN,
         IL_CAN0_RX2_RES_SUPPORT_RXFRM_MIN_LEN,
         &il_can0_rx2_res_support_rxfrm_init_data[0],
@@ -2498,7 +2498,7 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         NULL
         },
         {
-        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT | IL_RX_FRM_ATTR_ABSENT_NOTIFY ),
+        ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
         IL_CAN0_RX3_BRGTHNSS_CTRL_RXFRM_LEN,
         IL_CAN0_RX3_BRGTHNSS_CTRL_RXFRM_MIN_LEN,
         &il_can0_rx3_brgthnss_ctrl_rxfrm_init_data[0],

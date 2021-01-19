@@ -440,7 +440,8 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
                                     ( IL_RX_STATUS_PENDING       |
                                       IL_RX_STATUS_TIMEOUT1      |
                                       IL_RX_STATUS_TIMEOUT2      |
-                                      IL_RX_STATUS_LOSS_NOTIFIED ) );
+                                      IL_RX_STATUS_LOSS_NOTIFIED |
+                                      IL_RX_STATUS_TIMEOUT2_DIS ) );
         }
     }
 
@@ -2587,11 +2588,11 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
 *
 * Interaction Layer periodic receive task hard key
 *
-* This function is used to handle hard key.
+* This function is used to handle hard key and ECU indicate status.
 *
 *********************************************************************/
 static void
-rx_hardkey_handle
+rx_hardkey_ECU_status_handle
     (
     boolean                     new_frame,
     uint8                     * p_sw_status,
@@ -2599,6 +2600,17 @@ rx_hardkey_handle
     il_rxfrm_t          const * p_rxfrm
     )
 {
+/*------------------------------------------------------
+Timeout error 2 check disable, for instance, ECU indicate
+status and status1 can all be judge condition of timeout
+error 2, but them can not be received in the same time
+in one CAR type, so one condition should be disabled
+------------------------------------------------------*/
+if( ( *p_sw_status & IL_RX_STATUS_TIMEOUT2_DIS ) != 0 )
+    {
+    return;
+    }
+
 if( new_frame != FALSE )
     {
     if( ( *p_sw_status & IL_RX_STATUS_TIMEOUT2 ) != 0 )
@@ -2667,7 +2679,7 @@ if( new_frame != FALSE )
         *( p_rxfrm->p_per_info->p_timeout_cnt ) = p_rxfrm->p_per_info->timeout1;
         }
     }
- else
+else
     {
     /*------------------------------------------------------
     From normal receiving status to time out error 1
@@ -2829,7 +2841,6 @@ dll_frm_index_t             l_i_frm_index;
 dll_frm_handle_t            l_frm_handle;
 boolean                     l_new_frame;
 boolean                     l_frm_data_changed;
-uint8                      *l_p_sw_status;
 
 /*------------------------------------------------------
 Get the receive frame information and service all of
@@ -2854,7 +2865,6 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
     l_p_frm_status  = &( l_p_rxfrm_info->p_status[l_i_frm_index] );
     l_p_per_info    = l_p_rxfrm->p_per_info;
     l_new_frame     = FALSE;
-    l_p_sw_status   = &( l_p_rxfrm_info->p_status[0] );
 
     /*------------------------------------------------------
     Check if the frame is a new received one
@@ -2899,9 +2909,11 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         ( ( l_p_rxfrm->attributes   & IL_RX_FRM_ATTR_TIMEOUT ) != 0  )   &&
         ( l_p_per_info != NULL ) )
         {
-        if( l_i_frm_index == IL_CAN0_RX6_FUNCSW_STAT_RXFRM_INDEX )
+        if( ( l_i_frm_index == IL_CAN0_RX6_FUNCSW_STAT_RXFRM_INDEX )    ||
+            ( l_i_frm_index == IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_INDEX ) ||
+            ( l_i_frm_index == IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_INDEX ) )
             {
-            rx_hardkey_handle( l_new_frame, l_p_frm_status, l_p_per_info, l_p_rxfrm );
+            rx_hardkey_ECU_status_handle( l_new_frame, l_p_frm_status, l_p_per_info, l_p_rxfrm );
             }
         else
             {
@@ -2911,7 +2923,7 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         /*------------------------------------------------------
         Handle Hardkey error 1
         ------------------------------------------------------*/
-        if( ( *l_p_sw_status & IL_RX_STATUS_TIMEOUT1 ) != 0 )
+        if( ( *l_p_frm_status & IL_RX_STATUS_TIMEOUT1 ) != 0 )
             {
             memcpy( l_p_rxfrm->p_data, l_p_rxfrm->p_init_data, l_p_rxfrm->dlc );
             }
@@ -2919,7 +2931,7 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         /*------------------------------------------------------
         Handle Timeout error 2
         ------------------------------------------------------*/
-        if( ( *l_p_sw_status & IL_RX_STATUS_TIMEOUT2 ) != 0 )
+        if( ( *l_p_frm_status & IL_RX_STATUS_TIMEOUT2 ) != 0 )
             {
             /*------------------------------------------------------
             Some CAN frames should hold the previous values and other
@@ -3099,6 +3111,8 @@ void il_hook_receive
 il_rxfrm_info_t     const * l_p_rxfrm_info;
 uint8                       l_hw_inst;
 dll_frm_index_t             l_frm_index;
+uint8                     * l_p_frm_status;
+dll_frm_index_t             l_ecu_status_frm_index;
 
 /*------------------------------------------------------
 Extract the H/W instance from the reported frame handle
@@ -3117,6 +3131,23 @@ if( l_hw_inst == hw_inst )
 
     if( l_frm_index < l_p_rxfrm_info->num_frames )
         {
+        /*------------------------------------------------------
+        Disable the timeout error 2 by ECU indicate
+        status or status1
+        ------------------------------------------------------*/
+        if( p_rmd->identifier == RX0_ECU_INDCT_STAT_CAN0_ID )
+            {
+            l_ecu_status_frm_index = DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_HANDLE );
+            l_p_frm_status         = &( l_p_rxfrm_info->p_status[l_ecu_status_frm_index] );
+            ( *l_p_frm_status )   |= IL_RX_STATUS_TIMEOUT2_DIS;
+            }
+        else if( p_rmd->identifier == RXG_ECU_INDCT_STAT1_CAN0_ID )
+            {
+            l_ecu_status_frm_index = DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_HANDLE );
+            l_p_frm_status         = &( l_p_rxfrm_info->p_status[l_ecu_status_frm_index] );
+            ( *l_p_frm_status )   |= IL_RX_STATUS_TIMEOUT2_DIS;
+            }
+
         /*------------------------------------------------------
         Save the received frame for subsequent processing
         ------------------------------------------------------*/
