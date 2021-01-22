@@ -125,6 +125,18 @@ typedef enum
   EnumMainSettingItemReset              = 8
 } EnumMainSettingItem;
 
+/* User defined enumeration: 'Enum::NaviSettingItem' */
+typedef enum
+{
+  EnumNaviSettingItemStopNavigation     = 0,
+  EnumNaviSettingItemSkipNextStop       = 1,
+  EnumNaviSettingItemGoHome             = 2,
+  EnumNaviSettingItemGoToWork           = 3,
+  EnumNaviSettingItemFavorites          = 4,
+  EnumNaviSettingItemNearbyGasStations  = 5,
+  EnumNaviSettingItemChangeView         = 6
+} EnumNaviSettingItem;
+
 #ifdef __cplusplus
   }
 #endif

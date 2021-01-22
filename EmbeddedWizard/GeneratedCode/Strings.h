@@ -93,6 +93,36 @@ extern const XStringRes StringsLNC_seat_heater;
 /* User defined constant: 'Strings::LNC_settings' */
 extern const XStringRes StringsLNC_settings;
 
+/* User defined constant: 'Strings::NAV06_stop_navigation' */
+extern const XStringRes StringsNAV06_stop_navigation;
+
+/* User defined constant: 'Strings::NAV06_stop_next_stop' */
+extern const XStringRes StringsNAV06_stop_next_stop;
+
+/* User defined constant: 'Strings::NAV06_go_home' */
+extern const XStringRes StringsNAV06_go_home;
+
+/* User defined constant: 'Strings::NAV06_go_to_work' */
+extern const XStringRes StringsNAV06_go_to_work;
+
+/* User defined constant: 'Strings::NAV06_favorites' */
+extern const XStringRes StringsNAV06_favorites;
+
+/* User defined constant: 'Strings::NAV06_nearby_gas_stations' */
+extern const XStringRes StringsNAV06_nearby_gas_stations;
+
+/* User defined constant: 'Strings::NAV06_change_view' */
+extern const XStringRes StringsNAV06_change_view;
+
+/* User defined constant: 'Strings::NAV08_default_view' */
+extern const XStringRes StringsNAV08_default_view;
+
+/* User defined constant: 'Strings::NAV08_turn_by_turn' */
+extern const XStringRes StringsNAV08_turn_by_turn;
+
+/* User defined constant: 'Strings::NAV08_turn_list' */
+extern const XStringRes StringsNAV08_turn_list;
+
 /* User defined constant: 'Strings::SET01_connection' */
 extern const XStringRes StringsSET01_connection;
 

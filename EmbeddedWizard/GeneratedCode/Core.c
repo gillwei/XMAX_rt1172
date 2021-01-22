@@ -2945,6 +2945,51 @@ XBool CoreGroup__IsActiveDialog( void* _this, XBool aRecursive )
   return ((CoreGroup)_this)->_VMT->IsActiveDialog((CoreGroup)_this, aRecursive );
 }
 
+/* The method GetDialogAtIndex() returns the dialog component stored at position 
+   aIndex on the dialog stack of 'this' component. The dialog lying top-most (the 
+   current dialog in context of 'this' component) has the index 0. The dialog next 
+   below has the index 1, and so far. The total number of dialogs managed by this 
+   component can be asked by the method @CountDialogs().
+   If the passed index is negative or the desired dialog doesn't exist, the method 
+   returns 'null'. To present a dialog use the method @PresentDialog() or @SwitchToDialog(). */
+CoreGroup CoreGroup_GetDialogAtIndex( CoreGroup _this, XInt32 aIndex )
+{
+  CoreDialogContext dialog;
+
+  if ( aIndex < 0 )
+    return 0;
+
+  dialog = _this->dialogStack;
+
+  while (( dialog != 0 ) && ( aIndex > 0 ))
+  {
+    aIndex = aIndex - 1;
+    dialog = dialog->next;
+  }
+
+  if ( dialog != 0 )
+    return dialog->group;
+
+  return 0;
+}
+
+/* The method CountDialogs() returns the total number of dialog components subordinated 
+   to 'this' component. In case of an empty component without any embedded dialogs, 
+   0 is returned. To present a dialog use the method @PresentDialog() or @SwitchToDialog(). */
+XInt32 CoreGroup_CountDialogs( CoreGroup _this )
+{
+  CoreDialogContext dialog = _this->dialogStack;
+  XInt32 count = 0;
+
+  while ( dialog != 0 )
+  {
+    count = count + 1;
+    dialog = dialog->next;
+  }
+
+  return count;
+}
+
 /* The method SwitchToDialog() schedules an operation to show in context of 'this' 
    component another component passed in the parameter aDialogGroup. The operation 
    to show the component is performed with an animation specified in the parameter 

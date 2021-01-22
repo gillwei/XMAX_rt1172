@@ -179,3 +179,29 @@ enum MainSettingItem
   $rect <240,160,440,200>
   item Reset;
 }
+
+$rect <260,130,460,170>
+$output false
+enum NaviSettingItem
+{
+  $rect <10,10,210,50>
+  item StopNavigation;
+
+  $rect <220,10,420,50>
+  item SkipNextStop;
+
+  $rect <430,10,630,50>
+  item GoHome;
+
+  $rect <10,70,210,110>
+  item GoToWork;
+
+  $rect <220,70,420,110>
+  item Favorites;
+
+  $rect <430,70,630,110>
+  item NearbyGasStations;
+
+  $rect <10,130,210,170>
+  item ChangeView;
+}

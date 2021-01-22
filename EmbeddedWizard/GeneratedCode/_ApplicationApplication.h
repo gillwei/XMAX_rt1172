@@ -193,6 +193,10 @@ void ApplicationApplication_OnBtFwStatusUpdteSlot( ApplicationApplication _this,
 /* 'C' function for method : 'Application::Application.DismissFactoryTestDialog()' */
 void ApplicationApplication_DismissFactoryTestDialog( ApplicationApplication _this );
 
+/* 'C' function for method : 'Application::Application.SwitchToHome()' */
+void ApplicationApplication_SwitchToHome( ApplicationApplication _this, CoreGroup 
+  aHomeDialog );
+
 #ifdef __cplusplus
   }
 #endif

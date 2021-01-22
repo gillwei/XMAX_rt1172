@@ -1,6 +1,6 @@
 ﻿$version 10.00
 
-$rect <40,2190,240,2230>
+$rect <30,1840,230,1880>
 $output false
 resource Resources::Bitmap IconMediaPlayPause
 {
@@ -12,7 +12,7 @@ resource Resources::Bitmap IconMediaPlayPause
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,2190,450,2230>
+$rect <240,1840,440,1880>
 $output false
 resource Resources::Bitmap IconMediaPrevious
 {
@@ -24,7 +24,7 @@ resource Resources::Bitmap IconMediaPrevious
   attr bitmapmode Mode = Default;
 }
 
-$rect <460,2190,660,2230>
+$rect <450,1840,650,1880>
 $output false
 resource Resources::Bitmap IconMediaNext
 {
@@ -141,234 +141,6 @@ $output false
 resource Resources::Bitmap ArrivalBg
 {
   attr bitmapfile FileName = .\Res\navi_arrival_bg.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-// Navigation - YMC design
-note group Note2
-{
-  attr Bounds = <10,1790,1100,1950>;
-}
-
-$rect <40,1830,240,1870>
-$output false
-resource Resources::Bitmap YmcNaviDay
-{
-  attr bitmapfile FileName = .\Res\navi_screen\YMC\LC Navi – Navigating_D_YMC.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <40,1880,240,1920>
-$output false
-resource Resources::Bitmap YmcNaviNight
-{
-  attr bitmapfile FileName = .\Res\navi_screen\YMC\LC Navi – Navigating_N_YMC.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <250,1830,450,1870>
-$output false
-resource Resources::Bitmap YmcRouteDay
-{
-  attr bitmapfile FileName = .\Res\navi_screen\YMC\LC Navi – Overview_D_YMC.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <250,1880,450,1920>
-$output false
-resource Resources::Bitmap YmcRouteNight
-{
-  attr bitmapfile FileName = .\Res\navi_screen\YMC\LC Navi – Overview_N_YMC.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <460,1830,660,1870>
-$output false
-resource Resources::Bitmap YmcNextTurnDay
-{
-  attr bitmapfile FileName = .\Res\navi_screen\YMC\LC Navi – Next_turn_D_YMC.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <460,1880,660,1920>
-$output false
-resource Resources::Bitmap YmcNextTurnNight
-{
-  attr bitmapfile FileName = .\Res\navi_screen\YMC\LC Navi – Next_turn_N_YMC.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <670,1830,870,1870>
-$output false
-resource Resources::Bitmap YmcTbTDay
-{
-  attr bitmapfile FileName = .\Res\navi_screen\YMC\LC Navi – Turn_by_Turn_D_YMC.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <670,1880,870,1920>
-$output false
-resource Resources::Bitmap YmcTbTNight
-{
-  attr bitmapfile FileName = .\Res\navi_screen\YMC\LC Navi – Turn_by_Turn_N_YMC.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <880,1830,1080,1870>
-$output false
-resource Resources::Bitmap YmcTurnList
-{
-  attr bitmapfile FileName = .\Res\navi_screen\YMC\LC Navi – List View_YMC.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-// Navigation - Garmin design
-note group Note3
-{
-  attr Bounds = <10,1970,1100,2130>;
-}
-
-$rect <40,2010,240,2050>
-$output false
-resource Resources::Bitmap GrmnNaviDay
-{
-  attr bitmapfile FileName = .\Res\navi_screen\Garmin\LC Navi – Navigating_D_UX.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <40,2060,240,2100>
-$output false
-resource Resources::Bitmap GrmnNaviNight
-{
-  attr bitmapfile FileName = .\Res\navi_screen\Garmin\LC Navi – Navigating_N_UX.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <250,2010,450,2050>
-$output false
-resource Resources::Bitmap GrmnRouteDay
-{
-  attr bitmapfile FileName = .\Res\navi_screen\Garmin\LC Navi – Overview_D_UX.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <250,2060,450,2100>
-$output false
-resource Resources::Bitmap GrmnRouteNight
-{
-  attr bitmapfile FileName = .\Res\navi_screen\Garmin\LC Navi – Overview_N_UX.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <460,2010,660,2050>
-$output false
-resource Resources::Bitmap GrmnNextTurnDay
-{
-  attr bitmapfile FileName = .\Res\navi_screen\Garmin\LC Navi – Next_turn_D_UX.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <460,2060,660,2100>
-$output false
-resource Resources::Bitmap GrmnNextTurnNight
-{
-  attr bitmapfile FileName = .\Res\navi_screen\Garmin\LC Navi – Next_turn_N_UX.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <670,2010,870,2050>
-$output false
-resource Resources::Bitmap GrmnTbTDay
-{
-  attr bitmapfile FileName = .\Res\navi_screen\Garmin\LC Navi – Turn_by_Turn_D_UX.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <670,2060,870,2100>
-$output false
-resource Resources::Bitmap GrmnTbTNight
-{
-  attr bitmapfile FileName = .\Res\navi_screen\Garmin\LC Navi – Turn_by_Turn_N_UX.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <880,2010,1080,2050>
-$output false
-resource Resources::Bitmap GrmnTurnList
-{
-  attr bitmapfile FileName = .\Res\navi_screen\Garmin\LC Navi – List View_UX.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -947,10 +719,10 @@ resource Resources::Bitmap PageUpDown
 // Media
 note group Note9
 {
-  attr Bounds = <20,2150,1100,2310>;
+  attr Bounds = <10,1800,1090,1960>;
 }
 
-$rect <670,2190,880,2230>
+$rect <660,1840,870,1880>
 $output false
 resource Resources::Bitmap ControlKeyBackground
 {
@@ -962,7 +734,7 @@ resource Resources::Bitmap ControlKeyBackground
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,2190,1090,2230>
+$rect <870,1840,1080,1880>
 $output false
 resource Resources::Bitmap IconVolumeDown
 {
@@ -974,7 +746,7 @@ resource Resources::Bitmap IconVolumeDown
   attr bitmapmode Mode = Default;
 }
 
-$rect <40,2240,240,2280>
+$rect <30,1890,230,1930>
 $output false
 resource Resources::Bitmap IconVolumeUp
 {
@@ -986,7 +758,7 @@ resource Resources::Bitmap IconVolumeUp
   attr bitmapmode Mode = Default;
 }
 
-$rect <250,2240,450,2280>
+$rect <240,1890,440,1930>
 $output false
 resource Resources::Bitmap SeekBarDot
 {
@@ -998,7 +770,7 @@ resource Resources::Bitmap SeekBarDot
   attr bitmapmode Mode = Default;
 }
 
-$rect <460,2240,660,2280>
+$rect <450,1890,650,1930>
 $output false
 resource Resources::Bitmap SeekBar
 {

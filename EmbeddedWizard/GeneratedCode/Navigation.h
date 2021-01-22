@@ -42,9 +42,9 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_NavigationGarmin.h"
 #include "_NavigationMain.h"
-#include "_NavigationYMC.h"
+#include "_NavigationNAV06_NaviSettingMenu.h"
+#include "_NavigationNAV08_NaviChageViewMenu.h"
 
 #ifdef __cplusplus
   }

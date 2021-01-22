@@ -31,9 +31,6 @@ class Main : Components::BaseComponent
   {
     var Application::Application App = ( Application::Application )GetRoot();
     App.StatusBarVisible = false;
-
-    var Navigation::YMC Pictures = new Navigation::YMC;
-    PresentDialog( Pictures, null, null, null, null, null, null, null, null, false );
   }
 
   $rect <230,440,460,480>
@@ -154,159 +151,286 @@ class Main : Components::BaseComponent
   }
 }
 
-$rect <20,70,260,110>
+$rect <20,80,260,120>
 $output false
-class YMC : Components::BaseComponent
+class NAV06_NaviSettingMenu : Menu::BaseMenuView
 {
-  $rect <0,290,200,330>
+  $rect <0,300,200,340>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <510,60,710,100>
-  inherited method OnShortDownKeyActivated()
+  $rect <250,300,480,340>
+  inherited method OnShortHomeKeyActivated()
   {
-    var int32 NextIdx = PictureIdx + 1;
-    if( NextIdx >= 9 )
-    {
-      NextIdx = 0;
-    }
-    PictureIdx = NextIdx;
-  }
-
-  $rect <510,10,710,50>
-  inherited method OnShortUpKeyActivated()
-  {
-    var int32 PreviousIdx = PictureIdx - 1;
-    if( PreviousIdx < 0 )
-    {
-      PreviousIdx = 9 - 1;
-    }
-    PictureIdx = PreviousIdx;
-  }
-
-  $rect <510,110,710,150>
-  inherited method OnShortEnterKeyActivated()
-  {
-    var Navigation::Garmin GarminScreen = new Navigation::Garmin;
-    Owner.SwitchToDialog( GarminScreen, null, null, null, null, null, null, null, null, null, false );
-  }
-
-  $rect <20,20,160,60>
-  object Views::Image Image
-  {
-    preset Bounds = <0,0,480,272>;
-    preset Bitmap = Resource::YmcNaviDay;
-  }
-
-  $rect <510,160,710,200>
-  property int32 PictureIdx = 0;
-
-  $rect <510,210,710,250>
-  onset PictureIdx
-  {
-    if( pure PictureIdx != value )
-    {
-      pure PictureIdx = value;
-      switch( PictureIdx )
-      {
-        case 0: Image.Bitmap = Resource::YmcNaviDay;
-        case 1: Image.Bitmap = Resource::YmcNaviNight;
-        case 2: Image.Bitmap = Resource::YmcRouteDay;
-        case 3: Image.Bitmap = Resource::YmcRouteNight;
-        case 4: Image.Bitmap = Resource::YmcTurnList;
-        case 5: Image.Bitmap = Resource::YmcNextTurnDay;
-        case 6: Image.Bitmap = Resource::YmcNextTurnNight;
-        case 7: Image.Bitmap = Resource::YmcTbTDay;
-        case 8: Image.Bitmap = Resource::YmcTbTNight;
-        default:;
-      }
-    }
-  }
-
-  $rect <20,20,160,60>
-  object Views::Text Text
-  {
-    preset Bounds = <2,0,82,30>;
-    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
-    preset String = "YMC";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-}
-
-$rect <20,120,260,160>
-$output false
-class Garmin : Components::BaseComponent
-{
-  $rect <0,290,200,330>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <510,60,710,100>
-  inherited method OnShortDownKeyActivated()
-  {
-    var int32 NextIdx = PictureIdx + 1;
-    if( NextIdx >= 9 )
-    {
-      NextIdx = 0;
-    }
-    PictureIdx = NextIdx;
-  }
-
-  $rect <510,10,710,50>
-  inherited method OnShortUpKeyActivated()
-  {
-    var int32 PreviousIdx = PictureIdx - 1;
-    if( PreviousIdx < 0 )
-    {
-      PreviousIdx = 9 - 1;
-    }
-    PictureIdx = PreviousIdx;
-  }
-
-  $rect <510,110,710,150>
-  inherited method OnShortEnterKeyActivated()
-  {
-    var Application::Application App = ( Application::Application )GetRoot();
-    App.StatusBarVisible = true;
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
-  $rect <20,20,160,60>
-  object Views::Image Image
+  $rect <520,110,720,150>
+  inherited method LoadItemClass()
   {
-    preset Bounds = <0,0,480,272>;
-    preset Bitmap = Resource::GrmnNaviDay;
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+      ItemClass = Menu::ItemBase;
+    }
+    return ItemClass;
   }
 
-  $rect <510,160,710,200>
-  property int32 PictureIdx = 0;
-
-  $rect <510,210,710,250>
-  onset PictureIdx
+  $rect <520,50,720,90>
+  inherited method LoadItemTitle()
   {
-    if( pure PictureIdx != value )
+    var string Title = "";
+    switch( NaviSettings[aItemNo] )
     {
-      pure PictureIdx = value;
-      switch( PictureIdx )
-      {
-        case 0: Image.Bitmap = Resource::GrmnNaviDay;
-        case 1: Image.Bitmap = Resource::GrmnNaviNight;
-        case 2: Image.Bitmap = Resource::GrmnRouteDay;
-        case 3: Image.Bitmap = Resource::GrmnRouteNight;
-        case 4: Image.Bitmap = Resource::GrmnTurnList;
-        case 5: Image.Bitmap = Resource::GrmnNextTurnDay;
-        case 6: Image.Bitmap = Resource::GrmnNextTurnNight;
-        case 7: Image.Bitmap = Resource::GrmnTbTDay;
-        case 8: Image.Bitmap = Resource::GrmnTbTNight;
-        default:;
-      }
+      case Enum::NaviSettingItem.StopNavigation: Title = Strings::NAV06_stop_navigation;
+      case Enum::NaviSettingItem.SkipNextStop: Title = Strings::NAV06_stop_next_stop;
+      case Enum::NaviSettingItem.GoHome: Title = Strings::NAV06_go_home;
+      case Enum::NaviSettingItem.GoToWork: Title = Strings::NAV06_go_to_work;
+      case Enum::NaviSettingItem.Favorites: Title = Strings::NAV06_favorites;
+      case Enum::NaviSettingItem.NearbyGasStations: Title = Strings::NAV06_nearby_gas_stations;
+      case Enum::NaviSettingItem.ChangeView: Title = Strings::NAV06_change_view;
+      default:;
+    }
+    return Title;
+  }
+
+  $rect <520,230,720,270>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    var Components::BaseComponent Dialog = null;
+
+    switch( NaviSettings[aItemNo] )
+    {
+      case Enum::NaviSettingItem.StopNavigation:;
+      case Enum::NaviSettingItem.SkipNextStop:;
+      case Enum::NaviSettingItem.GoHome:;
+      case Enum::NaviSettingItem.GoToWork:;
+      case Enum::NaviSettingItem.Favorites:;
+      case Enum::NaviSettingItem.NearbyGasStations:;
+      case Enum::NaviSettingItem.ChangeView: Dialog = new Navigation::NAV08_NaviChageViewMenu;
+      default:;
+    }
+
+    if( null != Dialog )
+    {
+      SlideInDialog( Dialog );
     }
   }
 
-  $rect <20,20,160,60>
-  object Views::Text Text
+  $rect <520,170,720,210>
+  inherited method LoadItemEnabled()
   {
-    preset Bounds = <2,0,102,30>;
-    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
-    preset String = "Garmin";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    var bool ItemEnabled = true;
+    switch( NaviSettings[aItemNo] )
+    {
+      case Enum::NaviSettingItem.StopNavigation:
+      {
+        if( !IsDestSet )
+        {
+          ItemEnabled = false;
+        }
+      }
+      case Enum::NaviSettingItem.SkipNextStop:
+      {
+        if( !IsDestSet )
+        {
+          ItemEnabled = false;
+        }
+        else
+        {
+          if( !IsWayPointSet )
+          {
+            ItemEnabled = false;
+          }
+        }
+      }
+      case Enum::NaviSettingItem.GoHome:;
+      case Enum::NaviSettingItem.GoToWork:;
+      case Enum::NaviSettingItem.Favorites:;
+      case Enum::NaviSettingItem.NearbyGasStations:;
+      case Enum::NaviSettingItem.ChangeView:
+      {
+        if( !IsDestSet )
+        {
+          ItemEnabled = false;
+        }
+      }
+      default:;
+    }
+    return ItemEnabled;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <0,36,480,272>;
+    preset NoOfItems = 7;
+    preset ArrowScrollBarVisible = true;
+  }
+
+  $rect <750,50,950,90>
+  array Enum::NaviSettingItem NaviSettings[ 7 ] =
+  (
+    Default[0] = Enum::NaviSettingItem.StopNavigation;
+    Default[1] = Enum::NaviSettingItem.SkipNextStop;
+    Default[2] = Enum::NaviSettingItem.GoHome;
+    Default[3] = Enum::NaviSettingItem.GoToWork;
+    Default[4] = Enum::NaviSettingItem.Favorites;
+    Default[5] = Enum::NaviSettingItem.NearbyGasStations;
+    Default[6] = Enum::NaviSettingItem.ChangeView;
+  );
+
+  $rect <770,310,970,350>
+  var bool IsDestSet = true;
+
+  // TODO:
+  // 1. Integrate with navi protocol.
+  // 2. Replace IsDestSet and IsWayPointSet with variables defined in navigation \
+  // device interface after integrating with navi protocol.
+  // 3. Send corresponding request when short pressing enter each option after integrating \
+  // with navi protocol.
+  note group Note5
+  {
+    attr Bounds = <750,140,1310,420>;
+  }
+
+  $rect <770,360,970,400>
+  var bool IsWayPointSet = false;
+}
+
+$rect <20,140,260,180>
+$output false
+class NAV08_NaviChageViewMenu : Menu::BaseMenuView
+{
+  $rect <0,310,200,350>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <220,310,470,350>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <510,60,710,100>
+  inherited method LoadItemClass()
+  {
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+      ItemClass = Menu::ItemCheckMark;
+    }
+    return ItemClass;
+  }
+
+  $rect <510,110,710,150>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+      {
+      title = ItemTitleArray[aItemNo];
+      }
+    return title;
+  }
+
+  $rect <510,160,710,200>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    var int32 i = 0;
+    for( i = 0; i < ItemCheckedArray.size; i++ )
+    {
+      if( i == aItemNo )
+      {
+        ItemCheckedArray[i] = true;
+      }
+      else
+      {
+        ItemCheckedArray[i] = false;
+      }
+    }
+
+    Menu.InvalidateItems( 0, 2 );
+    CheckMarkUpdateTimer.Enabled = true;
+    NaviScreenIdx = aItemNo;
+  }
+
+  $rect <510,10,710,50>
+  inherited method LoadItemChecked()
+  {
+    var bool IsChecked = false;
+    if( aItemNo < ItemCheckedArray.size )
+    {
+      IsChecked = ItemCheckedArray[aItemNo];
+    }
+    return IsChecked;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <0,36,480,272>;
+    preset NoOfItems = 3;
+  }
+
+  $rect <750,10,950,50>
+  array string ItemTitleArray[ 3 ] =
+  (
+    Default[0] = Strings::NAV08_default_view;
+    Default[1] = Strings::NAV08_turn_by_turn;
+    Default[2] = Strings::NAV08_turn_list;
+  );
+
+  $rect <750,60,950,100>
+  array bool ItemCheckedArray[ 3 ] =
+  (
+    Default[0] = true;
+    Default[1] = false;
+    Default[2] = false;
+  );
+
+  $rect <510,240,740,280>
+  object Core::Timer CheckMarkUpdateTimer
+  {
+    preset OnTrigger = OnCheckMarkUpdateSlot;
+    preset Period = 450;
+  }
+
+  $rect <510,280,740,320>
+  slot OnCheckMarkUpdateSlot
+  {
+    CheckMarkUpdateTimer.Enabled = false;
+    var Components::BaseComponent Dialog = null;
+    var Application::Application App = ( Application::Application )GetRoot();
+    switch( NaviScreenIdx )
+    {
+      case 0:
+      {
+        Dialog = new Navigation::Main;
+        App.SwitchToHome( Dialog );
+      }
+      case 1:;
+      case 2:;
+      default:;
+    }
+  }
+
+  $rect <750,110,950,150>
+  var int32 NaviScreenIdx;
+
+  // TODO:
+  // 1. Connect to Turn-by-turn view after Turn-by-turn view UI is created.
+  // 2. Connect to Turn list after Turn list UI is created.
+  note group Note5
+  {
+    attr Bounds = <770,210,1270,340>;
   }
 }

@@ -30,7 +30,7 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000414, /* ratio 52.11 % */
+  0x00000416, /* ratio 52.77 % */
   0xB8001900, 0x00084452, 0x00EA0036, 0x0E800328, 0x1B0F3780, 0xA0034002, 0x458181A2,
   0xA8D0005A, 0x8C02A2B1, 0x01040057, 0x13800520, 0x024C4900, 0x80115238, 0x00468C2C,
   0xE6900184, 0x72004260, 0x21000216, 0x384F2211, 0xD9E40132, 0x43A1D419, 0xD6246E86,
@@ -45,24 +45,29 @@ static const unsigned int _StringsDefault0[] =
   0x13558D0A, 0xF461FA57, 0x31947D1D, 0x18035154, 0x1D93349D, 0xD9156951, 0x04799452,
   0xF9914E92, 0x0F001F97, 0x43911874, 0x15119935, 0x94462357, 0xF0134554, 0x4A7C9B97,
   0x769448D9, 0x11163D8B, 0x3461EE42, 0xF1128A05, 0xF8920484, 0x809154E5, 0x90C91D04,
-  0x3569B251, 0x011886D6, 0x8C725949, 0x8563E8C1, 0x10876904, 0x867D5C44, 0xD9064125,
-  0x0E4515A5, 0x95D63971, 0x51801C00, 0xE4D59415, 0x90174550, 0xE74D5B97, 0x7AD4171D,
-  0x9746A13A, 0xD5665E44, 0x32469E1C, 0x918A9449, 0x7DD73729, 0x670A1A3D, 0x261E8905,
-  0x61447FD1, 0xF65C6326, 0x4558B8D5, 0x84C46014, 0xA4DA224E, 0xE69B5257, 0x25A79B16,
-  0x1160E002, 0x653735BF, 0x9460184B, 0x2D8C46C5, 0x665725C6, 0x50000489, 0x5335027D,
-  0xDA19764D, 0x01014B52, 0x00000000
+  0x3569B251, 0x18124556, 0xE70013D9, 0x8861F651, 0x58B54545, 0xF9681145, 0x265D4D59,
+  0x491E0007, 0x4410E736, 0x10489940, 0x0861F54B, 0x45E486E0, 0x4F7D5C24, 0x67C005C5,
+  0x50440915, 0x59FA5F4C, 0x02577E13, 0xC08B8160, 0x50D9C4E5, 0x1334B13C, 0x54396362,
+  0xBE8962E3, 0x14768457, 0x6E1996B5, 0xD0C4D620, 0x48B51553, 0xC90C8150, 0x6D579338,
+  0xA913AA86, 0x1A78EA2C, 0xBA3D1A65, 0xDEB34491, 0x45A08008, 0x512B9784, 0x6954D508,
+  0x04121C4B, 0x726A6524, 0x2D8FA305, 0x001014B5, 0x00000000
 };
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault1[] =
 {
-  0x000000E6, /* ratio 67.83 % */
-  0xB8002300, 0x80088452, 0x00E60034, 0x0DE00318, 0xCA003B00, 0x20039000, 0x0010000F,
-  0x400434DA, 0x8F802226, 0x01420902, 0x44E0E610, 0x76311D8F, 0x21110894, 0x3F0A8943,
-  0x44581866, 0x00360008, 0xB3A478EA, 0x344F21D1, 0x04E64917, 0x4621D3C0, 0x00DD0E86,
-  0x21912A50, 0x0D34904F, 0x9129C44A, 0x708C44A7, 0x88A42284, 0x8F99E950, 0x1CD01400,
-  0xD32951B2, 0x36C14485, 0x21526A88, 0x9B70A5D2, 0x80E8FDA6, 0x4A9315E6, 0x82980253,
-  0x8944A296, 0x0D82C14A, 0x00000008, 0x00000000
+  0x0000020C, /* ratio 56.49 % */
+  0xB8001100, 0x00086452, 0x00DE0036, 0x0D600318, 0x060D8780, 0x40021116, 0x0034800E,
+  0x034000CE, 0x37000E80, 0x9800CA00, 0x8021F233, 0x7CAB1203, 0xE4D1D8BC, 0x2A478905,
+  0x000384B2, 0x003B8004, 0x136CC8C2, 0x924DA652, 0xC47A3D22, 0xC9235208, 0x4E092F87,
+  0xA3D3A9E9, 0x9B228E4D, 0xB3F8B4F6, 0x459650A7, 0x20AC3E4B, 0x929E6971, 0xB4F2451E,
+  0x99801449, 0xB6733B84, 0xE410A8C4, 0x99120A43, 0x13A8D4F4, 0x6795D921, 0x29E45A15,
+  0x87CAED95, 0xE94A0902, 0x43E5B409, 0x00B3120C, 0x2D10B168, 0x19229048, 0x0410053A,
+  0x369A4D00, 0x68C4EA69, 0x87C6ACB1, 0x61122411, 0x42A19249, 0x7C01533B, 0x2153C9B5,
+  0x25A09E99, 0xB9CB5142, 0xAF9B6BE7, 0xC8C6A245, 0x0051E450, 0x44522419, 0x5A2AC758,
+  0xDA391E85, 0xA3DC59D4, 0x57A69B42, 0x31EC6E42, 0x22D1C136, 0x99ED0611, 0xCF4CB699,
+  0x34481526, 0x646576D8, 0x5E2200C3, 0xFCB8DD27, 0x1D26C974, 0x1582BC48, 0x4B006DC0,
+  0x29145A19, 0x87C9ADD2, 0x00000101, 0x00000000
 };
 
 /* Compressed strings for the language 'French'. */
@@ -249,55 +254,85 @@ const XStringRes StringsLNC_seat_heater = { _StringsDefault0, 0x0151 };
 /* User defined constant: 'Strings::LNC_settings' */
 const XStringRes StringsLNC_settings = { _StringsDefault0, 0x015F };
 
+/* User defined constant: 'Strings::NAV06_stop_navigation' */
+const XStringRes StringsNAV06_stop_navigation = { _StringsDefault0, 0x016A };
+
+/* User defined constant: 'Strings::NAV06_stop_next_stop' */
+const XStringRes StringsNAV06_stop_next_stop = { _StringsDefault0, 0x017C };
+
+/* User defined constant: 'Strings::NAV06_go_home' */
+const XStringRes StringsNAV06_go_home = { _StringsDefault0, 0x018D };
+
+/* User defined constant: 'Strings::NAV06_go_to_work' */
+const XStringRes StringsNAV06_go_to_work = { _StringsDefault0, 0x0197 };
+
+/* User defined constant: 'Strings::NAV06_favorites' */
+const XStringRes StringsNAV06_favorites = { _StringsDefault0, 0x01A4 };
+
+/* User defined constant: 'Strings::NAV06_nearby_gas_stations' */
+const XStringRes StringsNAV06_nearby_gas_stations = { _StringsDefault0, 0x01B0 };
+
+/* User defined constant: 'Strings::NAV06_change_view' */
+const XStringRes StringsNAV06_change_view = { _StringsDefault0, 0x01C6 };
+
+/* User defined constant: 'Strings::NAV08_default_view' */
+const XStringRes StringsNAV08_default_view = { _StringsDefault0, 0x01D4 };
+
+/* User defined constant: 'Strings::NAV08_turn_by_turn' */
+const XStringRes StringsNAV08_turn_by_turn = { _StringsDefault0, 0x01E3 };
+
+/* User defined constant: 'Strings::NAV08_turn_list' */
+const XStringRes StringsNAV08_turn_list = { _StringsDefault0, 0x01F2 };
+
 /* User defined constant: 'Strings::SET01_connection' */
-const XStringRes StringsSET01_connection = { _StringsDefault0, 0x016A };
+const XStringRes StringsSET01_connection = { _StringsDefault0, 0x01FE };
 
 /* User defined constant: 'Strings::SET01_clock' */
-const XStringRes StringsSET01_clock = { _StringsDefault0, 0x0177 };
+const XStringRes StringsSET01_clock = { _StringsDefault1, 0x0002 };
 
 /* User defined constant: 'Strings::SET01_brightness' */
-const XStringRes StringsSET01_brightness = { _StringsDefault0, 0x017F };
+const XStringRes StringsSET01_brightness = { _StringsDefault1, 0x000A };
 
 /* User defined constant: 'Strings::SET01_unit' */
-const XStringRes StringsSET01_unit = { _StringsDefault0, 0x018C };
+const XStringRes StringsSET01_unit = { _StringsDefault1, 0x0017 };
 
 /* User defined constant: 'Strings::SET01_grip_warmer_settings' */
-const XStringRes StringsSET01_grip_warmer_settings = { _StringsDefault0, 0x0193 };
+const XStringRes StringsSET01_grip_warmer_settings = { _StringsDefault1, 0x001E };
 
 /* User defined constant: 'Strings::SET01_seat_heater_settings' */
-const XStringRes StringsSET01_seat_heater_settings = { _StringsDefault0, 0x01AA };
+const XStringRes StringsSET01_seat_heater_settings = { _StringsDefault1, 0x0035 };
 
 /* User defined constant: 'Strings::SET01_system_info' */
-const XStringRes StringsSET01_system_info = { _StringsDefault0, 0x01C1 };
+const XStringRes StringsSET01_system_info = { _StringsDefault1, 0x004C };
 
 /* User defined constant: 'Strings::SET01_legal_info' */
-const XStringRes StringsSET01_legal_info = { _StringsDefault0, 0x01D6 };
+const XStringRes StringsSET01_legal_info = { _StringsDefault1, 0x0061 };
 
 /* User defined constant: 'Strings::SET01_reset' */
-const XStringRes StringsSET01_reset = { _StringsDefault0, 0x01EA };
+const XStringRes StringsSET01_reset = { _StringsDefault1, 0x0075 };
 
 /* User defined constant: 'Strings::SET03_y_connect_app_pairing' */
-const XStringRes StringsSET03_y_connect_app_pairing = { _StringsDefault0, 0x01F2 };
+const XStringRes StringsSET03_y_connect_app_pairing = { _StringsDefault1, 0x007D };
 
 /* User defined constant: 'Strings::SET04_discovery_mode' */
-const XStringRes StringsSET04_discovery_mode = { _StringsDefault1, 0x0002 };
+const XStringRes StringsSET04_discovery_mode = { _StringsDefault1, 0x0095 };
 
 /* User defined constant: 'Strings::SET04_paired_devices' */
-const XStringRes StringsSET04_paired_devices = { _StringsDefault1, 0x0013 };
+const XStringRes StringsSET04_paired_devices = { _StringsDefault1, 0x00A6 };
 
 /* User defined constant: 'Strings::SET04_bt_auto_connect' */
-const XStringRes StringsSET04_bt_auto_connect = { _StringsDefault1, 0x0024 };
+const XStringRes StringsSET04_bt_auto_connect = { _StringsDefault1, 0x00B7 };
 
 /* User defined constant: 'Strings::SET19_delete_pairing' */
-const XStringRes StringsSET19_delete_pairing = { _StringsDefault1, 0x003D };
+const XStringRes StringsSET19_delete_pairing = { _StringsDefault1, 0x00D0 };
 
 /* User defined constant: 'Strings::SET19_connect' */
-const XStringRes StringsSET19_connect = { _StringsDefault1, 0x004E };
+const XStringRes StringsSET19_connect = { _StringsDefault1, 0x00E1 };
 
 /* User defined constant: 'Strings::SET19_disconnect' */
-const XStringRes StringsSET19_disconnect = { _StringsDefault1, 0x0058 };
+const XStringRes StringsSET19_disconnect = { _StringsDefault1, 0x00EB };
 
 /* User defined constant: 'Strings::WSC01_wind_screen' */
-const XStringRes StringsWSC01_wind_screen = { _StringsDefault1, 0x0065 };
+const XStringRes StringsWSC01_wind_screen = { _StringsDefault1, 0x00F8 };
 
 /* Embedded Wizard */

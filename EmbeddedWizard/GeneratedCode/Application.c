@@ -47,15 +47,19 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000030, /* ratio 108.33 % */
+  0x00000080, /* ratio 78.13 % */
   0xB8002D00, 0x000A6452, 0x1CC2003A, 0xC0075004, 0x1242001C, 0x00039002, 0x002B0004,
-  0x08CC38D2, 0x36000C40, 0xD000CA00, 0xC9801151, 0x02020093, 0x00000000
+  0x08CC38D2, 0x36000C40, 0xD000CA00, 0xC9801151, 0x908B0305, 0x0DB0F8E1, 0x4D168DCB,
+  0x64594876, 0x3637CDA2, 0x88545A49, 0x974E0004, 0x54708922, 0x99E71208, 0x5A1F1A92,
+  0xA3F0C374, 0x01509353, 0x00000404, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XRect _Const0001 = {{ 0, 0 }, { 480, 32 }};
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
+static const XStringRes _Const0003 = { _StringsDefault0, 0x0018 };
+static const XStringRes _Const0004 = { _StringsDefault0, 0x0023 };
 
 /* Initializer for the class 'Application::Application' */
 void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, XHandle aArg )
@@ -262,6 +266,29 @@ void ApplicationApplication_DismissFactoryTestDialog( ApplicationApplication _th
   {
     CoreGroup__DismissDialog( _this, FactoryTestDialog, 0, 0, 0, EwNullSlot, EwNullSlot, 
     0 );
+  }
+}
+
+/* 'C' function for method : 'Application::Application.SwitchToHome()' */
+void ApplicationApplication_SwitchToHome( ApplicationApplication _this, CoreGroup 
+  aHomeDialog )
+{
+  if ( aHomeDialog != 0 )
+  {
+    while ( CoreGroup_CountDialogs((CoreGroup)_this ) > 0 )
+    {
+      EwTrace( "%s%$", EwLoadString( &_Const0003 ), EwClassOf(((XObject)CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+        0 ))));
+      CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+      0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    }
+
+    CoreGroup_SwitchToDialog((CoreGroup)_this, aHomeDialog, 0, 0, 0, 0, 0, 0, 0, 
+    EwNullSlot, EwNullSlot, 0 );
+  }
+  else
+  {
+    EwTrace( "%s", EwLoadString( &_Const0004 ));
   }
 }
 

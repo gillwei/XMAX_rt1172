@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _NavigationYMC_H
-#define _NavigationYMC_H
+#ifndef _NavigationNAV08_NaviChageViewMenu_H
+#define _NavigationNAV08_NaviChageViewMenu_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,10 +42,12 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
 #include "_CoreKeyPressHandler.h"
+#include "_CoreTimer.h"
+#include "_MenuBaseMenuView.h"
+#include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
-#include "_ViewsText.h"
+#include "_ViewsRectangle.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -89,22 +91,30 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Navigation::YMC */
-#ifndef _NavigationYMC_
-  EW_DECLARE_CLASS( NavigationYMC )
-#define _NavigationYMC_
+/* Forward declaration of the class Menu::ItemBase */
+#ifndef _MenuItemBase_
+  EW_DECLARE_CLASS( MenuItemBase )
+#define _MenuItemBase_
+#endif
+
+/* Forward declaration of the class Navigation::NAV08_NaviChageViewMenu */
+#ifndef _NavigationNAV08_NaviChageViewMenu_
+  EW_DECLARE_CLASS( NavigationNAV08_NaviChageViewMenu )
+#define _NavigationNAV08_NaviChageViewMenu_
 #endif
 
 
-/* Deklaration of class : 'Navigation::YMC' */
-EW_DEFINE_FIELDS( NavigationYMC, ComponentsBaseComponent )
-  EW_OBJECT  ( Image,           ViewsImage )
-  EW_OBJECT  ( Text,            ViewsText )
-  EW_PROPERTY( PictureIdx,      XInt32 )
-EW_END_OF_FIELDS( NavigationYMC )
+/* Deklaration of class : 'Navigation::NAV08_NaviChageViewMenu' */
+EW_DEFINE_FIELDS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
+  EW_OBJECT  ( Menu,            MenuVerticalMenu )
+  EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
+  EW_ARRAY   ( ItemTitleArray,  XString, [3])
+  EW_VARIABLE( NaviScreenIdx,   XInt32 )
+  EW_ARRAY   ( ItemCheckedArray, XBool, [3])
+EW_END_OF_FIELDS( NavigationNAV08_NaviChageViewMenu )
 
-/* Virtual Method Table (VMT) for the class : 'Navigation::YMC' */
-EW_DEFINE_METHODS( NavigationYMC, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'Navigation::NAV08_NaviChageViewMenu' */
+EW_DEFINE_METHODS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -148,30 +158,50 @@ EW_DEFINE_METHODS( NavigationYMC, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( NavigationYMC _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( NavigationYMC _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( NavigationYMC _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( NavigationNAV08_NaviChageViewMenu _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( NavigationYMC )
+  EW_METHOD( LoadItemClass,     XClass )( NavigationNAV08_NaviChageViewMenu _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( NavigationNAV08_NaviChageViewMenu _this, 
+    XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( NavigationNAV08_NaviChageViewMenu _this, 
+    XInt32 aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( NavigationNAV08_NaviChageViewMenu _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+EW_END_OF_METHODS( NavigationNAV08_NaviChageViewMenu )
 
-/* 'C' function for method : 'Navigation::YMC.OnShortDownKeyActivated()' */
-void NavigationYMC_OnShortDownKeyActivated( NavigationYMC _this );
+/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.OnShortHomeKeyActivated()' */
+void NavigationNAV08_NaviChageViewMenu_OnShortHomeKeyActivated( NavigationNAV08_NaviChageViewMenu _this );
 
-/* 'C' function for method : 'Navigation::YMC.OnShortUpKeyActivated()' */
-void NavigationYMC_OnShortUpKeyActivated( NavigationYMC _this );
+/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemClass()' */
+XClass NavigationNAV08_NaviChageViewMenu_LoadItemClass( NavigationNAV08_NaviChageViewMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Navigation::YMC.OnShortEnterKeyActivated()' */
-void NavigationYMC_OnShortEnterKeyActivated( NavigationYMC _this );
+/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemTitle()' */
+XString NavigationNAV08_NaviChageViewMenu_LoadItemTitle( NavigationNAV08_NaviChageViewMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Navigation::YMC.OnSetPictureIdx()' */
-void NavigationYMC_OnSetPictureIdx( NavigationYMC _this, XInt32 value );
+/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.OnItemActivate()' */
+void NavigationNAV08_NaviChageViewMenu_OnItemActivate( NavigationNAV08_NaviChageViewMenu _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
+
+/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemChecked()' */
+XBool NavigationNAV08_NaviChageViewMenu_LoadItemChecked( NavigationNAV08_NaviChageViewMenu _this, 
+  XInt32 aItemNo );
+
+/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.OnCheckMarkUpdateSlot()' */
+void NavigationNAV08_NaviChageViewMenu_OnCheckMarkUpdateSlot( NavigationNAV08_NaviChageViewMenu _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _NavigationYMC_H */
+#endif /* _NavigationNAV08_NaviChageViewMenu_H */
 
 /* Embedded Wizard */

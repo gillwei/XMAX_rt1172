@@ -176,4 +176,28 @@ class Application : Core::Root
       DismissDialog( FactoryTestDialog, null, null, null, null, null, false );
     }
   }
+
+  // For dismissing the enclosed dialogs and showing home screen
+  note group Note1
+  {
+    attr Bounds = <330,390,620,550>;
+  }
+
+  $rect <350,490,550,530>
+  method void SwitchToHome( arg Core::Group aHomeDialog )
+  {
+    if( null!= aHomeDialog )
+    {
+      while( this.CountDialogs() > 0 )
+      {
+        trace "dismiss ", classof this.GetDialogAtIndex( 0 );
+        this.DismissDialog( GetDialogAtIndex( 0 ), null, null, null, null, null, false );
+      }
+      this.SwitchToDialog( aHomeDialog, null, null, null, null, null, null, null, null, null, false );
+    }
+    else
+    {
+      trace "Error: aHomeDialog is null";
+    }
+  }
 }

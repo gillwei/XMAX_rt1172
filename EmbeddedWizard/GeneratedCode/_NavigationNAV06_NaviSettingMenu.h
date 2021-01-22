@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _NavigationGarmin_H
-#define _NavigationGarmin_H
+#ifndef _NavigationNAV06_NaviSettingMenu_H
+#define _NavigationNAV06_NaviSettingMenu_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,10 +42,11 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
 #include "_CoreKeyPressHandler.h"
+#include "_MenuBaseMenuView.h"
+#include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
-#include "_ViewsText.h"
+#include "_ViewsRectangle.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -89,22 +90,29 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Navigation::Garmin */
-#ifndef _NavigationGarmin_
-  EW_DECLARE_CLASS( NavigationGarmin )
-#define _NavigationGarmin_
+/* Forward declaration of the class Menu::ItemBase */
+#ifndef _MenuItemBase_
+  EW_DECLARE_CLASS( MenuItemBase )
+#define _MenuItemBase_
+#endif
+
+/* Forward declaration of the class Navigation::NAV06_NaviSettingMenu */
+#ifndef _NavigationNAV06_NaviSettingMenu_
+  EW_DECLARE_CLASS( NavigationNAV06_NaviSettingMenu )
+#define _NavigationNAV06_NaviSettingMenu_
 #endif
 
 
-/* Deklaration of class : 'Navigation::Garmin' */
-EW_DEFINE_FIELDS( NavigationGarmin, ComponentsBaseComponent )
-  EW_OBJECT  ( Image,           ViewsImage )
-  EW_OBJECT  ( Text,            ViewsText )
-  EW_PROPERTY( PictureIdx,      XInt32 )
-EW_END_OF_FIELDS( NavigationGarmin )
+/* Deklaration of class : 'Navigation::NAV06_NaviSettingMenu' */
+EW_DEFINE_FIELDS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
+  EW_OBJECT  ( Menu,            MenuVerticalMenu )
+  EW_ARRAY   ( NaviSettings,    XEnum, [7])
+  EW_VARIABLE( IsWayPointSet,   XBool )
+  EW_VARIABLE( IsDestSet,       XBool )
+EW_END_OF_FIELDS( NavigationNAV06_NaviSettingMenu )
 
-/* Virtual Method Table (VMT) for the class : 'Navigation::Garmin' */
-EW_DEFINE_METHODS( NavigationGarmin, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'Navigation::NAV06_NaviSettingMenu' */
+EW_DEFINE_METHODS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -148,30 +156,46 @@ EW_DEFINE_METHODS( NavigationGarmin, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( NavigationGarmin _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( NavigationGarmin _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( NavigationGarmin _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( NavigationNAV06_NaviSettingMenu _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( NavigationGarmin )
+  EW_METHOD( LoadItemClass,     XClass )( NavigationNAV06_NaviSettingMenu _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( NavigationNAV06_NaviSettingMenu _this, 
+    XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( NavigationNAV06_NaviSettingMenu _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( NavigationNAV06_NaviSettingMenu _this, 
+    XInt32 aItemNo )
+EW_END_OF_METHODS( NavigationNAV06_NaviSettingMenu )
 
-/* 'C' function for method : 'Navigation::Garmin.OnShortDownKeyActivated()' */
-void NavigationGarmin_OnShortDownKeyActivated( NavigationGarmin _this );
+/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.OnShortHomeKeyActivated()' */
+void NavigationNAV06_NaviSettingMenu_OnShortHomeKeyActivated( NavigationNAV06_NaviSettingMenu _this );
 
-/* 'C' function for method : 'Navigation::Garmin.OnShortUpKeyActivated()' */
-void NavigationGarmin_OnShortUpKeyActivated( NavigationGarmin _this );
+/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemClass()' */
+XClass NavigationNAV06_NaviSettingMenu_LoadItemClass( NavigationNAV06_NaviSettingMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Navigation::Garmin.OnShortEnterKeyActivated()' */
-void NavigationGarmin_OnShortEnterKeyActivated( NavigationGarmin _this );
+/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemTitle()' */
+XString NavigationNAV06_NaviSettingMenu_LoadItemTitle( NavigationNAV06_NaviSettingMenu _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Navigation::Garmin.OnSetPictureIdx()' */
-void NavigationGarmin_OnSetPictureIdx( NavigationGarmin _this, XInt32 value );
+/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.OnItemActivate()' */
+void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSettingMenu _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
+
+/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemEnabled()' */
+XBool NavigationNAV06_NaviSettingMenu_LoadItemEnabled( NavigationNAV06_NaviSettingMenu _this, 
+  XInt32 aItemNo );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _NavigationGarmin_H */
+#endif /* _NavigationNAV06_NaviSettingMenu_H */
 
 /* Embedded Wizard */

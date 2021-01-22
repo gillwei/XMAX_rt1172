@@ -72,60 +72,6 @@ EW_DECLARE_BITMAP_RES( ResourceIconTbT )
 /* Bitmap resource : 'Resource::ArrivalBg' */
 EW_DECLARE_BITMAP_RES( ResourceArrivalBg )
 
-/* Bitmap resource : 'Resource::YmcNaviDay' */
-EW_DECLARE_BITMAP_RES( ResourceYmcNaviDay )
-
-/* Bitmap resource : 'Resource::YmcNaviNight' */
-EW_DECLARE_BITMAP_RES( ResourceYmcNaviNight )
-
-/* Bitmap resource : 'Resource::YmcRouteDay' */
-EW_DECLARE_BITMAP_RES( ResourceYmcRouteDay )
-
-/* Bitmap resource : 'Resource::YmcRouteNight' */
-EW_DECLARE_BITMAP_RES( ResourceYmcRouteNight )
-
-/* Bitmap resource : 'Resource::YmcNextTurnDay' */
-EW_DECLARE_BITMAP_RES( ResourceYmcNextTurnDay )
-
-/* Bitmap resource : 'Resource::YmcNextTurnNight' */
-EW_DECLARE_BITMAP_RES( ResourceYmcNextTurnNight )
-
-/* Bitmap resource : 'Resource::YmcTbTDay' */
-EW_DECLARE_BITMAP_RES( ResourceYmcTbTDay )
-
-/* Bitmap resource : 'Resource::YmcTbTNight' */
-EW_DECLARE_BITMAP_RES( ResourceYmcTbTNight )
-
-/* Bitmap resource : 'Resource::YmcTurnList' */
-EW_DECLARE_BITMAP_RES( ResourceYmcTurnList )
-
-/* Bitmap resource : 'Resource::GrmnNaviDay' */
-EW_DECLARE_BITMAP_RES( ResourceGrmnNaviDay )
-
-/* Bitmap resource : 'Resource::GrmnNaviNight' */
-EW_DECLARE_BITMAP_RES( ResourceGrmnNaviNight )
-
-/* Bitmap resource : 'Resource::GrmnRouteDay' */
-EW_DECLARE_BITMAP_RES( ResourceGrmnRouteDay )
-
-/* Bitmap resource : 'Resource::GrmnRouteNight' */
-EW_DECLARE_BITMAP_RES( ResourceGrmnRouteNight )
-
-/* Bitmap resource : 'Resource::GrmnNextTurnDay' */
-EW_DECLARE_BITMAP_RES( ResourceGrmnNextTurnDay )
-
-/* Bitmap resource : 'Resource::GrmnNextTurnNight' */
-EW_DECLARE_BITMAP_RES( ResourceGrmnNextTurnNight )
-
-/* Bitmap resource : 'Resource::GrmnTbTDay' */
-EW_DECLARE_BITMAP_RES( ResourceGrmnTbTDay )
-
-/* Bitmap resource : 'Resource::GrmnTbTNight' */
-EW_DECLARE_BITMAP_RES( ResourceGrmnTbTNight )
-
-/* Bitmap resource : 'Resource::GrmnTurnList' */
-EW_DECLARE_BITMAP_RES( ResourceGrmnTurnList )
-
 /* Bitmap resource : 'Resource::MainBG' */
 EW_DECLARE_BITMAP_RES( ResourceMainBG )
 

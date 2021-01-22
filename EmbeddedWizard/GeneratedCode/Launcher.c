@@ -34,7 +34,7 @@
 #include "_LauncherLNC_Main.h"
 #include "_LauncherLNC_RotaryPlate.h"
 #include "_MediaMED01_MediaUI.h"
-#include "_NavigationMain.h"
+#include "_NavigationNAV06_NaviSettingMenu.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "_SettingsSET01_MainSettingMenu.h"
@@ -397,7 +397,8 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
 
     case EnumLauncherItemNAVIGATION :
     {
-      ItemDialog = ((ComponentsBaseComponent)EwNewObject( NavigationMain, 0 ));
+      ItemDialog = ((ComponentsBaseComponent)EwNewObject( NavigationNAV06_NaviSettingMenu, 
+      0 ));
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
       0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }

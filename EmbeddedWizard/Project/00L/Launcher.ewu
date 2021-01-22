@@ -194,7 +194,7 @@ class LNC_Main : Components::BaseComponent
       case Enum::LauncherItem.THEME:;
       case Enum::LauncherItem.NAVIGATION:
       {
-        ItemDialog = new Navigation::Main;
+        ItemDialog = new Navigation::NAV06_NaviSettingMenu;
         PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
       case Enum::LauncherItem.NOTIFICATION:;
