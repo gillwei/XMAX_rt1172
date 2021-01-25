@@ -61,10 +61,9 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x0000006E, /* ratio 76.36 % */
-  0xB8001100, 0x800A8452, 0x00E80034, 0x0CA00360, 0x061F8780, 0xC0027916, 0x1522800D,
-  0x20043613, 0x8D948007, 0x01861D0C, 0x0B236730, 0x6E382000, 0x2151B384, 0xDE009742,
-  0xF281D464, 0x12048021, 0x69180087, 0x9B480C71, 0x5C522405, 0x4068B362, 0x00000000
+  0x00000030, /* ratio 100.00 % */
+  0xB8001100, 0x800A8452, 0x00E80034, 0x0CA00360, 0x06098780, 0x20021916, 0x0037000C,
+  0xF85C34C6, 0x89014010, 0xE92C004F, 0x00203248, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -99,16 +98,15 @@ static const XColor _Const001B = { 0x00, 0x00, 0x00, 0x26 };
 static const XRect _Const001C = {{ 0, 4 }, { 150, 38 }};
 static const XColor _Const001D = { 0xFF, 0xFF, 0xFF, 0xCD };
 static const XColor _Const001E = { 0x72, 0x71, 0x71, 0xFF };
-static const XStringRes _Const001F = { _StringsDefault0, 0x000A };
-static const XRect _Const0020 = {{ 0, 0 }, { 150, 83 }};
-static const XStringRes _Const0021 = { _StringsDefault0, 0x0029 };
-static const XRect _Const0022 = {{ 0, 43 }, { 150, 83 }};
-static const XStringRes _Const0023 = { _StringsDefault0, 0x0032 };
-static const XRect _Const0024 = {{ 37, 1 }, { 364, 69 }};
-static const XRect _Const0025 = {{ 371, 9 }, { 421, 59 }};
-static const XRect _Const0026 = {{ 0, 0 }, { 32, 216 }};
-static const XRect _Const0027 = {{ 0, 0 }, { 32, 32 }};
-static const XRect _Const0028 = {{ 0, 184 }, { 32, 216 }};
+static const XRect _Const001F = {{ 0, 0 }, { 150, 83 }};
+static const XStringRes _Const0020 = { _StringsDefault0, 0x000A };
+static const XRect _Const0021 = {{ 0, 43 }, { 150, 83 }};
+static const XStringRes _Const0022 = { _StringsDefault0, 0x0013 };
+static const XRect _Const0023 = {{ 37, 1 }, { 364, 69 }};
+static const XRect _Const0024 = {{ 371, 9 }, { 421, 59 }};
+static const XRect _Const0025 = {{ 0, 0 }, { 32, 216 }};
+static const XRect _Const0026 = {{ 0, 0 }, { 32, 32 }};
+static const XRect _Const0027 = {{ 0, 184 }, { 32, 216 }};
 
 /* Initializer for the class 'Menu::ItemBase' */
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
@@ -1572,8 +1570,6 @@ void MenuPushButton_OnEnterReleaseSlot( MenuPushButton _this, XObject sender )
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s%b", EwLoadString( &_Const001F ), _this->KeyHandler.Repetition );
-
   if (( 0 == _this->KeyHandler.Repetition ) && _this->Focusable )
   {
     CoreGroup_InvalidateViewState((CoreGroup)_this );
@@ -1584,6 +1580,7 @@ void MenuPushButton_OnEnterReleaseSlot( MenuPushButton _this, XObject sender )
       CoreTimer_OnSetEnabled( &_this->FocusFrameFlashTimer, 0 );
     }
 
+    _this->KeyHandler.Enabled = 0;
     CoreTimer_OnSetEnabled( &_this->FocusFrameFlashTimer, 1 );
   }
 }
@@ -1596,6 +1593,7 @@ void MenuPushButton_OnFocusFrameFlashTimer( MenuPushButton _this, XObject sender
 
   CoreGroup_InvalidateViewState((CoreGroup)_this );
   EwPostSignal( _this->OnActivate, ((XObject)_this ));
+  _this->KeyHandler.Enabled = 1;
 }
 
 /* Variants derived from the class : 'Menu::PushButton' */
@@ -1654,13 +1652,13 @@ void MenuUpDownPushButtonSet__Init( MenuUpDownPushButtonSet _this, XObject aLink
   _this->_VMT = EW_CLASS( MenuUpDownPushButtonSet );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0020 );
+  CoreRectView__OnSetBounds( _this, _Const001F );
   CoreRectView__OnSetBounds( &_this->UpButton, _Const001A );
-  MenuPushButton_OnSetTitle( &_this->UpButton, EwLoadString( &_Const0021 ));
-  CoreRectView__OnSetBounds( &_this->DownButton, _Const0022 );
-  MenuPushButton_OnSetTitle( &_this->DownButton, EwLoadString( &_Const0023 ));
-  _this->UpButtonTitle = EwShareString( EwLoadString( &_Const0021 ));
-  _this->DownButtonTitle = EwShareString( EwLoadString( &_Const0023 ));
+  MenuPushButton_OnSetTitle( &_this->UpButton, EwLoadString( &_Const0020 ));
+  CoreRectView__OnSetBounds( &_this->DownButton, _Const0021 );
+  MenuPushButton_OnSetTitle( &_this->DownButton, EwLoadString( &_Const0022 ));
+  _this->UpButtonTitle = EwShareString( EwLoadString( &_Const0020 ));
+  _this->DownButtonTitle = EwShareString( EwLoadString( &_Const0022 ));
   CoreGroup__Add( _this, ((CoreView)&_this->UpButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DownButton ), 0 );
   _this->UpButton.OnActivate = EwNewSlot( _this, MenuUpDownPushButtonSet_OnActivateSlot );
@@ -1804,8 +1802,8 @@ void MenuItemCheckMark__Init( MenuItemCheckMark _this, XObject aLink, XHandle aA
   _this->_VMT = EW_CLASS( MenuItemCheckMark );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0024 );
-  CoreRectView__OnSetBounds( &_this->CheckMark, _Const0025 );
+  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0023 );
+  CoreRectView__OnSetBounds( &_this->CheckMark, _Const0024 );
   ViewsImage_OnSetFrameNumber( &_this->CheckMark, 1 );
   ViewsImage_OnSetVisible( &_this->CheckMark, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->CheckMark ), 0 );
@@ -1933,9 +1931,9 @@ void MenuArrowScrollBar__Init( MenuArrowScrollBar _this, XObject aLink, XHandle 
   _this->_VMT = EW_CLASS( MenuArrowScrollBar );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0026 );
-  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const0027 );
-  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const0028 );
+  CoreRectView__OnSetBounds( _this, _Const0025 );
+  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const0026 );
+  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const0027 );
   ViewsImage_OnSetFrameNumber( &_this->DownArrowIcon, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpArrowIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DownArrowIcon ), 0 );

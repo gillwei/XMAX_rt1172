@@ -1038,8 +1038,6 @@ class PushButton : Core::Group
   $rect <250,110,450,150>
   slot OnEnterReleaseSlot
   {
-    trace "OnEnterRelease, repetition: ", KeyHandler.Repetition;
-
     if( false == KeyHandler.Repetition && Focusable )
     {
       InvalidateViewState();
@@ -1050,6 +1048,9 @@ class PushButton : Core::Group
         FocusFrameFlashTimer.Enabled = false;
       }
 
+      // To avoid sending OnActivate more than once when short pressing enter consecutively within the very short period,
+      // disable KeyHandler before blinking the background and enable KeyHandler again after the blink ends.
+      KeyHandler.Enabled = false;
       FocusFrameFlashTimer.Enabled = true;
     }
   }
@@ -1071,6 +1072,8 @@ class PushButton : Core::Group
 
     // With the end of the feedback flash effect the item is activated.
     postsignal OnActivate;
+
+    KeyHandler.Enabled = true;
   }
 
   $rect <20,20,160,60>
