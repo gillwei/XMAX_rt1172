@@ -90,9 +90,9 @@ At least one type of transmission is pending
                                               IL_TX_STATUS_PERIODIC_PENDING )
 
 /*------------------------------------------------------
-Receive Frame Maximum Absent Count
+Receive Frame timeout error start tick(50*10ms)
 ------------------------------------------------------*/
-#define IL_RX_MAX_ABSENT_COUNT              (0xFF)
+#define IL_RX_TIMEOUT_CHECK_START_TICK      (50)
 
 /*------------------------------------------------------
 Interaction layer status bits
@@ -147,6 +147,11 @@ il_bit_width_masks[( CAN_MAX_DATA_LENGTH + 1 )] =
 IL status for each CAN logical instance
 ------------------------------------------------------*/
 static uint8   il_status[CAN_NUM_INSTANCES];
+
+/*------------------------------------------------------
+IL timeout error check start cnt
+------------------------------------------------------*/
+static uint16  il_timeout_err_check_cnt = IL_RX_TIMEOUT_CHECK_START_TICK;
 
 /*--------------------------------------------------------------------
                             PROCEDURES
@@ -2909,6 +2914,35 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         ( ( l_p_rxfrm->attributes   & IL_RX_FRM_ATTR_TIMEOUT ) != 0  )   &&
         ( l_p_per_info != NULL ) )
         {
+        /*------------------------------------------------------
+        Handle the periodic frame
+        ------------------------------------------------------*/
+        if( *( l_p_per_info->p_per_cnt ) != 0 )
+            {
+            ( *( l_p_per_info->p_per_cnt ) )--;
+            if( 0 == *( l_p_per_info->p_per_cnt ) )
+                {
+                /*------------------------------------------------------
+                Reset the period timer
+                ------------------------------------------------------*/
+                *( l_p_per_info->p_per_cnt ) = l_p_per_info->period;
+                }
+            }
+
+        /*------------------------------------------------------
+        timeout checking shall be started 500ms after the enter
+        of normal communication
+        ------------------------------------------------------*/
+        if( il_timeout_err_check_cnt > 0 )
+            {
+            il_timeout_err_check_cnt--;
+            return;
+            }
+
+        /*------------------------------------------------------
+        Timeout error 2 is trggered by hardkey loss or ECU
+        indicate loss which has different IDs in different vehicles
+        ------------------------------------------------------*/
         if( ( l_i_frm_index == IL_CAN0_RX6_FUNCSW_STAT_RXFRM_INDEX )    ||
             ( l_i_frm_index == IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_INDEX ) ||
             ( l_i_frm_index == IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_INDEX ) )
@@ -2946,21 +2980,6 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
             Notify the CAN app that timeout error2 has happened
             ------------------------------------------------------*/
             il_app_notify_rx_timeout2( TRUE );
-            }
-
-        /*------------------------------------------------------
-        Handle the periodic frame
-        ------------------------------------------------------*/
-        if( *( l_p_per_info->p_per_cnt ) != 0 )
-            {
-            ( *( l_p_per_info->p_per_cnt ) )--;
-            if( 0 == *( l_p_per_info->p_per_cnt ) )
-                {
-                /*------------------------------------------------------
-                Reset the period timer
-                ------------------------------------------------------*/
-                *( l_p_per_info->p_per_cnt ) = l_p_per_info->period;
-                }
             }
         }
     }
@@ -3178,6 +3197,8 @@ Check for a valid CAN instance
 ------------------------------------------------------*/
 if( hw_inst < CAN_NUM_INSTANCES )
     {
+    il_timeout_err_check_cnt = IL_RX_TIMEOUT_CHECK_START_TICK;
+
     /*------------------------------------------------------
     Enable Interaction Layer operation
     ------------------------------------------------------*/
@@ -3272,6 +3293,8 @@ Check for a valid CAN instance
 ------------------------------------------------------*/
 if( hw_inst < CAN_NUM_INSTANCES )
     {
+    il_timeout_err_check_cnt = IL_RX_TIMEOUT_CHECK_START_TICK;
+
     /*------------------------------------------------------
     Enable transmit operation and enable receive message
     and transmit message timeout detection.
