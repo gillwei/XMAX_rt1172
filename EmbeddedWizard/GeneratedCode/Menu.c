@@ -442,6 +442,37 @@ void MenuVerticalMenu__Done( MenuVerticalMenu _this )
   ComponentsBaseComponent__Done( &_this->_Super );
 }
 
+/* The method UpdateViewState() is invoked automatically after the state of the 
+   component has been changed. This method can be overridden and filled with logic 
+   to ensure the visual aspect of the component does reflect its current state. 
+   For example, the 'enabled' state of the component can affect its colors (disabled 
+   components may appear pale). In this case the logic of the method should modify 
+   the respective color properties accordingly to the current 'enabled' state. 
+   The current state of the component is passed as a set in the parameter aState. 
+   It reflects the very basic component state like its visibility or the ability 
+   to react to user inputs. Beside this common state, the method can also involve 
+   any other variables used in the component as long as they reflect its current 
+   state. For example, the toggle switch component can take in account its toggle 
+   state 'on' or 'off' and change accordingly the location of the slider, etc.
+   Usually, this method will be invoked automatically by the framework. Optionally 
+   you can request its invocation by using the method @InvalidateViewState(). */
+void MenuVerticalMenu_UpdateViewState( MenuVerticalMenu _this, XSet aState )
+{
+  CoreGroup_UpdateViewState((CoreGroup)_this, aState );
+
+  if ( _this->ArrowScrollBarVisible && ( 0 != _this->ItemNumPerPage ))
+  {
+    XInt32 NoOfPages = _this->NoOfItems / _this->ItemNumPerPage;
+
+    if ( _this->NoOfItems > ( NoOfPages * _this->ItemNumPerPage ))
+    {
+      NoOfPages++;
+    }
+
+    MenuArrowScrollBar_OnSetNoOfPages( &_this->ArrowScrollBar, NoOfPages );
+  }
+}
+
 /* 'C' function for method : 'Menu::VerticalMenu.OnShortDownKeyActivated()' */
 void MenuVerticalMenu_OnShortDownKeyActivated( MenuVerticalMenu _this )
 {
@@ -566,18 +597,6 @@ void MenuVerticalMenu_OnSetNoOfItems( MenuVerticalMenu _this, XInt32 value )
       ViewsBorder_OnSetVisible( &_this->FocusFrame, 1 );
     }
 
-    if ( _this->ArrowScrollBarVisible && ( 0 != _this->ItemNumPerPage ))
-    {
-      XInt32 NoOfPages = value / _this->ItemNumPerPage;
-
-      if ( value > ( NoOfPages * _this->ItemNumPerPage ))
-      {
-        NoOfPages++;
-      }
-
-      MenuArrowScrollBar_OnSetNoOfPages( &_this->ArrowScrollBar, NoOfPages );
-    }
-
     if ( _this->MenuList.SelectedItem >= _this->MenuList.NoOfItems )
     {
       CoreVerticalList_OnSetSelectedItem( &_this->MenuList, _this->MenuList.NoOfItems 
@@ -585,6 +604,8 @@ void MenuVerticalMenu_OnSetNoOfItems( MenuVerticalMenu _this, XInt32 value )
       MenuVerticalMenu_MoveFocusFrame( _this );
       MenuVerticalMenu_SwitchToPageOfSelectedItem( _this );
     }
+
+    CoreGroup_InvalidateViewState((CoreGroup)_this );
   }
 }
 
@@ -627,6 +648,7 @@ void MenuVerticalMenu_OnSetItemNumPerPage( MenuVerticalMenu _this, XInt32 value 
   {
     _this->ItemNumPerPage = value;
     MenuVerticalMenu_UpdateListHeight( _this );
+    CoreGroup_InvalidateViewState((CoreGroup)_this );
   }
 }
 
@@ -707,7 +729,7 @@ EW_DEFINE_CLASS( MenuVerticalMenu, ComponentsBaseComponent, MenuList, MenuList,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
-  CoreGroup_UpdateViewState,
+  MenuVerticalMenu_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
   CoreGroup_FindNextView,
