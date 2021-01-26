@@ -1,9 +1,9 @@
 /*********************************************************************
 * @file
-* test_main.c
+* test_adc.c
 *
 * @brief
-* Test module - main
+* Test module - Unit test for outputing ADC value and converted value
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
@@ -14,18 +14,15 @@
 #include "FreeRTOS.h"
 #include "event_groups.h"
 #include "task.h"
-#include "semphr.h"
-#include "ewrte.h"
 #include "fsl_debug_console.h"
-#include <TEST_pub.h>
-#include <test_priv.h>
+#include "TEST_pub.h"
+#include "test_priv.h"
+#include "PERIPHERAL_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define TEST_TASK_PRIORITY   ( tskIDLE_PRIORITY )
-#define TEST_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 2 )
-#define TEST_TASK_NAME       "test_task"
+#define TEST_ADC_PROC_MS                ( 500 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -42,8 +39,9 @@
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
-#if( UNIT_TEST_ENABLE )
-    static const int TEST_TASK_DELAY_TICKS = pdMS_TO_TICKS( TEST_TICK_PERIOD_MS );
+#if( UNIT_TEST_ADC )
+    static const int TEST_ADC_TICK_COUNT = ( TEST_ADC_PROC_MS / TEST_TICK_PERIOD_MS );
+    static uint32_t test_adc_tick = 0;
 #endif
 
 /*--------------------------------------------------------------------
@@ -53,91 +51,63 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-#if( UNIT_TEST_ENABLE )
+#if( UNIT_TEST_ADC )
+
     /*********************************************************************
     *
     * @private
-    * task_main
+    * test_adc_flow
     *
-    * Main loop of the test task
+    * Test adc value and converted value
     *
     *********************************************************************/
-    static void task_main
+    void test_adc_flow
         (
-        void* arg
+        void
         )
     {
-    while( true )
+    PRINTF( "TFT NTC : ADC raw = %04d, temp value = %d \n\r", PERIPHERAL_adc_get_tft_ntc(), PERIPHERAL_adc_get_tft_ntc_converted() );
+    PRINTF( "PCBA NTC: ADC raw = %04d, temp value = %d \n\r", PERIPHERAL_adc_get_pcba_ntc(), PERIPHERAL_adc_get_pcba_ntc_converted() );
+    PRINTF( "VBATT   : ADC raw = %04d, voltage value = %d \n\r", PERIPHERAL_adc_get_vbatt(), PERIPHERAL_adc_get_vbatt_converted() );
+    PRINTF( "\n\r" );
+    }
+
+    /*********************************************************************
+    *
+    * @private
+    * test_adc_proc
+    *
+    * Test module - proc unit test for adc test
+    *
+    *********************************************************************/
+    void test_adc_proc
+        (
+        void
+        )
+    {
+    if( test_adc_tick == 0 )
         {
-        #if( UNIT_TEST_FACTORY )
-            test_factory_proc();
-        #endif
-
-        #if( UNIT_TEST_BURNIN )
-            test_burnin_proc();
-        #endif
-
-        #if( UNIT_TEST_JPEG )
-            test_jpeg_proc();
-        #endif
-
-        #if( UNIT_TEST_ADC )
-            test_adc_proc();
-        #endif
-
-        vTaskDelay( TEST_TASK_DELAY_TICKS );
+        test_adc_tick = TEST_ADC_TICK_COUNT;
+        test_adc_flow();
         }
-
-    vTaskDelete( NULL );
+    test_adc_tick--;
     }
 
     /*********************************************************************
     *
     * @private
-    * create_task
+    * test_adc_int
     *
-    * Create test task
+    * Test module - init unit test for adc test
     *
     *********************************************************************/
-    static void create_task
+    void test_adc_int
         (
         void
         )
     {
-    BaseType_t result = xTaskCreate( task_main, TEST_TASK_NAME, TEST_TASK_STACK_SIZE, NULL, TEST_TASK_PRIORITY, NULL );
-    configASSERT( pdPASS == result );
-    }
-
-    /*********************************************************************
-    *
-    * @private
-    * TEST_init
-    *
-    * Init test module.
-    *
-    *********************************************************************/
-    void TEST_init
-        (
-        void
-        )
-    {
-    create_task();
-
-    #if( UNIT_TEST_FACTORY )
-        test_factory_int();
-    #endif
-
-    #if( UNIT_TEST_BURNIN )
-        test_burnin_int();
-    #endif
-
-    #if( UNIT_TEST_JPEG )
-        test_jpeg_int();
-    #endif
-
-    #if( UNIT_TEST_ADC )
-        test_adc_int();
-    #endif
+    return;
     }
 #endif
+
 

@@ -17,7 +17,8 @@ extern "C"{
 #define UNIT_TEST_FACTORY       ( 0 )
 #define UNIT_TEST_BURNIN        ( 0 )
 #define UNIT_TEST_JPEG          ( 0 )
-#define UNIT_TEST_ENABLE        ( UNIT_TEST_FACTORY | UNIT_TEST_BURNIN | UNIT_TEST_JPEG )
+#define UNIT_TEST_ADC           ( 0 )
+#define UNIT_TEST_ENABLE        ( UNIT_TEST_FACTORY | UNIT_TEST_BURNIN | UNIT_TEST_JPEG | UNIT_TEST_ADC )
 
 void TEST_init( void );
 void TEST_motocon_tx( const int test_item );
