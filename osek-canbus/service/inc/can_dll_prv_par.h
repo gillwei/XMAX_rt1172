@@ -238,7 +238,87 @@ Transmit Complete Queue Sizes
 ------------------------------------------------------*/
 #define     DLL_CAN0_TXC_QUEUE_SIZE                             ( ( IL_CAN0_TX_NUM_FRAMES ) * 2 )
 
+/*------------------------------------------------------
+Diagnostic Request and Reply CAN ID and Frame Number
+Definitions
 
+The ECU always receives a REQuest from an external
+Diagnostic test tool and sends a REPly back to the
+tool using the Transport Protocol. These CAN ID's and
+frame definitions apply to all CAN hardware instances.
+The Diagnostic TP channel is always assigned to TP
+Index 0.
+------------------------------------------------------*/
+/*CAN0-CHANNEL 0*/
+#define     TP_DIAG_ID_CAN0_NUM_TX_FRAMES                    (0x06)
+#define     TP_DIAG_ID_CAN0_NUM_RX_FRAMES                    (0x05)
+
+/*For send  client -> server_0*/
+#define     TP_DIAG_ID_REP_CAN0_CHN0_CAN_ID                  (0x04E0)
+#define     TP_DIAG_ID_REP_CAN0_CHN0_SFFFFC_TXFRM_HANDLE     (0xF000)
+#define     TP_DIAG_ID_REP_CAN0_CHN0_FCF_TXFRM_HANDLE        (0xF001)
+#define     TTP_DIAG_ID_REP_CAN0_CHN0NUM_TX_FRAMES           (0x0001)
+/*For receive  server_0 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN0_CAN_ID                  (0x04E8)
+#define     TP_DIAG_ID_REQ_CAN0_CHN0_SFFFFC_TXFRM_HANDLE     (0xF000)
+#define     TP_DIAG_ID_REQ_CAN0_CHN0_NUM_RX_FRAMES           (0x0001)
+
+
+/*CAN0-CHANNEL 1*/
+/*For send  client -> server_1*/
+#define     TP_DIAG_ID_REP_CAN0_CHN1_CAN_ID                  (0x04E1)
+#define     TP_DIAG_ID_REP_CAN0_CHN1_SFFFFC_TXFRM_HANDLE     (0xF002)
+#define     TP_DIAG_ID_REP_CAN0_CHN1_FCF_TXFRM_HANDLE        (0xF003)
+#define     TP_DIAG_ID_REP_CAN0_CHN1_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_1 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN1_CAN_ID                  (0x04E9)
+#define     TP_DIAG_ID_REQ_CAN0_CHN1_SFFFFC_TXFRM_HANDLE     (0xF001)
+#define     TP_DIAG_ID_REQ_CAN0_CHN1_NUM_RX_FRAMES           (0x0001)
+
+
+/*CAN0-CHANNEL 2*/
+/*For send  client -> server_2*/
+#define     TP_DIAG_ID_REP_CAN0_CHN2_CAN_ID                  (0x04E2)
+#define     TP_DIAG_ID_REP_CAN0_CHN2_SFFFFC_TXFRM_HANDLE     (0xF004)
+#define     TP_DIAG_ID_REP_CAN0_CHN2_FCF_TXFRM_HANDLE        (0xF005)
+#define     TP_DIAG_ID_REP_CAN0_CHN2_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_2 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN2_CAN_ID                  (0x04EA)
+#define     TP_DIAG_ID_REQ_CAN0_CHN2_SFFFFC_TXFRM_HANDLE     (0xF002)
+#define     TP_DIAG_ID_REQ_CAN0_CHN2_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 3*/
+/*For send  client -> server_3*/
+#define     TP_DIAG_ID_REP_CAN0_CHN3_CAN_ID                  (0x04E3)
+#define     TP_DIAG_ID_REP_CAN0_CHN3_SFFFFC_TXFRM_HANDLE     (0xF006)
+#define     TP_DIAG_ID_REP_CAN0_CHN3_FCF_TXFRM_HANDLE        (0xF007)
+#define     TP_DIAG_ID_REP_CAN0_CHN3_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_3 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN3_CAN_ID                  (0x04EB)
+#define     TP_DIAG_ID_REQ_CAN0_CHN3_SFFFFC_TXFRM_HANDLE     (0xF003)
+#define     TP_DIAG_ID_REQ_CAN0_CHN3_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 4*/
+/*For send  client -> server_4*/
+#define     TP_DIAG_ID_REP_CAN0_CHN4_CAN_ID                  (0x04E4)
+#define     TP_DIAG_ID_REP_CAN0_CHN4_SFFFFC_TXFRM_HANDLE     (0xF008)
+#define     TP_DIAG_ID_REP_CAN0_CHN4_FCF_TXFRM_HANDLE        (0xF009)
+#define     TP_DIAG_ID_REP_CAN0_CHN4_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_4 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN4_CAN_ID                  (0x04EC)
+#define     TP_DIAG_ID_REQ_CAN0_CHN4_SFFFFC_TXFRM_HANDLE     (0xF004)
+#define     TP_DIAG_ID_REQ_CAN0_CHN4_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL Functional address*/
+/*For send  client -> all server*/
+#define     TP_DIAG_ID_REP_CAN0_CHN5_CAN_ID                  (0x04DF)
+#define     TP_DIAG_ID_REP_CAN0_CHN5_SFFFFC_TXFRM_HANDLE     (0xF0010)
+#define     TP_DIAG_ID_REP_CAN0_CHN5_FCF_TXFRM_HANDLE        (0xF0011)
+#define     TP_DIAG_ID_REP_CAN0_CHN5_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_4 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN5_CAN_ID                  (0x04DF)
+#define     TP_DIAG_ID_REQ_CAN0_CHN5_SFFFFC_TXFRM_HANDLE     (0xF005)
+#define     TP_DIAG_ID_REQ_CAN0_CHN5_NUM_RX_FRAMES           (0x0001)
 /*------------------------------------------------------
 FILTER ASSIGNMENT MACRO's
 ------------------------------------------------------*/

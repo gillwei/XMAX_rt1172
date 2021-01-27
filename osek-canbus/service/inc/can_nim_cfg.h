@@ -45,6 +45,17 @@ CAN Task Container Tick Divide
 /------------------------------------------------------*/
 #define  CAN_NIM_TASK_COUNT_INIT                (2)
 
+/*------------------------------------------------------
+Transport Layer Task Period
+------------------------------------------------------*/
+#define TP_TASK_PERIOD_MS                       (5)
+
+/*------------------------------------------------------
+Diagnostic Layer Task Period
+------------------------------------------------------*/
+#define DIAG_TASK_PERIOD_MS                     (5)
+
+
 #ifdef __cplusplus
 }
 #endif

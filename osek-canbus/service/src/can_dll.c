@@ -44,13 +44,17 @@
 /*--------------------------------------------------------------------
                             MACROS
 --------------------------------------------------------------------*/
-#define RX_DAIG_SEG1_CAN0_ID_END         (0x4EF)
-#define RX_DAIG_SEG5_YDT_CAN0_ID_END     (0x7EF)
+#define RX_DAIG_SEG1_CAN0_ID_END         ( 0x4CF )
+#define RX_DAIG_SEG2_CAN0_ID_END         ( 0x4EF )
+#define RX_DAIG_SEG3_CAN0_ID_END         ( 0x4DE )
+
+
+#define RX_DAIG_SEG5_YDT_CAN0_ID_END     ( 0x7EF )
 
 /*------------------------------------------------------
 Dispatch Layer Status Bit Definitions
 ------------------------------------------------------*/
-#define DLL_STATUS_TXC_OVERFLOW          (0x01u)
+#define DLL_STATUS_TXC_OVERFLOW          ( 0x01u )
 
 /*--------------------------------------------------------------------
                             TYPES
@@ -181,6 +185,8 @@ uint8               l_can_id_index;
 uint8               l_can_id_match;
 uint8               l_dispatch_layer;
 
+boolean             l_can_defined_cantp_id_match = FALSE;/*for can transprot layer*/
+boolean             l_can_defined_ydt_id_match = FALSE;/*for detecting yamaha diagnsotic tools*/
 /*------------------------------------------------------
 Initialize Variables
 ------------------------------------------------------*/
@@ -236,7 +242,25 @@ if( p_rmd != NULL )
                 l_frm_handle     = l_p_frm_dispatch[l_can_id_index].frame_handle;
                 l_dispatch_layer = l_p_frm_dispatch[l_can_id_index].frame_layer;
                 }
-            }
+            else
+                {
+                if( ( p_rmd->identifier >  RX_DAIG_SEG1_CAN0_ID && p_rmd->identifier <= RX_DAIG_SEG1_CAN0_ID_END )
+                    || ( p_rmd->identifier >  RX_DAIG_SEG2_CAN0_ID && p_rmd->identifier <= RX_DAIG_SEG2_CAN0_ID_END )
+                    || ( p_rmd->identifier >  RX_DAIG_SEG3_CAN0_ID && p_rmd->identifier <= RX_DAIG_SEG3_CAN0_ID_END )
+                    )
+                    {
+                    l_can_defined_cantp_id_match = TRUE;
+                    }
+                else if( p_rmd->identifier >  RX_DAIG_SEG5_YDT_CAN0_ID && p_rmd->identifier <= RX_DAIG_SEG5_YDT_CAN0_ID_END )
+                    {
+                    l_can_defined_ydt_id_match = TRUE;
+                    }
+                else
+                    {
+                    /*do nothing*/
+                    }
+                }
+           }
 
         /*------------------------------------------------------
         Check if Filter CAN ID match was found
@@ -277,7 +301,7 @@ if( p_rmd != NULL )
                     /*------------------------------------------------------
                     Dispatch to Transport Layer
                     ------------------------------------------------------*/
-                    //TBD tp_hook_receive( p_rmd, hw_inst );
+                    tp_hook_receive( p_rmd, hw_inst );
                     break;
 
                 case DLL_RX_FT_FRAME:
@@ -291,16 +315,20 @@ if( p_rmd != NULL )
                     break;
                 }
             }
-        else if( ( l_can_id_match == FALSE ) &&
-                 ( ( p_rmd->identifier >  RX_DAIG_SEG1_CAN0_ID &&
-                     p_rmd->identifier <= RX_DAIG_SEG1_CAN0_ID_END ) ||
-                   ( p_rmd->identifier >  RX_DAIG_SEG5_YDT_CAN0_ID &&
-                     p_rmd->identifier <= RX_DAIG_SEG5_YDT_CAN0_ID_END ) ) )
+        else if( ( l_can_id_match == FALSE ) && ( TRUE == l_can_defined_cantp_id_match ) )
             {
             /*------------------------------------------------------
             Dispatch to Transport Layer(the filters out of the DLL filter table)
             ------------------------------------------------------*/
-            //TBD tp_hook_receive( p_rmd, hw_inst );
+            tp_hook_receive( p_rmd, hw_inst );
+            }
+        else if( ( l_can_id_match == FALSE ) && ( TRUE == l_can_defined_ydt_id_match ) )
+            {
+            //TBD for detecting ydt online
+            }
+        else
+            {
+            /*do nothings*/
             }
         }
     }
@@ -597,7 +625,7 @@ can_drv_hook_transmit
 if( ( tmh >= TP_MIN_FRAME_HANDLE ) &&
     ( tmh <= TP_MAX_FRAME_HANDLE ) )
     {
-    //TBD tp_hook_transmit( tmh, hw_inst );
+    tp_hook_transmit( tmh, hw_inst );
     }
 else
     {
@@ -635,7 +663,7 @@ can_drv_hook_transmit_timeout
 if( ( tmh >= TP_MIN_FRAME_HANDLE ) &&
     ( tmh <= TP_MAX_FRAME_HANDLE ) )
     {
-    //TBD tp_hook_transmit_timeout( tmh, hw_inst );
+    tp_hook_transmit_timeout( tmh, hw_inst );
     }
 else if( tmh == IL_CAN0_TX_NM_AND_LP_BK_TXFRM_HANDLE )
     {

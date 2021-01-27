@@ -13,7 +13,8 @@
 *********************************************************************/
 #ifndef _CAN_TP_H
 #define _CAN_TP_H
-
+#include "can_defs.h"
+#include "can_tp_cfg.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -33,12 +34,14 @@ extern "C" {
 TP Channel Index
 ------------------------------------------------------*/
 typedef uint8 tp_chan_index_t;
+#define TP_CHN_FUNC_INDEX           (TP_CAN0_NUM_CHANNELS - 1)
 
 #define TP_CHN0_INDEX               (0)
 #define TP_CHN1_INDEX               (1)
 #define TP_CHN2_INDEX               (2)
 #define TP_CHN3_INDEX               (3)
 #define TP_CHN4_INDEX               (4)
+#define TP_CHN5_INDEX               TP_CHN_FUNC_INDEX
 
 /*------------------------------------------------------
 TP Parameter Enumerated Type Definition
@@ -49,9 +52,7 @@ typedef enum tagTP_N_PARAM_TYPE
     TP_NP_BLOCKSIZE,
     TP_NP_RCV_SUSPEND,
     TP_NP_RCV_RESUME,
-
     TP_NP_NUM_PARAMS
-
     } tp_n_param_t;
 
 /*------------------------------------------------------
@@ -125,6 +126,14 @@ void tp_transmit
     tp_chan_index_t         const ch_index,
     can_hw_inst_t           const hw_inst
     );
+
+void tp_transmit_direct
+(
+   uint8       const * const p_tp_data,        //!< [in] ptr to TP data to send
+   uint16              const num_tp_bytes,     //!< [in] number of bytes to send
+   tp_chan_index_t     const ch_index,         //!< [in] TP channel index
+   can_hw_inst_t       const hw_inst           //!< [in] CAN hardware instance
+   );
 
 void tp_cf_send_timer_event
     (

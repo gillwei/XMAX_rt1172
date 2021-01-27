@@ -28,6 +28,7 @@
 #include "can_il_enum.h"
 
 #include "can_tp.h"
+#include "client_dcm.h"
 #include "can_svcs.h"
 #include "can_nim_signals.h"
 #include "can_nim_cfg.h"
@@ -79,6 +80,7 @@ if( hw_inst < CAN_NUM_INSTANCES )
     initializes the remaining layers of the OSEK CAN Stack
     ------------------------------------------------------*/
     nm_init( NM_INIT_MODE_POWER_ON, hw_inst );
+    client_diag_init( CAN_CONTROLLER_2 );
     }
 }
 
@@ -145,6 +147,15 @@ while(1)
     for( l_i_hw_inst = 0; l_i_hw_inst < CAN_NUM_INSTANCES; l_i_hw_inst++ )
         {
         /*------------------------------------------------------
+        TP Layer Periodic Task
+        ------------------------------------------------------*/
+        tp_task( l_i_hw_inst );
+        /*------------------------------------------------------
+        Diagnostic Layer Periodic Task.
+        ------------------------------------------------------*/
+        client_diag_task( l_i_hw_inst );
+
+        /*------------------------------------------------------
         Check if the container tasks are scheduled to run.
         ------------------------------------------------------*/
         if( can_nim_task_count[l_i_hw_inst] != 0 )
@@ -165,15 +176,7 @@ while(1)
                 il_rx_task( l_i_hw_inst );
                 il_tx_task( l_i_hw_inst );
 
-                /*------------------------------------------------------
-                TP Layer Periodic Task
-                ------------------------------------------------------*/
-                //tp_task( l_i_hw_inst );
 
-                /*------------------------------------------------------
-                Diagnostic Layer Periodic Task.
-                ------------------------------------------------------*/
-                //can_diag_task( l_i_hw_inst );
 
                 /*------------------------------------------------------
                 Network Management Layer Periodic Task
