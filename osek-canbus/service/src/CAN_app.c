@@ -45,6 +45,9 @@
 #include "can_nim_signals.h"
 
 #include "fsl_debug_console.h"
+#include "fsl_gpio.h"
+#include "MIMXRT1176_cm7.h"
+
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -61,6 +64,12 @@
 #define LC_RS_WR                        0x20
 #define LC_FILL                         0x55
 
+#define WAKEUP_GPIO                     GPIO13
+#define WAKEUP_GPIO_PIN                 ( 0 )
+
+#define PM_IGN_ON                       ( 0 )
+#define PM_IGN_OFF                      ( 1 )
+
 #if( (DEBUG_TX_CAN_SUPPORT)&&(DEBUG_RX_CAN_SUPPORT) )
     #define CAN_APP_SIG_DEBUG_TICK      200;//!< 200 * 5 = 1000ms
 #endif
@@ -69,8 +78,17 @@
                                 TYPES
 --------------------------------------------------------------------*/
 /*------------------------------------------------------
-Negative response
+CAN system status
 ------------------------------------------------------*/
+typedef enum tagCAN_SYS_STAT_TYPE
+    {
+    CAN_SYS_STAT_INIT,
+    CAN_SYS_STAT_NORMAL,
+    CAN_SYS_STAT_COMM_ERR,
+    CAN_SYS_STAT_PWR_OFF,
+
+    CAN_SYS_STAT_INVALID
+    } can_sys_stat_t;
 
 /*--------------------------------------------------------------------
                               VARIABLES
@@ -86,6 +104,12 @@ CAN application BusOFF Status.
 ------------------------------------------------------*/
 static boolean
 can_app_timeout_error2[CAN_NUM_INSTANCES];
+
+/*------------------------------------------------------
+CAN system status
+------------------------------------------------------*/
+static can_sys_stat_t
+can_app_sys_stat[CAN_NUM_INSTANCES] = { CAN_SYS_STAT_INIT };
 
 /*--------------------------------------------------------------------
                               PROCEDURES
@@ -370,7 +394,7 @@ Notify Timeout error2 data
 ------------------------------------------------------*/
 if( timeout_trig == TRUE )
     {
-    PRINTF( "Timeout error 2!\r\n" );
+    //TBD
     }
 }
 
@@ -693,6 +717,67 @@ CAN application Other paras init
 
 /*!*******************************************************************
 *
+* @private
+*
+* CAN APP system status check
+*
+* This function is called by the CAN app layer to check if the system
+* status enters IGN OFF.
+*
+*********************************************************************/
+void
+can_app_sys_stat_check
+    (
+    void
+    )
+{
+volatile bool ign_status;
+
+ign_status = GPIO_ReadPinInput( WAKEUP_GPIO, WAKEUP_GPIO_PIN );
+
+/*------------------------------------------------------
+Switch the CAN status according to thw IGN status
+------------------------------------------------------*/
+#if( (DEBUG_TX_CAN_SUPPORT)&&(DEBUG_RX_CAN_SUPPORT) )
+    PRINTF( "sys status:%x IGN:%x\r\n", can_app_sys_stat[CAN_CONTROLLER_2], ign_status );
+#endif
+
+switch( can_app_sys_stat[CAN_CONTROLLER_2] )
+    {
+    case CAN_SYS_STAT_INIT:
+        if( PM_IGN_ON == ign_status )
+            {
+            can_app_sys_stat[CAN_CONTROLLER_2] = CAN_SYS_STAT_NORMAL;
+            il_resume( CAN_CONTROLLER_2 );
+            }
+        else
+            {
+            il_suspend( CAN_CONTROLLER_2 );
+            }
+        break;
+
+    case CAN_SYS_STAT_NORMAL:
+        if( PM_IGN_OFF == ign_status )
+            {
+            can_app_sys_stat[CAN_CONTROLLER_2] = CAN_SYS_STAT_PWR_OFF;
+            }
+        break;
+
+    case CAN_SYS_STAT_COMM_ERR:
+
+        break;
+
+    case CAN_SYS_STAT_PWR_OFF:
+        can_app_sys_stat[CAN_CONTROLLER_2] = CAN_SYS_STAT_INIT;
+        break;
+
+    default:
+        break;
+    }
+}
+
+/*!*******************************************************************
+*
 * @public
 * CAN application periodic task
 *
@@ -706,6 +791,8 @@ void app_task
     can_hw_inst_t   const hw_inst       //!< [in] CAN hardware instance
     )
 {
+can_app_sys_stat_check();
+
 #if( (DEBUG_TX_CAN_SUPPORT)&&(DEBUG_RX_CAN_SUPPORT) )
 static uint8   app_tx_tick = CAN_APP_SIG_DEBUG_TICK;//!< 200 * 5 = 1000ms
 static uint32  app_rx_data = 0;
@@ -766,9 +853,6 @@ else
     app_tx_tick = CAN_APP_SIG_DEBUG_TICK;
     }
 
-
 #endif
-
-//TBD
 }
 
