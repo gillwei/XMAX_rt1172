@@ -363,7 +363,7 @@ while( l_num_bytes > 0 )
                 else if( OPCODE_COMMIT_ADDR == l_p_pkt_store->opcode )
                     {
                     BT_UPDATE_setParserStatus( PARSER_WICED_HCI );
-                    HCI_normal_reset_BT();
+                    HCI_normal_reset_BT( RESPONSE_RESET_RECONFIG_UART );
                     }
                 break;
 
@@ -426,13 +426,13 @@ while( l_num_bytes > 0 )
 
 /*********************************************************************
 *
-* Download finish
+*@public BT_UPDATE_download_finish_after_reset
 *
-* Change download status, reset 89820 and reconfigure UART to default
-* state
+* After download finished and after BT reset pin pull up, get local
+* address set to BT module, inform EW the bin on flash
 *
 *********************************************************************/
-static void download_finish
+void BT_UPDATE_download_finish_after_reset
     (
     void
     )
@@ -442,13 +442,6 @@ uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = {0};
 bool    bd_addr_set = false;
 
 sprintf( sw_ver, "%c.%c", Read_BT_version[BT_SW_MAJOR_VER_BYTE], Read_BT_version[BT_SW_MINOR_VER_BYTE] );
-
-update_state = UPDATE_STATE_DOWNLOAD_FINISH;
-
-parser_status = PARSER_WICED_HCI;
-
-// Reset 89820
-HCI_normal_reset_BT();
 
 // Read BT chip address, if not all 0xFF(means already commit address), do factory commit BD address
 BTM_get_local_device_address( &(bd_addr[0]) );
@@ -474,6 +467,27 @@ BTM_update_sw_version( Read_BT_version );
 
 BT_update_status = false;
 update_state = UPDATE_STATE_SUSPEND;
+}
+
+
+/*********************************************************************
+*
+* Download finish
+*
+* Change download status, reset 89820 and reconfigure UART to default
+* state
+*
+*********************************************************************/
+static void download_finish
+    (
+    void
+    )
+{
+update_state = UPDATE_STATE_DOWNLOAD_FINISH;
+parser_status = PARSER_WICED_HCI;
+
+// Reset 89820
+HCI_normal_reset_BT( RESPONSE_RECONFIG_WAIT_BT_MODULE );
 }
 
 /*********************************************************************

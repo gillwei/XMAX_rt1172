@@ -43,6 +43,11 @@ bool BT_UPDATE_get_BT_update_status
     void
     );
 
+void BT_UPDATE_download_finish_after_reset
+    (
+    void
+    );
+
 #ifdef __cplusplus
 }
 #endif

@@ -71,6 +71,16 @@ typedef struct
     void ( *notification_received_callback ) ( const uint16_t handle, const uint8_t* data, const uint16_t length );
     } ble_client_callback;
 
+typedef enum HCI_RESPONSE_TYPE
+    {
+    RESPONSE_NO_EVENT,
+    RESPONSE_MFI_CHIP_VER,
+    RESPONSE_RECONFIG_WAIT_BT_MODULE,
+    RESPONSE_RESET_DOWNLOAD_FINISH,
+    RESPONSE_RESET_RECONFIG_UART,
+    RESPONSE_RESET_LE_TRANSMIT_CMD
+    } hci_resp_type_t;
+
 /*--------------------------------------------------------------------
                         PROJECT INCLUDES
 --------------------------------------------------------------------*/
@@ -102,7 +112,7 @@ void HCI_init
 
 void HCI_normal_reset_BT
     (
-    void
+    hci_resp_type_t resp_event
     );
 
 void HCI_notify_received
@@ -172,7 +182,7 @@ void HCI_LE_transmit_cmd
 
 void HCI_wait_for_resp_start
     (
-    void
+    hci_resp_type_t
     );
 
 #ifdef __cplusplus

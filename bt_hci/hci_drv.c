@@ -71,6 +71,8 @@ AT_BOARDSDRAM_SECTION( uint8_t hci_tx_data[HCI_TX_BUFFER_SIZE] );
 
 #define RESPONSE_TIMER_PERIOD_MS     50
 #define RESPONSE_TICK_PERIOD_MS      pdMS_TO_TICKS( RESPONSE_TIMER_PERIOD_MS )
+#define RESPONSE_TIMER_FIVE_HUNDRED_MS  ( 500 / RESPONSE_TICK_PERIOD_MS )
+#define RESPONSE_TIMER_ONE_SECOND    ( 1000 / RESPONSE_TICK_PERIOD_MS )
 #define RESPONSE_TIMER_TWO_SECONDS   ( 2000 / RESPONSE_TICK_PERIOD_MS )
 #define AUTH_CHIP_RESULT_FAIL        0
 #define ORIGINAL_BAUD_RATE           3000000
@@ -170,6 +172,7 @@ static const uint8_t          allow_connection_const_data[3] = { 0x02, 0x00, 0x0
 static const uint8_t          le_low_ch_cmd_data[3] = { 0x00, 0x37, 0x04 };
 static const uint8_t          le_mid_ch_cmd_data[3] = { 0x13, 0x37, 0x04 };
 static const uint8_t          le_hi_ch_cmd_data[3] = { 0x27, 0x37, 0x04 };
+static hci_resp_type_t        current_resp_event = RESPONSE_NO_EVENT;
 
 /*--------------------------------------------------------------------
                             PROCEDURES
@@ -211,6 +214,11 @@ static void hci_init_BT_module
     void
     );
 
+static void hci_reconfig_uart_normal
+    (
+    void
+    );
+
 /*********************************************************************
 *
 * @public
@@ -233,14 +241,14 @@ tx_command_opcode = 0;
 memset( &hci_status, 0, sizeof( hci_status_t ) );
 
 xUpdateTimer = xTimerCreate( "UpdateTimer",           /* A text name, purely to help debugging. */
-                             UPDATE_TICK_PERIOD_MS,   /* The timer period, in this case 5000ms (5s). */
+                             UPDATE_TICK_PERIOD_MS,   /* The timer period, in this case 50 ms. */
                              pdTRUE,                  /* This is a one shot timer, so xAutoReload is set to pdFALSE. */
                              ( void * ) 0,            /* The ID is not used, so can be set to anything. */
                              UpdateTimerCallback      /* The callback function */
                            );
 
 xRespTimer = xTimerCreate( "WaitResponseTimer",           /* A text name, purely to help debugging. */
-                           RESPONSE_TICK_PERIOD_MS,   /* The timer period, in this case 5000ms (5s). */
+                           RESPONSE_TICK_PERIOD_MS,   /* The timer period, in this case 50 ms. */
                            pdTRUE,                  /* This is a one shot timer, so xAutoReload is set to pdFALSE. */
                            ( void * ) 0,            /* The ID is not used, so can be set to anything. */
                            RespTimerCallback      /* The callback function */
@@ -266,7 +274,7 @@ hci_le_init();
 *********************************************************************/
 void HCI_normal_reset_BT
     (
-    void
+    hci_resp_type_t resp_event
     )
 {
 gpio_pin_config_t uart_cts_config = {kGPIO_DigitalOutput, 0, kGPIO_NoIntmode};
@@ -282,13 +290,7 @@ GPIO_PinWrite( GPIO9, 2, 1 );
 GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
 vTaskDelay( pdMS_TO_TICKS( BT_RESET_GPIO_DELAY ) );
 GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
-vTaskDelay( pdMS_TO_TICKS( BT_RESET_RECONFIG_DELAY ) );
-
-// Reconfigure GPIO1_IO21 to BT UART RTS
-IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_LPUART7_RTS_B, /* GPIO_AD_B1_05 is configured as GPIO1_IO21 */
-                  0U);                                /* Software Input On Field: Input Path is determined by functionality */
-
-PERIPHERAL_uart_port_reconfig( true, true, ORIGINAL_BAUD_RATE );
+HCI_wait_for_resp_start( resp_event );
 }
 
 /*********************************************************************
@@ -442,9 +444,7 @@ else if( LE_TRANSMIT_END == *data )
     {
     BT_UPDATE_standard_send_command( OPCODE_LE_END, NULL, 0 );
     vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
-    HCI_normal_reset_BT();
-    LE_transmit_cmd_called = false;
-    PRINTF( "%s cmd TEST END\n\r", __FUNCTION__ );
+    HCI_normal_reset_BT( RESPONSE_RESET_LE_TRANSMIT_CMD );
     }
 
 }
@@ -993,11 +993,59 @@ static void RespTimerCallback
     TimerHandle_t xTimerHandle
     )
 {
-// Wait for response timeout, means no receive chip version and timer not stop, return fail
-if( resp_timer_count >= RESPONSE_TIMER_TWO_SECONDS )
+switch( current_resp_event )
     {
-    hci_wait_for_resp_stop();
-    receive_auth_chip_ver( AUTH_CHIP_RESULT_FAIL );
+    /* Read MFI chip version timeout, return IOP fail */
+    case RESPONSE_MFI_CHIP_VER:
+        // Wait for response timeout, means no receive chip version and timer not stop, return fail
+        if( resp_timer_count >= RESPONSE_TIMER_TWO_SECONDS )
+            {
+            hci_wait_for_resp_stop();
+            receive_auth_chip_ver( AUTH_CHIP_RESULT_FAIL );
+            }
+        break;
+
+    /* UART reconfigure and wait for BT module ready */
+    case RESPONSE_RECONFIG_WAIT_BT_MODULE:
+        if( resp_timer_count >= RESPONSE_TIMER_ONE_SECOND )
+            {
+            hci_wait_for_resp_stop();
+            hci_reconfig_uart_normal();
+            HCI_wait_for_resp_start( RESPONSE_RESET_DOWNLOAD_FINISH );
+            }
+        break;
+
+    /* After BT module ready, Set BD address and notify SW version to EW */
+    case RESPONSE_RESET_DOWNLOAD_FINISH:
+        if( resp_timer_count >= RESPONSE_TIMER_FIVE_HUNDRED_MS )
+            {
+            hci_wait_for_resp_stop();
+            BT_UPDATE_download_finish_after_reset();
+            }
+        break;
+
+    /* After reset, only reconfigure UART */
+    case RESPONSE_RESET_RECONFIG_UART:
+        if( resp_timer_count >= RESPONSE_TIMER_ONE_SECOND )
+            {
+            hci_wait_for_resp_stop();
+            hci_reconfig_uart_normal();
+            }
+        break;
+
+    /* After CW transmit and reset, deassert CW Transmit flag */
+    case RESPONSE_RESET_LE_TRANSMIT_CMD:
+        if( resp_timer_count >= RESPONSE_TIMER_ONE_SECOND )
+            {
+            hci_wait_for_resp_stop();
+            hci_reconfig_uart_normal();
+            LE_transmit_cmd_called = false;
+            PRINTF( "LE transmit command TEST END\n\r" );
+            }
+        break;
+
+    default:
+        break;
     }
 
 resp_timer_count++;
@@ -1024,13 +1072,18 @@ configASSERT( pdPASS == result );
 * @public
 * HCI_wait_for_resp_start
 *
+* Input response event and start to count, response hci_resp_type_t event
+* on RespTimerCallback
+*
+* @param hci_resp_type_t Input current response event
 *
 *********************************************************************/
 void HCI_wait_for_resp_start
     (
-    void
+    hci_resp_type_t input_resp_event
     )
 {
+current_resp_event = input_resp_event;
 xTimerStart( xRespTimer, 0 );
 }
 
@@ -1048,6 +1101,7 @@ void hci_wait_for_resp_stop
 {
 xTimerStop( xRespTimer, 0 );
 resp_timer_count = 0;
+current_resp_event = RESPONSE_NO_EVENT;
 }
 
 /*********************************************************************
@@ -1055,6 +1109,7 @@ resp_timer_count = 0;
 * @private
 * hci_init_BT_module
 *
+* After MCU boot up, reset BT module for status synchronization
 *
 *********************************************************************/
 void hci_init_BT_module
@@ -1062,7 +1117,27 @@ void hci_init_BT_module
     void
     )
 {
-HCI_normal_reset_BT();
+HCI_normal_reset_BT( RESPONSE_RESET_RECONFIG_UART );
+}
+
+/*********************************************************************
+*
+* @private
+* hci_reconfig_uart_normal
+*
+* After BT normal reset, reconfigure HCI UART for UART flow control
+*
+*********************************************************************/
+void hci_reconfig_uart_normal
+    (
+    void
+    )
+{
+// Reconfigure GPIO1_IO21 to BT UART RTS
+IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_LPUART7_RTS_B, /* GPIO_AD_B1_05 is configured as GPIO1_IO21 */
+                  0U);                                /* Software Input On Field: Input Path is determined by functionality */
+
+PERIPHERAL_uart_port_reconfig( true, true, ORIGINAL_BAUD_RATE );
 }
 
 /*********************************************************************

@@ -899,7 +899,7 @@ switch( inst_id )
     case IOP_MFI_START_COPROCESSOR_TEST:
         {
         HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_GET_AUTH_CHIP_INFO, NULL, 0 );
-        HCI_wait_for_resp_start();
+        HCI_wait_for_resp_start( RESPONSE_MFI_CHIP_VER );
         IOPDone = true;
         }
         break;
