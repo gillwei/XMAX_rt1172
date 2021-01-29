@@ -15,6 +15,8 @@
 #include "client_dcm.h"
 #include "can_tp.h"
 #include "client_dcm_appl.h"
+#include "client_mem.h"
+uint32 os_task_time = 0;
 
 /*--------------------------------------------------------------------
                         VARIABLES
@@ -30,13 +32,6 @@ static uint8 client_diag_tx_buffer[CLIENT_TX_MAX_BUFFER_LEN] = { 0 };
 static uint32 g_pclient_timer= 0;
 static boolean g_pclient_timer_start_falg = FALSE;
 static uint32 g_s3_timer = 0x0;
-static boolean g_s3_timer_start_falg = FALSE;
-static uint32 ms_timer = 0;
-static boolean ms_timer_start_flag = FALSE;
-
-static req_current_session_type current_req_session = CURRENT_REQ_SESSION_DEFAULT;
-static boolean req_new_session_flag = FALSE;
-
 
 /*------------------------------------------------------------------
 *                          MACROS
@@ -324,7 +319,7 @@ if( TRUE == client_diag_msg_context.is_receive )
         {
         }
     }
-
+return return_value;
 }
 
 /*!******************************************************************************
@@ -339,6 +334,7 @@ void client_diag_main_funciton_5ms
     void
     )
 {
+os_task_time++;
 client_diag_timer_handler_5ms();
 client_diag_response_dispatch_handler_5ms();
 }
@@ -402,7 +398,7 @@ void client_diag_tx_complete
     uint8 channel_id
     )
 {
-PRINTF("Tx complete channel:%d\r\n",channel_id);
+PRINTF("Tx complete channel:%d-----time:%d\r\n",channel_id, os_task_time);
     /* TBD
 if( TP_N_OK != result )
     {
@@ -485,7 +481,8 @@ client_diag_rx_wrapper
     tp_chan_index_t const  tp_channel
     )
 {
-PRINTF("Received channe--%d     ",tp_channel);
+
+PRINTF("Received channe--%d    time:%d    \r\n",tp_channel, os_task_time);
 PRINTF("data: %d, %d\r\n",rx_buffer[0],rx_buffer[1] );
 /*resposne of functional address request*/
 if( CLIENT_ADDRESS_FUNCTIONAL == client_diag_msg_context.address_type )
@@ -522,7 +519,7 @@ else if( CLIENT_ADDRESS_PHYSICAL == client_diag_msg_context.address_type )
         }
     }
 
-client_diag_data_cpy( client_diag_rx_buffer, rx_buffer, mssg_length );
+client_diag_data_cpy( client_diag_rx_buffer, (uint8*)rx_buffer, mssg_length );
 client_diag_msg_context.resp_data = client_diag_rx_buffer;
 client_diag_msg_context.resp_data_len = mssg_length;
 client_diag_msg_context.resp_channel = tp_channel;

@@ -61,7 +61,7 @@ uint16* resp_length;
 uint8* resp_data;
 }client_mem_resposne_type;
 
-extern client_mem_get_current_command
+extern void client_mem_get_current_command
     (
     void
     );
@@ -87,6 +87,11 @@ extern client_mem_result_type client_mem_get_identifier_data
     uint16* resp_length,
     uint8** resp_data
     );
+
+extern client_ReturnType client_mem_send_can_data
+   (
+   void
+   );
 
 extern client_ReturnType client_mem_reset_data
     (

@@ -64,14 +64,40 @@ client_dcm_req_diagnostic_default_session_physical
     );
 
 extern client_ReturnType
+client_dcm_req_diagnostic_extend_session
+    (
+    uint8 channel_id
+    );
+
+extern client_ReturnType
 client_dcm_req_read_dtc_status_code
     (
     uint8 channel_id,
     uint8 status_code
     );
 
+extern client_ReturnType
+client_dcm_req_common_indentifier
+    (
+    uint8 channel_id,
+    uint16 common_id
+    );
+
+extern client_ReturnType
+client_dcm_req_local_indentifier
+    (
+    uint8 channel_id,
+    uint8 local_id
+    );
 
 
+extern client_ReturnType
+client_dcm_req_freeze_frame_data
+    (
+    uint8 channel_id,
+    uint8 freeze_frame_number,
+    uint8 record_local_id
+    );
 
 void client_diag_task
     (

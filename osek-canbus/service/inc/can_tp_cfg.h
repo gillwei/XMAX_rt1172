@@ -17,7 +17,7 @@
 *********************************************************************/
 #ifndef _CAN_TP_CFG_H
 #define _CAN_TP_CFG_H
-
+#include "can_dll_prv_par.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -38,8 +38,8 @@ TP Channel Definition Macros
 /*------------------------------------------------------
 TP Channel Definition Macros
 ------------------------------------------------------*/
-#define DIAGNOSTICS_TP_PHYSICAL_CAN_ID_INDEX        (0)/*not use*/
-#define DIAGNOSTICS_TP_FUNCTIONAL_CAN_ID_INDEX      (1)/*not use*/
+//#define DIAGNOSTICS_TP_PHYSICAL_CAN_ID_INDEX        (0)/*not use*/
+//#define DIAGNOSTICS_TP_FUNCTIONAL_CAN_ID_INDEX      (1)/*not use*/
 
 /*------------------------------------------------------
 CAN0 Message Types (CAN Standard 11 Bit or Extended 29
@@ -50,7 +50,7 @@ Bit Identifiers)
 /*------------------------------------------------------
 CAN0 Number of TP Channels
 ------------------------------------------------------*/
-#define TP_CAN0_NUM_CHANNELS                (6)/*4*/
+#define TP_CAN0_NUM_CHANNELS                ( TP_DIAG_ID_CAN0_NUM_TX_FRAMES )/*23 channels*/
 
 /*------------------------------------------------------
 CAN0 Channel 0  (Diagnostics)
@@ -124,6 +124,7 @@ CAN0 Channel 4  (IDVR_LIST) Qualified Receive ID's
 #define TP_CAN0_CHN4_NUM_RECV_CAN_IDS       (1)
 #define TP_CAN0_CHN4_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN4_CAN_ID
 
+
 /*------------------------------------------------------
 CAN0 Channel 5  (IDVR_LIST) Qualified Receive ID's
 ------------------------------------------------------*/
@@ -131,13 +132,251 @@ CAN0 Channel 5  (IDVR_LIST) Qualified Receive ID's
 #define TP_CAN0_CHN5_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN5_SFFFFC_TXFRM_HANDLE
 #define TP_CAN0_CHN5_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN5_FCF_TXFRM_HANDLE
 #define TP_CAN0_CHN5_RECV_XFR_QUEUE_SIZE    (10)
-#define TP_CAN0_CHN5_MAX_RPS                (100)
+#define TP_CAN0_CHN5_MAX_RPS                (255)
 #define TP_CAN0_CHN5_MAX_WTS                (3)
 #define TP_CAN0_CHN5_IGNORE_MAX_WTS         FALSE
 
 #define TP_CAN0_CHN5_NUM_RECV_CAN_IDS       (1)
 #define TP_CAN0_CHN5_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN5_CAN_ID
 
+/*------------------------------------------------------
+CAN0 Channel 6
+------------------------------------------------------*/
+#define TP_CAN0_CHN6_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN6_CAN_ID
+#define TP_CAN0_CHN6_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN6_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN6_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN6_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN6_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN6_MAX_RPS                (255)
+#define TP_CAN0_CHN6_MAX_WTS                (3)
+#define TP_CAN0_CHN6_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN6_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN6_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN6_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 7
+------------------------------------------------------*/
+#define TP_CAN0_CHN7_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN7_CAN_ID
+#define TP_CAN0_CHN7_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN7_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN7_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN7_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN7_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN7_MAX_RPS                (255)
+#define TP_CAN0_CHN7_MAX_WTS                (3)
+#define TP_CAN0_CHN7_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN7_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN7_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN7_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 8
+------------------------------------------------------*/
+#define TP_CAN0_CHN8_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN8_CAN_ID
+#define TP_CAN0_CHN8_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN8_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN8_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN8_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN8_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN8_MAX_RPS                (255)
+#define TP_CAN0_CHN8_MAX_WTS                (3)
+#define TP_CAN0_CHN8_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN8_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN8_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN8_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 9
+------------------------------------------------------*/
+#define TP_CAN0_CHN9_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN9_CAN_ID
+#define TP_CAN0_CHN9_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN9_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN9_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN9_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN9_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN9_MAX_RPS                (255)
+#define TP_CAN0_CHN9_MAX_WTS                (3)
+#define TP_CAN0_CHN9_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN9_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN9_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN9_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 10
+------------------------------------------------------*/
+#define TP_CAN0_CHN10_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN10_CAN_ID
+#define TP_CAN0_CHN10_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN10_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN10_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN10_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN10_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN10_MAX_RPS                (255)
+#define TP_CAN0_CHN10_MAX_WTS                (3)
+#define TP_CAN0_CHN10_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN10_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN10_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN10_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 11
+------------------------------------------------------*/
+#define TP_CAN0_CHN11_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN11_CAN_ID
+#define TP_CAN0_CHN11_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN11_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN11_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN11_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN11_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN11_MAX_RPS                (255)
+#define TP_CAN0_CHN11_MAX_WTS                (3)
+#define TP_CAN0_CHN11_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN11_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN11_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN11_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 12
+------------------------------------------------------*/
+#define TP_CAN0_CHN12_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN12_CAN_ID
+#define TP_CAN0_CHN12_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN12_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN12_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN12_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN12_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN12_MAX_RPS                (255)
+#define TP_CAN0_CHN12_MAX_WTS                (3)
+#define TP_CAN0_CHN12_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN12_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN12_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN12_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 13
+------------------------------------------------------*/
+#define TP_CAN0_CHN13_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN13_CAN_ID
+#define TP_CAN0_CHN13_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN13_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN13_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN13_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN13_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN13_MAX_RPS                (255)
+#define TP_CAN0_CHN13_MAX_WTS                (3)
+#define TP_CAN0_CHN13_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN13_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN13_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN13_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 14
+------------------------------------------------------*/
+#define TP_CAN0_CHN14_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN14_CAN_ID
+#define TP_CAN0_CHN14_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN14_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN14_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN14_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN14_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN14_MAX_RPS                (255)
+#define TP_CAN0_CHN14_MAX_WTS                (3)
+#define TP_CAN0_CHN14_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN14_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN14_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN14_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 14
+------------------------------------------------------*/
+#define TP_CAN0_CHN15_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN15_CAN_ID
+#define TP_CAN0_CHN15_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN15_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN15_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN15_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN15_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN15_MAX_RPS                (255)
+#define TP_CAN0_CHN15_MAX_WTS                (3)
+#define TP_CAN0_CHN15_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN15_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN15_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN15_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 16
+------------------------------------------------------*/
+#define TP_CAN0_CHN16_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN16_CAN_ID
+#define TP_CAN0_CHN16_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN16_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN16_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN16_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN16_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN16_MAX_RPS                (255)
+#define TP_CAN0_CHN16_MAX_WTS                (3)
+#define TP_CAN0_CHN16_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN16_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN16_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN16_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 17
+------------------------------------------------------*/
+#define TP_CAN0_CHN17_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN17_CAN_ID
+#define TP_CAN0_CHN17_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN17_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN17_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN17_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN17_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN17_MAX_RPS                (255)
+#define TP_CAN0_CHN17_MAX_WTS                (3)
+#define TP_CAN0_CHN17_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN17_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN17_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN17_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 18
+------------------------------------------------------*/
+#define TP_CAN0_CHN18_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN18_CAN_ID
+#define TP_CAN0_CHN18_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN18_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN18_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN18_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN18_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN18_MAX_RPS                (255)
+#define TP_CAN0_CHN18_MAX_WTS                (3)
+#define TP_CAN0_CHN18_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN18_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN18_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN18_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 19
+------------------------------------------------------*/
+#define TP_CAN0_CHN19_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN19_CAN_ID
+#define TP_CAN0_CHN19_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN19_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN19_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN19_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN19_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN19_MAX_RPS                (255)
+#define TP_CAN0_CHN19_MAX_WTS                (3)
+#define TP_CAN0_CHN19_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN19_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN19_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN19_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 20
+------------------------------------------------------*/
+#define TP_CAN0_CHN20_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN20_CAN_ID
+#define TP_CAN0_CHN20_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN20_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN20_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN20_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN20_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN20_MAX_RPS                (255)
+#define TP_CAN0_CHN20_MAX_WTS                (3)
+#define TP_CAN0_CHN20_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN20_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN20_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN20_CAN_ID
+
+/*------------------------------------------------------
+CAN0 Channel 21
+------------------------------------------------------*/
+#define TP_CAN0_CHN21_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN21_CAN_ID
+#define TP_CAN0_CHN21_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN21_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN21_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN21_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN21_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN21_MAX_RPS                (255)
+#define TP_CAN0_CHN21_MAX_WTS                (3)
+#define TP_CAN0_CHN21_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN21_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN21_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN21_CAN_ID
+
+
+/*------------------------------------------------------
+CAN0 Channel 22
+------------------------------------------------------*/
+#define TP_CAN0_CHN22_SEND_CAN_ID            TP_DIAG_ID_REP_CAN0_CHN22_CAN_ID
+#define TP_CAN0_CHN22_TX_DATA_FRAME_HANDLE   TP_DIAG_ID_REP_CAN0_CHN22_SFFFFC_TXFRM_HANDLE
+#define TP_CAN0_CHN22_TX_FCF_FRAME_HANDLE    TP_DIAG_ID_REP_CAN0_CHN22_FCF_TXFRM_HANDLE
+#define TP_CAN0_CHN22_RECV_XFR_QUEUE_SIZE    (10)
+#define TP_CAN0_CHN22_MAX_RPS                (255)
+#define TP_CAN0_CHN22_MAX_WTS                (3)
+#define TP_CAN0_CHN22_IGNORE_MAX_WTS         FALSE
+
+#define TP_CAN0_CHN22_NUM_RECV_CAN_IDS       (1)
+#define TP_CAN0_CHN22_RECV_CAN_ID0           TP_DIAG_ID_REQ_CAN0_CHN22_CAN_ID
 
 /*--------------------------------------------------------------------
 General Transport Protocol Parameters

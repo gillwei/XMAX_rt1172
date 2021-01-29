@@ -182,7 +182,7 @@ client_appl_negative_response_dispatch
     );
 
 extern void
-client_appl_postive_response_dispatch
+client_appl_positive_response_dispatch
      (
      uint8 * resp_data,
      uint16 resp_lenth,

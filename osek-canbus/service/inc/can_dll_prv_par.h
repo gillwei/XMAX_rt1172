@@ -250,8 +250,8 @@ The Diagnostic TP channel is always assigned to TP
 Index 0.
 ------------------------------------------------------*/
 /*CAN0-CHANNEL 0*/
-#define     TP_DIAG_ID_CAN0_NUM_TX_FRAMES                    (0x06)
-#define     TP_DIAG_ID_CAN0_NUM_RX_FRAMES                    (0x05)
+#define     TP_DIAG_ID_CAN0_NUM_TX_FRAMES                    (0x17)
+#define     TP_DIAG_ID_CAN0_NUM_RX_FRAMES                    (0x16)
 
 /*For send  client -> server_0*/
 #define     TP_DIAG_ID_REP_CAN0_CHN0_CAN_ID                  (0x04E0)
@@ -309,16 +309,208 @@ Index 0.
 #define     TP_DIAG_ID_REQ_CAN0_CHN4_SFFFFC_TXFRM_HANDLE     (0xF004)
 #define     TP_DIAG_ID_REQ_CAN0_CHN4_NUM_RX_FRAMES           (0x0001)
 
-/*CAN0-CHANNEL Functional address*/
-/*For send  client -> all server*/
-#define     TP_DIAG_ID_REP_CAN0_CHN5_CAN_ID                  (0x04DF)
-#define     TP_DIAG_ID_REP_CAN0_CHN5_SFFFFC_TXFRM_HANDLE     (0xF0010)
-#define     TP_DIAG_ID_REP_CAN0_CHN5_FCF_TXFRM_HANDLE        (0xF0011)
+/*CAN0-CHANNEL 5*/
+/*For send  client -> server_5*/
+#define     TP_DIAG_ID_REP_CAN0_CHN5_CAN_ID                  (0x04E5)
+#define     TP_DIAG_ID_REP_CAN0_CHN5_SFFFFC_TXFRM_HANDLE     (0xF00A)
+#define     TP_DIAG_ID_REP_CAN0_CHN5_FCF_TXFRM_HANDLE        (0xF00B)
 #define     TP_DIAG_ID_REP_CAN0_CHN5_NUM_TX_FRAMES           (0x0001)
-/*For receive  server_4 -> client*/
-#define     TP_DIAG_ID_REQ_CAN0_CHN5_CAN_ID                  (0x04DF)
+/*For receive  server_5 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN5_CAN_ID                  (0x04ED)
 #define     TP_DIAG_ID_REQ_CAN0_CHN5_SFFFFC_TXFRM_HANDLE     (0xF005)
 #define     TP_DIAG_ID_REQ_CAN0_CHN5_NUM_RX_FRAMES           (0x0001)
+
+
+/*CAN0-CHANNEL 6*/
+/*For send  client -> server_6*/
+#define     TP_DIAG_ID_REP_CAN0_CHN6_CAN_ID                  (0x04E6)
+#define     TP_DIAG_ID_REP_CAN0_CHN6_SFFFFC_TXFRM_HANDLE     (0xF00C)
+#define     TP_DIAG_ID_REP_CAN0_CHN6_FCF_TXFRM_HANDLE        (0xF00D)
+#define     TP_DIAG_ID_REP_CAN0_CHN6_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_6 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN6_CAN_ID                  (0x04EE)
+#define     TP_DIAG_ID_REQ_CAN0_CHN6_SFFFFC_TXFRM_HANDLE     (0xF006)
+#define     TP_DIAG_ID_REQ_CAN0_CHN6_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 7*/
+/*For send  client -> server_7*/
+#define     TP_DIAG_ID_REP_CAN0_CHN7_CAN_ID                  (0x04E7)
+#define     TP_DIAG_ID_REP_CAN0_CHN7_SFFFFC_TXFRM_HANDLE     (0xF00E)
+#define     TP_DIAG_ID_REP_CAN0_CHN7_FCF_TXFRM_HANDLE        (0xF00F)
+#define     TP_DIAG_ID_REP_CAN0_CHN7_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_7 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN7_CAN_ID                  (0x04EF)
+#define     TP_DIAG_ID_REQ_CAN0_CHN7_SFFFFC_TXFRM_HANDLE     (0xF007)
+#define     TP_DIAG_ID_REQ_CAN0_CHN7_NUM_RX_FRAMES           (0x0001)
+
+
+/*CAN0-CHANNEL 8*/
+/*For send  client -> server_8*/
+#define     TP_DIAG_ID_REP_CAN0_CHN8_CAN_ID                  (0x04D1)
+#define     TP_DIAG_ID_REP_CAN0_CHN8_SFFFFC_TXFRM_HANDLE     (0xF010)
+#define     TP_DIAG_ID_REP_CAN0_CHN8_FCF_TXFRM_HANDLE        (0xF011)
+#define     TP_DIAG_ID_REP_CAN0_CHN8_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_8 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN8_CAN_ID                  (0x04D9)
+#define     TP_DIAG_ID_REQ_CAN0_CHN8_SFFFFC_TXFRM_HANDLE     (0xF008)
+#define     TP_DIAG_ID_REQ_CAN0_CHN8_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 9*/
+/*For send  client -> server_9*/
+#define     TP_DIAG_ID_REP_CAN0_CHN9_CAN_ID                  (0x04D2)
+#define     TP_DIAG_ID_REP_CAN0_CHN9_SFFFFC_TXFRM_HANDLE     (0xF012)
+#define     TP_DIAG_ID_REP_CAN0_CHN9_FCF_TXFRM_HANDLE        (0xF013)
+#define     TP_DIAG_ID_REP_CAN0_CHN9_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_9 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN9_CAN_ID                  (0x04DA)
+#define     TP_DIAG_ID_REQ_CAN0_CHN9_SFFFFC_TXFRM_HANDLE     (0xF009)
+#define     TP_DIAG_ID_REQ_CAN0_CHN9_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 10*/
+/*For send  client -> server_10*/
+#define     TP_DIAG_ID_REP_CAN0_CHN10_CAN_ID                  (0x04D3)
+#define     TP_DIAG_ID_REP_CAN0_CHN10_SFFFFC_TXFRM_HANDLE     (0xF014)
+#define     TP_DIAG_ID_REP_CAN0_CHN10_FCF_TXFRM_HANDLE        (0xF015)
+#define     TP_DIAG_ID_REP_CAN0_CHN10_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_A -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN10_CAN_ID                  (0x04DB)
+#define     TP_DIAG_ID_REQ_CAN0_CHN10_SFFFFC_TXFRM_HANDLE     (0xF00A)
+#define     TP_DIAG_ID_REQ_CAN0_CHN10_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 11*/
+/*For send  client -> server_11*/
+#define     TP_DIAG_ID_REP_CAN0_CHN11_CAN_ID                  (0x04D4)
+#define     TP_DIAG_ID_REP_CAN0_CHN11_SFFFFC_TXFRM_HANDLE     (0xF016)
+#define     TP_DIAG_ID_REP_CAN0_CHN11_FCF_TXFRM_HANDLE        (0xF017)
+#define     TP_DIAG_ID_REP_CAN0_CHN11_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_11 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN11_CAN_ID                  (0x04DC)
+#define     TP_DIAG_ID_REQ_CAN0_CHN11_SFFFFC_TXFRM_HANDLE     (0xF00B)
+#define     TP_DIAG_ID_REQ_CAN0_CHN11_NUM_RX_FRAMES           (0x0001)
+
+
+/*CAN0-CHANNEL 12*/
+/*For send  client -> server_C*/
+#define     TP_DIAG_ID_REP_CAN0_CHN12_CAN_ID                  (0x04D5)
+#define     TP_DIAG_ID_REP_CAN0_CHN12_SFFFFC_TXFRM_HANDLE     (0xF018)
+#define     TP_DIAG_ID_REP_CAN0_CHN12_FCF_TXFRM_HANDLE        (0xF019)
+#define     TP_DIAG_ID_REP_CAN0_CHN12_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_C -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN12_CAN_ID                  (0x04DD)
+#define     TP_DIAG_ID_REQ_CAN0_CHN12_SFFFFC_TXFRM_HANDLE     (0xF00C)
+#define     TP_DIAG_ID_REQ_CAN0_CHN12_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 13*/
+/*For send  client -> server_13*/
+#define     TP_DIAG_ID_REP_CAN0_CHN13_CAN_ID                  (0x04D6)
+#define     TP_DIAG_ID_REP_CAN0_CHN13_SFFFFC_TXFRM_HANDLE     (0xF01A)
+#define     TP_DIAG_ID_REP_CAN0_CHN13_FCF_TXFRM_HANDLE        (0xF01B)
+#define     TP_DIAG_ID_REP_CAN0_CHN13_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_13 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN13_CAN_ID                  (0x04DE)
+#define     TP_DIAG_ID_REQ_CAN0_CHN13_SFFFFC_TXFRM_HANDLE     (0xF00D)
+#define     TP_DIAG_ID_REQ_CAN0_CHN13_NUM_RX_FRAMES           (0x0001)
+
+
+/*CAN0-CHANNEL 14*/
+/*For send  client -> server_14*/
+#define     TP_DIAG_ID_REP_CAN0_CHN14_CAN_ID                  (0x04C0)
+#define     TP_DIAG_ID_REP_CAN0_CHN14_SFFFFC_TXFRM_HANDLE     (0xF01C)
+#define     TP_DIAG_ID_REP_CAN0_CHN14_FCF_TXFRM_HANDLE        (0xF01D)
+#define     TP_DIAG_ID_REP_CAN0_CHN14_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_14 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN14_CAN_ID                  (0x04C8)
+#define     TP_DIAG_ID_REQ_CAN0_CHN14_SFFFFC_TXFRM_HANDLE     (0xF00E)
+#define     TP_DIAG_ID_REQ_CAN0_CHN14_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 15*/
+/*For send  client -> server_15*/
+#define     TP_DIAG_ID_REP_CAN0_CHN15_CAN_ID                  (0x04C1)
+#define     TP_DIAG_ID_REP_CAN0_CHN15_SFFFFC_TXFRM_HANDLE     (0xF01E)
+#define     TP_DIAG_ID_REP_CAN0_CHN15_FCF_TXFRM_HANDLE        (0xF01F)
+#define     TP_DIAG_ID_REP_CAN0_CHN15_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_15 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN15_CAN_ID                  (0x04C9)
+#define     TP_DIAG_ID_REQ_CAN0_CHN15_SFFFFC_TXFRM_HANDLE     (0xF00F)
+#define     TP_DIAG_ID_REQ_CAN0_CHN15_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 16*/
+/*For send  client -> server_15*/
+#define     TP_DIAG_ID_REP_CAN0_CHN16_CAN_ID                  (0x04C2)
+#define     TP_DIAG_ID_REP_CAN0_CHN16_SFFFFC_TXFRM_HANDLE     (0xF020)
+#define     TP_DIAG_ID_REP_CAN0_CHN16_FCF_TXFRM_HANDLE        (0xF021)
+#define     TP_DIAG_ID_REP_CAN0_CHN16_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_16 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN16_CAN_ID                  (0x04CA)
+#define     TP_DIAG_ID_REQ_CAN0_CHN16_SFFFFC_TXFRM_HANDLE     (0xF010)
+#define     TP_DIAG_ID_REQ_CAN0_CHN16_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 17*/
+/*For send  client -> server_17*/
+#define     TP_DIAG_ID_REP_CAN0_CHN17_CAN_ID                  (0x04C3)
+#define     TP_DIAG_ID_REP_CAN0_CHN17_SFFFFC_TXFRM_HANDLE     (0xF022)
+#define     TP_DIAG_ID_REP_CAN0_CHN17_FCF_TXFRM_HANDLE        (0xF023)
+#define     TP_DIAG_ID_REP_CAN0_CHN17_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_17 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN17_CAN_ID                  (0x04CB)
+#define     TP_DIAG_ID_REQ_CAN0_CHN17_SFFFFC_TXFRM_HANDLE     (0xF011)
+#define     TP_DIAG_ID_REQ_CAN0_CHN17_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 18*/
+/*For send  client -> server_18*/
+#define     TP_DIAG_ID_REP_CAN0_CHN18_CAN_ID                  (0x04C4)
+#define     TP_DIAG_ID_REP_CAN0_CHN18_SFFFFC_TXFRM_HANDLE     (0xF024)
+#define     TP_DIAG_ID_REP_CAN0_CHN18_FCF_TXFRM_HANDLE        (0xF025)
+#define     TP_DIAG_ID_REP_CAN0_CHN18_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_18 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN18_CAN_ID                  (0x04CC)
+#define     TP_DIAG_ID_REQ_CAN0_CHN18_SFFFFC_TXFRM_HANDLE     (0xF012)
+#define     TP_DIAG_ID_REQ_CAN0_CHN18_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 19*/
+/*For send  client -> server_19*/
+#define     TP_DIAG_ID_REP_CAN0_CHN19_CAN_ID                  (0x04C5)
+#define     TP_DIAG_ID_REP_CAN0_CHN19_SFFFFC_TXFRM_HANDLE     (0xF026)
+#define     TP_DIAG_ID_REP_CAN0_CHN19_FCF_TXFRM_HANDLE        (0xF027)
+#define     TP_DIAG_ID_REP_CAN0_CHN19_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_19 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN19_CAN_ID                  (0x04CD)
+#define     TP_DIAG_ID_REQ_CAN0_CHN19_SFFFFC_TXFRM_HANDLE     (0xF013)
+#define     TP_DIAG_ID_REQ_CAN0_CHN19_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 20*/
+/*For send  client -> server_20*/
+#define     TP_DIAG_ID_REP_CAN0_CHN20_CAN_ID                  (0x04C6)
+#define     TP_DIAG_ID_REP_CAN0_CHN20_SFFFFC_TXFRM_HANDLE     (0xF028)
+#define     TP_DIAG_ID_REP_CAN0_CHN20_FCF_TXFRM_HANDLE        (0xF029)
+#define     TP_DIAG_ID_REP_CAN0_CHN20_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_20 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN20_CAN_ID                  (0x04CE)
+#define     TP_DIAG_ID_REQ_CAN0_CHN20_SFFFFC_TXFRM_HANDLE     (0xF014)
+#define     TP_DIAG_ID_REQ_CAN0_CHN20_NUM_RX_FRAMES           (0x0001)
+
+/*CAN0-CHANNEL 21*/
+/*For send  client -> server_21*/
+#define     TP_DIAG_ID_REP_CAN0_CHN21_CAN_ID                  (0x04C7)
+#define     TP_DIAG_ID_REP_CAN0_CHN21_SFFFFC_TXFRM_HANDLE     (0xF02A)
+#define     TP_DIAG_ID_REP_CAN0_CHN21_FCF_TXFRM_HANDLE        (0xF02B)
+#define     TP_DIAG_ID_REP_CAN0_CHN21_NUM_TX_FRAMES           (0x0001)
+/*For receive  server_20 -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN21_CAN_ID                  (0x04CF)
+#define     TP_DIAG_ID_REQ_CAN0_CHN21_SFFFFC_TXFRM_HANDLE     (0xF015)
+#define     TP_DIAG_ID_REQ_CAN0_CHN21_NUM_RX_FRAMES           (0x0001)
+
+
+/*CAN0-CHANNEL Functional address*/
+/*For send  client -> all server*/
+#define     TP_DIAG_ID_REP_CAN0_CHN22_CAN_ID                  (0x04DF)
+#define     TP_DIAG_ID_REP_CAN0_CHN22_SFFFFC_TXFRM_HANDLE     (0xF02C)
+#define     TP_DIAG_ID_REP_CAN0_CHN22_FCF_TXFRM_HANDLE        (0xF02D)
+#define     TP_DIAG_ID_REP_CAN0_CHN22_NUM_TX_FRAMES           (0x0001)
+/*For receive  server -> client*/
+#define     TP_DIAG_ID_REQ_CAN0_CHN22_CAN_ID                  (0x04DF)
+#define     TP_DIAG_ID_REQ_CAN0_CHN22_SFFFFC_TXFRM_HANDLE     (0xF016)
+#define     TP_DIAG_ID_REQ_CAN0_CHN22_NUM_RX_FRAMES           (0x0001)
 /*------------------------------------------------------
 FILTER ASSIGNMENT MACRO's
 ------------------------------------------------------*/

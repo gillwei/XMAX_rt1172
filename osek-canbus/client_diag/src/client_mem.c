@@ -17,7 +17,7 @@
 --------------------------------------------------------------------*/
 #define INIT_DTC_DATA_MAX_CONUT           (238)
 #define INDENTIFIER_DATA_MAX_COUNT        (2000)
-#define CHANNELS_COUNT                    (5)/*DEBUG*/
+#define CHANNELS_COUNT                    (SUPPORT_SERVER_NUM)
 /*--------------------------------------------------------------------
                             VARIABLES
 --------------------------------------------------------------------*/
@@ -162,6 +162,7 @@ for( ; temp < CHANNELS_COUNT; temp++ )
         }
         PRINTF( "\r\n" );
     }
+return E_OK;
 }
 #endif
 
@@ -360,6 +361,9 @@ switch( current_flow )
         resp_data = client_mem_read_init_dtc_data[channel_id].mem_data;
         }
     return_value = client_mem_send_can_related_data(0x010B,(uint32)resp_len, resp_data );
+    break;
+
+    default:
     break;
     }
 return return_value;

@@ -2,9 +2,10 @@
 #ifndef _CLIENT_DCM_CFG_H_
 #define _CLIENT_DCM_CFG_H_
 #include "client_dcm_type.h"
-
+#include "client_dcm.h"
+#include "can_tp.h"
 /*for appl*/
-#define SUPPORT_SERVER_NUM                     (0x05)
+#define SUPPORT_SERVER_NUM                     ( TP_CAN0_NUM_CHANNELS - 1)/*22*/
 
 #define CLIENT_RX_MAX_BUFFER_LEN               (0xFF)
 #define CLIENT_TX_MAX_BUFFER_LEN               (0xFF)
@@ -49,7 +50,12 @@
 #define DCM_PADDING_DATA                       (0x55)
 
 
-#define SERVER_ECU_LIST                        { 0x4E0, 0x4E1, 0x4E2, 0x4E3, 0x4E4 }
+#define SERVER_ECU_LIST                        {\
+                                                0x4E0, 0x4E1, 0x4E2, 0x4E3, 0x4E4 ,0x4E5,\
+                                                0x4E6, 0x4E7, 0x4D1, 0x4D2, 0x4D3, 0x4D4,\
+                                                0x4D5, 0x4D6, 0x4C0, 0x4C1, 0x4C2, 0x4C3,\
+                                                0x4C4, 0x4C5, 0x4C6, 0x4C7\
+                                               }
 
 
 /*for 10h*/

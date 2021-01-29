@@ -41,7 +41,24 @@ typedef uint8 tp_chan_index_t;
 #define TP_CHN2_INDEX               (2)
 #define TP_CHN3_INDEX               (3)
 #define TP_CHN4_INDEX               (4)
-#define TP_CHN5_INDEX               TP_CHN_FUNC_INDEX
+#define TP_CHN5_INDEX               (5)
+#define TP_CHN6_INDEX               (6)
+#define TP_CHN7_INDEX               (7)
+#define TP_CHN8_INDEX               (8)
+#define TP_CHN9_INDEX               (9)
+#define TP_CHN10_INDEX              (10)
+#define TP_CHN11_INDEX              (11)
+#define TP_CHN12_INDEX              (12)
+#define TP_CHN13_INDEX              (13)
+#define TP_CHN14_INDEX              (14)
+#define TP_CHN15_INDEX              (15)
+#define TP_CHN16_INDEX              (16)
+#define TP_CHN17_INDEX              (17)
+#define TP_CHN18_INDEX              (18)
+#define TP_CHN19_INDEX              (19)
+#define TP_CHN20_INDEX              (20)
+#define TP_CHN21_INDEX              (21)
+#define TP_CHN22_INDEX              (TP_CHN_FUNC_INDEX)
 
 /*------------------------------------------------------
 TP Parameter Enumerated Type Definition

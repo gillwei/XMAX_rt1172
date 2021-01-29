@@ -80,8 +80,8 @@ const char* print_end_5 = " Process fail : GENERAL REJECT";
 const char* print_end_6 = " Process fail : INVALID DATA";
 const char* print_end_7 = " Process END";
 
-char** print_header[SUPPORT_FUCNTION_NUMS] = {0};
-char** print_end[PROCESS_RESULT_MAX] = {0};
+char* print_header[SUPPORT_FUCNTION_NUMS] = {0};
+char* print_end[PROCESS_RESULT_MAX] = {0};
 #endif
 
 /*------------------------------------------------------------------
@@ -385,6 +385,8 @@ static boolean client_appl_enter_ydt_handler
     void
     )
  {
+
+return FALSE;
 /*Pending*/
 #if(APPL_PENDING)
 #endif
@@ -564,7 +566,7 @@ switch( client_process_flow_state )
 
     case PROCESS_FLOW_RDBCID:
         read_common_identifier_infos.connected_server_id = get_current_connect_server_id();
-        read_common_identifier_infos.common_id_list = common_data_id_list;
+        read_common_identifier_infos.common_id_list = (uint16*)common_data_id_list;
         read_common_identifier_infos.common_data_amount = SUPPORT_COMMON_COUNT;
         read_common_identifier_infos.current_common_data_index = 0x00;
         read_common_identifier_infos.peocess_result = PROCESS_RESULT_INIT;
@@ -576,7 +578,7 @@ switch( client_process_flow_state )
 
     case PROCESS_FLOW_MARKET:
         read_loacl_market_infos.connected_server_id = get_current_connect_server_id();
-        read_loacl_market_infos.local_id_list = local_data_id_list;
+        read_loacl_market_infos.local_id_list = (uint8*)local_data_id_list;
         read_loacl_market_infos.amount_local_data = SUPPORT_MARKET_COUNT;
         read_loacl_market_infos.current_local_data_index = 0x00;
         read_loacl_market_infos.peocess_result = PROCESS_RESULT_INIT;
@@ -588,7 +590,7 @@ switch( client_process_flow_state )
 
     case PROCESS_FLOW_MONITOR:
         read_local_monitor_infos.connected_server_id = get_current_connect_server_id();
-        read_local_monitor_infos.local_id_list = local_data_id_list;
+        read_local_monitor_infos.local_id_list = (uint8*)local_data_id_list;
         read_local_monitor_infos.amount_local_data = SUPPORT_MARKET_COUNT;
         read_local_monitor_infos.current_local_data_index = 0x00;
         read_local_monitor_infos.peocess_result = PROCESS_RESULT_INIT;
@@ -600,7 +602,7 @@ switch( client_process_flow_state )
 
     case PROCESS_FLOW_RFFD:
         read_freeze_frame_data_infos.connected_server_id = get_current_connect_server_id();
-        read_freeze_frame_data_infos.request_id_list = current_request_freeze_frame_id_list;
+        read_freeze_frame_data_infos.request_id_list = (uint8*)current_request_freeze_frame_id_list;
         read_freeze_frame_data_infos.requset_id_list_amount = 0x00;
         read_freeze_frame_data_infos.current_freeze_frame_number = 0x01;
         read_freeze_frame_data_infos.current_request_id = 0x00;
@@ -665,20 +667,20 @@ client_appl_set_current_process_flow_step( PROCESS_FLOW_DETECT_SERVER );
 
 /*for debug display*/
 #if(APPL_DEBUG)
-print_end[0] = print_end_0;
-print_end[1] = print_end_1;
-print_end[2] = print_end_2;
-print_end[3] = print_end_3;
-print_end[4] = print_end_4;
-print_end[5] = print_end_5;
-print_end[6] = print_end_6;
-print_end[7] = print_end_7;
-print_header[0] = print_header_0;
-print_header[1] = print_header_1;
-print_header[2] = print_header_2;
-print_header[3] = print_header_3;
-print_header[4] = print_header_4;
-print_header[5] = print_header_5;
+print_end[0] = (char*)print_end_0;
+print_end[1] = (char*)print_end_1;
+print_end[2] = (char*)print_end_2;
+print_end[3] = (char*)print_end_3;
+print_end[4] = (char*)print_end_4;
+print_end[5] = (char*)print_end_5;
+print_end[6] = (char*)print_end_6;
+print_end[7] = (char*)print_end_7;
+print_header[0] = (char*)print_header_0;
+print_header[1] = (char*)print_header_1;
+print_header[2] = (char*)print_header_2;
+print_header[3] = (char*)print_header_3;
+print_header[4] = (char*)print_header_4;
+print_header[5] = (char*)print_header_5;
 #endif
 
 return E_OK;
@@ -823,7 +825,7 @@ switch( server_detect_step )
                 {
                 default_server_list_detect_amount++;
                 ecu_id = clent_appl_data_swap_u16( server_list_detect[index].ecu_identifier );
-                client_mem_storage_identifier_data( SUPPORT_SERVER_NUM, BYTE_NUM_2,&ecu_id );
+                client_mem_storage_identifier_data( SUPPORT_SERVER_NUM, BYTE_NUM_2,(uint8*)&ecu_id );
                 #if(APPL_DEBUG)
                 PRINTF("Client detect channel %d servers-default session\r\n", index );
                 #endif
@@ -958,7 +960,7 @@ if( PROCESS_RESULT_INIT != detect_connected_server_infos.peocess_result )
                 {
                 extend_server_list_detect_amount++;
                 ecu_id = clent_appl_data_swap_u16( server_list_detect[index].ecu_identifier );
-                client_mem_storage_identifier_data( SUPPORT_SERVER_NUM, BYTE_NUM_2,&ecu_id );
+                client_mem_storage_identifier_data( SUPPORT_SERVER_NUM, BYTE_NUM_2,(uint8*)&ecu_id );
                 #if(APPL_DEBUG)
                 PRINTF("Client detect channel %d servers-extend session\r\n", index );
                 #endif
@@ -1789,12 +1791,12 @@ static void client_appl_read_data_by_local_identifier_market_positive_response_h
  uint8 channel_id
 )
 {
-uint8 resp_identifier = 0x00;
+//uint8 resp_identifier = 0x00;
 switch( read_loacl_market_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
-        resp_identifier = resp_data[BYTE_NUM_1];
+       // resp_identifier = resp_data[BYTE_NUM_1];
       //  if(resp_identifier == read_loacl_market_infos.local_id_list[read_loacl_market_infos.current_local_data_index])
             {
             client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth, resp_data );
