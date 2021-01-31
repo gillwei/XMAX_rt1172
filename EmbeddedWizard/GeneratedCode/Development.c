@@ -363,6 +363,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, Menu, Menu, Menu, Menu,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   DevelopmentDEV_Main_LoadItemClass,
   DevelopmentDEV_Main_LoadItemTitle,
   DevelopmentDEV_Main_OnItemActivate,
@@ -501,6 +502,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG, OnUpdateLoc
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( DevelopmentDEV_RealTimeClock )
 
 /* Initializer for the class 'Development::DEV_Bluetooth' */
@@ -613,6 +615,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_Bluetooth, ComponentsBaseMainBG, BtSwVersionTitl
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( DevelopmentDEV_Bluetooth )
 
 /* Initializer for the class 'Development::DEV_TFTBrightness' */
@@ -864,6 +867,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_TFTBrightness, MenuBaseMenuView, CheckerboardIma
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -1031,6 +1035,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_MotoCon, MenuBaseMenuView, Menu, Menu, Menu, Men
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   DevelopmentDEV_MotoCon_LoadItemClass,
   DevelopmentDEV_MotoCon_LoadItemTitle,
   DevelopmentDEV_MotoCon_OnItemActivate,

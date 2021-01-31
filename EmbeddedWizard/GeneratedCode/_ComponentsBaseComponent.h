@@ -95,6 +95,7 @@ EW_DEFINE_FIELDS( ComponentsBaseComponent, CoreGroup )
   EW_PROPERTY( EnterKeyTriggerMode, XEnum )
   EW_PROPERTY( DownKeyTriggerMode, XEnum )
   EW_PROPERTY( UpKeyTriggerMode, XEnum )
+  EW_PROPERTY( DDModeEnabled,   XBool )
   EW_PROPERTY( PassMagicKey,    XBool )
   EW_PROPERTY( PassEnterKey,    XBool )
   EW_PROPERTY( PassHomeKey,     XBool )
@@ -155,6 +156,7 @@ EW_DEFINE_METHODS( ComponentsBaseComponent, CoreGroup )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
 EW_END_OF_METHODS( ComponentsBaseComponent )
 
 /* 'C' function for method : 'Components::BaseComponent.OnKeyPressSlot()' */
@@ -224,6 +226,16 @@ void ComponentsBaseComponent_OnShortMagicKeyActivated( ComponentsBaseComponent _
 
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortMagicKeyActivated()' */
 void ComponentsBaseComponent__OnShortMagicKeyActivated( void* _this );
+
+/* 'C' function for method : 'Components::BaseComponent.IsDDModeEffected()' */
+XBool ComponentsBaseComponent_IsDDModeEffected( ComponentsBaseComponent _this );
+
+/* 'C' function for method : 'Components::BaseComponent.OnSetDDModeEnabled()' */
+void ComponentsBaseComponent_OnSetDDModeEnabled( ComponentsBaseComponent _this, 
+  XBool value );
+
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnSetDDModeEnabled()' */
+void ComponentsBaseComponent__OnSetDDModeEnabled( void* _this, XBool value );
 
 #ifdef __cplusplus
   }

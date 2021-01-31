@@ -42,7 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_CoreGroup.h"
+#include "_ComponentsBaseComponent.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsBorder.h"
@@ -53,6 +53,12 @@
 #ifndef _CoreDialogContext_
   EW_DECLARE_CLASS( CoreDialogContext )
 #define _CoreDialogContext_
+#endif
+
+/* Forward declaration of the class Core::Group */
+#ifndef _CoreGroup_
+  EW_DECLARE_CLASS( CoreGroup )
+#define _CoreGroup_
 #endif
 
 /* Forward declaration of the class Core::LayoutContext */
@@ -93,11 +99,10 @@
 
 
 /* Deklaration of class : 'Menu::PushButton' */
-EW_DEFINE_FIELDS( MenuPushButton, CoreGroup )
+EW_DEFINE_FIELDS( MenuPushButton, ComponentsBaseComponent )
   EW_PROPERTY( OnActivate,      XSlot )
   EW_OBJECT  ( Background,      ViewsRectangle )
   EW_OBJECT  ( TitleText,       ViewsText )
-  EW_OBJECT  ( KeyHandler,      CoreKeyPressHandler )
   EW_OBJECT  ( FocusFrameFlashTimer, CoreTimer )
   EW_OBJECT  ( FocusBorder,     ViewsBorder )
   EW_PROPERTY( Title,           XString )
@@ -106,7 +111,7 @@ EW_DEFINE_FIELDS( MenuPushButton, CoreGroup )
 EW_END_OF_FIELDS( MenuPushButton )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::PushButton' */
-EW_DEFINE_METHODS( MenuPushButton, CoreGroup )
+EW_DEFINE_METHODS( MenuPushButton, ComponentsBaseComponent )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -150,6 +155,14 @@ EW_DEFINE_METHODS( MenuPushButton, CoreGroup )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( MenuPushButton _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
 EW_END_OF_METHODS( MenuPushButton )
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -168,11 +181,11 @@ EW_END_OF_METHODS( MenuPushButton )
    you can request its invocation by using the method @InvalidateViewState(). */
 void MenuPushButton_UpdateViewState( MenuPushButton _this, XSet aState );
 
+/* 'C' function for method : 'Menu::PushButton.OnShortEnterKeyActivated()' */
+void MenuPushButton_OnShortEnterKeyActivated( MenuPushButton _this );
+
 /* 'C' function for method : 'Menu::PushButton.OnSetTitle()' */
 void MenuPushButton_OnSetTitle( MenuPushButton _this, XString value );
-
-/* 'C' function for method : 'Menu::PushButton.OnEnterReleaseSlot()' */
-void MenuPushButton_OnEnterReleaseSlot( MenuPushButton _this, XObject sender );
 
 /* 'C' function for method : 'Menu::PushButton.OnFocusFrameFlashTimer()' */
 void MenuPushButton_OnFocusFrameFlashTimer( MenuPushButton _this, XObject sender );

@@ -787,3 +787,15 @@ note group Note10
 {
   attr Bounds = <770,130,1100,310>;
 }
+
+$rect <20,180,220,220>
+$output false
+resource Resources::Bitmap IconDDActive
+{
+  attr bitmapfile FileName = .\Res\common\icon_dd.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}

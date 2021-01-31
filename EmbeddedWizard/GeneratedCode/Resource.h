@@ -186,6 +186,9 @@ EW_DECLARE_BITMAP_RES( ResourceSeekBarDot )
 /* Bitmap resource : 'Resource::SeekBar' */
 EW_DECLARE_BITMAP_RES( ResourceSeekBar )
 
+/* Bitmap resource : 'Resource::IconDDActive' */
+EW_DECLARE_BITMAP_RES( ResourceIconDDActive )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

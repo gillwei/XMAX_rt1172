@@ -48,6 +48,7 @@
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
+#include "_DeviceInterfaceVehicleDeviceClass.h"
 
 /* User defined auto object: 'DeviceInterface::SystemDevice' */
 EW_DECLARE_AUTOOBJECT( DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )
@@ -60,6 +61,9 @@ EW_DECLARE_AUTOOBJECT( DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaMa
 
 /* User defined auto object: 'DeviceInterface::BluetoothDevice' */
 EW_DECLARE_AUTOOBJECT( DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )
+
+/* User defined auto object: 'DeviceInterface::VehicleDevice' */
+EW_DECLARE_AUTOOBJECT( DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )
 
 #ifdef __cplusplus
   }

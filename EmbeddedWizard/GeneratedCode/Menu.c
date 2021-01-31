@@ -356,6 +356,7 @@ EW_DEFINE_CLASS( MenuItemBase, ComponentsBaseComponent, OnActivate, OnActivate,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( MenuItemBase )
 
 /* Initializer for the class 'Menu::VerticalMenu' */
@@ -540,6 +541,7 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
       ItemNo ));
       Item->OnActivate = EwNewSlot( _this, MenuVerticalMenu_OnItemActivateSlot );
       MenuItemWrapper_OnSetFocusable( Item, _this->Focusable );
+      MenuItemWrapper_OnSetDDModeEnabled( Item, _this->Super1.DDModeEnabled );
     }
 
     if (( EW_CLASS( MenuItemCheckbox ) == Item->ItemClass ) || ( EW_CLASS( MenuItemCheckMark ) 
@@ -745,6 +747,7 @@ EW_DEFINE_CLASS( MenuVerticalMenu, ComponentsBaseComponent, MenuList, MenuList,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( MenuVerticalMenu )
 
 /* Initializer for the class 'Menu::ItemCheckbox' */
@@ -893,6 +896,7 @@ EW_DEFINE_CLASS( MenuItemCheckbox, MenuItemBase, CheckBoxButton, CheckBoxButton,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( MenuItemCheckbox )
 
 /* Initializer for the class 'Menu::ItemWrapper' */
@@ -1042,6 +1046,24 @@ void MenuItemWrapper_OnSetFocusable( MenuItemWrapper _this, XBool value )
     if ( Item != 0 )
     {
       MenuItemBase_OnSetFocusable( Item, value );
+    }
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetDDModeEnabled()' */
+void MenuItemWrapper_OnSetDDModeEnabled( MenuItemWrapper _this, XBool value )
+{
+  if ( _this->DDModeEnabled != value )
+  {
+    CoreView view;
+    MenuItemBase Item;
+    _this->DDModeEnabled = value;
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    Item = EwCastObject( view, MenuItemBase );
+
+    if ( Item != 0 )
+    {
+      ComponentsBaseComponent__OnSetDDModeEnabled( Item, value );
     }
   }
 }
@@ -1439,6 +1461,7 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, _None, _None, _None, _N
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -1450,7 +1473,7 @@ EW_END_OF_CLASS( MenuBaseMenuView )
 void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( MenuPushButton );
@@ -1458,7 +1481,6 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
   /* ... then construct all embedded objects */
   ViewsRectangle__Init( &_this->Background, &_this->_XObject, 0 );
   ViewsText__Init( &_this->TitleText, &_this->_XObject, 0 );
-  CoreKeyPressHandler__Init( &_this->KeyHandler, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->FocusFrameFlashTimer, &_this->_XObject, 0 );
   ViewsBorder__Init( &_this->FocusBorder, &_this->_XObject, 0 );
 
@@ -1467,13 +1489,15 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const001A );
+  _this->Super1.PassUpKey = 1;
+  _this->Super1.PassDownKey = 1;
+  _this->Super1.PassHomeKey = 1;
   CoreView_OnSetLayout((CoreView)&_this->Background, CoreLayoutResizeHorz | CoreLayoutResizeVert );
   CoreRectView__OnSetBounds( &_this->Background, _Const001A );
   ViewsRectangle_OnSetColor( &_this->Background, _Const001B );
   CoreView_OnSetLayout((CoreView)&_this->TitleText, CoreLayoutResizeHorz | CoreLayoutResizeVert );
   CoreRectView__OnSetBounds( &_this->TitleText, _Const001C );
   ViewsText_OnSetString( &_this->TitleText, 0 );
-  _this->KeyHandler.Filter = CoreKeyCodeOk;
   CoreTimer_OnSetPeriod( &_this->FocusFrameFlashTimer, 0 );
   CoreTimer_OnSetBegin( &_this->FocusFrameFlashTimer, 100 );
   CoreView_OnSetLayout((CoreView)&_this->FocusBorder, CoreLayoutResizeHorz | CoreLayoutResizeVert );
@@ -1487,7 +1511,6 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
   CoreGroup__Add( _this, ((CoreView)&_this->FocusBorder ), 0 );
   ViewsText_OnSetFont( &_this->TitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
-  _this->KeyHandler.OnRelease = EwNewSlot( _this, MenuPushButton_OnEnterReleaseSlot );
   _this->FocusFrameFlashTimer.OnTrigger = EwNewSlot( _this, MenuPushButton_OnFocusFrameFlashTimer );
 }
 
@@ -1495,12 +1518,11 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
 void MenuPushButton__ReInit( MenuPushButton _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->Background );
   ViewsText__ReInit( &_this->TitleText );
-  CoreKeyPressHandler__ReInit( &_this->KeyHandler );
   CoreTimer__ReInit( &_this->FocusFrameFlashTimer );
   ViewsBorder__ReInit( &_this->FocusBorder );
 }
@@ -1509,17 +1531,16 @@ void MenuPushButton__ReInit( MenuPushButton _this )
 void MenuPushButton__Done( MenuPushButton _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->Background );
   ViewsText__Done( &_this->TitleText );
-  CoreKeyPressHandler__Done( &_this->KeyHandler );
   CoreTimer__Done( &_this->FocusFrameFlashTimer );
   ViewsBorder__Done( &_this->FocusBorder );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_Super );
 }
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -1563,23 +1584,10 @@ void MenuPushButton_UpdateViewState( MenuPushButton _this, XSet aState )
     }
 }
 
-/* 'C' function for method : 'Menu::PushButton.OnSetTitle()' */
-void MenuPushButton_OnSetTitle( MenuPushButton _this, XString value )
+/* 'C' function for method : 'Menu::PushButton.OnShortEnterKeyActivated()' */
+void MenuPushButton_OnShortEnterKeyActivated( MenuPushButton _this )
 {
-  if ( EwCompString( _this->Title, value ) != 0 )
-  {
-    _this->Title = EwShareString( value );
-    ViewsText_OnSetString( &_this->TitleText, value );
-  }
-}
-
-/* 'C' function for method : 'Menu::PushButton.OnEnterReleaseSlot()' */
-void MenuPushButton_OnEnterReleaseSlot( MenuPushButton _this, XObject sender )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  if ((( 0 == _this->KeyHandler.Repetition ) && _this->Focusable ) && _this->ButtonEnabled )
+  if ((( 0 == _this->Super1.KeyHandler.Repetition ) && _this->Focusable ) && _this->ButtonEnabled )
   {
     CoreGroup_InvalidateViewState((CoreGroup)_this );
 
@@ -1589,8 +1597,18 @@ void MenuPushButton_OnEnterReleaseSlot( MenuPushButton _this, XObject sender )
       CoreTimer_OnSetEnabled( &_this->FocusFrameFlashTimer, 0 );
     }
 
-    _this->KeyHandler.Enabled = 0;
+    _this->Super1.KeyHandler.Enabled = 0;
     CoreTimer_OnSetEnabled( &_this->FocusFrameFlashTimer, 1 );
+  }
+}
+
+/* 'C' function for method : 'Menu::PushButton.OnSetTitle()' */
+void MenuPushButton_OnSetTitle( MenuPushButton _this, XString value )
+{
+  if ( EwCompString( _this->Title, value ) != 0 )
+  {
+    _this->Title = EwShareString( value );
+    ViewsText_OnSetString( &_this->TitleText, value );
   }
 }
 
@@ -1602,7 +1620,7 @@ void MenuPushButton_OnFocusFrameFlashTimer( MenuPushButton _this, XObject sender
 
   CoreGroup_InvalidateViewState((CoreGroup)_this );
   EwPostSignal( _this->OnActivate, ((XObject)_this ));
-  _this->KeyHandler.Enabled = 1;
+  _this->Super1.KeyHandler.Enabled = 1;
 }
 
 /* 'C' function for method : 'Menu::PushButton.OnSetButtonEnabled()' */
@@ -1628,8 +1646,8 @@ EW_DEFINE_CLASS_VARIANTS( MenuPushButton )
 EW_END_OF_CLASS_VARIANTS( MenuPushButton )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::PushButton' */
-EW_DEFINE_CLASS( MenuPushButton, CoreGroup, OnActivate, OnActivate, Background, 
-                 Background, Title, ButtonEnabled, "Menu::PushButton" )
+EW_DEFINE_CLASS( MenuPushButton, ComponentsBaseComponent, OnActivate, OnActivate, 
+                 Background, Background, Title, ButtonEnabled, "Menu::PushButton" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1660,6 +1678,14 @@ EW_DEFINE_CLASS( MenuPushButton, CoreGroup, OnActivate, OnActivate, Background,
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  MenuPushButton_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( MenuPushButton )
 
 /* Initializer for the class 'Menu::UpDownPushButtonSet' */
@@ -1683,9 +1709,11 @@ void MenuUpDownPushButtonSet__Init( MenuUpDownPushButtonSet _this, XObject aLink
   CoreView_OnSetLayout((CoreView)&_this->UpButton, CoreLayoutAlignToLeft | CoreLayoutAlignToTop 
   | CoreLayoutResizeHorz );
   CoreRectView__OnSetBounds( &_this->UpButton, _Const001A );
+  _this->UpButton.Super1.PassMagicKey = 1;
   MenuPushButton_OnSetTitle( &_this->UpButton, EwLoadString( &_Const0020 ));
   CoreView_OnSetLayout((CoreView)&_this->DownButton, CoreLayoutAlignToBottom | CoreLayoutResizeHorz );
   CoreRectView__OnSetBounds( &_this->DownButton, _Const0021 );
+  _this->DownButton.Super1.PassMagicKey = 1;
   MenuPushButton_OnSetTitle( &_this->DownButton, EwLoadString( &_Const0022 ));
   _this->UpButtonTitle = EwShareString( EwGetVariantOfString( &StringsGEN_cancel ));
   _this->DownButtonTitle = EwShareString( EwGetVariantOfString( &StringsGEN_ok ));
@@ -1828,6 +1856,7 @@ EW_DEFINE_CLASS( MenuUpDownPushButtonSet, ComponentsBaseComponent, OnUpButtonAct
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( MenuUpDownPushButtonSet )
 
 /* Initializer for the class 'Menu::ItemCheckMark' */
@@ -1957,6 +1986,7 @@ EW_DEFINE_CLASS( MenuItemCheckMark, MenuItemBase, CheckMark, CheckMark, CheckMar
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( MenuItemCheckMark )
 
 /* Initializer for the class 'Menu::ArrowScrollBar' */

@@ -43,6 +43,9 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
+  $rect <10,350,210,390>
+  inherited property DDModeEnabled = true;
+
   $rect <510,60,710,100>
   inherited method LoadItemClass()
   {
@@ -114,6 +117,7 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
+    preset DDModeEnabled = true;
     preset NoOfItems = 9;
     preset ArrowScrollBarVisible = true;
   }
@@ -147,10 +151,22 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
   );
 
   $reorder SlideInDialog 4
-  $reorder LoadItemClass 4
+  $reorder OnSetDDModeEnabled 1
+  $reorder LoadItemClass 5
   $reorder LoadItemTitle 4
   $reorder OnItemActivate 4
-  $reorder LoadItemChecked 4
+  $reorder BlackBG 1
+  $reorder LoadItemChecked 5
+  $reorder MainBottomBG 1
+  $reorder DDModeStateChangedHandler 1
+  $reorder OnDDModeStateChangedSlot 1
+  $reorder LoadItemEnabled 2
+  $reorder DDModeMask 1
+  $reorder Menu 1
+  $reorder Note5 1
+  $reorder SeatHeaterEnabled 1
+  $reorder GripWarmerEnabled 1
+  $reorder Settings 1
 }
 
 $rect <20,60,280,100>
@@ -165,6 +181,9 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
   {
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
+
+  $rect <10,340,210,380>
+  inherited property DDModeEnabled = true;
 
   $rect <510,20,710,60>
   inherited method LoadItemClass()
@@ -208,6 +227,7 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
+    preset DDModeEnabled = true;
     preset NoOfItems = 2;
   }
 
@@ -237,6 +257,9 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
   {
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
+
+  $rect <10,340,210,380>
+  inherited property DDModeEnabled = true;
 
   $rect <490,30,690,70>
   inherited method LoadItemClass()
@@ -324,6 +347,7 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
+    preset DDModeEnabled = true;
     preset NoOfItems = 4;
     preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
@@ -445,7 +469,7 @@ class SET28_SystemInfo : Components::BaseMainBG
     SoftwareVersionText.String = DeviceInterface::SystemDevice.SoftwareVersion;
   }
 
-  $rect <280,290,480,330>
+  $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
 
   $rect <520,60,750,100>
@@ -459,6 +483,9 @@ class SET28_SystemInfo : Components::BaseMainBG
   {
     this.PresentDialog( new Development::DEV_Main, null, null, null, null, null, null, null, null, false );
   }
+
+  $rect <10,340,210,380>
+  inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
   object Views::Text ESN
@@ -513,6 +540,7 @@ class SET28_SystemInfo : Components::BaseMainBG
     preset Bounds = <95,176,385,259>;
     preset PassHomeKey = true;
     preset PassMagicKey = true;
+    preset DDModeEnabled = true;
     preset OnUpButtonActivated = OnUnitIdButtonActivatedSlot;
     preset UpButtonTitle = Strings::SET28_unit_id;
     preset DownButtonTitle = Strings::SET28_sw_update;
@@ -992,6 +1020,9 @@ class BtDiscovarable : Components::BaseMainBG
   $rect <0,290,180,330>
   inherited property Bounds = <0,0,480,272>;
 
+  $rect <0,410,200,450>
+  inherited property DDModeEnabled = true;
+
   $rect <20,20,160,60>
   object Views::Text DiscoverableText
   {
@@ -1090,6 +1121,7 @@ class BtDiscovarable : Components::BaseMainBG
   object Menu::PushButton PushButton
   {
     preset Bounds = <165,219,315,259>;
+    preset DDModeEnabled = true;
     preset Title = "Cancel";
     preset OnActivate = OnCancelSlot;
   }
@@ -1208,6 +1240,9 @@ class BtMaxPairedDevice : Components::BaseMainBG
   $rect <0,290,200,330>
   inherited property Bounds = <0,0,480,272>;
 
+  $rect <0,340,200,380>
+  inherited property DDModeEnabled = true;
+
   $rect <20,20,160,60>
   object Views::Text Text
   {
@@ -1269,6 +1304,9 @@ class BtPairDevice : Components::BaseMainBG
       Focus = YesButton;
     }
   }
+
+  $rect <0,440,200,480>
+  inherited property DDModeEnabled = true;
 
   $rect <420,290,620,330>
   slot OnYesNoSlot
@@ -1387,6 +1425,9 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
+  $rect <0,340,200,380>
+  inherited property DDModeEnabled = true;
+
   $rect <520,20,720,60>
   inherited method LoadItemClass()
   {
@@ -1458,6 +1499,7 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
+    preset DDModeEnabled = true;
     preset NoOfItems = 1;
     preset Focusable = false;
     preset ItemHeight = Menu::ItemHeightSmall;
@@ -1525,6 +1567,9 @@ class SET19_BtPairedDeviceOperation : Menu::BaseMenuView
   {
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
+
+  $rect <230,350,430,390>
+  inherited property DDModeEnabled = true;
 
   $rect <510,20,710,60>
   inherited method LoadItemClass()
@@ -1611,6 +1656,7 @@ class SET19_BtPairedDeviceOperation : Menu::BaseMenuView
   object Menu::VerticalMenu Menu
   {
     preset Bounds = <0,36,480,272>;
+    preset DDModeEnabled = true;
     preset NoOfItems = 3;
   }
 
@@ -1636,6 +1682,9 @@ class BtDeleteBleDevice : Components::BaseMainBG
 
   $rect <0,290,180,330>
   inherited property Bounds = <0,0,480,272>;
+
+  $rect <0,390,200,430>
+  inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
   object Views::Text Text
@@ -1785,6 +1834,9 @@ class SET30_QRCode : Menu::BaseMenuView
   {
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
+
+  $rect <10,340,210,380>
+  inherited property DDModeEnabled = true;
 
   $rect <550,70,750,110>
   object Core::SystemEventHandler QrCodeUpdateEventHandler

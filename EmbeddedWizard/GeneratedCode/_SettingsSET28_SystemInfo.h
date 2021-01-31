@@ -43,8 +43,10 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CorePropertyObserver.h"
+#include "_CoreSystemEventHandler.h"
 #include "_MenuUpDownPushButtonSet.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -161,6 +163,7 @@ EW_DEFINE_METHODS( SettingsSET28_SystemInfo, ComponentsBaseMainBG )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( SettingsSET28_SystemInfo _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
 EW_END_OF_METHODS( SettingsSET28_SystemInfo )
 
 /* The method Init() is invoked automatically after the component has been created. 

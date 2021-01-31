@@ -38,7 +38,15 @@ class LNC_Main : Components::BaseComponent
   $rect <0,490,230,530>
   inherited method OnShortEnterKeyActivated()
   {
-    LNC_RotaryPlate.StartSelectedAnimation();
+    if( Enum::LauncherItem.SETTINGS == CurrentItem &&
+        DeviceInterface::VehicleDevice.DDModeActivated )
+    {
+      // not enter settings menu when DD mode is activated
+    }
+    else
+    {
+      LNC_RotaryPlate.StartSelectedAnimation();
+    }
   }
 
   $rect <0,450,230,490>

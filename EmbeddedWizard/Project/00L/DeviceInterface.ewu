@@ -1113,3 +1113,40 @@ class RtcTime
   $rect <20,210,220,250>
   var uint8 Second;
 }
+
+$rect <20,630,220,670>
+$output false
+class VehicleDeviceClass : Templates::DeviceClass
+{
+  // This object represents an individual system event.
+  $rect <20,100,310,140>
+  object Core::SystemEvent DDModeStateChangedSystemEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,50,260,90>
+  $output true
+  method void NotifyDDModeStateChanged()
+  {
+    DDModeStateChangedSystemEvent.Trigger( null, false );
+  }
+
+  // Driver Distraction Mode System Event
+  note group Note2
+  {
+    attr Bounds = <0,0,560,160>;
+  }
+
+  $rect <320,50,540,90>
+  property bool DDModeActivated;
+
+  $rect <320,100,540,140>
+  onget DDModeActivated
+  {
+    //TODO: Get value from the vehicle info manager directly
+    return pure DDModeActivated;
+  }
+}
+
+$rect <20,590,220,630>
+autoobject DeviceInterface::VehicleDeviceClass VehicleDevice;

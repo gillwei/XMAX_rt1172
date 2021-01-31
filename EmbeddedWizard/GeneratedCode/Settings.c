@@ -208,7 +208,9 @@ void SettingsSET01_MainSettingMenu__Init( SettingsSET01_MainSettingMenu _this, X
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->Menu, _Const0001 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 9 );
   MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Menu, 1 );
   _this->Settings[ 0 ] = EnumMainSettingItemConnection;
@@ -477,6 +479,7 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, Menu, Menu, Me
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   SettingsSET01_MainSettingMenu_LoadItemClass,
   SettingsSET01_MainSettingMenu_LoadItemTitle,
   SettingsSET01_MainSettingMenu_OnItemActivate,
@@ -501,7 +504,9 @@ void SettingsSET03_ConnectionSettingMenu__Init( SettingsSET03_ConnectionSettingM
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->Menu, _Const0001 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 2 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsGEN_bluetooth ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsSET03_y_connect_app_pairing ));
@@ -632,6 +637,7 @@ EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, Menu, Me
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   SettingsSET03_ConnectionSettingMenu_LoadItemClass,
   SettingsSET03_ConnectionSettingMenu_LoadItemTitle,
   SettingsSET03_ConnectionSettingMenu_OnItemActivate,
@@ -656,7 +662,9 @@ void SettingsSET04_BtSettingMenu__Init( SettingsSET04_BtSettingMenu _this, XObje
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->Menu, _Const0001 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 4 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Menu, 4 );
@@ -905,6 +913,7 @@ EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, Menu, Menu, Menu
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   SettingsSET04_BtSettingMenu_LoadItemClass,
   SettingsSET04_BtSettingMenu_LoadItemTitle,
   SettingsSET04_BtSettingMenu_OnItemActivate,
@@ -934,6 +943,7 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->ESN, _Const0002 );
   ViewsText_OnSetString( &_this->ESN, EwLoadString( &StringsSET28_esn ));
   CoreRectView__OnSetBounds( &_this->SoftwareVersionTitle, _Const0003 );
@@ -946,6 +956,7 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0006 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->UpDownPushButtonSet, 1 );
   MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
   &StringsSET28_unit_id ));
   MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
@@ -1102,6 +1113,7 @@ EW_DEFINE_CLASS( SettingsSET28_SystemInfo, ComponentsBaseMainBG, ESN, ESN, ESN,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   SettingsSET28_SystemInfo_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( SettingsSET28_SystemInfo )
 
 /* Initializer for the class 'Settings::BtDiscovarable' */
@@ -1127,6 +1139,7 @@ void SettingsBtDiscovarable__Init( SettingsBtDiscovarable _this, XObject aLink, 
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->DiscoverableText, _Const0007 );
   ViewsText_OnSetWrapText( &_this->DiscoverableText, 1 );
   ViewsText_OnSetAlignment( &_this->DiscoverableText, ViewsTextAlignmentAlignHorzCenter 
@@ -1157,6 +1170,7 @@ void SettingsBtDiscovarable__Init( SettingsBtDiscovarable _this, XObject aLink, 
   ViewsText_OnSetString( &_this->DeviceNameText, DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceName( 
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )));
   CoreRectView__OnSetBounds( &_this->PushButton, _Const0010 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->PushButton, 1 );
   MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &_Const0011 ));
   CoreGroup__Add( _this, ((CoreView)&_this->DiscoverableText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->TimeLeftText ), 0 );
@@ -1324,6 +1338,7 @@ EW_DEFINE_CLASS( SettingsBtDiscovarable, ComponentsBaseMainBG, DiscoverableText,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( SettingsBtDiscovarable )
 
 /* Initializer for the class 'Settings::BtConnectionResult' */
@@ -1506,6 +1521,7 @@ EW_DEFINE_CLASS( SettingsBtConnectionResult, ComponentsBaseMainBG, Text, Text, T
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( SettingsBtConnectionResult )
 
 /* Initializer for the class 'Settings::BtMaxPairedDevice' */
@@ -1526,6 +1542,7 @@ void SettingsBtMaxPairedDevice__Init( SettingsBtMaxPairedDevice _this, XObject a
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->Text, _Const001D );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
   ViewsText_OnSetAlignment( &_this->Text, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertTop );
@@ -1635,6 +1652,7 @@ EW_DEFINE_CLASS( SettingsBtMaxPairedDevice, ComponentsBaseMainBG, ToRemovePaired
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( SettingsBtMaxPairedDevice )
 
 /* Initializer for the class 'Settings::SET17_BtPairedDeviceList' */
@@ -1656,7 +1674,9 @@ void SettingsSET17_BtPairedDeviceList__Init( SettingsSET17_BtPairedDeviceList _t
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->Menu, _Const0001 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 1 );
   _this->Menu.Focusable = 0;
   MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
@@ -1888,6 +1908,7 @@ EW_DEFINE_CLASS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView, Menu, Menu,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   SettingsSET17_BtPairedDeviceList_LoadItemClass,
   SettingsSET17_BtPairedDeviceList_LoadItemTitle,
   SettingsSET17_BtPairedDeviceList_OnItemActivate,
@@ -1912,7 +1933,9 @@ void SettingsSET19_BtPairedDeviceOperation__Init( SettingsSET19_BtPairedDeviceOp
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->Menu, _Const0001 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 3 );
   CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
 }
@@ -2121,6 +2144,7 @@ EW_DEFINE_CLASS( SettingsSET19_BtPairedDeviceOperation, MenuBaseMenuView, Menu,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   SettingsSET19_BtPairedDeviceOperation_LoadItemClass,
   SettingsSET19_BtPairedDeviceOperation_LoadItemTitle,
   SettingsSET19_BtPairedDeviceOperation_OnItemActivate,
@@ -2146,6 +2170,7 @@ void SettingsBtDeleteBleDevice__Init( SettingsBtDeleteBleDevice _this, XObject a
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->Text, _Const0026 );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
   ViewsText_OnSetAlignment( &_this->Text, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertTop );
@@ -2258,6 +2283,7 @@ EW_DEFINE_CLASS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG, Text, Text, Te
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( SettingsBtDeleteBleDevice )
 
 /* Initializer for the class 'Settings::BtFwUpdateDialog' */
@@ -2427,6 +2453,7 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->QrCode, _Const0030 );
   ViewsImage_OnSetAlignment( &_this->QrCode, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
@@ -2612,6 +2639,7 @@ EW_DEFINE_CLASS( SettingsSET30_QRCode, MenuBaseMenuView, QrCodeUpdateEventHandle
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,

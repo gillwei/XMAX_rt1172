@@ -43,7 +43,9 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
+#include "_CoreSystemEventHandler.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -154,6 +156,7 @@ EW_DEFINE_METHODS( HomeHOM11_tachometer, ComponentsBaseMainBG )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
 EW_END_OF_METHODS( HomeHOM11_tachometer )
 
 /* 'C' function for method : 'Home::HOM11_tachometer.OnShortEnterKeyActivated()' */

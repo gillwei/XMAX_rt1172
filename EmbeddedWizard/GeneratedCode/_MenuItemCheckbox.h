@@ -157,6 +157,7 @@ EW_DEFINE_METHODS( MenuItemCheckbox, MenuItemBase )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
 EW_END_OF_METHODS( MenuItemCheckbox )
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 

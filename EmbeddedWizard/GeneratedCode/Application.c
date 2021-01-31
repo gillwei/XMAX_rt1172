@@ -31,9 +31,11 @@
 #include "_CorePropertyObserver.h"
 #include "_CoreRoot.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
+#include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_FactoryDisplayAutoRun.h"
 #include "_FactoryDisplayManual.h"
 #include "_FactoryTestContext.h"
@@ -47,11 +49,12 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000080, /* ratio 78.13 % */
+  0x0000009E, /* ratio 73.42 % */
   0xB8002D00, 0x000A6452, 0x1CC2003A, 0xC0075004, 0x1242001C, 0x00039002, 0x002B0004,
   0x08CC38D2, 0x36000C40, 0xD000CA00, 0xC9801151, 0x908B0305, 0x0DB0F8E1, 0x4D168DCB,
   0x64594876, 0x3637CDA2, 0x88545A49, 0x974E0004, 0x54708922, 0x99E71208, 0x5A1F1A92,
-  0xA3F0C374, 0x01509353, 0x00000404, 0x00000000
+  0xA3F0C374, 0x520F9353, 0x11B90952, 0x42A145A1, 0xB004F89B, 0x934C6452, 0x00020360,
+  0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -60,6 +63,7 @@ static const XRect _Const0001 = {{ 0, 0 }, { 480, 32 }};
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x0018 };
 static const XStringRes _Const0004 = { _StringsDefault0, 0x0023 };
+static const XStringRes _Const0005 = { _StringsDefault0, 0x0040 };
 
 /* Initializer for the class 'Application::Application' */
 void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, XHandle aArg )
@@ -74,6 +78,7 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreSystemEventHandler__Init( &_this->FactoryTestEventHandler, &_this->_XObject, 0 );
   ComponentsStatusBar__Init( &_this->StatusBar, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->BtFwStatusObserver, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->DDModeTestTimer, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( ApplicationApplication );
@@ -82,6 +87,8 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreRectView__OnSetBounds( _this, _Const0000 );
   CoreRectView__OnSetBounds( &_this->StatusBar, _Const0001 );
   _this->StatusBarVisible = 1;
+  CoreTimer_OnSetPeriod( &_this->DDModeTestTimer, 3000 );
+  CoreTimer_OnSetEnabled( &_this->DDModeTestTimer, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->StatusBar ), 0 );
   _this->FactoryTestEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnFactoryTestEventSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->FactoryTestEventHandler, &EwGetAutoObject( 
@@ -90,6 +97,7 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CorePropertyObserver_OnSetOutlet( &_this->BtFwStatusObserver, EwNewRef( EwGetAutoObject( 
   &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus, 
   DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus ));
+  _this->DDModeTestTimer.OnTrigger = EwNewSlot( _this, ApplicationApplication_OnDDModeTestSlot );
 
   /* Call the user defined constructor */
   ApplicationApplication_Init( _this, aArg );
@@ -105,6 +113,7 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
   CoreSystemEventHandler__ReInit( &_this->FactoryTestEventHandler );
   ComponentsStatusBar__ReInit( &_this->StatusBar );
   CorePropertyObserver__ReInit( &_this->BtFwStatusObserver );
+  CoreTimer__ReInit( &_this->DDModeTestTimer );
 }
 
 /* Finalizer method for the class 'Application::Application' */
@@ -117,6 +126,7 @@ void ApplicationApplication__Done( ApplicationApplication _this )
   CoreSystemEventHandler__Done( &_this->FactoryTestEventHandler );
   ComponentsStatusBar__Done( &_this->StatusBar );
   CorePropertyObserver__Done( &_this->BtFwStatusObserver );
+  CoreTimer__Done( &_this->DDModeTestTimer );
 
   /* Don't forget to deinitialize the super class ... */
   CoreRoot__Done( &_this->_Super );
@@ -290,6 +300,22 @@ void ApplicationApplication_SwitchToHome( ApplicationApplication _this, CoreGrou
   {
     EwTrace( "%s", EwLoadString( &_Const0004 ));
   }
+}
+
+/* 'C' function for method : 'Application::Application.OnDDModeTestSlot()' */
+void ApplicationApplication_OnDDModeTestSlot( ApplicationApplication _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( sender );
+
+  EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->DDModeActivated 
+  = (XBool)!EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->DDModeActivated;
+  EwTrace( "%s%b", EwLoadString( &_Const0005 ), EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+    DeviceInterfaceVehicleDeviceClass )->DDModeActivated );
+  DeviceInterfaceVehicleDeviceClass_NotifyDDModeStateChanged( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ));
 }
 
 /* Variants derived from the class : 'Application::Application' */

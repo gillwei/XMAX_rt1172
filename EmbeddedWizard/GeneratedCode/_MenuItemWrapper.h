@@ -99,6 +99,7 @@ EW_DEFINE_FIELDS( MenuItemWrapper, CoreGroup )
   EW_PROPERTY( Title,           XString )
   EW_PROPERTY( ItemClass,       XClass )
   EW_PROPERTY( Height,          XInt32 )
+  EW_PROPERTY( DDModeEnabled,   XBool )
   EW_PROPERTY( Focusable,       XBool )
   EW_PROPERTY( Checked,         XBool )
 EW_END_OF_FIELDS( MenuItemWrapper )
@@ -170,6 +171,9 @@ void MenuItemWrapper_OnSetChecked( MenuItemWrapper _this, XBool value );
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetFocusable()' */
 void MenuItemWrapper_OnSetFocusable( MenuItemWrapper _this, XBool value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetDDModeEnabled()' */
+void MenuItemWrapper_OnSetDDModeEnabled( MenuItemWrapper _this, XBool value );
 
 #ifdef __cplusplus
   }

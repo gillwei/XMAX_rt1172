@@ -347,6 +347,7 @@ EW_DEFINE_CLASS( NavigationMain, ComponentsBaseComponent, Background, Background
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( NavigationMain )
 
 /* Initializer for the class 'Navigation::NAV06_NaviSettingMenu' */
@@ -633,6 +634,7 @@ EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, Menu, Menu,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   NavigationNAV06_NaviSettingMenu_LoadItemClass,
   NavigationNAV06_NaviSettingMenu_LoadItemTitle,
   NavigationNAV06_NaviSettingMenu_OnItemActivate,
@@ -856,6 +858,7 @@ EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, Menu, Menu
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
   NavigationNAV08_NaviChageViewMenu_LoadItemClass,
   NavigationNAV08_NaviChageViewMenu_LoadItemTitle,
   NavigationNAV08_NaviChageViewMenu_OnItemActivate,

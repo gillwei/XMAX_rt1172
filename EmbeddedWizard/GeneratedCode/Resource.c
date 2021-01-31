@@ -342,4 +342,10 @@ EW_RES_WITHOUT_VARIANTS( ResourceSeekBarDot )
 /* Table with links to derived variants of the bitmap resource : 'Resource::SeekBar' */
 EW_RES_WITHOUT_VARIANTS( ResourceSeekBar )
 
+/* Include a file containing the bitmap resource : 'Resource::IconDDActive' */
+#include "_ResourceIconDDActive.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconDDActive' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconDDActive )
+
 /* Embedded Wizard */

@@ -161,6 +161,7 @@ EW_DEFINE_METHODS( TopTOP01_Disclaimer, ComponentsBaseComponent )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
 EW_END_OF_METHODS( TopTOP01_Disclaimer )
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 

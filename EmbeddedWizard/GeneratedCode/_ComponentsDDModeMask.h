@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSET30_QRCode_H
-#define _SettingsSET30_QRCode_H
+#ifndef _ComponentsDDModeMask_H
+#define _ComponentsDDModeMask_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,13 +42,15 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsDDModeMask.h"
-#include "_CoreKeyPressHandler.h"
-#include "_CoreSystemEventHandler.h"
-#include "_MenuBaseMenuView.h"
+#include "_CoreGroup.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
+
+/* Forward declaration of the class Components::DDModeMask */
+#ifndef _ComponentsDDModeMask_
+  EW_DECLARE_CLASS( ComponentsDDModeMask )
+#define _ComponentsDDModeMask_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -56,10 +58,10 @@
 #define _CoreDialogContext_
 #endif
 
-/* Forward declaration of the class Core::Group */
-#ifndef _CoreGroup_
-  EW_DECLARE_CLASS( CoreGroup )
-#define _CoreGroup_
+/* Forward declaration of the class Core::KeyPressHandler */
+#ifndef _CoreKeyPressHandler_
+  EW_DECLARE_CLASS( CoreKeyPressHandler )
+#define _CoreKeyPressHandler_
 #endif
 
 /* Forward declaration of the class Core::LayoutContext */
@@ -92,25 +94,15 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::SET30_QRCode */
-#ifndef _SettingsSET30_QRCode_
-  EW_DECLARE_CLASS( SettingsSET30_QRCode )
-#define _SettingsSET30_QRCode_
-#endif
 
+/* Deklaration of class : 'Components::DDModeMask' */
+EW_DEFINE_FIELDS( ComponentsDDModeMask, CoreGroup )
+  EW_OBJECT  ( DDModeBG,        ViewsRectangle )
+  EW_OBJECT  ( DDModeIcon,      ViewsImage )
+EW_END_OF_FIELDS( ComponentsDDModeMask )
 
-/* Deklaration of class : 'Settings::SET30_QRCode' */
-EW_DEFINE_FIELDS( SettingsSET30_QRCode, MenuBaseMenuView )
-  EW_OBJECT  ( QrCodeUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( QrCode,          ViewsImage )
-  EW_OBJECT  ( PixelText,       ViewsText )
-  EW_OBJECT  ( QrCodeWidthText, ViewsText )
-  EW_OBJECT  ( QrCodeContent,   ViewsText )
-  EW_VARIABLE( PixelPerModule,  XInt32 )
-EW_END_OF_FIELDS( SettingsSET30_QRCode )
-
-/* Virtual Method Table (VMT) for the class : 'Settings::SET30_QRCode' */
-EW_DEFINE_METHODS( SettingsSET30_QRCode, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Components::DDModeMask' */
+EW_DEFINE_METHODS( ComponentsDDModeMask, CoreGroup )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -154,45 +146,12 @@ EW_DEFINE_METHODS( SettingsSET30_QRCode, MenuBaseMenuView )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( SettingsSET30_QRCode _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( SettingsSET30_QRCode _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET30_QRCode _this )
-  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( LoadItemClass,     XClass )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( MenuBaseMenuView _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( SettingsSET30_QRCode )
-
-/* The method Init() is invoked automatically after the component has been created. 
-   This method can be overridden and filled with logic containing additional initialization 
-   statements. */
-void SettingsSET30_QRCode_Init( SettingsSET30_QRCode _this, XHandle aArg );
-
-/* 'C' function for method : 'Settings::SET30_QRCode.OnShortDownKeyActivated()' */
-void SettingsSET30_QRCode_OnShortDownKeyActivated( SettingsSET30_QRCode _this );
-
-/* 'C' function for method : 'Settings::SET30_QRCode.OnShortUpKeyActivated()' */
-void SettingsSET30_QRCode_OnShortUpKeyActivated( SettingsSET30_QRCode _this );
-
-/* 'C' function for method : 'Settings::SET30_QRCode.OnShortHomeKeyActivated()' */
-void SettingsSET30_QRCode_OnShortHomeKeyActivated( SettingsSET30_QRCode _this );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void SettingsSET30_QRCode_OnQrCodeUpdateSlot( SettingsSET30_QRCode _this, XObject 
-  sender );
+EW_END_OF_METHODS( ComponentsDDModeMask )
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSET30_QRCode_H */
+#endif /* _ComponentsDDModeMask_H */
 
 /* Embedded Wizard */

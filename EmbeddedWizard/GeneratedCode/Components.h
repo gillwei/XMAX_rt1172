@@ -44,6 +44,7 @@
 
 #include "_ComponentsBaseComponent.h"
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsDDModeMask.h"
 #include "_ComponentsStatusBar.h"
 
 #ifdef __cplusplus

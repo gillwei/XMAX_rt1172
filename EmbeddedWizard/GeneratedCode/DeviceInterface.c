@@ -33,6 +33,7 @@
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
+#include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_FactoryTestContext.h"
 #include "DeviceInterface.h"
 #include "Enum.h"
@@ -1298,5 +1299,80 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceRtcTime )
 EW_DEFINE_CLASS( DeviceInterfaceRtcTime, XObject, _None, _None, _None, _None, _None, 
                  _None, "DeviceInterface::RtcTime" )
 EW_END_OF_CLASS( DeviceInterfaceRtcTime )
+
+/* Initializer for the class 'DeviceInterface::VehicleDeviceClass' */
+void DeviceInterfaceVehicleDeviceClass__Init( DeviceInterfaceVehicleDeviceClass _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  TemplatesDeviceClass__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceVehicleDeviceClass );
+
+  /* ... then construct all embedded objects */
+  CoreSystemEvent__Init( &_this->DDModeStateChangedSystemEvent, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( DeviceInterfaceVehicleDeviceClass );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::VehicleDeviceClass' */
+void DeviceInterfaceVehicleDeviceClass__ReInit( DeviceInterfaceVehicleDeviceClass _this )
+{
+  /* At first re-initialize the super class ... */
+  TemplatesDeviceClass__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  CoreSystemEvent__ReInit( &_this->DDModeStateChangedSystemEvent );
+}
+
+/* Finalizer method for the class 'DeviceInterface::VehicleDeviceClass' */
+void DeviceInterfaceVehicleDeviceClass__Done( DeviceInterfaceVehicleDeviceClass _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( TemplatesDeviceClass );
+
+  /* Finalize all embedded objects */
+  CoreSystemEvent__Done( &_this->DDModeStateChangedSystemEvent );
+
+  /* Don't forget to deinitialize the super class ... */
+  TemplatesDeviceClass__Done( &_this->_Super );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceVehicleDeviceClass_NotifyDDModeStateChanged( DeviceInterfaceVehicleDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->DDModeStateChangedSystemEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::VehicleDeviceClass.NotifyDDModeStateChanged()' */
+void DeviceInterfaceVehicleDeviceClass__NotifyDDModeStateChanged( void* _this )
+{
+  DeviceInterfaceVehicleDeviceClass_NotifyDDModeStateChanged((DeviceInterfaceVehicleDeviceClass)_this );
+}
+
+/* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::VehicleDeviceClass' */
+EW_DEFINE_CLASS( DeviceInterfaceVehicleDeviceClass, TemplatesDeviceClass, DDModeStateChangedSystemEvent, 
+                 DDModeStateChangedSystemEvent, DDModeStateChangedSystemEvent, DDModeStateChangedSystemEvent, 
+                 DDModeActivated, DDModeActivated, "DeviceInterface::VehicleDeviceClass" )
+EW_END_OF_CLASS( DeviceInterfaceVehicleDeviceClass )
+
+/* User defined auto object: 'DeviceInterface::VehicleDevice' */
+EW_DEFINE_AUTOOBJECT( DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )
+
+/* Initializer for the auto object 'DeviceInterface::VehicleDevice' */
+void DeviceInterfaceVehicleDevice__Init( DeviceInterfaceVehicleDeviceClass _this )
+{
+  EW_UNUSED_ARG( _this );
+}
+
+/* Table with links to derived variants of the auto object : 'DeviceInterface::VehicleDevice' */
+EW_DEFINE_AUTOOBJECT_VARIANTS( DeviceInterfaceVehicleDevice )
+EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceVehicleDevice )
 
 /* Embedded Wizard */

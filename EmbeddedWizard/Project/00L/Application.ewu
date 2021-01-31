@@ -200,4 +200,27 @@ class Application : Core::Root
       trace "Error: aHomeDialog is null";
     }
   }
+
+  // Unit test to toggle DD mode every 3 second
+  $rect <380,780,580,820>
+  object Core::Timer DDModeTestTimer
+  {
+    preset OnTrigger = OnDDModeTestSlot;
+    preset Period = 3000;
+    preset Enabled = false;
+  }
+
+  $rect <380,830,580,870>
+  slot OnDDModeTestSlot
+  {
+    DeviceInterface::VehicleDevice.DDModeActivated = !DeviceInterface::VehicleDevice.DDModeActivated;
+    trace "Test DDMode ", DeviceInterface::VehicleDevice.DDModeActivated;
+    DeviceInterface::VehicleDevice.NotifyDDModeStateChanged();
+  }
+
+  // Unit Test for DD Mode
+  note group Note5
+  {
+    attr Bounds = <330,740,620,890>;
+  }
 }

@@ -43,7 +43,9 @@
 #endif
 
 #include "_ComponentsBaseComponent.h"
+#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
+#include "_CoreSystemEventHandler.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 
@@ -100,6 +102,8 @@
 EW_DEFINE_FIELDS( ComponentsBaseMainBG, ComponentsBaseComponent )
   EW_OBJECT  ( MainBottomBG,    ViewsImage )
   EW_OBJECT  ( BlackBG,         ViewsRectangle )
+  EW_OBJECT  ( DDModeStateChangedHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( DDModeMask,      ComponentsDDModeMask )
 EW_END_OF_FIELDS( ComponentsBaseMainBG )
 
 /* Virtual Method Table (VMT) for the class : 'Components::BaseMainBG' */
@@ -154,7 +158,25 @@ EW_DEFINE_METHODS( ComponentsBaseMainBG, ComponentsBaseComponent )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
 EW_END_OF_METHODS( ComponentsBaseMainBG )
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void ComponentsBaseMainBG_Init( ComponentsBaseMainBG _this, XHandle aArg );
+
+/* 'C' function for method : 'Components::BaseMainBG.OnSetDDModeEnabled()' */
+void ComponentsBaseMainBG_OnSetDDModeEnabled( ComponentsBaseMainBG _this, XBool 
+  value );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void ComponentsBaseMainBG_OnDDModeStateChangedSlot( ComponentsBaseMainBG _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Components::BaseMainBG.UpdateDDModeMask()' */
+void ComponentsBaseMainBG_UpdateDDModeMask( ComponentsBaseMainBG _this );
 
 #ifdef __cplusplus
   }

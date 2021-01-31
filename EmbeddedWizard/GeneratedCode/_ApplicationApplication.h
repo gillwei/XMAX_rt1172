@@ -114,6 +114,7 @@ EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( FactoryTestEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( StatusBar,       ComponentsStatusBar )
   EW_OBJECT  ( BtFwStatusObserver, CorePropertyObserver )
+  EW_OBJECT  ( DDModeTestTimer, CoreTimer )
   EW_PROPERTY( StatusBarVisible, XBool )
 EW_END_OF_FIELDS( ApplicationApplication )
 
@@ -196,6 +197,10 @@ void ApplicationApplication_DismissFactoryTestDialog( ApplicationApplication _th
 /* 'C' function for method : 'Application::Application.SwitchToHome()' */
 void ApplicationApplication_SwitchToHome( ApplicationApplication _this, CoreGroup 
   aHomeDialog );
+
+/* 'C' function for method : 'Application::Application.OnDDModeTestSlot()' */
+void ApplicationApplication_OnDDModeTestSlot( ApplicationApplication _this, XObject 
+  sender );
 
 #ifdef __cplusplus
   }

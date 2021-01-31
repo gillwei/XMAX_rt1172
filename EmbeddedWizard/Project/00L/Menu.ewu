@@ -341,6 +341,7 @@ class VerticalMenu : Components::BaseComponent
         Item.Enabled = OwnerMenu.LoadItemEnabled( ItemNo );
         Item.OnActivate = OnItemActivateSlot;
         Item.Focusable = Focusable;
+        Item.DDModeEnabled = DDModeEnabled;
       }
 
       if( Menu::ItemCheckbox == Item.ItemClass ||
@@ -780,6 +781,24 @@ class ItemWrapper : Core::Group
 
   $rect <890,290,1090,330>
   property int32 Height;
+
+  $rect <890,350,1090,390>
+  property bool DDModeEnabled;
+
+  $rect <890,390,1090,430>
+  onset DDModeEnabled
+  {
+    if( pure DDModeEnabled != value )
+    {
+      pure DDModeEnabled = value;
+      var Core::View view = FindNextView( null, Core::ViewState[] );
+      var Menu::ItemBase Item = ( Menu::ItemBase )view;
+      if( null != Item )
+      {
+        Item.DDModeEnabled = value;
+      }
+    }
+  }
 }
 
 $rect <460,160,660,200>
@@ -967,14 +986,14 @@ class BaseMenuView : Components::BaseMainBG
   $reorder BlackBG 1
 }
 
-$rect <690,10,890,50>
+$rect <690,10,910,50>
 $output false
-class PushButton : Core::Group
+class PushButton : Components::BaseComponent
 {
   $rect <10,60,210,100>
   inherited property Bounds = <0,0,150,40>;
 
-  $rect <470,10,670,50>
+  $rect <520,10,720,50>
   inherited method UpdateViewState()
   {
     super( aState );
@@ -999,6 +1018,35 @@ class PushButton : Core::Group
       FocusBorder.Width = 2;
     }
   }
+
+  $rect <260,200,490,240>
+  inherited method OnShortEnterKeyActivated()
+  {
+    if( false == KeyHandler.Repetition && Focusable && ButtonEnabled )
+    {
+      InvalidateViewState();
+
+      if( FocusFrameFlashTimer.Enabled )
+      {
+        postsignal OnActivate;
+        FocusFrameFlashTimer.Enabled = false;
+      }
+
+      // To avoid sending OnActivate more than once when short pressing enter consecutively within the very short period,
+      // disable KeyHandler before blinking the background and enable KeyHandler again after the blink ends.
+      KeyHandler.Enabled = false;
+      FocusFrameFlashTimer.Enabled = true;
+    }
+  }
+
+  $rect <260,50,460,90>
+  inherited property PassUpKey = true;
+
+  $rect <260,150,460,190>
+  inherited property PassDownKey = true;
+
+  $rect <260,100,460,140>
+  inherited property PassHomeKey = true;
 
   $rect <20,20,160,60>
   object Views::Rectangle Background
@@ -1030,14 +1078,7 @@ class PushButton : Core::Group
     }
   }
 
-  $rect <250,60,450,100>
-  object Core::KeyPressHandler KeyHandler
-  {
-    preset OnRelease = OnEnterReleaseSlot;
-    preset Filter = Core::KeyCode.Ok;
-  }
-
-  $rect <250,110,450,150>
+  $rect <790,110,990,150>
   slot OnEnterReleaseSlot
   {
     if( false == KeyHandler.Repetition && Focusable && ButtonEnabled )
@@ -1057,7 +1098,7 @@ class PushButton : Core::Group
     }
   }
 
-  $rect <470,60,670,100>
+  $rect <520,60,720,100>
   object Core::Timer FocusFrameFlashTimer
   {
     preset OnTrigger = OnFocusFrameFlashTimer;
@@ -1065,7 +1106,7 @@ class PushButton : Core::Group
     preset Begin = 100;
   }
 
-  $rect <470,110,670,150>
+  $rect <520,110,720,150>
   slot OnFocusFrameFlashTimer
   {
     // The feedback flash timer is finished. Request the item to update its
@@ -1108,13 +1149,13 @@ class PushButton : Core::Group
     }
   }
 
-  $rect <250,170,450,210>
+  $rect <10,300,210,340>
   property slot OnActivate;
 
-  $rect <470,170,670,210>
+  $rect <520,170,720,210>
   property bool ButtonEnabled = true;
 
-  $rect <470,210,670,250>
+  $rect <520,210,720,250>
   onset ButtonEnabled
   {
     if( pure ButtonEnabled != value )
@@ -1130,6 +1171,12 @@ class PushButton : Core::Group
         TitleText.Color = #646464FF;
       }
     }
+  }
+
+  // Key Settings
+  note group Note3
+  {
+    attr Bounds = <240,10,500,260>;
   }
 }
 
@@ -1157,6 +1204,7 @@ class UpDownPushButtonSet : Components::BaseComponent
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop, ResizeHorz];
     preset Bounds = <0,0,150,40>;
+    preset PassMagicKey = true;
     preset Title = "Cancel";
     preset OnActivate = OnActivateSlot;
   }
@@ -1166,6 +1214,7 @@ class UpDownPushButtonSet : Components::BaseComponent
   {
     preset Layout = Core::Layout[AlignToBottom, ResizeHorz];
     preset Bounds = <0,43,150,83>;
+    preset PassMagicKey = true;
     preset Title = "OK";
     preset OnActivate = OnActivateSlot;
   }

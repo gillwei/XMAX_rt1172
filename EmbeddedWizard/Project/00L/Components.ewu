@@ -15,7 +15,7 @@ class BaseComponent : Core::Group
   $rect <40,110,240,150>
   slot OnKeyPressSlot
   {
-    trace "OnKeyPressSlot", KeyHandler.Code;
+    trace "key event to: ", classof this;
     switch( KeyHandler.Code )
     {
       case Core::KeyCode.Up:
@@ -26,7 +26,7 @@ class BaseComponent : Core::Group
         }
         else
         {
-          if( Enum::KeyTriggerMode.ON == UpKeyTriggerMode )
+          if( ( Enum::KeyTriggerMode.ON == UpKeyTriggerMode ) && !IsDDModeEffected() )
           {
             OnShortUpKeyActivated();
           }
@@ -40,7 +40,7 @@ class BaseComponent : Core::Group
         }
         else
         {
-          if( Enum::KeyTriggerMode.ON == DownKeyTriggerMode )
+          if( ( Enum::KeyTriggerMode.ON == DownKeyTriggerMode ) && !IsDDModeEffected() )
           {
             OnShortDownKeyActivated();
           }
@@ -54,7 +54,7 @@ class BaseComponent : Core::Group
         }
         else
         {
-          if( Enum::KeyTriggerMode.ON == EnterKeyTriggerMode )
+          if( ( Enum::KeyTriggerMode.ON == EnterKeyTriggerMode ) && !IsDDModeEffected() )
           {
             OnShortEnterKeyActivated();
           }
@@ -92,43 +92,43 @@ class BaseComponent : Core::Group
   $rect <40,160,240,200>
   slot OnKeyHoldSlot
   {
-    trace "OnKeyHoldSlot", KeyHandler.Code;
-    switch( KeyHandler.Code )
+    if( !IsDDModeEffected() )
     {
-      case Core::KeyCode.Up: OnLongUpKeyActivated();
-      case Core::KeyCode.Down: OnLongDownKeyActivated();
-      case Core::KeyCode.Ok: OnLongEnterKeyActivated();
-      case Core::KeyCode.Home: OnLongHomeKeyActivated();
-      default:;
+      switch( KeyHandler.Code )
+      {
+        case Core::KeyCode.Up: OnLongUpKeyActivated();
+        case Core::KeyCode.Down: OnLongDownKeyActivated();
+        case Core::KeyCode.Ok: OnLongEnterKeyActivated();
+        case Core::KeyCode.Home: OnLongHomeKeyActivated();
+        default:;
+      }
     }
   }
 
   $rect <40,210,240,250>
   slot OnKeyReleaseSlot
   {
-    trace "OnKeyReleaseSlot", KeyHandler.Code;
-    trace "classof this: ", classof this;
     if( !KeyHandler.Repetition )
     {
       switch( KeyHandler.Code )
       {
         case Core::KeyCode.Up:
         {
-          if( Enum::KeyTriggerMode.OFF == UpKeyTriggerMode )
+          if( ( Enum::KeyTriggerMode.OFF == UpKeyTriggerMode ) && !IsDDModeEffected() )
           {
             OnShortUpKeyActivated();
           }
         }
         case Core::KeyCode.Down:
         {
-          if( Enum::KeyTriggerMode.OFF == DownKeyTriggerMode )
+          if( ( Enum::KeyTriggerMode.OFF == DownKeyTriggerMode ) && !IsDDModeEffected() )
           {
             OnShortDownKeyActivated();
           }
         }
         case Core::KeyCode.Ok:
         {
-          if( Enum::KeyTriggerMode.OFF == EnterKeyTriggerMode )
+          if( ( Enum::KeyTriggerMode.OFF == EnterKeyTriggerMode ) && !IsDDModeEffected() )
           {
             OnShortEnterKeyActivated();
           }
@@ -178,7 +178,7 @@ class BaseComponent : Core::Group
   // Slide Effect
   note group Note6
   {
-    attr Bounds = <20,370,730,540>;
+    attr Bounds = <20,370,530,540>;
   }
 
   $rect <50,420,250,460>
@@ -263,6 +263,30 @@ class BaseComponent : Core::Group
 
   $rect <990,260,1190,300>
   property bool PassMagicKey = false;
+
+  $rect <560,420,760,460>
+  property bool DDModeEnabled = false;
+
+  $rect <560,520,760,560>
+  method bool IsDDModeEffected()
+  {
+    return ( DDModeEnabled && DeviceInterface::VehicleDevice.DDModeActivated );
+  }
+
+  // Driver Distraction Mode
+  note group Note7
+  {
+    attr Bounds = <540,370,780,580>;
+  }
+
+  $rect <560,470,760,510>
+  onset DDModeEnabled
+  {
+    if( pure DDModeEnabled != value )
+    {
+      pure DDModeEnabled = value;
+    }
+  }
 }
 
 $rect <20,140,260,180>
@@ -338,8 +362,22 @@ $rect <60,70,300,110>
 $output false
 class BaseMainBG : Components::BaseComponent
 {
+  $rect <220,280,400,320>
+  inherited method Init()
+  {
+    DDModeStateChangedHandler.Enabled = DDModeEnabled;
+    UpdateDDModeMask();
+  }
+
   $rect <0,280,200,320>
   inherited property Bounds = <0,0,480,272>;
+
+  $rect <540,170,740,210>
+  inherited onset DDModeEnabled
+  {
+    super( value );
+    DDModeStateChangedHandler.Enabled = value;
+  }
 
   $rect <20,20,160,60>
   object Views::Image MainBottomBG
@@ -353,5 +391,70 @@ class BaseMainBG : Components::BaseComponent
   {
     preset Bounds = <0,32,480,182>;
     preset Color = #000000FF;
+  }
+
+  $rect <540,70,790,110>
+  object Core::SystemEventHandler DDModeStateChangedHandler
+  {
+    preset OnEvent = OnDDModeStateChangedSlot;
+    preset Enabled = false;
+    preset Event = DeviceInterface::VehicleDevice.DDModeStateChangedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <540,120,790,160>
+  slot OnDDModeStateChangedSlot
+  {
+    UpdateDDModeMask();
+  }
+
+  $rect <20,20,160,60>
+  object Components::DDModeMask DDModeMask
+  {
+    preset StackingPriority = 1;
+    preset Bounds = <0,36,480,272>;
+    preset Enabled = false;
+    preset Visible = false;
+  }
+
+  $rect <540,220,740,260>
+  method void UpdateDDModeMask()
+  {
+    if( IsCurrentDialog() && DDModeEnabled )
+    {
+      DDModeMask.Visible = DeviceInterface::VehicleDevice.DDModeActivated;
+      trace "DDModeMask Visible: ", DDModeMask.Visible, "in ", classof this;
+    }
+  }
+
+  // Driver Distraction Mode
+  note group Note5
+  {
+    attr Bounds = <510,30,820,280>;
+  }
+}
+
+$rect <20,190,220,230>
+$output false
+class DDModeMask : Core::Group
+{
+  $rect <10,320,210,360>
+  inherited property Bounds = <0,0,480,236>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle DDModeBG
+  {
+    preset StackingPriority = 0;
+    preset Bounds = <0,0,480,236>;
+    preset Color = #000000CD;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DDModeIcon
+  {
+    preset StackingPriority = 0;
+    preset Bounds = <195,62,285,152>;
+    preset Bitmap = Resource::IconDDActive;
   }
 }

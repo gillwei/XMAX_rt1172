@@ -43,6 +43,7 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
@@ -177,6 +178,7 @@ EW_DEFINE_METHODS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_METHOD( OnLongDownKeyActivated, void )( MediaMED01_MediaUI _this )
   EW_METHOD( OnLongUpKeyActivated, void )( MediaMED01_MediaUI _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
 EW_END_OF_METHODS( MediaMED01_MediaUI )
 
 /* The method Init() is invoked automatically after the component has been created. 

@@ -27,12 +27,14 @@
 #include "ewlocale.h"
 #include "_ComponentsBaseComponent.h"
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsDDModeMask.h"
 #include "_ComponentsStatusBar.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
+#include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsSlideTransition.h"
 #include "_EffectsTransition.h"
 #include "_ResourcesBitmap.h"
@@ -52,29 +54,31 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000096, /* ratio 74.67 % */
-  0xB8002300, 0x0009E452, 0x00960037, 0x0F200328, 0xE4002800, 0x8730042C, 0x00298022,
-  0x037800D8, 0x8F800E80, 0x3C160610, 0x43A27098, 0x02331B24, 0x25517320, 0x271F8F47,
-  0x50883488, 0x52874321, 0x18646A26, 0x8C4322C6, 0x047E5F1A, 0x18E09020, 0x562B3D95,
-  0x000668E4, 0xD0008E88, 0x51634800, 0x04A1D387, 0x3A1D5A44, 0x00002034, 0x00000000
+  0x00000068, /* ratio 80.77 % */
+  0xB8002300, 0x800D6452, 0x00F20032, 0x80107100, 0x006E869D, 0x112859D0, 0x3A001BC0,
+  0x40000228, 0x8C916060, 0x24782F1B, 0x13648002, 0x34C8008B, 0xC006193C, 0x1906001C,
+  0xC690015A, 0x62004D25, 0x9869B000, 0x0346E191, 0xF4466B1E, 0x4068B1B9, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XStringRes _Const0000 = { _StringsDefault0, 0x0002 };
-static const XStringRes _Const0001 = { _StringsDefault0, 0x0013 };
-static const XStringRes _Const0002 = { _StringsDefault0, 0x0023 };
-static const XStringRes _Const0003 = { _StringsDefault0, 0x0036 };
-static const XRect _Const0004 = {{ 0, 0 }, { 480, 32 }};
-static const XColor _Const0005 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0006 = {{ 50, 0 }, { 420, 30 }};
-static const XRect _Const0007 = {{ 0, 30 }, { 480, 32 }};
-static const XRect _Const0008 = {{ 174, 0 }, { 204, 30 }};
-static const XRect _Const0009 = {{ 2, 0 }, { 80, 30 }};
-static const XColor _Const000A = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XStringRes _Const000B = { _StringsDefault0, 0x0047 };
-static const XRect _Const000C = {{ 0, 0 }, { 480, 272 }};
-static const XRect _Const000D = {{ 0, 182 }, { 480, 272 }};
-static const XRect _Const000E = {{ 0, 32 }, { 480, 182 }};
+static const XRect _Const0001 = {{ 0, 0 }, { 480, 32 }};
+static const XColor _Const0002 = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0003 = {{ 50, 0 }, { 420, 30 }};
+static const XRect _Const0004 = {{ 0, 30 }, { 480, 32 }};
+static const XRect _Const0005 = {{ 174, 0 }, { 204, 30 }};
+static const XRect _Const0006 = {{ 2, 0 }, { 80, 30 }};
+static const XColor _Const0007 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XStringRes _Const0008 = { _StringsDefault0, 0x0013 };
+static const XRect _Const0009 = {{ 0, 0 }, { 480, 272 }};
+static const XRect _Const000A = {{ 0, 182 }, { 480, 272 }};
+static const XRect _Const000B = {{ 0, 32 }, { 480, 182 }};
+static const XRect _Const000C = {{ 0, 36 }, { 480, 272 }};
+static const XStringRes _Const000D = { _StringsDefault0, 0x0017 };
+static const XStringRes _Const000E = { _StringsDefault0, 0x002E };
+static const XRect _Const000F = {{ 0, 0 }, { 480, 236 }};
+static const XColor _Const0010 = { 0x00, 0x00, 0x00, 0xCD };
+static const XRect _Const0011 = {{ 195, 62 }, { 285, 152 }};
 
 /* Initializer for the class 'Components::BaseComponent' */
 void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink, XHandle aArg )
@@ -131,7 +135,7 @@ void ComponentsBaseComponent_OnKeyPressSlot( ComponentsBaseComponent _this, XObj
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s%e", EwLoadString( &_Const0000 ), _this->KeyHandler.Code );
+  EwTrace( "%s%$", EwLoadString( &_Const0000 ), EwClassOf(((XObject)_this )));
 
   switch ( _this->KeyHandler.Code )
   {
@@ -143,7 +147,8 @@ void ComponentsBaseComponent_OnKeyPressSlot( ComponentsBaseComponent _this, XObj
       }
       else
       {
-        if ( EnumKeyTriggerModeON == _this->UpKeyTriggerMode )
+        if (( EnumKeyTriggerModeON == _this->UpKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
+            _this ))
         {
           ComponentsBaseComponent__OnShortUpKeyActivated( _this );
         }
@@ -159,7 +164,8 @@ void ComponentsBaseComponent_OnKeyPressSlot( ComponentsBaseComponent _this, XObj
       }
       else
       {
-        if ( EnumKeyTriggerModeON == _this->DownKeyTriggerMode )
+        if (( EnumKeyTriggerModeON == _this->DownKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
+            _this ))
         {
           ComponentsBaseComponent__OnShortDownKeyActivated( _this );
         }
@@ -175,7 +181,8 @@ void ComponentsBaseComponent_OnKeyPressSlot( ComponentsBaseComponent _this, XObj
       }
       else
       {
-        if ( EnumKeyTriggerModeON == _this->EnterKeyTriggerMode )
+        if (( EnumKeyTriggerModeON == _this->EnterKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
+            _this ))
         {
           ComponentsBaseComponent__OnShortEnterKeyActivated( _this );
         }
@@ -224,28 +231,29 @@ void ComponentsBaseComponent_OnKeyHoldSlot( ComponentsBaseComponent _this, XObje
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s%e", EwLoadString( &_Const0001 ), _this->KeyHandler.Code );
-
-  switch ( _this->KeyHandler.Code )
+  if ( !ComponentsBaseComponent_IsDDModeEffected( _this ))
   {
-    case CoreKeyCodeUp :
-      ComponentsBaseComponent__OnLongUpKeyActivated( _this );
-    break;
+    switch ( _this->KeyHandler.Code )
+    {
+      case CoreKeyCodeUp :
+        ComponentsBaseComponent__OnLongUpKeyActivated( _this );
+      break;
 
-    case CoreKeyCodeDown :
-      ComponentsBaseComponent__OnLongDownKeyActivated( _this );
-    break;
+      case CoreKeyCodeDown :
+        ComponentsBaseComponent__OnLongDownKeyActivated( _this );
+      break;
 
-    case CoreKeyCodeOk :
-      ComponentsBaseComponent_OnLongEnterKeyActivated( _this );
-    break;
+      case CoreKeyCodeOk :
+        ComponentsBaseComponent_OnLongEnterKeyActivated( _this );
+      break;
 
-    case CoreKeyCodeHome :
-      ComponentsBaseComponent_OnLongHomeKeyActivated( _this );
-    break;
+      case CoreKeyCodeHome :
+        ComponentsBaseComponent_OnLongHomeKeyActivated( _this );
+      break;
 
-    default : 
-      ;
+      default : 
+        ;
+    }
   }
 }
 
@@ -256,16 +264,14 @@ void ComponentsBaseComponent_OnKeyReleaseSlot( ComponentsBaseComponent _this, XO
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s%e", EwLoadString( &_Const0002 ), _this->KeyHandler.Code );
-  EwTrace( "%s%$", EwLoadString( &_Const0003 ), EwClassOf(((XObject)_this )));
-
   if ( !_this->KeyHandler.Repetition )
   {
     switch ( _this->KeyHandler.Code )
     {
       case CoreKeyCodeUp :
       {
-        if ( EnumKeyTriggerModeOFF == _this->UpKeyTriggerMode )
+        if (( EnumKeyTriggerModeOFF == _this->UpKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
+            _this ))
         {
           ComponentsBaseComponent__OnShortUpKeyActivated( _this );
         }
@@ -274,7 +280,8 @@ void ComponentsBaseComponent_OnKeyReleaseSlot( ComponentsBaseComponent _this, XO
 
       case CoreKeyCodeDown :
       {
-        if ( EnumKeyTriggerModeOFF == _this->DownKeyTriggerMode )
+        if (( EnumKeyTriggerModeOFF == _this->DownKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
+            _this ))
         {
           ComponentsBaseComponent__OnShortDownKeyActivated( _this );
         }
@@ -283,7 +290,8 @@ void ComponentsBaseComponent_OnKeyReleaseSlot( ComponentsBaseComponent _this, XO
 
       case CoreKeyCodeOk :
       {
-        if ( EnumKeyTriggerModeOFF == _this->EnterKeyTriggerMode )
+        if (( EnumKeyTriggerModeOFF == _this->EnterKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
+            _this ))
         {
           ComponentsBaseComponent__OnShortEnterKeyActivated( _this );
         }
@@ -433,6 +441,30 @@ void ComponentsBaseComponent__OnShortMagicKeyActivated( void* _this )
   ((ComponentsBaseComponent)_this)->_VMT->OnShortMagicKeyActivated((ComponentsBaseComponent)_this );
 }
 
+/* 'C' function for method : 'Components::BaseComponent.IsDDModeEffected()' */
+XBool ComponentsBaseComponent_IsDDModeEffected( ComponentsBaseComponent _this )
+{
+  return (XBool)( _this->DDModeEnabled && EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+    DeviceInterfaceVehicleDeviceClass )->DDModeActivated );
+}
+
+/* 'C' function for method : 'Components::BaseComponent.OnSetDDModeEnabled()' */
+void ComponentsBaseComponent_OnSetDDModeEnabled( ComponentsBaseComponent _this, 
+  XBool value )
+{
+  if ( _this->DDModeEnabled != value )
+  {
+    _this->DDModeEnabled = value;
+  }
+}
+
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnSetDDModeEnabled()' */
+void ComponentsBaseComponent__OnSetDDModeEnabled( void* _this, XBool value )
+{
+  ((ComponentsBaseComponent)_this)->_VMT->OnSetDDModeEnabled((ComponentsBaseComponent)_this
+  , value );
+}
+
 /* Variants derived from the class : 'Components::BaseComponent' */
 EW_DEFINE_CLASS_VARIANTS( ComponentsBaseComponent )
 EW_END_OF_CLASS_VARIANTS( ComponentsBaseComponent )
@@ -477,6 +509,7 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, KeyHandler, KeyHandler, Key
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( ComponentsBaseComponent )
 
 /* Initializer for the class 'Components::StatusBar' */
@@ -500,25 +533,25 @@ void ComponentsStatusBar__Init( ComponentsStatusBar _this, XObject aLink, XHandl
   _this->_VMT = EW_CLASS( ComponentsStatusBar );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0004 );
-  CoreRectView__OnSetBounds( &_this->Background, _Const0004 );
-  ViewsRectangle_OnSetColor( &_this->Background, _Const0005 );
-  CoreRectView__OnSetBounds( &_this->TitleText, _Const0006 );
+  CoreRectView__OnSetBounds( _this, _Const0001 );
+  CoreRectView__OnSetBounds( &_this->Background, _Const0001 );
+  ViewsRectangle_OnSetColor( &_this->Background, _Const0002 );
+  CoreRectView__OnSetBounds( &_this->TitleText, _Const0003 );
   ViewsText_OnSetAlignment( &_this->TitleText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->TitleText, 0 );
-  CoreRectView__OnSetBounds( &_this->Divider, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const0004 );
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
-  CoreRectView__OnSetBounds( &_this->IconWarning, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->IconWarning, _Const0005 );
   ViewsImage_OnSetAlignment( &_this->IconWarning, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter | ViewsImageAlignmentScaleToFit );
   ViewsImage_OnSetVisible( &_this->IconWarning, 0 );
-  CoreRectView__OnSetBounds( &_this->TimeText, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->TimeText, _Const0006 );
   ViewsText_OnSetAlignment( &_this->TimeText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->TimeText, 0 );
-  ViewsText_OnSetColor( &_this->TimeText, _Const000A );
+  ViewsText_OnSetColor( &_this->TimeText, _Const0007 );
   ViewsText_OnSetVisible( &_this->TimeText, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->TitleText ), 0 );
@@ -585,7 +618,7 @@ void ComponentsStatusBar_OnUpdateLocalTimeSlot( ComponentsStatusBar _this, XObje
   if ( CurrentTime != 0 )
   {
     ViewsText_OnSetString( &_this->TimeText, EwConcatString( EwConcatString( EwNewStringInt( 
-    CurrentTime->Hour, 2, 10 ), EwLoadString( &_Const000B )), EwNewStringInt( CurrentTime->Minute, 
+    CurrentTime->Hour, 2, 10 ), EwLoadString( &_Const0008 )), EwNewStringInt( CurrentTime->Minute, 
     2, 10 )));
   }
 }
@@ -641,19 +674,33 @@ void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHan
   /* ... then construct all embedded objects */
   ViewsImage__Init( &_this->MainBottomBG, &_this->_XObject, 0 );
   ViewsRectangle__Init( &_this->BlackBG, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->DDModeStateChangedHandler, &_this->_XObject, 0 );
+  ComponentsDDModeMask__Init( &_this->DDModeMask, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const000C );
-  CoreRectView__OnSetBounds( &_this->MainBottomBG, _Const000D );
-  CoreRectView__OnSetBounds( &_this->BlackBG, _Const000E );
-  ViewsRectangle_OnSetColor( &_this->BlackBG, _Const0005 );
+  CoreRectView__OnSetBounds( _this, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->MainBottomBG, _Const000A );
+  CoreRectView__OnSetBounds( &_this->BlackBG, _Const000B );
+  ViewsRectangle_OnSetColor( &_this->BlackBG, _Const0002 );
+  CoreSystemEventHandler_OnSetEnabled( &_this->DDModeStateChangedHandler, 0 );
+  CoreView_OnSetStackingPriority((CoreView)&_this->DDModeMask, 1 );
+  CoreRectView__OnSetBounds( &_this->DDModeMask, _Const000C );
+  CoreGroup__OnSetEnabled( &_this->DDModeMask, 0 );
+  CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->MainBottomBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BlackBG ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->DDModeMask ), 0 );
   ViewsImage_OnSetBitmap( &_this->MainBottomBG, EwLoadResource( &ResourceMainBG, 
   ResourcesBitmap ));
+  _this->DDModeStateChangedHandler.OnEvent = EwNewSlot( _this, ComponentsBaseMainBG_OnDDModeStateChangedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->DDModeStateChangedHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->DDModeStateChangedSystemEvent );
+
+  /* Call the user defined constructor */
+  ComponentsBaseMainBG_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'Components::BaseMainBG' */
@@ -665,6 +712,8 @@ void ComponentsBaseMainBG__ReInit( ComponentsBaseMainBG _this )
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->MainBottomBG );
   ViewsRectangle__ReInit( &_this->BlackBG );
+  CoreSystemEventHandler__ReInit( &_this->DDModeStateChangedHandler );
+  ComponentsDDModeMask__ReInit( &_this->DDModeMask );
 }
 
 /* Finalizer method for the class 'Components::BaseMainBG' */
@@ -676,9 +725,54 @@ void ComponentsBaseMainBG__Done( ComponentsBaseMainBG _this )
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->MainBottomBG );
   ViewsRectangle__Done( &_this->BlackBG );
+  CoreSystemEventHandler__Done( &_this->DDModeStateChangedHandler );
+  ComponentsDDModeMask__Done( &_this->DDModeMask );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void ComponentsBaseMainBG_Init( ComponentsBaseMainBG _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  CoreSystemEventHandler_OnSetEnabled( &_this->DDModeStateChangedHandler, _this->Super1.DDModeEnabled );
+  ComponentsBaseMainBG_UpdateDDModeMask( _this );
+}
+
+/* 'C' function for method : 'Components::BaseMainBG.OnSetDDModeEnabled()' */
+void ComponentsBaseMainBG_OnSetDDModeEnabled( ComponentsBaseMainBG _this, XBool 
+  value )
+{
+  ComponentsBaseComponent_OnSetDDModeEnabled((ComponentsBaseComponent)_this, value );
+  CoreSystemEventHandler_OnSetEnabled( &_this->DDModeStateChangedHandler, value );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void ComponentsBaseMainBG_OnDDModeStateChangedSlot( ComponentsBaseMainBG _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ComponentsBaseMainBG_UpdateDDModeMask( _this );
+}
+
+/* 'C' function for method : 'Components::BaseMainBG.UpdateDDModeMask()' */
+void ComponentsBaseMainBG_UpdateDDModeMask( ComponentsBaseMainBG _this )
+{
+  if ( CoreGroup__IsCurrentDialog( _this ) && _this->Super1.DDModeEnabled )
+  {
+    CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+    DeviceInterfaceVehicleDeviceClass )->DDModeActivated );
+    EwTrace( "%s%b%s%$", EwLoadString( &_Const000D ), CoreGroup_OnGetVisible((CoreGroup)&_this->DDModeMask ), 
+      EwLoadString( &_Const000E ), EwClassOf(((XObject)_this )));
+  }
 }
 
 /* Variants derived from the class : 'Components::BaseMainBG' */
@@ -725,6 +819,100 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, MainBottomBG, Ma
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( ComponentsBaseMainBG )
+
+/* Initializer for the class 'Components::DDModeMask' */
+void ComponentsDDModeMask__Init( ComponentsDDModeMask _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  CoreGroup__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( ComponentsDDModeMask );
+
+  /* ... then construct all embedded objects */
+  ViewsRectangle__Init( &_this->DDModeBG, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->DDModeIcon, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( ComponentsDDModeMask );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const000F );
+  CoreView_OnSetStackingPriority((CoreView)&_this->DDModeBG, 0 );
+  CoreRectView__OnSetBounds( &_this->DDModeBG, _Const000F );
+  ViewsRectangle_OnSetColor( &_this->DDModeBG, _Const0010 );
+  CoreView_OnSetStackingPriority((CoreView)&_this->DDModeIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->DDModeIcon, _Const0011 );
+  CoreGroup__Add( _this, ((CoreView)&_this->DDModeBG ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->DDModeIcon ), 0 );
+  ViewsImage_OnSetBitmap( &_this->DDModeIcon, EwLoadResource( &ResourceIconDDActive, 
+  ResourcesBitmap ));
+}
+
+/* Re-Initializer for the class 'Components::DDModeMask' */
+void ComponentsDDModeMask__ReInit( ComponentsDDModeMask _this )
+{
+  /* At first re-initialize the super class ... */
+  CoreGroup__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsRectangle__ReInit( &_this->DDModeBG );
+  ViewsImage__ReInit( &_this->DDModeIcon );
+}
+
+/* Finalizer method for the class 'Components::DDModeMask' */
+void ComponentsDDModeMask__Done( ComponentsDDModeMask _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( CoreGroup );
+
+  /* Finalize all embedded objects */
+  ViewsRectangle__Done( &_this->DDModeBG );
+  ViewsImage__Done( &_this->DDModeIcon );
+
+  /* Don't forget to deinitialize the super class ... */
+  CoreGroup__Done( &_this->_Super );
+}
+
+/* Variants derived from the class : 'Components::DDModeMask' */
+EW_DEFINE_CLASS_VARIANTS( ComponentsDDModeMask )
+EW_END_OF_CLASS_VARIANTS( ComponentsDDModeMask )
+
+/* Virtual Method Table (VMT) for the class : 'Components::DDModeMask' */
+EW_DEFINE_CLASS( ComponentsDDModeMask, CoreGroup, DDModeBG, DDModeBG, DDModeBG, 
+                 DDModeBG, _None, _None, "Components::DDModeMask" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+EW_END_OF_CLASS( ComponentsDDModeMask )
 
 /* Embedded Wizard */

@@ -43,7 +43,9 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
+#include "_CoreSystemEventHandler.h"
 #include "_MenuPushButton.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -159,6 +161,7 @@ EW_DEFINE_METHODS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
 EW_END_OF_METHODS( SettingsBtDeleteBleDevice )
 
 /* The method Init() is invoked automatically after the component has been created. 

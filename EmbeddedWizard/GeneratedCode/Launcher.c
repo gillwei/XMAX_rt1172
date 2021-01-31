@@ -29,6 +29,7 @@
 #include "_CoreGroup.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsRectEffect.h"
 #include "_LauncherLNC_Base.h"
 #include "_LauncherLNC_Main.h"
@@ -43,6 +44,7 @@
 #include "_ViewsText.h"
 #include "_ViewsWallpaper.h"
 #include "Core.h"
+#include "DeviceInterface.h"
 #include "Effects.h"
 #include "Enum.h"
 #include "Fonts.h"
@@ -264,7 +266,13 @@ void LauncherLNC_Main_OnShortUpKeyActivated( LauncherLNC_Main _this )
 /* 'C' function for method : 'Launcher::LNC_Main.OnShortEnterKeyActivated()' */
 void LauncherLNC_Main_OnShortEnterKeyActivated( LauncherLNC_Main _this )
 {
-  LauncherLNC_RotaryPlate_StartSelectedAnimation( &_this->LNC_RotaryPlate );
+  if (( EnumLauncherItemSETTINGS == _this->CurrentItem ) && EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass )->DDModeActivated )
+    ;
+  else
+  {
+    LauncherLNC_RotaryPlate_StartSelectedAnimation( &_this->LNC_RotaryPlate );
+  }
 }
 
 /* 'C' function for method : 'Launcher::LNC_Main.OnShortHomeKeyActivated()' */
@@ -499,6 +507,7 @@ EW_DEFINE_CLASS( LauncherLNC_Main, ComponentsBaseComponent, BaseSlideInEffect, B
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( LauncherLNC_Main )
 
 /* Initializer for the class 'Launcher::LNC_RotaryPlate' */
@@ -984,6 +993,7 @@ EW_DEFINE_CLASS( LauncherLNC_RotaryPlate, ComponentsBaseComponent, Icons, OnIcon
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( LauncherLNC_RotaryPlate )
 
 /* Initializer for the class 'Launcher::LNC_Base' */
