@@ -157,7 +157,7 @@ EW_DEFINE_METHODS( SettingsSET30_QRCode, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( SettingsSET30_QRCode _this )
   EW_METHOD( OnShortUpKeyActivated, void )( SettingsSET30_QRCode _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET30_QRCode _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
@@ -180,9 +180,6 @@ void SettingsSET30_QRCode_OnShortDownKeyActivated( SettingsSET30_QRCode _this );
 
 /* 'C' function for method : 'Settings::SET30_QRCode.OnShortUpKeyActivated()' */
 void SettingsSET30_QRCode_OnShortUpKeyActivated( SettingsSET30_QRCode _this );
-
-/* 'C' function for method : 'Settings::SET30_QRCode.OnShortHomeKeyActivated()' */
-void SettingsSET30_QRCode_OnShortHomeKeyActivated( SettingsSET30_QRCode _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */

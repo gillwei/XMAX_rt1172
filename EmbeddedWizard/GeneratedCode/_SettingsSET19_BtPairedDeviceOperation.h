@@ -161,7 +161,7 @@ EW_DEFINE_METHODS( SettingsSET19_BtPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET19_BtPairedDeviceOperation _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
@@ -176,9 +176,6 @@ EW_DEFINE_METHODS( SettingsSET19_BtPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( LoadItemEnabled,   XBool )( SettingsSET19_BtPairedDeviceOperation _this, 
     XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET19_BtPairedDeviceOperation )
-
-/* 'C' function for method : 'Settings::SET19_BtPairedDeviceOperation.OnShortHomeKeyActivated()' */
-void SettingsSET19_BtPairedDeviceOperation_OnShortHomeKeyActivated( SettingsSET19_BtPairedDeviceOperation _this );
 
 /* 'C' function for method : 'Settings::SET19_BtPairedDeviceOperation.LoadItemClass()' */
 XClass SettingsSET19_BtPairedDeviceOperation_LoadItemClass( SettingsSET19_BtPairedDeviceOperation _this, 

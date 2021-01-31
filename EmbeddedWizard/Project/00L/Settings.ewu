@@ -152,16 +152,11 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
 
   $reorder SlideInDialog 4
   $reorder OnSetDDModeEnabled 1
-  $reorder LoadItemClass 5
+  $reorder LoadItemClass 4
   $reorder LoadItemTitle 4
-  $reorder OnItemActivate 4
-  $reorder BlackBG 1
-  $reorder LoadItemChecked 5
-  $reorder MainBottomBG 1
-  $reorder DDModeStateChangedHandler 1
-  $reorder OnDDModeStateChangedSlot 1
+  $reorder OnItemActivate 3
+  $reorder LoadItemChecked 2
   $reorder LoadItemEnabled 2
-  $reorder DDModeMask 1
   $reorder Menu 1
   $reorder Note5 1
   $reorder SeatHeaterEnabled 1
@@ -175,12 +170,6 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
 {
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <230,290,460,330>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
 
   $rect <10,340,210,380>
   inherited property DDModeEnabled = true;
@@ -251,12 +240,6 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
 
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <230,400,460,440>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
 
   $rect <10,340,210,380>
   inherited property DDModeEnabled = true;
@@ -471,12 +454,6 @@ class SET28_SystemInfo : Components::BaseMainBG
 
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <520,60,750,100>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
 
   $rect <520,110,750,150>
   inherited method OnShortMagicKeyActivated()
@@ -1419,12 +1396,6 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
     }
   }
 
-  $rect <520,220,750,260>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
-
   $rect <0,340,200,380>
   inherited property DDModeEnabled = true;
 
@@ -1561,12 +1532,6 @@ class SET19_BtPairedDeviceOperation : Menu::BaseMenuView
 {
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <230,290,460,330>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
 
   $rect <230,350,430,390>
   inherited property DDModeEnabled = true;
@@ -1827,12 +1792,6 @@ class SET30_QRCode : Menu::BaseMenuView
     {
       trace "please press down";
     }
-  }
-
-  $rect <230,290,460,330>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <10,340,210,380>

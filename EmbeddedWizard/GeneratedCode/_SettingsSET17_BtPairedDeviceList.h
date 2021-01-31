@@ -164,7 +164,7 @@ EW_DEFINE_METHODS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET17_BtPairedDeviceList _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
@@ -196,9 +196,6 @@ EW_END_OF_METHODS( SettingsSET17_BtPairedDeviceList )
    you can request its invocation by using the method @InvalidateViewState(). */
 void SettingsSET17_BtPairedDeviceList_UpdateViewState( SettingsSET17_BtPairedDeviceList _this, 
   XSet aState );
-
-/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.OnShortHomeKeyActivated()' */
-void SettingsSET17_BtPairedDeviceList_OnShortHomeKeyActivated( SettingsSET17_BtPairedDeviceList _this );
 
 /* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.LoadItemClass()' */
 XClass SettingsSET17_BtPairedDeviceList_LoadItemClass( SettingsSET17_BtPairedDeviceList _this, 

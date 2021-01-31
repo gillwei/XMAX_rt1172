@@ -159,7 +159,7 @@ EW_DEFINE_METHODS( SettingsSET28_SystemInfo, ComponentsBaseMainBG )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET28_SystemInfo _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( SettingsSET28_SystemInfo _this )
@@ -170,9 +170,6 @@ EW_END_OF_METHODS( SettingsSET28_SystemInfo )
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
 void SettingsSET28_SystemInfo_Init( SettingsSET28_SystemInfo _this, XHandle aArg );
-
-/* 'C' function for method : 'Settings::SET28_SystemInfo.OnShortHomeKeyActivated()' */
-void SettingsSET28_SystemInfo_OnShortHomeKeyActivated( SettingsSET28_SystemInfo _this );
 
 /* 'C' function for method : 'Settings::SET28_SystemInfo.OnShortMagicKeyActivated()' */
 void SettingsSET28_SystemInfo_OnShortMagicKeyActivated( SettingsSET28_SystemInfo _this );

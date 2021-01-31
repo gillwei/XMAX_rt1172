@@ -13,6 +13,12 @@ class HOM11_tachometer : Components::BaseMainBG
     GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
   }
 
+  $rect <210,330,440,370>
+  inherited method OnShortHomeKeyActivated()
+  {
+    // TODO: switch to other home group
+  }
+
   $rect <20,20,160,60>
   object Views::Text Title
   {

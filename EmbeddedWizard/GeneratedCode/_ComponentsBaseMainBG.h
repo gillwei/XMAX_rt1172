@@ -154,7 +154,7 @@ EW_DEFINE_METHODS( ComponentsBaseMainBG, ComponentsBaseComponent )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
@@ -165,6 +165,9 @@ EW_END_OF_METHODS( ComponentsBaseMainBG )
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
 void ComponentsBaseMainBG_Init( ComponentsBaseMainBG _this, XHandle aArg );
+
+/* 'C' function for method : 'Components::BaseMainBG.OnShortHomeKeyActivated()' */
+void ComponentsBaseMainBG_OnShortHomeKeyActivated( ComponentsBaseMainBG _this );
 
 /* 'C' function for method : 'Components::BaseMainBG.OnSetDDModeEnabled()' */
 void ComponentsBaseMainBG_OnSetDDModeEnabled( ComponentsBaseMainBG _this, XBool 

@@ -160,7 +160,7 @@ EW_DEFINE_METHODS( SettingsSET04_BtSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET04_BtSettingMenu _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
@@ -182,9 +182,6 @@ EW_END_OF_METHODS( SettingsSET04_BtSettingMenu )
    statements. */
 void SettingsSET04_BtSettingMenu_Init( SettingsSET04_BtSettingMenu _this, XHandle 
   aArg );
-
-/* 'C' function for method : 'Settings::SET04_BtSettingMenu.OnShortHomeKeyActivated()' */
-void SettingsSET04_BtSettingMenu_OnShortHomeKeyActivated( SettingsSET04_BtSettingMenu _this );
 
 /* 'C' function for method : 'Settings::SET04_BtSettingMenu.LoadItemClass()' */
 XClass SettingsSET04_BtSettingMenu_LoadItemClass( SettingsSET04_BtSettingMenu _this, 

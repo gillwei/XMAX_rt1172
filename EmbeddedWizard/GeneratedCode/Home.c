@@ -96,6 +96,13 @@ void HomeHOM11_tachometer_OnShortEnterKeyActivated( HomeHOM11_tachometer _this )
   LauncherLNC_Main, 0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
+/* 'C' function for method : 'Home::HOM11_tachometer.OnShortHomeKeyActivated()' */
+void HomeHOM11_tachometer_OnShortHomeKeyActivated( HomeHOM11_tachometer _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+}
+
 /* Variants derived from the class : 'Home::HOM11_tachometer' */
 EW_DEFINE_CLASS_VARIANTS( HomeHOM11_tachometer )
 EW_END_OF_CLASS_VARIANTS( HomeHOM11_tachometer )
@@ -136,7 +143,7 @@ EW_DEFINE_CLASS( HomeHOM11_tachometer, ComponentsBaseMainBG, Title, Title, Title
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   HomeHOM11_tachometer_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  HomeHOM11_tachometer_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,

@@ -40,6 +40,7 @@
 #include "_FactoryDisplayManual.h"
 #include "_FactoryTestContext.h"
 #include "_HomeHOM11_tachometer.h"
+#include "_LauncherLNC_Main.h"
 #include "_SettingsBtFwUpdateDialog.h"
 #include "_TopTOP01_Disclaimer.h"
 #include "Application.h"
@@ -316,6 +317,25 @@ void ApplicationApplication_OnDDModeTestSlot( ApplicationApplication _this, XObj
     DeviceInterfaceVehicleDeviceClass )->DDModeActivated );
   DeviceInterfaceVehicleDeviceClass_NotifyDDModeStateChanged( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
   DeviceInterfaceVehicleDeviceClass ));
+}
+
+/* Return from the DD mode forbidden UI to the launcher */
+void ApplicationApplication_ReturnToLauncher( ApplicationApplication _this )
+{
+  XInt32 NoOfDialogs = CoreGroup_CountDialogs((CoreGroup)_this );
+  XInt32 i;
+
+  for ( i = 0; i < NoOfDialogs; i++ )
+  {
+    LauncherLNC_Main LauncherMain = EwCastObject( CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+      i ), LauncherLNC_Main );
+
+    if ( LauncherMain != 0 )
+    {
+      LauncherLNC_Main_DismissChildDialogs( LauncherMain );
+      break;
+    }
+  }
 }
 
 /* Variants derived from the class : 'Application::Application' */

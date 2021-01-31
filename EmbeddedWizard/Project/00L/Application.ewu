@@ -223,4 +223,21 @@ class Application : Core::Root
   {
     attr Bounds = <330,740,620,890>;
   }
+
+  // Return from the DD mode forbidden UI to the launcher
+  $rect <640,410,840,450>
+  method void ReturnToLauncher()
+  {
+    var int32 NoOfDialogs = CountDialogs();
+    var int32 i;
+    for( i = 0; i < NoOfDialogs; i++ )
+    {
+      var Launcher::LNC_Main LauncherMain = ( Launcher::LNC_Main )GetDialogAtIndex( i );
+      if( null != LauncherMain )
+      {
+        LauncherMain.DismissChildDialogs();
+        break;
+      }
+    }
+  }
 }

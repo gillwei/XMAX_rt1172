@@ -372,6 +372,23 @@ class BaseMainBG : Components::BaseComponent
   $rect <0,280,200,320>
   inherited property Bounds = <0,0,480,272>;
 
+  $rect <220,330,450,370>
+  inherited method OnShortHomeKeyActivated()
+  {
+    if( IsDDModeEffected() )
+    {
+      var Application::Application App = ( Application::Application )GetRoot();
+      if( null != App )
+      {
+        App.ReturnToLauncher();
+      }
+    }
+    else
+    {
+      Owner.DismissDialog( this, null, null, null, null, null, false );
+    }
+  }
+
   $rect <540,170,740,210>
   inherited onset DDModeEnabled
   {

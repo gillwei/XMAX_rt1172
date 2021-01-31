@@ -25,10 +25,12 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_ApplicationApplication.h"
 #include "_ComponentsBaseComponent.h"
 #include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_ComponentsStatusBar.h"
+#include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreView.h"
@@ -744,6 +746,25 @@ void ComponentsBaseMainBG_Init( ComponentsBaseMainBG _this, XHandle aArg )
   ComponentsBaseMainBG_UpdateDDModeMask( _this );
 }
 
+/* 'C' function for method : 'Components::BaseMainBG.OnShortHomeKeyActivated()' */
+void ComponentsBaseMainBG_OnShortHomeKeyActivated( ComponentsBaseMainBG _this )
+{
+  if ( ComponentsBaseComponent_IsDDModeEffected((ComponentsBaseComponent)_this ))
+  {
+    ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+
+    if ( App != 0 )
+    {
+      ApplicationApplication_ReturnToLauncher( App );
+    }
+  }
+  else
+  {
+    CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, 
+    EwNullSlot, EwNullSlot, 0 );
+  }
+}
+
 /* 'C' function for method : 'Components::BaseMainBG.OnSetDDModeEnabled()' */
 void ComponentsBaseMainBG_OnSetDDModeEnabled( ComponentsBaseMainBG _this, XBool 
   value )
@@ -815,7 +836,7 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, MainBottomBG, Ma
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseMainBG_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,

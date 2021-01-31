@@ -159,7 +159,7 @@ EW_DEFINE_METHODS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET03_ConnectionSettingMenu _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
@@ -173,9 +173,6 @@ EW_DEFINE_METHODS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET03_ConnectionSettingMenu )
-
-/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.OnShortHomeKeyActivated()' */
-void SettingsSET03_ConnectionSettingMenu_OnShortHomeKeyActivated( SettingsSET03_ConnectionSettingMenu _this );
 
 /* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.LoadItemClass()' */
 XClass SettingsSET03_ConnectionSettingMenu_LoadItemClass( SettingsSET03_ConnectionSettingMenu _this, 

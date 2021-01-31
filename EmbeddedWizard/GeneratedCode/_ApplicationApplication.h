@@ -202,6 +202,9 @@ void ApplicationApplication_SwitchToHome( ApplicationApplication _this, CoreGrou
 void ApplicationApplication_OnDDModeTestSlot( ApplicationApplication _this, XObject 
   sender );
 
+/* Return from the DD mode forbidden UI to the launcher */
+void ApplicationApplication_ReturnToLauncher( ApplicationApplication _this );
+
 #ifdef __cplusplus
   }
 #endif

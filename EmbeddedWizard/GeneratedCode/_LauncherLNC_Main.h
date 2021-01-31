@@ -208,6 +208,9 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
 /* 'C' function for method : 'Launcher::LNC_Main.OnSlideOutFinishedSlot()' */
 void LauncherLNC_Main_OnSlideOutFinishedSlot( LauncherLNC_Main _this, XObject sender );
 
+/* Dismiss dialogs presented from launcher */
+void LauncherLNC_Main_DismissChildDialogs( LauncherLNC_Main _this );
+
 #ifdef __cplusplus
   }
 #endif

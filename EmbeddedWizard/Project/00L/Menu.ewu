@@ -980,10 +980,10 @@ class BaseMenuView : Components::BaseMainBG
     return true;
   }
 
+  $reorder BlackBG 1
   $reorder LoadItemClass 2
   $reorder LoadItemTitle 2
   $reorder OnItemActivate 2
-  $reorder BlackBG 1
 }
 
 $rect <690,10,910,50>

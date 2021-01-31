@@ -152,7 +152,7 @@ EW_DEFINE_METHODS( HomeHOM11_tachometer, ComponentsBaseMainBG )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( HomeHOM11_tachometer _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( HomeHOM11_tachometer _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
@@ -161,6 +161,9 @@ EW_END_OF_METHODS( HomeHOM11_tachometer )
 
 /* 'C' function for method : 'Home::HOM11_tachometer.OnShortEnterKeyActivated()' */
 void HomeHOM11_tachometer_OnShortEnterKeyActivated( HomeHOM11_tachometer _this );
+
+/* 'C' function for method : 'Home::HOM11_tachometer.OnShortHomeKeyActivated()' */
+void HomeHOM11_tachometer_OnShortHomeKeyActivated( HomeHOM11_tachometer _this );
 
 #ifdef __cplusplus
   }

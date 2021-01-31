@@ -303,6 +303,17 @@ class LNC_Main : Components::BaseComponent
       Owner.DismissDialog( this, null, null, null, null, null, false );
     }
   }
+
+  // Dismiss dialogs presented from launcher
+  $rect <250,630,450,670>
+  method void DismissChildDialogs()
+  {
+    while( CountDialogs() > 0 )
+    {
+      trace "DismissChildDialogs ", classof GetDialogAtIndex( 0 );
+      DismissDialog( GetDialogAtIndex( 0 ), null, null, null, null, null, false );
+    }
+  }
 }
 
 $rect <10,120,250,160>
