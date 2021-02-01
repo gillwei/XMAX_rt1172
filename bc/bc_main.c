@@ -18,12 +18,12 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "bc_ancs_priv.h"
-
+#include "bc_ams_priv.h"
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define BC_TASK_PRIORITY    ( TASK_PRIO_BT_CONNECTIVITY )
-#define BC_TASK_STACK_SIZE  ( configMINIMAL_STACK_SIZE * 5 )
+#define BC_TASK_STACK_SIZE  ( configMINIMAL_STACK_SIZE * 10 )
 #define BC_TASK_NAME        "bc_task"
 
 #define EVENT_ANCS_GATT_NOTIFICATION_RECEIVED       ( 1 << 0 )
@@ -126,4 +126,5 @@ BaseType_t result = xTaskCreate( task_main, BC_TASK_NAME, BC_TASK_STACK_SIZE, NU
 configASSERT( pdPASS == result );
 
 bc_ancs_init();
+bc_ams_init();
 }

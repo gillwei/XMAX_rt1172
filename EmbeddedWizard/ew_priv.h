@@ -71,7 +71,7 @@ bool ew_navi_is_map_frame_ready( void );
 void ew_device_mm_init( void );
 void ew_device_mm_deinit( void );
 int ew_device_mm_proc( void );
-mm_media_player_obj ew_get_media_player_state( void );
+mm_media_player_obj* ew_get_media_player_state( void );
 void ew_send_command( ams_remote_command command );
 
 void ew_device_bluetooth_init( void );

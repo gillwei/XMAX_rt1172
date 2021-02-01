@@ -5,7 +5,7 @@
 * @brief
 * Media manager module - Private API
 *
-* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+* Copyright 2021 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 #ifndef MM_PRIV_H
 #define MM_PRIV_H
@@ -17,13 +17,11 @@ extern "C"{
 #include "MM_pub_ams_type.h"
 
 bool mm_queue_cmd( ams_remote_command send_cmd );
-void mm_ams_avrc_handler_init( void );
-void mm_ams_avrc_handler_disconnect( void );
-
 void mm_start_elapsed_timer( void );
 void mm_stop_elapsed_timer( void );
 void mm_update_elapsed_time( void );
 void mm_start_delay_timer( void );
+void mm_ams_gatt_update_elapsed_time( void );
 
 #ifdef __cplusplus
 }

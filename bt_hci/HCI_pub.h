@@ -127,26 +127,6 @@ BaseType_t HCI_wiced_send_command
     const uint16_t len
     );
 
-void HCI_avrc_play
-    (
-    void
-    );
-
-void HCI_avrc_pause
-    (
-    void
-    );
-
-void HCI_avrc_play_next_track
-    (
-    void
-    );
-
-void HCI_avrc_play_previous_track
-    (
-    void
-    );
-
 int HCI_le_register_client_callback
     (
     const ble_client_type      client_type,
@@ -163,13 +143,6 @@ int HCI_le_enqueue_gatt_write_request
 bool HCI_le_is_connected
     (
     void
-    );
-
-void hci_avrc_event_handler
-    (
-    const uint16_t opcode,
-    const uint16_t length,
-    const uint8_t* data
     );
 
 void HCI_BT_off

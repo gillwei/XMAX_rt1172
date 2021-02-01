@@ -5,7 +5,7 @@
 * @brief
 * Media manager module - public API
 *
-* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+* Copyright 2021 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 #ifndef MM_PUB_AMS_TYPE_H
 #define MM_PUB_AMS_TYPE_H

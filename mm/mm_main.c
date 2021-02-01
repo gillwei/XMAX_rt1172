@@ -5,7 +5,7 @@
 * @brief
 * Media manager module - main
 *
-* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+* Copyright 2021 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 
 /*--------------------------------------------------------------------
@@ -22,6 +22,7 @@
 #include "GRM_pub_prj.h"
 #include "mm_priv.h"
 #include "MM_pub.h"
+#include "BC_ams_pub.h"
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -74,7 +75,7 @@ static void mm_timer_callback
     TimerHandle_t timer_handle
     )
 {
-mm_update_elapsed_time();
+mm_ams_gatt_update_elapsed_time();
 }
 
 /*********************************************************************
@@ -159,6 +160,25 @@ return cmd_sent;
 
 /*********************************************************************
 *
+* @public
+* MM_send_command
+*
+* Send user command to queue.
+*
+* @param command Ams remote command type.
+* @return Result of sending command.
+*
+*********************************************************************/
+bool MM_send_command
+    (
+    ams_remote_command command
+    )
+{
+return mm_queue_cmd( command );
+}
+
+/*********************************************************************
+*
 * @private
 * task_main
 *
@@ -191,19 +211,26 @@ while( true )
             switch( recv_cmd )
                 {
                 case AMS_REMOTE_COMMAND_PLAY:
-                    HCI_avrc_play();
+                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PLAY );
                     break;
                 case AMS_REMOTE_COMMAND_PAUSE:
-                    HCI_avrc_pause();
+                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PAUSE );
                     break;
                 case AMS_REMOTE_COMMAND_NEXT_TRACK:
                     mm_stop_elapsed_timer();
-                    HCI_avrc_play_next_track();
+                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_NEXT_TRACK );
                     break;
                 case AMS_REMOTE_COMMAND_PREVIOUS_TRACK:
                     mm_stop_elapsed_timer();
-                    HCI_avrc_play_previous_track();
+                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PREVIOUS_TRACK );
                     break;
+                // TODO: Enable when implementing volume control SCR.
+                /*case AMS_REMOTE_COMMAND_VOLUME_UP:
+                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_VOLUME_UP );
+                    break;
+                case AMS_REMOTE_COMMAND_VOLUME_DOWN:
+                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_VOLUME_DOWN );
+                    break;*/
                 default:
                     break;
                 }
@@ -227,8 +254,6 @@ void MM_init
     void
     )
 {
-mm_ams_avrc_handler_init();
-
 BaseType_t result = xTaskCreate( task_main, MM_TASK_NAME, MM_TASK_STACK_SIZE, NULL, MM_TASK_PRIORITY, NULL );
 configASSERT( pdPASS == result );
 

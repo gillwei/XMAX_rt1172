@@ -49,6 +49,7 @@
 #ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged_
     static int ew_notify_playback_state_changed( void );
 #endif
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -93,7 +94,6 @@
         };
 
     const int num_of_mm_func = sizeof( mm_function_lookup_table )/sizeof( mm_device_function* );
-
 #endif
 
 /*--------------------------------------------------------------------
@@ -214,8 +214,9 @@ int need_update = 0;
 if( is_title_changed )
     {
     is_title_changed = 0;
-    mm_media_player_obj media_player = MM_get_media_player_state();
-    XString xstring_title = EwNewStringUtf8( ( const unsigned char* )media_player.str.track_title, ( int )strlen( media_player.str.track_title ) );
+    mm_media_player_obj* media_player = NULL;
+    media_player = MM_ams_gatt_get_media_player_state();
+    XString xstring_title = EwNewStringUtf8( ( const unsigned char* )media_player->str.track_title, ( int )strlen( media_player->str.track_title ) );
     DeviceInterfaceMediaManagerDeviceClass__NotifyTitleChanged( device_object, xstring_title );
     need_update = 1;
     }
@@ -241,8 +242,9 @@ int need_update = 0;
 if( is_album_changed )
     {
     is_album_changed = 0;
-    mm_media_player_obj media_player = MM_get_media_player_state();
-    XString xstring_album = EwNewStringUtf8( ( const unsigned char* )media_player.str.track_album, ( int )strlen( media_player.str.track_album ) );
+    mm_media_player_obj* media_player = NULL;
+    media_player = MM_ams_gatt_get_media_player_state();
+    XString xstring_album = EwNewStringUtf8( ( const unsigned char* )media_player->str.track_album, ( int )strlen( media_player->str.track_album ) );
     DeviceInterfaceMediaManagerDeviceClass__NotifyAlbumChanged( device_object, xstring_album );
     need_update = 1;
     }
@@ -268,8 +270,9 @@ int need_update = 0;
 if( is_artist_changed )
     {
     is_artist_changed = 0;
-    mm_media_player_obj media_player = MM_get_media_player_state();
-    XString xstring_artist = EwNewStringUtf8( ( const unsigned char* )media_player.str.track_artist, ( int )strlen( media_player.str.track_artist ) );
+    mm_media_player_obj* media_player = NULL;
+    media_player = MM_ams_gatt_get_media_player_state();
+    XString xstring_artist = EwNewStringUtf8( ( const unsigned char* )media_player->str.track_artist, ( int )strlen( media_player->str.track_artist ) );
     DeviceInterfaceMediaManagerDeviceClass__NotifyArtistChanged( device_object, xstring_artist );
     need_update = 1;
     }
@@ -282,7 +285,7 @@ return need_update;
 * @private
 * ew_notify_playback_time_changed
 *
-* Notify elapsed time/remain time/duration to EW GUI.
+* Notify elapsed time/duration to EW GUI.
 *
 *********************************************************************/
 #ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyPlayBackTimeChanged_
@@ -295,9 +298,9 @@ int need_update = 0;
 if( is_playback_time_changed )
     {
     is_playback_time_changed = 0;
-    mm_media_player_obj media_player = MM_get_media_player_state();
-    uint32_t remain_time_sec = ( media_player.duration_sec - media_player.current_elapsed_time_sec );
-    DeviceInterfaceMediaManagerDeviceClass__NotifyPlayBackTimeChanged( device_object, media_player.current_elapsed_time_sec, media_player.duration_sec, remain_time_sec );
+    mm_media_player_obj* media_player = NULL;
+    media_player = MM_ams_gatt_get_media_player_state();
+    DeviceInterfaceMediaManagerDeviceClass__NotifyPlayBackTimeChanged( device_object, media_player->current_elapsed_time_sec, media_player->duration_sec );
     need_update = 1;
     }
 return need_update;
@@ -322,8 +325,9 @@ int need_update = 0;
 if( is_playback_state_changed )
     {
     is_playback_state_changed = 0;
-    mm_media_player_obj media_player = MM_get_media_player_state();
-    DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged( device_object, media_player.playback_state );
+    mm_media_player_obj* media_player = NULL;
+    media_player = MM_ams_gatt_get_media_player_state();
+    DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged( device_object, media_player->playback_state );
     need_update = 1;
     }
 return need_update;
@@ -339,12 +343,12 @@ return need_update;
 * @return media player state data.
 *
 *********************************************************************/
-mm_media_player_obj ew_get_media_player_state
+mm_media_player_obj* ew_get_media_player_state
     (
     void
     )
 {
-return MM_get_media_player_state();
+return MM_ams_gatt_get_media_player_state();
 }
 
 /*********************************************************************

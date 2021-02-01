@@ -62,7 +62,6 @@ EW_DEFINE_FIELDS( DeviceInterfaceMediaManagerDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( DurationTimeSec, XInt32 )
   EW_PROPERTY( ElapsedTimeSec,  XInt32 )
   EW_PROPERTY( PlaybackState,   XInt32 )
-  EW_PROPERTY( RemainTimeSec,   XInt32 )
   EW_VARIABLE( IsArtistReceived, XBool )
   EW_VARIABLE( IsAlbumReceived, XBool )
   EW_VARIABLE( IsTitleReceived, XBool )
@@ -88,14 +87,6 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( DeviceInterfaceMediaMan
 /* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.SendRemoteCommand()' */
 void DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( DeviceInterfaceMediaManagerDeviceClass _this, 
   XEnum cmd_type );
-
-/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.OnSetPlaybackState()' */
-void DeviceInterfaceMediaManagerDeviceClass_OnSetPlaybackState( DeviceInterfaceMediaManagerDeviceClass _this, 
-  XInt32 value );
-
-/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.OnSetPlayerName()' */
-void DeviceInterfaceMediaManagerDeviceClass_OnSetPlayerName( DeviceInterfaceMediaManagerDeviceClass _this, 
-  XString value );
 
 /* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.NotifyTitleChanged()' */
 void DeviceInterfaceMediaManagerDeviceClass_NotifyTitleChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
@@ -153,11 +144,11 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged( void* _th
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
 void DeviceInterfaceMediaManagerDeviceClass_NotifyPlayBackTimeChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
-  XInt32 aElapsedTimeSec, XInt32 aDurationTimeSec, XInt32 aRemainTimeSec );
+  XInt32 aElapsedTimeSec, XInt32 aDurationTimeSec );
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::MediaManagerDeviceClass.NotifyPlayBackTimeChanged()' */
 void DeviceInterfaceMediaManagerDeviceClass__NotifyPlayBackTimeChanged( void* _this, 
-  XInt32 aElapsedTimeSec, XInt32 aDurationTimeSec, XInt32 aRemainTimeSec );
+  XInt32 aElapsedTimeSec, XInt32 aDurationTimeSec );
 
 /* The following define announces the presence of the method DeviceInterface::MediaManagerDeviceClass.NotifyPlayBackTimeChanged(). */
 #define _DeviceInterfaceMediaManagerDeviceClass__NotifyPlayBackTimeChanged_
@@ -170,9 +161,6 @@ XString DeviceInterfaceMediaManagerDeviceClass_OnGetAlbum( DeviceInterfaceMediaM
 
 /* Default onget method for the property 'Artist' */
 XString DeviceInterfaceMediaManagerDeviceClass_OnGetArtist( DeviceInterfaceMediaManagerDeviceClass _this );
-
-/* Default onget method for the property 'PlaybackState' */
-XInt32 DeviceInterfaceMediaManagerDeviceClass_OnGetPlaybackState( DeviceInterfaceMediaManagerDeviceClass _this );
 
 #ifdef __cplusplus
   }

@@ -69,7 +69,7 @@ note group Note3
 // Project Units
 note group Note5
 {
-  attr Bounds = <270,140,740,680>;
+  attr Bounds = <270,140,740,710>;
 }
 
 // This is a profile member for the project. This profile controls the code generation \

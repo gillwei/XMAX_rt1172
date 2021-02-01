@@ -82,7 +82,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   ViewsText__Init( &_this->Artist, &_this->_XObject, 0 );
   ViewsText__Init( &_this->Album, &_this->_XObject, 0 );
   ViewsText__Init( &_this->ElapsedTimeSec, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->RemainTimeSec, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->TotalTimeSec, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->PlaybackTimeEventHandler, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->PlayPauseBG, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->PlayPauseButton, &_this->_XObject, 0 );
@@ -96,7 +96,6 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CorePropertyObserver__Init( &_this->TitleObserver, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->AlbumObserver, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->ArtistObserver, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->PlayStateObserver, &_this->_XObject, 0 );
   WidgetSetHorizontalSlider__Init( &_this->SeekBar, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
@@ -120,17 +119,17 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   ViewsText_OnSetEllipsis( &_this->Album, 1 );
   ViewsText_OnSetAlignment( &_this->Album, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Album, 0 );
-  ViewsText_OnSetVisible( &_this->Album, 1 );
+  ViewsText_OnSetVisible( &_this->Album, 0 );
   CoreRectView__OnSetBounds( &_this->ElapsedTimeSec, _Const0004 );
   ViewsText_OnSetAlignment( &_this->ElapsedTimeSec, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ElapsedTimeSec, 0 );
   ViewsText_OnSetVisible( &_this->ElapsedTimeSec, 0 );
-  CoreRectView__OnSetBounds( &_this->RemainTimeSec, _Const0005 );
-  ViewsText_OnSetAlignment( &_this->RemainTimeSec, ViewsTextAlignmentAlignHorzRight 
+  CoreRectView__OnSetBounds( &_this->TotalTimeSec, _Const0005 );
+  ViewsText_OnSetAlignment( &_this->TotalTimeSec, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->RemainTimeSec, 0 );
-  ViewsText_OnSetVisible( &_this->RemainTimeSec, 0 );
+  ViewsText_OnSetString( &_this->TotalTimeSec, 0 );
+  ViewsText_OnSetVisible( &_this->TotalTimeSec, 0 );
   CoreRectView__OnSetBounds( &_this->PlayPauseBG, _Const0006 );
   ViewsImage_OnSetFrameNumber( &_this->PlayPauseBG, 0 );
   CoreRectView__OnSetBounds( &_this->PlayPauseButton, _Const0006 );
@@ -149,7 +148,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CoreGroup__Add( _this, ((CoreView)&_this->Artist ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Album ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ElapsedTimeSec ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->RemainTimeSec ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->TotalTimeSec ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PlayPauseBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PlayPauseButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ControlDownBG ), 0 );
@@ -167,7 +166,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->ElapsedTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium22pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->RemainTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont( &_this->TotalTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->PlaybackTimeEventHandler.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->PlaybackTimeEventHandler, &EwGetAutoObject( 
@@ -201,10 +200,6 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CorePropertyObserver_OnSetOutlet( &_this->ArtistObserver, EwNewRef( EwGetAutoObject( 
   &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass ), 
   DeviceInterfaceMediaManagerDeviceClass_OnGetArtist, DeviceInterfaceMediaManagerDeviceClass_OnSetArtist ));
-  _this->PlayStateObserver.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnTrackInfoUpdateSlot );
-  CorePropertyObserver_OnSetOutlet( &_this->PlayStateObserver, EwNewRef( EwGetAutoObject( 
-  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass ), 
-  DeviceInterfaceMediaManagerDeviceClass_OnGetPlaybackState, DeviceInterfaceMediaManagerDeviceClass_OnSetPlaybackState ));
   WidgetSetHorizontalSlider_OnSetAppearance( &_this->SeekBar, EwGetAutoObject( &UIConfigHorizontalSliderConfig, 
   WidgetSetHorizontalSliderConfig ));
 
@@ -223,7 +218,7 @@ void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
   ViewsText__ReInit( &_this->Artist );
   ViewsText__ReInit( &_this->Album );
   ViewsText__ReInit( &_this->ElapsedTimeSec );
-  ViewsText__ReInit( &_this->RemainTimeSec );
+  ViewsText__ReInit( &_this->TotalTimeSec );
   CoreSystemEventHandler__ReInit( &_this->PlaybackTimeEventHandler );
   ViewsImage__ReInit( &_this->PlayPauseBG );
   ViewsImage__ReInit( &_this->PlayPauseButton );
@@ -237,7 +232,6 @@ void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
   CorePropertyObserver__ReInit( &_this->TitleObserver );
   CorePropertyObserver__ReInit( &_this->AlbumObserver );
   CorePropertyObserver__ReInit( &_this->ArtistObserver );
-  CorePropertyObserver__ReInit( &_this->PlayStateObserver );
   WidgetSetHorizontalSlider__ReInit( &_this->SeekBar );
 }
 
@@ -252,7 +246,7 @@ void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
   ViewsText__Done( &_this->Artist );
   ViewsText__Done( &_this->Album );
   ViewsText__Done( &_this->ElapsedTimeSec );
-  ViewsText__Done( &_this->RemainTimeSec );
+  ViewsText__Done( &_this->TotalTimeSec );
   CoreSystemEventHandler__Done( &_this->PlaybackTimeEventHandler );
   ViewsImage__Done( &_this->PlayPauseBG );
   ViewsImage__Done( &_this->PlayPauseButton );
@@ -266,7 +260,6 @@ void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
   CorePropertyObserver__Done( &_this->TitleObserver );
   CorePropertyObserver__Done( &_this->AlbumObserver );
   CorePropertyObserver__Done( &_this->ArtistObserver );
-  CorePropertyObserver__Done( &_this->PlayStateObserver );
   WidgetSetHorizontalSlider__Done( &_this->SeekBar );
 
   /* Don't forget to deinitialize the super class ... */
@@ -333,9 +326,10 @@ void MediaMED01_MediaUI_OnLongUpKeyActivated( MediaMED01_MediaUI _this )
 void MediaMED01_MediaUI_OnPlayPauseSlot( MediaMED01_MediaUI _this, XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( sender );
 
-  if ( 0 == _this->PlaybackState )
+  if ( 0 == EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->PlaybackState )
   {
     DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
     DeviceInterfaceMediaManagerDeviceClass ), EnumCommandTypePlay );
@@ -399,13 +393,13 @@ void MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot( MediaMED01_MediaUI _this, XObj
   ViewsText_OnSetString( &_this->ElapsedTimeSec, MediaMED01_MediaUI_FormatTimeText( 
   _this, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->ElapsedTimeSec ));
 
-  if ( !ViewsText_OnGetVisible( &_this->RemainTimeSec ))
+  if ( !ViewsText_OnGetVisible( &_this->TotalTimeSec ))
   {
-    ViewsText_OnSetVisible( &_this->RemainTimeSec, 1 );
+    ViewsText_OnSetVisible( &_this->TotalTimeSec, 1 );
   }
 
-  ViewsText_OnSetString( &_this->RemainTimeSec, MediaMED01_MediaUI_FormatTimeText( 
-  _this, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->RemainTimeSec ));
+  ViewsText_OnSetString( &_this->TotalTimeSec, MediaMED01_MediaUI_FormatTimeText( 
+  _this, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->DurationTimeSec ));
 
   if ( 0 != EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->DurationTimeSec )
   {
@@ -483,27 +477,45 @@ void MediaMED01_MediaUI_OnTrackInfoUpdateSlot( MediaMED01_MediaUI _this, XObject
 {
   if ( sender == ((XObject)&_this->TitleObserver ))
   {
+    if ( !ViewsText_OnGetVisible( &_this->Title ))
+    {
+      ViewsText_OnSetVisible( &_this->Title, 1 );
+    }
+
     ViewsText_OnSetString( &_this->Title, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
     DeviceInterfaceMediaManagerDeviceClass )->Title );
   }
   else
     if ( sender == ((XObject)&_this->AlbumObserver ))
     {
+      if ( !ViewsText_OnGetVisible( &_this->Album ))
+      {
+        ViewsText_OnSetVisible( &_this->Album, 1 );
+      }
+
       ViewsText_OnSetString( &_this->Album, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
       DeviceInterfaceMediaManagerDeviceClass )->Album );
     }
     else
       if ( sender == ((XObject)&_this->ArtistObserver ))
       {
+        if ( !ViewsText_OnGetVisible( &_this->Artist ))
+        {
+          ViewsText_OnSetVisible( &_this->Artist, 1 );
+        }
+
         ViewsText_OnSetString( &_this->Artist, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
         DeviceInterfaceMediaManagerDeviceClass )->Artist );
       }
-      else
-        if ( sender == ((XObject)&_this->PlayStateObserver ))
-        {
-          _this->PlaybackState = EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-          DeviceInterfaceMediaManagerDeviceClass )->PlaybackState;
-        }
+
+  if (( !EwCompString( _this->Title.String, EwLoadString( &StringsGEN_three_hyphens )) 
+      && !EwCompString( _this->Album.String, EwLoadString( &StringsGEN_three_hyphens ))) 
+      && !EwCompString( _this->Artist.String, EwLoadString( &StringsGEN_three_hyphens )))
+  {
+    ViewsText_OnSetVisible( &_this->Title, 0 );
+    ViewsText_OnSetVisible( &_this->Album, 0 );
+    ViewsText_OnSetVisible( &_this->Artist, 0 );
+  }
 }
 
 /* Variants derived from the class : 'Media::MED01_MediaUI' */
@@ -512,7 +524,7 @@ EW_END_OF_CLASS_VARIANTS( MediaMED01_MediaUI )
 
 /* Virtual Method Table (VMT) for the class : 'Media::MED01_MediaUI' */
 EW_DEFINE_CLASS( MediaMED01_MediaUI, ComponentsBaseMainBG, HighlightBG, Title, Title, 
-                 Title, PlaybackState, PlaybackState, "Media::MED01_MediaUI" )
+                 Title, _None, _None, "Media::MED01_MediaUI" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

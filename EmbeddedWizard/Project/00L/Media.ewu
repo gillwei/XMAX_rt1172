@@ -86,13 +86,13 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
-    preset Visible = true;
+    preset Visible = false;
   }
 
   $rect <540,320,740,360>
   slot OnPlayPauseSlot
   {
-    if( 0 == PlaybackState )
+    if( 0 == DeviceInterface::MediaManagerDevice.PlaybackState )
     {
       DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.Play );
     }
@@ -127,7 +127,7 @@ class MED01_MediaUI : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text RemainTimeSec
+  object Views::Text TotalTimeSec
   {
     preset Bounds = <364,226,441,256>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -163,11 +163,11 @@ class MED01_MediaUI : Components::BaseMainBG
     }
     ElapsedTimeSec.String = FormatTimeText( DeviceInterface::MediaManagerDevice.ElapsedTimeSec );
 
-    if( !RemainTimeSec.Visible )
+    if( !TotalTimeSec.Visible )
     {
-      RemainTimeSec.Visible = true;
+      TotalTimeSec.Visible = true;
     }
-    RemainTimeSec.String = FormatTimeText( DeviceInterface::MediaManagerDevice.RemainTimeSec );
+    TotalTimeSec.String = FormatTimeText( DeviceInterface::MediaManagerDevice.DurationTimeSec );
 
     if( 0 != DeviceInterface::MediaManagerDevice.DurationTimeSec )
     {
@@ -304,7 +304,7 @@ class MED01_MediaUI : Components::BaseMainBG
   // SystemEvents/Others
   note group Note11
   {
-    attr Bounds = <520,420,1460,760>;
+    attr Bounds = <520,420,1460,690>;
   }
 
   // TODO:
@@ -330,19 +330,37 @@ class MED01_MediaUI : Components::BaseMainBG
   {
     if( sender == TitleObserver )
     {
+      if( !Title.Visible )
+      {
+        Title.Visible = true;
+      }
       Title.String = DeviceInterface::MediaManagerDevice.Title;
     }
     else if( sender == AlbumObserver)
     {
+      if( !Album.Visible )
+      {
+        Album.Visible = true;
+      }
       Album.String = DeviceInterface::MediaManagerDevice.Album;
     }
     else if( sender == ArtistObserver )
     {
+      if( !Artist.Visible )
+      {
+        Artist.Visible = true;
+      }
       Artist.String = DeviceInterface::MediaManagerDevice.Artist;
     }
-    else if( sender == PlayStateObserver)
+
+    if( Title.String == Strings::GEN_three_hyphens &&
+        Album.String == Strings::GEN_three_hyphens &&
+        Artist.String == Strings::GEN_three_hyphens )
     {
-      PlaybackState = DeviceInterface::MediaManagerDevice.PlaybackState;
+      // Detect music data is failed
+      Title.Visible = false;
+      Album.Visible = false;
+      Artist.Visible = false;
     }
   }
 
@@ -358,23 +376,6 @@ class MED01_MediaUI : Components::BaseMainBG
   {
     preset OnEvent = OnTrackInfoUpdateSlot;
     preset Outlet = ^DeviceInterface::MediaManagerDevice.Artist;
-  }
-
-  $rect <540,680,740,720>
-  object Core::PropertyObserver PlayStateObserver
-  {
-    preset OnEvent = OnTrackInfoUpdateSlot;
-    preset Outlet = ^DeviceInterface::MediaManagerDevice.PlaybackState;
-  }
-
-  $rect <540,90,740,130>
-  property int32 PlaybackState = 0;
-
-  $rect <750,90,950,130>
-  onset PlaybackState
-  {
-    // Remember the property's new value.
-    pure PlaybackState = value;
   }
 
   $rect <20,20,160,60>

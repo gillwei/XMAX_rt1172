@@ -760,10 +760,6 @@ while( l_num_bytes > 0 )
                 hci_misc_event_handler( l_p_pkt_store->opcode, &( l_p_pkt_store->data[0] ), length );
                 break;
 
-            case HCI_CONTROL_GROUP_AVRC_CONTROLLER:
-                hci_avrc_event_handler( l_p_pkt_store->opcode, l_p_pkt_store->length, &l_p_pkt_store->data[0] );
-                break;
-
             default:
                 PRINTF( "hci_iap2_spp_proc_rx_cmd:unknown code:%04x len:%d\n\r", l_p_pkt_store->opcode, length );
                 break;

@@ -5,7 +5,7 @@
 * @brief
 * Media manager module - GATT AMS handler
 *
-* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+* Copyright 2021 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 /*--------------------------------------------------------------------
                            GENERAL INCLUDES
@@ -15,8 +15,8 @@
 #include "fsl_debug_console.h"
 #include <stdlib.h>
 #include <stdint.h>
+#include "task.h"
 
-#include "mm_config.h"
 #include "mm_priv.h"
 #include "MM_pub.h"
 /*--------------------------------------------------------------------
@@ -26,7 +26,30 @@
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
+static void mm_process_entity_attribute_data
+    (
+    ams_entity_id                           entity_id,
+    uint8_t                                 attribute_id,           // Type depends on entity_id
+    ams_entity_update_flags_type            entity_update_flags,
+    char const * const                      value
+    );
 
+static void mm_parse_player_attribute_data
+    (
+    mm_media_player_obj *               mp,
+    ams_player_attribute_id_type        player_attribute_id,
+    ams_entity_update_flags_type        entity_update_flags,
+    char const * const                  value,
+    uint32_t                            received_time
+    );
+
+static void mm_parse_track_attribute_data
+    (
+    mm_media_player_obj *                   mp,
+    ams_track_attribute_id_type             track_attribute_id,
+    ams_entity_update_flags_type            entity_update_flags,
+    char const * const                      value
+    );
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
 --------------------------------------------------------------------*/
@@ -38,9 +61,8 @@
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
-#if( MM_GATT )
-    static mm_media_player_obj media_player;
-#endif
+static mm_media_player_obj media_player;
+
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -48,45 +70,10 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-#if( MM_GATT )
-    static ams_media_event_update_attribute_type mm_process_entity_attribute_data
-        (
-        ams_entity_id                           entity_id,
-        uint8_t                                 attribute_id,           // Type depends on entity_id
-        ams_entity_update_flags_type            entity_update_flags,
-        char const * const                      value
-        );
-
-    static ams_media_event_update_attribute_type mm_parse_player_attribute_data
-        (
-        mm_media_player_obj *               mp,
-        ams_player_attribute_id_type        player_attribute_id,
-        ams_entity_update_flags_type        entity_update_flags,
-        char const * const                  value,
-        uint32_t                            received_time
-        );
-
-    static ams_media_event_update_attribute_type mm_parse_queue_attribute_data
-        (
-        mm_media_player_obj *               mp,
-        ams_queue_attribute_id_type         queue_attribute_id,
-        ams_entity_update_flags_type        entity_update_flags,
-        char const * const                  value
-        );
-
-    static ams_media_event_update_attribute_type mm_parse_track_attribute_data
-        (
-        mm_media_player_obj *                   mp,
-        ams_track_attribute_id_type             track_attribute_id,
-        ams_entity_update_flags_type            entity_update_flags,
-        char const * const                      value
-        );
-#endif
-
 /*********************************************************************
 *
-* @private
-* mm_ams_handler_entity_update_received
+* @public
+* MM_ams_handler_entity_update_received
 *
 * Handle Entity update data. Data should be formatted based on AMS
 * entity update characteristic spec.
@@ -94,45 +81,30 @@
 * @param data           Entity data.
 * @param data_length    Length of entity data.
 *********************************************************************/
-#if( MM_GATT )
-    void mm_ams_handler_entity_update_received
-        (
-        uint8_t const * const     data,
-        uint16_t                  data_length
-        )
+void MM_ams_handler_entity_update_received
+    (
+    uint8_t const * const     data,
+    uint16_t                  data_length
+    )
+{
+// First 3 bytes are hardcoded at Entity ID, Attribute ID and EntityUpdateFlags.
+if( data_length < 3 )
     {
-    ams_media_event_update_attribute_type media_event_attribute = AMS_MEDIA_EVENT_CNT;
-    if( ams_handler.is_connected )
-        {
-        // First 3 bytes are hardcoded at Entity ID, Attribute ID and EntityUpdateFlags.
-        if( data_length < 3 )
-            {
-            PRINTF("Something went wrong\n");
-            }
-        else if( data_length == 3 )
-            {
-            media_event_attribute = mm_process_entity_attribute_data( data[0], data[1], data[2], NULL );
-            if( AMS_MEDIA_EVENT_CNT != media_event_attribute )
-                {
-                EW_notify_media_player_state_updated( media_event_attribute );
-                }
-            }
-        else
-            {
-            // Minus 3 bytes to obtain the length of data.
-            uint16_t value_len = data_length - 3;
-            char* value_str = ( char* )malloc( ( value_len + 1 )* sizeof( char ) );
-            memcpy( value_str, &data[3], value_len );
-            value_str[value_len] = '\0';
-            media_event_attribute = mm_process_entity_attribute_data( data[0], data[1], data[2], value_str );
-            if( AMS_MEDIA_EVENT_CNT != media_event_attribute )
-                {
-                EW_notify_media_player_state_updated( media_event_attribute );
-                }
-            }
-        }
+    PRINTF( "Err: invalid AMS entity update data length %d\r\n", data_length );
     }
-#endif
+else
+    {
+    // Minus 3 bytes to obtain the length of data.
+    uint16_t value_len = data_length - 3;
+    char value_str[value_len + 1];
+    memset( value_str, 0, sizeof( value_str ) );
+    memcpy( value_str, &data[3], sizeof( value_str ) );
+    value_str[value_len] = '\0';
+
+    mm_process_entity_attribute_data( data[0], data[1], data[2], value_str );
+    }
+}
+
 
 /*********************************************************************
 *
@@ -147,38 +119,30 @@
 * @param value                  Entity data.
 *
 *********************************************************************/
-#if( MM_GATT )
-    static ams_media_event_update_attribute_type mm_process_entity_attribute_data
-        (
-        ams_entity_id                           entity_id,
-        uint8_t                                 attribute_id,
-        ams_entity_update_flags_type            entity_update_flags,
-        char const * const                      value
-        )
+
+static void mm_process_entity_attribute_data
+    (
+    ams_entity_id                           entity_id,
+    uint8_t                                 attribute_id,
+    ams_entity_update_flags_type            entity_update_flags,
+    char const * const                      value
+    )
+{
+PRINTF( "Entity: %d, Attribute: %d, Flags: 0x%02X, Value='%s'\r\n", entity_id, attribute_id, entity_update_flags, value ? value : NULL );
+uint32_t received_time = xTaskGetTickCount();
+switch( entity_id )
     {
-    ams_media_event_update_attribute_type media_event_attribute = AMS_MEDIA_EVENT_CNT;
-    taskENTER_CRITICAL();
-    PRINTF( "Entity: %d, Attribute: %d, Flags: 0x%02X, Value='%s'\r\n", entity_id, attribute_id, entity_update_flags, value ? value : NULL );
-    uint32_t received_time = xTaskGetTickCount();
-    switch( entity_id )
-        {
-        case AMS_ENTITY_ID_PLAYER:
-            media_event_attribute = mm_parse_player_attribute_data( &media_player, attribute_id, entity_update_flags, value, received_time );
-            break;
-        case AMS_ENTITY_ID_QUEUE:
-            media_event_attribute = mm_parse_queue_attribute_data( &media_player, attribute_id, entity_update_flags, value );
-            break;
-        case AMS_ENTITY_ID_TRACK:
-            media_event_attribute = mm_parse_track_attribute_data( &media_player, attribute_id, entity_update_flags, value );
-            break;
-        default:
-            PRINTF( "Something unexpected?\r\n" );
-            break;
-        }
-    taskEXIT_CRITICAL();
-    return media_event_attribute;
+    case AMS_ENTITY_ID_PLAYER:
+        mm_parse_player_attribute_data( &media_player, attribute_id, entity_update_flags, value, received_time );
+        break;
+    case AMS_ENTITY_ID_TRACK:
+        mm_parse_track_attribute_data( &media_player, attribute_id, entity_update_flags, value );
+        break;
+    default:
+        PRINTF( "Err: Invalid entity id: %d\r\n", entity_id );
+        break;
     }
-#endif
+}
 
 /*********************************************************************
 *
@@ -194,176 +158,91 @@
 * @param received_time          Time when receiving entity data.
 *
 *********************************************************************/
-#if( MM_GATT )
-    static ams_media_event_update_attribute_type mm_parse_player_attribute_data
-        (
-        mm_media_player_obj *               mp,
-        ams_player_attribute_id_type        player_attribute_id,
-        ams_entity_update_flags_type        entity_update_flags,
-        char const * const                  value,
-        uint32_t                            received_time
-        )
+static void mm_parse_player_attribute_data
+    (
+    mm_media_player_obj *               mp,
+    ams_player_attribute_id_type        player_attribute_id,
+    ams_entity_update_flags_type        entity_update_flags,
+    char const * const                  value,
+    uint32_t                            received_time
+    )
+{
+switch( player_attribute_id )
     {
-    ams_media_event_update_attribute_type media_event_attribute = AMS_MEDIA_EVENT_CNT;
-    switch( player_attribute_id )
+    case AMS_PLAYER_ATTRIBUTE_ID_NAME:
+        PRINTF( "Player name is '%s'\r\n", value ? value : NULL );
+        strncpy( mp->str.player_name, value, MEDIA_STRING_MAX_LENGTH );
+        break;
+    case AMS_PLAYER_ATTRIBUTE_ID_PLAYBACK_INFO:
         {
-        case AMS_PLAYER_ATTRIBUTE_ID_NAME:
-            PRINTF( "Player name is '%s'\r\n", value ? value : NULL );
-            strncpy( mp->str.player_name, value, MEDIA_STRING_MAX_LENGTH );
-            media_event_attribute = AMS_MEDIA_EVENT_PLAYER_ATTRIBUTE_ID_NAME;
-            break;
-        case AMS_PLAYER_ATTRIBUTE_ID_PLAYBACK_INFO:
-            {
-            int val_idx = 1;
-            char* cur_str = value;
-            char* next_str = strtok( cur_str, "," );
+        int val_idx = 1;
+        char* cur_str = ( char* )value;
+        char* next_str = strtok( cur_str, "," );
 
-            while( NULL != next_str )
+        while( NULL != next_str )
+            {
+            if( val_idx == 1 )
                 {
-                if( val_idx == 1 )
+                // First value, playback state.
+                switch( atoi( next_str ) )
                     {
-                    // First value, playback state.
-                    switch( atoi( next_str ) )
-                        {
-                        case AMS_PLAYBACK_STATE_PAUSED:
-                            mp->playback_state = MP_PLAYBACK_STATUS_PAUSED;
+                    case AMS_PLAYBACK_STATE_PAUSED:
+                        mp->playback_state = MP_PLAYBACK_STATUS_PAUSED;
                         break;
-                        case AMS_PLAYBACK_STATE_PLAYING:
-                            mp->playback_state = MP_PLAYBACK_STATUS_PLAYING;
+                    case AMS_PLAYBACK_STATE_PLAYING:
+                        mp->playback_state = MP_PLAYBACK_STATUS_PLAYING;
                         break;
-                        case AMS_PLAYBACK_STATE_REWINDING:
-                            mp->playback_state = MP_PLAYBACK_STATUS_REWINDING;
+                    case AMS_PLAYBACK_STATE_REWINDING:
+                        mp->playback_state = MP_PLAYBACK_STATUS_REWINDING;
                         break;
-                        case AMS_PLAYBACK_STATE_FAST_FORWARDING:
-                            mp->playback_state = MP_PLAYBACK_STATUS_FAST_FORWARDING;
+                    case AMS_PLAYBACK_STATE_FAST_FORWARDING:
+                        mp->playback_state = MP_PLAYBACK_STATUS_FAST_FORWARDING;
                         break;
-                        }
-                    PRINTF( "Playback state: %d\r\n", mp->playback_state );
+                    default:
+                        PRINTF( "Unsupported playback state %d\r\n", atoi( next_str ) );
+                        break;
                     }
-                else if( val_idx == 2)
+                PRINTF( "Playback state: %d\r\n", mp->playback_state );
+                EW_notify_playback_state_changed();
+                }
+            else if( val_idx == 2)
+                {
+                // Second value, playback rate.
+                mp->playback_rate = ( float )atof( next_str );
+                PRINTF( "Playback rate: %.2f\r\n", mp->playback_rate );
+                }
+            else
+                {
+                // Third value, elapsed time.
+                mp->start_elapsed_time_ms = ( uint32_t )( 1000.0f * ( float )atof( next_str ) );
+                mp->current_elapsed_time_sec = mp->start_elapsed_time_ms / 1000;
+                mp->start_elapsed_time_tick = received_time;
+                PRINTF( "Elapsed time: %d ms (at %d)\r\n", mp->start_elapsed_time_ms, mp->start_elapsed_time_tick );
+                if( mp->playback_state == MP_PLAYBACK_STATUS_PLAYING )
                     {
-                    // Second value, playback rate.
-                    mp->playback_rate = ( float )atof( next_str );
-                    PRINTF( "Playback rate: %.2f\r\n", mp->playback_rate );
+                    mm_start_elapsed_timer();
                     }
                 else
                     {
-                    // Third value, elapsed time.
-                    mp->start_elapsed_time_ms = ( uint32_t )( 1000.0f * ( float )atof( next_str ) );
-                    mp->start_elapsed_time_tick = received_time;
-                    PRINTF( "Elapsed time: %d ms (at %d)\r\n", mp->start_elapsed_time_ms, mp->start_elapsed_time_tick );
-                    media_event_attribute = AMS_MEDIA_EVENT_PLAYER_ATTRIBUTE_ID_PLAYBACK_INFO;
+                    mm_stop_elapsed_timer();
                     }
-                next_str = strtok( NULL, "," );
-                val_idx++;
+                EW_notify_playback_time_changed();
                 }
+            next_str = strtok( NULL, "," );
+            val_idx++;
             }
-            break;
-        case AMS_PLAYER_ATTRIBUTE_ID_VOLUME:
-            mp->playback_volume = ( float )atof( value );
-            PRINTF( "Volume: %0.5f\r\n", mp->playback_volume );
-            media_event_attribute = AMS_MEDIA_EVENT_PLAYER_ATTRIBUTE_ID_VOLUME;
-            break;
-        default:
-            PRINTF( "Invalid attribute id: %d\r\n", player_attribute_id );
-            break;
         }
-    return media_event_attribute;
+        break;
+    // TODO: Enable when implementing volume control SCR.
+    /*case AMS_PLAYER_ATTRIBUTE_ID_VOLUME:
+        mp->playback_volume = ( float )atof( value );
+        PRINTF( "Volume: %.2f\r\n", mp->playback_volume );
+        break;*/
+    default:
+        PRINTF( "Invalid attribute id: %d\r\n", player_attribute_id );
+        break;
     }
-#endif
-
-/*********************************************************************
-*
-* @private
-* mm_parse_queue_attribute_data
-*
-* Process received queue attribute data.
-*
-* @param mp                     Media player object.
-* @param queue_attribute_id     Queue Attribute id.
-* @param entity_update_flags    Entity data update flags.
-* @param value                  Entity data.
-*
-*********************************************************************/
-#if( MM_GATT )
-    static ams_media_event_update_attribute_type mm_parse_queue_attribute_data
-        (
-        mm_media_player_obj *               mp,
-        ams_queue_attribute_id_type         queue_attribute_id,
-        ams_entity_update_flags_type        entity_update_flags,
-        char const * const                  value
-        )
-    {
-    ams_media_event_update_attribute_type media_event_attribute = AMS_MEDIA_EVENT_CNT;
-    switch( queue_attribute_id )
-        {
-        case AMS_QUEUE_ATTRIBUTE_ID_INDEX:
-            mp->queue_index = value ? atoi( value ) : 0;
-            PRINTF( "Queue index: %d\r\n", mp->queue_index );
-            media_event_attribute = AMS_MEDIA_EVENT_QUEUE_ATTRIBUTE_ID_INDEX;
-            break;
-        case AMS_QUEUE_ATTRIBUTE_ID_COUNT:
-            mp->queue_index = value ? atoi( value ) : 0;
-            PRINTF( "Queue count: %d\r\n", mp->queue_count );
-            media_event_attribute = AMS_MEDIA_EVENT_QUEUE_ATTRIBUTE_ID_COUNT;
-            break;
-        case AMS_QUEUE_ATTRIBUTE_ID_SHUFFLE_MODE:
-            if( value )
-                {
-                switch( atoi( value ) )
-                    {
-                    case AMS_SHUFFLE_MODE_OFF:
-                        mp->shuffle_mode = MP_SHUFFLE_MODE_OFF;
-                        break;
-
-                    case AMS_SHUFFLE_MODE_ONE:
-                        mp->shuffle_mode = MP_SHUFFLE_MODE_ONE;
-                        break;
-
-                    case AMS_SHUFFLE_MODE_ALL:
-                        mp->shuffle_mode = MP_SHUFFLE_MODE_ALL;
-                        break;
-
-                    default:
-                        PRINTF( "Invalid shuffle mode\r\n" );
-                        break;
-                    }
-                PRINTF( "Shuffle Mode: %d\r\n", mp->shuffle_mode );
-                media_event_attribute = AMS_MEDIA_EVENT_QUEUE_ATTRIBUTE_ID_SHUFFLE_MODE;
-                }
-            break;
-        case AMS_QUEUE_ATTRIBUTE_ID_REPEAT_MODE:
-            if( value )
-                {
-                switch( atoi( value ) )
-                    {
-                    case AMS_REPEAT_MODE_OFF:
-                        mp->repeat_mode = MP_REPEAT_MODE_OFF;
-                        break;
-
-                    case AMS_REPEAT_MODE_ONE:
-                        mp->repeat_mode = MP_REPEAT_MODE_ONE;
-                        break;
-
-                    case AMS_REPEAT_MODE_ALL:
-                        mp->repeat_mode = MP_REPEAT_MODE_ALL;
-                        break;
-
-                    default:
-                        PRINTF( "Invalid repeat mode\r\n" );
-                        break;
-                    }
-                PRINTF( "Repeat Mode: %d\r\n", mp->repeat_mode );
-                media_event_attribute = AMS_MEDIA_EVENT_QUEUE_ATTRIBUTE_ID_REPEAT_MODE;
-                }
-            break;
-        default:
-            PRINTF( "Unsupported queue attribute mode %d\r\n", queue_attribute_id );
-            break;
-        }
-    return media_event_attribute;
-    }
-#endif
+}
 
 /*********************************************************************
 *
@@ -378,50 +257,89 @@
 * @param value                  Entity data.
 *
 *********************************************************************/
-#if( MM_GATT )
-    static ams_media_event_update_attribute_type mm_parse_track_attribute_data
-        (
-        mm_media_player_obj *                   mp,
-        ams_track_attribute_id_type             track_attribute_id,
-        ams_entity_update_flags_type            entity_update_flags,
-        char const * const                      value
-        )
+static void mm_parse_track_attribute_data
+    (
+    mm_media_player_obj *                   mp,
+    ams_track_attribute_id_type             track_attribute_id,
+    ams_entity_update_flags_type            entity_update_flags,
+    char const * const                      value
+    )
+{
+switch( track_attribute_id )
     {
-    ams_media_event_update_attribute_type media_event_attribute = AMS_MEDIA_EVENT_CNT;
-    switch( track_attribute_id )
-        {
-        case AMS_TRACK_ATTRIBUTE_ID_ARTIST:
-            PRINTF( "Artist = '%s'\r\n", value ? value : NULL );
-            strncpy( mp->str.track_artist, value, MEDIA_STRING_MAX_LENGTH );
-            media_event_attribute = AMS_MEDIA_EVENT_TRACK_ATTRIBUTE_ID_ARTIST;
-            break;
-        case AMS_TRACK_ATTRIBUTE_ID_ALBUM:
-            PRINTF( "Album = '%s'\r\n", value ? value : NULL );
-            strncpy( mp->str.track_album, value, MEDIA_STRING_MAX_LENGTH );
-            media_event_attribute = AMS_MEDIA_EVENT_TRACK_ATTRIBUTE_ID_ALBUM;
-            break;
-        case AMS_TRACK_ATTRIBUTE_ID_TITLE:
-            PRINTF( "Title = '%s'\r\n", value ? value : NULL );
-            strncpy( mp->str.track_title, value, MEDIA_STRING_MAX_LENGTH );
-            media_event_attribute = AMS_MEDIA_EVENT_TRACK_ATTRIBUTE_ID_TITLE;
-            break;
-        case AMS_TRACK_ATTRIBUTE_ID_DURATION:
-            if( value )
+    case AMS_TRACK_ATTRIBUTE_ID_ARTIST:
+        PRINTF( "Artist = '%s'\r\n", value ? value : NULL );
+        strncpy( mp->str.track_artist, value, MEDIA_STRING_MAX_LENGTH );
+        EW_notify_artist_changed();
+        break;
+    case AMS_TRACK_ATTRIBUTE_ID_ALBUM:
+        PRINTF( "Album = '%s'\r\n", value ? value : NULL );
+        strncpy( mp->str.track_album, value, MEDIA_STRING_MAX_LENGTH );
+        EW_notify_album_changed();
+        break;
+    case AMS_TRACK_ATTRIBUTE_ID_TITLE:
+        PRINTF( "Title = '%s'\r\n", value ? value : NULL );
+        strncpy( mp->str.track_title, value, MEDIA_STRING_MAX_LENGTH );
+        EW_notify_title_changed();
+        break;
+    case AMS_TRACK_ATTRIBUTE_ID_DURATION:
+        if( value )
+            {
+            PRINTF( "Duration = '%s'\r\n", value ? value : NULL );
+            float duration_sec = atof( value );
+            mp->duration_sec = (uint32_t)( duration_sec );
+            if( ( duration_sec - mp->duration_sec ) >= 0.5 )
                 {
-                PRINTF( "Duration = '%s'\r\n", value ? value : NULL );
-                float duration_sec = atof( value );
-                mp->duration_sec = (uint32_t)( duration_sec );
-                if( ( duration_sec - mp->duration_sec ) >= 0.5 )
-                    {
-                    mp->duration_sec++;
-                    }
-                media_event_attribute = AMS_MEDIA_EVENT_TRACK_ATTRIBUTE_ID_DURATION;
+                mp->duration_sec++;
                 }
-            break;
-        default:
-            PRINTF( "Unsupported Track Attribute ID %d\r\n", track_attribute_id );
-            break;
-        }
-    return media_event_attribute;
+            }
+        EW_notify_playback_time_changed();
+        break;
+    default:
+        PRINTF( "Unsupported Track Attribute ID %d\r\n", track_attribute_id );
+        break;
     }
-#endif
+}
+
+/*********************************************************************
+*
+* @public
+* MM_ams_gatt_get_media_player_state
+*
+* Obtain media player state data
+* @return media player state data
+*
+*********************************************************************/
+mm_media_player_obj* MM_ams_gatt_get_media_player_state
+    (
+    void
+    )
+{
+return &media_player;
+}
+
+/*********************************************************************
+*
+* @private
+* mm_ams_gatt_update_elapsed_time
+*
+* Update elapsed time
+*
+*********************************************************************/
+void mm_ams_gatt_update_elapsed_time
+    (
+    void
+    )
+{
+if( media_player.playback_state == MP_PLAYBACK_STATUS_PLAYING )
+    {
+    uint32_t elapsed_time_sec = ( media_player.start_elapsed_time_ms +
+        ( uint32_t )( ( float )( xTaskGetTickCount() - media_player.start_elapsed_time_tick ) * media_player.playback_rate ) ) / 1000;
+
+    if( media_player.current_elapsed_time_sec != elapsed_time_sec )
+        {
+        media_player.current_elapsed_time_sec = elapsed_time_sec;
+        EW_notify_playback_time_changed();
+        }
+    }
+}

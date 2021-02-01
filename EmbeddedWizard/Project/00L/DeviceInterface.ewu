@@ -419,15 +419,11 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   $rect <30,60,230,100>
   onset Title
   {
-    // The value doesn't change - nothing to do.
-    if ( pure Title == value && !IsInit )
-      return;
-
     // Get song title when receiving from media manager or UI initialization.
     if( IsTitleReceived || IsInit )
     {
 
-      if( value == "" && IsTitleReceived )
+      if( value == "" && ( IsTitleReceived || IsInit ) )
       {
         // If received song title is empty, show "---".
         pure Title = Strings::GEN_three_hyphens;
@@ -454,14 +450,10 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   $rect <250,60,450,100>
   onset Album
   {
-    // The value doesn't change - nothing to do.
-    if ( pure Album == value && !IsInit )
-      return;
-
     // Get album when receiving from media manager or UI initialization.
     if( IsAlbumReceived || IsInit )
     {
-      if( value == "" && IsAlbumReceived )
+      if( value == "" && ( IsAlbumReceived || IsInit ) )
       {
         // If received album is empty, show "---".
         pure Album = Strings::GEN_three_hyphens;
@@ -488,14 +480,10 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   $rect <480,60,680,100>
   onset Artist
   {
-    // The value doesn't change - nothing to do.
-    if ( pure Artist == value && !IsInit )
-      return;
-
     // Get artist when receiving from media manager or UI initialization.
     if( IsArtistReceived || IsInit )
     {
-      if( value == "" && IsArtistReceived )
+      if( value == "" && ( IsArtistReceived || IsInit ) )
       {
         // If received artist is empty, show "---".
         pure Artist = Strings::GEN_three_hyphens;
@@ -519,7 +507,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   $rect <720,60,920,100>
   property int32 DurationTimeSec = 0;
 
-  $rect <760,470,980,510>
+  $rect <720,470,940,510>
   method void SendRemoteCommand( arg Enum::CommandType cmd_type )
   {
     var int32 cmd_idx;
@@ -570,7 +558,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   // An interface to set/get data from device
   note group Note1
   {
-    attr Bounds = <10,430,1040,550>;
+    attr Bounds = <10,430,1040,540>;
   }
 
   $rect <30,120,230,160>
@@ -579,15 +567,8 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   $rect <30,160,230,200>
   onset PlaybackState
   {
-    // The value doesn't change - nothing to do.
-    if ( pure PlaybackState == value && !IsInit )
-      return;
-
     // Remember the property's new value.
     pure PlaybackState = value;
-
-    // Notify all associated property observers.
-    notifyobservers ^PlaybackState;
   }
 
   $rect <250,120,450,160>
@@ -596,10 +577,6 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   $rect <250,160,450,200>
   onset PlayerName
   {
-    // The value doesn't change - nothing to do.
-    if ( pure PlayerName == value && !IsInit )
-      return;
-
     // Remember the property's new value.
     pure PlayerName = value;
   }
@@ -639,10 +616,10 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     $if !$prototyper
     native ( p_name, p_state )
     {
-      mm_media_player_obj mp_state;
+      mm_media_player_obj* mp_state = NULL;
       mp_state = ew_get_media_player_state();
-      p_name = EwNewStringAnsi( mp_state.str.player_name );
-      p_state = mp_state.playback_state;
+      p_name = EwNewStringAnsi( mp_state->str.player_name );
+      p_state = mp_state->playback_state;
     }
     $endif
     PlayerName = p_name;
@@ -657,10 +634,10 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     $if !$prototyper
     native ( ela_time, dur )
     {
-      mm_media_player_obj mp_state;
+      mm_media_player_obj* mp_state = NULL;
       mp_state = ew_get_media_player_state();
-      ela_time = mp_state.current_elapsed_time_sec;
-      dur = mp_state.duration_sec;
+      ela_time = mp_state->current_elapsed_time_sec;
+      dur = mp_state->duration_sec;
     }
     $endif
     ElapsedTimeSec = ela_time;
@@ -676,11 +653,11 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     $if !$prototyper
     native ( media_artist, media_album, media_title )
     {
-      mm_media_player_obj mp_state;
+      mm_media_player_obj* mp_state = NULL;
       mp_state = ew_get_media_player_state();
-      media_artist = EwNewStringUtf8( ( const unsigned char* )mp_state.str.track_artist, ( int )strlen( mp_state.str.track_artist ) );
-      media_album = EwNewStringUtf8( ( const unsigned char* )mp_state.str.track_album, ( int )strlen( mp_state.str.track_album ) );
-      media_title = EwNewStringUtf8( ( const unsigned char* )mp_state.str.track_title, ( int )strlen( mp_state.str.track_title ) );
+      media_artist = EwNewStringUtf8( ( const unsigned char* )mp_state->str.track_artist, ( int )strlen( mp_state->str.track_artist ) );
+      media_album = EwNewStringUtf8( ( const unsigned char* )mp_state->str.track_album, ( int )strlen( mp_state->str.track_album ) );
+      media_title = EwNewStringUtf8( ( const unsigned char* )mp_state->str.track_title, ( int )strlen( mp_state->str.track_title ) );
     }
     $endif
     Artist = media_artist;
@@ -688,7 +665,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     Title = media_title;
   }
 
-  $rect <720,190,920,230>
+  $rect <720,240,920,280>
   var bool IsInit = false;
 
   $rect <350,360,610,400>
@@ -703,14 +680,12 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   // about a particular system event.
   $rect <30,280,320,320>
   $output true
-  method void NotifyPlayBackTimeChanged( arg int32 aElapsedTimeSec, arg int32 aDurationTimeSec, arg int32 aRemainTimeSec )
+  method void NotifyPlayBackTimeChanged( arg int32 aElapsedTimeSec, arg int32 aDurationTimeSec )
   {
     trace "ElapsedTime: ", aElapsedTimeSec;
     trace "Duration: ", aDurationTimeSec;
-    trace "Remain time: ", aDurationTimeSec;
     ElapsedTimeSec = aElapsedTimeSec;
     DurationTimeSec = aDurationTimeSec;
-    RemainTimeSec = aRemainTimeSec;
 
     NotifyPlayBackTimeChangedSystemEvent.Trigger( null, false );
   }
@@ -718,16 +693,13 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   $rect <30,240,320,280>
   object Core::SystemEvent NotifyPlayBackTimeChangedSystemEvent;
 
-  $rect <720,100,920,140>
-  property int32 RemainTimeSec;
-
-  $rect <720,230,920,270>
+  $rect <720,280,920,320>
   var bool IsTitleReceived = false;
 
-  $rect <720,270,920,310>
+  $rect <720,320,920,360>
   var bool IsAlbumReceived = false;
 
-  $rect <720,310,920,350>
+  $rect <720,360,920,400>
   var bool IsArtistReceived = false;
 }
 
