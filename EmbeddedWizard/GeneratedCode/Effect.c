@@ -25,21 +25,152 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
-#include "_EffectsSlideTransition.h"
+#include "_EffectSlideTransitionNoFade.h"
+#include "_EffectsFader.h"
+#include "_EffectsInt32Effect.h"
+#include "_EffectsPointEffect.h"
+#include "_EffectsPositionFader.h"
 #include "Core.h"
 #include "Effect.h"
+#include "Effects.h"
 
-/* User defined auto object: 'Effect::LeftSlideTransition' */
-EW_DEFINE_AUTOOBJECT( EffectLeftSlideTransition, EffectsSlideTransition )
+/* User defined auto object: 'Effect::SlideOutTransition' */
+EW_DEFINE_AUTOOBJECT( EffectSlideOutTransition, EffectSlideTransitionNoFade )
 
-/* Initializer for the auto object 'Effect::LeftSlideTransition' */
-void EffectLeftSlideTransition__Init( EffectsSlideTransition _this )
+/* Initializer for the auto object 'Effect::SlideOutTransition' */
+void EffectSlideOutTransition__Init( EffectSlideTransitionNoFade _this )
 {
-  _this->Direction = CoreDirectionLeft;
+  _this->Super1.Buffered = 1;
+  _this->Super1.Exponent = 4.430000f;
+  _this->Super1.Timing = EffectsTimingExp_Out;
+  _this->Super1.Duration = 200;
+  _this->Super1.Direction = CoreDirectionRight;
 }
 
-/* Table with links to derived variants of the auto object : 'Effect::LeftSlideTransition' */
-EW_DEFINE_AUTOOBJECT_VARIANTS( EffectLeftSlideTransition )
-EW_END_OF_AUTOOBJECT_VARIANTS( EffectLeftSlideTransition )
+/* Table with links to derived variants of the auto object : 'Effect::SlideOutTransition' */
+EW_DEFINE_AUTOOBJECT_VARIANTS( EffectSlideOutTransition )
+EW_END_OF_AUTOOBJECT_VARIANTS( EffectSlideOutTransition )
+
+/* User defined auto object: 'Effect::SlideInTransition' */
+EW_DEFINE_AUTOOBJECT( EffectSlideInTransition, EffectSlideTransitionNoFade )
+
+/* Initializer for the auto object 'Effect::SlideInTransition' */
+void EffectSlideInTransition__Init( EffectSlideTransitionNoFade _this )
+{
+  _this->Super1.Buffered = 1;
+  _this->Super1.Exponent = 4.430000f;
+  _this->Super1.Timing = EffectsTimingExp_Out;
+  _this->Super1.Duration = 200;
+  _this->Super1.Direction = CoreDirectionLeft;
+}
+
+/* Table with links to derived variants of the auto object : 'Effect::SlideInTransition' */
+EW_DEFINE_AUTOOBJECT_VARIANTS( EffectSlideInTransition )
+EW_END_OF_AUTOOBJECT_VARIANTS( EffectSlideInTransition )
+
+/* Initializer for the class 'Effect::SlideTransitionNoFade' */
+void EffectSlideTransitionNoFade__Init( EffectSlideTransitionNoFade _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  EffectsSlideTransition__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( EffectSlideTransitionNoFade );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( EffectSlideTransitionNoFade );
+}
+
+/* Re-Initializer for the class 'Effect::SlideTransitionNoFade' */
+void EffectSlideTransitionNoFade__ReInit( EffectSlideTransitionNoFade _this )
+{
+  /* At first re-initialize the super class ... */
+  EffectsSlideTransition__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'Effect::SlideTransitionNoFade' */
+void EffectSlideTransitionNoFade__Done( EffectSlideTransitionNoFade _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( EffectsSlideTransition );
+
+  /* Don't forget to deinitialize the super class ... */
+  EffectsSlideTransition__Done( &_this->_Super );
+}
+
+/* The method CreatePresentFader() creates an object of one of the classes descending 
+   from Effects::Fader and configures it with parameters according to the desired 
+   fade-in (present) transition. Finally the prepared fader object is returned to 
+   the caller. Typically, the created fader is used to show (to present) a GUI component 
+   when the user navigates to it. The method has to be overridden and implemented 
+   in derived classes. The actual implementation does nothing and returns 'null'. */
+EffectsFader EffectSlideTransitionNoFade_CreatePresentFader( EffectSlideTransitionNoFade _this )
+{
+  EffectsPositionFader fader = EwNewObject( EffectsPositionFader, 0 );
+
+  fader->Super1.Visible = 1;
+  fader->Super1.AssignFocus = 0;
+  fader->Super1.RestackTopmost = 1;
+  fader->Super1.UseCurrentState = 1;
+  fader->Buffered = _this->Super1.Buffered;
+  fader->Super1.OnInitialize = EwNewSlot( _this, EffectsSlideTransition_onInitializeIn );
+  EffectsEffect_OnSetCycleDuration((EffectsEffect)&fader->OpacityEffect, 0 );
+  fader->OpacityEffect.Value1 = 255;
+  fader->OpacityEffect.Value2 = 255;
+  EffectsEffect_OnSetCycleDuration((EffectsEffect)&fader->PositionEffect, _this->Super1.Duration );
+  EffectsEffect_OnSetTiming((EffectsEffect)&fader->PositionEffect, _this->Super1.Timing );
+  EffectsEffect_OnSetTimingCustom1((EffectsEffect)&fader->PositionEffect, _this->Super1.TimingCustom1 );
+  EffectsEffect_OnSetTimingCustom2((EffectsEffect)&fader->PositionEffect, _this->Super1.TimingCustom2 );
+  EffectsEffect_OnSetExponent((EffectsEffect)&fader->PositionEffect, _this->Super1.Exponent );
+  EffectsEffect_OnSetAmplitude((EffectsEffect)&fader->PositionEffect, _this->Super1.Amplitude );
+  EffectsEffect_OnSetOscillations((EffectsEffect)&fader->PositionEffect, _this->Super1.Oscillations );
+  EffectsEffect_OnSetBounces((EffectsEffect)&fader->PositionEffect, _this->Super1.Bounces );
+  EffectsEffect_OnSetElasticity((EffectsEffect)&fader->PositionEffect, _this->Super1.Elasticity );
+  return ((EffectsFader)fader );
+}
+
+/* The method CreateDismissFader() creates an object of one of the classes descending 
+   from Effects::Fader and configures it with parameters according to the desired 
+   fade-out (dismiss) transition. Finally the prepared fader object is returned 
+   to the caller. Typically, the created fader is used to hide (to dismiss) a GUI 
+   component when the user leaves it while he/she navigates in the GUI system. The 
+   method has to be overridden and implemented in derived classes. The actual implementation 
+   does nothing and returns 'null'. */
+EffectsFader EffectSlideTransitionNoFade_CreateDismissFader( EffectSlideTransitionNoFade _this )
+{
+  EffectsPositionFader fader = EwNewObject( EffectsPositionFader, 0 );
+
+  fader->Super1.Visible = 0;
+  fader->Super1.RemoveIfHidden = 1;
+  fader->Super1.UseCurrentState = 1;
+  fader->Buffered = _this->Super1.Buffered;
+  fader->Super1.OnInitialize = EwNewSlot( _this, EffectsSlideTransition_onInitializeOut );
+  EffectsEffect_OnSetCycleDuration((EffectsEffect)&fader->OpacityEffect, 0 );
+  fader->OpacityEffect.Value1 = 255;
+  fader->OpacityEffect.Value2 = 255;
+  EffectsEffect_OnSetCycleDuration((EffectsEffect)&fader->PositionEffect, _this->Super1.Duration );
+  EffectsEffect_OnSetTiming((EffectsEffect)&fader->PositionEffect, _this->Super1.Timing );
+  EffectsEffect_OnSetTimingCustom1((EffectsEffect)&fader->PositionEffect, _this->Super1.TimingCustom1 );
+  EffectsEffect_OnSetTimingCustom2((EffectsEffect)&fader->PositionEffect, _this->Super1.TimingCustom2 );
+  EffectsEffect_OnSetExponent((EffectsEffect)&fader->PositionEffect, _this->Super1.Exponent );
+  EffectsEffect_OnSetAmplitude((EffectsEffect)&fader->PositionEffect, _this->Super1.Amplitude );
+  EffectsEffect_OnSetOscillations((EffectsEffect)&fader->PositionEffect, _this->Super1.Oscillations );
+  EffectsEffect_OnSetBounces((EffectsEffect)&fader->PositionEffect, _this->Super1.Bounces );
+  EffectsEffect_OnSetElasticity((EffectsEffect)&fader->PositionEffect, _this->Super1.Elasticity );
+  return ((EffectsFader)fader );
+}
+
+/* Variants derived from the class : 'Effect::SlideTransitionNoFade' */
+EW_DEFINE_CLASS_VARIANTS( EffectSlideTransitionNoFade )
+EW_END_OF_CLASS_VARIANTS( EffectSlideTransitionNoFade )
+
+/* Virtual Method Table (VMT) for the class : 'Effect::SlideTransitionNoFade' */
+EW_DEFINE_CLASS( EffectSlideTransitionNoFade, EffectsSlideTransition, _None, _None, 
+                 _None, _None, _None, _None, "Effect::SlideTransitionNoFade" )
+  EffectSlideTransitionNoFade_CreatePresentFader,
+  EffectSlideTransitionNoFade_CreateDismissFader,
+  EffectsSlideTransition_CreateRestoreFader,
+  EffectsSlideTransition_CreateOverlayFader,
+EW_END_OF_CLASS( EffectSlideTransitionNoFade )
 
 /* Embedded Wizard */

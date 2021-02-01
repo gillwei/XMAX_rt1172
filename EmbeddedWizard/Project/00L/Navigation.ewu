@@ -201,7 +201,7 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
       // empty body to suppress warning
     }
 
-    var Components::BaseComponent Dialog = null;
+    var Menu::BaseMenuView MenuDialog = null;
 
     switch( NaviSettings[aItemNo] )
     {
@@ -211,13 +211,13 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
       case Enum::NaviSettingItem.GoToWork:;
       case Enum::NaviSettingItem.Favorites:;
       case Enum::NaviSettingItem.NearbyGasStations:;
-      case Enum::NaviSettingItem.ChangeView: Dialog = new Navigation::NAV08_NaviChageViewMenu;
+      case Enum::NaviSettingItem.ChangeView: MenuDialog = new Navigation::NAV08_NaviChageViewMenu;
       default:;
     }
 
-    if( null != Dialog )
+    if( null != MenuDialog )
     {
-      SlideInDialog( Dialog );
+      SlideInDialog( MenuDialog );
     }
   }
 
@@ -265,9 +265,8 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
   }
 
   $rect <20,20,160,60>
-  object Menu::VerticalMenu Menu
+  inherited object Menu
   {
-    preset Bounds = <0,36,480,272>;
     preset NoOfItems = 7;
     preset ArrowScrollBarVisible = true;
   }
@@ -308,12 +307,6 @@ class NAV08_NaviChageViewMenu : Menu::BaseMenuView
 {
   $rect <0,310,200,350>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <220,310,470,350>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
 
   $rect <510,60,710,100>
   inherited method LoadItemClass()
@@ -375,11 +368,13 @@ class NAV08_NaviChageViewMenu : Menu::BaseMenuView
   }
 
   $rect <20,20,160,60>
-  object Menu::VerticalMenu Menu
+  inherited object Menu
   {
-    preset Bounds = <0,36,480,272>;
     preset NoOfItems = 3;
   }
+
+  $rect <0,360,200,400>
+  inherited var SlideOutEffectEnabled = true;
 
   $rect <750,10,950,50>
   array string ItemTitleArray[ 3 ] =

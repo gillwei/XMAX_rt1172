@@ -46,6 +46,7 @@
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 
@@ -100,10 +101,15 @@
 
 /* Deklaration of class : 'Components::BaseMainBG' */
 EW_DEFINE_FIELDS( ComponentsBaseMainBG, ComponentsBaseComponent )
+  EW_VARIABLE( ChildDialog,     ComponentsBaseMainBG )
+  EW_VARIABLE( OwnerDialog,     ComponentsBaseMainBG )
   EW_OBJECT  ( MainBottomBG,    ViewsImage )
   EW_OBJECT  ( BlackBG,         ViewsRectangle )
   EW_OBJECT  ( DDModeStateChangedHandler, CoreSystemEventHandler )
   EW_OBJECT  ( DDModeMask,      ComponentsDDModeMask )
+  EW_OBJECT  ( HideFocusFrameTimer, CoreTimer )
+  EW_VARIABLE( SlideDirection,  XEnum )
+  EW_VARIABLE( SlideOutEffectEnabled, XBool )
 EW_END_OF_FIELDS( ComponentsBaseMainBG )
 
 /* Virtual Method Table (VMT) for the class : 'Components::BaseMainBG' */
@@ -180,6 +186,35 @@ void ComponentsBaseMainBG_OnDDModeStateChangedSlot( ComponentsBaseMainBG _this,
 
 /* 'C' function for method : 'Components::BaseMainBG.UpdateDDModeMask()' */
 void ComponentsBaseMainBG_UpdateDDModeMask( ComponentsBaseMainBG _this );
+
+/* 'C' function for method : 'Components::BaseMainBG.DismissThisDialog()' */
+void ComponentsBaseMainBG_DismissThisDialog( ComponentsBaseMainBG _this );
+
+/* 'C' function for method : 'Components::BaseMainBG.SlideInDialog()' */
+void ComponentsBaseMainBG_SlideInDialog( ComponentsBaseMainBG _this, ComponentsBaseMainBG 
+  aChildDialog );
+
+/* 'C' function for method : 'Components::BaseMainBG.OnHideFocusFrameTimeoutSlot()' */
+void ComponentsBaseMainBG_OnHideFocusFrameTimeoutSlot( ComponentsBaseMainBG _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Components::BaseMainBG.OnDialogSlideInCompletedSlot()' */
+void ComponentsBaseMainBG_OnDialogSlideInCompletedSlot( ComponentsBaseMainBG _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Components::BaseMainBG.PresentDialogWithSlideInEffect()' */
+void ComponentsBaseMainBG_PresentDialogWithSlideInEffect( ComponentsBaseMainBG _this, 
+  CoreGroup aView );
+
+/* 'C' function for method : 'Components::BaseMainBG.OnDialogSlideOutCompletedSlot()' */
+void ComponentsBaseMainBG_OnDialogSlideOutCompletedSlot( ComponentsBaseMainBG _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Components::BaseMainBG.SlideOutDialog()' */
+void ComponentsBaseMainBG_SlideOutDialog( ComponentsBaseMainBG _this );
+
+/* 'C' function for method : 'Components::BaseMainBG.DismissMenuWithSlideOutEffect()' */
+void ComponentsBaseMainBG_DismissMenuWithSlideOutEffect( ComponentsBaseMainBG _this );
 
 #ifdef __cplusplus
   }

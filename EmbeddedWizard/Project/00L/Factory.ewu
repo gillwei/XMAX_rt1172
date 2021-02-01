@@ -297,18 +297,29 @@ class Main : Menu::BaseMenuView
   );
 
   $rect <20,20,160,60>
-  object Menu::VerticalMenu Menu
+  inherited object Menu
   {
-    preset Bounds = <0,36,480,272>;
     preset NoOfItems = ItemTitleArray.size;
     preset ItemHeight = Menu::ItemHeightSmall;
   }
 
-  $reorder SlideInDialog 4
   $reorder LoadItemClass 4
   $reorder LoadItemTitle 4
   $reorder OnItemActivate 4
   $reorder LoadItemChecked 4
+  $reorder SlideInMenu 1
+  $reorder HideFocusFrameTimer 1
+  $reorder OnHideFocusFrameTimeoutSlot 1
+  $reorder ChildMenu 1
+  $reorder OnDialogSlideInCompletedSlot 1
+  $reorder PresentDialogWithSlideInEffect 1
+  $reorder SlideOutEffectEnabled 1
+  $reorder OnDialogSlideOutCompletedSlot 1
+  $reorder OwnerMenu 1
+  $reorder SlideOutMenu 1
+  $reorder DismissMenuWithSlideOutEffect 1
+  $reorder SlideDirection 1
+  $reorder ItemTitleArray 1
 }
 
 $rect <50,60,290,100>

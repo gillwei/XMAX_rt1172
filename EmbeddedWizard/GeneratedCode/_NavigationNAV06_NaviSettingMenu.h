@@ -45,10 +45,17 @@
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -107,7 +114,6 @@
 
 /* Deklaration of class : 'Navigation::NAV06_NaviSettingMenu' */
 EW_DEFINE_FIELDS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
-  EW_OBJECT  ( Menu,            MenuVerticalMenu )
   EW_ARRAY   ( NaviSettings,    XEnum, [7])
   EW_VARIABLE( IsWayPointSet,   XBool )
   EW_VARIABLE( IsDestSet,       XBool )

@@ -46,11 +46,18 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -109,7 +116,6 @@
 
 /* Deklaration of class : 'Settings::SET17_BtPairedDeviceList' */
 EW_DEFINE_FIELDS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView )
-  EW_OBJECT  ( Menu,            MenuVerticalMenu )
   EW_OBJECT  ( RefreshListObserver, CorePropertyObserver )
   EW_OBJECT  ( NoDataText,      ViewsText )
   EW_VARIABLE( PairedDeviceNum, XInt32 )

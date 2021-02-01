@@ -46,6 +46,8 @@
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
+#include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 
@@ -106,6 +108,7 @@
 
 /* Deklaration of class : 'Menu::BaseMenuView' */
 EW_DEFINE_FIELDS( MenuBaseMenuView, ComponentsBaseMainBG )
+  EW_OBJECT  ( Menu,            MenuVerticalMenu )
 EW_END_OF_FIELDS( MenuBaseMenuView )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::BaseMenuView' */

@@ -99,38 +99,37 @@ static const XStringRes _Const0003 = { _StringsDefault0, 0x0024 };
 static const XStringRes _Const0004 = { _StringsDefault0, 0x0036 };
 static const XStringRes _Const0005 = { _StringsDefault0, 0x0047 };
 static const XStringRes _Const0006 = { _StringsDefault0, 0x005D };
-static const XRect _Const0007 = {{ 0, 36 }, { 480, 272 }};
-static const XRect _Const0008 = {{ 96, 79 }, { 390, 122 }};
-static const XStringRes _Const0009 = { _StringsDefault0, 0x006C };
-static const XStringRes _Const000A = { _StringsDefault0, 0x0070 };
-static const XStringRes _Const000B = { _StringsDefault0, 0x0074 };
-static const XRect _Const000C = {{ 0, 40 }, { 240, 65 }};
-static const XStringRes _Const000D = { _StringsDefault0, 0x0078 };
-static const XRect _Const000E = {{ 247, 40 }, { 356, 65 }};
-static const XRect _Const000F = {{ 432, 2 }, { 482, 22 }};
-static const XStringRes _Const0010 = { _StringsDefault0, 0x008E };
-static const XStringRes _Const0011 = { _StringsDefault0, 0x0097 };
-static const XStringRes _Const0012 = { _StringsDefault0, 0x009F };
-static const XStringRes _Const0013 = { _StringsDefault0, 0x00B7 };
-static const XStringRes _Const0014 = { _StringsDefault0, 0x00CE };
-static const XStringRes _Const0015 = { _StringsDefault0, 0x00E5 };
-static const XStringRes _Const0016 = { _StringsDefault0, 0x00FC };
-static const XStringRes _Const0017 = { _StringsDefault0, 0x0110 };
-static const XStringRes _Const0018 = { _StringsDefault0, 0x012F };
-static const XStringRes _Const0019 = { _StringsDefault0, 0x0148 };
-static const XStringRes _Const001A = { _StringsDefault0, 0x0160 };
-static const XStringRes _Const001B = { _StringsDefault0, 0x0174 };
-static const XStringRes _Const001C = { _StringsDefault0, 0x018D };
-static const XStringRes _Const001D = { _StringsDefault0, 0x01AA };
-static const XStringRes _Const001E = { _StringsDefault0, 0x01C8 };
-static const XStringRes _Const001F = { _StringsDefault0, 0x01E9 };
-static const XStringRes _Const0020 = { _StringsDefault1, 0x0002 };
-static const XStringRes _Const0021 = { _StringsDefault1, 0x001E };
-static const XStringRes _Const0022 = { _StringsDefault1, 0x003B };
-static const XStringRes _Const0023 = { _StringsDefault1, 0x0058 };
-static const XStringRes _Const0024 = { _StringsDefault1, 0x0071 };
-static const XStringRes _Const0025 = { _StringsDefault1, 0x008C };
-static const XStringRes _Const0026 = { _StringsDefault1, 0x00AB };
+static const XRect _Const0007 = {{ 96, 79 }, { 390, 122 }};
+static const XStringRes _Const0008 = { _StringsDefault0, 0x006C };
+static const XStringRes _Const0009 = { _StringsDefault0, 0x0070 };
+static const XStringRes _Const000A = { _StringsDefault0, 0x0074 };
+static const XRect _Const000B = {{ 0, 40 }, { 240, 65 }};
+static const XStringRes _Const000C = { _StringsDefault0, 0x0078 };
+static const XRect _Const000D = {{ 247, 40 }, { 356, 65 }};
+static const XRect _Const000E = {{ 432, 2 }, { 482, 22 }};
+static const XStringRes _Const000F = { _StringsDefault0, 0x008E };
+static const XStringRes _Const0010 = { _StringsDefault0, 0x0097 };
+static const XStringRes _Const0011 = { _StringsDefault0, 0x009F };
+static const XStringRes _Const0012 = { _StringsDefault0, 0x00B7 };
+static const XStringRes _Const0013 = { _StringsDefault0, 0x00CE };
+static const XStringRes _Const0014 = { _StringsDefault0, 0x00E5 };
+static const XStringRes _Const0015 = { _StringsDefault0, 0x00FC };
+static const XStringRes _Const0016 = { _StringsDefault0, 0x0110 };
+static const XStringRes _Const0017 = { _StringsDefault0, 0x012F };
+static const XStringRes _Const0018 = { _StringsDefault0, 0x0148 };
+static const XStringRes _Const0019 = { _StringsDefault0, 0x0160 };
+static const XStringRes _Const001A = { _StringsDefault0, 0x0174 };
+static const XStringRes _Const001B = { _StringsDefault0, 0x018D };
+static const XStringRes _Const001C = { _StringsDefault0, 0x01AA };
+static const XStringRes _Const001D = { _StringsDefault0, 0x01C8 };
+static const XStringRes _Const001E = { _StringsDefault0, 0x01E9 };
+static const XStringRes _Const001F = { _StringsDefault1, 0x0002 };
+static const XStringRes _Const0020 = { _StringsDefault1, 0x001E };
+static const XStringRes _Const0021 = { _StringsDefault1, 0x003B };
+static const XStringRes _Const0022 = { _StringsDefault1, 0x0058 };
+static const XStringRes _Const0023 = { _StringsDefault1, 0x0071 };
+static const XStringRes _Const0024 = { _StringsDefault1, 0x008C };
+static const XStringRes _Const0025 = { _StringsDefault1, 0x00AB };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -165,9 +164,6 @@ void DevelopmentDEV_Main__Init( DevelopmentDEV_Main _this, XObject aLink, XHandl
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_Main );
 
-  /* ... then construct all embedded objects */
-  MenuVerticalMenu__Init( &_this->Menu, &_this->_XObject, 0 );
-
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DevelopmentDEV_Main );
 
@@ -179,11 +175,9 @@ void DevelopmentDEV_Main__Init( DevelopmentDEV_Main _this, XObject aLink, XHandl
   _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0004 ));
   _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const0005 ));
   _this->ItemTitleArray[ 5 ] = EwShareString( EwLoadString( &_Const0006 ));
-  CoreRectView__OnSetBounds( &_this->Menu, _Const0007 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 6 );
-  MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
-  MenuVerticalMenu_OnSetItemNumPerPage( &_this->Menu, 4 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 6 );
+  MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
+  MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
 }
 
 /* Re-Initializer for the class 'Development::DEV_Main' */
@@ -191,9 +185,6 @@ void DevelopmentDEV_Main__ReInit( DevelopmentDEV_Main _this )
 {
   /* At first re-initialize the super class ... */
   MenuBaseMenuView__ReInit( &_this->_Super );
-
-  /* ... then re-construct all embedded objects */
-  MenuVerticalMenu__ReInit( &_this->Menu );
 }
 
 /* Finalizer method for the class 'Development::DEV_Main' */
@@ -201,9 +192,6 @@ void DevelopmentDEV_Main__Done( DevelopmentDEV_Main _this )
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
-
-  /* Finalize all embedded objects */
-  MenuVerticalMenu__Done( &_this->Menu );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -324,8 +312,8 @@ EW_DEFINE_CLASS_VARIANTS( DevelopmentDEV_Main )
 EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_Main )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_Main' */
-EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, Menu, Menu, Menu, Menu, 
-                 ItemTitleArray, _None, "Development::DEV_Main" )
+EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, ItemTitleArray, ItemTitleArray, 
+                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _None, "Development::DEV_Main" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -389,7 +377,7 @@ void DevelopmentDEV_RealTimeClock__Init( DevelopmentDEV_RealTimeClock _this, XOb
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->TimeText, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->TimeText, _Const0007 );
   ViewsText_OnSetAlignment( &_this->TimeText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->TimeText, 0 );
@@ -449,10 +437,10 @@ void DevelopmentDEV_RealTimeClock_OnUpdateLocalTimeSlot( DevelopmentDEV_RealTime
     ViewsText_OnSetString( &_this->TimeText, EwConcatString( EwConcatString( EwConcatString( 
     EwConcatString( EwConcatString( EwConcatString( EwConcatString( EwConcatString( 
     EwConcatString( EwConcatString( EwNewStringInt( CurrentTime->Year, 4, 10 ), 
-    EwLoadString( &_Const0009 )), EwNewStringInt( CurrentTime->Month, 2, 10 )), 
-    EwLoadString( &_Const0009 )), EwNewStringInt( CurrentTime->Day, 2, 10 )), EwLoadString( 
-    &_Const000A )), EwNewStringInt( CurrentTime->Hour, 2, 10 )), EwLoadString( &_Const000B )), 
-    EwNewStringInt( CurrentTime->Minute, 2, 10 )), EwLoadString( &_Const000B )), 
+    EwLoadString( &_Const0008 )), EwNewStringInt( CurrentTime->Month, 2, 10 )), 
+    EwLoadString( &_Const0008 )), EwNewStringInt( CurrentTime->Day, 2, 10 )), EwLoadString( 
+    &_Const0009 )), EwNewStringInt( CurrentTime->Hour, 2, 10 )), EwLoadString( &_Const000A )), 
+    EwNewStringInt( CurrentTime->Minute, 2, 10 )), EwLoadString( &_Const000A )), 
     EwNewStringInt( CurrentTime->Second, 2, 10 )));
   }
 }
@@ -523,9 +511,9 @@ void DevelopmentDEV_Bluetooth__Init( DevelopmentDEV_Bluetooth _this, XObject aLi
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->BtSwVersionTitle, _Const000C );
-  ViewsText_OnSetString( &_this->BtSwVersionTitle, EwLoadString( &_Const000D ));
-  CoreRectView__OnSetBounds( &_this->BtSwVersionText, _Const000E );
+  CoreRectView__OnSetBounds( &_this->BtSwVersionTitle, _Const000B );
+  ViewsText_OnSetString( &_this->BtSwVersionTitle, EwLoadString( &_Const000C ));
+  CoreRectView__OnSetBounds( &_this->BtSwVersionText, _Const000D );
   ViewsText_OnSetAlignment( &_this->BtSwVersionText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->BtSwVersionText, DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( 
@@ -639,7 +627,7 @@ void DevelopmentDEV_TFTBrightness__Init( DevelopmentDEV_TFTBrightness _this, XOb
   CoreRectView__OnSetBounds( _this, _Const0000 );
   CoreRectView__OnSetBounds( &_this->CheckerboardImage, _Const0000 );
   ViewsImage_OnSetFrameNumber( &_this->CheckerboardImage, 1 );
-  CoreRectView__OnSetBounds( &_this->LevelText, _Const000F );
+  CoreRectView__OnSetBounds( &_this->LevelText, _Const000E );
   ViewsText_OnSetWrapText( &_this->LevelText, 1 );
   ViewsText_OnSetString( &_this->LevelText, 0 );
   _this->BrightnessLevel = -1;
@@ -726,9 +714,9 @@ void DevelopmentDEV_TFTBrightness_UpdateViewState( DevelopmentDEV_TFTBrightness 
   ApplicationApplication App;
 
   CoreGroup_UpdateViewState((CoreGroup)_this, aState );
-  EwTrace( "%s%t", EwLoadString( &_Const0010 ), aState );
+  EwTrace( "%s%t", EwLoadString( &_Const000F ), aState );
   App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
-  EwTrace( "%s%*", EwLoadString( &_Const0011 ), App );
+  EwTrace( "%s%*", EwLoadString( &_Const0010 ), App );
 
   if ( App != 0 )
   {
@@ -884,41 +872,35 @@ void DevelopmentDEV_MotoCon__Init( DevelopmentDEV_MotoCon _this, XObject aLink, 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_MotoCon );
 
-  /* ... then construct all embedded objects */
-  MenuVerticalMenu__Init( &_this->Menu, &_this->_XObject, 0 );
-
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DevelopmentDEV_MotoCon );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0012 ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0013 ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0014 ));
-  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0015 ));
-  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const0016 ));
-  _this->ItemTitleArray[ 5 ] = EwShareString( EwLoadString( &_Const0017 ));
-  _this->ItemTitleArray[ 6 ] = EwShareString( EwLoadString( &_Const0018 ));
-  _this->ItemTitleArray[ 7 ] = EwShareString( EwLoadString( &_Const0019 ));
-  _this->ItemTitleArray[ 8 ] = EwShareString( EwLoadString( &_Const001A ));
-  _this->ItemTitleArray[ 9 ] = EwShareString( EwLoadString( &_Const001B ));
-  _this->ItemTitleArray[ 10 ] = EwShareString( EwLoadString( &_Const001C ));
-  _this->ItemTitleArray[ 11 ] = EwShareString( EwLoadString( &_Const001D ));
-  _this->ItemTitleArray[ 12 ] = EwShareString( EwLoadString( &_Const001E ));
-  _this->ItemTitleArray[ 13 ] = EwShareString( EwLoadString( &_Const001F ));
-  _this->ItemTitleArray[ 14 ] = EwShareString( EwLoadString( &_Const0020 ));
-  _this->ItemTitleArray[ 15 ] = EwShareString( EwLoadString( &_Const0021 ));
-  _this->ItemTitleArray[ 16 ] = EwShareString( EwLoadString( &_Const0022 ));
-  _this->ItemTitleArray[ 17 ] = EwShareString( EwLoadString( &_Const0023 ));
-  _this->ItemTitleArray[ 18 ] = EwShareString( EwLoadString( &_Const0024 ));
-  _this->ItemTitleArray[ 19 ] = EwShareString( EwLoadString( &_Const0025 ));
-  _this->ItemTitleArray[ 20 ] = EwShareString( EwLoadString( &_Const0026 ));
-  CoreRectView__OnSetBounds( &_this->Menu, _Const0007 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 21 );
-  MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
-  MenuVerticalMenu_OnSetItemNumPerPage( &_this->Menu, 4 );
-  MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Menu, 1 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0011 ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0012 ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0013 ));
+  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0014 ));
+  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const0015 ));
+  _this->ItemTitleArray[ 5 ] = EwShareString( EwLoadString( &_Const0016 ));
+  _this->ItemTitleArray[ 6 ] = EwShareString( EwLoadString( &_Const0017 ));
+  _this->ItemTitleArray[ 7 ] = EwShareString( EwLoadString( &_Const0018 ));
+  _this->ItemTitleArray[ 8 ] = EwShareString( EwLoadString( &_Const0019 ));
+  _this->ItemTitleArray[ 9 ] = EwShareString( EwLoadString( &_Const001A ));
+  _this->ItemTitleArray[ 10 ] = EwShareString( EwLoadString( &_Const001B ));
+  _this->ItemTitleArray[ 11 ] = EwShareString( EwLoadString( &_Const001C ));
+  _this->ItemTitleArray[ 12 ] = EwShareString( EwLoadString( &_Const001D ));
+  _this->ItemTitleArray[ 13 ] = EwShareString( EwLoadString( &_Const001E ));
+  _this->ItemTitleArray[ 14 ] = EwShareString( EwLoadString( &_Const001F ));
+  _this->ItemTitleArray[ 15 ] = EwShareString( EwLoadString( &_Const0020 ));
+  _this->ItemTitleArray[ 16 ] = EwShareString( EwLoadString( &_Const0021 ));
+  _this->ItemTitleArray[ 17 ] = EwShareString( EwLoadString( &_Const0022 ));
+  _this->ItemTitleArray[ 18 ] = EwShareString( EwLoadString( &_Const0023 ));
+  _this->ItemTitleArray[ 19 ] = EwShareString( EwLoadString( &_Const0024 ));
+  _this->ItemTitleArray[ 20 ] = EwShareString( EwLoadString( &_Const0025 ));
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 21 );
+  MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
+  MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
 }
 
 /* Re-Initializer for the class 'Development::DEV_MotoCon' */
@@ -926,9 +908,6 @@ void DevelopmentDEV_MotoCon__ReInit( DevelopmentDEV_MotoCon _this )
 {
   /* At first re-initialize the super class ... */
   MenuBaseMenuView__ReInit( &_this->_Super );
-
-  /* ... then re-construct all embedded objects */
-  MenuVerticalMenu__ReInit( &_this->Menu );
 }
 
 /* Finalizer method for the class 'Development::DEV_MotoCon' */
@@ -936,9 +915,6 @@ void DevelopmentDEV_MotoCon__Done( DevelopmentDEV_MotoCon _this )
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
-
-  /* Finalize all embedded objects */
-  MenuVerticalMenu__Done( &_this->Menu );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -996,8 +972,8 @@ EW_DEFINE_CLASS_VARIANTS( DevelopmentDEV_MotoCon )
 EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_MotoCon )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_MotoCon' */
-EW_DEFINE_CLASS( DevelopmentDEV_MotoCon, MenuBaseMenuView, Menu, Menu, Menu, Menu, 
-                 ItemTitleArray, _None, "Development::DEV_MotoCon" )
+EW_DEFINE_CLASS( DevelopmentDEV_MotoCon, MenuBaseMenuView, ItemTitleArray, ItemTitleArray, 
+                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _None, "Development::DEV_MotoCon" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

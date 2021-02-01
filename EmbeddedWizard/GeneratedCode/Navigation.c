@@ -27,11 +27,13 @@
 #include "ewlocale.h"
 #include "_ApplicationApplication.h"
 #include "_ComponentsBaseComponent.h"
+#include "_ComponentsBaseMainBG.h"
 #include "_CoreGroup.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
+#include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
 #include "_MenuItemCheckMark.h"
 #include "_MenuVerticalMenu.h"
@@ -81,7 +83,6 @@ static const XStringRes _Const000E = { _StringsDefault0, 0x0033 };
 static const XRect _Const000F = {{ 77, 120 }, { 107, 150 }};
 static const XStringRes _Const0010 = { _StringsDefault0, 0x0038 };
 static const XStringRes _Const0011 = { _StringsDefault0, 0x003C };
-static const XRect _Const0012 = {{ 0, 36 }, { 480, 272 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -359,17 +360,13 @@ void NavigationNAV06_NaviSettingMenu__Init( NavigationNAV06_NaviSettingMenu _thi
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( NavigationNAV06_NaviSettingMenu );
 
-  /* ... then construct all embedded objects */
-  MenuVerticalMenu__Init( &_this->Menu, &_this->_XObject, 0 );
-
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( NavigationNAV06_NaviSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->Menu, _Const0012 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 7 );
-  MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Menu, 1 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 7 );
+  MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
   _this->NaviSettings[ 0 ] = EnumNaviSettingItemStopNavigation;
   _this->NaviSettings[ 1 ] = EnumNaviSettingItemSkipNextStop;
   _this->NaviSettings[ 2 ] = EnumNaviSettingItemGoHome;
@@ -378,7 +375,6 @@ void NavigationNAV06_NaviSettingMenu__Init( NavigationNAV06_NaviSettingMenu _thi
   _this->NaviSettings[ 5 ] = EnumNaviSettingItemNearbyGasStations;
   _this->NaviSettings[ 6 ] = EnumNaviSettingItemChangeView;
   _this->IsDestSet = 1;
-  CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
 }
 
 /* Re-Initializer for the class 'Navigation::NAV06_NaviSettingMenu' */
@@ -386,9 +382,6 @@ void NavigationNAV06_NaviSettingMenu__ReInit( NavigationNAV06_NaviSettingMenu _t
 {
   /* At first re-initialize the super class ... */
   MenuBaseMenuView__ReInit( &_this->_Super );
-
-  /* ... then re-construct all embedded objects */
-  MenuVerticalMenu__ReInit( &_this->Menu );
 }
 
 /* Finalizer method for the class 'Navigation::NAV06_NaviSettingMenu' */
@@ -396,9 +389,6 @@ void NavigationNAV06_NaviSettingMenu__Done( NavigationNAV06_NaviSettingMenu _thi
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
-
-  /* Finalize all embedded objects */
-  MenuVerticalMenu__Done( &_this->Menu );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -477,12 +467,12 @@ XString NavigationNAV06_NaviSettingMenu_LoadItemTitle( NavigationNAV06_NaviSetti
 void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  ComponentsBaseComponent Dialog;
+  MenuBaseMenuView MenuDialog;
 
   if ( aMenuItem == 0 )
     ;
 
-  Dialog = 0;
+  MenuDialog = 0;
 
   switch ( _this->NaviSettings[ EwCheckIndex( aItemNo, 7 )])
   {
@@ -511,7 +501,7 @@ void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSetting
     break;
 
     case EnumNaviSettingItemChangeView :
-      Dialog = ((ComponentsBaseComponent)EwNewObject( NavigationNAV08_NaviChageViewMenu, 
+      MenuDialog = ((MenuBaseMenuView)EwNewObject( NavigationNAV08_NaviChageViewMenu, 
       0 ));
     break;
 
@@ -519,9 +509,9 @@ void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSetting
       ;
   }
 
-  if ( Dialog != 0 )
+  if ( MenuDialog != 0 )
   {
-    ComponentsBaseComponent_SlideInDialog((ComponentsBaseComponent)_this, ((CoreGroup)Dialog ));
+    ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)MenuDialog ));
   }
 }
 
@@ -595,8 +585,8 @@ EW_DEFINE_CLASS_VARIANTS( NavigationNAV06_NaviSettingMenu )
 EW_END_OF_CLASS_VARIANTS( NavigationNAV06_NaviSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV06_NaviSettingMenu' */
-EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, Menu, Menu, 
-                 Menu, Menu, NaviSettings, NaviSettings, "Navigation::NAV06_NaviSettingMenu" )
+EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, _None, _None, 
+                 _None, _None, _None, _None, "Navigation::NAV06_NaviSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -652,7 +642,6 @@ void NavigationNAV08_NaviChageViewMenu__Init( NavigationNAV08_NaviChageViewMenu 
   _this->_GCT = EW_CLASS_GCT( NavigationNAV08_NaviChageViewMenu );
 
   /* ... then construct all embedded objects */
-  MenuVerticalMenu__Init( &_this->Menu, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
@@ -660,14 +649,13 @@ void NavigationNAV08_NaviChageViewMenu__Init( NavigationNAV08_NaviChageViewMenu 
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->Menu, _Const0012 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 3 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
+  _this->Super2.SlideOutEffectEnabled = 1;
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsNAV08_default_view ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsNAV08_turn_by_turn ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsNAV08_turn_list ));
   _this->ItemCheckedArray[ 0 ] = 1;
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, NavigationNAV08_NaviChageViewMenu_OnCheckMarkUpdateSlot );
 }
 
@@ -678,7 +666,6 @@ void NavigationNAV08_NaviChageViewMenu__ReInit( NavigationNAV08_NaviChageViewMen
   MenuBaseMenuView__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
-  MenuVerticalMenu__ReInit( &_this->Menu );
   CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
 }
 
@@ -689,18 +676,10 @@ void NavigationNAV08_NaviChageViewMenu__Done( NavigationNAV08_NaviChageViewMenu 
   _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
-  MenuVerticalMenu__Done( &_this->Menu );
   CoreTimer__Done( &_this->CheckMarkUpdateTimer );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
-}
-
-/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.OnShortHomeKeyActivated()' */
-void NavigationNAV08_NaviChageViewMenu_OnShortHomeKeyActivated( NavigationNAV08_NaviChageViewMenu _this )
-{
-  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
-  EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemClass()' */
@@ -759,7 +738,7 @@ void NavigationNAV08_NaviChageViewMenu_OnItemActivate( NavigationNAV08_NaviChage
     }
   }
 
-  MenuVerticalMenu_InvalidateItems( &_this->Menu, 0, 2 );
+  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
   CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
   _this->NaviScreenIdx = aItemNo;
 }
@@ -819,8 +798,9 @@ EW_DEFINE_CLASS_VARIANTS( NavigationNAV08_NaviChageViewMenu )
 EW_END_OF_CLASS_VARIANTS( NavigationNAV08_NaviChageViewMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV08_NaviChageViewMenu' */
-EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, Menu, Menu, 
-                 Menu, Menu, ItemTitleArray, NaviScreenIdx, "Navigation::NAV08_NaviChageViewMenu" )
+EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, CheckMarkUpdateTimer, 
+                 CheckMarkUpdateTimer, CheckMarkUpdateTimer, CheckMarkUpdateTimer, 
+                 ItemTitleArray, NaviScreenIdx, "Navigation::NAV08_NaviChageViewMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -854,7 +834,7 @@ EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, Menu, Menu
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  NavigationNAV08_NaviChageViewMenu_OnShortHomeKeyActivated,
+  ComponentsBaseMainBG_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,

@@ -388,7 +388,7 @@ class VerticalMenu : Components::BaseComponent
       Scrollbar.ListItems = value;
 
       // set focus frame invisible when there is no item
-      if( 0 == NoOfItems )
+      if( 0 == value )
       {
         FocusFrame.Visible = false;
       }
@@ -453,6 +453,7 @@ class VerticalMenu : Components::BaseComponent
     preset Bounds = <18,0,435,76>;
     preset Width = 3;
     preset Color = #0072FFFF;
+    preset Visible = false;
   }
 
   // Note:
@@ -980,10 +981,19 @@ class BaseMenuView : Components::BaseMainBG
     return true;
   }
 
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <0,36,480,272>;
+    preset DDModeEnabled = false;
+    preset NoOfItems = 0;
+    preset ArrowScrollBarVisible = false;
+  }
+
   $reorder BlackBG 1
-  $reorder LoadItemClass 2
-  $reorder LoadItemTitle 2
-  $reorder OnItemActivate 2
+  $reorder LoadItemClass 1
+  $reorder LoadItemTitle 1
+  $reorder OnItemActivate 1
 }
 
 $rect <690,10,910,50>
@@ -1364,22 +1374,30 @@ class ArrowScrollBar : Core::Group
   {
     super( aState );
 
-    if( 0 == CurrentPageIdx )
+    if( 0 == NoOfPages )
     {
       UpArrowIcon.Visible = false;
-    }
-    else
-    {
-      UpArrowIcon.Visible = true;
-    }
-
-    if( ( NoOfPages - 1 ) == CurrentPageIdx )
-    {
       DownArrowIcon.Visible = false;
     }
     else
     {
-      DownArrowIcon.Visible = true;
+      if( 0 == CurrentPageIdx )
+      {
+        UpArrowIcon.Visible = false;
+      }
+      else
+      {
+        UpArrowIcon.Visible = true;
+      }
+
+      if( ( NoOfPages - 1 ) == CurrentPageIdx )
+      {
+        DownArrowIcon.Visible = false;
+      }
+      else
+      {
+        DownArrowIcon.Visible = true;
+      }
     }
   }
 

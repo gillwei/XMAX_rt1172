@@ -160,51 +160,10 @@ class BaseComponent : Core::Group
   {
   }
 
-  $rect <50,480,260,520>
-  slot OnSlideEffectCompletedSlot
-  {
-    IsSlideEffectPresenting = false;
-  }
-
-  $rect <280,480,490,520>
-  var bool IsSlideEffectPresenting = false;
-
   // Key Handle
   note group Note5
   {
     attr Bounds = <20,10,1230,320>;
-  }
-
-  // Slide Effect
-  note group Note6
-  {
-    attr Bounds = <20,370,530,540>;
-  }
-
-  $rect <50,420,250,460>
-  method void SlideInDialog( arg Core::Group aView )
-  {
-    if( null != aView &&
-        IsCurrentDialog() &&
-        false == IsSlideEffectPresenting )
-    {
-      IsSlideEffectPresenting = true;
-      PresentDialog( aView, Effect::LeftSlideTransition, null, null, null, null, null, OnSlideEffectCompletedSlot, null, false );
-    }
-
-
-
-  }
-
-  $rect <280,420,480,460>
-  method void SlideOutDialog( arg Core::Group aView )
-  {
-    if( null != aView &&
-        false == IsSlideEffectPresenting )
-    {
-      IsSlideEffectPresenting = true;
-      Owner.DismissDialog( this, Effect::RightSlideTransition, null, null, OnSlideEffectCompletedSlot, null, false );
-    }
   }
 
   $rect <260,210,490,250>
@@ -264,10 +223,10 @@ class BaseComponent : Core::Group
   $rect <990,260,1190,300>
   property bool PassMagicKey = false;
 
-  $rect <560,420,760,460>
+  $rect <40,380,240,420>
   property bool DDModeEnabled = false;
 
-  $rect <560,520,760,560>
+  $rect <40,480,240,520>
   method bool IsDDModeEffected()
   {
     return ( DDModeEnabled && DeviceInterface::VehicleDevice.DDModeActivated );
@@ -276,10 +235,10 @@ class BaseComponent : Core::Group
   // Driver Distraction Mode
   note group Note7
   {
-    attr Bounds = <540,370,780,580>;
+    attr Bounds = <20,330,260,540>;
   }
 
-  $rect <560,470,760,510>
+  $rect <40,430,240,470>
   onset DDModeEnabled
   {
     if( pure DDModeEnabled != value )
@@ -385,7 +344,7 @@ class BaseMainBG : Components::BaseComponent
     }
     else
     {
-      Owner.DismissDialog( this, null, null, null, null, null, false );
+      DismissThisDialog();
     }
   }
 
@@ -450,6 +409,155 @@ class BaseMainBG : Components::BaseComponent
   {
     attr Bounds = <510,30,820,280>;
   }
+
+  $rect <220,380,420,420>
+  method void DismissThisDialog()
+  {
+    if( SlideOutEffectEnabled )
+    {
+      SlideOutDialog();
+    }
+    else
+    {
+      Owner.DismissDialog( this, null, null, null, null, null, false );
+    }
+  }
+
+  $rect <360,490,560,530>
+  method void SlideInDialog( arg Components::BaseMainBG aChildDialog )
+  {
+    if( IsCurrentDialog() && null != aChildDialog )
+    {
+      ChildDialog = aChildDialog;
+
+      // hide the highlight focus frame of the child menu
+      var Menu::BaseMenuView ChildMenu = ( Menu::BaseMenuView )aChildDialog;
+      if( null != ChildMenu )
+      {
+        ChildMenu.Menu.FocusFrame.Visible = false;
+      }
+
+      // hide the highlight focus frame of this current menu
+      var Menu::BaseMenuView CurrentMenu = ( Menu::BaseMenuView )this;
+      if( null != CurrentMenu )
+      {
+        CurrentMenu.Menu.FocusFrame.Visible = false;
+      }
+
+      SlideDirection = Core::Direction.Left;
+      HideFocusFrameTimer.Enabled = true;
+    }
+  }
+
+  $rect <670,490,870,530>
+  object Core::Timer HideFocusFrameTimer
+  {
+    preset OnTrigger = OnHideFocusFrameTimeoutSlot;
+    preset Period = 50;
+  }
+
+  $rect <670,590,940,630>
+  slot OnHideFocusFrameTimeoutSlot
+  {
+    HideFocusFrameTimer.Enabled = false;
+
+    if( Core::Direction.Left == SlideDirection )
+    {
+      PresentDialogWithSlideInEffect( ChildDialog );
+    }
+    else
+    {
+      DismissMenuWithSlideOutEffect();
+    }
+  }
+
+  $rect <360,540,580,580>
+  var Components::BaseMainBG ChildDialog;
+
+  // SlideIn Menu Operation
+  note group Note8
+  {
+    attr Bounds = <330,450,630,700>;
+  }
+
+  $rect <360,640,620,680>
+  slot OnDialogSlideInCompletedSlot
+  {
+    // show hightlight frame of the child menu after slide-in animation
+    var Menu::BaseMenuView ChildMenu = ( Menu::BaseMenuView )ChildDialog;
+    if( null != ChildMenu )
+    {
+      ChildMenu.Menu.FocusFrame.Visible = true;
+    }
+
+    ChildDialog = null;
+  }
+
+  // Timer to hide highlight
+  note group Note9
+  {
+    attr Bounds = <650,450,950,700>;
+  }
+
+  $rect <360,590,620,630>
+  method void PresentDialogWithSlideInEffect( arg Core::Group aView )
+  {
+    if( null != aView )
+    {
+      PresentDialog( aView, Effect::SlideInTransition, null, null, null, null, null, OnDialogSlideInCompletedSlot, null, false );
+    }
+  }
+
+  $rect <0,380,210,420>
+  var bool SlideOutEffectEnabled = false;
+
+  $rect <30,640,290,680>
+  slot OnDialogSlideOutCompletedSlot
+  {
+    // Set the focus frame of the owner menu visible after sliding-out animation
+    var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )OwnerDialog;
+    if( null != OwnerMenu )
+    {
+      OwnerMenu.Menu.FocusFrame.Visible = true;
+    }
+  }
+
+  $rect <30,540,250,580>
+  var Components::BaseMainBG OwnerDialog;
+
+  $rect <30,490,230,530>
+  method void SlideOutDialog()
+  {
+    if( IsCurrentDialog() )
+    {
+      OwnerDialog = ( Components::BaseMainBG )Owner;
+
+      // hide the highlight focus frame of this current menu
+      var Menu::BaseMenuView CurrentMenu = ( Menu::BaseMenuView )this;
+      if( null != CurrentMenu )
+      {
+        CurrentMenu.Menu.FocusFrame.Visible = false;
+      }
+
+      SlideDirection = Core::Direction.Right;
+      HideFocusFrameTimer.Enabled = true;
+    }
+  }
+
+  $rect <30,590,290,630>
+  method void DismissMenuWithSlideOutEffect()
+  {
+    Owner.DismissDialog( this, Effect::SlideOutTransition, null, null, OnDialogSlideOutCompletedSlot, null, false );
+  }
+
+  // SlideOut Menu Operation
+  note group Note10
+  {
+    attr Bounds = <10,450,310,700>;
+  }
+
+  $rect <670,540,870,580>
+  var Core::Direction SlideDirection;
 }
 
 $rect <20,190,220,230>

@@ -1,15 +1,91 @@
-$version 9.30
+﻿$version 10.00
 
-$rect <20,80,270,120>
+$rect <10,110,210,150>
 $output false
-autoobject Effects::SlideTransition RightSlideTransition
+autoobject Effect::SlideTransitionNoFade SlideOutTransition
 {
+  preset Buffered = true;
+  preset Exponent = 4.43;
+  preset Timing = Effects::Timing.Exp_Out;
+  preset Duration = 200;
   preset Direction = Core::Direction.Right;
 }
 
-$rect <20,20,270,60>
+$rect <10,60,210,100>
 $output false
-autoobject Effects::SlideTransition LeftSlideTransition
+autoobject Effect::SlideTransitionNoFade SlideInTransition
 {
+  preset Buffered = true;
+  preset Exponent = 4.43;
+  preset Timing = Effects::Timing.Exp_Out;
+  preset Duration = 200;
   preset Direction = Core::Direction.Left;
+}
+
+$rect <10,10,210,50>
+$output false
+class SlideTransitionNoFade : Effects::SlideTransition
+{
+  $rect <10,10,210,50>
+  inherited method CreatePresentFader()
+  {
+    // This function is referenced from Effects::SlideTransition.CreatePresentFader()
+    var Effects::PositionFader fader = new Effects::PositionFader;
+
+    fader.Visible                      = true;
+    fader.AssignFocus                  = false;
+    fader.RestackTopmost               = true;
+    fader.UseCurrentState              = true;
+    fader.Buffered                     = Buffered;
+    fader.OnInitialize                 = onInitializeIn;
+
+    // Fail to disable OpacityEffect by setting fader.OpacityEffect.Enabled to false,
+    // set CycleDuration to 0 and Value1/Value2 to 255 to invalidate the OpacitiyEffect
+    fader.OpacityEffect.CycleDuration  = 0;
+    fader.OpacityEffect.Value1         = 255;
+    fader.OpacityEffect.Value2         = 255;
+
+    fader.PositionEffect.CycleDuration = Duration;
+    fader.PositionEffect.Timing        = Timing;
+    fader.PositionEffect.TimingCustom1 = TimingCustom1;
+    fader.PositionEffect.TimingCustom2 = TimingCustom2;
+    fader.PositionEffect.Exponent      = Exponent;
+    fader.PositionEffect.Amplitude     = Amplitude;
+    fader.PositionEffect.Oscillations  = Oscillations;
+    fader.PositionEffect.Bounces       = Bounces;
+    fader.PositionEffect.Elasticity    = Elasticity;
+
+    return fader;
+  }
+
+  $rect <10,60,210,100>
+  inherited method CreateDismissFader()
+  {
+    // This function is referenced from Effects::SlideTransition.CreateDismissFader()
+    var Effects::PositionFader fader = new Effects::PositionFader;
+
+    fader.Visible                      = false;
+    fader.RemoveIfHidden               = true;
+    fader.UseCurrentState              = true;
+    fader.Buffered                     = Buffered;
+    fader.OnInitialize                 = onInitializeOut;
+
+    // Fail to disable OpacityEffect by setting fader.OpacityEffect.Enabled to false,
+    // set CycleDuration to 0 and Value1/Value2 to 255 to invalidate the OpacitiyEffect
+    fader.OpacityEffect.CycleDuration  = 0;
+    fader.OpacityEffect.Value1         = 255;
+    fader.OpacityEffect.Value2         = 255;
+
+    fader.PositionEffect.CycleDuration = Duration;
+    fader.PositionEffect.Timing        = Timing;
+    fader.PositionEffect.TimingCustom1 = TimingCustom1;
+    fader.PositionEffect.TimingCustom2 = TimingCustom2;
+    fader.PositionEffect.Exponent      = Exponent;
+    fader.PositionEffect.Amplitude     = Amplitude;
+    fader.PositionEffect.Oscillations  = Oscillations;
+    fader.PositionEffect.Bounces       = Bounces;
+    fader.PositionEffect.Elasticity    = Elasticity;
+
+    return fader;
+  }
 }

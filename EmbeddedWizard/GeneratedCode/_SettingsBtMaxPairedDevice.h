@@ -46,6 +46,7 @@
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_MenuUpDownPushButtonSet.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"

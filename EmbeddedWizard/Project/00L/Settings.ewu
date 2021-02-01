@@ -37,12 +37,6 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
   $rect <10,300,210,340>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <230,300,460,340>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
-
   $rect <10,350,210,390>
   inherited property DDModeEnabled = true;
 
@@ -109,14 +103,21 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
 
     if( null != Dialog )
     {
-      SlideInDialog( Dialog );
+      var Menu::BaseMenuView MenuDialog = ( Menu::BaseMenuView )Dialog;
+      if( null != MenuDialog )
+      {
+        SlideInDialog( MenuDialog );
+      }
+      else
+      {
+        PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
+      }
     }
   }
 
   $rect <20,20,160,60>
-  object Menu::VerticalMenu Menu
+  inherited object Menu
   {
-    preset Bounds = <0,36,480,272>;
     preset DDModeEnabled = true;
     preset NoOfItems = 9;
     preset ArrowScrollBarVisible = true;
@@ -150,14 +151,12 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
     Default[8] = Enum::MainSettingItem.Reset;
   );
 
-  $reorder SlideInDialog 4
   $reorder OnSetDDModeEnabled 1
-  $reorder LoadItemClass 4
-  $reorder LoadItemTitle 4
-  $reorder OnItemActivate 3
+  $reorder LoadItemClass 3
+  $reorder LoadItemTitle 3
+  $reorder OnItemActivate 2
   $reorder LoadItemChecked 2
   $reorder LoadItemEnabled 2
-  $reorder Menu 1
   $reorder Note5 1
   $reorder SeatHeaterEnabled 1
   $reorder GripWarmerEnabled 1
@@ -213,12 +212,14 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
   }
 
   $rect <20,20,160,60>
-  object Menu::VerticalMenu Menu
+  inherited object Menu
   {
-    preset Bounds = <0,36,480,272>;
     preset DDModeEnabled = true;
     preset NoOfItems = 2;
   }
+
+  $rect <10,390,210,430>
+  inherited var SlideOutEffectEnabled = true;
 
   $rect <730,70,930,110>
   array string ItemTitleArray[ 2 ] =
@@ -327,14 +328,16 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
   }
 
   $rect <20,20,160,60>
-  object Menu::VerticalMenu Menu
+  inherited object Menu
   {
-    preset Bounds = <0,36,480,272>;
     preset DDModeEnabled = true;
     preset NoOfItems = 4;
     preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
   }
+
+  $rect <10,390,210,430>
+  inherited var SlideOutEffectEnabled = true;
 
   $rect <710,30,910,70>
   array class ItemClassArray[ 4 ] =
@@ -418,9 +421,9 @@ class LegalMenu : Menu::BaseMenuView
     switch( aItemNo )
     {
     case 0:
-      SlideInDialog( new Settings::TermsOfService );
+      PresentDialogWithSlideInEffect( new Settings::TermsOfService );
     case 1:
-      SlideInDialog( new Settings::OpenSourceLicenses );
+      PresentDialogWithSlideInEffect( new Settings::OpenSourceLicenses );
     default :;
     }
   }
@@ -602,7 +605,7 @@ class SoftwareUpdate : Menu::BaseMenuView
   $rect <520,200,720,240>
   slot OnUpdate
   {
-    SlideInDialog( new Settings::InProgress );
+    PresentDialogWithSlideInEffect( new Settings::InProgress );
   }
 
   $rect <520,20,720,60>
@@ -1467,15 +1470,17 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
   }
 
   $rect <20,20,160,60>
-  object Menu::VerticalMenu Menu
+  inherited object Menu
   {
-    preset Bounds = <0,36,480,272>;
     preset DDModeEnabled = true;
-    preset NoOfItems = 1;
-    preset Focusable = false;
+    preset NoOfItems = 0;
     preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
+    preset ArrowScrollBarVisible = true;
   }
+
+  $rect <0,390,200,430>
+  inherited var SlideOutEffectEnabled = true;
 
   $rect <200,340,420,380>
   var int32 PairedDeviceNum = 0;
@@ -1618,11 +1623,9 @@ class SET19_BtPairedDeviceOperation : Menu::BaseMenuView
   }
 
   $rect <20,20,160,60>
-  object Menu::VerticalMenu Menu
+  inherited object Menu
   {
-    preset Bounds = <0,36,480,272>;
     preset DDModeEnabled = true;
-    preset NoOfItems = 3;
   }
 
   $rect <10,350,210,390>

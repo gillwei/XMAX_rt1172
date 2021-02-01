@@ -45,10 +45,17 @@
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -107,7 +114,6 @@
 
 /* Deklaration of class : 'Settings::SET01_MainSettingMenu' */
 EW_DEFINE_FIELDS( SettingsSET01_MainSettingMenu, MenuBaseMenuView )
-  EW_OBJECT  ( Menu,            MenuVerticalMenu )
   EW_ARRAY   ( Settings,        XEnum, [9])
   EW_VARIABLE( GripWarmerEnabled, XBool )
   EW_VARIABLE( SeatHeaterEnabled, XBool )
@@ -161,7 +167,7 @@ EW_DEFINE_METHODS( SettingsSET01_MainSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET01_MainSettingMenu _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
@@ -181,9 +187,6 @@ EW_END_OF_METHODS( SettingsSET01_MainSettingMenu )
    statements. */
 void SettingsSET01_MainSettingMenu_Init( SettingsSET01_MainSettingMenu _this, XHandle 
   aArg );
-
-/* 'C' function for method : 'Settings::SET01_MainSettingMenu.OnShortHomeKeyActivated()' */
-void SettingsSET01_MainSettingMenu_OnShortHomeKeyActivated( SettingsSET01_MainSettingMenu _this );
 
 /* 'C' function for method : 'Settings::SET01_MainSettingMenu.LoadItemClass()' */
 XClass SettingsSET01_MainSettingMenu_LoadItemClass( SettingsSET01_MainSettingMenu _this, 

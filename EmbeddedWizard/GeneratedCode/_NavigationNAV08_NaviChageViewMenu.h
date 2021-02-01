@@ -51,6 +51,12 @@
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
+
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
   EW_DECLARE_CLASS( CoreDialogContext )
@@ -108,7 +114,6 @@
 
 /* Deklaration of class : 'Navigation::NAV08_NaviChageViewMenu' */
 EW_DEFINE_FIELDS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
-  EW_OBJECT  ( Menu,            MenuVerticalMenu )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
   EW_ARRAY   ( ItemTitleArray,  XString, [3])
   EW_VARIABLE( NaviScreenIdx,   XInt32 )
@@ -163,7 +168,7 @@ EW_DEFINE_METHODS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( NavigationNAV08_NaviChageViewMenu _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
@@ -178,9 +183,6 @@ EW_DEFINE_METHODS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
     XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( NavigationNAV08_NaviChageViewMenu )
-
-/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.OnShortHomeKeyActivated()' */
-void NavigationNAV08_NaviChageViewMenu_OnShortHomeKeyActivated( NavigationNAV08_NaviChageViewMenu _this );
 
 /* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemClass()' */
 XClass NavigationNAV08_NaviChageViewMenu_LoadItemClass( NavigationNAV08_NaviChageViewMenu _this, 

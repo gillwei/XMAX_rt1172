@@ -101,7 +101,6 @@ EW_DEFINE_FIELDS( ComponentsBaseComponent, CoreGroup )
   EW_PROPERTY( PassHomeKey,     XBool )
   EW_PROPERTY( PassDownKey,     XBool )
   EW_PROPERTY( PassUpKey,       XBool )
-  EW_VARIABLE( IsSlideEffectPresenting, XBool )
 EW_END_OF_FIELDS( ComponentsBaseComponent )
 
 /* Virtual Method Table (VMT) for the class : 'Components::BaseComponent' */
@@ -188,14 +187,6 @@ void ComponentsBaseComponent_OnShortEnterKeyActivated( ComponentsBaseComponent _
 
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortEnterKeyActivated()' */
 void ComponentsBaseComponent__OnShortEnterKeyActivated( void* _this );
-
-/* 'C' function for method : 'Components::BaseComponent.OnSlideEffectCompletedSlot()' */
-void ComponentsBaseComponent_OnSlideEffectCompletedSlot( ComponentsBaseComponent _this, 
-  XObject sender );
-
-/* 'C' function for method : 'Components::BaseComponent.SlideInDialog()' */
-void ComponentsBaseComponent_SlideInDialog( ComponentsBaseComponent _this, CoreGroup 
-  aView );
 
 /* 'C' function for method : 'Components::BaseComponent.OnShortHomeKeyActivated()' */
 void ComponentsBaseComponent_OnShortHomeKeyActivated( ComponentsBaseComponent _this );

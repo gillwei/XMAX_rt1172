@@ -33,14 +33,18 @@
 #include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
-#include "_EffectsSlideTransition.h"
+#include "_EffectSlideTransitionNoFade.h"
 #include "_EffectsTransition.h"
+#include "_MenuBaseMenuView.h"
+#include "_MenuVerticalMenu.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
+#include "_ViewsBorder.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -354,29 +358,6 @@ void ComponentsBaseComponent__OnShortEnterKeyActivated( void* _this )
   ((ComponentsBaseComponent)_this)->_VMT->OnShortEnterKeyActivated((ComponentsBaseComponent)_this );
 }
 
-/* 'C' function for method : 'Components::BaseComponent.OnSlideEffectCompletedSlot()' */
-void ComponentsBaseComponent_OnSlideEffectCompletedSlot( ComponentsBaseComponent _this, 
-  XObject sender )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  _this->IsSlideEffectPresenting = 0;
-}
-
-/* 'C' function for method : 'Components::BaseComponent.SlideInDialog()' */
-void ComponentsBaseComponent_SlideInDialog( ComponentsBaseComponent _this, CoreGroup 
-  aView )
-{
-  if ((( aView != 0 ) && CoreGroup__IsCurrentDialog( _this )) && ( 0 == _this->IsSlideEffectPresenting ))
-  {
-    _this->IsSlideEffectPresenting = 1;
-    CoreGroup_PresentDialog((CoreGroup)_this, aView, ((EffectsTransition)EwGetAutoObject( 
-    &EffectLeftSlideTransition, EffectsSlideTransition )), 0, 0, 0, 0, 0, EwNewSlot( 
-    _this, ComponentsBaseComponent_OnSlideEffectCompletedSlot ), EwNullSlot, 0 );
-  }
-}
-
 /* 'C' function for method : 'Components::BaseComponent.OnShortHomeKeyActivated()' */
 void ComponentsBaseComponent_OnShortHomeKeyActivated( ComponentsBaseComponent _this )
 {
@@ -678,6 +659,7 @@ void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHan
   ViewsRectangle__Init( &_this->BlackBG, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->DDModeStateChangedHandler, &_this->_XObject, 0 );
   ComponentsDDModeMask__Init( &_this->DDModeMask, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->HideFocusFrameTimer, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( ComponentsBaseMainBG );
@@ -692,6 +674,7 @@ void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHan
   CoreRectView__OnSetBounds( &_this->DDModeMask, _Const000C );
   CoreGroup__OnSetEnabled( &_this->DDModeMask, 0 );
   CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, 0 );
+  CoreTimer_OnSetPeriod( &_this->HideFocusFrameTimer, 50 );
   CoreGroup__Add( _this, ((CoreView)&_this->MainBottomBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BlackBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DDModeMask ), 0 );
@@ -700,6 +683,7 @@ void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHan
   _this->DDModeStateChangedHandler.OnEvent = EwNewSlot( _this, ComponentsBaseMainBG_OnDDModeStateChangedSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->DDModeStateChangedHandler, &EwGetAutoObject( 
   &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->DDModeStateChangedSystemEvent );
+  _this->HideFocusFrameTimer.OnTrigger = EwNewSlot( _this, ComponentsBaseMainBG_OnHideFocusFrameTimeoutSlot );
 
   /* Call the user defined constructor */
   ComponentsBaseMainBG_Init( _this, aArg );
@@ -716,6 +700,7 @@ void ComponentsBaseMainBG__ReInit( ComponentsBaseMainBG _this )
   ViewsRectangle__ReInit( &_this->BlackBG );
   CoreSystemEventHandler__ReInit( &_this->DDModeStateChangedHandler );
   ComponentsDDModeMask__ReInit( &_this->DDModeMask );
+  CoreTimer__ReInit( &_this->HideFocusFrameTimer );
 }
 
 /* Finalizer method for the class 'Components::BaseMainBG' */
@@ -729,6 +714,7 @@ void ComponentsBaseMainBG__Done( ComponentsBaseMainBG _this )
   ViewsRectangle__Done( &_this->BlackBG );
   CoreSystemEventHandler__Done( &_this->DDModeStateChangedHandler );
   ComponentsDDModeMask__Done( &_this->DDModeMask );
+  CoreTimer__Done( &_this->HideFocusFrameTimer );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_Super );
@@ -760,8 +746,7 @@ void ComponentsBaseMainBG_OnShortHomeKeyActivated( ComponentsBaseMainBG _this )
   }
   else
   {
-    CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, 
-    EwNullSlot, EwNullSlot, 0 );
+    ComponentsBaseMainBG_DismissThisDialog( _this );
   }
 }
 
@@ -796,13 +781,149 @@ void ComponentsBaseMainBG_UpdateDDModeMask( ComponentsBaseMainBG _this )
   }
 }
 
+/* 'C' function for method : 'Components::BaseMainBG.DismissThisDialog()' */
+void ComponentsBaseMainBG_DismissThisDialog( ComponentsBaseMainBG _this )
+{
+  if ( _this->SlideOutEffectEnabled )
+  {
+    ComponentsBaseMainBG_SlideOutDialog( _this );
+  }
+  else
+  {
+    CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, 
+    EwNullSlot, EwNullSlot, 0 );
+  }
+}
+
+/* 'C' function for method : 'Components::BaseMainBG.SlideInDialog()' */
+void ComponentsBaseMainBG_SlideInDialog( ComponentsBaseMainBG _this, ComponentsBaseMainBG 
+  aChildDialog )
+{
+  if ( CoreGroup__IsCurrentDialog( _this ) && ( aChildDialog != 0 ))
+  {
+    MenuBaseMenuView ChildMenu;
+    MenuBaseMenuView CurrentMenu;
+    _this->ChildDialog = aChildDialog;
+    ChildMenu = EwCastObject( aChildDialog, MenuBaseMenuView );
+
+    if ( ChildMenu != 0 )
+    {
+      ViewsBorder_OnSetVisible( &ChildMenu->Menu.FocusFrame, 0 );
+    }
+
+    CurrentMenu = EwCastObject( _this, MenuBaseMenuView );
+
+    if ( CurrentMenu != 0 )
+    {
+      ViewsBorder_OnSetVisible( &CurrentMenu->Menu.FocusFrame, 0 );
+    }
+
+    _this->SlideDirection = CoreDirectionLeft;
+    CoreTimer_OnSetEnabled( &_this->HideFocusFrameTimer, 1 );
+  }
+}
+
+/* 'C' function for method : 'Components::BaseMainBG.OnHideFocusFrameTimeoutSlot()' */
+void ComponentsBaseMainBG_OnHideFocusFrameTimeoutSlot( ComponentsBaseMainBG _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  CoreTimer_OnSetEnabled( &_this->HideFocusFrameTimer, 0 );
+
+  if ( CoreDirectionLeft == _this->SlideDirection )
+  {
+    ComponentsBaseMainBG_PresentDialogWithSlideInEffect( _this, ((CoreGroup)_this->ChildDialog ));
+  }
+  else
+  {
+    ComponentsBaseMainBG_DismissMenuWithSlideOutEffect( _this );
+  }
+}
+
+/* 'C' function for method : 'Components::BaseMainBG.OnDialogSlideInCompletedSlot()' */
+void ComponentsBaseMainBG_OnDialogSlideInCompletedSlot( ComponentsBaseMainBG _this, 
+  XObject sender )
+{
+  MenuBaseMenuView ChildMenu;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ChildMenu = EwCastObject( _this->ChildDialog, MenuBaseMenuView );
+
+  if ( ChildMenu != 0 )
+  {
+    ViewsBorder_OnSetVisible( &ChildMenu->Menu.FocusFrame, 1 );
+  }
+
+  _this->ChildDialog = 0;
+}
+
+/* 'C' function for method : 'Components::BaseMainBG.PresentDialogWithSlideInEffect()' */
+void ComponentsBaseMainBG_PresentDialogWithSlideInEffect( ComponentsBaseMainBG _this, 
+  CoreGroup aView )
+{
+  if ( aView != 0 )
+  {
+    CoreGroup_PresentDialog((CoreGroup)_this, aView, ((EffectsTransition)EwGetAutoObject( 
+    &EffectSlideInTransition, EffectSlideTransitionNoFade )), 0, 0, 0, 0, 0, EwNewSlot( 
+    _this, ComponentsBaseMainBG_OnDialogSlideInCompletedSlot ), EwNullSlot, 0 );
+  }
+}
+
+/* 'C' function for method : 'Components::BaseMainBG.OnDialogSlideOutCompletedSlot()' */
+void ComponentsBaseMainBG_OnDialogSlideOutCompletedSlot( ComponentsBaseMainBG _this, 
+  XObject sender )
+{
+  MenuBaseMenuView OwnerMenu;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  OwnerMenu = EwCastObject( _this->OwnerDialog, MenuBaseMenuView );
+
+  if ( OwnerMenu != 0 )
+  {
+    ViewsBorder_OnSetVisible( &OwnerMenu->Menu.FocusFrame, 1 );
+  }
+}
+
+/* 'C' function for method : 'Components::BaseMainBG.SlideOutDialog()' */
+void ComponentsBaseMainBG_SlideOutDialog( ComponentsBaseMainBG _this )
+{
+  if ( CoreGroup__IsCurrentDialog( _this ))
+  {
+    MenuBaseMenuView CurrentMenu;
+    _this->OwnerDialog = EwCastObject( _this->Super4.Owner, ComponentsBaseMainBG );
+    CurrentMenu = EwCastObject( _this, MenuBaseMenuView );
+
+    if ( CurrentMenu != 0 )
+    {
+      ViewsBorder_OnSetVisible( &CurrentMenu->Menu.FocusFrame, 0 );
+    }
+
+    _this->SlideDirection = CoreDirectionRight;
+    CoreTimer_OnSetEnabled( &_this->HideFocusFrameTimer, 1 );
+  }
+}
+
+/* 'C' function for method : 'Components::BaseMainBG.DismissMenuWithSlideOutEffect()' */
+void ComponentsBaseMainBG_DismissMenuWithSlideOutEffect( ComponentsBaseMainBG _this )
+{
+  CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), ((EffectsTransition)EwGetAutoObject( 
+  &EffectSlideOutTransition, EffectSlideTransitionNoFade )), 0, 0, EwNewSlot( _this, 
+  ComponentsBaseMainBG_OnDialogSlideOutCompletedSlot ), EwNullSlot, 0 );
+}
+
 /* Variants derived from the class : 'Components::BaseMainBG' */
 EW_DEFINE_CLASS_VARIANTS( ComponentsBaseMainBG )
 EW_END_OF_CLASS_VARIANTS( ComponentsBaseMainBG )
 
 /* Virtual Method Table (VMT) for the class : 'Components::BaseMainBG' */
-EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, MainBottomBG, MainBottomBG, 
-                 MainBottomBG, MainBottomBG, _None, _None, "Components::BaseMainBG" )
+EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, ChildDialog, MainBottomBG, 
+                 MainBottomBG, MainBottomBG, SlideDirection, SlideDirection, "Components::BaseMainBG" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

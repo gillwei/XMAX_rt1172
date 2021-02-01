@@ -42,14 +42,13 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-/* Forward declaration of the class Effects::SlideTransition */
-#ifndef _EffectsSlideTransition_
-  EW_DECLARE_CLASS( EffectsSlideTransition )
-#define _EffectsSlideTransition_
-#endif
+#include "_EffectSlideTransitionNoFade.h"
 
-/* User defined auto object: 'Effect::LeftSlideTransition' */
-EW_DECLARE_AUTOOBJECT( EffectLeftSlideTransition, EffectsSlideTransition )
+/* User defined auto object: 'Effect::SlideOutTransition' */
+EW_DECLARE_AUTOOBJECT( EffectSlideOutTransition, EffectSlideTransitionNoFade )
+
+/* User defined auto object: 'Effect::SlideInTransition' */
+EW_DECLARE_AUTOOBJECT( EffectSlideInTransition, EffectSlideTransitionNoFade )
 
 #ifdef __cplusplus
   }

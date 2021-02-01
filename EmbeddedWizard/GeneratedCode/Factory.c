@@ -82,9 +82,8 @@ static const XStringRes _Const000F = { _StringsDefault0, 0x0038 };
 static const XStringRes _Const0010 = { _StringsDefault0, 0x003F };
 static const XStringRes _Const0011 = { _StringsDefault0, 0x0046 };
 static const XStringRes _Const0012 = { _StringsDefault0, 0x0059 };
-static const XRect _Const0013 = {{ 0, 36 }, { 480, 272 }};
-static const XColor _Const0014 = { 0xBA, 0xBA, 0xBA, 0xFF };
-static const XColor _Const0015 = { 0x40, 0x40, 0x40, 0xFF };
+static const XColor _Const0013 = { 0xBA, 0xBA, 0xBA, 0xFF };
+static const XColor _Const0014 = { 0x40, 0x40, 0x40, 0xFF };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -471,9 +470,6 @@ void FactoryMain__Init( FactoryMain _this, XObject aLink, XHandle aArg )
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( FactoryMain );
 
-  /* ... then construct all embedded objects */
-  MenuVerticalMenu__Init( &_this->Menu, &_this->_XObject, 0 );
-
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( FactoryMain );
 
@@ -481,10 +477,8 @@ void FactoryMain__Init( FactoryMain _this, XObject aLink, XHandle aArg )
   CoreRectView__OnSetBounds( _this, _Const0000 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0011 ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0012 ));
-  CoreRectView__OnSetBounds( &_this->Menu, _Const0013 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Menu, 2 );
-  MenuVerticalMenu_OnSetItemHeight( &_this->Menu, 56 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Menu ), 0 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
+  MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
 }
 
 /* Re-Initializer for the class 'Factory::Main' */
@@ -492,9 +486,6 @@ void FactoryMain__ReInit( FactoryMain _this )
 {
   /* At first re-initialize the super class ... */
   MenuBaseMenuView__ReInit( &_this->_Super );
-
-  /* ... then re-construct all embedded objects */
-  MenuVerticalMenu__ReInit( &_this->Menu );
 }
 
 /* Finalizer method for the class 'Factory::Main' */
@@ -502,9 +493,6 @@ void FactoryMain__Done( FactoryMain _this )
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
-
-  /* Finalize all embedded objects */
-  MenuVerticalMenu__Done( &_this->Menu );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -631,8 +619,8 @@ EW_DEFINE_CLASS_VARIANTS( FactoryMain )
 EW_END_OF_CLASS_VARIANTS( FactoryMain )
 
 /* Virtual Method Table (VMT) for the class : 'Factory::Main' */
-EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, Menu, Menu, Menu, Menu, ItemTitleArray, 
-                 _None, "Factory::Main" )
+EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, ItemTitleArray, ItemTitleArray, 
+                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _None, "Factory::Main" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -860,7 +848,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0014 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0013 );
     }
     break;
 
@@ -897,7 +885,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0014 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0013 );
     }
     break;
 
@@ -944,7 +932,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
-      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0015 );
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0014 );
     }
     break;
 
