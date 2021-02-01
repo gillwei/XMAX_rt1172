@@ -78,6 +78,7 @@ typedef enum tagIL_RX_FRM_INDEX_TYPE //!< Interaction Layer receive frames index
     IL_CAN0_RXE_HEATER_STAT_IDX,
     IL_CAN0_RXF_FACT_INSP_NS_IDX,
     IL_CAN0_RXF_FACT_INSP2_GA_IDX,
+    IL_CAN0_RXG_ECU_INDCT_STAT1_IDX,
 
     IL_RX_FRM_INDEX_ERRORS
     }il_rx_frm_index_t;

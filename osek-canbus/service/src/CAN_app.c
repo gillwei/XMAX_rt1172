@@ -624,22 +624,20 @@ Get the changed signal value
 ------------------------------------------------------*/
 nim_app_sig_get( sig_handle, num_bytes,&l_sig_val );
 
+/*------------------------------------------------------
+Handle the changed signal value
+------------------------------------------------------*/
+VI_notify_vehicle_data_changed( msg_index, sig_handle, l_sig_val );
+
 switch( msg_index )
     {
-    case IL_CAN0_RX5_VEHICLE_INFO_IDX:
+    case IL_CAN0_RX_NM_AND_LP_BK_IDX:
         /*--------------------------------------------------
-        Vehicle info handler
+        Network managment frame handle
         --------------------------------------------------*/
         break;
 
-    case IL_CAN0_RX6_FUNCSW_STAT_IDX:
-        /*--------------------------------------------------
-        Handle hard keys changed
-        --------------------------------------------------*/
-        VI_notify_vehicle_data_changed( msg_index, sig_handle, l_sig_val );
-        break;
-
-    //TBD other signals handler
+    //TBD other frames handler
 
     default:
         break;
