@@ -540,8 +540,16 @@ nim_app_sig_put
 Put the signal value
 ------------------------------------------------------*/
 uint8       l_bytes[sizeof( uint64 )];
-uint32      l_temp64;
+uint64      l_temp64;
 uint8       l_i_byte;
+
+/*------------------------------------------------------
+Input number bytes is over the reserved memory(uint64)
+------------------------------------------------------*/
+if( num_bytes > 8 )
+    {
+    return;
+    }
 
 /*------------------------------------------------------
 Convert the UINT32 value to a byte array and transmit it
@@ -585,6 +593,14 @@ uint8       l_i_byte = 0;
 uint32      l_temp32 = 0;
 
 /*------------------------------------------------------
+Input number bytes is over the reserved memory(uint32)
+------------------------------------------------------*/
+if( num_bytes > 4 )
+    {
+    return;
+    }
+
+/*------------------------------------------------------
 Get the signal value from memory in bytes
 ------------------------------------------------------*/
 il_rx_get_signal_bytes( sig_handle, l_bytes, num_bytes );
@@ -594,8 +610,7 @@ Convert the a byte array to UINT32 value
 ------------------------------------------------------*/
 for( l_i_byte = num_bytes; l_i_byte > 0; l_i_byte-- )
     {
-    l_temp32 |= l_bytes[l_i_byte - 1];
-    l_temp32  = ( l_temp32 << ( ( l_i_byte - 1  ) * IL_NUM_BITS_IN_BYTE ) );
+    l_temp32 |= l_bytes[l_i_byte - 1] << ( ( num_bytes  - l_i_byte ) * IL_NUM_BITS_IN_BYTE );
     }
 
 (*p_sig_val) = l_temp32;
