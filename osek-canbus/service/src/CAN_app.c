@@ -546,7 +546,7 @@ uint8       l_i_byte;
 /*------------------------------------------------------
 Input number bytes is over the reserved memory(uint64)
 ------------------------------------------------------*/
-if( num_bytes > 8 )
+if( num_bytes > sizeof( uint64 ) )
     {
     return;
     }
@@ -595,7 +595,7 @@ uint32      l_temp32 = 0;
 /*------------------------------------------------------
 Input number bytes is over the reserved memory(uint32)
 ------------------------------------------------------*/
-if( num_bytes > 4 )
+if( num_bytes > sizeof( uint32 ) )
     {
     return;
     }
