@@ -1,5 +1,11 @@
 ﻿$version 10.00
 
+$rect <300,10,500,50>
+inline Inline
+{
+  #include "TEST_pub.h"
+}
+
 $rect <20,10,260,50>
 $output false
 class DEV_Main : Menu::BaseMenuView
@@ -52,6 +58,7 @@ class DEV_Main : Menu::BaseMenuView
       case 2: this.PresentDialog( new Development::DEV_RealTimeClock, null, null, null, null, null, null, null, null, false );
       case 3: this.PresentDialog( new Development::DEV_Bluetooth, null, null, null, null, null, null, null, null, false );
       case 4: this.PresentDialog( new Development::DEV_TFTBrightness, null, null, null, null, null, null, null, null, false );
+      case 5: PresentDialog( new Development::DEV_MotoCon, null, null, null, null, null, null, null, null, false );
       default:;
     }
 
@@ -70,13 +77,14 @@ class DEV_Main : Menu::BaseMenuView
   }
 
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 5 ] =
+  array string ItemTitleArray[ 6 ] =
   (
     Default[0] = "Factory Test";
     Default[1] = "Hopper Test Mode";
     Default[2] = "Real Time Clock";
     Default[3] = "Bluetooth Test";
     Default[4] = "TFT Brightness Test";
+    Default[5] = "MotoCon Test";
   );
 
   $rect <20,20,160,60>
@@ -311,4 +319,101 @@ class DEV_TFTBrightness : Menu::BaseMenuView
     LevelText.Visible = true;
     HideLevelTimer.Enabled = true;
   }
+}
+
+$rect <20,210,260,250>
+$output false
+class DEV_MotoCon : Menu::BaseMenuView
+{
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <230,300,460,340>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <510,10,710,50>
+  inherited method LoadItemClass()
+  {
+    // suppress warning
+    if( aItemNo >= 0 )
+    {
+      // empty body
+    }
+    return Menu::ItemBase;
+  }
+
+  $rect <510,60,710,100>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    if( aItemNo < ItemTitleArray.size )
+    {
+      Title = ItemTitleArray[aItemNo];
+    }
+    return Title;
+  }
+
+  $rect <510,110,710,150>
+  inherited method OnItemActivate()
+  {
+    // suppress warning
+    if( null == aMenuItem || aItemNo > 0 )
+    {
+      // empty body
+    }
+
+    $if !$prototyper
+    native( aItemNo )
+    {
+      TEST_motocon_tx( aItemNo );
+    }
+    $endif
+  }
+
+  $rect <730,60,930,100>
+  array string ItemTitleArray[ 21 ] =
+  (
+    Default[0] = "Start BLE advertising";
+    Default[1] = "Stop BLE advertising";
+    Default[2] = "Send library version";
+    Default[3] = "Send weather request";
+    Default[4] = "Send vehicle info";
+    Default[5] = "Send vehicle setting request";
+    Default[6] = "Send lang type request";
+    Default[7] = "Send CAN related data";
+    Default[8] = "Send CAN response";
+    Default[9] = "Send injection quality";
+    Default[10] = "Send BT music control play";
+    Default[11] = "Send BT music control pause";
+    Default[12] = "Send BT music control previous";
+    Default[13] = "Send BT music control next";
+    Default[14] = "Send incoming call answer";
+    Default[15] = "Send incoming call decline";
+    Default[16] = "Send headset state request";
+    Default[17] = "Send volume control up";
+    Default[18] = "Send volume control down";
+    Default[19] = "Send volume controllable req";
+    Default[20] = "Send create OTA request";
+  );
+
+  $rect <20,20,160,60>
+  object Menu::VerticalMenu Menu
+  {
+    preset Bounds = <0,36,480,272>;
+    preset NoOfItems = ItemTitleArray.size;
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+    preset ArrowScrollBarVisible = true;
+  }
+
+  $reorder SlideInDialog 4
+  $reorder LoadItemClass 4
+  $reorder LoadItemTitle 4
+  $reorder OnItemActivate 4
+  $reorder LoadItemChecked 4
+  $reorder ItemTitleArray 1
+  $reorder Menu 1
 }

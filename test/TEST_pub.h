@@ -20,6 +20,7 @@ extern "C"{
 #define UNIT_TEST_ENABLE        ( UNIT_TEST_FACTORY | UNIT_TEST_BURNIN | UNIT_TEST_JPEG )
 
 void TEST_init( void );
+void TEST_motocon_tx( const int test_item );
 
 #ifdef __cplusplus
 }

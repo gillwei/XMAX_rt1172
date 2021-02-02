@@ -137,6 +137,32 @@ typedef enum
   EnumNaviSettingItemChangeView         = 6
 } EnumNaviSettingItem;
 
+/* User defined enumeration: 'Enum::MotoConTest' */
+typedef enum
+{
+  EnumMotoConTestSTART_BLE_ADVERTISING  = 0,
+  EnumMotoConTestSTOP_BLE_ADVERTISING   = 1,
+  EnumMotoConTestLIBRATY_VERSION        = 2,
+  EnumMotoConTestWEATHER_REQ            = 3,
+  EnumMotoConTestVEHICLE_INFO           = 4,
+  EnumMotoConTestVEHICLE_SETTING_REQ    = 5,
+  EnumMotoConTestLANG_TYPE_REQ          = 6,
+  EnumMotoConTestCAN_RELATED_DATA       = 7,
+  EnumMotoConTestCAN_RESPONSE           = 8,
+  EnumMotoConTestINJECTION_QUALITY      = 9,
+  EnumMotoConTestMUSIC_CONTROL_PLAY     = 10,
+  EnumMotoConTestMUSIC_CONTROL_PAUSE    = 11,
+  EnumMotoConTestMUSIC_CONTROL_PREVIOUS = 12,
+  EnumMotoConTestMUSIC_CONTROL_NEXT     = 13,
+  EnumMotoConTestINCOMING_CALL_ANSWER   = 14,
+  EnumMotoConTestINCOMING_CALL_DECLINE  = 15,
+  EnumMotoConTestHEADSET_STATE_REQ      = 16,
+  EnumMotoConTestVOLUME_CONTROL_UP      = 17,
+  EnumMotoConTestVOLUME_CONTROL_DOWN    = 18,
+  EnumMotoConTestVOLUME_CONTROLLABLE_REQ = 19,
+  EnumMotoConTestCREATE_OTA_REQ         = 20
+} EnumMotoConTest;
+
 #ifdef __cplusplus
   }
 #endif
