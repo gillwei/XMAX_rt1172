@@ -24,6 +24,15 @@
                                  TYPES
 --------------------------------------------------------------------*/
 
+void ddt_can_result( const bc_motocon_send_result_t result )
+{
+EwPrint( "ddt_can_result %d\r\n", result );
+}
+
+void ddt_can_related_result( const bc_motocon_send_result_t result )
+{
+EwPrint( "ddt_can_related_result %d\r\n", result );
+}
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
 --------------------------------------------------------------------*/
@@ -35,6 +44,7 @@
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
+static uint8_t data[50];
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -87,10 +97,16 @@ switch( test_item )
         BC_motocon_send_language_type_request();
         break;
     case EnumMotoConTestCAN_RELATED_DATA:
-        //BC_motocon_send_can_related_data();
+        {
+        BC_motocon_send_can_related_data( BC_MOTOCON_COMMAND_CODE_FFD_RESPONSE, 50, data, &ddt_can_related_result );
+        BC_motocon_send_can_related_data( BC_MOTOCON_COMMAND_CODE_VEHICLE_INFORMATION_RESPONSE, 50, data, &ddt_can_related_result );
+        BC_motocon_send_can_related_data( BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE, 1, data, &ddt_can_related_result );
+        }
         break;
     case EnumMotoConTestCAN_RESPONSE:
-        //BC_motocon_send_can_response();
+        {
+        BC_motocon_send_can_response( 50, data, &ddt_can_result );
+        }
         break;
     case EnumMotoConTestINJECTION_QUALITY:
         {

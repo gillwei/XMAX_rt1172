@@ -81,6 +81,7 @@ bc_motocon_connected = false;
 #if( ENABLE_MOTOCON_HCI_LINK )
     HCI_le_register_server_callback( BLE_SERVER_MOTOCONSDK, &bc_motocon_ble_callback );
 #endif
+ddt_init();
 }
 
 /*********************************************************************
@@ -301,12 +302,13 @@ return bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 2 );
 * @public
 * BC_motocon_send_can_related_data
 *
-* Send protobuf via BLE, data shall not be modify before function return.
+* Send can related via BLE, data shall not be modified before result_callback called.
 * 0x0101 ~ 0x0112
 *
-* @param command MotoConSDK's command code
-* @param size    Size of protobuf
-* @param data    Bytes of protobuf
+* @param command         MotoConSDK's command code
+* @param size            Size of data or protobuf
+* @param data            Bytes of data or protobuf
+* @param result_callback Function pointer of result callback
 *
 * @return bc_motocon_send_result_t
 * Result of send command
@@ -316,7 +318,8 @@ bc_motocon_send_result_t BC_motocon_send_can_related_data
     (
     const bc_motocon_command_code_t command,
     const uint32_t                  size,
-    const uint8_t*                  data
+    const uint8_t*                  data,
+    void ( *result_callback ) ( const bc_motocon_send_result_t )
     )
 {
 BC_MOTOCON_PRINTF( "%s, command: %d, size: %d\r\n", __FUNCTION__, command, size );
@@ -326,11 +329,13 @@ if( command == BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE )
     data[0] = BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE >> 8;
     data[1] = BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE & 0xFF;
     data[2] = data[0];
-    return bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 3 );
+    bc_motocon_send_result_t ret = bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 3 );
+    result_callback( ret );
+    return ret;
     }
 else
     {
-    return ddt_send_ddt_to_phone_data( command, data, size );
+    return ddt_send_ddt_to_phone_data( command, data, size, result_callback );
     }
 }
 
@@ -339,10 +344,11 @@ else
 * @public
 * BC_motocon_send_can_response
 *
-* Send can response via BLE, data shall not be modify before function return.
+* Send can response via BLE, data shall not be modified before result_callback called.
 *
-* @param size Size of protobuf
-* @param data Bytes of protobuf
+* @param size            Size of protobuf
+* @param data            Bytes of protobuf
+* @param result_callback Function pointer of result callback
 *
 * @return bc_motocon_send_result_t
 * Result of send command
@@ -351,11 +357,12 @@ else
 bc_motocon_send_result_t BC_motocon_send_can_response
     (
     const uint32_t size,
-    const uint8_t* data
+    const uint8_t* data,
+    void ( *result_callback ) ( const bc_motocon_send_result_t )
     )
 {
 BC_MOTOCON_PRINTF( "%s, size: %d\r\n", __FUNCTION__, size );
-return ddt_send_ddt_to_phone_data( BC_MOTOCON_COMMAND_CODE_CAN_RESPONSE, data, size );
+return ddt_send_ddt_to_phone_data( BC_MOTOCON_COMMAND_CODE_CAN_RESPONSE, data, size, result_callback );
 }
 
 /*********************************************************************
@@ -692,7 +699,7 @@ void BC_motocon_ble_disconnected_callback
 {
 BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
 bc_motocon_connected = false;
-ddt_reset_ddt_to_vehicle();
+ddt_reset();
 }
 
 /*********************************************************************
@@ -755,6 +762,24 @@ BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
                 bc_motocon_send_data( BC_MOTOCON_DDT_TO_VEHICLE_STATUS_NOTIFY, bytes, BC_MOTOCON_DDT_STATUS_LENGTH );
                 }
             }
+            break;
+
+        case HDLC_MOTOCONSDK_DDT_TO_PHONE_STATUS_VALUE:
+        case HDLC_MOTOCONSDK_DDT_TO_PHONE_DATA_VALUE:
+            BC_MOTOCON_PRINTF( "%s, DDT_TO_PHONE ack\r\n", __FUNCTION__ );
+            ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_TO_PHONE );
+            break;
+
+        case HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_STATUS_VALUE:
+        case HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_DATA_VALUE:
+            BC_MOTOCON_PRINTF( "%s, DDT_VEHICLE_INFORMATION ack\r\n", __FUNCTION__ );
+            ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_VEHICLE_INFORMATION );
+            break;
+
+        case HDLC_MOTOCONSDK_DDT_CAN_STATUS_VALUE:
+        case HDLC_MOTOCONSDK_DDT_CAN_DATA_VALUE:
+            BC_MOTOCON_PRINTF( "%s, DDT_CAN ack\r\n", __FUNCTION__ );
+            ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_CAN );
             break;
 
         default:

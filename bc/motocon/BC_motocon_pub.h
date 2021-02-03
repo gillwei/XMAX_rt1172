@@ -58,7 +58,10 @@ typedef enum
     BC_MOTOCON_SEND_RESULT_SUCCESS,
     BC_MOTOCON_SEND_RESULT_INVALID_INPUT,
     BC_MOTOCON_SEND_RESULT_INVALID_TYPE,
-    BC_MOTOCON_SEND_RESULT_BLE_ERROR
+    BC_MOTOCON_SEND_RESULT_BLE_ERROR,
+    BC_MOTOCON_SEND_RESULT_DDT_BUSY,
+    BC_MOTOCON_SEND_RESULT_DDT_TIMEOUT,
+    BC_MOTOCON_SEND_RESULT_DDT_COMPLETE
     } bc_motocon_send_result_t;
 
 /*--------------------------------------------------------------------
@@ -96,9 +99,9 @@ bc_motocon_send_result_t BC_motocon_send_vehicle_setting_request( void );
 
 bc_motocon_send_result_t BC_motocon_send_language_type_request( void );
 
-bc_motocon_send_result_t BC_motocon_send_can_related_data( const bc_motocon_command_code_t command, const uint32_t size, const uint8_t* data );
+bc_motocon_send_result_t BC_motocon_send_can_related_data( const bc_motocon_command_code_t command, const uint32_t size, const uint8_t* data, void ( *result_callback ) ( const bc_motocon_send_result_t ) );
 
-bc_motocon_send_result_t BC_motocon_send_can_response( const uint32_t size, const uint8_t* data );
+bc_motocon_send_result_t BC_motocon_send_can_response( const uint32_t size, const uint8_t* data, void ( *result_callback ) ( const bc_motocon_send_result_t ) );
 
 bc_motocon_send_result_t BC_motocon_send_injection_quantity( const uint8_t* injection_quantity );
 

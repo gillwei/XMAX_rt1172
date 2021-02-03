@@ -32,11 +32,14 @@ extern "C" {
 
 #define BC_MOTOCON_CALLBACK_MAX                     ( 5 )
 
+#define BC_MOTOCON_DDT_INACTIVE_ID                  ( 0 )
 #define BC_MOTOCON_DDT_STATUS_LENGTH                ( 2 )
 #define BC_MOTOCON_DDT_TO_VEHICLE_BUFFER_SIZE       ( 64 + 64 + 512 )
 
-#define BC_MOTOCON_DDT_TO_PHONE_CONTENT_SIZE        ( 20 ) /* this value shall more than 5 */
-#define BC_MOTOCON_DDT_TO_PHONE_TOTAL_PACKAGE_SIZE  ( BC_MOTOCON_DDT_TO_PHONE_CONTENT_SIZE + 4 )
+#define BC_MOTOCON_DDT_HEADER_SIZE                  ( 4 )
+#define BC_MOTOCON_DDT_TO_PHONE_CONTENT_SIZE        ( 24 ) /* this value shall more than 1 */
+#define BC_MOTOCON_DDT_TO_PHONE_TOTAL_PACKAGE_SIZE  ( BC_MOTOCON_DDT_TO_PHONE_CONTENT_SIZE + BC_MOTOCON_DDT_HEADER_SIZE )
+#define BC_MOTOCON_PROTOBUF_HEADER_SIZE             ( 5 )
 
 /*--------------------------------------------------------------------
                                 TYPES
@@ -61,6 +64,14 @@ typedef enum
     BC_MOTOCON_DDT_CAN_DATA_NOTIFY
     } bc_motocon_send_type_t;
 
+
+typedef enum
+    {
+    BC_MOTOCON_DDT_TO_VEHICLE,
+    BC_MOTOCON_DDT_TO_PHONE,
+    BC_MOTOCON_DDT_VEHICLE_INFORMATION,
+    BC_MOTOCON_DDT_CAN
+    } bc_motocon_ddt_type_t;
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
 --------------------------------------------------------------------*/
@@ -83,11 +94,13 @@ typedef enum
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+void ddt_init( void );
+void ddt_reset( void );
 const uint8_t* ddt_get_ddt_to_vehicle_status( void );
 const uint8_t* ddt_set_ddt_to_vehicle_status( const uint8_t* bytes );
 const uint8_t* ddt_insert_ddt_to_vehicle_data( const uint8_t* bytes, const uint32_t length );
-void ddt_reset_ddt_to_vehicle( void );
-bc_motocon_send_result_t ddt_send_ddt_to_phone_data( const bc_motocon_command_code_t command, const uint8_t* bytes, const uint32_t length );
+bc_motocon_send_result_t ddt_send_ddt_to_phone_data( const bc_motocon_command_code_t command, const uint8_t* bytes, const uint32_t length, void ( *result_callback ) ( const bc_motocon_send_result_t ) );
+void ddt_received_ddt_to_phone_ack( const bc_motocon_ddt_type_t type );
 
 void parser_write_received( const uint8_t* bytes, const uint32_t length );
 void parser_ddt_to_vehicle_received( const uint8_t* bytes, const uint32_t length );
