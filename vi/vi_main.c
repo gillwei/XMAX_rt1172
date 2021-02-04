@@ -99,43 +99,6 @@ configASSERT( pdPASS == result );
 /*********************************************************************
 *
 * @public
-* VI_notify_vehicle_data_changed
-*
-* @param message_frame The message frame index from CAN
-* @param signal_id The singal id from CAN
-* @param data The data from CAN
-*
-*********************************************************************/
-void VI_notify_vehicle_data_changed
-    (
-    const il_rx_frm_index_t message_frame,
-    const uint16_t          signal_id,
-    const uint16_t          data
-    )
-{
-PRINTF( "%s %d %d\r\n", __FUNCTION__, signal_id, data );
-switch( signal_id )
-    {
-    case IL_CAN0_FUNC_SW_1_RXSIG_HANDLE:
-        vi_key_status_changed( CoreKeyCodeUp, ( int )data );
-        break;
-    case IL_CAN0_FUNC_SW_2_RXSIG_HANDLE:
-        vi_key_status_changed( CoreKeyCodeDown, ( int )data );
-        break;
-    case IL_CAN0_FUNC_SW_5_RXSIG_HANDLE:
-        vi_key_status_changed( CoreKeyCodeOk, ( int )data );
-        break;
-    case IL_CAN0_FUNC_SW_6_RXSIG_HANDLE:
-        vi_key_status_changed( CoreKeyCodeHome, ( int )data );
-        break;
-    default:
-        break;
-    }
-}
-
-/*********************************************************************
-*
-* @public
 * VI_init
 *
 * Initialize vehicle information module
@@ -147,6 +110,6 @@ void VI_init
     )
 {
 create_task();
+vi_rx_init_data();
 vi_key_init();
 }
-
