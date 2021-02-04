@@ -376,8 +376,8 @@ static dll_rx_frm_dispatch_t const
 dll_can0_vctr24_ids[DLL_CAN0_VCTR24_NUM_IDS] =
     {
         {
-        RXF_FACT_INSP2_GA_CAN0_ID,
-        IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_HANDLE,
+        RXG_FACT_INSP2_GA_CAN0_ID,
+        IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_HANDLE,
         DLL_RX_FT_FRAME
         }
     };
@@ -389,8 +389,8 @@ static dll_rx_frm_dispatch_t const
 dll_can0_vctr25_ids[DLL_CAN0_VCTR25_NUM_IDS] =
     {
         {
-        RXG_ECU_INDCT_STAT1_CAN0_ID,
-        IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_HANDLE,
+        RXH_ECU_INDCT_STAT1_CAN0_ID,
+        IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_HANDLE,
         DLL_RX_IL_FRAME
         }
     };

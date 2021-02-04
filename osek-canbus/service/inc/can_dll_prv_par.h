@@ -59,6 +59,7 @@ IL CAN0 Transmitted Frame ID's
 #define     TX5_CLK_DATA_RES_CAN0_ID                            (0x5BF)
 #define     TX6_DEV_CTRL_CAN0_ID                                (0x5CA)
 #define     TX7_FACT_INSP1_GA_CAN0_ID                           (0x690)
+#define     TX8_FACT_INSP_NS_RES_CAN0_ID                        (0x60B)
 
 
 /*------------------------------------------------------
@@ -75,6 +76,7 @@ IL CAN0 Transmitted Frame Length (in Bytes) Definitions
 #define     IL_CAN0_TX5_CLK_DATA_RES_TXFRM_LEN                  (5)
 #define     IL_CAN0_TX6_DEV_CTRL_TXFRM_LEN                      (2)
 #define     IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_LEN                 (8)
+#define     IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_LEN              (8)
 
 
 /*------------------------------------------------------
@@ -91,8 +93,9 @@ IL CAN0 Transmitted Frame Index Definitions
 #define     IL_CAN0_TX5_CLK_DATA_RES_TXFRM_INDEX                DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_TX5_CLK_DATA_RES_TXFRM_HANDLE )
 #define     IL_CAN0_TX6_DEV_CTRL_TXFRM_INDEX                    DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_TX6_DEV_CTRL_TXFRM_HANDLE )
 #define     IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_INDEX               DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_HANDLE )
+#define     IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_INDEX            DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_HANDLE )
 
-#define     IL_CAN0_TX_NUM_FRAMES                               (0x000A)
+#define     IL_CAN0_TX_NUM_FRAMES                               (0x000B)
 
 
 /*------------------------------------------------------
@@ -122,9 +125,9 @@ IL CAN0 Received Frame ID's
 #define     RXC_VEHICLE_INFO_4_CAN0_ID                          (0x5BC)
 #define     RXD_MAINT_TRIP_CAN0_ID                              (0x5BD)
 #define     RXE_HEATER_STAT_CAN0_ID                             (0x5BE)
-#define     RXF_FACT_INSP_NS_CAN0_ID                            (0x5D5)
-#define     RXF_FACT_INSP2_GA_CAN0_ID                           (0x691)
-#define     RXG_ECU_INDCT_STAT1_CAN0_ID                         (0x20A)
+#define     RXF_FACT_INSP_NS_CAN0_ID                            (0x60A)
+#define     RXG_FACT_INSP2_GA_CAN0_ID                           (0x691)
+#define     RXH_ECU_INDCT_STAT1_CAN0_ID                         (0x20A)
 
 
 /*------------------------------------------------------
@@ -154,9 +157,9 @@ IL CAN0 Received Frame Length (in Bytes) Definitions
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_LEN                (3)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_LEN                    (8)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_LEN                   (4)
-#define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_LEN                  (1)
-#define     IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_LEN                 (8)
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_LEN               (6)
+#define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_LEN                  (8)
+#define     IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_LEN                 (8)
+#define     IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_LEN               (6)
 
 
 /*------------------------------------------------------
@@ -187,8 +190,8 @@ IL CAN0 Received Minimum Frame Length (in Bytes)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_MIN_LEN                (8)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_MIN_LEN               (4)
 #define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_MIN_LEN              (1)
-#define     IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_MIN_LEN             (8)
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_MIN_LEN           (6)
+#define     IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_MIN_LEN             (8)
+#define     IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_MIN_LEN           (6)
 
 
 /*------------------------------------------------------
@@ -219,8 +222,8 @@ IL CAN0 Received Frame Index Definitions
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_INDEX                  DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXD_MAINT_TRIP_RXFRM_HANDLE )
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_INDEX                 DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXE_HEATER_STAT_RXFRM_HANDLE )
 #define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_INDEX                DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXF_FACT_INSP_NS_RXFRM_HANDLE )
-#define     IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_INDEX               DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_HANDLE )
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_INDEX             DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_HANDLE )
+#define     IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_INDEX               DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_HANDLE )
+#define     IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_INDEX             DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_HANDLE )
 
 #define     IL_CAN0_RX_NUM_FRAMES                               (0x001A)
 

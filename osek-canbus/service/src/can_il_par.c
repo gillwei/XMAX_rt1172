@@ -78,8 +78,7 @@ transmissions
 #define     IL_CAN0_TX5_CLK_DATA_RES_TXFRM_MIN_DELAY_MS         (10)
 #define     IL_CAN0_TX6_DEV_CTRL_TXFRM_MIN_DELAY_MS             (10)
 #define     IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_MIN_DELAY_MS        (10)
-
-
+#define     IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_MIN_DELAY_MS     (10)
 
 
 /*------------------------------------------------------
@@ -104,7 +103,7 @@ CAN0 Periodic RX Frame Period (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_PER_MS             (100)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_PER_MS                 (100)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_PER_MS                (100)
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_PER_MS            (10)
+#define     IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_PER_MS            (10)
 
 
 /*------------------------------------------------------
@@ -122,7 +121,7 @@ CAN0 Periodic RX Frame Timeout1 (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_TIMEOUT1_MS        (200)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_TIMEOUT1_MS            (200)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_TIMEOUT1_MS           (200)
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TIMEOUT1_MS       (20)
+#define     IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_TIMEOUT1_MS       (20)
 
 
 /*------------------------------------------------------
@@ -140,7 +139,7 @@ CAN0 Periodic RX Frame TimeoutErr1 recovery (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_TERR1_RCVRY_MS     (100)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_TERR1_RCVRY_MS         (100)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_TERR1_RCVRY_MS        (100)
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TERR1_RCVRY_MS    (10)
+#define     IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_TERR1_RCVRY_MS    (10)
 
 
 /*------------------------------------------------------
@@ -158,7 +157,7 @@ CAN0 Periodic RX Frame Timeout2 (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_TIMEOUT2_MS        (0)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_TIMEOUT2_MS            (0)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_TIMEOUT2_MS           (0)
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TIMEOUT2_MS       (1000)
+#define     IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_TIMEOUT2_MS       (1000)
 
 
 /*------------------------------------------------------
@@ -176,7 +175,7 @@ CAN0 Periodic RX Frame TimeoutErr2 recovery (milliseconds)
 #define     IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_TERR2_RCVRY_MS     (0)
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_TERR2_RCVRY_MS         (0)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_TERR2_RCVRY_MS        (0)
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TERR2_RCVRY_MS    (1000)
+#define     IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_TERR2_RCVRY_MS    (1000)
 
 
 /*------------------------------------------------------
@@ -217,7 +216,15 @@ il_can0_txsig_table[IL_CAN0_TX_NUM_SIGNALS] =
         { IL_CAN0_TX6_DEV_CTRL_TXFRM_INDEX,                    0,  2  },    //  Dev_ctrl_seat_heater
         { IL_CAN0_TX6_DEV_CTRL_TXFRM_INDEX,                    12, 2  },    //  Dev_ctrl_TFT_brghtnss
         { IL_CAN0_TX6_DEV_CTRL_TXFRM_INDEX,                    6,  2  },    //  Dev_ctrl_windscrn
-        { IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_INDEX,               56, 64 }     //  Fact_insp1_ga_tx
+        { IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_INDEX,               56, 64 },    //  Fact_insp1_ga_tx
+        { IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_INDEX,            0,  8  },    //  Fact_insp_ns_res
+        { IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_INDEX,            16, 8  },    //  Fact_insp_ns_res_rsv1
+        { IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_INDEX,            24, 8  },    //  Fact_insp_ns_res_rsv2
+        { IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_INDEX,            32, 8  },    //  Fact_insp_ns_res_rsv3
+        { IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_INDEX,            40, 8  },    //  Fact_insp_ns_res_rsv4
+        { IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_INDEX,            48, 8  },    //  Fact_insp_ns_res_rsv5
+        { IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_INDEX,            56, 8  },    //  Fact_insp_ns_res_rsv6
+        { IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_INDEX,            8,  8  }     //  Fact_insp_ns_rescode
     };
 
 
@@ -411,6 +418,34 @@ il_can0_tx7_fact_insp1_ga_txfrm_sig_list[] =
 
 
 /*------------------------------------------------------
+TX8_FACT_INSP_NS_RES
+------------------------------------------------------*/
+static il_sig_index_t const
+il_can0_tx8_fact_insp_ns_res_txfrm_sig_list[] =
+    {
+    IL_CAN0_FACT_INSP_NS_RES_TXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_RES_RSV1_TXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_RES_RSV2_TXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_RES_RSV3_TXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_RES_RSV4_TXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_RES_RSV5_TXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_RES_RSV6_TXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_RESCODE_TXSIG_INDEX
+    };
+
+#define     IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_NSIG_BYTES       ( IL_CAN0_FACT_INSP_NS_RES_TXSIG_NBYTES             + \
+                                                                  IL_CAN0_FACT_INSP_NS_RES_RSV1_TXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_RES_RSV2_TXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_RES_RSV3_TXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_RES_RSV4_TXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_RES_RSV5_TXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_RES_RSV6_TXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_RESCODE_TXSIG_NBYTES )
+
+#define     IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_NSIGS            ( sizeof( il_can0_tx8_fact_insp_ns_res_txfrm_sig_list ) / sizeof( il_sig_index_t ) )
+
+
+/*------------------------------------------------------
 CAN0 Transmit Frame Data
 ------------------------------------------------------*/
 static uint8
@@ -442,6 +477,9 @@ il_can0_tx6_dev_ctrl_txfrm_data[IL_CAN0_TX6_DEV_CTRL_TXFRM_LEN];
 
 static uint8
 il_can0_tx7_fact_insp1_ga_txfrm_data[IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_LEN];
+
+static uint8
+il_can0_tx8_fact_insp_ns_res_txfrm_data[IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_LEN];
 
 
 /*------------------------------------------------------
@@ -485,6 +523,10 @@ il_can0_tx6_dev_ctrl_txfrm_init_data[IL_CAN0_TX6_DEV_CTRL_TXFRM_LEN] =
 
 static uint8 const
 il_can0_tx7_fact_insp1_ga_txfrm_init_data[IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_LEN] =
+    { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
+
+static uint8 const
+il_can0_tx8_fact_insp_ns_res_txfrm_init_data[IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_LEN] =
     { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
 
 
@@ -563,6 +605,13 @@ il_can0_tmd_table[IL_CAN0_TX_NUM_FRAMES] =
         IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_LEN,
         CAN_TXMSG_STANDARD,
         IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_HANDLE
+        },
+        {
+        TX8_FACT_INSP_NS_RES_CAN0_ID,
+        &il_can0_tx8_fact_insp_ns_res_txfrm_data[0],
+        IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_LEN,
+        CAN_TXMSG_STANDARD,
+        IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_HANDLE
         }
     };
 
@@ -714,6 +763,16 @@ il_can0_txfrm_table[IL_CAN0_TX_NUM_FRAMES] =
         IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_NSIG_BYTES,
         IL_TIME_IN_TASK_TICS( IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_MIN_DELAY_MS ),
         NULL
+        },
+        {
+        ( IL_TX_FRM_ATTR_EVENT | IL_TX_FRM_ATTR_MIN_DELAY ),
+        &il_can0_tx8_fact_insp_ns_res_txfrm_data[0],
+        &il_can0_tx8_fact_insp_ns_res_txfrm_init_data[0],
+        &il_can0_tx8_fact_insp_ns_res_txfrm_sig_list[0],
+        IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_NSIGS,
+        IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_NSIG_BYTES,
+        IL_TIME_IN_TASK_TICS( IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_MIN_DELAY_MS ),
+        NULL
         }
     };
 
@@ -813,6 +872,12 @@ static uint8
 il_can0_brtnss_ctrl_mt_tft_duty_rxsig_data[IL_CAN0_BRTNSS_CTRL_MT_TFT_DUTY_RXSIG_NBYTES];
 
 static uint8
+il_can0_brtnss_ctrl_rsv1_rxsig_data[IL_CAN0_BRTNSS_CTRL_RSV1_RXSIG_NBYTES];
+
+static uint8
+il_can0_brtnss_ctrl_tft_lv_rxsig_data[IL_CAN0_BRTNSS_CTRL_TFT_LV_RXSIG_NBYTES];
+
+static uint8
 il_can0_res_mt_func_cnt_data_1_rxsig_data[IL_CAN0_RES_MT_FUNC_CNT_DATA_1_RXSIG_NBYTES];
 
 static uint8
@@ -829,6 +894,18 @@ il_can0_vehicle_info_mile_unit_rxsig_data[IL_CAN0_VEHICLE_INFO_MILE_UNIT_RXSIG_N
 
 static uint8
 il_can0_vehicle_info_press_unit_rxsig_data[IL_CAN0_VEHICLE_INFO_PRESS_UNIT_RXSIG_NBYTES];
+
+static uint8
+il_can0_vehicle_info_rsv1_rxsig_data[IL_CAN0_VEHICLE_INFO_RSV1_RXSIG_NBYTES];
+
+static uint8
+il_can0_vehicle_info_rsv2_rxsig_data[IL_CAN0_VEHICLE_INFO_RSV2_RXSIG_NBYTES];
+
+static uint8
+il_can0_vehicle_info_rsv3_rxsig_data[IL_CAN0_VEHICLE_INFO_RSV3_RXSIG_NBYTES];
+
+static uint8
+il_can0_vehicle_info_rsv4_rxsig_data[IL_CAN0_VEHICLE_INFO_RSV4_RXSIG_NBYTES];
 
 static uint8
 il_can0_vehicle_info_temp_unit_rxsig_data[IL_CAN0_VEHICLE_INFO_TEMP_UNIT_RXSIG_NBYTES];
@@ -930,6 +1007,12 @@ static uint8
 il_can0_maint_trip_3_rxsig_data[IL_CAN0_MAINT_TRIP_3_RXSIG_NBYTES];
 
 static uint8
+il_can0_maint_trip_rsv1_rxsig_data[IL_CAN0_MAINT_TRIP_RSV1_RXSIG_NBYTES];
+
+static uint8
+il_can0_maint_trip_rsv2_rxsig_data[IL_CAN0_MAINT_TRIP_RSV2_RXSIG_NBYTES];
+
+static uint8
 il_can0_heater_stat_crnt_gw_stat_rxsig_data[IL_CAN0_HEATER_STAT_CRNT_GW_STAT_RXSIG_NBYTES];
 
 static uint8
@@ -954,7 +1037,28 @@ static uint8
 il_can0_heater_stat_rider_seat_warm_mid_rxsig_data[IL_CAN0_HEATER_STAT_RIDER_SEAT_WARM_MID_RXSIG_NBYTES];
 
 static uint8
-il_can0_fact_insp_ns1_rxsig_data[IL_CAN0_FACT_INSP_NS1_RXSIG_NBYTES];
+il_can0_fact_insp_ns_req_rxsig_data[IL_CAN0_FACT_INSP_NS_REQ_RXSIG_NBYTES];
+
+static uint8
+il_can0_fact_insp_ns_req_rsv1_rxsig_data[IL_CAN0_FACT_INSP_NS_REQ_RSV1_RXSIG_NBYTES];
+
+static uint8
+il_can0_fact_insp_ns_req_rsv2_rxsig_data[IL_CAN0_FACT_INSP_NS_REQ_RSV2_RXSIG_NBYTES];
+
+static uint8
+il_can0_fact_insp_ns_req_rsv3_rxsig_data[IL_CAN0_FACT_INSP_NS_REQ_RSV3_RXSIG_NBYTES];
+
+static uint8
+il_can0_fact_insp_ns_req_rsv4_rxsig_data[IL_CAN0_FACT_INSP_NS_REQ_RSV4_RXSIG_NBYTES];
+
+static uint8
+il_can0_fact_insp_ns_req_rsv5_rxsig_data[IL_CAN0_FACT_INSP_NS_REQ_RSV5_RXSIG_NBYTES];
+
+static uint8
+il_can0_fact_insp_ns_req_rsv6_rxsig_data[IL_CAN0_FACT_INSP_NS_REQ_RSV6_RXSIG_NBYTES];
+
+static uint8
+il_can0_fact_insp_ns_reqcode_rxsig_data[IL_CAN0_FACT_INSP_NS_REQCODE_RXSIG_NBYTES];
 
 static uint8
 il_can0_fact_insp2_ga_rx_rxsig_data[IL_CAN0_FACT_INSP2_GA_RX_RXSIG_NBYTES];
@@ -1100,6 +1204,18 @@ il_can0_rxsig_table[IL_CAN0_RX_NUM_SIGNALS] =
         },
         {
         ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        16,     8,
+        &il_can0_brtnss_ctrl_rsv1_rxsig_data[0],
+        IL_CAN0_BRTNSS_CTRL_RSV1_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        8,      3,
+        &il_can0_brtnss_ctrl_tft_lv_rxsig_data[0],
+        IL_CAN0_BRTNSS_CTRL_TFT_LV_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
         8,      8,
         &il_can0_res_mt_func_cnt_data_1_rxsig_data[0],
         IL_CAN0_RES_MT_FUNC_CNT_DATA_1_RXSIG_NBYTES
@@ -1133,6 +1249,30 @@ il_can0_rxsig_table[IL_CAN0_RX_NUM_SIGNALS] =
         20,     2,
         &il_can0_vehicle_info_press_unit_rxsig_data[0],
         IL_CAN0_VEHICLE_INFO_PRESS_UNIT_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        0,      8,
+        &il_can0_vehicle_info_rsv1_rxsig_data[0],
+        IL_CAN0_VEHICLE_INFO_RSV1_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        8,      8,
+        &il_can0_vehicle_info_rsv2_rxsig_data[0],
+        IL_CAN0_VEHICLE_INFO_RSV2_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        22,     1,
+        &il_can0_vehicle_info_rsv3_rxsig_data[0],
+        IL_CAN0_VEHICLE_INFO_RSV3_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        16,     1,
+        &il_can0_vehicle_info_rsv4_rxsig_data[0],
+        IL_CAN0_VEHICLE_INFO_RSV4_RXSIG_NBYTES
         },
         {
         ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
@@ -1334,6 +1474,18 @@ il_can0_rxsig_table[IL_CAN0_RX_NUM_SIGNALS] =
         },
         {
         ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        48,     2,
+        &il_can0_maint_trip_rsv1_rxsig_data[0],
+        IL_CAN0_MAINT_TRIP_RSV1_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        56,     8,
+        &il_can0_maint_trip_rsv2_rxsig_data[0],
+        IL_CAN0_MAINT_TRIP_RSV2_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
         30,     2,
         &il_can0_heater_stat_crnt_gw_stat_rxsig_data[0],
         IL_CAN0_HEATER_STAT_CRNT_GW_STAT_RXSIG_NBYTES
@@ -1382,9 +1534,51 @@ il_can0_rxsig_table[IL_CAN0_RX_NUM_SIGNALS] =
         },
         {
         ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
-        4,      4,
-        &il_can0_fact_insp_ns1_rxsig_data[0],
-        IL_CAN0_FACT_INSP_NS1_RXSIG_NBYTES
+        0,      8,
+        &il_can0_fact_insp_ns_req_rxsig_data[0],
+        IL_CAN0_FACT_INSP_NS_REQ_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        16,     8,
+        &il_can0_fact_insp_ns_req_rsv1_rxsig_data[0],
+        IL_CAN0_FACT_INSP_NS_REQ_RSV1_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        24,     8,
+        &il_can0_fact_insp_ns_req_rsv2_rxsig_data[0],
+        IL_CAN0_FACT_INSP_NS_REQ_RSV2_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        32,     8,
+        &il_can0_fact_insp_ns_req_rsv3_rxsig_data[0],
+        IL_CAN0_FACT_INSP_NS_REQ_RSV3_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        40,     8,
+        &il_can0_fact_insp_ns_req_rsv4_rxsig_data[0],
+        IL_CAN0_FACT_INSP_NS_REQ_RSV4_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        48,     8,
+        &il_can0_fact_insp_ns_req_rsv5_rxsig_data[0],
+        IL_CAN0_FACT_INSP_NS_REQ_RSV5_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        56,     8,
+        &il_can0_fact_insp_ns_req_rsv6_rxsig_data[0],
+        IL_CAN0_FACT_INSP_NS_REQ_RSV6_RXSIG_NBYTES
+        },
+        {
+        ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
+        8,      8,
+        &il_can0_fact_insp_ns_reqcode_rxsig_data[0],
+        IL_CAN0_FACT_INSP_NS_REQCODE_RXSIG_NBYTES
         },
         {
         ( IL_RX_SIG_ATTR_NOTIFY | IL_RX_SIG_ATTR_NOTIFY_CHANGE ),
@@ -1600,11 +1794,15 @@ static il_sig_index_t const
 il_can0_rx3_brgthnss_ctrl_rxfrm_sig_list[] =
     {
     IL_CAN0_BRTNSS_CTRL_LCD_LV_RXSIG_INDEX,
-    IL_CAN0_BRTNSS_CTRL_MT_TFT_DUTY_RXSIG_INDEX
+    IL_CAN0_BRTNSS_CTRL_MT_TFT_DUTY_RXSIG_INDEX,
+    IL_CAN0_BRTNSS_CTRL_RSV1_RXSIG_INDEX,
+    IL_CAN0_BRTNSS_CTRL_TFT_LV_RXSIG_INDEX
     };
 
 #define     IL_CAN0_RX3_BRGTHNSS_CTRL_RXFRM_NSIG_BYTES          ( IL_CAN0_BRTNSS_CTRL_LCD_LV_RXSIG_NBYTES           + \
-                                                                  IL_CAN0_BRTNSS_CTRL_MT_TFT_DUTY_RXSIG_NBYTES )
+                                                                  IL_CAN0_BRTNSS_CTRL_MT_TFT_DUTY_RXSIG_NBYTES      + \
+                                                                  IL_CAN0_BRTNSS_CTRL_RSV1_RXSIG_NBYTES             + \
+                                                                  IL_CAN0_BRTNSS_CTRL_TFT_LV_RXSIG_NBYTES )
 
 #define     IL_CAN0_RX3_BRGTHNSS_CTRL_RXFRM_NSIGS               ( sizeof( il_can0_rx3_brgthnss_ctrl_rxfrm_sig_list ) / sizeof( il_sig_index_t ) )
 
@@ -1636,12 +1834,20 @@ il_can0_rx5_vehicle_info_rxfrm_sig_list[] =
     IL_CAN0_VEHICLE_INFO_FUEL_CON_UNIT_RXSIG_INDEX,
     IL_CAN0_VEHICLE_INFO_MILE_UNIT_RXSIG_INDEX,
     IL_CAN0_VEHICLE_INFO_PRESS_UNIT_RXSIG_INDEX,
+    IL_CAN0_VEHICLE_INFO_RSV1_RXSIG_INDEX,
+    IL_CAN0_VEHICLE_INFO_RSV2_RXSIG_INDEX,
+    IL_CAN0_VEHICLE_INFO_RSV3_RXSIG_INDEX,
+    IL_CAN0_VEHICLE_INFO_RSV4_RXSIG_INDEX,
     IL_CAN0_VEHICLE_INFO_TEMP_UNIT_RXSIG_INDEX
     };
 
 #define     IL_CAN0_RX5_VEHICLE_INFO_RXFRM_NSIG_BYTES           ( IL_CAN0_VEHICLE_INFO_FUEL_CON_UNIT_RXSIG_NBYTES   + \
                                                                   IL_CAN0_VEHICLE_INFO_MILE_UNIT_RXSIG_NBYTES       + \
                                                                   IL_CAN0_VEHICLE_INFO_PRESS_UNIT_RXSIG_NBYTES      + \
+                                                                  IL_CAN0_VEHICLE_INFO_RSV1_RXSIG_NBYTES            + \
+                                                                  IL_CAN0_VEHICLE_INFO_RSV2_RXSIG_NBYTES            + \
+                                                                  IL_CAN0_VEHICLE_INFO_RSV3_RXSIG_NBYTES            + \
+                                                                  IL_CAN0_VEHICLE_INFO_RSV4_RXSIG_NBYTES            + \
                                                                   IL_CAN0_VEHICLE_INFO_TEMP_UNIT_RXSIG_NBYTES )
 
 #define     IL_CAN0_RX5_VEHICLE_INFO_RXFRM_NSIGS                ( sizeof( il_can0_rx5_vehicle_info_rxfrm_sig_list ) / sizeof( il_sig_index_t ) )
@@ -1797,12 +2003,16 @@ il_can0_rxd_maint_trip_rxfrm_sig_list[] =
     {
     IL_CAN0_MAINT_TRIP_1_RXSIG_INDEX,
     IL_CAN0_MAINT_TRIP_2_RXSIG_INDEX,
-    IL_CAN0_MAINT_TRIP_3_RXSIG_INDEX
+    IL_CAN0_MAINT_TRIP_3_RXSIG_INDEX,
+    IL_CAN0_MAINT_TRIP_RSV1_RXSIG_INDEX,
+    IL_CAN0_MAINT_TRIP_RSV2_RXSIG_INDEX
     };
 
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_NSIG_BYTES             ( IL_CAN0_MAINT_TRIP_1_RXSIG_NBYTES                 + \
                                                                   IL_CAN0_MAINT_TRIP_2_RXSIG_NBYTES                 + \
-                                                                  IL_CAN0_MAINT_TRIP_3_RXSIG_NBYTES )
+                                                                  IL_CAN0_MAINT_TRIP_3_RXSIG_NBYTES                 + \
+                                                                  IL_CAN0_MAINT_TRIP_RSV1_RXSIG_NBYTES              + \
+                                                                  IL_CAN0_MAINT_TRIP_RSV2_RXSIG_NBYTES )
 
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_NSIGS                  ( sizeof( il_can0_rxd_maint_trip_rxfrm_sig_list ) / sizeof( il_sig_index_t ) )
 
@@ -1841,42 +2051,56 @@ RXF_FACT_INSP_NS
 static il_sig_index_t const
 il_can0_rxf_fact_insp_ns_rxfrm_sig_list[] =
     {
-    IL_CAN0_FACT_INSP_NS1_RXSIG_INDEX
+    IL_CAN0_FACT_INSP_NS_REQ_RXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_REQ_RSV1_RXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_REQ_RSV2_RXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_REQ_RSV3_RXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_REQ_RSV4_RXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_REQ_RSV5_RXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_REQ_RSV6_RXSIG_INDEX,
+    IL_CAN0_FACT_INSP_NS_REQCODE_RXSIG_INDEX
     };
 
-#define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_NSIG_BYTES           ( IL_CAN0_FACT_INSP_NS1_RXSIG_NBYTES )
+#define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_NSIG_BYTES           ( IL_CAN0_FACT_INSP_NS_REQ_RXSIG_NBYTES             + \
+                                                                  IL_CAN0_FACT_INSP_NS_REQ_RSV1_RXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_REQ_RSV2_RXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_REQ_RSV3_RXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_REQ_RSV4_RXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_REQ_RSV5_RXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_REQ_RSV6_RXSIG_NBYTES        + \
+                                                                  IL_CAN0_FACT_INSP_NS_REQCODE_RXSIG_NBYTES )
 
 #define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_NSIGS                ( sizeof( il_can0_rxf_fact_insp_ns_rxfrm_sig_list ) / sizeof( il_sig_index_t ) )
 
 
 /*------------------------------------------------------
-RXF_FACT_INSP2_GA
+RXG_FACT_INSP2_GA
 ------------------------------------------------------*/
 static il_sig_index_t const
-il_can0_rxf_fact_insp2_ga_rxfrm_sig_list[] =
+il_can0_rxg_fact_insp2_ga_rxfrm_sig_list[] =
     {
     IL_CAN0_FACT_INSP2_GA_RX_RXSIG_INDEX
     };
 
-#define     IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_NSIG_BYTES          ( IL_CAN0_FACT_INSP2_GA_RX_RXSIG_NBYTES )
+#define     IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_NSIG_BYTES          ( IL_CAN0_FACT_INSP2_GA_RX_RXSIG_NBYTES )
 
-#define     IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_NSIGS               ( sizeof( il_can0_rxf_fact_insp2_ga_rxfrm_sig_list ) / sizeof( il_sig_index_t ) )
+#define     IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_NSIGS               ( sizeof( il_can0_rxg_fact_insp2_ga_rxfrm_sig_list ) / sizeof( il_sig_index_t ) )
 
 
 /*------------------------------------------------------
-RXG_ECU_INDCT_STAT1
+RXH_ECU_INDCT_STAT1
 ------------------------------------------------------*/
 static il_sig_index_t const
-il_can0_rxg_ecu_indct_stat1_rxfrm_sig_list[] =
+il_can0_rxh_ecu_indct_stat1_rxfrm_sig_list[] =
     {
     IL_CAN0_ECU_INDCT_EG_SPD1_RXSIG_INDEX,
     IL_CAN0_ECU_INDCT_TC_MODE1_RXSIG_INDEX
     };
 
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_NSIG_BYTES        ( IL_CAN0_ECU_INDCT_EG_SPD1_RXSIG_NBYTES            + \
+#define     IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_NSIG_BYTES        ( IL_CAN0_ECU_INDCT_EG_SPD1_RXSIG_NBYTES            + \
                                                                   IL_CAN0_ECU_INDCT_TC_MODE1_RXSIG_NBYTES )
 
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_NSIGS             ( sizeof( il_can0_rxg_ecu_indct_stat1_rxfrm_sig_list ) / sizeof( il_sig_index_t ) )
+#define     IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_NSIGS             ( sizeof( il_can0_rxh_ecu_indct_stat1_rxfrm_sig_list ) / sizeof( il_sig_index_t ) )
 
 
 /*------------------------------------------------------
@@ -1955,10 +2179,10 @@ static uint8
 il_can0_rxf_fact_insp_ns_rxfrm_data[IL_CAN0_RXF_FACT_INSP_NS_RXFRM_LEN];
 
 static uint8
-il_can0_rxf_fact_insp2_ga_rxfrm_data[IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_LEN];
+il_can0_rxg_fact_insp2_ga_rxfrm_data[IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_LEN];
 
 static uint8
-il_can0_rxg_ecu_indct_stat1_rxfrm_data[IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_LEN];
+il_can0_rxh_ecu_indct_stat1_rxfrm_data[IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_LEN];
 
 
 /*------------------------------------------------------
@@ -2058,14 +2282,14 @@ il_can0_rxe_heater_stat_rxfrm_init_data[IL_CAN0_RXE_HEATER_STAT_RXFRM_LEN] =
 
 static uint8 const
 il_can0_rxf_fact_insp_ns_rxfrm_init_data[IL_CAN0_RXF_FACT_INSP_NS_RXFRM_LEN] =
-    { 0x00 };
-
-static uint8 const
-il_can0_rxf_fact_insp2_ga_rxfrm_init_data[IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_LEN] =
     { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
 
 static uint8 const
-il_can0_rxg_ecu_indct_stat1_rxfrm_init_data[IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_LEN] =
+il_can0_rxg_fact_insp2_ga_rxfrm_init_data[IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_LEN] =
+    { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
+
+static uint8 const
+il_can0_rxh_ecu_indct_stat1_rxfrm_init_data[IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_LEN] =
     { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
 
 
@@ -2109,7 +2333,7 @@ static uint16
 il_can0_rxe_heater_stat_rxfrm_per_cnt;
 
 static uint16
-il_can0_rxg_ecu_indct_stat1_rxfrm_per_cnt;
+il_can0_rxh_ecu_indct_stat1_rxfrm_per_cnt;
 
 
 /*------------------------------------------------------
@@ -2152,7 +2376,7 @@ static uint16
 il_can0_rxe_heater_stat_rxfrm_terr_rcvry_cnt;
 
 static uint16
-il_can0_rxg_ecu_indct_stat1_rxfrm_terr_rcvry_cnt;
+il_can0_rxh_ecu_indct_stat1_rxfrm_terr_rcvry_cnt;
 
 
 /*------------------------------------------------------
@@ -2195,7 +2419,7 @@ static uint16
 il_can0_rxe_heater_stat_rxfrm_timeout_cnt;
 
 static uint16
-il_can0_rxg_ecu_indct_stat1_rxfrm_timeout_cnt;
+il_can0_rxh_ecu_indct_stat1_rxfrm_timeout_cnt;
 
 
 /*------------------------------------------------------
@@ -2358,17 +2582,18 @@ il_can0_rxe_heater_stat_rxfrm_per_info =
     };
 
 static il_rx_per_info_t const
-il_can0_rxg_ecu_indct_stat1_rxfrm_per_info =
+il_can0_rxh_ecu_indct_stat1_rxfrm_per_info =
     {
-    IL_TIME_IN_TASK_TICS( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_PER_MS ),
-    IL_TIME_IN_TASK_TICS( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TIMEOUT1_MS ),
-    IL_TIME_IN_TASK_TICS( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TIMEOUT2_MS ),
-    IL_TIME_IN_TASK_TICS( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TERR1_RCVRY_MS ),
-    IL_TIME_IN_TASK_TICS( IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_TERR2_RCVRY_MS ),
-    &il_can0_rxg_ecu_indct_stat1_rxfrm_per_cnt,
-    &il_can0_rxg_ecu_indct_stat1_rxfrm_timeout_cnt,
-    &il_can0_rxg_ecu_indct_stat1_rxfrm_terr_rcvry_cnt
+    IL_TIME_IN_TASK_TICS( IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_PER_MS ),
+    IL_TIME_IN_TASK_TICS( IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_TIMEOUT1_MS ),
+    IL_TIME_IN_TASK_TICS( IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_TIMEOUT2_MS ),
+    IL_TIME_IN_TASK_TICS( IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_TERR1_RCVRY_MS ),
+    IL_TIME_IN_TASK_TICS( IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_TERR2_RCVRY_MS ),
+    &il_can0_rxh_ecu_indct_stat1_rxfrm_per_cnt,
+    &il_can0_rxh_ecu_indct_stat1_rxfrm_timeout_cnt,
+    &il_can0_rxh_ecu_indct_stat1_rxfrm_terr_rcvry_cnt
     };
+
 
 /*------------------------------------------------------
 CAN0 Receive Frame Table
@@ -2642,25 +2867,25 @@ il_can0_rxfrm_table[IL_CAN0_RX_NUM_FRAMES] =
         },
         {
         ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
-        IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_LEN,
-        IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_MIN_LEN,
-        &il_can0_rxf_fact_insp2_ga_rxfrm_init_data[0],
-        &il_can0_rxf_fact_insp2_ga_rxfrm_sig_list[0],
-        IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_NSIGS,
-        IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_NSIG_BYTES,
-        &il_can0_rxf_fact_insp2_ga_rxfrm_data[0],
+        IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_LEN,
+        IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_MIN_LEN,
+        &il_can0_rxg_fact_insp2_ga_rxfrm_init_data[0],
+        &il_can0_rxg_fact_insp2_ga_rxfrm_sig_list[0],
+        IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_NSIGS,
+        IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_NSIG_BYTES,
+        &il_can0_rxg_fact_insp2_ga_rxfrm_data[0],
         NULL
         },
         {
         ( IL_RX_FRM_ATTR_NOTIFY | IL_RX_FRM_ATTR_TIMEOUT ),
-        IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_LEN,
-        IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_MIN_LEN,
-        &il_can0_rxg_ecu_indct_stat1_rxfrm_init_data[0],
-        &il_can0_rxg_ecu_indct_stat1_rxfrm_sig_list[0],
-        IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_NSIGS,
-        IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_NSIG_BYTES,
-        &il_can0_rxg_ecu_indct_stat1_rxfrm_data[0],
-        &il_can0_rxg_ecu_indct_stat1_rxfrm_per_info
+        IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_LEN,
+        IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_MIN_LEN,
+        &il_can0_rxh_ecu_indct_stat1_rxfrm_init_data[0],
+        &il_can0_rxh_ecu_indct_stat1_rxfrm_sig_list[0],
+        IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_NSIGS,
+        IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_NSIG_BYTES,
+        &il_can0_rxh_ecu_indct_stat1_rxfrm_data[0],
+        &il_can0_rxh_ecu_indct_stat1_rxfrm_per_info
         }
     };
 

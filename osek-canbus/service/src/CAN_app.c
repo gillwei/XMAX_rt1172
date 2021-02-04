@@ -831,6 +831,14 @@ if( app_tx_tick > 0 )
 
         nim_app_sig_put( IL_CAN0_REQ_MT_FUNC_CNT_SVC_ID_TXSIG_HANDLE,
                          IL_CAN0_REQ_MT_FUNC_CNT_SVC_ID_TXSIG_NBYTES,
+                         0x66 );
+
+        nim_app_sig_put( IL_CAN0_FACT_INSP_NS_RES_TXSIG_HANDLE,
+                         IL_CAN0_FACT_INSP_NS_RES_TXSIG_NBYTES,
+                         0x77 );
+
+        nim_app_sig_put( IL_CAN0_FACT_INSP_NS_RESCODE_TXSIG_HANDLE,
+                         IL_CAN0_FACT_INSP_NS_RESCODE_TXSIG_NBYTES,
                          0x88 );
 
         nim_app_sig_get( IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, sizeof(uint8), &app_rx_data );

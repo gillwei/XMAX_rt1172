@@ -56,6 +56,7 @@ IL CAN0 Transmitted Frame Application Handles
 #define     IL_CAN0_TX5_CLK_DATA_RES_TXFRM_HANDLE               (0x0007)
 #define     IL_CAN0_TX6_DEV_CTRL_TXFRM_HANDLE                   (0x0008)
 #define     IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_HANDLE              (0x0009)
+#define     IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_HANDLE           (0x000A)
 
 
 /*------------------------------------------------------
@@ -86,8 +87,8 @@ IL CAN0 Received Frame Application Handles
 #define     IL_CAN0_RXD_MAINT_TRIP_RXFRM_HANDLE                 (0x0015)
 #define     IL_CAN0_RXE_HEATER_STAT_RXFRM_HANDLE                (0x0016)
 #define     IL_CAN0_RXF_FACT_INSP_NS_RXFRM_HANDLE               (0x0017)
-#define     IL_CAN0_RXF_FACT_INSP2_GA_RXFRM_HANDLE              (0x0018)
-#define     IL_CAN0_RXG_ECU_INDCT_STAT1_RXFRM_HANDLE            (0x0019)
+#define     IL_CAN0_RXG_FACT_INSP2_GA_RXFRM_HANDLE              (0x0018)
+#define     IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_HANDLE            (0x0019)
 
 #ifdef __cplusplus
 }
