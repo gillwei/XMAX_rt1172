@@ -147,9 +147,16 @@ while(1)
     for( l_i_hw_inst = 0; l_i_hw_inst < CAN_NUM_INSTANCES; l_i_hw_inst++ )
         {
         /*------------------------------------------------------
+        Dispatch Layer Periodic Receive and Transmit Tasks
+        ------------------------------------------------------*/
+        dll_rx_task( l_i_hw_inst );
+        dll_tx_task( l_i_hw_inst );
+
+        /*------------------------------------------------------
         TP Layer Periodic Task
         ------------------------------------------------------*/
         tp_task( l_i_hw_inst );
+
         /*------------------------------------------------------
         Diagnostic Layer Periodic Task.
         ------------------------------------------------------*/
@@ -164,19 +171,11 @@ while(1)
             if( 0 == can_nim_task_count[l_i_hw_inst] )
                 {
                 /*------------------------------------------------------
-                Dispatch Layer Periodic Receive and Transmit Tasks
-                ------------------------------------------------------*/
-                dll_rx_task( l_i_hw_inst );
-                dll_tx_task( l_i_hw_inst );
-
-                /*------------------------------------------------------
                 Task interaction counter contains the Interaction Layer Periodic
                 Receive and Transmit Tasks
                 ------------------------------------------------------*/
                 il_rx_task( l_i_hw_inst );
                 il_tx_task( l_i_hw_inst );
-
-
 
                 /*------------------------------------------------------
                 Network Management Layer Periodic Task

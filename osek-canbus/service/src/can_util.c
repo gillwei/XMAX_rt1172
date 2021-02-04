@@ -76,10 +76,14 @@ void can_util_copy_bytes
 {
 uint8   l_ibyte;
 
+taskENTER_CRITICAL( );
+
 for( l_ibyte = 0; l_ibyte < n_bytes; l_ibyte++ )
     {
     p_to[l_ibyte] = p_from[l_ibyte];
     }
+
+taskEXIT_CRITICAL( );
 }
 
 /*!*******************************************************************
@@ -98,7 +102,11 @@ void can_util_set_status_bits
     uint8       const bit_mask          //!< [in] bit mask (bits to be set)
     )
 {
+taskENTER_CRITICAL( );
+
 *( p_status ) |= bit_mask;
+
+taskEXIT_CRITICAL( );
 }
 
 /*!*******************************************************************
@@ -117,7 +125,11 @@ void can_util_clear_status_bits
     uint8       const bit_mask          //!< [in] bit mask (bits to be cleared)
     )
 {
+taskENTER_CRITICAL( );
+
 *( p_status ) &= SYS_MASK8_COMPLEMENT( bit_mask );
+
+taskEXIT_CRITICAL( );
 }
 
 /*!*******************************************************************
@@ -136,7 +148,11 @@ void can_util_set_status16_bits
     uint16      const bit_mask          //!< [in] bit mask (bits to be set)
     )
 {
+taskENTER_CRITICAL( );
+
 *( p_status ) |= bit_mask;
+
+taskEXIT_CRITICAL( );
 }
 
 /*!*******************************************************************
@@ -155,6 +171,10 @@ void can_util_clear_status16_bits
     uint16      const bit_mask          //!< [in] bit mask (bits to be set)
     )
 {
+taskENTER_CRITICAL( );
+
 *( p_status ) &= SYS_MASK16_COMPLEMENT( bit_mask );
+
+taskEXIT_CRITICAL( );
 }
 

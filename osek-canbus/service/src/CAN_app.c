@@ -364,12 +364,28 @@ CAN_IGNORE_PARAMETER( hw_inst );
 void
 il_app_notify_rx_timeout1
     (
-    can_hw_inst_t    hw_inst,
-    dll_frm_handle_t rmh
+    dll_frm_handle_t rmh,
+    boolean          timeout_trig
     )
 {
-CAN_IGNORE_PARAMETER( rmh );
-CAN_IGNORE_PARAMETER( hw_inst );
+/*------------------------------------------------------
+For debugging
+------------------------------------------------------*/
+#if( DEBUG_RX_CAN_SUPPORT )
+    timeout_trig ? PRINTF( " Frm:%x TOE1 happens!\r\n", rmh ) : PRINTF( " Frm:%x TOE1 clears!\r\n", rmh );
+#endif
+
+/*------------------------------------------------------
+Notify Timeout error1 status
+------------------------------------------------------*/
+if( timeout_trig == TRUE )
+    {
+    //TBD TOE1 happens handler
+    }
+else
+    {
+    //TBD TOE1 clears  handler
+    }
 }
 
 /*!*******************************************************************
@@ -384,17 +400,88 @@ CAN_IGNORE_PARAMETER( hw_inst );
 void
 il_app_notify_rx_timeout2
     (
-    boolean  timeout_trig
+    dll_frm_handle_t   rmh,
+    boolean            timeout_trig
     )
 {
-can_app_timeout_error2[CAN_CONTROLLER_2] = timeout_trig;
+il_rxfrm_info_t     const *l_p_rxfrm_info;
+
+uint8                     *l_p_frm_FUNCSW_status;
+uint8                     *l_p_frm_ECU_indct_status;
+uint8                     *l_p_frm_ECU_indct1_status;
+
+boolean                    l_toe2_FUNCSW_status;
+boolean                    l_toe2_ECU_indct_status;
+boolean                    l_toe2_ECU_indct1_status;
 
 /*------------------------------------------------------
-Notify Timeout error2 data
+Get the receive frame information and service all of
+the receive frames for this CAN hardware instance
+------------------------------------------------------*/
+l_p_rxfrm_info = il_get_rxfrm_info_ptr( CAN_CONTROLLER_2 );
+
+/*------------------------------------------------------
+Get the receive frame status
+------------------------------------------------------*/
+l_p_frm_FUNCSW_status     = &( l_p_rxfrm_info->p_status[IL_CAN0_RX6_FUNCSW_STAT_IDX] );
+l_p_frm_ECU_indct_status  = &( l_p_rxfrm_info->p_status[IL_CAN0_RX0_ECU_INDCT_STAT_IDX] );
+l_p_frm_ECU_indct1_status = &( l_p_rxfrm_info->p_status[IL_CAN0_RXH_ECU_INDCT_STAT1_IDX] );
+
+/*------------------------------------------------------
+Get the receive frame timeout error1 status
+------------------------------------------------------*/
+l_toe2_FUNCSW_status     = ( ( *l_p_frm_FUNCSW_status )     & IL_RX_STATUS_TIMEOUT2 );
+l_toe2_ECU_indct_status  = ( ( *l_p_frm_ECU_indct_status )  & IL_RX_STATUS_TIMEOUT2 );
+l_toe2_ECU_indct1_status = ( ( *l_p_frm_ECU_indct1_status ) & IL_RX_STATUS_TIMEOUT2 );
+
+#if( DEBUG_RX_CAN_SUPPORT )
+    timeout_trig ? PRINTF( " Frm:%x TOE2 happens!\r\n", rmh ) : PRINTF( " Frm:%x TOE2 clears!\r\n", rmh );
+#endif
+
+/*------------------------------------------------------
+Notify Timeout error2 status
 ------------------------------------------------------*/
 if( timeout_trig == TRUE )
     {
-    //TBD
+    //TBD TOE2 happens handler
+    can_app_timeout_error2[CAN_CONTROLLER_2] = timeout_trig;
+    }
+/*------------------------------------------------------
+Only the two TOE2 triggered conditions(harg key and ECU
+status) have been cleared, the TOE2 is clear.
+------------------------------------------------------*/
+else
+    {
+    if( ( ( *l_p_frm_ECU_indct_status ) & IL_RX_STATUS_TIMEOUT2_DIS ) == FALSE )
+        {
+        /*------------------------------------------------------
+        Some Vehicle type use ECU_indct(0x209) and some use
+        ECU_indct1(0x20A)
+        ------------------------------------------------------*/
+        if( ( l_toe2_FUNCSW_status == FALSE ) &&
+            ( l_toe2_ECU_indct_status == FALSE ) )
+            {
+            //TBD TOE2 clears handler
+            can_app_timeout_error2[CAN_CONTROLLER_2] = timeout_trig;
+
+            #if( DEBUG_RX_CAN_SUPPORT )
+                PRINTF( " Frm ECU1:All TOE2 clears!\r\n" );
+            #endif
+            }
+        }
+    else
+        {
+        if( ( l_toe2_FUNCSW_status == FALSE ) &&
+            ( l_toe2_ECU_indct1_status == FALSE ) )
+            {
+            //TBD TOE2 clears handler
+            can_app_timeout_error2[CAN_CONTROLLER_2] = timeout_trig;
+
+            #if( DEBUG_RX_CAN_SUPPORT )
+                PRINTF( " Frm ECU2:All TOE2 clears!\r\n" );
+            #endif
+            }
+        }
     }
 }
 

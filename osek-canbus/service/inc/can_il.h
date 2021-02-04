@@ -77,8 +77,8 @@ typedef enum tagIL_RX_FRM_INDEX_TYPE //!< Interaction Layer receive frames index
     IL_CAN0_RXD_MAINT_TRIP_IDX,
     IL_CAN0_RXE_HEATER_STAT_IDX,
     IL_CAN0_RXF_FACT_INSP_NS_REQ_IDX,
-    IL_CAN0_RXF_FACT_INSP2_GA_IDX,
-    IL_CAN0_RXG_ECU_INDCT_STAT1_IDX,
+    IL_CAN0_RXG_FACT_INSP2_GA_IDX,
+    IL_CAN0_RXH_ECU_INDCT_STAT1_IDX,
 
     IL_RX_FRM_INDEX_ERRORS
     }il_rx_frm_index_t;
@@ -333,13 +333,14 @@ void il_app_hook_sig_received_handle
 
 void il_app_notify_rx_timeout1
     (
-    can_hw_inst_t    hw_inst,
-    dll_frm_handle_t rmh
+    dll_frm_handle_t rmh,
+    boolean          timeout_trig
     );
 
 void il_app_notify_rx_timeout2
     (
-    boolean timeout_trig
+    dll_frm_handle_t rmh,
+    boolean          timeout_trig
     );
 
 #ifdef __cplusplus

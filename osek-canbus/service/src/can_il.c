@@ -95,6 +95,11 @@ Receive Frame timeout error start tick(50*10ms)
 #define IL_RX_TIMEOUT_CHECK_START_TICK      (50)
 
 /*------------------------------------------------------
+Receive Frame timeout error 2 judge conditions number
+------------------------------------------------------*/
+#define IL_RX_TOE2_JUDGE_COND_NUM           (3)
+
+/*------------------------------------------------------
 Interaction layer status bits
 ------------------------------------------------------*/
 #define IL_STATUS_DISABLE                   (0x1 << 0)
@@ -132,6 +137,13 @@ typedef struct tagIL_SIG_FRM_COORDS_TYPE
     uint8   end_bit_pos;
 
     } il_sig_frm_coords_t;
+
+typedef struct tagIL_FRM_RX_NEW_STATUS_TYPE
+    {
+    dll_frm_handle_t  frm_handle;
+    uint8             frm_rx_new ;
+
+    }il_frm_rx_new_stat_t;
 
 /*--------------------------------------------------------------------
                             VARIABLES
@@ -439,7 +451,7 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         Reset the timeout and the frame status bits related to
         frame gain and loss to allow for new notifications.
         ------------------------------------------------------*/
-        *( l_p_rxfrm->p_per_info->p_timeout_cnt ) = l_p_rxfrm->p_per_info->timeout1;
+        *( l_p_rxfrm->p_per_info->p_timeout_cnt ) = 0;
 
         can_util_clear_status_bits( &( l_p_rxfrm_info->p_status[l_i_frm_index] ),
                                     ( IL_RX_STATUS_PENDING       |
@@ -2399,8 +2411,8 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
             Initialize the receive timeout counter.
             ------------------------------------------------------*/
             *( l_p_per_info->p_per_cnt)         = l_p_per_info->period;
-            *( l_p_per_info->p_timeout_cnt )    = l_p_per_info->timeout1;
-            *( l_p_per_info->p_terr_rcvry_cnt)  = l_p_per_info->terr1_rcvry;
+            *( l_p_per_info->p_timeout_cnt )    = 0;
+            *( l_p_per_info->p_terr_rcvry_cnt)  = 0;
             }
         }
     }
@@ -2602,7 +2614,8 @@ rx_hardkey_ECU_status_handle
     boolean                     new_frame,
     uint8                     * p_sw_status,
     il_rx_per_info_t    const * p_per_info,
-    il_rxfrm_t          const * p_rxfrm
+    il_rxfrm_t          const * p_rxfrm,
+    dll_frm_handle_t            frm_handle
     )
 {
 /*------------------------------------------------------
@@ -2618,127 +2631,147 @@ if( ( *p_sw_status & IL_RX_STATUS_TIMEOUT2_DIS ) != 0 )
 
 if( new_frame != FALSE )
     {
+    can_util_clear_status_bits( p_sw_status, ( IL_RX_STATUS_PENDING | IL_RX_STATUS_DATA_CHANGED ) );
+
+    /*------------------------------------------------------
+    Reset the timeout counter and save the frame rx status
+    ------------------------------------------------------*/
+    *( p_per_info->p_timeout_cnt ) = 0;
+
+    /*------------------------------------------------------
+    From TOE2 to normal
+    ------------------------------------------------------*/
     if( ( *p_sw_status & IL_RX_STATUS_TIMEOUT2 ) != 0 )
         {
-        *( p_rxfrm->p_per_info->p_timeout_cnt ) = p_rxfrm->p_per_info->timeout2;
-
         /*------------------------------------------------------
         Check the reception recovery timer timeout. If it hasn't timed
         out then decrement it and check for receive timeout2 recovery.
         ------------------------------------------------------*/
-        if( *( p_per_info->p_terr_rcvry_cnt )!= 0 )
+        if( *( p_per_info->p_terr_rcvry_cnt ) < p_per_info->terr2_rcvry )
             {
-            ( *( p_per_info->p_terr_rcvry_cnt ) )--;
-            if( 0 == *( p_per_info->p_terr_rcvry_cnt ) )
-                {
-                /*------------------------------------------------------
-                Reset the timeout conter
-                ------------------------------------------------------*/
-                *( p_rxfrm->p_per_info->p_timeout_cnt ) = p_rxfrm->p_per_info->timeout1;
+            ( *( p_per_info->p_terr_rcvry_cnt ) )++;
+            }
+        else
+            {
+            /*------------------------------------------------------
+            Reset the timeout recovery conter
+            ------------------------------------------------------*/
+            ( *( p_per_info->p_terr_rcvry_cnt ) ) = 0;
 
-                /*------------------------------------------------------
-                clear status bit
-                ------------------------------------------------------*/
-                can_util_clear_status_bits( p_sw_status, IL_RX_STATUS_TIMEOUT2 );
+            /*------------------------------------------------------
+            clear status bit
+            ------------------------------------------------------*/
+            can_util_clear_status_bits( p_sw_status, IL_RX_STATUS_TIMEOUT2 );
 
-                /*------------------------------------------------------
-                Notify the CAN app that timeout error2 has recoveried
-                ------------------------------------------------------*/
-                il_app_notify_rx_timeout2( FALSE );
-                }
+            /*------------------------------------------------------
+            Notify the CAN app that timeout error2 has recoveried
+            ------------------------------------------------------*/
+            il_app_notify_rx_timeout2( frm_handle, FALSE );
             }
         }
+    /*------------------------------------------------------
+    From TOE1 to normal
+    ------------------------------------------------------*/
     else if( ( *p_sw_status & IL_RX_STATUS_TIMEOUT1 ) != 0 )
         {
-        /*------------------------------------------------------
-        Reset the timeout conter
-        ------------------------------------------------------*/
-        *( p_rxfrm->p_per_info->p_timeout_cnt ) = p_rxfrm->p_per_info->timeout2;
-
-        /*------------------------------------------------------
-        Check the reception recovery timer timeout. If it hasn't timed
-        out then decrement it and check for receive timeout1 recovery.
-        ------------------------------------------------------*/
-        if( *( p_per_info->p_terr_rcvry_cnt ) != 0 )
+        if(  *( p_per_info->p_terr_rcvry_cnt ) < p_per_info->terr1_rcvry )
             {
-            ( *( p_per_info->p_terr_rcvry_cnt ) )--;
-            if( 0 == *( p_per_info->p_terr_rcvry_cnt ) )
-                {
-                /*------------------------------------------------------
-                Reset the timeout conter and clear the status bit
-                ------------------------------------------------------*/
-                *( p_rxfrm->p_per_info->p_timeout_cnt ) = p_rxfrm->p_per_info->timeout1;
+            ( *( p_per_info->p_terr_rcvry_cnt ) )++;
+            }
+        else
+            {
+            /*------------------------------------------------------
+            Reset the timeout recovery conter
+            ------------------------------------------------------*/
+            ( *( p_per_info->p_terr_rcvry_cnt ) ) = 0;
 
-                /*------------------------------------------------------
-                clear status bit
-                ------------------------------------------------------*/
-                can_util_clear_status_bits( p_sw_status, IL_RX_STATUS_TIMEOUT1 );
-                }
+            /*------------------------------------------------------
+            clear status bit
+            ------------------------------------------------------*/
+            can_util_clear_status_bits( p_sw_status, IL_RX_STATUS_TIMEOUT1 );
+            il_app_notify_rx_timeout1( frm_handle, FALSE );
             }
         }
-    else
+    /*------------------------------------------------------
+    In normal
+    ------------------------------------------------------*/
+    else if( ( ( *p_sw_status & IL_RX_STATUS_TIMEOUT1 ) == 0 ) &&
+             ( ( *p_sw_status & IL_RX_STATUS_TIMEOUT2 ) == 0 ) )
         {
         /*------------------------------------------------------
-        Reset the timeout conter
+        Reset the timeout recovery counter
         ------------------------------------------------------*/
-        *( p_rxfrm->p_per_info->p_timeout_cnt ) = p_rxfrm->p_per_info->timeout1;
+        ( *( p_per_info->p_terr_rcvry_cnt ) ) = 0;
         }
     }
 else
     {
     /*------------------------------------------------------
-    From normal receiving status to time out error 1
+    Reset the timeout recovery conter
+    ------------------------------------------------------*/
+    ( *( p_per_info->p_terr_rcvry_cnt ) ) = 0;
+
+    /*------------------------------------------------------
+    From normal receiving status to TOE1
     ------------------------------------------------------*/
     if( ( ( *p_sw_status & IL_RX_STATUS_TIMEOUT1 ) == 0 ) &&
         ( ( *p_sw_status & IL_RX_STATUS_TIMEOUT2 ) == 0 ) )
         {
-        *( p_per_info->p_terr_rcvry_cnt ) = p_per_info->terr1_rcvry;
-
-        /*------------------------------------------------------
-        Check the reception timer timeout. If it hasn't timed
-        out then decrement it and check for receive timeout1.
-        ------------------------------------------------------*/
-        if( *( p_per_info->p_timeout_cnt ) != 0 )
+        if( *( p_per_info->p_timeout_cnt ) < p_per_info->timeout1 )
             {
-            ( *( p_per_info->p_timeout_cnt ) )--;
-            if( 0 == *( p_per_info->p_timeout_cnt ) )
-                {
-                /*------------------------------------------------------
-                Reset the timeout counter to timeout error2
-                ------------------------------------------------------*/
-                *( p_per_info->p_timeout_cnt )    = p_per_info->timeout2;
+            ( *( p_per_info->p_timeout_cnt ) )++;
+            }
+        else
+            {
+            /*------------------------------------------------------
+            Reset the timeout counter to zero
+            ------------------------------------------------------*/
+            *( p_per_info->p_timeout_cnt ) = 0;
 
-                /*------------------------------------------------------
-                Set the timout error 1 status and notify the can app
-                and set frame status pending(init data transmitted on
-                no frame received )
-                ------------------------------------------------------*/
-                can_util_set_status_bits( p_sw_status, IL_RX_STATUS_TIMEOUT1 );
-                }
+            /*------------------------------------------------------
+            Set the TOE1 status and notify the can app
+            ------------------------------------------------------*/
+            can_util_set_status_bits( p_sw_status, IL_RX_STATUS_TIMEOUT1 );
+            il_app_notify_rx_timeout1( frm_handle, TRUE );
             }
         }
+    /*------------------------------------------------------
+    From TOE1 to TOE2
+    ------------------------------------------------------*/
     else if( ( *p_sw_status & IL_RX_STATUS_TIMEOUT1 ) != 0 )
         {
-        *( p_per_info->p_terr_rcvry_cnt) = p_per_info->terr1_rcvry;
-
-        /*------------------------------------------------------
-        Check the reception timer timeout. If it hasn't timed
-        out then decrement it and check for receive timeout2.
-        ------------------------------------------------------*/
-        if( *( p_per_info->p_timeout_cnt ) != 0 )
+        if( *( p_per_info->p_timeout_cnt ) < p_per_info->timeout2 )
             {
-            ( *( p_per_info->p_timeout_cnt ) )--;
-            if( 0 == *( p_per_info->p_timeout_cnt ) )
-                {
-                /*------------------------------------------------------
-                Set the timout error 2 status and recovery timer
-                clear timeout error1 and notify the can app
-                ------------------------------------------------------*/
-                *( p_per_info->p_terr_rcvry_cnt) = p_per_info->terr2_rcvry;
-                can_util_set_status_bits( p_sw_status, IL_RX_STATUS_TIMEOUT2 );
-                can_util_clear_status_bits( p_sw_status, IL_RX_STATUS_TIMEOUT1 );
-                }
+            ( *( p_per_info->p_timeout_cnt ) )++;
             }
+        else
+            {
+            /*------------------------------------------------------
+            Reset the timeout counter to zero
+            ------------------------------------------------------*/
+            *( p_per_info->p_timeout_cnt ) = 0;
+
+            /*------------------------------------------------------
+            Set the TOE2 status clear TOE1
+            ------------------------------------------------------*/
+            can_util_set_status_bits( p_sw_status, IL_RX_STATUS_TIMEOUT2 );
+            can_util_clear_status_bits( p_sw_status, IL_RX_STATUS_TIMEOUT1 );
+
+            /*------------------------------------------------------
+            Notify the can app
+            ------------------------------------------------------*/
+            il_app_notify_rx_timeout2( frm_handle, TRUE );
+            }
+        }
+    /*------------------------------------------------------
+    In TOE2
+    ------------------------------------------------------*/
+    else if( ( *p_sw_status & IL_RX_STATUS_TIMEOUT2 ) != 0 )
+        {
+        /*------------------------------------------------------
+        Reset the timeout counter to zero
+        ------------------------------------------------------*/
+        *( p_per_info->p_timeout_cnt ) = 0;
         }
     }
 }
@@ -2756,65 +2789,75 @@ rx_func_stat_handle
     boolean                     new_frame,
     uint8                     * p_frm_status,
     il_rx_per_info_t    const * p_per_info,
-    il_rxfrm_t          const * p_rxfrm
+    il_rxfrm_t          const * p_rxfrm,
+    dll_frm_handle_t            frm_handle
     )
 {
 if( new_frame != FALSE )
     {
+    can_util_clear_status_bits( p_frm_status, ( IL_RX_STATUS_PENDING | IL_RX_STATUS_DATA_CHANGED ) );
+
+    /*------------------------------------------------------
+    Reset the timeout counter to zero
+    ------------------------------------------------------*/
+    *( p_per_info->p_timeout_cnt ) = 0;
+
     if( ( *p_frm_status & IL_RX_STATUS_TIMEOUT1 ) != 0 )
         {
-        /*------------------------------------------------------
-        Check the reception recovery timer timeout. If it hasn't timed
-        out then decrement it and check for receive timeout1 recovery.
-        ------------------------------------------------------*/
-        if( *( p_per_info->p_terr_rcvry_cnt ) != 0 )
+        if(  *( p_per_info->p_terr_rcvry_cnt ) < p_per_info->terr1_rcvry )
             {
-            ( *( p_per_info->p_terr_rcvry_cnt ) )--;
-            if( 0 == *( p_per_info->p_terr_rcvry_cnt ) )
-                {
-                /*------------------------------------------------------
-                clear status bit
-                ------------------------------------------------------*/
-                can_util_clear_status_bits( p_frm_status, IL_RX_STATUS_TIMEOUT1 );
-                }
+            ( *( p_per_info->p_terr_rcvry_cnt ) )++;
+            }
+        else
+            {
+            /*------------------------------------------------------
+            Reset the timeout recovery conter
+            ------------------------------------------------------*/
+            ( *( p_per_info->p_terr_rcvry_cnt ) ) = 0;
+
+            /*------------------------------------------------------
+            clear status bit
+            ------------------------------------------------------*/
+            can_util_clear_status_bits( p_frm_status, IL_RX_STATUS_TIMEOUT1 );
+            il_app_notify_rx_timeout1( frm_handle, FALSE );
             }
         }
     else
         {
         /*------------------------------------------------------
-        Reset the timeout conter
+        Reset the timeout recovery conter
         ------------------------------------------------------*/
-        *( p_rxfrm->p_per_info->p_timeout_cnt ) = p_rxfrm->p_per_info->timeout1;
+        ( *( p_per_info->p_terr_rcvry_cnt ) ) = 0;
         }
     }
  else
     {
     /*------------------------------------------------------
-    From normal receiving status to time out error 1
+    Reset the timeout recovery conter
+    ------------------------------------------------------*/
+    ( *( p_per_info->p_terr_rcvry_cnt ) ) = 0;
+
+    /*------------------------------------------------------
+    From normal receiving status to TOE1
     ------------------------------------------------------*/
     if( ( *p_frm_status & IL_RX_STATUS_TIMEOUT1 ) == 0 )
         {
-        /*------------------------------------------------------
-        Check the reception timer timeout. If it hasn't timed
-        out then decrement it and check for receive timeout1.
-        ------------------------------------------------------*/
-        if( *( p_per_info->p_timeout_cnt ) != 0 )
+        if( *( p_per_info->p_timeout_cnt ) < p_per_info->timeout1 )
             {
-            ( *( p_per_info->p_timeout_cnt ) )--;
-            if( 0 == *( p_per_info->p_timeout_cnt ) )
-                {
-                /*------------------------------------------------------
-                Reset the Recovery counter to timeout error1 recovery
-                ------------------------------------------------------*/
-                *( p_per_info->p_terr_rcvry_cnt ) = p_per_info->terr1_rcvry;
+            ( *( p_per_info->p_timeout_cnt ) )++;
+            }
+        else
+            {
+            /*------------------------------------------------------
+            Reset the timeout counter to zero
+            ------------------------------------------------------*/
+            *( p_per_info->p_timeout_cnt ) = 0;
 
-                /*------------------------------------------------------
-                Set the timout error 1 status and notify the can app
-                and set frame status pending(init data transmitted on
-                no frame received )
-                ------------------------------------------------------*/
-                can_util_set_status_bits( p_frm_status, IL_RX_STATUS_TIMEOUT1 );
-                }
+            /*------------------------------------------------------
+            Set the TOE1 status and notify the can app
+            ------------------------------------------------------*/
+            can_util_set_status_bits( p_frm_status, IL_RX_STATUS_TIMEOUT1 );
+            il_app_notify_rx_timeout1( frm_handle, TRUE );
             }
         }
     }
@@ -2896,7 +2939,6 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         data changed flags after processing the frame.
         ------------------------------------------------------*/
         process_receive_frame( hw_inst, l_i_frm_index, TRUE, l_frm_data_changed );
-        can_util_clear_status_bits( l_p_frm_status, ( IL_RX_STATUS_PENDING | IL_RX_STATUS_DATA_CHANGED ) );
 
         if( ( l_p_rxfrm->attributes & IL_RX_FRM_ATTR_NOTIFY ) != 0 )
             {
@@ -2910,25 +2952,10 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
     timeout is enabled for this frame, and that the periodic
     info pointer is valid.
     ------------------------------------------------------*/
-    if( ( 0 == (il_status[hw_inst]  & IL_STATUS_RX_TIMEOUT_DISABLE ) )   &&
-        ( ( l_p_rxfrm->attributes   & IL_RX_FRM_ATTR_TIMEOUT ) != 0  )   &&
+    if( ( 0 == ( il_status[hw_inst]  & IL_STATUS_RX_TIMEOUT_DISABLE ) ) &&
+        ( ( l_p_rxfrm->attributes   & IL_RX_FRM_ATTR_TIMEOUT ) != 0  ) &&
         ( l_p_per_info != NULL ) )
         {
-        /*------------------------------------------------------
-        Handle the periodic frame
-        ------------------------------------------------------*/
-        if( *( l_p_per_info->p_per_cnt ) != 0 )
-            {
-            ( *( l_p_per_info->p_per_cnt ) )--;
-            if( 0 == *( l_p_per_info->p_per_cnt ) )
-                {
-                /*------------------------------------------------------
-                Reset the period timer
-                ------------------------------------------------------*/
-                *( l_p_per_info->p_per_cnt ) = l_p_per_info->period;
-                }
-            }
-
         /*------------------------------------------------------
         timeout checking shall be started 500ms after the enter
         of normal communication
@@ -2947,39 +2974,29 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
             ( l_i_frm_index == IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_INDEX ) ||
             ( l_i_frm_index == IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_INDEX ) )
             {
-            rx_hardkey_ECU_status_handle( l_new_frame, l_p_frm_status, l_p_per_info, l_p_rxfrm );
+            rx_hardkey_ECU_status_handle( l_new_frame, l_p_frm_status, l_p_per_info, l_p_rxfrm, l_frm_handle );
             }
         else
             {
-            rx_func_stat_handle( l_new_frame, l_p_frm_status, l_p_per_info, l_p_rxfrm );
-            }
-
-        /*------------------------------------------------------
-        Handle Hardkey error 1
-        ------------------------------------------------------*/
-        if( ( *l_p_frm_status & IL_RX_STATUS_TIMEOUT1 ) != 0 )
-            {
-            //TBD memcpy( l_p_rxfrm->p_data, l_p_rxfrm->p_init_data, l_p_rxfrm->dlc );
-            }
-
-        /*------------------------------------------------------
-        Handle Timeout error 2
-        ------------------------------------------------------*/
-        if( ( *l_p_frm_status & IL_RX_STATUS_TIMEOUT2 ) != 0 )
-            {
             /*------------------------------------------------------
-            Some CAN frames should hold the previous values and other
-            periodic CAN frame be initialized when timeout error 2
+            Handle the periodic frame
             ------------------------------------------------------*/
-            //TBD if( l_i_frm_index != IL_CAN0_RX5_VEHICLE_INFO_INDEX )
+            if( *( l_p_per_info->p_per_cnt ) != 0 )
                 {
-                //memcpy( l_p_rxfrm->p_data, l_p_rxfrm->p_init_data, l_p_rxfrm->dlc );
-                }
+                ( *( l_p_per_info->p_per_cnt ) )--;
+                if( 0 == *( l_p_per_info->p_per_cnt ) )
+                    {
+                    /*------------------------------------------------------
+                    Reset the period timer
+                    ------------------------------------------------------*/
+                    *( l_p_per_info->p_per_cnt ) = l_p_per_info->period;
 
-            /*------------------------------------------------------
-            Notify the CAN app that timeout error2 has happened
-            ------------------------------------------------------*/
-            il_app_notify_rx_timeout2( TRUE );
+                    /*------------------------------------------------------
+                    Handle TOE1 of other messages except those can cause TOE2
+                    ------------------------------------------------------*/
+                    rx_func_stat_handle( l_new_frame, l_p_frm_status, l_p_per_info, l_p_rxfrm, l_frm_handle );
+                    }
+                }
             }
         }
     }
@@ -3360,7 +3377,7 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         /*------------------------------------------------------
         put the frame data to  transmission array.
         ------------------------------------------------------*/
-        memcpy( l_p_tmd->p_data, p_can_tmd->p_data, l_dlc );
+        memcpy( (void*)l_p_tmd->p_data, p_can_tmd->p_data, l_dlc );
 
         #if( CAN_IL_DELAY_EVENT_TO_TICK == FALSE )
             /*------------------------------------------------------
