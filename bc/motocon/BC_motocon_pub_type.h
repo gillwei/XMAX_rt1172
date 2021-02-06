@@ -102,14 +102,58 @@ typedef uint16_t bc_motocon_command_code_t; enum
     BC_MOTOCON_COMMAND_CODE_NOTIFICATION_DATA_V2                           = 0x012F
     };/* end of bc_motocon_command_code_t */
 
+typedef enum
+    {
+    BC_MOTOCON_WEATHER_CURRENT,
+    BC_MOTOCON_WEATHER_AFTER_1DAY,
+    BC_MOTOCON_WEATHER_AFTER_2DAY,
+    BC_MOTOCON_WEATHER_AFTER_3DAY,
+    BC_MOTOCON_WEATHER_AFTER_4DAY,
+    BC_MOTOCON_WEATHER_AFTER_5DAY,
+    BC_MOTOCON_WEATHER_AFTER_1HOUR,
+    BC_MOTOCON_WEATHER_AFTER_2HOUR,
+    BC_MOTOCON_WEATHER_AFTER_3HOUR,
+    BC_MOTOCON_WEATHER_AFTER_6DAY
+    } bc_motocon_weather_time_t;
+
+typedef enum
+    {
+    BC_MOTOCON_WEATHER_SUNNY,
+    BC_MOTOCON_WEATHER_PARTLY_CLOUDY_DAY,
+    BC_MOTOCON_WEATHER_CLOUDY_DAY,
+    BC_MOTOCON_WEATHER_RAIN,
+    BC_MOTOCON_WEATHER_SNOW,
+    BC_MOTOCON_WEATHER_WIND,
+    BC_MOTOCON_WEATHER_RAIN_STORM_MIX,
+    BC_MOTOCON_WEATHER_RAIN_SNOW_MIX,
+    BC_MOTOCON_WEATHER_FOG,
+    BC_MOTOCON_WEATHER_SMOG                     = 0x0B,
+    BC_MOTOCON_WEATHER_HAIL,
+    BC_MOTOCON_WEATHER_SCATTERED_SHOWERS_DAY,
+    BC_MOTOCON_WEATHER_SCATTERED_STORM_DAY,
+    BC_MOTOCON_WEATHER_NO_DATA,
+    BC_MOTOCON_WEATHER_RAIN_LIGHT,
+    BC_MOTOCON_WEATHER_RAIN_HEAVY,
+    BC_MOTOCON_WEATHER_SNOW_LIGHT,
+    BC_MOTOCON_WEATHER_SNOW_HEAVY,
+    BC_MOTOCON_WEATHER_RAIN_SNOW_MIX_LIGHT,
+    BC_MOTOCON_WEATHER_RAIN_SNOW_MIX_HEAVY,
+    BC_MOTOCON_WEATHER_CLOUDY,
+    BC_MOTOCON_WEATHER_CLEAR                    = 0x80,
+    BC_MOTOCON_WEATHER_PARTLY_CLOUDY_NIGHT,
+    BC_MOTOCON_WEATHER_CLOUDY_NIGHT,
+    BC_MOTOCON_WEATHER_SCATTERED_SHOWERS_NIGHT  = 0x8D,
+    BC_MOTOCON_WEATHER_SCATTERED_STORM_NIGHT
+    } bc_motocon_weather_icon_t;
+
 typedef struct
     {
-    uint8_t time;
-    uint8_t type;
-    float   temperature;
-    float   temperature_max;
-    float   temperature_min;
-    uint8_t rain_probability;
+    bc_motocon_weather_time_t time;
+    bc_motocon_weather_icon_t type;
+    float                     temperature;
+    float                     temperature_max;
+    float                     temperature_min;
+    uint8_t                   rain_probability;
     } bc_motocon_weather_info_t;
 
 typedef struct
@@ -121,14 +165,50 @@ typedef struct
     bool     speed_unit_miles;
     } bc_motocon_vehicle_info_t;
 
+typedef enum
+    {
+    BC_MOTOCON_LANGUAGE_ENGLISH_US,
+    BC_MOTOCON_LANGUAGE_FRENCH_FRA,
+    BC_MOTOCON_LANGUAGE_GERMAN,
+    BC_MOTOCON_LANGUAGE_ITALIAN,
+    BC_MOTOCON_LANGUAGE_JAPANESE,
+    BC_MOTOCON_LANGUAGE_SPANISH_INTL,
+    BC_MOTOCON_LANGUAGE_TRADITIONAL_CHINESE,
+    BC_MOTOCON_LANGUAGE_SIMPLIFIED_CHINESE,
+    BC_MOTOCON_LANGUAGE_GREEK,
+    BC_MOTOCON_LANGUAGE_FINNISH,
+    BC_MOTOCON_LANGUAGE_HINDI,
+    BC_MOTOCON_LANGUAGE_INDONESIAN,
+    BC_MOTOCON_LANGUAGE_POLISH,
+    BC_MOTOCON_LANGUAGE_PORTUGUESE,
+    BC_MOTOCON_LANGUAGE_THAI,
+    BC_MOTOCON_LANGUAGE_VIETNAMESE,
+    BC_MOTOCON_LANGUAGE_KOREAN,
+    BC_MOTOCON_LANGUAGE_MALAY,
+    BC_MOTOCON_LANGUAGE_OTHERS = 0x1F
+    } bc_motocon_language_t;
+
+typedef enum
+    {
+    BC_MOTOCON_WEEK_SUN,
+    BC_MOTOCON_WEEK_MON,
+    BC_MOTOCON_WEEK_TUE,
+    BC_MOTOCON_WEEK_WED,
+    BC_MOTOCON_WEEK_THU,
+    BC_MOTOCON_WEEK_FRI,
+    BC_MOTOCON_WEEK_SAT,
+    BC_MOTOCON_WEEK_UNKOWN = 0xFF
+    } bc_motocon_week_t;
+
 typedef struct
     {
-    uint16_t year;
-    uint8_t  month;
-    uint8_t  day;
-    uint8_t  hour;
-    uint8_t  minute;
-    uint8_t  second;
+    uint16_t          year;
+    uint8_t           mon;
+    uint8_t           day;
+    uint8_t           hour;
+    uint8_t           min;
+    uint8_t           sec;
+    bc_motocon_week_t day_of_week;
     } bc_motocon_time_t;
 
 typedef enum
@@ -150,7 +230,7 @@ typedef struct
 
 typedef enum
     {
-    BC_MOTOCON_MUSIC_NEXT_TRACK = 1,
+    BC_MOTOCON_MUSIC_NEXT_TRACK = 0x01,
     BC_MOTOCON_MUSIC_PREVIOUS_TRACK,
     BC_MOTOCON_MUSIC_PLAY,
     BC_MOTOCON_MUSIC_PAUSE
@@ -185,7 +265,7 @@ typedef enum
 
 typedef enum
     {
-    BC_MOTOCON_VOLUME_UP = 1,
+    BC_MOTOCON_VOLUME_UP = 0x01,
     BC_MOTOCON_VOLUME_DOWN,
     BC_MOTOCON_VOLUME_MUTE_MIC,
     BC_MOTOCON_VOLUME_MUTE_SPEAKER

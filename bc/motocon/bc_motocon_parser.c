@@ -14,6 +14,7 @@
 #include <bc_motocon_priv.h>
 #include <pb_decode.h>
 #include "BleServiceStructure.pb.h"
+#include <time.h>
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -138,7 +139,7 @@ switch( command_code )
         ret = bc_motocon_parser_ota_update_info( bytes, length );
         break;
 
-        default:
+    default:
         break;
     }
 if( ret != BC_MOTOCON_PARSE_SUCCESS )
@@ -354,8 +355,26 @@ bc_motocon_parse_result_t bc_motocon_parser_vehicle_datetime
 {
 if( length == 11 )
     {
-    bc_motocon_time_t time; // TBD
-    BC_MOTOCON_PRINTF( "%s, TBD\r\n", __FUNCTION__ );
+    bc_motocon_time_t time;
+    time_t unixtime = FOUR_BYTE_BIG( bytes, 7 );
+    struct tm* tm_time = gmtime( &unixtime );
+    if( tm_time != NULL )
+        {
+        time.sec = tm_time->tm_sec;
+        time.min = tm_time->tm_min;
+        time.hour = tm_time->tm_hour;
+        time.day = tm_time->tm_mday;
+        time.mon = tm_time->tm_mon;
+        time.year = tm_time->tm_year + 1900;
+        time.day_of_week = tm_time->tm_wday;
+        BC_MOTOCON_PRINTF( "%s, %d.%02d.%02d W%01d %02d:%02d:%02d\r\n", __FUNCTION__, time.year, time.mon, time.day,
+            time.day_of_week, time.hour, time.min, time.sec );
+        }
+    else
+        {
+        BC_MOTOCON_PRINTF( "%s, gmtime() failed\r\n", __FUNCTION__ );
+        return BC_MOTOCON_PARSE_INVALID_INPUT;
+        }
     for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
         {
         if( NULL != bc_motocon_callbacks[i] &&
@@ -952,16 +971,17 @@ if( length >= 5 )
         notification_v2.uid = notification.notification_id;
         notification_v2.category = notification.category;
         notification_v2.time.year =  notification.year;
-        notification_v2.time.month = notification.month;
+        notification_v2.time.mon = notification.month;
         notification_v2.time.day = notification.day;
         notification_v2.time.hour = notification.hour;
-        notification_v2.time.minute = notification.minutes;
-        notification_v2.time.second = notification.second;
+        notification_v2.time.min = notification.minutes;
+        notification_v2.time.sec = notification.second;
+        notification_v2.time.day_of_week = BC_MOTOCON_WEEK_UNKOWN;
 
         BC_MOTOCON_PRINTF( "Id      : %d\r\n", notification_v2.uid );
         BC_MOTOCON_PRINTF( "Category: %d\r\n", notification_v2.category );
-        BC_MOTOCON_PRINTF( "Time    : %d.%02d.%02d %02d:%02d:%02d\r\n",notification_v2.time.year, notification_v2.time.month, notification_v2.time.day,
-            notification_v2.time.hour, notification_v2.time.minute, notification_v2.time.second );
+        BC_MOTOCON_PRINTF( "Time    : %d.%02d.%02d %02d:%02d:%02d\r\n",notification_v2.time.year, notification_v2.time.mon, notification_v2.time.day,
+            notification_v2.time.hour, notification_v2.time.min, notification_v2.time.sec );
         BC_MOTOCON_PRINTF( "Title   : %s\r\n", notification_v2.title );
         BC_MOTOCON_PRINTF( "Subtitle: %s\r\n", notification_v2.subtitle );
         BC_MOTOCON_PRINTF( "Detail  : %s\r\n", notification_v2.detail );
