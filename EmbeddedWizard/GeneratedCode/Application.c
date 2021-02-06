@@ -312,9 +312,10 @@ void ApplicationApplication_OnDDModeTestSlot( ApplicationApplication _this, XObj
   EW_UNUSED_ARG( sender );
 
   EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->DDModeActivated 
-  = (XBool)!EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->DDModeActivated;
-  EwTrace( "%s%b", EwLoadString( &_Const0005 ), EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-    DeviceInterfaceVehicleDeviceClass )->DDModeActivated );
+  = (XBool)!DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
+  EwTrace( "%s%b", EwLoadString( &_Const0005 ), DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )));
   DeviceInterfaceVehicleDeviceClass_NotifyDDModeStateChanged( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
   DeviceInterfaceVehicleDeviceClass ));
 }

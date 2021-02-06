@@ -25,6 +25,7 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define VEHICLE_DRIVER_DISTRACTION_MODE_LIMIT       ( 3 ) /* km/h */
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -56,6 +57,8 @@ static uint32_t rx_vehicle_supported_features = 0;
 static uint8_t  rx_vehicle_supported_features_response = VEHICLE_NEGATIVE_RESPONSE_ID;
 static uint8_t  rx_vehicle_info_reset_response = VEHICLE_NEGATIVE_RESPONSE_ID;
 
+static bool     is_dd_mode_activated = false;
+
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -84,7 +87,6 @@ switch( signal_id )
     {
     case IL_CAN0_ECU_INDCT_EG_SPD_RXSIG_HANDLE:
         rx_ecu_info.engine_speed = data;
-        /* TODO: notify HMI tachometer */
         break;
     case IL_CAN0_ECU_INDCT_TC_MODE_RXSIG_HANDLE:
         rx_ecu_info.tc_mode = ( uint8_t )data;
@@ -475,6 +477,20 @@ switch( signal_id )
     case IL_CAN0_VEHICLE_INFO_2_SPD_REAL_RXSIG_HANDLE:
         rx_vehicle_info.vehicle_speed_real = ( uint16_t )data;
         /* TODO: notify HMI speed visualizer */
+        if( is_dd_mode_activated && ( VEHICLE_DRIVER_DISTRACTION_MODE_LIMIT > rx_vehicle_info.vehicle_speed_real ) )
+            {
+            is_dd_mode_activated = false;
+            EW_notify_dd_mode_state_changed();
+            }
+        else if( !is_dd_mode_activated && ( VEHICLE_DRIVER_DISTRACTION_MODE_LIMIT <= rx_vehicle_info.vehicle_speed_real ) )
+            {
+            is_dd_mode_activated = true;
+            EW_notify_dd_mode_state_changed();
+            }
+        else
+            {
+            // empty
+            }
         break;
     case IL_CAN0_VEHICLE_INFO_2_SPD_REAL_MT_RXSIG_HANDLE:
         rx_vehicle_info.vehicle_speed_meter = ( uint16_t )data;
@@ -739,6 +755,29 @@ switch( message_frame_id )
         PRINTF( "unknown message frame id: 0x%x\r\n", message_frame_id );
         break;
     }
+}
+
+/*********************************************************************
+*
+* @public
+* VI_is_dd_mode_activated
+*
+* Return if the driver distraction mode is activated
+*
+* @return The driver distraction mode activated status
+*
+*********************************************************************/
+bool VI_is_dd_mode_activated
+    (
+    void
+    )
+{
+bool is_activated = false;
+if( VEHICLE_DRIVER_DISTRACTION_MODE_LIMIT <= rx_vehicle_info.vehicle_speed_real )
+    {
+    is_activated = true;
+    }
+return is_activated;
 }
 
 /*********************************************************************

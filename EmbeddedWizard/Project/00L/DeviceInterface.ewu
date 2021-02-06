@@ -8,6 +8,7 @@ inline Inline
   #include "ew_priv.h"
   #include "EEPM_pub.h"
   #include "PERIPHERAL_pub.h"
+  #include "VI_pub.h"
   /* uncomment these lines when integrating media manager
   #include "MM_pub_ams_type.h"
   #include "MM_pub.h"
@@ -1143,8 +1144,18 @@ class VehicleDeviceClass : Templates::DeviceClass
   $rect <320,100,540,140>
   onget DDModeActivated
   {
-    //TODO: Get value from the vehicle info manager directly
-    return pure DDModeActivated;
+    $if !$prototyper
+      var bool IsActivated = false;
+
+      native( IsActivated )
+      {
+        IsActivated = VI_is_dd_mode_activated();
+      }
+
+      return IsActivated;
+    $else
+      return pure DDModeActivated;
+    $endif
   }
 }
 

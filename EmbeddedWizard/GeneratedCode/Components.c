@@ -446,8 +446,8 @@ void ComponentsBaseComponent__OnShortMagicKeyActivated( void* _this )
 /* 'C' function for method : 'Components::BaseComponent.IsDDModeEffected()' */
 XBool ComponentsBaseComponent_IsDDModeEffected( ComponentsBaseComponent _this )
 {
-  return (XBool)( _this->DDModeEnabled && EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-    DeviceInterfaceVehicleDeviceClass )->DDModeActivated );
+  return (XBool)( _this->DDModeEnabled && DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )));
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnSetDDModeEnabled()' */
@@ -789,8 +789,8 @@ void ComponentsBaseMainBG_UpdateDDModeMask( ComponentsBaseMainBG _this )
 {
   if ( CoreGroup__IsCurrentDialog( _this ) && _this->Super1.DDModeEnabled )
   {
-    CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-    DeviceInterfaceVehicleDeviceClass )->DDModeActivated );
+    CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )));
     EwTrace( "%s%b%s%$", EwLoadString( &_Const000D ), CoreGroup_OnGetVisible((CoreGroup)&_this->DDModeMask ), 
       EwLoadString( &_Const000E ), EwClassOf(((XObject)_this )));
   }

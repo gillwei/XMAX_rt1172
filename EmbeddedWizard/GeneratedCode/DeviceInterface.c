@@ -77,6 +77,7 @@ static const XStringRes _Const000C = { _StringsDefault0, 0x0108 };
 #include "ew_priv.h"
 #include "EEPM_pub.h"
 #include "PERIPHERAL_pub.h"
+#include "VI_pub.h"
 /* uncomment these lines when integrating media manager
 #include "MM_pub_ams_type.h"
 #include "MM_pub.h"
@@ -1350,6 +1351,19 @@ void DeviceInterfaceVehicleDeviceClass_NotifyDDModeStateChanged( DeviceInterface
 void DeviceInterfaceVehicleDeviceClass__NotifyDDModeStateChanged( void* _this )
 {
   DeviceInterfaceVehicleDeviceClass_NotifyDDModeStateChanged((DeviceInterfaceVehicleDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetDDModeActivated()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( DeviceInterfaceVehicleDeviceClass _this )
+{
+  XBool IsActivated;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsActivated = 0;
+  IsActivated = VI_is_dd_mode_activated();
+  return IsActivated;
 }
 
 /* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */

@@ -72,6 +72,9 @@ void DeviceInterfaceVehicleDeviceClass__NotifyDDModeStateChanged( void* _this );
 /* The following define announces the presence of the method DeviceInterface::VehicleDeviceClass.NotifyDDModeStateChanged(). */
 #define _DeviceInterfaceVehicleDeviceClass__NotifyDDModeStateChanged_
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetDDModeActivated()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( DeviceInterfaceVehicleDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif

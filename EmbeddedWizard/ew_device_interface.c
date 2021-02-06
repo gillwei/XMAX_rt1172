@@ -51,7 +51,8 @@ device_interface_object const device_interface_lookup_table[] =
     {ew_device_system_init,    ew_device_system_proc,    ew_device_system_deinit},
     {ew_device_navi_init,      ew_device_navi_proc,      ew_device_navi_deinit},
     {ew_device_mm_init,        ew_device_mm_proc,        ew_device_mm_deinit},
-    {ew_device_bluetooth_init, ew_device_bluetooth_proc, ew_device_bluetooth_deinit}
+    {ew_device_bluetooth_init, ew_device_bluetooth_proc, ew_device_bluetooth_deinit},
+    {ew_device_vi_init,        ew_device_vi_proc,        ew_device_vi_deinit}
 };
 
 const int device_interface_num = sizeof( device_interface_lookup_table )/sizeof( device_interface_object );

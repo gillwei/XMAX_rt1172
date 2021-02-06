@@ -50,6 +50,8 @@ void EW_notify_bt_fw_update_status( EnumBtFwStatus status, char* version );
 
 void EW_notify_qrcode_ready( const char* qr_code_text );
 
+void EW_notify_dd_mode_state_changed( void );
+
 #ifdef __cplusplus
 }
 #endif

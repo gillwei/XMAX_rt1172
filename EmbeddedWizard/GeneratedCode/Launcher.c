@@ -268,8 +268,8 @@ void LauncherLNC_Main_OnShortUpKeyActivated( LauncherLNC_Main _this )
 /* 'C' function for method : 'Launcher::LNC_Main.OnShortEnterKeyActivated()' */
 void LauncherLNC_Main_OnShortEnterKeyActivated( LauncherLNC_Main _this )
 {
-  if (( EnumLauncherItemSETTINGS == _this->CurrentItem ) && EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass )->DDModeActivated )
+  if (( EnumLauncherItemSETTINGS == _this->CurrentItem ) && DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
     ;
   else
   {

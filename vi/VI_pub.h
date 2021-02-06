@@ -223,6 +223,7 @@ typedef enum
 
 void VI_init( void );
 void VI_notify_vehicle_data_changed( const il_rx_frm_index_t message_frame, const uint16_t signal_id, const uint32_t data );
+bool VI_is_dd_mode_activated( void );
 
 #ifdef __cplusplus
 }

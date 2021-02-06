@@ -93,6 +93,10 @@ void ew_bt_disconnect_paired_device( const int paired_device_idx );
 void ew_bt_unpair_paired_device( const int paired_device_idx );
 bool ew_bt_is_ble_paired_device( const int paired_device_idx );
 
+void ew_device_vi_init( void );
+void ew_device_vi_deinit( void );
+int  ew_device_vi_proc( void );
+
 #ifdef __cplusplus
 }
 #endif
