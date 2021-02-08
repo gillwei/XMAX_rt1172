@@ -14,6 +14,8 @@
 extern "C"{
 #endif
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "CAN_pub.h"
 
 #define CAN_TIMEOUT_ERROR_1     ( 1 )
@@ -190,6 +192,7 @@ typedef struct
     uint8_t redzone;        /**< tachometer red zone start (100rpm) */
     } rx_tacho_setting_struct;
 
+/* note: this define should be consistent with EnumVehicleFeature in Enum.h */
 typedef enum
     {
     VEHICLE_FEATURE_TRIP1            = 0,
@@ -224,6 +227,8 @@ typedef enum
 void VI_init( void );
 void VI_notify_vehicle_data_changed( const il_rx_frm_index_t message_frame, const uint16_t signal_id, const uint32_t data );
 bool VI_is_dd_mode_activated( void );
+bool VI_is_feature_supported( vehicle_feature_enum feature );
+void VI_set_feature_supported( vehicle_feature_enum feature, bool supported );
 
 #ifdef __cplusplus
 }

@@ -1366,6 +1366,22 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( DeviceInterfaceVeh
   return IsActivated;
 }
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.IsVehicleFeatureSupported()' */
+XBool DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( DeviceInterfaceVehicleDeviceClass _this, 
+  XEnum aVehicleFeature )
+{
+  XBool IsSupported;
+  XInt32 FeatureId;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsSupported = 0;
+  FeatureId = aVehicleFeature;
+  IsSupported = ew_vi_is_feature_supported( FeatureId );
+  return IsSupported;
+}
+
 /* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )

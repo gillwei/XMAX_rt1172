@@ -75,6 +75,10 @@ void DeviceInterfaceVehicleDeviceClass__NotifyDDModeStateChanged( void* _this );
 /* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetDDModeActivated()' */
 XBool DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( DeviceInterfaceVehicleDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.IsVehicleFeatureSupported()' */
+XBool DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( DeviceInterfaceVehicleDeviceClass _this, 
+  XEnum aVehicleFeature );
+
 #ifdef __cplusplus
   }
 #endif

@@ -782,6 +782,48 @@ return is_activated;
 
 /*********************************************************************
 *
+* @public
+* VI_is_feature_supported
+*
+* Return if the vehicle feature is supported
+*
+* @return The vehicle feature supported or not
+*
+*********************************************************************/
+bool VI_is_feature_supported
+    (
+    vehicle_feature_enum feature
+    )
+{
+return ( ( rx_vehicle_supported_features >> feature ) & 0x1 );
+}
+
+/*********************************************************************
+*
+* @public
+* VI_is_feature_supported
+*
+* Set the vehicle feature supported or not
+*
+*********************************************************************/
+void VI_set_feature_supported
+    (
+    vehicle_feature_enum feature,
+    bool supported
+    )
+{
+if( supported )
+    {
+    set_bit( rx_vehicle_supported_features, feature );
+    }
+else
+    {
+    clear_bit( rx_vehicle_supported_features, feature );
+    }
+}
+
+/*********************************************************************
+*
 * @private
 * vi_rx_init_data
 *

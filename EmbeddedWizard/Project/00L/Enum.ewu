@@ -180,7 +180,7 @@ enum MainSettingItem
   item Reset;
 }
 
-$rect <260,130,460,170>
+$rect <260,120,460,160>
 $output false
 enum NaviSettingItem
 {
@@ -271,4 +271,89 @@ enum MotoConTest
 
   $rect <500,310,700,350>
   item CREATE_OTA_REQ;
+}
+
+$rect <260,170,460,210>
+enum VehicleFeature
+{
+  $rect <10,10,210,50>
+  item TRIP1;
+
+  $rect <10,60,210,100>
+  item TRIP2;
+
+  $rect <10,110,210,150>
+  item F_TRIP;
+
+  $rect <10,160,210,200>
+  item METER_BRIGHTNESS_ADJ;
+
+  $rect <10,210,210,250>
+  item CLOCK;
+
+  $rect <10,260,210,300>
+  item TCS;
+
+  $rect <10,310,210,350>
+  item GRIP_WARMER;
+
+  $rect <10,360,210,400>
+  item SEAT_HEATER;
+
+  $rect <10,410,210,450>
+  item WIND_SCREEN;
+
+  $rect <10,460,210,500>
+  item OIL_TRIP;
+
+  $rect <220,10,420,50>
+  item V_BELT_TRIP;
+
+  $rect <220,60,420,100>
+  item FREE_1;
+
+  $rect <220,110,420,150>
+  item FREE_2;
+
+  $rect <220,160,420,200>
+  item AVG_SPEED;
+
+  $rect <220,210,420,250>
+  item CURRENT_FUEL;
+
+  $rect <220,260,420,300>
+  item AVG_FUEL;
+
+  $rect <220,310,420,350>
+  item FUEL_CONSUMPTION;
+
+  $rect <220,360,420,400>
+  item AIR_TEMPERATURE;
+
+  $rect <220,410,420,450>
+  item BATTERY_VOLTAGE;
+
+  $rect <220,460,420,500>
+  item COOLANT;
+
+  $rect <440,10,640,50>
+  item RANGE_DISTANCE;
+
+  $rect <440,60,640,100>
+  item TIRE_FRONT;
+
+  $rect <440,110,640,150>
+  item TIRE_FRONT_RIGHT;
+
+  $rect <440,160,640,200>
+  item TIRE_FRONT_LEFT;
+
+  $rect <440,210,640,250>
+  item TIRE_REAR;
+
+  $rect <440,260,640,300>
+  item TRIP_TIME;
+
+  $rect <440,310,640,350>
+  item CRUISE;
 }

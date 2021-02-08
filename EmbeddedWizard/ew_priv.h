@@ -96,6 +96,7 @@ bool ew_bt_is_ble_paired_device( const int paired_device_idx );
 void ew_device_vi_init( void );
 void ew_device_vi_deinit( void );
 int  ew_device_vi_proc( void );
+bool ew_vi_is_feature_supported( int feature_id );
 
 #ifdef __cplusplus
 }

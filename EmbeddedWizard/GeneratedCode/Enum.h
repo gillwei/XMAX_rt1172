@@ -163,6 +163,38 @@ typedef enum
   EnumMotoConTestCREATE_OTA_REQ         = 20
 } EnumMotoConTest;
 
+/* User defined enumeration: 'Enum::VehicleFeature' */
+typedef enum
+{
+  EnumVehicleFeatureTRIP1               = 0,
+  EnumVehicleFeatureTRIP2               = 1,
+  EnumVehicleFeatureF_TRIP              = 2,
+  EnumVehicleFeatureMETER_BRIGHTNESS_ADJ = 3,
+  EnumVehicleFeatureCLOCK               = 4,
+  EnumVehicleFeatureTCS                 = 5,
+  EnumVehicleFeatureGRIP_WARMER         = 6,
+  EnumVehicleFeatureSEAT_HEATER         = 7,
+  EnumVehicleFeatureWIND_SCREEN         = 8,
+  EnumVehicleFeatureOIL_TRIP            = 9,
+  EnumVehicleFeatureV_BELT_TRIP         = 10,
+  EnumVehicleFeatureFREE_1              = 11,
+  EnumVehicleFeatureFREE_2              = 12,
+  EnumVehicleFeatureAVG_SPEED           = 13,
+  EnumVehicleFeatureCURRENT_FUEL        = 14,
+  EnumVehicleFeatureAVG_FUEL            = 15,
+  EnumVehicleFeatureFUEL_CONSUMPTION    = 16,
+  EnumVehicleFeatureAIR_TEMPERATURE     = 17,
+  EnumVehicleFeatureBATTERY_VOLTAGE     = 18,
+  EnumVehicleFeatureCOOLANT             = 19,
+  EnumVehicleFeatureRANGE_DISTANCE      = 20,
+  EnumVehicleFeatureTIRE_FRONT          = 21,
+  EnumVehicleFeatureTIRE_FRONT_RIGHT    = 22,
+  EnumVehicleFeatureTIRE_FRONT_LEFT     = 23,
+  EnumVehicleFeatureTIRE_REAR           = 24,
+  EnumVehicleFeatureTRIP_TIME           = 25,
+  EnumVehicleFeatureCRUISE              = 26
+} EnumVehicleFeature;
+
 #ifdef __cplusplus
   }
 #endif

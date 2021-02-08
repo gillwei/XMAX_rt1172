@@ -47,6 +47,7 @@
 #include "_DevelopmentDEV_MotoCon.h"
 #include "_DevelopmentDEV_RealTimeClock.h"
 #include "_DevelopmentDEV_TFTBrightness.h"
+#include "_DevelopmentDEV_VehicleFeature.h"
 
 #ifdef __cplusplus
   }

@@ -19,6 +19,7 @@
 #include "DeviceInterface.h"
 #include "Application.h"
 #include <string.h>
+#include "VI_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -186,6 +187,24 @@ if( is_dd_mode_state_changed )
 return need_update;
 }
 #endif
+
+/*********************************************************************
+*
+* @private
+* ew_vi_is_feature_supported
+*
+* Get if the vehicle feature is supported
+*
+* @return The feature supported or not
+*
+*********************************************************************/
+bool ew_vi_is_feature_supported
+    (
+    int feature_id
+    )
+{
+return VI_is_feature_supported( feature_id );
+}
 
 /*********************************************************************
 *

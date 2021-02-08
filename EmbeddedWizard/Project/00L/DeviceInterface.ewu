@@ -1157,6 +1157,28 @@ class VehicleDeviceClass : Templates::DeviceClass
       return pure DDModeActivated;
     $endif
   }
+
+  $rect <20,180,260,220>
+  method bool IsVehicleFeatureSupported( arg Enum::VehicleFeature aVehicleFeature )
+  {
+    var bool IsSupported = false;
+
+    $if !$prototyper
+      var int32 FeatureId = ( int32 )aVehicleFeature;
+      native( IsSupported, FeatureId )
+      {
+        IsSupported = ew_vi_is_feature_supported( FeatureId );
+      }
+    $else
+      // suppress warning
+      if( ( int32 )aVehicleFeature >= 0 )
+      {
+        // empty
+      }
+    $endif
+
+    return IsSupported;
+  }
 }
 
 $rect <20,590,220,630>

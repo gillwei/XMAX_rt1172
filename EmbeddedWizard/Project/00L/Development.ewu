@@ -4,6 +4,7 @@ $rect <300,10,500,50>
 inline Inline
 {
   #include "TEST_pub.h"
+  #include "VI_pub.h"
 }
 
 $rect <20,10,260,50>
@@ -58,7 +59,8 @@ class DEV_Main : Menu::BaseMenuView
       case 2: this.PresentDialog( new Development::DEV_RealTimeClock, null, null, null, null, null, null, null, null, false );
       case 3: this.PresentDialog( new Development::DEV_Bluetooth, null, null, null, null, null, null, null, null, false );
       case 4: this.PresentDialog( new Development::DEV_TFTBrightness, null, null, null, null, null, null, null, null, false );
-      case 5: PresentDialog( new Development::DEV_MotoCon, null, null, null, null, null, null, null, null, false );
+      case 5: PresentDialog( new Development::DEV_VehicleFeature, null, null, null, null, null, null, null, null, false );
+      case 6: PresentDialog( new Development::DEV_MotoCon, null, null, null, null, null, null, null, null, false );
       default:;
     }
 
@@ -77,14 +79,15 @@ class DEV_Main : Menu::BaseMenuView
   }
 
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 6 ] =
+  array string ItemTitleArray[ 7 ] =
   (
     Default[0] = "Factory Test";
     Default[1] = "Hopper Test Mode";
     Default[2] = "Real Time Clock";
     Default[3] = "Bluetooth Test";
     Default[4] = "TFT Brightness Test";
-    Default[5] = "MotoCon Test";
+    Default[5] = "Vehicle Feature";
+    Default[6] = "MotoCon Test";
   );
 
   $rect <20,20,160,60>
@@ -95,20 +98,16 @@ class DEV_Main : Menu::BaseMenuView
     preset ItemNumPerPage = 4;
   }
 
-  $reorder LoadItemClass 4
-  $reorder LoadItemTitle 4
-  $reorder OnItemActivate 4
-  $reorder LoadItemChecked 4
-  $reorder SlideInMenu 1
   $reorder HideFocusFrameTimer 1
   $reorder OnHideFocusFrameTimeoutSlot 1
   $reorder ChildMenu 1
   $reorder OnDialogSlideInCompletedSlot 1
   $reorder PresentDialogWithSlideInEffect 1
   $reorder SlideOutEffectEnabled 1
-  $reorder OnDialogSlideOutCompletedSlot 1
-  $reorder OwnerMenu 1
-  $reorder SlideOutMenu 1
+  $reorder LoadItemClass 4
+  $reorder LoadItemTitle 4
+  $reorder OnItemActivate 3
+  $reorder LoadItemChecked 3
   $reorder DismissMenuWithSlideOutEffect 1
   $reorder ItemTitleArray 2
 }
@@ -405,6 +404,124 @@ class DEV_MotoCon : Menu::BaseMenuView
     Default[18] = "Send volume control down";
     Default[19] = "Send volume controllable req";
     Default[20] = "Send create OTA request";
+  );
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = ItemTitleArray.size;
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+  }
+
+  $reorder SlideInDialog 4
+  $reorder LoadItemClass 4
+  $reorder LoadItemTitle 4
+  $reorder OnItemActivate 4
+  $reorder LoadItemChecked 4
+  $reorder ItemTitleArray 2
+  $reorder Menu 1
+}
+
+$rect <20,260,260,300>
+$output false
+class DEV_VehicleFeature : Menu::BaseMenuView
+{
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <230,300,460,340>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <510,10,710,50>
+  inherited method LoadItemClass()
+  {
+    // suppress warning
+    if( aItemNo >= 0 )
+    {
+      // empty body
+    }
+    return Menu::ItemCheckbox;
+  }
+
+  $rect <510,60,710,100>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    if( aItemNo < ItemTitleArray.size )
+    {
+      Title = ItemTitleArray[aItemNo];
+    }
+    return Title;
+  }
+
+  $rect <510,160,710,200>
+  inherited method OnItemActivate()
+  {
+    // suppress warning
+    if( null == aMenuItem || aItemNo > 0 )
+    {
+      // empty body
+    }
+
+    $if !$prototyper
+      var bool IsChecked = false;
+      var Menu::ItemCheckbox CheckBoxItem = ( Menu::ItemCheckbox )aMenuItem;
+      if( null != CheckBoxItem )
+      {
+        IsChecked = CheckBoxItem.CheckBoxButton.Checked;
+      }
+
+      native( aItemNo, IsChecked )
+      {
+        VI_set_feature_supported( aItemNo, IsChecked );
+      }
+    $endif
+  }
+
+  $rect <510,110,710,150>
+  inherited method LoadItemChecked()
+  {
+    var bool IsFeatureSupported = false;
+    $if !$prototyper
+      IsFeatureSupported = DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( ( Enum::VehicleFeature )aItemNo );
+    $endif
+    return IsFeatureSupported;
+  }
+
+  $rect <730,60,930,100>
+  array string ItemTitleArray[ 27 ] =
+  (
+    Default[0] = "Trip 1";
+    Default[1] = "Trip 2";
+    Default[2] = "F-Trip";
+    Default[3] = "Meter Brightness Adj";
+    Default[4] = "Clock";
+    Default[5] = "TCS";
+    Default[6] = "Grip Warmer";
+    Default[7] = "Seat Heater";
+    Default[8] = "Wind Screen";
+    Default[9] = "Oil Trip";
+    Default[10] = "V-Belt Trip";
+    Default[11] = "Free 1";
+    Default[12] = "Free 2";
+    Default[13] = "Avg Speed";
+    Default[14] = "Current Fuel";
+    Default[15] = "Avg Fuel";
+    Default[16] = "Fuel Consumption";
+    Default[17] = "Air Temperature";
+    Default[18] = "Battery Voltage";
+    Default[19] = "Coolant";
+    Default[20] = "Range Distance";
+    Default[21] = "Tire Front";
+    Default[22] = "Tire Front Right";
+    Default[23] = "Tire Front Left";
+    Default[24] = "Tire Rear";
+    Default[25] = "Trip Time";
+    Default[26] = "Cruise";
   );
 
   $rect <20,20,160,60>

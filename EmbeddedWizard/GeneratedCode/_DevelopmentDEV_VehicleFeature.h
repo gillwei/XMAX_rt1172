@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentDEV_Main_H
-#define _DevelopmentDEV_Main_H
+#ifndef _DevelopmentDEV_VehicleFeature_H
+#define _DevelopmentDEV_VehicleFeature_H
 
 #ifdef __cplusplus
   extern "C"
@@ -87,10 +87,10 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::DEV_Main */
-#ifndef _DevelopmentDEV_Main_
-  EW_DECLARE_CLASS( DevelopmentDEV_Main )
-#define _DevelopmentDEV_Main_
+/* Forward declaration of the class Development::DEV_VehicleFeature */
+#ifndef _DevelopmentDEV_VehicleFeature_
+  EW_DECLARE_CLASS( DevelopmentDEV_VehicleFeature )
+#define _DevelopmentDEV_VehicleFeature_
 #endif
 
 /* Forward declaration of the class Effects::Fader */
@@ -112,13 +112,13 @@
 #endif
 
 
-/* Deklaration of class : 'Development::DEV_Main' */
-EW_DEFINE_FIELDS( DevelopmentDEV_Main, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [7])
-EW_END_OF_FIELDS( DevelopmentDEV_Main )
+/* Deklaration of class : 'Development::DEV_VehicleFeature' */
+EW_DEFINE_FIELDS( DevelopmentDEV_VehicleFeature, MenuBaseMenuView )
+  EW_ARRAY   ( ItemTitleArray,  XString, [27])
+EW_END_OF_FIELDS( DevelopmentDEV_VehicleFeature )
 
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_Main' */
-EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_VehicleFeature' */
+EW_DEFINE_METHODS( DevelopmentDEV_VehicleFeature, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -165,39 +165,45 @@ EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_Main _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_VehicleFeature _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_Main _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_Main _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_Main _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_Main _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_VehicleFeature _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_VehicleFeature _this, 
+    XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_VehicleFeature _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_VehicleFeature _this, XInt32 
+    aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( DevelopmentDEV_Main )
+EW_END_OF_METHODS( DevelopmentDEV_VehicleFeature )
 
-/* 'C' function for method : 'Development::DEV_Main.OnShortHomeKeyActivated()' */
-void DevelopmentDEV_Main_OnShortHomeKeyActivated( DevelopmentDEV_Main _this );
+/* 'C' function for method : 'Development::DEV_VehicleFeature.OnShortHomeKeyActivated()' */
+void DevelopmentDEV_VehicleFeature_OnShortHomeKeyActivated( DevelopmentDEV_VehicleFeature _this );
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemClass()' */
-XClass DevelopmentDEV_Main_LoadItemClass( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_VehicleFeature.LoadItemClass()' */
+XClass DevelopmentDEV_VehicleFeature_LoadItemClass( DevelopmentDEV_VehicleFeature _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemTitle()' */
-XString DevelopmentDEV_Main_LoadItemTitle( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_VehicleFeature.LoadItemTitle()' */
+XString DevelopmentDEV_VehicleFeature_LoadItemTitle( DevelopmentDEV_VehicleFeature _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Development::DEV_Main.OnItemActivate()' */
-void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItemNo, 
-  MenuItemBase aMenuItem );
+/* 'C' function for method : 'Development::DEV_VehicleFeature.OnItemActivate()' */
+void DevelopmentDEV_VehicleFeature_OnItemActivate( DevelopmentDEV_VehicleFeature _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemChecked()' */
-XBool DevelopmentDEV_Main_LoadItemChecked( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_VehicleFeature.LoadItemChecked()' */
+XBool DevelopmentDEV_VehicleFeature_LoadItemChecked( DevelopmentDEV_VehicleFeature _this, 
+  XInt32 aItemNo );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentDEV_Main_H */
+#endif /* _DevelopmentDEV_VehicleFeature_H */
 
 /* Embedded Wizard */
