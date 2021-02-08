@@ -210,6 +210,43 @@ int BTM_get_connect_request_bd_addrress_rev
     uint8_t* return_connect_bd_addr_rev
     );
 
+int BTM_set_ble_advertisement
+    (
+    bool enable_ble_adv
+    );
+
+int BTM_get_ble_pairing_fail_count
+    (
+    void
+    );
+
+void BTM_receive_user_confirm_evt
+    (
+    const uint8_t* p_data,
+    const uint32_t data_len
+    );
+
+void BTM_receive_pairing_clt_evt
+    (
+    const uint8_t* p_data,
+    const uint32_t data_len
+    );
+
+bool BTM_is_bt_connected
+    (
+    void
+    );
+
+void BTM_get_ble_connected_device_name
+    (
+    uint8_t** p_data
+    );
+
+void BTM_btc_confirm_passkey
+    (
+    bool match_result
+    );
+
 #ifdef __cplusplus
 }
 #endif

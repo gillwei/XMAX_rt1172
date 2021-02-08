@@ -185,6 +185,16 @@ switch( cmd_opcode )
         PRINTF( "Receive BT device start event\r\n" );
         break;
 
+    case HCI_CONTROL_EVENT_USER_CONFIRMATION:
+       PRINTF( "Receive BT user confirmation event\r\n" );
+       BTM_receive_user_confirm_evt( p_data, data_len );
+       break;
+
+    case HCI_CONTROL_EVENT_PAIRING_COMPLETE:
+       PRINTF( "Receive BT or BLE pairing complete event\r\n" );
+       BTM_receive_pairing_clt_evt( p_data, data_len );
+       break;
+
     default:
             break;
 
