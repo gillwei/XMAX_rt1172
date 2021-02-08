@@ -9,6 +9,8 @@ class LNC_Main : Components::BaseComponent
   {
     trace "LauncherInit";
 
+    GetVehicleSupportedFeature();
+
     RotaryPlateSlideInEffect.Enabled = true;
     BaseSlideInEffect.Enabled = true;
 
@@ -104,24 +106,22 @@ class LNC_Main : Components::BaseComponent
     }
   }
 
-  // TODO:
-  // Remove these temperary variables and get the TCS, Seat Heater, Grip Warmer, \
-  // Wind Screen enabled status from vehicle information manager directly.
+  // Vehicle Supported Feature
   note group Note5
   {
-    attr Bounds = <880,360,1240,680>;
+    attr Bounds = <810,360,1090,630>;
   }
 
-  $rect <970,500,1170,540>
+  $rect <850,450,1050,490>
   var bool TCSEnabled = false;
 
-  $rect <970,540,1170,580>
+  $rect <850,490,1050,530>
   var bool SeatHeaterEnabled = false;
 
-  $rect <970,580,1170,620>
+  $rect <850,530,1050,570>
   var bool GripWarmerEnabled = false;
 
-  $rect <970,620,1170,660>
+  $rect <850,570,1050,610>
   var bool WindScreenEnabled = false;
 
   $rect <250,490,450,530>
@@ -313,6 +313,15 @@ class LNC_Main : Components::BaseComponent
       trace "DismissChildDialogs ", classof GetDialogAtIndex( 0 );
       DismissDialog( GetDialogAtIndex( 0 ), null, null, null, null, null, false );
     }
+  }
+
+  $rect <850,410,1050,450>
+  method void GetVehicleSupportedFeature()
+  {
+    TCSEnabled = DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.TCS );
+    SeatHeaterEnabled = DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.SEAT_HEATER );
+    GripWarmerEnabled = DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.GRIP_WARMER );
+    WindScreenEnabled = DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.WIND_SCREEN );
   }
 }
 

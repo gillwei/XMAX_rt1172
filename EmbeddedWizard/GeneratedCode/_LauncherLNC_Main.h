@@ -211,6 +211,9 @@ void LauncherLNC_Main_OnSlideOutFinishedSlot( LauncherLNC_Main _this, XObject se
 /* Dismiss dialogs presented from launcher */
 void LauncherLNC_Main_DismissChildDialogs( LauncherLNC_Main _this );
 
+/* 'C' function for method : 'Launcher::LNC_Main.GetVehicleSupportedFeature()' */
+void LauncherLNC_Main_GetVehicleSupportedFeature( LauncherLNC_Main _this );
+
 #ifdef __cplusplus
   }
 #endif

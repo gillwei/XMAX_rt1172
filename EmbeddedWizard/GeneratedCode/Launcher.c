@@ -242,6 +242,7 @@ void LauncherLNC_Main_Init( LauncherLNC_Main _this, XHandle aArg )
   EW_UNUSED_ARG( aArg );
 
   EwTrace( "%s", EwLoadString( &_Const0006 ));
+  LauncherLNC_Main_GetVehicleSupportedFeature( _this );
   EffectsEffect_OnSetEnabled((EffectsEffect)&_this->RotaryPlateSlideInEffect, 1 );
   EffectsEffect_OnSetEnabled((EffectsEffect)&_this->BaseSlideInEffect, 1 );
   _this->CurrentItem = LauncherLNC_Main_GetInitialSelectedItem( _this );
@@ -475,6 +476,23 @@ void LauncherLNC_Main_DismissChildDialogs( LauncherLNC_Main _this )
     CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
     0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
   }
+}
+
+/* 'C' function for method : 'Launcher::LNC_Main.GetVehicleSupportedFeature()' */
+void LauncherLNC_Main_GetVehicleSupportedFeature( LauncherLNC_Main _this )
+{
+  _this->TCSEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+  EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+  EnumVehicleFeatureTCS );
+  _this->SeatHeaterEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+  EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+  EnumVehicleFeatureSEAT_HEATER );
+  _this->GripWarmerEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+  EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+  EnumVehicleFeatureGRIP_WARMER );
+  _this->WindScreenEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+  EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+  EnumVehicleFeatureWIND_SCREEN );
 }
 
 /* Variants derived from the class : 'Launcher::LNC_Main' */
