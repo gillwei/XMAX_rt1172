@@ -174,8 +174,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bc/ancs}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bc/ams}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bc/motocon}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/osek-canbus/client_diag\inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/osek-canbus/\client_diag\cfg}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/osek-canbus/client_diag/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/osek-canbus/client_diag/cfg}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.312516120" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.gcc.exe.debug.option.optimization.level.1617258062" name="Optimization Level" superClass="com.crt.advproject.gcc.exe.debug.option.optimization.level" useByScannerDiscovery="true"/>
@@ -709,6 +709,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bc/ancs}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bc/ams}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bc/motocon}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/osek-canbus/client_diag/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/osek-canbus/client_diag/cfg}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.62835457" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<option id="gnu.c.compiler.option.optimization.flags.140772290" name="Other optimization flags" superClass="gnu.c.compiler.option.optimization.flags" useByScannerDiscovery="false" value="-fno-common" valueType="string"/>
@@ -941,6 +943,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="mm"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nanopb"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="navi"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="osek-canbus/client_diag/src"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="osek-canbus/driver/src"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="osek-canbus/service/src"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="peripheral"/>
