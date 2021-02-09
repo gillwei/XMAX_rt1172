@@ -94,6 +94,9 @@ void ew_bt_connect_paired_device( const int paired_device_idx );
 void ew_bt_disconnect_paired_device( const int paired_device_idx );
 void ew_bt_unpair_paired_device( const int paired_device_idx );
 bool ew_bt_is_ble_paired_device( const int paired_device_idx );
+uint32_t ew_get_ble_pincode( void );
+EnumBlePairingState ew_get_ble_pairing_state( void );
+void ew_set_ble_advertisement( const bool enable );
 
 void ew_device_vi_init( void );
 void ew_device_vi_deinit( void );

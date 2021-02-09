@@ -1,7 +1,19 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/03/01 15:50:52
+// Generated: 2021/03/02 18:17:12
+
+$output false
+const string ARGUMENT_STR =
+(
+  Default = "%s";
+);
+
+$output false
+const string ARGUMENT_DECIMAL =
+(
+  Default = "%d";
+);
 
 $output false
 const string GEN_ok =
@@ -618,6 +630,54 @@ $output false
 const string SET19_disconnect =
 (
   Default = "Disconnect";
+);
+
+$output false
+const string SET20_COMPLETE_BT_PAIRING_FIRST =
+(
+  Default = "You must complete Bluetooth pairing before pairing with the Y-connect app.";
+);
+
+$output false
+const string SET21_BLE_ALREADY_CONNECTED =
+(
+  Default = "\"%s\" is now connected. To pair another smartphone with the Y-connect app, connect it via Bluetooth first.";
+);
+
+$output false
+const string SET22_DEVICE_NAME =
+(
+  Default = "Device name:\n";
+);
+
+$output false
+const string SET22_WAIT_APP_CONNECTION =
+(
+  Default = "Waiting for app connection.\nCheck the app for instructions.";
+);
+
+$output false
+const string SET23_PAIRING_FAILED =
+(
+  Default = "Pairing failed.";
+);
+
+$output false
+const string SET24_CHECK_BT_PAIRING_RECORD =
+(
+  Default = "Please check the bluetooth pairing record on your previously paired Smartphone. You may need to delete the unused pairing record.";
+);
+
+$output false
+const string SET25_PIN =
+(
+  Default = "PIN";
+);
+
+$output false
+const string SET26_PAIRING_SUCCESSFUL =
+(
+  Default = "Pairing successful.";
 );
 
 $output false

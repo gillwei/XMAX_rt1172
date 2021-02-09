@@ -43,7 +43,10 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/03/01 15:50:52 */
+   Generated: 2021/03/02 18:17:12 */
+extern const XStringRes StringsARGUMENT_STR;
+
+/* User defined constant: 'Strings::GEN_ok' */
 EW_DECLARE_CONST( StringsGEN_ok )
 
 /* User defined constant: 'Strings::GEN_cancel' */
@@ -192,6 +195,30 @@ extern const XStringRes StringsSET19_connect;
 
 /* User defined constant: 'Strings::SET19_disconnect' */
 extern const XStringRes StringsSET19_disconnect;
+
+/* User defined constant: 'Strings::SET20_COMPLETE_BT_PAIRING_FIRST' */
+extern const XStringRes StringsSET20_COMPLETE_BT_PAIRING_FIRST;
+
+/* User defined constant: 'Strings::SET21_BLE_ALREADY_CONNECTED' */
+extern const XStringRes StringsSET21_BLE_ALREADY_CONNECTED;
+
+/* User defined constant: 'Strings::SET22_DEVICE_NAME' */
+extern const XStringRes StringsSET22_DEVICE_NAME;
+
+/* User defined constant: 'Strings::SET22_WAIT_APP_CONNECTION' */
+extern const XStringRes StringsSET22_WAIT_APP_CONNECTION;
+
+/* User defined constant: 'Strings::SET23_PAIRING_FAILED' */
+extern const XStringRes StringsSET23_PAIRING_FAILED;
+
+/* User defined constant: 'Strings::SET24_CHECK_BT_PAIRING_RECORD' */
+extern const XStringRes StringsSET24_CHECK_BT_PAIRING_RECORD;
+
+/* User defined constant: 'Strings::SET25_PIN' */
+extern const XStringRes StringsSET25_PIN;
+
+/* User defined constant: 'Strings::SET26_PAIRING_SUCCESSFUL' */
+extern const XStringRes StringsSET26_PAIRING_SUCCESSFUL;
 
 /* User defined constant: 'Strings::SET28_esn' */
 extern const XStringRes StringsSET28_esn;

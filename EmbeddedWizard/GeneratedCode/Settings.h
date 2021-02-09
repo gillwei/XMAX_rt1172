@@ -52,8 +52,13 @@
 #include "_SettingsSET04_BtSettingMenu.h"
 #include "_SettingsSET17_BtPairedDeviceList.h"
 #include "_SettingsSET19_BtPairedDeviceOperation.h"
+#include "_SettingsSET22_BleAdvertising.h"
+#include "_SettingsSET23_BlePairingFail.h"
+#include "_SettingsSET24_CheckPairingRecord.h"
+#include "_SettingsSET25_BlePincode.h"
 #include "_SettingsSET28_SystemInfo.h"
 #include "_SettingsSET30_QRCode.h"
+#include "_SettingsTimeoutDialog.h"
 
 #ifdef __cplusplus
   }

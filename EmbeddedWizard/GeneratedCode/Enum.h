@@ -290,6 +290,17 @@ typedef enum
   EnumHomeTypeTOTAL                     = 7
 } EnumHomeType;
 
+/* User defined enumeration: 'Enum::BlePairingState' */
+typedef enum
+{
+  EnumBlePairingStateIDLE               = 0,
+  EnumBlePairingStateADVERTISING        = 1,
+  EnumBlePairingStateSUCCESSFUL         = 2,
+  EnumBlePairingStateTIMEOUT            = 3,
+  EnumBlePairingStateFAIL               = 4,
+  EnumBlePairingStatePINCODE_GENERATED  = 5
+} EnumBlePairingState;
+
 #ifdef __cplusplus
   }
 #endif

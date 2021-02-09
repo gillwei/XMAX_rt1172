@@ -10,8 +10,9 @@ inline Inline
   #include "PERIPHERAL_pub.h"
   #include "VI_pub.h"
   #include "MM_pub_ams_type.h"
+  #include "BTM_pub.h"
+  #include"BC_motocon_pub.h"
   #include "BC_motocon_pub_type.h"
-
 }
 
 $rect <20,20,220,60>
@@ -1073,6 +1074,135 @@ class BluetoothDeviceClass : Templates::DeviceClass
   method void NotifyPairedDeviceConnectionStatusUpdated()
   {
     RefreshPairedDeviceList = true;
+  }
+
+  // Interfaces of BLE
+  note group Note5
+  {
+    attr Bounds = <860,470,1640,730>;
+  }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <881,520,1130,560>
+  $output true
+  method void NotifyBlePairingStateChanged()
+  {
+    BlePairingStateChangedEvent.Trigger( null, false );
+  }
+
+  $rect <880,570,1130,610>
+  object Core::SystemEvent BlePairingStateChangedEvent;
+
+  $rect <1150,620,1360,660>
+  method void SetBleAdvertisement( arg bool aEnable )
+  {
+    $if !$prototyper
+      native( aEnable )
+      {
+        BTM_set_ble_advertisement( aEnable );
+      }
+    $else
+      trace "SetBleAdvertisement ", aEnable;
+    $endif
+  }
+
+  $rect <820,390,1020,430>
+  method bool IsBtConnected()
+  {
+    var bool BtConnected = false;
+
+    $if !$prototyper
+      native( BtConnected )
+      {
+        BtConnected = BTM_is_bt_connected();
+      }
+    $endif
+
+    return BtConnected;
+  }
+
+  $rect <1150,670,1360,710>
+  method int32 GetBlePairingFailCount()
+  {
+    var int32 FailCount = 0;
+
+    $if !$prototyper
+    native( FailCount )
+    {
+      FailCount = BTM_get_ble_pairing_fail_count();
+    }
+    $endif
+
+    return FailCount;
+  }
+
+  $rect <1370,520,1620,560>
+  method bool IsMotoconConnected()
+  {
+    $if !$prototyper
+      var bool MotoconConnected = false;
+      native( MotoconConnected )
+      {
+        MotoconConnected = BC_motocon_is_connected();
+      }
+      return MotoconConnected;
+    $else
+      return false;
+    $endif
+  }
+
+  $rect <1370,570,1620,610>
+  method string GetBleConnectedDeviceName()
+  {
+    var string BleConnectedDeviceName = "";
+
+    $if !$prototyper
+      native( BleConnectedDeviceName )
+      {
+        uint8_t* ble_connected_device_name;
+        BTM_get_ble_connected_device_name( &ble_connected_device_name );
+        BleConnectedDeviceName = EwNewStringAnsi( ( char* )ble_connected_device_name );
+      }
+    $endif
+
+    return BleConnectedDeviceName;
+  }
+
+  $rect <880,620,1080,660>
+  property Enum::BlePairingState BlePairingState;
+
+  $rect <880,670,1080,710>
+  onget BlePairingState
+  {
+    var Enum::BlePairingState State;
+
+    $if !$prototyper
+      native( State )
+      {
+        State = ew_get_ble_pairing_state();
+      }
+    $endif
+
+    return State;
+  }
+
+  $rect <1150,520,1350,560>
+  property uint32 BlePincode;
+
+  $rect <1150,570,1350,610>
+  onget BlePincode
+  {
+    $if !$prototyper
+      var uint32 Pincode = 0;
+      native( Pincode )
+      {
+        Pincode = ew_get_ble_pincode();
+      }
+      return Pincode;
+    $else
+      return pure BlePincode;
+    $endif
   }
 }
 

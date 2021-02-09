@@ -83,8 +83,9 @@ static const XStringRes _Const000D = { _StringsDefault0, 0x0114 };
 #include "PERIPHERAL_pub.h"
 #include "VI_pub.h"
 #include "MM_pub_ams_type.h"
+#include "BTM_pub.h"
+#include"BC_motocon_pub.h"
 #include "BC_motocon_pub_type.h"
-
 
 /* Initializer for the class 'DeviceInterface::SystemDeviceClass' */
 void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _this, XObject aLink, XHandle aArg )
@@ -910,6 +911,7 @@ void DeviceInterfaceBluetoothDeviceClass__Init( DeviceInterfaceBluetoothDeviceCl
   CoreSystemEvent__Init( &_this->PasskeyGeneratedSystemEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->ConnectionResultSystemEvent, &_this->_XObject, 0 );
   DeviceInterfaceBluetoothPairedDeviceInfo__Init( &_this->PairedDeviceObj, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->BlePairingStateChangedEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceBluetoothDeviceClass );
@@ -928,6 +930,7 @@ void DeviceInterfaceBluetoothDeviceClass__ReInit( DeviceInterfaceBluetoothDevice
   CoreSystemEvent__ReInit( &_this->PasskeyGeneratedSystemEvent );
   CoreSystemEvent__ReInit( &_this->ConnectionResultSystemEvent );
   DeviceInterfaceBluetoothPairedDeviceInfo__ReInit( &_this->PairedDeviceObj );
+  CoreSystemEvent__ReInit( &_this->BlePairingStateChangedEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::BluetoothDeviceClass' */
@@ -940,6 +943,7 @@ void DeviceInterfaceBluetoothDeviceClass__Done( DeviceInterfaceBluetoothDeviceCl
   CoreSystemEvent__Done( &_this->PasskeyGeneratedSystemEvent );
   CoreSystemEvent__Done( &_this->ConnectionResultSystemEvent );
   DeviceInterfaceBluetoothPairedDeviceInfo__Done( &_this->PairedDeviceObj );
+  CoreSystemEvent__Done( &_this->BlePairingStateChangedEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -1188,6 +1192,111 @@ void DeviceInterfaceBluetoothDeviceClass_NotifyPairedDeviceConnectionStatusUpdat
 void DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated( void* _this )
 {
   DeviceInterfaceBluetoothDeviceClass_NotifyPairedDeviceConnectionStatusUpdated((DeviceInterfaceBluetoothDeviceClass)_this );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceBluetoothDeviceClass_NotifyBlePairingStateChanged( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->BlePairingStateChangedEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBlePairingStateChanged()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyBlePairingStateChanged( void* _this )
+{
+  DeviceInterfaceBluetoothDeviceClass_NotifyBlePairingStateChanged((DeviceInterfaceBluetoothDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.SetBleAdvertisement()' */
+void DeviceInterfaceBluetoothDeviceClass_SetBleAdvertisement( DeviceInterfaceBluetoothDeviceClass _this, 
+  XBool aEnable )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  BTM_set_ble_advertisement( aEnable );
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.IsBtConnected()' */
+XBool DeviceInterfaceBluetoothDeviceClass_IsBtConnected( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  XBool BtConnected;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  BtConnected = 0;
+  BtConnected = BTM_is_bt_connected();
+  return BtConnected;
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBlePairingFailCount()' */
+XInt32 DeviceInterfaceBluetoothDeviceClass_GetBlePairingFailCount( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  XInt32 FailCount;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  FailCount = 0;
+  FailCount = BTM_get_ble_pairing_fail_count();
+  return FailCount;
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.IsMotoconConnected()' */
+XBool DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  XBool MotoconConnected;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  MotoconConnected = 0;
+  MotoconConnected = BC_motocon_is_connected();
+  return MotoconConnected;
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBleConnectedDeviceName()' */
+XString DeviceInterfaceBluetoothDeviceClass_GetBleConnectedDeviceName( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  XString BleConnectedDeviceName;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  BleConnectedDeviceName = 0;
+  {
+    uint8_t* ble_connected_device_name;
+    BTM_get_ble_connected_device_name( &ble_connected_device_name );
+    BleConnectedDeviceName = EwNewStringAnsi( ( char* )ble_connected_device_name );
+  }
+  return BleConnectedDeviceName;
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBlePairingState()' */
+XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBlePairingState( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  XEnum State;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  State = EnumBlePairingStateIDLE;
+  State = ew_get_ble_pairing_state();
+  return State;
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBlePincode()' */
+XUInt32 DeviceInterfaceBluetoothDeviceClass_OnGetBlePincode( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  XUInt32 Pincode;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Pincode = 0;
+  Pincode = ew_get_ble_pincode();
+  return Pincode;
 }
 
 /* Default onget method for the property 'BtFwStatus' */

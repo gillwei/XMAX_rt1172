@@ -19,7 +19,9 @@
 #include "fsl_debug_console.h"
 #include "FreeRTOS.h"
 #include "DeviceInterface.h"
+#include "Enum.h"
 #include "EW_pub.h"
+#include "BTM_pub.h"
 #include <string.h>
 
 /*--------------------------------------------------------------------
@@ -40,8 +42,11 @@
 #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus_
     static int ew_notify_bt_fw_status( void );
 #endif
+#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBlePairingStateChanged_
+    static int ew_notify_ble_pairing_state_changed( void );
+#endif
 
-#define BT_FW_VERSION_MAX_LEN   ( 8 )
+#define BT_FW_VERSION_MAX_LEN           ( 8 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -72,7 +77,10 @@
             ew_bt_notify_connection_result,
         #endif
         #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus_
-            ew_notify_bt_fw_status
+            ew_notify_bt_fw_status,
+        #endif
+        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBlePairingStateChanged_
+            ew_notify_ble_pairing_state_changed
         #endif
         };
 
@@ -87,6 +95,9 @@
     static int  is_notify_bt_fw_status = 0;
     static char bt_fw_version[BT_FW_VERSION_MAX_LEN];
     static EnumBtFwStatus bt_fw_update_status = 0;
+    static int  is_ble_pairing_state_changed;
+    static EnumBlePairingState ble_pairing_state;
+    static uint32_t ble_pincode = 0;
 #endif
 
 /*--------------------------------------------------------------------
@@ -287,6 +298,31 @@ return need_update;
         is_notify_bt_fw_status = 0;
         XString version = EwNewStringAnsi( bt_fw_version );
         DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus( device_object, bt_fw_update_status, version );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_ble_pairing_state_changed
+*
+* Notify EW the BLE pairing state changed
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBlePairingStateChanged_
+    static int ew_notify_ble_pairing_state_changed
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_ble_pairing_state_changed )
+        {
+        is_ble_pairing_state_changed = 0;
+        DeviceInterfaceBluetoothDeviceClass__NotifyBlePairingStateChanged( device_object );
         need_update = 1;
         }
     return need_update;
@@ -681,5 +717,95 @@ is_notify_bt_fw_status = 1;
 bt_fw_update_status = status;
 memcpy( bt_fw_version, version, BT_FW_VERSION_MAX_LEN );
 bt_fw_version[BT_FW_VERSION_MAX_LEN-1] = '\0';
+EwBspEventTrigger();
+}
+
+/*********************************************************************
+*
+* @private
+* ew_set_ble_advertisement
+*
+* Enable/disable BLE advertisement
+*
+* @param enable True: Enable BLE advertisement, False: Disable BLE advertisement
+*
+*********************************************************************/
+void ew_set_ble_advertisement
+    (
+    const bool enable
+    )
+{
+if( enable )
+    {
+    ble_pairing_state = EnumBlePairingStateADVERTISING;
+    }
+else
+    {
+    ble_pairing_state = EnumBlePairingStateIDLE;
+    }
+BTM_set_ble_advertisement( enable );
+}
+
+/*********************************************************************
+*
+* @private
+* ew_get_ble_pincode
+*
+* Get BLE pairing PIN code
+*
+* @return PIN code for BLE pairing
+*
+*********************************************************************/
+uint32_t ew_get_ble_pincode
+    (
+    void
+    )
+{
+return ble_pincode;
+}
+
+/*********************************************************************
+*
+* @private
+* ew_get_ble_pairing_state
+*
+* Get BLE pairing state
+*
+* @return BLE pairing state
+*
+*********************************************************************/
+EnumBlePairingState ew_get_ble_pairing_state
+    (
+    void
+    )
+{
+EwPrint( "%s %d\r\n", __FUNCTION__, ble_pairing_state );
+return ble_pairing_state;
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_ble_pairing_state_changed
+*
+* Notify EW BLE pairing state changed
+*
+* @param state BLE pairing state
+* @param param ble_pincode for EnumBlePairingEventPINCODE_GENERATED
+*
+*********************************************************************/
+void EW_notify_ble_pairing_state_changed
+    (
+    const EnumBlePairingState state,
+    const uint32_t            param
+    )
+{
+EwPrint( "%s %d\r\n", __FUNCTION__, state );
+ble_pairing_state = state;
+if( EnumBlePairingStatePINCODE_GENERATED == state )
+    {
+    ble_pincode = param;
+    }
+is_ble_pairing_state_changed = true;
 EwBspEventTrigger();
 }

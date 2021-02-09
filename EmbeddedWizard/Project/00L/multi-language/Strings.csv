@@ -1,4 +1,6 @@
 ﻿↓String-Id  /  Language →,Default,Japanese,French,Spanish,Italian,German,TraditionalChinese,SimplifiedChinese
+ARGUMENT_STR,%s,,,,,,,
+ARGUMENT_DECIMAL,%d,,,,,,,
 GEN_ok,OK,OK,OK,Vale,OK,OK,確定,确定
 GEN_cancel,Cancel,キャンセル,Annuler,Cancelar,Annulla,Abbrechen,取消,取消
 GEN_yes,Yes,,,,,,,
@@ -98,6 +100,16 @@ SET04_bt_auto_connect,Bluetooth auto connect,,,,,,,
 SET19_delete_pairing,Delete pairing,,,,,,,
 SET19_connect,Connect,,,,,,,
 SET19_disconnect,Disconnect,,,,,,,
+SET20_COMPLETE_BT_PAIRING_FIRST,You must complete Bluetooth pairing before pairing with the Y-connect app.,,,,,,,
+SET21_BLE_ALREADY_CONNECTED,"""%s"" is now connected. To pair another smartphone with the Y-connect app, connect it via Bluetooth first.",,,,,,,
+SET22_DEVICE_NAME,"Device name:
+",,,,,,,
+SET22_WAIT_APP_CONNECTION,"Waiting for app connection.
+Check the app for instructions.",,,,,,,
+SET23_PAIRING_FAILED,Pairing failed.,,,,,,,
+SET24_CHECK_BT_PAIRING_RECORD,Please check the bluetooth pairing record on your previously paired Smartphone. You may need to delete the unused pairing record.,,,,,,,
+SET25_PIN,PIN,,,,,,,
+SET26_PAIRING_SUCCESSFUL,Pairing successful.,,,,,,,
 SET28_esn,Electronic Serial Number,,,,,,,
 SET28_sw_version,Software version,,,,,,,
 SET28_unit_id,Unit ID,,,,,,,

@@ -43,10 +43,12 @@ try:
             for string in row[1:]:
                 if (len(string) > 0):
                     string_num = string_num + 1
+                    string = string.replace("\"", "\\\"")
                     unicode_str = str(string.encode('unicode_escape'))
                     unicode_str = unicode_str.replace("\\\\u", "\\u")
                     unicode_str = unicode_str.replace("\\\\n", "\\n")
                     unicode_str = unicode_str.replace("\\\\x", "\\u00")
+                    unicode_str = unicode_str.replace("\\\\\\\\", "\\")
                     unicode_str = unicode_str[2:-1]
                     string_block = string_block + "\n  " + language_list[language_idx] + " = \"" + unicode_str + "\";"
                 language_idx = language_idx + 1

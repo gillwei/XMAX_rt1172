@@ -592,3 +592,26 @@ enum HomeType
   $rect <10,360,210,400>
   item TOTAL;
 }
+
+$rect <30,460,230,500>
+$output false
+enum BlePairingState
+{
+  $rect <10,10,250,50>
+  item IDLE;
+
+  $rect <10,60,250,100>
+  item ADVERTISING;
+
+  $rect <10,110,250,150>
+  item SUCCESSFUL;
+
+  $rect <10,160,250,200>
+  item TIMEOUT;
+
+  $rect <10,210,250,250>
+  item FAIL;
+
+  $rect <10,260,250,300>
+  item PINCODE_GENERATED;
+}

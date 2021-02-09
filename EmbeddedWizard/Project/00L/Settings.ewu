@@ -1,5 +1,11 @@
 ﻿$version 10.00
 
+$rect <560,10,760,50>
+inline Inline
+{
+  #include "BTM_pub.h"
+}
+
 $rect <20,10,280,50>
 $output false
 class SET01_MainSettingMenu : Menu::BaseMenuView
@@ -167,8 +173,11 @@ $rect <20,60,280,100>
 $output false
 class SET03_ConnectionSettingMenu : Menu::BaseMenuView
 {
-  $rect <10,290,210,330>
-  inherited property Bounds = <0,0,480,272>;
+  $rect <10,290,190,330>
+  inherited method Init()
+  {
+    trace "Init SET03";
+  }
 
   $rect <10,340,210,380>
   inherited property DDModeEnabled = true;
@@ -209,7 +218,7 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
     switch( aItemNo )
     {
       case 0: SlideInDialog( new Settings::SET04_BtSettingMenu );
-      case 1:;
+      case 1: HandleYConnectAppPairing();
       default :;
     }
   }
@@ -227,6 +236,41 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
     Default[0] = Strings::GEN_bluetooth;
     Default[1] = Strings::SET03_y_connect_app_pairing;
   );
+
+  $rect <230,290,470,330>
+  method void HandleYConnectAppPairing()
+  {
+    if( DeviceInterface::BluetoothDevice.IsBtConnected() )
+    {
+      if( DeviceInterface::BluetoothDevice.IsMotoconConnected() )
+      {
+        // replase %s with the connected BLE deivce name
+        var string ProcessString = Strings::SET21_BLE_ALREADY_CONNECTED;
+        var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
+        var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+        var string Message = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBleConnectedDeviceName() + ProcessString.right( RightIdx );
+
+        PresentDialogWithTimeout( Message );
+      }
+      else
+      {
+        PresentDialog( new Settings::SET22_BleAdvertising, null, null, null, null, null, null, null, null, false );
+      }
+    }
+    else
+    {
+      PresentDialogWithTimeout( Strings::SET20_COMPLETE_BT_PAIRING_FIRST );
+    }
+  }
+
+  $rect <230,340,470,380>
+  method void PresentDialogWithTimeout( arg string aMessage )
+  {
+    var Settings::TimeoutDialog Dialog = new Settings::TimeoutDialog;
+    Dialog.Message = aMessage;
+    Dialog.DismissAfterTimeout = true;
+    PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
+  }
 }
 
 $rect <20,110,280,150>
@@ -370,7 +414,7 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
 // System Settings UI
 note group Note
 {
-  attr Bounds = <460,20,1420,560>;
+  attr Bounds = <690,20,1420,560>;
 }
 
 $rect <710,270,910,310>
@@ -441,96 +485,6 @@ class LegalMenu : Menu::BaseMenuView
   {
     preset Bounds = <10,32,470,272>;
     preset NoOfItems = 2;
-  }
-}
-
-$rect <490,70,690,110>
-$output false
-class SET28_SystemInfo : Components::BaseMainBG
-{
-  $rect <520,10,720,50>
-  inherited method Init()
-  {
-    EsnText.String = DeviceInterface::SystemDevice.ESN;
-    SoftwareVersionText.String = DeviceInterface::SystemDevice.SoftwareVersion;
-  }
-
-  $rect <10,290,210,330>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <520,110,750,150>
-  inherited method OnShortMagicKeyActivated()
-  {
-    this.PresentDialog( new Development::DEV_Main, null, null, null, null, null, null, null, null, false );
-  }
-
-  $rect <10,340,210,380>
-  inherited property DDModeEnabled = true;
-
-  $rect <20,20,160,60>
-  object Views::Text ESN
-  {
-    preset Bounds = <10,46,470,77>;
-    preset String = Strings::SET28_esn;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Text SoftwareVersionTitle
-  {
-    preset Bounds = <10,108,470,139>;
-    preset String = Strings::SET28_sw_version;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Text EsnText
-  {
-    preset Bounds = <10,77,470,108>;
-    preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Text SoftwareVersionText
-  {
-    preset Bounds = <10,139,470,170>;
-    preset String = DeviceInterface::SystemDevice.SoftwareVersion;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <520,260,720,300>
-  object Core::PropertyObserver EsnObserver
-  {
-    preset OnEvent = OnEsnReceivedSlot;
-    preset Outlet = ^DeviceInterface::SystemDevice.ESN;
-  }
-
-  // This slot method is executed when the associated property observer 'PropertyObserver' \
-  // is notified.
-  $rect <520,300,720,340>
-  slot OnEsnReceivedSlot
-  {
-    EsnText.String = DeviceInterface::SystemDevice.ESN;
-  }
-
-  $rect <20,20,160,60>
-  object Menu::UpDownPushButtonSet UpDownPushButtonSet
-  {
-    preset Bounds = <95,176,385,259>;
-    preset PassHomeKey = true;
-    preset PassMagicKey = true;
-    preset DDModeEnabled = true;
-    preset OnUpButtonActivated = OnUnitIdButtonActivatedSlot;
-    preset UpButtonTitle = Strings::SET28_unit_id;
-    preset DownButtonTitle = Strings::SET28_sw_update;
-    preset DownButtonEnabled = false;
-  }
-
-  $rect <520,160,760,200>
-  slot OnUnitIdButtonActivatedSlot
-  {
-    this.PresentDialog( new Settings::SET30_QRCode, null, null, null, null, null, null, null, null, false );
   }
 }
 
@@ -985,7 +939,7 @@ class Reset : Components::BaseComponent
   }
 }
 
-$rect <120,190,360,230>
+$rect <20,170,260,210>
 $output false
 class BtDiscovarable : Components::BaseMainBG
 {
@@ -1107,7 +1061,7 @@ class BtDiscovarable : Components::BaseMainBG
   }
 }
 
-$rect <160,250,400,290>
+$rect <20,220,260,260>
 $output false
 class BtConnectionResult : Components::BaseMainBG
 {
@@ -1213,7 +1167,7 @@ class BtConnectionResult : Components::BaseMainBG
   }
 }
 
-$rect <160,310,400,350>
+$rect <20,270,260,310>
 $output false
 class BtMaxPairedDevice : Components::BaseMainBG
 {
@@ -1260,7 +1214,7 @@ class BtMaxPairedDevice : Components::BaseMainBG
   }
 }
 
-$rect <160,370,400,410>
+$rect <20,320,260,360>
 $output false
 class BtPairDevice : Components::BaseMainBG
 {
@@ -1626,6 +1580,7 @@ class SET19_BtPairedDeviceOperation : Menu::BaseMenuView
   inherited object Menu
   {
     preset DDModeEnabled = true;
+    preset NoOfItems = 3;
   }
 
   $rect <10,350,210,390>
@@ -1689,7 +1644,7 @@ class BtDeleteBleDevice : Components::BaseMainBG
   }
 }
 
-$rect <120,620,320,660>
+$rect <450,570,650,610>
 $output false
 class BtFwUpdateDialog : Core::Group
 {
@@ -1756,7 +1711,69 @@ class BtFwUpdateDialog : Core::Group
   }
 }
 
-$rect <490,120,690,160>
+$rect <310,10,550,50>
+$output false
+class TimeoutDialog : Components::BaseMainBG
+{
+  $rect <20,290,200,330>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Text MessageText
+  {
+    preset Bounds = <10,50,470,236>;
+    preset Ellipsis = true;
+    preset WrapText = true;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <230,290,430,330>
+  property string Message;
+
+  $rect <230,330,430,370>
+  onset Message
+  {
+    if( pure Message != value )
+    {
+      pure Message = value;
+      MessageText.String = value;
+    }
+  }
+
+  $rect <460,290,660,330>
+  object Core::Timer TimeoutTimer
+  {
+    preset OnTrigger = OnTimeoutSlot;
+    preset Period = 0;
+    preset Begin = 2000;
+    preset Enabled = true;
+  }
+
+  $rect <460,330,660,370>
+  slot OnTimeoutSlot
+  {
+    if( DismissAfterTimeout )
+    {
+      if( null != Owner )
+      {
+        Owner.DismissDialog( this, null, null, null, null, null, false );
+      }
+    }
+    else
+    {
+      postsignal OnTimeout;
+    }
+  }
+
+  $rect <460,370,660,410>
+  property slot OnTimeout;
+
+  $rect <230,380,430,420>
+  property bool DismissAfterTimeout = false;
+}
+
+$rect <710,130,910,170>
 $output false
 class SET30_QRCode : Menu::BaseMenuView
 {
@@ -1856,5 +1873,333 @@ class SET30_QRCode : Menu::BaseMenuView
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+}
+
+$rect <310,60,550,100>
+$output false
+class SET22_BleAdvertising : Components::BaseMainBG
+{
+  $rect <0,280,180,320>
+  inherited method Init()
+  {
+    trace "Init SET22";
+    DeviceInterface::BluetoothDevice.SetBleAdvertisement( true );
+  }
+
+  $rect <0,380,230,420>
+  inherited method OnShortHomeKeyActivated()
+  {
+    DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
+    super();
+  }
+
+  $rect <0,330,180,370>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Text DeviceNameText
+  {
+    preset Bounds = <10,132,470,163>;
+    preset String = Strings::SET22_DEVICE_NAME;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text WaitText
+  {
+    preset Bounds = <10,194,470,256>;
+    preset WrapText = true;
+    preset String = Strings::SET22_WAIT_APP_CONNECTION;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text LocalDeviceNameText
+  {
+    preset Bounds = <10,163,470,194>;
+    preset Ellipsis = true;
+    preset String = DeviceInterface::BluetoothDevice.LocalDeviceName;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image
+  {
+    preset Bounds = <193,36,287,130>;
+    preset Animated = true;
+    preset Bitmap = Resource::LoadingAnimation;
+  }
+
+  $rect <250,280,510,320>
+  object Core::SystemEventHandler BlePairingStateChangedEventHandler
+  {
+    preset OnEvent = OnBlePairingStateChangedSlot;
+    preset Event = DeviceInterface::BluetoothDevice.BlePairingStateChangedEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <250,330,510,370>
+  slot OnBlePairingStateChangedSlot
+  {
+    if( null != Owner )
+    {
+      switch( DeviceInterface::BluetoothDevice.BlePairingState )
+      {
+        case Enum::BlePairingState.TIMEOUT,
+             Enum::BlePairingState.FAIL:
+        {
+          Owner.SwitchToDialog( new Settings::SET23_BlePairingFail, null, null, null, null, null, null, null, null, null, false );
+        }
+        case Enum::BlePairingState.SUCCESSFUL:
+        {
+          var Settings::TimeoutDialog MessageDialog = new Settings::TimeoutDialog;
+          var Settings::SET03_ConnectionSettingMenu ConnectionSettingDialog = ( Settings::SET03_ConnectionSettingMenu )Owner;
+          if( null != ConnectionSettingDialog )
+          {
+            MessageDialog.Message = Strings::SET26_PAIRING_SUCCESSFUL;
+            MessageDialog.DismissAfterTimeout = true;
+            ConnectionSettingDialog.SwitchToDialog( MessageDialog, null, null, null, null, null, null, null, null, null, false );
+          }
+        }
+        case Enum::BlePairingState.PINCODE_GENERATED:
+        {
+          Owner.SwitchToDialog( new Settings::SET25_BlePincode, null, null, null, null, null, null, null, null, null, false );
+        }
+        default:;
+      }
+    }
+  }
+}
+
+$rect <310,110,550,150>
+$output false
+class SET23_BlePairingFail : Settings::TimeoutDialog
+{
+  $rect <20,20,160,60>
+  inherited object MessageText
+  {
+    preset String = Strings::SET23_PAIRING_FAILED;
+  }
+
+  $rect <10,290,210,330>
+  inherited slot OnTimeoutSlot
+  {
+    if( DeviceInterface::BluetoothDevice.GetBlePairingFailCount() > 1 )
+    {
+      Owner.SwitchToDialog( new Settings::SET24_CheckPairingRecord, null, null, null, null, null, null, null, null, null, false );
+    }
+    else
+    {
+      Owner.DismissDialog( this, null, null, null, null, null, false );
+    }
+  }
+
+  $reorder Message 1
+  $reorder OnSetMessage 1
+  $reorder OnTimeout 3
+}
+
+$rect <310,160,550,200>
+$output false
+class SET24_CheckPairingRecord : Components::BaseMainBG
+{
+  $rect <0,290,180,330>
+  inherited method Init()
+  {
+    trace "Init SET24";
+  }
+
+  $rect <0,340,200,380>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Text MessageText
+  {
+    preset Bounds = <10,46,470,201>;
+    preset WrapText = true;
+    preset String = Strings::SET24_CHECK_BT_PAIRING_RECORD;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::PushButton PushButton
+  {
+    preset Bounds = <165,219,315,259>;
+    preset Title = Strings::GEN_ok;
+    preset OnActivate = OnOkActivatedSlot;
+  }
+
+  $rect <210,290,410,330>
+  slot OnOkActivatedSlot
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+}
+
+$rect <310,210,550,250>
+$output false
+class SET25_BlePincode : Components::BaseMainBG
+{
+  $rect <0,290,180,330>
+  inherited method Init()
+  {
+    var string PincodeString = string( DeviceInterface::BluetoothDevice.BlePincode );
+    PincodeText.String = Strings::SET25_PIN + "\n" + PincodeString;
+    trace "Init SET25 ", PincodeString;
+  }
+
+  $rect <0,340,180,380>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+
+    // check if BLE pairing state changed
+    if( aState.contains( Core::ViewState[ Dialog ] ) && null != Owner )
+    {
+      postsignal OnBlePairingStateChangedSlot;
+    }
+  }
+
+  $rect <0,440,230,480>
+  inherited method OnShortHomeKeyActivated()
+  {
+    DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
+    super();
+  }
+
+  $rect <0,390,180,430>
+  inherited property DDModeEnabled = true;
+
+  $rect <240,290,500,330>
+  object Core::SystemEventHandler BleStateChangedEventHandler
+  {
+    preset OnEvent = OnBlePairingStateChangedSlot;
+    preset Event = DeviceInterface::BluetoothDevice.BlePairingStateChangedEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <240,340,500,380>
+  slot OnBlePairingStateChangedSlot
+  {
+    if( null != Owner )
+    {
+      switch( DeviceInterface::BluetoothDevice.BlePairingState )
+      {
+        case Enum::BlePairingState.FAIL,
+             Enum::BlePairingState.TIMEOUT:
+        {
+          Owner.SwitchToDialog( new Settings::SET23_BlePairingFail, null, null, null, null, null, null, null, null, null, false );
+        }
+        case Enum::BlePairingState.SUCCESSFUL:
+        {
+          var Settings::TimeoutDialog MessageDialog = new Settings::TimeoutDialog;
+          MessageDialog.Message = Strings::SET26_PAIRING_SUCCESSFUL;
+          MessageDialog.DismissAfterTimeout = true;
+          Owner.SwitchToDialog( MessageDialog, null, null, null, null, null, null, null, null, null, false );
+        }
+        default:;
+      }
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text PincodeText
+  {
+    preset Bounds = <10,50,470,236>;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+}
+
+$rect <710,70,910,110>
+$output false
+class SET28_SystemInfo : Components::BaseMainBG
+{
+  $rect <520,10,720,50>
+  inherited method Init()
+  {
+    EsnText.String = DeviceInterface::SystemDevice.ESN;
+    SoftwareVersionText.String = DeviceInterface::SystemDevice.SoftwareVersion;
+  }
+
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <520,110,750,150>
+  inherited method OnShortMagicKeyActivated()
+  {
+    this.PresentDialog( new Development::DEV_Main, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <10,340,210,380>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Text ESN
+  {
+    preset Bounds = <10,46,470,77>;
+    preset String = Strings::SET28_esn;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text SoftwareVersionTitle
+  {
+    preset Bounds = <10,108,470,139>;
+    preset String = Strings::SET28_sw_version;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text EsnText
+  {
+    preset Bounds = <10,77,470,108>;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text SoftwareVersionText
+  {
+    preset Bounds = <10,139,470,170>;
+    preset String = DeviceInterface::SystemDevice.SoftwareVersion;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <520,260,720,300>
+  object Core::PropertyObserver EsnObserver
+  {
+    preset OnEvent = OnEsnReceivedSlot;
+    preset Outlet = ^DeviceInterface::SystemDevice.ESN;
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <520,300,720,340>
+  slot OnEsnReceivedSlot
+  {
+    EsnText.String = DeviceInterface::SystemDevice.ESN;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::UpDownPushButtonSet UpDownPushButtonSet
+  {
+    preset Bounds = <95,176,385,259>;
+    preset PassHomeKey = true;
+    preset PassMagicKey = true;
+    preset DDModeEnabled = true;
+    preset OnUpButtonActivated = OnUnitIdButtonActivatedSlot;
+    preset UpButtonTitle = Strings::SET28_unit_id;
+    preset DownButtonTitle = Strings::SET28_sw_update;
+    preset DownButtonEnabled = false;
+  }
+
+  $rect <520,160,760,200>
+  slot OnUnitIdButtonActivatedSlot
+  {
+    this.PresentDialog( new Settings::SET30_QRCode, null, null, null, null, null, null, null, null, false );
   }
 }

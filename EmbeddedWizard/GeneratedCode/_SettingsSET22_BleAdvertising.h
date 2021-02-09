@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSET03_ConnectionSettingMenu_H
-#define _SettingsSET03_ConnectionSettingMenu_H
+#ifndef _SettingsSET22_BleAdvertising_H
+#define _SettingsSET22_BleAdvertising_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,20 +42,14 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -99,26 +93,24 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBase */
-#ifndef _MenuItemBase_
-  EW_DECLARE_CLASS( MenuItemBase )
-#define _MenuItemBase_
-#endif
-
-/* Forward declaration of the class Settings::SET03_ConnectionSettingMenu */
-#ifndef _SettingsSET03_ConnectionSettingMenu_
-  EW_DECLARE_CLASS( SettingsSET03_ConnectionSettingMenu )
-#define _SettingsSET03_ConnectionSettingMenu_
+/* Forward declaration of the class Settings::SET22_BleAdvertising */
+#ifndef _SettingsSET22_BleAdvertising_
+  EW_DECLARE_CLASS( SettingsSET22_BleAdvertising )
+#define _SettingsSET22_BleAdvertising_
 #endif
 
 
-/* Deklaration of class : 'Settings::SET03_ConnectionSettingMenu' */
-EW_DEFINE_FIELDS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [2])
-EW_END_OF_FIELDS( SettingsSET03_ConnectionSettingMenu )
+/* Deklaration of class : 'Settings::SET22_BleAdvertising' */
+EW_DEFINE_FIELDS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG )
+  EW_OBJECT  ( DeviceNameText,  ViewsText )
+  EW_OBJECT  ( WaitText,        ViewsText )
+  EW_OBJECT  ( LocalDeviceNameText, ViewsText )
+  EW_OBJECT  ( Image,           ViewsImage )
+  EW_OBJECT  ( BlePairingStateChangedEventHandler, CoreSystemEventHandler )
+EW_END_OF_FIELDS( SettingsSET22_BleAdvertising )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SET03_ConnectionSettingMenu' */
-EW_DEFINE_METHODS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET22_BleAdvertising' */
+EW_DEFINE_METHODS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -165,52 +157,32 @@ EW_DEFINE_METHODS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET22_BleAdvertising _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( LoadItemClass,     XClass )( SettingsSET03_ConnectionSettingMenu _this, 
-    XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( SettingsSET03_ConnectionSettingMenu _this, 
-    XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( SettingsSET03_ConnectionSettingMenu _this, 
-    XInt32 aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( SettingsSET03_ConnectionSettingMenu )
+EW_END_OF_METHODS( SettingsSET22_BleAdvertising )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void SettingsSET03_ConnectionSettingMenu_Init( SettingsSET03_ConnectionSettingMenu _this, 
-  XHandle aArg );
+void SettingsSET22_BleAdvertising_Init( SettingsSET22_BleAdvertising _this, XHandle 
+  aArg );
 
-/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.LoadItemClass()' */
-XClass SettingsSET03_ConnectionSettingMenu_LoadItemClass( SettingsSET03_ConnectionSettingMenu _this, 
-  XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET22_BleAdvertising.OnShortHomeKeyActivated()' */
+void SettingsSET22_BleAdvertising_OnShortHomeKeyActivated( SettingsSET22_BleAdvertising _this );
 
-/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.LoadItemTitle()' */
-XString SettingsSET03_ConnectionSettingMenu_LoadItemTitle( SettingsSET03_ConnectionSettingMenu _this, 
-  XInt32 aItemNo );
-
-/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.OnItemActivate()' */
-void SettingsSET03_ConnectionSettingMenu_OnItemActivate( SettingsSET03_ConnectionSettingMenu _this, 
-  XInt32 aItemNo, MenuItemBase aMenuItem );
-
-/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.HandleYConnectAppPairing()' */
-void SettingsSET03_ConnectionSettingMenu_HandleYConnectAppPairing( SettingsSET03_ConnectionSettingMenu _this );
-
-/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.PresentDialogWithTimeout()' */
-void SettingsSET03_ConnectionSettingMenu_PresentDialogWithTimeout( SettingsSET03_ConnectionSettingMenu _this, 
-  XString aMessage );
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET22_BleAdvertising_OnBlePairingStateChangedSlot( SettingsSET22_BleAdvertising _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSET03_ConnectionSettingMenu_H */
+#endif /* _SettingsSET22_BleAdvertising_H */
 
 /* Embedded Wizard */
