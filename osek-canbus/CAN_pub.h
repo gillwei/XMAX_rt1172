@@ -46,6 +46,19 @@ void nim_app_sig_get
     uint32_t                     *p_sig_val
     );
 
+can_ret_code_t
+il_app_frm_put
+    (
+    can_msg_t const * const can_msg_tx_p
+    );
+
+can_ret_code_t
+il_app_frm_get
+    (
+    il_rx_frm_index_t   frm_index,
+    can_msg_t          *can_msg_rx_p
+    );
+
 #ifdef __cplusplus
 }
 #endif

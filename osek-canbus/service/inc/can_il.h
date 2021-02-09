@@ -180,8 +180,8 @@ void il_resume
 
 boolean il_tx_put_frame_bytes
     (
-    can_hw_inst_t const   hw_inst,
-    can_tmd_t     const * p_can_tmd
+    can_hw_inst_t const         hw_inst,
+    can_msg_t     const * const p_can_msg
     );
 
 boolean il_tx_put_signal_bytes
@@ -301,7 +301,7 @@ void il_app_notify_tx_hw_timeout
 
 void il_app_notify_frame_received
     (
-    dll_frm_handle_t        const frm_handle
+    il_rx_frm_index_t             msg_index
     );
 
 void il_app_notify_sig_received

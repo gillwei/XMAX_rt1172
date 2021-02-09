@@ -149,8 +149,8 @@ CAN_IGNORE_PARAMETER( hw_inst );
 static can_ret_code_t
 nm_app_tx_data
     (
-    can_hw_inst_t     hw_inst,
-    can_msg_t const * can_msg_tx_p
+    can_hw_inst_t           hw_inst,
+    can_msg_t const * const can_msg_tx_p
     )
 {
 can_ret_code_t  l_ret_code;
@@ -542,6 +542,115 @@ il_app_frm_timeout2_get
 /*!*******************************************************************
 *
 * @private
+* interaction layer frame put
+*
+* Put a CAN message which is from other module into interation layer
+* frame data structures
+*
+* @return can_ret_code
+* return code indicating success or failure
+*
+*********************************************************************/
+can_ret_code_t
+il_app_frm_put
+    (
+    can_msg_t const * const can_msg_tx_p
+    )
+{
+can_ret_code_t  l_ret_code;
+
+/*--------------------------------------------------
+put the interaction layer frame into the specific
+data structures for this CAN hardware instance
+--------------------------------------------------*/
+l_ret_code = il_tx_put_frame_bytes( CAN_CONTROLLER_2, can_msg_tx_p );
+
+return l_ret_code;
+}
+
+/*!*******************************************************************
+*
+* @private
+* interaction layer frame get
+*
+* Get a CAN message which is from lower driver into App layer for other
+* module
+*
+* @return can_ret_code
+* return code indicating success or failure
+*
+*********************************************************************/
+can_ret_code_t
+il_app_frm_get
+    (
+    il_rx_frm_index_t   frm_index,
+    can_msg_t          *can_msg_rx_p
+    )
+{
+can_ret_code_t  l_ret_code = CAN_RC_NOT_AVAILABLE;
+
+dll_rx_buf_dispatch_t   const * l_p_buf_dispatch;
+dll_rx_filt_dispatch_t  const * l_p_filt_dispatch;
+dll_rx_frm_dispatch_t   const * l_p_frm_dispatch;
+uint8                           l_num_filters;
+il_rxfrm_info_t         const * l_p_rxfrm_info;
+il_rxfrm_t              const * l_p_rxfrm;
+
+if( can_msg_rx_p == NULL )
+    {
+    return l_ret_code;
+    }
+
+/*------------------------------------------------------
+Get the Dispatch Table for this CAN Controller hardware
+instance and the specific hardware receive buffer in
+this hardware instance. Also get the number of filters
+enabled for this specific hardware buffer.
+------------------------------------------------------*/
+l_num_filters = dll_get_rx_buf_dispatch_table( CAN_CONTROLLER_2, &l_p_buf_dispatch );
+
+/*------------------------------------------------------
+Get the receive frame information and service all of
+the receive frames for this CAN hardware instance
+------------------------------------------------------*/
+l_p_rxfrm_info = il_get_rxfrm_info_ptr( CAN_CONTROLLER_2 );
+
+/*------------------------------------------------------
+Check for valid filters and a valid filter index
+------------------------------------------------------*/
+if( ( l_num_filters >  0 ) &&
+    ( frm_index < l_num_filters ) &&
+    ( l_p_buf_dispatch != NULL ) )
+    {
+    /*------------------------------------------------------
+    Get the CAN ID's for this filter index
+    ------------------------------------------------------*/
+    l_p_filt_dispatch = &( l_p_buf_dispatch->p_rx_filt_dispatch[frm_index] );
+    l_p_frm_dispatch  = l_p_filt_dispatch->p_frame_dispatch;
+
+    /*------------------------------------------------------
+    Get pointers to the frame information and initially
+    assume this frame is not newly received, then check for
+    the frame received since the last task call
+    ------------------------------------------------------*/
+    l_p_rxfrm = &( l_p_rxfrm_info->p_il_rxfrm[frm_index] );
+
+    /*------------------------------------------------------
+    fill the rmd
+    ------------------------------------------------------*/
+    can_msg_rx_p->id    = l_p_frm_dispatch->identifier;
+    can_msg_rx_p->size  = l_p_rxfrm->dlc;
+    memcpy( can_msg_rx_p->data, l_p_rxfrm->p_data, l_p_rxfrm->dlc );
+
+    l_ret_code = CAN_RC_OK;
+    }
+
+return l_ret_code;
+}
+
+/*!*******************************************************************
+*
+* @private
 * Interaction Layer CAN message frame reception notification
 *
 * This function is the Interaction Layer CAN frame reception callback
@@ -553,9 +662,23 @@ il_app_frm_timeout2_get
 void
 il_app_notify_frame_received
     (
-    dll_frm_handle_t        const frm_handle
+    il_rx_frm_index_t   msg_index
     )
 {
+can_msg_t app_can_msg_rx = {0};
+
+il_app_frm_get( msg_index, &app_can_msg_rx );
+
+PRINTF( "CAN ID:%x LEN:%d ", app_can_msg_rx.id, app_can_msg_rx.size );
+for( uint8 i = 0; i < app_can_msg_rx.size; i++ )
+    {
+    PRINTF( "Data:%x ", app_can_msg_rx.data[i] );
+    }
+PRINTF( "\r\n" );
+
+/*------------------------------------------------------
+Other module can add their event message handler here
+------------------------------------------------------*/
 //TBD
 }
 
@@ -838,10 +961,6 @@ ign_status = GPIO_ReadPinInput( WAKEUP_GPIO, WAKEUP_GPIO_PIN );
 /*------------------------------------------------------
 Switch the CAN status according to thw IGN status
 ------------------------------------------------------*/
-#if( (DEBUG_TX_CAN_SUPPORT)&&(DEBUG_RX_CAN_SUPPORT) )
-    PRINTF( "sys status:%x IGN:%x\r\n", can_app_sys_stat[CAN_CONTROLLER_2], ign_status );
-#endif
-
 switch( can_app_sys_stat[CAN_CONTROLLER_2] )
     {
     case CAN_SYS_STAT_INIT:
@@ -894,9 +1013,12 @@ void app_task
 can_app_sys_stat_check();
 
 #if( (DEBUG_TX_CAN_SUPPORT)&&(DEBUG_RX_CAN_SUPPORT) )
-static uint8   app_tx_tick = CAN_APP_SIG_DEBUG_TICK;//!< 200 * 5 = 1000ms
-static uint32  app_rx_data = 0;
-static boolean timeout_err = FALSE;
+static uint8     app_tx_tick    = CAN_APP_SIG_DEBUG_TICK;//!< 200 * 5 = 1000ms
+static can_msg_t app_can_msg_tx = {
+                                  TX0_REQ_MT_FUNC_CNT_CAN0_ID,
+                                  IL_CAN0_TX0_REQ_MT_FUNC_CNT_TXFRM_LEN,
+                                  { 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11 },
+                                  };
 
 if( app_tx_tick > 0 )
     {
@@ -904,56 +1026,8 @@ if( app_tx_tick > 0 )
     if( app_tx_tick == 0 )
         {
         app_tx_tick = CAN_APP_SIG_DEBUG_TICK;
-        nim_app_sig_put( IL_CAN0_HEATER_LVL_SLECT_TXSIG_HANDLE,
-                         IL_CAN0_HEATER_LVL_SLECT_TXSIG_NBYTES,
-                         IL_VT_HEATER_LVL_SLECT_PASSENGER_SEAT_HEATER );
 
-        nim_app_sig_put( IL_CAN0_SYS_INFO_VH_SPEED_UNIT_TXSIG_HANDLE,
-                         IL_CAN0_SYS_INFO_VH_SPEED_UNIT_TXSIG_NBYTES,
-                         IL_VT_SYS_INFO_VH_SPEED_UNIT_MPH );
-
-        nim_app_sig_put( IL_CAN0_CLK_DATE_RESP_DATA_TXSIG_HANDLE,
-                         IL_CAN0_CLK_DATE_RESP_DATA_TXSIG_NBYTES,
-                         app_tx_tick-1 );
-
-        nim_app_sig_put( IL_CAN0_REQ_MT_FUNC_CNT_SVC_ID_TXSIG_HANDLE,
-                         IL_CAN0_REQ_MT_FUNC_CNT_SVC_ID_TXSIG_NBYTES,
-                         0x66 );
-
-        nim_app_sig_put( IL_CAN0_FACT_INSP_NS_RES_TXSIG_HANDLE,
-                         IL_CAN0_FACT_INSP_NS_RES_TXSIG_NBYTES,
-                         0x77 );
-
-        nim_app_sig_put( IL_CAN0_FACT_INSP_NS_RESCODE_TXSIG_HANDLE,
-                         IL_CAN0_FACT_INSP_NS_RESCODE_TXSIG_NBYTES,
-                         0x88 );
-
-        nim_app_sig_get( IL_CAN0_FUNC_SW_6_RXSIG_HANDLE, sizeof(uint8), &app_rx_data );
-        PRINTF( "Hardkey value:%x\r\n\r\n",app_rx_data );
-
-        il_app_frm_timeout1_get( IL_CAN0_RX3_BRGTHNSS_CTRL_IDX, &timeout_err );
-        PRINTF( "BRGTHNSS_CTRL  timeout_err1:%x\r\n", timeout_err );
-
-        il_app_frm_timeout1_get( IL_CAN0_RX5_VEHICLE_INFO_IDX, &timeout_err );
-        PRINTF( "VEHICLE_INFO   timeout_err1:%x\r\n", timeout_err );
-
-        il_app_frm_timeout1_get( IL_CAN0_RXA_VEHICLE_INFO_2_IDX, &timeout_err );
-        PRINTF( "VEHICLE_INFO_2 timeout_err1:%x\r\n", timeout_err );
-
-        il_app_frm_timeout1_get( IL_CAN0_RXD_MAINT_TRIP_IDX, &timeout_err );
-        PRINTF( "MAINT_TRIP     timeout_err1:%x\r\n", timeout_err );
-
-        il_app_frm_timeout1_get( IL_CAN0_RX8_ODO_TRIP_IDX, &timeout_err );
-        PRINTF( "ODO_TRIP       timeout_err1:%x\r\n", timeout_err );
-
-        il_app_frm_timeout1_get( IL_CAN0_RX7_FUEL_RATE_IDX, &timeout_err );
-        PRINTF( "FUEL_RATE      timeout_err1:%x\r\n", timeout_err );
-
-        il_app_frm_timeout1_get( IL_CAN0_RX6_FUNCSW_STAT_IDX, &timeout_err );
-        PRINTF( "FUNCSW_STAT    timeout_err1:%x\r\n", timeout_err );
-
-        il_app_frm_timeout2_get( &timeout_err );
-        PRINTF( "FUNCSW_STAT    timeout_err2:%x\r\n", timeout_err );
+        il_app_frm_put( &app_can_msg_tx );
         }
     }
 else

@@ -2940,9 +2940,15 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         ------------------------------------------------------*/
         process_receive_frame( hw_inst, l_i_frm_index, TRUE, l_frm_data_changed );
 
-        if( ( l_p_rxfrm->attributes & IL_RX_FRM_ATTR_NOTIFY ) != 0 )
+        /*------------------------------------------------------
+        Only Event type messages can be notified to App layer
+        periodic messages use signal-notifying
+        ------------------------------------------------------*/
+        if( ( ( l_p_rxfrm->attributes & IL_RX_FRM_ATTR_NOTIFY ) != 0 ) &&
+            ( l_p_per_info == NULL ) )
             {
-            il_app_notify_frame_received( l_frm_handle );
+            can_util_clear_status_bits( l_p_frm_status, ( IL_RX_STATUS_PENDING | IL_RX_STATUS_DATA_CHANGED ) );
+            il_app_notify_frame_received( l_i_frm_index );
             }
         }
 
@@ -3337,8 +3343,8 @@ if( hw_inst < CAN_NUM_INSTANCES )
 boolean
 il_tx_put_frame_bytes
     (
-    can_hw_inst_t const   hw_inst,  //!< CAN hardware instanc
-    can_tmd_t     const * p_can_tmd //!< [in] frame CAN message
+    can_hw_inst_t const         hw_inst,  //!< CAN hardware instanc
+    can_msg_t     const * const p_can_msg //!< [in] frame CAN message
     )
 {
 il_txfrm_info_t     const * l_p_txfrm_info;
@@ -3371,13 +3377,13 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
     l_p_tmd      = &( l_p_txfrm_info->p_tmd[l_i_frm_index] );
     l_dlc        = l_p_tmd->dlc;
 
-    if( ( p_can_tmd->identifier == l_p_tmd->identifier ) &&
-        ( p_can_tmd->dlc == l_p_tmd->dlc ) )
+    if( ( p_can_msg->id   == l_p_tmd->identifier ) &&
+        ( p_can_msg->size == l_p_tmd->dlc ) )
         {
         /*------------------------------------------------------
         put the frame data to  transmission array.
         ------------------------------------------------------*/
-        memcpy( (void*)l_p_tmd->p_data, p_can_tmd->p_data, l_dlc );
+        memcpy( (void*)l_p_tmd->p_data, p_can_msg->data, l_dlc );
 
         #if( CAN_IL_DELAY_EVENT_TO_TICK == FALSE )
             /*------------------------------------------------------
@@ -3385,13 +3391,13 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
             ------------------------------------------------------*/
             if( ( l_p_txfrm->attributes & IL_TX_FRM_ATTR_EVENT ) != 0 )
                 {
-                transmit_frame( l_i_frm_index, hw_inst );
+                transmit_frame( hw_inst, l_i_frm_index );
                 }
         #else
             /*------------------------------------------------------
             Defer frame transmission at least until the next tick.
             ------------------------------------------------------*/
-            set_transmit_frame_event_pending( l_i_frm_index, hw_inst );
+            set_transmit_frame_event_pending(  hw_inst, l_i_frm_index );
         #endif
 
         /*------------------------------------------------------

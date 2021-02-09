@@ -76,30 +76,6 @@ static void log_il_error
 /*!*******************************************************************
 *
 * @public
-* transmit a CAN frame into byte(s) array
-*
-* This function transmits a CAN signal as an array of bytes.
-*
-*********************************************************************/
-void CAN_nim_tx_put_frame_bytes
-    (
-    can_hw_inst_t const   hw_inst,  //!< CAN hardware instanc
-    can_tmd_t     const * p_can_tmd //!< [in] frame CAN message
-    )
-{
-boolean l_success;
-
-l_success = il_tx_put_frame_bytes( hw_inst, p_can_tmd );
-
-if( FALSE == l_success )
-    {
-    log_il_error( IL_NIM_TX_PUT_SIGNAL_ERROR );
-    }
-}
-
-/*!*******************************************************************
-*
-* @public
 * transmit a CAN signal byte array
 *
 * This function transmits a CAN signal as an array of bytes. The
