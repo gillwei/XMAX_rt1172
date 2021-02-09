@@ -13,10 +13,15 @@
 --------------------------------------------------------------------*/
 #include <bc_motocon_priv.h>
 #include <string.h>
+#include "FreeRTOS.h"
+#include "semphr.h"
+#include "timers.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define DDT_TO_PHONE_SEMAPHORE_TIMEOUT_MS ( 100 )
+#define DDT_TO_PHONE_TIMEOUT_MS ( 3000 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -35,7 +40,11 @@ typedef struct
     uint32_t send_point;
     uint32_t send_length;
     uint32_t total_send_length;
+    SemaphoreHandle_t semaphore;
+    TimerHandle_t timer;
     } bc_motocon_ddt_to_phone_t;
+
+static void ddt_to_phone_timeout( TimerHandle_t timer_handle );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -85,6 +94,19 @@ ddt_vehicle_information.data_type = BC_MOTOCON_DDT_VEHICLE_INFORMATION_DATA_NOTI
 ddt_can.control_type = BC_MOTOCON_DDT_CAN_CONTROL_NOTIFY;
 ddt_can.data_type = BC_MOTOCON_DDT_CAN_DATA_NOTIFY;
 ddt_to_phone_id = BC_MOTOCON_DDT_INACTIVE_ID;
+
+ddt_to_phone.semaphore = xSemaphoreCreateBinary();
+ddt_to_phone.timer = xTimerCreate( "DdtToPhoneTimer", DDT_TO_PHONE_TIMEOUT_MS, pdTRUE, ( void * ) &ddt_to_phone, ddt_to_phone_timeout );
+configASSERT( NULL != ddt_to_phone.semaphore && NULL != ddt_to_phone.timer );
+
+ddt_vehicle_information.semaphore = xSemaphoreCreateBinary();
+ddt_vehicle_information.timer = xTimerCreate( "DdtVehicleInfoTimer", DDT_TO_PHONE_TIMEOUT_MS, pdTRUE, ( void * ) &ddt_vehicle_information, ddt_to_phone_timeout );
+configASSERT( NULL != ddt_vehicle_information.semaphore && NULL != ddt_vehicle_information.timer );
+
+ddt_can.semaphore = xSemaphoreCreateBinary();
+ddt_can.timer = xTimerCreate( "DdtCanTimer", DDT_TO_PHONE_TIMEOUT_MS, pdTRUE, ( void * ) &ddt_can, ddt_to_phone_timeout );
+configASSERT( NULL != ddt_can.semaphore && NULL != ddt_can.timer );
+
 bc_motocon_ddt_reset();
 }
 
@@ -105,6 +127,18 @@ memset( ddt_to_vehicle_status, 0, BC_MOTOCON_DDT_STATUS_LENGTH );
 ddt_to_phone.id = BC_MOTOCON_DDT_INACTIVE_ID;
 ddt_vehicle_information.id = BC_MOTOCON_DDT_INACTIVE_ID;
 ddt_can.id = BC_MOTOCON_DDT_INACTIVE_ID;
+if( ddt_to_phone.semaphore != NULL )
+    {
+    xSemaphoreGive( ddt_to_phone.semaphore );
+    }
+if( ddt_vehicle_information.semaphore != NULL )
+    {
+    xSemaphoreGive( ddt_vehicle_information.semaphore );
+    }
+if( ddt_can.semaphore != NULL )
+    {
+    xSemaphoreGive( ddt_can.semaphore );
+    }
 }
 
 /*********************************************************************
@@ -308,7 +342,8 @@ send_data[3] = ddt->total_length & 0xFF;
 bc_motocon_send_result_t ret = bc_motocon_send_data( ddt->control_type, send_data, BC_MOTOCON_DDT_HEADER_SIZE );
 if( ret == BC_MOTOCON_SEND_RESULT_SUCCESS )
     {
-    // TODO: Start timer for BC_MOTOCON_SEND_RESULT_DDT_TIMEOUT callback, IXWW22-4931.
+    BaseType_t result = xTimerStart( ddt->timer, 0 );
+    configASSERT( result == pdPASS );
     }
 else
     {
@@ -353,49 +388,94 @@ switch( type )
         return;
         break;
     }
-// check state
-if( ddt->id == BC_MOTOCON_DDT_INACTIVE_ID )
+BaseType_t result = xTimerStop( ddt->timer, 0 );
+configASSERT( result == pdPASS );
+if( pdTRUE == xSemaphoreTake( ddt->semaphore, DDT_TO_PHONE_SEMAPHORE_TIMEOUT_MS ) )
     {
-    BC_MOTOCON_PRINTF( "%s, ddt to phone(%d) inactive, drop ack\r\n", __FUNCTION__, type );
-    return;
-    }
-
-if( ( ddt->remain_header + ddt->remain_content ) > 0 )
-    {
-    ddt->send_length = 0;
-    ddt->total_send_length = 0;
-
-    uint8_t send_data[BC_MOTOCON_DDT_TO_PHONE_TOTAL_PACKAGE_SIZE];
-    send_data[0] = ddt->id;
-    send_data[1] = ( ddt->send_point >> 16 ) & 0xFF;
-    send_data[2] = ( ddt->send_point >> 8 ) & 0xFF;
-    send_data[3] = ddt->send_point & 0xFF;
-    if( ddt->remain_header > 0 )
+    if( ddt->id == BC_MOTOCON_DDT_INACTIVE_ID )
         {
-        ddt->send_length = MIN( ddt->remain_header, BC_MOTOCON_DDT_TO_PHONE_CONTENT_SIZE );
-        memcpy( &send_data[BC_MOTOCON_DDT_HEADER_SIZE], ddt->header + ddt->send_point, ddt->send_length );
-        ddt->remain_header -= ddt->send_length;
-        ddt->send_point += ddt->send_length;
-        ddt->total_send_length += ddt->send_length;
+        BC_MOTOCON_PRINTF( "%s, ddt to phone(%d) inactive, drop ack\r\n", __FUNCTION__, type );
+        xSemaphoreGive( ddt->semaphore );
+        return;
         }
-    if( ddt->remain_content > 0 && ddt->total_send_length < BC_MOTOCON_DDT_TO_PHONE_CONTENT_SIZE )
+
+    if( ( ddt->remain_header + ddt->remain_content ) > 0 )
         {
-        ddt->send_length = MIN( ddt->remain_content, BC_MOTOCON_DDT_TO_PHONE_CONTENT_SIZE - ddt->total_send_length );
-        memcpy( &send_data[BC_MOTOCON_DDT_HEADER_SIZE + ddt->total_send_length], ddt->content + ddt->send_point - BC_MOTOCON_PROTOBUF_HEADER_SIZE, ddt->send_length );
-        ddt->remain_content -= ddt->send_length;
-        ddt->send_point += ddt->send_length;
-        ddt->total_send_length += ddt->send_length;
+        ddt->send_length = 0;
+        ddt->total_send_length = 0;
+
+        uint8_t send_data[BC_MOTOCON_DDT_TO_PHONE_TOTAL_PACKAGE_SIZE];
+        send_data[0] = ddt->id;
+        send_data[1] = ( ddt->send_point >> 16 ) & 0xFF;
+        send_data[2] = ( ddt->send_point >> 8 ) & 0xFF;
+        send_data[3] = ddt->send_point & 0xFF;
+        if( ddt->remain_header > 0 )
+            {
+            ddt->send_length = MIN( ddt->remain_header, BC_MOTOCON_DDT_TO_PHONE_CONTENT_SIZE );
+            memcpy( &send_data[BC_MOTOCON_DDT_HEADER_SIZE], ddt->header + ddt->send_point, ddt->send_length );
+            ddt->remain_header -= ddt->send_length;
+            ddt->send_point += ddt->send_length;
+            ddt->total_send_length += ddt->send_length;
+            }
+        if( ddt->remain_content > 0 && ddt->total_send_length < BC_MOTOCON_DDT_TO_PHONE_CONTENT_SIZE )
+            {
+            ddt->send_length = MIN( ddt->remain_content, BC_MOTOCON_DDT_TO_PHONE_CONTENT_SIZE - ddt->total_send_length );
+            memcpy( &send_data[BC_MOTOCON_DDT_HEADER_SIZE + ddt->total_send_length], ddt->content + ddt->send_point - BC_MOTOCON_PROTOBUF_HEADER_SIZE, ddt->send_length );
+            ddt->remain_content -= ddt->send_length;
+            ddt->send_point += ddt->send_length;
+            ddt->total_send_length += ddt->send_length;
+            }
+        bc_motocon_send_result_t ret = bc_motocon_send_data( ddt->data_type, send_data, BC_MOTOCON_DDT_HEADER_SIZE + ddt->total_send_length );
+        if( ret == BC_MOTOCON_SEND_RESULT_SUCCESS )
+            {
+            BaseType_t result = xTimerStart( ddt->timer, 0 );
+            configASSERT( result == pdPASS );
+            }
+        else
+            {
+            ddt->id = BC_MOTOCON_DDT_INACTIVE_ID;
+            ddt->result_callback( ret );
+            }
         }
-    bc_motocon_send_result_t ret = bc_motocon_send_data( ddt->data_type, send_data, BC_MOTOCON_DDT_HEADER_SIZE + ddt->total_send_length );
-    if( ret !=  BC_MOTOCON_SEND_RESULT_SUCCESS )
+    else
         {
         ddt->id = BC_MOTOCON_DDT_INACTIVE_ID;
-        ddt->result_callback( ret );
+        ddt->result_callback( BC_MOTOCON_SEND_RESULT_DDT_COMPLETE );
         }
+    xSemaphoreGive( ddt->semaphore );
     }
 else
     {
-    ddt->id = BC_MOTOCON_DDT_INACTIVE_ID;
-    ddt->result_callback( BC_MOTOCON_SEND_RESULT_DDT_COMPLETE );
+    BC_MOTOCON_PRINTF( "%s, ddt to phone(%d) semaphore timeout, drop ack\r\n", __FUNCTION__, type );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* ddt_to_phone_timeout
+*
+* Post timeout callback
+*
+* @param timer_handle Timer handle
+*
+*********************************************************************/
+static void ddt_to_phone_timeout
+    (
+    TimerHandle_t timer_handle
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+BaseType_t result = xTimerStop( timer_handle, 0 );
+configASSERT( result == pdPASS );
+bc_motocon_ddt_to_phone_t* ddt = ( bc_motocon_ddt_to_phone_t* ) pvTimerGetTimerID( timer_handle );
+if( ddt != NULL && pdTRUE == xSemaphoreTake( ddt->semaphore, DDT_TO_PHONE_SEMAPHORE_TIMEOUT_MS ) )
+    {
+    if( ddt->id != BC_MOTOCON_DDT_INACTIVE_ID )
+        {
+        ddt->id = BC_MOTOCON_DDT_INACTIVE_ID;
+        ddt->result_callback( BC_MOTOCON_SEND_RESULT_DDT_TIMEOUT );
+        }
+    xSemaphoreGive( ddt->semaphore );
     }
 }
