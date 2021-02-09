@@ -9,10 +9,8 @@ inline Inline
   #include "EEPM_pub.h"
   #include "PERIPHERAL_pub.h"
   #include "VI_pub.h"
-  /* uncomment these lines when integrating media manager
   #include "MM_pub_ams_type.h"
-  #include "MM_pub.h"
-  */
+  #include "BC_motocon_pub_type.h"
 
 }
 
@@ -1183,3 +1181,145 @@ class VehicleDeviceClass : Templates::DeviceClass
 
 $rect <20,590,220,630>
 autoobject DeviceInterface::VehicleDeviceClass VehicleDevice;
+
+$rect <290,170,490,210>
+$output false
+class WeatherDeviceClass : Templates::DeviceClass
+{
+  $rect <100,310,300,350>
+  method void GetWeatherInfo( arg int32 aWeaItemIdx )
+  {
+    $if !$prototyper
+      var int32 WTime;
+      var int32 WType;
+      var int32 WTemp;
+      var int32 TempMin;
+      var int32 TempMax;
+      var int32 RainProb;
+
+      trace "index : ", aWeaItemIdx;
+      native( aWeaItemIdx, WTime, WType, WTemp, TempMin, TempMax, RainProb )
+      {
+        bc_motocon_weather_info_t* w_obj = NULL;
+        w_obj = ew_get_weather_info_obj( aWeaItemIdx );
+        WTime = w_obj->time;
+        WType = w_obj->type;
+        WTemp = w_obj->temperature;
+        TempMin = w_obj->temperature_min;
+        TempMax = w_obj->temperature_max;
+        RainProb = w_obj->rain_probability;
+      }
+      WeatherTime = WTime;
+      WeatherType = WType;
+      Temperature = WTemp;
+      MinTemperature = TempMin;
+      MaxTemperature = TempMax;
+      RainProbability = RainProb;
+    $else
+      if( aWeaItemIdx > 0 )
+      {
+      // suppress warning
+      }
+    $endif
+  }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <100,360,300,400>
+  $output true
+  method void NotifyWeatherInfoUpdated( arg int32 aWeatherTime, arg int32 aWeatherType, arg int32 aTemp, arg int32 aMaxTemp, arg int32 aMinTemp, arg int32 aRainProb )
+  {
+    trace " weather time: ", aWeatherTime;
+    trace " weather type: ", aWeatherType;
+    trace " weather temperature: ", aTemp;
+    trace " weather max temperature: ", aMaxTemp;
+    trace " weather min temperature: ", aMinTemp;
+    trace " rain probability: ", aRainProb;
+
+    WeatherTime = aWeatherTime;
+    WeatherType = aWeatherType;
+    Temperature = aTemp;
+    MaxTemperature = aMaxTemp;
+    MinTemperature = aMinTemp;
+    RainProbability = aRainProb;
+    IsWeatherInfoReceived = 1;
+  }
+
+  $rect <310,360,510,400>
+  $output true
+  method void NotifyWeatherLocationUpdated( arg string aWeatherLoc )
+  {
+    trace " weather location: ", aWeatherLoc;
+    WeatherLocation = aWeatherLoc;
+    IsWeatherLocReceived = 1;
+  }
+
+  $rect <100,210,300,250>
+  property int32 IsWeatherInfoReceived;
+
+  $rect <100,250,300,290>
+  onset IsWeatherInfoReceived
+  {
+    // Remember the property's new value.
+
+    trace " weather info notify ";
+
+    pure IsWeatherInfoReceived = value;
+
+    notifyobservers ^IsWeatherInfoReceived;
+  }
+
+  $rect <310,310,510,350>
+  method void GetWeatherLoc()
+  {
+    $if !$prototyper
+      var string CurrentLoc;
+
+      native( CurrentLoc )
+      {
+        char* cur_loc;
+        ew_get_weather_loc( &cur_loc );
+        CurrentLoc = EwNewStringAnsi( cur_loc );
+      }
+    WeatherLocation = CurrentLoc;
+    $endif
+  }
+
+  $rect <310,210,510,250>
+  property int32 IsWeatherLocReceived;
+
+  $rect <310,250,510,290>
+  onset IsWeatherLocReceived
+  {
+    trace " weather loc notify ";
+    // Remember the property's new value.
+    pure IsWeatherLocReceived = value;
+
+    // Notify all associated property observers.
+    notifyobservers ^IsWeatherLocReceived;
+  }
+
+  $rect <100,-10,300,30>
+  var int32 WeatherTime;
+
+  $rect <100,30,300,70>
+  var int32 Temperature;
+
+  $rect <100,70,300,110>
+  var int32 MaxTemperature;
+
+  $rect <310,-10,510,30>
+  var int32 WeatherType;
+
+  $rect <310,30,510,70>
+  var int32 MinTemperature;
+
+  $rect <310,70,510,110>
+  var int32 RainProbability;
+
+  $rect <100,110,300,150>
+  var string WeatherLocation;
+}
+
+$rect <290,210,490,250>
+autoobject DeviceInterface::WeatherDeviceClass WeatherDevice;

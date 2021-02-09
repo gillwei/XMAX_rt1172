@@ -38,6 +38,7 @@
 #include "BC_pub.h"
 #include "MM_pub.h"
 #include "QR_pub.h"
+#include "WEA_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -131,7 +132,7 @@ JPEG_init();
 NAVI_init();
 MM_init();
 QR_init();
-
+WEA_init();
 #if( UNIT_TEST_ENABLE )
     TEST_init();
 #endif

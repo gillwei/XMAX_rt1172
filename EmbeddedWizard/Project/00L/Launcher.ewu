@@ -206,7 +206,11 @@ class LNC_Main : Components::BaseComponent
         PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
       case Enum::LauncherItem.NOTIFICATION:;
-      case Enum::LauncherItem.WEATHER:;
+      case Enum::LauncherItem.WEATHER:
+      {
+        ItemDialog = new Weather::WEA01_Main;
+        PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
+      }
       case Enum::LauncherItem.SETTINGS:
       {
         ItemDialog = new Settings::SET01_MainSettingMenu;

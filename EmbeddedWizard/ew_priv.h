@@ -18,6 +18,8 @@ extern "C" {
 #include <stdint.h>
 #include "fsl_snvs_lp.h"
 #include "EW_pub.h"
+#include "TEST_pub.h"
+#include "BC_motocon_pub_type.h"
 
 // save Home index and Meter setting into the last page in EEPROM
 // the first 4 bits are of meter setting
@@ -97,6 +99,12 @@ void ew_device_vi_init( void );
 void ew_device_vi_deinit( void );
 int  ew_device_vi_proc( void );
 bool ew_vi_is_feature_supported( int feature_id );
+
+void ew_device_weather_init( void );
+void ew_device_weather_deinit( void );
+int ew_device_weather_proc( void );
+bc_motocon_weather_info_t* ew_get_weather_info_obj( const int index );
+void ew_get_weather_loc( char** location );
 
 #ifdef __cplusplus
 }

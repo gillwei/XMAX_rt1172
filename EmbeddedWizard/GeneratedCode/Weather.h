@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef DeviceInterface_H
-#define DeviceInterface_H
+#ifndef Weather_H
+#define Weather_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,37 +42,16 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_DeviceInterfaceBluetoothDeviceClass.h"
-#include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
-#include "_DeviceInterfaceMediaManagerDeviceClass.h"
-#include "_DeviceInterfaceNavigationDeviceClass.h"
-#include "_DeviceInterfaceRtcTime.h"
-#include "_DeviceInterfaceSystemDeviceClass.h"
-#include "_DeviceInterfaceVehicleDeviceClass.h"
-#include "_DeviceInterfaceWeatherDeviceClass.h"
-
-/* User defined auto object: 'DeviceInterface::SystemDevice' */
-EW_DECLARE_AUTOOBJECT( DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )
-
-/* User defined auto object: 'DeviceInterface::NavigationDevice' */
-EW_DECLARE_AUTOOBJECT( DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )
-
-/* User defined auto object: 'DeviceInterface::MediaManagerDevice' */
-EW_DECLARE_AUTOOBJECT( DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )
-
-/* User defined auto object: 'DeviceInterface::BluetoothDevice' */
-EW_DECLARE_AUTOOBJECT( DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )
-
-/* User defined auto object: 'DeviceInterface::VehicleDevice' */
-EW_DECLARE_AUTOOBJECT( DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )
-
-/* User defined auto object: 'DeviceInterface::WeatherDevice' */
-EW_DECLARE_AUTOOBJECT( DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )
+#include "_WeatherWEA01_Main.h"
+#include "_WeatherWeatherDayViewUI.h"
+#include "_WeatherWeatherItemWrapper.h"
+#include "_WeatherWeatherList.h"
+#include "_WeatherWeatherWeekViewUI.h"
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* DeviceInterface_H */
+#endif /* Weather_H */
 
 /* Embedded Wizard */

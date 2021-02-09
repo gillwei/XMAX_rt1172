@@ -1,0 +1,1058 @@
+﻿$version 10.00
+
+$rect <30,90,230,130>
+$output false
+class WeatherDayViewUI : Core::Group
+{
+  $rect <0,250,200,290>
+  inherited method Init()
+  {
+    var int32 i;
+    for( i = 0; i < WeaItemIdxArray.size; i++ )
+    {
+      DeviceInterface::WeatherDevice.GetWeatherInfo( WeaItemIdxArray[i] );
+      signal OnWeatherInfoUpdateSlot;
+    }
+    DeviceInterface::WeatherDevice.GetWeatherLoc();
+    signal OnWeatherLocUpdateSlot;
+  }
+
+  $rect <510,30,710,70>
+  inherited property Bounds = <0,0,480,224>;
+
+  $rect <20,20,160,60>
+  object Views::Text CurrentLocationText
+  {
+    preset Bounds = <129,15,353,49>;
+    preset Ellipsis = true;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ChanceOfRainText
+  {
+    preset Bounds = <142,59,197,93>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image PerOfRainIcon
+  {
+    preset Bounds = <199,60,264,91>;
+    preset Bitmap = Resource::IconPerOfRain;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text MinTempText
+  {
+    preset Bounds = <280,59,336,93>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Color = #28AAFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image TempUnitIcon
+  {
+    preset Bounds = <394,60,425,91>;
+    preset Bitmap = Resource::IconTempDegF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text WeekDayText
+  {
+    preset Bounds = <363,15,431,49>;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Color = #A0A0A0FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image WeatherIcon
+  {
+    preset Bounds = <20,13,113,106>;
+    preset FrameNumber = 0;
+    preset Bitmap = Resource::CurrentWeatherIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image WeatherHorizLine
+  {
+    preset Bounds = <0,118,480,121>;
+    preset Bitmap = Resource::WeatherLine;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line DivideLineLeft
+  {
+    preset Point2 = <155,224>;
+    preset Point1 = <155,118>;
+    preset Width = 2;
+    preset Color = #808080FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line DivideLineRight
+  {
+    preset Point2 = <299,224>;
+    preset Point1 = <299,118>;
+    preset Width = 2;
+    preset Color = #808080FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TimeInterval3h
+  {
+    preset Bounds = <382,123,434,154>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "3h";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TimeInterval2h
+  {
+    preset Bounds = <237,123,289,154>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "2h";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TimeInterval1h
+  {
+    preset Bounds = <93,123,145,154>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "1h";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Weather1h
+  {
+    preset Bounds = <20,122,84,186>;
+    preset Bitmap = Resource::ForecastWeatherIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Weather2h
+  {
+    preset Bounds = <164,122,228,186>;
+    preset Bitmap = Resource::ForecastWeatherIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Weather3h
+  {
+    preset Bounds = <308,122,372,186>;
+    preset Bitmap = Resource::ForecastWeatherIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ChanceOfRain1h
+  {
+    preset Bounds = <85,165,127,196>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ChanceOfRain2h
+  {
+    preset Bounds = <229,165,271,196>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ChanceOfRain3h
+  {
+    preset Bounds = <373,165,415,196>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image WeaPerIcon1h
+  {
+    preset Bounds = <127,169,149,190>;
+    preset Bitmap = Resource::IconWeatherPercentage;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image WeaPerIcon2h
+  {
+    preset Bounds = <271,169,293,190>;
+    preset Bitmap = Resource::IconWeatherPercentage;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image WeaPerIcon3h
+  {
+    preset Bounds = <415,169,437,190>;
+    preset Bitmap = Resource::IconWeatherPercentage;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Temp1h
+  {
+    preset Bounds = <85,191,127,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Temp2h
+  {
+    preset Bounds = <229,191,271,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Temp3h
+  {
+    preset Bounds = <373,191,415,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image TempUnit1h
+  {
+    preset Bounds = <127,195,149,216>;
+    preset Bitmap = Resource::IconTempDeg;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image TempUnit2h
+  {
+    preset Bounds = <271,195,293,216>;
+    preset Bitmap = Resource::IconTempDeg;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image TempUnit3h
+  {
+    preset Bounds = <415,195,437,216>;
+    preset Bitmap = Resource::IconTempDeg;
+  }
+
+  $rect <0,360,200,400>
+  object Core::PropertyObserver WeatherLocObserver
+  {
+    preset OnEvent = OnWeatherLocUpdateSlot;
+    preset Outlet = ^DeviceInterface::WeatherDevice.IsWeatherLocReceived;
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <200,360,400,400>
+  slot OnWeatherLocUpdateSlot
+  {
+    CurrentLocationText.String = DeviceInterface::WeatherDevice.WeatherLocation;
+  }
+
+  $rect <0,310,200,350>
+  object Core::PropertyObserver WeatherInfoObserver
+  {
+    preset OnEvent = OnWeatherInfoUpdateSlot;
+    preset Outlet = ^DeviceInterface::WeatherDevice.IsWeatherInfoReceived;
+  }
+
+  $rect <200,310,400,350>
+  slot OnWeatherInfoUpdateSlot
+  {
+    switch( DeviceInterface::WeatherDevice.WeatherTime )
+    {
+      case 0:
+      {
+        WeatherIcon.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+        ChanceOfRainText.String = string( DeviceInterface::WeatherDevice.RainProbability );
+        MinTempText.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+        MaxTempText.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+      }
+      case 6:
+      {
+        Weather1h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+        ChanceOfRain1h.String = string( DeviceInterface::WeatherDevice.RainProbability );
+        Temp1h.String =  string( DeviceInterface::WeatherDevice.Temperature );
+      }
+      case 7:
+      {
+        Weather2h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+        ChanceOfRain2h.String = string( DeviceInterface::WeatherDevice.RainProbability );
+        Temp2h.String =  string( DeviceInterface::WeatherDevice.Temperature );
+      }
+      case 8:
+      {
+        Weather3h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+        ChanceOfRain3h.String = string( DeviceInterface::WeatherDevice.RainProbability );
+        Temp3h.String =  string( DeviceInterface::WeatherDevice.Temperature );
+      }
+      default:;
+    }
+  }
+
+  $rect <510,80,710,120>
+  array string WeekDayTextArray[ 7 ] =
+  (
+    Default[0] = "Sun";
+    Default[1] = "Mon";
+    Default[2] = "Tue";
+    Default[3] = "Wed";
+    Default[4] = "Thu";
+    Default[5] = "Fri";
+    Default[6] = "Sat";
+  );
+
+  $rect <720,80,920,120>
+  array int32 WeaItemIdxArray[ 4 ] =
+  (
+    Default[0] = 0;
+    Default[1] = 6;
+    Default[2] = 7;
+    Default[3] = 8;
+  );
+
+  $rect <20,20,160,60>
+  object Views::Text TempTextSlash
+  {
+    preset Bounds = <336,59,347,93>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "/";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Color = #A0A0A0FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text MaxTempText
+  {
+    preset Bounds = <347,59,392,93>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Color = #FF2828FF;
+  }
+}
+
+$rect <30,20,230,60>
+$output false
+class WEA01_Main : Components::BaseMainBG
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <250,290,450,330>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <20,20,160,60>
+  object Weather::WeatherList WeatherListView
+  {
+    preset Bounds = <0,36,480,272>;
+    preset PassHomeKey = true;
+  }
+
+  // TODO:
+  // 1. Handle long pressing Home button.
+  // 2. Send BC_motocon_send_weather_request() to get weather info.
+  // 3. Send BC_motocon_send_vehicle_setting_request() to get unix time from phone.
+  note group Note12
+  {
+    attr Bounds = <510,70,970,230>;
+  }
+}
+
+$rect <250,90,450,130>
+$output false
+class WeatherWeekViewUI : Core::Group
+{
+  $rect <10,250,210,290>
+  inherited method Init()
+  {
+    trace "weather week view init";
+    var int32 i;
+    for( i = 0; i < WeaItemIdxArray.size; i++ )
+    {
+      DeviceInterface::WeatherDevice.GetWeatherInfo( WeaItemIdxArray[i] );
+      signal OnWeatherInfoUpdateSlot;
+    }
+  }
+
+  $rect <530,10,730,50>
+  inherited property Bounds = <0,0,480,224>;
+
+  $rect <20,20,160,60>
+  object Views::Image DayOneWeather
+  {
+    preset Bounds = <20,7,84,71>;
+    preset Bitmap = Resource::ForecastWeatherIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayOneText
+  {
+    preset Bounds = <85,8,146,39>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayOneChanceOfRain
+  {
+    preset Bounds = <85,50,127,81>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayOneMinTemp
+  {
+    preset Bounds = <30,76,75,107>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #28AAFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line DivideLineUpLeft
+  {
+    preset Point2 = <155,111>;
+    preset Point1 = <155,5>;
+    preset Width = 2;
+    preset Color = #808080FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line DivideLineUpRight
+  {
+    preset Point2 = <299,111>;
+    preset Point1 = <299,5>;
+    preset Width = 2;
+    preset Color = #808080FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayTwoWeather
+  {
+    preset Bounds = <164,7,228,71>;
+    preset Bitmap = Resource::ForecastWeatherIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayOneRainPerIcon
+  {
+    preset Bounds = <127,54,149,75>;
+    preset Bitmap = Resource::IconWeatherPercentage;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayTwoText
+  {
+    preset Bounds = <229,8,290,39>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayTwoChanceOfRain
+  {
+    preset Bounds = <229,50,271,81>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayTwoRainPerIcon
+  {
+    preset Bounds = <271,54,293,75>;
+    preset Bitmap = Resource::IconWeatherPercentage;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayTwoMinTemp
+  {
+    preset Bounds = <174,76,219,107>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #28AAFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayThreeWeather
+  {
+    preset Bounds = <308,7,372,71>;
+    preset Bitmap = Resource::ForecastWeatherIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayThreeText
+  {
+    preset Bounds = <373,8,434,39>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayThreeChanceOfRain
+  {
+    preset Bounds = <373,50,415,81>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayThreeRainPerIcon
+  {
+    preset Bounds = <415,54,437,75>;
+    preset Bitmap = Resource::IconWeatherPercentage;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayThreeMinTemp
+  {
+    preset Bounds = <318,76,363,107>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #28AAFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image WeatherLineUp
+  {
+    preset Bounds = <0,109,480,111>;
+    preset Bitmap = Resource::WeatherLine;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image WeatherLineDown
+  {
+    preset Bounds = <0,118,480,121>;
+    preset Bitmap = Resource::WeatherLine;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayFourWeather
+  {
+    preset Bounds = <20,122,84,176>;
+    preset Bitmap = Resource::ForecastWeatherIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayFiveWeather
+  {
+    preset Bounds = <164,122,228,176>;
+    preset Bitmap = Resource::ForecastWeatherIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DaySixWeather
+  {
+    preset Bounds = <308,122,372,176>;
+    preset Bitmap = Resource::ForecastWeatherIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayFourText
+  {
+    preset Bounds = <85,123,146,154>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayFiveText
+  {
+    preset Bounds = <229,123,290,154>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DaySixText
+  {
+    preset Bounds = <373,123,434,154>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line DivideLineDownLeft
+  {
+    preset Point2 = <155,224>;
+    preset Point1 = <155,118>;
+    preset Width = 2;
+    preset Color = #808080FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line DivideLineDownRight
+  {
+    preset Point2 = <299,224>;
+    preset Point1 = <299,118>;
+    preset Width = 2;
+    preset Color = #808080FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayFourChanceOfRain
+  {
+    preset Bounds = <85,165,127,196>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayFiveChanceOfRain
+  {
+    preset Bounds = <229,165,271,196>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DaySixChanceOfRain
+  {
+    preset Bounds = <373,165,415,196>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayFourRainPerIcon
+  {
+    preset Bounds = <127,169,149,190>;
+    preset Bitmap = Resource::IconWeatherPercentage;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayFiveRainPerIcon
+  {
+    preset Bounds = <271,169,293,190>;
+    preset Bitmap = Resource::IconWeatherPercentage;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DaySixRainPerIcon
+  {
+    preset Bounds = <415,169,437,190>;
+    preset Bitmap = Resource::IconWeatherPercentage;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayFourMinTemp
+  {
+    preset Bounds = <30,191,75,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #28AAFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayFiveMinTemp
+  {
+    preset Bounds = <174,191,219,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #28AAFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DaySixMinTemp
+  {
+    preset Bounds = <318,191,363,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #28AAFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayOneTempUnit
+  {
+    preset Bounds = <127,80,149,101>;
+    preset Bitmap = Resource::IconTempDeg;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayTwoTempUnit
+  {
+    preset Bounds = <271,80,293,101>;
+    preset Bitmap = Resource::IconTempDeg;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayThreeTempUnit
+  {
+    preset Bounds = <415,80,437,101>;
+    preset Bitmap = Resource::IconTempDeg;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayFourTempUnit
+  {
+    preset Bounds = <127,195,149,216>;
+    preset Bitmap = Resource::IconTempDeg;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DayFiveTempUnit
+  {
+    preset Bounds = <271,195,293,216>;
+    preset Bitmap = Resource::IconTempDeg;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DaySixTempUnit
+  {
+    preset Bounds = <415,195,437,216>;
+    preset Bitmap = Resource::IconTempDeg;
+  }
+
+  $rect <730,10,930,50>
+  array int32 WeaItemIdxArray[ 5 ] =
+  (
+    Default[0] = 1;
+    Default[1] = 2;
+    Default[2] = 3;
+    Default[3] = 4;
+    Default[4] = 5;
+  );
+
+  $rect <10,300,210,340>
+  object Core::PropertyObserver WeatherInfoObserver
+  {
+    preset OnEvent = OnWeatherInfoUpdateSlot;
+    preset Outlet = ^DeviceInterface::WeatherDevice.IsWeatherInfoReceived;
+  }
+
+  $rect <210,300,410,340>
+  slot OnWeatherInfoUpdateSlot
+  {
+    switch( DeviceInterface::WeatherDevice.WeatherTime )
+    {
+      case 1:
+      {
+        DayOneWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+        DayOneChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+        DayOneMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+        DayOneMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+      }
+      case 2:
+      {
+        DayTwoWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+        DayTwoChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+        DayTwoMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+        DayTwoMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+      }
+      case 3:
+      {
+        DayThreeWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+        DayThreeChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+        DayThreeMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+        DayThreeMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+      }
+      case 4:
+      {
+        DayFourWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+        DayFourChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+        DayFourMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+        DayFourMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+      }
+      case 5:
+      {
+        DayFiveWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+        DayFiveChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+        DayFiveMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+        DayFiveMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+      }
+      default:;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayOneTempSlash
+  {
+    preset Bounds = <75,76,85,107>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "/";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #A0A0A0FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayOneMaxTemp
+  {
+    preset Bounds = <85,76,127,107>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #FF2828FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayTwoTempSlash
+  {
+    preset Bounds = <219,76,229,107>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "/";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #A0A0A0FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayTwoMaxTemp
+  {
+    preset Bounds = <229,76,271,107>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #FF2828FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayThreeTempSlash
+  {
+    preset Bounds = <363,76,373,107>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "/";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #A0A0A0FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayThreeMaxTemp
+  {
+    preset Bounds = <373,76,415,107>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #FF2828FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayFourTempSlash
+  {
+    preset Bounds = <75,191,85,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "/";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #A0A0A0FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayFourMaxTemp
+  {
+    preset Bounds = <85,191,127,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #FF2828FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayFiveTempSlash
+  {
+    preset Bounds = <219,191,229,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "/";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #A0A0A0FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayFiveMaxTemp
+  {
+    preset Bounds = <229,191,271,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #FF2828FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DaySixTempSlash
+  {
+    preset Bounds = <363,191,373,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "/";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #A0A0A0FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DaySixMaxTemp
+  {
+    preset Bounds = <373,191,415,222>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #FF2828FF;
+  }
+}
+
+$rect <250,20,450,60>
+$output false
+class WeatherList : Components::BaseComponent
+{
+  $rect <20,280,220,320>
+  inherited property Bounds = <0,0,480,236>;
+
+  $rect <270,380,470,420>
+  inherited method OnShortDownKeyActivated()
+  {
+    var int32 NextItemIdx = VerticalList.SelectedItem + 1;
+    if( NextItemIdx < VerticalList.NoOfItems )
+    {
+      VerticalList.SelectedItem = NextItemIdx;
+      PageScrollEffect.Value1 = VerticalList.ScrollOffset;
+      PageScrollEffect.Value2 = ( -1 ) * VerticalList.Bounds.h;
+      PageScrollEffect.Enabled = true;
+    }
+  }
+
+  $rect <270,330,470,370>
+  inherited method OnShortUpKeyActivated()
+  {
+    var int32 PrevItemIdx = VerticalList.SelectedItem - 1;
+    if( PrevItemIdx >= 0 )
+    {
+      VerticalList.SelectedItem = PrevItemIdx;
+      PageScrollEffect.Value1 = VerticalList.ScrollOffset;
+      PageScrollEffect.Value2 = 0;
+      PageScrollEffect.Enabled = true;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Core::VerticalList VerticalList
+  {
+    preset Bounds = <0,2,435,226>;
+    preset OnLoadItem = OnLoadItem;
+    preset SelectedItem = 0;
+    preset ItemHeight = 224;
+    preset NoOfItems = 2;
+    preset ItemClass = Weather::WeatherItemWrapper;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::ArrowScrollBar ArrowScrollBar
+  {
+    preset Bounds = <441,5,473,221>;
+    preset Visible = true;
+    preset NoOfPages = 2;
+  }
+
+  // This method is called by 'VerticalList' every time the list loads or updates \
+  // an item.
+  $rect <270,280,470,320>
+  slot OnLoadItem
+  {
+    var int32 itemNo = VerticalList.Item;
+    var Weather::WeatherItemWrapper item = (Weather::WeatherItemWrapper)VerticalList.View;
+    if( item != null )
+    {
+      item.ItemIdx = itemNo;
+      switch( itemNo )
+      {
+        case 0: item.ItemClass = Weather::WeatherDayViewUI;
+        case 1: item.ItemClass = Weather::WeatherWeekViewUI;
+        default:;
+      }
+      item.Bounds.size = point( VerticalList.Bounds.w, VerticalList.ItemHeight );
+    }
+  }
+
+  $rect <500,280,750,320>
+  object Effects::Int32Effect PageScrollEffect
+  {
+    preset OnFinished = OnPageScrolledSlot;
+    preset Exponent = 4.19;
+    preset Timing = Effects::Timing.Exp_Out;
+    preset NoOfCycles = 1;
+    preset CycleDuration = 200;
+    preset InitialDelay = 50;
+    preset Outlet = ^VerticalList.ScrollOffset;
+  }
+
+  $rect <500,330,750,370>
+  slot OnPageScrolledSlot
+  {
+    ArrowScrollBar.CurrentPageIdx = VerticalList.SelectedItem;
+  }
+}
+
+$rect <490,20,690,60>
+$output false
+class WeatherItemWrapper : Core::Group
+{
+  $rect <10,270,210,310>
+  inherited property Bounds = <0,0,441,224>;
+
+  $rect <10,320,210,360>
+  property class ItemClass = null;
+
+  $rect <10,360,210,400>
+  onset ItemClass
+  {
+    if( pure ItemClass != value )
+    {
+      // Remember the property's new value.
+      pure ItemClass = value;
+
+      // Remove the old embedded item, if any ...
+      if( CountViews() > 0 )
+      {
+        Remove( FindNextView( null, Core::ViewState[] ) );
+      }
+
+      switch( ItemIdx )
+      {
+        case 0:
+        {
+          var Weather::WeatherDayViewUI Item = ( Weather::WeatherDayViewUI )new value;
+          Add( Item, 0 );
+        }
+        case 1:
+        {
+          var Weather::WeatherWeekViewUI Item = ( Weather::WeatherWeekViewUI )new value;
+          Add( Item, 0 );
+        }
+        default:;
+      }
+    }
+  }
+
+  $rect <230,270,430,310>
+  var int32 ItemIdx;
+}

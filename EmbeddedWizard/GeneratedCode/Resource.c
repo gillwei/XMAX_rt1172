@@ -348,4 +348,46 @@ EW_RES_WITHOUT_VARIANTS( ResourceSeekBar )
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconDDActive' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconDDActive )
 
+/* Include a file containing the bitmap resource : 'Resource::IconTempDegF' */
+#include "_ResourceIconTempDegF.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconTempDegF' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconTempDegF )
+
+/* Include a file containing the bitmap resource : 'Resource::WeatherLine' */
+#include "_ResourceWeatherLine.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::WeatherLine' */
+EW_RES_WITHOUT_VARIANTS( ResourceWeatherLine )
+
+/* Include a file containing the bitmap resource : 'Resource::IconWeatherPercentage' */
+#include "_ResourceIconWeatherPercentage.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconWeatherPercentage' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconWeatherPercentage )
+
+/* Include a file containing the bitmap resource : 'Resource::IconTempDeg' */
+#include "_ResourceIconTempDeg.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconTempDeg' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconTempDeg )
+
+/* Include a file containing the bitmap resource : 'Resource::CurrentWeatherIcon' */
+#include "_ResourceCurrentWeatherIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::CurrentWeatherIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceCurrentWeatherIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::ForecastWeatherIcon' */
+#include "_ResourceForecastWeatherIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ForecastWeatherIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceForecastWeatherIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::IconPerOfRain' */
+#include "_ResourceIconPerOfRain.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconPerOfRain' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconPerOfRain )
+
 /* Embedded Wizard */

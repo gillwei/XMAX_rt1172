@@ -799,3 +799,105 @@ resource Resources::Bitmap IconDDActive
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
+
+$rect <30,890,230,930>
+$output false
+resource Resources::Bitmap IconTempDegF
+{
+  attr bitmapfile FileName = .\Res\weather\mark_wea_deg_f.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,940,230,980>
+$output false
+resource Resources::Bitmap IconTempDegC
+{
+  attr bitmapfile FileName = .\Res\weather\mark_wea_deg_c.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <240,840,440,880>
+$output false
+resource Resources::Bitmap WeatherLine
+{
+  attr bitmapfile FileName = .\Res\weather\weather_line.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <240,890,460,930>
+$output false
+resource Resources::Bitmap IconWeatherPercentage
+{
+  attr bitmapfile FileName = .\Res\weather\mark_wea_per.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <240,940,440,980>
+$output false
+resource Resources::Bitmap IconTempDeg
+{
+  attr bitmapfile FileName = .\Res\weather\mark_wea_deg.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <470,840,670,880>
+$output false
+resource Resources::Bitmap CurrentWeatherIcon
+{
+  attr bitmapfile FileName = .\Res\weather\weather_icon_93x.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <93,93>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <470,900,670,940>
+$output false
+resource Resources::Bitmap ForecastWeatherIcon
+{
+  attr bitmapfile FileName = .\Res\weather\weather_icon_64x.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <64,64>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,840,230,880>
+$output false
+resource Resources::Bitmap IconPerOfRain
+{
+  attr bitmapfile FileName = .\Res\weather\mark_wea_per_icon.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// Weather
+note group Note11
+{
+  attr Bounds = <10,790,1100,1030>;
+}

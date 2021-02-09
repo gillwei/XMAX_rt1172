@@ -43,6 +43,7 @@
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 #include "_ViewsWallpaper.h"
+#include "_WeatherWEA01_Main.h"
 #include "Core.h"
 #include "DeviceInterface.h"
 #include "Effects.h"
@@ -420,7 +421,11 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
     break;
 
     case EnumLauncherItemWEATHER :
-      ;
+    {
+      ItemDialog = ((ComponentsBaseComponent)EwNewObject( WeatherWEA01_Main, 0 ));
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
+      0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    }
     break;
 
     case EnumLauncherItemSETTINGS :

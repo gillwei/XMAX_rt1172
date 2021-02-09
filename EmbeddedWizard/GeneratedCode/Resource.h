@@ -189,6 +189,27 @@ EW_DECLARE_BITMAP_RES( ResourceSeekBar )
 /* Bitmap resource : 'Resource::IconDDActive' */
 EW_DECLARE_BITMAP_RES( ResourceIconDDActive )
 
+/* Bitmap resource : 'Resource::IconTempDegF' */
+EW_DECLARE_BITMAP_RES( ResourceIconTempDegF )
+
+/* Bitmap resource : 'Resource::WeatherLine' */
+EW_DECLARE_BITMAP_RES( ResourceWeatherLine )
+
+/* Bitmap resource : 'Resource::IconWeatherPercentage' */
+EW_DECLARE_BITMAP_RES( ResourceIconWeatherPercentage )
+
+/* Bitmap resource : 'Resource::IconTempDeg' */
+EW_DECLARE_BITMAP_RES( ResourceIconTempDeg )
+
+/* Bitmap resource : 'Resource::CurrentWeatherIcon' */
+EW_DECLARE_BITMAP_RES( ResourceCurrentWeatherIcon )
+
+/* Bitmap resource : 'Resource::ForecastWeatherIcon' */
+EW_DECLARE_BITMAP_RES( ResourceForecastWeatherIcon )
+
+/* Bitmap resource : 'Resource::IconPerOfRain' */
+EW_DECLARE_BITMAP_RES( ResourceIconPerOfRain )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )
