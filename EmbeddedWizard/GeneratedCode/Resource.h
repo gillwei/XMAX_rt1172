@@ -78,9 +78,6 @@ EW_DECLARE_BITMAP_RES( ResourceArrivalBg )
 /* Bitmap resource : 'Resource::MainBG' */
 EW_DECLARE_BITMAP_RES( ResourceMainBG )
 
-/* Bitmap resource : 'Resource::ListDivider4' */
-EW_DECLARE_BITMAP_RES( ResourceListDivider4 )
-
 /* Bitmap resource : 'Resource::ListDivider3' */
 EW_DECLARE_BITMAP_RES( ResourceListDivider3 )
 
@@ -224,6 +221,9 @@ EW_DECLARE_BITMAP_RES( ResourceIconPerOfRain )
 
 /* Bitmap resource : 'Resource::LauncherBG' */
 EW_DECLARE_BITMAP_RES( ResourceLauncherBG )
+
+/* Bitmap resource : 'Resource::StatusBarDivider' */
+EW_DECLARE_BITMAP_RES( ResourceStatusBarDivider )
 
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_

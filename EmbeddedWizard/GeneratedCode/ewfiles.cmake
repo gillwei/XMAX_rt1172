@@ -30,4 +30,5 @@ set(EMWIFILES
 	"Pop.c" 
 	"Brightness.c" 
 	"Unit.c" 
-	"Info.c")
+	"Info.c" 
+	"StatusBar.c")

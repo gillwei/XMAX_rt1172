@@ -379,15 +379,26 @@ void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClas
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetLocalTime()' */
-void DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this )
+DeviceInterfaceRtcTime DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this )
 {
-  XUInt16 RtcYear = 0;
-  XUInt8 RtcMonth = 0;
-  XUInt8 RtcDay = 0;
-  XUInt8 RtcHour = 0;
-  XUInt8 RtcMinute = 0;
-  XUInt8 RtcSecond = 0;
+  DeviceInterfaceRtcTime CurrentLocalTime;
+  XUInt16 RtcYear;
+  XUInt8 RtcMonth;
+  XUInt8 RtcDay;
+  XUInt8 RtcHour;
+  XUInt8 RtcMinute;
+  XUInt8 RtcSecond;
 
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  CurrentLocalTime = EwNewObject( DeviceInterfaceRtcTime, 0 );
+  RtcYear = 0;
+  RtcMonth = 0;
+  RtcDay = 0;
+  RtcHour = 0;
+  RtcMinute = 0;
+  RtcSecond = 0;
   {
     snvs_lp_srtc_datetime_t srtc_time;
     ew_get_rtc_time( &srtc_time );
@@ -399,27 +410,20 @@ void DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceC
     RtcMinute = srtc_time.minute;
     RtcSecond = srtc_time.second;
   }
-
-  if ( _this->CurrentLocalTime == 0 )
-  {
-    _this->CurrentLocalTime = EwNewObject( DeviceInterfaceRtcTime, 0 );
-  }
-
-  _this->CurrentLocalTime->Year = RtcYear;
-  _this->CurrentLocalTime->Month = RtcMonth;
-  _this->CurrentLocalTime->Day = RtcDay;
-  _this->CurrentLocalTime->Hour = RtcHour;
-  _this->CurrentLocalTime->Minute = RtcMinute;
-  _this->CurrentLocalTime->Second = RtcSecond;
+  CurrentLocalTime->Year = RtcYear;
+  CurrentLocalTime->Month = RtcMonth;
+  CurrentLocalTime->Day = RtcDay;
+  CurrentLocalTime->Hour = RtcHour;
+  CurrentLocalTime->Minute = RtcMinute;
+  CurrentLocalTime->Second = RtcSecond;
+  return CurrentLocalTime;
 }
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
 void DeviceInterfaceSystemDeviceClass_NotifyUpdateLocalTime( DeviceInterfaceSystemDeviceClass _this )
 {
-  DeviceInterfaceSystemDeviceClass_GetLocalTime( _this );
-  CoreSystemEvent_Trigger( &_this->UpdateLocalTimeSystemEvent, ((XObject)_this->CurrentLocalTime ), 
-  0 );
+  CoreSystemEvent_Trigger( &_this->UpdateLocalTimeSystemEvent, 0, 0 );
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyUpdateLocalTime()' */
@@ -446,7 +450,7 @@ EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::SystemDeviceClass' */
-EW_DEFINE_CLASS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass, CurrentLocalTime, 
+EW_DEFINE_CLASS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass, FactoryTestSystemEvent, 
                  FactoryTestSystemEvent, FactoryTestSystemEvent, FactoryTestSystemEvent, 
                  SoftwareVersion, BrightnessLevel, "DeviceInterface::SystemDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceSystemDeviceClass )

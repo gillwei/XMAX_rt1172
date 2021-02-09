@@ -261,3 +261,9 @@ unit Info
 {
   attr Directory = .\;
 }
+
+$rect <520,750,720,790>
+unit StatusBar
+{
+  attr Directory = .\;
+}

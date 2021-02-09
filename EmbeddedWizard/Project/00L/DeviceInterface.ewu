@@ -313,8 +313,10 @@ class SystemDeviceClass : Templates::DeviceClass
   }
 
   $rect <680,120,930,160>
-  method void GetLocalTime()
+  method DeviceInterface::RtcTime GetLocalTime()
   {
+    var DeviceInterface::RtcTime CurrentLocalTime = new DeviceInterface::RtcTime;
+
     $if !$prototyper
       var uint16 RtcYear;
       var uint8 RtcMonth;
@@ -336,11 +338,6 @@ class SystemDeviceClass : Templates::DeviceClass
         RtcSecond = srtc_time.second;
       }
 
-      if( null == CurrentLocalTime )
-      {
-        CurrentLocalTime = new DeviceInterface::RtcTime;
-      }
-
       CurrentLocalTime.Year = RtcYear;
       CurrentLocalTime.Month = RtcMonth;
       CurrentLocalTime.Day = RtcDay;
@@ -348,6 +345,8 @@ class SystemDeviceClass : Templates::DeviceClass
       CurrentLocalTime.Minute = RtcMinute;
       CurrentLocalTime.Second = RtcSecond;
     $endif
+
+    return CurrentLocalTime;
   }
 
   // This method is intended to be called by the device to notify the GUI application \
@@ -356,15 +355,11 @@ class SystemDeviceClass : Templates::DeviceClass
   $output true
   method void NotifyUpdateLocalTime()
   {
-    GetLocalTime();
-    UpdateLocalTimeSystemEvent.Trigger( CurrentLocalTime, false );
+    UpdateLocalTimeSystemEvent.Trigger( null, false );
   }
 
-  $rect <680,220,930,260>
-  object Core::SystemEvent UpdateLocalTimeSystemEvent;
-
   $rect <680,170,930,210>
-  var DeviceInterface::RtcTime CurrentLocalTime;
+  object Core::SystemEvent UpdateLocalTimeSystemEvent;
 
   $rect <870,570,1070,610>
   property string QrCodeText;

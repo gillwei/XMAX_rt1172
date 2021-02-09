@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef Components_H
-#define Components_H
+#ifndef StatusBar_H
+#define StatusBar_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,14 +42,13 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
-#include "_ComponentsBaseMainBG.h"
-#include "_ComponentsDDModeMask.h"
+#include "_StatusBarClock.h"
+#include "_StatusBarMain.h"
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* Components_H */
+#endif /* StatusBar_H */
 
 /* Embedded Wizard */

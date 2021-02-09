@@ -1,0 +1,92 @@
+﻿$version 10.00
+
+$rect <20,10,220,50>
+$output false
+class Main : Core::Group
+{
+  $rect <0,50,200,90>
+  inherited property Bounds = <0,0,480,38>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Background
+  {
+    preset Bounds = <0,0,480,38>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,36,480,38>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
+  }
+
+  $rect <20,20,160,60>
+  object StatusBar::Clock Clock
+  {
+    preset Bounds = <11,0,93,38>;
+  }
+}
+
+$rect <20,60,220,100>
+$output false
+class Clock : Core::Group
+{
+  $rect <0,50,200,90>
+  inherited property Bounds = <0,0,82,38>;
+
+  $rect <20,20,160,60>
+  object Views::Text ClockHourText
+  {
+    preset Bounds = <0,1,37,38>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium32pt;
+    preset Color = #FFFFFFFF;
+    preset Visible = true;
+  }
+
+  $rect <210,100,480,140>
+  slot OnUpdateLocalTimeSlot
+  {
+    var DeviceInterface::RtcTime CurrentTime = DeviceInterface::SystemDevice.GetLocalTime();
+
+    if( CurrentTime.Hour > 12 )
+    {
+      CurrentTime.Hour -= 12;
+    }
+    ClockHourText.String = string( CurrentTime.Hour );
+    ClockMinuteText.String = string( CurrentTime.Minute, 2 );
+    ClockColonText.Visible = !ClockColonText.Visible;
+  }
+
+  $rect <210,50,480,90>
+  object Core::SystemEventHandler OnUpdateLocalTimeEventHandler
+  {
+    preset OnEvent = OnUpdateLocalTimeSlot;
+    preset Event = DeviceInterface::SystemDevice.UpdateLocalTimeSystemEvent;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ClockMinuteText
+  {
+    preset Bounds = <45,1,82,38>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium32pt;
+    preset Color = #FFFFFFFF;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ClockColonText
+  {
+    preset Bounds = <37,1,48,38>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = ":";
+    preset Font = Fonts::NotoSansMedium32pt;
+    preset Color = #FFFFFFFF;
+    preset Visible = false;
+  }
+}

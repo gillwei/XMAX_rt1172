@@ -28,3 +28,4 @@ module Pop                      file "Pop.c";
 module Brightness               file "Brightness.c";
 module Unit                     file "Unit.c";
 module Info                     file "Info.c";
+module StatusBar                file "StatusBar.c";

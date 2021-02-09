@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _ComponentsStatusBar_H
-#define _ComponentsStatusBar_H
+#ifndef _StatusBarClock_H
+#define _StatusBarClock_H
 
 #ifdef __cplusplus
   extern "C"
@@ -44,15 +44,7 @@
 
 #include "_CoreGroup.h"
 #include "_CoreSystemEventHandler.h"
-#include "_ViewsImage.h"
-#include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-
-/* Forward declaration of the class Components::StatusBar */
-#ifndef _ComponentsStatusBar_
-  EW_DECLARE_CLASS( ComponentsStatusBar )
-#define _ComponentsStatusBar_
-#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -96,19 +88,23 @@
 #define _GraphicsCanvas_
 #endif
 
+/* Forward declaration of the class StatusBar::Clock */
+#ifndef _StatusBarClock_
+  EW_DECLARE_CLASS( StatusBarClock )
+#define _StatusBarClock_
+#endif
 
-/* Deklaration of class : 'Components::StatusBar' */
-EW_DEFINE_FIELDS( ComponentsStatusBar, CoreGroup )
-  EW_OBJECT  ( Background,      ViewsRectangle )
-  EW_OBJECT  ( TitleText,       ViewsText )
-  EW_OBJECT  ( Divider,         ViewsImage )
-  EW_OBJECT  ( IconWarning,     ViewsImage )
-  EW_OBJECT  ( TimeText,        ViewsText )
+
+/* Deklaration of class : 'StatusBar::Clock' */
+EW_DEFINE_FIELDS( StatusBarClock, CoreGroup )
+  EW_OBJECT  ( ClockHourText,   ViewsText )
   EW_OBJECT  ( OnUpdateLocalTimeEventHandler, CoreSystemEventHandler )
-EW_END_OF_FIELDS( ComponentsStatusBar )
+  EW_OBJECT  ( ClockMinuteText, ViewsText )
+  EW_OBJECT  ( ClockColonText,  ViewsText )
+EW_END_OF_FIELDS( StatusBarClock )
 
-/* Virtual Method Table (VMT) for the class : 'Components::StatusBar' */
-EW_DEFINE_METHODS( ComponentsStatusBar, CoreGroup )
+/* Virtual Method Table (VMT) for the class : 'StatusBar::Clock' */
+EW_DEFINE_METHODS( StatusBarClock, CoreGroup )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -152,16 +148,15 @@ EW_DEFINE_METHODS( ComponentsStatusBar, CoreGroup )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-EW_END_OF_METHODS( ComponentsStatusBar )
+EW_END_OF_METHODS( StatusBarClock )
 
-/* 'C' function for method : 'Components::StatusBar.OnUpdateLocalTimeSlot()' */
-void ComponentsStatusBar_OnUpdateLocalTimeSlot( ComponentsStatusBar _this, XObject 
-  sender );
+/* 'C' function for method : 'StatusBar::Clock.OnUpdateLocalTimeSlot()' */
+void StatusBarClock_OnUpdateLocalTimeSlot( StatusBarClock _this, XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _ComponentsStatusBar_H */
+#endif /* _StatusBarClock_H */
 
 /* Embedded Wizard */

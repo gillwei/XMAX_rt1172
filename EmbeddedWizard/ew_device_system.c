@@ -272,9 +272,10 @@ static void update_time_task_main
 {
 TickType_t last_wake_ticks;
 
+last_wake_ticks = xTaskGetTickCount();
+
 while( 1 )
     {
-    last_wake_ticks = xTaskGetTickCount();
     is_update_time = 1;
     EwBspEventTrigger();
     vTaskDelayUntil( &last_wake_ticks, update_time_period_ticks );

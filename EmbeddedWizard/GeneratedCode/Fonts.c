@@ -63,4 +63,10 @@ EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkJpMedium80pt )
 /* Table with links to derived variants of the font resource : 'Fonts::NotoSansCjkJpMedium22pt' */
 EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkJpMedium22pt )
 
+/* Include a file containing the font resource : 'Fonts::NotoSansMedium32pt' */
+#include "_FontsNotoSansMedium32pt.h"
+
+/* Table with links to derived variants of the font resource : 'Fonts::NotoSansMedium32pt' */
+EW_RES_WITHOUT_VARIANTS( FontsNotoSansMedium32pt )
+
 /* Embedded Wizard */

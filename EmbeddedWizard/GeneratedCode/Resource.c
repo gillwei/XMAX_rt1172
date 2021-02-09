@@ -113,12 +113,6 @@ EW_RES_WITHOUT_VARIANTS( ResourceArrivalBg )
 /* Table with links to derived variants of the bitmap resource : 'Resource::MainBG' */
 EW_RES_WITHOUT_VARIANTS( ResourceMainBG )
 
-/* Include a file containing the bitmap resource : 'Resource::ListDivider4' */
-#include "_ResourceListDivider4.h"
-
-/* Table with links to derived variants of the bitmap resource : 'Resource::ListDivider4' */
-EW_RES_WITHOUT_VARIANTS( ResourceListDivider4 )
-
 /* Include a file containing the bitmap resource : 'Resource::ListDivider3' */
 #include "_ResourceListDivider3.h"
 
@@ -419,5 +413,11 @@ EW_RES_WITHOUT_VARIANTS( ResourceIconPerOfRain )
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::LauncherBG' */
 EW_RES_WITHOUT_VARIANTS( ResourceLauncherBG )
+
+/* Include a file containing the bitmap resource : 'Resource::StatusBarDivider' */
+#include "_ResourceStatusBarDivider.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::StatusBarDivider' */
+EW_RES_WITHOUT_VARIANTS( ResourceStatusBarDivider )
 
 /* Embedded Wizard */

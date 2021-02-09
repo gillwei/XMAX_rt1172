@@ -61,7 +61,6 @@
 
 /* Deklaration of class : 'DeviceInterface::SystemDeviceClass' */
 EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
-  EW_VARIABLE( CurrentLocalTime, DeviceInterfaceRtcTime )
   EW_OBJECT  ( FactoryTestSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( FactoryResetTimer, CoreTimer )
   EW_OBJECT  ( QrCodeSystemEvent, CoreSystemEvent )
@@ -187,7 +186,7 @@ void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClas
   XInt32 pixelnum );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetLocalTime()' */
-void DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this );
+DeviceInterfaceRtcTime DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this );
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */

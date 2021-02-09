@@ -29,62 +29,48 @@
 #include "_ComponentsBaseComponent.h"
 #include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
-#include "_ComponentsStatusBar.h"
 #include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
-#include "_DeviceInterfaceRtcTime.h"
-#include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectSlideTransitionNoFade.h"
 #include "_EffectsTransition.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuVerticalMenu.h"
 #include "_ResourcesBitmap.h"
-#include "_ResourcesFont.h"
 #include "_ViewsBorder.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 #include "Components.h"
 #include "Core.h"
 #include "DeviceInterface.h"
 #include "Effect.h"
 #include "Enum.h"
-#include "Fonts.h"
 #include "Resource.h"
-#include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000068, /* ratio 80.77 % */
+  0x00000060, /* ratio 83.33 % */
   0xB8002300, 0x800D6452, 0x00F20032, 0x80107100, 0x006E869D, 0x112859D0, 0x3A001BC0,
-  0x40000228, 0x8C916060, 0x24782F1B, 0x13648002, 0x34C8008B, 0xC006193C, 0x1906001C,
-  0xC690015A, 0x62004D25, 0x9869B000, 0x0346E191, 0xF4466B1E, 0x4068B1B9, 0x00000000
+  0x70000228, 0x22116061, 0xB1364000, 0xC34C8008, 0xCC006191, 0xA1906001, 0x54690015,
+  0x062004C2, 0x19869B00, 0xE0346E19, 0x9D446631, 0x0406831B, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XStringRes _Const0000 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0001 = {{ 0, 0 }, { 480, 32 }};
-static const XColor _Const0002 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0003 = {{ 50, 0 }, { 420, 30 }};
-static const XRect _Const0004 = {{ 0, 30 }, { 480, 32 }};
-static const XRect _Const0005 = {{ 174, 0 }, { 204, 30 }};
-static const XRect _Const0006 = {{ 2, 0 }, { 80, 30 }};
-static const XColor _Const0007 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XStringRes _Const0008 = { _StringsDefault0, 0x0013 };
-static const XRect _Const0009 = {{ 0, 0 }, { 480, 272 }};
-static const XRect _Const000A = {{ 0, 182 }, { 480, 272 }};
-static const XRect _Const000B = {{ 0, 32 }, { 480, 182 }};
-static const XRect _Const000C = {{ 0, 36 }, { 480, 272 }};
-static const XStringRes _Const000D = { _StringsDefault0, 0x0017 };
-static const XStringRes _Const000E = { _StringsDefault0, 0x002E };
-static const XRect _Const000F = {{ 0, 0 }, { 480, 236 }};
-static const XColor _Const0010 = { 0x00, 0x00, 0x00, 0xCD };
-static const XRect _Const0011 = {{ 195, 62 }, { 285, 152 }};
+static const XRect _Const0001 = {{ 0, 0 }, { 480, 272 }};
+static const XRect _Const0002 = {{ 0, 182 }, { 480, 272 }};
+static const XRect _Const0003 = {{ 0, 38 }, { 480, 182 }};
+static const XColor _Const0004 = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0005 = {{ 0, 36 }, { 480, 272 }};
+static const XStringRes _Const0006 = { _StringsDefault0, 0x0013 };
+static const XStringRes _Const0007 = { _StringsDefault0, 0x002A };
+static const XRect _Const0008 = {{ 0, 0 }, { 480, 236 }};
+static const XColor _Const0009 = { 0x00, 0x00, 0x00, 0xCD };
+static const XRect _Const000A = {{ 195, 62 }, { 285, 152 }};
 
 /* Initializer for the class 'Components::BaseComponent' */
 void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink, XHandle aArg )
@@ -502,156 +488,6 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, KeyHandler, KeyHandler, Key
   ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( ComponentsBaseComponent )
 
-/* Initializer for the class 'Components::StatusBar' */
-void ComponentsStatusBar__Init( ComponentsStatusBar _this, XObject aLink, XHandle aArg )
-{
-  /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
-
-  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ComponentsStatusBar );
-
-  /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->Background, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TitleText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->IconWarning, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TimeText, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->OnUpdateLocalTimeEventHandler, &_this->_XObject, 0 );
-
-  /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ComponentsStatusBar );
-
-  /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0001 );
-  CoreRectView__OnSetBounds( &_this->Background, _Const0001 );
-  ViewsRectangle_OnSetColor( &_this->Background, _Const0002 );
-  CoreRectView__OnSetBounds( &_this->TitleText, _Const0003 );
-  ViewsText_OnSetAlignment( &_this->TitleText, ViewsTextAlignmentAlignHorzLeft | 
-  ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->TitleText, 0 );
-  CoreRectView__OnSetBounds( &_this->Divider, _Const0004 );
-  ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
-  | ViewsImageAlignmentScaleToFit );
-  CoreRectView__OnSetBounds( &_this->IconWarning, _Const0005 );
-  ViewsImage_OnSetAlignment( &_this->IconWarning, ViewsImageAlignmentAlignHorzCenter 
-  | ViewsImageAlignmentAlignVertCenter | ViewsImageAlignmentScaleToFit );
-  ViewsImage_OnSetVisible( &_this->IconWarning, 0 );
-  CoreRectView__OnSetBounds( &_this->TimeText, _Const0006 );
-  ViewsText_OnSetAlignment( &_this->TimeText, ViewsTextAlignmentAlignHorzLeft | 
-  ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->TimeText, 0 );
-  ViewsText_OnSetColor( &_this->TimeText, _Const0007 );
-  ViewsText_OnSetVisible( &_this->TimeText, 1 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->TitleText ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->IconWarning ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->TimeText ), 0 );
-  ViewsText_OnSetFont( &_this->TitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
-  ResourcesFont ));
-  ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceListDivider4, 
-  ResourcesBitmap ));
-  ViewsImage_OnSetBitmap( &_this->IconWarning, EwLoadResource( &ResourceIconWarning, 
-  ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->TimeText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
-  ResourcesFont ));
-  _this->OnUpdateLocalTimeEventHandler.OnEvent = EwNewSlot( _this, ComponentsStatusBar_OnUpdateLocalTimeSlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->OnUpdateLocalTimeEventHandler, &EwGetAutoObject( 
-  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->UpdateLocalTimeSystemEvent );
-}
-
-/* Re-Initializer for the class 'Components::StatusBar' */
-void ComponentsStatusBar__ReInit( ComponentsStatusBar _this )
-{
-  /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
-
-  /* ... then re-construct all embedded objects */
-  ViewsRectangle__ReInit( &_this->Background );
-  ViewsText__ReInit( &_this->TitleText );
-  ViewsImage__ReInit( &_this->Divider );
-  ViewsImage__ReInit( &_this->IconWarning );
-  ViewsText__ReInit( &_this->TimeText );
-  CoreSystemEventHandler__ReInit( &_this->OnUpdateLocalTimeEventHandler );
-}
-
-/* Finalizer method for the class 'Components::StatusBar' */
-void ComponentsStatusBar__Done( ComponentsStatusBar _this )
-{
-  /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
-
-  /* Finalize all embedded objects */
-  ViewsRectangle__Done( &_this->Background );
-  ViewsText__Done( &_this->TitleText );
-  ViewsImage__Done( &_this->Divider );
-  ViewsImage__Done( &_this->IconWarning );
-  ViewsText__Done( &_this->TimeText );
-  CoreSystemEventHandler__Done( &_this->OnUpdateLocalTimeEventHandler );
-
-  /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
-}
-
-/* 'C' function for method : 'Components::StatusBar.OnUpdateLocalTimeSlot()' */
-void ComponentsStatusBar_OnUpdateLocalTimeSlot( ComponentsStatusBar _this, XObject 
-  sender )
-{
-  DeviceInterfaceRtcTime CurrentTime;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  CurrentTime = EwCastObject( _this->OnUpdateLocalTimeEventHandler.Context, DeviceInterfaceRtcTime );
-
-  if ( CurrentTime != 0 )
-  {
-    ViewsText_OnSetString( &_this->TimeText, EwConcatString( EwConcatString( EwNewStringInt( 
-    CurrentTime->Hour, 2, 10 ), EwLoadString( &_Const0008 )), EwNewStringInt( CurrentTime->Minute, 
-    2, 10 )));
-  }
-}
-
-/* Variants derived from the class : 'Components::StatusBar' */
-EW_DEFINE_CLASS_VARIANTS( ComponentsStatusBar )
-EW_END_OF_CLASS_VARIANTS( ComponentsStatusBar )
-
-/* Virtual Method Table (VMT) for the class : 'Components::StatusBar' */
-EW_DEFINE_CLASS( ComponentsStatusBar, CoreGroup, Background, Background, Background, 
-                 Background, _None, _None, "Components::StatusBar" )
-  CoreRectView_initLayoutContext,
-  CoreView_GetRoot,
-  CoreGroup_Draw,
-  CoreView_HandleEvent,
-  CoreGroup_CursorHitTest,
-  CoreRectView_ArrangeView,
-  CoreRectView_MoveView,
-  CoreRectView_GetExtent,
-  CoreGroup_ChangeViewState,
-  CoreGroup_OnSetBounds,
-  CoreGroup_OnSetFocus,
-  CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
-  CoreGroup_OnSetEnabled,
-  CoreGroup_OnSetOpacity,
-  CoreGroup_IsCurrentDialog,
-  CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
-  CoreGroup_DispatchEvent,
-  CoreGroup_BroadcastEvent,
-  CoreGroup_UpdateLayout,
-  CoreGroup_UpdateViewState,
-  CoreGroup_InvalidateArea,
-  CoreGroup_CountViews,
-  CoreGroup_FindNextView,
-  CoreGroup_FindSiblingView,
-  CoreGroup_RestackTop,
-  CoreGroup_Restack,
-  CoreGroup_Remove,
-  CoreGroup_Add,
-EW_END_OF_CLASS( ComponentsStatusBar )
-
 /* Initializer for the class 'Components::BaseMainBG' */
 void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHandle aArg )
 {
@@ -672,13 +508,13 @@ void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHan
   _this->_VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0009 );
-  CoreRectView__OnSetBounds( &_this->MainBottomBG, _Const000A );
-  CoreRectView__OnSetBounds( &_this->BlackBG, _Const000B );
-  ViewsRectangle_OnSetColor( &_this->BlackBG, _Const0002 );
+  CoreRectView__OnSetBounds( _this, _Const0001 );
+  CoreRectView__OnSetBounds( &_this->MainBottomBG, _Const0002 );
+  CoreRectView__OnSetBounds( &_this->BlackBG, _Const0003 );
+  ViewsRectangle_OnSetColor( &_this->BlackBG, _Const0004 );
   CoreSystemEventHandler_OnSetEnabled( &_this->DDModeStateChangedHandler, 0 );
   CoreView_OnSetStackingPriority((CoreView)&_this->DDModeMask, 1 );
-  CoreRectView__OnSetBounds( &_this->DDModeMask, _Const000C );
+  CoreRectView__OnSetBounds( &_this->DDModeMask, _Const0005 );
   CoreGroup__OnSetEnabled( &_this->DDModeMask, 0 );
   CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, 0 );
   CoreTimer_OnSetPeriod( &_this->HideFocusFrameTimer, 50 );
@@ -783,8 +619,8 @@ void ComponentsBaseMainBG_UpdateDDModeMask( ComponentsBaseMainBG _this )
   {
     CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )));
-    EwTrace( "%s%b%s%$", EwLoadString( &_Const000D ), CoreGroup_OnGetVisible((CoreGroup)&_this->DDModeMask ), 
-      EwLoadString( &_Const000E ), EwClassOf(((XObject)_this )));
+    EwTrace( "%s%b%s%$", EwLoadString( &_Const0006 ), CoreGroup_OnGetVisible((CoreGroup)&_this->DDModeMask ), 
+      EwLoadString( &_Const0007 ), EwClassOf(((XObject)_this )));
   }
 }
 
@@ -992,12 +828,12 @@ void ComponentsDDModeMask__Init( ComponentsDDModeMask _this, XObject aLink, XHan
   _this->_VMT = EW_CLASS( ComponentsDDModeMask );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const000F );
+  CoreRectView__OnSetBounds( _this, _Const0008 );
   CoreView_OnSetStackingPriority((CoreView)&_this->DDModeBG, 0 );
-  CoreRectView__OnSetBounds( &_this->DDModeBG, _Const000F );
-  ViewsRectangle_OnSetColor( &_this->DDModeBG, _Const0010 );
+  CoreRectView__OnSetBounds( &_this->DDModeBG, _Const0008 );
+  ViewsRectangle_OnSetColor( &_this->DDModeBG, _Const0009 );
   CoreView_OnSetStackingPriority((CoreView)&_this->DDModeIcon, 0 );
-  CoreRectView__OnSetBounds( &_this->DDModeIcon, _Const0011 );
+  CoreRectView__OnSetBounds( &_this->DDModeIcon, _Const000A );
   CoreGroup__Add( _this, ((CoreView)&_this->DDModeBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DDModeIcon ), 0 );
   ViewsImage_OnSetBitmap( &_this->DDModeIcon, EwLoadResource( &ResourceIconDDActive, 

@@ -490,19 +490,16 @@ void DevelopmentDEV_RealTimeClock_OnUpdateLocalTimeSlot( DevelopmentDEV_RealTime
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  CurrentTime = EwCastObject( _this->OnUpdateLocalTimeEventHandler.Context, DeviceInterfaceRtcTime );
-
-  if ( CurrentTime != 0 )
-  {
-    ViewsText_OnSetString( &_this->TimeText, EwConcatString( EwConcatString( EwConcatString( 
-    EwConcatString( EwConcatString( EwConcatString( EwConcatString( EwConcatString( 
-    EwConcatString( EwConcatString( EwNewStringInt( CurrentTime->Year, 4, 10 ), 
-    EwLoadString( &_Const0009 )), EwNewStringInt( CurrentTime->Month, 2, 10 )), 
-    EwLoadString( &_Const0009 )), EwNewStringInt( CurrentTime->Day, 2, 10 )), EwLoadString( 
-    &_Const000A )), EwNewStringInt( CurrentTime->Hour, 2, 10 )), EwLoadString( &_Const000B )), 
-    EwNewStringInt( CurrentTime->Minute, 2, 10 )), EwLoadString( &_Const000B )), 
-    EwNewStringInt( CurrentTime->Second, 2, 10 )));
-  }
+  CurrentTime = DeviceInterfaceSystemDeviceClass_GetLocalTime( EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ));
+  ViewsText_OnSetString( &_this->TimeText, EwConcatString( EwConcatString( EwConcatString( 
+  EwConcatString( EwConcatString( EwConcatString( EwConcatString( EwConcatString( 
+  EwConcatString( EwConcatString( EwNewStringInt( CurrentTime->Year, 4, 10 ), EwLoadString( 
+  &_Const0009 )), EwNewStringInt( CurrentTime->Month, 2, 10 )), EwLoadString( &_Const0009 )), 
+  EwNewStringInt( CurrentTime->Day, 2, 10 )), EwLoadString( &_Const000A )), EwNewStringInt( 
+  CurrentTime->Hour, 2, 10 )), EwLoadString( &_Const000B )), EwNewStringInt( CurrentTime->Minute, 
+  2, 10 )), EwLoadString( &_Const000B )), EwNewStringInt( CurrentTime->Second, 2, 
+  10 )));
 }
 
 /* Variants derived from the class : 'Development::DEV_RealTimeClock' */

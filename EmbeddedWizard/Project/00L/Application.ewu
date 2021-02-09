@@ -37,8 +37,6 @@ class Application : Core::Root
       GetRoot().Remove( Disclaimer );
     }
 
-    StatusBar.StackingPriority = 1;
-
     //TODO: switch to the last page saved in EEPROM
     GetRoot().SwitchToDialog( new Home::HOM11_TachoVisualizer, null, null, null, null, null, null, null, null, null, false );
   }
@@ -110,9 +108,9 @@ class Application : Core::Root
   }
 
   $rect <20,20,160,60>
-  object Components::StatusBar StatusBar
+  object StatusBar::Main StatusBar
   {
-    preset Bounds = <0,0,480,32>;
+    preset Bounds = <0,0,480,38>;
   }
 
   // For status bar

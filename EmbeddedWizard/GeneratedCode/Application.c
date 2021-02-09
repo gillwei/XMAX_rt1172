@@ -26,7 +26,6 @@
 
 #include "ewlocale.h"
 #include "_ApplicationApplication.h"
-#include "_ComponentsStatusBar.h"
 #include "_CoreGroup.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreRoot.h"
@@ -46,6 +45,7 @@
 #include "_LauncherLNC_Main.h"
 #include "_NavigationMain.h"
 #include "_SettingsBtFwUpdateDialog.h"
+#include "_StatusBarMain.h"
 #include "_TopTOP01_Disclaimer.h"
 #include "Application.h"
 #include "DeviceInterface.h"
@@ -62,7 +62,7 @@ static const unsigned int _StringsDefault0[] =
 
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
-static const XRect _Const0001 = {{ 0, 0 }, { 480, 32 }};
+static const XRect _Const0001 = {{ 0, 0 }, { 480, 38 }};
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x0018 };
 
@@ -77,7 +77,7 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
 
   /* ... then construct all embedded objects */
   CoreSystemEventHandler__Init( &_this->FactoryTestEventHandler, &_this->_XObject, 0 );
-  ComponentsStatusBar__Init( &_this->StatusBar, &_this->_XObject, 0 );
+  StatusBarMain__Init( &_this->StatusBar, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->BtFwStatusObserver, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->DDModeTestTimer, &_this->_XObject, 0 );
 
@@ -112,7 +112,7 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->FactoryTestEventHandler );
-  ComponentsStatusBar__ReInit( &_this->StatusBar );
+  StatusBarMain__ReInit( &_this->StatusBar );
   CorePropertyObserver__ReInit( &_this->BtFwStatusObserver );
   CoreTimer__ReInit( &_this->DDModeTestTimer );
 }
@@ -125,7 +125,7 @@ void ApplicationApplication__Done( ApplicationApplication _this )
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->FactoryTestEventHandler );
-  ComponentsStatusBar__Done( &_this->StatusBar );
+  StatusBarMain__Done( &_this->StatusBar );
   CorePropertyObserver__Done( &_this->BtFwStatusObserver );
   CoreTimer__Done( &_this->DDModeTestTimer );
 
@@ -156,7 +156,6 @@ void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _th
     CoreGroup__Remove( CoreView__GetRoot( _this ), ((CoreView)Disclaimer ));
   }
 
-  CoreView_OnSetStackingPriority((CoreView)&_this->StatusBar, 1 );
   CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
   HomeHOM11_TachoVisualizer, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 
   0 );

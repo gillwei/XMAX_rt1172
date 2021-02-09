@@ -125,19 +125,16 @@ class DEV_RealTimeClock : Components::BaseMainBG
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
-  $rect <530,120,820,160>
+  $rect <530,120,810,160>
   slot OnUpdateLocalTimeSlot
   {
-    var DeviceInterface::RtcTime CurrentTime = ( DeviceInterface::RtcTime )OnUpdateLocalTimeEventHandler.Context;
-    if( null != CurrentTime )
-    {
-      TimeText.String = string( CurrentTime.Year, 4 ) + "/" + string( CurrentTime.Month, 2 ) + "/"+ string( CurrentTime.Day, 2 ) + " "
-                        + string( CurrentTime.Hour, 2 ) + ":" + string( CurrentTime.Minute, 2 ) + ":" + string( CurrentTime.Second, 2 );
+    var DeviceInterface::RtcTime CurrentTime = DeviceInterface::SystemDevice.GetLocalTime();
 
-    }
+    TimeText.String = string( CurrentTime.Year, 4 ) + "/" + string( CurrentTime.Month, 2 ) + "/"+ string( CurrentTime.Day, 2 ) + " "
+                      + string( CurrentTime.Hour, 2 ) + ":" + string( CurrentTime.Minute, 2 ) + ":" + string( CurrentTime.Second, 2 );
   }
 
-  $rect <530,70,820,110>
+  $rect <530,70,800,110>
   object Core::SystemEventHandler OnUpdateLocalTimeEventHandler
   {
     preset OnEvent = OnUpdateLocalTimeSlot;

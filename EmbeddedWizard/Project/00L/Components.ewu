@@ -1,6 +1,6 @@
 ﻿$version 10.00
 
-$rect <20,20,260,60>
+$rect <20,20,220,60>
 $output false
 class BaseComponent : Core::Group
 {
@@ -248,76 +248,7 @@ class BaseComponent : Core::Group
   }
 }
 
-$rect <20,140,260,180>
-$output false
-class StatusBar : Core::Group
-{
-  $rect <0,70,200,110>
-  inherited property Bounds = <0,0,480,32>;
-
-  $rect <20,20,160,60>
-  object Views::Rectangle Background
-  {
-    preset Bounds = <0,0,480,32>;
-    preset Color = #000000FF;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Text TitleText
-  {
-    preset Bounds = <50,0,420,30>;
-    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
-    preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium28pt;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Image Divider
-  {
-    preset Bounds = <0,30,480,32>;
-    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
-    preset Bitmap = Resource::ListDivider4;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Image IconWarning
-  {
-    preset Bounds = <174,0,204,30>;
-    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter, ScaleToFit];
-    preset Bitmap = Resource::IconWarning;
-    preset Visible = false;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Text TimeText
-  {
-    preset Bounds = <2,0,80,30>;
-    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
-    preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium28pt;
-    preset Color = #FFFFFFFF;
-    preset Visible = true;
-  }
-
-  $rect <220,120,510,160>
-  slot OnUpdateLocalTimeSlot
-  {
-    var DeviceInterface::RtcTime CurrentTime = ( DeviceInterface::RtcTime )OnUpdateLocalTimeEventHandler.Context;
-    if( null != CurrentTime )
-    {
-      TimeText.String = string( CurrentTime.Hour, 2 ) + ":" + string( CurrentTime.Minute, 2 );
-    }
-  }
-
-  $rect <220,70,510,110>
-  object Core::SystemEventHandler OnUpdateLocalTimeEventHandler
-  {
-    preset OnEvent = OnUpdateLocalTimeSlot;
-    preset Event = DeviceInterface::SystemDevice.UpdateLocalTimeSystemEvent;
-  }
-}
-
-$rect <60,70,300,110>
+$rect <20,70,220,110>
 $output false
 class BaseMainBG : Components::BaseComponent
 {
@@ -365,7 +296,7 @@ class BaseMainBG : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Rectangle BlackBG
   {
-    preset Bounds = <0,32,480,182>;
+    preset Bounds = <0,38,480,182>;
     preset Color = #000000FF;
   }
 
@@ -563,7 +494,7 @@ class BaseMainBG : Components::BaseComponent
   var Core::Direction SlideDirection;
 }
 
-$rect <20,190,220,230>
+$rect <20,170,220,210>
 $output false
 class DDModeMask : Core::Group
 {
