@@ -69,7 +69,7 @@ note group Note3
 // Project Units
 note group Note5
 {
-  attr Bounds = <270,140,730,710>;
+  attr Bounds = <270,140,730,760>;
 }
 
 // This is a profile member for the project. This profile controls the code generation \
@@ -240,6 +240,12 @@ unit Weather
 
 $rect <520,650,720,690>
 unit Pop
+{
+  attr Directory = .\;
+}
+
+$rect <290,700,490,740>
+unit Brightness
 {
   attr Directory = .\;
 }

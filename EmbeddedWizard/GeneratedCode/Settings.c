@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_BrightnessBRT01_BrightnessSettingMenu.h"
 #include "_ComponentsBaseComponent.h"
 #include "_ComponentsBaseMainBG.h"
 #include "_CoreGroup.h"
@@ -207,9 +208,6 @@ void SettingsSET01_MainSettingMenu__Init( SettingsSET01_MainSettingMenu _this, X
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 9 );
-  MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
   _this->Settings[ 0 ] = EnumMainSettingItemConnection;
   _this->Settings[ 1 ] = EnumMainSettingItemClock;
   _this->Settings[ 2 ] = EnumMainSettingItemBrightness;
@@ -219,6 +217,9 @@ void SettingsSET01_MainSettingMenu__Init( SettingsSET01_MainSettingMenu _this, X
   _this->Settings[ 6 ] = EnumMainSettingItemSystemInfo;
   _this->Settings[ 7 ] = EnumMainSettingItemLegalInfo;
   _this->Settings[ 8 ] = EnumMainSettingItemReset;
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 9 );
+  MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
 
   /* Call the user defined constructor */
   SettingsSET01_MainSettingMenu_Init( _this, aArg );
@@ -380,7 +381,8 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
     break;
 
     case EnumMainSettingItemBrightness :
-      ;
+      Dialog = ((ComponentsBaseComponent)EwNewObject( BrightnessBRT01_BrightnessSettingMenu, 
+      0 ));
     break;
 
     case EnumMainSettingItemUnit :
@@ -495,9 +497,9 @@ void SettingsSET03_ConnectionSettingMenu__Init( SettingsSET03_ConnectionSettingM
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  _this->Super2.SlideOutEffectEnabled = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
-  _this->Super2.SlideOutEffectEnabled = 1;
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsGEN_bluetooth ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsSET03_y_connect_app_pairing ));
 }

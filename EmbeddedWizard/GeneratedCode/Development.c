@@ -668,7 +668,7 @@ EW_END_OF_CLASS( DevelopmentDEV_Bluetooth )
 void DevelopmentDEV_TFTBrightness__Init( DevelopmentDEV_TFTBrightness _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_TFTBrightness );
@@ -716,7 +716,7 @@ void DevelopmentDEV_TFTBrightness__Init( DevelopmentDEV_TFTBrightness _this, XOb
 void DevelopmentDEV_TFTBrightness__ReInit( DevelopmentDEV_TFTBrightness _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->CheckerboardImage );
@@ -728,7 +728,7 @@ void DevelopmentDEV_TFTBrightness__ReInit( DevelopmentDEV_TFTBrightness _this )
 void DevelopmentDEV_TFTBrightness__Done( DevelopmentDEV_TFTBrightness _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->CheckerboardImage );
@@ -736,7 +736,7 @@ void DevelopmentDEV_TFTBrightness__Done( DevelopmentDEV_TFTBrightness _this )
   CoreTimer__Done( &_this->HideLevelTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -822,7 +822,7 @@ void DevelopmentDEV_TFTBrightness_OnShortUpKeyActivated( DevelopmentDEV_TFTBrigh
 /* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortHomeKeyActivated()' */
 void DevelopmentDEV_TFTBrightness_OnShortHomeKeyActivated( DevelopmentDEV_TFTBrightness _this )
 {
-  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  CoreGroup__DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
 }
 
@@ -844,7 +844,7 @@ void DevelopmentDEV_TFTBrightness_OnSetBrightnessLevel( DevelopmentDEV_TFTBright
       = value;
     }
 
-    DeviceInterfaceSystemDeviceClass_SetBrightness( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+    DeviceInterfaceSystemDeviceClass_SetTFTDutyCycle( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
     DeviceInterfaceSystemDeviceClass ), _this->BrightnessList[ EwCheckIndex( _this->BrightnessLevel, 
     11 )]);
   }
@@ -873,7 +873,7 @@ EW_DEFINE_CLASS_VARIANTS( DevelopmentDEV_TFTBrightness )
 EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_TFTBrightness )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_TFTBrightness' */
-EW_DEFINE_CLASS( DevelopmentDEV_TFTBrightness, MenuBaseMenuView, CheckerboardImage, 
+EW_DEFINE_CLASS( DevelopmentDEV_TFTBrightness, ComponentsBaseMainBG, CheckerboardImage, 
                  CheckerboardImage, CheckerboardImage, CheckerboardImage, BrightnessLevel, 
                  BrightnessLevel, "Development::DEV_TFTBrightness" )
   CoreRectView_initLayoutContext,
@@ -914,11 +914,6 @@ EW_DEFINE_CLASS( DevelopmentDEV_TFTBrightness, MenuBaseMenuView, CheckerboardIma
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
-  MenuBaseMenuView_LoadItemClass,
-  MenuBaseMenuView_LoadItemTitle,
-  MenuBaseMenuView_OnItemActivate,
-  MenuBaseMenuView_LoadItemChecked,
-  MenuBaseMenuView_LoadItemEnabled,
 EW_END_OF_CLASS( DevelopmentDEV_TFTBrightness )
 
 /* Initializer for the class 'Development::DEV_MotoCon' */

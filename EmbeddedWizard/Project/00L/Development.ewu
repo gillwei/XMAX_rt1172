@@ -189,7 +189,7 @@ class DEV_Bluetooth : Components::BaseMainBG
 
 $rect <20,160,260,200>
 $output false
-class DEV_TFTBrightness : Menu::BaseMenuView
+class DEV_TFTBrightness : Components::BaseMainBG
 {
   $rect <10,340,190,380>
   inherited method Init()
@@ -287,7 +287,7 @@ class DEV_TFTBrightness : Menu::BaseMenuView
       {
         DeviceInterface::SystemDevice.BrightnessLevel = value;
       }
-      DeviceInterface::SystemDevice.SetBrightness( BrightnessList[BrightnessLevel] );
+      DeviceInterface::SystemDevice.SetTFTDutyCycle( BrightnessList[BrightnessLevel] );
     }
   }
 

@@ -60,7 +60,7 @@ resource Resources::Bitmap IconWarning
   attr bitmapmode Mode = Default;
 }
 
-$rect <20,240,220,280>
+$rect <20,230,220,270>
 $output false
 resource Resources::Bitmap LoadingAnimation
 {
@@ -842,6 +842,22 @@ resource Resources::Bitmap IconWeatherPercentage
 {
   attr bitmapfile FileName = .\Res\weather\mark_wea_per.png;
   attr bitmapformat Format = Native;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// Brightness Settings
+note group Note12
+{
+  attr Bounds = <10,1020,251,1220>;
+}
+
+$rect <31,1060,231,1100>
+$output false
+resource Resources::Bitmap TFTBrightnessBase
+{
+  attr bitmapfile FileName = .\Res\brightness\brightness_base2.png;
+  attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
@@ -853,6 +869,16 @@ $output false
 resource Resources::Bitmap IconTempDeg
 {
   attr bitmapfile FileName = .\Res\weather\mark_wea_deg.png;
+  attr bitmapformat Format = Native;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <31,1110,231,1150>
+$output false
+resource Resources::Bitmap MeterBrightnessBase
+{
+  attr bitmapfile FileName = .\Res\brightness\brightness_base.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -879,6 +905,17 @@ resource Resources::Bitmap ForecastWeatherIcon
   attr bitmapfile FileName = .\Res\weather\weather_icon_64x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize = <64,64>;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <31,1160,231,1200>
+$output false
+resource Resources::Bitmap BrightnessBar
+{
+  attr bitmapfile FileName = .\Res\brightness\brightness_bar.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <134,19>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
@@ -899,5 +936,5 @@ resource Resources::Bitmap IconPerOfRain
 // Weather
 note group Note11
 {
-  attr Bounds = <10,790,1100,1030>;
+  attr Bounds = <10,790,1100,1000>;
 }

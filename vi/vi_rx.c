@@ -223,11 +223,11 @@ switch( signal_id )
         break;
     case IL_CAN0_BRTNSS_CTRL_LCD_LV_RXSIG_HANDLE:
         rx_brightness_control.lcd_brightness_level = ( uint8_t )data;
-        /* TODO: notify HMI */
+        EW_notify_vi_data_received( EnumVehicleRxTypeMETER_BRIGHTNESS_LEVEL );
         break;
     case IL_CAN0_BRTNSS_CTRL_TFT_LV_RXSIG_HANDLE:
         rx_brightness_control.tft_brightness_level = ( uint8_t )data;
-        /* TODO: notify HMI */
+        EW_notify_vi_data_received( EnumVehicleRxTypeTFT_BRIGHTNESS_LEVEL );
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -796,6 +796,343 @@ bool VI_is_feature_supported
     )
 {
 return ( ( rx_vehicle_supported_features >> feature ) & 0x1 );
+}
+
+/*********************************************************************
+*
+* @public
+* VI_get_rx_data_uint
+*
+* Get vehicle rx data of uint32 type and validity
+*
+* @param rx_type Rx data type
+* @param data The pointer to the rx data
+* @return Vehicle rx data validity
+*
+*********************************************************************/
+bool VI_get_rx_data_uint
+    (
+    EnumVehicleRxType rx_type,
+    uint32_t*         data
+    )
+{
+bool validity = true;
+
+switch( rx_type )
+    {
+    case EnumVehicleRxTypeENGINE_SPEED:
+        *data = rx_ecu_info.engine_speed;
+        break;
+    case EnumVehicleRxTypeTC_MODE:
+        *data = rx_ecu_info.tc_mode;
+        break;
+    case EnumVehicleRxTypeVVA_INDICATOR:
+        *data = rx_ecu_info.vva_indicator;
+        break;
+    case EnumVehicleRxTypeTFT_BRIGHTNESS_LEVEL:
+        *data = rx_brightness_control.tft_brightness_level;
+        break;
+    case EnumVehicleRxTypeMETER_BRIGHTNESS_LEVEL:
+        *data = rx_brightness_control.lcd_brightness_level;
+        break;
+    case EnumVehicleRxTypeMILEAGE_UNIT:
+        *data = rx_unit_setting.mileage_unit;
+        break;
+    case EnumVehicleRxTypePRESSURE_UNIT:
+        *data = rx_unit_setting.pressure_unit;
+        break;
+    case EnumVehicleRxTypeTEMPERATURE_UNIT:
+        *data = rx_unit_setting.temperature_unit;
+        break;
+    case EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT:
+        *data = rx_unit_setting.fuel_unit;
+        break;
+    case EnumVehicleRxTypeRANGE_DISTANCE:
+        if( INVALID_RANGE_DISTANCE != rx_fuel_rate.range_distance_km )
+            {
+            *data = rx_fuel_rate.range_distance_km;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeAVERAGE_SPEED:
+        if( INVALID_AVERAGE_SPEED != rx_fuel_rate.average_speed_km )
+            {
+            *data = rx_fuel_rate.average_speed_km;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeAPS_ANGLE:
+        *data = ( rx_vehicle_info.aps_angle_deg * 125 ) >> 10;
+        break;
+    case EnumVehicleRxTypeVEHICLE_SPEED_REAL:
+        *data = rx_vehicle_info.vehicle_speed_real;
+        break;
+    case EnumVehicleRxTypeVEHICLE_SPEED_METER:
+        *data = rx_vehicle_info.vehicle_speed_meter;
+        break;
+    case EnumVehicleRxTypeCLOCK_ADJUSTMENT_STATUS:
+        *data = rx_vehicle_info.clock_adj_status;
+        break;
+    case EnumVehicleRxTypeCRUISE_SPEED:
+        if( INVALID_CRUISE_SPEED != rx_vehicle_info.cruise_speed )
+            {
+            *data = rx_vehicle_info.cruise_speed;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeLOW_FUEL_WARNING:
+        *data = rx_vehicle_info.low_fuel_warning;
+        break;
+    case EnumVehicleRxTypeFUEL_RESERVE:
+        *data = rx_vehicle_info.fuel_reserve;
+        break;
+    case EnumVehicleRxTypeODO_TRIP_DISPLAY:
+        *data = rx_vehicle_info.odo_trip_display;
+        break;
+    case EnumVehicleRxTypeF_TRIP_HARD_RESET:
+        *data = rx_vehicle_info.fuel_trip_hard_reset;
+        break;
+    case EnumVehicleRxTypeMAINTENANCE_TRIP1:
+        if( INVALID_MAINTENANCE_TRIP != rx_maintenance_trip.trip1_km )
+            {
+            *data = rx_maintenance_trip.trip1_km;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeMAINTENANCE_TRIP2:
+        if( INVALID_MAINTENANCE_TRIP != rx_maintenance_trip.trip2_km )
+            {
+            *data = rx_maintenance_trip.trip2_km;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeMAINTENANCE_TRIP3:
+        if( INVALID_MAINTENANCE_TRIP != rx_maintenance_trip.trip3_km )
+            {
+            *data = rx_maintenance_trip.trip3_km;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeGRIP_WARMER_VALUE_LOW:
+        if( INVALID_HEATER_VALUE != rx_grip_warmer_status.value_low )
+            {
+            *data = rx_grip_warmer_status.value_low;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeGRIP_WARMER_VALUE_MIDDLE:
+        if( INVALID_HEATER_VALUE != rx_grip_warmer_status.value_middle )
+            {
+            *data = rx_grip_warmer_status.value_middle;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH:
+        if( INVALID_HEATER_VALUE != rx_grip_warmer_status.value_high )
+            {
+            *data = rx_grip_warmer_status.value_high;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeSEAT_HEATER_VALUE_LOW:
+        if( INVALID_HEATER_VALUE != rx_seat_heater_status.value_low )
+            {
+            *data = rx_seat_heater_status.value_low;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeSEAT_HEATER_VALUE_MIDDLE:
+        if( INVALID_HEATER_VALUE != rx_seat_heater_status.value_middle )
+            {
+            *data = rx_seat_heater_status.value_middle;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeSEAT_HEATER_VALUE_HIGH:
+        if( INVALID_HEATER_VALUE != rx_seat_heater_status.value_high )
+            {
+            *data = rx_seat_heater_status.value_high;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeGRIP_WARMER_STATUS:
+        *data = rx_grip_warmer_status.setting;
+        break;
+    case EnumVehicleRxTypeHEAT_SEATERS_TATUS:
+        *data = rx_seat_heater_status.setting;
+        break;
+    default:
+        PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );
+        validity = false;
+        break;
+    }
+return validity;
+}
+
+/*********************************************************************
+*
+* @public
+* VI_get_rx_data_float
+*
+* Return vehicle rx data of float type
+*
+* @param rx_type Rx data type
+* @param data The pointer to the rx data
+* @return Vehicle rx data validity
+*
+*********************************************************************/
+bool VI_get_rx_data_float
+    (
+    EnumVehicleRxType rx_type,
+    float*            data
+    )
+{
+bool validity = true;
+
+switch( rx_type )
+    {
+    case EnumVehicleRxTypeFUEL_RATE_INSTANT:
+        if( INVALID_INSTANT_CONSUMPTION != rx_fuel_rate.instant_consumption )
+            {
+            *data = rx_fuel_rate.instant_consumption * 0.1;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeFUEL_RATE_AVERAGE:
+        if( INVALID_AVERAGE_CONSUMPTION != rx_fuel_rate.average_consumption )
+            {
+            *data = rx_fuel_rate.average_consumption * 0.1;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeODOMETER_VALUE:
+        if( INVALID_ODO_VALUE != rx_odo_trip.odo_value_km )
+            {
+            *data = rx_odo_trip.odo_value_km * 0.1;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeTRIP1_VALUE:
+        if( INVALID_TRIP1_VALUE != rx_odo_trip.trip1_value_km )
+            {
+            *data = rx_odo_trip.trip1_value_km * 0.1;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeTRIP2_VALUE:
+        if( INVALID_TRIP2_VALUE != rx_odo_trip.trip2_value_km )
+            {
+            *data = rx_odo_trip.trip2_value_km * 0.1;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeFUEL_CONSUMPTION:
+        if( INVALID_FUEL_CONS != rx_vehicle_info.fuel_cons )
+            {
+            *data = rx_vehicle_info.fuel_cons * 0.1;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeAIR_TEMPERATURE:
+        if( INVALID_AIR_TEMPERATURE != rx_vehicle_info.air_temperature )
+            {
+            *data = rx_vehicle_info.air_temperature * 160 / 256.0 - 30;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeCOOLANT_TEMPERATURE:
+        if( INVALID_COOLANT_TEMPERATURE != rx_vehicle_info.coolant_temperature )
+            {
+            *data = rx_vehicle_info.coolant_temperature * 160 / 256.0 - 30;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeBATTERY_VOLTAGE:
+        if( INVALID_BATTERY_VOLTAGE != rx_vehicle_info.battery_voltage )
+            {
+            *data = rx_vehicle_info.battery_voltage * 18.75 / 256.0;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    case EnumVehicleRxTypeF_TRIP:
+        if( INVALID_FUEL_TRIPMETER != rx_vehicle_info.fuel_tripmeter_km )
+            {
+            *data = rx_vehicle_info.fuel_tripmeter_km * 0.1;
+            }
+        else
+            {
+            validity = false;
+            }
+        break;
+    default:
+        PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );
+        validity = false;
+        break;
+    }
+return validity;
 }
 
 /*********************************************************************

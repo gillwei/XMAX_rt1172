@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentDEV_TFTBrightness_H
-#define _DevelopmentDEV_TFTBrightness_H
+#ifndef _BrightnessBRT03_MeterBrightness_H
+#define _BrightnessBRT03_MeterBrightness_H
 
 #ifdef __cplusplus
   extern "C"
@@ -49,7 +49,12 @@
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
+
+/* Forward declaration of the class Brightness::BRT03_MeterBrightness */
+#ifndef _BrightnessBRT03_MeterBrightness_
+  EW_DECLARE_CLASS( BrightnessBRT03_MeterBrightness )
+#define _BrightnessBRT03_MeterBrightness_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -81,12 +86,6 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::DEV_TFTBrightness */
-#ifndef _DevelopmentDEV_TFTBrightness_
-  EW_DECLARE_CLASS( DevelopmentDEV_TFTBrightness )
-#define _DevelopmentDEV_TFTBrightness_
-#endif
-
 /* Forward declaration of the class Effects::Fader */
 #ifndef _EffectsFader_
   EW_DECLARE_CLASS( EffectsFader )
@@ -100,17 +99,17 @@
 #endif
 
 
-/* Deklaration of class : 'Development::DEV_TFTBrightness' */
-EW_DEFINE_FIELDS( DevelopmentDEV_TFTBrightness, ComponentsBaseMainBG )
-  EW_OBJECT  ( CheckerboardImage, ViewsImage )
-  EW_OBJECT  ( LevelText,       ViewsText )
-  EW_OBJECT  ( HideLevelTimer,  CoreTimer )
-  EW_PROPERTY( BrightnessLevel, XInt32 )
-  EW_ARRAY   ( BrightnessList,  XInt32, [11])
-EW_END_OF_FIELDS( DevelopmentDEV_TFTBrightness )
+/* Deklaration of class : 'Brightness::BRT03_MeterBrightness' */
+EW_DEFINE_FIELDS( BrightnessBRT03_MeterBrightness, ComponentsBaseMainBG )
+  EW_OBJECT  ( Base,            ViewsImage )
+  EW_OBJECT  ( LevelBar,        ViewsImage )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
+  EW_VARIABLE( BrightnessLevel, XUInt32 )
+  EW_ARRAY   ( LevelBarBounds,  XRect, [6])
+EW_END_OF_FIELDS( BrightnessBRT03_MeterBrightness )
 
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_TFTBrightness' */
-EW_DEFINE_METHODS( DevelopmentDEV_TFTBrightness, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Brightness::BRT03_MeterBrightness' */
+EW_DEFINE_METHODS( BrightnessBRT03_MeterBrightness, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -141,7 +140,7 @@ EW_DEFINE_METHODS( DevelopmentDEV_TFTBrightness, ComponentsBaseMainBG )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
   EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
-  EW_METHOD( UpdateViewState,   void )( DevelopmentDEV_TFTBrightness _this, XSet 
+  EW_METHOD( UpdateViewState,   void )( BrightnessBRT03_MeterBrightness _this, XSet 
     aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
@@ -155,21 +154,21 @@ EW_DEFINE_METHODS( DevelopmentDEV_TFTBrightness, ComponentsBaseMainBG )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( DevelopmentDEV_TFTBrightness _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( DevelopmentDEV_TFTBrightness _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_TFTBrightness _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( BrightnessBRT03_MeterBrightness _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( BrightnessBRT03_MeterBrightness _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( BrightnessBRT03_MeterBrightness _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-EW_END_OF_METHODS( DevelopmentDEV_TFTBrightness )
+EW_END_OF_METHODS( BrightnessBRT03_MeterBrightness )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void DevelopmentDEV_TFTBrightness_Init( DevelopmentDEV_TFTBrightness _this, XHandle 
-  aArg );
+void BrightnessBRT03_MeterBrightness_Init( BrightnessBRT03_MeterBrightness _this, 
+  XHandle aArg );
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
    component has been changed. This method can be overridden and filled with logic 
@@ -185,33 +184,30 @@ void DevelopmentDEV_TFTBrightness_Init( DevelopmentDEV_TFTBrightness _this, XHan
    state 'on' or 'off' and change accordingly the location of the slider, etc.
    Usually, this method will be invoked automatically by the framework. Optionally 
    you can request its invocation by using the method @InvalidateViewState(). */
-void DevelopmentDEV_TFTBrightness_UpdateViewState( DevelopmentDEV_TFTBrightness _this, 
+void BrightnessBRT03_MeterBrightness_UpdateViewState( BrightnessBRT03_MeterBrightness _this, 
   XSet aState );
 
-/* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortDownKeyActivated()' */
-void DevelopmentDEV_TFTBrightness_OnShortDownKeyActivated( DevelopmentDEV_TFTBrightness _this );
+/* 'C' function for method : 'Brightness::BRT03_MeterBrightness.OnShortDownKeyActivated()' */
+void BrightnessBRT03_MeterBrightness_OnShortDownKeyActivated( BrightnessBRT03_MeterBrightness _this );
 
-/* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortUpKeyActivated()' */
-void DevelopmentDEV_TFTBrightness_OnShortUpKeyActivated( DevelopmentDEV_TFTBrightness _this );
+/* 'C' function for method : 'Brightness::BRT03_MeterBrightness.OnShortUpKeyActivated()' */
+void BrightnessBRT03_MeterBrightness_OnShortUpKeyActivated( BrightnessBRT03_MeterBrightness _this );
 
-/* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortHomeKeyActivated()' */
-void DevelopmentDEV_TFTBrightness_OnShortHomeKeyActivated( DevelopmentDEV_TFTBrightness _this );
+/* 'C' function for method : 'Brightness::BRT03_MeterBrightness.OnShortEnterKeyActivated()' */
+void BrightnessBRT03_MeterBrightness_OnShortEnterKeyActivated( BrightnessBRT03_MeterBrightness _this );
 
-/* 'C' function for method : 'Development::DEV_TFTBrightness.OnSetBrightnessLevel()' */
-void DevelopmentDEV_TFTBrightness_OnSetBrightnessLevel( DevelopmentDEV_TFTBrightness _this, 
-  XInt32 value );
-
-/* 'C' function for method : 'Development::DEV_TFTBrightness.OnHideLevelSlot()' */
-void DevelopmentDEV_TFTBrightness_OnHideLevelSlot( DevelopmentDEV_TFTBrightness _this, 
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void BrightnessBRT03_MeterBrightness_OnVehicleDataReceivedSlot( BrightnessBRT03_MeterBrightness _this, 
   XObject sender );
 
-/* 'C' function for method : 'Development::DEV_TFTBrightness.ShowLevelText()' */
-void DevelopmentDEV_TFTBrightness_ShowLevelText( DevelopmentDEV_TFTBrightness _this );
+/* 'C' function for method : 'Brightness::BRT03_MeterBrightness.UpdateBrightnessLevel()' */
+void BrightnessBRT03_MeterBrightness_UpdateBrightnessLevel( BrightnessBRT03_MeterBrightness _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentDEV_TFTBrightness_H */
+#endif /* _BrightnessBRT03_MeterBrightness_H */
 
 /* Embedded Wizard */

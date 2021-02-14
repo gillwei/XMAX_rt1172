@@ -195,6 +195,80 @@ typedef enum
   EnumVehicleFeatureCRUISE              = 26
 } EnumVehicleFeature;
 
+/* User defined enumeration: 'Enum::VehicleRxType' */
+typedef enum
+{
+  EnumVehicleRxTypeENGINE_SPEED         = 0,
+  EnumVehicleRxTypeTC_MODE              = 1,
+  EnumVehicleRxTypeVVA_INDICATOR        = 2,
+  EnumVehicleRxTypeTFT_BRIGHTNESS_LEVEL = 3,
+  EnumVehicleRxTypeMETER_BRIGHTNESS_LEVEL = 4,
+  EnumVehicleRxTypeMILEAGE_UNIT         = 5,
+  EnumVehicleRxTypePRESSURE_UNIT        = 6,
+  EnumVehicleRxTypeTEMPERATURE_UNIT     = 7,
+  EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT = 8,
+  EnumVehicleRxTypeFUEL_RATE_INSTANT    = 9,
+  EnumVehicleRxTypeFUEL_RATE_AVERAGE    = 10,
+  EnumVehicleRxTypeRANGE_DISTANCE       = 11,
+  EnumVehicleRxTypeAVERAGE_SPEED        = 12,
+  EnumVehicleRxTypeODOMETER_VALUE       = 13,
+  EnumVehicleRxTypeTRIP1_VALUE          = 14,
+  EnumVehicleRxTypeTRIP2_VALUE          = 15,
+  EnumVehicleRxTypeAPS_ANGLE            = 16,
+  EnumVehicleRxTypeVEHICLE_SPEED_REAL   = 17,
+  EnumVehicleRxTypeVEHICLE_SPEED_METER  = 18,
+  EnumVehicleRxTypeFUEL_CONSUMPTION     = 19,
+  EnumVehicleRxTypeCLOCK_ADJUSTMENT_STATUS = 20,
+  EnumVehicleRxTypeAIR_TEMPERATURE      = 21,
+  EnumVehicleRxTypeCOOLANT_TEMPERATURE  = 22,
+  EnumVehicleRxTypeBATTERY_VOLTAGE      = 23,
+  EnumVehicleRxTypeCRUISE_SPEED         = 24,
+  EnumVehicleRxTypeF_TRIP               = 25,
+  EnumVehicleRxTypeLOW_FUEL_WARNING     = 26,
+  EnumVehicleRxTypeFUEL_RESERVE         = 27,
+  EnumVehicleRxTypeODO_TRIP_DISPLAY     = 28,
+  EnumVehicleRxTypeF_TRIP_HARD_RESET    = 29,
+  EnumVehicleRxTypeMAINTENANCE_TRIP1    = 30,
+  EnumVehicleRxTypeMAINTENANCE_TRIP2    = 31,
+  EnumVehicleRxTypeMAINTENANCE_TRIP3    = 32,
+  EnumVehicleRxTypeGRIP_WARMER_VALUE_LOW = 33,
+  EnumVehicleRxTypeGRIP_WARMER_VALUE_MIDDLE = 34,
+  EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH = 35,
+  EnumVehicleRxTypeSEAT_HEATER_VALUE_LOW = 36,
+  EnumVehicleRxTypeSEAT_HEATER_VALUE_MIDDLE = 37,
+  EnumVehicleRxTypeSEAT_HEATER_VALUE_HIGH = 38,
+  EnumVehicleRxTypeGRIP_WARMER_STATUS   = 39,
+  EnumVehicleRxTypeHEAT_SEATERS_TATUS   = 40
+} EnumVehicleRxType;
+
+/* User defined enumeration: 'Enum::VehicleTxType' */
+typedef enum
+{
+  EnumVehicleTxTypeLANGUAGE             = 0,
+  EnumVehicleTxTypeMILEAGE_UNIT         = 1,
+  EnumVehicleTxTypeVEHICLE_SPEED_UNIT   = 2,
+  EnumVehicleTxTypePRESSURE_UNIT        = 3,
+  EnumVehicleTxTypeTEMPERATURE_UNIT     = 4,
+  EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT = 5,
+  EnumVehicleTxTypeFUEL_UNIT            = 6,
+  EnumVehicleTxTypeHEATER_SELECT        = 7,
+  EnumVehicleTxTypeHEATER_LEVEL         = 8,
+  EnumVehicleTxTypeBUTTON_STATUS_AUDIO  = 9,
+  EnumVehicleTxTypeWIND_SCREEN_OPERATION = 10,
+  EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION = 11,
+  EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL = 12,
+  EnumVehicleTxTypeHEAT_SEATER_CHANGE_LEVEL = 13,
+  EnumVehicleTxTypeCHG_METER_INFO       = 14,
+  EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION = 15
+} EnumVehicleTxType;
+
+/* User defined enumeration: 'Enum::DataType' */
+typedef enum
+{
+  EnumDataTypeUINT32                    = 0,
+  EnumDataTypeFLOAT                     = 1
+} EnumDataType;
+
 #ifdef __cplusplus
   }
 #endif

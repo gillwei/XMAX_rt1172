@@ -372,11 +372,23 @@ EW_RES_WITHOUT_VARIANTS( ResourceWeatherLine )
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconWeatherPercentage' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconWeatherPercentage )
 
+/* Include a file containing the bitmap resource : 'Resource::TFTBrightnessBase' */
+#include "_ResourceTFTBrightnessBase.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TFTBrightnessBase' */
+EW_RES_WITHOUT_VARIANTS( ResourceTFTBrightnessBase )
+
 /* Include a file containing the bitmap resource : 'Resource::IconTempDeg' */
 #include "_ResourceIconTempDeg.h"
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconTempDeg' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconTempDeg )
+
+/* Include a file containing the bitmap resource : 'Resource::MeterBrightnessBase' */
+#include "_ResourceMeterBrightnessBase.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::MeterBrightnessBase' */
+EW_RES_WITHOUT_VARIANTS( ResourceMeterBrightnessBase )
 
 /* Include a file containing the bitmap resource : 'Resource::CurrentWeatherIcon' */
 #include "_ResourceCurrentWeatherIcon.h"
@@ -389,6 +401,12 @@ EW_RES_WITHOUT_VARIANTS( ResourceCurrentWeatherIcon )
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::ForecastWeatherIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceForecastWeatherIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::BrightnessBar' */
+#include "_ResourceBrightnessBar.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::BrightnessBar' */
+EW_RES_WITHOUT_VARIANTS( ResourceBrightnessBar )
 
 /* Include a file containing the bitmap resource : 'Resource::IconPerOfRain' */
 #include "_ResourceIconPerOfRain.h"

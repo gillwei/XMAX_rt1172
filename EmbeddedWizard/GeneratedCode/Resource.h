@@ -201,14 +201,23 @@ EW_DECLARE_BITMAP_RES( ResourceWeatherLine )
 /* Bitmap resource : 'Resource::IconWeatherPercentage' */
 EW_DECLARE_BITMAP_RES( ResourceIconWeatherPercentage )
 
+/* Bitmap resource : 'Resource::TFTBrightnessBase' */
+EW_DECLARE_BITMAP_RES( ResourceTFTBrightnessBase )
+
 /* Bitmap resource : 'Resource::IconTempDeg' */
 EW_DECLARE_BITMAP_RES( ResourceIconTempDeg )
+
+/* Bitmap resource : 'Resource::MeterBrightnessBase' */
+EW_DECLARE_BITMAP_RES( ResourceMeterBrightnessBase )
 
 /* Bitmap resource : 'Resource::CurrentWeatherIcon' */
 EW_DECLARE_BITMAP_RES( ResourceCurrentWeatherIcon )
 
 /* Bitmap resource : 'Resource::ForecastWeatherIcon' */
 EW_DECLARE_BITMAP_RES( ResourceForecastWeatherIcon )
+
+/* Bitmap resource : 'Resource::BrightnessBar' */
+EW_DECLARE_BITMAP_RES( ResourceBrightnessBar )
 
 /* Bitmap resource : 'Resource::IconPerOfRain' */
 EW_DECLARE_BITMAP_RES( ResourceIconPerOfRain )

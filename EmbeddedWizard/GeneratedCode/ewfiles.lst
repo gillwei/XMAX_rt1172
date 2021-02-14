@@ -25,3 +25,4 @@ module Home                     file "Home.c";
 module Top                      file "Top.c";
 module Weather                  file "Weather.c";
 module Pop                      file "Pop.c";
+module Brightness               file "Brightness.c";

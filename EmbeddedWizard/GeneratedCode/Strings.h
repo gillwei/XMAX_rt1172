@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/02/16 09:57:50 */
+   Generated: 2021/02/19 14:15:50 */
 EW_DECLARE_CONST( StringsGEN_ok )
 
 /* User defined constant: 'Strings::GEN_cancel' */
@@ -66,6 +66,12 @@ EW_DECLARE_CONST( StringsTOP01_disclaimer )
 
 /* User defined constant: 'Strings::TOP01_accept' */
 EW_DECLARE_CONST( StringsTOP01_accept )
+
+/* User defined constant: 'Strings::BRT01_TFT_display' */
+extern const XStringRes StringsBRT01_TFT_display;
+
+/* User defined constant: 'Strings::BRT01_speed_meter' */
+extern const XStringRes StringsBRT01_speed_meter;
 
 /* User defined constant: 'Strings::GPW01_grip_warmer' */
 extern const XStringRes StringsGPW01_grip_warmer;

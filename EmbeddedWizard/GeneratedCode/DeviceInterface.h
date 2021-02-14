@@ -48,6 +48,7 @@
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
+#include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_DeviceInterfaceWeatherDeviceClass.h"
 

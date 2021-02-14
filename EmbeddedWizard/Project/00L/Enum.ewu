@@ -357,3 +357,195 @@ enum VehicleFeature
   $rect <440,310,640,350>
   item CRUISE;
 }
+
+$rect <260,220,460,260>
+$output false
+enum VehicleRxType
+{
+  $rect <10,10,210,50>
+  item ENGINE_SPEED;
+
+  $rect <10,60,210,100>
+  item TC_MODE;
+
+  $rect <10,110,210,150>
+  item VVA_INDICATOR;
+
+  $rect <10,160,210,200>
+  item TFT_BRIGHTNESS_LEVEL;
+
+  $rect <10,210,210,250>
+  item METER_BRIGHTNESS_LEVEL;
+
+  $rect <10,260,210,300>
+  item MILEAGE_UNIT;
+
+  $rect <10,310,210,350>
+  item PRESSURE_UNIT;
+
+  $rect <10,360,210,400>
+  item TEMPERATURE_UNIT;
+
+  $rect <10,410,210,450>
+  item FUEL_CONSUMPTION_UNIT;
+
+  $rect <10,460,210,500>
+  item FUEL_RATE_INSTANT;
+
+  $rect <220,10,420,50>
+  item FUEL_RATE_AVERAGE;
+
+  $rect <220,60,420,100>
+  item RANGE_DISTANCE;
+
+  $rect <220,110,420,150>
+  item AVERAGE_SPEED;
+
+  $rect <220,160,420,200>
+  item ODOMETER_VALUE;
+
+  $rect <220,210,420,250>
+  item TRIP1_VALUE;
+
+  $rect <220,260,420,300>
+  item TRIP2_VALUE;
+
+  $rect <220,310,420,350>
+  item APS_ANGLE;
+
+  $rect <220,360,420,400>
+  item VEHICLE_SPEED_REAL;
+
+  $rect <220,410,420,450>
+  item VEHICLE_SPEED_METER;
+
+  $rect <220,460,420,500>
+  item FUEL_CONSUMPTION;
+
+  $rect <430,10,630,50>
+  item CLOCK_ADJUSTMENT_STATUS;
+
+  $rect <430,60,630,100>
+  item AIR_TEMPERATURE;
+
+  $rect <430,110,630,150>
+  item COOLANT_TEMPERATURE;
+
+  $rect <430,160,630,200>
+  item BATTERY_VOLTAGE;
+
+  $rect <430,210,630,250>
+  item CRUISE_SPEED;
+
+  $rect <430,260,630,300>
+  item F_TRIP;
+
+  $rect <430,310,630,350>
+  item LOW_FUEL_WARNING;
+
+  $rect <430,360,630,400>
+  item FUEL_RESERVE;
+
+  $rect <430,410,630,450>
+  item ODO_TRIP_DISPLAY;
+
+  $rect <430,460,630,500>
+  item F_TRIP_HARD_RESET;
+
+  $rect <640,10,840,50>
+  item MAINTENANCE_TRIP1;
+
+  $rect <640,60,840,100>
+  item MAINTENANCE_TRIP2;
+
+  $rect <640,110,840,150>
+  item MAINTENANCE_TRIP3;
+
+  $rect <640,160,840,200>
+  item GRIP_WARMER_VALUE_LOW;
+
+  $rect <640,210,840,250>
+  item GRIP_WARMER_VALUE_MIDDLE;
+
+  $rect <640,260,840,300>
+  item GRIP_WARMER_VALUE_HIGH;
+
+  $rect <640,310,840,350>
+  item SEAT_HEATER_VALUE_LOW;
+
+  $rect <640,360,840,400>
+  item SEAT_HEATER_VALUE_MIDDLE;
+
+  $rect <640,410,840,450>
+  item SEAT_HEATER_VALUE_HIGH;
+
+  $rect <640,460,840,500>
+  item GRIP_WARMER_STATUS;
+
+  $rect <850,10,1050,50>
+  item HEAT_SEATERS_TATUS;
+}
+
+$rect <260,270,460,310>
+$output false
+enum VehicleTxType
+{
+  $rect <10,10,210,50>
+  item LANGUAGE;
+
+  $rect <10,60,210,100>
+  item MILEAGE_UNIT;
+
+  $rect <10,110,210,150>
+  item VEHICLE_SPEED_UNIT;
+
+  $rect <10,160,210,200>
+  item PRESSURE_UNIT;
+
+  $rect <10,210,210,250>
+  item TEMPERATURE_UNIT;
+
+  $rect <10,260,210,300>
+  item FUEL_CONSUMPTION_UNIT;
+
+  $rect <10,310,210,350>
+  item FUEL_UNIT;
+
+  $rect <10,360,210,400>
+  item HEATER_SELECT;
+
+  $rect <10,410,210,450>
+  item HEATER_LEVEL;
+
+  $rect <10,460,210,500>
+  item BUTTON_STATUS_AUDIO;
+
+  $rect <220,10,420,50>
+  item WIND_SCREEN_OPERATION;
+
+  $rect <220,60,420,100>
+  item METER_BRIGHTNESS_OPERATION;
+
+  $rect <220,110,420,150>
+  item GRIP_WARMER_CHANGE_LEVEL;
+
+  $rect <220,160,420,200>
+  item HEAT_SEATER_CHANGE_LEVEL;
+
+  $rect <220,210,420,250>
+  item CHG_METER_INFO;
+
+  $rect <220,260,420,300>
+  item TFT_BRIGHTNESS_OPERATION;
+}
+
+$rect <260,320,460,360>
+$output false
+enum DataType
+{
+  $rect <10,10,210,50>
+  item UINT32;
+
+  $rect <10,60,210,100>
+  item FLOAT;
+}

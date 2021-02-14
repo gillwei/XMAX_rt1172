@@ -17,15 +17,20 @@
 #include "ew_bsp_event.h"
 #include "ew_priv.h"
 #include "DeviceInterface.h"
+#include "Enum.h"
 #include "Application.h"
-#include <string.h>
 #include "VI_pub.h"
+#include "semphr.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #ifdef _DeviceInterfaceVehicleDeviceClass_
     typedef int device_function( void );
+#endif
+
+#ifdef _DeviceInterfaceVehicleDeviceClass__NotifyDataReceived_
+    static int ew_notify_vi_data_received( void );
 #endif
 
 #ifdef _DeviceInterfaceVehicleDeviceClass__NotifyDDModeStateChanged_
@@ -43,6 +48,7 @@
 /*--------------------------------------------------------------------
                            MEMORY CONSTANTS
 --------------------------------------------------------------------*/
+#define RX_TYPE_QUEUE_LENGTH    ( 16 )
 
 /*--------------------------------------------------------------------
                                VARIABLES
@@ -52,13 +58,18 @@
 
     device_function* const function_lookup_table[] =
     {
+    #ifdef _DeviceInterfaceVehicleDeviceClass__NotifyDataReceived_
+        ew_notify_vi_data_received,
+    #endif
     #ifdef _DeviceInterfaceVehicleDeviceClass__NotifyDDModeStateChanged_
-        ew_notify_vi_dd_mode_state_changed,
+        ew_notify_vi_dd_mode_state_changed
     #endif
     };
 
     const int num_of_func = sizeof( function_lookup_table )/sizeof( device_function* );
-    static bool is_dd_mode_state_changed = 0;
+    static QueueHandle_t rx_type_queue;
+    static bool is_dd_mode_state_changed = false;
+    static bool is_rx_type_queued = false;
 #endif
 
 /*--------------------------------------------------------------------
@@ -104,6 +115,9 @@ void ew_device_vi_init
        variable to access the driver class during the runtime.
     */
     EwLockObject( device_object );
+
+    rx_type_queue = xQueueCreate( RX_TYPE_QUEUE_LENGTH, sizeof( EnumVehicleRxType ) );
+    configASSERT( NULL != rx_type_queue );
 #endif
 }
 
@@ -191,6 +205,37 @@ return need_update;
 /*********************************************************************
 *
 * @private
+* ew_notify_vi_data_received
+*
+* Notify EW GUI the data received from vehicle info manager
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceVehicleDeviceClass__NotifyDataReceived_
+static int ew_notify_vi_data_received
+    (
+    void
+    )
+{
+int need_update = 0;
+
+if( is_rx_type_queued )
+    {
+    EnumVehicleRxType rx_type;
+    while( pdPASS == xQueueReceive( rx_type_queue, &rx_type, 0 ) )
+        {
+        DeviceInterfaceVehicleDeviceClass_NotifyDataReceived( device_object, rx_type );
+        }
+
+    is_rx_type_queued = 0;
+    need_update = 1;
+    }
+return need_update;
+}
+#endif
+
+/*********************************************************************
+*
+* @private
 * ew_vi_is_feature_supported
 *
 * Get if the vehicle feature is supported
@@ -223,4 +268,30 @@ void EW_notify_dd_mode_state_changed
     is_dd_mode_state_changed = true;
     EwBspEventTrigger();
 #endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_vi_data_received
+*
+* Enqueue the vehicle rx type and notify Embedded Wizard
+*
+* @param rx_type Vehicle rx data type
+*
+*********************************************************************/
+void EW_notify_vi_data_received
+    (
+    EnumVehicleRxType rx_type
+    )
+{
+if( pdTRUE == xQueueSend( rx_type_queue, &rx_type, 0 ) )
+    {
+    is_rx_type_queued = true;
+    EwBspEventTrigger();
+    }
+else
+    {
+    EwPrint( "%s err\r\n", __FUNCTION__ );
+    }
 }

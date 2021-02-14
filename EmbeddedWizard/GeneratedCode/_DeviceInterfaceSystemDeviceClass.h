@@ -133,9 +133,9 @@ void DeviceInterfaceSystemDeviceClass__NotifyFactoryResetComplete( void* _this )
 void DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot( DeviceInterfaceSystemDeviceClass _this, 
   XObject sender );
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetBrightness()' */
-void DeviceInterfaceSystemDeviceClass_SetBrightness( DeviceInterfaceSystemDeviceClass _this, 
-  XInt32 aBrightness );
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetTFTDutyCycle()' */
+void DeviceInterfaceSystemDeviceClass_SetTFTDutyCycle( DeviceInterfaceSystemDeviceClass _this, 
+  XInt32 aDutyCycle );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetBtSoftwareVersion()' */
 XString DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( DeviceInterfaceSystemDeviceClass _this );

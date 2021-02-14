@@ -45,6 +45,12 @@
 #include "_CoreSystemEvent.h"
 #include "_TemplatesDeviceClass.h"
 
+/* Forward declaration of the class DeviceInterface::VehicleDataClass */
+#ifndef _DeviceInterfaceVehicleDataClass_
+  EW_DECLARE_CLASS( DeviceInterfaceVehicleDataClass )
+#define _DeviceInterfaceVehicleDataClass_
+#endif
+
 /* Forward declaration of the class DeviceInterface::VehicleDeviceClass */
 #ifndef _DeviceInterfaceVehicleDeviceClass_
   EW_DECLARE_CLASS( DeviceInterfaceVehicleDeviceClass )
@@ -55,6 +61,7 @@
 /* Deklaration of class : 'DeviceInterface::VehicleDeviceClass' */
 EW_DEFINE_FIELDS( DeviceInterfaceVehicleDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( DDModeStateChangedSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( VehicleDataReceivedSystemEvent, CoreSystemEvent )
   EW_PROPERTY( DDModeActivated, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceVehicleDeviceClass )
 
@@ -78,6 +85,25 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( DeviceInterfaceVeh
 /* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.IsVehicleFeatureSupported()' */
 XBool DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( DeviceInterfaceVehicleDeviceClass _this, 
   XEnum aVehicleFeature );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.SetData()' */
+void DeviceInterfaceVehicleDeviceClass_SetData( DeviceInterfaceVehicleDeviceClass _this, 
+  XEnum aVehicleTxType, XUInt32 aData );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.GetData()' */
+DeviceInterfaceVehicleDataClass DeviceInterfaceVehicleDeviceClass_GetData( DeviceInterfaceVehicleDeviceClass _this, 
+  XEnum aVehicleRxType );
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceVehicleDeviceClass_NotifyDataReceived( DeviceInterfaceVehicleDeviceClass _this, 
+  XEnum aRxType );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::VehicleDeviceClass.NotifyDataReceived()' */
+void DeviceInterfaceVehicleDeviceClass__NotifyDataReceived( void* _this, XEnum aRxType );
+
+/* The following define announces the presence of the method DeviceInterface::VehicleDeviceClass.NotifyDataReceived(). */
+#define _DeviceInterfaceVehicleDeviceClass__NotifyDataReceived_
 
 #ifdef __cplusplus
   }

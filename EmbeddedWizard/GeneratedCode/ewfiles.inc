@@ -27,4 +27,5 @@ EMWIFILES := \
 	Home.c \
 	Top.c \
 	Weather.c \
-	Pop.c
+	Pop.c \
+	Brightness.c

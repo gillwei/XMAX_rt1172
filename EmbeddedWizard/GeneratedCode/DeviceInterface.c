@@ -33,6 +33,7 @@
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
+#include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_DeviceInterfaceWeatherDeviceClass.h"
 #include "_FactoryTestContext.h"
@@ -256,14 +257,14 @@ void DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot( DeviceInterface
   DeviceInterfaceSystemDeviceClass_NotifyFactoryResetComplete( _this );
 }
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetBrightness()' */
-void DeviceInterfaceSystemDeviceClass_SetBrightness( DeviceInterfaceSystemDeviceClass _this, 
-  XInt32 aBrightness )
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetTFTDutyCycle()' */
+void DeviceInterfaceSystemDeviceClass_SetTFTDutyCycle( DeviceInterfaceSystemDeviceClass _this, 
+  XInt32 aDutyCycle )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  PERIPHERAL_pwm_set_display_dutycycle( aBrightness );
+  PERIPHERAL_pwm_set_display_dutycycle( aDutyCycle );
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetBtSoftwareVersion()' */
@@ -1313,6 +1314,7 @@ void DeviceInterfaceVehicleDeviceClass__Init( DeviceInterfaceVehicleDeviceClass 
 
   /* ... then construct all embedded objects */
   CoreSystemEvent__Init( &_this->DDModeStateChangedSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->VehicleDataReceivedSystemEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceVehicleDeviceClass );
@@ -1326,6 +1328,7 @@ void DeviceInterfaceVehicleDeviceClass__ReInit( DeviceInterfaceVehicleDeviceClas
 
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->DDModeStateChangedSystemEvent );
+  CoreSystemEvent__ReInit( &_this->VehicleDataReceivedSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::VehicleDeviceClass' */
@@ -1336,6 +1339,7 @@ void DeviceInterfaceVehicleDeviceClass__Done( DeviceInterfaceVehicleDeviceClass 
 
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->DDModeStateChangedSystemEvent );
+  CoreSystemEvent__Done( &_this->VehicleDataReceivedSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -1381,6 +1385,97 @@ XBool DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( DeviceInterfa
   FeatureId = aVehicleFeature;
   IsSupported = ew_vi_is_feature_supported( FeatureId );
   return IsSupported;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.SetData()' */
+void DeviceInterfaceVehicleDeviceClass_SetData( DeviceInterfaceVehicleDeviceClass _this, 
+  XEnum aVehicleTxType, XUInt32 aData )
+{
+  XInt32 TxTypeId;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  TxTypeId = aVehicleTxType;
+  VI_set_tx_data( TxTypeId, aData );
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.GetData()' */
+DeviceInterfaceVehicleDataClass DeviceInterfaceVehicleDeviceClass_GetData( DeviceInterfaceVehicleDeviceClass _this, 
+  XEnum aVehicleRxType )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+  XInt32 RxTypeId;
+  XBool Validity;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 0 );
+
+  if (((((((((( EnumVehicleRxTypeFUEL_RATE_INSTANT == aVehicleRxType ) || ( EnumVehicleRxTypeFUEL_RATE_AVERAGE 
+      == aVehicleRxType )) || ( EnumVehicleRxTypeODOMETER_VALUE == aVehicleRxType )) 
+      || ( EnumVehicleRxTypeTRIP1_VALUE == aVehicleRxType )) || ( EnumVehicleRxTypeTRIP2_VALUE 
+      == aVehicleRxType )) || ( EnumVehicleRxTypeFUEL_CONSUMPTION == aVehicleRxType )) 
+      || ( EnumVehicleRxTypeAIR_TEMPERATURE == aVehicleRxType )) || ( EnumVehicleRxTypeCOOLANT_TEMPERATURE 
+      == aVehicleRxType )) || ( EnumVehicleRxTypeBATTERY_VOLTAGE == aVehicleRxType )) 
+      || ( EnumVehicleRxTypeF_TRIP == aVehicleRxType ))
+  {
+    VehicleData->DataType = EnumDataTypeFLOAT;
+  }
+
+  RxTypeId = aVehicleRxType;
+  Validity = 0;
+
+  if ( EnumDataTypeFLOAT == VehicleData->DataType )
+  {
+    XFloat RxData = 0.000000f;
+    {
+      float rx_data = 0;
+      Validity = VI_get_rx_data_float( RxTypeId, &rx_data );
+      if( Validity )
+      {
+        RxData = rx_data;
+      }
+    }
+    VehicleData->DataFloat = RxData;
+  }
+  else
+  {
+    XUInt32 RxData = 0;
+    {
+      uint32_t rx_data = 0;
+      Validity = VI_get_rx_data_uint( RxTypeId, &rx_data );
+      if( Validity )
+      {
+        RxData = rx_data;
+      }
+    }
+    VehicleData->DataUInt32 = RxData;
+  }
+
+  VehicleData->Validity = Validity;
+  return VehicleData;
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceVehicleDeviceClass_NotifyDataReceived( DeviceInterfaceVehicleDeviceClass _this, 
+  XEnum aRxType )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 
+    0 );
+
+  VehicleData->RxType = aRxType;
+  CoreSystemEvent_Trigger( &_this->VehicleDataReceivedSystemEvent, ((XObject)VehicleData ), 
+  0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::VehicleDeviceClass.NotifyDataReceived()' */
+void DeviceInterfaceVehicleDeviceClass__NotifyDataReceived( void* _this, XEnum aRxType )
+{
+  DeviceInterfaceVehicleDeviceClass_NotifyDataReceived((DeviceInterfaceVehicleDeviceClass)_this
+  , aRxType );
 }
 
 /* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */
@@ -1559,5 +1654,47 @@ void DeviceInterfaceWeatherDevice__Init( DeviceInterfaceWeatherDeviceClass _this
 /* Table with links to derived variants of the auto object : 'DeviceInterface::WeatherDevice' */
 EW_DEFINE_AUTOOBJECT_VARIANTS( DeviceInterfaceWeatherDevice )
 EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceWeatherDevice )
+
+/* Initializer for the class 'DeviceInterface::VehicleDataClass' */
+void DeviceInterfaceVehicleDataClass__Init( DeviceInterfaceVehicleDataClass _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceVehicleDataClass );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( DeviceInterfaceVehicleDataClass );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  _this->DataType = EnumDataTypeUINT32;
+}
+
+/* Re-Initializer for the class 'DeviceInterface::VehicleDataClass' */
+void DeviceInterfaceVehicleDataClass__ReInit( DeviceInterfaceVehicleDataClass _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::VehicleDataClass' */
+void DeviceInterfaceVehicleDataClass__Done( DeviceInterfaceVehicleDataClass _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_Super );
+}
+
+/* Variants derived from the class : 'DeviceInterface::VehicleDataClass' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceVehicleDataClass )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDataClass )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::VehicleDataClass' */
+EW_DEFINE_CLASS( DeviceInterfaceVehicleDataClass, XObject, _None, _None, _None, 
+                 _None, _None, _None, "DeviceInterface::VehicleDataClass" )
+EW_END_OF_CLASS( DeviceInterfaceVehicleDataClass )
 
 /* Embedded Wizard */

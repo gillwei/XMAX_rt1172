@@ -1,0 +1,402 @@
+﻿$version 10.00
+
+$rect <310,10,570,50>
+$output false
+class BRT01_BrightnessSettingMenu : Menu::BaseMenuView
+{
+  $rect <510,10,710,50>
+  inherited method Init()
+  {
+    var int32 NoOfItems = 1;
+
+    $if !$prototyper
+      if( DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.METER_BRIGHTNESS_ADJ ) )
+      {
+        NoOfItems++;
+      }
+    $else
+      NoOfItems++;
+    $endif
+
+    Menu.NoOfItems = NoOfItems;
+  }
+
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <10,350,210,390>
+  inherited property DDModeEnabled = true;
+
+  $rect <10,400,210,440>
+  inherited var SlideOutEffectEnabled = true;
+
+  $rect <510,60,710,100>
+  inherited method LoadItemClass()
+  {
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+      ItemClass = Menu::ItemBase;
+    }
+    return ItemClass;
+  }
+
+  $rect <510,110,710,150>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    switch( aItemNo )
+    {
+      case 0: Title = Strings::BRT01_TFT_display;
+      case 1: Title = Strings::BRT01_speed_meter;
+      default:;
+    }
+    return Title;
+  }
+
+  $rect <510,160,710,200>
+  inherited method OnItemActivate()
+  {
+    // suppress warning
+    if( null == aMenuItem )
+    {
+      // empty body
+    }
+
+    switch( aItemNo )
+    {
+      case 0: SlideInDialog( new Brightness::BRT02_TFTBrightness );
+      case 1: SlideInDialog( new Brightness::BRT03_MeterBrightness );
+      default:;
+    }
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset DDModeEnabled = true;
+    preset NoOfItems = 9;
+    preset ArrowScrollBarVisible = true;
+  }
+
+  // TODO
+  // 1. Gray out "Digital meter" when timeout2 happened.
+  note group Note2
+  {
+    attr Bounds = <500,240,960,330>;
+  }
+
+  $reorder OnSetDDModeEnabled 1
+  $reorder LoadItemClass 3
+  $reorder LoadItemTitle 3
+  $reorder OnItemActivate 2
+  $reorder LoadItemChecked 2
+  $reorder LoadItemEnabled 2
+}
+
+$rect <310,60,570,100>
+$output false
+class BRT02_TFTBrightness : Components::BaseMainBG
+{
+  $rect <210,290,390,330>
+  inherited method Init()
+  {
+    UpdateBrightnessLevel();
+  }
+
+  $rect <0,290,180,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <210,340,390,380>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+
+    if( Brightness::TFT_BRIGHTNESS_LEVEL_MIN <= BrightnessLevel &&
+        Brightness::TFT_BRIGHTNESS_LEVEL_MAX >= BrightnessLevel )
+    {
+      LevelBar.Bounds = LevelBarBounds[( int32 )BrightnessLevel - 1];
+      LevelBar.Visible = true;
+    }
+  }
+
+  $rect <210,390,440,430>
+  inherited method OnShortDownKeyActivated()
+  {
+    if( Brightness::TFT_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
+    {
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::LEVEL_DOWN_OPCODE );
+    }
+
+    $if $prototyper
+      if( Brightness::TFT_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
+      {
+        BrightnessLevel--;
+        InvalidateViewState();
+      }
+    $endif
+  }
+
+  $rect <210,440,440,480>
+  inherited method OnShortUpKeyActivated()
+  {
+    if( Brightness::TFT_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
+    {
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::LEVEL_UP_OPCODE );
+    }
+
+    $if $prototyper
+      if( Brightness::TFT_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
+      {
+        BrightnessLevel++;
+        InvalidateViewState();
+      }
+    $endif
+  }
+
+  $rect <210,490,440,530>
+  inherited method OnShortEnterKeyActivated()
+  {
+    // back to brightness setting menu when short pressing enter key
+    OnShortHomeKeyActivated();
+  }
+
+  $rect <0,340,180,380>
+  inherited property DDModeEnabled = true;
+
+  $rect <0,390,200,430>
+  inherited var SlideOutEffectEnabled = true;
+
+  // TODO
+  // 1. Gray out brightness bar when CAN timeout error happened.
+  note group Note2
+  {
+    attr Bounds = <510,100,970,220>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Base
+  {
+    preset Bounds = <45,60,435,231>;
+    preset Bitmap = Resource::TFTBrightnessBase;
+  }
+
+  $rect <450,290,650,330>
+  array rect LevelBarBounds[ 3 ] =
+  (
+    Default[0] = <173,205,307,224>;
+    Default[1] = <173,135,307,154>;
+    Default[2] = <173,65,307,84>;
+  );
+
+  $rect <20,20,160,60>
+  object Views::Image LevelBar
+  {
+    preset Bounds = <173,65,307,84>;
+    preset FrameNumber = 1;
+    preset Bitmap = Resource::BrightnessBar;
+    preset Visible = false;
+  }
+
+  $rect <450,440,730,480>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <450,490,730,530>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData &&
+        Enum::VehicleRxType.TFT_BRIGHTNESS_LEVEL == VehicleData.RxType )
+    {
+      UpdateBrightnessLevel();
+    }
+  }
+
+  $rect <450,390,660,430>
+  var uint32 BrightnessLevel = 0;
+
+  $rect <450,340,660,380>
+  method void UpdateBrightnessLevel()
+  {
+    //TODO: get CAN timeout error state
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TFT_BRIGHTNESS_LEVEL );
+    if( BrightnessLevel != VehicleData.DataUInt32 )
+    {
+      BrightnessLevel = VehicleData.DataUInt32;
+      InvalidateViewState();
+    }
+  }
+}
+
+$rect <10,60,290,100>
+$output false
+const uint32 TFT_BRIGHTNESS_LEVEL_MAX = 3;
+
+$rect <10,10,290,50>
+$output false
+const uint32 TFT_BRIGHTNESS_LEVEL_MIN = 1;
+
+$rect <10,160,290,200>
+$output false
+const uint32 METER_BRIGHTNESS_LEVEL_MAX = 6;
+
+$rect <10,110,290,150>
+$output false
+const uint32 METER_BRIGHTNESS_LEVEL_MIN = 1;
+
+$rect <10,260,240,300>
+$output false
+const uint32 LEVEL_UP_OPCODE = 2;
+
+$rect <10,210,240,250>
+$output false
+const uint32 LEVEL_DOWN_OPCODE = 1;
+
+$rect <310,110,570,150>
+$output false
+class BRT03_MeterBrightness : Components::BaseMainBG
+{
+  $rect <210,290,390,330>
+  inherited method Init()
+  {
+    UpdateBrightnessLevel();
+  }
+
+  $rect <0,290,180,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <210,340,390,380>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+
+    if( Brightness::METER_BRIGHTNESS_LEVEL_MIN <= BrightnessLevel &&
+        Brightness::METER_BRIGHTNESS_LEVEL_MAX >= BrightnessLevel )
+    {
+      LevelBar.Bounds = LevelBarBounds[( int32 )BrightnessLevel - 1];
+      LevelBar.Visible = true;
+    }
+  }
+
+  $rect <210,390,440,430>
+  inherited method OnShortDownKeyActivated()
+  {
+    if( Brightness::TFT_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
+    {
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::LEVEL_DOWN_OPCODE );
+    }
+
+    $if $prototyper
+      if( Brightness::METER_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
+      {
+        BrightnessLevel--;
+        InvalidateViewState();
+      }
+    $endif
+  }
+
+  $rect <210,440,440,480>
+  inherited method OnShortUpKeyActivated()
+  {
+    if( Brightness::TFT_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
+    {
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::LEVEL_UP_OPCODE );
+    }
+
+    $if $prototyper
+      if( Brightness::METER_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
+      {
+        BrightnessLevel++;
+        InvalidateViewState();
+      }
+    $endif
+  }
+
+  $rect <210,490,440,530>
+  inherited method OnShortEnterKeyActivated()
+  {
+    // back to brightness setting menu when short pressing enter key
+    OnShortHomeKeyActivated();
+  }
+
+  $rect <0,340,180,380>
+  inherited property DDModeEnabled = true;
+
+  $rect <0,390,200,430>
+  inherited var SlideOutEffectEnabled = true;
+
+  // TODO
+  // 1. Gray out brightness bar when CAN timeout error happened.
+  note group Note2
+  {
+    attr Bounds = <510,100,970,220>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Base
+  {
+    preset Bounds = <45,60,435,231>;
+    preset Bitmap = Resource::MeterBrightnessBase;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image LevelBar
+  {
+    preset Bounds = <173,205,307,224>;
+    preset FrameNumber = 1;
+    preset Bitmap = Resource::BrightnessBar;
+    preset Visible = false;
+  }
+
+  $rect <450,440,730,480>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <450,490,730,530>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData &&
+        Enum::VehicleRxType.METER_BRIGHTNESS_LEVEL == VehicleData.RxType )
+    {
+      UpdateBrightnessLevel();
+    }
+  }
+
+  $rect <450,390,660,430>
+  var uint32 BrightnessLevel = 0;
+
+  $rect <450,340,660,380>
+  method void UpdateBrightnessLevel()
+  {
+    //TODO: get CAN timeout error state
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.METER_BRIGHTNESS_LEVEL );
+    if( BrightnessLevel != VehicleData.DataUInt32 )
+    {
+      BrightnessLevel = VehicleData.DataUInt32;
+      InvalidateViewState();
+    }
+  }
+
+  $rect <450,290,650,330>
+  array rect LevelBarBounds[ 6 ] =
+  (
+    Default[0] = <173,205,307,224>;
+    Default[1] = <173,177,307,193>;
+    Default[2] = <173,149,307,168>;
+    Default[3] = <173,121,307,141>;
+    Default[4] = <173,93,307,112>;
+    Default[5] = <173,65,307,84>;
+  );
+}

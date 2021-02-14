@@ -192,16 +192,16 @@ class SystemDeviceClass : Templates::DeviceClass
   property bool FactoryResetComplete = false;
 
   $rect <40,710,240,750>
-  method void SetBrightness( arg int32 aBrightness )
+  method void SetTFTDutyCycle( arg int32 aDutyCycle )
   {
     $if !$prototyper
-      native( aBrightness )
+      native( aDutyCycle )
       {
-        PERIPHERAL_pwm_set_display_dutycycle( aBrightness );
+        PERIPHERAL_pwm_set_display_dutycycle( aDutyCycle );
       }
     $else
     // suppress warning
-    if( 0 == aBrightness )
+    if( 0 == aDutyCycle )
     {
       // empty body
     }
@@ -1177,6 +1177,99 @@ class VehicleDeviceClass : Templates::DeviceClass
 
     return IsSupported;
   }
+
+  $rect <280,180,480,220>
+  method void SetData( arg Enum::VehicleTxType aVehicleTxType, arg uint32 aData )
+  {
+    $if !$prototyper
+      var int32 TxTypeId = ( int32 )aVehicleTxType;
+      native( aData, TxTypeId )
+      {
+        VI_set_tx_data( TxTypeId, aData );
+      }
+    $else
+      trace "set vi tx data ", aVehicleTxType, " ", aData;
+    $endif
+  }
+
+  $rect <280,230,480,270>
+  method DeviceInterface::VehicleDataClass GetData( arg Enum::VehicleRxType aVehicleRxType )
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = new DeviceInterface::VehicleDataClass;
+
+    $if !$prototyper
+      if( Enum::VehicleRxType.FUEL_RATE_INSTANT == aVehicleRxType ||
+          Enum::VehicleRxType.FUEL_RATE_AVERAGE == aVehicleRxType ||
+          Enum::VehicleRxType.ODOMETER_VALUE == aVehicleRxType ||
+          Enum::VehicleRxType.TRIP1_VALUE == aVehicleRxType ||
+          Enum::VehicleRxType.TRIP2_VALUE == aVehicleRxType ||
+          Enum::VehicleRxType.FUEL_CONSUMPTION == aVehicleRxType ||
+          Enum::VehicleRxType.AIR_TEMPERATURE == aVehicleRxType ||
+          Enum::VehicleRxType.COOLANT_TEMPERATURE == aVehicleRxType ||
+          Enum::VehicleRxType.BATTERY_VOLTAGE == aVehicleRxType ||
+          Enum::VehicleRxType.F_TRIP == aVehicleRxType )
+      {
+        VehicleData.DataType = Enum::DataType.FLOAT;
+      }
+
+      var int32 RxTypeId = ( int32 )aVehicleRxType;
+      var bool  Validity = false;
+
+      if( Enum::DataType.FLOAT == VehicleData.DataType )
+      {
+        var float RxData = 0;
+        native( RxTypeId, Validity, RxData )
+        {
+          float rx_data = 0;
+          Validity = VI_get_rx_data_float( RxTypeId, &rx_data );
+          if( Validity )
+          {
+            RxData = rx_data;
+          }
+        }
+        VehicleData.DataFloat = RxData;
+      }
+      else
+      {
+        var uint32 RxData = 0;
+        native( RxTypeId, Validity, RxData )
+        {
+          uint32_t rx_data = 0;
+          Validity = VI_get_rx_data_uint( RxTypeId, &rx_data );
+          if( Validity )
+          {
+            RxData = rx_data;
+          }
+        }
+        VehicleData.DataUInt32 = RxData;
+      }
+
+      VehicleData.Validity = Validity;
+    $else
+      // suppress warning
+      if( ( int32 )aVehicleRxType >= 0 )
+      {
+        // empty
+      }
+    $endif
+
+    return VehicleData;
+  }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,230,260,270>
+  $output true
+  method void NotifyDataReceived( arg Enum::VehicleRxType aRxType )
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = new DeviceInterface::VehicleDataClass;
+    VehicleData.RxType = aRxType;
+    VehicleDataReceivedSystemEvent.Trigger( VehicleData, false );
+  }
+
+  // This object represents an individual system event.
+  $rect <20,280,260,320>
+  object Core::SystemEvent VehicleDataReceivedSystemEvent;
 }
 
 $rect <20,590,220,630>
@@ -1325,3 +1418,23 @@ class WeatherDeviceClass : Templates::DeviceClass
 
 $rect <290,210,490,250>
 autoobject DeviceInterface::WeatherDeviceClass WeatherDevice;
+
+$rect <20,670,220,710>
+$output false
+class VehicleDataClass
+{
+  $rect <10,110,210,150>
+  var float DataFloat = 0;
+
+  $rect <10,160,210,200>
+  var uint32 DataUInt32 = 0;
+
+  $rect <10,10,210,50>
+  var bool Validity = false;
+
+  $rect <10,60,210,100>
+  var Enum::DataType DataType = Enum::DataType.UINT32;
+
+  $rect <230,10,430,50>
+  var Enum::VehicleRxType RxType;
+}
