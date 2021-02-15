@@ -42,9 +42,19 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_NavigationMain.h"
+#include "_NavigationNAV01_DefaultView.h"
 #include "_NavigationNAV06_NaviSettingMenu.h"
 #include "_NavigationNAV08_NaviChageViewMenu.h"
+#include "_NavigationNaviAlert.h"
+#include "_NavigationNaviAlertMessage.h"
+#include "_NavigationNaviCurrentRoad.h"
+#include "_NavigationNaviETA.h"
+
+/* User defined constant: 'Navigation::TIMETEXT_WO_NAVI_BOUNDS' */
+extern const XRect NavigationTIMETEXT_WO_NAVI_BOUNDS;
+
+/* User defined constant: 'Navigation::NAVIFLAG_WO_NAVI_BOUNDS' */
+extern const XRect NavigationNAVIFLAG_WO_NAVI_BOUNDS;
 
 #ifdef __cplusplus
   }

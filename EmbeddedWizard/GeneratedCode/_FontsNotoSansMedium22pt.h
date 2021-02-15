@@ -25,7 +25,7 @@
 *******************************************************************************/
 
 /* This is a font resource. */
-EW_DEFINE_FONT_RES( FontsNotoSansCjkJpMedium22pt, 24, 6, 0, 4, 0x0001, 0x0140 )
+EW_DEFINE_FONT_RES( FontsNotoSansMedium22pt, 24, 6, 0, 4, 0x0001, 0x0140 )
   EW_GLYPH( 0x0001, 2, -16, 10, 17, 13, 0x00000000 ),
   EW_GLYPH( 0x0020, 0, 0, 0, 0, 6, 0x0000009F ),                /* ' ' */
   EW_GLYPH( 0x0021, 1, -16, 4, 16, 6, 0x0000009F ),             /* '!' */
@@ -347,7 +347,7 @@ EW_DEFINE_FONT_RES( FontsNotoSansCjkJpMedium22pt, 24, 6, 0, 4, 0x0001, 0x0140 )
   EW_GLYPH( 0x017E, 0, -17, 10, 17, 10, 0x00013E9B ),
   EW_GLYPH( 0x017F, 1, -16, 8, 16, 8, 0x00013FC5 ),
 
-  EW_FONT_PIXEL( FontsNotoSansCjkJpMedium22pt, 0x00014032 )     /* ratio 68.59 % */
+  EW_FONT_PIXEL( FontsNotoSansMedium22pt, 0x00014032 )          /* ratio 68.59 % */
     0xFA3BDEF7, 0x0000ABDE, 0x00000000, 0xBDF60000, 0x8EF7BDD7, 0x140050BD, 0xCF9D2741,
     0xFCFF3CF3, 0x60282EE7, 0x107E1E80, 0xA1814A36, 0xF3753610, 0xCF7CBDAC, 0xE3D66F17,
     0x17F0F5C9, 0xDBFF0601, 0x53D66E37, 0x7CDE3D4F, 0x52A5FDBF, 0x84436305, 0x37803F80,
@@ -715,8 +715,8 @@ EW_DEFINE_FONT_RES( FontsNotoSansCjkJpMedium22pt, 24, 6, 0, 4, 0x0001, 0x0140 )
     0xA89E79EA, 0xA273E150, 0xCF3CD7E6, 0x7BE86FA0, 0xA13CF2EF, 0x583C6FBF, 0x1F31FF49,
     0xC6F649EA, 0xB413D49C, 0x79EA9BEF, 0x9ACBFBC2, 0x5597F761, 0x00000000, 0x00000000
 
-  EW_FONT_KERNING_CODES( FontsNotoSansCjkJpMedium22pt )
-  EW_FONT_KERNING_VALUES( FontsNotoSansCjkJpMedium22pt )
-EW_END_OF_FONT_RES( FontsNotoSansCjkJpMedium22pt )
+  EW_FONT_KERNING_CODES( FontsNotoSansMedium22pt )
+  EW_FONT_KERNING_VALUES( FontsNotoSansMedium22pt )
+EW_END_OF_FONT_RES( FontsNotoSansMedium22pt )
 
 /* Embedded Wizard */

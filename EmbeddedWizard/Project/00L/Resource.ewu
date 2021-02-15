@@ -1,6 +1,6 @@
 ﻿$version 10.00
 
-$rect <30,1840,230,1880>
+$rect <30,2070,230,2110>
 $output false
 resource Resources::Bitmap IconMediaPlayPause
 {
@@ -12,7 +12,7 @@ resource Resources::Bitmap IconMediaPlayPause
   attr bitmapmode Mode = Default;
 }
 
-$rect <240,1840,440,1880>
+$rect <240,2070,440,2110>
 $output false
 resource Resources::Bitmap IconMediaPrevious
 {
@@ -24,7 +24,7 @@ resource Resources::Bitmap IconMediaPrevious
   attr bitmapmode Mode = Default;
 }
 
-$rect <450,1840,650,1880>
+$rect <450,2070,650,2110>
 $output false
 resource Resources::Bitmap IconMediaNext
 {
@@ -109,14 +109,14 @@ note group Note5
 // Navigation
 note group Note1
 {
-  attr Bounds = <10,1620,490,1780>;
+  attr Bounds = <10,1620,1090,2010>;
 }
 
-$rect <40,1670,240,1710>
+$rect <20,1670,220,1710>
 $output false
-resource Resources::Bitmap TbTBg
+resource Resources::Bitmap ZoomInDayIcon
 {
-  attr bitmapfile FileName = .\Res\nav_tbt_bg.png;
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_btn_zoomin_d_nrml.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -124,11 +124,11 @@ resource Resources::Bitmap TbTBg
   attr bitmapmode Mode = Default;
 }
 
-$rect <40,1720,240,1760>
+$rect <20,1720,220,1760>
 $output false
-resource Resources::Bitmap IconTbT
+resource Resources::Bitmap FlagIcon
 {
-  attr bitmapfile FileName = .\Res\navi_tbt_icon.png;
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_icon_flag.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -136,11 +136,11 @@ resource Resources::Bitmap IconTbT
   attr bitmapmode Mode = Default;
 }
 
-$rect <260,1670,460,1710>
+$rect <240,1670,440,1710>
 $output false
-resource Resources::Bitmap ArrivalBg
+resource Resources::Bitmap ZoomOutDayIcon
 {
-  attr bitmapfile FileName = .\Res\navi_arrival_bg.png;
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_btn_zoomout_d_nrml.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -719,10 +719,10 @@ resource Resources::Bitmap PageUpDown
 // Media
 note group Note9
 {
-  attr Bounds = <10,1800,1090,1960>;
+  attr Bounds = <10,2030,1090,2190>;
 }
 
-$rect <660,1840,870,1880>
+$rect <660,2070,870,2110>
 $output false
 resource Resources::Bitmap ControlKeyBackground
 {
@@ -734,7 +734,7 @@ resource Resources::Bitmap ControlKeyBackground
   attr bitmapmode Mode = Default;
 }
 
-$rect <870,1840,1080,1880>
+$rect <870,2070,1080,2110>
 $output false
 resource Resources::Bitmap IconVolumeDown
 {
@@ -746,7 +746,7 @@ resource Resources::Bitmap IconVolumeDown
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,1890,230,1930>
+$rect <30,2120,230,2160>
 $output false
 resource Resources::Bitmap IconVolumeUp
 {
@@ -758,7 +758,7 @@ resource Resources::Bitmap IconVolumeUp
   attr bitmapmode Mode = Default;
 }
 
-$rect <240,1890,440,1930>
+$rect <240,2120,440,2160>
 $output false
 resource Resources::Bitmap SeekBarDot
 {
@@ -770,7 +770,7 @@ resource Resources::Bitmap SeekBarDot
   attr bitmapmode Mode = Default;
 }
 
-$rect <450,1890,650,1930>
+$rect <450,2120,650,2160>
 $output false
 resource Resources::Bitmap SeekBar
 {
@@ -989,6 +989,330 @@ resource Resources::Bitmap OpeningFadeOut
   attr bitmapformat Format = Native;
   attr framesize FrameSize = <276,65>;
   attr framedelay FrameDelay = 50;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <880,1770,1080,1810>
+$output false
+resource Resources::Bitmap SafeCamEU
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_eu.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <860,1940,1060,1980>
+$output false
+resource Resources::Bitmap NaviShadowLine
+{
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_shadow.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <450,1820,650,1860>
+$output false
+resource Resources::Bitmap SafeCamMobileEU
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_mobile_eu.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <660,1820,860,1860>
+$output false
+resource Resources::Bitmap SafeCamMobileNA
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_mobile_na.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <450,1880,650,1920>
+$output false
+resource Resources::Bitmap SafeCamRedLight
+{
+  attr bitmapfile FileName;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <650,1880,850,1920>
+$output false
+resource Resources::Bitmap SafeCamRedLightEU
+{
+  attr bitmapfile FileName;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <640,1940,840,1980>
+$output false
+resource Resources::Bitmap SafeCamVariableNA
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_variable_na.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <450,1670,650,1710>
+$output false
+resource Resources::Bitmap SpeedLimitIcon
+{
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_speedlimit_nrml.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <450,1720,650,1760>
+$output false
+resource Resources::Bitmap ZoomInNightIcon
+{
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_btn_zoomin_n_nrml.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <660,1670,860,1710>
+$output false
+resource Resources::Bitmap ZoomOutNightIcon
+{
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_btn_zoomout_n_nrml.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <660,1720,860,1760>
+$output false
+resource Resources::Bitmap ZoomInDayFocusIcon
+{
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_btn_zoomin_d_press.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <460,1770,660,1810>
+$output false
+resource Resources::Bitmap SafeAvrgCamEU
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_avrg_eu.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <440,1940,640,1980>
+$output false
+resource Resources::Bitmap SafeCamVariableEU
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_variable_eu.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <670,1770,870,1810>
+$output false
+resource Resources::Bitmap SafeAvrgCamNA
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_avrg_na.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <870,1670,1070,1710>
+$output false
+resource Resources::Bitmap ZoomOutDayFocusIcon
+{
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_btn_zoomout_d_press.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <870,1720,1070,1760>
+$output false
+resource Resources::Bitmap ZoomInNightFocusIcon
+{
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_btn_zoomin_n_press.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <870,1820,1070,1860>
+$output false
+resource Resources::Bitmap SafeCamNA
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_na.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <870,1880,1070,1920>
+$output false
+resource Resources::Bitmap SafeCamRedLightNA
+{
+  attr bitmapfile FileName;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <240,1820,440,1860>
+$output false
+resource Resources::Bitmap SafeCamLifemobileNA
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_livemobile_na.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <240,1880,440,1920>
+$output false
+resource Resources::Bitmap SafeCamRealTimeNA
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_realtime_na.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <230,1940,430,1980>
+$output false
+resource Resources::Bitmap SafeCamTempNA
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_temp_na.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <240,1720,440,1760>
+$output false
+resource Resources::Bitmap CurRdIcon
+{
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_icon_currentroad.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <240,1770,440,1810>
+$output false
+resource Resources::Bitmap SafeCamTempEU
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_temp_eu.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <20,1820,220,1860>
+$output false
+resource Resources::Bitmap SafeCamLifemobileEU
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_livemobile_eu.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <20,1880,220,1920>
+$output false
+resource Resources::Bitmap SafeCamRealTimeEU
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_realtime_eu.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <20,1940,220,1980>
+$output false
+resource Resources::Bitmap SafeCamRiskZone
+{
+  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_riskzone.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <20,1770,220,1810>
+$output false
+resource Resources::Bitmap ZoomOutNightFocusIcon
+{
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_btn_zoomout_n_press.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }

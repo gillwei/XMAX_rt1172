@@ -11,8 +11,9 @@ inline Inline
   #include "VI_pub.h"
   #include "MM_pub_ams_type.h"
   #include "BTM_pub.h"
-  #include"BC_motocon_pub.h"
+  #include "BC_motocon_pub.h"
   #include "BC_motocon_pub_type.h"
+  #include "TEST_pub.h"
 }
 
 $rect <20,20,220,60>
@@ -417,12 +418,158 @@ class NavigationDeviceClass : Templates::DeviceClass
       return false;
     $endif
   }
+
+  $rect <230,150,430,190>
+  object Core::SystemEvent CurRdUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,150,220,190>
+  $output true
+  method void NotifyCurRdUpdate()
+  {
+    CurRdUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <220,190,420,230>
+  object Core::SystemEvent ETAUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,190,220,230>
+  $output true
+  method void NotifyETAUpdate()
+  {
+    ETAUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <220,230,420,270>
+  object Core::SystemEvent DayNightModeUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,230,220,270>
+  $output true
+  method void NotifyDayNightModeUpdate()
+  {
+    DayNightModeUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <220,270,420,310>
+  object Core::SystemEvent SpeedLimitUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,270,220,310>
+  $output true
+  method void NotifySpeedLimitUpdate()
+  {
+    SpeedLimitUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <220,310,420,350>
+  object Core::SystemEvent NaviIncidentUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,310,220,350>
+  $output true
+  method void NotifyNaviEventUpdate()
+  {
+    NaviIncidentUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <460,150,660,190>
+  method DeviceInterface::NaviDataClass GetNaviData( arg Enum::NaviDataType aDataType )
+  {
+    var DeviceInterface::NaviDataClass NaviData = new DeviceInterface::NaviDataClass;
+    $if !$prototyper
+    var int32 NaviDataType = ( int32 )aDataType;
+
+    native( NaviDataType, NaviData )
+    {
+      #if( UNIT_TEST_NAVI )
+        navi_data_type* navi_obj = NULL;
+        navi_obj = TEST_get_navi_obj();
+        switch( NaviDataType )
+        {
+          case 0:
+            {
+              NaviData->CurrentRoad = EwNewStringUtf8( ( const unsigned char* )navi_obj->current_road, ( int )strlen( navi_obj->current_road ) );
+            }
+            break;
+          case 1:
+            {
+              NaviData->ETA = navi_obj->eta;
+            }
+            break;
+          case 2:
+            {
+              NaviData->SpeedLimit = navi_obj->speed_limit;
+            }
+            break;
+          case 3:
+            {
+              NaviData->DayNightMode = navi_obj->daynight;
+            }
+            break;
+          case 4:
+            {
+              NaviData->NaviEventType = navi_obj->navi_event.event_type;
+              NaviData->NaviEventDist = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.dist, ( int )strlen( navi_obj->navi_event.dist ) );
+              NaviData->NaviEventSpeed = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.speed, ( int )strlen( navi_obj->navi_event.speed ) );
+              NaviData->NaviEventVisibility = navi_obj->navi_event.visibility;
+            }
+            break;
+          default:
+            break;
+        }
+      #endif
+    }
+    $else
+      // suppress warning
+      if( ( int32 )aDataType >= 0 )
+      {
+        // empty
+      }
+    $endif
+
+    return NaviData;
+
+  }
+
+  $rect <250,90,450,130>
+  method bool IsRouteGuidanceStarted()
+  {
+    $if( !$prototyper )
+      var bool IsNavigating= false;
+      native( IsNavigating )
+      {
+        IsNavigating = ew_navi_is_route_guidance_started();
+      }
+      return IsNavigating;
+    $else
+      return false;
+    $endif
+  }
+
+  $rect <220,350,420,390>
+  object Core::SystemEvent NavigatingStatusUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,350,220,390>
+  $output true
+  method void NotifyNavigatingStatusUpdate()
+  {
+    NavigatingStatusUpdateEvent.Trigger( null, false );
+  }
 }
 
 $rect <19,210,229,250>
 autoobject DeviceInterface::NavigationDeviceClass NavigationDevice;
 
-$rect <19,290,259,330>
+$rect <20,304,260,344>
 $output false
 class MediaManagerDeviceClass : Templates::DeviceClass
 {
@@ -716,7 +863,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   var bool IsArtistReceived = false;
 }
 
-$rect <19,330,219,370>
+$rect <20,344,220,384>
 autoobject DeviceInterface::MediaManagerDeviceClass MediaManagerDevice;
 
 $rect <19,400,219,440>
@@ -1583,4 +1730,33 @@ class VehicleDataClass
 
   $rect <230,10,430,50>
   var Enum::VehicleRxType RxType;
+}
+
+$rect <20,250,220,290>
+$output false
+class NaviDataClass
+{
+  $rect <80,60,280,100>
+  var string CurrentRoad;
+
+  $rect <80,100,280,140>
+  var int32 ETA;
+
+  $rect <80,140,280,180>
+  var int32 DayNightMode;
+
+  $rect <80,180,280,220>
+  var int32 SpeedLimit;
+
+  $rect <280,60,480,100>
+  var int32 NaviEventType;
+
+  $rect <280,100,480,140>
+  var string NaviEventDist;
+
+  $rect <280,140,480,180>
+  var bool NaviEventVisibility;
+
+  $rect <280,180,480,220>
+  var string NaviEventSpeed;
 }

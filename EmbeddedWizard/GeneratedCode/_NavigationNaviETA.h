@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _NavigationMain_H
-#define _NavigationMain_H
+#ifndef _NavigationNaviETA_H
+#define _NavigationNaviETA_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,11 +42,8 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
-#include "_CoreKeyPressHandler.h"
-#include "_CoreSystemEventHandler.h"
+#include "_CoreGroup.h"
 #include "_ViewsImage.h"
-#include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
@@ -55,10 +52,10 @@
 #define _CoreDialogContext_
 #endif
 
-/* Forward declaration of the class Core::Group */
-#ifndef _CoreGroup_
-  EW_DECLARE_CLASS( CoreGroup )
-#define _CoreGroup_
+/* Forward declaration of the class Core::KeyPressHandler */
+#ifndef _CoreKeyPressHandler_
+  EW_DECLARE_CLASS( CoreKeyPressHandler )
+#define _CoreKeyPressHandler_
 #endif
 
 /* Forward declaration of the class Core::LayoutContext */
@@ -91,32 +88,23 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Navigation::Main */
-#ifndef _NavigationMain_
-  EW_DECLARE_CLASS( NavigationMain )
-#define _NavigationMain_
+/* Forward declaration of the class Navigation::NaviETA */
+#ifndef _NavigationNaviETA_
+  EW_DECLARE_CLASS( NavigationNaviETA )
+#define _NavigationNaviETA_
 #endif
 
 
-/* Deklaration of class : 'Navigation::Main' */
-EW_DEFINE_FIELDS( NavigationMain, ComponentsBaseComponent )
-  EW_OBJECT  ( Background,      ViewsRectangle )
-  EW_OBJECT  ( MapUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( MapImage,        ViewsImage )
-  EW_OBJECT  ( TbTBgImage,      ViewsImage )
-  EW_OBJECT  ( ArrivalBgImage,  ViewsImage )
-  EW_OBJECT  ( TbtImage,        ViewsImage )
-  EW_OBJECT  ( DistanceText,    ViewsText )
-  EW_OBJECT  ( RoadText,        ViewsText )
-  EW_OBJECT  ( ArrivalText,     ViewsText )
+/* Deklaration of class : 'Navigation::NaviETA' */
+EW_DEFINE_FIELDS( NavigationNaviETA, CoreGroup )
+  EW_OBJECT  ( NaviIconFlag,    ViewsImage )
   EW_OBJECT  ( TimeText,        ViewsText )
   EW_OBJECT  ( AmPmText,        ViewsText )
-  EW_OBJECT  ( RoadText1,       ViewsText )
-  EW_VARIABLE( MapFrameIdx,     XInt32 )
-EW_END_OF_FIELDS( NavigationMain )
+  EW_PROPERTY( ETA,             XInt32 )
+EW_END_OF_FIELDS( NavigationNaviETA )
 
-/* Virtual Method Table (VMT) for the class : 'Navigation::Main' */
-EW_DEFINE_METHODS( NavigationMain, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'Navigation::NaviETA' */
+EW_DEFINE_METHODS( NavigationNaviETA, CoreGroup )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -160,42 +148,18 @@ EW_DEFINE_METHODS( NavigationMain, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( NavigationMain _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( NavigationMain _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( NavigationMain _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( NavigationMain _this )
-  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
-EW_END_OF_METHODS( NavigationMain )
+EW_END_OF_METHODS( NavigationNaviETA )
 
-/* The method Init() is invoked automatically after the component has been created. 
-   This method can be overridden and filled with logic containing additional initialization 
-   statements. */
-void NavigationMain_Init( NavigationMain _this, XHandle aArg );
+/* 'C' function for method : 'Navigation::NaviETA.OnSetETA()' */
+void NavigationNaviETA_OnSetETA( NavigationNaviETA _this, XInt32 value );
 
-/* 'C' function for method : 'Navigation::Main.OnShortDownKeyActivated()' */
-void NavigationMain_OnShortDownKeyActivated( NavigationMain _this );
-
-/* 'C' function for method : 'Navigation::Main.OnShortUpKeyActivated()' */
-void NavigationMain_OnShortUpKeyActivated( NavigationMain _this );
-
-/* 'C' function for method : 'Navigation::Main.OnShortEnterKeyActivated()' */
-void NavigationMain_OnShortEnterKeyActivated( NavigationMain _this );
-
-/* 'C' function for method : 'Navigation::Main.OnShortHomeKeyActivated()' */
-void NavigationMain_OnShortHomeKeyActivated( NavigationMain _this );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationMain_OnMapUpdateSlot( NavigationMain _this, XObject sender );
+/* 'C' function for method : 'Navigation::NaviETA.FormatTime()' */
+void NavigationNaviETA_FormatTime( NavigationNaviETA _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _NavigationMain_H */
+#endif /* _NavigationNaviETA_H */
 
 /* Embedded Wizard */

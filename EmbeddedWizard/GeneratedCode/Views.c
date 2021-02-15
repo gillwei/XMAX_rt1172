@@ -1356,6 +1356,12 @@ void ViewsImage_OnSetBitmap( ViewsImage _this, ResourcesBitmap value )
     CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
 }
 
+/* 'C' function for method : 'Views::Image.OnGetVisible()' */
+XBool ViewsImage_OnGetVisible( ViewsImage _this )
+{
+  return (( _this->Super2.viewState & CoreViewStateVisible ) == CoreViewStateVisible );
+}
+
 /* 'C' function for method : 'Views::Image.OnSetVisible()' */
 void ViewsImage_OnSetVisible( ViewsImage _this, XBool value )
 {

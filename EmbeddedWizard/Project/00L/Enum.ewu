@@ -615,3 +615,63 @@ enum BlePairingState
   $rect <10,260,250,300>
   item PINCODE_GENERATED;
 }
+
+$rect <500,20,700,60>
+$output false
+enum NaviDataType
+{
+  $rect <10,10,210,50>
+  item CURRENT_ROAD;
+
+  $rect <220,10,420,50>
+  item ETA;
+
+  $rect <430,10,630,50>
+  item SPEED_LIMIT;
+
+  $rect <10,70,210,110>
+  item DAYNIGHT;
+
+  $rect <220,70,420,110>
+  item NAVI_EVENT;
+
+  $rect <430,70,630,110>
+  item NAVI_ROUTE_GUIDANCE_STATUS;
+
+  $rect <10,130,210,170>
+  item NAVI_TBT_LIST;
+
+  $rect <220,130,420,170>
+  item NAVI_TBT_ACTIVE_TBT;
+}
+
+$rect <500,70,700,110>
+$output false
+enum NaviAlertType
+{
+  $rect <10,10,210,50>
+  item TRAFFIC;
+
+  $rect <220,10,420,50>
+  item SPEED;
+
+  $rect <430,10,630,50>
+  item CAMERA;
+
+  $rect <10,70,210,110>
+  item BORDER;
+
+  $rect <220,70,420,110>
+  item SCHOOL;
+}
+
+$rect <500,120,700,160>
+$output false
+enum NaviAlertAnimationType
+{
+  $rect <10,10,210,50>
+  item Shrink;
+
+  $rect <220,10,420,50>
+  item Dismiss;
+}

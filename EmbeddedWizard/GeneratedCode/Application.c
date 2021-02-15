@@ -43,7 +43,7 @@
 #include "_HomeHOM12_EcoVisualizer.h"
 #include "_HomeHOM13_SpeedVisualizer.h"
 #include "_LauncherLNC_Main.h"
-#include "_NavigationMain.h"
+#include "_NavigationNAV01_DefaultView.h"
 #include "_OpenOPN01_BootupAnimation.h"
 #include "_SettingsBtFwUpdateDialog.h"
 #include "_StatusBarMain.h"
@@ -415,7 +415,7 @@ XClass ApplicationApplication_HomeClassOfHomeType( ApplicationApplication _this,
     break;
 
     case EnumHomeTypeNAVI_DEFAULT_VIEW :
-      HomeClass = EW_CLASS( NavigationMain );
+      HomeClass = EW_CLASS( NavigationNAV01_DefaultView );
     break;
 
     case EnumHomeTypeNAVI_TURN_BY_TURN :
@@ -463,7 +463,7 @@ CoreGroup ApplicationApplication_HomeDialogOfHomeType( ApplicationApplication _t
     break;
 
     case EnumHomeTypeNAVI_DEFAULT_VIEW :
-      aHomeDialog = ((CoreGroup)EwNewObject( NavigationMain, 0 ));
+      aHomeDialog = ((CoreGroup)EwNewObject( NavigationNAV01_DefaultView, 0 ));
     break;
 
     case EnumHomeTypeNAVI_TURN_BY_TURN :

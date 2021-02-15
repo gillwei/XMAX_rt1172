@@ -30,6 +30,7 @@
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
+#include "_DeviceInterfaceNaviDataClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
@@ -84,8 +85,9 @@ static const XStringRes _Const000D = { _StringsDefault0, 0x0114 };
 #include "VI_pub.h"
 #include "MM_pub_ams_type.h"
 #include "BTM_pub.h"
-#include"BC_motocon_pub.h"
+#include "BC_motocon_pub.h"
 #include "BC_motocon_pub_type.h"
+#include "TEST_pub.h"
 
 /* Initializer for the class 'DeviceInterface::SystemDeviceClass' */
 void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _this, XObject aLink, XHandle aArg )
@@ -495,6 +497,12 @@ void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDevice
 
   /* ... then construct all embedded objects */
   CoreSystemEvent__Init( &_this->MapUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->CurRdUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->ETAUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->DayNightModeUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->SpeedLimitUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->NaviIncidentUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->NavigatingStatusUpdateEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceNavigationDeviceClass );
@@ -508,6 +516,12 @@ void DeviceInterfaceNavigationDeviceClass__ReInit( DeviceInterfaceNavigationDevi
 
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->MapUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->CurRdUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->ETAUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->DayNightModeUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->SpeedLimitUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->NaviIncidentUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->NavigatingStatusUpdateEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NavigationDeviceClass' */
@@ -518,6 +532,12 @@ void DeviceInterfaceNavigationDeviceClass__Done( DeviceInterfaceNavigationDevice
 
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->MapUpdateEvent );
+  CoreSystemEvent__Done( &_this->CurRdUpdateEvent );
+  CoreSystemEvent__Done( &_this->ETAUpdateEvent );
+  CoreSystemEvent__Done( &_this->DayNightModeUpdateEvent );
+  CoreSystemEvent__Done( &_this->SpeedLimitUpdateEvent );
+  CoreSystemEvent__Done( &_this->NaviIncidentUpdateEvent );
+  CoreSystemEvent__Done( &_this->NavigatingStatusUpdateEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -547,6 +567,151 @@ XBool DeviceInterfaceNavigationDeviceClass_IsMapFrameReady( DeviceInterfaceNavig
   IsMapFrameReady = 0;
   IsMapFrameReady = ew_navi_is_map_frame_ready();
   return IsMapFrameReady;
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyCurRdUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->CurRdUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyCurRdUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyCurRdUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyCurRdUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyETAUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->ETAUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyETAUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyETAUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyETAUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyDayNightModeUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->DayNightModeUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyDayNightModeUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyDayNightModeUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyDayNightModeUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifySpeedLimitUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->SpeedLimitUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifySpeedLimitUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifySpeedLimitUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifySpeedLimitUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyNaviEventUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->NaviIncidentUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNaviEventUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyNaviEventUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyNaviEventUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviData()' */
+DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( DeviceInterfaceNavigationDeviceClass _this, 
+  XEnum aDataType )
+{
+  DeviceInterfaceNaviDataClass NaviData;
+  XInt32 NaviDataType;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NaviData = EwNewObject( DeviceInterfaceNaviDataClass, 0 );
+  NaviDataType = aDataType;
+  {
+    #if( UNIT_TEST_NAVI )
+      navi_data_type* navi_obj = NULL;
+      navi_obj = TEST_get_navi_obj();
+      switch( NaviDataType )
+      {
+        case 0:
+          {
+            NaviData->CurrentRoad = EwNewStringUtf8( ( const unsigned char* )navi_obj->current_road, ( int )strlen( navi_obj->current_road ) );
+          }
+          break;
+        case 1:
+          {
+            NaviData->ETA = navi_obj->eta;
+          }
+          break;
+        case 2:
+          {
+            NaviData->SpeedLimit = navi_obj->speed_limit;
+          }
+          break;
+        case 3:
+          {
+            NaviData->DayNightMode = navi_obj->daynight;
+          }
+          break;
+        case 4:
+          {
+            NaviData->NaviEventType = navi_obj->navi_event.event_type;
+            NaviData->NaviEventDist = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.dist, ( int )strlen( navi_obj->navi_event.dist ) );
+            NaviData->NaviEventSpeed = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.speed, ( int )strlen( navi_obj->navi_event.speed ) );
+            NaviData->NaviEventVisibility = navi_obj->navi_event.visibility;
+          }
+          break;
+        default:
+          break;
+      }
+    #endif
+  }
+  return NaviData;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsRouteGuidanceStarted()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XBool IsNavigating;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsNavigating = 0;
+  IsNavigating = ew_navi_is_route_guidance_started();
+  return IsNavigating;
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyNavigatingStatusUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->NavigatingStatusUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNavigatingStatusUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyNavigatingStatusUpdate((DeviceInterfaceNavigationDeviceClass)_this );
 }
 
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */
@@ -1828,5 +1993,44 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDataClass )
 EW_DEFINE_CLASS( DeviceInterfaceVehicleDataClass, XObject, _None, _None, _None, 
                  _None, _None, _None, "DeviceInterface::VehicleDataClass" )
 EW_END_OF_CLASS( DeviceInterfaceVehicleDataClass )
+
+/* Initializer for the class 'DeviceInterface::NaviDataClass' */
+void DeviceInterfaceNaviDataClass__Init( DeviceInterfaceNaviDataClass _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceNaviDataClass );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( DeviceInterfaceNaviDataClass );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::NaviDataClass' */
+void DeviceInterfaceNaviDataClass__ReInit( DeviceInterfaceNaviDataClass _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::NaviDataClass' */
+void DeviceInterfaceNaviDataClass__Done( DeviceInterfaceNaviDataClass _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_Super );
+}
+
+/* Variants derived from the class : 'DeviceInterface::NaviDataClass' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNaviDataClass )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNaviDataClass )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::NaviDataClass' */
+EW_DEFINE_CLASS( DeviceInterfaceNaviDataClass, XObject, CurrentRoad, CurrentRoad, 
+                 CurrentRoad, CurrentRoad, CurrentRoad, ETA, "DeviceInterface::NaviDataClass" )
+EW_END_OF_CLASS( DeviceInterfaceNaviDataClass )
 
 /* Embedded Wizard */

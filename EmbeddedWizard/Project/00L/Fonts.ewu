@@ -1,7 +1,7 @@
 ﻿$version 10.00
 
 // This is a font resource.
-$rect <10,60,260,100>
+$rect <10,130,260,170>
 $output false
 resource Resources::Font NotoSansCjkJpMedium24pt
 {
@@ -40,7 +40,7 @@ resource Resources::Font NotoSansCjkJpMedium24pt
 }
 
 // This is a font resource.
-$rect <10,110,260,150>
+$rect <10,180,260,220>
 $output false
 resource Resources::Font NotoSansCjkJpMedium28pt
 {
@@ -113,7 +113,7 @@ resource Resources::Font FontNotoSansCjkJp20
 }
 
 // This is a font resource.
-$rect <10,160,270,200>
+$rect <10,230,270,270>
 $output false
 resource Resources::Font NotoSansCjkJpMedium80pt
 {
@@ -136,9 +136,9 @@ note group Note2
 }
 
 // This is a font resource.
-$rect <10,10,260,50>
+$rect <10,80,260,120>
 $output false
-resource Resources::Font NotoSansCjkJpMedium22pt
+resource Resources::Font NotoSansMedium22pt
 {
   attr fontname FontName = Noto Sans Med;
   attr fontheight Height = 22;
@@ -164,7 +164,7 @@ resource Resources::Font NotoSansCjkJpMedium22pt
 }
 
 // This is a font resource.
-$rect <10,210,270,250>
+$rect <10,280,270,320>
 $output false
 resource Resources::Font NotoSansMedium32pt
 {
@@ -177,5 +177,38 @@ resource Resources::Font NotoSansMedium32pt
   attr fontitalic Italic = false;
   attr fontkerning Kerning = true;
   attr fontheightmode HeightMode = Popular;
+  attr fontrowdistance RowDistance;
+}
+
+// This is a font resource.
+$rect <10,30,260,70>
+$output false
+resource Resources::Font NotoSansMedium16pt
+{
+  attr fontname FontName = Noto Sans Med;
+  attr fontheight Height = 16;
+  attr fontheightmode HeightMode = Popular;
+  attr fontquality Quality = Medium;
+  attr fontranges Ranges = 0x20-0x7E;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontrowdistance RowDistance;
+}
+
+$rect <610,30,890,70>
+$output false
+resource Resources::Font NotoSansBold24pt
+{
+  attr fontname FontName = Noto Sans;
+  attr fontheight Height = 24;
+  attr fontheightmode HeightMode = Popular;
+  attr fontquality Quality = Medium;
+  attr fontranges Ranges = 0x30-0x39;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
   attr fontrowdistance RowDistance;
 }

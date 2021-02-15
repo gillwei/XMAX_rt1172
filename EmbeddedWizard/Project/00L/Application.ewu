@@ -270,7 +270,7 @@ class Application : Core::Root
       case Enum::HomeType.TACHO_VISUALIZER: HomeClass = Home::HOM11_TachoVisualizer;
       case Enum::HomeType.ECO_VISUALIZER: HomeClass = Home::HOM12_EcoVisualizer;
       case Enum::HomeType.SPEED_VISUALIZER: HomeClass = Home::HOM13_SpeedVisualizer;
-      case Enum::HomeType.NAVI_DEFAULT_VIEW: HomeClass = Navigation::Main;
+      case Enum::HomeType.NAVI_DEFAULT_VIEW: HomeClass = Navigation::NAV01_DefaultView;
       case Enum::HomeType.NAVI_TURN_BY_TURN:;
       case Enum::HomeType.NAVI_NEXT_TURN:;
       case Enum::HomeType.VEHICLE_INFO:;
@@ -288,7 +288,7 @@ class Application : Core::Root
       case Enum::HomeType.TACHO_VISUALIZER: aHomeDialog = new Home::HOM11_TachoVisualizer;
       case Enum::HomeType.ECO_VISUALIZER: aHomeDialog = new Home::HOM12_EcoVisualizer;
       case Enum::HomeType.SPEED_VISUALIZER: aHomeDialog = new Home::HOM13_SpeedVisualizer;
-      case Enum::HomeType.NAVI_DEFAULT_VIEW: aHomeDialog = new Navigation::Main;
+      case Enum::HomeType.NAVI_DEFAULT_VIEW: aHomeDialog = new Navigation::NAV01_DefaultView;
       case Enum::HomeType.NAVI_TURN_BY_TURN:;
       case Enum::HomeType.NAVI_NEXT_TURN:;
       case Enum::HomeType.VEHICLE_INFO:;

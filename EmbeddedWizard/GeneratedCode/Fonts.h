@@ -49,19 +49,19 @@ EW_DECLARE_FONT_RES( FontsNotoSansCjkJpMedium24pt )
 EW_DECLARE_FONT_RES( FontsNotoSansCjkJpMedium28pt )
 
 /* This is a font resource. */
-EW_DECLARE_FONT_RES( FontsFontNotoSansCjkJp24 )
-
-/* This is a font resource. */
-EW_DECLARE_FONT_RES( FontsFontNotoSansCjkJp20 )
-
-/* This is a font resource. */
 EW_DECLARE_FONT_RES( FontsNotoSansCjkJpMedium80pt )
 
 /* This is a font resource. */
-EW_DECLARE_FONT_RES( FontsNotoSansCjkJpMedium22pt )
+EW_DECLARE_FONT_RES( FontsNotoSansMedium22pt )
 
 /* This is a font resource. */
 EW_DECLARE_FONT_RES( FontsNotoSansMedium32pt )
+
+/* This is a font resource. */
+EW_DECLARE_FONT_RES( FontsNotoSansMedium16pt )
+
+/* Font resource : 'Fonts::NotoSansBold24pt' */
+EW_DECLARE_FONT_RES( FontsNotoSansBold24pt )
 
 #ifdef __cplusplus
   }

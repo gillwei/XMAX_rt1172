@@ -69,6 +69,7 @@ void ew_device_navi_init( void );
 void ew_device_navi_deinit( void );
 int ew_device_navi_proc( void );
 bool ew_navi_is_map_frame_ready( void );
+bool ew_navi_is_route_guidance_started( void );
 
 void ew_device_mm_init( void );
 void ew_device_mm_deinit( void );

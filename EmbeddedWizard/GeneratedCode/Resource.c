@@ -89,23 +89,23 @@ void ResourceExternBitmap__Init( ResourcesExternBitmap _this )
 EW_DEFINE_AUTOOBJECT_VARIANTS( ResourceExternBitmap )
 EW_END_OF_AUTOOBJECT_VARIANTS( ResourceExternBitmap )
 
-/* Include a file containing the bitmap resource : 'Resource::TbTBg' */
-#include "_ResourceTbTBg.h"
+/* Include a file containing the bitmap resource : 'Resource::ZoomInDayIcon' */
+#include "_ResourceZoomInDayIcon.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::TbTBg' */
-EW_RES_WITHOUT_VARIANTS( ResourceTbTBg )
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomInDayIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomInDayIcon )
 
-/* Include a file containing the bitmap resource : 'Resource::IconTbT' */
-#include "_ResourceIconTbT.h"
+/* Include a file containing the bitmap resource : 'Resource::FlagIcon' */
+#include "_ResourceFlagIcon.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::IconTbT' */
-EW_RES_WITHOUT_VARIANTS( ResourceIconTbT )
+/* Table with links to derived variants of the bitmap resource : 'Resource::FlagIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceFlagIcon )
 
-/* Include a file containing the bitmap resource : 'Resource::ArrivalBg' */
-#include "_ResourceArrivalBg.h"
+/* Include a file containing the bitmap resource : 'Resource::ZoomOutDayIcon' */
+#include "_ResourceZoomOutDayIcon.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::ArrivalBg' */
-EW_RES_WITHOUT_VARIANTS( ResourceArrivalBg )
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomOutDayIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomOutDayIcon )
 
 /* Include a file containing the bitmap resource : 'Resource::MainBG' */
 #include "_ResourceMainBG.h"
@@ -431,5 +431,71 @@ EW_RES_WITHOUT_VARIANTS( ResourceOpeningFadeIn )
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::OpeningFadeOut' */
 EW_RES_WITHOUT_VARIANTS( ResourceOpeningFadeOut )
+
+/* Include a file containing the bitmap resource : 'Resource::NaviShadowLine' */
+#include "_ResourceNaviShadowLine.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviShadowLine' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviShadowLine )
+
+/* Include a file containing the bitmap resource : 'Resource::SpeedLimitIcon' */
+#include "_ResourceSpeedLimitIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SpeedLimitIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceSpeedLimitIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::ZoomInNightIcon' */
+#include "_ResourceZoomInNightIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomInNightIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomInNightIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::ZoomOutNightIcon' */
+#include "_ResourceZoomOutNightIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomOutNightIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomOutNightIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::ZoomInDayFocusIcon' */
+#include "_ResourceZoomInDayFocusIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomInDayFocusIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomInDayFocusIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::SafeAvrgCamEU' */
+#include "_ResourceSafeAvrgCamEU.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeAvrgCamEU' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeAvrgCamEU )
+
+/* Include a file containing the bitmap resource : 'Resource::ZoomOutDayFocusIcon' */
+#include "_ResourceZoomOutDayFocusIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomOutDayFocusIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomOutDayFocusIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::ZoomInNightFocusIcon' */
+#include "_ResourceZoomInNightFocusIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomInNightFocusIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomInNightFocusIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::CurRdIcon' */
+#include "_ResourceCurRdIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::CurRdIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceCurRdIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::SafeCamTempEU' */
+#include "_ResourceSafeCamTempEU.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamTempEU' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeCamTempEU )
+
+/* Include a file containing the bitmap resource : 'Resource::ZoomOutNightFocusIcon' */
+#include "_ResourceZoomOutNightFocusIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomOutNightFocusIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomOutNightFocusIcon )
 
 /* Embedded Wizard */

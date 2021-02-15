@@ -208,6 +208,9 @@ void ViewsImage_OnSetFrameNumber( ViewsImage _this, XInt32 value );
 /* 'C' function for method : 'Views::Image.OnSetBitmap()' */
 void ViewsImage_OnSetBitmap( ViewsImage _this, ResourcesBitmap value );
 
+/* 'C' function for method : 'Views::Image.OnGetVisible()' */
+XBool ViewsImage_OnGetVisible( ViewsImage _this );
+
 /* 'C' function for method : 'Views::Image.OnSetVisible()' */
 void ViewsImage_OnSetVisible( ViewsImage _this, XBool value );
 

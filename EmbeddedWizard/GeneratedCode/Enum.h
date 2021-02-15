@@ -301,6 +301,26 @@ typedef enum
   EnumBlePairingStatePINCODE_GENERATED  = 5
 } EnumBlePairingState;
 
+/* User defined enumeration: 'Enum::NaviDataType' */
+typedef enum
+{
+  EnumNaviDataTypeCURRENT_ROAD          = 0,
+  EnumNaviDataTypeETA                   = 1,
+  EnumNaviDataTypeSPEED_LIMIT           = 2,
+  EnumNaviDataTypeDAYNIGHT              = 3,
+  EnumNaviDataTypeNAVI_EVENT            = 4,
+  EnumNaviDataTypeNAVI_ROUTE_GUIDANCE_STATUS = 5,
+  EnumNaviDataTypeNAVI_TBT_LIST         = 6,
+  EnumNaviDataTypeNAVI_TBT_ACTIVE_TBT   = 7
+} EnumNaviDataType;
+
+/* User defined enumeration: 'Enum::NaviAlertAnimationType' */
+typedef enum
+{
+  EnumNaviAlertAnimationTypeShrink      = 0,
+  EnumNaviAlertAnimationTypeDismiss     = 1
+} EnumNaviAlertAnimationType;
+
 #ifdef __cplusplus
   }
 #endif

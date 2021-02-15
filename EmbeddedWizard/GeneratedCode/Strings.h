@@ -121,8 +121,8 @@ extern const XStringRes StringsLNC_settings;
 /* User defined constant: 'Strings::NAV06_stop_navigation' */
 extern const XStringRes StringsNAV06_stop_navigation;
 
-/* User defined constant: 'Strings::NAV06_stop_next_stop' */
-extern const XStringRes StringsNAV06_stop_next_stop;
+/* User defined constant: 'Strings::NAV06_SKIP_NEXT_STOP' */
+extern const XStringRes StringsNAV06_SKIP_NEXT_STOP;
 
 /* User defined constant: 'Strings::NAV06_go_home' */
 extern const XStringRes StringsNAV06_go_home;

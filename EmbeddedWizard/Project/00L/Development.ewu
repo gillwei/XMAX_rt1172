@@ -100,7 +100,6 @@ class DEV_Main : Menu::BaseMenuView
 
   $reorder HideFocusFrameTimer 1
   $reorder OnHideFocusFrameTimeoutSlot 1
-  $reorder ChildMenu 1
   $reorder OnDialogSlideInCompletedSlot 1
   $reorder PresentDialogWithSlideInEffect 1
   $reorder SlideOutEffectEnabled 1

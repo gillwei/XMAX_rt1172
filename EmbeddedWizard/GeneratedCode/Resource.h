@@ -66,14 +66,14 @@ EW_DECLARE_BITMAP_RES( ResourceCheckboxDisable )
 /* Bitmap resource : 'Resource::DisplayTest' */
 EW_DECLARE_BITMAP_RES( ResourceDisplayTest )
 
-/* Bitmap resource : 'Resource::TbTBg' */
-EW_DECLARE_BITMAP_RES( ResourceTbTBg )
+/* Bitmap resource : 'Resource::ZoomInDayIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomInDayIcon )
 
-/* Bitmap resource : 'Resource::IconTbT' */
-EW_DECLARE_BITMAP_RES( ResourceIconTbT )
+/* Bitmap resource : 'Resource::FlagIcon' */
+EW_DECLARE_BITMAP_RES( ResourceFlagIcon )
 
-/* Bitmap resource : 'Resource::ArrivalBg' */
-EW_DECLARE_BITMAP_RES( ResourceArrivalBg )
+/* Bitmap resource : 'Resource::ZoomOutDayIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomOutDayIcon )
 
 /* Bitmap resource : 'Resource::MainBG' */
 EW_DECLARE_BITMAP_RES( ResourceMainBG )
@@ -230,6 +230,39 @@ EW_DECLARE_BITMAP_RES( ResourceOpeningFadeIn )
 
 /* Bitmap resource : 'Resource::OpeningFadeOut' */
 EW_DECLARE_BITMAP_RES( ResourceOpeningFadeOut )
+
+/* Bitmap resource : 'Resource::NaviShadowLine' */
+EW_DECLARE_BITMAP_RES( ResourceNaviShadowLine )
+
+/* Bitmap resource : 'Resource::SpeedLimitIcon' */
+EW_DECLARE_BITMAP_RES( ResourceSpeedLimitIcon )
+
+/* Bitmap resource : 'Resource::ZoomInNightIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomInNightIcon )
+
+/* Bitmap resource : 'Resource::ZoomOutNightIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomOutNightIcon )
+
+/* Bitmap resource : 'Resource::ZoomInDayFocusIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomInDayFocusIcon )
+
+/* Bitmap resource : 'Resource::SafeAvrgCamEU' */
+EW_DECLARE_BITMAP_RES( ResourceSafeAvrgCamEU )
+
+/* Bitmap resource : 'Resource::ZoomOutDayFocusIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomOutDayFocusIcon )
+
+/* Bitmap resource : 'Resource::ZoomInNightFocusIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomInNightFocusIcon )
+
+/* Bitmap resource : 'Resource::CurRdIcon' */
+EW_DECLARE_BITMAP_RES( ResourceCurRdIcon )
+
+/* Bitmap resource : 'Resource::SafeCamTempEU' */
+EW_DECLARE_BITMAP_RES( ResourceSafeCamTempEU )
+
+/* Bitmap resource : 'Resource::ZoomOutNightFocusIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomOutNightFocusIcon )
 
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_

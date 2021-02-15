@@ -122,7 +122,7 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Bounds = <127,226,204,256>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium22pt;
+    preset Font = Fonts::NotoSansMedium22pt;
     preset Visible = false;
   }
 

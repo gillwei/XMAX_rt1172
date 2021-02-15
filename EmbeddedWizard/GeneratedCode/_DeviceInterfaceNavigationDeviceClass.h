@@ -45,6 +45,12 @@
 #include "_CoreSystemEvent.h"
 #include "_TemplatesDeviceClass.h"
 
+/* Forward declaration of the class DeviceInterface::NaviDataClass */
+#ifndef _DeviceInterfaceNaviDataClass_
+  EW_DECLARE_CLASS( DeviceInterfaceNaviDataClass )
+#define _DeviceInterfaceNaviDataClass_
+#endif
+
 /* Forward declaration of the class DeviceInterface::NavigationDeviceClass */
 #ifndef _DeviceInterfaceNavigationDeviceClass_
   EW_DECLARE_CLASS( DeviceInterfaceNavigationDeviceClass )
@@ -55,6 +61,12 @@
 /* Deklaration of class : 'DeviceInterface::NavigationDeviceClass' */
 EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( MapUpdateEvent,  CoreSystemEvent )
+  EW_OBJECT  ( CurRdUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( ETAUpdateEvent,  CoreSystemEvent )
+  EW_OBJECT  ( DayNightModeUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( SpeedLimitUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( NaviIncidentUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( NavigatingStatusUpdateEvent, CoreSystemEvent )
 EW_END_OF_FIELDS( DeviceInterfaceNavigationDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::NavigationDeviceClass' */
@@ -73,6 +85,73 @@ void DeviceInterfaceNavigationDeviceClass__NotifyMapUpdate( void* _this );
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsMapFrameReady()' */
 XBool DeviceInterfaceNavigationDeviceClass_IsMapFrameReady( DeviceInterfaceNavigationDeviceClass _this );
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyCurRdUpdate( DeviceInterfaceNavigationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyCurRdUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyCurRdUpdate( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyCurRdUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyCurRdUpdate_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyETAUpdate( DeviceInterfaceNavigationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyETAUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyETAUpdate( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyETAUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyETAUpdate_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyDayNightModeUpdate( DeviceInterfaceNavigationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyDayNightModeUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyDayNightModeUpdate( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyDayNightModeUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyDayNightModeUpdate_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifySpeedLimitUpdate( DeviceInterfaceNavigationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifySpeedLimitUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifySpeedLimitUpdate( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifySpeedLimitUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifySpeedLimitUpdate_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyNaviEventUpdate( DeviceInterfaceNavigationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNaviEventUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyNaviEventUpdate( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyNaviEventUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyNaviEventUpdate_
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviData()' */
+DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( DeviceInterfaceNavigationDeviceClass _this, 
+  XEnum aDataType );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsRouteGuidanceStarted()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( DeviceInterfaceNavigationDeviceClass _this );
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyNavigatingStatusUpdate( DeviceInterfaceNavigationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNavigatingStatusUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyNavigatingStatusUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate_
 
 #ifdef __cplusplus
   }

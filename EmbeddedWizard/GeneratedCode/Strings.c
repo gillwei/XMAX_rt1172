@@ -340,8 +340,8 @@ const XStringRes StringsLNC_settings = { _StringsDefault0, 0x01CE };
 /* User defined constant: 'Strings::NAV06_stop_navigation' */
 const XStringRes StringsNAV06_stop_navigation = { _StringsDefault0, 0x01D9 };
 
-/* User defined constant: 'Strings::NAV06_stop_next_stop' */
-const XStringRes StringsNAV06_stop_next_stop = { _StringsDefault0, 0x01EB };
+/* User defined constant: 'Strings::NAV06_SKIP_NEXT_STOP' */
+const XStringRes StringsNAV06_SKIP_NEXT_STOP = { _StringsDefault0, 0x01EB };
 
 /* User defined constant: 'Strings::NAV06_go_home' */
 const XStringRes StringsNAV06_go_home = { _StringsDefault0, 0x01FC };

@@ -465,7 +465,7 @@ const string NAV06_stop_navigation =
 );
 
 $output false
-const string NAV06_stop_next_stop =
+const string NAV06_SKIP_NEXT_STOP =
 (
   Default = "Skip next stop";
 );

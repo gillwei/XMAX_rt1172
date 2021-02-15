@@ -164,7 +164,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->Album, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->ElapsedTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium22pt, 
+  ViewsText_OnSetFont( &_this->ElapsedTimeSec, EwLoadResource( &FontsNotoSansMedium22pt, 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->TotalTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));

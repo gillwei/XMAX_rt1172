@@ -58,6 +58,13 @@ void EW_notify_vi_data_received( EnumVehicleRxType rx_type );
 
 void EW_notify_weather_info_update( void );
 
+void EW_notify_current_road_update( void );
+void EW_notify_eta_update( void );
+void EW_notify_daynight_mode_update( void );
+void EW_notify_speed_limit_update( void );
+void EW_notify_navi_event_update( void );
+void EW_notify_navigating_status_update( void );
+
 #ifdef __cplusplus
 }
 #endif
