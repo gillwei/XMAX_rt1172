@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _WeatherWeatherWeekViewUI_H
-#define _WeatherWeatherWeekViewUI_H
+#ifndef _PopPOP08_WeatherLoadingUI_H
+#define _PopPOP08_WeatherLoadingUI_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,9 +42,14 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_CoreGroup.h"
+#include "_ComponentsBaseMainBG.h"
+#include "_ComponentsDDModeMask.h"
+#include "_CoreKeyPressHandler.h"
+#include "_CorePropertyObserver.h"
+#include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_ViewsImage.h"
-#include "_ViewsLine.h"
+#include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
@@ -53,10 +58,10 @@
 #define _CoreDialogContext_
 #endif
 
-/* Forward declaration of the class Core::KeyPressHandler */
-#ifndef _CoreKeyPressHandler_
-  EW_DECLARE_CLASS( CoreKeyPressHandler )
-#define _CoreKeyPressHandler_
+/* Forward declaration of the class Core::Group */
+#ifndef _CoreGroup_
+  EW_DECLARE_CLASS( CoreGroup )
+#define _CoreGroup_
 #endif
 
 /* Forward declaration of the class Core::LayoutContext */
@@ -89,78 +94,22 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Weather::WeatherWeekViewUI */
-#ifndef _WeatherWeatherWeekViewUI_
-  EW_DECLARE_CLASS( WeatherWeatherWeekViewUI )
-#define _WeatherWeatherWeekViewUI_
+/* Forward declaration of the class Pop::POP08_WeatherLoadingUI */
+#ifndef _PopPOP08_WeatherLoadingUI_
+  EW_DECLARE_CLASS( PopPOP08_WeatherLoadingUI )
+#define _PopPOP08_WeatherLoadingUI_
 #endif
 
 
-/* Deklaration of class : 'Weather::WeatherWeekViewUI' */
-EW_DEFINE_FIELDS( WeatherWeatherWeekViewUI, CoreGroup )
-  EW_ARRAY   ( DayTextViewArray, ViewsText, [6])
-  EW_OBJECT  ( DayOneWeather,   ViewsImage )
-  EW_OBJECT  ( DayOneText,      ViewsText )
-  EW_OBJECT  ( DayOneChanceOfRain, ViewsText )
-  EW_OBJECT  ( DayOneMinTemp,   ViewsText )
-  EW_OBJECT  ( DivideLineUpLeft, ViewsLine )
-  EW_OBJECT  ( DivideLineUpRight, ViewsLine )
-  EW_OBJECT  ( DayTwoWeather,   ViewsImage )
-  EW_OBJECT  ( DayOneRainPerIcon, ViewsImage )
-  EW_OBJECT  ( DayTwoText,      ViewsText )
-  EW_OBJECT  ( DayTwoChanceOfRain, ViewsText )
-  EW_OBJECT  ( DayTwoRainPerIcon, ViewsImage )
-  EW_OBJECT  ( DayTwoMinTemp,   ViewsText )
-  EW_OBJECT  ( DayThreeWeather, ViewsImage )
-  EW_OBJECT  ( DayThreeText,    ViewsText )
-  EW_OBJECT  ( DayThreeChanceOfRain, ViewsText )
-  EW_OBJECT  ( DayThreeRainPerIcon, ViewsImage )
-  EW_OBJECT  ( DayThreeMinTemp, ViewsText )
-  EW_OBJECT  ( WeatherLineUp,   ViewsImage )
-  EW_OBJECT  ( WeatherLineDown, ViewsImage )
-  EW_OBJECT  ( DayFourWeather,  ViewsImage )
-  EW_OBJECT  ( DayFiveWeather,  ViewsImage )
-  EW_OBJECT  ( DaySixWeather,   ViewsImage )
-  EW_OBJECT  ( DayFourText,     ViewsText )
-  EW_OBJECT  ( DayFiveText,     ViewsText )
-  EW_OBJECT  ( DaySixText,      ViewsText )
-  EW_OBJECT  ( DivideLineDownLeft, ViewsLine )
-  EW_OBJECT  ( DivideLineDownRight, ViewsLine )
-  EW_OBJECT  ( DayFourChanceOfRain, ViewsText )
-  EW_OBJECT  ( DayFiveChanceOfRain, ViewsText )
-  EW_OBJECT  ( DaySixChanceOfRain, ViewsText )
-  EW_OBJECT  ( DayFourRainPerIcon, ViewsImage )
-  EW_OBJECT  ( DayFiveRainPerIcon, ViewsImage )
-  EW_OBJECT  ( DaySixRainPerIcon, ViewsImage )
-  EW_OBJECT  ( DayFourMinTemp,  ViewsText )
-  EW_OBJECT  ( DayFiveMinTemp,  ViewsText )
-  EW_OBJECT  ( DaySixMinTemp,   ViewsText )
-  EW_OBJECT  ( DayOneTempUnit,  ViewsImage )
-  EW_OBJECT  ( DayTwoTempUnit,  ViewsImage )
-  EW_OBJECT  ( DayThreeTempUnit, ViewsImage )
-  EW_OBJECT  ( DayFourTempUnit, ViewsImage )
-  EW_OBJECT  ( DayFiveTempUnit, ViewsImage )
-  EW_OBJECT  ( DaySixTempUnit,  ViewsImage )
-  EW_OBJECT  ( DayOneTempSlash, ViewsText )
-  EW_OBJECT  ( DayOneMaxTemp,   ViewsText )
-  EW_OBJECT  ( DayTwoTempSlash, ViewsText )
-  EW_OBJECT  ( DayTwoMaxTemp,   ViewsText )
-  EW_OBJECT  ( DayThreeTempSlash, ViewsText )
-  EW_OBJECT  ( DayThreeMaxTemp, ViewsText )
-  EW_OBJECT  ( DayFourTempSlash, ViewsText )
-  EW_OBJECT  ( DayFourMaxTemp,  ViewsText )
-  EW_OBJECT  ( DayFiveTempSlash, ViewsText )
-  EW_OBJECT  ( DayFiveMaxTemp,  ViewsText )
-  EW_OBJECT  ( DaySixTempSlash, ViewsText )
-  EW_OBJECT  ( DaySixMaxTemp,   ViewsText )
-  EW_ARRAY   ( WeekDayTextArray, XString, [7])
-  EW_ARRAY   ( WeaItemIdxArray, XInt32, [5])
-  EW_ARRAY   ( TempSlashBounds, XRect, [5])
-  EW_ARRAY   ( MinTempBounds,   XRect, [5])
-EW_END_OF_FIELDS( WeatherWeatherWeekViewUI )
+/* Deklaration of class : 'Pop::POP08_WeatherLoadingUI' */
+EW_DEFINE_FIELDS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG )
+  EW_OBJECT  ( LoadingText,     ViewsText )
+  EW_OBJECT  ( WeatherLoadingObserver, CorePropertyObserver )
+  EW_OBJECT  ( LoadingAnimation, ViewsImage )
+EW_END_OF_FIELDS( PopPOP08_WeatherLoadingUI )
 
-/* Virtual Method Table (VMT) for the class : 'Weather::WeatherWeekViewUI' */
-EW_DEFINE_METHODS( WeatherWeatherWeekViewUI, CoreGroup )
+/* Virtual Method Table (VMT) for the class : 'Pop::POP08_WeatherLoadingUI' */
+EW_DEFINE_METHODS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -204,26 +153,30 @@ EW_DEFINE_METHODS( WeatherWeatherWeekViewUI, CoreGroup )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-EW_END_OF_METHODS( WeatherWeatherWeekViewUI )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
+  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+EW_END_OF_METHODS( PopPOP08_WeatherLoadingUI )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void WeatherWeatherWeekViewUI_Init( WeatherWeatherWeekViewUI _this, XHandle aArg );
+void PopPOP08_WeatherLoadingUI_Init( PopPOP08_WeatherLoadingUI _this, XHandle aArg );
 
-/* 'C' function for method : 'Weather::WeatherWeekViewUI.OnWeatherInfoUpdateSlot()' */
-void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI _this, 
-  XObject sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void WeatherWeatherWeekViewUI_OnWeekDayUpdateSlot( WeatherWeatherWeekViewUI _this, 
+/* This slot method is executed when the associated property observer 'PropertyObserver' 
+   is notified. */
+void PopPOP08_WeatherLoadingUI_OnWeatherLoadingUpdateSlot( PopPOP08_WeatherLoadingUI _this, 
   XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _WeatherWeatherWeekViewUI_H */
+#endif /* _PopPOP08_WeatherLoadingUI_H */
 
 /* Embedded Wizard */

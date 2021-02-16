@@ -105,6 +105,9 @@ void ew_device_weather_deinit( void );
 int ew_device_weather_proc( void );
 bc_motocon_weather_info_t* ew_get_weather_info_obj( const int index );
 void ew_get_weather_loc( char** location );
+void ew_send_weather_info_req( void );
+void ew_send_vehicle_setting_req( void );
+int ew_get_weather_week_day( void );
 
 #ifdef __cplusplus
 }

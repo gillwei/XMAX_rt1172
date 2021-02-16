@@ -43,7 +43,7 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x000003E2, /* ratio 47.89 % */
+  0x0000023E, /* ratio 55.05 % */
   0xB8002500, 0x000A6452, 0x00C2003A, 0x80107390, 0x16750010, 0x20037002, 0x540044C9,
   0x30019400, 0x000021A7, 0x04160619, 0x1BC00680, 0x421C7700, 0x22D14894, 0x3B1B8CC5,
   0x91A29422, 0x0D364AE3, 0xF1000075, 0x9104C011, 0xE4D00051, 0x0024C639, 0xA6793532,
@@ -54,13 +54,8 @@ static const unsigned int _StringsDefault0[] =
   0x6C70B266, 0x16F8C5F6, 0x918DE280, 0x4910363F, 0xD0C32564, 0xCC524FB5, 0xE503600D,
   0x2B3171C1, 0x4D71D8EC, 0x6A47A94D, 0x564CEC52, 0x6CE26A34, 0x68B93E09, 0x87C22370,
   0x377A2338, 0x6BAC782A, 0x83110A8A, 0xC2A00D55, 0x5584DAF1, 0x10323422, 0x2BEAE7C0,
-  0x2067123B, 0x947CE1F2, 0x13515800, 0x202DC443, 0x211452D2, 0x7F1E11B5, 0x41102711,
-  0x54F4A53C, 0xC7512543, 0xA5B75D53, 0x0F0016A6, 0x4D611116, 0xD12855C0, 0x86C57185,
-  0x41217B1B, 0x0884E008, 0x8910C889, 0xA266291B, 0xE445C044, 0x89928694, 0x638B21F4,
-  0x591B6859, 0xE3F8C20C, 0x6435BF8C, 0x4DC44D63, 0xF884A2A6, 0x6297F8B9, 0x9D65FE08,
-  0x77E2038C, 0x5A1B89E4, 0xB58D23A0, 0x6C53C451, 0x58849D0C, 0xE4E1B57A, 0x69C45C55,
-  0x148824B9, 0x4E13C956, 0xDC051527, 0xB8E1C252, 0x864C96D6, 0x009766E8, 0x4F127568,
-  0x19679514, 0xC9AD547B, 0x1A6F93A3, 0x6EA01455, 0x4F61BA0D, 0x00040400, 0x00000000
+  0x2067123B, 0x947CE1F2, 0x13515800, 0x202DC443, 0x211452D2, 0x7F1E11B5, 0x0013D711,
+  0x00000101, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -78,15 +73,6 @@ static const XStringRes _Const000A = { _StringsDefault0, 0x00DB };
 static const XStringRes _Const000B = { _StringsDefault0, 0x00F3 };
 static const XStringRes _Const000C = { _StringsDefault0, 0x0108 };
 static const XStringRes _Const000D = { _StringsDefault0, 0x0114 };
-static const XStringRes _Const000E = { _StringsDefault0, 0x011F };
-static const XStringRes _Const000F = { _StringsDefault0, 0x0131 };
-static const XStringRes _Const0010 = { _StringsDefault0, 0x0143 };
-static const XStringRes _Const0011 = { _StringsDefault0, 0x015C };
-static const XStringRes _Const0012 = { _StringsDefault0, 0x0179 };
-static const XStringRes _Const0013 = { _StringsDefault0, 0x0196 };
-static const XStringRes _Const0014 = { _StringsDefault0, 0x01AC };
-static const XStringRes _Const0015 = { _StringsDefault0, 0x01C2 };
-static const XStringRes _Const0016 = { _StringsDefault0, 0x01DA };
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
@@ -1482,59 +1468,15 @@ void DeviceInterfaceWeatherDeviceClass_GetWeatherInfo( DeviceInterfaceWeatherDev
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceWeatherDeviceClass_NotifyWeatherInfoUpdated( DeviceInterfaceWeatherDeviceClass _this, 
-  XInt32 aWeatherTime, XInt32 aWeatherType, XInt32 aTemp, XInt32 aMaxTemp, XInt32 
-  aMinTemp, XInt32 aRainProb )
+void DeviceInterfaceWeatherDeviceClass_NotifyWeatherInfoUpdated( DeviceInterfaceWeatherDeviceClass _this )
 {
-  EwTrace( "%s%i", EwLoadString( &_Const000E ), aWeatherTime );
-  EwTrace( "%s%i", EwLoadString( &_Const000F ), aWeatherType );
-  EwTrace( "%s%i", EwLoadString( &_Const0010 ), aTemp );
-  EwTrace( "%s%i", EwLoadString( &_Const0011 ), aMaxTemp );
-  EwTrace( "%s%i", EwLoadString( &_Const0012 ), aMinTemp );
-  EwTrace( "%s%i", EwLoadString( &_Const0013 ), aRainProb );
-  _this->WeatherTime = aWeatherTime;
-  _this->WeatherType = aWeatherType;
-  _this->Temperature = aTemp;
-  _this->MaxTemperature = aMaxTemp;
-  _this->MinTemperature = aMinTemp;
-  _this->RainProbability = aRainProb;
   DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherInfoReceived( _this, 1 );
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::WeatherDeviceClass.NotifyWeatherInfoUpdated()' */
-void DeviceInterfaceWeatherDeviceClass__NotifyWeatherInfoUpdated( void* _this, XInt32 
-  aWeatherTime, XInt32 aWeatherType, XInt32 aTemp, XInt32 aMaxTemp, XInt32 aMinTemp, 
-  XInt32 aRainProb )
+void DeviceInterfaceWeatherDeviceClass__NotifyWeatherInfoUpdated( void* _this )
 {
-  DeviceInterfaceWeatherDeviceClass_NotifyWeatherInfoUpdated((DeviceInterfaceWeatherDeviceClass)_this
-  , aWeatherTime, aWeatherType, aTemp, aMaxTemp, aMinTemp, aRainProb );
-}
-
-/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.NotifyWeatherLocationUpdated()' */
-void DeviceInterfaceWeatherDeviceClass_NotifyWeatherLocationUpdated( DeviceInterfaceWeatherDeviceClass _this, 
-  XString aWeatherLoc )
-{
-  EwTrace( "%s%s", EwLoadString( &_Const0014 ), aWeatherLoc );
-  _this->WeatherLocation = EwShareString( aWeatherLoc );
-  DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherLocReceived( _this, 1 );
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::WeatherDeviceClass.NotifyWeatherLocationUpdated()' */
-void DeviceInterfaceWeatherDeviceClass__NotifyWeatherLocationUpdated( void* _this, 
-  XString aWeatherLoc )
-{
-  DeviceInterfaceWeatherDeviceClass_NotifyWeatherLocationUpdated((DeviceInterfaceWeatherDeviceClass)_this
-  , aWeatherLoc );
-}
-
-/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.OnSetIsWeatherInfoReceived()' */
-void DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherInfoReceived( DeviceInterfaceWeatherDeviceClass _this, 
-  XInt32 value )
-{
-  EwTrace( "%s", EwLoadString( &_Const0015 ));
-  _this->IsWeatherInfoReceived = value;
-  EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceWeatherDeviceClass_OnGetIsWeatherInfoReceived, 
-    DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherInfoReceived ), 0 );
+  DeviceInterfaceWeatherDeviceClass_NotifyWeatherInfoUpdated((DeviceInterfaceWeatherDeviceClass)_this );
 }
 
 /* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.GetWeatherLoc()' */
@@ -1550,26 +1492,49 @@ void DeviceInterfaceWeatherDeviceClass_GetWeatherLoc( DeviceInterfaceWeatherDevi
   _this->WeatherLocation = EwShareString( CurrentLoc );
 }
 
-/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.OnSetIsWeatherLocReceived()' */
-void DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherLocReceived( DeviceInterfaceWeatherDeviceClass _this, 
-  XInt32 value )
+/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.SendWeatherInfoRequest()' */
+void DeviceInterfaceWeatherDeviceClass_SendWeatherInfoRequest( DeviceInterfaceWeatherDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const0016 ));
-  _this->IsWeatherLocReceived = value;
-  EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceWeatherDeviceClass_OnGetIsWeatherLocReceived, 
-    DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherLocReceived ), 0 );
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ew_send_weather_info_req();
+}
+
+/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.SendVehicleSettingRequest()' */
+void DeviceInterfaceWeatherDeviceClass_SendVehicleSettingRequest( DeviceInterfaceWeatherDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ew_send_vehicle_setting_req();
+}
+
+/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.GetWeekDay()' */
+void DeviceInterfaceWeatherDeviceClass_GetWeekDay( DeviceInterfaceWeatherDeviceClass _this )
+{
+  XInt32 NewWeekDay = 0;
+
+  {
+    int week_day = ew_get_weather_week_day();
+    NewWeekDay = week_day;
+  }
+  _this->WeekDay = NewWeekDay;
+}
+
+/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.OnSetIsWeatherInfoReceived()' */
+void DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherInfoReceived( DeviceInterfaceWeatherDeviceClass _this, 
+  XBool value )
+{
+  _this->IsWeatherInfoReceived = value;
+  EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceWeatherDeviceClass_OnGetIsWeatherInfoReceived, 
+    DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherInfoReceived ), 0 );
 }
 
 /* Default onget method for the property 'IsWeatherInfoReceived' */
-XInt32 DeviceInterfaceWeatherDeviceClass_OnGetIsWeatherInfoReceived( DeviceInterfaceWeatherDeviceClass _this )
+XBool DeviceInterfaceWeatherDeviceClass_OnGetIsWeatherInfoReceived( DeviceInterfaceWeatherDeviceClass _this )
 {
   return _this->IsWeatherInfoReceived;
-}
-
-/* Default onget method for the property 'IsWeatherLocReceived' */
-XInt32 DeviceInterfaceWeatherDeviceClass_OnGetIsWeatherLocReceived( DeviceInterfaceWeatherDeviceClass _this )
-{
-  return _this->IsWeatherLocReceived;
 }
 
 /* Variants derived from the class : 'DeviceInterface::WeatherDeviceClass' */
@@ -1579,7 +1544,7 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceWeatherDeviceClass )
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::WeatherDeviceClass' */
 EW_DEFINE_CLASS( DeviceInterfaceWeatherDeviceClass, TemplatesDeviceClass, WeatherLocation, 
                  WeatherLocation, WeatherLocation, WeatherLocation, WeatherLocation, 
-                 IsWeatherInfoReceived, "DeviceInterface::WeatherDeviceClass" )
+                 WeatherTime, "DeviceInterface::WeatherDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceWeatherDeviceClass )
 
 /* User defined auto object: 'DeviceInterface::WeatherDevice' */

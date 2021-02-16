@@ -26,4 +26,5 @@ set(EMWIFILES
 	"Launcher.c" 
 	"Home.c" 
 	"Top.c" 
-	"Weather.c")
+	"Weather.c" 
+	"Pop.c")

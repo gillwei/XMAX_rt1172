@@ -208,7 +208,7 @@ class LNC_Main : Components::BaseComponent
       case Enum::LauncherItem.NOTIFICATION:;
       case Enum::LauncherItem.WEATHER:
       {
-        ItemDialog = new Weather::WEA01_Main;
+        ItemDialog = new Pop::POP08_WeatherLoadingUI;
         PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
       case Enum::LauncherItem.SETTINGS:

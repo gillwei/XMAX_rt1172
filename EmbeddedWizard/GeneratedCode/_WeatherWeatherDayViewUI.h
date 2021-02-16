@@ -43,7 +43,6 @@
 #endif
 
 #include "_CoreGroup.h"
-#include "_CorePropertyObserver.h"
 #include "_ViewsImage.h"
 #include "_ViewsLine.h"
 #include "_ViewsText.h"
@@ -102,7 +101,6 @@ EW_DEFINE_FIELDS( WeatherWeatherDayViewUI, CoreGroup )
   EW_OBJECT  ( CurrentLocationText, ViewsText )
   EW_OBJECT  ( ChanceOfRainText, ViewsText )
   EW_OBJECT  ( PerOfRainIcon,   ViewsImage )
-  EW_OBJECT  ( MinTempText,     ViewsText )
   EW_OBJECT  ( TempUnitIcon,    ViewsImage )
   EW_OBJECT  ( WeekDayText,     ViewsText )
   EW_OBJECT  ( WeatherIcon,     ViewsImage )
@@ -127,11 +125,13 @@ EW_DEFINE_FIELDS( WeatherWeatherDayViewUI, CoreGroup )
   EW_OBJECT  ( TempUnit1h,      ViewsImage )
   EW_OBJECT  ( TempUnit2h,      ViewsImage )
   EW_OBJECT  ( TempUnit3h,      ViewsImage )
-  EW_OBJECT  ( WeatherLocObserver, CorePropertyObserver )
-  EW_OBJECT  ( WeatherInfoObserver, CorePropertyObserver )
+  EW_OBJECT  ( MinTempText,     ViewsText )
   EW_OBJECT  ( TempTextSlash,   ViewsText )
   EW_OBJECT  ( MaxTempText,     ViewsText )
+  EW_ARRAY   ( WeekDayTextArray, XString, [7])
   EW_ARRAY   ( WeaItemIdxArray, XInt32, [4])
+  EW_VARIABLE( MinTempTextBounds, XRect )
+  EW_VARIABLE( TempTextSlashBounds, XRect )
 EW_END_OF_FIELDS( WeatherWeatherDayViewUI )
 
 /* Virtual Method Table (VMT) for the class : 'Weather::WeatherDayViewUI' */
@@ -193,6 +193,11 @@ void WeatherWeatherDayViewUI_OnWeatherLocUpdateSlot( WeatherWeatherDayViewUI _th
 
 /* 'C' function for method : 'Weather::WeatherDayViewUI.OnWeatherInfoUpdateSlot()' */
 void WeatherWeatherDayViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherDayViewUI _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void WeatherWeatherDayViewUI_OnWeekDayUpdateSlot( WeatherWeatherDayViewUI _this, 
   XObject sender );
 
 #ifdef __cplusplus

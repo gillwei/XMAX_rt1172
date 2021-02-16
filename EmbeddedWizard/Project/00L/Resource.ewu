@@ -60,16 +60,16 @@ resource Resources::Bitmap IconWarning
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,1320,230,1360>
+$rect <20,240,220,280>
 $output false
-resource Resources::Bitmap progress
+resource Resources::Bitmap LoadingAnimation
 {
-  attr bitmapfile FileName = .\Res\progress.png;
+  attr bitmapfile FileName = .\Res\common\loading_anime.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <200,200>;
-  attr framedelay FrameDelay = 33;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
+  attr framesize FrameSize = <94,94>;
+  attr framedelay FrameDelay = 42;
+  attr bitmapdithering Dithering;
+  attr bitmapmode Mode;
 }
 
 $rect <540,220,740,260>
@@ -872,7 +872,7 @@ resource Resources::Bitmap CurrentWeatherIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <470,900,670,940>
+$rect <470,890,670,930>
 $output false
 resource Resources::Bitmap ForecastWeatherIcon
 {

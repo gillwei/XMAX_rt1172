@@ -20,6 +20,9 @@ extern "C"{
 
 void WEA_init( void );
 bc_motocon_weather_info_t* WEA_get_weather_obj( const int index );
+char* WEA_get_weather_location( void );
+int WEA_get_weather_weekday( void );
+void WEA_reset_weather_info_threshold( void );
 
 #ifdef __cplusplus
 }

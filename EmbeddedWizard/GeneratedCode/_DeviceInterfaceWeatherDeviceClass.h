@@ -54,14 +54,14 @@
 /* Deklaration of class : 'DeviceInterface::WeatherDeviceClass' */
 EW_DEFINE_FIELDS( DeviceInterfaceWeatherDeviceClass, TemplatesDeviceClass )
   EW_VARIABLE( WeatherLocation, XString )
-  EW_PROPERTY( IsWeatherInfoReceived, XInt32 )
-  EW_PROPERTY( IsWeatherLocReceived, XInt32 )
   EW_VARIABLE( WeatherTime,     XInt32 )
   EW_VARIABLE( Temperature,     XInt32 )
   EW_VARIABLE( MaxTemperature,  XInt32 )
   EW_VARIABLE( WeatherType,     XInt32 )
   EW_VARIABLE( MinTemperature,  XInt32 )
   EW_VARIABLE( RainProbability, XInt32 )
+  EW_VARIABLE( WeekDay,         XInt32 )
+  EW_PROPERTY( IsWeatherInfoReceived, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceWeatherDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::WeatherDeviceClass' */
@@ -74,45 +74,32 @@ void DeviceInterfaceWeatherDeviceClass_GetWeatherInfo( DeviceInterfaceWeatherDev
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceWeatherDeviceClass_NotifyWeatherInfoUpdated( DeviceInterfaceWeatherDeviceClass _this, 
-  XInt32 aWeatherTime, XInt32 aWeatherType, XInt32 aTemp, XInt32 aMaxTemp, XInt32 
-  aMinTemp, XInt32 aRainProb );
+void DeviceInterfaceWeatherDeviceClass_NotifyWeatherInfoUpdated( DeviceInterfaceWeatherDeviceClass _this );
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::WeatherDeviceClass.NotifyWeatherInfoUpdated()' */
-void DeviceInterfaceWeatherDeviceClass__NotifyWeatherInfoUpdated( void* _this, XInt32 
-  aWeatherTime, XInt32 aWeatherType, XInt32 aTemp, XInt32 aMaxTemp, XInt32 aMinTemp, 
-  XInt32 aRainProb );
+void DeviceInterfaceWeatherDeviceClass__NotifyWeatherInfoUpdated( void* _this );
 
 /* The following define announces the presence of the method DeviceInterface::WeatherDeviceClass.NotifyWeatherInfoUpdated(). */
 #define _DeviceInterfaceWeatherDeviceClass__NotifyWeatherInfoUpdated_
 
-/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.NotifyWeatherLocationUpdated()' */
-void DeviceInterfaceWeatherDeviceClass_NotifyWeatherLocationUpdated( DeviceInterfaceWeatherDeviceClass _this, 
-  XString aWeatherLoc );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::WeatherDeviceClass.NotifyWeatherLocationUpdated()' */
-void DeviceInterfaceWeatherDeviceClass__NotifyWeatherLocationUpdated( void* _this, 
-  XString aWeatherLoc );
-
-/* The following define announces the presence of the method DeviceInterface::WeatherDeviceClass.NotifyWeatherLocationUpdated(). */
-#define _DeviceInterfaceWeatherDeviceClass__NotifyWeatherLocationUpdated_
-
-/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.OnSetIsWeatherInfoReceived()' */
-void DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherInfoReceived( DeviceInterfaceWeatherDeviceClass _this, 
-  XInt32 value );
-
 /* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.GetWeatherLoc()' */
 void DeviceInterfaceWeatherDeviceClass_GetWeatherLoc( DeviceInterfaceWeatherDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.OnSetIsWeatherLocReceived()' */
-void DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherLocReceived( DeviceInterfaceWeatherDeviceClass _this, 
-  XInt32 value );
+/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.SendWeatherInfoRequest()' */
+void DeviceInterfaceWeatherDeviceClass_SendWeatherInfoRequest( DeviceInterfaceWeatherDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.SendVehicleSettingRequest()' */
+void DeviceInterfaceWeatherDeviceClass_SendVehicleSettingRequest( DeviceInterfaceWeatherDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.GetWeekDay()' */
+void DeviceInterfaceWeatherDeviceClass_GetWeekDay( DeviceInterfaceWeatherDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.OnSetIsWeatherInfoReceived()' */
+void DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherInfoReceived( DeviceInterfaceWeatherDeviceClass _this, 
+  XBool value );
 
 /* Default onget method for the property 'IsWeatherInfoReceived' */
-XInt32 DeviceInterfaceWeatherDeviceClass_OnGetIsWeatherInfoReceived( DeviceInterfaceWeatherDeviceClass _this );
-
-/* Default onget method for the property 'IsWeatherLocReceived' */
-XInt32 DeviceInterfaceWeatherDeviceClass_OnGetIsWeatherLocReceived( DeviceInterfaceWeatherDeviceClass _this );
+XBool DeviceInterfaceWeatherDeviceClass_OnGetIsWeatherInfoReceived( DeviceInterfaceWeatherDeviceClass _this );
 
 #ifdef __cplusplus
   }

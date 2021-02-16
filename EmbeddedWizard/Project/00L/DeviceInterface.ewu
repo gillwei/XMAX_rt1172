@@ -1186,7 +1186,7 @@ $rect <290,170,490,210>
 $output false
 class WeatherDeviceClass : Templates::DeviceClass
 {
-  $rect <100,310,300,350>
+  $rect <110,180,310,220>
   method void GetWeatherInfo( arg int32 aWeaItemIdx )
   {
     $if !$prototyper
@@ -1225,51 +1225,14 @@ class WeatherDeviceClass : Templates::DeviceClass
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <100,360,300,400>
+  $rect <110,300,330,340>
   $output true
-  method void NotifyWeatherInfoUpdated( arg int32 aWeatherTime, arg int32 aWeatherType, arg int32 aTemp, arg int32 aMaxTemp, arg int32 aMinTemp, arg int32 aRainProb )
+  method void NotifyWeatherInfoUpdated()
   {
-    trace " weather time: ", aWeatherTime;
-    trace " weather type: ", aWeatherType;
-    trace " weather temperature: ", aTemp;
-    trace " weather max temperature: ", aMaxTemp;
-    trace " weather min temperature: ", aMinTemp;
-    trace " rain probability: ", aRainProb;
-
-    WeatherTime = aWeatherTime;
-    WeatherType = aWeatherType;
-    Temperature = aTemp;
-    MaxTemperature = aMaxTemp;
-    MinTemperature = aMinTemp;
-    RainProbability = aRainProb;
-    IsWeatherInfoReceived = 1;
+    IsWeatherInfoReceived = true;
   }
 
-  $rect <310,360,510,400>
-  $output true
-  method void NotifyWeatherLocationUpdated( arg string aWeatherLoc )
-  {
-    trace " weather location: ", aWeatherLoc;
-    WeatherLocation = aWeatherLoc;
-    IsWeatherLocReceived = 1;
-  }
-
-  $rect <100,210,300,250>
-  property int32 IsWeatherInfoReceived;
-
-  $rect <100,250,300,290>
-  onset IsWeatherInfoReceived
-  {
-    // Remember the property's new value.
-
-    trace " weather info notify ";
-
-    pure IsWeatherInfoReceived = value;
-
-    notifyobservers ^IsWeatherInfoReceived;
-  }
-
-  $rect <310,310,510,350>
+  $rect <320,180,520,220>
   method void GetWeatherLoc()
   {
     $if !$prototyper
@@ -1283,20 +1246,6 @@ class WeatherDeviceClass : Templates::DeviceClass
       }
     WeatherLocation = CurrentLoc;
     $endif
-  }
-
-  $rect <310,210,510,250>
-  property int32 IsWeatherLocReceived;
-
-  $rect <310,250,510,290>
-  onset IsWeatherLocReceived
-  {
-    trace " weather loc notify ";
-    // Remember the property's new value.
-    pure IsWeatherLocReceived = value;
-
-    // Notify all associated property observers.
-    notifyobservers ^IsWeatherLocReceived;
   }
 
   $rect <100,-10,300,30>
@@ -1319,6 +1268,59 @@ class WeatherDeviceClass : Templates::DeviceClass
 
   $rect <100,110,300,150>
   var string WeatherLocation;
+
+  $rect <110,240,340,280>
+  method void SendWeatherInfoRequest()
+  {
+    $if !$prototyper
+      native
+      {
+        ew_send_weather_info_req();
+      }
+    $endif
+  }
+
+  $rect <350,240,590,280>
+  method void SendVehicleSettingRequest()
+  {
+    $if !$prototyper
+      native
+      {
+        ew_send_vehicle_setting_req();
+      }
+    $endif
+  }
+
+  $rect <310,110,510,150>
+  var int32 WeekDay;
+
+  $rect <540,180,740,220>
+  method void GetWeekDay()
+  {
+    $if !$prototyper
+      var int32 NewWeekDay;
+
+      native( NewWeekDay )
+      {
+        int week_day = ew_get_weather_week_day();
+        NewWeekDay = week_day;
+      }
+    WeekDay = NewWeekDay;
+    $endif
+  }
+
+  $rect <530,-10,770,30>
+  property bool IsWeatherInfoReceived = false;
+
+  $rect <530,30,770,70>
+  onset IsWeatherInfoReceived
+  {
+    // Remember the property's new value.
+    pure IsWeatherInfoReceived = value;
+
+    notifyobservers ^IsWeatherInfoReceived;
+
+  }
 }
 
 $rect <290,210,490,250>

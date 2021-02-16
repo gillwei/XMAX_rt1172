@@ -15,6 +15,9 @@ class WeatherDayViewUI : Core::Group
     }
     DeviceInterface::WeatherDevice.GetWeatherLoc();
     signal OnWeatherLocUpdateSlot;
+    DeviceInterface::WeatherDevice.GetWeekDay();
+    signal OnWeekDayUpdateSlot;
+
   }
 
   $rect <510,30,710,70>
@@ -46,20 +49,10 @@ class WeatherDayViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text MinTempText
-  {
-    preset Bounds = <280,59,336,93>;
-    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
-    preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium28pt;
-    preset Color = #28AAFFFF;
-  }
-
-  $rect <20,20,160,60>
   object Views::Image TempUnitIcon
   {
     preset Bounds = <394,60,425,91>;
-    preset Bitmap = Resource::IconTempDegF;
+    preset Bitmap = Resource::IconTempDegC;
   }
 
   $rect <20,20,160,60>
@@ -248,59 +241,67 @@ class WeatherDayViewUI : Core::Group
     preset Bitmap = Resource::IconTempDeg;
   }
 
-  $rect <0,360,200,400>
-  object Core::PropertyObserver WeatherLocObserver
-  {
-    preset OnEvent = OnWeatherLocUpdateSlot;
-    preset Outlet = ^DeviceInterface::WeatherDevice.IsWeatherLocReceived;
-  }
-
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <200,360,400,400>
+  $rect <210,300,410,340>
   slot OnWeatherLocUpdateSlot
   {
-    CurrentLocationText.String = DeviceInterface::WeatherDevice.WeatherLocation;
+    if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
+    {
+      CurrentLocationText.String = DeviceInterface::WeatherDevice.WeatherLocation;
+    }
   }
 
-  $rect <0,310,200,350>
-  object Core::PropertyObserver WeatherInfoObserver
-  {
-    preset OnEvent = OnWeatherInfoUpdateSlot;
-    preset Outlet = ^DeviceInterface::WeatherDevice.IsWeatherInfoReceived;
-  }
-
-  $rect <200,310,400,350>
+  $rect <210,250,410,290>
   slot OnWeatherInfoUpdateSlot
   {
-    switch( DeviceInterface::WeatherDevice.WeatherTime )
+    if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
     {
-      case 0:
+      switch( DeviceInterface::WeatherDevice.WeatherTime )
       {
-        WeatherIcon.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
-        ChanceOfRainText.String = string( DeviceInterface::WeatherDevice.RainProbability );
-        MinTempText.String = string( DeviceInterface::WeatherDevice.MinTemperature );
-        MaxTempText.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+        case 0:
+        {
+          // Reset Bounds to original position.
+          MinTempText.Bounds = MinTempTextBounds;
+          TempTextSlash.Bounds = TempTextSlashBounds;
+
+          //WeekDayText.String = WeekDayTextArray[DeviceInterface::WeatherDevice.WeatherTime];
+          WeatherIcon.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+          ChanceOfRainText.String = string( DeviceInterface::WeatherDevice.RainProbability );
+          MinTempText.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+          MaxTempText.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+
+          // Shift text position based on the content.
+          var int32 TempShiftPixel = MaxTempText.Bounds.w - MaxTempText.GetContentArea().w;
+          var rect NewSlashBounds = TempTextSlash.Bounds;
+          var rect NewMinBounds = MinTempText.Bounds;
+          NewSlashBounds.x1 = TempTextSlash.Bounds.x1 + TempShiftPixel;
+          NewSlashBounds.x2 = TempTextSlash.Bounds.x2 + TempShiftPixel;
+          NewMinBounds.x1 = MinTempText.Bounds.x1 + TempShiftPixel;
+          NewMinBounds.x2 = MinTempText.Bounds.x2 + TempShiftPixel;
+          TempTextSlash.Bounds = NewSlashBounds;
+          MinTempText.Bounds = NewMinBounds;
+        }
+        case 6:
+        {
+          Weather1h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+          ChanceOfRain1h.String = string( DeviceInterface::WeatherDevice.RainProbability );
+          Temp1h.String =  string( DeviceInterface::WeatherDevice.Temperature );
+        }
+        case 7:
+        {
+          Weather2h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+          ChanceOfRain2h.String = string( DeviceInterface::WeatherDevice.RainProbability );
+          Temp2h.String =  string( DeviceInterface::WeatherDevice.Temperature );
+        }
+        case 8:
+        {
+          Weather3h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+          ChanceOfRain3h.String = string( DeviceInterface::WeatherDevice.RainProbability );
+          Temp3h.String =  string( DeviceInterface::WeatherDevice.Temperature );
+        }
+        default:;
       }
-      case 6:
-      {
-        Weather1h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
-        ChanceOfRain1h.String = string( DeviceInterface::WeatherDevice.RainProbability );
-        Temp1h.String =  string( DeviceInterface::WeatherDevice.Temperature );
-      }
-      case 7:
-      {
-        Weather2h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
-        ChanceOfRain2h.String = string( DeviceInterface::WeatherDevice.RainProbability );
-        Temp2h.String =  string( DeviceInterface::WeatherDevice.Temperature );
-      }
-      case 8:
-      {
-        Weather3h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
-        ChanceOfRain3h.String = string( DeviceInterface::WeatherDevice.RainProbability );
-        Temp3h.String =  string( DeviceInterface::WeatherDevice.Temperature );
-      }
-      default:;
     }
   }
 
@@ -326,6 +327,16 @@ class WeatherDayViewUI : Core::Group
   );
 
   $rect <20,20,160,60>
+  object Views::Text MinTempText
+  {
+    preset Bounds = <280,59,336,93>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Color = #28AAFFFF;
+  }
+
+  $rect <20,20,160,60>
   object Views::Text TempTextSlash
   {
     preset Bounds = <336,59,347,93>;
@@ -344,6 +355,23 @@ class WeatherDayViewUI : Core::Group
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
     preset Color = #FF2828FF;
   }
+
+  $rect <513,139,713,179>
+  var rect MinTempTextBounds = <280,59,336,93>;
+
+  $rect <510,180,710,220>
+  var rect TempTextSlashBounds = <336,59,347,93>;
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <210,360,410,400>
+  slot OnWeekDayUpdateSlot
+  {
+    if( WeekDayTextArray.size > DeviceInterface::WeatherDevice.WeekDay )
+    {
+      WeekDayText.String = WeekDayTextArray[DeviceInterface::WeatherDevice.WeekDay];
+    }
+  }
 }
 
 $rect <30,20,230,60>
@@ -356,7 +384,11 @@ class WEA01_Main : Components::BaseMainBG
   $rect <250,290,450,330>
   inherited method OnShortHomeKeyActivated()
   {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
+    var Application::Application App = ( Application::Application )GetRoot();
+    if( null != App )
+    {
+      App.ReturnToLauncher();
+    }
   }
 
   $rect <20,20,160,60>
@@ -364,15 +396,6 @@ class WEA01_Main : Components::BaseMainBG
   {
     preset Bounds = <0,36,480,272>;
     preset PassHomeKey = true;
-  }
-
-  // TODO:
-  // 1. Handle long pressing Home button.
-  // 2. Send BC_motocon_send_weather_request() to get weather info.
-  // 3. Send BC_motocon_send_vehicle_setting_request() to get unix time from phone.
-  note group Note12
-  {
-    attr Bounds = <510,70,970,230>;
   }
 }
 
@@ -390,6 +413,9 @@ class WeatherWeekViewUI : Core::Group
       DeviceInterface::WeatherDevice.GetWeatherInfo( WeaItemIdxArray[i] );
       signal OnWeatherInfoUpdateSlot;
     }
+    DeviceInterface::WeatherDevice.GetWeekDay();
+    signal OnWeekDayUpdateSlot;
+    DeviceInterface::WeatherDevice.IsWeatherInfoReceived = false;
   }
 
   $rect <530,10,730,50>
@@ -749,54 +775,125 @@ class WeatherWeekViewUI : Core::Group
     Default[4] = 5;
   );
 
-  $rect <10,300,210,340>
-  object Core::PropertyObserver WeatherInfoObserver
-  {
-    preset OnEvent = OnWeatherInfoUpdateSlot;
-    preset Outlet = ^DeviceInterface::WeatherDevice.IsWeatherInfoReceived;
-  }
-
-  $rect <210,300,410,340>
+  $rect <220,250,420,290>
   slot OnWeatherInfoUpdateSlot
   {
-    switch( DeviceInterface::WeatherDevice.WeatherTime )
+    if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
     {
-      case 1:
+      switch( DeviceInterface::WeatherDevice.WeatherTime )
       {
-        DayOneWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
-        DayOneChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
-        DayOneMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
-        DayOneMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+        case 1:
+        {
+          // Reset Bounds to original position.
+          DayOneMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
+          DayOneTempSlash.Bounds = TempSlashBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
+
+          DayOneWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+          DayOneChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+          DayOneMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+          DayOneMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+
+          // Shift text position based on the content.
+          var int32 TempShiftPixel = DayOneMaxTemp.Bounds.w - DayOneMaxTemp.GetContentArea().w;
+          var rect NewSlashBounds = DayOneTempSlash.Bounds;
+          var rect NewMinBounds = DayOneMinTemp.Bounds;
+          NewSlashBounds.x1 = DayOneTempSlash.Bounds.x1 + TempShiftPixel;
+          NewSlashBounds.x2 = DayOneTempSlash.Bounds.x2 + TempShiftPixel;
+          NewMinBounds.x1 = DayOneMinTemp.Bounds.x1 + TempShiftPixel;
+          NewMinBounds.x2 = DayOneMinTemp.Bounds.x2 + TempShiftPixel;
+          DayOneTempSlash.Bounds = NewSlashBounds;
+          DayOneMinTemp.Bounds = NewMinBounds;
+        }
+        case 2:
+        {
+          // Reset Bounds to original position.
+          DayTwoMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
+          DayTwoTempSlash.Bounds = TempSlashBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
+
+          DayTwoWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+          DayTwoChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+          DayTwoMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+          DayTwoMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+
+          // Shift text position based on the content.
+          var int32 TempShiftPixel = DayTwoMaxTemp.Bounds.w - DayTwoMaxTemp.GetContentArea().w;
+          var rect NewSlashBounds = DayTwoTempSlash.Bounds;
+          var rect NewMinBounds = DayTwoMinTemp.Bounds;
+          NewSlashBounds.x1 = DayTwoTempSlash.Bounds.x1 + TempShiftPixel;
+          NewSlashBounds.x2 = DayTwoTempSlash.Bounds.x2 + TempShiftPixel;
+          NewMinBounds.x1 = DayTwoMinTemp.Bounds.x1 + TempShiftPixel;
+          NewMinBounds.x2 = DayTwoMinTemp.Bounds.x2 + TempShiftPixel;
+          DayTwoTempSlash.Bounds = NewSlashBounds;
+          DayTwoMinTemp.Bounds = NewMinBounds;
+        }
+        case 3:
+        {
+          // Reset Bounds to original position.
+          DayThreeMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
+          DayThreeTempSlash.Bounds = TempSlashBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
+
+          DayThreeWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+          DayThreeChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+          DayThreeMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+          DayThreeMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+
+          // Shift text position based on the content.
+          var int32 TempShiftPixel = DayThreeMaxTemp.Bounds.w - DayThreeMaxTemp.GetContentArea().w;
+          var rect NewSlashBounds = DayThreeTempSlash.Bounds;
+          var rect NewMinBounds = DayThreeMinTemp.Bounds;
+          NewSlashBounds.x1 = DayThreeTempSlash.Bounds.x1 + TempShiftPixel;
+          NewSlashBounds.x2 = DayThreeTempSlash.Bounds.x2 + TempShiftPixel;
+          NewMinBounds.x1 = DayThreeMinTemp.Bounds.x1 + TempShiftPixel;
+          NewMinBounds.x2 = DayThreeMinTemp.Bounds.x2 + TempShiftPixel;
+          DayThreeTempSlash.Bounds = NewSlashBounds;
+          DayThreeMinTemp.Bounds = NewMinBounds;
+        }
+        case 4:
+        {
+           // Reset Bounds to original position.
+          DayFourMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
+          DayFourTempSlash.Bounds = TempSlashBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
+
+          DayFourWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+          DayFourChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+          DayFourMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+          DayFourMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+
+          // Shift text position based on the content.
+          var int32 TempShiftPixel = DayFourMaxTemp.Bounds.w - DayFourMaxTemp.GetContentArea().w;
+          var rect NewSlashBounds = DayFourTempSlash.Bounds;
+          var rect NewMinBounds = DayFourMinTemp.Bounds;
+          NewSlashBounds.x1 = DayFourTempSlash.Bounds.x1 + TempShiftPixel;
+          NewSlashBounds.x2 = DayFourTempSlash.Bounds.x2 + TempShiftPixel;
+          NewMinBounds.x1 = DayFourMinTemp.Bounds.x1 + TempShiftPixel;
+          NewMinBounds.x2 = DayFourMinTemp.Bounds.x2 + TempShiftPixel;
+          DayFourTempSlash.Bounds = NewSlashBounds;
+          DayFourMinTemp.Bounds = NewMinBounds;
+        }
+        case 5:
+        {
+           // Reset Bounds to original position.
+          DayFiveMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
+          DayFiveTempSlash.Bounds = TempSlashBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
+
+          DayFiveWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+          DayFiveChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+          DayFiveMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+          DayFiveMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+
+          // Shift text position based on the content.
+          var int32 TempShiftPixel = DayFiveMaxTemp.Bounds.w - DayFiveMaxTemp.GetContentArea().w;
+          var rect NewSlashBounds = DayFiveTempSlash.Bounds;
+          var rect NewMinBounds = DayFiveMinTemp.Bounds;
+          NewSlashBounds.x1 = DayFiveTempSlash.Bounds.x1 + TempShiftPixel;
+          NewSlashBounds.x2 = DayFiveTempSlash.Bounds.x2 + TempShiftPixel;
+          NewMinBounds.x1 = DayFiveMinTemp.Bounds.x1 + TempShiftPixel;
+          NewMinBounds.x2 = DayFiveMinTemp.Bounds.x2 + TempShiftPixel;
+          DayFiveTempSlash.Bounds = NewSlashBounds;
+          DayFiveMinTemp.Bounds = NewMinBounds;
+        }
+        default:;
       }
-      case 2:
-      {
-        DayTwoWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
-        DayTwoChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
-        DayTwoMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
-        DayTwoMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
-      }
-      case 3:
-      {
-        DayThreeWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
-        DayThreeChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
-        DayThreeMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
-        DayThreeMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
-      }
-      case 4:
-      {
-        DayFourWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
-        DayFourChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
-        DayFourMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
-        DayFourMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
-      }
-      case 5:
-      {
-        DayFiveWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
-        DayFiveChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
-        DayFiveMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
-        DayFiveMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
-      }
-      default:;
     }
   }
 
@@ -919,6 +1016,63 @@ class WeatherWeekViewUI : Core::Group
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Color = #FF2828FF;
   }
+
+  $rect <530,80,730,120>
+  array rect TempSlashBounds[ 5 ] =
+  (
+    Default[0] = <75,76,85,107>;
+    Default[1] = <219,76,229,107>;
+    Default[2] = <363,76,373,107>;
+    Default[3] = <75,191,85,222>;
+    Default[4] = <219,191,229,222>;
+  );
+
+  $rect <530,130,730,170>
+  array rect MinTempBounds[ 5 ] =
+  (
+    Default[0] = <30,76,75,107>;
+    Default[1] = <174,76,219,107>;
+    Default[2] = <318,76,363,107>;
+    Default[3] = <30,191,75,222>;
+    Default[4] = <174,191,219,222>;
+  );
+
+  $rect <940,10,1140,50>
+  array string WeekDayTextArray[ 7 ] =
+  (
+    Default[0] = "Sun";
+    Default[1] = "Mon";
+    Default[2] = "Tue";
+    Default[3] = "Wed";
+    Default[4] = "Thu";
+    Default[5] = "Fri";
+    Default[6] = "Sat";
+  );
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <210,320,410,360>
+  slot OnWeekDayUpdateSlot
+  {
+    var int32 i;
+    var int32 idx = 0;
+    for( i = DeviceInterface::WeatherDevice.WeekDay + 1; i < DeviceInterface::WeatherDevice.WeekDay + WeekDayTextArray.size; i++ )
+    {
+      DayTextViewArray[idx].String = WeekDayTextArray[i % WeekDayTextArray.size];
+      idx++;
+    }
+  }
+
+  $rect <740,80,940,120>
+  array Views::Text DayTextViewArray[ 6 ] =
+  (
+    Default[0] = DayOneText;
+    Default[1] = DayTwoText;
+    Default[2] = DayThreeText;
+    Default[3] = DayFourText;
+    Default[4] = DayFiveText;
+    Default[5] = DaySixText;
+  );
 }
 
 $rect <250,20,450,60>

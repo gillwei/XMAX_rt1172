@@ -1,0 +1,50 @@
+﻿$version 10.00
+
+$rect <30,30,230,70>
+$output false
+class POP08_WeatherLoadingUI : Components::BaseMainBG
+{
+  $rect <530,60,730,100>
+  inherited method Init()
+  {
+    DeviceInterface::WeatherDevice.SendWeatherInfoRequest();
+    DeviceInterface::WeatherDevice.SendVehicleSettingRequest();
+  }
+
+  $rect <0,300,200,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Text LoadingText
+  {
+    preset Bounds = <10,156,470,187>;
+    preset String = Strings::GEN_please_wait;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <530,110,730,150>
+  object Core::PropertyObserver WeatherLoadingObserver
+  {
+    preset OnEvent = OnWeatherLoadingUpdateSlot;
+    preset Outlet = ^DeviceInterface::WeatherDevice.IsWeatherInfoReceived;
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <730,110,930,150>
+  slot OnWeatherLoadingUpdateSlot
+  {
+    if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
+    {
+      PresentDialog( new Weather::WEA01_Main, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image LoadingAnimation
+  {
+    preset Bounds = <193,54,287,148>;
+    preset Animated = true;
+    preset Bitmap = Resource::LoadingAnimation;
+  }
+}

@@ -36,6 +36,7 @@
 #include "_LauncherLNC_RotaryPlate.h"
 #include "_MediaMED01_MediaUI.h"
 #include "_NavigationNAV06_NaviSettingMenu.h"
+#include "_PopPOP08_WeatherLoadingUI.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "_SettingsSET01_MainSettingMenu.h"
@@ -43,7 +44,6 @@
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 #include "_ViewsWallpaper.h"
-#include "_WeatherWEA01_Main.h"
 #include "Core.h"
 #include "DeviceInterface.h"
 #include "Effects.h"
@@ -422,7 +422,8 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
 
     case EnumLauncherItemWEATHER :
     {
-      ItemDialog = ((ComponentsBaseComponent)EwNewObject( WeatherWEA01_Main, 0 ));
+      ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP08_WeatherLoadingUI, 
+      0 ));
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
       0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }

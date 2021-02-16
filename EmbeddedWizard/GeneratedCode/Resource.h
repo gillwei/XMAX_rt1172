@@ -57,6 +57,9 @@ EW_DECLARE_BITMAP_RES( ResourceCheckboxNormal )
 /* Bitmap resource : 'Resource::IconWarning' */
 EW_DECLARE_BITMAP_RES( ResourceIconWarning )
 
+/* Bitmap resource : 'Resource::LoadingAnimation' */
+EW_DECLARE_BITMAP_RES( ResourceLoadingAnimation )
+
 /* Bitmap resource : 'Resource::CheckboxDisable' */
 EW_DECLARE_BITMAP_RES( ResourceCheckboxDisable )
 
@@ -189,8 +192,8 @@ EW_DECLARE_BITMAP_RES( ResourceSeekBar )
 /* Bitmap resource : 'Resource::IconDDActive' */
 EW_DECLARE_BITMAP_RES( ResourceIconDDActive )
 
-/* Bitmap resource : 'Resource::IconTempDegF' */
-EW_DECLARE_BITMAP_RES( ResourceIconTempDegF )
+/* Bitmap resource : 'Resource::IconTempDegC' */
+EW_DECLARE_BITMAP_RES( ResourceIconTempDegC )
 
 /* Bitmap resource : 'Resource::WeatherLine' */
 EW_DECLARE_BITMAP_RES( ResourceWeatherLine )

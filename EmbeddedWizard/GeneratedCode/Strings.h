@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/01/21 14:57:08 */
+   Generated: 2021/02/16 09:57:50 */
 EW_DECLARE_CONST( StringsGEN_ok )
 
 /* User defined constant: 'Strings::GEN_cancel' */
@@ -54,6 +54,9 @@ extern const XStringRes StringsGEN_bluetooth;
 
 /* User defined constant: 'Strings::GEN_three_hyphens' */
 extern const XStringRes StringsGEN_three_hyphens;
+
+/* User defined constant: 'Strings::GEN_please_wait' */
+extern const XStringRes StringsGEN_please_wait;
 
 /* User defined constant: 'Strings::TOP01_warning' */
 EW_DECLARE_CONST( StringsTOP01_warning )

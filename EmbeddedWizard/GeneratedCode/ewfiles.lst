@@ -24,3 +24,4 @@ module Launcher                 file "Launcher.c";
 module Home                     file "Home.c";
 module Top                      file "Top.c";
 module Weather                  file "Weather.c";
+module Pop                      file "Pop.c";

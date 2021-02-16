@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/01/21 14:57:08
+// Generated: 2021/02/16 09:57:50
 
 $output false
 const string GEN_ok =
@@ -87,6 +87,12 @@ $output false
 const string GEN_three_hyphens =
 (
   Default = "---";
+);
+
+$output false
+const string GEN_please_wait =
+(
+  Default = "Please wait\u2026";
 );
 
 $output false

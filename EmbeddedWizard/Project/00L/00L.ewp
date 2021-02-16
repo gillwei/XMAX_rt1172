@@ -237,3 +237,9 @@ unit Weather
 {
   attr Directory = .\;
 }
+
+$rect <520,650,720,690>
+unit Pop
+{
+  attr Directory = .\;
+}

@@ -58,6 +58,12 @@ EW_RES_WITHOUT_VARIANTS( ResourceCheckboxNormal )
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconWarning' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconWarning )
 
+/* Include a file containing the bitmap resource : 'Resource::LoadingAnimation' */
+#include "_ResourceLoadingAnimation.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::LoadingAnimation' */
+EW_RES_WITHOUT_VARIANTS( ResourceLoadingAnimation )
+
 /* Include a file containing the bitmap resource : 'Resource::CheckboxDisable' */
 #include "_ResourceCheckboxDisable.h"
 
@@ -348,11 +354,11 @@ EW_RES_WITHOUT_VARIANTS( ResourceSeekBar )
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconDDActive' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconDDActive )
 
-/* Include a file containing the bitmap resource : 'Resource::IconTempDegF' */
-#include "_ResourceIconTempDegF.h"
+/* Include a file containing the bitmap resource : 'Resource::IconTempDegC' */
+#include "_ResourceIconTempDegC.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::IconTempDegF' */
-EW_RES_WITHOUT_VARIANTS( ResourceIconTempDegF )
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconTempDegC' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconTempDegC )
 
 /* Include a file containing the bitmap resource : 'Resource::WeatherLine' */
 #include "_ResourceWeatherLine.h"
