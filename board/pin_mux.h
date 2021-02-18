@@ -262,7 +262,6 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_WDOG_B_GPIO_PIN                                        3U   /*!< GPIO pin number */
 #define BOARD_INITPINS_WDOG_B_GPIO_PIN_MASK                           (1U << 3U)   /*!< GPIO pin mask */
 
-
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
@@ -273,7 +272,6 @@ void BOARD_InitPins(void);                    /* Function assigned for the Corte
 /* Routed pin properties */
 #define BOARD_INITLCDIFPINS_LCDIF_ENABLE_PERIPHERAL                        LCDIF   /*!< Peripheral name */
 #define BOARD_INITLCDIFPINS_LCDIF_ENABLE_SIGNAL                     lcdif_enable   /*!< Signal name */
-
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

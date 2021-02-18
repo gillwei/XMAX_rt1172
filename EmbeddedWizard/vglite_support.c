@@ -43,8 +43,6 @@ static status_t BOARD_InitVGliteClock(void)
 {
     const clock_root_config_t gc355ClockConfig = {
         .clockOff = false,
-        .mfn      = 0,
-        .mfd      = 0,
         .mux      = 4, /*!< PLL_528. */
         .div      = 1,
     };

@@ -33,11 +33,11 @@
 
 #define DISPLAY_FLEXIO_CLOCK_FREQUENCY          ( CLOCK_GetRootClockFreq(kCLOCK_Root_Flexio2) )
 /* FLEXIO output PWM frequency */
-#define DISPLAY_FLEXIO_FREQUENCY                ( 27000U ) // TODO:Fix this, should be 20kHz
+#define DISPLAY_FLEXIO_FREQUENCY                ( 20000U )
 
 #define MIN_DUTY_CYCLE_VALUE                    ( 0 )
 #define MAX_DUTY_CYCLE_VALUE                    ( 100 )
-#define DEFAULT_DUTY_CYCLE_VALUE                ( 50 )
+#define DEFAULT_DUTY_CYCLE_VALUE                ( MAX_DUTY_CYCLE_VALUE )
 
 /*--------------------------------------------------------------------
                                  TYPES

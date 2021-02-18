@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, NXP
+ * Copyright 2019-2020 NXP
  * All rights reserved.
  *
  *
@@ -22,131 +22,69 @@
 
 /*! @name Driver version */
 /*@{*/
-/*! @brief GPC driver version 2.0.0. */
-#define FSL_GPC_RIVER_VERSION (MAKE_VERSION(2, 0, 0))
+/*! @brief GPC driver version 2.1.0. */
+#define FSL_GPC_RIVER_VERSION (MAKE_VERSION(2, 1, 0))
 /*@}*/
 
 #define GPC_RESERVED_USE_MACRO 0xFFFFFFFFU
 
 /* GPC CPU module step control register offset. */
-#define GPC_CM_SLEEP_SSAR_CTRL_OFFSET (0x200)
-#define GPC_CM_SLEEP_LPCG_CTRL_OFFSET (0x208)
-#define GPC_CM_SLEEP_PLL_CTRL_OFFSET (0x210)
-#define GPC_CM_SLEEP_ISO_CTRL_OFFSET (0x218)
-#define GPC_CM_SLEEP_RESET_CTRL_OFFSET (0x220)
-#define GPC_CM_SLEEP_POWER_CTRL_OFFSET (0x228)
+#define GPC_CM_SLEEP_SSAR_CTRL_OFFSET   (0x200)
+#define GPC_CM_SLEEP_LPCG_CTRL_OFFSET   (0x208)
+#define GPC_CM_SLEEP_PLL_CTRL_OFFSET    (0x210)
+#define GPC_CM_SLEEP_ISO_CTRL_OFFSET    (0x218)
+#define GPC_CM_SLEEP_RESET_CTRL_OFFSET  (0x220)
+#define GPC_CM_SLEEP_POWER_CTRL_OFFSET  (0x228)
 #define GPC_CM_WAKEUP_POWER_CTRL_OFFSET (0x290)
 #define GPC_CM_WAKEUP_RESET_CTRL_OFFSET (0x298)
-#define GPC_CM_WAKEUP_ISO_CTRL_OFFSET (0x2A0)
-#define GPC_CM_WAKEUP_PLL_CTRL_OFFSET (0x2A8)
-#define GPC_CM_WAKEUP_LPCG_CTRL_OFFSET (0x2B0)
-#define GPC_CM_WAKEUP_SSAR_CTRL_OFFSET (0x2B8)
-
-/* GPC CPU module step status register offset. */
-#define GPC_CM_SLEEP_SSAR_STAT_OFFSET (0x204)
-#define GPC_CM_SLEEP_LPCG_STAT_OFFSET (0x20C)
-#define GPC_CM_SLEEP_PLL_STAT_OFFSET (0x214)
-#define GPC_CM_SLEEP_ISO_STAT_OFFSET (0x21C)
-#define GPC_CM_SLEEP_RESET_STAT_OFFSET (0x224)
-#define GPC_CM_SLEEP_POWER_STAT_OFFSET (0x22C)
-#define GPC_CM_SLEEP_SP_STAT_OFFSET (0x234)
-#define GPC_CM_SLEEP_STBY_STAT_OFFSET (0x23C)
-#define GPC_CM_WAKEUP_STBY_STAT_OFFSET (0x284)
-#define GPC_CM_WAKEUP_SP_STAT_OFFSET (0x28C)
-#define GPC_CM_WAKEUP_POWER_STAT_OFFSET (0x294)
-#define GPC_CM_WAKEUP_RESET_STAT_OFFSET (0x29C)
-#define GPC_CM_WAKEUP_ISO_STAT_OFFSET (0x2A4)
-#define GPC_CM_WAKEUP_PLL_STAT_OFFSET (0x2AC)
-#define GPC_CM_WAKEUP_LPCG_STAT_OFFSET (0x2B4)
-#define GPC_CM_WAKEUP_SSAR_STAT_OFFSET (0x2BC)
+#define GPC_CM_WAKEUP_ISO_CTRL_OFFSET   (0x2A0)
+#define GPC_CM_WAKEUP_PLL_CTRL_OFFSET   (0x2A8)
+#define GPC_CM_WAKEUP_LPCG_CTRL_OFFSET  (0x2B0)
+#define GPC_CM_WAKEUP_SSAR_CTRL_OFFSET  (0x2B8)
 
 /* GPC set point module step control register offset. */
-#define GPC_SP_SSAR_SAVE_CTRL_OFFSET (0x100)
-#define GPC_SP_LPCG_OFF_CTRL_OFFSET (0x110)
-#define GPC_SP_GROUP_DOWN_CTRL_OFFSET (0x120)
-#define GPC_SP_ROOT_DOWN_CTRL_OFFSET (0x130)
-#define GPC_SP_PLL_OFF_CTRL_OFFSET (0x140)
-#define GPC_SP_ISO_ON_CTRL_OFFSET (0x150)
-#define GPC_SP_RESET_EARLY_CTRL_OFFSET (0x160)
-#define GPC_SP_POWER_OFF_CTRL_OFFSET (0x170)
-#define GPC_SP_BIAS_OFF_CTRL_OFFSET (0x180)
-#define GPC_SP_BG_PLDO_OFF_CTRL_OFFSET (0x190)
-#define GPC_SP_LDO_PRE_CTRL_OFFSET (0x1A0)
-#define GPC_SP_DCDC_DOWN_CTRL_OFFSET (0x1B0)
-#define GPC_SP_DCDC_UP_CTRL_OFFSET (0x2B0)
-#define GPC_SP_LDO_POST_CTRL_OFFSET (0x210)
-#define GPC_SP_BG_PLDO_ON_CTRL_OFFSET (0x220)
-#define GPC_SP_BIAS_ON_CTRL_OFFSET (0x230)
-#define GPC_SP_POWER_ON_CTRL_OFFSET (0x240)
-#define GPC_SP_RESET_LATE_CTRL_OFFSET (0x250)
-#define GPC_SP_ISO_OFF_CTRL_OFFSET (0x260)
-#define GPC_SP_PLL_ON_CTRL_OFFSET (0x270)
-#define GPC_SP_ROOT_UP_CTRL_OFFSET (0x280)
-#define GPC_SP_GROUP_UP_CTRL_OFFSET (0x290)
-#define GPC_SP_LPCG_ON_CTRL_OFFSET (0x2A0)
+#define GPC_SP_SSAR_SAVE_CTRL_OFFSET    (0x100)
+#define GPC_SP_LPCG_OFF_CTRL_OFFSET     (0x110)
+#define GPC_SP_GROUP_DOWN_CTRL_OFFSET   (0x120)
+#define GPC_SP_ROOT_DOWN_CTRL_OFFSET    (0x130)
+#define GPC_SP_PLL_OFF_CTRL_OFFSET      (0x140)
+#define GPC_SP_ISO_ON_CTRL_OFFSET       (0x150)
+#define GPC_SP_RESET_EARLY_CTRL_OFFSET  (0x160)
+#define GPC_SP_POWER_OFF_CTRL_OFFSET    (0x170)
+#define GPC_SP_BIAS_OFF_CTRL_OFFSET     (0x180)
+#define GPC_SP_BG_PLDO_OFF_CTRL_OFFSET  (0x190)
+#define GPC_SP_LDO_PRE_CTRL_OFFSET      (0x1A0)
+#define GPC_SP_DCDC_DOWN_CTRL_OFFSET    (0x1B0)
+#define GPC_SP_DCDC_UP_CTRL_OFFSET      (0x2B0)
+#define GPC_SP_LDO_POST_CTRL_OFFSET     (0x210)
+#define GPC_SP_BG_PLDO_ON_CTRL_OFFSET   (0x220)
+#define GPC_SP_BIAS_ON_CTRL_OFFSET      (0x230)
+#define GPC_SP_POWER_ON_CTRL_OFFSET     (0x240)
+#define GPC_SP_RESET_LATE_CTRL_OFFSET   (0x250)
+#define GPC_SP_ISO_OFF_CTRL_OFFSET      (0x260)
+#define GPC_SP_PLL_ON_CTRL_OFFSET       (0x270)
+#define GPC_SP_ROOT_UP_CTRL_OFFSET      (0x280)
+#define GPC_SP_GROUP_UP_CTRL_OFFSET     (0x290)
+#define GPC_SP_LPCG_ON_CTRL_OFFSET      (0x2A0)
 #define GPC_SP_SSAR_RESTORE_CTRL_OFFSET (0x2B0)
 
-/* GPC set point module step status register offset. */
-#define GPC_SP_SSAR_SAVE_STAT_OFFSET (0x104)
-#define GPC_SP_LPCG_OFF_STAT_OFFSET (0x114)
-#define GPC_SP_GROUP_DOWN_STAT_OFFSET (0x124)
-#define GPC_SP_ROOT_DOWN_STAT_OFFSET (0x134)
-#define GPC_SP_PLL_OFF_STAT_OFFSET (0x144)
-#define GPC_SP_ISO_ON_STAT_OFFSET (0x154)
-#define GPC_SP_RESET_EARLY_STAT_OFFSET (0x164)
-#define GPC_SP_POWER_OFF_STAT_OFFSET (0x174)
-#define GPC_SP_BIAS_OFF_STAT_OFFSET (0x184)
-#define GPC_SP_BG_PLDO_OFF_STAT_OFFSET (0x194)
-#define GPC_SP_LDO_PRE_STAT_OFFSET (0x1A4)
-#define GPC_SP_DCDC_DOWN_STAT_OFFSET (0x1B4)
-#define GPC_SP_DCDC_UP_STAT_OFFSET (0x204)
-#define GPC_SP_LDO_POST_STAT_OFFSET (0x214)
-#define GPC_SP_BG_PLDO_ON_STAT_OFFSET (0x224)
-#define GPC_SP_BIAS_ON_STAT_OFFSET (0x234)
-#define GPC_SP_POWER_ON_STAT_OFFSET (0x244)
-#define GPC_SP_RESET_LATE_STAT_OFFSET (0x254)
-#define GPC_SP_ISO_OFF_STAT_OFFSET (0x264)
-#define GPC_SP_PLL_ON_STAT_OFFSET (0x274)
-#define GPC_SP_ROOT_UP_STAT_OFFSET (0x284)
-#define GPC_SP_GROUP_UP_STAT_OFFSET (0x294)
-#define GPC_SP_LPCG_ON_STAT_OFFSET (0x2A4)
-#define GPC_SP_SSAR_RESTORE_STAT_OFFSET (0x2B4)
-
 /* GPC standby module step control register offset. */
-#define GPC_STBY_LPCG_IN_CTRL_OFFSET (0xF0)
-#define GPC_STBY_PLL_IN_CTRL_OFFSET (0x100)
-#define GPC_STBY_BIAS_IN_CTRL_OFFSET (0x110)
-#define GPC_STBY_PLDO_IN_CTRL_OFFSET (0x120)
-#define GPC_STBY_BANDGAP_IN_CTRL_OFFSET (0x128)
-#define GPC_STBY_LDO_IN_CTRL_OFFSET (0x130)
-#define GPC_STBY_DCDC_IN_CTRL_OFFSET (0x140)
-#define GPC_STBY_PMIC_IN_CTRL_OFFSET (0x150)
-#define GPC_STBY_PMIC_OUT_CTRL_OFFSET (0x200)
-#define GPC_STBY_DCDC_OUT_CTRL_OFFSET (0x210)
-#define GPC_STBY_LDO_OUT_CTRL_OFFSET (0x220)
+#define GPC_STBY_LPCG_IN_CTRL_OFFSET     (0xF0)
+#define GPC_STBY_PLL_IN_CTRL_OFFSET      (0x100)
+#define GPC_STBY_BIAS_IN_CTRL_OFFSET     (0x110)
+#define GPC_STBY_PLDO_IN_CTRL_OFFSET     (0x120)
+#define GPC_STBY_BANDGAP_IN_CTRL_OFFSET  (0x128)
+#define GPC_STBY_LDO_IN_CTRL_OFFSET      (0x130)
+#define GPC_STBY_DCDC_IN_CTRL_OFFSET     (0x140)
+#define GPC_STBY_PMIC_IN_CTRL_OFFSET     (0x150)
+#define GPC_STBY_PMIC_OUT_CTRL_OFFSET    (0x200)
+#define GPC_STBY_DCDC_OUT_CTRL_OFFSET    (0x210)
+#define GPC_STBY_LDO_OUT_CTRL_OFFSET     (0x220)
 #define GPC_STBY_BANDGAP_OUT_CTRL_OFFSET (0x238)
-#define GPC_STBY_PLDO_OUT_CTRL_OFFSET (0x238)
-#define GPC_STBY_BIAS_OUT_CTRL_OFFSET (0x240)
-#define GPC_STBY_PLL_OUT_CTRL_OFFSET (0x250)
-#define GPC_STBY_LPCG_OUT_CTRL_OFFSET (0x260)
-
-/* GPC standby module step status register offset. */
-#define GPC_STBY_LPCG_IN_STAT_OFFSET (0xF4)
-#define GPC_STBY_PLL_IN_STAT_OFFSET (0x104)
-#define GPC_STBY_BIAS_IN_STAT_OFFSETT (0x114)
-#define GPC_STBY_PLDO_IN_STAT_OFFSET (0x124)
-#define GPC_STBY_BANDGAP_IN_STAT_OFFSET (0x12C)
-#define GPC_STBY_LDO_IN_STAT_OFFSET (0x134)
-#define GPC_STBY_DCDC_IN_STAT_OFFSET (0x144)
-#define GPC_STBY_PMIC_IN_STAT_OFFSET (0x154)
-#define GPC_STBY_PMIC_OUT_STAT_OFFSET (0x204)
-#define GPC_STBY_DCDC_OUT_STAT_OFFSET (0x214)
-#define GPC_STBY_LDO_OUT_STAT_OFFSET (0x224)
-#define GPC_STBY_BANDGAP_OUT_STAT_OFFSET (0x234)
-#define GPC_STBY_PLDO_OUT_STAT_OFFSET (0x23C)
-#define GPC_STBY_BIAS_OUT_STAT_OFFSET (0x244)
-#define GPC_STBY_PLL_OUT_STAT_OFFSET (0x254)
-#define GPC_STBY_LPCG_OUT_STAT_OFFSET (0x264)
+#define GPC_STBY_PLDO_OUT_CTRL_OFFSET    (0x238)
+#define GPC_STBY_BIAS_OUT_CTRL_OFFSET    (0x240)
+#define GPC_STBY_PLL_OUT_CTRL_OFFSET     (0x250)
+#define GPC_STBY_LPCG_OUT_CTRL_OFFSET    (0x260)
 
 /* GPC CPU module step register offset. */
 #define GPC_CM_STEP_REG_OFFSET                                                                               \
@@ -156,17 +94,6 @@
             GPC_RESERVED_USE_MACRO, GPC_RESERVED_USE_MACRO, GPC_RESERVED_USE_MACRO, GPC_RESERVED_USE_MACRO,  \
             GPC_CM_WAKEUP_POWER_CTRL_OFFSET, GPC_CM_WAKEUP_RESET_CTRL_OFFSET, GPC_CM_WAKEUP_ISO_CTRL_OFFSET, \
             GPC_CM_WAKEUP_PLL_CTRL_OFFSET, GPC_CM_WAKEUP_LPCG_CTRL_OFFSET, GPC_CM_WAKEUP_SSAR_CTRL_OFFSET,   \
-    }
-
-/* GPC CPU module step status register offset. */
-#define GPC_CM_STEP_STAT_REG_OFFSET                                                                         \
-    {                                                                                                       \
-        GPC_CM_SLEEP_SSAR_STAT_OFFSET, GPC_CM_SLEEP_LPCG_STAT_OFFSET, GPC_CM_SLEEP_PLL_STAT_OFFSET,         \
-            GPC_CM_SLEEP_ISO_STAT_OFFSET, GPC_CM_SLEEP_RESET_STAT_OFFSET, GPC_CM_SLEEP_POWER_STAT_OFFSET,   \
-            GPC_CM_SLEEP_SP_STAT_OFFSET, GPC_CM_SLEEP_STBY_STAT_OFFSET, GPC_CM_WAKEUP_STBY_STAT_OFFSET,     \
-            GPC_CM_WAKEUP_SP_STAT_OFFSET, GPC_CM_WAKEUP_POWER_STAT_OFFSET, GPC_CM_WAKEUP_RESET_STAT_OFFSET, \
-            GPC_CM_WAKEUP_ISO_STAT_OFFSET, GPC_CM_WAKEUP_PLL_STAT_OFFSET, GPC_CM_WAKEUP_LPCG_STAT_OFFSET,   \
-            GPC_CM_WAKEUP_SSAR_STAT_OFFSET,                                                                 \
     }
 
 /* GPC set point module step control register offset. */
@@ -182,19 +109,6 @@
             GPC_SP_GROUP_UP_CTRL_OFFSET, GPC_SP_LPCG_ON_CTRL_OFFSET, GPC_SP_SSAR_RESTORE_CTRL_OFFSET,  \
     }
 
-/* GPC set point module step status register offset. */
-#define GPC_SP_STEP_STAT_REG_OFFSET                                                                    \
-    {                                                                                                  \
-        GPC_SP_SSAR_SAVE_STAT_OFFSET, GPC_SP_LPCG_OFF_STAT_OFFSET, GPC_SP_GROUP_DOWN_STAT_OFFSET,      \
-            GPC_SP_ROOT_DOWN_STAT_OFFSET, GPC_SP_PLL_OFF_STAT_OFFSET, GPC_SP_ISO_ON_STAT_OFFSET,       \
-            GPC_SP_RESET_EARLY_STAT_OFFSET, GPC_SP_POWER_OFF_STAT_OFFSET, GPC_SP_BIAS_OFF_STAT_OFFSET, \
-            GPC_SP_BG_PLDO_OFF_STAT_OFFSET, GPC_SP_LDO_PRE_STAT_OFFSET, GPC_SP_DCDC_DOWN_STAT_OFFSET,  \
-            GPC_SP_DCDC_UP_STAT_OFFSET, GPC_SP_LDO_POST_STAT_OFFSET, GPC_SP_BG_PLDO_ON_STAT_OFFSET,    \
-            GPC_SP_BIAS_ON_STAT_OFFSET, GPC_SP_POWER_ON_STAT_OFFSET, GPC_SP_RESET_LATE_STAT_OFFSET,    \
-            GPC_SP_ISO_OFF_STAT_OFFSET, GPC_SP_PLL_ON_STAT_OFFSET, GPC_SP_ROOT_UP_STAT_OFFSET,         \
-            GPC_SP_GROUP_UP_STAT_OFFSET, GPC_SP_LPCG_ON_STAT_OFFSET, GPC_SP_SSAR_RESTORE_STAT_OFFSET,  \
-    }
-
 /* GPC standby module step register offset. */
 #define GPC_STBY_STEP_REG_OFFSET                                                                           \
     {                                                                                                      \
@@ -206,23 +120,9 @@
             GPC_STBY_LPCG_OUT_CTRL_OFFSET,                                                                 \
     }
 
-#define GPC_STBY_STEP_STATUS_REG_OFFSET                                                                    \
-    {                                                                                                      \
-        GPC_STBY_LPCG_IN_STAT_OFFSET, GPC_STBY_PLL_IN_STAT_OFFSET, GPC_STBY_BIAS_IN_STAT_OFFSETT,          \
-            GPC_STBY_PLDO_IN_STAT_OFFSET, GPC_STBY_BANDGAP_IN_STAT_OFFSET, GPC_STBY_LDO_IN_STAT_OFFSET,    \
-            GPC_STBY_DCDC_IN_STAT_OFFSET, GPC_STBY_PMIC_IN_STAT_OFFSET, GPC_STBY_PMIC_OUT_STAT_OFFSET,     \
-            GPC_STBY_DCDC_OUT_STAT_OFFSET, GPC_STBY_LDO_OUT_STAT_OFFSET, GPC_STBY_BANDGAP_OUT_STAT_OFFSET, \
-            GPC_STBY_PLDO_OUT_STAT_OFFSET, GPC_STBY_BIAS_OUT_STAT_OFFSET, GPC_STBY_PLL_OUT_STAT_OFFSET,    \
-            GPC_STBY_LPCG_OUT_STAT_OFFSET,                                                                 \
-    }
-
 /* Make/Get status. */
 /* Make the mask/shift value of GPC status register in a variable. */
 #define GPC_STAT(mask, shift) (uint32_t)(((uint32_t)(shift) << 16UL) + ((uint32_t)(mask) >> (uint32_t)(shift)))
-/* Get the masked status value. */
-#define GPC_GET_STAT(reg, mask) (((uint32_t)(reg) >> ((uint32_t)(mask) >> 16UL)) & ((uint32_t)(mask)&0xFFFFUL))
-/* Get the masked status flag. */
-#define GPC_GET_BOOL_STAT(reg, mask) (((uint32_t)(mask)&0xFFFFUL) == GPC_GET_STAT(mask, reg))
 
 #define GPC_CM_ALL_INTERRUPT_STATUS                                     \
     (GPC_CPU_MODE_CTRL_CM_INT_CTRL_SP_REQ_NOT_ALLOWED_SLEEP_INT_MASK |  \
@@ -269,39 +169,6 @@ enum
     kGPC_CM_SleepSPNotAllowedStatusFlag = GPC_CPU_MODE_CTRL_CM_INT_CTRL_SP_REQ_NOT_ALLOWED_SLEEP_INT_MASK,
 };
 
-/*! @brief CPU mode status. */
-typedef enum _gpc_cm_cpu_mode_status
-{
-    kGPC_CM_CurrentCpuMode = GPC_STAT(GPC_CPU_MODE_CTRL_CM_MODE_STAT_CPU_MODE_CURRENT_MASK,
-                                      GPC_CPU_MODE_CTRL_CM_MODE_STAT_CPU_MODE_CURRENT_SHIFT), /*!< Current CPU mode. */
-    kGPC_CM_PreviousCpuMode =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_MODE_STAT_CPU_MODE_PREVIOUS_MASK,
-                 GPC_CPU_MODE_CTRL_CM_MODE_STAT_CPU_MODE_PREVIOUS_SHIFT), /*!< Previous CPU mode. */
-    kGPC_CM_SleepTransitionBusy =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_MODE_STAT_SLEEP_TRANS_BUSY_MASK,
-                 GPC_CPU_MODE_CTRL_CM_MODE_STAT_SLEEP_TRANS_BUSY_SHIFT), /*!< Busy on CPU mode transition of sleep, not
-                                                                            include set point trans busy. */
-    kGPC_CM_WakeupTransitionBusy =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_MODE_STAT_WAKEUP_TRANS_BUSY_MASK,
-                 GPC_CPU_MODE_CTRL_CM_MODE_STAT_WAKEUP_TRANS_BUSY_SHIFT), /*!< Busy on CPU mode transition of wakeup,
-                                                                             not include set point trans busy. */
-    kGPC_CM_SleepingIdle =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_MODE_STAT_SLEEPING_IDLE_MASK,
-                 GPC_CPU_MODE_CTRL_CM_MODE_STAT_SLEEPING_IDLE_SHIFT), /*!< Completed CPU mode and set point transition
-                                                                         of sleep sequence, in a sleeping_idle state. */
-    kGPC_CM_SleepRequest =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_MODE_STAT_SLEEP_REQUEST_MASK,
-                 GPC_CPU_MODE_CTRL_CM_MODE_STAT_SLEEP_REQUEST_SHIFT), /*!< Status of sleep_request input port. */
-    kGPC_CM_WfeRequest =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_MODE_STAT_WFE_REQUEST_MASK,
-                 GPC_CPU_MODE_CTRL_CM_MODE_STAT_WFE_REQUEST_SHIFT), /*!< Status of standby_wfe input port. */
-    kGPC_CM_WakeupRequest =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_MODE_STAT_WAKEUP_REQUEST_MASK,
-                 GPC_CPU_MODE_CTRL_CM_MODE_STAT_WAKEUP_REQUEST_SHIFT), /*!< Status of wakeup_request input port */
-    kGPC_CM_FsmState = GPC_STAT(GPC_CPU_MODE_CTRL_CM_MODE_STAT_FSM_STATE_MASK,
-                                GPC_CPU_MODE_CTRL_CM_MODE_STAT_FSM_STATE_SHIFT), /*!< CPU mode trans FSM state. */
-} gpc_cm_cpu_mode_status_t;
-
 /*! @brief CPU standby mode status. */
 typedef enum _gpc_cm_standby_mode_status
 {
@@ -346,81 +213,6 @@ typedef enum _gpc_tran_step_counter_mode
     kGPC_StepCounterTimeOutMode = 3UL,        /*!< Time out mode, the counter starts to count once step begins, the step
                                                     completes when either step_done received or counting to STEP_CNT value. */
 } gpc_tran_step_counter_mode_t;
-
-/*! @brief GPC CM set point status. */
-typedef enum _gpc_cm_set_point_status
-{
-    kGPC_CM_CurrentSetPoint =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_CURRENT_MASK,
-                 GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_CURRENT_SHIFT), /*!< The current set point of the system. */
-    kGPC_CM_PreviousSetPoint =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_PREVIOUS_MASK,
-                 GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_PREVIOUS_SHIFT), /*!< The previous set point of the system. */
-    kGPC_CM_TargetSetPoint = GPC_STAT(
-        GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_TARGET_MASK,
-        GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_TARGET_SHIFT), /*!< The requested set point from the CPU platform. */
-    kGPC_CM_SetPointChangeRequest =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_CHANGE_REQ_MASK,
-                 GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_CHANGE_REQ_SHIFT), /*!< The set point change request from the CPU
-                                                                           platform. */
-    kGPC_CM_SetPointSleepTransitionBusy =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_SLEEP_BUSY_MASK,
-                 GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_SLEEP_BUSY_SHIFT), /*!< Indicate busy on set point transition of
-                                                                           sleep sequence. */
-    kGPC_CM_SetPointWakeupTransitionBusy =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_WAKEUP_BUSY_MASK,
-                 GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_WAKEUP_BUSY_SHIFT), /*!< Indicate busy on set point transition of
-                                                                            wakeup sequence. */
-    kGPC_CM_SetPointRunTransitionBusy =
-        GPC_STAT(GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_SOFT_BUSY_MASK,
-                 GPC_CPU_MODE_CTRL_CM_SP_STAT_CPU_SP_SOFT_BUSY_SHIFT), /*!< Indicate busy on set point transition of
-                                                                          software trigger. */
-} gpc_cm_set_point_status_t;
-
-/* @brief GPC setpoint request status. */
-typedef enum _gpc_sp_cpu_request_status
-{
-    kGPC_SP_RequestedByCpu0 =
-        GPC_STAT(GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_REQ_CPU0_MASK,
-                 GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_REQ_CPU0_SHIFT), /*!< Set point requested by CPU0. */
-    kGPC_SP_RequestedByCpu1 =
-        GPC_STAT(GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_REQ_CPU1_MASK,
-                 GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_REQ_CPU1_SHIFT), /*!< Set point requested by CPU1. */
-    kGPC_SP_RequestedByCpu2 =
-        GPC_STAT(GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_REQ_CPU2_MASK,
-                 GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_REQ_CPU2_SHIFT), /*!< Set point requested by CPU2. */
-    kGPC_SP_RequestedByCpu3 =
-        GPC_STAT(GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_REQ_CPU3_MASK,
-                 GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_REQ_CPU3_SHIFT), /*!< Set point requested by CPU3. */
-    kGPC_SP_Cpu0Accepted = GPC_STAT(
-        GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_ACCEPTED_CPU0_MASK,
-        GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_ACCEPTED_CPU0_SHIFT), /*!< CPU0 set point accepted by SP controller. */
-    kGPC_SP_Cpu1Accepted = GPC_STAT(
-        GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_ACCEPTED_CPU1_MASK,
-        GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_ACCEPTED_CPU1_SHIFT), /*!< CPU1 set point accepted by SP controller. */
-    kGPC_SP_Cpu2Accepted = GPC_STAT(
-        GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_ACCEPTED_CPU2_MASK,
-        GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_ACCEPTED_CPU2_SHIFT), /*!< CPU2 set point accepted by SP controller. */
-    kGPC_SP_Cpu3Accepted = GPC_STAT(
-        GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_ACCEPTED_CPU3_MASK,
-        GPC_SET_POINT_CTRL_SP_CPU_REQ_SP_ACCEPTED_CPU3_SHIFT), /*!< CPU3 set point accepted by SP controller. */
-} gpc_sp_cpu_request_status_t;
-
-/*! @brief GPC setpoint system status */
-typedef enum _gpc_sp_system_status
-{
-    kGPC_SP_TargetSetPoint =
-        GPC_STAT(GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_TARGET_MASK,
-                 GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_TARGET_SHIFT), /*!< The set point chosen as target set point. */
-    kGPC_SP_CurrentSetPoint =
-        GPC_STAT(GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_CURRENT_MASK,
-                 GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_CURRENT_SHIFT), /*!< Current set point, only valid when not SP
-                                                                          trans busy. */
-    kGPC_SP_PreviousSetPoint =
-        GPC_STAT(GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_PREVIOUS_MASK,
-                 GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_PREVIOUS_SHIFT), /*!< Previous set point, only valid when not SP
-                                                                           trans busy */
-} gpc_sp_system_status_t;
 
 /*! @brief GPC set point transition steps. */
 typedef enum _gpc_sp_tran_step
@@ -496,25 +288,6 @@ typedef enum _gpc_stby_tran_step
     kGPC_STBY_PllOut     = 14UL, /*!< PLL out step. */
     kGPC_STBY_LpcgOut    = 15UL, /*!< LPCG out step. */
 } gpc_stby_tran_step_t;
-
-/*! @brief Configuration for run mode setpoint transition. */
-typedef struct _gpc_cm_run_sp_tran_config
-{
-    uint32_t setPointRun;     /*!< The set point CPU want the system to transit in the run mode. */
-    bool enableRunTransition; /*!< Request a set point transition in run mode. */
-} gpc_cm_run_sp_tran_config_t;
-
-/*! @brief Configuration for sleep mode setpoint transition. */
-typedef struct _gpc_cm_sleep_sp_tran_config
-{
-    uint32_t setPointSleep; /*!< The set point CPU want the system to transit to on next CPU platform sleep sequence. */
-    uint32_t
-        setPointWakeup; /*!< The set point CPU want the system to transit to on next CPU platform wakeup sequence. */
-    gpc_cm_wakeup_sp_sel_t wakeupSel; /*!< Select the set point transition on the next CPU platform wakeup sequence. */
-    bool enableSleepTransition /*!< Enable set point transition on next CPU platform sleep sequence. */;
-    bool enableWakeupTransition /*!< Enable set point transition on next CPU platform wakeup sequence. */;
-} gpc_cm_sleep_sp_tran_config_t;
-
 /*******************************************************************************
  * API
  ******************************************************************************/
@@ -560,20 +333,32 @@ static inline void GPC_CM_EnableCpuSleepHold(GPC_CPU_MODE_CTRL_Type *base, bool 
  */
 static inline void GPC_CM_SetNextCpuMode(GPC_CPU_MODE_CTRL_Type *base, gpc_cpu_mode_t mode)
 {
-    base->CM_MODE_CTRL |= GPC_CPU_MODE_CTRL_CM_MODE_CTRL_CPU_MODE_TARGET(mode);
+    base->CM_MODE_CTRL = (base->CM_MODE_CTRL & ~GPC_CPU_MODE_CTRL_CM_MODE_CTRL_CPU_MODE_TARGET_MASK) |
+                         GPC_CPU_MODE_CTRL_CM_MODE_CTRL_CPU_MODE_TARGET(mode);
 }
 
 /*!
- * @brief Get the CPU mode status.
+ * @brief Get current CPU mode.
  *
  * @param base GPC CPU module base address.
- * @param statusMask Get the CPU mode status, refer to "gpc_cm_cpu_mode_status_t".
- *
- * @return Status of the choosen statusMask.
+ * @return The current CPU mode, in type of @ref gpc_cpu_mode_t.
  */
-static inline uint32_t GPC_CM_GetCpuModeStatus(GPC_CPU_MODE_CTRL_Type *base, gpc_cm_cpu_mode_status_t status)
+static inline gpc_cpu_mode_t GPC_CM_GetCurrentCpuMode(GPC_CPU_MODE_CTRL_Type *base)
 {
-    return GPC_GET_STAT(base->CM_MODE_STAT, status);
+    return (gpc_cpu_mode_t)((base->CM_MODE_STAT & GPC_CPU_MODE_CTRL_CM_MODE_STAT_CPU_MODE_CURRENT_MASK) >>
+                            GPC_CPU_MODE_CTRL_CM_MODE_STAT_CPU_MODE_CURRENT_SHIFT);
+}
+
+/*!
+ * @brief Get previous CPU mode.
+ *
+ * @param base GPC CPU module base address.
+ * @return The previous CPU mode, in type of @ref gpc_cpu_mode_t.
+ */
+static inline gpc_cpu_mode_t GPC_CM_GetPreviousCpuMode(GPC_CPU_MODE_CTRL_Type *base)
+{
+    return (gpc_cpu_mode_t)((base->CM_MODE_STAT & GPC_CPU_MODE_CTRL_CM_MODE_STAT_CPU_MODE_PREVIOUS_MASK) >>
+                            GPC_CPU_MODE_CTRL_CM_MODE_STAT_CPU_MODE_PREVIOUS_SHIFT);
 }
 
 /*!
@@ -647,54 +432,30 @@ void GPC_CM_ConfigCpuModeTransitionStep(GPC_CPU_MODE_CTRL_Type *base,
                                         const gpc_tran_step_config_t *config);
 
 /*!
- * @brief Get the delay count from step start to step_done received.
- *
- * @param base GPC CPU module base address.
- * @param step step type, refer to "gpc_cm_tran_step_t".
- * @return The value of response delay count.
- */
-uint32_t GPC_CM_GetResponseCount(GPC_CPU_MODE_CTRL_Type *base, gpc_cm_tran_step_t step);
-
-/*!
  * @brief Request a set point transition before the CPU transfers into a sleep mode.
  *
  * This function triggers the set point transition during a CPU Sleep/wakeup event and selects which one the CMC want
  * to transfer to.
  *
  * @param base GPC CPU module base address.
- * @param config sleep mode set point transition configuration, refer to "gpc_cm_sleep_sp_tran_config_t".
+ * @param setPointSleep The set point CPU want the system to transit to on next CPU platform sleep sequence.
+ * @param setPointWakeup The set point CPU want the system to transit to on next CPU platform wakeup sequence.
+ * @param wakeupSel Select the set point transition on the next CPU platform wakeup sequence.
  */
 void GPC_CM_RequestSleepModeSetPointTransition(GPC_CPU_MODE_CTRL_Type *base,
-                                               const gpc_cm_sleep_sp_tran_config_t *config);
+                                               uint8_t setPointSleep,
+                                               uint8_t setPointWakeup,
+                                               gpc_cm_wakeup_sp_sel_t wakeupSel);
 
 /*!
  * @brief Request a set point transition during run mode.
  *
  * This function triggers the set point transition and selects which one the CMC want to transfer to.
  *
- * @note After calling this API, user should check the current set point flag in the set point system.
- * @code
- *    uint32_t targetSetPoint = GPC_SP_GetSystemStatus(gpc_sp_base, kGPC_SP_TargetSetPoint);
- *    while (targetSetPoint != GPC_SP_GetSystemStatus(gpc_sp_base, kGPC_SP_CurrentSetPoint))
- *    {
- *    }
- * @encode
- *
  * @param base GPC CPU module base address.
- * @param config run mode set point transition configuration, refer to "gpc_cm_run_sp_tran_config_t".
+ * @param setPointRun The set point CPU want the system to transit in the run mode.
  */
-void GPC_CM_RequestRunModeSetPointTransition(GPC_CPU_MODE_CTRL_Type *base, const gpc_cm_run_sp_tran_config_t *config);
-
-/*!
- * @brief Get the CPU set point status
- *
- * @param base GPC CPU module base address.
- * @param status mask value for set point status, refer to "gpc_cm_set_point_status_t"
- */
-static inline uint32_t GPC_CM_GetSetPointStatus(GPC_CPU_MODE_CTRL_Type *base, gpc_cm_set_point_status_t status)
-{
-    return GPC_GET_STAT(base->CM_SP_STAT, status);
-}
+void GPC_CM_RequestRunModeSetPointTransition(GPC_CPU_MODE_CTRL_Type *base, uint8_t setPointRun);
 
 /*!
  * @brief Set the set point mapping value for each set point.
@@ -739,6 +500,14 @@ void GPC_CM_SetCpuModeSetPointMapping(GPC_CPU_MODE_CTRL_Type *base, gpc_cpu_mode
 void GPC_CM_RequestStandbyMode(GPC_CPU_MODE_CTRL_Type *base, const gpc_cpu_mode_t mode);
 
 /*!
+ * @brief Clear the standby mode request.
+ *
+ * @param base GPC CPU module base address.
+ * @param mode CPU mode. Refer to "gpc_cpu_mode_t".
+ */
+void GPC_CM_ClearStandbyModeRequest(GPC_CPU_MODE_CTRL_Type *base, const gpc_cpu_mode_t mode);
+
+/*!
  * @brief Get the status of the CPU standby mode transition.
  *
  * @param base GPC CPU module base address.
@@ -777,65 +546,6 @@ void GPC_CM_ClearInterruptStatusFlags(GPC_CPU_MODE_CTRL_Type *base, uint32_t mas
  * @name Set point request control
  * @{
  */
-
-/*!
- * @brief Get the CPU set point request status.
- *
- * @param base GPC Setpoint controller base address.
- * @param status mask value for set point request status, refer to "gpc_sp_cpu_request_status_t"
- */
-static inline uint32_t GPC_SP_GetCpuRequestStatus(GPC_SET_POINT_CTRL_Type *base, gpc_sp_cpu_request_status_t status)
-{
-    return GPC_GET_STAT(base->SP_CPU_REQ, status);
-}
-
-/*!
- * @brief Get the set point system status.
- *
- * @param base GPC Setpoint controller base address.
- * @param status mask value for set point system status, refer to "gpc_sp_system_status_t"
- */
-static inline uint32_t GPC_SP_GetSystemStatus(GPC_SET_POINT_CTRL_Type *base, gpc_sp_system_status_t status)
-{
-    return GPC_GET_STAT(base->SP_SYS_STAT, status);
-}
-
-/*
- * @brief Set the set point mapping value which allows turn off ROSC
- *
- * This function configures which set point is allowed turn off the main ROSC clock. If there are multiple setpoints,
-use:
- * @code
- *    map = kkGPC_SetPoint0 | kGPC_SetPoint1 | ... | kGPC_SetPoint15;
- * @encode
- *
- * @note When the system transites to a standby mode, the 32 KHz clock will be used to wakeup the system and ROSC, it
- * does not need be synchronized by ipg_clk in LPCG since they are fully asynchronous.
- *
- * @param base GPC CPU module base address.
- * @param mode CPU mode. Refer to "gpc_cpu_mode_t".
- * @param map Map value of the set point. Refer to "_gpc_setpoint_map".
- */
-static inline void GPC_SP_SetRoscGateSetPoint(GPC_SET_POINT_CTRL_Type *base, uint32_t map)
-{
-    base->SP_MISC = map & 0xFFFFUL;
-}
-
-/*!
- * @brief Get the map of allowed set points by all current CPU set point requests.
- *
- * This function gets the final set point map that are allowed by all current CPU set point requests. The allowed set
- * point from all CMC platforms will be ANDed with this map to determine whether it is a valid state. If the return
- * value is zero, it means a invalid state and the GPC should generate a error IRQ.
- *
- * @param base GPC Setpoint controller base address.
- * @return The allowed set point(s) for transition.
- */
-static inline uint32_t GPC_SP_GetAllowedSetPointMap(GPC_SET_POINT_CTRL_Type *base)
-{
-    return ((base->SP_SYS_STAT & GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_ALLOWED_MASK) >>
-            GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_ALLOWED_SHIFT);
-}
 
 /*!
  * @brief Set the priority of set point.
@@ -881,6 +591,42 @@ void GPC_SP_ConfigSetPointTransitionStep(GPC_SET_POINT_CTRL_Type *base,
  * @return The value of response delay count.
  */
 uint32_t GPC_SP_GetResponseCount(GPC_SET_POINT_CTRL_Type *base, gpc_sp_tran_step_t step);
+
+/*!
+ * @brief Get system current setpoint, only valid when setpoint trans not busy.
+ *
+ * @param base GPC Setpoint controller base address.
+ * @return The current setpoint number, range from 0 to 15.
+ */
+static inline uint8_t GPC_SP_GetCurrentSetPoint(GPC_SET_POINT_CTRL_Type *base)
+{
+    return (uint8_t)((base->SP_SYS_STAT & GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_CURRENT_MASK) >>
+                     GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_CURRENT_SHIFT);
+}
+
+/*!
+ * @brief Get system previous setpoint, only valid when setpoint trans not busy.
+ *
+ * @param base GPC Setpoint controller base address.
+ * @return The previous setpoint number, range from 0 to 15.
+ */
+static inline uint8_t GPC_SP_GetPreviousSetPoint(GPC_SET_POINT_CTRL_Type *base)
+{
+    return (uint8_t)((base->SP_SYS_STAT & GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_PREVIOUS_MASK) >>
+                     GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_PREVIOUS_SHIFT);
+}
+
+/*!
+ * @brief Get target setpoint.
+ *
+ * @param base GPC Setpoint controller base address.
+ * @return The target setpoint number, range from 0 to 15.
+ */
+static inline uint8_t GPC_SP_GetTargetSetPoint(GPC_SET_POINT_CTRL_Type *base)
+{
+    return (uint8_t)((base->SP_SYS_STAT & GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_TARGET_MASK) >>
+                     GPC_SET_POINT_CTRL_SP_SYS_STAT_SYS_SP_TARGET_SHIFT);
+}
 /*!
  * @}
  */
@@ -900,15 +646,6 @@ uint32_t GPC_SP_GetResponseCount(GPC_SET_POINT_CTRL_Type *base, gpc_sp_tran_step
 void GPC_STBY_ConfigStandbyTransitionStep(GPC_STBY_CTRL_Type *base,
                                           gpc_stby_tran_step_t step,
                                           const gpc_tran_step_config_t *config);
-
-/*!
- * @brief Get the response delay count of the selected standby transition step.
- *
- * @param base GPC Setpoint controller base address.
- * @param step step type, refer to "gpc_stby_tran_step_t".
- * @return The value of response delay count.
- */
-uint32_t GPC_STBY_GetResponseCount(GPC_STBY_CTRL_Type *base, gpc_stby_tran_step_t step);
 
 /*!
  * @}

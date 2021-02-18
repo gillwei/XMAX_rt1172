@@ -15,23 +15,14 @@
  *
  * The CPU macro should be declared in the project or makefile.
  */
-#if (defined(CPU_MIMXRT1176AVM8A_cm7) || defined(CPU_MIMXRT1176CVM8A_cm7) || defined(CPU_MIMXRT1176DVMAA_cm7))
+#if (defined(CPU_MIMXRT1172AVM8A) || defined(CPU_MIMXRT1172CVM8A) || defined(CPU_MIMXRT1172DVMAA))
 
-#define MIMXRT1176_cm7_SERIES
-
-/* CMSIS-style register definitions */
-#include "MIMXRT1176_cm7.h"
-/* CPU specific feature definitions */
-#include "MIMXRT1176_cm7_features.h"
-
-#elif (defined(CPU_MIMXRT1176AVM8A_cm4) || defined(CPU_MIMXRT1176CVM8A_cm4) || defined(CPU_MIMXRT1176DVMAA_cm4))
-
-#define MIMXRT1176_cm4_SERIES
+#define MIMXRT1172_SERIES
 
 /* CMSIS-style register definitions */
-#include "MIMXRT1176_cm4.h"
+#include "MIMXRT1172.h"
 /* CPU specific feature definitions */
-#include "MIMXRT1176_cm4_features.h"
+#include "MIMXRT1172_features.h"
 
 #else
     #error "No valid CPU defined!"

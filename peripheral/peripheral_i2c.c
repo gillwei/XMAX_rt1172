@@ -26,7 +26,7 @@ extern "C"{
 --------------------------------------------------------------------*/
 #define LPI2C_MASTER_BASEADDR   ( LPI2C1 )
 #define LPI2C_BAUDRATE          ( 100000U )
-#define LPI2C_CLOCK             ( BOARD_BOOTCLOCKRUN_LPI2C_CLK_ROOT )
+#define LPI2C_CLOCK             ( BOARD_BOOTCLOCKRUN_LPI2C1_CLK_ROOT )
 #define LPI2C_SIZE_OF_QUEUE     ( 8 )
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS

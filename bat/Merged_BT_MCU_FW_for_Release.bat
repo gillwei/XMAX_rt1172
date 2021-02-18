@@ -21,12 +21,12 @@ xcopy .\EmbeddedWizard\MultiLanguage .\EmbeddedWizard\GeneratedCode /y
 echo Clean and Build Project...
 
 REM -cleanbuild on a build target: this does a 'clean' only on the build target, no build
-"%IDE%" -nosplash --launcher.suppressErrors -application org.eclipse.cdt.managedbuilder.core.headlessbuild -printErrorMarkers -import %CURRENT_PATH% -cleanBuild LinkCard-RT1176/Release
+"%IDE%" -nosplash --launcher.suppressErrors -application org.eclipse.cdt.managedbuilder.core.headlessbuild -printErrorMarkers -import %CURRENT_PATH% -cleanBuild LinkCard-RT1172/Release
 
 cd /d %TOOLCHAIN_PATH%
 
 echo Transform to Binary File...
-arm-none-eabi-objcopy -v -O binary %CURRENT_PATH%\Release\LinkCard-RT1176.axf %CURRENT_PATH%\Release\LinkCard-RT1176.bin
+arm-none-eabi-objcopy -v -O binary %CURRENT_PATH%\Release\LinkCard-RT1172.axf %CURRENT_PATH%\Release\LinkCard-RT1172.bin
 
 cd /d %CURRENT_PATH%\bat
 
@@ -35,7 +35,7 @@ set two=%2
 
 echo Merge BT F/W and MCU F/W within one Merged File...
 if "%one%" NEQ "" (
-    srec_cat.exe ..\submodule\cyw89820\Release_FW\BT_mdflash.bin -Binary -offset %1 ..\Release\LinkCard-RT1176.bin -Binary -o boot_image.bin -Binary
+    srec_cat.exe ..\submodule\cyw89820\Release_FW\BT_mdflash.bin -Binary -offset %1 ..\Release\LinkCard-RT1172.bin -Binary -o boot_image.bin -Binary
     if "%two%" NEQ "" (
         srec_cat.exe boot_image.bin -Binary -E 0x800000 0x800002 -GEN 0x800000 0x800002 -CONSTant_Big_Endian %2 2 -O boot_image.bin -Binary
 	)

@@ -46,7 +46,7 @@
 
 #include "fsl_debug_console.h"
 #include "fsl_gpio.h"
-#include "MIMXRT1176_cm7.h"
+#include "MIMXRT1172.h"
 
 #include "FreeRTOS.h"
 #include "task.h"

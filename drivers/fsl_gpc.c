@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, NXP
+ * Copyright 2019-2020 NXP
  * All rights reserved.
  *
  *
@@ -20,13 +20,12 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-/*! @brief GPC submodule step registers fofset */
-static uint32_t const s_cmRegOffset[]         = GPC_CM_STEP_REG_OFFSET;
-static uint32_t const s_cmStatusRegOffset[]   = GPC_CM_STEP_STAT_REG_OFFSET;
-static uint32_t const s_spRegOffset[]         = GPC_SP_STEP_REG_OFFSET;
-static uint32_t const s_spStatusRegOffset[]   = GPC_SP_STEP_STAT_REG_OFFSET;
-static uint32_t const s_stbyRegOffset[]       = GPC_STBY_STEP_REG_OFFSET;
-static uint32_t const s_stbyStatusRegOffset[] = GPC_STBY_STEP_STATUS_REG_OFFSET;
+/*! @brief GPC submodule step registers offset */
+static uint32_t const s_cmRegOffset[] = GPC_CM_STEP_REG_OFFSET;
+
+static uint32_t const s_spRegOffset[] = GPC_SP_STEP_REG_OFFSET;
+
+static uint32_t const s_stbyRegOffset[] = GPC_STBY_STEP_REG_OFFSET;
 
 /*******************************************************************************
  * Code
@@ -116,46 +115,32 @@ void GPC_CM_ConfigCpuModeTransitionStep(GPC_CPU_MODE_CTRL_Type *base,
 }
 
 /*!
- * brief Get the delay count from step start to step_done received.
- *
- * param base GPC CPU module base address.
- * param step step type, refer to "gpc_cm_tran_step_t".
- * return The value of response delay count.
- */
-uint32_t GPC_CM_GetResponseCount(GPC_CPU_MODE_CTRL_Type *base, gpc_cm_tran_step_t step)
-{
-    return (*(volatile uint32_t *)((uint32_t)base + s_cmStatusRegOffset[(uint32_t)step]) & 0xFFFFUL);
-}
-
-/*!
  * brief Request a set point transition before the CPU transfers into a sleep mode.
  *
  * This function triggers the set point transition during a CPU Sleep/wakeup event and selects which one the CMC want
  * to transfer to.
  *
  * param base GPC CPU module base address.
- * param config sleep mode set point transition configuration.
+ * param setPointSleep The set point CPU want the system to transit to on next CPU platform sleep sequence.
+ * param setPointWakeup The set point CPU want the system to transit to on next CPU platform wakeup sequence.
+ * param wakeupSel Select the set point transition on the next CPU platform wakeup sequence.
  */
 void GPC_CM_RequestSleepModeSetPointTransition(GPC_CPU_MODE_CTRL_Type *base,
-                                               const gpc_cm_sleep_sp_tran_config_t *config)
+                                               uint8_t setPointSleep,
+                                               uint8_t setPointWakeup,
+                                               gpc_cm_wakeup_sp_sel_t wakeupSel)
 {
     uint32_t tmp32 = base->CM_SP_CTRL;
 
     tmp32 &= ~(GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_RUN_EN_MASK | GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_SLEEP_MASK |
                GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_WAKEUP_MASK | GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_WAKEUP_SEL_MASK);
     /* Config set point transition in the next sleep sequence. */
-    if (true == config->enableSleepTransition)
-    {
-        tmp32 |= GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_SLEEP_EN_MASK |
-                 GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_SLEEP(config->setPointSleep);
-    }
+    tmp32 |=
+        GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_SLEEP_EN_MASK | GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_SLEEP(setPointSleep);
     /* Config set point transition in the next wakeup sequence. */
-    if (true == config->enableWakeupTransition)
-    {
-        tmp32 |= GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_WAKEUP_EN_MASK |
-                 GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_WAKEUP(config->setPointWakeup) |
-                 GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_WAKEUP_SEL(config->wakeupSel);
-    }
+    tmp32 |= GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_WAKEUP_EN_MASK |
+             GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_WAKEUP(setPointWakeup) |
+             GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_WAKEUP_SEL(wakeupSel);
 
     base->CM_SP_CTRL = tmp32;
 }
@@ -165,29 +150,20 @@ void GPC_CM_RequestSleepModeSetPointTransition(GPC_CPU_MODE_CTRL_Type *base,
  *
  * This function triggers the set point transition and selects which one the CMC want to transfer to.
  *
- * note After calling this API, user should check the current set point flag in the set point system.
- * code
- *    uint32_t targetSetPoint = GPC_SP_GetSystemStatus(gpc_sp_base, kGPC_SP_TargetSetPoint);
- *    while (targetSetPoint != GPC_SP_GetSystemStatus(gpc_sp_base, kGPC_SP_CurrentSetPoint))
- *    {
- *    }
- * encode
- *
  * param base GPC CPU module base address.
- * param config run mode set point transition configuration. Refer to "gpc_cm_run_sp_tran_config_t".
+ * param setPointRun The set point CPU want the system to transit in the run mode.
  */
-void GPC_CM_RequestRunModeSetPointTransition(GPC_CPU_MODE_CTRL_Type *base, const gpc_cm_run_sp_tran_config_t *config)
+void GPC_CM_RequestRunModeSetPointTransition(GPC_CPU_MODE_CTRL_Type *base, uint8_t setPointRun)
 {
     uint32_t tmp32 = base->CM_SP_CTRL;
 
     tmp32 &= ~(GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_RUN_MASK);
-    if (true == config->enableRunTransition)
-    {
-        tmp32 |= GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_RUN_EN_MASK |
-                 GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_RUN(config->setPointRun);
-    }
+    tmp32 |= GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_RUN_EN_MASK | GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_RUN(setPointRun);
 
     base->CM_SP_CTRL = tmp32;
+    while ((base->CM_SP_CTRL & GPC_CPU_MODE_CTRL_CM_SP_CTRL_CPU_SP_RUN_EN_MASK) != 0UL)
+    {
+    }
 }
 
 /*
@@ -236,19 +212,48 @@ void GPC_CM_SetCpuModeSetPointMapping(GPC_CPU_MODE_CTRL_Type *base, gpc_cpu_mode
  */
 void GPC_CM_RequestStandbyMode(GPC_CPU_MODE_CTRL_Type *base, const gpc_cpu_mode_t mode)
 {
+    assert(mode != kGPC_RunMode);
+
     switch (mode)
     {
         case kGPC_WaitMode:
-            base->CM_STBY_CTRL = GPC_CPU_MODE_CTRL_CM_STBY_CTRL_STBY_WAIT_MASK;
+            base->CM_STBY_CTRL |= GPC_CPU_MODE_CTRL_CM_STBY_CTRL_STBY_WAIT_MASK;
             break;
         case kGPC_StopMode:
-            base->CM_STBY_CTRL = GPC_CPU_MODE_CTRL_CM_STBY_CTRL_STBY_STOP_MASK;
+            base->CM_STBY_CTRL |= GPC_CPU_MODE_CTRL_CM_STBY_CTRL_STBY_STOP_MASK;
             break;
         case kGPC_SuspendMode:
-            base->CM_STBY_CTRL = GPC_CPU_MODE_CTRL_CM_STBY_CTRL_STBY_SUSPEND_MASK;
+            base->CM_STBY_CTRL |= GPC_CPU_MODE_CTRL_CM_STBY_CTRL_STBY_SUSPEND_MASK;
             break;
         default:
-            base->CM_STBY_CTRL = 0UL;
+            /* This branch should never be hit. */
+            break;
+    }
+}
+
+/*
+ * brief Clear the standby mode request.
+ *
+ * param base GPC CPU module base address.
+ * param mode CPU mode. Refer to "gpc_cpu_mode_t".
+ */
+void GPC_CM_ClearStandbyModeRequest(GPC_CPU_MODE_CTRL_Type *base, const gpc_cpu_mode_t mode)
+{
+    assert(mode != kGPC_RunMode);
+
+    switch (mode)
+    {
+        case kGPC_WaitMode:
+            base->CM_STBY_CTRL &= ~GPC_CPU_MODE_CTRL_CM_STBY_CTRL_STBY_WAIT_MASK;
+            break;
+        case kGPC_StopMode:
+            base->CM_STBY_CTRL &= ~GPC_CPU_MODE_CTRL_CM_STBY_CTRL_STBY_STOP_MASK;
+            break;
+        case kGPC_SuspendMode:
+            base->CM_STBY_CTRL &= ~GPC_CPU_MODE_CTRL_CM_STBY_CTRL_STBY_SUSPEND_MASK;
+            break;
+        default:
+            /* This branch should never be hit. */
             break;
     }
 }
@@ -300,18 +305,6 @@ void GPC_SP_ConfigSetPointTransitionStep(GPC_SET_POINT_CTRL_Type *base,
 }
 
 /*!
- * brief Gets the response count of the selected setpoint transition step.
- *
- * param base GPC Setpoint controller base address.
- * param step step type, refer to "gpc_sp_tran_step_t".
- * return The value of response delay count.
- */
-uint32_t GPC_SP_GetResponseCount(GPC_SET_POINT_CTRL_Type *base, gpc_sp_tran_step_t step)
-{
-    return (*(volatile uint32_t *)((uint32_t)base + s_spStatusRegOffset[(uint32_t)step]) & 0xFFFFUL);
-}
-
-/*!
  * brief Config the standby transition step.
  *
  * param base GPC Setpoint controller base address.
@@ -339,16 +332,4 @@ void GPC_STBY_ConfigStandbyTransitionStep(GPC_STBY_CTRL_Type *base,
         tmp32 |= GPC_STBY_CTRL_STBY_LPCG_IN_CTRL_DISABLE_MASK;
     }
     *(uint32_t *)((uint32_t)base + s_stbyRegOffset[step]) = tmp32;
-}
-
-/*!
- * brief Get the response delay count of the selected standby transition step.
- *
- * param base GPC Setpoint controller base address.
- * param step step type, refer to "gpc_stby_tran_step_t".
- * return The value of response delay count.
- */
-uint32_t GPC_STBY_GetResponseCount(GPC_STBY_CTRL_Type *base, gpc_stby_tran_step_t step)
-{
-    return (*(volatile uint32_t *)((uint32_t)base + s_stbyStatusRegOffset[(uint32_t)step]) & 0xFFFFUL);
 }

@@ -56,8 +56,8 @@ extern "C"{
 #define ADC_ETC_VBATT_CHANNEL         ( 2 )
 
 #define XBARA_BASE                    XBARA1
-#define XBARA_INPUT_PITCH0            kXBARA1_InputPitTrigger0
-#define XBARA_OUTPUT_ADC_ETC          kXBARA1_OutputAdcEtcXbar0Trig0
+#define XBARA_INPUT_PITCH0            kXBARA1_InputPit1Trigger0
+#define XBARA_OUTPUT_ADC_ETC          kXBARA1_OutputAdcEtc0Coco0
 
 #define PIT_SOURCE_CLOCK              CLOCK_GetFreq( kCLOCK_OscRc48M )
 #define PIT_PERIOD_uS                 ( 1000000U )

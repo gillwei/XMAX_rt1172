@@ -15,7 +15,7 @@ extern "C"{
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
 #include "board.h"
-#include "MIMXRT1176_cm7.h"
+#include "MIMXRT1172.h"
 #include "clock_config.h"
 #include "FreeRTOS.h"
 #include "pin_mux.h"

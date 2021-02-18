@@ -142,12 +142,10 @@ static void BOARD_InitLcdifClock
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  */
 
-CLOCK_InitVideoPllWithFreq( 89 );
+CLOCK_InitVideoPllWithFreq( 89, false, 0, 0 );
 
 const clock_root_config_t lcdifv2ClockConfig = {
     .clockOff = false,
-    .mfn      = 0,
-    .mfd      = 0,
     .mux      = kCLOCK_LCDIFV2_ClockRoot_MuxVideoPllOut, /*!< PLL_528. */
     .div      = 10,
 };
@@ -186,7 +184,7 @@ return kStatus_Success;
 * @brief Interrupt handler for lcdifv2
 *
 *********************************************************************/
-void LCDIF2_IRQHandler
+void LCDIFv2_IRQHandler
     (
     void
     )
@@ -259,8 +257,8 @@ status = BOARD_InitDisplayInterface();
 
 if( kStatus_Success == status )
     {
-    NVIC_SetPriority( LCDIF2_IRQn, 3 );
-    EnableIRQ( LCDIF2_IRQn );
+    NVIC_SetPriority( LCDIFv2_IRQn, 3 );
+    EnableIRQ( LCDIFv2_IRQn );
     }
 return kStatus_Success;
 }
