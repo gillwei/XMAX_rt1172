@@ -28,7 +28,7 @@ extern "C" {
 #define OPCODE_ALLOW_CONNECTION  0x0C05
 #define OPCODE_LE_TX             0x201E
 #define OPCODE_LE_END            0x201F
-
+#define OPCODE_TX_CARRIER        0xFC14
 #define RESET_WAIT_MS            1000
 
 extern uint32_t __base_BOARD_FLASH_BTFW;

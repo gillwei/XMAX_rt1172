@@ -891,7 +891,7 @@ switch( inst_id )
 
     case IOP_BT_TX_CARRIER_FREQ:
         {
-        HCI_LE_transmit_cmd( data );
+        HCI_tx_carrier_cmd( data[0] );
         IOPDone = true;
         }
         break;

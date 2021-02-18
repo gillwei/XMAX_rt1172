@@ -78,7 +78,8 @@ typedef enum HCI_RESPONSE_TYPE
     RESPONSE_RECONFIG_WAIT_BT_MODULE,
     RESPONSE_RESET_DOWNLOAD_FINISH,
     RESPONSE_RESET_RECONFIG_UART,
-    RESPONSE_RESET_LE_TRANSMIT_CMD
+    RESPONSE_TX_CARRIER_CMD,
+    RESPONSE_RESET_TX_CARRIER_CMD
     } hci_resp_type_t;
 
 typedef void ( *spp_iap2_data_callback ) ( const uint8_t* data, const uint16_t length );
@@ -182,9 +183,9 @@ bool HCI_get_test_mode_state
     void
     );
 
-void HCI_LE_transmit_cmd
+void HCI_tx_carrier_cmd
     (
-    uint8_t* data
+    uint8_t data
     );
 
 void HCI_wait_for_resp_start

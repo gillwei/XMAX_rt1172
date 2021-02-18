@@ -144,12 +144,11 @@ typedef enum
 
 typedef enum
     {
-    LE_TRANSMIT_LOW_CH,
-    LE_TRANSMIT_MID_CH,
-    LE_TRANSMIT_HI_CH,
-    LE_TRANSMIT_END
-    } LE_transmit_channel;
-
+    TX_CARRIER_LOW_CH,
+    TX_CARRIER_MID_CH,
+    TX_CARRIER_HI_CH,
+    TX_CARRIER_END
+    } TX_carrier_test_type;
 
 /*--------------------------------------------------------------------
                             VARIABLES
@@ -164,14 +163,15 @@ static uint16_t               tx_command_opcode;
 static init_update_state_t    init_update_state;
 static TimerHandle_t          xUpdateTimer = NULL;
 static uint16_t               update_timer_count;
-static bool                   LE_transmit_cmd_called = false;
 static TimerHandle_t          xRespTimer = NULL;
 static IOP_command_state_struct  iop_command_state;
 static uint16_t               resp_timer_count;
 static const uint8_t          allow_connection_const_data[3] = { 0x02, 0x00, 0x02 };
-static const uint8_t          le_low_ch_cmd_data[3] = { 0x00, 0x37, 0x04 };
-static const uint8_t          le_mid_ch_cmd_data[3] = { 0x13, 0x37, 0x04 };
-static const uint8_t          le_hi_ch_cmd_data[3] = { 0x27, 0x37, 0x04 };
+static bool                   tx_carrier_cmd_called = false;
+static uint8_t                tx_carrier_cmd_data = 0;
+static const uint8_t          tx_carrier_low_ch_data[7] = { 0x0, 0x02, 0x0, 0x0, 0x08, 0x02, 0x0 };
+static const uint8_t          tx_carrier_mid_ch_data[7] = { 0x0, 0x29, 0x0, 0x0, 0x08, 0x02, 0x0 };
+static const uint8_t          tx_carrier_hi_ch_data[7] = { 0x0, 0x50, 0x0, 0x0, 0x08, 0x02, 0x0 };
 static hci_resp_type_t        current_resp_event = RESPONSE_NO_EVENT;
 
 /*--------------------------------------------------------------------
@@ -409,44 +409,40 @@ return test_mode_state;
 
 /*********************************************************************
 *
-* HCI LE transmit
+* Tx Carrier frequency ARM transmit
 *
-* Send LE continuous transmit command
+* For Continuous Transmit frequency test, set fixed power and tx power
+* adjust different channel for test
 *
 *********************************************************************/
-void HCI_LE_transmit_cmd
+void HCI_tx_carrier_cmd
     (
-    uint8_t* data
+    uint8_t data
     )
 {
+tx_carrier_cmd_data = data;
 
-if( false == LE_transmit_cmd_called )
+/*  Tx Carrier command have not been called, send SW reset cmd and Tx Carrier cmd */
+if( false == tx_carrier_cmd_called )
     {
+    if( ( tx_carrier_cmd_data != TX_CARRIER_LOW_CH ) && ( tx_carrier_cmd_data != TX_CARRIER_MID_CH ) && ( tx_carrier_cmd_data != TX_CARRIER_HI_CH ) )
+       {
+       PRINTF( "%s:%d Wrong input parameter\r\n", __FUNCTION__, tx_carrier_cmd_data );
+       return;
+       }
     PRINTF( "%s cmd RECEIVED\n\r", __FUNCTION__ );
-    LE_transmit_cmd_called = true;
+    tx_carrier_cmd_called = true;
     BT_UPDATE_standard_send_command( OPCODE_RESET, NULL, 0 );
-    vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
+    HCI_wait_for_resp_start( RESPONSE_TX_CARRIER_CMD );
     }
-
-if( LE_TRANSMIT_LOW_CH == *data )
+/*  Tx Carrier command have been called, Reset BT chip or do nothing */
+else
     {
-    BT_UPDATE_standard_send_command( OPCODE_LE_TX, le_low_ch_cmd_data, sizeof( le_low_ch_cmd_data ) );
+    if( TX_CARRIER_END == tx_carrier_cmd_data )
+        {
+        HCI_normal_reset_BT( RESPONSE_RESET_TX_CARRIER_CMD );
+        }
     }
-else if( LE_TRANSMIT_MID_CH == *data )
-    {
-    BT_UPDATE_standard_send_command( OPCODE_LE_TX, le_mid_ch_cmd_data, sizeof( le_mid_ch_cmd_data ) );
-    }
-else if( LE_TRANSMIT_HI_CH == *data )
-    {
-    BT_UPDATE_standard_send_command( OPCODE_LE_TX, le_hi_ch_cmd_data, sizeof( le_hi_ch_cmd_data ) );
-    }
-else if( LE_TRANSMIT_END == *data )
-    {
-    BT_UPDATE_standard_send_command( OPCODE_LE_END, NULL, 0 );
-    vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
-    HCI_normal_reset_BT( RESPONSE_RESET_LE_TRANSMIT_CMD );
-    }
-
 }
 
 /*********************************************************************
@@ -1033,16 +1029,36 @@ switch( current_resp_event )
             }
         break;
 
-    /* After CW transmit and reset, deassert CW Transmit flag */
-    case RESPONSE_RESET_LE_TRANSMIT_CMD:
+    /* After execute Tx Carrier command and send SW reset command   */
+    case RESPONSE_TX_CARRIER_CMD:
         if( resp_timer_count >= RESPONSE_TIMER_ONE_SECOND )
             {
             hci_wait_for_resp_stop();
-            hci_reconfig_uart_normal();
-            LE_transmit_cmd_called = false;
-            PRINTF( "LE transmit command TEST END\n\r" );
+            if( TX_CARRIER_LOW_CH == tx_carrier_cmd_data )
+                {
+                BT_UPDATE_standard_send_command( OPCODE_TX_CARRIER, tx_carrier_low_ch_data, sizeof( tx_carrier_low_ch_data ) );
+                }
+            else if( TX_CARRIER_MID_CH == tx_carrier_cmd_data )
+                {
+                BT_UPDATE_standard_send_command( OPCODE_TX_CARRIER, tx_carrier_mid_ch_data, sizeof( tx_carrier_mid_ch_data ) );
+                }
+            else if( TX_CARRIER_HI_CH == tx_carrier_cmd_data )
+                {
+                BT_UPDATE_standard_send_command( OPCODE_TX_CARRIER, tx_carrier_hi_ch_data, sizeof( tx_carrier_hi_ch_data ) );
+                }
             }
         break;
+
+    /* After CW transmit and reset, deassert CW Transmit flag */
+        case RESPONSE_RESET_TX_CARRIER_CMD:
+            if( resp_timer_count >= RESPONSE_TIMER_ONE_SECOND )
+                {
+                hci_wait_for_resp_stop();
+                hci_reconfig_uart_normal();
+                tx_carrier_cmd_called = false;
+                PRINTF( "Tx Carrier command TEST END\n\r" );
+                }
+            break;
 
     default:
         break;
