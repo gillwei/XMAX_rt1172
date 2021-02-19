@@ -81,6 +81,8 @@ typedef enum HCI_RESPONSE_TYPE
     RESPONSE_RESET_LE_TRANSMIT_CMD
     } hci_resp_type_t;
 
+typedef void ( *spp_iap2_data_callback ) ( const uint8_t* data, const uint16_t length );
+
 /*--------------------------------------------------------------------
                         PROJECT INCLUDES
 --------------------------------------------------------------------*/
@@ -105,6 +107,11 @@ typedef enum HCI_RESPONSE_TYPE
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
+bool HCI_spp_iap2_add_data_callback
+    (
+    spp_iap2_data_callback data_callback
+    );
+
 void HCI_init
     (
     void

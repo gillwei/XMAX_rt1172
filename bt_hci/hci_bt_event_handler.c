@@ -34,6 +34,8 @@
 #define PAIR_DEV_LIST_TOTAL_NUM_BYTE 0
 #define PAIR_DEV_LIST_INDEX_BYTE     1
 
+#define SPP_IAP2_DATA_CB_MAX_NUM     3
+
 /*--------------------------------------------------------------------
                                 TYPES
 --------------------------------------------------------------------*/
@@ -48,6 +50,7 @@ typedef enum
                             VARIABLES
 --------------------------------------------------------------------*/
 static bool pair_list_update_status = false;
+static spp_iap2_data_callback spp_iap2_data_cb_array[BT_INFO_CB_MAX_NUM]; /* spp iap2 data callback array */
 
 /*--------------------------------------------------------------------
                               PROCEDURES
@@ -213,7 +216,14 @@ uint8_t bd_addr_rev[BT_DEVICE_ADDRESS_LEN] = { 0 };
 switch( cmd_opcode )
     {
     case HCI_CONTROL_SPP_EVENT_RX_DATA:
-        getUartJpegData( (uint8_t *)p_data, (uint32_t)data_len );
+        // fire callbacks defined by users
+        for( int i = 0; i < SPP_IAP2_DATA_CB_MAX_NUM; i++ )
+            {
+            if( spp_iap2_data_cb_array[i] != NULL )
+                {
+                ( spp_iap2_data_cb_array[i] )( (uint8_t *)p_data, (uint32_t)data_len );
+                }
+            }
         break;
 
     case HCI_CONTROL_SPP_EVENT_CONNECTED:
@@ -267,7 +277,14 @@ auth_chip_return_result_t auth_ver_result = AUTH_CHIP_RETURN_FAIL;
 switch( cmd_opcode )
     {
     case HCI_CONTROL_IAP2_EVENT_RX_DATA:
-        getUartJpegData( (uint8_t *)p_data, (uint32_t)data_len );
+        // fire callbacks defined by users
+        for( int i = 0; i < SPP_IAP2_DATA_CB_MAX_NUM; i++ )
+            {
+            if( spp_iap2_data_cb_array[i] != NULL )
+                {
+                ( spp_iap2_data_cb_array[i] )( (uint8_t *)p_data, (uint32_t)data_len );
+                }
+            }
         break;
 
     case HCI_CONTROL_IAP2_EVENT_CONNECTED:
@@ -305,4 +322,42 @@ switch( cmd_opcode )
     default:
         break;
     }
+}
+
+/*********************************************************************
+*
+* @public
+* HCI_spp_iap2_add_data_callback
+*
+* Register the spp or iap2 receive data callback function
+*
+* @param callback The pointer of the callback struct of spp_iap2_data_callback
+*
+*********************************************************************/
+bool HCI_spp_iap2_add_data_callback
+    (
+    spp_iap2_data_callback data_callback
+    )
+{
+int i = 0;
+
+for( i = 0; i < SPP_IAP2_DATA_CB_MAX_NUM; i++ )
+    {
+    // check if there exists same callback, if yes, return false
+    if( spp_iap2_data_cb_array[i] == data_callback )
+        {
+        PRINTF( "This spp iap2 data callback already added! skip\r\n" );
+        return false;
+        }
+    // if no, find a free slot to add this callback
+    else if( spp_iap2_data_cb_array[i] == NULL )
+        {
+        PRINTF( "This spp iap2 data callback added successfuly!\r\n" );
+        spp_iap2_data_cb_array[i] = data_callback;
+        return true;
+        }
+    }
+
+PRINTF( "not able to add spp iap2 data callback!" );
+return false;
 }
