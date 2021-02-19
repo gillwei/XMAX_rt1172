@@ -26,7 +26,7 @@
 #define TEST_BURN_IN_INIT_DELAY_SEC         ( 3 )    // time to wait before start burn-in
 #define TEST_BURN_IN_START_SEC              ( 1810 ) // start time of burning
 #define TEST_BURN_IN_DURATION_SEC           ( 25 )   // duration of burn-in test
-#define TEST_BURN_IN_SHOW_RESULT_SEC        ( 3 )
+#define TEST_BURN_IN_SHOW_RESULT_SEC        ( 6 )
 #define TEST_BURN_IN_RESULT                 ( true )
 
 /*--------------------------------------------------------------------

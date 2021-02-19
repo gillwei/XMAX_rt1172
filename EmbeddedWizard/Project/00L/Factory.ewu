@@ -118,7 +118,6 @@ class DisplayAutoRun : Components::BaseComponent
   $rect <830,58,1030,98>
   onset BurnInEnabled
   {
-    trace "BurnInEnabled: ", value;
     if( pure BurnInEnabled != value )
     {
       pure BurnInEnabled = value;
@@ -126,7 +125,6 @@ class DisplayAutoRun : Components::BaseComponent
       BurnInResultText.Visible = value;
       FactoryTestEventHandler.Enabled = value;
     }
-
   }
 
   $rect <20,20,160,60>
@@ -202,6 +200,13 @@ class DisplayAutoRun : Components::BaseComponent
     time_str += string( second );
 
     BurnInTimeText.String = time_str;
+
+    // blink time and result during burn-in test
+    if( BurnInEnabled )
+    {
+      BurnInTimeText.Visible = !BurnInTimeText.Visible;
+      BurnInResultText.Visible = !BurnInResultText.Visible;
+    }
   }
 
   $rect <830,250,1040,290>
