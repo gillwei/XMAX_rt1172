@@ -55,7 +55,6 @@
 #include "can_mid.h"
 #include "CAN_pub.h"
 #include "CAN_app.h"
-
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -75,6 +74,13 @@
     #define CAN_APP_SIG_DEBUG_TICK      200;//!< 200 * 5 = 1000ms
 #endif
 
+#include "client_dcm_appl.h"
+#if( TRUE == APPL_CMD_DBUG )
+static uint8 nm_simu_ble_data[100] = { 0 };
+uint8 protobuf_length = 0x00;
+uint32 data_length = 0;
+uint16 rx_cmd = 0;
+#endif
 /*--------------------------------------------------------------------
                                 TYPES
 --------------------------------------------------------------------*/
@@ -193,6 +199,31 @@ nm_app_hook_process_receive
 /*------------------------------------------------------
 CAN frame from can stack lower layer
 ------------------------------------------------------*/
+#if( TRUE == APPL_CMD_DBUG )
+can_msg_t   l_can_msg_rx;
+uint8 dlc = 0x00;
+/*--------------------------------------------------
+process received data from CAN lower layer
+--------------------------------------------------*/
+if( p_rmd->data[0] == 0xAA )
+    {
+    rx_cmd = ( p_rmd->data[1] << 8 ) | ( 0x00FF & p_rmd->data[2] );
+    data_length = (p_rmd->data[5]);
+    protobuf_length = 0;
+    }
+else if(p_rmd->data[0] == 0xFF && (p_rmd->data[1] == 0xFF) )
+    {
+    client_appl_ble_req_command_dispatch(rx_cmd, data_length, nm_simu_ble_data );
+    }
+else
+    {
+    dlc = p_rmd->dlc;
+    memcpy( &nm_simu_ble_data[protobuf_length], p_rmd->data, dlc);
+    protobuf_length += dlc;
+    }
+#else
+
+
 can_msg_t   l_can_msg_rx;
 
 /*--------------------------------------------------
@@ -201,6 +232,7 @@ process received data from CAN lower layer
 l_can_msg_rx.id     = p_rmd->identifier;
 l_can_msg_rx.size   = p_rmd->dlc;
 memcpy( l_can_msg_rx.data, p_rmd->data, p_rmd->dlc );
+#endif
 
 /*--------------------------------------------------
 Handling data

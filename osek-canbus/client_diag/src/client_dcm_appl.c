@@ -2,7 +2,7 @@
 * @file client_dcm_appl.c
 * @brief client diagnostic application management
 *
-* This file shall handle the service comsequence flow, store and transmit
+* This file shall handle the service com_sequence flow, store and transmit
 * data to upper layer.
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
@@ -17,51 +17,57 @@
 #include "client_dcm.h"
 #include "client_mem.h"
 #include <string.h>
+#include "BC_motocon_pub.h"
 
 /*Micro switch for DEBUG*/
 #define APPL_DEBUG                                   (TRUE)
 #define APPL_PENDING                                 (TRUE)
-
 /*--------------------------------------------------------------------
                             VARIABLES
 --------------------------------------------------------------------*/
 /*define yamaha diagnostic tools connected state*/
+/*define BLE connected state*/
 static boolean ydt_connected_state = FALSE;
-/*define BLE conneted state*/
 static boolean ble_connected_state = FALSE;
-uint16 delay_timer_count   =  0x0000;
-uint8 current_connect_server_id   = 0xFF;
-client_process_flow_type client_process_flow_state = PROCESS_FLOW_IDLE;
-static boolean is_read_init_dtc =  FALSE;
+static uint32 delay_timer_count   =  0;
+static client_process_flow_type client_process_flow_state = PROCESS_FLOW_IDLE;
 
 /*for server list detect*/
+static uint8 current_connect_server_id   = 0xFF;
 static uint8 default_server_list_detect_amount = 0x00;
 static uint8 extend_server_list_detect_amount = 0x00;
+static uint16 connected_server_list[SUPPORT_SERVER_NUM] = {0};
 static const uint16 server_ecu_identifier[SUPPORT_SERVER_NUM] = SERVER_ECU_LIST;
+static client_appl_server_detect_step_type server_detect_step = SERVER_DETECT_INIT;
+static client_appl_server_list_detect_type server_list_detect_infos[SUPPORT_SERVER_NUM] = {0};
+static client_appl_detect_connected_server_infos_type detect_connected_server_infos ={0};
 
-client_appl_server_detect_step_type server_detect_step = SERVER_DETECT_INIT;
-client_appl_server_list_detect_type server_list_detect[SUPPORT_SERVER_NUM] = {0};
+/*for read DTC*/
+static boolean is_read_init_dtc =  FALSE;
+static client_appl_read_dtc_infos_type read_dtc_infos = { 0 };
 
+/*for common identifier data*/
+static uint16 rx_comman_data_id_list[SUPPORT_COMMON_COUNT] = { 0 };
+static client_appl_read_data_by_comon_id_type read_common_identifier_infos = {0};
+static const uint16 support_common_data_id_list[SUPPORT_COMMON_COUNT] = SUPPORT_COMMON_IDS_LIST;
 
+/*for local data*/
+static uint8 rx_market_data_id_list[SUPPORT_MARKET_COUNT] = { 0 };
+static const uint8 support_market_data_id_list[SUPPORT_MARKET_COUNT]= SUPPORT_MARKET_IDS_LIST;
+static uint8 rx_monitor_data_id_list[SUPPORT_MONITOR_COUNT] = { 0 };
+static boolean support_id_received_flag[SUPPORT_MONITOR_COUNT] = { FALSE };
+static boolean response_support_monitor_data_id_list[18] = { 0 };
+static const uint8 support_monitor_data_id_list[SUPPORT_MONITOR_COUNT] = SUPPORT_MONITOR_IDS_LIST;
+static client_appl_read_data_by_local_id_type read_loacl_market_infos = {0};
+static client_appl_read_data_by_local_id_type read_local_monitor_infos = {0};
 
-uint8 current_request_freeze_frame_id_list[20] = {0};
-const uint16 common_data_id_list[SUPPORT_COMMON_COUNT] = { 0xF18A, 0xF18C, 0xF190, 0xF192, 0xF194 };
-const uint8 local_data_id_list[SUPPORT_MARKET_COUNT]=
-    { 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67,
-      0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F,
-      0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77,
-      0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F
-    };
+/*for freeze frame data*/
+static client_appl_read_freeze_frame_data_type read_freeze_frame_data_infos = {0};
+static uint8 current_request_freeze_frame_id_list[20] = {0};
 
-client_appl_read_dtc_infos_type read_dtc_infos = { 0 };
-client_appl_detect_connected_server_infos_type detect_connected_server_infos ={0};
-client_appl_read_data_by_comon_id_type read_common_identifier_infos = {0};
-client_appl_read_data_by_local_id_type read_loacl_market_infos = {0};
-client_appl_read_data_by_local_id_type read_local_monitor_infos = {0};
-client_appl_read_freeze_frame_data_type read_freeze_frame_data_infos = {0};
+static uint8 client_appl_failed_message_context[50] = { 0 };
 
-
-
+static client_appl_cmd_rsp_state_type client_app_cmd_rsp_state = CMD_RSP_IDLE;
 #if( APPL_DEBUG )
 const char* print_header_0 = "Server connect detect flow(default session)";
 const char* print_header_1 = "Server connected detect flow(extend session)";
@@ -70,6 +76,8 @@ const char* print_header_3 = "Read Common Identifier data flow";
 const char* print_header_4 = "Read Local Market data flow";
 const char* print_header_5 = "Read Local Monitor data flow";
 const char* print_header_6 = "Read Freeze Frame data flow";
+const char* print_header_7 = "IDLE flow";
+
 
 const char* print_end_0 = " NO RESULT";
 const char* print_end_1 = " process SUCCESS";
@@ -90,7 +98,8 @@ char* print_end[PROCESS_RESULT_MAX] = {0};
 #define set_current_conncet_server_id( value )       ( current_connect_server_id = value )
 #define get_current_connect_server_id()              ( current_connect_server_id )
 #define decrease_delay_timer()                       ( delay_timer_count -- )
-
+#define set_client_app_cmd_rsp_state( value )        ( client_app_cmd_rsp_state == value )
+#define get_client_app_cmd_rsp_state()               ( client_app_cmd_rsp_state )
 
 /*-------------------------------------------------------------------
 *                    function declaration
@@ -144,7 +153,7 @@ static void client_appl_server_detect_req_extend_session_timeout_notify
     );
 
 
-/*for Read dtc status infos*/
+/*for Read DTC status info*/
 static void client_appl_req_initial_dtc_status_handler_5ms
     (
     void
@@ -170,7 +179,7 @@ static void client_appl_read_initial_dtc_status_timeout_notify
 
 
 
-/*for common indentifier data*/
+/*for common identifier data*/
 static void client_appl_read_data_by_common_identifier_handler_5ms
     (
     void
@@ -196,7 +205,7 @@ static void client_appl_read_data_by_common_identifier_timeout_notify
 
 
 
-/*for local indentifier data-market*/
+/*for local identifier data-market*/
 static void client_appl_read_data_by_local_identifier_market_handler_5ms
     (
     void
@@ -221,7 +230,7 @@ static void client_appl_read_data_by_local_identifier_market_timeout_notify
     );
 
 
-/*for local indentifier data - monitor*/
+/*for local identifier data - monitor*/
 static void client_appl_read_data_by_local_identifier_monitor_handler_5ms
     (
     void
@@ -269,6 +278,17 @@ static void client_appl_read_freeze_frame_data_timeout_notify
     void
     );
 
+static boolean client_appl_set_current_process_flow_step
+    (
+    client_process_flow_type next_process_flow
+    );
+
+void client_appl_cmd_rsp_result_notify
+    (
+    const uint8 vlaue
+    );
+
+
 static client_process_flow_handler_type client_process_flow_handler[SUPPORT_FUCNTION_NUMS] =
 {
     { PROCESS_FLOW_DETECT_SERVER, &client_appl_detect_connected_server_handler_5ms, &client_appl_detect_connected_server_positive_response_handler, &client_appl_detect_connected_server_negative_response_handler, &client_appl_detect_connected_server_response_timeout_notify },
@@ -284,7 +304,7 @@ static client_process_flow_handler_type client_process_flow_handler[SUPPORT_FUCN
 /*!*******************************************************************
 * @public
 * Function name: client_appl_set_ydt_connect_state
-* Description:  Set current yamaha diagnsotic tools connnect state
+* Description:  Set current YAMAHA diagnostic tools connect state
 * Usage:   Called by can driver
 *********************************************************************/
 void client_appl_set_ydt_connect_state
@@ -298,7 +318,7 @@ ydt_connected_state = connect_state;
 /*!*******************************************************************
 * @public
 * Function name: client_appl_get_ydt_connect_state
-* Description:  Get current yamaha diagnsotic tools connnect state
+* Description:  Get current YAMAH diagnostic tools connect state
 * Usage: Called by client_appl_main_5ms_handler
 *********************************************************************/
 static boolean client_appl_get_ydt_connect_state
@@ -311,8 +331,22 @@ return ydt_connected_state;
 
 /*!*******************************************************************
 * @public
+* Function name: client_appl_enter_ydt_handler
+* Description:   this function will disconnect the diagnostic server
+with all servers
+*********************************************************************/
+static boolean client_appl_enter_ydt_handler
+    (
+    void
+    )
+{
+client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
+}
+
+/*!*******************************************************************
+* @public
 * Function name: client_appl_set_ble_connected_state
-* Description:  Set current ble connnect state
+* Description:  Set current BLE connect state
 *********************************************************************/
 static void client_appl_set_ble_connected_state
     (
@@ -324,10 +358,23 @@ ble_connected_state = next_state;
 
 /*!*******************************************************************
 * @public
-* Function name: client_appl_set_ble_connected_state
-* Description:  Get current ble connnect state
+* Function name: client_appl_get_ble_connected_state_ptr
+* Description:  Get pointer to ble_connected_state
 *********************************************************************/
-static boolean client_appl_get_ble_connected_state
+static uint8* client_appl_get_ble_connected_state_ptr
+    (
+    void
+    )
+{
+return &ble_connected_state;
+}
+
+/*!*******************************************************************
+* @public
+* Function name: client_appl_get_ble_connected_state
+* Description:  Get BLE connected state
+*********************************************************************/
+static uint8 client_appl_get_ble_connected_state
     (
     void
     )
@@ -335,6 +382,60 @@ static boolean client_appl_get_ble_connected_state
 return ble_connected_state;
 }
 
+/*!*******************************************************************
+* @public
+* Function name: byte_merge_u16
+* Description: combine two type uint8 data into type uint16
+*********************************************************************/
+static uint16 byte_merge_u16
+    (
+    const uint8* data
+    )
+{
+uint16 return_data = ( data[0] << 8 ) | ( 0x00FF & data[1]);
+return return_data;
+}
+
+/*!*******************************************************************
+* @public
+* Function name: byte_merge_u24
+* Description: combine three type uint8 data into type uint32
+*********************************************************************/
+static uint32 byte_merge_u24
+    (
+    const uint8* data
+    )
+{
+uint32 return_value = ( 0x00 << 24 & 0xFF000000 )\
+                    | ( data[0] << 16 & 0x00FF0000 )\
+                    | ( data[1] << 8  & 0x0000FF00 )\
+                    | ( data[2] & 0x000000FF);
+return return_value;
+}
+
+/*!*******************************************************************
+* @public
+* Function name: byte_merge_u32
+* Description: combine four type uint8 data into type uint32
+*********************************************************************/
+static uint32 byte_merge_u32
+    (
+    const uint8* data
+    )
+{
+uint32 return_value = ( data[0] << 24 & 0xFF000000 )\
+                    | ( data[1] << 16 & 0x00FF0000 )\
+                    | ( data[2] << 8  & 0x0000FF00 )\
+                    | ( data[3] & 0x000000FF);
+return return_value;
+}
+
+
+/*!*******************************************************************
+* @public
+* Function name: clent_appl_data_swap_u16
+* Description: big endian to little endian
+*********************************************************************/
 static uint16 clent_appl_data_swap_u16
     (
     uint16 data
@@ -344,53 +445,7 @@ return ( ( data >> 8 ) |
          ( ( data << 8 ) & 0xFF00 ) );
 }
 
-/*!*******************************************************************
-* @public
-* Function name: client_appl_get_service_command
-* Description:  Rarsing the receiving command an handle data
-* Usage: Called upper lyer
-*********************************************************************/
-void client_appl_get_service_command
-    (
-    uint16 command_code,
-    uint16 command_length,
-    uint8* command_data
-    )
-{
-/*Pending*/
-#if (APPL_PENDING)
-switch( command_code )
-    {
-    case 0x1000:
-        break;
 
-    case 0x1001:
-        break;
-
-    default:
-        break;
-    }
-#endif
-}
-
-
-/*!*******************************************************************
-* @public
-* Function name: client_appl_enter_ydt_handler
-* Description:   this function will disconnect the diagnostic server
-with all servers
-*********************************************************************/
-static boolean client_appl_enter_ydt_handler
-    (
-    void
-    )
- {
-
-return FALSE;
-/*Pending*/
-#if(APPL_PENDING)
-#endif
-}
 
 /*!*******************************************************************
 * @public
@@ -438,7 +493,6 @@ uint8 client_appl_get_current_connected_server_id
 return current_connect_server_id;
 }
 
-
 /*!*******************************************************************
 * @public
 * Function name: client_client_appl_get_first_connected_server_id
@@ -451,15 +505,15 @@ static uint8 client_appl_get_first_connected_server_id
     )
 {
 uint8 index = 0;
-uint8 return_value = no_server_connected;
+uint8 return_value = NO_SERVER_CONNECT;
 
 for( ; index < SUPPORT_SERVER_NUM; index++ )
     {
     if( SUPPORT_SERVER_NUM == index)
         {
-        return no_server_connected;
+        return NO_SERVER_CONNECT;
         }
-    else if( server_list_detect[index].server_connect_status_default == SERVER_CONNECT )
+    else if( server_list_detect_infos[index].server_connect_status_default == SERVER_CONNECT )
         {
         return index;
         }
@@ -485,15 +539,15 @@ static uint8 client_appl_get_next_connected_server_id
     )
 {
 uint8 index = get_current_connect_server_id();
-uint8 return_value = no_server_connected;
+uint8 return_value = NO_SERVER_CONNECT;
 
 for( index++ ; index < SUPPORT_SERVER_NUM; index++ )
     {
     if( SUPPORT_SERVER_NUM == index)
         {
-        return no_server_connected;
+        return NO_SERVER_CONNECT;
         }
-    else if( server_list_detect[index].server_connect_status_default == SERVER_CONNECT )
+    else if( server_list_detect_infos[index].server_connect_status_default == SERVER_CONNECT )
         {
         return index;
         }
@@ -519,7 +573,7 @@ return client_process_flow_state;
 * @public
 * Function name: client_appl_set_current_process_flow_step
 * Description: this function shall set next handle process flow
-* Note: In general, this fucntion shall be executed after call function client_appl_get_first_connected_server_id
+* Note: In general, this function shall be executed after call function client_appl_get_first_connected_server_id
 *********************************************************************/
 static boolean client_appl_set_current_process_flow_step
     (
@@ -530,10 +584,11 @@ client_process_flow_state = next_process_flow;
 switch( client_process_flow_state )
     {
     case PROCESS_FLOW_IDLE:
-        set_current_conncet_server_id( no_server_connected );
-        /*init structure*/
+        set_current_conncet_server_id( NO_SERVER_CONNECT );
+        /*initial structure*/
         /*clear the read_dtc_infos except the read_dtc_infos.is_storge_init_dtc*/
-        (void)memset( &read_dtc_infos, 0x00, sizeof( read_dtc_infos ) -1);
+        /*sizof( read_dtc_infos) = 12, Byte alignment */
+        (void)memset( &read_dtc_infos, 0x00, sizeof( read_dtc_infos ) - 2 );
         (void)memset( &read_common_identifier_infos, 0x00, sizeof( read_common_identifier_infos ));
         (void)memset( &read_loacl_market_infos, 0x00, sizeof( read_loacl_market_infos ) );
         (void)memset( &read_local_monitor_infos, 0x00, sizeof( read_local_monitor_infos ));
@@ -541,7 +596,7 @@ switch( client_process_flow_state )
         break;
 
     case PROCESS_FLOW_DETECT_SERVER:
-        client_appl_set_delay_timer( 500 );/*5ms*200 = 1s*/
+        client_appl_set_delay_timer( 2000 );/*5ms*2000 = 10s*/
         set_current_conncet_server_id( SUPPORT_SERVER_NUM );
         break;
 
@@ -565,9 +620,6 @@ switch( client_process_flow_state )
         break;
 
     case PROCESS_FLOW_RDBCID:
-        read_common_identifier_infos.connected_server_id = get_current_connect_server_id();
-        read_common_identifier_infos.common_id_list = (uint16*)common_data_id_list;
-        read_common_identifier_infos.common_data_amount = SUPPORT_COMMON_COUNT;
         read_common_identifier_infos.current_common_data_index = 0x00;
         read_common_identifier_infos.peocess_result = PROCESS_RESULT_INIT;
         read_common_identifier_infos.curr_req_frame = REQ_NO_FRAME;
@@ -577,9 +629,6 @@ switch( client_process_flow_state )
         break;
 
     case PROCESS_FLOW_MARKET:
-        read_loacl_market_infos.connected_server_id = get_current_connect_server_id();
-        read_loacl_market_infos.local_id_list = (uint8*)local_data_id_list;
-        read_loacl_market_infos.amount_local_data = SUPPORT_MARKET_COUNT;
         read_loacl_market_infos.current_local_data_index = 0x00;
         read_loacl_market_infos.peocess_result = PROCESS_RESULT_INIT;
         read_loacl_market_infos.curr_req_frame = REQ_NO_FRAME;
@@ -589,9 +638,6 @@ switch( client_process_flow_state )
         break;
 
     case PROCESS_FLOW_MONITOR:
-        read_local_monitor_infos.connected_server_id = get_current_connect_server_id();
-        read_local_monitor_infos.local_id_list = (uint8*)local_data_id_list;
-        read_local_monitor_infos.amount_local_data = SUPPORT_MARKET_COUNT;
         read_local_monitor_infos.current_local_data_index = 0x00;
         read_local_monitor_infos.peocess_result = PROCESS_RESULT_INIT;
         read_local_monitor_infos.curr_req_frame = REQ_NO_FRAME;
@@ -601,11 +647,9 @@ switch( client_process_flow_state )
         break;
 
     case PROCESS_FLOW_RFFD:
-        read_freeze_frame_data_infos.connected_server_id = get_current_connect_server_id();
         read_freeze_frame_data_infos.request_id_list = (uint8*)current_request_freeze_frame_id_list;
         read_freeze_frame_data_infos.requset_id_list_amount = 0x00;
         read_freeze_frame_data_infos.current_freeze_frame_number = 0x01;
-        read_freeze_frame_data_infos.current_request_id = 0x00;
         read_freeze_frame_data_infos.curr_request_frame = REQ_NO_FRAME;
         read_freeze_frame_data_infos.prev_request_frame = REQ_NO_FRAME;
         read_freeze_frame_data_infos.next_request_frame = REQ_ORIGINAL_FRAME;
@@ -624,7 +668,7 @@ return TRUE;
 /*!*******************************************************************
 * @public
 * Function name: client_appl_init
-* Description: this function shall intial moudle
+* Description: this function shall initial module
 *********************************************************************/
 client_ReturnType client_appl_init
     (
@@ -636,10 +680,10 @@ uint8 index = 0;
 /*for server list detect*/
 for( ; index < SUPPORT_SERVER_NUM; index++ )
     {
-    server_list_detect[index].server_id = index;
-    server_list_detect[index].ecu_identifier = server_ecu_identifier[index];
-    server_list_detect[index].server_connect_status_default = SERVER_UN_CONNECT;
-    server_list_detect[index].server_connect_status_extend = SERVER_UN_CONNECT;
+    server_list_detect_infos[index].server_id = index;
+    server_list_detect_infos[index].ecu_identifier = server_ecu_identifier[index];
+    server_list_detect_infos[index].server_connect_status_default = SERVER_UN_CONNECT;
+    server_list_detect_infos[index].server_connect_status_extend = SERVER_UN_CONNECT;
     }
 
 server_detect_step = SERVER_DETECT_INIT;
@@ -648,12 +692,12 @@ extend_server_list_detect_amount = 0x00;
 
 is_read_init_dtc = FALSE;
 
-/*the ydt connect state is sync with atucal app state*/
+/*the YDT connect state is sync with actual APP state*/
 /*we set ydt_connect_state to FALSE and */
 ydt_connected_state = FALSE;
-ble_connected_state = TRUE;
+ble_connected_state = FALSE;
 
-/*init structure infos*/
+/*initial structure info*/
 (void)memset( &read_dtc_infos, 0x00, sizeof( read_dtc_infos ));
 (void)memset( &read_loacl_market_infos, 0x00, sizeof( read_loacl_market_infos ) );
 (void)memset( &read_local_monitor_infos, 0x00, sizeof( read_local_monitor_infos ));
@@ -662,7 +706,7 @@ ble_connected_state = TRUE;
 (void)memset( &detect_connected_server_infos, 0x00, sizeof( detect_connected_server_infos ));
 
 
-/*After IG-ON, Frist enter detect connected server process flow*/
+/*After IG-ON, first enter detect connected server process flow*/
 client_appl_set_current_process_flow_step( PROCESS_FLOW_DETECT_SERVER );
 
 /*for debug display*/
@@ -681,10 +725,14 @@ print_header[2] = (char*)print_header_2;
 print_header[3] = (char*)print_header_3;
 print_header[4] = (char*)print_header_4;
 print_header[5] = (char*)print_header_5;
+print_header[6] = (char*)print_header_6;
+print_header[7] = (char*)print_header_7;
+
 #endif
 
 return E_OK;
 }
+
 
 #if(APPL_DEBUG)
 void client_appl_debug_printf
@@ -715,22 +763,28 @@ if( TRUE == client_appl_get_ydt_connect_state() )
     {
     if( PROCESS_FLOW_IDLE != client_process_flow_state )
         {
-        /*Reserved: Ther shall send connet ydt notify to upper layer*/
-        client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
         client_appl_enter_ydt_handler();
+        }
+    else
+        {
+        /* do nothing */
         }
     return;
     }
 
-if( 0x0000 != delay_timer_count )
+if( 0 != delay_timer_count )
     {
     decrease_delay_timer();
     }
 else
     {
-    if( client_process_flow_state < SUPPORT_FUCNTION_NUMS )
+    if( client_process_flow_state < PROCESS_FLOW_IDLE )
         {
         client_process_flow_handler[client_process_flow_state].appl_period_func();
+        }
+    else
+        {
+        /*idle state, do nothing*/
         }
     }
 }
@@ -739,7 +793,7 @@ else
 *
 * @public
 * Function name: client_appl_positive_response_dispatch
-* Description  : this function process the postive response data when handle hen handle process flow
+* Description  : this function process the positive response data when handle hen handle process flow
 * usage        : called by client_diag_response_dispatch_handler_5ms
 *********************************************************************************/
 void client_appl_positive_response_dispatch
@@ -784,6 +838,841 @@ void client_appl_response_timeout_notify
 client_process_flow_handler[client_process_flow_state].response_timeout_notify();
 }
 
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_data_compare
+* Description  : Check whether the elements of the two arrays are exactly the same
+*********************************************************************************/
+boolean client_appl_data_compare
+    (
+    const uint8* src,
+    const uint8* dst,
+    uint8  length
+    )
+{
+uint8 index = 0;
+for( ; index < length; index++ )
+    {
+    if( *(src + index ) != *( dst + index ) )
+        {
+        return FALSE;
+        break;
+        }
+    }
+return TRUE;
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_ble_req_authentication
+* Description  : authentication
+*********************************************************************************/
+boolean client_appl_ble_req_authentication
+    (
+    uint32 data_size,
+    const uint8* data
+    )
+{
+uint8 return_value = TRUE;
+const uint8* p_uuid = data + BLE_AUT_UUID_OFSET_ADDR;
+const uint8* p_ccu_id = data + BLE_AUT_CCU_ID_OFFSET_ADDR;
+const uint8* P_pass_key = data + BLE_AUT_PASS_KEY_OFFSET_ADDR;
+
+
+/*temporary,this data is read from EEP*/
+const uint8 tmep_ccu_id[BLE_AUT_CCU_ID_LENGTH] = {0};
+const uint8 temp_pass_key[BLE_AUT_PASS_KEY_LENGTH] = {0};
+const uint8 temp_uuid[BLE_AUT_UUID_KEY_LENGTH] = {0};
+
+uint8 data_total_length = BLE_AUT_CCU_ID_LENGTH + BLE_AUT_PASS_KEY_LENGTH + BLE_AUT_UUID_KEY_LENGTH;
+/*check CCU, pass_key, UUID*/
+if( (uint32)data_total_length != data_size )
+    {
+    return_value = FALSE;
+    }
+else
+    {
+    if( ( TRUE == client_appl_data_compare( p_ccu_id, tmep_ccu_id, BLE_AUT_CCU_ID_LENGTH ) )\
+        && ( TRUE == client_appl_data_compare( P_pass_key, temp_pass_key, BLE_AUT_PASS_KEY_LENGTH ) )\
+        && ( TRUE == client_appl_data_compare( p_uuid, temp_uuid, BLE_AUT_UUID_KEY_LENGTH ) ) )
+        {
+        return_value = TRUE;
+        }
+    else
+        {
+        return_value = FALSE;
+        }
+    }
+/*feedback check result to MOTOCAN*/
+
+return return_value;
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_ble_req_authentication
+* Description  : parsing the request connect server list command
+*********************************************************************************/
+boolean client_appl_ble_req_connect_server_list
+    (
+    uint32 data_size,
+    uint8* data
+    )
+{
+/*check command*/
+if( 0 != data_size )
+    {
+    return FALSE;
+    }
+
+/*Check whether the data has been read  */
+if( ( SERVER_DETECT_DEFAULT_DONE == server_detect_step ) && ( 0x00 < default_server_list_detect_amount ) )
+    {
+    return TRUE;
+    }
+else
+    {
+    return FALSE;
+    }
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_ble_rsp_connect_server_list
+* Description  : this function will get support connect server list and response to motocon
+*********************************************************************************/
+void client_appl_ble_rsp_connect_server_list
+    (
+    boolean check_result
+    )
+{
+uint8 index = 0x00;
+uint32 resp_data_length = 0;
+uint16* data_ptr = &connected_server_list[0];
+
+if( FALSE == check_result )
+    {
+    BC_motocon_send_can_related_data( BLE_RSP_CMD_SERVERLIST, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL, NULL );
+    }
+else
+    {
+    for( ; index < SUPPORT_SERVER_NUM; index++ )
+        {
+        if( SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
+            {
+            resp_data_length += 0x02; /*ECU code length: 2 bytes*/
+            *data_ptr = clent_appl_data_swap_u16( server_list_detect_infos[index].ecu_identifier );
+            data_ptr++;/*pointer movement*/
+            }
+        }
+        BC_motocon_send_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)connected_server_list, &client_appl_cmd_rsp_result_notify );
+    }
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_channel_mapping
+* Description  : this function will find connect server channel index according the
+* server code
+*********************************************************************************/
+uint8 client_appl_channel_mapping
+    (
+    uint16 server_code
+    )
+{
+uint8 return_value = NO_SERVER_CONNECT;
+uint8 index = 0x00;
+
+for( ; index < SUPPORT_SERVER_NUM; index++ )
+    {
+     if( server_list_detect_infos[index].ecu_identifier == server_code \
+        && SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
+        {
+        return_value = index;
+        break;
+        }
+    }
+
+return return_value;
+}
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_ble_req_malfunction
+* Description  : this function will parsing the request malfunction command and execute command
+*********************************************************************************/
+boolean client_appl_ble_req_malfunction
+    (
+    boolean is_request_interval,
+    uint32 data_size,
+    const uint8* data
+    )
+{
+uint8 channel_id = 0xFF;
+uint8 status_code = 0x00;
+uint16 server_code = 0x00000;
+uint32 interval_time = 0x00000000;
+
+/*check data length*/
+if( FALSE == is_request_interval )
+    {
+    if( 0x03 != data_size )
+        {
+        return FALSE;
+        }
+    }
+else
+    {
+    if( 0x07 != data_size )
+        {
+        return FALSE;
+        }
+    }
+
+/*Check server code and status code*/
+server_code = byte_merge_u16( data ) ;
+status_code = *( data + 2 );
+channel_id = client_appl_channel_mapping( server_code );
+if( NO_SERVER_CONNECT == channel_id  )
+    {
+    return FALSE;
+    }
+
+switch( status_code )
+    {
+    case BLE_CMD_MAL_STATUS_MARK:
+        status_code = 0xA1;
+        break;
+
+    case BLE_CMD_MAL_STATUS_TRIANGLE:
+        status_code = 0xA2;
+        break;
+
+    case BLE_CMD_MAL_STATUS_FULL:
+        status_code = 0xA3;
+        break;
+
+    case BLE_CMD_MAL_STATUS_TEMPORARY:
+        status_code = 0xA4;
+        break;
+
+    default:
+        return FALSE;
+        break;
+    }
+
+/*Check interval time*/
+if( TRUE == is_request_interval )
+    {
+    interval_time = byte_merge_u32( data + 3 );
+    if( 0x00000000 == interval_time )
+        {
+        read_dtc_infos.is_cycle_transmission = FALSE;
+        read_dtc_infos.cycle_tarns_interval_time = 0x00000000;
+        }
+    else
+        {
+        /*received data uint: MS*/
+        /*The minimum time shall be 5ms*/
+        if( interval_time < 5 )
+            {
+            interval_time = 5;
+            }
+        read_dtc_infos.is_cycle_transmission = TRUE;
+        read_dtc_infos.cycle_tarns_interval_time = interval_time / 5 ;
+        }
+    }
+else
+    {
+    read_dtc_infos.is_cycle_transmission = FALSE;
+    read_dtc_infos.cycle_tarns_interval_time = 0x00000000;
+    }
+
+client_appl_set_current_process_flow_step( PROCESS_FLOW_INIT_RDTCBS );
+read_dtc_infos.connected_server_id = channel_id;
+read_dtc_infos.current_STADTC = status_code;
+
+
+set_current_conncet_server_id( channel_id );
+return TRUE;
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_ble_req_vehicle_identification
+* Description  : this function will parsing the request vehicle identification and execute command
+*********************************************************************************/
+boolean client_appl_ble_req_vehicle_identification
+    (
+    uint32 data_size,
+    uint8* data
+    )
+{
+uint8 index = 0;
+boolean read_all_id = FALSE;
+uint8 received_id_amount = 0x00;
+uint8 channel_id = NO_SERVER_CONNECT;
+uint16 server_code = byte_merge_u16( data );
+
+channel_id = client_appl_channel_mapping( server_code );
+if( NO_SERVER_CONNECT == channel_id )
+    {
+    return FALSE;
+    }
+
+if( 0x03 == data_size )
+    {
+    read_all_id = *( data + BLE_REQ_SERVER_CODE_LENGTH );
+    if( TRUE == read_all_id )
+        {
+        client_appl_set_current_process_flow_step( PROCESS_FLOW_RDBCID );
+        set_current_conncet_server_id( channel_id );
+        read_common_identifier_infos.connected_server_id = channel_id;
+        read_common_identifier_infos.common_id_list = (uint16*)support_common_data_id_list;
+        read_common_identifier_infos.common_data_amount = SUPPORT_COMMON_COUNT;
+        read_common_identifier_infos.current_common_data_index = 0x00;
+        return TRUE;
+        }
+    else
+        {
+        return FALSE;
+        }
+    }
+else if( 0x04 <= data_size )/*server_code + 1 id*/
+    {
+    received_id_amount = (uint8)( data_size - 2 ) / 2;
+    client_appl_data_cpy( (uint8*)rx_comman_data_id_list, data + 2, data_size - 2 );
+    client_appl_set_current_process_flow_step( PROCESS_FLOW_RDBCID );
+    set_current_conncet_server_id( channel_id );
+    read_common_identifier_infos.connected_server_id = channel_id;
+    read_common_identifier_infos.common_id_list = rx_comman_data_id_list;
+    for( index = 0; index < received_id_amount; index++ )
+        {
+        rx_comman_data_id_list[index] = clent_appl_data_swap_u16( rx_comman_data_id_list[index] );
+        }
+    read_common_identifier_infos.common_data_amount = received_id_amount;
+    read_common_identifier_infos.current_common_data_index = 0x00;
+    return TRUE;
+    }
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_ble_req_market_data
+* Description  : this function will parsing the request market data and execute command
+*********************************************************************************/
+boolean client_appl_ble_req_market_data
+    (
+    uint32 data_size,
+    uint8* data
+    )
+{
+uint8 index = 0;
+boolean read_all_id = FALSE;
+uint8 received_id_amount = 0x00;
+uint8 channel_id = NO_SERVER_CONNECT;
+uint16 server_code = byte_merge_u16( data );
+
+channel_id = client_appl_channel_mapping( server_code );
+if( NO_SERVER_CONNECT == channel_id )
+    {
+    return FALSE;
+    }
+
+if( 0x02 >= data_size)
+{
+return FALSE;
+}
+
+if( 0x03 == data_size )
+    {
+    read_all_id = *( data + BLE_REQ_SERVER_CODE_LENGTH );
+    if( TRUE == read_all_id )
+        {
+        client_appl_set_current_process_flow_step( PROCESS_FLOW_MARKET );
+        set_current_conncet_server_id( channel_id );
+        read_loacl_market_infos.connected_server_id = channel_id;
+        read_loacl_market_infos.local_id_list = (uint8*)support_market_data_id_list;
+        read_loacl_market_infos.amount_local_data = SUPPORT_MARKET_COUNT;
+        read_loacl_market_infos.current_local_data_index = 0x00;
+        return TRUE;
+        }
+    else
+        {
+        return FALSE;
+        }
+    }
+else
+    {
+    received_id_amount = (uint8)( data_size - 2 );
+    client_appl_data_cpy( (uint8*)rx_market_data_id_list, data + 2, data_size - 2 );
+    client_appl_set_current_process_flow_step( PROCESS_FLOW_MARKET );
+    set_current_conncet_server_id( channel_id );
+    read_loacl_market_infos.connected_server_id = channel_id;
+    read_loacl_market_infos.local_id_list = rx_market_data_id_list;
+    read_loacl_market_infos.amount_local_data = received_id_amount;
+    read_loacl_market_infos.current_local_data_index = 0x00;
+    return TRUE;
+    }
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_ble_req_vehicle_information_supproted_list
+* Description  : this function will parsing the request vehicle supported list
+*********************************************************************************/
+boolean client_appl_ble_req_vehicle_information_supproted_list
+    (
+    uint32 data_size,
+    uint8* data
+    )
+{
+uint8 channel_id = NO_SERVER_CONNECT;
+uint16 server_code = byte_merge_u16( data );
+channel_id = client_appl_channel_mapping( server_code );
+
+if( NO_SERVER_CONNECT == channel_id )
+    {
+    return FALSE;
+    }
+
+if( data_size !=  0x02 )/*server_code*/
+    {
+    return FALSE;
+    }
+
+client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
+set_current_conncet_server_id( channel_id );
+read_loacl_market_infos.connected_server_id = channel_id;
+read_local_monitor_infos.local_id_list = (uint8*)support_monitor_data_id_list;
+read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
+read_local_monitor_infos.current_local_data_index = 0x00;
+read_local_monitor_infos.is_request_support_list_flow = TRUE;
+read_local_monitor_infos.support_id_received_flag_array = (boolean*)support_id_received_flag;
+return TRUE;
+}
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_ble_req_vehicle_information
+* Description  : this function will parsing the request vehicle information (interval) command and execute command
+*********************************************************************************/
+boolean client_appl_ble_req_vehicle_information
+    (
+    boolean is_request_interval,
+    uint32 data_size,
+    uint8* data
+    )
+{
+uint8 channel_id = NO_SERVER_CONNECT;
+uint32 interval_time = 0;
+uint8 received_id_amount = 0x00;
+
+uint16 server_code = byte_merge_u16( data );
+channel_id = client_appl_channel_mapping( server_code );
+
+if( (  data_size < 0x03 ) || ( data_size > ( 0x02 + SUPPORT_MONITOR_COUNT ) ) )
+    {
+    return FALSE;
+    }
+
+
+if( NO_SERVER_CONNECT == channel_id )
+    {
+    return FALSE;
+    }
+
+
+
+if( TRUE != is_request_interval )
+    {
+    received_id_amount = (uint8)( data_size - 2 );
+    read_local_monitor_infos.is_cycle_transmission = FALSE;
+    read_local_monitor_infos.cycle_tarns_interval_time = 0x00000000;
+    }
+else
+    {
+    /*Inter_time_length_ 0x04 */
+    /*server_code_length_0x02 */
+    received_id_amount = (uint8)( data_size - 4 - 2 );
+    interval_time = byte_merge_u32( data + data_size - 4 );
+    if( 0x00000000 == interval_time )
+        {
+        read_local_monitor_infos.is_cycle_transmission = FALSE;
+        read_local_monitor_infos.cycle_tarns_interval_time = 0x00000000;
+        }
+    else
+        {
+        /*received data uint: MS*/
+        /*The minimum time shall be 5ms*/
+        if( interval_time < 5 )
+            {
+            interval_time = 5;
+            }
+        read_local_monitor_infos.is_cycle_transmission = TRUE;
+        read_local_monitor_infos.cycle_tarns_interval_time = interval_time / 5;
+        }
+    }
+
+if( 0x00 < received_id_amount )
+    {
+    client_appl_data_cpy( (uint8*)rx_monitor_data_id_list, data + 2, received_id_amount );
+    client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
+    set_current_conncet_server_id( channel_id );
+    read_local_monitor_infos.connected_server_id = channel_id;
+    read_local_monitor_infos.local_id_list = rx_monitor_data_id_list;
+    read_local_monitor_infos.amount_local_data = received_id_amount;
+    read_local_monitor_infos.current_local_data_index = 0x00;
+    read_local_monitor_infos.is_request_support_list_flow = FALSE;
+    return TRUE;
+    }
+else
+    {
+    return FALSE;
+    }
+set_current_conncet_server_id( channel_id );
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_app_ble_req_freeze_frame_data
+* Description  : this function will parsing the request freeze frame data command and execute command
+*********************************************************************************/
+boolean client_app_ble_req_freeze_frame_data
+    (
+    uint32 data_size,
+    uint8* data
+    )
+{
+uint8 channel_id = NO_SERVER_CONNECT;
+uint16 server_code = 0x0000;
+
+if( 0x02 != (uint8)data_size )
+    {
+    return FALSE;
+    }
+
+server_code = byte_merge_u16( data );
+channel_id = client_appl_channel_mapping( server_code );
+if( NO_SERVER_CONNECT == channel_id )
+    {
+    return FALSE;
+    }
+
+client_appl_set_current_process_flow_step( PROCESS_FLOW_RFFD );
+set_current_conncet_server_id( channel_id );
+read_freeze_frame_data_infos.connected_server_id = channel_id;
+
+return TRUE;
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_cmd_rsp_result_notify
+* Description  : this function will reset data storage zone
+* Usage: Callback function by upper layer when upper layer transmit data finished
+*********************************************************************************/
+void client_appl_cmd_rsp_result_notify
+    (
+    const uint8 vlaue
+    )
+{
+client_process_flow_type process_flow = client_get_current_process_flow();
+
+
+if( CMD_RSP_PROCESSING != client_app_cmd_rsp_state )
+    {
+    return;
+    }
+
+switch( process_flow )
+    {
+    case PROCESS_FLOW_DETECT_SERVER:
+        (void)memset( connected_server_list, 0x00, sizeof(connected_server_list) );
+        client_app_cmd_rsp_state = CMD_RSP_DONE;
+        break;
+
+    case PROCESS_FLOW_INIT_RDTCBS:
+        if( TRUE == read_dtc_infos.is_storge_init_dtc )
+            {
+            client_mem_reset_data();
+            }
+        client_app_cmd_rsp_state = CMD_RSP_DONE;
+        break;
+
+    case PROCESS_FLOW_RDBCID:
+    case PROCESS_FLOW_MARKET:
+    case PROCESS_FLOW_MONITOR:
+    case PROCESS_FLOW_RFFD:
+        client_mem_reset_data();
+        client_app_cmd_rsp_state = CMD_RSP_DONE;
+        break;
+    }
+
+}
+
+void client_appl_rsp_initial_dtc_after_ble_connect
+    (
+    void
+    )
+{
+static uint8 channel_id = 0;
+uint8 result = 0x00;
+const uint8* data_ptr =  NULL;
+uint16 data_length = 0;
+
+for( ; channel_id < SUPPORT_SERVER_NUM; channel_id++ )
+    {
+    client_mem_get_init_dtc_data( channel_id, &result, &data_length, &data_ptr );
+    if( result != 0 )
+        {
+        channel_id++;
+        BC_motocon_send_can_related_data( BLE_RSP_CMD_MALFUNCTION, data_length, (uint8*)data_ptr, &client_appl_rsp_initial_dtc_after_ble_connect );
+        return;
+        }
+    }
+channel_id = 0;
+}
+
+void client_appl_rsp_server_list_after_ble_connect
+    (
+    void
+    )
+{
+uint8 index = 0x00;
+uint32 resp_data_length = 0;
+uint16* data_ptr = &connected_server_list[0];
+
+for( ; index < SUPPORT_SERVER_NUM; index++ )
+    {
+    if( SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
+        {
+        resp_data_length += 0x02; /*ECU code length: 2 bytes*/
+        *data_ptr = clent_appl_data_swap_u16( server_list_detect_infos[index].ecu_identifier );
+        data_ptr++;/*pointer movement*/
+        }
+    }
+if( TRUE == read_dtc_infos.is_storge_init_dtc )
+    {
+        BC_motocon_send_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)connected_server_list, &client_appl_rsp_initial_dtc_after_ble_connect );
+    }
+else
+    {
+    BC_motocon_send_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)connected_server_list, NULL );
+    }
+}
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_ble_req_command_dispatch
+* Description  : this function will parsing the request from MOTOCAN and execute command
+*********************************************************************************/
+void client_appl_ble_req_command_dispatch
+    (
+    uint16 req_command,
+    uint32 data_size,
+    uint8* data
+    )
+{
+if( TRUE == client_appl_get_ydt_connect_state() )
+    {
+    /*shall abandon current command when detect YAMAHA diagnostic tools online*/
+    return;
+    }
+
+if( FALSE == client_appl_get_ble_connected_state() )
+    {
+    if( req_command == BLE_REQ_CMD_AUTHENTICATION )
+        {
+        if( TRUE == client_appl_ble_req_authentication( data_size, data ) )
+            {
+            client_appl_set_ble_connected_state( TRUE );
+            if( SERVER_DETECT_DEFAULT_DONE == server_detect_step )
+                {
+                BC_motocon_send_can_related_data( BLE_RSP_CMD_AUTHENTICATION, BLE_RSP_CMD_AUTHENTICATION_length, client_appl_get_ble_connected_state_ptr(), &client_appl_rsp_server_list_after_ble_connect );
+                }
+            else
+                {
+                BC_motocon_send_can_related_data( BLE_RSP_CMD_AUTHENTICATION, BLE_RSP_CMD_AUTHENTICATION_length, client_appl_get_ble_connected_state_ptr(), NULL );
+                }
+            }
+        else
+            {
+            client_appl_set_ble_connected_state( FALSE );
+            }
+        }
+    return;
+    }
+
+switch( req_command )
+    {
+    case BLE_REQ_CMD_AUTHENTICATION:
+        if( TRUE == client_appl_ble_req_authentication( data_size, data ) )
+            {
+            client_appl_set_ble_connected_state( TRUE );
+            }
+        else
+            {
+            client_appl_set_ble_connected_state( FALSE );
+            }
+        BC_motocon_send_can_related_data( BLE_RSP_CMD_AUTHENTICATION, BLE_RSP_CMD_AUTHENTICATION_length, client_appl_get_ble_connected_state_ptr(), NULL );
+        break;
+
+    case BLE_REQ_CMD_SERVERLIST:
+        client_appl_ble_rsp_connect_server_list( client_appl_ble_req_connect_server_list( data_size, data ) );
+        break;
+
+    case BLE_REQ_CMD_MALFUNCTION:
+        if( FALSE == client_appl_ble_req_malfunction( FALSE, data_size, data ) )
+            {
+            BC_motocon_send_can_related_data( BLE_RSP_CMD_MALFUNCTION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL);
+            }
+        break;
+
+    case BLE_REQ_CMD_MALFUNCTION_INTERVAL:
+         if( FALSE == client_appl_ble_req_malfunction( TRUE, data_size, data ) )
+            {
+            BC_motocon_send_can_related_data( BLE_RSP_CMD_MALFUNCTION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL);
+            }
+        break;
+
+    case BLE_REQ_CMD_VEHICLE_IDENTIFICATION:
+        if( FALSE == client_appl_ble_req_vehicle_identification( data_size, data ) )
+            {
+            BC_motocon_send_can_related_data( BLE_RSP_CMD_VEHICLE_IDENTIFICATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL);
+            }
+        break;
+
+    case BLE_REQ_CMD_MARKET_DATA:
+        if( FALSE == client_appl_ble_req_market_data( data_size, data ) )
+            {
+            BC_motocon_send_can_related_data( BLE_RSP_CMD_MARKET_DATA, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL);
+            }
+        break;
+
+    case BLE_REQ_CMD_VEHICLE_INFORMATION:
+        if( FALSE == client_appl_ble_req_vehicle_information( FALSE, data_size, data ) )
+            {
+            BC_motocon_send_can_related_data( BLE_RSP_CMD_VEHICLE_INFORMATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL, NULL );
+            }
+        break;
+
+    case BLE_REQ_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST:
+        if( FALSE == client_appl_ble_req_vehicle_information_supproted_list( data_size, data ) )
+            {
+            BC_motocon_send_can_related_data( BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL, NULL );
+            }
+        break;
+
+    case BLE_REQ_CMD_VEHICLE_INFORMATION_INTERVAL:
+        if( FALSE == client_appl_ble_req_vehicle_information( TRUE, data_size, data ) )
+            {
+            BC_motocon_send_can_related_data( BLE_RSP_CMD_VEHICLE_INFORMATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL );
+            }
+        break;
+
+    case BLE_REQ_CMD_FFD:
+        if( FALSE == client_app_ble_req_freeze_frame_data( data_size, data ) )
+            {
+            BC_motocon_send_can_related_data( BLE_RSP_CMD_FFD, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL );
+            }
+        break;
+
+    default:
+    break;
+    }
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_ble_rsp_request_support_monitor_list
+* Description  : this function get support monitor id list and transmit to upper layer
+*********************************************************************************/
+static void client_appl_ble_rsp_request_support_monitor_list
+    (
+    void
+    )
+{
+uint8 index = 0x00;
+uint16 server_code = 0x0000;
+uint8* data_ptr = &response_support_monitor_data_id_list[2];
+uint8 data_length = 0x00;
+
+if( TRUE == read_local_monitor_infos.is_request_support_list_flow )
+    {
+    server_code = server_list_detect_infos[read_local_monitor_infos.connected_server_id].ecu_identifier;
+    response_support_monitor_data_id_list[0] = (uint8)(server_code >> 8 );
+    response_support_monitor_data_id_list[1] = (uint8)server_code;
+    for( index = 0; index < SUPPORT_MONITOR_COUNT; index++ )
+        {
+        if( TRUE == read_local_monitor_infos.support_id_received_flag_array[index] )
+            {
+            data_length++;
+            *data_ptr = read_local_monitor_infos.local_id_list[index];
+            data_ptr++;
+            }
+        }
+    }
+    BC_motocon_send_can_related_data( BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST, (uint32)( data_length + 2 ), response_support_monitor_data_id_list, &client_appl_cmd_rsp_result_notify );
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_send_faild_to_motocon
+* Description  : this function send notify to upper layer when current process flow execute failed
+*********************************************************************************/
+static void client_appl_send_faild_to_motocon
+    (
+    client_process_flow_type process_flow
+    )
+{
+uint32 resp_length = 0;
+uint16 current_ecu_number = 0x0000;
+
+current_ecu_number = server_list_detect_infos[get_current_connect_server_id()].ecu_identifier;
+
+switch( process_flow )
+    {
+    case PROCESS_FLOW_INIT_RDTCBS:
+        resp_length = (uint32)0x03;
+        client_appl_failed_message_context[BYTE_NUM_0] = (uint8)( current_ecu_number >> 8 );
+        client_appl_failed_message_context[BYTE_NUM_1] = (uint8)current_ecu_number;
+        client_appl_failed_message_context[BYTE_NUM_2] = read_dtc_infos.current_STADTC;
+        BC_motocon_send_can_related_data( BLE_RSP_CMD_MALFUNCTION, resp_length, client_appl_failed_message_context , &client_appl_cmd_rsp_result_notify );
+        break;
+
+    case PROCESS_FLOW_RDBCID:
+        break;
+
+    default:
+        break;
+    }
+}
 /**************************Dividing line***************************/
 /********************For server detect*****************************/
  /*!******************************************************************************
@@ -800,7 +1689,6 @@ static void  client_appl_detect_connected_server_handler_5ms
     )
 {
 uint8 index = 0x00;
-uint16 ecu_id = 0x0000;
 
 switch( server_detect_step )
     {
@@ -818,21 +1706,19 @@ switch( server_detect_step )
         break;
 
     case SERVER_DETECT_DEFAULT_DONE:
-        /*get connect server amount and send data to app*/
+        /*get connect server amount and send data to APP*/
         for( index = 0x00; index < SUPPORT_SERVER_NUM; index++ )
             {
-            if( SERVER_CONNECT == server_list_detect[index].server_connect_status_default )
+            if( SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
                 {
                 default_server_list_detect_amount++;
-                ecu_id = clent_appl_data_swap_u16( server_list_detect[index].ecu_identifier );
-                client_mem_storage_identifier_data( SUPPORT_SERVER_NUM, BYTE_NUM_2,(uint8*)&ecu_id );
                 #if(APPL_DEBUG)
                 PRINTF("Client detect channel %d servers-default session\r\n", index );
                 #endif
                 }
             }
 
-        /*contiune to detect all server`s dtc when connected server*/
+        /*continue to detect all server`s DTC when connected server*/
         if( 0x00 < default_server_list_detect_amount )
             {
             #if(APPL_DEBUG)
@@ -840,22 +1726,42 @@ switch( server_detect_step )
              #endif
              if( TRUE == client_appl_get_ble_connected_state() )
                 {
-                client_mem_send_can_data();
+                client_app_cmd_rsp_state = CMD_RSP_PROCESSING;
+                client_appl_ble_rsp_connect_server_list( TRUE );
+                server_detect_step = SERVER_DETECT_DEFAULT_TX;
                 }
-             client_mem_reset_data();
-             client_appl_set_current_process_flow_step( PROCESS_FLOW_EXTEND_SERVER );
+             else
+                {
+                server_detect_step = SERVER_DETECT_DEFAULT_DONE;
+                client_appl_set_current_process_flow_step( PROCESS_FLOW_EXTEND_SERVER );
+                }
             }
         else
             {
+            if( TRUE == client_appl_get_ble_connected_state() )
+                {
+                client_appl_ble_rsp_connect_server_list( FALSE );
+                }
             client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
             #if(APPL_DEBUG)
             PRINTF(" Client detect No server connected-default session\r\n\r\n");
             #endif
             }
+
         break;
 
-    default:
-    break;
+        case SERVER_DETECT_DEFAULT_TX:
+            /*wait data transmit done*/
+            if( CMD_RSP_DONE  == get_client_app_cmd_rsp_state() )
+                {
+                client_app_cmd_rsp_state = CMD_RSP_IDLE;
+                server_detect_step = SERVER_DETECT_DEFAULT_DONE;
+                client_appl_set_current_process_flow_step( PROCESS_FLOW_EXTEND_SERVER );
+                }
+            break;
+
+        default:
+        break;
     }
 }
 
@@ -864,7 +1770,7 @@ switch( server_detect_step )
 *
 * @public
 * Function name: client_appl_detect_connected_server_positive_response_handler
-* Description  : this function process the postive response data when handle hen handle process flow detect server list
+* Description  : this function process the positive response data when handle hen handle process flow detect server list
 * usage        : called by client_diag_response_dispatch_handler_5ms
 *********************************************************************************/
 static void client_appl_detect_connected_server_positive_response_handler
@@ -880,9 +1786,9 @@ if( DCM_10h_DEFAULT_ID != resp_data[BYTE_NUM_1] )
     return;
     }
 
-if( SERVER_UN_CONNECT == server_list_detect[channel_id].server_connect_status_default )
+if( SERVER_UN_CONNECT == server_list_detect_infos[channel_id].server_connect_status_default )
     {
-    server_list_detect[channel_id].server_connect_status_default = SERVER_CONNECT;
+    server_list_detect_infos[channel_id].server_connect_status_default = SERVER_CONNECT;
     }
 }
 
@@ -951,31 +1857,32 @@ switch( detect_connected_server_infos.next_req_dtc_status_frame )
 
 if( PROCESS_RESULT_INIT != detect_connected_server_infos.peocess_result )
     {
-    if( no_server_connected == client_appl_get_next_connected_server_id() )
+    if( NO_SERVER_CONNECT == client_appl_get_next_connected_server_id() )
         {
         /*Have been read all detected server*/
         for( index = 0; index < SUPPORT_SERVER_NUM; index++ )
             {
-            if( SERVER_CONNECT == server_list_detect[index].server_connect_status_extend )
+            if( SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_extend )
                 {
                 extend_server_list_detect_amount++;
-                ecu_id = clent_appl_data_swap_u16( server_list_detect[index].ecu_identifier );
-                client_mem_storage_identifier_data( SUPPORT_SERVER_NUM, BYTE_NUM_2,(uint8*)&ecu_id );
+                ecu_id = clent_appl_data_swap_u16( server_list_detect_infos[index].ecu_identifier );
                 #if(APPL_DEBUG)
                 PRINTF("Client detect channel %d servers-extend session\r\n", index );
                 #endif
                 }
             }
 
-       /*analysic the result*/
+       /*analysis the result*/
         if( 0x00 < extend_server_list_detect_amount )
             {
-            if( TRUE == client_appl_get_ble_connected_state() )
-                {
-                client_mem_send_can_data();
-                }
-            client_mem_reset_data();
+                /*extend shall not send notify to MOTOCAN -----i think*/
+          //  if( TRUE == client_appl_get_ble_connected_state() )
+               // {
+              //  client_mem_send_can_data();
+              //  }
+            //client_mem_reset_data();
 
+            /*Enter next process flow*/
             set_current_conncet_server_id( client_appl_get_first_connected_server_id() );
             client_appl_set_current_process_flow_step( PROCESS_FLOW_INIT_RDTCBS );
             #if(APPL_DEBUG)
@@ -985,11 +1892,11 @@ if( PROCESS_RESULT_INIT != detect_connected_server_infos.peocess_result )
         else
             {
             /*Handle all servers and all servers does send positive response*/
-            /*client shall enter detect server process flow again and shall not notify to yamaha app*/
+            /*client shall enter detect server process flow again and shall not notify to YAMAHA APP*/
             for( index = 0; index < SUPPORT_SERVER_NUM; index++ )
                 {
-                server_list_detect[index].server_connect_status_default = SERVER_UN_CONNECT;
-                server_list_detect[index].server_connect_status_extend = SERVER_UN_CONNECT;
+                server_list_detect_infos[index].server_connect_status_default = SERVER_UN_CONNECT;
+                server_list_detect_infos[index].server_connect_status_extend = SERVER_UN_CONNECT;
                 }
             server_detect_step = SERVER_DETECT_INIT;
             default_server_list_detect_amount = 0x00;
@@ -1018,7 +1925,7 @@ if( PROCESS_RESULT_INIT != detect_connected_server_infos.peocess_result )
 *
 * @public
 * Function name: client_appl_server_detect_req_extend_session_positive_response_handler
-* Description  : this function process the postive response data when handle hen handle process flow detect server list
+* Description  : this function process the positive response data when handle hen handle process flow detect server list
 * usage        : called by client_diag_response_dispatch_handler_5ms
 *********************************************************************************/
 static void client_appl_server_detect_req_extend_session_positive_response_handler
@@ -1040,7 +1947,7 @@ switch( detect_connected_server_infos.curr_dtc_status_frame )
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
     case REQ_NRC_RSEND_FRAME:
-        server_list_detect[channel_id].server_connect_status_extend = SERVER_CONNECT;
+        server_list_detect_infos[channel_id].server_connect_status_extend = SERVER_CONNECT;
         detect_connected_server_infos.peocess_result = PROCESS_RESULT_SUCCESS;
         break;
 
@@ -1175,7 +2082,7 @@ read_dtc_infos.next_req_dtc_status_frame = REQ_NO_FRAME;
 *
 * @public
 * Function name: client_appl_calc_storage_init_dtc_state
-* Description  : calculate the initial dtc data storage state according the mem state
+* Description  : calculate the initial DTC data storage state according the memory state
 *********************************************************************************/
 static void client_appl_calc_storage_init_dtc_state
     (
@@ -1191,13 +2098,16 @@ if( !read_dtc_infos.is_storge_init_dtc )
         read_dtc_infos.is_storge_init_dtc |= client_mem_get_storage_init_dtc_state( index );
         }
     }
+
+/*LC think read initial data is finished when all request servers does response any data*/
+read_dtc_infos.is_storge_init_dtc = TRUE;
 }
 
 /*!******************************************************************************
 *
 * @public
 * Function name: client_appl_get_storage_init_dtc_state
-* Description  : get the current storage init dtc data state
+* Description  : get the current storage initial DTC data state
 * Usage: This function will be used by client_mem to determine which memory area to choose
 *********************************************************************************/
 boolean client_appl_get_storage_init_dtc_state
@@ -1230,16 +2140,10 @@ switch( read_dtc_infos.next_req_dtc_status_frame )
     case REQ_ORIGINAL_FRAME:
         if( FALSE == read_dtc_infos.is_storge_init_dtc )
             {
-            /*if inital DTC is not storage ,STADTC is set as A1*/
+            /*if initial DTC is not storage ,STADTC is set as A1*/
             read_dtc_infos.current_STADTC = DCM_18h_INIT_STADTC;
-            client_dcm_req_read_dtc_status_code( read_dtc_infos.connected_server_id, read_dtc_infos.current_STADTC );
             }
-        else
-            {
-            /*when received a STADTC from upper layer,STADTC is set as received value*/
-            read_dtc_infos.current_STADTC = 0xA2;
-            client_dcm_req_read_dtc_status_code( read_dtc_infos.connected_server_id, read_dtc_infos.current_STADTC );
-            }
+        client_dcm_req_read_dtc_status_code( read_dtc_infos.connected_server_id, read_dtc_infos.current_STADTC );
         client_appl_read_initial_dtc_frame_status_change();
         break;
 
@@ -1249,16 +2153,9 @@ switch( read_dtc_infos.next_req_dtc_status_frame )
         break;
 
     case REQ_RESEND_FRAME:
-        if( FALSE == read_dtc_infos.is_storge_init_dtc )
-            {
-            /*if inital DTC is not storage ,STADTC is set as A1*/
-            client_dcm_req_read_dtc_status_code( read_dtc_infos.connected_server_id, read_dtc_infos.current_STADTC );
-            }
-        else
-            {
-            /*when received a STADTC from upper layer,STADTC is set as defined value*/
-            client_dcm_req_read_dtc_status_code( read_dtc_infos.connected_server_id, read_dtc_infos.current_STADTC );
-            }
+        /*if initial DTC is not storage ,STADTC is set as A1*/
+        /*when received a STADTC from upper layer,STADTC is set as defined value*/
+        client_dcm_req_read_dtc_status_code( read_dtc_infos.connected_server_id, read_dtc_infos.current_STADTC );
         client_appl_read_initial_dtc_frame_status_change();
         break;
 
@@ -1267,64 +2164,75 @@ switch( read_dtc_infos.next_req_dtc_status_frame )
             break;
     }
 
-/*shall send the process result to upper layer whehter process is success*/
-/*shall re-init related status flags*/
-/*shall set the next process flow*/
 if( PROCESS_RESULT_INIT != read_dtc_infos.peocess_result )
     {
-    #if (APPL_DEBUG )
-    client_appl_debug_printf( read_dtc_infos.peocess_result );
-    #endif
-    /*send current server datas to yamaha app*/
-    client_mem_send_can_data();
-    client_mem_reset_data();
-
-    /*Check anohter server is exist?*/
-    if( no_server_connected == client_appl_get_next_connected_server_id() )
+    /*shall send the process result and data to upper layer whether process is success*/
+    if( CMD_RSP_IDLE == client_app_cmd_rsp_state )
         {
-        /*current flow is end and have been request all servers*/
-        if( !read_dtc_infos.is_storge_init_dtc )
+        #if (APPL_DEBUG )
+        client_appl_debug_printf( read_dtc_infos.peocess_result );
+        #endif
+        client_mem_storage_server_code( server_list_detect_infos[read_dtc_infos.connected_server_id].ecu_identifier );
+        if( TRUE == client_appl_get_ble_connected_state() )
             {
-             /*Check whether initial DTC data is read*/
-            client_appl_calc_storage_init_dtc_state();
+            client_app_cmd_rsp_state = CMD_RSP_PROCESSING;
+            if( PROCESS_RESULT_SUCCESS == read_dtc_infos.peocess_result)
+                {
+                client_mem_send_can_data();
+                }
+            else
+                {
+                client_appl_send_faild_to_motocon( PROCESS_FLOW_INIT_RDTCBS );
+                }
             }
-
-        if( ( TRUE == read_dtc_infos.is_cycle_transmission ) && ( 0x00 < read_dtc_infos.cycle_tarns_interval_time ) )
+        else
             {
-            /*enter period transmission mode*/
+            client_app_cmd_rsp_state = CMD_RSP_DONE;
+            }
+        }
+    /*shall enter next process flow after transmit data finish*/
+    else if( CMD_RSP_DONE == client_app_cmd_rsp_state )
+        {
+        client_app_cmd_rsp_state = CMD_RSP_IDLE;
+        if( FALSE == read_dtc_infos.is_storge_init_dtc )
+            {
+            /*Have been request all connected server initial diagnostic trouble code data*/
+            if( NO_SERVER_CONNECT == client_appl_get_next_connected_server_id() )
+                {
+                /*Check if there is data storage*/
+                client_appl_calc_storage_init_dtc_state();
+                client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
+                }
+            else
+                {
+                client_appl_set_current_process_flow_step( PROCESS_FLOW_INIT_RDTCBS );
+                set_current_conncet_server_id( client_appl_get_next_connected_server_id() );
+                read_dtc_infos.connected_server_id = get_current_connect_server_id();
+                }
+            }
+        else if( TRUE == read_dtc_infos.is_cycle_transmission )
+            {
             client_appl_set_delay_timer( read_dtc_infos.cycle_tarns_interval_time );
-            set_current_conncet_server_id( client_appl_get_first_connected_server_id() );
             client_appl_set_current_process_flow_step( PROCESS_FLOW_INIT_RDTCBS );
             }
         else
             {
-            /*setting the next process flow to idle when read all server*/
-            //client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
-
-            /*for test cycle transmission---debug*/
-            set_current_conncet_server_id( client_appl_get_first_connected_server_id() );
-            client_appl_set_current_process_flow_step( PROCESS_FLOW_INIT_RDTCBS );
-
-            read_dtc_infos.is_cycle_transmission = TRUE;
-            read_dtc_infos.cycle_tarns_interval_time = 1000;
+            client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
             }
         }
     else
         {
-        /*Handle the next server*/
-        set_current_conncet_server_id( client_appl_get_next_connected_server_id() );
-        client_appl_set_current_process_flow_step( PROCESS_FLOW_INIT_RDTCBS );
+        /*do nothing*/
         }
     }
 }
-
 
 
 /*!******************************************************************************
 *
 * @public
 * Function name: client_appl_read_initial_dtc_status_positive_response_handler
-* Description  : this function process the postive response data when handle hen handle process flow Read_DTC_infos
+* Description  : this function process the positive response data when handle hen handle process flow Read_DTC_infos
 * usage        : called by client_diag_response_dispatch_handler_5ms
 *********************************************************************************/
 static void client_appl_read_initial_dtc_status_positive_response_handler
@@ -1334,20 +2242,28 @@ static void client_appl_read_initial_dtc_status_positive_response_handler
  uint8 channel_id
 )
 {
+uint8 connect_server_id = 0xFF;
+uint16 swap_server_code_u16 = 0x0000;
+
 switch( read_dtc_infos.curr_dtc_status_frame )
     {
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
-        /*When received a valid datas*/
-        /*step1: stroge data here*/
-        /**********func************/
+        /*storage example :04 DE 23 4E A1 E0 24 A1*/
+        /*04 DE: server code*/
+        /*23 4E:  diagnostic trouble code*/
+        /*A1: status code */
+        connect_server_id = get_current_connect_server_id();
+        swap_server_code_u16 = clent_appl_data_swap_u16( server_list_detect_infos[connect_server_id].ecu_identifier );
         if( FALSE == read_dtc_infos.is_storge_init_dtc )
         {
-        client_mem_storage_init_dtc_data( get_current_connect_server_id(), resp_lenth, resp_data );
+        client_mem_storage_init_dtc_data( connect_server_id, (uint16)0X02, (uint8*)&swap_server_code_u16 );
+        client_mem_storage_init_dtc_data( connect_server_id, resp_lenth, ( resp_data + 1 ));
         }
         else
         {
-        client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth, resp_data );
+        client_mem_storage_init_dtc_data( connect_server_id, (uint16)0X02, (uint8*)&swap_server_code_u16 );
+        client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth, ( resp_data + 1 ) );
         }
         read_dtc_infos.peocess_result = PROCESS_RESULT_SUCCESS;
         break;
@@ -1463,8 +2379,6 @@ static void client_appl_request_status_change
 {
 read_common_identifier_infos.curr_req_frame = read_common_identifier_infos.next_req_frame;
 read_common_identifier_infos.next_req_frame = REQ_NO_FRAME;;
-//read_common_identifier_infos.resend_timer = 0x00;
-//read_common_identifier_infos.receive_SNS_timer = 0x00;
 }
 
 /*!******************************************************************************
@@ -1505,42 +2419,44 @@ switch( read_common_identifier_infos.next_req_frame )
         break;
     }
 
-/*shall send the process result to upper layer whehter process is success*/
-/*shall re-init related status flags*/
+/*shall send the process result to upper layer whether process is success*/
+/*shall re-initial related status flags*/
 /*shall set the next process flow*/
 if( PROCESS_RESULT_INIT != read_common_identifier_infos.peocess_result )
     {
-    read_common_identifier_infos.receive_SNS_timer =0x00;
     read_common_identifier_infos.resend_timer = 0x00;
-    #if (APPL_DEBUG )
-         client_appl_debug_printf( read_common_identifier_infos.peocess_result );
-   #endif
-    if( read_common_identifier_infos.current_common_data_index == read_common_identifier_infos.common_data_amount - 1 )
+    read_common_identifier_infos.receive_SNS_timer =0x00;
+     if( read_common_identifier_infos.current_common_data_index != ( read_common_identifier_infos.common_data_amount - 1 ) )
         {
-        /*have been alraedy all identifier data of current server*/
-        client_mem_send_can_data();
-        client_mem_reset_data();
-        if( no_server_connected == client_appl_get_next_connected_server_id() )
-            {
-            /*set process state to Idle when request all servers*/
-            client_appl_set_current_process_flow_step(PROCESS_FLOW_IDLE);
-            }
-        else
-            {
-            /*requset the next server*/
-            set_current_conncet_server_id( client_appl_get_next_connected_server_id() );
-            client_appl_set_current_process_flow_step( PROCESS_FLOW_RDBCID );
-            }
-        }
-    else
-        {
-        /*go on request the next common indentifier data*/
+        /*go on request the next common identifier data*/
         read_common_identifier_infos.current_common_data_index++;
         read_common_identifier_infos.peocess_result = PROCESS_RESULT_INIT;
         read_common_identifier_infos.next_req_frame = REQ_ORIGINAL_FRAME;
         read_common_identifier_infos.curr_req_frame = REQ_NO_FRAME;
         read_common_identifier_infos.receive_SNS_timer =0x00;
         read_common_identifier_infos.resend_timer = 0x00;
+        }
+     else
+        {
+        if( CMD_RSP_IDLE == client_app_cmd_rsp_state )
+            {
+            #if (APPL_DEBUG )
+            client_appl_debug_printf( read_common_identifier_infos.peocess_result );
+            #endif
+            client_app_cmd_rsp_state = CMD_RSP_PROCESSING;
+            /*have been already all identifier data of current server*/
+            client_mem_storage_server_code( server_list_detect_infos[read_common_identifier_infos.connected_server_id].ecu_identifier );
+            client_mem_send_can_data();
+            }
+        else if( CMD_RSP_DONE == client_app_cmd_rsp_state )
+            {
+            client_app_cmd_rsp_state = CMD_RSP_IDLE;
+            client_appl_set_current_process_flow_step(PROCESS_FLOW_IDLE);
+            }
+        else
+            {
+            /*do nothing*/
+            }
         }
     }
 }
@@ -1549,7 +2465,7 @@ if( PROCESS_RESULT_INIT != read_common_identifier_infos.peocess_result )
 *
 * @public
 * Function name: client_appl_read_data_by_common_indentifier_postive_response_handler
-* Description  : this function process the postive response data when handle hen handle process flow Read_Common
+* Description  : this function process the positive response data when handle hen handle process flow Read_Common
 * usage        : called by client_diag_response_dispatch_handler_5ms
 *********************************************************************************/
 static void client_appl_read_data_by_common_identifier_positive_response_handler
@@ -1568,7 +2484,7 @@ switch( read_common_identifier_infos.curr_req_frame )
          resp_identifier = (uint16)( resp_data[BYTE_NUM_1] << 8 | resp_data[BYTE_NUM_2] );
          if( resp_identifier == read_common_identifier_infos.common_id_list[read_common_identifier_infos.current_common_data_index] )
             {
-            client_mem_storage_identifier_data( read_common_identifier_infos.connected_server_id, resp_lenth, resp_data );
+            client_mem_storage_identifier_data( read_common_identifier_infos.connected_server_id, resp_lenth - 1, resp_data + 1 );
             read_common_identifier_infos.peocess_result = PROCESS_RESULT_SUCCESS;
             }
          else
@@ -1733,39 +2649,14 @@ switch( read_loacl_market_infos.next_req_frame )
         break;
     }
 
-/*shall send the process result to upper layer whehter process is success*/
+/*shall send the process result to upper layer whether process is success*/
 /*shall re-init related status flags*/
 /*shall set the next process flow*/
 if( PROCESS_RESULT_INIT != read_loacl_market_infos.peocess_result )
     {
-    #if (APPL_DEBUG )
-    client_appl_debug_printf( read_loacl_market_infos.peocess_result );
-    #endif
-
-    if( read_loacl_market_infos.current_local_data_index == read_loacl_market_infos.amount_local_data - 1 )
+    if( read_loacl_market_infos.current_local_data_index != read_loacl_market_infos.amount_local_data - 1 )
         {
-        /*have been alraedy all identifier data of current server*/
-
-        /*step 1:response data to upper layer and reset buff*/
-        client_mem_send_can_data();
-        client_mem_reset_data();
-
-        if( no_server_connected == client_appl_get_next_connected_server_id() )
-            {
-            /*set process state to Idle when request all servers*/
-            client_appl_set_current_process_flow_step(PROCESS_FLOW_IDLE);
-            }
-        else
-            {
-            /*requset the next server*/
-            set_current_conncet_server_id( client_appl_get_next_connected_server_id() );
-            client_appl_set_current_process_flow_step( PROCESS_FLOW_MARKET );
-            }
-        /*step3: setting the next process flow*/
-        }
-    else
-        {
-        /*go on request the next common indentifier data*/
+        /*go on request the next common identifier data*/
         read_loacl_market_infos.current_local_data_index++;
         read_loacl_market_infos.peocess_result = PROCESS_RESULT_INIT;
         read_loacl_market_infos.next_req_frame = REQ_ORIGINAL_FRAME;
@@ -1773,15 +2664,34 @@ if( PROCESS_RESULT_INIT != read_loacl_market_infos.peocess_result )
         read_loacl_market_infos.receive_SNS_timer =0x00;
         read_loacl_market_infos.resend_timer = 0x00;
         }
+    else
+        {
+        /*shall send the process result and data to upper layer whether process is success*/
+        if( CMD_RSP_IDLE == client_app_cmd_rsp_state )
+            {
+            #if (APPL_DEBUG )
+            client_appl_debug_printf( read_loacl_market_infos.peocess_result );
+            #endif
+            client_app_cmd_rsp_state = CMD_RSP_PROCESSING;
+            /*step 1:response data to upper layer and reset buff*/
+            client_mem_storage_server_code( server_list_detect_infos[read_loacl_market_infos.connected_server_id].ecu_identifier );
+            client_mem_send_can_data();
+            }
+        else if( CMD_RSP_DONE == client_app_cmd_rsp_state )
+            {
+            /*enter the next process flow*/
+            client_app_cmd_rsp_state = CMD_RSP_IDLE;
+            client_appl_set_current_process_flow_step(PROCESS_FLOW_IDLE);
+            }
+        }
     }
-
 }
 
 /*!******************************************************************************
 *
 * @public
 * Function name: client_appl_read_data_by_local_indentifier_market_postive_response_handler
-* Description  : this function process the postive response data when handle hen handle process flow Read_Market
+* Description  : this function process the positive response data when handle hen handle process flow Read_Market
 * usage        : called by client_diag_response_dispatch_handler_5ms
 *********************************************************************************/
 static void client_appl_read_data_by_local_identifier_market_positive_response_handler
@@ -1791,22 +2701,21 @@ static void client_appl_read_data_by_local_identifier_market_positive_response_h
  uint8 channel_id
 )
 {
-//uint8 resp_identifier = 0x00;
+uint8 resp_identifier = 0x00;
 switch( read_loacl_market_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
-       // resp_identifier = resp_data[BYTE_NUM_1];
-      //  if(resp_identifier == read_loacl_market_infos.local_id_list[read_loacl_market_infos.current_local_data_index])
+        resp_identifier = resp_data[BYTE_NUM_1];
+        if(resp_identifier == read_loacl_market_infos.local_id_list[read_loacl_market_infos.current_local_data_index])
             {
-            client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth, resp_data );
+            client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth - 1, resp_data + 1 );
             read_loacl_market_infos.peocess_result = PROCESS_RESULT_SUCCESS;
             }
-      //  else
+        else
             {
-          //  read_loacl_market_infos.peocess_result = PROCESS_RESULT_INVALID_DATA;
+            read_loacl_market_infos.peocess_result = PROCESS_RESULT_INVALID_DATA;
             }
-
         read_loacl_market_infos.receive_SNS_timer = 0x00;
         read_loacl_market_infos.resend_timer = 0x00;
         break;
@@ -1955,34 +2864,14 @@ switch( read_local_monitor_infos.next_req_frame )
         break;
     }
 
-/*shall send the process result to upper layer whehter process is success*/
-/*shall re-init related status flags*/
+/*shall send the process result to upper layer whether process is success*/
+/*shall re-initial related status flags*/
 /*shall set the next process flow*/
 if( PROCESS_RESULT_INIT != read_local_monitor_infos.peocess_result )
     {
-    #if (APPL_DEBUG )
-    client_appl_debug_printf( read_local_monitor_infos.peocess_result );
-    #endif
-    if( read_local_monitor_infos.current_local_data_index == read_local_monitor_infos.amount_local_data - 1 )
+    if( read_local_monitor_infos.current_local_data_index != read_local_monitor_infos.amount_local_data - 1 )
         {
-        /*have been alraedy all identifier data of current server*/
-        client_mem_send_can_data();
-        client_mem_reset_data();
-        /*step 1:response result to upper layer*/
-        if( no_server_connected == client_appl_get_next_connected_server_id() )
-            {
-            client_appl_set_current_process_flow_step(PROCESS_FLOW_IDLE);
-            }
-        else
-            {
-            set_current_conncet_server_id( client_appl_get_next_connected_server_id() );
-            client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
-            }
-        /*step3: setting the next process flow*/
-        }
-    else
-        {
-        /*go on request the next common indentifier data*/
+        /*go on request the next common identifier data*/
         read_local_monitor_infos.current_local_data_index++;
         read_local_monitor_infos.peocess_result = PROCESS_RESULT_INIT;
         read_local_monitor_infos.next_req_frame = REQ_ORIGINAL_FRAME;
@@ -1990,8 +2879,40 @@ if( PROCESS_RESULT_INIT != read_local_monitor_infos.peocess_result )
         read_local_monitor_infos.receive_SNS_timer =0x00;
         read_local_monitor_infos.resend_timer = 0x00;
         }
+    else
+        {
+        if( CMD_RSP_IDLE == client_app_cmd_rsp_state )
+            {
+            #if (APPL_DEBUG )
+            client_appl_debug_printf( read_local_monitor_infos.peocess_result );
+            #endif
+            client_app_cmd_rsp_state = CMD_RSP_PROCESSING;
+            /*have been already all identifier data of current server*/
+            if( TRUE == read_local_monitor_infos.is_request_support_list_flow )
+                {
+                client_appl_ble_rsp_request_support_monitor_list();
+                }
+            else
+                {
+                client_mem_storage_server_code( server_list_detect_infos[read_local_monitor_infos.connected_server_id].ecu_identifier );
+                client_mem_send_can_data();
+               }
+            }
+        else if( CMD_RSP_DONE == client_app_cmd_rsp_state )
+            {
+            client_app_cmd_rsp_state = CMD_RSP_IDLE;
+            if( TRUE == read_local_monitor_infos.is_cycle_transmission )
+                {
+                client_appl_set_delay_timer( read_local_monitor_infos.cycle_tarns_interval_time );
+                client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
+                }
+            else
+                {
+                client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
+                }
+            }
+        }
     }
-
 }
 
 
@@ -1999,7 +2920,7 @@ if( PROCESS_RESULT_INIT != read_local_monitor_infos.peocess_result )
 *
 * @public
 * Function name: client_appl_read_data_by_local_indentifier_monitor_postive_response_handler
-* Description  : this function process the postive response data when handle hen handle process flow Read_Monitor
+* Description  : this function process the positive response data when handle hen handle process flow Read_Monitor
 * usage        : called by client_diag_response_dispatch_handler_5ms
 *********************************************************************************/
 static void client_appl_read_data_by_local_identifier_monitor_positive_response_handler
@@ -2013,10 +2934,19 @@ switch( read_local_monitor_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
-        /*When received a valid datas*/
-        /*step1: stroge data here*/
-        client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth, resp_data );
-        read_local_monitor_infos.peocess_result = PROCESS_RESULT_SUCCESS;
+        if( resp_data[1] == read_local_monitor_infos.local_id_list[read_local_monitor_infos.current_local_data_index] )
+            {
+            client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth - 1 , resp_data  +1 );
+            read_local_monitor_infos.peocess_result = PROCESS_RESULT_SUCCESS;
+            if( TRUE == read_local_monitor_infos.is_request_support_list_flow )
+                {
+                read_local_monitor_infos.support_id_received_flag_array[read_local_monitor_infos.current_local_data_index] = TRUE;
+                }
+            }
+        else
+            {
+            read_local_monitor_infos.peocess_result = PROCESS_RESULT_INVALID_DATA;
+            }
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
@@ -2201,28 +3131,21 @@ switch( read_freeze_frame_data_infos.next_request_frame )
 
 if( PROCESS_RESULT_INIT != read_freeze_frame_data_infos.peocess_result)
     {
-#if (APPL_DEBUG )
-    client_appl_debug_printf( read_freeze_frame_data_infos.peocess_result );
-#endif
-    /*have been alraedy all identifier data of current server*/
-    client_mem_send_can_data();
-    client_mem_reset_data();
-
-    if( 0xFF != client_appl_get_next_connected_server_id() )
+    if( CMD_RSP_IDLE == client_app_cmd_rsp_state )
         {
-        set_current_conncet_server_id( client_appl_get_next_connected_server_id() );
-        (void)memset(read_freeze_frame_data_infos.request_id_list, 0x00, sizeof(current_request_freeze_frame_id_list));
-        read_freeze_frame_data_infos.current_freeze_frame_number = 0x01;
-        read_freeze_frame_data_infos.curr_request_frame = REQ_NO_FRAME;
-        read_freeze_frame_data_infos.next_request_frame = REQ_ORIGINAL_FRAME;
-        read_freeze_frame_data_infos.receive_SNS_timer = 0x00;
-        read_freeze_frame_data_infos.resend_timer = 0x00;
+        #if (APPL_DEBUG )
+        client_appl_debug_printf( read_freeze_frame_data_infos.peocess_result );
+        #endif
+        client_app_cmd_rsp_state = CMD_RSP_PROCESSING;
+        /*have been already all identifier data of current server*/
+        client_mem_storage_server_code( server_list_detect_infos[read_loacl_market_infos.connected_server_id].ecu_identifier );
+        client_mem_send_can_data();
         }
-    else
+    else if( CMD_RSP_DONE == client_app_cmd_rsp_state)
         {
+        client_app_cmd_rsp_state = CMD_RSP_IDLE;
         client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
         }
-    read_freeze_frame_data_infos.peocess_result = PROCESS_RESULT_INIT;
     }
 }
 
@@ -2230,7 +3153,7 @@ if( PROCESS_RESULT_INIT != read_freeze_frame_data_infos.peocess_result)
 *
 * @public
 * Function name: client_appl_read_freeze_frame_data_positive_response_handler
-* Description  : this function process the postive response data when handle hen handle process flow Read_FFD
+* Description  : this function process the positive response data when handle hen handle process flow Read_FFD
 * usage        : called by client_diag_response_dispatch_handler_5ms
 *********************************************************************************/
 static void client_appl_read_freeze_frame_data_positive_response_handler
@@ -2250,7 +3173,7 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
         read_freeze_frame_data_infos.requset_id_list_amount = amount_of_list;
         client_appl_data_cpy( read_freeze_frame_data_infos.request_id_list, ( resp_data + 2 ), amount_of_list );
         client_appl_set_next_ffd_frame_frame( REQ_FFD_FRAME );
-        /*when rx a postive response for originl message, shall req FFD meesage consecutive*/
+        /*when receive a positive response for original message, shall request FFD message consecutive*/
         read_freeze_frame_data_infos.current_request_id = 0x00;
         break;
 
@@ -2278,7 +3201,7 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
                 }
             else
                 {
-                /*The max valud of freeze frame number is 0xFF, (type unsiged char)*/
+                /*The max valud of freeze frame number is 0xFF, (type unsigned char)*/
                 if( 0xFF == read_freeze_frame_data_infos.current_freeze_frame_number )
                     {
                     read_freeze_frame_data_infos.peocess_result = PROCESS_RESULT_END;
@@ -2305,14 +3228,14 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
         }
     else
         {
-        /*The max valud of freeze frame number is 0xFF, (type unsiged char)*/
+        /*The max value of freeze frame number is 0xFF, (type unsigned char)*/
         if( 0xFF == read_freeze_frame_data_infos.current_freeze_frame_number )
             {
             read_freeze_frame_data_infos.peocess_result = PROCESS_RESULT_END;
             }
         else
             {
-            /*Requset the next freeze frame number data*/
+            /*Request the next freeze frame number data*/
             client_appl_set_next_ffd_frame_frame( REQ_ORIGINAL_FRAME );
             read_freeze_frame_data_infos.current_freeze_frame_number++;
             read_freeze_frame_data_infos.current_request_id = 0x00;
@@ -2326,7 +3249,7 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
     break;
     }
 
-/*we need init timer when received a postive message of data*/
+/*we need initial timer when received a positive message of data*/
 if( REQ_ORIGINAL_FRAME == read_freeze_frame_data_infos.curr_request_frame
     || REQ_RESEND_FRAME == read_freeze_frame_data_infos.curr_request_frame
     || REQ_FFD_FRAME == read_freeze_frame_data_infos.curr_request_frame )
@@ -2357,7 +3280,7 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
             /*RX flow success end*/
             if( 0x01 < read_freeze_frame_data_infos.current_freeze_frame_number )
                 {
-                /*This process shall be end normaly by rx a NRC 12*/
+                /*This process shall be end normally by receive a NRC 12*/
                 read_freeze_frame_data_infos.peocess_result = PROCESS_RESULT_END;
                 }
             else
@@ -2396,7 +3319,7 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
                 /*RX flow success end*/
                 if( 0x01 < read_freeze_frame_data_infos.current_freeze_frame_number )
                     {
-                    /*This process shall be end normaly by rx a NRC 12*/
+                    /*This process shall be end normally by received a NRC 12*/
                     read_freeze_frame_data_infos.peocess_result = PROCESS_RESULT_SUCCESS;
                     }
                 else
@@ -2509,4 +3432,3 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
     break;
     }
 }
-

@@ -2,8 +2,8 @@
 * @file client_dcm.c
 * @brief client diagnostic communication management
 *
-* This file transmit data between server_dcm,client_dcm and can_tp mo
-* moudle, implment the 14229-2 session layer service
+* This file transmit data between server_dcm,client_dcm and can_tp
+* module, implement the 14229-2 session layer service
 * including the periodic function to be called by the scheduler/thread
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
@@ -36,8 +36,8 @@ static uint32 g_s3_timer = 0x0;
 /*------------------------------------------------------------------
 *                          MACROS
 -------------------------------------------------------------------*/
-#define set_client_diag_state( new_state )               g_client_diag_state = new_state; PRINTF("diag state:%d \r\n", g_client_diag_state)
-//#define set_client_diag_state( new_state )              ( g_client_diag_state = new_state )
+//#define set_client_diag_state( new_state )               g_client_diag_state = new_state; PRINTF("diag state:%d \r\n", g_client_diag_state)
+#define set_client_diag_state( new_state )              ( g_client_diag_state = new_state )
 #define is_client_diag_state( state )                   ( g_client_diag_state == state ? TRUE:FALSE )
 #define get_client_diag_state()                         ( g_client_diag_state )
 #define set_pclient_timer_vlaue( value)                 ( g_pclient_timer = (uint32) value )
@@ -110,7 +110,7 @@ for( i = 0; i < cnt; i++ )
 *
 * @public
 * Function name: client_dcm_init
-* Description:   this function init client diagnostic communication mangement
+* Description:   this function initial client diagnostic communication management
 *
 *********************************************************************/
 void client_dcm_init
@@ -135,7 +135,7 @@ if( CLIENT_UN_INITIALIZATION == g_client_init_state )
 *
 * @public
 * Function name: client_diag_pclient_timer_handler
-* Description:   this function handler pclient timer
+* Description:   this function handler p_client timer
 *
 *********************************************************************/
 static void client_diag_pclient_timer_handler
@@ -160,7 +160,7 @@ if( ( TRUE == g_pclient_timer_start_falg ) && ( CLIENT_DIAG_STATE_RX_PENDING != 
 *
 * @public
 * Function name: client_diag_RCPP_handler
-* Description:   this function handler pclient star timer
+* Description:   this function handler p_client star timer
 *
 *********************************************************************/
 static void client_diag_RCPP_handler
@@ -185,7 +185,7 @@ if( ( TRUE == g_pclient_timer_start_falg ) && ( CLIENT_DIAG_STATE_RX_PENDING == 
 *
 * @public
 * Function name: client_diag_S3_timer_handler
-* Description:   this function handler pclient star timer
+* Description:   this function handler p_client star timer
 *
 *********************************************************************/
 static void client_diag_S3_timer_handler
@@ -195,9 +195,11 @@ static void client_diag_S3_timer_handler
 {
 uint8 curr_connnect_ecu_id = client_appl_get_current_connected_server_id();
 
-if( 0x05 == curr_connnect_ecu_id || 0xFF == curr_connnect_ecu_id )
+if( ( SUPPORT_SERVER_NUM == curr_connnect_ecu_id ) \
+    || ( 0xFF == curr_connnect_ecu_id ) )
     {
     /*when channel is idle or function address channel */
+    prev_connect_ecu_id = curr_connnect_ecu_id;
     return;
     }
 else if( prev_connect_ecu_id != curr_connnect_ecu_id )
@@ -222,7 +224,7 @@ else
 *
 * @public
 * Function name: client_diag_timer_handler_5ms
-* Description  : this function handler pclient timer
+* Description  : this function handler p_client timer
 * usage        : called by function client_diag_main_funciton_5msDIAG_task
 *********************************************************************************/
 static void client_diag_timer_handler_5ms
@@ -238,11 +240,11 @@ client_diag_S3_timer_handler();
 /*!******************************************************************************
 *
 * @public
-* Function name: client_diag_response_dispatch_handler_5ms
+* Function name: client_diag_response_dispatch_handler
 * Description  : this function handler the response data
 * usage        : called by function client_diag_main_funciton_5msDIAG_task
 *********************************************************************************/
-static client_ReturnType client_diag_response_dispatch_handler_5ms
+static client_ReturnType client_diag_response_dispatch_handler
     (
     void
     )
@@ -268,10 +270,10 @@ if( TRUE == client_diag_msg_context.is_receive )
             }
         else if( DCM_NRC_RESPONSE_PENDING == client_diag_msg_context.resp_data[BYTE_NUM_2] )
             {
-            /*Check wether the RCPP is received*/
+            /*Check whether the RCPP is received*/
             if( CLIENT_ADDRESS_FUNCTIONAL == client_diag_msg_context.address_type )
                 {
-                /*response RCPP when requset by functional address is not allowable*/
+                /*response RCPP when request by functional address is not allowable*/
                 return_value = E_RX_FORMAT_ERROR;
                 }
             else
@@ -285,7 +287,7 @@ if( TRUE == client_diag_msg_context.is_receive )
             return_value =  E_OK;
             }
         }
-    /*Received  a Positive reponse message*/
+    /*Received  a Positive response message*/
     else if( (client_diag_msg_context.req_data[BYTE_NUM_0] + 0x40 ) != client_diag_msg_context.resp_data[BYTE_NUM_0])
         {
         return_value = E_RX_FORMAT_ERROR;
@@ -313,7 +315,7 @@ if( TRUE == client_diag_msg_context.is_receive )
         }
     else if( E_RX_FORMAT_ERROR == return_value )
         {
-        /*when received a error_format message,wait p2 timeout and set diag state*/
+        /*when received a error_format message,wait p2 timeout and set diagnostic state*/
         }
     else
         {
@@ -336,7 +338,7 @@ void client_diag_main_funciton_5ms
 {
 os_task_time++;
 client_diag_timer_handler_5ms();
-client_diag_response_dispatch_handler_5ms();
+//client_diag_response_dispatch_handler();
 }
 
 
@@ -368,7 +370,7 @@ if( channel_id >= TP_CAN0_NUM_CHANNELS )
     return E_NOT_OK;
     }
 
-if( 0x0000 != client_diag_msg_context.req_data_len ) /* network layer doesn't check for 0 byte mssg */
+if( 0x0000 != client_diag_msg_context.req_data_len ) /* network layer doesn't check for 0 byte message */
     {
     if( is_client_diag_state( CLIENT_DIAG_STATE_IDLE ))
         {
@@ -378,7 +380,7 @@ if( 0x0000 != client_diag_msg_context.req_data_len ) /* network layer doesn't ch
         }
     else
         {
-        /*a new requset message when last message is processing,abandon the new request*/
+        /*a new request message when last message is processing,abandon the new request*/
         }
     }
 return E_OK;
@@ -388,8 +390,8 @@ return E_OK;
 *
 * @public
 * Function name: client_diag_tx_complete
-* Description  : This function re-start pclient timer
-* usage        : called when the requset message send successful
+* Description  : This function re-start p_client timer
+* usage        : called when the request message send successful
 *********************************************************************************/
 void client_diag_tx_complete
     (
@@ -398,7 +400,7 @@ void client_diag_tx_complete
     uint8 channel_id
     )
 {
-PRINTF("Tx complete channel:%d-----time:%d\r\n",channel_id, os_task_time);
+//PRINTF("TX complete channel:%d-----time:%d\r\n",channel_id, os_task_time);
     /* TBD
 if( TP_N_OK != result )
     {
@@ -436,7 +438,7 @@ client_dcm_SOM_indication
     tp_chan_index_t const  tp_channel
     )
 {
-/*resposne of functional address request*/
+/*response of functional address request*/
 if( CLIENT_ADDRESS_FUNCTIONAL == client_diag_msg_context.address_type )
     {
     /* do nothing*/
@@ -482,9 +484,9 @@ client_diag_rx_wrapper
     )
 {
 
-PRINTF("Received channe--%d    time:%d    \r\n",tp_channel, os_task_time);
-PRINTF("data: %d, %d\r\n",rx_buffer[0],rx_buffer[1] );
-/*resposne of functional address request*/
+//PRINTF("Received channel--%d    time:%d    \r\n",tp_channel, os_task_time);
+//PRINTF("data: %d, %d\r\n",rx_buffer[0],rx_buffer[1] );
+/*response of functional address request*/
 if( CLIENT_ADDRESS_FUNCTIONAL == client_diag_msg_context.address_type )
     {
     if( TP_N_OK != result )
@@ -498,8 +500,10 @@ if( CLIENT_ADDRESS_FUNCTIONAL == client_diag_msg_context.address_type )
     }
 else if( CLIENT_ADDRESS_PHYSICAL == client_diag_msg_context.address_type )
     {
+    /*PENDING*/
     if( TP_N_OK != result )
         {
+        set_client_diag_state( CLIENT_DIAG_STATE_IDLE );
         return;
         }
     else if( tp_channel != client_diag_msg_context.req_channel )
@@ -525,11 +529,12 @@ client_diag_msg_context.resp_data_len = mssg_length;
 client_diag_msg_context.resp_channel = tp_channel;
 client_diag_msg_context.is_receive = TRUE;
 
+client_diag_response_dispatch_handler();
 }
 
 /***********************************************************************
 Function: client_dcm_req_diagnostic_default_session_functional
-Description: This fucntion will send a requset diagnostic default session message to can_tp
+Description: This function will send a request diagnostic default session message to can_tp
 Input: void
 Return: Send Status
 ***********************************************************************/
@@ -559,7 +564,7 @@ return return_value;
 
 /***********************************************************************
 Function: client_dcm_req_diagnostic_default_session_physical
-Description: This fucntion will send a requset diagnostic default session message to can_tp
+Description: This function will send a request diagnostic default session message to can_tp
 Input: void
 Return: Send Status
 ***********************************************************************/
@@ -589,7 +594,7 @@ return return_value;
 
 /***********************************************************************
 Function:    client_dcm_req_diagnostic_extend_session
-Description: This fucntion will send a requset diagnostic extend session message to speical ECU
+Description: This function will send a request diagnostic extend session message to speical ECU
 Input: channel_id
 Return: Send Status
 ***********************************************************************/
@@ -619,7 +624,7 @@ return return_value;
 
 /***********************************************************************
 Function:    client_dcm_req_diagnostic_extend_session
-Description: This fucntion will send a requset tester persent message to speical ECU
+Description: This function will send a request tester present message to special ECU
 Input: channel_id
 Return: Send Status
 ***********************************************************************/
@@ -637,7 +642,7 @@ return E_OK;
 
 /***********************************************************************
 Function:    client_dcm_req_read_dtc_status_code
-Description: This fucntion will send a requset dtc status code to speical ECU
+Description: This function will send a request DTC status code to special ECU
 Input: channel_id, status_code
 Return: Send Status
 ***********************************************************************/
@@ -668,7 +673,7 @@ return return_value;
 
 /***********************************************************************
 Function:    client_dcm_req_common_indentifier
-Description: This fucntion will send a requset common id data to speical ECU
+Description: This function will send a request common id data to special ECU
 Input: channel_id, common_id
 Return: Send Status
 ***********************************************************************/
@@ -699,7 +704,7 @@ return return_value;
 
 /***********************************************************************
 Function:    client_dcm_req_local_indentifier
-Description: This fucntion will send a requset local id data to speical ECU
+Description: This function will send a request local id data to special ECU
 Input: channel_id, common_id
 Return: Send Status
 ***********************************************************************/
@@ -731,7 +736,7 @@ return return_value;
 
 /***********************************************************************
 Function:    client_dcm_req_freeze_frame_data
-Description: This fucntion will send a requset freeze frame data data to speical ECU
+Description: This function will send a request freeze frame data data to special ECU
 Input: channel_id, freeze_frame_numberm, record_local_id
 Return: Send Status
 ***********************************************************************/

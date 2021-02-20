@@ -2,7 +2,7 @@
 * @file client_mem.c
 * @brief client memory management
 *
-* This file shall storege and package the received data
+* This file shall storage and package the received data
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 ---------------------------------------------------------------------*/
@@ -12,11 +12,13 @@
 --------------------------------------------------------------------*/
 #include "client_mem.h"
 #include "client_dcm_appl.h"
+#include "BC_motocon_pub.h"
+
 /*--------------------------------------------------------------------
                                  MACROS
 --------------------------------------------------------------------*/
 #define INIT_DTC_DATA_MAX_CONUT           (238)
-#define INDENTIFIER_DATA_MAX_COUNT        (2000)
+#define INDENTIFIER_DATA_MAX_COUNT        (10000)
 #define CHANNELS_COUNT                    (SUPPORT_SERVER_NUM)
 /*--------------------------------------------------------------------
                             VARIABLES
@@ -34,7 +36,7 @@ client_mem_management_info_type client_mem_indentifier_data = {0};
 *
 * @public
 * Function name: client_mem_init
-* Description  : init the module
+* Description  : initial the module
 *********************************************************************************/
 void client_mem_init
     (
@@ -52,15 +54,15 @@ for( ; index < CHANNELS_COUNT; index++)
 
 client_mem_indentifier_data.empty_flag = TRUE;
 client_mem_indentifier_data.overflow_flag = FALSE;
-
+client_mem_indentifier_data.length = 0x02;
 client_mem_indentifier_data.mem_data = client_mem_indentifier_data_array;
 }
 
 /*!******************************************************************************
 *
 * @public
-* Function name: client_mem_init
-* Description  : init the module
+* Function name: client_mem_data_cpy
+* Description  : data copy
 *********************************************************************************/
 void client_mem_data_cpy
     (
@@ -90,21 +92,36 @@ client_ReturnType client_mem_storage_init_dtc_data
     uint8* storage_data
     )
 {
-if( data_lenth >= INIT_DTC_DATA_MAX_CONUT )
+uint16 empty_length = 0x0000;
+
+if( 0x0000 == data_lenth )
     {
-    data_lenth = INIT_DTC_DATA_MAX_CONUT;
-    client_mem_read_init_dtc_data[channel_id].overflow_flag = TRUE;
+    return E_NOT_OK;
     }
-else if( 0x00000 != data_lenth )
+
+if( TRUE == client_mem_read_init_dtc_data[channel_id].overflow_flag )
     {
-    client_mem_read_init_dtc_data[channel_id].empty_flag = FALSE;
-    client_mem_read_init_dtc_data[channel_id].length = data_lenth;
-    client_mem_data_cpy( client_mem_init_dtc_data_array[channel_id], storage_data, data_lenth );
+    return E_NOT_OK;
+    }
+else if( INIT_DTC_DATA_MAX_CONUT <= data_lenth + client_mem_read_init_dtc_data[channel_id].length )
+    {
+    client_mem_read_init_dtc_data[channel_id].overflow_flag = TRUE;
+    empty_length = INIT_DTC_DATA_MAX_CONUT - client_mem_read_init_dtc_data[channel_id].length;
+    client_mem_data_cpy( &client_mem_read_init_dtc_data[channel_id].mem_data[client_mem_read_init_dtc_data[channel_id].length], storage_data, empty_length );
+    client_mem_read_init_dtc_data[channel_id].length = INIT_DTC_DATA_MAX_CONUT;
     }
 else
     {
-    client_mem_read_init_dtc_data[channel_id].empty_flag = TRUE;
+    client_mem_data_cpy( &client_mem_read_init_dtc_data[channel_id].mem_data[client_mem_read_init_dtc_data[channel_id].length], storage_data, data_lenth );
+    client_mem_read_init_dtc_data[channel_id].length += data_lenth;
     }
+
+if( 0x0000 < client_mem_read_init_dtc_data[channel_id].length )
+    {
+    client_mem_read_init_dtc_data[channel_id].empty_flag = FALSE;
+    }
+//PRINTF("current storage initial length %d \r\n", client_mem_read_init_dtc_data[channel_id].length );
+
 return E_OK;
 }
 
@@ -129,7 +146,7 @@ return FALSE == client_mem_read_init_dtc_data[channel_id].empty_flag?TRUE:FALSE;
 *
 * @public
 * Function name: client_mem_print_init_dtc_data
-* Description  : print the recevied data
+* Description  : print the received data
 *********************************************************************************/
 client_ReturnType client_mem_print_init_dtc_data
     (
@@ -172,14 +189,14 @@ return E_OK;
 *
 * @public
 * Function name: client_mem_get_init_dtc_data
-* Description  : response initial dtc data
+* Description  : response initial DTC data
 *********************************************************************************/
 client_ReturnType client_mem_get_init_dtc_data
     (
     uint8 channel_id,
     client_mem_result_type* result,
     uint16* resp_length,
-    uint8* resp_data
+    uint8** resp_data
     )
 {
 if( TRUE == client_mem_read_init_dtc_data[channel_id].empty_flag)
@@ -199,16 +216,24 @@ else
     }
 
 *resp_length = client_mem_read_init_dtc_data[channel_id].length;
-resp_data =  client_mem_read_init_dtc_data[channel_id].mem_data;
+*resp_data =  client_mem_read_init_dtc_data[channel_id].mem_data;
 
 return E_OK;
 }
 
+void client_mem_storage_server_code
+    (
+    uint16 server_code
+    )
+{
+client_mem_indentifier_data.mem_data[0] = (uint8)( server_code >> 8 );
+client_mem_indentifier_data.mem_data[1] = (uint8)server_code;
+}
 /*!******************************************************************************
 *
 * @public
 * Function name: client_mem_storage_identifier_data
-* Description  : storaged the received datas
+* Description  : storage the received data
 *********************************************************************************/
 client_ReturnType client_mem_storage_identifier_data
     (
@@ -253,7 +278,7 @@ return E_OK;
 *
 * @public
 * Function name: client_mem_get_identifier_data
-* Description  : response storaged data
+* Description  : response storage data
 *********************************************************************************/
 client_mem_result_type client_mem_get_identifier_data
     (
@@ -318,6 +343,7 @@ return E_OK;
      }
  PRINTF("\r\nsend data end \r\n");
 
+ BC_motocon_send_can_related_data( command, size, data, &client_appl_cmd_rsp_result_notify );
  return return_value;
  }
 
@@ -325,7 +351,7 @@ return E_OK;
  *
  * @public
  * Function name:client_mem_send_can_data
- * Description  : send the storaged datas to Motocan
+ * Description  : send the storage data to MOTOCAN
  *********************************************************************************/
  client_ReturnType client_mem_send_can_data
     (
@@ -336,17 +362,21 @@ client_ReturnType return_value = 0x00;
 uint8 channel_id = 0x00;
 uint16 resp_len = 0x0000;
 uint8* resp_data = 0x00;
+uint32 resp_cmd = 0;
 client_process_flow_type current_flow = client_get_current_process_flow();
+
 switch( current_flow )
     {
     case PROCESS_FLOW_RDBCID:
+        resp_cmd = BLE_RSP_CMD_VEHICLE_IDENTIFICATION;
     case PROCESS_FLOW_MARKET:
+        resp_cmd = BLE_RSP_CMD_MARKET_DATA;
     case PROCESS_FLOW_MONITOR:
+        resp_cmd = BLE_RSP_CMD_VEHICLE_INFORMATION;
     case PROCESS_FLOW_RFFD:
-    case PROCESS_FLOW_EXTEND_SERVER:
-    case PROCESS_FLOW_DETECT_SERVER:
+        resp_cmd = BLE_RSP_CMD_FFD;
         (void)client_mem_get_identifier_data( &resp_len, &resp_data );
-        return_value = client_mem_send_can_related_data(0x010B,(uint32)resp_len, resp_data );
+        return_value = client_mem_send_can_related_data( resp_cmd,(uint32)resp_len, resp_data );
         break;
 
     case PROCESS_FLOW_INIT_RDTCBS:
@@ -360,7 +390,7 @@ switch( current_flow )
         resp_len = client_mem_read_init_dtc_data[channel_id].length;
         resp_data = client_mem_read_init_dtc_data[channel_id].mem_data;
         }
-    return_value = client_mem_send_can_related_data(0x010B,(uint32)resp_len, resp_data );
+    return_value = client_mem_send_can_related_data( BLE_RSP_CMD_MALFUNCTION, (uint32)resp_len, resp_data );
     break;
 
     default:
@@ -373,7 +403,7 @@ return return_value;
 *
 * @public
 * Function name: client_mem_reset_data
-* Description  : clear the storaged data and reset state
+* Description  : clear the storage data and reset state
 *********************************************************************************/
 client_ReturnType client_mem_reset_data
     (
@@ -382,7 +412,7 @@ client_ReturnType client_mem_reset_data
 {
 (void)memset( client_mem_indentifier_data.mem_data, 0x00, client_mem_indentifier_data.length );
 client_mem_indentifier_data.empty_flag = TRUE;
-client_mem_indentifier_data.length = 0x0000;
+client_mem_indentifier_data.length = 0x02;
 client_mem_indentifier_data.overflow_flag = FALSE;
 return E_OK;
 }

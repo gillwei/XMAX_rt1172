@@ -35,7 +35,7 @@
 #include "can_il_par.h"
 #include "can_tp.h"
 #include "can_nm.h"
-
+#include "client_dcm_appl.h"
 #include "fsl_debug_console.h"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -308,9 +308,10 @@ if( p_rmd != NULL )
             ------------------------------------------------------*/
             tp_hook_receive( p_rmd, hw_inst );
             }
-        else if( ( l_can_id_match == FALSE ) && ( TRUE == l_can_defined_ydt_id_match ) )
+        else if( TRUE == l_can_defined_ydt_id_match )
             {
-            //TBD for detecting ydt online
+            /* for detecting ydt online */
+            client_appl_set_ydt_connect_state( TRUE );
             }
         else
             {

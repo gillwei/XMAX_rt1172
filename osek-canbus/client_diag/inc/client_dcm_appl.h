@@ -23,6 +23,16 @@ SERVER_CONNECT,
 SERVER_CONNECT_STATE_MAX
 }client_appl_server_connect_type;
 
+
+typedef enum
+{
+CMD_RSP_IDLE = 0,
+CMD_RSP_PROCESSING,
+CMD_RSP_TIMEOUT,
+CMD_RSP_DONE,
+CMD_RSP_MAX
+}client_appl_cmd_rsp_state_type;
+
 typedef enum
 {
 SERVER_DETECT_INIT = 0,
@@ -30,6 +40,7 @@ SERVER_DETECT_REQ,
 SERVER_DETECT_WAIT,
 SERVER_DETECT_DEFAULT_DONE,
 SERVER_DETECT_EXTEND_DONE,
+SERVER_DETECT_DEFAULT_TX,
 SERVER_DETECT_MAX
 }client_appl_server_detect_step_type;
 
@@ -119,8 +130,10 @@ process_flow_result_type peocess_result;
 
 typedef struct
 {
+boolean is_request_support_list_flow;
 uint8 connected_server_id;
 uint8* local_id_list;
+boolean* support_id_received_flag_array;
 uint8 amount_local_data;
 uint8 current_local_data_index;
 client_appl_request_frame_type curr_req_frame;
@@ -128,6 +141,8 @@ client_appl_request_frame_type next_req_frame;
 uint8 resend_timer;
 uint8 receive_SNS_timer;
 process_flow_result_type peocess_result;
+boolean is_cycle_transmission;
+uint32 cycle_tarns_interval_time;
 }client_appl_read_data_by_local_id_type;
 
 
@@ -213,6 +228,23 @@ extern boolean client_appl_get_storage_init_dtc_state
 extern uint8 client_appl_get_current_connected_server_id
     (
     void
+    );
+
+extern void client_appl_ble_req_command_dispatch
+    (
+    uint16 req_command,
+    uint32 data_size,
+    uint8* data
+    );
+
+extern void client_appl_set_ydt_connect_state
+    (
+    boolean connect_state
+    );
+
+extern void client_appl_cmd_rsp_result_notify
+    (
+    const uint8 vlaue
     );
 #endif
 

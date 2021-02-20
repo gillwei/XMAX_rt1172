@@ -235,7 +235,7 @@ void vCAN_nim_create_task
     void
     )
 {
-if( pdPASS == xTaskCreate( (TaskFunction_t)CAN_nim_task, "CAN nim task", 256, NULL, TASK_PRIO_CAN, NULL ) )
+if( pdPASS == xTaskCreate( (TaskFunction_t)CAN_nim_task, "CAN nim task", 512, NULL, TASK_PRIO_CAN, NULL ) )
     {
     PRINTF("Create LinkCard CAN Stack...                 [OK]\r\n" );
     }

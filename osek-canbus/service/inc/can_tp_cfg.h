@@ -415,6 +415,7 @@ Transmission timeout for any frame transmitted by a
 receiver, measured from request time to transmit complete
 notification, in units of milliseconds.
 ------------------------------------------------------*/
+//#define TP_N_Ar                     (100)
 #define TP_N_Ar                     (20)
 
 /*------------------------------------------------------
