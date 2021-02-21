@@ -31,6 +31,7 @@
 #include "_CoreView.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsRectEffect.h"
+#include "_InfoINF01_MeterDisplaySettingMenu.h"
 #include "_LauncherLNC_Base.h"
 #include "_LauncherLNC_Main.h"
 #include "_LauncherLNC_RotaryPlate.h"
@@ -41,7 +42,6 @@
 #include "_ResourcesFont.h"
 #include "_SettingsSET01_MainSettingMenu.h"
 #include "_ViewsImage.h"
-#include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 #include "_ViewsWallpaper.h"
 #include "Core.h"
@@ -88,12 +88,11 @@ static const XRect _Const0011 = {{ 13, 74 }, { 91, 152 }};
 static const XRect _Const0012 = {{ 0, 70 }, { 122, 156 }};
 static const XStringRes _Const0013 = { _StringsDefault0, 0x0045 };
 static const XRect _Const0014 = {{ 0, 0 }, { 480, 234 }};
-static const XColor _Const0015 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0016 = {{ 0, 58 }, { 480, 168 }};
-static const XRect _Const0017 = {{ 138, 94 }, { 469, 137 }};
-static const XRect _Const0018 = {{ 121, 19 }, { 439, 52 }};
-static const XColor _Const0019 = { 0x6B, 0x6B, 0x6B, 0xFF };
-static const XRect _Const001A = {{ 121, 174 }, { 439, 207 }};
+static const XRect _Const0015 = {{ 0, 58 }, { 480, 168 }};
+static const XRect _Const0016 = {{ 138, 94 }, { 469, 137 }};
+static const XRect _Const0017 = {{ 121, 19 }, { 439, 52 }};
+static const XColor _Const0018 = { 0x6B, 0x6B, 0x6B, 0xFF };
+static const XRect _Const0019 = {{ 121, 174 }, { 439, 207 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -403,8 +402,13 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
       ;
     break;
 
-    case EnumLauncherItemTHEME :
-      ;
+    case EnumLauncherItemMETER_DISPLAY :
+    {
+      ItemDialog = ((ComponentsBaseComponent)EwNewObject( InfoINF01_MeterDisplaySettingMenu, 
+      0 ));
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
+      0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    }
     break;
 
     case EnumLauncherItemNAVIGATION :
@@ -849,7 +853,7 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( LauncherLNC_
       IconBitmap = EwLoadResource( &ResourceIconOdoTripSmall, ResourcesBitmap );
     break;
 
-    case EnumLauncherItemTHEME :
+    case EnumLauncherItemMETER_DISPLAY :
       IconBitmap = EwLoadResource( &ResourceIconThemeSmall, ResourcesBitmap );
     break;
 
@@ -921,7 +925,7 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetLargeIconResourceOfItem( LauncherLNC_
       IconBitmap = EwLoadResource( &ResourceIconOdoTripLarge, ResourcesBitmap );
     break;
 
-    case EnumLauncherItemTHEME :
+    case EnumLauncherItemMETER_DISPLAY :
       IconBitmap = EwLoadResource( &ResourceIconThemeLarge, ResourcesBitmap );
     break;
 
@@ -1044,7 +1048,7 @@ void LauncherLNC_Base__Init( LauncherLNC_Base _this, XObject aLink, XHandle aArg
   _this->_GCT = EW_CLASS_GCT( LauncherLNC_Base );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->BlackBG, &_this->_XObject, 0 );
+  ViewsWallpaper__Init( &_this->Background, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->ImgLCBlueline, &_this->_XObject, 0 );
   ViewsText__Init( &_this->CurrentItemTitleText, &_this->_XObject, 0 );
   ViewsText__Init( &_this->PreviousItemTitleText, &_this->_XObject, 0 );
@@ -1055,27 +1059,29 @@ void LauncherLNC_Base__Init( LauncherLNC_Base _this, XObject aLink, XHandle aArg
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0001 );
-  CoreRectView__OnSetBounds( &_this->BlackBG, _Const0014 );
-  ViewsRectangle_OnSetColor( &_this->BlackBG, _Const0015 );
-  CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0016 );
-  CoreRectView__OnSetBounds( &_this->CurrentItemTitleText, _Const0017 );
+  CoreView_OnSetLayout((CoreView)&_this->Background, CoreLayoutAlignToBottom | CoreLayoutAlignToLeft );
+  CoreRectView__OnSetBounds( &_this->Background, _Const0014 );
+  CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0015 );
+  CoreRectView__OnSetBounds( &_this->CurrentItemTitleText, _Const0016 );
   ViewsText_OnSetAlignment( &_this->CurrentItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  CoreRectView__OnSetBounds( &_this->PreviousItemTitleText, _Const0018 );
+  CoreRectView__OnSetBounds( &_this->PreviousItemTitleText, _Const0017 );
   ViewsText_OnSetAlignment( &_this->PreviousItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->PreviousItemTitleText, 0 );
-  ViewsText_OnSetColor( &_this->PreviousItemTitleText, _Const0019 );
-  CoreRectView__OnSetBounds( &_this->NextItemTitleText, _Const001A );
+  ViewsText_OnSetColor( &_this->PreviousItemTitleText, _Const0018 );
+  CoreRectView__OnSetBounds( &_this->NextItemTitleText, _Const0019 );
   ViewsText_OnSetAlignment( &_this->NextItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->NextItemTitleText, 0 );
-  ViewsText_OnSetColor( &_this->NextItemTitleText, _Const0019 );
-  CoreGroup__Add( _this, ((CoreView)&_this->BlackBG ), 0 );
+  ViewsText_OnSetColor( &_this->NextItemTitleText, _Const0018 );
+  CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ImgLCBlueline ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->CurrentItemTitleText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PreviousItemTitleText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NextItemTitleText ), 0 );
+  ViewsWallpaper_OnSetBitmap( &_this->Background, EwLoadResource( &ResourceLauncherBG, 
+  ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->ImgLCBlueline, EwLoadResource( &ResourceLCBlueline, 
   ResourcesBitmap ));
   ViewsText_OnSetFont( &_this->CurrentItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
@@ -1093,7 +1099,7 @@ void LauncherLNC_Base__ReInit( LauncherLNC_Base _this )
   CoreGroup__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsRectangle__ReInit( &_this->BlackBG );
+  ViewsWallpaper__ReInit( &_this->Background );
   ViewsImage__ReInit( &_this->ImgLCBlueline );
   ViewsText__ReInit( &_this->CurrentItemTitleText );
   ViewsText__ReInit( &_this->PreviousItemTitleText );
@@ -1107,7 +1113,7 @@ void LauncherLNC_Base__Done( LauncherLNC_Base _this )
   _this->_Super._VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
-  ViewsRectangle__Done( &_this->BlackBG );
+  ViewsWallpaper__Done( &_this->Background );
   ViewsImage__Done( &_this->ImgLCBlueline );
   ViewsText__Done( &_this->CurrentItemTitleText );
   ViewsText__Done( &_this->PreviousItemTitleText );
@@ -1142,8 +1148,8 @@ XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum
       Title = EwLoadString( &StringsLNC_odo_trip );
     break;
 
-    case EnumLauncherItemTHEME :
-      Title = EwLoadString( &StringsLNC_theme );
+    case EnumLauncherItemMETER_DISPLAY :
+      Title = EwLoadString( &StringsLNC_METER_DISPLAY );
     break;
 
     case EnumLauncherItemNAVIGATION :
@@ -1202,8 +1208,8 @@ EW_DEFINE_CLASS_VARIANTS( LauncherLNC_Base )
 EW_END_OF_CLASS_VARIANTS( LauncherLNC_Base )
 
 /* Virtual Method Table (VMT) for the class : 'Launcher::LNC_Base' */
-EW_DEFINE_CLASS( LauncherLNC_Base, CoreGroup, BlackBG, BlackBG, BlackBG, BlackBG, 
-                 _None, _None, "Launcher::LNC_Base" )
+EW_DEFINE_CLASS( LauncherLNC_Base, CoreGroup, Background, Background, Background, 
+                 Background, _None, _None, "Launcher::LNC_Base" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

@@ -195,8 +195,7 @@ void ApplicationApplication_OnBtFwStatusUpdteSlot( ApplicationApplication _this,
 void ApplicationApplication_DismissFactoryTestDialog( ApplicationApplication _this );
 
 /* 'C' function for method : 'Application::Application.SwitchToHome()' */
-void ApplicationApplication_SwitchToHome( ApplicationApplication _this, CoreGroup 
-  aHomeDialog );
+void ApplicationApplication_SwitchToHome( ApplicationApplication _this, XEnum aHomeType );
 
 /* 'C' function for method : 'Application::Application.OnDDModeTestSlot()' */
 void ApplicationApplication_OnDDModeTestSlot( ApplicationApplication _this, XObject 
@@ -204,6 +203,14 @@ void ApplicationApplication_OnDDModeTestSlot( ApplicationApplication _this, XObj
 
 /* Return from the DD mode forbidden UI to the launcher */
 void ApplicationApplication_ReturnToLauncher( ApplicationApplication _this );
+
+/* 'C' function for method : 'Application::Application.HomeClassOfHomeType()' */
+XClass ApplicationApplication_HomeClassOfHomeType( ApplicationApplication _this, 
+  XEnum aHomeType );
+
+/* 'C' function for method : 'Application::Application.HomeDialogOfHomeType()' */
+CoreGroup ApplicationApplication_HomeDialogOfHomeType( ApplicationApplication _this, 
+  XEnum aHomeType );
 
 #ifdef __cplusplus
   }

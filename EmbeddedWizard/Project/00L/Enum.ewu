@@ -107,7 +107,7 @@ enum LauncherItem
   item ODO_TRIP;
 
   $rect <10,160,210,200>
-  item THEME;
+  item METER_DISPLAY;
 
   $rect <10,210,210,250>
   item NAVIGATION;
@@ -548,4 +548,47 @@ enum DataType
 
   $rect <10,60,210,100>
   item FLOAT;
+}
+
+$rect <260,370,460,410>
+$output false
+enum MeterDisplay
+{
+  $rect <10,10,210,50>
+  item TACHOMETER;
+
+  $rect <10,60,210,100>
+  item ECHO_METER;
+
+  $rect <10,110,210,150>
+  item SPEED_METER;
+}
+
+$rect <261,420,461,460>
+$output false
+enum HomeType
+{
+  $rect <10,10,210,50>
+  item TACHO_VISUALIZER;
+
+  $rect <10,60,210,100>
+  item ECO_VISUALIZER;
+
+  $rect <10,110,210,150>
+  item SPEED_VISUALIZER;
+
+  $rect <10,160,210,200>
+  item NAVI_DEFAULT_VIEW;
+
+  $rect <10,210,210,250>
+  item NAVI_TURN_BY_TURN;
+
+  $rect <10,260,210,300>
+  item NAVI_NEXT_TURN;
+
+  $rect <10,310,210,350>
+  item VEHICLE_INFO;
+
+  $rect <10,360,210,400>
+  item TOTAL;
 }

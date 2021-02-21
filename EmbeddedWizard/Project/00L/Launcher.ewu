@@ -199,7 +199,11 @@ class LNC_Main : Components::BaseComponent
         PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
       case Enum::LauncherItem.ODO_TRIP:;
-      case Enum::LauncherItem.THEME:;
+      case Enum::LauncherItem.METER_DISPLAY:
+      {
+        ItemDialog = new Info::INF01_MeterDisplaySettingMenu;
+        PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
+      }
       case Enum::LauncherItem.NAVIGATION:
       {
         ItemDialog = new Navigation::NAV06_NaviSettingMenu;
@@ -535,7 +539,7 @@ class LNC_RotaryPlate : Components::BaseComponent
       case Enum::LauncherItem.PHONE: IconBitmap = Resource::IconPhoneSmall;
       case Enum::LauncherItem.MUSIC: IconBitmap = Resource::IconMusicSmall;
       case Enum::LauncherItem.ODO_TRIP: IconBitmap = Resource::IconOdoTripSmall;
-      case Enum::LauncherItem.THEME: IconBitmap = Resource::IconThemeSmall;
+      case Enum::LauncherItem.METER_DISPLAY: IconBitmap = Resource::IconThemeSmall;
       case Enum::LauncherItem.NAVIGATION: IconBitmap = Resource::IconNavigationSmall;
       case Enum::LauncherItem.NOTIFICATION: IconBitmap = Resource::IconNotificationSmall;
       case Enum::LauncherItem.WEATHER: IconBitmap = Resource::IconWeatherSmall;
@@ -568,7 +572,7 @@ class LNC_RotaryPlate : Components::BaseComponent
       case Enum::LauncherItem.PHONE: IconBitmap = Resource::IconPhoneLarge;
       case Enum::LauncherItem.MUSIC: IconBitmap = Resource::IconMusicLarge;
       case Enum::LauncherItem.ODO_TRIP: IconBitmap = Resource::IconOdoTripLarge;
-      case Enum::LauncherItem.THEME: IconBitmap = Resource::IconThemeLarge;
+      case Enum::LauncherItem.METER_DISPLAY: IconBitmap = Resource::IconThemeLarge;
       case Enum::LauncherItem.NAVIGATION: IconBitmap = Resource::IconNavigationLarge;
       case Enum::LauncherItem.NOTIFICATION: IconBitmap = Resource::IconNotificationLarge;
       case Enum::LauncherItem.WEATHER: IconBitmap = Resource::IconWeatherLarge;
@@ -703,10 +707,11 @@ class LNC_Base : Core::Group
   inherited property Bounds = <0,38,480,272>;
 
   $rect <20,20,160,60>
-  object Views::Rectangle BlackBG
+  object Views::Wallpaper Background
   {
+    preset Layout = Core::Layout[AlignToBottom, AlignToLeft];
     preset Bounds = <0,0,480,234>;
-    preset Color = #000000FF;
+    preset Bitmap = Resource::LauncherBG;
   }
 
   $rect <20,20,160,60>
@@ -753,7 +758,7 @@ class LNC_Base : Core::Group
       case Enum::LauncherItem.PHONE: Title = Strings::LNC_phone;
       case Enum::LauncherItem.MUSIC: Title = Strings::LNC_music;
       case Enum::LauncherItem.ODO_TRIP: Title = Strings::LNC_odo_trip;
-      case Enum::LauncherItem.THEME: Title = Strings::LNC_theme;
+      case Enum::LauncherItem.METER_DISPLAY: Title = Strings::LNC_METER_DISPLAY;
       case Enum::LauncherItem.NAVIGATION: Title = Strings::LNC_navigation;
       case Enum::LauncherItem.NOTIFICATION: Title = Strings::LNC_notification;
       case Enum::LauncherItem.WEATHER: Title = Strings::LNC_weather;

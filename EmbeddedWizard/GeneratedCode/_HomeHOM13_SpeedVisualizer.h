@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _LauncherLNC_Base_H
-#define _LauncherLNC_Base_H
+#ifndef _HomeHOM13_SpeedVisualizer_H
+#define _HomeHOM13_SpeedVisualizer_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,10 +42,14 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_CoreGroup.h"
+#include "_ComponentsBaseMainBG.h"
+#include "_ComponentsDDModeMask.h"
+#include "_CoreKeyPressHandler.h"
+#include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_ViewsImage.h"
+#include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-#include "_ViewsWallpaper.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -53,10 +57,10 @@
 #define _CoreDialogContext_
 #endif
 
-/* Forward declaration of the class Core::KeyPressHandler */
-#ifndef _CoreKeyPressHandler_
-  EW_DECLARE_CLASS( CoreKeyPressHandler )
-#define _CoreKeyPressHandler_
+/* Forward declaration of the class Core::Group */
+#ifndef _CoreGroup_
+  EW_DECLARE_CLASS( CoreGroup )
+#define _CoreGroup_
 #endif
 
 /* Forward declaration of the class Core::LayoutContext */
@@ -89,24 +93,20 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Launcher::LNC_Base */
-#ifndef _LauncherLNC_Base_
-  EW_DECLARE_CLASS( LauncherLNC_Base )
-#define _LauncherLNC_Base_
+/* Forward declaration of the class Home::HOM13_SpeedVisualizer */
+#ifndef _HomeHOM13_SpeedVisualizer_
+  EW_DECLARE_CLASS( HomeHOM13_SpeedVisualizer )
+#define _HomeHOM13_SpeedVisualizer_
 #endif
 
 
-/* Deklaration of class : 'Launcher::LNC_Base' */
-EW_DEFINE_FIELDS( LauncherLNC_Base, CoreGroup )
-  EW_OBJECT  ( Background,      ViewsWallpaper )
-  EW_OBJECT  ( ImgLCBlueline,   ViewsImage )
-  EW_OBJECT  ( CurrentItemTitleText, ViewsText )
-  EW_OBJECT  ( PreviousItemTitleText, ViewsText )
-  EW_OBJECT  ( NextItemTitleText, ViewsText )
-EW_END_OF_FIELDS( LauncherLNC_Base )
+/* Deklaration of class : 'Home::HOM13_SpeedVisualizer' */
+EW_DEFINE_FIELDS( HomeHOM13_SpeedVisualizer, ComponentsBaseMainBG )
+  EW_OBJECT  ( Title,           ViewsText )
+EW_END_OF_FIELDS( HomeHOM13_SpeedVisualizer )
 
-/* Virtual Method Table (VMT) for the class : 'Launcher::LNC_Base' */
-EW_DEFINE_METHODS( LauncherLNC_Base, CoreGroup )
+/* Virtual Method Table (VMT) for the class : 'Home::HOM13_SpeedVisualizer' */
+EW_DEFINE_METHODS( HomeHOM13_SpeedVisualizer, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -150,20 +150,31 @@ EW_DEFINE_METHODS( LauncherLNC_Base, CoreGroup )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-EW_END_OF_METHODS( LauncherLNC_Base )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( HomeHOM13_SpeedVisualizer _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( HomeHOM13_SpeedVisualizer _this )
+  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+EW_END_OF_METHODS( HomeHOM13_SpeedVisualizer )
 
-/* 'C' function for method : 'Launcher::LNC_Base.GetStringOfLauncherItem()' */
-XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum 
-  aLauncherItem );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void HomeHOM13_SpeedVisualizer_Init( HomeHOM13_SpeedVisualizer _this, XHandle aArg );
 
-/* 'C' function for method : 'Launcher::LNC_Base.SetItems()' */
-void LauncherLNC_Base_SetItems( LauncherLNC_Base _this, XEnum aPreviousItem, XEnum 
-  aCurrentItem, XEnum aNextItem );
+/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnShortEnterKeyActivated()' */
+void HomeHOM13_SpeedVisualizer_OnShortEnterKeyActivated( HomeHOM13_SpeedVisualizer _this );
+
+/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnShortHomeKeyActivated()' */
+void HomeHOM13_SpeedVisualizer_OnShortHomeKeyActivated( HomeHOM13_SpeedVisualizer _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _LauncherLNC_Base_H */
+#endif /* _HomeHOM13_SpeedVisualizer_H */
 
 /* Embedded Wizard */

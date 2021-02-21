@@ -1270,6 +1270,9 @@ class VehicleDeviceClass : Templates::DeviceClass
   // This object represents an individual system event.
   $rect <20,280,260,320>
   object Core::SystemEvent VehicleDataReceivedSystemEvent;
+
+  $rect <20,330,220,370>
+  var Enum::MeterDisplay CurrentMeterDisplay = Enum::MeterDisplay.TACHOMETER;
 }
 
 $rect <20,590,220,630>

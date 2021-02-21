@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef Home_H
-#define Home_H
+#ifndef Info_H
+#define Info_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,14 +42,12 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_HomeHOM11_TachoVisualizer.h"
-#include "_HomeHOM12_EcoVisualizer.h"
-#include "_HomeHOM13_SpeedVisualizer.h"
+#include "_InfoINF01_MeterDisplaySettingMenu.h"
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* Home_H */
+#endif /* Info_H */
 
 /* Embedded Wizard */

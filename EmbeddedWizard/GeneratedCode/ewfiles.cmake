@@ -29,4 +29,5 @@ set(EMWIFILES
 	"Weather.c" 
 	"Pop.c" 
 	"Brightness.c" 
-	"Unit.c")
+	"Unit.c" 
+	"Info.c")

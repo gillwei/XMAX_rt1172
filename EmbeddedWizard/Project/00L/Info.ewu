@@ -1,0 +1,118 @@
+﻿$version 10.00
+
+$rect <10,10,280,50>
+$output false
+class INF01_MeterDisplaySettingMenu : Menu::BaseMenuView
+{
+  $rect <10,290,210,330>
+  inherited var SlideOutEffectEnabled = true;
+
+  $rect <510,20,710,60>
+  inherited method LoadItemClass()
+  {
+    // suppress warning
+    if( aItemNo )
+    {
+      // empty body
+    }
+    return Menu::ItemCheckMark;
+  }
+
+  $rect <510,70,710,110>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+      {
+      title = ItemTitleArray[aItemNo];
+      }
+    return title;
+  }
+
+  $rect <510,170,710,210>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    var Enum::HomeType HomeType = Enum::HomeType.TOTAL;
+    switch( aItemNo )
+    {
+      case 0:
+      {
+        DeviceInterface::VehicleDevice.CurrentMeterDisplay = Enum::MeterDisplay.TACHOMETER;
+        HomeType = Enum::HomeType.TACHO_VISUALIZER;
+      }
+      case 1:
+      {
+        DeviceInterface::VehicleDevice.CurrentMeterDisplay = Enum::MeterDisplay.ECHO_METER;
+        HomeType = Enum::HomeType.ECO_VISUALIZER;
+      }
+      case 2:
+      {
+        DeviceInterface::VehicleDevice.CurrentMeterDisplay = Enum::MeterDisplay.SPEED_METER;
+        HomeType = Enum::HomeType.SPEED_VISUALIZER;
+      }
+      default :;
+    }
+
+    if( HomeType != Enum::HomeType.TOTAL )
+    {
+      var Application::Application App = ( Application::Application )GetRoot();
+      if( null != App )
+      {
+        App.SwitchToHome( HomeType );
+      }
+    }
+  }
+
+  $rect <510,120,710,160>
+  inherited method LoadItemChecked()
+  {
+    var bool checked = false;
+    switch( aItemNo )
+    {
+      case 0:
+      {
+        if( Enum::MeterDisplay.TACHOMETER == DeviceInterface::VehicleDevice.CurrentMeterDisplay )
+        {
+          checked = true;
+        }
+      }
+      case 1:
+      {
+        if( Enum::MeterDisplay.ECHO_METER == DeviceInterface::VehicleDevice.CurrentMeterDisplay )
+        {
+          checked = true;
+        }
+      }
+      case 2:
+      {
+        if( Enum::MeterDisplay.SPEED_METER == DeviceInterface::VehicleDevice.CurrentMeterDisplay )
+        {
+          checked = true;
+        }
+      }
+      default:;
+    }
+
+    return checked;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset DDModeEnabled = true;
+    preset NoOfItems = 3;
+  }
+
+  $rect <730,70,930,110>
+  array string ItemTitleArray[ 3 ] =
+  (
+    Default[0] = Strings::INF01_TACHO_VISUALIZER;
+    Default[1] = Strings::INF01_ECHO_VISUALIZER;
+    Default[2] = Strings::INF01_SPEED_VISUALIZER;
+  );
+}

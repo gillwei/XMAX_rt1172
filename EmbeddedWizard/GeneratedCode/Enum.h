@@ -92,7 +92,7 @@ typedef enum
   EnumLauncherItemPHONE                 = 0,
   EnumLauncherItemMUSIC                 = 1,
   EnumLauncherItemODO_TRIP              = 2,
-  EnumLauncherItemTHEME                 = 3,
+  EnumLauncherItemMETER_DISPLAY         = 3,
   EnumLauncherItemNAVIGATION            = 4,
   EnumLauncherItemNOTIFICATION          = 5,
   EnumLauncherItemWEATHER               = 6,
@@ -268,6 +268,27 @@ typedef enum
   EnumDataTypeUINT32                    = 0,
   EnumDataTypeFLOAT                     = 1
 } EnumDataType;
+
+/* User defined enumeration: 'Enum::MeterDisplay' */
+typedef enum
+{
+  EnumMeterDisplayTACHOMETER            = 0,
+  EnumMeterDisplayECHO_METER            = 1,
+  EnumMeterDisplaySPEED_METER           = 2
+} EnumMeterDisplay;
+
+/* User defined enumeration: 'Enum::HomeType' */
+typedef enum
+{
+  EnumHomeTypeTACHO_VISUALIZER          = 0,
+  EnumHomeTypeECO_VISUALIZER            = 1,
+  EnumHomeTypeSPEED_VISUALIZER          = 2,
+  EnumHomeTypeNAVI_DEFAULT_VIEW         = 3,
+  EnumHomeTypeNAVI_TURN_BY_TURN         = 4,
+  EnumHomeTypeNAVI_NEXT_TURN            = 5,
+  EnumHomeTypeVEHICLE_INFO              = 6,
+  EnumHomeTypeTOTAL                     = 7
+} EnumHomeType;
 
 #ifdef __cplusplus
   }

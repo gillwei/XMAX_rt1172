@@ -39,8 +39,11 @@
 #include "_FactoryDisplayAutoRun.h"
 #include "_FactoryDisplayManual.h"
 #include "_FactoryTestContext.h"
-#include "_HomeHOM11_tachometer.h"
+#include "_HomeHOM11_TachoVisualizer.h"
+#include "_HomeHOM12_EcoVisualizer.h"
+#include "_HomeHOM13_SpeedVisualizer.h"
 #include "_LauncherLNC_Main.h"
+#include "_NavigationMain.h"
 #include "_SettingsBtFwUpdateDialog.h"
 #include "_TopTOP01_Disclaimer.h"
 #include "Application.h"
@@ -50,12 +53,10 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x0000009E, /* ratio 73.42 % */
+  0x0000004E, /* ratio 97.44 % */
   0xB8002D00, 0x000A6452, 0x1CC2003A, 0xC0075004, 0x1242001C, 0x00039002, 0x002B0004,
-  0x08CC38D2, 0x36000C40, 0xD000CA00, 0xC9801151, 0x908B0305, 0x0DB0F8E1, 0x4D168DCB,
-  0x64594876, 0x3637CDA2, 0x88545A49, 0x974E0004, 0x54708922, 0x99E71208, 0x5A1F1A92,
-  0xA3F0C374, 0x520F9353, 0x11B90952, 0x42A145A1, 0xB004F89B, 0x934C6452, 0x00020360,
-  0x00000000
+  0x08CC38D2, 0x36000C40, 0xD000CA00, 0xC9801151, 0x508B0307, 0xA111B909, 0x60002245,
+  0x06F00136, 0x16961900, 0x1004EA4D, 0x00000010, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -63,8 +64,6 @@ static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XRect _Const0001 = {{ 0, 0 }, { 480, 32 }};
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x0018 };
-static const XStringRes _Const0004 = { _StringsDefault0, 0x0023 };
-static const XStringRes _Const0005 = { _StringsDefault0, 0x0040 };
 
 /* Initializer for the class 'Application::Application' */
 void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, XHandle aArg )
@@ -158,7 +157,8 @@ void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _th
 
   CoreView_OnSetStackingPriority((CoreView)&_this->StatusBar, 1 );
   CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
-  HomeHOM11_tachometer, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  HomeHOM11_TachoVisualizer, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 
+  0 );
 }
 
 /* 'C' function for method : 'Application::Application.ShowDisclaimer()' */
@@ -281,25 +281,58 @@ void ApplicationApplication_DismissFactoryTestDialog( ApplicationApplication _th
 }
 
 /* 'C' function for method : 'Application::Application.SwitchToHome()' */
-void ApplicationApplication_SwitchToHome( ApplicationApplication _this, CoreGroup 
-  aHomeDialog )
+void ApplicationApplication_SwitchToHome( ApplicationApplication _this, XEnum aHomeType )
 {
-  if ( aHomeDialog != 0 )
+  XClass HomeClass = ApplicationApplication_HomeClassOfHomeType( _this, aHomeType );
+
+  if ( HomeClass != 0 )
   {
-    while ( CoreGroup_CountDialogs((CoreGroup)_this ) > 0 )
+    XBool IsInDialogStack = 0;
+    XInt32 DialogIdx = 0;
+
+    for ( DialogIdx = 0; DialogIdx < CoreGroup_CountDialogs((CoreGroup)_this ); 
+         DialogIdx++ )
     {
-      EwTrace( "%s%$", EwLoadString( &_Const0003 ), EwClassOf(((XObject)CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
-        0 ))));
-      CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
-      0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+      if ( HomeClass == EwClassOf(((XObject)CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+          DialogIdx ))))
+      {
+        IsInDialogStack = 1;
+        break;
+      }
     }
 
-    CoreGroup_SwitchToDialog((CoreGroup)_this, aHomeDialog, 0, 0, 0, 0, 0, 0, 0, 
-    EwNullSlot, EwNullSlot, 0 );
-  }
-  else
-  {
-    EwTrace( "%s", EwLoadString( &_Const0004 ));
+    if ( IsInDialogStack )
+    {
+      for ( DialogIdx = 0; DialogIdx < CoreGroup_CountDialogs((CoreGroup)_this ); 
+           DialogIdx++ )
+      {
+        if ( HomeClass == EwClassOf(((XObject)CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+            0 ))))
+          break;
+        else
+        {
+          CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+          0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+        }
+      }
+    }
+    else
+    {
+      CoreGroup HomeDialog = ApplicationApplication_HomeDialogOfHomeType( _this, 
+        aHomeType );
+
+      if ( HomeDialog != 0 )
+      {
+        while ( CoreGroup_CountDialogs((CoreGroup)_this ) > 0 )
+        {
+          CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+          0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+        }
+
+        CoreGroup_SwitchToDialog((CoreGroup)_this, HomeDialog, 0, 0, 0, 0, 0, 0, 
+        0, EwNullSlot, EwNullSlot, 0 );
+      }
+    }
   }
 }
 
@@ -314,7 +347,7 @@ void ApplicationApplication_OnDDModeTestSlot( ApplicationApplication _this, XObj
   EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->DDModeActivated 
   = (XBool)!DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( EwGetAutoObject( 
   &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
-  EwTrace( "%s%b", EwLoadString( &_Const0005 ), DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
+  EwTrace( "%s%b", EwLoadString( &_Const0003 ), DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )));
   DeviceInterfaceVehicleDeviceClass_NotifyDDModeStateChanged( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
   DeviceInterfaceVehicleDeviceClass ));
@@ -337,6 +370,102 @@ void ApplicationApplication_ReturnToLauncher( ApplicationApplication _this )
       break;
     }
   }
+}
+
+/* 'C' function for method : 'Application::Application.HomeClassOfHomeType()' */
+XClass ApplicationApplication_HomeClassOfHomeType( ApplicationApplication _this, 
+  XEnum aHomeType )
+{
+  XClass HomeClass;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  HomeClass = 0;
+
+  switch ( aHomeType )
+  {
+    case EnumHomeTypeTACHO_VISUALIZER :
+      HomeClass = EW_CLASS( HomeHOM11_TachoVisualizer );
+    break;
+
+    case EnumHomeTypeECO_VISUALIZER :
+      HomeClass = EW_CLASS( HomeHOM12_EcoVisualizer );
+    break;
+
+    case EnumHomeTypeSPEED_VISUALIZER :
+      HomeClass = EW_CLASS( HomeHOM13_SpeedVisualizer );
+    break;
+
+    case EnumHomeTypeNAVI_DEFAULT_VIEW :
+      HomeClass = EW_CLASS( NavigationMain );
+    break;
+
+    case EnumHomeTypeNAVI_TURN_BY_TURN :
+      ;
+    break;
+
+    case EnumHomeTypeNAVI_NEXT_TURN :
+      ;
+    break;
+
+    case EnumHomeTypeVEHICLE_INFO :
+      ;
+    break;
+
+    default : 
+      ;
+  }
+
+  return HomeClass;
+}
+
+/* 'C' function for method : 'Application::Application.HomeDialogOfHomeType()' */
+CoreGroup ApplicationApplication_HomeDialogOfHomeType( ApplicationApplication _this, 
+  XEnum aHomeType )
+{
+  CoreGroup aHomeDialog;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  aHomeDialog = 0;
+
+  switch ( aHomeType )
+  {
+    case EnumHomeTypeTACHO_VISUALIZER :
+      aHomeDialog = ((CoreGroup)EwNewObject( HomeHOM11_TachoVisualizer, 0 ));
+    break;
+
+    case EnumHomeTypeECO_VISUALIZER :
+      aHomeDialog = ((CoreGroup)EwNewObject( HomeHOM12_EcoVisualizer, 0 ));
+    break;
+
+    case EnumHomeTypeSPEED_VISUALIZER :
+      aHomeDialog = ((CoreGroup)EwNewObject( HomeHOM13_SpeedVisualizer, 0 ));
+    break;
+
+    case EnumHomeTypeNAVI_DEFAULT_VIEW :
+      aHomeDialog = ((CoreGroup)EwNewObject( NavigationMain, 0 ));
+    break;
+
+    case EnumHomeTypeNAVI_TURN_BY_TURN :
+      ;
+    break;
+
+    case EnumHomeTypeNAVI_NEXT_TURN :
+      ;
+    break;
+
+    case EnumHomeTypeVEHICLE_INFO :
+      ;
+    break;
+
+    default : 
+      ;
+  }
+
+  return aHomeDialog;
 }
 
 /* Variants derived from the class : 'Application::Application' */

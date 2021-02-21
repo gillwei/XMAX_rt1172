@@ -938,3 +938,15 @@ note group Note11
 {
   attr Bounds = <10,790,1100,1000>;
 }
+
+$rect <880,710,1080,750>
+$output false
+resource Resources::Bitmap LauncherBG
+{
+  attr bitmapfile FileName = .\Res\launcher\LC_Background.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}

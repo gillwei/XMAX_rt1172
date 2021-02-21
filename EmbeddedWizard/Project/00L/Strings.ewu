@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/02/24 23:32:41
+// Generated: 2021/03/01 15:50:52
 
 $output false
 const string GEN_ok =
@@ -321,21 +321,21 @@ const string HOM03_cruise =
 );
 
 $output false
-const string INF01_tachometer =
+const string INF01_TACHO_VISUALIZER =
 (
-  Default = "Tacho meter";
+  Default = "Tacho visualizer";
 );
 
 $output false
-const string INF01_echo_meter =
+const string INF01_ECHO_VISUALIZER =
 (
-  Default = "ECO meter";
+  Default = "ECO visualizer";
 );
 
 $output false
-const string INF01_speed_meter =
+const string INF01_SPEED_VISUALIZER =
 (
-  Default = "Speed meter";
+  Default = "Speed visualizer";
 );
 
 $output false
@@ -363,9 +363,9 @@ const string INF26_trip_f =
 );
 
 $output false
-const string LNC_theme =
+const string LNC_METER_DISPLAY =
 (
-  Default = "Theme";
+  Default = "Meter display";
 );
 
 $output false

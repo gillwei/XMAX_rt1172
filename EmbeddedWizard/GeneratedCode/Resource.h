@@ -222,6 +222,9 @@ EW_DECLARE_BITMAP_RES( ResourceBrightnessBar )
 /* Bitmap resource : 'Resource::IconPerOfRain' */
 EW_DECLARE_BITMAP_RES( ResourceIconPerOfRain )
 
+/* Bitmap resource : 'Resource::LauncherBG' */
+EW_DECLARE_BITMAP_RES( ResourceLauncherBG )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

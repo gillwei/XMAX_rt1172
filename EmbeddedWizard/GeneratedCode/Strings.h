@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/02/24 23:32:41 */
+   Generated: 2021/03/01 15:50:52 */
 EW_DECLARE_CONST( StringsGEN_ok )
 
 /* User defined constant: 'Strings::GEN_cancel' */
@@ -76,11 +76,17 @@ extern const XStringRes StringsBRT01_speed_meter;
 /* User defined constant: 'Strings::GPW01_grip_warmer' */
 extern const XStringRes StringsGPW01_grip_warmer;
 
-/* User defined constant: 'Strings::INF01_tachometer' */
-extern const XStringRes StringsINF01_tachometer;
+/* User defined constant: 'Strings::INF01_TACHO_VISUALIZER' */
+extern const XStringRes StringsINF01_TACHO_VISUALIZER;
 
-/* User defined constant: 'Strings::LNC_theme' */
-extern const XStringRes StringsLNC_theme;
+/* User defined constant: 'Strings::INF01_ECHO_VISUALIZER' */
+extern const XStringRes StringsINF01_ECHO_VISUALIZER;
+
+/* User defined constant: 'Strings::INF01_SPEED_VISUALIZER' */
+extern const XStringRes StringsINF01_SPEED_VISUALIZER;
+
+/* User defined constant: 'Strings::LNC_METER_DISPLAY' */
+extern const XStringRes StringsLNC_METER_DISPLAY;
 
 /* User defined constant: 'Strings::LNC_odo_trip' */
 extern const XStringRes StringsLNC_odo_trip;

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _HomeHOM11_tachometer_H
-#define _HomeHOM11_tachometer_H
+#ifndef _HomeHOM12_EcoVisualizer_H
+#define _HomeHOM12_EcoVisualizer_H
 
 #ifdef __cplusplus
   extern "C"
@@ -93,20 +93,20 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Home::HOM11_tachometer */
-#ifndef _HomeHOM11_tachometer_
-  EW_DECLARE_CLASS( HomeHOM11_tachometer )
-#define _HomeHOM11_tachometer_
+/* Forward declaration of the class Home::HOM12_EcoVisualizer */
+#ifndef _HomeHOM12_EcoVisualizer_
+  EW_DECLARE_CLASS( HomeHOM12_EcoVisualizer )
+#define _HomeHOM12_EcoVisualizer_
 #endif
 
 
-/* Deklaration of class : 'Home::HOM11_tachometer' */
-EW_DEFINE_FIELDS( HomeHOM11_tachometer, ComponentsBaseMainBG )
+/* Deklaration of class : 'Home::HOM12_EcoVisualizer' */
+EW_DEFINE_FIELDS( HomeHOM12_EcoVisualizer, ComponentsBaseMainBG )
   EW_OBJECT  ( Title,           ViewsText )
-EW_END_OF_FIELDS( HomeHOM11_tachometer )
+EW_END_OF_FIELDS( HomeHOM12_EcoVisualizer )
 
-/* Virtual Method Table (VMT) for the class : 'Home::HOM11_tachometer' */
-EW_DEFINE_METHODS( HomeHOM11_tachometer, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Home::HOM12_EcoVisualizer' */
+EW_DEFINE_METHODS( HomeHOM12_EcoVisualizer, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -152,24 +152,29 @@ EW_DEFINE_METHODS( HomeHOM11_tachometer, ComponentsBaseMainBG )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( HomeHOM11_tachometer _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( HomeHOM11_tachometer _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( HomeHOM12_EcoVisualizer _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( HomeHOM12_EcoVisualizer _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-EW_END_OF_METHODS( HomeHOM11_tachometer )
+EW_END_OF_METHODS( HomeHOM12_EcoVisualizer )
 
-/* 'C' function for method : 'Home::HOM11_tachometer.OnShortEnterKeyActivated()' */
-void HomeHOM11_tachometer_OnShortEnterKeyActivated( HomeHOM11_tachometer _this );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void HomeHOM12_EcoVisualizer_Init( HomeHOM12_EcoVisualizer _this, XHandle aArg );
 
-/* 'C' function for method : 'Home::HOM11_tachometer.OnShortHomeKeyActivated()' */
-void HomeHOM11_tachometer_OnShortHomeKeyActivated( HomeHOM11_tachometer _this );
+/* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnShortEnterKeyActivated()' */
+void HomeHOM12_EcoVisualizer_OnShortEnterKeyActivated( HomeHOM12_EcoVisualizer _this );
+
+/* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnShortHomeKeyActivated()' */
+void HomeHOM12_EcoVisualizer_OnShortHomeKeyActivated( HomeHOM12_EcoVisualizer _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _HomeHOM11_tachometer_H */
+#endif /* _HomeHOM12_EcoVisualizer_H */
 
 /* Embedded Wizard */

@@ -414,4 +414,10 @@ EW_RES_WITHOUT_VARIANTS( ResourceBrightnessBar )
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconPerOfRain' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconPerOfRain )
 
+/* Include a file containing the bitmap resource : 'Resource::LauncherBG' */
+#include "_ResourceLauncherBG.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::LauncherBG' */
+EW_RES_WITHOUT_VARIANTS( ResourceLauncherBG )
+
 /* Embedded Wizard */

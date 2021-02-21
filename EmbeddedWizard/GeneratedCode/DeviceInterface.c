@@ -1318,6 +1318,9 @@ void DeviceInterfaceVehicleDeviceClass__Init( DeviceInterfaceVehicleDeviceClass 
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceVehicleDeviceClass );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  _this->CurrentMeterDisplay = EnumMeterDisplayTACHOMETER;
 }
 
 /* Re-Initializer for the class 'DeviceInterface::VehicleDeviceClass' */
@@ -1485,7 +1488,7 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::VehicleDeviceClass' */
 EW_DEFINE_CLASS( DeviceInterfaceVehicleDeviceClass, TemplatesDeviceClass, DDModeStateChangedSystemEvent, 
                  DDModeStateChangedSystemEvent, DDModeStateChangedSystemEvent, DDModeStateChangedSystemEvent, 
-                 DDModeActivated, DDModeActivated, "DeviceInterface::VehicleDeviceClass" )
+                 CurrentMeterDisplay, CurrentMeterDisplay, "DeviceInterface::VehicleDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceVehicleDeviceClass )
 
 /* User defined auto object: 'DeviceInterface::VehicleDevice' */

@@ -40,7 +40,7 @@ class Application : Core::Root
     StatusBar.StackingPriority = 1;
 
     //TODO: switch to the last page saved in EEPROM
-    GetRoot().SwitchToDialog( new Home::HOM11_tachometer, null, null, null, null, null, null, null, null, null, false );
+    GetRoot().SwitchToDialog( new Home::HOM11_TachoVisualizer, null, null, null, null, null, null, null, null, null, false );
   }
 
   $rect <40,430,270,470>
@@ -177,27 +177,61 @@ class Application : Core::Root
     }
   }
 
-  // For dismissing the enclosed dialogs and showing home screen
+  // Switch to home/launcher
   note group Note1
   {
-    attr Bounds = <330,390,620,550>;
+    attr Bounds = <330,390,810,550>;
   }
 
-  $rect <350,490,550,530>
-  method void SwitchToHome( arg Core::Group aHomeDialog )
+  $rect <360,440,560,480>
+  method void SwitchToHome( arg Enum::HomeType aHomeType )
   {
-    if( null!= aHomeDialog )
+    var class HomeClass = HomeClassOfHomeType( aHomeType );
+
+    if( null != HomeClass )
     {
-      while( this.CountDialogs() > 0 )
+      // check if Home is already in the dialog stack
+      var bool IsInDialogStack = false;
+      var int32 DialogIdx = 0;
+      for( DialogIdx = 0; DialogIdx < CountDialogs(); DialogIdx++ )
       {
-        trace "dismiss ", classof this.GetDialogAtIndex( 0 );
-        this.DismissDialog( GetDialogAtIndex( 0 ), null, null, null, null, null, false );
+        if( HomeClass == classof GetDialogAtIndex( DialogIdx ) )
+        {
+          IsInDialogStack = true;
+          break;
+        }
       }
-      this.SwitchToDialog( aHomeDialog, null, null, null, null, null, null, null, null, null, false );
-    }
-    else
-    {
-      trace "Error: aHomeDialog is null";
+
+      if( IsInDialogStack )
+      {
+        // Dismiss the dialogs on the top of the current home dialog
+        for( DialogIdx = 0; DialogIdx < CountDialogs(); DialogIdx++ )
+        {
+          // The dialog lying top-most (the active dialog in context of this component) has the index 0 (zero).
+          if( HomeClass == classof GetDialogAtIndex( 0 ) )
+          {
+            break;
+          }
+          else
+          {
+            DismissDialog( GetDialogAtIndex( 0 ), null, null, null, null, null, false );
+          }
+        }
+      }
+      else
+      {
+        var Core::Group HomeDialog = HomeDialogOfHomeType( aHomeType );
+        if( null != HomeDialog )
+        {
+          // dismiss all dialogs
+          while( CountDialogs() > 0 )
+          {
+            DismissDialog( GetDialogAtIndex( 0 ), null, null, null, null, null, false );
+          }
+          // show the home dialog
+          SwitchToDialog( HomeDialog, null, null, null, null, null, null, null, null, null, false );
+        }
+      }
     }
   }
 
@@ -225,7 +259,7 @@ class Application : Core::Root
   }
 
   // Return from the DD mode forbidden UI to the launcher
-  $rect <640,410,840,450>
+  $rect <360,490,560,530>
   method void ReturnToLauncher()
   {
     var int32 NoOfDialogs = CountDialogs();
@@ -239,5 +273,41 @@ class Application : Core::Root
         break;
       }
     }
+  }
+
+  $rect <570,440,790,480>
+  method class HomeClassOfHomeType( arg Enum::HomeType aHomeType )
+  {
+    var class HomeClass = null;
+    switch( aHomeType )
+    {
+      case Enum::HomeType.TACHO_VISUALIZER: HomeClass = Home::HOM11_TachoVisualizer;
+      case Enum::HomeType.ECO_VISUALIZER: HomeClass = Home::HOM12_EcoVisualizer;
+      case Enum::HomeType.SPEED_VISUALIZER: HomeClass = Home::HOM13_SpeedVisualizer;
+      case Enum::HomeType.NAVI_DEFAULT_VIEW: HomeClass = Navigation::Main;
+      case Enum::HomeType.NAVI_TURN_BY_TURN:;
+      case Enum::HomeType.NAVI_NEXT_TURN:;
+      case Enum::HomeType.VEHICLE_INFO:;
+      default:;
+    }
+    return HomeClass;
+  }
+
+  $rect <570,490,790,530>
+  method Core::Group HomeDialogOfHomeType( arg Enum::HomeType aHomeType )
+  {
+    var Core::Group aHomeDialog = null;
+    switch( aHomeType )
+    {
+      case Enum::HomeType.TACHO_VISUALIZER: aHomeDialog = new Home::HOM11_TachoVisualizer;
+      case Enum::HomeType.ECO_VISUALIZER: aHomeDialog = new Home::HOM12_EcoVisualizer;
+      case Enum::HomeType.SPEED_VISUALIZER: aHomeDialog = new Home::HOM13_SpeedVisualizer;
+      case Enum::HomeType.NAVI_DEFAULT_VIEW: aHomeDialog = new Navigation::Main;
+      case Enum::HomeType.NAVI_TURN_BY_TURN:;
+      case Enum::HomeType.NAVI_NEXT_TURN:;
+      case Enum::HomeType.VEHICLE_INFO:;
+      default:;
+    }
+    return aHomeDialog;
   }
 }

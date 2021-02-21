@@ -62,6 +62,7 @@
 EW_DEFINE_FIELDS( DeviceInterfaceVehicleDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( DDModeStateChangedSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( VehicleDataReceivedSystemEvent, CoreSystemEvent )
+  EW_VARIABLE( CurrentMeterDisplay, XEnum )
   EW_PROPERTY( DDModeActivated, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceVehicleDeviceClass )
 

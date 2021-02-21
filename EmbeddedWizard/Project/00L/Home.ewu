@@ -2,10 +2,13 @@
 
 $rect <10,10,210,50>
 $output false
-class HOM11_tachometer : Components::BaseMainBG
+class HOM11_TachoVisualizer : Components::BaseMainBG
 {
-  $rect <0,280,200,320>
-  inherited property Bounds = <0,0,480,272>;
+  $rect <0,280,180,320>
+  inherited method Init()
+  {
+    trace "Init HOM11";
+  }
 
   $rect <210,280,440,320>
   inherited method OnShortEnterKeyActivated()
@@ -24,7 +27,71 @@ class HOM11_tachometer : Components::BaseMainBG
   {
     preset Bounds = <72,113,403,156>;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
-    preset String = Strings::INF01_tachometer;
+    preset String = Strings::INF01_TACHO_VISUALIZER;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+}
+
+$rect <10,60,210,100>
+$output false
+class HOM12_EcoVisualizer : Components::BaseMainBG
+{
+  $rect <0,280,180,320>
+  inherited method Init()
+  {
+    trace "Init HOM12";
+  }
+
+  $rect <210,280,440,320>
+  inherited method OnShortEnterKeyActivated()
+  {
+    GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <210,330,440,370>
+  inherited method OnShortHomeKeyActivated()
+  {
+    // TODO: switch to other home group
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Title
+  {
+    preset Bounds = <72,113,403,156>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = Strings::INF01_ECHO_VISUALIZER;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+}
+
+$rect <10,110,210,150>
+$output false
+class HOM13_SpeedVisualizer : Components::BaseMainBG
+{
+  $rect <0,280,180,320>
+  inherited method Init()
+  {
+    trace "Init HOM13";
+  }
+
+  $rect <210,280,440,320>
+  inherited method OnShortEnterKeyActivated()
+  {
+    GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <210,330,440,370>
+  inherited method OnShortHomeKeyActivated()
+  {
+    // TODO: switch to other home group
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Title
+  {
+    preset Bounds = <72,113,403,156>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = Strings::INF01_SPEED_VISUALIZER;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }

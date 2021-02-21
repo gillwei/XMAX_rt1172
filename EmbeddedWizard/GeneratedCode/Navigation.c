@@ -26,7 +26,6 @@
 
 #include "ewlocale.h"
 #include "_ApplicationApplication.h"
-#include "_ComponentsBaseComponent.h"
 #include "_ComponentsBaseMainBG.h"
 #include "_CoreGroup.h"
 #include "_CoreSystemEventHandler.h"
@@ -650,8 +649,8 @@ void NavigationNAV08_NaviChageViewMenu__Init( NavigationNAV08_NaviChageViewMenu 
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
   _this->Super2.SlideOutEffectEnabled = 1;
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsNAV08_default_view ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsNAV08_turn_by_turn ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsNAV08_turn_list ));
@@ -762,35 +761,40 @@ XBool NavigationNAV08_NaviChageViewMenu_LoadItemChecked( NavigationNAV08_NaviCha
 void NavigationNAV08_NaviChageViewMenu_OnCheckMarkUpdateSlot( NavigationNAV08_NaviChageViewMenu _this, 
   XObject sender )
 {
-  ComponentsBaseComponent Dialog;
-  ApplicationApplication App;
+  XEnum HomeType;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
   CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 0 );
-  Dialog = 0;
-  App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+  HomeType = EnumHomeTypeTOTAL;
 
   switch ( _this->NaviScreenIdx )
   {
     case 0 :
-    {
-      Dialog = ((ComponentsBaseComponent)EwNewObject( NavigationMain, 0 ));
-      ApplicationApplication_SwitchToHome( App, ((CoreGroup)Dialog ));
-    }
+      HomeType = EnumHomeTypeNAVI_DEFAULT_VIEW;
     break;
 
     case 1 :
-      ;
+      HomeType = EnumHomeTypeNAVI_TURN_BY_TURN;
     break;
 
     case 2 :
-      ;
+      HomeType = EnumHomeTypeNAVI_NEXT_TURN;
     break;
 
     default : 
       ;
+  }
+
+  if ( HomeType != EnumHomeTypeTOTAL )
+  {
+    ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+
+    if ( App != 0 )
+    {
+      ApplicationApplication_SwitchToHome( App, HomeType );
+    }
   }
 }
 
