@@ -225,6 +225,12 @@ EW_DECLARE_BITMAP_RES( ResourceLauncherBG )
 /* Bitmap resource : 'Resource::StatusBarDivider' */
 EW_DECLARE_BITMAP_RES( ResourceStatusBarDivider )
 
+/* Bitmap resource : 'Resource::OpeningFadeIn' */
+EW_DECLARE_BITMAP_RES( ResourceOpeningFadeIn )
+
+/* Bitmap resource : 'Resource::OpeningFadeOut' */
+EW_DECLARE_BITMAP_RES( ResourceOpeningFadeOut )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

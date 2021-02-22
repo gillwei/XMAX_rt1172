@@ -65,6 +65,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( FactoryResetTimer, CoreTimer )
   EW_OBJECT  ( QrCodeSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( UpdateLocalTimeSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( BootupAnimationSystemEvent, CoreSystemEvent )
   EW_PROPERTY( SoftwareVersion, XString )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
@@ -197,6 +198,16 @@ void DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime( void* _this );
 
 /* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyUpdateLocalTime(). */
 #define _DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceSystemDeviceClass_StartBootupAnimation( DeviceInterfaceSystemDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.StartBootupAnimation()' */
+void DeviceInterfaceSystemDeviceClass__StartBootupAnimation( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.StartBootupAnimation(). */
+#define _DeviceInterfaceSystemDeviceClass__StartBootupAnimation_
 
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );

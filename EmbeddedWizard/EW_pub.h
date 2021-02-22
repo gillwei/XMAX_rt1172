@@ -27,6 +27,8 @@ typedef enum
     } key_state;
 
 void EW_init( void );
+void EW_start_bootup_animation( void );
+
 void EW_notify_navi_map_update( void );
 void EW_notify_engine_speed_changed( int speed );
 void EW_send_key_event( CoreKeyCode code, key_state state );

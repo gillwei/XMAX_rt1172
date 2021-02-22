@@ -363,6 +363,24 @@ class SystemDeviceClass : Templates::DeviceClass
 
   $rect <870,570,1070,610>
   property string QrCodeText;
+
+  // Bootup Animation
+  note group Note6
+  {
+    attr Bounds = <990,10,1260,170>;
+  }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <1020,60,1230,100>
+  $output true
+  method void StartBootupAnimation()
+  {
+    BootupAnimationSystemEvent.Trigger( null, false );
+  }
+
+  $rect <1020,110,1230,150>
+  object Core::SystemEvent BootupAnimationSystemEvent;
 }
 
 $rect <20,60,220,100>

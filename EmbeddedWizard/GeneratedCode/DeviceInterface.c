@@ -101,6 +101,7 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
   CoreTimer__Init( &_this->FactoryResetTimer, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->QrCodeSystemEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->UpdateLocalTimeSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->BootupAnimationSystemEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceSystemDeviceClass );
@@ -123,6 +124,7 @@ void DeviceInterfaceSystemDeviceClass__ReInit( DeviceInterfaceSystemDeviceClass 
   CoreTimer__ReInit( &_this->FactoryResetTimer );
   CoreSystemEvent__ReInit( &_this->QrCodeSystemEvent );
   CoreSystemEvent__ReInit( &_this->UpdateLocalTimeSystemEvent );
+  CoreSystemEvent__ReInit( &_this->BootupAnimationSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::SystemDeviceClass' */
@@ -136,6 +138,7 @@ void DeviceInterfaceSystemDeviceClass__Done( DeviceInterfaceSystemDeviceClass _t
   CoreTimer__Done( &_this->FactoryResetTimer );
   CoreSystemEvent__Done( &_this->QrCodeSystemEvent );
   CoreSystemEvent__Done( &_this->UpdateLocalTimeSystemEvent );
+  CoreSystemEvent__Done( &_this->BootupAnimationSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -430,6 +433,19 @@ void DeviceInterfaceSystemDeviceClass_NotifyUpdateLocalTime( DeviceInterfaceSyst
 void DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime( void* _this )
 {
   DeviceInterfaceSystemDeviceClass_NotifyUpdateLocalTime((DeviceInterfaceSystemDeviceClass)_this );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceSystemDeviceClass_StartBootupAnimation( DeviceInterfaceSystemDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->BootupAnimationSystemEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.StartBootupAnimation()' */
+void DeviceInterfaceSystemDeviceClass__StartBootupAnimation( void* _this )
+{
+  DeviceInterfaceSystemDeviceClass_StartBootupAnimation((DeviceInterfaceSystemDeviceClass)_this );
 }
 
 /* Default onget method for the property 'FactoryResetComplete' */

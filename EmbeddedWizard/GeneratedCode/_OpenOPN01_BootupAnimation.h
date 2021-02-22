@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _TopTOP01_Disclaimer_H
-#define _TopTOP01_Disclaimer_H
+#ifndef _OpenOPN01_BootupAnimation_H
+#define _OpenOPN01_BootupAnimation_H
 
 #ifdef __cplusplus
   extern "C"
@@ -44,10 +44,9 @@
 
 #include "_ComponentsBaseComponent.h"
 #include "_CoreKeyPressHandler.h"
-#include "_MenuPushButton.h"
+#include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -91,26 +90,24 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Top::TOP01_Disclaimer */
-#ifndef _TopTOP01_Disclaimer_
-  EW_DECLARE_CLASS( TopTOP01_Disclaimer )
-#define _TopTOP01_Disclaimer_
+/* Forward declaration of the class Open::OPN01_BootupAnimation */
+#ifndef _OpenOPN01_BootupAnimation_
+  EW_DECLARE_CLASS( OpenOPN01_BootupAnimation )
+#define _OpenOPN01_BootupAnimation_
 #endif
 
 
-/* Deklaration of class : 'Top::TOP01_Disclaimer' */
-EW_DEFINE_FIELDS( TopTOP01_Disclaimer, ComponentsBaseComponent )
-  EW_PROPERTY( OnAcceptButtonClicked, XSlot )
+/* Deklaration of class : 'Open::OPN01_BootupAnimation' */
+EW_DEFINE_FIELDS( OpenOPN01_BootupAnimation, ComponentsBaseComponent )
+  EW_PROPERTY( OnBootupAnimationFinished, XSlot )
   EW_OBJECT  ( BlackBackground, ViewsRectangle )
-  EW_OBJECT  ( DisclaimerText,  ViewsText )
-  EW_OBJECT  ( TopBar,          ViewsRectangle )
-  EW_OBJECT  ( IconWarning,     ViewsImage )
-  EW_OBJECT  ( WarningText,     ViewsText )
-  EW_OBJECT  ( AcceptButton,    MenuPushButton )
-EW_END_OF_FIELDS( TopTOP01_Disclaimer )
+  EW_OBJECT  ( BootupAnimation, ViewsImage )
+  EW_OBJECT  ( FadeOutTimer,    CoreTimer )
+  EW_VARIABLE( FadeOutFrameNumber, XInt32 )
+EW_END_OF_FIELDS( OpenOPN01_BootupAnimation )
 
-/* Virtual Method Table (VMT) for the class : 'Top::TOP01_Disclaimer' */
-EW_DEFINE_METHODS( TopTOP01_Disclaimer, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'Open::OPN01_BootupAnimation' */
+EW_DEFINE_METHODS( OpenOPN01_BootupAnimation, ComponentsBaseComponent )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -140,7 +137,7 @@ EW_DEFINE_METHODS( TopTOP01_Disclaimer, ComponentsBaseComponent )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
-  EW_METHOD( UpdateLayout,      void )( TopTOP01_Disclaimer _this, XPoint aSize )
+  EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
   EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
@@ -163,29 +160,21 @@ EW_DEFINE_METHODS( TopTOP01_Disclaimer, ComponentsBaseComponent )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
-EW_END_OF_METHODS( TopTOP01_Disclaimer )
+EW_END_OF_METHODS( OpenOPN01_BootupAnimation )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void TopTOP01_Disclaimer_Init( TopTOP01_Disclaimer _this, XHandle aArg );
+void OpenOPN01_BootupAnimation_Init( OpenOPN01_BootupAnimation _this, XHandle aArg );
 
-/* The method UpdateLayout() is invoked automatically after the size of the component 
-   has been changed. This method can be overridden and filled with logic to perform 
-   a sophisticated arrangement calculation for one or more enclosed views. In this 
-   case the parameter aSize can be used. It contains the current size of the component. 
-   Usually, all enclosed views are arranged automatically accordingly to their @Layout 
-   property. UpdateLayout() gives the derived components a chance to extend this 
-   automatism by a user defined algorithm. */
-void TopTOP01_Disclaimer_UpdateLayout( TopTOP01_Disclaimer _this, XPoint aSize );
-
-/* 'C' function for method : 'Top::TOP01_Disclaimer.OnAcceptedSlot()' */
-void TopTOP01_Disclaimer_OnAcceptedSlot( TopTOP01_Disclaimer _this, XObject sender );
+/* 'C' function for method : 'Open::OPN01_BootupAnimation.OnFadeOutTriggeredSlot()' */
+void OpenOPN01_BootupAnimation_OnFadeOutTriggeredSlot( OpenOPN01_BootupAnimation _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _TopTOP01_Disclaimer_H */
+#endif /* _OpenOPN01_BootupAnimation_H */
 
 /* Embedded Wizard */

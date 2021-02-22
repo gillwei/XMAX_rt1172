@@ -39,6 +39,14 @@
 #include "Top.h"
 #include "Views.h"
 
+/* Compressed strings for the language 'Default'. */
+static const unsigned int _StringsDefault0[] =
+{
+  0x0000001E, /* ratio 133.33 % */
+  0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x9E002A00, 0x00028000, 0x00188006,
+  0x10046A32, 0x00000010, 0x00000000
+};
+
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XColor _Const0001 = { 0x00, 0x00, 0x00, 0xFF };
@@ -48,6 +56,7 @@ static const XColor _Const0004 = { 0xF6, 0x95, 0x00, 0xFF };
 static const XRect _Const0005 = {{ 155, 5 }, { 191, 41 }};
 static const XRect _Const0006 = {{ 196, 4 }, { 333, 42 }};
 static const XRect _Const0007 = {{ 165, 219 }, { 315, 259 }};
+static const XStringRes _Const0008 = { _StringsDefault0, 0x0002 };
 
 /* Initializer for the class 'Top::TOP01_Disclaimer' */
 void TopTOP01_Disclaimer__Init( TopTOP01_Disclaimer _this, XObject aLink, XHandle aArg )
@@ -105,6 +114,9 @@ void TopTOP01_Disclaimer__Init( TopTOP01_Disclaimer _this, XObject aLink, XHandl
   ViewsText_OnSetFont( &_this->WarningText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   _this->AcceptButton.OnActivate = EwNewSlot( _this, TopTOP01_Disclaimer_OnAcceptedSlot );
+
+  /* Call the user defined constructor */
+  TopTOP01_Disclaimer_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'Top::TOP01_Disclaimer' */
@@ -138,6 +150,18 @@ void TopTOP01_Disclaimer__Done( TopTOP01_Disclaimer _this )
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void TopTOP01_Disclaimer_Init( TopTOP01_Disclaimer _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const0008 ));
 }
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 

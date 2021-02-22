@@ -199,6 +199,9 @@ void ew_device_system_init
     // create a task to notify EW with the accurate period of 500ms.
     BaseType_t result = xTaskCreate( update_time_task_main, UPDATE_TIME_TASK_NAME, UPDATE_TIME_TASK_STACK_SIZE, NULL, UPDATE_TIME_TASK_PRIORITY, NULL );
     configASSERT( pdPASS == result );
+
+    /* TODO: start bootup animation after TFT backlight is turned on */
+    EW_start_bootup_animation();
 #endif
 }
 
@@ -814,5 +817,23 @@ void EW_notify_qrcode_ready
     is_qrcode_ready = 1;
     strncpy( qr_code, qr_code_text, sizeof( qr_code ) );
     EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_start_bootup_animation
+*
+* Start boot up animation
+*
+*********************************************************************/
+void EW_start_bootup_animation
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceSystemDeviceClass__StartBootupAnimation_
+    DeviceInterfaceSystemDeviceClass__StartBootupAnimation( device_object );
 #endif
 }

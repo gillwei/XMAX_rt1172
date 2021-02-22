@@ -8,24 +8,13 @@ class Application : Core::Root
   $rect <10,340,200,380>
   inherited method Init()
   {
-    ShowDisclaimer();
+    $if $prototyper
+      signal OnStartBootupAnimationSlot;
+    $endif
   }
 
   $rect <10,290,200,330>
   inherited property Bounds = <0,0,480,272>;
-
-  $rect <230,290,440,330>
-  slot ProcKeyHoldSlot
-  {
-    var Core::KeyPressHandler handler = ( Core::KeyPressHandler ) sender;
-    switch( handler.Code )
-    {
-      case Core::KeyCode.Down:;
-      case Core::KeyCode.Up:;
-      case Core::KeyCode.Ok:;
-      default:;
-    }
-  }
 
   $rect <40,490,270,530>
   slot OnDisclaimerAcceptedSlot
@@ -105,12 +94,6 @@ class Application : Core::Root
         default:;
       }
     }
-  }
-
-  $rect <20,20,160,60>
-  object StatusBar::Main StatusBar
-  {
-    preset Bounds = <0,0,480,38>;
   }
 
   // For status bar
@@ -312,5 +295,47 @@ class Application : Core::Root
       default:;
     }
     return aHomeDialog;
+  }
+
+  $rect <530,140,800,180>
+  slot OnBootupAnimationFinishedSlot
+  {
+    var Core::Group BootupAnimationDialog = ( Core::Group )sender;
+    if( null != BootupAnimationDialog )
+    {
+      DismissDialog( BootupAnimationDialog, null, null, null, null, null, false );
+    }
+    StatusBar.Visible = true;
+    ShowDisclaimer();
+  }
+
+  $rect <530,40,830,80>
+  object Core::SystemEventHandler BootupAnimationSystemEventHandler
+  {
+    preset OnEvent = OnStartBootupAnimationSlot;
+    preset Event = DeviceInterface::SystemDevice.BootupAnimationSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <530,90,780,130>
+  slot OnStartBootupAnimationSlot
+  {
+    var Open::OPN01_BootupAnimation BootupAnimationDialog = new Open::OPN01_BootupAnimation;
+    BootupAnimationDialog.OnBootupAnimationFinished = OnBootupAnimationFinishedSlot;
+    SwitchToDialog( BootupAnimationDialog, null, null, null, null, null, null, null, null, null, false );
+  }
+
+  // Bootup Animation
+  note group Note6
+  {
+    attr Bounds = <500,0,860,200>;
+  }
+
+  $rect <20,20,160,60>
+  object StatusBar::Main StatusBar
+  {
+    preset Bounds = <0,0,480,38>;
+    preset Visible = false;
   }
 }

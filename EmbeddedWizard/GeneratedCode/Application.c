@@ -44,6 +44,7 @@
 #include "_HomeHOM13_SpeedVisualizer.h"
 #include "_LauncherLNC_Main.h"
 #include "_NavigationMain.h"
+#include "_OpenOPN01_BootupAnimation.h"
 #include "_SettingsBtFwUpdateDialog.h"
 #include "_StatusBarMain.h"
 #include "_TopTOP01_Disclaimer.h"
@@ -77,19 +78,21 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
 
   /* ... then construct all embedded objects */
   CoreSystemEventHandler__Init( &_this->FactoryTestEventHandler, &_this->_XObject, 0 );
-  StatusBarMain__Init( &_this->StatusBar, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->BtFwStatusObserver, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->DDModeTestTimer, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->BootupAnimationSystemEventHandler, &_this->_XObject, 0 );
+  StatusBarMain__Init( &_this->StatusBar, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( ApplicationApplication );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->StatusBar, _Const0001 );
   _this->StatusBarVisible = 1;
   CoreTimer_OnSetPeriod( &_this->DDModeTestTimer, 3000 );
   CoreTimer_OnSetEnabled( &_this->DDModeTestTimer, 0 );
+  CoreRectView__OnSetBounds( &_this->StatusBar, _Const0001 );
+  CoreGroup_OnSetVisible((CoreGroup)&_this->StatusBar, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->StatusBar ), 0 );
   _this->FactoryTestEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnFactoryTestEventSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->FactoryTestEventHandler, &EwGetAutoObject( 
@@ -99,6 +102,9 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus, 
   DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus ));
   _this->DDModeTestTimer.OnTrigger = EwNewSlot( _this, ApplicationApplication_OnDDModeTestSlot );
+  _this->BootupAnimationSystemEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnStartBootupAnimationSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->BootupAnimationSystemEventHandler, 
+  &EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->BootupAnimationSystemEvent );
 
   /* Call the user defined constructor */
   ApplicationApplication_Init( _this, aArg );
@@ -112,9 +118,10 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->FactoryTestEventHandler );
-  StatusBarMain__ReInit( &_this->StatusBar );
   CorePropertyObserver__ReInit( &_this->BtFwStatusObserver );
   CoreTimer__ReInit( &_this->DDModeTestTimer );
+  CoreSystemEventHandler__ReInit( &_this->BootupAnimationSystemEventHandler );
+  StatusBarMain__ReInit( &_this->StatusBar );
 }
 
 /* Finalizer method for the class 'Application::Application' */
@@ -125,9 +132,10 @@ void ApplicationApplication__Done( ApplicationApplication _this )
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->FactoryTestEventHandler );
-  StatusBarMain__Done( &_this->StatusBar );
   CorePropertyObserver__Done( &_this->BtFwStatusObserver );
   CoreTimer__Done( &_this->DDModeTestTimer );
+  CoreSystemEventHandler__Done( &_this->BootupAnimationSystemEventHandler );
+  StatusBarMain__Done( &_this->StatusBar );
 
   /* Don't forget to deinitialize the super class ... */
   CoreRoot__Done( &_this->_Super );
@@ -139,9 +147,8 @@ void ApplicationApplication__Done( ApplicationApplication _this )
 void ApplicationApplication_Init( ApplicationApplication _this, XHandle aArg )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
-
-  ApplicationApplication_ShowDisclaimer( _this );
 }
 
 /* 'C' function for method : 'Application::Application.OnDisclaimerAcceptedSlot()' */
@@ -476,6 +483,38 @@ CoreGroup ApplicationApplication_HomeDialogOfHomeType( ApplicationApplication _t
   }
 
   return aHomeDialog;
+}
+
+/* 'C' function for method : 'Application::Application.OnBootupAnimationFinishedSlot()' */
+void ApplicationApplication_OnBootupAnimationFinishedSlot( ApplicationApplication _this, 
+  XObject sender )
+{
+  CoreGroup BootupAnimationDialog = EwCastObject( sender, CoreGroup );
+
+  if ( BootupAnimationDialog != 0 )
+  {
+    CoreGroup__DismissDialog( _this, BootupAnimationDialog, 0, 0, 0, EwNullSlot, 
+    EwNullSlot, 0 );
+  }
+
+  CoreGroup_OnSetVisible((CoreGroup)&_this->StatusBar, 1 );
+  ApplicationApplication_ShowDisclaimer( _this );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void ApplicationApplication_OnStartBootupAnimationSlot( ApplicationApplication _this, 
+  XObject sender )
+{
+  OpenOPN01_BootupAnimation BootupAnimationDialog;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  BootupAnimationDialog = EwNewObject( OpenOPN01_BootupAnimation, 0 );
+  BootupAnimationDialog->OnBootupAnimationFinished = EwNewSlot( _this, ApplicationApplication_OnBootupAnimationFinishedSlot );
+  CoreGroup_SwitchToDialog((CoreGroup)_this, ((CoreGroup)BootupAnimationDialog ), 
+  0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
 /* Variants derived from the class : 'Application::Application' */

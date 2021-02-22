@@ -936,7 +936,7 @@ resource Resources::Bitmap IconPerOfRain
 // Weather
 note group Note11
 {
-  attr Bounds = <10,790,1100,1000>;
+  attr Bounds = <10,790,690,1000>;
 }
 
 $rect <880,710,1080,750>
@@ -959,6 +959,36 @@ resource Resources::Bitmap StatusBarDivider
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// Opening Animation
+note group Note13
+{
+  attr Bounds = <710,790,960,1000>;
+}
+
+$rect <740,840,940,880>
+$output false
+resource Resources::Bitmap OpeningFadeIn
+{
+  attr bitmapfile FileName = .\Res\opening\loading00-08.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <276,65>;
+  attr framedelay FrameDelay = 50;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <740,890,940,930>
+$output false
+resource Resources::Bitmap OpeningFadeOut
+{
+  attr bitmapfile FileName = .\Res\opening\loading48-55.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <276,65>;
+  attr framedelay FrameDelay = 50;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }

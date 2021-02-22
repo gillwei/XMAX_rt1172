@@ -112,9 +112,10 @@
 /* This is the root component of the entire GUI application. */
 EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( FactoryTestEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( StatusBar,       StatusBarMain )
   EW_OBJECT  ( BtFwStatusObserver, CorePropertyObserver )
   EW_OBJECT  ( DDModeTestTimer, CoreTimer )
+  EW_OBJECT  ( BootupAnimationSystemEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( StatusBar,       StatusBarMain )
   EW_PROPERTY( StatusBarVisible, XBool )
 EW_END_OF_FIELDS( ApplicationApplication )
 
@@ -211,6 +212,15 @@ XClass ApplicationApplication_HomeClassOfHomeType( ApplicationApplication _this,
 /* 'C' function for method : 'Application::Application.HomeDialogOfHomeType()' */
 CoreGroup ApplicationApplication_HomeDialogOfHomeType( ApplicationApplication _this, 
   XEnum aHomeType );
+
+/* 'C' function for method : 'Application::Application.OnBootupAnimationFinishedSlot()' */
+void ApplicationApplication_OnBootupAnimationFinishedSlot( ApplicationApplication _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void ApplicationApplication_OnStartBootupAnimationSlot( ApplicationApplication _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }

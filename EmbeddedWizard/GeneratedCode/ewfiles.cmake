@@ -31,4 +31,5 @@ set(EMWIFILES
 	"Brightness.c" 
 	"Unit.c" 
 	"Info.c" 
-	"StatusBar.c")
+	"StatusBar.c" 
+	"Open.c")

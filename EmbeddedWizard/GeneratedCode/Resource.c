@@ -420,4 +420,16 @@ EW_RES_WITHOUT_VARIANTS( ResourceLauncherBG )
 /* Table with links to derived variants of the bitmap resource : 'Resource::StatusBarDivider' */
 EW_RES_WITHOUT_VARIANTS( ResourceStatusBarDivider )
 
+/* Include a file containing the bitmap resource : 'Resource::OpeningFadeIn' */
+#include "_ResourceOpeningFadeIn.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::OpeningFadeIn' */
+EW_RES_WITHOUT_VARIANTS( ResourceOpeningFadeIn )
+
+/* Include a file containing the bitmap resource : 'Resource::OpeningFadeOut' */
+#include "_ResourceOpeningFadeOut.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::OpeningFadeOut' */
+EW_RES_WITHOUT_VARIANTS( ResourceOpeningFadeOut )
+
 /* Embedded Wizard */

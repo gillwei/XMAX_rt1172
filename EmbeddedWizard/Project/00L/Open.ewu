@@ -1,0 +1,63 @@
+﻿$version 10.00
+
+$rect <10,10,250,50>
+$output false
+class OPN01_BootupAnimation : Components::BaseComponent
+{
+  $rect <220,290,400,330>
+  inherited method Init()
+  {
+    trace "Init OPN01";
+  }
+
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle BlackBackground
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image BootupAnimation
+  {
+    preset Bounds = <102,101,378,166>;
+    preset Endless = false;
+    preset Animated = true;
+    preset Bitmap = Resource::OpeningFadeIn;
+  }
+
+  $rect <510,0,710,40>
+  object Core::Timer FadeOutTimer
+  {
+    preset OnTrigger = OnFadeOutTriggeredSlot;
+    preset Period = 50;
+    preset Begin = 2600;
+    preset Enabled = true;
+  }
+
+  $rect <510,50,730,90>
+  slot OnFadeOutTriggeredSlot
+  {
+    if( FadeOutFrameNumber <= 8 )
+    {
+      BootupAnimation.Bitmap = Resource::OpeningFadeOut;
+      BootupAnimation.Animated = false;
+      BootupAnimation.FrameNumber = FadeOutFrameNumber;
+      FadeOutFrameNumber++;
+    }
+    else
+    {
+      FadeOutTimer.Enabled = false;
+      signal OnBootupAnimationFinished;
+    }
+  }
+
+  $rect <510,100,730,140>
+  var int32 FadeOutFrameNumber = 0;
+
+  $rect <510,150,750,190>
+  property slot OnBootupAnimationFinished;
+}

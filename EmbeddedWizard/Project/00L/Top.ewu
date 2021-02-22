@@ -4,7 +4,13 @@ $rect <10,10,250,50>
 $output false
 class TOP01_Disclaimer : Components::BaseComponent
 {
-  $rect <10,290,210,330>
+  $rect <10,340,190,380>
+  inherited method Init()
+  {
+    trace "Init TOP01";
+  }
+
+  $rect <10,290,190,330>
   inherited property Bounds = <0,0,480,272>;
 
   $rect <509,0,689,40>
