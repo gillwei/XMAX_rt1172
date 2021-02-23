@@ -34,7 +34,7 @@ extern "C" {
 
 #define BC_MOTOCON_DDT_INACTIVE_ID                  ( 0 )
 #define BC_MOTOCON_DDT_STATUS_LENGTH                ( 2 )
-#define BC_MOTOCON_DDT_TO_VEHICLE_BUFFER_SIZE       ( 64 + 64 + 512 )
+#define BC_MOTOCON_DDT_TO_VEHICLE_BUFFER_SIZE       ( 1000 ) // This is an estimated value due to protobuf's length will change by its content.
 
 #define BC_MOTOCON_DDT_HEADER_SIZE                  ( 4 )
 #define BC_MOTOCON_DDT_TO_PHONE_CONTENT_SIZE        ( 24 ) /* this value shall more than 1 */
@@ -110,7 +110,6 @@ bc_motocon_parse_result_t parser_vehicle_info_subscribe( const uint8_t* bytes, c
 bc_motocon_parse_result_t parser_datetime_changed( const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t parser_vehicle_datetime( const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t parser_language_type( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_notification( const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t parser_short_data_to_can( const bc_motocon_command_code_t command_code, const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t parser_protobuf_to_can( const bc_motocon_command_code_t command_code, const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t parser_can_request( void );

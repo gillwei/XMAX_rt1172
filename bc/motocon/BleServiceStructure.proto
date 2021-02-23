@@ -1,0 +1,155 @@
+syntax = "proto3";
+
+option java_package        = "co.jp.micware.yamahasdk.model.proto";
+option java_multiple_files = true;
+
+message McServerListResponse {
+  repeated int32 server_list = 3;
+}
+
+enum McMalfunctionStatus {
+  // don't use (The first enum value must be zero in proto3)
+  STATUS_UNKNOWN = 0x00;
+
+  X_MARK                = 0x01;  // ×
+  TRIANGLE              = 0x02;  // △
+  FULL                  = 0x03;
+  TEMPORARY_MALFUNCTION = 0x04;
+}
+
+message McMalfunctionRequest {
+  int32               server = 3;
+  McMalfunctionStatus status = 4;
+}
+
+message McMalfunctionResponse {
+  message ServerCodeStatus {
+    int32               server = 1;
+    int32               code   = 2;
+    McMalfunctionStatus status = 3;
+  }
+
+  repeated ServerCodeStatus list = 3;
+}
+
+message McMalfunctionIntervalRequest {
+  int32               server = 3;
+  McMalfunctionStatus status = 4;
+
+  // 0=stop etc=interval request (millisecond)
+  uint32 interval = 5;
+}
+
+message McVehicleIdentificationRequest {
+  int32          server  = 3;
+  repeated int32 id_list = 4;
+  bool           all_id  = 5;
+}
+
+message McVehicleIdentificationResponse {
+  message IdData {
+    int32 id   = 1;
+    bytes data = 2;
+  }
+
+  int32           server    = 3;
+  repeated IdData data_list = 4;
+}
+
+message McMarketDataRequest {
+  int32          server  = 3;
+  repeated int32 id_list = 4;
+  bool           all_id  = 5;
+}
+
+message McMarketDataResponse {
+  message IdData {
+    int32 id   = 1;
+    bytes data = 2;
+  }
+
+  int32           server    = 3;
+  repeated IdData data_list = 4;
+}
+
+message McLocalRecordVehicleInformationSupportIdListResponse {
+  int32          server  = 3;
+  repeated int32 id_list = 4;
+}
+
+message McLocalRecordVehicleInformationRequest {
+  int32          server  = 3;
+  repeated int32 id_list = 4;
+  bool           all_id  = 5;
+}
+
+message McLocalRecordVehicleInformationResponse {
+  message IdData {
+    int32 id   = 1;
+    bytes data = 2;
+  }
+
+  int32           server    = 3;
+  repeated IdData data_list = 4;
+}
+
+message McLocalRecordVehicleInformationIntervalRequest {
+  int32          server  = 3;
+  repeated int32 id_list = 4;
+  bool           all_id  = 5;
+
+  // 0=stop etc=interval request (millisecond)
+  uint32 interval = 6;
+}
+
+message McFfdResponse {
+  int32          server    = 3;
+  repeated bytes data_list = 4;
+}
+
+message McCanResponse {
+  message IdData {
+    enum Id {
+      SPEED                         = 0x00;
+      RPM                           = 0x01;
+      START_SWITCH                  = 0x02;
+      FI_ALERT_BLINK                = 0x03;
+      FI_ALERT                      = 0x04;
+      CUMULATIVE_INJECTION_QUANTITY = 0x05;
+      IDLING_RPM                    = 0x06;
+      TC_INDICATOR                  = 0x07;
+      TC_MODE                       = 0x08;
+      GEAR                          = 0x09;
+      UNIT                          = 0x0A;
+      RESERVE_1                     = 0x0B;
+      RESERVE_2                     = 0x0C;
+      RESERVE_3                     = 0x0D;
+      RESERVE_4                     = 0x0E;
+      RESERVE_5                     = 0x0F;
+    }
+
+    Id    id   = 1;
+    bytes data = 2;
+  }
+
+  repeated IdData data_list = 3;
+}
+
+message McNotificationDataV2 {
+  enum Category {
+    MESSAGE = 0;
+    CALL    = 1;
+  }
+
+  uint32   notification_id = 3;
+  Category category        = 4;
+  int32    year            = 5;   // 1970~2099
+  int32    month           = 6;   // 1~12
+  int32    day             = 7;   // 1~31
+  int32    hour            = 8;   // 0~23
+  int32    minutes         = 9;   // 0~59
+  int32    second          = 10;  // 0~59
+  string   title           = 11;  // length <= 60byte
+  string   sub_title       = 12;  // length <= 64byte
+  string   detail          = 13;  // length <= 512byte
+}

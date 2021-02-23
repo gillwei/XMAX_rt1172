@@ -38,7 +38,7 @@ typedef struct
     void ( *datetime_changed_callback ) ( void );
     void ( *vehicle_datetime_callback ) ( const bc_motocon_time_t* time );
     void ( *language_type_callback ) ( const uint8_t language_type );
-    void ( *notification_callback ) ( const bc_motocon_notification_t* notification );
+    void ( *notification_callback ) ( const bc_motocon_notification_v2_t* notification );
     void ( *can_related_callback ) ( const bc_motocon_command_code_t command, const uint32_t size, const uint8_t* data ); /* 0x0101 ~ 0x0112 */
     void ( *can_request_callback ) ( void );
     void ( *injection_request_callback ) ( void );

@@ -23,6 +23,8 @@ extern "C"{
 /*--------------------------------------------------------------------
                           LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define BC_MOTOCON_NOTIFICATION_TITLE  ( 64 )
+#define BC_MOTOCON_NOTIFICATION_DETAIL ( 512 )
 
 /*--------------------------------------------------------------------
                                 TYPES
@@ -129,19 +131,6 @@ typedef struct
     uint8_t  second;
     } bc_motocon_time_t;
 
-typedef struct
-    {
-    uint32_t          uid;
-    uint8_t           category;
-    bc_motocon_time_t time; // empty now
-    const uint8_t*    title;
-    uint16_t          title_len;
-    const uint8_t*    subtitle;
-    uint16_t          subtitle_len;
-    const uint8_t*    detail;
-    uint16_t          detail_len;
-    } bc_motocon_notification_t;
-
 typedef enum
     {
     BC_MOTOCON_BATTERY_NOT_CHARGING,
@@ -228,6 +217,16 @@ typedef struct
     uint32_t total_size;
     uint32_t number_of_packages;
     } bc_motocon_ota_update_info_t;
+
+typedef struct
+    {
+    uint32_t          uid;
+    uint8_t           category;
+    bc_motocon_time_t time;
+    char              title[BC_MOTOCON_NOTIFICATION_TITLE + 1];
+    char              subtitle[BC_MOTOCON_NOTIFICATION_TITLE + 1];
+    char              detail[BC_MOTOCON_NOTIFICATION_DETAIL + 1];
+    } bc_motocon_notification_v2_t;
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES

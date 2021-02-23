@@ -12,6 +12,8 @@
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
 #include <bc_motocon_priv.h>
+#include <pb_decode.h>
+#include "BleServiceStructure.pb.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -33,6 +35,7 @@
                                VARIABLES
 --------------------------------------------------------------------*/
 extern bc_motocon_callback_t* bc_motocon_callbacks[BC_MOTOCON_CALLBACK_MAX];
+static bc_motocon_notification_v2_t notification_v2;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -162,10 +165,6 @@ bc_motocon_parse_result_t ret = BC_MOTOCON_PARSE_INVALID_COMMAND_CODE;
 const bc_motocon_command_code_t command_code = TWO_BYTE_BIG( bytes, 0 );
 switch( command_code )
     {
-    case BC_MOTOCON_COMMAND_CODE_NOTIFICATION_DATA:
-        ret = parser_notification( bytes, length );
-        break;
-
     case BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_IDENTIFICATION_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_MARKET_DATA_REQUEST:
@@ -393,87 +392,6 @@ if( length == 4 )
             NULL != bc_motocon_callbacks[i]->language_type_callback )
             {
             bc_motocon_callbacks[i]->language_type_callback( bytes[3] );
-            }
-        }
-    return BC_MOTOCON_PARSE_SUCCESS;
-    }
-return BC_MOTOCON_PARSE_INVALID_INPUT;
-}
-
-/*********************************************************************
-*
-* @private
-* parser_notification
-*
-* Parse notification and post callback.
-*
-*********************************************************************/
-bc_motocon_parse_result_t parser_notification
-    (
-    const uint8_t* bytes,
-    const uint32_t length
-    )
-{
-bc_motocon_notification_t notification;
-uint32_t pt = 2;
-if( pt + 4 > length )
-    {
-    return BC_MOTOCON_PARSE_INVALID_INPUT;
-    }
-notification.uid = FOUR_BYTE_BIG( bytes, pt );
-pt += 4;
-
-if( pt + 2 > length )
-    {
-    return BC_MOTOCON_PARSE_INVALID_INPUT;
-    }
-notification.title_len = TWO_BYTE_BIG( bytes, pt );
-pt += 2;
-
-if( pt + notification.title_len > length )
-    {
-    return BC_MOTOCON_PARSE_INVALID_INPUT;
-    }
-notification.title = bytes + pt;
-pt += notification.title_len;
-
-if( pt + 2 > length )
-    {
-    return BC_MOTOCON_PARSE_INVALID_INPUT;
-    }
-notification.subtitle_len = TWO_BYTE_BIG( bytes, pt );
-pt += 2;
-
-if( pt + notification.subtitle_len > length )
-    {
-    return BC_MOTOCON_PARSE_INVALID_INPUT;
-    }
-notification.subtitle = bytes + pt;
-pt += notification.subtitle_len;
-
-if( pt + 2 > length )
-    {
-    return BC_MOTOCON_PARSE_INVALID_INPUT;
-    }
-notification.detail_len = TWO_BYTE_BIG( bytes, pt );
-pt += 2;
-
-if( pt + notification.detail_len > length )
-    {
-    return BC_MOTOCON_PARSE_INVALID_INPUT;
-    }
-notification.detail = bytes + pt;
-pt += notification.detail_len;
-
-if( pt == length )
-    {
-    BC_MOTOCON_PRINTF( "%s, TBD\r\n", __FUNCTION__ );
-    for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
-        {
-        if( NULL != bc_motocon_callbacks[i] &&
-            NULL != bc_motocon_callbacks[i]->notification_callback )
-            {
-            bc_motocon_callbacks[i]->notification_callback( &notification );
             }
         }
     return BC_MOTOCON_PARSE_SUCCESS;
@@ -963,6 +881,46 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
+* get_title
+*
+* Get title from notification protobuf.
+*
+*********************************************************************/
+static bool get_title
+    (
+    pb_istream_t*     stream,
+    const pb_field_t* field,
+    void**            arg
+    )
+{
+uint32_t length = MIN( BC_MOTOCON_NOTIFICATION_TITLE, stream->bytes_left );
+((uint8_t*)*arg)[length] = 0;
+return pb_read( stream, (uint8_t*)*arg, stream->bytes_left );
+}
+
+/*********************************************************************
+*
+* @private
+* get_detail
+*
+* Get detail from notification protobuf.
+*
+*********************************************************************/
+static bool get_detail
+    (
+    pb_istream_t*     stream,
+    const pb_field_t* field,
+    void**            arg
+    )
+{
+uint32_t length = MIN( BC_MOTOCON_NOTIFICATION_DETAIL, stream->bytes_left );
+((uint8_t*)*arg)[length] = 0;
+return pb_read( stream, (uint8_t*)*arg, stream->bytes_left );
+}
+
+/*********************************************************************
+*
+* @private
 * parser_notification_v2
 *
 * Parse notification data v2 and post callback.
@@ -976,7 +934,51 @@ bc_motocon_parse_result_t parser_notification_v2
 {
 if( length >= 5 )
     {
-    BC_MOTOCON_PRINTF( "%s, length: %d, TBD\r\n", __FUNCTION__, length );
+    BC_MOTOCON_PRINTF( "%s, length: %d\r\n", __FUNCTION__, length );
+
+    McNotificationDataV2 notification = McNotificationDataV2_init_zero;
+    pb_istream_t stream = pb_istream_from_buffer( bytes + 5, THREE_BYTE_BIG( bytes, 2 ) );
+
+    notification.title.funcs.decode = &get_title;
+    notification.title.arg = notification_v2.title;
+    notification.sub_title.funcs.decode = &get_title;
+    notification.sub_title.arg = notification_v2.subtitle;
+    notification.detail.funcs.decode = &get_detail;
+    notification.detail.arg = notification_v2.detail;
+
+    if( pb_decode( &stream, McNotificationDataV2_fields, &notification ) )
+        {
+        BC_MOTOCON_PRINTF( "Decoding Success!!\r\n");
+        notification_v2.uid = notification.notification_id;
+        notification_v2.category = notification.category;
+        notification_v2.time.year =  notification.year;
+        notification_v2.time.month = notification.month;
+        notification_v2.time.day = notification.day;
+        notification_v2.time.hour = notification.hour;
+        notification_v2.time.minute = notification.minutes;
+        notification_v2.time.second = notification.second;
+
+        BC_MOTOCON_PRINTF( "Id      : %d\r\n", notification_v2.uid );
+        BC_MOTOCON_PRINTF( "Category: %d\r\n", notification_v2.category );
+        BC_MOTOCON_PRINTF( "Time    : %d.%02d.%02d %02d:%02d:%02d\r\n",notification_v2.time.year, notification_v2.time.month, notification_v2.time.day,
+            notification_v2.time.hour, notification_v2.time.minute, notification_v2.time.second );
+        BC_MOTOCON_PRINTF( "Title   : %s\r\n", notification_v2.title );
+        BC_MOTOCON_PRINTF( "Subtitle: %s\r\n", notification_v2.subtitle );
+        BC_MOTOCON_PRINTF( "Detail  : %s\r\n", notification_v2.detail );
+
+        for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
+            {
+            if( NULL != bc_motocon_callbacks[i] &&
+                NULL != bc_motocon_callbacks[i]->notification_callback )
+                {
+                bc_motocon_callbacks[i]->notification_callback( &notification_v2 );
+                }
+            }
+        }
+    else
+        {
+        BC_MOTOCON_PRINTF( "Decoding failed: %s\r\n", PB_GET_ERROR( &stream ) );
+        }
     return BC_MOTOCON_PARSE_SUCCESS;
     }
 return BC_MOTOCON_PARSE_INVALID_INPUT;
