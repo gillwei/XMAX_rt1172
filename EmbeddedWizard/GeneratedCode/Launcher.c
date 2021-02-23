@@ -548,6 +548,7 @@ EW_DEFINE_CLASS( LauncherLNC_Main, ComponentsBaseComponent, BaseSlideInEffect, B
   LauncherLNC_Main_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( LauncherLNC_Main )
@@ -1034,6 +1035,7 @@ EW_DEFINE_CLASS( LauncherLNC_RotaryPlate, ComponentsBaseComponent, Icons, OnIcon
   ComponentsBaseComponent_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( LauncherLNC_RotaryPlate )

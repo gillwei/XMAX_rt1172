@@ -39,6 +39,7 @@
 #include "_FactoryDisplayAutoRun.h"
 #include "_FactoryDisplayManual.h"
 #include "_FactoryTestContext.h"
+#include "_HomeBaseHome.h"
 #include "_HomeHOM11_TachoVisualizer.h"
 #include "_HomeHOM12_EcoVisualizer.h"
 #include "_HomeHOM13_SpeedVisualizer.h"
@@ -308,7 +309,17 @@ void ApplicationApplication_SwitchToHome( ApplicationApplication _this, XEnum aH
       {
         if ( HomeClass == EwClassOf(((XObject)CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
             0 ))))
+        {
+          HomeBaseHome HomeDialog = EwCastObject( CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+            0 ), HomeBaseHome );
+
+          if ( HomeDialog != 0 )
+          {
+            HomeBaseHome_ReturnToHome( HomeDialog );
+          }
+
           break;
+        }
         else
         {
           CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 

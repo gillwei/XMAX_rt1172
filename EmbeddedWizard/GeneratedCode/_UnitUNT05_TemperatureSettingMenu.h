@@ -172,6 +172,7 @@ EW_DEFINE_METHODS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( LoadItemClass,     XClass )( UnitUNT05_TemperatureSettingMenu _this, 

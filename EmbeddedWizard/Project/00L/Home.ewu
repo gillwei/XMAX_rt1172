@@ -1,8 +1,8 @@
 ﻿$version 10.00
 
-$rect <10,10,210,50>
+$rect <10,60,210,100>
 $output false
-class HOM11_TachoVisualizer : Components::BaseMainBG
+class HOM11_TachoVisualizer : Home::BaseHome
 {
   $rect <0,280,180,320>
   inherited method Init()
@@ -22,6 +22,15 @@ class HOM11_TachoVisualizer : Components::BaseMainBG
     // TODO: switch to other home group
   }
 
+  $rect <210,380,440,420>
+  inherited method OnLongEnterKeyActivated()
+  {
+    if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    {
+      PresentDialog( new Info::INF01_MeterDisplaySettingMenu, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
   $rect <20,20,160,60>
   object Views::Text Title
   {
@@ -32,9 +41,9 @@ class HOM11_TachoVisualizer : Components::BaseMainBG
   }
 }
 
-$rect <10,60,210,100>
+$rect <10,110,210,150>
 $output false
-class HOM12_EcoVisualizer : Components::BaseMainBG
+class HOM12_EcoVisualizer : Home::BaseHome
 {
   $rect <0,280,180,320>
   inherited method Init()
@@ -54,6 +63,15 @@ class HOM12_EcoVisualizer : Components::BaseMainBG
     // TODO: switch to other home group
   }
 
+  $rect <210,380,440,420>
+  inherited method OnLongEnterKeyActivated()
+  {
+    if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    {
+      PresentDialog( new Info::INF01_MeterDisplaySettingMenu, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
   $rect <20,20,160,60>
   object Views::Text Title
   {
@@ -64,9 +82,9 @@ class HOM12_EcoVisualizer : Components::BaseMainBG
   }
 }
 
-$rect <10,110,210,150>
+$rect <10,160,210,200>
 $output false
-class HOM13_SpeedVisualizer : Components::BaseMainBG
+class HOM13_SpeedVisualizer : Home::BaseHome
 {
   $rect <0,280,180,320>
   inherited method Init()
@@ -86,6 +104,15 @@ class HOM13_SpeedVisualizer : Components::BaseMainBG
     // TODO: switch to other home group
   }
 
+  $rect <210,380,440,420>
+  inherited method OnLongEnterKeyActivated()
+  {
+    if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    {
+      PresentDialog( new Info::INF01_MeterDisplaySettingMenu, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
   $rect <20,20,160,60>
   object Views::Text Title
   {
@@ -95,3 +122,22 @@ class HOM13_SpeedVisualizer : Components::BaseMainBG
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }
+
+$rect <10,10,210,50>
+$output false
+class BaseHome : Components::BaseMainBG
+{
+  $rect <0,290,200,330>
+  method void ReturnToHome()
+  {
+    var Menu::BaseMenuView MenuDialog = ( Menu::BaseMenuView )GetDialogAtIndex( 0 );
+    if( null != MenuDialog )
+    {
+      DismissDialog( MenuDialog, null, null, null, null, null, false );
+    }
+  }
+}
+
+$rect <240,10,600,50>
+$output false
+const int32 ACTIVATE_LONG_PRESS_REPETITION_COUNT = 1;

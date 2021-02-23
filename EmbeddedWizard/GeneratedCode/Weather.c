@@ -776,6 +776,7 @@ EW_DEFINE_CLASS( WeatherWEA01_Main, ComponentsBaseMainBG, WeatherListView, Weath
   WeatherWEA01_Main_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( WeatherWEA01_Main )
@@ -1826,6 +1827,7 @@ EW_DEFINE_CLASS( WeatherWeatherList, ComponentsBaseComponent, VerticalList, Vert
   ComponentsBaseComponent_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( WeatherWeatherList )

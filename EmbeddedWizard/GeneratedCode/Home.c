@@ -26,12 +26,16 @@
 
 #include "ewlocale.h"
 #include "_CoreGroup.h"
+#include "_CoreKeyPressHandler.h"
 #include "_CoreRoot.h"
 #include "_CoreView.h"
+#include "_HomeBaseHome.h"
 #include "_HomeHOM11_TachoVisualizer.h"
 #include "_HomeHOM12_EcoVisualizer.h"
 #include "_HomeHOM13_SpeedVisualizer.h"
+#include "_InfoINF01_MeterDisplaySettingMenu.h"
 #include "_LauncherLNC_Main.h"
+#include "_MenuBaseMenuView.h"
 #include "_ResourcesFont.h"
 #include "_ViewsText.h"
 #include "Fonts.h"
@@ -58,7 +62,7 @@ static const XStringRes _Const0003 = { _StringsDefault0, 0x001C };
 void HomeHOM11_TachoVisualizer__Init( HomeHOM11_TachoVisualizer _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  HomeBaseHome__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( HomeHOM11_TachoVisualizer );
@@ -85,7 +89,7 @@ void HomeHOM11_TachoVisualizer__Init( HomeHOM11_TachoVisualizer _this, XObject a
 void HomeHOM11_TachoVisualizer__ReInit( HomeHOM11_TachoVisualizer _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  HomeBaseHome__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Title );
@@ -95,13 +99,13 @@ void HomeHOM11_TachoVisualizer__ReInit( HomeHOM11_TachoVisualizer _this )
 void HomeHOM11_TachoVisualizer__Done( HomeHOM11_TachoVisualizer _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_Super._VMT = EW_CLASS( HomeBaseHome );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Title );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  HomeBaseHome__Done( &_this->_Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -130,13 +134,23 @@ void HomeHOM11_TachoVisualizer_OnShortHomeKeyActivated( HomeHOM11_TachoVisualize
   EW_UNUSED_ARG( _this );
 }
 
+/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnLongEnterKeyActivated()' */
+void HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated( HomeHOM11_TachoVisualizer _this )
+{
+  if ( 1 == _this->Super3.KeyHandler.RepetitionCount )
+  {
+    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( InfoINF01_MeterDisplaySettingMenu, 
+    0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
+}
+
 /* Variants derived from the class : 'Home::HOM11_TachoVisualizer' */
 EW_DEFINE_CLASS_VARIANTS( HomeHOM11_TachoVisualizer )
 EW_END_OF_CLASS_VARIANTS( HomeHOM11_TachoVisualizer )
 
 /* Virtual Method Table (VMT) for the class : 'Home::HOM11_TachoVisualizer' */
-EW_DEFINE_CLASS( HomeHOM11_TachoVisualizer, ComponentsBaseMainBG, Title, Title, 
-                 Title, Title, _None, _None, "Home::HOM11_TachoVisualizer" )
+EW_DEFINE_CLASS( HomeHOM11_TachoVisualizer, HomeBaseHome, Title, Title, Title, Title, 
+                 _None, _None, "Home::HOM11_TachoVisualizer" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -173,6 +187,7 @@ EW_DEFINE_CLASS( HomeHOM11_TachoVisualizer, ComponentsBaseMainBG, Title, Title,
   HomeHOM11_TachoVisualizer_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( HomeHOM11_TachoVisualizer )
@@ -181,7 +196,7 @@ EW_END_OF_CLASS( HomeHOM11_TachoVisualizer )
 void HomeHOM12_EcoVisualizer__Init( HomeHOM12_EcoVisualizer _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  HomeBaseHome__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( HomeHOM12_EcoVisualizer );
@@ -208,7 +223,7 @@ void HomeHOM12_EcoVisualizer__Init( HomeHOM12_EcoVisualizer _this, XObject aLink
 void HomeHOM12_EcoVisualizer__ReInit( HomeHOM12_EcoVisualizer _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  HomeBaseHome__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Title );
@@ -218,13 +233,13 @@ void HomeHOM12_EcoVisualizer__ReInit( HomeHOM12_EcoVisualizer _this )
 void HomeHOM12_EcoVisualizer__Done( HomeHOM12_EcoVisualizer _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_Super._VMT = EW_CLASS( HomeBaseHome );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Title );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  HomeBaseHome__Done( &_this->_Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -253,13 +268,23 @@ void HomeHOM12_EcoVisualizer_OnShortHomeKeyActivated( HomeHOM12_EcoVisualizer _t
   EW_UNUSED_ARG( _this );
 }
 
+/* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnLongEnterKeyActivated()' */
+void HomeHOM12_EcoVisualizer_OnLongEnterKeyActivated( HomeHOM12_EcoVisualizer _this )
+{
+  if ( 1 == _this->Super3.KeyHandler.RepetitionCount )
+  {
+    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( InfoINF01_MeterDisplaySettingMenu, 
+    0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
+}
+
 /* Variants derived from the class : 'Home::HOM12_EcoVisualizer' */
 EW_DEFINE_CLASS_VARIANTS( HomeHOM12_EcoVisualizer )
 EW_END_OF_CLASS_VARIANTS( HomeHOM12_EcoVisualizer )
 
 /* Virtual Method Table (VMT) for the class : 'Home::HOM12_EcoVisualizer' */
-EW_DEFINE_CLASS( HomeHOM12_EcoVisualizer, ComponentsBaseMainBG, Title, Title, Title, 
-                 Title, _None, _None, "Home::HOM12_EcoVisualizer" )
+EW_DEFINE_CLASS( HomeHOM12_EcoVisualizer, HomeBaseHome, Title, Title, Title, Title, 
+                 _None, _None, "Home::HOM12_EcoVisualizer" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -296,6 +321,7 @@ EW_DEFINE_CLASS( HomeHOM12_EcoVisualizer, ComponentsBaseMainBG, Title, Title, Ti
   HomeHOM12_EcoVisualizer_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  HomeHOM12_EcoVisualizer_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( HomeHOM12_EcoVisualizer )
@@ -304,7 +330,7 @@ EW_END_OF_CLASS( HomeHOM12_EcoVisualizer )
 void HomeHOM13_SpeedVisualizer__Init( HomeHOM13_SpeedVisualizer _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  HomeBaseHome__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( HomeHOM13_SpeedVisualizer );
@@ -331,7 +357,7 @@ void HomeHOM13_SpeedVisualizer__Init( HomeHOM13_SpeedVisualizer _this, XObject a
 void HomeHOM13_SpeedVisualizer__ReInit( HomeHOM13_SpeedVisualizer _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  HomeBaseHome__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Title );
@@ -341,13 +367,13 @@ void HomeHOM13_SpeedVisualizer__ReInit( HomeHOM13_SpeedVisualizer _this )
 void HomeHOM13_SpeedVisualizer__Done( HomeHOM13_SpeedVisualizer _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_Super._VMT = EW_CLASS( HomeBaseHome );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Title );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  HomeBaseHome__Done( &_this->_Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -376,13 +402,23 @@ void HomeHOM13_SpeedVisualizer_OnShortHomeKeyActivated( HomeHOM13_SpeedVisualize
   EW_UNUSED_ARG( _this );
 }
 
+/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnLongEnterKeyActivated()' */
+void HomeHOM13_SpeedVisualizer_OnLongEnterKeyActivated( HomeHOM13_SpeedVisualizer _this )
+{
+  if ( 1 == _this->Super3.KeyHandler.RepetitionCount )
+  {
+    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( InfoINF01_MeterDisplaySettingMenu, 
+    0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
+}
+
 /* Variants derived from the class : 'Home::HOM13_SpeedVisualizer' */
 EW_DEFINE_CLASS_VARIANTS( HomeHOM13_SpeedVisualizer )
 EW_END_OF_CLASS_VARIANTS( HomeHOM13_SpeedVisualizer )
 
 /* Virtual Method Table (VMT) for the class : 'Home::HOM13_SpeedVisualizer' */
-EW_DEFINE_CLASS( HomeHOM13_SpeedVisualizer, ComponentsBaseMainBG, Title, Title, 
-                 Title, Title, _None, _None, "Home::HOM13_SpeedVisualizer" )
+EW_DEFINE_CLASS( HomeHOM13_SpeedVisualizer, HomeBaseHome, Title, Title, Title, Title, 
+                 _None, _None, "Home::HOM13_SpeedVisualizer" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -419,8 +455,100 @@ EW_DEFINE_CLASS( HomeHOM13_SpeedVisualizer, ComponentsBaseMainBG, Title, Title,
   HomeHOM13_SpeedVisualizer_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  HomeHOM13_SpeedVisualizer_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( HomeHOM13_SpeedVisualizer )
+
+/* Initializer for the class 'Home::BaseHome' */
+void HomeBaseHome__Init( HomeBaseHome _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( HomeBaseHome );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( HomeBaseHome );
+}
+
+/* Re-Initializer for the class 'Home::BaseHome' */
+void HomeBaseHome__ReInit( HomeBaseHome _this )
+{
+  /* At first re-initialize the super class ... */
+  ComponentsBaseMainBG__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'Home::BaseHome' */
+void HomeBaseHome__Done( HomeBaseHome _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+
+  /* Don't forget to deinitialize the super class ... */
+  ComponentsBaseMainBG__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Home::BaseHome.ReturnToHome()' */
+void HomeBaseHome_ReturnToHome( HomeBaseHome _this )
+{
+  MenuBaseMenuView MenuDialog = EwCastObject( CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+    0 ), MenuBaseMenuView );
+
+  if ( MenuDialog != 0 )
+  {
+    CoreGroup__DismissDialog( _this, ((CoreGroup)MenuDialog ), 0, 0, 0, EwNullSlot, 
+    EwNullSlot, 0 );
+  }
+}
+
+/* Variants derived from the class : 'Home::BaseHome' */
+EW_DEFINE_CLASS_VARIANTS( HomeBaseHome )
+EW_END_OF_CLASS_VARIANTS( HomeBaseHome )
+
+/* Virtual Method Table (VMT) for the class : 'Home::BaseHome' */
+EW_DEFINE_CLASS( HomeBaseHome, ComponentsBaseMainBG, _None, _None, _None, _None, 
+                 _None, _None, "Home::BaseHome" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseMainBG_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
+EW_END_OF_CLASS( HomeBaseHome )
 
 /* Embedded Wizard */

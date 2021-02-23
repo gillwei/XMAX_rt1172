@@ -346,6 +346,7 @@ EW_DEFINE_CLASS( NavigationMain, ComponentsBaseComponent, Background, Background
   NavigationMain_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( NavigationMain )
@@ -622,6 +623,7 @@ EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, _None, _None
   NavigationNAV06_NaviSettingMenu_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   NavigationNAV06_NaviSettingMenu_LoadItemClass,
@@ -842,6 +844,7 @@ EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, CheckMarkU
   ComponentsBaseMainBG_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   NavigationNAV08_NaviChageViewMenu_LoadItemClass,

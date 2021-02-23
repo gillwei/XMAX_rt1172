@@ -42,14 +42,20 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
+#include "_HomeBaseHome.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -101,12 +107,12 @@
 
 
 /* Deklaration of class : 'Home::HOM12_EcoVisualizer' */
-EW_DEFINE_FIELDS( HomeHOM12_EcoVisualizer, ComponentsBaseMainBG )
+EW_DEFINE_FIELDS( HomeHOM12_EcoVisualizer, HomeBaseHome )
   EW_OBJECT  ( Title,           ViewsText )
 EW_END_OF_FIELDS( HomeHOM12_EcoVisualizer )
 
 /* Virtual Method Table (VMT) for the class : 'Home::HOM12_EcoVisualizer' */
-EW_DEFINE_METHODS( HomeHOM12_EcoVisualizer, ComponentsBaseMainBG )
+EW_DEFINE_METHODS( HomeHOM12_EcoVisualizer, HomeBaseHome )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -156,6 +162,7 @@ EW_DEFINE_METHODS( HomeHOM12_EcoVisualizer, ComponentsBaseMainBG )
   EW_METHOD( OnShortHomeKeyActivated, void )( HomeHOM12_EcoVisualizer _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongEnterKeyActivated, void )( HomeHOM12_EcoVisualizer _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
 EW_END_OF_METHODS( HomeHOM12_EcoVisualizer )
@@ -170,6 +177,9 @@ void HomeHOM12_EcoVisualizer_OnShortEnterKeyActivated( HomeHOM12_EcoVisualizer _
 
 /* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnShortHomeKeyActivated()' */
 void HomeHOM12_EcoVisualizer_OnShortHomeKeyActivated( HomeHOM12_EcoVisualizer _this );
+
+/* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnLongEnterKeyActivated()' */
+void HomeHOM12_EcoVisualizer_OnLongEnterKeyActivated( HomeHOM12_EcoVisualizer _this );
 
 #ifdef __cplusplus
   }

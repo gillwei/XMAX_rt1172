@@ -457,6 +457,7 @@ EW_DEFINE_CLASS( FactoryDisplayAutoRun, ComponentsBaseComponent, TimerNextPatter
   FactoryDisplayAutoRun_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( FactoryDisplayAutoRun )
@@ -657,6 +658,7 @@ EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, ItemTitleArray, ItemTitleArray,
   FactoryMain_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   FactoryMain_LoadItemClass,
@@ -985,6 +987,7 @@ EW_DEFINE_CLASS( FactoryDisplayManual, ComponentsBaseComponent, FullScreen, Full
   FactoryDisplayManual_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( FactoryDisplayManual )

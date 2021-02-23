@@ -4,7 +4,29 @@ $rect <10,10,280,50>
 $output false
 class INF01_MeterDisplaySettingMenu : Menu::BaseMenuView
 {
-  $rect <10,290,210,330>
+  $rect <0,290,180,330>
+  inherited method Init()
+  {
+    trace "Init INF01";
+  }
+
+  $rect <220,290,400,330>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+
+    // disable slide-out effect if this menu is presented from Home
+    if( aState.contains( Core::ViewState[Visible] ) )
+    {
+      var Home::BaseHome HomeDialog = ( Home::BaseHome )Owner;
+      if( null != HomeDialog )
+      {
+        SlideOutEffectEnabled = false;
+      }
+    }
+  }
+
+  $rect <0,340,200,380>
   inherited var SlideOutEffectEnabled = true;
 
   $rect <510,20,710,60>

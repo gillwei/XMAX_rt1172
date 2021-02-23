@@ -250,7 +250,7 @@ void ComponentsBaseComponent_OnKeyHoldSlot( ComponentsBaseComponent _this, XObje
       break;
 
       case CoreKeyCodeOk :
-        ComponentsBaseComponent_OnLongEnterKeyActivated( _this );
+        ComponentsBaseComponent__OnLongEnterKeyActivated( _this );
       break;
 
       case CoreKeyCodeHome :
@@ -404,6 +404,12 @@ void ComponentsBaseComponent_OnLongEnterKeyActivated( ComponentsBaseComponent _t
   EW_UNUSED_ARG( _this );
 }
 
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongEnterKeyActivated()' */
+void ComponentsBaseComponent__OnLongEnterKeyActivated( void* _this )
+{
+  ((ComponentsBaseComponent)_this)->_VMT->OnLongEnterKeyActivated((ComponentsBaseComponent)_this );
+}
+
 /* 'C' function for method : 'Components::BaseComponent.OnLongHomeKeyActivated()' */
 void ComponentsBaseComponent_OnLongHomeKeyActivated( ComponentsBaseComponent _this )
 {
@@ -491,6 +497,7 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, KeyHandler, KeyHandler, Key
   ComponentsBaseComponent_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
 EW_END_OF_CLASS( ComponentsBaseComponent )
@@ -963,6 +970,7 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, ChildDialog, Mai
   ComponentsBaseMainBG_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( ComponentsBaseMainBG )

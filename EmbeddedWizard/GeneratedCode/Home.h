@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_HomeBaseHome.h"
 #include "_HomeHOM11_TachoVisualizer.h"
 #include "_HomeHOM12_EcoVisualizer.h"
 #include "_HomeHOM13_SpeedVisualizer.h"

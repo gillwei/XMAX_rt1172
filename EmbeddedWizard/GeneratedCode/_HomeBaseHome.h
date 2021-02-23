@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _HomeHOM11_TachoVisualizer_H
-#define _HomeHOM11_TachoVisualizer_H
+#ifndef _HomeBaseHome_H
+#define _HomeBaseHome_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,20 +42,13 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_HomeBaseHome.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -99,20 +92,19 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Home::HOM11_TachoVisualizer */
-#ifndef _HomeHOM11_TachoVisualizer_
-  EW_DECLARE_CLASS( HomeHOM11_TachoVisualizer )
-#define _HomeHOM11_TachoVisualizer_
+/* Forward declaration of the class Home::BaseHome */
+#ifndef _HomeBaseHome_
+  EW_DECLARE_CLASS( HomeBaseHome )
+#define _HomeBaseHome_
 #endif
 
 
-/* Deklaration of class : 'Home::HOM11_TachoVisualizer' */
-EW_DEFINE_FIELDS( HomeHOM11_TachoVisualizer, HomeBaseHome )
-  EW_OBJECT  ( Title,           ViewsText )
-EW_END_OF_FIELDS( HomeHOM11_TachoVisualizer )
+/* Deklaration of class : 'Home::BaseHome' */
+EW_DEFINE_FIELDS( HomeBaseHome, ComponentsBaseMainBG )
+EW_END_OF_FIELDS( HomeBaseHome )
 
-/* Virtual Method Table (VMT) for the class : 'Home::HOM11_TachoVisualizer' */
-EW_DEFINE_METHODS( HomeHOM11_TachoVisualizer, HomeBaseHome )
+/* Virtual Method Table (VMT) for the class : 'Home::BaseHome' */
+EW_DEFINE_METHODS( HomeBaseHome, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -158,33 +150,22 @@ EW_DEFINE_METHODS( HomeHOM11_TachoVisualizer, HomeBaseHome )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( HomeHOM11_TachoVisualizer _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( HomeHOM11_TachoVisualizer _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongEnterKeyActivated, void )( HomeHOM11_TachoVisualizer _this )
+  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-EW_END_OF_METHODS( HomeHOM11_TachoVisualizer )
+EW_END_OF_METHODS( HomeBaseHome )
 
-/* The method Init() is invoked automatically after the component has been created. 
-   This method can be overridden and filled with logic containing additional initialization 
-   statements. */
-void HomeHOM11_TachoVisualizer_Init( HomeHOM11_TachoVisualizer _this, XHandle aArg );
-
-/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnShortEnterKeyActivated()' */
-void HomeHOM11_TachoVisualizer_OnShortEnterKeyActivated( HomeHOM11_TachoVisualizer _this );
-
-/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnShortHomeKeyActivated()' */
-void HomeHOM11_TachoVisualizer_OnShortHomeKeyActivated( HomeHOM11_TachoVisualizer _this );
-
-/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnLongEnterKeyActivated()' */
-void HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated( HomeHOM11_TachoVisualizer _this );
+/* 'C' function for method : 'Home::BaseHome.ReturnToHome()' */
+void HomeBaseHome_ReturnToHome( HomeBaseHome _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _HomeHOM11_TachoVisualizer_H */
+#endif /* _HomeBaseHome_H */
 
 /* Embedded Wizard */

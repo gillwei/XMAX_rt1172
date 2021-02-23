@@ -210,6 +210,11 @@ class Application : Core::Root
           // The dialog lying top-most (the active dialog in context of this component) has the index 0 (zero).
           if( HomeClass == classof GetDialogAtIndex( 0 ) )
           {
+            var Home::BaseHome HomeDialog = ( Home::BaseHome )GetDialogAtIndex( 0 );
+            if( null != HomeDialog )
+            {
+              HomeDialog.ReturnToHome();
+            }
             break;
           }
           else

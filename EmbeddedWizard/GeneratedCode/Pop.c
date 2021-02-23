@@ -184,6 +184,7 @@ EW_DEFINE_CLASS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG, LoadingText, L
   ComponentsBaseMainBG_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( PopPOP08_WeatherLoadingUI )

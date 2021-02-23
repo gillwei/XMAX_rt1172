@@ -149,7 +149,8 @@ EW_DEFINE_METHODS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
   EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
-  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
+  EW_METHOD( UpdateViewState,   void )( InfoINF01_MeterDisplaySettingMenu _this, 
+    XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
@@ -168,6 +169,7 @@ EW_DEFINE_METHODS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( LoadItemClass,     XClass )( InfoINF01_MeterDisplaySettingMenu _this, 
@@ -181,6 +183,29 @@ EW_DEFINE_METHODS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( InfoINF01_MeterDisplaySettingMenu )
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void InfoINF01_MeterDisplaySettingMenu_Init( InfoINF01_MeterDisplaySettingMenu _this, 
+  XHandle aArg );
+
+/* The method UpdateViewState() is invoked automatically after the state of the 
+   component has been changed. This method can be overridden and filled with logic 
+   to ensure the visual aspect of the component does reflect its current state. 
+   For example, the 'enabled' state of the component can affect its colors (disabled 
+   components may appear pale). In this case the logic of the method should modify 
+   the respective color properties accordingly to the current 'enabled' state. 
+   The current state of the component is passed as a set in the parameter aState. 
+   It reflects the very basic component state like its visibility or the ability 
+   to react to user inputs. Beside this common state, the method can also involve 
+   any other variables used in the component as long as they reflect its current 
+   state. For example, the toggle switch component can take in account its toggle 
+   state 'on' or 'off' and change accordingly the location of the slider, etc.
+   Usually, this method will be invoked automatically by the framework. Optionally 
+   you can request its invocation by using the method @InvalidateViewState(). */
+void InfoINF01_MeterDisplaySettingMenu_UpdateViewState( InfoINF01_MeterDisplaySettingMenu _this, 
+  XSet aState );
 
 /* 'C' function for method : 'Info::INF01_MeterDisplaySettingMenu.LoadItemClass()' */
 XClass InfoINF01_MeterDisplaySettingMenu_LoadItemClass( InfoINF01_MeterDisplaySettingMenu _this, 

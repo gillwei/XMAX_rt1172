@@ -252,6 +252,7 @@ EW_DEFINE_CLASS( BrightnessBRT01_BrightnessSettingMenu, MenuBaseMenuView, _None,
   ComponentsBaseMainBG_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   BrightnessBRT01_BrightnessSettingMenu_LoadItemClass,
@@ -473,6 +474,7 @@ EW_DEFINE_CLASS( BrightnessBRT02_TFTBrightness, ComponentsBaseMainBG, Base, Base
   ComponentsBaseMainBG_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( BrightnessBRT02_TFTBrightness )
@@ -691,6 +693,7 @@ EW_DEFINE_CLASS( BrightnessBRT03_MeterBrightness, ComponentsBaseMainBG, Base, Ba
   ComponentsBaseMainBG_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( BrightnessBRT03_MeterBrightness )

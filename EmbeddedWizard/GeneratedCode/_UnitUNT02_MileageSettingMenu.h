@@ -172,6 +172,7 @@ EW_DEFINE_METHODS( UnitUNT02_MileageSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( LoadItemClass,     XClass )( UnitUNT02_MileageSettingMenu _this, XInt32 
