@@ -68,12 +68,12 @@ static bc_motocon_ddt_to_phone_t ddt_can;
 /*********************************************************************
 *
 * @private
-* ddt_init
+* bc_motocon_ddt_init
 *
 * Initial ddt
 *
 *********************************************************************/
-void ddt_init
+void bc_motocon_ddt_init
     (
     void
     )
@@ -85,18 +85,18 @@ ddt_vehicle_information.data_type = BC_MOTOCON_DDT_VEHICLE_INFORMATION_DATA_NOTI
 ddt_can.control_type = BC_MOTOCON_DDT_CAN_CONTROL_NOTIFY;
 ddt_can.data_type = BC_MOTOCON_DDT_CAN_DATA_NOTIFY;
 ddt_to_phone_id = BC_MOTOCON_DDT_INACTIVE_ID;
-ddt_reset();
+bc_motocon_ddt_reset();
 }
 
 /*********************************************************************
 *
 * @private
-* ddt_reset
+* bc_motocon_ddt_reset
 *
 * Reset ddt status
 *
 *********************************************************************/
-void ddt_reset
+void bc_motocon_ddt_reset
     (
     void
     )
@@ -110,7 +110,7 @@ ddt_can.id = BC_MOTOCON_DDT_INACTIVE_ID;
 /*********************************************************************
 *
 * @private
-* ddt_get_ddt_to_vehicle_status
+* bc_motocon_ddt_get_ddt_to_vehicle_status
 *
 * Get ddt to vehicle status.
 *
@@ -118,7 +118,7 @@ ddt_can.id = BC_MOTOCON_DDT_INACTIVE_ID;
 * Return status
 *
 *********************************************************************/
-const uint8_t* ddt_get_ddt_to_vehicle_status
+const uint8_t* bc_motocon_ddt_get_ddt_to_vehicle_status
     (
     void
     )
@@ -129,7 +129,7 @@ return ddt_to_vehicle_status;
 /*********************************************************************
 *
 * @private
-* ddt_set_ddt_to_vehicle_status
+* bc_motocon_ddt_set_ddt_to_vehicle_status
 *
 * Handle ddt to vehicle control.
 *
@@ -139,7 +139,7 @@ return ddt_to_vehicle_status;
 * Return status
 *
 *********************************************************************/
-const uint8_t* ddt_set_ddt_to_vehicle_status
+const uint8_t* bc_motocon_ddt_set_ddt_to_vehicle_status
     (
     const uint8_t* bytes
     )
@@ -159,7 +159,7 @@ return ddt_to_vehicle_status;
 /*********************************************************************
 *
 * @private
-* ddt_insert_ddt_to_vehicle_data
+* bc_motocon_ddt_insert_ddt_to_vehicle_data
 *
 * Handle ddt to vehicle data.
 *
@@ -169,7 +169,7 @@ return ddt_to_vehicle_status;
 * Return status is changed or NULL
 *
 *********************************************************************/
-const uint8_t* ddt_insert_ddt_to_vehicle_data
+const uint8_t* bc_motocon_ddt_insert_ddt_to_vehicle_data
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -204,7 +204,7 @@ if( data_position + data_length > ddt_to_vehicle_data_size )
 memcpy( ddt_to_vehicle_buffer + data_position, data, data_length );
 if( data_position + data_length == ddt_to_vehicle_data_size )
     {
-    parser_ddt_to_vehicle_received( ddt_to_vehicle_buffer, ddt_to_vehicle_data_size );
+    bc_motocon_parser_ddt_to_vehicle_received( ddt_to_vehicle_buffer, ddt_to_vehicle_data_size );
     memset( ddt_to_vehicle_status, 0, BC_MOTOCON_DDT_STATUS_LENGTH );
     return ddt_to_vehicle_status;
     }
@@ -238,7 +238,7 @@ return ddt_to_phone_id;
 /*********************************************************************
 *
 * @private
-* ddt_send_ddt_to_phone_data
+* bc_motocon_ddt_send_ddt_to_phone_data
 *
 * Send protobuf data by ddt to phone protocol. (include ddt vehicle information & ddt can)
 * Input arguments are protobuf's parameters.
@@ -252,7 +252,7 @@ return ddt_to_phone_id;
 * Result of send command
 *
 *********************************************************************/
-bc_motocon_send_result_t ddt_send_ddt_to_phone_data
+bc_motocon_send_result_t bc_motocon_ddt_send_ddt_to_phone_data
     (
     const bc_motocon_command_code_t command,
     const uint8_t* bytes,
@@ -321,14 +321,14 @@ return ret;
 /*********************************************************************
 *
 * @private
-* ddt_received_ddt_to_phone_ack
+* bc_motocon_ddt_received_ddt_to_phone_ack
 *
 * Get ack from phone and send the next package.
 *
 * @param type Type of ddt
 *
 *********************************************************************/
-void ddt_received_ddt_to_phone_ack
+void bc_motocon_ddt_received_ddt_to_phone_ack
     (
     const bc_motocon_ddt_type_t type
     )

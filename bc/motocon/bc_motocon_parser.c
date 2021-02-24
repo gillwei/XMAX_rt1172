@@ -47,12 +47,12 @@ static bc_motocon_notification_v2_t notification_v2;
 /*********************************************************************
 *
 * @private
-* parser_write_received
+* bc_motocon_parser_write_received
 *
 * Handle write data.
 *
 *********************************************************************/
-void parser_write_received
+void bc_motocon_parser_write_received
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -68,27 +68,27 @@ switch( command_code )
         break;
 
     case BC_MOTOCON_COMMAND_CODE_WEATHER_LOCATION:
-        ret = parser_weather_location( bytes, length );
+        ret = bc_motocon_parser_weather_location( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_WEATHER_INFO:
-        ret = parser_weather_info( bytes, length );
+        ret = bc_motocon_parser_weather_info( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_INFORMATION_SUBSCRIBE_INTERVAL:
-        ret = parser_vehicle_info_subscribe( bytes, length );
+        ret = bc_motocon_parser_vehicle_info_subscribe( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_DATETIME_CHANGE_NOTIFICATION:
-        ret = parser_datetime_changed( bytes, length );
+        ret = bc_motocon_parser_datetime_changed( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_SETTING_DATETIME:
-        ret = parser_vehicle_datetime( bytes, length );
+        ret = bc_motocon_parser_vehicle_datetime( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_LANGUAGE_TYPE_RESPONSE:
-        ret = parser_language_type( bytes, length );
+        ret = bc_motocon_parser_language_type( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_CONNECT_SERVER_LIST_REQUEST:
@@ -99,43 +99,43 @@ switch( command_code )
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_INFORMATION_SUPPORT_ID_LIST_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_INFORMATION_INTERVAL_SETTING_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_FFD_REQUEST:
-        ret = parser_short_data_to_can( command_code, bytes, length );
+        ret = bc_motocon_parser_short_data_to_can( command_code, bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_CAN_REQUEST:
-        ret = parser_can_request();
+        ret = bc_motocon_parser_can_request();
         break;
 
     case BC_MOTOCON_COMMAND_CODE_CUMULATIVE_INJECTION_QUANTITY_REQUEST:
-        ret = parser_injection_request();
+        ret = bc_motocon_parser_injection_request();
         break;
 
     case BC_MOTOCON_COMMAND_CODE_PHONE_BATTERY:
-        ret = parser_battery( bytes, length );
+        ret = bc_motocon_parser_battery( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_PHONE_THERMAL_STATE:
-        ret = parser_thermal( bytes, length );
+        ret = bc_motocon_parser_thermal( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_BLUETOOTH_HEADSET_STATE_RESPONSE:
-        ret = parser_bt_headset_state( bytes, length );
+        ret = bc_motocon_parser_bt_headset_state( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_PHONE_VOLUME_LEVEL:
-        ret = parser_volume_level( bytes, length );
+        ret = bc_motocon_parser_volume_level( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_NOTIFICATION_CATEGORY:
-        ret = parser_notification_category( bytes, length );
+        ret = bc_motocon_parser_notification_category( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_PHONE_VOLUME_CONTROLLABLE_RESPONSE:
-        ret = parser_volume_controllable( bytes, length );
+        ret = bc_motocon_parser_volume_controllable( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_OTA_UPDATE_INFORMATION:
-        ret = parser_ota_update_info( bytes, length );
+        ret = bc_motocon_parser_ota_update_info( bytes, length );
         break;
 
         default:
@@ -150,12 +150,12 @@ if( ret != BC_MOTOCON_PARSE_SUCCESS )
 /*********************************************************************
 *
 * @private
-* parser_ddt_to_vehicle_received
+* bc_motocon_parser_ddt_to_vehicle_received
 *
 * Handle ddt to vehicle data.
 *
 *********************************************************************/
-void parser_ddt_to_vehicle_received
+void bc_motocon_parser_ddt_to_vehicle_received
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -169,18 +169,18 @@ switch( command_code )
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_IDENTIFICATION_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_MARKET_DATA_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_INFORMATION_REQUEST:
-        ret = parser_protobuf_to_can( command_code, bytes, length );
+        ret = bc_motocon_parser_protobuf_to_can( command_code, bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_BLUETOOTH_MUSIC_META_DATA:
-        ret = parser_bt_music_meta_data( bytes, length );
+        ret = bc_motocon_parser_bt_music_meta_data( bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_INCOMING_CALL_INFORMATION:
-        ret = parser_incoming_call_info( bytes, length );
+        ret = bc_motocon_parser_incoming_call_info( bytes, length );
         break;
     case BC_MOTOCON_COMMAND_CODE_NOTIFICATION_DATA_V2:
-        ret = parser_notification_v2( bytes, length );
+        ret = bc_motocon_parser_notification_v2( bytes, length );
         break;
 
     default:
@@ -195,12 +195,12 @@ if( ret != BC_MOTOCON_PARSE_SUCCESS )
 /*********************************************************************
 *
 * @private
-* parser_weather_location
+* bc_motocon_parser_weather_location
 *
 * Parse weather and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_weather_location
+bc_motocon_parse_result_t bc_motocon_parser_weather_location
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -243,12 +243,12 @@ return (int16_t)( (int32_t)value - 0x10000u ) / 10.0;
 /*********************************************************************
 *
 * @private
-* parser_weather_info
+* bc_motocon_parser_weather_info
 *
 * Parse weather and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_weather_info
+bc_motocon_parse_result_t bc_motocon_parser_weather_info
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -281,12 +281,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_vehicle_info_subscribe
+* bc_motocon_parser_vehicle_info_subscribe
 *
 * Parse vehicle info subscribe interval and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_vehicle_info_subscribe
+bc_motocon_parse_result_t bc_motocon_parser_vehicle_info_subscribe
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -311,12 +311,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_datetime_changed
+* bc_motocon_parser_datetime_changed
 *
 * Parse datetime changed notification and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_datetime_changed
+bc_motocon_parse_result_t bc_motocon_parser_datetime_changed
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -341,12 +341,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_vehicle_datetime
+* bc_motocon_parser_vehicle_datetime
 *
 * Parse datetime and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_vehicle_datetime
+bc_motocon_parse_result_t bc_motocon_parser_vehicle_datetime
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -372,12 +372,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_language_type
+* bc_motocon_parser_language_type
 *
 * Parse language and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_language_type
+bc_motocon_parse_result_t bc_motocon_parser_language_type
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -402,12 +402,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_short_data_to_can
+* bc_motocon_parser_short_data_to_can
 *
 * Parse data and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_short_data_to_can
+bc_motocon_parse_result_t bc_motocon_parser_short_data_to_can
     (
     const bc_motocon_command_code_t command_code,
     const uint8_t*                  bytes,
@@ -434,12 +434,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_protobuf_to_can
+* bc_motocon_parser_protobuf_to_can
 *
 * Parse protobuf and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_protobuf_to_can
+bc_motocon_parse_result_t bc_motocon_parser_protobuf_to_can
     (
     const bc_motocon_command_code_t command_code,
     const uint8_t*                  bytes,
@@ -465,12 +465,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_can_request
+* bc_motocon_parser_can_request
 *
 * Post can request callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_can_request
+bc_motocon_parse_result_t bc_motocon_parser_can_request
     (
     void
     )
@@ -490,12 +490,12 @@ return BC_MOTOCON_PARSE_SUCCESS;
 /*********************************************************************
 *
 * @private
-* parser_injection_request
+* bc_motocon_parser_injection_request
 *
 * Post cumulative injection quantity request callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_injection_request
+bc_motocon_parse_result_t bc_motocon_parser_injection_request
     (
     void
     )
@@ -515,12 +515,12 @@ return BC_MOTOCON_PARSE_SUCCESS;
 /*********************************************************************
 *
 * @private
-* parser_battery
+* bc_motocon_parser_battery
 *
 * Parse battery and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_battery
+bc_motocon_parse_result_t bc_motocon_parser_battery
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -545,12 +545,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_bt_music_meta_data
+* bc_motocon_parser_bt_music_meta_data
 *
 * Parse bt music and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_bt_music_meta_data
+bc_motocon_parse_result_t bc_motocon_parser_bt_music_meta_data
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -626,12 +626,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_incoming_call_info
+* bc_motocon_parser_incoming_call_info
 *
 * Parse incoming call and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_incoming_call_info
+bc_motocon_parse_result_t bc_motocon_parser_incoming_call_info
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -686,12 +686,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_thermal
+* bc_motocon_parser_thermal
 *
 * Parse thermal and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_thermal
+bc_motocon_parse_result_t bc_motocon_parser_thermal
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -716,12 +716,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_bt_headset_state
+* bc_motocon_parser_bt_headset_state
 *
 * Parse bt headset state and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_bt_headset_state
+bc_motocon_parse_result_t bc_motocon_parser_bt_headset_state
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -746,12 +746,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_volume_level
+* bc_motocon_parser_volume_level
 *
 * Parse volume level state and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_volume_level
+bc_motocon_parse_result_t bc_motocon_parser_volume_level
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -776,12 +776,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_notification_category
+* bc_motocon_parser_notification_category
 *
 * Parse notification category state and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_notification_category
+bc_motocon_parse_result_t bc_motocon_parser_notification_category
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -815,12 +815,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_volume_controllable
+* bc_motocon_parser_volume_controllable
 *
 * Parse volume controllable state and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_volume_controllable
+bc_motocon_parse_result_t bc_motocon_parser_volume_controllable
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -845,12 +845,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
-* parser_ota_update_info
+* bc_motocon_parser_ota_update_info
 *
 * Parse ota update info and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_ota_update_info
+bc_motocon_parse_result_t bc_motocon_parser_ota_update_info
     (
     const uint8_t* bytes,
     const uint32_t length
@@ -921,12 +921,12 @@ return pb_read( stream, (uint8_t*)*arg, stream->bytes_left );
 /*********************************************************************
 *
 * @private
-* parser_notification_v2
+* bc_motocon_parser_notification_v2
 *
 * Parse notification data v2 and post callback.
 *
 *********************************************************************/
-bc_motocon_parse_result_t parser_notification_v2
+bc_motocon_parse_result_t bc_motocon_parser_notification_v2
     (
     const uint8_t* bytes,
     const uint32_t length

@@ -80,7 +80,7 @@ bc_motocon_set_connected( false );
 #if( ENABLE_MOTOCON_HCI_LINK )
     HCI_le_register_server_callback( BLE_SERVER_MOTOCONSDK, &bc_motocon_ble_callback );
 #endif
-ddt_init();
+bc_motocon_ddt_init();
 }
 
 /*********************************************************************
@@ -364,7 +364,7 @@ if( command == BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE )
     }
 else
     {
-    return ddt_send_ddt_to_phone_data( command, data, size, result_callback );
+    return bc_motocon_ddt_send_ddt_to_phone_data( command, data, size, result_callback );
     }
 }
 
@@ -391,7 +391,7 @@ bc_motocon_send_result_t BC_motocon_send_can_response
     )
 {
 BC_MOTOCON_PRINTF( "%s, size: %d\r\n", __FUNCTION__, size );
-return ddt_send_ddt_to_phone_data( BC_MOTOCON_COMMAND_CODE_CAN_RESPONSE, data, size, result_callback );
+return bc_motocon_ddt_send_ddt_to_phone_data( BC_MOTOCON_COMMAND_CODE_CAN_RESPONSE, data, size, result_callback );
 }
 
 /*********************************************************************
@@ -728,7 +728,7 @@ void BC_motocon_ble_disconnected_callback
 {
 BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
 bc_motocon_set_connected( false );
-ddt_reset();
+bc_motocon_ddt_reset();
 }
 
 /*********************************************************************
@@ -748,7 +748,7 @@ BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
 #if( ENABLE_MOTOCON_HCI_LINK )
     if( handle == HDLC_MOTOCONSDK_DDT_TO_VEHICLE_STATUS_VALUE )
         {
-        bc_motocon_send_data( BC_MOTOCON_DDT_TO_VEHICLE_STATUS_READ_RESPONSE, ddt_get_ddt_to_vehicle_status(), BC_MOTOCON_DDT_STATUS_LENGTH );
+        bc_motocon_send_data( BC_MOTOCON_DDT_TO_VEHICLE_STATUS_READ_RESPONSE, bc_motocon_ddt_get_ddt_to_vehicle_status(), BC_MOTOCON_DDT_STATUS_LENGTH );
         }
 #endif
 }
@@ -773,19 +773,19 @@ BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
     switch( handle )
         {
         case HDLC_MOTOCONSDK_WRITE_VALUE:
-            parser_write_received( data, length );
+            bc_motocon_parser_write_received( data, length );
             break;
 
         case HDLC_MOTOCONSDK_DDT_TO_VEHICLE_CONTROL_VALUE:
             {
-            const uint8_t* bytes = ddt_set_ddt_to_vehicle_status( data );
+            const uint8_t* bytes = bc_motocon_ddt_set_ddt_to_vehicle_status( data );
             bc_motocon_send_data( BC_MOTOCON_DDT_TO_VEHICLE_STATUS_NOTIFY, bytes, BC_MOTOCON_DDT_STATUS_LENGTH );
             }
             break;
 
         case HDLC_MOTOCONSDK_DDT_TO_VEHICLE_DATA_VALUE:
             {
-            const uint8_t* bytes = ddt_insert_ddt_to_vehicle_data( data, length );
+            const uint8_t* bytes = bc_motocon_ddt_insert_ddt_to_vehicle_data( data, length );
             if( bytes != NULL )
                 {
                 bc_motocon_send_data( BC_MOTOCON_DDT_TO_VEHICLE_STATUS_NOTIFY, bytes, BC_MOTOCON_DDT_STATUS_LENGTH );
@@ -796,19 +796,19 @@ BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
         case HDLC_MOTOCONSDK_DDT_TO_PHONE_STATUS_VALUE:
         case HDLC_MOTOCONSDK_DDT_TO_PHONE_DATA_VALUE:
             BC_MOTOCON_PRINTF( "%s, DDT_TO_PHONE ack\r\n", __FUNCTION__ );
-            ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_TO_PHONE );
+            bc_motocon_ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_TO_PHONE );
             break;
 
         case HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_STATUS_VALUE:
         case HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_DATA_VALUE:
             BC_MOTOCON_PRINTF( "%s, DDT_VEHICLE_INFORMATION ack\r\n", __FUNCTION__ );
-            ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_VEHICLE_INFORMATION );
+            bc_motocon_ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_VEHICLE_INFORMATION );
             break;
 
         case HDLC_MOTOCONSDK_DDT_CAN_STATUS_VALUE:
         case HDLC_MOTOCONSDK_DDT_CAN_DATA_VALUE:
             BC_MOTOCON_PRINTF( "%s, DDT_CAN ack\r\n", __FUNCTION__ );
-            ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_CAN );
+            bc_motocon_ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_CAN );
             break;
 
         default:

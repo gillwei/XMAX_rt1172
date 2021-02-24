@@ -94,36 +94,36 @@ typedef enum
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-void ddt_init( void );
-void ddt_reset( void );
-const uint8_t* ddt_get_ddt_to_vehicle_status( void );
-const uint8_t* ddt_set_ddt_to_vehicle_status( const uint8_t* bytes );
-const uint8_t* ddt_insert_ddt_to_vehicle_data( const uint8_t* bytes, const uint32_t length );
-bc_motocon_send_result_t ddt_send_ddt_to_phone_data( const bc_motocon_command_code_t command, const uint8_t* bytes, const uint32_t length, void ( *result_callback ) ( const bc_motocon_send_result_t ) );
-void ddt_received_ddt_to_phone_ack( const bc_motocon_ddt_type_t type );
+void bc_motocon_ddt_init( void );
+void bc_motocon_ddt_reset( void );
+const uint8_t* bc_motocon_ddt_get_ddt_to_vehicle_status( void );
+const uint8_t* bc_motocon_ddt_set_ddt_to_vehicle_status( const uint8_t* bytes );
+const uint8_t* bc_motocon_ddt_insert_ddt_to_vehicle_data( const uint8_t* bytes, const uint32_t length );
+bc_motocon_send_result_t bc_motocon_ddt_send_ddt_to_phone_data( const bc_motocon_command_code_t command, const uint8_t* bytes, const uint32_t length, void ( *result_callback ) ( const bc_motocon_send_result_t ) );
+void bc_motocon_ddt_received_ddt_to_phone_ack( const bc_motocon_ddt_type_t type );
 
-void parser_write_received( const uint8_t* bytes, const uint32_t length );
-void parser_ddt_to_vehicle_received( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_weather_location( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_weather_info( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_vehicle_info_subscribe( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_datetime_changed( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_vehicle_datetime( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_language_type( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_short_data_to_can( const bc_motocon_command_code_t command_code, const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_protobuf_to_can( const bc_motocon_command_code_t command_code, const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_can_request( void );
-bc_motocon_parse_result_t parser_injection_request( void );
-bc_motocon_parse_result_t parser_battery( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_bt_music_meta_data( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_incoming_call_info( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_thermal( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_bt_headset_state( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_volume_level( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_notification_category( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_volume_controllable( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_ota_update_info( const uint8_t* bytes, const uint32_t length );
-bc_motocon_parse_result_t parser_notification_v2( const uint8_t* bytes, const uint32_t length );
+void bc_motocon_parser_write_received( const uint8_t* bytes, const uint32_t length );
+void bc_motocon_parser_ddt_to_vehicle_received( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_weather_location( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_weather_info( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_vehicle_info_subscribe( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_datetime_changed( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_vehicle_datetime( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_language_type( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_short_data_to_can( const bc_motocon_command_code_t command_code, const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_protobuf_to_can( const bc_motocon_command_code_t command_code, const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_can_request( void );
+bc_motocon_parse_result_t bc_motocon_parser_injection_request( void );
+bc_motocon_parse_result_t bc_motocon_parser_battery( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_bt_music_meta_data( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_incoming_call_info( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_thermal( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_bt_headset_state( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_volume_level( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_notification_category( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_volume_controllable( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_ota_update_info( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_notification_v2( const uint8_t* bytes, const uint32_t length );
 
 void bc_motocon_init( void );
 void bc_motocon_set_connected( bool connected );
