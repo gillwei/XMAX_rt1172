@@ -97,6 +97,7 @@
 EW_DEFINE_FIELDS( MenuItemWrapper, CoreGroup )
   EW_PROPERTY( OnActivate,      XSlot )
   EW_PROPERTY( Title,           XString )
+  EW_PROPERTY( UnitValue,       XString )
   EW_PROPERTY( ItemClass,       XClass )
   EW_PROPERTY( Height,          XInt32 )
   EW_PROPERTY( DDModeEnabled,   XBool )
@@ -174,6 +175,9 @@ void MenuItemWrapper_OnSetFocusable( MenuItemWrapper _this, XBool value );
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetDDModeEnabled()' */
 void MenuItemWrapper_OnSetDDModeEnabled( MenuItemWrapper _this, XBool value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetUnitValue()' */
+void MenuItemWrapper_OnSetUnitValue( MenuItemWrapper _this, XString value );
 
 #ifdef __cplusplus
   }

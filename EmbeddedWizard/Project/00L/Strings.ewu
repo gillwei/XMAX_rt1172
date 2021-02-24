@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/02/19 14:15:50
+// Generated: 2021/02/24 23:32:41
 
 $output false
 const string GEN_ok =
@@ -642,6 +642,90 @@ $output false
 const string SET28_sw_update =
 (
   Default = "Software update";
+);
+
+$output false
+const string UNT01_unit_mileage =
+(
+  Default = "Mileage";
+);
+
+$output false
+const string UNT01_unit_fuel =
+(
+  Default = "Fuel";
+);
+
+$output false
+const string UNT01_unit_pressure =
+(
+  Default = "Pressure";
+);
+
+$output false
+const string UNT01_unit_temperature =
+(
+  Default = "Temperature";
+);
+
+$output false
+const string UNT02_unit_mileage_kilometer =
+(
+  Default = "km";
+);
+
+$output false
+const string UNT02_unit_mileage_mile =
+(
+  Default = "mile";
+);
+
+$output false
+const string UNT03_unit_fuel_km_per_liter =
+(
+  Default = "km/L";
+);
+
+$output false
+const string UNT03_unit_fuel_liter_per_hundred_km =
+(
+  Default = "L/100km";
+);
+
+$output false
+const string UNT03_unit_fuel_mile_per_gallon =
+(
+  Default = "MPG";
+);
+
+$output false
+const string UNT04_unit_pressure_kpa =
+(
+  Default = "kPa";
+);
+
+$output false
+const string UNT04_unit_pressure_psi =
+(
+  Default = "psi";
+);
+
+$output false
+const string UNT04_unit_pressure_kgf =
+(
+  Default = "kgf/cm\u00b2";
+);
+
+$output false
+const string UNT05_unit_temperature_c =
+(
+  Default = "\u2103";
+);
+
+$output false
+const string UNT05_unit_temperature_f =
+(
+  Default = "\u2109";
 );
 
 $output false

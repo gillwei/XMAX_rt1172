@@ -56,7 +56,7 @@ static const unsigned int _StringsDefault0[] =
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault1[] =
 {
-  0x0000030E, /* ratio 54.22 % */
+  0x000003E4, /* ratio 54.22 % */
   0xB8001F00, 0x80088452, 0x00CC0032, 0x0EA00308, 0xE8003600, 0xC0010000, 0x0734800E,
   0xC001DC01, 0x2A412051, 0x01C8010D, 0x0B4006E0, 0xE4006200, 0xE4311931, 0x191C92C8,
   0xD2022C0C, 0x0F89CBE1, 0xD398022F, 0x99836392, 0x21BC0043, 0x98E11449, 0xC2871896,
@@ -71,8 +71,12 @@ static const unsigned int _StringsDefault1[] =
   0x54E02953, 0x37120270, 0xE9055555, 0xC26CDD74, 0x06D1C859, 0x93911533, 0x148D2D51,
   0x0D387B1C, 0xB173D086, 0x138006AD, 0xD295D121, 0x404D538A, 0x490A6799, 0x0C561714,
   0x4F234766, 0x21252DA2, 0x74956541, 0x00494E16, 0x12471060, 0x8E5438DC, 0x5236C51A,
-  0xF5BD0E8F, 0x7108629D, 0x574CC0E4, 0x79D254E8, 0xD4760C00, 0x352D1994, 0x01010015,
-  0x00000000
+  0xF5BD0E8F, 0x7108629D, 0x4D116434, 0x6C60A4E8, 0xC009655A, 0x11190458, 0x2D538252,
+  0x3B8F1E20, 0x781369B5, 0x13303800, 0xB7219948, 0x8A6F6298, 0x524CC059, 0x4CD625D1,
+  0xE5F46174, 0x09F5049F, 0x9C000BC0, 0x8769A5A6, 0x00031002, 0x800A4030, 0x30191CA1,
+  0xB1E39753, 0x009F2955, 0xA6D0C78C, 0x6405BD04, 0xA56A9C84, 0xD147A210, 0x0454CB25,
+  0x084034CC, 0x504AB51C, 0x39C6B002, 0x953A15D3, 0x83001E74, 0x4665351D, 0x40054D4B,
+  0x00000040, 0x00000000
 };
 
 /* Compressed strings for the language 'French'. */
@@ -173,7 +177,7 @@ static const unsigned int _StringsTraditionalChinese0[] =
 };
 
 /* This file is generated automatically.
-   Generated: 2021/02/19 14:15:50 */
+   Generated: 2021/02/24 23:32:41 */
 const XVariantOfString _StringsGEN_ok[] = 
 {
   { SimplifiedChinese, { _StringsSimplifiedChinese0, 0x0002 }},
@@ -390,7 +394,49 @@ const XStringRes StringsSET28_unit_id = { _StringsDefault1, 0x015D };
 /* User defined constant: 'Strings::SET28_sw_update' */
 const XStringRes StringsSET28_sw_update = { _StringsDefault1, 0x0167 };
 
+/* User defined constant: 'Strings::UNT01_unit_mileage' */
+const XStringRes StringsUNT01_unit_mileage = { _StringsDefault1, 0x0179 };
+
+/* User defined constant: 'Strings::UNT01_unit_fuel' */
+const XStringRes StringsUNT01_unit_fuel = { _StringsDefault1, 0x0183 };
+
+/* User defined constant: 'Strings::UNT01_unit_pressure' */
+const XStringRes StringsUNT01_unit_pressure = { _StringsDefault1, 0x018A };
+
+/* User defined constant: 'Strings::UNT01_unit_temperature' */
+const XStringRes StringsUNT01_unit_temperature = { _StringsDefault1, 0x0195 };
+
+/* User defined constant: 'Strings::UNT02_unit_mileage_kilometer' */
+const XStringRes StringsUNT02_unit_mileage_kilometer = { _StringsDefault1, 0x01A3 };
+
+/* User defined constant: 'Strings::UNT02_unit_mileage_mile' */
+const XStringRes StringsUNT02_unit_mileage_mile = { _StringsDefault1, 0x01A8 };
+
+/* User defined constant: 'Strings::UNT03_unit_fuel_km_per_liter' */
+const XStringRes StringsUNT03_unit_fuel_km_per_liter = { _StringsDefault1, 0x01AF };
+
+/* User defined constant: 'Strings::UNT03_unit_fuel_liter_per_hundred_km' */
+const XStringRes StringsUNT03_unit_fuel_liter_per_hundred_km = { _StringsDefault1, 0x01B6 };
+
+/* User defined constant: 'Strings::UNT03_unit_fuel_mile_per_gallon' */
+const XStringRes StringsUNT03_unit_fuel_mile_per_gallon = { _StringsDefault1, 0x01C0 };
+
+/* User defined constant: 'Strings::UNT04_unit_pressure_kpa' */
+const XStringRes StringsUNT04_unit_pressure_kpa = { _StringsDefault1, 0x01C6 };
+
+/* User defined constant: 'Strings::UNT04_unit_pressure_psi' */
+const XStringRes StringsUNT04_unit_pressure_psi = { _StringsDefault1, 0x01CC };
+
+/* User defined constant: 'Strings::UNT04_unit_pressure_kgf' */
+const XStringRes StringsUNT04_unit_pressure_kgf = { _StringsDefault1, 0x01D2 };
+
+/* User defined constant: 'Strings::UNT05_unit_temperature_c' */
+const XStringRes StringsUNT05_unit_temperature_c = { _StringsDefault1, 0x01DC };
+
+/* User defined constant: 'Strings::UNT05_unit_temperature_f' */
+const XStringRes StringsUNT05_unit_temperature_f = { _StringsDefault1, 0x01E0 };
+
 /* User defined constant: 'Strings::WSC01_wind_screen' */
-const XStringRes StringsWSC01_wind_screen = { _StringsDefault1, 0x0179 };
+const XStringRes StringsWSC01_wind_screen = { _StringsDefault1, 0x01E4 };
 
 /* Embedded Wizard */

@@ -1,0 +1,814 @@
+﻿$version 10.00
+
+$rect <50,30,250,70>
+$output false
+class UNT01_UnitSettingMenu : Menu::BaseMenuView
+{
+  $rect <240,290,440,330>
+  inherited method Init()
+  {
+    var int32 NoOfItems = 3;
+    var int32 ItemIdx = 2;
+    var int32 i;
+
+    if( PressureEnabled )
+    {
+      NoOfItems++;
+      PressureMenu = new Unit::UNT04_PressureSettingMenu;
+    }
+
+    if( NoOfItems < ItemTitleArray.size )
+    {
+      ItemVehicleRxTypeArray[ItemIdx] = ItemVehicleRxTypeArray[3];
+    }
+
+    Menu.NoOfItems = NoOfItems;
+
+    var DeviceInterface::VehicleDataClass VehicleData;
+    UnitItemValue = new Unit::UnitValueClass;
+    MileageMenu = new Unit::UNT02_MileageSettingMenu;
+    FuelMenu = new Unit::UNT03_FuelSettingMenu;
+    TempMenu = new Unit::UNT05_TemperatureSettingMenu;
+
+    for( i = 0; i < NoOfItems; i++ )
+    {
+      VehicleData = DeviceInterface::VehicleDevice.GetData( ItemVehicleRxTypeArray[i] );
+      switch( ItemVehicleRxTypeArray[i] )
+      {
+        case Enum::VehicleRxType.MILEAGE_UNIT:
+        {
+          if( UnitItemValue.ItemMileageUnitArray.size > ( int32 )VehicleData.DataUInt32 )
+          {
+            ItemValueArray[i] = UnitItemValue.ItemMileageUnitArray[( int32 )VehicleData.DataUInt32];
+          }
+        }
+        case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT:
+        {
+          if( UnitItemValue.ItemFuelUnitArray.size > ( int32 )VehicleData.DataUInt32 )
+          {
+            ItemValueArray[i] = UnitItemValue.ItemFuelUnitArray[( int32 )VehicleData.DataUInt32];
+          }
+        }
+        case Enum::VehicleRxType.PRESSURE_UNIT:
+        {
+          if( UnitItemValue.ItemPressureUnitArray.size > ( int32 )VehicleData.DataUInt32 )
+          {
+            ItemValueArray[i] = UnitItemValue.ItemPressureUnitArray[( int32 )VehicleData.DataUInt32];
+          }
+        }
+        case Enum::VehicleRxType.TEMPERATURE_UNIT:
+        {
+          if( UnitItemValue.ItemTemperatureUnitArray.size > ( int32 )VehicleData.DataUInt32 )
+          {
+            ItemValueArray[i] = UnitItemValue.ItemTemperatureUnitArray[( int32 )VehicleData.DataUInt32];
+          }
+        }
+        default:;
+      }
+    }
+  }
+
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <220,450,420,490>
+  inherited property DDModeEnabled = true;
+
+  $rect <220,350,420,390>
+  inherited var SlideOutEffectEnabled = true;
+
+  $rect <520,30,720,70>
+  inherited method LoadItemClass()
+  {
+    // suppress warning
+    if( aItemNo )
+    {
+      // empty body
+    }
+    return Menu::ItemUnitValue;
+  }
+
+  $rect <520,80,720,120>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    switch( ItemVehicleRxTypeArray[aItemNo] )
+    {
+      case Enum::VehicleRxType.MILEAGE_UNIT: title = Strings::UNT01_unit_mileage;
+      case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT: title = Strings::UNT01_unit_fuel;
+      case Enum::VehicleRxType.PRESSURE_UNIT: title = Strings::UNT01_unit_pressure;
+      case Enum::VehicleRxType.TEMPERATURE_UNIT: title = Strings::UNT01_unit_temperature;
+      default:;
+    }
+    return title;
+  }
+
+  $rect <520,270,720,310>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    switch( ItemVehicleRxTypeArray[aItemNo] )
+    {
+      case Enum::VehicleRxType.MILEAGE_UNIT:
+      {
+        MileageMenu.MileageUpdateSignal = OnUnitValueUpdateSlot;
+        PresentDialog( MileageMenu, null, null, null, null, null, null, null, null, false );
+      }
+      case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT:
+      {
+        FuelMenu.FuelUpdateSignal = OnUnitValueUpdateSlot;
+        if( MileageMenu.MileageItemIdx == 0 )
+        {
+          FuelMenu.ItemEnabledArray[0] = true;
+          FuelMenu.ItemEnabledArray[1] = true;
+          FuelMenu.ItemEnabledArray[2] = false;
+        }
+        else
+        {
+          FuelMenu.ItemEnabledArray[0] = false;
+          FuelMenu.ItemEnabledArray[1] = false;
+          FuelMenu.ItemEnabledArray[2] = true;
+        }
+        FuelMenu.Menu.InvalidateItems( 0, 2 );
+        PresentDialog( FuelMenu, null, null, null, null, null, null, null, null, false );
+      }
+      case Enum::VehicleRxType.PRESSURE_UNIT:
+      {
+        PressureMenu.PressureUpdateSignal = OnUnitValueUpdateSlot;
+        PresentDialog( PressureMenu, null, null, null, null, null, null, null, null, false );
+      }
+      case Enum::VehicleRxType.TEMPERATURE_UNIT:
+      {
+        TempMenu.TempUpdateSignal = OnUnitValueUpdateSlot;
+        PresentDialog( TempMenu, null, null, null, null, null, null, null, null, false );
+      }
+      default :;
+    }
+  }
+
+  $rect <520,210,720,250>
+  inherited method LoadItemEnabled()
+  {
+    var bool ItemEnabled = true;
+    if( aItemNo == 1 )
+    {
+      ItemEnabled = IsFuelEnabled;
+    }
+    return ItemEnabled;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = 4;
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+  }
+
+  $rect <520,140,720,180>
+  inherited method LoadItemUnitValue()
+  {
+    var string val = "";
+    if( aItemNo < ItemValueArray.size )
+    {
+      val = ItemValueArray[aItemNo];
+    }
+    return val;
+  }
+
+  $rect <760,30,960,70>
+  array string ItemTitleArray[ 4 ] =
+  (
+    Default[0] = Strings::UNT01_unit_mileage;
+    Default[1] = Strings::UNT01_unit_fuel;
+    Default[2] = Strings::UNT01_unit_pressure;
+    Default[3] = Strings::UNT01_unit_temperature;
+  );
+
+  $rect <760,80,960,120>
+  array Enum::VehicleRxType ItemVehicleRxTypeArray[ 4 ] =
+  (
+    Default[0] = Enum::VehicleRxType.MILEAGE_UNIT;
+    Default[1] = Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT;
+    Default[2] = Enum::VehicleRxType.PRESSURE_UNIT;
+    Default[3] = Enum::VehicleRxType.TEMPERATURE_UNIT;
+  );
+
+  $rect <760,130,960,170>
+  array string ItemValueArray[ 4 ];
+
+  $rect <10,350,210,390>
+  var Unit::UnitValueClass UnitItemValue;
+
+  $rect <520,330,720,370>
+  slot OnUnitValueUpdateSlot
+  {
+    if( sender == MileageMenu )
+    {
+      IsFuelEnabled = true;
+      ItemValueArray[0] = UnitItemValue.ItemMileageUnitArray[MileageMenu.MileageItemIdx];
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.MILEAGE_UNIT, ( uint32 )MileageMenu.MileageItemIdx );
+      if( MileageMenu.MileageItemIdx == 1 )
+      {
+        IsFuelEnabled = false;
+      }
+    }
+    else if( sender == FuelMenu )
+    {
+      ItemValueArray[1] = UnitItemValue.ItemFuelUnitArray[FuelMenu.FuelItemIdx];
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.FUEL_CONSUMPTION_UNIT, ( uint32 )FuelMenu.FuelItemIdx );
+    }
+    else if( sender == PressureMenu )
+    {
+      ItemValueArray[2] = UnitItemValue.ItemPressureUnitArray[PressureMenu.PressureItemIdx];
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, ( uint32 )PressureMenu.PressureItemIdx );
+    }
+    else if( sender == TempMenu )
+    {
+      if( PressureEnabled )
+      {
+        ItemValueArray[3] = UnitItemValue.ItemTemperatureUnitArray[TempMenu.TempItemIdx];
+      }
+      else
+      {
+        ItemValueArray[2] = UnitItemValue.ItemTemperatureUnitArray[TempMenu.TempItemIdx];
+      }
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TEMPERATURE_UNIT, ( uint32 )TempMenu.TempItemIdx );
+    }
+
+    if( PressureEnabled )
+    {
+      Menu.InvalidateItems( 0, 3 );
+    }
+    else
+    {
+      Menu.InvalidateItems( 0, 2 );
+    }
+  }
+
+  $rect <10,400,210,440>
+  var Unit::UNT02_MileageSettingMenu MileageMenu;
+
+  $rect <10,450,210,490>
+  var Unit::UNT03_FuelSettingMenu FuelMenu;
+
+  $rect <10,500,210,540>
+  var Unit::UNT04_PressureSettingMenu PressureMenu;
+
+  $rect <220,400,420,440>
+  var Unit::UNT05_TemperatureSettingMenu TempMenu;
+
+  $rect <760,190,960,230>
+  var bool IsFuelEnabled = true;
+
+  $rect <760,280,960,320>
+  property bool PressureEnabled;
+
+  $rect <760,320,960,360>
+  onget PressureEnabled
+  {
+    return DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.TIRE_FRONT ) ||
+           DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.TIRE_FRONT_LEFT ) ||
+           DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.TIRE_FRONT_RIGHT ) ||
+           DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.TIRE_REAR );
+  }
+}
+
+$rect <270,30,470,70>
+$output false
+class UNT02_MileageSettingMenu : Menu::BaseMenuView
+{
+  $rect <0,300,200,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <0,370,200,410>
+  inherited property DDModeEnabled = true;
+
+  $rect <520,40,720,80>
+  inherited method LoadItemClass()
+  {
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+      ItemClass = Menu::ItemCheckMark;
+    }
+    return ItemClass;
+  }
+
+  $rect <520,90,720,130>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+      {
+      title = ItemTitleArray[aItemNo];
+      }
+    return title;
+  }
+
+  $rect <520,250,720,290>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    MileageItemIdx = aItemNo;
+    if( ItemCheckedArray[aItemNo] )
+    {
+      signal OnCheckMarkUpdateSlot;
+    }
+    else
+    {
+      var int32 i = 0;
+      for( i = 0; i < ItemCheckedArray.size; i++ )
+      {
+        if( i == aItemNo )
+        {
+          ItemCheckedArray[i] = true;
+        }
+        else
+        {
+          ItemCheckedArray[i] = false;
+        }
+      }
+
+      Menu.InvalidateItems( 0, 1 );
+      CheckMarkUpdateTimer.Enabled = true;
+    }
+  }
+
+  $rect <520,140,720,180>
+  inherited method LoadItemChecked()
+  {
+    var bool IsChecked = false;
+    if( aItemNo < ItemCheckedArray.size )
+    {
+      IsChecked = ItemCheckedArray[aItemNo];
+    }
+    return IsChecked;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = 2;
+    preset ItemNumPerPage = 2;
+  }
+
+  $rect <780,50,980,90>
+  array string ItemTitleArray[ 2 ] =
+  (
+    Default[0] = Strings::UNT02_unit_mileage_kilometer;
+    Default[1] = Strings::UNT02_unit_mileage_mile;
+  );
+
+  $rect <780,110,980,150>
+  array bool ItemCheckedArray[ 2 ] =
+  (
+    Default[0] = true;
+    Default[1] = false;
+  );
+
+  $rect <770,200,1000,240>
+  object Core::Timer CheckMarkUpdateTimer
+  {
+    preset OnTrigger = OnCheckMarkUpdateSlot;
+    preset Period = 450;
+  }
+
+  $rect <770,240,1000,280>
+  slot OnCheckMarkUpdateSlot
+  {
+    CheckMarkUpdateTimer.Enabled = false;
+    signal MileageUpdateSignal;
+    Menu.MenuList.SelectedItem = 0;
+    Menu.MoveFocusFrame();
+    OnShortHomeKeyActivated();
+  }
+
+  $rect <1000,50,1200,90>
+  var int32 MileageItemIdx;
+
+  $rect <230,300,430,340>
+  property slot MileageUpdateSignal;
+}
+
+$rect <50,80,250,120>
+$output false
+class UnitValueClass
+{
+  $rect <200,30,400,70>
+  array string ItemMileageUnitArray[ 2 ] =
+  (
+    Default[0] = Strings::UNT02_unit_mileage_kilometer;
+    Default[1] = Strings::UNT02_unit_mileage_mile;
+  );
+
+  $rect <200,80,400,120>
+  array string ItemFuelUnitArray[ 3 ] =
+  (
+    Default[0] = Strings::UNT03_unit_fuel_km_per_liter;
+    Default[1] = Strings::UNT03_unit_fuel_liter_per_hundred_km;
+    Default[2] = Strings::UNT03_unit_fuel_mile_per_gallon;
+  );
+
+  $rect <200,130,400,170>
+  array string ItemPressureUnitArray[ 3 ] =
+  (
+    Default[0] = Strings::UNT04_unit_pressure_kpa;
+    Default[1] = Strings::UNT04_unit_pressure_psi;
+    Default[2] = Strings::UNT04_unit_pressure_kgf;
+  );
+
+  $rect <200,180,400,220>
+  array string ItemTemperatureUnitArray[ 2 ] =
+  (
+    Default[0] = Strings::UNT05_unit_temperature_c;
+    Default[1] = Strings::UNT05_unit_temperature_f;
+  );
+}
+
+$rect <490,30,690,70>
+$output false
+class UNT03_FuelSettingMenu : Menu::BaseMenuView
+{
+  $rect <10,280,210,320>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <10,350,210,390>
+  inherited property DDModeEnabled = true;
+
+  $rect <520,20,720,60>
+  inherited method LoadItemClass()
+  {
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+      ItemClass = Menu::ItemCheckMark;
+    }
+    return ItemClass;
+  }
+
+  $rect <520,70,720,110>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+      {
+      title = ItemTitleArray[aItemNo];
+      }
+    return title;
+  }
+
+  $rect <520,220,720,260>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    FuelItemIdx = aItemNo;
+    if( ItemCheckedArray[aItemNo] )
+    {
+      signal OnCheckMarkUpdateSlot;
+    }
+    else
+    {
+      var int32 i = 0;
+      for( i = 0; i < ItemCheckedArray.size; i++ )
+      {
+        if( i == aItemNo )
+        {
+          ItemCheckedArray[i] = true;
+        }
+        else
+        {
+          ItemCheckedArray[i] = false;
+        }
+      }
+
+      Menu.InvalidateItems( 0, 2 );
+      CheckMarkUpdateTimer.Enabled = true;
+    }
+  }
+
+  $rect <520,120,720,160>
+  inherited method LoadItemChecked()
+  {
+    var bool IsChecked = false;
+    if( aItemNo < ItemCheckedArray.size )
+    {
+      IsChecked = ItemCheckedArray[aItemNo];
+    }
+    return IsChecked;
+  }
+
+  $rect <520,170,720,210>
+  inherited method LoadItemEnabled()
+  {
+    var bool ItemEnabled = true;
+    if( aItemNo > 0 )
+    {
+      ItemEnabled = ItemEnabledArray[aItemNo];
+    }
+    return ItemEnabled;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = 3;
+  }
+
+  $rect <750,70,950,110>
+  array bool ItemCheckedArray[ 3 ] =
+  (
+    Default[0] = true;
+    Default[1] = false;
+    Default[2] = false;
+  );
+
+  $rect <750,20,950,60>
+  array string ItemTitleArray[ 3 ] =
+  (
+    Default[0] = Strings::UNT03_unit_fuel_km_per_liter;
+    Default[1] = Strings::UNT03_unit_fuel_liter_per_hundred_km;
+    Default[2] = Strings::UNT03_unit_fuel_mile_per_gallon;
+  );
+
+  $rect <970,20,1170,60>
+  var int32 FuelItemIdx;
+
+  $rect <770,200,1000,240>
+  object Core::Timer CheckMarkUpdateTimer
+  {
+    preset OnTrigger = OnCheckMarkUpdateSlot;
+    preset Period = 450;
+  }
+
+  $rect <770,240,1000,280>
+  slot OnCheckMarkUpdateSlot
+  {
+    CheckMarkUpdateTimer.Enabled = false;
+    signal FuelUpdateSignal;
+    Menu.MenuList.SelectedItem = 0;
+    Menu.MoveFocusFrame();
+    OnShortHomeKeyActivated();
+  }
+
+  $rect <240,290,440,330>
+  property slot FuelUpdateSignal;
+
+  $rect <750,130,950,170>
+  array bool ItemEnabledArray[ 3 ];
+}
+
+$rect <270,80,470,120>
+$output false
+class UNT04_PressureSettingMenu : Menu::BaseMenuView
+{
+  $rect <0,280,200,320>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <10,350,210,390>
+  inherited property DDModeEnabled = true;
+
+  $rect <520,150,720,190>
+  inherited method LoadItemClass()
+  {
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+      ItemClass = Menu::ItemCheckMark;
+    }
+    return ItemClass;
+  }
+
+  $rect <520,50,720,90>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+      {
+      title = ItemTitleArray[aItemNo];
+      }
+    return title;
+  }
+
+  $rect <520,200,720,240>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    PressureItemIdx = aItemNo;
+    if( ItemCheckedArray[aItemNo] )
+    {
+      signal OnCheckMarkUpdateSlot;
+    }
+    else
+    {
+      var int32 i = 0;
+      for( i = 0; i < ItemCheckedArray.size; i++ )
+      {
+        if( i == aItemNo )
+        {
+          ItemCheckedArray[i] = true;
+        }
+        else
+        {
+          ItemCheckedArray[i] = false;
+        }
+      }
+
+      Menu.InvalidateItems( 0, 2 );
+      CheckMarkUpdateTimer.Enabled = true;
+    }
+  }
+
+  $rect <520,100,720,140>
+  inherited method LoadItemChecked()
+  {
+    var bool IsChecked = false;
+    if( aItemNo < ItemCheckedArray.size )
+    {
+      IsChecked = ItemCheckedArray[aItemNo];
+    }
+    return IsChecked;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = 3;
+  }
+
+  $rect <750,100,950,140>
+  array bool ItemCheckedArray[ 3 ] =
+  (
+    Default[0] = true;
+    Default[1] = false;
+    Default[2] = false;
+  );
+
+  $rect <750,50,950,90>
+  array string ItemTitleArray[ 3 ] =
+  (
+    Default[0] = Strings::UNT04_unit_pressure_kpa;
+    Default[1] = Strings::UNT04_unit_pressure_psi;
+    Default[2] = Strings::UNT04_unit_pressure_kgf;
+  );
+
+  $rect <970,50,1170,90>
+  var int32 PressureItemIdx;
+
+  $rect <230,290,430,330>
+  property slot PressureUpdateSignal;
+
+  $rect <770,200,1000,240>
+  object Core::Timer CheckMarkUpdateTimer
+  {
+    preset OnTrigger = OnCheckMarkUpdateSlot;
+    preset Period = 450;
+  }
+
+  $rect <770,240,1000,280>
+  slot OnCheckMarkUpdateSlot
+  {
+    CheckMarkUpdateTimer.Enabled = false;
+    signal PressureUpdateSignal;
+    Menu.MenuList.SelectedItem = 0;
+    Menu.MoveFocusFrame();
+    OnShortHomeKeyActivated();
+  }
+}
+
+$rect <490,80,690,120>
+$output false
+class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <10,350,210,390>
+  inherited property DDModeEnabled = true;
+
+  $rect <530,120,730,160>
+  inherited method LoadItemClass()
+  {
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+      ItemClass = Menu::ItemCheckMark;
+    }
+    return ItemClass;
+  }
+
+  $rect <530,70,730,110>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+      {
+      title = ItemTitleArray[aItemNo];
+      }
+    return title;
+  }
+
+  $rect <530,170,730,210>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    TempItemIdx = aItemNo;
+    if( ItemCheckedArray[aItemNo] )
+    {
+      signal OnCheckMarkUpdateSlot;
+    }
+    else
+    {
+      var int32 i = 0;
+      for( i = 0; i < ItemCheckedArray.size; i++ )
+      {
+        if( i == aItemNo )
+        {
+          ItemCheckedArray[i] = true;
+        }
+        else
+        {
+          ItemCheckedArray[i] = false;
+        }
+      }
+
+      Menu.InvalidateItems( 0, 1 );
+      CheckMarkUpdateTimer.Enabled = true;
+    }
+  }
+
+  $rect <530,20,730,60>
+  inherited method LoadItemChecked()
+  {
+    var bool IsChecked = false;
+    if( aItemNo < ItemCheckedArray.size )
+    {
+      IsChecked = ItemCheckedArray[aItemNo];
+    }
+    return IsChecked;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = 2;
+    preset ItemNumPerPage = 2;
+  }
+
+  $rect <750,70,950,110>
+  array bool ItemCheckedArray[ 2 ] =
+  (
+    Default[0] = true;
+    Default[1] = false;
+  );
+
+  $rect <750,20,950,60>
+  array string ItemTitleArray[ 2 ] =
+  (
+    Default[0] = Strings::UNT05_unit_temperature_c;
+    Default[1] = Strings::UNT05_unit_temperature_f;
+  );
+
+  $rect <950,20,1150,60>
+  var int32 TempItemIdx;
+
+  $rect <750,140,980,180>
+  object Core::Timer CheckMarkUpdateTimer
+  {
+    preset OnTrigger = OnCheckMarkUpdateSlot;
+    preset Period = 450;
+  }
+
+  $rect <750,180,980,220>
+  slot OnCheckMarkUpdateSlot
+  {
+    CheckMarkUpdateTimer.Enabled = false;
+    signal TempUpdateSignal;
+    Menu.MenuList.SelectedItem = 0;
+    Menu.MoveFocusFrame();
+    OnShortHomeKeyActivated();
+  }
+
+  $rect <230,290,430,330>
+  property slot TempUpdateSignal;
+}

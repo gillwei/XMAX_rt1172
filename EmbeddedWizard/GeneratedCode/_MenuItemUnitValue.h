@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _NavigationNAV06_NaviSettingMenu_H
-#define _NavigationNAV06_NaviSettingMenu_H
+#ifndef _MenuItemUnitValue_H
+#define _MenuItemUnitValue_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,20 +42,12 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
-#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuVerticalMenu.h"
+#include "_MenuItemBase.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -99,28 +91,21 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBase */
-#ifndef _MenuItemBase_
-  EW_DECLARE_CLASS( MenuItemBase )
-#define _MenuItemBase_
-#endif
-
-/* Forward declaration of the class Navigation::NAV06_NaviSettingMenu */
-#ifndef _NavigationNAV06_NaviSettingMenu_
-  EW_DECLARE_CLASS( NavigationNAV06_NaviSettingMenu )
-#define _NavigationNAV06_NaviSettingMenu_
+/* Forward declaration of the class Menu::ItemUnitValue */
+#ifndef _MenuItemUnitValue_
+  EW_DECLARE_CLASS( MenuItemUnitValue )
+#define _MenuItemUnitValue_
 #endif
 
 
-/* Deklaration of class : 'Navigation::NAV06_NaviSettingMenu' */
-EW_DEFINE_FIELDS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
-  EW_ARRAY   ( NaviSettings,    XEnum, [7])
-  EW_VARIABLE( IsWayPointSet,   XBool )
-  EW_VARIABLE( IsDestSet,       XBool )
-EW_END_OF_FIELDS( NavigationNAV06_NaviSettingMenu )
+/* Deklaration of class : 'Menu::ItemUnitValue' */
+EW_DEFINE_FIELDS( MenuItemUnitValue, MenuItemBase )
+  EW_OBJECT  ( UnitValueText,   ViewsText )
+  EW_PROPERTY( UnitValue,       XString )
+EW_END_OF_FIELDS( MenuItemUnitValue )
 
-/* Virtual Method Table (VMT) for the class : 'Navigation::NAV06_NaviSettingMenu' */
-EW_DEFINE_METHODS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemUnitValue' */
+EW_DEFINE_METHODS( MenuItemUnitValue, MenuItemBase )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -139,7 +124,7 @@ EW_DEFINE_METHODS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
-  EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
+  EW_METHOD( OnSetEnabled,      void )( MenuItemUnitValue _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
@@ -150,8 +135,8 @@ EW_DEFINE_METHODS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
-  EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
-  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
+  EW_METHOD( UpdateLayout,      void )( MenuItemUnitValue _this, XPoint aSize )
+  EW_METHOD( UpdateViewState,   void )( MenuItemBase _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
@@ -166,47 +151,33 @@ EW_DEFINE_METHODS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( NavigationNAV06_NaviSettingMenu _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( MenuItemBase _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( LoadItemClass,     XClass )( NavigationNAV06_NaviSettingMenu _this, 
-    XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( NavigationNAV06_NaviSettingMenu _this, 
-    XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( NavigationNAV06_NaviSettingMenu _this, XInt32 
-    aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( NavigationNAV06_NaviSettingMenu _this, 
-    XInt32 aItemNo )
-  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( NavigationNAV06_NaviSettingMenu )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
+EW_END_OF_METHODS( MenuItemUnitValue )
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.OnShortHomeKeyActivated()' */
-void NavigationNAV06_NaviSettingMenu_OnShortHomeKeyActivated( NavigationNAV06_NaviSettingMenu _this );
+/* The method UpdateLayout() is invoked automatically after the size of the component 
+   has been changed. This method can be overridden and filled with logic to perform 
+   a sophisticated arrangement calculation for one or more enclosed views. In this 
+   case the parameter aSize can be used. It contains the current size of the component. 
+   Usually, all enclosed views are arranged automatically accordingly to their @Layout 
+   property. UpdateLayout() gives the derived components a chance to extend this 
+   automatism by a user defined algorithm. */
+void MenuItemUnitValue_UpdateLayout( MenuItemUnitValue _this, XPoint aSize );
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemClass()' */
-XClass NavigationNAV06_NaviSettingMenu_LoadItemClass( NavigationNAV06_NaviSettingMenu _this, 
-  XInt32 aItemNo );
+/* 'C' function for method : 'Menu::ItemUnitValue.OnSetEnabled()' */
+void MenuItemUnitValue_OnSetEnabled( MenuItemUnitValue _this, XBool value );
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemTitle()' */
-XString NavigationNAV06_NaviSettingMenu_LoadItemTitle( NavigationNAV06_NaviSettingMenu _this, 
-  XInt32 aItemNo );
-
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.OnItemActivate()' */
-void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSettingMenu _this, 
-  XInt32 aItemNo, MenuItemBase aMenuItem );
-
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemEnabled()' */
-XBool NavigationNAV06_NaviSettingMenu_LoadItemEnabled( NavigationNAV06_NaviSettingMenu _this, 
-  XInt32 aItemNo );
+/* 'C' function for method : 'Menu::ItemUnitValue.OnSetUnitValue()' */
+void MenuItemUnitValue_OnSetUnitValue( MenuItemUnitValue _this, XString value );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _NavigationNAV06_NaviSettingMenu_H */
+#endif /* _MenuItemUnitValue_H */
 
 /* Embedded Wizard */

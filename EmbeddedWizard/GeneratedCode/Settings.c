@@ -60,6 +60,7 @@
 #include "_SettingsSET19_BtPairedDeviceOperation.h"
 #include "_SettingsSET28_SystemInfo.h"
 #include "_SettingsSET30_QRCode.h"
+#include "_UnitUNT01_UnitSettingMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -208,6 +209,9 @@ void SettingsSET01_MainSettingMenu__Init( SettingsSET01_MainSettingMenu _this, X
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 9 );
+  MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
   _this->Settings[ 0 ] = EnumMainSettingItemConnection;
   _this->Settings[ 1 ] = EnumMainSettingItemClock;
   _this->Settings[ 2 ] = EnumMainSettingItemBrightness;
@@ -217,9 +221,6 @@ void SettingsSET01_MainSettingMenu__Init( SettingsSET01_MainSettingMenu _this, X
   _this->Settings[ 6 ] = EnumMainSettingItemSystemInfo;
   _this->Settings[ 7 ] = EnumMainSettingItemLegalInfo;
   _this->Settings[ 8 ] = EnumMainSettingItemReset;
-  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 9 );
-  MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
 
   /* Call the user defined constructor */
   SettingsSET01_MainSettingMenu_Init( _this, aArg );
@@ -386,7 +387,8 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
     break;
 
     case EnumMainSettingItemUnit :
-      ;
+      Dialog = ((ComponentsBaseComponent)EwNewObject( UnitUNT01_UnitSettingMenu, 
+      0 ));
     break;
 
     case EnumMainSettingItemGripWarmerSettings :
@@ -480,6 +482,7 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, _None, _None,
   SettingsSET01_MainSettingMenu_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( SettingsSET01_MainSettingMenu )
 
 /* Initializer for the class 'Settings::SET03_ConnectionSettingMenu' */
@@ -622,6 +625,7 @@ EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, ItemTitl
   SettingsSET03_ConnectionSettingMenu_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( SettingsSET03_ConnectionSettingMenu )
 
 /* Initializer for the class 'Settings::SET04_BtSettingMenu' */
@@ -639,11 +643,11 @@ void SettingsSET04_BtSettingMenu__Init( SettingsSET04_BtSettingMenu _this, XObje
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  _this->Super2.SlideOutEffectEnabled = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
-  _this->Super2.SlideOutEffectEnabled = 1;
   _this->ItemClassArray[ 0 ] = EW_CLASS( MenuItemCheckbox );
   _this->ItemClassArray[ 1 ] = EW_CLASS( MenuItemBase );
   _this->ItemClassArray[ 2 ] = EW_CLASS( MenuItemBase );
@@ -882,6 +886,7 @@ EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, ItemTitleArray,
   SettingsSET04_BtSettingMenu_OnItemActivate,
   SettingsSET04_BtSettingMenu_LoadItemChecked,
   SettingsSET04_BtSettingMenu_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( SettingsSET04_BtSettingMenu )
 
 /* Initializer for the class 'Settings::SET28_SystemInfo' */
@@ -1630,12 +1635,12 @@ void SettingsSET17_BtPairedDeviceList__Init( SettingsSET17_BtPairedDeviceList _t
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  _this->Super2.SlideOutEffectEnabled = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 0 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
-  _this->Super2.SlideOutEffectEnabled = 1;
   CoreRectView__OnSetBounds( &_this->NoDataText, _Const0021 );
   ViewsText_OnSetString( &_this->NoDataText, EwLoadString( &_Const0022 ));
   CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), 0 );
@@ -1860,6 +1865,7 @@ EW_DEFINE_CLASS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView, RefreshList
   SettingsSET17_BtPairedDeviceList_OnItemActivate,
   SettingsSET17_BtPairedDeviceList_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( SettingsSET17_BtPairedDeviceList )
 
 /* Initializer for the class 'Settings::SET19_BtPairedDeviceOperation' */
@@ -2078,6 +2084,7 @@ EW_DEFINE_CLASS( SettingsSET19_BtPairedDeviceOperation, MenuBaseMenuView, Device
   SettingsSET19_BtPairedDeviceOperation_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   SettingsSET19_BtPairedDeviceOperation_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( SettingsSET19_BtPairedDeviceOperation )
 
 /* Initializer for the class 'Settings::BtDeleteBleDevice' */
@@ -2566,6 +2573,7 @@ EW_DEFINE_CLASS( SettingsSET30_QRCode, MenuBaseMenuView, QrCodeUpdateEventHandle
   MenuBaseMenuView_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( SettingsSET30_QRCode )
 
 /* Embedded Wizard */

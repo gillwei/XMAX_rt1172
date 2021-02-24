@@ -178,6 +178,7 @@ EW_DEFINE_METHODS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView )
     XInt32 aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET03_ConnectionSettingMenu )
 
 /* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.LoadItemClass()' */

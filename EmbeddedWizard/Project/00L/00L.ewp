@@ -249,3 +249,9 @@ unit Brightness
 {
   attr Directory = .\;
 }
+
+$rect <520,700,720,740>
+unit Unit
+{
+  attr Directory = .\;
+}

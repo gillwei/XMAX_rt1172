@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _NavigationNAV06_NaviSettingMenu_H
-#define _NavigationNAV06_NaviSettingMenu_H
+#ifndef _UnitUNT01_UnitSettingMenu_H
+#define _UnitUNT01_UnitSettingMenu_H
 
 #ifdef __cplusplus
   extern "C"
@@ -105,22 +105,58 @@
 #define _MenuItemBase_
 #endif
 
-/* Forward declaration of the class Navigation::NAV06_NaviSettingMenu */
-#ifndef _NavigationNAV06_NaviSettingMenu_
-  EW_DECLARE_CLASS( NavigationNAV06_NaviSettingMenu )
-#define _NavigationNAV06_NaviSettingMenu_
+/* Forward declaration of the class Unit::UNT01_UnitSettingMenu */
+#ifndef _UnitUNT01_UnitSettingMenu_
+  EW_DECLARE_CLASS( UnitUNT01_UnitSettingMenu )
+#define _UnitUNT01_UnitSettingMenu_
+#endif
+
+/* Forward declaration of the class Unit::UNT02_MileageSettingMenu */
+#ifndef _UnitUNT02_MileageSettingMenu_
+  EW_DECLARE_CLASS( UnitUNT02_MileageSettingMenu )
+#define _UnitUNT02_MileageSettingMenu_
+#endif
+
+/* Forward declaration of the class Unit::UNT03_FuelSettingMenu */
+#ifndef _UnitUNT03_FuelSettingMenu_
+  EW_DECLARE_CLASS( UnitUNT03_FuelSettingMenu )
+#define _UnitUNT03_FuelSettingMenu_
+#endif
+
+/* Forward declaration of the class Unit::UNT04_PressureSettingMenu */
+#ifndef _UnitUNT04_PressureSettingMenu_
+  EW_DECLARE_CLASS( UnitUNT04_PressureSettingMenu )
+#define _UnitUNT04_PressureSettingMenu_
+#endif
+
+/* Forward declaration of the class Unit::UNT05_TemperatureSettingMenu */
+#ifndef _UnitUNT05_TemperatureSettingMenu_
+  EW_DECLARE_CLASS( UnitUNT05_TemperatureSettingMenu )
+#define _UnitUNT05_TemperatureSettingMenu_
+#endif
+
+/* Forward declaration of the class Unit::UnitValueClass */
+#ifndef _UnitUnitValueClass_
+  EW_DECLARE_CLASS( UnitUnitValueClass )
+#define _UnitUnitValueClass_
 #endif
 
 
-/* Deklaration of class : 'Navigation::NAV06_NaviSettingMenu' */
-EW_DEFINE_FIELDS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
-  EW_ARRAY   ( NaviSettings,    XEnum, [7])
-  EW_VARIABLE( IsWayPointSet,   XBool )
-  EW_VARIABLE( IsDestSet,       XBool )
-EW_END_OF_FIELDS( NavigationNAV06_NaviSettingMenu )
+/* Deklaration of class : 'Unit::UNT01_UnitSettingMenu' */
+EW_DEFINE_FIELDS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView )
+  EW_VARIABLE( UnitItemValue,   UnitUnitValueClass )
+  EW_VARIABLE( MileageMenu,     UnitUNT02_MileageSettingMenu )
+  EW_VARIABLE( FuelMenu,        UnitUNT03_FuelSettingMenu )
+  EW_VARIABLE( PressureMenu,    UnitUNT04_PressureSettingMenu )
+  EW_VARIABLE( TempMenu,        UnitUNT05_TemperatureSettingMenu )
+  EW_ARRAY   ( ItemTitleArray,  XString, [4])
+  EW_ARRAY   ( ItemValueArray,  XString, [4])
+  EW_ARRAY   ( ItemVehicleRxTypeArray, XEnum, [4])
+  EW_VARIABLE( IsFuelEnabled,   XBool )
+EW_END_OF_FIELDS( UnitUNT01_UnitSettingMenu )
 
-/* Virtual Method Table (VMT) for the class : 'Navigation::NAV06_NaviSettingMenu' */
-EW_DEFINE_METHODS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Unit::UNT01_UnitSettingMenu' */
+EW_DEFINE_METHODS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -167,46 +203,60 @@ EW_DEFINE_METHODS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( NavigationNAV06_NaviSettingMenu _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( LoadItemClass,     XClass )( NavigationNAV06_NaviSettingMenu _this, 
-    XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( NavigationNAV06_NaviSettingMenu _this, 
-    XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( NavigationNAV06_NaviSettingMenu _this, XInt32 
+  EW_METHOD( LoadItemClass,     XClass )( UnitUNT01_UnitSettingMenu _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( UnitUNT01_UnitSettingMenu _this, XInt32 
+    aItemNo )
+  EW_METHOD( OnItemActivate,    void )( UnitUNT01_UnitSettingMenu _this, XInt32 
     aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( NavigationNAV06_NaviSettingMenu _this, 
-    XInt32 aItemNo )
-  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( NavigationNAV06_NaviSettingMenu )
+  EW_METHOD( LoadItemEnabled,   XBool )( UnitUNT01_UnitSettingMenu _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemUnitValue, XString )( UnitUNT01_UnitSettingMenu _this, XInt32 
+    aItemNo )
+EW_END_OF_METHODS( UnitUNT01_UnitSettingMenu )
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.OnShortHomeKeyActivated()' */
-void NavigationNAV06_NaviSettingMenu_OnShortHomeKeyActivated( NavigationNAV06_NaviSettingMenu _this );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aArg );
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemClass()' */
-XClass NavigationNAV06_NaviSettingMenu_LoadItemClass( NavigationNAV06_NaviSettingMenu _this, 
+/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemClass()' */
+XClass UnitUNT01_UnitSettingMenu_LoadItemClass( UnitUNT01_UnitSettingMenu _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemTitle()' */
-XString NavigationNAV06_NaviSettingMenu_LoadItemTitle( NavigationNAV06_NaviSettingMenu _this, 
+/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemTitle()' */
+XString UnitUNT01_UnitSettingMenu_LoadItemTitle( UnitUNT01_UnitSettingMenu _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.OnItemActivate()' */
-void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSettingMenu _this, 
+/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.OnItemActivate()' */
+void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemEnabled()' */
-XBool NavigationNAV06_NaviSettingMenu_LoadItemEnabled( NavigationNAV06_NaviSettingMenu _this, 
+/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemEnabled()' */
+XBool UnitUNT01_UnitSettingMenu_LoadItemEnabled( UnitUNT01_UnitSettingMenu _this, 
   XInt32 aItemNo );
+
+/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemUnitValue()' */
+XString UnitUNT01_UnitSettingMenu_LoadItemUnitValue( UnitUNT01_UnitSettingMenu _this, 
+  XInt32 aItemNo );
+
+/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.OnUnitValueUpdateSlot()' */
+void UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot( UnitUNT01_UnitSettingMenu _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.OnGetPressureEnabled()' */
+XBool UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( UnitUNT01_UnitSettingMenu _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _NavigationNAV06_NaviSettingMenu_H */
+#endif /* _UnitUNT01_UnitSettingMenu_H */
 
 /* Embedded Wizard */

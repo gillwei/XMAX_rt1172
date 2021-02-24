@@ -790,8 +790,11 @@ void ComponentsBaseMainBG_DismissThisDialog( ComponentsBaseMainBG _this )
   }
   else
   {
-    CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, 
-    EwNullSlot, EwNullSlot, 0 );
+    if ( _this->Super4.Owner != 0 )
+    {
+      CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 
+      0, EwNullSlot, EwNullSlot, 0 );
+    }
   }
 }
 

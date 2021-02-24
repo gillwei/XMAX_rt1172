@@ -415,6 +415,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, ItemTitleArray, ItemTitl
   DevelopmentDEV_Main_OnItemActivate,
   DevelopmentDEV_Main_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( DevelopmentDEV_Main )
 
 /* Initializer for the class 'Development::DEV_RealTimeClock' */
@@ -1070,6 +1071,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_MotoCon, MenuBaseMenuView, ItemTitleArray, ItemT
   DevelopmentDEV_MotoCon_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( DevelopmentDEV_MotoCon )
 
 /* Initializer for the class 'Development::DEV_VehicleFeature' */
@@ -1260,6 +1262,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_VehicleFeature, MenuBaseMenuView, ItemTitleArray
   DevelopmentDEV_VehicleFeature_OnItemActivate,
   DevelopmentDEV_VehicleFeature_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( DevelopmentDEV_VehicleFeature )
 
 /* Embedded Wizard */

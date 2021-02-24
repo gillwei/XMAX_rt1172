@@ -171,7 +171,7 @@ class ItemBase : Components::BaseComponent
     preset Bounds = <37,1,417,69>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
     preset Color = #FFFFFFFF;
   }
 
@@ -348,6 +348,11 @@ class VerticalMenu : Components::BaseComponent
           Menu::ItemCheckMark == Item.ItemClass )
       {
         Item.Checked = OwnerMenu.LoadItemChecked( ItemNo );
+      }
+
+      if( Menu::ItemUnitValue == Item.ItemClass )
+      {
+        Item.UnitValue = OwnerMenu.LoadItemUnitValue( ItemNo );
       }
 
       Item.Bounds.size = point( MenuList.Bounds.w, MenuList.ItemHeight );
@@ -800,6 +805,31 @@ class ItemWrapper : Core::Group
       }
     }
   }
+
+  // For ItemUnitValue
+  note group Note8
+  {
+    attr Bounds = <20,670,530,820>;
+  }
+
+  $rect <40,720,240,760>
+  property string UnitValue;
+
+  $rect <40,760,240,800>
+  onset UnitValue
+  {
+    if( pure UnitValue != value )
+    {
+      pure UnitValue = value;
+
+      var Core::View view = FindNextView( null, Core::ViewState[] );
+      var Menu::ItemUnitValue MenuItem = ( Menu::ItemUnitValue )view;
+      if( MenuItem != null )
+      {
+        MenuItem.UnitValue = value;
+      }
+    }
+  }
 }
 
 $rect <460,160,660,200>
@@ -958,7 +988,7 @@ class BaseMenuView : Components::BaseMainBG
   // For checkbox menu item
   note group Note7
   {
-    attr Bounds = <520,245,780,355>;
+    attr Bounds = <520,245,780,360>;
   }
 
   $rect <550,295,750,335>
@@ -988,6 +1018,22 @@ class BaseMenuView : Components::BaseMainBG
     preset DDModeEnabled = false;
     preset NoOfItems = 0;
     preset ArrowScrollBarVisible = false;
+  }
+
+  // For unit value menu item
+  note group Note8
+  {
+    attr Bounds = <520,380,780,490>;
+  }
+
+  $rect <550,430,750,470>
+  method string LoadItemUnitValue( arg int32 aItemNo )
+  {
+    if( aItemNo >= 0 )
+    {
+      // empty body to suppress warning
+    }
+    return "";
   }
 
   $reorder BlackBG 1
@@ -1352,6 +1398,20 @@ class ItemCheckMark : Menu::ItemBase
     preset Bitmap = Resource::CheckMark;
     preset Visible = false;
   }
+
+  $rect <0,180,200,220>
+  property Resources::Font Font;
+
+  $rect <0,220,200,260>
+  onset Font
+  {
+    if( pure Font != value )
+    {
+      pure Font = value;
+      Title.Font = value;
+    }
+
+  }
 }
 
 $rect <10,10,210,50>
@@ -1440,5 +1500,70 @@ class ArrowScrollBar : Core::Group
       pure NoOfPages = value;
       InvalidateViewState();
     }
+  }
+}
+
+$rect <230,160,430,200>
+$output false
+class ItemUnitValue : Menu::ItemBase
+{
+  $rect <0,110,200,150>
+  inherited method UpdateLayout()
+  {
+    super( aSize );
+
+    Title.Font = Fonts::NotoSansCjkJpMedium28pt;
+
+    switch( Height )
+    {
+      case Menu::ItemHeightSmall:
+      {
+        Title.Bounds = <37,9,286,43>;
+        UnitValueText.Bounds = <290,9,417,43>;
+      }
+      default:;
+    }
+  }
+
+  $rect <220,210,420,250>
+  inherited onset Enabled
+  {
+    if( pure Enabled != value )
+    {
+      super( value );
+
+      if( value )
+      {
+        UnitValueText.Color = #FFFFFFFF;
+      }
+      else
+      {
+        UnitValueText.Color = #646464FF;
+      }
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text UnitValueText
+  {
+    preset Bounds = <290,9,417,43>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <220,110,420,150>
+  property string UnitValue;
+
+  $rect <220,150,420,190>
+  onset UnitValue
+  {
+    if( pure UnitValue != value )
+    {
+      pure UnitValue = value;
+      UnitValueText.String = value;
+    }
+
+
   }
 }

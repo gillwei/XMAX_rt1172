@@ -630,6 +630,7 @@ EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, _None, _None
   NavigationNAV06_NaviSettingMenu_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   NavigationNAV06_NaviSettingMenu_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( NavigationNAV06_NaviSettingMenu )
 
 /* Initializer for the class 'Navigation::NAV08_NaviChageViewMenu' */
@@ -844,6 +845,7 @@ EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, CheckMarkU
   NavigationNAV08_NaviChageViewMenu_OnItemActivate,
   NavigationNAV08_NaviChageViewMenu_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( NavigationNAV08_NaviChageViewMenu )
 
 /* Embedded Wizard */

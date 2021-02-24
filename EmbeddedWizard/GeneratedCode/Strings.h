@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/02/19 14:15:50 */
+   Generated: 2021/02/24 23:32:41 */
 EW_DECLARE_CONST( StringsGEN_ok )
 
 /* User defined constant: 'Strings::GEN_cancel' */
@@ -198,6 +198,48 @@ extern const XStringRes StringsSET28_unit_id;
 
 /* User defined constant: 'Strings::SET28_sw_update' */
 extern const XStringRes StringsSET28_sw_update;
+
+/* User defined constant: 'Strings::UNT01_unit_mileage' */
+extern const XStringRes StringsUNT01_unit_mileage;
+
+/* User defined constant: 'Strings::UNT01_unit_fuel' */
+extern const XStringRes StringsUNT01_unit_fuel;
+
+/* User defined constant: 'Strings::UNT01_unit_pressure' */
+extern const XStringRes StringsUNT01_unit_pressure;
+
+/* User defined constant: 'Strings::UNT01_unit_temperature' */
+extern const XStringRes StringsUNT01_unit_temperature;
+
+/* User defined constant: 'Strings::UNT02_unit_mileage_kilometer' */
+extern const XStringRes StringsUNT02_unit_mileage_kilometer;
+
+/* User defined constant: 'Strings::UNT02_unit_mileage_mile' */
+extern const XStringRes StringsUNT02_unit_mileage_mile;
+
+/* User defined constant: 'Strings::UNT03_unit_fuel_km_per_liter' */
+extern const XStringRes StringsUNT03_unit_fuel_km_per_liter;
+
+/* User defined constant: 'Strings::UNT03_unit_fuel_liter_per_hundred_km' */
+extern const XStringRes StringsUNT03_unit_fuel_liter_per_hundred_km;
+
+/* User defined constant: 'Strings::UNT03_unit_fuel_mile_per_gallon' */
+extern const XStringRes StringsUNT03_unit_fuel_mile_per_gallon;
+
+/* User defined constant: 'Strings::UNT04_unit_pressure_kpa' */
+extern const XStringRes StringsUNT04_unit_pressure_kpa;
+
+/* User defined constant: 'Strings::UNT04_unit_pressure_psi' */
+extern const XStringRes StringsUNT04_unit_pressure_psi;
+
+/* User defined constant: 'Strings::UNT04_unit_pressure_kgf' */
+extern const XStringRes StringsUNT04_unit_pressure_kgf;
+
+/* User defined constant: 'Strings::UNT05_unit_temperature_c' */
+extern const XStringRes StringsUNT05_unit_temperature_c;
+
+/* User defined constant: 'Strings::UNT05_unit_temperature_f' */
+extern const XStringRes StringsUNT05_unit_temperature_f;
 
 /* User defined constant: 'Strings::WSC01_wind_screen' */
 extern const XStringRes StringsWSC01_wind_screen;

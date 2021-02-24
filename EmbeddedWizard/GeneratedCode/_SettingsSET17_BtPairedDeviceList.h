@@ -184,6 +184,7 @@ EW_DEFINE_METHODS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView )
   EW_METHOD( LoadItemChecked,   XBool )( SettingsSET17_BtPairedDeviceList _this, 
     XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET17_BtPairedDeviceList )
 
 /* The method UpdateViewState() is invoked automatically after the state of the 

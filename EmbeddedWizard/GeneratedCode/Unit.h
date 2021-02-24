@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef Menu_H
-#define Menu_H
+#ifndef Unit_H
+#define Unit_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,22 +42,17 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_MenuArrowScrollBar.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuItemBase.h"
-#include "_MenuItemCheckMark.h"
-#include "_MenuItemCheckbox.h"
-#include "_MenuItemUnitValue.h"
-#include "_MenuItemWrapper.h"
-#include "_MenuPushButton.h"
-#include "_MenuScrollbar.h"
-#include "_MenuUpDownPushButtonSet.h"
-#include "_MenuVerticalMenu.h"
+#include "_UnitUNT01_UnitSettingMenu.h"
+#include "_UnitUNT02_MileageSettingMenu.h"
+#include "_UnitUNT03_FuelSettingMenu.h"
+#include "_UnitUNT04_PressureSettingMenu.h"
+#include "_UnitUNT05_TemperatureSettingMenu.h"
+#include "_UnitUnitValueClass.h"
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* Menu_H */
+#endif /* Unit_H */
 
 /* Embedded Wizard */

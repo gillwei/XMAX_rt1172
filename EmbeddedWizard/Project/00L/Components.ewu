@@ -419,7 +419,10 @@ class BaseMainBG : Components::BaseComponent
     }
     else
     {
-      Owner.DismissDialog( this, null, null, null, null, null, false );
+      if( Owner != null )
+      {
+        Owner.DismissDialog( this, null, null, null, null, null, false );
+      }
     }
   }
 
@@ -528,7 +531,7 @@ class BaseMainBG : Components::BaseComponent
   $rect <30,490,230,530>
   method void SlideOutDialog()
   {
-    if( IsCurrentDialog() )
+    if( IsCurrentDialog() )
     {
       OwnerDialog = ( Components::BaseMainBG )Owner;
 

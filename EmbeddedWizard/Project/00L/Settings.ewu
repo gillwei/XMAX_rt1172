@@ -92,7 +92,7 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
       }
       case Enum::MainSettingItem.Clock:;
       case Enum::MainSettingItem.Brightness: Dialog = new Brightness::BRT01_BrightnessSettingMenu;
-      case Enum::MainSettingItem.Unit:;
+      case Enum::MainSettingItem.Unit: Dialog = new Unit::UNT01_UnitSettingMenu;
       case Enum::MainSettingItem.GripWarmerSettings:;
       case Enum::MainSettingItem.SeatHeaterSettings:;
       case Enum::MainSettingItem.SystemInfo: Dialog = new Settings::SET28_SystemInfo;
@@ -113,6 +113,14 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
         PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
       }
     }
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset DDModeEnabled = true;
+    preset NoOfItems = 9;
+    preset ArrowScrollBarVisible = true;
   }
 
   // TODO:
@@ -142,14 +150,6 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
     Default[7] = Enum::MainSettingItem.LegalInfo;
     Default[8] = Enum::MainSettingItem.Reset;
   );
-
-  $rect <20,20,160,60>
-  inherited object Menu
-  {
-    preset DDModeEnabled = true;
-    preset NoOfItems = 9;
-    preset ArrowScrollBarVisible = true;
-  }
 
   $reorder OnSetDDModeEnabled 1
   $reorder LoadItemClass 3
@@ -245,6 +245,9 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
   $rect <10,340,210,380>
   inherited property DDModeEnabled = true;
 
+  $rect <10,390,210,430>
+  inherited var SlideOutEffectEnabled = true;
+
   $rect <490,30,690,70>
   inherited method LoadItemClass()
   {
@@ -335,9 +338,6 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
     preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
   }
-
-  $rect <10,390,210,430>
-  inherited var SlideOutEffectEnabled = true;
 
   $rect <710,30,910,70>
   array class ItemClassArray[ 4 ] =
@@ -1402,6 +1402,9 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
   $rect <0,340,200,380>
   inherited property DDModeEnabled = true;
 
+  $rect <0,390,200,430>
+  inherited var SlideOutEffectEnabled = true;
+
   $rect <520,20,720,60>
   inherited method LoadItemClass()
   {
@@ -1478,9 +1481,6 @@ class SET17_BtPairedDeviceList : Menu::BaseMenuView
     preset ItemNumPerPage = 4;
     preset ArrowScrollBarVisible = true;
   }
-
-  $rect <0,390,200,430>
-  inherited var SlideOutEffectEnabled = true;
 
   $rect <200,340,420,380>
   var int32 PairedDeviceNum = 0;

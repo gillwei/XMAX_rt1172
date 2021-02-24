@@ -28,4 +28,5 @@ EMWIFILES := \
 	Top.c \
 	Weather.c \
 	Pop.c \
-	Brightness.c
+	Brightness.c \
+	Unit.c

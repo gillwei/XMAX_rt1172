@@ -182,6 +182,7 @@ EW_DEFINE_METHODS( FactoryMain, MenuBaseMenuView )
     aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( FactoryMain )
 
 /* The method DismissDialog() schedules an operation to hide again the component 

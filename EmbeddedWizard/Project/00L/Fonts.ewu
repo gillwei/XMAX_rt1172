@@ -60,7 +60,7 @@ resource Resources::Font NotoSansCjkJpMedium28pt
   attr fontquality Quality = Medium;
   attr fontranges Ranges =
   (
-    Default = 0x20-0x7E;
+    Default = 0x20-0x7E,0x2103,0x2109;
     SimplifiedChinese = 0x3000-0x303F;
     French = 0x0100-0x017F;
     Italian = 0xE0-0xEF;

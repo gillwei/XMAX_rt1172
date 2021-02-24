@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _NavigationNAV06_NaviSettingMenu_H
-#define _NavigationNAV06_NaviSettingMenu_H
+#ifndef _UnitUNT05_TemperatureSettingMenu_H
+#define _UnitUNT05_TemperatureSettingMenu_H
 
 #ifdef __cplusplus
   extern "C"
@@ -105,22 +105,24 @@
 #define _MenuItemBase_
 #endif
 
-/* Forward declaration of the class Navigation::NAV06_NaviSettingMenu */
-#ifndef _NavigationNAV06_NaviSettingMenu_
-  EW_DECLARE_CLASS( NavigationNAV06_NaviSettingMenu )
-#define _NavigationNAV06_NaviSettingMenu_
+/* Forward declaration of the class Unit::UNT05_TemperatureSettingMenu */
+#ifndef _UnitUNT05_TemperatureSettingMenu_
+  EW_DECLARE_CLASS( UnitUNT05_TemperatureSettingMenu )
+#define _UnitUNT05_TemperatureSettingMenu_
 #endif
 
 
-/* Deklaration of class : 'Navigation::NAV06_NaviSettingMenu' */
-EW_DEFINE_FIELDS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
-  EW_ARRAY   ( NaviSettings,    XEnum, [7])
-  EW_VARIABLE( IsWayPointSet,   XBool )
-  EW_VARIABLE( IsDestSet,       XBool )
-EW_END_OF_FIELDS( NavigationNAV06_NaviSettingMenu )
+/* Deklaration of class : 'Unit::UNT05_TemperatureSettingMenu' */
+EW_DEFINE_FIELDS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView )
+  EW_PROPERTY( TempUpdateSignal, XSlot )
+  EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
+  EW_ARRAY   ( ItemTitleArray,  XString, [2])
+  EW_VARIABLE( TempItemIdx,     XInt32 )
+  EW_ARRAY   ( ItemCheckedArray, XBool, [2])
+EW_END_OF_FIELDS( UnitUNT05_TemperatureSettingMenu )
 
-/* Virtual Method Table (VMT) for the class : 'Navigation::NAV06_NaviSettingMenu' */
-EW_DEFINE_METHODS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Unit::UNT05_TemperatureSettingMenu' */
+EW_DEFINE_METHODS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -167,46 +169,47 @@ EW_DEFINE_METHODS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( NavigationNAV06_NaviSettingMenu _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( LoadItemClass,     XClass )( NavigationNAV06_NaviSettingMenu _this, 
+  EW_METHOD( LoadItemClass,     XClass )( UnitUNT05_TemperatureSettingMenu _this, 
     XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( NavigationNAV06_NaviSettingMenu _this, 
+  EW_METHOD( LoadItemTitle,     XString )( UnitUNT05_TemperatureSettingMenu _this, 
     XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( NavigationNAV06_NaviSettingMenu _this, XInt32 
-    aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( NavigationNAV06_NaviSettingMenu _this, 
+  EW_METHOD( OnItemActivate,    void )( UnitUNT05_TemperatureSettingMenu _this, 
+    XInt32 aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( UnitUNT05_TemperatureSettingMenu _this, 
     XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( NavigationNAV06_NaviSettingMenu )
+EW_END_OF_METHODS( UnitUNT05_TemperatureSettingMenu )
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.OnShortHomeKeyActivated()' */
-void NavigationNAV06_NaviSettingMenu_OnShortHomeKeyActivated( NavigationNAV06_NaviSettingMenu _this );
-
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemClass()' */
-XClass NavigationNAV06_NaviSettingMenu_LoadItemClass( NavigationNAV06_NaviSettingMenu _this, 
+/* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.LoadItemClass()' */
+XClass UnitUNT05_TemperatureSettingMenu_LoadItemClass( UnitUNT05_TemperatureSettingMenu _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemTitle()' */
-XString NavigationNAV06_NaviSettingMenu_LoadItemTitle( NavigationNAV06_NaviSettingMenu _this, 
+/* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.LoadItemTitle()' */
+XString UnitUNT05_TemperatureSettingMenu_LoadItemTitle( UnitUNT05_TemperatureSettingMenu _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.OnItemActivate()' */
-void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSettingMenu _this, 
+/* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.OnItemActivate()' */
+void UnitUNT05_TemperatureSettingMenu_OnItemActivate( UnitUNT05_TemperatureSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemEnabled()' */
-XBool NavigationNAV06_NaviSettingMenu_LoadItemEnabled( NavigationNAV06_NaviSettingMenu _this, 
+/* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.LoadItemChecked()' */
+XBool UnitUNT05_TemperatureSettingMenu_LoadItemChecked( UnitUNT05_TemperatureSettingMenu _this, 
   XInt32 aItemNo );
+
+/* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.OnCheckMarkUpdateSlot()' */
+void UnitUNT05_TemperatureSettingMenu_OnCheckMarkUpdateSlot( UnitUNT05_TemperatureSettingMenu _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _NavigationNAV06_NaviSettingMenu_H */
+#endif /* _UnitUNT05_TemperatureSettingMenu_H */
 
 /* Embedded Wizard */

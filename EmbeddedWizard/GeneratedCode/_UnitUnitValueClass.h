@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef Menu_H
-#define Menu_H
+#ifndef _UnitUnitValueClass_H
+#define _UnitUnitValueClass_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,22 +42,29 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_MenuArrowScrollBar.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuItemBase.h"
-#include "_MenuItemCheckMark.h"
-#include "_MenuItemCheckbox.h"
-#include "_MenuItemUnitValue.h"
-#include "_MenuItemWrapper.h"
-#include "_MenuPushButton.h"
-#include "_MenuScrollbar.h"
-#include "_MenuUpDownPushButtonSet.h"
-#include "_MenuVerticalMenu.h"
+/* Forward declaration of the class Unit::UnitValueClass */
+#ifndef _UnitUnitValueClass_
+  EW_DECLARE_CLASS( UnitUnitValueClass )
+#define _UnitUnitValueClass_
+#endif
+
+
+/* Deklaration of class : 'Unit::UnitValueClass' */
+EW_DEFINE_FIELDS( UnitUnitValueClass, XObject )
+  EW_ARRAY   ( ItemMileageUnitArray, XString, [2])
+  EW_ARRAY   ( ItemFuelUnitArray, XString, [3])
+  EW_ARRAY   ( ItemPressureUnitArray, XString, [3])
+  EW_ARRAY   ( ItemTemperatureUnitArray, XString, [2])
+EW_END_OF_FIELDS( UnitUnitValueClass )
+
+/* Virtual Method Table (VMT) for the class : 'Unit::UnitValueClass' */
+EW_DEFINE_METHODS( UnitUnitValueClass, XObject )
+EW_END_OF_METHODS( UnitUnitValueClass )
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* Menu_H */
+#endif /* _UnitUnitValueClass_H */
 
 /* Embedded Wizard */
