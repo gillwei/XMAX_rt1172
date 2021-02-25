@@ -50,7 +50,7 @@ static void multiply(vg_lite_matrix_t * matrix, vg_lite_matrix_t * mult)
 {
     vg_lite_matrix_t temp;
     int row, column;
-    
+
     /* Process all rows. */
     for (row = 0; row < 3; row++) {
         /* Process all columns. */
@@ -61,7 +61,7 @@ static void multiply(vg_lite_matrix_t * matrix, vg_lite_matrix_t * mult)
             + (matrix->m[row][2] * mult->m[2][column]);
         }
     }
-    
+
     /* Copy temporary matrix into result. */
     memcpy(matrix, &temp, sizeof(temp));
 }
@@ -73,7 +73,7 @@ void vg_lite_translate(vg_lite_float_t x, vg_lite_float_t y, vg_lite_matrix_t * 
         {0.0f, 1.0f, y},
         {0.0f, 0.0f, 1.0f}
     } };
-    
+
     /* Multiply with current matrix. */
     multiply(matrix, &t);
 }
@@ -85,7 +85,7 @@ void vg_lite_scale(vg_lite_float_t scale_x, vg_lite_float_t scale_y, vg_lite_mat
         {0.0f, scale_y, 0.0f},
         {0.0f, 0.0f, 1.0f}
     } };
-    
+
     /* Multiply with current matrix. */
     multiply(matrix, &s);
 }
@@ -97,17 +97,17 @@ void vg_lite_rotate(vg_lite_float_t degrees, vg_lite_matrix_t * matrix)
 #endif
     /* Convert degrees into radians. */
     vg_lite_float_t angle = degrees / 180.0f * M_PI;
-    
+
     /* Compuet cosine and sine values. */
     vg_lite_float_t cos_angle = cosf(angle);
     vg_lite_float_t sin_angle = sinf(angle);
-    
+
     /* Set rotation matrix. */
     vg_lite_matrix_t r = { { {cos_angle, -sin_angle, 0.0f},
         {sin_angle, cos_angle, 0.0f},
         {0.0f, 0.0f, 1.0f}
     } };
-    
+
     /* Multiply with current matrix. */
     multiply(matrix, &r);
 }

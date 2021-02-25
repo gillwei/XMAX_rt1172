@@ -37,7 +37,8 @@
 
 #define MAX_CONTIGUOUS_SIZE 0x02000000
 
-#define VG_LITE_INFINITE    0xFFFFFFFF
+#define VG_LITE_INFINITE       0xFFFFFFFF
+#define VG_LITE_MAX_WAIT_TIME  0x130000
 #define CMDBUF_COUNT        2
 
 #define VG_LITE_ALIGN(number, alignment)    \
@@ -45,6 +46,10 @@
 
 #define VG_LITE_KERNEL_IS_GPU_IDLE() \
 ((vg_lite_hal_peek(VG_LITE_HW_IDLE) & VG_LITE_HW_IDLE_STATE) == VG_LITE_HW_IDLE_STATE)
+
+/* Hardware chip Ids */
+#define GPU_CHIP_ID_GCNanoliteV         0x255
+#define GPU_CHIP_ID_GC355               0x355
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,9 +74,18 @@ typedef enum vg_lite_error
     VG_LITE_OUT_OF_RESOURCES,   /*! Out of system resources. */
     VG_LITE_GENERIC_IO,         /*! Cannot communicate with the kernel driver. */
     VG_LITE_NOT_SUPPORT,        /*! Function call not supported. */
+    VG_LITE_MULTI_THREAD_FAIL,  /*! Multi-thread/tasks fail. */
 }
 vg_lite_error_t;
 #endif
+
+typedef enum vg_lite_buffer_singal
+{
+    VG_LITE_IDLE = 0,        /*! Buffer available. */
+    VG_LITE_HW_FINISHED,     /*! HW has completed command buffer. */
+    VG_LITE_IN_QUEUE,        /*! Buffer has been send to queue. */
+}
+vg_lite_buffer_singal_t;
 
 typedef enum vg_lite_kernel_counter
 {
@@ -126,6 +140,12 @@ typedef enum vg_lite_kernel_command
 
     /* Query mem. */
     VG_LITE_QUERY_MEM,
+
+    /* Mutex lock. */
+    VG_LITE_LOCK,
+
+    /* Mutex unlock. */
+    VG_LITE_UNLOCK,
 }
 vg_lite_kernel_command_t;
 
@@ -134,13 +154,16 @@ struct vg_lite_kernel_context {
     void      * command_buffer[CMDBUF_COUNT];
     void      * command_buffer_logical[CMDBUF_COUNT];
     uint32_t    command_buffer_physical[CMDBUF_COUNT];
-    
+    uint32_t    signal[CMDBUF_COUNT];
+    uint32_t    semaphore_id;
+    void      * semaphore;
+
     /* Tessellation buffer. */
     void      * tessellation_buffer;
     void      * tessellation_buffer_logical;
     uint32_t    tessellation_buffer_physical;
 };
-    
+
 /* Context structure. */
 typedef struct vg_lite_kernel_context vg_lite_kernel_context_t;
 
@@ -150,7 +173,7 @@ typedef struct capabilities
     uint32_t l2_cache : 1;
 }
 capabilities_t;
-    
+
 typedef union vg_lite_capabilities
 {
     capabilities_t cap;
@@ -179,16 +202,16 @@ typedef struct vg_lite_kernel_initialize
 
     /* Allocated command buffer. */
     void * command_buffer[CMDBUF_COUNT];
-    
+
     /* GPU address for command buffer. */
     uint32_t command_buffer_gpu[CMDBUF_COUNT];
-    
+
     /* GPU addresses for tesselation buffers. */
     uint32_t tessellation_buffer_gpu[3];
-    
+
     /* Logic addresses for tessellation buffers: used by SW Tessellator. */
     uint8_t *tessellation_buffer_logic[3];
-    
+
     /* Size of each level of the tesselation buffer. */
     uint32_t tessellation_buffer_size[3];
 
@@ -197,7 +220,7 @@ typedef struct vg_lite_kernel_initialize
 
     /* Width and height of tessellation buffer. */
     uint32_t tessellation_width_height;
-    
+
     /* Tessellation config: shift. */
     uint32_t tessellation_shift;
 }
@@ -261,12 +284,9 @@ typedef struct vg_lite_kernel_wait
 
     /* Timeout in milliseconds. */
     uint32_t timeout_ms;
-    
-    /* The event to wait. */
-    uint32_t event_mask;
 
-    /* The event(s) got after waiting. */
-    uint32_t event_got;
+    /* Command Buffer ID. */
+    uint32_t command_id;
 }
 vg_lite_kernel_wait_t;
 

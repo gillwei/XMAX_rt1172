@@ -25,26 +25,18 @@
 *****************************************************************************/
 
 #include "vg_lite_platform.h"
-#include "../vg_lite_kernel.h"
-#include "../../inc/vg_lite_hal.h"
 #include "vg_lite_kernel.h"
+#include "vg_lite_hal.h"
 #include "vg_lite_hw.h"
+#include "vg_lite_os.h"
 
 #if !_BAREMETAL
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
+#include "queue.h"
 #else
 #include "xil_cache.h"
-#include "sleep.h"
-#endif
-
-#if !_BAREMETAL
-static void sleep(uint32_t msec)
-{
-    vTaskDelay((configTICK_RATE_HZ * msec + 999)/ 1000);
-}
-
 #endif
 
 #if _BAREMETAL
@@ -54,9 +46,6 @@ static    uint32_t    registerMemBase    = 0x43c80000;
 static    uint32_t    registerMemBase    = 0x40240000;
 #endif
 
-/* If bit31 is activated this indicates a bus error */
-#define IS_AXI_BUS_ERR(x) ((x)&(1U << 31))
-
 #define HEAP_NODE_USED  0xABBAF00D
 
 volatile void* contiguousMem = NULL;
@@ -64,8 +53,6 @@ uint32_t gpuMemBase = 0;
 
 /* Default heap size is 16MB. */
 static int heap_size = MAX_CONTIGUOUS_SIZE;
-
-void __attribute__((weak)) vg_lite_bus_error_handler();
 
 void vg_lite_init_mem(uint32_t register_mem_base,
           uint32_t gpu_mem_base,
@@ -153,14 +140,6 @@ struct vg_lite_device {
     uint32_t size;
     struct memory_heap heap;
     int irq_enabled;
-    volatile uint32_t int_flags;
-#if _BAREMETAL
-    /* wait_queue_head_t int_queue; */
-    xSemaphoreHandle int_queue;
-#else
-    /* wait_queue_head_t int_queue; */
-    SemaphoreHandle_t int_queue;
-#endif
     void * device;
     int registered;
     int major;
@@ -176,28 +155,9 @@ struct client_data {
 
 static struct vg_lite_device Device, * device;
 
-void * vg_lite_hal_alloc(unsigned long size)
-{
-#if _BAREMETAL
-    /* Alloc is not supported in BAREMETAL / DDRLESS. */
-    return NULL;
-#else
-    /* TODO: Allocate some memory. No more kernel mode in RTOS. */
-    return pvPortMalloc(size);
-#endif
-}
-
-void vg_lite_hal_free(void * memory)
-{
-#if !_BAREMETAL
-    /* TODO: Free some memory. No more kernel mode in RTOS. */
-    vPortFree(memory);
-#endif
-}
-
 void vg_lite_hal_delay(uint32_t ms)
 {
-    sleep(ms);
+    vg_lite_os_sleep(ms);
 }
 
 void vg_lite_hal_barrier(void)
@@ -211,17 +171,21 @@ void vg_lite_hal_barrier(void)
 }
 
 static int vg_lite_init(void);
-void vg_lite_hal_initialize(void)
+vg_lite_error_t vg_lite_hal_initialize(void)
 {
+    vg_lite_error_t error = VG_LITE_SUCCESS;
     /* TODO: Turn on the power. */
     vg_lite_init();
     /* TODO: Turn on the clock. */
+    error = vg_lite_os_initialize();
+
+    return error;
 }
 
 void vg_lite_hal_deinitialize(void)
 {
     /* TODO: Remove clock. */
-
+    vg_lite_os_deinitialize();
     /* TODO: Remove power. */
 }
 
@@ -232,7 +196,7 @@ static int split_node(heap_node_t * node, unsigned long size)
     heap_node_t * split;
 
     /* Allocate a new node. */
-    split = vg_lite_hal_alloc(sizeof(heap_node_t));
+    split = (heap_node_t *)vg_lite_os_malloc(sizeof(heap_node_t));
     if (split == NULL)
         return -1;
 
@@ -274,7 +238,7 @@ vg_lite_error_t vg_lite_hal_allocate_contiguous(unsigned long size, void ** logi
                     return VG_LITE_OUT_OF_RESOURCES;
                 }
             /* Mark the current node as used. */
-            pos->status = 0xABBAF00D;
+            pos->status = HEAP_NODE_USED;
 
             /*  Return the logical/physical address. */
             /* *logical = (uint8_t *) private_data->contiguous_mapped + pos->offset; */
@@ -299,7 +263,7 @@ void vg_lite_hal_free_contiguous(void * memory_handle)
     /* Get pointer to node. */
     node = memory_handle;
 
-    if (node->status != 0xABBAF00D) {
+    if (node->status != HEAP_NODE_USED) {
         return;
     }
 
@@ -321,7 +285,7 @@ void vg_lite_hal_free_contiguous(void * memory_handle)
                 node->offset = pos->offset;
             /* Delete the next node from the list. */
             delete_list(&pos->list);
-            vg_lite_hal_free(pos);
+            vg_lite_os_free(pos);
         }
         break;
     }
@@ -338,14 +302,14 @@ void vg_lite_hal_free_contiguous(void * memory_handle)
                 pos->offset = node->offset;
             /* Delete the current node from the list. */
             delete_list(&node->list);
-            vg_lite_hal_free(node);
+            vg_lite_os_free(node);
         }
         break;
     }
     /* when release command buffer node and ts buffer node to exit,release the linked list*/
     if(device->heap.list.next == device->heap.list.prev) {
         delete_list(&pos->list);
-        vg_lite_hal_free(pos);
+        vg_lite_os_free(pos);
     }
 }
 
@@ -363,7 +327,7 @@ void vg_lite_hal_free_os_heap(void)
                 /* Remove it from the linked list. */
                 delete_list(&pos->list);
                 /* Free up the memory. */
-                vg_lite_hal_free(pos);
+                vg_lite_os_free(pos);
         }
     }
 }
@@ -393,71 +357,14 @@ vg_lite_error_t vg_lite_hal_query_mem(vg_lite_kernel_mem_t *mem)
     return VG_LITE_NO_CONTEXT;
 }
 
-void __attribute__((weak)) vg_lite_bus_error_handler()
-{
-    /*
-     * Default implementation of the bus error handler does nothing. Application
-     * should override this handler if it requires to be notified when a bus
-     * error event occurs.
-     */
-     return;
-}
-
 void vg_lite_IRQHandler(void)
 {
-    uint32_t flags = vg_lite_hal_peek(VG_LITE_INTR_STATUS);
-    portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
-
-    if (flags) {
-        /* Combine with current interrupt flags. */
-        device->int_flags |= flags;
-
-        /* Wake up any waiters. */
-        if(device->int_queue){
-            xSemaphoreGiveFromISR(device->int_queue, &xHigherPriorityTaskWoken);
-            if(xHigherPriorityTaskWoken != pdFALSE )
-            {
-                portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-            }
-        }
-    }
+    vg_lite_os_IRQHandler();
 }
 
 int32_t vg_lite_hal_wait_interrupt(uint32_t timeout, uint32_t mask, uint32_t * value)
 {
-#if _BAREMETAL
-    uint32_t int_status=0;
-    int_status = vg_lite_hal_peek(VG_LITE_INTR_STATUS);
-    (void)value;
-
-    while (int_status==0){
-        int_status = vg_lite_hal_peek(VG_LITE_INTR_STATUS);
-        usleep(1);
-    }
-
-    if (IS_AXI_BUS_ERR(*value))
-    {
-        vg_lite_bus_error_handler();
-    }
-    return 1;
-#else /*for rt500*/
-    if(device->int_queue) {
-        if (xSemaphoreTake(device->int_queue, timeout / portTICK_PERIOD_MS) == pdTRUE) {
-            if (value != NULL) {
-               *value = device->int_flags & mask;
-
-               if (IS_AXI_BUS_ERR(*value))
-               {
-                  vg_lite_bus_error_handler();
-               }
-            }
-            device->int_flags = 0;
-
-            return 1;
-        }
-    }
-    return 0;
-#endif
+    return vg_lite_os_wait_interrupt(timeout,mask,value);
 }
 
 void * vg_lite_hal_map(unsigned long bytes, void * logical, uint32_t physical, uint32_t * gpu)
@@ -476,7 +383,15 @@ void vg_lite_hal_unmap(void * handle)
     (void) handle;
 }
 
+vg_lite_error_t vg_lite_hal_submit(uint32_t physical, uint32_t offset, uint32_t size,  uint32_t * signal, uint32_t semaphore_id)
+{
+    return vg_lite_os_submit(physical,offset,size,signal,semaphore_id);
+}
 
+vg_lite_error_t vg_lite_hal_wait(uint32_t timeout, uint32_t * signal,void * semaphore)
+{
+    return  vg_lite_os_wait(timeout,signal,semaphore);
+}
 
 static void vg_lite_exit(void)
 {
@@ -496,11 +411,11 @@ static void vg_lite_exit(void)
             delete_list(&pos->list);
 
             /* Free up the memory. */
-            vg_lite_hal_free(pos);
+            vg_lite_os_free(pos);
         }
 
         /* Free up the device structure. */
-        vg_lite_hal_free(device);
+        vg_lite_os_free(device);
     }
 }
 
@@ -544,7 +459,7 @@ static int vg_lite_init(void)
     INIT_LIST_HEAD(&device->heap.list);
     device->heap.free = device->size;
 
-    node = vg_lite_hal_alloc(sizeof(heap_node_t));
+    node = (heap_node_t *)vg_lite_os_malloc(sizeof(heap_node_t));
     if (node == NULL) {
         vg_lite_exit();
         return -1;
@@ -553,10 +468,6 @@ static int vg_lite_init(void)
     node->size = device->size;
     node->status = 0;
     add_list(&node->list, &device->heap.list);
-#if !_BAREMETAL /*for rt500*/
-    device->int_queue = xSemaphoreCreateBinary();
-    device->int_flags = 0;
-#endif
     /* Success. */
     return 0;
 }

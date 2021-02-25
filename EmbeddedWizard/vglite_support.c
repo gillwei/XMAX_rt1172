@@ -16,8 +16,8 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define MAX_CONTIGUOUS_SIZE         ( 0x100000 )
-#define VG_LITE_COMMAND_BUFFER_SIZE ( 64 << 10 )
+#define MAX_CONTIGUOUS_SIZE         ( 0x180000 )
+#define VG_LITE_COMMAND_BUFFER_SIZE ( 256 * 1024 )
 
 /*******************************************************************************
  * Prototypes
@@ -26,10 +26,27 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+
 static uint32_t registerMemBase = 0x41800000;
 static uint32_t gpu_mem_base    = 0x0;
 
-AT_NONCACHEABLE_SECTION_ALIGN(static volatile uint8_t contiguous_mem[MAX_CONTIGUOUS_SIZE], 32);
+/*
+ * In case custom VGLite memory parameters are used, the application needs to
+ * allocate and publish the VGLite heap base, its size and the size of the
+ * command buffer(s) using the following global variables:
+ */
+extern void *vglite_heap_base;
+extern uint32_t vglite_heap_size;
+extern uint32_t vglite_cmd_buff_size;
+
+#if (CUSTOM_VGLITE_MEMORY_CONFIG == 0)
+/* VGLite driver heap */
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t contiguous_mem[MAX_CONTIGUOUS_SIZE], FRAME_BUFFER_ALIGN);
+
+void *vglite_heap_base        = &contiguous_mem;
+uint32_t vglite_heap_size     = MAX_CONTIGUOUS_SIZE;
+uint32_t vglite_cmd_buff_size = VG_LITE_COMMAND_BUFFER_SIZE;
+#endif /* CUSTOM_VGLITE_MEMORY_CONFIG */
 
 /*******************************************************************************
  * Code
@@ -71,9 +88,9 @@ status_t BOARD_PrepareVGLiteController(void)
         return status;
     }
 
-    vg_lite_init_mem(registerMemBase, gpu_mem_base, (void*)contiguous_mem, MAX_CONTIGUOUS_SIZE);
+    vg_lite_init_mem(registerMemBase, gpu_mem_base, vglite_heap_base, vglite_heap_size);
 
-    vg_lite_set_command_buffer_size(VG_LITE_COMMAND_BUFFER_SIZE);
+    vg_lite_set_command_buffer_size(vglite_cmd_buff_size);
 
     return kStatus_Success;
 }

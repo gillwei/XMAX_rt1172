@@ -97,6 +97,9 @@ extern "C" {
         VG_LITE_OUT_OF_RESOURCES,   /*! Out of system resources. */
         VG_LITE_GENERIC_IO,         /*! Cannot communicate with the kernel driver. */
         VG_LITE_NOT_SUPPORT,        /*! Function call not supported. */
+        VG_LITE_MULTI_THREAD_FAIL,  /*! Multi-thread/tasks fail. */
+        VG_LITE_ALREADY_EXISTS,     /*! Element already exists (e.g. font exists) */
+        VG_LITE_NOT_ALIGNED,        /*! Data alignment error */
     }
     vg_lite_error_t;
 #endif
@@ -105,15 +108,15 @@ extern "C" {
      @abstract The floating point type used by the VGLite API.
      */
     typedef float vg_lite_float_t;
-    
+
     /*!
      @abstract A 32-bit color value used by the VGLite API.
-     
+
      @discussion
      The color value specifies the color used in various functions. The color is formed using 8-bit RGBA channels. The red channel
      is in the lower 8-bit of the color value, followed by the green and blue channels. The alpha channel is in the upper 8-bit of
      the color value.
-     
+
      For L8 target formats, the RGB color is converted to L8 by using the default ITU-R BT.709 conversion rules.
      */
     typedef uint32_t vg_lite_color_t;
@@ -122,7 +125,7 @@ extern "C" {
 
     /*!
      @abstract Quality enumeration for a given path.
-     
+
      @discussion
      Each path should specify a quality hint for the hardware. The path generation tool will generate the quality hint based on the
      complexity of the path.
@@ -136,7 +139,7 @@ extern "C" {
 
     /*!
      @abstract Format of path coordinates.
-     
+
      @discussion
      Each path can have a separate coordinate system. The path generation tool will find the most optimal coordinate system for any
      given path based on its dimensions and input coordinates.
@@ -150,7 +153,7 @@ extern "C" {
 
     /*!
      @abstract Format of a buffer.
-     
+
      @discussion
      The pixel type for a <code>vg_lite_buffer_t</code> structure.
      */
@@ -239,7 +242,7 @@ extern "C" {
 
     /*!
      @abstract The YUV<->RGB conversion rule.
-     
+
      @discussion
      Indicate the rule how to convert rgb and yuv colors.
      */
@@ -250,7 +253,7 @@ extern "C" {
 
     /*!
      @abstract The pixel layout in a buffer.
-     
+
      @discussion
      Pixels in a buffer may be tiled  or linear.
      */
@@ -261,7 +264,7 @@ extern "C" {
 
     /*!
      @abstract The image (buffer) rendering mode.
-     
+
      @discussion
      This defines how an image are rendered onto a buffer. There are 3 modes.
      */
@@ -301,7 +304,7 @@ extern "C" {
 
     /*!
      @abstract Blending modes.
-     
+
      @discussion
      Some of the VGLite API functions calls support blending. S and D represent source and destination color channels and Sa and Da
      represent the source and destination alpha channels.
@@ -320,15 +323,15 @@ extern "C" {
 
     /*!
      @abstract Fill rules.
-     
+
      @discussion
      For drawing any path, the hardware supports both non-zero and odd-even fill rules.
-     
+
      To determine whether any point is contained inside an object, imagine drawing a line from that point out to infinity in any
      direction such that the line does not cross any vertex of the path. For each edge that is crossed by the line, add 1 to the
      counter if the edge crosses from left to right, as seen by an observer walking across the line towards infinity, and subtract 1
      if the edge crosses from right to left. In this way, each region of the plane will receive an integer value.
-     
+
      The non-zero fill rule says that a point is inside the shape if the resulting sum is not equal to zero. The even/odd rule says
      that a point is inside the shape if the resulting sum is odd, regardless of sign.
      */
@@ -342,10 +345,10 @@ extern "C" {
     {
         gcFEATURE_BIT_VG_IM_INDEX_FORMAT,
         gcFEATURE_BIT_VG_PE_PREMULTIPLY,
-        gcFEATURE_BIT_VG_SCISSOR,
         gcFEATURE_BIT_VG_BORDER_CULLING,
         gcFEATURE_BIT_VG_RGBA2_FORMAT,
         gcFEATURE_BIT_VG_QUALITY_8X,
+        gcFEATURE_BIT_VG_RADIAL_GRADIENT,
 
         /* Insert features above this comment only. */
         gcFEATURE_COUNT         /* Not a feature. */
@@ -367,6 +370,14 @@ extern "C" {
         VG_LITE_PATTERN_PAD,
     } vg_lite_pattern_mode_t;
 
+    /* radial gradient padding mode. */
+    typedef enum {
+      VG_LITE_RADIAL_GRADIENT_SPREAD_FILL = 0,
+      VG_LITE_RADIAL_GRADIENT_SPREAD_PAD,
+      VG_LITE_RADIAL_GRADIENT_SPREAD_REPEAT,
+      VG_LITE_RADIAL_GRADIENT_SPREAD_REFLECT,
+    } vg_lite_radial_gradient_spreadmode_t;
+
 /* Structures *******************************************************************************************************************/
 
     /* This structure is used to query VGLite driver information */
@@ -379,7 +390,7 @@ extern "C" {
 
     /*!
      @abstract A 3x3 matrix.
-     
+
      @discussion
      For those functions that need a matrix, this is the structure that defines it. The contents are a simple 3x3 matrix
      consisting of floating pointer numbers.
@@ -390,7 +401,7 @@ extern "C" {
 
     /*!
      @abstract A wrapper structure for any image or render target.
-     
+
      @discussion
      Each piece of memory, whether it is an image used as a source or a buffer used as a target, requires a structure to define it.
      This structure contains all the information the VGLite API requires to access the buffer's memory by the hardware.
@@ -423,7 +434,7 @@ extern "C" {
 
     /*!
      @abstract A path used by the drawing command.
-     
+
      @discussion
      Each path needs a few parameters. This structure defines those parameters, so the VGLite driver knows the detail of a path.
      */
@@ -439,7 +450,7 @@ extern "C" {
 
     /*!
      @abstract A rectangle.
-     
+
      @discussion
      A rectangle defines a rectangular definition of the screen.
      */
@@ -452,7 +463,7 @@ extern "C" {
 
     /*!
      @abstract Tessellation buffer information.
-     
+
      @discussion
      The tessellation buffer information for access.
      */
@@ -472,7 +483,7 @@ extern "C" {
 
     /*!
      @abstract Linear gradient definition.
-     
+
      @discussion
      Linear gradient is applied to filling a path. It will generate a 256x1 image according the settings.
      */
@@ -484,22 +495,77 @@ extern "C" {
         vg_lite_buffer_t image;             /*! The image for rendering as gradient pattern. */
     } vg_lite_linear_gradient_t;
 
+    /* radial Gradient definitions. */
+#define MAX_COLOR_RAMP_STOPS            256              /*! The max number of radial gradient stops. */
+
+    /*!
+     @abstract color ramp definition.
+
+     @discussion
+     This is the stop for the radial gradient.The number of parameters is 5,and give the offset and
+     color of the stop.Each stop is defined by a floating-point offset value and four floating-point values
+     containing the sRGBA color and alpha value associated with each stop, in the form of a non-premultiplied
+     (R, G, B, alpha) quad.And the range of all parameters in it is [0,1].[0,1] of the color channel value is
+     mapped to [0,255].
+     */
+    typedef struct vg_lite_color_ramp
+    {
+        vg_lite_float_t stop;        /* Value for the color stop. */
+        vg_lite_float_t red;         /* Red color channel value for the color stop. */
+        vg_lite_float_t green;       /* Green color channel value for the color stop. */
+        vg_lite_float_t blue;        /* Blue color channel value for the color stop. */
+        vg_lite_float_t alpha;       /* Alpha color channel value for the color stop. */
+    }
+    vg_lite_color_ramp_t, *vg_lite_color_ramp_ptr;
+
+    typedef struct vg_lite_radial_gradient_parameter
+    {
+        vg_lite_float_t cx;        /* the x coordinate of the center point. */
+        vg_lite_float_t cy;        /* the y coordinate of the center point. */
+        vg_lite_float_t fx;        /* the x coordinate of the focal point. */
+        vg_lite_float_t fy;        /* the y coordinate of the focal point. */
+        vg_lite_float_t r;         /* the radius. */
+    }
+    vg_lite_radial_gradient_parameter_t;
+
+    /*!
+     @abstract radial gradient definition.
+
+     @discussion
+     radial gradient is applied to filling a path.
+     */
+    typedef struct vg_lite_radial_gradient {
+        uint32_t count;                     /*! Count of colors, up to 256. */
+        vg_lite_matrix_t matrix;            /*! The matrix to transform the gradient. */
+        vg_lite_buffer_t image;             /*! The image for rendering as gradient pattern. */
+        vg_lite_radial_gradient_parameter_t radialGradient;      /* include center point,focal point and radius.*/
+
+        uint32_t vgColorRampLength;         /* Color ramp parameters for gradient paints provided to the driver. */
+        vg_lite_color_ramp_t vgColorRamp[MAX_COLOR_RAMP_STOPS];
+
+        uint32_t intColorRampLength;        /* Converted internal color ramp. */
+        vg_lite_color_ramp_t intColorRamp[MAX_COLOR_RAMP_STOPS + 2];
+
+        uint8_t colorRampPremultiplied;     /* if this value is set to 1,the color value of vgColorRamp will multiply by alpha value of vgColorRamp.*/
+        vg_lite_radial_gradient_spreadmode_t SpreadMode;    /* The tiling mode that applied to the pixels out of the image after transformed. */
+    } vg_lite_radial_gradient_t;
+
 /* API Function prototypes *****************************************************************************************************/
 
     /*!
      @abstract Allocate a buffer from hardware accessible memory.
-     
+
      @discussion
      In order for the hardware to access some memory, like a source image or a target buffer, it needs to be allocated first. The
      supplied <code>vg_lite_buffer_t</code> structure needs to be initialized with the size (width and height) and format of the
      requested buffer. If the stride is set to zero, this function will fill it in.
-     
+
      This function will call the kernel to actually allocate the memory and the memory handle and logical and hardware addresses
      will be filled in by the kernel.
-     
+
      @param buffer
      Pointer to the buffer that holds the size and format of the buffer being allocated.
-     
+
      @result
      Returns the status as defined by <code>vg_lite_error_t</code>.
      */
@@ -507,13 +573,13 @@ extern "C" {
 
     /*!
      @abstract Free a buffer that was previously allocated by {@link vg_lite_allocate}.
-     
+
      @discussion
      Free any memory resources allocated by a previous call to {@link vg_lite_allocate}.
-     
+
      @param buffer
      Pointer to a buffer structure that was filled in by {@link vg_lite_allocate}.
-     
+
      @result
      Returns the status as defined by <code>vg_lite_error_t</code>.
      */
@@ -521,23 +587,23 @@ extern "C" {
 
     /*!
      @abstract Upload the pixel data to the buffer object.
-     
+
      @discussion
      The function uploads the pixel data to the buffer object. According to the
      buffer format, there are 3 planes' data at most (for YUV planars). Note that
      the format of the data (pixel) to upload must be the same as described in
      the buffer object. The input data memory pointers should be big enough to
      hold all the data needed by the buffer.
-     
+
      @param buffer
      The image buffer object.
-     
+
      @param data
      Pixel data. For YUV format, it may be up to 3 pointers.
-     
+
      @param stride
      Stride for pixel data.
-     
+
      @result
      Any error status during uploading.
      */
@@ -545,19 +611,19 @@ extern "C" {
 
     /*!
      @abstract Map a buffer into hardware accessible address space.
-     
+
      @discussion
      If you want the use a frame buffer directly as an target buffer, you need to wrap a <code>vg_lite_buffer_t</code> structure
      around it and call the kernel to map the supplied logical or physical address into hardware accessible memory.
-     
+
      For example, if you know the logical address of the frame buffer, set the memory field of the vg_lite_buffer_t structure
      with that address and call this function. If you know the physical address, set the memory field to <code>NULL</code> and
      program the address field with the physical address.
-     
+
      @param buffer
      Pointer to the buffer that holds the size and format of the buffer being allocated. Either the memory or address field
      needs to be set to a non-zero value to map either a logical or physical address into hardware accessible memory.
-     
+
      @result
      Returns the status as defined by <code>vg_lite_error_t</code>.
      */
@@ -565,13 +631,13 @@ extern "C" {
 
     /*!
      @abstract Unmap a buffer that was previously mapped by {@link vg_lite_map}.
-     
+
      @discussion
      Free any memory resources allocated by a previous call to {@link vg_lite_map}.
-     
+
      @param buffer
      Pointer to a buffer structure that was filled in by {@link vg_lite_map}.
-     
+
      @result
      Returns the status as defined by <code>vg_lite_error_t</code>.
      */
@@ -579,23 +645,23 @@ extern "C" {
 
     /*!
      @abstract Fill a (partial) buffer with a specified color.
-     
+
      @discussion
      Either an entire buffer or a partial rectangle of a buffer will be filled with a specific color.
-     
+
      This function will wait until the hardware is complete, i.e. it is synchronous.
-     
+
      @param target
      Pointer to a <code>vg_lite_buffer_t</code> structure that describes the buffer to be filled.
-     
+
      @param rectangle
      Pointer to a rectangle that specifies the area to be filled. If <code>rectangle</code> is <code>NULL</code>, the entire target
      buffer will be filled with the specified color.
-     
+
      @param color
      The color value to use for filling the buffer. If the buffer is in L8 format, the RGBA color will be converted into a
      luminance value.
-     
+
      @result
      Returns the status as defined by <code>vg_lite_error_t</code>.
      */
@@ -606,41 +672,41 @@ extern "C" {
     /*!
      @abstract Copy a source image to the the destination window with a specified matrix that can include translation, rotation,
      scaling, and perspective correction.
-     
+
      @discussion
      A source image is copied to the target using the specified matrix. If the specified matrix is <code>NULL</code>, an identity
      matrix is assumed, meaning the source will be copied directly on the target at 0,0 location.
-     
+
      An optional blend mode can be specified that defines the blending of the source onto the target.
-     
+
      Also, an optional mix color can be specified. The mix color will be multiplied by the source color. If you don't need a mix
      color, set the <code>color</code> parameter to 0.
-     
+
      Note that on hardware that doesn't support border scissoring (GC355) the blend mode will be forced to
      <code>VG_LITE_BLEND_SRC_OVER</code> if rotation or perspective is involved.
-     
+
      @param target
      Pointer to a <code>vg_lite_buffer_t</code> structure that describes the target of the blit.
-     
+
      @param source
      Pointer to a <code>vg_lite_buffer_t</code> structure that describes the source of the blit.
-     
+
      @param matrix
      Pointer to a 3x3 matrix that defines the transformation matrix of source pixels into the target. If matrix is
      <code>NULL</code>, an identity matrix is assumed.
-     
+
      @param blend
      The blending mode to be applied to each image pixel. If no blending is required, set this value to
      <code>VG_LITE_BLEND_NONE</code> (0).
-     
+
      @param color
      If non-zero, this color value will be used as a mix color. The mix color gets multiplied with each source pixel before
      blending happens.
-     
+
      @param filter
-     The filter mode to be applied. If no filter mode is required, set this value to 
+     The filter mode to be applied. If no filter mode is required, set this value to
      <code>VG_LITE_FILTER_BI_LINEAR</code> (0x20000).
-     
+
      @result
      Returns the status as defined by <code>vg_lite_error_t</code>.
      */
@@ -651,7 +717,7 @@ extern "C" {
                                  vg_lite_color_t color,
                                  vg_lite_filter_t filter);
 
-    /* In additional to vg_lite_blit: 
+    /* In additional to vg_lite_blit:
     @brief
     This API draws a porting of the image to the screen.
 
@@ -667,12 +733,12 @@ extern "C" {
 
     /*!
      @abstract Initialize a vglite context.
-     
+
      @discussion
      The {@link vg_lite_draw} function requires a draw context to be initialized. There is only one draw context per process, so
      this function has be called once in your application if any draw command will be used. If this would be the first context that
      accesses the hardware, the hardware will be turned on and initialized.
-     
+
      The difference between a blit and draw context is that the draw context has a larger command buffer and allocates a
      tessellation buffer for the hardware. The size of the tessellation buffer can be specified, and that size will be aligned to
      the minimum required alignment of the hardware by the kernel. If you make the tessellation buffer smaller, less memory will
@@ -680,13 +746,13 @@ extern "C" {
      provided tessellation window size, so performance might go down. It is good practice to set the tessellation buffer size to the
      most common path size. For example, if all you do is render up to 24-pt fonts, you can set the tessellation buffer to be
      24x24.
-     
+
      @param tessellation_width
      The width of the tessellation window.
-     
+
      @param tessellation_height
      The height of the tessellation window.
-     
+
      @result
      Returns the status as defined by <code>vg_lite_error_t</code>.
      */
@@ -694,10 +760,10 @@ extern "C" {
 
     /*!
      @abstract Destroy a vglite context.
-     
+
      @discussion
      Destroy a draw context that was previously initialized by {@link vg_lite_draw_init}.
-     
+
      @result
      Returns the status as defined by <code>vg_lite_error_t</code>.
      */
@@ -705,7 +771,7 @@ extern "C" {
 
     /*!
      @abstract This api explicitly submits the command buffer to GPU and waits for it to complete.
-     
+
      @param none.
 
      @result
@@ -715,7 +781,7 @@ extern "C" {
 
     /*!
      @abstract This api explicitly submits the command buffer to GPU without waiting for it to complete.
-     
+
      @param none.
 
      @result
@@ -725,31 +791,31 @@ extern "C" {
 
     /*!
      @abstract Draw a path to a target buffer.
-     
+
      @discussion
      The specified path will be transformed by the given matrix and drawn into the specified target buffer using the supplied color.
      Blending can be specified.
-     
+
      @param target
      Pointer to a <code>vg_lite_buffer_t</code> structure that describes the target of the draw.
-     
+
      @param path
      Pointer to a <code>vg_lite_path_t</code> structure that describes the path to draw.
-     
+
      @param fill_rule
      Specified fill rule for the path.
-     
+
      @param matrix
-     Pointer to a 3x3 matrix that defines the transformation matrix of the path. If <code>matrix</code> is <code>NULL</code>, an 
+     Pointer to a 3x3 matrix that defines the transformation matrix of the path. If <code>matrix</code> is <code>NULL</code>, an
      identity matrix is assumed which is usually a bad idea since the path can be anything.
-     
+
      @param blend
-     The blending mode to be applied to each drawn pixel. If no blending is required, set this value to 
+     The blending mode to be applied to each drawn pixel. If no blending is required, set this value to
      <code>VG_LITE_BLEND_NONE</code> (0).
-     
+
      @param color
      The color applied to each pixel drawn by the path.
-     
+
      @result
      Returns the status as defined by <code>vg_lite_error_t</code>.
      */
@@ -762,7 +828,7 @@ extern "C" {
 
     /*!
      @abstract Get the value of register from register's address.
-     
+
      @discussion
      This address will be the AHB Byte address of the register whose value you want to dump.
      Refer to the Vivante AHB Register Specification document for register descriptions.
@@ -773,13 +839,13 @@ extern "C" {
 
      @param result
      The register's value.
-     
+
      */
     vg_lite_error_t vg_lite_get_register(uint32_t address, uint32_t *result);
 
     /*
      @abstract Get the VGLite driver information.
-     
+
      @param info
      Pointer to vg_lite_info_t structure.
      */
@@ -787,16 +853,16 @@ extern "C" {
 
     /*
      @abstract Get the name of the VGLite Product.
-     
+
      @param name
      Character array to store the name of the chip.
-     
+
      @param chip_id
      Store the chip id.
-     
+
      @param chip_rev
      Store the chip revision number.
-     
+
      @return
      Length of the name string, including the ending '\0'.
      */
@@ -804,10 +870,10 @@ extern "C" {
 
     /*!
      @abstract Queried whether the specified feature is available.
-     
+
      @param feature
      Feature to be verified.
-     
+
      @return
      The feature is supported (1) or not (0).
      */
@@ -815,13 +881,13 @@ extern "C" {
 
     /*!
      @abstract This api initializes a path object by given member values.
-     
+
      @param path
      The path object.
-     
+
      @param data_format
      The coordinate data format of the path. One of S8, S16, S32 and FP32.
-     
+
      @param quality
      The rendering quality (AA level) of the path.
 
@@ -833,13 +899,13 @@ extern "C" {
 
      @param min_x
      The min x of the bounding box.
-     
+
      @param min_y
      The min y of the bounding box.
-     
+
      @param max_x
      The max x of the bounding box.
-     
+
      @param max_y
      The max y of the bounding box.
 
@@ -856,9 +922,9 @@ extern "C" {
 
     /*!
      @abstract This api clears the path member values.
-     
-     @discussion It frees the hw memory if path was ever uploaded. 
-     
+
+     @discussion It frees the hw memory if path was ever uploaded.
+
      @param path
      The path object.
 
@@ -869,20 +935,20 @@ extern "C" {
 
     /*!
      @abstract Calculate the path command buffer length (in bytes).
-     
+
      @discussion The app should be response for allocating a buffer according to
      the buffer length calculated by this function. Then the buffer is used by
      the path as command buffer. The driver does not do allocation for the buffer.
-     
+
      @param cmd
      The opcode array to construct the path.
-     
+
      @param count
      The count of opcodes.
-     
+
      @param format
      The data format of the coordinate (VG_LITE_S8, S16, S32, FP32)
-     
+
      @result
      Return the actual length of the path command buffer.
      */
@@ -892,24 +958,24 @@ extern "C" {
 
     /*!
      @abstract Assemble the command buffer for the path.
-     
+
      @discussion The command buffer is allocated by the application and assigned
      to the path. The function make the final GPU command buffer for the path based
      on the input opcodes (cmd) and coordinates (data). Note that the Application
      must be responsible to alloate a big enough buffer for the path.
-     
+
      @param path
      The path object.
-     
+
      @param cmd
      The opcode array to construct the path.
-     
+
      @param data
      The coordinate data array to construct the path.
-     
+
      @param seg_count
      The count of the opcodes.
-     
+
      */
     void vg_lite_path_append(vg_lite_path_t *path,
                              uint8_t        *cmd,
@@ -939,11 +1005,11 @@ extern "C" {
 
     /*!
      @abstract Set the current CLUT (Color Look Up Table) for index image to use.
-     
+
      @discussion
      This is a global context state. Once it's set (Not NULL), when an indexed format image is rendered, the image color will
      be got from the CLUT by the image's pixels as indecies.
-     
+
      @param count
      This is the count of the colors in the look up table.
      For index 1, up to 2 colors in the table;
@@ -951,11 +1017,11 @@ extern "C" {
      For index 4, up to 16 colors in the table;
      For index 8, up to 256 colros in the table.
      Driver is not responsible to check the validation of the CLUT.
-     
+
      @param colors
      This pointer is directly programmed to the command buffer. So it won't take effect
      unless the command buffer is submitted. The color is in ARGB format with A staying at the high bits.
-     
+
      @result
      Error code. Currently always returns VG_LITE_SUCCESS since it does not do any checks.
      */
@@ -964,38 +1030,38 @@ extern "C" {
 
     /*!
      @abstract Fill a path with an image pattern.
-     
+
      @discussion
      The specified path will be transformed by the given matrix and filled by the tranformed image pattern.
-     
+
      @param path
      Pointer to a <code>vg_lite_path_t</code> structure that describes the path to draw.
-     
+
      @param fill_rule
      Specified fill rule for the path.
-     
+
      @param matrix0
      Pointer to a 3x3 matrix that defines the transformation matrix of the path. If <code>matrix</code> is <code>NULL</code>, an
      identity matrix is assumed which is usually a bad idea since the path can be anything.
-     
+
      @param source
      Pointer to a <code>vg_lite_buffer_t</code> structure that describes the source of the image pattern.
-     
+
      @param matrix1
      Pointer to a 3x3 matrix that defines the transformation matrix of source pixels into the target. If matrix is
      <code>NULL</code>, an identity matrix is assumed.
-     
+
      @param blend
      The blending mode to be applied to each drawn pixel. If no blending is required, set this value to
      <code>VG_LITE_BLEND_NONE</code> (0).
-     
+
      @param pattern_mode
      The tiling mode that applied to the pixels out of the image after transformed.
-     
+
      @param pattern_color
      The pattern_color applied by pattern_mode VG_LITE_PATTERN_COLOR. When pixels are out of the image after transformed,
      they are applied "pattern_color".
-     
+
      @result
      Returns the status as defined by <code>vg_lite_error_t</code>.
      */
@@ -1012,14 +1078,14 @@ extern "C" {
 
     /*!
      @abstract Init the linear gradient object.
-     
+
      @discussion
      This API initialize the grad object to its default settings. Since grad has
      an internal buffer object, this API will init the buffer object for rendering use.
-     
+
      @param grad
      This is the vg_lite_linear_gradient_t object to be initialized.
-     
+
      @result
      Error code, in case the buffer can't be created.
      */
@@ -1027,21 +1093,21 @@ extern "C" {
 
     /*!
      @abstract Set the linear gradient members.
-     
+
      @discussion
      This API sets the values for the members of the gradient definition.
-     
+
      @param grad
      This is the vg_lite_linear_gradient_t object to be set.
-     
+
      @param count
      This is the count of the colors in grad.
      The maxmum color stop count is defined by VLC_MAX_GRAD, which is currently 16.
-     
+
      @param colors
      This is the color array for the gradient stops. The color is in ARGB8888 format
      with alpha at the higher byte.
-     
+
      @result
      Error code. VG_LITE_INVALID_ARGUMENTS to indicate the parameters are wrong.
      */
@@ -1051,80 +1117,166 @@ extern "C" {
                                      uint32_t *stops);
 
     /*!
+     @abstract Set the radial gradient members.
+
+     @discussion
+     This API sets the values for the members of the radial gradient definition.
+
+     @param grad
+     This is the vg_lite_radial_gradient_t object to be set.
+
+     @param count
+     This is the count of the colors in grad.
+     The maxmum color stop count is defined by MAX_COLOR_RAMP_STOPS, which is currently 256.
+
+     @param vgColorRamp
+     This is the stop for the radial gradient.The number of parameters is 5,and give the offset and
+     color of the stop.Each stop is defined by a floating-point offset value and four floating-point values
+     containing the sRGBA color and alpha value associated with each stop, in the form of a non-premultiplied
+     (R, G, B, alpha) quad.And the range of all parameters in it is [0,1].
+
+     @param radialGradient
+     The radial gradient parameters are supplied as a vector of 5 floats in the order {cx,cy,fx,fy,r}.
+     the range of all parameters in it is [0,1].The meaning of the parameters in it is:(cx,cy) is center point,
+     (fx,fy) is focal point, and r is radius.
+
+     @param SpreadMode
+     The tiling mode that applied to the pixels out of the paint after transformed.
+
+     @param colorRampPremultiplied
+     The parameter controls whether color and alpha values are interpolated in premultiplied or non-premultiplied
+     form.
+
+     @result
+     Error code. VG_LITE_INVALID_ARGUMENTS to indicate the parameters are wrong.
+     */
+    vg_lite_error_t vg_lite_set_rad_grad(vg_lite_radial_gradient_t *grad,
+                                     uint32_t count,
+                                     vg_lite_color_ramp_t *vgColorRamp,
+                                     vg_lite_radial_gradient_parameter_t radialGradient,
+                                     vg_lite_radial_gradient_spreadmode_t SpreadMode,
+                                     uint8_t colorRampPremultiplied);
+
+    /*!
      @abstract Update or generate the corresponding image object to render with.
-     
+
      @discussion
      The vg_lite_linear_gradient_t object has an image buffer which is used to render
      the gradient pattern. The image buffer will be create/updated by the corresponding
      grad parameters.
-     
+
      @param grad
      This is the vg_lite_linear_gradient_t object to be upated from.
-     
+
      @result
      Error code.
      */
     vg_lite_error_t vg_lite_update_grad(vg_lite_linear_gradient_t *grad);
 
     /*!
+     @abstract Update or generate the corresponding image object to render with.
+
+     @discussion
+     The vg_lite_radial_gradient_t object has an image buffer which is used to render
+     the radial gradient paint. The image buffer will be create/updated by the corresponding
+     grad parameters.
+
+     @param grad
+     This is the vg_lite_radial_gradient_t object to be upated from.
+
+     @result
+     Error code.
+     */
+    vg_lite_error_t vg_lite_update_rad_grad(vg_lite_radial_gradient_t *grad);
+
+    /*!
      @abstract Clear the gradient object.
-     
+
      @discussion
      This will reset the grad members and free the image buffer's memory.
-     
+
      @param grad
      This is the vg_lite_linear_gradient_t object to be cleared.
-     
+
      @result
      Error code.
      */
     vg_lite_error_t vg_lite_clear_grad(vg_lite_linear_gradient_t *grad);
 
     /*!
+     @abstract Clear the radial gradient object.
+
+     @discussion
+     This will reset the grad members and free the image buffer's memory.
+
+     @param grad
+     This is the vg_lite_radial_gradient_t object to be cleared.
+
+     @result
+     Error code.
+     */
+    vg_lite_error_t vg_lite_clear_rad_grad(vg_lite_radial_gradient_t *grad);
+
+    /*!
      @abstract Get the pointer to the grad object's matrix.
-     
+
      @discussion
      This function get the pointer to the gradient object's matrix. Thus the app
      can manipulate the matrix to render the gradient path correctly.
-     
+
      @param grad
      This is the vg_lite_linear_gradient_t object where to get the matrix.
-     
+
      @result
      The pointer to the matrix.
      */
     vg_lite_matrix_t * vg_lite_get_grad_matrix(vg_lite_linear_gradient_t *grad);
 
     /*!
+     @abstract Get the pointer to the grad object's matrix.
+
+     @discussion
+     This function get the pointer to the radial gradient object's matrix. Thus the app
+     can manipulate the matrix to render the radial gradient path correctly.
+
+     @param grad
+     This is the vg_lite_radial_gradient_t object where to get the matrix.
+
+     @result
+     The pointer to the matrix.
+     */
+    vg_lite_matrix_t * vg_lite_get_rad_grad_matrix(vg_lite_radial_gradient_t *grad);
+
+    /*!
      @abstract Fill a path with an image pattern.
-     
+
      @discussion
      The specified path will be transformed by the given matrix and filled by the tranformed image pattern.
-     
+
      @param path
      Pointer to a <code>vg_lite_path_t</code> structure that describes the path to draw.
-     
+
      @param fill_rule
      Specified fill rule for the path.
-     
+
      @param matrix0
      Pointer to a 3x3 matrix that defines the transformation matrix of the path. If <code>matrix</code> is <code>NULL</code>, an
      identity matrix is assumed which is usually a bad idea since the path can be anything.
-     
+
      @param grad
      Pointer to the gradient object that will be filled the path with.
-     
+
      @param blend
      The blending mode to be applied to each drawn pixel. If no blending is required, set this value to
      <code>VG_LITE_BLEND_NONE</code> (0).
-     
+
      @param pattern_mode
      The tiling mode that applied to the pixels out of the image after transformed.
-     
+
      @param pattern_color
      The pattern_color applied by pattern_mode VG_LITE_PATTERN_COLOR. When pixels are out of the image after transformed,
      they are applied "pattern_color".
-     
+
      @result
      Returns the status as defined by <code>vg_lite_error_t</code>.
      */
@@ -1134,6 +1286,49 @@ extern "C" {
                                           vg_lite_matrix_t *matrix,
                                           vg_lite_linear_gradient_t *grad,
                                           vg_lite_blend_t blend);
+
+    /*!
+     @abstract Fill a path with a radial gradient.
+
+     @discussion
+     The specified path will be transformed by the given matrix and filled by the tranformed radial gradient.
+
+     @param path
+     Pointer to a <code>vg_lite_path_t</code> structure that describes the path to draw.
+
+     @param fill_rule
+     Specified fill rule for the path.
+
+     @param path_matrix
+     Pointer to a 3x3 matrix that defines the transformation matrix of the path. If <code>matrix</code> is <code>NULL</code>, an
+     identity matrix is assumed which is usually a bad idea since the path can be anything.
+
+     @param grad
+     This is the vg_lite_radial_gradient_t object to be set.
+
+     @param paint_color
+     Specifies the paint color vg_lite_color_t RGBA value to applied by VG_LITE_RADIAL_GRADIENT_SPREAD_FILL,which set by fuction
+     vg_lite_set_rad_grad. When pixels are out of the image after transformed,this paint_color is applied to them,See enum
+     vg_lite_radial_gradient_spreadmode_t.
+
+     @param blend
+     The blending mode to be applied to each drawn pixel. If no blending is required, set this value to
+     <code>VG_LITE_BLEND_NONE</code> (0).
+
+     @param filter
+     Specified the filter mode vg_lite_filter_t enum value to be applied to each drawn pixel.
+
+     @result
+     Returns the status as defined by <code>vg_lite_error_t</code>.
+     */
+    vg_lite_error_t vg_lite_draw_radial_gradient(vg_lite_buffer_t * target,
+                                     vg_lite_path_t * path,
+                                     vg_lite_fill_t fill_rule,
+                                     vg_lite_matrix_t * path_matrix,
+                                     vg_lite_radial_gradient_t *grad,
+                                     vg_lite_color_t  paint_color,
+                                     vg_lite_blend_t blend,
+                                     vg_lite_filter_t filter);
 
     /*!
      @abstract Load an identity matrix.
@@ -1226,12 +1421,12 @@ extern "C" {
       This function is used to set a scissor into render target so that the out region
       of scissor boundary is not drawn.
 
-     @param x, y, right, bottom
-      The scissor bounds which specifies the left, top, right, and bottom of the region.
+     @param x, y, width, height
+      The scissor bounds which specifies the x, y, width, and height of the region.
 
      @result
       Returns the status as defined by <code>vg_lite_error_t</code>.*/
-    vg_lite_error_t vg_lite_set_scissor(int32_t x, int32_t y, int32_t right, int32_t bottom);
+    vg_lite_error_t vg_lite_set_scissor(int32_t x, int32_t y, int32_t width, int32_t height);
 
     /*!
       @abstract Enable scissor.
@@ -1257,6 +1452,21 @@ extern "C" {
       Returns the status as defined by <code>vg_lite_error_t</code>.The result correctly returns VG_LITE_SUCCESS,
       return VG_LITE_NO_CONTEXT if not initialized.*/
     vg_lite_error_t vg_lite_mem_avail(uint32_t *size);
+
+    /*!
+      @abstract Enable premultiply.
+
+      @result
+      Returns the status as defined by <code>vg_lite_error_t</code>.*/
+    vg_lite_error_t vg_lite_enable_premultiply(void);
+
+    /*!
+      @abstract Disable premultiply.
+
+      @result
+      Returns the status as defined by <code>vg_lite_error_t</code>.*/
+    vg_lite_error_t vg_lite_disable_premultiply(void);
+
 #endif /* VGLITE_VERSION_2_0 */
 
 

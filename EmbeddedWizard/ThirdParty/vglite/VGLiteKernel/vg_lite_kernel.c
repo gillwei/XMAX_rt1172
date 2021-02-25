@@ -28,12 +28,14 @@
 #include "vg_lite_kernel.h"
 #include "vg_lite_hal.h"
 #include "vg_lite_hw.h"
+#include "vg_lite_os.h"
 #if defined(__linux__) && !EMULATOR
 #include <asm/uaccess.h>
 #include <linux/version.h>
 #endif
 
 static int s_reference = 0;
+static int task_num = 0;
 
 static vg_lite_error_t do_terminate(vg_lite_kernel_terminate_t * data);
 
@@ -70,7 +72,7 @@ static void gpu(int enable)
     }
     else
     {
-        while (!VG_LITE_KERNEL_IS_GPU_IDLE() && 
+        while (!VG_LITE_KERNEL_IS_GPU_IDLE() &&
             (reset_timer < reset_timer_limit)   // Force shutdown if timeout.
             ) {
             vg_lite_hal_delay(reset_timer);
@@ -114,6 +116,7 @@ static vg_lite_error_t init_vglite(vg_lite_kernel_initialize_t * data)
     uint32_t id;
     int      i;
     uint32_t chip_id = 0;
+    uint32_t semaphore_id = 0;
 
 #if defined(__linux__) && !EMULATOR
     vg_lite_kernel_context_t __user * context_usr;
@@ -121,7 +124,7 @@ static vg_lite_error_t init_vglite(vg_lite_kernel_initialize_t * data)
 
     // Construct the context.
     context_usr = (vg_lite_kernel_context_t  __user *) data->context;
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0)    
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0)
      if (!access_ok(VERIFY_READ, context_usr, sizeof(*context_usr)) ||
        !access_ok(VERIFY_WRITE, context_usr, sizeof(*context_usr))) {
 #else
@@ -155,11 +158,47 @@ static vg_lite_error_t init_vglite(vg_lite_kernel_initialize_t * data)
     /* Increment reference counter. */
     if (s_reference++ == 0) {
         /* Initialize the SOC. */
-        vg_lite_hal_initialize();
+        error = vg_lite_hal_initialize();
+        if(error != VG_LITE_SUCCESS)
+        {
+            s_reference--;
+            vg_lite_hal_free_os_heap();
+            vg_lite_hal_deinitialize();
+
+            return error;
+        }
 
         /* Enable the GPU. */
         gpu(1);
     }
+    else
+    {
+        while(!task_num)
+        {
+            vg_lite_hal_delay(5);
+        }
+    }
+
+    if((error = vg_lite_os_lock()) == VG_LITE_SUCCESS){
+        ++task_num;
+        for(semaphore_id = 0; semaphore_id < TASK_LENGTH ; semaphore_id++)
+        {
+            if(!vg_lite_os_get_semaphore(semaphore_id))
+            {
+                context->semaphore = vg_lite_os_create_semaphore();
+                context->semaphore_id = semaphore_id;
+                vg_lite_os_set_semaphore(context->semaphore_id,context->semaphore);
+                vg_lite_os_release_semaphore(context->semaphore);
+                break;
+            }
+        }
+        vg_lite_os_unlock();
+    }
+    else
+        return error;
+
+    if(semaphore_id == TASK_LENGTH)
+        return VG_LITE_MULTI_THREAD_FAIL;
 
     /* Fill in hardware capabilities. */
     data->capabilities.data = 0;
@@ -174,19 +213,22 @@ static vg_lite_error_t init_vglite(vg_lite_kernel_initialize_t * data)
         for (i = 0; i < 2; i ++)
         {
             /* Allocate the memory. */
+            vg_lite_os_lock();
             error = vg_lite_hal_allocate_contiguous(data->command_buffer_size,
                                                                          &context->command_buffer_logical[i],
                                                                          &context->command_buffer_physical[i],
                                                                          &context->command_buffer[i]);
+            vg_lite_os_unlock();
+
             if (error != VG_LITE_SUCCESS) {
                 /* Free any allocated memory. */
                 vg_lite_kernel_terminate_t terminate = { context };
                 do_terminate(&terminate);
-                
+
                 /* Out of memory. */
                 return error;
             }
-            
+
             /* Return command buffer logical pointer and GPU address. */
             data->command_buffer[i] = context->command_buffer_logical[i];
             data->command_buffer_gpu[i] = context->command_buffer_physical[i];
@@ -194,7 +236,7 @@ static vg_lite_error_t init_vglite(vg_lite_kernel_initialize_t * data)
     }
 
     /* Allocate the tessellation buffer. */
-    if ((data->tessellation_width > 0) && (data->tessellation_height > 0)) 
+    if ((data->tessellation_width > 0) && (data->tessellation_height > 0))
     {
         int width = data->tessellation_width;
         int height = 0;
@@ -203,7 +245,7 @@ static vg_lite_error_t init_vglite(vg_lite_kernel_initialize_t * data)
         height = VG_LITE_ALIGN(data->tessellation_height, 16);
 
         chip_id = vg_lite_hal_peek(0x20);
-        if(chip_id == 0x355)
+        if(chip_id == GPU_CHIP_ID_GC355)
             width = VG_LITE_ALIGN(width, 128);
         /* Check if we can used tiled tessellation (128x16). */
         if (((width & 127) == 0) && ((height & 15) == 0)) {
@@ -221,10 +263,13 @@ static vg_lite_error_t init_vglite(vg_lite_kernel_initialize_t * data)
         l2_size = data->capabilities.cap.l2_cache ? VG_LITE_ALIGN(VG_LITE_ALIGN(l1_size / 32, 64) / 8, 64) : 0;
 
         /* Allocate the memory. */
+        vg_lite_os_lock();
         error = vg_lite_hal_allocate_contiguous(buffer_size + l1_size + l2_size,
                                                                        &context->tessellation_buffer_logical,
                                                                        &context->tessellation_buffer_physical,
                                                                        &context->tessellation_buffer);
+        vg_lite_os_unlock();
+
         if (error != VG_LITE_SUCCESS) {
             /* Free any allocated memory. */
             vg_lite_kernel_terminate_t terminate = { context };
@@ -252,8 +297,9 @@ static vg_lite_error_t init_vglite(vg_lite_kernel_initialize_t * data)
         data->tessellation_shift = 0;
     }
 
-    /* Enable all interrupts. */
-    vg_lite_hal_poke(VG_LITE_INTR_ENABLE, 0xFFFFFFFF);
+    if(task_num == 1)
+        /* Enable all interrupts. */
+        vg_lite_hal_poke(VG_LITE_INTR_ENABLE, 0xFFFFFFFF);
 
 #if defined(__linux__) && !EMULATOR
     if (copy_to_user(context_usr, context, sizeof(vg_lite_kernel_context_t)) != 0) {
@@ -287,6 +333,7 @@ static vg_lite_error_t do_initialize(vg_lite_kernel_initialize_t * data)
 static vg_lite_error_t terminate_vglite(vg_lite_kernel_terminate_t * data)
 {
     vg_lite_kernel_context_t *context = NULL;
+    vg_lite_error_t error = VG_LITE_SUCCESS;
 #if defined(__linux__) && !EMULATOR
     vg_lite_kernel_context_t mycontext = {0};
     if (copy_from_user(&mycontext, data->context, sizeof(vg_lite_kernel_context_t)) != 0) {
@@ -315,15 +362,27 @@ static vg_lite_error_t terminate_vglite(vg_lite_kernel_terminate_t * data)
         vg_lite_hal_free_contiguous(context->tessellation_buffer);
         context->tessellation_buffer = NULL;
     }
-    vg_lite_hal_free_os_heap();
-    /* Decrement reference counter. */
-    if (--s_reference == 0) {
+
+    if((error = vg_lite_os_lock()) == VG_LITE_SUCCESS){
+        --task_num;
+        --s_reference;
+        vg_lite_os_unlock();
+    }
+    else
+        return error;
+
+    vg_lite_os_delete_semaphore_by_id(context->semaphore_id);
+
+    if(task_num == 0){
         /* Disable the GPU. */
         gpu(0);
+
+        vg_lite_hal_free_os_heap();
 
         /* De-initialize the SOC. */
         vg_lite_hal_deinitialize();
     }
+
 #if defined(__linux__) && !EMULATOR
     if (copy_to_user((vg_lite_kernel_context_t  __user *) data->context,
         &mycontext, sizeof(vg_lite_kernel_context_t)) != 0) {
@@ -351,7 +410,12 @@ static vg_lite_error_t do_terminate(vg_lite_kernel_terminate_t * data)
 static vg_lite_error_t do_allocate(vg_lite_kernel_allocate_t * data)
 {
     vg_lite_error_t error;
-    error = vg_lite_hal_allocate_contiguous(data->bytes, &data->memory, &data->memory_gpu, &data->memory_handle);
+    if((error = vg_lite_os_lock()) == VG_LITE_SUCCESS)
+    {
+        error = vg_lite_hal_allocate_contiguous(data->bytes, &data->memory, &data->memory_gpu, &data->memory_handle);
+        vg_lite_os_unlock();
+    }
+
     return error;
 }
 
@@ -364,9 +428,10 @@ static vg_lite_error_t do_free(vg_lite_kernel_free_t * data)
 
 static vg_lite_error_t do_submit(vg_lite_kernel_submit_t * data)
 {
+    vg_lite_error_t error;
     uint32_t offset;
     vg_lite_kernel_context_t *context = NULL;
-    uint32_t physical = data->context->command_buffer_physical[data->command_id];
+    uint32_t physical;
 
 #if defined(__linux__) && !EMULATOR
     vg_lite_kernel_context_t mycontext = { 0 };
@@ -386,24 +451,24 @@ static vg_lite_error_t do_submit(vg_lite_kernel_submit_t * data)
     /* Perform a memory barrier. */
     vg_lite_hal_barrier();
 
+    physical = data->context->command_buffer_physical[data->command_id];
     offset = (uint8_t *) data->commands - (uint8_t *)context->command_buffer_logical[data->command_id];
 
-    /* Write the registers to kick off the command execution (CMDBUF_SIZE). */
-    vg_lite_hal_poke(VG_LITE_HW_CMDBUF_ADDRESS, physical + offset);
-    vg_lite_hal_poke(VG_LITE_HW_CMDBUF_SIZE, (data->command_size + 7) / 8);
+    /* Send the current command buffer to the command queue. */
+    error = vg_lite_hal_submit(physical, offset, data->command_size, &data->context->signal[data->command_id],data->context->semaphore_id);
+    if(error != VG_LITE_SUCCESS)
+        return error;
 
     return VG_LITE_SUCCESS;
 }
 
 static vg_lite_error_t do_wait(vg_lite_kernel_wait_t * data)
 {
-    /* Wait for interrupt. */
-    if (!vg_lite_hal_wait_interrupt(data->timeout_ms, data->event_mask, &data->event_got)) {
-        /* Timeout. */
-        return VG_LITE_TIMEOUT;
-    }
+    vg_lite_error_t error;
+    /* Wait for the signal of current command buffer to 1. */
+    error = vg_lite_hal_wait(data->timeout_ms, &data->context->signal[data->command_id],data->context->semaphore);
 
-    return VG_LITE_SUCCESS;
+    return error;
 }
 
 static vg_lite_error_t do_reset(void)
@@ -469,6 +534,16 @@ static void soft_reset(void)
     vg_lite_hal_poke(VG_LITE_HW_CLOCK_CONTROL, value.data);
 }
 
+static vg_lite_error_t do_mutex_lock()
+{
+    return vg_lite_os_lock();
+}
+
+static vg_lite_error_t do_mutex_unlock()
+{
+    return vg_lite_os_unlock();
+}
+
 vg_lite_error_t vg_lite_kernel(vg_lite_kernel_command_t command, void * data)
 {
     /* Dispatch on command. */
@@ -500,7 +575,7 @@ vg_lite_error_t vg_lite_kernel(vg_lite_kernel_command_t command, void * data)
         case VG_LITE_RESET:
             /* Reset the GPU. */
             return do_reset();
-            
+
         case VG_LITE_DEBUG:
             /* Perform debugging features. */
             return do_debug();
@@ -520,6 +595,14 @@ vg_lite_error_t vg_lite_kernel(vg_lite_kernel_command_t command, void * data)
 
         case VG_LITE_QUERY_MEM:
             return do_query_mem(data);
+
+        case VG_LITE_LOCK:
+            /* Mutex lock */
+            return do_mutex_lock();
+
+        case VG_LITE_UNLOCK:
+            /* Mutex unlock */
+            return do_mutex_unlock();
 
         default:
             break;

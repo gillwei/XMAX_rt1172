@@ -38,34 +38,30 @@ vg_lite_error_t vg_lite_upload_path(vg_lite_path_t * path)
     uint32_t bytes;
     vg_lite_buffer_t Buf, *buffer;
     buffer = &Buf;
-    
+
     /* Compute the number of bytes required for path + command buffer prefix/postfix. */
     bytes = (8 + path->path_length + 7 + 8) & ~7;
-    
+
     /* Allocate GPU memory. */
     buffer->width  = bytes;
     buffer->height = 1;
     buffer->stride = 0;
     buffer->format = VG_LITE_A8;
     if (vg_lite_allocate(buffer) != VG_LITE_SUCCESS) {
-        /* Free the vg_lite_buffer structure. */
-#if defined(DEBUG) || defined(_DEBUG)
-        printf("%s out of memory!\n",__FUNCTION__);
-#endif
         return VG_LITE_OUT_OF_MEMORY;
     }
-    
+
     /* Initialize command buffer prefix. */
     ((uint32_t *) buffer->memory)[0] = 0x40000000 | ((path->path_length + 7) / 8);
     ((uint32_t *) buffer->memory)[1] = 0;
-    
+
     /* Copy the path data. */
     memcpy((uint32_t *) buffer->memory + 2, path->path, path->path_length);
-    
+
     /* Initialize command buffer postfix. */
     ((uint32_t *) buffer->memory)[bytes / 4 - 2] = 0x70000000;
     ((uint32_t *) buffer->memory)[bytes / 4 - 1] = 0;
-    
+
     /* Mark path as uploaded. */
     path->path = buffer->memory;
     path->uploaded.handle = buffer->handle;
@@ -74,7 +70,7 @@ vg_lite_error_t vg_lite_upload_path(vg_lite_path_t * path)
     path->uploaded.bytes = bytes;
     path->path_changed = 0;
     VLM_PATH_ENABLE_UPLOAD(*path);      /* Implicitly enable path uploading. */
-    
+
     /* Return pointer to vg_lite_buffer structure. */
     return VG_LITE_SUCCESS;
 }
@@ -98,7 +94,7 @@ static int32_t get_data_count(uint8_t cmd)
         6,
         6
     };
-    
+
     if (cmd > VLC_OP_CUBIC_REL) {
         return -1;
     }
@@ -110,20 +106,20 @@ static int32_t get_data_count(uint8_t cmd)
 static int32_t get_data_size(vg_lite_format_t format)
 {
     int32_t data_size = 0;
-    
+
     switch (format) {
         case VG_LITE_S8:
             data_size = sizeof(int8_t);
             break;
-            
+
         case VG_LITE_S16:
             data_size = sizeof(int16_t);
             break;
-            
+
         case VG_LITE_S32:
             data_size = sizeof(int32_t);
             break;
-            
+
         default:
             data_size = sizeof(vg_lite_float_t);
             break;
@@ -138,19 +134,19 @@ int32_t vg_lite_path_calc_length(uint8_t *cmd, uint32_t count, vg_lite_format_t 
     int32_t dCount = 0;
     uint32_t i = 0;
     int32_t data_size = 0;
-    
+
     data_size = get_data_size(format);
-    
+
     for (i = 0; i < count; i++) {
         size++;     /* OP CODE. */
-        
+
         dCount = get_data_count(cmd[i]);
         if (dCount > 0) {
             size = CDALIGN(size, data_size);
             size += dCount * data_size;
         }
     }
-    
+
     return size;
 }
 
@@ -169,23 +165,23 @@ void vg_lite_path_append(vg_lite_path_t *path,
     int32_t data_size;
     float px = 0.0f, py = 0.0f, cx = 0.0f, cy = 0.0f;
     int rel = 0;
-    
+
     data_size = get_data_size(path->format);
     path->path_changed= 1;
-    
+
     pathf = (float *)path->path;
     pathc = (uint8_t *)path->path;
-    
+
     /* Loop to fill path data. */
     for (i = 0; i < seg_count; i++) {
         *(pathc + offset) = cmd[i];
         offset++;
-        
+
         dataCount = get_data_count(cmd[i]);
         if (dataCount > 0) {
             offset = CDALIGN(offset, data_size);
             pathf = (float *) (pathc + offset);
-            
+
             if ((cmd[i] > VLC_OP_CLOSE) &&
                 ((cmd[i] & 0x01) == 1)){
                 rel = 1;
@@ -197,7 +193,7 @@ void vg_lite_path_append(vg_lite_path_t *path,
             for (j = 0; j < dataCount / 2; j++) {
                 pathf[j * 2] = *dataf++;
                 pathf[j * 2 + 1] = *dataf++;
-                
+
                 if (rel) {
                     cx = px + pathf[j * 2];
                     cy = py + pathf[j * 2 + 1];
@@ -215,7 +211,7 @@ void vg_lite_path_append(vg_lite_path_t *path,
             }
             px = cx;
             py = cy;
-            
+
             offset += dataCount * data_size;
         }
     }

@@ -33,6 +33,7 @@
 #include "vg_lite_platform.h"
 
 #define VGLITE_MEM_ALIGNMENT    128
+#define TASK_LENGTH             8
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,7 +62,7 @@ void vg_lite_hal_delay(uint32_t milliseconds);
  The implementer should make sure that on exit of this function the power and clock to the VGLite graphics hardware is
  turned on and stable.
  */
-void vg_lite_hal_initialize(void);
+vg_lite_error_t vg_lite_hal_initialize(void);
 
 /*!
  @brief Uninitialize the hardware.
@@ -228,6 +229,38 @@ vg_lite_error_t vg_lite_hal_query_mem(vg_lite_kernel_mem_t *mem);
  A boolean value indicating whether the interrupt was received (1) or not (0).
  */
 int32_t vg_lite_hal_wait_interrupt(uint32_t timeout, uint32_t mask, uint32_t * value);
+
+/*!
+ @brief Submit the current command buffer to the command queue.
+
+ @param physical
+ Current command buffer physical address.
+
+ @param offset
+ Current command buffer offset.
+
+ @param size
+ Current command buffer size.
+
+ @param singal
+ Current command buffer signal.
+
+ @param semaphore_id
+ Current thread semaphore id.
+ */
+vg_lite_error_t vg_lite_hal_submit(uint32_t physical, uint32_t offset, uint32_t size,  uint32_t * singal,  uint32_t semaphore_id);
+
+/*!
+ @brief Wait for the current command buffer to be executed.
+
+ @param timeout
+ Timeout in milliseconds.
+
+ @param singal
+ Current command buffer singal.
+ When singal is 1, it means current command buffer has been executed.
+ */
+vg_lite_error_t vg_lite_hal_wait(uint32_t timeout, uint32_t * singal ,void * semaphore);
 
 #ifdef __cplusplus
 }

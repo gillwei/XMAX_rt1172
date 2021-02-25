@@ -31,6 +31,12 @@ typedef enum
     TFT_CONNECTED,             //!< TFT is connected to the Board
     TFT_NOT_CONNECTED,         //!< TFT is not connected to the Board
     } TFT_CONNECT_STATUS;
+	
+/* There is not frame buffer aligned requirement, consider the 64-bit AXI data
+ * bus width and 32-byte cache line size, the frame buffer alignment is set to
+ * 32 byte.
+ */
+#define FRAME_BUFFER_ALIGN 32
 
 /*--------------------------------------------------------------------
                                  TYPES
