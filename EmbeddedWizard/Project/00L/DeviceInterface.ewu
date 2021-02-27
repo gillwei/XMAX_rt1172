@@ -879,7 +879,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
   // Interfaces to react to BT system events
   note group Note2
   {
-    attr Bounds = <9,280,1180,451>;
+    attr Bounds = <9,280,1690,450>;
   }
 
   // Interfaces to perform BT operations on device
@@ -913,38 +913,21 @@ class BluetoothDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <520,331,810,371>
-  object Core::SystemEvent PasskeyGeneratedSystemEvent;
+  $rect <30,380,290,420>
+  object Core::SystemEvent BtcPairingChangedSystemEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <40,331,280,371>
+  $rect <30,330,290,370>
   $output true
-  method void NotifyPasskeyGenerated( arg string aPasskey )
+  method void NotifyBtcPairingStateChanged( arg Enum::BtcPairingState aState )
   {
-    trace "NotifyPasskeyGenerated: ", aPasskey;
-    Passkey = aPasskey;
-    PasskeyGeneratedSystemEvent.Trigger( null, false );
+    BtcPairingState = aState;
+    BtcPairingChangedSystemEvent.Trigger( null, false );
   }
 
-  $rect <300,331,500,371>
-  var string Passkey;
-
-  $rect <520,391,810,431>
-  object Core::SystemEvent ConnectionResultSystemEvent;
-
-  // This method is intended to be called by the device to notify the GUI application \
-  // about a particular system event.
-  $rect <40,391,280,431>
-  $output true
-  method void NotifyConnectionResult( arg Enum::BtResult aResult )
-  {
-    ConnectionResult = aResult;
-    ConnectionResultSystemEvent.Trigger( null, false );
-  }
-
-  $rect <300,391,500,431>
-  property Enum::BtResult ConnectionResult = Enum::BtResult.FAIL;
+  $rect <302,330,502,370>
+  property Enum::BtcPairingState BtcPairingState;
 
   $rect <250,50,450,90>
   property bool Discoverable = false;
@@ -1090,18 +1073,18 @@ class BluetoothDeviceClass : Templates::DeviceClass
   $rect <1108,100,1338,140>
   onget LocalDeviceName
   {
+    var string LocalDevName;
     $if !$prototyper
-      var string DevName = "";
-      native( DevName )
+      native( LocalDevName )
       {
         uint8_t* device_name;
         ew_bt_get_local_device_name( &device_name );
-        DevName = EwNewStringAnsi( ( char* )device_name );
+        LocalDevName = EwNewStringAnsi( ( char* )device_name );
       }
-      return DevName;
     $else
-      return pure LocalDeviceName;
+      LocalDevName = "Prototyper";
     $endif
+    return LocalDevName;
   }
 
   $rect <1350,50,1580,90>
@@ -1232,11 +1215,12 @@ class BluetoothDeviceClass : Templates::DeviceClass
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <820,330,1170,370>
+  $rect <760,330,1110,370>
   $output true
   method void NotifyPairedDeviceConnectionStatusUpdated()
   {
     RefreshPairedDeviceList = true;
+    PairedDeviceUpdatedSystemEvent.Trigger( null, false );
   }
 
   // Interfaces of BLE
@@ -1276,7 +1260,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <820,390,1020,430>
+  $rect <670,150,870,190>
   method bool IsBtConnected()
   {
     var bool BtConnected = false;
@@ -1385,6 +1369,55 @@ class BluetoothDeviceClass : Templates::DeviceClass
 
   $rect <380,810,630,850>
   object Core::SystemEvent MotoConSystemEvent;
+
+  $rect <760,380,1110,420>
+  object Core::SystemEvent PairedDeviceUpdatedSystemEvent;
+
+  $rect <1130,380,1370,420>
+  property Enum::BtDeviceConnectionResult ConnectPairedDeviceResult;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <1130,330,1370,370>
+  $output true
+  method void NotifyBtcConnectionResult( arg Enum::BtDeviceConnectionResult aResult )
+  {
+    ConnectPairedDeviceResult = aResult;
+    BtcConnectionResultSystemEvent.Trigger( null, false );
+  }
+
+  $rect <1380,380,1670,420>
+  object Core::SystemEvent BtcConnectionResultSystemEvent;
+
+  $rect <300,380,500,420>
+  method uint32 GetBtcPasskey()
+  {
+    var uint32 Passkey;
+    $if !$prototyper
+      native( Passkey )
+      {
+        Passkey = ew_get_btc_passkey();
+      }
+    $endif
+    return Passkey;
+  }
+
+  $rect <510,330,740,370>
+  method string GetBtcPairingDeviceName()
+  {
+    var string PairingDeviceName;
+    $if !$prototyper
+      native( PairingDeviceName )
+      {
+        uint8_t* btc_pairing_device_name;
+        ew_bt_get_btc_connecting_device_name( &btc_pairing_device_name );
+        PairingDeviceName = EwNewStringAnsi( ( char* )btc_pairing_device_name );
+      }
+    $else
+      PairingDeviceName = "(Device name)";
+    $endif
+    return PairingDeviceName;
+  }
 }
 
 $rect <19,440,219,480>

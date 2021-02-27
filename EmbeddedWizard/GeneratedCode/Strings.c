@@ -30,87 +30,102 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x0000040C, /* ratio 53.28 % */
+  0x0000040E, /* ratio 53.18 % */
   0xB8000B00, 0x8004A452, 0x0A120039, 0xC004F824, 0x12008492, 0x04322C0C, 0x6E001840,
-  0x50018C00, 0x881B0006, 0xF10A260C, 0x470EA008, 0xBC007400, 0x00128951, 0x2606881A,
-  0x733000B6, 0x1307C266, 0x78EC90A1, 0x10476111, 0x0458EE00, 0x09A5A690, 0x4C1400A0,
-  0x082002BC, 0x9C002900, 0x15124800, 0xB28811C0, 0x5A191A26, 0x3949A3F4, 0x5CA68127,
-  0xD0CE1409, 0x5E80003C, 0x63B2994C, 0x574594C6, 0xF42A0466, 0x00B0D765, 0x432516C0,
-  0x33802314, 0x34B23569, 0x502F91F9, 0x12111DB0, 0xE8B4096E, 0x797C005C, 0x74097CB6,
-  0x3EA05825, 0x695DF6F3, 0xBF636112, 0x466A4A6A, 0xD3B022EB, 0xA22F428F, 0xAE582CF5,
-  0xC12DB760, 0xFAEBC5AE, 0x8EBE5F70, 0x031606FF, 0x35D02D00, 0xCD9A3B27, 0x5A28180D,
-  0x76819ACE, 0xF0389B44, 0x01868CC5, 0x3D0BE9B4, 0x78C9ED70, 0xC8BCAEC1, 0xA85034B7,
-  0x7CA7A392, 0x434013F9, 0x823B19A1, 0x7030713D, 0x4D19A193, 0x3A58FC5E, 0x4E8244A1,
-  0x022C562B, 0x88152740, 0xDFF44C0E, 0x8501FF56, 0x7D667B5B, 0x13801AA4, 0x5980014D,
-  0xDD14751D, 0xA5B51D74, 0x12014259, 0x0F5E9574, 0x45D4C606, 0x21785160, 0x38081300,
-  0x912F46D4, 0x7D1D8005, 0x47D43629, 0x1271E945, 0x30450958, 0x35157F11, 0x458B1404,
-  0x5F5F38B9, 0x5107AA32, 0x08390489, 0xF1D149E1, 0x247C9ED8, 0x442338C5, 0x5EF44C10,
-  0xD81A4F85, 0xF60A8762, 0x1302D106, 0x79844435, 0xC000BC00, 0xA551507F, 0x48084253,
-  0x45421A29, 0x4E66846D, 0x1E94B12E, 0x244C0D44, 0x024A45D5, 0x7E5C5B36, 0x4114A425,
-  0xDE36494C, 0xC9D93793, 0x98005C12, 0x7B46D7D1, 0x89A439CA, 0xE88609B2, 0x96B91575,
-  0x61247692, 0xB349E0D8, 0xA7048501, 0x1099092D, 0xC49E4597, 0x21BA7516, 0x9B049094,
-  0x5021D58E, 0x97D9E119, 0x99F12D9E, 0x029B8D51, 0xB0599457, 0x6307849E, 0x966AB9ED,
-  0xA55D139F, 0x9DD28A62, 0x01441104, 0x00000001, 0x00000000
+  0x50018C00, 0x881B0006, 0xE1662606, 0xC2E21078, 0xBC004E22, 0xA260C881, 0xEA008F10,
+  0xB2A3A490, 0x20344D26, 0xB000B627, 0x07C26773, 0xECC0A113, 0x47611178, 0x58EE0010,
+  0x00069004, 0x0148134D, 0x05789828, 0x52001040, 0xA24CA400, 0x8811C015, 0x591A26B2,
+  0x4CA3F4DA, 0xD2912439, 0xCE14895C, 0x90003CD2, 0xB349A45E, 0x4D9A4663, 0xAA446657,
+  0xB4D96714, 0x2536D000, 0x802314C3, 0xD6357133, 0x3091F994, 0x111DB452, 0xB89A7632,
+  0x84005EE9, 0x89C65289, 0xA45A2574, 0x5E170346, 0x52211329, 0xC4D400CB, 0x45D70D14,
+  0x951FABE2, 0x5A6B845E, 0x76C55EB1, 0x0B9DA329, 0xC2E3F6F8, 0x46235184, 0x5C00062A,
+  0x76486BA4, 0x313C2B74, 0x91A2D25C, 0x391B8476, 0x8E8CC5F1, 0x8C29B401, 0xCDEFB13D,
+  0xBCAED180, 0xD235D848, 0xDFB39AAC, 0x6950DC04, 0x4F688EC6, 0x64DA4494, 0x17994669,
+  0x284EBA3F, 0x8AD5E091, 0x80011515, 0xE4405450, 0x8E0544C0, 0xC1522055, 0x47D6E495,
+  0xD13819B3, 0xD5B80014, 0x6DD94751, 0xA25D51D7, 0x41207425, 0x6156095F, 0x845D5562,
+  0x021D8696, 0x4B820130, 0x5B13846D, 0x9851D800, 0xD47D4B64, 0xA1241E94, 0x13045095,
+  0x43515809, 0x14D8C948, 0x8615F98D, 0xAD107C23, 0x16851048, 0x909D9492, 0xD307E125,
+  0x0442398D, 0x6DF544C1, 0x33832558, 0x71A1088E, 0x51302D10, 0xD0004443, 0x14000BD0,
+  0x42571598, 0x96008425, 0xD4D421AB, 0x05066E46, 0x75868BC0, 0x13035094, 0x941174A5,
+  0x9796F188, 0x454D0961, 0xAD9A5550, 0x7D4FE487, 0x199854DA, 0x68246D85, 0xA425194D,
+  0xEE051164, 0x945E18A6, 0x6DD15626, 0x93078934, 0xC4921387, 0x9848521B, 0x00A2D94A,
+  0x4CE4B988, 0x50873594, 0xBA941242, 0x654888D6, 0x816167F4, 0x8EE9DAC6, 0x94D726A5,
+  0x8492B95B, 0x51A06507, 0x105B92B6, 0x00101441, 0x00000000
 };
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault1[] =
 {
-  0x0000041E, /* ratio 50.47 % */
-  0xB8001B00, 0x8008E452, 0x00400037, 0x213073A0, 0xE50D3B80, 0xA0035800, 0x45818322,
-  0x0308008C, 0x00444EC0, 0x28021669, 0x454E6003, 0x3A301600, 0x8011B919, 0xF2003144,
-  0xD1C83438, 0x0C9342A4, 0x890C3239, 0x93C94DD0, 0x010E300E, 0xCFA5A680, 0x7A152C33,
-  0x6212490C, 0x891807C5, 0xB2D334B0, 0x2236000E, 0xE9648295, 0x82540014, 0x95580054,
-  0x0005B3E8, 0x32CD3298, 0xA7C00B1C, 0xD9618C45, 0x358854FA, 0x5693CE24, 0xE9F43684,
-  0x9118E493, 0xA43ADB3C, 0x562431CA, 0xB8006492, 0xC000A000, 0x277EA2D0, 0x5572143A,
-  0x08864B2C, 0xAA2C3211, 0xC14F6FF0, 0x75EE7791, 0x43249268, 0x2E7F47D1, 0xE598FC6E,
-  0x01378A5F, 0x912969B4, 0xA3A21C21, 0x18942A49, 0xD16DE499, 0x1457179F, 0xE7E87048,
-  0x02FE00BE, 0x81115C17, 0x5F08AC5E, 0x845E249F, 0x4890C4B2, 0x6E44328B, 0x03C564D2,
-  0x0E08AB18, 0x05E2B0C9, 0x03AF068C, 0x2210ADB8, 0x49B38947, 0x1A6D8C4A, 0xDEA460B0,
-  0x38279C01, 0x874EA585, 0x90C4B590, 0x665DA47C, 0x55F96A5F, 0x327F5180, 0x6CD245DD,
-  0x13E4850A, 0x27C10855, 0x559F56E0, 0x4C460144, 0x471484B0, 0x18284558, 0x76C92E85,
-  0x016E6061, 0x52411CE0, 0x489A54B0, 0x51806115, 0xE5980016, 0x29C86099, 0xEB1050E7,
-  0x6DD0A8F5, 0x21289585, 0x14554800, 0x995B5441, 0x0447A374, 0x6CD0A4CA, 0x92462508,
-  0xD1411891, 0x01BC4852, 0x52429890, 0x5FD5B476, 0x0197E524, 0x65619446, 0x89997D55,
-  0x225559C4, 0x68D9D421, 0xC008C239, 0x45490491, 0xE92261D2, 0xEA9063D6, 0x635156A5,
-  0x9AE9C1C5, 0x6549D49C, 0x86827257, 0x33135276, 0x93D56436, 0x26F5DD96, 0x86DDB342,
-  0x559380E7, 0x0D9B6676, 0x9010E66D, 0xA449F55B, 0x44913043, 0x5E3F9662, 0x0E7DE429,
-  0x6E1E4441, 0x27AA790A, 0x8A26368D, 0x710A4328, 0xC26DDB74, 0x4051549D, 0x00000000
+  0x00000438, /* ratio 51.11 % */
+  0xB8001500, 0x8008E452, 0x00400037, 0x40107340, 0x0065001B, 0xB0306C48, 0x74854360,
+  0xD3B8022E, 0x35800E50, 0xA8300112, 0x18400468, 0x023A7600, 0x63200348, 0x2D2139C4,
+  0xD1027454, 0x628F0024, 0x0849E400, 0x9849E0C0, 0x3C66610A, 0x42259199, 0x4A600037,
+  0xC8715074, 0xCF489B42, 0x929854D4, 0x128E4465, 0x5224541F, 0x3ACD8CD3, 0xE4B4D800,
+  0x5626B559, 0x52095A00, 0x23D60001, 0x720016D2, 0xB19B84EE, 0x12A4002D, 0x7B65AA47,
+  0xB14F2EF3, 0xB486852C, 0x5221B4D2, 0x8CC711A4, 0xA157EA35, 0xC52C93D7, 0xC0032446,
+  0x4E810005, 0xC8FE2619, 0xBE584853, 0x44223311, 0x42A19198, 0x6EFD47C5, 0x27986A2E,
+  0xFD8BD0CC, 0x1969854A, 0x20CDD3F3, 0xE9B43A83, 0xA79C2331, 0xF42A23A9, 0x6FE239B8,
+  0x4F2DA9D6, 0x311A9C2C, 0xFDC8C500, 0x5850444A, 0x20C5422C, 0xECF41397, 0x8654A591,
+  0x54C39D19, 0xC540E00A, 0x66597E2A, 0xA2A17894, 0x7E00EEC1, 0xD278E42B, 0x1E88C3E3,
+  0x1D66C375, 0xF6C86935, 0x13514D04, 0x66693C51, 0xE97D4B93, 0x007F1637, 0x055216CC,
+  0x93B80915, 0xA43D1160, 0x79484B10, 0x077D9085, 0x449AD4AE, 0x44C45414, 0x249D524D,
+  0x697E85D6, 0x0443D7D8, 0x00178632, 0x452411D4, 0x258DAF4D, 0x65150611, 0xA85C0001,
+  0x741CE5F9, 0xDF11053C, 0x06FD0A90, 0x36185F59, 0x5B045218, 0x8F530879, 0x13A7E129,
+  0x44210F4F, 0x31124459, 0x36141049, 0x001C44B1, 0x25742994, 0xF62A1E4A, 0x54194852,
+  0x605899E4, 0x58DA36C1, 0x16357DA6, 0xF6B5A742, 0x24008DA3, 0x36135151, 0x5213C1E1,
+  0x93943D60, 0xE4210A94, 0x95359895, 0xC37FA665, 0x6DDCF80D, 0x19765660, 0x39D15C00,
+  0xCD604225, 0x1858D507, 0x87993469, 0x65D91519, 0x1A229F5F, 0x7D53A291, 0x3F58D816,
+  0x4CC2F484, 0xE884710D, 0xE4D650AA, 0x493949D1, 0x3C5C93C6, 0x47A90691, 0xDA09AD02,
+  0xC6950D9C, 0x9EA898D3, 0x12485CA9, 0x00000405, 0x00000000
 };
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault2[] =
 {
-  0x0000040A, /* ratio 51.84 % */
-  0xB800D900, 0x80044452, 0x00E60012, 0x40020830, 0x1A00849A, 0x06F001BA, 0x00889DC0,
-  0x300450C6, 0x8C996271, 0xF800E800, 0x0B800648, 0x3636548C, 0x8C200384, 0x30720043,
-  0x51589CBA, 0x30919A24, 0xD36C2A31, 0x9648A732, 0xC47A2B37, 0x4DA1F178, 0x363F478C,
-  0x05A002CC, 0x711CA148, 0xD0D9146A, 0x2C964B25, 0x3A846A30, 0xA3462A74, 0x74BCED18,
-  0x000850D9, 0x8A707581, 0xC01358AC, 0x5E6686CD, 0xF22854C6, 0x10000024, 0x82211606,
-  0x8D43EC53, 0xE4BAA34A, 0x000751F9, 0xF8017705, 0x27A57BD0, 0xCF1387D8, 0x315B8C60,
-  0x57005566, 0x28EC6EB5, 0xA84BE435, 0x710F1127, 0x520D79DB, 0x62AD81D2, 0xF2D1BC9E,
-  0x737489CB, 0x10FAF5A6, 0x00BB42AA, 0xE285E824, 0x00642738, 0x16F6E192, 0x6264D248,
-  0xE2CFBB42, 0xB030A974, 0x351F9BC6, 0x14986E9A, 0x69E518A3, 0x78DDAE3F, 0x98EF6574,
-  0x8CE783BF, 0xC9401ADE, 0xE61B5086, 0x35D698D9, 0xFD1F98CB, 0x702887B2, 0x0F9777BD,
-  0x38C79BE1, 0x974F0005, 0x1A44FD31, 0xB49D1F54, 0xFD0D7CD4, 0x517D8007, 0x751C547D,
-  0x11F7ED2A, 0x56059E71, 0x4D69435D, 0xFB735694, 0x6BD727DD, 0xDFA461C0, 0x84953956,
-  0x25C9019B, 0x89138001, 0x7E1C9059, 0x9E2545BE, 0xF481B342, 0xC50A4291, 0xB8409695,
-  0x1157A06D, 0x522791CA, 0xC5FD504C, 0xF5E04E1F, 0x2C435024, 0x75D3C5A6, 0xD774C51F,
-  0x57F57A04, 0x5D225C51, 0x0D4E2004, 0x44251589, 0x177545B5, 0x11550462, 0xA90D5815,
-  0xBA5DD7C8, 0x00256411, 0x93D45A58, 0x56AE187E, 0x7D224B92, 0x4D5EA634, 0x4BA144BC,
-  0xC009E992, 0x01197A01, 0xDDCA7640, 0xFA7240B5, 0x78E878E1, 0x57A03989, 0xC4F11F4A,
-  0x3E7897D2, 0x055DDFAA, 0x4F1A65E8, 0x104A1177, 0x18510F4F, 0x01FEA7AA, 0x4C0002F0,
-  0x11664624, 0x031AAEAD, 0x0AD03000, 0xA189A7C0, 0xBC9F5048, 0xAFD8911D, 0x00000101,
-  0x00000000
+  0x00000446, /* ratio 47.53 % */
+  0xB8001F00, 0x800A8452, 0x00DA0034, 0x04000328, 0x010B3600, 0xA7400198, 0x161D0021,
+  0x30E00001, 0x879088B0, 0xAC44EA00, 0xC94006F8, 0xC22C688A, 0x20E61001, 0xDD2E3900,
+  0x71633800, 0x10844B62, 0xE0019219, 0x09002342, 0x74B0A11D, 0x1DE1D309, 0x28012897,
+  0x40022000, 0x98730009, 0x73E1F802, 0x51A1D041, 0x9889AEA3, 0x8E4FA2E7, 0x8D3E9B04,
+  0x47E974DA, 0x92192288, 0x40114934, 0xD863A5CA, 0x30C994CA, 0x3C9D456E, 0x28E8927D,
+  0xB354AA16, 0x2DB6D320, 0x52ADD279, 0xCE4B7100, 0xA5D7688D, 0x71439AE2, 0x53D9DC46,
+  0x4EBE10E3, 0x887536FD, 0x9943AA30, 0x7C421D25, 0x5161934C, 0xBE6F2B00, 0x28F16C9C,
+  0x930EA4C2, 0x27687432, 0x71844A62, 0x2A5DE673, 0xA8CB7754, 0x5E4751B3, 0xC3ADB9CD,
+  0xCB553496, 0xAAF21CAC, 0x77C1BF6F, 0xD77DD432, 0xC3956CA2, 0x49942261, 0xBACC21D3,
+  0x74EE616C, 0x5F61D8F8, 0x585800B2, 0x34D29C2C, 0xD3D0D700, 0x525AEC5B, 0x2D8543A4,
+  0x5B667EBB, 0x8898A1D1, 0x9FF001C7, 0xE5B1B16E, 0x0172631D, 0xC6621740, 0x619487BD,
+  0x1311310E, 0xD65D5B00, 0x6D167892, 0xC1619D67, 0x4552244D, 0x97977D22, 0x44741146,
+  0x01D44444, 0xDA6A9C28, 0x4F933829, 0xD974114B, 0xA6360B63, 0xBA260351, 0x2E625514,
+  0x4696D8D6, 0x0594744D, 0xD425F65B, 0x31FD545C, 0x2B429258, 0x59DC18A5, 0x16C5A9CD,
+  0x38B1D87B, 0x46027761, 0x22495134, 0x511A943A, 0x60F6B657, 0x67B6054A, 0x282D90D1,
+  0x498223D9, 0x4AD2B4B6, 0x561441CC, 0xE715E866, 0x1D258B99, 0x8B8F10E5, 0x651D5781,
+  0xDA141916, 0x0806608A, 0x9E665B5A, 0xAB7E1516, 0x4A52B455, 0x1F07058F, 0x88AA886C,
+  0x327D9AA6, 0x2B70A6D8, 0x8267B7A9, 0x9AF9263E, 0xD421B545, 0x0A504392, 0x0E9516B6,
+  0x4C10844D, 0x93E88E48, 0x00010146, 0x00000000
 };
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault3[] =
 {
-  0x0000005C, /* ratio 91.30 % */
-  0xB8000D00, 0x000D6452, 0x00C20028, 0x20902858, 0x0073001C, 0x400859A4, 0x0082C0C1,
-  0x033000CE, 0x318005E0, 0x9000DA00, 0xC5C09145, 0x9A162101, 0x25209824, 0xAF170700,
-  0x06E00448, 0x20001900, 0x08F94C00, 0x32800E40, 0x1C52693F, 0x0000101A, 0x00000000
+  0x0000038A, /* ratio 54.30 % */
+  0xB8002100, 0x80088452, 0x00EC0032, 0xCC600348, 0x00200041, 0x061001B8, 0x3A879B40,
+  0xC0002800, 0x22C0C7D1, 0x042E2857, 0xC4E46740, 0x98011033, 0x8006F001, 0xE115949C,
+  0xD1199000, 0x1389CB61, 0xC92C3A11, 0x170026F0, 0x010C011A, 0xC3A1E680, 0x164B2935,
+  0xE6311845, 0x5B2B94CC, 0x70C88CBE, 0x2E921CE2, 0x8869D401, 0x0044A7B5, 0x94728157,
+  0x488A11F0, 0x02AB2F86, 0x65711940, 0x1E6C8645, 0x11C9F992, 0x00B2A100, 0x78AC22E2,
+  0xA5D72995, 0x5446915C, 0x98A230FA, 0x961F5ABC, 0x7092D96C, 0xB36F9944, 0x559B65AA,
+  0x73ACCB27, 0x988CFA23, 0xA9D6F2E7, 0x54225F4F, 0xD5EB75E8, 0x9F1F9DB8, 0x33200CAD,
+  0x45162980, 0xB3292CBE, 0x40844FA8, 0x9CF16623, 0xD4C562F2, 0x7422115F, 0x5CE538BD,
+  0xFAB17A84, 0xEB77EC25, 0x5372D344, 0xF6991E42, 0x5CD1652B, 0xCBA6B6A5, 0x24DE00D1,
+  0xB5D49C00, 0xF5723780, 0x6EAF2993, 0xE110E875, 0xB72BABD5, 0x600B15C6, 0x8822C7C3,
+  0xE97C972D, 0x88C3A193, 0x5D5421B0, 0x24457145, 0x1D1756DE, 0x135D6026, 0x4B5B047C,
+  0x8774952B, 0xF425856C, 0x79574BD0, 0x1B471135, 0x57C55411, 0x1114950C, 0xE58D0678,
+  0x021165E0, 0xD8456130, 0x4C95B445, 0x12545573, 0xD47E1C42, 0x55C948C4, 0x008D1284,
+  0x1191F01C, 0xD7572189, 0xF7617802, 0x71D8625E, 0x5447C0E4, 0x4C91743C, 0xE488CA0B,
+  0xF0151C43, 0x71175211, 0x174123E4, 0x8F6545C1, 0x02F6C657, 0xD5D44C00, 0x8E651161,
+  0x30000319, 0x960009B0, 0xD0477975, 0x111D668D, 0x55669867, 0x3247DDD4, 0x98666865,
+  0xA634AD28, 0x52C91743, 0x0D1F0117, 0x88470210, 0xA2C09412, 0x50492C00, 0x06B96A48,
+  0x21D8439B, 0x1C5D61B4, 0x00000405, 0x00000000
 };
 
 /* Compressed strings for the language 'French'. */
@@ -242,14 +257,20 @@ const XVariantOfString _StringsGEN_cancel[] =
 /* Table with links to derived variants of the constant : 'Strings::GEN_cancel' */
 EW_CONST_WITHOUT_VARIANTS( StringsGEN_cancel )
 
+/* User defined constant: 'Strings::GEN_yes' */
+const XStringRes StringsGEN_yes = { _StringsDefault0, 0x0015 };
+
+/* User defined constant: 'Strings::GEN_no' */
+const XStringRes StringsGEN_no = { _StringsDefault0, 0x001B };
+
 /* User defined constant: 'Strings::GEN_bluetooth' */
-const XStringRes StringsGEN_bluetooth = { _StringsDefault0, 0x0015 };
+const XStringRes StringsGEN_bluetooth = { _StringsDefault0, 0x0020 };
 
 /* User defined constant: 'Strings::GEN_three_hyphens' */
-const XStringRes StringsGEN_three_hyphens = { _StringsDefault0, 0x0021 };
+const XStringRes StringsGEN_three_hyphens = { _StringsDefault0, 0x002C };
 
 /* User defined constant: 'Strings::GEN_please_wait' */
-const XStringRes StringsGEN_please_wait = { _StringsDefault0, 0x0027 };
+const XStringRes StringsGEN_please_wait = { _StringsDefault0, 0x0032 };
 
 /* User defined constant: 'Strings::TOP01_warning' */
 const XVariantOfString _StringsTOP01_warning[] = 
@@ -261,7 +282,7 @@ const XVariantOfString _StringsTOP01_warning[] =
   { SimplifiedChinese, { _StringsSimplifiedChinese0, 0x000C }},
   { Spanish,   { _StringsSpanish0, 0x0014 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x000C }},
-  { Default,   { _StringsDefault0, 0x0036 }}
+  { Default,   { _StringsDefault0, 0x0041 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::TOP01_warning' */
@@ -277,7 +298,7 @@ const XVariantOfString _StringsTOP01_disclaimer[] =
   { SimplifiedChinese, { _StringsSimplifiedChinese0, 0x0011 }},
   { Spanish,   { _StringsSpanish0, 0x001F }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0011 }},
-  { Default,   { _StringsDefault0, 0x0040 }}
+  { Default,   { _StringsDefault0, 0x004B }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::TOP01_disclaimer' */
@@ -293,220 +314,250 @@ const XVariantOfString _StringsTOP01_accept[] =
   { SimplifiedChinese, { _StringsSimplifiedChinese0, 0x0046 }},
   { Spanish,   { _StringsSpanish0, 0x00E0 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0048 }},
-  { Default,   { _StringsDefault0, 0x00F2 }}
+  { Default,   { _StringsDefault0, 0x00FD }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::TOP01_accept' */
 EW_CONST_WITHOUT_VARIANTS( StringsTOP01_accept )
 
 /* User defined constant: 'Strings::BRT01_TFT_display' */
-const XStringRes StringsBRT01_TFT_display = { _StringsDefault0, 0x00FB };
+const XStringRes StringsBRT01_TFT_display = { _StringsDefault0, 0x0106 };
 
 /* User defined constant: 'Strings::BRT01_speed_meter' */
-const XStringRes StringsBRT01_speed_meter = { _StringsDefault0, 0x0109 };
+const XStringRes StringsBRT01_speed_meter = { _StringsDefault0, 0x0114 };
 
 /* User defined constant: 'Strings::GPW01_grip_warmer' */
-const XStringRes StringsGPW01_grip_warmer = { _StringsDefault0, 0x0117 };
+const XStringRes StringsGPW01_grip_warmer = { _StringsDefault0, 0x0122 };
 
 /* User defined constant: 'Strings::INF01_TACHO_VISUALIZER' */
-const XStringRes StringsINF01_TACHO_VISUALIZER = { _StringsDefault0, 0x0125 };
+const XStringRes StringsINF01_TACHO_VISUALIZER = { _StringsDefault0, 0x0130 };
 
 /* User defined constant: 'Strings::INF01_ECHO_VISUALIZER' */
-const XStringRes StringsINF01_ECHO_VISUALIZER = { _StringsDefault0, 0x0138 };
+const XStringRes StringsINF01_ECHO_VISUALIZER = { _StringsDefault0, 0x0143 };
 
 /* User defined constant: 'Strings::INF01_SPEED_VISUALIZER' */
-const XStringRes StringsINF01_SPEED_VISUALIZER = { _StringsDefault0, 0x0149 };
+const XStringRes StringsINF01_SPEED_VISUALIZER = { _StringsDefault0, 0x0154 };
 
 /* User defined constant: 'Strings::LNC_METER_DISPLAY' */
-const XStringRes StringsLNC_METER_DISPLAY = { _StringsDefault0, 0x015C };
+const XStringRes StringsLNC_METER_DISPLAY = { _StringsDefault0, 0x0167 };
 
 /* User defined constant: 'Strings::LNC_odo_trip' */
-const XStringRes StringsLNC_odo_trip = { _StringsDefault0, 0x016C };
+const XStringRes StringsLNC_odo_trip = { _StringsDefault0, 0x0177 };
 
 /* User defined constant: 'Strings::LNC_music' */
-const XStringRes StringsLNC_music = { _StringsDefault0, 0x0177 };
+const XStringRes StringsLNC_music = { _StringsDefault0, 0x0182 };
 
 /* User defined constant: 'Strings::LNC_phone' */
-const XStringRes StringsLNC_phone = { _StringsDefault0, 0x017F };
+const XStringRes StringsLNC_phone = { _StringsDefault0, 0x018A };
 
 /* User defined constant: 'Strings::LNC_navigation' */
-const XStringRes StringsLNC_navigation = { _StringsDefault0, 0x0187 };
+const XStringRes StringsLNC_navigation = { _StringsDefault0, 0x0192 };
 
 /* User defined constant: 'Strings::LNC_weather' */
-const XStringRes StringsLNC_weather = { _StringsDefault0, 0x0194 };
+const XStringRes StringsLNC_weather = { _StringsDefault0, 0x019F };
 
 /* User defined constant: 'Strings::LNC_notification' */
-const XStringRes StringsLNC_notification = { _StringsDefault0, 0x019E };
+const XStringRes StringsLNC_notification = { _StringsDefault0, 0x01A9 };
 
 /* User defined constant: 'Strings::LNC_traction_control' */
-const XStringRes StringsLNC_traction_control = { _StringsDefault0, 0x01AD };
+const XStringRes StringsLNC_traction_control = { _StringsDefault0, 0x01B8 };
 
 /* User defined constant: 'Strings::LNC_seat_heater' */
-const XStringRes StringsLNC_seat_heater = { _StringsDefault0, 0x01C0 };
+const XStringRes StringsLNC_seat_heater = { _StringsDefault0, 0x01CB };
 
 /* User defined constant: 'Strings::LNC_settings' */
-const XStringRes StringsLNC_settings = { _StringsDefault0, 0x01CE };
+const XStringRes StringsLNC_settings = { _StringsDefault0, 0x01D9 };
 
 /* User defined constant: 'Strings::NAV06_stop_navigation' */
-const XStringRes StringsNAV06_stop_navigation = { _StringsDefault0, 0x01D9 };
+const XStringRes StringsNAV06_stop_navigation = { _StringsDefault0, 0x01E4 };
 
 /* User defined constant: 'Strings::NAV06_SKIP_NEXT_STOP' */
-const XStringRes StringsNAV06_SKIP_NEXT_STOP = { _StringsDefault0, 0x01EB };
+const XStringRes StringsNAV06_SKIP_NEXT_STOP = { _StringsDefault0, 0x01F6 };
 
 /* User defined constant: 'Strings::NAV06_go_home' */
-const XStringRes StringsNAV06_go_home = { _StringsDefault0, 0x01FC };
+const XStringRes StringsNAV06_go_home = { _StringsDefault1, 0x0002 };
 
 /* User defined constant: 'Strings::NAV06_go_to_work' */
-const XStringRes StringsNAV06_go_to_work = { _StringsDefault1, 0x0002 };
+const XStringRes StringsNAV06_go_to_work = { _StringsDefault1, 0x000C };
 
 /* User defined constant: 'Strings::NAV06_favorites' */
-const XStringRes StringsNAV06_favorites = { _StringsDefault1, 0x000F };
+const XStringRes StringsNAV06_favorites = { _StringsDefault1, 0x0019 };
 
 /* User defined constant: 'Strings::NAV06_nearby_gas_stations' */
-const XStringRes StringsNAV06_nearby_gas_stations = { _StringsDefault1, 0x001B };
+const XStringRes StringsNAV06_nearby_gas_stations = { _StringsDefault1, 0x0025 };
 
 /* User defined constant: 'Strings::NAV06_change_view' */
-const XStringRes StringsNAV06_change_view = { _StringsDefault1, 0x0031 };
+const XStringRes StringsNAV06_change_view = { _StringsDefault1, 0x003B };
 
 /* User defined constant: 'Strings::NAV08_default_view' */
-const XStringRes StringsNAV08_default_view = { _StringsDefault1, 0x003F };
+const XStringRes StringsNAV08_default_view = { _StringsDefault1, 0x0049 };
 
 /* User defined constant: 'Strings::NAV08_turn_by_turn' */
-const XStringRes StringsNAV08_turn_by_turn = { _StringsDefault1, 0x004E };
+const XStringRes StringsNAV08_turn_by_turn = { _StringsDefault1, 0x0058 };
 
 /* User defined constant: 'Strings::NAV08_turn_list' */
-const XStringRes StringsNAV08_turn_list = { _StringsDefault1, 0x005D };
+const XStringRes StringsNAV08_turn_list = { _StringsDefault1, 0x0067 };
 
 /* User defined constant: 'Strings::POP09_CONNECTION_FAILED' */
-const XStringRes StringsPOP09_CONNECTION_FAILED = { _StringsDefault1, 0x0069 };
+const XStringRes StringsPOP09_CONNECTION_FAILED = { _StringsDefault1, 0x0073 };
 
 /* User defined constant: 'Strings::SET01_connection' */
-const XStringRes StringsSET01_connection = { _StringsDefault1, 0x00BF };
+const XStringRes StringsSET01_connection = { _StringsDefault1, 0x00C9 };
 
 /* User defined constant: 'Strings::SET01_clock' */
-const XStringRes StringsSET01_clock = { _StringsDefault1, 0x00CC };
+const XStringRes StringsSET01_clock = { _StringsDefault1, 0x00D6 };
 
 /* User defined constant: 'Strings::SET01_brightness' */
-const XStringRes StringsSET01_brightness = { _StringsDefault1, 0x00D4 };
+const XStringRes StringsSET01_brightness = { _StringsDefault1, 0x00DE };
 
 /* User defined constant: 'Strings::SET01_unit' */
-const XStringRes StringsSET01_unit = { _StringsDefault1, 0x00E1 };
+const XStringRes StringsSET01_unit = { _StringsDefault1, 0x00EB };
 
 /* User defined constant: 'Strings::SET01_grip_warmer_settings' */
-const XStringRes StringsSET01_grip_warmer_settings = { _StringsDefault1, 0x00E8 };
+const XStringRes StringsSET01_grip_warmer_settings = { _StringsDefault1, 0x00F2 };
 
 /* User defined constant: 'Strings::SET01_seat_heater_settings' */
-const XStringRes StringsSET01_seat_heater_settings = { _StringsDefault1, 0x00FF };
+const XStringRes StringsSET01_seat_heater_settings = { _StringsDefault1, 0x0109 };
 
 /* User defined constant: 'Strings::SET01_system_info' */
-const XStringRes StringsSET01_system_info = { _StringsDefault1, 0x0116 };
+const XStringRes StringsSET01_system_info = { _StringsDefault1, 0x0120 };
 
 /* User defined constant: 'Strings::SET01_legal_info' */
-const XStringRes StringsSET01_legal_info = { _StringsDefault1, 0x012B };
+const XStringRes StringsSET01_legal_info = { _StringsDefault1, 0x0135 };
 
 /* User defined constant: 'Strings::SET01_reset' */
-const XStringRes StringsSET01_reset = { _StringsDefault1, 0x013F };
+const XStringRes StringsSET01_reset = { _StringsDefault1, 0x0149 };
 
-/* User defined constant: 'Strings::SET03_y_connect_app_pairing' */
-const XStringRes StringsSET03_y_connect_app_pairing = { _StringsDefault1, 0x0147 };
+/* User defined constant: 'Strings::SET03_Y_CONNECT_APP_PAIRING' */
+const XStringRes StringsSET03_Y_CONNECT_APP_PAIRING = { _StringsDefault1, 0x0151 };
 
-/* User defined constant: 'Strings::SET04_discovery_mode' */
-const XStringRes StringsSET04_discovery_mode = { _StringsDefault1, 0x015F };
+/* User defined constant: 'Strings::SET04_DISCOVERY_MODE' */
+const XStringRes StringsSET04_DISCOVERY_MODE = { _StringsDefault1, 0x0169 };
 
-/* User defined constant: 'Strings::SET04_paired_devices' */
-const XStringRes StringsSET04_paired_devices = { _StringsDefault1, 0x0170 };
+/* User defined constant: 'Strings::SET04_PAIRED_DEVICES' */
+const XStringRes StringsSET04_PAIRED_DEVICES = { _StringsDefault1, 0x017A };
 
-/* User defined constant: 'Strings::SET04_bt_auto_connect' */
-const XStringRes StringsSET04_bt_auto_connect = { _StringsDefault1, 0x0181 };
+/* User defined constant: 'Strings::SET04_BT_AUTO_CONNECT' */
+const XStringRes StringsSET04_BT_AUTO_CONNECT = { _StringsDefault1, 0x018B };
 
-/* User defined constant: 'Strings::SET19_delete_pairing' */
-const XStringRes StringsSET19_delete_pairing = { _StringsDefault1, 0x019A };
+/* User defined constant: 'Strings::SET05_MAX_DEVICES' */
+const XStringRes StringsSET05_MAX_DEVICES = { _StringsDefault1, 0x01A4 };
 
-/* User defined constant: 'Strings::SET19_connect' */
-const XStringRes StringsSET19_connect = { _StringsDefault1, 0x01AB };
+/* User defined constant: 'Strings::SET06_DISCOVERABLE' */
+const XStringRes StringsSET06_DISCOVERABLE = { _StringsDefault1, 0x01ED };
 
-/* User defined constant: 'Strings::SET19_disconnect' */
-const XStringRes StringsSET19_disconnect = { _StringsDefault1, 0x01B5 };
+/* User defined constant: 'Strings::SET06_TIME_LEFT' */
+const XStringRes StringsSET06_TIME_LEFT = { _StringsDefault2, 0x0002 };
+
+/* User defined constant: 'Strings::SET07_PAIRING_FAILED' */
+const XStringRes StringsSET07_PAIRING_FAILED = { _StringsDefault2, 0x0011 };
+
+/* User defined constant: 'Strings::SET08_PAIR_WITH' */
+const XStringRes StringsSET08_PAIR_WITH = { _StringsDefault2, 0x002D };
+
+/* User defined constant: 'Strings::SET08_PASSKEY' */
+const XStringRes StringsSET08_PASSKEY = { _StringsDefault2, 0x003F };
+
+/* User defined constant: 'Strings::SET09_BT_CONNECTED' */
+const XStringRes StringsSET09_BT_CONNECTED = { _StringsDefault2, 0x004A };
+
+/* User defined constant: 'Strings::SET10_CONNECTION_FAILED' */
+const XStringRes StringsSET10_CONNECTION_FAILED = { _StringsDefault2, 0x0066 };
+
+/* User defined constant: 'Strings::SET11_NO_LONGER_PAIRED' */
+const XStringRes StringsSET11_NO_LONGER_PAIRED = { _StringsDefault2, 0x008A };
+
+/* User defined constant: 'Strings::SET18_DELETE_PAIRING_RECORD' */
+const XStringRes StringsSET18_DELETE_PAIRING_RECORD = { _StringsDefault2, 0x00CD };
+
+/* User defined constant: 'Strings::SET19_DELETE_PAIRING' */
+const XStringRes StringsSET19_DELETE_PAIRING = { _StringsDefault2, 0x0142 };
+
+/* User defined constant: 'Strings::SET19_CONNECT' */
+const XStringRes StringsSET19_CONNECT = { _StringsDefault2, 0x0153 };
+
+/* User defined constant: 'Strings::SET19_DISCONNECT' */
+const XStringRes StringsSET19_DISCONNECT = { _StringsDefault2, 0x015D };
 
 /* User defined constant: 'Strings::SET20_COMPLETE_BT_PAIRING_FIRST' */
-const XStringRes StringsSET20_COMPLETE_BT_PAIRING_FIRST = { _StringsDefault1, 0x01C2 };
+const XStringRes StringsSET20_COMPLETE_BT_PAIRING_FIRST = { _StringsDefault2, 0x016A };
 
 /* User defined constant: 'Strings::SET21_BLE_ALREADY_CONNECTED' */
-const XStringRes StringsSET21_BLE_ALREADY_CONNECTED = { _StringsDefault2, 0x0002 };
+const XStringRes StringsSET21_BLE_ALREADY_CONNECTED = { _StringsDefault2, 0x01B7 };
 
 /* User defined constant: 'Strings::SET22_DEVICE_NAME' */
-const XStringRes StringsSET22_DEVICE_NAME = { _StringsDefault2, 0x006E };
+const XStringRes StringsSET22_DEVICE_NAME = { _StringsDefault3, 0x0002 };
 
 /* User defined constant: 'Strings::SET22_WAIT_APP_CONNECTION' */
-const XStringRes StringsSET22_WAIT_APP_CONNECTION = { _StringsDefault2, 0x007E };
+const XStringRes StringsSET22_WAIT_APP_CONNECTION = { _StringsDefault3, 0x0012 };
 
 /* User defined constant: 'Strings::SET23_PAIRING_FAILED' */
-const XStringRes StringsSET23_PAIRING_FAILED = { _StringsDefault2, 0x00BC };
+const XStringRes StringsSET23_PAIRING_FAILED = { _StringsDefault3, 0x0050 };
 
 /* User defined constant: 'Strings::SET24_CHECK_BT_PAIRING_RECORD' */
-const XStringRes StringsSET24_CHECK_BT_PAIRING_RECORD = { _StringsDefault2, 0x00CE };
+const XStringRes StringsSET24_CHECK_BT_PAIRING_RECORD = { _StringsDefault3, 0x0062 };
 
 /* User defined constant: 'Strings::SET25_PIN' */
-const XStringRes StringsSET25_PIN = { _StringsDefault2, 0x0152 };
+const XStringRes StringsSET25_PIN = { _StringsDefault3, 0x00E6 };
 
 /* User defined constant: 'Strings::SET26_PAIRING_SUCCESSFUL' */
-const XStringRes StringsSET26_PAIRING_SUCCESSFUL = { _StringsDefault2, 0x0158 };
+const XStringRes StringsSET26_PAIRING_SUCCESSFUL = { _StringsDefault3, 0x00EC };
 
 /* User defined constant: 'Strings::SET28_esn' */
-const XStringRes StringsSET28_esn = { _StringsDefault2, 0x016E };
+const XStringRes StringsSET28_esn = { _StringsDefault3, 0x0102 };
 
 /* User defined constant: 'Strings::SET28_sw_version' */
-const XStringRes StringsSET28_sw_version = { _StringsDefault2, 0x0189 };
+const XStringRes StringsSET28_sw_version = { _StringsDefault3, 0x011D };
 
 /* User defined constant: 'Strings::SET28_unit_id' */
-const XStringRes StringsSET28_unit_id = { _StringsDefault2, 0x019C };
+const XStringRes StringsSET28_unit_id = { _StringsDefault3, 0x0130 };
 
 /* User defined constant: 'Strings::SET28_sw_update' */
-const XStringRes StringsSET28_sw_update = { _StringsDefault2, 0x01A6 };
+const XStringRes StringsSET28_sw_update = { _StringsDefault3, 0x013A };
 
 /* User defined constant: 'Strings::UNT01_unit_mileage' */
-const XStringRes StringsUNT01_unit_mileage = { _StringsDefault2, 0x01B8 };
+const XStringRes StringsUNT01_unit_mileage = { _StringsDefault3, 0x014C };
 
 /* User defined constant: 'Strings::UNT01_unit_fuel' */
-const XStringRes StringsUNT01_unit_fuel = { _StringsDefault2, 0x01C2 };
+const XStringRes StringsUNT01_unit_fuel = { _StringsDefault3, 0x0156 };
 
 /* User defined constant: 'Strings::UNT01_unit_pressure' */
-const XStringRes StringsUNT01_unit_pressure = { _StringsDefault2, 0x01C9 };
+const XStringRes StringsUNT01_unit_pressure = { _StringsDefault3, 0x015D };
 
 /* User defined constant: 'Strings::UNT01_unit_temperature' */
-const XStringRes StringsUNT01_unit_temperature = { _StringsDefault2, 0x01D4 };
+const XStringRes StringsUNT01_unit_temperature = { _StringsDefault3, 0x0168 };
 
 /* User defined constant: 'Strings::UNT02_unit_mileage_kilometer' */
-const XStringRes StringsUNT02_unit_mileage_kilometer = { _StringsDefault2, 0x01E2 };
+const XStringRes StringsUNT02_unit_mileage_kilometer = { _StringsDefault3, 0x0176 };
 
 /* User defined constant: 'Strings::UNT02_unit_mileage_mile' */
-const XStringRes StringsUNT02_unit_mileage_mile = { _StringsDefault2, 0x01E7 };
+const XStringRes StringsUNT02_unit_mileage_mile = { _StringsDefault3, 0x017B };
 
 /* User defined constant: 'Strings::UNT03_unit_fuel_km_per_liter' */
-const XStringRes StringsUNT03_unit_fuel_km_per_liter = { _StringsDefault2, 0x01EE };
+const XStringRes StringsUNT03_unit_fuel_km_per_liter = { _StringsDefault3, 0x0182 };
 
 /* User defined constant: 'Strings::UNT03_unit_fuel_liter_per_hundred_km' */
-const XStringRes StringsUNT03_unit_fuel_liter_per_hundred_km = { _StringsDefault2, 0x01F5 };
+const XStringRes StringsUNT03_unit_fuel_liter_per_hundred_km = { _StringsDefault3, 0x0189 };
 
 /* User defined constant: 'Strings::UNT03_unit_fuel_mile_per_gallon' */
-const XStringRes StringsUNT03_unit_fuel_mile_per_gallon = { _StringsDefault2, 0x01FF };
+const XStringRes StringsUNT03_unit_fuel_mile_per_gallon = { _StringsDefault3, 0x0193 };
 
 /* User defined constant: 'Strings::UNT04_unit_pressure_kpa' */
-const XStringRes StringsUNT04_unit_pressure_kpa = { _StringsDefault3, 0x0002 };
+const XStringRes StringsUNT04_unit_pressure_kpa = { _StringsDefault3, 0x0199 };
 
 /* User defined constant: 'Strings::UNT04_unit_pressure_psi' */
-const XStringRes StringsUNT04_unit_pressure_psi = { _StringsDefault3, 0x0008 };
+const XStringRes StringsUNT04_unit_pressure_psi = { _StringsDefault3, 0x019F };
 
 /* User defined constant: 'Strings::UNT04_unit_pressure_kgf' */
-const XStringRes StringsUNT04_unit_pressure_kgf = { _StringsDefault3, 0x000E };
+const XStringRes StringsUNT04_unit_pressure_kgf = { _StringsDefault3, 0x01A5 };
 
 /* User defined constant: 'Strings::UNT05_unit_temperature_c' */
-const XStringRes StringsUNT05_unit_temperature_c = { _StringsDefault3, 0x0018 };
+const XStringRes StringsUNT05_unit_temperature_c = { _StringsDefault3, 0x01AF };
 
 /* User defined constant: 'Strings::UNT05_unit_temperature_f' */
-const XStringRes StringsUNT05_unit_temperature_f = { _StringsDefault3, 0x001C };
+const XStringRes StringsUNT05_unit_temperature_f = { _StringsDefault3, 0x01B3 };
 
 /* User defined constant: 'Strings::WSC01_wind_screen' */
-const XStringRes StringsWSC01_wind_screen = { _StringsDefault3, 0x0020 };
+const XStringRes StringsWSC01_wind_screen = { _StringsDefault3, 0x01B7 };
 
 /* Embedded Wizard */

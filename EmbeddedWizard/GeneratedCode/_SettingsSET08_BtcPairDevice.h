@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsBtDeleteBleDevice_H
-#define _SettingsBtDeleteBleDevice_H
+#ifndef _SettingsSET08_BtcPairDevice_H
+#define _SettingsSET08_BtcPairDevice_H
 
 #ifdef __cplusplus
   extern "C"
@@ -47,7 +47,7 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuPushButton.h"
+#include "_MenuUpDownPushButtonSet.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -94,24 +94,23 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::BtDeleteBleDevice */
-#ifndef _SettingsBtDeleteBleDevice_
-  EW_DECLARE_CLASS( SettingsBtDeleteBleDevice )
-#define _SettingsBtDeleteBleDevice_
+/* Forward declaration of the class Settings::SET08_BtcPairDevice */
+#ifndef _SettingsSET08_BtcPairDevice_
+  EW_DECLARE_CLASS( SettingsSET08_BtcPairDevice )
+#define _SettingsSET08_BtcPairDevice_
 #endif
 
 
-/* Deklaration of class : 'Settings::BtDeleteBleDevice' */
-EW_DEFINE_FIELDS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG )
-  EW_OBJECT  ( Text,            ViewsText )
-  EW_OBJECT  ( PushButton,      MenuPushButton )
-  EW_PROPERTY( DeviceName,      XString )
-  EW_VARIABLE( DialogString1,   XString )
-  EW_VARIABLE( DialogString2,   XString )
-EW_END_OF_FIELDS( SettingsBtDeleteBleDevice )
+/* Deklaration of class : 'Settings::SET08_BtcPairDevice' */
+EW_DEFINE_FIELDS( SettingsSET08_BtcPairDevice, ComponentsBaseMainBG )
+  EW_OBJECT  ( PairText,        ViewsText )
+  EW_OBJECT  ( PasskeyText,     ViewsText )
+  EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
+  EW_OBJECT  ( BtcPairingStateChangeEventHandler, CoreSystemEventHandler )
+EW_END_OF_FIELDS( SettingsSET08_BtcPairDevice )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::BtDeleteBleDevice' */
-EW_DEFINE_METHODS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET08_BtcPairDevice' */
+EW_DEFINE_METHODS( SettingsSET08_BtcPairDevice, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -164,21 +163,31 @@ EW_DEFINE_METHODS( SettingsBtDeleteBleDevice, ComponentsBaseMainBG )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-EW_END_OF_METHODS( SettingsBtDeleteBleDevice )
+EW_END_OF_METHODS( SettingsSET08_BtcPairDevice )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void SettingsBtDeleteBleDevice_Init( SettingsBtDeleteBleDevice _this, XHandle aArg );
+void SettingsSET08_BtcPairDevice_Init( SettingsSET08_BtcPairDevice _this, XHandle 
+  aArg );
 
-/* 'C' function for method : 'Settings::BtDeleteBleDevice.OnOkSlot()' */
-void SettingsBtDeleteBleDevice_OnOkSlot( SettingsBtDeleteBleDevice _this, XObject 
-  sender );
+/* 'C' function for method : 'Settings::SET08_BtcPairDevice.OnNoActivatedSlot()' */
+void SettingsSET08_BtcPairDevice_OnNoActivatedSlot( SettingsSET08_BtcPairDevice _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Settings::SET08_BtcPairDevice.OnYesActivatedSlot()' */
+void SettingsSET08_BtcPairDevice_OnYesActivatedSlot( SettingsSET08_BtcPairDevice _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET08_BtcPairDevice_OnBtcPairingStateChangeSlot( SettingsSET08_BtcPairDevice _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsBtDeleteBleDevice_H */
+#endif /* _SettingsSET08_BtcPairDevice_H */
 
 /* Embedded Wizard */

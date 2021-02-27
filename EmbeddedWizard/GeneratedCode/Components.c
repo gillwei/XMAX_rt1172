@@ -53,24 +53,23 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000060, /* ratio 83.33 % */
-  0xB8002300, 0x800D6452, 0x00F20032, 0x80107100, 0x006E869D, 0x112859D0, 0x3A001BC0,
-  0x70000228, 0x22116061, 0xB1364000, 0xC34C8008, 0xCC006191, 0xA1906001, 0x54690015,
-  0x062004C2, 0x19869B00, 0xE0346E19, 0x9D446631, 0x0406831B, 0x00000000
+  0x0000003E, /* ratio 103.23 % */
+  0xB8002F00, 0x00088452, 0xBC004D83, 0x40064001, 0xC3090019, 0x60039800, 0x0010000D,
+  0x334800AC, 0x31002371, 0x0438D800, 0x8022E3A0, 0x16060693, 0xE4C6E8E1, 0x020097C9,
+  0x00000002, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
-static const XStringRes _Const0000 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0001 = {{ 0, 0 }, { 480, 272 }};
-static const XRect _Const0002 = {{ 0, 182 }, { 480, 272 }};
-static const XRect _Const0003 = {{ 0, 38 }, { 480, 182 }};
-static const XColor _Const0004 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0005 = {{ 0, 36 }, { 480, 272 }};
-static const XStringRes _Const0006 = { _StringsDefault0, 0x0013 };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x002A };
-static const XRect _Const0008 = {{ 0, 0 }, { 480, 236 }};
-static const XColor _Const0009 = { 0x00, 0x00, 0x00, 0xCD };
-static const XRect _Const000A = {{ 195, 62 }, { 285, 152 }};
+static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
+static const XRect _Const0001 = {{ 0, 182 }, { 480, 272 }};
+static const XRect _Const0002 = {{ 0, 38 }, { 480, 182 }};
+static const XColor _Const0003 = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0004 = {{ 0, 36 }, { 480, 272 }};
+static const XStringRes _Const0005 = { _StringsDefault0, 0x0002 };
+static const XStringRes _Const0006 = { _StringsDefault0, 0x0019 };
+static const XRect _Const0007 = {{ 0, 0 }, { 480, 236 }};
+static const XColor _Const0008 = { 0x00, 0x00, 0x00, 0xCD };
+static const XRect _Const0009 = {{ 195, 62 }, { 285, 152 }};
 
 /* Initializer for the class 'Components::BaseComponent' */
 void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink, XHandle aArg )
@@ -126,8 +125,6 @@ void ComponentsBaseComponent_OnKeyPressSlot( ComponentsBaseComponent _this, XObj
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
-
-  EwTrace( "%s%$", EwLoadString( &_Const0000 ), EwClassOf(((XObject)_this )));
 
   switch ( _this->KeyHandler.Code )
   {
@@ -508,13 +505,13 @@ void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHan
   _this->_VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0001 );
-  CoreRectView__OnSetBounds( &_this->MainBottomBG, _Const0002 );
-  CoreRectView__OnSetBounds( &_this->BlackBG, _Const0003 );
-  ViewsRectangle_OnSetColor( &_this->BlackBG, _Const0004 );
+  CoreRectView__OnSetBounds( _this, _Const0000 );
+  CoreRectView__OnSetBounds( &_this->MainBottomBG, _Const0001 );
+  CoreRectView__OnSetBounds( &_this->BlackBG, _Const0002 );
+  ViewsRectangle_OnSetColor( &_this->BlackBG, _Const0003 );
   CoreSystemEventHandler_OnSetEnabled( &_this->DDModeStateChangedHandler, 0 );
   CoreView_OnSetStackingPriority((CoreView)&_this->DDModeMask, 1 );
-  CoreRectView__OnSetBounds( &_this->DDModeMask, _Const0005 );
+  CoreRectView__OnSetBounds( &_this->DDModeMask, _Const0004 );
   CoreGroup__OnSetEnabled( &_this->DDModeMask, 0 );
   CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, 0 );
   CoreTimer_OnSetPeriod( &_this->HideFocusFrameTimer, 50 );
@@ -619,8 +616,8 @@ void ComponentsBaseMainBG_UpdateDDModeMask( ComponentsBaseMainBG _this )
   {
     CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )));
-    EwTrace( "%s%b%s%$", EwLoadString( &_Const0006 ), CoreGroup_OnGetVisible((CoreGroup)&_this->DDModeMask ), 
-      EwLoadString( &_Const0007 ), EwClassOf(((XObject)_this )));
+    EwTrace( "%s%b%s%$", EwLoadString( &_Const0005 ), CoreGroup_OnGetVisible((CoreGroup)&_this->DDModeMask ), 
+      EwLoadString( &_Const0006 ), EwClassOf(((XObject)_this )));
   }
 }
 
@@ -635,6 +632,13 @@ void ComponentsBaseMainBG_DismissThisDialog( ComponentsBaseMainBG _this )
   {
     if ( _this->Super4.Owner != 0 )
     {
+      MenuBaseMenuView MenuDialog = EwCastObject( _this->Super4.Owner, MenuBaseMenuView );
+
+      if ( MenuDialog != 0 )
+      {
+        ViewsBorder_OnSetVisible( &MenuDialog->Menu.FocusFrame, 1 );
+      }
+
       CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 
       0, EwNullSlot, EwNullSlot, 0 );
     }
@@ -701,7 +705,10 @@ void ComponentsBaseMainBG_OnDialogSlideInCompletedSlot( ComponentsBaseMainBG _th
 
   if ( ChildMenu != 0 )
   {
-    ViewsBorder_OnSetVisible( &ChildMenu->Menu.FocusFrame, 1 );
+    if ( ChildMenu->Menu.NoOfItems > 0 )
+    {
+      ViewsBorder_OnSetVisible( &ChildMenu->Menu.FocusFrame, 1 );
+    }
   }
 
   _this->ChildDialog = 0;
@@ -828,12 +835,12 @@ void ComponentsDDModeMask__Init( ComponentsDDModeMask _this, XObject aLink, XHan
   _this->_VMT = EW_CLASS( ComponentsDDModeMask );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0008 );
+  CoreRectView__OnSetBounds( _this, _Const0007 );
   CoreView_OnSetStackingPriority((CoreView)&_this->DDModeBG, 0 );
-  CoreRectView__OnSetBounds( &_this->DDModeBG, _Const0008 );
-  ViewsRectangle_OnSetColor( &_this->DDModeBG, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->DDModeBG, _Const0007 );
+  ViewsRectangle_OnSetColor( &_this->DDModeBG, _Const0008 );
   CoreView_OnSetStackingPriority((CoreView)&_this->DDModeIcon, 0 );
-  CoreRectView__OnSetBounds( &_this->DDModeIcon, _Const000A );
+  CoreRectView__OnSetBounds( &_this->DDModeIcon, _Const0009 );
   CoreGroup__Add( _this, ((CoreView)&_this->DDModeBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DDModeIcon ), 0 );
   ViewsImage_OnSetBitmap( &_this->DDModeIcon, EwLoadResource( &ResourceIconDDActive, 

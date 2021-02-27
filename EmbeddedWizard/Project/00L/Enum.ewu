@@ -31,7 +31,7 @@ enum FactoryTest
   item BurnInResult;
 }
 
-$rect <30,130,230,170>
+$rect <30,120,230,160>
 $output false
 enum CommandType
 {
@@ -48,9 +48,9 @@ enum CommandType
   item PrevTrack;
 }
 
-$rect <30,190,230,230>
+$rect <30,170,230,210>
 $output false
-enum BtResult
+enum BtDeviceConnectionResult
 {
   $rect <10,10,210,50>
   item SUCCESS;
@@ -58,14 +58,11 @@ enum BtResult
   $rect <10,60,210,100>
   item FAIL;
 
-  $rect <10,110,210,150>
-  item TIMEOUT;
-
-  $rect <10,160,210,200>
-  item LOST;
+  $rect <10,110,220,150>
+  item AUTHENTICATION_ERR;
 }
 
-$rect <30,240,230,280>
+$rect <30,220,230,260>
 $output false
 enum BtFwStatus
 {
@@ -82,7 +79,7 @@ enum BtFwStatus
   item UPDATE_FINISH;
 }
 
-$rect <30,340,230,380>
+$rect <30,421,230,461>
 $output false
 enum RotationDirection
 {
@@ -93,7 +90,7 @@ enum RotationDirection
   item CLOCKWISE;
 }
 
-$rect <30,289,230,329>
+$rect <30,370,230,410>
 $output false
 enum LauncherItem
 {
@@ -206,7 +203,7 @@ enum NaviSettingItem
   item ChangeView;
 }
 
-$rect <30,400,230,440>
+$rect <30,470,230,510>
 enum MotoConTest
 {
   $rect <10,10,210,50>
@@ -593,7 +590,7 @@ enum HomeType
   item TOTAL;
 }
 
-$rect <30,460,230,500>
+$rect <30,270,230,310>
 $output false
 enum BlePairingState
 {
@@ -793,4 +790,27 @@ enum PressureSettingItem
 
   $rect <430,10,630,50>
   item KGF;
+}
+
+$rect <30,320,230,360>
+$output false
+enum BtcPairingState
+{
+  $rect <10,10,250,50>
+  item IDLE;
+
+  $rect <10,60,250,100>
+  item DISCOVERABLE;
+
+  $rect <10,110,250,150>
+  item SUCCESSFUL;
+
+  $rect <10,160,250,200>
+  item TIMEOUT;
+
+  $rect <10,210,250,250>
+  item FAIL;
+
+  $rect <10,260,250,300>
+  item PASSKEY_GENERATED;
 }

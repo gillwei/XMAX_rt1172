@@ -15,7 +15,10 @@ class BaseComponent : Core::Group
   $rect <40,110,240,150>
   slot OnKeyPressSlot
   {
-    trace "key event to: ", classof this;
+    $if $prototyper
+      trace "key event to: ", classof this;
+    $endif
+
     switch( KeyHandler.Code )
     {
       case Core::KeyCode.Up:
@@ -352,6 +355,13 @@ class BaseMainBG : Components::BaseComponent
     {
       if( Owner != null )
       {
+        // Show FocusFrame if Owner is of menu type
+        var Menu::BaseMenuView MenuDialog = ( Menu::BaseMenuView )Owner;
+        if( null != MenuDialog )
+        {
+          MenuDialog.Menu.FocusFrame.Visible = true;
+        }
+
         Owner.DismissDialog( this, null, null, null, null, null, false );
       }
     }
@@ -421,7 +431,10 @@ class BaseMainBG : Components::BaseComponent
     var Menu::BaseMenuView ChildMenu = ( Menu::BaseMenuView )ChildDialog;
     if( null != ChildMenu )
     {
-      ChildMenu.Menu.FocusFrame.Visible = true;
+      if( ChildMenu.Menu.NoOfItems > 0 )
+      {
+        ChildMenu.Menu.FocusFrame.Visible = true;
+      }
     }
 
     ChildDialog = null;

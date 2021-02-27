@@ -55,14 +55,15 @@
 
 /* Deklaration of class : 'DeviceInterface::BluetoothDeviceClass' */
 EW_DEFINE_FIELDS( DeviceInterfaceBluetoothDeviceClass, TemplatesDeviceClass )
-  EW_OBJECT  ( PasskeyGeneratedSystemEvent, CoreSystemEvent )
-  EW_OBJECT  ( ConnectionResultSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( BtcPairingChangedSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( PairedDeviceObj, DeviceInterfaceBluetoothPairedDeviceInfo )
   EW_OBJECT  ( BlePairingStateChangedEvent, CoreSystemEvent )
   EW_OBJECT  ( MotoConSystemEvent, CoreSystemEvent )
-  EW_VARIABLE( Passkey,         XString )
+  EW_OBJECT  ( PairedDeviceUpdatedSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( BtcConnectionResultSystemEvent, CoreSystemEvent )
+  EW_PROPERTY( ConnectPairedDeviceResult, XEnum )
   EW_PROPERTY( BtFwStatus,      XEnum )
-  EW_PROPERTY( ConnectionResult, XEnum )
+  EW_PROPERTY( BtcPairingState, XEnum )
   EW_PROPERTY( RefreshPairedDeviceList, XBool )
   EW_PROPERTY( AutoConnect,     XBool )
   EW_PROPERTY( BluetoothEnable, XBool )
@@ -79,27 +80,15 @@ void DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceAtItem( DeviceInterfaceB
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceBluetoothDeviceClass_NotifyPasskeyGenerated( DeviceInterfaceBluetoothDeviceClass _this, 
-  XString aPasskey );
+void DeviceInterfaceBluetoothDeviceClass_NotifyBtcPairingStateChanged( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum aState );
 
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyPasskeyGenerated()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyPasskeyGenerated( void* _this, XString 
-  aPasskey );
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtcPairingStateChanged()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged( void* _this, 
+  XEnum aState );
 
-/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyPasskeyGenerated(). */
-#define _DeviceInterfaceBluetoothDeviceClass__NotifyPasskeyGenerated_
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceBluetoothDeviceClass_NotifyConnectionResult( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum aResult );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionResult()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyConnectionResult( void* _this, XEnum 
-  aResult );
-
-/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyConnectionResult(). */
-#define _DeviceInterfaceBluetoothDeviceClass__NotifyConnectionResult_
+/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyBtcPairingStateChanged(). */
+#define _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged_
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetDiscoverable()' */
 void DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( DeviceInterfaceBluetoothDeviceClass _this, 
@@ -218,6 +207,24 @@ void DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived( void* _thi
 
 /* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyMotoConEventReceived(). */
 #define _DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceBluetoothDeviceClass_NotifyBtcConnectionResult( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum aResult );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtcConnectionResult()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult( void* _this, 
+  XEnum aResult );
+
+/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyBtcConnectionResult(). */
+#define _DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult_
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBtcPasskey()' */
+XUInt32 DeviceInterfaceBluetoothDeviceClass_GetBtcPasskey( DeviceInterfaceBluetoothDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBtcPairingDeviceName()' */
+XString DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( DeviceInterfaceBluetoothDeviceClass _this );
 
 /* Default onget method for the property 'BtFwStatus' */
 XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this );

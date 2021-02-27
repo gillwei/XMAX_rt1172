@@ -597,43 +597,109 @@ const string SET01_reset =
 );
 
 $output false
-const string SET03_y_connect_app_pairing =
+const string SET03_Y_CONNECT_APP_PAIRING =
 (
   Default = "Y-connect App pairing";
 );
 
 $output false
-const string SET04_discovery_mode =
+const string SET04_DISCOVERY_MODE =
 (
   Default = "Discovery mode";
 );
 
 $output false
-const string SET04_paired_devices =
+const string SET04_PAIRED_DEVICES =
 (
   Default = "Paired devices";
 );
 
 $output false
-const string SET04_bt_auto_connect =
+const string SET04_BT_AUTO_CONNECT =
 (
   Default = "Bluetooth auto connect";
 );
 
 $output false
-const string SET19_delete_pairing =
+const string SET05_MAX_DEVICES =
+(
+  Default = "Max number of devices reached.\nDo you want to edit paired device list?";
+);
+
+$output false
+const string SET06_DISCOVERABLE =
+(
+  Default = "Now discoverable by other\nBluetooth devices.";
+);
+
+$output false
+const string SET06_NAME =
+(
+  Default = "Name : \"%s\"";
+);
+
+$output false
+const string SET06_TIME_LEFT =
+(
+  Default = "Time left : ";
+);
+
+$output false
+const string SET07_PAIRING_FAILED =
+(
+  Default = "Bluetooth pairing failed.";
+);
+
+$output false
+const string SET08_PAIR_WITH =
+(
+  Default = "Pair with\n\"%s\"?";
+);
+
+$output false
+const string SET08_PASSKEY =
+(
+  Default = "Passkey:";
+);
+
+$output false
+const string SET09_BT_CONNECTED =
+(
+  Default = "\"%s\"\nBluetooth\nconnected.";
+);
+
+$output false
+const string SET10_CONNECTION_FAILED =
+(
+  Default = "\"%s\"\nBluetooth\nconnection failed.";
+);
+
+$output false
+const string SET11_NO_LONGER_PAIRED =
+(
+  Default = "\"%s\" is no longer paired with the vehicle.\nPlease pair it again.";
+);
+
+$output false
+const string SET18_DELETE_PAIRING_RECORD =
+(
+  Default = "Please delete the pairing record on \"%s\", otherwise, you may not be able to reconnect with LinkCard in the future.";
+);
+
+$output false
+const string SET19_DELETE_PAIRING =
 (
   Default = "Delete pairing";
 );
 
 $output false
-const string SET19_connect =
+const string SET19_CONNECT =
 (
   Default = "Connect";
 );
 
 $output false
-const string SET19_disconnect =
+const string SET19_DISCONNECT =
 (
   Default = "Disconnect";
 );

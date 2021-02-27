@@ -36,7 +36,7 @@ resource Resources::Font NotoSansCjkJpMedium24pt
   attr fontitalic Italic = false;
   attr fontkerning Kerning = true;
   attr fontheightmode HeightMode = Popular;
-  attr fontrowdistance RowDistance;
+  attr fontrowdistance RowDistance = 31;
 }
 
 // This is a font resource.

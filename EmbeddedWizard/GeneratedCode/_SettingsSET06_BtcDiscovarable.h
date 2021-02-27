@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsBtMaxPairedDevice_H
-#define _SettingsBtMaxPairedDevice_H
+#ifndef _SettingsSET06_BtcDiscovarable_H
+#define _SettingsSET06_BtcDiscovarable_H
 
 #ifdef __cplusplus
   extern "C"
@@ -47,7 +47,7 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuUpDownPushButtonSet.h"
+#include "_MenuPushButton.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -94,22 +94,26 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::BtMaxPairedDevice */
-#ifndef _SettingsBtMaxPairedDevice_
-  EW_DECLARE_CLASS( SettingsBtMaxPairedDevice )
-#define _SettingsBtMaxPairedDevice_
+/* Forward declaration of the class Settings::SET06_BtcDiscovarable */
+#ifndef _SettingsSET06_BtcDiscovarable_
+  EW_DECLARE_CLASS( SettingsSET06_BtcDiscovarable )
+#define _SettingsSET06_BtcDiscovarable_
 #endif
 
 
-/* Deklaration of class : 'Settings::BtMaxPairedDevice' */
-EW_DEFINE_FIELDS( SettingsBtMaxPairedDevice, ComponentsBaseMainBG )
-  EW_PROPERTY( ToRemovePairedDevice, XSlot )
-  EW_OBJECT  ( Text,            ViewsText )
-  EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
-EW_END_OF_FIELDS( SettingsBtMaxPairedDevice )
+/* Deklaration of class : 'Settings::SET06_BtcDiscovarable' */
+EW_DEFINE_FIELDS( SettingsSET06_BtcDiscovarable, ComponentsBaseMainBG )
+  EW_OBJECT  ( DiscoverableText, ViewsText )
+  EW_OBJECT  ( TimeLeftText,    ViewsText )
+  EW_OBJECT  ( NameText,        ViewsText )
+  EW_OBJECT  ( CountDownTimer,  CoreTimer )
+  EW_OBJECT  ( PushButton,      MenuPushButton )
+  EW_OBJECT  ( BtcPairingStateChangeEventHandler, CoreSystemEventHandler )
+  EW_VARIABLE( CountDownTimeSec, XInt32 )
+EW_END_OF_FIELDS( SettingsSET06_BtcDiscovarable )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::BtMaxPairedDevice' */
-EW_DEFINE_METHODS( SettingsBtMaxPairedDevice, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET06_BtcDiscovarable' */
+EW_DEFINE_METHODS( SettingsSET06_BtcDiscovarable, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -156,26 +160,40 @@ EW_DEFINE_METHODS( SettingsBtMaxPairedDevice, ComponentsBaseMainBG )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET06_BtcDiscovarable _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-EW_END_OF_METHODS( SettingsBtMaxPairedDevice )
+EW_END_OF_METHODS( SettingsSET06_BtcDiscovarable )
 
-/* 'C' function for method : 'Settings::BtMaxPairedDevice.OnYesSlot()' */
-void SettingsBtMaxPairedDevice_OnYesSlot( SettingsBtMaxPairedDevice _this, XObject 
-  sender );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET06_BtcDiscovarable_Init( SettingsSET06_BtcDiscovarable _this, XHandle 
+  aArg );
 
-/* 'C' function for method : 'Settings::BtMaxPairedDevice.OnNoSlot()' */
-void SettingsBtMaxPairedDevice_OnNoSlot( SettingsBtMaxPairedDevice _this, XObject 
-  sender );
+/* 'C' function for method : 'Settings::SET06_BtcDiscovarable.OnShortHomeKeyActivated()' */
+void SettingsSET06_BtcDiscovarable_OnShortHomeKeyActivated( SettingsSET06_BtcDiscovarable _this );
+
+/* 'C' function for method : 'Settings::SET06_BtcDiscovarable.OnCancelSlot()' */
+void SettingsSET06_BtcDiscovarable_OnCancelSlot( SettingsSET06_BtcDiscovarable _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Settings::SET06_BtcDiscovarable.UpdateCountDownTimeSlot()' */
+void SettingsSET06_BtcDiscovarable_UpdateCountDownTimeSlot( SettingsSET06_BtcDiscovarable _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot( SettingsSET06_BtcDiscovarable _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsBtMaxPairedDevice_H */
+#endif /* _SettingsSET06_BtcDiscovarable_H */
 
 /* Embedded Wizard */

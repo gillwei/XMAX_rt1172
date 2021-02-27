@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSET17_BtPairedDeviceList_H
-#define _SettingsSET17_BtPairedDeviceList_H
+#ifndef _SettingsSET05_BtcMaxPairedDevice_H
+#define _SettingsSET05_BtcMaxPairedDevice_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,22 +42,15 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
-#include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuVerticalMenu.h"
+#include "_MenuUpDownPushButtonSet.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -101,28 +94,21 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBase */
-#ifndef _MenuItemBase_
-  EW_DECLARE_CLASS( MenuItemBase )
-#define _MenuItemBase_
-#endif
-
-/* Forward declaration of the class Settings::SET17_BtPairedDeviceList */
-#ifndef _SettingsSET17_BtPairedDeviceList_
-  EW_DECLARE_CLASS( SettingsSET17_BtPairedDeviceList )
-#define _SettingsSET17_BtPairedDeviceList_
+/* Forward declaration of the class Settings::SET05_BtcMaxPairedDevice */
+#ifndef _SettingsSET05_BtcMaxPairedDevice_
+  EW_DECLARE_CLASS( SettingsSET05_BtcMaxPairedDevice )
+#define _SettingsSET05_BtcMaxPairedDevice_
 #endif
 
 
-/* Deklaration of class : 'Settings::SET17_BtPairedDeviceList' */
-EW_DEFINE_FIELDS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView )
-  EW_OBJECT  ( RefreshListObserver, CorePropertyObserver )
-  EW_OBJECT  ( NoDataText,      ViewsText )
-  EW_VARIABLE( PairedDeviceNum, XInt32 )
-EW_END_OF_FIELDS( SettingsSET17_BtPairedDeviceList )
+/* Deklaration of class : 'Settings::SET05_BtcMaxPairedDevice' */
+EW_DEFINE_FIELDS( SettingsSET05_BtcMaxPairedDevice, ComponentsBaseMainBG )
+  EW_OBJECT  ( Text,            ViewsText )
+  EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
+EW_END_OF_FIELDS( SettingsSET05_BtcMaxPairedDevice )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SET17_BtPairedDeviceList' */
-EW_DEFINE_METHODS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET05_BtcMaxPairedDevice' */
+EW_DEFINE_METHODS( SettingsSET05_BtcMaxPairedDevice, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -153,8 +139,7 @@ EW_DEFINE_METHODS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
   EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
-  EW_METHOD( UpdateViewState,   void )( SettingsSET17_BtPairedDeviceList _this, 
-    XSet aState )
+  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
@@ -176,63 +161,26 @@ EW_DEFINE_METHODS( SettingsSET17_BtPairedDeviceList, MenuBaseMenuView )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( LoadItemClass,     XClass )( SettingsSET17_BtPairedDeviceList _this, 
-    XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( SettingsSET17_BtPairedDeviceList _this, 
-    XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( SettingsSET17_BtPairedDeviceList _this, 
-    XInt32 aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( SettingsSET17_BtPairedDeviceList _this, 
-    XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( SettingsSET17_BtPairedDeviceList )
+EW_END_OF_METHODS( SettingsSET05_BtcMaxPairedDevice )
 
-/* The method UpdateViewState() is invoked automatically after the state of the 
-   component has been changed. This method can be overridden and filled with logic 
-   to ensure the visual aspect of the component does reflect its current state. 
-   For example, the 'enabled' state of the component can affect its colors (disabled 
-   components may appear pale). In this case the logic of the method should modify 
-   the respective color properties accordingly to the current 'enabled' state. 
-   The current state of the component is passed as a set in the parameter aState. 
-   It reflects the very basic component state like its visibility or the ability 
-   to react to user inputs. Beside this common state, the method can also involve 
-   any other variables used in the component as long as they reflect its current 
-   state. For example, the toggle switch component can take in account its toggle 
-   state 'on' or 'off' and change accordingly the location of the slider, etc.
-   Usually, this method will be invoked automatically by the framework. Optionally 
-   you can request its invocation by using the method @InvalidateViewState(). */
-void SettingsSET17_BtPairedDeviceList_UpdateViewState( SettingsSET17_BtPairedDeviceList _this, 
-  XSet aState );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET05_BtcMaxPairedDevice_Init( SettingsSET05_BtcMaxPairedDevice _this, 
+  XHandle aArg );
 
-/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.LoadItemClass()' */
-XClass SettingsSET17_BtPairedDeviceList_LoadItemClass( SettingsSET17_BtPairedDeviceList _this, 
-  XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET05_BtcMaxPairedDevice.OnYesActivatedSlot()' */
+void SettingsSET05_BtcMaxPairedDevice_OnYesActivatedSlot( SettingsSET05_BtcMaxPairedDevice _this, 
+  XObject sender );
 
-/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.LoadItemTitle()' */
-XString SettingsSET17_BtPairedDeviceList_LoadItemTitle( SettingsSET17_BtPairedDeviceList _this, 
-  XInt32 aItemNo );
-
-/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.OnItemActivate()' */
-void SettingsSET17_BtPairedDeviceList_OnItemActivate( SettingsSET17_BtPairedDeviceList _this, 
-  XInt32 aItemNo, MenuItemBase aMenuItem );
-
-/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.LoadItemChecked()' */
-XBool SettingsSET17_BtPairedDeviceList_LoadItemChecked( SettingsSET17_BtPairedDeviceList _this, 
-  XInt32 aItemNo );
-
-/* 'C' function for method : 'Settings::SET17_BtPairedDeviceList.UpdatePairedDeviceNum()' */
-void SettingsSET17_BtPairedDeviceList_UpdatePairedDeviceNum( SettingsSET17_BtPairedDeviceList _this );
-
-/* This slot method is executed when the associated property observer 'PropertyObserver' 
-   is notified. */
-void SettingsSET17_BtPairedDeviceList_OnRefreshListSlot( SettingsSET17_BtPairedDeviceList _this, 
+/* 'C' function for method : 'Settings::SET05_BtcMaxPairedDevice.OnNoActivatedSlot()' */
+void SettingsSET05_BtcMaxPairedDevice_OnNoActivatedSlot( SettingsSET05_BtcMaxPairedDevice _this, 
   XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSET17_BtPairedDeviceList_H */
+#endif /* _SettingsSET05_BtcMaxPairedDevice_H */
 
 /* Embedded Wizard */

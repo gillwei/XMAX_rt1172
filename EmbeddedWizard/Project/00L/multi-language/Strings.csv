@@ -96,13 +96,32 @@ SET01_seat_heater_settings,Seat heater settings,,,,,,,
 SET01_system_info,System information,,,,,,,
 SET01_legal_info,Legal information,,,,,,,
 SET01_reset,Reset,,,,,,,
-SET03_y_connect_app_pairing,Y-connect App pairing,,,,,,,
-SET04_discovery_mode,Discovery mode,,,,,,,
-SET04_paired_devices,Paired devices,,,,,,,
-SET04_bt_auto_connect,Bluetooth auto connect,,,,,,,
-SET19_delete_pairing,Delete pairing,,,,,,,
-SET19_connect,Connect,,,,,,,
-SET19_disconnect,Disconnect,,,,,,,
+SET03_Y_CONNECT_APP_PAIRING,Y-connect App pairing,,,,,,,
+SET04_DISCOVERY_MODE,Discovery mode,,,,,,,
+SET04_PAIRED_DEVICES,Paired devices,,,,,,,
+SET04_BT_AUTO_CONNECT,Bluetooth auto connect,,,,,,,
+SET05_MAX_DEVICES,"Max number of devices reached.
+Do you want to edit paired device list?",,,,,,,
+SET06_DISCOVERABLE,"Now discoverable by other
+Bluetooth devices.",,,,,,,
+SET06_NAME,"Name : ""%s""",,,,,,,
+SET06_TIME_LEFT,Time left : ,,,,,,,
+SET07_PAIRING_FAILED,Bluetooth pairing failed.,,,,,,,
+SET08_PAIR_WITH,"Pair with
+""%s""?",,,,,,,
+SET08_PASSKEY,Passkey:,,,,,,,
+SET09_BT_CONNECTED,"""%s""
+Bluetooth
+connected.",,,,,,,
+SET10_CONNECTION_FAILED,"""%s""
+Bluetooth
+connection failed.",,,,,,,
+SET11_NO_LONGER_PAIRED,"""%s"" is no longer paired with the vehicle.
+Please pair it again.",,,,,,,
+SET18_DELETE_PAIRING_RECORD,"Please delete the pairing record on ""%s"", otherwise, you may not be able to reconnect with LinkCard in the future.",,,,,,,
+SET19_DELETE_PAIRING,Delete pairing,,,,,,,
+SET19_CONNECT,Connect,,,,,,,
+SET19_DISCONNECT,Disconnect,,,,,,,
 SET20_COMPLETE_BT_PAIRING_FIRST,You must complete Bluetooth pairing before pairing with the Y-connect app.,,,,,,,
 SET21_BLE_ALREADY_CONNECTED,"""%s"" is now connected. To pair another smartphone with the Y-connect app, connect it via Bluetooth first.",,,,,,,
 SET22_DEVICE_NAME,"Device name:

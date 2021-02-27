@@ -52,6 +52,12 @@ EW_DECLARE_CONST( StringsGEN_ok )
 /* User defined constant: 'Strings::GEN_cancel' */
 EW_DECLARE_CONST( StringsGEN_cancel )
 
+/* User defined constant: 'Strings::GEN_yes' */
+extern const XStringRes StringsGEN_yes;
+
+/* User defined constant: 'Strings::GEN_no' */
+extern const XStringRes StringsGEN_no;
+
 /* User defined constant: 'Strings::GEN_bluetooth' */
 extern const XStringRes StringsGEN_bluetooth;
 
@@ -178,26 +184,56 @@ extern const XStringRes StringsSET01_legal_info;
 /* User defined constant: 'Strings::SET01_reset' */
 extern const XStringRes StringsSET01_reset;
 
-/* User defined constant: 'Strings::SET03_y_connect_app_pairing' */
-extern const XStringRes StringsSET03_y_connect_app_pairing;
+/* User defined constant: 'Strings::SET03_Y_CONNECT_APP_PAIRING' */
+extern const XStringRes StringsSET03_Y_CONNECT_APP_PAIRING;
 
-/* User defined constant: 'Strings::SET04_discovery_mode' */
-extern const XStringRes StringsSET04_discovery_mode;
+/* User defined constant: 'Strings::SET04_DISCOVERY_MODE' */
+extern const XStringRes StringsSET04_DISCOVERY_MODE;
 
-/* User defined constant: 'Strings::SET04_paired_devices' */
-extern const XStringRes StringsSET04_paired_devices;
+/* User defined constant: 'Strings::SET04_PAIRED_DEVICES' */
+extern const XStringRes StringsSET04_PAIRED_DEVICES;
 
-/* User defined constant: 'Strings::SET04_bt_auto_connect' */
-extern const XStringRes StringsSET04_bt_auto_connect;
+/* User defined constant: 'Strings::SET04_BT_AUTO_CONNECT' */
+extern const XStringRes StringsSET04_BT_AUTO_CONNECT;
 
-/* User defined constant: 'Strings::SET19_delete_pairing' */
-extern const XStringRes StringsSET19_delete_pairing;
+/* User defined constant: 'Strings::SET05_MAX_DEVICES' */
+extern const XStringRes StringsSET05_MAX_DEVICES;
 
-/* User defined constant: 'Strings::SET19_connect' */
-extern const XStringRes StringsSET19_connect;
+/* User defined constant: 'Strings::SET06_DISCOVERABLE' */
+extern const XStringRes StringsSET06_DISCOVERABLE;
 
-/* User defined constant: 'Strings::SET19_disconnect' */
-extern const XStringRes StringsSET19_disconnect;
+/* User defined constant: 'Strings::SET06_TIME_LEFT' */
+extern const XStringRes StringsSET06_TIME_LEFT;
+
+/* User defined constant: 'Strings::SET07_PAIRING_FAILED' */
+extern const XStringRes StringsSET07_PAIRING_FAILED;
+
+/* User defined constant: 'Strings::SET08_PAIR_WITH' */
+extern const XStringRes StringsSET08_PAIR_WITH;
+
+/* User defined constant: 'Strings::SET08_PASSKEY' */
+extern const XStringRes StringsSET08_PASSKEY;
+
+/* User defined constant: 'Strings::SET09_BT_CONNECTED' */
+extern const XStringRes StringsSET09_BT_CONNECTED;
+
+/* User defined constant: 'Strings::SET10_CONNECTION_FAILED' */
+extern const XStringRes StringsSET10_CONNECTION_FAILED;
+
+/* User defined constant: 'Strings::SET11_NO_LONGER_PAIRED' */
+extern const XStringRes StringsSET11_NO_LONGER_PAIRED;
+
+/* User defined constant: 'Strings::SET18_DELETE_PAIRING_RECORD' */
+extern const XStringRes StringsSET18_DELETE_PAIRING_RECORD;
+
+/* User defined constant: 'Strings::SET19_DELETE_PAIRING' */
+extern const XStringRes StringsSET19_DELETE_PAIRING;
+
+/* User defined constant: 'Strings::SET19_CONNECT' */
+extern const XStringRes StringsSET19_CONNECT;
+
+/* User defined constant: 'Strings::SET19_DISCONNECT' */
+extern const XStringRes StringsSET19_DISCONNECT;
 
 /* User defined constant: 'Strings::SET20_COMPLETE_BT_PAIRING_FIRST' */
 extern const XStringRes StringsSET20_COMPLETE_BT_PAIRING_FIRST;

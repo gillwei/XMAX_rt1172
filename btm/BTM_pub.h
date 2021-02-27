@@ -39,8 +39,7 @@ typedef enum
     {
     BT_CONNECTION_SUCCESS,
     BT_CONNECTION_FAIL,
-    BT_CONNECTION_TIMEOUT,
-    BT_CONNECTION_LOST,
+    BT_CONNECTION_AUTHENTICATION_ERR
     } bt_connection_result_type;
 
 typedef void ( *bt_connection_info_update_cb )( const bool connection_is_up,

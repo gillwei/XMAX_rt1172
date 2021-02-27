@@ -46,7 +46,7 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000228, /* ratio 55.07 % */
+  0x000001F2, /* ratio 57.03 % */
   0xB8002500, 0x000A6452, 0x00C2003A, 0x80107390, 0x16750010, 0x20037002, 0x540044C9,
   0x30019400, 0x000021A7, 0x04160619, 0x1BC00680, 0x421C7700, 0x22D14894, 0x3B1B8CC5,
   0x91A29422, 0x0D364AE3, 0xF1000075, 0x9104C011, 0xE4D00051, 0x0024C639, 0xA6793532,
@@ -54,10 +54,10 @@ static const unsigned int _StringsDefault0[] =
   0x4D4CF178, 0x7E793AA4, 0x2AF550C4, 0x015BAC80, 0xD5889104, 0x25B14226, 0xBB345215,
   0xA9CEED11, 0xD5D64F6D, 0x4E2E752A, 0x00DB2B31, 0xEF764BC0, 0x7B690059, 0x10DC0876,
   0x002854AE, 0xBA942A70, 0x8441A191, 0x1D86110A, 0xDF0017AB, 0x7EFF90A3, 0x48B22084,
-  0x6C70B266, 0x16F8C5F6, 0x918DE280, 0x4910363F, 0xD0C32564, 0xCC524FB5, 0xE503600D,
-  0x2B3171C1, 0x4D71D8EC, 0x6A47A94D, 0x564CEC52, 0x6CE26A34, 0x68B93E09, 0x87C22370,
-  0x377A2338, 0x6BAC782A, 0x83110A8A, 0xC2A00D55, 0x5584DAF1, 0x10323422, 0x2BEAE7C0,
-  0x2067123B, 0x947CE1F2, 0x13515800, 0x04F5C443, 0x00004040, 0x00000000
+  0x6C70B266, 0x16F8C5F6, 0x918DE280, 0x4910363F, 0xD0C32564, 0xCC524FB5, 0xC12D800D,
+  0x6E0D1727, 0x6710F844, 0x0546E5C4, 0x514D758F, 0xAAB06221, 0x3CA05401, 0x8443EE38,
+  0xF8020646, 0xC461164C, 0x8819C48E, 0x7C200EFC, 0x19352B4A, 0x2009EF12, 0x00000020,
+  0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -71,9 +71,8 @@ static const XStringRes _Const0006 = { _StringsDefault0, 0x0086 };
 static const XStringRes _Const0007 = { _StringsDefault0, 0x00A3 };
 static const XStringRes _Const0008 = { _StringsDefault0, 0x00B3 };
 static const XStringRes _Const0009 = { _StringsDefault0, 0x00C0 };
-static const XStringRes _Const000A = { _StringsDefault0, 0x00DB };
-static const XStringRes _Const000B = { _StringsDefault0, 0x00F3 };
-static const XStringRes _Const000C = { _StringsDefault0, 0x0108 };
+static const XStringRes _Const000A = { _StringsDefault0, 0x00D8 };
+static const XStringRes _Const000B = { _StringsDefault0, 0x00ED };
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
@@ -1092,17 +1091,15 @@ void DeviceInterfaceBluetoothDeviceClass__Init( DeviceInterfaceBluetoothDeviceCl
   _this->_GCT = EW_CLASS_GCT( DeviceInterfaceBluetoothDeviceClass );
 
   /* ... then construct all embedded objects */
-  CoreSystemEvent__Init( &_this->PasskeyGeneratedSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->ConnectionResultSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->BtcPairingChangedSystemEvent, &_this->_XObject, 0 );
   DeviceInterfaceBluetoothPairedDeviceInfo__Init( &_this->PairedDeviceObj, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->BlePairingStateChangedEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->MotoConSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->PairedDeviceUpdatedSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->BtcConnectionResultSystemEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceBluetoothDeviceClass );
-
-  /* ... and initialize objects, variables, properties, etc. */
-  _this->ConnectionResult = EnumBtResultFAIL;
 }
 
 /* Re-Initializer for the class 'DeviceInterface::BluetoothDeviceClass' */
@@ -1112,11 +1109,12 @@ void DeviceInterfaceBluetoothDeviceClass__ReInit( DeviceInterfaceBluetoothDevice
   TemplatesDeviceClass__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
-  CoreSystemEvent__ReInit( &_this->PasskeyGeneratedSystemEvent );
-  CoreSystemEvent__ReInit( &_this->ConnectionResultSystemEvent );
+  CoreSystemEvent__ReInit( &_this->BtcPairingChangedSystemEvent );
   DeviceInterfaceBluetoothPairedDeviceInfo__ReInit( &_this->PairedDeviceObj );
   CoreSystemEvent__ReInit( &_this->BlePairingStateChangedEvent );
   CoreSystemEvent__ReInit( &_this->MotoConSystemEvent );
+  CoreSystemEvent__ReInit( &_this->PairedDeviceUpdatedSystemEvent );
+  CoreSystemEvent__ReInit( &_this->BtcConnectionResultSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::BluetoothDeviceClass' */
@@ -1126,11 +1124,12 @@ void DeviceInterfaceBluetoothDeviceClass__Done( DeviceInterfaceBluetoothDeviceCl
   _this->_Super._VMT = EW_CLASS( TemplatesDeviceClass );
 
   /* Finalize all embedded objects */
-  CoreSystemEvent__Done( &_this->PasskeyGeneratedSystemEvent );
-  CoreSystemEvent__Done( &_this->ConnectionResultSystemEvent );
+  CoreSystemEvent__Done( &_this->BtcPairingChangedSystemEvent );
   DeviceInterfaceBluetoothPairedDeviceInfo__Done( &_this->PairedDeviceObj );
   CoreSystemEvent__Done( &_this->BlePairingStateChangedEvent );
   CoreSystemEvent__Done( &_this->MotoConSystemEvent );
+  CoreSystemEvent__Done( &_this->PairedDeviceUpdatedSystemEvent );
+  CoreSystemEvent__Done( &_this->BtcConnectionResultSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -1156,37 +1155,19 @@ void DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceAtItem( DeviceInterfaceB
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceBluetoothDeviceClass_NotifyPasskeyGenerated( DeviceInterfaceBluetoothDeviceClass _this, 
-  XString aPasskey )
+void DeviceInterfaceBluetoothDeviceClass_NotifyBtcPairingStateChanged( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum aState )
 {
-  EwTrace( "%s%s", EwLoadString( &_Const0009 ), aPasskey );
-  _this->Passkey = EwShareString( aPasskey );
-  CoreSystemEvent_Trigger( &_this->PasskeyGeneratedSystemEvent, 0, 0 );
+  _this->BtcPairingState = aState;
+  CoreSystemEvent_Trigger( &_this->BtcPairingChangedSystemEvent, 0, 0 );
 }
 
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyPasskeyGenerated()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyPasskeyGenerated( void* _this, XString 
-  aPasskey )
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtcPairingStateChanged()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged( void* _this, 
+  XEnum aState )
 {
-  DeviceInterfaceBluetoothDeviceClass_NotifyPasskeyGenerated((DeviceInterfaceBluetoothDeviceClass)_this
-  , aPasskey );
-}
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceBluetoothDeviceClass_NotifyConnectionResult( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum aResult )
-{
-  _this->ConnectionResult = aResult;
-  CoreSystemEvent_Trigger( &_this->ConnectionResultSystemEvent, 0, 0 );
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionResult()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyConnectionResult( void* _this, XEnum 
-  aResult )
-{
-  DeviceInterfaceBluetoothDeviceClass_NotifyConnectionResult((DeviceInterfaceBluetoothDeviceClass)_this
-  , aResult );
+  DeviceInterfaceBluetoothDeviceClass_NotifyBtcPairingStateChanged((DeviceInterfaceBluetoothDeviceClass)_this
+  , aState );
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetDiscoverable()' */
@@ -1204,7 +1185,7 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( DeviceInterfaceBluet
 void DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this, 
   XBool value )
 {
-  EwTrace( "%s%b", EwLoadString( &_Const000A ), value );
+  EwTrace( "%s%b", EwLoadString( &_Const0009 ), value );
 
   if ( _this->BluetoothEnable != value )
   {
@@ -1278,18 +1259,18 @@ void DeviceInterfaceBluetoothDeviceClass_GetBluetoothEnable( DeviceInterfaceBlue
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetLocalDeviceName()' */
 XString DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceName( DeviceInterfaceBluetoothDeviceClass _this )
 {
-  XString DevName;
+  XString LocalDevName;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  DevName = 0;
+  LocalDevName = 0;
   {
     uint8_t* device_name;
     ew_bt_get_local_device_name( &device_name );
-    DevName = EwNewStringAnsi( ( char* )device_name );
+    LocalDevName = EwNewStringAnsi( ( char* )device_name );
   }
-  return DevName;
+  return LocalDevName;
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.ConnectPairedDevice()' */
@@ -1355,8 +1336,8 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( DeviceInterfaceBluetoo
 void DeviceInterfaceBluetoothDeviceClass_NotifyBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this, 
   XEnum status, XString version )
 {
-  EwTrace( "%s%e", EwLoadString( &_Const000B ), status );
-  EwTrace( "%s%s", EwLoadString( &_Const000C ), version );
+  EwTrace( "%s%e", EwLoadString( &_Const000A ), status );
+  EwTrace( "%s%s", EwLoadString( &_Const000B ), version );
   DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( _this, status );
 }
 
@@ -1382,6 +1363,7 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList( DeviceInt
 void DeviceInterfaceBluetoothDeviceClass_NotifyPairedDeviceConnectionStatusUpdated( DeviceInterfaceBluetoothDeviceClass _this )
 {
   DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList( _this, 1 );
+  CoreSystemEvent_Trigger( &_this->PairedDeviceUpdatedSystemEvent, 0, 0 );
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyPairedDeviceConnectionStatusUpdated()' */
@@ -1515,6 +1497,53 @@ void DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived( void* _thi
   , aEvent );
 }
 
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceBluetoothDeviceClass_NotifyBtcConnectionResult( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum aResult )
+{
+  _this->ConnectPairedDeviceResult = aResult;
+  CoreSystemEvent_Trigger( &_this->BtcConnectionResultSystemEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtcConnectionResult()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult( void* _this, 
+  XEnum aResult )
+{
+  DeviceInterfaceBluetoothDeviceClass_NotifyBtcConnectionResult((DeviceInterfaceBluetoothDeviceClass)_this
+  , aResult );
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBtcPasskey()' */
+XUInt32 DeviceInterfaceBluetoothDeviceClass_GetBtcPasskey( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  XUInt32 Passkey;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Passkey = 0;
+  Passkey = ew_get_btc_passkey();
+  return Passkey;
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBtcPairingDeviceName()' */
+XString DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  XString PairingDeviceName;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  PairingDeviceName = 0;
+  {
+    uint8_t* btc_pairing_device_name;
+    ew_bt_get_btc_connecting_device_name( &btc_pairing_device_name );
+    PairingDeviceName = EwNewStringAnsi( ( char* )btc_pairing_device_name );
+  }
+  return PairingDeviceName;
+}
+
 /* Default onget method for the property 'BtFwStatus' */
 XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this )
 {
@@ -1532,9 +1561,9 @@ EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceBluetoothDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceBluetoothDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::BluetoothDeviceClass' */
-EW_DEFINE_CLASS( DeviceInterfaceBluetoothDeviceClass, TemplatesDeviceClass, PasskeyGeneratedSystemEvent, 
-                 PasskeyGeneratedSystemEvent, PasskeyGeneratedSystemEvent, PasskeyGeneratedSystemEvent, 
-                 Passkey, BtFwStatus, "DeviceInterface::BluetoothDeviceClass" )
+EW_DEFINE_CLASS( DeviceInterfaceBluetoothDeviceClass, TemplatesDeviceClass, BtcPairingChangedSystemEvent, 
+                 BtcPairingChangedSystemEvent, BtcPairingChangedSystemEvent, BtcPairingChangedSystemEvent, 
+                 ConnectPairedDeviceResult, ConnectPairedDeviceResult, "DeviceInterface::BluetoothDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceBluetoothDeviceClass )
 
 /* User defined auto object: 'DeviceInterface::BluetoothDevice' */

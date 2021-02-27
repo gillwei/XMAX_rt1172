@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSET19_BtPairedDeviceOperation_H
-#define _SettingsSET19_BtPairedDeviceOperation_H
+#ifndef _SettingsSET19_BtcPairedDeviceOperation_H
+#define _SettingsSET19_BtcPairedDeviceOperation_H
 
 #ifdef __cplusplus
   extern "C"
@@ -105,22 +105,22 @@
 #define _MenuItemBase_
 #endif
 
-/* Forward declaration of the class Settings::SET19_BtPairedDeviceOperation */
-#ifndef _SettingsSET19_BtPairedDeviceOperation_
-  EW_DECLARE_CLASS( SettingsSET19_BtPairedDeviceOperation )
-#define _SettingsSET19_BtPairedDeviceOperation_
+/* Forward declaration of the class Settings::SET19_BtcPairedDeviceOperation */
+#ifndef _SettingsSET19_BtcPairedDeviceOperation_
+  EW_DECLARE_CLASS( SettingsSET19_BtcPairedDeviceOperation )
+#define _SettingsSET19_BtcPairedDeviceOperation_
 #endif
 
 
-/* Deklaration of class : 'Settings::SET19_BtPairedDeviceOperation' */
-EW_DEFINE_FIELDS( SettingsSET19_BtPairedDeviceOperation, MenuBaseMenuView )
+/* Deklaration of class : 'Settings::SET19_BtcPairedDeviceOperation' */
+EW_DEFINE_FIELDS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView )
   EW_PROPERTY( DeviceName,      XString )
   EW_PROPERTY( PairedDeviceIndex, XInt32 )
   EW_PROPERTY( IsConnected,     XBool )
-EW_END_OF_FIELDS( SettingsSET19_BtPairedDeviceOperation )
+EW_END_OF_FIELDS( SettingsSET19_BtcPairedDeviceOperation )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SET19_BtPairedDeviceOperation' */
-EW_DEFINE_METHODS( SettingsSET19_BtPairedDeviceOperation, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET19_BtcPairedDeviceOperation' */
+EW_DEFINE_METHODS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -173,38 +173,44 @@ EW_DEFINE_METHODS( SettingsSET19_BtPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( LoadItemClass,     XClass )( SettingsSET19_BtPairedDeviceOperation _this, 
+  EW_METHOD( LoadItemClass,     XClass )( SettingsSET19_BtcPairedDeviceOperation _this, 
     XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( SettingsSET19_BtPairedDeviceOperation _this, 
+  EW_METHOD( LoadItemTitle,     XString )( SettingsSET19_BtcPairedDeviceOperation _this, 
     XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( SettingsSET19_BtPairedDeviceOperation _this, 
+  EW_METHOD( OnItemActivate,    void )( SettingsSET19_BtcPairedDeviceOperation _this, 
     XInt32 aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( SettingsSET19_BtPairedDeviceOperation _this, 
+  EW_METHOD( LoadItemEnabled,   XBool )( SettingsSET19_BtcPairedDeviceOperation _this, 
     XInt32 aItemNo )
   EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( SettingsSET19_BtPairedDeviceOperation )
+EW_END_OF_METHODS( SettingsSET19_BtcPairedDeviceOperation )
 
-/* 'C' function for method : 'Settings::SET19_BtPairedDeviceOperation.LoadItemClass()' */
-XClass SettingsSET19_BtPairedDeviceOperation_LoadItemClass( SettingsSET19_BtPairedDeviceOperation _this, 
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET19_BtcPairedDeviceOperation_Init( SettingsSET19_BtcPairedDeviceOperation _this, 
+  XHandle aArg );
+
+/* 'C' function for method : 'Settings::SET19_BtcPairedDeviceOperation.LoadItemClass()' */
+XClass SettingsSET19_BtcPairedDeviceOperation_LoadItemClass( SettingsSET19_BtcPairedDeviceOperation _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::SET19_BtPairedDeviceOperation.LoadItemTitle()' */
-XString SettingsSET19_BtPairedDeviceOperation_LoadItemTitle( SettingsSET19_BtPairedDeviceOperation _this, 
+/* 'C' function for method : 'Settings::SET19_BtcPairedDeviceOperation.LoadItemTitle()' */
+XString SettingsSET19_BtcPairedDeviceOperation_LoadItemTitle( SettingsSET19_BtcPairedDeviceOperation _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::SET19_BtPairedDeviceOperation.OnItemActivate()' */
-void SettingsSET19_BtPairedDeviceOperation_OnItemActivate( SettingsSET19_BtPairedDeviceOperation _this, 
+/* 'C' function for method : 'Settings::SET19_BtcPairedDeviceOperation.OnItemActivate()' */
+void SettingsSET19_BtcPairedDeviceOperation_OnItemActivate( SettingsSET19_BtcPairedDeviceOperation _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Settings::SET19_BtPairedDeviceOperation.LoadItemEnabled()' */
-XBool SettingsSET19_BtPairedDeviceOperation_LoadItemEnabled( SettingsSET19_BtPairedDeviceOperation _this, 
+/* 'C' function for method : 'Settings::SET19_BtcPairedDeviceOperation.LoadItemEnabled()' */
+XBool SettingsSET19_BtcPairedDeviceOperation_LoadItemEnabled( SettingsSET19_BtcPairedDeviceOperation _this, 
   XInt32 aItemNo );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSET19_BtPairedDeviceOperation_H */
+#endif /* _SettingsSET19_BtcPairedDeviceOperation_H */
 
 /* Embedded Wizard */

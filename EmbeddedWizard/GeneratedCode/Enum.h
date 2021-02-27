@@ -61,14 +61,13 @@ typedef enum
   EnumCommandTypePrevTrack              = 3
 } EnumCommandType;
 
-/* User defined enumeration: 'Enum::BtResult' */
+/* User defined enumeration: 'Enum::BtDeviceConnectionResult' */
 typedef enum
 {
-  EnumBtResultSUCCESS                   = 0,
-  EnumBtResultFAIL                      = 1,
-  EnumBtResultTIMEOUT                   = 2,
-  EnumBtResultLOST                      = 3
-} EnumBtResult;
+  EnumBtDeviceConnectionResultSUCCESS   = 0,
+  EnumBtDeviceConnectionResultFAIL      = 1,
+  EnumBtDeviceConnectionResultAUTHENTICATION_ERR = 2
+} EnumBtDeviceConnectionResult;
 
 /* User defined enumeration: 'Enum::BtFwStatus' */
 typedef enum
@@ -351,6 +350,17 @@ typedef enum
   EnumWeatherTimeTypeWEATHER_AFTER_2HOUR = 7,
   EnumWeatherTimeTypeWEATHER_AFTER_3HOUR = 8
 } EnumWeatherTimeType;
+
+/* User defined enumeration: 'Enum::BtcPairingState' */
+typedef enum
+{
+  EnumBtcPairingStateIDLE               = 0,
+  EnumBtcPairingStateDISCOVERABLE       = 1,
+  EnumBtcPairingStateSUCCESSFUL         = 2,
+  EnumBtcPairingStateTIMEOUT            = 3,
+  EnumBtcPairingStateFAIL               = 4,
+  EnumBtcPairingStatePASSKEY_GENERATED  = 5
+} EnumBtcPairingState;
 
 #ifdef __cplusplus
   }

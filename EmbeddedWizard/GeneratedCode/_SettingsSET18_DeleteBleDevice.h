@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSET04_BtSettingMenu_H
-#define _SettingsSET04_BtSettingMenu_H
+#ifndef _SettingsSET18_DeleteBleDevice_H
+#define _SettingsSET18_DeleteBleDevice_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,20 +42,14 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -99,27 +93,21 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBase */
-#ifndef _MenuItemBase_
-  EW_DECLARE_CLASS( MenuItemBase )
-#define _MenuItemBase_
-#endif
-
-/* Forward declaration of the class Settings::SET04_BtSettingMenu */
-#ifndef _SettingsSET04_BtSettingMenu_
-  EW_DECLARE_CLASS( SettingsSET04_BtSettingMenu )
-#define _SettingsSET04_BtSettingMenu_
+/* Forward declaration of the class Settings::SET18_DeleteBleDevice */
+#ifndef _SettingsSET18_DeleteBleDevice_
+  EW_DECLARE_CLASS( SettingsSET18_DeleteBleDevice )
+#define _SettingsSET18_DeleteBleDevice_
 #endif
 
 
-/* Deklaration of class : 'Settings::SET04_BtSettingMenu' */
-EW_DEFINE_FIELDS( SettingsSET04_BtSettingMenu, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [4])
-  EW_ARRAY   ( ItemClassArray,  XClass, [4])
-EW_END_OF_FIELDS( SettingsSET04_BtSettingMenu )
+/* Deklaration of class : 'Settings::SET18_DeleteBleDevice' */
+EW_DEFINE_FIELDS( SettingsSET18_DeleteBleDevice, ComponentsBaseMainBG )
+  EW_OBJECT  ( Text,            ViewsText )
+  EW_PROPERTY( DeviceName,      XString )
+EW_END_OF_FIELDS( SettingsSET18_DeleteBleDevice )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SET04_BtSettingMenu' */
-EW_DEFINE_METHODS( SettingsSET04_BtSettingMenu, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET18_DeleteBleDevice' */
+EW_DEFINE_METHODS( SettingsSET18_DeleteBleDevice, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -172,49 +160,18 @@ EW_DEFINE_METHODS( SettingsSET04_BtSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( LoadItemClass,     XClass )( SettingsSET04_BtSettingMenu _this, XInt32 
-    aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( SettingsSET04_BtSettingMenu _this, XInt32 
-    aItemNo )
-  EW_METHOD( OnItemActivate,    void )( SettingsSET04_BtSettingMenu _this, XInt32 
-    aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( SettingsSET04_BtSettingMenu _this, XInt32 
-    aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( SettingsSET04_BtSettingMenu _this, XInt32 
-    aItemNo )
-  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( SettingsSET04_BtSettingMenu )
+EW_END_OF_METHODS( SettingsSET18_DeleteBleDevice )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void SettingsSET04_BtSettingMenu_Init( SettingsSET04_BtSettingMenu _this, XHandle 
+void SettingsSET18_DeleteBleDevice_Init( SettingsSET18_DeleteBleDevice _this, XHandle 
   aArg );
-
-/* 'C' function for method : 'Settings::SET04_BtSettingMenu.LoadItemClass()' */
-XClass SettingsSET04_BtSettingMenu_LoadItemClass( SettingsSET04_BtSettingMenu _this, 
-  XInt32 aItemNo );
-
-/* 'C' function for method : 'Settings::SET04_BtSettingMenu.LoadItemTitle()' */
-XString SettingsSET04_BtSettingMenu_LoadItemTitle( SettingsSET04_BtSettingMenu _this, 
-  XInt32 aItemNo );
-
-/* 'C' function for method : 'Settings::SET04_BtSettingMenu.OnItemActivate()' */
-void SettingsSET04_BtSettingMenu_OnItemActivate( SettingsSET04_BtSettingMenu _this, 
-  XInt32 aItemNo, MenuItemBase aMenuItem );
-
-/* 'C' function for method : 'Settings::SET04_BtSettingMenu.LoadItemChecked()' */
-XBool SettingsSET04_BtSettingMenu_LoadItemChecked( SettingsSET04_BtSettingMenu _this, 
-  XInt32 aItemNo );
-
-/* 'C' function for method : 'Settings::SET04_BtSettingMenu.LoadItemEnabled()' */
-XBool SettingsSET04_BtSettingMenu_LoadItemEnabled( SettingsSET04_BtSettingMenu _this, 
-  XInt32 aItemNo );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSET04_BtSettingMenu_H */
+#endif /* _SettingsSET18_DeleteBleDevice_H */
 
 /* Embedded Wizard */

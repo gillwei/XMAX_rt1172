@@ -169,6 +169,7 @@ class ItemBase : Components::BaseComponent
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
     preset Bounds = <37,1,417,69>;
+    preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;

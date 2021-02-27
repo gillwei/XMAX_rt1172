@@ -34,14 +34,17 @@
 #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated_
     static int ew_bt_notify_paired_device_connection_status_updated( void );
 #endif
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPasskeyGenerated_
-    static int ew_bt_notify_passkey_generated( void );
+#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPasskeyGenerated_
+    static int ew_bt_notify_btc_passkey_generated( void );
 #endif
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyConnectionResult_
-    static int ew_bt_notify_connection_result( void );
+#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult_
+    static int ew_bt_notify_btc_connection_result( void );
 #endif
 #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus_
     static int ew_notify_bt_fw_status( void );
+#endif
+#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged_
+    static int ew_notify_btc_pairing_state_received( void );
 #endif
 #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBlePairingStateChanged_
     static int ew_notify_ble_pairing_state_changed( void );
@@ -75,14 +78,17 @@
         #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated_
             ew_bt_notify_paired_device_connection_status_updated,
         #endif
-        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPasskeyGenerated_
-            ew_bt_notify_passkey_generated,
+        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPasskeyGenerated_
+            ew_bt_notify_btc_passkey_generated,
         #endif
-        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyConnectionResult_
-            ew_bt_notify_connection_result,
+        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult_
+            ew_bt_notify_btc_connection_result,
         #endif
         #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus_
             ew_notify_bt_fw_status,
+        #endif
+        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged_
+            ew_notify_btc_pairing_state_received,
         #endif
         #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBlePairingStateChanged_
             ew_notify_ble_pairing_state_changed,
@@ -94,11 +100,14 @@
 
     const int num_of_bluetooth_func = sizeof( bluetooth_function_lookup_table )/sizeof( bluetooth_device_function* );
 
-    static int  is_bt_passkey_received = 0;
-    static int  is_bt_paired_device_status_updated = 0;
-    static int  is_bt_connection_result_updated = 0;
-    static char bt_passkey[BT_PIN_CODE_LEN + 1] = "";
-    static EnumBtResult bt_connection_result = 0;
+    static int is_btc_passkey_received = 0;
+    static int is_btc_paired_device_status_updated = 0;
+    static int is_btc_connection_result_updated = 0;
+    static uint32_t btc_passkey = 0;
+    static uint8_t  btc_connecing_device_name[BT_DEVICE_NAME_LEN];
+    static EnumBtDeviceConnectionResult btc_connection_result = 0;
+    static EnumBtcPairingState btc_pairing_state;
+    static int is_btc_pairing_state_changed = 0;
 
     static int  is_notify_bt_fw_status = 0;
     static char bt_fw_version[BT_FW_VERSION_MAX_LEN];
@@ -230,9 +239,9 @@ return need_update;
         )
     {
     int need_update = 0;
-    if( is_bt_paired_device_status_updated )
+    if( is_btc_paired_device_status_updated )
         {
-        is_bt_paired_device_status_updated = 0;
+        is_btc_paired_device_status_updated = 0;
         DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated( device_object );
         need_update = 1;
         }
@@ -243,49 +252,22 @@ return need_update;
 /*********************************************************************
 *
 * @private
-* ew_bt_notify_passkey_generated
-*
-* Notify the Bluetooth passkey to EW GUI.
-*
-*********************************************************************/
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPasskeyGenerated_
-    static int ew_bt_notify_passkey_generated
-        (
-        void
-        )
-    {
-    int need_update = 0;
-    if( is_bt_passkey_received )
-        {
-        is_bt_passkey_received = 0;
-        XString passkey;
-        passkey = EwNewStringAnsi( bt_passkey );
-        DeviceInterfaceBluetoothDeviceClass__NotifyPasskeyGenerated( device_object, passkey );
-        need_update = 1;
-        }
-    return need_update;
-    }
-#endif
-
-/*********************************************************************
-*
-* @private
-* ew_bt_notify_connection_result
+* ew_bt_notify_btc_connection_result
 *
 * Notify the Bluetooth pairing result to EW GUI.
 *
 *********************************************************************/
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyConnectionResult_
-    static int ew_bt_notify_connection_result
+#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult_
+    static int ew_bt_notify_btc_connection_result
         (
         void
         )
     {
     int need_update = 0;
-    if( is_bt_connection_result_updated )
+    if( is_btc_connection_result_updated )
         {
-        is_bt_connection_result_updated = 0;
-        DeviceInterfaceBluetoothDeviceClass_NotifyConnectionResult( device_object, bt_connection_result );
+        is_btc_connection_result_updated = 0;
+        DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult( device_object, btc_connection_result );
         need_update = 1;
         }
     return need_update;
@@ -312,6 +294,31 @@ return need_update;
         is_notify_bt_fw_status = 0;
         XString version = EwNewStringAnsi( bt_fw_version );
         DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus( device_object, bt_fw_update_status, version );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_btc_pairing_state_received
+*
+* Notify EW the BTC pairing state changed
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged_
+    static int ew_notify_btc_pairing_state_received
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_btc_pairing_state_changed )
+        {
+        is_btc_pairing_state_changed = 0;
+        DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged( device_object, btc_pairing_state );
         need_update = 1;
         }
     return need_update;
@@ -448,7 +455,7 @@ return BTM_get_paired_device_num();
 * Get the specific Bluetooth paired device information.
 *
 * @param index The index of the paired device.
-* @param dev_name The pointer to the pointer of the device name.
+* @param device_name The pointer to the pointer of the device name.
 * @param is_connected The pointer to the is_connected bool value.
 *
 *********************************************************************/
@@ -476,7 +483,7 @@ bool ew_bt_is_ble_paired_device
     const int paired_device_idx
     )
 {
-return true; //TODO: get the result from BT manager
+return BTM_is_ble_paired_device( paired_device_idx );
 }
 
 /*********************************************************************
@@ -568,12 +575,7 @@ bool ew_bt_get_enable
     void
     )
 {
-bool result = false;
-if( BTM_get_enable_state() > 0 )
-    {
-    result = true;
-    }
-return result;
+return BTM_get_enable_state();
 }
 
 /*********************************************************************
@@ -612,12 +614,7 @@ bool ew_bt_get_discoverable
     void
     )
 {
-bool result = false;
-if( BTM_get_discoverable_state() > 0 )
-    {
-    result = true;
-    }
-return result;
+return BTM_get_discoverable_state();
 }
 
 /*********************************************************************
@@ -655,35 +652,49 @@ bool ew_bt_get_autoconnect
     void
     )
 {
-bool result = false;
-if( BTM_get_autoconnect_state() > 0 )
-    {
-    result = true;
-    }
-return result;
+return BTM_get_autoconnect_state();
 }
 
 /*********************************************************************
 *
 * @public
-* EW_notify_bt_passkey_generated
+* EW_notify_btc_passkey_generated
 *
-* Notify EW GUI that the pass key is generated.
+* Notify EW GUI that the BTC pairing passkey is generated.
 *
-* @param passkey The pointer to the char array of passkey
+* @param device_name Pointer to the BTC connecting device name
+* @param passkey Passkey to pair BTC
 *
 *********************************************************************/
-void EW_notify_bt_passkey_generated
+void EW_notify_btc_passkey_generated
     (
-    const char* passkey
+    const uint8_t* device_name,
+    const uint32_t passkey
     )
 {
 #ifdef _DeviceInterfaceBluetoothDeviceClass_
-    memcpy( bt_passkey, passkey, BT_PIN_CODE_LEN );
-    bt_passkey[BT_PIN_CODE_LEN] = '\0';
-    is_bt_passkey_received = 1;
+    memcpy( btc_connecing_device_name, device_name, BT_DEVICE_NAME_LEN );
+    btc_connecing_device_name[BT_DEVICE_NAME_LEN-1] = '\0';
+    btc_passkey = passkey;
+    is_btc_passkey_received = 1;
     EwBspEventTrigger();
 #endif
+}
+
+/*********************************************************************
+*
+* @private
+* ew_bt_get_btc_connecting_device_name
+*
+* @param device_name The pointer to the pointer to the device name.
+*
+*********************************************************************/
+void ew_bt_get_btc_connecting_device_name
+    (
+    uint8_t** device_name
+    )
+{
+*device_name = btc_connecing_device_name;
 }
 
 /*********************************************************************
@@ -700,7 +711,7 @@ void EW_notify_bt_paired_device_status_changed
     )
 {
 #ifdef _DeviceInterfaceBluetoothDeviceClass_
-    is_bt_paired_device_status_updated = 1;
+    is_btc_paired_device_status_updated = 1;
     EwBspEventTrigger();
 #endif
 }
@@ -720,23 +731,25 @@ void EW_notify_bt_connection_result
     const bt_connection_result_type result
     )
 {
+PRINTF( "%s, %d\r\n", __FUNCTION__, result );
+
 #ifdef _DeviceInterfaceBluetoothDeviceClass_
     switch( result )
         {
         case BT_CONNECTION_SUCCESS:
-            bt_connection_result = EnumBtResultSUCCESS;
+            btc_connection_result = EnumBtDeviceConnectionResultSUCCESS;
             break;
         case BT_CONNECTION_FAIL:
-            bt_connection_result = EnumBtResultFAIL;
+            btc_connection_result = EnumBtDeviceConnectionResultFAIL;
             break;
-        case BT_CONNECTION_TIMEOUT:
-            bt_connection_result = EnumBtResultTIMEOUT;
+        case BT_CONNECTION_AUTHENTICATION_ERR:
+            btc_connection_result = EnumBtDeviceConnectionResultAUTHENTICATION_ERR;
             break;
         default:
-            bt_connection_result = EnumBtResultFAIL;
+            btc_connection_result = EnumBtDeviceConnectionResultFAIL;
             break;
         }
-    is_bt_connection_result_updated = 1;
+    is_btc_connection_result_updated = 1;
     EwBspEventTrigger();
 #endif
 }
@@ -805,6 +818,90 @@ uint32_t ew_get_ble_pincode
     )
 {
 return ble_pincode;
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_bt_passkey_generated
+*
+* Notify EW BTC passkey generated
+*
+* @param device_name Name of the Bluetooth device to pari
+* @param passkey Passkey to pair BTC
+*
+*********************************************************************/
+void EW_notify_bt_passkey_generated
+    (
+    const uint8_t* device_name,
+    const uint32_t passkey
+    )
+{
+EwPrint( "%s %s %d\r\n", __FUNCTION__, device_name, passkey );
+memcpy( btc_connecing_device_name, device_name, BT_DEVICE_NAME_LEN );
+btc_connecing_device_name[BT_DEVICE_NAME_LEN -1] = '\0';
+btc_passkey = passkey;
+btc_pairing_state = EnumBtcPairingStatePASSKEY_GENERATED;
+is_btc_pairing_state_changed = true;
+EwBspEventTrigger();
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_btc_pairing_state_changed
+*
+* Notify EW BTC pairing state changed
+*
+* @param state BTC pairing state
+*
+*********************************************************************/
+void EW_notify_btc_pairing_state_changed
+    (
+    const EnumBtcPairingState state
+    )
+{
+EwPrint( "%s %d\r\n", __FUNCTION__, state );
+btc_pairing_state = state;
+is_btc_pairing_state_changed = true;
+EwBspEventTrigger();
+}
+
+/*********************************************************************
+*
+* @private
+* ew_get_blc_pairing_state
+*
+* Get BTC pairing state
+*
+* @return BTC pairing state
+*
+*********************************************************************/
+EnumBtcPairingState ew_get_blc_pairing_state
+    (
+    void
+    )
+{
+EwPrint( "%s %d\r\n", __FUNCTION__, btc_pairing_state );
+return btc_pairing_state;
+}
+
+/*********************************************************************
+*
+* @private
+* ew_get_btc_passkey
+*
+* Get BTC pairing passkey
+*
+* @return Passkey for BTC pairing
+*
+*********************************************************************/
+uint32_t ew_get_btc_passkey
+    (
+    void
+    )
+{
+return btc_passkey;
 }
 
 /*********************************************************************

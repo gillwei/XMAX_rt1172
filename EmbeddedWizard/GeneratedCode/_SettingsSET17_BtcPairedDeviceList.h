@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsBtDiscovarable_H
-#define _SettingsBtDiscovarable_H
+#ifndef _SettingsSET17_BtcPairedDeviceList_H
+#define _SettingsSET17_BtcPairedDeviceList_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,15 +42,22 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
+#include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuPushButton.h"
+#include "_MenuBaseMenuView.h"
+#include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -94,27 +101,29 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::BtDiscovarable */
-#ifndef _SettingsBtDiscovarable_
-  EW_DECLARE_CLASS( SettingsBtDiscovarable )
-#define _SettingsBtDiscovarable_
+/* Forward declaration of the class Menu::ItemBase */
+#ifndef _MenuItemBase_
+  EW_DECLARE_CLASS( MenuItemBase )
+#define _MenuItemBase_
+#endif
+
+/* Forward declaration of the class Settings::SET17_BtcPairedDeviceList */
+#ifndef _SettingsSET17_BtcPairedDeviceList_
+  EW_DECLARE_CLASS( SettingsSET17_BtcPairedDeviceList )
+#define _SettingsSET17_BtcPairedDeviceList_
 #endif
 
 
-/* Deklaration of class : 'Settings::BtDiscovarable' */
-EW_DEFINE_FIELDS( SettingsBtDiscovarable, ComponentsBaseMainBG )
-  EW_OBJECT  ( DiscoverableText, ViewsText )
-  EW_OBJECT  ( TimeLeftText,    ViewsText )
-  EW_OBJECT  ( NameText,        ViewsText )
-  EW_OBJECT  ( CountDownTimer,  CoreTimer )
-  EW_OBJECT  ( RemainTimeText,  ViewsText )
-  EW_OBJECT  ( DeviceNameText,  ViewsText )
-  EW_OBJECT  ( PushButton,      MenuPushButton )
-  EW_VARIABLE( CountDownTimeSec, XInt32 )
-EW_END_OF_FIELDS( SettingsBtDiscovarable )
+/* Deklaration of class : 'Settings::SET17_BtcPairedDeviceList' */
+EW_DEFINE_FIELDS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView )
+  EW_OBJECT  ( RefreshListObserver, CorePropertyObserver )
+  EW_OBJECT  ( NoDataText,      ViewsText )
+  EW_OBJECT  ( NoDataTimeoutTimer, CoreTimer )
+  EW_VARIABLE( PairedDeviceNum, XInt32 )
+EW_END_OF_FIELDS( SettingsSET17_BtcPairedDeviceList )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::BtDiscovarable' */
-EW_DEFINE_METHODS( SettingsBtDiscovarable, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET17_BtcPairedDeviceList' */
+EW_DEFINE_METHODS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -167,25 +176,56 @@ EW_DEFINE_METHODS( SettingsBtDiscovarable, ComponentsBaseMainBG )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-EW_END_OF_METHODS( SettingsBtDiscovarable )
+  EW_METHOD( LoadItemClass,     XClass )( SettingsSET17_BtcPairedDeviceList _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( SettingsSET17_BtcPairedDeviceList _this, 
+    XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( SettingsSET17_BtcPairedDeviceList _this, 
+    XInt32 aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( SettingsSET17_BtcPairedDeviceList _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+EW_END_OF_METHODS( SettingsSET17_BtcPairedDeviceList )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void SettingsBtDiscovarable_Init( SettingsBtDiscovarable _this, XHandle aArg );
+void SettingsSET17_BtcPairedDeviceList_Init( SettingsSET17_BtcPairedDeviceList _this, 
+  XHandle aArg );
 
-/* 'C' function for method : 'Settings::BtDiscovarable.OnCancelSlot()' */
-void SettingsBtDiscovarable_OnCancelSlot( SettingsBtDiscovarable _this, XObject 
-  sender );
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemClass()' */
+XClass SettingsSET17_BtcPairedDeviceList_LoadItemClass( SettingsSET17_BtcPairedDeviceList _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::BtDiscovarable.UpdateCountDownTimeSlot()' */
-void SettingsBtDiscovarable_UpdateCountDownTimeSlot( SettingsBtDiscovarable _this, 
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemTitle()' */
+XString SettingsSET17_BtcPairedDeviceList_LoadItemTitle( SettingsSET17_BtcPairedDeviceList _this, 
+  XInt32 aItemNo );
+
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.OnItemActivate()' */
+void SettingsSET17_BtcPairedDeviceList_OnItemActivate( SettingsSET17_BtcPairedDeviceList _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
+
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemChecked()' */
+XBool SettingsSET17_BtcPairedDeviceList_LoadItemChecked( SettingsSET17_BtcPairedDeviceList _this, 
+  XInt32 aItemNo );
+
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.UpdatePairedDeviceNum()' */
+void SettingsSET17_BtcPairedDeviceList_UpdatePairedDeviceNum( SettingsSET17_BtcPairedDeviceList _this );
+
+/* This slot method is executed when the associated property observer 'PropertyObserver' 
+   is notified. */
+void SettingsSET17_BtcPairedDeviceList_OnRefreshListSlot( SettingsSET17_BtcPairedDeviceList _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.OnNoDataTimeoutSlot()' */
+void SettingsSET17_BtcPairedDeviceList_OnNoDataTimeoutSlot( SettingsSET17_BtcPairedDeviceList _this, 
   XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsBtDiscovarable_H */
+#endif /* _SettingsSET17_BtcPairedDeviceList_H */
 
 /* Embedded Wizard */

@@ -88,6 +88,7 @@ void ew_bt_set_discoverable( bool state );
 bool ew_bt_get_discoverable( void );
 void ew_bt_set_autoconnect( bool state );
 bool ew_bt_get_autoconnect( void );
+void ew_bt_get_btc_connecting_device_name( uint8_t** device_name );
 bool ew_bt_is_max_paired_device_num( void );
 int  ew_bt_get_paired_device_num( void );
 void ew_bt_get_paired_device_at_index( const int paired_device_idx, uint8_t** device_name, bool* is_connected );
@@ -95,8 +96,10 @@ void ew_bt_connect_paired_device( const int paired_device_idx );
 void ew_bt_disconnect_paired_device( const int paired_device_idx );
 void ew_bt_unpair_paired_device( const int paired_device_idx );
 bool ew_bt_is_ble_paired_device( const int paired_device_idx );
+EnumBtcPairingState ew_get_blc_pairing_state( void );
 uint32_t ew_get_ble_pincode( void );
 EnumBlePairingState ew_get_ble_pairing_state( void );
+uint32_t ew_get_btc_passkey( void );
 void ew_set_ble_advertisement( const bool enable );
 
 void ew_device_vi_init( void );

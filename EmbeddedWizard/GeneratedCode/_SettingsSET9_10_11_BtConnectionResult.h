@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsBtConnectionResult_H
-#define _SettingsBtConnectionResult_H
+#ifndef _SettingsSET9_10_11_BtConnectionResult_H
+#define _SettingsSET9_10_11_BtConnectionResult_H
 
 #ifdef __cplusplus
   extern "C"
@@ -93,24 +93,24 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::BtConnectionResult */
-#ifndef _SettingsBtConnectionResult_
-  EW_DECLARE_CLASS( SettingsBtConnectionResult )
-#define _SettingsBtConnectionResult_
+/* Forward declaration of the class Settings::SET9_10_11_BtConnectionResult */
+#ifndef _SettingsSET9_10_11_BtConnectionResult_
+  EW_DECLARE_CLASS( SettingsSET9_10_11_BtConnectionResult )
+#define _SettingsSET9_10_11_BtConnectionResult_
 #endif
 
 
-/* Deklaration of class : 'Settings::BtConnectionResult' */
-EW_DEFINE_FIELDS( SettingsBtConnectionResult, ComponentsBaseMainBG )
-  EW_OBJECT  ( Text,            ViewsText )
-  EW_OBJECT  ( ConnectionResultHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( CloseDialogTimer, CoreTimer )
-  EW_OBJECT  ( ConnectingText,  ViewsText )
+/* Deklaration of class : 'Settings::SET9_10_11_BtConnectionResult' */
+EW_DEFINE_FIELDS( SettingsSET9_10_11_BtConnectionResult, ComponentsBaseMainBG )
+  EW_OBJECT  ( Message,         ViewsText )
+  EW_OBJECT  ( ConnectPairedDeviceResultHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( DismissTimer,    CoreTimer )
+  EW_OBJECT  ( Divider,         ViewsImage )
   EW_PROPERTY( DeviceName,      XString )
-EW_END_OF_FIELDS( SettingsBtConnectionResult )
+EW_END_OF_FIELDS( SettingsSET9_10_11_BtConnectionResult )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::BtConnectionResult' */
-EW_DEFINE_METHODS( SettingsBtConnectionResult, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET9_10_11_BtConnectionResult' */
+EW_DEFINE_METHODS( SettingsSET9_10_11_BtConnectionResult, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -163,25 +163,21 @@ EW_DEFINE_METHODS( SettingsBtConnectionResult, ComponentsBaseMainBG )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-EW_END_OF_METHODS( SettingsBtConnectionResult )
+EW_END_OF_METHODS( SettingsSET9_10_11_BtConnectionResult )
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsBtConnectionResult_OnConnectionResultReceivedSlot( SettingsBtConnectionResult _this, 
+void SettingsSET9_10_11_BtConnectionResult_OnConnectPairedDeviceResultSlot( SettingsSET9_10_11_BtConnectionResult _this, 
   XObject sender );
 
-/* 'C' function for method : 'Settings::BtConnectionResult.OnCloseDialogSlot()' */
-void SettingsBtConnectionResult_OnCloseDialogSlot( SettingsBtConnectionResult _this, 
+/* 'C' function for method : 'Settings::SET9_10_11_BtConnectionResult.OnDismissSlot()' */
+void SettingsSET9_10_11_BtConnectionResult_OnDismissSlot( SettingsSET9_10_11_BtConnectionResult _this, 
   XObject sender );
-
-/* 'C' function for method : 'Settings::BtConnectionResult.OnSetDeviceName()' */
-void SettingsBtConnectionResult_OnSetDeviceName( SettingsBtConnectionResult _this, 
-  XString value );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsBtConnectionResult_H */
+#endif /* _SettingsSET9_10_11_BtConnectionResult_H */
 
 /* Embedded Wizard */

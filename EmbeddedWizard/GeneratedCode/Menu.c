@@ -145,6 +145,7 @@ void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
   CoreTimer_OnSetBegin( &_this->FocusFrameFlashTimer, 100 );
   CoreView_OnSetLayout((CoreView)&_this->Title, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
   CoreRectView__OnSetBounds( &_this->Title, _Const0004 );
+  ViewsText_OnSetEllipsis( &_this->Title, 1 );
   ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Title, 0 );
   ViewsText_OnSetColor( &_this->Title, _Const0002 );
