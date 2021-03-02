@@ -33,7 +33,6 @@
                                VARIABLES
 --------------------------------------------------------------------*/
 extern bc_motocon_callback_t* bc_motocon_callbacks[BC_MOTOCON_CALLBACK_MAX];
-extern bool bc_motocon_connected;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -61,7 +60,7 @@ const bc_motocon_command_code_t command_code = TWO_BYTE_BIG( bytes, 0 );
 switch( command_code )
     {
     case BC_MOTOCON_COMMAND_CODE_CONNECT_APP_ID:
-        bc_motocon_connected = true;
+        bc_motocon_set_connected( true );
         ret = BC_MOTOCON_PARSE_SUCCESS;
         break;
 

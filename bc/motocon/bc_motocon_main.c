@@ -44,7 +44,7 @@ void BC_motocon_write_request_received_callback( const uint16_t handle, const ui
                                VARIABLES
 --------------------------------------------------------------------*/
 bc_motocon_callback_t* bc_motocon_callbacks[BC_MOTOCON_CALLBACK_MAX];
-bool bc_motocon_connected;
+static bool bc_motocon_connected;
 
 #if( ENABLE_MOTOCON_HCI_LINK )
     static ble_server_callback bc_motocon_ble_callback =
@@ -76,8 +76,7 @@ void bc_motocon_init
     void
     )
 {
-// Check bc_motocon_connected status at first
-bc_motocon_connected = false;
+bc_motocon_set_connected( false );
 #if( ENABLE_MOTOCON_HCI_LINK )
     HCI_le_register_server_callback( BLE_SERVER_MOTOCONSDK, &bc_motocon_ble_callback );
 #endif
@@ -159,6 +158,36 @@ bool BC_motocon_is_connected
     )
 {
 return bc_motocon_connected;
+}
+
+/*********************************************************************
+*
+* @public
+* bc_motocon_set_connected
+*
+* Check if phone app is connected.
+*
+* @param connected Is connected or not
+*
+*********************************************************************/
+void bc_motocon_set_connected
+    (
+    bool connected
+    )
+{
+BC_MOTOCON_PRINTF( "%s: %d\r\n", __FUNCTION__, connected );
+if( bc_motocon_connected != connected )
+    {
+    bc_motocon_connected = connected;
+    for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
+        {
+        if( NULL != bc_motocon_callbacks[i] &&
+            NULL != bc_motocon_callbacks[i]->connected_status_changed_callback )
+            {
+            bc_motocon_callbacks[i]->connected_status_changed_callback( bc_motocon_connected );
+            }
+        }
+    }
 }
 
 /*********************************************************************
@@ -698,7 +727,7 @@ void BC_motocon_ble_disconnected_callback
     )
 {
 BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
-bc_motocon_connected = false;
+bc_motocon_set_connected( false );
 ddt_reset();
 }
 
