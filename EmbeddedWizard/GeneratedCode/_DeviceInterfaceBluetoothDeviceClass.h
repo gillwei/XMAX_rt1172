@@ -59,6 +59,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceBluetoothDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( ConnectionResultSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( PairedDeviceObj, DeviceInterfaceBluetoothPairedDeviceInfo )
   EW_OBJECT  ( BlePairingStateChangedEvent, CoreSystemEvent )
+  EW_OBJECT  ( MotoConSystemEvent, CoreSystemEvent )
   EW_VARIABLE( Passkey,         XString )
   EW_PROPERTY( BtFwStatus,      XEnum )
   EW_PROPERTY( ConnectionResult, XEnum )
@@ -203,6 +204,17 @@ XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBlePairingState( DeviceInterfaceB
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBlePincode()' */
 XUInt32 DeviceInterfaceBluetoothDeviceClass_OnGetBlePincode( DeviceInterfaceBluetoothDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyMotoConEventReceived()' */
+void DeviceInterfaceBluetoothDeviceClass_NotifyMotoConEventReceived( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum aEvent );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyMotoConEventReceived()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived( void* _this, 
+  XEnum aEvent );
+
+/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyMotoConEventReceived(). */
+#define _DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived_
 
 /* Default onget method for the property 'BtFwStatus' */
 XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this );

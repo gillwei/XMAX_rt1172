@@ -119,6 +119,16 @@ bc_motocon_send_result_t BC_motocon_send_create_ota_request( void );
 
 bc_motocon_send_result_t BC_motocon_send_ota_linkcard_info( const bc_motocon_ota_linkcard_info_t* info );
 
+uint8_t BC_motocon_get_language_type( void );
+
+uint8_t BC_motocon_get_battery_percentage( void );
+
+bc_motocon_battery_t BC_motocon_get_battery_charging_state( void );
+
+bc_motocon_thermal_state_t BC_motocon_get_phone_thermal( void );
+
+bc_motocon_bt_headset_state_t BC_motocon_get_bt_headset_state( void );
+
 #ifdef __cplusplus
 }
 #endif

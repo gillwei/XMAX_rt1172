@@ -264,6 +264,18 @@ EW_DECLARE_BITMAP_RES( ResourceSafeCamTempEU )
 /* Bitmap resource : 'Resource::ZoomOutNightFocusIcon' */
 EW_DECLARE_BITMAP_RES( ResourceZoomOutNightFocusIcon )
 
+/* Bitmap resource : 'Resource::AppIcon' */
+EW_DECLARE_BITMAP_RES( ResourceAppIcon )
+
+/* Bitmap resource : 'Resource::BatteryChagingIcon' */
+EW_DECLARE_BITMAP_RES( ResourceBatteryChagingIcon )
+
+/* Bitmap resource : 'Resource::BatteryNotChagingIcon' */
+EW_DECLARE_BITMAP_RES( ResourceBatteryNotChagingIcon )
+
+/* Bitmap resource : 'Resource::HeadsetIcon' */
+EW_DECLARE_BITMAP_RES( ResourceHeadsetIcon )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

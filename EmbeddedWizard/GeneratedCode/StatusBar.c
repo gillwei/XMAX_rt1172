@@ -27,6 +27,8 @@
 #include "ewlocale.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceBluetoothDeviceClass.h"
+#include "_DeviceInterfaceMotoConContext.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_ResourcesBitmap.h"
@@ -37,6 +39,7 @@
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 #include "DeviceInterface.h"
+#include "Enum.h"
 #include "Fonts.h"
 #include "Resource.h"
 #include "StatusBar.h"
@@ -54,12 +57,19 @@ static const XRect _Const0000 = {{ 0, 0 }, { 480, 38 }};
 static const XColor _Const0001 = { 0x00, 0x00, 0x00, 0xFF };
 static const XRect _Const0002 = {{ 0, 36 }, { 480, 38 }};
 static const XRect _Const0003 = {{ 11, 0 }, { 93, 38 }};
-static const XRect _Const0004 = {{ 0, 0 }, { 82, 38 }};
-static const XRect _Const0005 = {{ 0, 1 }, { 37, 38 }};
-static const XColor _Const0006 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const0007 = {{ 45, 1 }, { 82, 38 }};
-static const XRect _Const0008 = {{ 37, 1 }, { 48, 38 }};
-static const XStringRes _Const0009 = { _StringsDefault0, 0x0002 };
+static const XRect _Const0004 = {{ 228, 3 }, { 260, 35 }};
+static const XRect _Const0005 = {{ 261, 3 }, { 293, 35 }};
+static const XRect _Const0006 = {{ 294, 3 }, { 326, 35 }};
+static const XRect _Const0007 = {{ 0, 0 }, { 82, 38 }};
+static const XRect _Const0008 = {{ 0, 1 }, { 37, 38 }};
+static const XColor _Const0009 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const000A = {{ 45, 1 }, { 82, 38 }};
+static const XRect _Const000B = {{ 37, 1 }, { 48, 38 }};
+static const XStringRes _Const000C = { _StringsDefault0, 0x0002 };
+
+/* User defined inline code: 'StatusBar::Inline' */
+#include "BC_motocon_pub.h"
+#include "BC_motocon_pub_type.h"
 
 /* Initializer for the class 'StatusBar::Main' */
 void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
@@ -74,6 +84,10 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsRectangle__Init( &_this->Background, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
   StatusBarClock__Init( &_this->Clock, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->MotoConEventHandler, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->BatteryIcon, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->HeadsetIcon, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->AppIcon, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( StatusBarMain );
@@ -86,11 +100,28 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
   CoreRectView__OnSetBounds( &_this->Clock, _Const0003 );
+  CoreRectView__OnSetBounds( &_this->BatteryIcon, _Const0004 );
+  ViewsImage_OnSetVisible( &_this->BatteryIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->HeadsetIcon, _Const0005 );
+  ViewsImage_OnSetVisible( &_this->HeadsetIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->AppIcon, _Const0006 );
+  ViewsImage_OnSetVisible( &_this->AppIcon, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Clock ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->BatteryIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->HeadsetIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->AppIcon ), 0 );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
+  _this->MotoConEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnMotoConEventReceived );
+  CoreSystemEventHandler_OnSetEvent( &_this->MotoConEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->MotoConSystemEvent );
+  ViewsImage_OnSetBitmap( &_this->BatteryIcon, EwLoadResource( &ResourceBatteryNotChagingIcon, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->HeadsetIcon, EwLoadResource( &ResourceHeadsetIcon, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->AppIcon, EwLoadResource( &ResourceAppIcon, ResourcesBitmap ));
 }
 
 /* Re-Initializer for the class 'StatusBar::Main' */
@@ -103,6 +134,10 @@ void StatusBarMain__ReInit( StatusBarMain _this )
   ViewsRectangle__ReInit( &_this->Background );
   ViewsImage__ReInit( &_this->Divider );
   StatusBarClock__ReInit( &_this->Clock );
+  CoreSystemEventHandler__ReInit( &_this->MotoConEventHandler );
+  ViewsImage__ReInit( &_this->BatteryIcon );
+  ViewsImage__ReInit( &_this->HeadsetIcon );
+  ViewsImage__ReInit( &_this->AppIcon );
 }
 
 /* Finalizer method for the class 'StatusBar::Main' */
@@ -115,9 +150,176 @@ void StatusBarMain__Done( StatusBarMain _this )
   ViewsRectangle__Done( &_this->Background );
   ViewsImage__Done( &_this->Divider );
   StatusBarClock__Done( &_this->Clock );
+  CoreSystemEventHandler__Done( &_this->MotoConEventHandler );
+  ViewsImage__Done( &_this->BatteryIcon );
+  ViewsImage__Done( &_this->HeadsetIcon );
+  ViewsImage__Done( &_this->AppIcon );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void StatusBarMain_OnMotoConEventReceived( StatusBarMain _this, XObject sender )
+{
+  DeviceInterfaceMotoConContext MotoConContext;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  MotoConContext = EwCastObject( _this->MotoConEventHandler.Context, DeviceInterfaceMotoConContext );
+
+  switch ( MotoConContext->RxEvent )
+  {
+    case EnumMotoConRxEventCONNECTION_STATUS :
+      StatusBarMain_UpdateMotoConConnectionStatus( _this );
+    break;
+
+    case EnumMotoConRxEventPHONE_BATTERY :
+      StatusBarMain_UpdateBatteryIcon( _this );
+    break;
+
+    case EnumMotoConRxEventPHONE_HEADSET :
+      StatusBarMain_UpdateHeadsetIcon( _this );
+    break;
+
+    case EnumMotoConRxEventPHONE_THERMAL :
+      StatusBarMain_UpdateAppIcon( _this );
+    break;
+
+    default : 
+      ;
+  }
+}
+
+/* 'C' function for method : 'StatusBar::Main.UpdateMotoConConnectionStatus()' */
+void StatusBarMain_UpdateMotoConConnectionStatus( StatusBarMain _this )
+{
+  _this->IsMotoConConnected = DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( 
+  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ));
+
+  if ( !_this->IsMotoConConnected )
+  {
+    ViewsImage_OnSetVisible( &_this->AppIcon, 0 );
+    ViewsImage_OnSetVisible( &_this->BatteryIcon, 0 );
+    ViewsImage_OnSetVisible( &_this->HeadsetIcon, 0 );
+  }
+  else
+  {
+    StatusBarMain_UpdateAppIcon( _this );
+  }
+}
+
+/* 'C' function for method : 'StatusBar::Main.UpdateBatteryIcon()' */
+void StatusBarMain_UpdateBatteryIcon( StatusBarMain _this )
+{
+  XBool IsBatteryCharging = 0;
+  XUInt8 PhoneBatteryPercentage = 0;
+
+  {
+    bc_motocon_battery_t charging_state = BC_motocon_get_battery_charging_state();
+    if( BC_MOTOCON_BATTERY_CHARGING == charging_state )
+    {
+      IsBatteryCharging = true;
+    }
+    PhoneBatteryPercentage = BC_motocon_get_battery_percentage();
+  }
+
+  if ( _this->IsMotoConConnected )
+  {
+    if ( IsBatteryCharging )
+    {
+      ViewsImage_OnSetBitmap( &_this->BatteryIcon, EwLoadResource( &ResourceBatteryChagingIcon, 
+      ResourcesBitmap ));
+    }
+    else
+    {
+      ViewsImage_OnSetBitmap( &_this->BatteryIcon, EwLoadResource( &ResourceBatteryNotChagingIcon, 
+      ResourcesBitmap ));
+    }
+
+    if ( PhoneBatteryPercentage >= 81 )
+    {
+      ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 5 );
+    }
+    else
+      if ( PhoneBatteryPercentage >= 61 )
+      {
+        ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 4 );
+      }
+      else
+        if ( PhoneBatteryPercentage >= 41 )
+        {
+          ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 3 );
+        }
+        else
+          if ( PhoneBatteryPercentage >= 16 )
+          {
+            ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 2 );
+          }
+          else
+            if ( PhoneBatteryPercentage >= 4 )
+            {
+              ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 1 );
+            }
+            else
+            {
+              ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 0 );
+            }
+
+    ViewsImage_OnSetVisible( &_this->BatteryIcon, 1 );
+  }
+}
+
+/* 'C' function for method : 'StatusBar::Main.UpdateHeadsetIcon()' */
+void StatusBarMain_UpdateHeadsetIcon( StatusBarMain _this )
+{
+  XBool IsHeadsetConnected = 0;
+
+  {
+    bc_motocon_bt_headset_state_t headset_state = BC_motocon_get_bt_headset_state();
+    if( BC_MOTOCON_HEADSET_CONNECTED == headset_state )
+    {
+      IsHeadsetConnected = true;
+    }
+  }
+
+  if ( _this->IsMotoConConnected && IsHeadsetConnected )
+  {
+    ViewsImage_OnSetVisible( &_this->HeadsetIcon, 1 );
+  }
+  else
+  {
+    ViewsImage_OnSetVisible( &_this->HeadsetIcon, 0 );
+  }
+}
+
+/* 'C' function for method : 'StatusBar::Main.UpdateAppIcon()' */
+void StatusBarMain_UpdateAppIcon( StatusBarMain _this )
+{
+  if ( _this->IsMotoConConnected )
+  {
+    XBool IsPhoneThermalHigh = 0;
+    {
+      bc_motocon_thermal_state_t charging_state = BC_motocon_get_phone_thermal();
+      if( BC_MOTOCON_THERMAL_HIGH == charging_state )
+      {
+        IsPhoneThermalHigh = true;
+      }
+    }
+
+    if ( IsPhoneThermalHigh )
+    {
+      ViewsImage_OnSetFrameNumber( &_this->AppIcon, 1 );
+    }
+    else
+    {
+      ViewsImage_OnSetFrameNumber( &_this->AppIcon, 0 );
+    }
+  }
+
+  ViewsImage_OnSetVisible( &_this->AppIcon, _this->IsMotoConConnected );
 }
 
 /* Variants derived from the class : 'StatusBar::Main' */
@@ -126,7 +328,7 @@ EW_END_OF_CLASS_VARIANTS( StatusBarMain )
 
 /* Virtual Method Table (VMT) for the class : 'StatusBar::Main' */
 EW_DEFINE_CLASS( StatusBarMain, CoreGroup, Background, Background, Background, Background, 
-                 _None, _None, "StatusBar::Main" )
+                 IsMotoConConnected, IsMotoConConnected, "StatusBar::Main" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -178,24 +380,24 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
   _this->_VMT = EW_CLASS( StatusBarClock );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0004 );
-  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const0005 );
+  CoreRectView__OnSetBounds( _this, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const0008 );
   ViewsText_OnSetAlignment( &_this->ClockHourText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockHourText, 0 );
-  ViewsText_OnSetColor( &_this->ClockHourText, _Const0006 );
+  ViewsText_OnSetColor( &_this->ClockHourText, _Const0009 );
   ViewsText_OnSetVisible( &_this->ClockHourText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const000A );
   ViewsText_OnSetAlignment( &_this->ClockMinuteText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockMinuteText, 0 );
-  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const0006 );
+  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const0009 );
   ViewsText_OnSetVisible( &_this->ClockMinuteText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const000B );
   ViewsText_OnSetAlignment( &_this->ClockColonText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const0009 ));
-  ViewsText_OnSetColor( &_this->ClockColonText, _Const0006 );
+  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const000C ));
+  ViewsText_OnSetColor( &_this->ClockColonText, _Const0009 );
   ViewsText_OnSetVisible( &_this->ClockColonText, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockHourText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockMinuteText ), 0 );

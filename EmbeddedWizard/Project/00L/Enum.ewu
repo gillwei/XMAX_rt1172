@@ -675,3 +675,23 @@ enum NaviAlertAnimationType
   $rect <220,10,420,50>
   item Dismiss;
 }
+
+$rect <260,470,460,510>
+$output false
+enum MotoConRxEvent
+{
+  $rect <10,10,210,50>
+  item CONNECTION_STATUS;
+
+  $rect <10,60,210,100>
+  item PHONE_BATTERY;
+
+  $rect <10,110,210,150>
+  item PHONE_LANGUAGE;
+
+  $rect <10,160,210,200>
+  item PHONE_THERMAL;
+
+  $rect <10,210,210,250>
+  item PHONE_HEADSET;
+}

@@ -321,6 +321,16 @@ typedef enum
   EnumNaviAlertAnimationTypeDismiss     = 1
 } EnumNaviAlertAnimationType;
 
+/* User defined enumeration: 'Enum::MotoConRxEvent' */
+typedef enum
+{
+  EnumMotoConRxEventCONNECTION_STATUS   = 0,
+  EnumMotoConRxEventPHONE_BATTERY       = 1,
+  EnumMotoConRxEventPHONE_LANGUAGE      = 2,
+  EnumMotoConRxEventPHONE_THERMAL       = 3,
+  EnumMotoConRxEventPHONE_HEADSET       = 4
+} EnumMotoConRxEvent;
+
 #ifdef __cplusplus
   }
 #endif

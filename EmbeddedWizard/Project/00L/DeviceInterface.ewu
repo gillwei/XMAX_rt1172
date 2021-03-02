@@ -1242,6 +1242,12 @@ class BluetoothDeviceClass : Templates::DeviceClass
     attr Bounds = <860,470,1640,730>;
   }
 
+  // MotoCon connection status
+  note group Note6
+  {
+    attr Bounds = <350,710,660,920>;
+  }
+
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
   $rect <881,520,1130,560>
@@ -1364,6 +1370,18 @@ class BluetoothDeviceClass : Templates::DeviceClass
       return pure BlePincode;
     $endif
   }
+
+  $rect <380,760,630,800>
+  $output true
+  method void NotifyMotoConEventReceived( arg Enum::MotoConRxEvent aEvent )
+  {
+    var DeviceInterface::MotoConContext MotoConContext = new DeviceInterface::MotoConContext;
+    MotoConContext.RxEvent = aEvent;
+    MotoConSystemEvent.Trigger( MotoConContext, false );
+  }
+
+  $rect <380,810,630,850>
+  object Core::SystemEvent MotoConSystemEvent;
 }
 
 $rect <19,440,219,480>
@@ -1759,4 +1777,12 @@ class NaviDataClass
 
   $rect <280,180,480,220>
   var string NaviEventSpeed;
+}
+
+$rect <20,520,220,560>
+$output false
+class MotoConContext
+{
+  $rect <10,10,210,50>
+  var Enum::MotoConRxEvent RxEvent;
 }

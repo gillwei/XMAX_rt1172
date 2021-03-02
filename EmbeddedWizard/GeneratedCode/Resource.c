@@ -498,4 +498,28 @@ EW_RES_WITHOUT_VARIANTS( ResourceSafeCamTempEU )
 /* Table with links to derived variants of the bitmap resource : 'Resource::ZoomOutNightFocusIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceZoomOutNightFocusIcon )
 
+/* Include a file containing the bitmap resource : 'Resource::AppIcon' */
+#include "_ResourceAppIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::AppIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceAppIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::BatteryChagingIcon' */
+#include "_ResourceBatteryChagingIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::BatteryChagingIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceBatteryChagingIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::BatteryNotChagingIcon' */
+#include "_ResourceBatteryNotChagingIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::BatteryNotChagingIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceBatteryNotChagingIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::HeadsetIcon' */
+#include "_ResourceHeadsetIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::HeadsetIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceHeadsetIcon )
+
 /* Embedded Wizard */

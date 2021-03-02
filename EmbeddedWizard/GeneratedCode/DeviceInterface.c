@@ -30,6 +30,7 @@
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
+#include "_DeviceInterfaceMotoConContext.h"
 #include "_DeviceInterfaceNaviDataClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
@@ -1097,6 +1098,7 @@ void DeviceInterfaceBluetoothDeviceClass__Init( DeviceInterfaceBluetoothDeviceCl
   CoreSystemEvent__Init( &_this->ConnectionResultSystemEvent, &_this->_XObject, 0 );
   DeviceInterfaceBluetoothPairedDeviceInfo__Init( &_this->PairedDeviceObj, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->BlePairingStateChangedEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->MotoConSystemEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceBluetoothDeviceClass );
@@ -1116,6 +1118,7 @@ void DeviceInterfaceBluetoothDeviceClass__ReInit( DeviceInterfaceBluetoothDevice
   CoreSystemEvent__ReInit( &_this->ConnectionResultSystemEvent );
   DeviceInterfaceBluetoothPairedDeviceInfo__ReInit( &_this->PairedDeviceObj );
   CoreSystemEvent__ReInit( &_this->BlePairingStateChangedEvent );
+  CoreSystemEvent__ReInit( &_this->MotoConSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::BluetoothDeviceClass' */
@@ -1129,6 +1132,7 @@ void DeviceInterfaceBluetoothDeviceClass__Done( DeviceInterfaceBluetoothDeviceCl
   CoreSystemEvent__Done( &_this->ConnectionResultSystemEvent );
   DeviceInterfaceBluetoothPairedDeviceInfo__Done( &_this->PairedDeviceObj );
   CoreSystemEvent__Done( &_this->BlePairingStateChangedEvent );
+  CoreSystemEvent__Done( &_this->MotoConSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -1482,6 +1486,26 @@ XUInt32 DeviceInterfaceBluetoothDeviceClass_OnGetBlePincode( DeviceInterfaceBlue
   Pincode = 0;
   Pincode = ew_get_ble_pincode();
   return Pincode;
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyMotoConEventReceived()' */
+void DeviceInterfaceBluetoothDeviceClass_NotifyMotoConEventReceived( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum aEvent )
+{
+  DeviceInterfaceMotoConContext MotoConContext = EwNewObject( DeviceInterfaceMotoConContext, 
+    0 );
+
+  MotoConContext->RxEvent = aEvent;
+  CoreSystemEvent_Trigger( &_this->MotoConSystemEvent, ((XObject)MotoConContext ), 
+  0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyMotoConEventReceived()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived( void* _this, 
+  XEnum aEvent )
+{
+  DeviceInterfaceBluetoothDeviceClass_NotifyMotoConEventReceived((DeviceInterfaceBluetoothDeviceClass)_this
+  , aEvent );
 }
 
 /* Default onget method for the property 'BtFwStatus' */
@@ -2032,5 +2056,44 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNaviDataClass )
 EW_DEFINE_CLASS( DeviceInterfaceNaviDataClass, XObject, CurrentRoad, CurrentRoad, 
                  CurrentRoad, CurrentRoad, CurrentRoad, ETA, "DeviceInterface::NaviDataClass" )
 EW_END_OF_CLASS( DeviceInterfaceNaviDataClass )
+
+/* Initializer for the class 'DeviceInterface::MotoConContext' */
+void DeviceInterfaceMotoConContext__Init( DeviceInterfaceMotoConContext _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceMotoConContext );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( DeviceInterfaceMotoConContext );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::MotoConContext' */
+void DeviceInterfaceMotoConContext__ReInit( DeviceInterfaceMotoConContext _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::MotoConContext' */
+void DeviceInterfaceMotoConContext__Done( DeviceInterfaceMotoConContext _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_Super );
+}
+
+/* Variants derived from the class : 'DeviceInterface::MotoConContext' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceMotoConContext )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceMotoConContext )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::MotoConContext' */
+EW_DEFINE_CLASS( DeviceInterfaceMotoConContext, XObject, _None, _None, _None, _None, 
+                 _None, _None, "DeviceInterface::MotoConContext" )
+EW_END_OF_CLASS( DeviceInterfaceMotoConContext )
 
 /* Embedded Wizard */

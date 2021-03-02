@@ -131,6 +131,8 @@ void bc_motocon_set_connected( bool connected );
 bc_motocon_send_result_t bc_motocon_send_data( const bc_motocon_send_type_t type, const uint8_t* bytes, const uint32_t length );
 void bc_motocon_parse_error_handler( const bc_motocon_command_code_t type, const bc_motocon_parse_result_t result, const char* message );
 
+void bc_motocon_listener_init( void );
+
 #ifdef __cplusplus
 }
 #endif

@@ -1,5 +1,12 @@
 ﻿$version 10.00
 
+$rect <550,10,750,50>
+inline Inline
+{
+  #include "BC_motocon_pub.h"
+  #include "BC_motocon_pub_type.h"
+}
+
 $rect <20,10,220,50>
 $output false
 class Main : Core::Group
@@ -26,6 +33,194 @@ class Main : Core::Group
   object StatusBar::Clock Clock
   {
     preset Bounds = <11,0,93,38>;
+  }
+
+  // App Icon
+  note group Note
+  {
+    attr Bounds = <210,50,530,450>;
+  }
+
+  $rect <230,90,470,130>
+  object Core::SystemEventHandler MotoConEventHandler
+  {
+    preset OnEvent = OnMotoConEventReceived;
+    preset Event = DeviceInterface::BluetoothDevice.MotoConSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <230,140,470,180>
+  slot OnMotoConEventReceived
+  {
+    var DeviceInterface::MotoConContext MotoConContext = ( DeviceInterface::MotoConContext )MotoConEventHandler.Context;
+    switch( MotoConContext.RxEvent )
+    {
+      case Enum::MotoConRxEvent.CONNECTION_STATUS: UpdateMotoConConnectionStatus();
+      case Enum::MotoConRxEvent.PHONE_BATTERY: UpdateBatteryIcon();
+      case Enum::MotoConRxEvent.PHONE_HEADSET: UpdateHeadsetIcon();
+      case Enum::MotoConRxEvent.PHONE_THERMAL: UpdateAppIcon();
+      default:;
+    }
+  }
+
+  $rect <230,240,510,280>
+  method void UpdateMotoConConnectionStatus()
+  {
+    IsMotoConConnected = DeviceInterface::BluetoothDevice.IsMotoconConnected();
+
+    if( !IsMotoConConnected )
+    {
+      AppIcon.Visible = false;
+      BatteryIcon.Visible = false;
+      HeadsetIcon.Visible = false;
+    }
+    else
+    {
+      UpdateAppIcon();
+    }
+  }
+
+  $rect <230,190,470,230>
+  var bool IsMotoConConnected;
+
+  $rect <230,340,510,380>
+  method void UpdateBatteryIcon()
+  {
+    var bool IsBatteryCharging = false;
+    var uint8 PhoneBatteryPercentage = 0;
+
+    $if !$prototyper
+      native( IsBatteryCharging, PhoneBatteryPercentage )
+      {
+        bc_motocon_battery_t charging_state = BC_motocon_get_battery_charging_state();
+        if( BC_MOTOCON_BATTERY_CHARGING == charging_state )
+        {
+          IsBatteryCharging = true;
+        }
+        PhoneBatteryPercentage = BC_motocon_get_battery_percentage();
+      }
+    $endif
+
+    if( IsMotoConConnected )
+    {
+      if( IsBatteryCharging )
+      {
+        BatteryIcon.Bitmap = Resource::BatteryChagingIcon;
+      }
+      else
+      {
+        BatteryIcon.Bitmap = Resource::BatteryNotChagingIcon;
+      }
+
+      if( PhoneBatteryPercentage >= StatusBar::BATTERY_PERCENTAGE_LEVEL5 )
+      {
+        BatteryIcon.FrameNumber = 5;
+      }
+      else if( PhoneBatteryPercentage >= StatusBar::BATTERY_PERCENTAGE_LEVEL4 )
+      {
+        BatteryIcon.FrameNumber = 4;
+      }
+      else if( PhoneBatteryPercentage >= StatusBar::BATTERY_PERCENTAGE_LEVEL3 )
+      {
+        BatteryIcon.FrameNumber = 3;
+      }
+      else if( PhoneBatteryPercentage >= StatusBar::BATTERY_PERCENTAGE_LEVEL2 )
+      {
+        BatteryIcon.FrameNumber = 2;
+      }
+      else if( PhoneBatteryPercentage >= StatusBar::BATTERY_PERCENTAGE_LEVEL1 )
+      {
+        BatteryIcon.FrameNumber = 1;
+      }
+      else
+      {
+        BatteryIcon.FrameNumber = 0;
+      }
+
+      BatteryIcon.Visible = true;
+    }
+  }
+
+  $rect <230,290,510,330>
+  method void UpdateHeadsetIcon()
+  {
+    var bool IsHeadsetConnected = false;
+
+    $if !$prototyper
+      native( IsHeadsetConnected )
+      {
+        bc_motocon_bt_headset_state_t headset_state = BC_motocon_get_bt_headset_state();
+        if( BC_MOTOCON_HEADSET_CONNECTED == headset_state )
+        {
+          IsHeadsetConnected = true;
+        }
+      }
+    $endif
+
+    if( IsMotoConConnected && IsHeadsetConnected )
+    {
+      HeadsetIcon.Visible = true;
+    }
+    else
+    {
+      HeadsetIcon.Visible = false;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image BatteryIcon
+  {
+    preset Bounds = <228,3,260,35>;
+    preset Bitmap = Resource::BatteryNotChagingIcon;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image HeadsetIcon
+  {
+    preset Bounds = <261,3,293,35>;
+    preset Bitmap = Resource::HeadsetIcon;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image AppIcon
+  {
+    preset Bounds = <294,3,326,35>;
+    preset Bitmap = Resource::AppIcon;
+    preset Visible = false;
+  }
+
+  $rect <230,390,510,430>
+  method void UpdateAppIcon()
+  {
+    if( IsMotoConConnected )
+    {
+      var bool IsPhoneThermalHigh = false;
+
+      $if !$prototyper
+        native( IsPhoneThermalHigh )
+        {
+          bc_motocon_thermal_state_t charging_state = BC_motocon_get_phone_thermal();
+          if( BC_MOTOCON_THERMAL_HIGH == charging_state )
+          {
+            IsPhoneThermalHigh = true;
+          }
+        }
+      $endif
+
+      if( IsPhoneThermalHigh )
+      {
+        AppIcon.FrameNumber = 1;
+      }
+      else
+      {
+        AppIcon.FrameNumber = 0;
+      }
+    }
+
+    AppIcon.Visible = IsMotoConConnected;
   }
 }
 
@@ -90,3 +285,27 @@ class Clock : Core::Group
     preset Visible = false;
   }
 }
+
+$rect <250,10,530,50>
+$output false
+const uint8 BATTERY_PERCENTAGE_LEVEL0 = 0;
+
+$rect <250,60,530,100>
+$output false
+const uint8 BATTERY_PERCENTAGE_LEVEL1 = 4;
+
+$rect <250,110,530,150>
+$output false
+const uint8 BATTERY_PERCENTAGE_LEVEL2 = 16;
+
+$rect <250,160,530,200>
+$output false
+const uint8 BATTERY_PERCENTAGE_LEVEL3 = 41;
+
+$rect <250,210,530,250>
+$output false
+const uint8 BATTERY_PERCENTAGE_LEVEL4 = 61;
+
+$rect <250,260,530,300>
+$output false
+const uint8 BATTERY_PERCENTAGE_LEVEL5 = 81;

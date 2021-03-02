@@ -23,6 +23,7 @@
 #include "EW_pub.h"
 #include "BTM_pub.h"
 #include <string.h>
+#include "semphr.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -45,8 +46,12 @@
 #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBlePairingStateChanged_
     static int ew_notify_ble_pairing_state_changed( void );
 #endif
+#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived_
+    static int ew_notify_motocon_event_received( void );
+#endif
 
-#define BT_FW_VERSION_MAX_LEN           ( 8 )
+#define BT_FW_VERSION_MAX_LEN       ( 8 )
+#define MOTOCON_RX_EVENT_QUEUE_SIZE ( 16 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -80,7 +85,10 @@
             ew_notify_bt_fw_status,
         #endif
         #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBlePairingStateChanged_
-            ew_notify_ble_pairing_state_changed
+            ew_notify_ble_pairing_state_changed,
+        #endif
+        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived_
+            ew_notify_motocon_event_received
         #endif
         };
 
@@ -98,6 +106,9 @@
     static int  is_ble_pairing_state_changed;
     static EnumBlePairingState ble_pairing_state;
     static uint32_t ble_pincode = 0;
+
+    static int  is_motocon_event_received = 0;
+    static QueueHandle_t motocon_rx_event_queue_handle;
 #endif
 
 /*--------------------------------------------------------------------
@@ -143,6 +154,9 @@ void ew_device_bluetooth_init
        variable to access the driver class during the runtime.
     */
     EwLockObject( device_object );
+
+    motocon_rx_event_queue_handle = xQueueCreate( MOTOCON_RX_EVENT_QUEUE_SIZE, sizeof( EnumMotoConRxEvent ) );
+    configASSERT( NULL != motocon_rx_event_queue_handle );
 #endif
 }
 
@@ -323,6 +337,35 @@ return need_update;
         {
         is_ble_pairing_state_changed = 0;
         DeviceInterfaceBluetoothDeviceClass__NotifyBlePairingStateChanged( device_object );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_motocon_event_received
+*
+* Notify MotoCon event to EW GUI.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived_
+    static int ew_notify_motocon_event_received
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_motocon_event_received )
+        {
+        is_motocon_event_received = 0;
+        EnumMotoConRxEvent event;
+        while( pdTRUE == xQueueReceive( motocon_rx_event_queue_handle, &event, 0 ) )
+            {
+            DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived( device_object, event );
+            }
         need_update = 1;
         }
     return need_update;
@@ -808,4 +851,30 @@ if( EnumBlePairingStatePINCODE_GENERATED == state )
     }
 is_ble_pairing_state_changed = true;
 EwBspEventTrigger();
+}
+
+/*********************************************************************
+* @public
+* EW_notify_motocon_event_received
+*
+* Notify EW GUI the MotoCon event
+*
+* @param event MotoCon Rx Event
+*
+*********************************************************************/
+void EW_notify_motocon_event_received
+    (
+    const EnumMotoConRxEvent event
+    )
+{
+PRINTF( "%s, %d\r\n", __FUNCTION__, event );
+if( pdTRUE == xQueueSend( motocon_rx_event_queue_handle, &event, 0 ) )
+    {
+    is_motocon_event_received = 1;
+    EwBspEventTrigger();
+    }
+else
+    {
+    PRINTF( "Err: %s queue\r\n", __FUNCTION__ );
+    }
 }

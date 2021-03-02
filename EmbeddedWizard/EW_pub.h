@@ -50,6 +50,7 @@ void EW_notify_bt_connection_result( const bt_connection_result_type result );
 void EW_notify_bt_passkey_generated( const char* pin );
 void EW_notify_bt_fw_update_status( EnumBtFwStatus status, char* version );
 void EW_notify_ble_pairing_state_changed( const EnumBlePairingState state, const uint32_t param );
+void EW_notify_motocon_event_received( const EnumMotoConRxEvent event );
 
 void EW_notify_qrcode_ready( const char* qr_code_text );
 

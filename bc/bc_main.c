@@ -129,4 +129,5 @@ configASSERT( pdPASS == result );
 bc_ancs_init();
 bc_ams_init();
 bc_motocon_init();
+bc_motocon_listener_init();
 }

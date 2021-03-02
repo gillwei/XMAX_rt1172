@@ -43,6 +43,7 @@
 #endif
 
 #include "_CoreGroup.h"
+#include "_CoreSystemEventHandler.h"
 #include "_StatusBarClock.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -101,6 +102,11 @@ EW_DEFINE_FIELDS( StatusBarMain, CoreGroup )
   EW_OBJECT  ( Background,      ViewsRectangle )
   EW_OBJECT  ( Divider,         ViewsImage )
   EW_OBJECT  ( Clock,           StatusBarClock )
+  EW_OBJECT  ( MotoConEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( BatteryIcon,     ViewsImage )
+  EW_OBJECT  ( HeadsetIcon,     ViewsImage )
+  EW_OBJECT  ( AppIcon,         ViewsImage )
+  EW_VARIABLE( IsMotoConConnected, XBool )
 EW_END_OF_FIELDS( StatusBarMain )
 
 /* Virtual Method Table (VMT) for the class : 'StatusBar::Main' */
@@ -149,6 +155,22 @@ EW_DEFINE_METHODS( StatusBarMain, CoreGroup )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
 EW_END_OF_METHODS( StatusBarMain )
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void StatusBarMain_OnMotoConEventReceived( StatusBarMain _this, XObject sender );
+
+/* 'C' function for method : 'StatusBar::Main.UpdateMotoConConnectionStatus()' */
+void StatusBarMain_UpdateMotoConConnectionStatus( StatusBarMain _this );
+
+/* 'C' function for method : 'StatusBar::Main.UpdateBatteryIcon()' */
+void StatusBarMain_UpdateBatteryIcon( StatusBarMain _this );
+
+/* 'C' function for method : 'StatusBar::Main.UpdateHeadsetIcon()' */
+void StatusBarMain_UpdateHeadsetIcon( StatusBarMain _this );
+
+/* 'C' function for method : 'StatusBar::Main.UpdateAppIcon()' */
+void StatusBarMain_UpdateAppIcon( StatusBarMain _this );
 
 #ifdef __cplusplus
   }
