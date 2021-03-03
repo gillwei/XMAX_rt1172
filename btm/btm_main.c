@@ -54,7 +54,7 @@
 #define BTM_TIMER_THIRTY_SECONDS   ( 30000 / BTM_TICK_PERIOD_MS )
 #define BTM_TIMER_SIXTY_SECONDS    ( 60000 / BTM_TICK_PERIOD_MS )
 #define USER_CONFIRM_EVT_PIN_CODE_LENGTH  sizeof( uint32_t )
-#define USER_CONFIRM_EVT_DATA_LENGTH      ( USER_CONFIRM_EVT_PIN_CODE_LENGTH + BT_DEVICE_ADDRESS_LEN )
+#define USER_CONFIRM_RESULT_DATA_LENGTH   ( USER_CONFIRM_EVT_PIN_CODE_LENGTH + BT_DEVICE_NAME_LEN )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -73,7 +73,8 @@ typedef enum
     MSG_UNPAIR_DEVICE,
     MSG_GET_LOCAL_ADDRESS,
     MSG_UNPAIR_ALL_DEVICE,
-    MSG_SET_BLE_ADV
+    MSG_SET_BLE_ADV,
+    MSG_USER_CONFIRM_PASSKEY
     } message_type;
 
 typedef struct
@@ -83,6 +84,7 @@ typedef struct
     uint16_t      connection_handle;
     uint8_t       pair_dev_index;
     bool          ble_adv_enable;
+    bool          user_confirm_result;
     } message_object;
 
 /** BR/EDR Discoverable modes */
@@ -132,16 +134,23 @@ typedef enum BTM_TIMEOUT_TYPE
 
 typedef enum BTM_BLE_PAIRING_RESULT
     {
-    BTM_BLE_PAIRING_SUCCESS
+    BTM_BTC_BLE_PAIRING_SUCCESS
     } btm_ble_pairing_result_t;
 
 typedef enum BTM_PAIRING_STATE
     {
-    BTM_PAIRING_IDLE,
-    BTM_PAIRING_BLE_WAIT_FOR_USER_CONFIRM,
-    BTM_PAIRING_BLE_USER_CONFIRM_REQUEST,
-    BTM_PAIRING_BLE_PAIRING_COMPLETE
+    BTM_PAIRING_STATE_NON,
+    BTM_PAIRING_STATE_BTC,
+    BTM_PAIRING_STATE_BLE
     } btm_pairing_state_t;
+
+typedef enum BTM_DISCOVERABLE_STATE
+    {
+    BTM_DISCOVERABLE_STATE_NON,
+    BTM_DISCOVERABLE_STATE_BTC,
+    BTM_DISCOVERABLE_STATE_BTC_INIT_CONNECTION,
+    BTM_DISCOVERABLE_STATE_BLE
+    } btm_discoverable_state_t;
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -175,7 +184,9 @@ static bool                         BTC_is_connected = false;
 static TimerHandle_t                timeout_timer_handle;
 static btm_timeout_type_t           btm_timeout_type;
 static uint16_t                     btm_timeout_count;
-static btm_pairing_state_t          btm_pairing_state = BTM_PAIRING_IDLE; /* BTC and BLE advertising and pairing event state  */
+static btm_pairing_state_t          btm_pairing_state = BTM_PAIRING_STATE_NON; /* BTC and BLE pairing event state  */
+static btm_discoverable_state_t     btm_discoverable_state = BTM_DISCOVERABLE_STATE_NON; /* BTC and BLE pairing event state  */
+static uint8_t                      connect_device_unpair_idx = 0; /* Used for the Authentication error return, the connect device is now unpaired */
 
 reset_status_type reset_status;
 
@@ -277,6 +288,7 @@ switch( btm_timeout_type )
         if( btm_timeout_count > BTM_TIMER_FIVE_SECONDS )
             {
             stop_btm_timeout_timer();
+            btm_discoverable_state = BTM_DISCOVERABLE_STATE_NON;
             BTM_notify_EW_connection_status( BT_CONNECTION_FAIL );
             }
         break;
@@ -286,7 +298,7 @@ switch( btm_timeout_type )
         if( btm_timeout_count > BTM_TIMER_SIXTY_SECONDS )
             {
             stop_btm_timeout_timer();
-            btm_pairing_state = BTM_PAIRING_IDLE;
+            btm_pairing_state = BTM_PAIRING_STATE_NON;
             BTM_set_ble_advertisement( false );
             ble_pairing_fail_count += 1;
             PRINTF( "BTM_BLE_ADV_TIMEOUT Fail Count:%d\r\n", ble_pairing_fail_count );
@@ -386,6 +398,7 @@ data[0] = BT_DISCOVERABLE;
 data[1] = BT_CONNECTABLE;
 
 is_bt_discoverable = true;
+btm_discoverable_state = BTM_DISCOVERABLE_STATE_BTC;
 PRINTF("%s\n\r", __FUNCTION__ );
 HCI_wiced_send_command( HCI_CONTROL_COMMAND_SET_VISIBILITY, &(data[0]), sizeof( data ) );
 }
@@ -408,7 +421,7 @@ data[0] = BT_NON_DISCOVERABLE;
 data[1] = BT_CONNECTABLE;
 
 is_bt_discoverable = false;
-btm_pairing_state = BTM_PAIRING_IDLE;
+btm_discoverable_state = BTM_DISCOVERABLE_STATE_NON;
 PRINTF( "%s\n\r", __FUNCTION__ );
 HCI_wiced_send_command( HCI_CONTROL_COMMAND_SET_VISIBILITY, &(data[0]), sizeof( data ) );
 }
@@ -472,9 +485,9 @@ for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
     }
 PRINTF( "\r\n" );
 
-/*  */
+connect_device_unpair_idx = paired_device_index;
 memcpy( connect_request_bd_addrress_rev, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
-
+btm_discoverable_state = BTM_DISCOVERABLE_STATE_BTC_INIT_CONNECTION;
 HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_CONNECT, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
 
 start_btm_timeout_timer( BTM_CONNECT_TIMEOUT );
@@ -610,7 +623,7 @@ BaseType_t  send_cmd_result;
 if( true == enable_ble_adv )
     {
     /* Request BT module start ble advertising */
-    btm_pairing_state = BTM_PAIRING_BLE_WAIT_FOR_USER_CONFIRM;
+    btm_discoverable_state = BTM_DISCOVERABLE_STATE_BLE;
     send_cmd_result = HCI_wiced_send_command( HCI_CONTROL_LE_COMMAND_ADVERTISE, ble_adv_param, sizeof( uint8_t ) );
     start_btm_timeout_timer( BTM_BLE_ADV_TIMEOUT );
     }
@@ -618,13 +631,44 @@ else
     {
     /* Request BT module stop ble advertising */
     stop_btm_timeout_timer();
-    btm_pairing_state = BTM_PAIRING_IDLE;
+    btm_discoverable_state = BTM_DISCOVERABLE_STATE_NON;
     send_cmd_result = HCI_wiced_send_command( HCI_CONTROL_LE_COMMAND_ADVERTISE, ble_adv_param, sizeof( uint8_t ) );
     }
 
 PRINTF( "%s:%d send result:%d\r\n", __FUNCTION__, enable_ble_adv, send_cmd_result );
 }
 
+/*********************************************************************
+*
+* @private
+* send_user_confirm_passkey_result
+*
+* Send user confirm passkey result to BT module,
+* refer to command HCI_CONTROL_MISC_EVENT_USER_CONFIRM_REQUEST
+*
+*********************************************************************/
+static void send_user_confirm_passkey_result
+    (
+    bool user_confirm_result
+    )
+{
+uint8_t user_confirm_result_arry[1];
+user_confirm_result_arry[0] = user_confirm_result;
+BaseType_t  send_cmd_result;
+
+if( true == user_confirm_result )
+    {
+    /* Send user confirm success to BT module */
+    send_cmd_result = HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_USER_CONFIRM_RESULT, user_confirm_result_arry, sizeof( uint8_t ) );
+    }
+else
+    {
+    /* Send user confirm fail to BT module */
+    send_cmd_result = HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_USER_CONFIRM_RESULT, user_confirm_result_arry, sizeof( uint8_t ) );
+    }
+
+PRINTF( "%s:%d send result:%d\r\n", __FUNCTION__, user_confirm_result, send_cmd_result );
+}
 /*********************************************************************
 *
 * @private
@@ -1625,6 +1669,7 @@ return ERR_NONE;
 * When BTC is connected and user want to connect BLE with Phone,
 * Start BLE advertising
 **
+**@param enable ble advertising
 *********************************************************************/
 int BTM_set_ble_advertisement
     (
@@ -1678,6 +1723,8 @@ return BTC_is_connected;
 *
 * MCU receive BT/BLE user confirmation event
 **
+**@param  p_data   Numeric code and Remote device address
+**@param  data_len USER_CONFIRM_RESULT_DATA_LENGTH
 *********************************************************************/
 void BTM_receive_user_confirm_evt
     (
@@ -1686,21 +1733,40 @@ void BTM_receive_user_confirm_evt
     )
 {
 uint32_t numeric_code = 0;
-if( USER_CONFIRM_EVT_DATA_LENGTH == data_len )
+uint8_t  device_name_char[BT_DEVICE_NAME_LEN];
+memcpy( &( device_name_char ), &( p_data[USER_CONFIRM_EVT_PIN_CODE_LENGTH] ), BT_DEVICE_NAME_LEN );
+
+/* BTC Pairing user confirmation request event */
+if( BTM_DISCOVERABLE_STATE_BTC == btm_discoverable_state )
     {
-    /* BLE Pairing user confirmation request event */
-    if( BTM_PAIRING_BLE_WAIT_FOR_USER_CONFIRM == btm_pairing_state )
-        {
-        stop_btm_timeout_timer();
-        btm_pairing_state = BTM_PAIRING_BLE_USER_CONFIRM_REQUEST;
-        numeric_code += (uint32_t)p_data[BT_DEVICE_ADDRESS_LEN];
-        numeric_code += (uint32_t)( p_data[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
-        numeric_code += (uint32_t)( p_data[BT_DEVICE_ADDRESS_LEN + 2] << 16 );
-        numeric_code += (uint32_t)( p_data[BT_DEVICE_ADDRESS_LEN + 3] << 24 );
-        PRINTF( "%s BLE_USR_CONFIRM numeric_code:%d\r\n", __FUNCTION__, numeric_code );
-        EW_notify_ble_pairing_state_changed( EnumBlePairingStatePINCODE_GENERATED, numeric_code );
-        start_btm_timeout_timer( BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT );
-        }
+    btm_pairing_state = BTM_PAIRING_STATE_BTC;
+    numeric_code += (uint32_t)p_data[0];
+    numeric_code += (uint32_t)( p_data[1] << 8 );
+    numeric_code += (uint32_t)( p_data[2] << 16 );
+    numeric_code += (uint32_t)( p_data[3] << 24 );
+    PRINTF( "%s BTC_USR_CONFIRM numeric_code:%d\r\n", __FUNCTION__, numeric_code );
+    EW_notify_bt_passkey_generated( device_name_char, numeric_code );
+    }
+/* BLE Pairing user confirmation request event */
+else if( BTM_DISCOVERABLE_STATE_BLE == btm_discoverable_state )
+    {
+    stop_btm_timeout_timer();
+    btm_pairing_state = BTM_PAIRING_STATE_BLE;
+    numeric_code += (uint32_t)p_data[0];
+    numeric_code += (uint32_t)( p_data[1] << 8 );
+    numeric_code += (uint32_t)( p_data[2] << 16 );
+    numeric_code += (uint32_t)( p_data[3] << 24 );
+    PRINTF( "%s BLE_USR_CONFIRM numeric_code:%d\r\n", __FUNCTION__, numeric_code );
+    EW_notify_ble_pairing_state_changed( EnumBlePairingStatePINCODE_GENERATED, numeric_code );
+    start_btm_timeout_timer( BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT );
+    }
+else if(  BTM_DISCOVERABLE_STATE_BTC_INIT_CONNECTION == btm_discoverable_state  )
+    {
+    BTM_btc_confirm_passkey( true );
+    }
+else
+    {
+    PRINTF( "ERROR: Receive User Confirm event when not on BT/BLE discoverable state\r\n" );
     }
 }
 
@@ -1713,6 +1779,8 @@ if( USER_CONFIRM_EVT_DATA_LENGTH == data_len )
 * After user press phone confirmation or confirmation, MCU will receive
 * BT/BLE pairing complete event
 **
+**@param  p_data   ERROR code and remote device address
+**@param  data_len 1 + BT_DEVICE_ADDRESS_LEN
 *********************************************************************/
 void BTM_receive_pairing_clt_evt
     (
@@ -1720,19 +1788,37 @@ void BTM_receive_pairing_clt_evt
     const uint32_t data_len
     )
 {
-if( ( BTM_PAIRING_BLE_USER_CONFIRM_REQUEST == btm_pairing_state ) || ( BTM_PAIRING_BLE_WAIT_FOR_USER_CONFIRM == btm_pairing_state ) )
+if( BTM_PAIRING_STATE_BTC == btm_pairing_state )
     {
-    if( BTM_BLE_PAIRING_SUCCESS == p_data[0] )
+    btm_pairing_state = BTM_PAIRING_STATE_NON;
+    if( BTM_BTC_BLE_PAIRING_SUCCESS == p_data[0] )
+        {
+        PRINTF( "Receive BTC Pairing success\r\n" );
+        EW_notify_btc_pairing_state_changed( EnumBtcPairingStateSUCCESSFUL );
+        }
+    else
+        {
+        PRINTF( "Receive BTC Pairing Fail Error code:%d remote address:", p_data[0] );
+        for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+            {
+            PRINTF( "%02x", p_data[1 + i] );
+            }
+        PRINTF( "\r\n" );
+        EW_notify_btc_pairing_state_changed( EnumBtcPairingStateFAIL );
+        }
+    }
+else if( BTM_PAIRING_STATE_BLE == btm_pairing_state )
+    {
+    btm_pairing_state = BTM_PAIRING_STATE_NON;
+    if( BTM_BTC_BLE_PAIRING_SUCCESS == p_data[0] )
         {
         stop_btm_timeout_timer();
-        btm_pairing_state = BTM_PAIRING_BLE_PAIRING_COMPLETE;
         ble_pairing_fail_count = 0;
         EW_notify_ble_pairing_state_changed( EnumBlePairingStateSUCCESSFUL, 0 );
         }
     else
         {
         stop_btm_timeout_timer();
-        btm_pairing_state = BTM_PAIRING_BLE_PAIRING_COMPLETE;
         ble_pairing_fail_count += 1;
         PRINTF( "Receive BLE Pairing Fail Error code:%d Fail count:%d remote address:", p_data[0], ble_pairing_fail_count );
         for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
@@ -1753,7 +1839,7 @@ if( ( BTM_PAIRING_BLE_USER_CONFIRM_REQUEST == btm_pairing_state ) || ( BTM_PAIRI
 * For EW get BLE connected device name, the BLE remote device should be
 * the same with the BTC connected device
 *
-**
+**@param p_data Return device name pointer value
 *********************************************************************/
 void BTM_get_ble_connected_device_name
     (
@@ -1769,16 +1855,74 @@ void BTM_get_ble_connected_device_name
 * BTM_btc_confirm_passkey
 *
 * From UI to confirm the passkey match the phone display pin code and
+* user press yes or no button result in UI will call
+* BTM_btc_confirm_passkey( true ) or BTM_btc_confirm_passkey( false )
 *
-*
+** @param match_result
+** user press result yes or no
 **
 *********************************************************************/
-void BTM_btc_confirm_passkey
+int BTM_btc_confirm_passkey
     (
     bool match_result
     )
 {
-// TODO confirm user confirm result
+message_object msg_obj;
+
+msg_obj.type = MSG_USER_CONFIRM_PASSKEY;
+msg_obj.user_confirm_result = match_result;
+send_message( msg_obj );
+return ERR_NONE;
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_is_ble_paired_device
+*
+* From UI to confirm the passkey match the phone display pin code and
+* user press yes or no button result in UI will call
+* BTM_btc_confirm_passkey( true ) or BTM_btc_confirm_passkey( false )
+*
+** @param match_result
+** user press result yes or no
+**
+*********************************************************************/
+bool BTM_is_ble_paired_device
+    (
+    const int paired_device_index
+    )
+{
+// TODO need to judge the paired_device BLE is paired or not
+return false;
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_receive_btc_paired_fail
+*
+* After MCU send SPP or iAP2 connect, receive this event if BT module
+* check the BD address is not on paired device list
+*
+**@param p_data    SPP/iAP2 connect BD address ( no paired )
+**@param data_len  Should be BT_DEVICE_ADDRESS_LEN
+*********************************************************************/
+void BTM_receive_btc_paired_fail
+    (
+    const uint8_t* p_data,
+    const uint32_t data_len
+    )
+{
+PRINTF( "ERROR %s:", __FUNCTION__ );
+for( int i = 0; i < data_len; i++ )
+    {
+    PRINTF( " %02x", p_data[i] );
+    }
+PRINTF( "\n\r" );
+
+BTM_unpair_paired_device( connect_device_unpair_idx );
+BTM_notify_EW_connection_status( BT_CONNECTION_AUTHENTICATION_ERR );
 }
 
 /*********************************************************************
@@ -1831,6 +1975,9 @@ while( pdPASS == xQueueReceive( message_queue, &msg_obj, 0 ) )
             break;
         case MSG_SET_BLE_ADV:
             set_ble_adv( msg_obj.ble_adv_enable );
+            break;
+        case MSG_USER_CONFIRM_PASSKEY:
+            send_user_confirm_passkey_result( msg_obj.user_confirm_result );
             break;
         default:
             break;

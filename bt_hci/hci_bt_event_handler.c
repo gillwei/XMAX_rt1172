@@ -148,6 +148,14 @@ switch( opcode )
         BTM_pairing_dev_num_update( p_data[0] );
         break;
 
+    case HCI_CONTROL_MISC_EVENT_USER_CONFIRM_RESULT:
+       BTM_receive_user_confirm_evt( p_data, data_len );
+       break;
+
+    case HCI_CONTROL_MISC_EVENT_ADDR_PAIR_FAIL:
+        BTM_receive_btc_paired_fail( p_data, data_len );
+       break;
+
     default:
         break;
     }
@@ -184,11 +192,6 @@ switch( cmd_opcode )
     case HCI_CONTROL_EVENT_DEVICE_STARTED:
         PRINTF( "Receive BT device start event\r\n" );
         break;
-
-    case HCI_CONTROL_EVENT_USER_CONFIRMATION:
-       PRINTF( "Receive BT user confirmation event\r\n" );
-       BTM_receive_user_confirm_evt( p_data, data_len );
-       break;
 
     case HCI_CONTROL_EVENT_PAIRING_COMPLETE:
        PRINTF( "Receive BT or BLE pairing complete event\r\n" );

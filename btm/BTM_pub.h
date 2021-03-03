@@ -242,9 +242,20 @@ void BTM_get_ble_connected_device_name
     uint8_t** p_data
     );
 
-void BTM_btc_confirm_passkey
+int BTM_btc_confirm_passkey
     (
     bool match_result
+    );
+
+bool BTM_is_ble_paired_device
+    (
+    const int paired_device_index
+    );
+
+void BTM_receive_btc_paired_fail
+    (
+    const uint8_t* p_data,
+    const uint32_t data_len
     );
 
 #ifdef __cplusplus
