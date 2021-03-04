@@ -305,6 +305,7 @@ class Application : Core::Root
     {
       DismissDialog( BootupAnimationDialog, null, null, null, null, null, false );
     }
+    DeviceInterface::BluetoothDevice.GetBluetoothEnable();
     StatusBar.Visible = true;
     ShowDisclaimer();
   }

@@ -986,6 +986,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
   onset BluetoothEnable
   {
     trace "OnSetBluetoothEnable ", value;
+
     if( pure BluetoothEnable != value )
     {
       pure BluetoothEnable = value;
@@ -996,6 +997,8 @@ class BluetoothDeviceClass : Templates::DeviceClass
         }
       $endif
     }
+
+    notifyobservers ^BluetoothEnable;
   }
 
   $rect <30,150,240,190>

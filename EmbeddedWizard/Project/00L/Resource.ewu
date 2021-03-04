@@ -1364,3 +1364,15 @@ resource Resources::Bitmap HeadsetIcon
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
+
+$rect <660,20,860,60>
+$output false
+resource Resources::Bitmap StatusBarBtIcon
+{
+  attr bitmapfile FileName = .\Res\status_bar\icon_bluetooth.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <32,32>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}

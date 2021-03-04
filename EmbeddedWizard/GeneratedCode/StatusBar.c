@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
@@ -60,12 +61,13 @@ static const XRect _Const0003 = {{ 11, 0 }, { 93, 38 }};
 static const XRect _Const0004 = {{ 228, 3 }, { 260, 35 }};
 static const XRect _Const0005 = {{ 261, 3 }, { 293, 35 }};
 static const XRect _Const0006 = {{ 294, 3 }, { 326, 35 }};
-static const XRect _Const0007 = {{ 0, 0 }, { 82, 38 }};
-static const XRect _Const0008 = {{ 0, 1 }, { 37, 38 }};
-static const XColor _Const0009 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const000A = {{ 45, 1 }, { 82, 38 }};
-static const XRect _Const000B = {{ 37, 1 }, { 48, 38 }};
-static const XStringRes _Const000C = { _StringsDefault0, 0x0002 };
+static const XRect _Const0007 = {{ 96, 3 }, { 128, 35 }};
+static const XRect _Const0008 = {{ 0, 0 }, { 82, 38 }};
+static const XRect _Const0009 = {{ 0, 1 }, { 37, 38 }};
+static const XColor _Const000A = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const000B = {{ 45, 1 }, { 82, 38 }};
+static const XRect _Const000C = {{ 37, 1 }, { 48, 38 }};
+static const XStringRes _Const000D = { _StringsDefault0, 0x0002 };
 
 /* User defined inline code: 'StatusBar::Inline' */
 #include "BC_motocon_pub.h"
@@ -88,6 +90,9 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage__Init( &_this->BatteryIcon, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->HeadsetIcon, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->AppIcon, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->BtIcon, &_this->_XObject, 0 );
+  CorePropertyObserver__Init( &_this->BTEnabledObserver, &_this->_XObject, 0 );
+  CorePropertyObserver__Init( &_this->PairdDeviceChangedObserver, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( StatusBarMain );
@@ -106,12 +111,15 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetVisible( &_this->HeadsetIcon, 0 );
   CoreRectView__OnSetBounds( &_this->AppIcon, _Const0006 );
   ViewsImage_OnSetVisible( &_this->AppIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->BtIcon, _Const0007 );
+  ViewsImage_OnSetVisible( &_this->BtIcon, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Clock ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BatteryIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->HeadsetIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->AppIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->BtIcon ), 0 );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
   _this->MotoConEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnMotoConEventReceived );
@@ -122,6 +130,16 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetBitmap( &_this->HeadsetIcon, EwLoadResource( &ResourceHeadsetIcon, 
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->AppIcon, EwLoadResource( &ResourceAppIcon, ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->BtIcon, EwLoadResource( &ResourceStatusBarBtIcon, 
+  ResourcesBitmap ));
+  _this->BTEnabledObserver.OnEvent = EwNewSlot( _this, StatusBarMain_OnBtcConnectionStatusChangedSlot );
+  CorePropertyObserver_OnSetOutlet( &_this->BTEnabledObserver, EwNewRef( EwGetAutoObject( 
+  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetBluetoothEnable, 
+  DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable ));
+  _this->PairdDeviceChangedObserver.OnEvent = EwNewSlot( _this, StatusBarMain_OnBtcConnectionStatusChangedSlot );
+  CorePropertyObserver_OnSetOutlet( &_this->PairdDeviceChangedObserver, EwNewRef( 
+  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 
+  DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList, DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList ));
 }
 
 /* Re-Initializer for the class 'StatusBar::Main' */
@@ -138,6 +156,9 @@ void StatusBarMain__ReInit( StatusBarMain _this )
   ViewsImage__ReInit( &_this->BatteryIcon );
   ViewsImage__ReInit( &_this->HeadsetIcon );
   ViewsImage__ReInit( &_this->AppIcon );
+  ViewsImage__ReInit( &_this->BtIcon );
+  CorePropertyObserver__ReInit( &_this->BTEnabledObserver );
+  CorePropertyObserver__ReInit( &_this->PairdDeviceChangedObserver );
 }
 
 /* Finalizer method for the class 'StatusBar::Main' */
@@ -154,6 +175,9 @@ void StatusBarMain__Done( StatusBarMain _this )
   ViewsImage__Done( &_this->BatteryIcon );
   ViewsImage__Done( &_this->HeadsetIcon );
   ViewsImage__Done( &_this->AppIcon );
+  ViewsImage__Done( &_this->BtIcon );
+  CorePropertyObserver__Done( &_this->BTEnabledObserver );
+  CorePropertyObserver__Done( &_this->PairdDeviceChangedObserver );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
@@ -295,6 +319,34 @@ void StatusBarMain_UpdateHeadsetIcon( StatusBarMain _this )
   }
 }
 
+/* This slot method is executed when the associated property observer 'PropertyObserver' 
+   is notified. */
+void StatusBarMain_OnBtcConnectionStatusChangedSlot( StatusBarMain _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BluetoothEnable )
+  {
+    if ( DeviceInterfaceBluetoothDeviceClass_IsBtConnected( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
+        DeviceInterfaceBluetoothDeviceClass )))
+    {
+      ViewsImage_OnSetFrameNumber( &_this->BtIcon, 1 );
+    }
+    else
+    {
+      ViewsImage_OnSetFrameNumber( &_this->BtIcon, 0 );
+    }
+
+    ViewsImage_OnSetVisible( &_this->BtIcon, 1 );
+  }
+  else
+  {
+    ViewsImage_OnSetVisible( &_this->BtIcon, 0 );
+  }
+}
+
 /* 'C' function for method : 'StatusBar::Main.UpdateAppIcon()' */
 void StatusBarMain_UpdateAppIcon( StatusBarMain _this )
 {
@@ -380,24 +432,24 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
   _this->_VMT = EW_CLASS( StatusBarClock );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0007 );
-  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const0008 );
+  CoreRectView__OnSetBounds( _this, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const0009 );
   ViewsText_OnSetAlignment( &_this->ClockHourText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockHourText, 0 );
-  ViewsText_OnSetColor( &_this->ClockHourText, _Const0009 );
+  ViewsText_OnSetColor( &_this->ClockHourText, _Const000A );
   ViewsText_OnSetVisible( &_this->ClockHourText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const000A );
+  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const000B );
   ViewsText_OnSetAlignment( &_this->ClockMinuteText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockMinuteText, 0 );
-  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const0009 );
+  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const000A );
   ViewsText_OnSetVisible( &_this->ClockMinuteText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const000B );
+  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const000C );
   ViewsText_OnSetAlignment( &_this->ClockColonText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const000C ));
-  ViewsText_OnSetColor( &_this->ClockColonText, _Const0009 );
+  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const000D ));
+  ViewsText_OnSetColor( &_this->ClockColonText, _Const000A );
   ViewsText_OnSetVisible( &_this->ClockColonText, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockHourText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockMinuteText ), 0 );

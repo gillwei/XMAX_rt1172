@@ -1213,6 +1213,15 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable( DeviceInterfaceBl
     _this->BluetoothEnable = value;
     ew_bt_set_enable( ( bool )value );
   }
+
+  EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceBluetoothDeviceClass_OnGetBluetoothEnable, 
+    DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable ), 0 );
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBluetoothEnable()' */
+XBool DeviceInterfaceBluetoothDeviceClass_OnGetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  return _this->BluetoothEnable;
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetAutoConnect()' */

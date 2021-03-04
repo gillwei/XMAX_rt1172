@@ -43,6 +43,7 @@
 #endif
 
 #include "_CoreGroup.h"
+#include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_StatusBarClock.h"
 #include "_ViewsImage.h"
@@ -106,6 +107,9 @@ EW_DEFINE_FIELDS( StatusBarMain, CoreGroup )
   EW_OBJECT  ( BatteryIcon,     ViewsImage )
   EW_OBJECT  ( HeadsetIcon,     ViewsImage )
   EW_OBJECT  ( AppIcon,         ViewsImage )
+  EW_OBJECT  ( BtIcon,          ViewsImage )
+  EW_OBJECT  ( BTEnabledObserver, CorePropertyObserver )
+  EW_OBJECT  ( PairdDeviceChangedObserver, CorePropertyObserver )
   EW_VARIABLE( IsMotoConConnected, XBool )
 EW_END_OF_FIELDS( StatusBarMain )
 
@@ -168,6 +172,11 @@ void StatusBarMain_UpdateBatteryIcon( StatusBarMain _this );
 
 /* 'C' function for method : 'StatusBar::Main.UpdateHeadsetIcon()' */
 void StatusBarMain_UpdateHeadsetIcon( StatusBarMain _this );
+
+/* This slot method is executed when the associated property observer 'PropertyObserver' 
+   is notified. */
+void StatusBarMain_OnBtcConnectionStatusChangedSlot( StatusBarMain _this, XObject 
+  sender );
 
 /* 'C' function for method : 'StatusBar::Main.UpdateAppIcon()' */
 void StatusBarMain_UpdateAppIcon( StatusBarMain _this );

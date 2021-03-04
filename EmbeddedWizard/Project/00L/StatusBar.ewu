@@ -35,7 +35,7 @@ class Main : Core::Group
     preset Bounds = <11,0,93,38>;
   }
 
-  // App Icon
+  // App/Headset/Battery Icon
   note group Note
   {
     attr Bounds = <210,50,530,450>;
@@ -190,6 +190,57 @@ class Main : Core::Group
     preset Bounds = <294,3,326,35>;
     preset Bitmap = Resource::AppIcon;
     preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image BtIcon
+  {
+    preset Bounds = <96,3,128,35>;
+    preset Bitmap = Resource::StatusBarBtIcon;
+    preset Visible = false;
+  }
+
+  $rect <570,100,860,140>
+  object Core::PropertyObserver BTEnabledObserver
+  {
+    preset OnEvent = OnBtcConnectionStatusChangedSlot;
+    preset Outlet = ^DeviceInterface::BluetoothDevice.BluetoothEnable;
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <570,200,860,240>
+  slot OnBtcConnectionStatusChangedSlot
+  {
+    if( DeviceInterface::BluetoothDevice.BluetoothEnable )
+    {
+      if( DeviceInterface::BluetoothDevice.IsBtConnected() )
+      {
+        BtIcon.FrameNumber = 1;
+      }
+      else
+      {
+        BtIcon.FrameNumber = 0;
+      }
+      BtIcon.Visible = true;
+    }
+    else
+    {
+      BtIcon.Visible = false;
+    }
+  }
+
+  $rect <570,150,860,190>
+  object Core::PropertyObserver PairdDeviceChangedObserver
+  {
+    preset OnEvent = OnBtcConnectionStatusChangedSlot;
+    preset Outlet = ^DeviceInterface::BluetoothDevice.RefreshPairedDeviceList;
+  }
+
+  // BT Icon
+  note group Note1
+  {
+    attr Bounds = <550,50,880,260>;
   }
 
   $rect <230,390,510,430>

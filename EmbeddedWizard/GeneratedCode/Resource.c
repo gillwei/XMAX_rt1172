@@ -522,4 +522,10 @@ EW_RES_WITHOUT_VARIANTS( ResourceBatteryNotChagingIcon )
 /* Table with links to derived variants of the bitmap resource : 'Resource::HeadsetIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceHeadsetIcon )
 
+/* Include a file containing the bitmap resource : 'Resource::StatusBarBtIcon' */
+#include "_ResourceStatusBarBtIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::StatusBarBtIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceStatusBarBtIcon )
+
 /* Embedded Wizard */

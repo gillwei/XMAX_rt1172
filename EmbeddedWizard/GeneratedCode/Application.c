@@ -497,6 +497,8 @@ void ApplicationApplication_OnBootupAnimationFinishedSlot( ApplicationApplicatio
     EwNullSlot, 0 );
   }
 
+  DeviceInterfaceBluetoothDeviceClass_GetBluetoothEnable( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
+  DeviceInterfaceBluetoothDeviceClass ));
   CoreGroup_OnSetVisible((CoreGroup)&_this->StatusBar, 1 );
   ApplicationApplication_ShowDisclaimer( _this );
 }

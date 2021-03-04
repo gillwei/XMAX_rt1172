@@ -276,6 +276,9 @@ EW_DECLARE_BITMAP_RES( ResourceBatteryNotChagingIcon )
 /* Bitmap resource : 'Resource::HeadsetIcon' */
 EW_DECLARE_BITMAP_RES( ResourceHeadsetIcon )
 
+/* Bitmap resource : 'Resource::StatusBarBtIcon' */
+EW_DECLARE_BITMAP_RES( ResourceStatusBarBtIcon )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )
