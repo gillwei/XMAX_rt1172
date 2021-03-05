@@ -28,6 +28,7 @@
 #include "can_il_enum.h"
 
 #include "can_tp.h"
+#include "can_mid.h"
 #include "client_dcm.h"
 #include "can_svcs.h"
 #include "can_nim_signals.h"
@@ -81,6 +82,11 @@ if( hw_inst < CAN_NUM_INSTANCES )
     ------------------------------------------------------*/
     nm_init( NM_INIT_MODE_POWER_ON, hw_inst );
     client_diag_init( CAN_CONTROLLER_2 );
+
+    /*------------------------------------------------------
+    CAN application Other paras init
+    ------------------------------------------------------*/
+    can_mid_init();
     }
 }
 

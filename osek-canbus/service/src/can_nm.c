@@ -296,10 +296,10 @@ if( ( NM_INIT_MODE_POWER_ON       == init_mode )     ||
     /*------------------------------------------------------
     Initialize the CAN Stack Layers
     ------------------------------------------------------*/
-    app_init( hw_inst );
     dll_init( hw_inst );
     il_init( hw_inst, l_init_default_signals );
     tp_init( hw_inst );
+    app_init( hw_inst );
     }
 
 /*------------------------------------------------------

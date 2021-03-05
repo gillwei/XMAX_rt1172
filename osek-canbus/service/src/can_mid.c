@@ -1,0 +1,636 @@
+/*!*******************************************************************
+*
+* @defgroup can_stack_mid middle Layer between CAN and other modules
+* @ingroup can_stack
+* @{
+*
+*********************************************************************/
+
+/*--------------------------------------------------------------------
+                            GENERAL INCLUDES
+--------------------------------------------------------------------*/
+#include "can_defs.h"
+#include "can_bcfg.h"
+#include "CAN_app.h"
+#include "can_dll_prv_par.h"
+
+#include "fsl_debug_console.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include <string.h>
+
+#include "can_mid.h"
+
+/*--------------------------------------------------------------------
+                            MACROS
+--------------------------------------------------------------------*/
+#define MID_MSG_RES_SHORT_TIMEOUT                       10   //!< 10  * 5ms = 50ms
+#define MID_MSG_RES_LONG_TIMEOUT                        1000 //!< 1000 * 5ms = 5000ms
+#define MID_MSG_RE_SEND_TIME_MAX                        3
+
+#define MID_MSG_CAN_ID_DEMO                             0xFFFFFFFF
+#define MID_MSG_SVC_ID_DEMO                             0xFF
+
+/*--------------------------------------------------------------------
+                            TYPES
+--------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+                              VARIABLES
+--------------------------------------------------------------------*/
+/*------------------------------------------------------
+Timer instances
+------------------------------------------------------*/
+mid_msg_supp_func_sfl_t supp_func_list = { 0 };
+
+/*------------------------------------------------------
+Message list pointer
+------------------------------------------------------*/
+mid_msg_lst msg_lst_head = NULL;
+
+/*------------------------------------------------------
+Request message instances
+------------------------------------------------------*/
+mid_msg_t mid_msg_inst[] =
+{
+    { TX0_REQ_MT_FUNC_CNT_CAN0_ID, RX4_RES_MT_FUNC_CNT_CAN0_ID, MID_MSG_SID_VC_INFO_RST        , MID_RES_SID_VC_INFO_RST    },
+    { TX0_REQ_MT_FUNC_CNT_CAN0_ID, RX4_RES_MT_FUNC_CNT_CAN0_ID, MID_MSG_SID_VC_INFO_CHNG_MT_LCD, MID_RES_SID_VC_INFO_CHNG   },
+    { TX0_REQ_MT_FUNC_CNT_CAN0_ID, RX4_RES_MT_FUNC_CNT_CAN0_ID, MID_MSG_SID_UNIT_CHNG,           MID_RES_SID_UNIT           },
+    { TX0_REQ_MT_FUNC_CNT_CAN0_ID, RX4_RES_MT_FUNC_CNT_CAN0_ID, MID_MSG_SID_TCS_SWITCH,          MID_RES_SID_TCS            },
+    { TX4_REQ_REPRGRM_INFO_CAN0_ID,RX9_RES_RPRGRM_INFO_CAN0_ID, MID_MSG_SID_REPROG,              MID_RES_SID_REPROG         },
+    { TX2_REQ_SUPPORT_CAN0_ID,     RX2_RES_SUPPORT_CAN0_ID,     MID_MSG_SID_SUPP_FUNC_LIST,      MID_RES_SID_SUPP_FUNC_LIST },
+};
+
+/*------------------------------------------------------
+Init the message list
+------------------------------------------------------*/
+static void mid_msg_list_init
+    (
+    void
+    )
+{
+/*------------------------------------------------------
+Get the head node memory space
+------------------------------------------------------*/
+msg_lst_head = pvPortMalloc( sizeof( mid_msg_node ) );
+
+/*------------------------------------------------------
+Init message para
+------------------------------------------------------*/
+msg_lst_head->next           = NULL;
+msg_lst_head->req_msg_time   = 0;
+msg_lst_head->req_msg_wait   = 0;
+msg_lst_head->req_msg_status = MID_MSG_STAT_INITED;
+
+/*------------------------------------------------------
+Reset data field
+------------------------------------------------------*/
+memset( &msg_lst_head->req_msg,  0, sizeof(can_msg_t) );
+memset( &msg_lst_head->pos_resp_msg,  0, sizeof(can_msg_t) );
+memset( &msg_lst_head->neg_resp_msg,  0, sizeof(can_msg_t) );
+}
+
+/*------------------------------------------------------
+Fill the node with the input request message
+------------------------------------------------------*/
+static can_ret_code_t
+mid_msg_node_req_fill
+    (
+    can_msg_t   const *const req_msg_p,
+    mid_msg_lst        const node_p
+    )
+{
+can_ret_code_t  l_ret_code  = CAN_RC_NOT_AVAILABLE;
+uint32 l_inst_can_id        = 0;
+uint8  l_inst_svc_id        = 0;
+uint32 l_req_can_id         = req_msg_p->id;
+uint8  l_req_svc_id         = req_msg_p->data[MID_MSG_REQMFNC_IDX];
+uint8  index = 0;
+
+/*------------------------------------------------------
+Find the para instance
+------------------------------------------------------*/
+for( index = 0; index < ( sizeof( mid_msg_inst ) / sizeof(mid_msg_t) ); index++ )
+    {
+    l_inst_can_id = mid_msg_inst[index].req_can_id;
+    l_inst_svc_id = mid_msg_inst[index].req_svc_id;
+
+    if( l_inst_can_id == l_req_can_id &&
+        l_inst_svc_id == l_req_svc_id )
+        {
+        l_ret_code = CAN_RC_SUCCESS;
+        break;
+        }
+    }
+
+if( l_ret_code == CAN_RC_SUCCESS )
+    {
+    /*------------------------------------------------------
+    Set these paras
+    ------------------------------------------------------*/
+    node_p->req_msg_wait   = 0;
+    node_p->req_msg_time   = 0;
+    node_p->req_msg_status = MID_MSG_STAT_WAIT_RES_SHORT;
+
+    /*------------------------------------------------------
+    Fill data field
+    ------------------------------------------------------*/
+    node_p->req_msg.id     = req_msg_p->id,
+    node_p->req_msg.size   = req_msg_p->size;
+    memcpy( node_p->req_msg.data, req_msg_p->data, req_msg_p->size );
+
+    node_p->pos_resp_msg.id  = mid_msg_inst[index].resp_can_id;
+    node_p->pos_resp_msg.data[MID_MSG_RESMFNC_IDX] = mid_msg_inst[index].pos_svc_id;
+
+    node_p->neg_resp_msg.id  = mid_msg_inst[index].resp_can_id;
+    node_p->neg_resp_msg.data[MID_MSG_NRES_NACK_IDX] = MID_MSG_NRES_NACK;
+    node_p->neg_resp_msg.data[MID_MSG_NRES_SID_IDX]  = req_msg_p->data[MID_MSG_REQMFNC_IDX];
+    }
+
+return l_ret_code;
+}
+
+/*------------------------------------------------------
+Search the message in the list by can id and service id
+------------------------------------------------------*/
+static mid_msg_lst
+mid_msg_node_search
+    (
+    can_msg_t   const *const msg_p
+    )
+{
+uint32 l_msg_can_id  = 0;
+uint8  l_msg_svc_id  = 0;
+uint32 l_can_id      = msg_p->id;
+uint8  l_svc_id      = MID_MSG_SVC_ID_DEMO;
+mid_msg_lst l_node_p = msg_lst_head;
+
+/*------------------------------------------------------
+Find the node whose element timer equals to the input
+------------------------------------------------------*/
+while( ( l_node_p != NULL ) &&
+       ( l_msg_can_id != l_can_id || l_msg_svc_id != l_svc_id ) )
+    {
+    l_node_p = l_node_p->next;
+
+    /*------------------------------------------------------
+    Find the node by request CAN id and service id
+    ------------------------------------------------------*/
+    if( ( l_can_id == TX0_REQ_MT_FUNC_CNT_CAN0_ID  ) ||
+        ( l_can_id == TX4_REQ_REPRGRM_INFO_CAN0_ID ) ||
+        ( l_can_id == TX2_REQ_SUPPORT_CAN0_ID ) )
+        {
+        l_msg_can_id = l_node_p->req_msg.id;
+        l_msg_svc_id = l_node_p->req_msg.data[MID_MSG_REQMFNC_IDX];
+        }
+    /*------------------------------------------------------
+    Find the node by response CAN id and service id
+    ------------------------------------------------------*/
+    else if( ( l_can_id == RX4_RES_MT_FUNC_CNT_CAN0_ID ) ||
+             ( l_can_id == RX9_RES_RPRGRM_INFO_CAN0_ID ) ||
+             ( l_can_id == RX2_RES_SUPPORT_CAN0_ID ) )
+        {
+        if( msg_p->data[MID_MSG_RESMFNC_IDX] == MID_MSG_NRES_NACK )
+            {
+            l_svc_id     = msg_p->data[MID_MSG_NRES_SID_IDX];
+
+            l_msg_can_id = l_node_p->neg_resp_msg.id;
+            l_msg_svc_id = l_node_p->neg_resp_msg.data[MID_MSG_NRES_SID_IDX];
+            }
+        else
+            {
+            l_svc_id     = msg_p->data[MID_MSG_REQMFNC_IDX];
+
+            l_msg_can_id = l_node_p->pos_resp_msg.id;
+            l_msg_svc_id = l_node_p->pos_resp_msg.data[MID_MSG_RESMFNC_IDX];
+            }
+        }
+    }
+
+return l_node_p;
+}
+
+/*------------------------------------------------------
+Insert a request to the request message list
+------------------------------------------------------*/
+static can_ret_code_t
+mid_msg_list_insert
+    (
+    can_msg_t   const *const req_msg_p
+    )
+{
+can_ret_code_t  l_ret_code      = CAN_RC_NOT_AVAILABLE;
+mid_msg_lst     l_node_pre_p    = msg_lst_head;
+uint8           l_svc_staus     = 0;
+
+/*------------------------------------------------------
+Find if there is a same request message node
+------------------------------------------------------*/
+mid_msg_lst l_node_p = mid_msg_node_search( req_msg_p );
+
+if( l_node_p != NULL )
+    {
+    /*------------------------------------------------------
+    Client must not transmit next "Request A" message before
+    "Response A" is received for previous "Request A".
+    ------------------------------------------------------*/
+    l_svc_staus = l_node_p->req_msg_status;
+    if( l_svc_staus >= MID_MSG_STAT_WAIT_RES_SHORT )
+        {
+        return l_ret_code;
+        }
+    else
+        {
+        l_ret_code = mid_msg_node_req_fill( req_msg_p, l_node_p );
+        }
+    }
+else
+    {
+    /*------------------------------------------------------
+    Get a node memory space
+    ------------------------------------------------------*/
+    l_node_p = pvPortMalloc( sizeof( mid_msg_node ) );
+    if( l_node_p == NULL )
+        {
+        return l_ret_code;
+        }
+
+    /*------------------------------------------------------
+    Find the message list tail
+    ------------------------------------------------------*/
+    while( l_node_pre_p->next != NULL )
+        {
+        l_node_pre_p = l_node_pre_p->next;
+        }
+
+    /*------------------------------------------------------
+    Link new node to the tail node
+    ------------------------------------------------------*/
+    l_node_pre_p->next = l_node_p;
+
+    /*------------------------------------------------------
+    Set new node next pointer
+    ------------------------------------------------------*/
+    l_node_p->next = NULL;
+
+    /*------------------------------------------------------
+    Fill the node
+    ------------------------------------------------------*/
+    l_ret_code = mid_msg_node_req_fill( req_msg_p, l_node_p );
+    }
+
+return l_ret_code;
+}
+
+/*------------------------------------------------------
+API for other module sending request
+------------------------------------------------------*/
+can_ret_code_t can_mid_req
+    (
+    uint32  can_id,
+    uint8   msg_len,
+    uint8   svc_id,
+    uint8   svc_opt
+    )
+{
+can_ret_code_t l_ret_code  = CAN_RC_NOT_AVAILABLE;
+can_msg_t l_req_msg        = { 0 };
+
+/*------------------------------------------------------
+Set request message
+------------------------------------------------------*/
+l_req_msg.id   = can_id;
+l_req_msg.size = msg_len;
+l_req_msg.data[MID_MSG_REQMFNC_IDX]     = svc_id;
+l_req_msg.data[MID_MSG_REQPROCDTL_IDX]  = svc_opt;
+l_req_msg.data[MID_MSG_PADDING_IDX]     = MID_MSG_PADDING_DATA;
+
+/*------------------------------------------------------
+Add the message to message list for timing and response
+waiting
+------------------------------------------------------*/
+l_ret_code = mid_msg_list_insert( &l_req_msg );
+
+/*------------------------------------------------------
+Add the message to message list for timing and response
+waiting
+------------------------------------------------------*/
+if( l_ret_code == CAN_RC_SUCCESS )
+    {
+    l_ret_code = il_app_frm_put( &l_req_msg );
+    }
+
+return l_ret_code;
+}
+
+/*------------------------------------------------------
+Response callback
+------------------------------------------------------*/
+void can_mid_resp_cb
+    (
+    can_msg_t const * const mid_msg_p
+    )
+{
+uint8            l_rs        = 0;
+uint8            l_svc_id    = 0;
+uint32           l_can_id    = mid_msg_p->id;
+uint32           l_msg_len   = mid_msg_p->size;
+uint8            l_resp_type = mid_msg_p->data[MID_MSG_RESMFNC_IDX];
+
+mid_msg_lst      l_node_p          = mid_msg_node_search( mid_msg_p );
+uint8           *l_node_time_p     = &( l_node_p->req_msg_time );
+uint16          *l_node_wait_p     = &( l_node_p->req_msg_wait );
+mid_msg_stat_t  *l_node_status_p   = &( l_node_p->req_msg_status );
+can_msg_t       *l_node_pos_resp_p = &( l_node_p->pos_resp_msg );
+
+uint8            l_pos_resp_svc_id = mid_msg_p->data[MID_MSG_RESMFNC_IDX];
+uint8            l_neg_resp_svc_id = mid_msg_p->data[MID_MSG_NRES_SID_IDX];
+
+/*------------------------------------------------------
+Can not find the response node in the message list
+------------------------------------------------------*/
+if( l_node_p == NULL )
+    {
+    return;
+    }
+
+/*------------------------------------------------------
+Handle resp date by different type(positive or negative)
+------------------------------------------------------*/
+if( l_resp_type == MID_MSG_NRES_NACK )
+    {
+    l_rs = mid_msg_p->data[MID_MSG_NRES_RS_IDX];
+    if( l_rs == MID_MSG_NRES_RS_WAIT_REQ )
+        {
+        *l_node_wait_p   = 0;
+        *l_node_time_p   = 0;
+        *l_node_status_p = MID_MSG_STAT_WAIT_RES_LONG;
+         l_svc_id        = l_neg_resp_svc_id;
+        PRINTF("Neg resp %x %x!\r\n", l_can_id, l_svc_id );
+        //TBD nodity upper layer (resending is in the mid_task)
+        }
+    else if( l_rs == MID_MSG_NRES_RS_NOT_SUPP )
+        {
+        /*------------------------------------------------------
+        Handle the response message
+        ------------------------------------------------------*/
+        *l_node_wait_p   = 0;
+        *l_node_time_p   = 0;
+        *l_node_status_p = MID_MSG_STAT_INITED;
+         l_svc_id        = l_neg_resp_svc_id;
+
+        PRINTF("Not supp %x %x!\r\n", l_can_id, l_svc_id );
+        //TBD nodity upper layer to handle no supported service ID
+        }
+    }
+else
+    {
+    /*------------------------------------------------------
+    Handle the positive response message
+    ------------------------------------------------------*/
+    *l_node_wait_p   = 0;
+    *l_node_time_p   = 0;
+    *l_node_status_p = MID_MSG_STAT_INITED;
+     l_svc_id        = l_pos_resp_svc_id;
+
+    /*------------------------------------------------------
+    Data modify
+    ------------------------------------------------------*/
+    memcpy( l_node_pos_resp_p->data, mid_msg_p->data, l_msg_len );
+
+    /*------------------------------------------------------
+    Set the function list
+    ------------------------------------------------------*/
+    if( l_can_id == RX2_RES_SUPPORT_CAN0_ID )
+        {
+        memcpy( &supp_func_list, &( mid_msg_p->data[MID_MSG_SFL_START_IDX] ), MID_MSG_SFL_LEN );
+        }
+
+    PRINTF("Pos resp %x %x!\r\n", l_can_id, l_svc_id );
+    //TBD nodity upper layer to handle positive response.
+    }
+}
+
+
+/*------------------------------------------------------
+Find the positive message node by reponse CAN ID and
+service ID
+------------------------------------------------------*/
+mid_msg_lst
+can_mid_resp_get
+    (
+    uint32  resp_can_id,
+    uint8   resp_svc_id
+    )
+{
+mid_msg_lst l_node_p      = msg_lst_head;
+uint32      l_msg_can_id  = 0;
+uint8       l_msg_svc_id  = 0;
+
+/*------------------------------------------------------
+Find the node whose element timer equals to the input
+------------------------------------------------------*/
+while( ( l_node_p != NULL ) &&
+       ( l_msg_can_id != resp_can_id || l_msg_svc_id != resp_svc_id ) )
+    {
+    l_node_p = l_node_p->next;
+
+    /*------------------------------------------------------
+    Find the node by response CAN id and service id
+    ------------------------------------------------------*/
+    l_msg_can_id = l_node_p->pos_resp_msg.id;
+    l_msg_svc_id = l_node_p->pos_resp_msg.data[MID_MSG_RESMFNC_IDX];
+    }
+
+return l_node_p;
+}
+
+/*------------------------------------------------------
+Middle layer request  and response message task
+------------------------------------------------------*/
+void can_mid_task
+    (
+    void
+    )
+{
+can_ret_code_t   l_ret_code       = CAN_RC_NOT_AVAILABLE;
+uint8           *l_node_time_p    = NULL;
+uint16          *l_node_wait_p    = NULL;
+mid_msg_stat_t  *l_node_status_p  = NULL;
+can_msg_t       *l_node_req_p     = NULL;
+mid_msg_lst      l_node_p         = msg_lst_head;
+
+/*------------------------------------------------------
+There is no request message in the list
+------------------------------------------------------*/
+if( l_node_p == NULL )
+    {
+    return;
+    }
+
+/*------------------------------------------------------
+Handle all the nodes in the list
+------------------------------------------------------*/
+while( l_node_p->next != NULL )
+    {
+    l_node_p = l_node_p->next;
+
+    /*------------------------------------------------------
+    Get the message node status and request message
+    ------------------------------------------------------*/
+    l_node_wait_p    = &( l_node_p->req_msg_wait );
+    l_node_time_p    = &( l_node_p->req_msg_time );
+    l_node_status_p  = &( l_node_p->req_msg_status );
+    l_node_req_p     = &( l_node_p->req_msg );
+
+    /*------------------------------------------------------
+    Handle message node with different status
+    ------------------------------------------------------*/
+    switch( *l_node_status_p )
+        {
+        case MID_MSG_STAT_INITED :
+
+            break;
+
+        case MID_MSG_STAT_WAIT_RES_SHORT :
+            ( *l_node_wait_p )++;
+            if( ( *l_node_wait_p ) > MID_MSG_RES_SHORT_TIMEOUT )
+                {
+                ( *l_node_time_p )++;
+                ( *l_node_wait_p )   = 0;
+                ( *l_node_status_p ) = MID_MSG_STAT_WAIT_RES_LONG;
+
+                /*------------------------------------------------------
+                Re-send the request message 50ms after the first sending
+                without response
+                ------------------------------------------------------*/
+                l_ret_code = il_app_frm_put( l_node_req_p );
+                }
+            break;
+
+        case MID_MSG_STAT_WAIT_RES_LONG :
+            ( *l_node_wait_p )++;
+            if( ( *l_node_wait_p ) > MID_MSG_RES_LONG_TIMEOUT )
+                {
+                ( *l_node_wait_p )  = 0;
+                ( *l_node_time_p )++;
+
+                /*------------------------------------------------------
+                Client judge as communication error if there is no response
+                even though Client send the request message for 3 times.
+                ------------------------------------------------------*/
+                if( ( *l_node_time_p ) >= MID_MSG_RE_SEND_TIME_MAX )
+                    {
+                    ( *l_node_status_p ) = MID_MSG_STAT_COMM_ERR;
+
+                    /*------------------------------------------------------
+                    Notify the communication error
+                    ------------------------------------------------------*/
+                    PRINTF("Comm error %x!\r\n", l_node_req_p->id );
+                    }
+                else
+                    {
+                    l_ret_code = il_app_frm_put( l_node_req_p );
+                    }
+                }
+            break;
+
+        case MID_MSG_STAT_RES_SUCCESS :
+
+            break;
+
+
+        case MID_MSG_STAT_COMM_ERR :
+            //TBD communication error handle.
+            break;
+        }
+    }
+}
+
+/*------------------------------------------------------
+Handshake with Meter to get supported functions list
+------------------------------------------------------*/
+static can_ret_code_t
+can_mid_hand_shake
+    (
+    void
+    )
+{
+can_ret_code_t  l_ret_code  = CAN_RC_NOT_AVAILABLE;
+
+/*------------------------------------------------------
+Only one byte for function list request
+------------------------------------------------------*/
+l_ret_code = can_mid_req( TX2_REQ_SUPPORT_CAN0_ID,    IL_CAN0_TX2_REQ_SUPPORT_TXFRM_LEN,
+                          MID_MSG_SID_SUPP_FUNC_LIST, MID_MSG_PADDING_DATA );
+return l_ret_code;
+}
+
+#if( DEBUG_TX_CAN_SUPPORT )
+/*------------------------------------------------------
+Positive and negative test
+------------------------------------------------------*/
+static can_ret_code_t
+can_mid_pos_neg_test
+    (
+    void
+    )
+{
+can_ret_code_t  l_ret_code  = CAN_RC_NOT_AVAILABLE;
+
+/*------------------------------------------------------
+Positive test
+------------------------------------------------------*/
+l_ret_code = can_mid_req( TX0_REQ_MT_FUNC_CNT_CAN0_ID, IL_CAN0_TX0_REQ_MT_FUNC_CNT_TXFRM_LEN,
+                          MID_MSG_SID_UNIT_CHNG, MID_MSG_PROCDTL_CHNG_DIST_UNIT_TO_MILE );
+
+/*------------------------------------------------------
+Negative test
+------------------------------------------------------*/
+l_ret_code = can_mid_req( TX4_REQ_REPRGRM_INFO_CAN0_ID, IL_CAN0_TX4_REQ_REPRGRM_INFO_TXFRM_LEN,
+                          MID_MSG_SID_REPROG, MID_MSG_PROGSTS_START_REQ );
+
+return l_ret_code;
+}
+#endif
+
+/*------------------------------------------------------
+Init CAN middle layer module
+------------------------------------------------------*/
+void can_mid_init
+    (
+    void
+    )
+{
+/*------------------------------------------------------
+Init message list
+------------------------------------------------------*/
+mid_msg_list_init();
+
+/*------------------------------------------------------
+Handshake with Meter to check out those functions
+it supports
+------------------------------------------------------*/
+can_mid_hand_shake();
+
+#if( DEBUG_TX_CAN_SUPPORT )
+/*------------------------------------------------------
+Positive and negative test case
+------------------------------------------------------*/
+can_mid_pos_neg_test();
+#endif
+
+}
+
+/*------------------------------------------------------
+Get supported functions
+------------------------------------------------------*/
+mid_msg_supp_func_sfl_t*
+can_mid_get_supp_func_list
+    (
+    void
+    )
+{
+return ( &supp_func_list );
+}
+

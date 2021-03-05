@@ -20,6 +20,7 @@ extern "C" {
 #endif
 #include "can_il_par.h"
 #include "can_il.h"
+#include "can_mid.h"
 
 void il_app_frm_timeout1_get
     (
@@ -46,17 +47,24 @@ void nim_app_sig_get
     uint32_t                     *p_sig_val
     );
 
-can_ret_code_t
-il_app_frm_put
+can_ret_code_t can_mid_req
     (
-    can_msg_t const * const can_msg_tx_p
+    uint32  can_id,
+    uint8   msg_len,
+    uint8   svc_id,
+    uint8   svc_opt
     );
 
-can_ret_code_t
-il_app_frm_get
+mid_msg_lst can_mid_resp_get
     (
-    il_rx_frm_index_t   frm_index,
-    can_msg_t          *can_msg_rx_p
+    uint32  can_id,
+    uint8   svc_id
+    );
+
+mid_msg_supp_func_sfl_t*
+can_mid_get_supp_func_list
+    (
+    void
     );
 
 #ifdef __cplusplus

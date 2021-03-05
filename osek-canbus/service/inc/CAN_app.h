@@ -21,6 +21,12 @@
 extern "C" {
 #endif
 
+can_ret_code_t
+il_app_frm_put
+    (
+    can_msg_t const * const can_msg_tx_p
+    );
+
 void app_init
     (
     can_hw_inst_t   const hw_inst

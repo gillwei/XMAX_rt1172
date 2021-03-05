@@ -19,7 +19,7 @@
 					<folderInfo id="com.crt.advproject.config.exe.debug.1541729567." name="/" resourcePath="">
 						<toolChain id="com.crt.advproject.toolchain.exe.debug.716917787" name="NXP MCU Tools" superClass="com.crt.advproject.toolchain.exe.debug">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.GNU_ELF" id="com.crt.advproject.platform.exe.debug.1676352127" name="ARM-based MCU (Debug)" superClass="com.crt.advproject.platform.exe.debug"/>
-							<builder buildPath="${workspace_loc:/evkmimxrt1170_igpio_led_output_cm7}/Debug" id="com.crt.advproject.builder.exe.debug.208896639" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.crt.advproject.builder.exe.debug"/>
+							<builder buildPath="${workspace_loc:/evkmimxrt1170_igpio_led_output_cm7}/Debug" enableCleanBuild="false" id="com.crt.advproject.builder.exe.debug.208896639" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.crt.advproject.builder.exe.debug"/>
 							<tool id="com.crt.advproject.cpp.exe.debug.592357430" name="MCU C++ Compiler" superClass="com.crt.advproject.cpp.exe.debug">
 								<option id="com.crt.advproject.cpp.arch.13169740" name="Architecture" superClass="com.crt.advproject.cpp.arch" useByScannerDiscovery="true" value="com.crt.advproject.cpp.target.cm7" valueType="enumerated"/>
 								<option id="com.crt.advproject.cpp.misc.dialect.701956486" name="Language standard" superClass="com.crt.advproject.cpp.misc.dialect" useByScannerDiscovery="true"/>

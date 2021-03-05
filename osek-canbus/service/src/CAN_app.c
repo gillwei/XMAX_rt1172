@@ -52,6 +52,7 @@
 #include "task.h"
 
 #include "VI_pub.h"
+#include "can_mid.h"
 #include "CAN_pub.h"
 #include "CAN_app.h"
 
@@ -679,7 +680,7 @@ PRINTF( "\r\n" );
 /*------------------------------------------------------
 Other module can add their event message handler here
 ------------------------------------------------------*/
-//TBD
+can_mid_resp_cb( &app_can_msg_rx );
 }
 
 /*!*******************************************************************
@@ -930,12 +931,6 @@ can_app_bus_off[CAN_CONTROLLER_2] = FALSE;
 CAN application Timeout error2 Status.
 ------------------------------------------------------*/
 can_app_timeout_error2[CAN_CONTROLLER_2] = FALSE;
-
-/*------------------------------------------------------
-CAN application Other paras init
-------------------------------------------------------*/
-//TBD
-
 }
 
 /*!*******************************************************************
@@ -1012,29 +1007,9 @@ void app_task
 {
 can_app_sys_stat_check();
 
-#if( (DEBUG_TX_CAN_SUPPORT)&&(DEBUG_RX_CAN_SUPPORT) )
-static uint8     app_tx_tick    = CAN_APP_SIG_DEBUG_TICK;//!< 200 * 5 = 1000ms
-static can_msg_t app_can_msg_tx = {
-                                  TX0_REQ_MT_FUNC_CNT_CAN0_ID,
-                                  IL_CAN0_TX0_REQ_MT_FUNC_CNT_TXFRM_LEN,
-                                  { 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11 },
-                                  };
-
-if( app_tx_tick > 0 )
-    {
-    app_tx_tick--;
-    if( app_tx_tick == 0 )
-        {
-        app_tx_tick = CAN_APP_SIG_DEBUG_TICK;
-
-        il_app_frm_put( &app_can_msg_tx );
-        }
-    }
-else
-    {
-    app_tx_tick = CAN_APP_SIG_DEBUG_TICK;
-    }
-
-#endif
+/*------------------------------------------------------
+Middle layer to handle request messages;
+------------------------------------------------------*/
+can_mid_task();
 }
 
