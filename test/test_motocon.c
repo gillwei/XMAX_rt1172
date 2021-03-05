@@ -73,10 +73,10 @@ PRINTF( "%s %d\r\n", __FUNCTION__, test_item );
 switch( test_item )
     {
     case EnumMotoConTestSTART_BLE_ADVERTISING:
-        BTM_set_discoverable_state( true );
+        BTM_set_ble_advertisement( true );
         break;
     case EnumMotoConTestSTOP_BLE_ADVERTISING:
-        BTM_set_discoverable_state( false );
+        BTM_set_ble_advertisement( false );
         break;
     case EnumMotoConTestLIBRATY_VERSION:
         BC_motocon_send_lib_version( 1, 2, 3 );
