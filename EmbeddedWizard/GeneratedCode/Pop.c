@@ -25,26 +25,33 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_ApplicationApplication.h"
 #include "_CoreGroup.h"
 #include "_CorePropertyObserver.h"
+#include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceBluetoothDeviceClass.h"
+#include "_DeviceInterfaceMotoConContext.h"
 #include "_DeviceInterfaceWeatherDeviceClass.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
+#include "_PopPOP09_WeatherConnectionErrorUI.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "_ViewsImage.h"
 #include "_ViewsText.h"
 #include "_WeatherWEA01_Main.h"
 #include "DeviceInterface.h"
+#include "Enum.h"
 #include "Fonts.h"
 #include "Pop.h"
 #include "Resource.h"
 #include "Strings.h"
 
 /* Constant values used in this 'C' module only. */
-static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
-static const XRect _Const0001 = {{ 10, 156 }, { 470, 187 }};
-static const XRect _Const0002 = {{ 193, 54 }, { 287, 148 }};
+static const XRect _Const0000 = {{ 10, 156 }, { 470, 187 }};
+static const XRect _Const0001 = {{ 193, 54 }, { 287, 148 }};
+static const XRect _Const0002 = {{ 10, 50 }, { 470, 236 }};
 
 /* Initializer for the class 'Pop::POP08_WeatherLoadingUI' */
 void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject aLink, XHandle aArg )
@@ -59,16 +66,19 @@ void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject a
   ViewsText__Init( &_this->LoadingText, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->WeatherLoadingObserver, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->LoadingAnimation, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->ConnectionFailedTimer, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->MotoConConnectionEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( PopPOP08_WeatherLoadingUI );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->LoadingText, _Const0001 );
+  CoreRectView__OnSetBounds( &_this->LoadingText, _Const0000 );
   ViewsText_OnSetString( &_this->LoadingText, EwLoadString( &StringsGEN_please_wait ));
-  CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0002 );
+  CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0001 );
   ViewsImage_OnSetAnimated( &_this->LoadingAnimation, 1 );
+  CoreTimer_OnSetPeriod( &_this->ConnectionFailedTimer, 20000 );
+  CoreTimer_OnSetEnabled( &_this->ConnectionFailedTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
   ViewsText_OnSetFont( &_this->LoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
@@ -79,6 +89,10 @@ void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject a
   DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherInfoReceived ));
   ViewsImage_OnSetBitmap( &_this->LoadingAnimation, EwLoadResource( &ResourceLoadingAnimation, 
   ResourcesBitmap ));
+  _this->ConnectionFailedTimer.OnTrigger = EwNewSlot( _this, PopPOP08_WeatherLoadingUI_OnConnectionFailedUpdateSlot );
+  _this->MotoConConnectionEventHandler.OnEvent = EwNewSlot( _this, PopPOP08_WeatherLoadingUI_OnMotoConConnectionUpdateEvent );
+  CoreSystemEventHandler_OnSetEvent( &_this->MotoConConnectionEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->MotoConSystemEvent );
 
   /* Call the user defined constructor */
   PopPOP08_WeatherLoadingUI_Init( _this, aArg );
@@ -94,6 +108,8 @@ void PopPOP08_WeatherLoadingUI__ReInit( PopPOP08_WeatherLoadingUI _this )
   ViewsText__ReInit( &_this->LoadingText );
   CorePropertyObserver__ReInit( &_this->WeatherLoadingObserver );
   ViewsImage__ReInit( &_this->LoadingAnimation );
+  CoreTimer__ReInit( &_this->ConnectionFailedTimer );
+  CoreSystemEventHandler__ReInit( &_this->MotoConConnectionEventHandler );
 }
 
 /* Finalizer method for the class 'Pop::POP08_WeatherLoadingUI' */
@@ -106,6 +122,8 @@ void PopPOP08_WeatherLoadingUI__Done( PopPOP08_WeatherLoadingUI _this )
   ViewsText__Done( &_this->LoadingText );
   CorePropertyObserver__Done( &_this->WeatherLoadingObserver );
   ViewsImage__Done( &_this->LoadingAnimation );
+  CoreTimer__Done( &_this->ConnectionFailedTimer );
+  CoreSystemEventHandler__Done( &_this->MotoConConnectionEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_Super );
@@ -136,8 +154,44 @@ void PopPOP08_WeatherLoadingUI_OnWeatherLoadingUpdateSlot( PopPOP08_WeatherLoadi
 
   if ( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->IsWeatherInfoReceived )
   {
+    CoreTimer_OnSetEnabled( &_this->ConnectionFailedTimer, 0 );
     CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( WeatherWEA01_Main, 
     0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
+}
+
+/* 'C' function for method : 'Pop::POP08_WeatherLoadingUI.OnConnectionFailedUpdateSlot()' */
+void PopPOP08_WeatherLoadingUI_OnConnectionFailedUpdateSlot( PopPOP08_WeatherLoadingUI _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  CoreTimer_OnSetEnabled( &_this->ConnectionFailedTimer, 0 );
+  CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( PopPOP09_WeatherConnectionErrorUI, 
+  0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void PopPOP08_WeatherLoadingUI_OnMotoConConnectionUpdateEvent( PopPOP08_WeatherLoadingUI _this, 
+  XObject sender )
+{
+  DeviceInterfaceMotoConContext MotoConContext;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  MotoConContext = EwCastObject( _this->MotoConConnectionEventHandler.Context, DeviceInterfaceMotoConContext );
+
+  if ( EnumMotoConRxEventCONNECTION_STATUS == MotoConContext->RxEvent )
+  {
+    if ( !DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( EwGetAutoObject( 
+        &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
+    {
+      EwSignal( EwNewSlot( _this, PopPOP08_WeatherLoadingUI_OnConnectionFailedUpdateSlot ), 
+        ((XObject)_this ));
+    }
   }
 }
 
@@ -188,5 +242,124 @@ EW_DEFINE_CLASS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG, LoadingText, L
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( PopPOP08_WeatherLoadingUI )
+
+/* Initializer for the class 'Pop::POP09_WeatherConnectionErrorUI' */
+void PopPOP09_WeatherConnectionErrorUI__Init( PopPOP09_WeatherConnectionErrorUI _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( PopPOP09_WeatherConnectionErrorUI );
+
+  /* ... then construct all embedded objects */
+  ViewsText__Init( &_this->ConnectionFailedMessage, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->CountDownTimer, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( PopPOP09_WeatherConnectionErrorUI );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( &_this->ConnectionFailedMessage, _Const0002 );
+  ViewsText_OnSetString( &_this->ConnectionFailedMessage, EwLoadString( &StringsPOP09_CONNECTION_FAILED ));
+  CoreTimer_OnSetPeriod( &_this->CountDownTimer, 2000 );
+  CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ConnectionFailedMessage ), 0 );
+  ViewsText_OnSetFont( &_this->ConnectionFailedMessage, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  _this->CountDownTimer.OnTrigger = EwNewSlot( _this, PopPOP09_WeatherConnectionErrorUI_OnLauncherScreenUpdateSlot );
+}
+
+/* Re-Initializer for the class 'Pop::POP09_WeatherConnectionErrorUI' */
+void PopPOP09_WeatherConnectionErrorUI__ReInit( PopPOP09_WeatherConnectionErrorUI _this )
+{
+  /* At first re-initialize the super class ... */
+  ComponentsBaseMainBG__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsText__ReInit( &_this->ConnectionFailedMessage );
+  CoreTimer__ReInit( &_this->CountDownTimer );
+}
+
+/* Finalizer method for the class 'Pop::POP09_WeatherConnectionErrorUI' */
+void PopPOP09_WeatherConnectionErrorUI__Done( PopPOP09_WeatherConnectionErrorUI _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+
+  /* Finalize all embedded objects */
+  ViewsText__Done( &_this->ConnectionFailedMessage );
+  CoreTimer__Done( &_this->CountDownTimer );
+
+  /* Don't forget to deinitialize the super class ... */
+  ComponentsBaseMainBG__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Pop::POP09_WeatherConnectionErrorUI.OnLauncherScreenUpdateSlot()' */
+void PopPOP09_WeatherConnectionErrorUI_OnLauncherScreenUpdateSlot( PopPOP09_WeatherConnectionErrorUI _this, 
+  XObject sender )
+{
+  ApplicationApplication App;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  CoreTimer_OnSetEnabled( &_this->CountDownTimer, 0 );
+  App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+
+  if ( App != 0 )
+  {
+    ApplicationApplication_ReturnToLauncher( App );
+  }
+}
+
+/* Variants derived from the class : 'Pop::POP09_WeatherConnectionErrorUI' */
+EW_DEFINE_CLASS_VARIANTS( PopPOP09_WeatherConnectionErrorUI )
+EW_END_OF_CLASS_VARIANTS( PopPOP09_WeatherConnectionErrorUI )
+
+/* Virtual Method Table (VMT) for the class : 'Pop::POP09_WeatherConnectionErrorUI' */
+EW_DEFINE_CLASS( PopPOP09_WeatherConnectionErrorUI, ComponentsBaseMainBG, ConnectionFailedMessage, 
+                 ConnectionFailedMessage, ConnectionFailedMessage, ConnectionFailedMessage, 
+                 _None, _None, "Pop::POP09_WeatherConnectionErrorUI" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseMainBG_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
+EW_END_OF_CLASS( PopPOP09_WeatherConnectionErrorUI )
 
 /* Embedded Wizard */

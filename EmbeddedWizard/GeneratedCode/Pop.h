@@ -43,6 +43,7 @@
 #endif
 
 #include "_PopPOP08_WeatherLoadingUI.h"
+#include "_PopPOP09_WeatherConnectionErrorUI.h"
 
 #ifdef __cplusplus
   }

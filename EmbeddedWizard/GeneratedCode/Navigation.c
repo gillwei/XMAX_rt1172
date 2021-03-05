@@ -609,7 +609,6 @@ void NavigationNAV01_DefaultView_OnSpeedLimitUpdateSlot( NavigationNAV01_Default
 
   NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
   &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeSPEED_LIMIT );
-  NaviData->SpeedLimit = 80;
 
   if ( NaviData->SpeedLimit > 0 )
   {

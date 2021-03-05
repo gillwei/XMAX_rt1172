@@ -316,7 +316,6 @@ class NAV01_DefaultView : Home::BaseHome
   slot OnSpeedLimitUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.SPEED_LIMIT );
-    NaviData.SpeedLimit = 80;
 
     if( NaviData.SpeedLimit > 0 )
     {
@@ -474,7 +473,7 @@ class NAV01_DefaultView : Home::BaseHome
   // 7. Add the rest of alert string.
   note group Note5
   {
-    attr Bounds = <0,300,480,580>;
+    attr Bounds = <0,300,480,640>;
   }
 
   $rect <520,430,730,470>

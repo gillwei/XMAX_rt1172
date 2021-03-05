@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _PopPOP08_WeatherLoadingUI_H
-#define _PopPOP08_WeatherLoadingUI_H
+#ifndef _PopPOP09_WeatherConnectionErrorUI_H
+#define _PopPOP09_WeatherConnectionErrorUI_H
 
 #ifdef __cplusplus
   extern "C"
@@ -45,7 +45,6 @@
 #include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
-#include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
@@ -94,24 +93,21 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Pop::POP08_WeatherLoadingUI */
-#ifndef _PopPOP08_WeatherLoadingUI_
-  EW_DECLARE_CLASS( PopPOP08_WeatherLoadingUI )
-#define _PopPOP08_WeatherLoadingUI_
+/* Forward declaration of the class Pop::POP09_WeatherConnectionErrorUI */
+#ifndef _PopPOP09_WeatherConnectionErrorUI_
+  EW_DECLARE_CLASS( PopPOP09_WeatherConnectionErrorUI )
+#define _PopPOP09_WeatherConnectionErrorUI_
 #endif
 
 
-/* Deklaration of class : 'Pop::POP08_WeatherLoadingUI' */
-EW_DEFINE_FIELDS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG )
-  EW_OBJECT  ( LoadingText,     ViewsText )
-  EW_OBJECT  ( WeatherLoadingObserver, CorePropertyObserver )
-  EW_OBJECT  ( LoadingAnimation, ViewsImage )
-  EW_OBJECT  ( ConnectionFailedTimer, CoreTimer )
-  EW_OBJECT  ( MotoConConnectionEventHandler, CoreSystemEventHandler )
-EW_END_OF_FIELDS( PopPOP08_WeatherLoadingUI )
+/* Deklaration of class : 'Pop::POP09_WeatherConnectionErrorUI' */
+EW_DEFINE_FIELDS( PopPOP09_WeatherConnectionErrorUI, ComponentsBaseMainBG )
+  EW_OBJECT  ( ConnectionFailedMessage, ViewsText )
+  EW_OBJECT  ( CountDownTimer,  CoreTimer )
+EW_END_OF_FIELDS( PopPOP09_WeatherConnectionErrorUI )
 
-/* Virtual Method Table (VMT) for the class : 'Pop::POP08_WeatherLoadingUI' */
-EW_DEFINE_METHODS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Pop::POP09_WeatherConnectionErrorUI' */
+EW_DEFINE_METHODS( PopPOP09_WeatherConnectionErrorUI, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -164,31 +160,16 @@ EW_DEFINE_METHODS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-EW_END_OF_METHODS( PopPOP08_WeatherLoadingUI )
+EW_END_OF_METHODS( PopPOP09_WeatherConnectionErrorUI )
 
-/* The method Init() is invoked automatically after the component has been created. 
-   This method can be overridden and filled with logic containing additional initialization 
-   statements. */
-void PopPOP08_WeatherLoadingUI_Init( PopPOP08_WeatherLoadingUI _this, XHandle aArg );
-
-/* This slot method is executed when the associated property observer 'PropertyObserver' 
-   is notified. */
-void PopPOP08_WeatherLoadingUI_OnWeatherLoadingUpdateSlot( PopPOP08_WeatherLoadingUI _this, 
-  XObject sender );
-
-/* 'C' function for method : 'Pop::POP08_WeatherLoadingUI.OnConnectionFailedUpdateSlot()' */
-void PopPOP08_WeatherLoadingUI_OnConnectionFailedUpdateSlot( PopPOP08_WeatherLoadingUI _this, 
-  XObject sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void PopPOP08_WeatherLoadingUI_OnMotoConConnectionUpdateEvent( PopPOP08_WeatherLoadingUI _this, 
+/* 'C' function for method : 'Pop::POP09_WeatherConnectionErrorUI.OnLauncherScreenUpdateSlot()' */
+void PopPOP09_WeatherConnectionErrorUI_OnLauncherScreenUpdateSlot( PopPOP09_WeatherConnectionErrorUI _this, 
   XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _PopPOP08_WeatherLoadingUI_H */
+#endif /* _PopPOP09_WeatherConnectionErrorUI_H */
 
 /* Embedded Wizard */

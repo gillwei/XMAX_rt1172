@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/03/02 18:17:12 */
+   Generated: 2021/03/03 18:12:13 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_ok' */
@@ -147,6 +147,9 @@ extern const XStringRes StringsNAV08_turn_by_turn;
 
 /* User defined constant: 'Strings::NAV08_turn_list' */
 extern const XStringRes StringsNAV08_turn_list;
+
+/* User defined constant: 'Strings::POP09_CONNECTION_FAILED' */
+extern const XStringRes StringsPOP09_CONNECTION_FAILED;
 
 /* User defined constant: 'Strings::SET01_connection' */
 extern const XStringRes StringsSET01_connection;

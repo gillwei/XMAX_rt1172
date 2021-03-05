@@ -212,7 +212,15 @@ class LNC_Main : Components::BaseComponent
       case Enum::LauncherItem.NOTIFICATION:;
       case Enum::LauncherItem.WEATHER:
       {
-        ItemDialog = new Pop::POP08_WeatherLoadingUI;
+        if( DeviceInterface::BluetoothDevice.IsMotoconConnected() )
+        {
+          ItemDialog = new Pop::POP08_WeatherLoadingUI;
+        }
+        else
+        {
+          ItemDialog = new Pop::POP09_WeatherConnectionErrorUI;
+        }
+
         PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
       case Enum::LauncherItem.SETTINGS:

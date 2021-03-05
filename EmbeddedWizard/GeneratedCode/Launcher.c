@@ -29,6 +29,7 @@
 #include "_CoreGroup.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsRectEffect.h"
 #include "_InfoINF01_MeterDisplaySettingMenu.h"
@@ -38,6 +39,7 @@
 #include "_MediaMED01_MediaUI.h"
 #include "_NavigationNAV06_NaviSettingMenu.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
+#include "_PopPOP09_WeatherConnectionErrorUI.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "_SettingsSET01_MainSettingMenu.h"
@@ -426,8 +428,18 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
 
     case EnumLauncherItemWEATHER :
     {
-      ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP08_WeatherLoadingUI, 
-      0 ));
+      if ( DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( EwGetAutoObject( 
+          &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
+      {
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP08_WeatherLoadingUI, 
+        0 ));
+      }
+      else
+      {
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_WeatherConnectionErrorUI, 
+        0 ));
+      }
+
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
       0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }

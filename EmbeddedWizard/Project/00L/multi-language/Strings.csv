@@ -84,6 +84,9 @@ NAV08_turn_list,Turn list,,,,,,,
 POP02_please_check,Please Check,,,,,,,
 POP02_details,Details,,,,,,,
 POP03_no_home_location,Home location is not set.,,,,,,,
+POP09_CONNECTION_FAILED,"Connection failed.
+Check Bluetooth connection settings.
+Check smartphone reception.",,,,,,,
 SET01_connection,Connection,,,,,,,
 SET01_clock,Clock,,,,,,,
 SET01_brightness,Brightness,,,,,,,

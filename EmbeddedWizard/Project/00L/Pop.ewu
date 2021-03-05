@@ -11,9 +11,6 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
     DeviceInterface::WeatherDevice.SendVehicleSettingRequest();
   }
 
-  $rect <0,300,200,340>
-  inherited property Bounds = <0,0,480,272>;
-
   $rect <20,20,160,60>
   object Views::Text LoadingText
   {
@@ -36,6 +33,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
   {
     if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
     {
+      ConnectionFailedTimer.Enabled = false;
       PresentDialog( new Weather::WEA01_Main, null, null, null, null, null, null, null, null, false );
     }
   }
@@ -46,5 +44,75 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
     preset Bounds = <193,54,287,148>;
     preset Animated = true;
     preset Bitmap = Resource::LoadingAnimation;
+  }
+
+  $rect <530,170,720,210>
+  object Core::Timer ConnectionFailedTimer
+  {
+    preset OnTrigger = OnConnectionFailedUpdateSlot;
+    preset Period = 20000;
+    preset Enabled = true;
+  }
+
+  $rect <730,170,930,210>
+  slot OnConnectionFailedUpdateSlot
+  {
+    ConnectionFailedTimer.Enabled = false;
+    PresentDialog( new Pop::POP09_WeatherConnectionErrorUI, null, null, null, null, null, null, null, null, false );
+
+  }
+
+  $rect <530,260,730,300>
+  object Core::SystemEventHandler MotoConConnectionEventHandler
+  {
+    preset OnEvent = OnMotoConConnectionUpdateEvent;
+    preset Event = DeviceInterface::BluetoothDevice.MotoConSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <730,260,930,300>
+  slot OnMotoConConnectionUpdateEvent
+  {
+    var DeviceInterface::MotoConContext MotoConContext = ( DeviceInterface::MotoConContext )MotoConConnectionEventHandler.Context;
+    if( Enum::MotoConRxEvent.CONNECTION_STATUS == MotoConContext.RxEvent )
+    {
+      if( !DeviceInterface::BluetoothDevice.IsMotoconConnected() )
+      {
+        signal OnConnectionFailedUpdateSlot;
+      }
+    }
+  }
+}
+
+$rect <30,80,230,120>
+$output false
+class POP09_WeatherConnectionErrorUI : Components::BaseMainBG
+{
+  $rect <20,20,160,60>
+  object Views::Text ConnectionFailedMessage
+  {
+    preset Bounds = <10,50,470,236>;
+    preset String = Strings::POP09_CONNECTION_FAILED;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <570,80,760,120>
+  object Core::Timer CountDownTimer
+  {
+    preset OnTrigger = OnLauncherScreenUpdateSlot;
+    preset Period = 2000;
+    preset Enabled = true;
+  }
+
+  $rect <760,80,960,120>
+  slot OnLauncherScreenUpdateSlot
+  {
+    CountDownTimer.Enabled = false;
+    var Application::Application App = (Application::Application)GetRoot();
+    if( null != App )
+    {
+      App.ReturnToLauncher();
+    }
   }
 }

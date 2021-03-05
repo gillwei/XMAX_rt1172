@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/03/02 18:17:12
+// Generated: 2021/03/03 18:12:13
 
 $output false
 const string ARGUMENT_STR =
@@ -534,6 +534,12 @@ $output false
 const string POP03_no_home_location =
 (
   Default = "Home location is not set.";
+);
+
+$output false
+const string POP09_CONNECTION_FAILED =
+(
+  Default = "Connection failed.\nCheck Bluetooth connection settings.\nCheck smartphone reception.";
 );
 
 $output false
