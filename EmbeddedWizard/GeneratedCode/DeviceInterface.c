@@ -46,7 +46,7 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x0000023E, /* ratio 55.05 % */
+  0x00000228, /* ratio 55.07 % */
   0xB8002500, 0x000A6452, 0x00C2003A, 0x80107390, 0x16750010, 0x20037002, 0x540044C9,
   0x30019400, 0x000021A7, 0x04160619, 0x1BC00680, 0x421C7700, 0x22D14894, 0x3B1B8CC5,
   0x91A29422, 0x0D364AE3, 0xF1000075, 0x9104C011, 0xE4D00051, 0x0024C639, 0xA6793532,
@@ -57,8 +57,7 @@ static const unsigned int _StringsDefault0[] =
   0x6C70B266, 0x16F8C5F6, 0x918DE280, 0x4910363F, 0xD0C32564, 0xCC524FB5, 0xE503600D,
   0x2B3171C1, 0x4D71D8EC, 0x6A47A94D, 0x564CEC52, 0x6CE26A34, 0x68B93E09, 0x87C22370,
   0x377A2338, 0x6BAC782A, 0x83110A8A, 0xC2A00D55, 0x5584DAF1, 0x10323422, 0x2BEAE7C0,
-  0x2067123B, 0x947CE1F2, 0x13515800, 0x202DC443, 0x211452D2, 0x7F1E11B5, 0x0013D711,
-  0x00000101, 0x00000000
+  0x2067123B, 0x947CE1F2, 0x13515800, 0x04F5C443, 0x00004040, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -75,7 +74,6 @@ static const XStringRes _Const0009 = { _StringsDefault0, 0x00C0 };
 static const XStringRes _Const000A = { _StringsDefault0, 0x00DB };
 static const XStringRes _Const000B = { _StringsDefault0, 0x00F3 };
 static const XStringRes _Const000C = { _StringsDefault0, 0x0108 };
-static const XStringRes _Const000D = { _StringsDefault0, 0x0114 };
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
@@ -1871,23 +1869,29 @@ void DeviceInterfaceWeatherDeviceClass_GetWeatherInfo( DeviceInterfaceWeatherDev
   XInt32 TempMin = 0;
   XInt32 TempMax = 0;
   XInt32 RainProb = 0;
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeTEMPERATURE_UNIT );
+  XEnum WeaTempType = (XEnum)VehicleData->DataUInt32;
 
-  EwTrace( "%s%i", EwLoadString( &_Const000D ), aWeaItemIdx );
   {
     bc_motocon_weather_info_t* w_obj = NULL;
     w_obj = ew_get_weather_info_obj( aWeaItemIdx );
     WTime = w_obj->time;
     WType = w_obj->type;
-    WTemp = w_obj->temperature;
-    TempMin = w_obj->temperature_min;
-    TempMax = w_obj->temperature_max;
+    WTemp = (int)w_obj->temperature;
+    TempMin = (int)w_obj->temperature_min;
+    TempMax = (int)w_obj->temperature_max;
     RainProb = w_obj->rain_probability;
   }
   _this->WeatherTime = WTime;
   _this->WeatherType = WType;
-  _this->Temperature = WTemp;
-  _this->MinTemperature = TempMin;
-  _this->MaxTemperature = TempMax;
+  _this->Temperature = DeviceInterfaceWeatherDeviceClass_ConvertTemperature( _this, 
+  WeaTempType, WTemp );
+  _this->MinTemperature = DeviceInterfaceWeatherDeviceClass_ConvertTemperature( 
+  _this, WeaTempType, TempMin );
+  _this->MaxTemperature = DeviceInterfaceWeatherDeviceClass_ConvertTemperature( 
+  _this, WeaTempType, TempMax );
   _this->RainProbability = RainProb;
 }
 
@@ -1954,6 +1958,25 @@ void DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherInfoReceived( DeviceInterfa
   _this->IsWeatherInfoReceived = value;
   EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceWeatherDeviceClass_OnGetIsWeatherInfoReceived, 
     DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherInfoReceived ), 0 );
+}
+
+/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.ConvertTemperature()' */
+XInt32 DeviceInterfaceWeatherDeviceClass_ConvertTemperature( DeviceInterfaceWeatherDeviceClass _this, 
+  XEnum aTempUnit, XInt32 aTemperature )
+{
+  XInt32 Temp;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Temp = aTemperature;
+
+  if ( EnumWeatherTempTypeTempF == aTempUnit )
+  {
+    Temp = (( aTemperature * 9 ) + 160 ) / 5;
+  }
+
+  return Temp;
 }
 
 /* Default onget method for the property 'IsWeatherInfoReceived' */

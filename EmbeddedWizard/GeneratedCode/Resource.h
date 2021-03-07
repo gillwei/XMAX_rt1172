@@ -189,6 +189,9 @@ EW_DECLARE_BITMAP_RES( ResourceSeekBar )
 /* Bitmap resource : 'Resource::IconDDActive' */
 EW_DECLARE_BITMAP_RES( ResourceIconDDActive )
 
+/* Bitmap resource : 'Resource::IconTempDegF' */
+EW_DECLARE_BITMAP_RES( ResourceIconTempDegF )
+
 /* Bitmap resource : 'Resource::IconTempDegC' */
 EW_DECLARE_BITMAP_RES( ResourceIconTempDegC )
 

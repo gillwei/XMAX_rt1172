@@ -695,3 +695,46 @@ enum MotoConRxEvent
   $rect <10,210,210,250>
   item PHONE_HEADSET;
 }
+
+$rect <730,20,930,60>
+$output false
+enum WeatherTempType
+{
+  $rect <10,10,210,50>
+  item TempC;
+
+  $rect <220,10,420,50>
+  item TempF;
+}
+
+$rect <730,70,930,110>
+$output false
+enum WeatherTimeType
+{
+  $rect <10,10,210,50>
+  item WEATHER_CURRENT;
+
+  $rect <220,10,420,50>
+  item WEATHER_AFTER_1DAY;
+
+  $rect <430,10,630,50>
+  item WEATHER_AFTER_2DAY;
+
+  $rect <10,70,210,110>
+  item WEATHER_AFTER_3DAY;
+
+  $rect <220,70,420,110>
+  item WEATHER_AFTER_4DAY;
+
+  $rect <430,70,630,110>
+  item WEATHER_AFTER_5DAY;
+
+  $rect <10,140,210,180>
+  item WEATHER_AFTER_1HOUR;
+
+  $rect <220,140,420,180>
+  item WEATHER_AFTER_2HOUR;
+
+  $rect <430,140,630,180>
+  item WEATHER_AFTER_3HOUR;
+}

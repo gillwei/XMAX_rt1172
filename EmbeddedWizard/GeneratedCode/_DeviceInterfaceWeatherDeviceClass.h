@@ -98,6 +98,10 @@ void DeviceInterfaceWeatherDeviceClass_GetWeekDay( DeviceInterfaceWeatherDeviceC
 void DeviceInterfaceWeatherDeviceClass_OnSetIsWeatherInfoReceived( DeviceInterfaceWeatherDeviceClass _this, 
   XBool value );
 
+/* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.ConvertTemperature()' */
+XInt32 DeviceInterfaceWeatherDeviceClass_ConvertTemperature( DeviceInterfaceWeatherDeviceClass _this, 
+  XEnum aTempUnit, XInt32 aTemperature );
+
 /* Default onget method for the property 'IsWeatherInfoReceived' */
 XBool DeviceInterfaceWeatherDeviceClass_OnGetIsWeatherInfoReceived( DeviceInterfaceWeatherDeviceClass _this );
 

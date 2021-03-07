@@ -28,6 +28,8 @@
 #include "_ApplicationApplication.h"
 #include "_CoreVerticalList.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceVehicleDataClass.h"
+#include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_DeviceInterfaceWeatherDeviceClass.h"
 #include "_EffectsInt32Effect.h"
 #include "_MenuArrowScrollBar.h"
@@ -44,6 +46,7 @@
 #include "Core.h"
 #include "DeviceInterface.h"
 #include "Effects.h"
+#include "Enum.h"
 #include "Fonts.h"
 #include "Resource.h"
 #include "Views.h"
@@ -541,10 +544,13 @@ void WeatherWeatherDayViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherDayViewUI _t
 
   if ( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->IsWeatherInfoReceived )
   {
-    switch ( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime )
+    XEnum WeatherTime = (XEnum)EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime;
+
+    switch ( WeatherTime )
     {
-      case 0 :
+      case EnumWeatherTimeTypeWEATHER_CURRENT :
       {
+        DeviceInterfaceVehicleDataClass VehicleData;
         XInt32 TempShiftPixel;
         XRect NewSlashBounds;
         XRect NewMinBounds;
@@ -555,6 +561,20 @@ void WeatherWeatherDayViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherDayViewUI _t
         ViewsText_OnSetString( &_this->ChanceOfRainText, EwNewStringInt( EwGetAutoObject( 
         &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->RainProbability, 
         0, 10 ));
+        VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTEMPERATURE_UNIT );
+
+        if ((XEnum)VehicleData->DataUInt32 == EnumWeatherTempTypeTempF )
+        {
+          ViewsImage_OnSetBitmap( &_this->TempUnitIcon, EwLoadResource( &ResourceIconTempDegF, 
+          ResourcesBitmap ));
+        }
+        else
+        {
+          ViewsImage_OnSetBitmap( &_this->TempUnitIcon, EwLoadResource( &ResourceIconTempDegC, 
+          ResourcesBitmap ));
+        }
+
         ViewsText_OnSetString( &_this->MinTempText, EwNewStringInt( EwGetAutoObject( 
         &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->MinTemperature, 
         0, 10 ));
@@ -576,7 +596,7 @@ void WeatherWeatherDayViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherDayViewUI _t
       }
       break;
 
-      case 6 :
+      case EnumWeatherTimeTypeWEATHER_AFTER_1HOUR :
       {
         ViewsImage_OnSetFrameNumber( &_this->Weather1h, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
         DeviceInterfaceWeatherDeviceClass )->WeatherType );
@@ -589,7 +609,7 @@ void WeatherWeatherDayViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherDayViewUI _t
       }
       break;
 
-      case 7 :
+      case EnumWeatherTimeTypeWEATHER_AFTER_2HOUR :
       {
         ViewsImage_OnSetFrameNumber( &_this->Weather2h, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
         DeviceInterfaceWeatherDeviceClass )->WeatherType );
@@ -602,7 +622,7 @@ void WeatherWeatherDayViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherDayViewUI _t
       }
       break;
 
-      case 8 :
+      case EnumWeatherTimeTypeWEATHER_AFTER_3HOUR :
       {
         ViewsImage_OnSetFrameNumber( &_this->Weather3h, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
         DeviceInterfaceWeatherDeviceClass )->WeatherType );
@@ -1378,9 +1398,11 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
 
   if ( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->IsWeatherInfoReceived )
   {
-    switch ( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime )
+    XEnum WeatherTime = (XEnum)EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime;
+
+    switch ( WeatherTime )
     {
-      case 1 :
+      case EnumWeatherTimeTypeWEATHER_AFTER_1DAY :
       {
         XInt32 TempShiftPixel;
         XRect NewSlashBounds;
@@ -1419,7 +1441,7 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
       }
       break;
 
-      case 2 :
+      case EnumWeatherTimeTypeWEATHER_AFTER_2DAY :
       {
         XInt32 TempShiftPixel;
         XRect NewSlashBounds;
@@ -1458,7 +1480,7 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
       }
       break;
 
-      case 3 :
+      case EnumWeatherTimeTypeWEATHER_AFTER_3DAY :
       {
         XInt32 TempShiftPixel;
         XRect NewSlashBounds;
@@ -1497,7 +1519,7 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
       }
       break;
 
-      case 4 :
+      case EnumWeatherTimeTypeWEATHER_AFTER_4DAY :
       {
         XInt32 TempShiftPixel;
         XRect NewSlashBounds;
@@ -1536,7 +1558,7 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
       }
       break;
 
-      case 5 :
+      case EnumWeatherTimeTypeWEATHER_AFTER_5DAY :
       {
         XInt32 TempShiftPixel;
         XRect NewSlashBounds;

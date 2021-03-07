@@ -257,17 +257,30 @@ class WeatherDayViewUI : Core::Group
   {
     if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
     {
-      switch( DeviceInterface::WeatherDevice.WeatherTime )
+      var Enum::WeatherTimeType WeatherTime = ( Enum::WeatherTimeType )DeviceInterface::WeatherDevice.WeatherTime;
+
+      switch( WeatherTime )
       {
-        case 0:
+        case Enum::WeatherTimeType.WEATHER_CURRENT:
         {
           // Reset Bounds to original position.
           MinTempText.Bounds = MinTempTextBounds;
           TempTextSlash.Bounds = TempTextSlashBounds;
 
-          //WeekDayText.String = WeekDayTextArray[DeviceInterface::WeatherDevice.WeatherTime];
           WeatherIcon.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
           ChanceOfRainText.String = string( DeviceInterface::WeatherDevice.RainProbability );
+
+          var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TEMPERATURE_UNIT );
+
+          if( ( Enum::WeatherTempType )VehicleData.DataUInt32 == Enum::WeatherTempType.TempF )
+          {
+            TempUnitIcon.Bitmap = Resource::IconTempDegF;
+          }
+          else
+          {
+            TempUnitIcon.Bitmap = Resource::IconTempDegC;
+          }
+
           MinTempText.String = string( DeviceInterface::WeatherDevice.MinTemperature );
           MaxTempText.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
 
@@ -282,23 +295,23 @@ class WeatherDayViewUI : Core::Group
           TempTextSlash.Bounds = NewSlashBounds;
           MinTempText.Bounds = NewMinBounds;
         }
-        case 6:
+        case Enum::WeatherTimeType.WEATHER_AFTER_1HOUR:
         {
           Weather1h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
           ChanceOfRain1h.String = string( DeviceInterface::WeatherDevice.RainProbability );
-          Temp1h.String =  string( DeviceInterface::WeatherDevice.Temperature );
+          Temp1h.String = string( DeviceInterface::WeatherDevice.Temperature );
         }
-        case 7:
+        case Enum::WeatherTimeType.WEATHER_AFTER_2HOUR:
         {
           Weather2h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
           ChanceOfRain2h.String = string( DeviceInterface::WeatherDevice.RainProbability );
-          Temp2h.String =  string( DeviceInterface::WeatherDevice.Temperature );
+          Temp2h.String = string( DeviceInterface::WeatherDevice.Temperature );
         }
-        case 8:
+        case Enum::WeatherTimeType.WEATHER_AFTER_3HOUR:
         {
           Weather3h.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
           ChanceOfRain3h.String = string( DeviceInterface::WeatherDevice.RainProbability );
-          Temp3h.String =  string( DeviceInterface::WeatherDevice.Temperature );
+          Temp3h.String = string( DeviceInterface::WeatherDevice.Temperature );
         }
         default:;
       }
@@ -780,9 +793,11 @@ class WeatherWeekViewUI : Core::Group
   {
     if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
     {
-      switch( DeviceInterface::WeatherDevice.WeatherTime )
+      var Enum::WeatherTimeType WeatherTime = ( Enum::WeatherTimeType )DeviceInterface::WeatherDevice.WeatherTime;
+
+      switch( WeatherTime )
       {
-        case 1:
+        case Enum::WeatherTimeType.WEATHER_AFTER_1DAY:
         {
           // Reset Bounds to original position.
           DayOneMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
@@ -790,6 +805,7 @@ class WeatherWeekViewUI : Core::Group
 
           DayOneWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
           DayOneChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+
           DayOneMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
           DayOneMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
 
@@ -804,7 +820,7 @@ class WeatherWeekViewUI : Core::Group
           DayOneTempSlash.Bounds = NewSlashBounds;
           DayOneMinTemp.Bounds = NewMinBounds;
         }
-        case 2:
+        case Enum::WeatherTimeType.WEATHER_AFTER_2DAY:
         {
           // Reset Bounds to original position.
           DayTwoMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
@@ -812,6 +828,7 @@ class WeatherWeekViewUI : Core::Group
 
           DayTwoWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
           DayTwoChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+
           DayTwoMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
           DayTwoMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
 
@@ -826,7 +843,7 @@ class WeatherWeekViewUI : Core::Group
           DayTwoTempSlash.Bounds = NewSlashBounds;
           DayTwoMinTemp.Bounds = NewMinBounds;
         }
-        case 3:
+        case Enum::WeatherTimeType.WEATHER_AFTER_3DAY:
         {
           // Reset Bounds to original position.
           DayThreeMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
@@ -834,6 +851,7 @@ class WeatherWeekViewUI : Core::Group
 
           DayThreeWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
           DayThreeChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+
           DayThreeMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
           DayThreeMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
 
@@ -848,7 +866,7 @@ class WeatherWeekViewUI : Core::Group
           DayThreeTempSlash.Bounds = NewSlashBounds;
           DayThreeMinTemp.Bounds = NewMinBounds;
         }
-        case 4:
+        case Enum::WeatherTimeType.WEATHER_AFTER_4DAY:
         {
            // Reset Bounds to original position.
           DayFourMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
@@ -856,6 +874,7 @@ class WeatherWeekViewUI : Core::Group
 
           DayFourWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
           DayFourChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+
           DayFourMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
           DayFourMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
 
@@ -870,7 +889,7 @@ class WeatherWeekViewUI : Core::Group
           DayFourTempSlash.Bounds = NewSlashBounds;
           DayFourMinTemp.Bounds = NewMinBounds;
         }
-        case 5:
+        case Enum::WeatherTimeType.WEATHER_AFTER_5DAY:
         {
            // Reset Bounds to original position.
           DayFiveMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
@@ -878,6 +897,7 @@ class WeatherWeekViewUI : Core::Group
 
           DayFiveWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
           DayFiveChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+
           DayFiveMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
           DayFiveMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
 

@@ -331,6 +331,27 @@ typedef enum
   EnumMotoConRxEventPHONE_HEADSET       = 4
 } EnumMotoConRxEvent;
 
+/* User defined enumeration: 'Enum::WeatherTempType' */
+typedef enum
+{
+  EnumWeatherTempTypeTempC              = 0,
+  EnumWeatherTempTypeTempF              = 1
+} EnumWeatherTempType;
+
+/* User defined enumeration: 'Enum::WeatherTimeType' */
+typedef enum
+{
+  EnumWeatherTimeTypeWEATHER_CURRENT    = 0,
+  EnumWeatherTimeTypeWEATHER_AFTER_1DAY = 1,
+  EnumWeatherTimeTypeWEATHER_AFTER_2DAY = 2,
+  EnumWeatherTimeTypeWEATHER_AFTER_3DAY = 3,
+  EnumWeatherTimeTypeWEATHER_AFTER_4DAY = 4,
+  EnumWeatherTimeTypeWEATHER_AFTER_5DAY = 5,
+  EnumWeatherTimeTypeWEATHER_AFTER_1HOUR = 6,
+  EnumWeatherTimeTypeWEATHER_AFTER_2HOUR = 7,
+  EnumWeatherTimeTypeWEATHER_AFTER_3HOUR = 8
+} EnumWeatherTimeType;
+
 #ifdef __cplusplus
   }
 #endif

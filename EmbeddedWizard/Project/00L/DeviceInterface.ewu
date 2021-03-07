@@ -1604,23 +1604,25 @@ class WeatherDeviceClass : Templates::DeviceClass
       var int32 TempMax;
       var int32 RainProb;
 
-      trace "index : ", aWeaItemIdx;
+      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TEMPERATURE_UNIT );
+      var Enum::WeatherTempType WeaTempType = ( Enum::WeatherTempType )VehicleData.DataUInt32;
+
       native( aWeaItemIdx, WTime, WType, WTemp, TempMin, TempMax, RainProb )
       {
         bc_motocon_weather_info_t* w_obj = NULL;
         w_obj = ew_get_weather_info_obj( aWeaItemIdx );
         WTime = w_obj->time;
         WType = w_obj->type;
-        WTemp = w_obj->temperature;
-        TempMin = w_obj->temperature_min;
-        TempMax = w_obj->temperature_max;
+        WTemp = (int)w_obj->temperature;
+        TempMin = (int)w_obj->temperature_min;
+        TempMax = (int)w_obj->temperature_max;
         RainProb = w_obj->rain_probability;
       }
       WeatherTime = WTime;
       WeatherType = WType;
-      Temperature = WTemp;
-      MinTemperature = TempMin;
-      MaxTemperature = TempMax;
+      Temperature = ConvertTemperature( WeaTempType, WTemp );
+      MinTemperature = ConvertTemperature( WeaTempType, TempMin );
+      MaxTemperature = ConvertTemperature( WeaTempType, TempMax );
       RainProbability = RainProb;
     $else
       if( aWeaItemIdx > 0 )
@@ -1727,6 +1729,17 @@ class WeatherDeviceClass : Templates::DeviceClass
 
     notifyobservers ^IsWeatherInfoReceived;
 
+  }
+
+  $rect <110,360,310,400>
+  method int32 ConvertTemperature( arg Enum::WeatherTempType aTempUnit, arg int32 aTemperature )
+  {
+    var int32 Temp = aTemperature;
+    if( Enum::WeatherTempType.TempF == aTempUnit )
+    {
+      Temp = ( int32 )( ( aTemperature * 9 + 160 ) / 5 );
+    }
+    return Temp;
   }
 }
 

@@ -71,7 +71,21 @@ static bc_motocon_callback_t weather_callback =
     WEA_receive_wea_info,
     NULL,
     NULL,
-    WEA_receive_weekday
+    WEA_receive_weekday,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
     };
 static int weather_info_received = 0;
 

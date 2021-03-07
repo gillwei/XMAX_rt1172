@@ -237,6 +237,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
       {
         ItemValueArray[2] = UnitItemValue.ItemTemperatureUnitArray[TempMenu.TempItemIdx];
       }
+
       DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TEMPERATURE_UNIT, ( uint32 )TempMenu.TempItemIdx );
     }
 
