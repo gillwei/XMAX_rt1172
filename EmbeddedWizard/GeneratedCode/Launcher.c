@@ -30,6 +30,7 @@
 #include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
+#include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsRectEffect.h"
 #include "_InfoINF01_MeterDisplaySettingMenu.h"
@@ -329,10 +330,12 @@ XEnum LauncherLNC_Main_GetNextItem( LauncherLNC_Main _this, XEnum aBaseItem )
   {
     BaseItemNext = (XEnum)(((XUInt32)BaseItemNext + 1 ) % TotalItemNum );
 
-    if ((((( EnumLauncherItemTRACTION_CONTROL == BaseItemNext ) && !_this->TCSEnabled ) 
+    if (((((( EnumLauncherItemTRACTION_CONTROL == BaseItemNext ) && !_this->TCSEnabled ) 
         || (( EnumLauncherItemSEAT_HEATER == BaseItemNext ) && !_this->SeatHeaterEnabled )) 
         || (( EnumLauncherItemGRIP_WARMER == BaseItemNext ) && !_this->GripWarmerEnabled )) 
-        || (( EnumLauncherItemWIND_SCREEN == BaseItemNext ) && !_this->WindScreenEnabled ))
+        || (( EnumLauncherItemWIND_SCREEN == BaseItemNext ) && !_this->WindScreenEnabled )) 
+        || (( EnumLauncherItemPHONE == BaseItemNext ) && !DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( 
+        EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ))))
     {
       bypass = 1;
     }
@@ -358,10 +361,12 @@ XEnum LauncherLNC_Main_GetPreviousItem( LauncherLNC_Main _this, XEnum aBaseItem 
     BaseItemPrevious = (XEnum)((((XUInt32)BaseItemPrevious + TotalItemNum ) - 1 ) 
     % TotalItemNum );
 
-    if ((((( EnumLauncherItemTRACTION_CONTROL == BaseItemPrevious ) && !_this->TCSEnabled ) 
+    if (((((( EnumLauncherItemTRACTION_CONTROL == BaseItemPrevious ) && !_this->TCSEnabled ) 
         || (( EnumLauncherItemSEAT_HEATER == BaseItemPrevious ) && !_this->SeatHeaterEnabled )) 
         || (( EnumLauncherItemGRIP_WARMER == BaseItemPrevious ) && !_this->GripWarmerEnabled )) 
-        || (( EnumLauncherItemWIND_SCREEN == BaseItemPrevious ) && !_this->WindScreenEnabled ))
+        || (( EnumLauncherItemWIND_SCREEN == BaseItemPrevious ) && !_this->WindScreenEnabled )) 
+        || (( EnumLauncherItemPHONE == BaseItemPrevious ) && !DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( 
+        EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ))))
     {
       bypass = 1;
     }

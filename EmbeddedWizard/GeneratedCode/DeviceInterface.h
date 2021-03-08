@@ -48,6 +48,7 @@
 #include "_DeviceInterfaceMotoConContext.h"
 #include "_DeviceInterfaceNaviDataClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
+#include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
@@ -71,6 +72,9 @@ EW_DECLARE_AUTOOBJECT( DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDevic
 
 /* User defined auto object: 'DeviceInterface::WeatherDevice' */
 EW_DECLARE_AUTOOBJECT( DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )
+
+/* User defined auto object: 'DeviceInterface::NotificationDevice' */
+EW_DECLARE_AUTOOBJECT( DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )
 
 #ifdef __cplusplus
   }

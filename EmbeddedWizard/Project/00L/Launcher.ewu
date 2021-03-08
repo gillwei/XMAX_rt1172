@@ -137,7 +137,8 @@ class LNC_Main : Components::BaseComponent
       if( Enum::LauncherItem.TRACTION_CONTROL == BaseItemNext && !TCSEnabled ||
           Enum::LauncherItem.SEAT_HEATER == BaseItemNext && !SeatHeaterEnabled ||
           Enum::LauncherItem.GRIP_WARMER == BaseItemNext && !GripWarmerEnabled ||
-          Enum::LauncherItem.WIND_SCREEN == BaseItemNext && !WindScreenEnabled )
+          Enum::LauncherItem.WIND_SCREEN == BaseItemNext && !WindScreenEnabled ||
+          Enum::LauncherItem.PHONE == BaseItemNext && !DeviceInterface::NotificationDevice.IsPhoneCallStateActive() )
       {
         bypass = true;
       }
@@ -172,7 +173,8 @@ class LNC_Main : Components::BaseComponent
       if( Enum::LauncherItem.TRACTION_CONTROL == BaseItemPrevious && !TCSEnabled ||
           Enum::LauncherItem.SEAT_HEATER == BaseItemPrevious && !SeatHeaterEnabled ||
           Enum::LauncherItem.GRIP_WARMER == BaseItemPrevious && !GripWarmerEnabled ||
-          Enum::LauncherItem.WIND_SCREEN == BaseItemPrevious && !WindScreenEnabled )
+          Enum::LauncherItem.WIND_SCREEN == BaseItemPrevious && !WindScreenEnabled ||
+          Enum::LauncherItem.PHONE == BaseItemPrevious && !DeviceInterface::NotificationDevice.IsPhoneCallStateActive() )
       {
         bypass = true;
       }
@@ -341,7 +343,7 @@ class LNC_Main : Components::BaseComponent
   }
 }
 
-$rect <10,120,250,160>
+$rect <10,110,250,150>
 $output false
 class LNC_RotaryPlate : Components::BaseComponent
 {
@@ -707,7 +709,7 @@ class LNC_RotaryPlate : Components::BaseComponent
   $reorder SlideOutDialog 1
 }
 
-$rect <10,70,250,110>
+$rect <10,60,250,100>
 $output false
 class LNC_Base : Core::Group
 {

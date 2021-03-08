@@ -464,13 +464,12 @@ class NAV01_DefaultView : Home::BaseHome
   // TODO:
   // 1. Integrate with navi protocol.
   // 2. Zoom in/out request.
-  // 3. Launcher screen transition ( depends on the phone call status ).
-  // 4. When GUI spec area is updated(ETA area is hidden when there is no navigation), \
+  // 3. When GUI spec area is updated(ETA area is hidden when there is no navigation), \
   // adjust the position of current road area, current road text view and shadow \
   // area.
-  // 5. Switch to other home group when short pressing home key.
-  // 6. Elaborate alert animation logic if possible.
-  // 7. Add the rest of alert string.
+  // 4. Switch to other home group when short pressing home key.
+  // 5. Elaborate alert animation logic if possible.
+  // 6. Add the rest of alert string.
   note group Note5
   {
     attr Bounds = <0,300,480,640>;

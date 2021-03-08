@@ -33,6 +33,7 @@
 #include "_DeviceInterfaceMotoConContext.h"
 #include "_DeviceInterfaceNaviDataClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
+#include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
@@ -2156,5 +2157,73 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceMotoConContext )
 EW_DEFINE_CLASS( DeviceInterfaceMotoConContext, XObject, _None, _None, _None, _None, 
                  _None, _None, "DeviceInterface::MotoConContext" )
 EW_END_OF_CLASS( DeviceInterfaceMotoConContext )
+
+/* Initializer for the class 'DeviceInterface::NotificationDeviceClass' */
+void DeviceInterfaceNotificationDeviceClass__Init( DeviceInterfaceNotificationDeviceClass _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  TemplatesDeviceClass__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceNotificationDeviceClass );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( DeviceInterfaceNotificationDeviceClass );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::NotificationDeviceClass' */
+void DeviceInterfaceNotificationDeviceClass__ReInit( DeviceInterfaceNotificationDeviceClass _this )
+{
+  /* At first re-initialize the super class ... */
+  TemplatesDeviceClass__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::NotificationDeviceClass' */
+void DeviceInterfaceNotificationDeviceClass__Done( DeviceInterfaceNotificationDeviceClass _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( TemplatesDeviceClass );
+
+  /* Don't forget to deinitialize the super class ... */
+  TemplatesDeviceClass__Done( &_this->_Super );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about an alternation of its setting or state value. */
+XBool DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( DeviceInterfaceNotificationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  return 0;
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NotificationDeviceClass.IsPhoneCallStateActive()' */
+XBool DeviceInterfaceNotificationDeviceClass__IsPhoneCallStateActive( void* _this )
+{
+  return DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive((DeviceInterfaceNotificationDeviceClass)_this );
+}
+
+/* Variants derived from the class : 'DeviceInterface::NotificationDeviceClass' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNotificationDeviceClass )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNotificationDeviceClass )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::NotificationDeviceClass' */
+EW_DEFINE_CLASS( DeviceInterfaceNotificationDeviceClass, TemplatesDeviceClass, _None, 
+                 _None, _None, _None, _None, _None, "DeviceInterface::NotificationDeviceClass" )
+EW_END_OF_CLASS( DeviceInterfaceNotificationDeviceClass )
+
+/* User defined auto object: 'DeviceInterface::NotificationDevice' */
+EW_DEFINE_AUTOOBJECT( DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )
+
+/* Initializer for the auto object 'DeviceInterface::NotificationDevice' */
+void DeviceInterfaceNotificationDevice__Init( DeviceInterfaceNotificationDeviceClass _this )
+{
+  EW_UNUSED_ARG( _this );
+}
+
+/* Table with links to derived variants of the auto object : 'DeviceInterface::NotificationDevice' */
+EW_DEFINE_AUTOOBJECT_VARIANTS( DeviceInterfaceNotificationDevice )
+EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceNotificationDevice )
 
 /* Embedded Wizard */

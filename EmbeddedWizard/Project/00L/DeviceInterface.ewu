@@ -1835,3 +1835,26 @@ class MotoConContext
   $rect <10,10,210,50>
   var Enum::MotoConRxEvent RxEvent;
 }
+
+$rect <290,410,500,450>
+$output false
+class NotificationDeviceClass : Templates::DeviceClass
+{
+  // This method is intended to be called by the device to notify the GUI application \
+  // about an alternation of its setting or state value.
+  $rect <20,60,230,100>
+  $output true
+  method bool IsPhoneCallStateActive()
+  {
+    return false;
+  }
+
+  // Phone Call Status
+  note group Note1
+  {
+    attr Bounds = <10,10,630,110>;
+  }
+}
+
+$rect <290,450,490,490>
+autoobject DeviceInterface::NotificationDeviceClass NotificationDevice;
