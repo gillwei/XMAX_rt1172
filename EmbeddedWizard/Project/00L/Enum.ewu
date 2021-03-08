@@ -696,18 +696,18 @@ enum MotoConRxEvent
   item PHONE_HEADSET;
 }
 
-$rect <730,20,930,60>
+$rect <960,220,1160,260>
 $output false
-enum WeatherTempType
+enum TemperatureSettingItem
 {
   $rect <10,10,210,50>
-  item TempC;
+  item TEMP_C;
 
   $rect <220,10,420,50>
-  item TempF;
+  item TEMP_F;
 }
 
-$rect <730,70,930,110>
+$rect <730,20,930,60>
 $output false
 enum WeatherTimeType
 {
@@ -737,4 +737,60 @@ enum WeatherTimeType
 
   $rect <430,140,630,180>
   item WEATHER_AFTER_3HOUR;
+}
+
+$rect <960,20,1160,60>
+$output false
+enum UnitSettingItem
+{
+  $rect <10,10,210,50>
+  item MILEAGE;
+
+  $rect <220,10,420,50>
+  item FUEL;
+
+  $rect <430,10,630,50>
+  item PRESSURE;
+
+  $rect <650,10,850,50>
+  item TEMPERATURE;
+}
+
+$rect <960,70,1160,110>
+$output false
+enum MileageSettingItem
+{
+  $rect <10,10,210,50>
+  item KM;
+
+  $rect <220,10,420,50>
+  item MILE;
+}
+
+$rect <960,120,1160,160>
+$output false
+enum FuelSettingItem
+{
+  $rect <10,10,210,50>
+  item KM_L;
+
+  $rect <240,10,440,50>
+  item MPG;
+
+  $rect <460,10,660,50>
+  item L_PER_HUNDRED_KM;
+}
+
+$rect <960,170,1160,210>
+$output false
+enum PressureSettingItem
+{
+  $rect <10,10,210,50>
+  item PSI;
+
+  $rect <220,10,420,50>
+  item KPA;
+
+  $rect <430,10,630,50>
+  item KGF;
 }

@@ -272,7 +272,7 @@ class WeatherDayViewUI : Core::Group
 
           var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TEMPERATURE_UNIT );
 
-          if( ( Enum::WeatherTempType )VehicleData.DataUInt32 == Enum::WeatherTempType.TempF )
+          if( ( Enum::TemperatureSettingItem )VehicleData.DataUInt32 == Enum::TemperatureSettingItem.TEMP_F )
           {
             TempUnitIcon.Bitmap = Resource::IconTempDegF;
           }

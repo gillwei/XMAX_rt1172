@@ -331,12 +331,12 @@ typedef enum
   EnumMotoConRxEventPHONE_HEADSET       = 4
 } EnumMotoConRxEvent;
 
-/* User defined enumeration: 'Enum::WeatherTempType' */
+/* User defined enumeration: 'Enum::TemperatureSettingItem' */
 typedef enum
 {
-  EnumWeatherTempTypeTempC              = 0,
-  EnumWeatherTempTypeTempF              = 1
-} EnumWeatherTempType;
+  EnumTemperatureSettingItemTEMP_C      = 0,
+  EnumTemperatureSettingItemTEMP_F      = 1
+} EnumTemperatureSettingItem;
 
 /* User defined enumeration: 'Enum::WeatherTimeType' */
 typedef enum

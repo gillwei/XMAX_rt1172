@@ -25,7 +25,7 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
-#include "_CoreGroup.h"
+#include "_ComponentsBaseMainBG.h"
 #include "_CoreTimer.h"
 #include "_CoreVerticalList.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
@@ -164,18 +164,72 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
       {
         if ( 2 > (XInt32)VehicleData->DataUInt32 )
         {
+          _this->IsFuelEnabled = 1;
+
+          if ((XInt32)VehicleData->DataUInt32 == 1 )
+          {
+            _this->IsFuelEnabled = 0;
+          }
+
           _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemMileageUnitArray[ 
           EwCheckIndex((XInt32)VehicleData->DataUInt32, 2 )]);
+          _this->MileageMenu->ItemCheckedArray[ EwCheckIndex((XInt32)VehicleData->DataUInt32, 
+          2 )] = 1;
         }
       }
       break;
 
       case EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT :
       {
-        if ( 3 > (XInt32)VehicleData->DataUInt32 )
+        if ( !_this->IsFuelEnabled )
         {
           _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
-          EwCheckIndex((XInt32)VehicleData->DataUInt32, 3 )]);
+          1 ]);
+          _this->FuelMenu->ItemCheckedArray[ 1 ] = 1;
+        }
+        else
+        {
+          switch ( VehicleData->DataUInt32 )
+          {
+            case 0 :
+            {
+              _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
+              0 ]);
+              _this->FuelMenu->ItemCheckedArray[ 0 ] = 1;
+              _this->FuelMenu->FuelItemIdx = 0;
+            }
+            break;
+
+            case 1 :
+            {
+              _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
+              1 ]);
+              _this->FuelMenu->ItemCheckedArray[ 1 ] = 1;
+              _this->FuelMenu->FuelItemIdx = 1;
+            }
+            break;
+
+            case 2 :
+            {
+              _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
+              1 ]);
+              _this->FuelMenu->ItemCheckedArray[ 1 ] = 1;
+              _this->FuelMenu->FuelItemIdx = 1;
+            }
+            break;
+
+            case 3 :
+            {
+              _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
+              2 ]);
+              _this->FuelMenu->ItemCheckedArray[ 2 ] = 1;
+              _this->FuelMenu->FuelItemIdx = 2;
+            }
+            break;
+
+            default : 
+              ;
+          }
         }
       }
       break;
@@ -186,6 +240,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
         {
           _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemPressureUnitArray[ 
           EwCheckIndex((XInt32)VehicleData->DataUInt32, 3 )]);
+          _this->PressureMenu->ItemCheckedArray[ EwCheckIndex((XInt32)VehicleData->DataUInt32, 
+          3 )] = 1;
         }
       }
       break;
@@ -196,6 +252,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
         {
           _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemTemperatureUnitArray[ 
           EwCheckIndex((XInt32)VehicleData->DataUInt32, 2 )]);
+          _this->TempMenu->ItemCheckedArray[ EwCheckIndex((XInt32)VehicleData->DataUInt32, 
+          2 )] = 1;
         }
       }
       break;
@@ -261,48 +319,56 @@ void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this,
   {
     case EnumVehicleRxTypeMILEAGE_UNIT :
     {
-      _this->MileageMenu->MileageUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)_this->MileageMenu ), 
-      0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+      if ( _this->MileageMenu != 0 )
+      {
+        _this->MileageMenu->MileageUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
+        ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->MileageMenu ));
+      }
     }
     break;
 
     case EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT :
     {
-      _this->FuelMenu->FuelUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
-
-      if ( _this->MileageMenu->MileageItemIdx == 0 )
+      if ( _this->FuelMenu != 0 )
       {
-        _this->FuelMenu->ItemEnabledArray[ 0 ] = 1;
-        _this->FuelMenu->ItemEnabledArray[ 1 ] = 1;
-        _this->FuelMenu->ItemEnabledArray[ 2 ] = 0;
-      }
-      else
-      {
-        _this->FuelMenu->ItemEnabledArray[ 0 ] = 0;
-        _this->FuelMenu->ItemEnabledArray[ 1 ] = 0;
-        _this->FuelMenu->ItemEnabledArray[ 2 ] = 1;
-      }
+        _this->FuelMenu->FuelUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
 
-      MenuVerticalMenu_InvalidateItems( &_this->FuelMenu->Super1.Menu, 0, 2 );
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)_this->FuelMenu ), 0, 
-      0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+        if ( _this->MileageMenu->MileageItemIdx == 0 )
+        {
+          _this->FuelMenu->ItemEnabledArray[ 0 ] = 1;
+          _this->FuelMenu->ItemEnabledArray[ 1 ] = 0;
+          _this->FuelMenu->ItemEnabledArray[ 2 ] = 1;
+        }
+        else
+        {
+          _this->FuelMenu->ItemEnabledArray[ 0 ] = 0;
+          _this->FuelMenu->ItemEnabledArray[ 1 ] = 1;
+          _this->FuelMenu->ItemEnabledArray[ 2 ] = 0;
+        }
+
+        MenuVerticalMenu_InvalidateItems( &_this->FuelMenu->Super1.Menu, 0, 2 );
+        ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->FuelMenu ));
+      }
     }
     break;
 
     case EnumVehicleRxTypePRESSURE_UNIT :
     {
-      _this->PressureMenu->PressureUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)_this->PressureMenu ), 
-      0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+      if ( _this->PressureMenu != 0 )
+      {
+        _this->PressureMenu->PressureUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
+        ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->PressureMenu ));
+      }
     }
     break;
 
     case EnumVehicleRxTypeTEMPERATURE_UNIT :
     {
-      _this->TempMenu->TempUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)_this->TempMenu ), 0, 
-      0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+      if ( _this->TempMenu != 0 )
+      {
+        _this->TempMenu->TempUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
+        ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->TempMenu ));
+      }
     }
     break;
 
@@ -353,7 +419,14 @@ void UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot( UnitUNT01_UnitSettingMenu 
 
     if ( _this->MileageMenu->MileageItemIdx == 1 )
     {
+      _this->ItemValueArray[ 1 ] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
+      1 ]);
       _this->IsFuelEnabled = 0;
+    }
+    else
+    {
+      _this->ItemValueArray[ 1 ] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
+      EwCheckIndex( _this->FuelMenu->FuelItemIdx, 3 )]);
     }
   }
   else
@@ -492,11 +565,11 @@ void UnitUNT02_MileageSettingMenu__Init( UnitUNT02_MileageSettingMenu _this, XOb
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  _this->Super2.SlideOutEffectEnabled = 1;
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 2 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT02_unit_mileage_kilometer ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT02_unit_mileage_mile ));
-  _this->ItemCheckedArray[ 0 ] = 1;
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, UnitUNT02_MileageSettingMenu_OnCheckMarkUpdateSlot );
 }
@@ -691,10 +764,10 @@ void UnitUnitValueClass__Init( UnitUnitValueClass _this, XObject aLink, XHandle 
   _this->ItemMileageUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT02_unit_mileage_kilometer ));
   _this->ItemMileageUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT02_unit_mileage_mile ));
   _this->ItemFuelUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_km_per_liter ));
-  _this->ItemFuelUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_liter_per_hundred_km ));
-  _this->ItemFuelUnitArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_mile_per_gallon ));
-  _this->ItemPressureUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_kpa ));
-  _this->ItemPressureUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_psi ));
+  _this->ItemFuelUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_mile_per_gallon ));
+  _this->ItemFuelUnitArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_liter_per_hundred_km ));
+  _this->ItemPressureUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_psi ));
+  _this->ItemPressureUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_kpa ));
   _this->ItemPressureUnitArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_kgf ));
   _this->ItemTemperatureUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT05_unit_temperature_c ));
   _this->ItemTemperatureUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT05_unit_temperature_f ));
@@ -745,8 +818,8 @@ void UnitUNT03_FuelSettingMenu__Init( UnitUNT03_FuelSettingMenu _this, XObject a
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  _this->Super2.SlideOutEffectEnabled = 1;
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
-  _this->ItemCheckedArray[ 0 ] = 1;
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_km_per_liter ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_liter_per_hundred_km ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_mile_per_gallon ));
@@ -817,9 +890,25 @@ void UnitUNT03_FuelSettingMenu_OnItemActivate( UnitUNT03_FuelSettingMenu _this,
   if ( aMenuItem == 0 )
     ;
 
-  _this->FuelItemIdx = aItemNo;
+  switch ( aItemNo )
+  {
+    case 0 :
+      _this->FuelItemIdx = 0;
+    break;
 
-  if ( _this->ItemCheckedArray[ EwCheckIndex( aItemNo, 3 )])
+    case 1 :
+      _this->FuelItemIdx = 2;
+    break;
+
+    case 2 :
+      _this->FuelItemIdx = 1;
+    break;
+
+    default : 
+      ;
+  }
+
+  if ( _this->ItemCheckedArray[ EwCheckIndex( _this->FuelItemIdx, 3 )])
   {
     EwSignal( EwNewSlot( _this, UnitUNT03_FuelSettingMenu_OnCheckMarkUpdateSlot ), 
       ((XObject)_this ));
@@ -830,7 +919,7 @@ void UnitUNT03_FuelSettingMenu_OnItemActivate( UnitUNT03_FuelSettingMenu _this,
 
     for ( i = 0; i < 3; i++ )
     {
-      if ( i == aItemNo )
+      if ( i == _this->FuelItemIdx )
       {
         _this->ItemCheckedArray[ EwCheckIndex( i, 3 )] = 1;
       }
@@ -851,9 +940,22 @@ XBool UnitUNT03_FuelSettingMenu_LoadItemChecked( UnitUNT03_FuelSettingMenu _this
 {
   XBool IsChecked = 0;
 
-  if ( aItemNo < 3 )
+  switch ( aItemNo )
   {
-    IsChecked = _this->ItemCheckedArray[ EwCheckIndex( aItemNo, 3 )];
+    case 0 :
+      IsChecked = _this->ItemCheckedArray[ 0 ];
+    break;
+
+    case 1 :
+      IsChecked = _this->ItemCheckedArray[ 2 ];
+    break;
+
+    case 2 :
+      IsChecked = _this->ItemCheckedArray[ 1 ];
+    break;
+
+    default : 
+      ;
   }
 
   return IsChecked;
@@ -865,9 +967,22 @@ XBool UnitUNT03_FuelSettingMenu_LoadItemEnabled( UnitUNT03_FuelSettingMenu _this
 {
   XBool ItemEnabled = 1;
 
-  if ( aItemNo > 0 )
+  switch ( aItemNo )
   {
-    ItemEnabled = _this->ItemEnabledArray[ EwCheckIndex( aItemNo, 3 )];
+    case 0 :
+      ItemEnabled = _this->ItemEnabledArray[ 0 ];
+    break;
+
+    case 1 :
+      ItemEnabled = _this->ItemEnabledArray[ 2 ];
+    break;
+
+    case 2 :
+      ItemEnabled = _this->ItemEnabledArray[ 1 ];
+    break;
+
+    default : 
+      ;
   }
 
   return ItemEnabled;
@@ -960,8 +1075,8 @@ void UnitUNT04_PressureSettingMenu__Init( UnitUNT04_PressureSettingMenu _this, X
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  _this->Super2.SlideOutEffectEnabled = 1;
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
-  _this->ItemCheckedArray[ 0 ] = 1;
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_kpa ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_psi ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_kgf ));
@@ -1032,9 +1147,25 @@ void UnitUNT04_PressureSettingMenu_OnItemActivate( UnitUNT04_PressureSettingMenu
   if ( aMenuItem == 0 )
     ;
 
-  _this->PressureItemIdx = aItemNo;
+  switch ( aItemNo )
+  {
+    case 0 :
+      _this->PressureItemIdx = 1;
+    break;
 
-  if ( _this->ItemCheckedArray[ EwCheckIndex( aItemNo, 3 )])
+    case 1 :
+      _this->PressureItemIdx = 0;
+    break;
+
+    case 2 :
+      _this->PressureItemIdx = 2;
+    break;
+
+    default : 
+      ;
+  }
+
+  if ( _this->ItemCheckedArray[ EwCheckIndex( _this->PressureItemIdx, 3 )])
   {
     EwSignal( EwNewSlot( _this, UnitUNT04_PressureSettingMenu_OnCheckMarkUpdateSlot ), 
       ((XObject)_this ));
@@ -1045,7 +1176,7 @@ void UnitUNT04_PressureSettingMenu_OnItemActivate( UnitUNT04_PressureSettingMenu
 
     for ( i = 0; i < 3; i++ )
     {
-      if ( i == aItemNo )
+      if ( i == _this->PressureItemIdx )
       {
         _this->ItemCheckedArray[ EwCheckIndex( i, 3 )] = 1;
       }
@@ -1066,9 +1197,22 @@ XBool UnitUNT04_PressureSettingMenu_LoadItemChecked( UnitUNT04_PressureSettingMe
 {
   XBool IsChecked = 0;
 
-  if ( aItemNo < 3 )
+  switch ( aItemNo )
   {
-    IsChecked = _this->ItemCheckedArray[ EwCheckIndex( aItemNo, 3 )];
+    case 0 :
+      IsChecked = _this->ItemCheckedArray[ 1 ];
+    break;
+
+    case 1 :
+      IsChecked = _this->ItemCheckedArray[ 0 ];
+    break;
+
+    case 2 :
+      IsChecked = _this->ItemCheckedArray[ 2 ];
+    break;
+
+    default : 
+      ;
   }
 
   return IsChecked;
@@ -1161,9 +1305,9 @@ void UnitUNT05_TemperatureSettingMenu__Init( UnitUNT05_TemperatureSettingMenu _t
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  _this->Super2.SlideOutEffectEnabled = 1;
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 2 );
-  _this->ItemCheckedArray[ 0 ] = 1;
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT05_unit_temperature_c ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT05_unit_temperature_f ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );

@@ -1971,7 +1971,7 @@ XInt32 DeviceInterfaceWeatherDeviceClass_ConvertTemperature( DeviceInterfaceWeat
 
   Temp = aTemperature;
 
-  if ( EnumWeatherTempTypeTempF == aTempUnit )
+  if ( EnumTemperatureSettingItemTEMP_F == aTempUnit )
   {
     Temp = (( aTemperature * 9 ) + 160 ) / 5;
   }

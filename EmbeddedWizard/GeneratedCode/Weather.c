@@ -564,7 +564,7 @@ void WeatherWeatherDayViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherDayViewUI _t
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTEMPERATURE_UNIT );
 
-        if ((XEnum)VehicleData->DataUInt32 == EnumWeatherTempTypeTempF )
+        if ((XEnum)VehicleData->DataUInt32 == EnumTemperatureSettingItemTEMP_F )
         {
           ViewsImage_OnSetBitmap( &_this->TempUnitIcon, EwLoadResource( &ResourceIconTempDegF, 
           ResourcesBitmap ));

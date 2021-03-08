@@ -1605,7 +1605,7 @@ class WeatherDeviceClass : Templates::DeviceClass
       var int32 RainProb;
 
       var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TEMPERATURE_UNIT );
-      var Enum::WeatherTempType WeaTempType = ( Enum::WeatherTempType )VehicleData.DataUInt32;
+      var Enum::TemperatureSettingItem WeaTempType = ( Enum::TemperatureSettingItem )VehicleData.DataUInt32;
 
       native( aWeaItemIdx, WTime, WType, WTemp, TempMin, TempMax, RainProb )
       {
@@ -1732,10 +1732,10 @@ class WeatherDeviceClass : Templates::DeviceClass
   }
 
   $rect <110,360,310,400>
-  method int32 ConvertTemperature( arg Enum::WeatherTempType aTempUnit, arg int32 aTemperature )
+  method int32 ConvertTemperature( arg Enum::TemperatureSettingItem aTempUnit, arg int32 aTemperature )
   {
     var int32 Temp = aTemperature;
-    if( Enum::WeatherTempType.TempF == aTempUnit )
+    if( Enum::TemperatureSettingItem.TEMP_F == aTempUnit )
     {
       Temp = ( int32 )( ( aTemperature * 9 + 160 ) / 5 );
     }
