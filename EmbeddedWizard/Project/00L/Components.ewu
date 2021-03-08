@@ -379,6 +379,7 @@ class BaseMainBG : Components::BaseComponent
       if( null != ChildMenu )
       {
         ChildMenu.Menu.FocusFrame.Visible = false;
+        ChildMenu.Menu.HideArrowScrollBar();
       }
 
       // hide the highlight focus frame of this current menu
@@ -386,6 +387,7 @@ class BaseMainBG : Components::BaseComponent
       if( null != CurrentMenu )
       {
         CurrentMenu.Menu.FocusFrame.Visible = false;
+        CurrentMenu.Menu.HideArrowScrollBar();
       }
 
       SlideDirection = Core::Direction.Left;
@@ -435,6 +437,10 @@ class BaseMainBG : Components::BaseComponent
       {
         ChildMenu.Menu.FocusFrame.Visible = true;
       }
+      if( ChildMenu.Menu.ArrowScrollBarVisible )
+      {
+        ChildMenu.Menu.ShowArrowScrollBar();
+      }
     }
 
     ChildDialog = null;
@@ -466,6 +472,10 @@ class BaseMainBG : Components::BaseComponent
     if( null != OwnerMenu )
     {
       OwnerMenu.Menu.FocusFrame.Visible = true;
+      if( OwnerMenu.Menu.ArrowScrollBarVisible )
+      {
+        OwnerMenu.Menu.ShowArrowScrollBar();
+      }
     }
   }
 
@@ -484,6 +494,7 @@ class BaseMainBG : Components::BaseComponent
       if( null != CurrentMenu )
       {
         CurrentMenu.Menu.FocusFrame.Visible = false;
+        CurrentMenu.Menu.HideArrowScrollBar();
       }
 
       SlideDirection = Core::Direction.Right;

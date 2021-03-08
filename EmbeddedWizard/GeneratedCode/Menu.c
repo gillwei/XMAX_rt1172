@@ -716,6 +716,18 @@ void MenuVerticalMenu_OnPageScrolledSlot( MenuVerticalMenu _this, XObject sender
   }
 }
 
+/* 'C' function for method : 'Menu::VerticalMenu.HideArrowScrollBar()' */
+void MenuVerticalMenu_HideArrowScrollBar( MenuVerticalMenu _this )
+{
+  CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, 0 );
+}
+
+/* 'C' function for method : 'Menu::VerticalMenu.ShowArrowScrollBar()' */
+void MenuVerticalMenu_ShowArrowScrollBar( MenuVerticalMenu _this )
+{
+  CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, 1 );
+}
+
 /* Variants derived from the class : 'Menu::VerticalMenu' */
 EW_DEFINE_CLASS_VARIANTS( MenuVerticalMenu )
 EW_END_OF_CLASS_VARIANTS( MenuVerticalMenu )

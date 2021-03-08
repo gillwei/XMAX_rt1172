@@ -659,6 +659,7 @@ void ComponentsBaseMainBG_SlideInDialog( ComponentsBaseMainBG _this, ComponentsB
     if ( ChildMenu != 0 )
     {
       ViewsBorder_OnSetVisible( &ChildMenu->Menu.FocusFrame, 0 );
+      MenuVerticalMenu_HideArrowScrollBar( &ChildMenu->Menu );
     }
 
     CurrentMenu = EwCastObject( _this, MenuBaseMenuView );
@@ -666,6 +667,7 @@ void ComponentsBaseMainBG_SlideInDialog( ComponentsBaseMainBG _this, ComponentsB
     if ( CurrentMenu != 0 )
     {
       ViewsBorder_OnSetVisible( &CurrentMenu->Menu.FocusFrame, 0 );
+      MenuVerticalMenu_HideArrowScrollBar( &CurrentMenu->Menu );
     }
 
     _this->SlideDirection = CoreDirectionLeft;
@@ -709,6 +711,11 @@ void ComponentsBaseMainBG_OnDialogSlideInCompletedSlot( ComponentsBaseMainBG _th
     {
       ViewsBorder_OnSetVisible( &ChildMenu->Menu.FocusFrame, 1 );
     }
+
+    if ( ChildMenu->Menu.ArrowScrollBarVisible )
+    {
+      MenuVerticalMenu_ShowArrowScrollBar( &ChildMenu->Menu );
+    }
   }
 
   _this->ChildDialog = 0;
@@ -740,6 +747,11 @@ void ComponentsBaseMainBG_OnDialogSlideOutCompletedSlot( ComponentsBaseMainBG _t
   if ( OwnerMenu != 0 )
   {
     ViewsBorder_OnSetVisible( &OwnerMenu->Menu.FocusFrame, 1 );
+
+    if ( OwnerMenu->Menu.ArrowScrollBarVisible )
+    {
+      MenuVerticalMenu_ShowArrowScrollBar( &OwnerMenu->Menu );
+    }
   }
 }
 
@@ -755,6 +767,7 @@ void ComponentsBaseMainBG_SlideOutDialog( ComponentsBaseMainBG _this )
     if ( CurrentMenu != 0 )
     {
       ViewsBorder_OnSetVisible( &CurrentMenu->Menu.FocusFrame, 0 );
+      MenuVerticalMenu_HideArrowScrollBar( &CurrentMenu->Menu );
     }
 
     _this->SlideDirection = CoreDirectionRight;

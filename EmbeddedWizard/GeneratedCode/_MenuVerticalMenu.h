@@ -227,6 +227,12 @@ void MenuVerticalMenu_OnSetArrowScrollBarVisible( MenuVerticalMenu _this, XBool
 /* 'C' function for method : 'Menu::VerticalMenu.OnPageScrolledSlot()' */
 void MenuVerticalMenu_OnPageScrolledSlot( MenuVerticalMenu _this, XObject sender );
 
+/* 'C' function for method : 'Menu::VerticalMenu.HideArrowScrollBar()' */
+void MenuVerticalMenu_HideArrowScrollBar( MenuVerticalMenu _this );
+
+/* 'C' function for method : 'Menu::VerticalMenu.ShowArrowScrollBar()' */
+void MenuVerticalMenu_ShowArrowScrollBar( MenuVerticalMenu _this );
+
 #ifdef __cplusplus
   }
 #endif

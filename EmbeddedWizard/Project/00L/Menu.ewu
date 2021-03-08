@@ -256,7 +256,7 @@ class VerticalMenu : Components::BaseComponent
   $rect <6,290,206,330>
   inherited property Bounds = <0,0,480,236>;
 
-  $rect <490,220,670,260>
+  $rect <3,246,183,286>
   inherited method UpdateViewState()
   {
     super( aState );
@@ -556,6 +556,18 @@ class VerticalMenu : Components::BaseComponent
       var int32 PageIdxOfSelectedItem = MenuList.SelectedItem / ItemNumPerPage;
       ArrowScrollBar.CurrentPageIdx = PageIdxOfSelectedItem;
     }
+  }
+
+  $rect <490,200,730,240>
+  method void HideArrowScrollBar()
+  {
+    ArrowScrollBar.Visible = false;
+  }
+
+  $rect <490,240,730,280>
+  method void ShowArrowScrollBar()
+  {
+    ArrowScrollBar.Visible = true;
   }
 }
 
