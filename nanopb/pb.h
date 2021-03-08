@@ -47,6 +47,8 @@
  * the string processing slightly and slightly increases code size. */
 /* #define PB_VALIDATE_UTF8 1 */
 
+#define PB_NO_STATIC_ASSERT
+
 /******************************************************************
  * You usually don't need to change anything below this line.     *
  * Feel free to look around and use the defined macros, though.   *
