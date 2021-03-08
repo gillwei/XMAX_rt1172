@@ -396,8 +396,15 @@ void ComponentsBaseComponent__OnLongEnterKeyActivated( void* _this )
 /* 'C' function for method : 'Components::BaseComponent.OnLongHomeKeyActivated()' */
 void ComponentsBaseComponent_OnLongHomeKeyActivated( ComponentsBaseComponent _this )
 {
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
+  if ( 1 == _this->KeyHandler.RepetitionCount )
+  {
+    ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+
+    if ( App != 0 )
+    {
+      ApplicationApplication_ReturnToHome( App );
+    }
+  }
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnShortMagicKeyActivated()' */

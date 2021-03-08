@@ -204,6 +204,14 @@ class BaseComponent : Core::Group
   $rect <510,210,740,250>
   method void OnLongHomeKeyActivated()
   {
+    if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    {
+      var Application::Application App = ( Application::Application )GetRoot();
+      if( null != App )
+      {
+        App.ReturnToHome();
+      }
+    }
   }
 
   $rect <990,60,1190,100>

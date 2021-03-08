@@ -161,7 +161,7 @@ class Application : Core::Root
   // Switch to home/launcher
   note group Note1
   {
-    attr Bounds = <330,390,810,550>;
+    attr Bounds = <330,390,1030,550>;
   }
 
   $rect <360,440,560,480>
@@ -338,5 +338,26 @@ class Application : Core::Root
   {
     preset Bounds = <0,0,480,38>;
     preset Visible = false;
+  }
+
+  // Return from the DD mode forbidden UI to the launcher
+  $rect <810,440,1010,480>
+  method void ReturnToHome()
+  {
+    trace "ReturnToHome";
+    var int32 NoOfDialogs = CountDialogs();
+    var int32 i;
+    for( i = 0; i < NoOfDialogs; i++ )
+    {
+      var Home::BaseHome Dialog = ( Home::BaseHome )GetDialogAtIndex( 0 );
+      if( null != Dialog )
+      {
+        Dialog.ReturnToHome();
+      }
+      else
+      {
+        DismissDialog( GetDialogAtIndex( 0 ), null, null, null, null, null, false );
+      }
+    }
   }
 }

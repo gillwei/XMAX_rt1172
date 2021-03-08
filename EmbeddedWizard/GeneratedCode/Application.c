@@ -55,10 +55,11 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x0000004E, /* ratio 97.44 % */
+  0x0000006C, /* ratio 85.19 % */
   0xB8002D00, 0x000A6452, 0x1CC2003A, 0xC0075004, 0x1242001C, 0x00039002, 0x002B0004,
   0x08CC38D2, 0x36000C40, 0xD000CA00, 0xC9801151, 0x508B0307, 0xA111B909, 0x60002245,
-  0x06F00136, 0x16961900, 0x1004EA4D, 0x00000010, 0x00000000
+  0x06F00136, 0x16961900, 0xC294A64F, 0x8A436112, 0xACAC006E, 0x80268489, 0x2A4D2C36,
+  0x00101005, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -66,6 +67,7 @@ static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XRect _Const0001 = {{ 0, 0 }, { 480, 38 }};
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x0018 };
+static const XStringRes _Const0004 = { _StringsDefault0, 0x0027 };
 
 /* Initializer for the class 'Application::Application' */
 void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, XHandle aArg )
@@ -517,6 +519,32 @@ void ApplicationApplication_OnStartBootupAnimationSlot( ApplicationApplication _
   BootupAnimationDialog->OnBootupAnimationFinished = EwNewSlot( _this, ApplicationApplication_OnBootupAnimationFinishedSlot );
   CoreGroup_SwitchToDialog((CoreGroup)_this, ((CoreGroup)BootupAnimationDialog ), 
   0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
+/* Return from the DD mode forbidden UI to the launcher */
+void ApplicationApplication_ReturnToHome( ApplicationApplication _this )
+{
+  XInt32 NoOfDialogs;
+  XInt32 i;
+
+  EwTrace( "%s", EwLoadString( &_Const0004 ));
+  NoOfDialogs = CoreGroup_CountDialogs((CoreGroup)_this );
+
+  for ( i = 0; i < NoOfDialogs; i++ )
+  {
+    HomeBaseHome Dialog = EwCastObject( CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+      0 ), HomeBaseHome );
+
+    if ( Dialog != 0 )
+    {
+      HomeBaseHome_ReturnToHome( Dialog );
+    }
+    else
+    {
+      CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+      0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    }
+  }
 }
 
 /* Variants derived from the class : 'Application::Application' */

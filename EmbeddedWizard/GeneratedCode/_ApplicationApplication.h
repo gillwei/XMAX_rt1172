@@ -222,6 +222,9 @@ void ApplicationApplication_OnBootupAnimationFinishedSlot( ApplicationApplicatio
 void ApplicationApplication_OnStartBootupAnimationSlot( ApplicationApplication _this, 
   XObject sender );
 
+/* Return from the DD mode forbidden UI to the launcher */
+void ApplicationApplication_ReturnToHome( ApplicationApplication _this );
+
 #ifdef __cplusplus
   }
 #endif
