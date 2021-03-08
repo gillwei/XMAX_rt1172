@@ -176,6 +176,9 @@ switch( msg->service_type )
     case NAVILITE_SERVICETYPE_VIA_POINT_COUNT_UPDATE:
         PRINTF( "VIA_POINT_COUNT_UPDATE" );
         break;
+    case NAVILITE_SERVICETYPE_MCU_ESN_UPDATE:
+        PRINTF( "MCU_ESN_UPDATE" );
+        break;
     default:
         PRINTF( "OTHER SERVICE CODE UNDEFINED:0x%x",  msg->service_type );
         break;

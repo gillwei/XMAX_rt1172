@@ -56,11 +56,12 @@ AT_BOARDSDRAM_SECTION( uint8_t navilite_jpg_buffer[NAVILITE_JPEG_BUFFER_MAX_SIZE
 AT_BOARDSDRAM_SECTION( uint8_t navilite_queue_buffer[NAVILITE_QUEUE_BUFFER_SIZE] );
 AT_BOARDSDRAM_SECTION( uint8_t navilite_queue_buffer_unused_alignment[256 - NAVILITE_QUEUE_BUFFER_SIZE] );
 
+navilite_content_update_callbacks_type navilite_content_update_callbacks;
+
 static TaskHandle_t xTaskNaviLite;
 static StreamBufferHandle_t xQueueBuffer = NULL;
 static navilite_conn_mode_type conn_mode = 0;
-navilite_content_update_callbacks_type navilite_content_update_callbacks;
-navilite_ack_table_type navilite_connection_ack_status;
+static navilite_session_status_type navilite_session_status;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -74,18 +75,73 @@ navilite_ack_table_type navilite_connection_ack_status;
 /*********************************************************************
 *
 * @private
-* init_ack_status
+* init_session_status
 *
-* Initialize ack status
+* Initialize session status
 *
 *********************************************************************/
-static void init_ack_status
+static void init_session_status
     (
     void
     )
 {
-navilite_connection_ack_status.esn_ack = 0;
-navilite_connection_ack_status.frame_ack = 0;
+navilite_session_status.navigation_status = 0; // reset navigating status
+navilite_session_status.home_status = 0; // home setting
+navilite_session_status.office_status = 0; // office setting
+}
+
+/*********************************************************************
+*
+* @public
+* NAVILITE_is_app_navigating
+*
+* Check if app is now navigating
+* @return true if it is navigating
+*         false if it is not navigating
+*
+*********************************************************************/
+bool NAVILITE_is_app_navigating
+    (
+    void
+    )
+{
+return navilite_session_status.navigation_status == 1;
+}
+
+/*********************************************************************
+*
+* @public
+* NAVILITE_is_app_home_setting_set
+*
+* Check if home setting is set
+* @return true if it is set
+*         false if it is not set
+*
+*********************************************************************/
+bool NAVILITE_is_app_home_setting_set
+    (
+    void
+    )
+{
+return navilite_session_status.home_status == 1;
+}
+
+/*********************************************************************
+*
+* @public
+* NAVILITE_is_app_office_setting_set
+*
+* Check if office setting is set
+* @return true if it is set
+*         false if it is not set
+*
+*********************************************************************/
+bool NAVILITE_is_app_office_setting_set
+    (
+    void
+    )
+{
+return navilite_session_status.office_status == 1;
 }
 
 /*********************************************************************
@@ -133,7 +189,6 @@ static void task_main
 {
 uint32_t notifiy_events;
 
-init_ack_status();
 navilite_hmi_init_setup();
 
 for( ;; )
@@ -146,16 +201,13 @@ for( ;; )
     if( ( notifiy_events & EVENT_NAVILITE_CONNECT ) != 0 )
         {
         PRINTF( "BT is connected, NAVILITE TASK switch to ready mode\r\n" );
-        if( navilite_content_update_callbacks.callback_func_connected )
-            {
-            navilite_content_update_callbacks.callback_func_connected( 0 );
-            }
+        init_session_status();
+        navilite_content_update_callbacks.callback_func_preconnected( 0 );
         }
     if( ( notifiy_events & EVENT_NAVILITE_DISCONNECT ) != 0 )
         {
         PRINTF( "BT is disconnected, NAVILITE TASK switch to close mode\r\n" );
         navilite_content_update_callbacks.callback_func_disconnected( 0 );
-        init_ack_status();
         }
     if( ( notifiy_events & EVENT_NAVILITE_QUEUE_AVAIL ) != 0 )
         {
@@ -226,11 +278,9 @@ void NAVILITE_init
 {
 PRINTF( "NAVILITE_init - create task\r\n" );
 
-// initialize callback pointers to be null
-#if( !UNIT_TEST_NAVILITE )
-    navilite_content_update_callbacks.callback_func_connected = NULL;
-    navilite_content_update_callbacks.callback_func_disconnected = NULL;
-#endif
+// ESN sent & acked notification callback
+navilite_content_update_callbacks.callback_func_esn_sent = NULL;
+
 navilite_content_update_callbacks.callback_func_imageframe = NULL;
 navilite_content_update_callbacks.callback_func_eta = NULL;
 navilite_content_update_callbacks.callback_func_currentroadname = NULL;
@@ -246,6 +296,7 @@ navilite_content_update_callbacks.callback_func_daynightmode = NULL;
 navilite_content_update_callbacks.callback_func_tbtmodestatus = NULL;
 navilite_content_update_callbacks.callback_func_speedlimit = NULL;
 navilite_content_update_callbacks.callback_func_viapointcount = NULL;
+navilite_content_update_callbacks.callback_func_navigationstatus = NULL;
 
 // Setup queue buffer
 navilite_setup_queue_buffer();
@@ -465,6 +516,13 @@ static int jpg_current_size = 0;
 
 if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
     {
+    // check connection
+    if( navilite_session_status.inited == 0 &&
+    navilite_content_update_callbacks.callback_func_connected )
+        {
+        navilite_session_status.inited = 1;
+        navilite_content_update_callbacks.callback_func_connected( 0 );
+        }
     // print the frame information for debug
 #if( NAVILITE_DEBUG )
     PRINTF( "\r\n======= FRAME DEBUG (MTU size:%d) ========\r\n", data_len);
@@ -536,51 +594,164 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
     // NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE
     if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
         {
-        if( data_len <= 240 && navilite_packet.payload_size > 0 )
+        if( is_jpeg_mode == 0 )
             {
-            if( is_jpeg_mode == 0 )
-                {
-                image_frame_update_payload_size = navilite_packet.payload_size;
-                is_jpeg_mode = 1;
-                }
-            jpg_current_size = 0;
-            memcpy( navilite_jpg_buffer, data + idx, data_len );
-            jpg_current_size += ( data_len - idx );
-            idx += data_len;
+            image_frame_update_payload_size = navilite_packet.payload_size;
+            is_jpeg_mode = 1;
             }
+        jpg_current_size = 0;
+        memcpy( navilite_jpg_buffer, data + idx, data_len );
+        jpg_current_size += ( data_len - idx );
+        idx += data_len;
         }
 
     // NAVILITE_SERVICETYPE_CURROADNAME_UPDATE
     if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_CURROADNAME_UPDATE )
         {
         // complete frame request contains ALL in one!!!
-        if( data_len <= 240 && navilite_packet.payload_size > 0 )
-            {
-            memcpy( navilite_buffer, data + idx, data_len );
-            idx += data_len;
-            navilite_buffer[idx] = 0;
+        memcpy( navilite_buffer, data + idx, data_len );
+        idx += data_len;
+        navilite_buffer[idx] = 0;
 
-            if( navilite_content_update_callbacks.callback_func_currentroadname )
-                {
-                // Callback API for RoadName notification update
-                navilite_content_update_callbacks.callback_func_currentroadname( navilite_buffer, navilite_packet.payload_size );
-                }
+        if( navilite_content_update_callbacks.callback_func_currentroadname )
+            {
+            // Callback API for RoadName notification update
+            navilite_content_update_callbacks.callback_func_currentroadname( navilite_buffer, navilite_packet.payload_size );
             }
+        }
+    else if( navilite_packet.payload_size == 0 && navilite_content_update_callbacks.callback_func_currentroadname )
+        {
+            // Used for clearing the road name on HMI
+            navilite_content_update_callbacks.callback_func_currentroadname( NULL, 0 );
         }
 
     // NAVILITE_SERVICETYPE_ETA_UPDATE
     if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_ETA_UPDATE )
         {
-        uint32_t eta_value = 0; // this value will be calculated in HMI for proper absolute time
-        if( data_len <= 240 && navilite_packet.payload_size > 0 )
-            {
-            eta_value = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
-            }
+        uint32_t value = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
 
         if( navilite_content_update_callbacks.callback_func_eta )
             {
             // Callback API for ETA notification update
-            navilite_content_update_callbacks.callback_func_eta( eta_value );
+            navilite_content_update_callbacks.callback_func_eta( value );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_HOMESETTING_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_HOMESETTING_UPDATE )
+        {
+        uint8_t value = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_homelocationsetting )
+            {
+            // Callback API for home setting notification update
+            navilite_content_update_callbacks.callback_func_homelocationsetting( value );
+            // Update the session status for home setting status, used for blocking type API
+            navilite_session_status.home_status = value;
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_OFFICESETTING_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_OFFICESETTING_UPDATE )
+        {
+        uint8_t setting_value = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_officelocationsetting )
+            {
+            // Callback API for home setting notification update
+            navilite_content_update_callbacks.callback_func_officelocationsetting( setting_value );
+            // Update the session status for office setting status, used for blocking type API
+            navilite_session_status.office_status = setting_value;
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_VIA_POINT_COUNT_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_VIA_POINT_COUNT_UPDATE )
+        {
+        uint8_t value = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_viapointcount )
+            {
+            // Callback API for via point count notification update
+            navilite_content_update_callbacks.callback_func_viapointcount( value );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_SPEED_LIMIT_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_SPEED_LIMIT_UPDATE )
+        {
+        uint16_t value = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_speedlimit )
+            {
+            // Callback API for speed limit notification update
+            navilite_content_update_callbacks.callback_func_speedlimit( value );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_NAVIEVENTTEXTUPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_NAVIEVENTTEXTUPDATE )
+        {
+        uint8_t event_type;
+        uint8_t event_extra_subtype;
+        uint8_t visibilty;
+        uint8_t event_str_size;
+
+        // complete frame request contains ALL in one!!!
+        int i = 0;
+        for( ; idx < data_len; idx++ )
+            {
+            // parsing the navi text packet
+            // read one byte for event type
+            event_type = (uint8_t)data[idx++];
+            // read one byte for extra subtype
+            event_extra_subtype = (uint8_t)data[idx++];
+            // read one byte for visibility
+            visibilty = (uint8_t)data[idx++];
+            // read one byte for navi text string size
+            event_str_size = (uint8_t)data[idx++];
+            // read the str size bytes for navi text
+            for ( i = 0; i < event_str_size; i++ )
+                {
+                navilite_buffer[i] = (uint8_t)data[idx++];
+                }
+            navilite_buffer[i++] = 0; // store the navi text on navilite buffer
+            if( navilite_content_update_callbacks.callback_func_navieventtext )
+                {
+                // Callback API for navi event text notification update
+                navilite_content_update_callbacks.callback_func_navieventtext( (uint8_t*)navilite_buffer, event_str_size, event_type, event_extra_subtype, visibilty );
+                }
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK
+    if( navilite_packet.service_type ==  NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK )
+        {
+        PRINTF( "*NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK*\r\n" );
+
+        if( navilite_content_update_callbacks.callback_func_esn_sent )
+            {
+            navilite_content_update_callbacks.callback_func_esn_sent();
+            }
+
+        // Once ESN is acked, the navilite session is established
+        if( navilite_content_update_callbacks.callback_func_connected )
+            {
+            navilite_content_update_callbacks.callback_func_connected( 0 );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_NAVIGATION_STATUS_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_NAVIGATION_STATUS_UPDATE )
+        {
+        uint16_t status = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_navigationstatus )
+            {
+            // Callback API for navigation status notification update
+            navilite_content_update_callbacks.callback_func_navigationstatus( status );
+            // Update the session status for navigation status, used for blocking type API
+            navilite_session_status.navigation_status = status;
             }
         }
 

@@ -242,21 +242,43 @@
     /*********************************************************************
     *
     * @public
-    * NAVILITE_request_app_get_recent_list
+    * NAVILITE_request_app_start_imageframe_update
     *
-    * Send get recent list request to app side
+    * stop image frame update request to app
     *
     * @return true when success
     *         false when failed
     *
     *********************************************************************/
-    bool NAVILITE_request_app_get_recentlist
+    bool NAVILITE_request_app_start_imageframe_update
         (
         void
         )
     {
-    navilite_message frame = NAVILITE_pack_frame_app_get_recentlist_request();
+    navilite_message frame = NAVILITE_pack_frame_app_enable_imageframe_update( NAVILITE_ENABLE_TYPE_ENABLE );
     bool ret = NAVILITE_send( (uint8_t*)&frame, sizeof( navilite_message ) );
     return ret;
     }
+
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_request_app_stop_imageframe_update
+    *
+    * stop image frame update request to app
+    *
+    * @return true when success
+    *         false when failed
+    *
+    *********************************************************************/
+    bool NAVILITE_request_app_stop_imageframe_update
+        (
+        void
+        )
+    {
+    navilite_message frame = NAVILITE_pack_frame_app_enable_imageframe_update( NAVILITE_ENABLE_TYPE_DISABLE );
+    bool ret = NAVILITE_send( (uint8_t*)&frame, sizeof( navilite_message ) );
+    return ret;
+    }
+
 #endif

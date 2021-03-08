@@ -285,32 +285,6 @@
     /*********************************************************************
     *
     * @public
-    * NAVILITE_pack_frame_app_get_recentlist_request
-    *
-    * Send enable recent list mode request
-    *
-    * @return navilite_message return navilite_message copy to caller
-    *
-    *********************************************************************/
-    navilite_message NAVILITE_pack_frame_app_get_recentlist_request
-        (
-        void
-        )
-    {
-    navilite_message frame = { 0 };
-    strncpy( (char*)frame.magic_code, (char*)MAGIC_CODE, MAGIC_CODE_SIZE );
-    frame.version = PROTOCOL_VERSION;
-    frame.frame_type = NAVILITE_FRAMETYPE_MOBILE_REQUEST;
-    frame.service_type = NAVILITE_SERVICETYPE_APP_GET_RECENT_LIST_REQUEST ;
-    frame.payload_size = 0;
-    frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
-    frame.data_value = 0;
-    return frame;
-    }
-
-    /*********************************************************************
-    *
-    * @public
     * NAVILITE_pack_frame_app_enable_imageframe_update
     *
     * Send enable/disable image frame update request
@@ -336,7 +310,7 @@
         {
         frame.service_type = NAVILITE_SERVICETYPE_APP_STOP_IMAGE_FRAME_REQUEST ;
         }
-    frame.payload_size = sizeof( navilite_switch_type );
+    frame.payload_size = 0;
     frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
     frame.data_value = enable;  // NOTE: navilite_switch_type enable/disable
     return frame;

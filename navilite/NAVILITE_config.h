@@ -35,6 +35,9 @@
 // enable ack serial data sending
 #define NAVILITE_SESSION_ACK_SERIAL_SUPPORT 0
 
+// support the ESN report to app if function is ready
+#define NAVILITE_ESN_REPORT_SUPPORT 1
+
 // support the serial send if function is ready
 #define NAVILITE_SERIAL_SEND_SUPPORT 1
 

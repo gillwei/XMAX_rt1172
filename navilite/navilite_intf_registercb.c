@@ -53,6 +53,28 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     /*********************************************************************
     *
     * @public
+    * NAVILITE_register_update_callback_preconnected
+    *
+    * Register navilite session preconnected notify callback
+    *
+    * @param callback_func_connected callback function for session preconnected
+    * @return The result of the callback registering
+    *
+    *********************************************************************/
+    bool NAVILITE_register_update_callback_preconnected
+        (
+        navilite_callback_func_preconnected callback_func
+        )
+    {
+    bool ret = true;
+    navilite_content_update_callbacks.callback_func_preconnected = callback_func;
+    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    return ret;
+    }
+
+    /*********************************************************************
+    *
+    * @public
     * NAVILITE_register_update_callback_connected
     *
     * Register navilite session connected notify callback
@@ -134,6 +156,50 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_eta = callback_func;
+    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    return ret;
+    }
+
+    /*********************************************************************
+     *
+     * @public
+     * NAVILITE_register_update_callback_viapoint
+     *
+     * register navilite via point content notify callback
+     *
+     * @param callback_func callback function for via point update
+     * @return The result of the callback registering
+     *
+     *********************************************************************/
+     bool NAVILITE_register_update_callback_viapointcount
+         (
+         navilite_callback_func_viapointcount callback_func
+         )
+     {
+     bool ret = true;
+     navilite_content_update_callbacks.callback_func_viapointcount = callback_func;
+     PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+     return ret;
+     }
+
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_register_update_callback_speedlimit
+    *
+    * register navilite speed limit content notify callback
+    *
+    * @param callback_func callback function for speed limit update
+    * @return The result of the callback registering
+    *
+    *********************************************************************/
+    bool NAVILITE_register_update_callback_speedlimit
+        (
+        navilite_callback_func_speedlimit callback_func
+        )
+    {
+    bool ret = true;
+    navilite_content_update_callbacks.callback_func_speedlimit = callback_func;
     PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
@@ -367,4 +433,47 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     return ret;
     }
 
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_register_update_callback_esn_sent
+    *
+    * Register esn sent notify callback
+    *
+    * @param callback_func callback function when esn id is sent and acked
+    * @return The result of the callback registering
+    *
+    *********************************************************************/
+    bool NAVILITE_register_update_callback_esn_sent
+        (
+        navilite_callback_func_esn_sent callback_func
+        )
+    {
+    bool ret = true;
+    navilite_content_update_callbacks.callback_func_esn_sent = callback_func;
+    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    return ret;
+    }
+
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_register_update_callback_navigationstatus
+    *
+    * Register navigation status notify callback
+    *
+    * @param callback_func callback function when navigation status is notified
+    * @return The result of the callback registering
+    *
+    *********************************************************************/
+    bool NAVILITE_register_update_callback_navigationstatus
+        (
+        navilite_callback_func_navigationstatus callback_func
+        )
+    {
+    bool ret = true;
+    navilite_content_update_callbacks.callback_func_navigationstatus = callback_func;
+    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    return ret;
+    }
 #endif

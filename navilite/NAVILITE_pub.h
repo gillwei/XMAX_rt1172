@@ -65,6 +65,22 @@ typedef enum tagNAVILITE_NAVIEVENT_TYPE
     NAVILITE_NAVIEVENT_TYPE_OTHER
     } navilite_navievent_type;
 
+typedef enum tagNAVILITE_EVENT_CAMERA_EXTRA_SUBTYPE
+    {
+    NAVILITE_CAM_TYPE_CHECK_FIXED = 0, // A permanent spot check - e.g. a GATSO.
+    NAVILITE_CAM_TYPE_CHECK_TEMPORARY = 1, // A site with infrastructure (e.g. lines on road) but no permanent camera.
+    NAVILITE_CAM_TYPE_MOBILE = 2, // A stretch of road enforced with mobile cameras/radar guns.
+    NAVILITE_CAM_TYPE_AVERAGE = 3, // A stretch of road where the average vehicle speed is measured e.g. a SPECS system.
+    NAVILITE_CAM_TYPE_VARIABLE = 4, // A camera with a speed limit that can be changed.
+    NAVILITE_CAM_TYPE_RED_LIGHT = 5, // A red-light camera
+    NAVILITE_CAM_TYPE_USER = 6, // Camera location reported by user
+    NAVILITE_CAM_TYPE_MOBILE_ZONE = 7, // A stretch of road enforced with mobile cameras/radar guns. Realtime reported.
+    NAVILITE_CAM_TYPE_DANGEROUS_ZONE = 8, // A Dangerous Zone (French regulations)
+    NAVILITE_CAM_TYPE_DANGEROUS_POINT = 9, // A Dangerous Point (French regulations)
+    NAVILITE_CAM_TYPE_RISK_ZONE = 10, // A Risk Zone (French regulations)
+    NAVILITE_CAM_TYPE_UNKNOWN = 11
+    } navilite_navievent_camera_extra_subtype;
+
 typedef enum tagNAVILITE_SWITCH_TYPE
     {
     NAVILITE_ENABLE_TYPE_ENABLE = 1,
@@ -76,6 +92,12 @@ typedef enum tagNAVILITE_DAYNIGHT_TYPE
     NAVILITE_DAYNIGHT_DAY_MODE,
     NAVILITE_DAYNIGHT_NIGHT_MODE
     } navilite_daynight_type;
+
+typedef enum tagNAVILITE_NAVIGATION_STATUS_TYPE
+    {
+    NAVILITE_STATE_INACTIVE    = 0,  ///< NAV state is inactive
+    NAVILITE_STATE_NAVIGATING  = 1,  ///< Navigating status
+    } navilite_navigation_status_type;
 
 /*--------------------------------------------------------------------
                         TYPES
@@ -104,34 +126,39 @@ typedef struct tagNAVILITE_NAVIEVENT_TEXT_TYPE
 /* NaviLight Callback Typdefs for NaviLite Content notification register API*/
 
 // connect/disconnect event when BT SPP/IAP2 connection is made
+typedef void ( *navilite_callback_func_preconnected )( uint8_t mode );
 typedef void ( *navilite_callback_func_connected )( uint8_t mode );
 typedef void ( *navilite_callback_func_disconnected )( uint8_t mode );
+
+// ESN id notification, once sent and ack to/from mobile app
+typedef void ( *navilite_callback_func_esn_sent )( void ); // ESN id notify
 
 // content notification
 typedef void ( *navilite_callback_func_imageframe )( uint8_t* image, uint16_t image_size, navilite_image_type mode );
 typedef void ( *navilite_callback_func_eta )( uint32_t value );
-typedef void ( *navilite_callback_func_remaindist )( uint8_t* str, uint8_t str_size );
 typedef void ( *navilite_callback_func_currentroadname )( uint8_t* str, uint8_t str_size );
 typedef void ( *navilite_callback_func_nextturndistance )( uint8_t* str, uint8_t str_size );
 typedef void ( *navilite_callback_func_nexttbtlist )( navilite_tbt_list_type *list, uint8_t list_size );
 typedef void ( *navilite_callback_func_activetbtitem )( uint8_t active_tbt_index);
-typedef void ( *navilite_callback_func_navieventtext )( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_event_type, uint8_t visibility );
+typedef void ( *navilite_callback_func_navieventtext )( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_event_type, navilite_navievent_camera_extra_subtype navi_extra_sub_type, uint8_t visibility );
 typedef void ( *navilite_callback_func_homelocationsetting )( uint8_t is_home_location );
 typedef void ( *navilite_callback_func_officelocationsetting )( uint8_t is_office_location );
-typedef void ( *navilite_callback_func_hardkeyreportrequest )( uint8_t enable );
 typedef void ( *navilite_callback_func_zoomlevel )( uint8_t current_level, uint8_t max_level );
 typedef void ( *navilite_callback_func_routecalcprogress )( uint8_t progress ); // timeout:10s and automatically callback to
 typedef void ( *navilite_callback_func_daynightmode )( navilite_daynight_type mode ); // daynight mode update
-typedef void ( *navilite_callback_func_speedlimit )( uint8_t speed ); // speed limit
-typedef void ( *navilite_callback_func_viapointcount )( uint16_t via_point_count ); // via point count
+typedef void ( *navilite_callback_func_speedlimit )( uint16_t speed_limit ); // speed limit
+typedef void ( *navilite_callback_func_viapointcount )( uint8_t via_point_count ); // via point count
+typedef void ( *navilite_callback_func_navigationstatus )( uint8_t navigation_status ); // navigation status
 
 /* Helper Utitilty (indirect callback API) */
 typedef void ( *navilite_callback_func_tbtmodestatus )( uint8_t is_tbt ); // when TBT/image is updated, this callback will fire
 
 typedef struct tagNAVILITE_CONTENT_UPDATE_CALLBACKS
     {
+    navilite_callback_func_connected callback_func_preconnected;
     navilite_callback_func_connected callback_func_connected;
     navilite_callback_func_disconnected callback_func_disconnected;
+    navilite_callback_func_esn_sent callback_func_esn_sent;
     navilite_callback_func_imageframe callback_func_imageframe;
     navilite_callback_func_eta callback_func_eta;
     navilite_callback_func_currentroadname callback_func_currentroadname;
@@ -147,6 +174,7 @@ typedef struct tagNAVILITE_CONTENT_UPDATE_CALLBACKS
     navilite_callback_func_tbtmodestatus callback_func_tbtmodestatus;
     navilite_callback_func_speedlimit callback_func_speedlimit;
     navilite_callback_func_viapointcount callback_func_viapointcount;
+    navilite_callback_func_navigationstatus callback_func_navigationstatus;
     } navilite_content_update_callbacks_type;
 
 typedef struct tagNAVILITE_ACK_STATE_CALLBACKS
@@ -155,6 +183,14 @@ typedef struct tagNAVILITE_ACK_STATE_CALLBACKS
     uint8_t frame_ack;
     } navilite_ack_table_type;
 
+typedef struct tagNAVILTE_SESSION_STATE
+    {
+    uint8_t session_id[6]; // bt address 6 bytes as session id
+    uint8_t navigation_status; // 1 - navigating 0 - non navigating
+    uint8_t office_status; // is office setting set? 1 - set , 0 - no
+    uint8_t home_status; // is home setting set? 1 - set, 0 - no
+    uint8_t inited;
+    } navilite_session_status_type;
 /*--------------------------------------------------------------------
                         PROJECT INCLUDES
 --------------------------------------------------------------------*/
@@ -170,7 +206,7 @@ typedef struct tagNAVILITE_ACK_STATE_CALLBACKS
 /*--------------------------------------------------------------------
                         MACROS
 --------------------------------------------------------------------*/
-#define NAVILITE_DELM " "    //! Delimiter for separating value/unit or so
+#define NAVILITE_DELM ";"    //! Delimiter for separating value/unit or so
 
 /*--------------------------------------------------------------------
                         PROCEDURES
@@ -190,6 +226,7 @@ void NAVILITE_disconnect( void );
 
 /* NaviLight Content Notification API */
 bool NAVILITE_register_update_callback_imageframe( navilite_callback_func_imageframe callback_func );
+bool NAVILITE_register_update_callback_speedlimit( navilite_callback_func_speedlimit callback_func );
 bool NAVILITE_register_update_callback_eta( navilite_callback_func_eta callback_func );
 bool NAVILITE_register_update_callback_currentroadname( navilite_callback_func_currentroadname callback_func );
 bool NAVILITE_register_update_callback_nextturndistance( navilite_callback_func_nextturndistance callback_func );
@@ -201,8 +238,12 @@ bool NAVILITE_register_update_callback_officelocationsetting( navilite_callback_
 bool NAVILITE_register_update_callback_zoomlevel( navilite_callback_func_zoomlevel callback_func );
 bool NAVILITE_register_update_callback_routecalcprogress( navilite_callback_func_routecalcprogress callback_func );
 bool NAVILITE_register_update_callback_daynightmode( navilite_callback_func_daynightmode callback_func );
+bool NAVILITE_register_update_callback_esn_sent( navilite_callback_func_esn_sent callback_func );
+bool NAVILITE_register_update_callback_navigationstatus( navilite_callback_func_navigationstatus callback_func );
+bool NAVILITE_register_update_callback_viapointcount( navilite_callback_func_viapointcount callback_func );
 
 /* NaviLight Connection Event API */
+bool NAVILITE_register_update_callback_preconnected();
 bool NAVILITE_register_update_callback_connected();
 bool NAVILITE_register_update_callback_disconnected();
 
@@ -224,15 +265,19 @@ bool NAVILITE_request_app_zoomin();           //! request navilite mobile app to
 bool NAVILITE_request_app_zoomout();          //! request navilite mobile app to zoom out map and report status
 bool NAVILITE_request_app_gohome();           //! request navilite mobile app to navigate home
 bool NAVILITE_request_app_gooffice();         //! request navilite mobile app to navigate office
-bool NAVILITE_request_app_get_recentlist( void ); //! request navilite mobile app to send recent list
-bool NAVILITE_request_app_get_favoritlist( void ); //! request navilite mobile app to send favorite list
-bool NAVILITE_request_app_get_stationlist( void ); //! request navilite mobile app to send station list
+bool NAVILITE_request_app_start_imageframe_update(); //! request navilite mobile app to start image frame update
+bool NAVILITE_request_app_stop_imageframe_update(); //! request navilite mobile app to stop image frame update
+
 
 /* NaviLite vehicle or other info report to Mobile App */
 bool NAVILITE_report_app_service_ack( uint8_t service_ack );         //! report meter speed to navilite mobile app
 bool NAVILITE_report_app_esn( uint8_t* esn );                //! report device ID to navilite mobile app
 bool NAVILITE_report_app_sysinfo( uint8_t* sysinfo );             //! report device ID to navilite mobile app
 
+/* NaviLite Status API for navigation */
+bool NAVILITE_is_app_navigating();
+bool NAVILITE_is_app_home_setting_set();
+bool NAVILITE_is_app_office_setting_set();
 #ifdef __cplusplus
 }
 #endif
