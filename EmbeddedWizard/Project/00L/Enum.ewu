@@ -734,6 +734,9 @@ enum WeatherTimeType
 
   $rect <430,140,630,180>
   item WEATHER_AFTER_3HOUR;
+
+  $rect <10,210,210,250>
+  item WEATHER_AFTER_6DAY;
 }
 
 $rect <960,20,1160,60>

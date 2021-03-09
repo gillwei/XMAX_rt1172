@@ -154,9 +154,9 @@ EW_DEFINE_FIELDS( WeatherWeatherWeekViewUI, CoreGroup )
   EW_OBJECT  ( DaySixTempSlash, ViewsText )
   EW_OBJECT  ( DaySixMaxTemp,   ViewsText )
   EW_ARRAY   ( WeekDayTextArray, XString, [7])
-  EW_ARRAY   ( WeaItemIdxArray, XInt32, [5])
-  EW_ARRAY   ( TempSlashBounds, XRect, [5])
-  EW_ARRAY   ( MinTempBounds,   XRect, [5])
+  EW_ARRAY   ( TempSlashBounds, XRect, [6])
+  EW_ARRAY   ( MinTempBounds,   XRect, [6])
+  EW_ARRAY   ( WeaItemIdxArray, XEnum, [6])
 EW_END_OF_FIELDS( WeatherWeatherWeekViewUI )
 
 /* Virtual Method Table (VMT) for the class : 'Weather::WeatherWeekViewUI' */

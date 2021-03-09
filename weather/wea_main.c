@@ -23,14 +23,14 @@
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define NUM_WEA_ITEM                                10
-
-// TODO: Adjust value of WEA_INFO_RECEIVED when after 6 day type is ready.
-#define WEA_INFO_RECEIVED                           0x7FF
+#define WEA_INFO_RECEIVED                           0xFFF
 
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
-// TODO: ADD after 6 day type when MotoCon SDK is ready.
+// Note: From 0 to 9 ( current weather to after 6 day ), the order
+// cannot be changed according to the definition on MotoCon SDK spec.
+
 typedef enum
     {
     WEATHER_CURRENT                  = 0,
@@ -42,8 +42,9 @@ typedef enum
     WEATHER_AFTER_1HOUR              = 6,
     WEATHER_AFTER_2HOUR              = 7,
     WEATHER_AFTER_3HOUR              = 8,
-    WEATHER_LOCATION                 = 9,
-    WEATHER_WEEKDAY                  = 10
+    WEATHER_AFTER_6DAY               = 9,
+    WEATHER_LOCATION                 = 10,
+    WEATHER_WEEKDAY                  = 11
     } weather_type;
 
 void WEA_receive_wea_info( const bc_motocon_weather_info_t* weather_info );
@@ -254,6 +255,8 @@ else
 * WEA_receive_weekday
 *
 * Receive week day from MotoCon library and update it to EW UI.
+* @param time the received time object ( only week day is used
+*             for weather UI ).
 *
 *********************************************************************/
 void WEA_receive_weekday
@@ -261,10 +264,9 @@ void WEA_receive_weekday
     const bc_motocon_time_t* time
     )
 {
-// TODO: in terms of weather, the assumption is that parameter should be a integer which indicates the week day:
-// Sunday = 0, Monday = 1... Saturday = 6
-// Assign 3 ( Wednesday ) for testing only. Will change code when weekday parsing is done in the MotoCon parser.
-weather_weekday = 3;
+weather_weekday = time->day_of_week;
+PRINTF( "%s, Weather WeekDay: %d\r\n", __FUNCTION__, weather_weekday );
+
 set_bit( weather_info_received, WEATHER_WEEKDAY );
 if( WEA_INFO_RECEIVED == weather_info_received )
     {

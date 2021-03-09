@@ -300,9 +300,10 @@ void WeatherWeatherDayViewUI__Init( WeatherWeatherDayViewUI _this, XObject aLink
   _this->WeekDayTextArray[ 4 ] = EwShareString( EwLoadString( &_Const0027 ));
   _this->WeekDayTextArray[ 5 ] = EwShareString( EwLoadString( &_Const0028 ));
   _this->WeekDayTextArray[ 6 ] = EwShareString( EwLoadString( &_Const0029 ));
-  _this->WeaItemIdxArray[ 1 ] = 6;
-  _this->WeaItemIdxArray[ 2 ] = 7;
-  _this->WeaItemIdxArray[ 3 ] = 8;
+  _this->WeaItemIdxArray[ 0 ] = EnumWeatherTimeTypeWEATHER_CURRENT;
+  _this->WeaItemIdxArray[ 1 ] = EnumWeatherTimeTypeWEATHER_AFTER_1HOUR;
+  _this->WeaItemIdxArray[ 2 ] = EnumWeatherTimeTypeWEATHER_AFTER_2HOUR;
+  _this->WeaItemIdxArray[ 3 ] = EnumWeatherTimeTypeWEATHER_AFTER_3HOUR;
   CoreRectView__OnSetBounds( &_this->MinTempText, _Const002A );
   ViewsText_OnSetAlignment( &_this->MinTempText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
@@ -663,7 +664,7 @@ EW_END_OF_CLASS_VARIANTS( WeatherWeatherDayViewUI )
 
 /* Virtual Method Table (VMT) for the class : 'Weather::WeatherDayViewUI' */
 EW_DEFINE_CLASS( WeatherWeatherDayViewUI, CoreGroup, CurrentLocationText, CurrentLocationText, 
-                 CurrentLocationText, CurrentLocationText, WeekDayTextArray, WeaItemIdxArray, 
+                 CurrentLocationText, CurrentLocationText, WeekDayTextArray, MinTempTextBounds, 
                  "Weather::WeatherDayViewUI" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
@@ -985,11 +986,12 @@ void WeatherWeatherWeekViewUI__Init( WeatherWeatherWeekViewUI _this, XObject aLi
   CoreRectView__OnSetBounds( &_this->DayFourTempUnit, _Const0020 );
   CoreRectView__OnSetBounds( &_this->DayFiveTempUnit, _Const0021 );
   CoreRectView__OnSetBounds( &_this->DaySixTempUnit, _Const0022 );
-  _this->WeaItemIdxArray[ 0 ] = 1;
-  _this->WeaItemIdxArray[ 1 ] = 2;
-  _this->WeaItemIdxArray[ 2 ] = 3;
-  _this->WeaItemIdxArray[ 3 ] = 4;
-  _this->WeaItemIdxArray[ 4 ] = 5;
+  _this->WeaItemIdxArray[ 0 ] = EnumWeatherTimeTypeWEATHER_AFTER_1DAY;
+  _this->WeaItemIdxArray[ 1 ] = EnumWeatherTimeTypeWEATHER_AFTER_2DAY;
+  _this->WeaItemIdxArray[ 2 ] = EnumWeatherTimeTypeWEATHER_AFTER_3DAY;
+  _this->WeaItemIdxArray[ 3 ] = EnumWeatherTimeTypeWEATHER_AFTER_4DAY;
+  _this->WeaItemIdxArray[ 4 ] = EnumWeatherTimeTypeWEATHER_AFTER_5DAY;
+  _this->WeaItemIdxArray[ 5 ] = EnumWeatherTimeTypeWEATHER_AFTER_6DAY;
   CoreRectView__OnSetBounds( &_this->DayOneTempSlash, _Const0052 );
   ViewsText_OnSetAlignment( &_this->DayOneTempSlash, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
@@ -1055,11 +1057,13 @@ void WeatherWeatherWeekViewUI__Init( WeatherWeatherWeekViewUI _this, XObject aLi
   _this->TempSlashBounds[ 2 ] = _Const0056;
   _this->TempSlashBounds[ 3 ] = _Const0058;
   _this->TempSlashBounds[ 4 ] = _Const0059;
+  _this->TempSlashBounds[ 5 ] = _Const005A;
   _this->MinTempBounds[ 0 ] = _Const0035;
   _this->MinTempBounds[ 1 ] = _Const003F;
   _this->MinTempBounds[ 2 ] = _Const0044;
   _this->MinTempBounds[ 3 ] = _Const004C;
   _this->MinTempBounds[ 4 ] = _Const004D;
+  _this->MinTempBounds[ 5 ] = _Const004E;
   _this->WeekDayTextArray[ 0 ] = EwShareString( EwLoadString( &_Const0023 ));
   _this->WeekDayTextArray[ 1 ] = EwShareString( EwLoadString( &_Const0024 ));
   _this->WeekDayTextArray[ 2 ] = EwShareString( EwLoadString( &_Const0025 ));
@@ -1373,11 +1377,11 @@ void WeatherWeatherWeekViewUI_Init( WeatherWeatherWeekViewUI _this, XHandle aArg
 
   EwTrace( "%s", EwLoadString( &_Const005B ));
 
-  for ( i = 0; i < 5; i++ )
+  for ( i = 0; i < 6; i++ )
   {
     DeviceInterfaceWeatherDeviceClass_GetWeatherInfo( EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
     DeviceInterfaceWeatherDeviceClass ), _this->WeaItemIdxArray[ EwCheckIndex( i, 
-    5 )]);
+    6 )]);
     EwSignal( EwNewSlot( _this, WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot ), 
       ((XObject)_this ));
   }
@@ -1409,10 +1413,10 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
         XRect NewMinBounds;
         CoreRectView__OnSetBounds( &_this->DayOneMinTemp, _this->MinTempBounds[ 
         EwCheckIndex( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime 
-        - 1, 5 )]);
+        - 1, 6 )]);
         CoreRectView__OnSetBounds( &_this->DayOneTempSlash, _this->TempSlashBounds[ 
         EwCheckIndex( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime 
-        - 1, 5 )]);
+        - 1, 6 )]);
         ViewsImage_OnSetFrameNumber( &_this->DayOneWeather, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
         DeviceInterfaceWeatherDeviceClass )->WeatherType );
         ViewsText_OnSetString( &_this->DayOneChanceOfRain, EwNewStringInt( EwGetAutoObject( 
@@ -1448,10 +1452,10 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
         XRect NewMinBounds;
         CoreRectView__OnSetBounds( &_this->DayTwoMinTemp, _this->MinTempBounds[ 
         EwCheckIndex( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime 
-        - 1, 5 )]);
+        - 1, 6 )]);
         CoreRectView__OnSetBounds( &_this->DayTwoTempSlash, _this->TempSlashBounds[ 
         EwCheckIndex( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime 
-        - 1, 5 )]);
+        - 1, 6 )]);
         ViewsImage_OnSetFrameNumber( &_this->DayTwoWeather, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
         DeviceInterfaceWeatherDeviceClass )->WeatherType );
         ViewsText_OnSetString( &_this->DayTwoChanceOfRain, EwNewStringInt( EwGetAutoObject( 
@@ -1487,10 +1491,10 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
         XRect NewMinBounds;
         CoreRectView__OnSetBounds( &_this->DayThreeMinTemp, _this->MinTempBounds[ 
         EwCheckIndex( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime 
-        - 1, 5 )]);
+        - 1, 6 )]);
         CoreRectView__OnSetBounds( &_this->DayThreeTempSlash, _this->TempSlashBounds[ 
         EwCheckIndex( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime 
-        - 1, 5 )]);
+        - 1, 6 )]);
         ViewsImage_OnSetFrameNumber( &_this->DayThreeWeather, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
         DeviceInterfaceWeatherDeviceClass )->WeatherType );
         ViewsText_OnSetString( &_this->DayThreeChanceOfRain, EwNewStringInt( EwGetAutoObject( 
@@ -1526,10 +1530,10 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
         XRect NewMinBounds;
         CoreRectView__OnSetBounds( &_this->DayFourMinTemp, _this->MinTempBounds[ 
         EwCheckIndex( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime 
-        - 1, 5 )]);
+        - 1, 6 )]);
         CoreRectView__OnSetBounds( &_this->DayFourTempSlash, _this->TempSlashBounds[ 
         EwCheckIndex( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime 
-        - 1, 5 )]);
+        - 1, 6 )]);
         ViewsImage_OnSetFrameNumber( &_this->DayFourWeather, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
         DeviceInterfaceWeatherDeviceClass )->WeatherType );
         ViewsText_OnSetString( &_this->DayFourChanceOfRain, EwNewStringInt( EwGetAutoObject( 
@@ -1565,10 +1569,10 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
         XRect NewMinBounds;
         CoreRectView__OnSetBounds( &_this->DayFiveMinTemp, _this->MinTempBounds[ 
         EwCheckIndex( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime 
-        - 1, 5 )]);
+        - 1, 6 )]);
         CoreRectView__OnSetBounds( &_this->DayFiveTempSlash, _this->TempSlashBounds[ 
         EwCheckIndex( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeatherTime 
-        - 1, 5 )]);
+        - 1, 6 )]);
         ViewsImage_OnSetFrameNumber( &_this->DayFiveWeather, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
         DeviceInterfaceWeatherDeviceClass )->WeatherType );
         ViewsText_OnSetString( &_this->DayFiveChanceOfRain, EwNewStringInt( EwGetAutoObject( 
@@ -1594,6 +1598,43 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
         TempShiftPixel );
         CoreRectView__OnSetBounds( &_this->DayFiveTempSlash, NewSlashBounds );
         CoreRectView__OnSetBounds( &_this->DayFiveMinTemp, NewMinBounds );
+      }
+      break;
+
+      case EnumWeatherTimeTypeWEATHER_AFTER_6DAY :
+      {
+        XInt32 TempShiftPixel;
+        XRect NewSlashBounds;
+        XRect NewMinBounds;
+        CoreRectView__OnSetBounds( &_this->DaySixMinTemp, _this->MinTempBounds[ 
+        5 ]);
+        CoreRectView__OnSetBounds( &_this->DaySixTempSlash, _this->TempSlashBounds[ 
+        5 ]);
+        ViewsImage_OnSetFrameNumber( &_this->DaySixWeather, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
+        DeviceInterfaceWeatherDeviceClass )->WeatherType );
+        ViewsText_OnSetString( &_this->DaySixChanceOfRain, EwNewStringInt( EwGetAutoObject( 
+        &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->RainProbability, 
+        0, 10 ));
+        ViewsText_OnSetString( &_this->DaySixMinTemp, EwNewStringInt( EwGetAutoObject( 
+        &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->MinTemperature, 
+        0, 10 ));
+        ViewsText_OnSetString( &_this->DaySixMaxTemp, EwNewStringInt( EwGetAutoObject( 
+        &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->MaxTemperature, 
+        0, 10 ));
+        TempShiftPixel = EwGetRectW( _this->DaySixMaxTemp.Super1.Bounds ) - EwGetRectW( 
+        ViewsText_GetContentArea( &_this->DaySixMaxTemp ));
+        NewSlashBounds = _this->DaySixTempSlash.Super1.Bounds;
+        NewMinBounds = _this->DaySixMinTemp.Super1.Bounds;
+        NewSlashBounds.Point1.X = ( _this->DaySixTempSlash.Super1.Bounds.Point1.X 
+        + TempShiftPixel );
+        NewSlashBounds.Point2.X = ( _this->DaySixTempSlash.Super1.Bounds.Point2.X 
+        + TempShiftPixel );
+        NewMinBounds.Point1.X = ( _this->DaySixMinTemp.Super1.Bounds.Point1.X + 
+        TempShiftPixel );
+        NewMinBounds.Point2.X = ( _this->DaySixMinTemp.Super1.Bounds.Point2.X + 
+        TempShiftPixel );
+        CoreRectView__OnSetBounds( &_this->DaySixTempSlash, NewSlashBounds );
+        CoreRectView__OnSetBounds( &_this->DaySixMinTemp, NewMinBounds );
       }
       break;
 
@@ -1632,7 +1673,7 @@ EW_END_OF_CLASS_VARIANTS( WeatherWeatherWeekViewUI )
 
 /* Virtual Method Table (VMT) for the class : 'Weather::WeatherWeekViewUI' */
 EW_DEFINE_CLASS( WeatherWeatherWeekViewUI, CoreGroup, DayTextViewArray, DayOneWeather, 
-                 DayOneWeather, DayOneWeather, WeekDayTextArray, WeaItemIdxArray, 
+                 DayOneWeather, DayOneWeather, WeekDayTextArray, TempSlashBounds, 
                  "Weather::WeatherWeekViewUI" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,

@@ -348,7 +348,8 @@ typedef enum
   EnumWeatherTimeTypeWEATHER_AFTER_5DAY = 5,
   EnumWeatherTimeTypeWEATHER_AFTER_1HOUR = 6,
   EnumWeatherTimeTypeWEATHER_AFTER_2HOUR = 7,
-  EnumWeatherTimeTypeWEATHER_AFTER_3HOUR = 8
+  EnumWeatherTimeTypeWEATHER_AFTER_3HOUR = 8,
+  EnumWeatherTimeTypeWEATHER_AFTER_6DAY = 9
 } EnumWeatherTimeType;
 
 /* User defined enumeration: 'Enum::BtcPairingState' */

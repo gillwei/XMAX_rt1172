@@ -10,7 +10,7 @@ class WeatherDayViewUI : Core::Group
     var int32 i;
     for( i = 0; i < WeaItemIdxArray.size; i++ )
     {
-      DeviceInterface::WeatherDevice.GetWeatherInfo( WeaItemIdxArray[i] );
+      DeviceInterface::WeatherDevice.GetWeatherInfo( ( int32 )WeaItemIdxArray[i] );
       signal OnWeatherInfoUpdateSlot;
     }
     DeviceInterface::WeatherDevice.GetWeatherLoc();
@@ -331,12 +331,12 @@ class WeatherDayViewUI : Core::Group
   );
 
   $rect <720,80,920,120>
-  array int32 WeaItemIdxArray[ 4 ] =
+  array Enum::WeatherTimeType WeaItemIdxArray[ 4 ] =
   (
-    Default[0] = 0;
-    Default[1] = 6;
-    Default[2] = 7;
-    Default[3] = 8;
+    Default[0] = Enum::WeatherTimeType.WEATHER_CURRENT;
+    Default[1] = Enum::WeatherTimeType.WEATHER_AFTER_1HOUR;
+    Default[2] = Enum::WeatherTimeType.WEATHER_AFTER_2HOUR;
+    Default[3] = Enum::WeatherTimeType.WEATHER_AFTER_3HOUR;
   );
 
   $rect <20,20,160,60>
@@ -423,7 +423,7 @@ class WeatherWeekViewUI : Core::Group
     var int32 i;
     for( i = 0; i < WeaItemIdxArray.size; i++ )
     {
-      DeviceInterface::WeatherDevice.GetWeatherInfo( WeaItemIdxArray[i] );
+      DeviceInterface::WeatherDevice.GetWeatherInfo( ( int32 )WeaItemIdxArray[i] );
       signal OnWeatherInfoUpdateSlot;
     }
     DeviceInterface::WeatherDevice.GetWeekDay();
@@ -779,13 +779,14 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <730,10,930,50>
-  array int32 WeaItemIdxArray[ 5 ] =
+  array Enum::WeatherTimeType WeaItemIdxArray[ 6 ] =
   (
-    Default[0] = 1;
-    Default[1] = 2;
-    Default[2] = 3;
-    Default[3] = 4;
-    Default[4] = 5;
+    Default[0] = Enum::WeatherTimeType.WEATHER_AFTER_1DAY;
+    Default[1] = Enum::WeatherTimeType.WEATHER_AFTER_2DAY;
+    Default[2] = Enum::WeatherTimeType.WEATHER_AFTER_3DAY;
+    Default[3] = Enum::WeatherTimeType.WEATHER_AFTER_4DAY;
+    Default[4] = Enum::WeatherTimeType.WEATHER_AFTER_5DAY;
+    Default[5] = Enum::WeatherTimeType.WEATHER_AFTER_6DAY;
   );
 
   $rect <220,250,420,290>
@@ -868,7 +869,7 @@ class WeatherWeekViewUI : Core::Group
         }
         case Enum::WeatherTimeType.WEATHER_AFTER_4DAY:
         {
-           // Reset Bounds to original position.
+          // Reset Bounds to original position.
           DayFourMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
           DayFourTempSlash.Bounds = TempSlashBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
 
@@ -891,7 +892,7 @@ class WeatherWeekViewUI : Core::Group
         }
         case Enum::WeatherTimeType.WEATHER_AFTER_5DAY:
         {
-           // Reset Bounds to original position.
+          // Reset Bounds to original position.
           DayFiveMinTemp.Bounds = MinTempBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
           DayFiveTempSlash.Bounds = TempSlashBounds[DeviceInterface::WeatherDevice.WeatherTime-1];
 
@@ -911,6 +912,31 @@ class WeatherWeekViewUI : Core::Group
           NewMinBounds.x2 = DayFiveMinTemp.Bounds.x2 + TempShiftPixel;
           DayFiveTempSlash.Bounds = NewSlashBounds;
           DayFiveMinTemp.Bounds = NewMinBounds;
+        }
+        case Enum::WeatherTimeType.WEATHER_AFTER_6DAY:
+        {
+          // Reset Bounds to original position. The weather time index of after 6 day is 9.
+          // It's not suitable to be used for getting the position of MinTempBounds and TempSlashBounds.
+          // Instead, we directly get the final element of MinTempBounds and TempSlashBounds.
+          DaySixMinTemp.Bounds = MinTempBounds[MinTempBounds.size-1];
+          DaySixTempSlash.Bounds = TempSlashBounds[TempSlashBounds.size-1];
+
+          DaySixWeather.FrameNumber = DeviceInterface::WeatherDevice.WeatherType;
+          DaySixChanceOfRain.String = string( DeviceInterface::WeatherDevice.RainProbability );
+
+          DaySixMinTemp.String = string( DeviceInterface::WeatherDevice.MinTemperature );
+          DaySixMaxTemp.String = string( DeviceInterface::WeatherDevice.MaxTemperature );
+
+          // Shift text position based on the content.
+          var int32 TempShiftPixel = DaySixMaxTemp.Bounds.w - DaySixMaxTemp.GetContentArea().w;
+          var rect NewSlashBounds = DaySixTempSlash.Bounds;
+          var rect NewMinBounds = DaySixMinTemp.Bounds;
+          NewSlashBounds.x1 = DaySixTempSlash.Bounds.x1 + TempShiftPixel;
+          NewSlashBounds.x2 = DaySixTempSlash.Bounds.x2 + TempShiftPixel;
+          NewMinBounds.x1 = DaySixMinTemp.Bounds.x1 + TempShiftPixel;
+          NewMinBounds.x2 = DaySixMinTemp.Bounds.x2 + TempShiftPixel;
+          DaySixTempSlash.Bounds = NewSlashBounds;
+          DaySixMinTemp.Bounds = NewMinBounds;
         }
         default:;
       }
@@ -1038,23 +1064,25 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <530,80,730,120>
-  array rect TempSlashBounds[ 5 ] =
+  array rect TempSlashBounds[ 6 ] =
   (
     Default[0] = <75,76,85,107>;
     Default[1] = <219,76,229,107>;
     Default[2] = <363,76,373,107>;
     Default[3] = <75,191,85,222>;
     Default[4] = <219,191,229,222>;
+    Default[5] = <363,191,373,222>;
   );
 
   $rect <530,130,730,170>
-  array rect MinTempBounds[ 5 ] =
+  array rect MinTempBounds[ 6 ] =
   (
     Default[0] = <30,76,75,107>;
     Default[1] = <174,76,219,107>;
     Default[2] = <318,76,363,107>;
     Default[3] = <30,191,75,222>;
     Default[4] = <174,191,219,222>;
+    Default[5] = <318,191,363,222>;
   );
 
   $rect <940,10,1140,50>

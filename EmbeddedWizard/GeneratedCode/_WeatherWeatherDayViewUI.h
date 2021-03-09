@@ -129,9 +129,9 @@ EW_DEFINE_FIELDS( WeatherWeatherDayViewUI, CoreGroup )
   EW_OBJECT  ( TempTextSlash,   ViewsText )
   EW_OBJECT  ( MaxTempText,     ViewsText )
   EW_ARRAY   ( WeekDayTextArray, XString, [7])
-  EW_ARRAY   ( WeaItemIdxArray, XInt32, [4])
   EW_VARIABLE( MinTempTextBounds, XRect )
   EW_VARIABLE( TempTextSlashBounds, XRect )
+  EW_ARRAY   ( WeaItemIdxArray, XEnum, [4])
 EW_END_OF_FIELDS( WeatherWeatherDayViewUI )
 
 /* Virtual Method Table (VMT) for the class : 'Weather::WeatherDayViewUI' */
