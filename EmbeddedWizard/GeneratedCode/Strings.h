@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/03/03 18:12:13 */
+   Generated: 2021/03/09 14:30:20 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_ok' */
@@ -315,6 +315,15 @@ extern const XStringRes StringsUNT05_unit_temperature_f;
 
 /* User defined constant: 'Strings::WSC01_wind_screen' */
 extern const XStringRes StringsWSC01_wind_screen;
+
+/* User defined constant: 'Strings::DEV_TEST_CHINESE' */
+extern const XStringRes StringsDEV_TEST_CHINESE;
+
+/* User defined constant: 'Strings::DEV_TEST_JAPANESE' */
+extern const XStringRes StringsDEV_TEST_JAPANESE;
+
+/* User defined constant: 'Strings::DEV_TEST_LETTERS' */
+extern const XStringRes StringsDEV_TEST_LETTERS;
 
 #ifdef __cplusplus
   }

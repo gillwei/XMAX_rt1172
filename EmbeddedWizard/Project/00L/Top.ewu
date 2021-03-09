@@ -49,7 +49,6 @@ class TOP01_Disclaimer : Components::BaseComponent
   object Views::Text DisclaimerText
   {
     preset Bounds = <10,51,470,206>;
-    preset RowDistance = 31;
     preset WrapText = true;
     preset String = Strings::TOP01_disclaimer;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;

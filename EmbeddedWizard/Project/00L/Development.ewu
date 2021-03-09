@@ -1,19 +1,16 @@
 ﻿$version 10.00
 
-$rect <300,10,500,50>
+$rect <20,10,220,50>
 inline Inline
 {
   #include "TEST_pub.h"
   #include "VI_pub.h"
 }
 
-$rect <20,10,260,50>
+$rect <20,60,260,100>
 $output false
 class DEV_Main : Menu::BaseMenuView
 {
-  $rect <10,300,210,340>
-  inherited property Bounds = <0,0,480,272>;
-
   $rect <240,300,470,340>
   inherited method OnShortHomeKeyActivated()
   {
@@ -54,13 +51,14 @@ class DEV_Main : Menu::BaseMenuView
 
     switch( aItemNo )
     {
-      case 0: this.PresentDialog( new Factory::Main, null, null, null, null, null, null, null, null, false );
+      case 0: PresentDialog( new Factory::Main, null, null, null, null, null, null, null, null, false );
       case 1: DeviceInterface::SystemDevice.IsHopperTestMode = !DeviceInterface::SystemDevice.IsHopperTestMode;
-      case 2: this.PresentDialog( new Development::DEV_RealTimeClock, null, null, null, null, null, null, null, null, false );
-      case 3: this.PresentDialog( new Development::DEV_Bluetooth, null, null, null, null, null, null, null, null, false );
-      case 4: this.PresentDialog( new Development::DEV_TFTBrightness, null, null, null, null, null, null, null, null, false );
+      case 2: PresentDialog( new Development::DEV_RealTimeClock, null, null, null, null, null, null, null, null, false );
+      case 3: PresentDialog( new Development::DEV_Bluetooth, null, null, null, null, null, null, null, null, false );
+      case 4: PresentDialog( new Development::DEV_TFTBrightness, null, null, null, null, null, null, null, null, false );
       case 5: PresentDialog( new Development::DEV_VehicleFeature, null, null, null, null, null, null, null, null, false );
       case 6: PresentDialog( new Development::DEV_MotoCon, null, null, null, null, null, null, null, null, false );
+      case 7: PresentDialog( new Development::DEV_FontMenu, null, null, null, null, null, null, null, null, false );
       default:;
     }
 
@@ -79,7 +77,7 @@ class DEV_Main : Menu::BaseMenuView
   }
 
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 7 ] =
+  array string ItemTitleArray[ 8 ] =
   (
     Default[0] = "Factory Test";
     Default[1] = "Hopper Test Mode";
@@ -88,6 +86,7 @@ class DEV_Main : Menu::BaseMenuView
     Default[4] = "TFT Brightness Test";
     Default[5] = "Vehicle Feature";
     Default[6] = "MotoCon Test";
+    Default[7] = "Font Test";
   );
 
   $rect <20,20,160,60>
@@ -111,7 +110,7 @@ class DEV_Main : Menu::BaseMenuView
   $reorder ItemTitleArray 2
 }
 
-$rect <20,60,260,100>
+$rect <20,110,260,150>
 $output false
 class DEV_RealTimeClock : Components::BaseMainBG
 {
@@ -150,7 +149,7 @@ class DEV_RealTimeClock : Components::BaseMainBG
   }
 }
 
-$rect <20,110,260,150>
+$rect <20,160,260,200>
 $output false
 class DEV_Bluetooth : Components::BaseMainBG
 {
@@ -183,7 +182,7 @@ class DEV_Bluetooth : Components::BaseMainBG
   $reorder next 1
 }
 
-$rect <20,160,260,200>
+$rect <20,210,260,250>
 $output false
 class DEV_TFTBrightness : Components::BaseMainBG
 {
@@ -324,7 +323,7 @@ class DEV_TFTBrightness : Components::BaseMainBG
   }
 }
 
-$rect <20,210,260,250>
+$rect <20,260,260,300>
 $output false
 class DEV_MotoCon : Menu::BaseMenuView
 {
@@ -419,7 +418,7 @@ class DEV_MotoCon : Menu::BaseMenuView
   $reorder Menu 1
 }
 
-$rect <20,260,260,300>
+$rect <20,310,260,350>
 $output false
 class DEV_VehicleFeature : Menu::BaseMenuView
 {
@@ -535,4 +534,188 @@ class DEV_VehicleFeature : Menu::BaseMenuView
   $reorder LoadItemChecked 4
   $reorder ItemTitleArray 2
   $reorder Menu 1
+}
+
+$rect <310,60,550,100>
+$output false
+class DEV_FontMenu : Menu::BaseMenuView
+{
+  $rect <510,10,710,50>
+  inherited method LoadItemClass()
+  {
+    // suppress warning
+    if( aItemNo >= 0 )
+    {
+      // empty body
+    }
+
+    return Menu::ItemBase;
+  }
+
+  $rect <510,60,710,100>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    if( aItemNo < ItemTitleArray.size )
+    {
+      Title = ItemTitleArray[aItemNo];
+    }
+    return Title;
+  }
+
+  $rect <510,110,710,150>
+  inherited method OnItemActivate()
+  {
+    // suppress warning
+    if( null == aMenuItem )
+    {
+      // empty body
+    }
+
+    var Development::DEV_FontTest Dialog = new Development::DEV_FontTest;
+
+    switch( aItemNo )
+    {
+      case 0:
+      {
+        Dialog.TestFont = Fonts::NotoSansCjkJpMedium24pt;
+        Dialog.TestString = Strings::DEV_TEST_LETTERS;
+      }
+      case 1:
+      {
+        Dialog.TestFont = Fonts::NotoSansCjkJpMedium28pt;
+        Dialog.TestString = Strings::DEV_TEST_LETTERS;
+      }
+      case 2:
+      {
+        Dialog.TestFont = Fonts::NotoSansCjkJpMedium24pt;
+        Dialog.TestString = Strings::DEV_TEST_CHINESE;
+      }
+      case 3:
+      {
+        Dialog.TestFont = Fonts::NotoSansCjkJpMedium24pt;
+        Dialog.TestString = Strings::DEV_TEST_JAPANESE;
+      }
+      case 4:
+      {
+        Dialog.TestFont = Fonts::NotoSansCjkJpMedium28pt;
+        Dialog.TestString = Strings::DEV_TEST_CHINESE;
+      }
+      case 5:
+      {
+        Dialog.TestFont = Fonts::NotoSansCjkJpMedium28pt;
+        Dialog.TestString = Strings::DEV_TEST_JAPANESE;
+      }
+      default:;
+    }
+
+    SlideInDialog( Dialog );
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = ItemTitleArray.size;
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+  }
+
+  $rect <730,60,930,100>
+  array string ItemTitleArray[ 6 ] =
+  (
+    Default[0] = "NotoSans Med 24pt Letter";
+    Default[1] = "NotoSans Med 28pt Letter";
+    Default[2] = "NotoSansCJKJP24 Chinese";
+    Default[3] = "NotoSansCJKJP24 Japanese";
+    Default[4] = "NotoSansCJKJP28 Chinese";
+    Default[5] = "NotoSansCJKJP28 Japanese";
+  );
+
+  $rect <0,290,200,330>
+  var bool SlideOutEffectEnabled1 = true;
+
+  $reorder SlideInDialog 4
+  $reorder LoadItemClass 4
+  $reorder LoadItemTitle 4
+  $reorder OnItemActivate 4
+  $reorder LoadItemChecked 4
+  $reorder ItemTitleArray 1
+}
+
+$rect <310,110,550,150>
+$output false
+class DEV_FontTest : Components::BaseMainBG
+{
+  $rect <210,340,440,380>
+  inherited method OnShortDownKeyActivated()
+  {
+    if( ( Text.ScrollOffset.y.abs + PageScrollOffset ) < ( Text.GetNoOfRows() * RowDistance ) )
+    {
+      Text.ScrollOffset.y -= PageScrollOffset;
+    }
+  }
+
+  $rect <210,290,440,330>
+  inherited method OnShortUpKeyActivated()
+  {
+    var int32 OffsetY = Text.ScrollOffset.y + PageScrollOffset;
+    if( OffsetY <= 0 )
+    {
+      Text.ScrollOffset.y = OffsetY;
+    }
+  }
+
+  $rect <0,290,200,330>
+  inherited var SlideOutEffectEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <10,50,470,236>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  // Page scroll offset of row distance 31px * 6row
+  $rect <514,239,714,279>
+  var int32 PageScrollOffset = 186;
+
+  $rect <510,20,710,60>
+  property Resources::Font TestFont;
+
+  $rect <510,60,710,100>
+  onset TestFont
+  {
+    if( pure TestFont != value )
+    {
+      pure TestFont = value;
+      Text.Font = value;
+
+      if( Fonts::NotoSansCjkJpMedium28pt == value )
+      {
+        RowDistance = Fonts::ROW_DISTANCE_28PT;
+      }
+
+      PageScrollOffset = ( Text.Bounds.size.y / RowDistance ) * RowDistance;
+      trace "PageScrollOffset: ", PageScrollOffset;
+    }
+  }
+
+  $rect <514,129,714,169>
+  property string TestString;
+
+  $rect <514,169,714,209>
+  onset TestString
+  {
+    if( pure TestString != value )
+    {
+      pure TestString = value;
+      Text.String = value;
+    }
+  }
+
+  $rect <511,280,711,320>
+  var int32 RowDistance = Fonts::ROW_DISTANCE_24PT;
 }

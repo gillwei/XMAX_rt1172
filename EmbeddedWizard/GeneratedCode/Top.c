@@ -83,7 +83,6 @@ void TopTOP01_Disclaimer__Init( TopTOP01_Disclaimer _this, XObject aLink, XHandl
   CoreRectView__OnSetBounds( &_this->BlackBackground, _Const0000 );
   ViewsRectangle_OnSetColor( &_this->BlackBackground, _Const0001 );
   CoreRectView__OnSetBounds( &_this->DisclaimerText, _Const0002 );
-  ViewsText_OnSetRowDistance( &_this->DisclaimerText, 31 );
   ViewsText_OnSetWrapText( &_this->DisclaimerText, 1 );
   ViewsText_OnSetString( &_this->DisclaimerText, EwGetVariantOfString( &StringsTOP01_disclaimer ));
   CoreRectView__OnSetBounds( &_this->TopBar, _Const0003 );

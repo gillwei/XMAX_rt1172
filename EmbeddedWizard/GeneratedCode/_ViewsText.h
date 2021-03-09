@@ -222,9 +222,6 @@ void ViewsText_reparseSlot( ViewsText _this, XObject sender );
 /* 'C' function for method : 'Views::Text.OnSetEnableBidiText()' */
 void ViewsText_OnSetEnableBidiText( ViewsText _this, XBool value );
 
-/* 'C' function for method : 'Views::Text.OnSetRowDistance()' */
-void ViewsText_OnSetRowDistance( ViewsText _this, XInt32 value );
-
 /* The onset method for the property 'Ellipsis' changes the ellipsis mode and forces 
    an update. */
 void ViewsText_OnSetEllipsis( ViewsText _this, XBool value );
@@ -234,6 +231,9 @@ void ViewsText_OnSetAutoSize( ViewsText _this, XBool value );
 
 /* 'C' function for method : 'Views::Text.OnSetWrapText()' */
 void ViewsText_OnSetWrapText( ViewsText _this, XBool value );
+
+/* 'C' function for method : 'Views::Text.OnSetScrollOffset()' */
+void ViewsText_OnSetScrollOffset( ViewsText _this, XPoint value );
 
 /* 'C' function for method : 'Views::Text.OnSetAlignment()' */
 void ViewsText_OnSetAlignment( ViewsText _this, XSet value );
@@ -265,6 +265,12 @@ XBool ViewsText_IsBaseDirectionRTL( ViewsText _this );
    property @EnableBidiText is false, the text is not processed by the Bidi algorithm 
    and this method returns 'false'. */
 XBool ViewsText_IsBidiText( ViewsText _this );
+
+/* The method GetNoOfRows() returns the total number of text rows currently displayed 
+   in the text view. It is useful when the application needs to iterate through 
+   the text rows and to evaluate their position and content. To get the position 
+   and the content of a row the methods @GetRowArea() and @GetRowString() are intended. */
+XInt32 ViewsText_GetNoOfRows( ViewsText _this );
 
 /* The method GetContentArea() returns the position and the size of an area where 
    the view will show the text. This area is expressed in coordinates relative to 

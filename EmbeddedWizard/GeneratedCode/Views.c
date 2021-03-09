@@ -2407,36 +2407,6 @@ void ViewsText_OnSetEnableBidiText( ViewsText _this, XBool value )
   EwPostSignal( EwNewSlot( _this, ViewsText_preReparseSlot ), ((XObject)_this ));
 }
 
-/* 'C' function for method : 'Views::Text.OnSetRowDistance()' */
-void ViewsText_OnSetRowDistance( ViewsText _this, XInt32 value )
-{
-  if ( value < 0 )
-    value = 0;
-
-  if ( _this->RowDistance == value )
-    return;
-
-  _this->RowDistance = value;
-
-  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
-      == CoreViewStateVisible ))
-    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
-
-  if ( _this->Ellipsis )
-  {
-    _this->flowString = 0;
-    _this->reparsed = 0;
-    EwPostSignal( EwNewSlot( _this, ViewsText_preReparseSlot ), ((XObject)_this ));
-  }
-
-  if ( _this->AutoSize && _this->reparsed )
-    CoreRectView__OnSetBounds( _this, EwMoveRectNeg( ViewsText_GetContentArea( _this ), 
-    _this->ScrollOffset ));
-
-  if ( _this->reparsed )
-    EwPostSignal( EwNewSlot( _this, ViewsText_preOnUpdateSlot ), ((XObject)_this ));
-}
-
 /* The onset method for the property 'Ellipsis' changes the ellipsis mode and forces 
    an update. */
 void ViewsText_OnSetEllipsis( ViewsText _this, XBool value )
@@ -2502,6 +2472,22 @@ void ViewsText_OnSetWrapText( ViewsText _this, XBool value )
     _this->Super2.viewState = _this->Super2.viewState & ~CoreViewStateFastReshape;
   else
     _this->Super2.viewState = _this->Super2.viewState | CoreViewStateFastReshape;
+}
+
+/* 'C' function for method : 'Views::Text.OnSetScrollOffset()' */
+void ViewsText_OnSetScrollOffset( ViewsText _this, XPoint value )
+{
+  if ( !EwCompPoint( value, _this->ScrollOffset ))
+    return;
+
+  _this->ScrollOffset = value;
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+
+  if ( _this->reparsed )
+    EwPostSignal( EwNewSlot( _this, ViewsText_preOnUpdateSlot ), ((XObject)_this ));
 }
 
 /* 'C' function for method : 'Views::Text.OnSetAlignment()' */
@@ -2624,6 +2610,21 @@ XBool ViewsText_IsBidiText( ViewsText _this )
   bidi = _this->bidiContext;
   result = EwBidiIsNeeded( bidi );
   return result;
+}
+
+/* The method GetNoOfRows() returns the total number of text rows currently displayed 
+   in the text view. It is useful when the application needs to iterate through 
+   the text rows and to evaluate their position and content. To get the position 
+   and the content of a row the methods @GetRowArea() and @GetRowString() are intended. */
+XInt32 ViewsText_GetNoOfRows( ViewsText _this )
+{
+  if ( !EwCompString( _this->String, 0 ) || ( _this->Font == 0 ))
+    return 0;
+
+  if ( !_this->reparsed )
+    EwSignal( EwNewSlot( _this, ViewsText_reparseSlot ), ((XObject)_this ));
+
+  return EwGetStringChar( _this->flowString, 0 );
 }
 
 /* The method GetContentArea() returns the position and the size of an area where 

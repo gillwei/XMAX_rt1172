@@ -18,9 +18,6 @@ SET IDE=%IDE_PATH%\ide\mcuxpressoidec.exe
 echo Extending PATH if not already present
 echo %PATH%|findstr /i /c:"%TOOLCHAIN_PATH:"=%">nul || set PATH=%PATH%;%TOOLCHAIN_PATH%
 
-echo Copy MultiLanguage Fonts
-xcopy .\EmbeddedWizard\MultiLanguage .\EmbeddedWizard\GeneratedCode /y
-
 echo Clean and Build Project...
 
 REM -cleanbuild on a build target: this does a 'clean' only on the build target, no build
