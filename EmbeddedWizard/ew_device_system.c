@@ -200,8 +200,6 @@ void ew_device_system_init
     BaseType_t result = xTaskCreate( update_time_task_main, UPDATE_TIME_TASK_NAME, UPDATE_TIME_TASK_STACK_SIZE, NULL, UPDATE_TIME_TASK_PRIORITY, NULL );
     configASSERT( pdPASS == result );
 
-    /* TODO: start bootup animation after TFT backlight is turned on */
-    EW_start_bootup_animation();
 #endif
 }
 
@@ -833,6 +831,7 @@ void EW_start_bootup_animation
     void
     )
 {
+PRINTF( "%s\r\n", __FUNCTION__ );
 #ifdef _DeviceInterfaceSystemDeviceClass__StartBootupAnimation_
     DeviceInterfaceSystemDeviceClass__StartBootupAnimation( device_object );
 #endif

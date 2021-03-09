@@ -24,6 +24,7 @@
 #include "GRM_pub_prj.h"
 #include "PM_pub.h"
 #include "PERIPHERAL_pub.h"
+#include "EW_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -368,6 +369,8 @@ static uint32_t asil_pin_status = 0;
 
 vTaskDelay( T4_TIMEOUT_AFTER_RESET );
 control_TFT_BL_EN( STD_HIGH );
+
+EW_start_bootup_animation();
 
 /* Wait until display initialization done */
 vTaskDelay( MIN_DELAY_START_TIME );
