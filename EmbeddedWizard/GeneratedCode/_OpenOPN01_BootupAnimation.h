@@ -103,6 +103,7 @@ EW_DEFINE_FIELDS( OpenOPN01_BootupAnimation, ComponentsBaseComponent )
   EW_OBJECT  ( BlackBackground, ViewsRectangle )
   EW_OBJECT  ( BootupAnimation, ViewsImage )
   EW_OBJECT  ( FadeOutTimer,    CoreTimer )
+  EW_OBJECT  ( HoldTimer,       CoreTimer )
   EW_VARIABLE( FadeOutFrameNumber, XInt32 )
 EW_END_OF_FIELDS( OpenOPN01_BootupAnimation )
 
@@ -169,6 +170,10 @@ void OpenOPN01_BootupAnimation_Init( OpenOPN01_BootupAnimation _this, XHandle aA
 
 /* 'C' function for method : 'Open::OPN01_BootupAnimation.OnFadeOutTriggeredSlot()' */
 void OpenOPN01_BootupAnimation_OnFadeOutTriggeredSlot( OpenOPN01_BootupAnimation _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Open::OPN01_BootupAnimation.OnHoldFinishedSlot()' */
+void OpenOPN01_BootupAnimation_OnHoldFinishedSlot( OpenOPN01_BootupAnimation _this, 
   XObject sender );
 
 #ifdef __cplusplus

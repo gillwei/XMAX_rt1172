@@ -61,6 +61,7 @@ void OpenOPN01_BootupAnimation__Init( OpenOPN01_BootupAnimation _this, XObject a
   ViewsRectangle__Init( &_this->BlackBackground, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->BootupAnimation, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->FadeOutTimer, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->HoldTimer, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( OpenOPN01_BootupAnimation );
@@ -72,14 +73,18 @@ void OpenOPN01_BootupAnimation__Init( OpenOPN01_BootupAnimation _this, XObject a
   CoreRectView__OnSetBounds( &_this->BootupAnimation, _Const0002 );
   _this->BootupAnimation.Endless = 0;
   ViewsImage_OnSetAnimated( &_this->BootupAnimation, 1 );
+  ViewsImage_OnSetFrameNumber( &_this->BootupAnimation, 0 );
   CoreTimer_OnSetPeriod( &_this->FadeOutTimer, 50 );
   CoreTimer_OnSetBegin( &_this->FadeOutTimer, 2600 );
   CoreTimer_OnSetEnabled( &_this->FadeOutTimer, 1 );
+  CoreTimer_OnSetPeriod( &_this->HoldTimer, 0 );
+  CoreTimer_OnSetBegin( &_this->HoldTimer, 400 );
   CoreGroup__Add( _this, ((CoreView)&_this->BlackBackground ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BootupAnimation ), 0 );
   ViewsImage_OnSetBitmap( &_this->BootupAnimation, EwLoadResource( &ResourceOpeningFadeIn, 
   ResourcesBitmap ));
   _this->FadeOutTimer.OnTrigger = EwNewSlot( _this, OpenOPN01_BootupAnimation_OnFadeOutTriggeredSlot );
+  _this->HoldTimer.OnTrigger = EwNewSlot( _this, OpenOPN01_BootupAnimation_OnHoldFinishedSlot );
 
   /* Call the user defined constructor */
   OpenOPN01_BootupAnimation_Init( _this, aArg );
@@ -95,6 +100,7 @@ void OpenOPN01_BootupAnimation__ReInit( OpenOPN01_BootupAnimation _this )
   ViewsRectangle__ReInit( &_this->BlackBackground );
   ViewsImage__ReInit( &_this->BootupAnimation );
   CoreTimer__ReInit( &_this->FadeOutTimer );
+  CoreTimer__ReInit( &_this->HoldTimer );
 }
 
 /* Finalizer method for the class 'Open::OPN01_BootupAnimation' */
@@ -107,6 +113,7 @@ void OpenOPN01_BootupAnimation__Done( OpenOPN01_BootupAnimation _this )
   ViewsRectangle__Done( &_this->BlackBackground );
   ViewsImage__Done( &_this->BootupAnimation );
   CoreTimer__Done( &_this->FadeOutTimer );
+  CoreTimer__Done( &_this->HoldTimer );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_Super );
@@ -131,7 +138,7 @@ void OpenOPN01_BootupAnimation_OnFadeOutTriggeredSlot( OpenOPN01_BootupAnimation
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  if ( _this->FadeOutFrameNumber <= 8 )
+  if ( _this->FadeOutFrameNumber < 8 )
   {
     ViewsImage_OnSetBitmap( &_this->BootupAnimation, EwLoadResource( &ResourceOpeningFadeOut, 
     ResourcesBitmap ));
@@ -141,9 +148,20 @@ void OpenOPN01_BootupAnimation_OnFadeOutTriggeredSlot( OpenOPN01_BootupAnimation
   }
   else
   {
+    ViewsImage_OnSetVisible( &_this->BootupAnimation, 0 );
     CoreTimer_OnSetEnabled( &_this->FadeOutTimer, 0 );
-    EwSignal( _this->OnBootupAnimationFinished, ((XObject)_this ));
+    CoreTimer_OnSetEnabled( &_this->HoldTimer, 1 );
   }
+}
+
+/* 'C' function for method : 'Open::OPN01_BootupAnimation.OnHoldFinishedSlot()' */
+void OpenOPN01_BootupAnimation_OnHoldFinishedSlot( OpenOPN01_BootupAnimation _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  EwSignal( _this->OnBootupAnimationFinished, ((XObject)_this ));
 }
 
 /* Variants derived from the class : 'Open::OPN01_BootupAnimation' */

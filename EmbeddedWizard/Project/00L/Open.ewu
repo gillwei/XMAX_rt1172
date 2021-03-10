@@ -26,6 +26,7 @@ class OPN01_BootupAnimation : Components::BaseComponent
     preset Bounds = <102,101,378,166>;
     preset Endless = false;
     preset Animated = true;
+    preset FrameNumber = 0;
     preset Bitmap = Resource::OpeningFadeIn;
   }
 
@@ -41,7 +42,7 @@ class OPN01_BootupAnimation : Components::BaseComponent
   $rect <510,50,730,90>
   slot OnFadeOutTriggeredSlot
   {
-    if( FadeOutFrameNumber <= 8 )
+    if( FadeOutFrameNumber < 8 )
     {
       BootupAnimation.Bitmap = Resource::OpeningFadeOut;
       BootupAnimation.Animated = false;
@@ -50,14 +51,29 @@ class OPN01_BootupAnimation : Components::BaseComponent
     }
     else
     {
+      BootupAnimation.Visible = false;
       FadeOutTimer.Enabled = false;
-      signal OnBootupAnimationFinished;
+      HoldTimer.Enabled = true;
     }
   }
 
   $rect <510,100,730,140>
   var int32 FadeOutFrameNumber = 0;
 
-  $rect <510,150,750,190>
+  $rect <510,250,750,290>
   property slot OnBootupAnimationFinished;
+
+  $rect <510,150,710,190>
+  object Core::Timer HoldTimer
+  {
+    preset OnTrigger = OnHoldFinishedSlot;
+    preset Period = 0;
+    preset Begin = 400;
+  }
+
+  $rect <510,200,710,240>
+  slot OnHoldFinishedSlot
+  {
+    signal OnBootupAnimationFinished;
+  }
 }
