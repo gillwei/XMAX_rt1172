@@ -67,6 +67,19 @@ can_mid_get_supp_func_list
     void
     );
 
+boolean can_mid_sig_set
+    (
+    dll_frm_index_t          *frm_index_p, //!< [in] Frame index
+    il_sig_handle_t     const sig_handle,  //!< [in] signal handle
+    uint8               const num_bytes,   //!< [in] number of bytes in the signal
+    uint8       const * const p_sig_data   //!< [in] pointer to signal data
+    );
+
+void can_mid_frm_send
+    (
+    dll_frm_index_t frm_index
+    );
+
 #ifdef __cplusplus
 }
 #endif

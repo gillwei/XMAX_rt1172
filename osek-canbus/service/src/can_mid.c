@@ -14,6 +14,12 @@
 #include "CAN_app.h"
 #include "can_dll_prv_par.h"
 
+#include "can_il.h"
+#include "can_il_prv.h"
+#include "can_il_par.h"
+#include "can_il_enum.h"
+#include "can_il_prv_par.h"
+
 #include "fsl_debug_console.h"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -446,6 +452,81 @@ return l_node_p;
 }
 
 /*------------------------------------------------------
+Middle layer signal value set for event type messages
+------------------------------------------------------*/
+boolean can_mid_sig_set
+    (
+    dll_frm_index_t          *frm_index_p, //!< [in] Frame index
+    il_sig_handle_t     const sig_handle,  //!< [in] signal handle
+    uint8               const num_bytes,   //!< [in] number of bytes in the signal
+    uint8       const * const p_sig_data   //!< [in] pointer to signal data
+    )
+{
+il_txsig_info_t     const * l_p_txsig_info;
+il_txfrm_info_t     const * l_p_txfrm_info;
+il_txsig_t          const * l_p_tx_sig;
+il_txfrm_t          const * l_p_txfrm;
+il_sig_index_t              l_sig_index;
+il_sig_index_t              l_num_signals;
+can_hw_inst_t               l_hw_inst;
+boolean                     l_success;
+
+/*------------------------------------------------------
+Initialize the return value, then validate the signal
+handle with respect to the range of CAN instances
+------------------------------------------------------*/
+l_success = FALSE;
+l_hw_inst = IL_GET_HWINST_FROM_SIGNAL_HANDLE( sig_handle );
+
+if( l_hw_inst < CAN_NUM_INSTANCES )
+    {
+    /*------------------------------------------------------
+    Verify that the signal index is within a valid range and
+    that the pointer to the data is not NULL
+    ------------------------------------------------------*/
+    l_p_txsig_info = il_get_txsig_info_ptr( l_hw_inst );
+    l_num_signals  = l_p_txsig_info->num_signals;
+    l_sig_index    = IL_GET_INDEX_FROM_SIGNAL_HANDLE( sig_handle );
+
+    if( ( l_sig_index < l_num_signals ) && ( p_sig_data != NULL ) )
+        {
+        /*------------------------------------------------------
+        Get the frame information for this signal index
+        ------------------------------------------------------*/
+        l_p_tx_sig     = &( l_p_txsig_info->p_il_txsig[l_sig_index] );
+        *frm_index_p   = l_p_tx_sig->frame_index;
+        l_p_txfrm_info = il_get_txfrm_info_ptr( l_hw_inst );
+        l_p_txfrm      = &( l_p_txfrm_info->p_il_txfrm[*frm_index_p] );
+
+        /*------------------------------------------------------
+        Perform thread safe update of the frame signal data
+        ------------------------------------------------------*/
+        taskENTER_CRITICAL();
+
+        l_success =  pack_frame_signal( l_p_tx_sig->start_bit,
+                                        l_p_tx_sig->num_bits,
+                                        p_sig_data,
+                                        l_p_txfrm->p_data,
+                                        num_bytes );
+        taskEXIT_CRITICAL();
+        }
+    }
+
+return l_success;
+}
+
+/*------------------------------------------------------
+Middle layer frame send
+------------------------------------------------------*/
+void can_mid_frm_send
+    (
+    dll_frm_index_t frm_index
+    )
+{
+transmit_frame( CAN_CONTROLLER_2, frm_index );
+}
+
+/*------------------------------------------------------
 Middle layer request  and response message task
 ------------------------------------------------------*/
 void can_mid_task
@@ -592,6 +673,51 @@ l_ret_code = can_mid_req( TX4_REQ_REPRGRM_INFO_CAN0_ID, IL_CAN0_TX4_REQ_REPRGRM_
 
 return l_ret_code;
 }
+
+/*------------------------------------------------------
+No response test
+------------------------------------------------------*/
+static can_ret_code_t
+can_mid_no_resp_test
+    (
+    void
+    )
+{
+dll_frm_index_t  l_frm_index;
+
+uint8  bnt_status = IL_VT_HEATER_LVL_BTN_STAT_AUD_UP;
+uint8  lvl_lv     = IL_VT_HEATER_LVL_LV_MID;
+uint8  lvl_select = IL_VT_HEATER_LVL_SLECT_RIDER_SEAT_HEATER;
+
+/*------------------------------------------------------
+Fill the frame with different signals' values
+------------------------------------------------------*/
+can_mid_sig_set(
+                &l_frm_index,
+                 IL_CAN0_HEATER_LVL_BTN_STAT_AUD_TXSIG_HANDLE,
+                 IL_CAN0_HEATER_LVL_BTN_STAT_AUD_TXSIG_NBYTES,
+                &bnt_status
+                );
+
+can_mid_sig_set(
+                &l_frm_index,
+                IL_CAN0_HEATER_LVL_LV_TXSIG_HANDLE,
+                IL_CAN0_HEATER_LVL_LV_TXSIG_NBYTES,
+                &lvl_lv
+                );
+
+can_mid_sig_set(
+                &l_frm_index,
+                IL_CAN0_HEATER_LVL_SLECT_TXSIG_HANDLE,
+                IL_CAN0_HEATER_LVL_SLECT_TXSIG_NBYTES,
+                &lvl_select
+                );
+
+/*------------------------------------------------------
+Send frame
+------------------------------------------------------*/
+can_mid_frm_send( l_frm_index );
+}
 #endif
 
 /*------------------------------------------------------
@@ -614,6 +740,11 @@ it supports
 can_mid_hand_shake();
 
 #if( DEBUG_TX_CAN_SUPPORT )
+/*------------------------------------------------------
+No response test case
+------------------------------------------------------*/
+can_mid_no_resp_test();
+
 /*------------------------------------------------------
 Positive and negative test case
 ------------------------------------------------------*/

@@ -220,7 +220,7 @@ if( 0 == ( il_status[hw_inst] & IL_STATUS_ANY_TX_DISABLE ) )
 * for the frame has expired.
 *
 *********************************************************************/
-static void transmit_frame
+void transmit_frame
     (
     can_hw_inst_t   const hw_inst,  //!< [in] CAN hardware instance
     dll_frm_index_t const frm_index //!< [in] CAN frame index
@@ -993,7 +993,7 @@ for( l_i_signal = 0; l_i_signal < l_num_frame_signals; l_i_signal++ )
 * success (TRUE or FALSE)
 *
 *********************************************************************/
-static boolean
+boolean
 pack_frame_signal
     (
     uint8               const start_bit,        //!< [in] Signal Start Bit (LSbit) in CAN Frame

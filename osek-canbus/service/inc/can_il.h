@@ -343,6 +343,22 @@ void il_app_notify_rx_timeout2
     boolean          timeout_trig
     );
 
+boolean
+pack_frame_signal
+    (
+    uint8               const start_bit,        //!< [in] Signal Start Bit (LSbit) in CAN Frame
+    can_hw_inst_t       const num_bits,         //!< [in] Number of bits in the signal
+    uint8       const * const p_sig_data,       //!< [in] Pointer to the signal data
+    uint8             * const p_frame_buffer,   //!< [in] Pointer to the frame buffer
+    uint8               const sig_size          //!< [in] Signal size in bytes
+    );
+
+void transmit_frame
+    (
+    can_hw_inst_t   const hw_inst,  //!< [in] CAN hardware instance
+    dll_frm_index_t const frm_index //!< [in] CAN frame index
+    );
+
 #ifdef __cplusplus
 }
 #endif
