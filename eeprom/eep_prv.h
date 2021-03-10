@@ -170,6 +170,65 @@ void eep_get_burn_in_target_time
     void ( *callback_func_ptr ) ( status_t )
     );
 
+void eep_set_ccu_id
+    (
+    uint32_t* ccu_id_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_get_ccu_id
+    (
+    uint32_t* ccu_id_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_set_passkey
+    (
+    uint32_t* pass_key_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_get_passkey
+    (
+    uint32_t* pass_key_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_set_dummy
+    (
+    uint16_t* dummy_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_get_dummy
+    (
+    uint16_t* dummy_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_set_trip_time
+    (
+    uint32_t* trip_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_get_trip_time
+    (
+    uint32_t* trip_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_set_mode
+    (
+    uint8_t* operation_mode_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_get_mode
+    (
+    uint8_t* operation_mode_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
 
 #ifdef __cplusplus
 }

@@ -34,20 +34,30 @@ extern "C" {
 #define BD_ADDRESS_LENGTH                    ( 6 )
 #define BURN_IN_TIME_LENGTH                  ( 4 )
 #define BURN_IN_TARGET_TIME_LENGTH           ( 4 )
+#define QRCODE_CCUID_LENGTH                  ( 4 )
+#define QRCODE_PASSKEY_LENGTH                ( 4 )
+#define QRCODE_DUMMY_LENGTH                  ( 2 )
+#define TRIP_TIME_LENGTH                     ( 4 )
+#define OPERATION_MODE_LENGTH                ( 1 )
 
 typedef uint8_t EEPM_block_config_type; enum
     {
-    EEPM_BLOCK_CONFIG_ESN                   = 0,
-    EEPM_BLOCK_CONFIG_BT_EN                 = 1,
-    EEPM_BLOCK_CONFIG_BT_AUTO_CONN          = 2,
-    EEPM_BLOCK_CONFIG_LAST_PAGE             = 3,
-    EEPM_BLOCK_CONFIG_ID_PAGE_LOCK          = 4,
-    EEPM_BLOCK_CONFIG_LANGUAGE              = 5,
-    EEPM_BLOCK_CONFIG_START_BURN_IN         = 6,
-    EEPM_BLOCK_CONFIG_BURN_IN_RESULT        = 7,
-    EEPM_BLOCK_CONFIG_BD_ADDRESS            = 8,
-    EEPM_BLOCK_CONFIG_BURN_IN_TIME          = 9,
-    EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME   = 10,
+    EEPM_BLOCK_CONFIG_ESN,
+    EEPM_BLOCK_CONFIG_BT_EN,
+    EEPM_BLOCK_CONFIG_BT_AUTO_CONN,
+    EEPM_BLOCK_CONFIG_LAST_PAGE,
+    EEPM_BLOCK_CONFIG_ID_PAGE_LOCK,
+    EEPM_BLOCK_CONFIG_LANGUAGE,
+    EEPM_BLOCK_CONFIG_START_BURN_IN,
+    EEPM_BLOCK_CONFIG_BURN_IN_RESULT,
+    EEPM_BLOCK_CONFIG_BD_ADDRESS,
+    EEPM_BLOCK_CONFIG_BURN_IN_TIME,
+    EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME,
+    EEPM_BLOCK_CONFIG_QRCODE_CCUID,
+    EEPM_BLOCK_CONFIG_QRCODE_PASSKEY,
+    EEPM_BLOCK_CONFIG_QRCODE_DUMMY,
+    EEPM_BLOCK_CONFIG_TRIP_TIME,
+    EEPM_BLOCK_CONFIG_OPERATION_MODE,
 
     EEPM_BLOCK_CONFIG_CNT
     };
@@ -195,6 +205,60 @@ BaseType_t EEPM_get_burn_in_target_time
     void (*callback_ptr)(bool, void*)
     );
 
+BaseType_t EEPM_set_qrcode_ccuid
+    (
+    uint32_t ccuid,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_qrcode_ccuid
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_qrcode_passkey
+    (
+    uint32_t passkey,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_qrcode_passkey
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_qrcode_dummy
+    (
+    uint16_t dummy,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_qrcode_dummy
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_trip_time
+    (
+    uint32_t triptime,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_trip_time
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_operation_mode
+    (
+    uint8_t mode,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_operation_mode
+    (
+    void (*callback_ptr)(bool, void*)
+    );
 #ifdef __cplusplus
 }
 #endif

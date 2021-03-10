@@ -621,6 +621,181 @@ eepm_r_callback( EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME, status );
 
 /*================================================================================================*/
 /**
+@brief   eepm_qrcode_ccuid_w_callback
+@details eepm_qrcode_ccuid_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_qrcode_ccuid_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_QRCODE_CCUID, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_qrcode_ccuid_r_callback
+@details eepm_qrcode_ccuid_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_qrcode_ccuid_r_callback
+    (
+    status_t status
+    )
+{
+eepm_r_callback( EEPM_BLOCK_CONFIG_QRCODE_CCUID, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_qrcode_passkey_w_callback
+@details eepm_qrcode_passkey_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_qrcode_passkey_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_QRCODE_PASSKEY, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_qrcode_passkey_r_callback
+@details eepm_qrcode_passkey_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_qrcode_passkey_r_callback
+    (
+    status_t status
+    )
+{
+eepm_r_callback( EEPM_BLOCK_CONFIG_QRCODE_PASSKEY, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_qrcode_dummy_w_callback
+@details eepm_qrcode_dummy_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_qrcode_dummy_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_QRCODE_DUMMY, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_qrcode_dummy_r_callback
+@details eepm_qrcode_dummy_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_qrcode_dummy_r_callback
+    (
+    status_t status
+    )
+{
+eepm_r_callback( EEPM_BLOCK_CONFIG_QRCODE_DUMMY, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_trip_time_w_callback
+@details eepm_trip_time_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_trip_time_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_TRIP_TIME, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_trip_time_r_callback
+@details eepm_trip_time_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_trip_time_r_callback
+    (
+    status_t status
+    )
+{
+eepm_r_callback( EEPM_BLOCK_CONFIG_TRIP_TIME, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_mode_w_callback
+@details eepm_mode_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_mode_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_OPERATION_MODE, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_mode_r_callback
+@details eepm_mode_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_mode_r_callback
+    (
+    status_t status
+    )
+{
+eepm_r_callback( EEPM_BLOCK_CONFIG_OPERATION_MODE, status );
+}
+
+/*================================================================================================*/
+/**
 @brief   EEPM_init
 @details EEPM_init
 
@@ -1226,12 +1401,10 @@ else
 return rtn;
 }
 
-
-
 /*================================================================================================*/
 /**
-@brief   EEPM_set_burn_in_time
-@details EEPM_set_burn_in_time
+@brief   EEPM_set_burn_in_target_time
+@details EEPM_set_burn_in_target_time
 
 @return None
 @retval None
@@ -1262,8 +1435,8 @@ return rtn;
 
 /*================================================================================================*/
 /**
-@brief   EEPM_get_burn_in_time
-@details EEPM_get_burn_in_time
+@brief   EEPM_get_burn_in_target_time
+@details EEPM_get_burn_in_target_time
 
 @return None
 @retval None
@@ -1282,6 +1455,316 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].semaphore, 
     eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].callback_ptr = callback_ptr;
     eep_get_burn_in_target_time( &( eepm_data[EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME].read_val ), eepm_burn_in_target_time_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_qrcode_ccuid
+@details EEPM_set_qrcode_ccuid
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_qrcode_ccuid
+    (
+    uint32_t ccuid,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].write_val = ccuid;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].callback_ptr = callback_ptr;
+    eep_set_ccu_id( &( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].write_val ), eepm_qrcode_ccuid_w_callback );
+    eep_get_ccu_id( &( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].read_val ), eepm_qrcode_ccuid_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_qrcode_ccuid
+@details EEPM_get_qrcode_ccuid
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_qrcode_ccuid
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].callback_ptr = callback_ptr;
+    eep_get_ccu_id( &( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].read_val ), eepm_qrcode_ccuid_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_qrcode_passkey
+@details EEPM_set_qrcode_passkey
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_qrcode_passkey
+    (
+    uint32_t passkey,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].write_val = passkey;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].callback_ptr = callback_ptr;
+    eep_set_passkey( &( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].write_val ), eepm_qrcode_passkey_w_callback );
+    eep_get_passkey( &( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].read_val ), eepm_qrcode_passkey_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_qrcode_passkey
+@details EEPM_get_qrcode_passkey
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_qrcode_passkey
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].callback_ptr = callback_ptr;
+    eep_get_passkey( &( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].read_val ), eepm_qrcode_passkey_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_qrcode_dummy
+@details EEPM_set_qrcode_dummy
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_qrcode_dummy
+    (
+    uint16_t dummy,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].write_val = (uint32_t)dummy;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].callback_ptr = callback_ptr;
+    eep_set_dummy( (uint16_t*)&( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].write_val ), eepm_qrcode_dummy_w_callback );
+    eep_get_dummy( (uint16_t*)&( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].read_val ), eepm_qrcode_dummy_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_qrcode_dummy
+@details EEPM_get_qrcode_dummy
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_qrcode_dummy
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].callback_ptr = callback_ptr;
+    eep_get_dummy( (uint16_t*)&( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].read_val ), eepm_qrcode_dummy_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_trip_time
+@details EEPM_set_trip_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_trip_time
+    (
+    uint32_t triptime,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_TRIP_TIME].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_TRIP_TIME].write_val = triptime;
+    eepm_data[EEPM_BLOCK_CONFIG_TRIP_TIME].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_TRIP_TIME].callback_ptr = callback_ptr;
+    eep_set_trip_time( &( eepm_data[EEPM_BLOCK_CONFIG_TRIP_TIME].write_val ), eepm_trip_time_w_callback );
+    eep_get_trip_time( &( eepm_data[EEPM_BLOCK_CONFIG_TRIP_TIME].read_val ), eepm_trip_time_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_trip_time
+@details EEPM_get_trip_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_trip_time
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_TRIP_TIME].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_TRIP_TIME].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_TRIP_TIME].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_TRIP_TIME].callback_ptr = callback_ptr;
+    eep_get_trip_time( &( eepm_data[EEPM_BLOCK_CONFIG_TRIP_TIME].read_val ), eepm_trip_time_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_operation_mode
+@details EEPM_set_operation_mode
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_operation_mode
+    (
+    uint8_t mode,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].write_val = (uint32_t)mode;
+    eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].callback_ptr = callback_ptr;
+    eep_set_mode( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].write_val ), eepm_mode_w_callback );
+    eep_get_mode( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].read_val ), eepm_mode_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_operation_mode
+@details EEPM_get_operation_mode
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_operation_mode
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].callback_ptr = callback_ptr;
+    eep_get_mode( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].read_val ), eepm_mode_r_callback );
     }
 else
     {

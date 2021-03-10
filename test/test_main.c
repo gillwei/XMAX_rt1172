@@ -89,6 +89,10 @@
             test_navi_proc();
         #endif
 
+        #if( UNIT_TEST_EEPROM )
+            test_eeprom_proc();
+        #endif
+
         vTaskDelay( TEST_TASK_DELAY_TICKS );
         }
 
@@ -145,6 +149,10 @@
 
     #if( UNIT_TEST_NAVI )
         test_navi_int();
+    #endif
+
+    #if( UNIT_TEST_EEPROM )
+        test_eeprom_int();
     #endif
 
     }

@@ -26,6 +26,8 @@ void test_adc_int( void );
 void test_adc_proc( void );
 void test_navi_int( void );
 void test_navi_proc( void );
+void test_eeprom_int( void );
+void test_eeprom_proc( void );
 
 #ifdef __cplusplus
 }

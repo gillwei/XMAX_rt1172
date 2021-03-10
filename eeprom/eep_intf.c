@@ -31,15 +31,23 @@ extern "C"{
 //mem page
 #define EEPROM_MEM_PAGE_I2C_DEV_ADDR         ( 0x50 )
 #define ESN_START_SUB_ADDR                   ( 0x0000 )
-#define BT_EN_START_SUB_ADDR                 ( ESN_START_SUB_ADDR               + ESN_LENGTH            )
-#define BT_AUTO_CONN_START_SUB_ADDR          ( BT_EN_START_SUB_ADDR             + BT_EN_LENGTH          )
-#define LAST_PAGE_START_SUB_ADDR             ( BT_AUTO_CONN_START_SUB_ADDR      + BT_AUTO_CONN_LENGTH   )
-#define LANGUAGE_START_SUB_ADDR              ( LAST_PAGE_START_SUB_ADDR         + LAST_PAGE_LENGTH      )
-#define START_BURN_IN_START_SUB_ADDR         ( LANGUAGE_START_SUB_ADDR          + LANGUAGE_LENGTH       )
-#define BURN_IN_RESULT_START_SUB_ADDR        ( START_BURN_IN_START_SUB_ADDR     + START_BURN_IN_LENGTH  )
-#define BD_ADDRESS_START_SUB_ADDR            ( BURN_IN_RESULT_START_SUB_ADDR    + BURN_IN_RESULT_LENGTH )
-#define BURN_IN_TIME_START_SUB_ADDR          ( BD_ADDRESS_START_SUB_ADDR        + BD_ADDRESS_LENGTH     )
-#define BURN_IN_TARGET_TIME_START_SUB_ADDR   ( BURN_IN_TIME_START_SUB_ADDR      + BURN_IN_TIME_LENGTH   )
+#define BT_EN_START_SUB_ADDR                 ( ESN_START_SUB_ADDR                   + ESN_LENGTH                    )
+#define BT_AUTO_CONN_START_SUB_ADDR          ( BT_EN_START_SUB_ADDR                 + BT_EN_LENGTH                  )
+#define LAST_PAGE_START_SUB_ADDR             ( BT_AUTO_CONN_START_SUB_ADDR          + BT_AUTO_CONN_LENGTH           )
+#define LANGUAGE_START_SUB_ADDR              ( LAST_PAGE_START_SUB_ADDR             + LAST_PAGE_LENGTH              )
+#define START_BURN_IN_START_SUB_ADDR         ( LANGUAGE_START_SUB_ADDR              + LANGUAGE_LENGTH               )
+#define BURN_IN_RESULT_START_SUB_ADDR        ( START_BURN_IN_START_SUB_ADDR         + START_BURN_IN_LENGTH          )
+#define BD_ADDRESS_START_SUB_ADDR            ( BURN_IN_RESULT_START_SUB_ADDR        + BURN_IN_RESULT_LENGTH         )
+#define BURN_IN_TIME_START_SUB_ADDR          ( BD_ADDRESS_START_SUB_ADDR            + BD_ADDRESS_LENGTH             )
+#define BURN_IN_TARGET_TIME_START_SUB_ADDR   ( BURN_IN_TIME_START_SUB_ADDR          + BURN_IN_TIME_LENGTH           )
+#define QRCODE_CCUID_START_SUB_ADDR          ( BURN_IN_TARGET_TIME_START_SUB_ADDR   + BURN_IN_TARGET_TIME_LENGTH    )
+#define QRCODE_PASSKEY_START_SUB_ADDR        ( QRCODE_CCUID_START_SUB_ADDR          + QRCODE_CCUID_LENGTH           )
+#define QRCODE_DUMMY_START_SUB_ADDR          ( QRCODE_PASSKEY_START_SUB_ADDR        + QRCODE_PASSKEY_LENGTH         )
+#define TRIP_TIME_START_SUB_ADDR             ( QRCODE_DUMMY_START_SUB_ADDR          + QRCODE_DUMMY_LENGTH           )
+#define OPERATION_MODE_START_SUB_ADDR        ( TRIP_TIME_START_SUB_ADDR             + TRIP_TIME_LENGTH              )
+
+// reserved for future newly add data..
+#define NEXT_START_SUB_ADDR                  ( OPERATION_MODE_START_SUB_ADDR        + OPERATION_MODE_LENGTH         )
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
@@ -78,6 +86,11 @@ eeprom_block_config_type block_config_list[EEPM_BLOCK_CONFIG_CNT] = \
     { BD_ADDRESS_START_SUB_ADDR,            BD_ADDRESS_LENGTH                  }, //EEPM_BLOCK_CONFIG_BD_ADDRESS
     { BURN_IN_TIME_START_SUB_ADDR,          BURN_IN_TIME_LENGTH                }, //EEPM_BLOCK_CONFIG_BURN_IN_TIME
     { BURN_IN_TARGET_TIME_START_SUB_ADDR,   BURN_IN_TARGET_TIME_LENGTH         }, //EEPM_BLOCK_CONFIG_BURN_IN_TARGET_TIME
+    { QRCODE_CCUID_START_SUB_ADDR,          QRCODE_CCUID_LENGTH                }, //EEPM_BLOCK_CONFIG_QRCODE_CCUID
+    { QRCODE_PASSKEY_START_SUB_ADDR,        QRCODE_PASSKEY_LENGTH              }, //EEPM_BLOCK_CONFIG_QRCODE_PASSKEY
+    { QRCODE_DUMMY_START_SUB_ADDR,          QRCODE_DUMMY_LENGTH                }, //EEPM_BLOCK_CONFIG_QRCODE_DUMMY
+    { TRIP_TIME_START_SUB_ADDR,             TRIP_TIME_LENGTH                   }, //EEPM_BLOCK_CONFIG_TRIP_TIME
+    { OPERATION_MODE_START_SUB_ADDR,        OPERATION_MODE_LENGTH              }, //EEPM_BLOCK_CONFIG_OPERATION_MODE
 };
 
 
@@ -99,7 +112,6 @@ eeprom_block_config_type block_config_list[EEPM_BLOCK_CONFIG_CNT] = \
 @retval None
 */
 /*================================================================================================*/
-
 void eep_set_ESN_number
     (
     uint32_t* number_ptr,
@@ -124,7 +136,6 @@ PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_get_ESN_number
     (
     uint32_t* number_ptr,
@@ -148,7 +159,6 @@ PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_set_id_page_lock
     (
     uint8_t* is_lock,
@@ -194,7 +204,6 @@ PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_get_BT_en
     (
     uint8_t* is_en_ptr,
@@ -241,7 +250,6 @@ PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_get_BT_auto_conn
     (
     uint8_t* is_auto_conn_ptr,
@@ -287,7 +295,6 @@ PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_get_last_page
     (
     uint8_t* page_num_ptr,
@@ -311,7 +318,6 @@ PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_set_language
     (
     uint8_t* language_ptr,
@@ -335,7 +341,6 @@ PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_get_language
     (
     uint8_t* language_ptr,
@@ -359,7 +364,6 @@ PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_set_start_burn_in
     (
     uint8_t* start_burn_in_ptr,
@@ -383,7 +387,6 @@ PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_get_start_burn_in
     (
     uint8_t* start_burn_in_ptr,
@@ -407,7 +410,6 @@ PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_set_burn_in_result
     (
     uint8_t* burn_in_result_ptr,
@@ -431,7 +433,6 @@ PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_get_burn_in_result
     (
     uint8_t* burn_in_result_ptr,
@@ -478,7 +479,6 @@ PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_get_bd_address
     (
     uint8_t* bd_addr_ptr,
@@ -526,7 +526,6 @@ PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_get_burn_in_time
     (
     uint32_t* burn_in_time_ptr,
@@ -573,7 +572,6 @@ PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 @retval None
 */
 /*================================================================================================*/
-
 void eep_get_burn_in_target_time
     (
     uint32_t* burn_in_target_time_ptr,
@@ -589,6 +587,235 @@ PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 }
 
 
+/*================================================================================================*/
+/**
+@brief   eep_set_ccu_id
+@details eep_set_ccu_id
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_ccu_id
+    (
+    uint32_t* ccu_id_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           (uint8_t *)ccu_id_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_QRCODE_CCUID].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_QRCODE_CCUID].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_ccu_id
+@details eep_get_ccu_id
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_get_ccu_id
+    (
+    uint32_t* ccu_id_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          (uint8_t *)ccu_id_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_QRCODE_CCUID].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_QRCODE_CCUID].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_passkey
+@details eep_set_passkey
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_passkey
+    (
+    uint32_t* pass_key_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           (uint8_t *)pass_key_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_passkey
+@details eep_get_passkey
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_get_passkey
+    (
+    uint32_t* pass_key_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          (uint8_t *)pass_key_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_dummy
+@details eep_set_dummy
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_dummy
+    (
+    uint16_t* dummy_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           (uint8_t *)dummy_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_dummy
+@details eep_get_dummy
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_get_dummy
+    (
+    uint16_t* dummy_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          (uint8_t *)dummy_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_QRCODE_DUMMY].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_trip_time
+@details eep_set_trip_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_trip_time
+    (
+    uint32_t* trip_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           (uint8_t *)trip_time_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_TRIP_TIME].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_TRIP_TIME].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_trip_time
+@details eep_get_trip_time
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_get_trip_time
+    (
+    uint32_t* trip_time_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          (uint8_t *)trip_time_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_TRIP_TIME].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_TRIP_TIME].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_mode
+@details eep_set_mode
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_mode
+    (
+    uint8_t* operation_mode_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           operation_mode_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_OPERATION_MODE].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_OPERATION_MODE].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_mode
+@details eep_get_mode
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_get_mode
+    (
+    uint8_t* operation_mode_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          operation_mode_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_OPERATION_MODE].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_OPERATION_MODE].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
 #ifdef __cplusplus
 }
 #endif
