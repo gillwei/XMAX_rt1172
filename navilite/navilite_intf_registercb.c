@@ -161,26 +161,48 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     }
 
     /*********************************************************************
-     *
-     * @public
-     * NAVILITE_register_update_callback_viapoint
-     *
-     * register navilite via point content notify callback
-     *
-     * @param callback_func callback function for via point update
-     * @return The result of the callback registering
-     *
-     *********************************************************************/
-     bool NAVILITE_register_update_callback_viapointcount
-         (
-         navilite_callback_func_viapointcount callback_func
-         )
-     {
-     bool ret = true;
-     navilite_content_update_callbacks.callback_func_viapointcount = callback_func;
-     PRINTF( "%s callback register done\r\n", __FUNCTION__ );
-     return ret;
-     }
+    *
+    * @public
+    * NAVILITE_register_update_callback_bt_timeout
+    *
+    * register navilite bt timeout notify callback
+    *
+    * @param callback_func callback function for bt timeout update
+    * @return The result of the callback registering
+    *
+    *********************************************************************/
+    bool NAVILITE_register_update_callback_bt_timeout
+        (
+        navilite_callback_func_bt_timeout callback_func
+        )
+    {
+    bool ret = true;
+    navilite_content_update_callbacks.callback_func_bt_timeout = callback_func;
+    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    return ret;
+    }
+
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_register_update_callback_viapointcount
+    *
+    * register navilite via point content notify callback
+    *
+    * @param callback_func callback function for via point update
+    * @return The result of the callback registering
+    *
+    *********************************************************************/
+    bool NAVILITE_register_update_callback_viapointcount
+        (
+        navilite_callback_func_viapointcount callback_func
+        )
+    {
+    bool ret = true;
+    navilite_content_update_callbacks.callback_func_viapointcount = callback_func;
+    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    return ret;
+    }
 
     /*********************************************************************
     *
@@ -291,12 +313,6 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
-
-    /*
-    @TODO: Those API are not confirmed yet. This should be decided for API v2
-    bool NAVILITE_register_update_callback_FavPOITurnList(*);
-    bool NAVILITE_register_update_callback_NearByGasStationList(*);
-    */
 
     /*********************************************************************
     *
@@ -476,4 +492,27 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
+
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_register_update_callback_dialogevent
+    *
+    * Register dialog event notify callback
+    *
+    * @param callback_func callback function when dialog event is received from app
+    * @return The result of the callback registering
+    *
+    *********************************************************************/
+    bool NAVILITE_register_update_callback_dialogevent
+        (
+        navilite_callback_func_dialogevent callback_func
+        )
+    {
+    bool ret = true;
+    navilite_content_update_callbacks.callback_func_dialogevent = callback_func;
+    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    return ret;
+    }
+
 #endif

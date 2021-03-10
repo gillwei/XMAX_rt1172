@@ -267,6 +267,24 @@ PRINTF( "\r\n[NAVILITE-CB] [ETA value]:%d\r\n", value );
 /*********************************************************************
 *
 * @private
+* hmi_update_callback_bt_timeout
+*
+* Callback API for bt timeout update
+*
+* @param value value of bt timeout received
+*
+*********************************************************************/
+static void  hmi_update_callback_bt_timeout
+    (
+    uint8_t value
+    )
+{
+PRINTF( "\r\n[NAVILITE-CB] [BT timeout value]:%d\r\n", value );
+}
+
+/*********************************************************************
+*
+* @private
 * hmi_update_callback_speedlimit
 *
 * Callback API for speed limit
@@ -384,6 +402,24 @@ PRINTF( "\r\n[NAVILITE-CB] navigation status:%d", is_navigating );
 /*********************************************************************
 *
 * @private
+* hmi_update_callback_daynightmode
+*
+* Callback API for day/night mode status
+*
+* @param mode status of day/night mode
+*
+*********************************************************************/
+static void hmi_update_callback_daynightmode
+    (
+    navilite_daynight_type mode
+    )
+{
+PRINTF( "\r\n[NAVILITE-CB] daynight mode: %d", mode );
+}
+
+/*********************************************************************
+*
+* @private
 * hmi_update_callback_zoomlevel
 *
 * Callback API for zoomlevel update
@@ -399,6 +435,81 @@ static void hmi_update_callback_zoomlevel
     )
 {
 PRINTF( "\r\n[NAVILITE-CB] zoom level: current:%d, max(%d) ", current_level, max_level );
+}
+
+/*********************************************************************
+*
+* @private
+* hmi_update_callback_routecalcprogress
+*
+* Callback API for route process update
+*
+* @param progress route calculating progress in percentage
+*
+*********************************************************************/
+static void hmi_update_callback_routecalcprogress  //timeout:10s and automatically callback to
+    (
+    uint8_t progress
+    )
+{
+PRINTF( "\r\n[NAVILITE-CB] Route Calc Progress: %d ", progress );
+}
+
+/*********************************************************************
+*
+* @private
+* hmi_update_callback_dialogevent
+*
+* Callback API for dialog event
+*
+* @param dialog_id dialog id for the event
+* @param dialog_type dialog_type for the event
+* @param message message content to show
+* @param message_size size of message content
+*
+*********************************************************************/
+static void hmi_update_callback_dialogevent
+    (
+    uint8_t dialog_id,
+    navilite_dialog_type dialog_type,
+    uint8_t* message,
+    uint8_t message_size
+    )
+{
+if( dialog_type != NAVILITE_DIALOGTYPE_DISMISS_DIALOG )
+    {
+    PRINTF( "[NAVILITE-CB] DIALOG_SHOW(dialog_id:%d, dialog_type:%d, dialog_size:%d, message:", dialog_id, dialog_type, message_size );
+    NAVILITE_print_utf8( message, message_size );
+    }
+else
+    {
+    PRINTF( "[NAVILITE-CB] DIALOG_DISMISS(dialog_id:%d)", dialog_id );
+    }
+PRINTF( "\r\n" );
+}
+
+/*********************************************************************
+*
+* @private
+* hmi_update_callback_nextturndistance
+*
+* Callback API for next turn distance
+*
+* @param icon_index icon index to show
+* @param distance distance string
+* @param distance_size distance string size
+*
+*********************************************************************/
+static void hmi_update_callback_nextturndistance
+    (
+    uint8_t icon_index,
+    uint8_t* distance,
+    uint8_t distance_size
+    )
+{
+PRINTF( "[NAVILITE-CB] NextTurnDistance icon_index:%d, distance_size:%d, distance_str:", icon_index, distance_size );
+NAVILITE_print_utf8( distance, distance_size );
+PRINTF( "\r\n" );
 }
 
 /*********************************************************************
@@ -424,11 +535,16 @@ NAVILITE_register_update_callback_esn_sent( hmi_update_callback_esn_sent );
 NAVILITE_register_update_callback_imageframe( hmi_update_callback_imageframe );
 NAVILITE_register_update_callback_currentroadname( hmi_update_callback_currentroadname );
 NAVILITE_register_update_callback_eta( hmi_update_callback_eta );
+NAVILITE_register_update_callback_bt_timeout( hmi_update_callback_bt_timeout );
 NAVILITE_register_update_callback_speedlimit( hmi_update_callback_speedlimit );
 NAVILITE_register_update_callback_navieventtext( hmi_update_callback_navieventtext );
 NAVILITE_register_update_callback_homelocationsetting( hmi_update_callback_homelocationsetting );
+NAVILITE_register_update_callback_daynightmode( hmi_update_callback_daynightmode );
 NAVILITE_register_update_callback_officelocationsetting( hmi_update_callback_officelocationsetting );
 NAVILITE_register_update_callback_zoomlevel( hmi_update_callback_zoomlevel );
 NAVILITE_register_update_callback_navigationstatus( hmi_update_callback_navigationstatus );
 NAVILITE_register_update_callback_viapointcount( hmi_update_callback_viapointcount );
+NAVILITE_register_update_callback_routecalcprogress( hmi_update_callback_routecalcprogress );
+NAVILITE_register_update_callback_dialogevent( hmi_update_callback_dialogevent );
+NAVILITE_register_update_callback_nextturndistance( hmi_update_callback_nextturndistance );
 }

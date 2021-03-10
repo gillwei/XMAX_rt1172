@@ -122,6 +122,12 @@ extern "C" {
         (
         navilite_service_type ack_service_type
         );
+
+    navilite_message NAVILITE_pack_frame_app_report_dialog_select
+        (
+        uint8_t dialog_id,
+        navilite_button_type button_type
+        );
 #endif
 
 #ifdef __cplusplus

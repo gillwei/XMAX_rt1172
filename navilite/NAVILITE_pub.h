@@ -136,8 +136,9 @@ typedef void ( *navilite_callback_func_esn_sent )( void ); // ESN id notify
 // content notification
 typedef void ( *navilite_callback_func_imageframe )( uint8_t* image, uint16_t image_size, navilite_image_type mode );
 typedef void ( *navilite_callback_func_eta )( uint32_t value );
+typedef void ( *navilite_callback_func_bt_timeout )( uint8_t value );
 typedef void ( *navilite_callback_func_currentroadname )( uint8_t* str, uint8_t str_size );
-typedef void ( *navilite_callback_func_nextturndistance )( uint8_t* str, uint8_t str_size );
+typedef void ( *navilite_callback_func_nextturndistance )( uint8_t icon_index, uint8_t* str, uint8_t str_size );
 typedef void ( *navilite_callback_func_nexttbtlist )( navilite_tbt_list_type *list, uint8_t list_size );
 typedef void ( *navilite_callback_func_activetbtitem )( uint8_t active_tbt_index);
 typedef void ( *navilite_callback_func_navieventtext )( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_event_type, navilite_navievent_camera_extra_subtype navi_extra_sub_type, uint8_t visibility );
@@ -149,6 +150,7 @@ typedef void ( *navilite_callback_func_daynightmode )( navilite_daynight_type mo
 typedef void ( *navilite_callback_func_speedlimit )( uint16_t speed_limit ); // speed limit
 typedef void ( *navilite_callback_func_viapointcount )( uint8_t via_point_count ); // via point count
 typedef void ( *navilite_callback_func_navigationstatus )( uint8_t navigation_status ); // navigation status
+typedef void ( *navilite_callback_func_dialogevent )( uint8_t dialog_id, navilite_dialog_type dialog_type, uint8_t* message, uint8_t message_size ); // dialog event
 
 /* Helper Utitilty (indirect callback API) */
 typedef void ( *navilite_callback_func_tbtmodestatus )( uint8_t is_tbt ); // when TBT/image is updated, this callback will fire
@@ -161,6 +163,7 @@ typedef struct tagNAVILITE_CONTENT_UPDATE_CALLBACKS
     navilite_callback_func_esn_sent callback_func_esn_sent;
     navilite_callback_func_imageframe callback_func_imageframe;
     navilite_callback_func_eta callback_func_eta;
+    navilite_callback_func_bt_timeout callback_func_bt_timeout;
     navilite_callback_func_currentroadname callback_func_currentroadname;
     navilite_callback_func_nextturndistance callback_func_nextturndistance;
     navilite_callback_func_nexttbtlist callback_func_nexttbtist;
@@ -175,6 +178,7 @@ typedef struct tagNAVILITE_CONTENT_UPDATE_CALLBACKS
     navilite_callback_func_speedlimit callback_func_speedlimit;
     navilite_callback_func_viapointcount callback_func_viapointcount;
     navilite_callback_func_navigationstatus callback_func_navigationstatus;
+    navilite_callback_func_dialogevent callback_func_dialogevent;
     } navilite_content_update_callbacks_type;
 
 typedef struct tagNAVILITE_ACK_STATE_CALLBACKS
@@ -241,6 +245,9 @@ bool NAVILITE_register_update_callback_daynightmode( navilite_callback_func_dayn
 bool NAVILITE_register_update_callback_esn_sent( navilite_callback_func_esn_sent callback_func );
 bool NAVILITE_register_update_callback_navigationstatus( navilite_callback_func_navigationstatus callback_func );
 bool NAVILITE_register_update_callback_viapointcount( navilite_callback_func_viapointcount callback_func );
+bool NAVILITE_register_update_callback_routecalcprogress( navilite_callback_func_routecalcprogress callback_func );
+bool NAVILITE_register_update_callback_bt_timeout( navilite_callback_func_bt_timeout callback_func );
+bool NAVILITE_register_update_callback_dialogevent( navilite_callback_func_dialogevent callback_func );
 
 /* NaviLight Connection Event API */
 bool NAVILITE_register_update_callback_preconnected();
@@ -273,6 +280,7 @@ bool NAVILITE_request_app_stop_imageframe_update(); //! request navilite mobile 
 bool NAVILITE_report_app_service_ack( uint8_t service_ack );         //! report meter speed to navilite mobile app
 bool NAVILITE_report_app_esn( uint8_t* esn );                //! report device ID to navilite mobile app
 bool NAVILITE_report_app_sysinfo( uint8_t* sysinfo );             //! report device ID to navilite mobile app
+bool NAVILITE_report_app_dialog_select( uint8_t dialog_id, navilite_button_type button_type ); //! report dialog selection to navilite mobile app
 
 /* NaviLite Status API for navigation */
 bool NAVILITE_is_app_navigating();

@@ -14,6 +14,7 @@
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
 #include "NAVILITE_pub.h"
+#include <stdlib.h>
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -393,6 +394,40 @@
     frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
     frame.payload_size = 0;
     return frame; // @TODO: need to release the memory from this pointer after use from caller!
+    }
+
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_pack_frame_app_report_dialog_select
+    *
+    * Send dialog select to app side
+    *
+    * @param dialog_id  dialog identifier to report
+    * @param button_type button type selected from HMI to send
+    * @return navilite_message return navilite_message copy to caller
+    *
+    *********************************************************************/
+    navilite_message NAVILITE_pack_frame_app_report_dialog_select
+        (
+        uint8_t dialog_id,
+        navilite_button_type button_type
+        )
+    {
+    navilite_message frame = { 0 };
+    // full data size = dialog_id + dialog_type
+    int full_data_size = sizeof( uint8_t ) * 2;
+    uint8_t* packValues = (uint8_t*)malloc( full_data_size );
+    packValues[0] = dialog_id;
+    packValues[1] = button_type;
+    strncpy( (char*)frame.magic_code, (char*)MAGIC_CODE, MAGIC_CODE_SIZE );
+    frame.version = PROTOCOL_VERSION;
+    frame.frame_type = NAVILITE_FRAMETYPE_MOBILE_UPDATE;
+    frame.service_type = NAVILITE_SERVICETYPE_MCU_DIALOG_USER_SELECT_UPDATE;
+    frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_POINTER;
+    frame.payload_size = sizeof( uint8_t ) * 2;
+    frame.data_pointer = packValues;
+    return frame;
     }
 #endif
 

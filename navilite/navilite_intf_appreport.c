@@ -120,4 +120,28 @@
     return ret;
     }
 
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_report_app_dialog_select
+    *
+    * Send dialog selection (dialog_id/button_type) to app side
+    *
+    * @param dialog_id dialog id to send
+    * @param button_type button type to send
+    * @return true when success
+    *         false when failed
+    *
+    *********************************************************************/
+    bool NAVILITE_report_app_dialog_select
+        (
+        uint8_t dialog_id,
+        navilite_button_type button_type
+        )
+    {
+    navilite_message frame = NAVILITE_pack_frame_app_report_dialog_select( dialog_id, button_type );
+    bool ret = NAVILITE_send( (uint8_t*)&frame, sizeof( navilite_message ) );
+    return ret;
+    }
+
 #endif

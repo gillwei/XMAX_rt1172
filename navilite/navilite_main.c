@@ -592,7 +592,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
     // }
 
     // NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
         {
         if( is_jpeg_mode == 0 )
             {
@@ -606,7 +606,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         }
 
     // NAVILITE_SERVICETYPE_CURROADNAME_UPDATE
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_CURROADNAME_UPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_CURROADNAME_UPDATE )
         {
         // complete frame request contains ALL in one!!!
         memcpy( navilite_buffer, data + idx, data_len );
@@ -626,7 +626,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         }
 
     // NAVILITE_SERVICETYPE_ETA_UPDATE
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_ETA_UPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_ETA_UPDATE )
         {
         uint32_t value = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
 
@@ -637,8 +637,60 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
             }
         }
 
+    // NAVILITE_SERVICETYPE_BT_THROUGHPUT_TIMEOUT_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_BT_THROUGHPUT_TIMEOUT_UPDATE )
+        {
+        uint8_t value = navilite_packet.data_value; // this value will be calculated in HMI for proper absolute time
+
+        if( navilite_content_update_callbacks.callback_func_bt_timeout )
+            {
+            // Callback API for BT timeout notification update
+            navilite_content_update_callbacks.callback_func_bt_timeout( value );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_ROUTE_CALC_PROGRESS_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_ROUTE_CALC_PROGRESS_UPDATE )
+        {
+        uint8_t progress = 0;
+        progress = (uint8_t)navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_routecalcprogress )
+            {
+            navilite_content_update_callbacks.callback_func_routecalcprogress( progress );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_DAYNIGHT_MODE_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_DAYNIGHT_MODE_UPDATE )
+        {
+        uint8_t mode = 0;
+        mode = (uint8_t)navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_daynightmode )
+            {
+            navilite_content_update_callbacks.callback_func_daynightmode( mode );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_MAP_ZOOM_LEVEL_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_MAP_ZOOM_LEVEL_UPDATE )
+        {
+        uint8_t currentLevel = 0;
+        uint8_t maxLevel = 0;
+
+        currentLevel = (uint8_t)data[idx++];
+        maxLevel = (uint8_t)data[idx++];
+
+        if( navilite_content_update_callbacks.callback_func_zoomlevel )
+            {
+            // Callback API for zoom level update
+            navilite_content_update_callbacks.callback_func_zoomlevel( currentLevel, maxLevel );
+            }
+        }
+
     // NAVILITE_SERVICETYPE_HOMESETTING_UPDATE
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_HOMESETTING_UPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_HOMESETTING_UPDATE )
         {
         uint8_t value = navilite_packet.data_value;
 
@@ -652,7 +704,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         }
 
     // NAVILITE_SERVICETYPE_OFFICESETTING_UPDATE
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_OFFICESETTING_UPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_OFFICESETTING_UPDATE )
         {
         uint8_t setting_value = navilite_packet.data_value;
 
@@ -666,7 +718,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         }
 
     // NAVILITE_SERVICETYPE_VIA_POINT_COUNT_UPDATE
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_VIA_POINT_COUNT_UPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_VIA_POINT_COUNT_UPDATE )
         {
         uint8_t value = navilite_packet.data_value;
 
@@ -678,7 +730,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         }
 
     // NAVILITE_SERVICETYPE_SPEED_LIMIT_UPDATE
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_SPEED_LIMIT_UPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_SPEED_LIMIT_UPDATE )
         {
         uint16_t value = navilite_packet.data_value;
 
@@ -690,42 +742,61 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         }
 
     // NAVILITE_SERVICETYPE_NAVIEVENTTEXTUPDATE
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_NAVIEVENTTEXTUPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_NAVIEVENTTEXTUPDATE )
         {
         uint8_t event_type;
         uint8_t event_extra_subtype;
         uint8_t visibilty;
         uint8_t event_str_size;
-
-        // complete frame request contains ALL in one!!!
         int i = 0;
-        for( ; idx < data_len; idx++ )
+        // parsing the navi text packet
+        // read one byte for event type
+        event_type = (uint8_t)data[idx++];
+        // read one byte for extra subtype
+        event_extra_subtype = (uint8_t)data[idx++];
+        // read one byte for visibility
+        visibilty = (uint8_t)data[idx++];
+        // read one byte for navi text string size
+        event_str_size = (uint8_t)data[idx++];
+        // read the str size bytes for navi text
+        for ( i = 0; i < event_str_size; i++ )
             {
-            // parsing the navi text packet
-            // read one byte for event type
-            event_type = (uint8_t)data[idx++];
-            // read one byte for extra subtype
-            event_extra_subtype = (uint8_t)data[idx++];
-            // read one byte for visibility
-            visibilty = (uint8_t)data[idx++];
-            // read one byte for navi text string size
-            event_str_size = (uint8_t)data[idx++];
-            // read the str size bytes for navi text
-            for ( i = 0; i < event_str_size; i++ )
-                {
-                navilite_buffer[i] = (uint8_t)data[idx++];
-                }
-            navilite_buffer[i++] = 0; // store the navi text on navilite buffer
-            if( navilite_content_update_callbacks.callback_func_navieventtext )
-                {
-                // Callback API for navi event text notification update
-                navilite_content_update_callbacks.callback_func_navieventtext( (uint8_t*)navilite_buffer, event_str_size, event_type, event_extra_subtype, visibilty );
-                }
+            navilite_buffer[i] = (uint8_t)data[idx++];
+            }
+        navilite_buffer[i++] = 0; // store the navi text on navilite buffer
+        if( navilite_content_update_callbacks.callback_func_navieventtext )
+            {
+            // Callback API for navi event text notification update
+            navilite_content_update_callbacks.callback_func_navieventtext( (uint8_t*)navilite_buffer, event_str_size, event_type, event_extra_subtype, visibilty );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_NEXTTURNDIST_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_NAVIEVENTTEXTUPDATE )
+        {
+        uint8_t icon_index = 0;
+        uint8_t distance_str_size = 0;
+        int i = 0;
+        // parsing the icon index
+        // read one byte for icon index
+        icon_index = (uint8_t)data[idx++];
+        // read str size for distance
+        distance_str_size = (uint8_t)data[idx++];
+        // read the str bytes for distance
+        for ( i = 0; i < distance_str_size; i++ )
+            {
+            navilite_buffer[i] = (uint8_t)data[idx++];
+            }
+        navilite_buffer[i++] = 0; // store the navi text on navilite buffer
+        if( navilite_content_update_callbacks.callback_func_nextturndistance )
+            {
+            // Callback API for next turn distance notification update
+            navilite_content_update_callbacks.callback_func_nextturndistance( icon_index, (uint8_t*)navilite_buffer, distance_str_size );
             }
         }
 
     // NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK
-    if( navilite_packet.service_type ==  NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK )
+    if( navilite_packet.service_type == NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK )
         {
         PRINTF( "*NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK*\r\n" );
 
@@ -741,8 +812,33 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
             }
         }
 
+    // NAVILITE_SERVICETYPE_DIALOG_EVENT_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_DIALOG_EVENT_UPDATE )
+        {
+        uint8_t dialog_id;
+        navilite_dialog_type dialog_type;
+        uint8_t message_size;
+        int i = 0;
+
+        dialog_id = (uint8_t)( data[idx++] );
+        dialog_type = (uint8_t)( data[idx++] );
+        message_size = (uint8_t)( data[idx++] );
+        // read the str size bytes for dialog text
+        for ( i = 0; i < message_size; i++ )
+            {
+            navilite_buffer[i] = (uint8_t)data[idx++];
+            }
+        navilite_buffer[i++] = 0;
+
+        if( navilite_content_update_callbacks.callback_func_dialogevent )
+            {
+            // Callback API for dialog prompt
+            navilite_content_update_callbacks.callback_func_dialogevent( dialog_id, dialog_type, navilite_buffer, message_size );
+            }
+        }
+
     // NAVILITE_SERVICETYPE_NAVIGATION_STATUS_UPDATE
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_NAVIGATION_STATUS_UPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_NAVIGATION_STATUS_UPDATE )
         {
         uint16_t status = navilite_packet.data_value;
 
