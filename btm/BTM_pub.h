@@ -199,11 +199,6 @@ void BTM_get_connection_info
     uint16_t* connection_handle
     );
 
-void BTM_pairing_dev_num_update
-    (
-    const uint8_t input_pair_dev_num
-    );
-
 int BTM_get_connect_request_bd_addrress_rev
     (
     uint8_t* return_connect_bd_addr_rev

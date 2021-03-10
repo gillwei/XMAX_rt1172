@@ -529,8 +529,6 @@ if( BT_CONN_TYPE_BT_IAP2 == paired_device_list[paired_device_index].connection_p
     paired_device_list[paired_device_index].is_connected = false;
     paired_device_list[paired_device_index].connection_handle = 0;
     HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, connection_handle_bytes, sizeof( uint16_t ) );
-
-    EW_notify_bt_paired_device_status_changed();
     }
 else if( BT_CONN_TYPE_BT_SPP == paired_device_list[paired_device_index].connection_path_type )
     {
@@ -570,6 +568,7 @@ if( pair_dev_index == ( paired_device_num - 1 ) )
     HCI_wiced_send_command( HCI_CONTROL_COMMAND_UNBOND, pair_dev_ind_arry, sizeof( uint8_t ) );
     memset( &(paired_device_list[pair_dev_index]), 0, sizeof( bt_device_info ) );
     paired_device_num --;
+    EW_notify_bt_paired_device_status_changed();
     }
 else
     {
@@ -904,19 +903,17 @@ if( ( CONNECTION_HANDLE_LENGTH == connection_info_length ) && ( false == connect
     {
     for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
         {
+        paired_device_list[i].is_connected = false;
+        paired_device_list[i].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
+        paired_device_list[i].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
         /* If the same remote device have connected BTC with LC, set BTC connect flag false */
         if( true == paired_device_list[i].is_connected )
             {
             btm_btc_connection_status.BTC_is_connected = false;
             btm_btc_connection_status.current_connection_handle = 0;
+            EW_notify_bt_paired_device_status_changed();
             }
-
-        paired_device_list[i].is_connected = connection_is_up;
-        paired_device_list[i].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
-        paired_device_list[i].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
         }
-
-    EW_notify_bt_paired_device_status_changed();
     }
 // Received BT connected event
 else if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) )
@@ -936,12 +933,10 @@ else if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_in
              btm_btc_connection_status.BTC_is_connected = true;
              btm_btc_connection_status.current_connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
              btm_btc_connection_status.current_connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
-
              paired_device_list[i].is_connected = connection_is_up;
              paired_device_list[i].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
              paired_device_list[i].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
              paired_device_list[i].connection_path_type = connection_path;
-
              EW_notify_bt_paired_device_status_changed();
              break;
              }
@@ -1066,10 +1061,16 @@ void BTM_pairing_info_update
     const uint8_t *pairing_info
     )
 {
-if( BT_MAX_PAIRED_DEVICE_NUM > pair_dev_index )
+if( ( ( BT_MAX_PAIRED_DEVICE_NUM - 1 ) > pair_dev_index ) & ( paired_device_num <= BT_MAX_PAIRED_DEVICE_NUM ) )
     {
     memcpy( &paired_device_list[pair_dev_index].device_address, &(pairing_info[0]), BT_DEVICE_ADDRESS_LEN );
     memcpy( &paired_device_list[pair_dev_index].device_name, &(pairing_info[BT_DEVICE_ADDRESS_LEN]), BT_DEVICE_NAME_LEN );
+    paired_device_num ++;
+    EW_notify_bt_paired_device_status_changed();
+    }
+else
+    {
+    PRINTF( "%s ERROR: pair device number:%d, Update pair device index:%d", __FUNCTION__, paired_device_num, pair_dev_index );
     }
 
 PRINTF( "%s", __FUNCTION__ );
@@ -1078,26 +1079,6 @@ for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
     PRINTF( " %02x", paired_device_list[pair_dev_index].device_address[i] );
     }
 PRINTF( "\r\n" );
-}
-
-/*********************************************************************
-*
-* @public
-* BTM_pairing_dev_num_update
-*
-* Update BT manager device number
-*
-* @param pair_dev_num Update pair device number
-*
-*
-*********************************************************************/
-void BTM_pairing_dev_num_update
-    (
-    const uint8_t input_pair_dev_num
-    )
-{
-paired_device_num = input_pair_dev_num;
-PRINTF( "%s:%d\n\r", __FUNCTION__, paired_device_num );
 }
 
 /*********************************************************************
@@ -1415,6 +1396,14 @@ int BTM_unpair_paired_device
 {
 int result = ERR_NONE;
 PRINTF( "%s: index:%d\r\n", __FUNCTION__, paired_device_idx );
+
+/* If the unpair device is connected, we need to assume the device will be successfully disconnected */
+/* Or the connection information update may not find the correct paired device */
+if( true == paired_device_list[paired_device_idx].is_connected )
+    {
+    btm_btc_connection_status.BTC_is_connected = false;
+    btm_btc_connection_status.current_connection_handle = 0;
+    }
 
 // We need to disconnect the device before unpair it
 BTM_disconnect_paired_device( paired_device_idx );

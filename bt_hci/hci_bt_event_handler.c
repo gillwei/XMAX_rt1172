@@ -137,14 +137,9 @@ switch( opcode )
         else if( p_data[PAIR_DEV_LIST_TOTAL_NUM_BYTE] == ( p_data[PAIR_DEV_LIST_INDEX_BYTE] + 1 ) )
             {
             BTM_pairing_info_update( p_data[PAIR_DEV_LIST_INDEX_BYTE], &( p_data[PAIR_DEV_LIST_INDEX_BYTE + 1] ) );
-            BTM_pairing_dev_num_update( p_data[PAIR_DEV_LIST_TOTAL_NUM_BYTE] );
             /* pair list update finished */
             pair_list_update_status = false;
             }
-        break;
-
-    case HCI_CONTROL_MISC_EVENT_READ_PAIR_DEV_NUM:
-        BTM_pairing_dev_num_update( p_data[0] );
         break;
 
     case HCI_CONTROL_MISC_EVENT_USER_CONFIRM_RESULT:
