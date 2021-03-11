@@ -89,3 +89,14 @@ class SlideTransitionNoFade : Effects::SlideTransition
     return fader;
   }
 }
+
+$rect <10,160,210,200>
+$output false
+autoobject Effect::SlideTransitionNoFade NoSlideOut
+{
+  preset Buffered = true;
+  preset Exponent = 4.43;
+  preset Timing = Effects::Timing.Exp_Out;
+  preset Duration = 0;
+  preset Direction = Core::Direction.Right;
+}

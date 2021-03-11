@@ -714,6 +714,7 @@ EW_DEFINE_CLASS( MediaMED01_MediaUI, ComponentsBaseMainBG, HighlightBG, Title, T
   MediaMED01_MediaUI_OnLongDownKeyActivated,
   MediaMED01_MediaUI_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,

@@ -106,6 +106,8 @@ EW_DEFINE_FIELDS( SettingsSET9_10_11_BtConnectionResult, ComponentsBaseMainBG )
   EW_OBJECT  ( ConnectPairedDeviceResultHandler, CoreSystemEventHandler )
   EW_OBJECT  ( DismissTimer,    CoreTimer )
   EW_OBJECT  ( Divider,         ViewsImage )
+  EW_OBJECT  ( LoadingAnimation, ViewsImage )
+  EW_OBJECT  ( LoadingText,     ViewsText )
   EW_PROPERTY( DeviceName,      XString )
 EW_END_OF_FIELDS( SettingsSET9_10_11_BtConnectionResult )
 
@@ -161,6 +163,7 @@ EW_DEFINE_METHODS( SettingsSET9_10_11_BtConnectionResult, ComponentsBaseMainBG )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
@@ -175,6 +178,9 @@ void SettingsSET9_10_11_BtConnectionResult_OnConnectPairedDeviceResultSlot( Sett
 /* 'C' function for method : 'Settings::SET9_10_11_BtConnectionResult.OnDismissSlot()' */
 void SettingsSET9_10_11_BtConnectionResult_OnDismissSlot( SettingsSET9_10_11_BtConnectionResult _this, 
   XObject sender );
+
+/* 'C' function for method : 'Settings::SET9_10_11_BtConnectionResult.HideLoadingUI()' */
+void SettingsSET9_10_11_BtConnectionResult_HideLoadingUI( SettingsSET9_10_11_BtConnectionResult _this );
 
 #ifdef __cplusplus
   }

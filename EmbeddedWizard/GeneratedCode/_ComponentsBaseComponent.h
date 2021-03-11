@@ -155,6 +155,7 @@ EW_DEFINE_METHODS( ComponentsBaseComponent, CoreGroup )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
@@ -217,6 +218,9 @@ void ComponentsBaseComponent__OnLongEnterKeyActivated( void* _this );
 
 /* 'C' function for method : 'Components::BaseComponent.OnLongHomeKeyActivated()' */
 void ComponentsBaseComponent_OnLongHomeKeyActivated( ComponentsBaseComponent _this );
+
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongHomeKeyActivated()' */
+void ComponentsBaseComponent__OnLongHomeKeyActivated( void* _this );
 
 /* 'C' function for method : 'Components::BaseComponent.OnShortMagicKeyActivated()' */
 void ComponentsBaseComponent_OnShortMagicKeyActivated( ComponentsBaseComponent _this );

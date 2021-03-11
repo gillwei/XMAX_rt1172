@@ -209,6 +209,7 @@ EW_DEFINE_CLASS( OpenOPN01_BootupAnimation, ComponentsBaseComponent, OnBootupAni
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,

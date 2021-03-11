@@ -84,27 +84,24 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000410, /* ratio 53.46 % */
+  0x0000035A, /* ratio 53.15 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x8A002980, 0x0002A000, 0x00198006,
   0x58181E32, 0x8A8EA304, 0xE0223320, 0x184004E8, 0x94006D00, 0x6331F001, 0x4C438E02,
   0x4630041E, 0x19360025, 0xA8240801, 0x8642A110, 0xA44A210E, 0x4E46D168, 0x662D1C02,
-  0x25B04A44, 0xA11C0C00, 0xE0039000, 0x739B4D0D, 0xC8856400, 0x004F6A90, 0xB8B80067,
-  0x58611369, 0xE61A6886, 0xEB91C10C, 0xC33384D4, 0x31F8FD66, 0x00290008, 0x02A8008E,
-  0x004449A0, 0x797E2925, 0x58AEF138, 0x2ECD2BB2, 0xA3F69004, 0x380F8CC3, 0x0769B112,
-  0x2595CD6E, 0xE95CA64F, 0x8E04E738, 0xCD66577E, 0xCAEC327A, 0xC6BD6EB1, 0xA336A965,
-  0xB0598E01, 0xB2402CE6, 0x059DCE6A, 0x2B54FE67, 0x1AC5B0B4, 0xF41A39B7, 0x5FE838B9,
-  0x1C7000A2, 0xE720A8E5, 0x41C7B682, 0xD088772A, 0xD006466A, 0x9B574A87, 0xE6C67647,
-  0x755A4B04, 0xC3264648, 0x0F711993, 0xB0940B87, 0x6E0018F6, 0xB0497CE4, 0xF2F84537,
-  0xC0A0031F, 0xBC4CC9F1, 0x96F1992B, 0xC0018C68, 0x31595C04, 0x564E1104, 0x709E9431,
-  0x5EE715BA, 0x10E5F061, 0xEDEB411C, 0xC97BDC66, 0x470274E5, 0x4001C17C, 0xF4312779,
-  0x090E5855, 0x02439851, 0x4A55442A, 0xD544C877, 0x25A82C4A, 0x9D2B4E22, 0x0E4AD594,
-  0x6ED278C5, 0x93990563, 0x20022007, 0xF18B8922, 0x148A8008, 0x8BD708B1, 0xA038F800,
-  0x9559355A, 0x31368DD2, 0x1A4652B4, 0x79A47914, 0x22B8A536, 0x05BE2D00, 0x92618CA3,
-  0x38429329, 0x47012465, 0x55A8E658, 0x38CE229A, 0xD50E5667, 0xFC4E6461, 0x4CA71411,
-  0xE538DA3B, 0x67956A68, 0xB9088C55, 0x861451C4, 0x795564C5, 0x5F40025B, 0xA5490E11,
-  0xB5361E10, 0x45780009, 0x7957015C, 0xDFA6B168, 0x5439046B, 0xF5194A53, 0x78A30459,
-  0x88E8E439, 0x93395669, 0xD6B2B396, 0x461883DC, 0x007D9ED8, 0x85EBD0C8, 0x6BB711B9,
-  0x90D2BE74, 0x0A100393, 0x00B11BCB, 0x4E5FA700, 0x00040400, 0x00000000
+  0x25B04A44, 0xB31C0300, 0xB3939CD8, 0x6F004900, 0x382CEE72, 0x87C367F3, 0xAC822711,
+  0x41A395A1, 0x0ABF0B9F, 0xC7116B15, 0x720A8E51, 0x96B8E02E, 0x0EB70028, 0xC8CD6611,
+  0xBB586E80, 0x99E40178, 0xC12E339A, 0x921D5992, 0x64F0C991, 0x1367ADC6, 0x17FA0DA6,
+  0x37000C40, 0x5824BE72, 0xAFE632D7, 0x7C702919, 0x4D8A5332, 0x10E40033, 0x89800346,
+  0x210CAA64, 0xF0CACCE2, 0x93AED9B1, 0x9CF50EC1, 0xC8C12CA3, 0xBEEF295E, 0x09E336EC,
+  0xC000558E, 0x24F8B001, 0xCE009EC3, 0xD622157C, 0xAA856A21, 0xA991DE53, 0xAF8B257A,
+  0x3CAE71CB, 0xC3A57549, 0xBABD27ED, 0x7D7EB000, 0x95C80F46, 0xD36C6733, 0xD68A7521,
+  0x80076725, 0x9A7D753E, 0x9F24A158, 0x94AD6978, 0x2DF10691, 0xD3815CD7, 0x75C00755,
+  0xDDC769FE, 0x77A5A87F, 0x70124E53, 0xE44D9E14, 0x775CB7FD, 0x95455000, 0x17C87543,
+  0x8E17869A, 0xFE87A217, 0x57E224AD, 0x1DB5658B, 0x14712E42, 0xC5A60005, 0x0662D594,
+  0x1159B002, 0x1921410E, 0x94E1361E, 0x5C456191, 0x0C62D921, 0x4391F6B1, 0x90454119,
+  0x74A53543, 0x9A374122, 0xF38E90E6, 0x56600799, 0x52B43108, 0x10012C98, 0xE1BF6D97,
+  0x626E9406, 0x9B8000C9, 0xD6857268, 0x49B99D9A, 0xDC0E4E43, 0x955AA736, 0x941649B9,
+  0x10146539, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -121,58 +118,56 @@ static const XStringRes _Const0009 = { _StringsDefault0, 0x0034 };
 static const XStringRes _Const000A = { _StringsDefault0, 0x0038 };
 static const XRect _Const000B = {{ 10, 50 }, { 470, 236 }};
 static const XRect _Const000C = {{ 0, 36 }, { 480, 38 }};
-static const XStringRes _Const000D = { _StringsDefault0, 0x003C };
-static const XStringRes _Const000E = { _StringsDefault0, 0x0054 };
-static const XStringRes _Const000F = { _StringsDefault0, 0x0075 };
-static const XStringRes _Const0010 = { _StringsDefault0, 0x0084 };
-static const XRect _Const0011 = {{ 10, 45 }, { 470, 169 }};
-static const XRect _Const0012 = {{ 165, 176 }, { 315, 259 }};
-static const XStringRes _Const0013 = { _StringsDefault0, 0x0097 };
-static const XStringRes _Const0014 = { _StringsDefault0, 0x009D };
-static const XStringRes _Const0015 = { _StringsDefault0, 0x00A2 };
-static const XRect _Const0016 = {{ 10, 45 }, { 470, 107 }};
-static const XRect _Const0017 = {{ 10, 107 }, { 470, 169 }};
-static const XStringRes _Const0018 = { _StringsDefault0, 0x00AF };
-static const XStringRes _Const0019 = { _StringsDefault0, 0x00BC };
-static const XStringRes _Const001A = { _StringsDefault0, 0x00C0 };
-static const XStringRes _Const001B = { _StringsDefault0, 0x00CB };
-static const XStringRes _Const001C = { _StringsDefault0, 0x00D7 };
-static const XStringRes _Const001D = { _StringsDefault0, 0x00E1 };
-static const XStringRes _Const001E = { _StringsDefault0, 0x00EE };
-static const XStringRes _Const001F = { _StringsDefault0, 0x00F7 };
-static const XStringRes _Const0020 = { _StringsDefault0, 0x010B };
-static const XStringRes _Const0021 = { _StringsDefault0, 0x0118 };
-static const XRect _Const0022 = {{ 0, 0 }, { 480, 272 }};
-static const XColor _Const0023 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0024 = {{ 80, 60 }, { 380, 210 }};
-static const XStringRes _Const0025 = { _StringsDefault0, 0x0125 };
-static const XColor _Const0026 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XStringRes _Const0027 = { _StringsDefault0, 0x014C };
-static const XStringRes _Const0028 = { _StringsDefault0, 0x016A };
-static const XRect _Const0029 = {{ 20, 98 }, { 207, 227 }};
-static const XRect _Const002A = {{ 210, 48 }, { 398, 98 }};
-static const XRect _Const002B = {{ 210, 192 }, { 442, 240 }};
-static const XRect _Const002C = {{ 210, 98 }, { 463, 192 }};
-static const XStringRes _Const002D = { _StringsDefault0, 0x0184 };
-static const XStringRes _Const002E = { _StringsDefault0, 0x0196 };
-static const XStringRes _Const002F = { _StringsDefault0, 0x01AA };
-static const XStringRes _Const0030 = { _StringsDefault0, 0x01B3 };
-static const XStringRes _Const0031 = { _StringsDefault0, 0x01BC };
-static const XStringRes _Const0032 = { _StringsDefault0, 0x01C6 };
-static const XStringRes _Const0033 = { _StringsDefault0, 0x01CC };
-static const XRect _Const0034 = {{ 10, 132 }, { 470, 163 }};
-static const XRect _Const0035 = {{ 10, 194 }, { 470, 256 }};
-static const XRect _Const0036 = {{ 10, 163 }, { 470, 194 }};
-static const XRect _Const0037 = {{ 193, 36 }, { 287, 130 }};
-static const XStringRes _Const0038 = { _StringsDefault0, 0x01E0 };
-static const XRect _Const0039 = {{ 10, 46 }, { 470, 201 }};
-static const XStringRes _Const003A = { _StringsDefault0, 0x01ED };
-static const XStringRes _Const003B = { _StringsDefault0, 0x01FA };
-static const XRect _Const003C = {{ 10, 45 }, { 470, 76 }};
-static const XRect _Const003D = {{ 10, 107 }, { 470, 138 }};
-static const XRect _Const003E = {{ 10, 76 }, { 470, 107 }};
-static const XRect _Const003F = {{ 10, 138 }, { 470, 169 }};
-static const XRect _Const0040 = {{ 95, 176 }, { 385, 259 }};
+static const XRect _Const000D = {{ 193, 54 }, { 287, 148 }};
+static const XRect _Const000E = {{ 10, 156 }, { 470, 187 }};
+static const XRect _Const000F = {{ 10, 45 }, { 470, 169 }};
+static const XRect _Const0010 = {{ 165, 176 }, { 315, 259 }};
+static const XStringRes _Const0011 = { _StringsDefault0, 0x003C };
+static const XStringRes _Const0012 = { _StringsDefault0, 0x0042 };
+static const XStringRes _Const0013 = { _StringsDefault0, 0x0047 };
+static const XRect _Const0014 = {{ 10, 45 }, { 470, 107 }};
+static const XRect _Const0015 = {{ 10, 107 }, { 470, 169 }};
+static const XStringRes _Const0016 = { _StringsDefault0, 0x0054 };
+static const XStringRes _Const0017 = { _StringsDefault0, 0x0061 };
+static const XStringRes _Const0018 = { _StringsDefault0, 0x0065 };
+static const XStringRes _Const0019 = { _StringsDefault0, 0x0070 };
+static const XStringRes _Const001A = { _StringsDefault0, 0x007C };
+static const XStringRes _Const001B = { _StringsDefault0, 0x0086 };
+static const XStringRes _Const001C = { _StringsDefault0, 0x0093 };
+static const XStringRes _Const001D = { _StringsDefault0, 0x009C };
+static const XStringRes _Const001E = { _StringsDefault0, 0x00B0 };
+static const XStringRes _Const001F = { _StringsDefault0, 0x00BD };
+static const XRect _Const0020 = {{ 0, 0 }, { 480, 272 }};
+static const XColor _Const0021 = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0022 = {{ 80, 60 }, { 380, 210 }};
+static const XStringRes _Const0023 = { _StringsDefault0, 0x00CA };
+static const XColor _Const0024 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XStringRes _Const0025 = { _StringsDefault0, 0x00F1 };
+static const XStringRes _Const0026 = { _StringsDefault0, 0x010F };
+static const XRect _Const0027 = {{ 20, 98 }, { 207, 227 }};
+static const XRect _Const0028 = {{ 210, 48 }, { 398, 98 }};
+static const XRect _Const0029 = {{ 210, 192 }, { 442, 240 }};
+static const XRect _Const002A = {{ 210, 98 }, { 463, 192 }};
+static const XStringRes _Const002B = { _StringsDefault0, 0x0129 };
+static const XStringRes _Const002C = { _StringsDefault0, 0x013B };
+static const XStringRes _Const002D = { _StringsDefault0, 0x014F };
+static const XStringRes _Const002E = { _StringsDefault0, 0x0158 };
+static const XStringRes _Const002F = { _StringsDefault0, 0x0161 };
+static const XStringRes _Const0030 = { _StringsDefault0, 0x016B };
+static const XStringRes _Const0031 = { _StringsDefault0, 0x0171 };
+static const XRect _Const0032 = {{ 10, 132 }, { 470, 163 }};
+static const XRect _Const0033 = {{ 10, 194 }, { 470, 256 }};
+static const XRect _Const0034 = {{ 10, 163 }, { 470, 194 }};
+static const XRect _Const0035 = {{ 193, 36 }, { 287, 130 }};
+static const XStringRes _Const0036 = { _StringsDefault0, 0x0185 };
+static const XRect _Const0037 = {{ 10, 46 }, { 470, 201 }};
+static const XStringRes _Const0038 = { _StringsDefault0, 0x0192 };
+static const XStringRes _Const0039 = { _StringsDefault0, 0x019F };
+static const XRect _Const003A = {{ 10, 45 }, { 470, 76 }};
+static const XRect _Const003B = {{ 10, 107 }, { 470, 138 }};
+static const XRect _Const003C = {{ 10, 76 }, { 470, 107 }};
+static const XRect _Const003D = {{ 10, 138 }, { 470, 169 }};
+static const XRect _Const003E = {{ 95, 176 }, { 385, 259 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -479,6 +474,7 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, _None, _None,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -685,6 +681,7 @@ EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, ItemTitl
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -934,6 +931,7 @@ EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, ItemTitleArray,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -1068,6 +1066,14 @@ void SettingsSET06_BtcDiscovarable_OnShortHomeKeyActivated( SettingsSET06_BtcDis
   DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
   DeviceInterfaceBluetoothDeviceClass ), 0 );
   ComponentsBaseMainBG_OnShortHomeKeyActivated((ComponentsBaseMainBG)_this );
+}
+
+/* 'C' function for method : 'Settings::SET06_BtcDiscovarable.OnLongHomeKeyActivated()' */
+void SettingsSET06_BtcDiscovarable_OnLongHomeKeyActivated( SettingsSET06_BtcDiscovarable _this )
+{
+  DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
+  DeviceInterfaceBluetoothDeviceClass ), 0 );
+  ComponentsBaseComponent_OnLongHomeKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Settings::SET06_BtcDiscovarable.OnCancelSlot()' */
@@ -1207,6 +1213,7 @@ EW_DEFINE_CLASS( SettingsSET06_BtcDiscovarable, ComponentsBaseMainBG, Discoverab
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  SettingsSET06_BtcDiscovarable_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -1227,6 +1234,8 @@ void SettingsSET9_10_11_BtConnectionResult__Init( SettingsSET9_10_11_BtConnectio
   CoreSystemEventHandler__Init( &_this->ConnectPairedDeviceResultHandler, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->DismissTimer, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->LoadingAnimation, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->LoadingText, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( SettingsSET9_10_11_BtConnectionResult );
@@ -1244,8 +1253,14 @@ void SettingsSET9_10_11_BtConnectionResult__Init( SettingsSET9_10_11_BtConnectio
   CoreRectView__OnSetBounds( &_this->Divider, _Const000C );
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
+  CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const000D );
+  ViewsImage_OnSetAnimated( &_this->LoadingAnimation, 1 );
+  CoreRectView__OnSetBounds( &_this->LoadingText, _Const000E );
+  ViewsText_OnSetString( &_this->LoadingText, EwLoadString( &StringsGEN_please_wait ));
   CoreGroup__Add( _this, ((CoreView)&_this->Message ), -1 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), -1 );
+  CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->LoadingText ), 0 );
   ViewsText_OnSetFont( &_this->Message, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->ConnectPairedDeviceResultHandler.OnEvent = EwNewSlot( _this, SettingsSET9_10_11_BtConnectionResult_OnConnectPairedDeviceResultSlot );
@@ -1254,6 +1269,10 @@ void SettingsSET9_10_11_BtConnectionResult__Init( SettingsSET9_10_11_BtConnectio
   _this->DismissTimer.OnTrigger = EwNewSlot( _this, SettingsSET9_10_11_BtConnectionResult_OnDismissSlot );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->LoadingAnimation, EwLoadResource( &ResourceLoadingAnimation, 
+  ResourcesBitmap ));
+  ViewsText_OnSetFont( &_this->LoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
 }
 
 /* Re-Initializer for the class 'Settings::SET9_10_11_BtConnectionResult' */
@@ -1267,6 +1286,8 @@ void SettingsSET9_10_11_BtConnectionResult__ReInit( SettingsSET9_10_11_BtConnect
   CoreSystemEventHandler__ReInit( &_this->ConnectPairedDeviceResultHandler );
   CoreTimer__ReInit( &_this->DismissTimer );
   ViewsImage__ReInit( &_this->Divider );
+  ViewsImage__ReInit( &_this->LoadingAnimation );
+  ViewsText__ReInit( &_this->LoadingText );
 }
 
 /* Finalizer method for the class 'Settings::SET9_10_11_BtConnectionResult' */
@@ -1280,6 +1301,8 @@ void SettingsSET9_10_11_BtConnectionResult__Done( SettingsSET9_10_11_BtConnectio
   CoreSystemEventHandler__Done( &_this->ConnectPairedDeviceResultHandler );
   CoreTimer__Done( &_this->DismissTimer );
   ViewsImage__Done( &_this->Divider );
+  ViewsImage__Done( &_this->LoadingAnimation );
+  ViewsText__Done( &_this->LoadingText );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_Super );
@@ -1306,6 +1329,7 @@ void SettingsSET9_10_11_BtConnectionResult_OnConnectPairedDeviceResultSlot( Sett
         0 );
       XInt32 RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
         EwLoadString( &StringsARGUMENT_STR ));
+      SettingsSET9_10_11_BtConnectionResult_HideLoadingUI( _this );
       ViewsText_OnSetString( &_this->Message, EwConcatString( EwConcatString( EwStringLeft( 
       ProcessString, LeftIdx ), _this->DeviceName ), EwStringRight( ProcessString, 
       RightIdx )));
@@ -1317,17 +1341,12 @@ void SettingsSET9_10_11_BtConnectionResult_OnConnectPairedDeviceResultSlot( Sett
       XString ProcessString = EwLoadString( &StringsSET10_CONNECTION_FAILED );
       XInt32 LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 
         0 );
-      XInt32 RightIdx;
-      EwTrace( "%s%i", EwLoadString( &_Const000D ), EwGetStringLength( ProcessString ));
-      EwTrace( "%s%i", EwLoadString( &_Const000E ), EwGetStringLength( EwLoadString( 
-        &StringsARGUMENT_STR )));
-      RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
-      EwLoadString( &StringsARGUMENT_STR ));
-      EwTrace( "%s%s", EwLoadString( &_Const000F ), _this->DeviceName );
+      XInt32 RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
+        EwLoadString( &StringsARGUMENT_STR ));
+      SettingsSET9_10_11_BtConnectionResult_HideLoadingUI( _this );
       ViewsText_OnSetString( &_this->Message, EwConcatString( EwConcatString( EwStringLeft( 
       ProcessString, LeftIdx ), _this->DeviceName ), EwStringRight( ProcessString, 
       RightIdx )));
-      EwTrace( "%s%s", EwLoadString( &_Const0010 ), _this->Message.String );
     }
     break;
 
@@ -1338,6 +1357,7 @@ void SettingsSET9_10_11_BtConnectionResult_OnConnectPairedDeviceResultSlot( Sett
         0 );
       XInt32 RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
         EwLoadString( &StringsARGUMENT_STR ));
+      SettingsSET9_10_11_BtConnectionResult_HideLoadingUI( _this );
       ViewsText_OnSetString( &_this->Message, EwConcatString( EwConcatString( EwStringLeft( 
       ProcessString, LeftIdx ), _this->DeviceName ), EwStringRight( ProcessString, 
       RightIdx )));
@@ -1362,6 +1382,13 @@ void SettingsSET9_10_11_BtConnectionResult_OnDismissSlot( SettingsSET9_10_11_BtC
   EwNullSlot, 0 );
   DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList( EwGetAutoObject( 
   &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 1 );
+}
+
+/* 'C' function for method : 'Settings::SET9_10_11_BtConnectionResult.HideLoadingUI()' */
+void SettingsSET9_10_11_BtConnectionResult_HideLoadingUI( SettingsSET9_10_11_BtConnectionResult _this )
+{
+  ViewsText_OnSetVisible( &_this->LoadingText, 0 );
+  ViewsImage_OnSetVisible( &_this->LoadingAnimation, 0 );
 }
 
 /* Variants derived from the class : 'Settings::SET9_10_11_BtConnectionResult' */
@@ -1408,6 +1435,7 @@ EW_DEFINE_CLASS( SettingsSET9_10_11_BtConnectionResult, ComponentsBaseMainBG, Me
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -1432,16 +1460,16 @@ void SettingsSET05_BtcMaxPairedDevice__Init( SettingsSET05_BtcMaxPairedDevice _t
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->Text, _Const0011 );
+  CoreRectView__OnSetBounds( &_this->Text, _Const000F );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
   ViewsText_OnSetAlignment( &_this->Text, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Text, EwLoadString( &StringsSET05_MAX_DEVICES ));
-  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0010 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
-  &_Const0013 ));
+  &_Const0011 ));
   MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
-  &_Const0014 ));
+  &_Const0012 ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
   ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
@@ -1488,7 +1516,7 @@ void SettingsSET05_BtcMaxPairedDevice_Init( SettingsSET05_BtcMaxPairedDevice _th
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0015 ));
+  EwTrace( "%s", EwLoadString( &_Const0013 ));
 }
 
 /* 'C' function for method : 'Settings::SET05_BtcMaxPairedDevice.OnYesActivatedSlot()' */
@@ -1563,6 +1591,7 @@ EW_DEFINE_CLASS( SettingsSET05_BtcMaxPairedDevice, ComponentsBaseMainBG, Text, T
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -1589,17 +1618,17 @@ void SettingsSET08_BtcPairDevice__Init( SettingsSET08_BtcPairDevice _this, XObje
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->PairText, _Const0016 );
+  CoreRectView__OnSetBounds( &_this->PairText, _Const0014 );
   ViewsText_OnSetWrapText( &_this->PairText, 1 );
   ViewsText_OnSetAlignment( &_this->PairText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString( &_this->PairText, EwLoadString( &StringsSET08_PAIR_WITH ));
-  CoreRectView__OnSetBounds( &_this->PasskeyText, _Const0017 );
+  CoreRectView__OnSetBounds( &_this->PasskeyText, _Const0015 );
   ViewsText_OnSetWrapText( &_this->PasskeyText, 1 );
   ViewsText_OnSetAlignment( &_this->PasskeyText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->PasskeyText, EwLoadString( &StringsSET08_PASSKEY ));
-  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0010 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
   &StringsGEN_yes ));
@@ -1664,7 +1693,7 @@ void SettingsSET08_BtcPairDevice_Init( SettingsSET08_BtcPairDevice _this, XHandl
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0018 ));
+  EwTrace( "%s", EwLoadString( &_Const0016 ));
   ProcessString = EwLoadString( &StringsSET08_PAIR_WITH );
   LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 0 );
   RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
@@ -1674,7 +1703,7 @@ void SettingsSET08_BtcPairDevice_Init( SettingsSET08_BtcPairDevice _this, XHandl
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))), 
   EwStringRight( ProcessString, RightIdx )));
   ViewsText_OnSetString( &_this->PasskeyText, EwConcatString( EwConcatString( EwLoadString( 
-  &StringsSET08_PASSKEY ), EwLoadString( &_Const0019 )), EwNewStringUInt( DeviceInterfaceBluetoothDeviceClass_GetBtcPasskey( 
+  &StringsSET08_PASSKEY ), EwLoadString( &_Const0017 )), EwNewStringUInt( DeviceInterfaceBluetoothDeviceClass_GetBtcPasskey( 
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )), 
   0, 10 )));
 }
@@ -1688,17 +1717,14 @@ void SettingsSET08_BtcPairDevice_OnNoActivatedSlot( SettingsSET08_BtcPairDevice 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s", EwLoadString( &_Const001A ));
+  EwTrace( "%s", EwLoadString( &_Const0018 ));
   BTM_btc_confirm_passkey( false );
   BtSettingMenu = EwCastObject( _this->Super5.Owner, SettingsSET04_BtSettingMenu );
 
   if ( BtSettingMenu != 0 )
   {
-    if ( BtSettingMenu->Super6.Owner != 0 )
-    {
-      BtSettingMenu->Super2.SlideOutEffectEnabled = 0;
-      ComponentsBaseMainBG_DismissThisDialog((ComponentsBaseMainBG)BtSettingMenu );
-    }
+    BtSettingMenu->Super2.SlideOutEffectEnabled = 0;
+    ComponentsBaseMainBG_DismissThisDialog((ComponentsBaseMainBG)BtSettingMenu );
   }
 }
 
@@ -1710,7 +1736,7 @@ void SettingsSET08_BtcPairDevice_OnYesActivatedSlot( SettingsSET08_BtcPairDevice
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s", EwLoadString( &_Const001B ));
+  EwTrace( "%s", EwLoadString( &_Const0019 ));
   BTM_btc_confirm_passkey( true );
 }
 
@@ -1798,6 +1824,7 @@ EW_DEFINE_CLASS( SettingsSET08_BtcPairDevice, ComponentsBaseMainBG, PairText, Pa
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -1824,15 +1851,16 @@ void SettingsSET17_BtcPairedDeviceList__Init( SettingsSET17_BtcPairedDeviceList 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super2.SlideOutEffectEnabled = 1;
+  CoreRectView__OnSetBounds( &_this->NoDataText, _Const000B );
+  ViewsText_OnSetString( &_this->NoDataText, EwLoadString( &_Const001A ));
+  CoreTimer_OnSetBegin( &_this->NoDataTimeoutTimer, 2000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 0 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
-  CoreRectView__OnSetBounds( &_this->NoDataText, _Const000B );
-  ViewsText_OnSetString( &_this->NoDataText, EwLoadString( &_Const001C ));
-  CoreTimer_OnSetBegin( &_this->NoDataTimeoutTimer, 2000 );
-  CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), 0 );
+  MenuVerticalMenu_OnSetStatusBarDividerVisible( &_this->Super1.Menu, 1 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), -1 );
   _this->RefreshListObserver.OnEvent = EwNewSlot( _this, SettingsSET17_BtcPairedDeviceList_OnRefreshListSlot );
   CorePropertyObserver_OnSetOutlet( &_this->RefreshListObserver, EwNewRef( EwGetAutoObject( 
   &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList, 
@@ -1881,7 +1909,7 @@ void SettingsSET17_BtcPairedDeviceList_Init( SettingsSET17_BtcPairedDeviceList _
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const001D ));
+  EwTrace( "%s", EwLoadString( &_Const001B ));
   SettingsSET17_BtcPairedDeviceList_UpdatePairedDeviceNum( _this );
 }
 
@@ -1966,7 +1994,7 @@ void SettingsSET17_BtcPairedDeviceList_UpdatePairedDeviceNum( SettingsSET17_BtcP
   _this->PairedDeviceNum = DeviceInterfaceBluetoothDeviceClass_OnGetPairedDeviceNum( 
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ));
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, _this->PairedDeviceNum );
-  EwTrace( "%s%i", EwLoadString( &_Const001E ), _this->PairedDeviceNum );
+  EwTrace( "%s%i", EwLoadString( &_Const001C ), _this->PairedDeviceNum );
 
   if ( _this->PairedDeviceNum > 0 )
   {
@@ -1993,7 +2021,7 @@ void SettingsSET17_BtcPairedDeviceList_OnRefreshListSlot( SettingsSET17_BtcPaire
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s", EwLoadString( &_Const001F ));
+  EwTrace( "%s", EwLoadString( &_Const001D ));
   SettingsSET17_BtcPairedDeviceList_UpdatePairedDeviceNum( _this );
 }
 
@@ -2055,6 +2083,7 @@ EW_DEFINE_CLASS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView, RefreshLis
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -2116,7 +2145,7 @@ void SettingsSET19_BtcPairedDeviceOperation_Init( SettingsSET19_BtcPairedDeviceO
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0020 ));
+  EwTrace( "%s", EwLoadString( &_Const001E ));
 }
 
 /* 'C' function for method : 'Settings::SET19_BtcPairedDeviceOperation.LoadItemClass()' */
@@ -2310,6 +2339,7 @@ EW_DEFINE_CLASS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView, Devic
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -2387,7 +2417,7 @@ void SettingsSET18_DeleteBleDevice_Init( SettingsSET18_DeleteBleDevice _this, XH
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0021 ));
+  EwTrace( "%s", EwLoadString( &_Const001F ));
   ProcessString = EwLoadString( &StringsSET18_DELETE_PAIRING_RECORD );
   LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 0 );
   RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
@@ -2440,6 +2470,7 @@ EW_DEFINE_CLASS( SettingsSET18_DeleteBleDevice, ComponentsBaseMainBG, Text, Text
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -2465,13 +2496,13 @@ void SettingsBtFwUpdateDialog__Init( SettingsBtFwUpdateDialog _this, XObject aLi
   _this->_VMT = EW_CLASS( SettingsBtFwUpdateDialog );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0022 );
-  CoreRectView__OnSetBounds( &_this->Rectangle, _Const0022 );
-  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0023 );
-  CoreRectView__OnSetBounds( &_this->StatusText, _Const0024 );
+  CoreRectView__OnSetBounds( _this, _Const0020 );
+  CoreRectView__OnSetBounds( &_this->Rectangle, _Const0020 );
+  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0021 );
+  CoreRectView__OnSetBounds( &_this->StatusText, _Const0022 );
   ViewsText_OnSetWrapText( &_this->StatusText, 1 );
-  ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0025 ));
-  ViewsText_OnSetColor( &_this->StatusText, _Const0026 );
+  ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0023 ));
+  ViewsText_OnSetColor( &_this->StatusText, _Const0024 );
   CoreTimer_OnSetPeriod( &_this->RemoveDialogTimer, 2000 );
   CoreGroup__Add( _this, ((CoreView)&_this->Rectangle ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->StatusText ), 0 );
@@ -2525,14 +2556,14 @@ void SettingsBtFwUpdateDialog_OnBtFwStatusUpdateSlot( SettingsBtFwUpdateDialog _
   {
     case EnumBtFwStatusUPDATE_FINISH :
     {
-      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0027 ));
+      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0025 ));
       CoreTimer_OnSetEnabled( &_this->RemoveDialogTimer, 1 );
     }
     break;
 
     case EnumBtFwStatusUPDATE_ABORT :
     {
-      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0028 ));
+      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0026 ));
       CoreTimer_OnSetEnabled( &_this->RemoveDialogTimer, 1 );
     }
     break;
@@ -2729,6 +2760,7 @@ EW_DEFINE_CLASS( SettingsTimeoutDialog, ComponentsBaseMainBG, OnTimeout, OnTimeo
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -2756,21 +2788,21 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
   _this->_VMT = EW_CLASS( SettingsSET30_QRCode );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0022 );
+  CoreRectView__OnSetBounds( _this, _Const0020 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->QrCode, _Const0029 );
+  CoreRectView__OnSetBounds( &_this->QrCode, _Const0027 );
   ViewsImage_OnSetAlignment( &_this->QrCode, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
   _this->PixelPerModule = 1;
-  CoreRectView__OnSetBounds( &_this->PixelText, _Const002A );
+  CoreRectView__OnSetBounds( &_this->PixelText, _Const0028 );
   ViewsText_OnSetAlignment( &_this->PixelText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->PixelText, 0 );
-  CoreRectView__OnSetBounds( &_this->QrCodeWidthText, _Const002B );
+  CoreRectView__OnSetBounds( &_this->QrCodeWidthText, _Const0029 );
   ViewsText_OnSetAlignment( &_this->QrCodeWidthText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->QrCodeWidthText, 0 );
-  CoreRectView__OnSetBounds( &_this->QrCodeContent, _Const002C );
+  CoreRectView__OnSetBounds( &_this->QrCodeContent, _Const002A );
   ViewsText_OnSetWrapText( &_this->QrCodeContent, 1 );
   ViewsText_OnSetAlignment( &_this->QrCodeContent, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
@@ -2849,7 +2881,7 @@ void SettingsSET30_QRCode_OnShortDownKeyActivated( SettingsSET30_QRCode _this )
   }
   else
   {
-    EwTrace( "%s", EwLoadString( &_Const002D ));
+    EwTrace( "%s", EwLoadString( &_Const002B ));
   }
 }
 
@@ -2864,7 +2896,7 @@ void SettingsSET30_QRCode_OnShortUpKeyActivated( SettingsSET30_QRCode _this )
   }
   else
   {
-    EwTrace( "%s", EwLoadString( &_Const002E ));
+    EwTrace( "%s", EwLoadString( &_Const002C ));
   }
 }
 
@@ -2879,15 +2911,15 @@ void SettingsSET30_QRCode_OnQrCodeUpdateSlot( SettingsSET30_QRCode _this, XObjec
   EW_UNUSED_ARG( sender );
 
   ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
-  ResourcesExternBitmap ), EwConcatString( EwLoadString( &_Const002F ), EwNewStringInt( 
+  ResourcesExternBitmap ), EwConcatString( EwLoadString( &_Const002D ), EwNewStringInt( 
   _this->PixelPerModule, 0, 10 )));
   ViewsText_OnSetString( &_this->PixelText, EwConcatString( EwNewStringInt( _this->PixelPerModule, 
-  0, 10 ), EwLoadString( &_Const0030 )));
+  0, 10 ), EwLoadString( &_Const002E )));
   QrCodeWidth = ( 33 * _this->PixelPerModule ) * 0.019350f;
   ViewsText_OnSetString( &_this->QrCodeWidthText, EwConcatString( EwConcatString( 
-  EwLoadString( &_Const0031 ), EwNewStringFloat( QrCodeWidth, 0, -1 )), EwLoadString( 
-  &_Const0032 )));
-  ViewsText_OnSetString( &_this->QrCodeContent, EwConcatString( EwLoadString( &_Const0033 ), 
+  EwLoadString( &_Const002F ), EwNewStringFloat( QrCodeWidth, 0, -1 )), EwLoadString( 
+  &_Const0030 )));
+  ViewsText_OnSetString( &_this->QrCodeContent, EwConcatString( EwLoadString( &_Const0031 ), 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->QrCodeText ));
 }
 
@@ -2936,6 +2968,7 @@ EW_DEFINE_CLASS( SettingsSET30_QRCode, ComponentsBaseMainBG, QrCodeUpdateEventHa
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -2963,16 +2996,16 @@ void SettingsSET22_BleAdvertising__Init( SettingsSET22_BleAdvertising _this, XOb
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->DeviceNameText, _Const0034 );
+  CoreRectView__OnSetBounds( &_this->DeviceNameText, _Const0032 );
   ViewsText_OnSetString( &_this->DeviceNameText, EwLoadString( &StringsSET22_DEVICE_NAME ));
-  CoreRectView__OnSetBounds( &_this->WaitText, _Const0035 );
+  CoreRectView__OnSetBounds( &_this->WaitText, _Const0033 );
   ViewsText_OnSetWrapText( &_this->WaitText, 1 );
   ViewsText_OnSetString( &_this->WaitText, EwLoadString( &StringsSET22_WAIT_APP_CONNECTION ));
-  CoreRectView__OnSetBounds( &_this->LocalDeviceNameText, _Const0036 );
+  CoreRectView__OnSetBounds( &_this->LocalDeviceNameText, _Const0034 );
   ViewsText_OnSetEllipsis( &_this->LocalDeviceNameText, 1 );
   ViewsText_OnSetString( &_this->LocalDeviceNameText, DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceName( 
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )));
-  CoreRectView__OnSetBounds( &_this->Image, _Const0037 );
+  CoreRectView__OnSetBounds( &_this->Image, _Const0035 );
   ViewsImage_OnSetAnimated( &_this->Image, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->DeviceNameText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->WaitText ), 0 );
@@ -3035,7 +3068,7 @@ void SettingsSET22_BleAdvertising_Init( SettingsSET22_BleAdvertising _this, XHan
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0038 ));
+  EwTrace( "%s", EwLoadString( &_Const0036 ));
   DeviceInterfaceBluetoothDeviceClass_SetBleAdvertisement( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
   DeviceInterfaceBluetoothDeviceClass ), 1 );
 }
@@ -3046,6 +3079,14 @@ void SettingsSET22_BleAdvertising_OnShortHomeKeyActivated( SettingsSET22_BleAdve
   DeviceInterfaceBluetoothDeviceClass_SetBleAdvertisement( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
   DeviceInterfaceBluetoothDeviceClass ), 0 );
   ComponentsBaseMainBG_OnShortHomeKeyActivated((ComponentsBaseMainBG)_this );
+}
+
+/* 'C' function for method : 'Settings::SET22_BleAdvertising.OnLongHomeKeyActivated()' */
+void SettingsSET22_BleAdvertising_OnLongHomeKeyActivated( SettingsSET22_BleAdvertising _this )
+{
+  DeviceInterfaceBluetoothDeviceClass_SetBleAdvertisement( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
+  DeviceInterfaceBluetoothDeviceClass ), 0 );
+  ComponentsBaseComponent_OnLongHomeKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -3154,6 +3195,7 @@ EW_DEFINE_CLASS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG, DeviceNameT
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  SettingsSET22_BleAdvertising_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -3258,6 +3300,7 @@ EW_DEFINE_CLASS( SettingsSET23_BlePairingFail, SettingsTimeoutDialog, _None, _No
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -3283,7 +3326,7 @@ void SettingsSET24_CheckPairingRecord__Init( SettingsSET24_CheckPairingRecord _t
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->MessageText, _Const0039 );
+  CoreRectView__OnSetBounds( &_this->MessageText, _Const0037 );
   ViewsText_OnSetWrapText( &_this->MessageText, 1 );
   ViewsText_OnSetString( &_this->MessageText, EwLoadString( &StringsSET24_CHECK_BT_PAIRING_RECORD ));
   CoreRectView__OnSetBounds( &_this->PushButton, _Const0006 );
@@ -3333,7 +3376,7 @@ void SettingsSET24_CheckPairingRecord_Init( SettingsSET24_CheckPairingRecord _th
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const003A ));
+  EwTrace( "%s", EwLoadString( &_Const0038 ));
 }
 
 /* 'C' function for method : 'Settings::SET24_CheckPairingRecord.OnOkActivatedSlot()' */
@@ -3391,6 +3434,7 @@ EW_DEFINE_CLASS( SettingsSET24_CheckPairingRecord, ComponentsBaseMainBG, Message
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -3467,8 +3511,8 @@ void SettingsSET25_BlePincode_Init( SettingsSET25_BlePincode _this, XHandle aArg
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )), 
   0, 10 );
   ViewsText_OnSetString( &_this->PincodeText, EwConcatString( EwConcatString( EwLoadString( 
-  &StringsSET25_PIN ), EwLoadString( &_Const0019 )), PincodeString ));
-  EwTrace( "%s%s", EwLoadString( &_Const003B ), PincodeString );
+  &StringsSET25_PIN ), EwLoadString( &_Const0017 )), PincodeString ));
+  EwTrace( "%s%s", EwLoadString( &_Const0039 ), PincodeString );
 }
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -3590,6 +3634,7 @@ EW_DEFINE_CLASS( SettingsSET25_BlePincode, ComponentsBaseMainBG, BleStateChanged
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -3617,18 +3662,18 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   _this->_VMT = EW_CLASS( SettingsSET28_SystemInfo );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0022 );
+  CoreRectView__OnSetBounds( _this, _Const0020 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->ESN, _Const003C );
+  CoreRectView__OnSetBounds( &_this->ESN, _Const003A );
   ViewsText_OnSetString( &_this->ESN, EwLoadString( &StringsSET28_esn ));
-  CoreRectView__OnSetBounds( &_this->SoftwareVersionTitle, _Const003D );
+  CoreRectView__OnSetBounds( &_this->SoftwareVersionTitle, _Const003B );
   ViewsText_OnSetString( &_this->SoftwareVersionTitle, EwLoadString( &StringsSET28_sw_version ));
-  CoreRectView__OnSetBounds( &_this->EsnText, _Const003E );
+  CoreRectView__OnSetBounds( &_this->EsnText, _Const003C );
   ViewsText_OnSetString( &_this->EsnText, 0 );
-  CoreRectView__OnSetBounds( &_this->SoftwareVersionText, _Const003F );
+  CoreRectView__OnSetBounds( &_this->SoftwareVersionText, _Const003D );
   ViewsText_OnSetString( &_this->SoftwareVersionText, DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
-  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0040 );
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const003E );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->UpDownPushButtonSet, 1 );
@@ -3781,6 +3826,7 @@ EW_DEFINE_CLASS( SettingsSET28_SystemInfo, ComponentsBaseMainBG, ESN, ESN, ESN,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   SettingsSET28_SystemInfo_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,

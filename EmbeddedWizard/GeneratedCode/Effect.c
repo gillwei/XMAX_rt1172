@@ -173,4 +173,21 @@ EW_DEFINE_CLASS( EffectSlideTransitionNoFade, EffectsSlideTransition, _None, _No
   EffectsSlideTransition_CreateOverlayFader,
 EW_END_OF_CLASS( EffectSlideTransitionNoFade )
 
+/* User defined auto object: 'Effect::NoSlideOut' */
+EW_DEFINE_AUTOOBJECT( EffectNoSlideOut, EffectSlideTransitionNoFade )
+
+/* Initializer for the auto object 'Effect::NoSlideOut' */
+void EffectNoSlideOut__Init( EffectSlideTransitionNoFade _this )
+{
+  _this->Super1.Buffered = 1;
+  _this->Super1.Exponent = 4.430000f;
+  _this->Super1.Timing = EffectsTimingExp_Out;
+  _this->Super1.Duration = 0;
+  _this->Super1.Direction = CoreDirectionRight;
+}
+
+/* Table with links to derived variants of the auto object : 'Effect::NoSlideOut' */
+EW_DEFINE_AUTOOBJECT_VARIANTS( EffectNoSlideOut )
+EW_END_OF_AUTOOBJECT_VARIANTS( EffectNoSlideOut )
+
 /* Embedded Wizard */

@@ -50,6 +50,9 @@ EW_DECLARE_AUTOOBJECT( EffectSlideOutTransition, EffectSlideTransitionNoFade )
 /* User defined auto object: 'Effect::SlideInTransition' */
 EW_DECLARE_AUTOOBJECT( EffectSlideInTransition, EffectSlideTransitionNoFade )
 
+/* User defined auto object: 'Effect::NoSlideOut' */
+EW_DECLARE_AUTOOBJECT( EffectNoSlideOut, EffectSlideTransitionNoFade )
+
 #ifdef __cplusplus
   }
 #endif

@@ -161,6 +161,7 @@ EW_DEFINE_METHODS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongHomeKeyActivated, void )( SettingsSET22_BleAdvertising _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
@@ -175,6 +176,9 @@ void SettingsSET22_BleAdvertising_Init( SettingsSET22_BleAdvertising _this, XHan
 
 /* 'C' function for method : 'Settings::SET22_BleAdvertising.OnShortHomeKeyActivated()' */
 void SettingsSET22_BleAdvertising_OnShortHomeKeyActivated( SettingsSET22_BleAdvertising _this );
+
+/* 'C' function for method : 'Settings::SET22_BleAdvertising.OnLongHomeKeyActivated()' */
+void SettingsSET22_BleAdvertising_OnLongHomeKeyActivated( SettingsSET22_BleAdvertising _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */

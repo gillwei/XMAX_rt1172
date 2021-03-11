@@ -238,7 +238,7 @@ void ComponentsBaseComponent_OnKeyHoldSlot( ComponentsBaseComponent _this, XObje
       break;
 
       case CoreKeyCodeHome :
-        ComponentsBaseComponent_OnLongHomeKeyActivated( _this );
+        ComponentsBaseComponent__OnLongHomeKeyActivated( _this );
       break;
 
       default : 
@@ -436,6 +436,12 @@ void ComponentsBaseComponent_OnLongHomeKeyActivated( ComponentsBaseComponent _th
   }
 }
 
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongHomeKeyActivated()' */
+void ComponentsBaseComponent__OnLongHomeKeyActivated( void* _this )
+{
+  ((ComponentsBaseComponent)_this)->_VMT->OnLongHomeKeyActivated((ComponentsBaseComponent)_this );
+}
+
 /* 'C' function for method : 'Components::BaseComponent.OnShortMagicKeyActivated()' */
 void ComponentsBaseComponent_OnShortMagicKeyActivated( ComponentsBaseComponent _this )
 {
@@ -543,6 +549,7 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, KeyHandler, KeyHandler, Key
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -703,8 +710,9 @@ void ComponentsBaseMainBG_DismissThisDialog( ComponentsBaseMainBG _this )
         ViewsBorder_OnSetVisible( &MenuDialog->Menu.FocusFrame, 1 );
       }
 
-      CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 
-      0, EwNullSlot, EwNullSlot, 0 );
+      CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), ((EffectsTransition)EwGetAutoObject( 
+      &EffectNoSlideOut, EffectSlideTransitionNoFade )), 0, 0, EwNullSlot, EwNullSlot, 
+      0 );
     }
   }
 }
@@ -891,6 +899,7 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, ChildDialog, Mai
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,

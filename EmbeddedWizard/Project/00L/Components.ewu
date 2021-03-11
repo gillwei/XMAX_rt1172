@@ -399,7 +399,7 @@ class BaseMainBG : Components::BaseComponent
           MenuDialog.Menu.FocusFrame.Visible = true;
         }
 
-        Owner.DismissDialog( this, null, null, null, null, null, false );
+        Owner.DismissDialog( this, Effect::NoSlideOut, null, null, null, null, false );
       }
     }
   }

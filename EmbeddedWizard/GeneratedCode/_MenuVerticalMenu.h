@@ -49,6 +49,7 @@
 #include "_MenuArrowScrollBar.h"
 #include "_MenuScrollbar.h"
 #include "_ViewsBorder.h"
+#include "_ViewsImage.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -103,12 +104,14 @@
 EW_DEFINE_FIELDS( MenuVerticalMenu, ComponentsBaseComponent )
   EW_OBJECT  ( MenuList,        CoreVerticalList )
   EW_OBJECT  ( Scrollbar,       MenuScrollbar )
+  EW_OBJECT  ( StatusBarDivider, ViewsImage )
   EW_OBJECT  ( FocusFrame,      ViewsBorder )
   EW_OBJECT  ( ArrowScrollBar,  MenuArrowScrollBar )
   EW_OBJECT  ( PageScrollEffect, EffectsInt32Effect )
   EW_PROPERTY( NoOfItems,       XInt32 )
   EW_PROPERTY( ItemHeight,      XInt32 )
   EW_PROPERTY( ItemNumPerPage,  XInt32 )
+  EW_PROPERTY( StatusBarDividerVisible, XBool )
   EW_PROPERTY( ArrowScrollBarVisible, XBool )
   EW_PROPERTY( Focusable,       XBool )
 EW_END_OF_FIELDS( MenuVerticalMenu )
@@ -165,6 +168,7 @@ EW_DEFINE_METHODS( MenuVerticalMenu, ComponentsBaseComponent )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
@@ -234,6 +238,10 @@ void MenuVerticalMenu_HideArrowScrollBar( MenuVerticalMenu _this );
 
 /* 'C' function for method : 'Menu::VerticalMenu.ShowArrowScrollBar()' */
 void MenuVerticalMenu_ShowArrowScrollBar( MenuVerticalMenu _this );
+
+/* 'C' function for method : 'Menu::VerticalMenu.OnSetStatusBarDividerVisible()' */
+void MenuVerticalMenu_OnSetStatusBarDividerVisible( MenuVerticalMenu _this, XBool 
+  value );
 
 #ifdef __cplusplus
   }

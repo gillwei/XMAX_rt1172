@@ -956,6 +956,13 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
     super();
   }
 
+  $rect <200,390,430,430>
+  inherited method OnLongHomeKeyActivated()
+  {
+    DeviceInterface::BluetoothDevice.Discoverable = false;
+    super();
+  }
+
   $rect <0,340,180,380>
   inherited property DDModeEnabled = true;
 
@@ -1119,6 +1126,7 @@ class SET9_10_11_BtConnectionResult : Components::BaseMainBG
         var string ProcessString = Strings::SET09_BT_CONNECTED;
         var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
         var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+        HideLoadingUI();
         Message.String = ProcessString.left( LeftIdx ) + DeviceName + ProcessString.right( RightIdx );
       }
       case Enum::BtDeviceConnectionResult.FAIL:
@@ -1126,12 +1134,9 @@ class SET9_10_11_BtConnectionResult : Components::BaseMainBG
         // replase %s with the connected BLE deivce name
         var string ProcessString = Strings::SET10_CONNECTION_FAILED;
         var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
-        trace "ProcessString.length ", ProcessString.length;
-        trace "Strings::ARGUMENT_STR.length: ", Strings::ARGUMENT_STR.length;
         var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
-        trace "DeviceName: ", DeviceName;
+        HideLoadingUI();
         Message.String = ProcessString.left( LeftIdx ) + DeviceName + ProcessString.right( RightIdx );
-        trace "Message.String: ", Message.String;
       }
       case Enum::BtDeviceConnectionResult.AUTHENTICATION_ERR:
       {
@@ -1139,6 +1144,7 @@ class SET9_10_11_BtConnectionResult : Components::BaseMainBG
         var string ProcessString = Strings::SET11_NO_LONGER_PAIRED;
         var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
         var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+        HideLoadingUI();
         Message.String = ProcessString.left( LeftIdx ) + DeviceName + ProcessString.right( RightIdx );
       }
       default: Message.String = "";
@@ -1167,6 +1173,29 @@ class SET9_10_11_BtConnectionResult : Components::BaseMainBG
     preset Bounds = <0,36,480,38>;
     preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
     preset Bitmap = Resource::StatusBarDivider;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image LoadingAnimation
+  {
+    preset Bounds = <193,54,287,148>;
+    preset Animated = true;
+    preset Bitmap = Resource::LoadingAnimation;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text LoadingText
+  {
+    preset Bounds = <10,156,470,187>;
+    preset String = Strings::GEN_please_wait;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <210,390,410,430>
+  method void HideLoadingUI()
+  {
+    LoadingText.Visible = false;
+    LoadingAnimation.Visible = false;
   }
 
   $reorder UpdateDDModeMask 1
@@ -1279,11 +1308,8 @@ class SET08_BtcPairDevice : Components::BaseMainBG
     var Settings::SET04_BtSettingMenu BtSettingMenu = ( Settings::SET04_BtSettingMenu )Owner;
     if( null != BtSettingMenu )
     {
-      if( null != BtSettingMenu.Owner )
-      {
-        BtSettingMenu.SlideOutEffectEnabled = false;
-        BtSettingMenu.DismissThisDialog();
-      }
+      BtSettingMenu.SlideOutEffectEnabled = false;
+      BtSettingMenu.DismissThisDialog();
     }
   }
 
@@ -1448,16 +1474,6 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
     return result;
   }
 
-  $rect <20,20,160,60>
-  inherited object Menu
-  {
-    preset DDModeEnabled = true;
-    preset NoOfItems = 0;
-    preset ItemHeight = Menu::ItemHeightSmall;
-    preset ItemNumPerPage = 4;
-    preset ArrowScrollBarVisible = true;
-  }
-
   $rect <220,290,440,330>
   var int32 PairedDeviceNum = 0;
 
@@ -1524,6 +1540,26 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
       SlideOutDialog();
     }
   }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset DDModeEnabled = true;
+    preset NoOfItems = 0;
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+    preset ArrowScrollBarVisible = true;
+    preset StatusBarDividerVisible = true;
+  }
+
+  $reorder LoadItemUnitValue 1
+  $reorder PairedDeviceNum 1
+  $reorder UpdatePairedDeviceNum 1
+  $reorder RefreshListObserver 1
+  $reorder OnRefreshListSlot 1
+  $reorder NoDataText 1
+  $reorder NoDataTimeoutTimer 1
+  $reorder OnNoDataTimeoutSlot 1
 }
 
 $rect <20,410,260,450>
@@ -1927,6 +1963,13 @@ class SET22_BleAdvertising : Components::BaseMainBG
 
   $rect <0,380,230,420>
   inherited method OnShortHomeKeyActivated()
+  {
+    DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
+    super();
+  }
+
+  $rect <0,430,230,470>
+  inherited method OnLongHomeKeyActivated()
   {
     DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
     super();

@@ -454,6 +454,15 @@ class VerticalMenu : Components::BaseComponent
   property int32 ItemNumPerPage = 3;
 
   $rect <20,20,160,60>
+  object Views::Image StatusBarDivider
+  {
+    preset Bounds = <0,0,480,2>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
   object Views::Border FocusFrame
   {
     preset Bounds = <18,0,435,76>;
@@ -568,6 +577,19 @@ class VerticalMenu : Components::BaseComponent
   method void ShowArrowScrollBar()
   {
     ArrowScrollBar.Visible = true;
+  }
+
+  $rect <770,120,1020,160>
+  property bool StatusBarDividerVisible;
+
+  $rect <770,160,1020,200>
+  onset StatusBarDividerVisible
+  {
+    if( pure StatusBarDividerVisible != value )
+    {
+      pure StatusBarDividerVisible = value;
+      StatusBarDivider.Visible = value;
+    }
   }
 }
 
