@@ -311,6 +311,10 @@ switch( key_detection_state )
             PRINTF( "Err: invalid key state\r\n" );
             key_detection_state = KEY_DETECTION_STATE_INVALID;
             disable_long_press_detection_state();
+            if( CoreKeyCodeNoKey != current_key_code )
+                {
+                send_key_release( current_key_code );
+                }
 
             if( ( CoreKeyCodeUp == last_key_code && CoreKeyCodeDown == key_code ) ||
                 ( CoreKeyCodeDown == last_key_code && CoreKeyCodeUp == key_code ) )
@@ -323,8 +327,6 @@ switch( key_detection_state )
     case KEY_DETECTION_STATE_INVALID:
         if( 0 == num_key_pressed )
             {
-            //TODO: to clear state state in Embedded Wizard
-            //EW_clear_key_state();
             key_detection_state = KEY_DETECTION_STATE_VALID;
             PRINTF( "valid key state\r\n" );
             vi_key_event |= KEY_EVENT_FLAG_MAGIC_KEY_STOP_COUNT;
@@ -334,6 +336,22 @@ switch( key_detection_state )
     default:
         break;
     }
+}
+
+/*********************************************************************
+*
+* @public
+* VI_is_key_state_valid
+*
+* Initialize vehicle key timer
+*
+*********************************************************************/
+bool VI_is_key_state_valid
+    (
+    void
+    )
+{
+return( key_detection_state == KEY_DETECTION_STATE_VALID );
 }
 
 /*********************************************************************
@@ -352,4 +370,3 @@ void vi_key_init
 magic_key_timer_handle = xTimerCreate( "MagicKeyTimer", MAGIC_KEY_TIME_DURATION_MS, pdTRUE, ( void * ) 0, MagicKeyTimerCallback );
 configASSERT( NULL != magic_key_timer_handle );
 }
-

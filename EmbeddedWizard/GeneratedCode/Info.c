@@ -329,6 +329,8 @@ EW_DEFINE_CLASS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView, ItemTitleA
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   InfoINF01_MeterDisplaySettingMenu_LoadItemClass,
   InfoINF01_MeterDisplaySettingMenu_LoadItemTitle,
   InfoINF01_MeterDisplaySettingMenu_OnItemActivate,

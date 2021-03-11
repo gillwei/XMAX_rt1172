@@ -53,10 +53,7 @@ static rx_heater_status_struct      rx_seat_heater_status;
 static rx_maintenance_trip_struct   rx_maintenance_trip;
 static rx_tacho_setting_struct      rx_tacho_setting;
 
-static uint32_t rx_vehicle_supported_features = 0;
-static uint8_t  rx_vehicle_supported_features_response = VEHICLE_NEGATIVE_RESPONSE_ID;
-static uint8_t  rx_vehicle_info_reset_response = VEHICLE_NEGATIVE_RESPONSE_ID;
-
+static uint32_t rx_vehicle_supported_functions = 0;
 static bool     is_dd_mode_activated = false;
 
 /*--------------------------------------------------------------------
@@ -89,7 +86,7 @@ switch( signal_id )
         rx_ecu_info.engine_speed = data;
         break;
     case IL_CAN0_ECU_INDCT_TC_MODE_RXSIG_HANDLE:
-        rx_ecu_info.tc_mode = ( uint8_t )data;
+        rx_ecu_info.tc_mode = (uint8_t)data;
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -126,83 +123,6 @@ switch( signal_id )
 /*********************************************************************
 *
 * @private
-* process_supported_function_response_flag
-*
-* @param signal_id The CAN signal id
-* @param data The received CAN data
-*
-*********************************************************************/
-static void process_supported_function_response_flag
-    (
-    const uint16_t signal_id,
-    const uint32_t data
-    )
-{
-switch( signal_id )
-    {
-    case IL_CAN0_RES_SUPPT_SVC_ID_RXSIG_HANDLE:
-        rx_vehicle_supported_features_response = ( uint8_t )data;
-        if( VEHICLE_NEGATIVE_RESPONSE_ID == rx_vehicle_supported_features_response )
-            {
-            PRINTF( "feature req neg res\r\n" );
-            }
-        break;
-    case IL_CAN0_RES_SUPPT_DATA_1_RXSIG_HANDLE: /* TCFS */
-        if( VEHICLE_FEATURE_LIST_POSITIVE_RESPONSE_ID == rx_vehicle_supported_features_response )
-            {
-            rx_tacho_setting.fullscale = ( uint8_t )data;
-            }
-        else
-            {
-            PRINTF( "feature req neg sid: %x\r\n", data );
-            }
-        break;
-    case IL_CAN0_RES_SUPPT_DATA_2_RXSIG_HANDLE: /* BRZEGR */
-        if( VEHICLE_FEATURE_LIST_POSITIVE_RESPONSE_ID == rx_vehicle_supported_features_response )
-            {
-            rx_tacho_setting.redzone = ( uint8_t )data;
-            }
-        else
-            {
-            PRINTF( "feature req neg rs: %x\r\n", data );
-            }
-        break;
-    case IL_CAN0_RES_SUPPT_DATA_3_RXSIG_HANDLE: /* SFL byte 0 */
-        if( VEHICLE_FEATURE_LIST_POSITIVE_RESPONSE_ID == rx_vehicle_supported_features_response )
-            {
-            rx_vehicle_supported_features = ( rx_vehicle_supported_features & 0xFFFFFF00 ) | ( data & 0xff );
-            }
-        break;
-    case IL_CAN0_RES_SUPPT_DATA_4_RXSIG_HANDLE: /* SFL byte 1 */
-        if( VEHICLE_FEATURE_LIST_POSITIVE_RESPONSE_ID == rx_vehicle_supported_features_response )
-            {
-            rx_vehicle_supported_features = ( rx_vehicle_supported_features & 0xFFFF00FF ) | ( ( data & 0xff ) << 8 );
-            }
-        break;
-    case IL_CAN0_RES_SUPPT_DATA_5_RXSIG_HANDLE: /* SFL byte 2 */
-        if( VEHICLE_FEATURE_LIST_POSITIVE_RESPONSE_ID == rx_vehicle_supported_features_response )
-            {
-            rx_vehicle_supported_features = ( rx_vehicle_supported_features & 0xFF00FFFF ) | ( ( data & 0xff ) << 16 );
-            }
-        break;
-    case IL_CAN0_RES_SUPPT_DATA_6_RXSIG_HANDLE: /* SFL byte 3 */
-        if( VEHICLE_FEATURE_LIST_POSITIVE_RESPONSE_ID == rx_vehicle_supported_features_response )
-            {
-            rx_vehicle_supported_features = ( rx_vehicle_supported_features & 0x00FFFFFF ) | ( ( data & 0xff ) << 24 );
-            }
-        break;
-    case IL_CAN0_RES_SUPPT_DATA_7_RXSIG_HANDLE: /* SFL byte 4 */
-        /* reserved */
-        break;
-    default:
-        PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
-        break;
-    }
-}
-
-/*********************************************************************
-*
-* @private
 * process_brightness_control_response
 *
 * @param signal_id The CAN signal id
@@ -218,74 +138,16 @@ static void process_brightness_control_response
 switch( signal_id )
     {
     case IL_CAN0_BRTNSS_CTRL_MT_TFT_DUTY_RXSIG_HANDLE:
-        rx_brightness_control.tft_duty = ( uint16_t )data;
+        rx_brightness_control.tft_duty = (uint16_t)data;
         /* TODO: set TFT pwm duty cycle */
         break;
     case IL_CAN0_BRTNSS_CTRL_LCD_LV_RXSIG_HANDLE:
-        rx_brightness_control.lcd_brightness_level = ( uint8_t )data;
+        rx_brightness_control.lcd_brightness_level = (uint8_t)data;
         EW_notify_vi_data_received( EnumVehicleRxTypeMETER_BRIGHTNESS_LEVEL );
         break;
     case IL_CAN0_BRTNSS_CTRL_TFT_LV_RXSIG_HANDLE:
-        rx_brightness_control.tft_brightness_level = ( uint8_t )data;
+        rx_brightness_control.tft_brightness_level = (uint8_t)data;
         EW_notify_vi_data_received( EnumVehicleRxTypeTFT_BRIGHTNESS_LEVEL );
-        break;
-    default:
-        PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
-        break;
-    }
-}
-
-/*********************************************************************
-*
-* @private
-* process_meter_function_control_response
-*
-* @param signal_id The CAN signal id
-* @param data The received CAN data
-*
-*********************************************************************/
-static void process_meter_function_control_response
-    (
-    const uint16_t signal_id,
-    const uint32_t data
-    )
-{
-switch( signal_id )
-    {
-    case IL_CAN0_RES_MT_FUNC_CNT_DATA_1_RXSIG_HANDLE:
-        rx_vehicle_info_reset_response = data;
-        if( VEHICLE_NEGATIVE_RESPONSE_ID == rx_vehicle_info_reset_response )
-            {
-            PRINTF( "reset or set odo/trip req neg res\r\n" );
-            }
-        break;
-    case IL_CAN0_RES_MT_FUNC_CNT_DATA_2_RXSIG_HANDLE:
-        if( RESET_VEHICLE_INFO_RESPONSE_ID == rx_vehicle_info_reset_response )
-            {
-            /* TODO: notify HMI */
-            }
-        else if( CHANGE_ODO_TRIP_RESPONSE_ID == rx_vehicle_info_reset_response )
-            {
-            /* TODO: notify HMI */
-            }
-        else
-            {
-            PRINTF( "Err: invalid res 0x%x\r\n", data );
-            }
-        break;
-    case IL_CAN0_RES_MT_FUNC_CNT_SVC_ID_RXSIG_HANDLE:
-        if( RESET_VEHICLE_INFO_RESPONSE_ID == rx_vehicle_info_reset_response )
-            {
-            /* TODO: notify HMI */
-            }
-        else if( CHANGE_ODO_TRIP_RESPONSE_ID == rx_vehicle_info_reset_response )
-            {
-            /* TODO: notify HMI */
-            }
-        else
-            {
-            PRINTF( "Err: invalid res 0x%x\r\n", data );
-            }
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -346,16 +208,16 @@ static void process_function_software_status
 switch( signal_id )
     {
     case IL_CAN0_FUNC_SW_1_RXSIG_HANDLE:
-        vi_key_status_changed( CoreKeyCodeUp, ( int )data );
+        vi_key_status_changed( CoreKeyCodeUp, (int)data );
         break;
     case IL_CAN0_FUNC_SW_2_RXSIG_HANDLE:
-        vi_key_status_changed( CoreKeyCodeDown, ( int )data );
+        vi_key_status_changed( CoreKeyCodeDown, (int)data );
         break;
     case IL_CAN0_FUNC_SW_5_RXSIG_HANDLE:
-        vi_key_status_changed( CoreKeyCodeOk, ( int )data );
+        vi_key_status_changed( CoreKeyCodeOk, (int)data );
         break;
     case IL_CAN0_FUNC_SW_6_RXSIG_HANDLE:
-        vi_key_status_changed( CoreKeyCodeHome, ( int )data );
+        vi_key_status_changed( CoreKeyCodeHome, (int)data );
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -381,16 +243,16 @@ static void process_fuel_rate
 switch( signal_id )
     {
     case IL_CAN0_FUEL_RATE_AVE_RXSIG_HANDLE:
-        rx_fuel_rate.average_consumption = ( uint16_t )data;
+        rx_fuel_rate.average_consumption = (uint16_t)data;
         break;
     case IL_CAN0_FUEL_RATE_AVG_SPD_RXSIG_HANDLE:
-        rx_fuel_rate.average_speed_km = ( uint16_t )data;
+        rx_fuel_rate.average_speed_km = (uint16_t)data;
         break;
     case IL_CAN0_FUEL_RATE_INST_RXSIG_HANDLE:
-        rx_fuel_rate.instant_consumption = ( uint16_t )data;
+        rx_fuel_rate.instant_consumption = (uint16_t)data;
         break;
     case IL_CAN0_FUEL_RATE_RANGE_DIST_RXSIG_HANDLE:
-        rx_fuel_rate.range_distance_km = ( uint16_t )data;
+        rx_fuel_rate.range_distance_km = (uint16_t)data;
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -471,12 +333,10 @@ static void process_vehicle_info_2
 switch( signal_id )
     {
     case IL_CAN0_VEHICLE_INFO_2_APS_ANG_TRAN_RXSIG_HANDLE:
-        rx_vehicle_info.aps_angle_deg = ( uint16_t )data;
-        /* TODO: notify HMI tachometer */
+        rx_vehicle_info.aps_angle_deg = (uint16_t)data;
         break;
     case IL_CAN0_VEHICLE_INFO_2_SPD_REAL_RXSIG_HANDLE:
-        rx_vehicle_info.vehicle_speed_real = ( uint16_t )data;
-        /* TODO: notify HMI speed visualizer */
+        rx_vehicle_info.vehicle_speed_real = (uint16_t)data;
         if( is_dd_mode_activated && ( VEHICLE_DRIVER_DISTRACTION_MODE_LIMIT > rx_vehicle_info.vehicle_speed_real ) )
             {
             is_dd_mode_activated = false;
@@ -493,7 +353,7 @@ switch( signal_id )
             }
         break;
     case IL_CAN0_VEHICLE_INFO_2_SPD_REAL_MT_RXSIG_HANDLE:
-        rx_vehicle_info.vehicle_speed_meter = ( uint16_t )data;
+        rx_vehicle_info.vehicle_speed_meter = (uint16_t)data;
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -519,23 +379,23 @@ static void process_vehicle_info_3
 switch( signal_id )
     {
     case IL_CAN0_VEHICLE_INFO_3_FUEL_CON_RXSIG_HANDLE:
-        rx_vehicle_info.fuel_cons = ( uint16_t )data;
+        rx_vehicle_info.fuel_cons = (uint16_t)data;
         break;
     case IL_CAN0_VEHICLE_INFO_3_CLK_ADJST_RXSIG_HANDLE:
-        rx_vehicle_info.clock_adj_status = ( bool )data;
+        rx_vehicle_info.clock_adj_status = (bool)data;
         /* TODO: respond to meter the current UNIX time */
         break;
     case IL_CAN0_VEHICLE_INFO_3_AIR_RXSIG_HANDLE:
-        rx_vehicle_info.air_temperature = ( int8_t )data;
+        rx_vehicle_info.air_temperature = (int8_t)data;
         break;
     case IL_CAN0_VEHICLE_INFO_3_COOLANT_RXSIG_HANDLE:
-        rx_vehicle_info.coolant_temperature = ( int8_t )data;
+        rx_vehicle_info.coolant_temperature = (int8_t)data;
         break;
     case IL_CAN0_VEHICLE_INFO_3_BAT_RXSIG_HANDLE:
-        rx_vehicle_info.battery_voltage = ( uint8_t )data;
+        rx_vehicle_info.battery_voltage = (uint8_t)data;
         break;
     case IL_CAN0_VEHICLE_INFO_3_CRUISE_RXSIG_HANDLE:
-        rx_vehicle_info.cruise_speed = ( uint8_t )data;
+        rx_vehicle_info.cruise_speed = (uint8_t)data;
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -561,19 +421,19 @@ static void process_vehicle_info_4
 switch( signal_id )
     {
     case IL_CAN0_VEHICLE_INFO_4_FTRIP_RXSIG_HANDLE:
-        rx_vehicle_info.fuel_tripmeter_km = ( uint16_t )data;
+        rx_vehicle_info.fuel_tripmeter_km = (uint16_t)data;
         break;
     case IL_CAN0_VEHICLE_INFO_4_LOW_FUEL_WRN_RXSIG_HANDLE:
-        rx_vehicle_info.low_fuel_warning = ( bool )data;
+        rx_vehicle_info.low_fuel_warning = (bool)data;
         break;
     case IL_CAN0_VEHICLE_INFO_4_FUEL_RSV_RXSIG_HANDLE:
-        rx_vehicle_info.fuel_reserve = ( bool )data;
+        rx_vehicle_info.fuel_reserve = (bool)data;
         break;
     case IL_CAN0_VEHICLE_INFO_4_ODO_TRIP_DIS_RXSIG_HANDLE:
-        rx_vehicle_info.odo_trip_display = ( odo_trip_display_enum )data;
+        rx_vehicle_info.odo_trip_display = (odo_trip_display_enum)data;
         break;
     case IL_CAN0_VEHICLE_INFO_4_FTRIP_HRD_RST_RXSIG_HANDLE:
-        rx_vehicle_info.fuel_trip_hard_reset = ( bool )data;
+        rx_vehicle_info.fuel_trip_hard_reset = (bool)data;
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -631,22 +491,22 @@ static void process_heater_status
 switch( signal_id )
     {
     case IL_CAN0_HEATER_STAT_GRIP_WARM_LO_RXSIG_HANDLE:
-        rx_grip_warmer_status.value_low = ( uint8_t )data;
+        rx_grip_warmer_status.value_low = (uint8_t)data;
         break;
     case IL_CAN0_HEATER_STAT_GRIP_WARM_MID_RXSIG_HANDLE:
-        rx_grip_warmer_status.value_middle = ( uint8_t )data;
+        rx_grip_warmer_status.value_middle = (uint8_t)data;
         break;
     case IL_CAN0_HEATER_STAT_GRIP_WARM_HI_RXSIG_HANDLE:
-        rx_grip_warmer_status.value_high = ( uint8_t )data;
+        rx_grip_warmer_status.value_high = (uint8_t)data;
         break;
     case IL_CAN0_HEATER_STAT_RIDER_SEAT_WARM_LO_RXSIG_HANDLE:
-        rx_seat_heater_status.value_low = ( uint8_t )data;
+        rx_seat_heater_status.value_low = (uint8_t)data;
         break;
     case IL_CAN0_HEATER_STAT_RIDER_SEAT_WARM_MID_RXSIG_HANDLE:
-        rx_seat_heater_status.value_middle = ( uint8_t )data;
+        rx_seat_heater_status.value_middle = (uint8_t)data;
         break;
     case IL_CAN0_HEATER_STAT_RIDER_SEAT_WARM_HI_RXSIG_HANDLE:
-        rx_seat_heater_status.value_high = ( uint8_t )data;
+        rx_seat_heater_status.value_high = (uint8_t)data;
         break;
     case IL_CAN0_HEATER_STAT_CRNT_GW_STAT_RXSIG_HANDLE:
         rx_grip_warmer_status.setting = ( heater_setting_enum )data;
@@ -709,14 +569,8 @@ switch( message_frame_id )
     case IL_CAN0_RX1_ECU_COM_DATA_IDX:
         process_ecu_legacy_com_data( signal_id, data );
         break;
-    case IL_CAN0_RX2_RES_SUPPORT_IDX:
-        process_supported_function_response_flag( signal_id, data );
-        break;
     case IL_CAN0_RX3_BRGTHNSS_CTRL_IDX:
         process_brightness_control_response( signal_id, data );
-        break;
-    case IL_CAN0_RX4_RES_MT_FUNC_CNT_IDX:
-        process_meter_function_control_response( signal_id, data );
         break;
     case IL_CAN0_RX5_VEHICLE_INFO_IDX:
         process_vehicle_info( signal_id, data );
@@ -752,7 +606,7 @@ switch( message_frame_id )
         process_factory_inspection_request( signal_id, data );
         break;
     default:
-        PRINTF( "unknown message frame id: 0x%x\r\n", message_frame_id );
+        PRINTF( "%s drop message frame id: 0x%x\r\n", __FUNCTION__, message_frame_id );
         break;
     }
 }
@@ -783,19 +637,19 @@ return is_activated;
 /*********************************************************************
 *
 * @public
-* VI_is_feature_supported
+* VI_is_function_supported
 *
-* Return if the vehicle feature is supported
+* Return if the vehicle function is supported
 *
-* @return The vehicle feature supported or not
+* @return The vehicle function supported or not
 *
 *********************************************************************/
-bool VI_is_feature_supported
+bool VI_is_function_supported
     (
-    vehicle_feature_enum feature
+    EnumVehicleSupportedFunction function
     )
 {
-return ( ( rx_vehicle_supported_features >> feature ) & 0x1 );
+return ( ( rx_vehicle_supported_functions >> function ) & 0x1 );
 }
 
 /*********************************************************************
@@ -1138,25 +992,77 @@ return validity;
 /*********************************************************************
 *
 * @public
-* VI_is_feature_supported
+* VI_set_supported_function
 *
-* Set the vehicle feature supported or not
+* Set the vehicle function supported or not
+*
+* @param function vehicle function
+* @param supported True or false
 *
 *********************************************************************/
-void VI_set_feature_supported
+void VI_set_supported_function
     (
-    vehicle_feature_enum feature,
+    EnumVehicleSupportedFunction function,
     bool supported
     )
 {
 if( supported )
     {
-    set_bit( rx_vehicle_supported_features, feature );
+    set_bit( rx_vehicle_supported_functions, function );
     }
 else
     {
-    clear_bit( rx_vehicle_supported_features, feature );
+    clear_bit( rx_vehicle_supported_functions, function );
     }
+}
+
+/*********************************************************************
+*
+* @public
+* VI_rx_support_function_received
+*
+* Notify from CAN stack that vehicle support functions received
+*
+* @param support_functions
+*
+*********************************************************************/
+void VI_rx_support_function_received
+    (
+    mid_msg_supp_func_t* support_functions
+    )
+{
+PRINTF( "%s, tacho: %d %d\r\n", __FUNCTION__, support_functions->tcfs, support_functions->brzegr );
+rx_tacho_setting.fullscale = support_functions->tcfs;
+rx_tacho_setting.redzone   = support_functions->brzegr;
+
+VI_set_supported_function( VEHICLE_FEATURE_TRIP2, support_functions->sfl.bit.trip2 );
+VI_set_supported_function( VEHICLE_FEATURE_F_TRIP, support_functions->sfl.bit.Ftrip );
+PRINTF( "%s, meter bright adj: %d\r\n", __FUNCTION__, support_functions->sfl.bit.mt_brgtnss_adj );
+VI_set_supported_function( VEHICLE_FEATURE_METER_BRIGHTNESS_ADJ, support_functions->sfl.bit.mt_brgtnss_adj );
+PRINTF( "%s, clk: %d\r\n", __FUNCTION__, support_functions->sfl.bit.clk );
+VI_set_supported_function( VEHICLE_FEATURE_CLOCK, support_functions->sfl.bit.clk );
+VI_set_supported_function( VEHICLE_FEATURE_TCS, support_functions->sfl.bit.tcs );
+VI_set_supported_function( VEHICLE_FEATURE_GRIP_HEATER, support_functions->sfl.bit.grip_warmer );
+VI_set_supported_function( VEHICLE_FEATURE_SEAT_HEATER, support_functions->sfl.bit.seat_heater );
+VI_set_supported_function( VEHICLE_FEATURE_WIND_SCREEN, support_functions->sfl.bit.wind_scrn );
+VI_set_supported_function( VEHICLE_FEATURE_OIL_TRIP, support_functions->sfl.bit.oil_trip );
+VI_set_supported_function( VEHICLE_FEATURE_V_BELT_TRIP, support_functions->sfl.bit.Vbelt_trip );
+VI_set_supported_function( VEHICLE_FEATURE_FREE1, support_functions->sfl.bit.Free1 );
+VI_set_supported_function( VEHICLE_FEATURE_FREE2, support_functions->sfl.bit.Free2 );
+VI_set_supported_function( VEHICLE_FEATURE_AVG_SPEED, support_functions->sfl.bit.avg_spd );
+VI_set_supported_function( VEHICLE_FEATURE_CURRENT_FUEL, support_functions->sfl.bit.crt_fuel );
+VI_set_supported_function( VEHICLE_FEATURE_AVG_FUEL, support_functions->sfl.bit.avg_fuel );
+VI_set_supported_function( VEHICLE_FEATURE_FUEL_CONSUMPTION, support_functions->sfl.bit.fuel_cons );
+VI_set_supported_function( VEHICLE_FEATURE_AIR_TEMPERATURE, support_functions->sfl.bit.air );
+VI_set_supported_function( VEHICLE_FEATURE_BATTERY_VOLTAGE, support_functions->sfl.bit.bat );
+VI_set_supported_function( VEHICLE_FEATURE_COOLANT, support_functions->sfl.bit.coolant );
+VI_set_supported_function( VEHICLE_FEATURE_DRIVING_RANGE, support_functions->sfl.bit.rng );
+VI_set_supported_function( VEHICLE_FEATURE_TIRE_FRONT, support_functions->sfl.bit.tire_frnt );
+VI_set_supported_function( VEHICLE_FEATURE_TIRE_FRONT_RIGHT, support_functions->sfl.bit.tire_frnt_r );
+VI_set_supported_function( VEHICLE_FEATURE_TIRE_FRONT_LEFT, support_functions->sfl.bit.tire_frnt_l );
+VI_set_supported_function( VEHICLE_FEATURE_TIRE_REAR, support_functions->sfl.bit.tire_rear );
+VI_set_supported_function( VEHICLE_FEATURE_TRIP_TIME, support_functions->sfl.bit.tip_time );
+VI_set_supported_function( VEHICLE_FEATURE_CRUISE, support_functions->sfl.bit.cruise );
 }
 
 /*********************************************************************
@@ -1221,8 +1127,8 @@ rx_brightness_control.tft_duty             = DEFALUT_TFT_DUTY;
 rx_tacho_setting.fullscale = DEFAULT_TACHO_FULLSCALE;
 rx_tacho_setting.redzone   = DEFAULT_TACHO_REDZONE;
 
-set_bit( rx_vehicle_supported_features, VEHICLE_FEATURE_OIL_TRIP );
-set_bit( rx_vehicle_supported_features, VEHICLE_FEATURE_CURRENT_FUEL );
-set_bit( rx_vehicle_supported_features, VEHICLE_FEATURE_AVG_FUEL );
-set_bit( rx_vehicle_supported_features, VEHICLE_FEATURE_TRIP_TIME );
+set_bit( rx_vehicle_supported_functions, VEHICLE_FEATURE_OIL_TRIP );
+set_bit( rx_vehicle_supported_functions, VEHICLE_FEATURE_CURRENT_FUEL );
+set_bit( rx_vehicle_supported_functions, VEHICLE_FEATURE_AVG_FUEL );
+set_bit( rx_vehicle_supported_functions, VEHICLE_FEATURE_TRIP_TIME );
 }

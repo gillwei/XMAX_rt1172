@@ -159,6 +159,8 @@ EW_DEFINE_METHODS( WeatherWEA01_Main, ComponentsBaseMainBG )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( WeatherWEA01_Main )
 
 /* 'C' function for method : 'Weather::WEA01_Main.OnShortHomeKeyActivated()' */

@@ -157,6 +157,8 @@ EW_DEFINE_METHODS( ComponentsBaseComponent, CoreGroup )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( ComponentsBaseComponent )
 
 /* 'C' function for method : 'Components::BaseComponent.OnKeyPressSlot()' */
@@ -231,6 +233,18 @@ void ComponentsBaseComponent_OnSetDDModeEnabled( ComponentsBaseComponent _this,
 
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnSetDDModeEnabled()' */
 void ComponentsBaseComponent__OnSetDDModeEnabled( void* _this, XBool value );
+
+/* Callback when down key of on trigger mode is released */
+void ComponentsBaseComponent_OnDownKeyReleased( ComponentsBaseComponent _this );
+
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnDownKeyReleased()' */
+void ComponentsBaseComponent__OnDownKeyReleased( void* _this );
+
+/* Callback when up key of on trigger mode is released */
+void ComponentsBaseComponent_OnUpKeyReleased( ComponentsBaseComponent _this );
+
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnUpKeyReleased()' */
+void ComponentsBaseComponent__OnUpKeyReleased( void* _this );
 
 #ifdef __cplusplus
   }

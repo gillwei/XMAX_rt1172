@@ -363,6 +363,8 @@ EW_DEFINE_CLASS( MenuItemBase, ComponentsBaseComponent, OnActivate, OnActivate,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuItemBase )
 
 /* Initializer for the class 'Menu::VerticalMenu' */
@@ -774,6 +776,8 @@ EW_DEFINE_CLASS( MenuVerticalMenu, ComponentsBaseComponent, MenuList, MenuList,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuVerticalMenu )
 
 /* Initializer for the class 'Menu::ItemCheckbox' */
@@ -924,6 +928,8 @@ EW_DEFINE_CLASS( MenuItemCheckbox, MenuItemBase, CheckBoxButton, CheckBoxButton,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuItemCheckbox )
 
 /* Initializer for the class 'Menu::ItemWrapper' */
@@ -1541,6 +1547,8 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, Menu, Menu, Menu, Menu,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   MenuBaseMenuView_LoadItemClass,
   MenuBaseMenuView_LoadItemTitle,
   MenuBaseMenuView_OnItemActivate,
@@ -1767,6 +1775,8 @@ EW_DEFINE_CLASS( MenuPushButton, ComponentsBaseComponent, OnActivate, OnActivate
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuPushButton )
 
 /* Initializer for the class 'Menu::UpDownPushButtonSet' */
@@ -1939,6 +1949,8 @@ EW_DEFINE_CLASS( MenuUpDownPushButtonSet, ComponentsBaseComponent, OnUpButtonAct
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuUpDownPushButtonSet )
 
 /* Initializer for the class 'Menu::ItemCheckMark' */
@@ -2070,6 +2082,8 @@ EW_DEFINE_CLASS( MenuItemCheckMark, MenuItemBase, CheckMark, CheckMark, CheckMar
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuItemCheckMark )
 
 /* Initializer for the class 'Menu::ArrowScrollBar' */
@@ -2379,6 +2393,8 @@ EW_DEFINE_CLASS( MenuItemUnitValue, MenuItemBase, UnitValueText, UnitValueText,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuItemUnitValue )
 
 /* Embedded Wizard */

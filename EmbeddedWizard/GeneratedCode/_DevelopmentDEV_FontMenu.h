@@ -171,6 +171,8 @@ EW_DEFINE_METHODS( DevelopmentDEV_FontMenu, MenuBaseMenuView )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_FontMenu _this, XInt32 
     aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_FontMenu _this, XInt32 

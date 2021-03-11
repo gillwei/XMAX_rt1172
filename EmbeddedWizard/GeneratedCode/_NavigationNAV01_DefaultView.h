@@ -195,6 +195,8 @@ EW_DEFINE_METHODS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_METHOD( OnLongEnterKeyActivated, void )( NavigationNAV01_DefaultView _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( NavigationNAV01_DefaultView )
 
 /* The method Init() is invoked automatically after the component has been created. 

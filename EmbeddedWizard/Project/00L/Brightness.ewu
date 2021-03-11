@@ -10,7 +10,7 @@ class BRT01_BrightnessSettingMenu : Menu::BaseMenuView
     var int32 NoOfItems = 1;
 
     $if !$prototyper
-      if( DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.METER_BRIGHTNESS_ADJ ) )
+      if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.METER_BRIGHTNESS_ADJ ) )
       {
         NoOfItems++;
       }
@@ -120,12 +120,12 @@ class BRT02_TFTBrightness : Components::BaseMainBG
     }
   }
 
-  $rect <210,390,440,430>
+  $rect <210,440,440,480>
   inherited method OnShortDownKeyActivated()
   {
     if( Brightness::TFT_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
     {
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::LEVEL_DOWN_OPCODE );
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::OPERATION_DOWN_CODE );
     }
 
     $if $prototyper
@@ -137,12 +137,12 @@ class BRT02_TFTBrightness : Components::BaseMainBG
     $endif
   }
 
-  $rect <210,440,440,480>
+  $rect <210,540,440,580>
   inherited method OnShortUpKeyActivated()
   {
     if( Brightness::TFT_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
     {
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::LEVEL_UP_OPCODE );
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::OPERAION_UP_CODE );
     }
 
     $if $prototyper
@@ -154,7 +154,7 @@ class BRT02_TFTBrightness : Components::BaseMainBG
     $endif
   }
 
-  $rect <210,490,440,530>
+  $rect <210,390,440,430>
   inherited method OnShortEnterKeyActivated()
   {
     // back to brightness setting menu when short pressing enter key
@@ -163,6 +163,18 @@ class BRT02_TFTBrightness : Components::BaseMainBG
 
   $rect <0,340,180,380>
   inherited property DDModeEnabled = true;
+
+  $rect <210,490,440,530>
+  inherited method OnDownKeyReleased()
+  {
+    DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::OPERATION_NONE_CODE );
+  }
+
+  $rect <210,590,440,630>
+  inherited method OnUpKeyReleased()
+  {
+    DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::OPERATION_NONE_CODE );
+  }
 
   $rect <0,390,200,430>
   inherited var SlideOutEffectEnabled = true;
@@ -181,7 +193,7 @@ class BRT02_TFTBrightness : Components::BaseMainBG
     preset Bitmap = Resource::TFTBrightnessBase;
   }
 
-  $rect <450,290,650,330>
+  $rect <470,290,670,330>
   array rect LevelBarBounds[ 3 ] =
   (
     Default[0] = <173,205,307,224>;
@@ -198,7 +210,7 @@ class BRT02_TFTBrightness : Components::BaseMainBG
     preset Visible = false;
   }
 
-  $rect <450,440,730,480>
+  $rect <470,440,750,480>
   object Core::SystemEventHandler VehicleDataReceivedEventHandler
   {
     preset OnEvent = OnVehicleDataReceivedSlot;
@@ -207,7 +219,7 @@ class BRT02_TFTBrightness : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <450,490,730,530>
+  $rect <470,490,750,530>
   slot OnVehicleDataReceivedSlot
   {
     var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
@@ -218,10 +230,10 @@ class BRT02_TFTBrightness : Components::BaseMainBG
     }
   }
 
-  $rect <450,390,660,430>
+  $rect <470,390,680,430>
   var uint32 BrightnessLevel = 0;
 
-  $rect <450,340,660,380>
+  $rect <470,340,680,380>
   method void UpdateBrightnessLevel()
   {
     //TODO: get CAN timeout error state
@@ -252,11 +264,11 @@ const uint32 METER_BRIGHTNESS_LEVEL_MIN = 1;
 
 $rect <10,260,240,300>
 $output false
-const uint32 LEVEL_UP_OPCODE = 2;
+const uint32 OPERAION_UP_CODE = 2;
 
 $rect <10,210,240,250>
 $output false
-const uint32 LEVEL_DOWN_OPCODE = 1;
+const uint32 OPERATION_DOWN_CODE = 1;
 
 $rect <310,110,570,150>
 $output false
@@ -284,12 +296,12 @@ class BRT03_MeterBrightness : Components::BaseMainBG
     }
   }
 
-  $rect <210,390,440,430>
+  $rect <210,440,440,480>
   inherited method OnShortDownKeyActivated()
   {
     if( Brightness::TFT_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
     {
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::LEVEL_DOWN_OPCODE );
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::OPERATION_DOWN_CODE );
     }
 
     $if $prototyper
@@ -301,12 +313,12 @@ class BRT03_MeterBrightness : Components::BaseMainBG
     $endif
   }
 
-  $rect <210,440,440,480>
+  $rect <210,540,440,580>
   inherited method OnShortUpKeyActivated()
   {
     if( Brightness::TFT_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
     {
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::LEVEL_UP_OPCODE );
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::OPERAION_UP_CODE );
     }
 
     $if $prototyper
@@ -318,7 +330,7 @@ class BRT03_MeterBrightness : Components::BaseMainBG
     $endif
   }
 
-  $rect <210,490,440,530>
+  $rect <210,390,440,430>
   inherited method OnShortEnterKeyActivated()
   {
     // back to brightness setting menu when short pressing enter key
@@ -327,6 +339,18 @@ class BRT03_MeterBrightness : Components::BaseMainBG
 
   $rect <0,340,180,380>
   inherited property DDModeEnabled = true;
+
+  $rect <210,490,440,530>
+  inherited method OnDownKeyReleased()
+  {
+    DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::OPERATION_NONE_CODE );
+  }
+
+  $rect <210,590,440,630>
+  inherited method OnUpKeyReleased()
+  {
+    DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::OPERATION_NONE_CODE );
+  }
 
   $rect <0,390,200,430>
   inherited var SlideOutEffectEnabled = true;
@@ -400,3 +424,7 @@ class BRT03_MeterBrightness : Components::BaseMainBG
     Default[5] = <173,65,307,84>;
   );
 }
+
+$rect <10,310,240,350>
+$output false
+const uint32 OPERATION_NONE_CODE = 0;

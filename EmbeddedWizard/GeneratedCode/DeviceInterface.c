@@ -448,6 +448,19 @@ void DeviceInterfaceSystemDeviceClass__StartBootupAnimation( void* _this )
   DeviceInterfaceSystemDeviceClass_StartBootupAnimation((DeviceInterfaceSystemDeviceClass)_this );
 }
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsKeyStateValid()' */
+XBool DeviceInterfaceSystemDeviceClass_IsKeyStateValid( DeviceInterfaceSystemDeviceClass _this )
+{
+  XBool IsValid;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsValid = 1;
+  IsValid = VI_is_key_state_valid();
+  return IsValid;
+}
+
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this )
 {
@@ -1725,8 +1738,8 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( DeviceInterfaceVeh
   return IsActivated;
 }
 
-/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.IsVehicleFeatureSupported()' */
-XBool DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( DeviceInterfaceVehicleDeviceClass _this, 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.IsVehicleFunctionSupported()' */
+XBool DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( DeviceInterfaceVehicleDeviceClass _this, 
   XEnum aVehicleFeature )
 {
   XBool IsSupported;
@@ -1737,7 +1750,7 @@ XBool DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( DeviceInterfa
 
   IsSupported = 0;
   FeatureId = aVehicleFeature;
-  IsSupported = ew_vi_is_feature_supported( FeatureId );
+  IsSupported = VI_is_function_supported( FeatureId );
   return IsSupported;
 }
 

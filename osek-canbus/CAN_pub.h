@@ -21,6 +21,7 @@ extern "C" {
 #include "can_il_par.h"
 #include "can_il.h"
 #include "can_mid.h"
+#include "can_il_enum.h"
 
 void il_app_frm_timeout1_get
     (

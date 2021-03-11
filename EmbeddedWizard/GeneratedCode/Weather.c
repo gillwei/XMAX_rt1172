@@ -800,6 +800,8 @@ EW_DEFINE_CLASS( WeatherWEA01_Main, ComponentsBaseMainBG, WeatherListView, Weath
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( WeatherWEA01_Main )
 
 /* Initializer for the class 'Weather::WeatherWeekViewUI' */
@@ -1893,6 +1895,8 @@ EW_DEFINE_CLASS( WeatherWeatherList, ComponentsBaseComponent, VerticalList, Vert
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( WeatherWeatherList )
 
 /* Initializer for the class 'Weather::WeatherItemWrapper' */

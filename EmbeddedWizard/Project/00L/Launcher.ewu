@@ -350,10 +350,10 @@ class LNC_Main : Components::BaseComponent
   $rect <850,410,1050,450>
   method void GetVehicleSupportedFeature()
   {
-    TCSEnabled = DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.TCS );
-    SeatHeaterEnabled = DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.SEAT_HEATER );
-    GripWarmerEnabled = DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.GRIP_WARMER );
-    WindScreenEnabled = DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.WIND_SCREEN );
+    TCSEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TCS );
+    SeatHeaterEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.SEAT_HEATER );
+    GripWarmerEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.GRIP_WARMER );
+    WindScreenEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.WIND_SCREEN );
   }
 }
 

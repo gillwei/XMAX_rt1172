@@ -165,6 +165,8 @@ EW_DEFINE_METHODS( HomeHOM13_SpeedVisualizer, HomeBaseHome )
   EW_METHOD( OnLongEnterKeyActivated, void )( HomeHOM13_SpeedVisualizer _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( HomeHOM13_SpeedVisualizer )
 
 /* The method Init() is invoked automatically after the component has been created. 

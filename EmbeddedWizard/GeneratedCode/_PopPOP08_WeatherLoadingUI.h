@@ -164,6 +164,8 @@ EW_DEFINE_METHODS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( PopPOP08_WeatherLoadingUI )
 
 /* The method Init() is invoked automatically after the component has been created. 

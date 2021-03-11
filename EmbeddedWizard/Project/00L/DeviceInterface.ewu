@@ -383,6 +383,19 @@ class SystemDeviceClass : Templates::DeviceClass
 
   $rect <1020,110,1230,150>
   object Core::SystemEvent BootupAnimationSystemEvent;
+
+  $rect <470,220,670,260>
+  method bool IsKeyStateValid()
+  {
+    var bool IsValid = true;
+    $if !$prototyper
+      native( IsValid )
+      {
+        IsValid = VI_is_key_state_valid();
+      }
+    $endif
+    return IsValid;
+  }
 }
 
 $rect <20,60,220,100>
@@ -1485,7 +1498,7 @@ class VehicleDeviceClass : Templates::DeviceClass
   }
 
   $rect <20,180,260,220>
-  method bool IsVehicleFeatureSupported( arg Enum::VehicleFeature aVehicleFeature )
+  method bool IsVehicleFunctionSupported( arg Enum::VehicleSupportedFunction aVehicleFeature )
   {
     var bool IsSupported = false;
 
@@ -1493,7 +1506,7 @@ class VehicleDeviceClass : Templates::DeviceClass
       var int32 FeatureId = ( int32 )aVehicleFeature;
       native( IsSupported, FeatureId )
       {
-        IsSupported = ew_vi_is_feature_supported( FeatureId );
+        IsSupported = VI_is_function_supported( FeatureId );
       }
     $else
       // suppress warning

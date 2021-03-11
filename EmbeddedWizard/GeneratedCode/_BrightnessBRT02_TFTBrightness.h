@@ -163,6 +163,8 @@ EW_DEFINE_METHODS( BrightnessBRT02_TFTBrightness, ComponentsBaseMainBG )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( BrightnessBRT02_TFTBrightness _this )
+  EW_METHOD( OnUpKeyReleased,   void )( BrightnessBRT02_TFTBrightness _this )
 EW_END_OF_METHODS( BrightnessBRT02_TFTBrightness )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -196,6 +198,12 @@ void BrightnessBRT02_TFTBrightness_OnShortUpKeyActivated( BrightnessBRT02_TFTBri
 
 /* 'C' function for method : 'Brightness::BRT02_TFTBrightness.OnShortEnterKeyActivated()' */
 void BrightnessBRT02_TFTBrightness_OnShortEnterKeyActivated( BrightnessBRT02_TFTBrightness _this );
+
+/* Callback when down key of on trigger mode is released */
+void BrightnessBRT02_TFTBrightness_OnDownKeyReleased( BrightnessBRT02_TFTBrightness _this );
+
+/* Callback when up key of on trigger mode is released */
+void BrightnessBRT02_TFTBrightness_OnUpKeyReleased( BrightnessBRT02_TFTBrightness _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */

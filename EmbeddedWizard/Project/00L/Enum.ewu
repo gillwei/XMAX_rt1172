@@ -271,7 +271,7 @@ enum MotoConTest
 }
 
 $rect <260,170,460,210>
-enum VehicleFeature
+enum VehicleSupportedFunction
 {
   $rect <10,10,210,50>
   item TRIP1;

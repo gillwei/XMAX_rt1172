@@ -163,6 +163,8 @@ EW_DEFINE_METHODS( BrightnessBRT03_MeterBrightness, ComponentsBaseMainBG )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( BrightnessBRT03_MeterBrightness _this )
+  EW_METHOD( OnUpKeyReleased,   void )( BrightnessBRT03_MeterBrightness _this )
 EW_END_OF_METHODS( BrightnessBRT03_MeterBrightness )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -196,6 +198,12 @@ void BrightnessBRT03_MeterBrightness_OnShortUpKeyActivated( BrightnessBRT03_Mete
 
 /* 'C' function for method : 'Brightness::BRT03_MeterBrightness.OnShortEnterKeyActivated()' */
 void BrightnessBRT03_MeterBrightness_OnShortEnterKeyActivated( BrightnessBRT03_MeterBrightness _this );
+
+/* Callback when down key of on trigger mode is released */
+void BrightnessBRT03_MeterBrightness_OnDownKeyReleased( BrightnessBRT03_MeterBrightness _this );
+
+/* Callback when up key of on trigger mode is released */
+void BrightnessBRT03_MeterBrightness_OnUpKeyReleased( BrightnessBRT03_MeterBrightness _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */

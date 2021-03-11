@@ -11,12 +11,6 @@ $rect <20,60,260,100>
 $output false
 class DEV_Main : Menu::BaseMenuView
 {
-  $rect <240,300,470,340>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
-
   $rect <510,10,710,50>
   inherited method LoadItemClass()
   {
@@ -56,12 +50,11 @@ class DEV_Main : Menu::BaseMenuView
       case 2: PresentDialog( new Development::DEV_RealTimeClock, null, null, null, null, null, null, null, null, false );
       case 3: PresentDialog( new Development::DEV_Bluetooth, null, null, null, null, null, null, null, null, false );
       case 4: PresentDialog( new Development::DEV_TFTBrightness, null, null, null, null, null, null, null, null, false );
-      case 5: PresentDialog( new Development::DEV_VehicleFeature, null, null, null, null, null, null, null, null, false );
+      case 5: PresentDialog( new Development::DEV_VehicleSupportedFunction, null, null, null, null, null, null, null, null, false );
       case 6: PresentDialog( new Development::DEV_MotoCon, null, null, null, null, null, null, null, null, false );
       case 7: PresentDialog( new Development::DEV_FontMenu, null, null, null, null, null, null, null, null, false );
       default:;
     }
-
   }
 
   $rect <510,110,710,150>
@@ -84,7 +77,7 @@ class DEV_Main : Menu::BaseMenuView
     Default[2] = "Real Time Clock";
     Default[3] = "Bluetooth Test";
     Default[4] = "TFT Brightness Test";
-    Default[5] = "Vehicle Feature";
+    Default[5] = "Vehicle Supported Func";
     Default[6] = "MotoCon Test";
     Default[7] = "Font Test";
   );
@@ -419,7 +412,7 @@ class DEV_MotoCon : Menu::BaseMenuView
 
 $rect <20,310,260,350>
 $output false
-class DEV_VehicleFeature : Menu::BaseMenuView
+class DEV_VehicleSupportedFunction : Menu::BaseMenuView
 {
   $rect <10,300,210,340>
   inherited property Bounds = <0,0,480,272>;
@@ -471,7 +464,7 @@ class DEV_VehicleFeature : Menu::BaseMenuView
 
       native( aItemNo, IsChecked )
       {
-        VI_set_feature_supported( aItemNo, IsChecked );
+        VI_set_supported_function( aItemNo, IsChecked );
       }
     $endif
   }
@@ -479,11 +472,25 @@ class DEV_VehicleFeature : Menu::BaseMenuView
   $rect <510,110,710,150>
   inherited method LoadItemChecked()
   {
-    var bool IsFeatureSupported = false;
+    var bool IsFunctionSupported = false;
     $if !$prototyper
-      IsFeatureSupported = DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( ( Enum::VehicleFeature )aItemNo );
+      IsFunctionSupported = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( ( Enum::VehicleSupportedFunction )aItemNo );
+    $else
+      // suppress warning
+      if( aItemNo )
+      {
+        // empty body
+      }
     $endif
-    return IsFeatureSupported;
+    return IsFunctionSupported;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = ItemTitleArray.size;
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
   }
 
   $rect <730,60,930,100>
@@ -518,21 +525,12 @@ class DEV_VehicleFeature : Menu::BaseMenuView
     Default[26] = "Cruise";
   );
 
-  $rect <20,20,160,60>
-  inherited object Menu
-  {
-    preset NoOfItems = ItemTitleArray.size;
-    preset ItemHeight = Menu::ItemHeightSmall;
-    preset ItemNumPerPage = 4;
-  }
-
   $reorder SlideInDialog 4
   $reorder LoadItemClass 4
   $reorder LoadItemTitle 4
   $reorder OnItemActivate 4
   $reorder LoadItemChecked 4
-  $reorder ItemTitleArray 2
-  $reorder Menu 1
+  $reorder ItemTitleArray 1
 }
 
 $rect <310,60,550,100>

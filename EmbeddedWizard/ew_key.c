@@ -100,39 +100,6 @@ else
 
 /*********************************************************************
 *
-* @public
-* EW_clear_key_state
-*
-* Clear key state
-*
-*********************************************************************/
-void EW_clear_key_state
-    (
-    void
-    )
-{
-CoreRoot root_object = ew_get_core_root();
-if( root_object != 0 )
-    {
-    if( root_object->keyLastTarget != 0 )
-        {
-        CoreKeyPressHandler key_handler = EwCastObject( root_object->keyLastTarget, CoreKeyPressHandler );
-        if( key_handler != 0 )
-            {
-            key_handler->Repetition = 0;
-            key_handler->RepetitionCount = 0;
-            key_handler->pressCounter = 0;
-            }
-        }
-    root_object->keyLastCode = CoreKeyCodeNoKey;
-    root_object->keyLastCharCode = 0x0000;
-    root_object->keyLastLocked = 0;
-    root_object->keyLastTarget = 0;
-    }
-}
-
-/*********************************************************************
-*
 * @private
 * ew_key_init
 *

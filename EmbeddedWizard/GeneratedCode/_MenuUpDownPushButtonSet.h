@@ -160,6 +160,8 @@ EW_DEFINE_METHODS( MenuUpDownPushButtonSet, ComponentsBaseComponent )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuUpDownPushButtonSet )
 
 /* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortDownKeyActivated()' */

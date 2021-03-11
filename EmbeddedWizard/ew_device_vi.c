@@ -235,24 +235,6 @@ return need_update;
 
 /*********************************************************************
 *
-* @private
-* ew_vi_is_feature_supported
-*
-* Get if the vehicle feature is supported
-*
-* @return The feature supported or not
-*
-*********************************************************************/
-bool ew_vi_is_feature_supported
-    (
-    int feature_id
-    )
-{
-return VI_is_feature_supported( feature_id );
-}
-
-/*********************************************************************
-*
 * @public
 * EW_notify_dd_mode_state_changed
 *

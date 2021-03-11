@@ -333,10 +333,10 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
   $rect <760,320,960,360>
   onget PressureEnabled
   {
-    return DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.TIRE_FRONT ) ||
-           DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.TIRE_FRONT_LEFT ) ||
-           DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.TIRE_FRONT_RIGHT ) ||
-           DeviceInterface::VehicleDevice.IsVehicleFeatureSupported( Enum::VehicleFeature.TIRE_REAR );
+    return DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_FRONT ) ||
+           DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_FRONT_LEFT ) ||
+           DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_FRONT_RIGHT ) ||
+           DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_REAR );
   }
 }
 

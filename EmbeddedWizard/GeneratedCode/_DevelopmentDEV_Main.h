@@ -165,12 +165,14 @@ EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_Main _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_Main _this, XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_Main _this, XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_Main _this, XInt32 aItemNo, 
@@ -179,9 +181,6 @@ EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( DevelopmentDEV_Main )
-
-/* 'C' function for method : 'Development::DEV_Main.OnShortHomeKeyActivated()' */
-void DevelopmentDEV_Main_OnShortHomeKeyActivated( DevelopmentDEV_Main _this );
 
 /* 'C' function for method : 'Development::DEV_Main.LoadItemClass()' */
 XClass DevelopmentDEV_Main_LoadItemClass( DevelopmentDEV_Main _this, XInt32 aItemNo );

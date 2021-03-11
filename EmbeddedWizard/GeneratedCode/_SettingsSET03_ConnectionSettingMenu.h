@@ -171,6 +171,8 @@ EW_DEFINE_METHODS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( SettingsSET03_ConnectionSettingMenu _this, 
     XInt32 aItemNo )
   EW_METHOD( LoadItemTitle,     XString )( SettingsSET03_ConnectionSettingMenu _this, 

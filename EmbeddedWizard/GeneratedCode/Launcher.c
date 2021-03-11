@@ -527,18 +527,18 @@ void LauncherLNC_Main_DismissChildDialogs( LauncherLNC_Main _this )
 /* 'C' function for method : 'Launcher::LNC_Main.GetVehicleSupportedFeature()' */
 void LauncherLNC_Main_GetVehicleSupportedFeature( LauncherLNC_Main _this )
 {
-  _this->TCSEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+  _this->TCSEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
   EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-  EnumVehicleFeatureTCS );
-  _this->SeatHeaterEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+  EnumVehicleSupportedFunctionTCS );
+  _this->SeatHeaterEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
   EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-  EnumVehicleFeatureSEAT_HEATER );
-  _this->GripWarmerEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+  EnumVehicleSupportedFunctionSEAT_HEATER );
+  _this->GripWarmerEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
   EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-  EnumVehicleFeatureGRIP_WARMER );
-  _this->WindScreenEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+  EnumVehicleSupportedFunctionGRIP_WARMER );
+  _this->WindScreenEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
   EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-  EnumVehicleFeatureWIND_SCREEN );
+  EnumVehicleSupportedFunctionWIND_SCREEN );
 }
 
 /* Variants derived from the class : 'Launcher::LNC_Main' */
@@ -587,6 +587,8 @@ EW_DEFINE_CLASS( LauncherLNC_Main, ComponentsBaseComponent, BaseSlideInEffect, B
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( LauncherLNC_Main )
 
 /* Initializer for the class 'Launcher::LNC_RotaryPlate' */
@@ -1074,6 +1076,8 @@ EW_DEFINE_CLASS( LauncherLNC_RotaryPlate, ComponentsBaseComponent, Icons, OnIcon
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( LauncherLNC_RotaryPlate )
 
 /* Initializer for the class 'Launcher::LNC_Base' */

@@ -481,15 +481,15 @@ XBool UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( UnitUNT01_UnitSettingMenu 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  return (XBool)((( DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+  return (XBool)((( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-    EnumVehicleFeatureTIRE_FRONT ) || DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+    EnumVehicleSupportedFunctionTIRE_FRONT ) || DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-    EnumVehicleFeatureTIRE_FRONT_LEFT )) || DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+    EnumVehicleSupportedFunctionTIRE_FRONT_LEFT )) || DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-    EnumVehicleFeatureTIRE_FRONT_RIGHT )) || DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+    EnumVehicleSupportedFunctionTIRE_FRONT_RIGHT )) || DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-    EnumVehicleFeatureTIRE_REAR ));
+    EnumVehicleSupportedFunctionTIRE_REAR ));
 }
 
 /* Variants derived from the class : 'Unit::UNT01_UnitSettingMenu' */
@@ -539,6 +539,8 @@ EW_DEFINE_CLASS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView, UnitItemValue, Ite
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   UnitUNT01_UnitSettingMenu_LoadItemClass,
   UnitUNT01_UnitSettingMenu_LoadItemTitle,
   UnitUNT01_UnitSettingMenu_OnItemActivate,
@@ -740,6 +742,8 @@ EW_DEFINE_CLASS( UnitUNT02_MileageSettingMenu, MenuBaseMenuView, MileageUpdateSi
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   UnitUNT02_MileageSettingMenu_LoadItemClass,
   UnitUNT02_MileageSettingMenu_LoadItemTitle,
   UnitUNT02_MileageSettingMenu_OnItemActivate,
@@ -1049,6 +1053,8 @@ EW_DEFINE_CLASS( UnitUNT03_FuelSettingMenu, MenuBaseMenuView, FuelUpdateSignal,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   UnitUNT03_FuelSettingMenu_LoadItemClass,
   UnitUNT03_FuelSettingMenu_LoadItemTitle,
   UnitUNT03_FuelSettingMenu_OnItemActivate,
@@ -1279,6 +1285,8 @@ EW_DEFINE_CLASS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView, PressureUpdate
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   UnitUNT04_PressureSettingMenu_LoadItemClass,
   UnitUNT04_PressureSettingMenu_LoadItemTitle,
   UnitUNT04_PressureSettingMenu_OnItemActivate,
@@ -1480,6 +1488,8 @@ EW_DEFINE_CLASS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView, TempUpdateS
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   UnitUNT05_TemperatureSettingMenu_LoadItemClass,
   UnitUNT05_TemperatureSettingMenu_LoadItemTitle,
   UnitUNT05_TemperatureSettingMenu_OnItemActivate,

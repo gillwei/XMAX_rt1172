@@ -169,6 +169,8 @@ EW_DEFINE_METHODS( DevelopmentDEV_FontTest, ComponentsBaseMainBG )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( DevelopmentDEV_FontTest )
 
 /* 'C' function for method : 'Development::DEV_FontTest.OnShortDownKeyActivated()' */

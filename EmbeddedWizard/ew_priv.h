@@ -105,7 +105,6 @@ void ew_set_ble_advertisement( const bool enable );
 void ew_device_vi_init( void );
 void ew_device_vi_deinit( void );
 int  ew_device_vi_proc( void );
-bool ew_vi_is_feature_supported( int feature_id );
 
 void ew_device_weather_init( void );
 void ew_device_weather_deinit( void );

@@ -481,6 +481,8 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, _None, _None,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET01_MainSettingMenu_LoadItemClass,
   SettingsSET01_MainSettingMenu_LoadItemTitle,
   SettingsSET01_MainSettingMenu_OnItemActivate,
@@ -685,6 +687,8 @@ EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, ItemTitl
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET03_ConnectionSettingMenu_LoadItemClass,
   SettingsSET03_ConnectionSettingMenu_LoadItemTitle,
   SettingsSET03_ConnectionSettingMenu_OnItemActivate,
@@ -932,6 +936,8 @@ EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, ItemTitleArray,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET04_BtSettingMenu_LoadItemClass,
   SettingsSET04_BtSettingMenu_LoadItemTitle,
   SettingsSET04_BtSettingMenu_OnItemActivate,
@@ -1203,6 +1209,8 @@ EW_DEFINE_CLASS( SettingsSET06_BtcDiscovarable, ComponentsBaseMainBG, Discoverab
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( SettingsSET06_BtcDiscovarable )
 
 /* Initializer for the class 'Settings::SET9_10_11_BtConnectionResult' */
@@ -1402,6 +1410,8 @@ EW_DEFINE_CLASS( SettingsSET9_10_11_BtConnectionResult, ComponentsBaseMainBG, Me
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( SettingsSET9_10_11_BtConnectionResult )
 
 /* Initializer for the class 'Settings::SET05_BtcMaxPairedDevice' */
@@ -1555,6 +1565,8 @@ EW_DEFINE_CLASS( SettingsSET05_BtcMaxPairedDevice, ComponentsBaseMainBG, Text, T
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( SettingsSET05_BtcMaxPairedDevice )
 
 /* Initializer for the class 'Settings::SET08_BtcPairDevice' */
@@ -1788,6 +1800,8 @@ EW_DEFINE_CLASS( SettingsSET08_BtcPairDevice, ComponentsBaseMainBG, PairText, Pa
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( SettingsSET08_BtcPairDevice )
 
 /* Initializer for the class 'Settings::SET17_BtcPairedDeviceList' */
@@ -2043,6 +2057,8 @@ EW_DEFINE_CLASS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView, RefreshLis
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET17_BtcPairedDeviceList_LoadItemClass,
   SettingsSET17_BtcPairedDeviceList_LoadItemTitle,
   SettingsSET17_BtcPairedDeviceList_OnItemActivate,
@@ -2296,6 +2312,8 @@ EW_DEFINE_CLASS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView, Devic
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET19_BtcPairedDeviceOperation_LoadItemClass,
   SettingsSET19_BtcPairedDeviceOperation_LoadItemTitle,
   SettingsSET19_BtcPairedDeviceOperation_OnItemActivate,
@@ -2424,6 +2442,8 @@ EW_DEFINE_CLASS( SettingsSET18_DeleteBleDevice, ComponentsBaseMainBG, Text, Text
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( SettingsSET18_DeleteBleDevice )
 
 /* Initializer for the class 'Settings::BtFwUpdateDialog' */
@@ -2711,6 +2731,8 @@ EW_DEFINE_CLASS( SettingsTimeoutDialog, ComponentsBaseMainBG, OnTimeout, OnTimeo
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   SettingsTimeoutDialog_OnTimeoutSlot,
 EW_END_OF_CLASS( SettingsTimeoutDialog )
 
@@ -2916,6 +2938,8 @@ EW_DEFINE_CLASS( SettingsSET30_QRCode, ComponentsBaseMainBG, QrCodeUpdateEventHa
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( SettingsSET30_QRCode )
 
 /* Initializer for the class 'Settings::SET22_BleAdvertising' */
@@ -3132,6 +3156,8 @@ EW_DEFINE_CLASS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG, DeviceNameT
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( SettingsSET22_BleAdvertising )
 
 /* Initializer for the class 'Settings::SET23_BlePairingFail' */
@@ -3234,6 +3260,8 @@ EW_DEFINE_CLASS( SettingsSET23_BlePairingFail, SettingsTimeoutDialog, _None, _No
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET23_BlePairingFail_OnTimeoutSlot,
 EW_END_OF_CLASS( SettingsSET23_BlePairingFail )
 
@@ -3365,6 +3393,8 @@ EW_DEFINE_CLASS( SettingsSET24_CheckPairingRecord, ComponentsBaseMainBG, Message
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( SettingsSET24_CheckPairingRecord )
 
 /* Initializer for the class 'Settings::SET25_BlePincode' */
@@ -3562,6 +3592,8 @@ EW_DEFINE_CLASS( SettingsSET25_BlePincode, ComponentsBaseMainBG, BleStateChanged
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( SettingsSET25_BlePincode )
 
 /* Initializer for the class 'Settings::SET28_SystemInfo' */
@@ -3751,6 +3783,8 @@ EW_DEFINE_CLASS( SettingsSET28_SystemInfo, ComponentsBaseMainBG, ESN, ESN, ESN,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   SettingsSET28_SystemInfo_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( SettingsSET28_SystemInfo )
 
 /* Embedded Wizard */

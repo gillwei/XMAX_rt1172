@@ -34,6 +34,7 @@
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectSlideTransitionNoFade.h"
 #include "_EffectsTransition.h"
@@ -259,28 +260,39 @@ void ComponentsBaseComponent_OnKeyReleaseSlot( ComponentsBaseComponent _this, XO
     {
       case CoreKeyCodeUp :
       {
-        if (( EnumKeyTriggerModeOFF == _this->UpKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
-            _this ))
+        if ((( EnumKeyTriggerModeOFF == _this->UpKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
+            _this )) && DeviceInterfaceSystemDeviceClass_IsKeyStateValid( EwGetAutoObject( 
+            &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
         {
           ComponentsBaseComponent__OnShortUpKeyActivated( _this );
+        }
+        else
+        {
+          ComponentsBaseComponent__OnUpKeyReleased( _this );
         }
       }
       break;
 
       case CoreKeyCodeDown :
       {
-        if (( EnumKeyTriggerModeOFF == _this->DownKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
-            _this ))
+        if ((( EnumKeyTriggerModeOFF == _this->DownKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
+            _this )) && DeviceInterfaceSystemDeviceClass_IsKeyStateValid( EwGetAutoObject( 
+            &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
         {
           ComponentsBaseComponent__OnShortDownKeyActivated( _this );
+        }
+        else
+        {
+          ComponentsBaseComponent__OnDownKeyReleased( _this );
         }
       }
       break;
 
       case CoreKeyCodeOk :
       {
-        if (( EnumKeyTriggerModeOFF == _this->EnterKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
-            _this ))
+        if ((( EnumKeyTriggerModeOFF == _this->EnterKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
+            _this )) && DeviceInterfaceSystemDeviceClass_IsKeyStateValid( EwGetAutoObject( 
+            &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
         {
           ComponentsBaseComponent__OnShortEnterKeyActivated( _this );
         }
@@ -289,11 +301,28 @@ void ComponentsBaseComponent_OnKeyReleaseSlot( ComponentsBaseComponent _this, XO
 
       case CoreKeyCodeHome :
       {
-        if ( EnumKeyTriggerModeOFF == _this->HomeKeyTriggerMode )
+        if (( EnumKeyTriggerModeOFF == _this->HomeKeyTriggerMode ) && DeviceInterfaceSystemDeviceClass_IsKeyStateValid( 
+            EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
         {
           ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
         }
       }
+      break;
+
+      default : 
+        ;
+    }
+  }
+  else
+  {
+    switch ( _this->KeyHandler.Code )
+    {
+      case CoreKeyCodeUp :
+        ComponentsBaseComponent__OnUpKeyReleased( _this );
+      break;
+
+      case CoreKeyCodeDown :
+        ComponentsBaseComponent__OnDownKeyReleased( _this );
       break;
 
       default : 
@@ -444,6 +473,32 @@ void ComponentsBaseComponent__OnSetDDModeEnabled( void* _this, XBool value )
   , value );
 }
 
+/* Callback when down key of on trigger mode is released */
+void ComponentsBaseComponent_OnDownKeyReleased( ComponentsBaseComponent _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+}
+
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnDownKeyReleased()' */
+void ComponentsBaseComponent__OnDownKeyReleased( void* _this )
+{
+  ((ComponentsBaseComponent)_this)->_VMT->OnDownKeyReleased((ComponentsBaseComponent)_this );
+}
+
+/* Callback when up key of on trigger mode is released */
+void ComponentsBaseComponent_OnUpKeyReleased( ComponentsBaseComponent _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+}
+
+/* Wrapper function for the virtual method : 'Components::BaseComponent.OnUpKeyReleased()' */
+void ComponentsBaseComponent__OnUpKeyReleased( void* _this )
+{
+  ((ComponentsBaseComponent)_this)->_VMT->OnUpKeyReleased((ComponentsBaseComponent)_this );
+}
+
 /* Variants derived from the class : 'Components::BaseComponent' */
 EW_DEFINE_CLASS_VARIANTS( ComponentsBaseComponent )
 EW_END_OF_CLASS_VARIANTS( ComponentsBaseComponent )
@@ -490,6 +545,8 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, KeyHandler, KeyHandler, Key
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( ComponentsBaseComponent )
 
 /* Initializer for the class 'Components::BaseMainBG' */
@@ -836,6 +893,8 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, ChildDialog, Mai
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( ComponentsBaseMainBG )
 
 /* Initializer for the class 'Components::DDModeMask' */

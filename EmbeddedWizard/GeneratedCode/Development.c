@@ -38,7 +38,7 @@
 #include "_DevelopmentDEV_MotoCon.h"
 #include "_DevelopmentDEV_RealTimeClock.h"
 #include "_DevelopmentDEV_TFTBrightness.h"
-#include "_DevelopmentDEV_VehicleFeature.h"
+#include "_DevelopmentDEV_VehicleSupportedFunction.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
@@ -62,26 +62,26 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x0000040E, /* ratio 49.71 % */
+  0x0000041C, /* ratio 50.19 % */
   0xB8001F00, 0x8008C452, 0x00C60030, 0x0DE003A0, 0xF2003900, 0x80010000, 0x0032800A,
   0xC0042CE6, 0x22C0C271, 0x80021A48, 0xC3E2F233, 0x6A4D1589, 0x89B14864, 0x39263248,
   0xC528F84A, 0x28364224, 0xD001A62D, 0x21C524C6, 0x543A7000, 0x802386B8, 0x04851F08,
   0x24C75005, 0x190E8743, 0x72A9C9A2, 0x1F0B4723, 0x48B41A2D, 0x9DC42951, 0x654C0067,
-  0x46AAA6E8, 0xAE31168A, 0xA0933A34, 0x77539315, 0x9189C42A, 0x088C41A2, 0x88853619,
-  0x8240A391, 0x048AA32E, 0xDA2CB0EA, 0x32390CAA, 0xF0B068F8, 0xAD6AC3C6, 0xF1F02002,
-  0x04CA5185, 0x5CC47229, 0xAC518744, 0x05729504, 0x99A44530, 0x9E0E778D, 0x2DE00BAC,
-  0x771A8846, 0xE098E63A, 0x0CD2C223, 0x8004C6F3, 0x924976C0, 0xC003359E, 0x6AB711F0,
-  0x28012C88, 0x08A00265, 0xED30844A, 0x600E4498, 0x65006C67, 0x50BC72C3, 0x9243A37C,
-  0x7730015D, 0x003A114E, 0x5A37AFE9, 0x801D8EAF, 0x09DC0076, 0x1658C696, 0x3B9C4526,
-  0x08449CC5, 0xF4452251, 0x1B375D27, 0x07D1DD7C, 0xA4007D80, 0x5346D786, 0x5F1147A5,
-  0x14C1C400, 0x50514662, 0x02087B60, 0x4B425718, 0x5953B6B1, 0xD1C439A7, 0x87D61707,
-  0xCDEC8692, 0x4E4653E5, 0x585ED7A9, 0x61249A0F, 0x06259153, 0x1E250640, 0x084E1288,
-  0x43128765, 0x1AC49112, 0xC8523384, 0x99F27111, 0x004FE264, 0x13800104, 0xE3C84128,
-  0x08211846, 0x71086E93, 0x06926164, 0x93940822, 0x1918C650, 0xD4698E49, 0x22398DD7,
-  0x6A0021F8, 0x4310A498, 0x5147B5B2, 0x07B13791, 0xA41D51A4, 0x28689289, 0x75D4D4F5,
-  0x90A4510A, 0xE4410C63, 0x91144E10, 0x1C44A534, 0x7867A079, 0xA2C9F9A3, 0xDA0D285C,
-  0x2122A15E, 0x7F42125A, 0xA3C216EE, 0x9144A5CA, 0x2A5680A4, 0x1E985952, 0x1049128A,
-  0xA767174A, 0x10151946, 0x00000000
+  0x46AAA6E8, 0xAE31168A, 0xA3E19A34, 0x77539315, 0x9189C42A, 0x25A614E2, 0xC8843A49,
+  0x8A4C2310, 0x55969B06, 0x412051C8, 0x02455197, 0x6D165875, 0x191C8655, 0x78C8347C,
+  0x56B563A3, 0xF8F81001, 0x8266E8C2, 0x2E7E3914, 0x5628C3A2, 0x02B94A82, 0xCCD0EBB8,
+  0x4F073BC6, 0x16F005D6, 0x3B8D4423, 0xF04C732B, 0x865DE111, 0x451AFB08, 0x802F3BD0,
+  0x6001A1D2, 0x363BF8F8, 0x994A945F, 0x12822800, 0x263B4C21, 0x0DC4EF9F, 0x8E586CA0,
+  0x746F9817, 0x002BB248, 0x5A29D4E9, 0xF6DD8007, 0x7600EDC6, 0x9E1A377A, 0x658C5DE0,
+  0x29DD2EFF, 0x884224E6, 0xDED45112, 0x06E9DC49, 0xDC457D40, 0xFA001DD7, 0x705186C1,
+  0x12876562, 0x81C51844, 0x01906617, 0xF8788140, 0x80D28831, 0xD4B42571, 0xE001F26C,
+  0x7D1C439A, 0xFA82E1C0, 0x889F1881, 0x11A4A174, 0x54310C46, 0x51145862, 0x4D858008,
+  0x8AD6C861, 0x1384A1F9, 0xC451F342, 0xCD244490, 0x8F8F23A6, 0x7D9CB519, 0x13F90526,
+  0xE0004100, 0x0D2684C4, 0x285F91B9, 0x422104C1, 0x65086D1C, 0x5501FA87, 0x563995E5,
+  0x3382D7A5, 0x8B2638FE, 0x86A89528, 0x28D90A49, 0xE23B6352, 0x478BD375, 0x9001D51A,
+  0x5AA79A1E, 0xA7714D4F, 0x550A4510, 0x0E4410C6, 0x491144E1, 0x91C44A5A, 0x97EA8007,
+  0x66844A1A, 0x22A1E2F4, 0xA3527A2A, 0x50849128, 0x100131A1, 0xA5D0A542, 0x86A65144,
+  0x82E894A2, 0x68E48A8B, 0x97623A49, 0x191A5E1B, 0x00405465, 0x00000000
 };
 
 /* Compressed strings for the language 'Default'. */
@@ -132,33 +132,33 @@ static const XStringRes _Const0002 = { _StringsDefault0, 0x0024 };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x0036 };
 static const XStringRes _Const0004 = { _StringsDefault0, 0x0047 };
 static const XStringRes _Const0005 = { _StringsDefault0, 0x005D };
-static const XStringRes _Const0006 = { _StringsDefault0, 0x006F };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x007E };
+static const XStringRes _Const0006 = { _StringsDefault0, 0x0076 };
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0085 };
 static const XRect _Const0008 = {{ 0, 0 }, { 480, 272 }};
 static const XRect _Const0009 = {{ 96, 79 }, { 390, 122 }};
-static const XStringRes _Const000A = { _StringsDefault0, 0x008A };
-static const XStringRes _Const000B = { _StringsDefault0, 0x008E };
-static const XStringRes _Const000C = { _StringsDefault0, 0x0092 };
+static const XStringRes _Const000A = { _StringsDefault0, 0x0091 };
+static const XStringRes _Const000B = { _StringsDefault0, 0x0095 };
+static const XStringRes _Const000C = { _StringsDefault0, 0x0099 };
 static const XRect _Const000D = {{ 0, 40 }, { 240, 65 }};
-static const XStringRes _Const000E = { _StringsDefault0, 0x0096 };
+static const XStringRes _Const000E = { _StringsDefault0, 0x009D };
 static const XRect _Const000F = {{ 247, 40 }, { 356, 65 }};
 static const XRect _Const0010 = {{ 0, 2 }, { 480, 272 }};
 static const XRect _Const0011 = {{ 432, 2 }, { 482, 22 }};
-static const XStringRes _Const0012 = { _StringsDefault0, 0x00AC };
-static const XStringRes _Const0013 = { _StringsDefault0, 0x00B5 };
-static const XStringRes _Const0014 = { _StringsDefault0, 0x00BD };
-static const XStringRes _Const0015 = { _StringsDefault0, 0x00D5 };
-static const XStringRes _Const0016 = { _StringsDefault0, 0x00EC };
-static const XStringRes _Const0017 = { _StringsDefault0, 0x0103 };
-static const XStringRes _Const0018 = { _StringsDefault0, 0x011A };
-static const XStringRes _Const0019 = { _StringsDefault0, 0x012E };
-static const XStringRes _Const001A = { _StringsDefault0, 0x014D };
-static const XStringRes _Const001B = { _StringsDefault0, 0x0166 };
-static const XStringRes _Const001C = { _StringsDefault0, 0x017E };
-static const XStringRes _Const001D = { _StringsDefault0, 0x0192 };
-static const XStringRes _Const001E = { _StringsDefault0, 0x01AB };
-static const XStringRes _Const001F = { _StringsDefault0, 0x01C8 };
-static const XStringRes _Const0020 = { _StringsDefault0, 0x01E6 };
+static const XStringRes _Const0012 = { _StringsDefault0, 0x00B3 };
+static const XStringRes _Const0013 = { _StringsDefault0, 0x00BC };
+static const XStringRes _Const0014 = { _StringsDefault0, 0x00C4 };
+static const XStringRes _Const0015 = { _StringsDefault0, 0x00DC };
+static const XStringRes _Const0016 = { _StringsDefault0, 0x00F3 };
+static const XStringRes _Const0017 = { _StringsDefault0, 0x010A };
+static const XStringRes _Const0018 = { _StringsDefault0, 0x0121 };
+static const XStringRes _Const0019 = { _StringsDefault0, 0x0135 };
+static const XStringRes _Const001A = { _StringsDefault0, 0x0154 };
+static const XStringRes _Const001B = { _StringsDefault0, 0x016D };
+static const XStringRes _Const001C = { _StringsDefault0, 0x0185 };
+static const XStringRes _Const001D = { _StringsDefault0, 0x0199 };
+static const XStringRes _Const001E = { _StringsDefault0, 0x01B2 };
+static const XStringRes _Const001F = { _StringsDefault0, 0x01CF };
+static const XStringRes _Const0020 = { _StringsDefault0, 0x01ED };
 static const XStringRes _Const0021 = { _StringsDefault1, 0x0002 };
 static const XStringRes _Const0022 = { _StringsDefault1, 0x001F };
 static const XStringRes _Const0023 = { _StringsDefault1, 0x003B };
@@ -271,13 +271,6 @@ void DevelopmentDEV_Main__Done( DevelopmentDEV_Main _this )
   MenuBaseMenuView__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Development::DEV_Main.OnShortHomeKeyActivated()' */
-void DevelopmentDEV_Main_OnShortHomeKeyActivated( DevelopmentDEV_Main _this )
-{
-  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
-  EwNullSlot, 0 );
-}
-
 /* 'C' function for method : 'Development::DEV_Main.LoadItemClass()' */
 XClass DevelopmentDEV_Main_LoadItemClass( DevelopmentDEV_Main _this, XInt32 aItemNo )
 {
@@ -349,7 +342,7 @@ void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItem
     break;
 
     case 5 :
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( DevelopmentDEV_VehicleFeature, 
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( DevelopmentDEV_VehicleSupportedFunction, 
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     break;
 
@@ -431,12 +424,14 @@ EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, ItemTitleArray, ItemTitl
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  DevelopmentDEV_Main_OnShortHomeKeyActivated,
+  ComponentsBaseMainBG_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   DevelopmentDEV_Main_LoadItemClass,
   DevelopmentDEV_Main_LoadItemTitle,
   DevelopmentDEV_Main_OnItemActivate,
@@ -575,6 +570,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG, OnUpdateLoc
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( DevelopmentDEV_RealTimeClock )
 
 /* Initializer for the class 'Development::DEV_Bluetooth' */
@@ -689,6 +686,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_Bluetooth, ComponentsBaseMainBG, BtSwVersionTitl
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( DevelopmentDEV_Bluetooth )
 
 /* Initializer for the class 'Development::DEV_TFTBrightness' */
@@ -941,6 +940,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_TFTBrightness, ComponentsBaseMainBG, ChessboardI
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( DevelopmentDEV_TFTBrightness )
 
 /* Initializer for the class 'Development::DEV_MotoCon' */
@@ -1093,6 +1094,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_MotoCon, MenuBaseMenuView, ItemTitleArray, ItemT
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   DevelopmentDEV_MotoCon_LoadItemClass,
   DevelopmentDEV_MotoCon_LoadItemTitle,
   DevelopmentDEV_MotoCon_OnItemActivate,
@@ -1101,20 +1104,23 @@ EW_DEFINE_CLASS( DevelopmentDEV_MotoCon, MenuBaseMenuView, ItemTitleArray, ItemT
   MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( DevelopmentDEV_MotoCon )
 
-/* Initializer for the class 'Development::DEV_VehicleFeature' */
-void DevelopmentDEV_VehicleFeature__Init( DevelopmentDEV_VehicleFeature _this, XObject aLink, XHandle aArg )
+/* Initializer for the class 'Development::DEV_VehicleSupportedFunction' */
+void DevelopmentDEV_VehicleSupportedFunction__Init( DevelopmentDEV_VehicleSupportedFunction _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
   MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_VehicleFeature );
+  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_VehicleSupportedFunction );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DevelopmentDEV_VehicleFeature );
+  _this->_VMT = EW_CLASS( DevelopmentDEV_VehicleSupportedFunction );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0008 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 27 );
+  MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
+  MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0029 ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const002A ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const002B ));
@@ -1142,20 +1148,17 @@ void DevelopmentDEV_VehicleFeature__Init( DevelopmentDEV_VehicleFeature _this, X
   _this->ItemTitleArray[ 24 ] = EwShareString( EwLoadString( &_Const0041 ));
   _this->ItemTitleArray[ 25 ] = EwShareString( EwLoadString( &_Const0042 ));
   _this->ItemTitleArray[ 26 ] = EwShareString( EwLoadString( &_Const0043 ));
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 27 );
-  MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
-  MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
 }
 
-/* Re-Initializer for the class 'Development::DEV_VehicleFeature' */
-void DevelopmentDEV_VehicleFeature__ReInit( DevelopmentDEV_VehicleFeature _this )
+/* Re-Initializer for the class 'Development::DEV_VehicleSupportedFunction' */
+void DevelopmentDEV_VehicleSupportedFunction__ReInit( DevelopmentDEV_VehicleSupportedFunction _this )
 {
   /* At first re-initialize the super class ... */
   MenuBaseMenuView__ReInit( &_this->_Super );
 }
 
-/* Finalizer method for the class 'Development::DEV_VehicleFeature' */
-void DevelopmentDEV_VehicleFeature__Done( DevelopmentDEV_VehicleFeature _this )
+/* Finalizer method for the class 'Development::DEV_VehicleSupportedFunction' */
+void DevelopmentDEV_VehicleSupportedFunction__Done( DevelopmentDEV_VehicleSupportedFunction _this )
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
@@ -1164,15 +1167,15 @@ void DevelopmentDEV_VehicleFeature__Done( DevelopmentDEV_VehicleFeature _this )
   MenuBaseMenuView__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Development::DEV_VehicleFeature.OnShortHomeKeyActivated()' */
-void DevelopmentDEV_VehicleFeature_OnShortHomeKeyActivated( DevelopmentDEV_VehicleFeature _this )
+/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.OnShortHomeKeyActivated()' */
+void DevelopmentDEV_VehicleSupportedFunction_OnShortHomeKeyActivated( DevelopmentDEV_VehicleSupportedFunction _this )
 {
   CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
 }
 
-/* 'C' function for method : 'Development::DEV_VehicleFeature.LoadItemClass()' */
-XClass DevelopmentDEV_VehicleFeature_LoadItemClass( DevelopmentDEV_VehicleFeature _this, 
+/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.LoadItemClass()' */
+XClass DevelopmentDEV_VehicleSupportedFunction_LoadItemClass( DevelopmentDEV_VehicleSupportedFunction _this, 
   XInt32 aItemNo )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
@@ -1184,8 +1187,8 @@ XClass DevelopmentDEV_VehicleFeature_LoadItemClass( DevelopmentDEV_VehicleFeatur
   return EW_CLASS( MenuItemCheckbox );
 }
 
-/* 'C' function for method : 'Development::DEV_VehicleFeature.LoadItemTitle()' */
-XString DevelopmentDEV_VehicleFeature_LoadItemTitle( DevelopmentDEV_VehicleFeature _this, 
+/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.LoadItemTitle()' */
+XString DevelopmentDEV_VehicleSupportedFunction_LoadItemTitle( DevelopmentDEV_VehicleSupportedFunction _this, 
   XInt32 aItemNo )
 {
   XString Title = 0;
@@ -1198,8 +1201,8 @@ XString DevelopmentDEV_VehicleFeature_LoadItemTitle( DevelopmentDEV_VehicleFeatu
   return Title;
 }
 
-/* 'C' function for method : 'Development::DEV_VehicleFeature.OnItemActivate()' */
-void DevelopmentDEV_VehicleFeature_OnItemActivate( DevelopmentDEV_VehicleFeature _this, 
+/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.OnItemActivate()' */
+void DevelopmentDEV_VehicleSupportedFunction_OnItemActivate( DevelopmentDEV_VehicleSupportedFunction _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
   XBool IsChecked;
@@ -1219,33 +1222,33 @@ void DevelopmentDEV_VehicleFeature_OnItemActivate( DevelopmentDEV_VehicleFeature
     IsChecked = CheckBoxItem->CheckBoxButton.Checked;
   }
 
-  VI_set_feature_supported( aItemNo, IsChecked );
+  VI_set_supported_function( aItemNo, IsChecked );
 }
 
-/* 'C' function for method : 'Development::DEV_VehicleFeature.LoadItemChecked()' */
-XBool DevelopmentDEV_VehicleFeature_LoadItemChecked( DevelopmentDEV_VehicleFeature _this, 
+/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.LoadItemChecked()' */
+XBool DevelopmentDEV_VehicleSupportedFunction_LoadItemChecked( DevelopmentDEV_VehicleSupportedFunction _this, 
   XInt32 aItemNo )
 {
-  XBool IsFeatureSupported;
+  XBool IsFunctionSupported;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  IsFeatureSupported = 0;
-  IsFeatureSupported = DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( 
+  IsFunctionSupported = 0;
+  IsFunctionSupported = DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
   EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
   (XEnum)aItemNo );
-  return IsFeatureSupported;
+  return IsFunctionSupported;
 }
 
-/* Variants derived from the class : 'Development::DEV_VehicleFeature' */
-EW_DEFINE_CLASS_VARIANTS( DevelopmentDEV_VehicleFeature )
-EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_VehicleFeature )
+/* Variants derived from the class : 'Development::DEV_VehicleSupportedFunction' */
+EW_DEFINE_CLASS_VARIANTS( DevelopmentDEV_VehicleSupportedFunction )
+EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_VehicleSupportedFunction )
 
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_VehicleFeature' */
-EW_DEFINE_CLASS( DevelopmentDEV_VehicleFeature, MenuBaseMenuView, ItemTitleArray, 
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_VehicleSupportedFunction' */
+EW_DEFINE_CLASS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView, ItemTitleArray, 
                  ItemTitleArray, ItemTitleArray, ItemTitleArray, ItemTitleArray, 
-                 _None, "Development::DEV_VehicleFeature" )
+                 _None, "Development::DEV_VehicleSupportedFunction" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1279,19 +1282,21 @@ EW_DEFINE_CLASS( DevelopmentDEV_VehicleFeature, MenuBaseMenuView, ItemTitleArray
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  DevelopmentDEV_VehicleFeature_OnShortHomeKeyActivated,
+  DevelopmentDEV_VehicleSupportedFunction_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
-  DevelopmentDEV_VehicleFeature_LoadItemClass,
-  DevelopmentDEV_VehicleFeature_LoadItemTitle,
-  DevelopmentDEV_VehicleFeature_OnItemActivate,
-  DevelopmentDEV_VehicleFeature_LoadItemChecked,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+  DevelopmentDEV_VehicleSupportedFunction_LoadItemClass,
+  DevelopmentDEV_VehicleSupportedFunction_LoadItemTitle,
+  DevelopmentDEV_VehicleSupportedFunction_OnItemActivate,
+  DevelopmentDEV_VehicleSupportedFunction_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
   MenuBaseMenuView_LoadItemUnitValue,
-EW_END_OF_CLASS( DevelopmentDEV_VehicleFeature )
+EW_END_OF_CLASS( DevelopmentDEV_VehicleSupportedFunction )
 
 /* Initializer for the class 'Development::DEV_FontMenu' */
 void DevelopmentDEV_FontMenu__Init( DevelopmentDEV_FontMenu _this, XObject aLink, XHandle aArg )
@@ -1475,6 +1480,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_FontMenu, MenuBaseMenuView, ItemTitleArray, Item
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   DevelopmentDEV_FontMenu_LoadItemClass,
   DevelopmentDEV_FontMenu_LoadItemTitle,
   DevelopmentDEV_FontMenu_OnItemActivate,
@@ -1636,6 +1643,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_FontTest, ComponentsBaseMainBG, TestFont, Text,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( DevelopmentDEV_FontTest )
 
 /* Embedded Wizard */

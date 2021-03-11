@@ -129,8 +129,8 @@ void BrightnessBRT01_BrightnessSettingMenu_Init( BrightnessBRT01_BrightnessSetti
 
   NoOfItems = 1;
 
-  if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFeatureSupported( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleFeatureMETER_BRIGHTNESS_ADJ ))
+  if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleSupportedFunctionMETER_BRIGHTNESS_ADJ ))
   {
     NoOfItems++;
   }
@@ -255,6 +255,8 @@ EW_DEFINE_CLASS( BrightnessBRT01_BrightnessSettingMenu, MenuBaseMenuView, _None,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   BrightnessBRT01_BrightnessSettingMenu_LoadItemClass,
   BrightnessBRT01_BrightnessSettingMenu_LoadItemTitle,
   BrightnessBRT01_BrightnessSettingMenu_OnItemActivate,
@@ -399,6 +401,28 @@ void BrightnessBRT02_TFTBrightness_OnShortEnterKeyActivated( BrightnessBRT02_TFT
   ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
 }
 
+/* Callback when down key of on trigger mode is released */
+void BrightnessBRT02_TFTBrightness_OnDownKeyReleased( BrightnessBRT02_TFTBrightness _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION, 
+  0 );
+}
+
+/* Callback when up key of on trigger mode is released */
+void BrightnessBRT02_TFTBrightness_OnUpKeyReleased( BrightnessBRT02_TFTBrightness _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION, 
+  0 );
+}
+
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
 void BrightnessBRT02_TFTBrightness_OnVehicleDataReceivedSlot( BrightnessBRT02_TFTBrightness _this, 
@@ -477,6 +501,8 @@ EW_DEFINE_CLASS( BrightnessBRT02_TFTBrightness, ComponentsBaseMainBG, Base, Base
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  BrightnessBRT02_TFTBrightness_OnDownKeyReleased,
+  BrightnessBRT02_TFTBrightness_OnUpKeyReleased,
 EW_END_OF_CLASS( BrightnessBRT02_TFTBrightness )
 
 /* Initializer for the class 'Brightness::BRT03_MeterBrightness' */
@@ -618,6 +644,28 @@ void BrightnessBRT03_MeterBrightness_OnShortEnterKeyActivated( BrightnessBRT03_M
   ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
 }
 
+/* Callback when down key of on trigger mode is released */
+void BrightnessBRT03_MeterBrightness_OnDownKeyReleased( BrightnessBRT03_MeterBrightness _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION, 
+  0 );
+}
+
+/* Callback when up key of on trigger mode is released */
+void BrightnessBRT03_MeterBrightness_OnUpKeyReleased( BrightnessBRT03_MeterBrightness _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION, 
+  0 );
+}
+
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
 void BrightnessBRT03_MeterBrightness_OnVehicleDataReceivedSlot( BrightnessBRT03_MeterBrightness _this, 
@@ -696,6 +744,8 @@ EW_DEFINE_CLASS( BrightnessBRT03_MeterBrightness, ComponentsBaseMainBG, Base, Ba
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  BrightnessBRT03_MeterBrightness_OnDownKeyReleased,
+  BrightnessBRT03_MeterBrightness_OnUpKeyReleased,
 EW_END_OF_CLASS( BrightnessBRT03_MeterBrightness )
 
 /* Embedded Wizard */

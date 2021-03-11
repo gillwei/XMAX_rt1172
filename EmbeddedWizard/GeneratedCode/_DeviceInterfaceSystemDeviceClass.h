@@ -209,6 +209,9 @@ void DeviceInterfaceSystemDeviceClass__StartBootupAnimation( void* _this );
 /* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.StartBootupAnimation(). */
 #define _DeviceInterfaceSystemDeviceClass__StartBootupAnimation_
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsKeyStateValid()' */
+XBool DeviceInterfaceSystemDeviceClass_IsKeyStateValid( DeviceInterfaceSystemDeviceClass _this );
+
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );
 

@@ -165,6 +165,8 @@ EW_DEFINE_METHODS( HomeHOM12_EcoVisualizer, HomeBaseHome )
   EW_METHOD( OnLongEnterKeyActivated, void )( HomeHOM12_EcoVisualizer _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( HomeHOM12_EcoVisualizer )
 
 /* The method Init() is invoked automatically after the component has been created. 

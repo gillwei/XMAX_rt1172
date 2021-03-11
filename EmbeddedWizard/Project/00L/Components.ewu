@@ -117,32 +117,49 @@ class BaseComponent : Core::Group
       {
         case Core::KeyCode.Up:
         {
-          if( ( Enum::KeyTriggerMode.OFF == UpKeyTriggerMode ) && !IsDDModeEffected() )
+          if( ( Enum::KeyTriggerMode.OFF == UpKeyTriggerMode ) && !IsDDModeEffected() && DeviceInterface::SystemDevice.IsKeyStateValid() )
           {
             OnShortUpKeyActivated();
+          }
+          else
+          {
+            OnUpKeyReleased();
           }
         }
         case Core::KeyCode.Down:
         {
-          if( ( Enum::KeyTriggerMode.OFF == DownKeyTriggerMode ) && !IsDDModeEffected() )
+          if( ( Enum::KeyTriggerMode.OFF == DownKeyTriggerMode ) && !IsDDModeEffected() && DeviceInterface::SystemDevice.IsKeyStateValid() )
           {
             OnShortDownKeyActivated();
+          }
+          else
+          {
+            OnDownKeyReleased();
           }
         }
         case Core::KeyCode.Ok:
         {
-          if( ( Enum::KeyTriggerMode.OFF == EnterKeyTriggerMode ) && !IsDDModeEffected() )
+          if( ( Enum::KeyTriggerMode.OFF == EnterKeyTriggerMode ) && !IsDDModeEffected() && DeviceInterface::SystemDevice.IsKeyStateValid() )
           {
             OnShortEnterKeyActivated();
           }
         }
         case Core::KeyCode.Home:
         {
-          if( Enum::KeyTriggerMode.OFF == HomeKeyTriggerMode )
+          if( Enum::KeyTriggerMode.OFF == HomeKeyTriggerMode && DeviceInterface::SystemDevice.IsKeyStateValid() )
           {
             OnShortHomeKeyActivated();
           }
         }
+        default:;
+      }
+    }
+    else
+    {
+      switch( KeyHandler.Code )
+      {
+        case Core::KeyCode.Up: OnUpKeyReleased();
+        case Core::KeyCode.Down: OnDownKeyReleased();
         default:;
       }
     }
@@ -166,7 +183,7 @@ class BaseComponent : Core::Group
   // Key Handle
   note group Note5
   {
-    attr Bounds = <20,10,1230,320>;
+    attr Bounds = <20,10,1430,320>;
   }
 
   $rect <260,210,490,250>
@@ -174,16 +191,16 @@ class BaseComponent : Core::Group
   {
   }
 
-  $rect <770,60,970,100>
+  $rect <990,60,1190,100>
   property Enum::KeyTriggerMode UpKeyTriggerMode = Enum::KeyTriggerMode.ON;
 
-  $rect <770,110,970,150>
+  $rect <990,110,1190,150>
   property Enum::KeyTriggerMode DownKeyTriggerMode = Enum::KeyTriggerMode.ON;
 
-  $rect <770,160,970,200>
+  $rect <990,160,1190,200>
   property Enum::KeyTriggerMode EnterKeyTriggerMode = Enum::KeyTriggerMode.OFF;
 
-  $rect <770,210,970,250>
+  $rect <990,210,1190,250>
   property Enum::KeyTriggerMode HomeKeyTriggerMode = Enum::KeyTriggerMode.OFF;
 
   $rect <510,110,740,150>
@@ -214,16 +231,16 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <990,60,1190,100>
+  $rect <1210,60,1410,100>
   property bool PassUpKey = false;
 
-  $rect <990,110,1190,150>
+  $rect <1210,110,1410,150>
   property bool PassDownKey = false;
 
-  $rect <991,160,1191,200>
+  $rect <1211,160,1411,200>
   property bool PassHomeKey = false;
 
-  $rect <990,210,1190,250>
+  $rect <1210,210,1410,250>
   property bool PassEnterKey = false;
 
   $rect <260,260,490,300>
@@ -231,7 +248,7 @@ class BaseComponent : Core::Group
   {
   }
 
-  $rect <990,260,1190,300>
+  $rect <1210,260,1410,300>
   property bool PassMagicKey = false;
 
   $rect <40,380,240,420>
@@ -256,6 +273,18 @@ class BaseComponent : Core::Group
     {
       pure DDModeEnabled = value;
     }
+  }
+
+  // Callback when down key of on trigger mode is released
+  $rect <760,110,970,150>
+  method void OnDownKeyReleased()
+  {
+  }
+
+  // Callback when up key of on trigger mode is released
+  $rect <760,160,970,200>
+  method void OnUpKeyReleased()
+  {
   }
 }
 

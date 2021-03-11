@@ -241,6 +241,8 @@ EW_DEFINE_CLASS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG, LoadingText, L
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( PopPOP08_WeatherLoadingUI )
 
 /* Initializer for the class 'Pop::POP09_BleConnectionErrorUI' */
@@ -360,6 +362,8 @@ EW_DEFINE_CLASS( PopPOP09_BleConnectionErrorUI, ComponentsBaseMainBG, Connection
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( PopPOP09_BleConnectionErrorUI )
 
 /* Embedded Wizard */

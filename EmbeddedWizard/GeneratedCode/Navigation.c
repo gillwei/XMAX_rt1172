@@ -830,6 +830,8 @@ EW_DEFINE_CLASS( NavigationNAV01_DefaultView, HomeBaseHome, Background, Backgrou
   NavigationNAV01_DefaultView_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( NavigationNAV01_DefaultView )
 
 /* Initializer for the class 'Navigation::NAV06_NaviSettingMenu' */
@@ -1107,6 +1109,8 @@ EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, _None, _None
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   NavigationNAV06_NaviSettingMenu_LoadItemClass,
   NavigationNAV06_NaviSettingMenu_LoadItemTitle,
   NavigationNAV06_NaviSettingMenu_OnItemActivate,
@@ -1328,6 +1332,8 @@ EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, CheckMarkU
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
   NavigationNAV08_NaviChageViewMenu_LoadItemClass,
   NavigationNAV08_NaviChageViewMenu_LoadItemTitle,
   NavigationNAV08_NaviChageViewMenu_OnItemActivate,

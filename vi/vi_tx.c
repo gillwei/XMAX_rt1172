@@ -19,7 +19,6 @@
 #include "fsl_debug_console.h"
 #include "vi_priv.h"
 #include "VI_pub.h"
-#include "CAN_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -48,6 +47,53 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+/*********************************************************************
+*
+* @private
+* send_meter_brightngess_operation
+*
+* Send meter brightness operation
+*
+* @param operation_code Brightness operation code of
+*                       IL_VT_DEV_CTRL_LCD_BRGHTNSS_NT,
+*                       IL_VT_DEV_CTRL_LCD_BRGHTNSS_DOWN,
+*                       IL_VT_DEV_CTRL_LCD_BRGHTNSS_UP
+*
+*********************************************************************/
+void send_meter_brightngess_operation
+    (
+    uint8_t operation_code
+    )
+{
+dll_frm_index_t l_frm_index;
+can_mid_sig_set( &l_frm_index, IL_CAN0_DEV_CTRL_LCD_BRGHTNSS_TXSIG_HANDLE, IL_CAN0_DEV_CTRL_LCD_BRGHTNSS_TXSIG_NBYTES, &operation_code );
+can_mid_frm_send( l_frm_index );
+PRINTF( "%s %d\r\n", __FUNCTION__, operation_code );
+}
+
+/*********************************************************************
+*
+* @private
+* send_tft_brightngess_operation
+*
+* Send TFT brightness operation
+*
+* @param operation_code Brightness operation code of
+*                       IL_VT_DEV_CTRL_TFT_BRGHTNSS_NT,
+*                       IL_VT_DEV_CTRL_TFT_BRGHTNSS_DOWN,
+*                       IL_VT_DEV_CTRL_TFT_BRGHTNSS_UP
+*
+*********************************************************************/
+void send_tft_brightngess_operation
+    (
+    uint8_t operation_code
+    )
+{
+dll_frm_index_t l_frm_index;
+can_mid_sig_set( &l_frm_index, IL_CAN0_DEV_CTRL_TFT_BRGHTNSS_TXSIG_HANDLE, IL_CAN0_DEV_CTRL_TFT_BRGHTNSS_TXSIG_NBYTES, &operation_code );
+can_mid_frm_send( l_frm_index );
+PRINTF( "%s %d\r\n", __FUNCTION__, operation_code );
+}
 
 /*********************************************************************
 *
@@ -93,6 +139,7 @@ switch( tx_type )
     case EnumVehicleTxTypeWIND_SCREEN_OPERATION:
         break;
     case EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION:
+        send_meter_brightngess_operation( (uint8_t)data );
         break;
     case EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL:
         break;
@@ -101,6 +148,7 @@ switch( tx_type )
     case EnumVehicleTxTypeCHG_METER_INFO:
         break;
     case EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION:
+        send_tft_brightngess_operation( (uint8_t)data );
         break;
     default:
         PRINTF( "Err: %s invalid tx type %d\r\n", __FUNCTION__, tx_type );

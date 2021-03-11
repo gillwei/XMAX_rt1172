@@ -411,7 +411,7 @@ else
     if( l_can_id == RX2_RES_SUPPORT_CAN0_ID )
         {
         memcpy( &supp_func_list, &( mid_msg_p->data[MID_MSG_TCFS_IDX] ), sizeof( supp_func_list ) );
-        //TBD VI_rx_support_function_received( &supp_func_list );
+        VI_rx_support_function_received( &supp_func_list );
         }
 
     PRINTF( "Pos resp %x %x!\r\n", l_can_id, l_svc_id );

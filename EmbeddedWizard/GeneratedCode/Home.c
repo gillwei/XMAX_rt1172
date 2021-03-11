@@ -192,6 +192,8 @@ EW_DEFINE_CLASS( HomeHOM11_TachoVisualizer, HomeBaseHome, Title, Title, Title, T
   HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( HomeHOM11_TachoVisualizer )
 
 /* Initializer for the class 'Home::HOM12_EcoVisualizer' */
@@ -320,6 +322,8 @@ EW_DEFINE_CLASS( HomeHOM12_EcoVisualizer, HomeBaseHome, Title, Title, Title, Tit
   HomeHOM12_EcoVisualizer_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( HomeHOM12_EcoVisualizer )
 
 /* Initializer for the class 'Home::HOM13_SpeedVisualizer' */
@@ -448,6 +452,8 @@ EW_DEFINE_CLASS( HomeHOM13_SpeedVisualizer, HomeBaseHome, Title, Title, Title, T
   HomeHOM13_SpeedVisualizer_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( HomeHOM13_SpeedVisualizer )
 
 /* Initializer for the class 'Home::BaseHome' */
@@ -610,6 +616,8 @@ EW_DEFINE_CLASS( HomeBaseHome, ComponentsBaseMainBG, _None, _None, _None, _None,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( HomeBaseHome )
 
 /* Initializer for the class 'Home::HOM03_VehicleInfo' */
@@ -721,6 +729,8 @@ EW_DEFINE_CLASS( HomeHOM03_VehicleInfo, HomeBaseHome, Title, Title, Title, Title
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( HomeHOM03_VehicleInfo )
 
 /* Embedded Wizard */
