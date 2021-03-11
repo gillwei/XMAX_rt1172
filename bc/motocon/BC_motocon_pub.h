@@ -47,10 +47,13 @@ typedef struct
     void ( *incoming_call_info_callback ) ( const bc_motocon_incoming_call_info_t* incoming_call_information );
     void ( *thermal_callback ) ( const bc_motocon_thermal_state_t thermal_state );
     void ( *bt_headset_state_callback ) ( const bc_motocon_bt_headset_state_t headset_state );
-    void ( *volume_level_callback ) ( const uint8_t level );
+    void ( *volume_level_callback ) ( const uint8_t level, const bc_motocon_volume_type_t type );
     void ( *notification_category_callback ) ( const bc_motocon_notification_category_t* notification_category );
     void ( *volume_controllable_callback ) ( const bool enable );
     void ( *ota_update_info_callback ) ( const bc_motocon_ota_update_info_t* info );
+    void ( *ccuid_request_callback ) ( void );
+    void ( *cell_signal_callback ) ( const uint8_t level );
+    void ( *call_changed_callback ) ( const bc_motocon_call_state_t call_state );
     } bc_motocon_callback_t;
 
 typedef enum
@@ -118,6 +121,10 @@ bc_motocon_send_result_t BC_motocon_send_volume_controllable_request( void );
 bc_motocon_send_result_t BC_motocon_send_create_ota_request( void );
 
 bc_motocon_send_result_t BC_motocon_send_ota_linkcard_info( const bc_motocon_ota_linkcard_info_t* info );
+
+bc_motocon_send_result_t BC_motocon_send_ccuid_response( const uint8_t* ccuid );
+
+bc_motocon_send_result_t BC_motocon_send_cell_signal_request( void );
 
 uint8_t BC_motocon_get_language_type( void );
 

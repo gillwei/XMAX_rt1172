@@ -45,6 +45,7 @@ EwPrint( "ddt_can_related_result %d\r\n", result );
                                VARIABLES
 --------------------------------------------------------------------*/
 static uint8_t data[50];
+static uint8_t ccuid[14] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13};
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -137,15 +138,19 @@ switch( test_item )
         break;
     case EnumMotoConTestVOLUME_CONTROL_UP:
         BC_motocon_send_volume_control( BC_MOTOCON_VOLUME_UP );
+        BC_motocon_send_volume_control( BC_MOTOCON_MEDIA_VOLUME_UP );
         break;
     case EnumMotoConTestVOLUME_CONTROL_DOWN:
         BC_motocon_send_volume_control( BC_MOTOCON_VOLUME_DOWN );
+        BC_motocon_send_volume_control( BC_MOTOCON_MEDIA_VOLUME_DOWN );
         break;
     case EnumMotoConTestVOLUME_CONTROLLABLE_REQ:
         BC_motocon_send_volume_controllable_request();
         break;
     case EnumMotoConTestCREATE_OTA_REQ:
         BC_motocon_send_create_ota_request();
+        BC_motocon_send_ccuid_response( ccuid );
+        BC_motocon_send_cell_signal_request();
         break;
     default:
         PRINTF( "Err: invalid motocon test type %d\r\n", test_item );

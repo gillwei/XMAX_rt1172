@@ -86,6 +86,9 @@ static bc_motocon_callback_t weather_callback =
     NULL,
     NULL,
     NULL,
+    NULL,
+    NULL,
+    NULL,
     NULL
     };
 static int weather_info_received = 0;

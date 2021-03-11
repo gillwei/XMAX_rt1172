@@ -99,7 +99,12 @@ typedef uint16_t bc_motocon_command_code_t; enum
     BC_MOTOCON_COMMAND_CODE_CREATE_OTA_CONNECTION_REQUEST                  = 0x012C,
     BC_MOTOCON_COMMAND_CODE_OTA_LINKCARD_INFORMATION                       = 0x0121,
     BC_MOTOCON_COMMAND_CODE_OTA_UPDATE_INFORMATION                         = 0x0122,
-    BC_MOTOCON_COMMAND_CODE_NOTIFICATION_DATA_V2                           = 0x012F
+    BC_MOTOCON_COMMAND_CODE_NOTIFICATION_DATA_V2                           = 0x012F,
+    BC_MOTOCON_COMMAND_CODE_CCUID_REQUEST                                  = 0x0130,
+    BC_MOTOCON_COMMAND_CODE_CCUID_RESPONSE                                 = 0x0131,
+    BC_MOTOCON_COMMAND_CODE_PHONE_CELL_SIGNAL_LEVEL_REQUEST                = 0x0132,
+    BC_MOTOCON_COMMAND_CODE_PHONE_CELL_SIGNAL_LEVEL_RESPONSE               = 0x0133,
+    BC_MOTOCON_COMMAND_CODE_CALL_CHANGE_NOTIFICATION                       = 0x0134
     };/* end of bc_motocon_command_code_t */
 
 typedef enum
@@ -217,15 +222,26 @@ typedef enum
     BC_MOTOCON_BATTERY_CHARGING
     } bc_motocon_battery_t;
 
+typedef enum
+    {
+    BC_MOTOCON_PLAYBACK_PAUSED,
+    BC_MOTOCON_PLAYBACK_PLAYING,
+    BC_MOTOCON_PLAYBACK_REWINDING,
+    BC_MOTOCON_PLAYBACK_FAST_FORWARDING
+    } bc_motocon_playback_t;
+
 typedef struct
     {
-    const uint8_t* artist;
-    uint8_t        artist_len;
-    const uint8_t* album;
-    uint8_t        album_len;
-    const uint8_t* song;
-    uint8_t        song_len;
-    uint32_t       duration_time;
+    const uint8_t*        artist;
+    uint8_t               artist_len;
+    const uint8_t*        album;
+    uint8_t               album_len;
+    const uint8_t*        song;
+    uint8_t               song_len;
+    uint32_t              duration_time;
+    bc_motocon_playback_t state;
+    float                 rate;
+    uint32_t              elapsed_time;
     } bc_motocon_bt_music_meta_data_t;
 
 typedef enum
@@ -268,8 +284,16 @@ typedef enum
     BC_MOTOCON_VOLUME_UP = 0x01,
     BC_MOTOCON_VOLUME_DOWN,
     BC_MOTOCON_VOLUME_MUTE_MIC,
-    BC_MOTOCON_VOLUME_MUTE_SPEAKER
+    BC_MOTOCON_VOLUME_MUTE_SPEAKER,
+    BC_MOTOCON_MEDIA_VOLUME_UP,
+    BC_MOTOCON_MEDIA_VOLUME_DOWN
     } bc_motocon_volume_control_t;
+
+typedef enum
+    {
+    BC_MOTOCON_VOLUME_PHONE = 0x01,
+    BC_MOTOCON_VOLUME_MEDIA
+    } bc_motocon_volume_type_t;
 
 typedef struct
     {
@@ -307,6 +331,12 @@ typedef struct
     char              subtitle[BC_MOTOCON_NOTIFICATION_TITLE + 1];
     char              detail[BC_MOTOCON_NOTIFICATION_DETAIL + 1];
     } bc_motocon_notification_v2_t;
+
+typedef enum
+    {
+    BC_MOTOCON_CALL_STARTED = 0x01,
+    BC_MOTOCON_CALL_ENDED
+    } bc_motocon_call_state_t;
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES

@@ -601,6 +601,55 @@ return bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 14 );
 /*********************************************************************
 *
 * @public
+* BC_motocon_send_ccuid_response
+*
+* Send ccuid via BLE.
+*
+* @param ccuid Ccu id, the size of data must be 14 byte.
+*
+* @return bc_motocon_send_result_t
+* Result of send command
+*
+*********************************************************************/
+bc_motocon_send_result_t BC_motocon_send_ccuid_response
+    (
+    const uint8_t* ccuid
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+uint8_t data[16];
+data[0] = BC_MOTOCON_COMMAND_CODE_CCUID_RESPONSE >> 8;
+data[1] = BC_MOTOCON_COMMAND_CODE_CCUID_RESPONSE & 0xFF;
+memcpy( data + 2, ccuid, 14 );
+return bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 16 );
+}
+
+/*********************************************************************
+*
+* @public
+* BC_motocon_send_cell_signal_request
+*
+* Send cell signal request via BLE.
+*
+* @return bc_motocon_send_result_t
+* Result of send command
+*
+*********************************************************************/
+bc_motocon_send_result_t BC_motocon_send_cell_signal_request
+    (
+    void
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+uint8_t data[2];
+data[0] = BC_MOTOCON_COMMAND_CODE_PHONE_CELL_SIGNAL_LEVEL_REQUEST >> 8;
+data[1] = BC_MOTOCON_COMMAND_CODE_PHONE_CELL_SIGNAL_LEVEL_REQUEST & 0xFF;
+return bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 2 );
+}
+
+/*********************************************************************
+*
+* @public
 * bc_motocon_send_data
 *
 * Send data via BLE.

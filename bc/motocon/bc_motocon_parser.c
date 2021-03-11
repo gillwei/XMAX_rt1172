@@ -37,6 +37,9 @@
 --------------------------------------------------------------------*/
 extern bc_motocon_callback_t* bc_motocon_callbacks[BC_MOTOCON_CALLBACK_MAX];
 static bc_motocon_notification_v2_t notification_v2;
+#if( ENABLE_MOTOCON_DEBUG_LOG )
+    static char c64[65];
+#endif
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -137,6 +140,18 @@ switch( command_code )
 
     case BC_MOTOCON_COMMAND_CODE_OTA_UPDATE_INFORMATION:
         ret = bc_motocon_parser_ota_update_info( bytes, length );
+        break;
+
+    case BC_MOTOCON_COMMAND_CODE_CCUID_REQUEST:
+        ret = bc_motocon_parser_ccuid_request( bytes, length );
+        break;
+
+    case BC_MOTOCON_COMMAND_CODE_PHONE_CELL_SIGNAL_LEVEL_RESPONSE:
+        ret = bc_motocon_parser_cell_signal( bytes, length );
+        break;
+
+    case BC_MOTOCON_COMMAND_CODE_CALL_CHANGE_NOTIFICATION:
+        ret = bc_motocon_parser_call_changed( bytes, length );
         break;
 
     default:
@@ -561,6 +576,27 @@ if( length == 4 )
 return BC_MOTOCON_PARSE_INVALID_INPUT;
 }
 
+#if( ENABLE_MOTOCON_DEBUG_LOG )
+    /*********************************************************************
+    *
+    * @private
+    * print_char
+    *
+    * Fill '\0' at end of char array. Maximum size is 64.
+    *
+    *********************************************************************/
+    static char* print_char64
+        (
+        const uint8_t* bytes,
+        const uint32_t length
+        )
+    {
+    memcpy( c64, bytes, MIN( length, 64 ) );
+    c64[MIN( length, 64 )] = 0;
+    return c64;
+    }
+#endif
+
 /*********************************************************************
 *
 * @private
@@ -626,9 +662,34 @@ if( pt + 3 > length )
 music.duration_time = THREE_BYTE_BIG( bytes, pt );
 pt += 3;
 
+if( pt + 1 > length )
+    {
+    return BC_MOTOCON_PARSE_INVALID_INPUT;
+    }
+music.state = bytes[pt];
+pt += 1;
+
+if( pt + 2 > length )
+    {
+    return BC_MOTOCON_PARSE_INVALID_INPUT;
+    }
+music.rate = ((float)TWO_BYTE_BIG( bytes, pt ))/10;
+pt += 2;
+
+if( pt + 3 > length )
+    {
+    return BC_MOTOCON_PARSE_INVALID_INPUT;
+    }
+music.elapsed_time = THREE_BYTE_BIG( bytes, pt );
+pt += 3;
+
 if( pt == length )
     {
-    BC_MOTOCON_PRINTF( "%s, TBD\r\n", __FUNCTION__ );
+    BC_MOTOCON_PRINTF( "%s, artist: %d, album: %d, song: %d, duration: %d, state: %d, rate: %f, elapsed: %d\r\n", __FUNCTION__,
+            music.artist_len, music.album_len, music.song_len, music.duration_time, music.state, music.rate, music.elapsed_time);
+    BC_MOTOCON_PRINTF( "artist: %s\r\n", print_char64( music.artist, music.artist_len ) );
+    BC_MOTOCON_PRINTF( "album : %s\r\n", print_char64( music.album, music.album_len ) );
+    BC_MOTOCON_PRINTF( "song  : %s\r\n", print_char64( music.song, music.song_len ) );
     for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
         {
         if( NULL != bc_motocon_callbacks[i] &&
@@ -688,7 +749,9 @@ pt += call.phone_number_len;
 
 if( pt == length )
     {
-    BC_MOTOCON_PRINTF( "%s, TBD\r\n", __FUNCTION__ );
+    BC_MOTOCON_PRINTF( "%s, name: %d, number: %d\r\n", __FUNCTION__, call.name_len, call.phone_number_len );
+    BC_MOTOCON_PRINTF( "name  : %s\r\n", print_char64( call.name, call.name_len ) );
+    BC_MOTOCON_PRINTF( "number: %s\r\n", print_char64( call.phone_number, call.phone_number_len ) );
     for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
         {
         if( NULL != bc_motocon_callbacks[i] &&
@@ -776,15 +839,15 @@ bc_motocon_parse_result_t bc_motocon_parser_volume_level
     const uint32_t length
     )
 {
-if( length == 3 )
+if( length == 4 )
     {
-    BC_MOTOCON_PRINTF( "%s, %d\r\n", __FUNCTION__, bytes[2] );
+    BC_MOTOCON_PRINTF( "%s, %d type: %d\r\n", __FUNCTION__, bytes[2], bytes[3] );
     for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
         {
         if( NULL != bc_motocon_callbacks[i] &&
             NULL != bc_motocon_callbacks[i]->volume_level_callback )
             {
-            bc_motocon_callbacks[i]->volume_level_callback( bytes[2] );
+            bc_motocon_callbacks[i]->volume_level_callback( bytes[2], bytes[3] );
             }
         }
     return BC_MOTOCON_PARSE_SUCCESS;
@@ -998,6 +1061,92 @@ if( length >= 5 )
     else
         {
         BC_MOTOCON_PRINTF( "Decoding failed: %s\r\n", PB_GET_ERROR( &stream ) );
+        }
+    return BC_MOTOCON_PARSE_SUCCESS;
+    }
+return BC_MOTOCON_PARSE_INVALID_INPUT;
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_parser_ccuid_request
+*
+* Parse ota update info and post callback.
+*
+*********************************************************************/
+bc_motocon_parse_result_t bc_motocon_parser_ccuid_request
+    (
+    const uint8_t* bytes,
+    const uint32_t length
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
+    {
+    if( NULL != bc_motocon_callbacks[i] &&
+        NULL != bc_motocon_callbacks[i]->ccuid_request_callback )
+        {
+        bc_motocon_callbacks[i]->ccuid_request_callback();
+        }
+    }
+return BC_MOTOCON_PARSE_SUCCESS;
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_parser_cell_signal
+*
+* Parse ota update info and post callback.
+*
+*********************************************************************/
+bc_motocon_parse_result_t bc_motocon_parser_cell_signal
+    (
+    const uint8_t* bytes,
+    const uint32_t length
+    )
+{
+if( length == 3 )
+    {
+    BC_MOTOCON_PRINTF( "%s, level: %d\r\n", __FUNCTION__, bytes[2] );
+    for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
+        {
+        if( NULL != bc_motocon_callbacks[i] &&
+            NULL != bc_motocon_callbacks[i]->cell_signal_callback )
+            {
+            bc_motocon_callbacks[i]->cell_signal_callback( bytes[2] );
+            }
+        }
+    return BC_MOTOCON_PARSE_SUCCESS;
+    }
+return BC_MOTOCON_PARSE_INVALID_INPUT;
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_parser_call_changed
+*
+* Parse ota update info and post callback.
+*
+*********************************************************************/
+bc_motocon_parse_result_t bc_motocon_parser_call_changed
+    (
+    const uint8_t* bytes,
+    const uint32_t length
+    )
+{
+if( length == 3 )
+    {
+    BC_MOTOCON_PRINTF( "%s, state: %d\r\n", __FUNCTION__, bytes[2] );
+    for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
+        {
+        if( NULL != bc_motocon_callbacks[i] &&
+            NULL != bc_motocon_callbacks[i]->call_changed_callback )
+            {
+            bc_motocon_callbacks[i]->call_changed_callback( bytes[2] );
+            }
         }
     return BC_MOTOCON_PARSE_SUCCESS;
     }
