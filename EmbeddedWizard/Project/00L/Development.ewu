@@ -251,11 +251,10 @@ class DEV_TFTBrightness : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Image CheckerboardImage
+  object Views::Wallpaper ChessboardImage
   {
-    preset Bounds = <0,0,480,272>;
-    preset FrameNumber = 1;
-    preset Bitmap = Resource::DisplayTest;
+    preset Bounds = <0,2,480,272>;
+    preset Bitmap = Resource::Chessboard;
   }
 
   $rect <20,20,160,60>

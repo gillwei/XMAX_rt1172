@@ -534,4 +534,10 @@ EW_RES_WITHOUT_VARIANTS( ResourceHeadsetIcon )
 /* Table with links to derived variants of the bitmap resource : 'Resource::StatusBarBtIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceStatusBarBtIcon )
 
+/* Include a file containing the bitmap resource : 'Resource::Chessboard' */
+#include "_ResourceChessboard.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::Chessboard' */
+EW_RES_WITHOUT_VARIANTS( ResourceChessboard )
+
 /* Embedded Wizard */

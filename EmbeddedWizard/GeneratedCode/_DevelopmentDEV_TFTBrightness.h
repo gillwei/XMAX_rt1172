@@ -50,6 +50,7 @@
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
+#include "_ViewsWallpaper.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -102,7 +103,7 @@
 
 /* Deklaration of class : 'Development::DEV_TFTBrightness' */
 EW_DEFINE_FIELDS( DevelopmentDEV_TFTBrightness, ComponentsBaseMainBG )
-  EW_OBJECT  ( CheckerboardImage, ViewsImage )
+  EW_OBJECT  ( ChessboardImage, ViewsWallpaper )
   EW_OBJECT  ( LevelText,       ViewsText )
   EW_OBJECT  ( HideLevelTimer,  CoreTimer )
   EW_PROPERTY( BrightnessLevel, XInt32 )
