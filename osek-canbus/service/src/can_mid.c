@@ -20,6 +20,7 @@
 #include "can_il_enum.h"
 #include "can_il_prv_par.h"
 
+#include "VI_pub.h"
 #include "fsl_debug_console.h"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -45,9 +46,9 @@
                               VARIABLES
 --------------------------------------------------------------------*/
 /*------------------------------------------------------
-Timer instances
+Supported function list instances
 ------------------------------------------------------*/
-mid_msg_supp_func_sfl_t supp_func_list = { 0 };
+mid_msg_supp_func_t supp_func_list = { 0 };
 
 /*------------------------------------------------------
 Message list pointer
@@ -409,10 +410,11 @@ else
     ------------------------------------------------------*/
     if( l_can_id == RX2_RES_SUPPORT_CAN0_ID )
         {
-        memcpy( &supp_func_list, &( mid_msg_p->data[MID_MSG_SFL_START_IDX] ), MID_MSG_SFL_LEN );
+        memcpy( &supp_func_list, &( mid_msg_p->data[MID_MSG_TCFS_IDX] ), sizeof( supp_func_list ) );
+        //TBD VI_rx_support_function_received( &supp_func_list );
         }
 
-    PRINTF("Pos resp %x %x!\r\n", l_can_id, l_svc_id );
+    PRINTF( "Pos resp %x %x!\r\n", l_can_id, l_svc_id );
     //TBD nodity upper layer to handle positive response.
     }
 }
@@ -756,7 +758,7 @@ can_mid_pos_neg_test();
 /*------------------------------------------------------
 Get supported functions
 ------------------------------------------------------*/
-mid_msg_supp_func_sfl_t*
+mid_msg_supp_func_t*
 can_mid_get_supp_func_list
     (
     void

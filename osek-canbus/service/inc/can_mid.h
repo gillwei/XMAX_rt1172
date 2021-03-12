@@ -207,7 +207,7 @@ typedef struct mid_msg_node
 typedef struct mid_msg_node   *mid_msg_lst;
 
 /*------------------------------------------------------
-Supported functions list
+Supported functions list sfl
 ------------------------------------------------------*/
 typedef union
     {
@@ -253,6 +253,17 @@ typedef union
 
     uint8 fsl_data[5];
     }mid_msg_supp_func_sfl_t;
+
+/*------------------------------------------------------
+Supported functions
+------------------------------------------------------*/
+typedef struct
+    {
+    uint8                   tcfs;
+    uint8                   brzegr;
+    mid_msg_supp_func_sfl_t sfl;
+
+    }mid_msg_supp_func_t;
 
 /*--------------------------------------------------------------------
                               PROCEDURES

@@ -61,7 +61,7 @@ mid_msg_lst can_mid_resp_get
     uint8   svc_id
     );
 
-mid_msg_supp_func_sfl_t*
+mid_msg_supp_func_t*
 can_mid_get_supp_func_list
     (
     void
