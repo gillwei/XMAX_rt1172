@@ -22,6 +22,7 @@ void mm_stop_elapsed_timer( void );
 void mm_update_elapsed_time( void );
 void mm_start_delay_timer( void );
 void mm_ams_gatt_update_elapsed_time( void );
+void mm_motocon_init( void );
 
 #ifdef __cplusplus
 }

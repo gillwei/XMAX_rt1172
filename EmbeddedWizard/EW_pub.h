@@ -37,7 +37,8 @@ void EW_notify_title_changed( void );
 void EW_notify_album_changed( void );
 void EW_notify_artist_changed( void );
 void EW_notify_playback_time_changed( void );
-void EW_notify_playback_state_changed( void );
+void EW_notify_ams_ble_connected( void );
+void EW_notify_motocon_music_info_changed( void );
 
 void EW_test_display_pattern( int index );
 void EW_quit_test( void );

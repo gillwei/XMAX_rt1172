@@ -80,6 +80,7 @@ static const char AMS_CHARACTERISTIC_UUID[AMS_CHARACTERISTIC_TOTAL][UUID_128BIT_
 static ams_characteristic_type ams_characteristics[AMS_CHARACTERISTIC_TOTAL];
 static uint16_t ams_start_handle;
 static uint16_t ams_end_handle;
+static bool     is_ble_connected;
 static bool     ams_is_discovered;
 static int      ams_characteristic_discovered_count;
 static uint8_t  ams_index_table[AMS_CHARACTERISTIC_TOTAL];
@@ -160,6 +161,8 @@ void BC_ams_ble_connected_callback
     )
 {
 BC_AMS_PRINTF( "%s\r\n", __FUNCTION__ );
+is_ble_connected = true;
+MM_update_playback_status( is_ble_connected );
 }
 
 /*********************************************************************
@@ -176,11 +179,13 @@ void BC_ams_ble_disconnected_callback
     )
 {
 BC_AMS_PRINTF( "%s\r\n", __FUNCTION__ );
+is_ble_connected  = false;
 ams_is_discovered = false;
 ams_start_handle  = 0;
 ams_end_handle    = 0;
 ams_characteristic_discovered_count = 0;
 memset( ams_characteristics, 0, sizeof( ams_characteristics ) );
+MM_update_playback_status( is_ble_connected );
 }
 
 /*********************************************************************
@@ -384,6 +389,22 @@ if( HCI_le_is_connected() &&
     BC_AMS_PRINTF( "%s %d\r\n", __FUNCTION__, re_ctrl_cmd );
     HCI_le_enqueue_gatt_write_request( handle, &re_ctrl_cmd, 1 );
     }
+}
+
+/*********************************************************************
+*
+* @public
+* BC_ams_is_ams_connected
+*
+* Return ams connected status.
+*
+*********************************************************************/
+bool BC_ams_is_ams_connected
+    (
+    void
+    )
+{
+return( ams_is_discovered && is_ble_connected );
 }
 
 /*********************************************************************

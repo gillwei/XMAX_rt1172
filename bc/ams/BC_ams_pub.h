@@ -16,6 +16,7 @@ extern "C"{
 #include "fsl_debug_console.h"
 
 void BC_ams_send_remote_control( const uint8_t re_ctrl_cmd );
+bool BC_ams_is_ams_connected( void );
 
 #ifdef __cplusplus
 }

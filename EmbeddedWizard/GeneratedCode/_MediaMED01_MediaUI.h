@@ -124,6 +124,11 @@ EW_DEFINE_FIELDS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_OBJECT  ( AlbumObserver,   CorePropertyObserver )
   EW_OBJECT  ( ArtistObserver,  CorePropertyObserver )
   EW_OBJECT  ( SeekBar,         WidgetSetHorizontalSlider )
+  EW_OBJECT  ( MotoConMusicInfoEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( ErrorMessage,    ViewsText )
+  EW_OBJECT  ( MotoConEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( BleConnectionRecoveryTimer, CoreTimer )
+  EW_OBJECT  ( AmsBleConnectionEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( MediaMED01_MediaUI )
 
 /* Virtual Method Table (VMT) for the class : 'Media::MED01_MediaUI' */
@@ -174,7 +179,7 @@ EW_DEFINE_METHODS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( MediaMED01_MediaUI _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( MediaMED01_MediaUI _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( MediaMED01_MediaUI _this )
   EW_METHOD( OnLongUpKeyActivated, void )( MediaMED01_MediaUI _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
@@ -189,9 +194,6 @@ void MediaMED01_MediaUI_Init( MediaMED01_MediaUI _this, XHandle aArg );
 
 /* 'C' function for method : 'Media::MED01_MediaUI.OnShortEnterKeyActivated()' */
 void MediaMED01_MediaUI_OnShortEnterKeyActivated( MediaMED01_MediaUI _this );
-
-/* 'C' function for method : 'Media::MED01_MediaUI.OnShortHomeKeyActivated()' */
-void MediaMED01_MediaUI_OnShortHomeKeyActivated( MediaMED01_MediaUI _this );
 
 /* 'C' function for method : 'Media::MED01_MediaUI.OnLongDownKeyActivated()' */
 void MediaMED01_MediaUI_OnLongDownKeyActivated( MediaMED01_MediaUI _this );
@@ -229,6 +231,28 @@ void MediaMED01_MediaUI_StartHighlight( MediaMED01_MediaUI _this, ViewsImage aBa
    is notified. */
 void MediaMED01_MediaUI_OnTrackInfoUpdateSlot( MediaMED01_MediaUI _this, XObject 
   sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void MediaMED01_MediaUI_OnMotoConMusicInfoUpdateSlot( MediaMED01_MediaUI _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void MediaMED01_MediaUI_OnMotoConEventReceived( MediaMED01_MediaUI _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Media::MED01_MediaUI.OnBleConnectionRecoverSlot()' */
+void MediaMED01_MediaUI_OnBleConnectionRecoverSlot( MediaMED01_MediaUI _this, XObject 
+  sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void MediaMED01_MediaUI_OnAmsBleConnectedStatusUpdateSlot( MediaMED01_MediaUI _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Media::MED01_MediaUI.UpdateMediaInfoItem()' */
+void MediaMED01_MediaUI_UpdateMediaInfoItem( MediaMED01_MediaUI _this, XEnum aNewStatus );
 
 #ifdef __cplusplus
   }

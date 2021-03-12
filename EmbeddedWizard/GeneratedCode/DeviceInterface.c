@@ -47,17 +47,16 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x000001F2, /* ratio 57.03 % */
+  0x000001B8, /* ratio 58.18 % */
   0xB8002500, 0x000A6452, 0x00C2003A, 0x80107390, 0x16750010, 0x20037002, 0x540044C9,
   0x30019400, 0x000021A7, 0x04160619, 0x1BC00680, 0x421C7700, 0x22D14894, 0x3B1B8CC5,
   0x91A29422, 0x0D364AE3, 0xF1000075, 0x9104C011, 0xE4D00051, 0x0024C639, 0xA6793532,
   0xE193C9B1, 0xF3488546, 0xD220BCF4, 0x4B845189, 0x9A9000CD, 0x9C422971, 0x4C90871B,
   0x4D4CF178, 0x7E793AA4, 0x2AF550C4, 0x015BAC80, 0xD5889104, 0x25B14226, 0xBB345215,
-  0xA9CEED11, 0xD5D64F6D, 0x4E2E752A, 0x00DB2B31, 0xEF764BC0, 0x7B690059, 0x10DC0876,
-  0x002854AE, 0xBA942A70, 0x8441A191, 0x1D86110A, 0xDF0017AB, 0x7EFF90A3, 0x48B22084,
-  0x6C70B266, 0x16F8C5F6, 0x918DE280, 0x4910363F, 0xD0C32564, 0xCC524FB5, 0xC12D800D,
-  0x6E0D1727, 0x6710F844, 0x0546E5C4, 0x514D758F, 0xAAB06221, 0x3CA05401, 0x8443EE38,
-  0xF8020646, 0xC461164C, 0x8819C48E, 0x7C200EFC, 0x19352B4A, 0x2009EF12, 0x00000020,
+  0xA9CEED11, 0xD5D64F6D, 0x4E2E752A, 0x00DB2B31, 0xEF764BC0, 0x7B690059, 0x04591042,
+  0x70854E00, 0xF8C5F66C, 0x8DE28016, 0x10363F91, 0x43256449, 0x524F7585, 0x2D800D0C,
+  0x0D1727C1, 0x10F8446E, 0x46D9C467, 0x4CAD8F05, 0xB0622151, 0x08563F7F, 0xD4AE10DC,
+  0x0C8D0887, 0x21106004, 0x591D95EA, 0x1C891033, 0x5694F280, 0xDD64326A, 0x00404013,
   0x00000000
 };
 
@@ -69,11 +68,10 @@ static const XStringRes _Const0003 = { _StringsDefault0, 0x0040 };
 static const XStringRes _Const0004 = { _StringsDefault0, 0x0057 };
 static const XStringRes _Const0005 = { _StringsDefault0, 0x006F };
 static const XStringRes _Const0006 = { _StringsDefault0, 0x0086 };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x00A3 };
-static const XStringRes _Const0008 = { _StringsDefault0, 0x00B3 };
-static const XStringRes _Const0009 = { _StringsDefault0, 0x00C0 };
-static const XStringRes _Const000A = { _StringsDefault0, 0x00D8 };
-static const XStringRes _Const000B = { _StringsDefault0, 0x00ED };
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0096 };
+static const XStringRes _Const0008 = { _StringsDefault0, 0x00A3 };
+static const XStringRes _Const0009 = { _StringsDefault0, 0x00BB };
+static const XStringRes _Const000A = { _StringsDefault0, 0x00D0 };
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
@@ -86,6 +84,7 @@ static const XStringRes _Const000B = { _StringsDefault0, 0x00ED };
 #include "BTM_pub.h"
 #include "BC_motocon_pub.h"
 #include "BC_motocon_pub_type.h"
+#include "BC_ams_pub.h"
 #include "TEST_pub.h"
 
 /* Initializer for the class 'DeviceInterface::SystemDeviceClass' */
@@ -645,6 +644,10 @@ DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( D
 
   NaviData = EwNewObject( DeviceInterfaceNaviDataClass, 0 );
   NaviDataType = aDataType;
+
+  if ( !!NaviDataType )
+    ;
+
   {
     #if( UNIT_TEST_NAVI )
       navi_data_type* navi_obj = NULL;
@@ -746,6 +749,8 @@ void DeviceInterfaceMediaManagerDeviceClass__Init( DeviceInterfaceMediaManagerDe
 
   /* ... then construct all embedded objects */
   CoreSystemEvent__Init( &_this->NotifyPlayBackTimeChangedSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->NotifyMotoConMusicUpdatedSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->NotifyAmsBleConnectedStatusSystemEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceMediaManagerDeviceClass );
@@ -759,6 +764,8 @@ void DeviceInterfaceMediaManagerDeviceClass__ReInit( DeviceInterfaceMediaManager
 
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->NotifyPlayBackTimeChangedSystemEvent );
+  CoreSystemEvent__ReInit( &_this->NotifyMotoConMusicUpdatedSystemEvent );
+  CoreSystemEvent__ReInit( &_this->NotifyAmsBleConnectedStatusSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::MediaManagerDeviceClass' */
@@ -769,6 +776,8 @@ void DeviceInterfaceMediaManagerDeviceClass__Done( DeviceInterfaceMediaManagerDe
 
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->NotifyPlayBackTimeChangedSystemEvent );
+  CoreSystemEvent__Done( &_this->NotifyMotoConMusicUpdatedSystemEvent );
+  CoreSystemEvent__Done( &_this->NotifyAmsBleConnectedStatusSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -780,14 +789,7 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetTitle( DeviceInterfaceMediaMana
 {
   if ( _this->IsTitleReceived || _this->IsInit )
   {
-    if ( !EwCompString( value, 0 ) && ( _this->IsTitleReceived || _this->IsInit ))
-    {
-      _this->Title = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
-    }
-    else
-    {
-      _this->Title = EwShareString( value );
-    }
+    _this->Title = EwShareString( value );
   }
   else
   {
@@ -804,14 +806,7 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum( DeviceInterfaceMediaMana
 {
   if ( _this->IsAlbumReceived || _this->IsInit )
   {
-    if ( !EwCompString( value, 0 ) && ( _this->IsAlbumReceived || _this->IsInit ))
-    {
-      _this->Album = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
-    }
-    else
-    {
-      _this->Album = EwShareString( value );
-    }
+    _this->Album = EwShareString( value );
   }
   else
   {
@@ -828,14 +823,7 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( DeviceInterfaceMediaMan
 {
   if ( _this->IsArtistReceived || _this->IsInit )
   {
-    if ( !EwCompString( value, 0 ) && ( _this->IsArtistReceived || _this->IsInit ))
-    {
-      _this->Artist = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
-    }
-    else
-    {
-      _this->Artist = EwShareString( value );
-    }
+    _this->Artist = EwShareString( value );
   }
   else
   {
@@ -855,33 +843,14 @@ void DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( DeviceInterfaceMe
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  switch ( cmd_type )
-  {
-    case EnumCommandTypePlay :
-      cmd_idx = 0;
-    break;
-
-    case EnumCommandTypePause :
-      cmd_idx = 1;
-    break;
-
-    case EnumCommandTypeNextTrack :
-      cmd_idx = 2;
-    break;
-
-    case EnumCommandTypePrevTrack :
-      cmd_idx = 3;
-    break;
-
-    default : 
-      cmd_idx = 14;
-  }
+  cmd_idx = cmd_type;
 
   if ( !!cmd_idx )
     ;
 
   {
     ams_remote_command cmd = AMS_REMOTE_COMMAND_CNT;
+
     switch( cmd_idx )
     {
       case 0:
@@ -954,20 +923,21 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyAlbumChanged( void* _this, XS
   , aAlbum );
 }
 
-/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.GetPlayerInfo()' */
-void DeviceInterfaceMediaManagerDeviceClass_GetPlayerInfo( DeviceInterfaceMediaManagerDeviceClass _this )
+/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.GetPlayBackStateInfo()' */
+XInt32 DeviceInterfaceMediaManagerDeviceClass_GetPlayBackStateInfo( DeviceInterfaceMediaManagerDeviceClass _this )
 {
-  XString p_name = 0;
-  XInt32 p_state = 0;
+  XInt32 PlayBackState;
 
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  PlayBackState = 0;
   {
     mm_media_player_obj* mp_state = NULL;
     mp_state = ew_get_media_player_state();
-    p_name = EwNewStringAnsi( mp_state->str.player_name );
-    p_state = mp_state->playback_state;
+    PlayBackState = mp_state->playback_state;
   }
-  _this->PlayerName = EwShareString( p_name );
-  _this->PlaybackState = p_state;
+  return PlayBackState;
 }
 
 /* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.GetPlaybackInfo()' */
@@ -1005,29 +975,13 @@ void DeviceInterfaceMediaManagerDeviceClass_GetTrackInfo( DeviceInterfaceMediaMa
   DeviceInterfaceMediaManagerDeviceClass_OnSetTitle( _this, media_title );
 }
 
-/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.NotifyPlayerStateChanged()' */
-void DeviceInterfaceMediaManagerDeviceClass_NotifyPlayerStateChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
-  XInt32 aPlaybackState )
-{
-  EwTrace( "%s%i", EwLoadString( &_Const0006 ), aPlaybackState );
-  _this->PlaybackState = aPlaybackState;
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::MediaManagerDeviceClass.NotifyPlayerStateChanged()' */
-void DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged( void* _this, 
-  XInt32 aPlaybackState )
-{
-  DeviceInterfaceMediaManagerDeviceClass_NotifyPlayerStateChanged((DeviceInterfaceMediaManagerDeviceClass)_this
-  , aPlaybackState );
-}
-
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
 void DeviceInterfaceMediaManagerDeviceClass_NotifyPlayBackTimeChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XInt32 aElapsedTimeSec, XInt32 aDurationTimeSec )
 {
-  EwTrace( "%s%i", EwLoadString( &_Const0007 ), aElapsedTimeSec );
-  EwTrace( "%s%i", EwLoadString( &_Const0008 ), aDurationTimeSec );
+  EwTrace( "%s%i", EwLoadString( &_Const0006 ), aElapsedTimeSec );
+  EwTrace( "%s%i", EwLoadString( &_Const0007 ), aDurationTimeSec );
   _this->ElapsedTimeSec = aElapsedTimeSec;
   _this->DurationTimeSec = aDurationTimeSec;
   CoreSystemEvent_Trigger( &_this->NotifyPlayBackTimeChangedSystemEvent, 0, 0 );
@@ -1039,6 +993,48 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyPlayBackTimeChanged( void* _t
 {
   DeviceInterfaceMediaManagerDeviceClass_NotifyPlayBackTimeChanged((DeviceInterfaceMediaManagerDeviceClass)_this
   , aElapsedTimeSec, aDurationTimeSec );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceMediaManagerDeviceClass_NotfiyMotoConMusicInfoUpdated( DeviceInterfaceMediaManagerDeviceClass _this )
+{
+  _this->IsTitleReceived = 1;
+  _this->IsAlbumReceived = 1;
+  _this->IsArtistReceived = 1;
+  CoreSystemEvent_Trigger( &_this->NotifyMotoConMusicUpdatedSystemEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::MediaManagerDeviceClass.NotfiyMotoConMusicInfoUpdated()' */
+void DeviceInterfaceMediaManagerDeviceClass__NotfiyMotoConMusicInfoUpdated( void* _this )
+{
+  DeviceInterfaceMediaManagerDeviceClass_NotfiyMotoConMusicInfoUpdated((DeviceInterfaceMediaManagerDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.IsAmsConnected()' */
+XBool DeviceInterfaceMediaManagerDeviceClass_IsAmsConnected( DeviceInterfaceMediaManagerDeviceClass _this )
+{
+  XBool AmsConnected;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  AmsConnected = 0;
+  AmsConnected = BC_ams_is_ams_connected();
+  return AmsConnected;
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceMediaManagerDeviceClass_NotifyAmsBleConnectedStatusChanged( DeviceInterfaceMediaManagerDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->NotifyAmsBleConnectedStatusSystemEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::MediaManagerDeviceClass.NotifyAmsBleConnectedStatusChanged()' */
+void DeviceInterfaceMediaManagerDeviceClass__NotifyAmsBleConnectedStatusChanged( void* _this )
+{
+  DeviceInterfaceMediaManagerDeviceClass_NotifyAmsBleConnectedStatusChanged((DeviceInterfaceMediaManagerDeviceClass)_this );
 }
 
 /* Default onget method for the property 'Title' */
@@ -1186,7 +1182,7 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( DeviceInterfaceBluet
 void DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this, 
   XBool value )
 {
-  EwTrace( "%s%b", EwLoadString( &_Const0009 ), value );
+  EwTrace( "%s%b", EwLoadString( &_Const0008 ), value );
 
   if ( _this->BluetoothEnable != value )
   {
@@ -1337,8 +1333,8 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( DeviceInterfaceBluetoo
 void DeviceInterfaceBluetoothDeviceClass_NotifyBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this, 
   XEnum status, XString version )
 {
-  EwTrace( "%s%e", EwLoadString( &_Const000A ), status );
-  EwTrace( "%s%s", EwLoadString( &_Const000B ), version );
+  EwTrace( "%s%e", EwLoadString( &_Const0009 ), status );
+  EwTrace( "%s%s", EwLoadString( &_Const000A ), version );
   DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( _this, status );
 }
 

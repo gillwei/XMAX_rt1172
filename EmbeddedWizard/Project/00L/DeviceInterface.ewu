@@ -13,6 +13,7 @@ inline Inline
   #include "BTM_pub.h"
   #include "BC_motocon_pub.h"
   #include "BC_motocon_pub_type.h"
+  #include "BC_ams_pub.h"
   #include "TEST_pub.h"
 }
 
@@ -486,6 +487,12 @@ class NavigationDeviceClass : Templates::DeviceClass
     $if !$prototyper
     var int32 NaviDataType = ( int32 )aDataType;
 
+    // suppress warning
+    if( NaviDataType )
+    {
+      // empty body
+    }
+
     native( NaviDataType, NaviData )
     {
       #if( UNIT_TEST_NAVI )
@@ -582,17 +589,8 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     // Get song title when receiving from media manager or UI initialization.
     if( IsTitleReceived || IsInit )
     {
-
-      if( value == "" && ( IsTitleReceived || IsInit ) )
-      {
-        // If received song title is empty, show "---".
-        pure Title = Strings::GEN_three_hyphens;
-      }
-      else
-      {
-        // Remember the property's new value.
-        pure Title = value;
-      }
+      // Remember the property's new value.
+      pure Title = value;
     }
     else
     {
@@ -613,16 +611,8 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     // Get album when receiving from media manager or UI initialization.
     if( IsAlbumReceived || IsInit )
     {
-      if( value == "" && ( IsAlbumReceived || IsInit ) )
-      {
-        // If received album is empty, show "---".
-        pure Album = Strings::GEN_three_hyphens;
-      }
-      else
-      {
-        // Remember the property's new value.
-        pure Album = value;
-      }
+      // Remember the property's new value.
+      pure Album = value;
     }
     else
     {
@@ -643,16 +633,8 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     // Get artist when receiving from media manager or UI initialization.
     if( IsArtistReceived || IsInit )
     {
-      if( value == "" && ( IsArtistReceived || IsInit ) )
-      {
-        // If received artist is empty, show "---".
-        pure Artist = Strings::GEN_three_hyphens;
-      }
-      else
-      {
-        // Remember the property's new value.
-        pure Artist = value;
-      }
+      // Remember the property's new value.
+      pure Artist = value;
     }
     else
     {
@@ -668,20 +650,10 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   property int32 DurationTimeSec = 0;
 
   $rect <720,470,940,510>
-  method void SendRemoteCommand( arg Enum::CommandType cmd_type )
+  method void SendRemoteCommand( arg Enum::MusicControlType cmd_type )
   {
-    var int32 cmd_idx;
-
-    switch( cmd_type )
-    {
-      case Enum::CommandType.Play: cmd_idx = 0;
-      case Enum::CommandType.Pause: cmd_idx = 1;
-      case Enum::CommandType.NextTrack: cmd_idx = 2;
-      case Enum::CommandType.PrevTrack: cmd_idx = 3;
-      default:cmd_idx = 14; // according to AMS spec, only 14 commands so that we set index to 14 in case no command is matched.
-    }
-
     $if !$prototyper
+    var int32 cmd_idx = ( int32 )cmd_type;
     // suppress warning
     if( cmd_idx )
     {
@@ -690,6 +662,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     native( cmd_idx )
     {
       ams_remote_command cmd = AMS_REMOTE_COMMAND_CNT;
+
       switch( cmd_idx )
       {
         case 0:
@@ -721,26 +694,6 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     attr Bounds = <10,430,1040,540>;
   }
 
-  $rect <30,120,230,160>
-  property int32 PlaybackState = 0;
-
-  $rect <30,160,230,200>
-  onset PlaybackState
-  {
-    // Remember the property's new value.
-    pure PlaybackState = value;
-  }
-
-  $rect <250,120,450,160>
-  property string PlayerName;
-
-  $rect <250,160,450,200>
-  onset PlayerName
-  {
-    // Remember the property's new value.
-    pure PlayerName = value;
-  }
-
   $rect <350,240,550,280>
   $output true
   method void NotifyTitleChanged( arg string aTitle )
@@ -769,21 +722,18 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   }
 
   $rect <50,470,250,510>
-  method void GetPlayerInfo()
+  method int32 GetPlayBackStateInfo()
   {
-    var string p_name = "";
-    var int32 p_state = 0;
+    var int32 PlayBackState = 0;
     $if !$prototyper
-    native ( p_name, p_state )
+    native ( PlayBackState )
     {
       mm_media_player_obj* mp_state = NULL;
       mp_state = ew_get_media_player_state();
-      p_name = EwNewStringAnsi( mp_state->str.player_name );
-      p_state = mp_state->playback_state;
+      PlayBackState = mp_state->playback_state;
     }
     $endif
-    PlayerName = p_name;
-    PlaybackState = p_state;
+    return PlayBackState;
   }
 
   $rect <270,470,470,510>
@@ -828,14 +778,6 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   $rect <720,240,920,280>
   var bool IsInit = false;
 
-  $rect <350,360,610,400>
-  $output true
-  method void NotifyPlayerStateChanged( arg int32 aPlaybackState )
-  {
-    trace "NotifyPlayerStateChanged: ", aPlaybackState;
-    PlaybackState = aPlaybackState;
-  }
-
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
   $rect <30,280,320,320>
@@ -861,6 +803,48 @@ class MediaManagerDeviceClass : Templates::DeviceClass
 
   $rect <720,360,920,400>
   var bool IsArtistReceived = false;
+
+  $rect <50,560,250,600>
+  object Core::SystemEvent NotifyMotoConMusicUpdatedSystemEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <260,560,460,600>
+  $output true
+  method void NotfiyMotoConMusicInfoUpdated()
+  {
+    IsTitleReceived = true;
+    IsAlbumReceived = true;
+    IsArtistReceived = true;
+    NotifyMotoConMusicUpdatedSystemEvent.Trigger( null, false );
+  }
+
+  $rect <470,610,670,650>
+  method bool IsAmsConnected()
+  {
+    $if !$prototyper
+      var bool AmsConnected = false;
+      native( AmsConnected )
+      {
+        AmsConnected = BC_ams_is_ams_connected();
+      }
+      return AmsConnected;
+    $else
+      return false;
+    $endif
+  }
+
+  $rect <50,610,250,650>
+  object Core::SystemEvent NotifyAmsBleConnectedStatusSystemEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <260,610,460,650>
+  $output true
+  method void NotifyAmsBleConnectedStatusChanged()
+  {
+    NotifyAmsBleConnectedStatusSystemEvent.Trigger( null, false );
+  }
 }
 
 $rect <20,344,220,384>

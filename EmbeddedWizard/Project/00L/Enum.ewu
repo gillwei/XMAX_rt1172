@@ -33,7 +33,7 @@ enum FactoryTest
 
 $rect <30,120,230,160>
 $output false
-enum CommandType
+enum MusicControlType
 {
   $rect <10,10,210,50>
   item Play;
@@ -813,4 +813,15 @@ enum BtcPairingState
 
   $rect <10,260,250,300>
   item PASSKEY_GENERATED;
+}
+
+$rect <30,530,230,570>
+$output false
+enum ReceptionStatus
+{
+  $rect <10,10,210,50>
+  item SUCCESS;
+
+  $rect <220,10,420,50>
+  item ERROR;
 }

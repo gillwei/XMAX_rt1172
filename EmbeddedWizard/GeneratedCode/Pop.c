@@ -35,7 +35,7 @@
 #include "_DeviceInterfaceMotoConContext.h"
 #include "_DeviceInterfaceWeatherDeviceClass.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
-#include "_PopPOP09_WeatherConnectionErrorUI.h"
+#include "_PopPOP09_BleConnectionErrorUI.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "_ViewsImage.h"
@@ -168,7 +168,7 @@ void PopPOP08_WeatherLoadingUI_OnConnectionFailedUpdateSlot( PopPOP08_WeatherLoa
   EW_UNUSED_ARG( sender );
 
   CoreTimer_OnSetEnabled( &_this->ConnectionFailedTimer, 0 );
-  CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( PopPOP09_WeatherConnectionErrorUI, 
+  CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( PopPOP09_BleConnectionErrorUI, 
   0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
@@ -243,21 +243,21 @@ EW_DEFINE_CLASS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG, LoadingText, L
   ComponentsBaseMainBG_OnSetDDModeEnabled,
 EW_END_OF_CLASS( PopPOP08_WeatherLoadingUI )
 
-/* Initializer for the class 'Pop::POP09_WeatherConnectionErrorUI' */
-void PopPOP09_WeatherConnectionErrorUI__Init( PopPOP09_WeatherConnectionErrorUI _this, XObject aLink, XHandle aArg )
+/* Initializer for the class 'Pop::POP09_BleConnectionErrorUI' */
+void PopPOP09_BleConnectionErrorUI__Init( PopPOP09_BleConnectionErrorUI _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
   ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( PopPOP09_WeatherConnectionErrorUI );
+  _this->_GCT = EW_CLASS_GCT( PopPOP09_BleConnectionErrorUI );
 
   /* ... then construct all embedded objects */
   ViewsText__Init( &_this->ConnectionFailedMessage, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->CountDownTimer, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( PopPOP09_WeatherConnectionErrorUI );
+  _this->_VMT = EW_CLASS( PopPOP09_BleConnectionErrorUI );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->ConnectionFailedMessage, _Const0002 );
@@ -267,11 +267,11 @@ void PopPOP09_WeatherConnectionErrorUI__Init( PopPOP09_WeatherConnectionErrorUI 
   CoreGroup__Add( _this, ((CoreView)&_this->ConnectionFailedMessage ), 0 );
   ViewsText_OnSetFont( &_this->ConnectionFailedMessage, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  _this->CountDownTimer.OnTrigger = EwNewSlot( _this, PopPOP09_WeatherConnectionErrorUI_OnLauncherScreenUpdateSlot );
+  _this->CountDownTimer.OnTrigger = EwNewSlot( _this, PopPOP09_BleConnectionErrorUI_OnLauncherScreenUpdateSlot );
 }
 
-/* Re-Initializer for the class 'Pop::POP09_WeatherConnectionErrorUI' */
-void PopPOP09_WeatherConnectionErrorUI__ReInit( PopPOP09_WeatherConnectionErrorUI _this )
+/* Re-Initializer for the class 'Pop::POP09_BleConnectionErrorUI' */
+void PopPOP09_BleConnectionErrorUI__ReInit( PopPOP09_BleConnectionErrorUI _this )
 {
   /* At first re-initialize the super class ... */
   ComponentsBaseMainBG__ReInit( &_this->_Super );
@@ -281,8 +281,8 @@ void PopPOP09_WeatherConnectionErrorUI__ReInit( PopPOP09_WeatherConnectionErrorU
   CoreTimer__ReInit( &_this->CountDownTimer );
 }
 
-/* Finalizer method for the class 'Pop::POP09_WeatherConnectionErrorUI' */
-void PopPOP09_WeatherConnectionErrorUI__Done( PopPOP09_WeatherConnectionErrorUI _this )
+/* Finalizer method for the class 'Pop::POP09_BleConnectionErrorUI' */
+void PopPOP09_BleConnectionErrorUI__Done( PopPOP09_BleConnectionErrorUI _this )
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
@@ -295,8 +295,8 @@ void PopPOP09_WeatherConnectionErrorUI__Done( PopPOP09_WeatherConnectionErrorUI 
   ComponentsBaseMainBG__Done( &_this->_Super );
 }
 
-/* 'C' function for method : 'Pop::POP09_WeatherConnectionErrorUI.OnLauncherScreenUpdateSlot()' */
-void PopPOP09_WeatherConnectionErrorUI_OnLauncherScreenUpdateSlot( PopPOP09_WeatherConnectionErrorUI _this, 
+/* 'C' function for method : 'Pop::POP09_BleConnectionErrorUI.OnLauncherScreenUpdateSlot()' */
+void PopPOP09_BleConnectionErrorUI_OnLauncherScreenUpdateSlot( PopPOP09_BleConnectionErrorUI _this, 
   XObject sender )
 {
   ApplicationApplication App;
@@ -313,14 +313,14 @@ void PopPOP09_WeatherConnectionErrorUI_OnLauncherScreenUpdateSlot( PopPOP09_Weat
   }
 }
 
-/* Variants derived from the class : 'Pop::POP09_WeatherConnectionErrorUI' */
-EW_DEFINE_CLASS_VARIANTS( PopPOP09_WeatherConnectionErrorUI )
-EW_END_OF_CLASS_VARIANTS( PopPOP09_WeatherConnectionErrorUI )
+/* Variants derived from the class : 'Pop::POP09_BleConnectionErrorUI' */
+EW_DEFINE_CLASS_VARIANTS( PopPOP09_BleConnectionErrorUI )
+EW_END_OF_CLASS_VARIANTS( PopPOP09_BleConnectionErrorUI )
 
-/* Virtual Method Table (VMT) for the class : 'Pop::POP09_WeatherConnectionErrorUI' */
-EW_DEFINE_CLASS( PopPOP09_WeatherConnectionErrorUI, ComponentsBaseMainBG, ConnectionFailedMessage, 
+/* Virtual Method Table (VMT) for the class : 'Pop::POP09_BleConnectionErrorUI' */
+EW_DEFINE_CLASS( PopPOP09_BleConnectionErrorUI, ComponentsBaseMainBG, ConnectionFailedMessage, 
                  ConnectionFailedMessage, ConnectionFailedMessage, ConnectionFailedMessage, 
-                 _None, _None, "Pop::POP09_WeatherConnectionErrorUI" )
+                 _None, _None, "Pop::POP09_BleConnectionErrorUI" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -360,6 +360,6 @@ EW_DEFINE_CLASS( PopPOP09_WeatherConnectionErrorUI, ComponentsBaseMainBG, Connec
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
-EW_END_OF_CLASS( PopPOP09_WeatherConnectionErrorUI )
+EW_END_OF_CLASS( PopPOP09_BleConnectionErrorUI )
 
 /* Embedded Wizard */

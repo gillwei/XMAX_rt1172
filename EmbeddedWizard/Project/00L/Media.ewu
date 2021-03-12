@@ -8,10 +8,10 @@ class MED01_MediaUI : Components::BaseMainBG
   inherited method Init()
   {
     DeviceInterface::MediaManagerDevice.IsInit = true;
-    DeviceInterface::MediaManagerDevice.GetPlayerInfo();
     DeviceInterface::MediaManagerDevice.GetPlaybackInfo();
     DeviceInterface::MediaManagerDevice.GetTrackInfo();
     DeviceInterface::MediaManagerDevice.IsInit = false;
+
     if( "" != DeviceInterface::MediaManagerDevice.Title &&
         Strings::GEN_three_hyphens != DeviceInterface::MediaManagerDevice.Title )
     {
@@ -28,12 +28,6 @@ class MED01_MediaUI : Components::BaseMainBG
   {
     StartHighlight( PlayPauseBG );
     postsignal OnPlayPauseSlot;
-  }
-
-  $rect <1210,260,1440,300>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
   $rect <960,40,1160,80>
@@ -92,13 +86,13 @@ class MED01_MediaUI : Components::BaseMainBG
   $rect <540,320,740,360>
   slot OnPlayPauseSlot
   {
-    if( 0 == DeviceInterface::MediaManagerDevice.PlaybackState )
+    if( 0 == DeviceInterface::MediaManagerDevice.GetPlayBackStateInfo() )
     {
-      DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.Play );
+      DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::MusicControlType.Play );
     }
     else
     {
-      DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.Pause );
+      DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::MusicControlType.Pause );
     }
   }
 
@@ -106,14 +100,14 @@ class MED01_MediaUI : Components::BaseMainBG
   slot OnPrevTrackSlot
   {
     ChangeTrack();
-    DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.PrevTrack );
+    DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::MusicControlType.PrevTrack );
   }
 
   $rect <960,320,1160,360>
   slot OnNextTrackSlot
   {
     ChangeTrack();
-    DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::CommandType.NextTrack );
+    DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::MusicControlType.NextTrack );
   }
 
   $rect <20,20,160,60>
@@ -154,7 +148,7 @@ class MED01_MediaUI : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <800,460,1070,500>
+  $rect <790,460,1060,500>
   slot OnPlaybackTimeUpdateSlot
   {
     if( !ElapsedTimeSec.Visible )
@@ -177,8 +171,6 @@ class MED01_MediaUI : Components::BaseMainBG
       }
       SeekBar.CurrentValue = ( DeviceInterface::MediaManagerDevice.ElapsedTimeSec * 100 ) / DeviceInterface::MediaManagerDevice.DurationTimeSec;
     }
-
-
   }
 
   $rect <960,200,1160,240>
@@ -271,7 +263,7 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Enabled = false;
   }
 
-  $rect <800,510,1060,550>
+  $rect <780,510,1040,550>
   slot OnHighlightEndSlot
   {
     HighlightTimer.Enabled = false;
@@ -304,16 +296,14 @@ class MED01_MediaUI : Components::BaseMainBG
   // SystemEvents/Others
   note group Note11
   {
-    attr Bounds = <520,420,1460,690>;
+    attr Bounds = <520,420,1460,920>;
   }
 
   // TODO:
-  // 1. Handle long pressing Home button.
-  // 2. Reception error/success (BLE connected/disconnected).
-  // 3. Volume control.
+  // 1. Volume control.
   note group Note12
   {
-    attr Bounds = <20,290,480,450>;
+    attr Bounds = <20,290,480,370>;
   }
 
   $rect <540,560,740,600>
@@ -325,32 +315,47 @@ class MED01_MediaUI : Components::BaseMainBG
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <800,610,1050,650>
+  $rect <770,560,1020,600>
   slot OnTrackInfoUpdateSlot
   {
-    if( sender == TitleObserver )
+    // Music info could be varied, some songs only have title, but have no album & artist name.
+    // Moreover, we found a possibility that not all observers will be triggered (for example, only receive song title).
+    // Therefore, we have to update title, album and artist together when one of observers is triggered in order to assign
+    // "---" to album and artist text view when there is no album and artist information.
+    if( !Title.Visible )
     {
-      if( !Title.Visible )
-      {
-        Title.Visible = true;
-      }
-      Title.String = DeviceInterface::MediaManagerDevice.Title;
+      Title.Visible = true;
     }
-    else if( sender == AlbumObserver)
+    Title.String = DeviceInterface::MediaManagerDevice.Title;
+
+    // If music data doesn't have song title information, LC shall display "---".
+    if( Title.String == "" )
     {
-      if( !Album.Visible )
-      {
-        Album.Visible = true;
-      }
-      Album.String = DeviceInterface::MediaManagerDevice.Album;
+      Title.String = Strings::GEN_three_hyphens;
     }
-    else if( sender == ArtistObserver )
+
+    if( !Album.Visible )
     {
-      if( !Artist.Visible )
-      {
-        Artist.Visible = true;
-      }
-      Artist.String = DeviceInterface::MediaManagerDevice.Artist;
+      Album.Visible = true;
+    }
+    Album.String = DeviceInterface::MediaManagerDevice.Album;
+
+    // If music data doesn't have album information, LC shall display "---".
+    if( Album.String  == "" )
+    {
+      Album.String = Strings::GEN_three_hyphens;
+    }
+
+    if( !Artist.Visible )
+    {
+      Artist.Visible = true;
+    }
+    Artist.String = DeviceInterface::MediaManagerDevice.Artist;
+
+    // If music data doesn't have artist information, LC shall display "---".
+    if( Artist.String == "" )
+    {
+      Artist.String = Strings::GEN_three_hyphens;
     }
 
     if( Title.String == Strings::GEN_three_hyphens &&
@@ -358,9 +363,14 @@ class MED01_MediaUI : Components::BaseMainBG
         Artist.String == Strings::GEN_three_hyphens )
     {
       // Detect music data is failed
-      Title.Visible = false;
-      Album.Visible = false;
-      Artist.Visible = false;
+      UpdateMediaInfoItem( Enum::ReceptionStatus.ERROR );
+    }
+    else
+    {
+      if( ErrorMessage.Visible )
+      {
+        ErrorMessage.Visible = false;
+      }
     }
   }
 
@@ -385,5 +395,132 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Visible = false;
     preset CurrentValue = 0;
     preset Appearance = UIConfig::HorizontalSliderConfig;
+  }
+
+  $rect <540,690,740,730>
+  object Core::SystemEventHandler MotoConMusicInfoEventHandler
+  {
+    preset OnEvent = OnMotoConMusicInfoUpdateSlot;
+    preset Event = DeviceInterface::MediaManagerDevice.NotifyMotoConMusicUpdatedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <750,690,990,730>
+  slot OnMotoConMusicInfoUpdateSlot
+  {
+    DeviceInterface::MediaManagerDevice.GetPlaybackInfo();
+    DeviceInterface::MediaManagerDevice.GetTrackInfo();
+
+    if( "" != DeviceInterface::MediaManagerDevice.Title &&
+        Strings::GEN_three_hyphens != DeviceInterface::MediaManagerDevice.Title )
+    {
+      // Received music previously, update elapsed time & remain time.
+      signal OnPlaybackTimeUpdateSlot;
+    }
+
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ErrorMessage
+  {
+    preset Bounds = <117,107,447,175>;
+    preset String = Strings::MED02_DEV_UNAVAILABLE;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Visible = false;
+  }
+
+  $rect <540,740,730,780>
+  object Core::SystemEventHandler MotoConEventHandler
+  {
+    preset OnEvent = OnMotoConEventReceived;
+    preset Event = DeviceInterface::BluetoothDevice.MotoConSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <750,740,990,780>
+  slot OnMotoConEventReceived
+  {
+    var DeviceInterface::MotoConContext MotoConContext = ( DeviceInterface::MotoConContext )MotoConEventHandler.Context;
+    if( Enum::MotoConRxEvent.CONNECTION_STATUS == MotoConContext.RxEvent )
+    {
+      if( !DeviceInterface::BluetoothDevice.IsMotoconConnected() )
+      {
+        UpdateMediaInfoItem( Enum::ReceptionStatus.ERROR );
+      }
+      else
+      {
+        BleConnectionRecoveryTimer.Enabled = true;
+      }
+    }
+  }
+
+  $rect <540,860,730,900>
+  object Core::Timer BleConnectionRecoveryTimer
+  {
+    preset OnTrigger = OnBleConnectionRecoverSlot;
+    preset Period = 5000;
+  }
+
+  $rect <750,860,950,900>
+  slot OnBleConnectionRecoverSlot
+  {
+    BleConnectionRecoveryTimer.Enabled = false;
+    UpdateMediaInfoItem( Enum::ReceptionStatus.SUCCESS );
+  }
+
+  $rect <540,800,740,840>
+  object Core::SystemEventHandler AmsBleConnectionEventHandler
+  {
+    preset OnEvent = OnAmsBleConnectedStatusUpdateSlot;
+    preset Event = DeviceInterface::MediaManagerDevice.NotifyAmsBleConnectedStatusSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <750,800,980,840>
+  slot OnAmsBleConnectedStatusUpdateSlot
+  {
+    if( !DeviceInterface::MediaManagerDevice.IsAmsConnected() )
+    {
+      UpdateMediaInfoItem( Enum::ReceptionStatus.ERROR );
+    }
+    else
+    {
+      // Reception success, wait for 5 seconds and then present music info.
+      BleConnectionRecoveryTimer.Enabled = true; 
+    }
+  }
+
+  $rect <1010,740,1210,780>
+  method void UpdateMediaInfoItem( arg Enum::ReceptionStatus aNewStatus )
+  {
+    switch( aNewStatus )
+    {
+      case Enum::ReceptionStatus.SUCCESS:
+      {
+        // Reception success, present music info and hide error message.
+        Title.Visible = true;
+        Album.Visible = true;
+        Artist.Visible = true;
+        ElapsedTimeSec.Visible = true;
+        TotalTimeSec.Visible = true;
+        SeekBar.Visible = true;
+        ErrorMessage.Visible = false;
+      }
+      case Enum::ReceptionStatus.ERROR:
+      {
+        // Reception error, hide music info and display error message.
+        Title.Visible = false;
+        Album.Visible = false;
+        Artist.Visible = false;
+        ElapsedTimeSec.Visible = false;
+        TotalTimeSec.Visible = false;
+        SeekBar.Visible = false;
+        ErrorMessage.Visible = true;
+      }
+      default:;
+    }
   }
 }

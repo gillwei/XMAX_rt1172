@@ -58,7 +58,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
   slot OnConnectionFailedUpdateSlot
   {
     ConnectionFailedTimer.Enabled = false;
-    PresentDialog( new Pop::POP09_WeatherConnectionErrorUI, null, null, null, null, null, null, null, null, false );
+    PresentDialog( new Pop::POP09_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
 
   }
 
@@ -87,7 +87,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
 
 $rect <30,80,230,120>
 $output false
-class POP09_WeatherConnectionErrorUI : Components::BaseMainBG
+class POP09_BleConnectionErrorUI : Components::BaseMainBG
 {
   $rect <20,20,160,60>
   object Views::Text ConnectionFailedMessage

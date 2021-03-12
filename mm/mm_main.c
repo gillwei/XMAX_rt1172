@@ -23,6 +23,8 @@
 #include "mm_priv.h"
 #include "MM_pub.h"
 #include "BC_ams_pub.h"
+#include "BC_motocon_pub.h"
+
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -51,6 +53,7 @@
 static QueueHandle_t remote_command = NULL;
 static EventGroupHandle_t mm_event_group = NULL;
 static TimerHandle_t elapsed_timer_handle;
+static mm_media_player_obj media_player;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -59,6 +62,32 @@ static TimerHandle_t elapsed_timer_handle;
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+
+/*********************************************************************
+*
+* @private
+* mm_ams_gatt_update_elapsed_time
+*
+* Update elapsed time
+*
+*********************************************************************/
+void mm_ams_gatt_update_elapsed_time
+    (
+    void
+    )
+{
+if( media_player.playback_state == MP_PLAYBACK_STATUS_PLAYING )
+    {
+    uint32_t elapsed_time_sec = ( media_player.start_elapsed_time_ms +
+        ( uint32_t )( ( float )( xTaskGetTickCount() - media_player.start_elapsed_time_tick ) * media_player.playback_rate ) ) / 1000;
+
+    if( media_player.current_elapsed_time_sec != elapsed_time_sec )
+        {
+        media_player.current_elapsed_time_sec = elapsed_time_sec;
+        EW_notify_playback_time_changed();
+        }
+    }
+}
 
 /*********************************************************************
 *
@@ -75,7 +104,14 @@ static void mm_timer_callback
     TimerHandle_t timer_handle
     )
 {
-mm_ams_gatt_update_elapsed_time();
+if( media_player.current_elapsed_time_sec < media_player.duration_sec )
+    {
+    mm_ams_gatt_update_elapsed_time();
+    }
+else
+    {
+    mm_stop_elapsed_timer();
+    }
 }
 
 /*********************************************************************
@@ -161,6 +197,44 @@ return cmd_sent;
 /*********************************************************************
 *
 * @public
+* MM_ams_gatt_get_media_player_state
+*
+* Obtain media player state data
+* @return media player state data
+*
+*********************************************************************/
+mm_media_player_obj* MM_ams_gatt_get_media_player_state
+    (
+    void
+    )
+{
+return &media_player;
+}
+
+/*********************************************************************
+*
+* @public
+* MM_update_playback_status
+*
+* Decide to stop timer of song based on Ble connected status.
+* @param ble_cnnt_status BLE connected status.
+*
+*********************************************************************/
+void MM_update_playback_status
+    (
+    const bool ble_cnnt_status
+    )
+{
+if( !ble_cnnt_status )
+    {
+    mm_stop_elapsed_timer();
+    }
+EW_notify_ams_ble_connected();
+}
+
+/*********************************************************************
+*
+* @public
 * MM_send_command
 *
 * Send user command to queue.
@@ -211,18 +285,56 @@ while( true )
             switch( recv_cmd )
                 {
                 case AMS_REMOTE_COMMAND_PLAY:
-                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PLAY );
+                    if( BC_motocon_is_connected() )
+                        {
+                        // TODO: Because MotoCon SDK is not completed yet, I can only set playback state here in order to make UI reflect the play/pause status when
+                        // sending play/pause remote command from LC. Once Yamaha updates MotoCon SDK regarding playback state. We have to remove below setting.
+                        media_player.playback_state = MP_PLAYBACK_STATUS_PLAYING;
+                        media_player.playback_rate = 1.0;
+                        media_player.start_elapsed_time_tick = xTaskGetTickCount();
+                        mm_start_elapsed_timer();
+                        BC_motocon_send_bt_music_control( BC_MOTOCON_MUSIC_PLAY );
+                        }
+                    else
+                        {
+                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PLAY );
+                        }
                     break;
                 case AMS_REMOTE_COMMAND_PAUSE:
-                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PAUSE );
+                    if( BC_motocon_is_connected() )
+                        {
+                        // TODO: Because MotoCon SDK is not completed yet, I can only set playback state here in order to make UI reflect the play/pause status when
+                        // sending play/pause remote command from LC. Once Yamaha updates MotoCon SDK regarding playback state. We have to remove below setting.
+                        media_player.playback_state = MP_PLAYBACK_STATUS_PAUSED;
+                        mm_stop_elapsed_timer();
+                        BC_motocon_send_bt_music_control( BC_MOTOCON_MUSIC_PAUSE );
+                        }
+                    else
+                        {
+                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PAUSE );
+                        }
                     break;
                 case AMS_REMOTE_COMMAND_NEXT_TRACK:
                     mm_stop_elapsed_timer();
-                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_NEXT_TRACK );
+                     if( BC_motocon_is_connected() )
+                        {
+                        BC_motocon_send_bt_music_control( BC_MOTOCON_MUSIC_NEXT_TRACK );
+                        }
+                    else
+                        {
+                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_NEXT_TRACK );
+                        }
                     break;
                 case AMS_REMOTE_COMMAND_PREVIOUS_TRACK:
                     mm_stop_elapsed_timer();
-                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PREVIOUS_TRACK );
+                    if( BC_motocon_is_connected() )
+                        {
+                        BC_motocon_send_bt_music_control( BC_MOTOCON_MUSIC_PREVIOUS_TRACK );
+                        }
+                    else
+                        {
+                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PREVIOUS_TRACK );
+                        }
                     break;
                 // TODO: Enable when implementing volume control SCR.
                 /*case AMS_REMOTE_COMMAND_VOLUME_UP:
@@ -263,4 +375,6 @@ remote_command = xQueueCreate( MM_QUEUE_LENGTH, sizeof( ams_remote_command ) );
 configASSERT( NULL != remote_command );
 
 create_elapsed_timer();
+
+mm_motocon_init();
 }

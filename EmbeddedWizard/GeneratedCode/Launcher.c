@@ -30,6 +30,7 @@
 #include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
+#include "_DeviceInterfaceMediaManagerDeviceClass.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsRectEffect.h"
@@ -40,7 +41,7 @@
 #include "_MediaMED01_MediaUI.h"
 #include "_NavigationNAV06_NaviSettingMenu.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
-#include "_PopPOP09_WeatherConnectionErrorUI.h"
+#include "_PopPOP09_BleConnectionErrorUI.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "_SettingsSET01_MainSettingMenu.h"
@@ -399,7 +400,25 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
 
     case EnumLauncherItemMUSIC :
     {
-      ItemDialog = ((ComponentsBaseComponent)EwNewObject( MediaMED01_MediaUI, 0 ));
+      if ( DeviceInterfaceMediaManagerDeviceClass_IsAmsConnected( EwGetAutoObject( 
+          &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )))
+      {
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( MediaMED01_MediaUI, 
+        0 ));
+      }
+      else
+        if ( DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( EwGetAutoObject( 
+            &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
+        {
+          ItemDialog = ((ComponentsBaseComponent)EwNewObject( MediaMED01_MediaUI, 
+          0 ));
+        }
+        else
+        {
+          ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_BleConnectionErrorUI, 
+          0 ));
+        }
+
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
       0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }
@@ -441,7 +460,7 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
       }
       else
       {
-        ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_WeatherConnectionErrorUI, 
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_BleConnectionErrorUI, 
         0 ));
       }
 

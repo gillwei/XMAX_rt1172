@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/03/09 14:30:20
+// Generated: 2021/03/12 12:50:50
 
 $output false
 const string ARGUMENT_STR =
@@ -435,7 +435,7 @@ const string LNC_settings =
 );
 
 $output false
-const string MED02_dev_unavailable =
+const string MED02_DEV_UNAVAILABLE =
 (
   Default = "Media device\nunavailable";
 );

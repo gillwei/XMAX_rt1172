@@ -61,7 +61,6 @@ static void mm_parse_track_attribute_data
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
-static mm_media_player_obj media_player;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -130,13 +129,16 @@ static void mm_process_entity_attribute_data
 {
 PRINTF( "Entity: %d, Attribute: %d, Flags: 0x%02X, Value='%s'\r\n", entity_id, attribute_id, entity_update_flags, value ? value : NULL );
 uint32_t received_time = xTaskGetTickCount();
+mm_media_player_obj* media_player = NULL;
+media_player = MM_ams_gatt_get_media_player_state();
+
 switch( entity_id )
     {
     case AMS_ENTITY_ID_PLAYER:
-        mm_parse_player_attribute_data( &media_player, attribute_id, entity_update_flags, value, received_time );
+        mm_parse_player_attribute_data( media_player, attribute_id, entity_update_flags, value, received_time );
         break;
     case AMS_ENTITY_ID_TRACK:
-        mm_parse_track_attribute_data( &media_player, attribute_id, entity_update_flags, value );
+        mm_parse_track_attribute_data( media_player, attribute_id, entity_update_flags, value );
         break;
     default:
         PRINTF( "Err: Invalid entity id: %d\r\n", entity_id );
@@ -203,7 +205,6 @@ switch( player_attribute_id )
                         break;
                     }
                 PRINTF( "Playback state: %d\r\n", mp->playback_state );
-                EW_notify_playback_state_changed();
                 }
             else if( val_idx == 2)
                 {
@@ -298,48 +299,5 @@ switch( track_attribute_id )
     default:
         PRINTF( "Unsupported Track Attribute ID %d\r\n", track_attribute_id );
         break;
-    }
-}
-
-/*********************************************************************
-*
-* @public
-* MM_ams_gatt_get_media_player_state
-*
-* Obtain media player state data
-* @return media player state data
-*
-*********************************************************************/
-mm_media_player_obj* MM_ams_gatt_get_media_player_state
-    (
-    void
-    )
-{
-return &media_player;
-}
-
-/*********************************************************************
-*
-* @private
-* mm_ams_gatt_update_elapsed_time
-*
-* Update elapsed time
-*
-*********************************************************************/
-void mm_ams_gatt_update_elapsed_time
-    (
-    void
-    )
-{
-if( media_player.playback_state == MP_PLAYBACK_STATUS_PLAYING )
-    {
-    uint32_t elapsed_time_sec = ( media_player.start_elapsed_time_ms +
-        ( uint32_t )( ( float )( xTaskGetTickCount() - media_player.start_elapsed_time_tick ) * media_player.playback_rate ) ) / 1000;
-
-    if( media_player.current_elapsed_time_sec != elapsed_time_sec )
-        {
-        media_player.current_elapsed_time_sec = elapsed_time_sec;
-        EW_notify_playback_time_changed();
-        }
     }
 }

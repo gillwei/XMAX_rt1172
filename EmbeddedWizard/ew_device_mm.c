@@ -46,8 +46,12 @@
     static int ew_notify_playback_time_changed( void );
 #endif
 
-#ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged_
-    static int ew_notify_playback_state_changed( void );
+#ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyAmsBleConnectedStatusChanged_
+    static int ew_notify_ams_connected_status_changed( void );
+#endif
+
+#ifdef _DeviceInterfaceMediaManagerDeviceClass__NotfiyMotoConMusicInfoUpdated_
+    static int ew_notify_motocon_music_info_changed( void );
 #endif
 
 /*--------------------------------------------------------------------
@@ -72,7 +76,8 @@
     static int is_album_changed = 0;
     static int is_artist_changed = 0;
     static int is_playback_time_changed = 0;
-    static int is_playback_state_changed = 0;
+    static int is_ams_ble_connected = 0;
+    static int is_motocon_music_info_changed = 0;
 
     mm_device_function* const mm_function_lookup_table[] =
         {
@@ -88,8 +93,11 @@
         #ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyPlayBackTimeChanged_
             ew_notify_playback_time_changed,
         #endif
-        #ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged_
-            ew_notify_playback_state_changed
+        #ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyAmsBleConnectedStatusChanged_
+            ew_notify_ams_connected_status_changed,
+        #endif
+        #ifdef _DeviceInterfaceMediaManagerDeviceClass__NotfiyMotoConMusicInfoUpdated_
+            ew_notify_motocon_music_info_changed
         #endif
         };
 
@@ -310,24 +318,47 @@ return need_update;
 /*********************************************************************
 *
 * @private
-* ew_notify_playback_state_changed
+* ew_notify_ams_connected_status_changed
 *
-* Notify player state to EW GUI.
+* Notify music info received from MotoCon SDK to EW GUI.
 *
 *********************************************************************/
-#ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged_
-static int ew_notify_playback_state_changed
+#ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyAmsBleConnectedStatusChanged_
+static int ew_notify_ams_connected_status_changed
     (
     void
     )
 {
 int need_update = 0;
-if( is_playback_state_changed )
+if( is_ams_ble_connected )
     {
-    is_playback_state_changed = 0;
-    mm_media_player_obj* media_player = NULL;
-    media_player = MM_ams_gatt_get_media_player_state();
-    DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged( device_object, media_player->playback_state );
+    is_ams_ble_connected = 0;
+    DeviceInterfaceMediaManagerDeviceClass__NotifyAmsBleConnectedStatusChanged( device_object );
+    need_update = 1;
+    }
+return need_update;
+}
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_motocon_music_info_changed
+*
+* Notify music info received from MotoCon SDK to EW GUI.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceMediaManagerDeviceClass__NotfiyMotoConMusicInfoUpdated_
+static int ew_notify_motocon_music_info_changed
+    (
+    void
+    )
+{
+int need_update = 0;
+if( is_motocon_music_info_changed )
+    {
+    is_motocon_music_info_changed = 0;
+    DeviceInterfaceMediaManagerDeviceClass__NotfiyMotoConMusicInfoUpdated( device_object );
     need_update = 1;
     }
 return need_update;
@@ -451,19 +482,37 @@ void EW_notify_playback_time_changed
 /*********************************************************************
 *
 * @public
-* EW_notify_playback_state_changed
+* EW_notify_ams_ble_connected
 *
-* Inform EW GUI the playback state is changed
+* Inform EW GUI the AMS is connected.
 *
 *********************************************************************/
-void EW_notify_playback_state_changed
+void EW_notify_ams_ble_connected
     (
     void
     )
 {
 #ifdef _DeviceInterfaceMediaManagerDeviceClass_
-    is_playback_state_changed = 1;
+    is_ams_ble_connected = 1;
     EwBspEventTrigger();
 #endif
 }
 
+/*********************************************************************
+*
+* @public
+* EW_notify_motocon_music_info_changed
+*
+* Inform EW GUI the music info received via MotoCon SDK is changed
+*
+*********************************************************************/
+void EW_notify_motocon_music_info_changed
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceMediaManagerDeviceClass_
+    is_motocon_music_info_changed = 1;
+    EwBspEventTrigger();
+#endif
+}

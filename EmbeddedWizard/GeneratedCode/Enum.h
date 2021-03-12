@@ -52,14 +52,14 @@ typedef enum
   EnumFactoryTestBurnInResult           = 4
 } EnumFactoryTest;
 
-/* User defined enumeration: 'Enum::CommandType' */
+/* User defined enumeration: 'Enum::MusicControlType' */
 typedef enum
 {
-  EnumCommandTypePlay                   = 0,
-  EnumCommandTypePause                  = 1,
-  EnumCommandTypeNextTrack              = 2,
-  EnumCommandTypePrevTrack              = 3
-} EnumCommandType;
+  EnumMusicControlTypePlay              = 0,
+  EnumMusicControlTypePause             = 1,
+  EnumMusicControlTypeNextTrack         = 2,
+  EnumMusicControlTypePrevTrack         = 3
+} EnumMusicControlType;
 
 /* User defined enumeration: 'Enum::BtDeviceConnectionResult' */
 typedef enum
@@ -361,6 +361,13 @@ typedef enum
   EnumBtcPairingStateFAIL               = 4,
   EnumBtcPairingStatePASSKEY_GENERATED  = 5
 } EnumBtcPairingState;
+
+/* User defined enumeration: 'Enum::ReceptionStatus' */
+typedef enum
+{
+  EnumReceptionStatusSUCCESS            = 0,
+  EnumReceptionStatusERROR              = 1
+} EnumReceptionStatus;
 
 #ifdef __cplusplus
   }

@@ -55,13 +55,13 @@
 /* Deklaration of class : 'DeviceInterface::MediaManagerDeviceClass' */
 EW_DEFINE_FIELDS( DeviceInterfaceMediaManagerDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( NotifyPlayBackTimeChangedSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( NotifyMotoConMusicUpdatedSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( NotifyAmsBleConnectedStatusSystemEvent, CoreSystemEvent )
   EW_PROPERTY( Title,           XString )
   EW_PROPERTY( Album,           XString )
   EW_PROPERTY( Artist,          XString )
-  EW_PROPERTY( PlayerName,      XString )
   EW_PROPERTY( DurationTimeSec, XInt32 )
   EW_PROPERTY( ElapsedTimeSec,  XInt32 )
-  EW_PROPERTY( PlaybackState,   XInt32 )
   EW_VARIABLE( IsArtistReceived, XBool )
   EW_VARIABLE( IsAlbumReceived, XBool )
   EW_VARIABLE( IsTitleReceived, XBool )
@@ -121,25 +121,14 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyAlbumChanged( void* _this, XS
 /* The following define announces the presence of the method DeviceInterface::MediaManagerDeviceClass.NotifyAlbumChanged(). */
 #define _DeviceInterfaceMediaManagerDeviceClass__NotifyAlbumChanged_
 
-/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.GetPlayerInfo()' */
-void DeviceInterfaceMediaManagerDeviceClass_GetPlayerInfo( DeviceInterfaceMediaManagerDeviceClass _this );
+/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.GetPlayBackStateInfo()' */
+XInt32 DeviceInterfaceMediaManagerDeviceClass_GetPlayBackStateInfo( DeviceInterfaceMediaManagerDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.GetPlaybackInfo()' */
 void DeviceInterfaceMediaManagerDeviceClass_GetPlaybackInfo( DeviceInterfaceMediaManagerDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.GetTrackInfo()' */
 void DeviceInterfaceMediaManagerDeviceClass_GetTrackInfo( DeviceInterfaceMediaManagerDeviceClass _this );
-
-/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.NotifyPlayerStateChanged()' */
-void DeviceInterfaceMediaManagerDeviceClass_NotifyPlayerStateChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
-  XInt32 aPlaybackState );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::MediaManagerDeviceClass.NotifyPlayerStateChanged()' */
-void DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged( void* _this, 
-  XInt32 aPlaybackState );
-
-/* The following define announces the presence of the method DeviceInterface::MediaManagerDeviceClass.NotifyPlayerStateChanged(). */
-#define _DeviceInterfaceMediaManagerDeviceClass__NotifyPlayerStateChanged_
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
@@ -152,6 +141,29 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyPlayBackTimeChanged( void* _t
 
 /* The following define announces the presence of the method DeviceInterface::MediaManagerDeviceClass.NotifyPlayBackTimeChanged(). */
 #define _DeviceInterfaceMediaManagerDeviceClass__NotifyPlayBackTimeChanged_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceMediaManagerDeviceClass_NotfiyMotoConMusicInfoUpdated( DeviceInterfaceMediaManagerDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::MediaManagerDeviceClass.NotfiyMotoConMusicInfoUpdated()' */
+void DeviceInterfaceMediaManagerDeviceClass__NotfiyMotoConMusicInfoUpdated( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::MediaManagerDeviceClass.NotfiyMotoConMusicInfoUpdated(). */
+#define _DeviceInterfaceMediaManagerDeviceClass__NotfiyMotoConMusicInfoUpdated_
+
+/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.IsAmsConnected()' */
+XBool DeviceInterfaceMediaManagerDeviceClass_IsAmsConnected( DeviceInterfaceMediaManagerDeviceClass _this );
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceMediaManagerDeviceClass_NotifyAmsBleConnectedStatusChanged( DeviceInterfaceMediaManagerDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::MediaManagerDeviceClass.NotifyAmsBleConnectedStatusChanged()' */
+void DeviceInterfaceMediaManagerDeviceClass__NotifyAmsBleConnectedStatusChanged( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::MediaManagerDeviceClass.NotifyAmsBleConnectedStatusChanged(). */
+#define _DeviceInterfaceMediaManagerDeviceClass__NotifyAmsBleConnectedStatusChanged_
 
 /* Default onget method for the property 'Title' */
 XString DeviceInterfaceMediaManagerDeviceClass_OnGetTitle( DeviceInterfaceMediaManagerDeviceClass _this );

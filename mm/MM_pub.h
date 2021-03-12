@@ -26,6 +26,7 @@ void MM_set_elapsed_time( const uint32_t elapsed_time_sec );
 
 mm_media_player_obj* MM_ams_gatt_get_media_player_state( void );
 void MM_ams_handler_entity_update_received( uint8_t const * const data, uint16_t data_length );
+void MM_update_playback_status( const bool ble_cnnt_status );
 
 #ifdef __cplusplus
 }

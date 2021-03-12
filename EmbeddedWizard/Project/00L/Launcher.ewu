@@ -197,7 +197,21 @@ class LNC_Main : Components::BaseComponent
       case Enum::LauncherItem.PHONE:;
       case Enum::LauncherItem.MUSIC:
       {
-        ItemDialog = new Media::MED01_MediaUI;
+        // Media source could be delivered from either Android or Iphone. Android: MotoCon SDK. Iphone: AMS.
+        // Therefore, using IsAmsConnected to check if ble is connected and ams is discovered.
+        if( DeviceInterface::MediaManagerDevice.IsAmsConnected() )
+        {
+          ItemDialog = new Media::MED01_MediaUI;
+        }
+        else if( DeviceInterface::BluetoothDevice.IsMotoconConnected() )
+        {
+          // MotoCon is connected. Media source should be delivered from Android.
+          ItemDialog = new Media::MED01_MediaUI;
+        }
+        else
+        {
+          ItemDialog = new Pop::POP09_BleConnectionErrorUI;
+        }
         PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
       case Enum::LauncherItem.ODO_TRIP:;
@@ -220,7 +234,7 @@ class LNC_Main : Components::BaseComponent
         }
         else
         {
-          ItemDialog = new Pop::POP09_WeatherConnectionErrorUI;
+          ItemDialog = new Pop::POP09_BleConnectionErrorUI;
         }
 
         PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );

@@ -25,12 +25,13 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
-#include "_CoreGroup.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
+#include "_DeviceInterfaceMotoConContext.h"
 #include "_MediaMED01_MediaUI.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
@@ -65,8 +66,9 @@ static const XRect _Const0006 = {{ 0, 114 }, { 94, 189 }};
 static const XRect _Const0007 = {{ 0, 189 }, { 94, 264 }};
 static const XRect _Const0008 = {{ 0, 39 }, { 94, 114 }};
 static const XRect _Const0009 = {{ 111, 188 }, { 455, 231 }};
-static const XStringRes _Const000A = { _StringsDefault0, 0x0002 };
-static const XStringRes _Const000B = { _StringsDefault0, 0x0006 };
+static const XRect _Const000A = {{ 117, 107 }, { 447, 175 }};
+static const XStringRes _Const000B = { _StringsDefault0, 0x0002 };
+static const XStringRes _Const000C = { _StringsDefault0, 0x0006 };
 
 /* Initializer for the class 'Media::MED01_MediaUI' */
 void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle aArg )
@@ -97,6 +99,11 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CorePropertyObserver__Init( &_this->AlbumObserver, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->ArtistObserver, &_this->_XObject, 0 );
   WidgetSetHorizontalSlider__Init( &_this->SeekBar, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->MotoConMusicInfoEventHandler, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->ErrorMessage, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->MotoConEventHandler, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->BleConnectionRecoveryTimer, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->AmsBleConnectionEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( MediaMED01_MediaUI );
@@ -144,6 +151,10 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CoreRectView__OnSetBounds( &_this->SeekBar, _Const0009 );
   CoreGroup_OnSetVisible((CoreGroup)&_this->SeekBar, 0 );
   WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->SeekBar, 0 );
+  CoreRectView__OnSetBounds( &_this->ErrorMessage, _Const000A );
+  ViewsText_OnSetString( &_this->ErrorMessage, EwLoadString( &StringsMED02_DEV_UNAVAILABLE ));
+  ViewsText_OnSetVisible( &_this->ErrorMessage, 0 );
+  CoreTimer_OnSetPeriod( &_this->BleConnectionRecoveryTimer, 5000 );
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Artist ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Album ), 0 );
@@ -158,6 +169,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CoreGroup__Add( _this, ((CoreView)&_this->NextTrackButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->VolumeUpButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->SeekBar ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ErrorMessage ), 0 );
   ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->Artist, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
@@ -202,6 +214,18 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   DeviceInterfaceMediaManagerDeviceClass_OnGetArtist, DeviceInterfaceMediaManagerDeviceClass_OnSetArtist ));
   WidgetSetHorizontalSlider_OnSetAppearance( &_this->SeekBar, EwGetAutoObject( &UIConfigHorizontalSliderConfig, 
   WidgetSetHorizontalSliderConfig ));
+  _this->MotoConMusicInfoEventHandler.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnMotoConMusicInfoUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->MotoConMusicInfoEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->NotifyMotoConMusicUpdatedSystemEvent );
+  ViewsText_OnSetFont( &_this->ErrorMessage, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  _this->MotoConEventHandler.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnMotoConEventReceived );
+  CoreSystemEventHandler_OnSetEvent( &_this->MotoConEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->MotoConSystemEvent );
+  _this->BleConnectionRecoveryTimer.OnTrigger = EwNewSlot( _this, MediaMED01_MediaUI_OnBleConnectionRecoverSlot );
+  _this->AmsBleConnectionEventHandler.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnAmsBleConnectedStatusUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->AmsBleConnectionEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->NotifyAmsBleConnectedStatusSystemEvent );
 
   /* Call the user defined constructor */
   MediaMED01_MediaUI_Init( _this, aArg );
@@ -233,6 +257,11 @@ void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
   CorePropertyObserver__ReInit( &_this->AlbumObserver );
   CorePropertyObserver__ReInit( &_this->ArtistObserver );
   WidgetSetHorizontalSlider__ReInit( &_this->SeekBar );
+  CoreSystemEventHandler__ReInit( &_this->MotoConMusicInfoEventHandler );
+  ViewsText__ReInit( &_this->ErrorMessage );
+  CoreSystemEventHandler__ReInit( &_this->MotoConEventHandler );
+  CoreTimer__ReInit( &_this->BleConnectionRecoveryTimer );
+  CoreSystemEventHandler__ReInit( &_this->AmsBleConnectionEventHandler );
 }
 
 /* Finalizer method for the class 'Media::MED01_MediaUI' */
@@ -261,6 +290,11 @@ void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
   CorePropertyObserver__Done( &_this->AlbumObserver );
   CorePropertyObserver__Done( &_this->ArtistObserver );
   WidgetSetHorizontalSlider__Done( &_this->SeekBar );
+  CoreSystemEventHandler__Done( &_this->MotoConMusicInfoEventHandler );
+  ViewsText__Done( &_this->ErrorMessage );
+  CoreSystemEventHandler__Done( &_this->MotoConEventHandler );
+  CoreTimer__Done( &_this->BleConnectionRecoveryTimer );
+  CoreSystemEventHandler__Done( &_this->AmsBleConnectionEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_Super );
@@ -276,8 +310,6 @@ void MediaMED01_MediaUI_Init( MediaMED01_MediaUI _this, XHandle aArg )
 
   EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->IsInit 
   = 1;
-  DeviceInterfaceMediaManagerDeviceClass_GetPlayerInfo( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-  DeviceInterfaceMediaManagerDeviceClass ));
   DeviceInterfaceMediaManagerDeviceClass_GetPlaybackInfo( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
   DeviceInterfaceMediaManagerDeviceClass ));
   DeviceInterfaceMediaManagerDeviceClass_GetTrackInfo( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
@@ -301,13 +333,6 @@ void MediaMED01_MediaUI_OnShortEnterKeyActivated( MediaMED01_MediaUI _this )
   EwPostSignal( EwNewSlot( _this, MediaMED01_MediaUI_OnPlayPauseSlot ), ((XObject)_this ));
 }
 
-/* 'C' function for method : 'Media::MED01_MediaUI.OnShortHomeKeyActivated()' */
-void MediaMED01_MediaUI_OnShortHomeKeyActivated( MediaMED01_MediaUI _this )
-{
-  CoreGroup__DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
-  EwNullSlot, 0 );
-}
-
 /* 'C' function for method : 'Media::MED01_MediaUI.OnLongDownKeyActivated()' */
 void MediaMED01_MediaUI_OnLongDownKeyActivated( MediaMED01_MediaUI _this )
 {
@@ -329,15 +354,16 @@ void MediaMED01_MediaUI_OnPlayPauseSlot( MediaMED01_MediaUI _this, XObject sende
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( sender );
 
-  if ( 0 == EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->PlaybackState )
+  if ( 0 == DeviceInterfaceMediaManagerDeviceClass_GetPlayBackStateInfo( EwGetAutoObject( 
+      &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )))
   {
     DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-    DeviceInterfaceMediaManagerDeviceClass ), EnumCommandTypePlay );
+    DeviceInterfaceMediaManagerDeviceClass ), EnumMusicControlTypePlay );
   }
   else
   {
     DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-    DeviceInterfaceMediaManagerDeviceClass ), EnumCommandTypePause );
+    DeviceInterfaceMediaManagerDeviceClass ), EnumMusicControlTypePause );
   }
 }
 
@@ -349,7 +375,7 @@ void MediaMED01_MediaUI_OnPrevTrackSlot( MediaMED01_MediaUI _this, XObject sende
 
   MediaMED01_MediaUI_ChangeTrack( _this );
   DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-  DeviceInterfaceMediaManagerDeviceClass ), EnumCommandTypePrevTrack );
+  DeviceInterfaceMediaManagerDeviceClass ), EnumMusicControlTypePrevTrack );
 }
 
 /* 'C' function for method : 'Media::MED01_MediaUI.OnNextTrackSlot()' */
@@ -360,7 +386,7 @@ void MediaMED01_MediaUI_OnNextTrackSlot( MediaMED01_MediaUI _this, XObject sende
 
   MediaMED01_MediaUI_ChangeTrack( _this );
   DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-  DeviceInterfaceMediaManagerDeviceClass ), EnumCommandTypeNextTrack );
+  DeviceInterfaceMediaManagerDeviceClass ), EnumMusicControlTypeNextTrack );
 }
 
 /* 'C' function for method : 'Media::MED01_MediaUI.ChangeTrack()' */
@@ -432,20 +458,20 @@ XString MediaMED01_MediaUI_FormatTimeText( MediaMED01_MediaUI _this, XInt32 Time
 
   if ( Hour > 0 )
   {
-    TimeText = EwConcatString( EwNewStringInt( Hour, 0, 10 ), EwLoadString( &_Const000A ));
+    TimeText = EwConcatString( EwNewStringInt( Hour, 0, 10 ), EwLoadString( &_Const000B ));
 
     if ( Minute < 10 )
     {
-      TimeText = EwConcatString( TimeText, EwLoadString( &_Const000B ));
+      TimeText = EwConcatString( TimeText, EwLoadString( &_Const000C ));
     }
   }
 
   TimeText = EwConcatString( EwConcatString( TimeText, EwNewStringInt( Minute, 0, 
-  10 )), EwLoadString( &_Const000A ));
+  10 )), EwLoadString( &_Const000B ));
 
   if ( Second < 10 )
   {
-    TimeText = EwConcatString( TimeText, EwLoadString( &_Const000B ));
+    TimeText = EwConcatString( TimeText, EwLoadString( &_Const000C ));
   }
 
   TimeText = EwConcatString( TimeText, EwNewStringInt( Second, 0, 10 ));
@@ -475,46 +501,172 @@ void MediaMED01_MediaUI_StartHighlight( MediaMED01_MediaUI _this, ViewsImage aBa
 void MediaMED01_MediaUI_OnTrackInfoUpdateSlot( MediaMED01_MediaUI _this, XObject 
   sender )
 {
-  if ( sender == ((XObject)&_this->TitleObserver ))
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( !ViewsText_OnGetVisible( &_this->Title ))
   {
-    if ( !ViewsText_OnGetVisible( &_this->Title ))
-    {
-      ViewsText_OnSetVisible( &_this->Title, 1 );
-    }
-
-    ViewsText_OnSetString( &_this->Title, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-    DeviceInterfaceMediaManagerDeviceClass )->Title );
+    ViewsText_OnSetVisible( &_this->Title, 1 );
   }
-  else
-    if ( sender == ((XObject)&_this->AlbumObserver ))
-    {
-      if ( !ViewsText_OnGetVisible( &_this->Album ))
-      {
-        ViewsText_OnSetVisible( &_this->Album, 1 );
-      }
 
-      ViewsText_OnSetString( &_this->Album, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-      DeviceInterfaceMediaManagerDeviceClass )->Album );
-    }
-    else
-      if ( sender == ((XObject)&_this->ArtistObserver ))
-      {
-        if ( !ViewsText_OnGetVisible( &_this->Artist ))
-        {
-          ViewsText_OnSetVisible( &_this->Artist, 1 );
-        }
+  ViewsText_OnSetString( &_this->Title, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+  DeviceInterfaceMediaManagerDeviceClass )->Title );
 
-        ViewsText_OnSetString( &_this->Artist, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
-        DeviceInterfaceMediaManagerDeviceClass )->Artist );
-      }
+  if ( !EwCompString( _this->Title.String, 0 ))
+  {
+    ViewsText_OnSetString( &_this->Title, EwLoadString( &StringsGEN_three_hyphens ));
+  }
+
+  if ( !ViewsText_OnGetVisible( &_this->Album ))
+  {
+    ViewsText_OnSetVisible( &_this->Album, 1 );
+  }
+
+  ViewsText_OnSetString( &_this->Album, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+  DeviceInterfaceMediaManagerDeviceClass )->Album );
+
+  if ( !EwCompString( _this->Album.String, 0 ))
+  {
+    ViewsText_OnSetString( &_this->Album, EwLoadString( &StringsGEN_three_hyphens ));
+  }
+
+  if ( !ViewsText_OnGetVisible( &_this->Artist ))
+  {
+    ViewsText_OnSetVisible( &_this->Artist, 1 );
+  }
+
+  ViewsText_OnSetString( &_this->Artist, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+  DeviceInterfaceMediaManagerDeviceClass )->Artist );
+
+  if ( !EwCompString( _this->Artist.String, 0 ))
+  {
+    ViewsText_OnSetString( &_this->Artist, EwLoadString( &StringsGEN_three_hyphens ));
+  }
 
   if (( !EwCompString( _this->Title.String, EwLoadString( &StringsGEN_three_hyphens )) 
       && !EwCompString( _this->Album.String, EwLoadString( &StringsGEN_three_hyphens ))) 
       && !EwCompString( _this->Artist.String, EwLoadString( &StringsGEN_three_hyphens )))
   {
-    ViewsText_OnSetVisible( &_this->Title, 0 );
-    ViewsText_OnSetVisible( &_this->Album, 0 );
-    ViewsText_OnSetVisible( &_this->Artist, 0 );
+    MediaMED01_MediaUI_UpdateMediaInfoItem( _this, EnumReceptionStatusERROR );
+  }
+  else
+  {
+    if ( ViewsText_OnGetVisible( &_this->ErrorMessage ))
+    {
+      ViewsText_OnSetVisible( &_this->ErrorMessage, 0 );
+    }
+  }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void MediaMED01_MediaUI_OnMotoConMusicInfoUpdateSlot( MediaMED01_MediaUI _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  DeviceInterfaceMediaManagerDeviceClass_GetPlaybackInfo( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+  DeviceInterfaceMediaManagerDeviceClass ));
+  DeviceInterfaceMediaManagerDeviceClass_GetTrackInfo( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+  DeviceInterfaceMediaManagerDeviceClass ));
+
+  if (( EwCompString( 0, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->Title ) 
+      != 0 ) && ( EwCompString( EwLoadString( &StringsGEN_three_hyphens ), EwGetAutoObject( 
+      &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->Title ) 
+      != 0 ))
+  {
+    EwSignal( EwNewSlot( _this, MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot ), ((XObject)_this ));
+  }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void MediaMED01_MediaUI_OnMotoConEventReceived( MediaMED01_MediaUI _this, XObject 
+  sender )
+{
+  DeviceInterfaceMotoConContext MotoConContext;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  MotoConContext = EwCastObject( _this->MotoConEventHandler.Context, DeviceInterfaceMotoConContext );
+
+  if ( EnumMotoConRxEventCONNECTION_STATUS == MotoConContext->RxEvent )
+  {
+    if ( !DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( EwGetAutoObject( 
+        &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
+    {
+      MediaMED01_MediaUI_UpdateMediaInfoItem( _this, EnumReceptionStatusERROR );
+    }
+    else
+    {
+      CoreTimer_OnSetEnabled( &_this->BleConnectionRecoveryTimer, 1 );
+    }
+  }
+}
+
+/* 'C' function for method : 'Media::MED01_MediaUI.OnBleConnectionRecoverSlot()' */
+void MediaMED01_MediaUI_OnBleConnectionRecoverSlot( MediaMED01_MediaUI _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  CoreTimer_OnSetEnabled( &_this->BleConnectionRecoveryTimer, 0 );
+  MediaMED01_MediaUI_UpdateMediaInfoItem( _this, EnumReceptionStatusSUCCESS );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void MediaMED01_MediaUI_OnAmsBleConnectedStatusUpdateSlot( MediaMED01_MediaUI _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( !DeviceInterfaceMediaManagerDeviceClass_IsAmsConnected( EwGetAutoObject( 
+      &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )))
+  {
+    MediaMED01_MediaUI_UpdateMediaInfoItem( _this, EnumReceptionStatusERROR );
+  }
+  else
+  {
+    CoreTimer_OnSetEnabled( &_this->BleConnectionRecoveryTimer, 1 );
+  }
+}
+
+/* 'C' function for method : 'Media::MED01_MediaUI.UpdateMediaInfoItem()' */
+void MediaMED01_MediaUI_UpdateMediaInfoItem( MediaMED01_MediaUI _this, XEnum aNewStatus )
+{
+  switch ( aNewStatus )
+  {
+    case EnumReceptionStatusSUCCESS :
+    {
+      ViewsText_OnSetVisible( &_this->Title, 1 );
+      ViewsText_OnSetVisible( &_this->Album, 1 );
+      ViewsText_OnSetVisible( &_this->Artist, 1 );
+      ViewsText_OnSetVisible( &_this->ElapsedTimeSec, 1 );
+      ViewsText_OnSetVisible( &_this->TotalTimeSec, 1 );
+      CoreGroup_OnSetVisible((CoreGroup)&_this->SeekBar, 1 );
+      ViewsText_OnSetVisible( &_this->ErrorMessage, 0 );
+    }
+    break;
+
+    case EnumReceptionStatusERROR :
+    {
+      ViewsText_OnSetVisible( &_this->Title, 0 );
+      ViewsText_OnSetVisible( &_this->Album, 0 );
+      ViewsText_OnSetVisible( &_this->Artist, 0 );
+      ViewsText_OnSetVisible( &_this->ElapsedTimeSec, 0 );
+      ViewsText_OnSetVisible( &_this->TotalTimeSec, 0 );
+      CoreGroup_OnSetVisible((CoreGroup)&_this->SeekBar, 0 );
+      ViewsText_OnSetVisible( &_this->ErrorMessage, 1 );
+    }
+    break;
+
+    default : 
+      ;
   }
 }
 
@@ -558,7 +710,7 @@ EW_DEFINE_CLASS( MediaMED01_MediaUI, ComponentsBaseMainBG, HighlightBG, Title, T
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
   MediaMED01_MediaUI_OnShortEnterKeyActivated,
-  MediaMED01_MediaUI_OnShortHomeKeyActivated,
+  ComponentsBaseMainBG_OnShortHomeKeyActivated,
   MediaMED01_MediaUI_OnLongDownKeyActivated,
   MediaMED01_MediaUI_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,

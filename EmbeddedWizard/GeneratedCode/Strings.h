@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/03/09 14:30:20 */
+   Generated: 2021/03/12 12:50:50 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_ok' */
@@ -123,6 +123,9 @@ extern const XStringRes StringsLNC_seat_heater;
 
 /* User defined constant: 'Strings::LNC_settings' */
 extern const XStringRes StringsLNC_settings;
+
+/* User defined constant: 'Strings::MED02_DEV_UNAVAILABLE' */
+extern const XStringRes StringsMED02_DEV_UNAVAILABLE;
 
 /* User defined constant: 'Strings::NAV06_stop_navigation' */
 extern const XStringRes StringsNAV06_stop_navigation;
