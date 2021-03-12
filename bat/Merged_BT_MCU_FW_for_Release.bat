@@ -24,11 +24,12 @@ xcopy .\EmbeddedWizard\MultiLanguage .\EmbeddedWizard\GeneratedCode /y
 echo Clean and Build Project...
 
 REM -cleanbuild on a build target: this does a 'clean' only on the build target, no build
-SET EXTRA_ARGUMENT=""
-if %MCU_DATA_FOLDER% NEQ "" (
-    SET EXTRA_ARGUMENT=-data "%MCU_DATA_FOLDER%"
+if "%MCU_DATA_FOLDER%" NEQ "" (
+    "%IDE%" -nosplash --launcher.suppressErrors -application org.eclipse.cdt.managedbuilder.core.headlessbuild -printErrorMarkers -import "%CURRENT_PATH%" -cleanBuild LinkCard-RT1172/Release -data "%MCU_DATA_FOLDER%"
+) else (
+    "%IDE%" -nosplash --launcher.suppressErrors -application org.eclipse.cdt.managedbuilder.core.headlessbuild -printErrorMarkers -import "%CURRENT_PATH%" -cleanBuild LinkCard-RT1172/Release
 )
-"%IDE%" -nosplash --launcher.suppressErrors -application org.eclipse.cdt.managedbuilder.core.headlessbuild -printErrorMarkers -import "%CURRENT_PATH%" -cleanBuild LinkCard-RT1172/Release %EXTRA_ARGUMENT%
+
 cd /d %TOOLCHAIN_PATH%
 
 echo Transform to Binary File...
@@ -43,4 +44,3 @@ if "%BT_ADDRESS%" NEQ "" (
         srec_cat.exe boot_image.bin -Binary -E 0x800000 0x800002 -GEN 0x800000 0x800002 -CONSTant_Big_Endian %BT_VERSION% 2 -O boot_image.bin -Binary
 	)
 )
-
