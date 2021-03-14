@@ -110,6 +110,12 @@ typedef struct
     bt_connection_path_type  connection_path_type;    /**< connection profile type */
     } bt_device_info;
 
+typedef struct BTM_BTC_CONNECTION_STATUS
+    {
+    uint16_t  current_connection_handle;              /**< BTC connection handle  */
+    bool      BTC_is_connected;                       /**< BTC is connected flag */
+    } btm_btc_connection_status_t;
+
 typedef struct
     {
     uint8_t is_done;
@@ -180,7 +186,7 @@ static uint8_t connect_request_bd_addrress_rev[BT_DEVICE_NAME_LEN]; /* connect c
 
 static bt_connection_info_update_cb bt_conn_info_cb_array[BT_INFO_CB_MAX_NUM]; /* bt connection info callback array */
 static uint32_t                     ble_pairing_fail_count;
-static bool                         BTC_is_connected = false;
+static btm_btc_connection_status_t  btm_btc_connection_status;
 static TimerHandle_t                timeout_timer_handle;
 static btm_timeout_type_t           btm_timeout_type;
 static uint16_t                     btm_timeout_count;
@@ -901,7 +907,8 @@ if( ( CONNECTION_HANDLE_LENGTH == connection_info_length ) && ( false == connect
         /* If the same remote device have connected BTC with LC, set BTC connect flag false */
         if( true == paired_device_list[i].is_connected )
             {
-            BTC_is_connected = false;
+            btm_btc_connection_status.BTC_is_connected = false;
+            btm_btc_connection_status.current_connection_handle = 0;
             }
 
         paired_device_list[i].is_connected = connection_is_up;
@@ -926,7 +933,9 @@ else if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_in
         {
         if( 0 == memcmp( connect_bd_addr, paired_device_list[i].device_address, BT_DEVICE_ADDRESS_LEN ) )
              {
-             BTC_is_connected = true;
+             btm_btc_connection_status.BTC_is_connected = true;
+             btm_btc_connection_status.current_connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
+             btm_btc_connection_status.current_connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
 
              paired_device_list[i].is_connected = connection_is_up;
              paired_device_list[i].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
@@ -964,12 +973,12 @@ for( int i = 0; i < BT_INFO_CB_MAX_NUM; i++ )
 *********************************************************************/
 void BTM_get_connection_info
     (
-    bool*     current_connection_status,
+    bool*     btc_is_connected,
     uint16_t* connection_handle
     )
 {
-memcpy( current_connection_status, &(paired_device_list[0].is_connected), sizeof( bool ) );
-memcpy( connection_handle, &(paired_device_list[0].connection_handle), sizeof( uint16_t ) );
+memcpy( btc_is_connected, &( btm_btc_connection_status.BTC_is_connected ), sizeof( bool ) );
+memcpy( connection_handle, &( btm_btc_connection_status.current_connection_handle ), sizeof( uint16_t ) );
 }
 
 /*********************************************************************
@@ -1713,7 +1722,7 @@ bool BTM_is_bt_connected
     void
     )
 {
-return BTC_is_connected;
+return btm_btc_connection_status.BTC_is_connected;
 }
 
 /*********************************************************************

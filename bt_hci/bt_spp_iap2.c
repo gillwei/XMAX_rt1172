@@ -38,6 +38,7 @@ BTM_get_connection_info( &bt_connection_status, &bt_connection_handle );
 PRINTF( "%s handle:%04x connection status:%d\n\r", __FUNCTION__, bt_connection_handle, bt_connection_status );
 if( ( data_length > ( HCI_MAX_DATA_SIZE - 2 ) ) || ( bt_connection_status != true ) )
     {
+    PRINTF( "Send fail data length:%d bt_connection_status:%d\n\r", data_length, bt_connection_status );
     return false;
     }
 transfer_spp_data[0] = (uint8_t)bt_connection_handle;
@@ -74,6 +75,7 @@ BTM_get_connection_info( &bt_connection_status, &bt_connection_handle );
 PRINTF( "%s handle:%04x connection status:%d\n\r", __FUNCTION__, bt_connection_handle, bt_connection_status );
 if( ( data_length > ( HCI_MAX_DATA_SIZE - 2 ) ) || ( bt_connection_status != true ) )
     {
+    PRINTF( "Send fail data length:%d bt_connection_status:%d\n\r", data_length, bt_connection_status );
     return false;
     }
 transfer_iap2_data[0] = (uint8_t)bt_connection_handle;
