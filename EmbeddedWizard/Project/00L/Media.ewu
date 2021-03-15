@@ -53,7 +53,7 @@ class MED01_MediaUI : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text Title
   {
-    preset Bounds = <127,69,457,103>;
+    preset Bounds = <127,65,457,103>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
@@ -64,7 +64,7 @@ class MED01_MediaUI : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text Artist
   {
-    preset Bounds = <127,114,457,148>;
+    preset Bounds = <127,110,457,148>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
@@ -75,7 +75,7 @@ class MED01_MediaUI : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text Album
   {
-    preset Bounds = <127,153,457,187>;
+    preset Bounds = <127,149,457,187>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
@@ -113,7 +113,7 @@ class MED01_MediaUI : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text ElapsedTimeSec
   {
-    preset Bounds = <127,226,204,256>;
+    preset Bounds = <127,225,204,255>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansMedium22pt;
@@ -123,10 +123,10 @@ class MED01_MediaUI : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text TotalTimeSec
   {
-    preset Bounds = <364,226,441,256>;
+    preset Bounds = <365,225,442,255>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Font = Fonts::NotoSansMedium22pt;
     preset Visible = false;
   }
 
@@ -424,7 +424,7 @@ class MED01_MediaUI : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text ErrorMessage
   {
-    preset Bounds = <117,107,447,175>;
+    preset Bounds = <117,105,447,173>;
     preset String = Strings::MED02_DEV_UNAVAILABLE;
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
     preset Visible = false;

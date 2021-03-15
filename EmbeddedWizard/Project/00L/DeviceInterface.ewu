@@ -346,6 +346,10 @@ class SystemDeviceClass : Templates::DeviceClass
       CurrentLocalTime.Hour = RtcHour;
       CurrentLocalTime.Minute = RtcMinute;
       CurrentLocalTime.Second = RtcSecond;
+    $else
+      // for screenshot
+      CurrentLocalTime.Hour = 12;
+      CurrentLocalTime.Minute = 40;
     $endif
 
     return CurrentLocalTime;
@@ -1509,10 +1513,10 @@ class VehicleDeviceClass : Templates::DeviceClass
         IsSupported = VI_is_function_supported( FeatureId );
       }
     $else
-      // suppress warning
-      if( ( int32 )aVehicleFeature >= 0 )
+      // enable pressure in the unit setting for screenshot
+      if( Enum::VehicleSupportedFunction.TIRE_FRONT == aVehicleFeature )
       {
-        // empty
+        IsSupported = true;
       }
     $endif
 
@@ -1843,7 +1847,12 @@ class NotificationDeviceClass : Templates::DeviceClass
   $output true
   method bool IsPhoneCallStateActive()
   {
-    return false;
+    var bool IsActive = false;
+    $if $prototyper
+      // for screenshot
+      IsActive = true;
+    $endif
+    return IsActive;
   }
 
   // Phone Call Status

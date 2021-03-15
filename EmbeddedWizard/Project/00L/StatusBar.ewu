@@ -317,7 +317,7 @@ class Clock : Core::Group
   $rect <20,20,160,60>
   object Views::Text ClockHourText
   {
-    preset Bounds = <0,1,37,38>;
+    preset Bounds = <1,0,38,37>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansMedium32pt;
@@ -349,7 +349,7 @@ class Clock : Core::Group
   $rect <20,20,160,60>
   object Views::Text ClockMinuteText
   {
-    preset Bounds = <45,1,82,38>;
+    preset Bounds = <48,0,82,37>;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansMedium32pt;
@@ -360,7 +360,7 @@ class Clock : Core::Group
   $rect <20,20,160,60>
   object Views::Text ClockColonText
   {
-    preset Bounds = <37,1,48,38>;
+    preset Bounds = <37,0,48,37>;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
     preset String = ":";
     preset Font = Fonts::NotoSansMedium32pt;

@@ -54,7 +54,7 @@ static const XRect _Const0002 = {{ 10, 51 }, { 470, 206 }};
 static const XRect _Const0003 = {{ 0, 0 }, { 480, 43 }};
 static const XColor _Const0004 = { 0xF6, 0x95, 0x00, 0xFF };
 static const XRect _Const0005 = {{ 155, 5 }, { 191, 41 }};
-static const XRect _Const0006 = {{ 196, 4 }, { 333, 42 }};
+static const XRect _Const0006 = {{ 191, 1 }, { 327, 42 }};
 static const XRect _Const0007 = {{ 165, 219 }, { 315, 259 }};
 static const XStringRes _Const0008 = { _StringsDefault0, 0x0002 };
 

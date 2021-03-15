@@ -10,6 +10,14 @@ class Application : Core::Root
   {
     $if $prototyper
       signal OnStartBootupAnimationSlot;
+
+      // for screenshot
+      DeviceInterface::SystemDevice.NotifyUpdateLocalTime();
+      StatusBar.BtIcon.Visible = true;
+      StatusBar.BatteryIcon.Visible = true;
+      StatusBar.HeadsetIcon.Visible = true;
+      StatusBar.AppIcon.Visible = true;
+      StatusBar.SignalLevelIcon.Visible = true;
     $endif
   }
 

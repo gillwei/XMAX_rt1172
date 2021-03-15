@@ -57,16 +57,16 @@ static const unsigned int _StringsDefault0[] =
 
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
-static const XRect _Const0001 = {{ 127, 69 }, { 457, 103 }};
-static const XRect _Const0002 = {{ 127, 114 }, { 457, 148 }};
-static const XRect _Const0003 = {{ 127, 153 }, { 457, 187 }};
-static const XRect _Const0004 = {{ 127, 226 }, { 204, 256 }};
-static const XRect _Const0005 = {{ 364, 226 }, { 441, 256 }};
+static const XRect _Const0001 = {{ 127, 65 }, { 457, 103 }};
+static const XRect _Const0002 = {{ 127, 110 }, { 457, 148 }};
+static const XRect _Const0003 = {{ 127, 149 }, { 457, 187 }};
+static const XRect _Const0004 = {{ 127, 225 }, { 204, 255 }};
+static const XRect _Const0005 = {{ 365, 225 }, { 442, 255 }};
 static const XRect _Const0006 = {{ 0, 114 }, { 94, 189 }};
 static const XRect _Const0007 = {{ 0, 189 }, { 94, 264 }};
 static const XRect _Const0008 = {{ 0, 39 }, { 94, 114 }};
 static const XRect _Const0009 = {{ 111, 188 }, { 455, 231 }};
-static const XRect _Const000A = {{ 117, 107 }, { 447, 175 }};
+static const XRect _Const000A = {{ 117, 105 }, { 447, 173 }};
 static const XStringRes _Const000B = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const000C = { _StringsDefault0, 0x0006 };
 
@@ -178,7 +178,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->ElapsedTimeSec, EwLoadResource( &FontsNotoSansMedium22pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->TotalTimeSec, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont( &_this->TotalTimeSec, EwLoadResource( &FontsNotoSansMedium22pt, 
   ResourcesFont ));
   _this->PlaybackTimeEventHandler.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->PlaybackTimeEventHandler, &EwGetAutoObject( 

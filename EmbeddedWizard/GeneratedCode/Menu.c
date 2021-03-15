@@ -74,7 +74,7 @@ static const XRect _Const0001 = {{ 18, 0 }, { 435, 74 }};
 static const XColor _Const0002 = { 0xFF, 0xFF, 0xFF, 0xFF };
 static const XRect _Const0003 = {{ 0, 72 }, { 480, 74 }};
 static const XRect _Const0004 = {{ 37, 1 }, { 417, 69 }};
-static const XRect _Const0005 = {{ 37, 9 }, { 417, 43 }};
+static const XRect _Const0005 = {{ 37, 3 }, { 417, 45 }};
 static const XRect _Const0006 = {{ 18, 0 }, { 435, 54 }};
 static const XRect _Const0007 = {{ 0, 54 }, { 480, 56 }};
 static const XColor _Const0008 = { 0x64, 0x64, 0x64, 0xFF };
@@ -98,7 +98,7 @@ static const XRect _Const0019 = {{ 0, 0 }, { 480, 272 }};
 static const XRect _Const001A = {{ 0, 36 }, { 480, 272 }};
 static const XRect _Const001B = {{ 0, 0 }, { 150, 40 }};
 static const XColor _Const001C = { 0x00, 0x00, 0x00, 0x26 };
-static const XRect _Const001D = {{ 0, 4 }, { 150, 38 }};
+static const XRect _Const001D = {{ 0, 0 }, { 150, 36 }};
 static const XColor _Const001E = { 0xFF, 0xFF, 0xFF, 0xCD };
 static const XColor _Const001F = { 0x72, 0x71, 0x71, 0xFF };
 static const XRect _Const0020 = {{ 0, 0 }, { 150, 83 }};
@@ -111,7 +111,7 @@ static const XRect _Const0026 = {{ 0, 0 }, { 32, 216 }};
 static const XRect _Const0027 = {{ 0, 0 }, { 32, 32 }};
 static const XRect _Const0028 = {{ 0, 184 }, { 32, 216 }};
 static const XRect _Const0029 = {{ 290, 9 }, { 417, 43 }};
-static const XRect _Const002A = {{ 37, 9 }, { 286, 43 }};
+static const XRect _Const002A = {{ 290, 7 }, { 417, 43 }};
 
 /* Initializer for the class 'Menu::ItemBase' */
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
@@ -2302,15 +2302,12 @@ void MenuItemUnitValue__Done( MenuItemUnitValue _this )
 void MenuItemUnitValue_UpdateLayout( MenuItemUnitValue _this, XPoint aSize )
 {
   MenuItemBase_UpdateLayout((MenuItemBase)_this, aSize );
-  ViewsText_OnSetFont( &_this->Super1.Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
-  ResourcesFont ));
 
   switch ( _this->Super1.Height )
   {
     case 56 :
     {
-      CoreRectView__OnSetBounds( &_this->Super1.Title, _Const002A );
-      CoreRectView__OnSetBounds( &_this->UnitValueText, _Const0029 );
+      CoreRectView__OnSetBounds( &_this->UnitValueText, _Const002A );
     }
     break;
 

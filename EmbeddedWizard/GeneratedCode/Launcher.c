@@ -93,10 +93,10 @@ static const XRect _Const0012 = {{ 0, 70 }, { 122, 156 }};
 static const XStringRes _Const0013 = { _StringsDefault0, 0x0045 };
 static const XRect _Const0014 = {{ 0, 0 }, { 480, 234 }};
 static const XRect _Const0015 = {{ 0, 58 }, { 480, 168 }};
-static const XRect _Const0016 = {{ 138, 94 }, { 469, 137 }};
-static const XRect _Const0017 = {{ 121, 19 }, { 439, 52 }};
+static const XRect _Const0016 = {{ 138, 92 }, { 469, 135 }};
+static const XRect _Const0017 = {{ 121, 17 }, { 439, 50 }};
 static const XColor _Const0018 = { 0x6B, 0x6B, 0x6B, 0xFF };
-static const XRect _Const0019 = {{ 121, 174 }, { 439, 207 }};
+static const XRect _Const0019 = {{ 121, 173 }, { 439, 206 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.

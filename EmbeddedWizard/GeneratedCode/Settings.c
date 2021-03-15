@@ -168,10 +168,10 @@ static const XStringRes _Const0038 = { _StringsDefault0, 0x01E0 };
 static const XRect _Const0039 = {{ 10, 46 }, { 470, 201 }};
 static const XStringRes _Const003A = { _StringsDefault0, 0x01ED };
 static const XStringRes _Const003B = { _StringsDefault0, 0x01FA };
-static const XRect _Const003C = {{ 10, 46 }, { 470, 77 }};
-static const XRect _Const003D = {{ 10, 108 }, { 470, 139 }};
-static const XRect _Const003E = {{ 10, 77 }, { 470, 108 }};
-static const XRect _Const003F = {{ 10, 139 }, { 470, 170 }};
+static const XRect _Const003C = {{ 10, 45 }, { 470, 76 }};
+static const XRect _Const003D = {{ 10, 107 }, { 470, 138 }};
+static const XRect _Const003E = {{ 10, 76 }, { 470, 107 }};
+static const XRect _Const003F = {{ 10, 138 }, { 470, 169 }};
 static const XRect _Const0040 = {{ 95, 176 }, { 385, 259 }};
 
 #ifndef EW_DONT_CHECK_INDEX

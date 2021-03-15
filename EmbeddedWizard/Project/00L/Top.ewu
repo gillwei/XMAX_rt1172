@@ -82,7 +82,7 @@ class TOP01_Disclaimer : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Text WarningText
   {
-    preset Bounds = <196,4,333,42>;
+    preset Bounds = <191,1,327,42>;
     preset AutoSize = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = Strings::TOP01_warning;

@@ -2201,10 +2201,13 @@ void DeviceInterfaceNotificationDeviceClass__Done( DeviceInterfaceNotificationDe
    about an alternation of its setting or state value. */
 XBool DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( DeviceInterfaceNotificationDeviceClass _this )
 {
+  XBool IsActive;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  return 0;
+  IsActive = 0;
+  return IsActive;
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::NotificationDeviceClass.IsPhoneCallStateActive()' */

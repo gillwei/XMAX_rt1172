@@ -64,10 +64,10 @@ static const XRect _Const0006 = {{ 261, 3 }, { 293, 35 }};
 static const XRect _Const0007 = {{ 96, 3 }, { 128, 35 }};
 static const XRect _Const0008 = {{ 195, 3 }, { 227, 35 }};
 static const XRect _Const0009 = {{ 0, 0 }, { 82, 38 }};
-static const XRect _Const000A = {{ 0, 1 }, { 37, 38 }};
+static const XRect _Const000A = {{ 1, 0 }, { 38, 37 }};
 static const XColor _Const000B = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const000C = {{ 45, 1 }, { 82, 38 }};
-static const XRect _Const000D = {{ 37, 1 }, { 48, 38 }};
+static const XRect _Const000C = {{ 48, 0 }, { 82, 37 }};
+static const XRect _Const000D = {{ 37, 0 }, { 48, 37 }};
 static const XStringRes _Const000E = { _StringsDefault0, 0x0002 };
 
 /* User defined inline code: 'StatusBar::Inline' */

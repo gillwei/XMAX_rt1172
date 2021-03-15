@@ -2164,6 +2164,11 @@ class SET28_SystemInfo : Components::BaseMainBG
   {
     EsnText.String = DeviceInterface::SystemDevice.ESN;
     SoftwareVersionText.String = DeviceInterface::SystemDevice.SoftwareVersion;
+    $if $prototyper
+      // for screenshot
+      EsnText.String = "XXXXXXXXX";
+      SoftwareVersionText.String = "XX.XX.XXX";
+    $endif
   }
 
   $rect <10,290,210,330>
@@ -2181,7 +2186,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text ESN
   {
-    preset Bounds = <10,46,470,77>;
+    preset Bounds = <10,45,470,76>;
     preset String = Strings::SET28_esn;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
@@ -2189,7 +2194,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text SoftwareVersionTitle
   {
-    preset Bounds = <10,108,470,139>;
+    preset Bounds = <10,107,470,138>;
     preset String = Strings::SET28_sw_version;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
@@ -2197,7 +2202,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text EsnText
   {
-    preset Bounds = <10,77,470,108>;
+    preset Bounds = <10,76,470,107>;
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
@@ -2205,7 +2210,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text SoftwareVersionText
   {
-    preset Bounds = <10,139,470,170>;
+    preset Bounds = <10,138,470,169>;
     preset String = DeviceInterface::SystemDevice.SoftwareVersion;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }

@@ -16,7 +16,7 @@ class ItemBase : Components::BaseComponent
     {
       case Menu::ItemHeightSmall:
       {
-        Title.Bounds = <37,9,417,43>;
+        Title.Bounds = <37,3,417,45>;
         HighlightRect.Bounds = <18,0,435,54>;
         ListDivider.Bounds = <0,54,480,56>;
       }
@@ -1129,7 +1129,7 @@ class PushButton : Components::BaseComponent
   object Views::Text TitleText
   {
     preset Layout = Core::Layout[ResizeHorz, ResizeVert];
-    preset Bounds = <0,4,150,38>;
+    preset Bounds = <0,0,150,36>;
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
   }
@@ -1525,14 +1525,11 @@ class ItemUnitValue : Menu::ItemBase
   {
     super( aSize );
 
-    Title.Font = Fonts::NotoSansCjkJpMedium28pt;
-
     switch( Height )
     {
       case Menu::ItemHeightSmall:
       {
-        Title.Bounds = <37,9,286,43>;
-        UnitValueText.Bounds = <290,9,417,43>;
+        UnitValueText.Bounds = <290,7,417,43>;
       }
       default:;
     }
