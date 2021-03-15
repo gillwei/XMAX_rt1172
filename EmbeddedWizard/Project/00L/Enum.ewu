@@ -264,10 +264,31 @@ enum MotoConTest
   item VOLUME_CONTROL_DOWN;
 
   $rect <500,260,700,300>
-  item VOLUME_CONTROLLABLE_REQ;
+  item MUTE_MICROPHONE;
 
   $rect <500,310,700,350>
+  item MUTE_SPEAKER;
+
+  $rect <740,10,940,50>
+  item MEDIA_VOLUME_UP;
+
+  $rect <740,60,940,100>
+  item MEDIA_VOLUME_DOWN;
+
+  $rect <740,110,940,150>
+  item VOLUME_CONTROLLABLE_REQ;
+
+  $rect <740,160,940,200>
   item CREATE_OTA_REQ;
+
+  $rect <740,210,940,250>
+  item OTA_LINKCARD_INFO;
+
+  $rect <740,260,940,300>
+  item CCUID_RESPONSE;
+
+  $rect <740,310,940,350>
+  item PHONE_CELL_SIGNAL_LEVEL_REQ;
 }
 
 $rect <260,170,460,210>

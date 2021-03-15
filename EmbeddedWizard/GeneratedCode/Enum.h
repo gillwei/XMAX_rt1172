@@ -158,8 +158,15 @@ typedef enum
   EnumMotoConTestHEADSET_STATE_REQ      = 16,
   EnumMotoConTestVOLUME_CONTROL_UP      = 17,
   EnumMotoConTestVOLUME_CONTROL_DOWN    = 18,
-  EnumMotoConTestVOLUME_CONTROLLABLE_REQ = 19,
-  EnumMotoConTestCREATE_OTA_REQ         = 20
+  EnumMotoConTestMUTE_MICROPHONE        = 19,
+  EnumMotoConTestMUTE_SPEAKER           = 20,
+  EnumMotoConTestMEDIA_VOLUME_UP        = 21,
+  EnumMotoConTestMEDIA_VOLUME_DOWN      = 22,
+  EnumMotoConTestVOLUME_CONTROLLABLE_REQ = 23,
+  EnumMotoConTestCREATE_OTA_REQ         = 24,
+  EnumMotoConTestOTA_LINKCARD_INFO      = 25,
+  EnumMotoConTestCCUID_RESPONSE         = 26,
+  EnumMotoConTestPHONE_CELL_SIGNAL_LEVEL_REQ = 27
 } EnumMotoConTest;
 
 /* User defined enumeration: 'Enum::VehicleSupportedFunction' */

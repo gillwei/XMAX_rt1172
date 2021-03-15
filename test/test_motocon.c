@@ -15,6 +15,7 @@
 #include "Enum.h"
 #include "BTM_pub.h"
 #include "BC_motocon_pub.h"
+#include "BC_motocon_pub_type.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -45,7 +46,8 @@ EwPrint( "ddt_can_related_result %d\r\n", result );
                                VARIABLES
 --------------------------------------------------------------------*/
 static uint8_t data[50];
-static uint8_t ccuid[14] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13};
+static const uint8_t ccuid[14] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13};
+static bc_motocon_ota_linkcard_info_t linkcard_info;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -138,10 +140,20 @@ switch( test_item )
         break;
     case EnumMotoConTestVOLUME_CONTROL_UP:
         BC_motocon_send_volume_control( BC_MOTOCON_VOLUME_UP );
-        BC_motocon_send_volume_control( BC_MOTOCON_MEDIA_VOLUME_UP );
         break;
     case EnumMotoConTestVOLUME_CONTROL_DOWN:
         BC_motocon_send_volume_control( BC_MOTOCON_VOLUME_DOWN );
+        break;
+    case EnumMotoConTestMUTE_MICROPHONE:
+        BC_motocon_send_volume_control( BC_MOTOCON_VOLUME_MUTE_MIC );
+        break;
+    case EnumMotoConTestMUTE_SPEAKER:
+        BC_motocon_send_volume_control( BC_MOTOCON_VOLUME_MUTE_SPEAKER );
+        break;
+    case EnumMotoConTestMEDIA_VOLUME_UP:
+        BC_motocon_send_volume_control( BC_MOTOCON_MEDIA_VOLUME_UP );
+        break;
+    case EnumMotoConTestMEDIA_VOLUME_DOWN:
         BC_motocon_send_volume_control( BC_MOTOCON_MEDIA_VOLUME_DOWN );
         break;
     case EnumMotoConTestVOLUME_CONTROLLABLE_REQ:
@@ -149,7 +161,14 @@ switch( test_item )
         break;
     case EnumMotoConTestCREATE_OTA_REQ:
         BC_motocon_send_create_ota_request();
+        break;
+    case EnumMotoConTestOTA_LINKCARD_INFO:
+        BC_motocon_send_ota_linkcard_info( &linkcard_info );
+        break;
+    case EnumMotoConTestCCUID_RESPONSE:
         BC_motocon_send_ccuid_response( ccuid );
+        break;
+    case EnumMotoConTestPHONE_CELL_SIGNAL_LEVEL_REQ:
         BC_motocon_send_cell_signal_request();
         break;
     default:

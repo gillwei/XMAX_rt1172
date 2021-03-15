@@ -114,7 +114,7 @@
 
 /* Deklaration of class : 'Development::DEV_MotoCon' */
 EW_DEFINE_FIELDS( DevelopmentDEV_MotoCon, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [21])
+  EW_ARRAY   ( ItemTitleArray,  XString, [28])
 EW_END_OF_FIELDS( DevelopmentDEV_MotoCon )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_MotoCon' */
