@@ -26,17 +26,23 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <950,600,1180,640>
   inherited method OnShortDownKeyActivated()
   {
-    // TODO: Send zoom out request.
-    ZoomButtonStatus = 1;
-    StartHighlight();
+    // TODO: Send zoom out request, remove the condition below when navilite protocol is ready to be integrated.
+    if( ZoomOutButton.Visible )
+    {
+      ZoomButtonStatus = 1;
+      StartHighlight();
+    }
   }
 
   $rect <720,600,950,640>
   inherited method OnShortUpKeyActivated()
   {
-    // TODO: Send zoom in request.
-    ZoomButtonStatus = 0;
-    StartHighlight();
+    // TODO: Send zoom in request, remove the condition below when navilite protocol is ready to be integrated.
+    if( ZoomInButton.Visible )
+    {
+      ZoomButtonStatus = 0;
+      StartHighlight();
+    }
   }
 
   $rect <940,640,1170,680>
@@ -147,6 +153,7 @@ class NAV01_DefaultView : Home::BaseHome
   {
     preset Bounds = <9,122,49,162>;
     preset Bitmap = Resource::ZoomInDayIcon;
+    preset Visible = false;
   }
 
   $rect <20,20,160,60>
@@ -154,6 +161,7 @@ class NAV01_DefaultView : Home::BaseHome
   {
     preset Bounds = <9,170,49,210>;
     preset Bitmap = Resource::ZoomOutDayIcon;
+    preset Visible = false;
   }
 
   $rect <20,20,160,60>

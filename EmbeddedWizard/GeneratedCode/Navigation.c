@@ -209,7 +209,9 @@ void NavigationNAV01_DefaultView__Init( NavigationNAV01_DefaultView _this, XObje
   CoreRectView__OnSetBounds( &_this->NaviETAObject, _Const0009 );
   CoreGroup_OnSetVisible((CoreGroup)&_this->NaviETAObject, 1 );
   CoreRectView__OnSetBounds( &_this->ZoomInButton, _Const000A );
+  ViewsImage_OnSetVisible( &_this->ZoomInButton, 0 );
   CoreRectView__OnSetBounds( &_this->ZoomOutButton, _Const000B );
+  ViewsImage_OnSetVisible( &_this->ZoomOutButton, 0 );
   CoreRectView__OnSetBounds( &_this->SpeedLimitIcon, _Const000C );
   ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
   CoreRectView__OnSetBounds( &_this->SpeedLimitText, _Const000D );
@@ -405,15 +407,21 @@ void NavigationNAV01_DefaultView_Init( NavigationNAV01_DefaultView _this, XHandl
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnShortDownKeyActivated()' */
 void NavigationNAV01_DefaultView_OnShortDownKeyActivated( NavigationNAV01_DefaultView _this )
 {
-  _this->ZoomButtonStatus = 1;
-  NavigationNAV01_DefaultView_StartHighlight( _this );
+  if ( ViewsImage_OnGetVisible( &_this->ZoomOutButton ))
+  {
+    _this->ZoomButtonStatus = 1;
+    NavigationNAV01_DefaultView_StartHighlight( _this );
+  }
 }
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnShortUpKeyActivated()' */
 void NavigationNAV01_DefaultView_OnShortUpKeyActivated( NavigationNAV01_DefaultView _this )
 {
-  _this->ZoomButtonStatus = 0;
-  NavigationNAV01_DefaultView_StartHighlight( _this );
+  if ( ViewsImage_OnGetVisible( &_this->ZoomInButton ))
+  {
+    _this->ZoomButtonStatus = 0;
+    NavigationNAV01_DefaultView_StartHighlight( _this );
+  }
 }
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnShortEnterKeyActivated()' */
