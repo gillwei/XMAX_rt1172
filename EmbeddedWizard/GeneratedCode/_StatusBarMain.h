@@ -110,6 +110,7 @@ EW_DEFINE_FIELDS( StatusBarMain, CoreGroup )
   EW_OBJECT  ( BtIcon,          ViewsImage )
   EW_OBJECT  ( BTEnabledObserver, CorePropertyObserver )
   EW_OBJECT  ( PairdDeviceChangedObserver, CorePropertyObserver )
+  EW_OBJECT  ( SignalLevelIcon, ViewsImage )
   EW_VARIABLE( IsMotoConConnected, XBool )
 EW_END_OF_FIELDS( StatusBarMain )
 
@@ -180,6 +181,9 @@ void StatusBarMain_OnBtcConnectionStatusChangedSlot( StatusBarMain _this, XObjec
 
 /* 'C' function for method : 'StatusBar::Main.UpdateAppIcon()' */
 void StatusBarMain_UpdateAppIcon( StatusBarMain _this );
+
+/* 'C' function for method : 'StatusBar::Main.UpdatePhoneCellSignalLevelIcon()' */
+void StatusBarMain_UpdatePhoneCellSignalLevelIcon( StatusBarMain _this );
 
 #ifdef __cplusplus
   }

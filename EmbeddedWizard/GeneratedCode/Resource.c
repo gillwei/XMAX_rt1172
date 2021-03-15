@@ -540,4 +540,10 @@ EW_RES_WITHOUT_VARIANTS( ResourceStatusBarBtIcon )
 /* Table with links to derived variants of the bitmap resource : 'Resource::Chessboard' */
 EW_RES_WITHOUT_VARIANTS( ResourceChessboard )
 
+/* Include a file containing the bitmap resource : 'Resource::SignalLevelIcon' */
+#include "_ResourceSignalLevelIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SignalLevelIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceSignalLevelIcon )
+
 /* Embedded Wizard */

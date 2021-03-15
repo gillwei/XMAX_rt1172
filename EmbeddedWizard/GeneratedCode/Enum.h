@@ -327,7 +327,8 @@ typedef enum
   EnumMotoConRxEventPHONE_BATTERY       = 1,
   EnumMotoConRxEventPHONE_LANGUAGE      = 2,
   EnumMotoConRxEventPHONE_THERMAL       = 3,
-  EnumMotoConRxEventPHONE_HEADSET       = 4
+  EnumMotoConRxEventPHONE_HEADSET       = 4,
+  EnumMotoConRxEventPHONE_CELL_SIGNAL_LEVEL = 5
 } EnumMotoConRxEvent;
 
 /* User defined enumeration: 'Enum::TemperatureSettingItem' */

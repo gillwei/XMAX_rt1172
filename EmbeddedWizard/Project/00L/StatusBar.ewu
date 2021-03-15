@@ -38,7 +38,7 @@ class Main : Core::Group
   // App/Headset/Battery Icon
   note group Note
   {
-    attr Bounds = <210,50,530,450>;
+    attr Bounds = <210,50,530,500>;
   }
 
   $rect <230,90,470,130>
@@ -60,6 +60,7 @@ class Main : Core::Group
       case Enum::MotoConRxEvent.PHONE_BATTERY: UpdateBatteryIcon();
       case Enum::MotoConRxEvent.PHONE_HEADSET: UpdateHeadsetIcon();
       case Enum::MotoConRxEvent.PHONE_THERMAL: UpdateAppIcon();
+      case Enum::MotoConRxEvent.PHONE_CELL_SIGNAL_LEVEL: UpdatePhoneCellSignalLevelIcon();
       default:;
     }
   }
@@ -179,7 +180,7 @@ class Main : Core::Group
   $rect <20,20,160,60>
   object Views::Image HeadsetIcon
   {
-    preset Bounds = <261,3,293,35>;
+    preset Bounds = <294,3,326,35>;
     preset Bitmap = Resource::HeadsetIcon;
     preset Visible = false;
   }
@@ -187,7 +188,7 @@ class Main : Core::Group
   $rect <20,20,160,60>
   object Views::Image AppIcon
   {
-    preset Bounds = <294,3,326,35>;
+    preset Bounds = <261,3,293,35>;
     preset Bitmap = Resource::AppIcon;
     preset Visible = false;
   }
@@ -272,6 +273,37 @@ class Main : Core::Group
     }
 
     AppIcon.Visible = IsMotoConConnected;
+  }
+
+  $rect <230,440,510,480>
+  method void UpdatePhoneCellSignalLevelIcon()
+  {
+    if( IsMotoConConnected )
+    {
+      var uint8 PhoneCellSignalLevel;
+
+      $if !$prototyper
+        native( PhoneCellSignalLevel )
+        {
+          PhoneCellSignalLevel = BC_motocon_get_phone_cell_signal_level();
+        }
+      $endif
+
+      if( StatusBar::MAX_PHONE_CELL_SIGNAL_LEVEL >= PhoneCellSignalLevel )
+      {
+        SignalLevelIcon.FrameNumber = PhoneCellSignalLevel;
+      }
+    }
+
+    SignalLevelIcon.Visible = IsMotoConConnected;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image SignalLevelIcon
+  {
+    preset Bounds = <195,3,227,35>;
+    preset Bitmap = Resource::SignalLevelIcon;
+    preset Visible = false;
   }
 }
 
@@ -360,3 +392,8 @@ const uint8 BATTERY_PERCENTAGE_LEVEL4 = 61;
 $rect <250,260,530,300>
 $output false
 const uint8 BATTERY_PERCENTAGE_LEVEL5 = 81;
+
+// Phone cell signal level ranging from 0 to 4
+$rect <250,310,530,350>
+$output false
+const int32 MAX_PHONE_CELL_SIGNAL_LEVEL = 4;

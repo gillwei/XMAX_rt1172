@@ -691,6 +691,9 @@ enum MotoConRxEvent
 
   $rect <10,210,210,250>
   item PHONE_HEADSET;
+
+  $rect <10,260,210,300>
+  item PHONE_CELL_SIGNAL_LEVEL;
 }
 
 $rect <960,220,1160,260>

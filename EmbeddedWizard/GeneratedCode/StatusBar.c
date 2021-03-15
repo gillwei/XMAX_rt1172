@@ -59,15 +59,16 @@ static const XColor _Const0001 = { 0x00, 0x00, 0x00, 0xFF };
 static const XRect _Const0002 = {{ 0, 36 }, { 480, 38 }};
 static const XRect _Const0003 = {{ 11, 0 }, { 93, 38 }};
 static const XRect _Const0004 = {{ 228, 3 }, { 260, 35 }};
-static const XRect _Const0005 = {{ 261, 3 }, { 293, 35 }};
-static const XRect _Const0006 = {{ 294, 3 }, { 326, 35 }};
+static const XRect _Const0005 = {{ 294, 3 }, { 326, 35 }};
+static const XRect _Const0006 = {{ 261, 3 }, { 293, 35 }};
 static const XRect _Const0007 = {{ 96, 3 }, { 128, 35 }};
-static const XRect _Const0008 = {{ 0, 0 }, { 82, 38 }};
-static const XRect _Const0009 = {{ 0, 1 }, { 37, 38 }};
-static const XColor _Const000A = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const000B = {{ 45, 1 }, { 82, 38 }};
-static const XRect _Const000C = {{ 37, 1 }, { 48, 38 }};
-static const XStringRes _Const000D = { _StringsDefault0, 0x0002 };
+static const XRect _Const0008 = {{ 195, 3 }, { 227, 35 }};
+static const XRect _Const0009 = {{ 0, 0 }, { 82, 38 }};
+static const XRect _Const000A = {{ 0, 1 }, { 37, 38 }};
+static const XColor _Const000B = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const000C = {{ 45, 1 }, { 82, 38 }};
+static const XRect _Const000D = {{ 37, 1 }, { 48, 38 }};
+static const XStringRes _Const000E = { _StringsDefault0, 0x0002 };
 
 /* User defined inline code: 'StatusBar::Inline' */
 #include "BC_motocon_pub.h"
@@ -93,6 +94,7 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage__Init( &_this->BtIcon, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->BTEnabledObserver, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->PairdDeviceChangedObserver, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->SignalLevelIcon, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( StatusBarMain );
@@ -113,6 +115,8 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetVisible( &_this->AppIcon, 0 );
   CoreRectView__OnSetBounds( &_this->BtIcon, _Const0007 );
   ViewsImage_OnSetVisible( &_this->BtIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->SignalLevelIcon, _Const0008 );
+  ViewsImage_OnSetVisible( &_this->SignalLevelIcon, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Clock ), 0 );
@@ -120,6 +124,7 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   CoreGroup__Add( _this, ((CoreView)&_this->HeadsetIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->AppIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BtIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->SignalLevelIcon ), 0 );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
   _this->MotoConEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnMotoConEventReceived );
@@ -140,6 +145,8 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   CorePropertyObserver_OnSetOutlet( &_this->PairdDeviceChangedObserver, EwNewRef( 
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 
   DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList, DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList ));
+  ViewsImage_OnSetBitmap( &_this->SignalLevelIcon, EwLoadResource( &ResourceSignalLevelIcon, 
+  ResourcesBitmap ));
 }
 
 /* Re-Initializer for the class 'StatusBar::Main' */
@@ -159,6 +166,7 @@ void StatusBarMain__ReInit( StatusBarMain _this )
   ViewsImage__ReInit( &_this->BtIcon );
   CorePropertyObserver__ReInit( &_this->BTEnabledObserver );
   CorePropertyObserver__ReInit( &_this->PairdDeviceChangedObserver );
+  ViewsImage__ReInit( &_this->SignalLevelIcon );
 }
 
 /* Finalizer method for the class 'StatusBar::Main' */
@@ -178,6 +186,7 @@ void StatusBarMain__Done( StatusBarMain _this )
   ViewsImage__Done( &_this->BtIcon );
   CorePropertyObserver__Done( &_this->BTEnabledObserver );
   CorePropertyObserver__Done( &_this->PairdDeviceChangedObserver );
+  ViewsImage__Done( &_this->SignalLevelIcon );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
@@ -210,6 +219,10 @@ void StatusBarMain_OnMotoConEventReceived( StatusBarMain _this, XObject sender )
 
     case EnumMotoConRxEventPHONE_THERMAL :
       StatusBarMain_UpdateAppIcon( _this );
+    break;
+
+    case EnumMotoConRxEventPHONE_CELL_SIGNAL_LEVEL :
+      StatusBarMain_UpdatePhoneCellSignalLevelIcon( _this );
     break;
 
     default : 
@@ -374,6 +387,23 @@ void StatusBarMain_UpdateAppIcon( StatusBarMain _this )
   ViewsImage_OnSetVisible( &_this->AppIcon, _this->IsMotoConConnected );
 }
 
+/* 'C' function for method : 'StatusBar::Main.UpdatePhoneCellSignalLevelIcon()' */
+void StatusBarMain_UpdatePhoneCellSignalLevelIcon( StatusBarMain _this )
+{
+  if ( _this->IsMotoConConnected )
+  {
+    XUInt8 PhoneCellSignalLevel = 0;
+    PhoneCellSignalLevel = BC_motocon_get_phone_cell_signal_level();
+
+    if ( 4 >= PhoneCellSignalLevel )
+    {
+      ViewsImage_OnSetFrameNumber( &_this->SignalLevelIcon, PhoneCellSignalLevel );
+    }
+  }
+
+  ViewsImage_OnSetVisible( &_this->SignalLevelIcon, _this->IsMotoConConnected );
+}
+
 /* Variants derived from the class : 'StatusBar::Main' */
 EW_DEFINE_CLASS_VARIANTS( StatusBarMain )
 EW_END_OF_CLASS_VARIANTS( StatusBarMain )
@@ -432,24 +462,24 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
   _this->_VMT = EW_CLASS( StatusBarClock );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0008 );
-  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const0009 );
+  CoreRectView__OnSetBounds( _this, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const000A );
   ViewsText_OnSetAlignment( &_this->ClockHourText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockHourText, 0 );
-  ViewsText_OnSetColor( &_this->ClockHourText, _Const000A );
+  ViewsText_OnSetColor( &_this->ClockHourText, _Const000B );
   ViewsText_OnSetVisible( &_this->ClockHourText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const000B );
+  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const000C );
   ViewsText_OnSetAlignment( &_this->ClockMinuteText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockMinuteText, 0 );
-  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const000A );
+  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const000B );
   ViewsText_OnSetVisible( &_this->ClockMinuteText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const000C );
+  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const000D );
   ViewsText_OnSetAlignment( &_this->ClockColonText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const000D ));
-  ViewsText_OnSetColor( &_this->ClockColonText, _Const000A );
+  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const000E ));
+  ViewsText_OnSetColor( &_this->ClockColonText, _Const000B );
   ViewsText_OnSetVisible( &_this->ClockColonText, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockHourText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockMinuteText ), 0 );

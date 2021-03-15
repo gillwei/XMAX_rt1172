@@ -29,6 +29,7 @@ void bc_motocon_listener_language_type( const uint8_t language_type );
 void bc_motocon_listener_battery( const uint8_t battery, const bc_motocon_battery_t battery_type );
 void bc_motocon_listener_phone_thermal( const bc_motocon_thermal_state_t thermal_state );
 void bc_motocon_listener_bt_headset_state( const bc_motocon_bt_headset_state_t headset_state );
+void bc_motocon_listener_phone_signal_level( const uint8_t level );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -62,11 +63,15 @@ static bc_motocon_callback_t motocon_callback =
     NULL,                                   // volume_level_callback
     NULL,                                   // notification_category_callback
     NULL,                                   // volume_controllable_callback
-    NULL                                    // ota_update_info_callback
+    NULL,                                   // ota_update_info_callback
+    NULL,                                   // ccuid_request_callback
+    bc_motocon_listener_phone_signal_level, // cell_signal_callback
+    NULL                                    // call_changed_callback
     };
 
 static uint8_t phone_language_type;
 static uint8_t phone_battery_percentage;
+static uint8_t phone_cell_signal_level;
 static bc_motocon_battery_t phone_battery_charging_status;
 static bc_motocon_thermal_state_t phone_thermal_state;
 static bc_motocon_bt_headset_state_t phone_headset_state;
@@ -154,6 +159,25 @@ void bc_motocon_listener_phone_thermal
 {
 phone_thermal_state = thermal_state;
 EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_THERMAL );
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_listener_phone_signal_level
+*
+* Notify EW phone cell signal level
+*
+* @param level Phone cell signal level (0-4)
+*
+*********************************************************************/
+void bc_motocon_listener_phone_signal_level
+    (
+    const uint8_t level
+    )
+{
+phone_cell_signal_level = level;
+EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_CELL_SIGNAL_LEVEL );
 }
 
 /*********************************************************************
@@ -263,6 +287,24 @@ bc_motocon_bt_headset_state_t BC_motocon_get_bt_headset_state
     )
 {
 return phone_headset_state;
+}
+
+/*********************************************************************
+*
+* @public
+* BC_motocon_get_phone_cell_signal_level
+*
+* Get the cell signal level of the smartphone
+*
+* @return Cell signal level of the smartphone
+*
+*********************************************************************/
+uint8_t BC_motocon_get_phone_cell_signal_level
+    (
+    void
+    )
+{
+return phone_cell_signal_level;
 }
 
 /*********************************************************************

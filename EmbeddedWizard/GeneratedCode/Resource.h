@@ -285,6 +285,9 @@ EW_DECLARE_BITMAP_RES( ResourceStatusBarBtIcon )
 /* Bitmap resource : 'Resource::Chessboard' */
 EW_DECLARE_BITMAP_RES( ResourceChessboard )
 
+/* Bitmap resource : 'Resource::SignalLevelIcon' */
+EW_DECLARE_BITMAP_RES( ResourceSignalLevelIcon )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )
