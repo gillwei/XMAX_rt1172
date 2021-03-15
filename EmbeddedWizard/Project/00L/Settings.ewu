@@ -1813,7 +1813,7 @@ class TimeoutDialog : Components::BaseMainBG
 
 $rect <710,130,910,170>
 $output false
-class SET30_QRCode : Menu::BaseMenuView
+class SET30_QRCode : Components::BaseMainBG
 {
   $rect <550,20,750,60>
   inherited method Init()
@@ -1888,7 +1888,7 @@ class SET30_QRCode : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Views::Text PixelText
   {
-    preset Bounds = <210,85,398,135>;
+    preset Bounds = <210,48,398,98>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -1906,7 +1906,7 @@ class SET30_QRCode : Menu::BaseMenuView
   $rect <20,20,160,60>
   object Views::Text QrCodeContent
   {
-    preset Bounds = <210,137,463,192>;
+    preset Bounds = <210,98,463,192>;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";

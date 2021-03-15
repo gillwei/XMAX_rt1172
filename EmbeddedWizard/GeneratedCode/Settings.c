@@ -150,9 +150,9 @@ static const XColor _Const0026 = { 0xFF, 0xFF, 0xFF, 0xFF };
 static const XStringRes _Const0027 = { _StringsDefault0, 0x014C };
 static const XStringRes _Const0028 = { _StringsDefault0, 0x016A };
 static const XRect _Const0029 = {{ 20, 98 }, { 207, 227 }};
-static const XRect _Const002A = {{ 210, 85 }, { 398, 135 }};
+static const XRect _Const002A = {{ 210, 48 }, { 398, 98 }};
 static const XRect _Const002B = {{ 210, 192 }, { 442, 240 }};
-static const XRect _Const002C = {{ 210, 137 }, { 463, 192 }};
+static const XRect _Const002C = {{ 210, 98 }, { 463, 192 }};
 static const XStringRes _Const002D = { _StringsDefault0, 0x0184 };
 static const XStringRes _Const002E = { _StringsDefault0, 0x0196 };
 static const XStringRes _Const002F = { _StringsDefault0, 0x01AA };
@@ -2718,7 +2718,7 @@ EW_END_OF_CLASS( SettingsTimeoutDialog )
 void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( SettingsSET30_QRCode );
@@ -2777,7 +2777,7 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
 void SettingsSET30_QRCode__ReInit( SettingsSET30_QRCode _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->QrCodeUpdateEventHandler );
@@ -2791,7 +2791,7 @@ void SettingsSET30_QRCode__ReInit( SettingsSET30_QRCode _this )
 void SettingsSET30_QRCode__Done( SettingsSET30_QRCode _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->QrCodeUpdateEventHandler );
@@ -2801,7 +2801,7 @@ void SettingsSET30_QRCode__Done( SettingsSET30_QRCode _this )
   ViewsText__Done( &_this->QrCodeContent );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -2874,7 +2874,7 @@ EW_DEFINE_CLASS_VARIANTS( SettingsSET30_QRCode )
 EW_END_OF_CLASS_VARIANTS( SettingsSET30_QRCode )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET30_QRCode' */
-EW_DEFINE_CLASS( SettingsSET30_QRCode, MenuBaseMenuView, QrCodeUpdateEventHandler, 
+EW_DEFINE_CLASS( SettingsSET30_QRCode, ComponentsBaseMainBG, QrCodeUpdateEventHandler, 
                  QrCodeUpdateEventHandler, QrCodeUpdateEventHandler, QrCodeUpdateEventHandler, 
                  PixelPerModule, PixelPerModule, "Settings::SET30_QRCode" )
   CoreRectView_initLayoutContext,
@@ -2916,12 +2916,6 @@ EW_DEFINE_CLASS( SettingsSET30_QRCode, MenuBaseMenuView, QrCodeUpdateEventHandle
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
-  MenuBaseMenuView_LoadItemClass,
-  MenuBaseMenuView_LoadItemTitle,
-  MenuBaseMenuView_OnItemActivate,
-  MenuBaseMenuView_LoadItemChecked,
-  MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
 EW_END_OF_CLASS( SettingsSET30_QRCode )
 
 /* Initializer for the class 'Settings::SET22_BleAdvertising' */

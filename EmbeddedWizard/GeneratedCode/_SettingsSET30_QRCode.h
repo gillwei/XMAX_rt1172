@@ -42,21 +42,14 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -108,7 +101,7 @@
 
 
 /* Deklaration of class : 'Settings::SET30_QRCode' */
-EW_DEFINE_FIELDS( SettingsSET30_QRCode, MenuBaseMenuView )
+EW_DEFINE_FIELDS( SettingsSET30_QRCode, ComponentsBaseMainBG )
   EW_OBJECT  ( QrCodeUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( QrCode,          ViewsImage )
   EW_OBJECT  ( PixelText,       ViewsText )
@@ -118,7 +111,7 @@ EW_DEFINE_FIELDS( SettingsSET30_QRCode, MenuBaseMenuView )
 EW_END_OF_FIELDS( SettingsSET30_QRCode )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET30_QRCode' */
-EW_DEFINE_METHODS( SettingsSET30_QRCode, MenuBaseMenuView )
+EW_DEFINE_METHODS( SettingsSET30_QRCode, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -171,13 +164,6 @@ EW_DEFINE_METHODS( SettingsSET30_QRCode, MenuBaseMenuView )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( LoadItemClass,     XClass )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( MenuBaseMenuView _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET30_QRCode )
 
 /* The method Init() is invoked automatically after the component has been created. 
