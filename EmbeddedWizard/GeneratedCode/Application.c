@@ -39,6 +39,7 @@
 #include "_FactoryDisplayManual.h"
 #include "_FactoryTestContext.h"
 #include "_HomeBaseHome.h"
+#include "_HomeHOM03_VehicleInfo.h"
 #include "_HomeHOM11_TachoVisualizer.h"
 #include "_HomeHOM12_EcoVisualizer.h"
 #include "_HomeHOM13_SpeedVisualizer.h"
@@ -429,7 +430,7 @@ XClass ApplicationApplication_HomeClassOfHomeType( ApplicationApplication _this,
     break;
 
     case EnumHomeTypeVEHICLE_INFO :
-      ;
+      HomeClass = EW_CLASS( HomeHOM03_VehicleInfo );
     break;
 
     default : 
@@ -477,7 +478,7 @@ CoreGroup ApplicationApplication_HomeDialogOfHomeType( ApplicationApplication _t
     break;
 
     case EnumHomeTypeVEHICLE_INFO :
-      ;
+      aHomeDialog = ((CoreGroup)EwNewObject( HomeHOM03_VehicleInfo, 0 ));
     break;
 
     default : 

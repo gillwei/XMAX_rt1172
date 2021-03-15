@@ -17,12 +17,6 @@ class HOM11_TachoVisualizer : Home::BaseHome
   }
 
   $rect <210,330,440,370>
-  inherited method OnShortHomeKeyActivated()
-  {
-    // TODO: switch to other home group
-  }
-
-  $rect <210,380,440,420>
   inherited method OnLongEnterKeyActivated()
   {
     if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
@@ -30,6 +24,9 @@ class HOM11_TachoVisualizer : Home::BaseHome
       PresentDialog( new Info::INF01_MeterDisplaySettingMenu, null, null, null, null, null, null, null, null, false );
     }
   }
+
+  $rect <0,330,180,370>
+  inherited var HomeType = Enum::HomeType.TACHO_VISUALIZER;
 
   $rect <20,20,160,60>
   object Views::Text Title
@@ -58,12 +55,6 @@ class HOM12_EcoVisualizer : Home::BaseHome
   }
 
   $rect <210,330,440,370>
-  inherited method OnShortHomeKeyActivated()
-  {
-    // TODO: switch to other home group
-  }
-
-  $rect <210,380,440,420>
   inherited method OnLongEnterKeyActivated()
   {
     if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
@@ -71,6 +62,9 @@ class HOM12_EcoVisualizer : Home::BaseHome
       PresentDialog( new Info::INF01_MeterDisplaySettingMenu, null, null, null, null, null, null, null, null, false );
     }
   }
+
+  $rect <0,330,180,370>
+  inherited var HomeType = Enum::HomeType.ECO_VISUALIZER;
 
   $rect <20,20,160,60>
   object Views::Text Title
@@ -99,12 +93,6 @@ class HOM13_SpeedVisualizer : Home::BaseHome
   }
 
   $rect <210,330,440,370>
-  inherited method OnShortHomeKeyActivated()
-  {
-    // TODO: switch to other home group
-  }
-
-  $rect <210,380,440,420>
   inherited method OnLongEnterKeyActivated()
   {
     if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
@@ -112,6 +100,9 @@ class HOM13_SpeedVisualizer : Home::BaseHome
       PresentDialog( new Info::INF01_MeterDisplaySettingMenu, null, null, null, null, null, null, null, null, false );
     }
   }
+
+  $rect <0,330,180,370>
+  inherited var HomeType = Enum::HomeType.SPEED_VISUALIZER;
 
   $rect <20,20,160,60>
   object Views::Text Title
@@ -127,6 +118,20 @@ $rect <10,10,210,50>
 $output false
 class BaseHome : Components::BaseMainBG
 {
+  $rect <220,290,450,330>
+  inherited method OnShortHomeKeyActivated()
+  {
+    var Enum::HomeType NextHomeType = GetNextHomeType( HomeType );
+    if( Enum::HomeType.TOTAL != NextHomeType )
+    {
+      var Application::Application App = ( Application::Application )GetRoot();
+      if( null != App )
+      {
+        App.SwitchToHome( NextHomeType );
+      }
+    }
+  }
+
   $rect <0,290,200,330>
   method void ReturnToHome()
   {
@@ -136,8 +141,71 @@ class BaseHome : Components::BaseMainBG
       DismissDialog( MenuDialog, null, null, null, null, null, false );
     }
   }
+
+  $rect <470,290,670,330>
+  var Enum::HomeType HomeType;
+
+  $rect <0,340,200,380>
+  method Enum::HomeType GetNextHomeType( arg Enum::HomeType aCurrentHomeType )
+  {
+    var Enum::HomeType NextHomeType = Enum::HomeType.TOTAL;
+    switch( aCurrentHomeType )
+    {
+      case Enum::HomeType.TACHO_VISUALIZER, Enum::HomeType.ECO_VISUALIZER, Enum::HomeType.SPEED_VISUALIZER:
+      {
+        //TODO: remove the comments below
+        /*
+        if( DeviceInterface::NavigationDevice.IsNaviAppConnected() )
+        {
+          NextHomeType = DeviceInterface::NavigationDevice.CurrentHome;
+        }
+        else
+        {
+          NextHomeType = Enum::HomeType.VEHICLE_INFO;
+        }
+        */
+        NextHomeType = Enum::HomeType.NAVI_DEFAULT_VIEW; //TODO: remove this line
+      }
+      case Enum::HomeType.NAVI_DEFAULT_VIEW, Enum::HomeType.NAVI_NEXT_TURN, Enum::HomeType.NAVI_TURN_BY_TURN: NextHomeType = Enum::HomeType.VEHICLE_INFO;
+      case Enum::HomeType.VEHICLE_INFO:
+      {
+        switch( DeviceInterface::VehicleDevice.CurrentMeterDisplay )
+        {
+          case Enum::MeterDisplay.TACHOMETER: NextHomeType = Enum::HomeType.TACHO_VISUALIZER;
+          case Enum::MeterDisplay.ECHO_METER: NextHomeType = Enum::HomeType.ECO_VISUALIZER;
+          case Enum::MeterDisplay.SPEED_METER: NextHomeType = Enum::HomeType.SPEED_VISUALIZER;
+          default:;
+        }
+      }
+      default:;
+    }
+    return NextHomeType;
+  }
 }
 
 $rect <240,10,600,50>
 $output false
 const int32 ACTIVATE_LONG_PRESS_REPETITION_COUNT = 1;
+
+$rect <10,210,210,250>
+$output false
+class HOM03_VehicleInfo : Home::BaseHome
+{
+  $rect <10,290,190,330>
+  inherited method Init()
+  {
+    trace "Init HOM03";
+  }
+
+  $rect <10,340,190,380>
+  inherited var HomeType = Enum::HomeType.VEHICLE_INFO;
+
+  $rect <20,20,160,60>
+  object Views::Text Title
+  {
+    preset Bounds = <72,113,403,156>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = "[HOM 03]";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+}

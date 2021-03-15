@@ -101,6 +101,7 @@
 
 /* Deklaration of class : 'Home::BaseHome' */
 EW_DEFINE_FIELDS( HomeBaseHome, ComponentsBaseMainBG )
+  EW_VARIABLE( HomeType,        XEnum )
 EW_END_OF_FIELDS( HomeBaseHome )
 
 /* Virtual Method Table (VMT) for the class : 'Home::BaseHome' */
@@ -151,7 +152,7 @@ EW_DEFINE_METHODS( HomeBaseHome, ComponentsBaseMainBG )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
@@ -159,8 +160,14 @@ EW_DEFINE_METHODS( HomeBaseHome, ComponentsBaseMainBG )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
 EW_END_OF_METHODS( HomeBaseHome )
 
+/* 'C' function for method : 'Home::BaseHome.OnShortHomeKeyActivated()' */
+void HomeBaseHome_OnShortHomeKeyActivated( HomeBaseHome _this );
+
 /* 'C' function for method : 'Home::BaseHome.ReturnToHome()' */
 void HomeBaseHome_ReturnToHome( HomeBaseHome _this );
+
+/* 'C' function for method : 'Home::BaseHome.GetNextHomeType()' */
+XEnum HomeBaseHome_GetNextHomeType( HomeBaseHome _this, XEnum aCurrentHomeType );
 
 #ifdef __cplusplus
   }

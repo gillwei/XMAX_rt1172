@@ -193,6 +193,7 @@ void NavigationNAV01_DefaultView__Init( NavigationNAV01_DefaultView _this, XObje
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super3.UpKeyTriggerMode = EnumKeyTriggerModeOFF;
   _this->Super3.DownKeyTriggerMode = EnumKeyTriggerModeOFF;
+  _this->Super1.HomeType = EnumHomeTypeNAVI_DEFAULT_VIEW;
   CoreRectView__OnSetBounds( &_this->Background, _Const0000 );
   ViewsRectangle_OnSetColor( &_this->Background, _Const0001 );
   CoreRectView__OnSetBounds( &_this->MapImage, _Const0002 );
@@ -429,13 +430,6 @@ void NavigationNAV01_DefaultView_OnShortEnterKeyActivated( NavigationNAV01_Defau
 {
   CoreGroup_PresentDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
   LauncherLNC_Main, 0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-}
-
-/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnShortHomeKeyActivated()' */
-void NavigationNAV01_DefaultView_OnShortHomeKeyActivated( NavigationNAV01_DefaultView _this )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
 }
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnLongEnterKeyActivated()' */
@@ -830,7 +824,7 @@ EW_DEFINE_CLASS( NavigationNAV01_DefaultView, HomeBaseHome, Background, Backgrou
   NavigationNAV01_DefaultView_OnShortDownKeyActivated,
   NavigationNAV01_DefaultView_OnShortUpKeyActivated,
   NavigationNAV01_DefaultView_OnShortEnterKeyActivated,
-  NavigationNAV01_DefaultView_OnShortHomeKeyActivated,
+  HomeBaseHome_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   NavigationNAV01_DefaultView_OnLongEnterKeyActivated,

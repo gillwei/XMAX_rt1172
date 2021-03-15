@@ -43,6 +43,7 @@
 #endif
 
 #include "_HomeBaseHome.h"
+#include "_HomeHOM03_VehicleInfo.h"
 #include "_HomeHOM11_TachoVisualizer.h"
 #include "_HomeHOM12_EcoVisualizer.h"
 #include "_HomeHOM13_SpeedVisualizer.h"

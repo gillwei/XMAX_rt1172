@@ -159,7 +159,7 @@ EW_DEFINE_METHODS( HomeHOM13_SpeedVisualizer, HomeBaseHome )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( HomeHOM13_SpeedVisualizer _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( HomeHOM13_SpeedVisualizer _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( HomeHOM13_SpeedVisualizer _this )
@@ -174,9 +174,6 @@ void HomeHOM13_SpeedVisualizer_Init( HomeHOM13_SpeedVisualizer _this, XHandle aA
 
 /* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnShortEnterKeyActivated()' */
 void HomeHOM13_SpeedVisualizer_OnShortEnterKeyActivated( HomeHOM13_SpeedVisualizer _this );
-
-/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnShortHomeKeyActivated()' */
-void HomeHOM13_SpeedVisualizer_OnShortHomeKeyActivated( HomeHOM13_SpeedVisualizer _this );
 
 /* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnLongEnterKeyActivated()' */
 void HomeHOM13_SpeedVisualizer_OnLongEnterKeyActivated( HomeHOM13_SpeedVisualizer _this );

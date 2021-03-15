@@ -159,7 +159,7 @@ EW_DEFINE_METHODS( HomeHOM12_EcoVisualizer, HomeBaseHome )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( HomeHOM12_EcoVisualizer _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( HomeHOM12_EcoVisualizer _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( HomeHOM12_EcoVisualizer _this )
@@ -174,9 +174,6 @@ void HomeHOM12_EcoVisualizer_Init( HomeHOM12_EcoVisualizer _this, XHandle aArg )
 
 /* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnShortEnterKeyActivated()' */
 void HomeHOM12_EcoVisualizer_OnShortEnterKeyActivated( HomeHOM12_EcoVisualizer _this );
-
-/* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnShortHomeKeyActivated()' */
-void HomeHOM12_EcoVisualizer_OnShortHomeKeyActivated( HomeHOM12_EcoVisualizer _this );
 
 /* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnLongEnterKeyActivated()' */
 void HomeHOM12_EcoVisualizer_OnLongEnterKeyActivated( HomeHOM12_EcoVisualizer _this );

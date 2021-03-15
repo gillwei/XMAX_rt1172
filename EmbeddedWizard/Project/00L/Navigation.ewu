@@ -45,17 +45,11 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <940,640,1170,680>
+  $rect <949,640,1179,680>
   inherited method OnShortEnterKeyActivated()
   {
     //TODO: Check phone talking status and decide if LNC 02 or LNC 06 should be shown.
     GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
-  }
-
-  $rect <1180,600,1380,640>
-  inherited method OnShortHomeKeyActivated()
-  {
-    //TODO: switch to other home group.
   }
 
   $rect <730,50,930,90>
@@ -73,6 +67,9 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
+  $rect <520,50,720,90>
+  inherited var HomeType = Enum::HomeType.NAVI_DEFAULT_VIEW;
+
   $rect <20,20,160,60>
   object Views::Rectangle Background
   {
@@ -80,7 +77,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Color = #000000FF;
   }
 
-  $rect <520,50,720,90>
+  $rect <520,92,720,132>
   var int32 MapFrameIdx = 0;
 
   $rect <520,190,750,230>
