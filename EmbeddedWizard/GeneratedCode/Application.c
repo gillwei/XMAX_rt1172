@@ -272,6 +272,7 @@ void ApplicationApplication_OnBtFwStatusUpdteSlot( ApplicationApplication _this,
   {
     SettingsBtFwUpdateDialog BtFwDialog = EwNewObject( SettingsBtFwUpdateDialog, 
       0 );
+    CoreView_OnSetStackingPriority((CoreView)BtFwDialog, 1 );
     CoreGroup__Add( CoreView__GetRoot( _this ), ((CoreView)BtFwDialog ), 0 );
     CoreRoot_BeginModal( CoreView__GetRoot( _this ), ((CoreGroup)BtFwDialog ));
   }

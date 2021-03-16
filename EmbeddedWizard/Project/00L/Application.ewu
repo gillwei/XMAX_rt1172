@@ -145,6 +145,7 @@ class Application : Core::Root
     if( Enum::BtFwStatus.UPDATE_START == DeviceInterface::BluetoothDevice.BtFwStatus )
     {
       var Settings::BtFwUpdateDialog BtFwDialog = new Settings::BtFwUpdateDialog;
+      BtFwDialog.StackingPriority = 1;
       GetRoot().Add( BtFwDialog, 0 );
       GetRoot().BeginModal( BtFwDialog );
     }
