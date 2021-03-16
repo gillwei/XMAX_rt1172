@@ -374,7 +374,7 @@ class VerticalMenu : Components::BaseComponent
       }
     }
 
-    var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )Owner;
+    var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )Owner;
     if( null != OwnerMenu )
     {
       OwnerMenu.OnItemActivate( MenuList.SelectedItem, MenuItem );
@@ -1577,3 +1577,8 @@ class ItemUnitValue : Menu::ItemBase
 
   }
 }
+
+// Delay time after selecting the menu item of check mark type
+$rect <10,110,210,150>
+$output false
+const int32 DELAY_TIME_CHECKMARK = 450;

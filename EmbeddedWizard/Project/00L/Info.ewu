@@ -59,35 +59,29 @@ class INF01_MeterDisplaySettingMenu : Menu::BaseMenuView
       // empty body to suppress warning
     }
 
-    var Enum::HomeType HomeType = Enum::HomeType.TOTAL;
+    SelectedHomeType = Enum::HomeType.TOTAL;
     switch( aItemNo )
     {
       case 0:
       {
         DeviceInterface::VehicleDevice.CurrentMeterDisplay = Enum::MeterDisplay.TACHOMETER;
-        HomeType = Enum::HomeType.TACHO_VISUALIZER;
+        SelectedHomeType = Enum::HomeType.TACHO_VISUALIZER;
       }
       case 1:
       {
         DeviceInterface::VehicleDevice.CurrentMeterDisplay = Enum::MeterDisplay.ECHO_METER;
-        HomeType = Enum::HomeType.ECO_VISUALIZER;
+        SelectedHomeType = Enum::HomeType.ECO_VISUALIZER;
       }
       case 2:
       {
         DeviceInterface::VehicleDevice.CurrentMeterDisplay = Enum::MeterDisplay.SPEED_METER;
-        HomeType = Enum::HomeType.SPEED_VISUALIZER;
+        SelectedHomeType = Enum::HomeType.SPEED_VISUALIZER;
       }
-      default :;
+      default:;
     }
 
-    if( HomeType != Enum::HomeType.TOTAL )
-    {
-      var Application::Application App = ( Application::Application )GetRoot();
-      if( null != App )
-      {
-        App.SwitchToHome( HomeType );
-      }
-    }
+    Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );
+    CheckMarkUpdateTimer.Enabled = true;
   }
 
   $rect <510,120,710,160>
@@ -137,4 +131,28 @@ class INF01_MeterDisplaySettingMenu : Menu::BaseMenuView
     Default[1] = Strings::INF01_ECHO_VISUALIZER;
     Default[2] = Strings::INF01_SPEED_VISUALIZER;
   );
+
+  $rect <510,270,730,310>
+  object Core::Timer CheckMarkUpdateTimer
+  {
+    preset OnTrigger = OnCheckMarkUpdateSlot;
+    preset Period = 0;
+    preset Begin = Menu::DELAY_TIME_CHECKMARK;
+  }
+
+  $rect <510,320,730,360>
+  slot OnCheckMarkUpdateSlot
+  {
+    if( SelectedHomeType != Enum::HomeType.TOTAL )
+    {
+      var Application::Application App = ( Application::Application )GetRoot();
+      if( null != App )
+      {
+        App.SwitchToHome( SelectedHomeType );
+      }
+    }
+  }
+
+  $rect <510,220,730,260>
+  var Enum::HomeType SelectedHomeType;
 }

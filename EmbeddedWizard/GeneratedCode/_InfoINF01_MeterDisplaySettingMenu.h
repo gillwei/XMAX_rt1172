@@ -114,7 +114,9 @@
 
 /* Deklaration of class : 'Info::INF01_MeterDisplaySettingMenu' */
 EW_DEFINE_FIELDS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView )
+  EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
   EW_ARRAY   ( ItemTitleArray,  XString, [3])
+  EW_VARIABLE( SelectedHomeType, XEnum )
 EW_END_OF_FIELDS( InfoINF01_MeterDisplaySettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Info::INF01_MeterDisplaySettingMenu' */
@@ -224,6 +226,10 @@ void InfoINF01_MeterDisplaySettingMenu_OnItemActivate( InfoINF01_MeterDisplaySet
 /* 'C' function for method : 'Info::INF01_MeterDisplaySettingMenu.LoadItemChecked()' */
 XBool InfoINF01_MeterDisplaySettingMenu_LoadItemChecked( InfoINF01_MeterDisplaySettingMenu _this, 
   XInt32 aItemNo );
+
+/* 'C' function for method : 'Info::INF01_MeterDisplaySettingMenu.OnCheckMarkUpdateSlot()' */
+void InfoINF01_MeterDisplaySettingMenu_OnCheckMarkUpdateSlot( InfoINF01_MeterDisplaySettingMenu _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }

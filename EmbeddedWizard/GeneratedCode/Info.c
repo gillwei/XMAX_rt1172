@@ -26,6 +26,7 @@
 
 #include "ewlocale.h"
 #include "_ApplicationApplication.h"
+#include "_CoreTimer.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_HomeBaseHome.h"
 #include "_InfoINF01_MeterDisplaySettingMenu.h"
@@ -78,6 +79,9 @@ void InfoINF01_MeterDisplaySettingMenu__Init( InfoINF01_MeterDisplaySettingMenu 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( InfoINF01_MeterDisplaySettingMenu );
 
+  /* ... then construct all embedded objects */
+  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
+
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( InfoINF01_MeterDisplaySettingMenu );
 
@@ -88,6 +92,9 @@ void InfoINF01_MeterDisplaySettingMenu__Init( InfoINF01_MeterDisplaySettingMenu 
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsINF01_TACHO_VISUALIZER ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsINF01_ECHO_VISUALIZER ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsINF01_SPEED_VISUALIZER ));
+  CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 0 );
+  CoreTimer_OnSetBegin( &_this->CheckMarkUpdateTimer, 450 );
+  _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, InfoINF01_MeterDisplaySettingMenu_OnCheckMarkUpdateSlot );
 
   /* Call the user defined constructor */
   InfoINF01_MeterDisplaySettingMenu_Init( _this, aArg );
@@ -98,6 +105,9 @@ void InfoINF01_MeterDisplaySettingMenu__ReInit( InfoINF01_MeterDisplaySettingMen
 {
   /* At first re-initialize the super class ... */
   MenuBaseMenuView__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
 }
 
 /* Finalizer method for the class 'Info::INF01_MeterDisplaySettingMenu' */
@@ -105,6 +115,9 @@ void InfoINF01_MeterDisplaySettingMenu__Done( InfoINF01_MeterDisplaySettingMenu 
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+
+  /* Finalize all embedded objects */
+  CoreTimer__Done( &_this->CheckMarkUpdateTimer );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -184,12 +197,10 @@ XString InfoINF01_MeterDisplaySettingMenu_LoadItemTitle( InfoINF01_MeterDisplayS
 void InfoINF01_MeterDisplaySettingMenu_OnItemActivate( InfoINF01_MeterDisplaySettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  XEnum HomeType;
-
   if ( aMenuItem == 0 )
     ;
 
-  HomeType = EnumHomeTypeTOTAL;
+  _this->SelectedHomeType = EnumHomeTypeTOTAL;
 
   switch ( aItemNo )
   {
@@ -197,7 +208,7 @@ void InfoINF01_MeterDisplaySettingMenu_OnItemActivate( InfoINF01_MeterDisplaySet
     {
       EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay 
       = EnumMeterDisplayTACHOMETER;
-      HomeType = EnumHomeTypeTACHO_VISUALIZER;
+      _this->SelectedHomeType = EnumHomeTypeTACHO_VISUALIZER;
     }
     break;
 
@@ -205,7 +216,7 @@ void InfoINF01_MeterDisplaySettingMenu_OnItemActivate( InfoINF01_MeterDisplaySet
     {
       EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay 
       = EnumMeterDisplayECHO_METER;
-      HomeType = EnumHomeTypeECO_VISUALIZER;
+      _this->SelectedHomeType = EnumHomeTypeECO_VISUALIZER;
     }
     break;
 
@@ -213,7 +224,7 @@ void InfoINF01_MeterDisplaySettingMenu_OnItemActivate( InfoINF01_MeterDisplaySet
     {
       EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay 
       = EnumMeterDisplaySPEED_METER;
-      HomeType = EnumHomeTypeSPEED_VISUALIZER;
+      _this->SelectedHomeType = EnumHomeTypeSPEED_VISUALIZER;
     }
     break;
 
@@ -221,15 +232,9 @@ void InfoINF01_MeterDisplaySettingMenu_OnItemActivate( InfoINF01_MeterDisplaySet
       ;
   }
 
-  if ( HomeType != EnumHomeTypeTOTAL )
-  {
-    ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
-
-    if ( App != 0 )
-    {
-      ApplicationApplication_SwitchToHome( App, HomeType );
-    }
-  }
+  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
+  - 1 );
+  CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
 }
 
 /* 'C' function for method : 'Info::INF01_MeterDisplaySettingMenu.LoadItemChecked()' */
@@ -282,14 +287,32 @@ XBool InfoINF01_MeterDisplaySettingMenu_LoadItemChecked( InfoINF01_MeterDisplayS
   return checked;
 }
 
+/* 'C' function for method : 'Info::INF01_MeterDisplaySettingMenu.OnCheckMarkUpdateSlot()' */
+void InfoINF01_MeterDisplaySettingMenu_OnCheckMarkUpdateSlot( InfoINF01_MeterDisplaySettingMenu _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( _this->SelectedHomeType != EnumHomeTypeTOTAL )
+  {
+    ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+
+    if ( App != 0 )
+    {
+      ApplicationApplication_SwitchToHome( App, _this->SelectedHomeType );
+    }
+  }
+}
+
 /* Variants derived from the class : 'Info::INF01_MeterDisplaySettingMenu' */
 EW_DEFINE_CLASS_VARIANTS( InfoINF01_MeterDisplaySettingMenu )
 EW_END_OF_CLASS_VARIANTS( InfoINF01_MeterDisplaySettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Info::INF01_MeterDisplaySettingMenu' */
-EW_DEFINE_CLASS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView, ItemTitleArray, 
-                 ItemTitleArray, ItemTitleArray, ItemTitleArray, ItemTitleArray, 
-                 _None, "Info::INF01_MeterDisplaySettingMenu" )
+EW_DEFINE_CLASS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView, CheckMarkUpdateTimer, 
+                 CheckMarkUpdateTimer, CheckMarkUpdateTimer, CheckMarkUpdateTimer, 
+                 ItemTitleArray, SelectedHomeType, "Info::INF01_MeterDisplaySettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
