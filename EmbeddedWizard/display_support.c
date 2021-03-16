@@ -412,6 +412,24 @@ GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPI
 /*********************************************************************
 *
 * @public
+* displayis_tft_backlight_on
+*
+* Get the TFT backlight on/off status
+*
+* @return True if TFT backlight is on
+*
+*********************************************************************/
+bool display_is_tft_backlight_on
+    (
+    void
+    )
+{
+return ( STD_LOW == GPIO_PinRead( BOARD_INITPINS_TFT_CONNECTED_GPIO, BOARD_INITPINS_TFT_CONNECTED_GPIO_PIN ) );
+}
+
+/*********************************************************************
+*
+* @public
 * display_pre_handler
 *
 * @brief handle display related pins

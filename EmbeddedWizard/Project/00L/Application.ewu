@@ -327,18 +327,19 @@ class Application : Core::Root
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <530,90,780,130>
+  $rect <530,90,800,130>
   slot OnStartBootupAnimationSlot
   {
+    CheckTFTBacklightTimer.Enabled = false;
     var Open::OPN01_BootupAnimation BootupAnimationDialog = new Open::OPN01_BootupAnimation;
     BootupAnimationDialog.OnBootupAnimationFinished = OnBootupAnimationFinishedSlot;
     SwitchToDialog( BootupAnimationDialog, null, null, null, null, null, null, null, null, null, false );
   }
 
-  // Bootup Animation
+  // Bootup Flow
   note group Note6
   {
-    attr Bounds = <500,0,860,200>;
+    attr Bounds = <500,0,860,300>;
   }
 
   $rect <20,20,160,60>
@@ -366,6 +367,27 @@ class Application : Core::Root
       {
         DismissDialog( GetDialogAtIndex( 0 ), null, null, null, null, null, false );
       }
+    }
+  }
+
+  $rect <530,190,800,230>
+  object Core::Timer CheckTFTBacklightTimer
+  {
+    preset OnTrigger = OnCheckTFTBacklightSlot;
+    preset Period = 200;
+    preset Begin = 500;
+    preset Enabled = true;
+  }
+
+  $rect <530,240,800,280>
+  slot OnCheckTFTBacklightSlot
+  {
+    var bool IsTFTBacklightOn = DeviceInterface::SystemDevice.IsTFTBacklightOn();
+    if( IsTFTBacklightOn )
+    {
+      trace "TFT bl ", IsTFTBacklightOn;
+      CheckTFTBacklightTimer.Enabled = false;
+      signal OnStartBootupAnimationSlot;
     }
   }
 }

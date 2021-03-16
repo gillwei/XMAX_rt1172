@@ -6,6 +6,7 @@ inline Inline
   #include <stddef.h>
   #include <stdlib.h>
   #include "ew_priv.h"
+  #include "display_support.h"
   #include "EEPM_pub.h"
   #include "PERIPHERAL_pub.h"
   #include "VI_pub.h"
@@ -399,6 +400,21 @@ class SystemDeviceClass : Templates::DeviceClass
       }
     $endif
     return IsValid;
+  }
+
+  $rect <680,220,880,260>
+  method bool IsTFTBacklightOn()
+  {
+    var bool IsBacklightOn = false;
+    $if !$prototyper
+      native( IsBacklightOn )
+      {
+        IsBacklightOn = display_is_tft_backlight_on();
+      }
+    $else
+      IsBacklightOn = true;
+    $endif
+    return IsBacklightOn;
   }
 }
 

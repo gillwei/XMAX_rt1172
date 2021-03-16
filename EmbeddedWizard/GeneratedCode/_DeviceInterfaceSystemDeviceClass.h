@@ -212,6 +212,9 @@ void DeviceInterfaceSystemDeviceClass__StartBootupAnimation( void* _this );
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsKeyStateValid()' */
 XBool DeviceInterfaceSystemDeviceClass_IsKeyStateValid( DeviceInterfaceSystemDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsTFTBacklightOn()' */
+XBool DeviceInterfaceSystemDeviceClass_IsTFTBacklightOn( DeviceInterfaceSystemDeviceClass _this );
+
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );
 

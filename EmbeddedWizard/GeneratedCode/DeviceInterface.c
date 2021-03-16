@@ -77,6 +77,7 @@ static const XStringRes _Const000A = { _StringsDefault0, 0x00D0 };
 #include <stddef.h>
 #include <stdlib.h>
 #include "ew_priv.h"
+#include "display_support.h"
 #include "EEPM_pub.h"
 #include "PERIPHERAL_pub.h"
 #include "VI_pub.h"
@@ -459,6 +460,19 @@ XBool DeviceInterfaceSystemDeviceClass_IsKeyStateValid( DeviceInterfaceSystemDev
   IsValid = 1;
   IsValid = VI_is_key_state_valid();
   return IsValid;
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsTFTBacklightOn()' */
+XBool DeviceInterfaceSystemDeviceClass_IsTFTBacklightOn( DeviceInterfaceSystemDeviceClass _this )
+{
+  XBool IsBacklightOn;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsBacklightOn = 0;
+  IsBacklightOn = display_is_tft_backlight_on();
+  return IsBacklightOn;
 }
 
 /* Default onget method for the property 'FactoryResetComplete' */

@@ -116,6 +116,7 @@ EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( DDModeTestTimer, CoreTimer )
   EW_OBJECT  ( BootupAnimationSystemEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( StatusBar,       StatusBarMain )
+  EW_OBJECT  ( CheckTFTBacklightTimer, CoreTimer )
   EW_PROPERTY( StatusBarVisible, XBool )
 EW_END_OF_FIELDS( ApplicationApplication )
 
@@ -224,6 +225,10 @@ void ApplicationApplication_OnStartBootupAnimationSlot( ApplicationApplication _
 
 /* Return from the DD mode forbidden UI to the launcher */
 void ApplicationApplication_ReturnToHome( ApplicationApplication _this );
+
+/* 'C' function for method : 'Application::Application.OnCheckTFTBacklightSlot()' */
+void ApplicationApplication_OnCheckTFTBacklightSlot( ApplicationApplication _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
