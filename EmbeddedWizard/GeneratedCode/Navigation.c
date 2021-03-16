@@ -191,8 +191,6 @@ void NavigationNAV01_DefaultView__Init( NavigationNAV01_DefaultView _this, XObje
   _this->_VMT = EW_CLASS( NavigationNAV01_DefaultView );
 
   /* ... and initialize objects, variables, properties, etc. */
-  _this->Super3.UpKeyTriggerMode = EnumKeyTriggerModeOFF;
-  _this->Super3.DownKeyTriggerMode = EnumKeyTriggerModeOFF;
   _this->Super1.HomeType = EnumHomeTypeNAVI_DEFAULT_VIEW;
   CoreRectView__OnSetBounds( &_this->Background, _Const0000 );
   ViewsRectangle_OnSetColor( &_this->Background, _Const0001 );
