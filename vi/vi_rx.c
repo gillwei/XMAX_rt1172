@@ -1014,6 +1014,23 @@ else
     {
     clear_bit( rx_vehicle_supported_functions, function );
     }
+
+// For updating the status bar icons,
+// notify HMI if the supported functions of clock/grip warmer/seat heater are changed
+switch( function )
+    {
+    case VEHICLE_FEATURE_CLOCK:
+        EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_CLOCK );
+        break;
+    case VEHICLE_FEATURE_GRIP_HEATER:
+        EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_GRIP_WARMER );
+        break;
+    case VEHICLE_FEATURE_SEAT_HEATER:
+        EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_SEAT_HEATER );
+        break;
+    default:
+        break;
+    }
 }
 
 /*********************************************************************

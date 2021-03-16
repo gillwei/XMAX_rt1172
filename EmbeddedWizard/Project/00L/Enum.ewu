@@ -481,6 +481,15 @@ enum VehicleRxType
 
   $rect <850,10,1050,50>
   item HEAT_SEATERS_TATUS;
+
+  $rect <850,60,1050,100>
+  item SUPPORT_FUNC_CLOCK;
+
+  $rect <850,110,1050,150>
+  item SUPPORT_FUNC_GRIP_WARMER;
+
+  $rect <850,160,1050,200>
+  item SUPPORT_FUNC_SEAT_HEATER;
 }
 
 $rect <260,270,460,310>

@@ -32,6 +32,8 @@
 #include "_DeviceInterfaceMotoConContext.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
+#include "_DeviceInterfaceVehicleDataClass.h"
+#include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "_StatusBarClock.h"
@@ -95,6 +97,7 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   CorePropertyObserver__Init( &_this->BTEnabledObserver, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->PairdDeviceChangedObserver, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->SignalLevelIcon, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( StatusBarMain );
@@ -107,6 +110,7 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
   CoreRectView__OnSetBounds( &_this->Clock, _Const0003 );
+  CoreGroup_OnSetVisible((CoreGroup)&_this->Clock, 0 );
   CoreRectView__OnSetBounds( &_this->BatteryIcon, _Const0004 );
   ViewsImage_OnSetVisible( &_this->BatteryIcon, 0 );
   CoreRectView__OnSetBounds( &_this->HeadsetIcon, _Const0005 );
@@ -147,6 +151,9 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList, DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList ));
   ViewsImage_OnSetBitmap( &_this->SignalLevelIcon, EwLoadResource( &ResourceSignalLevelIcon, 
   ResourcesBitmap ));
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
 }
 
 /* Re-Initializer for the class 'StatusBar::Main' */
@@ -167,6 +174,7 @@ void StatusBarMain__ReInit( StatusBarMain _this )
   CorePropertyObserver__ReInit( &_this->BTEnabledObserver );
   CorePropertyObserver__ReInit( &_this->PairdDeviceChangedObserver );
   ViewsImage__ReInit( &_this->SignalLevelIcon );
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
 }
 
 /* Finalizer method for the class 'StatusBar::Main' */
@@ -187,6 +195,7 @@ void StatusBarMain__Done( StatusBarMain _this )
   CorePropertyObserver__Done( &_this->BTEnabledObserver );
   CorePropertyObserver__Done( &_this->PairdDeviceChangedObserver );
   ViewsImage__Done( &_this->SignalLevelIcon );
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
@@ -402,6 +411,33 @@ void StatusBarMain_UpdatePhoneCellSignalLevelIcon( StatusBarMain _this )
   }
 
   ViewsImage_OnSetVisible( &_this->SignalLevelIcon, _this->IsMotoConConnected );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void StatusBarMain_OnVehicleDataReceivedSlot( StatusBarMain _this, XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if ( VehicleData != 0 )
+  {
+    switch ( VehicleData->RxType )
+    {
+      case EnumVehicleRxTypeSUPPORT_FUNC_CLOCK :
+        CoreGroup_OnSetVisible((CoreGroup)&_this->Clock, DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        EnumVehicleSupportedFunctionCLOCK ));
+      break;
+
+      default : 
+        ;
+    }
+  }
 }
 
 /* Variants derived from the class : 'StatusBar::Main' */

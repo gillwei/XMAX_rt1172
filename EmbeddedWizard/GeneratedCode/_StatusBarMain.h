@@ -111,6 +111,7 @@ EW_DEFINE_FIELDS( StatusBarMain, CoreGroup )
   EW_OBJECT  ( BTEnabledObserver, CorePropertyObserver )
   EW_OBJECT  ( PairdDeviceChangedObserver, CorePropertyObserver )
   EW_OBJECT  ( SignalLevelIcon, ViewsImage )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( IsMotoConConnected, XBool )
 EW_END_OF_FIELDS( StatusBarMain )
 
@@ -184,6 +185,10 @@ void StatusBarMain_UpdateAppIcon( StatusBarMain _this );
 
 /* 'C' function for method : 'StatusBar::Main.UpdatePhoneCellSignalLevelIcon()' */
 void StatusBarMain_UpdatePhoneCellSignalLevelIcon( StatusBarMain _this );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void StatusBarMain_OnVehicleDataReceivedSlot( StatusBarMain _this, XObject sender );
 
 #ifdef __cplusplus
   }

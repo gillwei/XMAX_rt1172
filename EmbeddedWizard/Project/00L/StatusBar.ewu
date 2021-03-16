@@ -33,6 +33,7 @@ class Main : Core::Group
   object StatusBar::Clock Clock
   {
     preset Bounds = <11,0,93,38>;
+    preset Visible = false;
   }
 
   // App/Headset/Battery Icon
@@ -304,6 +305,35 @@ class Main : Core::Group
     preset Bounds = <195,3,227,35>;
     preset Bitmap = Resource::SignalLevelIcon;
     preset Visible = false;
+  }
+
+  // Vehicle supported function
+  note group Note2
+  {
+    attr Bounds = <900,50,1230,260>;
+  }
+
+  $rect <930,100,1210,140>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <930,150,1210,190>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData )
+    {
+      switch( VehicleData.RxType )
+      {
+        case Enum::VehicleRxType.SUPPORT_FUNC_CLOCK: Clock.Visible = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.CLOCK );
+        default:;
+      }
+    }
   }
 }
 
