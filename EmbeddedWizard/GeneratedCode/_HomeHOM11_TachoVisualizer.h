@@ -158,7 +158,7 @@ EW_DEFINE_METHODS( HomeHOM11_TachoVisualizer, HomeBaseHome )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( HomeHOM11_TachoVisualizer _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
@@ -174,9 +174,6 @@ EW_END_OF_METHODS( HomeHOM11_TachoVisualizer )
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
 void HomeHOM11_TachoVisualizer_Init( HomeHOM11_TachoVisualizer _this, XHandle aArg );
-
-/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnShortEnterKeyActivated()' */
-void HomeHOM11_TachoVisualizer_OnShortEnterKeyActivated( HomeHOM11_TachoVisualizer _this );
 
 /* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnLongEnterKeyActivated()' */
 void HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated( HomeHOM11_TachoVisualizer _this );

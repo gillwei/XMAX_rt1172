@@ -10,13 +10,7 @@ class HOM11_TachoVisualizer : Home::BaseHome
     trace "Init HOM11";
   }
 
-  $rect <210,280,440,320>
-  inherited method OnShortEnterKeyActivated()
-  {
-    GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
-  }
-
-  $rect <210,330,440,370>
+  $rect <220,280,450,320>
   inherited method OnLongEnterKeyActivated()
   {
     if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
@@ -49,12 +43,6 @@ class HOM12_EcoVisualizer : Home::BaseHome
   }
 
   $rect <210,280,440,320>
-  inherited method OnShortEnterKeyActivated()
-  {
-    GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
-  }
-
-  $rect <210,330,440,370>
   inherited method OnLongEnterKeyActivated()
   {
     if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
@@ -87,12 +75,6 @@ class HOM13_SpeedVisualizer : Home::BaseHome
   }
 
   $rect <210,280,440,320>
-  inherited method OnShortEnterKeyActivated()
-  {
-    GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
-  }
-
-  $rect <210,330,440,370>
   inherited method OnLongEnterKeyActivated()
   {
     if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
@@ -118,6 +100,12 @@ $rect <10,10,210,50>
 $output false
 class BaseHome : Components::BaseMainBG
 {
+  $rect <220,340,450,380>
+  inherited method OnShortEnterKeyActivated()
+  {
+    GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
+  }
+
   $rect <220,290,450,330>
   inherited method OnShortHomeKeyActivated()
   {

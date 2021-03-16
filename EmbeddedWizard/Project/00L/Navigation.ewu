@@ -45,13 +45,6 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <949,640,1179,680>
-  inherited method OnShortEnterKeyActivated()
-  {
-    //TODO: Check phone talking status and decide if LNC 02 or LNC 06 should be shown.
-    GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
-  }
-
   $rect <720,640,940,680>
   inherited method OnLongEnterKeyActivated()
   {

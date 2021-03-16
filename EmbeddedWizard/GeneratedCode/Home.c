@@ -129,13 +129,6 @@ void HomeHOM11_TachoVisualizer_Init( HomeHOM11_TachoVisualizer _this, XHandle aA
   EwTrace( "%s", EwLoadString( &_Const0001 ));
 }
 
-/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnShortEnterKeyActivated()' */
-void HomeHOM11_TachoVisualizer_OnShortEnterKeyActivated( HomeHOM11_TachoVisualizer _this )
-{
-  CoreGroup_PresentDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
-  LauncherLNC_Main, 0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-}
-
 /* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnLongEnterKeyActivated()' */
 void HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated( HomeHOM11_TachoVisualizer _this )
 {
@@ -185,7 +178,7 @@ EW_DEFINE_CLASS( HomeHOM11_TachoVisualizer, HomeBaseHome, Title, Title, Title, T
   CoreGroup_Add,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
-  HomeHOM11_TachoVisualizer_OnShortEnterKeyActivated,
+  HomeBaseHome_OnShortEnterKeyActivated,
   HomeBaseHome_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
@@ -260,13 +253,6 @@ void HomeHOM12_EcoVisualizer_Init( HomeHOM12_EcoVisualizer _this, XHandle aArg )
   EwTrace( "%s", EwLoadString( &_Const0002 ));
 }
 
-/* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnShortEnterKeyActivated()' */
-void HomeHOM12_EcoVisualizer_OnShortEnterKeyActivated( HomeHOM12_EcoVisualizer _this )
-{
-  CoreGroup_PresentDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
-  LauncherLNC_Main, 0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-}
-
 /* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnLongEnterKeyActivated()' */
 void HomeHOM12_EcoVisualizer_OnLongEnterKeyActivated( HomeHOM12_EcoVisualizer _this )
 {
@@ -316,7 +302,7 @@ EW_DEFINE_CLASS( HomeHOM12_EcoVisualizer, HomeBaseHome, Title, Title, Title, Tit
   CoreGroup_Add,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
-  HomeHOM12_EcoVisualizer_OnShortEnterKeyActivated,
+  HomeBaseHome_OnShortEnterKeyActivated,
   HomeBaseHome_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
@@ -391,13 +377,6 @@ void HomeHOM13_SpeedVisualizer_Init( HomeHOM13_SpeedVisualizer _this, XHandle aA
   EwTrace( "%s", EwLoadString( &_Const0003 ));
 }
 
-/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnShortEnterKeyActivated()' */
-void HomeHOM13_SpeedVisualizer_OnShortEnterKeyActivated( HomeHOM13_SpeedVisualizer _this )
-{
-  CoreGroup_PresentDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
-  LauncherLNC_Main, 0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-}
-
 /* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnLongEnterKeyActivated()' */
 void HomeHOM13_SpeedVisualizer_OnLongEnterKeyActivated( HomeHOM13_SpeedVisualizer _this )
 {
@@ -447,7 +426,7 @@ EW_DEFINE_CLASS( HomeHOM13_SpeedVisualizer, HomeBaseHome, Title, Title, Title, T
   CoreGroup_Add,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
-  HomeHOM13_SpeedVisualizer_OnShortEnterKeyActivated,
+  HomeBaseHome_OnShortEnterKeyActivated,
   HomeBaseHome_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
@@ -487,6 +466,13 @@ void HomeBaseHome__Done( HomeBaseHome _this )
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Home::BaseHome.OnShortEnterKeyActivated()' */
+void HomeBaseHome_OnShortEnterKeyActivated( HomeBaseHome _this )
+{
+  CoreGroup_PresentDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
+  LauncherLNC_Main, 0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Home::BaseHome.OnShortHomeKeyActivated()' */
@@ -612,7 +598,7 @@ EW_DEFINE_CLASS( HomeBaseHome, ComponentsBaseMainBG, _None, _None, _None, _None,
   CoreGroup_Add,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
-  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  HomeBaseHome_OnShortEnterKeyActivated,
   HomeBaseHome_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
@@ -726,7 +712,7 @@ EW_DEFINE_CLASS( HomeHOM03_VehicleInfo, HomeBaseHome, Title, Title, Title, Title
   CoreGroup_Add,
   ComponentsBaseComponent_OnShortDownKeyActivated,
   ComponentsBaseComponent_OnShortUpKeyActivated,
-  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  HomeBaseHome_OnShortEnterKeyActivated,
   HomeBaseHome_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,

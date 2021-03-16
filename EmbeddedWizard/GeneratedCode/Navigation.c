@@ -29,7 +29,6 @@
 #include "_ComponentsBaseMainBG.h"
 #include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
-#include "_CoreRoot.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
@@ -38,7 +37,6 @@
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsRectEffect.h"
-#include "_LauncherLNC_Main.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
 #include "_MenuItemCheckMark.h"
@@ -421,13 +419,6 @@ void NavigationNAV01_DefaultView_OnShortUpKeyActivated( NavigationNAV01_DefaultV
     _this->ZoomButtonStatus = 0;
     NavigationNAV01_DefaultView_StartHighlight( _this );
   }
-}
-
-/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnShortEnterKeyActivated()' */
-void NavigationNAV01_DefaultView_OnShortEnterKeyActivated( NavigationNAV01_DefaultView _this )
-{
-  CoreGroup_PresentDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
-  LauncherLNC_Main, 0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnLongEnterKeyActivated()' */
@@ -821,7 +812,7 @@ EW_DEFINE_CLASS( NavigationNAV01_DefaultView, HomeBaseHome, Background, Backgrou
   CoreGroup_Add,
   NavigationNAV01_DefaultView_OnShortDownKeyActivated,
   NavigationNAV01_DefaultView_OnShortUpKeyActivated,
-  NavigationNAV01_DefaultView_OnShortEnterKeyActivated,
+  HomeBaseHome_OnShortEnterKeyActivated,
   HomeBaseHome_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,

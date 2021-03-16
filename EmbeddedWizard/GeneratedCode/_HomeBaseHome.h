@@ -151,7 +151,7 @@ EW_DEFINE_METHODS( HomeBaseHome, ComponentsBaseMainBG )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
@@ -162,6 +162,9 @@ EW_DEFINE_METHODS( HomeBaseHome, ComponentsBaseMainBG )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( HomeBaseHome )
+
+/* 'C' function for method : 'Home::BaseHome.OnShortEnterKeyActivated()' */
+void HomeBaseHome_OnShortEnterKeyActivated( HomeBaseHome _this );
 
 /* 'C' function for method : 'Home::BaseHome.OnShortHomeKeyActivated()' */
 void HomeBaseHome_OnShortHomeKeyActivated( HomeBaseHome _this );

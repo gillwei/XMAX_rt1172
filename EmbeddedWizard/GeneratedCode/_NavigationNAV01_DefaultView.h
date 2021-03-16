@@ -188,7 +188,7 @@ EW_DEFINE_METHODS( NavigationNAV01_DefaultView, HomeBaseHome )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( NavigationNAV01_DefaultView _this )
   EW_METHOD( OnShortUpKeyActivated, void )( NavigationNAV01_DefaultView _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( NavigationNAV01_DefaultView _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
@@ -211,9 +211,6 @@ void NavigationNAV01_DefaultView_OnShortDownKeyActivated( NavigationNAV01_Defaul
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnShortUpKeyActivated()' */
 void NavigationNAV01_DefaultView_OnShortUpKeyActivated( NavigationNAV01_DefaultView _this );
-
-/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnShortEnterKeyActivated()' */
-void NavigationNAV01_DefaultView_OnShortEnterKeyActivated( NavigationNAV01_DefaultView _this );
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnLongEnterKeyActivated()' */
 void NavigationNAV01_DefaultView_OnLongEnterKeyActivated( NavigationNAV01_DefaultView _this );

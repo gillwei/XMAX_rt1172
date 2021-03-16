@@ -158,7 +158,7 @@ EW_DEFINE_METHODS( HomeHOM12_EcoVisualizer, HomeBaseHome )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( HomeHOM12_EcoVisualizer _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
@@ -174,9 +174,6 @@ EW_END_OF_METHODS( HomeHOM12_EcoVisualizer )
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
 void HomeHOM12_EcoVisualizer_Init( HomeHOM12_EcoVisualizer _this, XHandle aArg );
-
-/* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnShortEnterKeyActivated()' */
-void HomeHOM12_EcoVisualizer_OnShortEnterKeyActivated( HomeHOM12_EcoVisualizer _this );
 
 /* 'C' function for method : 'Home::HOM12_EcoVisualizer.OnLongEnterKeyActivated()' */
 void HomeHOM12_EcoVisualizer_OnLongEnterKeyActivated( HomeHOM12_EcoVisualizer _this );
