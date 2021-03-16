@@ -250,6 +250,7 @@ void StatusBarMain_UpdateMotoConConnectionStatus( StatusBarMain _this )
     ViewsImage_OnSetVisible( &_this->AppIcon, 0 );
     ViewsImage_OnSetVisible( &_this->BatteryIcon, 0 );
     ViewsImage_OnSetVisible( &_this->HeadsetIcon, 0 );
+    ViewsImage_OnSetVisible( &_this->SignalLevelIcon, 0 );
   }
   else
   {

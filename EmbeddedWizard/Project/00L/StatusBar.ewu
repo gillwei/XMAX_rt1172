@@ -76,6 +76,7 @@ class Main : Core::Group
       AppIcon.Visible = false;
       BatteryIcon.Visible = false;
       HeadsetIcon.Visible = false;
+      SignalLevelIcon.Visible = false;
     }
     else
     {
