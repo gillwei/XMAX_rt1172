@@ -560,7 +560,7 @@ resource Resources::Bitmap IconGripWarmer0Small
 {
   attr bitmapfile FileName = .\Res\launcher\50x50\LC9_S0.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <42,42>;
+  attr framesize FrameSize = <50,50>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
@@ -572,7 +572,7 @@ resource Resources::Bitmap IconGripWarmer0Large
 {
   attr bitmapfile FileName = .\Res\launcher\78x78\LC9_L0.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <70,70>;
+  attr framesize FrameSize = <78,78>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
@@ -584,7 +584,7 @@ resource Resources::Bitmap IconGripWarmer1Small
 {
   attr bitmapfile FileName = .\Res\launcher\50x50\LC9_S1.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <42,42>;
+  attr framesize FrameSize = <50,50>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
@@ -596,7 +596,7 @@ resource Resources::Bitmap IconGripWarmer1Large
 {
   attr bitmapfile FileName = .\Res\launcher\78x78\LC9_L1.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <70,70>;
+  attr framesize FrameSize = <78,78>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
@@ -608,7 +608,7 @@ resource Resources::Bitmap IconGripWarmer2Small
 {
   attr bitmapfile FileName = .\Res\launcher\50x50\LC9_S2.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <42,42>;
+  attr framesize FrameSize = <50,50>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
@@ -620,7 +620,7 @@ resource Resources::Bitmap IconGripWarmer2Large
 {
   attr bitmapfile FileName = .\Res\launcher\78x78\LC9_L2.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <70,70>;
+  attr framesize FrameSize = <78,78>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
@@ -632,7 +632,7 @@ resource Resources::Bitmap IconGripWarmer3Small
 {
   attr bitmapfile FileName = .\Res\launcher\50x50\LC10_S3.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <42,42>;
+  attr framesize FrameSize = <50,50>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
@@ -644,7 +644,7 @@ resource Resources::Bitmap IconGripWarmer3Large
 {
   attr bitmapfile FileName = .\Res\launcher\78x78\LC10_L3.png;
   attr bitmapformat Format = Native;
-  attr framesize FrameSize = <70,70>;
+  attr framesize FrameSize = <78,78>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
