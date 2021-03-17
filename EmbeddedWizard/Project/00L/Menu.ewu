@@ -374,7 +374,7 @@ class VerticalMenu : Components::BaseComponent
       }
     }
 
-    var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )Owner;
+    var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )Owner;
     if( null != OwnerMenu )
     {
       OwnerMenu.OnItemActivate( MenuList.SelectedItem, MenuItem );
@@ -404,7 +404,8 @@ class VerticalMenu : Components::BaseComponent
       }
 
       // move focus to the item before the last item when the last item is deleted
-      if( MenuList.SelectedItem >= MenuList.NoOfItems )
+      if( 0 < MenuList.NoOfItems &&
+          MenuList.SelectedItem >= MenuList.NoOfItems )
       {
         MenuList.SelectedItem = MenuList.NoOfItems - 1;
         MoveFocusFrame();

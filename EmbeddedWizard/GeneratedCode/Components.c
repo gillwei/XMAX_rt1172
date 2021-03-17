@@ -818,7 +818,10 @@ void ComponentsBaseMainBG_OnDialogSlideOutCompletedSlot( ComponentsBaseMainBG _t
 
   if ( OwnerMenu != 0 )
   {
-    ViewsBorder_OnSetVisible( &OwnerMenu->Menu.FocusFrame, 1 );
+    if ( 0 < OwnerMenu->Menu.NoOfItems )
+    {
+      ViewsBorder_OnSetVisible( &OwnerMenu->Menu.FocusFrame, 1 );
+    }
 
     if ( OwnerMenu->Menu.ArrowScrollBarVisible )
     {

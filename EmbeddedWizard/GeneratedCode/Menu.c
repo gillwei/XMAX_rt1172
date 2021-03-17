@@ -626,7 +626,7 @@ void MenuVerticalMenu_OnSetNoOfItems( MenuVerticalMenu _this, XInt32 value )
       ViewsBorder_OnSetVisible( &_this->FocusFrame, 1 );
     }
 
-    if ( _this->MenuList.SelectedItem >= _this->MenuList.NoOfItems )
+    if (( 0 < _this->MenuList.NoOfItems ) && ( _this->MenuList.SelectedItem >= _this->MenuList.NoOfItems ))
     {
       CoreVerticalList_OnSetSelectedItem( &_this->MenuList, _this->MenuList.NoOfItems 
       - 1 );

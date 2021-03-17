@@ -508,7 +508,11 @@ class BaseMainBG : Components::BaseComponent
     var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )OwnerDialog;
     if( null != OwnerMenu )
     {
-      OwnerMenu.Menu.FocusFrame.Visible = true;
+      if( 0 < OwnerMenu.Menu.NoOfItems )
+      {
+        OwnerMenu.Menu.FocusFrame.Visible = true;
+      }
+
       if( OwnerMenu.Menu.ArrowScrollBarVisible )
       {
         OwnerMenu.Menu.ShowArrowScrollBar();
