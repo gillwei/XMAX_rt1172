@@ -173,8 +173,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
 
           _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemMileageUnitArray[ 
           EwCheckIndex((XInt32)VehicleData->DataUInt32, 2 )]);
-          _this->MileageMenu->ItemCheckedArray[ EwCheckIndex((XInt32)VehicleData->DataUInt32, 
-          2 )] = 1;
+          EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting 
+          = (XEnum)VehicleData->DataUInt32;
         }
       }
       break;
@@ -185,7 +185,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
         {
           _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
           1 ]);
-          _this->FuelMenu->ItemCheckedArray[ 1 ] = 1;
+          EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+          = EnumFuelSettingItemMPG;
         }
         else
         {
@@ -195,7 +196,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
             {
               _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
               0 ]);
-              _this->FuelMenu->ItemCheckedArray[ 0 ] = 1;
+              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+              = EnumFuelSettingItemKM_L;
               _this->FuelMenu->FuelItemIdx = 0;
             }
             break;
@@ -204,7 +206,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
             {
               _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
               1 ]);
-              _this->FuelMenu->ItemCheckedArray[ 1 ] = 1;
+              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+              = EnumFuelSettingItemMPG;
               _this->FuelMenu->FuelItemIdx = 1;
             }
             break;
@@ -213,7 +216,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
             {
               _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
               1 ]);
-              _this->FuelMenu->ItemCheckedArray[ 1 ] = 1;
+              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+              = EnumFuelSettingItemMPG;
               _this->FuelMenu->FuelItemIdx = 1;
             }
             break;
@@ -222,7 +226,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
             {
               _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
               2 ]);
-              _this->FuelMenu->ItemCheckedArray[ 2 ] = 1;
+              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+              = EnumFuelSettingItemL_PER_HUNDRED_KM;
               _this->FuelMenu->FuelItemIdx = 2;
             }
             break;
@@ -240,8 +245,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
         {
           _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemPressureUnitArray[ 
           EwCheckIndex((XInt32)VehicleData->DataUInt32, 3 )]);
-          _this->PressureMenu->ItemCheckedArray[ EwCheckIndex((XInt32)VehicleData->DataUInt32, 
-          3 )] = 1;
+          EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
+          = (XEnum)VehicleData->DataUInt32;
         }
       }
       break;
@@ -252,8 +257,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
         {
           _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemTemperatureUnitArray[ 
           EwCheckIndex((XInt32)VehicleData->DataUInt32, 2 )]);
-          _this->TempMenu->ItemCheckedArray[ EwCheckIndex((XInt32)VehicleData->DataUInt32, 
-          2 )] = 1;
+          EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting 
+          = (XEnum)VehicleData->DataUInt32;
         }
       }
       break;
@@ -642,41 +647,65 @@ void UnitUNT02_MileageSettingMenu_OnItemActivate( UnitUNT02_MileageSettingMenu _
 
   _this->MileageItemIdx = aItemNo;
 
-  if ( _this->ItemCheckedArray[ EwCheckIndex( aItemNo, 2 )])
+  switch ( aItemNo )
   {
-    EwSignal( EwNewSlot( _this, UnitUNT02_MileageSettingMenu_OnCheckMarkUpdateSlot ), 
-      ((XObject)_this ));
-  }
-  else
-  {
-    XInt32 i = 0;
-
-    for ( i = 0; i < 2; i++ )
+    case 0 :
     {
-      if ( i == aItemNo )
-      {
-        _this->ItemCheckedArray[ EwCheckIndex( i, 2 )] = 1;
-      }
-      else
-      {
-        _this->ItemCheckedArray[ EwCheckIndex( i, 2 )] = 0;
-      }
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting 
+      = EnumMileageSettingItemKM;
     }
+    break;
 
-    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
-    CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+    case 1 :
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting 
+      = EnumMileageSettingItemMILE;
+    }
+    break;
+
+    default : 
+      ;
   }
+
+  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
+  CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
 }
 
 /* 'C' function for method : 'Unit::UNT02_MileageSettingMenu.LoadItemChecked()' */
 XBool UnitUNT02_MileageSettingMenu_LoadItemChecked( UnitUNT02_MileageSettingMenu _this, 
   XInt32 aItemNo )
 {
-  XBool IsChecked = 0;
+  XBool IsChecked;
 
-  if ( aItemNo < 2 )
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsChecked = 0;
+
+  switch ( aItemNo )
   {
-    IsChecked = _this->ItemCheckedArray[ EwCheckIndex( aItemNo, 2 )];
+    case 0 :
+    {
+      if ( EnumMileageSettingItemKM == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting )
+      {
+        IsChecked = 1;
+      }
+    }
+    break;
+
+    case 1 :
+    {
+      if ( EnumMileageSettingItemMILE == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting )
+      {
+        IsChecked = 1;
+      }
+    }
+    break;
+
+    default : 
+      ;
   }
 
   return IsChecked;
@@ -899,65 +928,78 @@ void UnitUNT03_FuelSettingMenu_OnItemActivate( UnitUNT03_FuelSettingMenu _this,
   switch ( aItemNo )
   {
     case 0 :
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+      = EnumFuelSettingItemKM_L;
       _this->FuelItemIdx = 0;
+    }
     break;
 
     case 1 :
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+      = EnumFuelSettingItemL_PER_HUNDRED_KM;
       _this->FuelItemIdx = 2;
+    }
     break;
 
     case 2 :
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+      = EnumFuelSettingItemMPG;
       _this->FuelItemIdx = 1;
+    }
     break;
 
     default : 
       ;
   }
 
-  if ( _this->ItemCheckedArray[ EwCheckIndex( _this->FuelItemIdx, 3 )])
-  {
-    EwSignal( EwNewSlot( _this, UnitUNT03_FuelSettingMenu_OnCheckMarkUpdateSlot ), 
-      ((XObject)_this ));
-  }
-  else
-  {
-    XInt32 i = 0;
-
-    for ( i = 0; i < 3; i++ )
-    {
-      if ( i == _this->FuelItemIdx )
-      {
-        _this->ItemCheckedArray[ EwCheckIndex( i, 3 )] = 1;
-      }
-      else
-      {
-        _this->ItemCheckedArray[ EwCheckIndex( i, 3 )] = 0;
-      }
-    }
-
-    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
-    CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-  }
+  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
+  CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
 }
 
 /* 'C' function for method : 'Unit::UNT03_FuelSettingMenu.LoadItemChecked()' */
 XBool UnitUNT03_FuelSettingMenu_LoadItemChecked( UnitUNT03_FuelSettingMenu _this, 
   XInt32 aItemNo )
 {
-  XBool IsChecked = 0;
+  XBool IsChecked;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsChecked = 0;
 
   switch ( aItemNo )
   {
     case 0 :
-      IsChecked = _this->ItemCheckedArray[ 0 ];
+    {
+      if ( EnumFuelSettingItemKM_L == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
+      {
+        IsChecked = 1;
+      }
+    }
     break;
 
     case 1 :
-      IsChecked = _this->ItemCheckedArray[ 2 ];
+    {
+      if ( EnumFuelSettingItemL_PER_HUNDRED_KM == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
+      {
+        IsChecked = 1;
+      }
+    }
     break;
 
     case 2 :
-      IsChecked = _this->ItemCheckedArray[ 1 ];
+    {
+      if ( EnumFuelSettingItemMPG == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
+      {
+        IsChecked = 1;
+      }
+    }
     break;
 
     default : 
@@ -1159,65 +1201,78 @@ void UnitUNT04_PressureSettingMenu_OnItemActivate( UnitUNT04_PressureSettingMenu
   switch ( aItemNo )
   {
     case 0 :
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
+      = EnumPressureSettingItemKPA;
       _this->PressureItemIdx = 1;
+    }
     break;
 
     case 1 :
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
+      = EnumPressureSettingItemPSI;
       _this->PressureItemIdx = 0;
+    }
     break;
 
     case 2 :
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
+      = EnumPressureSettingItemKGF;
       _this->PressureItemIdx = 2;
+    }
     break;
 
     default : 
       ;
   }
 
-  if ( _this->ItemCheckedArray[ EwCheckIndex( _this->PressureItemIdx, 3 )])
-  {
-    EwSignal( EwNewSlot( _this, UnitUNT04_PressureSettingMenu_OnCheckMarkUpdateSlot ), 
-      ((XObject)_this ));
-  }
-  else
-  {
-    XInt32 i = 0;
-
-    for ( i = 0; i < 3; i++ )
-    {
-      if ( i == _this->PressureItemIdx )
-      {
-        _this->ItemCheckedArray[ EwCheckIndex( i, 3 )] = 1;
-      }
-      else
-      {
-        _this->ItemCheckedArray[ EwCheckIndex( i, 3 )] = 0;
-      }
-    }
-
-    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
-    CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-  }
+  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
+  CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
 }
 
 /* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.LoadItemChecked()' */
 XBool UnitUNT04_PressureSettingMenu_LoadItemChecked( UnitUNT04_PressureSettingMenu _this, 
   XInt32 aItemNo )
 {
-  XBool IsChecked = 0;
+  XBool IsChecked;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsChecked = 0;
 
   switch ( aItemNo )
   {
     case 0 :
-      IsChecked = _this->ItemCheckedArray[ 1 ];
+    {
+      if ( EnumPressureSettingItemKPA == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
+      {
+        IsChecked = 1;
+      }
+    }
     break;
 
     case 1 :
-      IsChecked = _this->ItemCheckedArray[ 0 ];
+    {
+      if ( EnumPressureSettingItemPSI == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
+      {
+        IsChecked = 1;
+      }
+    }
     break;
 
     case 2 :
-      IsChecked = _this->ItemCheckedArray[ 2 ];
+    {
+      if ( EnumPressureSettingItemKGF == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
+      {
+        IsChecked = 1;
+      }
+    }
     break;
 
     default : 
@@ -1391,41 +1446,65 @@ void UnitUNT05_TemperatureSettingMenu_OnItemActivate( UnitUNT05_TemperatureSetti
 
   _this->TempItemIdx = aItemNo;
 
-  if ( _this->ItemCheckedArray[ EwCheckIndex( aItemNo, 2 )])
+  switch ( aItemNo )
   {
-    EwSignal( EwNewSlot( _this, UnitUNT05_TemperatureSettingMenu_OnCheckMarkUpdateSlot ), 
-      ((XObject)_this ));
-  }
-  else
-  {
-    XInt32 i = 0;
-
-    for ( i = 0; i < 2; i++ )
+    case 0 :
     {
-      if ( i == aItemNo )
-      {
-        _this->ItemCheckedArray[ EwCheckIndex( i, 2 )] = 1;
-      }
-      else
-      {
-        _this->ItemCheckedArray[ EwCheckIndex( i, 2 )] = 0;
-      }
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting 
+      = EnumTemperatureSettingItemTEMP_C;
     }
+    break;
 
-    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
-    CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+    case 1 :
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting 
+      = EnumTemperatureSettingItemTEMP_F;
+    }
+    break;
+
+    default : 
+      ;
   }
+
+  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
+  CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
 }
 
 /* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.LoadItemChecked()' */
 XBool UnitUNT05_TemperatureSettingMenu_LoadItemChecked( UnitUNT05_TemperatureSettingMenu _this, 
   XInt32 aItemNo )
 {
-  XBool IsChecked = 0;
+  XBool IsChecked;
 
-  if ( aItemNo < 2 )
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsChecked = 0;
+
+  switch ( aItemNo )
   {
-    IsChecked = _this->ItemCheckedArray[ EwCheckIndex( aItemNo, 2 )];
+    case 0 :
+    {
+      if ( EnumTemperatureSettingItemTEMP_C == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting )
+      {
+        IsChecked = 1;
+      }
+    }
+    break;
+
+    case 1 :
+    {
+      if ( EnumTemperatureSettingItemTEMP_F == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting )
+      {
+        IsChecked = 1;
+      }
+    }
+    break;
+
+    default : 
+      ;
   }
 
   return IsChecked;

@@ -363,6 +363,29 @@ typedef enum
   EnumWeatherTimeTypeWEATHER_AFTER_6DAY = 9
 } EnumWeatherTimeType;
 
+/* User defined enumeration: 'Enum::MileageSettingItem' */
+typedef enum
+{
+  EnumMileageSettingItemKM              = 0,
+  EnumMileageSettingItemMILE            = 1
+} EnumMileageSettingItem;
+
+/* User defined enumeration: 'Enum::FuelSettingItem' */
+typedef enum
+{
+  EnumFuelSettingItemKM_L               = 0,
+  EnumFuelSettingItemMPG                = 1,
+  EnumFuelSettingItemL_PER_HUNDRED_KM   = 2
+} EnumFuelSettingItem;
+
+/* User defined enumeration: 'Enum::PressureSettingItem' */
+typedef enum
+{
+  EnumPressureSettingItemPSI            = 0,
+  EnumPressureSettingItemKPA            = 1,
+  EnumPressureSettingItemKGF            = 2
+} EnumPressureSettingItem;
+
 /* User defined enumeration: 'Enum::BtcPairingState' */
 typedef enum
 {

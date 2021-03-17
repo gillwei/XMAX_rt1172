@@ -118,7 +118,6 @@ EW_DEFINE_FIELDS( UnitUNT02_MileageSettingMenu, MenuBaseMenuView )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
   EW_ARRAY   ( ItemTitleArray,  XString, [2])
   EW_VARIABLE( MileageItemIdx,  XInt32 )
-  EW_ARRAY   ( ItemCheckedArray, XBool, [2])
 EW_END_OF_FIELDS( UnitUNT02_MileageSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT02_MileageSettingMenu' */

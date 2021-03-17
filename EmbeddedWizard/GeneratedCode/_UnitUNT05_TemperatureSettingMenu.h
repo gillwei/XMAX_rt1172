@@ -118,7 +118,6 @@ EW_DEFINE_FIELDS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
   EW_ARRAY   ( ItemTitleArray,  XString, [2])
   EW_VARIABLE( TempItemIdx,     XInt32 )
-  EW_ARRAY   ( ItemCheckedArray, XBool, [2])
 EW_END_OF_FIELDS( UnitUNT05_TemperatureSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT05_TemperatureSettingMenu' */

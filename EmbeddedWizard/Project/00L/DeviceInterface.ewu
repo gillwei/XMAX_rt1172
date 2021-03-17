@@ -1634,6 +1634,18 @@ class VehicleDeviceClass : Templates::DeviceClass
 
   $rect <20,330,220,370>
   var Enum::MeterDisplay CurrentMeterDisplay = Enum::MeterDisplay.TACHOMETER;
+
+  $rect <20,380,220,420>
+  var Enum::MileageSettingItem CurrentMileageSetting;
+
+  $rect <20,430,220,470>
+  var Enum::FuelSettingItem CurrentFuelSetting;
+
+  $rect <20,480,220,520>
+  var Enum::PressureSettingItem CurrentPressureSetting;
+
+  $rect <20,530,220,570>
+  var Enum::TemperatureSettingItem CurrentTempSetting;
 }
 
 $rect <20,590,220,630>

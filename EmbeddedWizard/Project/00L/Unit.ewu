@@ -46,7 +46,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
             }
 
             ItemValueArray[i] = UnitItemValue.ItemMileageUnitArray[( int32 )VehicleData.DataUInt32];
-            MileageMenu.ItemCheckedArray[( int32 )VehicleData.DataUInt32] = true;
+            DeviceInterface::VehicleDevice.CurrentMileageSetting = ( Enum::MileageSettingItem )VehicleData.DataUInt32;
           }
         }
         case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT:
@@ -54,7 +54,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
           if( !IsFuelEnabled )
           {
             ItemValueArray[i] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.MPG];
-            FuelMenu.ItemCheckedArray[( int32 )Enum::FuelSettingItem.MPG] = true;
+            DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.MPG;
           }
           else
           {
@@ -63,25 +63,25 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
               case 0:
               {
                 ItemValueArray[i] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.KM_L];
-                FuelMenu.ItemCheckedArray[( int32 )Enum::FuelSettingItem.KM_L] = true;
+                DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.KM_L;
                 FuelMenu.FuelItemIdx = ( int32 )Enum::FuelSettingItem.KM_L;
               }
               case 1:
               {
                 ItemValueArray[i] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.MPG];
-                FuelMenu.ItemCheckedArray[( int32 )Enum::FuelSettingItem.MPG] = true;
+                DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.MPG;
                 FuelMenu.FuelItemIdx = ( int32 )Enum::FuelSettingItem.MPG;
               }
               case 2:
               {
                 ItemValueArray[i] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.MPG];
-                FuelMenu.ItemCheckedArray[( int32 )Enum::FuelSettingItem.MPG] = true;
+                DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.MPG;
                 FuelMenu.FuelItemIdx = ( int32 )Enum::FuelSettingItem.MPG;
               }
               case 3:
               {
                 ItemValueArray[i] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.L_PER_HUNDRED_KM];
-                FuelMenu.ItemCheckedArray[( int32 )Enum::FuelSettingItem.L_PER_HUNDRED_KM] = true;
+                DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.L_PER_HUNDRED_KM;
                 FuelMenu.FuelItemIdx = ( int32 )Enum::FuelSettingItem.L_PER_HUNDRED_KM;
               }
               default:;
@@ -93,7 +93,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
           if( UnitItemValue.ItemPressureUnitArray.size > ( int32 )VehicleData.DataUInt32 )
           {
             ItemValueArray[i] = UnitItemValue.ItemPressureUnitArray[( int32 )VehicleData.DataUInt32];
-            PressureMenu.ItemCheckedArray[( int32 )VehicleData.DataUInt32] = true;
+            DeviceInterface::VehicleDevice.CurrentPressureSetting = ( Enum::PressureSettingItem )VehicleData.DataUInt32;
           }
         }
         case Enum::VehicleRxType.TEMPERATURE_UNIT:
@@ -101,7 +101,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
           if( UnitItemValue.ItemTemperatureUnitArray.size > ( int32 )VehicleData.DataUInt32 )
           {
             ItemValueArray[i] = UnitItemValue.ItemTemperatureUnitArray[( int32 )VehicleData.DataUInt32];
-            TempMenu.ItemCheckedArray[( int32 )VehicleData.DataUInt32] = true;
+            DeviceInterface::VehicleDevice.CurrentTempSetting = ( Enum::TemperatureSettingItem )VehicleData.DataUInt32;
           }
         }
         default:;
@@ -200,7 +200,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
           SlideInDialog( TempMenu );
         }
       }
-      default :;
+      default:;
     }
   }
 
@@ -384,37 +384,43 @@ class UNT02_MileageSettingMenu : Menu::BaseMenuView
     }
 
     MileageItemIdx = aItemNo;
-    if( ItemCheckedArray[aItemNo] )
+    switch( aItemNo )
     {
-      signal OnCheckMarkUpdateSlot;
-    }
-    else
-    {
-      var int32 i = 0;
-      for( i = 0; i < ItemCheckedArray.size; i++ )
+      case 0:
       {
-        if( i == aItemNo )
-        {
-          ItemCheckedArray[i] = true;
-        }
-        else
-        {
-          ItemCheckedArray[i] = false;
-        }
+        DeviceInterface::VehicleDevice.CurrentMileageSetting = Enum::MileageSettingItem.KM;
       }
-
-      Menu.InvalidateItems( ( int32 )Enum::MileageSettingItem.KM, ( int32 )Enum::MileageSettingItem.MILE );
-      CheckMarkUpdateTimer.Enabled = true;
+      case 1:
+      {
+        DeviceInterface::VehicleDevice.CurrentMileageSetting = Enum::MileageSettingItem.MILE;
+      }
+      default:;
     }
+    Menu.InvalidateItems( ( int32 )Enum::MileageSettingItem.KM, ( int32 )Enum::MileageSettingItem.MILE );
+    CheckMarkUpdateTimer.Enabled = true;
   }
 
   $rect <520,140,720,180>
   inherited method LoadItemChecked()
   {
     var bool IsChecked = false;
-    if( aItemNo < ItemCheckedArray.size )
+    switch( aItemNo )
     {
-      IsChecked = ItemCheckedArray[aItemNo];
+      case 0:
+      {
+        if( Enum::MileageSettingItem.KM == DeviceInterface::VehicleDevice.CurrentMileageSetting )
+        {
+          IsChecked = true;
+        }
+      }
+      case 1:
+      {
+        if( Enum::MileageSettingItem.MILE == DeviceInterface::VehicleDevice.CurrentMileageSetting )
+        {
+          IsChecked = true;
+        }
+      }
+      default:;
     }
     return IsChecked;
   }
@@ -431,13 +437,6 @@ class UNT02_MileageSettingMenu : Menu::BaseMenuView
   (
     Default[0] = Strings::UNT02_unit_mileage_kilometer;
     Default[1] = Strings::UNT02_unit_mileage_mile;
-  );
-
-  $rect <780,110,980,150>
-  array bool ItemCheckedArray[ 2 ] =
-  (
-    Default[0] = ;
-    Default[1] = ;
   );
 
   $rect <770,200,1000,240>
@@ -544,34 +543,25 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
 
     switch( aItemNo )
     {
-     case 0: FuelItemIdx = ( int32 ) Enum::FuelSettingItem.KM_L;
-     case 1: FuelItemIdx = ( int32 ) Enum::FuelSettingItem.L_PER_HUNDRED_KM;
-     case 2: FuelItemIdx = ( int32 ) Enum::FuelSettingItem.MPG;
-     default:;
-    }
-
-    if( ItemCheckedArray[FuelItemIdx] )
-    {
-      signal OnCheckMarkUpdateSlot;
-    }
-    else
-    {
-      var int32 i = 0;
-      for( i = 0; i < ItemCheckedArray.size; i++ )
+      case 0:
       {
-        if( i == FuelItemIdx )
-        {
-          ItemCheckedArray[i] = true;
-        }
-        else
-        {
-          ItemCheckedArray[i] = false;
-        }
+        DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.KM_L;
+        FuelItemIdx = ( int32 ) Enum::FuelSettingItem.KM_L;
       }
-
-      Menu.InvalidateItems( ( int32 )Enum::FuelSettingItem.KM_L, ( int32 )Enum::FuelSettingItem.L_PER_HUNDRED_KM );
-      CheckMarkUpdateTimer.Enabled = true;
+      case 1:
+      {
+        DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.L_PER_HUNDRED_KM;
+        FuelItemIdx = ( int32 ) Enum::FuelSettingItem.L_PER_HUNDRED_KM;
+      }
+      case 2:
+      {
+        DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.MPG;
+        FuelItemIdx = ( int32 ) Enum::FuelSettingItem.MPG;
+      }
+      default:;
     }
+    Menu.InvalidateItems( ( int32 )Enum::FuelSettingItem.KM_L, ( int32 )Enum::FuelSettingItem.L_PER_HUNDRED_KM );
+    CheckMarkUpdateTimer.Enabled = true;
   }
 
   $rect <520,120,720,160>
@@ -580,10 +570,28 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
     var bool IsChecked = false;
     switch( aItemNo )
     {
-     case 0: IsChecked = ItemCheckedArray[( int32 ) Enum::FuelSettingItem.KM_L];
-     case 1: IsChecked = ItemCheckedArray[( int32 ) Enum::FuelSettingItem.L_PER_HUNDRED_KM];
-     case 2: IsChecked = ItemCheckedArray[( int32 ) Enum::FuelSettingItem.MPG];
-     default:;
+      case 0:
+      {
+        if( Enum::FuelSettingItem.KM_L == DeviceInterface::VehicleDevice.CurrentFuelSetting )
+        {
+          IsChecked = true;
+        }
+      }
+      case 1:
+      {
+        if( Enum::FuelSettingItem.L_PER_HUNDRED_KM == DeviceInterface::VehicleDevice.CurrentFuelSetting )
+        {
+          IsChecked = true;
+        }
+      }
+      case 2:
+      {
+        if( Enum::FuelSettingItem.MPG == DeviceInterface::VehicleDevice.CurrentFuelSetting )
+        {
+          IsChecked = true;
+        }
+      }
+      default:;
     }
     return IsChecked;
   }
@@ -607,14 +615,6 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
   {
     preset NoOfItems = 3;
   }
-
-  $rect <750,70,950,110>
-  array bool ItemCheckedArray[ 3 ] =
-  (
-    Default[0] = ;
-    Default[1] = ;
-    Default[2] = ;
-  );
 
   $rect <750,20,950,60>
   array string ItemTitleArray[ 3 ] =
@@ -696,34 +696,25 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
 
     switch( aItemNo )
     {
-     case 0: PressureItemIdx = ( int32 ) Enum::PressureSettingItem.KPA;
-     case 1: PressureItemIdx = ( int32 ) Enum::PressureSettingItem.PSI;
-     case 2: PressureItemIdx = ( int32 ) Enum::PressureSettingItem.KGF;
-     default:;
-    }
-
-    if( ItemCheckedArray[PressureItemIdx] )
-    {
-      signal OnCheckMarkUpdateSlot;
-    }
-    else
-    {
-      var int32 i = 0;
-      for( i = 0; i < ItemCheckedArray.size; i++ )
+      case 0:
       {
-        if( i == PressureItemIdx )
-        {
-          ItemCheckedArray[i] = true;
-        }
-        else
-        {
-          ItemCheckedArray[i] = false;
-        }
+        DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.KPA;
+        PressureItemIdx = ( int32 )Enum::PressureSettingItem.KPA;
       }
-
-      Menu.InvalidateItems( ( int32 )Enum::PressureSettingItem.PSI, ( int32 )Enum::PressureSettingItem.KGF );
-      CheckMarkUpdateTimer.Enabled = true;
+      case 1:
+      {
+        DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.PSI;
+        PressureItemIdx = ( int32 )Enum::PressureSettingItem.PSI;
+      }
+      case 2:
+      {
+        DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.KGF;
+        PressureItemIdx = ( int32 )Enum::PressureSettingItem.KGF;
+      }
+      default:;
     }
+    Menu.InvalidateItems( ( int32 )Enum::PressureSettingItem.PSI, ( int32 )Enum::PressureSettingItem.KGF );
+    CheckMarkUpdateTimer.Enabled = true;
   }
 
   $rect <520,100,720,140>
@@ -732,10 +723,28 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
     var bool IsChecked = false;
     switch( aItemNo )
     {
-     case 0: IsChecked = ItemCheckedArray[( int32 ) Enum::PressureSettingItem.KPA];
-     case 1: IsChecked = ItemCheckedArray[( int32 ) Enum::PressureSettingItem.PSI];
-     case 2: IsChecked = ItemCheckedArray[( int32 ) Enum::PressureSettingItem.KGF];
-     default:;
+      case 0:
+      {
+        if( Enum::PressureSettingItem.KPA == DeviceInterface::VehicleDevice.CurrentPressureSetting )
+        {
+          IsChecked = true;
+        }
+      }
+      case 1:
+      {
+        if( Enum::PressureSettingItem.PSI == DeviceInterface::VehicleDevice.CurrentPressureSetting )
+        {
+          IsChecked = true;
+        }
+      }
+      case 2:
+      {
+        if( Enum::PressureSettingItem.KGF == DeviceInterface::VehicleDevice.CurrentPressureSetting )
+        {
+          IsChecked = true;
+        }
+      }
+      default:;
     }
     return IsChecked;
   }
@@ -830,37 +839,43 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
     }
 
     TempItemIdx = aItemNo;
-    if( ItemCheckedArray[aItemNo] )
+    switch( aItemNo )
     {
-      signal OnCheckMarkUpdateSlot;
-    }
-    else
-    {
-      var int32 i = 0;
-      for( i = 0; i < ItemCheckedArray.size; i++ )
+      case 0:
       {
-        if( i == aItemNo )
-        {
-          ItemCheckedArray[i] = true;
-        }
-        else
-        {
-          ItemCheckedArray[i] = false;
-        }
+        DeviceInterface::VehicleDevice.CurrentTempSetting = Enum::TemperatureSettingItem.TEMP_C;
       }
-
-      Menu.InvalidateItems( ( int32 )Enum::TemperatureSettingItem.TEMP_C, ( int32 )Enum::TemperatureSettingItem.TEMP_F );
-      CheckMarkUpdateTimer.Enabled = true;
+      case 1:
+      {
+        DeviceInterface::VehicleDevice.CurrentTempSetting = Enum::TemperatureSettingItem.TEMP_F;
+      }
+      default:;
     }
+    Menu.InvalidateItems( ( int32 )Enum::TemperatureSettingItem.TEMP_C, ( int32 )Enum::TemperatureSettingItem.TEMP_F );
+    CheckMarkUpdateTimer.Enabled = true;
   }
 
   $rect <530,20,730,60>
   inherited method LoadItemChecked()
   {
     var bool IsChecked = false;
-    if( aItemNo < ItemCheckedArray.size )
+    switch( aItemNo )
     {
-      IsChecked = ItemCheckedArray[aItemNo];
+      case 0:
+      {
+        if( Enum::TemperatureSettingItem.TEMP_C == DeviceInterface::VehicleDevice.CurrentTempSetting )
+        {
+          IsChecked = true;
+        }
+      }
+      case 1:
+      {
+        if( Enum::TemperatureSettingItem.TEMP_F == DeviceInterface::VehicleDevice.CurrentTempSetting )
+        {
+          IsChecked = true;
+        }
+      }
+      default:;
     }
     return IsChecked;
   }

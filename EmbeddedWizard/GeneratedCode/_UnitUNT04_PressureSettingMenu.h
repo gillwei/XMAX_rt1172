@@ -118,7 +118,6 @@ EW_DEFINE_FIELDS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
   EW_ARRAY   ( ItemTitleArray,  XString, [3])
   EW_VARIABLE( PressureItemIdx, XInt32 )
-  EW_ARRAY   ( ItemCheckedArray, XBool, [3])
 EW_END_OF_FIELDS( UnitUNT04_PressureSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT04_PressureSettingMenu' */

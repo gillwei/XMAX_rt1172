@@ -119,7 +119,6 @@ EW_DEFINE_FIELDS( UnitUNT03_FuelSettingMenu, MenuBaseMenuView )
   EW_ARRAY   ( ItemTitleArray,  XString, [3])
   EW_VARIABLE( FuelItemIdx,     XInt32 )
   EW_ARRAY   ( ItemEnabledArray, XBool, [3])
-  EW_ARRAY   ( ItemCheckedArray, XBool, [3])
 EW_END_OF_FIELDS( UnitUNT03_FuelSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT03_FuelSettingMenu' */
