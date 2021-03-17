@@ -285,7 +285,11 @@ while( true )
             switch( recv_cmd )
                 {
                 case AMS_REMOTE_COMMAND_PLAY:
-                    if( BC_motocon_is_connected() )
+                    if( BC_ams_is_ams_connected() )
+                        {
+                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PLAY );
+                        }
+                    else if( BC_motocon_is_connected() )
                         {
                         // TODO: Because MotoCon SDK is not completed yet, I can only set playback state here in order to make UI reflect the play/pause status when
                         // sending play/pause remote command from LC. Once Yamaha updates MotoCon SDK regarding playback state. We have to remove below setting.
@@ -297,11 +301,15 @@ while( true )
                         }
                     else
                         {
-                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PLAY );
+                        PRINTF( "%s, play command can not be sent due to disconnection of AMS and MotoCon\r\n", __FUNCTION__ );
                         }
                     break;
                 case AMS_REMOTE_COMMAND_PAUSE:
-                    if( BC_motocon_is_connected() )
+                    if( BC_ams_is_ams_connected() )
+                        {
+                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PAUSE );
+                        }
+                    else if( BC_motocon_is_connected() )
                         {
                         // TODO: Because MotoCon SDK is not completed yet, I can only set playback state here in order to make UI reflect the play/pause status when
                         // sending play/pause remote command from LC. Once Yamaha updates MotoCon SDK regarding playback state. We have to remove below setting.
@@ -311,29 +319,37 @@ while( true )
                         }
                     else
                         {
-                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PAUSE );
+                        PRINTF( "%s, pause command can not be sent due to disconnection of AMS and MotoCon\r\n", __FUNCTION__ );
                         }
                     break;
                 case AMS_REMOTE_COMMAND_NEXT_TRACK:
                     mm_stop_elapsed_timer();
-                     if( BC_motocon_is_connected() )
+                    if( BC_ams_is_ams_connected() )
+                        {
+                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_NEXT_TRACK );
+                        }
+                    else if( BC_motocon_is_connected() )
                         {
                         BC_motocon_send_bt_music_control( BC_MOTOCON_MUSIC_NEXT_TRACK );
                         }
                     else
                         {
-                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_NEXT_TRACK );
+                        PRINTF( "%s, next track command can not be sent due to disconnection of AMS and MotoCon\r\n", __FUNCTION__ );
                         }
                     break;
                 case AMS_REMOTE_COMMAND_PREVIOUS_TRACK:
                     mm_stop_elapsed_timer();
-                    if( BC_motocon_is_connected() )
+                    if( BC_ams_is_ams_connected() )
+                        {
+                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PREVIOUS_TRACK );
+                        }
+                    else if( BC_motocon_is_connected() )
                         {
                         BC_motocon_send_bt_music_control( BC_MOTOCON_MUSIC_PREVIOUS_TRACK );
                         }
                     else
                         {
-                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_PREVIOUS_TRACK );
+                        PRINTF( "%s, previous track command can not be sent due to disconnection of AMS and MotoCon\r\n", __FUNCTION__ );
                         }
                     break;
                 // TODO: Enable when implementing volume control SCR.
