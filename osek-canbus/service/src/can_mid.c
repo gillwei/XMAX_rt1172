@@ -432,7 +432,7 @@ else
         }
 
     PRINTF( "Pos resp %x %x!\r\n", l_can_id, l_svc_id );
-    //TBD nodity upper layer to handle positive response.
+    VI_rx_positive_response_received( l_can_id, l_svc_id );
     }
 }
 

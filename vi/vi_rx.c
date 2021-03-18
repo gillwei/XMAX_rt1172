@@ -1086,6 +1086,26 @@ VI_set_supported_function( VEHICLE_FEATURE_CRUISE, support_functions->sfl.bit.cr
 
 /*********************************************************************
 *
+* @public
+* VI_rx_positive_response_received
+*
+* Notify from CAN stack that positive reponse is received
+*
+* @param can_id CAN message
+* @param request_service_id Request service id
+*
+*********************************************************************/
+void VI_rx_positive_response_received
+    (
+    const uint32_t can_id,
+    const uint8_t  request_service_id
+    )
+{
+PRINTF( "%s: can id 0x%x, svc id: 0x%x\r\n", __FUNCTION__, can_id, request_service_id );
+}
+
+/*********************************************************************
+*
 * @private
 * vi_rx_init_data
 *
