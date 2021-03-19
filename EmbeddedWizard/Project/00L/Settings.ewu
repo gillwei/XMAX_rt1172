@@ -1287,7 +1287,7 @@ class SET08_BtcPairDevice : Components::BaseMainBG
     var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
     PairText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
 
-    PasskeyText.String = Strings::SET08_PASSKEY + "\n" + string( DeviceInterface::BluetoothDevice.GetBtcPasskey() );
+    PasskeyText.String = Strings::SET08_PASSKEY + "\n" + string( DeviceInterface::BluetoothDevice.GetBtcPasskey(), Settings::BT_PASSKEY_LEN );
   }
 
   $rect <0,340,170,380>
@@ -2129,7 +2129,7 @@ class SET25_BlePincode : Components::BaseMainBG
   $rect <0,290,180,330>
   inherited method Init()
   {
-    var string PincodeString = string( DeviceInterface::BluetoothDevice.BlePincode );
+    var string PincodeString = string( DeviceInterface::BluetoothDevice.BlePincode, Settings::BT_PASSKEY_LEN );
     PincodeText.String = Strings::SET25_PIN + "\n" + PincodeString;
     trace "Init SET25 ", PincodeString;
   }
@@ -2292,3 +2292,7 @@ class SET28_SystemInfo : Components::BaseMainBG
     this.PresentDialog( new Settings::SET30_QRCode, null, null, null, null, null, null, null, null, false );
   }
 }
+
+$rect <20,510,220,550>
+$output false
+const int32 BT_PASSKEY_LEN = 6;

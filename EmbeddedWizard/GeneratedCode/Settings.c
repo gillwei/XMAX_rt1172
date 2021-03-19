@@ -1705,7 +1705,7 @@ void SettingsSET08_BtcPairDevice_Init( SettingsSET08_BtcPairDevice _this, XHandl
   ViewsText_OnSetString( &_this->PasskeyText, EwConcatString( EwConcatString( EwLoadString( 
   &StringsSET08_PASSKEY ), EwLoadString( &_Const0017 )), EwNewStringUInt( DeviceInterfaceBluetoothDeviceClass_GetBtcPasskey( 
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )), 
-  0, 10 )));
+  6, 10 )));
 }
 
 /* 'C' function for method : 'Settings::SET08_BtcPairDevice.OnNoActivatedSlot()' */
@@ -3509,7 +3509,7 @@ void SettingsSET25_BlePincode_Init( SettingsSET25_BlePincode _this, XHandle aArg
 
   PincodeString = EwNewStringUInt( DeviceInterfaceBluetoothDeviceClass_OnGetBlePincode( 
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )), 
-  0, 10 );
+  6, 10 );
   ViewsText_OnSetString( &_this->PincodeText, EwConcatString( EwConcatString( EwLoadString( 
   &StringsSET25_PIN ), EwLoadString( &_Const0017 )), PincodeString ));
   EwTrace( "%s%s", EwLoadString( &_Const0039 ), PincodeString );
