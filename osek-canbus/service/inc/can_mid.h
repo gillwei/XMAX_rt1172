@@ -216,39 +216,39 @@ typedef union
         /*------------------------------------------------------
         SFL Data0(message data3 )
         ------------------------------------------------------*/
-        boolean trip1              : 1;
-        boolean trip2              : 1;
-        boolean Ftrip              : 1;
-        boolean mt_brgtnss_adj     : 1;
-        boolean clk                : 1;
-        boolean tcs                : 1;
-        boolean grip_warmer        : 1;
         boolean seat_heater        : 1;
+        boolean grip_warmer        : 1;
+        boolean tcs                : 1;
+        boolean clk                : 1;
+        boolean mt_brgtnss_adj     : 1;
+        boolean Ftrip              : 1;
+        boolean trip2              : 1;
+        boolean trip1              : 1;
 
-        boolean wind_scrn          : 1;
-        boolean oil_trip           : 1;
-        boolean Vbelt_trip         : 1;
-        boolean Free1              : 1;
-        boolean Free2              : 1;
-        boolean avg_spd            : 1;
-        boolean crt_fuel           : 1;
         boolean avg_fuel           : 1;
+        boolean crt_fuel           : 1;
+        boolean avg_spd            : 1;
+        boolean Free2              : 1;
+        boolean Free1              : 1;
+        boolean Vbelt_trip         : 1;
+        boolean oil_trip           : 1;
+        boolean wind_scrn          : 1;
 
-        boolean fuel_cons          : 1;
-        boolean air                : 1;
-        boolean bat                : 1;
-        boolean coolant            : 1;
-        boolean rng                : 1;
-        boolean tire_frnt          : 1;
-        boolean tire_frnt_r        : 1;
         boolean tire_frnt_l        : 1;
+        boolean tire_frnt_r        : 1;
+        boolean tire_frnt          : 1;
+        boolean rng                : 1;
+        boolean coolant            : 1;
+        boolean bat                : 1;
+        boolean air                : 1;
+        boolean fuel_cons          : 1;
 
-        boolean tire_rear          : 1;
-        boolean tip_time           : 1;
-        boolean cruise             : 1;
         boolean rsv                : 5;
+        boolean cruise             : 1;
+        boolean tip_time           : 1;
+        boolean tire_rear          : 1;
 
-        uint8 unused            : 8;
+        uint8 unused               : 8;
         }bit;
 
     uint8 fsl_data[5];
