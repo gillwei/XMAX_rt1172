@@ -917,7 +917,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
         uint8_t* device_name;
         bool     is_connected;
         ew_bt_get_paired_device_at_index( aItemNo, &device_name, &is_connected );
-        DevName = EwNewStringAnsi( ( char* )device_name );
+        DevName = EwNewStringUtf8( (const unsigned char*)device_name, (int)strlen( (char*)device_name ) );
         IsConnected = is_connected;
       }
       PairedDeviceObj.DeviceName = DevName;
@@ -1096,7 +1096,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
       {
         uint8_t* device_name;
         ew_bt_get_local_device_name( &device_name );
-        LocalDevName = EwNewStringAnsi( ( char* )device_name );
+        LocalDevName = EwNewStringUtf8( (const unsigned char*)device_name, (int)strlen( (char*)device_name ) );
       }
     $else
       LocalDevName = "Prototyper";
@@ -1332,7 +1332,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
       {
         uint8_t* ble_connected_device_name;
         BTM_get_ble_connected_device_name( &ble_connected_device_name );
-        BleConnectedDeviceName = EwNewStringAnsi( ( char* )ble_connected_device_name );
+        BleConnectedDeviceName = EwNewStringUtf8( (const unsigned char*)ble_connected_device_name, (int)strlen( (char*)ble_connected_device_name ) );
       }
     $endif
 
@@ -1428,7 +1428,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
       {
         uint8_t* btc_pairing_device_name;
         ew_bt_get_btc_connecting_device_name( &btc_pairing_device_name );
-        PairingDeviceName = EwNewStringAnsi( ( char* )btc_pairing_device_name );
+        PairingDeviceName = EwNewStringUtf8( (const unsigned char*)btc_pairing_device_name, (int)strlen( (char*)btc_pairing_device_name ) );
       }
     $else
       PairingDeviceName = "(Device name)";
@@ -1713,7 +1713,7 @@ class WeatherDeviceClass : Templates::DeviceClass
       {
         char* cur_loc;
         ew_get_weather_loc( &cur_loc );
-        CurrentLoc = EwNewStringAnsi( cur_loc );
+        CurrentLoc = EwNewStringUtf8( (const unsigned char*) cur_loc, (int)strlen( cur_loc ) );
       }
     WeatherLocation = CurrentLoc;
     $endif

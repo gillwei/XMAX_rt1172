@@ -1170,7 +1170,7 @@ void DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceAtItem( DeviceInterfaceB
     uint8_t* device_name;
     bool     is_connected;
     ew_bt_get_paired_device_at_index( aItemNo, &device_name, &is_connected );
-    DevName = EwNewStringAnsi( ( char* )device_name );
+    DevName = EwNewStringUtf8( (const unsigned char*)device_name, (int)strlen( (char*)device_name ) );
     IsConnected = is_connected;
   }
   _this->PairedDeviceObj.DeviceName = EwShareString( DevName );
@@ -1292,7 +1292,7 @@ XString DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceName( DeviceInterfac
   {
     uint8_t* device_name;
     ew_bt_get_local_device_name( &device_name );
-    LocalDevName = EwNewStringAnsi( ( char* )device_name );
+    LocalDevName = EwNewStringUtf8( (const unsigned char*)device_name, (int)strlen( (char*)device_name ) );
   }
   return LocalDevName;
 }
@@ -1470,7 +1470,7 @@ XString DeviceInterfaceBluetoothDeviceClass_GetBleConnectedDeviceName( DeviceInt
   {
     uint8_t* ble_connected_device_name;
     BTM_get_ble_connected_device_name( &ble_connected_device_name );
-    BleConnectedDeviceName = EwNewStringAnsi( ( char* )ble_connected_device_name );
+    BleConnectedDeviceName = EwNewStringUtf8( (const unsigned char*)ble_connected_device_name, (int)strlen( (char*)ble_connected_device_name ) );
   }
   return BleConnectedDeviceName;
 }
@@ -1563,7 +1563,7 @@ XString DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( DeviceInter
   {
     uint8_t* btc_pairing_device_name;
     ew_bt_get_btc_connecting_device_name( &btc_pairing_device_name );
-    PairingDeviceName = EwNewStringAnsi( ( char* )btc_pairing_device_name );
+    PairingDeviceName = EwNewStringUtf8( (const unsigned char*)btc_pairing_device_name, (int)strlen( (char*)btc_pairing_device_name ) );
   }
   return PairingDeviceName;
 }
@@ -1969,7 +1969,7 @@ void DeviceInterfaceWeatherDeviceClass_GetWeatherLoc( DeviceInterfaceWeatherDevi
   {
     char* cur_loc;
     ew_get_weather_loc( &cur_loc );
-    CurrentLoc = EwNewStringAnsi( cur_loc );
+    CurrentLoc = EwNewStringUtf8( (const unsigned char*) cur_loc, (int)strlen( cur_loc ) );
   }
   _this->WeatherLocation = EwShareString( CurrentLoc );
 }
