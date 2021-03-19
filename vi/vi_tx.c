@@ -50,7 +50,7 @@
 /*********************************************************************
 *
 * @private
-* send_meter_brightngess_operation
+* send_meter_brightness_operation
 *
 * Send meter brightness operation
 *
@@ -60,7 +60,7 @@
 *                       IL_VT_DEV_CTRL_LCD_BRGHTNSS_UP
 *
 *********************************************************************/
-void send_meter_brightngess_operation
+static void send_meter_brightness_operation
     (
     uint8_t operation_code
     )
@@ -74,7 +74,7 @@ PRINTF( "%s %d\r\n", __FUNCTION__, operation_code );
 /*********************************************************************
 *
 * @private
-* send_tft_brightngess_operation
+* send_tft_brightness_operation
 *
 * Send TFT brightness operation
 *
@@ -84,7 +84,7 @@ PRINTF( "%s %d\r\n", __FUNCTION__, operation_code );
 *                       IL_VT_DEV_CTRL_TFT_BRGHTNSS_UP
 *
 *********************************************************************/
-void send_tft_brightngess_operation
+static void send_tft_brightness_operation
     (
     uint8_t operation_code
     )
@@ -139,7 +139,7 @@ switch( tx_type )
     case EnumVehicleTxTypeWIND_SCREEN_OPERATION:
         break;
     case EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION:
-        send_meter_brightngess_operation( (uint8_t)data );
+        send_meter_brightness_operation( (uint8_t)data );
         break;
     case EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL:
         break;
@@ -148,7 +148,7 @@ switch( tx_type )
     case EnumVehicleTxTypeCHG_METER_INFO:
         break;
     case EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION:
-        send_tft_brightngess_operation( (uint8_t)data );
+        send_tft_brightness_operation( (uint8_t)data );
         break;
     default:
         PRINTF( "Err: %s invalid tx type %d\r\n", __FUNCTION__, tx_type );

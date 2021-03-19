@@ -299,7 +299,7 @@ class BRT03_MeterBrightness : Components::BaseMainBG
   $rect <210,440,440,480>
   inherited method OnShortDownKeyActivated()
   {
-    if( Brightness::TFT_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
+    if( Brightness::METER_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
     {
       DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::OPERATION_DOWN_CODE );
     }
@@ -316,7 +316,7 @@ class BRT03_MeterBrightness : Components::BaseMainBG
   $rect <210,540,440,580>
   inherited method OnShortUpKeyActivated()
   {
-    if( Brightness::TFT_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
+    if( Brightness::METER_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
     {
       DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::OPERAION_UP_CODE );
     }

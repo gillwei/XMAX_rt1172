@@ -632,7 +632,7 @@ void BrightnessBRT03_MeterBrightness_OnShortDownKeyActivated( BrightnessBRT03_Me
 /* 'C' function for method : 'Brightness::BRT03_MeterBrightness.OnShortUpKeyActivated()' */
 void BrightnessBRT03_MeterBrightness_OnShortUpKeyActivated( BrightnessBRT03_MeterBrightness _this )
 {
-  if ( 3 > _this->BrightnessLevel )
+  if ( 6 > _this->BrightnessLevel )
   {
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION, 
