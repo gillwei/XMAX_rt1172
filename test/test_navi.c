@@ -22,7 +22,8 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define TEST_NAVI_PERIOD_MS     ( 1000 )
+#define TEST_NAVI_PERIOD_MS                 ( 1000 )
+#define MAX_TBT_LIST_SIZE                   ( 50   )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -34,7 +35,9 @@ typedef enum
     TEST_NAVI_SPEEDLIMIT,
     TEST_NAVI_DAYNIGHT,
     TEST_NAVI_EVENT,
-    TEST_NAVI_ROUTE_START,
+    TEST_NAVI_ROUTE_GUIDANCE_STATUS,
+    TEST_NAVI_TBT_LIST,
+    TEST_NAVI_TBT_ACTIVE_TBT,
     TEST_NAVI_TOTAL_ITEM
     } navi_test_type;
 
@@ -61,7 +64,9 @@ typedef enum
     static bool is_navi_event_sent = false;
     static navi_data_type navi_data_obj;
     static bool is_route_guidance_started = false;
-
+    static int active_tbt_item = 1;
+    static navi_tbt_data_type tbt_list[MAX_TBT_LIST_SIZE];
+    static int num_of_tbt_list_item = 0;
 #endif
 
 /*--------------------------------------------------------------------
@@ -182,6 +187,44 @@ typedef enum
     /*********************************************************************
     *
     * @private
+    * test_navi_tbt_list
+    *
+    * Test TBT list.
+    *
+    *********************************************************************/
+    static void test_navi_tbt_list
+        (
+        void
+        )
+    {
+    PRINTF( "TBT list update\r\n" );
+    if( num_of_tbt_list_item < MAX_TBT_LIST_SIZE )
+        {
+        EW_notify_tbt_list_update( num_of_tbt_list_item );
+        }
+    }
+
+    /*********************************************************************
+    *
+    * @private
+    * test_navi_active_tbt_item
+    *
+    * Test TBT active item.
+    *
+    *********************************************************************/
+    static void test_navi_active_tbt_item
+        (
+        uint32_t index
+        )
+    {
+    PRINTF( "Active Tbt item index: %d\r\n", index );
+
+    EW_notify_active_tbt_item_update( index );
+    }
+
+    /*********************************************************************
+    *
+    * @private
     * test_navi_event
     *
     * Test Navi event.
@@ -281,9 +324,9 @@ typedef enum
     /*********************************************************************
     *
     * @public
-    * TEST_get_navi_event
+    * TEST_get_navi_obj
     *
-    * Get navi event.
+    * Get navi object.
     *
     *********************************************************************/
     navi_data_type* TEST_get_navi_obj
@@ -292,6 +335,35 @@ typedef enum
         )
     {
     return &navi_data_obj;
+    }
+
+    /*********************************************************************
+    *
+    * @public
+    * TEST_get_navi_tbt_data
+    *
+    * Get navi tbt data.
+    *
+    *********************************************************************/
+    void TEST_get_navi_tbt_data
+        (
+        const int active_tbt_index,
+        uint32_t* list_index,
+        uint32_t* icon_index,
+        uint16_t* distance,
+        char** dist_unit,
+        char** description
+        )
+    {
+    if( active_tbt_index < MAX_TBT_LIST_SIZE )
+        {
+        *list_index = tbt_list[active_tbt_index].list_idx;
+        *icon_index = tbt_list[active_tbt_index].icon_idx;
+        *distance = tbt_list[active_tbt_index].distance;
+        *dist_unit = tbt_list[active_tbt_index].dist_unit;
+        *description = tbt_list[active_tbt_index].description;
+        }
+    PRINTF( "%s, %d, %d, %d, %d, %s, %s\r\n", __FUNCTION__, active_tbt_index, *list_index, *icon_index, *distance, *dist_unit, *description );
     }
 
     /*********************************************************************
@@ -345,9 +417,19 @@ typedef enum
                     }
                 }
                 break;
-            case TEST_NAVI_ROUTE_START:
+            case TEST_NAVI_ROUTE_GUIDANCE_STATUS:
                 {
                 test_navi_navigating_status( is_route_guidance_started );
+                }
+                break;
+            case TEST_NAVI_TBT_LIST:
+                {
+                test_navi_tbt_list();
+                }
+                break;
+            case TEST_NAVI_TBT_ACTIVE_TBT:
+                {
+                test_navi_active_tbt_item( active_tbt_item );
                 }
                 break;
             default:
@@ -379,6 +461,38 @@ typedef enum
         void
         )
     {
+    // Prepare TBT list fake data.
+    navi_tbt_data_type tbt_item;
+    tbt_item.list_idx = 0;
+    tbt_item.icon_idx = 0;
+    tbt_item.distance = 150;
+    memset( tbt_item.dist_unit, 0, MAX_TBT_DIST_UNIT_SIZE );
+    strncpy( tbt_item.dist_unit, "m", MAX_TBT_DIST_UNIT_SIZE );
+    memset( tbt_item.description, 0, MAX_TBT_DESCRIPTION_SIZE );
+    strncpy( tbt_item.description, "Turn Left on Xintai 5th Road", MAX_TBT_DESCRIPTION_SIZE );
+
+    tbt_list[0] = tbt_item;
+
+    tbt_item.list_idx = 1;
+    tbt_item.icon_idx = 1;
+    tbt_item.distance = 100;
+    memset( tbt_item.dist_unit, 0, MAX_TBT_DIST_UNIT_SIZE );
+    strncpy( tbt_item.dist_unit, "m", MAX_TBT_DIST_UNIT_SIZE );
+    memset( tbt_item.description, 0, MAX_TBT_DESCRIPTION_SIZE );
+    strncpy( tbt_item.description, "Turn Left on Datong Road", MAX_TBT_DESCRIPTION_SIZE );
+
+    tbt_list[1] = tbt_item;
+
+    tbt_item.list_idx = 2;
+    tbt_item.icon_idx = 2;
+    tbt_item.distance = 50;
+    memset( tbt_item.dist_unit, 0, MAX_TBT_DIST_UNIT_SIZE );
+    strncpy( tbt_item.dist_unit, "m", MAX_TBT_DIST_UNIT_SIZE );
+    memset( tbt_item.description, 0, MAX_TBT_DESCRIPTION_SIZE );
+    strncpy( tbt_item.description, "Turn Right on Nangang Road Sec.1", MAX_TBT_DESCRIPTION_SIZE );
+
+    tbt_list[2] = tbt_item;
+    num_of_tbt_list_item = 3;
     return;
     }
 #endif

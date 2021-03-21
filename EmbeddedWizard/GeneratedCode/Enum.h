@@ -413,6 +413,14 @@ typedef enum
   EnumOperationModeTOTAL                = 3
 } EnumOperationMode;
 
+/* User defined enumeration: 'Enum::NaviTurnStatusType' */
+typedef enum
+{
+  EnumNaviTurnStatusTypeCONTINUE_LEFT   = 0,
+  EnumNaviTurnStatusTypeTURN_LEFT       = 1,
+  EnumNaviTurnStatusTypeTURN_RIGHT      = 2
+} EnumNaviTurnStatusType;
+
 #ifdef __cplusplus
   }
 #endif

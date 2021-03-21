@@ -423,7 +423,7 @@ void MenuVerticalMenu__Init( MenuVerticalMenu _this, XObject aLink, XHandle aArg
   CoreGroup__Add( _this, ((CoreView)&_this->FocusFrame ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ArrowScrollBar ), 0 );
   CoreGroup__OnSetFocus( &_this->MenuList, 0 );
-  _this->MenuList.OnLoadItem = EwNewSlot( _this, MenuVerticalMenu_OnLoadItemSlot );
+  _this->MenuList.OnLoadItem = EwNewSlot( _this, MenuVerticalMenu__OnLoadItemSlot );
   ViewsImage_OnSetBitmap( &_this->StatusBarDivider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
   _this->PageScrollEffect.Super1.OnFinished = EwNewSlot( _this, MenuVerticalMenu_OnPageScrolledSlot );
@@ -581,6 +581,12 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
     CoreRectView__OnSetBounds( Item, EwSetRectSize( Item->Super2.Bounds, EwNewPoint( 
     EwGetRectW( _this->MenuList.Super2.Bounds ), _this->MenuList.ItemHeight )));
   }
+}
+
+/* Wrapper function for the virtual method : 'Menu::VerticalMenu.OnLoadItemSlot()' */
+void MenuVerticalMenu__OnLoadItemSlot( void* _this, XObject sender )
+{
+  ((MenuVerticalMenu)_this)->_VMT->OnLoadItemSlot((MenuVerticalMenu)_this, sender );
 }
 
 /* 'C' function for method : 'Menu::VerticalMenu.OnItemActivateSlot()' */
@@ -802,6 +808,7 @@ EW_DEFINE_CLASS( MenuVerticalMenu, ComponentsBaseComponent, MenuList, MenuList,
   ComponentsBaseComponent_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
+  MenuVerticalMenu_OnLoadItemSlot,
 EW_END_OF_CLASS( MenuVerticalMenu )
 
 /* Initializer for the class 'Menu::ItemCheckbox' */

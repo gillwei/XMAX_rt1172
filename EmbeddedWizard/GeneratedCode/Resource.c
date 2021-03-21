@@ -553,6 +553,48 @@ EW_RES_WITHOUT_VARIANTS( ResourceChessboard )
 /* Table with links to derived variants of the bitmap resource : 'Resource::SignalLevelIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceSignalLevelIcon )
 
+/* Include a file containing the bitmap resource : 'Resource::NaviTBTViewBg' */
+#include "_ResourceNaviTBTViewBg.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTBTViewBg' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTBTViewBg )
+
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwContinueIrgTbt' */
+#include "_ResourceNaviTurnArrwContinueIrgTbt.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwContinueIrgTbt' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwContinueIrgTbt )
+
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwTurnLIrgTbt' */
+#include "_ResourceNaviTurnArrwTurnLIrgTbt.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwTurnLIrgTbt' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwTurnLIrgTbt )
+
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwTurnRIrgTbt' */
+#include "_ResourceNaviTurnArrwTurnRIrgTbt.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwTurnRIrgTbt' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwTurnRIrgTbt )
+
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwKeepLIrg28' */
+#include "_ResourceNaviTurnArrwKeepLIrg28.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwKeepLIrg28' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwKeepLIrg28 )
+
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwTurnLIrg28' */
+#include "_ResourceNaviTurnArrwTurnLIrg28.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwTurnLIrg28' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwTurnLIrg28 )
+
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwTurnRIrg28' */
+#include "_ResourceNaviTurnArrwTurnRIrg28.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwTurnRIrg28' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwTurnRIrg28 )
+
 /* User defined constant: 'Resource::EXTERN_BMP_QRCODE' */
 const XStringRes ResourceEXTERN_BMP_QRCODE = { _StringsDefault0, 0x0002 };
 

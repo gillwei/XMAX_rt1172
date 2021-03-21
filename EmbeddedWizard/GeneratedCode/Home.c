@@ -30,6 +30,7 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreRoot.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_HomeBaseHome.h"
 #include "_HomeHOM03_VehicleInfo.h"
@@ -540,7 +541,7 @@ XEnum HomeBaseHome_GetNextHomeType( HomeBaseHome _this, XEnum aCurrentHomeType )
     case EnumHomeTypeECO_VISUALIZER :
     case EnumHomeTypeSPEED_VISUALIZER :
     {
-      NextHomeType = EnumHomeTypeNAVI_DEFAULT_VIEW;
+      NextHomeType = EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome;
     }
     break;
 

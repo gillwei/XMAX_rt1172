@@ -615,11 +615,7 @@ class NavigationDeviceClass : Templates::DeviceClass
       #endif
     }
     $else
-      // suppress warning
-      if( ( int32 )aDataType >= 0 )
-      {
-        // empty
-      }
+      aDataType; // suppress warning.
     $endif
 
     return NaviData;
@@ -652,6 +648,70 @@ class NavigationDeviceClass : Templates::DeviceClass
   {
     NavigatingStatusUpdateEvent.Trigger( null, false );
   }
+
+  $rect <220,400,420,440>
+  object Core::SystemEvent TbtListUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,400,220,440>
+  $output true
+  method void NotifyTbtListUpdate( arg int32 aNewTbtListSize )
+  {
+    TbtListSize = aNewTbtListSize;
+    TbtListUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <220,450,420,490>
+  object Core::SystemEvent ActiveTbtItemUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,450,220,490>
+  $output true
+  method void NotifyActiveTbtItemUpdate( arg int32 aNewActiveTbtItemIdx )
+  {
+    ActiveTbtItemIdx = aNewActiveTbtItemIdx;
+    ActiveTbtItemUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <460,210,660,250>
+  method DeviceInterface::NaviTbtDataClass GetNaviTbtData( arg int32 aTbtItemIdx )
+  {
+    var DeviceInterface::NaviTbtDataClass NaviTbtData = new DeviceInterface::NaviTbtDataClass;
+
+    $if !$prototyper
+      native( NaviTbtData, aTbtItemIdx )
+      {
+        #if( UNIT_TEST_NAVI )
+          uint32_t list_idx;
+          uint32_t icon_idx;
+          uint16_t distance;
+          char* dist_unit;
+          char* description;
+          TEST_get_navi_tbt_data( aTbtItemIdx, &list_idx, &icon_idx, &distance, &dist_unit, &description );
+          NaviTbtData->ListIdx = list_idx;
+          NaviTbtData->IconIdx = icon_idx;
+          NaviTbtData->Distance = distance;
+          NaviTbtData->DistUnit = EwNewStringUtf8( ( const unsigned char* )dist_unit, ( int )strlen( dist_unit ) );
+          NaviTbtData->TbtDescription = EwNewStringUtf8( ( const unsigned char* )description, ( int )strlen( description ) );
+        #endif
+      }
+    $else
+      aTbtItemIdx; // suppress warning.
+    $endif
+
+    return NaviTbtData;
+  }
+
+  $rect <480,40,680,80>
+  var int32 ActiveTbtItemIdx;
+
+  $rect <480,90,680,130>
+  var int32 TbtListSize = 0;
+
+  $rect <710,40,910,80>
+  var Enum::HomeType CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
 }
 
 $rect <19,210,229,250>
@@ -1943,3 +2003,23 @@ class NotificationDeviceClass : Templates::DeviceClass
 
 $rect <290,450,490,490>
 autoobject DeviceInterface::NotificationDeviceClass NotificationDevice;
+
+$rect <280,100,480,140>
+$output false
+class NaviTbtDataClass
+{
+  $rect <50,40,250,80>
+  var int32 IconIdx;
+
+  $rect <50,90,250,130>
+  var string DistUnit;
+
+  $rect <50,150,250,190>
+  var string TbtDescription;
+
+  $rect <50,210,250,250>
+  var int32 ListIdx;
+
+  $rect <50,260,250,300>
+  var int32 Distance;
+}

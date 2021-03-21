@@ -288,6 +288,27 @@ EW_DECLARE_BITMAP_RES( ResourceChessboard )
 /* Bitmap resource : 'Resource::SignalLevelIcon' */
 EW_DECLARE_BITMAP_RES( ResourceSignalLevelIcon )
 
+/* Bitmap resource : 'Resource::NaviTBTViewBg' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTBTViewBg )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwContinueIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwContinueIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwTurnLIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwTurnLIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwTurnRIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwTurnRIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwKeepLIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwKeepLIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwTurnLIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwTurnLIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwTurnRIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwTurnRIrg28 )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

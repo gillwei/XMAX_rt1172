@@ -47,6 +47,8 @@
 #include "_HomeHOM13_SpeedVisualizer.h"
 #include "_LauncherLNC_Main.h"
 #include "_NavigationNAV01_DefaultView.h"
+#include "_NavigationNAV03_TBTListView.h"
+#include "_NavigationNAV05_TBTView.h"
 #include "_OpenOPN01_BootupAnimation.h"
 #include "_OpenOPN02_FactoryMode.h"
 #include "_SettingsBtFwUpdateDialog.h"
@@ -438,11 +440,11 @@ XClass ApplicationApplication_HomeClassOfHomeType( ApplicationApplication _this,
     break;
 
     case EnumHomeTypeNAVI_TURN_BY_TURN :
-      ;
+      HomeClass = EW_CLASS( NavigationNAV03_TBTListView );
     break;
 
     case EnumHomeTypeNAVI_NEXT_TURN :
-      ;
+      HomeClass = EW_CLASS( NavigationNAV05_TBTView );
     break;
 
     case EnumHomeTypeVEHICLE_INFO :
@@ -486,11 +488,11 @@ CoreGroup ApplicationApplication_HomeDialogOfHomeType( ApplicationApplication _t
     break;
 
     case EnumHomeTypeNAVI_TURN_BY_TURN :
-      ;
+      aHomeDialog = ((CoreGroup)EwNewObject( NavigationNAV03_TBTListView, 0 ));
     break;
 
     case EnumHomeTypeNAVI_NEXT_TURN :
-      ;
+      aHomeDialog = ((CoreGroup)EwNewObject( NavigationNAV05_TBTView, 0 ));
     break;
 
     case EnumHomeTypeVEHICLE_INFO :

@@ -862,7 +862,7 @@ enum ReceptionStatus
   item ERROR;
 }
 
-$rect <500,170,700,210>
+$rect <260,530,460,570>
 $output false
 enum OperationMode
 {
@@ -877,4 +877,26 @@ enum OperationMode
 
   $rect <10,160,210,200>
   item TOTAL;
+}
+
+$rect <500,180,700,220>
+$output false
+enum NaviTurnStatusType
+{
+  $rect <10,10,210,50>
+  item CONTINUE_LEFT;
+
+  $rect <220,10,420,50>
+  item TURN_LEFT;
+
+  $rect <430,10,630,50>
+  item TURN_RIGHT;
+
+  // TODO:
+  // Have to confirm with navi app team about the definition of each index of arrow \
+  // image in order to finish the enum definition.
+  note group Note
+  {
+    attr Bounds = <670,10,970,210>;
+  }
 }

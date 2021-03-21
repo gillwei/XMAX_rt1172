@@ -173,6 +173,7 @@ EW_DEFINE_METHODS( MenuVerticalMenu, ComponentsBaseComponent )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLoadItemSlot,    void )( MenuVerticalMenu _this, XObject sender )
 EW_END_OF_METHODS( MenuVerticalMenu )
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -200,6 +201,9 @@ void MenuVerticalMenu_OnShortUpKeyActivated( MenuVerticalMenu _this );
 /* This method is called by 'VerticalList' every time the list loads or updates 
    an item. */
 void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender );
+
+/* Wrapper function for the virtual method : 'Menu::VerticalMenu.OnLoadItemSlot()' */
+void MenuVerticalMenu__OnLoadItemSlot( void* _this, XObject sender );
 
 /* 'C' function for method : 'Menu::VerticalMenu.OnItemActivateSlot()' */
 void MenuVerticalMenu_OnItemActivateSlot( MenuVerticalMenu _this, XObject sender );

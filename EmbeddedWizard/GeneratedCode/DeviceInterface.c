@@ -32,6 +32,7 @@
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
 #include "_DeviceInterfaceMotoConContext.h"
 #include "_DeviceInterfaceNaviDataClass.h"
+#include "_DeviceInterfaceNaviTbtDataClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
@@ -562,9 +563,14 @@ void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Init( &_this->SpeedLimitUpdateEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->NaviIncidentUpdateEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->NavigatingStatusUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->TbtListUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->ActiveTbtItemUpdateEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceNavigationDeviceClass );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  _this->CurrentHome = EnumHomeTypeNAVI_DEFAULT_VIEW;
 }
 
 /* Re-Initializer for the class 'DeviceInterface::NavigationDeviceClass' */
@@ -581,6 +587,8 @@ void DeviceInterfaceNavigationDeviceClass__ReInit( DeviceInterfaceNavigationDevi
   CoreSystemEvent__ReInit( &_this->SpeedLimitUpdateEvent );
   CoreSystemEvent__ReInit( &_this->NaviIncidentUpdateEvent );
   CoreSystemEvent__ReInit( &_this->NavigatingStatusUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->TbtListUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->ActiveTbtItemUpdateEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NavigationDeviceClass' */
@@ -597,6 +605,8 @@ void DeviceInterfaceNavigationDeviceClass__Done( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Done( &_this->SpeedLimitUpdateEvent );
   CoreSystemEvent__Done( &_this->NaviIncidentUpdateEvent );
   CoreSystemEvent__Done( &_this->NavigatingStatusUpdateEvent );
+  CoreSystemEvent__Done( &_this->TbtListUpdateEvent );
+  CoreSystemEvent__Done( &_this->ActiveTbtItemUpdateEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -777,13 +787,76 @@ void DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate( void* _
   DeviceInterfaceNavigationDeviceClass_NotifyNavigatingStatusUpdate((DeviceInterfaceNavigationDeviceClass)_this );
 }
 
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyTbtListUpdate( DeviceInterfaceNavigationDeviceClass _this, 
+  XInt32 aNewTbtListSize )
+{
+  _this->TbtListSize = aNewTbtListSize;
+  CoreSystemEvent_Trigger( &_this->TbtListUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyTbtListUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate( void* _this, XInt32 
+  aNewTbtListSize )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyTbtListUpdate((DeviceInterfaceNavigationDeviceClass)_this
+  , aNewTbtListSize );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyActiveTbtItemUpdate( DeviceInterfaceNavigationDeviceClass _this, 
+  XInt32 aNewActiveTbtItemIdx )
+{
+  _this->ActiveTbtItemIdx = aNewActiveTbtItemIdx;
+  CoreSystemEvent_Trigger( &_this->ActiveTbtItemUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyActiveTbtItemUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyActiveTbtItemUpdate( void* _this, 
+  XInt32 aNewActiveTbtItemIdx )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyActiveTbtItemUpdate((DeviceInterfaceNavigationDeviceClass)_this
+  , aNewActiveTbtItemIdx );
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviTbtData()' */
+DeviceInterfaceNaviTbtDataClass DeviceInterfaceNavigationDeviceClass_GetNaviTbtData( DeviceInterfaceNavigationDeviceClass _this, 
+  XInt32 aTbtItemIdx )
+{
+  DeviceInterfaceNaviTbtDataClass NaviTbtData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NaviTbtData = EwNewObject( DeviceInterfaceNaviTbtDataClass, 0 );
+  {
+    #if( UNIT_TEST_NAVI )
+      uint32_t list_idx;
+      uint32_t icon_idx;
+      uint16_t distance;
+      char* dist_unit;
+      char* description;
+      TEST_get_navi_tbt_data( aTbtItemIdx, &list_idx, &icon_idx, &distance, &dist_unit, &description );
+      NaviTbtData->ListIdx = list_idx;
+      NaviTbtData->IconIdx = icon_idx;
+      NaviTbtData->Distance = distance;
+      NaviTbtData->DistUnit = EwNewStringUtf8( ( const unsigned char* )dist_unit, ( int )strlen( dist_unit ) );
+      NaviTbtData->TbtDescription = EwNewStringUtf8( ( const unsigned char* )description, ( int )strlen( description ) );
+    #endif
+  }
+  return NaviTbtData;
+}
+
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::NavigationDeviceClass' */
 EW_DEFINE_CLASS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass, MapUpdateEvent, 
-                 MapUpdateEvent, MapUpdateEvent, MapUpdateEvent, _None, _None, "DeviceInterface::NavigationDeviceClass" )
+                 MapUpdateEvent, MapUpdateEvent, MapUpdateEvent, ActiveTbtItemIdx, 
+                 ActiveTbtItemIdx, "DeviceInterface::NavigationDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceNavigationDeviceClass )
 
 /* User defined auto object: 'DeviceInterface::NavigationDevice' */
@@ -2288,5 +2361,44 @@ void DeviceInterfaceNotificationDevice__Init( DeviceInterfaceNotificationDeviceC
 /* Table with links to derived variants of the auto object : 'DeviceInterface::NotificationDevice' */
 EW_DEFINE_AUTOOBJECT_VARIANTS( DeviceInterfaceNotificationDevice )
 EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceNotificationDevice )
+
+/* Initializer for the class 'DeviceInterface::NaviTbtDataClass' */
+void DeviceInterfaceNaviTbtDataClass__Init( DeviceInterfaceNaviTbtDataClass _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceNaviTbtDataClass );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( DeviceInterfaceNaviTbtDataClass );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::NaviTbtDataClass' */
+void DeviceInterfaceNaviTbtDataClass__ReInit( DeviceInterfaceNaviTbtDataClass _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::NaviTbtDataClass' */
+void DeviceInterfaceNaviTbtDataClass__Done( DeviceInterfaceNaviTbtDataClass _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_Super );
+}
+
+/* Variants derived from the class : 'DeviceInterface::NaviTbtDataClass' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNaviTbtDataClass )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNaviTbtDataClass )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::NaviTbtDataClass' */
+EW_DEFINE_CLASS( DeviceInterfaceNaviTbtDataClass, XObject, DistUnit, DistUnit, DistUnit, 
+                 DistUnit, DistUnit, IconIdx, "DeviceInterface::NaviTbtDataClass" )
+EW_END_OF_CLASS( DeviceInterfaceNaviTbtDataClass )
 
 /* Embedded Wizard */

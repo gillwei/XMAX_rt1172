@@ -180,3 +180,19 @@ const int32 ROW_DISTANCE_24PT = 31;
 $rect <610,80,810,120>
 $output false
 const int32 ROW_DISTANCE_28PT = 36;
+
+$rect <300,80,570,120>
+$output false
+resource Resources::Font NotoSansBold38pt
+{
+  attr fontname FontName = Noto Sans;
+  attr fontheight Height = 38;
+  attr fontheightmode HeightMode = Popular;
+  attr fontquality Quality = Medium;
+  attr fontranges Ranges = 0x20-0xFF;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontrowdistance RowDistance;
+}

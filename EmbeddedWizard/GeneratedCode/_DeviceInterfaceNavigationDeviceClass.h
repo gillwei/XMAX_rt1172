@@ -51,6 +51,12 @@
 #define _DeviceInterfaceNaviDataClass_
 #endif
 
+/* Forward declaration of the class DeviceInterface::NaviTbtDataClass */
+#ifndef _DeviceInterfaceNaviTbtDataClass_
+  EW_DECLARE_CLASS( DeviceInterfaceNaviTbtDataClass )
+#define _DeviceInterfaceNaviTbtDataClass_
+#endif
+
 /* Forward declaration of the class DeviceInterface::NavigationDeviceClass */
 #ifndef _DeviceInterfaceNavigationDeviceClass_
   EW_DECLARE_CLASS( DeviceInterfaceNavigationDeviceClass )
@@ -67,6 +73,11 @@ EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( SpeedLimitUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( NaviIncidentUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( NavigatingStatusUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( TbtListUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( ActiveTbtItemUpdateEvent, CoreSystemEvent )
+  EW_VARIABLE( ActiveTbtItemIdx, XInt32 )
+  EW_VARIABLE( TbtListSize,     XInt32 )
+  EW_VARIABLE( CurrentHome,     XEnum )
 EW_END_OF_FIELDS( DeviceInterfaceNavigationDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::NavigationDeviceClass' */
@@ -152,6 +163,34 @@ void DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate( void* _
 
 /* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyNavigatingStatusUpdate(). */
 #define _DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyTbtListUpdate( DeviceInterfaceNavigationDeviceClass _this, 
+  XInt32 aNewTbtListSize );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyTbtListUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate( void* _this, XInt32 
+  aNewTbtListSize );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyTbtListUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyActiveTbtItemUpdate( DeviceInterfaceNavigationDeviceClass _this, 
+  XInt32 aNewActiveTbtItemIdx );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyActiveTbtItemUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyActiveTbtItemUpdate( void* _this, 
+  XInt32 aNewActiveTbtItemIdx );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyActiveTbtItemUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyActiveTbtItemUpdate_
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviTbtData()' */
+DeviceInterfaceNaviTbtDataClass DeviceInterfaceNavigationDeviceClass_GetNaviTbtData( DeviceInterfaceNavigationDeviceClass _this, 
+  XInt32 aTbtItemIdx );
 
 #ifdef __cplusplus
   }

@@ -43,12 +43,16 @@
 #endif
 
 #include "_NavigationNAV01_DefaultView.h"
+#include "_NavigationNAV03_TBTListView.h"
+#include "_NavigationNAV05_TBTView.h"
 #include "_NavigationNAV06_NaviSettingMenu.h"
 #include "_NavigationNAV08_NaviChageViewMenu.h"
 #include "_NavigationNaviAlert.h"
 #include "_NavigationNaviAlertMessage.h"
 #include "_NavigationNaviCurrentRoad.h"
 #include "_NavigationNaviETA.h"
+#include "_NavigationTbtInfoItem.h"
+#include "_NavigationTbtListMenu.h"
 
 /* User defined constant: 'Navigation::TIMETEXT_WO_NAVI_BOUNDS' */
 extern const XRect NavigationTIMETEXT_WO_NAVI_BOUNDS;

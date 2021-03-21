@@ -117,7 +117,6 @@ EW_DEFINE_FIELDS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
   EW_ARRAY   ( ItemTitleArray,  XString, [3])
   EW_VARIABLE( NaviScreenIdx,   XInt32 )
-  EW_ARRAY   ( ItemCheckedArray, XBool, [3])
 EW_END_OF_FIELDS( NavigationNAV08_NaviChageViewMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV08_NaviChageViewMenu' */

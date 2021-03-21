@@ -57,6 +57,14 @@
     static int ew_notify_navi_navigating_status_update( void );
 #endif
 
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate_
+    static int ew_notify_navi_tbt_list_update( void );
+#endif
+
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyActiveTbtItemUpdate_
+    static int ew_notify_navi_active_tbt_item_update( void );
+#endif
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -95,7 +103,13 @@
             ew_notify_navi_event_update,
         #endif
         #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate_
-            ew_notify_navi_navigating_status_update
+            ew_notify_navi_navigating_status_update,
+        #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate_
+            ew_notify_navi_tbt_list_update,
+        #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyActiveTbtItemUpdate_
+            ew_notify_navi_active_tbt_item_update
         #endif
         };
     const int num_of_navi_func = sizeof( navi_function_lookup_table )/sizeof( device_function* );
@@ -106,7 +120,10 @@
     static int is_speed_limit_update = 0;
     static int is_navi_event_update = 0;
     static int is_navigating_status_update = 0;
-
+    static int is_tbt_list_update = 0;
+    static int is_active_tbt_item_update = 0;
+    static int active_tbt_item_idx;
+    static int tbt_list_size;
 #endif
 /*--------------------------------------------------------------------
                                 MACROS
@@ -427,6 +444,56 @@ bool ew_navi_is_route_guidance_started
 
 /*********************************************************************
 *
+* @private
+* ew_notify_navi_tbt_list_update
+*
+* Notify EW GUI that tbt list has received.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate_
+    static int ew_notify_navi_tbt_list_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_tbt_list_update )
+        {
+        is_tbt_list_update = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate( device_object, tbt_list_size );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_navi_active_tbt_item_update
+*
+* Notify EW GUI that active tbt item has received.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyActiveTbtItemUpdate_
+    static int ew_notify_navi_active_tbt_item_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_active_tbt_item_update )
+        {
+        is_active_tbt_item_update = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyActiveTbtItemUpdate( device_object, active_tbt_item_idx );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
 * @public
 * EW_notify_navi_map_update
 *
@@ -554,6 +621,46 @@ void EW_notify_navi_event_update
 {
 #ifdef _DeviceInterfaceNavigationDeviceClass_
     is_navi_event_update = 1;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_tbt_list_update
+*
+* Notify Embedded Wizard that the tbt list is updated.
+*
+*********************************************************************/
+void EW_notify_tbt_list_update
+    (
+    int size
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    is_tbt_list_update = 1;
+    tbt_list_size = size;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_active_tbt_item_update
+*
+* Notify Embedded Wizard that the active tbt item is updated.
+*
+*********************************************************************/
+void EW_notify_active_tbt_item_update
+    (
+    int index
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    is_active_tbt_item_update = 1;
+    active_tbt_item_idx = index;
     EwBspEventTrigger();
 #endif
 }

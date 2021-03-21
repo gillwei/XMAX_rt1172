@@ -1414,6 +1414,918 @@ resource Resources::Bitmap SignalLevelIcon
   attr bitmapmode Mode = Default;
 }
 
+$rect <1160,60,1360,100>
+$output false
+resource Resources::Bitmap NaviTBTViewBg
+{
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_top_bg.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1160,110,1360,150>
+$output false
+resource Resources::Bitmap NaviTurnArrwArvngLIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_arvng_L_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,110,1570,150>
+$output false
+resource Resources::Bitmap NaviTurnArrwArvngRIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_arvng_R_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1570,110,1770,150>
+$output false
+resource Resources::Bitmap NaviTurnArrwArvngViaLIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_arvng_via_L_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1770,110,1970,150>
+$output false
+resource Resources::Bitmap NaviTurnArrwArvngViaRIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_arvng_via_R_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1980,110,2180,150>
+$output false
+resource Resources::Bitmap NaviTurnArrwContinueIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_continue_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1160,160,1360,200>
+$output false
+resource Resources::Bitmap NaviTurnArrwDrivetoIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_driveto_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,160,1570,200>
+$output false
+resource Resources::Bitmap NaviTurnArrwDstntnFlgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_dstntn_flg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1570,160,1770,200>
+$output false
+resource Resources::Bitmap NaviTurnArrwExitLIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_exit_L_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1770,160,1970,200>
+$output false
+resource Resources::Bitmap NaviTurnArrwExitRIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_exit_R_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1980,160,2180,200>
+$output false
+resource Resources::Bitmap NaviTurnarrwFerryIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_ferry_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1160,210,1360,250>
+$output false
+resource Resources::Bitmap NaviTurnArrwKeepLIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_keep_L_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,210,1570,250>
+$output false
+resource Resources::Bitmap NaviTurnArrwKeepRIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_keep_R_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1570,210,1770,250>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout45IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_45_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1770,210,1970,250>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout90IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_90_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1980,210,2180,250>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout135IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_135_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1160,260,1360,300>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout180IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_180_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,260,1570,300>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout225IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_225_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1570,260,1770,300>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout270IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_270_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1770,260,1970,300>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout315IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_315_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1980,260,2180,300>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout360IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_360_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1160,310,1360,350>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro45IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_euro_45_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,310,1570,350>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro90IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_euro_90_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1570,310,1770,350>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro135IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_euro_135_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1770,310,1970,350>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro180IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_euro_180_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1980,310,2180,350>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro225IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_euro_225_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// TBT View
+note group Note15
+{
+  attr Bounds = <1120,10,2200,530>;
+}
+
+$rect <1160,360,1360,400>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro270IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_euro_270_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,360,1570,400>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro315IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_euro_315_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1570,360,1770,400>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro360IrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_euro_360_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1770,360,1970,400>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuroGenericIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_euro_generic_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1980,360,2180,400>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutGenericIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_roundabout_generic_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1160,410,1360,450>
+$output false
+resource Resources::Bitmap NaviTurnArrwShrpturnLIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_shrpturn_L_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,410,1570,450>
+$output false
+resource Resources::Bitmap NaviTurnArrwShrpturnRIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_shrpturn_R_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1570,410,1770,450>
+$output false
+resource Resources::Bitmap NaviTurnArrwTurnLIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_turn_L_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1770,410,1970,450>
+$output false
+resource Resources::Bitmap NaviTurnArrwTurnRIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_turn_R_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1980,410,2180,450>
+$output false
+resource Resources::Bitmap NaviTurnArrwUturnLIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_uturn_L_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1160,460,1360,500>
+$output false
+resource Resources::Bitmap NaviTurnArrwUturnRIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_uturn_R_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,460,1570,500>
+$output false
+resource Resources::Bitmap NaviTurnArrwViaFlgIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_via_flg_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// TBT List
+note group Note16
+{
+  attr Bounds = <1120,560,2200,1170>;
+}
+
+$rect <1160,620,1360,660>
+$output false
+resource Resources::Bitmap NaviTurnArrwArvngLIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_L_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,620,1570,660>
+$output false
+resource Resources::Bitmap NaviTurnArrwArvngRIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_R_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1580,620,1780,660>
+$output false
+resource Resources::Bitmap NaviTurnArrwArvngViaLIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_via_L_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1790,620,1990,660>
+$output false
+resource Resources::Bitmap NaviTurnArrwArvngViaRIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_via_R_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1990,620,2190,660>
+$output false
+resource Resources::Bitmap NaviTurnArrwContinuelrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_continue_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1160,680,1360,720>
+$output false
+resource Resources::Bitmap NaviTurnArrwDriveTolrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_driveto_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,680,1570,720>
+$output false
+resource Resources::Bitmap NaviTurnArrwDstntnFlg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_dstntn_flg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1580,680,1780,720>
+$output false
+resource Resources::Bitmap NaviTurnArrwExitLIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_exit_L_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1790,680,1990,720>
+$output false
+resource Resources::Bitmap NaviTurnArrwExitRIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_exit_R_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1990,680,2190,720>
+$output false
+resource Resources::Bitmap NaviTurnArrwFerryIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_ferry_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1160,740,1360,780>
+$output false
+resource Resources::Bitmap NaviTurnArrwKeepLIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_keep_L_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,740,1570,780>
+$output false
+resource Resources::Bitmap NaviTurnArrwKeepRIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_keep_R_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1580,740,1780,780>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout45Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_45_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1790,740,1990,780>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout90Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_90_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1990,740,2190,780>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout135Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_135_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1160,800,1360,840>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout180Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_180_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1370,800,1570,840>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout225Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_225_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1580,800,1780,840>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout270Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_270_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1790,800,1990,840>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout315Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_315_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1990,800,2190,840>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundabout360Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_360_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1150,860,1350,900>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro45Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_45_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1360,860,1560,900>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro90Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_90_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1580,860,1780,900>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro135Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_135_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1790,860,1990,900>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro180Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_180_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1990,860,2190,900>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro225Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_225_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1150,920,1350,960>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro270Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_270_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1360,920,1560,960>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro315Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_315_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1580,920,1780,960>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro360Irg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_360_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1790,920,1990,960>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuroGenericIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_generic_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1990,920,2190,960>
+$output false
+resource Resources::Bitmap NaviTurnArrwRoundaboutGenericIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_generic_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1140,980,1340,1020>
+$output false
+resource Resources::Bitmap NaviTurnArrwShrpturnLIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_shrpturn_L_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1360,980,1560,1020>
+$output false
+resource Resources::Bitmap NaviTurnArrwShrpturnRIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_shrpturn_R_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1580,980,1780,1020>
+$output false
+resource Resources::Bitmap NaviTurnArrwTurnLIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_turn_L_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1790,980,1990,1020>
+$output false
+resource Resources::Bitmap NaviTurnArrwTurnRIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_turn_R_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1990,980,2190,1020>
+$output false
+resource Resources::Bitmap NaviTurnArrwUturnLIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_uturn_L_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1140,1050,1340,1090>
+$output false
+resource Resources::Bitmap NaviTurnArrwUturnRIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_uturn_R_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1350,1050,1550,1090>
+$output false
+resource Resources::Bitmap NaviTurnArrwViaflgIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_via_flg_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
 $rect <390,1540,600,1580>
 $output false
 const string EXTERN_BMP_QRCODE = "QRCode";

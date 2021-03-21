@@ -17,8 +17,10 @@ extern "C"{
 #include <stdint.h>
 #include <stdbool.h>
 
-#define MAX_STR_SIZE            ( 16 )
-#define MAX_ROAD_NAME_SIZE      ( 64 )
+#define MAX_STR_SIZE                 ( 16 )
+#define MAX_ROAD_NAME_SIZE           ( 64 )
+#define MAX_TBT_DESCRIPTION_SIZE     ( 64 )
+#define MAX_TBT_DIST_UNIT_SIZE       ( 16 )
 
 typedef enum
     {
@@ -48,6 +50,15 @@ typedef struct
     navi_event_stat navi_event;
     bool is_navigating;
     } navi_data_type;
+
+typedef struct
+    {
+    uint32_t list_idx;
+    uint32_t icon_idx;
+    uint16_t distance;
+    char     dist_unit[MAX_TBT_DIST_UNIT_SIZE];
+    char     description[MAX_TBT_DESCRIPTION_SIZE];
+    }navi_tbt_data_type;
 
 void NAVI_init( void );
 void NAVI_jpeg_data_received( uint32_t jpeg_size, uint8_t* buffer_addr );

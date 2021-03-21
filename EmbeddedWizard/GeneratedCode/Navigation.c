@@ -31,8 +31,10 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
+#include "_CoreVerticalList.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceNaviDataClass.h"
+#include "_DeviceInterfaceNaviTbtDataClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
@@ -42,18 +44,23 @@
 #include "_MenuItemCheckMark.h"
 #include "_MenuVerticalMenu.h"
 #include "_NavigationNAV01_DefaultView.h"
+#include "_NavigationNAV03_TBTListView.h"
+#include "_NavigationNAV05_TBTView.h"
 #include "_NavigationNAV06_NaviSettingMenu.h"
 #include "_NavigationNAV08_NaviChageViewMenu.h"
 #include "_NavigationNaviAlert.h"
 #include "_NavigationNaviAlertMessage.h"
 #include "_NavigationNaviCurrentRoad.h"
 #include "_NavigationNaviETA.h"
+#include "_NavigationTbtInfoItem.h"
+#include "_NavigationTbtListMenu.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesExternBitmap.h"
 #include "_ResourcesFont.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
+#include "_ViewsWallpaper.h"
 #include "DeviceInterface.h"
 #include "Enum.h"
 #include "Fonts.h"
@@ -65,12 +72,13 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x000000C6, /* ratio 68.69 % */
+  0x000000F0, /* ratio 68.33 % */
   0xB8000D00, 0x8009A452, 0x00E00030, 0x60607858, 0xDE002911, 0x6640041C, 0x0E028021,
   0x636800D7, 0x8E438091, 0x046E330C, 0x1A0002F0, 0x023E098B, 0x0D800348, 0x4D243280,
   0x70E0745A, 0x3231800A, 0x09744A25, 0x88968002, 0xB4BCDC00, 0x1061C178, 0xCA867600,
   0x68667899, 0x610A9B4F, 0x73D8ACC2, 0x308E44C8, 0x885C2297, 0x000B61C0, 0x1D80755F,
-  0x412310BB, 0x3A2F2084, 0x23D69854, 0x2D16B141, 0x00000406, 0x00000000
+  0x412310BB, 0x3A2F2084, 0x23D69854, 0x2B0BB141, 0x4002A438, 0x3DBA0008, 0x3004AC99,
+  0x001D0007, 0x85ECAD3D, 0x5EF00779, 0x5AFF2CA1, 0x001018B4, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -127,6 +135,25 @@ static const XStringRes _Const0031 = { _StringsDefault0, 0x004D };
 static const XStringRes _Const0032 = { _StringsDefault0, 0x0055 };
 static const XStringRes _Const0033 = { _StringsDefault0, 0x005A };
 static const XStringRes _Const0034 = { _StringsDefault0, 0x005F };
+static const XRect _Const0035 = {{ 0, 38 }, { 480, 226 }};
+static const XRect _Const0036 = {{ 186, 68 }, { 254, 116 }};
+static const XRect _Const0037 = {{ 254, 82 }, { 278, 112 }};
+static const XRect _Const0038 = {{ 186, 117 }, { 408, 210 }};
+static const XColor _Const0039 = { 0xCF, 0xCF, 0xCF, 0xFF };
+static const XRect _Const003A = {{ 28, 54 }, { 178, 204 }};
+static const XRect _Const003B = {{ 104, 75 }, { 376, 199 }};
+static const XRect _Const003C = {{ 0, 36 }, { 480, 272 }};
+static const XStringRes _Const003D = { _StringsDefault0, 0x0063 };
+static const XRect _Const003E = {{ 0, 0 }, { 480, 74 }};
+static const XRect _Const003F = {{ 20, 0 }, { 440, 72 }};
+static const XColor _Const0040 = { 0x1E, 0x47, 0x8C, 0xFF };
+static const XRect _Const0041 = {{ 30, 22 }, { 58, 50 }};
+static const XRect _Const0042 = {{ 62, 19 }, { 106, 53 }};
+static const XRect _Const0043 = {{ 106, 19 }, { 154, 53 }};
+static const XRect _Const0044 = {{ 155, 5 }, { 430, 72 }};
+static const XColor _Const0045 = { 0xC8, 0xC8, 0xC8, 0xFF };
+static const XRect _Const0046 = {{ 0, 72 }, { 480, 74 }};
+static const XRect _Const0047 = {{ 0, 0 }, { 480, 236 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -1132,7 +1159,6 @@ void NavigationNAV08_NaviChageViewMenu__Init( NavigationNAV08_NaviChageViewMenu 
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsNAV08_default_view ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsNAV08_turn_by_turn ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsNAV08_turn_list ));
-  _this->ItemCheckedArray[ 0 ] = 1;
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, NavigationNAV08_NaviChageViewMenu_OnCheckMarkUpdateSlot );
 }
@@ -1197,39 +1223,81 @@ XString NavigationNAV08_NaviChageViewMenu_LoadItemTitle( NavigationNAV08_NaviCha
 void NavigationNAV08_NaviChageViewMenu_OnItemActivate( NavigationNAV08_NaviChageViewMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  XInt32 i;
-
   if ( aMenuItem == 0 )
     ;
 
-  i = 0;
+  _this->NaviScreenIdx = aItemNo;
 
-  for ( i = 0; i < 3; i++ )
+  switch ( aItemNo )
   {
-    if ( i == aItemNo )
-    {
-      _this->ItemCheckedArray[ EwCheckIndex( i, 3 )] = 1;
-    }
-    else
-    {
-      _this->ItemCheckedArray[ EwCheckIndex( i, 3 )] = 0;
-    }
+    case 0 :
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+      = EnumHomeTypeNAVI_DEFAULT_VIEW;
+    break;
+
+    case 1 :
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+      = EnumHomeTypeNAVI_NEXT_TURN;
+    break;
+
+    case 2 :
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+      = EnumHomeTypeNAVI_TURN_BY_TURN;
+    break;
+
+    default : 
+      ;
   }
 
   MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
   CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-  _this->NaviScreenIdx = aItemNo;
 }
 
 /* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemChecked()' */
 XBool NavigationNAV08_NaviChageViewMenu_LoadItemChecked( NavigationNAV08_NaviChageViewMenu _this, 
   XInt32 aItemNo )
 {
-  XBool IsChecked = 0;
+  XBool IsChecked;
 
-  if ( aItemNo < 3 )
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsChecked = 0;
+
+  switch ( aItemNo )
   {
-    IsChecked = _this->ItemCheckedArray[ EwCheckIndex( aItemNo, 3 )];
+    case 0 :
+    {
+      if ( EnumHomeTypeNAVI_DEFAULT_VIEW == EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+          DeviceInterfaceNavigationDeviceClass )->CurrentHome )
+      {
+        IsChecked = 1;
+      }
+    }
+    break;
+
+    case 1 :
+    {
+      if ( EnumHomeTypeNAVI_NEXT_TURN == EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+          DeviceInterfaceNavigationDeviceClass )->CurrentHome )
+      {
+        IsChecked = 1;
+      }
+    }
+    break;
+
+    case 2 :
+    {
+      if ( EnumHomeTypeNAVI_TURN_BY_TURN == EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+          DeviceInterfaceNavigationDeviceClass )->CurrentHome )
+      {
+        IsChecked = 1;
+      }
+    }
+    break;
+
+    default : 
+      ;
   }
 
   return IsChecked;
@@ -1239,39 +1307,20 @@ XBool NavigationNAV08_NaviChageViewMenu_LoadItemChecked( NavigationNAV08_NaviCha
 void NavigationNAV08_NaviChageViewMenu_OnCheckMarkUpdateSlot( NavigationNAV08_NaviChageViewMenu _this, 
   XObject sender )
 {
-  XEnum HomeType;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
   CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 0 );
-  HomeType = EnumHomeTypeTOTAL;
 
-  switch ( _this->NaviScreenIdx )
-  {
-    case 0 :
-      HomeType = EnumHomeTypeNAVI_DEFAULT_VIEW;
-    break;
-
-    case 1 :
-      HomeType = EnumHomeTypeNAVI_TURN_BY_TURN;
-    break;
-
-    case 2 :
-      HomeType = EnumHomeTypeNAVI_NEXT_TURN;
-    break;
-
-    default : 
-      ;
-  }
-
-  if ( HomeType != EnumHomeTypeTOTAL )
+  if ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+      != EnumHomeTypeTOTAL )
   {
     ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
     if ( App != 0 )
     {
-      ApplicationApplication_SwitchToHome( App, HomeType );
+      ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass )->CurrentHome );
     }
   }
 }
@@ -2087,5 +2136,902 @@ EW_DEFINE_CLASS( NavigationNaviETA, CoreGroup, NaviIconFlag, NaviIconFlag, NaviI
   CoreGroup_Remove,
   CoreGroup_Add,
 EW_END_OF_CLASS( NavigationNaviETA )
+
+/* Initializer for the class 'Navigation::NAV05_TBTView' */
+void NavigationNAV05_TBTView__Init( NavigationNAV05_TBTView _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  HomeBaseHome__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( NavigationNAV05_TBTView );
+
+  /* ... then construct all embedded objects */
+  ViewsWallpaper__Init( &_this->NaviTBTViewBg, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->ArrivalBg, &_this->_XObject, 0 );
+  NavigationNaviETA__Init( &_this->NaviETAObject, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->RoadNameBg, &_this->_XObject, 0 );
+  NavigationNaviCurrentRoad__Init( &_this->CurrentRoadObject, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->SpeedLimitIcon, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->SpeedLimitText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->NextTurnDist, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->NextTurnDistUnit, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->NextTurnDescription, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->NextTurnIcon, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ETAUpdateEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->CurRdUpdateEventHandler, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->RecalculateMessage, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ActiveTbtItemUpdateEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->SpeedLimitUpdateEventHandler, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->SpeedLimitFlickeringTimer, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( NavigationNAV05_TBTView );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const0002 );
+  _this->Super1.HomeType = EnumHomeTypeNAVI_NEXT_TURN;
+  CoreRectView__OnSetBounds( &_this->NaviTBTViewBg, _Const0035 );
+  CoreRectView__OnSetBounds( &_this->ArrivalBg, _Const0003 );
+  ViewsRectangle_OnSetColor( &_this->ArrivalBg, _Const0004 );
+  ViewsRectangle_OnSetVisible( &_this->ArrivalBg, 1 );
+  CoreRectView__OnSetBounds( &_this->NaviETAObject, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->RoadNameBg, _Const0005 );
+  ViewsRectangle_OnSetColor( &_this->RoadNameBg, _Const0006 );
+  CoreRectView__OnSetBounds( &_this->CurrentRoadObject, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->SpeedLimitIcon, _Const000C );
+  ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->SpeedLimitText, _Const000D );
+  ViewsText_OnSetString( &_this->SpeedLimitText, 0 );
+  ViewsText_OnSetColor( &_this->SpeedLimitText, _Const0001 );
+  ViewsText_OnSetVisible( &_this->SpeedLimitText, 0 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDist, _Const0036 );
+  ViewsText_OnSetString( &_this->NextTurnDist, 0 );
+  ViewsText_OnSetVisible( &_this->NextTurnDist, 0 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDistUnit, _Const0037 );
+  ViewsText_OnSetString( &_this->NextTurnDistUnit, 0 );
+  ViewsText_OnSetVisible( &_this->NextTurnDistUnit, 0 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDescription, _Const0038 );
+  ViewsText_OnSetEllipsis( &_this->NextTurnDescription, 1 );
+  ViewsText_OnSetWrapText( &_this->NextTurnDescription, 1 );
+  ViewsText_OnSetAlignment( &_this->NextTurnDescription, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->NextTurnDescription, 0 );
+  ViewsText_OnSetColor( &_this->NextTurnDescription, _Const0039 );
+  CoreRectView__OnSetBounds( &_this->NextTurnIcon, _Const003A );
+  ViewsImage_OnSetVisible( &_this->NextTurnIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->RecalculateMessage, _Const003B );
+  ViewsText_OnSetString( &_this->RecalculateMessage, 0 );
+  ViewsText_OnSetColor( &_this->RecalculateMessage, _Const0039 );
+  ViewsText_OnSetVisible( &_this->RecalculateMessage, 0 );
+  CoreTimer_OnSetPeriod( &_this->SpeedLimitFlickeringTimer, 300 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NaviTBTViewBg ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ArrivalBg ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NaviETAObject ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->RoadNameBg ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->CurrentRoadObject ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->SpeedLimitIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->SpeedLimitText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NextTurnDist ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NextTurnDistUnit ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NextTurnDescription ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NextTurnIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->RecalculateMessage ), 0 );
+  ViewsWallpaper_OnSetBitmap( &_this->NaviTBTViewBg, EwLoadResource( &ResourceNaviTBTViewBg, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->SpeedLimitIcon, EwLoadResource( &ResourceSpeedLimitIcon, 
+  ResourcesBitmap ));
+  ViewsText_OnSetFont( &_this->SpeedLimitText, EwLoadResource( &FontsNotoSansBold24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->NextTurnDist, EwLoadResource( &FontsNotoSansBold38pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->NextTurnDistUnit, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->NextTurnDescription, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  _this->ETAUpdateEventHandler.OnEvent = EwNewSlot( _this, NavigationNAV05_TBTView_OnETAUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->ETAUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->ETAUpdateEvent );
+  _this->CurRdUpdateEventHandler.OnEvent = EwNewSlot( _this, NavigationNAV05_TBTView_OnCurRdUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->CurRdUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurRdUpdateEvent );
+  ViewsText_OnSetFont( &_this->RecalculateMessage, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  _this->ActiveTbtItemUpdateEventHandler.OnEvent = EwNewSlot( _this, NavigationNAV05_TBTView_OnActiveTbtItemUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->ActiveTbtItemUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->ActiveTbtItemUpdateEvent );
+  _this->SpeedLimitUpdateEventHandler.OnEvent = EwNewSlot( _this, NavigationNAV05_TBTView_OnSpeedLimitUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->SpeedLimitUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->SpeedLimitUpdateEvent );
+  _this->SpeedLimitFlickeringTimer.OnTrigger = EwNewSlot( _this, NavigationNAV05_TBTView_OnSpeedLimitFlickeringSlot );
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, NavigationNAV05_TBTView_OnVehicleSpeedUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
+
+  /* Call the user defined constructor */
+  NavigationNAV05_TBTView_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Navigation::NAV05_TBTView' */
+void NavigationNAV05_TBTView__ReInit( NavigationNAV05_TBTView _this )
+{
+  /* At first re-initialize the super class ... */
+  HomeBaseHome__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsWallpaper__ReInit( &_this->NaviTBTViewBg );
+  ViewsRectangle__ReInit( &_this->ArrivalBg );
+  NavigationNaviETA__ReInit( &_this->NaviETAObject );
+  ViewsRectangle__ReInit( &_this->RoadNameBg );
+  NavigationNaviCurrentRoad__ReInit( &_this->CurrentRoadObject );
+  ViewsImage__ReInit( &_this->SpeedLimitIcon );
+  ViewsText__ReInit( &_this->SpeedLimitText );
+  ViewsText__ReInit( &_this->NextTurnDist );
+  ViewsText__ReInit( &_this->NextTurnDistUnit );
+  ViewsText__ReInit( &_this->NextTurnDescription );
+  ViewsImage__ReInit( &_this->NextTurnIcon );
+  CoreSystemEventHandler__ReInit( &_this->ETAUpdateEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->CurRdUpdateEventHandler );
+  ViewsText__ReInit( &_this->RecalculateMessage );
+  CoreSystemEventHandler__ReInit( &_this->ActiveTbtItemUpdateEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->SpeedLimitUpdateEventHandler );
+  CoreTimer__ReInit( &_this->SpeedLimitFlickeringTimer );
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
+}
+
+/* Finalizer method for the class 'Navigation::NAV05_TBTView' */
+void NavigationNAV05_TBTView__Done( NavigationNAV05_TBTView _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( HomeBaseHome );
+
+  /* Finalize all embedded objects */
+  ViewsWallpaper__Done( &_this->NaviTBTViewBg );
+  ViewsRectangle__Done( &_this->ArrivalBg );
+  NavigationNaviETA__Done( &_this->NaviETAObject );
+  ViewsRectangle__Done( &_this->RoadNameBg );
+  NavigationNaviCurrentRoad__Done( &_this->CurrentRoadObject );
+  ViewsImage__Done( &_this->SpeedLimitIcon );
+  ViewsText__Done( &_this->SpeedLimitText );
+  ViewsText__Done( &_this->NextTurnDist );
+  ViewsText__Done( &_this->NextTurnDistUnit );
+  ViewsText__Done( &_this->NextTurnDescription );
+  ViewsImage__Done( &_this->NextTurnIcon );
+  CoreSystemEventHandler__Done( &_this->ETAUpdateEventHandler );
+  CoreSystemEventHandler__Done( &_this->CurRdUpdateEventHandler );
+  ViewsText__Done( &_this->RecalculateMessage );
+  CoreSystemEventHandler__Done( &_this->ActiveTbtItemUpdateEventHandler );
+  CoreSystemEventHandler__Done( &_this->SpeedLimitUpdateEventHandler );
+  CoreTimer__Done( &_this->SpeedLimitFlickeringTimer );
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
+
+  /* Don't forget to deinitialize the super class ... */
+  HomeBaseHome__Done( &_this->_Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void NavigationNAV05_TBTView_Init( NavigationNAV05_TBTView _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  EwSignal( EwNewSlot( _this, NavigationNAV05_TBTView_OnCurRdUpdateSlot ), ((XObject)_this ));
+  EwSignal( EwNewSlot( _this, NavigationNAV05_TBTView_OnETAUpdateSlot ), ((XObject)_this ));
+  EwSignal( EwNewSlot( _this, NavigationNAV05_TBTView_OnActiveTbtItemUpdateSlot ), 
+    ((XObject)_this ));
+}
+
+/* 'C' function for method : 'Navigation::NAV05_TBTView.OnLongEnterKeyActivated()' */
+void NavigationNAV05_TBTView_OnLongEnterKeyActivated( NavigationNAV05_TBTView _this )
+{
+  if ( 1 == _this->Super3.KeyHandler.RepetitionCount )
+  {
+    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( NavigationNAV06_NaviSettingMenu, 
+    0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV05_TBTView_OnETAUpdateSlot( NavigationNAV05_TBTView _this, XObject 
+  sender )
+{
+  DeviceInterfaceNaviDataClass NaviData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeETA );
+  NavigationNaviETA_OnSetETA( &_this->NaviETAObject, NaviData->ETA );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV05_TBTView_OnCurRdUpdateSlot( NavigationNAV05_TBTView _this, XObject 
+  sender )
+{
+  DeviceInterfaceNaviDataClass NaviData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeCURRENT_ROAD );
+  NavigationNaviCurrentRoad_OnSetRoadName( &_this->CurrentRoadObject, NaviData->CurrentRoad );
+  NavigationNaviCurrentRoad_SetItemBounds( &_this->CurrentRoadObject, 0 );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV05_TBTView_OnActiveTbtItemUpdateSlot( NavigationNAV05_TBTView _this, 
+  XObject sender )
+{
+  DeviceInterfaceNaviTbtDataClass NaviTbtData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  NaviTbtData = DeviceInterfaceNavigationDeviceClass_GetNaviTbtData( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->ActiveTbtItemIdx );
+  NavigationNAV05_TBTView_ShowNextTurnIcon( _this, NaviTbtData->IconIdx );
+
+  if ( !ViewsText_OnGetVisible( &_this->NextTurnDist ))
+  {
+    ViewsText_OnSetVisible( &_this->NextTurnDist, 1 );
+  }
+
+  if ( !ViewsText_OnGetVisible( &_this->NextTurnDistUnit ))
+  {
+    ViewsText_OnSetVisible( &_this->NextTurnDistUnit, 1 );
+  }
+
+  ViewsText_OnSetString( &_this->NextTurnDistUnit, NaviTbtData->DistUnit );
+  ViewsText_OnSetString( &_this->NextTurnDist, EwNewStringInt( NaviTbtData->Distance, 
+  0, 10 ));
+  ViewsText_OnSetString( &_this->NextTurnDescription, NaviTbtData->TbtDescription );
+}
+
+/* 'C' function for method : 'Navigation::NAV05_TBTView.ShowNextTurnIcon()' */
+void NavigationNAV05_TBTView_ShowNextTurnIcon( NavigationNAV05_TBTView _this, XInt32 
+  index )
+{
+  XEnum NaviTurnStatus;
+
+  if ( !ViewsImage_OnGetVisible( &_this->NextTurnIcon ))
+  {
+    ViewsImage_OnSetVisible( &_this->NextTurnIcon, 1 );
+  }
+
+  NaviTurnStatus = (XEnum)index;
+
+  switch ( NaviTurnStatus )
+  {
+    case EnumNaviTurnStatusTypeCONTINUE_LEFT :
+      ViewsImage_OnSetBitmap( &_this->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwContinueIrgTbt, 
+      ResourcesBitmap ));
+    break;
+
+    case EnumNaviTurnStatusTypeTURN_LEFT :
+      ViewsImage_OnSetBitmap( &_this->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwTurnLIrgTbt, 
+      ResourcesBitmap ));
+    break;
+
+    case EnumNaviTurnStatusTypeTURN_RIGHT :
+      ViewsImage_OnSetBitmap( &_this->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwTurnRIrgTbt, 
+      ResourcesBitmap ));
+    break;
+
+    default : 
+      ;
+  }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV05_TBTView_OnSpeedLimitUpdateSlot( NavigationNAV05_TBTView _this, 
+  XObject sender )
+{
+  DeviceInterfaceNaviDataClass NaviData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeSPEED_LIMIT );
+
+  if ( NaviData->SpeedLimit > 0 )
+  {
+    DeviceInterfaceVehicleDataClass VehicleData;
+    ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 1 );
+    ViewsText_OnSetString( &_this->SpeedLimitText, EwNewStringInt( NaviData->SpeedLimit, 
+    0, 10 ));
+    ViewsText_OnSetVisible( &_this->SpeedLimitText, 1 );
+    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+    DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeVEHICLE_SPEED_REAL );
+
+    if ((XInt32)VehicleData->DataUInt32 > NaviData->SpeedLimit )
+    {
+      CoreTimer_OnSetEnabled( &_this->SpeedLimitFlickeringTimer, 1 );
+    }
+    else
+    {
+      CoreTimer_OnSetEnabled( &_this->SpeedLimitFlickeringTimer, 0 );
+    }
+  }
+  else
+  {
+    ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
+    ViewsText_OnSetVisible( &_this->SpeedLimitText, 0 );
+    CoreTimer_OnSetEnabled( &_this->SpeedLimitFlickeringTimer, 0 );
+  }
+}
+
+/* 'C' function for method : 'Navigation::NAV05_TBTView.OnSpeedLimitFlickeringSlot()' */
+void NavigationNAV05_TBTView_OnSpeedLimitFlickeringSlot( NavigationNAV05_TBTView _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, (XBool)!ViewsImage_OnGetVisible( 
+  &_this->SpeedLimitIcon ));
+  ViewsText_OnSetVisible( &_this->SpeedLimitText, (XBool)!ViewsText_OnGetVisible( 
+  &_this->SpeedLimitText ));
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV05_TBTView_OnVehicleSpeedUpdateSlot( NavigationNAV05_TBTView _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if (( VehicleData != 0 ) && ( EnumVehicleRxTypeVEHICLE_SPEED_REAL == VehicleData->RxType ))
+  {
+    EwSignal( EwNewSlot( _this, NavigationNAV05_TBTView_OnSpeedLimitUpdateSlot ), 
+      ((XObject)_this ));
+  }
+}
+
+/* Variants derived from the class : 'Navigation::NAV05_TBTView' */
+EW_DEFINE_CLASS_VARIANTS( NavigationNAV05_TBTView )
+EW_END_OF_CLASS_VARIANTS( NavigationNAV05_TBTView )
+
+/* Virtual Method Table (VMT) for the class : 'Navigation::NAV05_TBTView' */
+EW_DEFINE_CLASS( NavigationNAV05_TBTView, HomeBaseHome, NaviTBTViewBg, NaviTBTViewBg, 
+                 NaviTBTViewBg, NaviTBTViewBg, _None, _None, "Navigation::NAV05_TBTView" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  HomeBaseHome_OnShortEnterKeyActivated,
+  HomeBaseHome_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  NavigationNAV05_TBTView_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+EW_END_OF_CLASS( NavigationNAV05_TBTView )
+
+/* Initializer for the class 'Navigation::NAV03_TBTListView' */
+void NavigationNAV03_TBTListView__Init( NavigationNAV03_TBTListView _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  HomeBaseHome__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( NavigationNAV03_TBTListView );
+
+  /* ... then construct all embedded objects */
+  NavigationTbtListMenu__Init( &_this->TbtList, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->TbtListUpdateEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ActiveTbtItemUpdateEventHandler, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( NavigationNAV03_TBTListView );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( &_this->Super2.BlackBG, _Const0000 );
+  _this->Super1.HomeType = EnumHomeTypeNAVI_TURN_BY_TURN;
+  CoreRectView__OnSetBounds( &_this->TbtList, _Const003C );
+  _this->TbtList.Super2.PassHomeKey = 1;
+  _this->TbtList.Super2.PassEnterKey = 1;
+  MenuVerticalMenu_OnSetArrowScrollBarVisible((MenuVerticalMenu)&_this->TbtList, 
+  1 );
+  CoreGroup__Add( _this, ((CoreView)&_this->TbtList ), 0 );
+  _this->TbtListUpdateEventHandler.OnEvent = EwNewSlot( _this, NavigationNAV03_TBTListView_OnTbtListUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->TbtListUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->TbtListUpdateEvent );
+  _this->ActiveTbtItemUpdateEventHandler.OnEvent = EwNewSlot( _this, NavigationNAV03_TBTListView_OnActiveTbtItemUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->ActiveTbtItemUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->ActiveTbtItemUpdateEvent );
+
+  /* Call the user defined constructor */
+  NavigationNAV03_TBTListView_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Navigation::NAV03_TBTListView' */
+void NavigationNAV03_TBTListView__ReInit( NavigationNAV03_TBTListView _this )
+{
+  /* At first re-initialize the super class ... */
+  HomeBaseHome__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  NavigationTbtListMenu__ReInit( &_this->TbtList );
+  CoreSystemEventHandler__ReInit( &_this->TbtListUpdateEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->ActiveTbtItemUpdateEventHandler );
+}
+
+/* Finalizer method for the class 'Navigation::NAV03_TBTListView' */
+void NavigationNAV03_TBTListView__Done( NavigationNAV03_TBTListView _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( HomeBaseHome );
+
+  /* Finalize all embedded objects */
+  NavigationTbtListMenu__Done( &_this->TbtList );
+  CoreSystemEventHandler__Done( &_this->TbtListUpdateEventHandler );
+  CoreSystemEventHandler__Done( &_this->ActiveTbtItemUpdateEventHandler );
+
+  /* Don't forget to deinitialize the super class ... */
+  HomeBaseHome__Done( &_this->_Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void NavigationNAV03_TBTListView_Init( NavigationNAV03_TBTListView _this, XHandle 
+  aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const003D ));
+  EwSignal( EwNewSlot( _this, NavigationNAV03_TBTListView_OnTbtListUpdateSlot ), 
+    ((XObject)_this ));
+}
+
+/* 'C' function for method : 'Navigation::NAV03_TBTListView.OnLongEnterKeyActivated()' */
+void NavigationNAV03_TBTListView_OnLongEnterKeyActivated( NavigationNAV03_TBTListView _this )
+{
+  if ( 1 == _this->Super3.KeyHandler.RepetitionCount )
+  {
+    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( NavigationNAV06_NaviSettingMenu, 
+    0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV03_TBTListView_OnTbtListUpdateSlot( NavigationNAV03_TBTListView _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  MenuVerticalMenu_OnSetNoOfItems((MenuVerticalMenu)&_this->TbtList, EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->TbtListSize );
+  _this->TbtList.ActiveTbtIdx = EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+  DeviceInterfaceNavigationDeviceClass )->ActiveTbtItemIdx;
+  MenuVerticalMenu_InvalidateItems((MenuVerticalMenu)&_this->TbtList, 0, EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->TbtListSize 
+  - 1 );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV03_TBTListView_OnActiveTbtItemUpdateSlot( NavigationNAV03_TBTListView _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  _this->TbtList.ActiveTbtIdx = EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+  DeviceInterfaceNavigationDeviceClass )->ActiveTbtItemIdx;
+  MenuVerticalMenu_InvalidateItems((MenuVerticalMenu)&_this->TbtList, _this->TbtList.ActiveTbtIdx, 
+  _this->TbtList.ActiveTbtIdx );
+}
+
+/* Variants derived from the class : 'Navigation::NAV03_TBTListView' */
+EW_DEFINE_CLASS_VARIANTS( NavigationNAV03_TBTListView )
+EW_END_OF_CLASS_VARIANTS( NavigationNAV03_TBTListView )
+
+/* Virtual Method Table (VMT) for the class : 'Navigation::NAV03_TBTListView' */
+EW_DEFINE_CLASS( NavigationNAV03_TBTListView, HomeBaseHome, TbtList, TbtList, TbtList, 
+                 TbtList, _None, _None, "Navigation::NAV03_TBTListView" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  HomeBaseHome_OnShortEnterKeyActivated,
+  HomeBaseHome_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  NavigationNAV03_TBTListView_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+EW_END_OF_CLASS( NavigationNAV03_TBTListView )
+
+/* Initializer for the class 'Navigation::TbtInfoItem' */
+void NavigationTbtInfoItem__Init( NavigationTbtInfoItem _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  CoreGroup__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( NavigationTbtInfoItem );
+
+  /* ... then construct all embedded objects */
+  ViewsRectangle__Init( &_this->TbtItemBg, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->NextTurnIcon, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->NextTurnDist, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->NextTurnDistUnit, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->NextTurnDescription, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->ListDivider, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( NavigationTbtInfoItem );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const003E );
+  CoreRectView__OnSetBounds( &_this->TbtItemBg, _Const003F );
+  ViewsRectangle_OnSetColor( &_this->TbtItemBg, _Const0040 );
+  ViewsRectangle_OnSetVisible( &_this->TbtItemBg, 0 );
+  CoreRectView__OnSetBounds( &_this->NextTurnIcon, _Const0041 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDist, _Const0042 );
+  ViewsText_OnSetString( &_this->NextTurnDist, 0 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDistUnit, _Const0043 );
+  ViewsText_OnSetString( &_this->NextTurnDistUnit, 0 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDescription, _Const0044 );
+  ViewsText_OnSetEllipsis( &_this->NextTurnDescription, 1 );
+  ViewsText_OnSetWrapText( &_this->NextTurnDescription, 1 );
+  ViewsText_OnSetAlignment( &_this->NextTurnDescription, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertTop );
+  ViewsText_OnSetString( &_this->NextTurnDescription, 0 );
+  ViewsText_OnSetColor( &_this->NextTurnDescription, _Const0045 );
+  CoreRectView__OnSetBounds( &_this->ListDivider, _Const0046 );
+  ViewsImage_OnSetAlignment( &_this->ListDivider, ViewsImageAlignmentScaleToFit );
+  CoreGroup__Add( _this, ((CoreView)&_this->TbtItemBg ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NextTurnIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NextTurnDist ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NextTurnDistUnit ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NextTurnDescription ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ListDivider ), 0 );
+  ViewsText_OnSetFont( &_this->NextTurnDist, EwLoadResource( &FontsNotoSansBold24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->NextTurnDistUnit, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->NextTurnDescription, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsImage_OnSetBitmap( &_this->ListDivider, EwLoadResource( &ResourceListDivider3, 
+  ResourcesBitmap ));
+}
+
+/* Re-Initializer for the class 'Navigation::TbtInfoItem' */
+void NavigationTbtInfoItem__ReInit( NavigationTbtInfoItem _this )
+{
+  /* At first re-initialize the super class ... */
+  CoreGroup__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsRectangle__ReInit( &_this->TbtItemBg );
+  ViewsImage__ReInit( &_this->NextTurnIcon );
+  ViewsText__ReInit( &_this->NextTurnDist );
+  ViewsText__ReInit( &_this->NextTurnDistUnit );
+  ViewsText__ReInit( &_this->NextTurnDescription );
+  ViewsImage__ReInit( &_this->ListDivider );
+}
+
+/* Finalizer method for the class 'Navigation::TbtInfoItem' */
+void NavigationTbtInfoItem__Done( NavigationTbtInfoItem _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( CoreGroup );
+
+  /* Finalize all embedded objects */
+  ViewsRectangle__Done( &_this->TbtItemBg );
+  ViewsImage__Done( &_this->NextTurnIcon );
+  ViewsText__Done( &_this->NextTurnDist );
+  ViewsText__Done( &_this->NextTurnDistUnit );
+  ViewsText__Done( &_this->NextTurnDescription );
+  ViewsImage__Done( &_this->ListDivider );
+
+  /* Don't forget to deinitialize the super class ... */
+  CoreGroup__Done( &_this->_Super );
+}
+
+/* Variants derived from the class : 'Navigation::TbtInfoItem' */
+EW_DEFINE_CLASS_VARIANTS( NavigationTbtInfoItem )
+EW_END_OF_CLASS_VARIANTS( NavigationTbtInfoItem )
+
+/* Virtual Method Table (VMT) for the class : 'Navigation::TbtInfoItem' */
+EW_DEFINE_CLASS( NavigationTbtInfoItem, CoreGroup, TbtItemBg, TbtItemBg, TbtItemBg, 
+                 TbtItemBg, _None, _None, "Navigation::TbtInfoItem" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+EW_END_OF_CLASS( NavigationTbtInfoItem )
+
+/* Initializer for the class 'Navigation::TbtListMenu' */
+void NavigationTbtListMenu__Init( NavigationTbtListMenu _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuVerticalMenu__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( NavigationTbtListMenu );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( NavigationTbtListMenu );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const0047 );
+  CoreVerticalList_OnSetItemClass( &_this->Super1.MenuList, EW_CLASS( NavigationTbtInfoItem ));
+}
+
+/* Re-Initializer for the class 'Navigation::TbtListMenu' */
+void NavigationTbtListMenu__ReInit( NavigationTbtListMenu _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuVerticalMenu__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'Navigation::TbtListMenu' */
+void NavigationTbtListMenu__Done( NavigationTbtListMenu _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( MenuVerticalMenu );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuVerticalMenu__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Navigation::TbtListMenu.OnShortDownKeyActivated()' */
+void NavigationTbtListMenu_OnShortDownKeyActivated( NavigationTbtListMenu _this )
+{
+  XInt32 NextItemIdx = _this->Super1.MenuList.SelectedItem + 1;
+
+  if ( NextItemIdx < _this->Super1.MenuList.NoOfItems )
+  {
+    CoreVerticalList_OnSetSelectedItem( &_this->Super1.MenuList, NextItemIdx );
+    MenuVerticalMenu_SwitchToPageOfSelectedItem((MenuVerticalMenu)_this );
+    MenuVerticalMenu_MoveFocusFrame((MenuVerticalMenu)_this );
+  }
+}
+
+/* 'C' function for method : 'Navigation::TbtListMenu.OnShortUpKeyActivated()' */
+void NavigationTbtListMenu_OnShortUpKeyActivated( NavigationTbtListMenu _this )
+{
+  XInt32 PrevItemIdx = _this->Super1.MenuList.SelectedItem - 1;
+
+  if ( PrevItemIdx >= 0 )
+  {
+    CoreVerticalList_OnSetSelectedItem( &_this->Super1.MenuList, PrevItemIdx );
+    MenuVerticalMenu_SwitchToPageOfSelectedItem((MenuVerticalMenu)_this );
+    MenuVerticalMenu_MoveFocusFrame((MenuVerticalMenu)_this );
+  }
+}
+
+/* This method is called by 'VerticalList' every time the list loads or updates 
+   an item. */
+void NavigationTbtListMenu_OnLoadItemSlot( NavigationTbtListMenu _this, XObject 
+  sender )
+{
+  NavigationTbtInfoItem item;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  item = EwCastObject( _this->Super1.MenuList.View, NavigationTbtInfoItem );
+
+  if ( item != 0 )
+  {
+    DeviceInterfaceNaviTbtDataClass NaviTbtData = DeviceInterfaceNavigationDeviceClass_GetNaviTbtData( 
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), 
+      _this->Super1.MenuList.Item );
+
+    if ( NaviTbtData->ListIdx < 0 )
+      ;
+
+    NavigationTbtListMenu_ShowTbtListItemIcon( _this, NaviTbtData->IconIdx );
+    ViewsText_OnSetString( &item->NextTurnDistUnit, NaviTbtData->DistUnit );
+    ViewsText_OnSetString( &item->NextTurnDist, EwNewStringInt( NaviTbtData->Distance, 
+    0, 10 ));
+    ViewsText_OnSetString( &item->NextTurnDescription, NaviTbtData->TbtDescription );
+    ViewsRectangle_OnSetVisible( &item->TbtItemBg, 0 );
+
+    if ( _this->ActiveTbtIdx == _this->Super1.MenuList.Item )
+    {
+      ViewsRectangle_OnSetVisible( &item->TbtItemBg, 1 );
+    }
+
+    CoreRectView__OnSetBounds( item, EwSetRectSize( item->Super2.Bounds, EwNewPoint( 
+    EwGetRectW( _this->Super1.MenuList.Super2.Bounds ), _this->Super1.MenuList.ItemHeight )));
+  }
+}
+
+/* 'C' function for method : 'Navigation::TbtListMenu.ShowTbtListItemIcon()' */
+void NavigationTbtListMenu_ShowTbtListItemIcon( NavigationTbtListMenu _this, XInt32 
+  index )
+{
+  NavigationTbtInfoItem item = EwCastObject( _this->Super1.MenuList.View, NavigationTbtInfoItem );
+
+  if ( item != 0 )
+  {
+    XEnum NaviTurnStatus = (XEnum)index;
+
+    switch ( NaviTurnStatus )
+    {
+      case EnumNaviTurnStatusTypeCONTINUE_LEFT :
+        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwKeepLIrg28, 
+        ResourcesBitmap ));
+      break;
+
+      case EnumNaviTurnStatusTypeTURN_LEFT :
+        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwTurnLIrg28, 
+        ResourcesBitmap ));
+      break;
+
+      case EnumNaviTurnStatusTypeTURN_RIGHT :
+        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwTurnRIrg28, 
+        ResourcesBitmap ));
+      break;
+
+      default : 
+        ;
+    }
+  }
+}
+
+/* Variants derived from the class : 'Navigation::TbtListMenu' */
+EW_DEFINE_CLASS_VARIANTS( NavigationTbtListMenu )
+EW_END_OF_CLASS_VARIANTS( NavigationTbtListMenu )
+
+/* Virtual Method Table (VMT) for the class : 'Navigation::TbtListMenu' */
+EW_DEFINE_CLASS( NavigationTbtListMenu, MenuVerticalMenu, _None, _None, _None, _None, 
+                 _None, _None, "Navigation::TbtListMenu" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  MenuVerticalMenu_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  NavigationTbtListMenu_OnShortDownKeyActivated,
+  NavigationTbtListMenu_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+  NavigationTbtListMenu_OnLoadItemSlot,
+EW_END_OF_CLASS( NavigationTbtListMenu )
 
 /* Embedded Wizard */

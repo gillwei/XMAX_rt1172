@@ -165,7 +165,7 @@ class BaseHome : Components::BaseMainBG
           NextHomeType = Enum::HomeType.VEHICLE_INFO;
         }
         */
-        NextHomeType = Enum::HomeType.NAVI_DEFAULT_VIEW; //TODO: remove this line
+        NextHomeType = DeviceInterface::NavigationDevice.CurrentHome; //TODO: replace this line with above login when IsNaviAppConnected is ready.
       }
       case Enum::HomeType.NAVI_DEFAULT_VIEW, Enum::HomeType.NAVI_NEXT_TURN, Enum::HomeType.NAVI_TURN_BY_TURN: NextHomeType = Enum::HomeType.VEHICLE_INFO;
       case Enum::HomeType.VEHICLE_INFO:
