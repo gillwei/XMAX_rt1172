@@ -109,13 +109,26 @@ class BaseHome : Components::BaseMainBG
   $rect <220,290,450,330>
   inherited method OnShortHomeKeyActivated()
   {
-    var Enum::HomeType NextHomeType = GetNextHomeType( HomeType );
-    if( Enum::HomeType.TOTAL != NextHomeType )
+    var Enum::HomeType NextHomeType = GetNextHomeType( HomeType );
+    var Application::Application App = ( Application::Application )GetRoot();
+    if( null != App )
     {
-      var Application::Application App = ( Application::Application )GetRoot();
-      if( null != App )
+      switch( NextHomeType )
       {
-        App.SwitchToHome( NextHomeType );
+        case Enum::HomeType.TACHO_VISUALIZER,
+             Enum::HomeType.SPEED_VISUALIZER,
+             Enum::HomeType.ECO_VISUALIZER:
+        {
+          App.SlideInHome( NextHomeType );
+        }
+        case Enum::HomeType.NAVI_DEFAULT_VIEW,
+             Enum::HomeType.NAVI_NEXT_TURN,
+             Enum::HomeType.NAVI_TURN_BY_TURN:
+        {
+          App.SwitchToHome( NextHomeType );
+        }
+        case Enum::HomeType.VEHICLE_INFO: App.SlideInHome( NextHomeType );
+        default:;
       }
     }
   }

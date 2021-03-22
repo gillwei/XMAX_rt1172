@@ -479,14 +479,34 @@ void HomeBaseHome_OnShortEnterKeyActivated( HomeBaseHome _this )
 void HomeBaseHome_OnShortHomeKeyActivated( HomeBaseHome _this )
 {
   XEnum NextHomeType = HomeBaseHome_GetNextHomeType( _this, _this->HomeType );
+  ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
-  if ( EnumHomeTypeTOTAL != NextHomeType )
+  if ( App != 0 )
   {
-    ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
-
-    if ( App != 0 )
+    switch ( NextHomeType )
     {
-      ApplicationApplication_SwitchToHome( App, NextHomeType );
+      case EnumHomeTypeTACHO_VISUALIZER :
+      case EnumHomeTypeSPEED_VISUALIZER :
+      case EnumHomeTypeECO_VISUALIZER :
+      {
+        ApplicationApplication_SlideInHome( App, NextHomeType );
+      }
+      break;
+
+      case EnumHomeTypeNAVI_DEFAULT_VIEW :
+      case EnumHomeTypeNAVI_NEXT_TURN :
+      case EnumHomeTypeNAVI_TURN_BY_TURN :
+      {
+        ApplicationApplication_SwitchToHome( App, NextHomeType );
+      }
+      break;
+
+      case EnumHomeTypeVEHICLE_INFO :
+        ApplicationApplication_SlideInHome( App, NextHomeType );
+      break;
+
+      default : 
+        ;
     }
   }
 }

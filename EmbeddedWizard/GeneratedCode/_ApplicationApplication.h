@@ -230,6 +230,13 @@ void ApplicationApplication_ReturnToHome( ApplicationApplication _this );
 void ApplicationApplication_OnCheckTFTBacklightSlot( ApplicationApplication _this, 
   XObject sender );
 
+/* 'C' function for method : 'Application::Application.SlideInHome()' */
+void ApplicationApplication_SlideInHome( ApplicationApplication _this, XEnum aHomeType );
+
+/* 'C' function for method : 'Application::Application.OnSlideInHomeFinishedSlot()' */
+void ApplicationApplication_OnSlideInHomeFinishedSlot( ApplicationApplication _this, 
+  XObject sender );
+
 #ifdef __cplusplus
   }
 #endif

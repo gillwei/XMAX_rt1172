@@ -35,6 +35,8 @@
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
+#include "_EffectSlideTransitionNoFade.h"
+#include "_EffectsTransition.h"
 #include "_FactoryDisplayAutoRun.h"
 #include "_FactoryDisplayManual.h"
 #include "_FactoryTestContext.h"
@@ -51,16 +53,18 @@
 #include "_TopTOP01_Disclaimer.h"
 #include "Application.h"
 #include "DeviceInterface.h"
+#include "Effect.h"
 #include "Enum.h"
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000080, /* ratio 81.25 % */
+  0x0000009E, /* ratio 75.95 % */
   0xB8002D00, 0x000A6452, 0x1CC2003A, 0xC0075004, 0x1242001C, 0x00039002, 0x002B0004,
   0x08CC38D2, 0x36000C40, 0xD000CA00, 0xC9801151, 0x508B0307, 0xA111B909, 0x60002245,
   0x06F00136, 0x16961900, 0xC294A64F, 0x8A436112, 0xACAC006E, 0x80268489, 0x2A4D2C36,
-  0x88D2B948, 0x411E92D0, 0x354934E6, 0x00000020, 0x00000000
+  0x88D2B948, 0x411E92D0, 0x928004E6, 0x1A9041A0, 0x024C8A6F, 0x9AD16820, 0x354E4548,
+  0x00203269, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -70,6 +74,7 @@ static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x0018 };
 static const XStringRes _Const0004 = { _StringsDefault0, 0x0027 };
 static const XStringRes _Const0005 = { _StringsDefault0, 0x0036 };
+static const XStringRes _Const0006 = { _StringsDefault0, 0x0040 };
 
 /* Initializer for the class 'Application::Application' */
 void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, XHandle aArg )
@@ -355,11 +360,12 @@ void ApplicationApplication_SwitchToHome( ApplicationApplication _this, XEnum aH
         while ( CoreGroup_CountDialogs((CoreGroup)_this ) > 0 )
         {
           CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
-          0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+          0 ), ((EffectsTransition)EwGetAutoObject( &EffectNoSlideOut, EffectSlideTransitionNoFade )), 
+          0, 0, EwNullSlot, EwNullSlot, 1 );
         }
 
         CoreGroup_SwitchToDialog((CoreGroup)_this, HomeDialog, 0, 0, 0, 0, 0, 0, 
-        0, EwNullSlot, EwNullSlot, 0 );
+        0, EwNullSlot, EwNullSlot, 1 );
       }
     }
   }
@@ -576,6 +582,36 @@ void ApplicationApplication_OnCheckTFTBacklightSlot( ApplicationApplication _thi
     CoreTimer_OnSetEnabled( &_this->CheckTFTBacklightTimer, 0 );
     EwSignal( EwNewSlot( _this, ApplicationApplication_OnStartBootupAnimationSlot ), 
       ((XObject)_this ));
+  }
+}
+
+/* 'C' function for method : 'Application::Application.SlideInHome()' */
+void ApplicationApplication_SlideInHome( ApplicationApplication _this, XEnum aHomeType )
+{
+  CoreGroup HomeDialog = ApplicationApplication_HomeDialogOfHomeType( _this, aHomeType );
+
+  EwTrace( "%s%$", EwLoadString( &_Const0006 ), EwClassOf(((XObject)HomeDialog )));
+  CoreGroup_PresentDialog((CoreGroup)_this, HomeDialog, ((EffectsTransition)EwGetAutoObject( 
+  &EffectSlideInTransition, EffectSlideTransitionNoFade )), 0, 0, 0, 0, 0, EwNewSlot( 
+  _this, ApplicationApplication_OnSlideInHomeFinishedSlot ), EwNullSlot, 0 );
+}
+
+/* 'C' function for method : 'Application::Application.OnSlideInHomeFinishedSlot()' */
+void ApplicationApplication_OnSlideInHomeFinishedSlot( ApplicationApplication _this, 
+  XObject sender )
+{
+  XInt32 DialogIdx;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  DialogIdx = 1;
+
+  while ( 1 < CoreGroup_CountDialogs((CoreGroup)_this ))
+  {
+    CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+    DialogIdx ), ((EffectsTransition)EwGetAutoObject( &EffectNoSlideOut, EffectSlideTransitionNoFade )), 
+    0, 0, EwNullSlot, EwNullSlot, 0 );
   }
 }
 

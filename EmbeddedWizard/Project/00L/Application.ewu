@@ -170,7 +170,7 @@ class Application : Core::Root
   // Switch to home/launcher
   note group Note1
   {
-    attr Bounds = <330,390,1030,550>;
+    attr Bounds = <330,390,1240,550>;
   }
 
   $rect <360,440,560,480>
@@ -221,10 +221,10 @@ class Application : Core::Root
           // dismiss all dialogs
           while( CountDialogs() > 0 )
           {
-            DismissDialog( GetDialogAtIndex( 0 ), null, null, null, null, null, false );
+            DismissDialog( GetDialogAtIndex( 0 ), Effect::NoSlideOut, null, null, null, null, true );
           }
           // show the home dialog
-          SwitchToDialog( HomeDialog, null, null, null, null, null, null, null, null, null, false );
+          SwitchToDialog( HomeDialog, null, null, null, null, null, null, null, null, null, true );
         }
       }
     }
@@ -389,6 +389,24 @@ class Application : Core::Root
       trace "TFT bl ", IsTFTBacklightOn;
       CheckTFTBacklightTimer.Enabled = false;
       signal OnStartBootupAnimationSlot;
+    }
+  }
+
+  $rect <1020,440,1220,480>
+  method void SlideInHome( arg Enum::HomeType aHomeType )
+  {
+    var Core::Group HomeDialog = HomeDialogOfHomeType( aHomeType );
+    trace "SlideInHome ", classof HomeDialog;
+    PresentDialog( HomeDialog, Effect::SlideInTransition, null, null, null, null, null, OnSlideInHomeFinishedSlot, null, false );
+  }
+
+  $rect <1020,490,1220,530>
+  slot OnSlideInHomeFinishedSlot
+  {
+    var int32 DialogIdx = 1;
+    while( 1 < CountDialogs() )
+    {
+      DismissDialog( GetDialogAtIndex( DialogIdx ), Effect::NoSlideOut, null, null, null, null, false );
     }
   }
 }
