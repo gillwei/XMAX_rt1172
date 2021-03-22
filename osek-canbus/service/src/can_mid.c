@@ -48,7 +48,8 @@
 /*------------------------------------------------------
 Supported function list instances
 ------------------------------------------------------*/
-mid_msg_supp_func_t supp_func_list = { 0 };
+mid_msg_supp_func_t supp_func_list      = { 0 };
+boolean             supp_func_list_syc  = FALSE;
 
 /*------------------------------------------------------
 Message list pointer
@@ -408,8 +409,10 @@ else
     /*------------------------------------------------------
     Set the function list
     ------------------------------------------------------*/
-    if( l_can_id == RX2_RES_SUPPORT_CAN0_ID )
+    if( ( l_can_id == RX2_RES_SUPPORT_CAN0_ID ) &&
+        ( supp_func_list_syc == FALSE ) )
         {
+        supp_func_list_syc = TRUE;
         memcpy( &supp_func_list, &( mid_msg_p->data[MID_MSG_TCFS_IDX] ), sizeof( supp_func_list ) );
         VI_rx_support_function_received( &supp_func_list );
         }
