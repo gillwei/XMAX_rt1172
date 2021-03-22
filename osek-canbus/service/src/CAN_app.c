@@ -1005,8 +1005,6 @@ void app_task
     can_hw_inst_t   const hw_inst       //!< [in] CAN hardware instance
     )
 {
-can_app_sys_stat_check();
-
 /*------------------------------------------------------
 Middle layer to handle request messages;
 ------------------------------------------------------*/

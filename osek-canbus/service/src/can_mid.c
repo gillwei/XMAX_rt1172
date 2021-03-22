@@ -32,6 +32,8 @@
                             MACROS
 --------------------------------------------------------------------*/
 #define MID_MSG_RES_SHORT_TIMEOUT                       10   //!< 10  * 5ms = 50ms
+#define MID_MSG_RES_SHORT_TIMEOUT_OFFSET                5
+
 #define MID_MSG_RES_LONG_TIMEOUT                        1000 //!< 1000 * 5ms = 5000ms
 #define MID_MSG_RE_SEND_TIME_MAX                        3
 
