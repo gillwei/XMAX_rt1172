@@ -45,6 +45,7 @@
 /*--------------------------------------------------------------------
                             MACROS
 --------------------------------------------------------------------*/
+#define CAN_MID_LAYER_INIT_DELAY    100
 
 /*--------------------------------------------------------------------
                             TYPES
@@ -82,11 +83,6 @@ if( hw_inst < CAN_NUM_INSTANCES )
     ------------------------------------------------------*/
     nm_init( NM_INIT_MODE_POWER_ON, hw_inst );
     client_diag_init( CAN_CONTROLLER_2 );
-
-    /*------------------------------------------------------
-    CAN application Other paras init
-    ------------------------------------------------------*/
-    can_mid_init();
     }
 }
 
@@ -137,7 +133,9 @@ CAN_nim_task
     )
 {
 can_hw_inst_t   l_i_hw_inst;
-uint32_t        last_time = xTaskGetTickCount();
+uint32_t        last_time       = xTaskGetTickCount();
+static uint16   l_mid_init_delay_tick = 0;
+static boolean  l_mid_init_delay      = FALSE;
 
 /*------------------------------------------------------
 Starup the CAN hardware and services
@@ -146,6 +144,16 @@ CAN_nim_start_up();
 
 while(1)
     {
+    /*------------------------------------------------------
+    Middle layer delay init and handshake with Meter
+    ------------------------------------------------------*/
+    if( ( l_mid_init_delay_tick++ == CAN_MID_LAYER_INIT_DELAY ) &&
+        ( l_mid_init_delay == FALSE ) )
+        {
+        l_mid_init_delay = TRUE;
+        can_mid_init();
+        }
+
     /*------------------------------------------------------
     Service all the CAN stack layers for each hardware
     instance.

@@ -32,10 +32,12 @@
                             MACROS
 --------------------------------------------------------------------*/
 #define MID_MSG_RES_SHORT_TIMEOUT                       10   //!< 10  * 5ms = 50ms
-#define MID_MSG_RES_SHORT_TIMEOUT_OFFSET                5
+#define MID_MSG_RES_SHORT_TIMEOUT_OFFSET                2    //!< 2  *  5ms = 10ms
+#define MID_MSG_RES_MID_TIMEOUT                         30   //!< 30  * 5ms = 150ms
 
 #define MID_MSG_RES_LONG_TIMEOUT                        1000 //!< 1000 * 5ms = 5000ms
-#define MID_MSG_RE_SEND_TIME_MAX                        3
+#define MID_MSG_RE_SEND_TIME_LONG                       1    //!< 1 time,
+#define MID_MSG_RE_SEND_TIME_SHORT                      3    //!< No response resending times
 
 #define MID_MSG_CAN_ID_DEMO                             0xFFFFFFFF
 #define MID_MSG_SVC_ID_DEMO                             0xFF
@@ -245,7 +247,7 @@ if( l_node_p != NULL )
     "Response A" is received for previous "Request A".
     ------------------------------------------------------*/
     l_svc_staus = l_node_p->req_msg_status;
-    if( l_svc_staus >= MID_MSG_STAT_WAIT_RES_SHORT )
+    if( l_svc_staus == MID_MSG_STAT_WAIT_RES_SHORT )
         {
         return l_ret_code;
         }
@@ -365,6 +367,16 @@ if( l_node_p == NULL )
     }
 
 /*------------------------------------------------------
+Only when LC is in short wait(50ms) or long wait(5000ms),
+response messages can be valid
+------------------------------------------------------*/
+if( ( ( *l_node_status_p ) != MID_MSG_STAT_WAIT_RES_SHORT ) &&
+    ( ( *l_node_status_p ) != MID_MSG_STAT_WAIT_RES_LONG ) )
+    {
+    return;
+    }
+
+/*------------------------------------------------------
 Handle resp date by different type(positive or negative)
 ------------------------------------------------------*/
 if( l_resp_type == MID_MSG_NRES_NACK )
@@ -386,7 +398,7 @@ if( l_resp_type == MID_MSG_NRES_NACK )
         ------------------------------------------------------*/
         *l_node_wait_p   = 0;
         *l_node_time_p   = 0;
-        *l_node_status_p = MID_MSG_STAT_INITED;
+        *l_node_status_p = MID_MSG_STAT_WAIT_RES_SHORT;
          l_svc_id        = l_neg_resp_svc_id;
 
         PRINTF("Not supp %x %x!\r\n", l_can_id, l_svc_id );
@@ -424,9 +436,8 @@ else
     }
 }
 
-
 /*------------------------------------------------------
-Find the positive message node by reponse CAN ID and
+Find the positive message node by response CAN ID and
 service ID
 ------------------------------------------------------*/
 mid_msg_lst
@@ -581,12 +592,39 @@ while( l_node_p->next != NULL )
             break;
 
         case MID_MSG_STAT_WAIT_RES_SHORT :
+            /*------------------------------------------------------
+            Ticker increases
+            ------------------------------------------------------*/
             ( *l_node_wait_p )++;
             if( ( *l_node_wait_p ) > MID_MSG_RES_SHORT_TIMEOUT )
                 {
+                ( *l_node_wait_p ) = 0;
                 ( *l_node_time_p )++;
-                ( *l_node_wait_p )   = 0;
-                ( *l_node_status_p ) = MID_MSG_STAT_WAIT_RES_LONG;
+                if( ( *l_node_time_p ) >= MID_MSG_RE_SEND_TIME_SHORT )
+                    {
+                    ( *l_node_status_p ) = MID_MSG_STAT_COMM_ERR;
+
+                    /*------------------------------------------------------
+                    Notify the communication error
+                    ------------------------------------------------------*/
+                    PRINTF( "Comm error %x!\r\n", l_node_req_p->id );
+                    }
+                else
+                    {
+                    ( *l_node_status_p ) = MID_MSG_STAT_WAIT_RES_MID;
+                    }
+                }
+            break;
+
+        case MID_MSG_STAT_WAIT_RES_MID :
+            /*------------------------------------------------------
+            Ticker increases
+            ------------------------------------------------------*/
+            ( *l_node_wait_p )++;
+            if( ( *l_node_wait_p ) > MID_MSG_RES_MID_TIMEOUT )
+                {
+                ( *l_node_wait_p ) = 0;
+                ( *l_node_status_p ) = MID_MSG_STAT_WAIT_RES_SHORT;
 
                 /*------------------------------------------------------
                 Re-send the request message 50ms after the first sending
@@ -597,28 +635,27 @@ while( l_node_p->next != NULL )
             break;
 
         case MID_MSG_STAT_WAIT_RES_LONG :
+            /*------------------------------------------------------
+            Ticker increases
+            ------------------------------------------------------*/
             ( *l_node_wait_p )++;
             if( ( *l_node_wait_p ) > MID_MSG_RES_LONG_TIMEOUT )
                 {
-                ( *l_node_wait_p )  = 0;
+                ( *l_node_wait_p ) = 0;
                 ( *l_node_time_p )++;
 
                 /*------------------------------------------------------
                 Client judge as communication error if there is no response
                 even though Client send the request message for 3 times.
                 ------------------------------------------------------*/
-                if( ( *l_node_time_p ) >= MID_MSG_RE_SEND_TIME_MAX )
+                if( ( *l_node_time_p ) > MID_MSG_RE_SEND_TIME_LONG )
                     {
                     ( *l_node_status_p ) = MID_MSG_STAT_COMM_ERR;
 
                     /*------------------------------------------------------
                     Notify the communication error
                     ------------------------------------------------------*/
-                    PRINTF("Comm error %x!\r\n", l_node_req_p->id );
-                    }
-                else
-                    {
-                    l_ret_code = il_app_frm_put( l_node_req_p );
+                    PRINTF( "Comm error %x!\r\n", l_node_req_p->id );
                     }
                 }
             break;
