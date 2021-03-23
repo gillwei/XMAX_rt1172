@@ -21,6 +21,7 @@
 #include "vi_priv.h"
 #include "VI_pub.h"
 #include "EW_pub.h"
+#include "PERIPHERAL_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -62,6 +63,7 @@ static bool     is_dd_mode_activated = false;
 #define set_bit( data, offset )   ( ( data ) |=  ( 1 << ( offset ) ) )
 #define clear_bit( data, offset ) ( ( data ) &= ~( 1 << ( offset ) ) )
 
+#define TFT_DUTY_FACTOR           100 / 1023.0
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
@@ -139,7 +141,7 @@ switch( signal_id )
     {
     case IL_CAN0_BRTNSS_CTRL_MT_TFT_DUTY_RXSIG_HANDLE:
         rx_brightness_control.tft_duty = (uint16_t)data;
-        /* TODO: set TFT pwm duty cycle */
+        PERIPHERAL_pwm_set_display_dutycycle( (uint8_t)( data * TFT_DUTY_FACTOR ) );
         break;
     case IL_CAN0_BRTNSS_CTRL_LCD_LV_RXSIG_HANDLE:
         rx_brightness_control.lcd_brightness_level = (uint8_t)data;
