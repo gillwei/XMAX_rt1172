@@ -469,6 +469,7 @@ static void enable_bt
 {
 is_bt_enable = true;
 EEPM_set_BT_en( true, NULL );
+BTM_init_autoconnect();
 }
 
 /*********************************************************************
