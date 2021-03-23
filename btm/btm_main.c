@@ -1946,14 +1946,17 @@ else if( BTM_PAIRING_STATE_BLE == btm_pairing_state )
 * For EW get BLE connected device name, the BLE remote device should be
 * the same with the BTC connected device
 *
-**@param p_data Return device name pointer value
+* @param p_data Return device name pointer value
+* @return True if there is a BLE connected device.
+*
 *********************************************************************/
-void BTM_get_ble_connected_device_name
+bool BTM_get_ble_connected_device_name
     (
     uint8_t** p_data
     )
 {
 // TODO memcpy BLE connected name to the pointer
+return false;
 }
 
 /*********************************************************************

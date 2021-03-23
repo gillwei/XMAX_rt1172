@@ -231,7 +231,7 @@ bool BTM_is_bt_connected
     void
     );
 
-void BTM_get_ble_connected_device_name
+bool BTM_get_ble_connected_device_name
     (
     uint8_t** p_data
     );

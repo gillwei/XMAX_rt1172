@@ -6,7 +6,7 @@ inline Inline
   #include "BTM_pub.h"
 }
 
-$rect <20,10,280,50>
+$rect <20,10,260,50>
 $output false
 class SET01_MainSettingMenu : Menu::BaseMenuView
 {

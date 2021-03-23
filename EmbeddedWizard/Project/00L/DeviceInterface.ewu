@@ -1331,8 +1331,11 @@ class BluetoothDeviceClass : Templates::DeviceClass
       native( BleConnectedDeviceName )
       {
         uint8_t* ble_connected_device_name;
-        BTM_get_ble_connected_device_name( &ble_connected_device_name );
-        BleConnectedDeviceName = EwNewStringUtf8( (const unsigned char*)ble_connected_device_name, (int)strlen( (char*)ble_connected_device_name ) );
+        bool has_ble_connected_device = BTM_get_ble_connected_device_name( &ble_connected_device_name );
+        if( has_ble_connected_device )
+        {
+          BleConnectedDeviceName = EwNewStringUtf8( (const unsigned char*)ble_connected_device_name, (int)strlen( (char*)ble_connected_device_name ) );
+        }
       }
     $endif
 
