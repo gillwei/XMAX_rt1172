@@ -102,7 +102,9 @@ typedef uint16_t bc_motocon_command_code_t; enum
     BC_MOTOCON_COMMAND_CODE_CCUID_RESPONSE                                 = 0x0131,
     BC_MOTOCON_COMMAND_CODE_PHONE_CELL_SIGNAL_LEVEL_REQUEST                = 0x0132,
     BC_MOTOCON_COMMAND_CODE_PHONE_CELL_SIGNAL_LEVEL_RESPONSE               = 0x0133,
-    BC_MOTOCON_COMMAND_CODE_CALL_CHANGE_NOTIFICATION                       = 0x0134
+    BC_MOTOCON_COMMAND_CODE_CALL_CHANGE_NOTIFICATION                       = 0x0134,
+    BC_MOTOCON_COMMAND_CODE_ALIVE_CHECK_REQUEST                            = 0x0135,
+    BC_MOTOCON_COMMAND_CODE_ALIVE_CHECK_RESPONSE                           = 0x0136
     };/* end of bc_motocon_command_code_t */
 
 typedef enum

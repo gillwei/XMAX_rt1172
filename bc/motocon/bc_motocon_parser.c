@@ -142,6 +142,7 @@ switch( command_code )
         break;
 
     case BC_MOTOCON_COMMAND_CODE_CCUID_REQUEST:
+        bc_motocon_set_connected( true );
         ret = bc_motocon_parser_ccuid_request( bytes, length );
         break;
 
@@ -151,6 +152,10 @@ switch( command_code )
 
     case BC_MOTOCON_COMMAND_CODE_CALL_CHANGE_NOTIFICATION:
         ret = bc_motocon_parser_call_changed( bytes, length );
+        break;
+
+    case BC_MOTOCON_COMMAND_CODE_ALIVE_CHECK_RESPONSE:
+        ret = bc_motocon_parser_alive_response( bytes, length );
         break;
 
     default:
@@ -1184,6 +1189,28 @@ if( length == 3 )
             bc_motocon_callbacks[i]->call_changed_callback( bytes[2] );
             }
         }
+    return BC_MOTOCON_PARSE_SUCCESS;
+    }
+return BC_MOTOCON_PARSE_INVALID_INPUT;
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_parser_alive_response
+*
+* Parse alive signal and post callback.
+*
+*********************************************************************/
+bc_motocon_parse_result_t bc_motocon_parser_alive_response
+    (
+    const uint8_t* bytes,
+    const uint32_t length
+    )
+{
+if( length == 3 )
+    {
+    BC_MOTOCON_PRINTF( "%s, id: %d\r\n", __FUNCTION__, bytes[2] );
     return BC_MOTOCON_PARSE_SUCCESS;
     }
 return BC_MOTOCON_PARSE_INVALID_INPUT;

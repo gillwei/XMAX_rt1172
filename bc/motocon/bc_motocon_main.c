@@ -17,12 +17,15 @@
 #if( ENABLE_MOTOCON_HCI_LINK )
     #include <cycfg_gatt_db.h>
 #endif
+#include "timers.h"
 
 
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define MOTOCON_ALIVE_TIMEOUT_COUNT ( 3 )
+#define MOTOCON_ALIVE_INTERVAL_MS ( 3000 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -31,6 +34,7 @@ void BC_motocon_ble_connected_callback( void );
 void BC_motocon_ble_disconnected_callback( void );
 void BC_motocon_read_request_received_callback( const uint16_t handle );
 void BC_motocon_write_request_received_callback( const uint16_t handle, const uint8_t* data, const uint16_t length );
+static void send_alive_request( TimerHandle_t timer_handle );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -45,6 +49,9 @@ void BC_motocon_write_request_received_callback( const uint16_t handle, const ui
 --------------------------------------------------------------------*/
 bc_motocon_callback_t* bc_motocon_callbacks[BC_MOTOCON_CALLBACK_MAX];
 static bool bc_motocon_connected;
+static uint8_t alive_count;
+static uint8_t alive_id;
+static TimerHandle_t alive_send_timer;
 
 #if( ENABLE_MOTOCON_HCI_LINK )
     static ble_server_callback bc_motocon_ble_callback =
@@ -81,6 +88,10 @@ bc_motocon_set_connected( false );
     HCI_le_register_server_callback( BLE_SERVER_MOTOCONSDK, &bc_motocon_ble_callback );
 #endif
 bc_motocon_ddt_init();
+alive_count = 0;
+alive_id = 0;
+alive_send_timer = xTimerCreate( "MotoconAliveTimer", MOTOCON_ALIVE_INTERVAL_MS, pdTRUE, ( void * ) 0, send_alive_request );
+configASSERT( NULL != alive_send_timer );
 }
 
 /*********************************************************************
@@ -162,6 +173,27 @@ return bc_motocon_connected;
 
 /*********************************************************************
 *
+* @private
+* reset_alive_timer
+*
+* Reset/start alive timer and reset alive_count.
+*
+*********************************************************************/
+static void reset_alive_timer
+    (
+    void
+    )
+{
+if( bc_motocon_connected )
+    {
+    alive_count = 0;
+    BaseType_t result = xTimerStart( alive_send_timer, MOTOCON_ALIVE_INTERVAL_MS );
+    configASSERT( result == pdPASS );
+    }
+}
+
+/*********************************************************************
+*
 * @public
 * bc_motocon_set_connected
 *
@@ -179,6 +211,15 @@ BC_MOTOCON_PRINTF( "%s: %d\r\n", __FUNCTION__, connected );
 if( bc_motocon_connected != connected )
     {
     bc_motocon_connected = connected;
+    if( bc_motocon_connected )
+        {
+        reset_alive_timer();
+        }
+    else
+        {
+        BaseType_t result = xTimerStop( alive_send_timer, 0 );
+        configASSERT( result == pdPASS );
+        }
     for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
         {
         if( NULL != bc_motocon_callbacks[i] &&
@@ -187,6 +228,40 @@ if( bc_motocon_connected != connected )
             bc_motocon_callbacks[i]->connected_status_changed_callback( bc_motocon_connected );
             }
         }
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* send_alive_request
+*
+* Send alive signal request via BLE.
+* If alive_count is over MOTOCON_ALIVE_TIMEOUT_COUNT times, disconnect current ble connection,
+* if not, send alive request and +1 alive_count.
+*
+* @param timer_handle Timer handle
+*
+*********************************************************************/
+static void send_alive_request
+    (
+    TimerHandle_t timer_handle
+    )
+{
+BC_MOTOCON_PRINTF( "%s, %d\r\n", __FUNCTION__, alive_id );
+if( alive_count >= MOTOCON_ALIVE_TIMEOUT_COUNT )
+    {
+    BC_MOTOCON_PRINTF( "%s, disconnect ble.\r\n", __FUNCTION__ );
+    // TODO: call ble disconnect api.
+    }
+else
+    {
+    uint8_t data[3];
+    data[0] = BC_MOTOCON_COMMAND_CODE_ALIVE_CHECK_REQUEST >> 8;
+    data[1] = BC_MOTOCON_COMMAND_CODE_ALIVE_CHECK_REQUEST & 0xFF;
+    data[2] = alive_id++;
+    bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 3 );
+    alive_count++;
     }
 }
 
@@ -810,6 +885,7 @@ void BC_motocon_read_request_received_callback
 {
 BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
 #if( ENABLE_MOTOCON_HCI_LINK )
+    reset_alive_timer();
     if( handle == HDLC_MOTOCONSDK_DDT_TO_VEHICLE_STATUS_VALUE )
         {
         bc_motocon_send_data( BC_MOTOCON_DDT_TO_VEHICLE_STATUS_READ_RESPONSE, bc_motocon_ddt_get_ddt_to_vehicle_status(), BC_MOTOCON_DDT_STATUS_LENGTH );
@@ -834,6 +910,7 @@ void BC_motocon_write_request_received_callback
 {
 BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
 #if( ENABLE_MOTOCON_HCI_LINK )
+    reset_alive_timer();
     switch( handle )
         {
         case HDLC_MOTOCONSDK_WRITE_VALUE:

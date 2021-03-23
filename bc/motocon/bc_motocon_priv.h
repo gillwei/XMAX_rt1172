@@ -128,6 +128,7 @@ bc_motocon_parse_result_t bc_motocon_parser_notification_v2( const uint8_t* byte
 bc_motocon_parse_result_t bc_motocon_parser_ccuid_request( const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t bc_motocon_parser_cell_signal( const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t bc_motocon_parser_call_changed( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_alive_response( const uint8_t* bytes, const uint32_t length );
 
 void bc_motocon_init( void );
 void bc_motocon_set_connected( bool connected );
