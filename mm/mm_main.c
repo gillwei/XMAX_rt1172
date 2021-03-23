@@ -76,7 +76,9 @@ void mm_ams_gatt_update_elapsed_time
     void
     )
 {
-if( media_player.playback_state == MP_PLAYBACK_STATUS_PLAYING )
+if( media_player.playback_state == MP_PLAYBACK_STATUS_PLAYING ||
+    media_player.playback_state == MP_PLAYBACK_STATUS_FAST_FORWARDING ||
+    media_player.playback_state == MP_PLAYBACK_STATUS_REWINDING )
     {
     uint32_t elapsed_time_sec = ( media_player.start_elapsed_time_ms +
         ( uint32_t )( ( float )( xTaskGetTickCount() - media_player.start_elapsed_time_tick ) * media_player.playback_rate ) ) / 1000;

@@ -209,8 +209,8 @@ switch( player_attribute_id )
             else if( val_idx == 2)
                 {
                 // Second value, playback rate.
+                PRINTF( "Playback rate: %s\r\n", next_str );
                 mp->playback_rate = ( float )atof( next_str );
-                PRINTF( "Playback rate: %.2f\r\n", mp->playback_rate );
                 }
             else
                 {
@@ -219,7 +219,9 @@ switch( player_attribute_id )
                 mp->current_elapsed_time_sec = mp->start_elapsed_time_ms / 1000;
                 mp->start_elapsed_time_tick = received_time;
                 PRINTF( "Elapsed time: %d ms (at %d)\r\n", mp->start_elapsed_time_ms, mp->start_elapsed_time_tick );
-                if( mp->playback_state == MP_PLAYBACK_STATUS_PLAYING )
+                if( mp->playback_state == MP_PLAYBACK_STATUS_PLAYING ||
+                    mp->playback_state == MP_PLAYBACK_STATUS_FAST_FORWARDING ||
+                    mp->playback_state == MP_PLAYBACK_STATUS_REWINDING )
                     {
                     mm_start_elapsed_timer();
                     }
