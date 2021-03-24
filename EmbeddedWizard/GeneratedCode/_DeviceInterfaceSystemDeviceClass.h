@@ -71,6 +71,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( BtSoftwareVersion, XString )
   EW_PROPERTY( QrCodeText,      XString )
   EW_PROPERTY( BrightnessLevel, XInt32 )
+  EW_PROPERTY( OperationMode,   XEnum )
   EW_VARIABLE( IsHopperTestMode, XBool )
   EW_PROPERTY( FactoryResetComplete, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceSystemDeviceClass )
@@ -214,6 +215,13 @@ XBool DeviceInterfaceSystemDeviceClass_IsKeyStateValid( DeviceInterfaceSystemDev
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsTFTBacklightOn()' */
 XBool DeviceInterfaceSystemDeviceClass_IsTFTBacklightOn( DeviceInterfaceSystemDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetOperationMode()' */
+void DeviceInterfaceSystemDeviceClass_OnSetOperationMode( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum value );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetOperationMode()' */
+XEnum DeviceInterfaceSystemDeviceClass_OnGetOperationMode( DeviceInterfaceSystemDeviceClass _this );
 
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );

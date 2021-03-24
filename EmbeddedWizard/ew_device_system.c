@@ -77,7 +77,6 @@
 #define UPDATE_TIME_PERIOD_MS           ( 500 )
 
 #define ESN_STR_MAX_LEN             ( 10 )
-#define INVALID_ESN                 ( 0xFFFFFFFF )
 #define UNIT_ID_LEN                 ( 24 )
 
 #define FACTORY_TEST_EVENT_DISP_PATTERN         ( 1 << 0 )
@@ -90,6 +89,7 @@
                                  TYPES
 --------------------------------------------------------------------*/
 static void update_time_task_main( void* arg );
+static void ew_get_info_from_eeprom( void );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -146,6 +146,10 @@ static void update_time_task_main( void* arg );
     static int is_esn_read = 0;
     static int is_factory_reset_complete = 0;
     static int is_qrcode_ready = 0;
+    static uint32_t ccuid;
+    static uint32_t qrcode_passkey;
+    static uint16_t qrcode_dummy;
+    static uint8_t  operation_mode;
 #endif
 
 static uint32_t esn;
@@ -200,6 +204,7 @@ void ew_device_system_init
     BaseType_t result = xTaskCreate( update_time_task_main, UPDATE_TIME_TASK_NAME, UPDATE_TIME_TASK_STACK_SIZE, NULL, UPDATE_TIME_TASK_PRIORITY, NULL );
     configASSERT( pdPASS == result );
 
+    ew_get_info_from_eeprom();
 #endif
 }
 
@@ -335,24 +340,154 @@ sprintf( version, "%d.%02d", bt_sw_ver[0], bt_sw_ver[1] );
 /*********************************************************************
 *
 * @private
-* read_esn_callback
+* EW_read_esn_callback
 *
-* Callback of ESN read
+* Callback of reading ESN
 *
 * @param result True if read success. False if read fail.
 * @param value The pointer to the ESN of uint32_t* type.
 *
 *********************************************************************/
-static void read_esn_callback
+void EW_read_esn_callback
     (
     bool  result,
     void* value
     )
 {
-esn = *( uint32_t* )value;
-if( INVALID_ESN != esn )
+esn = *(uint32_t*)value;
+if( EEPROM_INVALID_VAL_4_BYTE != esn )
     {
     is_esn_read = 1;
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* EW_read_qrcode_ccuid_callback
+*
+* Callback of reading CCUID from EEPROM
+*
+* @param result True if read success. False if read fail.
+* @param value The pointer to the CCUID of uint32_t* type
+*
+*********************************************************************/
+void EW_read_qrcode_ccuid_callback
+    (
+    bool  result,
+    void* value
+    )
+{
+if( result )
+    {
+    ccuid = *(uint32_t*)value;
+    PRINTF( "rd ccuid 0x%x\r\n", ccuid );
+    }
+else
+    {
+    PRINTF( "rd ccuid fail\r\n" );
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* EW_read_passkey_callback
+*
+* Callback of reading passkey from EEPROM
+*
+* @param result True if read success. False if read fail.
+* @param value The pointer to the passkey of uint32_t* type
+*
+*********************************************************************/
+void EW_read_passkey_callback
+    (
+    bool  result,
+    void* value
+    )
+{
+if( result )
+    {
+    qrcode_passkey = *(uint32_t*)value;
+    PRINTF( "rd passkey %u\r\n", qrcode_passkey );
+    if( EEPROM_INVALID_VAL_4_BYTE == qrcode_passkey )
+        {
+        qrcode_passkey = 0;
+        }
+    }
+else
+    {
+    PRINTF( "rd passkey fail\r\n" );
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* EW_read_qrcode_dummy_callback
+*
+* Callback of reading qrcode dummy from EEPROM
+*
+* @param result True if read success. False if read fail.
+* @param value The pointer to the QR code dummy of uint16_t* type
+*
+*********************************************************************/
+void EW_read_qrcode_dummy_callback
+    (
+    bool  result,
+    void* value
+    )
+{
+if( result )
+    {
+    qrcode_dummy = *(uint16_t*)value;
+    PRINTF( "rd qrcode dummy 0x%x\r\n", qrcode_dummy );
+    }
+else
+    {
+    PRINTF( "rd qrcode dummy fail\r\n" );
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* EW_read_operation_mode_callback
+*
+* Callback of reading operation mode from EEPROM
+*
+* @param result True if read success. False if read fail.
+* @param value The pointer to the operation of uint8_t* type
+*
+*********************************************************************/
+void EW_read_operation_mode_callback
+    (
+    bool  result,
+    void* value
+    )
+{
+if( result )
+    {
+    operation_mode = *(uint8_t*)value;
+    PRINTF( "rd op mode 0x%x\r\n", operation_mode );
+
+    if( EEPROM_INVALID_VAL_1_BYTE == operation_mode )
+        {
+        operation_mode = EnumOperationModeFACTORY;
+        }
+    else if( EnumOperationModeTOTAL <= operation_mode )
+        {
+        operation_mode = EnumOperationModeNORMAL;
+        }
+    else
+        {
+        // empty
+        }
+    }
+else
+    {
+    PRINTF( "rd op mode fail\r\n" );
+    operation_mode = EnumOperationModeNORMAL;
     }
 }
 
@@ -370,9 +505,46 @@ void ew_get_esn
     )
 {
 #ifdef _DeviceInterfaceSystemDeviceClass_
-if( pdFALSE == EEPM_get_ESN( &read_esn_callback ) )
+if( pdFALSE == EEPM_get_ESN( &EW_read_esn_callback ) )
     {
     EwPrint( "%s false\r\n", __FUNCTION__ );
+    }
+#endif
+}
+
+/*********************************************************************
+*
+* @private
+* ew_get_info_from_eeprom
+*
+* Get info from EEPROM
+*
+*********************************************************************/
+static void ew_get_info_from_eeprom
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceSystemDeviceClass_
+if( pdFALSE == EEPM_get_operation_mode( &EW_read_operation_mode_callback ) )
+    {
+    EwPrint( "get op mode fail\r\n" );
+    }
+if( pdFALSE == EEPM_get_ESN( &EW_read_esn_callback ) )
+    {
+    EwPrint( "get esn fail\r\n" );
+    }
+if( pdFALSE == EEPM_get_qrcode_ccuid( &EW_read_qrcode_ccuid_callback ) )
+    {
+    EwPrint( "get ccuid fail\r\n" );
+    }
+if( pdFALSE == EEPM_get_qrcode_passkey( &EW_read_passkey_callback ) )
+    {
+    EwPrint( "get passkey fail\r\n" );
+    }
+if( pdFALSE == EEPM_get_qrcode_dummy( &EW_read_qrcode_dummy_callback ) )
+    {
+    EwPrint( "get dummy fail\r\n" );
     }
 #endif
 }
@@ -666,6 +838,108 @@ void ew_request_qrcode
     )
 {
 QR_generate_qrcode( esn, pixel_per_mod );
+}
+
+/*********************************************************************
+*
+* @private
+* ew_set_operation_mode
+*
+* Set operation mode
+*
+* @param mode Operation mode of EnumOperationMode type
+*
+*********************************************************************/
+void ew_set_operation_mode
+    (
+    EnumOperationMode mode
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, mode );
+operation_mode = mode;
+
+/* no need to write EnumOperationModeINSPECTION to EEPROM */
+if( EnumOperationModeNORMAL == mode ||
+    EnumOperationModeFACTORY == mode )
+    {
+    EEPM_set_operation_mode( operation_mode, NULL );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* ew_get_operation_mode
+*
+* Return current operation mode
+*
+* @return Operation mode (factory/inspection/normal)
+*
+*********************************************************************/
+EnumOperationMode ew_get_operation_mode
+    (
+    void
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, operation_mode );
+return operation_mode;
+}
+
+/*********************************************************************
+*
+* @private
+* EW_get_ccuid
+*
+* Get CCUID
+*
+* @return CCUID
+*
+*********************************************************************/
+uint32_t EW_get_ccuid
+    (
+    void
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, ccuid );
+return ccuid;
+}
+
+/*********************************************************************
+*
+* @private
+* EW_get_qrcode_dummy
+*
+* Get QR code dummy
+*
+* @return QR code dummy
+*
+*********************************************************************/
+uint16_t EW_get_qrcode_dummy
+    (
+    void
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, qrcode_dummy );
+return qrcode_dummy;
+}
+
+/*********************************************************************
+*
+* @private
+* EW_get_qrcode_passkey
+*
+* Get QR code passkey
+*
+* @return QR code passkey
+*
+*********************************************************************/
+uint16_t EW_get_qrcode_passkey
+    (
+    void
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, qrcode_passkey );
+return qrcode_passkey;
 }
 
 /*********************************************************************

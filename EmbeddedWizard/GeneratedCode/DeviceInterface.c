@@ -475,6 +475,27 @@ XBool DeviceInterfaceSystemDeviceClass_IsTFTBacklightOn( DeviceInterfaceSystemDe
   return IsBacklightOn;
 }
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetOperationMode()' */
+void DeviceInterfaceSystemDeviceClass_OnSetOperationMode( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum value )
+{
+  if ( _this->OperationMode != value )
+  {
+    _this->OperationMode = value;
+    ew_set_operation_mode( value );
+  }
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetOperationMode()' */
+XEnum DeviceInterfaceSystemDeviceClass_OnGetOperationMode( DeviceInterfaceSystemDeviceClass _this )
+{
+  XEnum Mode = EnumOperationModeNORMAL;
+
+  Mode = ew_get_operation_mode();
+  _this->OperationMode = Mode;
+  return _this->OperationMode;
+}
+
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this )
 {

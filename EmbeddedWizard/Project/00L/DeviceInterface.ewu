@@ -25,7 +25,7 @@ class SystemDeviceClass : Templates::DeviceClass
   // Interface to get system info
   note group Note1
   {
-    attr Bounds = <10,10,970,280>;
+    attr Bounds = <10,10,1160,280>;
   }
 
   $rect <250,70,450,110>
@@ -374,19 +374,19 @@ class SystemDeviceClass : Templates::DeviceClass
   // Bootup Animation
   note group Note6
   {
-    attr Bounds = <990,10,1260,170>;
+    attr Bounds = <930,300,1200,460>;
   }
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <1020,60,1230,100>
+  $rect <960,350,1170,390>
   $output true
   method void StartBootupAnimation()
   {
     BootupAnimationSystemEvent.Trigger( null, false );
   }
 
-  $rect <1020,110,1230,150>
+  $rect <960,400,1170,440>
   object Core::SystemEvent BootupAnimationSystemEvent;
 
   $rect <470,220,670,260>
@@ -415,6 +415,39 @@ class SystemDeviceClass : Templates::DeviceClass
       IsBacklightOn = true;
     $endif
     return IsBacklightOn;
+  }
+
+  $rect <940,70,1140,110>
+  property Enum::OperationMode OperationMode;
+
+  $rect <940,120,1140,160>
+  onset OperationMode
+  {
+    if( pure OperationMode != value )
+    {
+      pure OperationMode = value;
+      $if !$prototyper
+        native( value )
+        {
+          ew_set_operation_mode( value );
+        }
+      $endif
+    }
+  }
+
+  $rect <940,170,1140,210>
+  onget OperationMode
+  {
+    $if !$prototyper
+      var Enum::OperationMode Mode = Enum::OperationMode.NORMAL;
+      native( Mode )
+      {
+        Mode = ew_get_operation_mode();
+      }
+      pure OperationMode = Mode;
+    $endif
+
+    return pure OperationMode;
   }
 }
 

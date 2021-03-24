@@ -861,3 +861,20 @@ enum ReceptionStatus
   $rect <220,10,420,50>
   item ERROR;
 }
+
+$rect <500,170,700,210>
+$output false
+enum OperationMode
+{
+  $rect <10,10,210,50>
+  item NORMAL;
+
+  $rect <10,60,210,100>
+  item FACTORY;
+
+  $rect <10,110,210,150>
+  item INSPECTION;
+
+  $rect <10,160,210,200>
+  item TOTAL;
+}

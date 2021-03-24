@@ -40,6 +40,10 @@ extern "C" {
 #define TRIP_TIME_LENGTH                     ( 4 )
 #define OPERATION_MODE_LENGTH                ( 1 )
 
+#define EEPROM_INVALID_VAL_1_BYTE            ( 0xFF )
+#define EEPROM_INVALID_VAL_2_BYTE            ( 0xFFFF )
+#define EEPROM_INVALID_VAL_4_BYTE            ( 0xFFFFFFFF )
+
 typedef uint8_t EEPM_block_config_type; enum
     {
     EEPM_BLOCK_CONFIG_ESN,

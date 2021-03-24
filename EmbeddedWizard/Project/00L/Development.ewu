@@ -17,7 +17,7 @@ class DEV_Main : Menu::BaseMenuView
     var class ItemClass = null;
     switch (aItemNo )
     {
-      case 1: ItemClass = Menu::ItemCheckbox;
+      case 0, 1: ItemClass = Menu::ItemCheckbox;
       default: ItemClass = Menu::ItemBase;
     }
 
@@ -45,14 +45,25 @@ class DEV_Main : Menu::BaseMenuView
 
     switch( aItemNo )
     {
-      case 0: PresentDialog( new Factory::Main, null, null, null, null, null, null, null, null, false );
+      case 0:
+      {
+        if( Enum::OperationMode.FACTORY == DeviceInterface::SystemDevice.OperationMode )
+        {
+          DeviceInterface::SystemDevice.OperationMode = Enum::OperationMode.NORMAL;
+        }
+        else
+        {
+          DeviceInterface::SystemDevice.OperationMode = Enum::OperationMode.FACTORY;
+        }
+      }
       case 1: DeviceInterface::SystemDevice.IsHopperTestMode = !DeviceInterface::SystemDevice.IsHopperTestMode;
-      case 2: PresentDialog( new Development::DEV_RealTimeClock, null, null, null, null, null, null, null, null, false );
-      case 3: PresentDialog( new Development::DEV_Bluetooth, null, null, null, null, null, null, null, null, false );
-      case 4: PresentDialog( new Development::DEV_TFTBrightness, null, null, null, null, null, null, null, null, false );
-      case 5: PresentDialog( new Development::DEV_VehicleSupportedFunction, null, null, null, null, null, null, null, null, false );
-      case 6: PresentDialog( new Development::DEV_MotoCon, null, null, null, null, null, null, null, null, false );
-      case 7: PresentDialog( new Development::DEV_FontMenu, null, null, null, null, null, null, null, null, false );
+      case 2: PresentDialog( new Factory::Main, null, null, null, null, null, null, null, null, false );
+      case 3: PresentDialog( new Development::DEV_RealTimeClock, null, null, null, null, null, null, null, null, false );
+      case 4: PresentDialog( new Development::DEV_Bluetooth, null, null, null, null, null, null, null, null, false );
+      case 5: PresentDialog( new Development::DEV_TFTBrightness, null, null, null, null, null, null, null, null, false );
+      case 6: PresentDialog( new Development::DEV_VehicleSupportedFunction, null, null, null, null, null, null, null, null, false );
+      case 7: PresentDialog( new Development::DEV_MotoCon, null, null, null, null, null, null, null, null, false );
+      case 8: PresentDialog( new Development::DEV_FontMenu, null, null, null, null, null, null, null, null, false );
       default:;
     }
   }
@@ -63,6 +74,7 @@ class DEV_Main : Menu::BaseMenuView
     var bool IsChecked = false;
     switch( aItemNo )
     {
+      case 0: IsChecked = ( Enum::OperationMode.NORMAL != DeviceInterface::SystemDevice.OperationMode );
       case 1: IsChecked = DeviceInterface::SystemDevice.IsHopperTestMode;
       default:;
     }
@@ -70,16 +82,17 @@ class DEV_Main : Menu::BaseMenuView
   }
 
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 8 ] =
+  array string ItemTitleArray[ 9 ] =
   (
-    Default[0] = "Factory Test";
+    Default[0] = "Factory Mode";
     Default[1] = "Hopper Test Mode";
-    Default[2] = "Real Time Clock";
-    Default[3] = "Bluetooth Test";
-    Default[4] = "TFT Brightness Test";
-    Default[5] = "Vehicle Supported Func";
-    Default[6] = "MotoCon Test";
-    Default[7] = "Font Test";
+    Default[2] = "Factory Test";
+    Default[3] = "Real Time Clock";
+    Default[4] = "Bluetooth Test";
+    Default[5] = "TFT Brightness Test";
+    Default[6] = "Vehicle Supported Func";
+    Default[7] = "MotoCon Test";
+    Default[8] = "Font Test";
   );
 
   $rect <20,20,160,60>

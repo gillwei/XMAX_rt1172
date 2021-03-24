@@ -55,6 +55,8 @@ void ew_get_bt_software_version( char* version );
 void ew_get_esn( void );
 void ew_get_rtc_time( snvs_lp_srtc_datetime_t* srtc_datetime );
 void ew_request_qrcode( int pixel_per_mod );
+EnumOperationMode ew_get_operation_mode( void );
+void ew_set_operation_mode( EnumOperationMode mode );
 
 void ew_power_init( void );
 int  ew_power_ignition_status( void );

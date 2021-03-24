@@ -404,6 +404,15 @@ typedef enum
   EnumReceptionStatusERROR              = 1
 } EnumReceptionStatus;
 
+/* User defined enumeration: 'Enum::OperationMode' */
+typedef enum
+{
+  EnumOperationModeNORMAL               = 0,
+  EnumOperationModeFACTORY              = 1,
+  EnumOperationModeINSPECTION           = 2,
+  EnumOperationModeTOTAL                = 3
+} EnumOperationMode;
+
 #ifdef __cplusplus
   }
 #endif

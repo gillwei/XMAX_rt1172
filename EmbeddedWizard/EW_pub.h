@@ -29,6 +29,10 @@ typedef enum
 void EW_init( void );
 void EW_start_bootup_animation( void );
 
+uint32_t EW_get_ccuid( void );
+uint16_t EW_get_qrcode_dummy( void );
+uint16_t EW_get_qrcode_passkey( void );
+
 void EW_notify_navi_map_update( void );
 void EW_notify_engine_speed_changed( int speed );
 void EW_send_key_event( CoreKeyCode code, key_state state );
