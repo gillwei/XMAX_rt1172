@@ -25,21 +25,32 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_OpenOPN01_BootupAnimation.h"
+#include "_OpenOPN02_FactoryMode.h"
 #include "_ResourcesBitmap.h"
+#include "_ResourcesExternBitmap.h"
+#include "_ResourcesFont.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+#include "_ViewsText.h"
+#include "DeviceInterface.h"
+#include "Enum.h"
+#include "Fonts.h"
 #include "Open.h"
 #include "Resource.h"
+#include "Strings.h"
+#include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x0000001E, /* ratio 133.33 % */
+  0x00000038, /* ratio 92.86 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0xA0002780, 0x00027000, 0x00188006,
-  0x10046A32, 0x00000010, 0x00000000
+  0x68240A32, 0x8642A110, 0xA44A210E, 0xC6465168, 0x02031993, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -47,6 +58,10 @@ static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XColor _Const0001 = { 0x00, 0x00, 0x00, 0xFF };
 static const XRect _Const0002 = {{ 102, 101 }, { 378, 166 }};
 static const XStringRes _Const0003 = { _StringsDefault0, 0x0002 };
+static const XColor _Const0004 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const0005 = {{ 53, 215 }, { 434, 245 }};
+static const XRect _Const0006 = {{ 140, 59 }, { 327, 188 }};
+static const XStringRes _Const0007 = { _StringsDefault0, 0x000F };
 
 /* Initializer for the class 'Open::OPN01_BootupAnimation' */
 void OpenOPN01_BootupAnimation__Init( OpenOPN01_BootupAnimation _this, XObject aLink, XHandle aArg )
@@ -131,6 +146,13 @@ void OpenOPN01_BootupAnimation_Init( OpenOPN01_BootupAnimation _this, XHandle aA
   EwTrace( "%s", EwLoadString( &_Const0003 ));
 }
 
+/* 'C' function for method : 'Open::OPN01_BootupAnimation.OnLongHomeKeyActivated()' */
+void OpenOPN01_BootupAnimation_OnLongHomeKeyActivated( OpenOPN01_BootupAnimation _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+}
+
 /* 'C' function for method : 'Open::OPN01_BootupAnimation.OnFadeOutTriggeredSlot()' */
 void OpenOPN01_BootupAnimation_OnFadeOutTriggeredSlot( OpenOPN01_BootupAnimation _this, 
   XObject sender )
@@ -209,11 +231,197 @@ EW_DEFINE_CLASS( OpenOPN01_BootupAnimation, ComponentsBaseComponent, OnBootupAni
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
-  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  OpenOPN01_BootupAnimation_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( OpenOPN01_BootupAnimation )
+
+/* Initializer for the class 'Open::OPN02_FactoryMode' */
+void OpenOPN02_FactoryMode__Init( OpenOPN02_FactoryMode _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( OpenOPN02_FactoryMode );
+
+  /* ... then construct all embedded objects */
+  ViewsRectangle__Init( &_this->FullWhiteBG, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->PressEnterTwiceText, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->QrCodeImage, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->QrCodeReadyEventHandler, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( OpenOPN02_FactoryMode );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const0000 );
+  CoreRectView__OnSetBounds( &_this->FullWhiteBG, _Const0000 );
+  ViewsRectangle_OnSetColor( &_this->FullWhiteBG, _Const0004 );
+  CoreRectView__OnSetBounds( &_this->PressEnterTwiceText, _Const0005 );
+  ViewsText_OnSetString( &_this->PressEnterTwiceText, EwLoadString( &StringsOPN02_ENTER_TWICE ));
+  ViewsText_OnSetColor( &_this->PressEnterTwiceText, _Const0001 );
+  CoreRectView__OnSetBounds( &_this->QrCodeImage, _Const0006 );
+  ViewsImage_OnSetAlignment( &_this->QrCodeImage, ViewsImageAlignmentAlignHorzCenter 
+  | ViewsImageAlignmentAlignVertCenter );
+  CoreGroup__Add( _this, ((CoreView)&_this->FullWhiteBG ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->PressEnterTwiceText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->QrCodeImage ), 0 );
+  ViewsText_OnSetFont( &_this->PressEnterTwiceText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsImage_OnSetBitmap( &_this->QrCodeImage, ((ResourcesBitmap)EwGetAutoObject( 
+  &ResourceQrCodeExternBitmap, ResourcesExternBitmap )));
+  _this->QrCodeReadyEventHandler.OnEvent = EwNewSlot( _this, OpenOPN02_FactoryMode_OnQrCodeReadySlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->QrCodeReadyEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->QrCodeSystemEvent );
+
+  /* Call the user defined constructor */
+  OpenOPN02_FactoryMode_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Open::OPN02_FactoryMode' */
+void OpenOPN02_FactoryMode__ReInit( OpenOPN02_FactoryMode _this )
+{
+  /* At first re-initialize the super class ... */
+  ComponentsBaseComponent__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsRectangle__ReInit( &_this->FullWhiteBG );
+  ViewsText__ReInit( &_this->PressEnterTwiceText );
+  ViewsImage__ReInit( &_this->QrCodeImage );
+  CoreSystemEventHandler__ReInit( &_this->QrCodeReadyEventHandler );
+}
+
+/* Finalizer method for the class 'Open::OPN02_FactoryMode' */
+void OpenOPN02_FactoryMode__Done( OpenOPN02_FactoryMode _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+
+  /* Finalize all embedded objects */
+  ViewsRectangle__Done( &_this->FullWhiteBG );
+  ViewsText__Done( &_this->PressEnterTwiceText );
+  ViewsImage__Done( &_this->QrCodeImage );
+  CoreSystemEventHandler__Done( &_this->QrCodeReadyEventHandler );
+
+  /* Don't forget to deinitialize the super class ... */
+  ComponentsBaseComponent__Done( &_this->_Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void OpenOPN02_FactoryMode_Init( OpenOPN02_FactoryMode _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const0007 ));
+}
+
+/* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortDownKeyActivated()' */
+void OpenOPN02_FactoryMode_OnShortDownKeyActivated( OpenOPN02_FactoryMode _this )
+{
+  _this->EnterButtonPressedCount = 0;
+}
+
+/* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortUpKeyActivated()' */
+void OpenOPN02_FactoryMode_OnShortUpKeyActivated( OpenOPN02_FactoryMode _this )
+{
+  _this->EnterButtonPressedCount = 0;
+}
+
+/* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortEnterKeyActivated()' */
+void OpenOPN02_FactoryMode_OnShortEnterKeyActivated( OpenOPN02_FactoryMode _this )
+{
+  _this->EnterButtonPressedCount++;
+
+  if ( _this->EnterButtonPressedCount >= 2 )
+  {
+    DeviceInterfaceSystemDeviceClass_OnSetOperationMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+    DeviceInterfaceSystemDeviceClass ), EnumOperationModeNORMAL );
+    EwSignal( _this->OnFactoryModeFinished, ((XObject)_this ));
+  }
+}
+
+/* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortHomeKeyActivated()' */
+void OpenOPN02_FactoryMode_OnShortHomeKeyActivated( OpenOPN02_FactoryMode _this )
+{
+  _this->EnterButtonPressedCount = 0;
+}
+
+/* 'C' function for method : 'Open::OPN02_FactoryMode.OnLongHomeKeyActivated()' */
+void OpenOPN02_FactoryMode_OnLongHomeKeyActivated( OpenOPN02_FactoryMode _this )
+{
+  _this->EnterButtonPressedCount = 0;
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void OpenOPN02_FactoryMode_OnQrCodeReadySlot( OpenOPN02_FactoryMode _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( sender );
+
+  ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
+  ResourcesExternBitmap ), EwLoadString( &ResourceEXTERN_BMP_QRCODE ));
+}
+
+/* Variants derived from the class : 'Open::OPN02_FactoryMode' */
+EW_DEFINE_CLASS_VARIANTS( OpenOPN02_FactoryMode )
+EW_END_OF_CLASS_VARIANTS( OpenOPN02_FactoryMode )
+
+/* Virtual Method Table (VMT) for the class : 'Open::OPN02_FactoryMode' */
+EW_DEFINE_CLASS( OpenOPN02_FactoryMode, ComponentsBaseComponent, OnFactoryModeFinished, 
+                 OnFactoryModeFinished, FullWhiteBG, FullWhiteBG, EnterButtonPressedCount, 
+                 EnterButtonPressedCount, "Open::OPN02_FactoryMode" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  OpenOPN02_FactoryMode_OnShortDownKeyActivated,
+  OpenOPN02_FactoryMode_OnShortUpKeyActivated,
+  OpenOPN02_FactoryMode_OnShortEnterKeyActivated,
+  OpenOPN02_FactoryMode_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  OpenOPN02_FactoryMode_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+EW_END_OF_CLASS( OpenOPN02_FactoryMode )
 
 /* Embedded Wizard */

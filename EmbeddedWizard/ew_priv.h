@@ -57,6 +57,7 @@ void ew_get_rtc_time( snvs_lp_srtc_datetime_t* srtc_datetime );
 void ew_request_qrcode( int pixel_per_mod );
 EnumOperationMode ew_get_operation_mode( void );
 void ew_set_operation_mode( EnumOperationMode mode );
+bool ew_is_operation_mode_ready( void );
 
 void ew_power_init( void );
 int  ew_power_ignition_status( void );

@@ -43,6 +43,7 @@
 #endif
 
 #include "_OpenOPN01_BootupAnimation.h"
+#include "_OpenOPN02_FactoryMode.h"
 
 #ifdef __cplusplus
   }

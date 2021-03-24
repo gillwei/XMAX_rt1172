@@ -13,6 +13,12 @@ class OPN01_BootupAnimation : Components::BaseComponent
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
 
+  $rect <220,340,450,380>
+  inherited method OnLongHomeKeyActivated()
+  {
+    // neglect long home key event
+  }
+
   $rect <20,20,160,60>
   object Views::Rectangle BlackBackground
   {
@@ -75,5 +81,99 @@ class OPN01_BootupAnimation : Components::BaseComponent
   slot OnHoldFinishedSlot
   {
     signal OnBootupAnimationFinished;
+  }
+}
+
+$rect <10,60,250,100>
+$output false
+class OPN02_FactoryMode : Components::BaseComponent
+{
+  $rect <10,340,190,380>
+  inherited method Init()
+  {
+    trace "Init OPN02";
+  }
+
+  $rect <10,290,190,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <220,440,450,480>
+  inherited method OnShortDownKeyActivated()
+  {
+    EnterButtonPressedCount = 0;
+  }
+
+  $rect <220,490,450,530>
+  inherited method OnShortUpKeyActivated()
+  {
+    EnterButtonPressedCount = 0;
+  }
+
+  $rect <220,290,450,330>
+  inherited method OnShortEnterKeyActivated()
+  {
+    EnterButtonPressedCount++;
+    if( EnterButtonPressedCount >= 2 )
+    {
+      DeviceInterface::SystemDevice.OperationMode = Enum::OperationMode.NORMAL;
+      signal OnFactoryModeFinished;
+    }
+  }
+
+  $rect <220,540,450,580>
+  inherited method OnShortHomeKeyActivated()
+  {
+    EnterButtonPressedCount = 0;
+  }
+
+  $rect <220,590,450,630>
+  inherited method OnLongHomeKeyActivated()
+  {
+    EnterButtonPressedCount = 0;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle FullWhiteBG
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #FFFFFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text PressEnterTwiceText
+  {
+    preset Bounds = <53,215,434,245>;
+    preset String = Strings::OPN02_ENTER_TWICE;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #000000FF;
+  }
+
+  $rect <220,340,450,380>
+  var int32 EnterButtonPressedCount;
+
+  $rect <220,390,450,430>
+  property slot OnFactoryModeFinished;
+
+  $rect <20,20,160,60>
+  object Views::Image QrCodeImage
+  {
+    preset Bounds = <140,59,327,188>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::QrCodeExternBitmap;
+  }
+
+  $rect <470,290,720,330>
+  object Core::SystemEventHandler QrCodeReadyEventHandler
+  {
+    preset OnEvent = OnQrCodeReadySlot;
+    preset Event = DeviceInterface::SystemDevice.QrCodeSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <470,340,720,380>
+  slot OnQrCodeReadySlot
+  {
+    Resource::QrCodeExternBitmap.Name = Resource::EXTERN_BMP_QRCODE;
   }
 }

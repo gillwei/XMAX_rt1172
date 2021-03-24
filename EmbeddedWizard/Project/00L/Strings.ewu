@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/03/12 12:50:50
+// Generated: 2021/03/24 18:56:51
 
 $output false
 const string ARGUMENT_STR =
@@ -516,6 +516,12 @@ $output false
 const string NAV08_turn_list =
 (
   Default = "Turn list";
+);
+
+$output false
+const string OPN02_ENTER_TWICE =
+(
+  Default = "Press \"ENTER\" button twice.";
 );
 
 $output false

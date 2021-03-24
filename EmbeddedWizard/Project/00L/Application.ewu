@@ -9,7 +9,7 @@ class Application : Core::Root
   inherited method Init()
   {
     $if $prototyper
-      signal OnStartBootupAnimationSlot;
+      signal OnStartOpeningSlot;
 
       // for screenshot
       DeviceInterface::SystemDevice.NotifyUpdateLocalTime();
@@ -306,41 +306,51 @@ class Application : Core::Root
     return aHomeDialog;
   }
 
-  $rect <530,140,800,180>
-  slot OnBootupAnimationFinishedSlot
+  $rect <530,140,780,180>
+  slot OnOpeningFinishedSlot
   {
-    var Core::Group BootupAnimationDialog = ( Core::Group )sender;
-    if( null != BootupAnimationDialog )
+    var Core::Group OpeningDialog = ( Core::Group )sender;
+    if( null != OpeningDialog )
     {
-      DismissDialog( BootupAnimationDialog, null, null, null, null, null, false );
+      DismissDialog( OpeningDialog, null, null, null, null, null, false );
     }
     DeviceInterface::BluetoothDevice.GetBluetoothEnable();
     StatusBar.Visible = true;
     ShowDisclaimer();
   }
 
-  $rect <530,40,830,80>
-  object Core::SystemEventHandler BootupAnimationSystemEventHandler
+  $rect <530,40,780,80>
+  object Core::SystemEventHandler OpeningSystemEventHandler
   {
-    preset OnEvent = OnStartBootupAnimationSlot;
-    preset Event = DeviceInterface::SystemDevice.BootupAnimationSystemEvent;
+    preset OnEvent = OnStartOpeningSlot;
+    preset Event = DeviceInterface::SystemDevice.OpeningSystemEvent;
   }
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <530,90,800,130>
-  slot OnStartBootupAnimationSlot
+  $rect <530,90,780,130>
+  slot OnStartOpeningSlot
   {
-    CheckTFTBacklightTimer.Enabled = false;
-    var Open::OPN01_BootupAnimation BootupAnimationDialog = new Open::OPN01_BootupAnimation;
-    BootupAnimationDialog.OnBootupAnimationFinished = OnBootupAnimationFinishedSlot;
-    SwitchToDialog( BootupAnimationDialog, null, null, null, null, null, null, null, null, null, false );
+    CheckOpeningTimer.Enabled = false;
+
+    if( Enum::OperationMode.FACTORY == DeviceInterface::SystemDevice.OperationMode )
+    {
+      var Open::OPN02_FactoryMode FactoryModeDialog = new Open::OPN02_FactoryMode;
+      FactoryModeDialog.OnFactoryModeFinished = OnOpeningFinishedSlot;
+      SwitchToDialog( FactoryModeDialog, null, null, null, null, null, null, null, null, null, false );
+    }
+    else
+    {
+      var Open::OPN01_BootupAnimation BootupAnimationDialog = new Open::OPN01_BootupAnimation;
+      BootupAnimationDialog.OnBootupAnimationFinished = OnOpeningFinishedSlot;
+      SwitchToDialog( BootupAnimationDialog, null, null, null, null, null, null, null, null, null, false );
+    }
   }
 
-  // Bootup Flow
+  // Opening Flow
   note group Note6
   {
-    attr Bounds = <500,0,860,300>;
+    attr Bounds = <500,0,800,300>;
   }
 
   $rect <20,20,160,60>
@@ -371,24 +381,25 @@ class Application : Core::Root
     }
   }
 
-  $rect <530,190,800,230>
-  object Core::Timer CheckTFTBacklightTimer
+  $rect <530,190,780,230>
+  object Core::Timer CheckOpeningTimer
   {
-    preset OnTrigger = OnCheckTFTBacklightSlot;
+    preset OnTrigger = OnCheckOpeningSlot;
     preset Period = 200;
     preset Begin = 500;
     preset Enabled = true;
   }
 
-  $rect <530,240,800,280>
-  slot OnCheckTFTBacklightSlot
+  $rect <530,240,780,280>
+  slot OnCheckOpeningSlot
   {
     var bool IsTFTBacklightOn = DeviceInterface::SystemDevice.IsTFTBacklightOn();
-    if( IsTFTBacklightOn )
+    if( IsTFTBacklightOn &&
+        DeviceInterface::SystemDevice.IsOperationModeReady() )
     {
       trace "TFT bl ", IsTFTBacklightOn;
-      CheckTFTBacklightTimer.Enabled = false;
-      signal OnStartBootupAnimationSlot;
+      CheckOpeningTimer.Enabled = false;
+      signal OnStartOpeningSlot;
     }
   }
 

@@ -65,7 +65,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( FactoryResetTimer, CoreTimer )
   EW_OBJECT  ( QrCodeSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( UpdateLocalTimeSystemEvent, CoreSystemEvent )
-  EW_OBJECT  ( BootupAnimationSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( OpeningSystemEvent, CoreSystemEvent )
   EW_PROPERTY( SoftwareVersion, XString )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
@@ -202,13 +202,13 @@ void DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime( void* _this );
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceSystemDeviceClass_StartBootupAnimation( DeviceInterfaceSystemDeviceClass _this );
+void DeviceInterfaceSystemDeviceClass_StartOpening( DeviceInterfaceSystemDeviceClass _this );
 
-/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.StartBootupAnimation()' */
-void DeviceInterfaceSystemDeviceClass__StartBootupAnimation( void* _this );
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.StartOpening()' */
+void DeviceInterfaceSystemDeviceClass__StartOpening( void* _this );
 
-/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.StartBootupAnimation(). */
-#define _DeviceInterfaceSystemDeviceClass__StartBootupAnimation_
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.StartOpening(). */
+#define _DeviceInterfaceSystemDeviceClass__StartOpening_
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsKeyStateValid()' */
 XBool DeviceInterfaceSystemDeviceClass_IsKeyStateValid( DeviceInterfaceSystemDeviceClass _this );
@@ -222,6 +222,9 @@ void DeviceInterfaceSystemDeviceClass_OnSetOperationMode( DeviceInterfaceSystemD
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetOperationMode()' */
 XEnum DeviceInterfaceSystemDeviceClass_OnGetOperationMode( DeviceInterfaceSystemDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsOperationModeReady()' */
+XBool DeviceInterfaceSystemDeviceClass_IsOperationModeReady( DeviceInterfaceSystemDeviceClass _this );
 
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );

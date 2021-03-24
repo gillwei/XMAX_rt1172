@@ -25,7 +25,7 @@ class SystemDeviceClass : Templates::DeviceClass
   // Interface to get system info
   note group Note1
   {
-    attr Bounds = <10,10,1160,280>;
+    attr Bounds = <10,10,960,280>;
   }
 
   $rect <250,70,450,110>
@@ -52,7 +52,7 @@ class SystemDeviceClass : Templates::DeviceClass
   // Interfaces for factory test
   note group Note3
   {
-    attr Bounds = <10,300,910,460>;
+    attr Bounds = <10,300,740,460>;
   }
 
   $rect <40,390,240,430>
@@ -212,7 +212,7 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <270,710,470,750>
+  $rect <40,760,240,800>
   property int32 BrightnessLevel = 7;
 
   $rect <250,170,450,210>
@@ -371,23 +371,23 @@ class SystemDeviceClass : Templates::DeviceClass
   $rect <870,570,1070,610>
   property string QrCodeText;
 
-  // Bootup Animation
+  // Opening Flow Control
   note group Note6
   {
-    attr Bounds = <930,300,1200,460>;
+    attr Bounds = <440,700,1120,910>;
   }
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <960,350,1170,390>
+  $rect <455,746,665,786>
   $output true
-  method void StartBootupAnimation()
+  method void StartOpening()
   {
-    BootupAnimationSystemEvent.Trigger( null, false );
+    OpeningSystemEvent.Trigger( null, false );
   }
 
-  $rect <960,400,1170,440>
-  object Core::SystemEvent BootupAnimationSystemEvent;
+  $rect <455,796,665,836>
+  object Core::SystemEvent OpeningSystemEvent;
 
   $rect <470,220,670,260>
   method bool IsKeyStateValid()
@@ -402,7 +402,7 @@ class SystemDeviceClass : Templates::DeviceClass
     return IsValid;
   }
 
-  $rect <680,220,880,260>
+  $rect <675,746,885,786>
   method bool IsTFTBacklightOn()
   {
     var bool IsBacklightOn = false;
@@ -417,10 +417,10 @@ class SystemDeviceClass : Templates::DeviceClass
     return IsBacklightOn;
   }
 
-  $rect <940,70,1140,110>
+  $rect <900,747,1100,787>
   property Enum::OperationMode OperationMode;
 
-  $rect <940,120,1140,160>
+  $rect <900,797,1100,837>
   onset OperationMode
   {
     if( pure OperationMode != value )
@@ -435,7 +435,7 @@ class SystemDeviceClass : Templates::DeviceClass
     }
   }
 
-  $rect <940,170,1140,210>
+  $rect <899,847,1099,887>
   onget OperationMode
   {
     $if !$prototyper
@@ -448,6 +448,21 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
 
     return pure OperationMode;
+  }
+
+  $rect <675,796,885,836>
+  method bool IsOperationModeReady()
+  {
+    var bool IsOperationModeReady = false;
+    $if !$prototyper
+      native( IsOperationModeReady )
+      {
+        IsOperationModeReady = ew_is_operation_mode_ready();
+      }
+    $else
+      IsOperationModeReady = true;
+    $endif
+    return IsOperationModeReady;
   }
 }
 

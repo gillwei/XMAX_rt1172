@@ -102,7 +102,7 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
   CoreTimer__Init( &_this->FactoryResetTimer, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->QrCodeSystemEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->UpdateLocalTimeSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->BootupAnimationSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->OpeningSystemEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceSystemDeviceClass );
@@ -125,7 +125,7 @@ void DeviceInterfaceSystemDeviceClass__ReInit( DeviceInterfaceSystemDeviceClass 
   CoreTimer__ReInit( &_this->FactoryResetTimer );
   CoreSystemEvent__ReInit( &_this->QrCodeSystemEvent );
   CoreSystemEvent__ReInit( &_this->UpdateLocalTimeSystemEvent );
-  CoreSystemEvent__ReInit( &_this->BootupAnimationSystemEvent );
+  CoreSystemEvent__ReInit( &_this->OpeningSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::SystemDeviceClass' */
@@ -139,7 +139,7 @@ void DeviceInterfaceSystemDeviceClass__Done( DeviceInterfaceSystemDeviceClass _t
   CoreTimer__Done( &_this->FactoryResetTimer );
   CoreSystemEvent__Done( &_this->QrCodeSystemEvent );
   CoreSystemEvent__Done( &_this->UpdateLocalTimeSystemEvent );
-  CoreSystemEvent__Done( &_this->BootupAnimationSystemEvent );
+  CoreSystemEvent__Done( &_this->OpeningSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -438,15 +438,15 @@ void DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime( void* _this )
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceSystemDeviceClass_StartBootupAnimation( DeviceInterfaceSystemDeviceClass _this )
+void DeviceInterfaceSystemDeviceClass_StartOpening( DeviceInterfaceSystemDeviceClass _this )
 {
-  CoreSystemEvent_Trigger( &_this->BootupAnimationSystemEvent, 0, 0 );
+  CoreSystemEvent_Trigger( &_this->OpeningSystemEvent, 0, 0 );
 }
 
-/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.StartBootupAnimation()' */
-void DeviceInterfaceSystemDeviceClass__StartBootupAnimation( void* _this )
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.StartOpening()' */
+void DeviceInterfaceSystemDeviceClass__StartOpening( void* _this )
 {
-  DeviceInterfaceSystemDeviceClass_StartBootupAnimation((DeviceInterfaceSystemDeviceClass)_this );
+  DeviceInterfaceSystemDeviceClass_StartOpening((DeviceInterfaceSystemDeviceClass)_this );
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsKeyStateValid()' */
@@ -494,6 +494,19 @@ XEnum DeviceInterfaceSystemDeviceClass_OnGetOperationMode( DeviceInterfaceSystem
   Mode = ew_get_operation_mode();
   _this->OperationMode = Mode;
   return _this->OperationMode;
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsOperationModeReady()' */
+XBool DeviceInterfaceSystemDeviceClass_IsOperationModeReady( DeviceInterfaceSystemDeviceClass _this )
+{
+  XBool IsOperationModeReady;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsOperationModeReady = 0;
+  IsOperationModeReady = ew_is_operation_mode_ready();
+  return IsOperationModeReady;
 }
 
 /* Default onget method for the property 'FactoryResetComplete' */

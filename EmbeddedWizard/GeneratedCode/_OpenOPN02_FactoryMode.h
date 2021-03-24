@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _OpenOPN01_BootupAnimation_H
-#define _OpenOPN01_BootupAnimation_H
+#ifndef _OpenOPN02_FactoryMode_H
+#define _OpenOPN02_FactoryMode_H
 
 #ifdef __cplusplus
   extern "C"
@@ -44,9 +44,10 @@
 
 #include "_ComponentsBaseComponent.h"
 #include "_CoreKeyPressHandler.h"
-#include "_CoreTimer.h"
+#include "_CoreSystemEventHandler.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -90,25 +91,25 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Open::OPN01_BootupAnimation */
-#ifndef _OpenOPN01_BootupAnimation_
-  EW_DECLARE_CLASS( OpenOPN01_BootupAnimation )
-#define _OpenOPN01_BootupAnimation_
+/* Forward declaration of the class Open::OPN02_FactoryMode */
+#ifndef _OpenOPN02_FactoryMode_
+  EW_DECLARE_CLASS( OpenOPN02_FactoryMode )
+#define _OpenOPN02_FactoryMode_
 #endif
 
 
-/* Deklaration of class : 'Open::OPN01_BootupAnimation' */
-EW_DEFINE_FIELDS( OpenOPN01_BootupAnimation, ComponentsBaseComponent )
-  EW_PROPERTY( OnBootupAnimationFinished, XSlot )
-  EW_OBJECT  ( BlackBackground, ViewsRectangle )
-  EW_OBJECT  ( BootupAnimation, ViewsImage )
-  EW_OBJECT  ( FadeOutTimer,    CoreTimer )
-  EW_OBJECT  ( HoldTimer,       CoreTimer )
-  EW_VARIABLE( FadeOutFrameNumber, XInt32 )
-EW_END_OF_FIELDS( OpenOPN01_BootupAnimation )
+/* Deklaration of class : 'Open::OPN02_FactoryMode' */
+EW_DEFINE_FIELDS( OpenOPN02_FactoryMode, ComponentsBaseComponent )
+  EW_PROPERTY( OnFactoryModeFinished, XSlot )
+  EW_OBJECT  ( FullWhiteBG,     ViewsRectangle )
+  EW_OBJECT  ( PressEnterTwiceText, ViewsText )
+  EW_OBJECT  ( QrCodeImage,     ViewsImage )
+  EW_OBJECT  ( QrCodeReadyEventHandler, CoreSystemEventHandler )
+  EW_VARIABLE( EnterButtonPressedCount, XInt32 )
+EW_END_OF_FIELDS( OpenOPN02_FactoryMode )
 
-/* Virtual Method Table (VMT) for the class : 'Open::OPN01_BootupAnimation' */
-EW_DEFINE_METHODS( OpenOPN01_BootupAnimation, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'Open::OPN02_FactoryMode' */
+EW_DEFINE_METHODS( OpenOPN02_FactoryMode, ComponentsBaseComponent )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -152,40 +153,49 @@ EW_DEFINE_METHODS( OpenOPN01_BootupAnimation, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( OpenOPN02_FactoryMode _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( OpenOPN02_FactoryMode _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( OpenOPN02_FactoryMode _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( OpenOPN02_FactoryMode _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongHomeKeyActivated, void )( OpenOPN01_BootupAnimation _this )
+  EW_METHOD( OnLongHomeKeyActivated, void )( OpenOPN02_FactoryMode _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( OpenOPN01_BootupAnimation )
+EW_END_OF_METHODS( OpenOPN02_FactoryMode )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void OpenOPN01_BootupAnimation_Init( OpenOPN01_BootupAnimation _this, XHandle aArg );
+void OpenOPN02_FactoryMode_Init( OpenOPN02_FactoryMode _this, XHandle aArg );
 
-/* 'C' function for method : 'Open::OPN01_BootupAnimation.OnLongHomeKeyActivated()' */
-void OpenOPN01_BootupAnimation_OnLongHomeKeyActivated( OpenOPN01_BootupAnimation _this );
+/* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortDownKeyActivated()' */
+void OpenOPN02_FactoryMode_OnShortDownKeyActivated( OpenOPN02_FactoryMode _this );
 
-/* 'C' function for method : 'Open::OPN01_BootupAnimation.OnFadeOutTriggeredSlot()' */
-void OpenOPN01_BootupAnimation_OnFadeOutTriggeredSlot( OpenOPN01_BootupAnimation _this, 
-  XObject sender );
+/* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortUpKeyActivated()' */
+void OpenOPN02_FactoryMode_OnShortUpKeyActivated( OpenOPN02_FactoryMode _this );
 
-/* 'C' function for method : 'Open::OPN01_BootupAnimation.OnHoldFinishedSlot()' */
-void OpenOPN01_BootupAnimation_OnHoldFinishedSlot( OpenOPN01_BootupAnimation _this, 
-  XObject sender );
+/* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortEnterKeyActivated()' */
+void OpenOPN02_FactoryMode_OnShortEnterKeyActivated( OpenOPN02_FactoryMode _this );
+
+/* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortHomeKeyActivated()' */
+void OpenOPN02_FactoryMode_OnShortHomeKeyActivated( OpenOPN02_FactoryMode _this );
+
+/* 'C' function for method : 'Open::OPN02_FactoryMode.OnLongHomeKeyActivated()' */
+void OpenOPN02_FactoryMode_OnLongHomeKeyActivated( OpenOPN02_FactoryMode _this );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void OpenOPN02_FactoryMode_OnQrCodeReadySlot( OpenOPN02_FactoryMode _this, XObject 
+  sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _OpenOPN01_BootupAnimation_H */
+#endif /* _OpenOPN02_FactoryMode_H */
 
 /* Embedded Wizard */

@@ -114,9 +114,9 @@ EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( FactoryTestEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( BtFwStatusObserver, CorePropertyObserver )
   EW_OBJECT  ( DDModeTestTimer, CoreTimer )
-  EW_OBJECT  ( BootupAnimationSystemEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( OpeningSystemEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( StatusBar,       StatusBarMain )
-  EW_OBJECT  ( CheckTFTBacklightTimer, CoreTimer )
+  EW_OBJECT  ( CheckOpeningTimer, CoreTimer )
   EW_PROPERTY( StatusBarVisible, XBool )
 EW_END_OF_FIELDS( ApplicationApplication )
 
@@ -214,21 +214,21 @@ XClass ApplicationApplication_HomeClassOfHomeType( ApplicationApplication _this,
 CoreGroup ApplicationApplication_HomeDialogOfHomeType( ApplicationApplication _this, 
   XEnum aHomeType );
 
-/* 'C' function for method : 'Application::Application.OnBootupAnimationFinishedSlot()' */
-void ApplicationApplication_OnBootupAnimationFinishedSlot( ApplicationApplication _this, 
+/* 'C' function for method : 'Application::Application.OnOpeningFinishedSlot()' */
+void ApplicationApplication_OnOpeningFinishedSlot( ApplicationApplication _this, 
   XObject sender );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void ApplicationApplication_OnStartBootupAnimationSlot( ApplicationApplication _this, 
-  XObject sender );
+void ApplicationApplication_OnStartOpeningSlot( ApplicationApplication _this, XObject 
+  sender );
 
 /* Return from the DD mode forbidden UI to the launcher */
 void ApplicationApplication_ReturnToHome( ApplicationApplication _this );
 
-/* 'C' function for method : 'Application::Application.OnCheckTFTBacklightSlot()' */
-void ApplicationApplication_OnCheckTFTBacklightSlot( ApplicationApplication _this, 
-  XObject sender );
+/* 'C' function for method : 'Application::Application.OnCheckOpeningSlot()' */
+void ApplicationApplication_OnCheckOpeningSlot( ApplicationApplication _this, XObject 
+  sender );
 
 /* 'C' function for method : 'Application::Application.SlideInHome()' */
 void ApplicationApplication_SlideInHome( ApplicationApplication _this, XEnum aHomeType );

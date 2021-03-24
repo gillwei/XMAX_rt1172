@@ -370,7 +370,7 @@ static uint32_t asil_pin_status = 0;
 vTaskDelay( T4_TIMEOUT_AFTER_RESET );
 control_TFT_BL_EN( STD_HIGH );
 
-EW_start_bootup_animation();
+EW_notify_opening_event( OPENING_EVENT_TFT_BACKLIGHT_ON );
 
 /* Wait until display initialization done */
 vTaskDelay( MIN_DELAY_START_TIME );

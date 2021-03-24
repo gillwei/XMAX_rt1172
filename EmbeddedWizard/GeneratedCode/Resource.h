@@ -300,6 +300,9 @@ EW_DECLARE_AUTOOBJECT( ResourceExternBitmap, ResourcesExternBitmap )
 /* User defined auto object: 'Resource::QrCodeExternBitmap' */
 EW_DECLARE_AUTOOBJECT( ResourceQrCodeExternBitmap, ResourcesExternBitmap )
 
+/* User defined constant: 'Resource::EXTERN_BMP_QRCODE' */
+extern const XStringRes ResourceEXTERN_BMP_QRCODE;
+
 #ifdef __cplusplus
   }
 #endif

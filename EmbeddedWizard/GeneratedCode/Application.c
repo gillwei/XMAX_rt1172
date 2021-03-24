@@ -48,6 +48,7 @@
 #include "_LauncherLNC_Main.h"
 #include "_NavigationNAV01_DefaultView.h"
 #include "_OpenOPN01_BootupAnimation.h"
+#include "_OpenOPN02_FactoryMode.h"
 #include "_SettingsBtFwUpdateDialog.h"
 #include "_StatusBarMain.h"
 #include "_TopTOP01_Disclaimer.h"
@@ -89,9 +90,9 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreSystemEventHandler__Init( &_this->FactoryTestEventHandler, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->BtFwStatusObserver, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->DDModeTestTimer, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->BootupAnimationSystemEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->OpeningSystemEventHandler, &_this->_XObject, 0 );
   StatusBarMain__Init( &_this->StatusBar, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->CheckTFTBacklightTimer, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->CheckOpeningTimer, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( ApplicationApplication );
@@ -103,9 +104,9 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreTimer_OnSetEnabled( &_this->DDModeTestTimer, 0 );
   CoreRectView__OnSetBounds( &_this->StatusBar, _Const0001 );
   CoreGroup_OnSetVisible((CoreGroup)&_this->StatusBar, 0 );
-  CoreTimer_OnSetPeriod( &_this->CheckTFTBacklightTimer, 200 );
-  CoreTimer_OnSetBegin( &_this->CheckTFTBacklightTimer, 500 );
-  CoreTimer_OnSetEnabled( &_this->CheckTFTBacklightTimer, 1 );
+  CoreTimer_OnSetPeriod( &_this->CheckOpeningTimer, 200 );
+  CoreTimer_OnSetBegin( &_this->CheckOpeningTimer, 500 );
+  CoreTimer_OnSetEnabled( &_this->CheckOpeningTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->StatusBar ), 0 );
   _this->FactoryTestEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnFactoryTestEventSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->FactoryTestEventHandler, &EwGetAutoObject( 
@@ -115,10 +116,10 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus, 
   DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus ));
   _this->DDModeTestTimer.OnTrigger = EwNewSlot( _this, ApplicationApplication_OnDDModeTestSlot );
-  _this->BootupAnimationSystemEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnStartBootupAnimationSlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->BootupAnimationSystemEventHandler, 
-  &EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->BootupAnimationSystemEvent );
-  _this->CheckTFTBacklightTimer.OnTrigger = EwNewSlot( _this, ApplicationApplication_OnCheckTFTBacklightSlot );
+  _this->OpeningSystemEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnStartOpeningSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->OpeningSystemEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->OpeningSystemEvent );
+  _this->CheckOpeningTimer.OnTrigger = EwNewSlot( _this, ApplicationApplication_OnCheckOpeningSlot );
 
   /* Call the user defined constructor */
   ApplicationApplication_Init( _this, aArg );
@@ -134,9 +135,9 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
   CoreSystemEventHandler__ReInit( &_this->FactoryTestEventHandler );
   CorePropertyObserver__ReInit( &_this->BtFwStatusObserver );
   CoreTimer__ReInit( &_this->DDModeTestTimer );
-  CoreSystemEventHandler__ReInit( &_this->BootupAnimationSystemEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->OpeningSystemEventHandler );
   StatusBarMain__ReInit( &_this->StatusBar );
-  CoreTimer__ReInit( &_this->CheckTFTBacklightTimer );
+  CoreTimer__ReInit( &_this->CheckOpeningTimer );
 }
 
 /* Finalizer method for the class 'Application::Application' */
@@ -149,9 +150,9 @@ void ApplicationApplication__Done( ApplicationApplication _this )
   CoreSystemEventHandler__Done( &_this->FactoryTestEventHandler );
   CorePropertyObserver__Done( &_this->BtFwStatusObserver );
   CoreTimer__Done( &_this->DDModeTestTimer );
-  CoreSystemEventHandler__Done( &_this->BootupAnimationSystemEventHandler );
+  CoreSystemEventHandler__Done( &_this->OpeningSystemEventHandler );
   StatusBarMain__Done( &_this->StatusBar );
-  CoreTimer__Done( &_this->CheckTFTBacklightTimer );
+  CoreTimer__Done( &_this->CheckOpeningTimer );
 
   /* Don't forget to deinitialize the super class ... */
   CoreRoot__Done( &_this->_Super );
@@ -503,16 +504,16 @@ CoreGroup ApplicationApplication_HomeDialogOfHomeType( ApplicationApplication _t
   return aHomeDialog;
 }
 
-/* 'C' function for method : 'Application::Application.OnBootupAnimationFinishedSlot()' */
-void ApplicationApplication_OnBootupAnimationFinishedSlot( ApplicationApplication _this, 
+/* 'C' function for method : 'Application::Application.OnOpeningFinishedSlot()' */
+void ApplicationApplication_OnOpeningFinishedSlot( ApplicationApplication _this, 
   XObject sender )
 {
-  CoreGroup BootupAnimationDialog = EwCastObject( sender, CoreGroup );
+  CoreGroup OpeningDialog = EwCastObject( sender, CoreGroup );
 
-  if ( BootupAnimationDialog != 0 )
+  if ( OpeningDialog != 0 )
   {
-    CoreGroup__DismissDialog( _this, BootupAnimationDialog, 0, 0, 0, EwNullSlot, 
-    EwNullSlot, 0 );
+    CoreGroup__DismissDialog( _this, OpeningDialog, 0, 0, 0, EwNullSlot, EwNullSlot, 
+    0 );
   }
 
   DeviceInterfaceBluetoothDeviceClass_GetBluetoothEnable( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
@@ -523,19 +524,31 @@ void ApplicationApplication_OnBootupAnimationFinishedSlot( ApplicationApplicatio
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void ApplicationApplication_OnStartBootupAnimationSlot( ApplicationApplication _this, 
-  XObject sender )
+void ApplicationApplication_OnStartOpeningSlot( ApplicationApplication _this, XObject 
+  sender )
 {
-  OpenOPN01_BootupAnimation BootupAnimationDialog;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  CoreTimer_OnSetEnabled( &_this->CheckTFTBacklightTimer, 0 );
-  BootupAnimationDialog = EwNewObject( OpenOPN01_BootupAnimation, 0 );
-  BootupAnimationDialog->OnBootupAnimationFinished = EwNewSlot( _this, ApplicationApplication_OnBootupAnimationFinishedSlot );
-  CoreGroup_SwitchToDialog((CoreGroup)_this, ((CoreGroup)BootupAnimationDialog ), 
-  0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  CoreTimer_OnSetEnabled( &_this->CheckOpeningTimer, 0 );
+
+  if ( EnumOperationModeFACTORY == DeviceInterfaceSystemDeviceClass_OnGetOperationMode( 
+      EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
+  {
+    OpenOPN02_FactoryMode FactoryModeDialog = EwNewObject( OpenOPN02_FactoryMode, 
+      0 );
+    FactoryModeDialog->OnFactoryModeFinished = EwNewSlot( _this, ApplicationApplication_OnOpeningFinishedSlot );
+    CoreGroup_SwitchToDialog((CoreGroup)_this, ((CoreGroup)FactoryModeDialog ), 
+    0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
+  else
+  {
+    OpenOPN01_BootupAnimation BootupAnimationDialog = EwNewObject( OpenOPN01_BootupAnimation, 
+      0 );
+    BootupAnimationDialog->OnBootupAnimationFinished = EwNewSlot( _this, ApplicationApplication_OnOpeningFinishedSlot );
+    CoreGroup_SwitchToDialog((CoreGroup)_this, ((CoreGroup)BootupAnimationDialog ), 
+    0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
 }
 
 /* Return from the DD mode forbidden UI to the launcher */
@@ -564,9 +577,9 @@ void ApplicationApplication_ReturnToHome( ApplicationApplication _this )
   }
 }
 
-/* 'C' function for method : 'Application::Application.OnCheckTFTBacklightSlot()' */
-void ApplicationApplication_OnCheckTFTBacklightSlot( ApplicationApplication _this, 
-  XObject sender )
+/* 'C' function for method : 'Application::Application.OnCheckOpeningSlot()' */
+void ApplicationApplication_OnCheckOpeningSlot( ApplicationApplication _this, XObject 
+  sender )
 {
   XBool IsTFTBacklightOn;
 
@@ -576,12 +589,12 @@ void ApplicationApplication_OnCheckTFTBacklightSlot( ApplicationApplication _thi
   IsTFTBacklightOn = DeviceInterfaceSystemDeviceClass_IsTFTBacklightOn( EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ));
 
-  if ( IsTFTBacklightOn )
+  if ( IsTFTBacklightOn && DeviceInterfaceSystemDeviceClass_IsOperationModeReady( 
+      EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
   {
     EwTrace( "%s%b", EwLoadString( &_Const0005 ), IsTFTBacklightOn );
-    CoreTimer_OnSetEnabled( &_this->CheckTFTBacklightTimer, 0 );
-    EwSignal( EwNewSlot( _this, ApplicationApplication_OnStartBootupAnimationSlot ), 
-      ((XObject)_this ));
+    CoreTimer_OnSetEnabled( &_this->CheckOpeningTimer, 0 );
+    EwSignal( EwNewSlot( _this, ApplicationApplication_OnStartOpeningSlot ), ((XObject)_this ));
   }
 }
 

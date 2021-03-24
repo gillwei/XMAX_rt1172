@@ -150,6 +150,11 @@ static void ew_get_info_from_eeprom( void );
     static uint32_t qrcode_passkey;
     static uint16_t qrcode_dummy;
     static uint8_t  operation_mode;
+    static bool     is_tft_backlight_on;
+    static bool     is_op_mode_ready;
+    static bool     is_ccuid_ready;
+    static bool     is_qrcode_passkey_ready;
+    static bool     is_qrcode_dummy_ready;
 #endif
 
 static uint32_t esn;
@@ -340,6 +345,28 @@ sprintf( version, "%d.%02d", bt_sw_ver[0], bt_sw_ver[1] );
 /*********************************************************************
 *
 * @private
+* start_factory_qrcode_generation
+*
+* Start QR code generation for factory mode
+*
+*********************************************************************/
+static void start_factory_qrcode_generation
+    (
+    void
+    )
+{
+if( is_op_mode_ready &&
+    EnumOperationModeFACTORY == operation_mode )
+    {
+    QR_generate_qrcode( esn, 4 );
+    //TODO:
+    //QR_generate_qrcode( ccuid, qrcode_passkey, qrcode_dummy );
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * EW_read_esn_callback
 *
 * Callback of reading ESN
@@ -387,6 +414,8 @@ else
     {
     PRINTF( "rd ccuid fail\r\n" );
     }
+
+is_ccuid_ready = true;
 }
 
 /*********************************************************************
@@ -419,6 +448,8 @@ else
     {
     PRINTF( "rd passkey fail\r\n" );
     }
+
+is_qrcode_passkey_ready = true;
 }
 
 /*********************************************************************
@@ -447,6 +478,9 @@ else
     {
     PRINTF( "rd qrcode dummy fail\r\n" );
     }
+
+is_qrcode_dummy_ready = true;
+start_factory_qrcode_generation();
 }
 
 /*********************************************************************
@@ -489,6 +523,9 @@ else
     PRINTF( "rd op mode fail\r\n" );
     operation_mode = EnumOperationModeNORMAL;
     }
+
+is_op_mode_ready = true;
+EW_notify_opening_event( OPENING_EVENT_OP_MODE_READY );
 }
 
 /*********************************************************************
@@ -838,6 +875,8 @@ void ew_request_qrcode
     )
 {
 QR_generate_qrcode( esn, pixel_per_mod );
+//TODO:
+//QR_generate_qrcode( ccuid, qrcode_passkey, qrcode_dummy );
 }
 
 /*********************************************************************
@@ -883,6 +922,25 @@ EnumOperationMode ew_get_operation_mode
 {
 PRINTF( "%s %d\r\n", __FUNCTION__, operation_mode );
 return operation_mode;
+}
+
+/*********************************************************************
+*
+* @private
+* ew_is_operation_mode_ready
+*
+* Check if the operation mode is read from EEPROM
+*
+* @return True if the operation mode is read from EEPROM
+*
+*********************************************************************/
+bool ew_is_operation_mode_ready
+    (
+    void
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, operation_mode );
+return is_op_mode_ready;
 }
 
 /*********************************************************************
@@ -1094,19 +1152,46 @@ void EW_notify_qrcode_ready
 
 /*********************************************************************
 *
-* @public
-* EW_start_bootup_animation
+* @private
+* start_opening
 *
-* Start boot up animation
+* Start opening
 *
 *********************************************************************/
-void EW_start_bootup_animation
+static void start_opening
     (
     void
     )
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
-#ifdef _DeviceInterfaceSystemDeviceClass__StartBootupAnimation_
-    DeviceInterfaceSystemDeviceClass__StartBootupAnimation( device_object );
+#ifdef _DeviceInterfaceSystemDeviceClass__StartOpening_
+    DeviceInterfaceSystemDeviceClass__StartOpening( device_object );
 #endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_opening_event
+*
+* Start opening if both TFT backlight is on and operation mode is ready
+*
+* @param event TFT backlight on or operation mode ready event
+*
+*********************************************************************/
+void EW_notify_opening_event
+    (
+    const opening_event event
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, event );
+if( OPENING_EVENT_TFT_BACKLIGHT_ON == event )
+    {
+    is_tft_backlight_on = true;
+    }
+
+if( is_tft_backlight_on && is_op_mode_ready )
+    {
+    start_opening();
+    }
 }

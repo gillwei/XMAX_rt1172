@@ -26,8 +26,14 @@ typedef enum
     KEY_STATE_PRESS
     } key_state;
 
+typedef enum
+    {
+    OPENING_EVENT_TFT_BACKLIGHT_ON,
+    OPENING_EVENT_OP_MODE_READY
+    } opening_event;
+
 void EW_init( void );
-void EW_start_bootup_animation( void );
+void EW_notify_opening_event( const opening_event event );
 
 uint32_t EW_get_ccuid( void );
 uint16_t EW_get_qrcode_dummy( void );

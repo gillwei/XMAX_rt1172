@@ -208,7 +208,7 @@ note group Note6
   attr Bounds = <350,1440,640,1600>;
 }
 
-$rect <390,1500,590,1540>
+$rect <390,1490,590,1530>
 $output false
 autoobject Resources::ExternBitmap QrCodeExternBitmap;
 
@@ -1413,3 +1413,7 @@ resource Resources::Bitmap SignalLevelIcon
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
+
+$rect <390,1540,600,1580>
+$output false
+const string EXTERN_BMP_QRCODE = "QRCode";

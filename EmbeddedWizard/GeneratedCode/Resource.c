@@ -28,6 +28,13 @@
 #include "_ResourcesExternBitmap.h"
 #include "Resource.h"
 
+/* Compressed strings for the language 'Default'. */
+static const unsigned int _StringsDefault0[] =
+{
+  0x00000016, /* ratio 127.27 % */
+  0xB8001300, 0x000A2452, 0x00860029, 0x0C800378, 0x22003280, 0x1010044A, 0x00000000
+};
+
 /* Include a file containing the bitmap resource : 'Resource::IconMediaPlayPause' */
 #include "_ResourceIconMediaPlayPause.h"
 
@@ -545,5 +552,8 @@ EW_RES_WITHOUT_VARIANTS( ResourceChessboard )
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::SignalLevelIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceSignalLevelIcon )
+
+/* User defined constant: 'Resource::EXTERN_BMP_QRCODE' */
+const XStringRes ResourceEXTERN_BMP_QRCODE = { _StringsDefault0, 0x0002 };
 
 /* Embedded Wizard */
