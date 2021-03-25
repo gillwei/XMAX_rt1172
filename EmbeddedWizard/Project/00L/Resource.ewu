@@ -2329,3 +2329,69 @@ resource Resources::Bitmap NaviTurnArrwViaflgIrg28
 $rect <390,1540,600,1580>
 $output false
 const string EXTERN_BMP_QRCODE = "QRCode";
+
+// Seat heater and Grip warmer
+note group Note17
+{
+  attr Bounds = <10,2220,1090,2330>;
+}
+
+$rect <30,2260,230,2300>
+$output false
+resource Resources::Bitmap ScaleIndicatorWindowLow
+{
+  attr bitmapfile FileName = .\Res\SHandGW\heater_window1.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <240,2260,440,2300>
+$output false
+resource Resources::Bitmap ScaleIndicatorWindowMid
+{
+  attr bitmapfile FileName = .\Res\SHandGW\heater_window2.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <450,2260,650,2300>
+$output false
+resource Resources::Bitmap ScaleIndicatorWindowHigh
+{
+  attr bitmapfile FileName = .\Res\SHandGW\heater_window3.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <660,2260,860,2300>
+$output false
+resource Resources::Bitmap ScaleIndicatorBg
+{
+  attr bitmapfile FileName = .\Res\SHandGW\heater_scale.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <870,2260,1070,2300>
+$output false
+resource Resources::Bitmap ScaleIndicatorBar
+{
+  attr bitmapfile FileName = .\Res\SHandGW\heater_bar.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <125,19>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}

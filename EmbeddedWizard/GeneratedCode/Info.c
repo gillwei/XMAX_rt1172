@@ -360,7 +360,7 @@ EW_DEFINE_CLASS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView, CheckMarkU
   InfoINF01_MeterDisplaySettingMenu_OnItemActivate,
   InfoINF01_MeterDisplaySettingMenu_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( InfoINF01_MeterDisplaySettingMenu )
 
 /* Embedded Wizard */

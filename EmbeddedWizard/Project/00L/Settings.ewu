@@ -17,13 +17,17 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
     var int32 ItemIdx = 4;
     var int32 i = 0;
 
-    if( GripWarmerEnabled )
+    if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.GRIP_WARMER ) )
     {
       NoOfItems++;
       ItemIdx++;
     }
+    else
+    {
+      Settings[ItemIdx] = Settings[ItemIdx+1];
+    }
 
-    if( SeatHeaterEnabled )
+    if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.SEAT_HEATER ) )
     {
       NoOfItems++;
       ItemIdx++;
@@ -96,8 +100,18 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
       case Enum::MainSettingItem.Clock:;
       case Enum::MainSettingItem.Brightness: Dialog = new Brightness::BRT01_BrightnessSettingMenu;
       case Enum::MainSettingItem.Unit: Dialog = new Unit::UNT01_UnitSettingMenu;
-      case Enum::MainSettingItem.GripWarmerSettings:;
-      case Enum::MainSettingItem.SeatHeaterSettings:;
+      case Enum::MainSettingItem.GripWarmerSettings:
+      {
+        DeviceInterface::VehicleDevice.CurrentVehicleFunction = Enum::VehicleSupportedFunction.GRIP_WARMER;
+        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.HEATER_SELECT, SeatHeater_GripWarmer::GRIP_WARMER );
+        Dialog = new SeatHeater_GripWarmer::SHT02_GPW02_Main;
+      }
+      case Enum::MainSettingItem.SeatHeaterSettings:
+      {
+        DeviceInterface::VehicleDevice.CurrentVehicleFunction = Enum::VehicleSupportedFunction.SEAT_HEATER;
+        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.HEATER_SELECT, SeatHeater_GripWarmer::RIDER_SEAT_HEATER );
+        Dialog = new SeatHeater_GripWarmer::SHT02_GPW02_Main;
+      }
       case Enum::MainSettingItem.SystemInfo: Dialog = new Settings::SET28_SystemInfo;
       case Enum::MainSettingItem.LegalInfo:;
       case Enum::MainSettingItem.Reset:;
@@ -126,20 +140,6 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
     preset ArrowScrollBarVisible = true;
   }
 
-  // TODO:
-  // Remove these temperary variables and get the Seat Heater and Grip Warmer enabled \
-  // status from vehicle information manager directly.
-  note group Note5
-  {
-    attr Bounds = <730,60,1090,310>;
-  }
-
-  $rect <810,240,1010,280>
-  var bool SeatHeaterEnabled = false;
-
-  $rect <810,200,1010,240>
-  var bool GripWarmerEnabled = false;
-
   $rect <730,10,930,50>
   array Enum::MainSettingItem Settings[ 9 ] =
   (
@@ -160,9 +160,6 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
   $reorder OnItemActivate 2
   $reorder LoadItemChecked 2
   $reorder LoadItemEnabled 2
-  $reorder Note5 1
-  $reorder SeatHeaterEnabled 1
-  $reorder GripWarmerEnabled 1
   $reorder Settings 1
 }
 

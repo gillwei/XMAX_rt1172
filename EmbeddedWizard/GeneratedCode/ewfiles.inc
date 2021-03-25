@@ -32,4 +32,5 @@ EMWIFILES := \
 	Unit.c \
 	Info.c \
 	StatusBar.c \
-	Open.c
+	Open.c \
+	SeatHeater_GripWarmer.c

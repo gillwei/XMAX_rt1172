@@ -39,6 +39,7 @@
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
+static dll_frm_index_t heater_frm_index;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -286,6 +287,75 @@ PRINTF( "%s %d\r\n", __FUNCTION__, operation_code );
 /*********************************************************************
 *
 * @private
+* send_meter_heater_operation
+*
+* Send meter seat heater/grip warmer operation
+*
+* @param operation_code Seat heater operation code of
+*                       IL_VT_HEATER_LVL_BTN_STAT_AUD_DOWN
+*                       IL_VT_HEATER_LVL_BTN_STAT_AUD_UP
+*
+*********************************************************************/
+static void send_meter_heater_operation
+    (
+    uint8_t operation_code
+    )
+{
+can_mid_sig_set( &heater_frm_index, IL_CAN0_HEATER_LVL_BTN_STAT_AUD_TXSIG_HANDLE, IL_CAN0_HEATER_LVL_BTN_STAT_AUD_TXSIG_NBYTES, &operation_code );
+can_mid_frm_send( heater_frm_index );
+
+// Reset heater_frm_index to 0.
+heater_frm_index = 0;
+PRINTF( "%s %d\r\n", __FUNCTION__, operation_code );
+}
+
+/*********************************************************************
+*
+* @private
+* set_meter_heater_level
+*
+* Set meter seat heater/grip warmer level
+*
+* @param heater_level Seat heater/Grip warmer level of
+*                     IL_VT_HEATER_LVL_LV_LO
+*                     IL_VT_HEATER_LVL_LV_MID
+*                     IL_VT_HEATER_LVL_LV_HI
+*
+*********************************************************************/
+static void set_meter_heater_level
+    (
+    uint8_t heater_level
+    )
+{
+can_mid_sig_set( &heater_frm_index, IL_CAN0_HEATER_LVL_LV_TXSIG_HANDLE, IL_CAN0_HEATER_LVL_LV_TXSIG_NBYTES, &heater_level );
+PRINTF( "%s %d\r\n", __FUNCTION__, heater_level );
+}
+
+/*********************************************************************
+*
+* @private
+* set_meter_heater_select
+*
+* Set meter the selected heater
+*
+* @param heater_code The selected heater code of
+*                    IL_VT_HEATER_LVL_SLECT_GRIP_WARNER
+*                    IL_VT_HEATER_LVL_SLECT_RIDER_SEAT_HEATER
+*                    IL_VT_HEATER_LVL_SLECT_PASSENGER_SEAT_HEATER
+*
+*********************************************************************/
+static void set_meter_heater_select
+    (
+    uint8_t heater_code
+    )
+{
+can_mid_sig_set( &heater_frm_index, IL_CAN0_HEATER_LVL_SLECT_TXSIG_HANDLE, IL_CAN0_HEATER_LVL_SLECT_TXSIG_NBYTES, &heater_code );
+PRINTF( "%s %d\r\n", __FUNCTION__, heater_code );
+}
+
+/*********************************************************************
+*
+* @private
 * VI_set_tx_data
 *
 * Send data from UI to CAN stack
@@ -323,10 +393,13 @@ switch( tx_type )
     case EnumVehicleTxTypeFUEL_UNIT:
         break;
     case EnumVehicleTxTypeHEATER_SELECT:
+        set_meter_heater_select( (uint8_t)data );
         break;
     case EnumVehicleTxTypeHEATER_LEVEL:
+        set_meter_heater_level( (uint8_t)data );
         break;
     case EnumVehicleTxTypeBUTTON_STATUS_AUDIO:
+        send_meter_heater_operation( (uint8_t)data );
         break;
     case EnumVehicleTxTypeWIND_SCREEN_OPERATION:
         break;
@@ -335,7 +408,7 @@ switch( tx_type )
         break;
     case EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL:
         break;
-    case EnumVehicleTxTypeHEAT_SEATER_CHANGE_LEVEL:
+    case EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL:
         break;
     case EnumVehicleTxTypeCHG_METER_INFO:
         break;

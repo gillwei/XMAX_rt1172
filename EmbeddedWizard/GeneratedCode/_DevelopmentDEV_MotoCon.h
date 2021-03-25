@@ -181,7 +181,7 @@ EW_DEFINE_METHODS( DevelopmentDEV_MotoCon, MenuBaseMenuView )
     MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( DevelopmentDEV_MotoCon )
 
 /* 'C' function for method : 'Development::DEV_MotoCon.OnShortHomeKeyActivated()' */

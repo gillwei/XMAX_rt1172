@@ -351,9 +351,9 @@ class VerticalMenu : Components::BaseComponent
         Item.Checked = OwnerMenu.LoadItemChecked( ItemNo );
       }
 
-      if( Menu::ItemUnitValue == Item.ItemClass )
+      if( Menu::ItemBaseValue == Item.ItemClass )
       {
-        Item.UnitValue = OwnerMenu.LoadItemUnitValue( ItemNo );
+        Item.ItemValue = OwnerMenu.LoadItemBaseValue( ItemNo );
       }
 
       Item.Bounds.size = point( MenuList.Bounds.w, MenuList.ItemHeight );
@@ -842,27 +842,27 @@ class ItemWrapper : Core::Group
     }
   }
 
-  // For ItemUnitValue
+  // For ItemBaseValue
   note group Note8
   {
-    attr Bounds = <20,670,530,820>;
+    attr Bounds = <20,670,530,830>;
   }
 
   $rect <40,720,240,760>
-  property string UnitValue;
+  property string ItemValue;
 
   $rect <40,760,240,800>
-  onset UnitValue
+  onset ItemValue
   {
-    if( pure UnitValue != value )
+    if( pure ItemValue != value )
     {
-      pure UnitValue = value;
+      pure ItemValue = value;
 
       var Core::View view = FindNextView( null, Core::ViewState[] );
-      var Menu::ItemUnitValue MenuItem = ( Menu::ItemUnitValue )view;
+      var Menu::ItemBaseValue MenuItem = ( Menu::ItemBaseValue )view;
       if( MenuItem != null )
       {
-        MenuItem.UnitValue = value;
+        MenuItem.ItemValue = value;
       }
     }
   }
@@ -1056,14 +1056,14 @@ class BaseMenuView : Components::BaseMainBG
     preset ArrowScrollBarVisible = false;
   }
 
-  // For unit value menu item
+  // For menu item which has value
   note group Note8
   {
-    attr Bounds = <520,380,780,490>;
+    attr Bounds = <520,380,780,500>;
   }
 
-  $rect <550,430,750,470>
-  method string LoadItemUnitValue( arg int32 aItemNo )
+  $rect <550,440,750,480>
+  method string LoadItemBaseValue( arg int32 aItemNo )
   {
     if( aItemNo >= 0 )
     {
@@ -1541,7 +1541,7 @@ class ArrowScrollBar : Core::Group
 
 $rect <230,160,430,200>
 $output false
-class ItemUnitValue : Menu::ItemBase
+class ItemBaseValue : Menu::ItemBase
 {
   $rect <0,110,200,150>
   inherited method UpdateLayout()
@@ -1552,7 +1552,12 @@ class ItemUnitValue : Menu::ItemBase
     {
       case Menu::ItemHeightSmall:
       {
-        UnitValueText.Bounds = <290,7,417,43>;
+        ItemValueText.Bounds = <290,7,417,43>;
+      }
+      case Menu::ItemHeightTall:
+      {
+        Title.Bounds = <37,1,193,69>;
+        ItemValueText.Bounds = <385,1,418,69>;
       }
       default:;
     }
@@ -1567,17 +1572,17 @@ class ItemUnitValue : Menu::ItemBase
 
       if( value )
       {
-        UnitValueText.Color = #FFFFFFFF;
+        ItemValueText.Color = #FFFFFFFF;
       }
       else
       {
-        UnitValueText.Color = #646464FF;
+        ItemValueText.Color = #646464FF;
       }
     }
   }
 
   $rect <20,20,160,60>
-  object Views::Text UnitValueText
+  object Views::Text ItemValueText
   {
     preset Bounds = <290,9,417,43>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -1586,15 +1591,15 @@ class ItemUnitValue : Menu::ItemBase
   }
 
   $rect <220,110,420,150>
-  property string UnitValue;
+  property string ItemValue;
 
   $rect <220,150,420,190>
-  onset UnitValue
+  onset ItemValue
   {
-    if( pure UnitValue != value )
+    if( pure ItemValue != value )
     {
-      pure UnitValue = value;
-      UnitValueText.String = value;
+      pure ItemValue = value;
+      ItemValueText.String = value;
     }
 
 

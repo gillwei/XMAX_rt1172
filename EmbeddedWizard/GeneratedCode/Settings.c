@@ -38,6 +38,7 @@
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
+#include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
 #include "_MenuItemCheckMark.h"
@@ -48,6 +49,7 @@
 #include "_ResourcesBitmap.h"
 #include "_ResourcesExternBitmap.h"
 #include "_ResourcesFont.h"
+#include "_SeatHeater_GripWarmerSHT02_GPW02_Main.h"
 #include "_SettingsBtFwUpdateDialog.h"
 #include "_SettingsSET01_MainSettingMenu.h"
 #include "_SettingsSET03_ConnectionSettingMenu.h"
@@ -258,13 +260,20 @@ void SettingsSET01_MainSettingMenu_Init( SettingsSET01_MainSettingMenu _this, XH
   ItemIdx = 4;
   i = 0;
 
-  if ( _this->GripWarmerEnabled )
+  if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleSupportedFunctionGRIP_WARMER ))
   {
     NoOfItems++;
     ItemIdx++;
   }
+  else
+  {
+    _this->Settings[ EwCheckIndex( ItemIdx, 9 )] = _this->Settings[ EwCheckIndex( 
+    ItemIdx + 1, 9 )];
+  }
 
-  if ( _this->SeatHeaterEnabled )
+  if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleSupportedFunctionSEAT_HEATER ))
   {
     NoOfItems++;
     ItemIdx++;
@@ -390,11 +399,25 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
     break;
 
     case EnumMainSettingItemGripWarmerSettings :
-      ;
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
+      = EnumVehicleSupportedFunctionGRIP_WARMER;
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeHEATER_SELECT, 0 );
+      Dialog = ((ComponentsBaseComponent)EwNewObject( SeatHeater_GripWarmerSHT02_GPW02_Main, 
+      0 ));
+    }
     break;
 
     case EnumMainSettingItemSeatHeaterSettings :
-      ;
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
+      = EnumVehicleSupportedFunctionSEAT_HEATER;
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeHEATER_SELECT, 1 );
+      Dialog = ((ComponentsBaseComponent)EwNewObject( SeatHeater_GripWarmerSHT02_GPW02_Main, 
+      0 ));
+    }
     break;
 
     case EnumMainSettingItemSystemInfo :
@@ -484,7 +507,7 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, _None, _None,
   SettingsSET01_MainSettingMenu_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( SettingsSET01_MainSettingMenu )
 
 /* Initializer for the class 'Settings::SET03_ConnectionSettingMenu' */
@@ -691,7 +714,7 @@ EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, ItemTitl
   SettingsSET03_ConnectionSettingMenu_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( SettingsSET03_ConnectionSettingMenu )
 
 /* Initializer for the class 'Settings::SET04_BtSettingMenu' */
@@ -941,7 +964,7 @@ EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, ItemTitleArray,
   SettingsSET04_BtSettingMenu_OnItemActivate,
   SettingsSET04_BtSettingMenu_LoadItemChecked,
   SettingsSET04_BtSettingMenu_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( SettingsSET04_BtSettingMenu )
 
 /* Initializer for the class 'Settings::SET06_BtcDiscovarable' */
@@ -1860,7 +1883,7 @@ void SettingsSET17_BtcPairedDeviceList__Init( SettingsSET17_BtcPairedDeviceList 
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetStatusBarDividerVisible( &_this->Super1.Menu, 1 );
-  CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), -1 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), 0 );
   _this->RefreshListObserver.OnEvent = EwNewSlot( _this, SettingsSET17_BtcPairedDeviceList_OnRefreshListSlot );
   CorePropertyObserver_OnSetOutlet( &_this->RefreshListObserver, EwNewRef( EwGetAutoObject( 
   &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList, 
@@ -2093,7 +2116,7 @@ EW_DEFINE_CLASS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView, RefreshLis
   SettingsSET17_BtcPairedDeviceList_OnItemActivate,
   SettingsSET17_BtcPairedDeviceList_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( SettingsSET17_BtcPairedDeviceList )
 
 /* Initializer for the class 'Settings::SET19_BtcPairedDeviceOperation' */
@@ -2349,7 +2372,7 @@ EW_DEFINE_CLASS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView, Devic
   SettingsSET19_BtcPairedDeviceOperation_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   SettingsSET19_BtcPairedDeviceOperation_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( SettingsSET19_BtcPairedDeviceOperation )
 
 /* Initializer for the class 'Settings::SET18_DeleteBleDevice' */

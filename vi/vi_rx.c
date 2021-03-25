@@ -494,21 +494,27 @@ switch( signal_id )
     {
     case IL_CAN0_HEATER_STAT_GRIP_WARM_LO_RXSIG_HANDLE:
         rx_grip_warmer_status.value_low = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeGRIP_WARMER_VALUE_LOW );
         break;
     case IL_CAN0_HEATER_STAT_GRIP_WARM_MID_RXSIG_HANDLE:
         rx_grip_warmer_status.value_middle = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeGRIP_WARMER_VALUE_MIDDLE );
         break;
     case IL_CAN0_HEATER_STAT_GRIP_WARM_HI_RXSIG_HANDLE:
         rx_grip_warmer_status.value_high = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH );
         break;
     case IL_CAN0_HEATER_STAT_RIDER_SEAT_WARM_LO_RXSIG_HANDLE:
         rx_seat_heater_status.value_low = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeSEAT_HEATER_VALUE_LOW );
         break;
     case IL_CAN0_HEATER_STAT_RIDER_SEAT_WARM_MID_RXSIG_HANDLE:
         rx_seat_heater_status.value_middle = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeSEAT_HEATER_VALUE_MIDDLE );
         break;
     case IL_CAN0_HEATER_STAT_RIDER_SEAT_WARM_HI_RXSIG_HANDLE:
         rx_seat_heater_status.value_high = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeSEAT_HEATER_VALUE_HIGH );
         break;
     case IL_CAN0_HEATER_STAT_CRNT_GW_STAT_RXSIG_HANDLE:
         rx_grip_warmer_status.setting = ( heater_setting_enum )data;
@@ -665,11 +671,11 @@ return ( ( rx_vehicle_supported_functions >> function ) & 0x1 );
 * @public
 * VI_get_rx_data_uint
 *
-* Get vehicle rx data of uint32 type and validity
+* Get vehicle rx data of uint32 type
 *
 * @param rx_type Rx data type
-* @param data The pointer to the rx data
-* @return Vehicle rx data validity
+* @param data    The pointer to the rx data
+* @return        The validity of vehicle rx data
 *
 *********************************************************************/
 bool VI_get_rx_data_uint
@@ -678,7 +684,7 @@ bool VI_get_rx_data_uint
     uint32_t*         data
     )
 {
-bool validity = true;
+bool is_valid = true;
 
 switch( rx_type )
     {
@@ -716,7 +722,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeAVERAGE_SPEED:
@@ -726,7 +732,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeAPS_ANGLE:
@@ -748,7 +754,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeLOW_FUEL_WARNING:
@@ -770,7 +776,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeMAINTENANCE_TRIP2:
@@ -780,7 +786,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeMAINTENANCE_TRIP3:
@@ -790,7 +796,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeGRIP_WARMER_VALUE_LOW:
@@ -800,7 +806,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeGRIP_WARMER_VALUE_MIDDLE:
@@ -810,7 +816,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH:
@@ -820,7 +826,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeSEAT_HEATER_VALUE_LOW:
@@ -830,7 +836,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeSEAT_HEATER_VALUE_MIDDLE:
@@ -840,7 +846,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeSEAT_HEATER_VALUE_HIGH:
@@ -850,21 +856,21 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeGRIP_WARMER_STATUS:
         *data = rx_grip_warmer_status.setting;
         break;
-    case EnumVehicleRxTypeHEAT_SEATERS_TATUS:
+    case EnumVehicleRxTypeSEAT_HEATER_STATUS:
         *data = rx_seat_heater_status.setting;
         break;
     default:
         PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );
-        validity = false;
+        is_valid = false;
         break;
     }
-return validity;
+return is_valid;
 }
 
 /*********************************************************************
@@ -872,11 +878,11 @@ return validity;
 * @public
 * VI_get_rx_data_float
 *
-* Return vehicle rx data of float type
+* Get vehicle rx data of float type
 *
 * @param rx_type Rx data type
-* @param data The pointer to the rx data
-* @return Vehicle rx data validity
+* @param data    The pointer to the rx data
+* @return        The validity of vehicle rx data
 *
 *********************************************************************/
 bool VI_get_rx_data_float
@@ -885,7 +891,7 @@ bool VI_get_rx_data_float
     float*            data
     )
 {
-bool validity = true;
+bool is_valid = true;
 
 switch( rx_type )
     {
@@ -896,7 +902,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeFUEL_RATE_AVERAGE:
@@ -906,7 +912,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeODOMETER_VALUE:
@@ -916,7 +922,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeTRIP1_VALUE:
@@ -926,7 +932,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeTRIP2_VALUE:
@@ -936,7 +942,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeFUEL_CONSUMPTION:
@@ -946,7 +952,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeAIR_TEMPERATURE:
@@ -956,7 +962,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeCOOLANT_TEMPERATURE:
@@ -966,7 +972,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeBATTERY_VOLTAGE:
@@ -976,7 +982,7 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     case EnumVehicleRxTypeF_TRIP:
@@ -986,15 +992,15 @@ switch( rx_type )
             }
         else
             {
-            validity = false;
+            is_valid = false;
             }
         break;
     default:
         PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );
-        validity = false;
+        is_valid = false;
         break;
     }
-return validity;
+return is_valid;
 }
 
 /*********************************************************************
@@ -1064,7 +1070,9 @@ VI_set_supported_function( VEHICLE_FEATURE_F_TRIP, support_functions->sfl.bit.Ft
 VI_set_supported_function( VEHICLE_FEATURE_METER_BRIGHTNESS_ADJ, support_functions->sfl.bit.mt_brgtnss_adj );
 VI_set_supported_function( VEHICLE_FEATURE_CLOCK, support_functions->sfl.bit.clk );
 VI_set_supported_function( VEHICLE_FEATURE_TCS, support_functions->sfl.bit.tcs );
+PRINTF( "%s, grip warmer: %d\r\n", __FUNCTION__, support_functions->sfl.bit.grip_warmer );
 VI_set_supported_function( VEHICLE_FEATURE_GRIP_HEATER, support_functions->sfl.bit.grip_warmer );
+PRINTF( "%s, seat heater: %d\r\n", __FUNCTION__, support_functions->sfl.bit.seat_heater );
 VI_set_supported_function( VEHICLE_FEATURE_SEAT_HEATER, support_functions->sfl.bit.seat_heater );
 VI_set_supported_function( VEHICLE_FEATURE_WIND_SCREEN, support_functions->sfl.bit.wind_scrn );
 VI_set_supported_function( VEHICLE_FEATURE_OIL_TRIP, support_functions->sfl.bit.oil_trip );

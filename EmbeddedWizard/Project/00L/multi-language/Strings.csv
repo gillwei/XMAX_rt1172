@@ -5,9 +5,9 @@ GEN_ok,OK,OK,OK,Vale,OK,OK,確定,确定
 GEN_cancel,Cancel,キャンセル,Annuler,Cancelar,Annulla,Abbrechen,取消,取消
 GEN_yes,Yes,,,,,,,
 GEN_no,No,,,,,,,
-GEN_low,Low,,,,,,,
-GEN_middle,Mid,,,,,,,
-GEN_hight,High,,,,,,,
+GEN_LOW,Low,,,,,,,
+GEN_MIDDLE,Mid,,,,,,,
+GEN_HIGH,High,,,,,,,
 GEN_reset_question_mark,Reset?,,,,,,,
 GEN_bluetooth,Bluetooth,,,,,,,
 GEN_three_hyphens,---,,,,,,,

@@ -1,0 +1,591 @@
+﻿$version 10.00
+
+$rect <20,40,220,80>
+$output false
+class SHT02_GPW02_Main : Menu::BaseMenuView
+{
+  $rect <260,310,460,350>
+  inherited method Init()
+  {
+    ScaleIndicator = new SeatHeater_GripWarmer::ScaleIndicator;
+    $if !$prototyper
+      if( DeviceInterface::VehicleDevice.CurrentVehicleFunction == Enum::VehicleSupportedFunction.SEAT_HEATER )
+      {
+        UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_LOW );
+        UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_MIDDLE );
+        UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_HIGH );
+      }
+      else if( DeviceInterface::VehicleDevice.CurrentVehicleFunction == Enum::VehicleSupportedFunction.GRIP_WARMER )
+      {
+        UpdateLevel( Enum::VehicleRxType.GRIP_WARMER_VALUE_LOW );
+        UpdateLevel( Enum::VehicleRxType.GRIP_WARMER_VALUE_MIDDLE );
+        UpdateLevel( Enum::VehicleRxType.GRIP_WARMER_VALUE_HIGH );
+      }
+      else
+      {
+        trace "Unexpected vehicle function";
+      }
+    $else
+      // For testing in prototype.
+      ItemValueArray[0] = 1;
+      ItemValueArray[1] = 5;
+      ItemValueArray[2] = 10;
+
+      ScaleIndicator.LevelUpUpdateSignal = OnLevelUpUpdateSlot;
+      ScaleIndicator.LevelDownUpdateSignal = OnLevelDownUpdateSlot;
+    $endif
+  }
+
+  $rect <20,470,220,510>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,410,220,450>
+  inherited var SlideOutEffectEnabled = true;
+
+  $rect <520,30,720,70>
+  inherited method LoadItemClass()
+  {
+    // suppress warning
+    if( aItemNo )
+    {
+      // empty body
+    }
+    return Menu::ItemBaseValue;
+  }
+
+  $rect <520,90,720,130>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+    {
+      title = ItemTitleArray[aItemNo];
+    }
+    return title;
+  }
+
+  $rect <520,210,720,250>
+  inherited method OnItemActivate()
+  {
+    if( null == aMenuItem )
+    {
+      // empty body to suppress warning
+    }
+
+    ScaleIndicator.LevelValue = (int32)ItemValueArray[aItemNo];
+    ItemIdx = aItemNo;
+
+    switch( aItemNo )
+    {
+      case 0:
+      {
+        ScaleIndicator.ScaleIndicatorType = Enum::SeatHeaterGripWarmerLevelType.LOW;
+        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.HEATER_LEVEL, (uint32)Enum::SeatHeaterGripWarmerLevelType.LOW );
+        PresentDialog( ScaleIndicator, null, null, null, null, null, null, null, null, false );
+      }
+      case 1:
+      {
+        ScaleIndicator.ScaleIndicatorType = Enum::SeatHeaterGripWarmerLevelType.MID;
+        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.HEATER_LEVEL, (uint32)Enum::SeatHeaterGripWarmerLevelType.MID );
+        PresentDialog( ScaleIndicator, null, null, null, null, null, null, null, null, false );
+      }
+      case 2:
+      {
+        ScaleIndicator.ScaleIndicatorType = Enum::SeatHeaterGripWarmerLevelType.HIGH;
+        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.HEATER_LEVEL, (uint32)Enum::SeatHeaterGripWarmerLevelType.HIGH );
+        PresentDialog( ScaleIndicator, null, null, null, null, null, null, null, null, false );
+      }
+      default:;
+    }
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset DDModeEnabled = true;
+    preset NoOfItems = 3;
+  }
+
+  $rect <520,150,720,190>
+  inherited method LoadItemBaseValue()
+  {
+    var string val = "";
+    if( aItemNo < ItemValueArray.size )
+    {
+      val = string( ItemValueArray[aItemNo] );
+    }
+    return val;
+  }
+
+  $rect <760,90,960,130>
+  array uint32 ItemValueArray[ 3 ];
+
+  $rect <760,30,960,70>
+  array string ItemTitleArray[ 3 ] =
+  (
+    Default[0] = Strings::GEN_LOW;
+    Default[1] = Strings::GEN_MIDDLE;
+    Default[2] = Strings::GEN_HIGH;
+  );
+
+  $rect <23,296,223,336>
+  var SeatHeater_GripWarmer::ScaleIndicator ScaleIndicator;
+
+  $rect <520,290,720,330>
+  slot OnLevelUpUpdateSlot
+  {
+    $if $prototyper
+    if( ItemValueArray[ItemIdx] < SeatHeater_GripWarmer::MAX_LEVEL )
+    {
+      var int32 i;
+      switch( ItemIdx )
+      {
+        case 0:
+        {
+          if( ( ItemValueArray[ItemIdx]+1 ) == ItemValueArray[ItemIdx+1] &&
+              ( ItemValueArray[ItemIdx+1] + 1 ) == ItemValueArray[ItemIdx+2] &&
+              ItemValueArray[ItemIdx+2] < 10 )
+          {
+            i = ItemIdx;
+            for( i = ItemIdx; i < ItemValueArray.size; i++ )
+            {
+              ItemValueArray[i]++;
+            }
+          }
+          else if( ( ItemValueArray[ItemIdx]+1 ) == ItemValueArray[ItemIdx+1] &&
+                   ItemValueArray[ItemIdx+1] < 9 )
+          {
+            i = ItemIdx;
+            for( i = ItemIdx; i < ItemValueArray.size - 1; i++ )
+            {
+              ItemValueArray[i]++;
+            }
+          }
+          else if( ItemValueArray[ItemIdx] < 8 )
+          {
+            ItemValueArray[ItemIdx]++;
+          }
+        }
+        case 1:
+        {
+          if( ( ItemValueArray[ItemIdx]+1 ) == ItemValueArray[ItemIdx+1] &&
+              ItemValueArray[ItemIdx+1] < 10 )
+          {
+            i = ItemIdx;
+            for( i = ItemIdx; i < ItemValueArray.size; i++ )
+            {
+              ItemValueArray[i]++;
+            }
+          }
+          else if( ItemValueArray[ItemIdx] < 9 )
+          {
+            ItemValueArray[ItemIdx]++;
+          }
+        }
+        case 2:
+        {
+          if( ItemValueArray[ItemIdx] < 10 )
+          {
+            ItemValueArray[ItemIdx]++;
+          }
+        }
+        default:;
+      }
+      Menu.InvalidateItems( 0, ItemTitleArray.size - 1 );
+    }
+    $endif
+
+  }
+
+  $rect <20,350,220,390>
+  var int32 ItemIdx;
+
+  $rect <520,340,720,380>
+  slot OnLevelDownUpdateSlot
+  {
+    $if $prototyper
+    if( ItemValueArray[ItemIdx] > SeatHeater_GripWarmer::MIN_LEVEL )
+    {
+      var int32 i;
+      switch( ItemIdx )
+      {
+        case 0:
+        {
+          if( ItemValueArray[ItemIdx] > 0 )
+          {
+            ItemValueArray[ItemIdx]--;
+          }
+        }
+        case 1:
+        {
+          if( ( ItemValueArray[ItemIdx]-1 ) == ItemValueArray[ItemIdx-1] &&
+              ItemValueArray[ItemIdx-1] > 0 )
+          {
+            i = ItemIdx;
+            for( i = ItemIdx; i >= 0; i-- )
+            {
+              ItemValueArray[i]--;
+            }
+          }
+          else if( ItemValueArray[ItemIdx] > 2 )
+          {
+            ItemValueArray[ItemIdx]--;
+          }
+        }
+        case 2:
+        {
+          if( ( ItemValueArray[ItemIdx]-1 ) == ItemValueArray[ItemIdx-1] &&
+              ( ItemValueArray[ItemIdx-1] - 1 ) == ItemValueArray[ItemIdx-2] &&
+              ItemValueArray[ItemIdx-2] > 0 )
+          {
+            i = ItemIdx;
+            for( i = ItemIdx; i >= 0; i-- )
+            {
+              ItemValueArray[i]--;
+            }
+          }
+          else if( ( ItemValueArray[ItemIdx]-1 ) == ItemValueArray[ItemIdx-1] &&
+                   ItemValueArray[ItemIdx-1] > 1 )
+          {
+            i = ItemIdx;
+            for( i = ItemIdx; i >= 1; i-- )
+            {
+              ItemValueArray[i]--;
+            }
+          }
+          else if( ItemValueArray[ItemIdx] > 3 )
+          {
+            ItemValueArray[ItemIdx]--;
+          }
+        }
+        default:;
+      }
+      Menu.InvalidateItems( 0, ItemTitleArray.size - 1 );
+    }
+    $endif
+  }
+
+  $rect <750,160,950,200>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <950,160,1150,200>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    var bool IsSeatHeaterValueReceived = ( Enum::VehicleRxType.SEAT_HEATER_VALUE_LOW == VehicleData.RxType ||
+                                           Enum::VehicleRxType.SEAT_HEATER_VALUE_MIDDLE == VehicleData.RxType ||
+                                           Enum::VehicleRxType.SEAT_HEATER_VALUE_HIGH == VehicleData.RxType );
+
+    var bool IsGripWarmerValueReceived = ( Enum::VehicleRxType.GRIP_WARMER_VALUE_LOW == VehicleData.RxType ||
+                                           Enum::VehicleRxType.GRIP_WARMER_VALUE_MIDDLE == VehicleData.RxType ||
+                                           Enum::VehicleRxType.GRIP_WARMER_VALUE_HIGH == VehicleData.RxType );
+    if( null != VehicleData &&
+        ( IsSeatHeaterValueReceived || IsGripWarmerValueReceived ) )
+    {
+      UpdateLevel( VehicleData.RxType );
+    }
+    else
+    {
+      trace "Unexpected vehicle function";
+    }
+  }
+
+  $rect <750,270,950,310>
+  method void UpdateLevel( arg Enum::VehicleRxType aNewType )
+  {
+    //TODO: get CAN timeout error state
+    var DeviceInterface::VehicleDataClass VehicleData;
+    switch( aNewType )
+    {
+      case Enum::VehicleRxType.SEAT_HEATER_VALUE_LOW, Enum::VehicleRxType.GRIP_WARMER_VALUE_LOW:
+      {
+        if( aNewType == Enum::VehicleRxType.SEAT_HEATER_VALUE_LOW )
+        {
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.SEAT_HEATER_VALUE_LOW );
+        }
+        else
+        {
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.GRIP_WARMER_VALUE_LOW );
+        }
+
+        if( null != VehicleData &&
+            VehicleData.Valid &&
+            ItemValueArray[0] != VehicleData.DataUInt32 &&
+            SeatHeater_GripWarmer::MAX_LEVEL >= VehicleData.DataUInt32 &&
+            VehicleData.DataUInt32 >= SeatHeater_GripWarmer::MIN_LEVEL )
+        {
+          ItemValueArray[0] = VehicleData.DataUInt32;
+          ScaleIndicator.LevelValue = (int32)VehicleData.DataUInt32;
+          Menu.InvalidateItems( 0, 0 );
+        }
+      }
+      case Enum::VehicleRxType.SEAT_HEATER_VALUE_MIDDLE, Enum::VehicleRxType.GRIP_WARMER_VALUE_MIDDLE:
+      {
+        if( aNewType == Enum::VehicleRxType.SEAT_HEATER_VALUE_MIDDLE )
+        {
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.SEAT_HEATER_VALUE_MIDDLE );
+        }
+        else
+        {
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.GRIP_WARMER_VALUE_MIDDLE );
+        }
+
+        if( null != VehicleData &&
+            VehicleData.Valid &&
+            ItemValueArray[1] != VehicleData.DataUInt32 &&
+            SeatHeater_GripWarmer::MAX_LEVEL >= VehicleData.DataUInt32 &&
+            VehicleData.DataUInt32 >= SeatHeater_GripWarmer::MIN_LEVEL )
+        {
+          ItemValueArray[1] = VehicleData.DataUInt32;
+          ScaleIndicator.LevelValue = (int32)VehicleData.DataUInt32;
+          Menu.InvalidateItems( 1, 1 );
+        }
+      }
+      case Enum::VehicleRxType.SEAT_HEATER_VALUE_HIGH, Enum::VehicleRxType.GRIP_WARMER_VALUE_HIGH:
+      {
+        if( aNewType == Enum::VehicleRxType.SEAT_HEATER_VALUE_HIGH )
+        {
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.SEAT_HEATER_VALUE_HIGH );
+        }
+        else
+        {
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.GRIP_WARMER_VALUE_HIGH );
+        }
+
+        if( null != VehicleData &&
+            VehicleData.Valid &&
+            ItemValueArray[2] != VehicleData.DataUInt32 &&
+            SeatHeater_GripWarmer::MAX_LEVEL >= VehicleData.DataUInt32 &&
+            VehicleData.DataUInt32 >= SeatHeater_GripWarmer::MIN_LEVEL )
+        {
+          ItemValueArray[2] = VehicleData.DataUInt32;
+          ScaleIndicator.LevelValue = (int32)VehicleData.DataUInt32;
+          Menu.InvalidateItems( 2, 2 );
+        }
+      }
+      default:;
+    }
+  }
+}
+
+$rect <250,40,450,80>
+$output false
+class ScaleIndicator : Components::BaseMainBG
+{
+  $rect <0,300,200,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <820,160,1020,200>
+  inherited method OnShortDownKeyActivated()
+  {
+    if( SeatHeater_GripWarmer::MIN_LEVEL < LevelValue )
+    {
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.BUTTON_STATUS_AUDIO, SeatHeater_GripWarmer::BUTTON_STATUS_AUDIO_DOWN_CODE );
+    }
+    $if $prototyper
+    switch( ScaleIndicatorType )
+    {
+      case Enum::SeatHeaterGripWarmerLevelType.LOW:
+      {
+        if( LevelValue > 1 )
+        {
+          LevelValue = LevelValue - 1;
+          signal LevelDownUpdateSignal;
+        }
+      }
+      case Enum::SeatHeaterGripWarmerLevelType.MID:
+      {
+        if( LevelValue > 2 )
+        {
+          LevelValue = LevelValue - 1;
+          signal LevelDownUpdateSignal;
+        }
+      }
+      case Enum::SeatHeaterGripWarmerLevelType.HIGH:
+      {
+        if( LevelValue > 3 )
+        {
+          LevelValue = LevelValue - 1;
+          signal LevelDownUpdateSignal;
+        }
+      }
+      default:;
+    }
+    $endif
+  }
+
+  $rect <820,120,1020,160>
+  inherited method OnShortUpKeyActivated()
+  {
+    if( SeatHeater_GripWarmer::MAX_LEVEL > LevelValue )
+    {
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.BUTTON_STATUS_AUDIO, SeatHeater_GripWarmer::BUTTON_STATUS_AUDIO_UP_CODE );
+    }
+    $if $prototyper
+    switch( ScaleIndicatorType )
+    {
+      case Enum::SeatHeaterGripWarmerLevelType.LOW:
+      {
+        if( LevelValue < 8 )
+        {
+          LevelValue = LevelValue + 1;
+          signal LevelUpUpdateSignal;
+        }
+      }
+      case Enum::SeatHeaterGripWarmerLevelType.MID:
+      {
+        if( LevelValue < 9 )
+        {
+          LevelValue = LevelValue + 1;
+          signal LevelUpUpdateSignal;
+        }
+      }
+      case Enum::SeatHeaterGripWarmerLevelType.HIGH:
+      {
+        if( LevelValue < 10 )
+        {
+          LevelValue = LevelValue + 1;
+          signal LevelUpUpdateSignal;
+        }
+      }
+      default:;
+    }
+    $endif
+  }
+
+  $rect <820,210,1020,250>
+  inherited method OnShortEnterKeyActivated()
+  {
+    OnShortHomeKeyActivated();
+  }
+
+  $rect <10,400,210,440>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,20,160,60>
+  inherited object MainBottomBG
+  {
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  inherited object BlackBG
+  {
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ScaleIndicatorWindow
+  {
+    preset Bounds = <193,39,395,268>;
+    preset Bitmap = Resource::ScaleIndicatorWindowLow;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ScaleIndicatorBg
+  {
+    preset Bounds = <193,39,395,268>;
+    preset Bitmap = Resource::ScaleIndicatorBg;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ScaleIndicatorBar
+  {
+    preset Bounds = <230,219,355,238>;
+    preset Bitmap = Resource::ScaleIndicatorBar;
+  }
+
+  $rect <550,20,750,60>
+  property Enum::SeatHeaterGripWarmerLevelType ScaleIndicatorType;
+
+  $rect <550,60,750,100>
+  onset ScaleIndicatorType
+  {
+    if( pure ScaleIndicatorType != value )
+    {
+      pure ScaleIndicatorType = value;
+
+      switch( ScaleIndicatorType )
+      {
+        case Enum::SeatHeaterGripWarmerLevelType.LOW: ScaleIndicatorWindow.Bitmap = Resource::ScaleIndicatorWindowLow;
+        case Enum::SeatHeaterGripWarmerLevelType.MID: ScaleIndicatorWindow.Bitmap = Resource::ScaleIndicatorWindowMid;
+        case Enum::SeatHeaterGripWarmerLevelType.HIGH: ScaleIndicatorWindow.Bitmap = Resource::ScaleIndicatorWindowHigh;
+        default:;
+      }
+    }
+  }
+
+  $rect <830,20,1030,60>
+  property int32 LevelValue;
+
+  $rect <830,60,1030,100>
+  onset LevelValue
+  {
+    if( pure LevelValue != value )
+    {
+      pure LevelValue = value;
+      ScaleIndicatorBar.FrameNumber = 1;
+      var rect NewBounds;
+      NewBounds.x1 = ScaleIndicatorBarOriBounds.x1;
+      NewBounds.y1 = ScaleIndicatorBarOriBounds.y1 - 18*( LevelValue - 1 );
+      NewBounds.x2 = ScaleIndicatorBarOriBounds.x2;
+      NewBounds.y2 = ScaleIndicatorBarOriBounds.y2 - 18*( LevelValue - 1 );
+
+      ScaleIndicatorBar.Bounds = NewBounds;
+    }
+  }
+
+  $rect <550,250,750,290>
+  property slot LevelUpUpdateSignal;
+
+  $rect <0,350,200,390>
+  var rect ScaleIndicatorBarOriBounds = <230,219,355,238>;
+
+  $rect <550,300,750,340>
+  property slot LevelDownUpdateSignal;
+
+  // TODO:
+  // When communication error occurs, framenumber is set to 0 to show gray bar.
+  note group Note
+  {
+    attr Bounds = <1070,30,1370,230>;
+  }
+}
+
+$rect <20,100,220,140>
+$output false
+const rect TITLE_BOUNDS = <37,1,193,69>;
+
+$rect <20,150,220,190>
+$output false
+const rect VALUE_BOUNDS = <385,1,418,69>;
+
+$rect <20,200,220,240>
+$output false
+const uint32 MAX_LEVEL = 10;
+
+$rect <20,250,220,290>
+$output false
+const uint32 MIN_LEVEL = 1;
+
+$rect <250,150,480,190>
+$output false
+const uint32 BUTTON_STATUS_AUDIO_UP_CODE = 1;
+
+$rect <250,100,480,140>
+$output false
+const uint32 BUTTON_STATUS_AUDIO_DOWN_CODE = 0;
+
+$rect <20,310,220,350>
+$output false
+const uint32 GRIP_WARMER = 0;
+
+$rect <20,360,220,400>
+$output false
+const uint32 RIDER_SEAT_HEATER = 1;

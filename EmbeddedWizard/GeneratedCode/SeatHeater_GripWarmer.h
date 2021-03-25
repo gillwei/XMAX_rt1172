@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DeviceInterfaceVehicleDataClass_H
-#define _DeviceInterfaceVehicleDataClass_H
+#ifndef SeatHeater_GripWarmer_H
+#define SeatHeater_GripWarmer_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,30 +42,13 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-/* Forward declaration of the class DeviceInterface::VehicleDataClass */
-#ifndef _DeviceInterfaceVehicleDataClass_
-  EW_DECLARE_CLASS( DeviceInterfaceVehicleDataClass )
-#define _DeviceInterfaceVehicleDataClass_
-#endif
-
-
-/* Deklaration of class : 'DeviceInterface::VehicleDataClass' */
-EW_DEFINE_FIELDS( DeviceInterfaceVehicleDataClass, XObject )
-  EW_VARIABLE( DataFloat,       XFloat )
-  EW_VARIABLE( DataUInt32,      XUInt32 )
-  EW_VARIABLE( RxType,          XEnum )
-  EW_VARIABLE( DataType,        XEnum )
-  EW_VARIABLE( Valid,           XBool )
-EW_END_OF_FIELDS( DeviceInterfaceVehicleDataClass )
-
-/* Virtual Method Table (VMT) for the class : 'DeviceInterface::VehicleDataClass' */
-EW_DEFINE_METHODS( DeviceInterfaceVehicleDataClass, XObject )
-EW_END_OF_METHODS( DeviceInterfaceVehicleDataClass )
+#include "_SeatHeater_GripWarmerSHT02_GPW02_Main.h"
+#include "_SeatHeater_GripWarmerScaleIndicator.h"
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DeviceInterfaceVehicleDataClass_H */
+#endif /* SeatHeater_GripWarmer_H */
 
 /* Embedded Wizard */

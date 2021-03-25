@@ -62,6 +62,7 @@
 EW_DEFINE_FIELDS( DeviceInterfaceVehicleDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( DDModeStateChangedSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( VehicleDataReceivedSystemEvent, CoreSystemEvent )
+  EW_VARIABLE( CurrentVehicleFunction, XEnum )
   EW_VARIABLE( CurrentTempSetting, XEnum )
   EW_VARIABLE( CurrentPressureSetting, XEnum )
   EW_VARIABLE( CurrentFuelSetting, XEnum )

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _MenuItemUnitValue_H
-#define _MenuItemUnitValue_H
+#ifndef _SeatHeater_GripWarmerScaleIndicator_H
+#define _SeatHeater_GripWarmerScaleIndicator_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,12 +42,13 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseMainBG.h"
+#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
+#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuItemBase.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -91,21 +92,25 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemUnitValue */
-#ifndef _MenuItemUnitValue_
-  EW_DECLARE_CLASS( MenuItemUnitValue )
-#define _MenuItemUnitValue_
+/* Forward declaration of the class SeatHeater_GripWarmer::ScaleIndicator */
+#ifndef _SeatHeater_GripWarmerScaleIndicator_
+  EW_DECLARE_CLASS( SeatHeater_GripWarmerScaleIndicator )
+#define _SeatHeater_GripWarmerScaleIndicator_
 #endif
 
 
-/* Deklaration of class : 'Menu::ItemUnitValue' */
-EW_DEFINE_FIELDS( MenuItemUnitValue, MenuItemBase )
-  EW_OBJECT  ( UnitValueText,   ViewsText )
-  EW_PROPERTY( UnitValue,       XString )
-EW_END_OF_FIELDS( MenuItemUnitValue )
+/* Deklaration of class : 'SeatHeater_GripWarmer::ScaleIndicator' */
+EW_DEFINE_FIELDS( SeatHeater_GripWarmerScaleIndicator, ComponentsBaseMainBG )
+  EW_OBJECT  ( ScaleIndicatorWindow, ViewsImage )
+  EW_OBJECT  ( ScaleIndicatorBg, ViewsImage )
+  EW_OBJECT  ( ScaleIndicatorBar, ViewsImage )
+  EW_PROPERTY( LevelValue,      XInt32 )
+  EW_VARIABLE( ScaleIndicatorBarOriBounds, XRect )
+  EW_PROPERTY( ScaleIndicatorType, XEnum )
+EW_END_OF_FIELDS( SeatHeater_GripWarmerScaleIndicator )
 
-/* Virtual Method Table (VMT) for the class : 'Menu::ItemUnitValue' */
-EW_DEFINE_METHODS( MenuItemUnitValue, MenuItemBase )
+/* Virtual Method Table (VMT) for the class : 'SeatHeater_GripWarmer::ScaleIndicator' */
+EW_DEFINE_METHODS( SeatHeater_GripWarmerScaleIndicator, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -124,7 +129,7 @@ EW_DEFINE_METHODS( MenuItemUnitValue, MenuItemBase )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
-  EW_METHOD( OnSetEnabled,      void )( MenuItemUnitValue _this, XBool value )
+  EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
@@ -135,8 +140,8 @@ EW_DEFINE_METHODS( MenuItemUnitValue, MenuItemBase )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
-  EW_METHOD( UpdateLayout,      void )( MenuItemUnitValue _this, XPoint aSize )
-  EW_METHOD( UpdateViewState,   void )( MenuItemBase _this, XSet aState )
+  EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
+  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
@@ -149,39 +154,41 @@ EW_DEFINE_METHODS( MenuItemUnitValue, MenuItemBase )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( MenuItemBase _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( SeatHeater_GripWarmerScaleIndicator _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( SeatHeater_GripWarmerScaleIndicator _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( SeatHeater_GripWarmerScaleIndicator _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( MenuItemUnitValue )
+EW_END_OF_METHODS( SeatHeater_GripWarmerScaleIndicator )
 
-/* The method UpdateLayout() is invoked automatically after the size of the component 
-   has been changed. This method can be overridden and filled with logic to perform 
-   a sophisticated arrangement calculation for one or more enclosed views. In this 
-   case the parameter aSize can be used. It contains the current size of the component. 
-   Usually, all enclosed views are arranged automatically accordingly to their @Layout 
-   property. UpdateLayout() gives the derived components a chance to extend this 
-   automatism by a user defined algorithm. */
-void MenuItemUnitValue_UpdateLayout( MenuItemUnitValue _this, XPoint aSize );
+/* 'C' function for method : 'SeatHeater_GripWarmer::ScaleIndicator.OnShortDownKeyActivated()' */
+void SeatHeater_GripWarmerScaleIndicator_OnShortDownKeyActivated( SeatHeater_GripWarmerScaleIndicator _this );
 
-/* 'C' function for method : 'Menu::ItemUnitValue.OnSetEnabled()' */
-void MenuItemUnitValue_OnSetEnabled( MenuItemUnitValue _this, XBool value );
+/* 'C' function for method : 'SeatHeater_GripWarmer::ScaleIndicator.OnShortUpKeyActivated()' */
+void SeatHeater_GripWarmerScaleIndicator_OnShortUpKeyActivated( SeatHeater_GripWarmerScaleIndicator _this );
 
-/* 'C' function for method : 'Menu::ItemUnitValue.OnSetUnitValue()' */
-void MenuItemUnitValue_OnSetUnitValue( MenuItemUnitValue _this, XString value );
+/* 'C' function for method : 'SeatHeater_GripWarmer::ScaleIndicator.OnShortEnterKeyActivated()' */
+void SeatHeater_GripWarmerScaleIndicator_OnShortEnterKeyActivated( SeatHeater_GripWarmerScaleIndicator _this );
+
+/* 'C' function for method : 'SeatHeater_GripWarmer::ScaleIndicator.OnSetScaleIndicatorType()' */
+void SeatHeater_GripWarmerScaleIndicator_OnSetScaleIndicatorType( SeatHeater_GripWarmerScaleIndicator _this, 
+  XEnum value );
+
+/* 'C' function for method : 'SeatHeater_GripWarmer::ScaleIndicator.OnSetLevelValue()' */
+void SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( SeatHeater_GripWarmerScaleIndicator _this, 
+  XInt32 value );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _MenuItemUnitValue_H */
+#endif /* _SeatHeater_GripWarmerScaleIndicator_H */
 
 /* Embedded Wizard */

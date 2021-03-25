@@ -69,7 +69,7 @@ note group Note3
 // Project Units
 note group Note5
 {
-  attr Bounds = <270,140,730,860>;
+  attr Bounds = <270,140,730,920>;
 }
 
 // This is a profile member for the project. This profile controls the code generation \
@@ -270,6 +270,12 @@ unit StatusBar
 
 $rect <290,800,490,840>
 unit Open
+{
+  attr Directory = .\;
+}
+
+$rect <520,800,720,840>
+unit SeatHeater_GripWarmer
 {
   attr Directory = .\;
 }

@@ -1685,16 +1685,16 @@ class VehicleDeviceClass : Templates::DeviceClass
       }
 
       var int32 RxTypeId = ( int32 )aVehicleRxType;
-      var bool  Validity = false;
+      var bool  Valid = false;
 
       if( Enum::DataType.FLOAT == VehicleData.DataType )
       {
         var float RxData = 0;
-        native( RxTypeId, Validity, RxData )
+        native( RxTypeId, Valid, RxData )
         {
           float rx_data = 0;
-          Validity = VI_get_rx_data_float( RxTypeId, &rx_data );
-          if( Validity )
+          Valid = VI_get_rx_data_float( RxTypeId, &rx_data );
+          if( Valid )
           {
             RxData = rx_data;
           }
@@ -1704,11 +1704,11 @@ class VehicleDeviceClass : Templates::DeviceClass
       else
       {
         var uint32 RxData = 0;
-        native( RxTypeId, Validity, RxData )
+        native( RxTypeId, Valid, RxData )
         {
           uint32_t rx_data = 0;
-          Validity = VI_get_rx_data_uint( RxTypeId, &rx_data );
-          if( Validity )
+          Valid = VI_get_rx_data_uint( RxTypeId, &rx_data );
+          if( Valid )
           {
             RxData = rx_data;
           }
@@ -1716,7 +1716,7 @@ class VehicleDeviceClass : Templates::DeviceClass
         VehicleData.DataUInt32 = RxData;
       }
 
-      VehicleData.Validity = Validity;
+      VehicleData.Valid = Valid;
     $else
       // suppress warning
       if( ( int32 )aVehicleRxType >= 0 )
@@ -1757,6 +1757,9 @@ class VehicleDeviceClass : Templates::DeviceClass
 
   $rect <20,530,220,570>
   var Enum::TemperatureSettingItem CurrentTempSetting;
+
+  $rect <20,580,220,620>
+  var Enum::VehicleSupportedFunction CurrentVehicleFunction;
 }
 
 $rect <20,590,220,630>
@@ -1930,7 +1933,7 @@ class VehicleDataClass
   var uint32 DataUInt32 = 0;
 
   $rect <10,10,210,50>
-  var bool Validity = false;
+  var bool Valid = false;
 
   $rect <10,60,210,100>
   var Enum::DataType DataType = Enum::DataType.UINT32;

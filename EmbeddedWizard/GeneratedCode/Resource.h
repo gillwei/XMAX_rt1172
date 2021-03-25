@@ -309,6 +309,21 @@ EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwTurnLIrg28 )
 /* Bitmap resource : 'Resource::NaviTurnArrwTurnRIrg28' */
 EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwTurnRIrg28 )
 
+/* Bitmap resource : 'Resource::ScaleIndicatorWindowLow' */
+EW_DECLARE_BITMAP_RES( ResourceScaleIndicatorWindowLow )
+
+/* Bitmap resource : 'Resource::ScaleIndicatorWindowMid' */
+EW_DECLARE_BITMAP_RES( ResourceScaleIndicatorWindowMid )
+
+/* Bitmap resource : 'Resource::ScaleIndicatorWindowHigh' */
+EW_DECLARE_BITMAP_RES( ResourceScaleIndicatorWindowHigh )
+
+/* Bitmap resource : 'Resource::ScaleIndicatorBg' */
+EW_DECLARE_BITMAP_RES( ResourceScaleIndicatorBg )
+
+/* Bitmap resource : 'Resource::ScaleIndicatorBar' */
+EW_DECLARE_BITMAP_RES( ResourceScaleIndicatorBar )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

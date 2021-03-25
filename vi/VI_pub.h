@@ -44,7 +44,7 @@ extern "C"{
 
 #define INVALID_MAINTENANCE_TRIP            ( 0x3FFFF )
 
-#define INVALID_HEATER_VALUE                ( 0xFF )
+#define INVALID_HEATER_VALUE                ( 0xF )
 
 #define DEFAULT_GRIP_WARMER_LOW_VALUE       ( 0x1 )
 #define DEFAULT_GRIP_WARMER_MIDDLE_VALUE    ( 0x5 )

@@ -598,4 +598,34 @@ EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwTurnRIrg28 )
 /* User defined constant: 'Resource::EXTERN_BMP_QRCODE' */
 const XStringRes ResourceEXTERN_BMP_QRCODE = { _StringsDefault0, 0x0002 };
 
+/* Include a file containing the bitmap resource : 'Resource::ScaleIndicatorWindowLow' */
+#include "_ResourceScaleIndicatorWindowLow.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ScaleIndicatorWindowLow' */
+EW_RES_WITHOUT_VARIANTS( ResourceScaleIndicatorWindowLow )
+
+/* Include a file containing the bitmap resource : 'Resource::ScaleIndicatorWindowMid' */
+#include "_ResourceScaleIndicatorWindowMid.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ScaleIndicatorWindowMid' */
+EW_RES_WITHOUT_VARIANTS( ResourceScaleIndicatorWindowMid )
+
+/* Include a file containing the bitmap resource : 'Resource::ScaleIndicatorWindowHigh' */
+#include "_ResourceScaleIndicatorWindowHigh.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ScaleIndicatorWindowHigh' */
+EW_RES_WITHOUT_VARIANTS( ResourceScaleIndicatorWindowHigh )
+
+/* Include a file containing the bitmap resource : 'Resource::ScaleIndicatorBg' */
+#include "_ResourceScaleIndicatorBg.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ScaleIndicatorBg' */
+EW_RES_WITHOUT_VARIANTS( ResourceScaleIndicatorBg )
+
+/* Include a file containing the bitmap resource : 'Resource::ScaleIndicatorBar' */
+#include "_ResourceScaleIndicatorBar.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ScaleIndicatorBar' */
+EW_RES_WITHOUT_VARIANTS( ResourceScaleIndicatorBar )
+
 /* Embedded Wizard */

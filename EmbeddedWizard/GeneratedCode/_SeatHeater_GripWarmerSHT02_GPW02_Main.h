@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentDEV_VehicleSupportedFunction_H
-#define _DevelopmentDEV_VehicleSupportedFunction_H
+#ifndef _SeatHeater_GripWarmerSHT02_GPW02_Main_H
+#define _SeatHeater_GripWarmerSHT02_GPW02_Main_H
 
 #ifdef __cplusplus
   extern "C"
@@ -87,12 +87,6 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::DEV_VehicleSupportedFunction */
-#ifndef _DevelopmentDEV_VehicleSupportedFunction_
-  EW_DECLARE_CLASS( DevelopmentDEV_VehicleSupportedFunction )
-#define _DevelopmentDEV_VehicleSupportedFunction_
-#endif
-
 /* Forward declaration of the class Effects::Fader */
 #ifndef _EffectsFader_
   EW_DECLARE_CLASS( EffectsFader )
@@ -111,14 +105,30 @@
 #define _MenuItemBase_
 #endif
 
+/* Forward declaration of the class SeatHeater_GripWarmer::SHT02_GPW02_Main */
+#ifndef _SeatHeater_GripWarmerSHT02_GPW02_Main_
+  EW_DECLARE_CLASS( SeatHeater_GripWarmerSHT02_GPW02_Main )
+#define _SeatHeater_GripWarmerSHT02_GPW02_Main_
+#endif
 
-/* Deklaration of class : 'Development::DEV_VehicleSupportedFunction' */
-EW_DEFINE_FIELDS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [27])
-EW_END_OF_FIELDS( DevelopmentDEV_VehicleSupportedFunction )
+/* Forward declaration of the class SeatHeater_GripWarmer::ScaleIndicator */
+#ifndef _SeatHeater_GripWarmerScaleIndicator_
+  EW_DECLARE_CLASS( SeatHeater_GripWarmerScaleIndicator )
+#define _SeatHeater_GripWarmerScaleIndicator_
+#endif
 
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_VehicleSupportedFunction' */
-EW_DEFINE_METHODS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView )
+
+/* Deklaration of class : 'SeatHeater_GripWarmer::SHT02_GPW02_Main' */
+EW_DEFINE_FIELDS( SeatHeater_GripWarmerSHT02_GPW02_Main, MenuBaseMenuView )
+  EW_VARIABLE( ScaleIndicator,  SeatHeater_GripWarmerScaleIndicator )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
+  EW_ARRAY   ( ItemTitleArray,  XString, [3])
+  EW_ARRAY   ( ItemValueArray,  XUInt32, [3])
+  EW_VARIABLE( ItemIdx,         XInt32 )
+EW_END_OF_FIELDS( SeatHeater_GripWarmerSHT02_GPW02_Main )
+
+/* Virtual Method Table (VMT) for the class : 'SeatHeater_GripWarmer::SHT02_GPW02_Main' */
+EW_DEFINE_METHODS( SeatHeater_GripWarmerSHT02_GPW02_Main, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -165,7 +175,7 @@ EW_DEFINE_METHODS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_VehicleSupportedFunction _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
@@ -174,41 +184,53 @@ EW_DEFINE_METHODS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_VehicleSupportedFunction _this, 
+  EW_METHOD( LoadItemClass,     XClass )( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
     XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_VehicleSupportedFunction _this, 
+  EW_METHOD( LoadItemTitle,     XString )( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
     XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_VehicleSupportedFunction _this, 
+  EW_METHOD( OnItemActivate,    void )( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
     XInt32 aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_VehicleSupportedFunction _this, 
-    XInt32 aItemNo )
+  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( DevelopmentDEV_VehicleSupportedFunction )
+  EW_METHOD( LoadItemBaseValue, XString )( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
+    XInt32 aItemNo )
+EW_END_OF_METHODS( SeatHeater_GripWarmerSHT02_GPW02_Main )
 
-/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.OnShortHomeKeyActivated()' */
-void DevelopmentDEV_VehicleSupportedFunction_OnShortHomeKeyActivated( DevelopmentDEV_VehicleSupportedFunction _this );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SeatHeater_GripWarmerSHT02_GPW02_Main_Init( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
+  XHandle aArg );
 
-/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.LoadItemClass()' */
-XClass DevelopmentDEV_VehicleSupportedFunction_LoadItemClass( DevelopmentDEV_VehicleSupportedFunction _this, 
+/* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.LoadItemClass()' */
+XClass SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemClass( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.LoadItemTitle()' */
-XString DevelopmentDEV_VehicleSupportedFunction_LoadItemTitle( DevelopmentDEV_VehicleSupportedFunction _this, 
+/* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.LoadItemTitle()' */
+XString SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemTitle( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.OnItemActivate()' */
-void DevelopmentDEV_VehicleSupportedFunction_OnItemActivate( DevelopmentDEV_VehicleSupportedFunction _this, 
+/* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.OnItemActivate()' */
+void SeatHeater_GripWarmerSHT02_GPW02_Main_OnItemActivate( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.LoadItemChecked()' */
-XBool DevelopmentDEV_VehicleSupportedFunction_LoadItemChecked( DevelopmentDEV_VehicleSupportedFunction _this, 
+/* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.LoadItemBaseValue()' */
+XString SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemBaseValue( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
   XInt32 aItemNo );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SeatHeater_GripWarmerSHT02_GPW02_Main_OnVehicleDataReceivedSlot( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
+  XObject sender );
+
+/* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.UpdateLevel()' */
+void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
+  XEnum aNewType );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentDEV_VehicleSupportedFunction_H */
+#endif /* _SeatHeater_GripWarmerSHT02_GPW02_Main_H */
 
 /* Embedded Wizard */

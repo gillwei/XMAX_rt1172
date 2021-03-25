@@ -1897,7 +1897,7 @@ DeviceInterfaceVehicleDataClass DeviceInterfaceVehicleDeviceClass_GetData( Devic
 {
   DeviceInterfaceVehicleDataClass VehicleData;
   XInt32 RxTypeId;
-  XBool Validity;
+  XBool Valid;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
@@ -1916,15 +1916,15 @@ DeviceInterfaceVehicleDataClass DeviceInterfaceVehicleDeviceClass_GetData( Devic
   }
 
   RxTypeId = aVehicleRxType;
-  Validity = 0;
+  Valid = 0;
 
   if ( EnumDataTypeFLOAT == VehicleData->DataType )
   {
     XFloat RxData = 0.000000f;
     {
       float rx_data = 0;
-      Validity = VI_get_rx_data_float( RxTypeId, &rx_data );
-      if( Validity )
+      Valid = VI_get_rx_data_float( RxTypeId, &rx_data );
+      if( Valid )
       {
         RxData = rx_data;
       }
@@ -1936,8 +1936,8 @@ DeviceInterfaceVehicleDataClass DeviceInterfaceVehicleDeviceClass_GetData( Devic
     XUInt32 RxData = 0;
     {
       uint32_t rx_data = 0;
-      Validity = VI_get_rx_data_uint( RxTypeId, &rx_data );
-      if( Validity )
+      Valid = VI_get_rx_data_uint( RxTypeId, &rx_data );
+      if( Valid )
       {
         RxData = rx_data;
       }
@@ -1945,7 +1945,7 @@ DeviceInterfaceVehicleDataClass DeviceInterfaceVehicleDeviceClass_GetData( Devic
     VehicleData->DataUInt32 = RxData;
   }
 
-  VehicleData->Validity = Validity;
+  VehicleData->Valid = Valid;
   return VehicleData;
 }
 
@@ -1976,7 +1976,7 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::VehicleDeviceClass' */
 EW_DEFINE_CLASS( DeviceInterfaceVehicleDeviceClass, TemplatesDeviceClass, DDModeStateChangedSystemEvent, 
                  DDModeStateChangedSystemEvent, DDModeStateChangedSystemEvent, DDModeStateChangedSystemEvent, 
-                 CurrentTempSetting, CurrentTempSetting, "DeviceInterface::VehicleDeviceClass" )
+                 CurrentVehicleFunction, CurrentVehicleFunction, "DeviceInterface::VehicleDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceVehicleDeviceClass )
 
 /* User defined auto object: 'DeviceInterface::VehicleDevice' */

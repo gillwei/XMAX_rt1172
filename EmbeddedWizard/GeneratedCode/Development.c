@@ -475,7 +475,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, ItemTitleArray, ItemTitl
   DevelopmentDEV_Main_OnItemActivate,
   DevelopmentDEV_Main_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( DevelopmentDEV_Main )
 
 /* Initializer for the class 'Development::DEV_RealTimeClock' */
@@ -1150,7 +1150,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_MotoCon, MenuBaseMenuView, ItemTitleArray, ItemT
   DevelopmentDEV_MotoCon_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( DevelopmentDEV_MotoCon )
 
 /* Initializer for the class 'Development::DEV_VehicleSupportedFunction' */
@@ -1345,7 +1345,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView, Item
   DevelopmentDEV_VehicleSupportedFunction_OnItemActivate,
   DevelopmentDEV_VehicleSupportedFunction_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( DevelopmentDEV_VehicleSupportedFunction )
 
 /* Initializer for the class 'Development::DEV_FontMenu' */
@@ -1538,7 +1538,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_FontMenu, MenuBaseMenuView, ItemTitleArray, Item
   DevelopmentDEV_FontMenu_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( DevelopmentDEV_FontMenu )
 
 /* Initializer for the class 'Development::DEV_FontTest' */

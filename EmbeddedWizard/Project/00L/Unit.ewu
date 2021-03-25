@@ -126,7 +126,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
     {
       // empty body
     }
-    return Menu::ItemUnitValue;
+    return Menu::ItemBaseValue;
   }
 
   $rect <520,80,720,120>
@@ -224,7 +224,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
   }
 
   $rect <520,140,720,180>
-  inherited method LoadItemUnitValue()
+  inherited method LoadItemBaseValue()
   {
     var string val = "";
     if( aItemNo < ItemValueArray.size )

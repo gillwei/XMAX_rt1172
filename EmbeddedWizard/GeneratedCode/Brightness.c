@@ -263,7 +263,7 @@ EW_DEFINE_CLASS( BrightnessBRT01_BrightnessSettingMenu, MenuBaseMenuView, _None,
   BrightnessBRT01_BrightnessSettingMenu_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( BrightnessBRT01_BrightnessSettingMenu )
 
 /* Initializer for the class 'Brightness::BRT02_TFTBrightness' */

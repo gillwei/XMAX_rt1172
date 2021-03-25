@@ -186,7 +186,7 @@ EW_DEFINE_METHODS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemChecked,   XBool )( InfoINF01_MeterDisplaySettingMenu _this, 
     XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( InfoINF01_MeterDisplaySettingMenu )
 
 /* The method Init() is invoked automatically after the component has been created. 

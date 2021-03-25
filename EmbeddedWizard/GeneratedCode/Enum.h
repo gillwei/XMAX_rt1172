@@ -244,7 +244,7 @@ typedef enum
   EnumVehicleRxTypeSEAT_HEATER_VALUE_MIDDLE = 37,
   EnumVehicleRxTypeSEAT_HEATER_VALUE_HIGH = 38,
   EnumVehicleRxTypeGRIP_WARMER_STATUS   = 39,
-  EnumVehicleRxTypeHEAT_SEATERS_TATUS   = 40,
+  EnumVehicleRxTypeSEAT_HEATER_STATUS   = 40,
   EnumVehicleRxTypeSUPPORT_FUNC_CLOCK   = 41,
   EnumVehicleRxTypeSUPPORT_FUNC_GRIP_WARMER = 42,
   EnumVehicleRxTypeSUPPORT_FUNC_SEAT_HEATER = 43
@@ -266,7 +266,7 @@ typedef enum
   EnumVehicleTxTypeWIND_SCREEN_OPERATION = 10,
   EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION = 11,
   EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL = 12,
-  EnumVehicleTxTypeHEAT_SEATER_CHANGE_LEVEL = 13,
+  EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL = 13,
   EnumVehicleTxTypeCHG_METER_INFO       = 14,
   EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION = 15
 } EnumVehicleTxType;
@@ -420,6 +420,14 @@ typedef enum
   EnumNaviTurnStatusTypeTURN_LEFT       = 1,
   EnumNaviTurnStatusTypeTURN_RIGHT      = 2
 } EnumNaviTurnStatusType;
+
+/* User defined enumeration: 'Enum::SeatHeaterGripWarmerLevelType' */
+typedef enum
+{
+  EnumSeatHeaterGripWarmerLevelTypeLOW  = 0,
+  EnumSeatHeaterGripWarmerLevelTypeMID  = 1,
+  EnumSeatHeaterGripWarmerLevelTypeHIGH = 2
+} EnumSeatHeaterGripWarmerLevelType;
 
 #ifdef __cplusplus
   }

@@ -501,7 +501,7 @@ enum VehicleRxType
   item GRIP_WARMER_STATUS;
 
   $rect <850,10,1050,50>
-  item HEAT_SEATERS_TATUS;
+  item SEAT_HEATER_STATUS;
 
   $rect <850,60,1050,100>
   item SUPPORT_FUNC_CLOCK;
@@ -557,7 +557,7 @@ enum VehicleTxType
   item GRIP_WARMER_CHANGE_LEVEL;
 
   $rect <220,160,420,200>
-  item HEAT_SEATER_CHANGE_LEVEL;
+  item SEAT_HEATER_CHANGE_LEVEL;
 
   $rect <220,210,420,250>
   item CHG_METER_INFO;
@@ -899,4 +899,18 @@ enum NaviTurnStatusType
   {
     attr Bounds = <670,10,970,210>;
   }
+}
+
+$rect <30,590,230,630>
+$output false
+enum SeatHeaterGripWarmerLevelType
+{
+  $rect <10,10,210,50>
+  item LOW;
+
+  $rect <220,10,420,50>
+  item MID;
+
+  $rect <430,10,630,50>
+  item HIGH;
 }

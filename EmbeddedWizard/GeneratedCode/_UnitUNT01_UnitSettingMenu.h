@@ -221,7 +221,7 @@ EW_DEFINE_METHODS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( UnitUNT01_UnitSettingMenu _this, XInt32 
     aItemNo )
-  EW_METHOD( LoadItemUnitValue, XString )( UnitUNT01_UnitSettingMenu _this, XInt32 
+  EW_METHOD( LoadItemBaseValue, XString )( UnitUNT01_UnitSettingMenu _this, XInt32 
     aItemNo )
 EW_END_OF_METHODS( UnitUNT01_UnitSettingMenu )
 
@@ -246,8 +246,8 @@ void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this,
 XBool UnitUNT01_UnitSettingMenu_LoadItemEnabled( UnitUNT01_UnitSettingMenu _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemUnitValue()' */
-XString UnitUNT01_UnitSettingMenu_LoadItemUnitValue( UnitUNT01_UnitSettingMenu _this, 
+/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemBaseValue()' */
+XString UnitUNT01_UnitSettingMenu_LoadItemBaseValue( UnitUNT01_UnitSettingMenu _this, 
   XInt32 aItemNo );
 
 /* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.OnUnitValueUpdateSlot()' */

@@ -34,9 +34,9 @@
 #include "_MenuArrowScrollBar.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
+#include "_MenuItemBaseValue.h"
 #include "_MenuItemCheckMark.h"
 #include "_MenuItemCheckbox.h"
-#include "_MenuItemUnitValue.h"
 #include "_MenuItemWrapper.h"
 #include "_MenuPushButton.h"
 #include "_MenuScrollbar.h"
@@ -113,6 +113,8 @@ static const XRect _Const0028 = {{ 0, 0 }, { 32, 32 }};
 static const XRect _Const0029 = {{ 0, 184 }, { 32, 216 }};
 static const XRect _Const002A = {{ 290, 9 }, { 417, 43 }};
 static const XRect _Const002B = {{ 290, 7 }, { 417, 43 }};
+static const XRect _Const002C = {{ 37, 1 }, { 193, 69 }};
+static const XRect _Const002D = {{ 385, 1 }, { 418, 69 }};
 
 /* Initializer for the class 'Menu::ItemBase' */
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
@@ -572,9 +574,9 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
       ItemNo ));
     }
 
-    if ( EW_CLASS( MenuItemUnitValue ) == Item->ItemClass )
+    if ( EW_CLASS( MenuItemBaseValue ) == Item->ItemClass )
     {
-      MenuItemWrapper_OnSetUnitValue( Item, MenuBaseMenuView__LoadItemUnitValue( 
+      MenuItemWrapper_OnSetItemValue( Item, MenuBaseMenuView__LoadItemBaseValue( 
       OwnerMenu, ItemNo ));
     }
 
@@ -1133,20 +1135,20 @@ void MenuItemWrapper_OnSetDDModeEnabled( MenuItemWrapper _this, XBool value )
   }
 }
 
-/* 'C' function for method : 'Menu::ItemWrapper.OnSetUnitValue()' */
-void MenuItemWrapper_OnSetUnitValue( MenuItemWrapper _this, XString value )
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetItemValue()' */
+void MenuItemWrapper_OnSetItemValue( MenuItemWrapper _this, XString value )
 {
-  if ( EwCompString( _this->UnitValue, value ) != 0 )
+  if ( EwCompString( _this->ItemValue, value ) != 0 )
   {
     CoreView view;
-    MenuItemUnitValue MenuItem;
-    _this->UnitValue = EwShareString( value );
+    MenuItemBaseValue MenuItem;
+    _this->ItemValue = EwShareString( value );
     view = CoreGroup__FindNextView( _this, 0, 0 );
-    MenuItem = EwCastObject( view, MenuItemUnitValue );
+    MenuItem = EwCastObject( view, MenuItemBaseValue );
 
     if ( MenuItem != 0 )
     {
-      MenuItemUnitValue_OnSetUnitValue( MenuItem, value );
+      MenuItemBaseValue_OnSetItemValue( MenuItem, value );
     }
   }
 }
@@ -1514,8 +1516,8 @@ XBool MenuBaseMenuView__LoadItemEnabled( void* _this, XInt32 aItemNo )
   , aItemNo );
 }
 
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemUnitValue()' */
-XString MenuBaseMenuView_LoadItemUnitValue( MenuBaseMenuView _this, XInt32 aItemNo )
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemBaseValue()' */
+XString MenuBaseMenuView_LoadItemBaseValue( MenuBaseMenuView _this, XInt32 aItemNo )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
@@ -1526,10 +1528,10 @@ XString MenuBaseMenuView_LoadItemUnitValue( MenuBaseMenuView _this, XInt32 aItem
   return 0;
 }
 
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemUnitValue()' */
-XString MenuBaseMenuView__LoadItemUnitValue( void* _this, XInt32 aItemNo )
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemBaseValue()' */
+XString MenuBaseMenuView__LoadItemBaseValue( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemUnitValue((MenuBaseMenuView)_this
+  return ((MenuBaseMenuView)_this)->_VMT->LoadItemBaseValue((MenuBaseMenuView)_this
   , aItemNo );
 }
 
@@ -1587,7 +1589,7 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, Menu, Menu, Menu, Menu,
   MenuBaseMenuView_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( MenuBaseMenuView )
 
 /* Initializer for the class 'Menu::PushButton' */
@@ -2280,49 +2282,49 @@ EW_DEFINE_CLASS( MenuArrowScrollBar, CoreGroup, UpArrowIcon, UpArrowIcon, UpArro
   CoreGroup_Add,
 EW_END_OF_CLASS( MenuArrowScrollBar )
 
-/* Initializer for the class 'Menu::ItemUnitValue' */
-void MenuItemUnitValue__Init( MenuItemUnitValue _this, XObject aLink, XHandle aArg )
+/* Initializer for the class 'Menu::ItemBaseValue' */
+void MenuItemBaseValue__Init( MenuItemBaseValue _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
   MenuItemBase__Init( &_this->_Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuItemUnitValue );
+  _this->_GCT = EW_CLASS_GCT( MenuItemBaseValue );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->UnitValueText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->ItemValueText, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuItemUnitValue );
+  _this->_VMT = EW_CLASS( MenuItemBaseValue );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->UnitValueText, _Const002A );
-  ViewsText_OnSetAlignment( &_this->UnitValueText, ViewsTextAlignmentAlignHorzRight 
+  CoreRectView__OnSetBounds( &_this->ItemValueText, _Const002A );
+  ViewsText_OnSetAlignment( &_this->ItemValueText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->UnitValueText, 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->UnitValueText ), 0 );
-  ViewsText_OnSetFont( &_this->UnitValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetString( &_this->ItemValueText, 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ItemValueText ), 0 );
+  ViewsText_OnSetFont( &_this->ItemValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
 }
 
-/* Re-Initializer for the class 'Menu::ItemUnitValue' */
-void MenuItemUnitValue__ReInit( MenuItemUnitValue _this )
+/* Re-Initializer for the class 'Menu::ItemBaseValue' */
+void MenuItemBaseValue__ReInit( MenuItemBaseValue _this )
 {
   /* At first re-initialize the super class ... */
   MenuItemBase__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->UnitValueText );
+  ViewsText__ReInit( &_this->ItemValueText );
 }
 
-/* Finalizer method for the class 'Menu::ItemUnitValue' */
-void MenuItemUnitValue__Done( MenuItemUnitValue _this )
+/* Finalizer method for the class 'Menu::ItemBaseValue' */
+void MenuItemBaseValue__Done( MenuItemBaseValue _this )
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( MenuItemBase );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->UnitValueText );
+  ViewsText__Done( &_this->ItemValueText );
 
   /* Don't forget to deinitialize the super class ... */
   MenuItemBase__Done( &_this->_Super );
@@ -2335,7 +2337,7 @@ void MenuItemUnitValue__Done( MenuItemUnitValue _this )
    Usually, all enclosed views are arranged automatically accordingly to their @Layout 
    property. UpdateLayout() gives the derived components a chance to extend this 
    automatism by a user defined algorithm. */
-void MenuItemUnitValue_UpdateLayout( MenuItemUnitValue _this, XPoint aSize )
+void MenuItemBaseValue_UpdateLayout( MenuItemBaseValue _this, XPoint aSize )
 {
   MenuItemBase_UpdateLayout((MenuItemBase)_this, aSize );
 
@@ -2343,7 +2345,14 @@ void MenuItemUnitValue_UpdateLayout( MenuItemUnitValue _this, XPoint aSize )
   {
     case 56 :
     {
-      CoreRectView__OnSetBounds( &_this->UnitValueText, _Const002B );
+      CoreRectView__OnSetBounds( &_this->ItemValueText, _Const002B );
+    }
+    break;
+
+    case 74 :
+    {
+      CoreRectView__OnSetBounds( &_this->Super1.Title, _Const002C );
+      CoreRectView__OnSetBounds( &_this->ItemValueText, _Const002D );
     }
     break;
 
@@ -2352,8 +2361,8 @@ void MenuItemUnitValue_UpdateLayout( MenuItemUnitValue _this, XPoint aSize )
   }
 }
 
-/* 'C' function for method : 'Menu::ItemUnitValue.OnSetEnabled()' */
-void MenuItemUnitValue_OnSetEnabled( MenuItemUnitValue _this, XBool value )
+/* 'C' function for method : 'Menu::ItemBaseValue.OnSetEnabled()' */
+void MenuItemBaseValue_OnSetEnabled( MenuItemBaseValue _this, XBool value )
 {
   if ( _this->Super3.Enabled != value )
   {
@@ -2361,32 +2370,32 @@ void MenuItemUnitValue_OnSetEnabled( MenuItemUnitValue _this, XBool value )
 
     if ( value )
     {
-      ViewsText_OnSetColor( &_this->UnitValueText, _Const0002 );
+      ViewsText_OnSetColor( &_this->ItemValueText, _Const0002 );
     }
     else
     {
-      ViewsText_OnSetColor( &_this->UnitValueText, _Const0008 );
+      ViewsText_OnSetColor( &_this->ItemValueText, _Const0008 );
     }
   }
 }
 
-/* 'C' function for method : 'Menu::ItemUnitValue.OnSetUnitValue()' */
-void MenuItemUnitValue_OnSetUnitValue( MenuItemUnitValue _this, XString value )
+/* 'C' function for method : 'Menu::ItemBaseValue.OnSetItemValue()' */
+void MenuItemBaseValue_OnSetItemValue( MenuItemBaseValue _this, XString value )
 {
-  if ( EwCompString( _this->UnitValue, value ) != 0 )
+  if ( EwCompString( _this->ItemValue, value ) != 0 )
   {
-    _this->UnitValue = EwShareString( value );
-    ViewsText_OnSetString( &_this->UnitValueText, value );
+    _this->ItemValue = EwShareString( value );
+    ViewsText_OnSetString( &_this->ItemValueText, value );
   }
 }
 
-/* Variants derived from the class : 'Menu::ItemUnitValue' */
-EW_DEFINE_CLASS_VARIANTS( MenuItemUnitValue )
-EW_END_OF_CLASS_VARIANTS( MenuItemUnitValue )
+/* Variants derived from the class : 'Menu::ItemBaseValue' */
+EW_DEFINE_CLASS_VARIANTS( MenuItemBaseValue )
+EW_END_OF_CLASS_VARIANTS( MenuItemBaseValue )
 
-/* Virtual Method Table (VMT) for the class : 'Menu::ItemUnitValue' */
-EW_DEFINE_CLASS( MenuItemUnitValue, MenuItemBase, UnitValueText, UnitValueText, 
-                 UnitValueText, UnitValueText, UnitValue, _None, "Menu::ItemUnitValue" )
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemBaseValue' */
+EW_DEFINE_CLASS( MenuItemBaseValue, MenuItemBase, ItemValueText, ItemValueText, 
+                 ItemValueText, ItemValueText, ItemValue, _None, "Menu::ItemBaseValue" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -2400,14 +2409,14 @@ EW_DEFINE_CLASS( MenuItemUnitValue, MenuItemBase, UnitValueText, UnitValueText,
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
   CoreGroup_OnGetEnabled,
-  MenuItemUnitValue_OnSetEnabled,
+  MenuItemBaseValue_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
-  MenuItemUnitValue_UpdateLayout,
+  MenuItemBaseValue_UpdateLayout,
   MenuItemBase_UpdateViewState,
   CoreGroup_InvalidateArea,
   CoreGroup_CountViews,
@@ -2429,6 +2438,6 @@ EW_DEFINE_CLASS( MenuItemUnitValue, MenuItemBase, UnitValueText, UnitValueText,
   ComponentsBaseComponent_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
-EW_END_OF_CLASS( MenuItemUnitValue )
+EW_END_OF_CLASS( MenuItemBaseValue )
 
 /* Embedded Wizard */

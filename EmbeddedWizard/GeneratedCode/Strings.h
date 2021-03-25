@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/03/24 18:56:51 */
+   Generated: 2021/03/25 12:40:09 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_ok' */
@@ -57,6 +57,15 @@ extern const XStringRes StringsGEN_yes;
 
 /* User defined constant: 'Strings::GEN_no' */
 extern const XStringRes StringsGEN_no;
+
+/* User defined constant: 'Strings::GEN_LOW' */
+extern const XStringRes StringsGEN_LOW;
+
+/* User defined constant: 'Strings::GEN_MIDDLE' */
+extern const XStringRes StringsGEN_MIDDLE;
+
+/* User defined constant: 'Strings::GEN_HIGH' */
+extern const XStringRes StringsGEN_HIGH;
 
 /* User defined constant: 'Strings::GEN_bluetooth' */
 extern const XStringRes StringsGEN_bluetooth;

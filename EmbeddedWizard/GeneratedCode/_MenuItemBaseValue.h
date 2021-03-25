@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentDEV_VehicleSupportedFunction_H
-#define _DevelopmentDEV_VehicleSupportedFunction_H
+#ifndef _MenuItemBaseValue_H
+#define _MenuItemBaseValue_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,20 +42,12 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
-#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuVerticalMenu.h"
+#include "_MenuItemBase.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -87,12 +79,6 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::DEV_VehicleSupportedFunction */
-#ifndef _DevelopmentDEV_VehicleSupportedFunction_
-  EW_DECLARE_CLASS( DevelopmentDEV_VehicleSupportedFunction )
-#define _DevelopmentDEV_VehicleSupportedFunction_
-#endif
-
 /* Forward declaration of the class Effects::Fader */
 #ifndef _EffectsFader_
   EW_DECLARE_CLASS( EffectsFader )
@@ -105,20 +91,21 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBase */
-#ifndef _MenuItemBase_
-  EW_DECLARE_CLASS( MenuItemBase )
-#define _MenuItemBase_
+/* Forward declaration of the class Menu::ItemBaseValue */
+#ifndef _MenuItemBaseValue_
+  EW_DECLARE_CLASS( MenuItemBaseValue )
+#define _MenuItemBaseValue_
 #endif
 
 
-/* Deklaration of class : 'Development::DEV_VehicleSupportedFunction' */
-EW_DEFINE_FIELDS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [27])
-EW_END_OF_FIELDS( DevelopmentDEV_VehicleSupportedFunction )
+/* Deklaration of class : 'Menu::ItemBaseValue' */
+EW_DEFINE_FIELDS( MenuItemBaseValue, MenuItemBase )
+  EW_OBJECT  ( ItemValueText,   ViewsText )
+  EW_PROPERTY( ItemValue,       XString )
+EW_END_OF_FIELDS( MenuItemBaseValue )
 
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_VehicleSupportedFunction' */
-EW_DEFINE_METHODS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemBaseValue' */
+EW_DEFINE_METHODS( MenuItemBaseValue, MenuItemBase )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -137,7 +124,7 @@ EW_DEFINE_METHODS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
-  EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
+  EW_METHOD( OnSetEnabled,      void )( MenuItemBaseValue _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
@@ -148,8 +135,8 @@ EW_DEFINE_METHODS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
-  EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
-  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
+  EW_METHOD( UpdateLayout,      void )( MenuItemBaseValue _this, XPoint aSize )
+  EW_METHOD( UpdateViewState,   void )( MenuItemBase _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
@@ -164,51 +151,37 @@ EW_DEFINE_METHODS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_VehicleSupportedFunction _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( MenuItemBase _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_VehicleSupportedFunction _this, 
-    XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_VehicleSupportedFunction _this, 
-    XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_VehicleSupportedFunction _this, 
-    XInt32 aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_VehicleSupportedFunction _this, 
-    XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( DevelopmentDEV_VehicleSupportedFunction )
+EW_END_OF_METHODS( MenuItemBaseValue )
 
-/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.OnShortHomeKeyActivated()' */
-void DevelopmentDEV_VehicleSupportedFunction_OnShortHomeKeyActivated( DevelopmentDEV_VehicleSupportedFunction _this );
+/* The method UpdateLayout() is invoked automatically after the size of the component 
+   has been changed. This method can be overridden and filled with logic to perform 
+   a sophisticated arrangement calculation for one or more enclosed views. In this 
+   case the parameter aSize can be used. It contains the current size of the component. 
+   Usually, all enclosed views are arranged automatically accordingly to their @Layout 
+   property. UpdateLayout() gives the derived components a chance to extend this 
+   automatism by a user defined algorithm. */
+void MenuItemBaseValue_UpdateLayout( MenuItemBaseValue _this, XPoint aSize );
 
-/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.LoadItemClass()' */
-XClass DevelopmentDEV_VehicleSupportedFunction_LoadItemClass( DevelopmentDEV_VehicleSupportedFunction _this, 
-  XInt32 aItemNo );
+/* 'C' function for method : 'Menu::ItemBaseValue.OnSetEnabled()' */
+void MenuItemBaseValue_OnSetEnabled( MenuItemBaseValue _this, XBool value );
 
-/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.LoadItemTitle()' */
-XString DevelopmentDEV_VehicleSupportedFunction_LoadItemTitle( DevelopmentDEV_VehicleSupportedFunction _this, 
-  XInt32 aItemNo );
-
-/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.OnItemActivate()' */
-void DevelopmentDEV_VehicleSupportedFunction_OnItemActivate( DevelopmentDEV_VehicleSupportedFunction _this, 
-  XInt32 aItemNo, MenuItemBase aMenuItem );
-
-/* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.LoadItemChecked()' */
-XBool DevelopmentDEV_VehicleSupportedFunction_LoadItemChecked( DevelopmentDEV_VehicleSupportedFunction _this, 
-  XInt32 aItemNo );
+/* 'C' function for method : 'Menu::ItemBaseValue.OnSetItemValue()' */
+void MenuItemBaseValue_OnSetItemValue( MenuItemBaseValue _this, XString value );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentDEV_VehicleSupportedFunction_H */
+#endif /* _MenuItemBaseValue_H */
 
 /* Embedded Wizard */

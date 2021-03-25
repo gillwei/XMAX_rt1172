@@ -30,8 +30,8 @@
 #include "_CoreVerticalList.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
+#include "_MenuItemBaseValue.h"
 #include "_MenuItemCheckMark.h"
-#include "_MenuItemUnitValue.h"
 #include "_MenuVerticalMenu.h"
 #include "_UnitUNT01_UnitSettingMenu.h"
 #include "_UnitUNT02_MileageSettingMenu.h"
@@ -279,7 +279,7 @@ XClass UnitUNT01_UnitSettingMenu_LoadItemClass( UnitUNT01_UnitSettingMenu _this,
   if ( !!aItemNo )
     ;
 
-  return EW_CLASS( MenuItemUnitValue );
+  return EW_CLASS( MenuItemBaseValue );
 }
 
 /* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemTitle()' */
@@ -396,8 +396,8 @@ XBool UnitUNT01_UnitSettingMenu_LoadItemEnabled( UnitUNT01_UnitSettingMenu _this
   return ItemEnabled;
 }
 
-/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemUnitValue()' */
-XString UnitUNT01_UnitSettingMenu_LoadItemUnitValue( UnitUNT01_UnitSettingMenu _this, 
+/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemBaseValue()' */
+XString UnitUNT01_UnitSettingMenu_LoadItemBaseValue( UnitUNT01_UnitSettingMenu _this, 
   XInt32 aItemNo )
 {
   XString val = 0;
@@ -552,7 +552,7 @@ EW_DEFINE_CLASS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView, UnitItemValue, Ite
   UnitUNT01_UnitSettingMenu_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
   UnitUNT01_UnitSettingMenu_LoadItemEnabled,
-  UnitUNT01_UnitSettingMenu_LoadItemUnitValue,
+  UnitUNT01_UnitSettingMenu_LoadItemBaseValue,
 EW_END_OF_CLASS( UnitUNT01_UnitSettingMenu )
 
 /* Initializer for the class 'Unit::UNT02_MileageSettingMenu' */
@@ -780,7 +780,7 @@ EW_DEFINE_CLASS( UnitUNT02_MileageSettingMenu, MenuBaseMenuView, MileageUpdateSi
   UnitUNT02_MileageSettingMenu_OnItemActivate,
   UnitUNT02_MileageSettingMenu_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( UnitUNT02_MileageSettingMenu )
 
 /* Initializer for the class 'Unit::UnitValueClass' */
@@ -1105,7 +1105,7 @@ EW_DEFINE_CLASS( UnitUNT03_FuelSettingMenu, MenuBaseMenuView, FuelUpdateSignal,
   UnitUNT03_FuelSettingMenu_OnItemActivate,
   UnitUNT03_FuelSettingMenu_LoadItemChecked,
   UnitUNT03_FuelSettingMenu_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( UnitUNT03_FuelSettingMenu )
 
 /* Initializer for the class 'Unit::UNT04_PressureSettingMenu' */
@@ -1351,7 +1351,7 @@ EW_DEFINE_CLASS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView, PressureUpdate
   UnitUNT04_PressureSettingMenu_OnItemActivate,
   UnitUNT04_PressureSettingMenu_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( UnitUNT04_PressureSettingMenu )
 
 /* Initializer for the class 'Unit::UNT05_TemperatureSettingMenu' */
@@ -1579,7 +1579,7 @@ EW_DEFINE_CLASS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView, TempUpdateS
   UnitUNT05_TemperatureSettingMenu_OnItemActivate,
   UnitUNT05_TemperatureSettingMenu_LoadItemChecked,
   MenuBaseMenuView_LoadItemEnabled,
-  MenuBaseMenuView_LoadItemUnitValue,
+  MenuBaseMenuView_LoadItemBaseValue,
 EW_END_OF_CLASS( UnitUNT05_TemperatureSettingMenu )
 
 /* Embedded Wizard */

@@ -188,7 +188,7 @@ EW_DEFINE_METHODS( UnitUNT03_FuelSettingMenu, MenuBaseMenuView )
     aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( UnitUNT03_FuelSettingMenu _this, XInt32 
     aItemNo )
-  EW_METHOD( LoadItemUnitValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( UnitUNT03_FuelSettingMenu )
 
 /* 'C' function for method : 'Unit::UNT03_FuelSettingMenu.LoadItemClass()' */
