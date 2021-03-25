@@ -670,12 +670,14 @@ can_msg_t app_can_msg_rx = {0};
 
 il_app_frm_get( msg_index, &app_can_msg_rx );
 
-PRINTF( "CAN ID:%x LEN:%d ", app_can_msg_rx.id, app_can_msg_rx.size );
-for( uint8 i = 0; i < app_can_msg_rx.size; i++ )
-    {
-    PRINTF( "Data:%x ", app_can_msg_rx.data[i] );
-    }
-PRINTF( "\r\n" );
+#if( DEBUG_RX_CAN_SUPPORT )
+    PRINTF( "CAN ID:%x LEN:%d ", app_can_msg_rx.id, app_can_msg_rx.size );
+    for( uint8 i = 0; i < app_can_msg_rx.size; i++ )
+        {
+        PRINTF( "Data:%x ", app_can_msg_rx.data[i] );
+        }
+    PRINTF( "\r\n" );
+#endif
 
 /*------------------------------------------------------
 Other module can add their event message handler here

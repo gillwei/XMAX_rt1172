@@ -562,7 +562,10 @@ void VI_notify_vehicle_data_changed
     const uint32_t          data
     )
 {
-PRINTF( "vi 0x%x 0x%x 0x%x\r\n", message_frame_id, signal_id, data );
+#if( DEBUG_RX_CAN_SUPPORT )
+    PRINTF( "vi 0x%x 0x%x 0x%x\r\n", message_frame_id, signal_id, data );
+#endif
+
 switch( message_frame_id )
     {
     case IL_CAN0_RX0_ECU_INDCT_STAT_IDX:
@@ -608,7 +611,10 @@ switch( message_frame_id )
         process_factory_inspection_request( signal_id, data );
         break;
     default:
+
+#if( DEBUG_RX_CAN_SUPPORT )
         PRINTF( "%s drop message frame id: 0x%x\r\n", __FUNCTION__, message_frame_id );
+#endif
         break;
     }
 }
@@ -1050,15 +1056,12 @@ void VI_rx_support_function_received
     mid_msg_supp_func_t* support_functions
     )
 {
-PRINTF( "%s, tacho: %d %d\r\n", __FUNCTION__, support_functions->tcfs, support_functions->brzegr );
 rx_tacho_setting.fullscale = support_functions->tcfs;
 rx_tacho_setting.redzone   = support_functions->brzegr;
 
 VI_set_supported_function( VEHICLE_FEATURE_TRIP2, support_functions->sfl.bit.trip2 );
 VI_set_supported_function( VEHICLE_FEATURE_F_TRIP, support_functions->sfl.bit.Ftrip );
-PRINTF( "%s, meter bright adj: %d\r\n", __FUNCTION__, support_functions->sfl.bit.mt_brgtnss_adj );
 VI_set_supported_function( VEHICLE_FEATURE_METER_BRIGHTNESS_ADJ, support_functions->sfl.bit.mt_brgtnss_adj );
-PRINTF( "%s, clk: %d\r\n", __FUNCTION__, support_functions->sfl.bit.clk );
 VI_set_supported_function( VEHICLE_FEATURE_CLOCK, support_functions->sfl.bit.clk );
 VI_set_supported_function( VEHICLE_FEATURE_TCS, support_functions->sfl.bit.tcs );
 VI_set_supported_function( VEHICLE_FEATURE_GRIP_HEATER, support_functions->sfl.bit.grip_warmer );
@@ -1101,7 +1104,9 @@ void VI_rx_positive_response_received
     const uint8_t  request_service_id
     )
 {
-PRINTF( "%s: can id 0x%x, svc id: 0x%x\r\n", __FUNCTION__, can_id, request_service_id );
+#if( DEBUG_RX_CAN_SUPPORT )
+    PRINTF( "%s: can id 0x%x, svc id: 0x%x\r\n", __FUNCTION__, can_id, request_service_id );
+#endif
 }
 
 /*********************************************************************

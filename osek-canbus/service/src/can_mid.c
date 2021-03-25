@@ -388,7 +388,11 @@ if( l_resp_type == MID_MSG_NRES_NACK )
         *l_node_time_p   = 0;
         *l_node_status_p = MID_MSG_STAT_WAIT_RES_LONG;
          l_svc_id        = l_neg_resp_svc_id;
+
+#if( DEBUG_RX_CAN_SUPPORT )
         PRINTF("Neg resp %x %x!\r\n", l_can_id, l_svc_id );
+#endif
+
         //TBD nodity upper layer (resending is in the mid_task)
         }
     else if( l_rs == MID_MSG_NRES_RS_NOT_SUPP )
@@ -401,7 +405,10 @@ if( l_resp_type == MID_MSG_NRES_NACK )
         *l_node_status_p = MID_MSG_STAT_WAIT_RES_SHORT;
          l_svc_id        = l_neg_resp_svc_id;
 
+#if( DEBUG_RX_CAN_SUPPORT )
         PRINTF("Not supp %x %x!\r\n", l_can_id, l_svc_id );
+#endif
+
         //TBD nodity upper layer to handle no supported service ID
         }
     }
@@ -431,7 +438,10 @@ else
         VI_rx_support_function_received( &supp_func_list );
         }
 
+#if( DEBUG_RX_CAN_SUPPORT )
     PRINTF( "Pos resp %x %x!\r\n", l_can_id, l_svc_id );
+#endif
+
     VI_rx_positive_response_received( l_can_id, l_svc_id );
     }
 }
