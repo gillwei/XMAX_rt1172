@@ -230,6 +230,18 @@ void eep_get_mode
     void ( *callback_func_ptr ) ( status_t )
     );
 
+void eep_set_supported_function
+    (
+    uint8_t* sup_func_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+void eep_get_supported_function
+    (
+    uint8_t* sup_func_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
 #ifdef __cplusplus
 }
 #endif

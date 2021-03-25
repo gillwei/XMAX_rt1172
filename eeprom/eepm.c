@@ -54,6 +54,8 @@ static eepm_data_type eepm_data[EEPM_BLOCK_CONFIG_CNT];
 static const uint8_t page_id_lock = 0x02;
 static uint8_t write_bd_address[BD_ADDRESS_LENGTH]; // Use for store compare bd address value
 static uint8_t read_bd_address[BD_ADDRESS_LENGTH];  // Use for store compare bd address value
+static uint8_t write_sup_func[SUPPORTED_FUNCTION_LENGTH];
+static uint8_t read_sup_func[SUPPORTED_FUNCTION_LENGTH];
 
 /*--------------------------------------------------------------------
                         PROTOTYPES
@@ -793,6 +795,67 @@ static void eepm_mode_r_callback
 {
 eepm_r_callback( EEPM_BLOCK_CONFIG_OPERATION_MODE, status );
 }
+
+/*================================================================================================*/
+/**
+@brief   eepm_sup_func_w_callback
+@details eepm_sup_func_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_sup_func_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_bd_addr_r_callback
+@details eepm_bd_addr_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_sup_func_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].cb_write )
+            {
+            if( 0 == memcmp( write_sup_func, read_sup_func, SUPPORTED_FUNCTION_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].callback_ptr( rtn, read_sup_func );
+    }
+}
+
 
 /*================================================================================================*/
 /**
@@ -1765,6 +1828,69 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].semaphore, ( Tic
     eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].callback_ptr = callback_ptr;
     eep_get_mode( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_OPERATION_MODE].read_val ), eepm_mode_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_supported_function
+@details EEPM_set_supported_function
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_supported_function
+    (
+    uint8_t *sup_func,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].callback_ptr = callback_ptr;
+    memcpy( write_sup_func, sup_func, SUPPORTED_FUNCTION_LENGTH );
+    eep_set_supported_function( sup_func, eepm_sup_func_w_callback );
+    eep_get_supported_function( read_sup_func, eepm_sup_func_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_supported_function
+@details EEPM_get_supported_function
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_supported_function
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].callback_ptr = callback_ptr;
+    eep_get_supported_function( read_sup_func, eepm_sup_func_r_callback );
     }
 else
     {

@@ -33,6 +33,7 @@
 #define TEST_EEPM_DATA_QRCODE_DUMMY        ( 3 )
 #define TEST_EEPM_DATA_TRIP_TIME           ( 4 )
 #define TEST_EEPM_DATA_MODE                ( 5 )
+#define TEST_EEPM_DATA_SUP_FUNC            ( 6 )
 
 #define TEST_EEPM_DATA_ID                  ( TEST_EEPM_DATA_NONE )
 
@@ -65,6 +66,8 @@
         uint32_t trip_time = 0x11223344;
     #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_MODE )
         uint8_t mode = 123;
+    #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_SUP_FUNC )
+        uint8_t sup_func[SUPPORTED_FUNCTION_LENGTH] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };
     #else
         //Do nothing
     #endif
@@ -116,6 +119,8 @@
             EEPM_set_trip_time( trip_time, eepm_test_write_cb );
         #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_MODE )
             EEPM_set_operation_mode( mode, eepm_test_write_cb );
+        #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_SUP_FUNC )
+            EEPM_set_supported_function( sup_func, eepm_test_write_cb );
         #else
             //Do nothing
         #endif
@@ -133,6 +138,8 @@
             EEPM_get_trip_time( eepm_test_read_cb );
         #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_MODE )
             EEPM_get_operation_mode( eepm_test_read_cb );
+        #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_SUP_FUNC )
+            EEPM_get_supported_function( eepm_test_read_cb );
         #else
             //Do nothing
         #endif
@@ -222,6 +229,8 @@
         uint8_t eepm_data[TRIP_TIME_LENGTH] = { 0 };
     #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_MODE )
         uint8_t eepm_data[OPERATION_MODE_LENGTH] = { 0 };
+    #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_SUP_FUNC )
+        uint8_t eepm_data[SUPPORTED_FUNCTION_LENGTH] = { 0 };
     #else
         uint8_t eepm_data[4] = { 0 };
     #endif

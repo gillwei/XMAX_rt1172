@@ -45,9 +45,10 @@ extern "C"{
 #define QRCODE_DUMMY_START_SUB_ADDR          ( QRCODE_PASSKEY_START_SUB_ADDR        + QRCODE_PASSKEY_LENGTH         )
 #define TRIP_TIME_START_SUB_ADDR             ( QRCODE_DUMMY_START_SUB_ADDR          + QRCODE_DUMMY_LENGTH           )
 #define OPERATION_MODE_START_SUB_ADDR        ( TRIP_TIME_START_SUB_ADDR             + TRIP_TIME_LENGTH              )
+#define SUPPORTED_FUNCTION_START_SUB_ADDR    ( OPERATION_MODE_START_SUB_ADDR        + OPERATION_MODE_LENGTH         )
 
 // reserved for future newly add data..
-#define NEXT_START_SUB_ADDR                  ( OPERATION_MODE_START_SUB_ADDR        + OPERATION_MODE_LENGTH         )
+#define NEXT_START_SUB_ADDR                  ( SUPPORTED_FUNCTION_START_SUB_ADDR    + SUPPORTED_FUNCTION_LENGTH     )
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
@@ -91,6 +92,7 @@ eeprom_block_config_type block_config_list[EEPM_BLOCK_CONFIG_CNT] = \
     { QRCODE_DUMMY_START_SUB_ADDR,          QRCODE_DUMMY_LENGTH                }, //EEPM_BLOCK_CONFIG_QRCODE_DUMMY
     { TRIP_TIME_START_SUB_ADDR,             TRIP_TIME_LENGTH                   }, //EEPM_BLOCK_CONFIG_TRIP_TIME
     { OPERATION_MODE_START_SUB_ADDR,        OPERATION_MODE_LENGTH              }, //EEPM_BLOCK_CONFIG_OPERATION_MODE
+    { SUPPORTED_FUNCTION_START_SUB_ADDR,    SUPPORTED_FUNCTION_LENGTH          }, //EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION
 };
 
 
@@ -816,6 +818,55 @@ PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
                           EEPROM_SUB_ADDR_SIZE,
                           callback_func_ptr );
 }
+
+
+/*================================================================================================*/
+/**
+@brief   eep_set_supported_function
+@details eep_set_supported_function
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_set_supported_function
+    (
+    uint8_t* sup_func_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                           sup_func_ptr,
+                           block_config_list[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].length,
+                           block_config_list[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].start_addr,
+                           EEPROM_SUB_ADDR_SIZE,
+                           callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_supported_function
+@details eep_get_supported_function
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+void eep_get_supported_function
+    (
+    uint8_t* sup_func_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                          sup_func_ptr,
+                          block_config_list[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].length,
+                          block_config_list[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].start_addr,
+                          EEPROM_SUB_ADDR_SIZE,
+                          callback_func_ptr );
+}
+
+
 #ifdef __cplusplus
 }
 #endif

@@ -39,6 +39,7 @@ extern "C" {
 #define QRCODE_DUMMY_LENGTH                  ( 2 )
 #define TRIP_TIME_LENGTH                     ( 4 )
 #define OPERATION_MODE_LENGTH                ( 1 )
+#define SUPPORTED_FUNCTION_LENGTH            ( 6 )
 
 #define EEPROM_INVALID_VAL_1_BYTE            ( 0xFF )
 #define EEPROM_INVALID_VAL_2_BYTE            ( 0xFFFF )
@@ -62,6 +63,7 @@ typedef uint8_t EEPM_block_config_type; enum
     EEPM_BLOCK_CONFIG_QRCODE_DUMMY,
     EEPM_BLOCK_CONFIG_TRIP_TIME,
     EEPM_BLOCK_CONFIG_OPERATION_MODE,
+    EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION,
 
     EEPM_BLOCK_CONFIG_CNT
     };
@@ -263,6 +265,18 @@ BaseType_t EEPM_get_operation_mode
     (
     void (*callback_ptr)(bool, void*)
     );
+
+BaseType_t EEPM_set_supported_function
+    (
+    uint8_t *sup_func,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_supported_function
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
 #ifdef __cplusplus
 }
 #endif
