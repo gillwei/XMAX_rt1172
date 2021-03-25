@@ -54,6 +54,8 @@ Supported function list instances
 ------------------------------------------------------*/
 mid_msg_supp_func_t supp_func_list      = { 0 };
 boolean             supp_func_list_syc  = FALSE;
+boolean             comm_err            = FALSE;
+
 
 /*------------------------------------------------------
 Message list pointer
@@ -431,7 +433,8 @@ else
     Set the function list
     ------------------------------------------------------*/
     if( ( l_can_id == RX2_RES_SUPPORT_CAN0_ID ) &&
-        ( supp_func_list_syc == FALSE ) )
+        ( supp_func_list_syc == FALSE ) &&
+        ( comm_err == FALSE ) )
         {
         supp_func_list_syc = TRUE;
         memcpy( &supp_func_list, &( mid_msg_p->data[MID_MSG_TCFS_IDX] ), sizeof( supp_func_list ) );
@@ -618,6 +621,7 @@ while( l_node_p->next != NULL )
                     Notify the communication error
                     ------------------------------------------------------*/
                     PRINTF( "Comm error %x!\r\n", l_node_req_p->id );
+                    comm_err = TRUE;
                     }
                 else
                     {
@@ -666,6 +670,7 @@ while( l_node_p->next != NULL )
                     Notify the communication error
                     ------------------------------------------------------*/
                     PRINTF( "Comm error %x!\r\n", l_node_req_p->id );
+                    comm_err = TRUE;
                     }
                 }
             break;
