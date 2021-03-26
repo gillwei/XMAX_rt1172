@@ -401,17 +401,20 @@ if( l_resp_type == MID_MSG_NRES_NACK )
         {
         /*------------------------------------------------------
         Handle the response message
+        If linkcard cannot receive positive response even though
+        linkcard transmits the request 3 times, linkcard shall
+        stop transmiting the request.
         ------------------------------------------------------*/
-        *l_node_wait_p   = 0;
-        *l_node_time_p   = 0;
-        *l_node_status_p = MID_MSG_STAT_WAIT_RES_SHORT;
-         l_svc_id        = l_neg_resp_svc_id;
+        if( ( *l_node_time_p ) < MID_MSG_RE_SEND_TIME_SHORT )
+            {
+             l_svc_id        = l_neg_resp_svc_id;
+            }
 
 #if( DEBUG_RX_CAN_SUPPORT )
         PRINTF("Not supp %x %x!\r\n", l_can_id, l_svc_id );
 #endif
 
-        //TBD nodity upper layer to handle no supported service ID
+        //TBD notity upper layer to handle no supported service ID
         }
     }
 else
