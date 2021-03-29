@@ -36,6 +36,7 @@ typedef enum
     TEST_NAVI_DAYNIGHT,
     TEST_NAVI_EVENT,
     TEST_NAVI_ROUTE_GUIDANCE_STATUS,
+    TEST_NAVI_DIALOG,
     TEST_NAVI_TBT_LIST,
     TEST_NAVI_TBT_ACTIVE_TBT,
     TEST_NAVI_TOTAL_ITEM
@@ -67,6 +68,8 @@ typedef enum
     static int active_tbt_item = 1;
     static navi_tbt_data_type tbt_list[MAX_TBT_LIST_SIZE];
     static int num_of_tbt_list_item = 0;
+    static navi_dialog_type navi_dialog_obj;
+    static uint8_t dialog_message[MAX_DIALOG_DESCRIPTION_SIZE] = "The toll on this route cannot be avoided.";
 #endif
 
 /*--------------------------------------------------------------------
@@ -234,8 +237,8 @@ typedef enum
         (
         uint8_t* str,
         uint8_t str_size,
-        navi_event_type navi_event_type,
-        navi_event_camera_type navi_camera_type,
+        navilite_navievent_type navi_event_type,
+        navilite_navievent_camera_extra_subtype navi_camera_type,
         uint8_t visibility
         )
     {
@@ -289,6 +292,93 @@ typedef enum
         {
         PRINTF( "Unexpected length of navi event message: %d\r\n", str_size );
         }
+    }
+
+    /*********************************************************************
+    *
+    * @private
+    * test_navi_dialog
+    *
+    * Test navi dialog
+    *
+    *********************************************************************/
+    static void test_navi_dialog
+        (
+        uint8_t dialog_id,
+        navilite_dialog_type dialog_type,
+        uint8_t* message,
+        uint8_t message_size
+        )
+    {
+    PRINTF( "%s\r\n", __FUNCTION__ );
+
+    navi_dialog_obj.dialog_id = dialog_id;
+    navi_dialog_obj.dialog_type = dialog_type;
+    if( MAX_DIALOG_DESCRIPTION_SIZE > message_size )
+        {
+        strncpy( navi_dialog_obj.dialog_message, ( char* )message, MAX_DIALOG_DESCRIPTION_SIZE );
+        EW_notify_dialog_event_update();
+        }
+    else
+        {
+        PRINTF( "Unexpected length of dialog message: %d\r\n", message_size );
+        }
+    }
+
+    /*********************************************************************
+    *
+    * @public
+    * TEST_navi_get_dialog_type
+    *
+    * Obtain navi dialog type.
+    *
+    *********************************************************************/
+    EnumNaviDialogType TEST_navi_get_dialog_type
+        (
+        void
+        )
+    {
+    PRINTF( "%s\r\n", __FUNCTION__ );
+    EnumNaviDialogType navi_dialog_type;
+    switch( navi_dialog_obj.dialog_type )
+        {
+        case NAVILITE_DIALOGTYPE_OK:
+            navi_dialog_type = EnumNaviDialogTypeDIALOG_OK;
+            break;
+        case NAVILITE_DIALOGTYPE_OK_CANCEL:
+            navi_dialog_type = EnumNaviDialogTypeDIALOG_OK_CANCEL;
+            break;
+        case NAVILITE_DIALOGTYPE_YES_NO:
+            navi_dialog_type = EnumNaviDialogTypeDIALOG_YES_NO;
+            break;
+        case NAVILITE_DIALOGTYPE_YES_NO_CANCEL:
+            navi_dialog_type = EnumNaviDialogTypeDIALOG_YES_NO_CANCEL;
+            break;
+        case NAVILITE_DIALOGTYPE_DISMISS_DIALOG:
+            navi_dialog_type = EnumNaviDialogTypeDIALOG_DISMISS;
+            break;
+        default:
+            PRINTF( "%s: Unknown dialog type\r\n", __FUNCTION__ );
+            break;
+        }
+    return navi_dialog_type;
+    }
+
+    /*********************************************************************
+    *
+    * @public
+    * TEST_navi_get_dialog_message
+    *
+    * Obtain the content of dialog
+    *
+    *********************************************************************/
+    void TEST_navi_get_dialog_message
+        (
+        char** message
+        )
+    {
+    PRINTF( "%s\r\n", __FUNCTION__ );
+    *message = navi_dialog_obj.dialog_message;
     }
 
     /*********************************************************************
@@ -416,7 +506,7 @@ typedef enum
                     {
                     is_navi_event_sent = true;
                     is_route_guidance_started = true;
-                    test_navi_event( navi_event_message, strlen( ( char* ) navi_event_message ), NAVIEVENT_TYPE_CAMERA, NAVI_CAM_TYPE_USER, 1 );
+                    test_navi_event( navi_event_message, strlen( ( char* ) navi_event_message ), NAVILITE_NAVIEVENT_TYPE_CAMERA, NAVILITE_CAM_TYPE_USER, 1 );
                     }
                 }
                 break;
@@ -424,6 +514,11 @@ typedef enum
                 {
                 test_navi_navigating_status( is_route_guidance_started );
                 is_route_guidance_started = !is_route_guidance_started;
+                }
+                break;
+            case TEST_NAVI_DIALOG:
+                {
+                test_navi_dialog( 0, NAVILITE_DIALOGTYPE_OK, dialog_message, strlen( ( char* ) dialog_message ) );
                 }
                 break;
             case TEST_NAVI_TBT_LIST:

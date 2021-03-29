@@ -31,7 +31,6 @@
 #include "factory_test.h"
 #include "VI_pub.h"
 #include "NAVILITE_pub.h"
-#include "NAVI_pub.h"
 #include "JPEG_pub.h"
 #include "TEST_pub.h"
 #include "HCI_pub.h"
@@ -131,7 +130,6 @@ BTM_init();
 BC_init();
 VI_init();
 JPEG_init();
-NAVI_init();
 MM_init();
 QR_init();
 WEA_init();

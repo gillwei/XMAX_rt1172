@@ -98,6 +98,8 @@ static const XStringRes _Const000E = { _StringsDefault0, 0x0122 };
 #include "BC_ams_pub.h"
 #include "NTF_pub.h"
 #include "TEST_pub.h"
+#include "NAVI_pub.h"
+#include "Enum.h"
 
 /* Initializer for the class 'DeviceInterface::SystemDeviceClass' */
 void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _this, XObject aLink, XHandle aArg )
@@ -945,12 +947,19 @@ void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Init( &_this->NavigatingStatusUpdateEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->TbtListUpdateEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->ActiveTbtItemUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->RouteCalProgressUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->ZoomLevelUpdateEventHandler, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->DialogEventUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->ViaPointUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->HomeSettingUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->OfficeSettingUpdateEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceNavigationDeviceClass );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->CurrentHome = EnumHomeTypeNAVI_DEFAULT_VIEW;
+  _this->IsZoomLevelButtonEnabled = 1;
 }
 
 /* Re-Initializer for the class 'DeviceInterface::NavigationDeviceClass' */
@@ -969,6 +978,12 @@ void DeviceInterfaceNavigationDeviceClass__ReInit( DeviceInterfaceNavigationDevi
   CoreSystemEvent__ReInit( &_this->NavigatingStatusUpdateEvent );
   CoreSystemEvent__ReInit( &_this->TbtListUpdateEvent );
   CoreSystemEvent__ReInit( &_this->ActiveTbtItemUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->RouteCalProgressUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->ZoomLevelUpdateEventHandler );
+  CoreSystemEvent__ReInit( &_this->DialogEventUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->ViaPointUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->HomeSettingUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->OfficeSettingUpdateEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NavigationDeviceClass' */
@@ -987,6 +1002,12 @@ void DeviceInterfaceNavigationDeviceClass__Done( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Done( &_this->NavigatingStatusUpdateEvent );
   CoreSystemEvent__Done( &_this->TbtListUpdateEvent );
   CoreSystemEvent__Done( &_this->ActiveTbtItemUpdateEvent );
+  CoreSystemEvent__Done( &_this->RouteCalProgressUpdateEvent );
+  CoreSystemEvent__Done( &_this->ZoomLevelUpdateEventHandler );
+  CoreSystemEvent__Done( &_this->DialogEventUpdateEvent );
+  CoreSystemEvent__Done( &_this->ViaPointUpdateEvent );
+  CoreSystemEvent__Done( &_this->HomeSettingUpdateEvent );
+  CoreSystemEvent__Done( &_this->OfficeSettingUpdateEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -1095,49 +1116,53 @@ DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( D
 
   NaviData = EwNewObject( DeviceInterfaceNaviDataClass, 0 );
   NaviDataType = aDataType;
-
-  if ( !!NaviDataType )
-    ;
-
   {
-    #if( UNIT_TEST_NAVI )
-      navi_data_type* navi_obj = NULL;
+    navi_data_type* navi_obj = NULL;
+    #if( !UNIT_TEST_NAVI )
+      navi_obj = NAVI_get_navi_obj();
+    #else
       navi_obj = TEST_get_navi_obj();
-      switch( NaviDataType )
-      {
-        case 0:
-          {
-            NaviData->CurrentRoad = EwNewStringUtf8( ( const unsigned char* )navi_obj->current_road, ( int )strlen( navi_obj->current_road ) );
-          }
-          break;
-        case 1:
-          {
-            NaviData->ETA = navi_obj->eta;
-          }
-          break;
-        case 2:
-          {
-            NaviData->SpeedLimit = navi_obj->speed_limit;
-          }
-          break;
-        case 3:
-          {
-            NaviData->DayNightMode = navi_obj->daynight;
-          }
-          break;
-        case 4:
-          {
-            NaviData->NaviEventType = navi_obj->navi_event.event_type;
-            NaviData->NaviCameraType = navi_obj->navi_event.camera_type;
-            NaviData->NaviEventDist = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.dist, ( int )strlen( navi_obj->navi_event.dist ) );
-            NaviData->NaviEventSpeed = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.speed, ( int )strlen( navi_obj->navi_event.speed ) );
-            NaviData->NaviEventVisibility = navi_obj->navi_event.visibility;
-          }
-          break;
-        default:
-          break;
-      }
     #endif
+
+    switch( NaviDataType )
+    {
+      case EnumNaviDataTypeCURRENT_ROAD:
+        NaviData->CurrentRoad = EwNewStringUtf8( ( const unsigned char* )navi_obj->current_road, ( int )strlen( navi_obj->current_road ) );
+        break;
+      case EnumNaviDataTypeETA:
+        NaviData->ETA = navi_obj->eta;
+        break;
+      case EnumNaviDataTypeSPEED_LIMIT:
+        NaviData->SpeedLimit = navi_obj->speed_limit;
+        break;
+      case EnumNaviDataTypeDAYNIGHT:
+        NaviData->DayNightMode = navi_obj->daynight;
+        break;
+      case EnumNaviDataTypeNAVI_EVENT:
+        {
+          navi_event_stat navi_event_obj;
+          bool is_event_retrieved = NAVI_get_event( &navi_event_obj );
+          if( is_event_retrieved )
+          {
+            NaviData->NaviEventType = navi_event_obj.event_type;
+            NaviData->NaviCameraType = navi_event_obj.camera_type;
+            NaviData->NaviEventDist = EwNewStringUtf8( ( const unsigned char* )navi_event_obj.dist, ( int )strlen( navi_event_obj.dist ) );
+            NaviData->NaviEventSpeed = EwNewStringUtf8( ( const unsigned char* )navi_event_obj.speed, ( int )strlen( navi_event_obj.speed ) );
+            NaviData->NaviEventVisibility = navi_event_obj.visibility;
+          }
+          else
+          {
+            NAVI_reset_event_buffer();
+            NaviData = NULL;
+          }
+        }
+        break;
+      case EnumNaviDataTypeNAVI_ROUTE_CAL_PROGRESS:
+        NaviData->RouteCalProgress = navi_obj->route_cal_progress; 
+        break;
+      default:
+        break;
+    }
   }
   return NaviData;
 }
@@ -1228,6 +1253,242 @@ DeviceInterfaceNaviTbtDataClass DeviceInterfaceNavigationDeviceClass_GetNaviTbtD
     #endif
   }
   return NaviTbtData;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StopMapFrameRequest()' */
+void DeviceInterfaceNavigationDeviceClass_StopMapFrameRequest( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_stop_map_update();
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyRouteCalProgressUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->RouteCalProgressUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyRouteCalProgressUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyRouteCalProgressUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyRouteCalProgressUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyZoomLevelUpdate( DeviceInterfaceNavigationDeviceClass _this, 
+  XBool aNewZoomLevelButtonStatus )
+{
+  _this->IsZoomLevelButtonEnabled = aNewZoomLevelButtonStatus;
+  CoreSystemEvent_Trigger( &_this->ZoomLevelUpdateEventHandler, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyZoomLevelUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate( void* _this, XBool 
+  aNewZoomLevelButtonStatus )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyZoomLevelUpdate((DeviceInterfaceNavigationDeviceClass)_this
+  , aNewZoomLevelButtonStatus );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyDialogEventUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->DialogEventUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyDialogEventUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyDialogEventUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyDialogEventUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviDialogType()' */
+XEnum DeviceInterfaceNavigationDeviceClass_GetNaviDialogType( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XEnum NaviDialog;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NaviDialog = EnumNaviDialogTypeDIALOG_OK;
+  {
+    #if( !UNIT_TEST_NAVI )
+      NaviDialog = NAVI_get_dialog_type();
+    #else
+      NaviDialog = TEST_navi_get_dialog_type();
+    #endif
+  }
+  return NaviDialog;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviDialogMessage()' */
+XString DeviceInterfaceNavigationDeviceClass_GetNaviDialogMessage( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XString NaviDialogMessage;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NaviDialogMessage = 0;
+  {
+    char* dialog_message;
+     #if( !UNIT_TEST_NAVI )
+      NAVI_get_dialog_message( &dialog_message );
+    #else
+      TEST_navi_get_dialog_message( &dialog_message );
+    #endif
+    NaviDialogMessage  = EwNewStringUtf8( ( const unsigned char* )dialog_message, ( int )strlen( dialog_message ) );
+  }
+  return NaviDialogMessage;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.SendSelectedDialog()' */
+void DeviceInterfaceNavigationDeviceClass_SendSelectedDialog( DeviceInterfaceNavigationDeviceClass _this, 
+  XEnum aNewButtonType )
+{
+  XEnum ButtonType;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ButtonType = aNewButtonType;
+  NAVI_send_selected_dialog( ButtonType );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyViaPointUpdate( DeviceInterfaceNavigationDeviceClass _this, 
+  XInt32 aNewViaPointNum )
+{
+  _this->ViaPointNum = aNewViaPointNum;
+  CoreSystemEvent_Trigger( &_this->ViaPointUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyViaPointUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate( void* _this, XInt32 
+  aNewViaPointNum )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyViaPointUpdate((DeviceInterfaceNavigationDeviceClass)_this
+  , aNewViaPointNum );
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviConnectStatus()' */
+XBool DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XBool IsNaviAppConnected;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsNaviAppConnected = 0;
+  IsNaviAppConnected = NAVI_get_connect_status();
+  return IsNaviAppConnected;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviAppInitSettingStatus()' */
+XBool DeviceInterfaceNavigationDeviceClass_GetNaviAppInitSettingStatus( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XBool IsNaviAppInitSettingCompleted;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsNaviAppInitSettingCompleted = 0;
+  IsNaviAppInitSettingCompleted = NAVI_get_navi_app_setup_status();
+  return IsNaviAppInitSettingCompleted;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StopRoute()' */
+void DeviceInterfaceNavigationDeviceClass_StopRoute( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_send_stop_route_request();
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.SkipNextWaypoint()' */
+void DeviceInterfaceNavigationDeviceClass_SkipNextWaypoint( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_send_skip_next_waypoint_request();
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GoHome()' */
+void DeviceInterfaceNavigationDeviceClass_GoHome( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_send_go_home_request();
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GoOffice()' */
+void DeviceInterfaceNavigationDeviceClass_GoOffice( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_send_go_office_request();
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyHomeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this, 
+  XBool aNewHomeSettingStatus )
+{
+  _this->IsHomeSet = aNewHomeSettingStatus;
+  CoreSystemEvent_Trigger( &_this->HomeSettingUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyHomeSettingUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate( void* _this, 
+  XBool aNewHomeSettingStatus )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyHomeSettingUpdate((DeviceInterfaceNavigationDeviceClass)_this
+  , aNewHomeSettingStatus );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyOfficeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this, 
+  XBool aNewOfficeSettingStatus )
+{
+  _this->IsOfficeSet = aNewOfficeSettingStatus;
+  CoreSystemEvent_Trigger( &_this->OfficeSettingUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyOfficeSettingUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate( void* _this, 
+  XBool aNewOfficeSettingStatus )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyOfficeSettingUpdate((DeviceInterfaceNavigationDeviceClass)_this
+  , aNewOfficeSettingStatus );
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ZoomInRequest()' */
+void DeviceInterfaceNavigationDeviceClass_ZoomInRequest( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_send_zoom_in_request();
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ZoomOutRequest()' */
+void DeviceInterfaceNavigationDeviceClass_ZoomOutRequest( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_send_zoom_out_request();
 }
 
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */

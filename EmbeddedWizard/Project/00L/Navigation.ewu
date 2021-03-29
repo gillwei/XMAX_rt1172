@@ -4,7 +4,7 @@ $rect <20,20,260,60>
 $output false
 class NAV01_DefaultView : Home::BaseHome
 {
-  $rect <520,600,720,640>
+  $rect <520,670,720,710>
   inherited method Init()
   {
     if( DeviceInterface::NavigationDevice.IsMapFrameReady() )
@@ -15,44 +15,61 @@ class NAV01_DefaultView : Home::BaseHome
       }
       postsignal OnMapUpdateSlot;
     }
-    signal OnNavigatingStatusUpdateSlot;
+    SetItemBounds();
+    signal OnCurRdUpdateSlot;
+    signal OnETAUpdateSlot;
     signal OnDayNightModeUpdateSlot;
     signal OnSpeedLimitUpdateSlot;
     signal OnNaviIncidentUpdateSlot;
   }
 
-  $rect <950,600,1180,640>
+  $rect <950,670,1180,710>
   inherited method OnShortDownKeyActivated()
   {
-    // TODO: Send zoom out request, remove the condition below when navilite protocol is ready to be integrated.
-    if( ZoomOutButton.Visible )
+    if( ZoomOutButton.Visible && DeviceInterface::NavigationDevice.IsZoomLevelButtonEnabled )
     {
+      DeviceInterface::NavigationDevice.IsZoomLevelButtonEnabled = false;
       ZoomButtonStatus = 1;
       StartHighlight();
+      DeviceInterface::NavigationDevice.ZoomOutRequest();
     }
   }
 
-  $rect <720,600,950,640>
+  $rect <720,670,950,710>
   inherited method OnShortUpKeyActivated()
   {
-    // TODO: Send zoom in request, remove the condition below when navilite protocol is ready to be integrated.
-    if( ZoomInButton.Visible )
+    if( ZoomInButton.Visible && DeviceInterface::NavigationDevice.IsZoomLevelButtonEnabled )
     {
+      DeviceInterface::NavigationDevice.IsZoomLevelButtonEnabled = false;
       ZoomButtonStatus = 0;
       StartHighlight();
+      DeviceInterface::NavigationDevice.ZoomInRequest();
     }
   }
 
-  $rect <720,640,940,680>
+  $rect <720,710,940,750>
   inherited method OnLongEnterKeyActivated()
   {
     if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
-      PresentDialog( new Navigation::NAV06_NaviSettingMenu, null, null, null, null, null, null, null, null, false );
+      if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
+      {
+        PresentDialog( new Pop::POP09_POP14_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
+      }
+      else if( !DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+      {
+        PresentDialog( new Pop::POP17_AppInitSettingError, null, null, null, null, null, null, null, null, false );
+      }
+      else
+      {
+        // Leave navigation home screen so that stop map frame request.
+        DeviceInterface::NavigationDevice.StopMapFrameRequest();
+        PresentDialog( new Navigation::NAV06_NaviSettingMenu, null, null, null, null, null, null, null, null, false );
+      }
     }
   }
 
-  $rect <780,60,980,100>
+  $rect <730,50,930,90>
   inherited var HomeType = Enum::HomeType.NAVI_DEFAULT_VIEW;
 
   $rect <20,20,160,60>
@@ -62,7 +79,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Color = #000000FF;
   }
 
-  $rect <560,60,760,100>
+  $rect <520,50,720,90>
   var int32 MapFrameIdx = 0;
 
   $rect <520,190,750,230>
@@ -235,7 +252,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <720,690,920,730>
+  $rect <720,760,920,800>
   method void StartHighlight()
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.DAYNIGHT );
@@ -264,7 +281,7 @@ class NAV01_DefaultView : Home::BaseHome
     HighlightTimer.Enabled = true;
   }
 
-  $rect <520,690,710,730>
+  $rect <520,760,710,800>
   object Core::Timer HighlightTimer
   {
     preset OnTrigger = OnHighlightEndSlot;
@@ -272,7 +289,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Enabled = false;
   }
 
-  $rect <930,690,1130,730>
+  $rect <930,760,1130,800>
   slot OnHighlightEndSlot
   {
     HighlightTimer.Enabled = false;
@@ -301,7 +318,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <1000,60,1200,100>
+  $rect <940,50,1140,90>
   var int32 ZoomButtonStatus;
 
   $rect <520,350,730,390>
@@ -355,15 +372,20 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <750,390,990,430>
   slot OnNaviIncidentUpdateSlot
   {
-    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.NAVI_EVENT );
-
-    if( NaviData.NaviEventVisibility )
+    if( !IsEventDisplaying )
     {
-      var Enum::NaviAlertType NaviEvent = ( Enum::NaviAlertType )NaviData.NaviEventType;
-      var Enum::NaviCameraType NaviCamera = ( Enum::NaviCameraType )NaviData.NaviCameraType;
-
-      NaviEventObject.SetAlert( NaviEvent, NaviCamera, NaviData.NaviEventSpeed, NaviData.NaviEventDist );
-      NaviEventEnLargeEffect.Enabled = true;
+      IsEventDisplaying = true;
+      // If event is not displaying and receive event update, get event.
+      var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.NAVI_EVENT );
+      if( null != NaviData && NaviData.NaviEventVisibility )
+      {
+        NaviEventObject.SetAlert( NaviData.NaviEventType, NaviData.NaviCameraType, NaviData.NaviEventSpeed, NaviData.NaviEventDist );
+        NaviEventEnLargeEffect.Enabled = true;
+      }
+      else
+      {
+        IsEventDisplaying = false;
+      }
     }
   }
 
@@ -391,6 +413,13 @@ class NAV01_DefaultView : Home::BaseHome
   {
     preset Bounds = <480,226,480,272>;
     preset DismissAlertSignal = DismissAlert;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Wallpaper StatusBarShadowImage
+  {
+    preset Bounds = <0,38,480,49>;
+    preset Bitmap = Resource::StatusBarShadow;
   }
 
   $rect <1050,230,1250,270>
@@ -436,6 +465,8 @@ class NAV01_DefaultView : Home::BaseHome
     NaviEventDismissEffect.Enabled = false;
     // Reset Alert message bounds for next alert.
     NaviEventObject.AlertMessage.Bounds = Navigation::ALERT_MESSAGE_BOUNDS;
+    IsEventDisplaying = false;
+    signal OnNaviIncidentUpdateSlot;
   }
 
   $rect <1050,190,1250,230>
@@ -493,19 +524,32 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <750,430,990,470>
   slot OnNavigatingStatusUpdateSlot
   {
+    // Handle the route calculation failed case, normal stop navigation won't enter the if condition.
+    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.NAVI_ROUTE_CAL_PROGRESS );
+    if( !DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() &&
+        NaviData.RouteCalProgress > 0 )
+    {
+      var Navigation::NaviDialog Dialog = new Navigation::NaviDialog;
+      Dialog.DialogType = Enum::NaviDialogType.DIALOG_OK;
+      Dialog.DialogButton = Menu::PushButton;
+      Dialog.DialogMessage = Strings::NAV01_NO_DESTINATION;
+      Dialog.OnDialogDismiss = OnNaviDialogDismissSlot;
+      PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
+      Mask.Visible = true;
+    }
     SetItemBounds();
     signal OnCurRdUpdateSlot;
     signal OnETAUpdateSlot;
   }
 
-  $rect <520,750,710,790>
+  $rect <520,820,710,860>
   object Core::Timer SpeedLimitFlickeringTimer
   {
     preset OnTrigger = OnSpeedLimitFlickeringSlot;
     preset Period = 300;
   }
 
-  $rect <720,750,920,790>
+  $rect <720,820,920,860>
   slot OnSpeedLimitFlickeringSlot
   {
     SpeedLimitIcon.Visible = !SpeedLimitIcon.Visible;
@@ -521,7 +565,7 @@ class NAV01_DefaultView : Home::BaseHome
   // System Event
   note group Note7
   {
-    attr Bounds = <500,150,1020,530>;
+    attr Bounds = <500,150,1020,580>;
   }
 
   // Rider Alert Animation
@@ -533,7 +577,7 @@ class NAV01_DefaultView : Home::BaseHome
   // Method
   note group Note9
   {
-    attr Bounds = <500,550,1380,820>;
+    attr Bounds = <500,620,1380,890>;
   }
 
   $rect <520,480,720,520>
@@ -556,7 +600,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <930,750,1130,790>
+  $rect <1140,820,1340,860>
   method void SetItemBounds()
   {
     if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
@@ -576,12 +620,110 @@ class NAV01_DefaultView : Home::BaseHome
       CurrentRoadWithOutGuide.Visible = true;
     }
   }
+
+  $rect <1150,50,1350,90>
+  var bool IsEventDisplaying = false;
+
+  $rect <520,530,720,570>
+  object Core::SystemEventHandler NaviDialogEventHandler
+  {
+    preset OnEvent = OnNaviDialogEventUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.DialogEventUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <750,530,950,570>
+  slot OnNaviDialogEventUpdateSlot
+  {
+    var Enum::NaviDialogType NaviDialog = DeviceInterface::NavigationDevice.GetNaviDialogType();
+    var string NaviDialogMessage = DeviceInterface::NavigationDevice.GetNaviDialogMessage();
+    switch( NaviDialog )
+    {
+      case Enum::NaviDialogType.DIALOG_YES_NO:
+      {
+        var Navigation::NaviDialog Dialog = new Navigation::NaviDialog;
+        Dialog.DialogType = Enum::NaviDialogType.DIALOG_YES_NO;
+        Dialog.DialogButton = Menu::UpDownPushButtonSet;
+        Dialog.DialogMessage = NaviDialogMessage;
+        Dialog.OnDialogDismiss = OnNaviDialogDismissSlot;
+        PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
+        Dialog.CountDownTimer.Enabled = true;
+        Mask.Visible = true;
+      }
+      case Enum::NaviDialogType.DIALOG_OK:
+      {
+        var Navigation::NaviDialog Dialog = new Navigation::NaviDialog;
+        Dialog.DialogType = Enum::NaviDialogType.DIALOG_OK;
+        Dialog.DialogButton = Menu::PushButton;
+        Dialog.DialogMessage = NaviDialogMessage;
+        Dialog.OnDialogDismiss = OnNaviDialogDismissSlot;
+        PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
+        Mask.Visible = true;
+      }
+      default:;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Mask
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #00000080;
+    preset Visible = false;
+  }
+
+  $rect <930,820,1130,860>
+  slot OnNaviDialogDismissSlot
+  {
+    Mask.Visible = false;
+
+  }
 }
 
 $rect <20,80,260,120>
 $output false
 class NAV06_NaviSettingMenu : Menu::BaseMenuView
 {
+  $rect <10,360,210,400>
+  inherited method Init()
+  {
+    var int32 i;
+    var int32 NoOfItems = 0;
+    var Enum::NaviSettingItem NaviSettingItem;
+
+    for( i = 0; i < (int32)Enum::NaviSettingItem.TOTAL; i++ )
+    {
+      NaviSettingItem = (Enum::NaviSettingItem)i;
+      switch( NaviSettingItem )
+      {
+        case Enum::NaviSettingItem.StopNavigation:
+        {
+          if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+          {
+            NaviSettings[NoOfItems] = NaviSettingItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::NaviSettingItem.SkipNextStop:
+        {
+          if( DeviceInterface::NavigationDevice.ViaPointNum > 0 )
+          {
+            NaviSettings[NoOfItems] = NaviSettingItem;
+            NoOfItems++;
+          }
+        }
+        default:
+        {
+          NaviSettings[NoOfItems] = NaviSettingItem;
+          NoOfItems++;
+        }
+      }
+    }
+
+    Menu.NoOfItems = NoOfItems;
+  }
+
   $rect <0,300,200,340>
   inherited property Bounds = <0,0,480,272>;
 
@@ -623,19 +765,31 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
   $rect <520,230,720,270>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
-
+    aMenuItem;
     var Menu::BaseMenuView MenuDialog = null;
 
     switch( NaviSettings[aItemNo] )
     {
-      case Enum::NaviSettingItem.StopNavigation:;
-      case Enum::NaviSettingItem.SkipNextStop:;
-      case Enum::NaviSettingItem.GoHome:;
-      case Enum::NaviSettingItem.GoToWork:;
+      case Enum::NaviSettingItem.StopNavigation:
+      {
+        SelectedItem = Enum::NaviSettingItem.StopNavigation;
+        DeviceInterface::NavigationDevice.StopRoute();
+      }
+      case Enum::NaviSettingItem.SkipNextStop:
+      {
+        SelectedItem = Enum::NaviSettingItem.SkipNextStop;
+        DeviceInterface::NavigationDevice.SkipNextWaypoint();
+      }
+      case Enum::NaviSettingItem.GoHome:
+      {
+        SelectedItem = Enum::NaviSettingItem.GoHome;
+        DeviceInterface::NavigationDevice.GoHome();
+      }
+      case Enum::NaviSettingItem.GoToWork:
+      {
+        SelectedItem = Enum::NaviSettingItem.GoToWork;
+        DeviceInterface::NavigationDevice.GoOffice();
+      }
       case Enum::NaviSettingItem.Favorites:;
       case Enum::NaviSettingItem.NearbyGasStations:;
       case Enum::NaviSettingItem.ChangeView: MenuDialog = new Navigation::NAV08_NaviChageViewMenu;
@@ -654,34 +808,15 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
     var bool ItemEnabled = true;
     switch( NaviSettings[aItemNo] )
     {
-      case Enum::NaviSettingItem.StopNavigation:
-      {
-        if( !IsDestSet )
-        {
-          ItemEnabled = false;
-        }
-      }
-      case Enum::NaviSettingItem.SkipNextStop:
-      {
-        if( !IsDestSet )
-        {
-          ItemEnabled = false;
-        }
-        else
-        {
-          if( !IsWayPointSet )
-          {
-            ItemEnabled = false;
-          }
-        }
-      }
+      case Enum::NaviSettingItem.StopNavigation:;
+      case Enum::NaviSettingItem.SkipNextStop:;
       case Enum::NaviSettingItem.GoHome:;
       case Enum::NaviSettingItem.GoToWork:;
       case Enum::NaviSettingItem.Favorites:;
       case Enum::NaviSettingItem.NearbyGasStations:;
       case Enum::NaviSettingItem.ChangeView:
       {
-        if( !IsDestSet )
+        if( !DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
         {
           ItemEnabled = false;
         }
@@ -710,22 +845,162 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
     Default[6] = Enum::NaviSettingItem.ChangeView;
   );
 
-  $rect <770,310,970,350>
-  var bool IsDestSet = true;
-
-  // TODO:
-  // 1. Integrate with navi protocol.
-  // 2. Replace IsDestSet and IsWayPointSet with variables defined in navigation \
-  // device interface after integrating with navi protocol.
-  // 3. Send corresponding request when short pressing enter each option after integrating \
-  // with navi protocol.
-  note group Note5
+  $rect <730,130,930,170>
+  object Core::SystemEventHandler HomeSettingUpdateSystemEventHandler
   {
-    attr Bounds = <750,140,1310,420>;
+    preset OnEvent = OnHomeSettingUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.HomeSettingUpdateEvent;
   }
 
-  $rect <770,360,970,400>
-  var bool IsWayPointSet = false;
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <930,130,1130,170>
+  slot OnHomeSettingUpdateSlot
+  {
+    if( DeviceInterface::NavigationDevice.IsHomeSet &&
+        SelectedItem == Enum::NaviSettingItem.GoHome )
+    {
+      SelectedItem = Enum::NaviSettingItem.TOTAL;
+      var Application::Application App = ( Application::Application )GetRoot();
+      if( null != App )
+      {
+        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+        App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+      }
+    }
+    else
+    {
+      var Pop::POP03_HomeOfficeSettingError HomeSettingError = new Pop::POP03_HomeOfficeSettingError;
+      HomeSettingError.ErrorMessage = Strings::POP03_NO_HOME_LOCATION;
+      PresentDialog( HomeSettingError, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
+  $rect <740,190,940,230>
+  object Core::SystemEventHandler OfficeSettingUpdateEventHandler
+  {
+    preset OnEvent = OnOfficeSettingUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.OfficeSettingUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <940,190,1140,230>
+  slot OnOfficeSettingUpdateSlot
+  {
+    if( DeviceInterface::NavigationDevice.IsOfficeSet &&
+        SelectedItem == Enum::NaviSettingItem.GoToWork )
+    {
+      SelectedItem = Enum::NaviSettingItem.TOTAL;
+      var Application::Application App = ( Application::Application )GetRoot();
+      if( null != App )
+      {
+        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+        App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+      }
+    }
+    else
+    {
+      var Pop::POP03_HomeOfficeSettingError OfficeSettingError = new Pop::POP03_HomeOfficeSettingError;
+      OfficeSettingError.ErrorMessage = Strings::POP03_NO_OFFICE_LOCATION;
+      PresentDialog( OfficeSettingError, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
+  $rect <740,250,950,290>
+  object Core::SystemEventHandler NavigatingStatusUpdateEventHandler
+  {
+    preset OnEvent = OnNavigatingStatusUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.NavigatingStatusUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <970,250,1130,290>
+  slot OnNavigatingStatusUpdateSlot
+  {
+    if( !DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() &&
+        SelectedItem == Enum::NaviSettingItem.StopNavigation )
+    {
+      SelectedItem = Enum::NaviSettingItem.TOTAL;
+      var Application::Application App = ( Application::Application )GetRoot();
+      if( null != App )
+      {
+        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+        App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+      }
+    }
+    else
+    {
+      SetNaviSettingMenuItem();
+      Menu.InvalidateItems( 0, Menu.NoOfItems-1 );
+    }
+  }
+
+  $rect <710,300,910,340>
+  object Core::SystemEventHandler ViaPointUpdateEventHandler
+  {
+    preset OnEvent = OnViaPointUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.ViaPointUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <910,300,1110,340>
+  slot OnViaPointUpdateSlot
+  {
+    if( SelectedItem == Enum::NaviSettingItem.SkipNextStop )
+    {
+      SelectedItem = Enum::NaviSettingItem.TOTAL;
+      var Application::Application App = ( Application::Application )GetRoot();
+      if( null != App )
+      {
+        App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+      }
+    }
+  }
+
+  $rect <10,420,210,460>
+  var Enum::NaviSettingItem SelectedItem = Enum::NaviSettingItem.TOTAL;
+
+  $rect <247,366,447,406>
+  method void SetNaviSettingMenuItem()
+  {
+    var int32 i;
+    var int32 NoOfItems = 0;
+    var Enum::NaviSettingItem NaviSettingItem;
+
+    for( i = 0; i < (int32)Enum::NaviSettingItem.TOTAL; i++ )
+    {
+      NaviSettingItem = (Enum::NaviSettingItem)i;
+      switch( NaviSettingItem )
+      {
+        case Enum::NaviSettingItem.StopNavigation:
+        {
+          if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+          {
+            NaviSettings[NoOfItems] = NaviSettingItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::NaviSettingItem.SkipNextStop:
+        {
+          if( DeviceInterface::NavigationDevice.ViaPointNum > 0 )
+          {
+            NaviSettings[NoOfItems] = NaviSettingItem;
+            NoOfItems++;
+          }
+        }
+        default:
+        {
+          NaviSettings[NoOfItems] = NaviSettingItem;
+          NoOfItems++;
+        }
+      }
+    }
+
+    Menu.NoOfItems = NoOfItems;
+  }
 }
 
 $rect <20,140,260,180>
@@ -1065,12 +1340,12 @@ class NaviAlert : Core::Group
       {
         if( AlertMessage.NaviSpeed.Visible )
         {
-           AlertMessage.NaviSpeed.Visible = false;
+          AlertMessage.NaviSpeed.Visible = false;
         }
 
         if( AlertMessage.NaviSpeedUnit.Visible )
         {
-           AlertMessage.NaviSpeedUnit.Visible = false;
+          AlertMessage.NaviSpeedUnit.Visible = false;
         }
 
         AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamSchoolZone;
@@ -1082,12 +1357,12 @@ class NaviAlert : Core::Group
       {
         if( !AlertMessage.NaviSpeed.Visible )
         {
-           AlertMessage.NaviSpeed.Visible = true;
+          AlertMessage.NaviSpeed.Visible = true;
         }
 
         if( !AlertMessage.NaviSpeedUnit.Visible )
         {
-           AlertMessage.NaviSpeedUnit.Visible = true;
+          AlertMessage.NaviSpeedUnit.Visible = true;
         }
 
         SetCamera( aNaviCameraType );
@@ -1108,7 +1383,7 @@ class NaviAlert : Core::Group
         if( idx > -1 )
         {
           AlertMessage.NaviSpeedUnit.String = SpeedUnitTextArray[i];
-          aNaviEventSpeed = aNaviEventSpeed.remove( idx, SpeedUnitTextArray[i].length );
+          aNaviEventSpeed = aNaviEventSpeed.remove( idx - 1 , SpeedUnitTextArray[i].length + 1 );
           break;
         }
       }
@@ -1121,7 +1396,7 @@ class NaviAlert : Core::Group
       if( idx > -1 )
       {
         DistUnit.String = DistUnitTextArray[i];
-        aNaviEventDist = aNaviEventDist.remove( idx, DistUnitTextArray[i].length );
+        aNaviEventDist = aNaviEventDist.remove( idx - 1 , DistUnitTextArray[i].length + 1 );
         break;
       }
     }
@@ -1584,22 +1859,25 @@ class NAV05_TBTView : Home::BaseHome
   $rect <730,310,960,350>
   slot OnActiveTbtItemUpdateSlot
   {
-    var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( DeviceInterface::NavigationDevice.ActiveTbtItemIdx );
-    ShowNextTurnIcon( NaviTbtData.IconIdx );
-
-    if( !NextTurnDist.Visible )
+    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
     {
-      NextTurnDist.Visible = true;
-    }
+      var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( DeviceInterface::NavigationDevice.ActiveTbtItemIdx );
+      ShowNextTurnIcon( NaviTbtData.IconIdx );
 
-    if( !NextTurnDistUnit.Visible )
-    {
-      NextTurnDistUnit.Visible = true;
-    }
+      if( !NextTurnDist.Visible )
+      {
+        NextTurnDist.Visible = true;
+      }
 
-    NextTurnDistUnit.String = NaviTbtData.DistUnit;
-    NextTurnDist.String = string( NaviTbtData.Distance );
-    NextTurnDescription.String = NaviTbtData.TbtDescription;
+      if( !NextTurnDistUnit.Visible )
+      {
+        NextTurnDistUnit.Visible = true;
+      }
+
+      NextTurnDistUnit.String = NaviTbtData.DistUnit;
+      NextTurnDist.String = string( NaviTbtData.Distance );
+      NextTurnDescription.String = NaviTbtData.TbtDescription;
+    }
   }
 
   $rect <950,530,1150,570>
@@ -1701,7 +1979,56 @@ class NAV05_TBTView : Home::BaseHome
     attr Bounds = <0,350,480,480>;
   }
 
-  $rect <980,210,1190,250>
+  $rect <980,210,1180,250>
+  object Core::SystemEventHandler RouteCalProgressUpdateEventHandler
+  {
+    preset OnEvent = OnRouteCalProgressUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.RouteCalProgressUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <1180,210,1380,250>
+  slot OnRouteCalProgressUpdateSlot
+  {
+    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.NAVI_ROUTE_CAL_PROGRESS );
+    var int32 RouteCalProgress = NaviData.RouteCalProgress;
+    SetRecalculatingStatus( RouteCalProgress );
+  }
+
+  $rect <940,590,1140,630>
+  method void SetRecalculatingStatus( arg int32 aNewRouteCalProgress )
+  {
+    if( aNewRouteCalProgress < 100 )
+    {
+      NextTurnIcon.Visible = false;
+      NextTurnDescription.Visible = false;
+      NextTurnDistUnit.Visible = false;
+      NextTurnDist.Visible = false;
+      SpeedLimitText.Visible = false;
+      SpeedLimitIcon.Visible = false;
+      ETAComponent.ETA = 0;
+      RecalculateMessage.String = "Recalculating " + string( aNewRouteCalProgress ) + " %%...";
+      RecalculateMessage.Visible = true;
+    }
+    else if( aNewRouteCalProgress == 100 )
+    {
+      NextTurnIcon.Visible = true;
+      NextTurnDescription.Visible = true;
+      NextTurnDistUnit.Visible = true;
+      NextTurnDist.Visible = true;
+      SpeedLimitText.Visible = true;
+      SpeedLimitIcon.Visible = true;
+      RecalculateMessage.Visible = false;
+      signal OnETAUpdateSlot;
+    }
+    else
+    {
+      // empty
+    }
+  }
+
+  $rect <990,270,1200,310>
   object Core::SystemEventHandler NavigatingStatusUpdateEventHandler
   {
     preset OnEvent = OnNavigatingStatusUpdateSlot;
@@ -1710,14 +2037,14 @@ class NAV05_TBTView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <1210,210,1370,250>
+  $rect <1220,270,1380,310>
   slot OnNavigatingStatusUpdateSlot
   {
     signal OnCurRdUpdateSlot;
     signal OnETAUpdateSlot;
   }
 
-  $rect <940,590,1140,630>
+  $rect <1160,530,1360,570>
   method void SetCurrentRoadBounds()
   {
     if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
@@ -1985,6 +2312,171 @@ class TbtListMenu : Menu::VerticalMenu
   note group Note5
   {
     attr Bounds = <780,170,1260,370>;
+  }
+}
+
+$rect <240,210,440,250>
+$output false
+class NaviDialog : Core::Group
+{
+  $rect <10,280,210,320>
+  inherited property Bounds = <0,0,340,252>;
+
+  $rect <20,20,160,60>
+  object Views::Frame DialogBackground
+  {
+    preset Bounds = <0,0,340,252>;
+    preset Bitmap = Resource::DialogBackground;
+  }
+
+  $rect <440,10,640,50>
+  property class DialogButton;
+
+  $rect <440,50,640,90>
+  onset DialogButton
+  {
+    if( pure DialogButton != value )
+    {
+      // Remember the property's new value.
+      pure DialogButton = value;
+
+      switch( DialogType )
+      {
+        case Enum::NaviDialogType.DIALOG_YES_NO:
+        {
+          ButtonSet = (Menu::UpDownPushButtonSet)new value;
+          ButtonSet.OnUpButtonActivated = OnOkActivatedSlot;
+          ButtonSet.OnDownButtonActivated = OnNoActivatedSlot;
+
+          ButtonSet.UpButtonTitle = Strings::GEN_YES;
+          ButtonSet.DownButtonTitle = Strings::GEN_NO + " (" + string( CountDownTime ) + ")";
+          ButtonSet.Bounds = <69,154,271,240>;
+          Add( ButtonSet, 0 );
+          DialogContent.Bounds = <15,13,325,144>;
+        }
+        case Enum::NaviDialogType.DIALOG_OK:
+        {
+          var Menu::PushButton Button = (Menu::PushButton)new value;
+          Button.OnActivate = OnOkActivatedSlot;
+          Button.Bounds = <69,200,271,240>;
+          Button.Title = Strings::GEN_OK;
+          Add( Button, 0 );
+          DialogContent.Bounds = <15,13,325,190>;
+        }
+        default:;
+      }
+    }
+  }
+
+  $rect <660,10,860,50>
+  property string DialogMessage;
+
+  $rect <660,50,860,90>
+  onset DialogMessage
+  {
+    // The value doesn't change - nothing to do.
+    if( pure DialogMessage != value )
+    {
+      // Remember the property's new value.
+      pure DialogMessage = value;
+      DialogContent.String = DialogMessage;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DialogContent
+  {
+    preset Bounds = <15,13,325,190>;
+    preset WrapText = true;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <440,130,640,170>
+  property Enum::NaviDialogType DialogType;
+
+  $rect <440,170,640,210>
+  onset DialogType
+  {
+    // The value doesn't change - nothing to do.
+    if( pure DialogType != value )
+    {
+      // Remember the property's new value.
+      pure DialogType = value;
+      /*switch( DialogType )
+      {
+        case Enum::NaviDialogType.DIALOG_YES_NO:;
+        //{
+          //DialogContent.Bounds = <15,13,325,144>;
+          //DialogButton.Bounds = <69,154,271,240>;
+        //}
+        case Enum::NaviDialogType.DIALOG_OK:
+        {
+          DialogContent.Bounds = <15,13,325,190>;
+          DialogButton.Bounds = <69,200,271,240>;
+        }
+        default:;
+      }*/
+    }
+  }
+
+  $rect <350,280,550,320>
+  slot OnOkActivatedSlot
+  {
+    if( DialogType == Enum::NaviDialogType.DIALOG_OK )
+    {
+      DeviceInterface::NavigationDevice.SendSelectedDialog( Enum::NaviButtonType.OK );
+    }
+    else if( DialogType == Enum::NaviDialogType.DIALOG_YES_NO )
+    {
+      DeviceInterface::NavigationDevice.SendSelectedDialog( Enum::NaviButtonType.YES );
+    }
+    else
+    {
+      // empty
+    }
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+    signal OnDialogDismiss;
+  }
+
+  $rect <10,330,210,370>
+  property slot OnDialogDismiss;
+
+  $rect <670,170,860,210>
+  object Core::Timer CountDownTimer
+  {
+    preset OnTrigger = UpdateCountDownTimeSlot;
+  }
+
+  $rect <670,210,870,250>
+  slot UpdateCountDownTimeSlot
+  {
+    if( null != ButtonSet && CountDownTime > 0 )
+    {
+      CountDownTime--;
+      ButtonSet.DownButtonTitle = Strings::GEN_NO + " (" + string( CountDownTime ) + ")";
+      InvalidateViewState();
+    }
+    else
+    {
+      CountDownTimer.Enabled = false;
+      CountDownTime = 10;
+      signal OnNoActivatedSlot;
+    }
+  }
+
+  $rect <10,380,210,420>
+  var Menu::UpDownPushButtonSet ButtonSet;
+
+  $rect <10,430,210,470>
+  var int32 CountDownTime = 10;
+
+  $rect <340,330,550,370>
+  slot OnNoActivatedSlot
+  {
+    DeviceInterface::NavigationDevice.SendSelectedDialog( Enum::NaviButtonType.NO );
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+    signal OnDialogDismiss;
   }
 }
 

@@ -44,10 +44,12 @@
 
 #include "_PopPOP01_PleaseWait.h"
 #include "_PopPOP02_ConnectionError.h"
+#include "_PopPOP03_HomeOfficeSettingError.h"
 #include "_PopPOP04_Reset.h"
 #include "_PopPOP07_TROUBLE_SHOOTING.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
-#include "_PopPOP09_BleConnectionErrorUI.h"
+#include "_PopPOP09_POP14_BleConnectionErrorUI.h"
+#include "_PopPOP17_AppInitSettingError.h"
 
 #ifdef __cplusplus
   }

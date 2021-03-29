@@ -58,7 +58,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
   slot OnConnectionFailedUpdateSlot
   {
     ConnectionFailedTimer.Enabled = false;
-    PresentDialog( new Pop::POP09_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
+    PresentDialog( new Pop::POP09_POP14_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
   }
 
   $rect <530,260,730,300>
@@ -86,7 +86,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
 
 $rect <10,260,210,300>
 $output false
-class POP09_BleConnectionErrorUI : Components::BaseMainBG
+class POP09_POP14_BleConnectionErrorUI : Components::BaseMainBG
 {
   $rect <20,20,160,60>
   object Views::Text ConnectionFailedMessage
@@ -525,5 +525,86 @@ class POP04_Reset : Components::BaseMainBG
     preset Bounds = <0,36,480,38>;
     preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
     preset Bitmap = Resource::StatusBarDivider;
+  }
+}
+
+$rect <10,310,210,350>
+$output false
+class POP17_AppInitSettingError : Components::BaseMainBG
+{
+  $rect <20,20,160,60>
+  object Views::Text AppInitSettingFailedMessage
+  {
+    preset Bounds = <10,50,470,236>;
+    preset WrapText = true;
+    preset String = Strings::POP17_APP_INIT_SETTING_FAILED;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <570,80,760,120>
+  object Core::Timer CountDownTimer
+  {
+    preset OnTrigger = OnLauncherScreenUpdateSlot;
+    preset Period = 2000;
+    preset Enabled = true;
+  }
+
+  $rect <760,80,960,120>
+  slot OnLauncherScreenUpdateSlot
+  {
+    CountDownTimer.Enabled = false;
+    var Application::Application App = (Application::Application)GetRoot();
+    if( null != App )
+    {
+      App.ReturnToLauncher();
+    }
+  }
+}
+
+$rect <280,10,480,50>
+$output false
+class POP03_HomeOfficeSettingError : Components::BaseMainBG
+{
+  $rect <20,20,160,60>
+  object Views::Text HomeOfficeSettingFailedMessage
+  {
+    preset Bounds = <10,50,470,236>;
+    preset WrapText = true;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <570,80,760,120>
+  object Core::Timer CountDownTimer
+  {
+    preset OnTrigger = OnLauncherScreenUpdateSlot;
+    preset Period = 2000;
+    preset Enabled = true;
+  }
+
+  $rect <760,80,960,120>
+  slot OnLauncherScreenUpdateSlot
+  {
+    CountDownTimer.Enabled = false;
+    var Application::Application App = ( Application::Application )GetRoot();
+    if( null != App )
+    {
+      DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+      App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+    }
+  }
+
+  $rect <570,150,770,190>
+  property string ErrorMessage;
+
+  $rect <570,190,770,230>
+  onset ErrorMessage
+  {
+    if( pure ErrorMessage != value )
+    {
+    // Remember the property's new value.
+    pure ErrorMessage = value;
+    HomeOfficeSettingFailedMessage.String = ErrorMessage;
+    }
   }
 }

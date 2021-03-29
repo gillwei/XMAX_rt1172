@@ -87,7 +87,6 @@
 
 #define EW_STRING_LEN               ( 1024 )
 
-#define ESN_STR_MAX_LEN             ( 10 )
 #define UNIT_ID_LEN                 ( 24 )
 
 #define FACTORY_TEST_EVENT_DISP_PATTERN         ( 1 << 0 )
@@ -1293,6 +1292,25 @@ bool ew_is_operation_mode_ready
 {
 PRINTF( "%s %d\r\n", __FUNCTION__, operation_mode );
 return is_op_mode_ready;
+}
+
+/*********************************************************************
+*
+* @public
+* EW_get_esn
+*
+* Get ESN
+*
+* @return ESN
+*
+*********************************************************************/
+uint32_t EW_get_esn
+    (
+    void
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, esn );
+return esn;
 }
 
 /*********************************************************************

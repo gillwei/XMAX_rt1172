@@ -26,6 +26,7 @@
 #include "BTM_pub.h"
 #include "NAVILITE_pub.h"
 #include "navilite_util.h"
+#include "NAVI_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -305,7 +306,11 @@ navilite_setup_queue_buffer();
 BTM_add_connection_info_callback( navilite_bt_connection_info_handler );
 
 // HMI setup
-NAVILITE_hmi_integration_setup();
+#if( UNIT_TEST_NAVILITE )
+    NAVILITE_hmi_integration_setup();
+#else
+    NAVI_init();
+#endif
 
 // Setup HCI data callback
 HCI_spp_iap2_add_data_callback( ( spp_iap2_data_callback )NAVILITE_queue_hci_buffer );

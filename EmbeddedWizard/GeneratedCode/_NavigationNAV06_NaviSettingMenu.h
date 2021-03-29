@@ -114,9 +114,12 @@
 
 /* Deklaration of class : 'Navigation::NAV06_NaviSettingMenu' */
 EW_DEFINE_FIELDS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
+  EW_OBJECT  ( HomeSettingUpdateSystemEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( OfficeSettingUpdateEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( ViaPointUpdateEventHandler, CoreSystemEventHandler )
+  EW_VARIABLE( SelectedItem,    XEnum )
   EW_ARRAY   ( NaviSettings,    XEnum, [7])
-  EW_VARIABLE( IsWayPointSet,   XBool )
-  EW_VARIABLE( IsDestSet,       XBool )
 EW_END_OF_FIELDS( NavigationNAV06_NaviSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV06_NaviSettingMenu' */
@@ -196,6 +199,12 @@ EW_DEFINE_METHODS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( NavigationNAV06_NaviSettingMenu )
 
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void NavigationNAV06_NaviSettingMenu_Init( NavigationNAV06_NaviSettingMenu _this, 
+  XHandle aArg );
+
 /* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.OnShortHomeKeyActivated()' */
 void NavigationNAV06_NaviSettingMenu_OnShortHomeKeyActivated( NavigationNAV06_NaviSettingMenu _this );
 
@@ -214,6 +223,29 @@ void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSetting
 /* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.LoadItemEnabled()' */
 XBool NavigationNAV06_NaviSettingMenu_LoadItemEnabled( NavigationNAV06_NaviSettingMenu _this, 
   XInt32 aItemNo );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV06_NaviSettingMenu_OnHomeSettingUpdateSlot( NavigationNAV06_NaviSettingMenu _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV06_NaviSettingMenu_OnOfficeSettingUpdateSlot( NavigationNAV06_NaviSettingMenu _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV06_NaviSettingMenu_OnNavigatingStatusUpdateSlot( NavigationNAV06_NaviSettingMenu _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV06_NaviSettingMenu_OnViaPointUpdateSlot( NavigationNAV06_NaviSettingMenu _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.SetNaviSettingMenuItem()' */
+void NavigationNAV06_NaviSettingMenu_SetNaviSettingMenuItem( NavigationNAV06_NaviSettingMenu _this );
 
 #ifdef __cplusplus
   }

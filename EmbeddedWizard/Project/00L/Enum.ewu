@@ -204,6 +204,9 @@ enum NaviSettingItem
 
   $rect <10,130,210,170>
   item ChangeView;
+
+  $rect <220,130,420,170>
+  item TOTAL;
 }
 
 $rect <30,470,230,510>
@@ -692,13 +695,16 @@ enum NaviDataType
   $rect <220,70,420,110>
   item NAVI_EVENT;
 
-  $rect <430,70,630,110>
-  item NAVI_ROUTE_GUIDANCE_STATUS;
+  $rect <440,70,640,110>
+  item NAVI_ROUTE_CAL_PROGRESS;
 
-  $rect <10,130,210,170>
+  $rect <10,120,210,160>
+  item DIALOG_EVENT;
+
+  $rect <10,180,210,220>
   item NAVI_TBT_LIST;
 
-  $rect <220,130,420,170>
+  $rect <220,180,420,220>
   item NAVI_TBT_ACTIVE_TBT;
 }
 
@@ -1333,5 +1339,48 @@ enum MeterFuelConsumptionUnit
   item L_PER_100KM;
 
   $rect <10,210,210,250>
+  item TOTAL;
+}
+
+$rect <500,680,700,720>
+$output false
+enum NaviDialogType
+{
+  $rect <10,10,210,50>
+  item DIALOG_OK;
+
+  $rect <220,10,420,50>
+  item DIALOG_OK_CANCEL;
+
+  $rect <430,10,630,50>
+  item DIALOG_YES_NO;
+
+  $rect <10,60,210,100>
+  item DIALOG_YES_NO_CANCEL;
+
+  $rect <220,60,420,100>
+  item DIALOG_DISMISS;
+
+  $rect <430,60,630,100>
+  item DIALOG_TOTAL;
+}
+
+$rect <500,630,700,670>
+$output false
+enum NaviButtonType
+{
+  $rect <10,10,210,50>
+  item OK;
+
+  $rect <220,10,420,50>
+  item CANCEL;
+
+  $rect <430,10,630,50>
+  item YES;
+
+  $rect <10,60,210,100>
+  item NO;
+
+  $rect <220,60,420,100>
   item TOTAL;
 }

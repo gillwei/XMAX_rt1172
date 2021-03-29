@@ -22,6 +22,7 @@ extern "C" {
 #include "RTC_pub.h"
 
 #define UPDATE_TIME_PERIOD_MS           ( 500 )
+#define ESN_STR_MAX_LEN                 ( 10 )
 
 #define IGN_OFF_TASK_DISPLAY_OFF        ( 1 << 0 )
 #define IGN_OFF_TASK_WRITE_LAST_PAGE    ( 1 << 1 )
@@ -49,6 +50,7 @@ void EW_power_update_ignoff_task_status( uint32_t task );
 uint32_t EW_get_ccuid( void );
 uint16_t EW_get_qrcode_dummy( void );
 uint32_t EW_get_qrcode_passkey( void );
+uint32_t EW_get_esn( void );
 
 void EW_notify_navi_map_update( void );
 void EW_notify_engine_speed_changed( int speed );
@@ -91,6 +93,13 @@ void EW_notify_navi_event_update( void );
 void EW_notify_navigating_status_update( void );
 void EW_notify_tbt_list_update( int size );
 void EW_notify_active_tbt_item_update( int index );
+void EW_notify_route_cal_progress_update( void );
+void EW_notify_zoom_level_update( const bool zoom_level_button_status );
+void EW_notify_dialog_event_update( void );
+void EW_notify_via_point_update( const int via_point_num );
+void EW_notify_home_setting_update( const bool is_home_set );
+void EW_notify_office_setting_update( const bool is_office_set );
+
 
 void EW_notify_notification_list_updated( void );
 void EW_notify_phone_call_state_changed( void );

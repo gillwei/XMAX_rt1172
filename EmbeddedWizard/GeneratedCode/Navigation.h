@@ -50,6 +50,7 @@
 #include "_NavigationNaviAlert.h"
 #include "_NavigationNaviAlertMessage.h"
 #include "_NavigationNaviCurrentRoad.h"
+#include "_NavigationNaviDialog.h"
 #include "_NavigationNaviETA.h"
 #include "_NavigationTbtInfoItem.h"
 #include "_NavigationTbtListMenu.h"

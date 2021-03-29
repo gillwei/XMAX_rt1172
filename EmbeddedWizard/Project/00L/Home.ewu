@@ -154,20 +154,25 @@ class BaseHome : Components::BaseMainBG
     {
       case Enum::HomeType.TACHO_VISUALIZER, Enum::HomeType.ECO_VISUALIZER, Enum::HomeType.SPEED_VISUALIZER:
       {
-        //TODO: remove the comments below
-        /*
-        if( DeviceInterface::NavigationDevice.IsNaviAppConnected() )
-        {
-          NextHomeType = DeviceInterface::NavigationDevice.CurrentHome;
-        }
-        else
+        if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
         {
           NextHomeType = Enum::HomeType.VEHICLE_INFO;
         }
-        */
-        NextHomeType = DeviceInterface::NavigationDevice.CurrentHome; //TODO: replace this line with above login when IsNaviAppConnected is ready.
+        else if( !DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+        {
+          NextHomeType = Enum::HomeType.VEHICLE_INFO;
+        }
+        else
+        {
+          NextHomeType = DeviceInterface::NavigationDevice.CurrentHome;
+        }
       }
-      case Enum::HomeType.NAVI_DEFAULT_VIEW, Enum::HomeType.NAVI_NEXT_TURN, Enum::HomeType.NAVI_TURN_BY_TURN: NextHomeType = Enum::HomeType.VEHICLE_INFO;
+      case Enum::HomeType.NAVI_DEFAULT_VIEW, Enum::HomeType.NAVI_NEXT_TURN, Enum::HomeType.NAVI_TURN_BY_TURN:
+      {
+        // Leave navigation home screen so that stop map frame request.
+        DeviceInterface::NavigationDevice.StopMapFrameRequest();
+        NextHomeType = Enum::HomeType.VEHICLE_INFO;
+      }
       case Enum::HomeType.VEHICLE_INFO:
       {
         switch( DeviceInterface::VehicleDevice.CurrentMeterDisplay )

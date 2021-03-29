@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _NavigationNAV05_TBTView_H
-#define _NavigationNAV05_TBTView_H
+#ifndef _PopPOP17_AppInitSettingError_H
+#define _PopPOP17_AppInitSettingError_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,23 +42,14 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_HomeBaseHome.h"
-#include "_NavigationNaviCurrentRoad.h"
-#include "_NavigationNaviETA.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-#include "_ViewsWallpaper.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -102,39 +93,21 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Navigation::NAV05_TBTView */
-#ifndef _NavigationNAV05_TBTView_
-  EW_DECLARE_CLASS( NavigationNAV05_TBTView )
-#define _NavigationNAV05_TBTView_
+/* Forward declaration of the class Pop::POP17_AppInitSettingError */
+#ifndef _PopPOP17_AppInitSettingError_
+  EW_DECLARE_CLASS( PopPOP17_AppInitSettingError )
+#define _PopPOP17_AppInitSettingError_
 #endif
 
 
-/* Deklaration of class : 'Navigation::NAV05_TBTView' */
-EW_DEFINE_FIELDS( NavigationNAV05_TBTView, HomeBaseHome )
-  EW_OBJECT  ( NaviTBTViewBg,   ViewsWallpaper )
-  EW_OBJECT  ( ArrivalBg,       ViewsRectangle )
-  EW_OBJECT  ( ETAComponent,    NavigationNaviETA )
-  EW_OBJECT  ( RoadNameBg,      ViewsRectangle )
-  EW_OBJECT  ( CurrentRoadComponent, NavigationNaviCurrentRoad )
-  EW_OBJECT  ( SpeedLimitIcon,  ViewsImage )
-  EW_OBJECT  ( SpeedLimitText,  ViewsText )
-  EW_OBJECT  ( NextTurnDist,    ViewsText )
-  EW_OBJECT  ( NextTurnDistUnit, ViewsText )
-  EW_OBJECT  ( NextTurnDescription, ViewsText )
-  EW_OBJECT  ( NextTurnIcon,    ViewsImage )
-  EW_OBJECT  ( ETAUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( CurRdUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( RecalculateMessage, ViewsText )
-  EW_OBJECT  ( ActiveTbtItemUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( SpeedLimitUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( SpeedLimitFlickeringTimer, CoreTimer )
-  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( RouteCalProgressUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
-EW_END_OF_FIELDS( NavigationNAV05_TBTView )
+/* Deklaration of class : 'Pop::POP17_AppInitSettingError' */
+EW_DEFINE_FIELDS( PopPOP17_AppInitSettingError, ComponentsBaseMainBG )
+  EW_OBJECT  ( AppInitSettingFailedMessage, ViewsText )
+  EW_OBJECT  ( CountDownTimer,  CoreTimer )
+EW_END_OF_FIELDS( PopPOP17_AppInitSettingError )
 
-/* Virtual Method Table (VMT) for the class : 'Navigation::NAV05_TBTView' */
-EW_DEFINE_METHODS( NavigationNAV05_TBTView, HomeBaseHome )
+/* Virtual Method Table (VMT) for the class : 'Pop::POP17_AppInitSettingError' */
+EW_DEFINE_METHODS( PopPOP17_AppInitSettingError, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -177,80 +150,26 @@ EW_DEFINE_METHODS( NavigationNAV05_TBTView, HomeBaseHome )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( HomeBaseHome _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongEnterKeyActivated, void )( NavigationNAV05_TBTView _this )
+  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( NavigationNAV05_TBTView )
+EW_END_OF_METHODS( PopPOP17_AppInitSettingError )
 
-/* The method Init() is invoked automatically after the component has been created. 
-   This method can be overridden and filled with logic containing additional initialization 
-   statements. */
-void NavigationNAV05_TBTView_Init( NavigationNAV05_TBTView _this, XHandle aArg );
-
-/* 'C' function for method : 'Navigation::NAV05_TBTView.OnLongEnterKeyActivated()' */
-void NavigationNAV05_TBTView_OnLongEnterKeyActivated( NavigationNAV05_TBTView _this );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV05_TBTView_OnETAUpdateSlot( NavigationNAV05_TBTView _this, XObject 
-  sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV05_TBTView_OnCurRdUpdateSlot( NavigationNAV05_TBTView _this, XObject 
-  sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV05_TBTView_OnActiveTbtItemUpdateSlot( NavigationNAV05_TBTView _this, 
+/* 'C' function for method : 'Pop::POP17_AppInitSettingError.OnLauncherScreenUpdateSlot()' */
+void PopPOP17_AppInitSettingError_OnLauncherScreenUpdateSlot( PopPOP17_AppInitSettingError _this, 
   XObject sender );
-
-/* 'C' function for method : 'Navigation::NAV05_TBTView.ShowNextTurnIcon()' */
-void NavigationNAV05_TBTView_ShowNextTurnIcon( NavigationNAV05_TBTView _this, XInt32 
-  index );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV05_TBTView_OnSpeedLimitUpdateSlot( NavigationNAV05_TBTView _this, 
-  XObject sender );
-
-/* 'C' function for method : 'Navigation::NAV05_TBTView.OnSpeedLimitFlickeringSlot()' */
-void NavigationNAV05_TBTView_OnSpeedLimitFlickeringSlot( NavigationNAV05_TBTView _this, 
-  XObject sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV05_TBTView_OnVehicleSpeedUpdateSlot( NavigationNAV05_TBTView _this, 
-  XObject sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV05_TBTView_OnRouteCalProgressUpdateSlot( NavigationNAV05_TBTView _this, 
-  XObject sender );
-
-/* 'C' function for method : 'Navigation::NAV05_TBTView.SetRecalculatingStatus()' */
-void NavigationNAV05_TBTView_SetRecalculatingStatus( NavigationNAV05_TBTView _this, 
-  XInt32 aNewRouteCalProgress );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV05_TBTView_OnNavigatingStatusUpdateSlot( NavigationNAV05_TBTView _this, 
-  XObject sender );
-
-/* 'C' function for method : 'Navigation::NAV05_TBTView.SetCurrentRoadBounds()' */
-void NavigationNAV05_TBTView_SetCurrentRoadBounds( NavigationNAV05_TBTView _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _NavigationNAV05_TBTView_H */
+#endif /* _PopPOP17_AppInitSettingError_H */
 
 /* Embedded Wizard */

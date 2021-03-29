@@ -259,12 +259,26 @@ class LNC_Main : Components::BaseComponent
         }
         else
         {
-          ItemDialog = new Pop::POP09_BleConnectionErrorUI;
+          ItemDialog = new Pop::POP09_POP14_BleConnectionErrorUI;
         }
       }
       case Enum::LauncherItem.ODO_TRIP: ItemDialog = new Info::INF26_ODO_TRIP_SettingMenu;
       case Enum::LauncherItem.METER_DISPLAY: ItemDialog = new Info::INF01_MeterDisplaySettingMenu;
-      case Enum::LauncherItem.NAVIGATION: ItemDialog = new Navigation::NAV06_NaviSettingMenu;
+      case Enum::LauncherItem.NAVIGATION:
+      {
+        if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
+        {
+          ItemDialog = new Pop::POP09_POP14_BleConnectionErrorUI;
+        }
+        else if( !DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+        {
+          ItemDialog = new Pop::POP17_AppInitSettingError;
+        }
+        else
+        {
+          ItemDialog = new Navigation::NAV06_NaviSettingMenu;
+        }
+      }
       case Enum::LauncherItem.NOTIFICATION:
       {
         if( DeviceInterface::BluetoothDevice.IsMotoconConnected() )
@@ -273,7 +287,7 @@ class LNC_Main : Components::BaseComponent
         }
         else
         {
-          ItemDialog = new Pop::POP09_BleConnectionErrorUI;
+          ItemDialog = new Pop::POP09_POP14_BleConnectionErrorUI;
         }
       }
       case Enum::LauncherItem.WEATHER:
@@ -284,7 +298,7 @@ class LNC_Main : Components::BaseComponent
         }
         else
         {
-          ItemDialog = new Pop::POP09_BleConnectionErrorUI;
+          ItemDialog = new Pop::POP09_POP14_BleConnectionErrorUI;
         }
       }
       case Enum::LauncherItem.SETTINGS: ItemDialog = new Settings::SET01_MainSettingMenu;

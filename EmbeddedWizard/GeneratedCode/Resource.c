@@ -923,4 +923,10 @@ EW_RES_WITHOUT_VARIANTS( ResourceClockDayTimeText )
 /* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamSchoolZone' */
 EW_RES_WITHOUT_VARIANTS( ResourceSafeCamSchoolZone )
 
+/* Include a file containing the bitmap resource : 'Resource::DialogBackground' */
+#include "_ResourceDialogBackground.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::DialogBackground' */
+EW_RES_WITHOUT_VARIANTS( ResourceDialogBackground )
+
 /* Embedded Wizard */

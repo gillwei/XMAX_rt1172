@@ -134,7 +134,8 @@ typedef enum
   EnumNaviSettingItemGoToWork           = 3,
   EnumNaviSettingItemFavorites          = 4,
   EnumNaviSettingItemNearbyGasStations  = 5,
-  EnumNaviSettingItemChangeView         = 6
+  EnumNaviSettingItemChangeView         = 6,
+  EnumNaviSettingItemTOTAL              = 7
 } EnumNaviSettingItem;
 
 /* User defined enumeration: 'Enum::MotoConTest' */
@@ -328,9 +329,10 @@ typedef enum
   EnumNaviDataTypeSPEED_LIMIT           = 2,
   EnumNaviDataTypeDAYNIGHT              = 3,
   EnumNaviDataTypeNAVI_EVENT            = 4,
-  EnumNaviDataTypeNAVI_ROUTE_GUIDANCE_STATUS = 5,
-  EnumNaviDataTypeNAVI_TBT_LIST         = 6,
-  EnumNaviDataTypeNAVI_TBT_ACTIVE_TBT   = 7
+  EnumNaviDataTypeNAVI_ROUTE_CAL_PROGRESS = 5,
+  EnumNaviDataTypeDIALOG_EVENT          = 6,
+  EnumNaviDataTypeNAVI_TBT_LIST         = 7,
+  EnumNaviDataTypeNAVI_TBT_ACTIVE_TBT   = 8
 } EnumNaviDataType;
 
 /* User defined enumeration: 'Enum::NaviAlertType' */
@@ -632,6 +634,27 @@ typedef enum
   EnumMeterFuelConsumptionUnitL_PER_100KM = 3,
   EnumMeterFuelConsumptionUnitTOTAL     = 4
 } EnumMeterFuelConsumptionUnit;
+
+/* User defined enumeration: 'Enum::NaviDialogType' */
+typedef enum
+{
+  EnumNaviDialogTypeDIALOG_OK           = 0,
+  EnumNaviDialogTypeDIALOG_OK_CANCEL    = 1,
+  EnumNaviDialogTypeDIALOG_YES_NO       = 2,
+  EnumNaviDialogTypeDIALOG_YES_NO_CANCEL = 3,
+  EnumNaviDialogTypeDIALOG_DISMISS      = 4,
+  EnumNaviDialogTypeDIALOG_TOTAL        = 5
+} EnumNaviDialogType;
+
+/* User defined enumeration: 'Enum::NaviButtonType' */
+typedef enum
+{
+  EnumNaviButtonTypeOK                  = 0,
+  EnumNaviButtonTypeCANCEL              = 1,
+  EnumNaviButtonTypeYES                 = 2,
+  EnumNaviButtonTypeNO                  = 3,
+  EnumNaviButtonTypeTOTAL               = 4
+} EnumNaviButtonType;
 
 #ifdef __cplusplus
   }

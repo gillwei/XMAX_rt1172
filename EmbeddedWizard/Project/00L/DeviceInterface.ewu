@@ -17,6 +17,8 @@ inline Inline
   #include "BC_ams_pub.h"
   #include "NTF_pub.h"
   #include "TEST_pub.h"
+  #include "NAVI_pub.h"
+  #include "Enum.h"
 }
 
 $rect <20,70,220,110>
@@ -900,52 +902,54 @@ class NavigationDeviceClass : Templates::DeviceClass
     $if !$prototyper
     var int32 NaviDataType = ( int32 )aDataType;
 
-    // suppress warning
-    if( NaviDataType )
-    {
-      // empty body
-    }
-
     native( NaviDataType, NaviData )
     {
-      #if( UNIT_TEST_NAVI )
-        navi_data_type* navi_obj = NULL;
+      navi_data_type* navi_obj = NULL;
+      #if( !UNIT_TEST_NAVI )
+        navi_obj = NAVI_get_navi_obj();
+      #else
         navi_obj = TEST_get_navi_obj();
-        switch( NaviDataType )
-        {
-          case 0:
-            {
-              NaviData->CurrentRoad = EwNewStringUtf8( ( const unsigned char* )navi_obj->current_road, ( int )strlen( navi_obj->current_road ) );
-            }
-            break;
-          case 1:
-            {
-              NaviData->ETA = navi_obj->eta;
-            }
-            break;
-          case 2:
-            {
-              NaviData->SpeedLimit = navi_obj->speed_limit;
-            }
-            break;
-          case 3:
-            {
-              NaviData->DayNightMode = navi_obj->daynight;
-            }
-            break;
-          case 4:
-            {
-              NaviData->NaviEventType = navi_obj->navi_event.event_type;
-              NaviData->NaviCameraType = navi_obj->navi_event.camera_type;
-              NaviData->NaviEventDist = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.dist, ( int )strlen( navi_obj->navi_event.dist ) );
-              NaviData->NaviEventSpeed = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.speed, ( int )strlen( navi_obj->navi_event.speed ) );
-              NaviData->NaviEventVisibility = navi_obj->navi_event.visibility;
-            }
-            break;
-          default:
-            break;
-        }
       #endif
+
+      switch( NaviDataType )
+      {
+        case EnumNaviDataTypeCURRENT_ROAD:
+          NaviData->CurrentRoad = EwNewStringUtf8( ( const unsigned char* )navi_obj->current_road, ( int )strlen( navi_obj->current_road ) );
+          break;
+        case EnumNaviDataTypeETA:
+          NaviData->ETA = navi_obj->eta;
+          break;
+        case EnumNaviDataTypeSPEED_LIMIT:
+          NaviData->SpeedLimit = navi_obj->speed_limit;
+          break;
+        case EnumNaviDataTypeDAYNIGHT:
+          NaviData->DayNightMode = navi_obj->daynight;
+          break;
+        case EnumNaviDataTypeNAVI_EVENT:
+          {
+            navi_event_stat navi_event_obj;
+            bool is_event_retrieved = NAVI_get_event( &navi_event_obj );
+            if( is_event_retrieved )
+            {
+              NaviData->NaviEventType = navi_event_obj.event_type;
+              NaviData->NaviCameraType = navi_event_obj.camera_type;
+              NaviData->NaviEventDist = EwNewStringUtf8( ( const unsigned char* )navi_event_obj.dist, ( int )strlen( navi_event_obj.dist ) );
+              NaviData->NaviEventSpeed = EwNewStringUtf8( ( const unsigned char* )navi_event_obj.speed, ( int )strlen( navi_event_obj.speed ) );
+              NaviData->NaviEventVisibility = navi_event_obj.visibility;
+            }
+            else
+            {
+              NAVI_reset_event_buffer();
+              NaviData = NULL;
+            }
+          }
+          break;
+        case EnumNaviDataTypeNAVI_ROUTE_CAL_PROGRESS:
+          NaviData->RouteCalProgress = navi_obj->route_cal_progress; 
+          break;
+        default:
+          break;
+      }
     }
     $else
       aDataType; // suppress warning.
@@ -1045,6 +1049,255 @@ class NavigationDeviceClass : Templates::DeviceClass
 
   $rect <710,40,910,80>
   var Enum::HomeType CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+
+  $rect <460,270,660,310>
+  method void StopMapFrameRequest()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_stop_map_update();
+      }
+    $endif
+  }
+
+  $rect <220,510,420,550>
+  object Core::SystemEvent RouteCalProgressUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,510,220,550>
+  $output true
+  method void NotifyRouteCalProgressUpdate()
+  {
+    RouteCalProgressUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <220,570,420,610>
+  object Core::SystemEvent ZoomLevelUpdateEventHandler;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,570,220,610>
+  $output true
+  method void NotifyZoomLevelUpdate( arg bool aNewZoomLevelButtonStatus )
+  {
+    IsZoomLevelButtonEnabled = aNewZoomLevelButtonStatus;
+    ZoomLevelUpdateEventHandler.Trigger( null, false );
+  }
+
+  $rect <710,90,910,130>
+  var bool IsZoomLevelButtonEnabled = true;
+
+  $rect <230,620,430,660>
+  object Core::SystemEvent DialogEventUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,620,220,660>
+  $output true
+  method void NotifyDialogEventUpdate()
+  {
+    DialogEventUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <460,330,660,370>
+  method Enum::NaviDialogType GetNaviDialogType()
+  {
+    $if !$prototyper
+      var Enum::NaviDialogType NaviDialog;
+      native( NaviDialog )
+      {
+        #if( !UNIT_TEST_NAVI )
+          NaviDialog = NAVI_get_dialog_type();
+        #else
+          NaviDialog = TEST_navi_get_dialog_type();
+        #endif
+      }
+      return NaviDialog;
+    $else
+      return Enum::NaviDialogType.DIALOG_TOTAL;
+    $endif
+  }
+
+  $rect <460,380,660,420>
+  method string GetNaviDialogMessage()
+  {
+    $if !$prototyper
+      var string NaviDialogMessage;
+      native( NaviDialogMessage )
+      {
+        char* dialog_message;
+         #if( !UNIT_TEST_NAVI )
+          NAVI_get_dialog_message( &dialog_message );
+        #else
+          TEST_navi_get_dialog_message( &dialog_message );
+        #endif
+        NaviDialogMessage  = EwNewStringUtf8( ( const unsigned char* )dialog_message, ( int )strlen( dialog_message ) );
+      }
+      return NaviDialogMessage;
+    $else
+      return "";
+    $endif
+  }
+
+  $rect <460,430,660,470>
+  method void SendSelectedDialog( arg Enum::NaviButtonType aNewButtonType )
+  {
+    $if !$prototyper
+      var Enum::NaviButtonType ButtonType = aNewButtonType;
+      native( ButtonType )
+      {
+        NAVI_send_selected_dialog( ButtonType );
+      }
+    $else
+      aNewButtonType; // suppress warning.
+    $endif
+  }
+
+  $rect <650,520,850,560>
+  object Core::SystemEvent ViaPointUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <450,520,650,560>
+  $output true
+  method void NotifyViaPointUpdate( arg int32 aNewViaPointNum )
+  {
+    ViaPointNum = aNewViaPointNum;
+    ViaPointUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <710,140,910,180>
+  var int32 ViaPointNum;
+
+  $rect <690,210,890,250>
+  method bool GetNaviConnectStatus()
+  {
+    $if( !$prototyper )
+      var bool IsNaviAppConnected= false;
+      native( IsNaviAppConnected )
+      {
+        IsNaviAppConnected = NAVI_get_connect_status();
+      }
+      return IsNaviAppConnected;
+    $else
+      return false;
+    $endif
+  }
+
+  $rect <690,260,890,300>
+  method bool GetNaviAppInitSettingStatus()
+  {
+    $if( !$prototyper )
+      var bool IsNaviAppInitSettingCompleted= false;
+      native( IsNaviAppInitSettingCompleted )
+      {
+        IsNaviAppInitSettingCompleted = NAVI_get_navi_app_setup_status();
+      }
+      return IsNaviAppInitSettingCompleted;
+    $else
+      return false;
+    $endif
+  }
+
+  $rect <690,310,890,350>
+  method void StopRoute()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_send_stop_route_request();
+      }
+    $endif
+  }
+
+  $rect <690,360,890,400>
+  method void SkipNextWaypoint()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_send_skip_next_waypoint_request();
+      }
+    $endif
+  }
+
+  $rect <690,410,890,450>
+  method void GoHome()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_send_go_home_request();
+      }
+    $endif
+  }
+
+  $rect <690,460,890,500>
+  method void GoOffice()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_send_go_office_request();
+      }
+    $endif
+  }
+
+  $rect <650,570,850,610>
+  object Core::SystemEvent HomeSettingUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <450,570,650,610>
+  $output true
+  method void NotifyHomeSettingUpdate( arg bool aNewHomeSettingStatus )
+  {
+    IsHomeSet = aNewHomeSettingStatus;
+    HomeSettingUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <920,40,1120,80>
+  var bool IsHomeSet;
+
+  $rect <920,90,1120,130>
+  var bool IsOfficeSet;
+
+  $rect <660,620,860,660>
+  object Core::SystemEvent OfficeSettingUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <460,620,660,660>
+  $output true
+  method void NotifyOfficeSettingUpdate( arg bool aNewOfficeSettingStatus )
+  {
+    IsOfficeSet = aNewOfficeSettingStatus;
+    OfficeSettingUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <920,210,1120,250>
+  method void ZoomInRequest()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_send_zoom_in_request();
+      }
+    $endif
+  }
+
+  $rect <920,260,1120,300>
+  method void ZoomOutRequest()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_send_zoom_out_request();
+      }
+    $endif
+  }
 }
 
 $rect <20,340,230,380>
@@ -2335,7 +2588,7 @@ class NaviDataClass
   var int32 SpeedLimit;
 
   $rect <280,60,480,100>
-  var int32 NaviEventType;
+  var Enum::NaviAlertType NaviEventType;
 
   $rect <280,100,480,140>
   var string NaviEventDist;
@@ -2347,7 +2600,10 @@ class NaviDataClass
   var string NaviEventSpeed;
 
   $rect <490,60,690,100>
-  var int32 NaviCameraType;
+  var Enum::NaviCameraType NaviCameraType;
+
+  $rect <80,220,280,260>
+  var int32 RouteCalProgress;
 }
 
 $rect <751,190,951,230>

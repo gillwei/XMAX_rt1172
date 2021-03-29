@@ -21,6 +21,7 @@
 #include <stdbool.h>
 #include "JPEG_pub.h"
 #include "TEST_pub.h"
+#include "NAVI_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -57,12 +58,36 @@
     static int ew_notify_navi_navigating_status_update( void );
 #endif
 
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyRouteCalProgressUpdate_
+    static int ew_notify_navi_route_cal_progress_update( void );
+#endif
+
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate_
+    static int ew_notify_navi_zoom_level_update( void );
+#endif
+
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyDialogEventUpdate_
+    static int ew_notify_navi_dialog_event_update( void );
+#endif
+
 #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate_
     static int ew_notify_navi_tbt_list_update( void );
 #endif
 
 #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyActiveTbtItemUpdate_
     static int ew_notify_navi_active_tbt_item_update( void );
+#endif
+
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate_
+    static int ew_notify_via_point_update( void );
+#endif
+
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate_
+    static int ew_notify_home_setting_update( void );
+#endif
+
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate_
+    static int ew_notify_office_setting_update( void );
 #endif
 
 /*--------------------------------------------------------------------
@@ -105,6 +130,24 @@
         #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate_
             ew_notify_navi_navigating_status_update,
         #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyRouteCalProgressUpdate_
+            ew_notify_navi_route_cal_progress_update,
+        #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate_
+            ew_notify_navi_zoom_level_update,
+        #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyDialogEventUpdate_
+            ew_notify_navi_dialog_event_update,
+        #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate_
+            ew_notify_via_point_update,
+        #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate_
+            ew_notify_home_setting_update,
+        #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate_
+            ew_notify_office_setting_update,
+        #endif
         #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate_
             ew_notify_navi_tbt_list_update,
         #endif
@@ -122,8 +165,19 @@
     static int is_navigating_status_update = 0;
     static int is_tbt_list_update = 0;
     static int is_active_tbt_item_update = 0;
+    static int is_route_cal_progress_update = 0;
+    static int is_zoom_level_update = 0;
+    static int is_dialog_event_update = 0;
+    static int is_via_point_update = 0;
+    static int is_home_setting_update = 0;
+    static int is_office_setting_update = 0;
+
     static int active_tbt_item_idx;
     static int tbt_list_size;
+    static bool is_zoom_level_button_displayed;
+    static int num_of_via_point = 0;
+    static bool home_setting_status;
+    static bool office_setting_status;
 #endif
 /*--------------------------------------------------------------------
                                 MACROS
@@ -263,7 +317,7 @@ bool ew_navi_is_route_guidance_started
 #if( UNIT_TEST_NAVI )
     return TEST_navi_get_route_guidance_status();
 #else
-    return false;
+    return NAVI_get_navigation_status();
 #endif
 }
 
@@ -410,8 +464,8 @@ bool ew_navi_is_route_guidance_started
     if( is_navi_event_update )
         {
         is_navi_event_update = 0;
-        need_update = 1;
         DeviceInterfaceNavigationDeviceClass__NotifyNaviEventUpdate( device_object );
+        need_update = 1;
         }
     return need_update;
     }
@@ -437,6 +491,156 @@ bool ew_navi_is_route_guidance_started
         is_navigating_status_update = 0;
         need_update = 1;
         DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate( device_object );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_navi_route_cal_progress_update
+*
+* Notify EW GUI that new route calculation progress has received.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyRouteCalProgressUpdate_
+    static int ew_notify_navi_route_cal_progress_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_route_cal_progress_update )
+        {
+        is_route_cal_progress_update = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyRouteCalProgressUpdate( device_object );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_navi_zoom_level_update
+*
+* Notify EW GUI that new zoom level has received.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate_
+    static int ew_notify_navi_zoom_level_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_zoom_level_update )
+        {
+        is_zoom_level_update = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate( device_object, is_zoom_level_button_displayed );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_navi_dialog_event_update
+*
+* Notify EW GUI that new dialog event has received.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyDialogEventUpdate_
+    static int ew_notify_navi_dialog_event_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_dialog_event_update )
+        {
+        is_dialog_event_update = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyDialogEventUpdate( device_object );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_via_point_update
+*
+* Notify EW GUI that new dialog event has received.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate_
+    static int ew_notify_via_point_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_via_point_update )
+        {
+        is_via_point_update = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate( device_object, num_of_via_point );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_home_setting_update
+*
+* Notify EW GUI that new home setting status has received.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate_
+    static int ew_notify_home_setting_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_home_setting_update )
+        {
+        is_home_setting_update = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate( device_object, home_setting_status );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_office_setting_update
+*
+* Notify EW GUI that new office setting status has received.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate_
+    static int ew_notify_office_setting_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_office_setting_update )
+        {
+        is_office_setting_update = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate( device_object, office_setting_status );
         }
     return need_update;
     }
@@ -661,6 +865,123 @@ void EW_notify_active_tbt_item_update
 #ifdef _DeviceInterfaceNavigationDeviceClass_
     is_active_tbt_item_update = 1;
     active_tbt_item_idx = index;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_route_cal_progress_update
+*
+* Notify Embedded Wizard that the route calculation progress is updated.
+*
+*********************************************************************/
+void EW_notify_route_cal_progress_update
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    is_route_cal_progress_update = 1;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_zoom_level_update
+*
+* Notify Embedded Wizard that zoom level is updated.
+*
+*********************************************************************/
+void EW_notify_zoom_level_update
+    (
+    const bool zoom_level_button_status
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    is_zoom_level_update = 1;
+    is_zoom_level_button_displayed = zoom_level_button_status;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_dialog_event_update
+*
+* Notify Embedded Wizard that dialog event is updated.
+*
+*********************************************************************/
+void EW_notify_dialog_event_update
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    is_dialog_event_update = 1;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_via_point_update
+*
+* Notify Embedded Wizard that number of via point is updated.
+*
+*********************************************************************/
+void EW_notify_via_point_update
+    (
+    const int via_point_num
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    is_via_point_update = 1;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_home_setting_update
+*
+* Notify Embedded Wizard that home setting is updated.
+*
+*********************************************************************/
+void EW_notify_home_setting_update
+    (
+    const bool is_home_set
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    home_setting_status = is_home_set;
+    is_home_setting_update = 1;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_office_setting_update
+*
+* Notify Embedded Wizard that office setting is updated.
+*
+*********************************************************************/
+void EW_notify_office_setting_update
+    (
+    const bool is_office_set
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    office_setting_status = is_office_set;
+    is_office_setting_update = 1;
     EwBspEventTrigger();
 #endif
 }

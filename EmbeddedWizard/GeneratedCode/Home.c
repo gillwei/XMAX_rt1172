@@ -541,14 +541,32 @@ XEnum HomeBaseHome_GetNextHomeType( HomeBaseHome _this, XEnum aCurrentHomeType )
     case EnumHomeTypeECO_VISUALIZER :
     case EnumHomeTypeSPEED_VISUALIZER :
     {
-      NextHomeType = EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome;
+      if ( !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
+          &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+      {
+        NextHomeType = EnumHomeTypeVEHICLE_INFO;
+      }
+      else
+        if ( !DeviceInterfaceNavigationDeviceClass_GetNaviAppInitSettingStatus( 
+            EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+        {
+          NextHomeType = EnumHomeTypeVEHICLE_INFO;
+        }
+        else
+        {
+          NextHomeType = EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome;
+        }
     }
     break;
 
     case EnumHomeTypeNAVI_DEFAULT_VIEW :
     case EnumHomeTypeNAVI_NEXT_TURN :
     case EnumHomeTypeNAVI_TURN_BY_TURN :
+    {
+      DeviceInterfaceNavigationDeviceClass_StopMapFrameRequest( EwGetAutoObject( 
+      &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
       NextHomeType = EnumHomeTypeVEHICLE_INFO;
+    }
     break;
 
     case EnumHomeTypeVEHICLE_INFO :

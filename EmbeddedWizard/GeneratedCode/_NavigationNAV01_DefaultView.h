@@ -54,6 +54,7 @@
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
+#include "_ViewsWallpaper.h"
 
 /* Forward declaration of the class Components::BaseMainBG */
 #ifndef _ComponentsBaseMainBG_
@@ -133,13 +134,17 @@ EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( NaviIncidentUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( CurrentRoadShiftEffect, EffectsRectEffect )
   EW_OBJECT  ( NaviEventObject, NavigationNaviAlert )
+  EW_OBJECT  ( StatusBarShadowImage, ViewsWallpaper )
   EW_OBJECT  ( NaviEventEnLargeEffect, EffectsRectEffect )
   EW_OBJECT  ( NaviEventDismissEffect, EffectsRectEffect )
   EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( SpeedLimitFlickeringTimer, CoreTimer )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( NaviDialogEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( Mask,            ViewsRectangle )
   EW_VARIABLE( MapFrameIdx,     XInt32 )
   EW_VARIABLE( ZoomButtonStatus, XInt32 )
+  EW_VARIABLE( IsEventDisplaying, XBool )
 EW_END_OF_FIELDS( NavigationNAV01_DefaultView )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV01_DefaultView' */
@@ -282,6 +287,15 @@ void NavigationNAV01_DefaultView_OnVehicleSpeedUpdateSlot( NavigationNAV01_Defau
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.SetItemBounds()' */
 void NavigationNAV01_DefaultView_SetItemBounds( NavigationNAV01_DefaultView _this );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV01_DefaultView_OnNaviDialogEventUpdateSlot( NavigationNAV01_DefaultView _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnNaviDialogDismissSlot()' */
+void NavigationNAV01_DefaultView_OnNaviDialogDismissSlot( NavigationNAV01_DefaultView _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }

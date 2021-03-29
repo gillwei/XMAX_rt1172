@@ -33,6 +33,7 @@
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
+#include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
@@ -47,7 +48,8 @@
 #include "_NotificationNTF01_NotificationList.h"
 #include "_PopPOP04_Reset.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
-#include "_PopPOP09_BleConnectionErrorUI.h"
+#include "_PopPOP09_POP14_BleConnectionErrorUI.h"
+#include "_PopPOP17_AppInitSettingError.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "_SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction.h"
@@ -509,7 +511,7 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
         }
         else
         {
-          ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_BleConnectionErrorUI, 
+          ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
           0 ));
         }
     }
@@ -526,8 +528,26 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
     break;
 
     case EnumLauncherItemNAVIGATION :
-      ItemDialog = ((ComponentsBaseComponent)EwNewObject( NavigationNAV06_NaviSettingMenu, 
-      0 ));
+    {
+      if ( !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
+          &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+      {
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
+        0 ));
+      }
+      else
+        if ( !DeviceInterfaceNavigationDeviceClass_GetNaviAppInitSettingStatus( 
+            EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+        {
+          ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP17_AppInitSettingError, 
+          0 ));
+        }
+        else
+        {
+          ItemDialog = ((ComponentsBaseComponent)EwNewObject( NavigationNAV06_NaviSettingMenu, 
+          0 ));
+        }
+    }
     break;
 
     case EnumLauncherItemNOTIFICATION :
@@ -540,7 +560,7 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
       }
       else
       {
-        ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_BleConnectionErrorUI, 
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
         0 ));
       }
     }
@@ -556,7 +576,7 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
       }
       else
       {
-        ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_BleConnectionErrorUI, 
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
         0 ));
       }
     }

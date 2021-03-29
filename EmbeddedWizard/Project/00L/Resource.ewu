@@ -2773,3 +2773,15 @@ resource Resources::Bitmap NaviTurnArrwDstntnFlgIrg28
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
+
+$rect <230,1970,430,2010>
+$output false
+resource Resources::Bitmap DialogBackground
+{
+  attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_dialog_bg .png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}

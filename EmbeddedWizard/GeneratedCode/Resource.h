@@ -465,6 +465,9 @@ EW_DECLARE_BITMAP_RES( ResourceClockDayTimeText )
 /* Bitmap resource : 'Resource::SafeCamSchoolZone' */
 EW_DECLARE_BITMAP_RES( ResourceSafeCamSchoolZone )
 
+/* Bitmap resource : 'Resource::DialogBackground' */
+EW_DECLARE_BITMAP_RES( ResourceDialogBackground )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

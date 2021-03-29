@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _PopPOP09_BleConnectionErrorUI_H
-#define _PopPOP09_BleConnectionErrorUI_H
+#ifndef _PopPOP09_POP14_BleConnectionErrorUI_H
+#define _PopPOP09_POP14_BleConnectionErrorUI_H
 
 #ifdef __cplusplus
   extern "C"
@@ -93,21 +93,21 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Pop::POP09_BleConnectionErrorUI */
-#ifndef _PopPOP09_BleConnectionErrorUI_
-  EW_DECLARE_CLASS( PopPOP09_BleConnectionErrorUI )
-#define _PopPOP09_BleConnectionErrorUI_
+/* Forward declaration of the class Pop::POP09_POP14_BleConnectionErrorUI */
+#ifndef _PopPOP09_POP14_BleConnectionErrorUI_
+  EW_DECLARE_CLASS( PopPOP09_POP14_BleConnectionErrorUI )
+#define _PopPOP09_POP14_BleConnectionErrorUI_
 #endif
 
 
-/* Deklaration of class : 'Pop::POP09_BleConnectionErrorUI' */
-EW_DEFINE_FIELDS( PopPOP09_BleConnectionErrorUI, ComponentsBaseMainBG )
+/* Deklaration of class : 'Pop::POP09_POP14_BleConnectionErrorUI' */
+EW_DEFINE_FIELDS( PopPOP09_POP14_BleConnectionErrorUI, ComponentsBaseMainBG )
   EW_OBJECT  ( ConnectionFailedMessage, ViewsText )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
-EW_END_OF_FIELDS( PopPOP09_BleConnectionErrorUI )
+EW_END_OF_FIELDS( PopPOP09_POP14_BleConnectionErrorUI )
 
-/* Virtual Method Table (VMT) for the class : 'Pop::POP09_BleConnectionErrorUI' */
-EW_DEFINE_METHODS( PopPOP09_BleConnectionErrorUI, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Pop::POP09_POP14_BleConnectionErrorUI' */
+EW_DEFINE_METHODS( PopPOP09_POP14_BleConnectionErrorUI, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -160,16 +160,16 @@ EW_DEFINE_METHODS( PopPOP09_BleConnectionErrorUI, ComponentsBaseMainBG )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( PopPOP09_BleConnectionErrorUI )
+EW_END_OF_METHODS( PopPOP09_POP14_BleConnectionErrorUI )
 
-/* 'C' function for method : 'Pop::POP09_BleConnectionErrorUI.OnLauncherScreenUpdateSlot()' */
-void PopPOP09_BleConnectionErrorUI_OnLauncherScreenUpdateSlot( PopPOP09_BleConnectionErrorUI _this, 
+/* 'C' function for method : 'Pop::POP09_POP14_BleConnectionErrorUI.OnLauncherScreenUpdateSlot()' */
+void PopPOP09_POP14_BleConnectionErrorUI_OnLauncherScreenUpdateSlot( PopPOP09_POP14_BleConnectionErrorUI _this, 
   XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _PopPOP09_BleConnectionErrorUI_H */
+#endif /* _PopPOP09_POP14_BleConnectionErrorUI_H */
 
 /* Embedded Wizard */

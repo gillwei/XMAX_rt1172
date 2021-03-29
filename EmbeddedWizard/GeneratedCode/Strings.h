@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/05/05 13:21:15 */
+   Generated: 2021/05/12 17:05:14 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -241,6 +241,9 @@ extern const XStringRes StringsNAV01_UNKNOWN;
 /* User defined constant: 'Strings::NAV01_SCHOOL_ZONE' */
 extern const XStringRes StringsNAV01_SCHOOL_ZONE;
 
+/* User defined constant: 'Strings::NAV01_NO_DESTINATION' */
+extern const XStringRes StringsNAV01_NO_DESTINATION;
+
 /* User defined constant: 'Strings::NAV06_STOP_NAVIGATION' */
 extern const XStringRes StringsNAV06_STOP_NAVIGATION;
 
@@ -286,6 +289,12 @@ extern const XStringRes StringsPOP02_PLEASE_CHECK;
 /* User defined constant: 'Strings::POP02_DETAILS' */
 extern const XStringRes StringsPOP02_DETAILS;
 
+/* User defined constant: 'Strings::POP03_NO_HOME_LOCATION' */
+extern const XStringRes StringsPOP03_NO_HOME_LOCATION;
+
+/* User defined constant: 'Strings::POP03_NO_OFFICE_LOCATION' */
+extern const XStringRes StringsPOP03_NO_OFFICE_LOCATION;
+
 /* User defined constant: 'Strings::POP07_TROUBLE_SHOOTING' */
 extern const XStringRes StringsPOP07_TROUBLE_SHOOTING;
 
@@ -300,6 +309,9 @@ extern const XStringRes StringsPOP07_LAUNCH_APP;
 
 /* User defined constant: 'Strings::POP09_CONNECTION_FAILED' */
 extern const XStringRes StringsPOP09_CONNECTION_FAILED;
+
+/* User defined constant: 'Strings::POP17_APP_INIT_SETTING_FAILED' */
+extern const XStringRes StringsPOP17_APP_INIT_SETTING_FAILED;
 
 /* User defined constant: 'Strings::SET01_TRACTION_CONTROL' */
 extern const XStringRes StringsSET01_TRACTION_CONTROL;
