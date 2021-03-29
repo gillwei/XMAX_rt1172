@@ -59,6 +59,16 @@ extern "C" {
                         PROCEDURES
 --------------------------------------------------------------------*/
 
+float NAVILITE_bytes_to_float
+    (
+    uint32_t bytes_value
+    );
+
+uint32_t NAVILITE_float_to_bytes
+    (
+    float float_value
+    );
+
 void NAVILITE_print_utf8
     (
     uint8_t* str,

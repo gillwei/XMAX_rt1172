@@ -107,6 +107,12 @@ extern "C" {
         navilite_switch_type enable
         );
 
+    navilite_message NAVILITE_pack_frame_app_enable_content_update
+        (
+        navilite_content_type content_type,
+        navilite_switch_type enable
+        );
+
     navilite_message NAVILITE_pack_frame_app_report_esn
         (
         uint8_t* esn

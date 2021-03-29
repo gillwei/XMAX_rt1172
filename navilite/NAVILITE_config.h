@@ -57,7 +57,7 @@
 #define NAVILITE_QUEUE_BUFFER_SIZE 240
 
 // jpeg max buffer size
-#define NAVILITE_JPEG_BUFFER_MAX_SIZE 65 * 1024
+#define NAVILITE_JPEG_BUFFER_MAX_SIZE ( 65 * 1024 )
 
 // buffer queue max timeout
 #define NAVILITE_QUEUE_BUFFER_TIMEOUT 500

@@ -234,58 +234,6 @@
     /*********************************************************************
     *
     * @public
-    * NAVILITE_pack_frame_app_get_favoritlist_request
-    *
-    * Send get favorite list mode request
-    *
-    * @return navilite_message return navilite_message copy to caller
-    *
-    *********************************************************************/
-    navilite_message NAVILITE_pack_frame_app_get_favoritlist_request
-        (
-        void
-        )
-    {
-    navilite_message frame = { 0 };
-    strncpy( (char*)frame.magic_code, (char*)MAGIC_CODE, MAGIC_CODE_SIZE );
-    frame.version = PROTOCOL_VERSION;
-    frame.frame_type = NAVILITE_FRAMETYPE_MOBILE_REQUEST;
-    frame.service_type = NAVILITE_SERVICETYPE_APP_GET_FAVORITE_LIST_REQUEST ;
-    frame.payload_size = 0;
-    frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
-    frame.data_value = 0;
-    return frame;
-    }
-
-    /*********************************************************************
-    *
-    * @public
-    * NAVILITE_pack_frame_app_get_stationlist_request
-    *
-    * Send get station list request
-    *
-    * @return navilite_message return navilite_message copy to caller
-    *
-    *********************************************************************/
-    navilite_message NAVILITE_pack_frame_app_get_stationlist_request
-        (
-        void
-        )
-    {
-    navilite_message frame = { 0 };
-    strncpy( (char*)frame.magic_code, (char*)MAGIC_CODE, MAGIC_CODE_SIZE );
-    frame.version = PROTOCOL_VERSION;
-    frame.frame_type = NAVILITE_FRAMETYPE_MOBILE_REQUEST;
-    frame.service_type = NAVILITE_SERVICETYPE_APP_GET_STATION_LIST_REQUEST ;
-    frame.payload_size = 0;
-    frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
-    frame.data_value = 0;
-    return frame;
-    }
-
-    /*********************************************************************
-    *
-    * @public
     * NAVILITE_pack_frame_app_enable_imageframe_update
     *
     * Send enable/disable image frame update request
@@ -314,6 +262,42 @@
     frame.payload_size = 0;
     frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
     frame.data_value = enable;  // NOTE: navilite_switch_type enable/disable
+    return frame;
+    }
+
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_pack_frame_app_enable_content_update
+    *
+    * Send enable/disable content update request
+    *
+    * @param content_type what content to enable/disable updating from app
+    * @param enable true/false to enable/disable the image frame update
+    * @return navilite_message return navilite_message copy to caller
+    *
+    *********************************************************************/
+    navilite_message NAVILITE_pack_frame_app_enable_content_update
+        (
+        navilite_content_type content_type,
+        navilite_switch_type enable
+        )
+    {
+    navilite_message frame = { 0 };
+    strncpy( (char*)frame.magic_code, (char*)MAGIC_CODE, MAGIC_CODE_SIZE );
+    frame.version = PROTOCOL_VERSION;
+    frame.frame_type = NAVILITE_FRAMETYPE_MOBILE_REQUEST;
+    if( enable == NAVILITE_ENABLE_TYPE_ENABLE )
+        {
+        frame.service_type = NAVILITE_SERVICETYPE_APP_START_CONTENT_UPDATE_REQUEST ;
+        }
+    else
+        {
+        frame.service_type = NAVILITE_SERVICETYPE_APP_STOP_CONTENT_UPDATE_REQUEST ;
+        }
+    frame.payload_size = sizeof( content_type );
+    frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
+    frame.data_value = content_type;  // NOTE: navilite_content_type to disable/enable request
     return frame;
     }
 

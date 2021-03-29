@@ -244,7 +244,7 @@
     * @public
     * NAVILITE_request_app_start_imageframe_update
     *
-    * stop image frame update request to app
+    * start image frame update request to app
     *
     * @return true when success
     *         false when failed
@@ -281,4 +281,44 @@
     return ret;
     }
 
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_request_app_enable_content_update
+    *
+    * Send content update request to app side
+    * @param content_type for enable/disable the update request
+    *        ex: NAVILITE_CONTENT_TYPE_TBT_LIST
+    *            NAVILITE_CONTENT_TYPE_FAVORITE_LIST
+    *            NAVILITE_CONTENT_TYPE_STATION_LIST
+    *
+    * @param enable enable or disable the content update request
+    * @return true when success
+    *         false when failed
+    *
+    *********************************************************************/
+    bool NAVILITE_request_app_enable_content_update
+        (
+        navilite_content_type content_type,
+        navilite_switch_type enable
+        )
+    {
+    // Back API compatibility for navigation image type
+    if( NAVILITE_CONTENT_TYPE_NAVI_IMAGE == content_type )
+        {
+        navilite_message frame = NAVILITE_pack_frame_app_enable_imageframe_update( enable );
+        bool ret = NAVILITE_send( (uint8_t*)&frame, sizeof( navilite_message ) );
+        return ret;
+        }
+    else
+        {
+        navilite_message frame = NAVILITE_pack_frame_app_enable_content_update
+            (
+            content_type,
+            enable
+            );
+        bool ret = NAVILITE_send( (uint8_t*)&frame, sizeof( navilite_message ) );
+        return ret;
+        }
+    }
 #endif

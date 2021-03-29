@@ -460,6 +460,93 @@ NAVILITE_PRINTF( "\r\n[NAVILITE-CB] Route Calc Progress: %d ", progress );
 /*********************************************************************
 *
 * @private
+* hmi_update_callback_activetbtlistitem
+*
+* Callback API for active tbt list item update
+*
+* @param tbt_index active tbt list item index
+*        This index value is used to know which active TBT list item need to be
+*        shown.
+*
+*********************************************************************/
+static void hmi_update_callback_activetbtlistitem
+    (
+    uint16_t tbt_index
+    )
+{
+PRINTF( "\r\n[NAVILITE-CB] Active TBT list item index to show: %d\r\n", tbt_index );
+}
+
+/*********************************************************************
+*
+* @private
+* hmi_update_callback_tbtlist
+*
+* Callback API for list item size/data update
+* NOTE: To save bt bandwidth, please call NAVILITE_request_app_enable_content_update with
+*       NAVILITE_CONTENT_TYPE_NAVI_IMAGE/NAVILITE_ENABLE_TYPE_DISABLE to disable navi image transfer.
+*
+* @param action what kind of action it is
+* @param list_item data pointer to a list item received
+*        when action is NAVILITE_TBTLIST_ACTION_ITEMADD
+* @param list_item_index the index number that list item data begins to
+*        when action is NAVILITE_TBTLIST_ACTION_ITEMADD
+* @param list_total_items the total list items will be available
+*        when action is NAVILITE_TBTLIST_ACTION_LISTSIZE
+*        ( aka: how many items in this tbt list )
+* @param list_total_items_recevied current list total items count currently received
+*        when action is NAVILITE_TBTLIST_ACTION_ITEMADD
+* @param has_more_items_on_next_request true if there will be more items coming on next request
+*        otherwise, false. This value only available when action is NAVILITE_TBTLIST_ACTION_LISTSIZE
+*
+*********************************************************************/
+static void hmi_update_callback_tbtlist
+    (
+    navilite_tbt_list_action_type action,
+    navilite_tbt_list_type *list_item,
+    uint16_t list_item_no,
+    uint16_t list_total_items,
+    uint16_t list_total_items_recevied,
+    uint8_t has_more_items_on_next_request
+    )
+{
+if( action == NAVILITE_TBTLIST_ACTION_LISTSIZE )
+    {
+    PRINTF( "\r\n*[NAVILITE-CB NAVILITE_TBTLIST_ACTION_LISTSIZE] TBT LIST ITEM SIZE REQUEST: %d, more data in this request?%d", list_total_items, has_more_items_on_next_request );
+    // Integration Note: allocate memory size before receiving the list items.
+    }
+else if( action == NAVILITE_TBTLIST_ACTION_ITEMADD )
+    {
+    PRINTF( "\r\n[NAVILITE-CB NAVILITE_TBTLIST_ACTION_ITEMADD]  TBT item add notify for list item no: %d\r\n", list_item_no );
+    if( list_total_items_recevied > list_total_items )
+        {
+        PRINTF( "\r\nWARNING: the list item count exceeds the item count previously request (NAVILITE_TBTLIST_ACTION_LISTSIZE)! should be less or equal to %d\r\n", list_total_items );
+        }
+    // Integration Note: replace the following API demo codes for HMI integration
+    PRINTF( "* TBT LIST ITEM ADD - list item index:%d progress:(%d/%d)\r\n", list_item_no, list_total_items_recevied, list_total_items );
+    PRINTF( " list item index:%d\r\n", list_item->list_item_index );
+    PRINTF( " icon index:%d\r\n", list_item->icon_index );
+    PRINTF( " desc size:%d\r\n", list_item->desc_size );
+    PRINTF( " dist unit size:%d\r\n", list_item->dist_unit_size );
+    PRINTF( " distance * 100:" );
+    // Float value conversion
+    // NOTE: since float number console print requires another library, so
+    // here uses float value * 100 to show integer value instead without modifying existed project's setting.
+    float float_val = 0;
+    float_val = NAVILITE_bytes_to_float( list_item->distance );
+    PRINTF( "%d\r\n ",(int)( (float)float_val * 100) );
+    PRINTF( " distance unit:" );
+    NAVILITE_print_utf8( list_item->distance_unit, list_item->dist_unit_size );
+    PRINTF( "\r\n" );
+    PRINTF( " desc : " );
+    NAVILITE_print_utf8( list_item->desc, list_item->desc_size  );
+    PRINTF( "\r\n" );
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * hmi_update_callback_dialogevent
 *
 * Callback API for dialog event
@@ -556,4 +643,6 @@ NAVILITE_register_update_callback_viapointcount( hmi_update_callback_viapointcou
 NAVILITE_register_update_callback_routecalcprogress( hmi_update_callback_routecalcprogress );
 NAVILITE_register_update_callback_dialogevent( hmi_update_callback_dialogevent );
 NAVILITE_register_update_callback_nextturndistance( hmi_update_callback_nextturndistance );
+NAVILITE_register_update_callback_activetbtlistitem( hmi_update_callback_activetbtlistitem );
+NAVILITE_register_update_callback_tbtlist( hmi_update_callback_tbtlist );
 }

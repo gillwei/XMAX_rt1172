@@ -22,6 +22,9 @@
 #include "ewrte.h"
 #include "fsl_debug_console.h"
 
+#define NAVILITE_DEBUG true
+#define NAVILITE_DEBUG_DETAIL false
+
 #if( NAVILITE_SERIAL_SEND_SUPPORT == 1 )
 #include "bt_spp_iap2.h"
 #endif
@@ -86,6 +89,10 @@ int i = 0;
 int dataoffset = 0;
 navilite_message* frame = (navilite_message*)data;
 
+#if( NAVILITE_DEBUG )
+    NAVILITE_PRINTF( "\r\n#NAVILITE-DEBUG# (NAVILITE_send MTU:%d, payload: %d, service: %d, data_type: %s) >> ", FIELD_PAYLOADDATA_OFFSET + frame->payload_size, frame->payload_size, frame->service_type, (frame->payload_data_type == 0) ? "V":"P" );
+#endif
+
 // copy the frame header except the payload to temp buffer
 memcpy( (char*)navilite_send_buffer, (char*)frame, dataoffset = sizeof( navilite_message ) - sizeof( uint8_t* ) );
 
@@ -93,35 +100,42 @@ memcpy( (char*)navilite_send_buffer, (char*)frame, dataoffset = sizeof( navilite
 if ( frame->payload_data_type == NAVILITE_PAYLOAD_DATA_TYPE_AS_POINTER )
     {
     memcpy( (char*)navilite_send_buffer + FIELD_PAYLOADDATA_OFFSET, (char*)frame->data_pointer, frame->payload_size );
-    NAVILITE_PRINTF( "# payload data retrieved from pointer:%p", frame->data_pointer );
-
+#if( NAVILITE_DEBUG )
+    NAVILITE_PRINTF( "\r\n++ Data as follows:\r\n++ " );
     // print the payload frame content
     for( i = 0; i < frame->payload_size; i++ )
         {
         NAVILITE_PRINTF( "[0x%x]", navilite_send_buffer[FIELD_PAYLOADDATA_OFFSET + i] );
         }
     NAVILITE_PRINTF( "\r\n" );
+#endif
     }
 else
     {
-    NAVILITE_PRINTF( "data value: 0x%x from value type", navilite_send_buffer[FIELD_PAYLOADDATA_OFFSET] );
+#if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
+    NAVILITE_PRINTF( "\r\n++ Value is: 0x%x\r\n", navilite_send_buffer[FIELD_PAYLOADDATA_OFFSET] );
+#endif
     }
 
-// @TODO: implement a queue buffer to handling serial send if available
+#if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
+    NAVILITE_print_frame( frame );
+#endif
 
 #if( NAVILITE_SERIAL_SEND_SUPPORT == 1 )
     // Note: full frame header size - payload pointer filed + real data size = actual data frame to be sent!!
-    NAVILITE_PRINTF( "# SEND SIZE:%d", FIELD_PAYLOADDATA_OFFSET + frame->payload_size );
-
-    // print the payload frame content
-    NAVILITE_print_frame( frame );
 
     if( NAVILITE_get_connect_mode() == NAVILITE_CONN_BT_IAP2 )
         {
+        #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
+            NAVILITE_PRINTF( "\r\n++ Sent via IAP2\r\n" );
+        #endif
         ret = BT_IAP2_send( FIELD_PAYLOADDATA_OFFSET + frame->payload_size, navilite_send_buffer );
         }
     else
         {
+        #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
+            NAVILITE_PRINTF( "\r\n++ Sent via SPP\r\n" );
+        #endif
         ret = BT_SPP_send( FIELD_PAYLOADDATA_OFFSET + frame->payload_size, navilite_send_buffer );
         }
 #endif
@@ -152,4 +166,3 @@ NAVILITE_PRINTF( "@TODO:  NAVILITE_receive(%s,%d)" , data, data_size );
 // @TODO: implement a queue buffer to handling serial receive if available
 return ret;
 }
-

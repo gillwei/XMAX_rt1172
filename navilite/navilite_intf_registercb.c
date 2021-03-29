@@ -295,7 +295,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     /*********************************************************************
     *
     * @public
-    * NAVILITE_register_update_callback_active_tbtlistitem
+    * NAVILITE_register_update_callback_activetbtlistitem
     *
     * register active navilite tbt list content notify callback
     *
@@ -303,7 +303,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     * @return The result of the callback registering
     *
     *********************************************************************/
-    bool NAVILITE_register_update_callback_active_tbtlistitem
+    bool NAVILITE_register_update_callback_activetbtlistitem
         (
         navilite_callback_func_activetbtitem callback_func
         )

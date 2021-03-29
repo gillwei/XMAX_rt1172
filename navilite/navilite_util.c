@@ -52,6 +52,46 @@
 /*********************************************************************
 *
 * @public
+* NAVILITE_float_to_bytes
+*
+* convert float value to data bytes
+* @param float_value float value
+* @return the data bytes of float value
+*
+*********************************************************************/
+uint32_t NAVILITE_float_to_bytes
+    (
+    float float_value
+    )
+{
+    uint32_t bytes_value;
+    memcpy( &bytes_value, &float_value, sizeof( bytes_value ) );
+    return bytes_value;
+}
+
+/*********************************************************************
+*
+* @public
+* NAVILITE_bytes_to_float
+*
+* convert bytes data to float
+* @param bytes_value float value
+* @return float value
+*
+*********************************************************************/
+float NAVILITE_bytes_to_float
+    (
+    uint32_t bytes_value
+    )
+{
+    float float_value = 0;
+    memcpy( &float_value, &bytes_value, sizeof( float_value ) );
+    return float_value;
+}
+
+/*********************************************************************
+*
+* @public
 * NAVILITE_print_utf8
 *
 * print string to console  character by character
@@ -88,11 +128,8 @@ void NAVILITE_print_frame
     navilite_message* msg
     )
 {
-int i = 0;
-
 PRINTF("\r\n --- NAVILITE FRAME INFO ---\r\n");
 PRINTF("Frame Type:");
-
 switch( msg->frame_type )
     {
     case NAVILITE_FRAMETYPE_MOBILE_REQUEST:
@@ -124,18 +161,11 @@ switch( msg->service_type )
     case NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE:
         PRINTF( "IMAGEFRAME_UPDATE" );
         break;
-    case NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE_ACK:
-        PRINTF( "IMAGEFRAME_UPDATE_ACK" );
-        break;
     case NAVILITE_SERVICETYPE_ETA_UPDATE:
-        PRINTF( "ETA_UPDATE:" );
-        char tmp[255];
-        strncpy( tmp, (char*)msg->data_pointer, msg->payload_size );
-        tmp[msg->payload_size] = 0;
-        for( i = 0; i < msg->payload_size; i++ )
-            {
-            PRINTF( "%c", msg->data_pointer[i] );
-            }
+        PRINTF( "ETA_UPDATE" );
+        break;
+    case NAVILITE_SERVICETYPE_NAVIGATION_STATUS_UPDATE:
+        PRINTF( "NAVIGATION_STATUS_UPDATE" );
         break;
     case NAVILITE_SERVICETYPE_CURROADNAME_UPDATE:
         PRINTF( "CURROADNAME_UPDATE" );
@@ -165,25 +195,97 @@ switch( msg->service_type )
         PRINTF( "OFFICESETTING_UPDATE" );
         break;
     case NAVILITE_SERVICETYPE_MAP_ZOOM_LEVEL_UPDATE:
-        PRINTF( "ZOOMLEVEL_UPDATE" );
+        PRINTF( "MAP_ZOOM_LEVEL_UPDATE" );
         break;
     case NAVILITE_SERVICETYPE_ROUTE_CALC_PROGRESS_UPDATE:
         PRINTF( "ROUTE_CALC_PROGRESS_UPDATE" );
         break;
+    case NAVILITE_SERVICETYPE_DAYNIGHT_MODE_UPDATE:
+        PRINTF( "DAYNIGHT_MODE_UPDATE" );
+        break;
     case NAVILITE_SERVICETYPE_BT_THROUGHPUT_TIMEOUT_UPDATE:
-        PRINTF( "NAVILITE_SERVICETYPE_BT_THROUGHTPUT_TIMEOUT_UPDATE" );
+        PRINTF( "BT_THROUGHPUT_TIMEOUT_UPDATE" );
+        break;
+    case NAVILITE_SERVICETYPE_SPEED_LIMIT_UPDATE:
+        PRINTF( "SPEED_LIMIT_UPDATE" );
         break;
     case NAVILITE_SERVICETYPE_VIA_POINT_COUNT_UPDATE:
         PRINTF( "VIA_POINT_COUNT_UPDATE" );
         break;
+    case NAVILITE_SERVICETYPE_DIALOG_EVENT_UPDATE:
+        PRINTF( "DIALOG_EVENT_UPDATE" );
+        break;
+    case NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE_ACK:
+        PRINTF( "IMAGEFRAME_UPDATE_ACK" );
+        break;
+    case NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK:
+        PRINTF( "MCU_ESN_UPDATE_ACK" );
+        break;
+    case NAVILITE_SERVICETYPE_AUTH_REQUEST_ACK:
+        PRINTF( "AUTH_REQUEST_ACK" );
+        break;
+    case NAVILITE_SERVICETYPE_AUTH_REQUEST_NACK:
+        PRINTF( "AUTH_REQUEST_NACK" );
+        break;
+    case NAVILITE_SERVICETYPE_AUTH_REQUEST:
+        PRINTF( "AUTH_REQUEST" );
+        break;
+    // Note: Mobile request types
+    case NAVILITE_SERVICETYPE_APP_START_ROUTE_REQUEST:
+        PRINTF( "APP_START_ROUTE_REQUEST" );
+        break;
+    case NAVILITE_SERVICETYPE_APP_STOP_ROUTE_REQUEST:
+        PRINTF( "APP_STOP_ROUTE_REQUEST" );
+        break;
+    case NAVILITE_SERVICETYPE_APP_SKIP_NEXT_WAYPOINT_REQUEST:
+        PRINTF( "APP_SKIP_NEXT_WAYPOINT_REQUEST" );
+        break;
+    case NAVILITE_SERVICETYPE_APP_MAP_ZOOM_IN_REQUEST:
+        PRINTF( "APP_MAP_ZOOM_IN_REQUEST" );
+        break;
+    case NAVILITE_SERVICETYPE_APP_MAP_ZOOM_OUT_REQUEST:
+        PRINTF( "APP_MAP_ZOOM_OUT_REQUEST" );
+        break;
+    case NAVILITE_SERVICETYPE_APP_GO_HOME_REQUEST:
+        PRINTF( "APP_GO_HOME_REQUEST" );
+        break;
+    case NAVILITE_SERVICETYPE_APP_GO_OFFICE_REQUEST:
+        PRINTF( "APP_GO_OFFICE_REQUEST" );
+        break;
+    case NAVILITE_SERVICETYPE_APP_START_CONTENT_UPDATE_REQUEST:
+        PRINTF( "APP_START_CONTENT_UPDATE_REQUEST" );
+        break;
+    case NAVILITE_SERVICETYPE_APP_STOP_CONTENT_UPDATE_REQUEST:
+        PRINTF( "APP_STOP_CONTENT_UPDATE_REQUEST" );
+        break;
+    case NAVILITE_SERVICETYPE_APP_START_IMAGE_FRAME_REQUEST:
+        PRINTF( "START_IMAGE_FRAME_REQUEST(Obsolete)" );
+        break;
+    case NAVILITE_SERVICETYPE_APP_STOP_IMAGE_FRAME_REQUEST:
+        PRINTF( "APP_STOP_IMAGE_FRAME_REQUEST(Obsolete)" );
+        break;
+    // Note: MCU report types
+    case NAVILITE_SERVICETYPE_MCU_METER_SPEED_UPDATE:
+        PRINTF( "MCU_METER_SPEED_UPDATE" );
+        break;
     case NAVILITE_SERVICETYPE_MCU_ESN_UPDATE:
         PRINTF( "MCU_ESN_UPDATE" );
+        break;
+    case NAVILITE_SERVICETYPE_MCU_SYSINFO_UPDATE:
+        PRINTF( "MCU_SYSINFO_UPDATE" );
+        break;
+    case NAVILITE_SERVICETYPE_MCU_DIALOG_USER_SELECT_UPDATE:
+        PRINTF( "MCU_DIALOG_USER_SELECT_UPDATE" );
+        break;
+    // Note: Appendix
+    case NAVILITE_SERVICETYPE_TBTLIST_DATA_UPDATE:
+        PRINTF( "TBTLIST_DATA_UPDATE" );
         break;
     default:
         PRINTF( "OTHER SERVICE CODE UNDEFINED:0x%x",  msg->service_type );
         break;
     }
-PRINTF( "\r\nPayLoad Type:%d",msg->payload_data_type);
-PRINTF( "\r\nPayload Size:%d\r\n", msg->payload_size );
+PRINTF( "\r\nPayLoad Type:%d", msg->payload_data_type );
+PRINTF( "\r\nPayload Size:%d", msg->payload_size );
 PRINTF( "\r\nPayload value:%d\r\n", msg->data_value );
 }

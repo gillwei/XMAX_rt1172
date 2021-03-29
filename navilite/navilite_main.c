@@ -67,7 +67,7 @@ static uint16_t session_tbtlist_size_total = 0;
 static uint16_t session_tbtlist_size_last_total = 0;
 static uint16_t session_tbtlist_size_counter = 0;
 static uint16_t session_tbtlist_item_counter = 0;  // used for counting list items under same list index
-static navilite_tbt_list_type* session_tbtlist_data_ptr = NULL;
+static navilite_tbt_list_type session_tbtlist_data;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -92,6 +92,7 @@ static void init_session_status
     void
     )
 {
+navilite_session_status.inited = 0; // reset inited status
 navilite_session_status.navigation_status = 0; // reset navigating status
 navilite_session_status.home_status = 0; // home setting
 navilite_session_status.office_status = 0; // office setting
@@ -287,7 +288,6 @@ PRINTF( "NAVILITE_init - create task\r\n" );
 
 // ESN sent & acked notification callback
 navilite_content_update_callbacks.callback_func_esn_sent = NULL;
-
 navilite_content_update_callbacks.callback_func_imageframe = NULL;
 navilite_content_update_callbacks.callback_func_eta = NULL;
 navilite_content_update_callbacks.callback_func_currentroadname = NULL;
@@ -304,6 +304,11 @@ navilite_content_update_callbacks.callback_func_tbtmodestatus = NULL;
 navilite_content_update_callbacks.callback_func_speedlimit = NULL;
 navilite_content_update_callbacks.callback_func_viapointcount = NULL;
 navilite_content_update_callbacks.callback_func_navigationstatus = NULL;
+
+// Session variables init
+session_tbtlist_size_total = 0;
+session_tbtlist_size_last_total = 0;
+session_tbtlist_size_counter = 0;
 
 // Setup queue buffer
 navilite_setup_queue_buffer();
@@ -323,9 +328,9 @@ HCI_spp_iap2_add_data_callback( ( spp_iap2_data_callback )NAVILITE_queue_hci_buf
 
 create_task();
 
-#if( NAVILITE_LOCAL_HMI_TEST_MODE == 1 )
+#if( NAVILITE_LOCAL_HMI_TEST_MODE == 1 || UNIT_TEST_NAVILITE )
     navilite_setup( NAVILITE_INIT_FAKE_DATA );
-    PRINTF( "#HMI local test mode setting detected! run fake data test mode!\r\n" );
+    PRINTF( "#test mode setting detected! run fake data test mode!\r\n" );
 #else
     navilite_setup( NAVILITE_INIT_NORMAL );
 #endif
@@ -439,6 +444,69 @@ else
 /*********************************************************************
 *
 * @private
+* navilite_frame_count
+*
+* Count the head protocol
+*
+* @return return the counts of protocol heads
+*
+*********************************************************************/
+int navilite_frame_count
+    (
+    uint8_t* data,
+    uint8_t data_len
+    )
+{
+int counter = 0;
+
+if( data_len < 5 )
+    {
+     return -1;
+    }
+for( int i = 0; ( data_len >= 5 ) && ( i < data_len ); i++ )
+    {
+        if( ( data[i] == 110 ) && ( data[i+1] == 65 ) && ( data[i+2] == 108 ) && ( data[i+3] == 64 ) )
+            {
+            counter++;
+            }
+    }
+return counter;
+}
+
+/*********************************************************************
+*
+* @private
+* navilite_find_next_pos
+*
+* Find next protocol head
+*
+* @return return the next position of protocol head
+*
+*********************************************************************/
+int navilite_find_next_pos
+    (
+    uint8_t* data,
+    uint8_t data_len
+    )
+{
+if( data_len < 5 )
+    {
+     return -1;
+    }
+
+for( int i = 0; (data_len >= 5) && (i < data_len); i++ )
+    {
+        if( ( data[i] == 110 ) && ( data[i + 1] == 65 ) && ( data[i + 2] == 108 ) && ( data[i + 3] == 64 ) )
+            {
+            return i;
+            }
+    }
+return -1;
+}
+
+/*********************************************************************
+*
+* @private
 * navilite_receive_buffer_and_parse
 *
 * Receive buffer and parse the buffer from message queue
@@ -453,6 +521,13 @@ void navilite_receive_buffer_and_parse
 {
 size_t received_bytes;
 int buffer_remained = 0;
+int pos = 0;
+int t1 = 0;
+int t2 = 0;
+int fc = 0;
+int step = 0;
+bool is_jpeg_mode = false;
+
 
 while( ( buffer_remained = xStreamBufferBytesAvailable( buffer_handle ) > 0 ) )
     {
@@ -461,10 +536,57 @@ while( ( buffer_remained = xStreamBufferBytesAvailable( buffer_handle ) > 0 ) )
             sizeof( navilite_queue_buffer ),
             portMAX_DELAY );
 
-    #if( NAVILITE_DEBUG )
-        PRINTF( "Parse Data:[%d], Buffer Remained:%d\r\n", received_bytes, buffer_remained );
-    #endif
-    NAVILITE_parse_data( navilite_queue_buffer, received_bytes );
+    fc = navilite_frame_count( navilite_queue_buffer, received_bytes );
+
+    if( fc <= 1 )
+    {
+        t1 = ( navilite_find_next_pos( navilite_queue_buffer , received_bytes ) );
+
+        if( is_jpeg_mode && ( t1 > 0 ) )
+            {
+            is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer, t1 );
+            is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer + t1, received_bytes - t1 );
+            }
+        else
+            {
+            is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer, received_bytes );
+            }
+    }
+
+    if( fc > 1 )
+    {
+        t2 = navilite_find_next_pos( navilite_queue_buffer + 1, received_bytes );
+        t1 = ( navilite_find_next_pos( navilite_queue_buffer , received_bytes ) );
+        step = 0;
+
+        if( !is_jpeg_mode && ( t1 > t2 ) )
+            {
+            is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer, t1 );
+            }
+
+        if( is_jpeg_mode && ( t1 > 0 ) )
+            {
+            is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer, t1 );
+            }
+
+        while ( ( step <= fc ) )
+            {
+            if( t1 >= 0 )
+                {
+                int hc = navilite_frame_count( navilite_queue_buffer + t1, received_bytes - t1 );
+                if( hc <= 0 ) {
+                    break;
+                }
+
+                is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer + t1, t2 - t1 + 1 );
+
+                t1 = t2 + 1;
+                pos = navilite_find_next_pos( navilite_queue_buffer + t1 + 1 , received_bytes - t1 ) ;
+                t2 = t1 + ( (pos < 0) ? ( received_bytes - t1 ) : pos);
+                }
+            step++;
+            }
+        }
     }
 }
 
@@ -481,15 +603,19 @@ static void navilite_ack_reply
     void
     )
 {
-bool ret = false;
-int try_count = 3;
+#if( NAVILITE_SESSION_ACK_SUPPORT )
+    bool ret = false;
+    int try_count = 3;
 
-// response ACK when receive a image frame and try resend if failed
-while( !ret && try_count-- )
-    {
-    ret = NAVILITE_report_app_service_ack( NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE_ACK );
-    if( !ret ) PRINTF( "# ERROR: SENDING failed, and resend # try:%d\r\n", try_count );
-    }
+    // response ACK when receive a image frame and try resend if failed
+    while( !ret && try_count-- )
+        {
+        ret = NAVILITE_report_app_service_ack( NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE_ACK );
+        if( !ret ) PRINTF( "# ERROR: SENDING failed, and resend # try:%d\r\n", try_count );
+        }
+#else
+   PRINTF( "# WARNING: image frame update ack reply is disabled!\r\n" );
+#endif
 }
 
 /*********************************************************************
@@ -501,9 +627,10 @@ while( !ret && try_count-- )
 *
 * @param data data pointer of NAVILITE protocol stream
 * @param data_len data length of the data pointer received
-*
+* @return return true if jpeg mode is available
+*                false if jpeg not available
 *********************************************************************/
-void NAVILITE_parse_data
+bool NAVILITE_parse_data
     (
     uint8_t *data,
     uint32_t data_len
@@ -536,19 +663,25 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         }
     // print the frame information for debug
 #if( NAVILITE_DEBUG )
+    int i;
     PRINTF( "\r\n======= FRAME DEBUG (MTU size:%d) ========\r\n", data_len);
     PRINTF("\r\nRAW TEXT:");
-    for( i=0; i < sizeof( navilite_message );i++ )
+    for( i = 0; i < sizeof( navilite_message ); i++ )
         {
         PRINTF("[%c]", data[i] );
         }
-    PRINTF("\r\nASCII:");
-    for( i=0; i < sizeof( navilite_message );i++ )
-        {
-        PRINTF("[%d]", data[i] );
-        }
-    PRINTF("\r\n");
 #endif
+
+#if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
+    PRINTF("\r\nASCII(%d-%d):", d_counter++, data_len );
+    PRINTF("\r\n{");
+    for( i = 0; i < data_len; i++ )
+        {
+        PRINTF("%d,", data[i] );
+        }
+    PRINTF("}\r\n");
+#endif
+
     strncpy( (char*)data, (char*)navilite_packet.magic_code, 4 );
 
     // magic code
@@ -557,7 +690,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
     // navilite version
     navilite_packet.version = data[idx++];
 #if( NAVILITE_DEBUG )
-    PRINTF( "version:%d\r\n", navilite_packet.version );
+    PRINTF( "\r\nversion:%d\r\n", navilite_packet.version );
 #endif
     // navlite frame type
     navilite_packet.frame_type = data[idx++];
@@ -783,12 +916,11 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         }
 
     // NAVILITE_SERVICETYPE_NEXTTURNDIST_UPDATE
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_NAVIEVENTTEXTUPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_NEXTTURNDIST_UPDATE )
         {
         uint8_t icon_index = 0;
         uint32_t distance = 0;
         uint8_t dist_unit_str_size = 0;
-        uint8_t* dist_unit_str = NULL;
 
         int i = 0;
         // parsing the icon index
@@ -813,11 +945,116 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
             }
         }
 
+    // NAVILITE_SERVICETYPE_ACTIVETURBLIST_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_ACTIVETURBLIST_UPDATE )
+        {
+        uint16_t active_tbt_index = 0; // app will inform current active tbt list to let HMI know what tbt list should be shown
+        active_tbt_index = (uint16_t)navilite_packet.data_value;
+        // fire callback when available
+        if( navilite_content_update_callbacks.callback_func_activetbtitem )
+            {
+            // Callback API for next turn distance notification update
+            navilite_content_update_callbacks.callback_func_activetbtitem( active_tbt_index );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_TBTLIST_UPDATE  (list SIZE/hasMoreData notify)
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_TBTLIST_UPDATE )
+        {
+        uint16_t list_item_count = 0;
+        uint8_t has_more_items = 0;
+        // list item count extraction
+        for( ; idx < data_len; idx++ )
+            {
+            list_item_count = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+            // has more data in next request for UI to show more data on item lists(> 50);
+            idx += 2;
+            has_more_items = data[idx++];
+            }
+        session_tbtlist_size_total = list_item_count;
+        session_tbtlist_item_counter = 0; // reset the counter when this command is received
+        PRINTF( "[NAVILITE_BEGIN TBT LIST ITEM SIZE: %d, reset session_tbtlist_item_counter = 0]\r\n", session_tbtlist_size_total );
+
+        if( session_tbtlist_size_last_total != session_tbtlist_size_counter)
+            {
+            session_tbtlist_size_last_total = session_tbtlist_size_total;
+            PRINTF( "#WARNING: previous tbtlist is not completely received! SHOULD HAVE %d lists but only %d lists received\r\n", session_tbtlist_size_last_total, session_tbtlist_size_counter );
+            }
+        if( navilite_content_update_callbacks.callback_func_nexttbtist )
+            {
+            navilite_content_update_callbacks.callback_func_nexttbtist
+                (
+                NAVILITE_TBTLIST_ACTION_LISTSIZE,
+                NULL,
+                0,
+                session_tbtlist_size_total,  // total items will be updated later by NAVILITE_SERVICETYPE_TBTLIST_DATA_UPDATE
+                0,
+                has_more_items // has more item on next request?
+                );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_TBTLIST_DATA_UPDATE  // list item data notify
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_TBTLIST_DATA_UPDATE )
+        {
+
+        if( session_tbtlist_size_total == 0 )
+            {
+            PRINTF( "#ERROR: session_tbtlist_size_total = 0 ; NAVILITE_SERVICETYPE_TBTLIST_UPDATE request need to be issued first from app!\r\n" );
+            }
+
+            session_tbtlist_size_counter ++;
+            uint16_t list_item_index = 0;
+            uint8_t icon_index = 0;
+            uint8_t desc_str_size;
+            uint8_t dist_unit_str_size;
+            uint32_t distance = 0;
+            uint8_t* desc_str = NULL;
+            uint8_t* dist_unit_str = NULL;
+
+            for( ; idx < data_len; idx++ )
+                {
+                // list index
+                list_item_index = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+                idx += 2;
+                // icon index
+                icon_index = (uint8_t)data[idx++];
+                // desc_size
+                desc_str_size = (uint8_t)data[idx++];
+                // dist_unit_size;
+                dist_unit_str_size = (uint8_t)data[idx++];
+                // distance
+                distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+                idx += sizeof( distance ); // now point to distance unit string portion
+                // store the distance unit string
+                dist_unit_str = navilite_buffer;
+                // copy the unit string to buffer
+                memcpy( navilite_buffer, data + idx, dist_unit_str_size );
+                idx += dist_unit_str_size;
+                // store the desc string pointer
+                desc_str = navilite_buffer + idx;
+                // copy the desc string to buffer
+                memcpy( navilite_buffer + idx, data + idx , desc_str_size );
+                idx += data_len;
+                if( navilite_content_update_callbacks.callback_func_nexttbtist )
+                    {
+                    // prepare list item data
+                    session_tbtlist_data.list_item_index = list_item_index;
+                    session_tbtlist_data.icon_index = icon_index;
+                    session_tbtlist_data.desc_size = desc_str_size;
+                    session_tbtlist_data.dist_unit_size = dist_unit_str_size;
+                    session_tbtlist_data.distance= distance;
+                    session_tbtlist_data.distance_unit = dist_unit_str;
+                    session_tbtlist_data.desc = desc_str;
+                    // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                    navilite_content_update_callbacks.callback_func_nexttbtist( NAVILITE_TBTLIST_ACTION_ITEMADD, &session_tbtlist_data, list_item_index, session_tbtlist_size_total, ++session_tbtlist_item_counter, 0 );
+                    }
+                }
+        }
+
     // NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK
     if( navilite_packet.service_type == NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK )
         {
-        PRINTF( "*NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK*\r\n" );
-
         if( navilite_content_update_callbacks.callback_func_esn_sent )
             {
             navilite_content_update_callbacks.callback_func_esn_sent();
@@ -906,4 +1143,5 @@ else if( is_jpeg_mode )
         }
     // Otherwise, the map frame update's payload data is parsing until next frame request!
     }
+return is_jpeg_mode;
 }

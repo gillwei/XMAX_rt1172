@@ -81,6 +81,15 @@ typedef enum tagNAVILITE_EVENT_CAMERA_EXTRA_SUBTYPE
     NAVILITE_CAM_TYPE_UNKNOWN = 11
     } navilite_navievent_camera_extra_subtype;
 
+// argument used for start/stop list request
+typedef enum tagNAVILITE_CONTENT_TYPE
+    {
+    NAVILITE_CONTENT_TYPE_NAVI_IMAGE = 1, // reserved for code refactor
+    NAVILITE_CONTENT_TYPE_TBT_LIST = 2,
+    NAVILITE_CONTENT_TYPE_FAVORITE_LIST = 3,
+    NAVILITE_CONTENT_TYPE_STATION_LIST = 4
+    } navilite_content_type;
+
 typedef enum tagNAVILITE_SWITCH_TYPE
     {
     NAVILITE_ENABLE_TYPE_ENABLE = 1,
@@ -93,6 +102,13 @@ typedef enum tagNAVILITE_NAVIGATION_STATUS_TYPE
     NAVILITE_STATE_NAVIGATING  = 1,  ///< Navigating status
     } navilite_navigation_status_type;
 
+typedef enum tagNAVILITE_TBTLIST_ACTON_TYPE
+    {
+    NAVILITE_TBTLIST_ACTION_LISTSIZE = 1,  ///< list size notify
+    NAVILITE_TBTLIST_ACTION_ITEMADD  = 2,  ///< list item add notify
+    NAVILITE_TBTLIST_ACTION_OTHER    = 0
+    } navilite_tbt_list_action_type;
+
 /*--------------------------------------------------------------------
                         TYPES
 --------------------------------------------------------------------*/
@@ -100,12 +116,13 @@ typedef enum tagNAVILITE_NAVIGATION_STATUS_TYPE
 
 typedef struct tagNAVILITE_TBT_LIST_TYPE
     {
-    uint32_t list_index;
+    uint16_t list_item_index;
     uint8_t icon_index;
     uint8_t desc_size;
-    uint8_t dist_size;
+    uint8_t dist_unit_size;
+    uint32_t distance; // NOTE: storage as FP32
+    uint8_t* distance_unit;
     uint8_t* desc;
-    uint8_t* distance;
     } navilite_tbt_list_type;
 
 /* Navigation Events */
@@ -133,8 +150,8 @@ typedef void ( *navilite_callback_func_eta )( uint32_t value );
 typedef void ( *navilite_callback_func_bt_timeout )( uint8_t value );
 typedef void ( *navilite_callback_func_currentroadname )( uint8_t* str, uint8_t str_size );
 typedef void ( *navilite_callback_func_nextturndistance )( uint8_t icon_index, uint32_t distance, uint8_t* dist_unit_str, uint8_t dist_unit_str_size );
-typedef void ( *navilite_callback_func_nexttbtlist )( navilite_tbt_list_type *list, uint8_t list_size );
-typedef void ( *navilite_callback_func_activetbtitem )( uint8_t active_tbt_index);
+typedef void ( *navilite_callback_func_nexttbtlist )( navilite_tbt_list_action_type action, navilite_tbt_list_type *list, uint16_t list_item_index, uint16_t list_total_items, uint16_t list_item_total_recevied, uint8_t has_more_items_on_next_request );
+typedef void ( *navilite_callback_func_activetbtitem )( uint16_t active_tbt_index);
 typedef void ( *navilite_callback_func_navieventtext )( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_event_type, navilite_navievent_camera_extra_subtype navi_extra_sub_type, uint8_t visibility );
 typedef void ( *navilite_callback_func_homelocationsetting )( uint8_t is_home_location );
 typedef void ( *navilite_callback_func_officelocationsetting )( uint8_t is_office_location );
@@ -249,14 +266,14 @@ bool NAVILITE_register_update_callback_connected();
 bool NAVILITE_register_update_callback_disconnected();
 
 /* NaviLite protocol parsing */
-void NAVILITE_parse_data( uint8_t *, uint32_t );
+bool NAVILITE_parse_data( uint8_t*, uint32_t );
 
 /* NaviLite Data Transfer API for queuing hci data buffers */
-void NAVILITE_queue_hci_buffer( uint8_t *, uint32_t );
+void NAVILITE_queue_hci_buffer( uint8_t*, uint32_t );
 
 /* NaviLite transportation API */
-bool NAVILITE_send( uint8_t *, uint32_t );
-bool NAVILITE_receive( uint8_t *, uint32_t );
+bool NAVILITE_send( uint8_t*, uint32_t );
+bool NAVILITE_receive( uint8_t*, uint32_t );
 
 /* NaviLite App Request API (Request Mobile App to do something) */
 bool NAVILITE_request_app_startroute( uint16_t route_index ); //! request navilite mobile app to start routing
