@@ -27,12 +27,7 @@ class Application : Core::Root
   $rect <40,490,270,530>
   slot OnDisclaimerAcceptedSlot
   {
-    var Top::TOP01_Disclaimer Disclaimer = ( Top::TOP01_Disclaimer )sender;
-    if( null != Disclaimer )
-    {
-      GetRoot().EndModal( Disclaimer );
-      GetRoot().Remove( Disclaimer );
-    }
+    IsDisclaimerDismissed = true;
 
     //TODO: switch to the last page saved in EEPROM
     GetRoot().SwitchToDialog( new Home::HOM11_TachoVisualizer, null, null, null, null, null, null, null, null, null, false );
@@ -43,23 +38,22 @@ class Application : Core::Root
   {
     var Top::TOP01_Disclaimer Disclaimer = new Top::TOP01_Disclaimer;
     Disclaimer.OnAcceptButtonClicked = OnDisclaimerAcceptedSlot;
-    GetRoot().Add( Disclaimer, 0 );
-    GetRoot().BeginModal( Disclaimer );
+    PresentDialog( Disclaimer, null, null, null, null, null, null, null, null, false );
   }
 
   // For disclaimer
   note group Note
   {
-    attr Bounds = <10,390,300,550>;
+    attr Bounds = <10,390,300,600>;
   }
 
   // Factory Test
   note group Note2
   {
-    attr Bounds = <10,570,320,780>;
+    attr Bounds = <10,620,300,860>;
   }
 
-  $rect <40,610,290,650>
+  $rect <40,660,270,700>
   object Core::SystemEventHandler FactoryTestEventHandler
   {
     preset OnEvent = OnFactoryTestEventSlot;
@@ -68,7 +62,7 @@ class Application : Core::Root
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <40,660,290,700>
+  $rect <40,710,270,750>
   slot OnFactoryTestEventSlot
   {
     var Factory::TestContext TestContext = ( Factory::TestContext )FactoryTestEventHandler.Context;
@@ -86,6 +80,7 @@ class Application : Core::Root
             PresentDialog( FactoryTestDialog, null, null, null, null, null, null, null, null, false );
           }
           FactoryTestDialog.PatternIdx = TestContext.Data;
+          IsFactoryTest = true;
         }
         case Enum::FactoryTest.BurnInStart:
         {
@@ -93,11 +88,13 @@ class Application : Core::Root
           var Factory::DisplayAutoRun DisplayAutoRunDialog = new Factory::DisplayAutoRun;
           DisplayAutoRunDialog.BurnInEnabled = true;
           PresentDialog( DisplayAutoRunDialog, null, null, null, null, null, null, null, null, false );
+          IsFactoryTest = true;
         }
         case Enum::FactoryTest.Quit:
         {
           DismissFactoryTestDialog();
           StatusBarVisible = true;
+          IsFactoryTest = false;
         }
         default:;
       }
@@ -151,7 +148,7 @@ class Application : Core::Root
     }
   }
 
-  $rect <40,710,290,750>
+  $rect <40,760,270,800>
   method void DismissFactoryTestDialog()
   {
     var Core::Group FactoryTestDialog = this.FindDialogByClass( Factory::DisplayAutoRun );
@@ -420,4 +417,41 @@ class Application : Core::Root
       DismissDialog( GetDialogAtIndex( DialogIdx ), Effect::NoSlideOut, null, null, null, null, false );
     }
   }
+
+  // Phone
+  note group PhoneNote
+  {
+    attr Bounds = <660,740,1000,900>;
+  }
+
+  $rect <680,780,980,820>
+  object Core::SystemEventHandler PhoneCallStateChangedEventHandler
+  {
+    preset OnEvent = OnPhoneCallStateChangedSlot;
+    preset Event = DeviceInterface::NotificationDevice.PhoneCallStateChangedSystemEvent;
+  }
+
+  $rect <680,830,980,870>
+  slot OnPhoneCallStateChangedSlot
+  {
+    var Enum::PhoneCallState PhoneCallState = DeviceInterface::NotificationDevice.GetPhoneCallState();
+    switch( PhoneCallState )
+    {
+      case Enum::PhoneCallState.INCOMING:
+      {
+        if( IsDisclaimerDismissed && !IsFactoryTest )
+        {
+          var Telephone::TEL01_IncomingCall IncomingCallDialog = new Telephone::TEL01_IncomingCall;
+          PresentDialog( IncomingCallDialog, null, null, null, null, null, null, null, null, false );
+        }
+      }
+      default:;
+    }
+  }
+
+  $rect <40,540,270,580>
+  var bool IsDisclaimerDismissed = false;
+
+  $rect <40,810,270,850>
+  var bool IsFactoryTest = false;
 }

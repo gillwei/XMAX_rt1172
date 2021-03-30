@@ -1,0 +1,372 @@
+﻿$version 10.00
+
+$rect <10,20,210,60>
+$output false
+class ImageButton : Core::Group
+{
+  $rect <0,90,200,130>
+  inherited property Bounds = <0,0,94,75>;
+
+  $rect <20,20,160,60>
+  object Views::Image BackgroundImage
+  {
+    preset Bounds = <0,0,94,75>;
+    preset Bitmap = Resource::PhoneButtonBG;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ForegroundImage
+  {
+    preset Bounds = <0,0,94,75>;
+    preset Bitmap = Resources::DefaultBitmap;
+  }
+
+  $rect <0,140,200,180>
+  property Resources::Bitmap ForegroundBmp;
+
+  $rect <0,190,200,230>
+  onset ForegroundBmp
+  {
+    if( pure ForegroundBmp != value )
+    {
+      pure ForegroundBmp = value;
+      ForegroundImage.Bitmap = value;
+    }
+  }
+
+  $rect <220,140,420,180>
+  property int32 ForegroundFrameNumber;
+
+  $rect <220,190,420,230>
+  onset ForegroundFrameNumber
+  {
+    if( pure ForegroundFrameNumber != value )
+    {
+      pure ForegroundFrameNumber = value;
+      ForegroundImage.FrameNumber = value;
+    }
+  }
+
+  $rect <440,190,630,230>
+  object Core::Timer HighlightTimer
+  {
+    preset OnTrigger = OnHighlightEndSlot;
+    preset Period = 0;
+    preset Begin = 100;
+    preset Enabled = false;
+  }
+
+  $rect <440,140,670,180>
+  method void DisplayHighlightAnimation()
+  {
+    BackgroundImage.FrameNumber = 1;
+    HighlightTimer.Enabled = true;
+  }
+
+  $rect <440,240,630,280>
+  slot OnHighlightEndSlot
+  {
+    BackgroundImage.FrameNumber = 0;
+  }
+}
+
+$rect <10,70,210,110>
+$output false
+class TEL01_IncomingCall : Components::BaseMainBG
+{
+  $rect <20,290,200,330>
+  inherited method Init()
+  {
+    CallerText.String = DeviceInterface::NotificationDevice.GetPhoneCaller();
+    if( 0 == CallerText.String.length )
+    {
+      CallerText.String = "---";
+    }
+    trace "Init TEL01, ", CallerText.String;
+  }
+
+  $rect <230,340,460,380>
+  inherited method OnShortDownKeyActivated()
+  {
+    if( IsKeyEnabled )
+    {
+      DeclineButton.DisplayHighlightAnimation();
+      DeviceInterface::NotificationDevice.DeclinePhoneCall();
+    }
+  }
+
+  $rect <230,290,460,330>
+  inherited method OnShortUpKeyActivated()
+  {
+    if( IsKeyEnabled )
+    {
+      AnswerButton.DisplayHighlightAnimation();
+      DeviceInterface::NotificationDevice.AnswerPhoneCall();
+    }
+  }
+
+  $rect <230,390,460,430>
+  inherited method OnShortHomeKeyActivated()
+  {
+    // ignore short home key event
+  }
+
+  $rect <230,440,460,480>
+  inherited method OnLongHomeKeyActivated()
+  {
+    // ignore long home key event
+  }
+
+  $rect <20,20,160,60>
+  inherited object MainBottomBG
+  {
+    preset Bitmap = Resource::PhoneBG;
+  }
+
+  $rect <20,20,160,60>
+  object Telephone::ImageButton AnswerButton
+  {
+    preset Bounds = <0,39,94,114>;
+    preset ForegroundBmp = Resource::PhoneAnswerDecline;
+  }
+
+  $rect <20,20,160,60>
+  object Telephone::ImageButton DeclineButton
+  {
+    preset Bounds = <0,189,94,264>;
+    preset ForegroundBmp = Resource::PhoneAnswerDecline;
+    preset ForegroundFrameNumber = 1;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ForegroundImage
+  {
+    preset Bounds = <241,44,311,114>;
+    preset Bitmap = Resource::IncomingCallIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text CallerText
+  {
+    preset Bounds = <100,117,451,151>;
+    preset Ellipsis = true;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Visible = true;
+  }
+
+  $rect <490,290,790,330>
+  object Core::SystemEventHandler PhoneCallStateChangedEventHandler
+  {
+    preset OnEvent = OnPhoneCallStateChangedSlot;
+    preset Event = DeviceInterface::NotificationDevice.PhoneCallStateChangedSystemEvent;
+  }
+
+  $rect <490,340,790,380>
+  slot OnPhoneCallStateChangedSlot
+  {
+    var Enum::PhoneCallState PhoneCallState = DeviceInterface::NotificationDevice.GetPhoneCallState();
+    switch( PhoneCallState )
+    {
+      case Enum::PhoneCallState.IDLE: DismissTimer.Enabled = true;
+      case Enum::PhoneCallState.ACTIVE:
+      {
+        DismissTimer.Enabled = false;
+        if( null != Owner )
+        {
+          Owner.SwitchToDialog( new Telephone::TEL02_ActiveCall, null, null, null, null, null, null, null, null, null, false );
+        }
+      }
+      default:;
+    }
+  }
+
+  $rect <820,290,1020,330>
+  object Core::Timer DismissTimer
+  {
+    preset OnTrigger = OnDismissSlot;
+    preset Period = 0;
+    preset Begin = 1000;
+  }
+
+  $rect <820,340,1020,380>
+  slot OnDismissSlot
+  {
+    DismissThisDialog();
+  }
+
+  $rect <20,340,220,380>
+  object Core::Timer KeyEnableTimer
+  {
+    preset OnTrigger = OnKeyEnableSlot;
+    preset Period = 0;
+    preset Begin = 1000;
+    preset Enabled = true;
+  }
+
+  $rect <20,390,220,430>
+  slot OnKeyEnableSlot
+  {
+    IsKeyEnabled = true;
+  }
+
+  $rect <20,440,220,480>
+  var bool IsKeyEnabled;
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,36,480,38>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
+  }
+}
+
+$rect <10,120,210,160>
+$output false
+class TEL02_ActiveCall : Components::BaseMainBG
+{
+  $rect <20,290,200,330>
+  inherited method Init()
+  {
+    CallerText.String = DeviceInterface::NotificationDevice.GetPhoneCaller();
+    if( 0 == CallerText.String.length )
+    {
+      CallerText.String = "---";
+    }
+
+    VolumeControllable = DeviceInterface::NotificationDevice.IsPhoneCallVolumeControllable();
+    if( VolumeControllable )
+    {
+      VolumeUpButton.ForegroundFrameNumber = 0;
+      VolumeDownButton.ForegroundFrameNumber = 0;
+    }
+
+    signal OnUpdateDurationSlot;
+
+    trace "Init TEL02 ", CallerText.String;
+  }
+
+  $rect <230,340,460,380>
+  inherited method OnShortDownKeyActivated()
+  {
+    if( VolumeControllable )
+    {
+      VolumeDownButton.DisplayHighlightAnimation();
+      DeviceInterface::NotificationDevice.PhoneCallVolumeControl( Enum::VolumeControl.DOWN );
+    }
+  }
+
+  $rect <230,290,460,330>
+  inherited method OnShortUpKeyActivated()
+  {
+    if( VolumeControllable )
+    {
+      VolumeUpButton.DisplayHighlightAnimation();
+      DeviceInterface::NotificationDevice.PhoneCallVolumeControl( Enum::VolumeControl.UP );
+    }
+  }
+
+  $rect <20,20,160,60>
+  inherited object MainBottomBG
+  {
+    preset Bitmap = Resource::PhoneBG;
+  }
+
+  $rect <20,20,160,60>
+  object Telephone::ImageButton VolumeUpButton
+  {
+    preset Bounds = <0,39,94,114>;
+    preset ForegroundBmp = Resource::PhoneVolumeUp;
+    preset ForegroundFrameNumber = 1;
+  }
+
+  $rect <20,20,160,60>
+  object Telephone::ImageButton VolumeDownButton
+  {
+    preset Bounds = <0,189,94,264>;
+    preset ForegroundBmp = Resource::PhoneVolumeDown;
+    preset ForegroundFrameNumber = 1;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ForegroundImage
+  {
+    preset Bounds = <241,44,311,114>;
+    preset Bitmap = Resource::ActiveCallIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text CallerText
+  {
+    preset Bounds = <100,117,451,151>;
+    preset Ellipsis = true;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DurationText
+  {
+    preset Bounds = <100,205,451,239>;
+    preset Ellipsis = true;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Visible = true;
+  }
+
+  $rect <490,290,790,330>
+  object Core::SystemEventHandler PhoneCallStateChangedEventHandler
+  {
+    preset OnEvent = OnPhoneCallStateChangedSlot;
+    preset Event = DeviceInterface::NotificationDevice.PhoneCallStateChangedSystemEvent;
+  }
+
+  $rect <490,340,790,380>
+  slot OnPhoneCallStateChangedSlot
+  {
+    var Enum::PhoneCallState PhoneCallState = DeviceInterface::NotificationDevice.GetPhoneCallState();
+    switch( PhoneCallState )
+    {
+      case Enum::PhoneCallState.IDLE: DismissThisDialog();
+      default:;
+    }
+  }
+
+  $rect <810,290,1010,330>
+  object Core::Timer UpdateDurationTimer
+  {
+    preset OnTrigger = OnUpdateDurationSlot;
+    preset Period = 500;
+    preset Enabled = true;
+  }
+
+  $rect <810,340,1010,380>
+  slot OnUpdateDurationSlot
+  {
+    var uint32 TotalDurationSec = DeviceInterface::NotificationDevice.GetActiveCallDuration() / 1000;
+    var uint32 DurationHour = TotalDurationSec / 3600;
+    var uint32 DurationSec = TotalDurationSec % 60;
+    var uint32 DurationMinute = ( TotalDurationSec / 60 ) - ( DurationHour * 60 );
+    if( DurationHour > 0 )
+    {
+      DurationText.String = string( DurationHour ) + ":" + string( DurationMinute, 2, 10 ) + ":" + string( DurationSec, 2, 10 );
+    }
+    else
+    {
+      DurationText.String = string( DurationMinute ) + ":" + string( DurationSec, 2, 10 );
+    }
+  }
+
+  $rect <15,341,215,381>
+  var bool VolumeControllable;
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,36,480,38>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
+  }
+}

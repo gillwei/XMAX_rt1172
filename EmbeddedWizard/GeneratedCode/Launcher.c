@@ -46,6 +46,7 @@
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "_SettingsSET01_MainSettingMenu.h"
+#include "_TelephoneTEL02_ActiveCall.h"
 #include "_ViewsImage.h"
 #include "_ViewsText.h"
 #include "_ViewsWallpaper.h"
@@ -308,14 +309,11 @@ void LauncherLNC_Main_OnCurrentItemChangedSlot( LauncherLNC_Main _this, XObject
 /* 'C' function for method : 'Launcher::LNC_Main.GetInitialSelectedItem()' */
 XEnum LauncherLNC_Main_GetInitialSelectedItem( LauncherLNC_Main _this )
 {
-  XBool is_phone_call_active;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  is_phone_call_active = 0;
-
-  if ( is_phone_call_active )
+  if ( DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( EwGetAutoObject( 
+      &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )))
     return EnumLauncherItemPHONE;
   else
     return EnumLauncherItemMUSIC;
@@ -396,7 +394,18 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
   switch ( _this->CurrentItem )
   {
     case EnumLauncherItemPHONE :
-      ;
+    {
+      if ( DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( EwGetAutoObject( 
+          &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )))
+      {
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( TelephoneTEL02_ActiveCall, 
+        0 ));
+      }
+      else
+      {
+        ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
+      }
+    }
     break;
 
     case EnumLauncherItemMUSIC :
@@ -419,9 +428,6 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
           ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_BleConnectionErrorUI, 
           0 ));
         }
-
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
-      0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }
     break;
 
@@ -430,21 +436,13 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
     break;
 
     case EnumLauncherItemMETER_DISPLAY :
-    {
       ItemDialog = ((ComponentsBaseComponent)EwNewObject( InfoINF01_MeterDisplaySettingMenu, 
       0 ));
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
-      0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    }
     break;
 
     case EnumLauncherItemNAVIGATION :
-    {
       ItemDialog = ((ComponentsBaseComponent)EwNewObject( NavigationNAV06_NaviSettingMenu, 
       0 ));
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
-      0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    }
     break;
 
     case EnumLauncherItemNOTIFICATION :
@@ -460,9 +458,6 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
         ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_BleConnectionErrorUI, 
         0 ));
       }
-
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
-      0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }
     break;
 
@@ -479,19 +474,12 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
         ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_BleConnectionErrorUI, 
         0 ));
       }
-
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
-      0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }
     break;
 
     case EnumLauncherItemSETTINGS :
-    {
       ItemDialog = ((ComponentsBaseComponent)EwNewObject( SettingsSET01_MainSettingMenu, 
       0 ));
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
-      0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    }
     break;
 
     case EnumLauncherItemTRACTION_CONTROL :
@@ -512,6 +500,12 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
 
     default : 
       ;
+  }
+
+  if ( ItemDialog != 0 )
+  {
+    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 0, 
+    0, 0, 0, EwNullSlot, EwNullSlot, 0 );
   }
 }
 

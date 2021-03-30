@@ -943,3 +943,17 @@ enum PhoneCallState
   $rect <10,160,210,200>
   item TOTAL;
 }
+
+$rect <500,320,700,360>
+$output false
+enum VolumeControl
+{
+  $rect <10,10,210,50>
+  item UP;
+
+  $rect <10,60,210,100>
+  item DOWN;
+
+  $rect <10,110,210,150>
+  item TOTAL;
+}

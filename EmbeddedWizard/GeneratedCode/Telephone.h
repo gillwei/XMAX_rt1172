@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef Resources_H
-#define Resources_H
+#ifndef Telephone_H
+#define Telephone_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,21 +42,14 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ResourcesBitmap.h"
-#include "_ResourcesExternBitmap.h"
-#include "_ResourcesFont.h"
-
-/* Bitmap resource used per default by 'Image', 'Wallpaper' and 'Warp Image' views 
-   to ensure that new views don't remain empty on the screen. */
-EW_DECLARE_BITMAP_RES( ResourcesDefaultBitmap )
-
-/* Bitmap resource : 'Resources::WhiteBitmapStripe' */
-EW_DECLARE_BITMAP_RES( ResourcesWhiteBitmapStripe )
+#include "_TelephoneImageButton.h"
+#include "_TelephoneTEL01_IncomingCall.h"
+#include "_TelephoneTEL02_ActiveCall.h"
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* Resources_H */
+#endif /* Telephone_H */
 
 /* Embedded Wizard */

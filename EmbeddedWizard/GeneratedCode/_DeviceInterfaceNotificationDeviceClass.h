@@ -114,6 +114,35 @@ void DeviceInterfaceNotificationDeviceClass_DeleteNotificationOfUid( DeviceInter
 XInt32 DeviceInterfaceNotificationDeviceClass_GetBufferIdxOfNotificationUID( DeviceInterfaceNotificationDeviceClass _this, 
   XUInt32 Uid );
 
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetPhoneCaller()' */
+XString DeviceInterfaceNotificationDeviceClass_GetPhoneCaller( DeviceInterfaceNotificationDeviceClass _this );
+
+/* Get active call duration in ms */
+XUInt32 DeviceInterfaceNotificationDeviceClass_GetActiveCallDuration( DeviceInterfaceNotificationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetPhoneCallState()' */
+XEnum DeviceInterfaceNotificationDeviceClass_GetPhoneCallState( DeviceInterfaceNotificationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.AnswerPhoneCall()' */
+void DeviceInterfaceNotificationDeviceClass_AnswerPhoneCall( DeviceInterfaceNotificationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.DeclinePhoneCall()' */
+void DeviceInterfaceNotificationDeviceClass_DeclinePhoneCall( DeviceInterfaceNotificationDeviceClass _this );
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about an alternation of its setting or state value. */
+XBool DeviceInterfaceNotificationDeviceClass_IsPhoneCallVolumeControllable( DeviceInterfaceNotificationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NotificationDeviceClass.IsPhoneCallVolumeControllable()' */
+XBool DeviceInterfaceNotificationDeviceClass__IsPhoneCallVolumeControllable( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NotificationDeviceClass.IsPhoneCallVolumeControllable(). */
+#define _DeviceInterfaceNotificationDeviceClass__IsPhoneCallVolumeControllable_
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.PhoneCallVolumeControl()' */
+void DeviceInterfaceNotificationDeviceClass_PhoneCallVolumeControl( DeviceInterfaceNotificationDeviceClass _this, 
+  XEnum aControl );
+
 #ifdef __cplusplus
   }
 #endif

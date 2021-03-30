@@ -446,6 +446,14 @@ typedef enum
   EnumPhoneCallStateTOTAL               = 3
 } EnumPhoneCallState;
 
+/* User defined enumeration: 'Enum::VolumeControl' */
+typedef enum
+{
+  EnumVolumeControlUP                   = 0,
+  EnumVolumeControlDOWN                 = 1,
+  EnumVolumeControlTOTAL                = 2
+} EnumVolumeControl;
+
 #ifdef __cplusplus
   }
 #endif

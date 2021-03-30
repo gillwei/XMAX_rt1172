@@ -117,6 +117,9 @@ EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( OpeningSystemEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( StatusBar,       StatusBarMain )
   EW_OBJECT  ( CheckOpeningTimer, CoreTimer )
+  EW_OBJECT  ( PhoneCallStateChangedEventHandler, CoreSystemEventHandler )
+  EW_VARIABLE( IsFactoryTest,   XBool )
+  EW_VARIABLE( IsDisclaimerDismissed, XBool )
   EW_PROPERTY( StatusBarVisible, XBool )
 EW_END_OF_FIELDS( ApplicationApplication )
 
@@ -235,6 +238,10 @@ void ApplicationApplication_SlideInHome( ApplicationApplication _this, XEnum aHo
 
 /* 'C' function for method : 'Application::Application.OnSlideInHomeFinishedSlot()' */
 void ApplicationApplication_OnSlideInHomeFinishedSlot( ApplicationApplication _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Application::Application.OnPhoneCallStateChangedSlot()' */
+void ApplicationApplication_OnPhoneCallStateChangedSlot( ApplicationApplication _this, 
   XObject sender );
 
 #ifdef __cplusplus

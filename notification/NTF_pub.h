@@ -21,7 +21,7 @@ extern "C"{
 #define NOTIFICATION_TITLE_MAX_LEN                  ( 64 )
 #define NOTIFICATION_SUBTITLE_MAX_LEN               ( 64 )
 #define NOTIFICATION_MESSAGE_MAX_LEN                ( 512 )
-#define INCOMING_CALLER_MAX_LEN                     ( 64 )
+#define PHONE_CALLER_MAX_LEN                        ( 64 )
 
 typedef enum
     {
@@ -44,14 +44,15 @@ typedef struct
     {
     void ( *notification_answer_call_callback )( const uint32_t uid );
     void ( *notification_decline_call_callback )( const uint32_t uid );
+    void ( *notification_volume_control_callback )( const EnumVolumeControl control );
     } notification_callback_t;
 
 void NTF_init( void );
 void NTF_notify_connected( const notification_protocol_t protocol, notification_callback_t* callback );
 void NTF_notify_disconnected( const notification_protocol_t protocol );
-void NTF_notify_incoming_call_started( const uint32_t uid, const uint8_t* caller );
+void NTF_notify_incoming_call_started( const uint32_t uid, const uint8_t* caller, const bool is_volume_adjustable );
 void NTF_notify_incoming_call_stopped( const uint32_t uid );
-void NTF_notify_active_call_started( const uint32_t uid );
+void NTF_notify_active_call_started( const uint32_t uid, const bool is_volume_adjustable );
 void NTF_notify_active_call_stopped( const uint32_t uid );
 
 void NTF_answer_call( void );
@@ -65,6 +66,12 @@ int  NTF_get_idx_of_notification_uid( const uint32_t uid );
 
 void NTF_delete_notification( const uint32_t uid );
 void NTF_notify_notification_deleted( const uint32_t uid );
+
+void NTF_update_active_call_duration( void );
+uint32_t NTF_get_active_call_duration( void );
+void NTF_get_phone_caller( uint8_t** phone_caller );
+bool NTF_is_phonecall_volume_controllable( void );
+void NTF_phonecall_volume_control( const EnumVolumeControl control );
 
 #ifdef __cplusplus
 }

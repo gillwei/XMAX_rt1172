@@ -84,6 +84,8 @@
 #define ANCS_NOTIFICATION_ATTRIBUTE_RESPONSE_ATTR_ID_SIZE           ( 1 )
 #define ANCS_NOTIFICATION_ATTRIBUTE_RESPONSE_ATTR_LEN_SIZE          ( 2 )
 
+#define IPHONE_CALL_VOLUME_CONTROLLABLE                 ( false )
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -169,7 +171,8 @@ static const ble_client_callback ancs_client_callback =
 static notification_callback_t ancs_notification_callback =
     {
     BC_ancs_answer_call_callback,
-    BC_ancs_decline_call_callback
+    BC_ancs_decline_call_callback,
+    NULL
     };
 
 static uint32_t ancs_active_call_uid = 0;
@@ -659,7 +662,7 @@ if( ERR_NONE == get_category_from_dictionary( notification_uid, &category_id ) )
     BC_ANCS_PRINTF( "%s uid: %d, category: %d\r\n", __FUNCTION__, notification_uid, category_id );
     if( ANCS_CATEGORY_ID_INCOMING_CALL == category_id )
         {
-        NTF_notify_incoming_call_started( notification_uid, title );
+        NTF_notify_incoming_call_started( notification_uid, title, IPHONE_CALL_VOLUME_CONTROLLABLE );
         }
     else
         {
@@ -667,7 +670,7 @@ if( ERR_NONE == get_category_from_dictionary( notification_uid, &category_id ) )
             !memcmp( body, "Active Call", 11 ) )
             {
             ancs_active_call_uid = notification_uid;
-            NTF_notify_active_call_started( notification_uid );
+            NTF_notify_active_call_started( notification_uid, IPHONE_CALL_VOLUME_CONTROLLABLE );
             }
         else
             {

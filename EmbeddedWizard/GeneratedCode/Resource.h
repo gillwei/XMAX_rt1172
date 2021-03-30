@@ -327,6 +327,27 @@ EW_DECLARE_BITMAP_RES( ResourceNotificationCategory )
 /* Bitmap resource : 'Resource::ScaleIndicatorBar' */
 EW_DECLARE_BITMAP_RES( ResourceScaleIndicatorBar )
 
+/* Bitmap resource : 'Resource::PhoneAnswerDecline' */
+EW_DECLARE_BITMAP_RES( ResourcePhoneAnswerDecline )
+
+/* Bitmap resource : 'Resource::PhoneVolumeUp' */
+EW_DECLARE_BITMAP_RES( ResourcePhoneVolumeUp )
+
+/* Bitmap resource : 'Resource::PhoneVolumeDown' */
+EW_DECLARE_BITMAP_RES( ResourcePhoneVolumeDown )
+
+/* Bitmap resource : 'Resource::PhoneBG' */
+EW_DECLARE_BITMAP_RES( ResourcePhoneBG )
+
+/* Bitmap resource : 'Resource::PhoneButtonBG' */
+EW_DECLARE_BITMAP_RES( ResourcePhoneButtonBG )
+
+/* Bitmap resource : 'Resource::IncomingCallIcon' */
+EW_DECLARE_BITMAP_RES( ResourceIncomingCallIcon )
+
+/* Bitmap resource : 'Resource::ActiveCallIcon' */
+EW_DECLARE_BITMAP_RES( ResourceActiveCallIcon )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

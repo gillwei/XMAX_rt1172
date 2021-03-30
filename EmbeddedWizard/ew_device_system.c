@@ -74,7 +74,6 @@
 #define UPDATE_TIME_TASK_PRIORITY       ( tskIDLE_PRIORITY )
 #define UPDATE_TIME_TASK_NAME           "time_task"
 #define UPDATE_TIME_TASK_STACK_SIZE     ( configMINIMAL_STACK_SIZE )
-#define UPDATE_TIME_PERIOD_MS           ( 500 )
 
 #define EW_STRING_LEN               ( 1024 )
 
@@ -293,6 +292,7 @@ while( 1 )
     {
     is_update_time = 1;
     EwBspEventTrigger();
+    NTF_update_active_call_duration();
     vTaskDelayUntil( &last_wake_ticks, update_time_period_ticks );
     }
 vTaskDelete( NULL );

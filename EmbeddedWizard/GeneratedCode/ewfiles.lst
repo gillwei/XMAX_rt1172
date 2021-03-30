@@ -32,3 +32,4 @@ module StatusBar                file "StatusBar.c";
 module Open                     file "Open.c";
 module SeatHeater_GripWarmer    file "SeatHeater_GripWarmer.c";
 module Notification             file "Notification.c";
+module Telephone                file "Telephone.c";

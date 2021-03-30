@@ -285,3 +285,9 @@ unit Notification
 {
   attr Directory = .\;
 }
+
+$rect <520,850,720,890>
+unit Telephone
+{
+  attr Directory = .\;
+}

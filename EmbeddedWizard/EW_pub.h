@@ -20,6 +20,8 @@ extern "C" {
 #include "MM_pub_ams_type.h"
 #include "BTM_pub.h"
 
+#define UPDATE_TIME_PERIOD_MS           ( 500 )
+
 typedef enum
     {
     KEY_STATE_RELEASE,

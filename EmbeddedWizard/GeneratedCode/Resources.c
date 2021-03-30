@@ -180,6 +180,12 @@ EW_DEFINE_CLASS( ResourcesBitmap, CoreResource, _None, _None, _None, _None, _Non
   ResourcesBitmap_Update,
 EW_END_OF_CLASS( ResourcesBitmap )
 
+/* Include a file containing the bitmap resource : 'Resources::DefaultBitmap' */
+#include "_ResourcesDefaultBitmap.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resources::DefaultBitmap' */
+EW_RES_WITHOUT_VARIANTS( ResourcesDefaultBitmap )
+
 /* Initializer for the class 'Resources::ExternBitmap' */
 void ResourcesExternBitmap__Init( ResourcesExternBitmap _this, XObject aLink, XHandle aArg )
 {

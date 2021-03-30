@@ -634,4 +634,46 @@ EW_RES_WITHOUT_VARIANTS( ResourceNotificationCategory )
 /* Table with links to derived variants of the bitmap resource : 'Resource::ScaleIndicatorBar' */
 EW_RES_WITHOUT_VARIANTS( ResourceScaleIndicatorBar )
 
+/* Include a file containing the bitmap resource : 'Resource::PhoneAnswerDecline' */
+#include "_ResourcePhoneAnswerDecline.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::PhoneAnswerDecline' */
+EW_RES_WITHOUT_VARIANTS( ResourcePhoneAnswerDecline )
+
+/* Include a file containing the bitmap resource : 'Resource::PhoneVolumeUp' */
+#include "_ResourcePhoneVolumeUp.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::PhoneVolumeUp' */
+EW_RES_WITHOUT_VARIANTS( ResourcePhoneVolumeUp )
+
+/* Include a file containing the bitmap resource : 'Resource::PhoneVolumeDown' */
+#include "_ResourcePhoneVolumeDown.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::PhoneVolumeDown' */
+EW_RES_WITHOUT_VARIANTS( ResourcePhoneVolumeDown )
+
+/* Include a file containing the bitmap resource : 'Resource::PhoneBG' */
+#include "_ResourcePhoneBG.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::PhoneBG' */
+EW_RES_WITHOUT_VARIANTS( ResourcePhoneBG )
+
+/* Include a file containing the bitmap resource : 'Resource::PhoneButtonBG' */
+#include "_ResourcePhoneButtonBG.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::PhoneButtonBG' */
+EW_RES_WITHOUT_VARIANTS( ResourcePhoneButtonBG )
+
+/* Include a file containing the bitmap resource : 'Resource::IncomingCallIcon' */
+#include "_ResourceIncomingCallIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IncomingCallIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceIncomingCallIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::ActiveCallIcon' */
+#include "_ResourceActiveCallIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ActiveCallIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceActiveCallIcon )
+
 /* Embedded Wizard */

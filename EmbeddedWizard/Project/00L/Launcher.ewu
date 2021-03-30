@@ -94,9 +94,7 @@ class LNC_Main : Components::BaseComponent
   $rect <250,450,450,490>
   method Enum::LauncherItem GetInitialSelectedItem()
   {
-    // TODO: get active phone call status from the notification center
-    var bool is_phone_call_active = false;
-    if( is_phone_call_active )
+    if( DeviceInterface::NotificationDevice.IsPhoneCallStateActive() )
     {
       return Enum::LauncherItem.PHONE;
     }
@@ -194,7 +192,18 @@ class LNC_Main : Components::BaseComponent
 
     switch( CurrentItem )
     {
-      case Enum::LauncherItem.PHONE:;
+      case Enum::LauncherItem.PHONE:
+      {
+        if( DeviceInterface::NotificationDevice.IsPhoneCallStateActive() )
+        {
+          ItemDialog = new Telephone::TEL02_ActiveCall;
+        }
+        else
+        {
+          // back to previous home screen if no active call
+          OnShortHomeKeyActivated();
+        }
+      }
       case Enum::LauncherItem.MUSIC:
       {
         // Media source could be delivered from either Android or Iphone. Android: MotoCon SDK. Iphone: AMS.
@@ -212,19 +221,10 @@ class LNC_Main : Components::BaseComponent
         {
           ItemDialog = new Pop::POP09_BleConnectionErrorUI;
         }
-        PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
       case Enum::LauncherItem.ODO_TRIP:;
-      case Enum::LauncherItem.METER_DISPLAY:
-      {
-        ItemDialog = new Info::INF01_MeterDisplaySettingMenu;
-        PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
-      }
-      case Enum::LauncherItem.NAVIGATION:
-      {
-        ItemDialog = new Navigation::NAV06_NaviSettingMenu;
-        PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
-      }
+      case Enum::LauncherItem.METER_DISPLAY: ItemDialog = new Info::INF01_MeterDisplaySettingMenu;
+      case Enum::LauncherItem.NAVIGATION: ItemDialog = new Navigation::NAV06_NaviSettingMenu;
       case Enum::LauncherItem.NOTIFICATION:
       {
         if( DeviceInterface::BluetoothDevice.IsMotoconConnected() )
@@ -235,8 +235,6 @@ class LNC_Main : Components::BaseComponent
         {
           ItemDialog = new Pop::POP09_BleConnectionErrorUI;
         }
-
-        PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
       case Enum::LauncherItem.WEATHER:
       {
@@ -248,19 +246,18 @@ class LNC_Main : Components::BaseComponent
         {
           ItemDialog = new Pop::POP09_BleConnectionErrorUI;
         }
-
-        PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
       }
-      case Enum::LauncherItem.SETTINGS:
-      {
-        ItemDialog = new Settings::SET01_MainSettingMenu;
-        PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
-      }
+      case Enum::LauncherItem.SETTINGS: ItemDialog = new Settings::SET01_MainSettingMenu;
       case Enum::LauncherItem.TRACTION_CONTROL:;
       case Enum::LauncherItem.SEAT_HEATER:;
       case Enum::LauncherItem.GRIP_WARMER:;
       case Enum::LauncherItem.WIND_SCREEN:;
       default:;
+    }
+
+    if( null != ItemDialog )
+    {
+      PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
     }
   }
 

@@ -2343,13 +2343,8 @@ void DeviceInterfaceNotificationDeviceClass__Done( DeviceInterfaceNotificationDe
    about an alternation of its setting or state value. */
 XBool DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( DeviceInterfaceNotificationDeviceClass _this )
 {
-  XBool IsActive;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  IsActive = 0;
-  return IsActive;
+  return (XBool)( EnumPhoneCallStateACTIVE == DeviceInterfaceNotificationDeviceClass_GetPhoneCallState( 
+    _this ));
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::NotificationDeviceClass.IsPhoneCallStateActive()' */
@@ -2483,6 +2478,106 @@ XInt32 DeviceInterfaceNotificationDeviceClass_GetBufferIdxOfNotificationUID( Dev
   Index = -1;
   Index = NTF_get_idx_of_notification_uid( Uid );
   return Index;
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetPhoneCaller()' */
+XString DeviceInterfaceNotificationDeviceClass_GetPhoneCaller( DeviceInterfaceNotificationDeviceClass _this )
+{
+  XString Caller;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Caller = 0;
+  {
+    uint8_t* phone_caller;
+    uint8_t *stuffed_str = NULL;
+
+    NTF_get_phone_caller( &phone_caller );
+    int stuffed_str_len = ew_handle_special_characters( phone_caller, &stuffed_str );
+    if( stuffed_str_len > 0 && stuffed_str != NULL )
+    {
+      Caller = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+    }
+  }
+  return Caller;
+}
+
+/* Get active call duration in ms */
+XUInt32 DeviceInterfaceNotificationDeviceClass_GetActiveCallDuration( DeviceInterfaceNotificationDeviceClass _this )
+{
+  XUInt32 DurationMS;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  DurationMS = 0;
+  DurationMS = NTF_get_active_call_duration();
+  return DurationMS;
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetPhoneCallState()' */
+XEnum DeviceInterfaceNotificationDeviceClass_GetPhoneCallState( DeviceInterfaceNotificationDeviceClass _this )
+{
+  XEnum PhoneCallState;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  PhoneCallState = EnumPhoneCallStateIDLE;
+  {
+    int32_t phone_call_state = NTF_get_phonecall_state();
+    PhoneCallState = (EnumPhoneCallState)phone_call_state;
+  }
+  return PhoneCallState;
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.AnswerPhoneCall()' */
+void DeviceInterfaceNotificationDeviceClass_AnswerPhoneCall( DeviceInterfaceNotificationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NTF_answer_call();
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.DeclinePhoneCall()' */
+void DeviceInterfaceNotificationDeviceClass_DeclinePhoneCall( DeviceInterfaceNotificationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NTF_decline_call();
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about an alternation of its setting or state value. */
+XBool DeviceInterfaceNotificationDeviceClass_IsPhoneCallVolumeControllable( DeviceInterfaceNotificationDeviceClass _this )
+{
+  XBool Controllable;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Controllable = 0;
+  Controllable = NTF_is_phonecall_volume_controllable();
+  return Controllable;
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NotificationDeviceClass.IsPhoneCallVolumeControllable()' */
+XBool DeviceInterfaceNotificationDeviceClass__IsPhoneCallVolumeControllable( void* _this )
+{
+  return DeviceInterfaceNotificationDeviceClass_IsPhoneCallVolumeControllable((DeviceInterfaceNotificationDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.PhoneCallVolumeControl()' */
+void DeviceInterfaceNotificationDeviceClass_PhoneCallVolumeControl( DeviceInterfaceNotificationDeviceClass _this, 
+  XEnum aControl )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NTF_phonecall_volume_control( aControl );
 }
 
 /* Variants derived from the class : 'DeviceInterface::NotificationDeviceClass' */

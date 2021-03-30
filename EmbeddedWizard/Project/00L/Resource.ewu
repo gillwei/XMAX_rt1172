@@ -1392,7 +1392,7 @@ resource Resources::Bitmap Chessboard
 // Development
 note group Note14
 {
-  attr Bounds = <260,1069,501,1269>;
+  attr Bounds = <260,1069,500,1170>;
 }
 
 $rect <30,1540,280,1580>
@@ -2384,7 +2384,7 @@ resource Resources::Bitmap ScaleIndicatorBg
   attr bitmapmode Mode = Default;
 }
 
-$rect <540,1110,740,1150>
+$rect <280,1220,480,1260>
 $output false
 resource Resources::Bitmap NotificationCategory
 {
@@ -2411,5 +2411,95 @@ resource Resources::Bitmap ScaleIndicatorBar
 // Notification
 note group NotificationNote
 {
-  attr Bounds = <520,1070,760,1180>;
+  attr Bounds = <260,1180,500,1270>;
+}
+
+// Phone
+note group Note18
+{
+  attr Bounds = <510,1070,960,1320>;
+}
+
+$rect <532,1110,732,1150>
+$output false
+resource Resources::Bitmap PhoneAnswerDecline
+{
+  attr bitmapfile FileName = .\Res\phone\phone_answer_decline.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <742,1110,942,1150>
+$output false
+resource Resources::Bitmap PhoneVolumeUp
+{
+  attr bitmapfile FileName = .\Res\phone\controlicon_plus.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <742,1160,942,1200>
+$output false
+resource Resources::Bitmap PhoneVolumeDown
+{
+  attr bitmapfile FileName = .\Res\phone\controlicon_minus.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <532,1160,732,1200>
+$output false
+resource Resources::Bitmap PhoneBG
+{
+  attr bitmapfile FileName = .\Res\phone\bg_picture_phone call.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <742,1210,942,1250>
+$output false
+resource Resources::Bitmap PhoneButtonBG
+{
+  attr bitmapfile FileName = .\Res\phone\controlkey.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <532,1210,732,1250>
+$output false
+resource Resources::Bitmap IncomingCallIcon
+{
+  attr bitmapfile FileName = .\Res\phone\icon_phone_call.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <532,1260,732,1300>
+$output false
+resource Resources::Bitmap ActiveCallIcon
+{
+  attr bitmapfile FileName = .\Res\phone\icon_phone_talk.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
 }

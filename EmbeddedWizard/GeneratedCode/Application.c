@@ -33,6 +33,7 @@
 #include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
+#include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectSlideTransitionNoFade.h"
@@ -53,6 +54,7 @@
 #include "_OpenOPN02_FactoryMode.h"
 #include "_SettingsBtFwUpdateDialog.h"
 #include "_StatusBarMain.h"
+#include "_TelephoneTEL01_IncomingCall.h"
 #include "_TopTOP01_Disclaimer.h"
 #include "Application.h"
 #include "DeviceInterface.h"
@@ -95,6 +97,7 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreSystemEventHandler__Init( &_this->OpeningSystemEventHandler, &_this->_XObject, 0 );
   StatusBarMain__Init( &_this->StatusBar, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->CheckOpeningTimer, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( ApplicationApplication );
@@ -122,6 +125,9 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreSystemEventHandler_OnSetEvent( &_this->OpeningSystemEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->OpeningSystemEvent );
   _this->CheckOpeningTimer.OnTrigger = EwNewSlot( _this, ApplicationApplication_OnCheckOpeningSlot );
+  _this->PhoneCallStateChangedEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnPhoneCallStateChangedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->PhoneCallStateChangedEventHandler, 
+  &EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )->PhoneCallStateChangedSystemEvent );
 
   /* Call the user defined constructor */
   ApplicationApplication_Init( _this, aArg );
@@ -140,6 +146,7 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
   CoreSystemEventHandler__ReInit( &_this->OpeningSystemEventHandler );
   StatusBarMain__ReInit( &_this->StatusBar );
   CoreTimer__ReInit( &_this->CheckOpeningTimer );
+  CoreSystemEventHandler__ReInit( &_this->PhoneCallStateChangedEventHandler );
 }
 
 /* Finalizer method for the class 'Application::Application' */
@@ -155,6 +162,7 @@ void ApplicationApplication__Done( ApplicationApplication _this )
   CoreSystemEventHandler__Done( &_this->OpeningSystemEventHandler );
   StatusBarMain__Done( &_this->StatusBar );
   CoreTimer__Done( &_this->CheckOpeningTimer );
+  CoreSystemEventHandler__Done( &_this->PhoneCallStateChangedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   CoreRoot__Done( &_this->_Super );
@@ -174,14 +182,10 @@ void ApplicationApplication_Init( ApplicationApplication _this, XHandle aArg )
 void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _this, 
   XObject sender )
 {
-  TopTOP01_Disclaimer Disclaimer = EwCastObject( sender, TopTOP01_Disclaimer );
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
 
-  if ( Disclaimer != 0 )
-  {
-    CoreRoot_EndModal( CoreView__GetRoot( _this ), ((CoreGroup)Disclaimer ));
-    CoreGroup__Remove( CoreView__GetRoot( _this ), ((CoreView)Disclaimer ));
-  }
-
+  _this->IsDisclaimerDismissed = 1;
   CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
   HomeHOM11_TachoVisualizer, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 
   0 );
@@ -193,8 +197,8 @@ void ApplicationApplication_ShowDisclaimer( ApplicationApplication _this )
   TopTOP01_Disclaimer Disclaimer = EwNewObject( TopTOP01_Disclaimer, 0 );
 
   Disclaimer->OnAcceptButtonClicked = EwNewSlot( _this, ApplicationApplication_OnDisclaimerAcceptedSlot );
-  CoreGroup__Add( CoreView__GetRoot( _this ), ((CoreView)Disclaimer ), 0 );
-  CoreRoot_BeginModal( CoreView__GetRoot( _this ), ((CoreGroup)Disclaimer ));
+  CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)Disclaimer ), 0, 0, 0, 0, 
+  0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -228,6 +232,7 @@ void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this
         }
 
         FactoryDisplayManual_OnSetPatternIdx( FactoryTestDialog, TestContext->Data );
+        _this->IsFactoryTest = 1;
       }
       break;
 
@@ -239,6 +244,7 @@ void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this
         FactoryDisplayAutoRun_OnSetBurnInEnabled( DisplayAutoRunDialog, 1 );
         CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)DisplayAutoRunDialog ), 
         0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+        _this->IsFactoryTest = 1;
       }
       break;
 
@@ -246,6 +252,7 @@ void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this
       {
         ApplicationApplication_DismissFactoryTestDialog( _this );
         ApplicationApplication_OnSetStatusBarVisible( _this, 1 );
+        _this->IsFactoryTest = 0;
       }
       break;
 
@@ -630,14 +637,45 @@ void ApplicationApplication_OnSlideInHomeFinishedSlot( ApplicationApplication _t
   }
 }
 
+/* 'C' function for method : 'Application::Application.OnPhoneCallStateChangedSlot()' */
+void ApplicationApplication_OnPhoneCallStateChangedSlot( ApplicationApplication _this, 
+  XObject sender )
+{
+  XEnum PhoneCallState;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  PhoneCallState = DeviceInterfaceNotificationDeviceClass_GetPhoneCallState( EwGetAutoObject( 
+  &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ));
+
+  switch ( PhoneCallState )
+  {
+    case EnumPhoneCallStateINCOMING :
+    {
+      if ( _this->IsDisclaimerDismissed && !_this->IsFactoryTest )
+      {
+        TelephoneTEL01_IncomingCall IncomingCallDialog = EwNewObject( TelephoneTEL01_IncomingCall, 
+          0 );
+        CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)IncomingCallDialog ), 
+        0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+      }
+    }
+    break;
+
+    default : 
+      ;
+  }
+}
+
 /* Variants derived from the class : 'Application::Application' */
 EW_DEFINE_CLASS_VARIANTS( ApplicationApplication )
 EW_END_OF_CLASS_VARIANTS( ApplicationApplication )
 
 /* Virtual Method Table (VMT) for the class : 'Application::Application' */
 EW_DEFINE_CLASS( ApplicationApplication, CoreRoot, FactoryTestEventHandler, FactoryTestEventHandler, 
-                 FactoryTestEventHandler, FactoryTestEventHandler, StatusBarVisible, 
-                 StatusBarVisible, "Application::Application" )
+                 FactoryTestEventHandler, FactoryTestEventHandler, IsFactoryTest, 
+                 IsFactoryTest, "Application::Application" )
   CoreRectView_initLayoutContext,
   CoreRoot_GetRoot,
   CoreRoot_Draw,

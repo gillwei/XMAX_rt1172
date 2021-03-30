@@ -43,7 +43,9 @@ static notification_protocol_t notification_protocol = NOTIFICATION_PROTOCOL_NON
 static notification_callback_t *notification_callback;
 static EnumPhoneCallState phonecall_state = EnumPhoneCallStateIDLE;
 static uint32_t incoming_call_uid;
-static uint8_t  incoming_call_caller[INCOMING_CALLER_MAX_LEN];
+static uint8_t  phonecall_caller[PHONE_CALLER_MAX_LEN];
+static uint32_t active_call_duration_ms;
+static bool     is_phone_call_volume_controllable;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -66,15 +68,12 @@ void NTF_answer_call
     void
     )
 {
+PRINTF( "%s, %d\r\n", __FUNCTION__, phonecall_state );
 if( EnumPhoneCallStateINCOMING == phonecall_state &&
     NULL != notification_callback &&
     NULL != notification_callback->notification_answer_call_callback )
     {
     notification_callback->notification_answer_call_callback( incoming_call_uid );
-    }
-else
-    {
-    PRINTF( "%s ignore, %d\r\n", __FUNCTION__, phonecall_state );
     }
 }
 
@@ -91,15 +90,12 @@ void NTF_decline_call
     void
     )
 {
+PRINTF( "%s, %d\r\n", __FUNCTION__, phonecall_state );
 if( EnumPhoneCallStateINCOMING == phonecall_state &&
     NULL != notification_callback &&
     NULL != notification_callback->notification_decline_call_callback )
     {
     notification_callback->notification_decline_call_callback( incoming_call_uid );
-    }
-else
-    {
-    PRINTF( "%s ignore, %d\r\n", __FUNCTION__, phonecall_state );
     }
 }
 
@@ -146,7 +142,7 @@ return result;
 *
 * Get notification at the specified index of the notification list
 *
-* @param idx Index of notificaiton list
+* @param idx Index of notification list
 * @param uid Unique notification id
 * @param title Pointer to the title buffer
 * @param title_length Size of the title buffer
@@ -223,20 +219,23 @@ EW_notify_notification_list_updated();
 *
 * @param uid Unique notification id of this incoming call
 * @param caller The caller's name or phone number
+* @param is_volume_controllable Volume controllable status
 *
 *********************************************************************/
 void NTF_notify_incoming_call_started
     (
     const uint32_t uid,
-    const uint8_t* caller
+    const uint8_t* caller,
+    const bool     is_volume_controllable
     )
 {
-NTF_PRINTF( "%s %d %s\r\n", __FUNCTION__, uid, caller );
-phonecall_state = EnumPhoneCallStateINCOMING;
+NTF_PRINTF( "%s %d %s %d\r\n", __FUNCTION__, uid, caller, is_volume_controllable );
 
-incoming_call_uid = uid;
 int caller_len = strlen( (char*)caller);
-memcpy( incoming_call_caller, caller, MIN( INCOMING_CALLER_MAX_LEN, caller_len ) );
+is_phone_call_volume_controllable = is_volume_controllable;
+phonecall_state = EnumPhoneCallStateINCOMING;
+incoming_call_uid = uid;
+memcpy( phonecall_caller, caller, MIN( PHONE_CALLER_MAX_LEN, caller_len ) );
 
 EW_notify_phone_call_state_changed();
 }
@@ -270,15 +269,19 @@ EW_notify_phone_call_state_changed();
 * Notify notification center that active call is started
 *
 * @param uid Unique notification id of this active call
+* @param is_volume_controllable Volume controllable status
 *
 *********************************************************************/
 void NTF_notify_active_call_started
     (
-    const uint32_t uid
+    const uint32_t uid,
+    const bool     is_volume_controllable
     )
 {
-NTF_PRINTF( "%s %d\r\n", __FUNCTION__, uid );
+NTF_PRINTF( "%s %d %d\r\n", __FUNCTION__, uid, is_volume_controllable );
+is_phone_call_volume_controllable = is_volume_controllable;
 phonecall_state = EnumPhoneCallStateACTIVE;
+active_call_duration_ms = 0;
 EW_notify_phone_call_state_changed();
 }
 
@@ -299,6 +302,7 @@ void NTF_notify_active_call_stopped
 {
 NTF_PRINTF( "%s %d\r\n", __FUNCTION__, uid );
 phonecall_state = EnumPhoneCallStateIDLE;
+active_call_duration_ms = 0;
 EW_notify_phone_call_state_changed();
 }
 
@@ -325,17 +329,100 @@ return phonecall_state;
 * @public
 * NTF_get_incoming_caller
 *
-* Get caller name or number of the incoming call
+* Get caller name or number of the phone call
 *
 * @param Pointer to pointer of the caller string
 *
 *********************************************************************/
-void NTF_get_incoming_caller
+void NTF_get_phone_caller
     (
     uint8_t** caller
     )
 {
-*caller = incoming_call_caller;
+*caller = phonecall_caller;
+}
+
+/*********************************************************************
+*
+* @public
+* NTF_is_phonecall_volume_controllable
+*
+* Get if phone call volume is controllable
+*
+* @return Phone call volume controllable
+*
+*********************************************************************/
+bool NTF_is_phonecall_volume_controllable
+    (
+    void
+    )
+{
+return is_phone_call_volume_controllable;
+}
+
+/*********************************************************************
+*
+* @public
+* NTF_phonecall_volume_control
+*
+* Control phone call volume
+*
+* @param control Volume up/down control
+*
+*********************************************************************/
+void NTF_phonecall_volume_control
+    (
+    const EnumVolumeControl control
+    )
+{
+NTF_PRINTF( "%s %d\r\n", __FUNCTION__, control );
+if( EnumPhoneCallStateACTIVE == phonecall_state &&
+    NULL != notification_callback &&
+    NULL != notification_callback->notification_volume_control_callback )
+    {
+    notification_callback->notification_volume_control_callback( control );
+    }
+else
+    {
+    PRINTF( "%s ignore\r\n", __FUNCTION__ );
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* NTF_get_active_call_duration
+*
+* Get active call duration (MS)
+*
+* @return Active all duration (MS)
+*
+*********************************************************************/
+uint32_t NTF_get_active_call_duration
+    (
+    void
+    )
+{
+return active_call_duration_ms;
+}
+
+/*********************************************************************
+*
+* @public
+* NTF_update_active_call_duration
+*
+* Counting active call duration
+*
+*********************************************************************/
+void NTF_update_active_call_duration
+    (
+    void
+    )
+{
+if( EnumPhoneCallStateACTIVE == phonecall_state )
+    {
+    active_call_duration_ms += UPDATE_TIME_PERIOD_MS;
+    }
 }
 
 /*********************************************************************
@@ -382,6 +469,7 @@ if( protocol == notification_protocol )
     notification_protocol = NOTIFICATION_PROTOCOL_NONE;
     notification_callback = NULL;
     phonecall_state = EnumPhoneCallStateIDLE;
+    active_call_duration_ms = 0;
     ntf_buffer_reset();
     EW_notify_notification_list_updated();
     }
