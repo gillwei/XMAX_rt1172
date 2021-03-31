@@ -110,6 +110,6 @@ void VI_init
     )
 {
 create_task();
-vi_rx_init_data();
+vi_rx_init();
 vi_key_init();
 }

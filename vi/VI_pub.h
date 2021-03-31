@@ -65,12 +65,12 @@ void VI_init( void );
 bool VI_is_key_state_valid( void );
 void VI_notify_vehicle_data_changed( const il_rx_frm_index_t message_frame, const uint16_t signal_id, const uint32_t data );
 bool VI_is_dd_mode_activated( void );
-bool VI_is_function_supported( EnumVehicleSupportedFunction feature );
-void VI_set_supported_function( EnumVehicleSupportedFunction feature, bool supported );
+bool VI_is_function_supported( const EnumVehicleSupportedFunction feature );
+void VI_set_supported_function( const EnumVehicleSupportedFunction feature, const bool supported );
 void VI_set_tx_data( int tx_data_type, uint64_t data );
-bool VI_get_rx_data_uint( EnumVehicleRxType rx_type, uint32_t* data );
-bool VI_get_rx_data_float( EnumVehicleRxType rx_type, float* data );
-void VI_rx_support_function_received( mid_msg_supp_func_t* support_functions );
+bool VI_get_rx_data_uint( const EnumVehicleRxType rx_type, uint32_t* data );
+bool VI_get_rx_data_float( const EnumVehicleRxType rx_type, float* data );
+void VI_rx_support_function_received( const mid_msg_supp_func_t* const support_functions );
 void VI_rx_positive_response_received( const uint32_t can_id, const uint8_t  request_service_id );
 
 #ifdef __cplusplus

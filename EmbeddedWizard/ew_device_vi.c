@@ -115,9 +115,6 @@ void ew_device_vi_init
        variable to access the driver class during the runtime.
     */
     EwLockObject( device_object );
-
-    rx_type_queue = xQueueCreate( RX_TYPE_QUEUE_LENGTH, sizeof( EnumVehicleRxType ) );
-    configASSERT( NULL != rx_type_queue );
 #endif
 }
 
@@ -264,9 +261,15 @@ void EW_notify_dd_mode_state_changed
 *********************************************************************/
 void EW_notify_vi_data_received
     (
-    EnumVehicleRxType rx_type
+    const EnumVehicleRxType rx_type
     )
 {
+if( NULL == rx_type_queue )
+    {
+    rx_type_queue = xQueueCreate( RX_TYPE_QUEUE_LENGTH, sizeof( EnumVehicleRxType ) );
+    configASSERT( NULL != rx_type_queue );
+    }
+
 if( pdTRUE == xQueueSend( rx_type_queue, &rx_type, 0 ) )
     {
     is_rx_type_queued = true;

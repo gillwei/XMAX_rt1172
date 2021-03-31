@@ -1858,7 +1858,7 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].semaphore, (
     eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].need_verified = true;
     eepm_data[EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION].callback_ptr = callback_ptr;
     memcpy( write_sup_func, sup_func, SUPPORTED_FUNCTION_LENGTH );
-    eep_set_supported_function( sup_func, eepm_sup_func_w_callback );
+    eep_set_supported_function( write_sup_func, eepm_sup_func_w_callback );
     eep_get_supported_function( read_sup_func, eepm_sup_func_r_callback );
     }
 else

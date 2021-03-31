@@ -22,11 +22,12 @@
 #include "VI_pub.h"
 #include "EW_pub.h"
 #include "PERIPHERAL_pub.h"
+#include "EEPM_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define VEHICLE_DRIVER_DISTRACTION_MODE_LIMIT       ( 3 ) /* km/h */
+#define VEHICLE_DRIVER_DISTRACTION_MODE_LIMIT       ( 3 )       /* km/h */
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -56,6 +57,8 @@ static rx_tacho_setting_struct      rx_tacho_setting;
 
 static uint32_t rx_vehicle_supported_functions = 0;
 static bool     is_dd_mode_activated = false;
+static SemaphoreHandle_t supported_function_semaphore_handle;
+static supported_func_data_src_enum supported_func_data_source;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -617,7 +620,6 @@ switch( message_frame_id )
         process_factory_inspection_request( signal_id, data );
         break;
     default:
-
 #if( DEBUG_RX_CAN_SUPPORT )
         PRINTF( "%s drop message frame id: 0x%x\r\n", __FUNCTION__, message_frame_id );
 #endif
@@ -660,7 +662,7 @@ return is_activated;
 *********************************************************************/
 bool VI_is_function_supported
     (
-    EnumVehicleSupportedFunction function
+    const EnumVehicleSupportedFunction function
     )
 {
 return ( ( rx_vehicle_supported_functions >> function ) & 0x1 );
@@ -680,8 +682,8 @@ return ( ( rx_vehicle_supported_functions >> function ) & 0x1 );
 *********************************************************************/
 bool VI_get_rx_data_uint
     (
-    EnumVehicleRxType rx_type,
-    uint32_t*         data
+    const EnumVehicleRxType rx_type,
+    uint32_t* data
     )
 {
 bool is_valid = true;
@@ -887,8 +889,8 @@ return is_valid;
 *********************************************************************/
 bool VI_get_rx_data_float
     (
-    EnumVehicleRxType rx_type,
-    float*            data
+    const EnumVehicleRxType rx_type,
+    float* data
     )
 {
 bool is_valid = true;
@@ -1005,46 +1007,169 @@ return is_valid;
 
 /*********************************************************************
 *
-* @public
-* VI_set_supported_function
+* @private
+* set_sfl
 *
-* Set the vehicle function supported or not
+* Set SFL bit
 *
+* @param sfl Pointer to SFL
 * @param function vehicle function
 * @param supported True or false
 *
 *********************************************************************/
-void VI_set_supported_function
+static void set_sfl
     (
-    EnumVehicleSupportedFunction function,
-    bool supported
+    uint32_t* sfl,
+    const EnumVehicleSupportedFunction function,
+    const bool supported
     )
 {
 if( supported )
     {
-    set_bit( rx_vehicle_supported_functions, function );
+    set_bit( *sfl, function );
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* VI_write_supported_function_callback
+*
+* Callback of writing supported function from EEPROM
+*
+* @param result True if write success. False if read fail.
+* @param value Pointer to the supported function of uint8_t* type
+*
+*********************************************************************/
+void VI_write_supported_function_callback
+    (
+    bool  result,
+    void* value
+    )
+{
+if( !result )
+    {
+    uint8_t* supported_functions = (uint8_t*)value;
+    PRINTF( "%s false, 0x%02x %02x %02x %02x %02x\r\n", __FUNCTION__, supported_functions[0], supported_functions[1], supported_functions[2],
+                                                                      supported_functions[3], supported_functions[4], supported_functions[5] );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* set_supported_function
+*
+* Set supported function
+*
+* @param supported_functions Supported functions of uint8 data array
+* @param data_source Data source of supported functions
+*
+*********************************************************************/
+static void set_supported_function
+    (
+    uint8_t* supported_functions,
+    const supported_func_data_src_enum data_source
+    )
+{
+uint32_t last_supported_functions = 0;
+uint32_t sfl_diff = 0;
+bool     is_tacho_setting_changed = false;
+
+if( pdTRUE == xSemaphoreTake( supported_function_semaphore_handle, 0 ) )
+    {
+    PRINTF( "%s %d\r\n", __FUNCTION__, data_source );
+    if( SUPPORTED_FUNCTION_DATA_SOURCE_CAN == supported_func_data_source &&
+        SUPPORTED_FUNCTION_DATA_SOURCE_EEPROM == data_source )
+        {
+        // data from CAN has higher priority than data from EEPROM, so ignore
+        PRINTF( "%s ignore eep data\r\n", __FUNCTION__ );
+        }
+    else
+        {
+        supported_func_data_source = data_source;
+        last_supported_functions = rx_vehicle_supported_functions;
+
+        if( rx_tacho_setting.fullscale != supported_functions[0] )
+            {
+            rx_tacho_setting.fullscale = supported_functions[0];
+            is_tacho_setting_changed = true;
+            }
+        if( rx_tacho_setting.redzone != supported_functions[1] )
+            {
+            rx_tacho_setting.redzone = supported_functions[1];
+            is_tacho_setting_changed = true;
+            }
+        rx_vehicle_supported_functions = ( supported_functions[5] << 24 ) | ( supported_functions[4] << 16 ) |
+                                         ( supported_functions[3] << 8 ) | supported_functions[2];
+
+        // Notify UI if the supported functions of clock/grip warmer/seat heater are changed to update status bar
+        sfl_diff = last_supported_functions ^ rx_vehicle_supported_functions;
+        if( ( sfl_diff >> VEHICLE_FEATURE_CLOCK ) & 0x1 )
+            {
+            EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_CLOCK );
+            }
+        if( ( sfl_diff >> VEHICLE_FEATURE_GRIP_HEATER ) & 0x1 )
+            {
+            EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_GRIP_WARMER );
+            }
+        if( ( sfl_diff >> VEHICLE_FEATURE_SEAT_HEATER ) & 0x1 )
+            {
+            EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_SEAT_HEATER );
+            }
+
+        // write to EEPROM when the data from CAN is different
+        if( SUPPORTED_FUNCTION_DATA_SOURCE_CAN == data_source &&
+            ( is_tacho_setting_changed || ( 0 != sfl_diff ) ) )
+            {
+            PRINTF( "%s w\r\n", __FUNCTION__ );
+            // Bit 8 of byte 5 is used for checking if data is valid. (0: valid. 1: invalid)
+            clear_bit( supported_functions[5], 8 );
+            EEPM_set_supported_function( supported_functions, &VI_write_supported_function_callback );
+            }
+        }
+
+    xSemaphoreGive( supported_function_semaphore_handle );
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* VI_set_supported_function
+*
+* Set vehicle supported function
+*
+* @param function vehicle supported function
+* @param supported Supported status
+*
+*********************************************************************/
+void VI_set_supported_function
+    (
+    const EnumVehicleSupportedFunction function,
+    const bool supported
+    )
+{
+static uint8_t supported_functions[SUPPORTED_FUNCTION_LENGTH];
+uint32_t sfl = rx_vehicle_supported_functions;
+
+if( supported )
+    {
+    set_bit( sfl, function );
     }
 else
     {
-    clear_bit( rx_vehicle_supported_functions, function );
+    clear_bit( sfl, function );
     }
 
-// For updating the status bar icons,
-// notify HMI if the supported functions of clock/grip warmer/seat heater are changed
-switch( function )
-    {
-    case VEHICLE_FEATURE_CLOCK:
-        EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_CLOCK );
-        break;
-    case VEHICLE_FEATURE_GRIP_HEATER:
-        EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_GRIP_WARMER );
-        break;
-    case VEHICLE_FEATURE_SEAT_HEATER:
-        EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_SEAT_HEATER );
-        break;
-    default:
-        break;
-    }
+supported_functions[0] = rx_tacho_setting.fullscale;
+supported_functions[1] = rx_tacho_setting.redzone;
+supported_functions[2] = sfl & 0xFF;
+supported_functions[3] = ( sfl >> 8 ) & 0xFF;
+supported_functions[4] = ( sfl >> 16 ) & 0xFF;
+supported_functions[5] = ( sfl >> 24 ) & 0xFF;
+
+set_supported_function( supported_functions, SUPPORTED_FUNCTION_DATA_SOURCE_UI );
 }
 
 /*********************************************************************
@@ -1059,40 +1184,50 @@ switch( function )
 *********************************************************************/
 void VI_rx_support_function_received
     (
-    mid_msg_supp_func_t* support_functions
+    const mid_msg_supp_func_t* const support_functions
     )
 {
-rx_tacho_setting.fullscale = support_functions->tcfs;
-rx_tacho_setting.redzone   = support_functions->brzegr;
+uint8_t  supported_functions[SUPPORTED_FUNCTION_LENGTH];
+uint32_t sfl = 0;
 
-VI_set_supported_function( VEHICLE_FEATURE_TRIP2, support_functions->sfl.bit.trip2 );
-VI_set_supported_function( VEHICLE_FEATURE_F_TRIP, support_functions->sfl.bit.Ftrip );
-VI_set_supported_function( VEHICLE_FEATURE_METER_BRIGHTNESS_ADJ, support_functions->sfl.bit.mt_brgtnss_adj );
-VI_set_supported_function( VEHICLE_FEATURE_CLOCK, support_functions->sfl.bit.clk );
-VI_set_supported_function( VEHICLE_FEATURE_TCS, support_functions->sfl.bit.tcs );
 PRINTF( "%s, grip warmer: %d\r\n", __FUNCTION__, support_functions->sfl.bit.grip_warmer );
-VI_set_supported_function( VEHICLE_FEATURE_GRIP_HEATER, support_functions->sfl.bit.grip_warmer );
 PRINTF( "%s, seat heater: %d\r\n", __FUNCTION__, support_functions->sfl.bit.seat_heater );
-VI_set_supported_function( VEHICLE_FEATURE_SEAT_HEATER, support_functions->sfl.bit.seat_heater );
-VI_set_supported_function( VEHICLE_FEATURE_WIND_SCREEN, support_functions->sfl.bit.wind_scrn );
-VI_set_supported_function( VEHICLE_FEATURE_OIL_TRIP, support_functions->sfl.bit.oil_trip );
-VI_set_supported_function( VEHICLE_FEATURE_V_BELT_TRIP, support_functions->sfl.bit.Vbelt_trip );
-VI_set_supported_function( VEHICLE_FEATURE_FREE1, support_functions->sfl.bit.Free1 );
-VI_set_supported_function( VEHICLE_FEATURE_FREE2, support_functions->sfl.bit.Free2 );
-VI_set_supported_function( VEHICLE_FEATURE_AVG_SPEED, support_functions->sfl.bit.avg_spd );
-VI_set_supported_function( VEHICLE_FEATURE_CURRENT_FUEL, support_functions->sfl.bit.crt_fuel );
-VI_set_supported_function( VEHICLE_FEATURE_AVG_FUEL, support_functions->sfl.bit.avg_fuel );
-VI_set_supported_function( VEHICLE_FEATURE_FUEL_CONSUMPTION, support_functions->sfl.bit.fuel_cons );
-VI_set_supported_function( VEHICLE_FEATURE_AIR_TEMPERATURE, support_functions->sfl.bit.air );
-VI_set_supported_function( VEHICLE_FEATURE_BATTERY_VOLTAGE, support_functions->sfl.bit.bat );
-VI_set_supported_function( VEHICLE_FEATURE_COOLANT, support_functions->sfl.bit.coolant );
-VI_set_supported_function( VEHICLE_FEATURE_DRIVING_RANGE, support_functions->sfl.bit.rng );
-VI_set_supported_function( VEHICLE_FEATURE_TIRE_FRONT, support_functions->sfl.bit.tire_frnt );
-VI_set_supported_function( VEHICLE_FEATURE_TIRE_FRONT_RIGHT, support_functions->sfl.bit.tire_frnt_r );
-VI_set_supported_function( VEHICLE_FEATURE_TIRE_FRONT_LEFT, support_functions->sfl.bit.tire_frnt_l );
-VI_set_supported_function( VEHICLE_FEATURE_TIRE_REAR, support_functions->sfl.bit.tire_rear );
-VI_set_supported_function( VEHICLE_FEATURE_TRIP_TIME, support_functions->sfl.bit.tip_time );
-VI_set_supported_function( VEHICLE_FEATURE_CRUISE, support_functions->sfl.bit.cruise );
+
+set_sfl( &sfl, VEHICLE_FEATURE_TRIP2, support_functions->sfl.bit.trip2 );
+set_sfl( &sfl, VEHICLE_FEATURE_F_TRIP, support_functions->sfl.bit.Ftrip );
+set_sfl( &sfl, VEHICLE_FEATURE_METER_BRIGHTNESS_ADJ, support_functions->sfl.bit.mt_brgtnss_adj );
+set_sfl( &sfl, VEHICLE_FEATURE_CLOCK, support_functions->sfl.bit.clk );
+set_sfl( &sfl, VEHICLE_FEATURE_TCS, support_functions->sfl.bit.tcs );
+set_sfl( &sfl, VEHICLE_FEATURE_GRIP_HEATER, support_functions->sfl.bit.grip_warmer );
+set_sfl( &sfl, VEHICLE_FEATURE_SEAT_HEATER, support_functions->sfl.bit.seat_heater );
+set_sfl( &sfl, VEHICLE_FEATURE_WIND_SCREEN, support_functions->sfl.bit.wind_scrn );
+set_sfl( &sfl, VEHICLE_FEATURE_OIL_TRIP, support_functions->sfl.bit.oil_trip );
+set_sfl( &sfl, VEHICLE_FEATURE_V_BELT_TRIP, support_functions->sfl.bit.Vbelt_trip );
+set_sfl( &sfl, VEHICLE_FEATURE_FREE1, support_functions->sfl.bit.Free1 );
+set_sfl( &sfl, VEHICLE_FEATURE_FREE2, support_functions->sfl.bit.Free2 );
+set_sfl( &sfl, VEHICLE_FEATURE_AVG_SPEED, support_functions->sfl.bit.avg_spd );
+set_sfl( &sfl, VEHICLE_FEATURE_CURRENT_FUEL, support_functions->sfl.bit.crt_fuel );
+set_sfl( &sfl, VEHICLE_FEATURE_AVG_FUEL, support_functions->sfl.bit.avg_fuel );
+set_sfl( &sfl, VEHICLE_FEATURE_FUEL_CONSUMPTION, support_functions->sfl.bit.fuel_cons );
+set_sfl( &sfl, VEHICLE_FEATURE_AIR_TEMPERATURE, support_functions->sfl.bit.air );
+set_sfl( &sfl, VEHICLE_FEATURE_BATTERY_VOLTAGE, support_functions->sfl.bit.bat );
+set_sfl( &sfl, VEHICLE_FEATURE_COOLANT, support_functions->sfl.bit.coolant );
+set_sfl( &sfl, VEHICLE_FEATURE_DRIVING_RANGE, support_functions->sfl.bit.rng );
+set_sfl( &sfl, VEHICLE_FEATURE_TIRE_FRONT, support_functions->sfl.bit.tire_frnt );
+set_sfl( &sfl, VEHICLE_FEATURE_TIRE_FRONT_RIGHT, support_functions->sfl.bit.tire_frnt_r );
+set_sfl( &sfl, VEHICLE_FEATURE_TIRE_FRONT_LEFT, support_functions->sfl.bit.tire_frnt_l );
+set_sfl( &sfl, VEHICLE_FEATURE_TIRE_REAR, support_functions->sfl.bit.tire_rear );
+set_sfl( &sfl, VEHICLE_FEATURE_TRIP_TIME, support_functions->sfl.bit.tip_time );
+set_sfl( &sfl, VEHICLE_FEATURE_CRUISE, support_functions->sfl.bit.cruise );
+
+supported_functions[0] = support_functions->tcfs;
+supported_functions[1] = support_functions->brzegr;
+supported_functions[2] = sfl & 0xFF;
+supported_functions[3] = ( sfl >> 8 ) & 0xFF;
+supported_functions[4] = ( sfl >> 16 ) & 0xFF;
+supported_functions[5] = ( sfl >> 24 ) & 0xFF;
+
+set_supported_function( supported_functions, SUPPORTED_FUNCTION_DATA_SOURCE_CAN );
 }
 
 /*********************************************************************
@@ -1100,7 +1235,7 @@ VI_set_supported_function( VEHICLE_FEATURE_CRUISE, support_functions->sfl.bit.cr
 * @public
 * VI_rx_positive_response_received
 *
-* Notify from CAN stack that positive reponse is received
+* Notify from CAN stack that positive response is received
 *
 * @param can_id CAN message
 * @param request_service_id Request service id
@@ -1120,12 +1255,44 @@ void VI_rx_positive_response_received
 /*********************************************************************
 *
 * @private
-* vi_rx_init_data
+* init_supported_function
+*
+* Init supported functions
+*
+*********************************************************************/
+static void init_supported_function
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+uint8_t  init_value[SUPPORTED_FUNCTION_LENGTH];
+uint32_t sfl = 0;
+
+set_sfl( &sfl, VEHICLE_FEATURE_OIL_TRIP, true );
+set_sfl( &sfl, VEHICLE_FEATURE_CURRENT_FUEL, true );
+set_sfl( &sfl, VEHICLE_FEATURE_AVG_FUEL, true );
+set_sfl( &sfl, VEHICLE_FEATURE_TRIP_TIME, true );
+
+init_value[0] = DEFAULT_TACHO_FULLSCALE;
+init_value[1] = DEFAULT_TACHO_REDZONE;
+init_value[2] = sfl & 0xFF;
+init_value[3] = ( sfl >> 8 ) & 0xFF;
+init_value[4] = ( sfl >> 16 ) & 0xFF;
+init_value[5] = ( sfl >> 24 ) & 0xFF;
+
+set_supported_function( init_value, SUPPORTED_FUNCTION_DATA_SOURCE_EEPROM );
+}
+
+/*********************************************************************
+*
+* @private
+* init_rx_data
 *
 * Set initial value of rx data defined in CAN requirement spec
 *
 *********************************************************************/
-void vi_rx_init_data
+static void init_rx_data
     (
     void
     )
@@ -1175,12 +1342,77 @@ rx_vehicle_info.clock_adj_status   = false;
 rx_brightness_control.lcd_brightness_level = DEFALUT_LCD_BRIGHTNESS_LEVEL;
 rx_brightness_control.tft_brightness_level = DEFALUT_TFT_BRIGHTNESS_LEVEL;
 rx_brightness_control.tft_duty             = DEFALUT_TFT_DUTY;
+}
 
-rx_tacho_setting.fullscale = DEFAULT_TACHO_FULLSCALE;
-rx_tacho_setting.redzone   = DEFAULT_TACHO_REDZONE;
+/*********************************************************************
+*
+* @public
+* VI_read_supported_function_callback
+*
+* Callback of reading supported function from EEPROM
+*
+* @param result True if read success. False if read fail.
+* @param value Pointer to the supported function of uint8_t* type
+*
+*********************************************************************/
+void VI_read_supported_function_callback
+    (
+    bool  result,
+    void* value
+    )
+{
+bool     is_valid = false;
+uint8_t* supported_functions = (uint8_t*)value;
 
-set_bit( rx_vehicle_supported_functions, VEHICLE_FEATURE_OIL_TRIP );
-set_bit( rx_vehicle_supported_functions, VEHICLE_FEATURE_CURRENT_FUEL );
-set_bit( rx_vehicle_supported_functions, VEHICLE_FEATURE_AVG_FUEL );
-set_bit( rx_vehicle_supported_functions, VEHICLE_FEATURE_TRIP_TIME );
+if( result )
+    {
+    PRINTF( "rd sf %02x%02x%02x%02x%02x%02x\r\n", supported_functions[0], supported_functions[1], supported_functions[2],
+                                                  supported_functions[3], supported_functions[4], supported_functions[5] );
+    // The initial data from EEPROM is all 0xFF.
+    // Bit 8 of byte 5 is used for checking if the supported function from EEPROM is valid.
+    // (0: valid. 1: invalid)
+    if( 0 == ( supported_functions[5] & 0x80 ) )
+        {
+        is_valid = true;
+        }
+    }
+else
+    {
+    PRINTF( "rd supported func fail\r\n" );
+    }
+
+if( is_valid )
+    {
+    set_supported_function( supported_functions, SUPPORTED_FUNCTION_DATA_SOURCE_EEPROM );
+    }
+else
+    {
+    // used initial value when fail to get supported function from EEPROM
+    init_supported_function();
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* vi_rx_init
+*
+* Init vi rx
+*
+*********************************************************************/
+void vi_rx_init
+    (
+    void
+    )
+{
+supported_function_semaphore_handle = xSemaphoreCreateBinary();
+configASSERT( NULL != supported_function_semaphore_handle );
+xSemaphoreGive( supported_function_semaphore_handle );
+
+if( pdFALSE == EEPM_get_supported_function( &VI_read_supported_function_callback ) )
+    {
+    PRINTF( "get supported func fail\r\n" );
+    }
+
+init_rx_data();
 }

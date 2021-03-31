@@ -67,7 +67,7 @@ void EW_notify_motocon_event_received( const EnumMotoConRxEvent event );
 void EW_notify_qrcode_ready( const char* qr_code_text );
 
 void EW_notify_dd_mode_state_changed( void );
-void EW_notify_vi_data_received( EnumVehicleRxType rx_type );
+void EW_notify_vi_data_received( const EnumVehicleRxType rx_type );
 
 void EW_notify_weather_info_update( void );
 

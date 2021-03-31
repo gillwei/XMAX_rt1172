@@ -192,10 +192,17 @@ typedef enum
     VEHICLE_FEATURE_CRUISE           = 26
     } vehicle_feature_enum;
 
+typedef enum
+    {
+    SUPPORTED_FUNCTION_DATA_SOURCE_UI,
+    SUPPORTED_FUNCTION_DATA_SOURCE_CAN,
+    SUPPORTED_FUNCTION_DATA_SOURCE_EEPROM
+    } supported_func_data_src_enum;
+
 void vi_key_init( void );
 void vi_key_status_changed( const CoreKeyCode key_code, const int key_status );
 void vi_key_proc( void );
-void vi_rx_init_data( void );
+void vi_rx_init( void );
 
 #ifdef __cplusplus
 }
