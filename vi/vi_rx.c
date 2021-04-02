@@ -92,6 +92,7 @@ switch( signal_id )
         break;
     case IL_CAN0_ECU_INDCT_TC_MODE_RXSIG_HANDLE:
         rx_ecu_info.tc_mode = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeTC_MODE );
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -521,9 +522,11 @@ switch( signal_id )
         break;
     case IL_CAN0_HEATER_STAT_CRNT_GW_STAT_RXSIG_HANDLE:
         rx_grip_warmer_status.setting = ( heater_setting_enum )data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeGRIP_WARMER_STATUS );
         break;
     case IL_CAN0_HEATER_STAT_CRNT_SH_STAT_RXSIG_HANDLE:
         rx_seat_heater_status.setting = ( heater_setting_enum )data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeSEAT_HEATER_STATUS );
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );

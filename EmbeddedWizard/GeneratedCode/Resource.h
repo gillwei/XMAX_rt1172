@@ -150,11 +150,47 @@ EW_DECLARE_BITMAP_RES( ResourceIconSeatHeater0Small )
 /* Bitmap resource : 'Resource::IconSeatHeater0Large' */
 EW_DECLARE_BITMAP_RES( ResourceIconSeatHeater0Large )
 
+/* Bitmap resource : 'Resource::IconSeatHeater1Small' */
+EW_DECLARE_BITMAP_RES( ResourceIconSeatHeater1Small )
+
+/* Bitmap resource : 'Resource::IconSeatHeater1Large' */
+EW_DECLARE_BITMAP_RES( ResourceIconSeatHeater1Large )
+
+/* Bitmap resource : 'Resource::IconSeatHeater2Small' */
+EW_DECLARE_BITMAP_RES( ResourceIconSeatHeater2Small )
+
+/* Bitmap resource : 'Resource::IconSeatHeater2Large' */
+EW_DECLARE_BITMAP_RES( ResourceIconSeatHeater2Large )
+
+/* Bitmap resource : 'Resource::IconSeatHeater3Small' */
+EW_DECLARE_BITMAP_RES( ResourceIconSeatHeater3Small )
+
+/* Bitmap resource : 'Resource::IconSeatHeater3Large' */
+EW_DECLARE_BITMAP_RES( ResourceIconSeatHeater3Large )
+
 /* Bitmap resource : 'Resource::IconGripWarmer0Small' */
 EW_DECLARE_BITMAP_RES( ResourceIconGripWarmer0Small )
 
 /* Bitmap resource : 'Resource::IconGripWarmer0Large' */
 EW_DECLARE_BITMAP_RES( ResourceIconGripWarmer0Large )
+
+/* Bitmap resource : 'Resource::IconGripWarmer1Small' */
+EW_DECLARE_BITMAP_RES( ResourceIconGripWarmer1Small )
+
+/* Bitmap resource : 'Resource::IconGripWarmer1Large' */
+EW_DECLARE_BITMAP_RES( ResourceIconGripWarmer1Large )
+
+/* Bitmap resource : 'Resource::IconGripWarmer2Small' */
+EW_DECLARE_BITMAP_RES( ResourceIconGripWarmer2Small )
+
+/* Bitmap resource : 'Resource::IconGripWarmer2Large' */
+EW_DECLARE_BITMAP_RES( ResourceIconGripWarmer2Large )
+
+/* Bitmap resource : 'Resource::IconGripWarmer3Small' */
+EW_DECLARE_BITMAP_RES( ResourceIconGripWarmer3Small )
+
+/* Bitmap resource : 'Resource::IconGripWarmer3Large' */
+EW_DECLARE_BITMAP_RES( ResourceIconGripWarmer3Large )
 
 /* Bitmap resource : 'Resource::StatusBarShadow' */
 EW_DECLARE_BITMAP_RES( ResourceStatusBarShadow )
@@ -356,6 +392,21 @@ EW_DECLARE_BITMAP_RES( ResourcePhoneIcon )
 
 /* Bitmap resource : 'Resource::PhoneVol' */
 EW_DECLARE_BITMAP_RES( ResourcePhoneVol )
+
+/* Bitmap resource : 'Resource::ControlUpButton' */
+EW_DECLARE_BITMAP_RES( ResourceControlUpButton )
+
+/* Bitmap resource : 'Resource::ControlDownButton' */
+EW_DECLARE_BITMAP_RES( ResourceControlDownButton )
+
+/* Bitmap resource : 'Resource::ControlButtonBackground' */
+EW_DECLARE_BITMAP_RES( ResourceControlButtonBackground )
+
+/* Bitmap resource : 'Resource::ControlUpButtonArrow' */
+EW_DECLARE_BITMAP_RES( ResourceControlUpButtonArrow )
+
+/* Bitmap resource : 'Resource::ControlDownButtonArrow' */
+EW_DECLARE_BITMAP_RES( ResourceControlDownButtonArrow )
 
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_

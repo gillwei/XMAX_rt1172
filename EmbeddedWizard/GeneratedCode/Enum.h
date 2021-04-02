@@ -268,7 +268,8 @@ typedef enum
   EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL = 12,
   EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL = 13,
   EnumVehicleTxTypeCHG_METER_INFO       = 14,
-  EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION = 15
+  EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION = 15,
+  EnumVehicleTxTypeTCS                  = 16
 } EnumVehicleTxType;
 
 /* User defined enumeration: 'Enum::DataType' */
@@ -454,6 +455,15 @@ typedef enum
   EnumVolumeControlDOWN                 = 1,
   EnumVolumeControlTOTAL                = 2
 } EnumVolumeControl;
+
+/* User defined enumeration: 'Enum::HeaterSettingStatusType' */
+typedef enum
+{
+  EnumHeaterSettingStatusTypeOFF        = 0,
+  EnumHeaterSettingStatusTypeLOW        = 1,
+  EnumHeaterSettingStatusTypeMID        = 2,
+  EnumHeaterSettingStatusTypeHIGH       = 3
+} EnumHeaterSettingStatusType;
 
 #ifdef __cplusplus
   }

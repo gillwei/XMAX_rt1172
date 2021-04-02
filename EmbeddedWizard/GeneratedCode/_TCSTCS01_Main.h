@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _LauncherLNC_Main_H
-#define _LauncherLNC_Main_H
+#ifndef _TCSTCS01_Main_H
+#define _TCSTCS01_Main_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,13 +42,20 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
+#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
-#include "_EffectsRectEffect.h"
-#include "_LauncherLNC_Base.h"
-#include "_LauncherLNC_RotaryPlate.h"
-#include "_ViewsWallpaper.h"
+#include "_CoreTimer.h"
+#include "_MenuBaseMenuView.h"
+#include "_MenuVerticalMenu.h"
+#include "_ViewsImage.h"
+#include "_ViewsRectangle.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -92,34 +99,27 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Launcher::LNC_Main */
-#ifndef _LauncherLNC_Main_
-  EW_DECLARE_CLASS( LauncherLNC_Main )
-#define _LauncherLNC_Main_
+/* Forward declaration of the class Menu::ItemBase */
+#ifndef _MenuItemBase_
+  EW_DECLARE_CLASS( MenuItemBase )
+#define _MenuItemBase_
+#endif
+
+/* Forward declaration of the class TCS::TCS01_Main */
+#ifndef _TCSTCS01_Main_
+  EW_DECLARE_CLASS( TCSTCS01_Main )
+#define _TCSTCS01_Main_
 #endif
 
 
-/* Deklaration of class : 'Launcher::LNC_Main' */
-EW_DEFINE_FIELDS( LauncherLNC_Main, ComponentsBaseComponent )
-  EW_OBJECT  ( BaseSlideInEffect, EffectsRectEffect )
-  EW_OBJECT  ( BaseSlideOutEffect, EffectsRectEffect )
-  EW_OBJECT  ( RotaryPlateSlideInEffect, EffectsRectEffect )
-  EW_OBJECT  ( RotaryPlateSlideOutEffect, EffectsRectEffect )
-  EW_OBJECT  ( LNC_Base,        LauncherLNC_Base )
-  EW_OBJECT  ( LNC_RotaryPlate, LauncherLNC_RotaryPlate )
-  EW_OBJECT  ( StatusBarShadowImage, ViewsWallpaper )
+/* Deklaration of class : 'TCS::TCS01_Main' */
+EW_DEFINE_FIELDS( TCSTCS01_Main, MenuBaseMenuView )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
-  EW_VARIABLE( NextItem,        XEnum )
-  EW_VARIABLE( CurrentItem,     XEnum )
-  EW_VARIABLE( PreviousItem,    XEnum )
-  EW_VARIABLE( WindScreenEnabled, XBool )
-  EW_VARIABLE( GripWarmerEnabled, XBool )
-  EW_VARIABLE( SeatHeaterEnabled, XBool )
-  EW_VARIABLE( TCSEnabled,      XBool )
-EW_END_OF_FIELDS( LauncherLNC_Main )
+  EW_VARIABLE( IsTCSEnabled,    XUInt32 )
+EW_END_OF_FIELDS( TCSTCS01_Main )
 
-/* Virtual Method Table (VMT) for the class : 'Launcher::LNC_Main' */
-EW_DEFINE_METHODS( LauncherLNC_Main, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'TCS::TCS01_Main' */
+EW_DEFINE_METHODS( TCSTCS01_Main, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -163,75 +163,57 @@ EW_DEFINE_METHODS( LauncherLNC_Main, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( LauncherLNC_Main _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( LauncherLNC_Main _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( LauncherLNC_Main _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( LauncherLNC_Main _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongEnterKeyActivated, void )( LauncherLNC_Main _this )
+  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( LauncherLNC_Main )
+  EW_METHOD( LoadItemClass,     XClass )( TCSTCS01_Main _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( TCSTCS01_Main _this, XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( TCSTCS01_Main _this, XInt32 aItemNo, MenuItemBase 
+    aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( TCSTCS01_Main _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
+EW_END_OF_METHODS( TCSTCS01_Main )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void LauncherLNC_Main_Init( LauncherLNC_Main _this, XHandle aArg );
+void TCSTCS01_Main_Init( TCSTCS01_Main _this, XHandle aArg );
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortDownKeyActivated()' */
-void LauncherLNC_Main_OnShortDownKeyActivated( LauncherLNC_Main _this );
+/* 'C' function for method : 'TCS::TCS01_Main.LoadItemClass()' */
+XClass TCSTCS01_Main_LoadItemClass( TCSTCS01_Main _this, XInt32 aItemNo );
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortUpKeyActivated()' */
-void LauncherLNC_Main_OnShortUpKeyActivated( LauncherLNC_Main _this );
+/* 'C' function for method : 'TCS::TCS01_Main.LoadItemTitle()' */
+XString TCSTCS01_Main_LoadItemTitle( TCSTCS01_Main _this, XInt32 aItemNo );
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortEnterKeyActivated()' */
-void LauncherLNC_Main_OnShortEnterKeyActivated( LauncherLNC_Main _this );
+/* 'C' function for method : 'TCS::TCS01_Main.OnItemActivate()' */
+void TCSTCS01_Main_OnItemActivate( TCSTCS01_Main _this, XInt32 aItemNo, MenuItemBase 
+  aMenuItem );
 
-/* 'C' function for method : 'Launcher::LNC_Main.OnShortHomeKeyActivated()' */
-void LauncherLNC_Main_OnShortHomeKeyActivated( LauncherLNC_Main _this );
-
-/* 'C' function for method : 'Launcher::LNC_Main.OnLongEnterKeyActivated()' */
-void LauncherLNC_Main_OnLongEnterKeyActivated( LauncherLNC_Main _this );
-
-/* 'C' function for method : 'Launcher::LNC_Main.OnCurrentItemChangedSlot()' */
-void LauncherLNC_Main_OnCurrentItemChangedSlot( LauncherLNC_Main _this, XObject 
-  sender );
-
-/* 'C' function for method : 'Launcher::LNC_Main.GetInitialSelectedItem()' */
-XEnum LauncherLNC_Main_GetInitialSelectedItem( LauncherLNC_Main _this );
-
-/* 'C' function for method : 'Launcher::LNC_Main.GetNextItem()' */
-XEnum LauncherLNC_Main_GetNextItem( LauncherLNC_Main _this, XEnum aBaseItem );
-
-/* 'C' function for method : 'Launcher::LNC_Main.GetPreviousItem()' */
-XEnum LauncherLNC_Main_GetPreviousItem( LauncherLNC_Main _this, XEnum aBaseItem );
-
-/* 'C' function for method : 'Launcher::LNC_Main.OnSelectedAnimationFinishedSlot()' */
-void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, XObject 
-  sender );
-
-/* 'C' function for method : 'Launcher::LNC_Main.OnSlideOutFinishedSlot()' */
-void LauncherLNC_Main_OnSlideOutFinishedSlot( LauncherLNC_Main _this, XObject sender );
-
-/* Dismiss dialogs presented from launcher */
-void LauncherLNC_Main_DismissChildDialogs( LauncherLNC_Main _this );
-
-/* 'C' function for method : 'Launcher::LNC_Main.GetVehicleSupportedFeature()' */
-void LauncherLNC_Main_GetVehicleSupportedFeature( LauncherLNC_Main _this );
+/* 'C' function for method : 'TCS::TCS01_Main.LoadItemChecked()' */
+XBool TCSTCS01_Main_LoadItemChecked( TCSTCS01_Main _this, XInt32 aItemNo );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void LauncherLNC_Main_OnVehicleDataReceivedSlot( LauncherLNC_Main _this, XObject 
-  sender );
+void TCSTCS01_Main_OnVehicleDataReceivedSlot( TCSTCS01_Main _this, XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _LauncherLNC_Main_H */
+#endif /* _TCSTCS01_Main_H */
 
 /* Embedded Wizard */

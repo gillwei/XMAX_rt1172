@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/04/08 08:28:05 */
+   Generated: 2021/04/12 15:12:18 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_ok' */
@@ -91,8 +91,8 @@ extern const XStringRes StringsBRT01_TFT_display;
 /* User defined constant: 'Strings::BRT01_speed_meter' */
 extern const XStringRes StringsBRT01_speed_meter;
 
-/* User defined constant: 'Strings::GPW01_grip_warmer' */
-extern const XStringRes StringsGPW01_grip_warmer;
+/* User defined constant: 'Strings::GPW01_GRIP_WARMER' */
+extern const XStringRes StringsGPW01_GRIP_WARMER;
 
 /* User defined constant: 'Strings::INF01_TACHO_VISUALIZER' */
 extern const XStringRes StringsINF01_TACHO_VISUALIZER;
@@ -127,8 +127,8 @@ extern const XStringRes StringsLNC_notification;
 /* User defined constant: 'Strings::LNC_traction_control' */
 extern const XStringRes StringsLNC_traction_control;
 
-/* User defined constant: 'Strings::LNC_seat_heater' */
-extern const XStringRes StringsLNC_seat_heater;
+/* User defined constant: 'Strings::LNC_SEAT_HEATER' */
+extern const XStringRes StringsLNC_SEAT_HEATER;
 
 /* User defined constant: 'Strings::LNC_settings' */
 extern const XStringRes StringsLNC_settings;
@@ -289,6 +289,9 @@ extern const XStringRes StringsSET28_unit_id;
 /* User defined constant: 'Strings::SET28_sw_update' */
 extern const XStringRes StringsSET28_sw_update;
 
+/* User defined constant: 'Strings::TCS01_TCS' */
+extern const XStringRes StringsTCS01_TCS;
+
 /* User defined constant: 'Strings::UNT01_unit_mileage' */
 extern const XStringRes StringsUNT01_unit_mileage;
 
@@ -331,8 +334,8 @@ extern const XStringRes StringsUNT05_unit_temperature_c;
 /* User defined constant: 'Strings::UNT05_unit_temperature_f' */
 extern const XStringRes StringsUNT05_unit_temperature_f;
 
-/* User defined constant: 'Strings::WSC01_wind_screen' */
-extern const XStringRes StringsWSC01_wind_screen;
+/* User defined constant: 'Strings::WSC01_WIND_SCREEN' */
+extern const XStringRes StringsWSC01_WIND_SCREEN;
 
 /* User defined constant: 'Strings::DEV_TEST_CHINESE' */
 extern const XStringRes StringsDEV_TEST_CHINESE;

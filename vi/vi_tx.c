@@ -239,6 +239,43 @@ if( 0 != unit_change_req )
 /*********************************************************************
 *
 * @private
+* send_tcs_status
+*
+* Send tcs status to meter
+*
+* @param tcs_status TCS mode
+*
+*********************************************************************/
+static void send_tcs_status
+    (
+    uint8_t tcs_status
+    )
+{
+mid_msg_tcs_t   tcs_change_req = 0;
+
+switch( tcs_status )
+    {
+    case 0:
+        tcs_change_req = MID_MSG_PROCDTL_TCS_ON_TO_OFF;
+        break;
+    case 1:
+        tcs_change_req = MID_MSG_PROCDTL_TCS_OFF_TO_ON;
+        break;
+    default:
+        break;
+    }
+
+if( 0 != tcs_change_req )
+    {
+    /* H'584 */
+    can_mid_req( TX0_REQ_MT_FUNC_CNT_CAN0_ID, IL_CAN0_TX0_REQ_MT_FUNC_CNT_TXFRM_LEN, MID_MSG_SID_TCS_SWITCH, tcs_change_req );
+    PRINTF( "%s 0x%x\r\n", __FUNCTION__, tcs_change_req );
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * send_meter_brightness_operation
 *
 * Send meter brightness operation
@@ -356,6 +393,78 @@ PRINTF( "%s %d\r\n", __FUNCTION__, heater_code );
 /*********************************************************************
 *
 * @private
+* send_meter_seat_heater_change_level
+*
+* Send meter seat heater needs to change level
+*
+* @param level Seat heater level code of
+*              IL_VT_DEV_CTRL_SEAT_HEATER_NT,
+*              IL_VT_DEV_CTRL_SEAT_HEATER_DOWN,
+*              IL_VT_DEV_CTRL_SEAT_HEATER_UP
+*
+*********************************************************************/
+static void send_meter_seat_heater_change_level
+    (
+    const uint8_t level
+    )
+{
+dll_frm_index_t l_frm_index;
+can_mid_sig_set( &l_frm_index, IL_CAN0_DEV_CTRL_SEAT_HEATER_TXSIG_HANDLE, IL_CAN0_DEV_CTRL_SEAT_HEATER_TXSIG_NBYTES, &level );
+can_mid_frm_send( l_frm_index );
+PRINTF( "%s %d\r\n", __FUNCTION__, level );
+}
+
+/*********************************************************************
+*
+* @private
+* send_meter_grip_warmer_change_level
+*
+* Send meter grip warmer needs to change level
+*
+* @param level Grip warmer level code of
+*              IL_VT_DEV_CTRL_GRIP_WARM_NT,
+*              IL_VT_DEV_CTRL_GRIP_WARM_DOWN,
+*              IL_VT_DEV_CTRL_GRIP_WARM_UP
+*
+*********************************************************************/
+static void send_meter_grip_warmer_change_level
+    (
+    const uint8_t level
+    )
+{
+dll_frm_index_t l_frm_index;
+can_mid_sig_set( &l_frm_index, IL_CAN0_DEV_CTRL_GRIP_WARM_TXSIG_HANDLE, IL_CAN0_DEV_CTRL_GRIP_WARM_TXSIG_NBYTES, &level );
+can_mid_frm_send( l_frm_index );
+PRINTF( "%s %d\r\n", __FUNCTION__, level );
+}
+
+/*********************************************************************
+*
+* @private
+* send_meter_windscreen_operation
+*
+* Send meter wind screen operation
+*
+* @param operation_code Wind screen operation code of
+*                       IL_VT_DEV_CTRL_WINDSCRN_NT,
+*                       IL_VT_DEV_CTRL_WINDSCRN_DOWN,
+*                       IL_VT_DEV_CTRL_WINDSCRN_UP
+*
+*********************************************************************/
+static void send_meter_windscreen_operation
+    (
+    const uint8_t operation_code
+    )
+{
+dll_frm_index_t l_frm_index;
+can_mid_sig_set( &l_frm_index, IL_CAN0_DEV_CTRL_WINDSCRN_TXSIG_HANDLE, IL_CAN0_DEV_CTRL_WINDSCRN_TXSIG_NBYTES, &operation_code );
+can_mid_frm_send( l_frm_index );
+PRINTF( "%s %d\r\n", __FUNCTION__, operation_code );
+}
+
+/*********************************************************************
+*
+* @private
 * VI_set_tx_data
 *
 * Send data from UI to CAN stack
@@ -402,18 +511,24 @@ switch( tx_type )
         send_meter_heater_operation( (uint8_t)data );
         break;
     case EnumVehicleTxTypeWIND_SCREEN_OPERATION:
+        send_meter_windscreen_operation( (uint8_t)data );
         break;
     case EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION:
         send_meter_brightness_operation( (uint8_t)data );
         break;
     case EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL:
+        send_meter_grip_warmer_change_level( (uint8_t)data );
         break;
     case EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL:
+        send_meter_seat_heater_change_level( (uint8_t)data );
         break;
     case EnumVehicleTxTypeCHG_METER_INFO:
         break;
     case EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION:
         send_tft_brightness_operation( (uint8_t)data );
+        break;
+    case EnumVehicleTxTypeTCS:
+        send_tcs_status( (uint8_t)data );
         break;
     default:
         PRINTF( "Err: %s invalid tx type %d\r\n", __FUNCTION__, tx_type );

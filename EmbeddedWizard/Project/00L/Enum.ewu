@@ -564,6 +564,9 @@ enum VehicleTxType
 
   $rect <220,260,420,300>
   item TFT_BRIGHTNESS_OPERATION;
+
+  $rect <220,310,420,350>
+  item TCS;
 }
 
 $rect <260,320,460,360>
@@ -959,4 +962,21 @@ enum VolumeControl
 
   $rect <10,110,210,150>
   item TOTAL;
+}
+
+$rect <30,650,230,690>
+$output false
+enum HeaterSettingStatusType
+{
+  $rect <10,10,210,50>
+  item OFF;
+
+  $rect <220,10,420,50>
+  item LOW;
+
+  $rect <430,10,630,50>
+  item MID;
+
+  $rect <650,10,850,50>
+  item HIGH;
 }

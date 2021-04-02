@@ -709,13 +709,13 @@ class ItemCheckbox : Menu::ItemBase
   $rect <20,20,160,60>
   inherited object Title
   {
-    preset Bounds = <37,1,386,69>;
+    preset Bounds = <37,1,366,69>;
   }
 
   $rect <20,20,160,60>
   object WidgetSet::ToggleButton CheckBoxButton
   {
-    preset Bounds = <394,10,444,60>;
+    preset Bounds = <371,11,421,61>;
     preset Enabled = true;
     preset Checked = false;
     preset IconFrame = 0;

@@ -277,6 +277,42 @@ EW_RES_WITHOUT_VARIANTS( ResourceIconSeatHeater0Small )
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconSeatHeater0Large' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconSeatHeater0Large )
 
+/* Include a file containing the bitmap resource : 'Resource::IconSeatHeater1Small' */
+#include "_ResourceIconSeatHeater1Small.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconSeatHeater1Small' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconSeatHeater1Small )
+
+/* Include a file containing the bitmap resource : 'Resource::IconSeatHeater1Large' */
+#include "_ResourceIconSeatHeater1Large.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconSeatHeater1Large' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconSeatHeater1Large )
+
+/* Include a file containing the bitmap resource : 'Resource::IconSeatHeater2Small' */
+#include "_ResourceIconSeatHeater2Small.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconSeatHeater2Small' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconSeatHeater2Small )
+
+/* Include a file containing the bitmap resource : 'Resource::IconSeatHeater2Large' */
+#include "_ResourceIconSeatHeater2Large.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconSeatHeater2Large' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconSeatHeater2Large )
+
+/* Include a file containing the bitmap resource : 'Resource::IconSeatHeater3Small' */
+#include "_ResourceIconSeatHeater3Small.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconSeatHeater3Small' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconSeatHeater3Small )
+
+/* Include a file containing the bitmap resource : 'Resource::IconSeatHeater3Large' */
+#include "_ResourceIconSeatHeater3Large.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconSeatHeater3Large' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconSeatHeater3Large )
+
 /* Include a file containing the bitmap resource : 'Resource::IconGripWarmer0Small' */
 #include "_ResourceIconGripWarmer0Small.h"
 
@@ -288,6 +324,42 @@ EW_RES_WITHOUT_VARIANTS( ResourceIconGripWarmer0Small )
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconGripWarmer0Large' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconGripWarmer0Large )
+
+/* Include a file containing the bitmap resource : 'Resource::IconGripWarmer1Small' */
+#include "_ResourceIconGripWarmer1Small.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconGripWarmer1Small' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconGripWarmer1Small )
+
+/* Include a file containing the bitmap resource : 'Resource::IconGripWarmer1Large' */
+#include "_ResourceIconGripWarmer1Large.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconGripWarmer1Large' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconGripWarmer1Large )
+
+/* Include a file containing the bitmap resource : 'Resource::IconGripWarmer2Small' */
+#include "_ResourceIconGripWarmer2Small.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconGripWarmer2Small' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconGripWarmer2Small )
+
+/* Include a file containing the bitmap resource : 'Resource::IconGripWarmer2Large' */
+#include "_ResourceIconGripWarmer2Large.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconGripWarmer2Large' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconGripWarmer2Large )
+
+/* Include a file containing the bitmap resource : 'Resource::IconGripWarmer3Small' */
+#include "_ResourceIconGripWarmer3Small.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconGripWarmer3Small' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconGripWarmer3Small )
+
+/* Include a file containing the bitmap resource : 'Resource::IconGripWarmer3Large' */
+#include "_ResourceIconGripWarmer3Large.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconGripWarmer3Large' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconGripWarmer3Large )
 
 /* Include a file containing the bitmap resource : 'Resource::StatusBarShadow' */
 #include "_ResourceStatusBarShadow.h"
@@ -693,5 +765,35 @@ EW_RES_WITHOUT_VARIANTS( ResourcePhoneIcon )
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::PhoneVol' */
 EW_RES_WITHOUT_VARIANTS( ResourcePhoneVol )
+
+/* Include a file containing the bitmap resource : 'Resource::ControlUpButton' */
+#include "_ResourceControlUpButton.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ControlUpButton' */
+EW_RES_WITHOUT_VARIANTS( ResourceControlUpButton )
+
+/* Include a file containing the bitmap resource : 'Resource::ControlDownButton' */
+#include "_ResourceControlDownButton.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ControlDownButton' */
+EW_RES_WITHOUT_VARIANTS( ResourceControlDownButton )
+
+/* Include a file containing the bitmap resource : 'Resource::ControlButtonBackground' */
+#include "_ResourceControlButtonBackground.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ControlButtonBackground' */
+EW_RES_WITHOUT_VARIANTS( ResourceControlButtonBackground )
+
+/* Include a file containing the bitmap resource : 'Resource::ControlUpButtonArrow' */
+#include "_ResourceControlUpButtonArrow.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ControlUpButtonArrow' */
+EW_RES_WITHOUT_VARIANTS( ResourceControlUpButtonArrow )
+
+/* Include a file containing the bitmap resource : 'Resource::ControlDownButtonArrow' */
+#include "_ResourceControlDownButtonArrow.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ControlDownButtonArrow' */
+EW_RES_WITHOUT_VARIANTS( ResourceControlDownButtonArrow )
 
 /* Embedded Wizard */

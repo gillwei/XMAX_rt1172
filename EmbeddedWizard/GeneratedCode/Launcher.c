@@ -27,11 +27,14 @@
 #include "ewlocale.h"
 #include "_ComponentsBaseComponent.h"
 #include "_CoreGroup.h"
+#include "_CoreKeyPressHandler.h"
+#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
+#include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsRectEffect.h"
 #include "_InfoINF01_MeterDisplaySettingMenu.h"
@@ -45,7 +48,10 @@
 #include "_PopPOP09_BleConnectionErrorUI.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
+#include "_SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction.h"
+#include "_SeatHeater_GripWarmerSHT02_GPW02_Main.h"
 #include "_SettingsSET01_MainSettingMenu.h"
+#include "_TCSTCS01_Main.h"
 #include "_TelephoneTEL02_ActiveCall.h"
 #include "_ViewsImage.h"
 #include "_ViewsText.h"
@@ -138,6 +144,7 @@ void LauncherLNC_Main__Init( LauncherLNC_Main _this, XObject aLink, XHandle aArg
   LauncherLNC_Base__Init( &_this->LNC_Base, &_this->_XObject, 0 );
   LauncherLNC_RotaryPlate__Init( &_this->LNC_RotaryPlate, &_this->_XObject, 0 );
   ViewsWallpaper__Init( &_this->StatusBarShadowImage, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( LauncherLNC_Main );
@@ -199,6 +206,9 @@ void LauncherLNC_Main__Init( LauncherLNC_Main _this, XObject aLink, XHandle aArg
   _this->LNC_RotaryPlate.OnSelectedAnimationFinished = EwNewSlot( _this, LauncherLNC_Main_OnSelectedAnimationFinishedSlot );
   ViewsWallpaper_OnSetBitmap( &_this->StatusBarShadowImage, EwLoadResource( &ResourceStatusBarShadow, 
   ResourcesBitmap ));
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, LauncherLNC_Main_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
 
   /* Call the user defined constructor */
   LauncherLNC_Main_Init( _this, aArg );
@@ -218,6 +228,7 @@ void LauncherLNC_Main__ReInit( LauncherLNC_Main _this )
   LauncherLNC_Base__ReInit( &_this->LNC_Base );
   LauncherLNC_RotaryPlate__ReInit( &_this->LNC_RotaryPlate );
   ViewsWallpaper__ReInit( &_this->StatusBarShadowImage );
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
 }
 
 /* Finalizer method for the class 'Launcher::LNC_Main' */
@@ -234,6 +245,7 @@ void LauncherLNC_Main__Done( LauncherLNC_Main _this )
   LauncherLNC_Base__Done( &_this->LNC_Base );
   LauncherLNC_RotaryPlate__Done( &_this->LNC_RotaryPlate );
   ViewsWallpaper__Done( &_this->StatusBarShadowImage );
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_Super );
@@ -289,6 +301,47 @@ void LauncherLNC_Main_OnShortHomeKeyActivated( LauncherLNC_Main _this )
 {
   EffectsEffect_OnSetEnabled((EffectsEffect)&_this->BaseSlideOutEffect, 1 );
   EffectsEffect_OnSetEnabled((EffectsEffect)&_this->RotaryPlateSlideOutEffect, 1 );
+}
+
+/* 'C' function for method : 'Launcher::LNC_Main.OnLongEnterKeyActivated()' */
+void LauncherLNC_Main_OnLongEnterKeyActivated( LauncherLNC_Main _this )
+{
+  if ( 1 == _this->Super1.KeyHandler.RepetitionCount )
+  {
+    ComponentsBaseComponent ItemDialog = 0;
+
+    switch ( _this->CurrentItem )
+    {
+      case EnumLauncherItemSEAT_HEATER :
+      {
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
+        = EnumVehicleSupportedFunctionSEAT_HEATER;
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeHEATER_SELECT, 1 );
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( SeatHeater_GripWarmerSHT02_GPW02_Main, 
+        0 ));
+        CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
+        0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+      }
+      break;
+
+      case EnumLauncherItemGRIP_WARMER :
+      {
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
+        = EnumVehicleSupportedFunctionGRIP_WARMER;
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeHEATER_SELECT, 0 );
+        ItemDialog = ((ComponentsBaseComponent)EwNewObject( SeatHeater_GripWarmerSHT02_GPW02_Main, 
+        0 ));
+        CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 
+        0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+      }
+      break;
+
+      default : 
+        ;
+    }
+  }
 }
 
 /* 'C' function for method : 'Launcher::LNC_Main.OnCurrentItemChangedSlot()' */
@@ -483,19 +536,34 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
     break;
 
     case EnumLauncherItemTRACTION_CONTROL :
-      ;
+      ItemDialog = ((ComponentsBaseComponent)EwNewObject( TCSTCS01_Main, 0 ));
     break;
 
     case EnumLauncherItemSEAT_HEATER :
-      ;
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
+      = EnumVehicleSupportedFunctionSEAT_HEATER;
+      ItemDialog = ((ComponentsBaseComponent)EwNewObject( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction, 
+      0 ));
+    }
     break;
 
     case EnumLauncherItemGRIP_WARMER :
-      ;
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
+      = EnumVehicleSupportedFunctionGRIP_WARMER;
+      ItemDialog = ((ComponentsBaseComponent)EwNewObject( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction, 
+      0 ));
+    }
     break;
 
     case EnumLauncherItemWIND_SCREEN :
-      ;
+    {
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
+      = EnumVehicleSupportedFunctionWIND_SCREEN;
+      ItemDialog = ((ComponentsBaseComponent)EwNewObject( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction, 
+      0 ));
+    }
     break;
 
     default : 
@@ -551,6 +619,37 @@ void LauncherLNC_Main_GetVehicleSupportedFeature( LauncherLNC_Main _this )
   EnumVehicleSupportedFunctionWIND_SCREEN );
 }
 
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void LauncherLNC_Main_OnVehicleDataReceivedSlot( LauncherLNC_Main _this, XObject 
+  sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+  XBool IsSeatHeaterItemDisplayed;
+  XBool IsGripWarmerItemDisplayed;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+  IsSeatHeaterItemDisplayed = (XBool)((( EnumLauncherItemSEAT_HEATER == _this->PreviousItem ) 
+  || ( EnumLauncherItemSEAT_HEATER == _this->CurrentItem )) || ( EnumLauncherItemSEAT_HEATER 
+  == _this->NextItem ));
+  IsGripWarmerItemDisplayed = (XBool)((( EnumLauncherItemSEAT_HEATER == _this->PreviousItem ) 
+  || ( EnumLauncherItemSEAT_HEATER == _this->CurrentItem )) || ( EnumLauncherItemSEAT_HEATER 
+  == _this->NextItem ));
+
+  if (( VehicleData != 0 ) && (( EnumVehicleRxTypeGRIP_WARMER_STATUS == VehicleData->RxType ) 
+      || ( EnumVehicleRxTypeSEAT_HEATER_STATUS == VehicleData->RxType )))
+  {
+    if ( IsSeatHeaterItemDisplayed || IsGripWarmerItemDisplayed )
+    {
+      LauncherLNC_RotaryPlate_SetItems( &_this->LNC_RotaryPlate, _this->PreviousItem, 
+      _this->CurrentItem, _this->NextItem );
+    }
+  }
+}
+
 /* Variants derived from the class : 'Launcher::LNC_Main' */
 EW_DEFINE_CLASS_VARIANTS( LauncherLNC_Main )
 EW_END_OF_CLASS_VARIANTS( LauncherLNC_Main )
@@ -594,7 +693,7 @@ EW_DEFINE_CLASS( LauncherLNC_Main, ComponentsBaseComponent, BaseSlideInEffect, B
   LauncherLNC_Main_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
-  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  LauncherLNC_Main_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
@@ -883,6 +982,7 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( LauncherLNC_
   XEnum aItem )
 {
   ResourcesBitmap IconBitmap;
+  DeviceInterfaceVehicleDataClass VehicleData;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
@@ -929,13 +1029,71 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( LauncherLNC_
 
     case EnumLauncherItemSEAT_HEATER :
     {
-      IconBitmap = EwLoadResource( &ResourceIconSeatHeater0Small, ResourcesBitmap );
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeSEAT_HEATER_STATUS );
+
+      if ((( VehicleData != 0 ) && ( 3 >= VehicleData->DataUInt32 )) && ( VehicleData->DataUInt32 
+          >= 0 ))
+      {
+        XEnum HeaterSettingStatus = (XEnum)VehicleData->DataUInt32;
+
+        switch ( HeaterSettingStatus )
+        {
+          case EnumHeaterSettingStatusTypeOFF :
+            IconBitmap = EwLoadResource( &ResourceIconSeatHeater0Small, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeLOW :
+            IconBitmap = EwLoadResource( &ResourceIconSeatHeater1Small, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeMID :
+            IconBitmap = EwLoadResource( &ResourceIconSeatHeater2Small, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeHIGH :
+            IconBitmap = EwLoadResource( &ResourceIconSeatHeater3Small, ResourcesBitmap );
+          break;
+
+          default : 
+            ;
+        }
+      }
     }
     break;
 
     case EnumLauncherItemGRIP_WARMER :
     {
-      IconBitmap = EwLoadResource( &ResourceIconGripWarmer0Small, ResourcesBitmap );
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeGRIP_WARMER_STATUS );
+
+      if ((( VehicleData != 0 ) && ( 3 >= VehicleData->DataUInt32 )) && ( VehicleData->DataUInt32 
+          >= 0 ))
+      {
+        XEnum HeaterSettingStatus = (XEnum)VehicleData->DataUInt32;
+
+        switch ( HeaterSettingStatus )
+        {
+          case EnumHeaterSettingStatusTypeOFF :
+            IconBitmap = EwLoadResource( &ResourceIconGripWarmer0Small, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeLOW :
+            IconBitmap = EwLoadResource( &ResourceIconGripWarmer1Small, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeMID :
+            IconBitmap = EwLoadResource( &ResourceIconGripWarmer2Small, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeHIGH :
+            IconBitmap = EwLoadResource( &ResourceIconGripWarmer3Small, ResourcesBitmap );
+          break;
+
+          default : 
+            ;
+        }
+      }
     }
     break;
 
@@ -955,6 +1113,7 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetLargeIconResourceOfItem( LauncherLNC_
   XEnum aItem )
 {
   ResourcesBitmap IconBitmap;
+  DeviceInterfaceVehicleDataClass VehicleData;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
@@ -1001,13 +1160,71 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetLargeIconResourceOfItem( LauncherLNC_
 
     case EnumLauncherItemSEAT_HEATER :
     {
-      IconBitmap = EwLoadResource( &ResourceIconSeatHeater0Large, ResourcesBitmap );
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeSEAT_HEATER_STATUS );
+
+      if ((( VehicleData != 0 ) && ( 3 >= VehicleData->DataUInt32 )) && ( VehicleData->DataUInt32 
+          >= 0 ))
+      {
+        XEnum HeaterSettingStatus = (XEnum)VehicleData->DataUInt32;
+
+        switch ( HeaterSettingStatus )
+        {
+          case EnumHeaterSettingStatusTypeOFF :
+            IconBitmap = EwLoadResource( &ResourceIconSeatHeater0Large, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeLOW :
+            IconBitmap = EwLoadResource( &ResourceIconSeatHeater1Large, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeMID :
+            IconBitmap = EwLoadResource( &ResourceIconSeatHeater2Large, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeHIGH :
+            IconBitmap = EwLoadResource( &ResourceIconSeatHeater3Large, ResourcesBitmap );
+          break;
+
+          default : 
+            ;
+        }
+      }
     }
     break;
 
     case EnumLauncherItemGRIP_WARMER :
     {
-      IconBitmap = EwLoadResource( &ResourceIconGripWarmer0Large, ResourcesBitmap );
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeGRIP_WARMER_STATUS );
+
+      if ((( VehicleData != 0 ) && ( 3 >= VehicleData->DataUInt32 )) && ( VehicleData->DataUInt32 
+          >= 0 ))
+      {
+        XEnum HeaterSettingStatus = (XEnum)VehicleData->DataUInt32;
+
+        switch ( HeaterSettingStatus )
+        {
+          case EnumHeaterSettingStatusTypeOFF :
+            IconBitmap = EwLoadResource( &ResourceIconGripWarmer0Large, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeLOW :
+            IconBitmap = EwLoadResource( &ResourceIconGripWarmer1Large, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeMID :
+            IconBitmap = EwLoadResource( &ResourceIconGripWarmer2Large, ResourcesBitmap );
+          break;
+
+          case EnumHeaterSettingStatusTypeHIGH :
+            IconBitmap = EwLoadResource( &ResourceIconGripWarmer3Large, ResourcesBitmap );
+          break;
+
+          default : 
+            ;
+        }
+      }
     }
     break;
 
@@ -1227,15 +1444,15 @@ XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum
     break;
 
     case EnumLauncherItemSEAT_HEATER :
-      Title = EwLoadString( &StringsLNC_seat_heater );
+      Title = EwLoadString( &StringsLNC_SEAT_HEATER );
     break;
 
     case EnumLauncherItemGRIP_WARMER :
-      Title = EwLoadString( &StringsGPW01_grip_warmer );
+      Title = EwLoadString( &StringsGPW01_GRIP_WARMER );
     break;
 
     case EnumLauncherItemWIND_SCREEN :
-      Title = EwLoadString( &StringsWSC01_wind_screen );
+      Title = EwLoadString( &StringsWSC01_WIND_SCREEN );
     break;
 
     default : 

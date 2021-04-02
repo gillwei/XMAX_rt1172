@@ -35,4 +35,5 @@ set(EMWIFILES
 	"Open.c" 
 	"SeatHeater_GripWarmer.c" 
 	"Notification.c" 
-	"Telephone.c")
+	"Telephone.c" 
+	"TCS.c")

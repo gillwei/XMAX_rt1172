@@ -2333,7 +2333,7 @@ const string EXTERN_BMP_QRCODE = "QRCode";
 // Seat heater and Grip warmer
 note group Note17
 {
-  attr Bounds = <10,2220,1090,2330>;
+  attr Bounds = <10,2220,1090,2400>;
 }
 
 $rect <30,2260,230,2300>
@@ -2533,6 +2533,66 @@ $output false
 resource Resources::Bitmap PhoneVol
 {
   attr bitmapfile FileName = .\Res\phone\controlicon_vol.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,2330,230,2370>
+$output false
+resource Resources::Bitmap ControlUpButton
+{
+  attr bitmapfile FileName = .\Res\SHandGW\controlicon_up.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <240,2330,440,2370>
+$output false
+resource Resources::Bitmap ControlDownButton
+{
+  attr bitmapfile FileName = .\Res\SHandGW\controlicon_down.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <450,2330,650,2370>
+$output false
+resource Resources::Bitmap ControlButtonBackground
+{
+  attr bitmapfile FileName = .\Res\SHandGW\controlkey.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <660,2330,860,2370>
+$output false
+resource Resources::Bitmap ControlUpButtonArrow
+{
+  attr bitmapfile FileName = .\Res\SHandGW\controlicon_arrow_up.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <870,2330,1070,2370>
+$output false
+resource Resources::Bitmap ControlDownButtonArrow
+{
+  attr bitmapfile FileName = .\Res\SHandGW\controlicon_arrow_down.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize = <94,75>;
   attr framedelay FrameDelay;

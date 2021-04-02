@@ -1,0 +1,102 @@
+﻿$version 10.00
+
+$rect <20,20,220,60>
+$output false
+class TCS01_Main : Menu::BaseMenuView
+{
+  $rect <260,300,460,340>
+  inherited method Init()
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TC_MODE );
+    if( null != VehicleData )
+    {
+      IsTCSEnabled = VehicleData.DataUInt32;
+    }
+  }
+
+  $rect <20,350,220,390>
+  inherited property DDModeEnabled = true;
+
+  $rect <520,30,720,70>
+  inherited method LoadItemClass()
+  {
+    var class ClassType = null;
+    if( aItemNo < Menu.NoOfItems )
+    {
+      ClassType = Menu::ItemCheckbox;
+    }
+    return ClassType;
+  }
+
+  $rect <520,90,720,130>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < Menu.NoOfItems )
+    {
+      title = Strings::TCS01_TCS;
+    }
+    return title;
+  }
+
+  $rect <520,220,720,260>
+  inherited method OnItemActivate()
+  {
+    aItemNo;
+    var Menu::ItemCheckbox CheckBoxItem = ( Menu::ItemCheckbox )aMenuItem;
+    if( null != CheckBoxItem )
+    {
+      if( CheckBoxItem.CheckBoxButton.Checked )
+      {
+        IsTCSEnabled = 0;
+      }
+      else
+      {
+        IsTCSEnabled = 1;
+      }
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TCS, IsTCSEnabled );
+    }
+  }
+
+  $rect <520,160,720,200>
+  inherited method LoadItemChecked()
+  {
+    var bool IsChecked = false;
+    if( aItemNo < Menu.NoOfItems )
+    {
+      IsChecked = IsTCSEnabled;
+    }
+    return IsChecked;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset DDModeEnabled = true;
+    preset NoOfItems = 1;
+  }
+
+  $rect <770,30,1050,70>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <770,80,1050,120>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData &&
+        Enum::VehicleRxType.TC_MODE == VehicleData.RxType )
+    {
+      IsTCSEnabled = VehicleData.DataUInt32;
+      Menu.InvalidateItems( 0, 0 );
+    }
+  }
+
+  $rect <20,300,220,340>
+  var uint32 IsTCSEnabled;
+}

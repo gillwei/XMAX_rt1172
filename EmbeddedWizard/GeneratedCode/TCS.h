@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef SeatHeater_GripWarmer_H
-#define SeatHeater_GripWarmer_H
+#ifndef TCS_H
+#define TCS_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,14 +42,12 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction.h"
-#include "_SeatHeater_GripWarmerSHT02_GPW02_Main.h"
-#include "_SeatHeater_GripWarmerScaleIndicator.h"
+#include "_TCSTCS01_Main.h"
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* SeatHeater_GripWarmer_H */
+#endif /* TCS_H */
 
 /* Embedded Wizard */

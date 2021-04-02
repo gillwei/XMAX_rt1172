@@ -58,6 +58,34 @@ class LNC_Main : Components::BaseComponent
     RotaryPlateSlideOutEffect.Enabled = true;
   }
 
+  $rect <0,530,230,570>
+  inherited method OnLongEnterKeyActivated()
+  {
+    if( 1 == KeyHandler.RepetitionCount )
+    {
+      var Components::BaseComponent ItemDialog = null;
+
+      switch( CurrentItem )
+      {
+        case Enum::LauncherItem.SEAT_HEATER:
+        {
+          DeviceInterface::VehicleDevice.CurrentVehicleFunction = Enum::VehicleSupportedFunction.SEAT_HEATER;
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.HEATER_SELECT, SeatHeater_GripWarmer::RIDER_SEAT_HEATER );
+          ItemDialog = new SeatHeater_GripWarmer::SHT02_GPW02_Main;
+          PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
+        }
+        case Enum::LauncherItem.GRIP_WARMER:
+        {
+          DeviceInterface::VehicleDevice.CurrentVehicleFunction = Enum::VehicleSupportedFunction.GRIP_WARMER;
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.HEATER_SELECT, SeatHeater_GripWarmer::GRIP_WARMER );
+          ItemDialog = new SeatHeater_GripWarmer::SHT02_GPW02_Main;
+          PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
+        }
+        default:;
+      }
+    }
+  }
+
   // 1. The initial selected item should be "Phone" if there is an active call.
   //    Otherwise, "Music" is the initial selected item.
   // 2. Rotary Menu shows following items in sequence:
@@ -248,10 +276,22 @@ class LNC_Main : Components::BaseComponent
         }
       }
       case Enum::LauncherItem.SETTINGS: ItemDialog = new Settings::SET01_MainSettingMenu;
-      case Enum::LauncherItem.TRACTION_CONTROL:;
-      case Enum::LauncherItem.SEAT_HEATER:;
-      case Enum::LauncherItem.GRIP_WARMER:;
-      case Enum::LauncherItem.WIND_SCREEN:;
+      case Enum::LauncherItem.TRACTION_CONTROL: ItemDialog = new TCS::TCS01_Main;
+      case Enum::LauncherItem.SEAT_HEATER:
+      {
+        DeviceInterface::VehicleDevice.CurrentVehicleFunction = Enum::VehicleSupportedFunction.SEAT_HEATER;
+        ItemDialog = new SeatHeater_GripWarmer::SHT01_GPW01_WSC01_VehicleFunction;
+      }
+      case Enum::LauncherItem.GRIP_WARMER:
+      {
+        DeviceInterface::VehicleDevice.CurrentVehicleFunction = Enum::VehicleSupportedFunction.GRIP_WARMER;
+        ItemDialog = new SeatHeater_GripWarmer::SHT01_GPW01_WSC01_VehicleFunction;
+      }
+      case Enum::LauncherItem.WIND_SCREEN:
+      {
+        DeviceInterface::VehicleDevice.CurrentVehicleFunction = Enum::VehicleSupportedFunction.WIND_SCREEN;
+        ItemDialog = new SeatHeater_GripWarmer::SHT01_GPW01_WSC01_VehicleFunction;
+      }
       default:;
     }
 
@@ -363,6 +403,38 @@ class LNC_Main : Components::BaseComponent
     SeatHeaterEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.SEAT_HEATER );
     GripWarmerEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.GRIP_WARMER );
     WindScreenEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.WIND_SCREEN );
+  }
+
+  $rect <850,640,1070,680>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <850,680,1070,720>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    var bool IsSeatHeaterItemDisplayed = ( Enum::LauncherItem.SEAT_HEATER == PreviousItem ||
+                                           Enum::LauncherItem.SEAT_HEATER == CurrentItem  ||
+                                           Enum::LauncherItem.SEAT_HEATER == NextItem );
+
+    var bool IsGripWarmerItemDisplayed = ( Enum::LauncherItem.SEAT_HEATER == PreviousItem ||
+                                           Enum::LauncherItem.SEAT_HEATER == CurrentItem  ||
+                                           Enum::LauncherItem.SEAT_HEATER == NextItem );
+
+
+    if( null != VehicleData &&
+        ( Enum::VehicleRxType.GRIP_WARMER_STATUS == VehicleData.RxType || Enum::VehicleRxType.SEAT_HEATER_STATUS == VehicleData.RxType ) )
+    {
+      if( IsSeatHeaterItemDisplayed || IsGripWarmerItemDisplayed )
+      {
+        LNC_RotaryPlate.SetItems( PreviousItem, CurrentItem, NextItem );
+      }
+    }
   }
 }
 
@@ -566,6 +638,7 @@ class LNC_RotaryPlate : Components::BaseComponent
   method Resources::Bitmap GetSmallIconResourceOfItem( arg Enum::LauncherItem aItem )
   {
     var Resources::Bitmap IconBitmap;
+    var DeviceInterface::VehicleDataClass VehicleData;
 
     switch( aItem )
     {
@@ -580,13 +653,39 @@ class LNC_RotaryPlate : Components::BaseComponent
       case Enum::LauncherItem.TRACTION_CONTROL: IconBitmap = Resource::IconTcsSmall;
       case Enum::LauncherItem.SEAT_HEATER:
       {
-        //TODO: get the heat seater level from vehicle information manager
-        IconBitmap = Resource::IconSeatHeater0Small;
+        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.SEAT_HEATER_STATUS );
+        if( null != VehicleData &&
+            SeatHeater_GripWarmer::HIGHEST_STATUS >= VehicleData.DataUInt32 &&
+            VehicleData.DataUInt32 >= SeatHeater_GripWarmer::LOWEST_STATUS )
+        {
+          var Enum::HeaterSettingStatusType HeaterSettingStatus = (Enum::HeaterSettingStatusType)VehicleData.DataUInt32;
+          switch( HeaterSettingStatus )
+          {
+            case Enum::HeaterSettingStatusType.OFF: IconBitmap = Resource::IconSeatHeater0Small;
+            case Enum::HeaterSettingStatusType.LOW: IconBitmap = Resource::IconSeatHeater1Small;
+            case Enum::HeaterSettingStatusType.MID: IconBitmap = Resource::IconSeatHeater2Small;
+            case Enum::HeaterSettingStatusType.HIGH: IconBitmap = Resource::IconSeatHeater3Small;
+            default:;
+          }
+        }
       }
       case Enum::LauncherItem.GRIP_WARMER:
       {
-        //TODO: get the grip warmer level from vehicle infomation manager
-        IconBitmap = Resource::IconGripWarmer0Small;
+        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.GRIP_WARMER_STATUS );
+        if( null != VehicleData &&
+            SeatHeater_GripWarmer::HIGHEST_STATUS >= VehicleData.DataUInt32 &&
+            VehicleData.DataUInt32 >= SeatHeater_GripWarmer::LOWEST_STATUS )
+        {
+          var Enum::HeaterSettingStatusType HeaterSettingStatus = (Enum::HeaterSettingStatusType)VehicleData.DataUInt32;
+          switch( HeaterSettingStatus )
+          {
+            case Enum::HeaterSettingStatusType.OFF: IconBitmap = Resource::IconGripWarmer0Small;
+            case Enum::HeaterSettingStatusType.LOW: IconBitmap = Resource::IconGripWarmer1Small;
+            case Enum::HeaterSettingStatusType.MID: IconBitmap = Resource::IconGripWarmer2Small;
+            case Enum::HeaterSettingStatusType.HIGH: IconBitmap = Resource::IconGripWarmer3Small;
+            default:;
+          }
+        }
       }
       case Enum::LauncherItem.WIND_SCREEN: IconBitmap = Resource::IconWindScreenSmall;
       default:;
@@ -599,6 +698,7 @@ class LNC_RotaryPlate : Components::BaseComponent
   method Resources::Bitmap GetLargeIconResourceOfItem( arg Enum::LauncherItem aItem )
   {
     var Resources::Bitmap IconBitmap;
+    var DeviceInterface::VehicleDataClass VehicleData;
 
     switch( aItem )
     {
@@ -613,13 +713,39 @@ class LNC_RotaryPlate : Components::BaseComponent
       case Enum::LauncherItem.TRACTION_CONTROL: IconBitmap = Resource::IconTcsLarge;
       case Enum::LauncherItem.SEAT_HEATER:
       {
-        //TODO: get the heat seater level from vehicle information manager
-        IconBitmap = Resource::IconSeatHeater0Large;
+        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.SEAT_HEATER_STATUS );
+        if( null != VehicleData &&
+            SeatHeater_GripWarmer::HIGHEST_STATUS >= VehicleData.DataUInt32 &&
+            VehicleData.DataUInt32 >= SeatHeater_GripWarmer::LOWEST_STATUS )
+        {
+          var Enum::HeaterSettingStatusType HeaterSettingStatus = (Enum::HeaterSettingStatusType)VehicleData.DataUInt32;
+          switch( HeaterSettingStatus )
+          {
+            case Enum::HeaterSettingStatusType.OFF: IconBitmap = Resource::IconSeatHeater0Large;
+            case Enum::HeaterSettingStatusType.LOW: IconBitmap = Resource::IconSeatHeater1Large;
+            case Enum::HeaterSettingStatusType.MID: IconBitmap = Resource::IconSeatHeater2Large;
+            case Enum::HeaterSettingStatusType.HIGH: IconBitmap = Resource::IconSeatHeater3Large;
+            default:;
+          }
+        }
       }
       case Enum::LauncherItem.GRIP_WARMER:
       {
-        //TODO: get the grip warmer level from vehicle infomation manager
-        IconBitmap = Resource::IconGripWarmer0Large;
+        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.GRIP_WARMER_STATUS );
+        if( null != VehicleData &&
+            SeatHeater_GripWarmer::HIGHEST_STATUS >= VehicleData.DataUInt32 &&
+            VehicleData.DataUInt32 >= SeatHeater_GripWarmer::LOWEST_STATUS )
+        {
+          var Enum::HeaterSettingStatusType HeaterSettingStatus = (Enum::HeaterSettingStatusType)VehicleData.DataUInt32;
+          switch( HeaterSettingStatus )
+          {
+            case Enum::HeaterSettingStatusType.OFF: IconBitmap = Resource::IconGripWarmer0Large;
+            case Enum::HeaterSettingStatusType.LOW: IconBitmap = Resource::IconGripWarmer1Large;
+            case Enum::HeaterSettingStatusType.MID: IconBitmap = Resource::IconGripWarmer2Large;
+            case Enum::HeaterSettingStatusType.HIGH: IconBitmap = Resource::IconGripWarmer3Large;
+            default:;
+          }
+        }
       }
       case Enum::LauncherItem.WIND_SCREEN: IconBitmap = Resource::IconWindScreenLarge;
       default:;
@@ -726,10 +852,6 @@ class LNC_RotaryPlate : Components::BaseComponent
   $reorder OnKeyPressSlot 1
   $reorder OnKeyHoldSlot 1
   $reorder OnKeyReleaseSlot 1
-  $reorder OnSlideEffectCompletedSlot 1
-  $reorder IsSlideEffectPresenting 1
-  $reorder SlideInDialog 1
-  $reorder SlideOutDialog 1
 }
 
 $rect <10,60,250,100>
@@ -797,9 +919,9 @@ class LNC_Base : Core::Group
       case Enum::LauncherItem.WEATHER: Title = Strings::LNC_weather;
       case Enum::LauncherItem.SETTINGS: Title = Strings::LNC_settings;
       case Enum::LauncherItem.TRACTION_CONTROL: Title = Strings::LNC_traction_control;
-      case Enum::LauncherItem.SEAT_HEATER: Title = Strings::LNC_seat_heater;
-      case Enum::LauncherItem.GRIP_WARMER: Title = Strings::GPW01_grip_warmer;
-      case Enum::LauncherItem.WIND_SCREEN: Title = Strings::WSC01_wind_screen;
+      case Enum::LauncherItem.SEAT_HEATER: Title = Strings::LNC_SEAT_HEATER;
+      case Enum::LauncherItem.GRIP_WARMER: Title = Strings::GPW01_GRIP_WARMER;
+      case Enum::LauncherItem.WIND_SCREEN: Title = Strings::WSC01_WIND_SCREEN;
       default:;
     }
     return Title;
