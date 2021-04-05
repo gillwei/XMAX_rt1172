@@ -116,8 +116,8 @@
 EW_DEFINE_FIELDS( UnitUNT03_FuelSettingMenu, MenuBaseMenuView )
   EW_PROPERTY( FuelUpdateSignal, XSlot )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_ARRAY   ( ItemTitleArray,  XString, [3])
-  EW_VARIABLE( FuelItemIdx,     XInt32 )
   EW_ARRAY   ( ItemEnabledArray, XBool, [3])
 EW_END_OF_FIELDS( UnitUNT03_FuelSettingMenu )
 
@@ -217,6 +217,11 @@ XBool UnitUNT03_FuelSettingMenu_LoadItemEnabled( UnitUNT03_FuelSettingMenu _this
 
 /* 'C' function for method : 'Unit::UNT03_FuelSettingMenu.OnCheckMarkUpdateSlot()' */
 void UnitUNT03_FuelSettingMenu_OnCheckMarkUpdateSlot( UnitUNT03_FuelSettingMenu _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void UnitUNT03_FuelSettingMenu_OnVehicleDataReceivedSlot( UnitUNT03_FuelSettingMenu _this, 
   XObject sender );
 
 #ifdef __cplusplus

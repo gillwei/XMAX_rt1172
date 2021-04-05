@@ -116,8 +116,8 @@
 EW_DEFINE_FIELDS( UnitUNT02_MileageSettingMenu, MenuBaseMenuView )
   EW_PROPERTY( MileageUpdateSignal, XSlot )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_ARRAY   ( ItemTitleArray,  XString, [2])
-  EW_VARIABLE( MileageItemIdx,  XInt32 )
 EW_END_OF_FIELDS( UnitUNT02_MileageSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT02_MileageSettingMenu' */
@@ -211,6 +211,11 @@ XBool UnitUNT02_MileageSettingMenu_LoadItemChecked( UnitUNT02_MileageSettingMenu
 
 /* 'C' function for method : 'Unit::UNT02_MileageSettingMenu.OnCheckMarkUpdateSlot()' */
 void UnitUNT02_MileageSettingMenu_OnCheckMarkUpdateSlot( UnitUNT02_MileageSettingMenu _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void UnitUNT02_MileageSettingMenu_OnVehicleDataReceivedSlot( UnitUNT02_MileageSettingMenu _this, 
   XObject sender );
 
 #ifdef __cplusplus

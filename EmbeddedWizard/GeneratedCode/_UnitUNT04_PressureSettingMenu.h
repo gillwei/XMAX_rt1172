@@ -116,8 +116,8 @@
 EW_DEFINE_FIELDS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView )
   EW_PROPERTY( PressureUpdateSignal, XSlot )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_ARRAY   ( ItemTitleArray,  XString, [3])
-  EW_VARIABLE( PressureItemIdx, XInt32 )
 EW_END_OF_FIELDS( UnitUNT04_PressureSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT04_PressureSettingMenu' */
@@ -211,6 +211,11 @@ XBool UnitUNT04_PressureSettingMenu_LoadItemChecked( UnitUNT04_PressureSettingMe
 
 /* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.OnCheckMarkUpdateSlot()' */
 void UnitUNT04_PressureSettingMenu_OnCheckMarkUpdateSlot( UnitUNT04_PressureSettingMenu _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void UnitUNT04_PressureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT04_PressureSettingMenu _this, 
   XObject sender );
 
 #ifdef __cplusplus

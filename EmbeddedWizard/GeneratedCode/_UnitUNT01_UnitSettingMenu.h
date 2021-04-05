@@ -149,6 +149,7 @@ EW_DEFINE_FIELDS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView )
   EW_VARIABLE( FuelMenu,        UnitUNT03_FuelSettingMenu )
   EW_VARIABLE( PressureMenu,    UnitUNT04_PressureSettingMenu )
   EW_VARIABLE( TempMenu,        UnitUNT05_TemperatureSettingMenu )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_ARRAY   ( ItemTitleArray,  XString, [4])
   EW_ARRAY   ( ItemValueArray,  XString, [4])
   EW_ARRAY   ( ItemVehicleRxTypeArray, XEnum, [4])
@@ -260,6 +261,15 @@ void UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot( UnitUNT01_UnitSettingMenu 
 
 /* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.OnGetPressureEnabled()' */
 XBool UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( UnitUNT01_UnitSettingMenu _this );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void UnitUNT01_UnitSettingMenu_OnVehicleDataReceivedSlot( UnitUNT01_UnitSettingMenu _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.UpdateUnitValue()' */
+void UnitUNT01_UnitSettingMenu_UpdateUnitValue( UnitUNT01_UnitSettingMenu _this, 
+  XEnum aReceivedUnitType );
 
 #ifdef __cplusplus
   }

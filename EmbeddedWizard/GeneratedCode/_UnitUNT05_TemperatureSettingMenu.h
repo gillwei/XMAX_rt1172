@@ -116,8 +116,8 @@
 EW_DEFINE_FIELDS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView )
   EW_PROPERTY( TempUpdateSignal, XSlot )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_ARRAY   ( ItemTitleArray,  XString, [2])
-  EW_VARIABLE( TempItemIdx,     XInt32 )
 EW_END_OF_FIELDS( UnitUNT05_TemperatureSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT05_TemperatureSettingMenu' */
@@ -211,6 +211,11 @@ XBool UnitUNT05_TemperatureSettingMenu_LoadItemChecked( UnitUNT05_TemperatureSet
 
 /* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.OnCheckMarkUpdateSlot()' */
 void UnitUNT05_TemperatureSettingMenu_OnCheckMarkUpdateSlot( UnitUNT05_TemperatureSettingMenu _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void UnitUNT05_TemperatureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT05_TemperatureSettingMenu _this, 
   XObject sender );
 
 #ifdef __cplusplus

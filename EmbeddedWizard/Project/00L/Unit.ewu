@@ -19,12 +19,11 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
 
     if( NoOfItems < ItemTitleArray.size )
     {
-      ItemVehicleRxTypeArray[ItemIdx] = ItemVehicleRxTypeArray[( int32 )Enum::UnitSettingItem.TEMPERATURE];
+      ItemVehicleRxTypeArray[ItemIdx] = ItemVehicleRxTypeArray[(int32)Enum::UnitSettingItem.TEMPERATURE];
     }
 
     Menu.NoOfItems = NoOfItems;
 
-    var DeviceInterface::VehicleDataClass VehicleData;
     UnitItemValue = new Unit::UnitValueClass;
     MileageMenu = new Unit::UNT02_MileageSettingMenu;
     FuelMenu = new Unit::UNT03_FuelSettingMenu;
@@ -32,80 +31,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
 
     for( i = 0; i < NoOfItems; i++ )
     {
-      VehicleData = DeviceInterface::VehicleDevice.GetData( ItemVehicleRxTypeArray[i] );
-      switch( ItemVehicleRxTypeArray[i] )
-      {
-        case Enum::VehicleRxType.MILEAGE_UNIT:
-        {
-          if( UnitItemValue.ItemMileageUnitArray.size > ( int32 )VehicleData.DataUInt32 )
-          {
-            IsFuelEnabled = true;
-            if( ( int32 )VehicleData.DataUInt32 == ( int32 )Enum::MileageSettingItem.MILE )
-            {
-              IsFuelEnabled = false;
-            }
-
-            ItemValueArray[i] = UnitItemValue.ItemMileageUnitArray[( int32 )VehicleData.DataUInt32];
-            DeviceInterface::VehicleDevice.CurrentMileageSetting = ( Enum::MileageSettingItem )VehicleData.DataUInt32;
-          }
-        }
-        case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT:
-        {
-          if( !IsFuelEnabled )
-          {
-            ItemValueArray[i] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.MPG];
-            DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.MPG;
-          }
-          else
-          {
-            switch( VehicleData.DataUInt32 )
-            {
-              case 0:
-              {
-                ItemValueArray[i] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.KM_L];
-                DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.KM_L;
-                FuelMenu.FuelItemIdx = ( int32 )Enum::FuelSettingItem.KM_L;
-              }
-              case 1:
-              {
-                ItemValueArray[i] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.MPG];
-                DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.MPG;
-                FuelMenu.FuelItemIdx = ( int32 )Enum::FuelSettingItem.MPG;
-              }
-              case 2:
-              {
-                ItemValueArray[i] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.MPG];
-                DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.MPG;
-                FuelMenu.FuelItemIdx = ( int32 )Enum::FuelSettingItem.MPG;
-              }
-              case 3:
-              {
-                ItemValueArray[i] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.L_PER_HUNDRED_KM];
-                DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.L_PER_HUNDRED_KM;
-                FuelMenu.FuelItemIdx = ( int32 )Enum::FuelSettingItem.L_PER_HUNDRED_KM;
-              }
-              default:;
-            }
-          }
-        }
-        case Enum::VehicleRxType.PRESSURE_UNIT:
-        {
-          if( UnitItemValue.ItemPressureUnitArray.size > ( int32 )VehicleData.DataUInt32 )
-          {
-            ItemValueArray[i] = UnitItemValue.ItemPressureUnitArray[( int32 )VehicleData.DataUInt32];
-            DeviceInterface::VehicleDevice.CurrentPressureSetting = ( Enum::PressureSettingItem )VehicleData.DataUInt32;
-          }
-        }
-        case Enum::VehicleRxType.TEMPERATURE_UNIT:
-        {
-          if( UnitItemValue.ItemTemperatureUnitArray.size > ( int32 )VehicleData.DataUInt32 )
-          {
-            ItemValueArray[i] = UnitItemValue.ItemTemperatureUnitArray[( int32 )VehicleData.DataUInt32];
-            DeviceInterface::VehicleDevice.CurrentTempSetting = ( Enum::TemperatureSettingItem )VehicleData.DataUInt32;
-          }
-        }
-        default:;
-      }
+      UpdateUnitValue( ItemVehicleRxTypeArray[i] );
     }
   }
 
@@ -147,11 +73,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
   $rect <520,270,720,310>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
-
+    aMenuItem; // suppress warning
     switch( ItemVehicleRxTypeArray[aItemNo] )
     {
       case Enum::VehicleRxType.MILEAGE_UNIT:
@@ -167,7 +89,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
         if( null != FuelMenu )
         {
           FuelMenu.FuelUpdateSignal = OnUnitValueUpdateSlot;
-          if( MileageMenu.MileageItemIdx == ( int32 )Enum::MileageSettingItem.KM )
+          if( Enum::MileageSettingItem.KM == DeviceInterface::VehicleDevice.CurrentMileageSetting )
           {
             FuelMenu.ItemEnabledArray[( int32 )Enum::FuelSettingItem.KM_L] = true;
             FuelMenu.ItemEnabledArray[( int32 )Enum::FuelSettingItem.MPG] = false;
@@ -264,43 +186,19 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
   {
     if( sender == MileageMenu )
     {
-      IsFuelEnabled = true;
-      ItemValueArray[( int32 )Enum::UnitSettingItem.MILEAGE] = UnitItemValue.ItemMileageUnitArray[MileageMenu.MileageItemIdx];
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.MILEAGE_UNIT, ( uint32 )MileageMenu.MileageItemIdx );
-      if( MileageMenu.MileageItemIdx == ( int32 )Enum::MileageSettingItem.MILE )
-      {
-        ItemValueArray[( int32 )Enum::UnitSettingItem.FUEL] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.MPG];
-        IsFuelEnabled = false;
-      }
-      else
-      {
-        ItemValueArray[( int32 )Enum::UnitSettingItem.FUEL] = UnitItemValue.ItemFuelUnitArray[FuelMenu.FuelItemIdx];
-      }
+      UpdateUnitValue( Enum::VehicleRxType.MILEAGE_UNIT );
     }
     else if( sender == FuelMenu )
     {
-      ItemValueArray[( int32 )Enum::UnitSettingItem.FUEL] = UnitItemValue.ItemFuelUnitArray[FuelMenu.FuelItemIdx];
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.FUEL_CONSUMPTION_UNIT, ( uint32 )FuelMenu.FuelItemIdx );
+      UpdateUnitValue( Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT );
     }
     else if( sender == PressureMenu )
     {
-      ItemValueArray[( int32 )Enum::UnitSettingItem.PRESSURE] = UnitItemValue.ItemPressureUnitArray[PressureMenu.PressureItemIdx];
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, ( uint32 )PressureMenu.PressureItemIdx );
+      UpdateUnitValue( Enum::VehicleRxType.PRESSURE_UNIT );
     }
     else if( sender == TempMenu )
     {
-      if( PressureEnabled )
-      {
-        ItemValueArray[( int32 )Enum::UnitSettingItem.TEMPERATURE] = UnitItemValue.ItemTemperatureUnitArray[TempMenu.TempItemIdx];
-      }
-      else
-      {
-        // If vehicle doesn't support pressure function, the pressure option is hidden and temperature option is moved up to
-        // the position of pressure option. Therefore, minus 1 to match the correct index of temperature option.
-        ItemValueArray[( int32 )Enum::UnitSettingItem.TEMPERATURE - 1] = UnitItemValue.ItemTemperatureUnitArray[TempMenu.TempItemIdx];
-      }
-
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TEMPERATURE_UNIT, ( uint32 )TempMenu.TempItemIdx );
+      UpdateUnitValue( Enum::VehicleRxType.TEMPERATURE_UNIT );
     }
 
     if( PressureEnabled )
@@ -339,6 +237,113 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
            DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_FRONT_RIGHT ) ||
            DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_REAR );
   }
+
+  $rect <520,410,720,450>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <720,410,920,450>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    var bool IsVehicleUnitDataReceived = ( Enum::VehicleRxType.MILEAGE_UNIT == VehicleData.RxType ||
+                                           Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT == VehicleData.RxType ||
+                                           Enum::VehicleRxType.PRESSURE_UNIT == VehicleData.RxType ||
+                                           Enum::VehicleRxType.TEMPERATURE_UNIT == VehicleData.RxType );
+
+    if( null != VehicleData && IsVehicleUnitDataReceived )
+    {
+      UpdateUnitValue( VehicleData.RxType );
+      if( PressureEnabled )
+      {
+        Menu.InvalidateItems( (int32)Enum::UnitSettingItem.MILEAGE, (int32)Enum::UnitSettingItem.TEMPERATURE );
+      }
+      else
+      {
+        Menu.InvalidateItems( (int32)Enum::UnitSettingItem.MILEAGE, (int32)Enum::UnitSettingItem.TEMPERATURE - 1 );
+      }
+    }
+  }
+
+  $rect <520,470,720,510>
+  method void UpdateUnitValue( arg Enum::VehicleRxType aReceivedUnitType )
+  {
+    var DeviceInterface::VehicleDataClass VehicleData;
+    switch( aReceivedUnitType )
+    {
+      case Enum::VehicleRxType.MILEAGE_UNIT:
+      {
+        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MILEAGE_UNIT );
+        if( null != VehicleData && UnitItemValue.ItemMileageUnitArray.size > (int32)VehicleData.DataUInt32 )
+        {
+          ItemValueArray[(int32)Enum::UnitSettingItem.MILEAGE] = UnitItemValue.ItemMileageUnitArray[(int32)VehicleData.DataUInt32];
+          DeviceInterface::VehicleDevice.CurrentMileageSetting = (Enum::MileageSettingItem)VehicleData.DataUInt32;
+        }
+      }
+      case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT:
+      {
+        IsFuelEnabled = true;
+        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT );
+        if( null != VehicleData )
+        {
+          switch( VehicleData.DataUInt32 )
+          {
+            case 0:
+            {
+              ItemValueArray[( int32 )Enum::UnitSettingItem.FUEL] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.KM_L];
+              DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.KM_L;
+            }
+            case 1,2:
+            {
+              IsFuelEnabled = false;
+              ItemValueArray[( int32 )Enum::UnitSettingItem.FUEL] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.MPG];
+              DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.MPG;
+            }
+            case 3:
+            {
+              ItemValueArray[( int32 )Enum::UnitSettingItem.FUEL] = UnitItemValue.ItemFuelUnitArray[( int32 )Enum::FuelSettingItem.L_PER_HUNDRED_KM];
+              DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.L_PER_HUNDRED_KM;
+            }
+            default:;
+          }
+        }
+      }
+      case Enum::VehicleRxType.PRESSURE_UNIT:
+      {
+        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.PRESSURE_UNIT );
+        if( null != VehicleData && UnitItemValue.ItemPressureUnitArray.size > (int32)VehicleData.DataUInt32 )
+        {
+          ItemValueArray[(int32)Enum::UnitSettingItem.PRESSURE] = UnitItemValue.ItemPressureUnitArray[(int32)VehicleData.DataUInt32];
+          DeviceInterface::VehicleDevice.CurrentPressureSetting = ( Enum::PressureSettingItem )VehicleData.DataUInt32;
+        }
+      }
+      case Enum::VehicleRxType.TEMPERATURE_UNIT:
+      {
+        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TEMPERATURE_UNIT );
+        if( null != VehicleData && UnitItemValue.ItemTemperatureUnitArray.size > (int32)VehicleData.DataUInt32 )
+        {
+          if( PressureEnabled )
+          {
+            ItemValueArray[(int32)Enum::UnitSettingItem.TEMPERATURE] = UnitItemValue.ItemTemperatureUnitArray[(int32)VehicleData.DataUInt32];
+          }
+          else
+          {
+            // If vehicle doesn't support pressure function, the pressure option is hidden and temperature option is moved up to
+            // the position of pressure option. Therefore, minus 1 to match the correct index of temperature option.
+            ItemValueArray[(int32)Enum::UnitSettingItem.TEMPERATURE - 1] = UnitItemValue.ItemTemperatureUnitArray[(int32)VehicleData.DataUInt32];
+          }
+          DeviceInterface::VehicleDevice.CurrentTempSetting = (Enum::TemperatureSettingItem)VehicleData.DataUInt32;
+        }
+      }
+      default:;
+    }
+
+  }
 }
 
 $rect <270,30,470,70>
@@ -376,29 +381,16 @@ class UNT02_MileageSettingMenu : Menu::BaseMenuView
     return title;
   }
 
-  $rect <520,250,720,290>
+  $rect <520,200,720,240>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
-
-    MileageItemIdx = aItemNo;
+    aMenuItem; // suppress warning
     switch( aItemNo )
     {
-      case 0:
-      {
-        DeviceInterface::VehicleDevice.CurrentMileageSetting = Enum::MileageSettingItem.KM;
-      }
-      case 1:
-      {
-        DeviceInterface::VehicleDevice.CurrentMileageSetting = Enum::MileageSettingItem.MILE;
-      }
+      case 0: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.MILEAGE_UNIT, (uint32)Enum::MileageSettingItem.KM );
+      case 1: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.MILEAGE_UNIT, (uint32)Enum::MileageSettingItem.MILE );
       default:;
     }
-    Menu.InvalidateItems( ( int32 )Enum::MileageSettingItem.KM, ( int32 )Enum::MileageSettingItem.MILE );
-    CheckMarkUpdateTimer.Enabled = true;
   }
 
   $rect <520,140,720,180>
@@ -441,14 +433,14 @@ class UNT02_MileageSettingMenu : Menu::BaseMenuView
     Default[1] = Strings::UNT02_unit_mileage_mile;
   );
 
-  $rect <770,200,1000,240>
+  $rect <520,260,750,300>
   object Core::Timer CheckMarkUpdateTimer
   {
     preset OnTrigger = OnCheckMarkUpdateSlot;
     preset Period = 450;
   }
 
-  $rect <770,240,1000,280>
+  $rect <520,300,750,340>
   slot OnCheckMarkUpdateSlot
   {
     CheckMarkUpdateTimer.Enabled = false;
@@ -458,11 +450,37 @@ class UNT02_MileageSettingMenu : Menu::BaseMenuView
     OnShortHomeKeyActivated();
   }
 
-  $rect <1000,50,1200,90>
-  var int32 MileageItemIdx;
-
   $rect <230,300,430,340>
   property slot MileageUpdateSignal;
+
+  $rect <520,360,720,400>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <720,360,920,400>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData &&
+        Enum::VehicleRxType.MILEAGE_UNIT == VehicleData.RxType )
+    {
+      VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MILEAGE_UNIT );
+      switch( VehicleData.DataUInt32 )
+      {
+        case 0: DeviceInterface::VehicleDevice.CurrentMileageSetting = Enum::MileageSettingItem.KM;
+        case 1: DeviceInterface::VehicleDevice.CurrentMileageSetting = Enum::MileageSettingItem.MILE;
+        default:;
+      }
+
+      Menu.InvalidateItems( (int32)Enum::MileageSettingItem.KM, (int32)Enum::MileageSettingItem.MILE );
+      CheckMarkUpdateTimer.Enabled = true;
+    }
+  }
 }
 
 $rect <50,80,250,120>
@@ -538,32 +556,14 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
   $rect <520,220,720,260>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
-
+    aMenuItem; // suppress warning
     switch( aItemNo )
     {
-      case 0:
-      {
-        DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.KM_L;
-        FuelItemIdx = ( int32 ) Enum::FuelSettingItem.KM_L;
-      }
-      case 1:
-      {
-        DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.L_PER_HUNDRED_KM;
-        FuelItemIdx = ( int32 ) Enum::FuelSettingItem.L_PER_HUNDRED_KM;
-      }
-      case 2:
-      {
-        DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.MPG;
-        FuelItemIdx = ( int32 ) Enum::FuelSettingItem.MPG;
-      }
+      case 0: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.FUEL_CONSUMPTION_UNIT, (uint32)Enum::FuelSettingItem.KM_L );
+      case 1: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.FUEL_CONSUMPTION_UNIT, (uint32)Enum::FuelSettingItem.L_PER_HUNDRED_KM );
+      case 2: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.FUEL_CONSUMPTION_UNIT, (uint32)Enum::FuelSettingItem.MPG );
       default:;
     }
-    Menu.InvalidateItems( ( int32 )Enum::FuelSettingItem.KM_L, ( int32 )Enum::FuelSettingItem.L_PER_HUNDRED_KM );
-    CheckMarkUpdateTimer.Enabled = true;
   }
 
   $rect <520,120,720,160>
@@ -627,17 +627,14 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
     Default[2] = Strings::UNT03_unit_fuel_mile_per_gallon;
   );
 
-  $rect <970,20,1170,60>
-  var int32 FuelItemIdx;
-
-  $rect <770,200,1000,240>
+  $rect <520,290,750,330>
   object Core::Timer CheckMarkUpdateTimer
   {
     preset OnTrigger = OnCheckMarkUpdateSlot;
     preset Period = 450;
   }
 
-  $rect <770,240,1000,280>
+  $rect <520,330,750,370>
   slot OnCheckMarkUpdateSlot
   {
     CheckMarkUpdateTimer.Enabled = false;
@@ -650,8 +647,38 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
   $rect <240,290,440,330>
   property slot FuelUpdateSignal;
 
-  $rect <750,130,950,170>
+  $rect <750,70,950,110>
   array bool ItemEnabledArray[ 3 ];
+
+  $rect <520,390,720,430>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <720,390,920,430>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData &&
+        Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT == VehicleData.RxType )
+    {
+      VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT );
+      switch( VehicleData.DataUInt32 )
+      {
+        case 0: DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.KM_L;
+        case 1: DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.MPG;
+        case 2: DeviceInterface::VehicleDevice.CurrentFuelSetting = Enum::FuelSettingItem.L_PER_HUNDRED_KM;
+        default:;
+      }
+
+      Menu.InvalidateItems( (int32)Enum::FuelSettingItem.KM_L, (int32)Enum::FuelSettingItem.L_PER_HUNDRED_KM );
+      CheckMarkUpdateTimer.Enabled = true;
+    }
+  }
 }
 
 $rect <270,80,470,120>
@@ -692,32 +719,14 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
   $rect <520,200,720,240>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
-
+    aMenuItem; // suppress warning
     switch( aItemNo )
     {
-      case 0:
-      {
-        DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.KPA;
-        PressureItemIdx = ( int32 )Enum::PressureSettingItem.KPA;
-      }
-      case 1:
-      {
-        DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.PSI;
-        PressureItemIdx = ( int32 )Enum::PressureSettingItem.PSI;
-      }
-      case 2:
-      {
-        DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.KGF;
-        PressureItemIdx = ( int32 )Enum::PressureSettingItem.KGF;
-      }
+      case 0: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, (uint32)Enum::PressureSettingItem.KPA );
+      case 1: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, (uint32)Enum::PressureSettingItem.PSI );
+      case 2: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, (uint32)Enum::PressureSettingItem.KGF );
       default:;
     }
-    Menu.InvalidateItems( ( int32 )Enum::PressureSettingItem.PSI, ( int32 )Enum::PressureSettingItem.KGF );
-    CheckMarkUpdateTimer.Enabled = true;
   }
 
   $rect <520,100,720,140>
@@ -775,20 +784,17 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
     Default[2] = Strings::UNT04_unit_pressure_kgf;
   );
 
-  $rect <970,50,1170,90>
-  var int32 PressureItemIdx;
-
   $rect <230,290,430,330>
   property slot PressureUpdateSignal;
 
-  $rect <770,200,1000,240>
+  $rect <520,250,750,290>
   object Core::Timer CheckMarkUpdateTimer
   {
     preset OnTrigger = OnCheckMarkUpdateSlot;
     preset Period = 450;
   }
 
-  $rect <770,240,1000,280>
+  $rect <520,290,750,330>
   slot OnCheckMarkUpdateSlot
   {
     CheckMarkUpdateTimer.Enabled = false;
@@ -796,6 +802,36 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
     Menu.MenuList.SelectedItem = 0;
     Menu.MoveFocusFrame();
     OnShortHomeKeyActivated();
+  }
+
+  $rect <520,350,720,390>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <720,350,920,390>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData &&
+        Enum::VehicleRxType.PRESSURE_UNIT == VehicleData.RxType )
+    {
+      VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.PRESSURE_UNIT );
+      switch( VehicleData.DataUInt32 )
+      {
+        case 0: DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.PSI;
+        case 1: DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.KPA;
+        case 2: DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.KGF;
+        default:;
+      }
+
+      Menu.InvalidateItems( (int32)Enum::PressureSettingItem.PSI, (int32)Enum::PressureSettingItem.KGF );
+      CheckMarkUpdateTimer.Enabled = true;
+    }
   }
 }
 
@@ -837,26 +873,13 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
   $rect <530,170,730,210>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
-
-    TempItemIdx = aItemNo;
+    aMenuItem; // suppress warning
     switch( aItemNo )
     {
-      case 0:
-      {
-        DeviceInterface::VehicleDevice.CurrentTempSetting = Enum::TemperatureSettingItem.TEMP_C;
-      }
-      case 1:
-      {
-        DeviceInterface::VehicleDevice.CurrentTempSetting = Enum::TemperatureSettingItem.TEMP_F;
-      }
+      case 0: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TEMPERATURE_UNIT, ( uint32 )Enum::TemperatureSettingItem.TEMP_C );
+      case 1: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TEMPERATURE_UNIT, ( uint32 )Enum::TemperatureSettingItem.TEMP_F );
       default:;
     }
-    Menu.InvalidateItems( ( int32 )Enum::TemperatureSettingItem.TEMP_C, ( int32 )Enum::TemperatureSettingItem.TEMP_F );
-    CheckMarkUpdateTimer.Enabled = true;
   }
 
   $rect <530,20,730,60>
@@ -906,17 +929,14 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
     Default[1] = Strings::UNT05_unit_temperature_f;
   );
 
-  $rect <950,20,1150,60>
-  var int32 TempItemIdx;
-
-  $rect <750,140,980,180>
+  $rect <530,230,760,270>
   object Core::Timer CheckMarkUpdateTimer
   {
     preset OnTrigger = OnCheckMarkUpdateSlot;
     preset Period = 450;
   }
 
-  $rect <750,180,980,220>
+  $rect <530,270,760,310>
   slot OnCheckMarkUpdateSlot
   {
     CheckMarkUpdateTimer.Enabled = false;
@@ -928,4 +948,32 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
 
   $rect <230,290,430,330>
   property slot TempUpdateSignal;
+
+  $rect <530,320,730,360>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <730,320,930,360>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData &&
+        Enum::VehicleRxType.TEMPERATURE_UNIT == VehicleData.RxType )
+    {
+      VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TEMPERATURE_UNIT );
+      switch( VehicleData.DataUInt32 )
+      {
+        case 0: DeviceInterface::VehicleDevice.CurrentTempSetting = Enum::TemperatureSettingItem.TEMP_C;
+        case 1: DeviceInterface::VehicleDevice.CurrentTempSetting = Enum::TemperatureSettingItem.TEMP_F;
+        default:;
+      }
+      Menu.InvalidateItems( ( int32 )Enum::TemperatureSettingItem.TEMP_C, ( int32 )Enum::TemperatureSettingItem.TEMP_F );
+      CheckMarkUpdateTimer.Enabled = true;
+    }
+  }
 }

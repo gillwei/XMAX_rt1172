@@ -26,6 +26,7 @@
 
 #include "ewlocale.h"
 #include "_ComponentsBaseMainBG.h"
+#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreVerticalList.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
@@ -77,6 +78,9 @@ void UnitUNT01_UnitSettingMenu__Init( UnitUNT01_UnitSettingMenu _this, XObject a
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_GCT = EW_CLASS_GCT( UnitUNT01_UnitSettingMenu );
 
+  /* ... then construct all embedded objects */
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( UnitUNT01_UnitSettingMenu );
 
@@ -97,6 +101,9 @@ void UnitUNT01_UnitSettingMenu__Init( UnitUNT01_UnitSettingMenu _this, XObject a
   _this->ItemVehicleRxTypeArray[ 2 ] = EnumVehicleRxTypePRESSURE_UNIT;
   _this->ItemVehicleRxTypeArray[ 3 ] = EnumVehicleRxTypeTEMPERATURE_UNIT;
   _this->IsFuelEnabled = 1;
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
 
   /* Call the user defined constructor */
   UnitUNT01_UnitSettingMenu_Init( _this, aArg );
@@ -107,6 +114,9 @@ void UnitUNT01_UnitSettingMenu__ReInit( UnitUNT01_UnitSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
   MenuBaseMenuView__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
 }
 
 /* Finalizer method for the class 'Unit::UNT01_UnitSettingMenu' */
@@ -114,6 +124,9 @@ void UnitUNT01_UnitSettingMenu__Done( UnitUNT01_UnitSettingMenu _this )
 {
   /* Finalize this class */
   _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+
+  /* Finalize all embedded objects */
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -127,7 +140,6 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
   XInt32 NoOfItems;
   XInt32 ItemIdx;
   XInt32 i;
-  DeviceInterfaceVehicleDataClass VehicleData;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
@@ -155,118 +167,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
 
   for ( i = 0; i < NoOfItems; i++ )
   {
-    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-    DeviceInterfaceVehicleDeviceClass ), _this->ItemVehicleRxTypeArray[ EwCheckIndex( 
-    i, 4 )]);
-
-    switch ( _this->ItemVehicleRxTypeArray[ EwCheckIndex( i, 4 )])
-    {
-      case EnumVehicleRxTypeMILEAGE_UNIT :
-      {
-        if ( 2 > (XInt32)VehicleData->DataUInt32 )
-        {
-          _this->IsFuelEnabled = 1;
-
-          if ((XInt32)VehicleData->DataUInt32 == 1 )
-          {
-            _this->IsFuelEnabled = 0;
-          }
-
-          _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemMileageUnitArray[ 
-          EwCheckIndex((XInt32)VehicleData->DataUInt32, 2 )]);
-          EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting 
-          = (XEnum)VehicleData->DataUInt32;
-        }
-      }
-      break;
-
-      case EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT :
-      {
-        if ( !_this->IsFuelEnabled )
-        {
-          _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
-          1 ]);
-          EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
-          = EnumFuelSettingItemMPG;
-        }
-        else
-        {
-          switch ( VehicleData->DataUInt32 )
-          {
-            case 0 :
-            {
-              _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
-              0 ]);
-              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
-              = EnumFuelSettingItemKM_L;
-              _this->FuelMenu->FuelItemIdx = 0;
-            }
-            break;
-
-            case 1 :
-            {
-              _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
-              1 ]);
-              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
-              = EnumFuelSettingItemMPG;
-              _this->FuelMenu->FuelItemIdx = 1;
-            }
-            break;
-
-            case 2 :
-            {
-              _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
-              1 ]);
-              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
-              = EnumFuelSettingItemMPG;
-              _this->FuelMenu->FuelItemIdx = 1;
-            }
-            break;
-
-            case 3 :
-            {
-              _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
-              2 ]);
-              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
-              = EnumFuelSettingItemL_PER_HUNDRED_KM;
-              _this->FuelMenu->FuelItemIdx = 2;
-            }
-            break;
-
-            default : 
-              ;
-          }
-        }
-      }
-      break;
-
-      case EnumVehicleRxTypePRESSURE_UNIT :
-      {
-        if ( 3 > (XInt32)VehicleData->DataUInt32 )
-        {
-          _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemPressureUnitArray[ 
-          EwCheckIndex((XInt32)VehicleData->DataUInt32, 3 )]);
-          EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
-          = (XEnum)VehicleData->DataUInt32;
-        }
-      }
-      break;
-
-      case EnumVehicleRxTypeTEMPERATURE_UNIT :
-      {
-        if ( 2 > (XInt32)VehicleData->DataUInt32 )
-        {
-          _this->ItemValueArray[ EwCheckIndex( i, 4 )] = EwShareString( _this->UnitItemValue->ItemTemperatureUnitArray[ 
-          EwCheckIndex((XInt32)VehicleData->DataUInt32, 2 )]);
-          EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting 
-          = (XEnum)VehicleData->DataUInt32;
-        }
-      }
-      break;
-
-      default : 
-        ;
-    }
+    UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, _this->ItemVehicleRxTypeArray[ 
+    EwCheckIndex( i, 4 )]);
   }
 }
 
@@ -318,8 +220,8 @@ XString UnitUNT01_UnitSettingMenu_LoadItemTitle( UnitUNT01_UnitSettingMenu _this
 void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  if ( aMenuItem == 0 )
-    ;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aMenuItem );
 
   switch ( _this->ItemVehicleRxTypeArray[ EwCheckIndex( aItemNo, 4 )])
   {
@@ -339,7 +241,8 @@ void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this,
       {
         _this->FuelMenu->FuelUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
 
-        if ( _this->MileageMenu->MileageItemIdx == 0 )
+        if ( EnumMileageSettingItemKM == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+            DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting )
         {
           _this->FuelMenu->ItemEnabledArray[ 0 ] = 1;
           _this->FuelMenu->ItemEnabledArray[ 1 ] = 0;
@@ -417,58 +320,22 @@ void UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot( UnitUNT01_UnitSettingMenu 
 {
   if ( sender == (XObject)_this->MileageMenu )
   {
-    _this->IsFuelEnabled = 1;
-    _this->ItemValueArray[ 0 ] = EwShareString( _this->UnitItemValue->ItemMileageUnitArray[ 
-    EwCheckIndex( _this->MileageMenu->MileageItemIdx, 2 )]);
-    DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-    DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMILEAGE_UNIT, (XUInt32)_this->MileageMenu->MileageItemIdx );
-
-    if ( _this->MileageMenu->MileageItemIdx == 1 )
-    {
-      _this->ItemValueArray[ 1 ] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
-      1 ]);
-      _this->IsFuelEnabled = 0;
-    }
-    else
-    {
-      _this->ItemValueArray[ 1 ] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
-      EwCheckIndex( _this->FuelMenu->FuelItemIdx, 3 )]);
-    }
+    UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, EnumVehicleRxTypeMILEAGE_UNIT );
   }
   else
     if ( sender == (XObject)_this->FuelMenu )
     {
-      _this->ItemValueArray[ 1 ] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
-      EwCheckIndex( _this->FuelMenu->FuelItemIdx, 3 )]);
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
-      (XUInt32)_this->FuelMenu->FuelItemIdx );
+      UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT );
     }
     else
       if ( sender == (XObject)_this->PressureMenu )
       {
-        _this->ItemValueArray[ 2 ] = EwShareString( _this->UnitItemValue->ItemPressureUnitArray[ 
-        EwCheckIndex( _this->PressureMenu->PressureItemIdx, 3 )]);
-        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, (XUInt32)_this->PressureMenu->PressureItemIdx );
+        UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, EnumVehicleRxTypePRESSURE_UNIT );
       }
       else
         if ( sender == (XObject)_this->TempMenu )
         {
-          if ( UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( _this ))
-          {
-            _this->ItemValueArray[ 3 ] = EwShareString( _this->UnitItemValue->ItemTemperatureUnitArray[ 
-            EwCheckIndex( _this->TempMenu->TempItemIdx, 2 )]);
-          }
-          else
-          {
-            _this->ItemValueArray[ 2 ] = EwShareString( _this->UnitItemValue->ItemTemperatureUnitArray[ 
-            EwCheckIndex( _this->TempMenu->TempItemIdx, 2 )]);
-          }
-
-          DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-          DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTEMPERATURE_UNIT, 
-          (XUInt32)_this->TempMenu->TempItemIdx );
+          UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, EnumVehicleRxTypeTEMPERATURE_UNIT );
         }
 
   if ( UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( _this ))
@@ -498,14 +365,158 @@ XBool UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( UnitUNT01_UnitSettingMenu 
     EnumVehicleSupportedFunctionTIRE_REAR ));
 }
 
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void UnitUNT01_UnitSettingMenu_OnVehicleDataReceivedSlot( UnitUNT01_UnitSettingMenu _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+  XBool IsVehicleUnitDataReceived;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+  IsVehicleUnitDataReceived = (XBool)(((( EnumVehicleRxTypeMILEAGE_UNIT == VehicleData->RxType ) 
+  || ( EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT == VehicleData->RxType )) || ( EnumVehicleRxTypePRESSURE_UNIT 
+  == VehicleData->RxType )) || ( EnumVehicleRxTypeTEMPERATURE_UNIT == VehicleData->RxType ));
+
+  if (( VehicleData != 0 ) && IsVehicleUnitDataReceived )
+  {
+    UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, VehicleData->RxType );
+
+    if ( UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( _this ))
+    {
+      MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 3 );
+    }
+    else
+    {
+      MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
+    }
+  }
+}
+
+/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.UpdateUnitValue()' */
+void UnitUNT01_UnitSettingMenu_UpdateUnitValue( UnitUNT01_UnitSettingMenu _this, 
+  XEnum aReceivedUnitType )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  switch ( aReceivedUnitType )
+  {
+    case EnumVehicleRxTypeMILEAGE_UNIT :
+    {
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMILEAGE_UNIT );
+
+      if (( VehicleData != 0 ) && ( 2 > (XInt32)VehicleData->DataUInt32 ))
+      {
+        _this->ItemValueArray[ 0 ] = EwShareString( _this->UnitItemValue->ItemMileageUnitArray[ 
+        EwCheckIndex((XInt32)VehicleData->DataUInt32, 2 )]);
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting 
+        = (XEnum)VehicleData->DataUInt32;
+      }
+    }
+    break;
+
+    case EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT :
+    {
+      _this->IsFuelEnabled = 1;
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT );
+
+      if ( VehicleData != 0 )
+      {
+        switch ( VehicleData->DataUInt32 )
+        {
+          case 0 :
+          {
+            _this->ItemValueArray[ 1 ] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
+            0 ]);
+            EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+            = EnumFuelSettingItemKM_L;
+          }
+          break;
+
+          case 1 :
+          case 2 :
+          {
+            _this->IsFuelEnabled = 0;
+            _this->ItemValueArray[ 1 ] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
+            1 ]);
+            EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+            = EnumFuelSettingItemMPG;
+          }
+          break;
+
+          case 3 :
+          {
+            _this->ItemValueArray[ 1 ] = EwShareString( _this->UnitItemValue->ItemFuelUnitArray[ 
+            2 ]);
+            EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+            = EnumFuelSettingItemL_PER_HUNDRED_KM;
+          }
+          break;
+
+          default : 
+            ;
+        }
+      }
+    }
+    break;
+
+    case EnumVehicleRxTypePRESSURE_UNIT :
+    {
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypePRESSURE_UNIT );
+
+      if (( VehicleData != 0 ) && ( 3 > (XInt32)VehicleData->DataUInt32 ))
+      {
+        _this->ItemValueArray[ 2 ] = EwShareString( _this->UnitItemValue->ItemPressureUnitArray[ 
+        EwCheckIndex((XInt32)VehicleData->DataUInt32, 3 )]);
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
+        = (XEnum)VehicleData->DataUInt32;
+      }
+    }
+    break;
+
+    case EnumVehicleRxTypeTEMPERATURE_UNIT :
+    {
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTEMPERATURE_UNIT );
+
+      if (( VehicleData != 0 ) && ( 2 > (XInt32)VehicleData->DataUInt32 ))
+      {
+        if ( UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( _this ))
+        {
+          _this->ItemValueArray[ 3 ] = EwShareString( _this->UnitItemValue->ItemTemperatureUnitArray[ 
+          EwCheckIndex((XInt32)VehicleData->DataUInt32, 2 )]);
+        }
+        else
+        {
+          _this->ItemValueArray[ 2 ] = EwShareString( _this->UnitItemValue->ItemTemperatureUnitArray[ 
+          EwCheckIndex((XInt32)VehicleData->DataUInt32, 2 )]);
+        }
+
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting 
+        = (XEnum)VehicleData->DataUInt32;
+      }
+    }
+    break;
+
+    default : 
+      ;
+  }
+}
+
 /* Variants derived from the class : 'Unit::UNT01_UnitSettingMenu' */
 EW_DEFINE_CLASS_VARIANTS( UnitUNT01_UnitSettingMenu )
 EW_END_OF_CLASS_VARIANTS( UnitUNT01_UnitSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT01_UnitSettingMenu' */
-EW_DEFINE_CLASS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView, UnitItemValue, ItemTitleArray, 
-                 ItemTitleArray, ItemTitleArray, ItemTitleArray, ItemVehicleRxTypeArray, 
-                 "Unit::UNT01_UnitSettingMenu" )
+EW_DEFINE_CLASS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView, UnitItemValue, VehicleDataReceivedEventHandler, 
+                 VehicleDataReceivedEventHandler, VehicleDataReceivedEventHandler, 
+                 ItemTitleArray, ItemVehicleRxTypeArray, "Unit::UNT01_UnitSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -571,6 +582,7 @@ void UnitUNT02_MileageSettingMenu__Init( UnitUNT02_MileageSettingMenu _this, XOb
 
   /* ... then construct all embedded objects */
   CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( UnitUNT02_MileageSettingMenu );
@@ -586,6 +598,9 @@ void UnitUNT02_MileageSettingMenu__Init( UnitUNT02_MileageSettingMenu _this, XOb
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT02_unit_mileage_mile ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, UnitUNT02_MileageSettingMenu_OnCheckMarkUpdateSlot );
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, UnitUNT02_MileageSettingMenu_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
 }
 
 /* Re-Initializer for the class 'Unit::UNT02_MileageSettingMenu' */
@@ -596,6 +611,7 @@ void UnitUNT02_MileageSettingMenu__ReInit( UnitUNT02_MileageSettingMenu _this )
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
 }
 
 /* Finalizer method for the class 'Unit::UNT02_MileageSettingMenu' */
@@ -606,6 +622,7 @@ void UnitUNT02_MileageSettingMenu__Done( UnitUNT02_MileageSettingMenu _this )
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->CheckMarkUpdateTimer );
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -648,33 +665,25 @@ XString UnitUNT02_MileageSettingMenu_LoadItemTitle( UnitUNT02_MileageSettingMenu
 void UnitUNT02_MileageSettingMenu_OnItemActivate( UnitUNT02_MileageSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  if ( aMenuItem == 0 )
-    ;
-
-  _this->MileageItemIdx = aItemNo;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aMenuItem );
 
   switch ( aItemNo )
   {
     case 0 :
-    {
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting 
-      = EnumMileageSettingItemKM;
-    }
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMILEAGE_UNIT, 0 );
     break;
 
     case 1 :
-    {
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting 
-      = EnumMileageSettingItemMILE;
-    }
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMILEAGE_UNIT, 1 );
     break;
 
     default : 
       ;
   }
-
-  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
-  CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
 }
 
 /* 'C' function for method : 'Unit::UNT02_MileageSettingMenu.LoadItemChecked()' */
@@ -731,6 +740,44 @@ void UnitUNT02_MileageSettingMenu_OnCheckMarkUpdateSlot( UnitUNT02_MileageSettin
   ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
 }
 
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void UnitUNT02_MileageSettingMenu_OnVehicleDataReceivedSlot( UnitUNT02_MileageSettingMenu _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if (( VehicleData != 0 ) && ( EnumVehicleRxTypeMILEAGE_UNIT == VehicleData->RxType ))
+  {
+    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+    DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMILEAGE_UNIT );
+
+    switch ( VehicleData->DataUInt32 )
+    {
+      case 0 :
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting 
+        = EnumMileageSettingItemKM;
+      break;
+
+      case 1 :
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting 
+        = EnumMileageSettingItemMILE;
+      break;
+
+      default : 
+        ;
+    }
+
+    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
+    CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+  }
+}
+
 /* Variants derived from the class : 'Unit::UNT02_MileageSettingMenu' */
 EW_DEFINE_CLASS_VARIANTS( UnitUNT02_MileageSettingMenu )
 EW_END_OF_CLASS_VARIANTS( UnitUNT02_MileageSettingMenu )
@@ -738,7 +785,7 @@ EW_END_OF_CLASS_VARIANTS( UnitUNT02_MileageSettingMenu )
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT02_MileageSettingMenu' */
 EW_DEFINE_CLASS( UnitUNT02_MileageSettingMenu, MenuBaseMenuView, MileageUpdateSignal, 
                  MileageUpdateSignal, CheckMarkUpdateTimer, CheckMarkUpdateTimer, 
-                 ItemTitleArray, MileageItemIdx, "Unit::UNT02_MileageSettingMenu" )
+                 ItemTitleArray, _None, "Unit::UNT02_MileageSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -856,6 +903,7 @@ void UnitUNT03_FuelSettingMenu__Init( UnitUNT03_FuelSettingMenu _this, XObject a
 
   /* ... then construct all embedded objects */
   CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( UnitUNT03_FuelSettingMenu );
@@ -871,6 +919,9 @@ void UnitUNT03_FuelSettingMenu__Init( UnitUNT03_FuelSettingMenu _this, XObject a
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_mile_per_gallon ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, UnitUNT03_FuelSettingMenu_OnCheckMarkUpdateSlot );
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, UnitUNT03_FuelSettingMenu_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
 }
 
 /* Re-Initializer for the class 'Unit::UNT03_FuelSettingMenu' */
@@ -881,6 +932,7 @@ void UnitUNT03_FuelSettingMenu__ReInit( UnitUNT03_FuelSettingMenu _this )
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
 }
 
 /* Finalizer method for the class 'Unit::UNT03_FuelSettingMenu' */
@@ -891,6 +943,7 @@ void UnitUNT03_FuelSettingMenu__Done( UnitUNT03_FuelSettingMenu _this )
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->CheckMarkUpdateTimer );
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -933,41 +986,33 @@ XString UnitUNT03_FuelSettingMenu_LoadItemTitle( UnitUNT03_FuelSettingMenu _this
 void UnitUNT03_FuelSettingMenu_OnItemActivate( UnitUNT03_FuelSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  if ( aMenuItem == 0 )
-    ;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aMenuItem );
 
   switch ( aItemNo )
   {
     case 0 :
-    {
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
-      = EnumFuelSettingItemKM_L;
-      _this->FuelItemIdx = 0;
-    }
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
+      0 );
     break;
 
     case 1 :
-    {
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
-      = EnumFuelSettingItemL_PER_HUNDRED_KM;
-      _this->FuelItemIdx = 2;
-    }
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
+      2 );
     break;
 
     case 2 :
-    {
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
-      = EnumFuelSettingItemMPG;
-      _this->FuelItemIdx = 1;
-    }
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
+      1 );
     break;
 
     default : 
       ;
   }
-
-  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
-  CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
 }
 
 /* 'C' function for method : 'Unit::UNT03_FuelSettingMenu.LoadItemChecked()' */
@@ -1061,6 +1106,49 @@ void UnitUNT03_FuelSettingMenu_OnCheckMarkUpdateSlot( UnitUNT03_FuelSettingMenu 
   ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
 }
 
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void UnitUNT03_FuelSettingMenu_OnVehicleDataReceivedSlot( UnitUNT03_FuelSettingMenu _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if (( VehicleData != 0 ) && ( EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT == VehicleData->RxType ))
+  {
+    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+    DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT );
+
+    switch ( VehicleData->DataUInt32 )
+    {
+      case 0 :
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+        = EnumFuelSettingItemKM_L;
+      break;
+
+      case 1 :
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+        = EnumFuelSettingItemMPG;
+      break;
+
+      case 2 :
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting 
+        = EnumFuelSettingItemL_PER_HUNDRED_KM;
+      break;
+
+      default : 
+        ;
+    }
+
+    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
+    CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+  }
+}
+
 /* Variants derived from the class : 'Unit::UNT03_FuelSettingMenu' */
 EW_DEFINE_CLASS_VARIANTS( UnitUNT03_FuelSettingMenu )
 EW_END_OF_CLASS_VARIANTS( UnitUNT03_FuelSettingMenu )
@@ -1068,7 +1156,7 @@ EW_END_OF_CLASS_VARIANTS( UnitUNT03_FuelSettingMenu )
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT03_FuelSettingMenu' */
 EW_DEFINE_CLASS( UnitUNT03_FuelSettingMenu, MenuBaseMenuView, FuelUpdateSignal, 
                  FuelUpdateSignal, CheckMarkUpdateTimer, CheckMarkUpdateTimer, ItemTitleArray, 
-                 FuelItemIdx, "Unit::UNT03_FuelSettingMenu" )
+                 ItemEnabledArray, "Unit::UNT03_FuelSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1134,6 +1222,7 @@ void UnitUNT04_PressureSettingMenu__Init( UnitUNT04_PressureSettingMenu _this, X
 
   /* ... then construct all embedded objects */
   CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( UnitUNT04_PressureSettingMenu );
@@ -1149,6 +1238,9 @@ void UnitUNT04_PressureSettingMenu__Init( UnitUNT04_PressureSettingMenu _this, X
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_kgf ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, UnitUNT04_PressureSettingMenu_OnCheckMarkUpdateSlot );
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, UnitUNT04_PressureSettingMenu_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
 }
 
 /* Re-Initializer for the class 'Unit::UNT04_PressureSettingMenu' */
@@ -1159,6 +1251,7 @@ void UnitUNT04_PressureSettingMenu__ReInit( UnitUNT04_PressureSettingMenu _this 
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
 }
 
 /* Finalizer method for the class 'Unit::UNT04_PressureSettingMenu' */
@@ -1169,6 +1262,7 @@ void UnitUNT04_PressureSettingMenu__Done( UnitUNT04_PressureSettingMenu _this )
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->CheckMarkUpdateTimer );
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -1211,41 +1305,30 @@ XString UnitUNT04_PressureSettingMenu_LoadItemTitle( UnitUNT04_PressureSettingMe
 void UnitUNT04_PressureSettingMenu_OnItemActivate( UnitUNT04_PressureSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  if ( aMenuItem == 0 )
-    ;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aMenuItem );
 
   switch ( aItemNo )
   {
     case 0 :
-    {
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
-      = EnumPressureSettingItemKPA;
-      _this->PressureItemIdx = 1;
-    }
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 1 );
     break;
 
     case 1 :
-    {
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
-      = EnumPressureSettingItemPSI;
-      _this->PressureItemIdx = 0;
-    }
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 0 );
     break;
 
     case 2 :
-    {
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
-      = EnumPressureSettingItemKGF;
-      _this->PressureItemIdx = 2;
-    }
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 2 );
     break;
 
     default : 
       ;
   }
-
-  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
-  CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
 }
 
 /* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.LoadItemChecked()' */
@@ -1312,6 +1395,49 @@ void UnitUNT04_PressureSettingMenu_OnCheckMarkUpdateSlot( UnitUNT04_PressureSett
   ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
 }
 
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void UnitUNT04_PressureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT04_PressureSettingMenu _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if (( VehicleData != 0 ) && ( EnumVehicleRxTypePRESSURE_UNIT == VehicleData->RxType ))
+  {
+    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+    DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypePRESSURE_UNIT );
+
+    switch ( VehicleData->DataUInt32 )
+    {
+      case 0 :
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
+        = EnumPressureSettingItemPSI;
+      break;
+
+      case 1 :
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
+        = EnumPressureSettingItemKPA;
+      break;
+
+      case 2 :
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
+        = EnumPressureSettingItemKGF;
+      break;
+
+      default : 
+        ;
+    }
+
+    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
+    CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+  }
+}
+
 /* Variants derived from the class : 'Unit::UNT04_PressureSettingMenu' */
 EW_DEFINE_CLASS_VARIANTS( UnitUNT04_PressureSettingMenu )
 EW_END_OF_CLASS_VARIANTS( UnitUNT04_PressureSettingMenu )
@@ -1319,7 +1445,7 @@ EW_END_OF_CLASS_VARIANTS( UnitUNT04_PressureSettingMenu )
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT04_PressureSettingMenu' */
 EW_DEFINE_CLASS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView, PressureUpdateSignal, 
                  PressureUpdateSignal, CheckMarkUpdateTimer, CheckMarkUpdateTimer, 
-                 ItemTitleArray, PressureItemIdx, "Unit::UNT04_PressureSettingMenu" )
+                 ItemTitleArray, _None, "Unit::UNT04_PressureSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1385,6 +1511,7 @@ void UnitUNT05_TemperatureSettingMenu__Init( UnitUNT05_TemperatureSettingMenu _t
 
   /* ... then construct all embedded objects */
   CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( UnitUNT05_TemperatureSettingMenu );
@@ -1400,6 +1527,9 @@ void UnitUNT05_TemperatureSettingMenu__Init( UnitUNT05_TemperatureSettingMenu _t
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT05_unit_temperature_f ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, UnitUNT05_TemperatureSettingMenu_OnCheckMarkUpdateSlot );
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, UnitUNT05_TemperatureSettingMenu_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
 }
 
 /* Re-Initializer for the class 'Unit::UNT05_TemperatureSettingMenu' */
@@ -1410,6 +1540,7 @@ void UnitUNT05_TemperatureSettingMenu__ReInit( UnitUNT05_TemperatureSettingMenu 
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
 }
 
 /* Finalizer method for the class 'Unit::UNT05_TemperatureSettingMenu' */
@@ -1420,6 +1551,7 @@ void UnitUNT05_TemperatureSettingMenu__Done( UnitUNT05_TemperatureSettingMenu _t
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->CheckMarkUpdateTimer );
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_Super );
@@ -1462,33 +1594,25 @@ XString UnitUNT05_TemperatureSettingMenu_LoadItemTitle( UnitUNT05_TemperatureSet
 void UnitUNT05_TemperatureSettingMenu_OnItemActivate( UnitUNT05_TemperatureSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  if ( aMenuItem == 0 )
-    ;
-
-  _this->TempItemIdx = aItemNo;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aMenuItem );
 
   switch ( aItemNo )
   {
     case 0 :
-    {
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting 
-      = EnumTemperatureSettingItemTEMP_C;
-    }
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTEMPERATURE_UNIT, 0 );
     break;
 
     case 1 :
-    {
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting 
-      = EnumTemperatureSettingItemTEMP_F;
-    }
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTEMPERATURE_UNIT, 1 );
     break;
 
     default : 
       ;
   }
-
-  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
-  CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
 }
 
 /* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.LoadItemChecked()' */
@@ -1545,6 +1669,44 @@ void UnitUNT05_TemperatureSettingMenu_OnCheckMarkUpdateSlot( UnitUNT05_Temperatu
   ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
 }
 
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void UnitUNT05_TemperatureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT05_TemperatureSettingMenu _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if (( VehicleData != 0 ) && ( EnumVehicleRxTypeTEMPERATURE_UNIT == VehicleData->RxType ))
+  {
+    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+    DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTEMPERATURE_UNIT );
+
+    switch ( VehicleData->DataUInt32 )
+    {
+      case 0 :
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting 
+        = EnumTemperatureSettingItemTEMP_C;
+      break;
+
+      case 1 :
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting 
+        = EnumTemperatureSettingItemTEMP_F;
+      break;
+
+      default : 
+        ;
+    }
+
+    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
+    CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+  }
+}
+
 /* Variants derived from the class : 'Unit::UNT05_TemperatureSettingMenu' */
 EW_DEFINE_CLASS_VARIANTS( UnitUNT05_TemperatureSettingMenu )
 EW_END_OF_CLASS_VARIANTS( UnitUNT05_TemperatureSettingMenu )
@@ -1552,7 +1714,7 @@ EW_END_OF_CLASS_VARIANTS( UnitUNT05_TemperatureSettingMenu )
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT05_TemperatureSettingMenu' */
 EW_DEFINE_CLASS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView, TempUpdateSignal, 
                  TempUpdateSignal, CheckMarkUpdateTimer, CheckMarkUpdateTimer, ItemTitleArray, 
-                 TempItemIdx, "Unit::UNT05_TemperatureSettingMenu" )
+                 _None, "Unit::UNT05_TemperatureSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

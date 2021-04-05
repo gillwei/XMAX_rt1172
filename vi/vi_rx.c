@@ -180,15 +180,19 @@ switch( signal_id )
     {
     case IL_CAN0_VEHICLE_INFO_MILE_UNIT_RXSIG_HANDLE:
         rx_unit_setting.mileage_unit = ( mileage_unit_enum )data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeMILEAGE_UNIT );
         break;
     case IL_CAN0_VEHICLE_INFO_PRESS_UNIT_RXSIG_HANDLE:
         rx_unit_setting.pressure_unit = ( pressure_unit_enum )data;
+        EW_notify_vi_data_received( EnumVehicleRxTypePRESSURE_UNIT );
         break;
     case IL_CAN0_VEHICLE_INFO_TEMP_UNIT_RXSIG_HANDLE:
         rx_unit_setting.temperature_unit = ( temperature_unit_enum )data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeTEMPERATURE_UNIT );
         break;
     case IL_CAN0_VEHICLE_INFO_FUEL_CON_UNIT_RXSIG_HANDLE:
         rx_unit_setting.fuel_unit = ( fuel_unit_enum )data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT );
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
