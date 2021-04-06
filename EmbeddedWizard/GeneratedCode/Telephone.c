@@ -48,10 +48,11 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000052, /* ratio 87.80 % */
+  0x0000006C, /* ratio 81.48 % */
   0xB8000D00, 0x0005A452, 0x00010683, 0x48B03078, 0x006E0012, 0x074001A4, 0x54000800,
   0xC0011400, 0x000C0004, 0xB0B00031, 0x838010A8, 0x4E230F86, 0xE33178AC, 0x651F8EC6,
-  0xA0485490, 0x38928EA1, 0x00000203, 0x00000000
+  0xA0485490, 0x0D928EA1, 0x10018E1A, 0x9F1B0006, 0x7800ED24, 0xC5E6F403, 0x02032592,
+  0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -66,6 +67,7 @@ static const XStringRes _Const0007 = { _StringsDefault0, 0x0008 };
 static const XRect _Const0008 = {{ 100, 205 }, { 451, 239 }};
 static const XStringRes _Const0009 = { _StringsDefault0, 0x0017 };
 static const XStringRes _Const000A = { _StringsDefault0, 0x0025 };
+static const XStringRes _Const000B = { _StringsDefault0, 0x0029 };
 
 /* Initializer for the class 'Telephone::ImageButton' */
 void TelephoneImageButton__Init( TelephoneImageButton _this, XObject aLink, XHandle aArg )
@@ -491,6 +493,7 @@ void TelephoneTEL02_ActiveCall__Init( TelephoneTEL02_ActiveCall _this, XObject a
   CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->UpdateDurationTimer, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->PhoneCallVolumeChangedEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( TelephoneTEL02_ActiveCall );
@@ -538,6 +541,9 @@ void TelephoneTEL02_ActiveCall__Init( TelephoneTEL02_ActiveCall _this, XObject a
   _this->UpdateDurationTimer.OnTrigger = EwNewSlot( _this, TelephoneTEL02_ActiveCall_OnUpdateDurationSlot );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
+  _this->PhoneCallVolumeChangedEventHandler.OnEvent = EwNewSlot( _this, TelephoneTEL02_ActiveCall_OnPhoneCallVolumeChangedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->PhoneCallVolumeChangedEventHandler, 
+  &EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )->PhoneCallVolumeChangedSystemEvent );
 
   /* Call the user defined constructor */
   TelephoneTEL02_ActiveCall_Init( _this, aArg );
@@ -558,6 +564,7 @@ void TelephoneTEL02_ActiveCall__ReInit( TelephoneTEL02_ActiveCall _this )
   CoreSystemEventHandler__ReInit( &_this->PhoneCallStateChangedEventHandler );
   CoreTimer__ReInit( &_this->UpdateDurationTimer );
   ViewsImage__ReInit( &_this->Divider );
+  CoreSystemEventHandler__ReInit( &_this->PhoneCallVolumeChangedEventHandler );
 }
 
 /* Finalizer method for the class 'Telephone::TEL02_ActiveCall' */
@@ -575,6 +582,7 @@ void TelephoneTEL02_ActiveCall__Done( TelephoneTEL02_ActiveCall _this )
   CoreSystemEventHandler__Done( &_this->PhoneCallStateChangedEventHandler );
   CoreTimer__Done( &_this->UpdateDurationTimer );
   ViewsImage__Done( &_this->Divider );
+  CoreSystemEventHandler__Done( &_this->PhoneCallVolumeChangedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_Super );
@@ -605,6 +613,8 @@ void TelephoneTEL02_ActiveCall_Init( TelephoneTEL02_ActiveCall _this, XHandle aA
     TelephoneImageButton_OnSetForegroundFrameNumber( &_this->VolumeDownButton, 0 );
   }
 
+  EwSignal( EwNewSlot( _this, TelephoneTEL02_ActiveCall_OnPhoneCallVolumeChangedSlot ), 
+    ((XObject)_this ));
   EwSignal( EwNewSlot( _this, TelephoneTEL02_ActiveCall_OnUpdateDurationSlot ), 
     ((XObject)_this ));
   EwTrace( "%s%s", EwLoadString( &_Const0009 ), _this->CallerText.String );
@@ -613,7 +623,7 @@ void TelephoneTEL02_ActiveCall_Init( TelephoneTEL02_ActiveCall _this, XHandle aA
 /* 'C' function for method : 'Telephone::TEL02_ActiveCall.OnShortDownKeyActivated()' */
 void TelephoneTEL02_ActiveCall_OnShortDownKeyActivated( TelephoneTEL02_ActiveCall _this )
 {
-  if ( _this->VolumeControllable )
+  if ( _this->VolumeControllable && ( 0 < _this->PhoneCallVolume ))
   {
     TelephoneImageButton_DisplayHighlightAnimation( &_this->VolumeDownButton );
     DeviceInterfaceNotificationDeviceClass_PhoneCallVolumeControl( EwGetAutoObject( 
@@ -625,7 +635,7 @@ void TelephoneTEL02_ActiveCall_OnShortDownKeyActivated( TelephoneTEL02_ActiveCal
 /* 'C' function for method : 'Telephone::TEL02_ActiveCall.OnShortUpKeyActivated()' */
 void TelephoneTEL02_ActiveCall_OnShortUpKeyActivated( TelephoneTEL02_ActiveCall _this )
 {
-  if ( _this->VolumeControllable )
+  if ( _this->VolumeControllable && ( 100 > _this->PhoneCallVolume ))
   {
     TelephoneImageButton_DisplayHighlightAnimation( &_this->VolumeUpButton );
     DeviceInterfaceNotificationDeviceClass_PhoneCallVolumeControl( EwGetAutoObject( 
@@ -691,14 +701,49 @@ void TelephoneTEL02_ActiveCall_OnUpdateDurationSlot( TelephoneTEL02_ActiveCall _
   }
 }
 
+/* 'C' function for method : 'Telephone::TEL02_ActiveCall.OnPhoneCallVolumeChangedSlot()' */
+void TelephoneTEL02_ActiveCall_OnPhoneCallVolumeChangedSlot( TelephoneTEL02_ActiveCall _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( DeviceInterfaceNotificationDeviceClass_IsPhoneCallVolumeControllable( EwGetAutoObject( 
+      &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )))
+  {
+    _this->PhoneCallVolume = DeviceInterfaceNotificationDeviceClass_GetPhoneCallVolume( 
+    EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ));
+    EwTrace( "%s%u", EwLoadString( &_Const000B ), _this->PhoneCallVolume );
+
+    if ( 0 == _this->PhoneCallVolume )
+    {
+      TelephoneImageButton_OnSetForegroundFrameNumber( &_this->VolumeDownButton, 
+      1 );
+    }
+    else
+      if ( 100 == _this->PhoneCallVolume )
+      {
+        TelephoneImageButton_OnSetForegroundFrameNumber( &_this->VolumeUpButton, 
+        1 );
+      }
+      else
+      {
+        TelephoneImageButton_OnSetForegroundFrameNumber( &_this->VolumeDownButton, 
+        0 );
+        TelephoneImageButton_OnSetForegroundFrameNumber( &_this->VolumeUpButton, 
+        0 );
+      }
+  }
+}
+
 /* Variants derived from the class : 'Telephone::TEL02_ActiveCall' */
 EW_DEFINE_CLASS_VARIANTS( TelephoneTEL02_ActiveCall )
 EW_END_OF_CLASS_VARIANTS( TelephoneTEL02_ActiveCall )
 
 /* Virtual Method Table (VMT) for the class : 'Telephone::TEL02_ActiveCall' */
 EW_DEFINE_CLASS( TelephoneTEL02_ActiveCall, ComponentsBaseMainBG, VolumeUpButton, 
-                 VolumeUpButton, VolumeUpButton, VolumeUpButton, VolumeControllable, 
-                 VolumeControllable, "Telephone::TEL02_ActiveCall" )
+                 VolumeUpButton, VolumeUpButton, VolumeUpButton, PhoneCallVolume, 
+                 PhoneCallVolume, "Telephone::TEL02_ActiveCall" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

@@ -16,6 +16,7 @@
 #include <BC_motocon_pub_type.h>
 #include "Enum.h"
 #include "EW_pub.h"
+#include "NTF_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -26,10 +27,19 @@
 --------------------------------------------------------------------*/
 void bc_motocon_listener_connection_status( const bool connected );
 void bc_motocon_listener_language_type( const uint8_t language_type );
+void bc_motocon_notification_received( const bc_motocon_notification_v2_t* notification );
 void bc_motocon_listener_battery( const uint8_t battery, const bc_motocon_battery_t battery_type );
+void bc_motocon_incoming_call_received( const bc_motocon_incoming_call_info_t* incoming_call_information );
 void bc_motocon_listener_phone_thermal( const bc_motocon_thermal_state_t thermal_state );
 void bc_motocon_listener_bt_headset_state( const bc_motocon_bt_headset_state_t headset_state );
+void bc_motocon_volume_changed( const uint8_t level, const bc_motocon_volume_type_t type );
+void bc_motocon_phone_volume_controllable( const bool enable );
 void bc_motocon_listener_phone_signal_level( const uint8_t level );
+void bc_motocon_phonecall_state_changed( const bc_motocon_call_state_t call_state );
+
+void BC_motocon_answer_call_callback( const uint32_t uid );
+void BC_motocon_decline_call_callback( const uint32_t uid );
+void BC_motocon_phonecall_volume_control_callback( const EnumVolumeControl control );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -51,30 +61,41 @@ static bc_motocon_callback_t motocon_callback =
     NULL,                                   // datetime_changed_callback
     NULL,                                   // vehicle_datetime_callback
     bc_motocon_listener_language_type,      // language_type_callback
-    NULL,                                   // notification_callback
+    bc_motocon_notification_received,       // notification_callback
     NULL,                                   // can_related_callback
     NULL,                                   // can_request_callback
     NULL,                                   // injection_request_callback
     bc_motocon_listener_battery,            // battery_callback
     NULL,                                   // bt_music_meta_data_callback
-    NULL,                                   // incoming_call_info_callback
+    bc_motocon_incoming_call_received,      // incoming_call_info_callback
     bc_motocon_listener_phone_thermal,      // thermal_callback
     bc_motocon_listener_bt_headset_state,   // bt_headset_state_callback
-    NULL,                                   // volume_level_callback
+    bc_motocon_volume_changed,              // volume_level_callback
     NULL,                                   // notification_category_callback
-    NULL,                                   // volume_controllable_callback
+    bc_motocon_phone_volume_controllable,   // volume_controllable_callback
     NULL,                                   // ota_update_info_callback
     NULL,                                   // ccuid_request_callback
     bc_motocon_listener_phone_signal_level, // cell_signal_callback
-    NULL                                    // call_changed_callback
+    bc_motocon_phonecall_state_changed      // call_changed_callback
     };
+
+static notification_callback_t motocon_notification_callback =
+    {
+    BC_motocon_answer_call_callback,
+    BC_motocon_decline_call_callback,
+    BC_motocon_phonecall_volume_control_callback
+    };
+static bool is_ntf_connected;
 
 static uint8_t phone_language_type;
 static uint8_t phone_battery_percentage;
 static uint8_t phone_cell_signal_level;
+static bool phone_volume_controllable;
 static bc_motocon_battery_t phone_battery_charging_status;
 static bc_motocon_thermal_state_t phone_thermal_state;
 static bc_motocon_bt_headset_state_t phone_headset_state;
+static uint32_t phone_call_volume;
+static bool motocon_connected;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -83,6 +104,47 @@ static bc_motocon_bt_headset_state_t phone_headset_state;
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+/*********************************************************************
+*
+* @private
+* notify_motocon_notification_disconnected
+*
+* Notify MotoCon notification is connected
+*
+*********************************************************************/
+static void notify_motocon_notification_connected
+    (
+    void
+    )
+{
+if( !is_ntf_connected )
+    {
+    is_ntf_connected = true;
+    NTF_notify_connected( NOTIFICATION_PROTOCOL_MOTOCON, &motocon_notification_callback );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* notify_motocon_notification_disconnected
+*
+* Notify MotoCon notification is disconnected
+*
+*********************************************************************/
+static void notify_motocon_notification_disconnected
+    (
+    void
+    )
+{
+if( is_ntf_connected )
+    {
+    is_ntf_connected = false;
+    phone_call_volume = 0;
+    NTF_notify_disconnected( NOTIFICATION_PROTOCOL_MOTOCON );
+    }
+}
+
 /*********************************************************************
 *
 * @private
@@ -98,7 +160,13 @@ void bc_motocon_listener_connection_status
     const bool connected
     )
 {
+motocon_connected = connected;
 EW_notify_motocon_event_received( EnumMotoConRxEventCONNECTION_STATUS );
+if( !connected )
+    {
+    phone_volume_controllable = false;
+    notify_motocon_notification_disconnected();
+    }
 }
 
 /*********************************************************************
@@ -118,6 +186,153 @@ void bc_motocon_listener_language_type
 {
 phone_language_type = language_type;
 EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_LANGUAGE );
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_notification_received
+*
+* Notify notification received
+*
+* @param notification MotoCon notification v2
+*
+*********************************************************************/
+void bc_motocon_notification_received
+    (
+    const bc_motocon_notification_v2_t* notification
+    )
+{
+notification_time_t received_time;
+received_time.year   = notification->time.year;
+received_time.month  = notification->time.mon;
+received_time.day    = notification->time.day;
+received_time.hour   = notification->time.hour;
+received_time.minute = notification->time.min;
+received_time.second = notification->time.sec;
+
+EnumNotificationCategory category = EnumNotificationCategoryMESSAGE;
+if( BC_MOTOCON_NOTIFICATION_CATEGORY_MISSED_CALL == notification->category )
+    {
+    category = EnumNotificationCategoryMISSED_CALL;
+    }
+
+if( motocon_connected )
+    {
+    notify_motocon_notification_connected();
+    NTF_add_notification( notification->uid, (const uint8_t*)notification->title, (const uint8_t*)notification->subtitle, (const uint8_t*)notification->detail, category, received_time );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_incoming_call_received
+*
+* Notify incoming call received
+*
+* @param incoming_call_information Pointer to incoming call info
+*
+*********************************************************************/
+void bc_motocon_incoming_call_received
+    (
+    const bc_motocon_incoming_call_info_t* incoming_call_information
+    )
+{
+uint8_t caller[PHONE_CALLER_MAX_LEN];
+if( 0 < incoming_call_information->name_len )
+    {
+    memcpy( caller, incoming_call_information->name, MIN( PHONE_CALLER_MAX_LEN, incoming_call_information->name_len ) );
+    caller[PHONE_CALLER_MAX_LEN - 1] = '\0';
+    }
+else if( 0 < incoming_call_information->phone_number_len )
+    {
+    memcpy( caller, incoming_call_information->phone_number, MIN( PHONE_CALLER_MAX_LEN, incoming_call_information->phone_number_len ) );
+    caller[PHONE_CALLER_MAX_LEN - 1] = '\0';
+    }
+else
+    {
+    caller[0] = '\0';
+    }
+
+if( motocon_connected )
+    {
+    notify_motocon_notification_connected();
+    NTF_notify_incoming_call_started( 0, caller, phone_volume_controllable );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_phonecall_state_changed
+*
+* Notify phone call state changed
+*
+* @param call_state Phone call state of bc_motocon_call_state_t type
+*
+*********************************************************************/
+void bc_motocon_phonecall_state_changed
+    (
+    const bc_motocon_call_state_t call_state
+    )
+{
+if( motocon_connected )
+    {
+    switch( call_state )
+        {
+        case BC_MOTOCON_CALL_STARTED:
+            NTF_notify_active_call_started( 0, phone_volume_controllable );
+            break;
+        case BC_MOTOCON_CALL_ENDED:
+            NTF_notify_active_call_stopped( 0 );
+            break;
+        default:
+            break;
+        }
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_phone_volume_controllable
+*
+* Notify phone volume controllable status
+*
+* @param enable Phone volume controllable status
+*
+*********************************************************************/
+void bc_motocon_volume_changed
+    (
+    const uint8_t level,
+    const bc_motocon_volume_type_t type
+    )
+{
+if( BC_MOTOCON_VOLUME_PHONE == type )
+    {
+    phone_call_volume = level;
+    EW_notify_phone_call_volume_changed();
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_phone_volume_controllable
+*
+* Notify phone volume controllable status
+*
+* @param enable Phone volume controllable status
+*
+*********************************************************************/
+void bc_motocon_phone_volume_controllable
+    (
+    const bool enable
+    )
+{
+BC_MOTOCON_PRINTF( "%s %d\r\n", __FUNCTION__, enable );
+phone_volume_controllable = enable;
 }
 
 /*********************************************************************
@@ -305,6 +520,93 @@ uint8_t BC_motocon_get_phone_cell_signal_level
     )
 {
 return phone_cell_signal_level;
+}
+
+/*********************************************************************
+*
+* @public
+* BC_motocon_answer_call_callback
+*
+* Callback function from UI to answer the phone call
+*
+* @param uid Unique notification id
+*
+*********************************************************************/
+void BC_motocon_answer_call_callback
+    (
+    const uint32_t uid
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+BC_motocon_send_incoming_call_control( BC_MOTOCON_CALL_ANSWER );
+}
+
+/*********************************************************************
+*
+* @public
+* BC_motocon_decline_call_callback
+*
+* Callback function from UI to decline the phone call
+*
+* @param uid Unique notification id
+*
+*********************************************************************/
+void BC_motocon_decline_call_callback
+    (
+    const uint32_t uid
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+BC_motocon_send_incoming_call_control( BC_MOTOCON_CALL_REJECT );
+}
+
+/*********************************************************************
+*
+* @public
+* BC_motocon_phonecall_volume_control_callback
+*
+* Callback function from UI to control phone call volume
+*
+* @param control Volume control
+*
+*********************************************************************/
+void BC_motocon_phonecall_volume_control_callback
+    (
+    const EnumVolumeControl control
+    )
+{
+BC_MOTOCON_PRINTF( "%s %d\r\n", __FUNCTION__, control );
+switch( control )
+    {
+    case EnumVolumeControlUP:
+        BC_motocon_send_volume_control( BC_MOTOCON_VOLUME_UP );
+        break;
+    case EnumVolumeControlDOWN:
+        BC_motocon_send_volume_control( BC_MOTOCON_VOLUME_DOWN );
+        break;
+    default:
+        BC_MOTOCON_PRINTF( "invalid %d\r\n", control );
+        break;
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* BC_motocon_get_phonecall_volume
+*
+* Get phone call volume
+*
+* @return Phone call volume from 0 to 100
+*
+*********************************************************************/
+uint32_t BC_motocon_get_phonecall_volume
+    (
+    void
+    )
+{
+BC_MOTOCON_PRINTF( "%s %d\r\n", __FUNCTION__, phone_call_volume );
+return phone_call_volume;
 }
 
 /*********************************************************************

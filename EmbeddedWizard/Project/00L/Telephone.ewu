@@ -242,6 +242,7 @@ class TEL02_ActiveCall : Components::BaseMainBG
       VolumeDownButton.ForegroundFrameNumber = 0;
     }
 
+    signal OnPhoneCallVolumeChangedSlot;
     signal OnUpdateDurationSlot;
 
     trace "Init TEL02 ", CallerText.String;
@@ -250,7 +251,8 @@ class TEL02_ActiveCall : Components::BaseMainBG
   $rect <230,340,460,380>
   inherited method OnShortDownKeyActivated()
   {
-    if( VolumeControllable )
+    if( VolumeControllable &&
+        Telephone::PHONE_CALL_VOLUME_MIN < PhoneCallVolume )
     {
       VolumeDownButton.DisplayHighlightAnimation();
       DeviceInterface::NotificationDevice.PhoneCallVolumeControl( Enum::VolumeControl.DOWN );
@@ -260,7 +262,8 @@ class TEL02_ActiveCall : Components::BaseMainBG
   $rect <230,290,460,330>
   inherited method OnShortUpKeyActivated()
   {
-    if( VolumeControllable )
+    if( VolumeControllable &&
+        Telephone::PHONE_CALL_VOLUME_MAX > PhoneCallVolume )
     {
       VolumeUpButton.DisplayHighlightAnimation();
       DeviceInterface::NotificationDevice.PhoneCallVolumeControl( Enum::VolumeControl.UP );
@@ -369,4 +372,45 @@ class TEL02_ActiveCall : Components::BaseMainBG
     preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
     preset Bitmap = Resource::StatusBarDivider;
   }
+
+  $rect <490,390,800,430>
+  object Core::SystemEventHandler PhoneCallVolumeChangedEventHandler
+  {
+    preset OnEvent = OnPhoneCallVolumeChangedSlot;
+    preset Event = DeviceInterface::NotificationDevice.PhoneCallVolumeChangedSystemEvent;
+  }
+
+  $rect <490,440,790,480>
+  slot OnPhoneCallVolumeChangedSlot
+  {
+    if( DeviceInterface::NotificationDevice.IsPhoneCallVolumeControllable() )
+    {
+      PhoneCallVolume = DeviceInterface::NotificationDevice.GetPhoneCallVolume();
+      trace "call vol: ", PhoneCallVolume;
+      if( Telephone::PHONE_CALL_VOLUME_MIN == PhoneCallVolume )
+      {
+        VolumeDownButton.ForegroundFrameNumber = 1;
+      }
+      else if( Telephone::PHONE_CALL_VOLUME_MAX == PhoneCallVolume )
+      {
+        VolumeUpButton.ForegroundFrameNumber = 1;
+      }
+      else
+      {
+        VolumeDownButton.ForegroundFrameNumber = 0;
+        VolumeUpButton.ForegroundFrameNumber = 0;
+      }
+    }
+  }
+
+  $rect <490,490,690,530>
+  var uint32 PhoneCallVolume;
 }
+
+$rect <10,220,260,260>
+$output false
+const uint32 PHONE_CALL_VOLUME_MIN = 0;
+
+$rect <10,270,260,310>
+$output false
+const uint32 PHONE_CALL_VOLUME_MAX = 100;

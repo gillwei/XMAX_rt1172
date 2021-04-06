@@ -62,6 +62,7 @@
 EW_DEFINE_FIELDS( DeviceInterfaceNotificationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( NotificationListUpdatedSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( PhoneCallStateChangedSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( PhoneCallVolumeChangedSystemEvent, CoreSystemEvent )
   EW_PROPERTY( NotificationNum, XUInt32 )
 EW_END_OF_FIELDS( DeviceInterfaceNotificationDeviceClass )
 
@@ -142,6 +143,19 @@ XBool DeviceInterfaceNotificationDeviceClass__IsPhoneCallVolumeControllable( voi
 /* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.PhoneCallVolumeControl()' */
 void DeviceInterfaceNotificationDeviceClass_PhoneCallVolumeControl( DeviceInterfaceNotificationDeviceClass _this, 
   XEnum aControl );
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallVolumeChanged( DeviceInterfaceNotificationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NotificationDeviceClass.NotifyPhoneCallVolumeChanged()' */
+void DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallVolumeChanged( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NotificationDeviceClass.NotifyPhoneCallVolumeChanged(). */
+#define _DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallVolumeChanged_
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetPhoneCallVolume()' */
+XUInt32 DeviceInterfaceNotificationDeviceClass_GetPhoneCallVolume( DeviceInterfaceNotificationDeviceClass _this );
 
 #ifdef __cplusplus
   }

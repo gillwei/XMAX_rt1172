@@ -84,6 +84,7 @@ void EW_notify_active_tbt_item_update( int index );
 
 void EW_notify_notification_list_updated( void );
 void EW_notify_phone_call_state_changed( void );
+void EW_notify_phone_call_volume_changed( void );
 
 #ifdef __cplusplus
 }

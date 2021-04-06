@@ -37,6 +37,10 @@
     static int ew_notification_notify_phone_call_state_changed( void );
 #endif
 
+#ifdef _DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallVolumeChanged_
+    static int ew_notification_notify_phone_call_volume_changed( void );
+#endif
+
 #define DEVICE_NOTIFICATION_EVENT_LIST_UPDATED          ( 1 << 0 )
 
 /*--------------------------------------------------------------------
@@ -57,6 +61,7 @@
 #ifdef _DeviceInterfaceNotificationDeviceClass_
     static DeviceInterfaceNotificationDeviceClass device_object = 0;
     static bool     is_phone_call_stated_changed = false;
+    static bool     is_phone_call_volume_changed = false;
     static uint32_t device_notification_event = 0;
 
     notification_device_function* const nm_function_lookup_table[] =
@@ -65,7 +70,10 @@
             ew_notification_notify_list_updated,
         #endif
         #ifdef _DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallStateChanged_
-            ew_notification_notify_phone_call_state_changed
+            ew_notification_notify_phone_call_state_changed,
+        #endif
+        #ifdef _DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallVolumeChanged_
+            ew_notification_notify_phone_call_volume_changed
         #endif
         };
 
@@ -224,6 +232,31 @@ return need_update;
 
 /*********************************************************************
 *
+* @private
+* ew_notification_notify_phone_call_volume_changed
+*
+* Notify EW GUI the phone call state changed
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallVolumeChanged_
+static int ew_notification_notify_phone_call_volume_changed
+    (
+    void
+    )
+{
+int need_update = 0;
+if( is_phone_call_volume_changed )
+    {
+    is_phone_call_volume_changed = false;
+    DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallVolumeChanged( device_object );
+    need_update = 1;
+    }
+return need_update;
+}
+#endif
+
+/*********************************************************************
+*
 * @public
 * EW_notify_notification_list_updated
 *
@@ -256,6 +289,25 @@ void EW_notify_phone_call_state_changed
 {
 #ifdef _DeviceInterfaceNotificationDeviceClass_
     is_phone_call_stated_changed = true;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_phone_call_volume_changed
+*
+* Notify EW GUI the phone call volume changed
+*
+*********************************************************************/
+void EW_notify_phone_call_volume_changed
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceNotificationDeviceClass_
+    is_phone_call_volume_changed = true;
     EwBspEventTrigger();
 #endif
 }

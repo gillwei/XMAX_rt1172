@@ -138,6 +138,8 @@ bc_motocon_bt_headset_state_t BC_motocon_get_bt_headset_state( void );
 
 uint8_t BC_motocon_get_phone_cell_signal_level( void );
 
+uint32_t BC_motocon_get_phonecall_volume( void );
+
 #ifdef __cplusplus
 }
 #endif

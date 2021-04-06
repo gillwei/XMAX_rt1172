@@ -1986,7 +1986,7 @@ class NotificationDeviceClass : Templates::DeviceClass
 {
   // This method is intended to be called by the device to notify the GUI application \
   // about an alternation of its setting or state value.
-  $rect <340,110,550,150>
+  $rect <30,220,240,260>
   $output true
   method bool IsPhoneCallStateActive()
   {
@@ -1996,7 +1996,7 @@ class NotificationDeviceClass : Templates::DeviceClass
   // Phone Call
   note group Note1
   {
-    attr Bounds = <10,10,1270,160>;
+    attr Bounds = <10,10,970,280>;
   }
 
   // This method is intended to be called by the device to notify the GUI application \
@@ -2011,7 +2011,7 @@ class NotificationDeviceClass : Templates::DeviceClass
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <30,210,230,250>
+  $rect <30,350,230,390>
   $output true
   method void NotifyListUpdated()
   {
@@ -2019,10 +2019,10 @@ class NotificationDeviceClass : Templates::DeviceClass
     NotificationListUpdatedSystemEvent.Trigger( null, false );
   }
 
-  $rect <30,260,320,300>
+  $rect <30,400,320,440>
   object Core::SystemEvent NotificationListUpdatedSystemEvent;
 
-  $rect <560,210,770,250>
+  $rect <560,350,770,390>
   method DeviceInterface::NotificationContext GetNotificationAtItem( arg uint32 aItemNo )
   {
     var DeviceInterface::NotificationContext NotificationItem = new DeviceInterface::NotificationContext;
@@ -2083,10 +2083,10 @@ class NotificationDeviceClass : Templates::DeviceClass
     return NotificationItem;
   }
 
-  $rect <337,210,547,250>
+  $rect <337,350,547,390>
   property uint32 NotificationNum;
 
-  $rect <337,260,547,300>
+  $rect <337,400,547,440>
   onget NotificationNum
   {
     $if !$prototyper
@@ -2104,10 +2104,10 @@ class NotificationDeviceClass : Templates::DeviceClass
   // Notification
   note group Note2
   {
-    attr Bounds = <10,170,1070,320>;
+    attr Bounds = <10,300,1070,460>;
   }
 
-  $rect <560,260,770,300>
+  $rect <560,400,770,440>
   method void DeleteNotificationOfUid( arg uint32 Uid )
   {
     $if !$prototyper
@@ -2118,7 +2118,7 @@ class NotificationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <790,210,1050,250>
+  $rect <790,350,1050,390>
   method int32 GetBufferIdxOfNotificationUID( arg uint32 Uid )
   {
     var int32 Index = -1;
@@ -2134,7 +2134,7 @@ class NotificationDeviceClass : Templates::DeviceClass
   $rect <30,110,330,150>
   object Core::SystemEvent PhoneCallStateChangedSystemEvent;
 
-  $rect <560,60,770,100>
+  $rect <250,170,460,210>
   method string GetPhoneCaller()
   {
     var string Caller;
@@ -2158,7 +2158,7 @@ class NotificationDeviceClass : Templates::DeviceClass
   }
 
   // Get active call duration in ms
-  $rect <560,110,770,150>
+  $rect <250,220,460,260>
   method uint32 GetActiveCallDuration()
   {
     var uint32 DurationMS;
@@ -2173,7 +2173,7 @@ class NotificationDeviceClass : Templates::DeviceClass
     return DurationMS;
   }
 
-  $rect <340,60,550,100>
+  $rect <30,170,240,210>
   method Enum::PhoneCallState GetPhoneCallState()
   {
     var Enum::PhoneCallState PhoneCallState = Enum::PhoneCallState.IDLE;
@@ -2189,7 +2189,7 @@ class NotificationDeviceClass : Templates::DeviceClass
     return PhoneCallState;
   }
 
-  $rect <1050,60,1260,100>
+  $rect <740,170,950,210>
   method void AnswerPhoneCall()
   {
     $if !$prototyper
@@ -2200,7 +2200,7 @@ class NotificationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <1050,110,1260,150>
+  $rect <740,220,950,260>
   method void DeclinePhoneCall()
   {
     $if !$prototyper
@@ -2213,7 +2213,7 @@ class NotificationDeviceClass : Templates::DeviceClass
 
   // This method is intended to be called by the device to notify the GUI application \
   // about an alternation of its setting or state value.
-  $rect <780,60,1040,100>
+  $rect <470,170,730,210>
   $output true
   method bool IsPhoneCallVolumeControllable()
   {
@@ -2229,7 +2229,7 @@ class NotificationDeviceClass : Templates::DeviceClass
     return Controllable;
   }
 
-  $rect <780,110,1040,150>
+  $rect <470,220,730,260>
   method void PhoneCallVolumeControl( arg Enum::VolumeControl aControl )
   {
     $if !$prototyper
@@ -2238,6 +2238,34 @@ class NotificationDeviceClass : Templates::DeviceClass
         NTF_phonecall_volume_control( aControl );
       }
     $endif
+  }
+
+  $rect <340,110,650,150>
+  object Core::SystemEvent PhoneCallVolumeChangedSystemEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <340,60,590,100>
+  $output true
+  method void NotifyPhoneCallVolumeChanged()
+  {
+    trace "NotifyPhoneCallVolumeChanged";
+    PhoneCallVolumeChangedSystemEvent.Trigger( null, false );
+  }
+
+  $rect <680,60,890,100>
+  method uint32 GetPhoneCallVolume()
+  {
+    var uint32 PhoneCallVolume = 0;
+
+    $if !$prototyper
+      native( PhoneCallVolume )
+      {
+        PhoneCallVolume = BC_motocon_get_phonecall_volume();
+      }
+    $endif
+
+    return PhoneCallVolume;
   }
 }
 

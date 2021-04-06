@@ -336,6 +336,12 @@ typedef enum
     BC_MOTOCON_CALL_ENDED
     } bc_motocon_call_state_t;
 
+typedef enum
+    {
+    BC_MOTOCON_NOTIFICATION_CATEGORY_MESSAGE,
+    BC_MOTOCON_NOTIFICATION_CATEGORY_MISSED_CALL
+    } bc_motocon_notification_type_t;
+
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
 --------------------------------------------------------------------*/

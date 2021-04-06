@@ -50,7 +50,7 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x0000021C, /* ratio 55.56 % */
+  0x0000025A, /* ratio 53.82 % */
   0xB8002500, 0x000A6452, 0x00C2003A, 0x80107390, 0x16750010, 0x20037002, 0x540044C9,
   0x30019400, 0x000021A7, 0x04160619, 0x1BC00680, 0x421C7700, 0x22D14894, 0x3B1B8CC5,
   0x91A29422, 0x0D364AE3, 0xF1000075, 0x9104C011, 0xE4D00051, 0x0024C639, 0xA6793532,
@@ -61,7 +61,8 @@ static const unsigned int _StringsDefault0[] =
   0x0D1727C1, 0x10F8446E, 0x46D9C467, 0x4CAD8F05, 0xB0622151, 0x08563F7F, 0xD4AE10DC,
   0x0C8D0887, 0x21106004, 0x591D95EA, 0x1C891033, 0x5694F280, 0xED64326A, 0xB8E0F881,
   0xAEAAC650, 0x4E215629, 0x22C9CD9C, 0x2F563B0C, 0x7B47BE00, 0x99DEF052, 0x9D260030,
-  0x02A80265, 0xE7D23320, 0x53D4F59B, 0x00000040, 0x00000000
+  0x02A80265, 0xE7D23320, 0x01F47D9B, 0x1001C67D, 0xB1E3495E, 0x00659E67, 0x6D927764,
+  0x5ED7919E, 0xD4F58F59, 0x00004053, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -78,6 +79,7 @@ static const XStringRes _Const0009 = { _StringsDefault0, 0x00BB };
 static const XStringRes _Const000A = { _StringsDefault0, 0x00D0 };
 static const XStringRes _Const000B = { _StringsDefault0, 0x00DC };
 static const XStringRes _Const000C = { _StringsDefault0, 0x00FA };
+static const XStringRes _Const000D = { _StringsDefault0, 0x010E };
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
@@ -2309,6 +2311,7 @@ void DeviceInterfaceNotificationDeviceClass__Init( DeviceInterfaceNotificationDe
   /* ... then construct all embedded objects */
   CoreSystemEvent__Init( &_this->NotificationListUpdatedSystemEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->PhoneCallStateChangedSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->PhoneCallVolumeChangedSystemEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceNotificationDeviceClass );
@@ -2323,6 +2326,7 @@ void DeviceInterfaceNotificationDeviceClass__ReInit( DeviceInterfaceNotification
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->NotificationListUpdatedSystemEvent );
   CoreSystemEvent__ReInit( &_this->PhoneCallStateChangedSystemEvent );
+  CoreSystemEvent__ReInit( &_this->PhoneCallVolumeChangedSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NotificationDeviceClass' */
@@ -2334,6 +2338,7 @@ void DeviceInterfaceNotificationDeviceClass__Done( DeviceInterfaceNotificationDe
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->NotificationListUpdatedSystemEvent );
   CoreSystemEvent__Done( &_this->PhoneCallStateChangedSystemEvent );
+  CoreSystemEvent__Done( &_this->PhoneCallVolumeChangedSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -2578,6 +2583,33 @@ void DeviceInterfaceNotificationDeviceClass_PhoneCallVolumeControl( DeviceInterf
   EW_UNUSED_ARG( _this );
 
   NTF_phonecall_volume_control( aControl );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallVolumeChanged( DeviceInterfaceNotificationDeviceClass _this )
+{
+  EwTrace( "%s", EwLoadString( &_Const000D ));
+  CoreSystemEvent_Trigger( &_this->PhoneCallVolumeChangedSystemEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NotificationDeviceClass.NotifyPhoneCallVolumeChanged()' */
+void DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallVolumeChanged( void* _this )
+{
+  DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallVolumeChanged((DeviceInterfaceNotificationDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetPhoneCallVolume()' */
+XUInt32 DeviceInterfaceNotificationDeviceClass_GetPhoneCallVolume( DeviceInterfaceNotificationDeviceClass _this )
+{
+  XUInt32 PhoneCallVolume;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  PhoneCallVolume = 0;
+  PhoneCallVolume = BC_motocon_get_phonecall_volume();
+  return PhoneCallVolume;
 }
 
 /* Variants derived from the class : 'DeviceInterface::NotificationDeviceClass' */
