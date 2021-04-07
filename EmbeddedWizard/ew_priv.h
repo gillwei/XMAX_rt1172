@@ -124,6 +124,9 @@ void ew_send_weather_info_req( void );
 void ew_send_vehicle_setting_req( void );
 int ew_get_weather_week_day( void );
 
+void ew_get_copyright( const int index, uint8_t** copyright_title, uint8_t** copyright_content );
+int ew_get_num_of_licenses( void );
+
 #ifdef __cplusplus
 }
 #endif

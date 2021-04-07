@@ -1,9 +1,10 @@
 ﻿$version 10.00
 
-$rect <560,10,760,50>
+$rect <320,380,520,420>
 inline Inline
 {
   #include "BTM_pub.h"
+  #include "ew_priv.h"
 }
 
 $rect <20,10,260,50>
@@ -113,7 +114,7 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
         Dialog = new SeatHeater_GripWarmer::SHT02_GPW02_Main;
       }
       case Enum::MainSettingItem.SystemInfo: Dialog = new Settings::SET28_SystemInfo;
-      case Enum::MainSettingItem.LegalInfo:;
+      case Enum::MainSettingItem.LegalInfo: Dialog = new Settings::SET35_LegalMenu;
       case Enum::MainSettingItem.Reset:;
       default:;
     }
@@ -411,20 +412,17 @@ note group Note
   attr Bounds = <690,20,1420,560>;
 }
 
-$rect <710,270,910,310>
+$rect <710,190,910,230>
 $output false
-class LegalMenu : Menu::BaseMenuView
+class SET35_LegalMenu : Menu::BaseMenuView
 {
-  $rect <20,290,220,330>
-  inherited property Bounds = <0,0,480,272>;
+  $rect <10,360,210,400>
+  inherited property DDModeEnabled = true;
 
-  $rect <520,200,750,240>
-  inherited method OnShortHomeKeyActivated()
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
+  $rect <10,310,210,350>
+  inherited var SlideOutEffectEnabled = true;
 
-  $rect <520,150,720,190>
+  $rect <520,110,720,150>
   inherited method LoadItemClass()
   {
     var class ItemClass = null;
@@ -439,47 +437,29 @@ class LegalMenu : Menu::BaseMenuView
   inherited method LoadItemTitle()
   {
     var string Title = "";
-    if( aItemNo < LegalMenu.size )
+    if( aItemNo >= 0 )
     {
-    Title = LegalMenu[aItemNo];
+      Title = Strings::SET35_LICENSE;
     }
     return Title;
   }
 
-  $rect <520,100,720,140>
+  $rect <520,200,720,240>
   inherited method OnItemActivate()
   {
-    trace "OnItemActivate:", aItemNo;
-
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
-
-    switch( aItemNo )
-    {
-    case 0:
-      PresentDialogWithSlideInEffect( new Settings::TermsOfService );
-    case 1:
-      PresentDialogWithSlideInEffect( new Settings::OpenSourceLicenses );
-    default :;
-    }
+    aItemNo;   // suppress warning
+    aMenuItem; // suppress warning
+    SlideInDialog( new Settings::SET37_3rdPartyLicenses );
   }
-
-  $rect <520,10,720,50>
-  array string LegalMenu[ 3 ] =
-  (
-    Default[0] = "Terms of Service";
-    Default[1] = "Open source licenses";
-    Default[2] = "";
-  );
 
   $rect <20,20,160,60>
-  object Menu::VerticalMenu Menu
+  inherited object Menu
   {
-    preset Bounds = <10,32,470,272>;
-    preset NoOfItems = 2;
+    preset DDModeEnabled = true;
+    preset NoOfItems = 1;
   }
+
+  $reorder LoadItemBaseValue 4
 }
 
 $rect <950,70,1150,110>
@@ -758,20 +738,88 @@ class AllResetCompleted : Menu::BaseMenuView
   }
 }
 
-$rect <940,270,1140,310>
+$rect <950,190,1150,230>
 $output false
-class TermsOfService : Menu::BaseMenuView
+class SET37_3rdPartyLicenses : Components::BaseMainBG
 {
-  $rect <10,300,210,340>
-  inherited property Bounds = <0,0,480,272>;
-}
+  $rect <240,310,440,350>
+  inherited method Init()
+  {
+    $if !$prototyper
+      var int32 i;
+      var string CopyRightTitle;
+      var string CopyRightContent;
+      var int32 NumberOfLicenses;
 
-$rect <1170,270,1370,310>
-$output false
-class OpenSourceLicenses : Menu::BaseMenuView
-{
-  $rect <0,300,200,340>
-  inherited property Bounds = <0,0,480,272>;
+      native( NumberOfLicenses )
+      {
+        NumberOfLicenses = ew_get_num_of_licenses();
+      }
+
+      for( i = 0; i < NumberOfLicenses; i++ )
+      {
+        native( i, CopyRightTitle, CopyRightContent )
+        {
+          uint8_t* copyright_title;
+          uint8_t* copyright_content;
+          ew_get_copyright( i, &copyright_title, &copyright_content );
+          CopyRightTitle = EwNewStringUtf8( ( const unsigned char* )copyright_title, ( int )strlen( ( char* )copyright_title ) );
+          CopyRightContent = EwNewStringUtf8( ( const unsigned char* )copyright_content, ( int )strlen( ( char* )copyright_content ) );
+        }
+
+        ThirdPartyLicenseText.LicenseText.String += ( CopyRightTitle + "\n" + CopyRightContent + "\n" );
+        ThirdPartyLicenseText.LicenseText.String += "\n";
+      }
+      ThirdPartyLicenseText.UpdateLineNum();
+      ThirdPartyLicenseText.LicenseInitBounds = ThirdPartyLicenseText.LicenseText.Bounds;
+    $endif
+  }
+
+  $rect <520,140,720,180>
+  inherited method OnShortDownKeyActivated()
+  {
+    Scrollbar.ViewIdx = ThirdPartyLicenseText.ScrollDownPage();
+  }
+
+  $rect <520,90,720,130>
+  inherited method OnShortUpKeyActivated()
+  {
+    Scrollbar.ViewIdx = ThirdPartyLicenseText.ScrollUpPage();
+  }
+
+  $rect <520,210,720,250>
+  inherited method OnShortEnterKeyActivated()
+  {
+    OnShortHomeKeyActivated();
+  }
+
+  $rect <10,300,210,340>
+  inherited property DDModeEnabled = true;
+
+  $rect <10,350,210,390>
+  inherited var SlideOutEffectEnabled = true;
+
+  $rect <20,20,160,60>
+  object Menu::Scrollbar Scrollbar
+  {
+    preset Bounds = <453,44,461,254>;
+    preset ViewIdx = 0;
+    preset PageItems = Settings::DETAIL_TOTAL_LINE_NUM;
+    preset ListItems = 1;
+  }
+
+  $rect <20,20,160,60>
+  object Settings::LicenseDetail ThirdPartyLicenseText
+  {
+    preset Bounds = <33,47,421,258>;
+    preset OnLineNumUpdated = OnLineNumUpdatedSlot;
+  }
+
+  $rect <520,270,730,310>
+  slot OnLineNumUpdatedSlot
+  {
+    Scrollbar.ListItems = ThirdPartyLicenseText.NoOfLines;
+  }
 }
 
 $rect <1160,400,1360,440>
@@ -2292,3 +2340,145 @@ class SET28_SystemInfo : Components::BaseMainBG
 $rect <20,510,220,550>
 $output false
 const int32 BT_PASSKEY_LEN = 6;
+
+$rect <1170,190,1370,230>
+$output false
+class LicenseDetail : Core::Group
+{
+  $rect <430,10,630,50>
+  inherited property Bounds = <0,0,388,211>;
+
+  $rect <20,20,160,60>
+  object Views::Text TitleText
+  {
+    preset Bounds = <0,0,388,31>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = Strings::SET35_LICENSE;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text LicenseText
+  {
+    preset Bounds = <0,61,388,1301>;
+    preset RowDistance = 30;
+    preset AutoSize = true;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <430,110,630,150>
+  method int32 ScrollUpPage()
+  {
+    if( !ScrollEffect.Enabled &&
+        ScrollOffsetY < 0 )
+    {
+      var int32 NextScrollOffsetY = ScrollOffsetY + Bounds.h;
+
+      if( NextScrollOffsetY > 0 )
+      {
+        NextScrollOffsetY = 0;
+      }
+
+      ScrollEffect.Value1 = ScrollOffsetY;
+      ScrollEffect.Value2 = NextScrollOffsetY;
+      ScrollEffect.Enabled = true;
+
+      LineToScroll = NextScrollOffsetY.abs / LicenseText.RowDistance + Settings::DETAIL_TOTAL_LINE_NUM - 1;
+      trace "LineToScroll ", LineToScroll;
+    }
+
+    return LineToScroll;
+  }
+
+  $rect <430,150,630,190>
+  method int32 ScrollDownPage()
+  {
+    if( !ScrollEffect.Enabled )
+    {
+      var int32 NextScrollOffsetY = ScrollOffsetY - Bounds.h;
+      var int32 MaxScrollOffset = NoOfLines * LicenseText.RowDistance - Bounds.h;
+      if( MaxScrollOffset < 0 )
+      {
+        MaxScrollOffset = 0;
+      }
+
+      if( NextScrollOffsetY.abs > MaxScrollOffset )
+      {
+        NextScrollOffsetY = -1 * ( MaxScrollOffset );
+      }
+
+      ScrollEffect.Value1 = ScrollOffsetY;
+      ScrollEffect.Value2 = NextScrollOffsetY;
+      ScrollEffect.Enabled = true;
+
+      LineToScroll = NextScrollOffsetY.abs / LicenseText.RowDistance + Settings::DETAIL_TOTAL_LINE_NUM - 1;
+      trace "LineToScroll ", LineToScroll;
+    }
+
+    return LineToScroll;
+  }
+
+  $rect <650,10,850,50>
+  var int32 LineToScroll;
+
+  $rect <880,110,1080,150>
+  object Effects::Int32Effect ScrollEffect
+  {
+    preset OnFinished = null;
+    preset OnAnimate = null;
+    preset Exponent = 4.19;
+    preset Timing = Effects::Timing.Exp_Out;
+    preset NoOfCycles = 1;
+    preset CycleDuration = 200;
+    preset InitialDelay = 0;
+    preset Outlet = ^ScrollOffsetY;
+  }
+
+  $rect <880,150,1080,190>
+  property slot OnLineNumUpdated;
+
+  $rect <660,110,860,150>
+  property int32 ScrollOffsetY = 0;
+
+  $rect <660,150,860,190>
+  onset ScrollOffsetY
+  {
+    if( pure ScrollOffsetY != value )
+    {
+      pure ScrollOffsetY = value;
+
+      var rect NewBounds = TitleInitBounds;
+      NewBounds.y1 = value;
+      NewBounds.y2 = NewBounds.y1 + TitleInitBounds.h;
+      TitleText.Bounds = NewBounds;
+
+      NewBounds = LicenseInitBounds;
+      NewBounds.y1 = NewBounds.y1 + value;
+      NewBounds.y2 = NewBounds.y1 + LicenseInitBounds.h;
+      LicenseText.Bounds = NewBounds;
+    }
+  }
+
+  $rect <870,10,1070,50>
+  method void UpdateLineNum()
+  {
+    NoOfLines = LicenseText.GetNoOfRows() + 2;
+    signal OnLineNumUpdated;
+  }
+
+  $rect <870,50,1070,90>
+  property int32 NoOfLines;
+
+  $rect <1080,10,1280,50>
+  var rect TitleInitBounds = <0,0,388,31>;
+
+  $rect <1080,50,1280,90>
+  var rect LicenseInitBounds = <0,61,388,1301>;
+}
+
+// Max line number per page on the license UI.
+$rect <20,560,250,600>
+$output false
+const int32 DETAIL_TOTAL_LINE_NUM = 7;

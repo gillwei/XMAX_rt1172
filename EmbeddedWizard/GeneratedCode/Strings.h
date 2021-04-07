@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/04/12 15:12:18 */
+   Generated: 2021/04/12 16:15:05 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_ok' */
@@ -288,6 +288,9 @@ extern const XStringRes StringsSET28_unit_id;
 
 /* User defined constant: 'Strings::SET28_sw_update' */
 extern const XStringRes StringsSET28_sw_update;
+
+/* User defined constant: 'Strings::SET35_LICENSE' */
+extern const XStringRes StringsSET35_LICENSE;
 
 /* User defined constant: 'Strings::TCS01_TCS' */
 extern const XStringRes StringsTCS01_TCS;

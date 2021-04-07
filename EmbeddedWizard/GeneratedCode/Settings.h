@@ -43,6 +43,7 @@
 #endif
 
 #include "_SettingsBtFwUpdateDialog.h"
+#include "_SettingsLicenseDetail.h"
 #include "_SettingsSET01_MainSettingMenu.h"
 #include "_SettingsSET03_ConnectionSettingMenu.h"
 #include "_SettingsSET04_BtSettingMenu.h"
@@ -58,6 +59,8 @@
 #include "_SettingsSET25_BlePincode.h"
 #include "_SettingsSET28_SystemInfo.h"
 #include "_SettingsSET30_QRCode.h"
+#include "_SettingsSET35_LegalMenu.h"
+#include "_SettingsSET37_3rdPartyLicenses.h"
 #include "_SettingsSET9_10_11_BtConnectionResult.h"
 #include "_SettingsTimeoutDialog.h"
 

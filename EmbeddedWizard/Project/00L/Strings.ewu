@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/04/12 15:12:18
+// Generated: 2021/04/12 16:15:05
 
 $output false
 const string ARGUMENT_STR =
@@ -786,6 +786,12 @@ $output false
 const string SET28_sw_update =
 (
   Default = "Software update";
+);
+
+$output false
+const string SET35_LICENSE =
+(
+  Default = "3rd party licenses";
 );
 
 $output false
