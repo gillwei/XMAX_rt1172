@@ -2022,7 +2022,7 @@ class NotificationDeviceClass : Templates::DeviceClass
   $rect <30,400,320,440>
   object Core::SystemEvent NotificationListUpdatedSystemEvent;
 
-  $rect <560,350,770,390>
+  $rect <840,350,1050,390>
   method DeviceInterface::NotificationContext GetNotificationAtItem( arg uint32 aItemNo )
   {
     var DeviceInterface::NotificationContext NotificationItem = new DeviceInterface::NotificationContext;
@@ -2107,7 +2107,7 @@ class NotificationDeviceClass : Templates::DeviceClass
     attr Bounds = <10,300,1070,460>;
   }
 
-  $rect <560,400,770,440>
+  $rect <840,400,1050,440>
   method void DeleteNotificationOfUid( arg uint32 Uid )
   {
     $if !$prototyper
@@ -2118,7 +2118,7 @@ class NotificationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <790,350,1050,390>
+  $rect <560,350,820,390>
   method int32 GetBufferIdxOfNotificationUID( arg uint32 Uid )
   {
     var int32 Index = -1;
@@ -2266,6 +2266,19 @@ class NotificationDeviceClass : Templates::DeviceClass
     $endif
 
     return PhoneCallVolume;
+  }
+
+  $rect <560,400,820,440>
+  method int32 GetNotificationNumOfCategory( arg Enum::NotificationCategory aCategory )
+  {
+    var int32 Num = 0;
+    $if !$prototyper
+      native( aCategory, Num )
+      {
+        Num = NTF_get_notification_num_of_category( aCategory );
+      }
+    $endif
+    return Num;
   }
 }
 

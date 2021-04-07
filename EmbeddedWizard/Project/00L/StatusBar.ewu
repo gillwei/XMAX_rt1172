@@ -336,6 +336,78 @@ class Main : Core::Group
       }
     }
   }
+
+  // Notification Icon
+  note group Note3
+  {
+    attr Bounds = <550,270,910,530>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image PhoneIcon
+  {
+    preset Bounds = <129,3,161,35>;
+    preset Bitmap = Resource::PhoneIcon;
+    preset Visible = false;
+  }
+
+  $rect <560,320,860,360>
+  object Core::SystemEventHandler PhoneCallStateChangedEventHandler
+  {
+    preset OnEvent = OnUpdatePhoneIconSlot;
+    preset Event = DeviceInterface::NotificationDevice.PhoneCallStateChangedSystemEvent;
+  }
+
+  $rect <560,370,860,410>
+  slot OnUpdatePhoneIconSlot
+  {
+    if( DeviceInterface::NotificationDevice.IsPhoneCallStateActive() )
+    {
+      PhoneIcon.FrameNumber = 1;
+      PhoneIcon.Visible = true;
+    }
+    else if( 0 < DeviceInterface::NotificationDevice.GetNotificationNumOfCategory( Enum::NotificationCategory.MISSED_CALL ) )
+    {
+      PhoneIcon.FrameNumber = 0;
+      PhoneIcon.Visible = true;
+    }
+    else
+    {
+      PhoneIcon.Visible = false;
+    }
+  }
+
+  // This slot method is executed when the associated property observer 'PropertyObserver' \
+  // is notified.
+  $rect <560,470,820,510>
+  slot OnNotificationListUpdatedSlot
+  {
+    if( 0 < DeviceInterface::NotificationDevice.GetNotificationNumOfCategory( Enum::NotificationCategory.MESSAGE ) )
+    {
+      MessageIcon.Visible = true;
+    }
+    else
+    {
+      MessageIcon.Visible = false;
+    }
+
+    signal OnUpdatePhoneIconSlot;
+  }
+
+  $rect <560,420,900,460>
+  object Core::SystemEventHandler NotificationListUpdatedSystemEventHandler
+  {
+    preset OnEvent = OnNotificationListUpdatedSlot;
+    preset Event = DeviceInterface::NotificationDevice.NotificationListUpdatedSystemEvent;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image MessageIcon
+  {
+    preset Bounds = <162,3,194,35>;
+    preset Bitmap = Resource::MessageIcon;
+    preset Visible = false;
+  }
 }
 
 $rect <20,60,220,100>

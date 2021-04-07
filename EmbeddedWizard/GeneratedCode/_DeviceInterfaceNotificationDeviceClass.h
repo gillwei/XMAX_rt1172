@@ -157,6 +157,10 @@ void DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallVolumeChanged( void*
 /* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetPhoneCallVolume()' */
 XUInt32 DeviceInterfaceNotificationDeviceClass_GetPhoneCallVolume( DeviceInterfaceNotificationDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetNotificationNumOfCategory()' */
+XInt32 DeviceInterfaceNotificationDeviceClass_GetNotificationNumOfCategory( DeviceInterfaceNotificationDeviceClass _this, 
+  XEnum aCategory );
+
 #ifdef __cplusplus
   }
 #endif

@@ -19,6 +19,7 @@
 #include "error_code.h"
 #include "ntf_priv.h"
 #include "EW_pub.h"
+#include "BC_motocon_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -126,11 +127,17 @@ int NTF_add_notification
     const notification_time_t      received_time
     )
 {
+int result = ERR_NONE;
+
 PRINTF( "%s %d %s %d\r\n", __FUNCTION__, uid, title, category );
-int result = ntf_buffer_add_notification( uid, title, subtitle, message, category, received_time );
-if( ERR_NONE == result )
+
+if( BC_motocon_is_connected() )
     {
-    EW_notify_notification_list_updated();
+    result = ntf_buffer_add_notification( uid, title, subtitle, message, category, received_time );
+    if( ERR_NONE == result )
+        {
+        EW_notify_notification_list_updated();
+        }
     }
 return result;
 }
@@ -231,13 +238,16 @@ void NTF_notify_incoming_call_started
 {
 NTF_PRINTF( "%s %d %s %d\r\n", __FUNCTION__, uid, caller, is_volume_controllable );
 
-int caller_len = strlen( (char*)caller);
-is_phone_call_volume_controllable = is_volume_controllable;
-phonecall_state = EnumPhoneCallStateINCOMING;
-incoming_call_uid = uid;
-memcpy( phonecall_caller, caller, MIN( PHONE_CALLER_MAX_LEN, caller_len ) );
+if( BC_motocon_is_connected() )
+    {
+    int caller_len = strlen( (char*)caller);
+    is_phone_call_volume_controllable = is_volume_controllable;
+    phonecall_state = EnumPhoneCallStateINCOMING;
+    incoming_call_uid = uid;
+    memcpy( phonecall_caller, caller, MIN( PHONE_CALLER_MAX_LEN, caller_len ) );
 
-EW_notify_phone_call_state_changed();
+    EW_notify_phone_call_state_changed();
+    }
 }
 
 /*********************************************************************
@@ -256,9 +266,12 @@ void NTF_notify_incoming_call_stopped
     )
 {
 NTF_PRINTF( "%s %d\r\n", __FUNCTION__, uid );
-phonecall_state = EnumPhoneCallStateIDLE;
-incoming_call_uid = uid;
-EW_notify_phone_call_state_changed();
+if( BC_motocon_is_connected() )
+    {
+    phonecall_state = EnumPhoneCallStateIDLE;
+    incoming_call_uid = uid;
+    EW_notify_phone_call_state_changed();
+    }
 }
 
 /*********************************************************************
@@ -279,10 +292,13 @@ void NTF_notify_active_call_started
     )
 {
 NTF_PRINTF( "%s %d %d\r\n", __FUNCTION__, uid, is_volume_controllable );
-is_phone_call_volume_controllable = is_volume_controllable;
-phonecall_state = EnumPhoneCallStateACTIVE;
-active_call_duration_ms = 0;
-EW_notify_phone_call_state_changed();
+if( BC_motocon_is_connected() )
+    {
+    is_phone_call_volume_controllable = is_volume_controllable;
+    phonecall_state = EnumPhoneCallStateACTIVE;
+    active_call_duration_ms = 0;
+    EW_notify_phone_call_state_changed();
+    }
 }
 
 /*********************************************************************
@@ -301,9 +317,12 @@ void NTF_notify_active_call_stopped
     )
 {
 NTF_PRINTF( "%s %d\r\n", __FUNCTION__, uid );
-phonecall_state = EnumPhoneCallStateIDLE;
-active_call_duration_ms = 0;
-EW_notify_phone_call_state_changed();
+if( BC_motocon_is_connected() )
+    {
+    phonecall_state = EnumPhoneCallStateIDLE;
+    active_call_duration_ms = 0;
+    EW_notify_phone_call_state_changed();
+    }
 }
 
 /*********************************************************************
@@ -488,5 +507,5 @@ void NTF_init
     void
     )
 {
-ntf_buffer_reset();
+ntf_buffer_init();
 }

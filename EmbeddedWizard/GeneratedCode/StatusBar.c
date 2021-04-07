@@ -30,6 +30,7 @@
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceMotoConContext.h"
+#include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
@@ -65,12 +66,14 @@ static const XRect _Const0005 = {{ 294, 3 }, { 326, 35 }};
 static const XRect _Const0006 = {{ 261, 3 }, { 293, 35 }};
 static const XRect _Const0007 = {{ 96, 3 }, { 128, 35 }};
 static const XRect _Const0008 = {{ 195, 3 }, { 227, 35 }};
-static const XRect _Const0009 = {{ 0, 0 }, { 82, 38 }};
-static const XRect _Const000A = {{ 1, 0 }, { 38, 37 }};
-static const XColor _Const000B = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const000C = {{ 48, 0 }, { 82, 37 }};
-static const XRect _Const000D = {{ 37, 0 }, { 48, 37 }};
-static const XStringRes _Const000E = { _StringsDefault0, 0x0002 };
+static const XRect _Const0009 = {{ 129, 3 }, { 161, 35 }};
+static const XRect _Const000A = {{ 162, 3 }, { 194, 35 }};
+static const XRect _Const000B = {{ 0, 0 }, { 82, 38 }};
+static const XRect _Const000C = {{ 1, 0 }, { 38, 37 }};
+static const XColor _Const000D = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const000E = {{ 48, 0 }, { 82, 37 }};
+static const XRect _Const000F = {{ 37, 0 }, { 48, 37 }};
+static const XStringRes _Const0010 = { _StringsDefault0, 0x0002 };
 
 /* User defined inline code: 'StatusBar::Inline' */
 #include "BC_motocon_pub.h"
@@ -98,6 +101,10 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   CorePropertyObserver__Init( &_this->PairdDeviceChangedObserver, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->SignalLevelIcon, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->PhoneIcon, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->NotificationListUpdatedSystemEventHandler, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->MessageIcon, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( StatusBarMain );
@@ -121,6 +128,10 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetVisible( &_this->BtIcon, 0 );
   CoreRectView__OnSetBounds( &_this->SignalLevelIcon, _Const0008 );
   ViewsImage_OnSetVisible( &_this->SignalLevelIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->PhoneIcon, _Const0009 );
+  ViewsImage_OnSetVisible( &_this->PhoneIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->MessageIcon, _Const000A );
+  ViewsImage_OnSetVisible( &_this->MessageIcon, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Clock ), 0 );
@@ -129,6 +140,8 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   CoreGroup__Add( _this, ((CoreView)&_this->AppIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BtIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->SignalLevelIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->PhoneIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->MessageIcon ), 0 );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
   _this->MotoConEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnMotoConEventReceived );
@@ -154,6 +167,16 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnVehicleDataReceivedSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
+  ViewsImage_OnSetBitmap( &_this->PhoneIcon, EwLoadResource( &ResourcePhoneIcon, 
+  ResourcesBitmap ));
+  _this->PhoneCallStateChangedEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnUpdatePhoneIconSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->PhoneCallStateChangedEventHandler, 
+  &EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )->PhoneCallStateChangedSystemEvent );
+  _this->NotificationListUpdatedSystemEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnNotificationListUpdatedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->NotificationListUpdatedSystemEventHandler, 
+  &EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )->NotificationListUpdatedSystemEvent );
+  ViewsImage_OnSetBitmap( &_this->MessageIcon, EwLoadResource( &ResourceMessageIcon, 
+  ResourcesBitmap ));
 }
 
 /* Re-Initializer for the class 'StatusBar::Main' */
@@ -175,6 +198,10 @@ void StatusBarMain__ReInit( StatusBarMain _this )
   CorePropertyObserver__ReInit( &_this->PairdDeviceChangedObserver );
   ViewsImage__ReInit( &_this->SignalLevelIcon );
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
+  ViewsImage__ReInit( &_this->PhoneIcon );
+  CoreSystemEventHandler__ReInit( &_this->PhoneCallStateChangedEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->NotificationListUpdatedSystemEventHandler );
+  ViewsImage__ReInit( &_this->MessageIcon );
 }
 
 /* Finalizer method for the class 'StatusBar::Main' */
@@ -196,6 +223,10 @@ void StatusBarMain__Done( StatusBarMain _this )
   CorePropertyObserver__Done( &_this->PairdDeviceChangedObserver );
   ViewsImage__Done( &_this->SignalLevelIcon );
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
+  ViewsImage__Done( &_this->PhoneIcon );
+  CoreSystemEventHandler__Done( &_this->PhoneCallStateChangedEventHandler );
+  CoreSystemEventHandler__Done( &_this->NotificationListUpdatedSystemEventHandler );
+  ViewsImage__Done( &_this->MessageIcon );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
@@ -441,6 +472,53 @@ void StatusBarMain_OnVehicleDataReceivedSlot( StatusBarMain _this, XObject sende
   }
 }
 
+/* 'C' function for method : 'StatusBar::Main.OnUpdatePhoneIconSlot()' */
+void StatusBarMain_OnUpdatePhoneIconSlot( StatusBarMain _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( EwGetAutoObject( 
+      &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )))
+  {
+    ViewsImage_OnSetFrameNumber( &_this->PhoneIcon, 1 );
+    ViewsImage_OnSetVisible( &_this->PhoneIcon, 1 );
+  }
+  else
+    if ( 0 < DeviceInterfaceNotificationDeviceClass_GetNotificationNumOfCategory( 
+        EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ), 
+        EnumNotificationCategoryMISSED_CALL ))
+    {
+      ViewsImage_OnSetFrameNumber( &_this->PhoneIcon, 0 );
+      ViewsImage_OnSetVisible( &_this->PhoneIcon, 1 );
+    }
+    else
+    {
+      ViewsImage_OnSetVisible( &_this->PhoneIcon, 0 );
+    }
+}
+
+/* This slot method is executed when the associated property observer 'PropertyObserver' 
+   is notified. */
+void StatusBarMain_OnNotificationListUpdatedSlot( StatusBarMain _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( 0 < DeviceInterfaceNotificationDeviceClass_GetNotificationNumOfCategory( 
+      EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ), 
+      EnumNotificationCategoryMESSAGE ))
+  {
+    ViewsImage_OnSetVisible( &_this->MessageIcon, 1 );
+  }
+  else
+  {
+    ViewsImage_OnSetVisible( &_this->MessageIcon, 0 );
+  }
+
+  EwSignal( EwNewSlot( _this, StatusBarMain_OnUpdatePhoneIconSlot ), ((XObject)_this ));
+}
+
 /* Variants derived from the class : 'StatusBar::Main' */
 EW_DEFINE_CLASS_VARIANTS( StatusBarMain )
 EW_END_OF_CLASS_VARIANTS( StatusBarMain )
@@ -499,24 +577,24 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
   _this->_VMT = EW_CLASS( StatusBarClock );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0009 );
-  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const000A );
+  CoreRectView__OnSetBounds( _this, _Const000B );
+  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const000C );
   ViewsText_OnSetAlignment( &_this->ClockHourText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockHourText, 0 );
-  ViewsText_OnSetColor( &_this->ClockHourText, _Const000B );
+  ViewsText_OnSetColor( &_this->ClockHourText, _Const000D );
   ViewsText_OnSetVisible( &_this->ClockHourText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const000C );
+  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const000E );
   ViewsText_OnSetAlignment( &_this->ClockMinuteText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockMinuteText, 0 );
-  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const000B );
+  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const000D );
   ViewsText_OnSetVisible( &_this->ClockMinuteText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const000D );
+  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const000F );
   ViewsText_OnSetAlignment( &_this->ClockColonText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const000E ));
-  ViewsText_OnSetColor( &_this->ClockColonText, _Const000B );
+  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const0010 ));
+  ViewsText_OnSetColor( &_this->ClockColonText, _Const000D );
   ViewsText_OnSetVisible( &_this->ClockColonText, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockHourText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockMinuteText ), 0 );

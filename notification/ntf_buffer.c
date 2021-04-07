@@ -47,8 +47,13 @@ typedef struct
     int idx[NOTIFICATION_MAX_NUM];
     } buffer_lookup_table_s;
 
+static SemaphoreHandle_t buffer_semaphore_handle;
+static int32_t ticks_to_wait = pdMS_TO_TICKS( 500 );
+
 static buffer_lookup_table_s free_buffer_lookup_table;
 static buffer_lookup_table_s used_buffer_lookup_table;
+static int32_t missed_call_notification_num;
+static int32_t message_notification_num;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -229,55 +234,62 @@ if( EnumNotificationCategoryMISSED_CALL == category )
     same_caller_buf_idx = find_same_caller_missed_call( title );
     }
 
-if( INVALID_BUFFER_IDX < same_caller_buf_idx )
+if( pdTRUE == xSemaphoreTake( buffer_semaphore_handle, ticks_to_wait ) )
     {
-    notification_buffer[used_buffer_lookup_table.idx[same_caller_buf_idx]].call_repetition++;
-    notification_buffer[used_buffer_lookup_table.idx[same_caller_buf_idx]].received_time = received_time;
-    result = move_notification_last( same_caller_buf_idx );
-    }
-else
-    {
-    int free_buffer_idx = get_free_buffer_idx();
-    if( INVALID_BUFFER_IDX == free_buffer_idx )
+    if( INVALID_BUFFER_IDX < same_caller_buf_idx )
         {
-        NTF_PRINTF( "%s hdl no free buf\r\n", __FUNCTION__ );
-        delete_notification_at_used_buffer_idx( 0 );
-        free_buffer_idx = get_free_buffer_idx();
-        }
-
-    if( INVALID_BUFFER_IDX < free_buffer_idx )
-        {
-        notification_buffer[free_buffer_idx].uid           = uid;
-        notification_buffer[free_buffer_idx].received_time = received_time;
-        notification_buffer[free_buffer_idx].category      = category;
-        if( EnumNotificationCategoryMISSED_CALL == category )
-            {
-            notification_buffer[free_buffer_idx].call_repetition = 1;
-            }
-        else
-            {
-            notification_buffer[free_buffer_idx].call_repetition = 0;
-            }
-
-        string_length = strlen( (const char*)title );
-        string_length = MIN( string_length, NOTIFICATION_TITLE_MAX_LEN - 1 );
-        memcpy( notification_buffer[free_buffer_idx].title, title, string_length );
-        notification_buffer[free_buffer_idx].title[string_length] = '\0';
-
-        string_length = strlen( (const char*)subtitle );
-        string_length = MIN( string_length, NOTIFICATION_SUBTITLE_MAX_LEN - 1 );
-        memcpy( notification_buffer[free_buffer_idx].subtitle, subtitle, NOTIFICATION_SUBTITLE_MAX_LEN );
-        notification_buffer[free_buffer_idx].subtitle[string_length] = '\0';
-
-        string_length = strlen( (const char*)message );
-        string_length = MIN( string_length, NOTIFICATION_MESSAGE_MAX_LEN - 1 );
-        memcpy( notification_buffer[free_buffer_idx].message, message, NOTIFICATION_MESSAGE_MAX_LEN );
-        notification_buffer[free_buffer_idx].message[string_length] = '\0';
+        notification_buffer[used_buffer_lookup_table.idx[same_caller_buf_idx]].call_repetition++;
+        notification_buffer[used_buffer_lookup_table.idx[same_caller_buf_idx]].received_time = received_time;
+        result = move_notification_last( same_caller_buf_idx );
         }
     else
         {
-        result = ERR_BUF_OPERATION;
+        int free_buffer_idx = get_free_buffer_idx();
+        if( INVALID_BUFFER_IDX == free_buffer_idx )
+            {
+            NTF_PRINTF( "%s hdl no free buf\r\n", __FUNCTION__ );
+            delete_notification_at_used_buffer_idx( 0 );
+            free_buffer_idx = get_free_buffer_idx();
+            }
+
+        if( INVALID_BUFFER_IDX < free_buffer_idx )
+            {
+            notification_buffer[free_buffer_idx].uid           = uid;
+            notification_buffer[free_buffer_idx].received_time = received_time;
+            notification_buffer[free_buffer_idx].category      = category;
+            if( EnumNotificationCategoryMISSED_CALL == category )
+                {
+                notification_buffer[free_buffer_idx].call_repetition = 1;
+                missed_call_notification_num++;
+                }
+            else
+                {
+                notification_buffer[free_buffer_idx].call_repetition = 0;
+                message_notification_num++;
+                }
+
+            string_length = strlen( (const char*)title );
+            string_length = MIN( string_length, NOTIFICATION_TITLE_MAX_LEN - 1 );
+            memcpy( notification_buffer[free_buffer_idx].title, title, string_length );
+            notification_buffer[free_buffer_idx].title[string_length] = '\0';
+
+            string_length = strlen( (const char*)subtitle );
+            string_length = MIN( string_length, NOTIFICATION_SUBTITLE_MAX_LEN - 1 );
+            memcpy( notification_buffer[free_buffer_idx].subtitle, subtitle, string_length );
+            notification_buffer[free_buffer_idx].subtitle[string_length] = '\0';
+
+            string_length = strlen( (const char*)message );
+            string_length = MIN( string_length, NOTIFICATION_MESSAGE_MAX_LEN - 1 );
+            memcpy( notification_buffer[free_buffer_idx].message, message, string_length );
+            notification_buffer[free_buffer_idx].message[string_length] = '\0';
+            }
+        else
+            {
+            result = ERR_BUF_OPERATION;
+            }
         }
+
+    xSemaphoreGive( buffer_semaphore_handle );
     }
 return result;
 }
@@ -316,13 +328,27 @@ for( i = 0; i < used_buffer_lookup_table.num; i++ )
 
 if( found_idx >= 0 )
     {
-    free_buffer_lookup_table.idx[free_buffer_lookup_table.num] = used_buffer_lookup_table.idx[found_idx];
-    free_buffer_lookup_table.num++;
-    for( i = found_idx + 1; i < used_buffer_lookup_table.num; i++ )
+    if( pdTRUE == xSemaphoreTake( buffer_semaphore_handle, ticks_to_wait ) )
         {
-        used_buffer_lookup_table.idx[i-1] = used_buffer_lookup_table.idx[i];
+        if( EnumNotificationCategoryMISSED_CALL == notification_buffer[notification_buf_idx].category )
+            {
+            missed_call_notification_num--;
+            }
+        else
+            {
+            message_notification_num--;
+            }
+
+        free_buffer_lookup_table.idx[free_buffer_lookup_table.num] = used_buffer_lookup_table.idx[found_idx];
+        free_buffer_lookup_table.num++;
+        for( i = found_idx + 1; i < used_buffer_lookup_table.num; i++ )
+            {
+            used_buffer_lookup_table.idx[i-1] = used_buffer_lookup_table.idx[i];
+            }
+        used_buffer_lookup_table.num--;
+
+        xSemaphoreGive( buffer_semaphore_handle );
         }
-    used_buffer_lookup_table.num--;
     }
 else
     {
@@ -468,6 +494,37 @@ NTF_PRINTF( "%s %u %d\r\n", __FUNCTION__, uid, used_buffer_idx );
 return used_buffer_idx;
 }
 
+/*********************************************************************
+*
+* @public
+* NTF_get_num_missed_call
+*
+* Get number of notification in the specified category
+*
+* @param category Notification category
+* @return Number of notification in the category
+*
+*********************************************************************/
+int NTF_get_notification_num_of_category
+    (
+    EnumNotificationCategory category
+    )
+{
+int notification_num = 0;
+if( EnumNotificationCategoryMESSAGE == category )
+    {
+    notification_num = message_notification_num;
+    }
+else if( EnumNotificationCategoryMISSED_CALL == category )
+    {
+    notification_num = missed_call_notification_num;
+    }
+else
+    {
+    // empty
+    }
+return notification_num;
+}
 
 /*********************************************************************
 *
@@ -482,12 +539,39 @@ void ntf_buffer_reset
     void
     )
 {
-NTF_PRINTF( "%s\r\n", __FUNCTION__ );
-for( int i = 0; i < NOTIFICATION_MAX_NUM; i++ )
+if( pdTRUE == xSemaphoreTake( buffer_semaphore_handle, ticks_to_wait ) )
     {
-    free_buffer_lookup_table.idx[i] = i;
-    used_buffer_lookup_table.idx[i] = INVALID_BUFFER_IDX;
+    NTF_PRINTF( "%s\r\n", __FUNCTION__ );
+    for( int i = 0; i < NOTIFICATION_MAX_NUM; i++ )
+        {
+        free_buffer_lookup_table.idx[i] = i;
+        used_buffer_lookup_table.idx[i] = INVALID_BUFFER_IDX;
+        }
+    free_buffer_lookup_table.num = NOTIFICATION_MAX_NUM;
+    used_buffer_lookup_table.num = 0;
+    missed_call_notification_num = 0;
+    message_notification_num     = 0;
+
+    xSemaphoreGive( buffer_semaphore_handle );
     }
-free_buffer_lookup_table.num = NOTIFICATION_MAX_NUM;
-used_buffer_lookup_table.num = 0;
+}
+
+/*********************************************************************
+*
+* @private
+* ntf_buffer_init
+*
+* Init notification buffer
+*
+*********************************************************************/
+void ntf_buffer_init
+    (
+    void
+    )
+{
+buffer_semaphore_handle = xSemaphoreCreateBinary();
+configASSERT( NULL != buffer_semaphore_handle );
+xSemaphoreGive( buffer_semaphore_handle );
+
+ntf_buffer_reset();
 }

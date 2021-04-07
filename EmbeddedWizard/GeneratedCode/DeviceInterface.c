@@ -2612,6 +2612,20 @@ XUInt32 DeviceInterfaceNotificationDeviceClass_GetPhoneCallVolume( DeviceInterfa
   return PhoneCallVolume;
 }
 
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetNotificationNumOfCategory()' */
+XInt32 DeviceInterfaceNotificationDeviceClass_GetNotificationNumOfCategory( DeviceInterfaceNotificationDeviceClass _this, 
+  XEnum aCategory )
+{
+  XInt32 Num;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Num = 0;
+  Num = NTF_get_notification_num_of_category( aCategory );
+  return Num;
+}
+
 /* Variants derived from the class : 'DeviceInterface::NotificationDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNotificationDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNotificationDeviceClass )

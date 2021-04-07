@@ -676,4 +676,16 @@ EW_RES_WITHOUT_VARIANTS( ResourceIncomingCallIcon )
 /* Table with links to derived variants of the bitmap resource : 'Resource::ActiveCallIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceActiveCallIcon )
 
+/* Include a file containing the bitmap resource : 'Resource::MessageIcon' */
+#include "_ResourceMessageIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::MessageIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceMessageIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::PhoneIcon' */
+#include "_ResourcePhoneIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::PhoneIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourcePhoneIcon )
+
 /* Embedded Wizard */

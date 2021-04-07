@@ -348,6 +348,12 @@ EW_DECLARE_BITMAP_RES( ResourceIncomingCallIcon )
 /* Bitmap resource : 'Resource::ActiveCallIcon' */
 EW_DECLARE_BITMAP_RES( ResourceActiveCallIcon )
 
+/* Bitmap resource : 'Resource::MessageIcon' */
+EW_DECLARE_BITMAP_RES( ResourceMessageIcon )
+
+/* Bitmap resource : 'Resource::PhoneIcon' */
+EW_DECLARE_BITMAP_RES( ResourcePhoneIcon )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )
