@@ -84,7 +84,7 @@ void TopTOP01_Disclaimer__Init( TopTOP01_Disclaimer _this, XObject aLink, XHandl
   ViewsRectangle_OnSetColor( &_this->BlackBackground, _Const0001 );
   CoreRectView__OnSetBounds( &_this->DisclaimerText, _Const0002 );
   ViewsText_OnSetWrapText( &_this->DisclaimerText, 1 );
-  ViewsText_OnSetString( &_this->DisclaimerText, EwGetVariantOfString( &StringsTOP01_disclaimer ));
+  ViewsText_OnSetString( &_this->DisclaimerText, EwGetVariantOfString( &StringsTOP01_DISCLAIMER ));
   CoreRectView__OnSetBounds( &_this->TopBar, _Const0003 );
   ViewsRectangle_OnSetColor( &_this->TopBar, _Const0004 );
   CoreRectView__OnSetBounds( &_this->IconWarning, _Const0005 );
@@ -95,11 +95,11 @@ void TopTOP01_Disclaimer__Init( TopTOP01_Disclaimer _this, XObject aLink, XHandl
   ViewsText_OnSetAutoSize( &_this->WarningText, 1 );
   ViewsText_OnSetAlignment( &_this->WarningText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->WarningText, EwGetVariantOfString( &StringsTOP01_warning ));
+  ViewsText_OnSetString( &_this->WarningText, EwGetVariantOfString( &StringsTOP01_WARNING ));
   ViewsText_OnSetColor( &_this->WarningText, _Const0001 );
   ViewsText_OnSetVisible( &_this->WarningText, 1 );
   CoreRectView__OnSetBounds( &_this->AcceptButton, _Const0007 );
-  MenuPushButton_OnSetTitle( &_this->AcceptButton, EwGetVariantOfString( &StringsTOP01_accept ));
+  MenuPushButton_OnSetTitle( &_this->AcceptButton, EwGetVariantOfString( &StringsTOP01_ACCEPT ));
   CoreGroup__Add( _this, ((CoreView)&_this->BlackBackground ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DisclaimerText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->TopBar ), 0 );

@@ -47,8 +47,8 @@ class BRT01_BrightnessSettingMenu : Menu::BaseMenuView
     var string Title = "";
     switch( aItemNo )
     {
-      case 0: Title = Strings::BRT01_TFT_display;
-      case 1: Title = Strings::BRT01_speed_meter;
+      case 0: Title = Strings::BRT01_TFT_DISPLAY;
+      case 1: Title = Strings::BRT01_SPEED_METER;
       default:;
     }
     return Title;

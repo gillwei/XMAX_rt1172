@@ -92,10 +92,10 @@ void UnitUNT01_UnitSettingMenu__Init( UnitUNT01_UnitSettingMenu _this, XObject a
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT01_unit_mileage ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT01_unit_fuel ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT01_unit_pressure ));
-  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &StringsUNT01_unit_temperature ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT01_UNIT_MILEAGE ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT01_UNIT_FUEL ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT01_UNIT_PRESSURE ));
+  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &StringsUNT01_UNIT_TEMPERATURE ));
   _this->ItemVehicleRxTypeArray[ 0 ] = EnumVehicleRxTypeMILEAGE_UNIT;
   _this->ItemVehicleRxTypeArray[ 1 ] = EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT;
   _this->ItemVehicleRxTypeArray[ 2 ] = EnumVehicleRxTypePRESSURE_UNIT;
@@ -194,19 +194,19 @@ XString UnitUNT01_UnitSettingMenu_LoadItemTitle( UnitUNT01_UnitSettingMenu _this
   switch ( _this->ItemVehicleRxTypeArray[ EwCheckIndex( aItemNo, 4 )])
   {
     case EnumVehicleRxTypeMILEAGE_UNIT :
-      title = EwLoadString( &StringsUNT01_unit_mileage );
+      title = EwLoadString( &StringsUNT01_UNIT_MILEAGE );
     break;
 
     case EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT :
-      title = EwLoadString( &StringsUNT01_unit_fuel );
+      title = EwLoadString( &StringsUNT01_UNIT_FUEL );
     break;
 
     case EnumVehicleRxTypePRESSURE_UNIT :
-      title = EwLoadString( &StringsUNT01_unit_pressure );
+      title = EwLoadString( &StringsUNT01_UNIT_PRESSURE );
     break;
 
     case EnumVehicleRxTypeTEMPERATURE_UNIT :
-      title = EwLoadString( &StringsUNT01_unit_temperature );
+      title = EwLoadString( &StringsUNT01_UNIT_TEMPERATURE );
     break;
 
     default : 
@@ -595,8 +595,8 @@ void UnitUNT02_MileageSettingMenu__Init( UnitUNT02_MileageSettingMenu _this, XOb
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 2 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT02_unit_mileage_kilometer ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT02_unit_mileage_mile ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT02_UNIT_MILEAGE_KILOMETER ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT02_UNIT_MILEAGE_MILE ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, UnitUNT02_MileageSettingMenu_OnCheckMarkUpdateSlot );
   _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, UnitUNT02_MileageSettingMenu_OnVehicleDataReceivedSlot );
@@ -855,16 +855,16 @@ void UnitUnitValueClass__Init( UnitUnitValueClass _this, XObject aLink, XHandle 
   _this->_VMT = EW_CLASS( UnitUnitValueClass );
 
   /* ... and initialize objects, variables, properties, etc. */
-  _this->ItemMileageUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT02_unit_mileage_kilometer ));
-  _this->ItemMileageUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT02_unit_mileage_mile ));
-  _this->ItemFuelUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_km_per_liter ));
-  _this->ItemFuelUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_mile_per_gallon ));
-  _this->ItemFuelUnitArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_liter_per_hundred_km ));
-  _this->ItemPressureUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_psi ));
-  _this->ItemPressureUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_kpa ));
-  _this->ItemPressureUnitArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_kgf ));
-  _this->ItemTemperatureUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT05_unit_temperature_c ));
-  _this->ItemTemperatureUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT05_unit_temperature_f ));
+  _this->ItemMileageUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT02_UNIT_MILEAGE_KILOMETER ));
+  _this->ItemMileageUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT02_UNIT_MILEAGE_MILE ));
+  _this->ItemFuelUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT03_UNIT_FUEL_KM_PER_LITER ));
+  _this->ItemFuelUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT03_UNIT_FUEL_MILE_PER_GALLON ));
+  _this->ItemFuelUnitArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT03_UNIT_FUEL_LITER_PER_HUNDRED_KM ));
+  _this->ItemPressureUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT04_UNIT_PRESSURE_PSI ));
+  _this->ItemPressureUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT04_UNIT_PRESSURE_KPA ));
+  _this->ItemPressureUnitArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT04_UNIT_PRESSURE_KGF ));
+  _this->ItemTemperatureUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT05_UNIT_TEMPERATURE_C ));
+  _this->ItemTemperatureUnitArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT05_UNIT_TEMPERATURE_F ));
 }
 
 /* Re-Initializer for the class 'Unit::UnitValueClass' */
@@ -916,9 +916,9 @@ void UnitUNT03_FuelSettingMenu__Init( UnitUNT03_FuelSettingMenu _this, XObject a
   _this->Super2.SlideOutEffectEnabled = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_km_per_liter ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_liter_per_hundred_km ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_mile_per_gallon ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT03_UNIT_FUEL_KM_PER_LITER ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT03_UNIT_FUEL_LITER_PER_HUNDRED_KM ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT03_UNIT_FUEL_MILE_PER_GALLON ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, UnitUNT03_FuelSettingMenu_OnCheckMarkUpdateSlot );
   _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, UnitUNT03_FuelSettingMenu_OnVehicleDataReceivedSlot );
@@ -1236,9 +1236,9 @@ void UnitUNT04_PressureSettingMenu__Init( UnitUNT04_PressureSettingMenu _this, X
   _this->Super2.SlideOutEffectEnabled = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_kpa ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_psi ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_kgf ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT04_UNIT_PRESSURE_KPA ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT04_UNIT_PRESSURE_PSI ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT04_UNIT_PRESSURE_KGF ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, UnitUNT04_PressureSettingMenu_OnCheckMarkUpdateSlot );
   _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, UnitUNT04_PressureSettingMenu_OnVehicleDataReceivedSlot );
@@ -1527,8 +1527,8 @@ void UnitUNT05_TemperatureSettingMenu__Init( UnitUNT05_TemperatureSettingMenu _t
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 2 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT05_unit_temperature_c ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT05_unit_temperature_f ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT05_UNIT_TEMPERATURE_C ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT05_UNIT_TEMPERATURE_F ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, UnitUNT05_TemperatureSettingMenu_OnCheckMarkUpdateSlot );
   _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, UnitUNT05_TemperatureSettingMenu_OnVehicleDataReceivedSlot );

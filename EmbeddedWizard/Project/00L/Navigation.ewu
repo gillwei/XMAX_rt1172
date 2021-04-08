@@ -580,13 +580,13 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
     var string Title = "";
     switch( NaviSettings[aItemNo] )
     {
-      case Enum::NaviSettingItem.StopNavigation: Title = Strings::NAV06_stop_navigation;
+      case Enum::NaviSettingItem.StopNavigation: Title = Strings::NAV06_STOP_NAVIGATION;
       case Enum::NaviSettingItem.SkipNextStop: Title = Strings::NAV06_SKIP_NEXT_STOP;
-      case Enum::NaviSettingItem.GoHome: Title = Strings::NAV06_go_home;
-      case Enum::NaviSettingItem.GoToWork: Title = Strings::NAV06_go_to_work;
-      case Enum::NaviSettingItem.Favorites: Title = Strings::NAV06_favorites;
-      case Enum::NaviSettingItem.NearbyGasStations: Title = Strings::NAV06_nearby_gas_stations;
-      case Enum::NaviSettingItem.ChangeView: Title = Strings::NAV06_change_view;
+      case Enum::NaviSettingItem.GoHome: Title = Strings::NAV06_GO_HOME;
+      case Enum::NaviSettingItem.GoToWork: Title = Strings::NAV06_GO_TO_WORK;
+      case Enum::NaviSettingItem.Favorites: Title = Strings::NAV06_FAVORITES;
+      case Enum::NaviSettingItem.NearbyGasStations: Title = Strings::NAV06_NEARBY_GAS_STATIONS;
+      case Enum::NaviSettingItem.ChangeView: Title = Strings::NAV06_CHANGE_VIEW;
       default:;
     }
     return Title;
@@ -794,9 +794,9 @@ class NAV08_NaviChageViewMenu : Menu::BaseMenuView
   $rect <750,10,950,50>
   array string ItemTitleArray[ 3 ] =
   (
-    Default[0] = Strings::NAV08_default_view;
-    Default[1] = Strings::NAV08_turn_by_turn;
-    Default[2] = Strings::NAV08_turn_list;
+    Default[0] = Strings::NAV08_DEFAULT_VIEW;
+    Default[1] = Strings::NAV08_TURN_BY_TURN;
+    Default[2] = Strings::NAV08_TURN_LIST;
   );
 
   $rect <510,240,740,280>

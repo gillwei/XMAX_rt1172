@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/04/12 16:15:05
+// Generated: 2021/04/14 11:49:10
 
 $output false
 const string ARGUMENT_STR =
@@ -16,7 +16,7 @@ const string ARGUMENT_DECIMAL =
 );
 
 $output false
-const string GEN_ok =
+const string GEN_OK =
 (
   Default = "OK";
   Japanese = "OK";
@@ -29,7 +29,7 @@ const string GEN_ok =
 );
 
 $output false
-const string GEN_cancel =
+const string GEN_CANCEL =
 (
   Default = "Cancel";
   Japanese = "\u30ad\u30e3\u30f3\u30bb\u30eb";
@@ -42,13 +42,13 @@ const string GEN_cancel =
 );
 
 $output false
-const string GEN_yes =
+const string GEN_YES =
 (
   Default = "Yes";
 );
 
 $output false
-const string GEN_no =
+const string GEN_NO =
 (
   Default = "No";
 );
@@ -72,13 +72,13 @@ const string GEN_HIGH =
 );
 
 $output false
-const string GEN_reset_question_mark =
+const string GEN_RESET_QUESTION_MARK =
 (
   Default = "Reset?";
 );
 
 $output false
-const string GEN_bluetooth =
+const string GEN_BLUETOOTH =
 (
   Default = "Bluetooth";
 );
@@ -90,13 +90,13 @@ const string GEN_THREE_HYPHENS =
 );
 
 $output false
-const string GEN_please_wait =
+const string GEN_PLEASE_WAIT =
 (
   Default = "Please wait\u2026";
 );
 
 $output false
-const string TOP01_warning =
+const string TOP01_WARNING =
 (
   Default = "WARNING";
   Japanese = "\u8b66\u544a";
@@ -109,7 +109,7 @@ const string TOP01_warning =
 );
 
 $output false
-const string TOP01_disclaimer =
+const string TOP01_DISCLAIMER =
 (
   Default = "Failure to pay attention while riding could result in death or serious injury. Always concentrate on riding by keeping your eyes and mind on the road. Read the Owner's Manual.";
   Japanese = "\u904b\u8ee2\u4e2d\u306b\u6ce8\u610f\u3092\u6020\u308b\u3068\u3001\u6b7b\u4ea1\u307e\u305f\u306f\u91cd\u50b7\u3092\u8ca0\u3046\u53ef\u80fd\u6027\u304c\u3042\u308a\u307e\u3059\u3002\u5e38\u306b\u4ea4\u901a\u72b6\u6cc1\u3092\u6ce8\u8996\u3057\u3001\u904b\u8ee2\u306b\u96c6\u4e2d\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u53d6\u6271\u8aac\u660e\u66f8\u3092\u3054\u78ba\u8a8d\u304f\u3060\u3055\u3044\u3002";
@@ -122,7 +122,7 @@ const string TOP01_disclaimer =
 );
 
 $output false
-const string TOP01_accept =
+const string TOP01_ACCEPT =
 (
   Default = "ACCEPT";
   Japanese = "\u78ba\u8a8d";
@@ -135,85 +135,85 @@ const string TOP01_accept =
 );
 
 $output false
-const string BRT01_TFT_display =
+const string BRT01_TFT_DISPLAY =
 (
   Default = "TFT display";
 );
 
 $output false
-const string BRT01_speed_meter =
+const string BRT01_SPEED_METER =
 (
   Default = "Speed meter";
 );
 
 $output false
-const string BRT02_max =
+const string BRT02_MAX =
 (
   Default = "Max.";
 );
 
 $output false
-const string BRT02_min =
+const string BRT02_MIN =
 (
   Default = "Min.";
 );
 
 $output false
-const string CLK01_auto_adjustment =
+const string CLK01_AUTO_ADJUSTMENT =
 (
   Default = "Auto Adjustment";
 );
 
 $output false
-const string CLK01_manual_adjustment =
+const string CLK01_MANUAL_ADJUSTMENT =
 (
   Default = "Manual Adjustment";
 );
 
 $output false
-const string CLK02_day =
+const string CLK02_DAY =
 (
   Default = "Day";
 );
 
 $output false
-const string CLK02_month =
+const string CLK02_MONTH =
 (
   Default = "Month";
 );
 
 $output false
-const string CLK02_year =
+const string CLK02_YEAR =
 (
   Default = "Year";
 );
 
 $output false
-const string CLK02_am =
+const string CLK02_AM =
 (
   Default = "AM";
 );
 
 $output false
-const string CLK02_pm =
+const string CLK02_PM =
 (
   Default = "PM";
 );
 
 $output false
-const string CLK02_hour =
+const string CLK02_HOUR =
 (
   Default = "Hour";
 );
 
 $output false
-const string CLK02_minute =
+const string CLK02_MINUTE =
 (
   Default = "Min.";
 );
 
 $output false
-const string CLK03_set_clock =
+const string CLK03_SET_CLOCK =
 (
   Default = "Set Clock?";
 );
@@ -225,109 +225,109 @@ const string GPW01_GRIP_WARMER =
 );
 
 $output false
-const string HOM11_x1000r_min =
+const string HOM11_X1000R_MIN =
 (
   Default = "x1000r/min";
 );
 
 $output false
-const string HOM12_avg =
+const string HOM12_AVG =
 (
   Default = "AVG";
 );
 
 $output false
-const string HOM12_avg_fuel =
+const string HOM12_AVG_fuel =
 (
   Default = "AVG FUEL";
 );
 
 $output false
-const string HOM13_speed_limit =
+const string HOM13_SPEED_LIMIT =
 (
   Default = "SPEED LIMIT";
 );
 
 $output false
-const string HOM03_avg_speed =
+const string HOM03_AVG_SPEED =
 (
   Default = "AVG SPEED";
 );
 
 $output false
-const string HOM03_avg_fuel =
+const string HOM03_AVG_FUEL =
 (
   Default = "AVG FUEL";
 );
 
 $output false
-const string HOM03_current_fuel =
+const string HOM03_CURRENT_FUEL =
 (
   Default = "CRNT FUEL";
 );
 
 $output false
-const string HOM03_trip_time =
+const string HOM03_TRIP_TIME =
 (
   Default = "TRIP TIME";
 );
 
 $output false
-const string HOM03_range =
+const string HOM03_RANGE =
 (
   Default = "RANGE";
 );
 
 $output false
-const string HOM03_fuel_consumption =
+const string HOM03_FUEL_CONSUMPTION =
 (
   Default = "FUEL CONS";
 );
 
 $output false
-const string HOM03_air =
+const string HOM03_AIR =
 (
   Default = "AIR";
 );
 
 $output false
-const string HOM03_coolant =
+const string HOM03_COOLANT =
 (
   Default = "COOLANT";
 );
 
 $output false
-const string HOM03_battery =
+const string HOM03_BATTERY =
 (
   Default = "BATTERY";
 );
 
 $output false
-const string HOM03_front_r =
+const string HOM03_FRONT_R =
 (
   Default = "FRONT (R)";
 );
 
 $output false
-const string HOM03_front_l =
+const string HOM03_FRONT_L =
 (
   Default = "FRONT (L)";
 );
 
 $output false
-const string HOM03_front =
+const string HOM03_FRONT =
 (
   Default = "FRONT";
 );
 
 $output false
-const string HOM03_rear =
+const string HOM03_REAR =
 (
   Default = "REAR";
 );
 
 $output false
-const string HOM03_cruise =
+const string HOM03_CRUISE =
 (
   Default = "CRUISE";
 );
@@ -351,25 +351,25 @@ const string INF01_SPEED_VISUALIZER =
 );
 
 $output false
-const string INF26_odo =
+const string INF26_ODO =
 (
   Default = "ODO";
 );
 
 $output false
-const string INF26_trip_1 =
+const string INF26_TRIP_1 =
 (
   Default = "TRIP 1";
 );
 
 $output false
-const string INF26_trip_2 =
+const string INF26_TRIP_2 =
 (
   Default = "TRIP 2";
 );
 
 $output false
-const string INF26_trip_f =
+const string INF26_TRIP_F =
 (
   Default = "TRIP F";
 );
@@ -381,43 +381,43 @@ const string LNC_METER_DISPLAY =
 );
 
 $output false
-const string LNC_odo_trip =
+const string LNC_ODO_TRIP =
 (
   Default = "ODO/TRIP";
 );
 
 $output false
-const string LNC_music =
+const string LNC_MUSIC =
 (
   Default = "Music";
 );
 
 $output false
-const string LNC_phone =
+const string LNC_PHONE =
 (
   Default = "Phone";
 );
 
 $output false
-const string LNC_navigation =
+const string LNC_NAVIGATION =
 (
   Default = "Navigation";
 );
 
 $output false
-const string LNC_weather =
+const string LNC_WEATHER =
 (
   Default = "Weather";
 );
 
 $output false
-const string LNC_notification =
+const string LNC_NOTIFICATION =
 (
   Default = "Notification";
 );
 
 $output false
-const string LNC_traction_control =
+const string LNC_TRACTION_CONTROL =
 (
   Default = "Traction Control";
 );
@@ -429,7 +429,7 @@ const string LNC_SEAT_HEATER =
 );
 
 $output false
-const string LNC_settings =
+const string LNC_SETTINGS =
 (
   Default = "Settings";
 );
@@ -441,25 +441,25 @@ const string MED02_DEV_UNAVAILABLE =
 );
 
 $output false
-const string MNT01_oil =
+const string MNT01_OIL =
 (
   Default = "OIL";
 );
 
 $output false
-const string MNT01_v_belt =
+const string MNT01_V_BELT =
 (
   Default = "V-BELT";
 );
 
 $output false
-const string MNT01_free =
+const string MNT01_FREE =
 (
   Default = "FREE";
 );
 
 $output false
-const string NAV06_stop_navigation =
+const string NAV06_STOP_NAVIGATION =
 (
   Default = "Stop navigation";
 );
@@ -471,49 +471,49 @@ const string NAV06_SKIP_NEXT_STOP =
 );
 
 $output false
-const string NAV06_go_home =
+const string NAV06_GO_HOME =
 (
   Default = "Go home";
 );
 
 $output false
-const string NAV06_go_to_work =
+const string NAV06_GO_TO_WORK =
 (
   Default = "Go to work";
 );
 
 $output false
-const string NAV06_favorites =
+const string NAV06_FAVORITES =
 (
   Default = "Favorites";
 );
 
 $output false
-const string NAV06_nearby_gas_stations =
+const string NAV06_NEARBY_GAS_STATIONS =
 (
   Default = "Nearby Gas stations";
 );
 
 $output false
-const string NAV06_change_view =
+const string NAV06_CHANGE_VIEW =
 (
   Default = "Change view";
 );
 
 $output false
-const string NAV08_default_view =
+const string NAV08_DEFAULT_VIEW =
 (
   Default = "Default view";
 );
 
 $output false
-const string NAV08_turn_by_turn =
+const string NAV08_TURN_BY_TURN =
 (
   Default = "Turn-by-turn";
 );
 
 $output false
-const string NAV08_turn_list =
+const string NAV08_TURN_LIST =
 (
   Default = "Turn list";
 );
@@ -531,19 +531,19 @@ const string OPN02_ENTER_TWICE =
 );
 
 $output false
-const string POP02_please_check =
+const string POP02_PLEASE_CHECK =
 (
   Default = "Please Check";
 );
 
 $output false
-const string POP02_details =
+const string POP02_DETAILS =
 (
   Default = "Details";
 );
 
 $output false
-const string POP03_no_home_location =
+const string POP03_NO_HOME_LOCATION =
 (
   Default = "Home location is not set.";
 );
@@ -555,55 +555,55 @@ const string POP09_CONNECTION_FAILED =
 );
 
 $output false
-const string SET01_connection =
+const string SET01_CONNECTION =
 (
   Default = "Connection";
 );
 
 $output false
-const string SET01_clock =
+const string SET01_CLOCK =
 (
   Default = "Clock";
 );
 
 $output false
-const string SET01_brightness =
+const string SET01_BRIGHTNESS =
 (
   Default = "Brightness";
 );
 
 $output false
-const string SET01_unit =
+const string SET01_UNIT =
 (
   Default = "Unit";
 );
 
 $output false
-const string SET01_grip_warmer_settings =
+const string SET01_GRIP_WARMER_SETTINGS =
 (
   Default = "Grip warmer settings";
 );
 
 $output false
-const string SET01_seat_heater_settings =
+const string SET01_SEAT_HEATER_SETTINGS =
 (
   Default = "Seat heater settings";
 );
 
 $output false
-const string SET01_system_info =
+const string SET01_SYSTEM_INFO =
 (
   Default = "System information";
 );
 
 $output false
-const string SET01_legal_info =
+const string SET01_LEGAL_INFO =
 (
   Default = "Legal information";
 );
 
 $output false
-const string SET01_reset =
+const string SET01_RESET =
 (
   Default = "Reset";
 );
@@ -765,25 +765,25 @@ const string SET26_PAIRING_SUCCESSFUL =
 );
 
 $output false
-const string SET28_esn =
+const string SET28_ESN =
 (
   Default = "Electronic Serial Number";
 );
 
 $output false
-const string SET28_sw_version =
+const string SET28_SW_VERSION =
 (
   Default = "Software version";
 );
 
 $output false
-const string SET28_unit_id =
+const string SET28_UNIT_ID =
 (
   Default = "Unit ID";
 );
 
 $output false
-const string SET28_sw_update =
+const string SET28_SW_UPDATE =
 (
   Default = "Software update";
 );
@@ -801,85 +801,85 @@ const string TCS01_TCS =
 );
 
 $output false
-const string UNT01_unit_mileage =
+const string UNT01_UNIT_MILEAGE =
 (
   Default = "Mileage";
 );
 
 $output false
-const string UNT01_unit_fuel =
+const string UNT01_UNIT_FUEL =
 (
   Default = "Fuel";
 );
 
 $output false
-const string UNT01_unit_pressure =
+const string UNT01_UNIT_PRESSURE =
 (
   Default = "Pressure";
 );
 
 $output false
-const string UNT01_unit_temperature =
+const string UNT01_UNIT_TEMPERATURE =
 (
   Default = "Temperature";
 );
 
 $output false
-const string UNT02_unit_mileage_kilometer =
+const string UNT02_UNIT_MILEAGE_KILOMETER =
 (
   Default = "km";
 );
 
 $output false
-const string UNT02_unit_mileage_mile =
+const string UNT02_UNIT_MILEAGE_MILE =
 (
   Default = "mile";
 );
 
 $output false
-const string UNT03_unit_fuel_km_per_liter =
+const string UNT03_UNIT_FUEL_KM_PER_LITER =
 (
   Default = "km/L";
 );
 
 $output false
-const string UNT03_unit_fuel_liter_per_hundred_km =
+const string UNT03_UNIT_FUEL_LITER_PER_HUNDRED_KM =
 (
   Default = "L/100km";
 );
 
 $output false
-const string UNT03_unit_fuel_mile_per_gallon =
+const string UNT03_UNIT_FUEL_MILE_PER_GALLON =
 (
   Default = "MPG";
 );
 
 $output false
-const string UNT04_unit_pressure_kpa =
+const string UNT04_UNIT_PRESSURE_KPA =
 (
   Default = "kPa";
 );
 
 $output false
-const string UNT04_unit_pressure_psi =
+const string UNT04_UNIT_PRESSURE_PSI =
 (
   Default = "psi";
 );
 
 $output false
-const string UNT04_unit_pressure_kgf =
+const string UNT04_UNIT_PRESSURE_KGF =
 (
   Default = "kgf/cm\u00b2";
 );
 
 $output false
-const string UNT05_unit_temperature_c =
+const string UNT05_UNIT_TEMPERATURE_C =
 (
   Default = "\u2103";
 );
 
 $output false
-const string UNT05_unit_temperature_f =
+const string UNT05_UNIT_TEMPERATURE_F =
 (
   Default = "\u2109";
 );

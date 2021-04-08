@@ -1447,15 +1447,15 @@ XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum
   switch ( aLauncherItem )
   {
     case EnumLauncherItemPHONE :
-      Title = EwLoadString( &StringsLNC_phone );
+      Title = EwLoadString( &StringsLNC_PHONE );
     break;
 
     case EnumLauncherItemMUSIC :
-      Title = EwLoadString( &StringsLNC_music );
+      Title = EwLoadString( &StringsLNC_MUSIC );
     break;
 
     case EnumLauncherItemODO_TRIP :
-      Title = EwLoadString( &StringsLNC_odo_trip );
+      Title = EwLoadString( &StringsLNC_ODO_TRIP );
     break;
 
     case EnumLauncherItemMETER_DISPLAY :
@@ -1463,23 +1463,23 @@ XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum
     break;
 
     case EnumLauncherItemNAVIGATION :
-      Title = EwLoadString( &StringsLNC_navigation );
+      Title = EwLoadString( &StringsLNC_NAVIGATION );
     break;
 
     case EnumLauncherItemNOTIFICATION :
-      Title = EwLoadString( &StringsLNC_notification );
+      Title = EwLoadString( &StringsLNC_NOTIFICATION );
     break;
 
     case EnumLauncherItemWEATHER :
-      Title = EwLoadString( &StringsLNC_weather );
+      Title = EwLoadString( &StringsLNC_WEATHER );
     break;
 
     case EnumLauncherItemSETTINGS :
-      Title = EwLoadString( &StringsLNC_settings );
+      Title = EwLoadString( &StringsLNC_SETTINGS );
     break;
 
     case EnumLauncherItemTRACTION_CONTROL :
-      Title = EwLoadString( &StringsLNC_traction_control );
+      Title = EwLoadString( &StringsLNC_TRACTION_CONTROL );
     break;
 
     case EnumLauncherItemSEAT_HEATER :

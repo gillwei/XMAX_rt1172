@@ -61,10 +61,10 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
     var string title = "";
     switch( ItemVehicleRxTypeArray[aItemNo] )
     {
-      case Enum::VehicleRxType.MILEAGE_UNIT: title = Strings::UNT01_unit_mileage;
-      case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT: title = Strings::UNT01_unit_fuel;
-      case Enum::VehicleRxType.PRESSURE_UNIT: title = Strings::UNT01_unit_pressure;
-      case Enum::VehicleRxType.TEMPERATURE_UNIT: title = Strings::UNT01_unit_temperature;
+      case Enum::VehicleRxType.MILEAGE_UNIT: title = Strings::UNT01_UNIT_MILEAGE;
+      case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT: title = Strings::UNT01_UNIT_FUEL;
+      case Enum::VehicleRxType.PRESSURE_UNIT: title = Strings::UNT01_UNIT_PRESSURE;
+      case Enum::VehicleRxType.TEMPERATURE_UNIT: title = Strings::UNT01_UNIT_TEMPERATURE;
       default:;
     }
     return title;
@@ -160,10 +160,10 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
   $rect <760,30,960,70>
   array string ItemTitleArray[ 4 ] =
   (
-    Default[0] = Strings::UNT01_unit_mileage;
-    Default[1] = Strings::UNT01_unit_fuel;
-    Default[2] = Strings::UNT01_unit_pressure;
-    Default[3] = Strings::UNT01_unit_temperature;
+    Default[0] = Strings::UNT01_UNIT_MILEAGE;
+    Default[1] = Strings::UNT01_UNIT_FUEL;
+    Default[2] = Strings::UNT01_UNIT_PRESSURE;
+    Default[3] = Strings::UNT01_UNIT_TEMPERATURE;
   );
 
   $rect <760,80,960,120>
@@ -429,8 +429,8 @@ class UNT02_MileageSettingMenu : Menu::BaseMenuView
   $rect <780,50,980,90>
   array string ItemTitleArray[ 2 ] =
   (
-    Default[0] = Strings::UNT02_unit_mileage_kilometer;
-    Default[1] = Strings::UNT02_unit_mileage_mile;
+    Default[0] = Strings::UNT02_UNIT_MILEAGE_KILOMETER;
+    Default[1] = Strings::UNT02_UNIT_MILEAGE_MILE;
   );
 
   $rect <520,260,750,300>
@@ -490,31 +490,31 @@ class UnitValueClass
   $rect <200,30,400,70>
   array string ItemMileageUnitArray[ 2 ] =
   (
-    Default[0] = Strings::UNT02_unit_mileage_kilometer;
-    Default[1] = Strings::UNT02_unit_mileage_mile;
+    Default[0] = Strings::UNT02_UNIT_MILEAGE_KILOMETER;
+    Default[1] = Strings::UNT02_UNIT_MILEAGE_MILE;
   );
 
   $rect <200,80,400,120>
   array string ItemFuelUnitArray[ 3 ] =
   (
-    Default[0] = Strings::UNT03_unit_fuel_km_per_liter;
-    Default[1] = Strings::UNT03_unit_fuel_mile_per_gallon;
-    Default[2] = Strings::UNT03_unit_fuel_liter_per_hundred_km;
+    Default[0] = Strings::UNT03_UNIT_FUEL_KM_PER_LITER;
+    Default[1] = Strings::UNT03_UNIT_FUEL_MILE_PER_GALLON;
+    Default[2] = Strings::UNT03_UNIT_FUEL_LITER_PER_HUNDRED_KM;
   );
 
   $rect <200,130,400,170>
   array string ItemPressureUnitArray[ 3 ] =
   (
-    Default[0] = Strings::UNT04_unit_pressure_psi;
-    Default[1] = Strings::UNT04_unit_pressure_kpa;
-    Default[2] = Strings::UNT04_unit_pressure_kgf;
+    Default[0] = Strings::UNT04_UNIT_PRESSURE_PSI;
+    Default[1] = Strings::UNT04_UNIT_PRESSURE_KPA;
+    Default[2] = Strings::UNT04_UNIT_PRESSURE_KGF;
   );
 
   $rect <200,180,400,220>
   array string ItemTemperatureUnitArray[ 2 ] =
   (
-    Default[0] = Strings::UNT05_unit_temperature_c;
-    Default[1] = Strings::UNT05_unit_temperature_f;
+    Default[0] = Strings::UNT05_UNIT_TEMPERATURE_C;
+    Default[1] = Strings::UNT05_UNIT_TEMPERATURE_F;
   );
 }
 
@@ -622,9 +622,9 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
   $rect <750,20,950,60>
   array string ItemTitleArray[ 3 ] =
   (
-    Default[0] = Strings::UNT03_unit_fuel_km_per_liter;
-    Default[1] = Strings::UNT03_unit_fuel_liter_per_hundred_km;
-    Default[2] = Strings::UNT03_unit_fuel_mile_per_gallon;
+    Default[0] = Strings::UNT03_UNIT_FUEL_KM_PER_LITER;
+    Default[1] = Strings::UNT03_UNIT_FUEL_LITER_PER_HUNDRED_KM;
+    Default[2] = Strings::UNT03_UNIT_FUEL_MILE_PER_GALLON;
   );
 
   $rect <520,290,750,330>
@@ -779,9 +779,9 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
   $rect <750,50,950,90>
   array string ItemTitleArray[ 3 ] =
   (
-    Default[0] = Strings::UNT04_unit_pressure_kpa;
-    Default[1] = Strings::UNT04_unit_pressure_psi;
-    Default[2] = Strings::UNT04_unit_pressure_kgf;
+    Default[0] = Strings::UNT04_UNIT_PRESSURE_KPA;
+    Default[1] = Strings::UNT04_UNIT_PRESSURE_PSI;
+    Default[2] = Strings::UNT04_UNIT_PRESSURE_KGF;
   );
 
   $rect <230,290,430,330>
@@ -925,8 +925,8 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
   $rect <750,20,950,60>
   array string ItemTitleArray[ 2 ] =
   (
-    Default[0] = Strings::UNT05_unit_temperature_c;
-    Default[1] = Strings::UNT05_unit_temperature_f;
+    Default[0] = Strings::UNT05_UNIT_TEMPERATURE_C;
+    Default[1] = Strings::UNT05_UNIT_TEMPERATURE_F;
   );
 
   $rect <530,230,760,270>

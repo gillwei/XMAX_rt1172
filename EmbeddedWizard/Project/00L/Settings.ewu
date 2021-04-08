@@ -65,15 +65,15 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
     var string Title = "";
     switch( Settings[aItemNo] )
     {
-      case Enum::MainSettingItem.Connection: Title = Strings::SET01_connection;
-      case Enum::MainSettingItem.Clock: Title = Strings::SET01_clock;
-      case Enum::MainSettingItem.Brightness: Title = Strings::SET01_brightness;
-      case Enum::MainSettingItem.Unit: Title = Strings::SET01_unit;
-      case Enum::MainSettingItem.GripWarmerSettings: Title = Strings::SET01_grip_warmer_settings;
-      case Enum::MainSettingItem.SeatHeaterSettings: Title = Strings::SET01_seat_heater_settings;
-      case Enum::MainSettingItem.SystemInfo: Title = Strings::SET01_system_info;
-      case Enum::MainSettingItem.LegalInfo: Title = Strings::SET01_legal_info;
-      case Enum::MainSettingItem.Reset: Title = Strings::SET01_reset;
+      case Enum::MainSettingItem.Connection: Title = Strings::SET01_CONNECTION;
+      case Enum::MainSettingItem.Clock: Title = Strings::SET01_CLOCK;
+      case Enum::MainSettingItem.Brightness: Title = Strings::SET01_BRIGHTNESS;
+      case Enum::MainSettingItem.Unit: Title = Strings::SET01_UNIT;
+      case Enum::MainSettingItem.GripWarmerSettings: Title = Strings::SET01_GRIP_WARMER_SETTINGS;
+      case Enum::MainSettingItem.SeatHeaterSettings: Title = Strings::SET01_SEAT_HEATER_SETTINGS;
+      case Enum::MainSettingItem.SystemInfo: Title = Strings::SET01_SYSTEM_INFO;
+      case Enum::MainSettingItem.LegalInfo: Title = Strings::SET01_LEGAL_INFO;
+      case Enum::MainSettingItem.Reset: Title = Strings::SET01_RESET;
       default:;
     }
     return Title;
@@ -228,7 +228,7 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
   $rect <730,70,930,110>
   array string ItemTitleArray[ 2 ] =
   (
-    Default[0] = Strings::GEN_bluetooth;
+    Default[0] = Strings::GEN_BLUETOOTH;
     Default[1] = Strings::SET03_Y_CONNECT_APP_PAIRING;
   );
 
@@ -385,7 +385,7 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
   $rect <710,80,910,120>
   array string ItemTitleArray[ 4 ] =
   (
-    Default[0] = Strings::GEN_bluetooth;
+    Default[0] = Strings::GEN_BLUETOOTH;
     Default[1] = Strings::SET04_DISCOVERY_MODE;
     Default[2] = Strings::SET04_PAIRED_DEVICES;
     Default[3] = Strings::SET04_BT_AUTO_CONNECT;
@@ -1232,7 +1232,7 @@ class SET9_10_11_BtConnectionResult : Components::BaseMainBG
   object Views::Text LoadingText
   {
     preset Bounds = <10,156,470,187>;
-    preset String = Strings::GEN_please_wait;
+    preset String = Strings::GEN_PLEASE_WAIT;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
@@ -1385,8 +1385,8 @@ class SET08_BtcPairDevice : Components::BaseMainBG
     preset PassHomeKey = true;
     preset OnUpButtonActivated = OnYesActivatedSlot;
     preset OnDownButtonActivated = OnNoActivatedSlot;
-    preset UpButtonTitle = Strings::GEN_yes;
-    preset DownButtonTitle = Strings::GEN_no;
+    preset UpButtonTitle = Strings::GEN_YES;
+    preset DownButtonTitle = Strings::GEN_NO;
   }
 
   $rect <190,290,390,330>
@@ -2155,7 +2155,7 @@ class SET24_CheckPairingRecord : Components::BaseMainBG
   object Menu::PushButton PushButton
   {
     preset Bounds = <165,219,315,259>;
-    preset Title = Strings::GEN_ok;
+    preset Title = Strings::GEN_OK;
     preset OnActivate = OnOkActivatedSlot;
   }
 
@@ -2274,7 +2274,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   object Views::Text ESN
   {
     preset Bounds = <10,45,470,76>;
-    preset String = Strings::SET28_esn;
+    preset String = Strings::SET28_ESN;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
@@ -2282,7 +2282,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   object Views::Text SoftwareVersionTitle
   {
     preset Bounds = <10,107,470,138>;
-    preset String = Strings::SET28_sw_version;
+    preset String = Strings::SET28_SW_VERSION;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
@@ -2325,8 +2325,8 @@ class SET28_SystemInfo : Components::BaseMainBG
     preset PassMagicKey = true;
     preset DDModeEnabled = true;
     preset OnUpButtonActivated = OnUnitIdButtonActivatedSlot;
-    preset UpButtonTitle = Strings::SET28_unit_id;
-    preset DownButtonTitle = Strings::SET28_sw_update;
+    preset UpButtonTitle = Strings::SET28_UNIT_ID;
+    preset DownButtonTitle = Strings::SET28_SW_UPDATE;
     preset DownButtonEnabled = false;
   }
 

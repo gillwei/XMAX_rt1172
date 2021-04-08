@@ -56,7 +56,7 @@ class TOP01_Disclaimer : Components::BaseComponent
   {
     preset Bounds = <10,51,470,206>;
     preset WrapText = true;
-    preset String = Strings::TOP01_disclaimer;
+    preset String = Strings::TOP01_DISCLAIMER;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
@@ -91,7 +91,7 @@ class TOP01_Disclaimer : Components::BaseComponent
     preset Bounds = <191,1,327,42>;
     preset AutoSize = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
-    preset String = Strings::TOP01_warning;
+    preset String = Strings::TOP01_WARNING;
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
     preset Color = #000000FF;
     preset Visible = true;
@@ -101,7 +101,7 @@ class TOP01_Disclaimer : Components::BaseComponent
   object Menu::PushButton AcceptButton
   {
     preset Bounds = <165,219,315,259>;
-    preset Title = Strings::TOP01_accept;
+    preset Title = Strings::TOP01_ACCEPT;
     preset OnActivate = OnAcceptedSlot;
   }
 }

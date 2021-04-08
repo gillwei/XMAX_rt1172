@@ -74,7 +74,7 @@ void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject a
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->LoadingText, _Const0000 );
-  ViewsText_OnSetString( &_this->LoadingText, EwLoadString( &StringsGEN_please_wait ));
+  ViewsText_OnSetString( &_this->LoadingText, EwLoadString( &StringsGEN_PLEASE_WAIT ));
   CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0001 );
   ViewsImage_OnSetAnimated( &_this->LoadingAnimation, 1 );
   CoreTimer_OnSetPeriod( &_this->ConnectionFailedTimer, 20000 );

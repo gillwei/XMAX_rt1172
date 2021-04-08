@@ -2670,10 +2670,10 @@ DeviceInterfaceNotificationContext DeviceInterfaceNotificationDeviceClass_GetNot
     notification_time_t received_time;
     EnumNotificationCategory notification_category;
 
-    NTF_get_notification_at_idx( aItemNo, &notification_uid, &call_repetition, 
-                                 notification_title, NOTIFICATION_TITLE_MAX_LEN, 
-                                 notification_subtitle, NOTIFICATION_SUBTITLE_MAX_LEN, 
-                                 notification_message, NOTIFICATION_MESSAGE_MAX_LEN, 
+    NTF_get_notification_at_idx( aItemNo, &notification_uid, &call_repetition,
+                                 notification_title, NOTIFICATION_TITLE_MAX_LEN,
+                                 notification_subtitle, NOTIFICATION_SUBTITLE_MAX_LEN,
+                                 notification_message, NOTIFICATION_MESSAGE_MAX_LEN,
                                  &notification_category, &received_time );
 
     Uid = notification_uid;

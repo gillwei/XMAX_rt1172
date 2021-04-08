@@ -15,7 +15,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
   object Views::Text LoadingText
   {
     preset Bounds = <10,156,470,187>;
-    preset String = Strings::GEN_please_wait;
+    preset String = Strings::GEN_PLEASE_WAIT;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 

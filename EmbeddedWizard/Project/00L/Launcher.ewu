@@ -923,15 +923,15 @@ class LNC_Base : Core::Group
     var string Title;
     switch( aLauncherItem )
     {
-      case Enum::LauncherItem.PHONE: Title = Strings::LNC_phone;
-      case Enum::LauncherItem.MUSIC: Title = Strings::LNC_music;
-      case Enum::LauncherItem.ODO_TRIP: Title = Strings::LNC_odo_trip;
+      case Enum::LauncherItem.PHONE: Title = Strings::LNC_PHONE;
+      case Enum::LauncherItem.MUSIC: Title = Strings::LNC_MUSIC;
+      case Enum::LauncherItem.ODO_TRIP: Title = Strings::LNC_ODO_TRIP;
       case Enum::LauncherItem.METER_DISPLAY: Title = Strings::LNC_METER_DISPLAY;
-      case Enum::LauncherItem.NAVIGATION: Title = Strings::LNC_navigation;
-      case Enum::LauncherItem.NOTIFICATION: Title = Strings::LNC_notification;
-      case Enum::LauncherItem.WEATHER: Title = Strings::LNC_weather;
-      case Enum::LauncherItem.SETTINGS: Title = Strings::LNC_settings;
-      case Enum::LauncherItem.TRACTION_CONTROL: Title = Strings::LNC_traction_control;
+      case Enum::LauncherItem.NAVIGATION: Title = Strings::LNC_NAVIGATION;
+      case Enum::LauncherItem.NOTIFICATION: Title = Strings::LNC_NOTIFICATION;
+      case Enum::LauncherItem.WEATHER: Title = Strings::LNC_WEATHER;
+      case Enum::LauncherItem.SETTINGS: Title = Strings::LNC_SETTINGS;
+      case Enum::LauncherItem.TRACTION_CONTROL: Title = Strings::LNC_TRACTION_CONTROL;
       case Enum::LauncherItem.SEAT_HEATER: Title = Strings::LNC_SEAT_HEATER;
       case Enum::LauncherItem.GRIP_WARMER: Title = Strings::GPW01_GRIP_WARMER;
       case Enum::LauncherItem.WIND_SCREEN: Title = Strings::WSC01_WIND_SCREEN;

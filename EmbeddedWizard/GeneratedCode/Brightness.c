@@ -171,11 +171,11 @@ XString BrightnessBRT01_BrightnessSettingMenu_LoadItemTitle( BrightnessBRT01_Bri
   switch ( aItemNo )
   {
     case 0 :
-      Title = EwLoadString( &StringsBRT01_TFT_display );
+      Title = EwLoadString( &StringsBRT01_TFT_DISPLAY );
     break;
 
     case 1 :
-      Title = EwLoadString( &StringsBRT01_speed_meter );
+      Title = EwLoadString( &StringsBRT01_SPEED_METER );
     break;
 
     default : 

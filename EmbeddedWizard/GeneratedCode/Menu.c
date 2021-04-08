@@ -2091,8 +2091,8 @@ void MenuUpDownPushButtonSet__Init( MenuUpDownPushButtonSet _this, XObject aLink
   CoreRectView__OnSetBounds( &_this->DownButton, _Const0023 );
   _this->DownButton.Super1.PassMagicKey = 1;
   MenuPushButton_OnSetTitle( &_this->DownButton, EwLoadString( &_Const0024 ));
-  _this->UpButtonTitle = EwShareString( EwGetVariantOfString( &StringsGEN_cancel ));
-  _this->DownButtonTitle = EwShareString( EwGetVariantOfString( &StringsGEN_ok ));
+  _this->UpButtonTitle = EwShareString( EwGetVariantOfString( &StringsGEN_CANCEL ));
+  _this->DownButtonTitle = EwShareString( EwGetVariantOfString( &StringsGEN_OK ));
   _this->DownButtonEnabled = 1;
   CoreGroup__Add( _this, ((CoreView)&_this->UpButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DownButton ), 0 );

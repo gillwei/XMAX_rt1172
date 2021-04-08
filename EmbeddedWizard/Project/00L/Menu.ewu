@@ -1544,7 +1544,7 @@ class UpDownPushButtonSet : Components::BaseComponent
   property slot OnDownButtonActivated;
 
   $rect <340,170,540,210>
-  property string UpButtonTitle = Strings::GEN_cancel;
+  property string UpButtonTitle = Strings::GEN_CANCEL;
 
   $rect <340,210,540,250>
   onset UpButtonTitle
@@ -1557,7 +1557,7 @@ class UpDownPushButtonSet : Components::BaseComponent
   }
 
   $rect <340,260,540,300>
-  property string DownButtonTitle = Strings::GEN_ok;
+  property string DownButtonTitle = Strings::GEN_OK;
 
   $rect <340,300,550,340>
   onset DownButtonTitle

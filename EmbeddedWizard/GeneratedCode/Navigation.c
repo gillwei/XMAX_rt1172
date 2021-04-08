@@ -930,7 +930,7 @@ XString NavigationNAV06_NaviSettingMenu_LoadItemTitle( NavigationNAV06_NaviSetti
   switch ( _this->NaviSettings[ EwCheckIndex( aItemNo, 7 )])
   {
     case EnumNaviSettingItemStopNavigation :
-      Title = EwLoadString( &StringsNAV06_stop_navigation );
+      Title = EwLoadString( &StringsNAV06_STOP_NAVIGATION );
     break;
 
     case EnumNaviSettingItemSkipNextStop :
@@ -938,23 +938,23 @@ XString NavigationNAV06_NaviSettingMenu_LoadItemTitle( NavigationNAV06_NaviSetti
     break;
 
     case EnumNaviSettingItemGoHome :
-      Title = EwLoadString( &StringsNAV06_go_home );
+      Title = EwLoadString( &StringsNAV06_GO_HOME );
     break;
 
     case EnumNaviSettingItemGoToWork :
-      Title = EwLoadString( &StringsNAV06_go_to_work );
+      Title = EwLoadString( &StringsNAV06_GO_TO_WORK );
     break;
 
     case EnumNaviSettingItemFavorites :
-      Title = EwLoadString( &StringsNAV06_favorites );
+      Title = EwLoadString( &StringsNAV06_FAVORITES );
     break;
 
     case EnumNaviSettingItemNearbyGasStations :
-      Title = EwLoadString( &StringsNAV06_nearby_gas_stations );
+      Title = EwLoadString( &StringsNAV06_NEARBY_GAS_STATIONS );
     break;
 
     case EnumNaviSettingItemChangeView :
-      Title = EwLoadString( &StringsNAV06_change_view );
+      Title = EwLoadString( &StringsNAV06_CHANGE_VIEW );
     break;
 
     default : 
@@ -1162,9 +1162,9 @@ void NavigationNAV08_NaviChageViewMenu__Init( NavigationNAV08_NaviChageViewMenu 
   CoreRectView__OnSetBounds( _this, _Const0002 );
   _this->Super2.SlideOutEffectEnabled = 1;
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsNAV08_default_view ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsNAV08_turn_by_turn ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsNAV08_turn_list ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsNAV08_DEFAULT_VIEW ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsNAV08_TURN_BY_TURN ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsNAV08_TURN_LIST ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, NavigationNAV08_NaviChageViewMenu_OnCheckMarkUpdateSlot );
 }

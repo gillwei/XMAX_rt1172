@@ -332,39 +332,39 @@ XString SettingsSET01_MainSettingMenu_LoadItemTitle( SettingsSET01_MainSettingMe
   switch ( _this->Settings[ EwCheckIndex( aItemNo, 9 )])
   {
     case EnumMainSettingItemConnection :
-      Title = EwLoadString( &StringsSET01_connection );
+      Title = EwLoadString( &StringsSET01_CONNECTION );
     break;
 
     case EnumMainSettingItemClock :
-      Title = EwLoadString( &StringsSET01_clock );
+      Title = EwLoadString( &StringsSET01_CLOCK );
     break;
 
     case EnumMainSettingItemBrightness :
-      Title = EwLoadString( &StringsSET01_brightness );
+      Title = EwLoadString( &StringsSET01_BRIGHTNESS );
     break;
 
     case EnumMainSettingItemUnit :
-      Title = EwLoadString( &StringsSET01_unit );
+      Title = EwLoadString( &StringsSET01_UNIT );
     break;
 
     case EnumMainSettingItemGripWarmerSettings :
-      Title = EwLoadString( &StringsSET01_grip_warmer_settings );
+      Title = EwLoadString( &StringsSET01_GRIP_WARMER_SETTINGS );
     break;
 
     case EnumMainSettingItemSeatHeaterSettings :
-      Title = EwLoadString( &StringsSET01_seat_heater_settings );
+      Title = EwLoadString( &StringsSET01_SEAT_HEATER_SETTINGS );
     break;
 
     case EnumMainSettingItemSystemInfo :
-      Title = EwLoadString( &StringsSET01_system_info );
+      Title = EwLoadString( &StringsSET01_SYSTEM_INFO );
     break;
 
     case EnumMainSettingItemLegalInfo :
-      Title = EwLoadString( &StringsSET01_legal_info );
+      Title = EwLoadString( &StringsSET01_LEGAL_INFO );
     break;
 
     case EnumMainSettingItemReset :
-      Title = EwLoadString( &StringsSET01_reset );
+      Title = EwLoadString( &StringsSET01_RESET );
     break;
 
     default : 
@@ -545,7 +545,7 @@ void SettingsSET03_ConnectionSettingMenu__Init( SettingsSET03_ConnectionSettingM
   _this->Super2.SlideOutEffectEnabled = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsGEN_bluetooth ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsGEN_BLUETOOTH ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsSET03_Y_CONNECT_APP_PAIRING ));
 
   /* Call the user defined constructor */
@@ -763,7 +763,7 @@ void SettingsSET04_BtSettingMenu__Init( SettingsSET04_BtSettingMenu _this, XObje
   _this->ItemClassArray[ 1 ] = EW_CLASS( MenuItemBase );
   _this->ItemClassArray[ 2 ] = EW_CLASS( MenuItemBase );
   _this->ItemClassArray[ 3 ] = EW_CLASS( MenuItemCheckbox );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsGEN_bluetooth ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsGEN_BLUETOOTH ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsSET04_DISCOVERY_MODE ));
   _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsSET04_PAIRED_DEVICES ));
   _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &StringsSET04_BT_AUTO_CONNECT ));
@@ -1635,7 +1635,7 @@ void SettingsSET9_10_11_BtConnectionResult__Init( SettingsSET9_10_11_BtConnectio
   CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0010 );
   ViewsImage_OnSetAnimated( &_this->LoadingAnimation, 1 );
   CoreRectView__OnSetBounds( &_this->LoadingText, _Const0011 );
-  ViewsText_OnSetString( &_this->LoadingText, EwLoadString( &StringsGEN_please_wait ));
+  ViewsText_OnSetString( &_this->LoadingText, EwLoadString( &StringsGEN_PLEASE_WAIT ));
   CoreGroup__Add( _this, ((CoreView)&_this->Message ), -1 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), -1 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
@@ -2012,9 +2012,9 @@ void SettingsSET08_BtcPairDevice__Init( SettingsSET08_BtcPairDevice _this, XObje
   CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0013 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
-  &StringsGEN_yes ));
+  &StringsGEN_YES ));
   MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
-  &StringsGEN_no ));
+  &StringsGEN_NO ));
   CoreGroup__Add( _this, ((CoreView)&_this->PairText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PasskeyText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
@@ -3727,7 +3727,7 @@ void SettingsSET24_CheckPairingRecord__Init( SettingsSET24_CheckPairingRecord _t
   ViewsText_OnSetWrapText( &_this->MessageText, 1 );
   ViewsText_OnSetString( &_this->MessageText, EwLoadString( &StringsSET24_CHECK_BT_PAIRING_RECORD ));
   CoreRectView__OnSetBounds( &_this->PushButton, _Const0009 );
-  MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsGEN_ok ));
+  MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsGEN_OK ));
   CoreGroup__Add( _this, ((CoreView)&_this->MessageText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );
   ViewsText_OnSetFont( &_this->MessageText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
@@ -4064,9 +4064,9 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   CoreRectView__OnSetBounds( _this, _Const0022 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->ESN, _Const003C );
-  ViewsText_OnSetString( &_this->ESN, EwLoadString( &StringsSET28_esn ));
+  ViewsText_OnSetString( &_this->ESN, EwLoadString( &StringsSET28_ESN ));
   CoreRectView__OnSetBounds( &_this->SoftwareVersionTitle, _Const003D );
-  ViewsText_OnSetString( &_this->SoftwareVersionTitle, EwLoadString( &StringsSET28_sw_version ));
+  ViewsText_OnSetString( &_this->SoftwareVersionTitle, EwLoadString( &StringsSET28_SW_VERSION ));
   CoreRectView__OnSetBounds( &_this->EsnText, _Const003E );
   ViewsText_OnSetString( &_this->EsnText, 0 );
   CoreRectView__OnSetBounds( &_this->SoftwareVersionText, _Const003F );
@@ -4077,9 +4077,9 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->UpDownPushButtonSet, 1 );
   MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
-  &StringsSET28_unit_id ));
+  &StringsSET28_UNIT_ID ));
   MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
-  &StringsSET28_sw_update ));
+  &StringsSET28_SW_UPDATE ));
   MenuUpDownPushButtonSet_OnSetDownButtonEnabled( &_this->UpDownPushButtonSet, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ESN ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->SoftwareVersionTitle ), 0 );

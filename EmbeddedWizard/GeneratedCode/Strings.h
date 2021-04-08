@@ -43,20 +43,20 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/04/12 16:15:05 */
+   Generated: 2021/04/14 11:49:10 */
 extern const XStringRes StringsARGUMENT_STR;
 
-/* User defined constant: 'Strings::GEN_ok' */
-EW_DECLARE_CONST( StringsGEN_ok )
+/* User defined constant: 'Strings::GEN_OK' */
+EW_DECLARE_CONST( StringsGEN_OK )
 
-/* User defined constant: 'Strings::GEN_cancel' */
-EW_DECLARE_CONST( StringsGEN_cancel )
+/* User defined constant: 'Strings::GEN_CANCEL' */
+EW_DECLARE_CONST( StringsGEN_CANCEL )
 
-/* User defined constant: 'Strings::GEN_yes' */
-extern const XStringRes StringsGEN_yes;
+/* User defined constant: 'Strings::GEN_YES' */
+extern const XStringRes StringsGEN_YES;
 
-/* User defined constant: 'Strings::GEN_no' */
-extern const XStringRes StringsGEN_no;
+/* User defined constant: 'Strings::GEN_NO' */
+extern const XStringRes StringsGEN_NO;
 
 /* User defined constant: 'Strings::GEN_LOW' */
 extern const XStringRes StringsGEN_LOW;
@@ -67,29 +67,29 @@ extern const XStringRes StringsGEN_MIDDLE;
 /* User defined constant: 'Strings::GEN_HIGH' */
 extern const XStringRes StringsGEN_HIGH;
 
-/* User defined constant: 'Strings::GEN_bluetooth' */
-extern const XStringRes StringsGEN_bluetooth;
+/* User defined constant: 'Strings::GEN_BLUETOOTH' */
+extern const XStringRes StringsGEN_BLUETOOTH;
 
 /* User defined constant: 'Strings::GEN_THREE_HYPHENS' */
 extern const XStringRes StringsGEN_THREE_HYPHENS;
 
-/* User defined constant: 'Strings::GEN_please_wait' */
-extern const XStringRes StringsGEN_please_wait;
+/* User defined constant: 'Strings::GEN_PLEASE_WAIT' */
+extern const XStringRes StringsGEN_PLEASE_WAIT;
 
-/* User defined constant: 'Strings::TOP01_warning' */
-EW_DECLARE_CONST( StringsTOP01_warning )
+/* User defined constant: 'Strings::TOP01_WARNING' */
+EW_DECLARE_CONST( StringsTOP01_WARNING )
 
-/* User defined constant: 'Strings::TOP01_disclaimer' */
-EW_DECLARE_CONST( StringsTOP01_disclaimer )
+/* User defined constant: 'Strings::TOP01_DISCLAIMER' */
+EW_DECLARE_CONST( StringsTOP01_DISCLAIMER )
 
-/* User defined constant: 'Strings::TOP01_accept' */
-EW_DECLARE_CONST( StringsTOP01_accept )
+/* User defined constant: 'Strings::TOP01_ACCEPT' */
+EW_DECLARE_CONST( StringsTOP01_ACCEPT )
 
-/* User defined constant: 'Strings::BRT01_TFT_display' */
-extern const XStringRes StringsBRT01_TFT_display;
+/* User defined constant: 'Strings::BRT01_TFT_DISPLAY' */
+extern const XStringRes StringsBRT01_TFT_DISPLAY;
 
-/* User defined constant: 'Strings::BRT01_speed_meter' */
-extern const XStringRes StringsBRT01_speed_meter;
+/* User defined constant: 'Strings::BRT01_SPEED_METER' */
+extern const XStringRes StringsBRT01_SPEED_METER;
 
 /* User defined constant: 'Strings::GPW01_GRIP_WARMER' */
 extern const XStringRes StringsGPW01_GRIP_WARMER;
@@ -106,65 +106,65 @@ extern const XStringRes StringsINF01_SPEED_VISUALIZER;
 /* User defined constant: 'Strings::LNC_METER_DISPLAY' */
 extern const XStringRes StringsLNC_METER_DISPLAY;
 
-/* User defined constant: 'Strings::LNC_odo_trip' */
-extern const XStringRes StringsLNC_odo_trip;
+/* User defined constant: 'Strings::LNC_ODO_TRIP' */
+extern const XStringRes StringsLNC_ODO_TRIP;
 
-/* User defined constant: 'Strings::LNC_music' */
-extern const XStringRes StringsLNC_music;
+/* User defined constant: 'Strings::LNC_MUSIC' */
+extern const XStringRes StringsLNC_MUSIC;
 
-/* User defined constant: 'Strings::LNC_phone' */
-extern const XStringRes StringsLNC_phone;
+/* User defined constant: 'Strings::LNC_PHONE' */
+extern const XStringRes StringsLNC_PHONE;
 
-/* User defined constant: 'Strings::LNC_navigation' */
-extern const XStringRes StringsLNC_navigation;
+/* User defined constant: 'Strings::LNC_NAVIGATION' */
+extern const XStringRes StringsLNC_NAVIGATION;
 
-/* User defined constant: 'Strings::LNC_weather' */
-extern const XStringRes StringsLNC_weather;
+/* User defined constant: 'Strings::LNC_WEATHER' */
+extern const XStringRes StringsLNC_WEATHER;
 
-/* User defined constant: 'Strings::LNC_notification' */
-extern const XStringRes StringsLNC_notification;
+/* User defined constant: 'Strings::LNC_NOTIFICATION' */
+extern const XStringRes StringsLNC_NOTIFICATION;
 
-/* User defined constant: 'Strings::LNC_traction_control' */
-extern const XStringRes StringsLNC_traction_control;
+/* User defined constant: 'Strings::LNC_TRACTION_CONTROL' */
+extern const XStringRes StringsLNC_TRACTION_CONTROL;
 
 /* User defined constant: 'Strings::LNC_SEAT_HEATER' */
 extern const XStringRes StringsLNC_SEAT_HEATER;
 
-/* User defined constant: 'Strings::LNC_settings' */
-extern const XStringRes StringsLNC_settings;
+/* User defined constant: 'Strings::LNC_SETTINGS' */
+extern const XStringRes StringsLNC_SETTINGS;
 
 /* User defined constant: 'Strings::MED02_DEV_UNAVAILABLE' */
 extern const XStringRes StringsMED02_DEV_UNAVAILABLE;
 
-/* User defined constant: 'Strings::NAV06_stop_navigation' */
-extern const XStringRes StringsNAV06_stop_navigation;
+/* User defined constant: 'Strings::NAV06_STOP_NAVIGATION' */
+extern const XStringRes StringsNAV06_STOP_NAVIGATION;
 
 /* User defined constant: 'Strings::NAV06_SKIP_NEXT_STOP' */
 extern const XStringRes StringsNAV06_SKIP_NEXT_STOP;
 
-/* User defined constant: 'Strings::NAV06_go_home' */
-extern const XStringRes StringsNAV06_go_home;
+/* User defined constant: 'Strings::NAV06_GO_HOME' */
+extern const XStringRes StringsNAV06_GO_HOME;
 
-/* User defined constant: 'Strings::NAV06_go_to_work' */
-extern const XStringRes StringsNAV06_go_to_work;
+/* User defined constant: 'Strings::NAV06_GO_TO_WORK' */
+extern const XStringRes StringsNAV06_GO_TO_WORK;
 
-/* User defined constant: 'Strings::NAV06_favorites' */
-extern const XStringRes StringsNAV06_favorites;
+/* User defined constant: 'Strings::NAV06_FAVORITES' */
+extern const XStringRes StringsNAV06_FAVORITES;
 
-/* User defined constant: 'Strings::NAV06_nearby_gas_stations' */
-extern const XStringRes StringsNAV06_nearby_gas_stations;
+/* User defined constant: 'Strings::NAV06_NEARBY_GAS_STATIONS' */
+extern const XStringRes StringsNAV06_NEARBY_GAS_STATIONS;
 
-/* User defined constant: 'Strings::NAV06_change_view' */
-extern const XStringRes StringsNAV06_change_view;
+/* User defined constant: 'Strings::NAV06_CHANGE_VIEW' */
+extern const XStringRes StringsNAV06_CHANGE_VIEW;
 
-/* User defined constant: 'Strings::NAV08_default_view' */
-extern const XStringRes StringsNAV08_default_view;
+/* User defined constant: 'Strings::NAV08_DEFAULT_VIEW' */
+extern const XStringRes StringsNAV08_DEFAULT_VIEW;
 
-/* User defined constant: 'Strings::NAV08_turn_by_turn' */
-extern const XStringRes StringsNAV08_turn_by_turn;
+/* User defined constant: 'Strings::NAV08_TURN_BY_TURN' */
+extern const XStringRes StringsNAV08_TURN_BY_TURN;
 
-/* User defined constant: 'Strings::NAV08_turn_list' */
-extern const XStringRes StringsNAV08_turn_list;
+/* User defined constant: 'Strings::NAV08_TURN_LIST' */
+extern const XStringRes StringsNAV08_TURN_LIST;
 
 /* User defined constant: 'Strings::OPN02_FACTORY_MODE' */
 extern const XStringRes StringsOPN02_FACTORY_MODE;
@@ -175,32 +175,32 @@ extern const XStringRes StringsOPN02_ENTER_TWICE;
 /* User defined constant: 'Strings::POP09_CONNECTION_FAILED' */
 extern const XStringRes StringsPOP09_CONNECTION_FAILED;
 
-/* User defined constant: 'Strings::SET01_connection' */
-extern const XStringRes StringsSET01_connection;
+/* User defined constant: 'Strings::SET01_CONNECTION' */
+extern const XStringRes StringsSET01_CONNECTION;
 
-/* User defined constant: 'Strings::SET01_clock' */
-extern const XStringRes StringsSET01_clock;
+/* User defined constant: 'Strings::SET01_CLOCK' */
+extern const XStringRes StringsSET01_CLOCK;
 
-/* User defined constant: 'Strings::SET01_brightness' */
-extern const XStringRes StringsSET01_brightness;
+/* User defined constant: 'Strings::SET01_BRIGHTNESS' */
+extern const XStringRes StringsSET01_BRIGHTNESS;
 
-/* User defined constant: 'Strings::SET01_unit' */
-extern const XStringRes StringsSET01_unit;
+/* User defined constant: 'Strings::SET01_UNIT' */
+extern const XStringRes StringsSET01_UNIT;
 
-/* User defined constant: 'Strings::SET01_grip_warmer_settings' */
-extern const XStringRes StringsSET01_grip_warmer_settings;
+/* User defined constant: 'Strings::SET01_GRIP_WARMER_SETTINGS' */
+extern const XStringRes StringsSET01_GRIP_WARMER_SETTINGS;
 
-/* User defined constant: 'Strings::SET01_seat_heater_settings' */
-extern const XStringRes StringsSET01_seat_heater_settings;
+/* User defined constant: 'Strings::SET01_SEAT_HEATER_SETTINGS' */
+extern const XStringRes StringsSET01_SEAT_HEATER_SETTINGS;
 
-/* User defined constant: 'Strings::SET01_system_info' */
-extern const XStringRes StringsSET01_system_info;
+/* User defined constant: 'Strings::SET01_SYSTEM_INFO' */
+extern const XStringRes StringsSET01_SYSTEM_INFO;
 
-/* User defined constant: 'Strings::SET01_legal_info' */
-extern const XStringRes StringsSET01_legal_info;
+/* User defined constant: 'Strings::SET01_LEGAL_INFO' */
+extern const XStringRes StringsSET01_LEGAL_INFO;
 
-/* User defined constant: 'Strings::SET01_reset' */
-extern const XStringRes StringsSET01_reset;
+/* User defined constant: 'Strings::SET01_RESET' */
+extern const XStringRes StringsSET01_RESET;
 
 /* User defined constant: 'Strings::SET03_Y_CONNECT_APP_PAIRING' */
 extern const XStringRes StringsSET03_Y_CONNECT_APP_PAIRING;
@@ -277,17 +277,17 @@ extern const XStringRes StringsSET25_PIN;
 /* User defined constant: 'Strings::SET26_PAIRING_SUCCESSFUL' */
 extern const XStringRes StringsSET26_PAIRING_SUCCESSFUL;
 
-/* User defined constant: 'Strings::SET28_esn' */
-extern const XStringRes StringsSET28_esn;
+/* User defined constant: 'Strings::SET28_ESN' */
+extern const XStringRes StringsSET28_ESN;
 
-/* User defined constant: 'Strings::SET28_sw_version' */
-extern const XStringRes StringsSET28_sw_version;
+/* User defined constant: 'Strings::SET28_SW_VERSION' */
+extern const XStringRes StringsSET28_SW_VERSION;
 
-/* User defined constant: 'Strings::SET28_unit_id' */
-extern const XStringRes StringsSET28_unit_id;
+/* User defined constant: 'Strings::SET28_UNIT_ID' */
+extern const XStringRes StringsSET28_UNIT_ID;
 
-/* User defined constant: 'Strings::SET28_sw_update' */
-extern const XStringRes StringsSET28_sw_update;
+/* User defined constant: 'Strings::SET28_SW_UPDATE' */
+extern const XStringRes StringsSET28_SW_UPDATE;
 
 /* User defined constant: 'Strings::SET35_LICENSE' */
 extern const XStringRes StringsSET35_LICENSE;
@@ -295,47 +295,47 @@ extern const XStringRes StringsSET35_LICENSE;
 /* User defined constant: 'Strings::TCS01_TCS' */
 extern const XStringRes StringsTCS01_TCS;
 
-/* User defined constant: 'Strings::UNT01_unit_mileage' */
-extern const XStringRes StringsUNT01_unit_mileage;
+/* User defined constant: 'Strings::UNT01_UNIT_MILEAGE' */
+extern const XStringRes StringsUNT01_UNIT_MILEAGE;
 
-/* User defined constant: 'Strings::UNT01_unit_fuel' */
-extern const XStringRes StringsUNT01_unit_fuel;
+/* User defined constant: 'Strings::UNT01_UNIT_FUEL' */
+extern const XStringRes StringsUNT01_UNIT_FUEL;
 
-/* User defined constant: 'Strings::UNT01_unit_pressure' */
-extern const XStringRes StringsUNT01_unit_pressure;
+/* User defined constant: 'Strings::UNT01_UNIT_PRESSURE' */
+extern const XStringRes StringsUNT01_UNIT_PRESSURE;
 
-/* User defined constant: 'Strings::UNT01_unit_temperature' */
-extern const XStringRes StringsUNT01_unit_temperature;
+/* User defined constant: 'Strings::UNT01_UNIT_TEMPERATURE' */
+extern const XStringRes StringsUNT01_UNIT_TEMPERATURE;
 
-/* User defined constant: 'Strings::UNT02_unit_mileage_kilometer' */
-extern const XStringRes StringsUNT02_unit_mileage_kilometer;
+/* User defined constant: 'Strings::UNT02_UNIT_MILEAGE_KILOMETER' */
+extern const XStringRes StringsUNT02_UNIT_MILEAGE_KILOMETER;
 
-/* User defined constant: 'Strings::UNT02_unit_mileage_mile' */
-extern const XStringRes StringsUNT02_unit_mileage_mile;
+/* User defined constant: 'Strings::UNT02_UNIT_MILEAGE_MILE' */
+extern const XStringRes StringsUNT02_UNIT_MILEAGE_MILE;
 
-/* User defined constant: 'Strings::UNT03_unit_fuel_km_per_liter' */
-extern const XStringRes StringsUNT03_unit_fuel_km_per_liter;
+/* User defined constant: 'Strings::UNT03_UNIT_FUEL_KM_PER_LITER' */
+extern const XStringRes StringsUNT03_UNIT_FUEL_KM_PER_LITER;
 
-/* User defined constant: 'Strings::UNT03_unit_fuel_liter_per_hundred_km' */
-extern const XStringRes StringsUNT03_unit_fuel_liter_per_hundred_km;
+/* User defined constant: 'Strings::UNT03_UNIT_FUEL_LITER_PER_HUNDRED_KM' */
+extern const XStringRes StringsUNT03_UNIT_FUEL_LITER_PER_HUNDRED_KM;
 
-/* User defined constant: 'Strings::UNT03_unit_fuel_mile_per_gallon' */
-extern const XStringRes StringsUNT03_unit_fuel_mile_per_gallon;
+/* User defined constant: 'Strings::UNT03_UNIT_FUEL_MILE_PER_GALLON' */
+extern const XStringRes StringsUNT03_UNIT_FUEL_MILE_PER_GALLON;
 
-/* User defined constant: 'Strings::UNT04_unit_pressure_kpa' */
-extern const XStringRes StringsUNT04_unit_pressure_kpa;
+/* User defined constant: 'Strings::UNT04_UNIT_PRESSURE_KPA' */
+extern const XStringRes StringsUNT04_UNIT_PRESSURE_KPA;
 
-/* User defined constant: 'Strings::UNT04_unit_pressure_psi' */
-extern const XStringRes StringsUNT04_unit_pressure_psi;
+/* User defined constant: 'Strings::UNT04_UNIT_PRESSURE_PSI' */
+extern const XStringRes StringsUNT04_UNIT_PRESSURE_PSI;
 
-/* User defined constant: 'Strings::UNT04_unit_pressure_kgf' */
-extern const XStringRes StringsUNT04_unit_pressure_kgf;
+/* User defined constant: 'Strings::UNT04_UNIT_PRESSURE_KGF' */
+extern const XStringRes StringsUNT04_UNIT_PRESSURE_KGF;
 
-/* User defined constant: 'Strings::UNT05_unit_temperature_c' */
-extern const XStringRes StringsUNT05_unit_temperature_c;
+/* User defined constant: 'Strings::UNT05_UNIT_TEMPERATURE_C' */
+extern const XStringRes StringsUNT05_UNIT_TEMPERATURE_C;
 
-/* User defined constant: 'Strings::UNT05_unit_temperature_f' */
-extern const XStringRes StringsUNT05_unit_temperature_f;
+/* User defined constant: 'Strings::UNT05_UNIT_TEMPERATURE_F' */
+extern const XStringRes StringsUNT05_UNIT_TEMPERATURE_F;
 
 /* User defined constant: 'Strings::WSC01_WIND_SCREEN' */
 extern const XStringRes StringsWSC01_WIND_SCREEN;
