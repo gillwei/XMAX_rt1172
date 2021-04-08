@@ -218,6 +218,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
   $rect <20,20,160,60>
   inherited object Menu
   {
+    preset DDModeEnabled = true;
     preset NoOfItems = 4;
     preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
@@ -428,6 +429,7 @@ class UNT02_MileageSettingMenu : Menu::BaseMenuView
   $rect <20,20,160,60>
   inherited object Menu
   {
+    preset DDModeEnabled = true;
     preset NoOfItems = 2;
     preset ItemNumPerPage = 2;
   }
@@ -613,6 +615,7 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
   $rect <20,20,160,60>
   inherited object Menu
   {
+    preset DDModeEnabled = true;
     preset NoOfItems = 3;
   }
 
@@ -752,6 +755,7 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
   $rect <20,20,160,60>
   inherited object Menu
   {
+    preset DDModeEnabled = true;
     preset NoOfItems = 3;
   }
 
@@ -883,6 +887,7 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
   $rect <20,20,160,60>
   inherited object Menu
   {
+    preset DDModeEnabled = true;
     preset NoOfItems = 2;
     preset ItemNumPerPage = 2;
   }

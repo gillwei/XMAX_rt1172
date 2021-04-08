@@ -51,26 +51,15 @@
 #include "Enum.h"
 #include "Resource.h"
 
-/* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
-{
-  0x0000003E, /* ratio 103.23 % */
-  0xB8002F00, 0x00088452, 0xBC004D83, 0x40064001, 0xC3090019, 0x60039800, 0x0010000D,
-  0x334800AC, 0x31002371, 0x0438D800, 0x8022E3A0, 0x16060693, 0xE4C6E8E1, 0x020097C9,
-  0x00000002, 0x00000000
-};
-
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XRect _Const0001 = {{ 0, 182 }, { 480, 272 }};
 static const XRect _Const0002 = {{ 0, 38 }, { 480, 182 }};
 static const XColor _Const0003 = { 0x00, 0x00, 0x00, 0xFF };
 static const XRect _Const0004 = {{ 0, 36 }, { 480, 272 }};
-static const XStringRes _Const0005 = { _StringsDefault0, 0x0002 };
-static const XStringRes _Const0006 = { _StringsDefault0, 0x0019 };
-static const XRect _Const0007 = {{ 0, 0 }, { 480, 236 }};
-static const XColor _Const0008 = { 0x00, 0x00, 0x00, 0xCD };
-static const XRect _Const0009 = {{ 195, 62 }, { 285, 152 }};
+static const XRect _Const0005 = {{ 0, 0 }, { 480, 236 }};
+static const XColor _Const0006 = { 0x00, 0x00, 0x00, 0xCD };
+static const XRect _Const0007 = {{ 195, 62 }, { 285, 152 }};
 
 /* Initializer for the class 'Components::BaseComponent' */
 void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink, XHandle aArg )
@@ -683,12 +672,20 @@ void ComponentsBaseMainBG_OnDDModeStateChangedSlot( ComponentsBaseMainBG _this,
 /* 'C' function for method : 'Components::BaseMainBG.UpdateDDModeMask()' */
 void ComponentsBaseMainBG_UpdateDDModeMask( ComponentsBaseMainBG _this )
 {
-  if ( CoreGroup__IsCurrentDialog( _this ) && _this->Super1.DDModeEnabled )
+  if ( _this->Super1.DDModeEnabled )
   {
-    CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
-    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )));
-    EwTrace( "%s%b%s%$", EwLoadString( &_Const0005 ), CoreGroup_OnGetVisible((CoreGroup)&_this->DDModeMask ), 
-      EwLoadString( &_Const0006 ), EwClassOf(((XObject)_this )));
+    if ( !DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+    {
+      CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, 0 );
+    }
+    else
+    {
+      if ( CoreGroup__IsCurrentDialog( _this ))
+      {
+        CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, 1 );
+      }
+    }
   }
 }
 
@@ -922,12 +919,12 @@ void ComponentsDDModeMask__Init( ComponentsDDModeMask _this, XObject aLink, XHan
   _this->_VMT = EW_CLASS( ComponentsDDModeMask );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0007 );
+  CoreRectView__OnSetBounds( _this, _Const0005 );
   CoreView_OnSetStackingPriority((CoreView)&_this->DDModeBG, 0 );
-  CoreRectView__OnSetBounds( &_this->DDModeBG, _Const0007 );
-  ViewsRectangle_OnSetColor( &_this->DDModeBG, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->DDModeBG, _Const0005 );
+  ViewsRectangle_OnSetColor( &_this->DDModeBG, _Const0006 );
   CoreView_OnSetStackingPriority((CoreView)&_this->DDModeIcon, 0 );
-  CoreRectView__OnSetBounds( &_this->DDModeIcon, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->DDModeIcon, _Const0007 );
   CoreGroup__Add( _this, ((CoreView)&_this->DDModeBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DDModeIcon ), 0 );
   ViewsImage_OnSetBitmap( &_this->DDModeIcon, EwLoadResource( &ResourceIconDDActive, 

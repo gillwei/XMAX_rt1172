@@ -20,7 +20,8 @@ extern "C"{
 #define UNIT_TEST_ADC           ( 0 )
 #define UNIT_TEST_NAVI          ( 0 )
 #define UNIT_TEST_EEPROM        ( 0 )
-#define UNIT_TEST_ENABLE        ( UNIT_TEST_FACTORY | UNIT_TEST_BURNIN | UNIT_TEST_JPEG | UNIT_TEST_ADC | UNIT_TEST_NAVI | UNIT_TEST_EEPROM )
+#define UNIT_TEST_VI            ( 0 )
+#define UNIT_TEST_ENABLE        ( UNIT_TEST_FACTORY | UNIT_TEST_BURNIN | UNIT_TEST_JPEG | UNIT_TEST_ADC | UNIT_TEST_NAVI | UNIT_TEST_EEPROM | UNIT_TEST_VI )
 
 #include "NAVI_pub.h"
 

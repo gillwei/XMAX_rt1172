@@ -120,7 +120,6 @@ class INF01_MeterDisplaySettingMenu : Menu::BaseMenuView
   $rect <20,20,160,60>
   inherited object Menu
   {
-    preset DDModeEnabled = true;
     preset NoOfItems = 3;
   }
 

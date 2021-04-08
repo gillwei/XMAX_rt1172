@@ -368,10 +368,20 @@ class BaseMainBG : Components::BaseComponent
   $rect <540,220,740,260>
   method void UpdateDDModeMask()
   {
-    if( IsCurrentDialog() && DDModeEnabled )
+    if( DDModeEnabled )
     {
-      DDModeMask.Visible = DeviceInterface::VehicleDevice.DDModeActivated;
-      trace "DDModeMask Visible: ", DDModeMask.Visible, "in ", classof this;
+      // always dimiss the DD mode mask even when this dialog is not the top dialog.
+      if( !DeviceInterface::VehicleDevice.DDModeActivated )
+      {
+        DDModeMask.Visible = false;
+      }
+      else
+      {
+        if( IsCurrentDialog() )
+        {
+          DDModeMask.Visible = true;
+        }
+      }
     }
   }
 

@@ -87,7 +87,6 @@ void InfoINF01_MeterDisplaySettingMenu__Init( InfoINF01_MeterDisplaySettingMenu 
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super2.SlideOutEffectEnabled = 1;
-  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsINF01_TACHO_VISUALIZER ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsINF01_ECHO_VISUALIZER ));

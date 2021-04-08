@@ -28,6 +28,8 @@ void test_navi_int( void );
 void test_navi_proc( void );
 void test_eeprom_int( void );
 void test_eeprom_proc( void );
+void test_vi_int( void );
+void test_vi_proc( void );
 
 #ifdef __cplusplus
 }

@@ -84,6 +84,7 @@ void UnitUNT01_UnitSettingMenu__Init( UnitUNT01_UnitSettingMenu _this, XObject a
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super2.SlideOutEffectEnabled = 1;
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
@@ -578,6 +579,7 @@ void UnitUNT02_MileageSettingMenu__Init( UnitUNT02_MileageSettingMenu _this, XOb
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super2.SlideOutEffectEnabled = 1;
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 2 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT02_unit_mileage_kilometer ));
@@ -862,6 +864,7 @@ void UnitUNT03_FuelSettingMenu__Init( UnitUNT03_FuelSettingMenu _this, XObject a
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super2.SlideOutEffectEnabled = 1;
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_km_per_liter ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT03_unit_fuel_liter_per_hundred_km ));
@@ -1139,6 +1142,7 @@ void UnitUNT04_PressureSettingMenu__Init( UnitUNT04_PressureSettingMenu _this, X
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super2.SlideOutEffectEnabled = 1;
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_kpa ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT04_unit_pressure_psi ));
@@ -1389,6 +1393,7 @@ void UnitUNT05_TemperatureSettingMenu__Init( UnitUNT05_TemperatureSettingMenu _t
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super2.SlideOutEffectEnabled = 1;
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 2 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT05_unit_temperature_c ));

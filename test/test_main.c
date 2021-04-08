@@ -93,6 +93,10 @@
             test_eeprom_proc();
         #endif
 
+        #if( UNIT_TEST_VI )
+            test_vi_proc();
+        #endif
+
         vTaskDelay( TEST_TASK_DELAY_TICKS );
         }
 
@@ -153,6 +157,10 @@
 
     #if( UNIT_TEST_EEPROM )
         test_eeprom_int();
+    #endif
+
+    #if( UNIT_TEST_VI )
+        test_vi_int();
     #endif
 
     }
