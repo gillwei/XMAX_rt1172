@@ -681,6 +681,7 @@ EW_DEFINE_CLASS( WeatherWeatherDayViewUI, CoreGroup, CurrentLocationText, Curren
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -776,6 +777,7 @@ EW_DEFINE_CLASS( WeatherWEA01_Main, ComponentsBaseMainBG, WeatherListView, Weath
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1693,6 +1695,7 @@ EW_DEFINE_CLASS( WeatherWeatherWeekViewUI, CoreGroup, DayTextViewArray, DayOneWe
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1735,7 +1738,7 @@ void WeatherWeatherList__Init( WeatherWeatherList _this, XObject aLink, XHandle 
   CoreVerticalList_OnSetNoOfItems( &_this->VerticalList, 2 );
   CoreVerticalList_OnSetItemClass( &_this->VerticalList, EW_CLASS( WeatherWeatherItemWrapper ));
   CoreRectView__OnSetBounds( &_this->ArrowScrollBar, _Const005E );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, 1 );
+  CoreGroup__OnSetVisible( &_this->ArrowScrollBar, 1 );
   MenuArrowScrollBar_OnSetNoOfPages( &_this->ArrowScrollBar, 2 );
   EffectsEffect_OnSetExponent((EffectsEffect)&_this->PageScrollEffect, 4.190000f );
   EffectsEffect_OnSetTiming((EffectsEffect)&_this->PageScrollEffect, EffectsTimingExp_Out );
@@ -1872,6 +1875,7 @@ EW_DEFINE_CLASS( WeatherWeatherList, ComponentsBaseComponent, VerticalList, Vert
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1993,6 +1997,7 @@ EW_DEFINE_CLASS( WeatherWeatherItemWrapper, CoreGroup, _None, _None, _None, _Non
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,

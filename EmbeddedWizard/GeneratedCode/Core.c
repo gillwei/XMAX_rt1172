@@ -2043,6 +2043,7 @@ void CoreGroup__Init( CoreGroup _this, XObject aLink, XHandle aArg )
   | CoreViewStateTouchable | CoreViewStateVisible;
   _this->Enabled = 1;
   _this->Opacity = 255;
+  _this->Visible = 1;
 
   /* Call the user defined constructor */
   CoreGroup_Init( _this, aArg );
@@ -2865,6 +2866,12 @@ void CoreGroup_OnSetVisible( CoreGroup _this, XBool value )
     CoreView__ChangeViewState( _this, CoreViewStateVisible, 0 );
   else
     CoreView__ChangeViewState( _this, 0, CoreViewStateVisible );
+}
+
+/* Wrapper function for the virtual method : 'Core::Group.OnSetVisible()' */
+void CoreGroup__OnSetVisible( void* _this, XBool value )
+{
+  ((CoreGroup)_this)->_VMT->OnSetVisible((CoreGroup)_this, value );
 }
 
 /* The method FindDialogByClass() searches the tree of subordinated components for 
@@ -4325,6 +4332,7 @@ EW_DEFINE_CLASS( CoreGroup, CoreRectView, first, Opacity, Opacity, Opacity, Opac
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -5900,6 +5908,7 @@ EW_DEFINE_CLASS( CoreRoot, CoreGroup, keyLastTarget, cursorHoldTimer, cursorHold
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreRoot_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreRoot_IsCurrentDialog,
   CoreRoot_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -7563,6 +7572,7 @@ EW_DEFINE_CLASS( CoreVerticalList, CoreGroup, itemsPool, OnUpdate, invalidTail,
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,

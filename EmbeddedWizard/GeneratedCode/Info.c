@@ -327,6 +327,7 @@ EW_DEFINE_CLASS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView, CheckMarkU
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,

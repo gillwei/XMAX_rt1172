@@ -221,6 +221,7 @@ EW_DEFINE_METHODS( CoreRoot, CoreGroup )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
   EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreRoot _this, XInt32 value )
+  EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreRoot _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreRoot _this, XBool aRecursive )
   EW_METHOD( DismissDialog,     void )( CoreGroup _this, CoreGroup aDialogGroup, 

@@ -619,6 +619,19 @@ EW_RES_WITHOUT_VARIANTS( ResourceStatusBarBtIcon )
 /* Table with links to derived variants of the bitmap resource : 'Resource::Chessboard' */
 EW_RES_WITHOUT_VARIANTS( ResourceChessboard )
 
+/* User defined auto object: 'Resource::ExternFlickerPattern' */
+EW_DEFINE_AUTOOBJECT( ResourceExternFlickerPattern, ResourcesExternBitmap )
+
+/* Initializer for the auto object 'Resource::ExternFlickerPattern' */
+void ResourceExternFlickerPattern__Init( ResourcesExternBitmap _this )
+{
+  ResourcesExternBitmap_OnSetName( _this, 0 );
+}
+
+/* Table with links to derived variants of the auto object : 'Resource::ExternFlickerPattern' */
+EW_DEFINE_AUTOOBJECT_VARIANTS( ResourceExternFlickerPattern )
+EW_END_OF_AUTOOBJECT_VARIANTS( ResourceExternFlickerPattern )
+
 /* Include a file containing the bitmap resource : 'Resource::SignalLevelIcon' */
 #include "_ResourceSignalLevelIcon.h"
 

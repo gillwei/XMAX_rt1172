@@ -46,6 +46,7 @@
 #include "_HomeHOM11_TachoVisualizer.h"
 #include "_HomeHOM12_EcoVisualizer.h"
 #include "_HomeHOM13_SpeedVisualizer.h"
+#include "_InspectionTFT_Main.h"
 #include "_LauncherLNC_Main.h"
 #include "_NavigationNAV01_DefaultView.h"
 #include "_NavigationNAV03_TBTListView.h"
@@ -98,6 +99,7 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   StatusBarMain__Init( &_this->StatusBar, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->CheckOpeningTimer, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->InspectionModeEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( ApplicationApplication );
@@ -108,7 +110,7 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreTimer_OnSetPeriod( &_this->DDModeTestTimer, 3000 );
   CoreTimer_OnSetEnabled( &_this->DDModeTestTimer, 0 );
   CoreRectView__OnSetBounds( &_this->StatusBar, _Const0001 );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->StatusBar, 0 );
+  CoreGroup__OnSetVisible( &_this->StatusBar, 0 );
   CoreTimer_OnSetPeriod( &_this->CheckOpeningTimer, 200 );
   CoreTimer_OnSetBegin( &_this->CheckOpeningTimer, 500 );
   CoreTimer_OnSetEnabled( &_this->CheckOpeningTimer, 1 );
@@ -128,6 +130,9 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   _this->PhoneCallStateChangedEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnPhoneCallStateChangedSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->PhoneCallStateChangedEventHandler, 
   &EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )->PhoneCallStateChangedSystemEvent );
+  _this->InspectionModeEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnInspectionModeEventSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->InspectionModeEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->InspectionModeSystemEvent );
 
   /* Call the user defined constructor */
   ApplicationApplication_Init( _this, aArg );
@@ -147,6 +152,7 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
   StatusBarMain__ReInit( &_this->StatusBar );
   CoreTimer__ReInit( &_this->CheckOpeningTimer );
   CoreSystemEventHandler__ReInit( &_this->PhoneCallStateChangedEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->InspectionModeEventHandler );
 }
 
 /* Finalizer method for the class 'Application::Application' */
@@ -163,6 +169,7 @@ void ApplicationApplication__Done( ApplicationApplication _this )
   StatusBarMain__Done( &_this->StatusBar );
   CoreTimer__Done( &_this->CheckOpeningTimer );
   CoreSystemEventHandler__Done( &_this->PhoneCallStateChangedEventHandler );
+  CoreSystemEventHandler__Done( &_this->InspectionModeEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   CoreRoot__Done( &_this->_Super );
@@ -219,14 +226,13 @@ void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this
     {
       case EnumFactoryTestDisplay :
       {
-        FactoryDisplayManual FactoryTestDialog;
-        ApplicationApplication_OnSetStatusBarVisible( _this, 0 );
-        FactoryTestDialog = EwCastObject( CoreGroup_FindDialogByClass((CoreGroup)_this, 
-        EW_CLASS( FactoryDisplayManual )), FactoryDisplayManual );
+        FactoryDisplayManual FactoryTestDialog = EwCastObject( CoreGroup_FindDialogByClass((CoreGroup)_this, 
+          EW_CLASS( FactoryDisplayManual )), FactoryDisplayManual );
 
         if ( FactoryTestDialog == 0 )
         {
           FactoryTestDialog = EwNewObject( FactoryDisplayManual, 0 );
+          CoreView_OnSetStackingPriority((CoreView)FactoryTestDialog, 1 );
           CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)FactoryTestDialog ), 
           0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
         }
@@ -238,10 +244,10 @@ void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this
 
       case EnumFactoryTestBurnInStart :
       {
-        FactoryDisplayAutoRun DisplayAutoRunDialog;
-        ApplicationApplication_OnSetStatusBarVisible( _this, 0 );
-        DisplayAutoRunDialog = EwNewObject( FactoryDisplayAutoRun, 0 );
+        FactoryDisplayAutoRun DisplayAutoRunDialog = EwNewObject( FactoryDisplayAutoRun, 
+          0 );
         FactoryDisplayAutoRun_OnSetBurnInEnabled( DisplayAutoRunDialog, 1 );
+        CoreView_OnSetStackingPriority((CoreView)DisplayAutoRunDialog, 1 );
         CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)DisplayAutoRunDialog ), 
         0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
         _this->IsFactoryTest = 1;
@@ -269,7 +275,7 @@ void ApplicationApplication_OnSetStatusBarVisible( ApplicationApplication _this,
   if ( _this->StatusBarVisible != value )
   {
     _this->StatusBarVisible = value;
-    CoreGroup_OnSetVisible((CoreGroup)&_this->StatusBar, value );
+    CoreGroup__OnSetVisible( &_this->StatusBar, value );
     EwTrace( "%s%b", EwLoadString( &_Const0002 ), value );
   }
 }
@@ -525,9 +531,10 @@ void ApplicationApplication_OnOpeningFinishedSlot( ApplicationApplication _this,
     0 );
   }
 
+  _this->IsFactoryModeDialogDisplayed = 0;
   DeviceInterfaceBluetoothDeviceClass_GetBluetoothEnable( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
   DeviceInterfaceBluetoothDeviceClass ));
-  CoreGroup_OnSetVisible((CoreGroup)&_this->StatusBar, 1 );
+  CoreGroup__OnSetVisible( &_this->StatusBar, 1 );
   ApplicationApplication_ShowDisclaimer( _this );
 }
 
@@ -549,6 +556,7 @@ void ApplicationApplication_OnStartOpeningSlot( ApplicationApplication _this, XO
     FactoryModeDialog->OnFactoryModeFinished = EwNewSlot( _this, ApplicationApplication_OnOpeningFinishedSlot );
     CoreGroup_SwitchToDialog((CoreGroup)_this, ((CoreGroup)FactoryModeDialog ), 
     0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    _this->IsFactoryModeDialogDisplayed = 1;
   }
   else
   {
@@ -668,14 +676,79 @@ void ApplicationApplication_OnPhoneCallStateChangedSlot( ApplicationApplication 
   }
 }
 
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void ApplicationApplication_OnInspectionModeEventSlot( ApplicationApplication _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( _this->IsFactoryModeDialogDisplayed )
+  {
+    switch ( EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->InspectionMode )
+    {
+      case EnumInspectionModeDISPLAY :
+        ApplicationApplication_ProcInspectionDisplay( _this );
+      break;
+
+      case EnumInspectionModeEND :
+        ApplicationApplication_StopInspection( _this );
+      break;
+
+      default : 
+        ;
+    }
+  }
+  else
+  {
+    DeviceInterfaceSystemDeviceClass_SendInspectionResponse( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+    DeviceInterfaceSystemDeviceClass ), EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+    DeviceInterfaceSystemDeviceClass )->InspectionMode, 255 );
+  }
+}
+
+/* 'C' function for method : 'Application::Application.ProcInspectionDisplay()' */
+void ApplicationApplication_ProcInspectionDisplay( ApplicationApplication _this )
+{
+  InspectionTFT_Main InspectionDialog = EwCastObject( CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+    0 ), InspectionTFT_Main );
+
+  if ( InspectionDialog == 0 )
+  {
+    InspectionDialog = EwNewObject( InspectionTFT_Main, 0 );
+    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)InspectionDialog ), 0, 
+    0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
+
+  InspectionTFT_Main_OnSetPattern( InspectionDialog, EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass )->InspectionDisplayPattern );
+}
+
+/* 'C' function for method : 'Application::Application.StopInspection()' */
+void ApplicationApplication_StopInspection( ApplicationApplication _this )
+{
+  InspectionTFT_Main InspectionDialog = EwCastObject( CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+    0 ), InspectionTFT_Main );
+
+  if ( InspectionDialog != 0 )
+  {
+    CoreGroup__DismissDialog( _this, ((CoreGroup)InspectionDialog ), 0, 0, 0, EwNullSlot, 
+    EwNullSlot, 0 );
+  }
+
+  DeviceInterfaceSystemDeviceClass_SendInspectionResponse( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), EnumInspectionModeEND, 0 );
+}
+
 /* Variants derived from the class : 'Application::Application' */
 EW_DEFINE_CLASS_VARIANTS( ApplicationApplication )
 EW_END_OF_CLASS_VARIANTS( ApplicationApplication )
 
 /* Virtual Method Table (VMT) for the class : 'Application::Application' */
 EW_DEFINE_CLASS( ApplicationApplication, CoreRoot, FactoryTestEventHandler, FactoryTestEventHandler, 
-                 FactoryTestEventHandler, FactoryTestEventHandler, IsFactoryTest, 
-                 IsFactoryTest, "Application::Application" )
+                 FactoryTestEventHandler, FactoryTestEventHandler, IsFactoryModeDialogDisplayed, 
+                 IsFactoryModeDialogDisplayed, "Application::Application" )
   CoreRectView_initLayoutContext,
   CoreRoot_GetRoot,
   CoreRoot_Draw,
@@ -691,6 +764,7 @@ EW_DEFINE_CLASS( ApplicationApplication, CoreRoot, FactoryTestEventHandler, Fact
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreRoot_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreRoot_IsCurrentDialog,
   CoreRoot_IsActiveDialog,
   CoreGroup_DismissDialog,

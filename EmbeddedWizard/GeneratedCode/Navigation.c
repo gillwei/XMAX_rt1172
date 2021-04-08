@@ -231,7 +231,7 @@ void NavigationNAV01_DefaultView__Init( NavigationNAV01_DefaultView _this, XObje
   CoreRectView__OnSetBounds( &_this->Shadow, _Const0008 );
   ViewsImage_OnSetVisible( &_this->Shadow, 0 );
   CoreRectView__OnSetBounds( &_this->NaviETAObject, _Const0009 );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->NaviETAObject, 1 );
+  CoreGroup__OnSetVisible( &_this->NaviETAObject, 1 );
   CoreRectView__OnSetBounds( &_this->ZoomInButton, _Const000A );
   ViewsImage_OnSetVisible( &_this->ZoomInButton, 0 );
   CoreRectView__OnSetBounds( &_this->ZoomOutButton, _Const000B );
@@ -822,6 +822,7 @@ EW_DEFINE_CLASS( NavigationNAV01_DefaultView, HomeBaseHome, Background, Backgrou
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1102,6 +1103,7 @@ EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, _None, _None
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1352,6 +1354,7 @@ EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, CheckMarkU
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1568,6 +1571,7 @@ EW_DEFINE_CLASS( NavigationNaviCurrentRoad, CoreGroup, NaviIconCurRd, NaviIconCu
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1832,6 +1836,7 @@ EW_DEFINE_CLASS( NavigationNaviAlert, CoreGroup, DismissAlertSignal, DismissAler
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1952,6 +1957,7 @@ EW_DEFINE_CLASS( NavigationNaviAlertMessage, CoreGroup, NaviEventBg, NaviEventBg
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -2128,6 +2134,7 @@ EW_DEFINE_CLASS( NavigationNaviETA, CoreGroup, NaviIconFlag, NaviIconFlag, NaviI
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -2533,6 +2540,7 @@ EW_DEFINE_CLASS( NavigationNAV05_TBTView, HomeBaseHome, NaviTBTViewBg, NaviTBTVi
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -2703,6 +2711,7 @@ EW_DEFINE_CLASS( NavigationNAV03_TBTListView, HomeBaseHome, TbtList, TbtList, Tb
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -2842,6 +2851,7 @@ EW_DEFINE_CLASS( NavigationTbtInfoItem, CoreGroup, TbtItemBg, TbtItemBg, TbtItem
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -3012,6 +3022,7 @@ EW_DEFINE_CLASS( NavigationTbtListMenu, MenuVerticalMenu, _None, _None, _None, _
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,

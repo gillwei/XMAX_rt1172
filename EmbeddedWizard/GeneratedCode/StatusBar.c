@@ -117,7 +117,7 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
   CoreRectView__OnSetBounds( &_this->Clock, _Const0003 );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->Clock, 0 );
+  CoreGroup__OnSetVisible( &_this->Clock, 0 );
   CoreRectView__OnSetBounds( &_this->BatteryIcon, _Const0004 );
   ViewsImage_OnSetVisible( &_this->BatteryIcon, 0 );
   CoreRectView__OnSetBounds( &_this->HeadsetIcon, _Const0005 );
@@ -461,7 +461,7 @@ void StatusBarMain_OnVehicleDataReceivedSlot( StatusBarMain _this, XObject sende
     switch ( VehicleData->RxType )
     {
       case EnumVehicleRxTypeSUPPORT_FUNC_CLOCK :
-        CoreGroup_OnSetVisible((CoreGroup)&_this->Clock, DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
+        CoreGroup__OnSetVisible( &_this->Clock, DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
         EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
         EnumVehicleSupportedFunctionCLOCK ));
       break;
@@ -541,6 +541,7 @@ EW_DEFINE_CLASS( StatusBarMain, CoreGroup, Background, Background, Background, B
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -685,6 +686,7 @@ EW_DEFINE_CLASS( StatusBarClock, CoreGroup, ClockHourText, ClockHourText, ClockH
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,

@@ -425,6 +425,58 @@ void ViewsRectangle_Draw( ViewsRectangle _this, GraphicsCanvas aCanvas, XRect aC
     aOffset ), _this->ColorTL, _this->ColorTR, _this->ColorBR, _this->ColorBL, aBlend );
 }
 
+/* 'C' function for method : 'Views::Rectangle.OnSetColorBL()' */
+void ViewsRectangle_OnSetColorBL( ViewsRectangle _this, XColor value )
+{
+  if ( !EwCompColor( value, _this->ColorBL ))
+    return;
+
+  _this->ColorBL = value;
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+}
+
+/* 'C' function for method : 'Views::Rectangle.OnSetColorBR()' */
+void ViewsRectangle_OnSetColorBR( ViewsRectangle _this, XColor value )
+{
+  if ( !EwCompColor( value, _this->ColorBR ))
+    return;
+
+  _this->ColorBR = value;
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+}
+
+/* 'C' function for method : 'Views::Rectangle.OnSetColorTR()' */
+void ViewsRectangle_OnSetColorTR( ViewsRectangle _this, XColor value )
+{
+  if ( !EwCompColor( value, _this->ColorTR ))
+    return;
+
+  _this->ColorTR = value;
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+}
+
+/* 'C' function for method : 'Views::Rectangle.OnSetColorTL()' */
+void ViewsRectangle_OnSetColorTL( ViewsRectangle _this, XColor value )
+{
+  if ( !EwCompColor( value, _this->ColorTL ))
+    return;
+
+  _this->ColorTL = value;
+
+  if (( _this->Super2.Owner != 0 ) && (( _this->Super2.viewState & CoreViewStateVisible ) 
+      == CoreViewStateVisible ))
+    CoreGroup__InvalidateArea( _this->Super2.Owner, _this->Super1.Bounds );
+}
+
 /* 'C' function for method : 'Views::Rectangle.OnSetColor()' */
 void ViewsRectangle_OnSetColor( ViewsRectangle _this, XColor value )
 {

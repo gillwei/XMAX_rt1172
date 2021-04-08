@@ -353,6 +353,7 @@ EW_DEFINE_CLASS( MenuItemBase, ComponentsBaseComponent, OnActivate, OnActivate,
   CoreGroup_OnGetEnabled,
   MenuItemBase_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -409,7 +410,7 @@ void MenuVerticalMenu__Init( MenuVerticalMenu _this, XObject aLink, XHandle aArg
   CoreVerticalList_OnSetItemHeight( &_this->MenuList, 74 );
   CoreVerticalList_OnSetItemClass( &_this->MenuList, EW_CLASS( MenuItemWrapper ));
   CoreRectView__OnSetBounds( &_this->Scrollbar, _Const000B );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, 0 );
+  CoreGroup__OnSetVisible( &_this->Scrollbar, 0 );
   MenuScrollbar_OnSetPageItems( &_this->Scrollbar, 3 );
   _this->Focusable = 1;
   _this->ItemHeight = 74;
@@ -419,7 +420,7 @@ void MenuVerticalMenu__Init( MenuVerticalMenu _this, XObject aLink, XHandle aArg
   ViewsBorder_OnSetColor( &_this->FocusFrame, _Const000D );
   ViewsBorder_OnSetVisible( &_this->FocusFrame, 0 );
   CoreRectView__OnSetBounds( &_this->ArrowScrollBar, _Const000E );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, 0 );
+  CoreGroup__OnSetVisible( &_this->ArrowScrollBar, 0 );
   EffectsEffect_OnSetExponent((EffectsEffect)&_this->PageScrollEffect, 4.190000f );
   EffectsEffect_OnSetTiming((EffectsEffect)&_this->PageScrollEffect, EffectsTimingExp_Out );
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->PageScrollEffect, 1 );
@@ -502,11 +503,11 @@ void MenuVerticalMenu_UpdateViewState( MenuVerticalMenu _this, XSet aState )
   {
     if ( _this->ItemNumPerPage < _this->NoOfItems )
     {
-      CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, 1 );
+      CoreGroup__OnSetVisible( &_this->Scrollbar, 1 );
     }
     else
     {
-      CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, 0 );
+      CoreGroup__OnSetVisible( &_this->Scrollbar, 0 );
     }
   }
 }
@@ -747,7 +748,7 @@ void MenuVerticalMenu_OnSetArrowScrollBarVisible( MenuVerticalMenu _this, XBool
   if ( _this->ArrowScrollBarVisible != value )
   {
     _this->ArrowScrollBarVisible = value;
-    CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, value );
+    CoreGroup__OnSetVisible( &_this->ArrowScrollBar, value );
   }
 }
 
@@ -769,7 +770,7 @@ void MenuVerticalMenu_OnPageScrolledSlot( MenuVerticalMenu _this, XObject sender
 /* 'C' function for method : 'Menu::VerticalMenu.HideArrowScrollBar()' */
 void MenuVerticalMenu_HideArrowScrollBar( MenuVerticalMenu _this )
 {
-  CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, 0 );
+  CoreGroup__OnSetVisible( &_this->ArrowScrollBar, 0 );
 }
 
 /* 'C' function for method : 'Menu::VerticalMenu.RestoreArrowScrollBar()' */
@@ -777,7 +778,7 @@ void MenuVerticalMenu_RestoreArrowScrollBar( MenuVerticalMenu _this )
 {
   if ( _this->ArrowScrollBarVisible )
   {
-    CoreGroup_OnSetVisible((CoreGroup)&_this->ArrowScrollBar, 1 );
+    CoreGroup__OnSetVisible( &_this->ArrowScrollBar, 1 );
   }
 }
 
@@ -787,7 +788,7 @@ void MenuVerticalMenu_OnSetScrollbarVisible( MenuVerticalMenu _this, XBool value
   if ( _this->ScrollbarVisible != value )
   {
     _this->ScrollbarVisible = value;
-    CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, value );
+    CoreGroup__OnSetVisible( &_this->Scrollbar, value );
   }
 }
 
@@ -823,7 +824,7 @@ void MenuVerticalMenu_OnSetSelectedItem( MenuVerticalMenu _this, XInt32 value )
 /* 'C' function for method : 'Menu::VerticalMenu.HideScrollbar()' */
 void MenuVerticalMenu_HideScrollbar( MenuVerticalMenu _this )
 {
-  CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, 0 );
+  CoreGroup__OnSetVisible( &_this->Scrollbar, 0 );
 }
 
 /* 'C' function for method : 'Menu::VerticalMenu.RestoreScrollbar()' */
@@ -831,7 +832,7 @@ void MenuVerticalMenu_RestoreScrollbar( MenuVerticalMenu _this )
 {
   if ( _this->ScrollbarVisible && ( _this->Scrollbar.PageNum > 0 ))
   {
-    CoreGroup_OnSetVisible((CoreGroup)&_this->Scrollbar, 1 );
+    CoreGroup__OnSetVisible( &_this->Scrollbar, 1 );
   }
 }
 
@@ -866,6 +867,7 @@ EW_DEFINE_CLASS( MenuVerticalMenu, ComponentsBaseComponent, MenuList, MenuList,
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1020,6 +1022,7 @@ EW_DEFINE_CLASS( MenuItemCheckbox, MenuItemBase, CheckBoxButton, CheckBoxButton,
   CoreGroup_OnGetEnabled,
   MenuItemCheckbox_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1331,6 +1334,7 @@ EW_DEFINE_CLASS( MenuItemWrapper, CoreGroup, OnActivate, OnActivate, Title, Titl
   MenuItemWrapper_OnGetEnabled,
   MenuItemWrapper_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1519,6 +1523,7 @@ EW_DEFINE_CLASS( MenuScrollbar, CoreGroup, Track, Track, Track, Track, ViewIdx,
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -1795,6 +1800,7 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, Menu, Menu, Menu, Menu,
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -2028,6 +2034,7 @@ EW_DEFINE_CLASS( MenuPushButton, ComponentsBaseComponent, OnActivate, OnActivate
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -2203,6 +2210,7 @@ EW_DEFINE_CLASS( MenuUpDownPushButtonSet, ComponentsBaseComponent, OnUpButtonAct
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -2337,6 +2345,7 @@ EW_DEFINE_CLASS( MenuItemCheckMark, MenuItemBase, CheckMark, CheckMark, CheckMar
   CoreGroup_OnGetEnabled,
   MenuItemBase_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -2507,6 +2516,7 @@ EW_DEFINE_CLASS( MenuArrowScrollBar, CoreGroup, UpArrowIcon, UpArrowIcon, UpArro
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -2653,6 +2663,7 @@ EW_DEFINE_CLASS( MenuItemBaseValue, MenuItemBase, ItemValueText, ItemValueText,
   CoreGroup_OnGetEnabled,
   MenuItemBaseValue_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -2828,6 +2839,7 @@ EW_DEFINE_CLASS( MenuItemNotification, MenuItemBase, MessageText, MessageText, M
   CoreGroup_OnGetEnabled,
   MenuItemBase_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,

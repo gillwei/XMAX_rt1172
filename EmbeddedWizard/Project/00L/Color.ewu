@@ -1,0 +1,21 @@
+﻿$version 10.00
+
+$rect <10,10,210,50>
+$output false
+const color RED = #FF0000FF;
+
+$rect <10,60,210,100>
+$output false
+const color GREEN = #00FF00FF;
+
+$rect <10,110,210,150>
+$output false
+const color BLUE = #0000FFFF;
+
+$rect <10,160,210,200>
+$output false
+const color WHITE = #FFFFFFFF;
+
+$rect <10,210,210,250>
+$output false
+const color BLACK = #000000FF;

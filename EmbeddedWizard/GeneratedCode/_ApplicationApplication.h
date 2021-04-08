@@ -118,6 +118,8 @@ EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( StatusBar,       StatusBarMain )
   EW_OBJECT  ( CheckOpeningTimer, CoreTimer )
   EW_OBJECT  ( PhoneCallStateChangedEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( InspectionModeEventHandler, CoreSystemEventHandler )
+  EW_VARIABLE( IsFactoryModeDialogDisplayed, XBool )
   EW_VARIABLE( IsFactoryTest,   XBool )
   EW_VARIABLE( IsDisclaimerDismissed, XBool )
   EW_PROPERTY( StatusBarVisible, XBool )
@@ -145,6 +147,7 @@ EW_DEFINE_METHODS( ApplicationApplication, CoreRoot )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
   EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreRoot _this, XInt32 value )
+  EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreRoot _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreRoot _this, XBool aRecursive )
   EW_METHOD( DismissDialog,     void )( CoreGroup _this, CoreGroup aDialogGroup, 
@@ -243,6 +246,17 @@ void ApplicationApplication_OnSlideInHomeFinishedSlot( ApplicationApplication _t
 /* 'C' function for method : 'Application::Application.OnPhoneCallStateChangedSlot()' */
 void ApplicationApplication_OnPhoneCallStateChangedSlot( ApplicationApplication _this, 
   XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void ApplicationApplication_OnInspectionModeEventSlot( ApplicationApplication _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Application::Application.ProcInspectionDisplay()' */
+void ApplicationApplication_ProcInspectionDisplay( ApplicationApplication _this );
+
+/* 'C' function for method : 'Application::Application.StopInspection()' */
+void ApplicationApplication_StopInspection( ApplicationApplication _this );
 
 #ifdef __cplusplus
   }

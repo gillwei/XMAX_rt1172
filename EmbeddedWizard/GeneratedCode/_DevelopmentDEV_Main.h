@@ -114,7 +114,7 @@
 
 /* Deklaration of class : 'Development::DEV_Main' */
 EW_DEFINE_FIELDS( DevelopmentDEV_Main, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [9])
+  EW_ARRAY   ( ItemTitleArray,  XString, [10])
 EW_END_OF_FIELDS( DevelopmentDEV_Main )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_Main' */
@@ -139,6 +139,7 @@ EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
   EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
+  EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
   EW_METHOD( DismissDialog,     void )( CoreGroup _this, CoreGroup aDialogGroup, 

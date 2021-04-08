@@ -112,6 +112,8 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
   CoreSystemEvent__Init( &_this->QrCodeSystemEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->UpdateLocalTimeSystemEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->OpeningSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->InspectionDisplaySystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->InspectionModeSystemEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceSystemDeviceClass );
@@ -120,6 +122,7 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
   CoreTimer_OnSetPeriod( &_this->FactoryResetTimer, 2000 );
   CoreTimer_OnSetEnabled( &_this->FactoryResetTimer, 0 );
   _this->BrightnessLevel = 7;
+  _this->InspectionMode = EnumInspectionModeNONE;
   _this->FactoryResetTimer.OnTrigger = EwNewSlot( _this, DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot );
 }
 
@@ -135,6 +138,8 @@ void DeviceInterfaceSystemDeviceClass__ReInit( DeviceInterfaceSystemDeviceClass 
   CoreSystemEvent__ReInit( &_this->QrCodeSystemEvent );
   CoreSystemEvent__ReInit( &_this->UpdateLocalTimeSystemEvent );
   CoreSystemEvent__ReInit( &_this->OpeningSystemEvent );
+  CoreSystemEvent__ReInit( &_this->InspectionDisplaySystemEvent );
+  CoreSystemEvent__ReInit( &_this->InspectionModeSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::SystemDeviceClass' */
@@ -149,6 +154,8 @@ void DeviceInterfaceSystemDeviceClass__Done( DeviceInterfaceSystemDeviceClass _t
   CoreSystemEvent__Done( &_this->QrCodeSystemEvent );
   CoreSystemEvent__Done( &_this->UpdateLocalTimeSystemEvent );
   CoreSystemEvent__Done( &_this->OpeningSystemEvent );
+  CoreSystemEvent__Done( &_this->InspectionDisplaySystemEvent );
+  CoreSystemEvent__Done( &_this->InspectionModeSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -516,6 +523,51 @@ XBool DeviceInterfaceSystemDeviceClass_IsOperationModeReady( DeviceInterfaceSyst
   IsOperationModeReady = 0;
   IsOperationModeReady = ew_is_operation_mode_ready();
   return IsOperationModeReady;
+}
+
+/* Notifiy the inspection display pattern to test */
+void DeviceInterfaceSystemDeviceClass_NotifyInspectionRequest( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aMode, XEnum aDisplayPattern )
+{
+  DeviceInterfaceSystemDeviceClass_OnSetInspectionDisplayPattern( _this, aDisplayPattern );
+  DeviceInterfaceSystemDeviceClass_OnSetInspectionMode( _this, aMode );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyInspectionRequest()' */
+void DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest( void* _this, XEnum 
+  aMode, XEnum aDisplayPattern )
+{
+  DeviceInterfaceSystemDeviceClass_NotifyInspectionRequest((DeviceInterfaceSystemDeviceClass)_this
+  , aMode, aDisplayPattern );
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetInspectionMode()' */
+void DeviceInterfaceSystemDeviceClass_OnSetInspectionMode( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum value )
+{
+  _this->InspectionMode = value;
+  CoreSystemEvent_Trigger( &_this->InspectionModeSystemEvent, 0, 0 );
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetInspectionDisplayPattern()' */
+void DeviceInterfaceSystemDeviceClass_OnSetInspectionDisplayPattern( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum value )
+{
+  if ( _this->InspectionDisplayPattern != value )
+  {
+    _this->InspectionDisplayPattern = value;
+    CoreSystemEvent_Trigger( &_this->InspectionDisplaySystemEvent, 0, 0 );
+  }
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SendInspectionResponse()' */
+void DeviceInterfaceSystemDeviceClass_SendInspectionResponse( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aMode, XUInt8 aRes )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  VI_send_inspection_response( aMode, aRes );
 }
 
 /* Default onget method for the property 'FactoryResetComplete' */

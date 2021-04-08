@@ -1,6 +1,6 @@
 ﻿$version 10.00
 
-$rect <50,110,290,150>
+$rect <20,110,260,150>
 class DisplayAutoRun : Components::BaseComponent
 {
   $rect <20,340,200,380>
@@ -327,7 +327,7 @@ class Main : Menu::BaseMenuView
   $reorder ItemTitleArray 1
 }
 
-$rect <50,60,290,100>
+$rect <20,60,260,100>
 class DisplayManual : Components::BaseComponent
 {
   $rect <10,290,210,330>

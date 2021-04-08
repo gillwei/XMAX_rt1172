@@ -464,6 +464,30 @@ PRINTF( "%s %d\r\n", __FUNCTION__, operation_code );
 
 /*********************************************************************
 *
+* @public
+* VI_send_inspection_response
+*
+* Send inspection response H'60B
+*
+* @param mode Inspection mode
+* @param fainsres FAINSRES in the CAN signal H'60B
+*
+*********************************************************************/
+void VI_send_inspection_response
+    (
+    const EnumInspectionMode mode,
+    const uint8_t fainsres
+    )
+{
+PRINTF( "%s %d %d\r\n", __FUNCTION__, mode, fainsres );
+dll_frm_index_t l_frm_index;
+can_mid_sig_set( &l_frm_index, IL_CAN0_FACT_INSP_NS_RES_TXSIG_HANDLE, IL_CAN0_FACT_INSP_NS_RES_TXSIG_NBYTES, &mode );
+can_mid_sig_set( &l_frm_index, IL_CAN0_FACT_INSP_NS_RESCODE_TXSIG_HANDLE, IL_CAN0_FACT_INSP_NS_RESCODE_TXSIG_NBYTES, &fainsres );
+can_mid_frm_send( l_frm_index );
+}
+
+/*********************************************************************
+*
 * @private
 * VI_set_tx_data
 *

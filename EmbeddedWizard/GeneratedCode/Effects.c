@@ -1383,12 +1383,12 @@ void EffectsVisibilityFader_OnEnd( EffectsVisibilityFader _this )
   if ( _this->Super1.Visible && !_this->ShowAtStart )
   {
     CoreGroup__OnSetOpacity( _this->Super1.Group, 255 );
-    CoreGroup_OnSetVisible( _this->Super1.Group, 1 );
+    CoreGroup__OnSetVisible( _this->Super1.Group, 1 );
   }
 
   if (( !_this->Super1.Visible && !_this->HideAtStart ) && ( _this->Super1.Group->Super2.Owner 
       != 0 ))
-    CoreGroup_OnSetVisible( _this->Super1.Group, 0 );
+    CoreGroup__OnSetVisible( _this->Super1.Group, 0 );
 
   if (( !_this->Super1.Visible && _this->Super1.RemoveIfHidden ) && ( _this->Super1.Group->Super2.Owner 
       != 0 ))
@@ -1418,7 +1418,7 @@ void EffectsVisibilityFader_OnStart( EffectsVisibilityFader _this )
   if (( _this->Super1.Visible || _this->Super1.AddToOwner ) && ( _this->Super1.Group->Super2.Owner 
       == 0 ))
   {
-    CoreGroup_OnSetVisible( _this->Super1.Group, 0 );
+    CoreGroup__OnSetVisible( _this->Super1.Group, 0 );
     CoreGroup__Add( _this->Super1.Owner, ((CoreView)_this->Super1.Group ), 0 );
   }
 
@@ -1435,12 +1435,12 @@ void EffectsVisibilityFader_OnStart( EffectsVisibilityFader _this )
   if ( _this->Super1.Visible && _this->ShowAtStart )
   {
     CoreGroup__OnSetOpacity( _this->Super1.Group, 255 );
-    CoreGroup_OnSetVisible( _this->Super1.Group, 1 );
+    CoreGroup__OnSetVisible( _this->Super1.Group, 1 );
   }
 
   if (( !_this->Super1.Visible && _this->HideAtStart ) && ( _this->Super1.Group->Super2.Owner 
       != 0 ))
-    CoreGroup_OnSetVisible( _this->Super1.Group, 0 );
+    CoreGroup__OnSetVisible( _this->Super1.Group, 0 );
 
   if ( !_this->Super1.Visible && ( _this->Super1.Owner->Focus == (CoreView)_this->Super1.Group ))
     CoreGroup__OnSetFocus( _this->Super1.Owner, 0 );
@@ -1532,7 +1532,7 @@ void EffectsPositionFader_OnEnd( EffectsPositionFader _this )
   }
 
   if ( !_this->Super1.Visible && ( _this->Super1.Group->Opacity == 0 ))
-    CoreGroup_OnSetVisible( _this->Super1.Group, 0 );
+    CoreGroup__OnSetVisible( _this->Super1.Group, 0 );
 
   if (( !_this->Super1.Visible && _this->Super1.RemoveIfHidden ) && ( _this->Super1.Group->Super2.Owner 
       != 0 ))
@@ -1597,7 +1597,7 @@ void EffectsPositionFader_OnStart( EffectsPositionFader _this )
   if (( _this->Super1.Visible || _this->Super1.AddToOwner ) && ( _this->Super1.Group->Super2.Owner 
       == 0 ))
   {
-    CoreGroup_OnSetVisible( _this->Super1.Group, 0 );
+    CoreGroup__OnSetVisible( _this->Super1.Group, 0 );
     CoreGroup__Add( _this->Super1.Owner, ((CoreView)_this->Super1.Group ), 0 );
   }
 
@@ -1615,7 +1615,7 @@ void EffectsPositionFader_OnStart( EffectsPositionFader _this )
     CoreRectView__OnSetBounds( _this->Super1.Group, EwSetRectOrigin( _this->Super1.Group->Super1.Bounds, 
     _this->PositionEffect.Value1 ));
     CoreGroup__OnSetOpacity( _this->Super1.Group, _this->OpacityEffect.Value1 );
-    CoreGroup_OnSetVisible( _this->Super1.Group, 1 );
+    CoreGroup__OnSetVisible( _this->Super1.Group, 1 );
   }
 
   if ( !_this->Super1.Visible && ((( _this->Super1.Group->Super2.Owner == 0 ) || 

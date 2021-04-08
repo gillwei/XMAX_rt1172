@@ -28,6 +28,8 @@
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define VEHICLE_DRIVER_DISTRACTION_MODE_LIMIT       ( 3 )       /* km/h */
+#define POSITIVE_RESPONSE   ( 0x0 )
+#define NEGATIVE_RESPONSE   ( 0xFF )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -541,7 +543,48 @@ switch( signal_id )
 /*********************************************************************
 *
 * @private
+* notify_inspection_display_request
+*
+* Notify inspection display test pattern
+*
+* @param fainsreq FAINSREQ from CAN signal H'60A
+*
+*********************************************************************/
+static void notify_inspection_display_request
+    (
+    const uint8_t fainsreq
+    )
+{
+switch( fainsreq )
+    {
+    case 1: EW_notify_inspection_request( EnumInspectionModeDISPLAY, EnumInspectionDisplayCOLOR_GRADIENT );
+        break;
+    case 2: EW_notify_inspection_request( EnumInspectionModeDISPLAY, EnumInspectionDisplayFULL_BLACK );
+        break;
+    case 3: EW_notify_inspection_request( EnumInspectionModeDISPLAY, EnumInspectionDisplayFULL_WHITE );
+        break;
+    case 4: EW_notify_inspection_request( EnumInspectionModeDISPLAY, EnumInspectionDisplayFULL_RED );
+        break;
+    case 5: EW_notify_inspection_request( EnumInspectionModeDISPLAY, EnumInspectionDisplayFULL_GREEN );
+        break;
+    case 6: EW_notify_inspection_request( EnumInspectionModeDISPLAY, EnumInspectionDisplayFULL_BLUE );
+        break;
+    case 7: EW_notify_inspection_request( EnumInspectionModeDISPLAY, EnumInspectionDisplayFLICKER );
+        break;
+    case 8: EW_notify_inspection_request( EnumInspectionModeDISPLAY, EnumInspectionDisplayCROSSTALK );
+        break;
+    default:
+        VI_send_inspection_response( EnumInspectionModeDISPLAY, fainsreq );
+        break;
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * process_factory_inspection_request
+*
+* Process factory inspection request
 *
 * @param signal_id The CAN signal id
 * @param data The received CAN data
@@ -553,8 +596,30 @@ static void process_factory_inspection_request
     const uint32_t data
     )
 {
+static uint8_t mefareq = 0;
 switch( signal_id )
     {
+    case IL_CAN0_FACT_INSP_NS_REQ_RXSIG_HANDLE:
+        mefareq = (uint8_t)data;
+        break;
+    case IL_CAN0_FACT_INSP_NS_REQCODE_RXSIG_HANDLE:
+        PRINTF( "%s mefareq: %d\r\n", __FUNCTION__, mefareq );
+        switch( mefareq )
+            {
+            case EnumInspectionModeNONE:
+                VI_send_inspection_response( mefareq, POSITIVE_RESPONSE );
+                break;
+            case EnumInspectionModeDISPLAY:
+                notify_inspection_display_request( (uint8_t)data );
+                break;
+            case EnumInspectionModeEND:
+                EW_notify_inspection_request( EnumInspectionModeEND, EnumInspectionDisplayTOTAL );
+                break;
+            default:
+                VI_send_inspection_response( mefareq, NEGATIVE_RESPONSE );
+                break;
+            }
+        break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
         break;

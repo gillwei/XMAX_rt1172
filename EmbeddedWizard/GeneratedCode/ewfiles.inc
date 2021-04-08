@@ -36,4 +36,6 @@ EMWIFILES := \
 	SeatHeater_GripWarmer.c \
 	Notification.c \
 	Telephone.c \
-	TCS.c
+	TCS.c \
+	Inspection.c \
+	Color.c

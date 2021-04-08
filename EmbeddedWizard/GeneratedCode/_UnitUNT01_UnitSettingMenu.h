@@ -178,6 +178,7 @@ EW_DEFINE_METHODS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
   EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
+  EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
   EW_METHOD( DismissDialog,     void )( CoreGroup _this, CoreGroup aDialogGroup, 

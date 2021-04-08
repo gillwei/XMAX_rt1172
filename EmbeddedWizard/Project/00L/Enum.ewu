@@ -980,3 +980,52 @@ enum HeaterSettingStatusType
   $rect <650,10,850,50>
   item HIGH;
 }
+
+$rect <500,370,700,410>
+$output false
+enum InspectionDisplay
+{
+  $rect <10,10,210,50>
+  item COLOR_GRADIENT;
+
+  $rect <10,60,210,100>
+  item FULL_BLACK;
+
+  $rect <10,110,210,150>
+  item FULL_WHITE;
+
+  $rect <10,160,210,200>
+  item FULL_RED;
+
+  $rect <10,210,210,250>
+  item FULL_GREEN;
+
+  $rect <10,260,210,300>
+  item FULL_BLUE;
+
+  $rect <10,310,210,350>
+  item FLICKER;
+
+  $rect <10,360,210,400>
+  item CROSSTALK;
+
+  $rect <10,410,210,450>
+  item TOTAL;
+}
+
+$rect <500,420,700,460>
+$output false
+enum InspectionMode
+{
+  $rect <10,10,210,50>
+  item NONE;
+
+  $rect <10,60,210,100>
+  item DISPLAY;
+
+  $rect <10,110,210,150>
+  item BLUETOOTH;
+
+  $rect <10,160,210,200>
+  item END;
+}

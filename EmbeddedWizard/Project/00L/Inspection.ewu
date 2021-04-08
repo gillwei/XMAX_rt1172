@@ -1,0 +1,242 @@
+﻿$version 10.00
+
+$rect <10,10,210,50>
+class TFT_Main : Components::BaseMainBG
+{
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <470,340,700,380>
+  inherited method OnShortDownKeyActivated()
+  {
+    var int32 PreviousIdx = (int32)Pattern - 1;
+    if( PreviousIdx < 0 )
+    {
+      PreviousIdx = (int32)Enum::InspectionDisplay.TOTAL - 1;
+    }
+    Pattern = (Enum::InspectionDisplay)( PreviousIdx );
+  }
+
+  $rect <220,340,450,380>
+  inherited method OnShortUpKeyActivated()
+  {
+    var int32 NextPatternIdx = (int32)Pattern + 1;
+    if( NextPatternIdx >= (int32)Enum::InspectionDisplay.TOTAL )
+    {
+      NextPatternIdx = 0;
+    }
+    Pattern = (Enum::InspectionDisplay)( NextPatternIdx );
+  }
+
+  $rect <220,290,420,330>
+  inherited property PassUpKey = true;
+
+  $rect <470,290,670,330>
+  inherited property PassDownKey = true;
+
+  $rect <720,290,920,330>
+  inherited property PassHomeKey = true;
+
+  $rect <510,0,720,40>
+  property Enum::InspectionDisplay Pattern = Enum::InspectionDisplay.COLOR_GRADIENT;
+
+  $rect <510,50,720,90>
+  onset Pattern
+  {
+    if( pure Pattern != value )
+    {
+      pure Pattern = value;
+      DisplayPattern( Pattern );
+    }
+  }
+
+  $rect <510,100,720,140>
+  method void DisplayPattern( arg Enum::InspectionDisplay aPattern )
+  {
+    ColorGradient.Visible = false;
+    FullScreen.Visible = false;
+    CrossTalk.Visible = false;
+    Flicker.Visible = false;
+
+    switch( aPattern )
+    {
+      case Enum::InspectionDisplay.COLOR_GRADIENT: ColorGradient.Visible = true;
+      case Enum::InspectionDisplay.FULL_BLACK:
+      {
+        FullScreen.Color = Color::BLACK;
+        FullScreen.Visible = true;
+      }
+      case Enum::InspectionDisplay.FULL_WHITE:
+      {
+        FullScreen.Color = Color::WHITE;
+        FullScreen.Visible = true;
+      }
+      case Enum::InspectionDisplay.FULL_RED:
+      {
+        FullScreen.Color = Color::RED;
+        FullScreen.Visible = true;
+      }
+      case Enum::InspectionDisplay.FULL_GREEN:
+      {
+        FullScreen.Color = Color::GREEN;
+        FullScreen.Visible = true;
+      }
+      case Enum::InspectionDisplay.FULL_BLUE:
+      {
+        FullScreen.Color = Color::BLUE;
+        FullScreen.Visible = true;
+      }
+      case Enum::InspectionDisplay.FLICKER: Flicker.Visible = true;
+      case Enum::InspectionDisplay.CROSSTALK: CrossTalk.Visible = true;
+      default:;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle FullScreen
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Inspection::TFT10_CrossTalk CrossTalk
+  {
+    preset Bounds = <0,0,480,272>;
+  }
+
+  $rect <20,20,160,60>
+  object Inspection::TFT09_Flicker Flicker
+  {
+    preset Bounds = <0,0,480,272>;
+  }
+
+  $rect <20,20,160,60>
+  object Inspection::TFT01_ColorGradient ColorGradient
+  {
+    preset Bounds = <0,0,480,272>;
+  }
+}
+
+$rect <10,60,210,100>
+$output false
+class TFT01_ColorGradient : Core::Group
+{
+  $rect <0,280,200,320>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle GeenBG
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #00FF00FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Border BlackFrame
+  {
+    preset Bounds = <6,6,474,264>;
+    preset Width = 5;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle StripRed
+  {
+    preset Bounds = <11,11,469,73>;
+    preset ColorBL = Color::RED;
+    preset ColorBR = Color::BLACK;
+    preset ColorTR = Color::BLACK;
+    preset ColorTL = Color::RED;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle StripGreen
+  {
+    preset Bounds = <11,73,469,135>;
+    preset ColorBL = Color::GREEN;
+    preset ColorBR = Color::BLACK;
+    preset ColorTR = Color::BLACK;
+    preset ColorTL = Color::GREEN;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle SripBlue
+  {
+    preset Bounds = <11,135,469,197>;
+    preset ColorBL = Color::BLUE;
+    preset ColorBR = Color::BLACK;
+    preset ColorTR = Color::BLACK;
+    preset ColorTL = Color::BLUE;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle StripWhite
+  {
+    preset Bounds = <11,197,469,259>;
+    preset ColorBR = #000000FF;
+    preset ColorTR = #000000FF;
+  }
+}
+
+$rect <10,110,210,150>
+$output false
+class TFT10_CrossTalk : Core::Group
+{
+  $rect <0,280,200,320>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle GrayBG
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #7F7F7FFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle RectanbleBlack
+  {
+    preset Bounds = <120,68,240,136>;
+    preset Color = Color::BLACK;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle RectangleWhite
+  {
+    preset Bounds = <240,136,360,204>;
+    preset Color = Color::WHITE;
+  }
+}
+
+$rect <10,160,210,200>
+class TFT09_Flicker : Components::BaseComponent
+{
+  $rect <220,290,400,330>
+  inherited method Init()
+  {
+    $if !$prototyper
+      Resource::ExternFlickerPattern.Name = "DisplayFlicker";
+    $endif
+  }
+
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <220,340,400,380>
+  inherited onset Visible
+  {
+    if( pure Visible != value )
+    {
+      pure Visible = value;
+      FlickerImage.Visible = value;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image FlickerImage
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Bitmap = Resource::ExternFlickerPattern;
+    preset Visible = true;
+  }
+}

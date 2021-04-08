@@ -1,6 +1,6 @@
 ﻿$version 10.00
 
-$rect <270,20,470,60>
+$rect <20,10,220,50>
 inline Inline
 {
   #include <stddef.h>
@@ -19,7 +19,7 @@ inline Inline
   #include "TEST_pub.h"
 }
 
-$rect <20,20,220,60>
+$rect <20,70,220,110>
 $output false
 class SystemDeviceClass : Templates::DeviceClass
 {
@@ -196,7 +196,7 @@ class SystemDeviceClass : Templates::DeviceClass
   $rect <30,620,250,660>
   property bool FactoryResetComplete = false;
 
-  $rect <40,710,240,750>
+  $rect <750,300,950,340>
   method void SetTFTDutyCycle( arg int32 aDutyCycle )
   {
     $if !$prototyper
@@ -213,7 +213,7 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <40,760,240,800>
+  $rect <750,350,950,390>
   property int32 BrightnessLevel = 7;
 
   $rect <250,170,450,210>
@@ -465,12 +465,67 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
     return IsOperationModeReady;
   }
+
+  // Inspection Mode
+  note group Note7
+  {
+    attr Bounds = <10,700,310,1160>;
+  }
+
+  $rect <30,1040,290,1080>
+  object Core::SystemEvent InspectionDisplaySystemEvent;
+
+  $rect <30,890,290,930>
+  object Core::SystemEvent InspectionModeSystemEvent;
+
+  // Notifiy the inspection display pattern to test
+  $rect <30,740,290,780>
+  $output true
+  method void NotifyInspectionRequest( arg Enum::InspectionMode aMode, arg Enum::InspectionDisplay aDisplayPattern )
+  {
+    InspectionDisplayPattern = aDisplayPattern;
+    InspectionMode = aMode;
+  }
+
+  $rect <30,790,230,830>
+  property Enum::InspectionMode InspectionMode = Enum::InspectionMode.NONE;
+
+  $rect <30,840,230,880>
+  onset InspectionMode
+  {
+    pure InspectionMode = value;
+    InspectionModeSystemEvent.Trigger( null, false );
+  }
+
+  $rect <30,940,230,980>
+  property Enum::InspectionDisplay InspectionDisplayPattern;
+
+  $rect <30,990,230,1030>
+  onset InspectionDisplayPattern
+  {
+    if ( pure InspectionDisplayPattern != value )
+    {
+      pure InspectionDisplayPattern = value;
+      InspectionDisplaySystemEvent.Trigger( null, false );
+    }
+  }
+
+  $rect <30,1090,250,1130>
+  method void SendInspectionResponse( arg Enum::InspectionMode aMode, arg uint8 aRes )
+  {
+    $if !$prototyper
+      native( aMode, aRes )
+      {
+        VI_send_inspection_response( aMode, aRes );
+      }
+    $endif
+  }
 }
 
-$rect <20,60,220,100>
+$rect <20,110,220,150>
 autoobject DeviceInterface::SystemDeviceClass SystemDevice;
 
-$rect <19,170,229,210>
+$rect <20,300,230,340>
 $output false
 class NavigationDeviceClass : Templates::DeviceClass
 {
@@ -715,10 +770,10 @@ class NavigationDeviceClass : Templates::DeviceClass
   var Enum::HomeType CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
 }
 
-$rect <19,210,229,250>
+$rect <20,340,230,380>
 autoobject DeviceInterface::NavigationDeviceClass NavigationDevice;
 
-$rect <20,304,260,344>
+$rect <260,300,500,340>
 $output false
 class MediaManagerDeviceClass : Templates::DeviceClass
 {
@@ -989,10 +1044,10 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   }
 }
 
-$rect <20,344,220,384>
+$rect <261,344,461,384>
 autoobject DeviceInterface::MediaManagerDeviceClass MediaManagerDevice;
 
-$rect <19,400,219,440>
+$rect <750,70,950,110>
 $output false
 class BluetoothDeviceClass : Templates::DeviceClass
 {
@@ -1549,10 +1604,10 @@ class BluetoothDeviceClass : Templates::DeviceClass
   }
 }
 
-$rect <19,440,219,480>
+$rect <750,110,950,150>
 autoobject DeviceInterface::BluetoothDeviceClass BluetoothDevice;
 
-$rect <19,480,219,520>
+$rect <750,150,950,190>
 $output false
 class BluetoothPairedDeviceInfo
 {
@@ -1563,7 +1618,7 @@ class BluetoothPairedDeviceInfo
   var bool IsConnected;
 }
 
-$rect <20,100,220,140>
+$rect <20,150,220,190>
 $output false
 class RtcTime
 {
@@ -1586,7 +1641,7 @@ class RtcTime
   var uint8 Second;
 }
 
-$rect <20,630,220,670>
+$rect <500,110,700,150>
 $output false
 class VehicleDeviceClass : Templates::DeviceClass
 {
@@ -1763,10 +1818,10 @@ class VehicleDeviceClass : Templates::DeviceClass
   var Enum::VehicleSupportedFunction CurrentVehicleFunction;
 }
 
-$rect <20,590,220,630>
+$rect <500,70,700,110>
 autoobject DeviceInterface::VehicleDeviceClass VehicleDevice;
 
-$rect <290,170,490,210>
+$rect <260,70,460,110>
 $output false
 class WeatherDeviceClass : Templates::DeviceClass
 {
@@ -1920,10 +1975,10 @@ class WeatherDeviceClass : Templates::DeviceClass
   }
 }
 
-$rect <290,210,490,250>
+$rect <260,110,460,150>
 autoobject DeviceInterface::WeatherDeviceClass WeatherDevice;
 
-$rect <20,670,220,710>
+$rect <500,150,700,190>
 $output false
 class VehicleDataClass
 {
@@ -1943,7 +1998,7 @@ class VehicleDataClass
   var Enum::VehicleRxType RxType;
 }
 
-$rect <20,250,220,290>
+$rect <21,380,221,420>
 $output false
 class NaviDataClass
 {
@@ -1972,7 +2027,7 @@ class NaviDataClass
   var string NaviEventSpeed;
 }
 
-$rect <20,520,220,560>
+$rect <751,190,951,230>
 $output false
 class MotoConContext
 {
@@ -1980,7 +2035,7 @@ class MotoConContext
   var Enum::MotoConRxEvent RxEvent;
 }
 
-$rect <290,410,500,450>
+$rect <530,300,740,340>
 $output false
 class NotificationDeviceClass : Templates::DeviceClass
 {
@@ -2305,10 +2360,10 @@ class NotificationDeviceClass : Templates::DeviceClass
   }
 }
 
-$rect <290,450,490,490>
+$rect <530,340,730,380>
 autoobject DeviceInterface::NotificationDeviceClass NotificationDevice;
 
-$rect <280,100,480,140>
+$rect <20,420,220,460>
 $output false
 class NaviTbtDataClass
 {
@@ -2328,7 +2383,7 @@ class NaviTbtDataClass
   var int32 Distance;
 }
 
-$rect <290,490,490,530>
+$rect <530,380,730,420>
 $output false
 class DateTime
 {
@@ -2351,7 +2406,7 @@ class DateTime
   var string Second;
 }
 
-$rect <290,530,490,570>
+$rect <530,420,730,460>
 $output false
 class NotificationContext
 {
@@ -2376,3 +2431,7 @@ class NotificationContext
   $rect <10,160,210,200>
   var string Subtitle;
 }
+
+$rect <20,190,300,230>
+$output false
+const uint8 INSPECTION_NEGATIVE_RESPONSE = 0xFF;

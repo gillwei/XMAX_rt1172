@@ -24,7 +24,7 @@ class Application : Core::Root
   $rect <10,290,200,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <40,490,270,530>
+  $rect <40,480,270,520>
   slot OnDisclaimerAcceptedSlot
   {
     IsDisclaimerDismissed = true;
@@ -72,11 +72,11 @@ class Application : Core::Root
       {
         case Enum::FactoryTest.Display:
         {
-          StatusBarVisible = false;
-          var Factory::DisplayManual FactoryTestDialog = ( Factory::DisplayManual )this.FindDialogByClass( Factory::DisplayManual );
+          var Factory::DisplayManual FactoryTestDialog = (Factory::DisplayManual)FindDialogByClass( Factory::DisplayManual );
           if( null == FactoryTestDialog )
           {
             FactoryTestDialog = new Factory::DisplayManual;
+            FactoryTestDialog.StackingPriority = 1;
             PresentDialog( FactoryTestDialog, null, null, null, null, null, null, null, null, false );
           }
           FactoryTestDialog.PatternIdx = TestContext.Data;
@@ -84,9 +84,9 @@ class Application : Core::Root
         }
         case Enum::FactoryTest.BurnInStart:
         {
-          StatusBarVisible = false;
           var Factory::DisplayAutoRun DisplayAutoRunDialog = new Factory::DisplayAutoRun;
           DisplayAutoRunDialog.BurnInEnabled = true;
+          DisplayAutoRunDialog.StackingPriority = 1;
           PresentDialog( DisplayAutoRunDialog, null, null, null, null, null, null, null, null, false );
           IsFactoryTest = true;
         }
@@ -124,10 +124,10 @@ class Application : Core::Root
   // BT FW Update
   note group Note4
   {
-    attr Bounds = <660,570,930,730>;
+    attr Bounds = <640,570,910,730>;
   }
 
-  $rect <690,620,910,660>
+  $rect <670,620,890,660>
   object Core::PropertyObserver BtFwStatusObserver
   {
     preset OnEvent = OnBtFwStatusUpdteSlot;
@@ -136,7 +136,7 @@ class Application : Core::Root
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <690,670,910,710>
+  $rect <670,670,890,710>
   slot OnBtFwStatusUpdteSlot
   {
     if( Enum::BtFwStatus.UPDATE_START == DeviceInterface::BluetoothDevice.BtFwStatus )
@@ -151,13 +151,13 @@ class Application : Core::Root
   $rect <40,760,270,800>
   method void DismissFactoryTestDialog()
   {
-    var Core::Group FactoryTestDialog = this.FindDialogByClass( Factory::DisplayAutoRun );
+    var Core::Group FactoryTestDialog = FindDialogByClass( Factory::DisplayAutoRun );
     if( null != FactoryTestDialog )
     {
       DismissDialog( FactoryTestDialog, null, null, null, null, null, false );
     }
 
-    FactoryTestDialog = this.FindDialogByClass( Factory::DisplayManual );
+    FactoryTestDialog = FindDialogByClass( Factory::DisplayManual );
     if( null != FactoryTestDialog )
     {
       DismissDialog( FactoryTestDialog, null, null, null, null, null, false );
@@ -167,7 +167,7 @@ class Application : Core::Root
   // Switch to home/launcher
   note group Note1
   {
-    attr Bounds = <330,390,1240,550>;
+    attr Bounds = <330,390,1270,550>;
   }
 
   $rect <360,440,560,480>
@@ -311,6 +311,7 @@ class Application : Core::Root
     {
       DismissDialog( OpeningDialog, null, null, null, null, null, false );
     }
+    IsFactoryModeDialogDisplayed = false;
     DeviceInterface::BluetoothDevice.GetBluetoothEnable();
     StatusBar.Visible = true;
     ShowDisclaimer();
@@ -335,6 +336,7 @@ class Application : Core::Root
       var Open::OPN02_FactoryMode FactoryModeDialog = new Open::OPN02_FactoryMode;
       FactoryModeDialog.OnFactoryModeFinished = OnOpeningFinishedSlot;
       SwitchToDialog( FactoryModeDialog, null, null, null, null, null, null, null, null, null, false );
+      IsFactoryModeDialogDisplayed = true;
     }
     else
     {
@@ -347,7 +349,7 @@ class Application : Core::Root
   // Opening Flow
   note group Note6
   {
-    attr Bounds = <500,0,800,300>;
+    attr Bounds = <500,0,800,350>;
   }
 
   $rect <20,20,160,60>
@@ -408,7 +410,7 @@ class Application : Core::Root
     PresentDialog( HomeDialog, Effect::SlideInTransition, null, null, null, null, null, OnSlideInHomeFinishedSlot, null, false );
   }
 
-  $rect <1020,490,1220,530>
+  $rect <1020,490,1260,530>
   slot OnSlideInHomeFinishedSlot
   {
     var int32 DialogIdx = 1;
@@ -421,17 +423,17 @@ class Application : Core::Root
   // Phone
   note group PhoneNote
   {
-    attr Bounds = <660,740,1000,900>;
+    attr Bounds = <640,740,980,890>;
   }
 
-  $rect <680,780,980,820>
+  $rect <660,780,960,820>
   object Core::SystemEventHandler PhoneCallStateChangedEventHandler
   {
     preset OnEvent = OnPhoneCallStateChangedSlot;
     preset Event = DeviceInterface::NotificationDevice.PhoneCallStateChangedSystemEvent;
   }
 
-  $rect <680,830,980,870>
+  $rect <660,830,960,870>
   slot OnPhoneCallStateChangedSlot
   {
     var Enum::PhoneCallState PhoneCallState = DeviceInterface::NotificationDevice.GetPhoneCallState();
@@ -449,9 +451,68 @@ class Application : Core::Root
     }
   }
 
-  $rect <40,540,270,580>
+  $rect <40,530,270,570>
   var bool IsDisclaimerDismissed = false;
 
   $rect <40,810,270,850>
   var bool IsFactoryTest = false;
+
+  // Inspection Mode
+  note group Note7
+  {
+    attr Bounds = <10,880,300,1120>;
+  }
+
+  $rect <30,920,280,960>
+  object Core::SystemEventHandler InspectionModeEventHandler
+  {
+    preset OnEvent = OnInspectionModeEventSlot;
+    preset Event = DeviceInterface::SystemDevice.InspectionModeSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <30,970,280,1010>
+  slot OnInspectionModeEventSlot
+  {
+    if( IsFactoryModeDialogDisplayed )
+    {
+      switch( DeviceInterface::SystemDevice.InspectionMode )
+      {
+        case Enum::InspectionMode.DISPLAY: ProcInspectionDisplay();
+        case Enum::InspectionMode.END: StopInspection();
+        default:;
+      }
+    }
+    else
+    {
+      DeviceInterface::SystemDevice.SendInspectionResponse( DeviceInterface::SystemDevice.InspectionMode, DeviceInterface::INSPECTION_NEGATIVE_RESPONSE );
+    }
+  }
+
+  $rect <30,1020,280,1060>
+  method void ProcInspectionDisplay()
+  {
+    var Inspection::TFT_Main InspectionDialog = (Inspection::TFT_Main)GetDialogAtIndex( 0 );
+    if( null == InspectionDialog )
+    {
+      InspectionDialog = new Inspection::TFT_Main;
+      PresentDialog( InspectionDialog, null, null, null, null, null, null, null, null, false );
+    }
+    InspectionDialog.Pattern = DeviceInterface::SystemDevice.InspectionDisplayPattern;
+  }
+
+  $rect <30,1070,230,1110>
+  method void StopInspection()
+  {
+    var Inspection::TFT_Main InspectionDialog = (Inspection::TFT_Main)GetDialogAtIndex( 0 );
+    if( null != InspectionDialog )
+    {
+      DismissDialog( InspectionDialog, null, null, null, null, null, false );
+    }
+    DeviceInterface::SystemDevice.SendInspectionResponse( Enum::InspectionMode.END, 0 );
+  }
+
+  $rect <530,290,790,330>
+  var bool IsFactoryModeDialogDisplayed;
 }

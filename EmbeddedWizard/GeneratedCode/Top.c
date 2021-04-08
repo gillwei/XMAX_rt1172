@@ -234,6 +234,7 @@ EW_DEFINE_CLASS( TopTOP01_Disclaimer, ComponentsBaseComponent, OnAcceptButtonCli
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,

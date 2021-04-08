@@ -73,6 +73,10 @@
             test_factory_proc();
         #endif
 
+        #if( UNIT_TEST_INSPECTION )
+            test_inspection_proc();
+        #endif
+
         #if( UNIT_TEST_BURNIN )
             test_burnin_proc();
         #endif
@@ -137,6 +141,10 @@
 
     #if( UNIT_TEST_FACTORY )
         test_factory_int();
+    #endif
+
+    #if( UNIT_TEST_INSPECTION )
+        test_inspection_int();
     #endif
 
     #if( UNIT_TEST_BURNIN )

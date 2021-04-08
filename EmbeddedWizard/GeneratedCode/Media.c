@@ -149,7 +149,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CoreTimer_OnSetPeriod( &_this->HighlightTimer, 100 );
   CoreTimer_OnSetEnabled( &_this->HighlightTimer, 0 );
   CoreRectView__OnSetBounds( &_this->SeekBar, _Const0009 );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->SeekBar, 0 );
+  CoreGroup__OnSetVisible( &_this->SeekBar, 0 );
   WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->SeekBar, 0 );
   CoreRectView__OnSetBounds( &_this->ErrorMessage, _Const000A );
   ViewsText_OnSetString( &_this->ErrorMessage, EwLoadString( &StringsMED02_DEV_UNAVAILABLE ));
@@ -431,7 +431,7 @@ void MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot( MediaMED01_MediaUI _this, XObj
   {
     if ( !CoreGroup_OnGetVisible((CoreGroup)&_this->SeekBar ))
     {
-      CoreGroup_OnSetVisible((CoreGroup)&_this->SeekBar, 1 );
+      CoreGroup__OnSetVisible( &_this->SeekBar, 1 );
     }
 
     WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->SeekBar, ( EwGetAutoObject( 
@@ -648,7 +648,7 @@ void MediaMED01_MediaUI_UpdateMediaInfoItem( MediaMED01_MediaUI _this, XEnum aNe
       ViewsText_OnSetVisible( &_this->Artist, 1 );
       ViewsText_OnSetVisible( &_this->ElapsedTimeSec, 1 );
       ViewsText_OnSetVisible( &_this->TotalTimeSec, 1 );
-      CoreGroup_OnSetVisible((CoreGroup)&_this->SeekBar, 1 );
+      CoreGroup__OnSetVisible( &_this->SeekBar, 1 );
       ViewsText_OnSetVisible( &_this->ErrorMessage, 0 );
     }
     break;
@@ -660,7 +660,7 @@ void MediaMED01_MediaUI_UpdateMediaInfoItem( MediaMED01_MediaUI _this, XEnum aNe
       ViewsText_OnSetVisible( &_this->Artist, 0 );
       ViewsText_OnSetVisible( &_this->ElapsedTimeSec, 0 );
       ViewsText_OnSetVisible( &_this->TotalTimeSec, 0 );
-      CoreGroup_OnSetVisible((CoreGroup)&_this->SeekBar, 0 );
+      CoreGroup__OnSetVisible( &_this->SeekBar, 0 );
       ViewsText_OnSetVisible( &_this->ErrorMessage, 1 );
     }
     break;
@@ -692,6 +692,7 @@ EW_DEFINE_CLASS( MediaMED01_MediaUI, ComponentsBaseMainBG, HighlightBG, Title, T
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,

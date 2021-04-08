@@ -212,6 +212,7 @@ EW_DEFINE_FIELDS( CoreGroup, CoreRectView )
   EW_VARIABLE( pendingFader,    EffectsFader )
   EW_PROPERTY( Focus,           CoreView )
   EW_PROPERTY( Opacity,         XInt32 )
+  EW_PROPERTY( Visible,         XBool )
   EW_PROPERTY( Enabled,         XBool )
 EW_END_OF_FIELDS( CoreGroup )
 
@@ -237,6 +238,7 @@ EW_DEFINE_METHODS( CoreGroup, CoreRectView )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
   EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
+  EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
   EW_METHOD( DismissDialog,     void )( CoreGroup _this, CoreGroup aDialogGroup, 
@@ -400,6 +402,9 @@ XBool CoreGroup_OnGetVisible( CoreGroup _this );
 
 /* 'C' function for method : 'Core::Group.OnSetVisible()' */
 void CoreGroup_OnSetVisible( CoreGroup _this, XBool value );
+
+/* Wrapper function for the virtual method : 'Core::Group.OnSetVisible()' */
+void CoreGroup__OnSetVisible( void* _this, XBool value );
 
 /* The method FindDialogByClass() searches the tree of subordinated components for 
    the one, which acts actually as a dialog and it is an instance of the specified 

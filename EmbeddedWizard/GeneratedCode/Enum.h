@@ -465,6 +465,29 @@ typedef enum
   EnumHeaterSettingStatusTypeHIGH       = 3
 } EnumHeaterSettingStatusType;
 
+/* User defined enumeration: 'Enum::InspectionDisplay' */
+typedef enum
+{
+  EnumInspectionDisplayCOLOR_GRADIENT   = 0,
+  EnumInspectionDisplayFULL_BLACK       = 1,
+  EnumInspectionDisplayFULL_WHITE       = 2,
+  EnumInspectionDisplayFULL_RED         = 3,
+  EnumInspectionDisplayFULL_GREEN       = 4,
+  EnumInspectionDisplayFULL_BLUE        = 5,
+  EnumInspectionDisplayFLICKER          = 6,
+  EnumInspectionDisplayCROSSTALK        = 7,
+  EnumInspectionDisplayTOTAL            = 8
+} EnumInspectionDisplay;
+
+/* User defined enumeration: 'Enum::InspectionMode' */
+typedef enum
+{
+  EnumInspectionModeNONE                = 0,
+  EnumInspectionModeDISPLAY             = 1,
+  EnumInspectionModeBLUETOOTH           = 2,
+  EnumInspectionModeEND                 = 3
+} EnumInspectionMode;
+
 #ifdef __cplusplus
   }
 #endif

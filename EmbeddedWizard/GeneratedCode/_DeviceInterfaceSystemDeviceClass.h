@@ -66,11 +66,15 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( QrCodeSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( UpdateLocalTimeSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( OpeningSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( InspectionDisplaySystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( InspectionModeSystemEvent, CoreSystemEvent )
   EW_PROPERTY( SoftwareVersion, XString )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
   EW_PROPERTY( QrCodeText,      XString )
   EW_PROPERTY( BrightnessLevel, XInt32 )
+  EW_PROPERTY( InspectionDisplayPattern, XEnum )
+  EW_PROPERTY( InspectionMode,  XEnum )
   EW_PROPERTY( OperationMode,   XEnum )
   EW_VARIABLE( IsHopperTestMode, XBool )
   EW_PROPERTY( FactoryResetComplete, XBool )
@@ -225,6 +229,29 @@ XEnum DeviceInterfaceSystemDeviceClass_OnGetOperationMode( DeviceInterfaceSystem
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsOperationModeReady()' */
 XBool DeviceInterfaceSystemDeviceClass_IsOperationModeReady( DeviceInterfaceSystemDeviceClass _this );
+
+/* Notifiy the inspection display pattern to test */
+void DeviceInterfaceSystemDeviceClass_NotifyInspectionRequest( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aMode, XEnum aDisplayPattern );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyInspectionRequest()' */
+void DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest( void* _this, XEnum 
+  aMode, XEnum aDisplayPattern );
+
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyInspectionRequest(). */
+#define _DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest_
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetInspectionMode()' */
+void DeviceInterfaceSystemDeviceClass_OnSetInspectionMode( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum value );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetInspectionDisplayPattern()' */
+void DeviceInterfaceSystemDeviceClass_OnSetInspectionDisplayPattern( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum value );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SendInspectionResponse()' */
+void DeviceInterfaceSystemDeviceClass_SendInspectionResponse( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aMode, XUInt8 aRes );
 
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );

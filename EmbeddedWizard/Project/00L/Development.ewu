@@ -38,10 +38,7 @@ class DEV_Main : Menu::BaseMenuView
   $rect <510,160,710,200>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
+    aMenuItem; //suppress warnin
 
     switch( aItemNo )
     {
@@ -64,6 +61,14 @@ class DEV_Main : Menu::BaseMenuView
       case 6: PresentDialog( new Development::DEV_VehicleSupportedFunction, null, null, null, null, null, null, null, null, false );
       case 7: PresentDialog( new Development::DEV_MotoCon, null, null, null, null, null, null, null, null, false );
       case 8: PresentDialog( new Development::DEV_FontMenu, null, null, null, null, null, null, null, null, false );
+      case 9:
+      {
+        var Inspection::TFT_Main InspectionDialog = new Inspection::TFT_Main;
+        InspectionDialog.PassUpKey = false;
+        InspectionDialog.PassDownKey = false;
+        InspectionDialog.PassHomeKey = false;
+        PresentDialog( InspectionDialog, null, null, null, null, null, null, null, null, false );
+      }
       default:;
     }
   }
@@ -81,8 +86,16 @@ class DEV_Main : Menu::BaseMenuView
     return IsChecked;
   }
 
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = ItemTitleArray.size;
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+  }
+
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 9 ] =
+  array string ItemTitleArray[ 10 ] =
   (
     Default[0] = "Factory Mode";
     Default[1] = "Hopper Test Mode";
@@ -93,15 +106,8 @@ class DEV_Main : Menu::BaseMenuView
     Default[6] = "Vehicle Supported Func";
     Default[7] = "MotoCon Test";
     Default[8] = "Font Test";
+    Default[9] = "Inspection Test";
   );
-
-  $rect <20,20,160,60>
-  inherited object Menu
-  {
-    preset NoOfItems = ItemTitleArray.size;
-    preset ItemHeight = Menu::ItemHeightSmall;
-    preset ItemNumPerPage = 4;
-  }
 
   $reorder HideFocusFrameTimer 1
   $reorder OnHideFocusFrameTimeoutSlot 1

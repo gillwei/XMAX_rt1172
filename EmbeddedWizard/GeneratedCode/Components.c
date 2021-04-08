@@ -516,6 +516,7 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, KeyHandler, KeyHandler, Key
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -573,7 +574,7 @@ void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHan
   CoreView_OnSetStackingPriority((CoreView)&_this->DDModeMask, 1 );
   CoreRectView__OnSetBounds( &_this->DDModeMask, _Const0004 );
   CoreGroup__OnSetEnabled( &_this->DDModeMask, 0 );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, 0 );
+  CoreGroup__OnSetVisible( &_this->DDModeMask, 0 );
   CoreTimer_OnSetPeriod( &_this->HideFocusFrameTimer, 50 );
   CoreGroup__Add( _this, ((CoreView)&_this->MainBottomBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BlackBG ), 0 );
@@ -677,13 +678,13 @@ void ComponentsBaseMainBG_UpdateDDModeMask( ComponentsBaseMainBG _this )
     if ( !DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
     {
-      CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, 0 );
+      CoreGroup__OnSetVisible( &_this->DDModeMask, 0 );
     }
     else
     {
       if ( CoreGroup__IsCurrentDialog( _this ))
       {
-        CoreGroup_OnSetVisible((CoreGroup)&_this->DDModeMask, 1 );
+        CoreGroup__OnSetVisible( &_this->DDModeMask, 1 );
       }
     }
   }
@@ -873,6 +874,7 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, ChildDialog, Mai
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,
@@ -978,6 +980,7 @@ EW_DEFINE_CLASS( ComponentsDDModeMask, CoreGroup, DDModeBG, DDModeBG, DDModeBG,
   CoreGroup_OnGetEnabled,
   CoreGroup_OnSetEnabled,
   CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
   CoreGroup_DismissDialog,

@@ -186,4 +186,3 @@ if( is_map_frame_ready )
 return need_update;
 }
 #endif
-

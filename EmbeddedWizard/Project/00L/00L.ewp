@@ -69,7 +69,7 @@ note group Note3
 // Project Units
 note group Note5
 {
-  attr Bounds = <270,140,730,970>;
+  attr Bounds = <270,140,730,1000>;
 }
 
 // This is a profile member for the project. This profile controls the code generation \
@@ -286,14 +286,26 @@ unit Notification
   attr Directory = .\;
 }
 
-$rect <520,850,720,890>
+$rect <290,900,490,940>
 unit Telephone
 {
   attr Directory = .\;
 }
 
-$rect <290,910,490,950>
+$rect <290,950,490,990>
 unit TCS
+{
+  attr Directory = .\;
+}
+
+$rect <520,850,720,890>
+unit Inspection
+{
+  attr Directory = .\;
+}
+
+$rect <520,900,720,940>
+unit Color
 {
   attr Directory = .\;
 }

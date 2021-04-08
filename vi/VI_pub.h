@@ -71,7 +71,8 @@ void VI_set_tx_data( int tx_data_type, uint64_t data );
 bool VI_get_rx_data_uint( const EnumVehicleRxType rx_type, uint32_t* data );
 bool VI_get_rx_data_float( const EnumVehicleRxType rx_type, float* data );
 void VI_rx_support_function_received( const mid_msg_supp_func_t* const support_functions );
-void VI_rx_positive_response_received( const uint32_t can_id, const uint8_t  request_service_id );
+void VI_rx_positive_response_received( const uint32_t can_id, const uint8_t request_service_id );
+void VI_send_inspection_response( const EnumInspectionMode mode, const uint8_t fainsres );
 
 #ifdef __cplusplus
 }

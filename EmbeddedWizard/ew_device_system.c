@@ -71,6 +71,10 @@
     static int ew_qrcode_ready( void );
 #endif
 
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest_
+    static int ew_notify_inspection_mode_request( void );
+#endif
+
 #define UPDATE_TIME_TASK_PRIORITY       ( tskIDLE_PRIORITY )
 #define UPDATE_TIME_TASK_NAME           "time_task"
 #define UPDATE_TIME_TASK_STACK_SIZE     ( configMINIMAL_STACK_SIZE )
@@ -132,7 +136,10 @@ static void ew_get_info_from_eeprom( void );
             ew_show_burn_in_test_result,
         #endif
         #ifdef _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_
-            ew_qrcode_ready
+            ew_qrcode_ready,
+        #endif
+        #ifdef _DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest_
+            ew_notify_inspection_mode_request
         #endif
         };
     const int num_of_system_func = sizeof( system_function_lookup_table )/sizeof( system_device_function* );
@@ -143,6 +150,10 @@ static void ew_get_info_from_eeprom( void );
     static uint32_t factory_test_burn_in_time_sec = 0;
     static int      is_update_time = 0;
     static TickType_t update_time_period_ticks = pdMS_TO_TICKS( UPDATE_TIME_PERIOD_MS );
+
+    static bool     is_inspection_request_received = false;
+    static EnumInspectionMode inspection_mode = 0;
+    static EnumInspectionDisplay inspection_display_pattern = 0;
 
     static int is_esn_read = 0;
     static int is_factory_reset_complete = 0;
@@ -1085,6 +1096,31 @@ return qrcode_passkey;
 
 /*********************************************************************
 *
+* @private
+* ew_notify_vi_dd_mode_state_changed
+*
+* Notify EW GUI the inspection mode request
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest_
+    static int ew_notify_inspection_mode_request
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_inspection_request_received )
+        {
+        is_inspection_request_received = false;
+        DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest( device_object, inspection_mode, inspection_display_pattern );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
 * @public
 * EW_test_display_pattern
 *
@@ -1252,3 +1288,28 @@ if( is_tft_backlight_on && is_op_mode_ready )
     start_opening();
     }
 }
+
+/*********************************************************************
+*
+* @public
+* EW_notify_inspection_request
+*
+* Notify Embedded Wizard inspection request
+* @param mode Inspection mode
+* @param display_pattern Inspection display pattern
+*
+*********************************************************************/
+void EW_notify_inspection_request
+    (
+    EnumInspectionMode    mode,
+    EnumInspectionDisplay display_pattern
+    )
+{
+#ifdef _DeviceInterfaceSystemDeviceClass_
+    inspection_mode = mode;
+    inspection_display_pattern = display_pattern;
+    is_inspection_request_received = true;
+    EwBspEventTrigger();
+#endif
+}
+
