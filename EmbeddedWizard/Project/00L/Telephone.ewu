@@ -273,7 +273,7 @@ class TEL02_ActiveCall : Components::BaseMainBG
   $rect <20,20,160,60>
   inherited object MainBottomBG
   {
-    preset Bitmap = Resource::PhoneBG;
+    preset Bitmap = Resource::MainBG;
   }
 
   $rect <20,20,160,60>
@@ -405,6 +405,13 @@ class TEL02_ActiveCall : Components::BaseMainBG
 
   $rect <490,490,690,530>
   var uint32 PhoneCallVolume;
+
+  $rect <20,20,160,60>
+  object Views::Image Image
+  {
+    preset Bounds = <0,114,94,189>;
+    preset Bitmap = Resource::PhoneVol;
+  }
 }
 
 $rect <10,220,260,260>

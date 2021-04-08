@@ -244,7 +244,9 @@ if( BC_motocon_is_connected() )
     is_phone_call_volume_controllable = is_volume_controllable;
     phonecall_state = EnumPhoneCallStateINCOMING;
     incoming_call_uid = uid;
-    memcpy( phonecall_caller, caller, MIN( PHONE_CALLER_MAX_LEN, caller_len ) );
+    int string_length = MIN( PHONE_CALLER_MAX_LEN - 1, caller_len );
+    memcpy( phonecall_caller, caller, string_length );
+    phonecall_caller[string_length] = '\0';
 
     EW_notify_phone_call_state_changed();
     }
@@ -483,12 +485,17 @@ void NTF_notify_disconnected
     )
 {
 NTF_PRINTF( "%s %d\r\n", __FUNCTION__, protocol );
-if( protocol == notification_protocol )
+// Handle ANCS disconnecetd for iPhone or MotoCon disconnected for iPhone/Android phone
+if( notification_protocol == protocol ||
+    NOTIFICATION_PROTOCOL_MOTOCON == protocol )
     {
     notification_protocol = NOTIFICATION_PROTOCOL_NONE;
     notification_callback = NULL;
-    phonecall_state = EnumPhoneCallStateIDLE;
+
     active_call_duration_ms = 0;
+    phonecall_state = EnumPhoneCallStateIDLE;
+    EW_notify_phone_call_state_changed();
+
     ntf_buffer_reset();
     EW_notify_notification_list_updated();
     }

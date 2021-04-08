@@ -688,4 +688,10 @@ EW_RES_WITHOUT_VARIANTS( ResourceMessageIcon )
 /* Table with links to derived variants of the bitmap resource : 'Resource::PhoneIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourcePhoneIcon )
 
+/* Include a file containing the bitmap resource : 'Resource::PhoneVol' */
+#include "_ResourcePhoneVol.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::PhoneVol' */
+EW_RES_WITHOUT_VARIANTS( ResourcePhoneVol )
+
 /* Embedded Wizard */

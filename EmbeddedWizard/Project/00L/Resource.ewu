@@ -2527,3 +2527,15 @@ resource Resources::Bitmap PhoneIcon
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
+
+$rect <740,1260,940,1300>
+$output false
+resource Resources::Bitmap PhoneVol
+{
+  attr bitmapfile FileName = .\Res\phone\controlicon_vol.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
