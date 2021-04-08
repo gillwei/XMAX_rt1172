@@ -161,7 +161,7 @@ EW_DEFINE_METHODS( TopTOP01_Disclaimer, ComponentsBaseComponent )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongHomeKeyActivated, void )( TopTOP01_Disclaimer _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
@@ -181,6 +181,9 @@ void TopTOP01_Disclaimer_Init( TopTOP01_Disclaimer _this, XHandle aArg );
    property. UpdateLayout() gives the derived components a chance to extend this 
    automatism by a user defined algorithm. */
 void TopTOP01_Disclaimer_UpdateLayout( TopTOP01_Disclaimer _this, XPoint aSize );
+
+/* 'C' function for method : 'Top::TOP01_Disclaimer.OnLongHomeKeyActivated()' */
+void TopTOP01_Disclaimer_OnLongHomeKeyActivated( TopTOP01_Disclaimer _this );
 
 /* 'C' function for method : 'Top::TOP01_Disclaimer.OnAcceptedSlot()' */
 void TopTOP01_Disclaimer_OnAcceptedSlot( TopTOP01_Disclaimer _this, XObject sender );

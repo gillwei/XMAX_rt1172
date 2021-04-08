@@ -38,6 +38,12 @@ class TOP01_Disclaimer : Components::BaseComponent
     WarningText.Bounds = NewBounds;
   }
 
+  $rect <510,50,710,90>
+  inherited method OnLongHomeKeyActivated()
+  {
+    // neglect long home key event
+  }
+
   $rect <20,20,160,60>
   object Views::Rectangle BlackBackground
   {

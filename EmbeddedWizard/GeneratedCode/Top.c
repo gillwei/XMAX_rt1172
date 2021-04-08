@@ -195,6 +195,13 @@ void TopTOP01_Disclaimer_UpdateLayout( TopTOP01_Disclaimer _this, XPoint aSize )
   CoreRectView__OnSetBounds( &_this->WarningText, NewBounds );
 }
 
+/* 'C' function for method : 'Top::TOP01_Disclaimer.OnLongHomeKeyActivated()' */
+void TopTOP01_Disclaimer_OnLongHomeKeyActivated( TopTOP01_Disclaimer _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+}
+
 /* 'C' function for method : 'Top::TOP01_Disclaimer.OnAcceptedSlot()' */
 void TopTOP01_Disclaimer_OnAcceptedSlot( TopTOP01_Disclaimer _this, XObject sender )
 {
@@ -249,7 +256,7 @@ EW_DEFINE_CLASS( TopTOP01_Disclaimer, ComponentsBaseComponent, OnAcceptButtonCli
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
-  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  TopTOP01_Disclaimer_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
