@@ -58,10 +58,12 @@ static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XColor _Const0001 = { 0x00, 0x00, 0x00, 0xFF };
 static const XRect _Const0002 = {{ 102, 101 }, { 378, 166 }};
 static const XStringRes _Const0003 = { _StringsDefault0, 0x0002 };
-static const XColor _Const0004 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const0005 = {{ 53, 215 }, { 434, 245 }};
-static const XRect _Const0006 = {{ 140, 59 }, { 327, 188 }};
-static const XStringRes _Const0007 = { _StringsDefault0, 0x000F };
+static const XRect _Const0004 = {{ 10, 222 }, { 470, 256 }};
+static const XColor _Const0005 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const0006 = {{ 174, 71 }, { 306, 203 }};
+static const XRect _Const0007 = {{ 10, 2 }, { 470, 40 }};
+static const XRect _Const0008 = {{ 0, 44 }, { 480, 46 }};
+static const XStringRes _Const0009 = { _StringsDefault0, 0x000F };
 
 /* Initializer for the class 'Open::OPN01_BootupAnimation' */
 void OpenOPN01_BootupAnimation__Init( OpenOPN01_BootupAnimation _this, XObject aLink, XHandle aArg )
@@ -248,34 +250,48 @@ void OpenOPN02_FactoryMode__Init( OpenOPN02_FactoryMode _this, XObject aLink, XH
   _this->_GCT = EW_CLASS_GCT( OpenOPN02_FactoryMode );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->FullWhiteBG, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->FullBlackBG, &_this->_XObject, 0 );
   ViewsText__Init( &_this->PressEnterTwiceText, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->QrCodeImage, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->QrCodeReadyEventHandler, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->FactoryModeText, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( OpenOPN02_FactoryMode );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->FullWhiteBG, _Const0000 );
-  ViewsRectangle_OnSetColor( &_this->FullWhiteBG, _Const0004 );
-  CoreRectView__OnSetBounds( &_this->PressEnterTwiceText, _Const0005 );
+  CoreRectView__OnSetBounds( &_this->FullBlackBG, _Const0000 );
+  ViewsRectangle_OnSetColor( &_this->FullBlackBG, _Const0001 );
+  CoreRectView__OnSetBounds( &_this->PressEnterTwiceText, _Const0004 );
   ViewsText_OnSetString( &_this->PressEnterTwiceText, EwLoadString( &StringsOPN02_ENTER_TWICE ));
-  ViewsText_OnSetColor( &_this->PressEnterTwiceText, _Const0001 );
+  ViewsText_OnSetColor( &_this->PressEnterTwiceText, _Const0005 );
   CoreRectView__OnSetBounds( &_this->QrCodeImage, _Const0006 );
   ViewsImage_OnSetAlignment( &_this->QrCodeImage, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
-  CoreGroup__Add( _this, ((CoreView)&_this->FullWhiteBG ), 0 );
+  CoreRectView__OnSetBounds( &_this->FactoryModeText, _Const0007 );
+  ViewsText_OnSetString( &_this->FactoryModeText, EwLoadString( &StringsOPN02_FACTORY_MODE ));
+  ViewsText_OnSetColor( &_this->FactoryModeText, _Const0005 );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const0008 );
+  ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
+  | ViewsImageAlignmentScaleToFit );
+  CoreGroup__Add( _this, ((CoreView)&_this->FullBlackBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PressEnterTwiceText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->QrCodeImage ), 0 );
-  ViewsText_OnSetFont( &_this->PressEnterTwiceText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  CoreGroup__Add( _this, ((CoreView)&_this->FactoryModeText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
+  ViewsText_OnSetFont( &_this->PressEnterTwiceText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->QrCodeImage, ((ResourcesBitmap)EwGetAutoObject( 
   &ResourceQrCodeExternBitmap, ResourcesExternBitmap )));
   _this->QrCodeReadyEventHandler.OnEvent = EwNewSlot( _this, OpenOPN02_FactoryMode_OnQrCodeReadySlot );
   CoreSystemEventHandler_OnSetEvent( &_this->QrCodeReadyEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->QrCodeSystemEvent );
+  ViewsText_OnSetFont( &_this->FactoryModeText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
+  ResourcesBitmap ));
 
   /* Call the user defined constructor */
   OpenOPN02_FactoryMode_Init( _this, aArg );
@@ -288,10 +304,12 @@ void OpenOPN02_FactoryMode__ReInit( OpenOPN02_FactoryMode _this )
   ComponentsBaseComponent__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsRectangle__ReInit( &_this->FullWhiteBG );
+  ViewsRectangle__ReInit( &_this->FullBlackBG );
   ViewsText__ReInit( &_this->PressEnterTwiceText );
   ViewsImage__ReInit( &_this->QrCodeImage );
   CoreSystemEventHandler__ReInit( &_this->QrCodeReadyEventHandler );
+  ViewsText__ReInit( &_this->FactoryModeText );
+  ViewsImage__ReInit( &_this->Divider );
 }
 
 /* Finalizer method for the class 'Open::OPN02_FactoryMode' */
@@ -301,10 +319,12 @@ void OpenOPN02_FactoryMode__Done( OpenOPN02_FactoryMode _this )
   _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
-  ViewsRectangle__Done( &_this->FullWhiteBG );
+  ViewsRectangle__Done( &_this->FullBlackBG );
   ViewsText__Done( &_this->PressEnterTwiceText );
   ViewsImage__Done( &_this->QrCodeImage );
   CoreSystemEventHandler__Done( &_this->QrCodeReadyEventHandler );
+  ViewsText__Done( &_this->FactoryModeText );
+  ViewsImage__Done( &_this->Divider );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_Super );
@@ -319,7 +339,7 @@ void OpenOPN02_FactoryMode_Init( OpenOPN02_FactoryMode _this, XHandle aArg )
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0007 ));
+  EwTrace( "%s", EwLoadString( &_Const0009 ));
 }
 
 /* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortDownKeyActivated()' */
@@ -378,7 +398,7 @@ EW_END_OF_CLASS_VARIANTS( OpenOPN02_FactoryMode )
 
 /* Virtual Method Table (VMT) for the class : 'Open::OPN02_FactoryMode' */
 EW_DEFINE_CLASS( OpenOPN02_FactoryMode, ComponentsBaseComponent, OnFactoryModeFinished, 
-                 OnFactoryModeFinished, FullWhiteBG, FullWhiteBG, EnterButtonPressedCount, 
+                 OnFactoryModeFinished, FullBlackBG, FullBlackBG, EnterButtonPressedCount, 
                  EnterButtonPressedCount, "Open::OPN02_FactoryMode" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,

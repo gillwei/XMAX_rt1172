@@ -101,10 +101,12 @@
 /* Deklaration of class : 'Open::OPN02_FactoryMode' */
 EW_DEFINE_FIELDS( OpenOPN02_FactoryMode, ComponentsBaseComponent )
   EW_PROPERTY( OnFactoryModeFinished, XSlot )
-  EW_OBJECT  ( FullWhiteBG,     ViewsRectangle )
+  EW_OBJECT  ( FullBlackBG,     ViewsRectangle )
   EW_OBJECT  ( PressEnterTwiceText, ViewsText )
   EW_OBJECT  ( QrCodeImage,     ViewsImage )
   EW_OBJECT  ( QrCodeReadyEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( FactoryModeText, ViewsText )
+  EW_OBJECT  ( Divider,         ViewsImage )
   EW_VARIABLE( EnterButtonPressedCount, XInt32 )
 EW_END_OF_FIELDS( OpenOPN02_FactoryMode )
 

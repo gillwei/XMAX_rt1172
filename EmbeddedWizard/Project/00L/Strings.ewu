@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/03/25 12:40:09
+// Generated: 2021/04/08 08:28:05
 
 $output false
 const string ARGUMENT_STR =
@@ -516,6 +516,12 @@ $output false
 const string NAV08_turn_list =
 (
   Default = "Turn list";
+);
+
+$output false
+const string OPN02_FACTORY_MODE =
+(
+  Default = "Factory mode";
 );
 
 $output false

@@ -133,19 +133,19 @@ class OPN02_FactoryMode : Components::BaseComponent
   }
 
   $rect <20,20,160,60>
-  object Views::Rectangle FullWhiteBG
+  object Views::Rectangle FullBlackBG
   {
     preset Bounds = <0,0,480,272>;
-    preset Color = #FFFFFFFF;
+    preset Color = #000000FF;
   }
 
   $rect <20,20,160,60>
   object Views::Text PressEnterTwiceText
   {
-    preset Bounds = <53,215,434,245>;
+    preset Bounds = <10,222,470,256>;
     preset String = Strings::OPN02_ENTER_TWICE;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-    preset Color = #000000FF;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Color = #FFFFFFFF;
   }
 
   $rect <220,340,450,380>
@@ -157,7 +157,7 @@ class OPN02_FactoryMode : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Image QrCodeImage
   {
-    preset Bounds = <140,59,327,188>;
+    preset Bounds = <174,71,306,203>;
     preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
     preset Bitmap = Resource::QrCodeExternBitmap;
   }
@@ -175,5 +175,22 @@ class OPN02_FactoryMode : Components::BaseComponent
   slot OnQrCodeReadySlot
   {
     Resource::QrCodeExternBitmap.Name = Resource::EXTERN_BMP_QRCODE;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text FactoryModeText
+  {
+    preset Bounds = <10,2,470,40>;
+    preset String = Strings::OPN02_FACTORY_MODE;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Color = #FFFFFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,44,480,46>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
   }
 }
