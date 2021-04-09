@@ -318,7 +318,7 @@ void MediaMED01_MediaUI_Init( MediaMED01_MediaUI _this, XHandle aArg )
   = 0;
 
   if (( EwCompString( 0, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->Title ) 
-      != 0 ) && ( EwCompString( EwLoadString( &StringsGEN_three_hyphens ), EwGetAutoObject( 
+      != 0 ) && ( EwCompString( EwLoadString( &StringsGEN_THREE_HYPHENS ), EwGetAutoObject( 
       &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->Title ) 
       != 0 ))
   {
@@ -514,7 +514,7 @@ void MediaMED01_MediaUI_OnTrackInfoUpdateSlot( MediaMED01_MediaUI _this, XObject
 
   if ( !EwCompString( _this->Title.String, 0 ))
   {
-    ViewsText_OnSetString( &_this->Title, EwLoadString( &StringsGEN_three_hyphens ));
+    ViewsText_OnSetString( &_this->Title, EwLoadString( &StringsGEN_THREE_HYPHENS ));
   }
 
   if ( !ViewsText_OnGetVisible( &_this->Album ))
@@ -527,7 +527,7 @@ void MediaMED01_MediaUI_OnTrackInfoUpdateSlot( MediaMED01_MediaUI _this, XObject
 
   if ( !EwCompString( _this->Album.String, 0 ))
   {
-    ViewsText_OnSetString( &_this->Album, EwLoadString( &StringsGEN_three_hyphens ));
+    ViewsText_OnSetString( &_this->Album, EwLoadString( &StringsGEN_THREE_HYPHENS ));
   }
 
   if ( !ViewsText_OnGetVisible( &_this->Artist ))
@@ -540,12 +540,12 @@ void MediaMED01_MediaUI_OnTrackInfoUpdateSlot( MediaMED01_MediaUI _this, XObject
 
   if ( !EwCompString( _this->Artist.String, 0 ))
   {
-    ViewsText_OnSetString( &_this->Artist, EwLoadString( &StringsGEN_three_hyphens ));
+    ViewsText_OnSetString( &_this->Artist, EwLoadString( &StringsGEN_THREE_HYPHENS ));
   }
 
-  if (( !EwCompString( _this->Title.String, EwLoadString( &StringsGEN_three_hyphens )) 
-      && !EwCompString( _this->Album.String, EwLoadString( &StringsGEN_three_hyphens ))) 
-      && !EwCompString( _this->Artist.String, EwLoadString( &StringsGEN_three_hyphens )))
+  if (( !EwCompString( _this->Title.String, EwLoadString( &StringsGEN_THREE_HYPHENS )) 
+      && !EwCompString( _this->Album.String, EwLoadString( &StringsGEN_THREE_HYPHENS ))) 
+      && !EwCompString( _this->Artist.String, EwLoadString( &StringsGEN_THREE_HYPHENS )))
   {
     MediaMED01_MediaUI_UpdateMediaInfoItem( _this, EnumReceptionStatusERROR );
   }
@@ -572,7 +572,7 @@ void MediaMED01_MediaUI_OnMotoConMusicInfoUpdateSlot( MediaMED01_MediaUI _this,
   DeviceInterfaceMediaManagerDeviceClass ));
 
   if (( EwCompString( 0, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->Title ) 
-      != 0 ) && ( EwCompString( EwLoadString( &StringsGEN_three_hyphens ), EwGetAutoObject( 
+      != 0 ) && ( EwCompString( EwLoadString( &StringsGEN_THREE_HYPHENS ), EwGetAutoObject( 
       &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->Title ) 
       != 0 ))
   {

@@ -935,7 +935,7 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetTitle( DeviceInterfaceMediaMana
   }
   else
   {
-    _this->Title = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
+    _this->Title = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
   }
 
   EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceMediaManagerDeviceClass_OnGetTitle, 
@@ -952,7 +952,7 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum( DeviceInterfaceMediaMana
   }
   else
   {
-    _this->Album = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
+    _this->Album = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
   }
 
   EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceMediaManagerDeviceClass_OnGetAlbum, 
@@ -969,7 +969,7 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( DeviceInterfaceMediaMan
   }
   else
   {
-    _this->Artist = EwShareString( EwLoadString( &StringsGEN_three_hyphens ));
+    _this->Artist = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
   }
 
   EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceMediaManagerDeviceClass_OnGetArtist, 

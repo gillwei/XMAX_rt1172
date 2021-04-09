@@ -80,8 +80,20 @@ class TEL01_IncomingCall : Components::BaseMainBG
     CallerText.String = DeviceInterface::NotificationDevice.GetIncomingCallCaller();
     if( 0 == CallerText.String.length )
     {
-      CallerText.String = "---";
+      CallerText.String = Strings::GEN_THREE_HYPHENS;
     }
+
+    if( 1 >= CallerText.GetNoOfRows() )
+    {
+      CallerText.Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    }
+    else
+    {
+      CallerText.Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
+      CallerText.Bounds = <100,114,451,152>;
+    }
+    CallerText.Visible = true;
+
     trace "Init TEL01, ", CallerText.String;
   }
 
@@ -148,11 +160,13 @@ class TEL01_IncomingCall : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text CallerText
   {
-    preset Bounds = <100,117,451,151>;
+    preset Bounds = <100,114,451,190>;
     preset Ellipsis = true;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
-    preset Visible = true;
+    preset Visible = false;
   }
 
   $rect <490,290,790,330>
@@ -298,8 +312,10 @@ class TEL02_ActiveCall : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text CallerText
   {
-    preset Bounds = <100,117,451,151>;
+    preset Bounds = <100,114,451,190>;
     preset Ellipsis = true;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
     preset Visible = true;
@@ -437,8 +453,19 @@ class TEL02_ActiveCall : Components::BaseMainBG
     CallerText.String = DeviceInterface::NotificationDevice.GetActiveCallCaller();
     if( 0 == CallerText.String.length )
     {
-      CallerText.String = "---";
+      CallerText.String = Strings::GEN_THREE_HYPHENS;
     }
+
+    if( 1 >= CallerText.GetNoOfRows() )
+    {
+      CallerText.Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    }
+    else
+    {
+      CallerText.Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
+      CallerText.Bounds = <100,114,451,152>;
+    }
+    CallerText.Visible = true;
   }
 }
 

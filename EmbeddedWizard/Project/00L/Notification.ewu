@@ -41,7 +41,7 @@ class NTF01_NotificationList : Menu::BaseMenuView
       }
       else
       {
-        Title = "---";
+        Title = Strings::GEN_THREE_HYPHENS;
       }
 
       // append (call repetition count) at the end of title
@@ -138,7 +138,7 @@ class NTF01_NotificationList : Menu::BaseMenuView
       // Set to "---" if no message
       if( 0 == Message.length )
       {
-        Message = "---";
+        Message = Strings::GEN_THREE_HYPHENS;
       }
     }
     else

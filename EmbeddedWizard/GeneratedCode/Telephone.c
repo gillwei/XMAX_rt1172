@@ -42,17 +42,17 @@
 #include "Fonts.h"
 #include "Resource.h"
 #include "Resources.h"
+#include "Strings.h"
 #include "Telephone.h"
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x0000006C, /* ratio 81.48 % */
-  0xB8000D00, 0x0005A452, 0x00010683, 0x48B03078, 0x006E0012, 0x074001A4, 0x54000800,
-  0xC0011400, 0x000C0004, 0xB0B00031, 0x838010A8, 0x4E230F86, 0xE33178AC, 0x651F8EC6,
-  0xA0485490, 0x0D928EA1, 0x10018E1A, 0x9F1B0006, 0x7800ED24, 0xC5E6F403, 0x02032592,
-  0x00000000
+  0x00000060, /* ratio 83.33 % */
+  0xB8001F00, 0x00092452, 0x00D20037, 0x040003A0, 0x8A002A00, 0x00026000, 0x00188006,
+  0xC0043458, 0x82C0C1D1, 0xDC2E1307, 0x45225108, 0x7236328B, 0x0751F024, 0x3E0D0047,
+  0x0610018E, 0x1B9B1B00, 0x837800ED, 0x97C3A5D3, 0x0002032F, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -60,15 +60,15 @@ static const XRect _Const0000 = {{ 0, 0 }, { 94, 75 }};
 static const XRect _Const0001 = {{ 0, 39 }, { 94, 114 }};
 static const XRect _Const0002 = {{ 0, 189 }, { 94, 264 }};
 static const XRect _Const0003 = {{ 241, 44 }, { 311, 114 }};
-static const XRect _Const0004 = {{ 100, 117 }, { 451, 151 }};
+static const XRect _Const0004 = {{ 100, 114 }, { 451, 190 }};
 static const XRect _Const0005 = {{ 0, 36 }, { 480, 38 }};
-static const XStringRes _Const0006 = { _StringsDefault0, 0x0002 };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x0008 };
+static const XRect _Const0006 = {{ 100, 114 }, { 451, 152 }};
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0002 };
 static const XRect _Const0008 = {{ 100, 205 }, { 451, 239 }};
 static const XRect _Const0009 = {{ 0, 114 }, { 94, 189 }};
-static const XStringRes _Const000A = { _StringsDefault0, 0x0017 };
-static const XStringRes _Const000B = { _StringsDefault0, 0x0025 };
-static const XStringRes _Const000C = { _StringsDefault0, 0x0029 };
+static const XStringRes _Const000A = { _StringsDefault0, 0x0011 };
+static const XStringRes _Const000B = { _StringsDefault0, 0x001F };
+static const XStringRes _Const000C = { _StringsDefault0, 0x0023 };
 
 /* Initializer for the class 'Telephone::ImageButton' */
 void TelephoneImageButton__Init( TelephoneImageButton _this, XObject aLink, XHandle aArg )
@@ -238,8 +238,11 @@ void TelephoneTEL01_IncomingCall__Init( TelephoneTEL01_IncomingCall _this, XObje
   CoreRectView__OnSetBounds( &_this->ForegroundImage, _Const0003 );
   CoreRectView__OnSetBounds( &_this->CallerText, _Const0004 );
   ViewsText_OnSetEllipsis( &_this->CallerText, 1 );
+  ViewsText_OnSetWrapText( &_this->CallerText, 1 );
+  ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString( &_this->CallerText, 0 );
-  ViewsText_OnSetVisible( &_this->CallerText, 1 );
+  ViewsText_OnSetVisible( &_this->CallerText, 0 );
   CoreTimer_OnSetPeriod( &_this->DismissTimer, 0 );
   CoreTimer_OnSetBegin( &_this->DismissTimer, 1000 );
   CoreTimer_OnSetPeriod( &_this->KeyEnableTimer, 0 );
@@ -326,9 +329,22 @@ void TelephoneTEL01_IncomingCall_Init( TelephoneTEL01_IncomingCall _this, XHandl
 
   if ( 0 == EwGetStringLength( _this->CallerText.String ))
   {
-    ViewsText_OnSetString( &_this->CallerText, EwLoadString( &_Const0006 ));
+    ViewsText_OnSetString( &_this->CallerText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
   }
 
+  if ( 1 >= ViewsText_GetNoOfRows( &_this->CallerText ))
+  {
+    ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzCenter 
+    | ViewsTextAlignmentAlignVertTop );
+  }
+  else
+  {
+    ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
+    | ViewsTextAlignmentAlignVertTop );
+    CoreRectView__OnSetBounds( &_this->CallerText, _Const0006 );
+  }
+
+  ViewsText_OnSetVisible( &_this->CallerText, 1 );
   EwTrace( "%s%s", EwLoadString( &_Const0007 ), _this->CallerText.String );
 }
 
@@ -509,6 +525,9 @@ void TelephoneTEL02_ActiveCall__Init( TelephoneTEL02_ActiveCall _this, XObject a
   CoreRectView__OnSetBounds( &_this->ForegroundImage, _Const0003 );
   CoreRectView__OnSetBounds( &_this->CallerText, _Const0004 );
   ViewsText_OnSetEllipsis( &_this->CallerText, 1 );
+  ViewsText_OnSetWrapText( &_this->CallerText, 1 );
+  ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString( &_this->CallerText, 0 );
   ViewsText_OnSetVisible( &_this->CallerText, 1 );
   CoreRectView__OnSetBounds( &_this->DurationText, _Const0008 );
@@ -766,8 +785,22 @@ void TelephoneTEL02_ActiveCall_UpdateCaller( TelephoneTEL02_ActiveCall _this )
 
   if ( 0 == EwGetStringLength( _this->CallerText.String ))
   {
-    ViewsText_OnSetString( &_this->CallerText, EwLoadString( &_Const0006 ));
+    ViewsText_OnSetString( &_this->CallerText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
   }
+
+  if ( 1 >= ViewsText_GetNoOfRows( &_this->CallerText ))
+  {
+    ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzCenter 
+    | ViewsTextAlignmentAlignVertTop );
+  }
+  else
+  {
+    ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
+    | ViewsTextAlignmentAlignVertTop );
+    CoreRectView__OnSetBounds( &_this->CallerText, _Const0006 );
+  }
+
+  ViewsText_OnSetVisible( &_this->CallerText, 1 );
 }
 
 /* Variants derived from the class : 'Telephone::TEL02_ActiveCall' */

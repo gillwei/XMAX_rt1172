@@ -52,6 +52,7 @@
 #include "Fonts.h"
 #include "Notification.h"
 #include "Resource.h"
+#include "Strings.h"
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
@@ -59,15 +60,15 @@ static const unsigned int _StringsDefault0[] =
 {
   0x000001C8, /* ratio 57.89 % */
   0xB8001500, 0x8009C452, 0x00400037, 0x0C200320, 0x010D3A00, 0xB0306C48, 0x6E001248,
-  0x9879A400, 0x2A418010, 0x80008C00, 0x44862001, 0xB62A0600, 0xA572B000, 0x51150244,
-  0x3049849C, 0x3A8ACCC5, 0xF8A88A4E, 0x83C7A304, 0xD19A371C, 0x444C6008, 0x66111B88,
-  0x0E744264, 0xE0002AC7, 0xA00A3C2C, 0x0029D4CC, 0x988500D8, 0x0A44A153, 0xD55AB115,
-  0x4428D56A, 0x7E150CAB, 0xEA11D90C, 0x251D2245, 0x50A8A832, 0x003A800C, 0x88645E86,
-  0x9D574007, 0x441A7D3C, 0x512F3488, 0x2B0B0EA3, 0x2AD70005, 0xB51B8744, 0xB4E8DDC2,
-  0x4E00534D, 0x7C256AB1, 0x8CE04552, 0xDE1A8383, 0xE2F45888, 0x67211CC6, 0x32D97C65,
-  0x3400CC65, 0xA2C0056F, 0x0E9F1163, 0x493D92ED, 0x8CC5E091, 0x05AA211B, 0x49245200,
-  0x841D2719, 0x0E400A2D, 0x8192AD50, 0x15E9F1DE, 0x58825CC0, 0x08473A8D, 0xA954001D,
-  0x111669D5, 0x4064F278, 0x00000000
+  0x9879A400, 0x2A418010, 0x80008C00, 0x44862001, 0xA22A0400, 0x60929938, 0x7515960A,
+  0xF151149C, 0x078F4609, 0xA3346E39, 0x8898C011, 0xCC223710, 0x1CE7A4C8, 0xC000558E,
+  0x40140859, 0x0053A619, 0x5109C9B0, 0x148942A6, 0x3A7D462A, 0x884FE9F5, 0xFC2A194F,
+  0xD263B218, 0x4A3A448B, 0xA1515064, 0x00750018, 0x10C8BCF0, 0x33AB000F, 0x8834DE6B,
+  0x9EDCA830, 0x1DFA1D3F, 0x53ED200A, 0x4E370E88, 0x68F1BB4D, 0x8E00A31B, 0xF7DA9D46,
+  0x19BD0AA4, 0xBBFCEAF9, 0xC266F031, 0x96263986, 0xE3F2185A, 0x4C0191C6, 0x45800AA6,
+  0x1D3722C7, 0x927AEDBE, 0x198BC122, 0x0B1C4237, 0x9248A400, 0xD03A4E32, 0x9C8013EA,
+  0xE717539C, 0x2AF373BC, 0xA304B600, 0x308E3CFE, 0x4BA48039, 0xD8A81B9D, 0xEEF74002,
+  0x11165B12, 0x4064F278, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -76,28 +77,28 @@ static const XRect _Const0001 = {{ 10, 50 }, { 470, 236 }};
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x000C };
 static const XStringRes _Const0004 = { _StringsDefault0, 0x0019 };
-static const XStringRes _Const0005 = { _StringsDefault0, 0x001F };
-static const XStringRes _Const0006 = { _StringsDefault0, 0x0023 };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x0027 };
-static const XStringRes _Const0008 = { _StringsDefault0, 0x002B };
-static const XStringRes _Const0009 = { _StringsDefault0, 0x004D };
-static const XStringRes _Const000A = { _StringsDefault0, 0x0061 };
-static const XStringRes _Const000B = { _StringsDefault0, 0x006D };
-static const XStringRes _Const000C = { _StringsDefault0, 0x008F };
-static const XRect _Const000D = {{ 11, 44 }, { 444, 265 }};
-static const XColor _Const000E = { 0xCC, 0xCC, 0xCC, 0xFF };
-static const XRect _Const000F = {{ 453, 44 }, { 461, 252 }};
-static const XRect _Const0010 = {{ 33, 48 }, { 439, 258 }};
-static const XRect _Const0011 = {{ 0, 36 }, { 480, 38 }};
-static const XStringRes _Const0012 = { _StringsDefault0, 0x00B9 };
-static const XRect _Const0013 = {{ 0, 0 }, { 406, 210 }};
-static const XRect _Const0014 = {{ 0, 0 }, { 332, 30 }};
-static const XColor _Const0015 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0016 = {{ 343, 0 }, { 406, 30 }};
-static const XRect _Const0017 = {{ 0, 30 }, { 406, 1260 }};
-static const XPoint _Const0018 = { 0, 0 };
-static const XStringRes _Const0019 = { _StringsDefault0, 0x00C6 };
-static const XStringRes _Const001A = { _StringsDefault0, 0x00D4 };
+static const XStringRes _Const0005 = { _StringsDefault0, 0x001D };
+static const XStringRes _Const0006 = { _StringsDefault0, 0x0021 };
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0025 };
+static const XStringRes _Const0008 = { _StringsDefault0, 0x0047 };
+static const XStringRes _Const0009 = { _StringsDefault0, 0x005B };
+static const XStringRes _Const000A = { _StringsDefault0, 0x0067 };
+static const XStringRes _Const000B = { _StringsDefault0, 0x0089 };
+static const XRect _Const000C = {{ 11, 44 }, { 444, 265 }};
+static const XColor _Const000D = { 0xCC, 0xCC, 0xCC, 0xFF };
+static const XRect _Const000E = {{ 453, 44 }, { 461, 252 }};
+static const XRect _Const000F = {{ 33, 48 }, { 439, 258 }};
+static const XRect _Const0010 = {{ 0, 36 }, { 480, 38 }};
+static const XStringRes _Const0011 = { _StringsDefault0, 0x00B3 };
+static const XRect _Const0012 = {{ 0, 0 }, { 406, 210 }};
+static const XRect _Const0013 = {{ 0, 0 }, { 332, 30 }};
+static const XColor _Const0014 = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0015 = {{ 343, 0 }, { 406, 30 }};
+static const XRect _Const0016 = {{ 0, 30 }, { 406, 1260 }};
+static const XPoint _Const0017 = { 0, 0 };
+static const XStringRes _Const0018 = { _StringsDefault0, 0x00C0 };
+static const XStringRes _Const0019 = { _StringsDefault0, 0x00CE };
+static const XStringRes _Const001A = { _StringsDefault0, 0x00DA };
 static const XStringRes _Const001B = { _StringsDefault0, 0x00E0 };
 
 #ifndef EW_DONT_CHECK_INDEX
@@ -239,15 +240,15 @@ XString NotificationNTF01_NotificationList_LoadItemTitle( NotificationNTF01_Noti
       }
       else
       {
-        Title = EwLoadString( &_Const0004 );
+        Title = EwLoadString( &StringsGEN_THREE_HYPHENS );
       }
 
     if (( EnumNotificationCategoryMISSED_CALL == _this->NotificationData->Category ) 
         && ( 1 < _this->NotificationData->CallRepetition ))
     {
       Title = EwConcatString( Title, EwConcatString( EwConcatString( EwLoadString( 
-      &_Const0005 ), EwNewStringInt( _this->NotificationData->CallRepetition, 0, 
-      10 )), EwLoadString( &_Const0006 )));
+      &_Const0004 ), EwNewStringInt( _this->NotificationData->CallRepetition, 0, 
+      10 )), EwLoadString( &_Const0005 )));
     }
   }
 
@@ -270,7 +271,7 @@ XString NotificationNTF01_NotificationList_LoadItemReceivedTime( NotificationNTF
       > 0 )
   {
     ReceivedTime = EwConcatString( EwConcatString( _this->NotificationData->ReceivedTime->Hour, 
-    EwLoadString( &_Const0007 )), _this->NotificationData->ReceivedTime->Minute );
+    EwLoadString( &_Const0006 )), _this->NotificationData->ReceivedTime->Minute );
   }
 
   return ReceivedTime;
@@ -358,7 +359,7 @@ XString NotificationNTF01_NotificationList_LoadItemMessage( NotificationNTF01_No
 
     if ( 0 == EwGetStringLength( Message ))
     {
-      Message = EwLoadString( &_Const0004 );
+      Message = EwLoadString( &StringsGEN_THREE_HYPHENS );
     }
   }
   else
@@ -379,7 +380,7 @@ void NotificationNTF01_NotificationList_OnNotificationListUpdatedSlot( Notificat
 
   NotificationNum = DeviceInterfaceNotificationDeviceClass_OnGetNotificationNum( 
   EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ));
-  EwTrace( "%s%u", EwLoadString( &_Const0008 ), NotificationNum );
+  EwTrace( "%s%u", EwLoadString( &_Const0007 ), NotificationNum );
 
   if ( 0 < NotificationNum )
   {
@@ -397,8 +398,8 @@ void NotificationNTF01_NotificationList_OnNotificationListUpdatedSlot( Notificat
       XInt32 BufferIdx = DeviceInterfaceNotificationDeviceClass_GetBufferIdxOfNotificationUID( 
         EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ), 
         SelectedNotificationUID );
-      EwTrace( "%s%u%s%i", EwLoadString( &_Const0009 ), SelectedNotificationUID, 
-        EwLoadString( &_Const000A ), BufferIdx );
+      EwTrace( "%s%u%s%i", EwLoadString( &_Const0008 ), SelectedNotificationUID, 
+        EwLoadString( &_Const0009 ), BufferIdx );
 
       if (( 0 <= BufferIdx ) && ( BufferIdx < _this->Super1.Menu.NoOfItems ))
       {
@@ -440,11 +441,11 @@ void NotificationNTF01_NotificationList_OnNotificationDetailDismissSlot( Notific
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s", EwLoadString( &_Const000B ));
+  EwTrace( "%s", EwLoadString( &_Const000A ));
 
   if ( 0 == _this->Super1.Menu.NoOfItems )
   {
-    EwTrace( "%s", EwLoadString( &_Const000C ));
+    EwTrace( "%s", EwLoadString( &_Const000B ));
     CoreTimer_OnSetEnabled( &_this->NoDataTimeoutTimer, 1 );
   }
 }
@@ -533,14 +534,14 @@ void NotificationNTF02_NotificationDetail__Init( NotificationNTF02_NotificationD
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super1.SlideOutEffectEnabled = 1;
-  CoreRectView__OnSetBounds( &_this->GrayBG, _Const000D );
-  ViewsRectangle_OnSetColor( &_this->GrayBG, _Const000E );
-  CoreRectView__OnSetBounds( &_this->Scrollbar, _Const000F );
+  CoreRectView__OnSetBounds( &_this->GrayBG, _Const000C );
+  ViewsRectangle_OnSetColor( &_this->GrayBG, _Const000D );
+  CoreRectView__OnSetBounds( &_this->Scrollbar, _Const000E );
   MenuScrollbar_OnSetViewIdx( &_this->Scrollbar, 0 );
   MenuScrollbar_OnSetPageItems( &_this->Scrollbar, 7 );
   MenuScrollbar_OnSetListItems( &_this->Scrollbar, 1 );
-  CoreRectView__OnSetBounds( &_this->NotificationText, _Const0010 );
-  CoreRectView__OnSetBounds( &_this->Divider, _Const0011 );
+  CoreRectView__OnSetBounds( &_this->NotificationText, _Const000F );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const0010 );
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
   CoreGroup__Add( _this, ((CoreView)&_this->GrayBG ), 0 );
@@ -594,7 +595,7 @@ void NotificationNTF02_NotificationDetail_Init( NotificationNTF02_NotificationDe
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0012 ));
+  EwTrace( "%s", EwLoadString( &_Const0011 ));
 }
 
 /* 'C' function for method : 'Notification::NTF02_NotificationDetail.OnShortDownKeyActivated()' */
@@ -719,34 +720,34 @@ void NotificationNotificationDetailText__Init( NotificationNotificationDetailTex
   _this->_VMT = EW_CLASS( NotificationNotificationDetailText );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0013 );
+  CoreRectView__OnSetBounds( _this, _Const0012 );
   CoreView_OnSetLayout((CoreView)&_this->TitleText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->TitleText, _Const0014 );
+  CoreRectView__OnSetBounds( &_this->TitleText, _Const0013 );
   ViewsText_OnSetEllipsis( &_this->TitleText, 1 );
   ViewsText_OnSetAlignment( &_this->TitleText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->TitleText, 0 );
-  ViewsText_OnSetColor( &_this->TitleText, _Const0015 );
+  ViewsText_OnSetColor( &_this->TitleText, _Const0014 );
   CoreView_OnSetLayout((CoreView)&_this->ReceivedTimeText, CoreLayoutAlignToLeft 
   | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->ReceivedTimeText, _Const0016 );
+  CoreRectView__OnSetBounds( &_this->ReceivedTimeText, _Const0015 );
   ViewsText_OnSetAlignment( &_this->ReceivedTimeText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ReceivedTimeText, 0 );
-  ViewsText_OnSetColor( &_this->ReceivedTimeText, _Const0015 );
+  ViewsText_OnSetColor( &_this->ReceivedTimeText, _Const0014 );
   CoreView_OnSetLayout((CoreView)&_this->MessageText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->MessageText, _Const0017 );
+  CoreRectView__OnSetBounds( &_this->MessageText, _Const0016 );
   ViewsText_OnSetRowDistance( &_this->MessageText, 30 );
   ViewsText_OnSetEllipsis( &_this->MessageText, 1 );
   ViewsText_OnSetWrapText( &_this->MessageText, 1 );
-  ViewsText_OnSetScrollOffset( &_this->MessageText, _Const0018 );
+  ViewsText_OnSetScrollOffset( &_this->MessageText, _Const0017 );
   ViewsText_OnSetAlignment( &_this->MessageText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString( &_this->MessageText, 0 );
-  ViewsText_OnSetColor( &_this->MessageText, _Const0015 );
-  _this->TitleInitBounds = _Const0014;
-  _this->ReceivedTimeInitBounds = _Const0016;
-  _this->MessageInitBounds = _Const0017;
+  ViewsText_OnSetColor( &_this->MessageText, _Const0014 );
+  _this->TitleInitBounds = _Const0013;
+  _this->ReceivedTimeInitBounds = _Const0015;
+  _this->MessageInitBounds = _Const0016;
   EffectsEffect_OnSetExponent((EffectsEffect)&_this->ScrollEffect, 4.190000f );
   EffectsEffect_OnSetTiming((EffectsEffect)&_this->ScrollEffect, EffectsTimingExp_Out );
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->ScrollEffect, 1 );
@@ -843,7 +844,7 @@ XInt32 NotificationNotificationDetailText_ScrollDownPage( NotificationNotificati
     EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ScrollEffect, 1 );
     _this->LineToScroll = (( EwGetInt32Abs( NextScrollOffsetY ) / _this->MessageText.RowDistance ) 
     + 7 ) - 1;
-    EwTrace( "%s%i", EwLoadString( &_Const0019 ), _this->LineToScroll );
+    EwTrace( "%s%i", EwLoadString( &_Const0018 ), _this->LineToScroll );
   }
 
   return _this->LineToScroll;
@@ -873,7 +874,7 @@ XInt32 NotificationNotificationDetailText_ScrollUpPage( NotificationNotification
     EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ScrollEffect, 1 );
     _this->LineToScroll = (( EwGetInt32Abs( NextScrollOffsetY ) / _this->MessageText.RowDistance ) 
     + 7 ) - 1;
-    EwTrace( "%s%i", EwLoadString( &_Const001A ), _this->LineToScroll );
+    EwTrace( "%s%i", EwLoadString( &_Const0019 ), _this->LineToScroll );
   }
 
   return _this->LineToScroll;
@@ -899,11 +900,11 @@ void NotificationNotificationDetailText_OnSetNotificationData( NotificationNotif
       }
       else
       {
-        ViewsText_OnSetString( &_this->TitleText, EwLoadString( &_Const0004 ));
+        ViewsText_OnSetString( &_this->TitleText, EwLoadString( &_Const001A ));
       }
 
     ViewsText_OnSetString( &_this->ReceivedTimeText, EwConcatString( EwConcatString( 
-    _this->NotificationData->ReceivedTime->Hour, EwLoadString( &_Const0007 )), _this->NotificationData->ReceivedTime->Minute ));
+    _this->NotificationData->ReceivedTime->Hour, EwLoadString( &_Const0006 )), _this->NotificationData->ReceivedTime->Minute ));
 
     if ( EnumNotificationCategoryMESSAGE == _this->NotificationData->Category )
     {
@@ -918,7 +919,7 @@ void NotificationNotificationDetailText_OnSetNotificationData( NotificationNotif
 
       if ( 0 == EwGetStringLength( _this->MessageText.String ))
       {
-        ViewsText_OnSetString( &_this->MessageText, EwLoadString( &_Const0004 ));
+        ViewsText_OnSetString( &_this->MessageText, EwLoadString( &_Const001A ));
       }
     }
 

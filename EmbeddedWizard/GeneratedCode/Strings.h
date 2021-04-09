@@ -70,8 +70,8 @@ extern const XStringRes StringsGEN_HIGH;
 /* User defined constant: 'Strings::GEN_bluetooth' */
 extern const XStringRes StringsGEN_bluetooth;
 
-/* User defined constant: 'Strings::GEN_three_hyphens' */
-extern const XStringRes StringsGEN_three_hyphens;
+/* User defined constant: 'Strings::GEN_THREE_HYPHENS' */
+extern const XStringRes StringsGEN_THREE_HYPHENS;
 
 /* User defined constant: 'Strings::GEN_please_wait' */
 extern const XStringRes StringsGEN_please_wait;

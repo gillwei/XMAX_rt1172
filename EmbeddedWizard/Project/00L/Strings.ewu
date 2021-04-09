@@ -1,20 +1,16 @@
-$version 10.00
+﻿$version 10.00
 
 // This file is generated automatically.
 // Generated: 2021/04/08 08:28:05
-
+$rect <10,10,150,50>
 $output false
-const string ARGUMENT_STR =
-(
-  Default = "%s";
-);
+const string ARGUMENT_STR = "%s";
 
+$rect <160,10,300,50>
 $output false
-const string ARGUMENT_DECIMAL =
-(
-  Default = "%d";
-);
+const string ARGUMENT_DECIMAL = "%d";
 
+$rect <310,10,450,50>
 $output false
 const string GEN_ok =
 (
@@ -24,881 +20,610 @@ const string GEN_ok =
   Spanish = "Vale";
   Italian = "OK";
   German = "OK";
-  TraditionalChinese = "\u78ba\u5b9a";
-  SimplifiedChinese = "\u786e\u5b9a";
+  TraditionalChinese = "確定";
+  SimplifiedChinese = "确定";
 );
 
+$rect <460,10,600,50>
 $output false
 const string GEN_cancel =
 (
   Default = "Cancel";
-  Japanese = "\u30ad\u30e3\u30f3\u30bb\u30eb";
+  Japanese = "キャンセル";
   French = "Annuler";
   Spanish = "Cancelar";
   Italian = "Annulla";
   German = "Abbrechen";
-  TraditionalChinese = "\u53d6\u6d88";
-  SimplifiedChinese = "\u53d6\u6d88";
+  TraditionalChinese = "取消";
+  SimplifiedChinese = "取消";
 );
 
+$rect <10,60,150,100>
 $output false
-const string GEN_yes =
-(
-  Default = "Yes";
-);
+const string GEN_yes = "Yes";
 
+$rect <160,60,300,100>
 $output false
-const string GEN_no =
-(
-  Default = "No";
-);
+const string GEN_no = "No";
 
+$rect <310,60,450,100>
 $output false
-const string GEN_LOW =
-(
-  Default = "Low";
-);
+const string GEN_LOW = "Low";
 
+$rect <460,60,600,100>
 $output false
-const string GEN_MIDDLE =
-(
-  Default = "Mid";
-);
+const string GEN_MIDDLE = "Mid";
 
+$rect <10,110,150,150>
 $output false
-const string GEN_HIGH =
-(
-  Default = "High";
-);
+const string GEN_HIGH = "High";
 
+$rect <160,110,300,150>
 $output false
-const string GEN_reset_question_mark =
-(
-  Default = "Reset?";
-);
+const string GEN_reset_question_mark = "Reset?";
 
+$rect <310,110,450,150>
 $output false
-const string GEN_bluetooth =
-(
-  Default = "Bluetooth";
-);
+const string GEN_bluetooth = "Bluetooth";
 
+$rect <460,110,600,150>
 $output false
-const string GEN_three_hyphens =
-(
-  Default = "---";
-);
+const string GEN_THREE_HYPHENS = "---";
 
+$rect <10,160,150,200>
 $output false
-const string GEN_please_wait =
-(
-  Default = "Please wait\u2026";
-);
+const string GEN_please_wait = "Please wait…";
 
+$rect <160,160,300,200>
 $output false
 const string TOP01_warning =
 (
   Default = "WARNING";
-  Japanese = "\u8b66\u544a";
+  Japanese = "警告";
   French = "AVERTISSEMENT";
-  Spanish = "ATENCI\u00d3N";
+  Spanish = "ATENCIÓN";
   Italian = "AVVERTENZA";
   German = "WARNUNG";
-  TraditionalChinese = "\u8b66\u544a";
-  SimplifiedChinese = "\u8b66\u544a";
+  TraditionalChinese = "警告";
+  SimplifiedChinese = "警告";
 );
 
+$rect <310,160,450,200>
 $output false
 const string TOP01_disclaimer =
 (
   Default = "Failure to pay attention while riding could result in death or serious injury. Always concentrate on riding by keeping your eyes and mind on the road. Read the Owner's Manual.";
-  Japanese = "\u904b\u8ee2\u4e2d\u306b\u6ce8\u610f\u3092\u6020\u308b\u3068\u3001\u6b7b\u4ea1\u307e\u305f\u306f\u91cd\u50b7\u3092\u8ca0\u3046\u53ef\u80fd\u6027\u304c\u3042\u308a\u307e\u3059\u3002\u5e38\u306b\u4ea4\u901a\u72b6\u6cc1\u3092\u6ce8\u8996\u3057\u3001\u904b\u8ee2\u306b\u96c6\u4e2d\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u53d6\u6271\u8aac\u660e\u66f8\u3092\u3054\u78ba\u8a8d\u304f\u3060\u3055\u3044\u3002";
-  French = "Toute inattention lors de la conduite peut entra\u00eener la mort ou des blessures graves. Concentrez-vous toujours sur la conduite en gardant vos yeux et votre esprit sur la route. Lisez votre mode d'emploi.";
-  Spanish = "No prestar atenci\u00f3n mientras se conduce puede producir heridas graves y la muerte. Conc\u00e9ntrese siempre en la conducci\u00f3n y mantenga la vista siempre en la carretera. Lea su manual de usuario.";
-  Italian = "Non prestare attenzione mentre si viaggia pu\u00f2 causare lesioni gravi o decesso. Rimanete sempre concentrati sulla strada. Leggere il Manuale utente.";
-  German = "Unachtsamkeit w\u00e4hrend des Fahrens kann zu Verletzungen oder Tod f\u00fchren. Konzentrieren Sie sich w\u00e4hrend der Fahrt immer auf die Stra\u00dfe. ";
-  TraditionalChinese = "\u672a\u5c08\u5fc3\u9a0e\u4e58\u8eca\u8f1b\u6642\uff0c\u5c07\u53ef\u80fd\u5c0e\u81f4\u91cd\u50b7\u6216\u6b7b\u4ea1\u3002\u9a0e\u4e58\u4e2d\u8acb\u52d9\u5fc5\u4fdd\u6301\u5c08\u6ce8\uff0c\u4e26\u96a8\u6642\u7559\u610f\u5468\u906d\u4e4b\u4ea4\u901a\u72c0\u6cc1\u3002\u8acb\u8a73\u95b1\u8eca\u4e3b\u624b\u518a\u3002";
-  SimplifiedChinese = "\u9a91\u884c\u65f6\u4e0d\u6ce8\u610f\u5b89\u5168\u53ef\u80fd\u4f1a\u5bfc\u81f4\u6b7b\u4ea1\u6216\u91cd\u4f24\u3002\u8bf7\u968f\u65f6\u6ce8\u610f\u9053\u8def\u72b6\u51b5\u548c\u5468\u56f4\u7684\u73af\u5883\uff0c\u4e13\u5fc3\u9a91\u884c\u3002\u8bf7\u53c2\u9605\u300a\u7528\u6237\u624b\u518c\u300b\u3002";
+  Japanese = "運転中に注意を怠ると、死亡または重傷を負う可能性があります。常に交通状況を注視し、運転に集中してください。\n取扱説明書をご確認ください。";
+  French = "Toute inattention lors de la conduite peut entraîner la mort ou des blessures graves. Concentrez-vous toujours sur la conduite en gardant vos yeux et votre esprit sur la route. Lisez votre mode d'emploi.";
+  Spanish = "No prestar atención mientras se conduce puede producir heridas graves y la muerte. Concéntrese siempre en la conducción y mantenga la vista siempre en la carretera. Lea su manual de usuario.";
+  Italian = "Non prestare attenzione mentre si viaggia può causare lesioni gravi o decesso. Rimanete sempre concentrati sulla strada. Leggere il Manuale utente.";
+  German = "Unachtsamkeit während des Fahrens kann zu Verletzungen oder Tod führen. Konzentrieren Sie sich während der Fahrt immer auf die Straße. ";
+  TraditionalChinese = "未專心騎乘車輛時，將可能導致重傷或死亡。騎乘中請務必保持專注，並隨時留意周遭之交通狀況。請詳閱車主手冊。";
+  SimplifiedChinese = "骑行时不注意安全可能会导致死亡或重伤。请随时注意道路状况和周围的环境，专心骑行。请参阅《用户手册》。";
 );
 
+$rect <460,160,600,200>
 $output false
 const string TOP01_accept =
 (
   Default = "ACCEPT";
-  Japanese = "\u78ba\u8a8d";
+  Japanese = "確認";
   French = "ACCEPTER";
   Spanish = "ACEPTAR";
   Italian = "ACCETTA";
   German = "Akzeptiert";
-  TraditionalChinese = "\u77e5\u6089\u4e26\u540c\u610f";
-  SimplifiedChinese = "\u63a5\u53d7";
+  TraditionalChinese = "知悉並同意";
+  SimplifiedChinese = "接受";
 );
 
+$rect <10,210,150,250>
 $output false
-const string BRT01_TFT_display =
-(
-  Default = "TFT display";
-);
+const string BRT01_TFT_display = "TFT display";
 
+$rect <160,210,300,250>
 $output false
-const string BRT01_speed_meter =
-(
-  Default = "Speed meter";
-);
+const string BRT01_speed_meter = "Speed meter";
 
+$rect <310,210,450,250>
 $output false
-const string BRT02_max =
-(
-  Default = "Max.";
-);
+const string BRT02_max = "Max.";
 
+$rect <460,210,600,250>
 $output false
-const string BRT02_min =
-(
-  Default = "Min.";
-);
+const string BRT02_min = "Min.";
 
+$rect <10,260,150,300>
 $output false
-const string CLK01_auto_adjustment =
-(
-  Default = "Auto Adjustment";
-);
+const string CLK01_auto_adjustment = "Auto Adjustment";
 
+$rect <160,260,300,300>
 $output false
-const string CLK01_manual_adjustment =
-(
-  Default = "Manual Adjustment";
-);
+const string CLK01_manual_adjustment = "Manual Adjustment";
 
+$rect <310,260,450,300>
 $output false
-const string CLK02_day =
-(
-  Default = "Day";
-);
+const string CLK02_day = "Day";
 
+$rect <460,260,600,300>
 $output false
-const string CLK02_month =
-(
-  Default = "Month";
-);
+const string CLK02_month = "Month";
 
+$rect <10,310,150,350>
 $output false
-const string CLK02_year =
-(
-  Default = "Year";
-);
+const string CLK02_year = "Year";
 
+$rect <160,310,300,350>
 $output false
-const string CLK02_am =
-(
-  Default = "AM";
-);
+const string CLK02_am = "AM";
 
+$rect <310,310,450,350>
 $output false
-const string CLK02_pm =
-(
-  Default = "PM";
-);
+const string CLK02_pm = "PM";
 
+$rect <460,310,600,350>
 $output false
-const string CLK02_hour =
-(
-  Default = "Hour";
-);
+const string CLK02_hour = "Hour";
 
+$rect <10,360,150,400>
 $output false
-const string CLK02_minute =
-(
-  Default = "Min.";
-);
+const string CLK02_minute = "Min.";
 
+$rect <160,360,300,400>
 $output false
-const string CLK03_set_clock =
-(
-  Default = "Set Clock?";
-);
+const string CLK03_set_clock = "Set Clock?";
 
+$rect <310,360,450,400>
 $output false
-const string GPW01_grip_warmer =
-(
-  Default = "Grip Warmer";
-);
+const string GPW01_grip_warmer = "Grip Warmer";
 
+$rect <460,360,600,400>
 $output false
-const string HOM11_x1000r_min =
-(
-  Default = "x1000r/min";
-);
+const string HOM11_x1000r_min = "x1000r/min";
 
+$rect <10,410,150,450>
 $output false
-const string HOM12_avg =
-(
-  Default = "AVG";
-);
+const string HOM12_avg = "AVG";
 
+$rect <160,410,300,450>
 $output false
-const string HOM12_avg_fuel =
-(
-  Default = "AVG FUEL";
-);
+const string HOM12_avg_fuel = "AVG FUEL";
 
+$rect <310,410,450,450>
 $output false
-const string HOM13_speed_limit =
-(
-  Default = "SPEED LIMIT";
-);
+const string HOM13_speed_limit = "SPEED LIMIT";
 
+$rect <460,410,600,450>
 $output false
-const string HOM03_avg_speed =
-(
-  Default = "AVG SPEED";
-);
+const string HOM03_avg_speed = "AVG SPEED";
 
+$rect <10,460,150,500>
 $output false
-const string HOM03_avg_fuel =
-(
-  Default = "AVG FUEL";
-);
+const string HOM03_avg_fuel = "AVG FUEL";
 
+$rect <160,460,300,500>
 $output false
-const string HOM03_current_fuel =
-(
-  Default = "CRNT FUEL";
-);
+const string HOM03_current_fuel = "CRNT FUEL";
 
+$rect <310,460,450,500>
 $output false
-const string HOM03_trip_time =
-(
-  Default = "TRIP TIME";
-);
+const string HOM03_trip_time = "TRIP TIME";
 
+$rect <460,460,600,500>
 $output false
-const string HOM03_range =
-(
-  Default = "RANGE";
-);
+const string HOM03_range = "RANGE";
 
+$rect <10,510,150,550>
 $output false
-const string HOM03_fuel_consumption =
-(
-  Default = "FUEL CONS";
-);
+const string HOM03_fuel_consumption = "FUEL CONS";
 
+$rect <160,510,300,550>
 $output false
-const string HOM03_air =
-(
-  Default = "AIR";
-);
+const string HOM03_air = "AIR";
 
+$rect <310,510,450,550>
 $output false
-const string HOM03_coolant =
-(
-  Default = "COOLANT";
-);
+const string HOM03_coolant = "COOLANT";
 
+$rect <460,510,600,550>
 $output false
-const string HOM03_battery =
-(
-  Default = "BATTERY";
-);
+const string HOM03_battery = "BATTERY";
 
+$rect <10,560,150,600>
 $output false
-const string HOM03_front_r =
-(
-  Default = "FRONT (R)";
-);
+const string HOM03_front_r = "FRONT (R)";
 
+$rect <160,560,300,600>
 $output false
-const string HOM03_front_l =
-(
-  Default = "FRONT (L)";
-);
+const string HOM03_front_l = "FRONT (L)";
 
+$rect <310,560,450,600>
 $output false
-const string HOM03_front =
-(
-  Default = "FRONT";
-);
+const string HOM03_front = "FRONT";
 
+$rect <460,560,600,600>
 $output false
-const string HOM03_rear =
-(
-  Default = "REAR";
-);
+const string HOM03_rear = "REAR";
 
+$rect <10,610,150,650>
 $output false
-const string HOM03_cruise =
-(
-  Default = "CRUISE";
-);
+const string HOM03_cruise = "CRUISE";
 
+$rect <160,610,300,650>
 $output false
-const string INF01_TACHO_VISUALIZER =
-(
-  Default = "Tacho visualizer";
-);
+const string INF01_TACHO_VISUALIZER = "Tacho visualizer";
 
+$rect <310,610,450,650>
 $output false
-const string INF01_ECHO_VISUALIZER =
-(
-  Default = "ECO visualizer";
-);
+const string INF01_ECHO_VISUALIZER = "ECO visualizer";
 
+$rect <460,610,600,650>
 $output false
-const string INF01_SPEED_VISUALIZER =
-(
-  Default = "Speed visualizer";
-);
+const string INF01_SPEED_VISUALIZER = "Speed visualizer";
 
+$rect <10,660,150,700>
 $output false
-const string INF26_odo =
-(
-  Default = "ODO";
-);
+const string INF26_odo = "ODO";
 
+$rect <160,660,300,700>
 $output false
-const string INF26_trip_1 =
-(
-  Default = "TRIP 1";
-);
+const string INF26_trip_1 = "TRIP 1";
 
+$rect <310,660,450,700>
 $output false
-const string INF26_trip_2 =
-(
-  Default = "TRIP 2";
-);
+const string INF26_trip_2 = "TRIP 2";
 
+$rect <460,660,600,700>
 $output false
-const string INF26_trip_f =
-(
-  Default = "TRIP F";
-);
+const string INF26_trip_f = "TRIP F";
 
+$rect <10,710,150,750>
 $output false
-const string LNC_METER_DISPLAY =
-(
-  Default = "Meter display";
-);
+const string LNC_METER_DISPLAY = "Meter display";
 
+$rect <160,710,300,750>
 $output false
-const string LNC_odo_trip =
-(
-  Default = "ODO/TRIP";
-);
+const string LNC_odo_trip = "ODO/TRIP";
 
+$rect <310,710,450,750>
 $output false
-const string LNC_music =
-(
-  Default = "Music";
-);
+const string LNC_music = "Music";
 
+$rect <460,710,600,750>
 $output false
-const string LNC_phone =
-(
-  Default = "Phone";
-);
+const string LNC_phone = "Phone";
 
+$rect <10,760,150,800>
 $output false
-const string LNC_navigation =
-(
-  Default = "Navigation";
-);
+const string LNC_navigation = "Navigation";
 
+$rect <160,760,300,800>
 $output false
-const string LNC_weather =
-(
-  Default = "Weather";
-);
+const string LNC_weather = "Weather";
 
+$rect <310,760,450,800>
 $output false
-const string LNC_notification =
-(
-  Default = "Notification";
-);
+const string LNC_notification = "Notification";
 
+$rect <460,760,600,800>
 $output false
-const string LNC_traction_control =
-(
-  Default = "Traction Control";
-);
+const string LNC_traction_control = "Traction Control";
 
+$rect <10,810,150,850>
 $output false
-const string LNC_seat_heater =
-(
-  Default = "Seat Heater";
-);
+const string LNC_seat_heater = "Seat Heater";
 
+$rect <160,810,300,850>
 $output false
-const string LNC_settings =
-(
-  Default = "Settings";
-);
+const string LNC_settings = "Settings";
 
+$rect <310,810,450,850>
 $output false
-const string MED02_DEV_UNAVAILABLE =
-(
-  Default = "Media device\nunavailable";
-);
+const string MED02_DEV_UNAVAILABLE = "Media device\nunavailable";
 
+$rect <460,810,600,850>
 $output false
-const string MNT01_oil =
-(
-  Default = "OIL";
-);
+const string MNT01_oil = "OIL";
 
+$rect <10,860,150,900>
 $output false
-const string MNT01_v_belt =
-(
-  Default = "V-BELT";
-);
+const string MNT01_v_belt = "V-BELT";
 
+$rect <160,860,300,900>
 $output false
-const string MNT01_free =
-(
-  Default = "FREE";
-);
+const string MNT01_free = "FREE";
 
+$rect <310,860,450,900>
 $output false
-const string NAV06_stop_navigation =
-(
-  Default = "Stop navigation";
-);
+const string NAV06_stop_navigation = "Stop navigation";
 
+$rect <460,860,600,900>
 $output false
-const string NAV06_SKIP_NEXT_STOP =
-(
-  Default = "Skip next stop";
-);
+const string NAV06_SKIP_NEXT_STOP = "Skip next stop";
 
+$rect <10,910,150,950>
 $output false
-const string NAV06_go_home =
-(
-  Default = "Go home";
-);
+const string NAV06_go_home = "Go home";
 
+$rect <160,910,300,950>
 $output false
-const string NAV06_go_to_work =
-(
-  Default = "Go to work";
-);
+const string NAV06_go_to_work = "Go to work";
 
+$rect <310,910,450,950>
 $output false
-const string NAV06_favorites =
-(
-  Default = "Favorites";
-);
+const string NAV06_favorites = "Favorites";
 
+$rect <460,910,600,950>
 $output false
-const string NAV06_nearby_gas_stations =
-(
-  Default = "Nearby Gas stations";
-);
+const string NAV06_nearby_gas_stations = "Nearby Gas stations";
 
+$rect <10,960,150,1000>
 $output false
-const string NAV06_change_view =
-(
-  Default = "Change view";
-);
+const string NAV06_change_view = "Change view";
 
+$rect <160,960,300,1000>
 $output false
-const string NAV08_default_view =
-(
-  Default = "Default view";
-);
+const string NAV08_default_view = "Default view";
 
+$rect <310,960,450,1000>
 $output false
-const string NAV08_turn_by_turn =
-(
-  Default = "Turn-by-turn";
-);
+const string NAV08_turn_by_turn = "Turn-by-turn";
 
+$rect <460,960,600,1000>
 $output false
-const string NAV08_turn_list =
-(
-  Default = "Turn list";
-);
+const string NAV08_turn_list = "Turn list";
 
+$rect <10,1010,150,1050>
 $output false
-const string OPN02_FACTORY_MODE =
-(
-  Default = "Factory mode";
-);
+const string OPN02_FACTORY_MODE = "Factory mode";
 
+$rect <160,1010,300,1050>
 $output false
-const string OPN02_ENTER_TWICE =
-(
-  Default = "Press \"ENTER\" button twice.";
-);
+const string OPN02_ENTER_TWICE = "Press \"ENTER\" button twice.";
 
+$rect <310,1010,450,1050>
 $output false
-const string POP02_please_check =
-(
-  Default = "Please Check";
-);
+const string POP02_please_check = "Please Check";
 
+$rect <460,1010,600,1050>
 $output false
-const string POP02_details =
-(
-  Default = "Details";
-);
+const string POP02_details = "Details";
 
+$rect <10,1060,150,1100>
 $output false
-const string POP03_no_home_location =
-(
-  Default = "Home location is not set.";
-);
+const string POP03_no_home_location = "Home location is not set.";
 
+$rect <160,1060,300,1100>
 $output false
-const string POP09_CONNECTION_FAILED =
-(
-  Default = "Connection failed.\nCheck Bluetooth connection settings.\nCheck smartphone reception.";
-);
+const string POP09_CONNECTION_FAILED = "Connection failed.\nCheck Bluetooth connection settings.\nCheck smartphone reception.";
 
+$rect <310,1060,450,1100>
 $output false
-const string SET01_connection =
-(
-  Default = "Connection";
-);
+const string SET01_connection = "Connection";
 
+$rect <460,1060,600,1100>
 $output false
-const string SET01_clock =
-(
-  Default = "Clock";
-);
+const string SET01_clock = "Clock";
 
+$rect <10,1110,150,1150>
 $output false
-const string SET01_brightness =
-(
-  Default = "Brightness";
-);
+const string SET01_brightness = "Brightness";
 
+$rect <160,1110,300,1150>
 $output false
-const string SET01_unit =
-(
-  Default = "Unit";
-);
+const string SET01_unit = "Unit";
 
+$rect <310,1110,450,1150>
 $output false
-const string SET01_grip_warmer_settings =
-(
-  Default = "Grip warmer settings";
-);
+const string SET01_grip_warmer_settings = "Grip warmer settings";
 
+$rect <460,1110,600,1150>
 $output false
-const string SET01_seat_heater_settings =
-(
-  Default = "Seat heater settings";
-);
+const string SET01_seat_heater_settings = "Seat heater settings";
 
+$rect <10,1160,150,1200>
 $output false
-const string SET01_system_info =
-(
-  Default = "System information";
-);
+const string SET01_system_info = "System information";
 
+$rect <160,1160,300,1200>
 $output false
-const string SET01_legal_info =
-(
-  Default = "Legal information";
-);
+const string SET01_legal_info = "Legal information";
 
+$rect <310,1160,450,1200>
 $output false
-const string SET01_reset =
-(
-  Default = "Reset";
-);
+const string SET01_reset = "Reset";
 
+$rect <460,1160,600,1200>
 $output false
-const string SET03_Y_CONNECT_APP_PAIRING =
-(
-  Default = "Y-connect App pairing";
-);
+const string SET03_Y_CONNECT_APP_PAIRING = "Y-connect App pairing";
 
+$rect <10,1210,150,1250>
 $output false
-const string SET04_DISCOVERY_MODE =
-(
-  Default = "Discovery mode";
-);
+const string SET04_DISCOVERY_MODE = "Discovery mode";
 
+$rect <160,1210,300,1250>
 $output false
-const string SET04_PAIRED_DEVICES =
-(
-  Default = "Paired devices";
-);
+const string SET04_PAIRED_DEVICES = "Paired devices";
 
+$rect <310,1210,450,1250>
 $output false
-const string SET04_BT_AUTO_CONNECT =
-(
-  Default = "Bluetooth auto connect";
-);
+const string SET04_BT_AUTO_CONNECT = "Bluetooth auto connect";
 
+$rect <460,1210,600,1250>
 $output false
-const string SET05_MAX_DEVICES =
-(
-  Default = "Max number of devices reached.\nDo you want to edit paired device list?";
-);
+const string SET05_MAX_DEVICES = "Max number of devices reached.\nDo you want to edit paired device list?";
 
+$rect <10,1260,150,1300>
 $output false
-const string SET06_DISCOVERABLE =
-(
-  Default = "Now discoverable by other\nBluetooth devices.";
-);
+const string SET06_DISCOVERABLE = "Now discoverable by other\nBluetooth devices.";
 
+$rect <160,1260,300,1300>
 $output false
-const string SET06_NAME =
-(
-  Default = "Name : \"%s\"";
-);
+const string SET06_NAME = "Name : \"%s\"";
 
+$rect <310,1260,450,1300>
 $output false
-const string SET06_TIME_LEFT =
-(
-  Default = "Time left : ";
-);
+const string SET06_TIME_LEFT = "Time left : ";
 
+$rect <460,1260,600,1300>
 $output false
-const string SET07_PAIRING_FAILED =
-(
-  Default = "Bluetooth pairing failed.";
-);
+const string SET07_PAIRING_FAILED = "Bluetooth pairing failed.";
 
+$rect <10,1310,150,1350>
 $output false
-const string SET08_PAIR_WITH =
-(
-  Default = "Pair with\n\"%s\"?";
-);
+const string SET08_PAIR_WITH = "Pair with\n\"%s\"?";
 
+$rect <160,1310,300,1350>
 $output false
-const string SET08_PASSKEY =
-(
-  Default = "Passkey:";
-);
+const string SET08_PASSKEY = "Passkey:";
 
+$rect <310,1310,450,1350>
 $output false
-const string SET09_BT_CONNECTED =
-(
-  Default = "\"%s\"\nBluetooth\nconnected.";
-);
+const string SET09_BT_CONNECTED = "\"%s\"\nBluetooth\nconnected.";
 
+$rect <460,1310,600,1350>
 $output false
-const string SET10_CONNECTION_FAILED =
-(
-  Default = "\"%s\"\nBluetooth\nconnection failed.";
-);
+const string SET10_CONNECTION_FAILED = "\"%s\"\nBluetooth\nconnection failed.";
 
+$rect <10,1360,150,1400>
 $output false
-const string SET11_NO_LONGER_PAIRED =
-(
-  Default = "\"%s\" is no longer paired with the vehicle.\nPlease pair it again.";
-);
+const string SET11_NO_LONGER_PAIRED = "\"%s\" is no longer paired with the vehicle.\nPlease pair it again.";
 
+$rect <160,1360,300,1400>
 $output false
-const string SET18_DELETE_PAIRING_RECORD =
-(
-  Default = "Please delete the pairing record on \"%s\", otherwise, you may not be able to reconnect with LinkCard in the future.";
-);
+const string SET18_DELETE_PAIRING_RECORD = "Please delete the pairing record on \"%s\", otherwise, you may not be able to reconnect with LinkCard in the future.";
 
+$rect <310,1360,450,1400>
 $output false
-const string SET19_DELETE_PAIRING =
-(
-  Default = "Delete pairing";
-);
+const string SET19_DELETE_PAIRING = "Delete pairing";
 
+$rect <460,1360,600,1400>
 $output false
-const string SET19_CONNECT =
-(
-  Default = "Connect";
-);
+const string SET19_CONNECT = "Connect";
 
+$rect <10,1410,150,1450>
 $output false
-const string SET19_DISCONNECT =
-(
-  Default = "Disconnect";
-);
+const string SET19_DISCONNECT = "Disconnect";
 
+$rect <160,1410,300,1450>
 $output false
-const string SET20_COMPLETE_BT_PAIRING_FIRST =
-(
-  Default = "You must complete Bluetooth pairing before pairing with the Y-connect app.";
-);
+const string SET20_COMPLETE_BT_PAIRING_FIRST = "You must complete Bluetooth pairing before pairing with the Y-connect app.";
 
+$rect <310,1410,450,1450>
 $output false
-const string SET21_BLE_ALREADY_CONNECTED =
-(
-  Default = "\"%s\" is now connected. To pair another smartphone with the Y-connect app, connect it via Bluetooth first.";
-);
+const string SET21_BLE_ALREADY_CONNECTED = "\"%s\" is now connected. To pair another smartphone with the Y-connect app, connect it via Bluetooth first.";
 
+$rect <460,1410,600,1450>
 $output false
-const string SET22_DEVICE_NAME =
-(
-  Default = "Device name:\n";
-);
+const string SET22_DEVICE_NAME = "Device name:\n";
 
+$rect <10,1460,150,1500>
 $output false
-const string SET22_WAIT_APP_CONNECTION =
-(
-  Default = "Waiting for app connection.\nCheck the app for instructions.";
-);
+const string SET22_WAIT_APP_CONNECTION = "Waiting for app connection.\nCheck the app for instructions.";
 
+$rect <160,1460,300,1500>
 $output false
-const string SET23_PAIRING_FAILED =
-(
-  Default = "Pairing failed.";
-);
+const string SET23_PAIRING_FAILED = "Pairing failed.";
 
+$rect <310,1460,450,1500>
 $output false
-const string SET24_CHECK_BT_PAIRING_RECORD =
-(
-  Default = "Please check the bluetooth pairing record on your previously paired Smartphone. You may need to delete the unused pairing record.";
-);
+const string SET24_CHECK_BT_PAIRING_RECORD = "Please check the bluetooth pairing record on your previously paired Smartphone. You may need to delete the unused pairing record.";
 
+$rect <460,1460,600,1500>
 $output false
-const string SET25_PIN =
-(
-  Default = "PIN";
-);
+const string SET25_PIN = "PIN";
 
+$rect <10,1510,150,1550>
 $output false
-const string SET26_PAIRING_SUCCESSFUL =
-(
-  Default = "Pairing successful.";
-);
+const string SET26_PAIRING_SUCCESSFUL = "Pairing successful.";
 
+$rect <160,1510,300,1550>
 $output false
-const string SET28_esn =
-(
-  Default = "Electronic Serial Number";
-);
+const string SET28_esn = "Electronic Serial Number";
 
+$rect <310,1510,450,1550>
 $output false
-const string SET28_sw_version =
-(
-  Default = "Software version";
-);
+const string SET28_sw_version = "Software version";
 
+$rect <460,1510,600,1550>
 $output false
-const string SET28_unit_id =
-(
-  Default = "Unit ID";
-);
+const string SET28_unit_id = "Unit ID";
 
+$rect <10,1560,150,1600>
 $output false
-const string SET28_sw_update =
-(
-  Default = "Software update";
-);
+const string SET28_sw_update = "Software update";
 
+$rect <160,1560,300,1600>
 $output false
-const string UNT01_unit_mileage =
-(
-  Default = "Mileage";
-);
+const string UNT01_unit_mileage = "Mileage";
 
+$rect <310,1560,450,1600>
 $output false
-const string UNT01_unit_fuel =
-(
-  Default = "Fuel";
-);
+const string UNT01_unit_fuel = "Fuel";
 
+$rect <460,1560,600,1600>
 $output false
-const string UNT01_unit_pressure =
-(
-  Default = "Pressure";
-);
+const string UNT01_unit_pressure = "Pressure";
 
+$rect <10,1610,150,1650>
 $output false
-const string UNT01_unit_temperature =
-(
-  Default = "Temperature";
-);
+const string UNT01_unit_temperature = "Temperature";
 
+$rect <160,1610,300,1650>
 $output false
-const string UNT02_unit_mileage_kilometer =
-(
-  Default = "km";
-);
+const string UNT02_unit_mileage_kilometer = "km";
 
+$rect <310,1610,450,1650>
 $output false
-const string UNT02_unit_mileage_mile =
-(
-  Default = "mile";
-);
+const string UNT02_unit_mileage_mile = "mile";
 
+$rect <460,1610,600,1650>
 $output false
-const string UNT03_unit_fuel_km_per_liter =
-(
-  Default = "km/L";
-);
+const string UNT03_unit_fuel_km_per_liter = "km/L";
 
+$rect <10,1660,150,1700>
 $output false
-const string UNT03_unit_fuel_liter_per_hundred_km =
-(
-  Default = "L/100km";
-);
+const string UNT03_unit_fuel_liter_per_hundred_km = "L/100km";
 
+$rect <160,1660,300,1700>
 $output false
-const string UNT03_unit_fuel_mile_per_gallon =
-(
-  Default = "MPG";
-);
+const string UNT03_unit_fuel_mile_per_gallon = "MPG";
 
+$rect <310,1660,450,1700>
 $output false
-const string UNT04_unit_pressure_kpa =
-(
-  Default = "kPa";
-);
+const string UNT04_unit_pressure_kpa = "kPa";
 
+$rect <460,1660,600,1700>
 $output false
-const string UNT04_unit_pressure_psi =
-(
-  Default = "psi";
-);
+const string UNT04_unit_pressure_psi = "psi";
 
+$rect <10,1710,150,1750>
 $output false
-const string UNT04_unit_pressure_kgf =
-(
-  Default = "kgf/cm\u00b2";
-);
+const string UNT04_unit_pressure_kgf = "kgf/cm²";
 
+$rect <160,1710,300,1750>
 $output false
-const string UNT05_unit_temperature_c =
-(
-  Default = "\u2103";
-);
+const string UNT05_unit_temperature_c = "℃";
 
+$rect <310,1710,450,1750>
 $output false
-const string UNT05_unit_temperature_f =
-(
-  Default = "\u2109";
-);
+const string UNT05_unit_temperature_f = "℉";
 
+$rect <460,1710,600,1750>
 $output false
-const string WSC01_wind_screen =
-(
-  Default = "Wind Screen";
-);
+const string WSC01_wind_screen = "Wind Screen";
 
+$rect <10,1760,150,1800>
 $output false
-const string DEV_TEST_CHINESE =
-(
-  Default = "\u53f0\u7063\u570b\u969b\u822a\u96fb\u53f0\u6e7e\u56fd\u9645\u822a\u7535\uff0c\uff1b\u3002\uff08\uff09\uff3b\uff3d\uff1f\uff01\uff3c\uff0f\uff10\uff11\uff12\uff13\uff14\uff15\uff16\uff17\uff18\uff19";
-);
+const string DEV_TEST_CHINESE = "台灣國際航電台湾国际航电，；。（）［］？！＼／０１２３４５６７８９";
 
+$rect <160,1760,300,1800>
 $output false
-const string DEV_TEST_JAPANESE =
-(
-  Default = "\u3042\u3044\u3046\u3048\u304a\u304b\u304d\u304f\u3051\u3053\u3055\u3057\u3059\u305b\u305d\u305f\u3061\u3064\u3066\u3068\u306a\u306b\u306c\u306d\u306e\u306f\u3072\u3075\u3078\u307b\u307e\u307f\u3080\u3081\u3082\u3084\u3086\u3088\u3089\u308a\u308b\u308c\u308d\u308f\u3092\u3093\n\u304c\u304e\u3050\u3052\u3054\u3056\u3058\u305a\u305c\u305e\u3070\u3073\u3076\u3079\u307c\u3071\u3074\u3077\u307a\u307d\n\u30a2\u30a4\u30a6\u30a8\u30aa\u30ab\u30ad\u30af\u30b1\u30b3\u30b5\u30b7\u30b9\u30bb\u30bd\u30bf\u30c1\u30c4\u30c6\u30c8\u30ca\u30cb\u30cc\u30cd\u30ce\u30cf\u30d2\u30d5\u30d8\u30db\u30de\u30df\u30e0\u30e1\u30e2\u30e4\u30e6\u30e8\u30e9\u30ea\u30eb\u30ec\u30ed\u30ef\u30f2\u30f3\n\u30ac\u30ae\u30b0\u30b2\u30b4\u30b6\u30b8\u30ba\u30bc\u30c9\u30d0\u30d3\u30d6\u30d9\u30dc\u30d1\u30d4\u30d7\u30da\u30dd";
-);
+const string DEV_TEST_JAPANESE = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん\nがぎぐげござじずぜぞばびぶべぼぱぴぷぺぽ\nアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン\nガギグゲゴザジズゼドバビブベボパピプペポ";
 
+$rect <310,1760,450,1800>
 $output false
-const string DEV_TEST_KOREAN =
-(
-  Default = "\ub2e4\uac00\uc624\ub294 \uac08\ub9bc\uae38\uc5d0\uc11c \uc5b4\ub290 \ub3c4\ub85c\ub85c \uac00\uc57c\ud560 \uc9c0 \ub354 \uc774\uc0c1 \ucd94\uce21\ud560 \ud544\uc694\uac00 \uc5c6\uc2b5\ub2c8\ub2e4. \uc815\uc158 \ubdf0\uac00 \uae30\ub2a5\uc740 \ub2e4\uac00\uc624\ub294 \uac08\ub9bc\uae38,\ucd9c\uad6c \ub610\ub294 \uad50\ucc28\ub85c\uc758 \uc548\ub0b4\uc640 \uac80\uc0c9\uc774 \uac00\ub2a5\ud569\ub2c8\ub2e4 \uc62c\ubc14\ub978 \ub3c4\ub85c\ub97c \uc548\ub0b4\ud574 \uc8fc\ub294 \ub124\ube44\uac8c\uc774\uc158 \ud654\uc0b4\ud45c\uc640 \ud568\uaed8 \uacbd\ub85c \uc0c1\uc5d0 \uc2e4\uc81c \ub3c4\ub85c \ud45c\uc9c0\ud310\uacfc \uad50\ucc28\ub85c\uac00 \ud45c\uc2dc\ub429\ub2c8\ub2e4. \uc815\uc158 \ubdf0 \uae30\ub2a5\uc740 \uc9c0\uc815\ub41c \ub300\ub3c4\uc2dc\uc5d0\uc11c \uc774\uc6a9\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.";
-);
+const string DEV_TEST_KOREAN = "다가오는 갈림길에서 어느 도로로 가야할 지 더 이상 추측할 필요가 없습니다. 정션 뷰가 기능은 다가오는 갈림길,출구 또는 교차로의 안내와 검색이 가능합니다 올바른 도로를 안내해 주는 네비게이션 화살표와 함께 경로 상에 실제 도로 표지판과 교차로가 표시됩니다. 정션 뷰 기능은 지정된 대도시에서 이용할 수 있습니다.";
 
+$rect <460,1760,600,1800>
 $output false
-const string DEV_TEST_LETTERS =
-(
-  Default = "ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n0123456789,;.()[]/\\n\u00c4\u00d6\u00dc\u00df\n\u00c0\u00e0\u00c2\u00e2\u00c7\u00e7\u00c9\u00e9\u00c8\u00e8\u00ca\u00ea\u00cb\u00eb\u00cc\u00ec\u00cd\u00ed\u00ce\u00ee\u00cf\u00ef\u00d4\u00f4\u00db\u00fb\u00d9\u00f9\u00dc\u00fc\u0178\u00ff\u00d1\u00f1\u0160\u0161\u017d\u017e\u00c5\u00e5\u00c4\u00e4\u00d6\u00f6\u0107\u0144\u00f3\u015b\u017a\u017c\u0105\u0119\u0142\n\u00e7\u00e1\u00e9\u00ed\u00f3\u00fa\u00e2\u00ea\u00f4\u00e3\u00f5\u00e0\u00e8\u00ec\u00f2\u00f9\n\u0102\u00c2\u00ca\u00d4\u01a0\u01af\u0103\u00e2\u0111\u00ea\u00f4\u01a1\u01b0";
-);
-
+const string DEV_TEST_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n0123456789,;.()[]/\\nÄÖÜß\nÀàÂâÇçÉéÈèÊêËëÌìÍíÎîÏïÔôÛûÙùÜüŸÿÑñŠšŽžÅåÄäÖöćńóśźżąęł\nçáéíóúâêôãõàèìòù\nĂÂÊÔƠƯăâđêôơư";

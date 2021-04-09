@@ -737,7 +737,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     else
     {
       // Fail to receive song title, show "---".
-      pure Title = Strings::GEN_three_hyphens;
+      pure Title = Strings::GEN_THREE_HYPHENS;
     }
 
     // Notify all associated property observers.
@@ -759,7 +759,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     else
     {
       // Fail to receive album, show "---".
-      pure Album = Strings::GEN_three_hyphens;
+      pure Album = Strings::GEN_THREE_HYPHENS;
     }
 
     // Notify all associated property observers.
@@ -781,7 +781,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
     else
     {
       // Fail to receive artist, show "---".
-      pure Artist = Strings::GEN_three_hyphens;
+      pure Artist = Strings::GEN_THREE_HYPHENS;
     }
 
     // Notify all associated property observers.

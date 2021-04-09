@@ -312,8 +312,8 @@ const XStringRes StringsGEN_HIGH = { _StringsDefault0, 0x002C };
 /* User defined constant: 'Strings::GEN_bluetooth' */
 const XStringRes StringsGEN_bluetooth = { _StringsDefault0, 0x0033 };
 
-/* User defined constant: 'Strings::GEN_three_hyphens' */
-const XStringRes StringsGEN_three_hyphens = { _StringsDefault0, 0x003F };
+/* User defined constant: 'Strings::GEN_THREE_HYPHENS' */
+const XStringRes StringsGEN_THREE_HYPHENS = { _StringsDefault0, 0x003F };
 
 /* User defined constant: 'Strings::GEN_please_wait' */
 const XStringRes StringsGEN_please_wait = { _StringsDefault0, 0x0045 };

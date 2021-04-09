@@ -13,7 +13,7 @@ class MED01_MediaUI : Components::BaseMainBG
     DeviceInterface::MediaManagerDevice.IsInit = false;
 
     if( "" != DeviceInterface::MediaManagerDevice.Title &&
-        Strings::GEN_three_hyphens != DeviceInterface::MediaManagerDevice.Title )
+        Strings::GEN_THREE_HYPHENS != DeviceInterface::MediaManagerDevice.Title )
     {
       // Received music previously, update elapsed time & remain time.
       signal OnPlaybackTimeUpdateSlot;
@@ -331,7 +331,7 @@ class MED01_MediaUI : Components::BaseMainBG
     // If music data doesn't have song title information, LC shall display "---".
     if( Title.String == "" )
     {
-      Title.String = Strings::GEN_three_hyphens;
+      Title.String = Strings::GEN_THREE_HYPHENS;
     }
 
     if( !Album.Visible )
@@ -343,7 +343,7 @@ class MED01_MediaUI : Components::BaseMainBG
     // If music data doesn't have album information, LC shall display "---".
     if( Album.String  == "" )
     {
-      Album.String = Strings::GEN_three_hyphens;
+      Album.String = Strings::GEN_THREE_HYPHENS;
     }
 
     if( !Artist.Visible )
@@ -355,12 +355,12 @@ class MED01_MediaUI : Components::BaseMainBG
     // If music data doesn't have artist information, LC shall display "---".
     if( Artist.String == "" )
     {
-      Artist.String = Strings::GEN_three_hyphens;
+      Artist.String = Strings::GEN_THREE_HYPHENS;
     }
 
-    if( Title.String == Strings::GEN_three_hyphens &&
-        Album.String == Strings::GEN_three_hyphens &&
-        Artist.String == Strings::GEN_three_hyphens )
+    if( Title.String == Strings::GEN_THREE_HYPHENS &&
+        Album.String == Strings::GEN_THREE_HYPHENS &&
+        Artist.String == Strings::GEN_THREE_HYPHENS )
     {
       // Detect music data is failed
       UpdateMediaInfoItem( Enum::ReceptionStatus.ERROR );
@@ -413,7 +413,7 @@ class MED01_MediaUI : Components::BaseMainBG
     DeviceInterface::MediaManagerDevice.GetTrackInfo();
 
     if( "" != DeviceInterface::MediaManagerDevice.Title &&
-        Strings::GEN_three_hyphens != DeviceInterface::MediaManagerDevice.Title )
+        Strings::GEN_THREE_HYPHENS != DeviceInterface::MediaManagerDevice.Title )
     {
       // Received music previously, update elapsed time & remain time.
       signal OnPlaybackTimeUpdateSlot;
