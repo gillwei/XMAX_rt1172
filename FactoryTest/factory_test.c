@@ -96,6 +96,13 @@ extern "C"{
 #define CANID_TEST_MAX_TIME_CNT ( CANID_TEST_MAX_TIME_MS / FACTORY_TASK_PERIOD_MS )
 
 #define ABSOLUTE_TEMP_OFFSET    ( 273150 )
+
+// For Factory Reset IOP
+#define OPERATION_MODE_NORMAL   ( 0 )
+#define OPERATION_MODE_FACTORY  ( 1 )
+#define FACTORY_RST_FLAG_NEXIST ( 0 )
+#define FACTORY_RST_FLAG_EXIST  ( 1 )
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -309,6 +316,18 @@ static void burnin_target_time_read_cb
     );
 
 static void burnin_target_time_write_cb
+    (
+    bool    status,
+    void*   data
+    );
+
+static void operation_mode_write_cb
+    (
+    bool    status,
+    void*   data
+    );
+
+static void operation_mode_read_cb
     (
     bool    status,
     void*   data
@@ -630,6 +649,16 @@ switch ( IOPInstId )
         iopToCanData( IOP_MFI_INST_RESPONSE, iopData, data_len );
         break;
 
+    case IOP_ANDROID_FDR_DEL_FILE:
+        memcpy( &iopData[0], data_ptr, data_len );
+        iopToCanData( IOP_ANDROID_FDR_DEL_FILE, iopData, data_len );
+        break;
+
+    case IOP_ANDROID_FDR_CHK_FILE:
+         memcpy( &iopData[0], data_ptr, data_len );
+        iopToCanData( IOP_ANDROID_FDR_CHK_FILE, iopData, data_len );
+        break;
+
     default:
         iopToCanData( IOP_INV_INST_ID, iopData, 0 );
         break;
@@ -700,7 +729,8 @@ switch( inst_id )
 
             case IOP_CLR_NONVOL_UNPROTECTED_ONLY:
                 {
-
+                EEPM_set_operation_mode( OPERATION_MODE_FACTORY, NULL );
+                EW_reset_to_factory_default();
                 IOPDone = true;
                 }
                 break;
@@ -993,6 +1023,18 @@ switch( inst_id )
             EW_test_display_pattern( data[0] );
             }
         IOPDone = true;
+        }
+        break;
+
+    case IOP_ANDROID_FDR_DEL_FILE:
+        {
+        EEPM_set_operation_mode( OPERATION_MODE_NORMAL, operation_mode_write_cb );
+        }
+        break;
+
+    case IOP_ANDROID_FDR_CHK_FILE:
+        {
+        EEPM_get_operation_mode( operation_mode_read_cb );
         }
         break;
 
@@ -1617,6 +1659,70 @@ memcpy( &iop_Data[1], data, BIT_32_DATA_LEN );
 packageIopToCanData( &iop_Data, sizeof( iop_Data ) );
 }
 
+/*********************************************************************
+*
+* @private
+* operation_mode_write_cb
+*
+* @brief callback function for operation mode write operation.
+*
+*********************************************************************/
+static void operation_mode_write_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+if( status == TRUE )
+    {
+    uint8_t operation_mode;
+    uint8_t iop_Data;
+    memcpy( &operation_mode, data, BIT_8_DATA_LEN );
+    if( operation_mode == OPERATION_MODE_NORMAL )
+        {
+        iop_Data = FACTORY_RST_FLAG_EXIST;
+        }
+    else if( operation_mode == OPERATION_MODE_FACTORY )
+        {
+        iop_Data = FACTORY_RST_FLAG_NEXIST;
+        }
+
+    packageIopToCanData( &iop_Data, sizeof( iop_Data ) );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* operation_mode_read_cb
+*
+* @brief callback function for operation mode read operation.
+*
+*********************************************************************/
+static void operation_mode_read_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+if( status == TRUE )
+    {
+    uint8_t iop_Data;
+    uint8_t operation_mode;
+    memcpy( &operation_mode, data, BIT_8_DATA_LEN );
+
+    if( operation_mode == OPERATION_MODE_NORMAL )
+        {
+        iop_Data = FACTORY_RST_FLAG_EXIST;
+        }
+    else if( operation_mode == OPERATION_MODE_FACTORY )
+        {
+        iop_Data = FACTORY_RST_FLAG_NEXIST;
+        }
+
+    packageIopToCanData( &iop_Data, sizeof( iop_Data ) );
+    }
+}
 /*********************************************************************
 *
 * @private
