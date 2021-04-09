@@ -935,12 +935,15 @@ enum PhoneCallState
   item IDLE;
 
   $rect <10,60,210,100>
-  item INCOMING;
+  item INCOMING_STARTED;
 
   $rect <10,110,210,150>
-  item ACTIVE;
+  item INCOMING_STOPPED;
 
   $rect <10,160,210,200>
+  item ACTIVE;
+
+  $rect <10,210,210,250>
   item TOTAL;
 }
 

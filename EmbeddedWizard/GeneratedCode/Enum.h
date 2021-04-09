@@ -441,9 +441,10 @@ typedef enum
 typedef enum
 {
   EnumPhoneCallStateIDLE                = 0,
-  EnumPhoneCallStateINCOMING            = 1,
-  EnumPhoneCallStateACTIVE              = 2,
-  EnumPhoneCallStateTOTAL               = 3
+  EnumPhoneCallStateINCOMING_STARTED    = 1,
+  EnumPhoneCallStateINCOMING_STOPPED    = 2,
+  EnumPhoneCallStateACTIVE              = 3,
+  EnumPhoneCallStateTOTAL               = 4
 } EnumPhoneCallState;
 
 /* User defined enumeration: 'Enum::VolumeControl' */

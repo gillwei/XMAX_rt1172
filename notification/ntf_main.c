@@ -3,7 +3,7 @@
 * ntf_main.c
 *
 * @brief
-* The main program of the notificatioln.
+* The main program of the notification.
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
@@ -24,10 +24,19 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define MAX_ACTIVE_CALL_NUM         ( 2 )
+#define INVALID_INDEX               ( -1 )
+#define PHONE_CALL_STATE_DELAY_MS   ( 1000 )
 
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
+typedef struct
+    {
+    uint32_t uid;
+    uint32_t duration_ms;
+    uint8_t  caller[PHONE_CALLER_MAX_LEN];
+    } active_call_status_t;
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -44,9 +53,12 @@ static notification_protocol_t notification_protocol = NOTIFICATION_PROTOCOL_NON
 static notification_callback_t *notification_callback;
 static EnumPhoneCallState phonecall_state = EnumPhoneCallStateIDLE;
 static uint32_t incoming_call_uid;
-static uint8_t  phonecall_caller[PHONE_CALLER_MAX_LEN];
-static uint32_t active_call_duration_ms;
+static uint8_t  incoming_call_caller[PHONE_CALLER_MAX_LEN];
 static bool     is_phone_call_volume_controllable;
+static int32_t  active_call_num = 0;
+static uint8_t  null_caller = '\0';
+static active_call_status_t active_call_table[MAX_ACTIVE_CALL_NUM];
+static TimerHandle_t phone_call_state_timer_handle = NULL;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -55,6 +67,120 @@ static bool     is_phone_call_volume_controllable;
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+/*********************************************************************
+*
+* @private
+* lookup_active_call_uid
+*
+* Look for the index of active call table with uid
+*
+* @param uid Unique notification id
+* @return Index of the active call
+*
+*********************************************************************/
+static int32_t lookup_active_call_uid
+    (
+    const uint32_t uid
+    )
+{
+int32_t idx = INVALID_INDEX;
+for( int32_t i = 0; i < active_call_num; i++ )
+    {
+    if( active_call_table[i].uid == uid )
+        {
+        idx = i;
+        break;
+        }
+    }
+return idx;
+}
+
+/*********************************************************************
+*
+* @private
+* add_active_call
+*
+* Add the active call of uid into the active call table
+*
+* @param uid Unique notification id
+* @param caller Pointer to the caller string
+*
+*********************************************************************/
+static void add_active_call
+    (
+    const uint32_t uid,
+    const uint8_t* caller
+    )
+{
+int32_t found_idx = lookup_active_call_uid( uid );
+
+if( INVALID_INDEX == found_idx &&
+    MAX_ACTIVE_CALL_NUM > active_call_num )
+    {
+    active_call_table[active_call_num].uid = uid;
+    active_call_table[active_call_num].duration_ms = 0;
+    memcpy( active_call_table[active_call_num].caller, caller, PHONE_CALLER_MAX_LEN );
+    active_call_num++;
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* remove_active_call
+*
+* Remove the active call of uid
+*
+* @param uid Unique notification id
+*
+*********************************************************************/
+static void remove_active_call
+    (
+    const uint32_t uid
+    )
+{
+int found_idx = lookup_active_call_uid( uid );
+if( INVALID_INDEX < found_idx )
+    {
+    for( int32_t i = found_idx; i < active_call_num - 1; i++ )
+        {
+        active_call_table[i] = active_call_table[i+1];
+        }
+    active_call_num--;
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* PhoneCallStateTimerCallback
+*
+* Callback function of the phone call state timer
+*
+* @param xTimerHandle Phone call state timer handle
+*
+*********************************************************************/
+static void PhoneCallStateTimerCallback
+    (
+    TimerHandle_t xTimerHandle
+    )
+{
+NTF_PRINTF( "%s\r\n" );
+xTimerStop( phone_call_state_timer_handle , 0 );
+
+if( EnumPhoneCallStateINCOMING_STOPPED == phonecall_state )
+    {
+    if( 0 < active_call_num )
+        {
+        phonecall_state = EnumPhoneCallStateACTIVE;
+        }
+    else
+        {
+        phonecall_state = EnumPhoneCallStateIDLE;
+        }
+    EW_notify_phone_call_state_changed();
+    }
+}
 
 /*********************************************************************
 *
@@ -69,8 +195,8 @@ void NTF_answer_call
     void
     )
 {
-PRINTF( "%s, %d\r\n", __FUNCTION__, phonecall_state );
-if( EnumPhoneCallStateINCOMING == phonecall_state &&
+NTF_PRINTF( "%s, %d\r\n", __FUNCTION__, phonecall_state );
+if( EnumPhoneCallStateINCOMING_STARTED == phonecall_state &&
     NULL != notification_callback &&
     NULL != notification_callback->notification_answer_call_callback )
     {
@@ -91,8 +217,8 @@ void NTF_decline_call
     void
     )
 {
-PRINTF( "%s, %d\r\n", __FUNCTION__, phonecall_state );
-if( EnumPhoneCallStateINCOMING == phonecall_state &&
+NTF_PRINTF( "%s, %d\r\n", __FUNCTION__, phonecall_state );
+if( EnumPhoneCallStateINCOMING_STARTED == phonecall_state &&
     NULL != notification_callback &&
     NULL != notification_callback->notification_decline_call_callback )
     {
@@ -128,8 +254,7 @@ int NTF_add_notification
     )
 {
 int result = ERR_NONE;
-
-PRINTF( "%s %d %s %d\r\n", __FUNCTION__, uid, title, category );
+NTF_PRINTF( "%s %d %s %d\r\n", __FUNCTION__, uid, title, category );
 
 if( BC_motocon_is_connected() )
     {
@@ -192,7 +317,7 @@ void NTF_delete_notification
     const uint32_t uid
     )
 {
-NTF_PRINTF( "%s uid: %d\r\n", __FUNCTION__, uid );
+NTF_PRINTF( "%s %d\r\n", __FUNCTION__, uid );
 ntf_buffer_delete_notification_of_uid( uid );
 EW_notify_notification_list_updated();
 }
@@ -213,8 +338,11 @@ void NTF_notify_notification_deleted
     )
 {
 NTF_PRINTF( "%s uid: %d\r\n", __FUNCTION__, uid );
-ntf_buffer_delete_notification_of_uid( uid );
-EW_notify_notification_list_updated();
+int found_idx = lookup_active_call_uid( uid );
+if( INVALID_INDEX < found_idx )
+    {
+    NTF_notify_active_call_stopped( uid );
+    }
 }
 
 /*********************************************************************
@@ -242,11 +370,11 @@ if( BC_motocon_is_connected() )
     {
     int caller_len = strlen( (char*)caller);
     is_phone_call_volume_controllable = is_volume_controllable;
-    phonecall_state = EnumPhoneCallStateINCOMING;
+    phonecall_state = EnumPhoneCallStateINCOMING_STARTED;
     incoming_call_uid = uid;
     int string_length = MIN( PHONE_CALLER_MAX_LEN - 1, caller_len );
-    memcpy( phonecall_caller, caller, string_length );
-    phonecall_caller[string_length] = '\0';
+    memcpy( incoming_call_caller, caller, string_length );
+    incoming_call_caller[string_length] = '\0';
 
     EW_notify_phone_call_state_changed();
     }
@@ -270,9 +398,8 @@ void NTF_notify_incoming_call_stopped
 NTF_PRINTF( "%s %d\r\n", __FUNCTION__, uid );
 if( BC_motocon_is_connected() )
     {
-    phonecall_state = EnumPhoneCallStateIDLE;
-    incoming_call_uid = uid;
-    EW_notify_phone_call_state_changed();
+    phonecall_state = EnumPhoneCallStateINCOMING_STOPPED;
+    xTimerStart( phone_call_state_timer_handle , 0 );
     }
 }
 
@@ -284,12 +411,14 @@ if( BC_motocon_is_connected() )
 * Notify notification center that active call is started
 *
 * @param uid Unique notification id of this active call
+* @param caller Caller's name or phone number
 * @param is_volume_controllable Volume controllable status
 *
 *********************************************************************/
 void NTF_notify_active_call_started
     (
     const uint32_t uid,
+    const uint8_t* caller,
     const bool     is_volume_controllable
     )
 {
@@ -297,8 +426,16 @@ NTF_PRINTF( "%s %d %d\r\n", __FUNCTION__, uid, is_volume_controllable );
 if( BC_motocon_is_connected() )
     {
     is_phone_call_volume_controllable = is_volume_controllable;
+    if( NULL == caller )
+        {
+        add_active_call( uid, incoming_call_caller );
+        }
+    else
+        {
+        add_active_call( uid, caller );
+        }
+
     phonecall_state = EnumPhoneCallStateACTIVE;
-    active_call_duration_ms = 0;
     EW_notify_phone_call_state_changed();
     }
 }
@@ -319,11 +456,20 @@ void NTF_notify_active_call_stopped
     )
 {
 NTF_PRINTF( "%s %d\r\n", __FUNCTION__, uid );
+EnumPhoneCallState new_phonecall_state = EnumPhoneCallStateIDLE;
 if( BC_motocon_is_connected() )
     {
-    phonecall_state = EnumPhoneCallStateIDLE;
-    active_call_duration_ms = 0;
-    EW_notify_phone_call_state_changed();
+    remove_active_call( uid );
+    if( active_call_num > 0 )
+        {
+        new_phonecall_state = EnumPhoneCallStateACTIVE;
+        }
+
+    if( phonecall_state != new_phonecall_state )
+        {
+        phonecall_state = new_phonecall_state;
+        EW_notify_phone_call_state_changed();
+        }
     }
 }
 
@@ -348,19 +494,45 @@ return phonecall_state;
 /*********************************************************************
 *
 * @public
-* NTF_get_incoming_caller
+* NTF_get_incoming_call_caller
 *
-* Get caller name or number of the phone call
+* Get caller name or number of the incoming call
 *
 * @param Pointer to pointer of the caller string
 *
 *********************************************************************/
-void NTF_get_phone_caller
+void NTF_get_incoming_call_caller
     (
     uint8_t** caller
     )
 {
-*caller = phonecall_caller;
+*caller = incoming_call_caller;
+}
+
+/*********************************************************************
+*
+* @public
+* NTF_get_active_call_caller
+*
+* Get caller name or number of the active call
+*
+* @param Pointer to pointer of the caller string
+*
+*********************************************************************/
+void NTF_get_active_call_caller
+    (
+    uint8_t** caller
+    )
+{
+NTF_PRINTF( "%s %d\r\n", __FUNCTION__, active_call_num );
+if( 0 < active_call_num )
+    {
+    *caller = active_call_table[active_call_num-1].caller;
+    }
+else
+    {
+    *caller = &null_caller;
+    }
 }
 
 /*********************************************************************
@@ -424,7 +596,13 @@ uint32_t NTF_get_active_call_duration
     void
     )
 {
-return active_call_duration_ms;
+uint32_t duration_ms = 0;
+if( EnumPhoneCallStateACTIVE == phonecall_state &&
+    0 < active_call_num )
+    {
+    duration_ms = active_call_table[active_call_num - 1].duration_ms;
+    }
+return duration_ms;
 }
 
 /*********************************************************************
@@ -442,7 +620,10 @@ void NTF_update_active_call_duration
 {
 if( EnumPhoneCallStateACTIVE == phonecall_state )
     {
-    active_call_duration_ms += UPDATE_TIME_PERIOD_MS;
+    for( int i = 0; i < active_call_num; i++ )
+        {
+        active_call_table[i].duration_ms += UPDATE_TIME_PERIOD_MS;
+        }
     }
 }
 
@@ -467,6 +648,7 @@ NTF_PRINTF( "%s %d\r\n", __FUNCTION__, protocol );
 notification_protocol = protocol;
 notification_callback = callback;
 phonecall_state       = EnumPhoneCallStateIDLE;
+active_call_num       = 0;
 }
 
 /*********************************************************************
@@ -492,7 +674,7 @@ if( notification_protocol == protocol ||
     notification_protocol = NOTIFICATION_PROTOCOL_NONE;
     notification_callback = NULL;
 
-    active_call_duration_ms = 0;
+    active_call_num = 0;
     phonecall_state = EnumPhoneCallStateIDLE;
     EW_notify_phone_call_state_changed();
 
@@ -515,4 +697,6 @@ void NTF_init
     )
 {
 ntf_buffer_init();
+phone_call_state_timer_handle = xTimerCreate( "PhoneCallStateTimer", PHONE_CALL_STATE_DELAY_MS, pdTRUE, ( void * ) 0, PhoneCallStateTimerCallback );
+configASSERT( NULL != phone_call_state_timer_handle );
 }

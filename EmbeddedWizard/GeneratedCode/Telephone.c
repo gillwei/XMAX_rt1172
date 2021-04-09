@@ -321,7 +321,7 @@ void TelephoneTEL01_IncomingCall_Init( TelephoneTEL01_IncomingCall _this, XHandl
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  ViewsText_OnSetString( &_this->CallerText, DeviceInterfaceNotificationDeviceClass_GetPhoneCaller( 
+  ViewsText_OnSetString( &_this->CallerText, DeviceInterfaceNotificationDeviceClass_GetIncomingCallCaller( 
   EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )));
 
   if ( 0 == EwGetStringLength( _this->CallerText.String ))
@@ -496,6 +496,7 @@ void TelephoneTEL02_ActiveCall__Init( TelephoneTEL02_ActiveCall _this, XObject a
   ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->PhoneCallVolumeChangedEventHandler, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->Image, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->DismissTimer, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( TelephoneTEL02_ActiveCall );
@@ -520,6 +521,8 @@ void TelephoneTEL02_ActiveCall__Init( TelephoneTEL02_ActiveCall _this, XObject a
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
   CoreRectView__OnSetBounds( &_this->Image, _Const0009 );
+  CoreTimer_OnSetPeriod( &_this->DismissTimer, 0 );
+  CoreTimer_OnSetBegin( &_this->DismissTimer, 1000 );
   CoreGroup__Add( _this, ((CoreView)&_this->VolumeUpButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->VolumeDownButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ForegroundImage ), 0 );
@@ -549,6 +552,7 @@ void TelephoneTEL02_ActiveCall__Init( TelephoneTEL02_ActiveCall _this, XObject a
   CoreSystemEventHandler_OnSetEvent( &_this->PhoneCallVolumeChangedEventHandler, 
   &EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )->PhoneCallVolumeChangedSystemEvent );
   ViewsImage_OnSetBitmap( &_this->Image, EwLoadResource( &ResourcePhoneVol, ResourcesBitmap ));
+  _this->DismissTimer.OnTrigger = EwNewSlot( _this, TelephoneTEL02_ActiveCall_OnDismissSlot );
 
   /* Call the user defined constructor */
   TelephoneTEL02_ActiveCall_Init( _this, aArg );
@@ -571,6 +575,7 @@ void TelephoneTEL02_ActiveCall__ReInit( TelephoneTEL02_ActiveCall _this )
   ViewsImage__ReInit( &_this->Divider );
   CoreSystemEventHandler__ReInit( &_this->PhoneCallVolumeChangedEventHandler );
   ViewsImage__ReInit( &_this->Image );
+  CoreTimer__ReInit( &_this->DismissTimer );
 }
 
 /* Finalizer method for the class 'Telephone::TEL02_ActiveCall' */
@@ -590,6 +595,7 @@ void TelephoneTEL02_ActiveCall__Done( TelephoneTEL02_ActiveCall _this )
   ViewsImage__Done( &_this->Divider );
   CoreSystemEventHandler__Done( &_this->PhoneCallVolumeChangedEventHandler );
   ViewsImage__Done( &_this->Image );
+  CoreTimer__Done( &_this->DismissTimer );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_Super );
@@ -603,14 +609,7 @@ void TelephoneTEL02_ActiveCall_Init( TelephoneTEL02_ActiveCall _this, XHandle aA
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  ViewsText_OnSetString( &_this->CallerText, DeviceInterfaceNotificationDeviceClass_GetPhoneCaller( 
-  EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )));
-
-  if ( 0 == EwGetStringLength( _this->CallerText.String ))
-  {
-    ViewsText_OnSetString( &_this->CallerText, EwLoadString( &_Const0006 ));
-  }
-
+  TelephoneTEL02_ActiveCall_UpdateCaller( _this );
   _this->VolumeControllable = DeviceInterfaceNotificationDeviceClass_IsPhoneCallVolumeControllable( 
   EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ));
 
@@ -666,7 +665,14 @@ void TelephoneTEL02_ActiveCall_OnPhoneCallStateChangedSlot( TelephoneTEL02_Activ
   switch ( PhoneCallState )
   {
     case EnumPhoneCallStateIDLE :
-      ComponentsBaseMainBG_DismissThisDialog((ComponentsBaseMainBG)_this );
+      CoreTimer_OnSetEnabled( &_this->DismissTimer, 1 );
+    break;
+
+    case EnumPhoneCallStateACTIVE :
+    {
+      CoreTimer_OnSetEnabled( &_this->DismissTimer, 0 );
+      TelephoneTEL02_ActiveCall_UpdateCaller( _this );
+    }
     break;
 
     default : 
@@ -678,33 +684,32 @@ void TelephoneTEL02_ActiveCall_OnPhoneCallStateChangedSlot( TelephoneTEL02_Activ
 void TelephoneTEL02_ActiveCall_OnUpdateDurationSlot( TelephoneTEL02_ActiveCall _this, 
   XObject sender )
 {
-  XUInt32 TotalDurationSec;
-  XUInt32 DurationHour;
-  XUInt32 DurationSec;
-  XUInt32 DurationMinute;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  TotalDurationSec = DeviceInterfaceNotificationDeviceClass_GetActiveCallDuration( 
-  EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )) 
-  / 1000;
-  DurationHour = TotalDurationSec / 3600;
-  DurationSec = TotalDurationSec % 60;
-  DurationMinute = ( TotalDurationSec / 60 ) - ( DurationHour * 60 );
+  if ( EnumPhoneCallStateACTIVE == DeviceInterfaceNotificationDeviceClass_GetPhoneCallState( 
+      EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )))
+  {
+    XUInt32 TotalDurationSec = DeviceInterfaceNotificationDeviceClass_GetActiveCallDuration( 
+      EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )) 
+      / 1000;
+    XUInt32 DurationHour = TotalDurationSec / 3600;
+    XUInt32 DurationSec = TotalDurationSec % 60;
+    XUInt32 DurationMinute = ( TotalDurationSec / 60 ) - ( DurationHour * 60 );
 
-  if ( DurationHour > 0 )
-  {
-    ViewsText_OnSetString( &_this->DurationText, EwConcatString( EwConcatString( 
-    EwConcatString( EwConcatString( EwNewStringUInt( DurationHour, 0, 10 ), EwLoadString( 
-    &_Const000B )), EwNewStringUInt( DurationMinute, 2, 10 )), EwLoadString( &_Const000B )), 
-    EwNewStringUInt( DurationSec, 2, 10 )));
-  }
-  else
-  {
-    ViewsText_OnSetString( &_this->DurationText, EwConcatString( EwConcatString( 
-    EwNewStringUInt( DurationMinute, 0, 10 ), EwLoadString( &_Const000B )), EwNewStringUInt( 
-    DurationSec, 2, 10 )));
+    if ( DurationHour > 0 )
+    {
+      ViewsText_OnSetString( &_this->DurationText, EwConcatString( EwConcatString( 
+      EwConcatString( EwConcatString( EwNewStringUInt( DurationHour, 0, 10 ), EwLoadString( 
+      &_Const000B )), EwNewStringUInt( DurationMinute, 2, 10 )), EwLoadString( &_Const000B )), 
+      EwNewStringUInt( DurationSec, 2, 10 )));
+    }
+    else
+    {
+      ViewsText_OnSetString( &_this->DurationText, EwConcatString( EwConcatString( 
+      EwNewStringUInt( DurationMinute, 0, 10 ), EwLoadString( &_Const000B )), EwNewStringUInt( 
+      DurationSec, 2, 10 )));
+    }
   }
 }
 
@@ -740,6 +745,28 @@ void TelephoneTEL02_ActiveCall_OnPhoneCallVolumeChangedSlot( TelephoneTEL02_Acti
         TelephoneImageButton_OnSetForegroundFrameNumber( &_this->VolumeUpButton, 
         0 );
       }
+  }
+}
+
+/* 'C' function for method : 'Telephone::TEL02_ActiveCall.OnDismissSlot()' */
+void TelephoneTEL02_ActiveCall_OnDismissSlot( TelephoneTEL02_ActiveCall _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ComponentsBaseMainBG_DismissThisDialog((ComponentsBaseMainBG)_this );
+}
+
+/* 'C' function for method : 'Telephone::TEL02_ActiveCall.UpdateCaller()' */
+void TelephoneTEL02_ActiveCall_UpdateCaller( TelephoneTEL02_ActiveCall _this )
+{
+  ViewsText_OnSetString( &_this->CallerText, DeviceInterfaceNotificationDeviceClass_GetActiveCallCaller( 
+  EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )));
+
+  if ( 0 == EwGetStringLength( _this->CallerText.String ))
+  {
+    ViewsText_OnSetString( &_this->CallerText, EwLoadString( &_Const0006 ));
   }
 }
 

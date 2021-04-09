@@ -437,7 +437,7 @@ class Application : Core::Root
     var Enum::PhoneCallState PhoneCallState = DeviceInterface::NotificationDevice.GetPhoneCallState();
     switch( PhoneCallState )
     {
-      case Enum::PhoneCallState.INCOMING:
+      case Enum::PhoneCallState.INCOMING_STARTED:
       {
         if( IsDisclaimerDismissed && !IsFactoryTest )
         {

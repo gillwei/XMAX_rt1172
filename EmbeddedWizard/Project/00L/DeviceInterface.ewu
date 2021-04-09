@@ -2135,7 +2135,7 @@ class NotificationDeviceClass : Templates::DeviceClass
   object Core::SystemEvent PhoneCallStateChangedSystemEvent;
 
   $rect <250,170,460,210>
-  method string GetPhoneCaller()
+  method string GetIncomingCallCaller()
   {
     var string Caller;
 
@@ -2145,7 +2145,7 @@ class NotificationDeviceClass : Templates::DeviceClass
         uint8_t* phone_caller;
         uint8_t *stuffed_str = NULL;
 
-        NTF_get_phone_caller( &phone_caller );
+        NTF_get_incoming_call_caller( &phone_caller );
         int stuffed_str_len = ew_handle_special_characters( phone_caller, &stuffed_str );
         if( stuffed_str_len > 0 && stuffed_str != NULL )
         {
@@ -2158,7 +2158,7 @@ class NotificationDeviceClass : Templates::DeviceClass
   }
 
   // Get active call duration in ms
-  $rect <250,220,460,260>
+  $rect <680,110,890,150>
   method uint32 GetActiveCallDuration()
   {
     var uint32 DurationMS;
@@ -2279,6 +2279,29 @@ class NotificationDeviceClass : Templates::DeviceClass
       }
     $endif
     return Num;
+  }
+
+  $rect <250,220,460,260>
+  method string GetActiveCallCaller()
+  {
+    var string Caller;
+
+    $if !$prototyper
+      native( Caller )
+      {
+        uint8_t* phone_caller;
+        uint8_t* stuffed_str = NULL;
+
+        NTF_get_active_call_caller( &phone_caller );
+        int stuffed_str_len = ew_handle_special_characters( phone_caller, &stuffed_str );
+        if( stuffed_str_len > 0 && stuffed_str != NULL )
+        {
+          Caller = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+        }
+      }
+    $endif
+
+    return Caller;
   }
 }
 

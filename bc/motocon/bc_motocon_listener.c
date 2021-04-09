@@ -282,7 +282,7 @@ if( motocon_connected )
     switch( call_state )
         {
         case BC_MOTOCON_CALL_STARTED:
-            NTF_notify_active_call_started( 0, phone_volume_controllable );
+            NTF_notify_active_call_started( 0, NULL, phone_volume_controllable );
             break;
         case BC_MOTOCON_CALL_ENDED:
             NTF_notify_active_call_stopped( 0 );

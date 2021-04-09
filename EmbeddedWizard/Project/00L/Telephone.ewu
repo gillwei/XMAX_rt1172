@@ -77,7 +77,7 @@ class TEL01_IncomingCall : Components::BaseMainBG
   $rect <20,290,200,330>
   inherited method Init()
   {
-    CallerText.String = DeviceInterface::NotificationDevice.GetPhoneCaller();
+    CallerText.String = DeviceInterface::NotificationDevice.GetIncomingCallCaller();
     if( 0 == CallerText.String.length )
     {
       CallerText.String = "---";
@@ -229,11 +229,7 @@ class TEL02_ActiveCall : Components::BaseMainBG
   $rect <20,290,200,330>
   inherited method Init()
   {
-    CallerText.String = DeviceInterface::NotificationDevice.GetPhoneCaller();
-    if( 0 == CallerText.String.length )
-    {
-      CallerText.String = "---";
-    }
+    UpdateCaller();
 
     VolumeControllable = DeviceInterface::NotificationDevice.IsPhoneCallVolumeControllable();
     if( VolumeControllable )
@@ -332,7 +328,12 @@ class TEL02_ActiveCall : Components::BaseMainBG
     var Enum::PhoneCallState PhoneCallState = DeviceInterface::NotificationDevice.GetPhoneCallState();
     switch( PhoneCallState )
     {
-      case Enum::PhoneCallState.IDLE: DismissThisDialog();
+      case Enum::PhoneCallState.IDLE: DismissTimer.Enabled = true;
+      case Enum::PhoneCallState.ACTIVE:
+      {
+        DismissTimer.Enabled = false;
+        UpdateCaller();
+      }
       default:;
     }
   }
@@ -348,17 +349,20 @@ class TEL02_ActiveCall : Components::BaseMainBG
   $rect <810,340,1010,380>
   slot OnUpdateDurationSlot
   {
-    var uint32 TotalDurationSec = DeviceInterface::NotificationDevice.GetActiveCallDuration() / 1000;
-    var uint32 DurationHour = TotalDurationSec / 3600;
-    var uint32 DurationSec = TotalDurationSec % 60;
-    var uint32 DurationMinute = ( TotalDurationSec / 60 ) - ( DurationHour * 60 );
-    if( DurationHour > 0 )
+    if( Enum::PhoneCallState.ACTIVE == DeviceInterface::NotificationDevice.GetPhoneCallState() )
     {
-      DurationText.String = string( DurationHour ) + ":" + string( DurationMinute, 2, 10 ) + ":" + string( DurationSec, 2, 10 );
-    }
-    else
-    {
-      DurationText.String = string( DurationMinute ) + ":" + string( DurationSec, 2, 10 );
+      var uint32 TotalDurationSec = DeviceInterface::NotificationDevice.GetActiveCallDuration() / 1000;
+      var uint32 DurationHour = TotalDurationSec / 3600;
+      var uint32 DurationSec = TotalDurationSec % 60;
+      var uint32 DurationMinute = ( TotalDurationSec / 60 ) - ( DurationHour * 60 );
+      if( DurationHour > 0 )
+      {
+        DurationText.String = string( DurationHour ) + ":" + string( DurationMinute, 2, 10 ) + ":" + string( DurationSec, 2, 10 );
+      }
+      else
+      {
+        DurationText.String = string( DurationMinute ) + ":" + string( DurationSec, 2, 10 );
+      }
     }
   }
 
@@ -411,6 +415,30 @@ class TEL02_ActiveCall : Components::BaseMainBG
   {
     preset Bounds = <0,114,94,189>;
     preset Bitmap = Resource::PhoneVol;
+  }
+
+  $rect <1030,290,1230,330>
+  object Core::Timer DismissTimer
+  {
+    preset OnTrigger = OnDismissSlot;
+    preset Period = 0;
+    preset Begin = 1000;
+  }
+
+  $rect <1030,340,1230,380>
+  slot OnDismissSlot
+  {
+    DismissThisDialog();
+  }
+
+  $rect <20,390,220,430>
+  method void UpdateCaller()
+  {
+    CallerText.String = DeviceInterface::NotificationDevice.GetActiveCallCaller();
+    if( 0 == CallerText.String.length )
+    {
+      CallerText.String = "---";
+    }
   }
 }
 

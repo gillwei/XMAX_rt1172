@@ -651,7 +651,7 @@ void ApplicationApplication_OnPhoneCallStateChangedSlot( ApplicationApplication 
 
   switch ( PhoneCallState )
   {
-    case EnumPhoneCallStateINCOMING :
+    case EnumPhoneCallStateINCOMING_STARTED :
     {
       if ( _this->IsDisclaimerDismissed && !_this->IsFactoryTest )
       {

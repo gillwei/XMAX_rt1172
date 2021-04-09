@@ -175,7 +175,6 @@ static notification_callback_t ancs_notification_callback =
     NULL
     };
 
-static uint32_t ancs_active_call_uid = 0;
 static uid_category_dictionary ancs_uid_category_dictionary[DICTIONARY_SIZE];
 
 static uint8_t  ancs_notification_attributes_buffer[ANCS_NOTIFICATION_ATTRIBUTES_BUFFER_SIZE];
@@ -449,15 +448,10 @@ if( total_data == ANCS_NOTIFICATION_SOURCE_DATA_LENGTH &&
                 BC_ANCS_PRINTF( "ancs incoming call stopped %d\r\n", notification_uid );
                 NTF_notify_incoming_call_stopped( notification_uid );
                 }
-            else if( ancs_active_call_uid == notification_uid )
-                {
-                BC_ANCS_PRINTF( "ancs active call stopped %d\r\n", notification_uid );
-                NTF_notify_active_call_stopped( notification_uid );
-                ancs_active_call_uid = 0;
-                }
             else
                 {
                 BC_ANCS_PRINTF( "ancs notification deleted %d\r\n", notification_uid );
+                NTF_notify_notification_deleted( notification_uid );
                 }
             break;
 
@@ -669,8 +663,7 @@ if( ERR_NONE == get_category_from_dictionary( notification_uid, &category_id ) )
         if( !memcmp( negative_action_label, "End Call", 8 ) &&
             !memcmp( body, "Active Call", 11 ) )
             {
-            ancs_active_call_uid = notification_uid;
-            NTF_notify_active_call_started( notification_uid, IPHONE_CALL_VOLUME_CONTROLLABLE );
+            NTF_notify_active_call_started( notification_uid, title, IPHONE_CALL_VOLUME_CONTROLLABLE );
             }
         else
             {
@@ -875,7 +868,6 @@ for( int i = 0; i < DICTIONARY_SIZE; i++ )
     }
 
 ancs_notification_attributes_received_size = 0;
-ancs_active_call_uid = 0;
 }
 
 /*********************************************************************

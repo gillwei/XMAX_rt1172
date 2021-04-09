@@ -115,8 +115,8 @@ void DeviceInterfaceNotificationDeviceClass_DeleteNotificationOfUid( DeviceInter
 XInt32 DeviceInterfaceNotificationDeviceClass_GetBufferIdxOfNotificationUID( DeviceInterfaceNotificationDeviceClass _this, 
   XUInt32 Uid );
 
-/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetPhoneCaller()' */
-XString DeviceInterfaceNotificationDeviceClass_GetPhoneCaller( DeviceInterfaceNotificationDeviceClass _this );
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetIncomingCallCaller()' */
+XString DeviceInterfaceNotificationDeviceClass_GetIncomingCallCaller( DeviceInterfaceNotificationDeviceClass _this );
 
 /* Get active call duration in ms */
 XUInt32 DeviceInterfaceNotificationDeviceClass_GetActiveCallDuration( DeviceInterfaceNotificationDeviceClass _this );
@@ -160,6 +160,9 @@ XUInt32 DeviceInterfaceNotificationDeviceClass_GetPhoneCallVolume( DeviceInterfa
 /* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetNotificationNumOfCategory()' */
 XInt32 DeviceInterfaceNotificationDeviceClass_GetNotificationNumOfCategory( DeviceInterfaceNotificationDeviceClass _this, 
   XEnum aCategory );
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetActiveCallCaller()' */
+XString DeviceInterfaceNotificationDeviceClass_GetActiveCallCaller( DeviceInterfaceNotificationDeviceClass _this );
 
 #ifdef __cplusplus
   }

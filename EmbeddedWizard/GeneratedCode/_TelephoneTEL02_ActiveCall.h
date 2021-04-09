@@ -113,6 +113,7 @@ EW_DEFINE_FIELDS( TelephoneTEL02_ActiveCall, ComponentsBaseMainBG )
   EW_OBJECT  ( Divider,         ViewsImage )
   EW_OBJECT  ( PhoneCallVolumeChangedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( Image,           ViewsImage )
+  EW_OBJECT  ( DismissTimer,    CoreTimer )
   EW_VARIABLE( PhoneCallVolume, XUInt32 )
   EW_VARIABLE( VolumeControllable, XBool )
 EW_END_OF_FIELDS( TelephoneTEL02_ActiveCall )
@@ -198,6 +199,13 @@ void TelephoneTEL02_ActiveCall_OnUpdateDurationSlot( TelephoneTEL02_ActiveCall _
 /* 'C' function for method : 'Telephone::TEL02_ActiveCall.OnPhoneCallVolumeChangedSlot()' */
 void TelephoneTEL02_ActiveCall_OnPhoneCallVolumeChangedSlot( TelephoneTEL02_ActiveCall _this, 
   XObject sender );
+
+/* 'C' function for method : 'Telephone::TEL02_ActiveCall.OnDismissSlot()' */
+void TelephoneTEL02_ActiveCall_OnDismissSlot( TelephoneTEL02_ActiveCall _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Telephone::TEL02_ActiveCall.UpdateCaller()' */
+void TelephoneTEL02_ActiveCall_UpdateCaller( TelephoneTEL02_ActiveCall _this );
 
 #ifdef __cplusplus
   }

@@ -2485,8 +2485,8 @@ XInt32 DeviceInterfaceNotificationDeviceClass_GetBufferIdxOfNotificationUID( Dev
   return Index;
 }
 
-/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetPhoneCaller()' */
-XString DeviceInterfaceNotificationDeviceClass_GetPhoneCaller( DeviceInterfaceNotificationDeviceClass _this )
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetIncomingCallCaller()' */
+XString DeviceInterfaceNotificationDeviceClass_GetIncomingCallCaller( DeviceInterfaceNotificationDeviceClass _this )
 {
   XString Caller;
 
@@ -2498,7 +2498,7 @@ XString DeviceInterfaceNotificationDeviceClass_GetPhoneCaller( DeviceInterfaceNo
     uint8_t* phone_caller;
     uint8_t *stuffed_str = NULL;
 
-    NTF_get_phone_caller( &phone_caller );
+    NTF_get_incoming_call_caller( &phone_caller );
     int stuffed_str_len = ew_handle_special_characters( phone_caller, &stuffed_str );
     if( stuffed_str_len > 0 && stuffed_str != NULL )
     {
@@ -2624,6 +2624,29 @@ XInt32 DeviceInterfaceNotificationDeviceClass_GetNotificationNumOfCategory( Devi
   Num = 0;
   Num = NTF_get_notification_num_of_category( aCategory );
   return Num;
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetActiveCallCaller()' */
+XString DeviceInterfaceNotificationDeviceClass_GetActiveCallCaller( DeviceInterfaceNotificationDeviceClass _this )
+{
+  XString Caller;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Caller = 0;
+  {
+    uint8_t* phone_caller;
+    uint8_t* stuffed_str = NULL;
+
+    NTF_get_active_call_caller( &phone_caller );
+    int stuffed_str_len = ew_handle_special_characters( phone_caller, &stuffed_str );
+    if( stuffed_str_len > 0 && stuffed_str != NULL )
+    {
+      Caller = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+    }
+  }
+  return Caller;
 }
 
 /* Variants derived from the class : 'DeviceInterface::NotificationDeviceClass' */
