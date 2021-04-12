@@ -116,6 +116,8 @@ EW_DEFINE_FIELDS( StatusBarMain, CoreGroup )
   EW_OBJECT  ( PhoneCallStateChangedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NotificationListUpdatedSystemEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( MessageIcon,     ViewsImage )
+  EW_OBJECT  ( GripWarmerIcon,  ViewsImage )
+  EW_OBJECT  ( SeatHeaterIcon,  ViewsImage )
   EW_VARIABLE( IsMotoConConnected, XBool )
 EW_END_OF_FIELDS( StatusBarMain )
 
@@ -201,6 +203,12 @@ void StatusBarMain_OnUpdatePhoneIconSlot( StatusBarMain _this, XObject sender );
 /* This slot method is executed when the associated property observer 'PropertyObserver' 
    is notified. */
 void StatusBarMain_OnNotificationListUpdatedSlot( StatusBarMain _this, XObject sender );
+
+/* 'C' function for method : 'StatusBar::Main.UpdateGripWarmerIcon()' */
+void StatusBarMain_UpdateGripWarmerIcon( StatusBarMain _this );
+
+/* 'C' function for method : 'StatusBar::Main.UpdateSeatHeaterIcon()' */
+void StatusBarMain_UpdateSeatHeaterIcon( StatusBarMain _this );
 
 #ifdef __cplusplus
   }

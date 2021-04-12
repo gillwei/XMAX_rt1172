@@ -408,6 +408,12 @@ EW_DECLARE_BITMAP_RES( ResourceControlUpButtonArrow )
 /* Bitmap resource : 'Resource::ControlDownButtonArrow' */
 EW_DECLARE_BITMAP_RES( ResourceControlDownButtonArrow )
 
+/* Bitmap resource : 'Resource::GripWarmerIcon' */
+EW_DECLARE_BITMAP_RES( ResourceGripWarmerIcon )
+
+/* Bitmap resource : 'Resource::SeatHeaterIcon' */
+EW_DECLARE_BITMAP_RES( ResourceSeatHeaterIcon )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

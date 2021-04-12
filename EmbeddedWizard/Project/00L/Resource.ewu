@@ -36,7 +36,7 @@ resource Resources::Bitmap IconMediaNext
   attr bitmapmode Mode = Default;
 }
 
-$rect <540,229,740,269>
+$rect <540,310,740,350>
 $output false
 resource Resources::Bitmap CheckboxNormal
 {
@@ -48,7 +48,7 @@ resource Resources::Bitmap CheckboxNormal
   attr bitmapmode Mode = Default;
 }
 
-$rect <830,229,1030,269>
+$rect <830,310,1030,350>
 $output false
 resource Resources::Bitmap IconWarning
 {
@@ -60,7 +60,7 @@ resource Resources::Bitmap IconWarning
   attr bitmapmode Mode = Default;
 }
 
-$rect <20,279,220,319>
+$rect <20,360,220,400>
 $output false
 resource Resources::Bitmap LoadingAnimation
 {
@@ -72,7 +72,7 @@ resource Resources::Bitmap LoadingAnimation
   attr bitmapmode Mode;
 }
 
-$rect <540,269,740,309>
+$rect <540,350,740,390>
 $output false
 resource Resources::Bitmap CheckboxDisable
 {
@@ -148,7 +148,7 @@ resource Resources::Bitmap ZoomOutDayIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <20,179,220,219>
+$rect <20,260,220,300>
 $output false
 resource Resources::Bitmap MainBG
 {
@@ -160,7 +160,7 @@ resource Resources::Bitmap MainBG
   attr bitmapmode Mode = Default;
 }
 
-$rect <330,269,530,309>
+$rect <330,350,530,390>
 $output false
 resource Resources::Bitmap ListDivider4
 {
@@ -172,7 +172,7 @@ resource Resources::Bitmap ListDivider4
   attr bitmapmode Mode = Default;
 }
 
-$rect <330,229,530,269>
+$rect <330,310,530,350>
 $output false
 resource Resources::Bitmap ListDivider3
 {
@@ -187,10 +187,10 @@ resource Resources::Bitmap ListDivider3
 // Menu
 note group Note4
 {
-  attr Bounds = <310,179,760,359>;
+  attr Bounds = <310,260,760,440>;
 }
 
-$rect <540,309,740,349>
+$rect <540,390,740,430>
 $output false
 resource Resources::Bitmap CheckMark
 {
@@ -215,10 +215,10 @@ autoobject Resources::ExternBitmap QrCodeExternBitmap;
 // Launcher
 note group Note7
 {
-  attr Bounds = <10,369,1100,819>;
+  attr Bounds = <10,450,1100,900>;
 }
 
-$rect <30,419,230,459>
+$rect <30,500,230,540>
 $output false
 resource Resources::Bitmap LCBase
 {
@@ -230,7 +230,7 @@ resource Resources::Bitmap LCBase
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,462,230,502>
+$rect <30,543,230,583>
 $output false
 resource Resources::Bitmap LCBlueline
 {
@@ -242,7 +242,7 @@ resource Resources::Bitmap LCBlueline
   attr bitmapmode Mode = Default;
 }
 
-$rect <242,419,442,459>
+$rect <242,500,442,540>
 $output false
 resource Resources::Bitmap IconPhoneSmall
 {
@@ -254,7 +254,7 @@ resource Resources::Bitmap IconPhoneSmall
   attr bitmapmode Mode = Default;
 }
 
-$rect <242,461,442,501>
+$rect <242,542,442,582>
 $output false
 resource Resources::Bitmap IconPhoneLarge
 {
@@ -266,7 +266,7 @@ resource Resources::Bitmap IconPhoneLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <455,419,655,459>
+$rect <455,500,655,540>
 $output false
 resource Resources::Bitmap IconMusicSmall
 {
@@ -278,7 +278,7 @@ resource Resources::Bitmap IconMusicSmall
   attr bitmapmode Mode = Default;
 }
 
-$rect <455,462,655,502>
+$rect <455,543,655,583>
 $output false
 resource Resources::Bitmap IconMusicLarge
 {
@@ -290,7 +290,7 @@ resource Resources::Bitmap IconMusicLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <667,419,867,459>
+$rect <667,500,867,540>
 $output false
 resource Resources::Bitmap IconTcsSmall
 {
@@ -302,7 +302,7 @@ resource Resources::Bitmap IconTcsSmall
   attr bitmapmode Mode = Default;
 }
 
-$rect <667,462,867,502>
+$rect <667,543,867,583>
 $output false
 resource Resources::Bitmap IconTcsLarge
 {
@@ -314,7 +314,7 @@ resource Resources::Bitmap IconTcsLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,419,1080,459>
+$rect <880,500,1080,540>
 $output false
 resource Resources::Bitmap IconOdoTripSmall
 {
@@ -326,7 +326,7 @@ resource Resources::Bitmap IconOdoTripSmall
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,462,1080,502>
+$rect <880,543,1080,583>
 $output false
 resource Resources::Bitmap IconOdoTripLarge
 {
@@ -338,7 +338,7 @@ resource Resources::Bitmap IconOdoTripLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,518,230,558>
+$rect <30,599,230,639>
 $output false
 resource Resources::Bitmap IconSettingSmall
 {
@@ -350,7 +350,7 @@ resource Resources::Bitmap IconSettingSmall
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,559,230,599>
+$rect <30,640,230,680>
 $output false
 resource Resources::Bitmap IconSettingLarge
 {
@@ -362,7 +362,7 @@ resource Resources::Bitmap IconSettingLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <242,518,442,558>
+$rect <242,599,442,639>
 $output false
 resource Resources::Bitmap IconWeatherSmall
 {
@@ -374,7 +374,7 @@ resource Resources::Bitmap IconWeatherSmall
   attr bitmapmode Mode = Default;
 }
 
-$rect <242,559,442,599>
+$rect <242,640,442,680>
 $output false
 resource Resources::Bitmap IconWeatherLarge
 {
@@ -386,7 +386,7 @@ resource Resources::Bitmap IconWeatherLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <455,518,655,558>
+$rect <455,599,655,639>
 $output false
 resource Resources::Bitmap IconNotificationSmall
 {
@@ -398,7 +398,7 @@ resource Resources::Bitmap IconNotificationSmall
   attr bitmapmode Mode = Default;
 }
 
-$rect <455,559,655,599>
+$rect <455,640,655,680>
 $output false
 resource Resources::Bitmap IconNotificationLarge
 {
@@ -410,7 +410,7 @@ resource Resources::Bitmap IconNotificationLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <667,518,867,558>
+$rect <667,599,867,639>
 $output false
 resource Resources::Bitmap IconNavigationSmall
 {
@@ -422,7 +422,7 @@ resource Resources::Bitmap IconNavigationSmall
   attr bitmapmode Mode = Default;
 }
 
-$rect <667,559,867,599>
+$rect <667,640,867,680>
 $output false
 resource Resources::Bitmap IconNavigationLarge
 {
@@ -434,7 +434,7 @@ resource Resources::Bitmap IconNavigationLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,518,1080,558>
+$rect <880,599,1080,639>
 $output false
 resource Resources::Bitmap IconThemeSmall
 {
@@ -446,7 +446,7 @@ resource Resources::Bitmap IconThemeSmall
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,559,1080,599>
+$rect <880,640,1080,680>
 $output false
 resource Resources::Bitmap IconThemeLarge
 {
@@ -458,7 +458,7 @@ resource Resources::Bitmap IconThemeLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,619,230,659>
+$rect <30,700,230,740>
 $output false
 resource Resources::Bitmap IconSeatHeater0Small
 {
@@ -470,7 +470,7 @@ resource Resources::Bitmap IconSeatHeater0Small
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,659,230,699>
+$rect <30,740,230,780>
 $output false
 resource Resources::Bitmap IconSeatHeater0Large
 {
@@ -482,7 +482,7 @@ resource Resources::Bitmap IconSeatHeater0Large
   attr bitmapmode Mode = Default;
 }
 
-$rect <242,619,442,659>
+$rect <242,700,442,740>
 $output false
 resource Resources::Bitmap IconSeatHeater1Small
 {
@@ -494,7 +494,7 @@ resource Resources::Bitmap IconSeatHeater1Small
   attr bitmapmode Mode = Default;
 }
 
-$rect <242,659,442,699>
+$rect <242,740,442,780>
 $output false
 resource Resources::Bitmap IconSeatHeater1Large
 {
@@ -506,7 +506,7 @@ resource Resources::Bitmap IconSeatHeater1Large
   attr bitmapmode Mode = Default;
 }
 
-$rect <455,619,655,659>
+$rect <455,700,655,740>
 $output false
 resource Resources::Bitmap IconSeatHeater2Small
 {
@@ -518,7 +518,7 @@ resource Resources::Bitmap IconSeatHeater2Small
   attr bitmapmode Mode = Default;
 }
 
-$rect <455,659,655,699>
+$rect <455,740,655,780>
 $output false
 resource Resources::Bitmap IconSeatHeater2Large
 {
@@ -530,7 +530,7 @@ resource Resources::Bitmap IconSeatHeater2Large
   attr bitmapmode Mode = Default;
 }
 
-$rect <667,619,867,659>
+$rect <667,700,867,740>
 $output false
 resource Resources::Bitmap IconSeatHeater3Small
 {
@@ -542,7 +542,7 @@ resource Resources::Bitmap IconSeatHeater3Small
   attr bitmapmode Mode = Default;
 }
 
-$rect <667,659,867,699>
+$rect <667,740,867,780>
 $output false
 resource Resources::Bitmap IconSeatHeater3Large
 {
@@ -554,7 +554,7 @@ resource Resources::Bitmap IconSeatHeater3Large
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,719,230,759>
+$rect <30,800,230,840>
 $output false
 resource Resources::Bitmap IconGripWarmer0Small
 {
@@ -566,7 +566,7 @@ resource Resources::Bitmap IconGripWarmer0Small
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,759,230,799>
+$rect <30,840,230,880>
 $output false
 resource Resources::Bitmap IconGripWarmer0Large
 {
@@ -578,7 +578,7 @@ resource Resources::Bitmap IconGripWarmer0Large
   attr bitmapmode Mode = Default;
 }
 
-$rect <242,719,442,759>
+$rect <242,800,442,840>
 $output false
 resource Resources::Bitmap IconGripWarmer1Small
 {
@@ -590,7 +590,7 @@ resource Resources::Bitmap IconGripWarmer1Small
   attr bitmapmode Mode = Default;
 }
 
-$rect <242,759,442,799>
+$rect <242,840,442,880>
 $output false
 resource Resources::Bitmap IconGripWarmer1Large
 {
@@ -602,7 +602,7 @@ resource Resources::Bitmap IconGripWarmer1Large
   attr bitmapmode Mode = Default;
 }
 
-$rect <455,719,655,759>
+$rect <455,800,655,840>
 $output false
 resource Resources::Bitmap IconGripWarmer2Small
 {
@@ -614,7 +614,7 @@ resource Resources::Bitmap IconGripWarmer2Small
   attr bitmapmode Mode = Default;
 }
 
-$rect <455,759,655,799>
+$rect <455,840,655,880>
 $output false
 resource Resources::Bitmap IconGripWarmer2Large
 {
@@ -626,7 +626,7 @@ resource Resources::Bitmap IconGripWarmer2Large
   attr bitmapmode Mode = Default;
 }
 
-$rect <667,719,867,759>
+$rect <667,800,867,840>
 $output false
 resource Resources::Bitmap IconGripWarmer3Small
 {
@@ -638,7 +638,7 @@ resource Resources::Bitmap IconGripWarmer3Small
   attr bitmapmode Mode = Default;
 }
 
-$rect <667,759,867,799>
+$rect <667,840,867,880>
 $output false
 resource Resources::Bitmap IconGripWarmer3Large
 {
@@ -665,10 +665,10 @@ resource Resources::Bitmap StatusBarShadow
 // Status Bar
 note group Note8
 {
-  attr Bounds = <10,10,1100,160>;
+  attr Bounds = <10,10,1100,210>;
 }
 
-$rect <880,619,1080,659>
+$rect <880,700,1080,740>
 $output false
 resource Resources::Bitmap IconWindScreenSmall
 {
@@ -680,7 +680,7 @@ resource Resources::Bitmap IconWindScreenSmall
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,660,1080,700>
+$rect <880,741,1080,781>
 $output false
 resource Resources::Bitmap IconWindScreenLarge
 {
@@ -692,7 +692,7 @@ resource Resources::Bitmap IconWindScreenLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,719,1080,759>
+$rect <880,800,1080,840>
 $output false
 resource Resources::Bitmap LCHighlight
 {
@@ -704,7 +704,7 @@ resource Resources::Bitmap LCHighlight
   attr bitmapmode Mode = Default;
 }
 
-$rect <330,309,530,349>
+$rect <330,390,530,430>
 $output false
 resource Resources::Bitmap PageUpDown
 {
@@ -785,10 +785,10 @@ resource Resources::Bitmap SeekBar
 // Disclaimer
 note group Note10
 {
-  attr Bounds = <770,179,1100,359>;
+  attr Bounds = <770,260,1100,440>;
 }
 
-$rect <20,229,220,269>
+$rect <20,310,220,350>
 $output false
 resource Resources::Bitmap IconDDActive
 {
@@ -800,7 +800,7 @@ resource Resources::Bitmap IconDDActive
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,939,230,979>
+$rect <30,1020,230,1060>
 $output false
 resource Resources::Bitmap IconTempDegF
 {
@@ -812,7 +812,7 @@ resource Resources::Bitmap IconTempDegF
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,989,230,1029>
+$rect <30,1070,230,1110>
 $output false
 resource Resources::Bitmap IconTempDegC
 {
@@ -824,7 +824,7 @@ resource Resources::Bitmap IconTempDegC
   attr bitmapmode Mode = Default;
 }
 
-$rect <240,889,440,929>
+$rect <240,970,440,1010>
 $output false
 resource Resources::Bitmap WeatherLine
 {
@@ -836,7 +836,7 @@ resource Resources::Bitmap WeatherLine
   attr bitmapmode Mode = Default;
 }
 
-$rect <240,939,460,979>
+$rect <240,1020,460,1060>
 $output false
 resource Resources::Bitmap IconWeatherPercentage
 {
@@ -849,10 +849,10 @@ resource Resources::Bitmap IconWeatherPercentage
 // Brightness Settings
 note group Note12
 {
-  attr Bounds = <10,1069,251,1269>;
+  attr Bounds = <10,1150,251,1350>;
 }
 
-$rect <31,1109,231,1149>
+$rect <31,1190,231,1230>
 $output false
 resource Resources::Bitmap TFTBrightnessBase
 {
@@ -864,7 +864,7 @@ resource Resources::Bitmap TFTBrightnessBase
   attr bitmapmode Mode = Default;
 }
 
-$rect <240,989,440,1029>
+$rect <240,1070,440,1110>
 $output false
 resource Resources::Bitmap IconTempDeg
 {
@@ -874,7 +874,7 @@ resource Resources::Bitmap IconTempDeg
   attr bitmapmode Mode = Default;
 }
 
-$rect <31,1159,231,1199>
+$rect <31,1240,231,1280>
 $output false
 resource Resources::Bitmap MeterBrightnessBase
 {
@@ -886,7 +886,7 @@ resource Resources::Bitmap MeterBrightnessBase
   attr bitmapmode Mode = Default;
 }
 
-$rect <470,889,670,929>
+$rect <470,970,670,1010>
 $output false
 resource Resources::Bitmap CurrentWeatherIcon
 {
@@ -898,7 +898,7 @@ resource Resources::Bitmap CurrentWeatherIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <470,939,670,979>
+$rect <470,1020,670,1060>
 $output false
 resource Resources::Bitmap ForecastWeatherIcon
 {
@@ -909,7 +909,7 @@ resource Resources::Bitmap ForecastWeatherIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <31,1209,231,1249>
+$rect <31,1290,231,1330>
 $output false
 resource Resources::Bitmap BrightnessBar
 {
@@ -921,7 +921,7 @@ resource Resources::Bitmap BrightnessBar
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,889,230,929>
+$rect <30,970,230,1010>
 $output false
 resource Resources::Bitmap IconPerOfRain
 {
@@ -936,10 +936,10 @@ resource Resources::Bitmap IconPerOfRain
 // Weather
 note group Note11
 {
-  attr Bounds = <10,839,690,1049>;
+  attr Bounds = <10,920,690,1130>;
 }
 
-$rect <880,759,1080,799>
+$rect <880,840,1080,880>
 $output false
 resource Resources::Bitmap LauncherBG
 {
@@ -966,10 +966,10 @@ resource Resources::Bitmap StatusBarDivider
 // Opening Animation
 note group Note13
 {
-  attr Bounds = <710,839,960,1049>;
+  attr Bounds = <710,920,960,1130>;
 }
 
-$rect <740,889,940,929>
+$rect <740,970,940,1010>
 $output false
 resource Resources::Bitmap OpeningFadeIn
 {
@@ -981,7 +981,7 @@ resource Resources::Bitmap OpeningFadeIn
   attr bitmapmode Mode = Default;
 }
 
-$rect <740,939,940,979>
+$rect <740,1020,940,1060>
 $output false
 resource Resources::Bitmap OpeningFadeOut
 {
@@ -1377,7 +1377,7 @@ resource Resources::Bitmap StatusBarBtIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <280,1109,480,1149>
+$rect <280,1190,480,1230>
 $output false
 resource Resources::Bitmap Chessboard
 {
@@ -1392,7 +1392,7 @@ resource Resources::Bitmap Chessboard
 // Development
 note group Note14
 {
-  attr Bounds = <260,1069,500,1170>;
+  attr Bounds = <260,1150,500,1251>;
 }
 
 $rect <30,1540,280,1580>
@@ -2384,7 +2384,7 @@ resource Resources::Bitmap ScaleIndicatorBg
   attr bitmapmode Mode = Default;
 }
 
-$rect <280,1220,480,1260>
+$rect <280,1301,480,1341>
 $output false
 resource Resources::Bitmap NotificationCategory
 {
@@ -2411,16 +2411,16 @@ resource Resources::Bitmap ScaleIndicatorBar
 // Notification
 note group NotificationNote
 {
-  attr Bounds = <260,1180,500,1270>;
+  attr Bounds = <260,1261,500,1351>;
 }
 
 // Phone
 note group Note18
 {
-  attr Bounds = <510,1070,960,1320>;
+  attr Bounds = <510,1151,960,1401>;
 }
 
-$rect <532,1110,732,1150>
+$rect <532,1191,732,1231>
 $output false
 resource Resources::Bitmap PhoneAnswerDecline
 {
@@ -2432,7 +2432,7 @@ resource Resources::Bitmap PhoneAnswerDecline
   attr bitmapmode Mode = Default;
 }
 
-$rect <742,1110,942,1150>
+$rect <742,1191,942,1231>
 $output false
 resource Resources::Bitmap PhoneVolumeUp
 {
@@ -2444,7 +2444,7 @@ resource Resources::Bitmap PhoneVolumeUp
   attr bitmapmode Mode = Default;
 }
 
-$rect <742,1160,942,1200>
+$rect <742,1241,942,1281>
 $output false
 resource Resources::Bitmap PhoneVolumeDown
 {
@@ -2456,7 +2456,7 @@ resource Resources::Bitmap PhoneVolumeDown
   attr bitmapmode Mode = Default;
 }
 
-$rect <532,1160,732,1200>
+$rect <532,1241,732,1281>
 $output false
 resource Resources::Bitmap PhoneBG
 {
@@ -2468,7 +2468,7 @@ resource Resources::Bitmap PhoneBG
   attr bitmapmode Mode = Default;
 }
 
-$rect <742,1210,942,1250>
+$rect <742,1291,942,1331>
 $output false
 resource Resources::Bitmap PhoneButtonBG
 {
@@ -2480,7 +2480,7 @@ resource Resources::Bitmap PhoneButtonBG
   attr bitmapmode Mode = Default;
 }
 
-$rect <532,1210,732,1250>
+$rect <532,1291,732,1331>
 $output false
 resource Resources::Bitmap IncomingCallIcon
 {
@@ -2492,7 +2492,7 @@ resource Resources::Bitmap IncomingCallIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <532,1260,732,1300>
+$rect <532,1341,732,1381>
 $output false
 resource Resources::Bitmap ActiveCallIcon
 {
@@ -2528,7 +2528,7 @@ resource Resources::Bitmap PhoneIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <740,1260,940,1300>
+$rect <740,1341,940,1381>
 $output false
 resource Resources::Bitmap PhoneVol
 {
@@ -2595,6 +2595,30 @@ resource Resources::Bitmap ControlDownButtonArrow
   attr bitmapfile FileName = .\Res\SHandGW\controlicon_arrow_down.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize = <94,75>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,160,230,200>
+$output false
+resource Resources::Bitmap GripWarmerIcon
+{
+  attr bitmapfile FileName = .\Res\status_bar\icon_grip_warmer.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <32,32>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <240,160,440,200>
+$output false
+resource Resources::Bitmap SeatHeaterIcon
+{
+  attr bitmapfile FileName = .\Res\status_bar\icon_seat_heater.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <32,32>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;

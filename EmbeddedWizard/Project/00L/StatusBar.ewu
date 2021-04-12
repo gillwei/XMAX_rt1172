@@ -311,10 +311,10 @@ class Main : Core::Group
   // Vehicle supported function
   note group Note2
   {
-    attr Bounds = <900,50,1230,260>;
+    attr Bounds = <920,50,1250,310>;
   }
 
-  $rect <930,100,1210,140>
+  $rect <950,100,1230,140>
   object Core::SystemEventHandler VehicleDataReceivedEventHandler
   {
     preset OnEvent = OnVehicleDataReceivedSlot;
@@ -323,7 +323,7 @@ class Main : Core::Group
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <930,150,1210,190>
+  $rect <950,150,1230,190>
   slot OnVehicleDataReceivedSlot
   {
     var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
@@ -332,6 +332,16 @@ class Main : Core::Group
       switch( VehicleData.RxType )
       {
         case Enum::VehicleRxType.SUPPORT_FUNC_CLOCK: Clock.Visible = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.CLOCK );
+        case Enum::VehicleRxType.SUPPORT_FUNC_GRIP_WARMER,
+             Enum::VehicleRxType.GRIP_WARMER_STATUS:
+        {
+          UpdateGripWarmerIcon();
+        }
+        case Enum::VehicleRxType.SUPPORT_FUNC_SEAT_HEATER,
+             Enum::VehicleRxType.SEAT_HEATER_STATUS:
+        {
+          UpdateSeatHeaterIcon();
+        }
         default:;
       }
     }
@@ -407,6 +417,62 @@ class Main : Core::Group
     preset Bounds = <162,3,194,35>;
     preset Bitmap = Resource::MessageIcon;
     preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image GripWarmerIcon
+  {
+    preset Bounds = <327,3,359,35>;
+    preset Bitmap = Resource::GripWarmerIcon;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image SeatHeaterIcon
+  {
+    preset Bounds = <360,3,392,35>;
+    preset Bitmap = Resource::SeatHeaterIcon;
+    preset Visible = false;
+  }
+
+  $rect <950,200,1160,240>
+  method void UpdateGripWarmerIcon()
+  {
+    if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.GRIP_WARMER ) )
+    {
+      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.GRIP_WARMER_STATUS );
+      if( null != VehicleData &&
+          SeatHeater_GripWarmer::LOWEST_STATUS <= VehicleData.DataUInt32 &&
+          SeatHeater_GripWarmer::HIGHEST_STATUS >= VehicleData.DataUInt32 )
+      {
+        GripWarmerIcon.FrameNumber = (int32)VehicleData.DataUInt32;
+        GripWarmerIcon.Visible = true;
+      }
+    }
+    else
+    {
+      GripWarmerIcon.Visible = false;
+    }
+  }
+
+  $rect <950,250,1160,290>
+  method void UpdateSeatHeaterIcon()
+  {
+    if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.SEAT_HEATER ) )
+    {
+      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.SEAT_HEATER_STATUS );
+      if( null != VehicleData &&
+          SeatHeater_GripWarmer::LOWEST_STATUS <= VehicleData.DataUInt32 &&
+          SeatHeater_GripWarmer::HIGHEST_STATUS >= VehicleData.DataUInt32 )
+      {
+        SeatHeaterIcon.FrameNumber = (int32)VehicleData.DataUInt32;
+        SeatHeaterIcon.Visible = true;
+      }
+    }
+    else
+    {
+      SeatHeaterIcon.Visible = false;
+    }
   }
 }
 

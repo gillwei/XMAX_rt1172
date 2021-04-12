@@ -809,4 +809,16 @@ EW_RES_WITHOUT_VARIANTS( ResourceControlUpButtonArrow )
 /* Table with links to derived variants of the bitmap resource : 'Resource::ControlDownButtonArrow' */
 EW_RES_WITHOUT_VARIANTS( ResourceControlDownButtonArrow )
 
+/* Include a file containing the bitmap resource : 'Resource::GripWarmerIcon' */
+#include "_ResourceGripWarmerIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::GripWarmerIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceGripWarmerIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::SeatHeaterIcon' */
+#include "_ResourceSeatHeaterIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SeatHeaterIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceSeatHeaterIcon )
+
 /* Embedded Wizard */

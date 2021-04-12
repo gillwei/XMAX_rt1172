@@ -68,12 +68,14 @@ static const XRect _Const0007 = {{ 96, 3 }, { 128, 35 }};
 static const XRect _Const0008 = {{ 195, 3 }, { 227, 35 }};
 static const XRect _Const0009 = {{ 129, 3 }, { 161, 35 }};
 static const XRect _Const000A = {{ 162, 3 }, { 194, 35 }};
-static const XRect _Const000B = {{ 0, 0 }, { 82, 38 }};
-static const XRect _Const000C = {{ 1, 0 }, { 38, 37 }};
-static const XColor _Const000D = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const000E = {{ 48, 0 }, { 82, 37 }};
-static const XRect _Const000F = {{ 37, 0 }, { 48, 37 }};
-static const XStringRes _Const0010 = { _StringsDefault0, 0x0002 };
+static const XRect _Const000B = {{ 327, 3 }, { 359, 35 }};
+static const XRect _Const000C = {{ 360, 3 }, { 392, 35 }};
+static const XRect _Const000D = {{ 0, 0 }, { 82, 38 }};
+static const XRect _Const000E = {{ 1, 0 }, { 38, 37 }};
+static const XColor _Const000F = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const0010 = {{ 48, 0 }, { 82, 37 }};
+static const XRect _Const0011 = {{ 37, 0 }, { 48, 37 }};
+static const XStringRes _Const0012 = { _StringsDefault0, 0x0002 };
 
 /* User defined inline code: 'StatusBar::Inline' */
 #include "BC_motocon_pub.h"
@@ -105,6 +107,8 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->NotificationListUpdatedSystemEventHandler, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->MessageIcon, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->GripWarmerIcon, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->SeatHeaterIcon, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( StatusBarMain );
@@ -132,6 +136,10 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetVisible( &_this->PhoneIcon, 0 );
   CoreRectView__OnSetBounds( &_this->MessageIcon, _Const000A );
   ViewsImage_OnSetVisible( &_this->MessageIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->GripWarmerIcon, _Const000B );
+  ViewsImage_OnSetVisible( &_this->GripWarmerIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->SeatHeaterIcon, _Const000C );
+  ViewsImage_OnSetVisible( &_this->SeatHeaterIcon, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Clock ), 0 );
@@ -142,6 +150,8 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   CoreGroup__Add( _this, ((CoreView)&_this->SignalLevelIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PhoneIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->MessageIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->GripWarmerIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->SeatHeaterIcon ), 0 );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
   _this->MotoConEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnMotoConEventReceived );
@@ -177,6 +187,10 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   &EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )->NotificationListUpdatedSystemEvent );
   ViewsImage_OnSetBitmap( &_this->MessageIcon, EwLoadResource( &ResourceMessageIcon, 
   ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->GripWarmerIcon, EwLoadResource( &ResourceGripWarmerIcon, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->SeatHeaterIcon, EwLoadResource( &ResourceSeatHeaterIcon, 
+  ResourcesBitmap ));
 }
 
 /* Re-Initializer for the class 'StatusBar::Main' */
@@ -202,6 +216,8 @@ void StatusBarMain__ReInit( StatusBarMain _this )
   CoreSystemEventHandler__ReInit( &_this->PhoneCallStateChangedEventHandler );
   CoreSystemEventHandler__ReInit( &_this->NotificationListUpdatedSystemEventHandler );
   ViewsImage__ReInit( &_this->MessageIcon );
+  ViewsImage__ReInit( &_this->GripWarmerIcon );
+  ViewsImage__ReInit( &_this->SeatHeaterIcon );
 }
 
 /* Finalizer method for the class 'StatusBar::Main' */
@@ -227,6 +243,8 @@ void StatusBarMain__Done( StatusBarMain _this )
   CoreSystemEventHandler__Done( &_this->PhoneCallStateChangedEventHandler );
   CoreSystemEventHandler__Done( &_this->NotificationListUpdatedSystemEventHandler );
   ViewsImage__Done( &_this->MessageIcon );
+  ViewsImage__Done( &_this->GripWarmerIcon );
+  ViewsImage__Done( &_this->SeatHeaterIcon );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
@@ -466,6 +484,20 @@ void StatusBarMain_OnVehicleDataReceivedSlot( StatusBarMain _this, XObject sende
         EnumVehicleSupportedFunctionCLOCK ));
       break;
 
+      case EnumVehicleRxTypeSUPPORT_FUNC_GRIP_WARMER :
+      case EnumVehicleRxTypeGRIP_WARMER_STATUS :
+      {
+        StatusBarMain_UpdateGripWarmerIcon( _this );
+      }
+      break;
+
+      case EnumVehicleRxTypeSUPPORT_FUNC_SEAT_HEATER :
+      case EnumVehicleRxTypeSEAT_HEATER_STATUS :
+      {
+        StatusBarMain_UpdateSeatHeaterIcon( _this );
+      }
+      break;
+
       default : 
         ;
     }
@@ -517,6 +549,50 @@ void StatusBarMain_OnNotificationListUpdatedSlot( StatusBarMain _this, XObject s
   }
 
   EwSignal( EwNewSlot( _this, StatusBarMain_OnUpdatePhoneIconSlot ), ((XObject)_this ));
+}
+
+/* 'C' function for method : 'StatusBar::Main.UpdateGripWarmerIcon()' */
+void StatusBarMain_UpdateGripWarmerIcon( StatusBarMain _this )
+{
+  if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleSupportedFunctionGRIP_WARMER ))
+  {
+    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      EnumVehicleRxTypeGRIP_WARMER_STATUS );
+
+    if ((( VehicleData != 0 ) && ( 0 <= VehicleData->DataUInt32 )) && ( 3 >= VehicleData->DataUInt32 ))
+    {
+      ViewsImage_OnSetFrameNumber( &_this->GripWarmerIcon, (XInt32)VehicleData->DataUInt32 );
+      ViewsImage_OnSetVisible( &_this->GripWarmerIcon, 1 );
+    }
+  }
+  else
+  {
+    ViewsImage_OnSetVisible( &_this->GripWarmerIcon, 0 );
+  }
+}
+
+/* 'C' function for method : 'StatusBar::Main.UpdateSeatHeaterIcon()' */
+void StatusBarMain_UpdateSeatHeaterIcon( StatusBarMain _this )
+{
+  if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleSupportedFunctionSEAT_HEATER ))
+  {
+    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      EnumVehicleRxTypeSEAT_HEATER_STATUS );
+
+    if ((( VehicleData != 0 ) && ( 0 <= VehicleData->DataUInt32 )) && ( 3 >= VehicleData->DataUInt32 ))
+    {
+      ViewsImage_OnSetFrameNumber( &_this->SeatHeaterIcon, (XInt32)VehicleData->DataUInt32 );
+      ViewsImage_OnSetVisible( &_this->SeatHeaterIcon, 1 );
+    }
+  }
+  else
+  {
+    ViewsImage_OnSetVisible( &_this->SeatHeaterIcon, 0 );
+  }
 }
 
 /* Variants derived from the class : 'StatusBar::Main' */
@@ -578,24 +654,24 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
   _this->_VMT = EW_CLASS( StatusBarClock );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const000B );
-  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const000C );
+  CoreRectView__OnSetBounds( _this, _Const000D );
+  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const000E );
   ViewsText_OnSetAlignment( &_this->ClockHourText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockHourText, 0 );
-  ViewsText_OnSetColor( &_this->ClockHourText, _Const000D );
+  ViewsText_OnSetColor( &_this->ClockHourText, _Const000F );
   ViewsText_OnSetVisible( &_this->ClockHourText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const000E );
+  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const0010 );
   ViewsText_OnSetAlignment( &_this->ClockMinuteText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockMinuteText, 0 );
-  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const000D );
+  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const000F );
   ViewsText_OnSetVisible( &_this->ClockMinuteText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const000F );
+  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const0011 );
   ViewsText_OnSetAlignment( &_this->ClockColonText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const0010 ));
-  ViewsText_OnSetColor( &_this->ClockColonText, _Const000D );
+  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const0012 ));
+  ViewsText_OnSetColor( &_this->ClockColonText, _Const000F );
   ViewsText_OnSetVisible( &_this->ClockColonText, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockHourText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockMinuteText ), 0 );
