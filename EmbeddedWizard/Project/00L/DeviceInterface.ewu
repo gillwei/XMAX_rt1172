@@ -26,7 +26,7 @@ class SystemDeviceClass : Templates::DeviceClass
   // Interface to get system info
   note group Note1
   {
-    attr Bounds = <10,10,960,280>;
+    attr Bounds = <10,10,1160,280>;
   }
 
   $rect <250,70,450,110>
@@ -519,6 +519,130 @@ class SystemDeviceClass : Templates::DeviceClass
         VI_send_inspection_response( aMode, aRes );
       }
     $endif
+  }
+
+  // Get current home type from UI
+  $rect <941,70,1140,110>
+  $output true
+  method void NotifyLastPageRead()
+  {
+    $if !$prototyper
+      var Enum::HomeGroup HomeGroup;
+      var Enum::MeterDisplay MeterDisplaySetting;
+      var Enum::NavigationView NavigationViewSetting;
+      native( HomeGroup, MeterDisplaySetting, NavigationViewSetting )
+      {
+        HomeGroup = ew_get_last_home_group();
+        MeterDisplaySetting = ew_get_meter_display_setting();
+        NavigationViewSetting = ew_get_navigation_view_setting();
+      }
+
+      DeviceInterface::VehicleDevice.CurrentMeterDisplay = MeterDisplaySetting;
+      switch( NavigationViewSetting )
+      {
+        case Enum::NavigationView.DEFAULT_VIEW: DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+        case Enum::NavigationView.TURN_BY_TURN: DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_TURN_BY_TURN;
+        case Enum::NavigationView.NEXT_TURN: DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_NEXT_TURN;
+        default: DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+      }
+
+      switch( HomeGroup )
+      {
+        case Enum::HomeGroup.METER:
+        {
+          switch( MeterDisplaySetting )
+          {
+            case Enum::MeterDisplay.TACHOMETER: pure HomeType = Enum::HomeType.TACHO_VISUALIZER;
+            case Enum::MeterDisplay.ECHO_METER: pure HomeType = Enum::HomeType.ECO_VISUALIZER;
+            case Enum::MeterDisplay.SPEED_METER: pure HomeType = Enum::HomeType.SPEED_VISUALIZER;
+            default: pure HomeType = Enum::HomeType.TACHO_VISUALIZER;
+          }
+        }
+        case Enum::HomeGroup.NAVIGATION: pure HomeType = DeviceInterface::NavigationDevice.CurrentHome;
+        case Enum::HomeGroup.VEHICLE_INFO: pure HomeType = Enum::HomeType.VEHICLE_INFO;
+        default:;
+      }
+    $endif
+  }
+
+  // Get current home type from UI
+  $rect <941,120,1140,160>
+  $output true
+  method void UpdateLastPage()
+  {
+    var Enum::HomeGroup HomeGroup;
+    switch( DeviceInterface::SystemDevice.HomeType )
+    {
+      case Enum::HomeType.TACHO_VISUALIZER,
+           Enum::HomeType.ECO_VISUALIZER,
+           Enum::HomeType.SPEED_VISUALIZER: HomeGroup = Enum::HomeGroup.METER;
+      case Enum::HomeType.NAVI_DEFAULT_VIEW,
+           Enum::HomeType.NAVI_TURN_BY_TURN,
+           Enum::HomeType.NAVI_NEXT_TURN: HomeGroup = Enum::HomeGroup.NAVIGATION;
+      case Enum::HomeType.VEHICLE_INFO: HomeGroup = Enum::HomeGroup.VEHICLE_INFO;
+      default: HomeGroup = Enum::HomeGroup.METER;
+    }
+
+    var Enum::NavigationView NavigationViewSetting;
+    switch( DeviceInterface::NavigationDevice.CurrentHome )
+    {
+      case Enum::HomeType.NAVI_DEFAULT_VIEW: NavigationViewSetting = Enum::NavigationView.DEFAULT_VIEW;
+      case Enum::HomeType.NAVI_TURN_BY_TURN: NavigationViewSetting = Enum::NavigationView.TURN_BY_TURN;
+      case Enum::HomeType.NAVI_NEXT_TURN: NavigationViewSetting = Enum::NavigationView.NEXT_TURN;
+      default: NavigationViewSetting = Enum::NavigationView.DEFAULT_VIEW;
+    }
+
+    var Enum::MeterDisplay MeterDisplaySetting = DeviceInterface::VehicleDevice.CurrentMeterDisplay;
+
+    $if !$prototyper
+      native( HomeGroup, NavigationViewSetting, MeterDisplaySetting )
+      {
+        ew_set_last_page( HomeGroup, MeterDisplaySetting, NavigationViewSetting );
+      }
+    $endif
+  }
+
+  $rect <940,170,1140,210>
+  property Enum::HomeType HomeType;
+
+  $rect <940,220,1140,260>
+  onset HomeType
+  {
+    if( pure HomeType != value )
+    {
+      pure HomeType = value;
+
+      var Enum::HomeGroup HomeGroup;
+      switch( value )
+      {
+        case Enum::HomeType.TACHO_VISUALIZER,
+             Enum::HomeType.ECO_VISUALIZER,
+             Enum::HomeType.SPEED_VISUALIZER: HomeGroup = Enum::HomeGroup.METER;
+        case Enum::HomeType.NAVI_DEFAULT_VIEW,
+             Enum::HomeType.NAVI_TURN_BY_TURN,
+             Enum::HomeType.NAVI_NEXT_TURN: HomeGroup = Enum::HomeGroup.NAVIGATION;
+        case Enum::HomeType.VEHICLE_INFO: HomeGroup = Enum::HomeGroup.VEHICLE_INFO;
+        default: HomeGroup = Enum::HomeGroup.METER;
+      }
+
+      var Enum::NavigationView NavigationViewSetting;
+      switch( DeviceInterface::NavigationDevice.CurrentHome )
+      {
+        case Enum::HomeType.NAVI_DEFAULT_VIEW: NavigationViewSetting = Enum::NavigationView.DEFAULT_VIEW;
+        case Enum::HomeType.NAVI_TURN_BY_TURN: NavigationViewSetting = Enum::NavigationView.TURN_BY_TURN;
+        case Enum::HomeType.NAVI_NEXT_TURN: NavigationViewSetting = Enum::NavigationView.NEXT_TURN;
+        default: NavigationViewSetting = Enum::NavigationView.DEFAULT_VIEW;
+      }
+
+      var Enum::MeterDisplay MeterDisplaySetting = DeviceInterface::VehicleDevice.CurrentMeterDisplay;
+
+      $if !$prototyper
+        native( HomeGroup, NavigationViewSetting, MeterDisplaySetting )
+        {
+          ew_set_last_page( HomeGroup, MeterDisplaySetting, NavigationViewSetting );
+        }
+      $endif
+    }
   }
 }
 

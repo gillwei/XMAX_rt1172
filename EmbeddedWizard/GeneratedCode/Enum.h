@@ -488,6 +488,23 @@ typedef enum
   EnumInspectionModeEND                 = 3
 } EnumInspectionMode;
 
+/* User defined enumeration: 'Enum::HomeGroup' */
+typedef enum
+{
+  EnumHomeGroupNONE                     = 0,
+  EnumHomeGroupMETER                    = 1,
+  EnumHomeGroupNAVIGATION               = 2,
+  EnumHomeGroupVEHICLE_INFO             = 3
+} EnumHomeGroup;
+
+/* User defined enumeration: 'Enum::NavigationView' */
+typedef enum
+{
+  EnumNavigationViewDEFAULT_VIEW        = 0,
+  EnumNavigationViewTURN_BY_TURN        = 1,
+  EnumNavigationViewNEXT_TURN           = 2
+} EnumNavigationView;
+
 #ifdef __cplusplus
   }
 #endif

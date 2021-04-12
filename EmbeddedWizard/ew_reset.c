@@ -162,8 +162,8 @@ void ew_reset_to_factory_default
     )
 {
 factory_reset_status = 0;
-uint8_t last_page = ( DEFAULT_METER_INDEX << LAST_PAGE_METER_SHIFT ) |
-                    ( DEFAULT_HOME_INDEX  << LAST_PAGE_HOME_SHIFT );
+uint8_t last_page = ( DEFAULT_METER_INDEX ) |
+                    ( DEFAULT_HOME_INDEX << LAST_PAGE_HOME_GROUP_SHIFT );
 if( pdFALSE == EEPM_set_last_page( last_page, &EW_eeprom_set_last_page_callback ) )
     {
     EwPrint( "reset page false\r\n" );

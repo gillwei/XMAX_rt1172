@@ -570,6 +570,202 @@ void DeviceInterfaceSystemDeviceClass_SendInspectionResponse( DeviceInterfaceSys
   VI_send_inspection_response( aMode, aRes );
 }
 
+/* Get current home type from UI */
+void DeviceInterfaceSystemDeviceClass_NotifyLastPageRead( DeviceInterfaceSystemDeviceClass _this )
+{
+  XEnum HomeGroup = EnumHomeGroupNONE;
+  XEnum MeterDisplaySetting = EnumMeterDisplayTACHOMETER;
+  XEnum NavigationViewSetting = EnumNavigationViewDEFAULT_VIEW;
+
+  {
+    HomeGroup = ew_get_last_home_group();
+    MeterDisplaySetting = ew_get_meter_display_setting();
+    NavigationViewSetting = ew_get_navigation_view_setting();
+  }
+  EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay 
+  = MeterDisplaySetting;
+
+  switch ( NavigationViewSetting )
+  {
+    case EnumNavigationViewDEFAULT_VIEW :
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+      = EnumHomeTypeNAVI_DEFAULT_VIEW;
+    break;
+
+    case EnumNavigationViewTURN_BY_TURN :
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+      = EnumHomeTypeNAVI_TURN_BY_TURN;
+    break;
+
+    case EnumNavigationViewNEXT_TURN :
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+      = EnumHomeTypeNAVI_NEXT_TURN;
+    break;
+
+    default : 
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+      = EnumHomeTypeNAVI_DEFAULT_VIEW;
+  }
+
+  switch ( HomeGroup )
+  {
+    case EnumHomeGroupMETER :
+    {
+      switch ( MeterDisplaySetting )
+      {
+        case EnumMeterDisplayTACHOMETER :
+          _this->HomeType = EnumHomeTypeTACHO_VISUALIZER;
+        break;
+
+        case EnumMeterDisplayECHO_METER :
+          _this->HomeType = EnumHomeTypeECO_VISUALIZER;
+        break;
+
+        case EnumMeterDisplaySPEED_METER :
+          _this->HomeType = EnumHomeTypeSPEED_VISUALIZER;
+        break;
+
+        default : 
+          _this->HomeType = EnumHomeTypeTACHO_VISUALIZER;
+      }
+    }
+    break;
+
+    case EnumHomeGroupNAVIGATION :
+      _this->HomeType = EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome;
+    break;
+
+    case EnumHomeGroupVEHICLE_INFO :
+      _this->HomeType = EnumHomeTypeVEHICLE_INFO;
+    break;
+
+    default : 
+      ;
+  }
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyLastPageRead()' */
+void DeviceInterfaceSystemDeviceClass__NotifyLastPageRead( void* _this )
+{
+  DeviceInterfaceSystemDeviceClass_NotifyLastPageRead((DeviceInterfaceSystemDeviceClass)_this );
+}
+
+/* Get current home type from UI */
+void DeviceInterfaceSystemDeviceClass_UpdateLastPage( DeviceInterfaceSystemDeviceClass _this )
+{
+  XEnum HomeGroup;
+  XEnum NavigationViewSetting;
+  XEnum MeterDisplaySetting;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  switch ( EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->HomeType )
+  {
+    case EnumHomeTypeTACHO_VISUALIZER :
+    case EnumHomeTypeECO_VISUALIZER :
+    case EnumHomeTypeSPEED_VISUALIZER :
+      HomeGroup = EnumHomeGroupMETER;
+    break;
+
+    case EnumHomeTypeNAVI_DEFAULT_VIEW :
+    case EnumHomeTypeNAVI_TURN_BY_TURN :
+    case EnumHomeTypeNAVI_NEXT_TURN :
+      HomeGroup = EnumHomeGroupNAVIGATION;
+    break;
+
+    case EnumHomeTypeVEHICLE_INFO :
+      HomeGroup = EnumHomeGroupVEHICLE_INFO;
+    break;
+
+    default : 
+      HomeGroup = EnumHomeGroupMETER;
+  }
+
+  switch ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome )
+  {
+    case EnumHomeTypeNAVI_DEFAULT_VIEW :
+      NavigationViewSetting = EnumNavigationViewDEFAULT_VIEW;
+    break;
+
+    case EnumHomeTypeNAVI_TURN_BY_TURN :
+      NavigationViewSetting = EnumNavigationViewTURN_BY_TURN;
+    break;
+
+    case EnumHomeTypeNAVI_NEXT_TURN :
+      NavigationViewSetting = EnumNavigationViewNEXT_TURN;
+    break;
+
+    default : 
+      NavigationViewSetting = EnumNavigationViewDEFAULT_VIEW;
+  }
+
+  MeterDisplaySetting = EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay;
+  ew_set_last_page( HomeGroup, MeterDisplaySetting, NavigationViewSetting );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.UpdateLastPage()' */
+void DeviceInterfaceSystemDeviceClass__UpdateLastPage( void* _this )
+{
+  DeviceInterfaceSystemDeviceClass_UpdateLastPage((DeviceInterfaceSystemDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetHomeType()' */
+void DeviceInterfaceSystemDeviceClass_OnSetHomeType( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum value )
+{
+  if ( _this->HomeType != value )
+  {
+    XEnum HomeGroup;
+    XEnum NavigationViewSetting;
+    XEnum MeterDisplaySetting;
+    _this->HomeType = value;
+
+    switch ( value )
+    {
+      case EnumHomeTypeTACHO_VISUALIZER :
+      case EnumHomeTypeECO_VISUALIZER :
+      case EnumHomeTypeSPEED_VISUALIZER :
+        HomeGroup = EnumHomeGroupMETER;
+      break;
+
+      case EnumHomeTypeNAVI_DEFAULT_VIEW :
+      case EnumHomeTypeNAVI_TURN_BY_TURN :
+      case EnumHomeTypeNAVI_NEXT_TURN :
+        HomeGroup = EnumHomeGroupNAVIGATION;
+      break;
+
+      case EnumHomeTypeVEHICLE_INFO :
+        HomeGroup = EnumHomeGroupVEHICLE_INFO;
+      break;
+
+      default : 
+        HomeGroup = EnumHomeGroupMETER;
+    }
+
+    switch ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome )
+    {
+      case EnumHomeTypeNAVI_DEFAULT_VIEW :
+        NavigationViewSetting = EnumNavigationViewDEFAULT_VIEW;
+      break;
+
+      case EnumHomeTypeNAVI_TURN_BY_TURN :
+        NavigationViewSetting = EnumNavigationViewTURN_BY_TURN;
+      break;
+
+      case EnumHomeTypeNAVI_NEXT_TURN :
+        NavigationViewSetting = EnumNavigationViewNEXT_TURN;
+      break;
+
+      default : 
+        NavigationViewSetting = EnumNavigationViewDEFAULT_VIEW;
+    }
+
+    MeterDisplaySetting = EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay;
+    ew_set_last_page( HomeGroup, MeterDisplaySetting, NavigationViewSetting );
+  }
+}
+
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this )
 {

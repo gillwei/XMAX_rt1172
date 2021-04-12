@@ -75,6 +75,10 @@
     static int ew_notify_inspection_mode_request( void );
 #endif
 
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyLastPageRead_
+    static int ew_notify_last_page_read( void );
+#endif
+
 #define UPDATE_TIME_TASK_PRIORITY       ( tskIDLE_PRIORITY )
 #define UPDATE_TIME_TASK_NAME           "time_task"
 #define UPDATE_TIME_TASK_STACK_SIZE     ( configMINIMAL_STACK_SIZE )
@@ -139,11 +143,17 @@ static void ew_get_info_from_eeprom( void );
             ew_qrcode_ready,
         #endif
         #ifdef _DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest_
-            ew_notify_inspection_mode_request
+            ew_notify_inspection_mode_request,
+        #endif
+        #ifdef _DeviceInterfaceSystemDeviceClass__NotifyLastPageRead_
+            ew_notify_last_page_read
         #endif
         };
     const int num_of_system_func = sizeof( system_function_lookup_table )/sizeof( system_device_function* );
 
+    static EnumHomeGroup      home_group;
+    static EnumMeterDisplay   meter_display_setting;
+    static EnumNavigationView navigation_view_setting;
     static int      factory_test_event = 0;
     static int      factory_test_disp_pattern_idx = 0;
     static bool     factory_test_burn_in_result = false;
@@ -167,6 +177,7 @@ static void ew_get_info_from_eeprom( void );
     static bool     is_ccuid_ready;
     static bool     is_qrcode_passkey_ready;
     static bool     is_qrcode_dummy_ready;
+    static bool     is_last_page_read;
 #endif
 
 static uint32_t esn;
@@ -360,6 +371,83 @@ sprintf( version, "%d.%02d", bt_sw_ver[0], bt_sw_ver[1] );
 /*********************************************************************
 *
 * @private
+* ew_set_last_page
+*
+* Set last page
+*
+* @param version The pointer to the char buffer storing software version
+*
+*********************************************************************/
+void ew_set_last_page
+    (
+    const EnumHomeGroup      group,
+    const EnumMeterDisplay   meter_disp_setting,
+    const EnumNavigationView navi_view_setting
+    )
+{
+PRINTF( "%s %d %d %d\r\n", __FUNCTION__, group, meter_disp_setting, navi_view_setting );
+home_group = group;
+meter_display_setting   = meter_disp_setting;
+navigation_view_setting = navi_view_setting;
+}
+
+/*********************************************************************
+*
+* @private
+* ew_get_last_home_group
+*
+* Get last home group
+*
+* @return Last page of uint8_t type
+*
+*********************************************************************/
+EnumHomeGroup ew_get_last_home_group
+    (
+    void
+    )
+{
+return home_group;
+}
+
+/*********************************************************************
+*
+* @private
+* ew_get_meter_display_setting
+*
+* Get meter display setting
+*
+* @return Meter display setting
+*
+*********************************************************************/
+EnumMeterDisplay ew_get_meter_display_setting
+    (
+    void
+    )
+{
+return meter_display_setting;
+}
+
+/*********************************************************************
+*
+* @private
+* ew_get_navigation_view_setting
+*
+* Get navigation view setting
+*
+* @return Navigation view setting
+*
+*********************************************************************/
+EnumNavigationView ew_get_navigation_view_setting
+    (
+    void
+    )
+{
+return navigation_view_setting;
+}
+
+/*********************************************************************
+*
+* @private
 * start_factory_qrcode_generation
 *
 * Start QR code generation for factory mode
@@ -501,6 +589,41 @@ start_factory_qrcode_generation();
 /*********************************************************************
 *
 * @public
+* EW_get_last_page_callback
+*
+* Callback of reading last page from EEPROM
+*
+* @param result True if read success. False if read fail.
+* @param value Pointer to the last page of uint8_t* type
+*
+*********************************************************************/
+void EW_get_last_page_callback
+    (
+    bool  result,
+    void* value
+    )
+{
+if( result )
+    {
+    uint8_t last_page = *(uint8_t*)value;
+    PRINTF( "rd last page 0x%x\r\n", last_page );
+    if( EEPROM_INVALID_VAL_1_BYTE != last_page )
+        {
+        home_group = ( last_page >> LAST_PAGE_HOME_GROUP_SHIFT ) & LAST_PAGE_HOME_GROUP_MASK;
+        navigation_view_setting = ( last_page >> LAST_PAGE_NAVI_SETTING_SHIFT ) & LAST_PAGE_NAVIGATION_SETTING_MASK;
+        meter_display_setting   = last_page & LAST_PAGE_METER_DISP_SETTING_MASK;
+        is_last_page_read = true;
+        }
+    }
+else
+    {
+    PRINTF( "rd last page fail\r\n" );
+    }
+}
+
+/*********************************************************************
+*
+* @public
 * EW_read_operation_mode_callback
 *
 * Callback of reading operation mode from EEPROM
@@ -597,6 +720,10 @@ if( pdFALSE == EEPM_get_qrcode_passkey( &EW_read_passkey_callback ) )
 if( pdFALSE == EEPM_get_qrcode_dummy( &EW_read_qrcode_dummy_callback ) )
     {
     EwPrint( "get dummy fail\r\n" );
+    }
+if( pdFALSE == EEPM_get_last_page( &EW_get_last_page_callback ) )
+    {
+    EwPrint( "get last page err\r\n" );
     }
 #endif
 }
@@ -1113,6 +1240,31 @@ return qrcode_passkey;
         {
         is_inspection_request_received = false;
         DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest( device_object, inspection_mode, inspection_display_pattern );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_last_page_read
+*
+* Notify EW UI the last page has been read from EEPROM
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyLastPageRead_
+    static int ew_notify_last_page_read
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_last_page_read )
+        {
+        is_last_page_read = false;
+        DeviceInterfaceSystemDeviceClass__NotifyLastPageRead( device_object );
         need_update = 1;
         }
     return need_update;

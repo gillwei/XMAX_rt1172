@@ -29,8 +29,12 @@ class Application : Core::Root
   {
     IsDisclaimerDismissed = true;
 
-    //TODO: switch to the last page saved in EEPROM
-    GetRoot().SwitchToDialog( new Home::HOM11_TachoVisualizer, null, null, null, null, null, null, null, null, null, false );
+    //TODO: check if navigation app is connected / destination is set before switching to the navigation group
+    var Core::Group HomeDialog = HomeDialogOfHomeType( DeviceInterface::SystemDevice.HomeType );
+    if( null != HomeDialog )
+    {
+      GetRoot().SwitchToDialog( HomeDialog, null, null, null, null, null, null, null, null, null, false );
+    }
   }
 
   $rect <40,430,270,470>
@@ -44,7 +48,7 @@ class Application : Core::Root
   // For disclaimer
   note group Note
   {
-    attr Bounds = <10,390,300,600>;
+    attr Bounds = <10,390,300,590>;
   }
 
   // Factory Test
@@ -222,6 +226,7 @@ class Application : Core::Root
           }
           // show the home dialog
           SwitchToDialog( HomeDialog, null, null, null, null, null, null, null, null, null, true );
+          DeviceInterface::SystemDevice.HomeType = aHomeType;
         }
       }
     }
@@ -408,6 +413,7 @@ class Application : Core::Root
     var Core::Group HomeDialog = HomeDialogOfHomeType( aHomeType );
     trace "SlideInHome ", classof HomeDialog;
     PresentDialog( HomeDialog, Effect::SlideInTransition, null, null, null, null, null, OnSlideInHomeFinishedSlot, null, false );
+    DeviceInterface::SystemDevice.HomeType = aHomeType;
   }
 
   $rect <1020,490,1260,530>

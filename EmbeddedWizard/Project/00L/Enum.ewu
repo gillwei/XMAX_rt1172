@@ -706,7 +706,7 @@ enum NaviAlertAnimationType
   item Dismiss;
 }
 
-$rect <260,470,460,510>
+$rect <500,470,700,510>
 $output false
 enum MotoConRxEvent
 {
@@ -854,7 +854,7 @@ enum BtcPairingState
   item PASSKEY_GENERATED;
 }
 
-$rect <30,530,230,570>
+$rect <30,520,230,560>
 $output false
 enum ReceptionStatus
 {
@@ -865,7 +865,7 @@ enum ReceptionStatus
   item ERROR;
 }
 
-$rect <260,530,460,570>
+$rect <500,520,700,560>
 $output false
 enum OperationMode
 {
@@ -904,7 +904,7 @@ enum NaviTurnStatusType
   }
 }
 
-$rect <30,590,230,630>
+$rect <30,570,230,610>
 $output false
 enum SeatHeaterGripWarmerLevelType
 {
@@ -1028,4 +1028,35 @@ enum InspectionMode
 
   $rect <10,160,210,200>
   item END;
+}
+
+$rect <260,470,460,510>
+$output false
+enum HomeGroup
+{
+  $rect <10,10,210,50>
+  item NONE;
+
+  $rect <10,60,210,100>
+  item METER;
+
+  $rect <10,110,210,150>
+  item NAVIGATION;
+
+  $rect <10,160,210,200>
+  item VEHICLE_INFO;
+}
+
+$rect <260,520,460,560>
+$output false
+enum NavigationView
+{
+  $rect <10,10,210,50>
+  item DEFAULT_VIEW;
+
+  $rect <10,60,210,100>
+  item TURN_BY_TURN;
+
+  $rect <10,110,210,150>
+  item NEXT_TURN;
 }

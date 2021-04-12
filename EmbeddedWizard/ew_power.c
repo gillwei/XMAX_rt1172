@@ -136,12 +136,13 @@ if( PM_IGN_OFF == ignition_status )
     ew_ignition_status = 1;
 
     // write last page to EEPROM
-    // TODO: get last home index and meter index from UI
-    uint8_t last_page = ( 0 << LAST_PAGE_METER_SHIFT ) |
-                        ( 0 << LAST_PAGE_HOME_SHIFT );
+    uint8_t last_page = ( ( ew_get_last_home_group() & LAST_PAGE_HOME_GROUP_MASK ) << LAST_PAGE_HOME_GROUP_SHIFT ) |
+                        ( ( ew_get_navigation_view_setting() & LAST_PAGE_NAVIGATION_SETTING_MASK ) << LAST_PAGE_NAVI_SETTING_SHIFT ) |
+                        ( ew_get_meter_display_setting() & LAST_PAGE_METER_DISP_SETTING_MASK );
+    EwPrint( "last pg 0x%x\r\n", last_page );
     if( pdFALSE == EEPM_set_last_page( last_page, &EW_power_write_last_page_callback ) )
         {
-        EwPrint( "reset page false\r\n" );
+        EwPrint( "Err: set last page\r\n" );
         }
 
     // wake up EW task from Blocked state

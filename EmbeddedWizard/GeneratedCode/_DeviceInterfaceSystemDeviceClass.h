@@ -73,6 +73,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( BtSoftwareVersion, XString )
   EW_PROPERTY( QrCodeText,      XString )
   EW_PROPERTY( BrightnessLevel, XInt32 )
+  EW_PROPERTY( HomeType,        XEnum )
   EW_PROPERTY( InspectionDisplayPattern, XEnum )
   EW_PROPERTY( InspectionMode,  XEnum )
   EW_PROPERTY( OperationMode,   XEnum )
@@ -252,6 +253,28 @@ void DeviceInterfaceSystemDeviceClass_OnSetInspectionDisplayPattern( DeviceInter
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SendInspectionResponse()' */
 void DeviceInterfaceSystemDeviceClass_SendInspectionResponse( DeviceInterfaceSystemDeviceClass _this, 
   XEnum aMode, XUInt8 aRes );
+
+/* Get current home type from UI */
+void DeviceInterfaceSystemDeviceClass_NotifyLastPageRead( DeviceInterfaceSystemDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyLastPageRead()' */
+void DeviceInterfaceSystemDeviceClass__NotifyLastPageRead( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyLastPageRead(). */
+#define _DeviceInterfaceSystemDeviceClass__NotifyLastPageRead_
+
+/* Get current home type from UI */
+void DeviceInterfaceSystemDeviceClass_UpdateLastPage( DeviceInterfaceSystemDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.UpdateLastPage()' */
+void DeviceInterfaceSystemDeviceClass__UpdateLastPage( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.UpdateLastPage(). */
+#define _DeviceInterfaceSystemDeviceClass__UpdateLastPage_
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetHomeType()' */
+void DeviceInterfaceSystemDeviceClass_OnSetHomeType( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum value );
 
 /* Default onget method for the property 'FactoryResetComplete' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );

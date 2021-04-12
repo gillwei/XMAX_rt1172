@@ -189,13 +189,20 @@ void ApplicationApplication_Init( ApplicationApplication _this, XHandle aArg )
 void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _this, 
   XObject sender )
 {
+  CoreGroup HomeDialog;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
   _this->IsDisclaimerDismissed = 1;
-  CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
-  HomeHOM11_TachoVisualizer, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 
-  0 );
+  HomeDialog = ApplicationApplication_HomeDialogOfHomeType( _this, EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->HomeType );
+
+  if ( HomeDialog != 0 )
+  {
+    CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), HomeDialog, 
+    0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
 }
 
 /* 'C' function for method : 'Application::Application.ShowDisclaimer()' */
@@ -382,6 +389,8 @@ void ApplicationApplication_SwitchToHome( ApplicationApplication _this, XEnum aH
 
         CoreGroup_SwitchToDialog((CoreGroup)_this, HomeDialog, 0, 0, 0, 0, 0, 0, 
         0, EwNullSlot, EwNullSlot, 1 );
+        DeviceInterfaceSystemDeviceClass_OnSetHomeType( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+        DeviceInterfaceSystemDeviceClass ), aHomeType );
       }
     }
   }
@@ -624,6 +633,8 @@ void ApplicationApplication_SlideInHome( ApplicationApplication _this, XEnum aHo
   CoreGroup_PresentDialog((CoreGroup)_this, HomeDialog, ((EffectsTransition)EwGetAutoObject( 
   &EffectSlideInTransition, EffectSlideTransitionNoFade )), 0, 0, 0, 0, 0, EwNewSlot( 
   _this, ApplicationApplication_OnSlideInHomeFinishedSlot ), EwNullSlot, 0 );
+  DeviceInterfaceSystemDeviceClass_OnSetHomeType( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), aHomeType );
 }
 
 /* 'C' function for method : 'Application::Application.OnSlideInHomeFinishedSlot()' */

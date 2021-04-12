@@ -22,11 +22,15 @@ extern "C" {
 #include "BC_motocon_pub_type.h"
 #include "NTF_pub.h"
 
-// save Home index and Meter setting into the last page in EEPROM
-// the first 4 bits are of meter setting
-// the last 4 bits are of Home index
-#define LAST_PAGE_HOME_SHIFT    ( 0 )
-#define LAST_PAGE_METER_SHIFT   ( 4 )
+// the last page in EEPROM inclues
+// home group index (1,2,3): 2 bits
+// navigation setting (0,1,2): 2 bits
+// meter setting (0,1,2,3): 4 bits
+#define LAST_PAGE_HOME_GROUP_SHIFT          ( 6 )
+#define LAST_PAGE_NAVI_SETTING_SHIFT        ( 4 )
+#define LAST_PAGE_HOME_GROUP_MASK           ( 0x3 )
+#define LAST_PAGE_NAVIGATION_SETTING_MASK   ( 0x3 )
+#define LAST_PAGE_METER_DISP_SETTING_MASK   ( 0xF )
 
 #define IGN_OFF_TASK_CLOSE_DISPLAY      ( 1 << 0 )
 #define IGN_OFF_TASK_WRITE_LAST_PAGE    ( 1 << 1 )
@@ -53,6 +57,10 @@ void ew_device_system_deinit( void );
 int ew_device_system_proc( void );
 void ew_get_software_version( char* version );
 void ew_get_bt_software_version( char* version );
+void ew_set_last_page( const EnumHomeGroup home_group, const EnumMeterDisplay meter_display_setting, const EnumNavigationView navigation_view_setting );
+EnumHomeGroup ew_get_last_home_group( void );
+EnumMeterDisplay ew_get_meter_display_setting( void );
+EnumNavigationView ew_get_navigation_view_setting( void );
 void ew_get_esn( void );
 void ew_get_rtc_time( snvs_lp_srtc_datetime_t* srtc_datetime );
 void ew_request_qrcode( int pixel_per_mod );
