@@ -61,6 +61,7 @@ static uint32_t rx_vehicle_supported_functions = 0;
 static bool     is_dd_mode_activated = false;
 static SemaphoreHandle_t supported_function_semaphore_handle;
 static supported_func_data_src_enum supported_func_data_source;
+static const int32_t ticks_to_wait = pdMS_TO_TICKS( 500 );
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -1148,7 +1149,7 @@ uint32_t last_supported_functions = 0;
 uint32_t sfl_diff = 0;
 bool     is_tacho_setting_changed = false;
 
-if( pdTRUE == xSemaphoreTake( supported_function_semaphore_handle, 0 ) )
+if( pdTRUE == xSemaphoreTake( supported_function_semaphore_handle, ticks_to_wait ) )
     {
     PRINTF( "%s %d\r\n", __FUNCTION__, data_source );
     if( SUPPORTED_FUNCTION_DATA_SOURCE_CAN == supported_func_data_source &&
@@ -1175,7 +1176,7 @@ if( pdTRUE == xSemaphoreTake( supported_function_semaphore_handle, 0 ) )
         rx_vehicle_supported_functions = ( supported_functions[5] << 24 ) | ( supported_functions[4] << 16 ) |
                                          ( supported_functions[3] << 8 ) | supported_functions[2];
 
-        // Notify UI if the supported functions of clock/grip warmer/seat heater are changed to update status bar
+        // Notify UI if the supported functions of clock/grip warmer/seat heater/wind screen are changed
         sfl_diff = last_supported_functions ^ rx_vehicle_supported_functions;
         if( ( sfl_diff >> VEHICLE_FEATURE_CLOCK ) & 0x1 )
             {
@@ -1188,6 +1189,10 @@ if( pdTRUE == xSemaphoreTake( supported_function_semaphore_handle, 0 ) )
         if( ( sfl_diff >> VEHICLE_FEATURE_SEAT_HEATER ) & 0x1 )
             {
             EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_SEAT_HEATER );
+            }
+        if( ( sfl_diff >> VEHICLE_FEATURE_WIND_SCREEN ) & 0x1 )
+            {
+            EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_WIND_SCREEN );
             }
 
         // write to EEPROM when the data from CAN is different

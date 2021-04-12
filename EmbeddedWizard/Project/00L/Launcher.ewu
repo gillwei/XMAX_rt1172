@@ -135,7 +135,7 @@ class LNC_Main : Components::BaseComponent
   // Vehicle Supported Feature
   note group Note5
   {
-    attr Bounds = <810,360,1090,630>;
+    attr Bounds = <810,360,1150,720>;
   }
 
   $rect <850,450,1050,490>
@@ -405,7 +405,7 @@ class LNC_Main : Components::BaseComponent
     WindScreenEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.WIND_SCREEN );
   }
 
-  $rect <850,640,1070,680>
+  $rect <850,620,1130,660>
   object Core::SystemEventHandler VehicleDataReceivedEventHandler
   {
     preset OnEvent = OnVehicleDataReceivedSlot;
@@ -414,25 +414,38 @@ class LNC_Main : Components::BaseComponent
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <850,680,1070,720>
+  $rect <850,660,1090,700>
   slot OnVehicleDataReceivedSlot
   {
-    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
-    var bool IsSeatHeaterItemDisplayed = ( Enum::LauncherItem.SEAT_HEATER == PreviousItem ||
-                                           Enum::LauncherItem.SEAT_HEATER == CurrentItem  ||
-                                           Enum::LauncherItem.SEAT_HEATER == NextItem );
-
-    var bool IsGripWarmerItemDisplayed = ( Enum::LauncherItem.SEAT_HEATER == PreviousItem ||
-                                           Enum::LauncherItem.SEAT_HEATER == CurrentItem  ||
-                                           Enum::LauncherItem.SEAT_HEATER == NextItem );
-
-
-    if( null != VehicleData &&
-        ( Enum::VehicleRxType.GRIP_WARMER_STATUS == VehicleData.RxType || Enum::VehicleRxType.SEAT_HEATER_STATUS == VehicleData.RxType ) )
+    var DeviceInterface::VehicleDataClass VehicleData = (DeviceInterface::VehicleDataClass)VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData )
     {
-      if( IsSeatHeaterItemDisplayed || IsGripWarmerItemDisplayed )
+      switch( VehicleData.RxType )
       {
-        LNC_RotaryPlate.SetItems( PreviousItem, CurrentItem, NextItem );
+        case Enum::VehicleRxType.SUPPORT_FUNC_GRIP_WARMER: GripWarmerEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.GRIP_WARMER );
+        case Enum::VehicleRxType.SUPPORT_FUNC_SEAT_HEATER: SeatHeaterEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.SEAT_HEATER );
+        case Enum::VehicleRxType.SUPPORT_FUNC_WIND_SCREEN: WindScreenEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.WIND_SCREEN );
+        case Enum::VehicleRxType.GRIP_WARMER_STATUS:
+        {
+          var bool IsGripWarmerItemDisplayed = ( Enum::LauncherItem.GRIP_WARMER == PreviousItem ||
+                                                 Enum::LauncherItem.GRIP_WARMER == CurrentItem  ||
+                                                 Enum::LauncherItem.GRIP_WARMER == NextItem );
+          if( IsGripWarmerItemDisplayed )
+          {
+            LNC_RotaryPlate.SetItems( PreviousItem, CurrentItem, NextItem );
+          }
+        }
+        case Enum::VehicleRxType.SEAT_HEATER_STATUS:
+        {
+          var bool IsSeatHeaterItemDisplayed = ( Enum::LauncherItem.SEAT_HEATER == PreviousItem ||
+                                                 Enum::LauncherItem.SEAT_HEATER == CurrentItem  ||
+                                                 Enum::LauncherItem.SEAT_HEATER == NextItem );
+          if( IsSeatHeaterItemDisplayed )
+          {
+            LNC_RotaryPlate.SetItems( PreviousItem, CurrentItem, NextItem );
+          }
+        }
+        default:;
       }
     }
   }

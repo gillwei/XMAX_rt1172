@@ -625,27 +625,64 @@ void LauncherLNC_Main_OnVehicleDataReceivedSlot( LauncherLNC_Main _this, XObject
   sender )
 {
   DeviceInterfaceVehicleDataClass VehicleData;
-  XBool IsSeatHeaterItemDisplayed;
-  XBool IsGripWarmerItemDisplayed;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
-  IsSeatHeaterItemDisplayed = (XBool)((( EnumLauncherItemSEAT_HEATER == _this->PreviousItem ) 
-  || ( EnumLauncherItemSEAT_HEATER == _this->CurrentItem )) || ( EnumLauncherItemSEAT_HEATER 
-  == _this->NextItem ));
-  IsGripWarmerItemDisplayed = (XBool)((( EnumLauncherItemSEAT_HEATER == _this->PreviousItem ) 
-  || ( EnumLauncherItemSEAT_HEATER == _this->CurrentItem )) || ( EnumLauncherItemSEAT_HEATER 
-  == _this->NextItem ));
 
-  if (( VehicleData != 0 ) && (( EnumVehicleRxTypeGRIP_WARMER_STATUS == VehicleData->RxType ) 
-      || ( EnumVehicleRxTypeSEAT_HEATER_STATUS == VehicleData->RxType )))
+  if ( VehicleData != 0 )
   {
-    if ( IsSeatHeaterItemDisplayed || IsGripWarmerItemDisplayed )
+    switch ( VehicleData->RxType )
     {
-      LauncherLNC_RotaryPlate_SetItems( &_this->LNC_RotaryPlate, _this->PreviousItem, 
-      _this->CurrentItem, _this->NextItem );
+      case EnumVehicleRxTypeSUPPORT_FUNC_GRIP_WARMER :
+        _this->GripWarmerEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        EnumVehicleSupportedFunctionGRIP_WARMER );
+      break;
+
+      case EnumVehicleRxTypeSUPPORT_FUNC_SEAT_HEATER :
+        _this->SeatHeaterEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        EnumVehicleSupportedFunctionSEAT_HEATER );
+      break;
+
+      case EnumVehicleRxTypeSUPPORT_FUNC_WIND_SCREEN :
+        _this->WindScreenEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        EnumVehicleSupportedFunctionWIND_SCREEN );
+      break;
+
+      case EnumVehicleRxTypeGRIP_WARMER_STATUS :
+      {
+        XBool IsGripWarmerItemDisplayed = (XBool)((( EnumLauncherItemGRIP_WARMER 
+          == _this->PreviousItem ) || ( EnumLauncherItemGRIP_WARMER == _this->CurrentItem )) 
+          || ( EnumLauncherItemGRIP_WARMER == _this->NextItem ));
+
+        if ( IsGripWarmerItemDisplayed )
+        {
+          LauncherLNC_RotaryPlate_SetItems( &_this->LNC_RotaryPlate, _this->PreviousItem, 
+          _this->CurrentItem, _this->NextItem );
+        }
+      }
+      break;
+
+      case EnumVehicleRxTypeSEAT_HEATER_STATUS :
+      {
+        XBool IsSeatHeaterItemDisplayed = (XBool)((( EnumLauncherItemSEAT_HEATER 
+          == _this->PreviousItem ) || ( EnumLauncherItemSEAT_HEATER == _this->CurrentItem )) 
+          || ( EnumLauncherItemSEAT_HEATER == _this->NextItem ));
+
+        if ( IsSeatHeaterItemDisplayed )
+        {
+          LauncherLNC_RotaryPlate_SetItems( &_this->LNC_RotaryPlate, _this->PreviousItem, 
+          _this->CurrentItem, _this->NextItem );
+        }
+      }
+      break;
+
+      default : 
+        ;
     }
   }
 }
