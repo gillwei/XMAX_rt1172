@@ -53,11 +53,14 @@
 #include "_NavigationNAV05_TBTView.h"
 #include "_OpenOPN01_BootupAnimation.h"
 #include "_OpenOPN02_FactoryMode.h"
+#include "_PopPOP01_PleaseWait.h"
 #include "_SettingsBtFwUpdateDialog.h"
 #include "_StatusBarMain.h"
 #include "_TelephoneTEL01_IncomingCall.h"
 #include "_TopTOP01_Disclaimer.h"
+#include "_ViewsRectangle.h"
 #include "Application.h"
+#include "Color.h"
 #include "DeviceInterface.h"
 #include "Effect.h"
 #include "Enum.h"
@@ -189,19 +192,35 @@ void ApplicationApplication_Init( ApplicationApplication _this, XHandle aArg )
 void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _this, 
   XObject sender )
 {
-  CoreGroup HomeDialog;
+  TopTOP01_Disclaimer DisclaimerDialog = EwCastObject( sender, TopTOP01_Disclaimer );
 
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
+  if ( DisclaimerDialog != 0 )
+  {
+    ViewsRectangle_OnSetColor( &DisclaimerDialog->TopBar, ColorBLACK );
+  }
 
   _this->IsDisclaimerDismissed = 1;
-  HomeDialog = ApplicationApplication_HomeDialogOfHomeType( _this, EwGetAutoObject( 
-  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->HomeType );
+  CoreGroup__OnSetVisible( &_this->StatusBar, 1 );
 
-  if ( HomeDialog != 0 )
+  if ((( EnumHomeTypeNAVI_DEFAULT_VIEW == EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+      DeviceInterfaceSystemDeviceClass )->HomeType ) || ( EnumHomeTypeNAVI_NEXT_TURN 
+      == EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->HomeType )) 
+      || ( EnumHomeTypeNAVI_TURN_BY_TURN == EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+      DeviceInterfaceSystemDeviceClass )->HomeType ))
   {
-    CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), HomeDialog, 
-    0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
+    PopPOP01_PleaseWait, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
+  else
+  {
+    CoreGroup HomeDialog = ApplicationApplication_HomeDialogOfHomeType( _this, EwGetAutoObject( 
+      &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->HomeType );
+
+    if ( HomeDialog != 0 )
+    {
+      CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), HomeDialog, 
+      0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    }
   }
 }
 
@@ -211,8 +230,8 @@ void ApplicationApplication_ShowDisclaimer( ApplicationApplication _this )
   TopTOP01_Disclaimer Disclaimer = EwNewObject( TopTOP01_Disclaimer, 0 );
 
   Disclaimer->OnAcceptButtonClicked = EwNewSlot( _this, ApplicationApplication_OnDisclaimerAcceptedSlot );
-  CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)Disclaimer ), 0, 0, 0, 0, 
-  0, 0, EwNullSlot, EwNullSlot, 0 );
+  CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)Disclaimer ), 
+  0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -543,7 +562,6 @@ void ApplicationApplication_OnOpeningFinishedSlot( ApplicationApplication _this,
   _this->IsFactoryModeDialogDisplayed = 0;
   DeviceInterfaceBluetoothDeviceClass_GetBluetoothEnable( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
   DeviceInterfaceBluetoothDeviceClass ));
-  CoreGroup__OnSetVisible( &_this->StatusBar, 1 );
   ApplicationApplication_ShowDisclaimer( _this );
 }
 
@@ -750,6 +768,32 @@ void ApplicationApplication_StopInspection( ApplicationApplication _this )
 
   DeviceInterfaceSystemDeviceClass_SendInspectionResponse( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass ), EnumInspectionModeEND, 0 );
+}
+
+/* 'C' function for method : 'Application::Application.SwitchToMeterHome()' */
+void ApplicationApplication_SwitchToMeterHome( ApplicationApplication _this )
+{
+  XEnum MeterHomeType;
+
+  switch ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay )
+  {
+    case EnumMeterDisplayTACHOMETER :
+      MeterHomeType = EnumHomeTypeTACHO_VISUALIZER;
+    break;
+
+    case EnumMeterDisplayECHO_METER :
+      MeterHomeType = EnumHomeTypeECO_VISUALIZER;
+    break;
+
+    case EnumMeterDisplaySPEED_METER :
+      MeterHomeType = EnumHomeTypeSPEED_VISUALIZER;
+    break;
+
+    default : 
+      MeterHomeType = EnumHomeTypeTACHO_VISUALIZER;
+  }
+
+  ApplicationApplication_SwitchToHome( _this, MeterHomeType );
 }
 
 /* Variants derived from the class : 'Application::Application' */

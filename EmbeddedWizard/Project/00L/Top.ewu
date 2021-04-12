@@ -63,10 +63,10 @@ class TOP01_Disclaimer : Components::BaseComponent
   $rect <240,290,440,330>
   slot OnAcceptedSlot
   {
-    signal OnAcceptButtonClicked, this;
+    postsignal OnAcceptButtonClicked, this;
   }
 
-  $rect <240,340,440,380>
+  $rect <240,340,450,380>
   property slot OnAcceptButtonClicked;
 
   $rect <20,20,160,60>

@@ -208,7 +208,7 @@ void TopTOP01_Disclaimer_OnAcceptedSlot( TopTOP01_Disclaimer _this, XObject send
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwSignal( _this->OnAcceptButtonClicked, ((XObject)_this ));
+  EwPostSignal( _this->OnAcceptButtonClicked, ((XObject)_this ));
 }
 
 /* Variants derived from the class : 'Top::TOP01_Disclaimer' */

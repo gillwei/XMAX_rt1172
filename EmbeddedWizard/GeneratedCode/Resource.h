@@ -414,6 +414,24 @@ EW_DECLARE_BITMAP_RES( ResourceGripWarmerIcon )
 /* Bitmap resource : 'Resource::SeatHeaterIcon' */
 EW_DECLARE_BITMAP_RES( ResourceSeatHeaterIcon )
 
+/* Bitmap resource : 'Resource::IconError' */
+EW_DECLARE_BITMAP_RES( ResourceIconError )
+
+/* Bitmap resource : 'Resource::IconErrorBT' */
+EW_DECLARE_BITMAP_RES( ResourceIconErrorBT )
+
+/* Bitmap resource : 'Resource::IconErrorNavigation' */
+EW_DECLARE_BITMAP_RES( ResourceIconErrorNavigation )
+
+/* Bitmap resource : 'Resource::IconErrorPhoneLock' */
+EW_DECLARE_BITMAP_RES( ResourceIconErrorPhoneLock )
+
+/* Bitmap resource : 'Resource::SplitLineLarge' */
+EW_DECLARE_BITMAP_RES( ResourceSplitLineLarge )
+
+/* Bitmap resource : 'Resource::SplitLineMiddle' */
+EW_DECLARE_BITMAP_RES( ResourceSplitLineMiddle )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

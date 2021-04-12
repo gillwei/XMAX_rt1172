@@ -42,6 +42,9 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_PopPOP01_PleaseWait.h"
+#include "_PopPOP02_ConnectionError.h"
+#include "_PopPOP07_TROUBLE_SHOOTING.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
 #include "_PopPOP09_BleConnectionErrorUI.h"
 

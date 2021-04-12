@@ -821,4 +821,40 @@ EW_RES_WITHOUT_VARIANTS( ResourceGripWarmerIcon )
 /* Table with links to derived variants of the bitmap resource : 'Resource::SeatHeaterIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceSeatHeaterIcon )
 
+/* Include a file containing the bitmap resource : 'Resource::IconError' */
+#include "_ResourceIconError.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconError' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconError )
+
+/* Include a file containing the bitmap resource : 'Resource::IconErrorBT' */
+#include "_ResourceIconErrorBT.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconErrorBT' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconErrorBT )
+
+/* Include a file containing the bitmap resource : 'Resource::IconErrorNavigation' */
+#include "_ResourceIconErrorNavigation.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconErrorNavigation' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconErrorNavigation )
+
+/* Include a file containing the bitmap resource : 'Resource::IconErrorPhoneLock' */
+#include "_ResourceIconErrorPhoneLock.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconErrorPhoneLock' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconErrorPhoneLock )
+
+/* Include a file containing the bitmap resource : 'Resource::SplitLineLarge' */
+#include "_ResourceSplitLineLarge.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SplitLineLarge' */
+EW_RES_WITHOUT_VARIANTS( ResourceSplitLineLarge )
+
+/* Include a file containing the bitmap resource : 'Resource::SplitLineMiddle' */
+#include "_ResourceSplitLineMiddle.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SplitLineMiddle' */
+EW_RES_WITHOUT_VARIANTS( ResourceSplitLineMiddle )
+
 /* Embedded Wizard */

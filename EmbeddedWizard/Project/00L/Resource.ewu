@@ -2623,3 +2623,87 @@ resource Resources::Bitmap SeatHeaterIcon
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
+
+$rect <40,2460,240,2500>
+$output false
+resource Resources::Bitmap IconError
+{
+  attr bitmapfile FileName = .\Res\connection_error\icon_error.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// Connection Error
+note group Note19
+{
+  attr Bounds = <10,2420,480,2570>;
+}
+
+$rect <40,2510,240,2550>
+$output false
+resource Resources::Bitmap IconErrorBT
+{
+  attr bitmapfile FileName = .\Res\connection_error\icon_error_bluetooth.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <250,2460,450,2500>
+$output false
+resource Resources::Bitmap IconErrorNavigation
+{
+  attr bitmapfile FileName = .\Res\connection_error\icon_error_navi.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <250,2510,450,2550>
+$output false
+resource Resources::Bitmap IconErrorPhoneLock
+{
+  attr bitmapfile FileName = .\Res\connection_error\icon_error_smapholock.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <510,2460,710,2500>
+$output false
+resource Resources::Bitmap SplitLineLarge
+{
+  attr bitmapfile FileName = .\Res\trouble_shooting\spline_l.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <510,2510,710,2550>
+$output false
+resource Resources::Bitmap SplitLineMiddle
+{
+  attr bitmapfile FileName = .\Res\trouble_shooting\sp_line_m.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// Trouble shooting
+note group Note20
+{
+  attr Bounds = <490,2420,730,2570>;
+}

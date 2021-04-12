@@ -1,6 +1,6 @@
 ﻿$version 10.00
 
-$rect <30,30,230,70>
+$rect <10,160,250,200>
 $output false
 class POP08_WeatherLoadingUI : Components::BaseMainBG
 {
@@ -85,7 +85,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
   }
 }
 
-$rect <30,80,230,120>
+$rect <10,210,210,250>
 $output false
 class POP09_BleConnectionErrorUI : Components::BaseMainBG
 {
@@ -113,6 +113,368 @@ class POP09_BleConnectionErrorUI : Components::BaseMainBG
     if( null != App )
     {
       App.ReturnToLauncher();
+    }
+  }
+}
+
+$rect <10,60,250,100>
+$output false
+class POP02_ConnectionError : Components::BaseComponent
+{
+  $rect <10,340,190,380>
+  inherited method Init()
+  {
+    trace "Init POP02";
+  }
+
+  $rect <10,290,190,330>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <509,0,689,40>
+  inherited method UpdateLayout()
+  {
+    super( aSize );
+
+    // calculate the margin on the left/right side to make the warning icon and the warning text align horizontal center
+    var int32 TextIconGapPixel = 3;
+    var int32 TotalWidth = ErrorIcon.Bounds.w + TextIconGapPixel + ConnectionErrText.GetContentArea().w;
+    var int32 Margin = ( Bounds.w - TotalWidth ) / 2;
+
+    /* adjust the bounds of IconWarning */
+    var int32 Width = ErrorIcon.Bounds.w;
+    var rect NewBounds = ErrorIcon.Bounds;
+    NewBounds.x1 = Margin;
+    NewBounds.x2 = NewBounds.x1 + Width;
+    ErrorIcon.Bounds = NewBounds;
+
+    /* adjust the bounds of WarningText */
+    Width = ConnectionErrText.Bounds.w;
+    NewBounds = ConnectionErrText.Bounds;
+    NewBounds.x1 = ErrorIcon.Bounds.x2 + TextIconGapPixel;
+    NewBounds.x2 = NewBounds.x1 + Width;
+    ConnectionErrText.Bounds = NewBounds;
+  }
+
+  $rect <510,50,740,90>
+  inherited method OnShortHomeKeyActivated()
+  {
+    // neglect home key event
+  }
+
+  $rect <510,100,740,140>
+  inherited method OnLongHomeKeyActivated()
+  {
+    // neglect home key event
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle BlackBackground
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text CheckText
+  {
+    preset Bounds = <10,57,470,91>;
+    preset WrapText = false;
+    preset String = Strings::POP02_PLEASE_CHECK;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle TopBar
+  {
+    preset Bounds = <0,0,480,43>;
+    preset Color = #FFF500FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ErrorIcon
+  {
+    preset Bounds = <155,5,191,41>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter, ScaleToFit];
+    preset Bitmap = Resource::IconError;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ConnectionErrText
+  {
+    preset Bounds = <191,1,327,42>;
+    preset AutoSize = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = Strings::POP02_CONNECTION_ERR;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Color = #000000FF;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ErrorBTIcon
+  {
+    preset Bounds = <215,105,265,155>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::IconErrorBT;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ErrorNavigationIcon
+  {
+    preset Bounds = <296,105,346,155>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::IconErrorNavigation;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ErrorPhoneLockIcon
+  {
+    preset Bounds = <134,105,184,155>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::IconErrorPhoneLock;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::UpDownPushButtonSet UpDownPushButtonSet
+  {
+    preset Bounds = <165,176,315,259>;
+    preset PassHomeKey = true;
+    preset PassMagicKey = true;
+    preset DDModeEnabled = true;
+    preset OnUpButtonActivated = OnOkButtonActivatedSlot;
+    preset OnDownButtonActivated = OnDetailsButtonActivatedSlot;
+    preset UpButtonTitle = Strings::GEN_OK;
+    preset DownButtonTitle = Strings::POP02_DETAILS;
+    preset DownButtonEnabled = true;
+  }
+
+  $rect <510,150,750,190>
+  slot OnOkButtonActivatedSlot
+  {
+    var Application::Application App = (Application::Application)GetRoot();
+    if( null != App )
+    {
+      App.SwitchToHome( Enum::HomeType.VEHICLE_INFO );
+    }
+  }
+
+  $rect <510,200,760,240>
+  slot OnDetailsButtonActivatedSlot
+  {
+    PresentDialog( new Pop::POP07_TROUBLE_SHOOTING, null, null, null, null, null, null, null, null, false );
+  }
+}
+
+$rect <10,110,260,150>
+$output false
+class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
+{
+  $rect <10,340,240,380>
+  inherited method OnShortEnterKeyActivated()
+  {
+    var Application::Application App = (Application::Application)GetRoot();
+    if( null != App )
+    {
+      App.SwitchToHome( Enum::HomeType.VEHICLE_INFO );
+    }
+  }
+
+  $rect <10,290,240,330>
+  inherited method OnLongHomeKeyActivated()
+  {
+    var Application::Application App = (Application::Application)GetRoot();
+    if( null != App )
+    {
+      App.SwitchToHome( Enum::HomeType.VEHICLE_INFO );
+    }
+  }
+
+  $rect <20,20,160,60>
+  inherited object BlackBG
+  {
+    preset Bounds = <0,0,480,272>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,44,480,48>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::SplitLineLarge;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ErrorPhoneLockIcon
+  {
+    preset Bounds = <10,56,60,106>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::IconErrorPhoneLock;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ErrorBTIcon
+  {
+    preset Bounds = <10,127,60,177>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::IconErrorBT;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ErrorNavigationIcon
+  {
+    preset Bounds = <10,198,60,248>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::IconErrorNavigation;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TroubleShootingText
+  {
+    preset Bounds = <10,4,470,41>;
+    preset AutoSize = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = Strings::POP07_TROUBLE_SHOOTING;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+    preset Color = #FFFFFFFF;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TroubleShootingText1
+  {
+    preset Bounds = <68,50,440,112>;
+    preset AutoSize = false;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = Strings::POP07_UNLOCK_PHONE;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #FFFFFFFF;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TroubleShootingText2
+  {
+    preset Bounds = <68,121,440,183>;
+    preset AutoSize = false;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = Strings::POP07_TURN_ON_BT;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #FFFFFFFF;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TroubleShootingText3
+  {
+    preset Bounds = <68,192,440,254>;
+    preset AutoSize = false;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = Strings::POP07_LAUNCH_APP;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #FFFFFFFF;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider1
+  {
+    preset Bounds = <0,115,480,119>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::SplitLineMiddle;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider2
+  {
+    preset Bounds = <0,186,480,190>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::SplitLineMiddle;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider3
+  {
+    preset Bounds = <0,257,480,261>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
+    preset Bitmap = Resource::SplitLineMiddle;
+  }
+}
+
+$rect <10,10,250,50>
+$output false
+class POP01_PleaseWait : Components::BaseMainBG
+{
+  $rect <530,60,730,100>
+  inherited method Init()
+  {
+    trace "Init POP01";
+  }
+
+  $rect <530,340,760,380>
+  inherited method OnShortHomeKeyActivated()
+  {
+    var Application::Application App = (Application::Application)GetRoot();
+    if( null != App )
+    {
+      App.SwitchToMeterHome();
+    }
+  }
+
+  $rect <528,298,758,338>
+  inherited method OnLongHomeKeyActivated()
+  {
+    var Application::Application App = (Application::Application)GetRoot();
+    if( null != App )
+    {
+      App.SwitchToMeterHome();
+    }
+  }
+
+  $rect <20,20,160,60>
+  inherited object BlackBG
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text LoadingText
+  {
+    preset Bounds = <10,156,470,187>;
+    preset String = Strings::GEN_PLEASE_WAIT;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image LoadingAnimation
+  {
+    preset Bounds = <193,54,287,148>;
+    preset Animated = true;
+    preset Bitmap = Resource::LoadingAnimation;
+  }
+
+  $rect <530,170,750,210>
+  object Core::Timer ConnectionFailedTimer
+  {
+    preset OnTrigger = OnConnectionFailedUpdateSlot;
+    preset Period = 0;
+    preset Begin = 5000;
+    preset Enabled = true;
+  }
+
+  $rect <530,220,750,260>
+  slot OnConnectionFailedUpdateSlot
+  {
+    if( null != Owner )
+    {
+      Owner.SwitchToDialog( new Pop::POP02_ConnectionError, null, null, null, null, null, null, null, null, null, false );
     }
   }
 }

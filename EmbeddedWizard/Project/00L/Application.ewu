@@ -27,13 +27,29 @@ class Application : Core::Root
   $rect <40,480,270,520>
   slot OnDisclaimerAcceptedSlot
   {
-    IsDisclaimerDismissed = true;
-
-    //TODO: check if navigation app is connected / destination is set before switching to the navigation group
-    var Core::Group HomeDialog = HomeDialogOfHomeType( DeviceInterface::SystemDevice.HomeType );
-    if( null != HomeDialog )
+    var Top::TOP01_Disclaimer DisclaimerDialog = (Top::TOP01_Disclaimer)sender;
+    if( null != DisclaimerDialog )
     {
-      GetRoot().SwitchToDialog( HomeDialog, null, null, null, null, null, null, null, null, null, false );
+      DisclaimerDialog.TopBar.Color = Color::BLACK;
+    }
+
+    IsDisclaimerDismissed = true;
+    StatusBar.Visible = true;
+
+    if( Enum::HomeType.NAVI_DEFAULT_VIEW == DeviceInterface::SystemDevice.HomeType ||
+        Enum::HomeType.NAVI_NEXT_TURN    == DeviceInterface::SystemDevice.HomeType ||
+        Enum::HomeType.NAVI_TURN_BY_TURN == DeviceInterface::SystemDevice.HomeType )
+    {
+      //TODO: check if navigation app is connected / destination is set before switching to the navigation group
+      GetRoot().SwitchToDialog( new Pop::POP01_PleaseWait, null, null, null, null, null, null, null, null, null, false );
+    }
+    else
+    {
+      var Core::Group HomeDialog = HomeDialogOfHomeType( DeviceInterface::SystemDevice.HomeType );
+      if( null != HomeDialog )
+      {
+        GetRoot().SwitchToDialog( HomeDialog, null, null, null, null, null, null, null, null, null, false );
+      }
     }
   }
 
@@ -42,7 +58,7 @@ class Application : Core::Root
   {
     var Top::TOP01_Disclaimer Disclaimer = new Top::TOP01_Disclaimer;
     Disclaimer.OnAcceptButtonClicked = OnDisclaimerAcceptedSlot;
-    PresentDialog( Disclaimer, null, null, null, null, null, null, null, null, false );
+    GetRoot().SwitchToDialog( Disclaimer, null, null, null, null, null, null, null, null, null, false );
   }
 
   // For disclaimer
@@ -311,14 +327,13 @@ class Application : Core::Root
   $rect <530,140,780,180>
   slot OnOpeningFinishedSlot
   {
-    var Core::Group OpeningDialog = ( Core::Group )sender;
+    var Core::Group OpeningDialog = (Core::Group)sender;
     if( null != OpeningDialog )
     {
       DismissDialog( OpeningDialog, null, null, null, null, null, false );
     }
     IsFactoryModeDialogDisplayed = false;
     DeviceInterface::BluetoothDevice.GetBluetoothEnable();
-    StatusBar.Visible = true;
     ShowDisclaimer();
   }
 
@@ -365,7 +380,7 @@ class Application : Core::Root
   }
 
   // Return from the DD mode forbidden UI to the launcher
-  $rect <810,440,1010,480>
+  $rect <800,440,1000,480>
   method void ReturnToHome()
   {
     trace "ReturnToHome";
@@ -521,4 +536,18 @@ class Application : Core::Root
 
   $rect <530,290,790,330>
   var bool IsFactoryModeDialogDisplayed;
+
+  $rect <800,490,1000,530>
+  method void SwitchToMeterHome()
+  {
+    var Enum::HomeType MeterHomeType;
+    switch( DeviceInterface::VehicleDevice.CurrentMeterDisplay )
+    {
+      case Enum::MeterDisplay.TACHOMETER: MeterHomeType = Enum::HomeType.TACHO_VISUALIZER;
+      case Enum::MeterDisplay.ECHO_METER: MeterHomeType = Enum::HomeType.ECO_VISUALIZER;
+      case Enum::MeterDisplay.SPEED_METER: MeterHomeType = Enum::HomeType.SPEED_VISUALIZER;
+      default: MeterHomeType = Enum::HomeType.TACHO_VISUALIZER;
+    }
+    SwitchToHome( MeterHomeType );
+  }
 }

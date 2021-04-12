@@ -258,6 +258,9 @@ void ApplicationApplication_ProcInspectionDisplay( ApplicationApplication _this 
 /* 'C' function for method : 'Application::Application.StopInspection()' */
 void ApplicationApplication_StopInspection( ApplicationApplication _this );
 
+/* 'C' function for method : 'Application::Application.SwitchToMeterHome()' */
+void ApplicationApplication_SwitchToMeterHome( ApplicationApplication _this );
+
 #ifdef __cplusplus
   }
 #endif

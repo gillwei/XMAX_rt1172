@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/04/14 11:49:10
+// Generated: 2021/04/14 11:09:12
 
 $output false
 const string ARGUMENT_STR =
@@ -531,6 +531,12 @@ const string OPN02_ENTER_TWICE =
 );
 
 $output false
+const string POP02_CONNECTION_ERR =
+(
+  Default = "Connection Error";
+);
+
+$output false
 const string POP02_PLEASE_CHECK =
 (
   Default = "Please Check";
@@ -546,6 +552,30 @@ $output false
 const string POP03_NO_HOME_LOCATION =
 (
   Default = "Home location is not set.";
+);
+
+$output false
+const string POP07_TROUBLE_SHOOTING =
+(
+  Default = "Connection troubleshooting";
+);
+
+$output false
+const string POP07_UNLOCK_PHONE =
+(
+  Default = "Unlock smartphone.";
+);
+
+$output false
+const string POP07_TURN_ON_BT =
+(
+  Default = "Turn ON smartphone Bluetooth.";
+);
+
+$output false
+const string POP07_LAUNCH_APP =
+(
+  Default = "Launch the application.";
 );
 
 $output false

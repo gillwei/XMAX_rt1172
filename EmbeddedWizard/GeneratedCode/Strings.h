@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/04/14 11:49:10 */
+   Generated: 2021/04/14 11:09:12 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -171,6 +171,27 @@ extern const XStringRes StringsOPN02_FACTORY_MODE;
 
 /* User defined constant: 'Strings::OPN02_ENTER_TWICE' */
 extern const XStringRes StringsOPN02_ENTER_TWICE;
+
+/* User defined constant: 'Strings::POP02_CONNECTION_ERR' */
+extern const XStringRes StringsPOP02_CONNECTION_ERR;
+
+/* User defined constant: 'Strings::POP02_PLEASE_CHECK' */
+extern const XStringRes StringsPOP02_PLEASE_CHECK;
+
+/* User defined constant: 'Strings::POP02_DETAILS' */
+extern const XStringRes StringsPOP02_DETAILS;
+
+/* User defined constant: 'Strings::POP07_TROUBLE_SHOOTING' */
+extern const XStringRes StringsPOP07_TROUBLE_SHOOTING;
+
+/* User defined constant: 'Strings::POP07_UNLOCK_PHONE' */
+extern const XStringRes StringsPOP07_UNLOCK_PHONE;
+
+/* User defined constant: 'Strings::POP07_TURN_ON_BT' */
+extern const XStringRes StringsPOP07_TURN_ON_BT;
+
+/* User defined constant: 'Strings::POP07_LAUNCH_APP' */
+extern const XStringRes StringsPOP07_LAUNCH_APP;
 
 /* User defined constant: 'Strings::POP09_CONNECTION_FAILED' */
 extern const XStringRes StringsPOP09_CONNECTION_FAILED;
