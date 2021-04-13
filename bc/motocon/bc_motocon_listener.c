@@ -26,6 +26,7 @@
                                  TYPES
 --------------------------------------------------------------------*/
 void bc_motocon_listener_connection_status( const bool connected );
+void bc_motocon_datetime_received( const bc_motocon_time_t* time );
 void bc_motocon_listener_language_type( const uint8_t language_type );
 void bc_motocon_notification_received( const bc_motocon_notification_v2_t* notification );
 void bc_motocon_listener_battery( const uint8_t battery, const bc_motocon_battery_t battery_type );
@@ -59,7 +60,7 @@ static bc_motocon_callback_t motocon_callback =
     NULL,                                   // weather_info_callback
     NULL,                                   // vehicle_info_subscribe_callback
     NULL,                                   // datetime_changed_callback
-    NULL,                                   // vehicle_datetime_callback
+    bc_motocon_datetime_received,           // vehicle_datetime_callback
     bc_motocon_listener_language_type,      // language_type_callback
     bc_motocon_notification_received,       // notification_callback
     NULL,                                   // can_related_callback
@@ -162,11 +163,34 @@ void bc_motocon_listener_connection_status
 {
 motocon_connected = connected;
 EW_notify_motocon_event_received( EnumMotoConRxEventCONNECTION_STATUS );
-if( !connected )
+if( connected )
+    {
+    BC_motocon_send_language_type_request();
+    BC_motocon_send_vehicle_setting_request();
+    }
+else
     {
     phone_volume_controllable = false;
     notify_motocon_notification_disconnected();
     }
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_datetime_received
+*
+* Callback function when receiving the datetime via MotoCon
+*
+* @param time Pointer to the smartphone time of bc_motocon_time_t type
+*
+*********************************************************************/
+void bc_motocon_datetime_received
+    (
+    const bc_motocon_time_t* time
+    )
+{
+BC_MOTOCON_PRINTF( "%s %d %d/%d %d:%d:%d\r\n", __FUNCTION__, time->year, time->mon, time->day, time->hour, time->min, time->sec );
 }
 
 /*********************************************************************
