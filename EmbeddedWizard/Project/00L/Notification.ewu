@@ -35,11 +35,18 @@ class NTF01_NotificationList : Menu::BaseMenuView
       {
         Title = NotificationData.Title;
       }
-      else if( 0 < NotificationData.Subtitle.length )
+
+      // display title followed by subtitle
+      if( 0 < NotificationData.Subtitle.length )
       {
-        Title = NotificationData.Subtitle;
+        if( 0 < Title.length )
+        {
+          Title += " ";
+        }
+        Title += NotificationData.Subtitle;
       }
-      else
+
+      if( 0 == Title.length )
       {
         Title = Strings::GEN_THREE_HYPHENS;
       }
@@ -513,28 +520,29 @@ class NotificationDetailText : Core::Group
       {
         TitleText.String = value.Title;
       }
-      else if( 0 < value.Subtitle.length )
+
+      if( 0 < value.Subtitle.length )
       {
-        TitleText.String = value.Subtitle;
+        if(  0 < TitleText.String.length )
+        {
+          TitleText.String += " ";
+        }
+        TitleText.String += value.Subtitle;
       }
-      else
+
+      if( 0 == TitleText.String.length )
       {
-        TitleText.String = "---";
+        TitleText.String = Strings::GEN_THREE_HYPHENS;
       }
 
       ReceivedTimeText.String = NotificationData.ReceivedTime.Hour + ":" + NotificationData.ReceivedTime.Minute;
 
       if( Enum::NotificationCategory.MESSAGE == NotificationData.Category )
       {
-        if( 0 < value.Subtitle.length )
-        {
-          MessageText.String = value.Subtitle + "\n";
-        }
-
         MessageText.String += value.Message;
         if( 0 == MessageText.String.length )
         {
-          MessageText.String = "---";
+          MessageText.String = Strings::GEN_THREE_HYPHENS;
         }
       }
 

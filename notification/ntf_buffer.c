@@ -415,13 +415,15 @@ return used_buffer_lookup_table.num;
 * Get notification of brief information from the used buffer
 *
 * @param idx The index of the notification buffer
-* @param uid The pointer to the notification uid
-* @param title The pointer to the title string
+* @param uid Pointer to the notification uid
+* @param title Pointer to the title string
 * @param title_length The buffer size to keep title string
-* @param message The pointer to message string
+* @param subtitle Pointer to the subtitle string
+* @param subtitle_length Buffer size to keep subtitle string
+* @param message Pointer to message string
 * @param message_length message buffer size
-* @param category The pointer to the category
-* @param received_time The pointer to the recevied time
+* @param category Pointer to the category
+* @param received_time Pointer to the recevied time
 *
 *********************************************************************/
 int ntf_buffer_get_notification_at_idx
@@ -431,6 +433,8 @@ int ntf_buffer_get_notification_at_idx
     uint16_t*      call_repetition,
     uint8_t*       title,
     const uint32_t title_length,
+    uint8_t*       subtitle,
+    const uint32_t subtitle_length,
     uint8_t*       message,
     const uint32_t message_length,
     EnumNotificationCategory* category,
@@ -449,11 +453,15 @@ if( idx < used_buffer_lookup_table.num )
     *category        = notification_buffer[buffer_idx].category;
     *received_time   = notification_buffer[buffer_idx].received_time;
 
-    copy_length = MIN( title_length, NOTIFICATION_TITLE_MAX_LEN );
+    copy_length = MIN( title_length, NOTIFICATION_TITLE_MAX_LEN - 1 );
     memcpy( title, notification_buffer[buffer_idx].title, copy_length );
     title[copy_length] = '\0';
 
-    copy_length = MIN( message_length, NOTIFICATION_MESSAGE_MAX_LEN );
+    copy_length = MIN( subtitle_length, NOTIFICATION_SUBTITLE_MAX_LEN - 1 );
+    memcpy( subtitle, notification_buffer[buffer_idx].subtitle, copy_length );
+    subtitle[copy_length] = '\0';
+
+    copy_length = MIN( message_length, NOTIFICATION_MESSAGE_MAX_LEN - 1 );
     memcpy( message, notification_buffer[buffer_idx].message, copy_length );
     message[copy_length] = '\0';
     }

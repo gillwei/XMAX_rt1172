@@ -2643,6 +2643,7 @@ DeviceInterfaceNotificationContext DeviceInterfaceNotificationDeviceClass_GetNot
   XUInt16 CallRepetition;
   XUInt32 Category;
   XString Title;
+  XString Subtitle;
   XString Message;
   XString ReceivedHour;
   XString ReceivedMinute;
@@ -2656,6 +2657,7 @@ DeviceInterfaceNotificationContext DeviceInterfaceNotificationDeviceClass_GetNot
   CallRepetition = 0;
   Category = 0;
   Title = 0;
+  Subtitle = 0;
   Message = 0;
   ReceivedHour = 0;
   ReceivedMinute = 0;
@@ -2663,11 +2665,16 @@ DeviceInterfaceNotificationContext DeviceInterfaceNotificationDeviceClass_GetNot
     uint32_t notification_uid;
     uint16_t call_repetition;
     uint8_t  notification_title[NOTIFICATION_TITLE_MAX_LEN];
+    uint8_t  notification_subtitle[NOTIFICATION_SUBTITLE_MAX_LEN];
     uint8_t  notification_message[NOTIFICATION_MESSAGE_MAX_LEN];
     notification_time_t received_time;
     EnumNotificationCategory notification_category;
 
-    NTF_get_notification_at_idx( aItemNo, &notification_uid, &call_repetition, notification_title, NOTIFICATION_TITLE_MAX_LEN, notification_message, NOTIFICATION_MESSAGE_MAX_LEN, &notification_category, &received_time );
+    NTF_get_notification_at_idx( aItemNo, &notification_uid, &call_repetition, 
+                                 notification_title, NOTIFICATION_TITLE_MAX_LEN, 
+                                 notification_subtitle, NOTIFICATION_SUBTITLE_MAX_LEN, 
+                                 notification_message, NOTIFICATION_MESSAGE_MAX_LEN, 
+                                 &notification_category, &received_time );
 
     Uid = notification_uid;
     CallRepetition = call_repetition;
@@ -2677,6 +2684,12 @@ DeviceInterfaceNotificationContext DeviceInterfaceNotificationDeviceClass_GetNot
     if( stuffed_str_len > 0 && stuffed_str != NULL )
     {
       Title = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+    }
+
+    stuffed_str_len = ew_handle_special_characters( notification_subtitle, &stuffed_str );
+    if( stuffed_str_len > 0 && stuffed_str != NULL )
+    {
+      Subtitle = EwNewStringUtf8( stuffed_str, stuffed_str_len );
     }
 
     stuffed_str_len = ew_handle_special_characters( notification_message, &stuffed_str );
@@ -2692,6 +2705,7 @@ DeviceInterfaceNotificationContext DeviceInterfaceNotificationDeviceClass_GetNot
   NotificationItem->Uid = Uid;
   NotificationItem->CallRepetition = CallRepetition;
   NotificationItem->Title = EwShareString( Title );
+  NotificationItem->Subtitle = EwShareString( Subtitle );
   NotificationItem->Message = EwShareString( Message );
   NotificationItem->Category = (XEnum)Category;
   NotificationItem->ReceivedTime->Hour = EwShareString( ReceivedHour );

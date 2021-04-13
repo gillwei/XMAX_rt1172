@@ -2212,20 +2212,26 @@ class NotificationDeviceClass : Templates::DeviceClass
       var uint16 CallRepetition;
       var uint32 Category;
       var string Title = "";
+      var string Subtitle = "";
       var string Message = "";
       var string ReceivedHour = "";
       var string ReceivedMinute = "";
 
-      native( aItemNo, Uid, Title, Message, Category, ReceivedHour, ReceivedMinute )
+      native( aItemNo, Uid, Title, Subtitle, Message, Category, ReceivedHour, ReceivedMinute )
       {
         uint32_t notification_uid;
         uint16_t call_repetition;
         uint8_t  notification_title[NOTIFICATION_TITLE_MAX_LEN];
+        uint8_t  notification_subtitle[NOTIFICATION_SUBTITLE_MAX_LEN];
         uint8_t  notification_message[NOTIFICATION_MESSAGE_MAX_LEN];
         notification_time_t received_time;
         EnumNotificationCategory notification_category;
 
-        NTF_get_notification_at_idx( aItemNo, &notification_uid, &call_repetition, notification_title, NOTIFICATION_TITLE_MAX_LEN, notification_message, NOTIFICATION_MESSAGE_MAX_LEN, &notification_category, &received_time );
+        NTF_get_notification_at_idx( aItemNo, &notification_uid, &call_repetition,
+                                     notification_title, NOTIFICATION_TITLE_MAX_LEN,
+                                     notification_subtitle, NOTIFICATION_SUBTITLE_MAX_LEN,
+                                     notification_message, NOTIFICATION_MESSAGE_MAX_LEN,
+                                     &notification_category, &received_time );
 
         Uid = notification_uid;
         CallRepetition = call_repetition;
@@ -2235,6 +2241,12 @@ class NotificationDeviceClass : Templates::DeviceClass
         if( stuffed_str_len > 0 && stuffed_str != NULL )
         {
           Title = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+        }
+
+        stuffed_str_len = ew_handle_special_characters( notification_subtitle, &stuffed_str );
+        if( stuffed_str_len > 0 && stuffed_str != NULL )
+        {
+          Subtitle = EwNewStringUtf8( stuffed_str, stuffed_str_len );
         }
 
         stuffed_str_len = ew_handle_special_characters( notification_message, &stuffed_str );
@@ -2251,6 +2263,7 @@ class NotificationDeviceClass : Templates::DeviceClass
       NotificationItem.Uid = Uid;
       NotificationItem.CallRepetition = CallRepetition;
       NotificationItem.Title = Title;
+      NotificationItem.Subtitle = Subtitle;
       NotificationItem.Message = Message;
       NotificationItem.Category = (Enum::NotificationCategory)Category;
       NotificationItem.ReceivedTime.Hour = ReceivedHour;

@@ -278,6 +278,8 @@ return result;
 * @param uid Unique notification id
 * @param title Pointer to the title buffer
 * @param title_length Size of the title buffer
+* @param subtitle Pointer to the subtitle buffer
+* @param subtitle_length Size of the subtitle buffer
 * @param message Pointer to the message buffer
 * @param message_length Size of the message buffer
 * @param category Pointer to the category
@@ -293,13 +295,15 @@ int NTF_get_notification_at_idx
     uint16_t*      call_repitition,
     uint8_t*       title,
     const uint32_t title_length,
+    uint8_t*       subtitle,
+    const uint32_t subtitle_length,
     uint8_t*       message,
     const uint32_t message_length,
-    EnumNotificationCategory* category,
+	EnumNotificationCategory* category,
     notification_time_t*      received_time
     )
 {
-return ntf_buffer_get_notification_at_idx( idx, uid, call_repitition, title, title_length, message, message_length, category, received_time );
+return ntf_buffer_get_notification_at_idx( idx, uid, call_repitition, title, title_length, subtitle, subtitle_length, message, message_length, category, received_time );
 }
 
 /*********************************************************************

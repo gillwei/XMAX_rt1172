@@ -37,7 +37,7 @@ typedef struct
 void ntf_buffer_init( void );
 int  ntf_buffer_add_notification( const uint32_t uid, const uint8_t* title, const uint8_t* subtitle, const uint8_t* message, const EnumNotificationCategory category, const notification_time_t received_time );
 int  ntf_buffer_delete_notification_of_uid( const uint32_t uid );
-int  ntf_buffer_get_notification_at_idx( const uint32_t idx, uint32_t* uid, uint16_t* call_repetition, uint8_t* title, const uint32_t title_length, uint8_t* message, const uint32_t message_length, EnumNotificationCategory* category, notification_time_t* received_time );
+int  ntf_buffer_get_notification_at_idx( const uint32_t idx, uint32_t* uid, uint16_t* call_repetition, uint8_t* title, const uint32_t title_length, uint8_t* subtitle, const uint32_t subtitle_length, uint8_t* message, const uint32_t message_length, EnumNotificationCategory* category, notification_time_t* received_time );
 void ntf_buffer_reset( void );
 EnumNotificationCategory ntf_buffer_get_category_of_uid( const uint32_t uid );
 
