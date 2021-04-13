@@ -57,6 +57,7 @@ static bc_motocon_callback_t music_callback =
     NULL,
     NULL,
     NULL,
+    NULL,
     MM_receive_music_info,
     NULL,
     NULL,

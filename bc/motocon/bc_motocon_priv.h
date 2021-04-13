@@ -110,6 +110,7 @@ bc_motocon_parse_result_t bc_motocon_parser_vehicle_info_subscribe( const uint8_
 bc_motocon_parse_result_t bc_motocon_parser_datetime_changed( const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t bc_motocon_parser_vehicle_datetime( const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t bc_motocon_parser_language_type( const uint8_t* bytes, const uint32_t length );
+bc_motocon_parse_result_t bc_motocon_parser_device_name( const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t bc_motocon_parser_short_data_to_can( const bc_motocon_command_code_t command_code, const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t bc_motocon_parser_protobuf_to_can( const bc_motocon_command_code_t command_code, const uint8_t* bytes, const uint32_t length );
 bc_motocon_parse_result_t bc_motocon_parser_can_request( void );

@@ -62,6 +62,7 @@ static bc_motocon_callback_t motocon_callback =
     NULL,                                   // datetime_changed_callback
     bc_motocon_datetime_received,           // vehicle_datetime_callback
     bc_motocon_listener_language_type,      // language_type_callback
+    NULL,                                   // device_name_callback
     bc_motocon_notification_received,       // notification_callback
     NULL,                                   // can_related_callback
     NULL,                                   // can_request_callback

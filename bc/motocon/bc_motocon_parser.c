@@ -95,6 +95,10 @@ switch( command_code )
         ret = bc_motocon_parser_language_type( bytes, length );
         break;
 
+    case BC_MOTOCON_COMMAND_CODE_DEVICE_NAME:
+        ret = bc_motocon_parser_device_name( bytes, length );;
+        break;
+
     case BC_MOTOCON_COMMAND_CODE_CONNECT_SERVER_LIST_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_INFORMATION_SUPPORT_ID_LIST_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_FFD_REQUEST:
@@ -424,6 +428,38 @@ if( length == 4 )
             NULL != bc_motocon_callbacks[i]->language_type_callback )
             {
             bc_motocon_callbacks[i]->language_type_callback( bytes[3] );
+            }
+        }
+    return BC_MOTOCON_PARSE_SUCCESS;
+    }
+return BC_MOTOCON_PARSE_INVALID_INPUT;
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_parser_device_name
+*
+* Parse weather and post callback.
+*
+*********************************************************************/
+bc_motocon_parse_result_t bc_motocon_parser_device_name
+    (
+    const uint8_t* bytes,
+    const uint32_t length
+    )
+{
+int8_t name_length = length - 3;
+if( name_length >= 0 )
+    {
+    const uint8_t* name_content = bytes + 3;
+    BC_MOTOCON_PRINTF( "%s, length = %d\r\n", __FUNCTION__, name_length );
+    for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
+        {
+        if( NULL != bc_motocon_callbacks[i] &&
+            NULL != bc_motocon_callbacks[i]->device_name_callback )
+            {
+            bc_motocon_callbacks[i]->device_name_callback( name_length, name_length ? name_content : NULL );
             }
         }
     return BC_MOTOCON_PARSE_SUCCESS;
