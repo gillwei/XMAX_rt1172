@@ -428,7 +428,7 @@ PIT_SetTimerPeriod( PIT1, kPIT_Chnl_0, USEC_TO_COUNT( PIT_PERIOD_uS, PIT_SOURCE_
 * @brief
 *
 *********************************************************************/
-void adcetc_config
+static void adcetc_config
     (
     void
     )
@@ -456,18 +456,26 @@ adcEtcTriggerChainConfig.enableB2BMode       = true;
 adcEtcTriggerChainConfig.ADCHCRegisterSelect = 1U << ADC_ETC_TFT_HW_TGR_GROUP;
 adcEtcTriggerChainConfig.ADCChannelSelect    = ADC_ETC_TFT_CHANNEL;
 adcEtcTriggerChainConfig.InterruptEnable     = kADC_ETC_Done0InterruptEnable;
+#if defined(FSL_FEATURE_ADC_ETC_HAS_TRIGm_CHAIN_a_b_IEn_EN) && FSL_FEATURE_ADC_ETC_HAS_TRIGm_CHAIN_a_b_IEn_EN
+    adcEtcTriggerChainConfig.enableIrq           = true; /* Enable the IRQ. */
+#endif
 ADC_ETC_SetTriggerChainConfig( ADC_ETC, ADC_ETC_TRIGGER_GROUP, 0U, &adcEtcTriggerChainConfig );
 
 //trigger 0 chain 1
 adcEtcTriggerChainConfig.ADCHCRegisterSelect = 1U << ADC_ETC_PCBA_HW_TGR_GROUP;
 adcEtcTriggerChainConfig.ADCChannelSelect = ADC_ETC_PCBA_CHANNEL;
-adcEtcTriggerChainConfig.InterruptEnable = kADC_ETC_Done0InterruptEnable;
+#if defined(FSL_FEATURE_ADC_ETC_HAS_TRIGm_CHAIN_a_b_IEn_EN) && FSL_FEATURE_ADC_ETC_HAS_TRIGm_CHAIN_a_b_IEn_EN
+    adcEtcTriggerChainConfig.enableIrq           = true; /* Enable the IRQ. */
+#endif
 ADC_ETC_SetTriggerChainConfig( ADC_ETC, ADC_ETC_TRIGGER_GROUP, 1U, &adcEtcTriggerChainConfig );
 
 //trigger 0 chain 2
 adcEtcTriggerChainConfig.ADCHCRegisterSelect = 1U << ADC_ETC_VATT_HW_TGR_GROUP;
 adcEtcTriggerChainConfig.ADCChannelSelect = ADC_ETC_VBATT_CHANNEL;
 adcEtcTriggerChainConfig.InterruptEnable = kADC_ETC_Done0InterruptEnable;
+#if defined(FSL_FEATURE_ADC_ETC_HAS_TRIGm_CHAIN_a_b_IEn_EN) && FSL_FEATURE_ADC_ETC_HAS_TRIGm_CHAIN_a_b_IEn_EN
+    adcEtcTriggerChainConfig.enableIrq           = true; /* Enable the IRQ. */
+#endif
 ADC_ETC_SetTriggerChainConfig( ADC_ETC, ADC_ETC_TRIGGER_GROUP, 2U, &adcEtcTriggerChainConfig );
 
 EnableIRQ( ADC_ETC_IRQ0_IRQn );
