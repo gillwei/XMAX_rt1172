@@ -291,9 +291,18 @@ class Main : Core::Group
         }
       $endif
 
-      if( StatusBar::MAX_PHONE_CELL_SIGNAL_LEVEL >= PhoneCellSignalLevel )
+      if( 0 == PhoneCellSignalLevel )
       {
-        SignalLevelIcon.FrameNumber = PhoneCellSignalLevel;
+        SignalLevelIcon.Visible = false;
+      }
+      else if( StatusBar::MAX_PHONE_CELL_SIGNAL_LEVEL >= PhoneCellSignalLevel )
+      {
+        SignalLevelIcon.FrameNumber = PhoneCellSignalLevel - 1;
+        SignalLevelIcon.Visible = true;
+      }
+      else
+      {
+        // empty
       }
     }
 
@@ -565,4 +574,4 @@ const uint8 BATTERY_PERCENTAGE_LEVEL5 = 81;
 // Phone cell signal level ranging from 0 to 4
 $rect <250,310,530,350>
 $output false
-const int32 MAX_PHONE_CELL_SIGNAL_LEVEL = 4;
+const int32 MAX_PHONE_CELL_SIGNAL_LEVEL = 5;

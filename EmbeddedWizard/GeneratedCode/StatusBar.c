@@ -454,10 +454,19 @@ void StatusBarMain_UpdatePhoneCellSignalLevelIcon( StatusBarMain _this )
     XUInt8 PhoneCellSignalLevel = 0;
     PhoneCellSignalLevel = BC_motocon_get_phone_cell_signal_level();
 
-    if ( 4 >= PhoneCellSignalLevel )
+    if ( 0 == PhoneCellSignalLevel )
     {
-      ViewsImage_OnSetFrameNumber( &_this->SignalLevelIcon, PhoneCellSignalLevel );
+      ViewsImage_OnSetVisible( &_this->SignalLevelIcon, 0 );
     }
+    else
+      if ( 5 >= PhoneCellSignalLevel )
+      {
+        ViewsImage_OnSetFrameNumber( &_this->SignalLevelIcon, PhoneCellSignalLevel 
+        - 1 );
+        ViewsImage_OnSetVisible( &_this->SignalLevelIcon, 1 );
+      }
+      else
+        ;
   }
 
   ViewsImage_OnSetVisible( &_this->SignalLevelIcon, _this->IsMotoConConnected );
