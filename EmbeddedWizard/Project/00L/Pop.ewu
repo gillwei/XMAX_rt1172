@@ -34,7 +34,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
     if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
     {
       ConnectionFailedTimer.Enabled = false;
-      PresentDialog( new Weather::WEA01_Main, null, null, null, null, null, null, null, null, false );
+      Owner.SwitchToDialog( new Weather::WEA01_Main, null, null, null, null, null, null, null, null, null, false );
     }
   }
 
@@ -59,7 +59,6 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
   {
     ConnectionFailedTimer.Enabled = false;
     PresentDialog( new Pop::POP09_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
-
   }
 
   $rect <530,260,730,300>

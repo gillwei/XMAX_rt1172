@@ -194,8 +194,8 @@ void PopPOP08_WeatherLoadingUI_OnWeatherLoadingUpdateSlot( PopPOP08_WeatherLoadi
   if ( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->IsWeatherInfoReceived )
   {
     CoreTimer_OnSetEnabled( &_this->ConnectionFailedTimer, 0 );
-    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( WeatherWEA01_Main, 
-    0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( WeatherWEA01_Main, 
+    0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
   }
 }
 
