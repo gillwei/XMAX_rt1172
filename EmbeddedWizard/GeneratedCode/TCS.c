@@ -54,6 +54,7 @@ void TCSTCS01_Main__Init( TCSTCS01_Main _this, XObject aLink, XHandle aArg )
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  _this->Super2.SlideOutEffectEnabled = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 1 );
   _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, TCSTCS01_Main_OnVehicleDataReceivedSlot );

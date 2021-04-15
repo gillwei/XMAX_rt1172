@@ -17,6 +17,9 @@ class TCS01_Main : Menu::BaseMenuView
   $rect <20,350,220,390>
   inherited property DDModeEnabled = true;
 
+  $rect <20,400,220,440>
+  inherited var SlideOutEffectEnabled = true;
+
   $rect <520,30,720,70>
   inherited method LoadItemClass()
   {

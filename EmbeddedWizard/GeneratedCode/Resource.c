@@ -181,18 +181,6 @@ EW_RES_WITHOUT_VARIANTS( ResourceIconMusicSmall )
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconMusicLarge' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconMusicLarge )
 
-/* Include a file containing the bitmap resource : 'Resource::IconTcsSmall' */
-#include "_ResourceIconTcsSmall.h"
-
-/* Table with links to derived variants of the bitmap resource : 'Resource::IconTcsSmall' */
-EW_RES_WITHOUT_VARIANTS( ResourceIconTcsSmall )
-
-/* Include a file containing the bitmap resource : 'Resource::IconTcsLarge' */
-#include "_ResourceIconTcsLarge.h"
-
-/* Table with links to derived variants of the bitmap resource : 'Resource::IconTcsLarge' */
-EW_RES_WITHOUT_VARIANTS( ResourceIconTcsLarge )
-
 /* Include a file containing the bitmap resource : 'Resource::IconOdoTripSmall' */
 #include "_ResourceIconOdoTripSmall.h"
 

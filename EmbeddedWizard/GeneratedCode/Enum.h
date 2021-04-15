@@ -96,11 +96,10 @@ typedef enum
   EnumLauncherItemNOTIFICATION          = 5,
   EnumLauncherItemWEATHER               = 6,
   EnumLauncherItemSETTINGS              = 7,
-  EnumLauncherItemTRACTION_CONTROL      = 8,
-  EnumLauncherItemSEAT_HEATER           = 9,
-  EnumLauncherItemGRIP_WARMER           = 10,
-  EnumLauncherItemWIND_SCREEN           = 11,
-  EnumLauncherItemTOTAL                 = 12
+  EnumLauncherItemSEAT_HEATER           = 8,
+  EnumLauncherItemGRIP_WARMER           = 9,
+  EnumLauncherItemWIND_SCREEN           = 10,
+  EnumLauncherItemTOTAL                 = 11
 } EnumLauncherItem;
 
 /* User defined enumeration: 'Enum::KeyTriggerMode' */
@@ -113,15 +112,17 @@ typedef enum
 /* User defined enumeration: 'Enum::MainSettingItem' */
 typedef enum
 {
-  EnumMainSettingItemConnection         = 0,
-  EnumMainSettingItemClock              = 1,
-  EnumMainSettingItemBrightness         = 2,
-  EnumMainSettingItemUnit               = 3,
-  EnumMainSettingItemGripWarmerSettings = 4,
-  EnumMainSettingItemSeatHeaterSettings = 5,
-  EnumMainSettingItemSystemInfo         = 6,
-  EnumMainSettingItemLegalInfo          = 7,
-  EnumMainSettingItemReset              = 8
+  EnumMainSettingItemTRACTION_CONTROL   = 0,
+  EnumMainSettingItemCONNECTION         = 1,
+  EnumMainSettingItemINFORMATION_RESET  = 2,
+  EnumMainSettingItemCLOCK              = 3,
+  EnumMainSettingItemBRIGHTNESS         = 4,
+  EnumMainSettingItemUNIT               = 5,
+  EnumMainSettingItemGRIP_WARMER        = 6,
+  EnumMainSettingItemSEAT_HEATER        = 7,
+  EnumMainSettingItemSYSTEM_INFO        = 8,
+  EnumMainSettingItemLEGAL_INFO         = 9,
+  EnumMainSettingItemTOTAL              = 10
 } EnumMainSettingItem;
 
 /* User defined enumeration: 'Enum::NaviSettingItem' */

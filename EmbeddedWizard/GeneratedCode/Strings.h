@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/04/14 11:09:12 */
+   Generated: 2021/04/15 09:06:41 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -124,9 +124,6 @@ extern const XStringRes StringsLNC_WEATHER;
 /* User defined constant: 'Strings::LNC_NOTIFICATION' */
 extern const XStringRes StringsLNC_NOTIFICATION;
 
-/* User defined constant: 'Strings::LNC_TRACTION_CONTROL' */
-extern const XStringRes StringsLNC_TRACTION_CONTROL;
-
 /* User defined constant: 'Strings::LNC_SEAT_HEATER' */
 extern const XStringRes StringsLNC_SEAT_HEATER;
 
@@ -196,6 +193,9 @@ extern const XStringRes StringsPOP07_LAUNCH_APP;
 /* User defined constant: 'Strings::POP09_CONNECTION_FAILED' */
 extern const XStringRes StringsPOP09_CONNECTION_FAILED;
 
+/* User defined constant: 'Strings::SET01_TRACTION_CONTROL' */
+extern const XStringRes StringsSET01_TRACTION_CONTROL;
+
 /* User defined constant: 'Strings::SET01_CONNECTION' */
 extern const XStringRes StringsSET01_CONNECTION;
 
@@ -220,8 +220,8 @@ extern const XStringRes StringsSET01_SYSTEM_INFO;
 /* User defined constant: 'Strings::SET01_LEGAL_INFO' */
 extern const XStringRes StringsSET01_LEGAL_INFO;
 
-/* User defined constant: 'Strings::SET01_RESET' */
-extern const XStringRes StringsSET01_RESET;
+/* User defined constant: 'Strings::SET01_INFO_RESET' */
+extern const XStringRes StringsSET01_INFO_RESET;
 
 /* User defined constant: 'Strings::SET03_Y_CONNECT_APP_PAIRING' */
 extern const XStringRes StringsSET03_Y_CONNECT_APP_PAIRING;

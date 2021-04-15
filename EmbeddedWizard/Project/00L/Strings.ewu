@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/04/14 11:09:12
+// Generated: 2021/04/15 09:06:41
 
 $output false
 const string ARGUMENT_STR =
@@ -417,12 +417,6 @@ const string LNC_NOTIFICATION =
 );
 
 $output false
-const string LNC_TRACTION_CONTROL =
-(
-  Default = "Traction Control";
-);
-
-$output false
 const string LNC_SEAT_HEATER =
 (
   Default = "Seat Heater";
@@ -585,6 +579,12 @@ const string POP09_CONNECTION_FAILED =
 );
 
 $output false
+const string SET01_TRACTION_CONTROL =
+(
+  Default = "Traction Control";
+);
+
+$output false
 const string SET01_CONNECTION =
 (
   Default = "Connection";
@@ -633,9 +633,9 @@ const string SET01_LEGAL_INFO =
 );
 
 $output false
-const string SET01_RESET =
+const string SET01_INFO_RESET =
 (
-  Default = "Reset";
+  Default = "Information / Reset";
 );
 
 $output false

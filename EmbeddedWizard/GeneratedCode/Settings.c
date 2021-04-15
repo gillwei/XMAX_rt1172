@@ -73,6 +73,7 @@
 #include "_SettingsSET37_3rdPartyLicenses.h"
 #include "_SettingsSET9_10_11_BtConnectionResult.h"
 #include "_SettingsTimeoutDialog.h"
+#include "_TCSTCS01_Main.h"
 #include "_UnitUNT01_UnitSettingMenu.h"
 #include "_ViewsBorder.h"
 #include "_ViewsImage.h"
@@ -225,15 +226,6 @@ void SettingsSET01_MainSettingMenu__Init( SettingsSET01_MainSettingMenu _this, X
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 9 );
   MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
-  _this->Settings[ 0 ] = EnumMainSettingItemConnection;
-  _this->Settings[ 1 ] = EnumMainSettingItemClock;
-  _this->Settings[ 2 ] = EnumMainSettingItemBrightness;
-  _this->Settings[ 3 ] = EnumMainSettingItemUnit;
-  _this->Settings[ 4 ] = EnumMainSettingItemGripWarmerSettings;
-  _this->Settings[ 5 ] = EnumMainSettingItemSeatHeaterSettings;
-  _this->Settings[ 6 ] = EnumMainSettingItemSystemInfo;
-  _this->Settings[ 7 ] = EnumMainSettingItemLegalInfo;
-  _this->Settings[ 8 ] = EnumMainSettingItemReset;
 
   /* Call the user defined constructor */
   SettingsSET01_MainSettingMenu_Init( _this, aArg );
@@ -262,42 +254,62 @@ void SettingsSET01_MainSettingMenu__Done( SettingsSET01_MainSettingMenu _this )
 void SettingsSET01_MainSettingMenu_Init( SettingsSET01_MainSettingMenu _this, XHandle 
   aArg )
 {
-  XInt32 NoOfItems;
-  XInt32 ItemIdx;
   XInt32 i;
+  XInt32 NoOfItems;
+  XEnum SettingItem;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  NoOfItems = 7;
-  ItemIdx = 4;
-  i = 0;
+  NoOfItems = 0;
 
-  if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleSupportedFunctionGRIP_WARMER ))
+  for ( i = 0; i < 10; i++ )
   {
-    NoOfItems++;
-    ItemIdx++;
-  }
-  else
-  {
-    _this->Settings[ EwCheckIndex( ItemIdx, 9 )] = _this->Settings[ EwCheckIndex( 
-    ItemIdx + 1, 9 )];
-  }
+    SettingItem = (XEnum)i;
 
-  if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleSupportedFunctionSEAT_HEATER ))
-  {
-    NoOfItems++;
-    ItemIdx++;
-  }
-
-  if ( NoOfItems < 9 )
-  {
-    for ( i = 6; i <= 8; i++, ItemIdx++ )
+    switch ( SettingItem )
     {
-      _this->Settings[ EwCheckIndex( ItemIdx, 9 )] = _this->Settings[ EwCheckIndex( 
-      i, 9 )];
+      case EnumMainSettingItemTRACTION_CONTROL :
+      {
+        if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            EnumVehicleSupportedFunctionTCS ))
+        {
+          _this->Settings[ EwCheckIndex( NoOfItems, 10 )] = SettingItem;
+          NoOfItems++;
+        }
+      }
+      break;
+
+      case EnumMainSettingItemGRIP_WARMER :
+      {
+        if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            EnumVehicleSupportedFunctionGRIP_WARMER ))
+        {
+          _this->Settings[ EwCheckIndex( NoOfItems, 10 )] = SettingItem;
+          NoOfItems++;
+        }
+      }
+      break;
+
+      case EnumMainSettingItemSEAT_HEATER :
+      {
+        if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            EnumVehicleSupportedFunctionSEAT_HEATER ))
+        {
+          _this->Settings[ EwCheckIndex( NoOfItems, 10 )] = SettingItem;
+          NoOfItems++;
+        }
+      }
+      break;
+
+      default : 
+      {
+        _this->Settings[ EwCheckIndex( NoOfItems, 10 )] = SettingItem;
+        NoOfItems++;
+      }
     }
   }
 
@@ -329,42 +341,46 @@ XString SettingsSET01_MainSettingMenu_LoadItemTitle( SettingsSET01_MainSettingMe
 {
   XString Title = 0;
 
-  switch ( _this->Settings[ EwCheckIndex( aItemNo, 9 )])
+  switch ( _this->Settings[ EwCheckIndex( aItemNo, 10 )])
   {
-    case EnumMainSettingItemConnection :
+    case EnumMainSettingItemTRACTION_CONTROL :
+      Title = EwLoadString( &StringsSET01_TRACTION_CONTROL );
+    break;
+
+    case EnumMainSettingItemCONNECTION :
       Title = EwLoadString( &StringsSET01_CONNECTION );
     break;
 
-    case EnumMainSettingItemClock :
+    case EnumMainSettingItemCLOCK :
       Title = EwLoadString( &StringsSET01_CLOCK );
     break;
 
-    case EnumMainSettingItemBrightness :
+    case EnumMainSettingItemBRIGHTNESS :
       Title = EwLoadString( &StringsSET01_BRIGHTNESS );
     break;
 
-    case EnumMainSettingItemUnit :
+    case EnumMainSettingItemUNIT :
       Title = EwLoadString( &StringsSET01_UNIT );
     break;
 
-    case EnumMainSettingItemGripWarmerSettings :
+    case EnumMainSettingItemGRIP_WARMER :
       Title = EwLoadString( &StringsSET01_GRIP_WARMER_SETTINGS );
     break;
 
-    case EnumMainSettingItemSeatHeaterSettings :
+    case EnumMainSettingItemSEAT_HEATER :
       Title = EwLoadString( &StringsSET01_SEAT_HEATER_SETTINGS );
     break;
 
-    case EnumMainSettingItemSystemInfo :
+    case EnumMainSettingItemSYSTEM_INFO :
       Title = EwLoadString( &StringsSET01_SYSTEM_INFO );
     break;
 
-    case EnumMainSettingItemLegalInfo :
+    case EnumMainSettingItemLEGAL_INFO :
       Title = EwLoadString( &StringsSET01_LEGAL_INFO );
     break;
 
-    case EnumMainSettingItemReset :
-      Title = EwLoadString( &StringsSET01_RESET );
+    case EnumMainSettingItemINFORMATION_RESET :
+      Title = EwLoadString( &StringsSET01_INFO_RESET );
     break;
 
     default : 
@@ -385,9 +401,13 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
 
   Dialog = 0;
 
-  switch ( _this->Settings[ EwCheckIndex( aItemNo, 9 )])
+  switch ( _this->Settings[ EwCheckIndex( aItemNo, 10 )])
   {
-    case EnumMainSettingItemConnection :
+    case EnumMainSettingItemTRACTION_CONTROL :
+      Dialog = ((ComponentsBaseComponent)EwNewObject( TCSTCS01_Main, 0 ));
+    break;
+
+    case EnumMainSettingItemCONNECTION :
     {
       if ( !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode )
       {
@@ -397,21 +417,25 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
     }
     break;
 
-    case EnumMainSettingItemClock :
+    case EnumMainSettingItemINFORMATION_RESET :
       ;
     break;
 
-    case EnumMainSettingItemBrightness :
+    case EnumMainSettingItemCLOCK :
+      ;
+    break;
+
+    case EnumMainSettingItemBRIGHTNESS :
       Dialog = ((ComponentsBaseComponent)EwNewObject( BrightnessBRT01_BrightnessSettingMenu, 
       0 ));
     break;
 
-    case EnumMainSettingItemUnit :
+    case EnumMainSettingItemUNIT :
       Dialog = ((ComponentsBaseComponent)EwNewObject( UnitUNT01_UnitSettingMenu, 
       0 ));
     break;
 
-    case EnumMainSettingItemGripWarmerSettings :
+    case EnumMainSettingItemGRIP_WARMER :
     {
       EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
       = EnumVehicleSupportedFunctionGRIP_WARMER;
@@ -422,7 +446,7 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
     }
     break;
 
-    case EnumMainSettingItemSeatHeaterSettings :
+    case EnumMainSettingItemSEAT_HEATER :
     {
       EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
       = EnumVehicleSupportedFunctionSEAT_HEATER;
@@ -433,17 +457,13 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
     }
     break;
 
-    case EnumMainSettingItemSystemInfo :
+    case EnumMainSettingItemSYSTEM_INFO :
       Dialog = ((ComponentsBaseComponent)EwNewObject( SettingsSET28_SystemInfo, 
       0 ));
     break;
 
-    case EnumMainSettingItemLegalInfo :
+    case EnumMainSettingItemLEGAL_INFO :
       Dialog = ((ComponentsBaseComponent)EwNewObject( SettingsSET35_LegalMenu, 0 ));
-    break;
-
-    case EnumMainSettingItemReset :
-      ;
     break;
 
     default : 
@@ -4056,6 +4076,7 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   ViewsText__Init( &_this->SoftwareVersionText, &_this->_XObject, 0 );
   CorePropertyObserver__Init( &_this->EsnObserver, &_this->_XObject, 0 );
   MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( SettingsSET28_SystemInfo );
@@ -4081,11 +4102,15 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
   &StringsSET28_SW_UPDATE ));
   MenuUpDownPushButtonSet_OnSetDownButtonEnabled( &_this->UpDownPushButtonSet, 0 );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const000F );
+  ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
+  | ViewsImageAlignmentScaleToFit );
   CoreGroup__Add( _this, ((CoreView)&_this->ESN ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->SoftwareVersionTitle ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->EsnText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->SoftwareVersionText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
   ViewsText_OnSetFont( &_this->ESN, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->SoftwareVersionTitle, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
@@ -4099,6 +4124,8 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), DeviceInterfaceSystemDeviceClass_OnGetESN, 
   DeviceInterfaceSystemDeviceClass_OnSetESN ));
   _this->UpDownPushButtonSet.OnUpButtonActivated = EwNewSlot( _this, SettingsSET28_SystemInfo_OnUnitIdButtonActivatedSlot );
+  ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
+  ResourcesBitmap ));
 
   /* Call the user defined constructor */
   SettingsSET28_SystemInfo_Init( _this, aArg );
@@ -4117,6 +4144,7 @@ void SettingsSET28_SystemInfo__ReInit( SettingsSET28_SystemInfo _this )
   ViewsText__ReInit( &_this->SoftwareVersionText );
   CorePropertyObserver__ReInit( &_this->EsnObserver );
   MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
+  ViewsImage__ReInit( &_this->Divider );
 }
 
 /* Finalizer method for the class 'Settings::SET28_SystemInfo' */
@@ -4132,6 +4160,7 @@ void SettingsSET28_SystemInfo__Done( SettingsSET28_SystemInfo _this )
   ViewsText__Done( &_this->SoftwareVersionText );
   CorePropertyObserver__Done( &_this->EsnObserver );
   MenuUpDownPushButtonSet__Done( &_this->UpDownPushButtonSet );
+  ViewsImage__Done( &_this->Divider );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_Super );

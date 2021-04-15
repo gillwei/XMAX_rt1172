@@ -110,6 +110,7 @@ EW_DEFINE_FIELDS( SettingsSET28_SystemInfo, ComponentsBaseMainBG )
   EW_OBJECT  ( SoftwareVersionText, ViewsText )
   EW_OBJECT  ( EsnObserver,     CorePropertyObserver )
   EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
+  EW_OBJECT  ( Divider,         ViewsImage )
 EW_END_OF_FIELDS( SettingsSET28_SystemInfo )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET28_SystemInfo' */

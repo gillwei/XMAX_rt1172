@@ -138,16 +138,13 @@ class LNC_Main : Components::BaseComponent
     attr Bounds = <810,360,1150,720>;
   }
 
-  $rect <850,450,1050,490>
-  var bool TCSEnabled = false;
-
-  $rect <850,490,1050,530>
+  $rect <850,460,1050,500>
   var bool SeatHeaterEnabled = false;
 
-  $rect <850,530,1050,570>
+  $rect <850,510,1050,550>
   var bool GripWarmerEnabled = false;
 
-  $rect <850,570,1050,610>
+  $rect <850,560,1050,600>
   var bool WindScreenEnabled = false;
 
   $rect <250,490,450,530>
@@ -160,8 +157,7 @@ class LNC_Main : Components::BaseComponent
     do
     {
       BaseItemNext = ( Enum::LauncherItem )( ( ( uint32 )BaseItemNext + 1 ) % ( TotalItemNum ) );
-      if( Enum::LauncherItem.TRACTION_CONTROL == BaseItemNext && !TCSEnabled ||
-          Enum::LauncherItem.SEAT_HEATER == BaseItemNext && !SeatHeaterEnabled ||
+      if( Enum::LauncherItem.SEAT_HEATER == BaseItemNext && !SeatHeaterEnabled ||
           Enum::LauncherItem.GRIP_WARMER == BaseItemNext && !GripWarmerEnabled ||
           Enum::LauncherItem.WIND_SCREEN == BaseItemNext && !WindScreenEnabled ||
           Enum::LauncherItem.PHONE == BaseItemNext && !DeviceInterface::NotificationDevice.IsPhoneCallStateActive() )
@@ -196,8 +192,7 @@ class LNC_Main : Components::BaseComponent
     do
     {
       BaseItemPrevious = ( Enum::LauncherItem )( ( ( uint32 )BaseItemPrevious + TotalItemNum - 1 ) % ( TotalItemNum ) );
-      if( Enum::LauncherItem.TRACTION_CONTROL == BaseItemPrevious && !TCSEnabled ||
-          Enum::LauncherItem.SEAT_HEATER == BaseItemPrevious && !SeatHeaterEnabled ||
+      if( Enum::LauncherItem.SEAT_HEATER == BaseItemPrevious && !SeatHeaterEnabled ||
           Enum::LauncherItem.GRIP_WARMER == BaseItemPrevious && !GripWarmerEnabled ||
           Enum::LauncherItem.WIND_SCREEN == BaseItemPrevious && !WindScreenEnabled ||
           Enum::LauncherItem.PHONE == BaseItemPrevious && !DeviceInterface::NotificationDevice.IsPhoneCallStateActive() )
@@ -276,7 +271,6 @@ class LNC_Main : Components::BaseComponent
         }
       }
       case Enum::LauncherItem.SETTINGS: ItemDialog = new Settings::SET01_MainSettingMenu;
-      case Enum::LauncherItem.TRACTION_CONTROL: ItemDialog = new TCS::TCS01_Main;
       case Enum::LauncherItem.SEAT_HEATER:
       {
         DeviceInterface::VehicleDevice.CurrentVehicleFunction = Enum::VehicleSupportedFunction.SEAT_HEATER;
@@ -399,13 +393,12 @@ class LNC_Main : Components::BaseComponent
   $rect <850,410,1050,450>
   method void GetVehicleSupportedFeature()
   {
-    TCSEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TCS );
     SeatHeaterEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.SEAT_HEATER );
     GripWarmerEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.GRIP_WARMER );
     WindScreenEnabled = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.WIND_SCREEN );
   }
 
-  $rect <850,620,1130,660>
+  $rect <850,610,1130,650>
   object Core::SystemEventHandler VehicleDataReceivedEventHandler
   {
     preset OnEvent = OnVehicleDataReceivedSlot;
@@ -663,7 +656,6 @@ class LNC_RotaryPlate : Components::BaseComponent
       case Enum::LauncherItem.NOTIFICATION: IconBitmap = Resource::IconNotificationSmall;
       case Enum::LauncherItem.WEATHER: IconBitmap = Resource::IconWeatherSmall;
       case Enum::LauncherItem.SETTINGS: IconBitmap = Resource::IconSettingSmall;
-      case Enum::LauncherItem.TRACTION_CONTROL: IconBitmap = Resource::IconTcsSmall;
       case Enum::LauncherItem.SEAT_HEATER:
       {
         VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.SEAT_HEATER_STATUS );
@@ -723,7 +715,6 @@ class LNC_RotaryPlate : Components::BaseComponent
       case Enum::LauncherItem.NOTIFICATION: IconBitmap = Resource::IconNotificationLarge;
       case Enum::LauncherItem.WEATHER: IconBitmap = Resource::IconWeatherLarge;
       case Enum::LauncherItem.SETTINGS: IconBitmap = Resource::IconSettingLarge;
-      case Enum::LauncherItem.TRACTION_CONTROL: IconBitmap = Resource::IconTcsLarge;
       case Enum::LauncherItem.SEAT_HEATER:
       {
         VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.SEAT_HEATER_STATUS );
@@ -814,7 +805,7 @@ class LNC_RotaryPlate : Components::BaseComponent
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
     preset Bounds = <27,88,77,138>;
     preset FrameNumber = 1;
-    preset Bitmap = Resource::IconTcsSmall;
+    preset Bitmap = Resource::IconMusicSmall;
     preset Visible = false;
   }
 
@@ -842,7 +833,7 @@ class LNC_RotaryPlate : Components::BaseComponent
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
     preset Bounds = <13,74,91,152>;
     preset FrameNumber = 1;
-    preset Bitmap = Resource::IconTcsLarge;
+    preset Bitmap = Resource::IconMusicLarge;
     preset Visible = true;
   }
 
@@ -931,7 +922,6 @@ class LNC_Base : Core::Group
       case Enum::LauncherItem.NOTIFICATION: Title = Strings::LNC_NOTIFICATION;
       case Enum::LauncherItem.WEATHER: Title = Strings::LNC_WEATHER;
       case Enum::LauncherItem.SETTINGS: Title = Strings::LNC_SETTINGS;
-      case Enum::LauncherItem.TRACTION_CONTROL: Title = Strings::LNC_TRACTION_CONTROL;
       case Enum::LauncherItem.SEAT_HEATER: Title = Strings::LNC_SEAT_HEATER;
       case Enum::LauncherItem.GRIP_WARMER: Title = Strings::GPW01_GRIP_WARMER;
       case Enum::LauncherItem.WIND_SCREEN: Title = Strings::WSC01_WIND_SCREEN;

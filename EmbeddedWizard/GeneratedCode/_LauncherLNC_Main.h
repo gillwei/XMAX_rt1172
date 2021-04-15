@@ -115,7 +115,6 @@ EW_DEFINE_FIELDS( LauncherLNC_Main, ComponentsBaseComponent )
   EW_VARIABLE( WindScreenEnabled, XBool )
   EW_VARIABLE( GripWarmerEnabled, XBool )
   EW_VARIABLE( SeatHeaterEnabled, XBool )
-  EW_VARIABLE( TCSEnabled,      XBool )
 EW_END_OF_FIELDS( LauncherLNC_Main )
 
 /* Virtual Method Table (VMT) for the class : 'Launcher::LNC_Main' */

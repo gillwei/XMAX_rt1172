@@ -119,18 +119,15 @@ enum LauncherItem
   item SETTINGS;
 
   $rect <10,410,210,450>
-  item TRACTION_CONTROL;
-
-  $rect <10,460,210,500>
   item SEAT_HEATER;
 
-  $rect <10,510,210,550>
+  $rect <10,460,210,500>
   item GRIP_WARMER;
 
-  $rect <10,560,210,600>
+  $rect <10,510,210,550>
   item WIND_SCREEN;
 
-  $rect <10,610,210,650>
+  $rect <10,560,210,600>
   item TOTAL;
 }
 
@@ -150,31 +147,37 @@ $output false
 enum MainSettingItem
 {
   $rect <10,10,210,50>
-  item Connection;
+  item TRACTION_CONTROL;
 
   $rect <10,60,210,100>
-  item Clock;
+  item CONNECTION;
 
   $rect <10,110,210,150>
-  item Brightness;
+  item INFORMATION_RESET;
 
   $rect <10,160,210,200>
-  item Unit;
+  item CLOCK;
 
   $rect <10,210,210,250>
-  item GripWarmerSettings;
+  item BRIGHTNESS;
 
   $rect <240,10,440,50>
-  item SeatHeaterSettings;
+  item UNIT;
 
   $rect <240,60,440,100>
-  item SystemInfo;
+  item GRIP_WARMER;
 
   $rect <240,110,440,150>
-  item LegalInfo;
+  item SEAT_HEATER;
 
   $rect <240,160,440,200>
-  item Reset;
+  item SYSTEM_INFO;
+
+  $rect <240,210,440,250>
+  item LEGAL_INFO;
+
+  $rect <470,10,670,50>
+  item TOTAL;
 }
 
 $rect <260,120,460,160>

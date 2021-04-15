@@ -51,7 +51,6 @@
 #include "_SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction.h"
 #include "_SeatHeater_GripWarmerSHT02_GPW02_Main.h"
 #include "_SettingsSET01_MainSettingMenu.h"
-#include "_TCSTCS01_Main.h"
 #include "_TelephoneTEL02_ActiveCall.h"
 #include "_ViewsImage.h"
 #include "_ViewsText.h"
@@ -375,7 +374,7 @@ XEnum LauncherLNC_Main_GetInitialSelectedItem( LauncherLNC_Main _this )
 /* 'C' function for method : 'Launcher::LNC_Main.GetNextItem()' */
 XEnum LauncherLNC_Main_GetNextItem( LauncherLNC_Main _this, XEnum aBaseItem )
 {
-  XUInt32 TotalItemNum = 12;
+  XUInt32 TotalItemNum = 11;
   XEnum BaseItemNext = aBaseItem;
   XBool bypass = 0;
 
@@ -383,8 +382,7 @@ XEnum LauncherLNC_Main_GetNextItem( LauncherLNC_Main _this, XEnum aBaseItem )
   {
     BaseItemNext = (XEnum)(((XUInt32)BaseItemNext + 1 ) % TotalItemNum );
 
-    if (((((( EnumLauncherItemTRACTION_CONTROL == BaseItemNext ) && !_this->TCSEnabled ) 
-        || (( EnumLauncherItemSEAT_HEATER == BaseItemNext ) && !_this->SeatHeaterEnabled )) 
+    if ((((( EnumLauncherItemSEAT_HEATER == BaseItemNext ) && !_this->SeatHeaterEnabled ) 
         || (( EnumLauncherItemGRIP_WARMER == BaseItemNext ) && !_this->GripWarmerEnabled )) 
         || (( EnumLauncherItemWIND_SCREEN == BaseItemNext ) && !_this->WindScreenEnabled )) 
         || (( EnumLauncherItemPHONE == BaseItemNext ) && !DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( 
@@ -405,7 +403,7 @@ XEnum LauncherLNC_Main_GetNextItem( LauncherLNC_Main _this, XEnum aBaseItem )
 /* 'C' function for method : 'Launcher::LNC_Main.GetPreviousItem()' */
 XEnum LauncherLNC_Main_GetPreviousItem( LauncherLNC_Main _this, XEnum aBaseItem )
 {
-  XUInt32 TotalItemNum = 12;
+  XUInt32 TotalItemNum = 11;
   XEnum BaseItemPrevious = aBaseItem;
   XBool bypass = 0;
 
@@ -414,8 +412,7 @@ XEnum LauncherLNC_Main_GetPreviousItem( LauncherLNC_Main _this, XEnum aBaseItem 
     BaseItemPrevious = (XEnum)((((XUInt32)BaseItemPrevious + TotalItemNum ) - 1 ) 
     % TotalItemNum );
 
-    if (((((( EnumLauncherItemTRACTION_CONTROL == BaseItemPrevious ) && !_this->TCSEnabled ) 
-        || (( EnumLauncherItemSEAT_HEATER == BaseItemPrevious ) && !_this->SeatHeaterEnabled )) 
+    if ((((( EnumLauncherItemSEAT_HEATER == BaseItemPrevious ) && !_this->SeatHeaterEnabled ) 
         || (( EnumLauncherItemGRIP_WARMER == BaseItemPrevious ) && !_this->GripWarmerEnabled )) 
         || (( EnumLauncherItemWIND_SCREEN == BaseItemPrevious ) && !_this->WindScreenEnabled )) 
         || (( EnumLauncherItemPHONE == BaseItemPrevious ) && !DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( 
@@ -535,10 +532,6 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
       0 ));
     break;
 
-    case EnumLauncherItemTRACTION_CONTROL :
-      ItemDialog = ((ComponentsBaseComponent)EwNewObject( TCSTCS01_Main, 0 ));
-    break;
-
     case EnumLauncherItemSEAT_HEATER :
     {
       EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
@@ -605,9 +598,6 @@ void LauncherLNC_Main_DismissChildDialogs( LauncherLNC_Main _this )
 /* 'C' function for method : 'Launcher::LNC_Main.GetVehicleSupportedFeature()' */
 void LauncherLNC_Main_GetVehicleSupportedFeature( LauncherLNC_Main _this )
 {
-  _this->TCSEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
-  EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-  EnumVehicleSupportedFunctionTCS );
   _this->SeatHeaterEnabled = DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
   EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
   EnumVehicleSupportedFunctionSEAT_HEATER );
@@ -831,13 +821,13 @@ void LauncherLNC_RotaryPlate__Init( LauncherLNC_RotaryPlate _this, XObject aLink
   ViewsImage_OnSetBitmap( &_this->BaseImage, EwLoadResource( &ResourceLCBase, ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->Icon0, EwLoadResource( &ResourceIconMusicSmall, 
   ResourcesBitmap ));
-  ViewsImage_OnSetBitmap( &_this->Icon1, EwLoadResource( &ResourceIconTcsSmall, 
+  ViewsImage_OnSetBitmap( &_this->Icon1, EwLoadResource( &ResourceIconMusicSmall, 
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->Icon2, EwLoadResource( &ResourceIconPhoneSmall, 
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->Icon3, EwLoadResource( &ResourceIconSettingSmall, 
   ResourcesBitmap ));
-  ViewsImage_OnSetBitmap( &_this->IconSelectedLarge, EwLoadResource( &ResourceIconTcsLarge, 
+  ViewsImage_OnSetBitmap( &_this->IconSelectedLarge, EwLoadResource( &ResourceIconMusicLarge, 
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->HighlightImage, EwLoadResource( &ResourceLCHighlight, 
   ResourcesBitmap ));
@@ -1061,10 +1051,6 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( LauncherLNC_
       IconBitmap = EwLoadResource( &ResourceIconSettingSmall, ResourcesBitmap );
     break;
 
-    case EnumLauncherItemTRACTION_CONTROL :
-      IconBitmap = EwLoadResource( &ResourceIconTcsSmall, ResourcesBitmap );
-    break;
-
     case EnumLauncherItemSEAT_HEATER :
     {
       VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
@@ -1190,10 +1176,6 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetLargeIconResourceOfItem( LauncherLNC_
 
     case EnumLauncherItemSETTINGS :
       IconBitmap = EwLoadResource( &ResourceIconSettingLarge, ResourcesBitmap );
-    break;
-
-    case EnumLauncherItemTRACTION_CONTROL :
-      IconBitmap = EwLoadResource( &ResourceIconTcsLarge, ResourcesBitmap );
     break;
 
     case EnumLauncherItemSEAT_HEATER :
@@ -1476,10 +1458,6 @@ XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum
 
     case EnumLauncherItemSETTINGS :
       Title = EwLoadString( &StringsLNC_SETTINGS );
-    break;
-
-    case EnumLauncherItemTRACTION_CONTROL :
-      Title = EwLoadString( &StringsLNC_TRACTION_CONTROL );
     break;
 
     case EnumLauncherItemSEAT_HEATER :

@@ -102,12 +102,6 @@ EW_DECLARE_BITMAP_RES( ResourceIconMusicSmall )
 /* Bitmap resource : 'Resource::IconMusicLarge' */
 EW_DECLARE_BITMAP_RES( ResourceIconMusicLarge )
 
-/* Bitmap resource : 'Resource::IconTcsSmall' */
-EW_DECLARE_BITMAP_RES( ResourceIconTcsSmall )
-
-/* Bitmap resource : 'Resource::IconTcsLarge' */
-EW_DECLARE_BITMAP_RES( ResourceIconTcsLarge )
-
 /* Bitmap resource : 'Resource::IconOdoTripSmall' */
 EW_DECLARE_BITMAP_RES( ResourceIconOdoTripSmall )
 

@@ -290,30 +290,6 @@ resource Resources::Bitmap IconMusicLarge
   attr bitmapmode Mode = Default;
 }
 
-$rect <667,500,867,540>
-$output false
-resource Resources::Bitmap IconTcsSmall
-{
-  attr bitmapfile FileName = .\Res\launcher\50x50\LC12_S.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <50,50>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <667,543,867,583>
-$output false
-resource Resources::Bitmap IconTcsLarge
-{
-  attr bitmapfile FileName = .\Res\launcher\78x78\LC12_L.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize = <78,78>;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
 $rect <880,500,1080,540>
 $output false
 resource Resources::Bitmap IconOdoTripSmall
