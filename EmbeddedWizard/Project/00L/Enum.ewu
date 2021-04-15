@@ -517,6 +517,9 @@ enum VehicleRxType
 
   $rect <850,210,1050,250>
   item SUPPORT_FUNC_WIND_SCREEN;
+
+  $rect <850,260,1050,300>
+  item SUPPORT_FUNC_AIR_TEMPERATURE;
 }
 
 $rect <260,270,460,310>

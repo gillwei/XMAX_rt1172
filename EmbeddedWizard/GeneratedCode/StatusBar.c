@@ -47,6 +47,7 @@
 #include "Fonts.h"
 #include "Resource.h"
 #include "StatusBar.h"
+#include "Strings.h"
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
@@ -70,12 +71,14 @@ static const XRect _Const0009 = {{ 129, 3 }, { 161, 35 }};
 static const XRect _Const000A = {{ 162, 3 }, { 194, 35 }};
 static const XRect _Const000B = {{ 327, 3 }, { 359, 35 }};
 static const XRect _Const000C = {{ 360, 3 }, { 392, 35 }};
-static const XRect _Const000D = {{ 0, 0 }, { 82, 38 }};
-static const XRect _Const000E = {{ 1, 0 }, { 38, 37 }};
-static const XColor _Const000F = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const0010 = {{ 48, 0 }, { 82, 37 }};
-static const XRect _Const0011 = {{ 37, 0 }, { 48, 37 }};
-static const XStringRes _Const0012 = { _StringsDefault0, 0x0002 };
+static const XRect _Const000D = {{ 397, 1 }, { 452, 38 }};
+static const XRect _Const000E = {{ 454, 2 }, { 471, 36 }};
+static const XRect _Const000F = {{ 0, 0 }, { 82, 38 }};
+static const XRect _Const0010 = {{ 1, 0 }, { 38, 37 }};
+static const XColor _Const0011 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const0012 = {{ 48, 0 }, { 82, 37 }};
+static const XRect _Const0013 = {{ 37, 0 }, { 48, 37 }};
+static const XStringRes _Const0014 = { _StringsDefault0, 0x0002 };
 
 /* User defined inline code: 'StatusBar::Inline' */
 #include "BC_motocon_pub.h"
@@ -109,6 +112,8 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage__Init( &_this->MessageIcon, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->GripWarmerIcon, &_this->_XObject, 0 );
   ViewsImage__Init( &_this->SeatHeaterIcon, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->AirTemperatureText, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->UnitImage, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( StatusBarMain );
@@ -140,6 +145,13 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetVisible( &_this->GripWarmerIcon, 0 );
   CoreRectView__OnSetBounds( &_this->SeatHeaterIcon, _Const000C );
   ViewsImage_OnSetVisible( &_this->SeatHeaterIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->AirTemperatureText, _Const000D );
+  ViewsText_OnSetAlignment( &_this->AirTemperatureText, ViewsTextAlignmentAlignHorzRight 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->AirTemperatureText, 0 );
+  ViewsText_OnSetVisible( &_this->AirTemperatureText, 0 );
+  CoreRectView__OnSetBounds( &_this->UnitImage, _Const000E );
+  ViewsImage_OnSetVisible( &_this->UnitImage, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Clock ), 0 );
@@ -152,6 +164,8 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   CoreGroup__Add( _this, ((CoreView)&_this->MessageIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->GripWarmerIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->SeatHeaterIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->AirTemperatureText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->UnitImage ), 0 );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
   _this->MotoConEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnMotoConEventReceived );
@@ -191,6 +205,10 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->SeatHeaterIcon, EwLoadResource( &ResourceSeatHeaterIcon, 
   ResourcesBitmap ));
+  ViewsText_OnSetFont( &_this->AirTemperatureText, EwLoadResource( &FontsNotoSansMedium32pt, 
+  ResourcesFont ));
+  ViewsImage_OnSetBitmap( &_this->UnitImage, EwLoadResource( &ResourceTempUnit, 
+  ResourcesBitmap ));
 }
 
 /* Re-Initializer for the class 'StatusBar::Main' */
@@ -218,6 +236,8 @@ void StatusBarMain__ReInit( StatusBarMain _this )
   ViewsImage__ReInit( &_this->MessageIcon );
   ViewsImage__ReInit( &_this->GripWarmerIcon );
   ViewsImage__ReInit( &_this->SeatHeaterIcon );
+  ViewsText__ReInit( &_this->AirTemperatureText );
+  ViewsImage__ReInit( &_this->UnitImage );
 }
 
 /* Finalizer method for the class 'StatusBar::Main' */
@@ -245,6 +265,8 @@ void StatusBarMain__Done( StatusBarMain _this )
   ViewsImage__Done( &_this->MessageIcon );
   ViewsImage__Done( &_this->GripWarmerIcon );
   ViewsImage__Done( &_this->SeatHeaterIcon );
+  ViewsText__Done( &_this->AirTemperatureText );
+  ViewsImage__Done( &_this->UnitImage );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
@@ -507,6 +529,14 @@ void StatusBarMain_OnVehicleDataReceivedSlot( StatusBarMain _this, XObject sende
       }
       break;
 
+      case EnumVehicleRxTypeTEMPERATURE_UNIT :
+      case EnumVehicleRxTypeAIR_TEMPERATURE :
+      case EnumVehicleRxTypeSUPPORT_FUNC_AIR_TEMPERATURE :
+      {
+        StatusBarMain_UpdateAirTemperature( _this );
+      }
+      break;
+
       default : 
         ;
     }
@@ -604,6 +634,52 @@ void StatusBarMain_UpdateSeatHeaterIcon( StatusBarMain _this )
   }
 }
 
+/* 'C' function for method : 'StatusBar::Main.UpdateAirTemperature()' */
+void StatusBarMain_UpdateAirTemperature( StatusBarMain _this )
+{
+  if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleSupportedFunctionAIR_TEMPERATURE ))
+  {
+    DeviceInterfaceVehicleDataClass AirTemperatureContext = DeviceInterfaceVehicleDeviceClass_GetData( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      EnumVehicleRxTypeAIR_TEMPERATURE );
+    DeviceInterfaceVehicleDataClass TemepratureUnitContext = DeviceInterfaceVehicleDeviceClass_GetData( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      EnumVehicleRxTypeTEMPERATURE_UNIT );
+
+    if (( AirTemperatureContext != 0 ) && ( TemepratureUnitContext != 0 ))
+    {
+      if ( AirTemperatureContext->Valid )
+      {
+        if ( EnumTemperatureSettingItemTEMP_F == (XEnum)TemepratureUnitContext->DataUInt32 )
+        {
+          ViewsImage_OnSetFrameNumber( &_this->UnitImage, 1 );
+          ViewsText_OnSetString( &_this->AirTemperatureText, EwNewStringFloat(( 
+          AirTemperatureContext->DataFloat * 1.800000f ) + 32, 0, 0 ));
+        }
+        else
+        {
+          ViewsImage_OnSetFrameNumber( &_this->UnitImage, 0 );
+          ViewsText_OnSetString( &_this->AirTemperatureText, EwNewStringFloat( AirTemperatureContext->DataFloat, 
+          0, 0 ));
+        }
+      }
+      else
+      {
+        ViewsText_OnSetString( &_this->AirTemperatureText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
+      }
+
+      ViewsText_OnSetVisible( &_this->AirTemperatureText, 1 );
+      ViewsImage_OnSetVisible( &_this->UnitImage, 1 );
+    }
+  }
+  else
+  {
+    ViewsText_OnSetVisible( &_this->AirTemperatureText, 0 );
+    ViewsImage_OnSetVisible( &_this->UnitImage, 0 );
+  }
+}
+
 /* Variants derived from the class : 'StatusBar::Main' */
 EW_DEFINE_CLASS_VARIANTS( StatusBarMain )
 EW_END_OF_CLASS_VARIANTS( StatusBarMain )
@@ -663,24 +739,24 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
   _this->_VMT = EW_CLASS( StatusBarClock );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const000D );
-  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const000E );
+  CoreRectView__OnSetBounds( _this, _Const000F );
+  CoreRectView__OnSetBounds( &_this->ClockHourText, _Const0010 );
   ViewsText_OnSetAlignment( &_this->ClockHourText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockHourText, 0 );
-  ViewsText_OnSetColor( &_this->ClockHourText, _Const000F );
+  ViewsText_OnSetColor( &_this->ClockHourText, _Const0011 );
   ViewsText_OnSetVisible( &_this->ClockHourText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const0010 );
+  CoreRectView__OnSetBounds( &_this->ClockMinuteText, _Const0012 );
   ViewsText_OnSetAlignment( &_this->ClockMinuteText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ClockMinuteText, 0 );
-  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const000F );
+  ViewsText_OnSetColor( &_this->ClockMinuteText, _Const0011 );
   ViewsText_OnSetVisible( &_this->ClockMinuteText, 1 );
-  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const0011 );
+  CoreRectView__OnSetBounds( &_this->ClockColonText, _Const0013 );
   ViewsText_OnSetAlignment( &_this->ClockColonText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const0012 ));
-  ViewsText_OnSetColor( &_this->ClockColonText, _Const000F );
+  ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const0014 ));
+  ViewsText_OnSetColor( &_this->ClockColonText, _Const0011 );
   ViewsText_OnSetVisible( &_this->ClockColonText, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockHourText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockMinuteText ), 0 );

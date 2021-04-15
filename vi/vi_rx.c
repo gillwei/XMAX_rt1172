@@ -399,7 +399,8 @@ switch( signal_id )
         /* TODO: respond to meter the current UNIX time */
         break;
     case IL_CAN0_VEHICLE_INFO_3_AIR_RXSIG_HANDLE:
-        rx_vehicle_info.air_temperature = (int8_t)data;
+        rx_vehicle_info.air_temperature = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeAIR_TEMPERATURE );
         break;
     case IL_CAN0_VEHICLE_INFO_3_COOLANT_RXSIG_HANDLE:
         rx_vehicle_info.coolant_temperature = (int8_t)data;
@@ -1176,7 +1177,7 @@ if( pdTRUE == xSemaphoreTake( supported_function_semaphore_handle, ticks_to_wait
         rx_vehicle_supported_functions = ( supported_functions[5] << 24 ) | ( supported_functions[4] << 16 ) |
                                          ( supported_functions[3] << 8 ) | supported_functions[2];
 
-        // Notify UI if the supported functions of clock/grip warmer/seat heater/wind screen are changed
+        // Notify UI if the supported functions are changed
         sfl_diff = last_supported_functions ^ rx_vehicle_supported_functions;
         if( ( sfl_diff >> VEHICLE_FEATURE_CLOCK ) & 0x1 )
             {
@@ -1193,6 +1194,10 @@ if( pdTRUE == xSemaphoreTake( supported_function_semaphore_handle, ticks_to_wait
         if( ( sfl_diff >> VEHICLE_FEATURE_WIND_SCREEN ) & 0x1 )
             {
             EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_WIND_SCREEN );
+            }
+        if( ( sfl_diff >> VEHICLE_FEATURE_AIR_TEMPERATURE ) & 0x1 )
+            {
+            EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_AIR_TEMPERATURE );
             }
 
         // write to EEPROM when the data from CAN is different

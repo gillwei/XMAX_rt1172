@@ -845,4 +845,10 @@ EW_RES_WITHOUT_VARIANTS( ResourceSplitLineLarge )
 /* Table with links to derived variants of the bitmap resource : 'Resource::SplitLineMiddle' */
 EW_RES_WITHOUT_VARIANTS( ResourceSplitLineMiddle )
 
+/* Include a file containing the bitmap resource : 'Resource::TempUnit' */
+#include "_ResourceTempUnit.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TempUnit' */
+EW_RES_WITHOUT_VARIANTS( ResourceTempUnit )
+
 /* Embedded Wizard */

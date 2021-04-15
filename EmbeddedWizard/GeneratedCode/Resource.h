@@ -426,6 +426,9 @@ EW_DECLARE_BITMAP_RES( ResourceSplitLineLarge )
 /* Bitmap resource : 'Resource::SplitLineMiddle' */
 EW_DECLARE_BITMAP_RES( ResourceSplitLineMiddle )
 
+/* Bitmap resource : 'Resource::TempUnit' */
+EW_DECLARE_BITMAP_RES( ResourceTempUnit )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

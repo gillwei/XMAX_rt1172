@@ -320,7 +320,7 @@ class Main : Core::Group
   // Vehicle supported function
   note group Note2
   {
-    attr Bounds = <920,50,1250,310>;
+    attr Bounds = <920,50,1250,360>;
   }
 
   $rect <950,100,1230,140>
@@ -350,6 +350,12 @@ class Main : Core::Group
              Enum::VehicleRxType.SEAT_HEATER_STATUS:
         {
           UpdateSeatHeaterIcon();
+        }
+        case Enum::VehicleRxType.TEMPERATURE_UNIT,
+             Enum::VehicleRxType.AIR_TEMPERATURE,
+             Enum::VehicleRxType.SUPPORT_FUNC_AIR_TEMPERATURE:
+        {
+          UpdateAirTemperature();
         }
         default:;
       }
@@ -482,6 +488,62 @@ class Main : Core::Group
     {
       SeatHeaterIcon.Visible = false;
     }
+  }
+
+  $rect <950,300,1160,340>
+  method void UpdateAirTemperature()
+  {
+    if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.AIR_TEMPERATURE ) )
+    {
+      var DeviceInterface::VehicleDataClass AirTemperatureContext = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.AIR_TEMPERATURE );
+      var DeviceInterface::VehicleDataClass TemepratureUnitContext = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TEMPERATURE_UNIT );
+      if( null != AirTemperatureContext && null != TemepratureUnitContext )
+      {
+        if( AirTemperatureContext.Valid )
+        {
+          if( Enum::TemperatureSettingItem.TEMP_F == (Enum::TemperatureSettingItem)TemepratureUnitContext.DataUInt32 )
+          {
+            UnitImage.FrameNumber = 1;
+            AirTemperatureText.String = string( AirTemperatureContext.DataFloat * 1.8 + 32, 0, 0 );
+          }
+          else
+          {
+            UnitImage.FrameNumber = 0;
+            AirTemperatureText.String = string( AirTemperatureContext.DataFloat, 0, 0 );
+          }
+        }
+        else
+        {
+          AirTemperatureText.String = Strings::GEN_THREE_HYPHENS;
+        }
+
+        AirTemperatureText.Visible = true;
+        UnitImage.Visible = true;
+      }
+    }
+    else
+    {
+      AirTemperatureText.Visible = false;
+      UnitImage.Visible = false;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text AirTemperatureText
+  {
+    preset Bounds = <397,1,452,38>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium32pt;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image UnitImage
+  {
+    preset Bounds = <454,2,471,36>;
+    preset Bitmap = Resource::TempUnit;
+    preset Visible = false;
   }
 }
 

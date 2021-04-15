@@ -128,7 +128,7 @@ typedef struct
     uint16_t vehicle_speed_meter;   /**< actual vehicle speed */
     uint16_t fuel_cons;             /**< fuel usage volume (L) */
     bool     clock_adj_status;      /**< clock adjustment status */
-    int8_t   air_temperature;       /**< intake air temperature or outside temperature (degC), H'FF: "---" */
+    uint8_t  air_temperature;       /**< intake air temperature or outside temperature (degC), H'FF: "---" */
     int8_t   coolant_temperature;   /**< coolant temperature (degC), H'00:"Lo", H'FE:"Hi", H'FF:"---" */
     uint8_t  battery_voltage;       /**< battery voltage (Volt) */
     uint8_t  cruise_speed;          /**< cruise speed (km/h) */

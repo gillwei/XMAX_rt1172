@@ -2683,3 +2683,15 @@ note group Note20
 {
   attr Bounds = <490,2420,730,2570>;
 }
+
+$rect <450,160,650,200>
+$output false
+resource Resources::Bitmap TempUnit
+{
+  attr bitmapfile FileName = .\Res\status_bar\sb_deg.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <17,34>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
