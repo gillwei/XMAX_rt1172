@@ -506,6 +506,13 @@ typedef enum
   EnumNavigationViewNEXT_TURN           = 2
 } EnumNavigationView;
 
+/* User defined enumeration: 'Enum::EEPROMTest' */
+typedef enum
+{
+  EnumEEPROMTestWRITE_LAST_PAGE_FF      = 0,
+  EnumEEPROMTestREAD_LAST_PAGE          = 1
+} EnumEEPROMTest;
+
 #ifdef __cplusplus
   }
 #endif

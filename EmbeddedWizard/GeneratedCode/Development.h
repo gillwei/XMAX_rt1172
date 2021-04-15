@@ -43,6 +43,7 @@
 #endif
 
 #include "_DevelopmentDEV_Bluetooth.h"
+#include "_DevelopmentDEV_EEPROMTest.h"
 #include "_DevelopmentDEV_FontMenu.h"
 #include "_DevelopmentDEV_FontTest.h"
 #include "_DevelopmentDEV_Main.h"

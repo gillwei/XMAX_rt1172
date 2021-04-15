@@ -80,13 +80,76 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-#if( UNIT_TEST_EEPROM )
+/*********************************************************************
+*
+* @private
+* eepm_test_write_cb
+*
+* test eeprom write callback function
+*
+*********************************************************************/
+static void eepm_test_write_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+PRINTF( "write status = %d\r\n", status );
+if( status == pdFALSE )
+    {
+    PRINTF( "EEPROM write test Error!\r\n" );
+    }
+}
 
-    static void eepm_test_write_cb
-        (
-        bool    status,
-        void*   data
-        );
+/*********************************************************************
+*
+* @private
+* read_1byte_cb
+*
+* Read callback
+*
+* @param status Read status
+* @param data Pointer to read data
+*
+*********************************************************************/
+static void read_1byte_cb
+    (
+    bool  status,
+    void* data
+    )
+{
+PRINTF( "rd %d 0x%x\r\n", status, *(uint8_t*)data );
+}
+
+/*********************************************************************
+*
+* @public
+* TEST_eeprom
+*
+* Test eeprom read/write
+*
+* @param test_item Test item of EnumEEPROMTest type
+*
+*********************************************************************/
+void TEST_eeprom
+    (
+    const EnumEEPROMTest test_item
+    )
+{
+switch( test_item )
+    {
+    case EnumEEPROMTestWRITE_LAST_PAGE_FF:
+        EEPM_set_last_page( 0xFF, eepm_test_write_cb );
+        break;
+    case EnumEEPROMTestREAD_LAST_PAGE:
+        EEPM_get_last_page( &read_1byte_cb );
+        break;
+    default:
+        break;
+    }
+}
+
+#if( UNIT_TEST_EEPROM )
 
     static void eepm_test_read_cb
         (
@@ -187,27 +250,6 @@
     /*********************************************************************
     *
     * @private
-    * eepm_test_write_cb
-    *
-    * test eeprom write callback function
-    *
-    *********************************************************************/
-    static void eepm_test_write_cb
-        (
-        bool    status,
-        void*   data
-        )
-    {
-    PRINTF( "write status = %d\r\n", status );
-    if( status == pdFALSE )
-        {
-        PRINTF( "EEPROM write test Error!\r\n" );
-        }
-    }
-
-    /*********************************************************************
-    *
-    * @private
     * eepm_test_read_cb
     *
     * test eeprom read callback function
@@ -247,5 +289,3 @@
     }
 
 #endif
-
-

@@ -69,6 +69,7 @@ class DEV_Main : Menu::BaseMenuView
         InspectionDialog.PassHomeKey = false;
         PresentDialog( InspectionDialog, null, null, null, null, null, null, null, null, false );
       }
+      case 10: PresentDialog( new Development::DEV_EEPROMTest, null, null, null, null, null, null, null, null, false );
       default:;
     }
   }
@@ -95,7 +96,7 @@ class DEV_Main : Menu::BaseMenuView
   }
 
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 10 ] =
+  array string ItemTitleArray[ 11 ] =
   (
     Default[0] = "Factory Mode";
     Default[1] = "Hopper Test Mode";
@@ -107,6 +108,7 @@ class DEV_Main : Menu::BaseMenuView
     Default[7] = "MotoCon Test";
     Default[8] = "Font Test";
     Default[9] = "Inspection Test";
+    Default[10] = "EEPROM Test";
   );
 
   $reorder HideFocusFrameTimer 1
@@ -350,11 +352,7 @@ class DEV_MotoCon : Menu::BaseMenuView
   $rect <510,10,710,50>
   inherited method LoadItemClass()
   {
-    // suppress warning
-    if( aItemNo >= 0 )
-    {
-      // empty body
-    }
+    aItemNo; // suppress warning
     return Menu::ItemBase;
   }
 
@@ -373,10 +371,8 @@ class DEV_MotoCon : Menu::BaseMenuView
   inherited method OnItemActivate()
   {
     // suppress warning
-    if( null == aMenuItem || aItemNo > 0 )
-    {
-      // empty body
-    }
+    aMenuItem;
+    aItemNo;
 
     $if !$prototyper
     native( aItemNo )
@@ -474,10 +470,8 @@ class DEV_VehicleSupportedFunction : Menu::BaseMenuView
   inherited method OnItemActivate()
   {
     // suppress warning
-    if( null == aMenuItem || aItemNo > 0 )
-    {
-      // empty body
-    }
+    aMenuItem;
+    aItemNo;
 
     $if !$prototyper
       var bool IsChecked = false;
@@ -501,11 +495,7 @@ class DEV_VehicleSupportedFunction : Menu::BaseMenuView
     $if !$prototyper
       IsFunctionSupported = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( ( Enum::VehicleSupportedFunction )aItemNo );
     $else
-      // suppress warning
-      if( aItemNo )
-      {
-        // empty body
-      }
+      aItemNo; // suppress warning
     $endif
     return IsFunctionSupported;
   }
@@ -589,11 +579,7 @@ class DEV_FontMenu : Menu::BaseMenuView
   $rect <510,110,710,150>
   inherited method OnItemActivate()
   {
-    // suppress warning
-    if( null == aMenuItem )
-    {
-      // empty body
-    }
+    aMenuItem; // suppress warning
 
     var Development::DEV_FontTest Dialog = new Development::DEV_FontTest;
 
@@ -741,4 +727,57 @@ class DEV_FontTest : Components::BaseMainBG
 
   $rect <511,280,711,320>
   var int32 RowDistance = Fonts::ROW_DISTANCE_24PT;
+}
+
+$rect <310,160,550,200>
+$output false
+class DEV_EEPROMTest : Menu::BaseMenuView
+{
+  $rect <500,20,700,60>
+  inherited method LoadItemClass()
+  {
+    aItemNo; // suppress warning
+    return Menu::ItemBase;
+  }
+
+  $rect <500,70,700,110>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    if( aItemNo < ItemTitleArray.size )
+    {
+      Title = ItemTitleArray[aItemNo];
+    }
+    return Title;
+  }
+
+  $rect <500,120,700,160>
+  inherited method OnItemActivate()
+  {
+    aMenuItem; // suppress warning
+
+    $if !$prototyper
+      var Enum::EEPROMTest TestItem = (Enum::EEPROMTest)aItemNo;
+      native( TestItem )
+      {
+        TEST_eeprom( TestItem );
+      }
+    $else
+      aItemNo; // suppress warning
+    $endif
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = ItemTitleArray.size;
+    preset ItemHeight = Menu::ItemHeightSmall;
+  }
+
+  $rect <730,70,930,110>
+  array string ItemTitleArray[ 2 ] =
+  (
+    Default[0] = "Write \"last page\" 0xFF";
+    Default[1] = "Read \"last page\"";
+  );
 }

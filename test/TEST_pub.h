@@ -26,9 +26,11 @@ extern "C"{
 #define UNIT_TEST_ENABLE        ( UNIT_TEST_INSPECTION | UNIT_TEST_FACTORY | UNIT_TEST_BURNIN | UNIT_TEST_JPEG | UNIT_TEST_ADC | UNIT_TEST_NAVI | UNIT_TEST_EEPROM | UNIT_TEST_VI | UNIT_TEST_NOTIFICATION )
 
 #include "NAVI_pub.h"
+#include "Enum.h"
 
 void TEST_init( void );
 void TEST_motocon_tx( const int test_item );
+void TEST_eeprom( const EnumEEPROMTest test_item );
 
 void TEST_navi_set_test_type( const int type );
 navi_data_type* TEST_get_navi_obj( void );

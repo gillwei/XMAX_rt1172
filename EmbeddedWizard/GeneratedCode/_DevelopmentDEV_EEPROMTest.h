@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentDEV_Main_H
-#define _DevelopmentDEV_Main_H
+#ifndef _DevelopmentDEV_EEPROMTest_H
+#define _DevelopmentDEV_EEPROMTest_H
 
 #ifdef __cplusplus
   extern "C"
@@ -87,10 +87,10 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::DEV_Main */
-#ifndef _DevelopmentDEV_Main_
-  EW_DECLARE_CLASS( DevelopmentDEV_Main )
-#define _DevelopmentDEV_Main_
+/* Forward declaration of the class Development::DEV_EEPROMTest */
+#ifndef _DevelopmentDEV_EEPROMTest_
+  EW_DECLARE_CLASS( DevelopmentDEV_EEPROMTest )
+#define _DevelopmentDEV_EEPROMTest_
 #endif
 
 /* Forward declaration of the class Effects::Fader */
@@ -112,13 +112,13 @@
 #endif
 
 
-/* Deklaration of class : 'Development::DEV_Main' */
-EW_DEFINE_FIELDS( DevelopmentDEV_Main, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [11])
-EW_END_OF_FIELDS( DevelopmentDEV_Main )
+/* Deklaration of class : 'Development::DEV_EEPROMTest' */
+EW_DEFINE_FIELDS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView )
+  EW_ARRAY   ( ItemTitleArray,  XString, [2])
+EW_END_OF_FIELDS( DevelopmentDEV_EEPROMTest )
 
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_Main' */
-EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_EEPROMTest' */
+EW_DEFINE_METHODS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -175,36 +175,37 @@ EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_Main _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_Main _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_Main _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_Main _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_EEPROMTest _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_EEPROMTest _this, XInt32 
+    aItemNo )
+  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_EEPROMTest _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( DevelopmentDEV_Main )
+EW_END_OF_METHODS( DevelopmentDEV_EEPROMTest )
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemClass()' */
-XClass DevelopmentDEV_Main_LoadItemClass( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_EEPROMTest.LoadItemClass()' */
+XClass DevelopmentDEV_EEPROMTest_LoadItemClass( DevelopmentDEV_EEPROMTest _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemTitle()' */
-XString DevelopmentDEV_Main_LoadItemTitle( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_EEPROMTest.LoadItemTitle()' */
+XString DevelopmentDEV_EEPROMTest_LoadItemTitle( DevelopmentDEV_EEPROMTest _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Development::DEV_Main.OnItemActivate()' */
-void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItemNo, 
-  MenuItemBase aMenuItem );
-
-/* 'C' function for method : 'Development::DEV_Main.LoadItemChecked()' */
-XBool DevelopmentDEV_Main_LoadItemChecked( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_EEPROMTest.OnItemActivate()' */
+void DevelopmentDEV_EEPROMTest_OnItemActivate( DevelopmentDEV_EEPROMTest _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentDEV_Main_H */
+#endif /* _DevelopmentDEV_EEPROMTest_H */
 
 /* Embedded Wizard */

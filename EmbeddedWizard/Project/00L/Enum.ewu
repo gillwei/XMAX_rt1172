@@ -1063,3 +1063,14 @@ enum NavigationView
   $rect <10,110,210,150>
   item NEXT_TURN;
 }
+
+$rect <730,70,930,110>
+$output false
+enum EEPROMTest
+{
+  $rect <10,10,220,50>
+  item WRITE_LAST_PAGE_FF;
+
+  $rect <10,60,220,100>
+  item READ_LAST_PAGE;
+}
