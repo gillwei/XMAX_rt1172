@@ -194,6 +194,8 @@ while( ( l_node_p != NULL ) &&
         ( l_can_id == TX4_REQ_REPRGRM_INFO_CAN0_ID ) ||
         ( l_can_id == TX2_REQ_SUPPORT_CAN0_ID ) )
         {
+        l_svc_id     = msg_p->data[MID_MSG_REQMFNC_IDX];
+
         l_msg_can_id = l_node_p->req_msg.id;
         l_msg_svc_id = l_node_p->req_msg.data[MID_MSG_REQMFNC_IDX];
         }
