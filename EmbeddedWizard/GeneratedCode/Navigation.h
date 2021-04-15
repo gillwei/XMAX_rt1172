@@ -54,11 +54,11 @@
 #include "_NavigationTbtInfoItem.h"
 #include "_NavigationTbtListMenu.h"
 
-/* User defined constant: 'Navigation::TIMETEXT_WO_NAVI_BOUNDS' */
-extern const XRect NavigationTIMETEXT_WO_NAVI_BOUNDS;
+/* User defined constant: 'Navigation::TIMETEXT_W_NAVI_BOUNDS' */
+extern const XRect NavigationTIMETEXT_W_NAVI_BOUNDS;
 
-/* User defined constant: 'Navigation::NAVIFLAG_WO_NAVI_BOUNDS' */
-extern const XRect NavigationNAVIFLAG_WO_NAVI_BOUNDS;
+/* User defined constant: 'Navigation::NAVIFLAG_W_NAVI_BOUNDS' */
+extern const XRect NavigationNAVIFLAG_W_NAVI_BOUNDS;
 
 #ifdef __cplusplus
   }

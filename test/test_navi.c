@@ -413,6 +413,7 @@ typedef enum
                     if( xTaskGetTickCount() >= 15000 && !is_navi_event_sent )
                     {
                     is_navi_event_sent = true;
+                    is_route_guidance_started = true;
                     test_navi_event( navi_event_message, strlen( ( char* ) navi_event_message ), NAVIEVENT_TYPE_CAMERA, 1 );
                     }
                 }
