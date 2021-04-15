@@ -129,27 +129,27 @@ void InspectionTFT_Main__Done( InspectionTFT_Main _this )
 /* 'C' function for method : 'Inspection::TFT_Main.OnShortDownKeyActivated()' */
 void InspectionTFT_Main_OnShortDownKeyActivated( InspectionTFT_Main _this )
 {
-  XInt32 PreviousIdx = _this->Pattern - 1;
+  XInt32 NextPatternIdx = _this->Pattern + 1;
 
-  if ( PreviousIdx < 0 )
+  if ( NextPatternIdx >= 9 )
   {
-    PreviousIdx = 7;
+    NextPatternIdx = 1;
   }
 
-  InspectionTFT_Main_OnSetPattern( _this, (XEnum)PreviousIdx );
+  InspectionTFT_Main_OnSetPattern( _this, (XEnum)NextPatternIdx );
 }
 
 /* 'C' function for method : 'Inspection::TFT_Main.OnShortUpKeyActivated()' */
 void InspectionTFT_Main_OnShortUpKeyActivated( InspectionTFT_Main _this )
 {
-  XInt32 NextPatternIdx = _this->Pattern + 1;
+  XInt32 PreviousIdx = _this->Pattern - 1;
 
-  if ( NextPatternIdx >= 8 )
+  if ( PreviousIdx <= 0 )
   {
-    NextPatternIdx = 0;
+    PreviousIdx = 8;
   }
 
-  InspectionTFT_Main_OnSetPattern( _this, (XEnum)NextPatternIdx );
+  InspectionTFT_Main_OnSetPattern( _this, (XEnum)PreviousIdx );
 }
 
 /* 'C' function for method : 'Inspection::TFT_Main.OnSetPattern()' */

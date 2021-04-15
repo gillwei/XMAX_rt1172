@@ -332,7 +332,10 @@ class Application : Core::Root
     {
       DismissDialog( OpeningDialog, null, null, null, null, null, false );
     }
+
     IsFactoryModeDialogDisplayed = false;
+    DeviceInterface::SystemDevice.OperationMode = Enum::OperationMode.NORMAL;
+
     DeviceInterface::BluetoothDevice.GetBluetoothEnable();
     ShowDisclaimer();
   }
@@ -481,7 +484,7 @@ class Application : Core::Root
   // Inspection Mode
   note group Note7
   {
-    attr Bounds = <10,880,300,1120>;
+    attr Bounds = <10,880,300,1130>;
   }
 
   $rect <30,920,280,960>
@@ -521,6 +524,9 @@ class Application : Core::Root
       PresentDialog( InspectionDialog, null, null, null, null, null, null, null, null, false );
     }
     InspectionDialog.Pattern = DeviceInterface::SystemDevice.InspectionDisplayPattern;
+
+    DeviceInterface::SystemDevice.SendInspectionResponse( Enum::InspectionMode.DISPLAY, (uint8)InspectionDialog.Pattern );
+    DeviceInterface::SystemDevice.OperationMode = Enum::OperationMode.INSPECTION;
   }
 
   $rect <30,1070,230,1110>
@@ -532,6 +538,7 @@ class Application : Core::Root
       DismissDialog( InspectionDialog, null, null, null, null, null, false );
     }
     DeviceInterface::SystemDevice.SendInspectionResponse( Enum::InspectionMode.END, 0 );
+    DeviceInterface::SystemDevice.OperationMode = Enum::OperationMode.FACTORY;
   }
 
   $rect <530,290,790,330>

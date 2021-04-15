@@ -471,15 +471,16 @@ typedef enum
 /* User defined enumeration: 'Enum::InspectionDisplay' */
 typedef enum
 {
-  EnumInspectionDisplayCOLOR_GRADIENT   = 0,
-  EnumInspectionDisplayFULL_BLACK       = 1,
-  EnumInspectionDisplayFULL_WHITE       = 2,
-  EnumInspectionDisplayFULL_RED         = 3,
-  EnumInspectionDisplayFULL_GREEN       = 4,
-  EnumInspectionDisplayFULL_BLUE        = 5,
-  EnumInspectionDisplayFLICKER          = 6,
-  EnumInspectionDisplayCROSSTALK        = 7,
-  EnumInspectionDisplayTOTAL            = 8
+  EnumInspectionDisplayKEEP_CURRENT     = 0,
+  EnumInspectionDisplayCOLOR_GRADIENT   = 1,
+  EnumInspectionDisplayFULL_BLACK       = 2,
+  EnumInspectionDisplayFULL_WHITE       = 3,
+  EnumInspectionDisplayFULL_RED         = 4,
+  EnumInspectionDisplayFULL_GREEN       = 5,
+  EnumInspectionDisplayFULL_BLUE        = 6,
+  EnumInspectionDisplayFLICKER          = 7,
+  EnumInspectionDisplayCROSSTALK        = 8,
+  EnumInspectionDisplayTOTAL            = 9
 } EnumInspectionDisplay;
 
 /* User defined enumeration: 'Enum::InspectionMode' */

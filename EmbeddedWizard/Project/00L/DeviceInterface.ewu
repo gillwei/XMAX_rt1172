@@ -501,10 +501,10 @@ class SystemDeviceClass : Templates::DeviceClass
     InspectionModeSystemEvent.Trigger( null, false );
   }
 
-  $rect <30,940,230,980>
+  $rect <30,940,260,980>
   property Enum::InspectionDisplay InspectionDisplayPattern;
 
-  $rect <30,990,230,1030>
+  $rect <30,990,290,1030>
   onset InspectionDisplayPattern
   {
     if ( pure InspectionDisplayPattern != value )

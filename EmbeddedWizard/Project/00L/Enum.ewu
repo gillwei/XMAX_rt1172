@@ -995,30 +995,33 @@ $output false
 enum InspectionDisplay
 {
   $rect <10,10,210,50>
-  item COLOR_GRADIENT;
+  item KEEP_CURRENT;
 
   $rect <10,60,210,100>
-  item FULL_BLACK;
+  item COLOR_GRADIENT;
 
   $rect <10,110,210,150>
-  item FULL_WHITE;
+  item FULL_BLACK;
 
   $rect <10,160,210,200>
-  item FULL_RED;
+  item FULL_WHITE;
 
   $rect <10,210,210,250>
+  item FULL_RED;
+
+  $rect <230,10,430,50>
   item FULL_GREEN;
 
-  $rect <10,260,210,300>
+  $rect <230,60,430,100>
   item FULL_BLUE;
 
-  $rect <10,310,210,350>
+  $rect <230,110,430,150>
   item FLICKER;
 
-  $rect <10,360,210,400>
+  $rect <230,160,430,200>
   item CROSSTALK;
 
-  $rect <10,410,210,450>
+  $rect <230,210,430,250>
   item TOTAL;
 }
 

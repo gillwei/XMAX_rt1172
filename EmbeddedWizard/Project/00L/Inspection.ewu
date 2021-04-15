@@ -9,23 +9,23 @@ class TFT_Main : Components::BaseMainBG
   $rect <470,340,700,380>
   inherited method OnShortDownKeyActivated()
   {
-    var int32 PreviousIdx = (int32)Pattern - 1;
-    if( PreviousIdx < 0 )
+    var int32 NextPatternIdx = (int32)Pattern + 1;
+    if( NextPatternIdx >= (int32)Enum::InspectionDisplay.TOTAL )
     {
-      PreviousIdx = (int32)Enum::InspectionDisplay.TOTAL - 1;
+      NextPatternIdx = (int32)Enum::InspectionDisplay.COLOR_GRADIENT;
     }
-    Pattern = (Enum::InspectionDisplay)( PreviousIdx );
+    Pattern = (Enum::InspectionDisplay)( NextPatternIdx );
   }
 
   $rect <220,340,450,380>
   inherited method OnShortUpKeyActivated()
   {
-    var int32 NextPatternIdx = (int32)Pattern + 1;
-    if( NextPatternIdx >= (int32)Enum::InspectionDisplay.TOTAL )
+    var int32 PreviousIdx = (int32)Pattern - 1;
+    if( PreviousIdx <= (int32)Enum::InspectionDisplay.KEEP_CURRENT )
     {
-      NextPatternIdx = 0;
+      PreviousIdx = (int32)Enum::InspectionDisplay.TOTAL - 1;
     }
-    Pattern = (Enum::InspectionDisplay)( NextPatternIdx );
+    Pattern = (Enum::InspectionDisplay)( PreviousIdx );
   }
 
   $rect <220,290,420,330>

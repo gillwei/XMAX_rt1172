@@ -560,6 +560,8 @@ void ApplicationApplication_OnOpeningFinishedSlot( ApplicationApplication _this,
   }
 
   _this->IsFactoryModeDialogDisplayed = 0;
+  DeviceInterfaceSystemDeviceClass_OnSetOperationMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), EnumOperationModeNORMAL );
   DeviceInterfaceBluetoothDeviceClass_GetBluetoothEnable( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
   DeviceInterfaceBluetoothDeviceClass ));
   ApplicationApplication_ShowDisclaimer( _this );
@@ -752,6 +754,10 @@ void ApplicationApplication_ProcInspectionDisplay( ApplicationApplication _this 
 
   InspectionTFT_Main_OnSetPattern( InspectionDialog, EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass )->InspectionDisplayPattern );
+  DeviceInterfaceSystemDeviceClass_SendInspectionResponse( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), EnumInspectionModeDISPLAY, (XUInt8)(XUInt32)InspectionDialog->Pattern );
+  DeviceInterfaceSystemDeviceClass_OnSetOperationMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), EnumOperationModeINSPECTION );
 }
 
 /* 'C' function for method : 'Application::Application.StopInspection()' */
@@ -768,6 +774,8 @@ void ApplicationApplication_StopInspection( ApplicationApplication _this )
 
   DeviceInterfaceSystemDeviceClass_SendInspectionResponse( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass ), EnumInspectionModeEND, 0 );
+  DeviceInterfaceSystemDeviceClass_OnSetOperationMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), EnumOperationModeFACTORY );
 }
 
 /* 'C' function for method : 'Application::Application.SwitchToMeterHome()' */
