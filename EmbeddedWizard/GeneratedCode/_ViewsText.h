@@ -219,9 +219,6 @@ void ViewsText_preReparseSlot( ViewsText _this, XObject sender );
 /* 'C' function for method : 'Views::Text.reparseSlot()' */
 void ViewsText_reparseSlot( ViewsText _this, XObject sender );
 
-/* 'C' function for method : 'Views::Text.OnSetEnableBidiText()' */
-void ViewsText_OnSetEnableBidiText( ViewsText _this, XBool value );
-
 /* 'C' function for method : 'Views::Text.OnSetRowDistance()' */
 void ViewsText_OnSetRowDistance( ViewsText _this, XInt32 value );
 

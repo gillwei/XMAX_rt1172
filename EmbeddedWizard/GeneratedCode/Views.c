@@ -2447,18 +2447,6 @@ void ViewsText_reparseSlot( ViewsText _this, XObject sender )
   EwPostSignal( EwNewSlot( _this, ViewsText_preOnUpdateSlot ), ((XObject)_this ));
 }
 
-/* 'C' function for method : 'Views::Text.OnSetEnableBidiText()' */
-void ViewsText_OnSetEnableBidiText( ViewsText _this, XBool value )
-{
-  if ( value == _this->EnableBidiText )
-    return;
-
-  _this->EnableBidiText = value;
-  _this->flowString = 0;
-  _this->reparsed = 0;
-  EwPostSignal( EwNewSlot( _this, ViewsText_preReparseSlot ), ((XObject)_this ));
-}
-
 /* 'C' function for method : 'Views::Text.OnSetRowDistance()' */
 void ViewsText_OnSetRowDistance( ViewsText _this, XInt32 value )
 {

@@ -31,7 +31,7 @@ class TCS01_Main : Menu::BaseMenuView
     return ClassType;
   }
 
-  $rect <520,90,720,130>
+  $rect <520,80,720,120>
   inherited method LoadItemTitle()
   {
     var string title = "";
@@ -42,14 +42,14 @@ class TCS01_Main : Menu::BaseMenuView
     return title;
   }
 
-  $rect <520,220,720,260>
+  $rect <520,230,720,270>
   inherited method OnItemActivate()
   {
     aItemNo; // suppress warning
     var Menu::ItemCheckbox CheckBoxItem = (Menu::ItemCheckbox)aMenuItem;
     if( null != CheckBoxItem )
     {
-      if( CheckBoxItem.CheckBoxButton.Checked )
+      if( CheckBoxItem.Checked )
       {
         IsTCSEnabled = false;
         DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TCS, TCS::TCS_OFF );
@@ -62,7 +62,7 @@ class TCS01_Main : Menu::BaseMenuView
     }
   }
 
-  $rect <520,160,720,200>
+  $rect <520,130,720,170>
   inherited method LoadItemChecked()
   {
     var bool IsChecked = false;
@@ -78,6 +78,13 @@ class TCS01_Main : Menu::BaseMenuView
   {
     preset DDModeEnabled = true;
     preset NoOfItems = 1;
+  }
+
+  $rect <520,180,720,220>
+  inherited method LoadItemToggle()
+  {
+    aItemNo; // suppress warning
+    return false;
   }
 
   $rect <770,30,1050,70>

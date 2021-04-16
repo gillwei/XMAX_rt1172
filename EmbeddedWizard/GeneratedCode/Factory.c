@@ -683,6 +683,7 @@ EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, ItemTitleArray, ItemTitleArray,
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( FactoryMain )
 
 /* Initializer for the class 'Factory::DisplayManual' */

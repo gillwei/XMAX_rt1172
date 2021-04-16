@@ -31,7 +31,6 @@
 #include "_MenuItemCheckbox.h"
 #include "_MenuVerticalMenu.h"
 #include "_TCSTCS01_Main.h"
-#include "_WidgetSetToggleButton.h"
 #include "DeviceInterface.h"
 #include "Enum.h"
 #include "Strings.h"
@@ -146,7 +145,7 @@ void TCSTCS01_Main_OnItemActivate( TCSTCS01_Main _this, XInt32 aItemNo, MenuItem
 
   if ( CheckBoxItem != 0 )
   {
-    if ( CheckBoxItem->CheckBoxButton.Checked )
+    if ( CheckBoxItem->Checked )
     {
       _this->IsTCSEnabled = 0;
       DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
@@ -172,6 +171,16 @@ XBool TCSTCS01_Main_LoadItemChecked( TCSTCS01_Main _this, XInt32 aItemNo )
   }
 
   return IsChecked;
+}
+
+/* 'C' function for method : 'TCS::TCS01_Main.LoadItemToggle()' */
+XBool TCSTCS01_Main_LoadItemToggle( TCSTCS01_Main _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return 0;
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -267,6 +276,7 @@ EW_DEFINE_CLASS( TCSTCS01_Main, MenuBaseMenuView, VehicleDataReceivedEventHandle
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  TCSTCS01_Main_LoadItemToggle,
 EW_END_OF_CLASS( TCSTCS01_Main )
 
 /* Embedded Wizard */

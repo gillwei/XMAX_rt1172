@@ -104,6 +104,7 @@ EW_DEFINE_FIELDS( MenuItemWrapper, CoreGroup )
   EW_PROPERTY( Height,          XInt32 )
   EW_PROPERTY( Uid,             XUInt32 )
   EW_PROPERTY( Category,        XEnum )
+  EW_PROPERTY( ToggleEnabled,   XBool )
   EW_PROPERTY( DDModeEnabled,   XBool )
   EW_PROPERTY( Focusable,       XBool )
   EW_PROPERTY( Checked,         XBool )
@@ -195,6 +196,9 @@ void MenuItemWrapper_OnSetCategory( MenuItemWrapper _this, XEnum value );
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetUid()' */
 void MenuItemWrapper_OnSetUid( MenuItemWrapper _this, XUInt32 value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetToggleEnabled()' */
+void MenuItemWrapper_OnSetToggleEnabled( MenuItemWrapper _this, XBool value );
 
 #ifdef __cplusplus
   }

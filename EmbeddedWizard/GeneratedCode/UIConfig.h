@@ -48,15 +48,6 @@
 #define _WidgetSetHorizontalSliderConfig_
 #endif
 
-/* Forward declaration of the class WidgetSet::ToggleButtonConfig */
-#ifndef _WidgetSetToggleButtonConfig_
-  EW_DECLARE_CLASS( WidgetSetToggleButtonConfig )
-#define _WidgetSetToggleButtonConfig_
-#endif
-
-/* User defined auto object: 'UIConfig::CheckBoxConfig' */
-EW_DECLARE_AUTOOBJECT( UIConfigCheckBoxConfig, WidgetSetToggleButtonConfig )
-
 /* User defined auto object: 'UIConfig::HorizontalSliderConfig' */
 EW_DECLARE_AUTOOBJECT( UIConfigHorizontalSliderConfig, WidgetSetHorizontalSliderConfig )
 

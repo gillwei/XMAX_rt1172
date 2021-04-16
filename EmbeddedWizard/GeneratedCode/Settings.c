@@ -79,7 +79,6 @@
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-#include "_WidgetSetToggleButton.h"
 #include "Core.h"
 #include "DeviceInterface.h"
 #include "Effects.h"
@@ -546,6 +545,7 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, _None, _None,
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( SettingsSET01_MainSettingMenu )
 
 /* Initializer for the class 'Settings::SET03_ConnectionSettingMenu' */
@@ -758,6 +758,7 @@ EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, ItemTitl
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( SettingsSET03_ConnectionSettingMenu )
 
 /* Initializer for the class 'Settings::SET04_BtSettingMenu' */
@@ -860,7 +861,7 @@ void SettingsSET04_BtSettingMenu_OnItemActivate( SettingsSET04_BtSettingMenu _th
 
   if ( CheckBoxItem != 0 )
   {
-    IsChecked = CheckBoxItem->CheckBoxButton.Checked;
+    IsChecked = CheckBoxItem->Checked;
   }
 
   switch ( aItemNo )
@@ -1013,6 +1014,7 @@ EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, ItemTitleArray,
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( SettingsSET04_BtSettingMenu )
 
 /* Initializer for the class 'Settings::SET35_LegalMenu' */
@@ -1161,6 +1163,7 @@ EW_DEFINE_CLASS( SettingsSET35_LegalMenu, MenuBaseMenuView, _None, _None, _None,
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( SettingsSET35_LegalMenu )
 
 /* Initializer for the class 'Settings::SET37_3rdPartyLicenses' */
@@ -2500,6 +2503,7 @@ EW_DEFINE_CLASS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView, RefreshLis
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( SettingsSET17_BtcPairedDeviceList )
 
 /* Initializer for the class 'Settings::SET19_BtcPairedDeviceOperation' */
@@ -2761,6 +2765,7 @@ EW_DEFINE_CLASS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView, Devic
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( SettingsSET19_BtcPairedDeviceOperation )
 
 /* Initializer for the class 'Settings::SET18_DeleteBleDevice' */

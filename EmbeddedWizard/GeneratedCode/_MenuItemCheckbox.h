@@ -48,7 +48,6 @@
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-#include "_WidgetSetToggleButton.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -101,7 +100,8 @@
 
 /* Deklaration of class : 'Menu::ItemCheckbox' */
 EW_DEFINE_FIELDS( MenuItemCheckbox, MenuItemBase )
-  EW_OBJECT  ( CheckBoxButton,  WidgetSetToggleButton )
+  EW_OBJECT  ( CheckboxIcon,    ViewsImage )
+  EW_PROPERTY( ToggleEnabled,   XBool )
   EW_PROPERTY( Checked,         XBool )
 EW_END_OF_FIELDS( MenuItemCheckbox )
 

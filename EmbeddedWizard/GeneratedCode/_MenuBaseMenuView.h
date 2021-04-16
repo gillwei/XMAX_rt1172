@@ -180,6 +180,7 @@ EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseMainBG )
   EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( MenuBaseMenuView )
 
 /* 'C' function for method : 'Menu::BaseMenuView.LoadItemClass()' */
@@ -243,6 +244,12 @@ XUInt32 MenuBaseMenuView_LoadItemUid( MenuBaseMenuView _this, XInt32 aItemNo );
 
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemUid()' */
 XUInt32 MenuBaseMenuView__LoadItemUid( void* _this, XInt32 aItemNo );
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemToggle()' */
+XBool MenuBaseMenuView_LoadItemToggle( MenuBaseMenuView _this, XInt32 aItemNo );
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemToggle()' */
+XBool MenuBaseMenuView__LoadItemToggle( void* _this, XInt32 aItemNo );
 
 #ifdef __cplusplus
   }

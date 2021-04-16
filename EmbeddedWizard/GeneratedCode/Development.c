@@ -52,7 +52,6 @@
 #include "_ResourcesFont.h"
 #include "_ViewsText.h"
 #include "_ViewsWallpaper.h"
-#include "_WidgetSetToggleButton.h"
 #include "Core.h"
 #include "Development.h"
 #include "DeviceInterface.h"
@@ -508,6 +507,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, ItemTitleArray, ItemTitl
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( DevelopmentDEV_Main )
 
 /* Initializer for the class 'Development::DEV_RealTimeClock' */
@@ -1187,6 +1187,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_MotoCon, MenuBaseMenuView, ItemTitleArray, ItemT
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( DevelopmentDEV_MotoCon )
 
 /* Initializer for the class 'Development::DEV_VehicleSupportedFunction' */
@@ -1302,7 +1303,7 @@ void DevelopmentDEV_VehicleSupportedFunction_OnItemActivate( DevelopmentDEV_Vehi
 
   if ( CheckBoxItem != 0 )
   {
-    IsChecked = CheckBoxItem->CheckBoxButton.Checked;
+    IsChecked = CheckBoxItem->Checked;
   }
 
   VI_set_supported_function( aItemNo, IsChecked );
@@ -1385,6 +1386,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView, Item
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( DevelopmentDEV_VehicleSupportedFunction )
 
 /* Initializer for the class 'Development::DEV_FontMenu' */
@@ -1583,6 +1585,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_FontMenu, MenuBaseMenuView, ItemTitleArray, Item
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( DevelopmentDEV_FontMenu )
 
 /* Initializer for the class 'Development::DEV_FontTest' */
@@ -1879,6 +1882,7 @@ EW_DEFINE_CLASS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView, ItemTitleArray, It
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( DevelopmentDEV_EEPROMTest )
 
 /* Embedded Wizard */

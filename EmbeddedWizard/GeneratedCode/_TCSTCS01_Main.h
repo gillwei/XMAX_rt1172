@@ -187,6 +187,7 @@ EW_DEFINE_METHODS( TCSTCS01_Main, MenuBaseMenuView )
   EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemToggle,    XBool )( TCSTCS01_Main _this, XInt32 aItemNo )
 EW_END_OF_METHODS( TCSTCS01_Main )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -206,6 +207,9 @@ void TCSTCS01_Main_OnItemActivate( TCSTCS01_Main _this, XInt32 aItemNo, MenuItem
 
 /* 'C' function for method : 'TCS::TCS01_Main.LoadItemChecked()' */
 XBool TCSTCS01_Main_LoadItemChecked( TCSTCS01_Main _this, XInt32 aItemNo );
+
+/* 'C' function for method : 'TCS::TCS01_Main.LoadItemToggle()' */
+XBool TCSTCS01_Main_LoadItemToggle( TCSTCS01_Main _this, XInt32 aItemNo );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */

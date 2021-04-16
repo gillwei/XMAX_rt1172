@@ -203,6 +203,7 @@ EW_DEFINE_METHODS( NotificationNTF01_NotificationList, MenuBaseMenuView )
     XInt32 aItemNo )
   EW_METHOD( LoadItemUid,       XUInt32 )( NotificationNTF01_NotificationList _this, 
     XInt32 aItemNo )
+  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( NotificationNTF01_NotificationList )
 
 /* The method Init() is invoked automatically after the component has been created. 

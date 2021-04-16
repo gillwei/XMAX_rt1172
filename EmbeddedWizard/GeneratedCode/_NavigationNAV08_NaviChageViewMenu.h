@@ -191,6 +191,7 @@ EW_DEFINE_METHODS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( NavigationNAV08_NaviChageViewMenu )
 
 /* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemClass()' */

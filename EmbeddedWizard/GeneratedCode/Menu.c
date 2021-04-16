@@ -51,8 +51,6 @@
 #include "_ViewsLine.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
-#include "_WidgetSetToggleButton.h"
-#include "_WidgetSetToggleButtonConfig.h"
 #include "Core.h"
 #include "Effects.h"
 #include "Enum.h"
@@ -60,7 +58,6 @@
 #include "Menu.h"
 #include "Resource.h"
 #include "Strings.h"
-#include "UIConfig.h"
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
@@ -587,6 +584,8 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
     {
       MenuItemWrapper_OnSetChecked( Item, MenuBaseMenuView__LoadItemChecked( OwnerMenu, 
       ItemNo ));
+      MenuItemWrapper_OnSetToggleEnabled( Item, MenuBaseMenuView__LoadItemToggle( 
+      OwnerMenu, ItemNo ));
     }
 
     if ( EW_CLASS( MenuItemBaseValue ) == Item->ItemClass )
@@ -908,21 +907,17 @@ void MenuItemCheckbox__Init( MenuItemCheckbox _this, XObject aLink, XHandle aArg
   _this->_GCT = EW_CLASS_GCT( MenuItemCheckbox );
 
   /* ... then construct all embedded objects */
-  WidgetSetToggleButton__Init( &_this->CheckBoxButton, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->CheckboxIcon, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( MenuItemCheckbox );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0010 );
-  CoreRectView__OnSetBounds( &_this->CheckBoxButton, _Const0011 );
-  CoreGroup__OnSetEnabled( &_this->CheckBoxButton, 1 );
-  WidgetSetToggleButton_OnSetChecked( &_this->CheckBoxButton, 0 );
-  WidgetSetToggleButton_OnSetIconFrame( &_this->CheckBoxButton, 0 );
-  WidgetSetToggleButton_OnSetLabel( &_this->CheckBoxButton, 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->CheckBoxButton ), 0 );
-  WidgetSetToggleButton_OnSetAppearance( &_this->CheckBoxButton, EwGetAutoObject( 
-  &UIConfigCheckBoxConfig, WidgetSetToggleButtonConfig ));
+  CoreRectView__OnSetBounds( &_this->CheckboxIcon, _Const0011 );
+  CoreGroup__Add( _this, ((CoreView)&_this->CheckboxIcon ), 0 );
+  ViewsImage_OnSetBitmap( &_this->CheckboxIcon, EwLoadResource( &ResourceCheckboxNormal, 
+  ResourcesBitmap ));
 }
 
 /* Re-Initializer for the class 'Menu::ItemCheckbox' */
@@ -932,7 +927,7 @@ void MenuItemCheckbox__ReInit( MenuItemCheckbox _this )
   MenuItemBase__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
-  WidgetSetToggleButton__ReInit( &_this->CheckBoxButton );
+  ViewsImage__ReInit( &_this->CheckboxIcon );
 }
 
 /* Finalizer method for the class 'Menu::ItemCheckbox' */
@@ -942,7 +937,7 @@ void MenuItemCheckbox__Done( MenuItemCheckbox _this )
   _this->_Super._VMT = EW_CLASS( MenuItemBase );
 
   /* Finalize all embedded objects */
-  WidgetSetToggleButton__Done( &_this->CheckBoxButton );
+  ViewsImage__Done( &_this->CheckboxIcon );
 
   /* Don't forget to deinitialize the super class ... */
   MenuItemBase__Done( &_this->_Super );
@@ -964,7 +959,7 @@ void MenuItemCheckbox_UpdateLayout( MenuItemCheckbox _this, XPoint aSize )
     case 56 :
     {
       CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0012 );
-      CoreRectView__OnSetBounds( &_this->CheckBoxButton, _Const0013 );
+      CoreRectView__OnSetBounds( &_this->CheckboxIcon, _Const0013 );
     }
     break;
 
@@ -979,7 +974,17 @@ void MenuItemCheckbox_OnSetEnabled( MenuItemCheckbox _this, XBool value )
   if ( _this->Super3.Enabled != value )
   {
     MenuItemBase_OnSetEnabled((MenuItemBase)_this, value );
-    CoreGroup__OnSetEnabled( &_this->CheckBoxButton, value );
+
+    if ( value )
+    {
+      ViewsImage_OnSetBitmap( &_this->CheckboxIcon, EwLoadResource( &ResourceCheckboxNormal, 
+      ResourcesBitmap ));
+    }
+    else
+    {
+      ViewsImage_OnSetBitmap( &_this->CheckboxIcon, EwLoadResource( &ResourceCheckboxDisable, 
+      ResourcesBitmap ));
+    }
   }
 }
 
@@ -987,7 +992,11 @@ void MenuItemCheckbox_OnSetEnabled( MenuItemCheckbox _this, XBool value )
 void MenuItemCheckbox_OnShortEnterKeyActivated( MenuItemCheckbox _this )
 {
   MenuItemBase_OnShortEnterKeyActivated((MenuItemBase)_this );
-  WidgetSetToggleButton_OnSetChecked( &_this->CheckBoxButton, (XBool)!_this->CheckBoxButton.Checked );
+
+  if ( _this->ToggleEnabled )
+  {
+    MenuItemCheckbox_OnSetChecked( _this, (XBool)!_this->Checked );
+  }
 }
 
 /* 'C' function for method : 'Menu::ItemCheckbox.OnSetChecked()' */
@@ -996,7 +1005,15 @@ void MenuItemCheckbox_OnSetChecked( MenuItemCheckbox _this, XBool value )
   if ( _this->Checked != value )
   {
     _this->Checked = value;
-    WidgetSetToggleButton_OnSetChecked( &_this->CheckBoxButton, value );
+
+    if ( value )
+    {
+      ViewsImage_OnSetFrameNumber( &_this->CheckboxIcon, 1 );
+    }
+    else
+    {
+      ViewsImage_OnSetFrameNumber( &_this->CheckboxIcon, 0 );
+    }
   }
 }
 
@@ -1005,8 +1022,8 @@ EW_DEFINE_CLASS_VARIANTS( MenuItemCheckbox )
 EW_END_OF_CLASS_VARIANTS( MenuItemCheckbox )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::ItemCheckbox' */
-EW_DEFINE_CLASS( MenuItemCheckbox, MenuItemBase, CheckBoxButton, CheckBoxButton, 
-                 CheckBoxButton, CheckBoxButton, Checked, Checked, "Menu::ItemCheckbox" )
+EW_DEFINE_CLASS( MenuItemCheckbox, MenuItemBase, CheckboxIcon, CheckboxIcon, CheckboxIcon, 
+                 CheckboxIcon, ToggleEnabled, ToggleEnabled, "Menu::ItemCheckbox" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1308,6 +1325,24 @@ void MenuItemWrapper_OnSetUid( MenuItemWrapper _this, XUInt32 value )
     if ( NotificationItem != 0 )
     {
       NotificationItem->Uid = value;
+    }
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetToggleEnabled()' */
+void MenuItemWrapper_OnSetToggleEnabled( MenuItemWrapper _this, XBool value )
+{
+  if ( _this->ToggleEnabled != value )
+  {
+    CoreView view;
+    MenuItemCheckbox CheckboxMenuItem;
+    _this->ToggleEnabled = value;
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    CheckboxMenuItem = EwCastObject( view, MenuItemCheckbox );
+
+    if ( CheckboxMenuItem != 0 )
+    {
+      CheckboxMenuItem->ToggleEnabled = value;
     }
   }
 }
@@ -1651,9 +1686,7 @@ XBool MenuBaseMenuView_LoadItemChecked( MenuBaseMenuView _this, XInt32 aItemNo )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return 0;
 }
@@ -1778,6 +1811,23 @@ XUInt32 MenuBaseMenuView__LoadItemUid( void* _this, XInt32 aItemNo )
   return ((MenuBaseMenuView)_this)->_VMT->LoadItemUid((MenuBaseMenuView)_this, aItemNo );
 }
 
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemToggle()' */
+XBool MenuBaseMenuView_LoadItemToggle( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return 1;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemToggle()' */
+XBool MenuBaseMenuView__LoadItemToggle( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_VMT->LoadItemToggle((MenuBaseMenuView)_this
+  , aItemNo );
+}
+
 /* Variants derived from the class : 'Menu::BaseMenuView' */
 EW_DEFINE_CLASS_VARIANTS( MenuBaseMenuView )
 EW_END_OF_CLASS_VARIANTS( MenuBaseMenuView )
@@ -1838,6 +1888,7 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, Menu, Menu, Menu, Menu,
   MenuBaseMenuView_LoadItemReceivedTime,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
 EW_END_OF_CLASS( MenuBaseMenuView )
 
 /* Initializer for the class 'Menu::PushButton' */

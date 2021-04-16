@@ -44,8 +44,6 @@
 
 #include "_WidgetSetHorizontalSlider.h"
 #include "_WidgetSetHorizontalSliderConfig.h"
-#include "_WidgetSetToggleButton.h"
-#include "_WidgetSetToggleButtonConfig.h"
 #include "_WidgetSetWidgetConfig.h"
 
 #ifdef __cplusplus

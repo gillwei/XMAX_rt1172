@@ -478,7 +478,7 @@ class DEV_VehicleSupportedFunction : Menu::BaseMenuView
       var Menu::ItemCheckbox CheckBoxItem = ( Menu::ItemCheckbox )aMenuItem;
       if( null != CheckBoxItem )
       {
-        IsChecked = CheckBoxItem.CheckBoxButton.Checked;
+        IsChecked = CheckBoxItem.Checked;
       }
 
       native( aItemNo, IsChecked )

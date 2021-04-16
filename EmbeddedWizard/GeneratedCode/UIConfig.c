@@ -27,43 +27,8 @@
 #include "ewlocale.h"
 #include "_ResourcesBitmap.h"
 #include "_WidgetSetHorizontalSliderConfig.h"
-#include "_WidgetSetToggleButtonConfig.h"
-#include "Core.h"
 #include "Resource.h"
 #include "UIConfig.h"
-
-/* User defined auto object: 'UIConfig::CheckBoxConfig' */
-EW_DEFINE_AUTOOBJECT( UIConfigCheckBoxConfig, WidgetSetToggleButtonConfig )
-
-/* Initializer for the auto object 'UIConfig::CheckBoxConfig' */
-void UIConfigCheckBoxConfig__Init( WidgetSetToggleButtonConfig _this )
-{
-  WidgetSetToggleButtonConfig_OnSetKeyCode( _this, CoreKeyCodeNoKey );
-  WidgetSetToggleButtonConfig_OnSetFaceOnFrameActive( _this, 1 );
-  WidgetSetToggleButtonConfig_OnSetFaceOnFrameFocused( _this, 1 );
-  WidgetSetToggleButtonConfig_OnSetFaceOnFrameDisabled( _this, 1 );
-  WidgetSetToggleButtonConfig_OnSetFaceOnFrameDefault( _this, 1 );
-  WidgetSetToggleButtonConfig_OnSetFaceOnActive( _this, 0 );
-  WidgetSetToggleButtonConfig_OnSetFaceOnFocused( _this, 0 );
-  WidgetSetToggleButtonConfig_OnSetFaceOnDisabled( _this, EwLoadResource( &ResourceCheckboxDisable, 
-  ResourcesBitmap ));
-  WidgetSetToggleButtonConfig_OnSetFaceOnDefault( _this, EwLoadResource( &ResourceCheckboxNormal, 
-  ResourcesBitmap ));
-  WidgetSetToggleButtonConfig_OnSetFaceOffFrameActive( _this, 0 );
-  WidgetSetToggleButtonConfig_OnSetFaceOffFrameFocused( _this, 0 );
-  WidgetSetToggleButtonConfig_OnSetFaceOffFrameDisabled( _this, 0 );
-  WidgetSetToggleButtonConfig_OnSetFaceOffFrameDefault( _this, 0 );
-  WidgetSetToggleButtonConfig_OnSetFaceOffActive( _this, 0 );
-  WidgetSetToggleButtonConfig_OnSetFaceOffFocused( _this, 0 );
-  WidgetSetToggleButtonConfig_OnSetFaceOffDisabled( _this, EwLoadResource( &ResourceCheckboxDisable, 
-  ResourcesBitmap ));
-  WidgetSetToggleButtonConfig_OnSetFaceOffDefault( _this, EwLoadResource( &ResourceCheckboxNormal, 
-  ResourcesBitmap ));
-}
-
-/* Table with links to derived variants of the auto object : 'UIConfig::CheckBoxConfig' */
-EW_DEFINE_AUTOOBJECT_VARIANTS( UIConfigCheckBoxConfig )
-EW_END_OF_AUTOOBJECT_VARIANTS( UIConfigCheckBoxConfig )
 
 /* User defined auto object: 'UIConfig::HorizontalSliderConfig' */
 EW_DEFINE_AUTOOBJECT( UIConfigHorizontalSliderConfig, WidgetSetHorizontalSliderConfig )

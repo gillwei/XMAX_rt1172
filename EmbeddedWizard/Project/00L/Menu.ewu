@@ -361,6 +361,7 @@ class VerticalMenu : Components::BaseComponent
           Menu::ItemCheckMark == Item.ItemClass )
       {
         Item.Checked = OwnerMenu.LoadItemChecked( ItemNo );
+        Item.ToggleEnabled = OwnerMenu.LoadItemToggle( ItemNo );
       }
 
       if( Menu::ItemBaseValue == Item.ItemClass )
@@ -683,27 +684,37 @@ class ItemCheckbox : Menu::ItemBase
       case Menu::ItemHeightSmall:
       {
         Title.Bounds = <37,9,367,43>;
-        CheckBoxButton.Bounds = <371,2,421,52>;
+        CheckboxIcon.Bounds = <371,2,421,52>;
       }
       default:;
     }
   }
 
-  $rect <0,170,190,210>
+  $rect <0,180,190,220>
   inherited onset Enabled
   {
     if( pure Enabled != value )
     {
       super( value );
-      CheckBoxButton.Enabled = value;
+      if( value )
+      {
+        CheckboxIcon.Bitmap = Resource::CheckboxNormal;
+      }
+      else
+      {
+        CheckboxIcon.Bitmap = Resource::CheckboxDisable;
+      }
     }
   }
 
-  $rect <220,80,450,120>
+  $rect <220,130,450,170>
   inherited method OnShortEnterKeyActivated()
   {
     super();
-    CheckBoxButton.Checked = !CheckBoxButton.Checked;
+    if( ToggleEnabled )
+    {
+      Checked = !Checked;
+    }
   }
 
   $rect <20,20,160,60>
@@ -712,29 +723,35 @@ class ItemCheckbox : Menu::ItemBase
     preset Bounds = <37,1,366,69>;
   }
 
-  $rect <20,20,160,60>
-  object WidgetSet::ToggleButton CheckBoxButton
-  {
-    preset Bounds = <371,11,421,61>;
-    preset Enabled = true;
-    preset Checked = false;
-    preset IconFrame = 0;
-    preset Label = "";
-    preset Appearance = UIConfig::CheckBoxConfig;
-  }
-
   $rect <0,80,200,120>
   property bool Checked = false;
 
-  $rect <0,120,200,160>
+  $rect <0,130,200,170>
   onset Checked
   {
     if( pure Checked != value )
     {
       pure Checked = value;
-      CheckBoxButton.Checked = value;
+      if( value )
+      {
+        CheckboxIcon.FrameNumber = 1;
+      }
+      else
+      {
+        CheckboxIcon.FrameNumber = 0;
+      }
     }
   }
+
+  $rect <20,20,160,60>
+  object Views::Image CheckboxIcon
+  {
+    preset Bounds = <371,11,421,61>;
+    preset Bitmap = Resource::CheckboxNormal;
+  }
+
+  $rect <220,80,420,120>
+  property bool ToggleEnabled = false;
 }
 
 // This is a GUI component.
@@ -1019,6 +1036,24 @@ class ItemWrapper : Core::Group
       }
     }
   }
+
+  $rect <260,540,460,580>
+  property bool ToggleEnabled;
+
+  $rect <260,590,460,630>
+  onset ToggleEnabled
+  {
+    if( pure ToggleEnabled != value )
+    {
+      pure ToggleEnabled = value;
+      var Core::View view = FindNextView( null, Core::ViewState[] );
+      var Menu::ItemCheckbox CheckboxMenuItem = (Menu::ItemCheckbox)view;
+      if( null != CheckboxMenuItem )
+      {
+        CheckboxMenuItem.ToggleEnabled = value;
+      }
+    }
+  }
 }
 
 $rect <460,160,660,200>
@@ -1187,16 +1222,13 @@ class BaseMenuView : Components::BaseMainBG
   // For checkbox menu item
   note group Note7
   {
-    attr Bounds = <520,245,780,360>;
+    attr Bounds = <520,245,780,400>;
   }
 
   $rect <550,295,750,335>
   method bool LoadItemChecked( arg int32 aItemNo )
   {
-    if( aItemNo >= 0 )
-    {
-      // empty body to suppress warning
-    }
+    aItemNo; //suppress warning
     return false;
   }
 
@@ -1222,10 +1254,10 @@ class BaseMenuView : Components::BaseMainBG
   // For menu item which has value
   note group Note8
   {
-    attr Bounds = <520,380,780,500>;
+    attr Bounds = <520,430,780,550>;
   }
 
-  $rect <550,440,750,480>
+  $rect <550,490,750,530>
   method string LoadItemBaseValue( arg int32 aItemNo )
   {
     if( aItemNo >= 0 )
@@ -1279,6 +1311,13 @@ class BaseMenuView : Components::BaseMainBG
       // empty body to suppress warning
     }
     return 0;
+  }
+
+  $rect <550,340,750,380>
+  method bool LoadItemToggle( arg int32 aItemNo )
+  {
+    aItemNo; //suppress warning
+    return true;
   }
 
   $reorder BlackBG 1

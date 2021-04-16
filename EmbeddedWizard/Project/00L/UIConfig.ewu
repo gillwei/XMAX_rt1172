@@ -2,29 +2,6 @@
 
 $rect <10,10,250,50>
 $output false
-autoobject WidgetSet::ToggleButtonConfig CheckBoxConfig
-{
-  preset KeyCode = Core::KeyCode.NoKey;
-  preset FaceOnFrameActive = 1;
-  preset FaceOnFrameFocused = 1;
-  preset FaceOnFrameDisabled = 1;
-  preset FaceOnFrameDefault = 1;
-  preset FaceOnActive = null;
-  preset FaceOnFocused = null;
-  preset FaceOnDisabled = Resource::CheckboxDisable;
-  preset FaceOnDefault = Resource::CheckboxNormal;
-  preset FaceOffFrameActive = 0;
-  preset FaceOffFrameFocused = 0;
-  preset FaceOffFrameDisabled = 0;
-  preset FaceOffFrameDefault = 0;
-  preset FaceOffActive = null;
-  preset FaceOffFocused = null;
-  preset FaceOffDisabled = Resource::CheckboxDisable;
-  preset FaceOffDefault = Resource::CheckboxNormal;
-}
-
-$rect <10,70,250,110>
-$output false
 autoobject WidgetSet::HorizontalSliderConfig HorizontalSliderConfig
 {
   preset ThumbFocused = Resource::SeekBarDot;

@@ -192,6 +192,7 @@ EW_DEFINE_METHODS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( UnitUNT05_TemperatureSettingMenu )
 
 /* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.LoadItemClass()' */
