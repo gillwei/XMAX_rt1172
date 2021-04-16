@@ -286,7 +286,14 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
                                            Enum::VehicleRxType.GRIP_WARMER_VALUE_MIDDLE == VehicleData.RxType ||
                                            Enum::VehicleRxType.GRIP_WARMER_VALUE_HIGH == VehicleData.RxType );
     if( null != VehicleData &&
-        ( IsSeatHeaterValueReceived || IsGripWarmerValueReceived ) )
+        DeviceInterface::VehicleDevice.CurrentVehicleFunction == Enum::VehicleSupportedFunction.SEAT_HEATER &&
+        IsSeatHeaterValueReceived )
+    {
+      UpdateLevel( VehicleData.RxType );
+    }
+    else if( null != VehicleData &&
+             DeviceInterface::VehicleDevice.CurrentVehicleFunction == Enum::VehicleSupportedFunction.GRIP_WARMER &&
+             IsGripWarmerValueReceived )
     {
       UpdateLevel( VehicleData.RxType );
     }
@@ -321,7 +328,10 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
             VehicleData.DataUInt32 >= SeatHeater_GripWarmer::MIN_LEVEL )
         {
           ItemValueArray[0] = VehicleData.DataUInt32;
-          ScaleIndicator.LevelValue = (int32)VehicleData.DataUInt32;
+          if( Enum::SeatHeaterGripWarmerLevelType.LOW == ScaleIndicator.ScaleIndicatorType )
+          {
+            ScaleIndicator.LevelValue = (int32)VehicleData.DataUInt32;
+          }
           Menu.InvalidateItems( 0, 0 );
         }
       }
@@ -343,7 +353,10 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
             VehicleData.DataUInt32 >= SeatHeater_GripWarmer::MIN_LEVEL )
         {
           ItemValueArray[1] = VehicleData.DataUInt32;
-          ScaleIndicator.LevelValue = (int32)VehicleData.DataUInt32;
+          if( Enum::SeatHeaterGripWarmerLevelType.MID == ScaleIndicator.ScaleIndicatorType )
+          {
+            ScaleIndicator.LevelValue = (int32)VehicleData.DataUInt32;
+          }
           Menu.InvalidateItems( 1, 1 );
         }
       }
@@ -365,7 +378,10 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
             VehicleData.DataUInt32 >= SeatHeater_GripWarmer::MIN_LEVEL )
         {
           ItemValueArray[2] = VehicleData.DataUInt32;
-          ScaleIndicator.LevelValue = (int32)VehicleData.DataUInt32;
+          if( Enum::SeatHeaterGripWarmerLevelType.HIGH == ScaleIndicator.ScaleIndicatorType )
+          {
+            ScaleIndicator.LevelValue = (int32)VehicleData.DataUInt32;
+          }
           Menu.InvalidateItems( 2, 2 );
         }
       }

@@ -290,14 +290,23 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_OnVehicleDataReceivedSlot( SeatHeater
   == VehicleData->RxType ) || ( EnumVehicleRxTypeGRIP_WARMER_VALUE_MIDDLE == VehicleData->RxType )) 
   || ( EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH == VehicleData->RxType ));
 
-  if (( VehicleData != 0 ) && ( IsSeatHeaterValueReceived || IsGripWarmerValueReceived ))
+  if ((( VehicleData != 0 ) && ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction == EnumVehicleSupportedFunctionSEAT_HEATER )) 
+      && IsSeatHeaterValueReceived )
   {
     SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, VehicleData->RxType );
   }
   else
-  {
-    EwTrace( "%s", EwLoadString( &_Const0000 ));
-  }
+    if ((( VehicleData != 0 ) && ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction == EnumVehicleSupportedFunctionGRIP_WARMER )) 
+        && IsGripWarmerValueReceived )
+    {
+      SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, VehicleData->RxType );
+    }
+    else
+    {
+      EwTrace( "%s", EwLoadString( &_Const0000 ));
+    }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.UpdateLevel()' */
@@ -327,8 +336,13 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
           && ( VehicleData->DataUInt32 >= 1 ))
       {
         _this->ItemValueArray[ 0 ] = VehicleData->DataUInt32;
-        SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( _this->ScaleIndicator, 
-        (XInt32)VehicleData->DataUInt32 );
+
+        if ( EnumSeatHeaterGripWarmerLevelTypeLOW == _this->ScaleIndicator->ScaleIndicatorType )
+        {
+          SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( _this->ScaleIndicator, 
+          (XInt32)VehicleData->DataUInt32 );
+        }
+
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 0 );
       }
     }
@@ -353,8 +367,13 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
           && ( VehicleData->DataUInt32 >= 1 ))
       {
         _this->ItemValueArray[ 1 ] = VehicleData->DataUInt32;
-        SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( _this->ScaleIndicator, 
-        (XInt32)VehicleData->DataUInt32 );
+
+        if ( EnumSeatHeaterGripWarmerLevelTypeMID == _this->ScaleIndicator->ScaleIndicatorType )
+        {
+          SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( _this->ScaleIndicator, 
+          (XInt32)VehicleData->DataUInt32 );
+        }
+
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 1, 1 );
       }
     }
@@ -379,8 +398,13 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
           && ( VehicleData->DataUInt32 >= 1 ))
       {
         _this->ItemValueArray[ 2 ] = VehicleData->DataUInt32;
-        SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( _this->ScaleIndicator, 
-        (XInt32)VehicleData->DataUInt32 );
+
+        if ( EnumSeatHeaterGripWarmerLevelTypeHIGH == _this->ScaleIndicator->ScaleIndicatorType )
+        {
+          SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( _this->ScaleIndicator, 
+          (XInt32)VehicleData->DataUInt32 );
+        }
+
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 2, 2 );
       }
     }
