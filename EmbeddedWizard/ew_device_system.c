@@ -1103,20 +1103,22 @@ if( EnumOperationModeNORMAL == mode ||
 /*********************************************************************
 *
 * @private
-* ew_get_operation_mode
+* EW_get_operation_mode
 *
-* Return current operation mode
+* Get current operation mode
 *
-* @return Operation mode (factory/inspection/normal)
+* @param mode Pointer to operation mode
+* @return True if operation mode from EEPROM is ready
 *
 *********************************************************************/
-EnumOperationMode ew_get_operation_mode
+bool EW_get_operation_mode
     (
-    void
+    EnumOperationMode* mode
     )
 {
-PRINTF( "%s %d\r\n", __FUNCTION__, operation_mode );
-return operation_mode;
+PRINTF( "%s %d %d\r\n", __FUNCTION__, is_op_mode_ready, operation_mode );
+*mode = operation_mode;
+return is_op_mode_ready;
 }
 
 /*********************************************************************

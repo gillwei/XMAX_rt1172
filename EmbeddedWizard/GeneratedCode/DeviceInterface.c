@@ -507,7 +507,13 @@ XEnum DeviceInterfaceSystemDeviceClass_OnGetOperationMode( DeviceInterfaceSystem
 {
   XEnum Mode = EnumOperationModeNORMAL;
 
-  Mode = ew_get_operation_mode();
+  {
+    EnumOperationMode op_mode;
+    if( EW_get_operation_mode( &op_mode ) )
+    {
+      Mode = op_mode;
+    }
+  }
   _this->OperationMode = Mode;
   return _this->OperationMode;
 }
