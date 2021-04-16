@@ -182,6 +182,21 @@ int result = ERR_NONE;
 int i = 0;
 if( idx < used_buffer_lookup_table.num )
     {
+    if( EnumNotificationCategoryMISSED_CALL == notification_buffer[used_buffer_lookup_table.idx[idx]].category &&
+        0 < missed_call_notification_num )
+        {
+        missed_call_notification_num--;
+        }
+    else if ( EnumNotificationCategoryMESSAGE == notification_buffer[used_buffer_lookup_table.idx[idx]].category &&
+        0 < message_notification_num )
+        {
+        message_notification_num--;
+        }
+    else
+        {
+        // empty
+        }
+
     free_buffer_lookup_table.idx[free_buffer_lookup_table.num] = used_buffer_lookup_table.idx[idx];
     free_buffer_lookup_table.num++;
     for( i = idx + 1; i < used_buffer_lookup_table.num; i++ )
