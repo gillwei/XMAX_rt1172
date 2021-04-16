@@ -111,7 +111,7 @@ class NTF01_NotificationList : Menu::BaseMenuView
   {
     aMenuItem; // suppress warning
 
-    if( aItemNo >= 0 )
+    if( aItemNo >= 0 && !DeviceInterface::VehicleDevice.DDModeActivated )
     {
       var Notification::NTF02_NotificationDetail Dialog = new Notification::NTF02_NotificationDetail;
       var uint32 NotificationIdx = DeviceInterface::NotificationDevice.NotificationNum - aItemNo - 1;
@@ -241,7 +241,6 @@ class NTF01_NotificationList : Menu::BaseMenuView
     trace "OnNotificationDetailDismissSlot";
     if( 0 == Menu.NoOfItems )
     {
-    trace "OnNotificationDetailDismissSlot, Enable";
       NoDataTimeoutTimer.Enabled = true;
     }
   }
@@ -283,7 +282,7 @@ class NTF02_NotificationDetail : Components::BaseMainBG
   inherited method OnShortHomeKeyActivated()
   {
     signal OnDismiss;
-    super();
+    DismissThisDialog();
   }
 
   $rect <10,350,210,390>
