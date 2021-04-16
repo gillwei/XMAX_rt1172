@@ -387,8 +387,28 @@ class UNT02_MileageSettingMenu : Menu::BaseMenuView
     aMenuItem; // suppress warning
     switch( aItemNo )
     {
-      case 0: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.MILEAGE_UNIT, (uint32)Enum::MileageSettingItem.KM );
-      case 1: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.MILEAGE_UNIT, (uint32)Enum::MileageSettingItem.MILE );
+      case 0:
+      {
+        if( Enum::MileageSettingItem.KM == DeviceInterface::VehicleDevice.CurrentMileageSetting )
+        {
+          CheckMarkUpdateTimer.Enabled = true;
+        }
+        else
+        {
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.MILEAGE_UNIT, (uint32)Enum::MileageSettingItem.KM );
+        }
+      }
+      case 1:
+      {
+        if( Enum::MileageSettingItem.MILE == DeviceInterface::VehicleDevice.CurrentMileageSetting )
+        {
+          CheckMarkUpdateTimer.Enabled = true;
+        }
+        else
+        {
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.MILEAGE_UNIT, (uint32)Enum::MileageSettingItem.MILE );
+        }
+      }
       default:;
     }
   }
@@ -559,9 +579,39 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
     aMenuItem; // suppress warning
     switch( aItemNo )
     {
-      case 0: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.FUEL_CONSUMPTION_UNIT, (uint32)Enum::FuelSettingItem.KM_L );
-      case 1: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.FUEL_CONSUMPTION_UNIT, (uint32)Enum::FuelSettingItem.L_PER_HUNDRED_KM );
-      case 2: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.FUEL_CONSUMPTION_UNIT, (uint32)Enum::FuelSettingItem.MPG );
+      case 0:
+      {
+        if( Enum::FuelSettingItem.KM_L == DeviceInterface::VehicleDevice.CurrentFuelSetting )
+        {
+          CheckMarkUpdateTimer.Enabled = true;
+        }
+        else
+        {
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.FUEL_CONSUMPTION_UNIT, (uint32)Enum::FuelSettingItem.KM_L );
+        }
+      }
+      case 1:
+      {
+        if( Enum::FuelSettingItem.L_PER_HUNDRED_KM == DeviceInterface::VehicleDevice.CurrentFuelSetting )
+        {
+          CheckMarkUpdateTimer.Enabled = true;
+        }
+        else
+        {
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.FUEL_CONSUMPTION_UNIT, (uint32)Enum::FuelSettingItem.L_PER_HUNDRED_KM );
+        }
+      }
+      case 2:
+      {
+        if( Enum::FuelSettingItem.MPG == DeviceInterface::VehicleDevice.CurrentFuelSetting )
+        {
+          CheckMarkUpdateTimer.Enabled = true;
+        }
+        else
+        {
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.FUEL_CONSUMPTION_UNIT, (uint32)Enum::FuelSettingItem.MPG );
+        }
+      }
       default:;
     }
   }
@@ -722,9 +772,39 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
     aMenuItem; // suppress warning
     switch( aItemNo )
     {
-      case 0: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, (uint32)Enum::PressureSettingItem.KPA );
-      case 1: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, (uint32)Enum::PressureSettingItem.PSI );
-      case 2: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, (uint32)Enum::PressureSettingItem.KGF );
+      case 0:
+      {
+        if( Enum::PressureSettingItem.KPA == DeviceInterface::VehicleDevice.CurrentPressureSetting )
+        {
+          CheckMarkUpdateTimer.Enabled = true;
+        }
+        else
+        {
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, (uint32)Enum::PressureSettingItem.KPA );
+        }
+      }
+      case 1:
+      {
+        if( Enum::PressureSettingItem.PSI == DeviceInterface::VehicleDevice.CurrentPressureSetting )
+        {
+          CheckMarkUpdateTimer.Enabled = true;
+        }
+        else
+        {
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, (uint32)Enum::PressureSettingItem.PSI );
+        }
+      }
+      case 2:
+      {
+        if( Enum::PressureSettingItem.KGF == DeviceInterface::VehicleDevice.CurrentPressureSetting )
+        {
+          CheckMarkUpdateTimer.Enabled = true;
+        }
+        else
+        {
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, (uint32)Enum::PressureSettingItem.KGF );
+        }
+      }
       default:;
     }
   }
@@ -876,8 +956,28 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
     aMenuItem; // suppress warning
     switch( aItemNo )
     {
-      case 0: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TEMPERATURE_UNIT, ( uint32 )Enum::TemperatureSettingItem.TEMP_C );
-      case 1: DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TEMPERATURE_UNIT, ( uint32 )Enum::TemperatureSettingItem.TEMP_F );
+      case 0:
+      {
+        if( Enum::TemperatureSettingItem.TEMP_C == DeviceInterface::VehicleDevice.CurrentTempSetting )
+        {
+          CheckMarkUpdateTimer.Enabled = true;
+        }
+        else
+        {
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TEMPERATURE_UNIT, ( uint32 )Enum::TemperatureSettingItem.TEMP_C );
+        }
+      }
+      case 1:
+      {
+        if( Enum::TemperatureSettingItem.TEMP_F == DeviceInterface::VehicleDevice.CurrentTempSetting )
+        {
+          CheckMarkUpdateTimer.Enabled = true;
+        }
+        else
+        {
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TEMPERATURE_UNIT, ( uint32 )Enum::TemperatureSettingItem.TEMP_F );
+        }
+      }
       default:;
     }
   }

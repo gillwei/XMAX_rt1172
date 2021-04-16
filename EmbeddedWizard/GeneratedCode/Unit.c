@@ -667,19 +667,38 @@ void UnitUNT02_MileageSettingMenu_OnItemActivate( UnitUNT02_MileageSettingMenu _
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aMenuItem );
 
   switch ( aItemNo )
   {
     case 0 :
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMILEAGE_UNIT, 0 );
+    {
+      if ( EnumMileageSettingItemKM == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting )
+      {
+        CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+      }
+      else
+      {
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMILEAGE_UNIT, 0 );
+      }
+    }
     break;
 
     case 1 :
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMILEAGE_UNIT, 1 );
+    {
+      if ( EnumMileageSettingItemMILE == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting )
+      {
+        CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+      }
+      else
+      {
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMILEAGE_UNIT, 1 );
+      }
+    }
     break;
 
     default : 
@@ -989,27 +1008,56 @@ void UnitUNT03_FuelSettingMenu_OnItemActivate( UnitUNT03_FuelSettingMenu _this,
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aMenuItem );
 
   switch ( aItemNo )
   {
     case 0 :
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
-      0 );
+    {
+      if ( EnumFuelSettingItemKM_L == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
+      {
+        CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+      }
+      else
+      {
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
+        0 );
+      }
+    }
     break;
 
     case 1 :
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
-      2 );
+    {
+      if ( EnumFuelSettingItemL_PER_HUNDRED_KM == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
+      {
+        CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+      }
+      else
+      {
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
+        2 );
+      }
+    }
     break;
 
     case 2 :
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
-      1 );
+    {
+      if ( EnumFuelSettingItemMPG == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
+      {
+        CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+      }
+      else
+      {
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
+        1 );
+      }
+    }
     break;
 
     default : 
@@ -1309,24 +1357,53 @@ void UnitUNT04_PressureSettingMenu_OnItemActivate( UnitUNT04_PressureSettingMenu
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aMenuItem );
 
   switch ( aItemNo )
   {
     case 0 :
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 1 );
+    {
+      if ( EnumPressureSettingItemKPA == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
+      {
+        CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+      }
+      else
+      {
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 1 );
+      }
+    }
     break;
 
     case 1 :
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 0 );
+    {
+      if ( EnumPressureSettingItemPSI == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
+      {
+        CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+      }
+      else
+      {
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 0 );
+      }
+    }
     break;
 
     case 2 :
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 2 );
+    {
+      if ( EnumPressureSettingItemKGF == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
+      {
+        CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+      }
+      else
+      {
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 2 );
+      }
+    }
     break;
 
     default : 
@@ -1599,19 +1676,40 @@ void UnitUNT05_TemperatureSettingMenu_OnItemActivate( UnitUNT05_TemperatureSetti
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aMenuItem );
 
   switch ( aItemNo )
   {
     case 0 :
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTEMPERATURE_UNIT, 0 );
+    {
+      if ( EnumTemperatureSettingItemTEMP_C == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting )
+      {
+        CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+      }
+      else
+      {
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTEMPERATURE_UNIT, 
+        0 );
+      }
+    }
     break;
 
     case 1 :
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTEMPERATURE_UNIT, 1 );
+    {
+      if ( EnumTemperatureSettingItemTEMP_F == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting )
+      {
+        CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+      }
+      else
+      {
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTEMPERATURE_UNIT, 
+        1 );
+      }
+    }
     break;
 
     default : 
