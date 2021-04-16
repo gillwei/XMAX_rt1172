@@ -115,7 +115,7 @@
 /* Deklaration of class : 'TCS::TCS01_Main' */
 EW_DEFINE_FIELDS( TCSTCS01_Main, MenuBaseMenuView )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
-  EW_VARIABLE( IsTCSEnabled,    XUInt32 )
+  EW_VARIABLE( IsTCSEnabled,    XBool )
 EW_END_OF_FIELDS( TCSTCS01_Main )
 
 /* Virtual Method Table (VMT) for the class : 'TCS::TCS01_Main' */

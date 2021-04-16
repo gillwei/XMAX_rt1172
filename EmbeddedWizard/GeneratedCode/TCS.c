@@ -103,7 +103,7 @@ void TCSTCS01_Main_Init( TCSTCS01_Main _this, XHandle aArg )
 
   if ( VehicleData != 0 )
   {
-    _this->IsTCSEnabled = VehicleData->DataUInt32;
+    _this->IsTCSEnabled = !!VehicleData->DataUInt32;
   }
 }
 
@@ -149,14 +149,15 @@ void TCSTCS01_Main_OnItemActivate( TCSTCS01_Main _this, XInt32 aItemNo, MenuItem
     if ( CheckBoxItem->CheckBoxButton.Checked )
     {
       _this->IsTCSEnabled = 0;
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTCS, 0 );
     }
     else
     {
       _this->IsTCSEnabled = 1;
+      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTCS, 1 );
     }
-
-    DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-    DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTCS, _this->IsTCSEnabled );
   }
 }
 
@@ -167,7 +168,7 @@ XBool TCSTCS01_Main_LoadItemChecked( TCSTCS01_Main _this, XInt32 aItemNo )
 
   if ( aItemNo < _this->Super1.Menu.NoOfItems )
   {
-    IsChecked = !!_this->IsTCSEnabled;
+    IsChecked = _this->IsTCSEnabled;
   }
 
   return IsChecked;
@@ -186,8 +187,22 @@ void TCSTCS01_Main_OnVehicleDataReceivedSlot( TCSTCS01_Main _this, XObject sende
 
   if (( VehicleData != 0 ) && ( EnumVehicleRxTypeTC_MODE == VehicleData->RxType ))
   {
-    _this->IsTCSEnabled = VehicleData->DataUInt32;
-    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 0 );
+    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+    DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTC_MODE );
+
+    if ( 1 == VehicleData->DataUInt32 )
+    {
+      _this->IsTCSEnabled = 1;
+      MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 0 );
+    }
+    else
+      if ( 0 == VehicleData->DataUInt32 )
+      {
+        _this->IsTCSEnabled = 0;
+        MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 0 );
+      }
+      else
+        ;
   }
 }
 

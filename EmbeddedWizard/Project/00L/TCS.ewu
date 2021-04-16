@@ -45,19 +45,20 @@ class TCS01_Main : Menu::BaseMenuView
   $rect <520,220,720,260>
   inherited method OnItemActivate()
   {
-    aItemNo;
-    var Menu::ItemCheckbox CheckBoxItem = ( Menu::ItemCheckbox )aMenuItem;
+    aItemNo; // suppress warning
+    var Menu::ItemCheckbox CheckBoxItem = (Menu::ItemCheckbox)aMenuItem;
     if( null != CheckBoxItem )
     {
       if( CheckBoxItem.CheckBoxButton.Checked )
       {
-        IsTCSEnabled = 0;
+        IsTCSEnabled = false;
+        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TCS, TCS::TCS_OFF );
       }
       else
       {
-        IsTCSEnabled = 1;
+        IsTCSEnabled = true;
+        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TCS, TCS::TCS_ON );
       }
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TCS, IsTCSEnabled );
     }
   }
 
@@ -91,15 +92,36 @@ class TCS01_Main : Menu::BaseMenuView
   $rect <770,80,1050,120>
   slot OnVehicleDataReceivedSlot
   {
-    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    var DeviceInterface::VehicleDataClass VehicleData = (DeviceInterface::VehicleDataClass)VehicleDataReceivedEventHandler.Context;
     if( null != VehicleData &&
         Enum::VehicleRxType.TC_MODE == VehicleData.RxType )
     {
-      IsTCSEnabled = VehicleData.DataUInt32;
-      Menu.InvalidateItems( 0, 0 );
+      VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TC_MODE );
+      if( TCS::TCS_ON == VehicleData.DataUInt32 )
+      {
+        IsTCSEnabled = true;
+        Menu.InvalidateItems( 0, 0 );
+      }
+      else if( TCS::TCS_OFF == VehicleData.DataUInt32 )
+      {
+        IsTCSEnabled = false;
+        Menu.InvalidateItems( 0, 0 );
+      }
+      else
+      {
+        // ignore
+      }
     }
   }
 
   $rect <20,300,220,340>
-  var uint32 IsTCSEnabled;
+  var bool IsTCSEnabled;
 }
+
+$rect <20,70,220,110>
+$output false
+const int32 TCS_ON = 1;
+
+$rect <20,120,220,160>
+$output false
+const int32 TCS_OFF = 0;
