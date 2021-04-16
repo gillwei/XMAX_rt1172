@@ -26,6 +26,7 @@
 #include "task.h"
 #include <string.h>
 
+#include "EW_pub.h"
 #include "can_mid.h"
 
 /*--------------------------------------------------------------------
@@ -792,16 +793,39 @@ void can_mid_init
     void
     )
 {
+EnumOperationMode mode = EnumOperationModeNORMAL;
+
 /*------------------------------------------------------
 Init message list
 ------------------------------------------------------*/
 mid_msg_list_init();
 
 /*------------------------------------------------------
-Handshake with Meter to check out those functions
-it supports
+Get Operation Mode
 ------------------------------------------------------*/
-can_mid_hand_shake();
+if( EW_get_operation_mode( &mode ) )
+    {
+    /*------------------------------------------------------
+    Handshake request(0x581) should not be sended when the
+    operation mode is Factory or Inspection
+    ------------------------------------------------------*/
+    if( EnumOperationModeNORMAL == mode )
+        {
+        /*------------------------------------------------------
+        Handshake with Meter to check out those functions
+        it supports
+        ------------------------------------------------------*/
+        can_mid_hand_shake();
+        }
+    }
+else
+    {
+    /*------------------------------------------------------
+    Handshake with Meter to check out those functions
+    it supports
+    ------------------------------------------------------*/
+    can_mid_hand_shake();
+    }
 
 #if( DEBUG_TX_CAN_SUPPORT )
 /*------------------------------------------------------
