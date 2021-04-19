@@ -649,6 +649,9 @@ void VI_notify_vehicle_data_changed
     PRINTF( "vi 0x%x 0x%x 0x%x\r\n", message_frame_id, signal_id, data );
 #endif
 
+EnumOperationMode operation_mode;
+EW_get_operation_mode( &operation_mode );
+
 switch( message_frame_id )
     {
     case IL_CAN0_RX0_ECU_INDCT_STAT_IDX:
@@ -691,7 +694,11 @@ switch( message_frame_id )
         process_heater_status( signal_id, data );
         break;
     case IL_CAN0_RXF_FACT_INSP_NS_REQ_IDX:
-        process_factory_inspection_request( signal_id, data );
+        if( EnumOperationModeFACTORY == operation_mode ||
+            EnumOperationModeINSPECTION == operation_mode )
+            {
+            process_factory_inspection_request( signal_id, data );
+            }
         break;
     default:
 #if( DEBUG_RX_CAN_SUPPORT )

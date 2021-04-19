@@ -171,7 +171,7 @@ static void ew_get_info_from_eeprom( void );
     static uint32_t ccuid;
     static uint32_t qrcode_passkey;
     static uint16_t qrcode_dummy;
-    static uint8_t  operation_mode;
+    static uint8_t  operation_mode = EnumOperationModeNORMAL;
     static bool     is_tft_backlight_on;
     static bool     is_op_mode_ready;
     static bool     is_ccuid_ready;
