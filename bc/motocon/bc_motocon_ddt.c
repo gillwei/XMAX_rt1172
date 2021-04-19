@@ -313,7 +313,10 @@ switch( command )
 // check state
 if( ddt->id != BC_MOTOCON_DDT_INACTIVE_ID )
     {
-    result_callback( BC_MOTOCON_SEND_RESULT_DDT_BUSY );
+    if( result_callback != NULL )
+        {
+        result_callback( BC_MOTOCON_SEND_RESULT_DDT_BUSY );
+        }
     return BC_MOTOCON_SEND_RESULT_DDT_BUSY;
     }
 // start ddt
@@ -348,7 +351,10 @@ if( ret == BC_MOTOCON_SEND_RESULT_SUCCESS )
 else
     {
     ddt->id = BC_MOTOCON_DDT_INACTIVE_ID;
-    ddt->result_callback( ret );
+    if( ddt->result_callback != NULL )
+        {
+        ddt->result_callback( ret );
+        }
     }
 return ret;
 }
@@ -434,13 +440,19 @@ if( pdTRUE == xSemaphoreTake( ddt->semaphore, DDT_TO_PHONE_SEMAPHORE_TIMEOUT_MS 
         else
             {
             ddt->id = BC_MOTOCON_DDT_INACTIVE_ID;
-            ddt->result_callback( ret );
+            if( ddt->result_callback != NULL )
+                {
+                ddt->result_callback( ret );
+                }
             }
         }
     else
         {
         ddt->id = BC_MOTOCON_DDT_INACTIVE_ID;
-        ddt->result_callback( BC_MOTOCON_SEND_RESULT_DDT_COMPLETE );
+        if( ddt->result_callback != NULL )
+            {
+            ddt->result_callback( BC_MOTOCON_SEND_RESULT_DDT_COMPLETE );
+            }
         }
     xSemaphoreGive( ddt->semaphore );
     }
@@ -474,7 +486,10 @@ if( ddt != NULL && pdTRUE == xSemaphoreTake( ddt->semaphore, DDT_TO_PHONE_SEMAPH
     if( ddt->id != BC_MOTOCON_DDT_INACTIVE_ID )
         {
         ddt->id = BC_MOTOCON_DDT_INACTIVE_ID;
-        ddt->result_callback( BC_MOTOCON_SEND_RESULT_DDT_TIMEOUT );
+        if( ddt->result_callback != NULL )
+            {
+            ddt->result_callback( BC_MOTOCON_SEND_RESULT_DDT_TIMEOUT );
+            }
         }
     xSemaphoreGive( ddt->semaphore );
     }

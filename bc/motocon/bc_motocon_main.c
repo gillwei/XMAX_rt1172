@@ -359,7 +359,10 @@ if( command == BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE )
     data[1] = BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE & 0xFF;
     data[2] = data[0];
     bc_motocon_send_result_t ret = bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 3 );
-    result_callback( ret );
+    if( result_callback != NULL )
+        {
+        result_callback( ret );
+        }
     return ret;
     }
 else
