@@ -606,7 +606,7 @@ $rect <667,800,867,840>
 $output false
 resource Resources::Bitmap IconGripWarmer3Small
 {
-  attr bitmapfile FileName = .\Res\launcher\50x50\LC10_S3.png;
+  attr bitmapfile FileName = .\Res\launcher\50x50\LC9_S3.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize = <50,50>;
   attr framedelay FrameDelay;
@@ -618,7 +618,7 @@ $rect <667,840,867,880>
 $output false
 resource Resources::Bitmap IconGripWarmer3Large
 {
-  attr bitmapfile FileName = .\Res\launcher\78x78\LC10_L3.png;
+  attr bitmapfile FileName = .\Res\launcher\78x78\LC9_L3.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize = <78,78>;
   attr framedelay FrameDelay;
