@@ -220,6 +220,11 @@ extern void client_appl_set_ydt_connect_state
     boolean connect_state
     );
 
+extern void client_appl_operation_mode_switch
+    (
+    void
+    );
+
 extern boolean client_appl_get_storage_init_dtc_state
     (
     void

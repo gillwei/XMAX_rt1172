@@ -27,7 +27,7 @@
 #include "RTC_pub.h"
 #include "PM_pub.h"
 #include "QR_pub.h"
-
+#include "client_dcm_appl.h"
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -1091,6 +1091,7 @@ void ew_set_operation_mode
 {
 PRINTF( "%s %d\r\n", __FUNCTION__, mode );
 operation_mode = mode;
+client_appl_operation_mode_switch();
 
 /* no need to write EnumOperationModeINSPECTION to EEPROM */
 if( EnumOperationModeNORMAL == mode ||

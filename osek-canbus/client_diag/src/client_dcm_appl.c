@@ -18,10 +18,13 @@
 #include "client_mem.h"
 #include <string.h>
 #include "BC_motocon_pub.h"
+#include "EW_pub.h"
 
 /*Micro switch for DEBUG*/
 #define APPL_DEBUG                                   (TRUE)
-#define APPL_PENDING                                 (TRUE)
+#define CLIENT_DEBUG(x)   PRINTF("[%s-%s-%s]:%s",__FILE__,__TIME__,__func__, x)
+
+
 /*--------------------------------------------------------------------
                             VARIABLES
 --------------------------------------------------------------------*/
@@ -29,6 +32,8 @@
 /*define BLE connected state*/
 static boolean ydt_connected_state = FALSE;
 static boolean ble_connected_state = FALSE;
+static EnumOperationMode sys_operation_mode = EnumOperationModeTOTAL;
+static boolean operation_mode_switch_flag = FALSE;
 static uint32 delay_timer_count   =  0;
 static client_process_flow_type client_process_flow_state = PROCESS_FLOW_IDLE;
 
@@ -696,6 +701,9 @@ is_read_init_dtc = FALSE;
 /*we set ydt_connect_state to FALSE and */
 ydt_connected_state = FALSE;
 ble_connected_state = FALSE;
+sys_operation_mode = EnumOperationModeNORMAL;
+operation_mode_switch_flag = FALSE;
+
 
 /*initial structure info*/
 (void)memset( &read_dtc_infos, 0x00, sizeof( read_dtc_infos ));
@@ -748,6 +756,94 @@ PRINTF("%s\r\n\n\n", print_end[result_code]);
 /*!******************************************************************************
 *
 * @public
+* Function name: client_appl_operation_mode_switch
+* Description  : this function will infrom that a requset of switching operation
+*                mode is occured
+* usage        : called by we_device_system
+*********************************************************************************/
+void client_appl_operation_mode_switch
+    (
+    void
+    )
+{
+operation_mode_switch_flag = TRUE;
+}
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_get_valid_operation_mode
+* Description  : this function will get current operation mdoe whether is valid for
+*                diagnostic fucntion and handler operation mode switch
+* usage        : called periodly
+*********************************************************************************/
+static boolean client_appl_get_valid_operation_mode
+    (
+    void
+    )
+{
+static boolean is_read_init_mode = FALSE;
+EnumOperationMode mode = EnumOperationModeNORMAL;
+
+if( FALSE == is_read_init_mode )
+    {
+    /*wait read data from eep after ign on*/
+    is_read_init_mode = EW_get_operation_mode( &sys_operation_mode );
+    if( TRUE == is_read_init_mode )
+        {
+        if( EnumOperationModeNORMAL == sys_operation_mode )
+            {
+            CLIENT_DEBUG("Init_EnterNormalOperationMode\r\n");
+            client_appl_init();
+            }
+        else
+            {
+            CLIENT_DEBUG("Init_EnterFactoryOperationMode\r\n");
+            client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
+            client_appl_set_ble_connected_state( FALSE );
+            }
+        }
+    else
+        {
+        return FALSE;
+        }
+    }
+
+if( TRUE == operation_mode_switch_flag )
+    {
+    operation_mode_switch_flag = FALSE;
+    (void)EW_get_operation_mode( &mode );
+    if( mode != sys_operation_mode )
+        {
+        sys_operation_mode = mode;
+        if( EnumOperationModeNORMAL == sys_operation_mode )
+            {
+            CLIENT_DEBUG("ModeSwitch_EnterNormalOperationMode\r\n");
+            client_appl_init();
+            }
+        else
+            {
+            CLIENT_DEBUG("ModeSwitch_InitEnterFactoryOperationMode\r\n");
+            client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
+            client_appl_set_ble_connected_state( FALSE );
+            }
+        }
+    }
+
+if( EnumOperationModeNORMAL == sys_operation_mode )
+    {
+    return TRUE;
+    }
+else
+    {
+    return FALSE;
+    }
+}
+
+
+/*!******************************************************************************
+*
+* @public
 * Function name: client_appl_main_5ms_handler
 * Description  : this function will send request message and send final result to
                 upper layer when handle process flow
@@ -758,20 +854,23 @@ void client_appl_main_5ms_handler
     void
     )
 {
-/*delay timer*/
+/*Check the system operation mode*/
+if( FALSE  == client_appl_get_valid_operation_mode() )
+    {
+    return;
+    }
+
+/*Check the Yamaha diagnostic tools connect state*/
 if( TRUE == client_appl_get_ydt_connect_state() )
     {
     if( PROCESS_FLOW_IDLE != client_process_flow_state )
         {
         client_appl_enter_ydt_handler();
         }
-    else
-        {
-        /* do nothing */
-        }
     return;
     }
 
+/*Diagnostic main function*/
 if( 0 != delay_timer_count )
     {
     decrease_delay_timer();
@@ -1337,6 +1436,7 @@ if( 0x00 < received_id_amount )
     client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
     set_current_conncet_server_id( channel_id );
     read_local_monitor_infos.connected_server_id = channel_id;
+    set_current_conncet_server_id( channel_id );
     read_local_monitor_infos.local_id_list = rx_monitor_data_id_list;
     read_local_monitor_infos.amount_local_data = received_id_amount;
     read_local_monitor_infos.current_local_data_index = 0x00;
@@ -1347,7 +1447,6 @@ else
     {
     return FALSE;
     }
-set_current_conncet_server_id( channel_id );
 }
 
 
@@ -1381,6 +1480,7 @@ if( NO_SERVER_CONNECT == channel_id )
 client_appl_set_current_process_flow_step( PROCESS_FLOW_RFFD );
 set_current_conncet_server_id( channel_id );
 read_freeze_frame_data_infos.connected_server_id = channel_id;
+CLIENT_DEBUG("BleCmdFFD  SUCCESS");
 
 return TRUE;
 }
@@ -1495,6 +1595,8 @@ void client_appl_ble_req_command_dispatch
     uint8* data
     )
 {
+CLIENT_DEBUG("RX-BleRequestcommand\r\n");
+
 if( TRUE == client_appl_get_ydt_connect_state() )
     {
     /*shall abandon current command when detect YAMAHA diagnostic tools online*/
@@ -1507,6 +1609,7 @@ if( FALSE == client_appl_get_ble_connected_state() )
         {
         if( TRUE == client_appl_ble_req_authentication( data_size, data ) )
             {
+            CLIENT_DEBUG("Authentication SUCCESS\r\n");
             client_appl_set_ble_connected_state( TRUE );
             if( SERVER_DETECT_DEFAULT_DONE == server_detect_step )
                 {
@@ -1519,8 +1622,13 @@ if( FALSE == client_appl_get_ble_connected_state() )
             }
         else
             {
+            CLIENT_DEBUG("Authentication FAILED\r\n");
             client_appl_set_ble_connected_state( FALSE );
             }
+        }
+    else
+        {
+        CLIENT_DEBUG("Failed CMD with Pass Authentication\r\n");
         }
     return;
     }
@@ -1531,35 +1639,49 @@ switch( req_command )
         if( TRUE == client_appl_ble_req_authentication( data_size, data ) )
             {
             client_appl_set_ble_connected_state( TRUE );
+            CLIENT_DEBUG("BleCmdAuthentication SUCCESS\r\n");
             }
         else
             {
             client_appl_set_ble_connected_state( FALSE );
+            CLIENT_DEBUG("Authentication FAILED\r\n");
             }
         BC_motocon_send_can_related_data( BLE_RSP_CMD_AUTHENTICATION, BLE_RSP_CMD_AUTHENTICATION_length, client_appl_get_ble_connected_state_ptr(), NULL );
         break;
 
     case BLE_REQ_CMD_SERVERLIST:
+        CLIENT_DEBUG("BleCmdReqServerList SUCCESS\r\n");
         client_appl_ble_rsp_connect_server_list( client_appl_ble_req_connect_server_list( data_size, data ) );
         break;
 
     case BLE_REQ_CMD_MALFUNCTION:
         if( FALSE == client_appl_ble_req_malfunction( FALSE, data_size, data ) )
             {
+            CLIENT_DEBUG("BleCmdMalFunction FAILED");
             BC_motocon_send_can_related_data( BLE_RSP_CMD_MALFUNCTION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL);
+            }
+        else
+            {
+            CLIENT_DEBUG("BleCmdMalFunction SUCCESS");
             }
         break;
 
     case BLE_REQ_CMD_MALFUNCTION_INTERVAL:
          if( FALSE == client_appl_ble_req_malfunction( TRUE, data_size, data ) )
             {
+            CLIENT_DEBUG("BleCmdMalFunctionInterval FAILED");
             BC_motocon_send_can_related_data( BLE_RSP_CMD_MALFUNCTION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL);
+            }
+         else
+            {
+            CLIENT_DEBUG("BleCmdMalFunctionInterval SUCCESS");
             }
         break;
 
     case BLE_REQ_CMD_VEHICLE_IDENTIFICATION:
         if( FALSE == client_appl_ble_req_vehicle_identification( data_size, data ) )
             {
+            CLIENT_DEBUG("BleCmdVehicleFucntion FAILED");
             BC_motocon_send_can_related_data( BLE_RSP_CMD_VEHICLE_IDENTIFICATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL);
             }
         break;
@@ -1567,35 +1689,60 @@ switch( req_command )
     case BLE_REQ_CMD_MARKET_DATA:
         if( FALSE == client_appl_ble_req_market_data( data_size, data ) )
             {
+            CLIENT_DEBUG("BleCmdMarketData FAILED");
             BC_motocon_send_can_related_data( BLE_RSP_CMD_MARKET_DATA, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL);
+            }
+        else
+            {
+            CLIENT_DEBUG("BleCmdMarketData SUCCESS");
             }
         break;
 
     case BLE_REQ_CMD_VEHICLE_INFORMATION:
         if( FALSE == client_appl_ble_req_vehicle_information( FALSE, data_size, data ) )
             {
+            CLIENT_DEBUG("BleCmdVehicleInformation FAILED");
             BC_motocon_send_can_related_data( BLE_RSP_CMD_VEHICLE_INFORMATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL, NULL );
+            }
+        else
+            {
+            CLIENT_DEBUG("BleCmdVehicleInformation SUCCESS");
             }
         break;
 
     case BLE_REQ_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST:
         if( FALSE == client_appl_ble_req_vehicle_information_supproted_list( data_size, data ) )
             {
+            CLIENT_DEBUG("BleCmdVehicleFucntionSupportList FAILED");
             BC_motocon_send_can_related_data( BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL, NULL );
+            }
+        else
+            {
+            CLIENT_DEBUG("BleCmdVehicleFucntionSupportList SUCCESS");
             }
         break;
 
     case BLE_REQ_CMD_VEHICLE_INFORMATION_INTERVAL:
         if( FALSE == client_appl_ble_req_vehicle_information( TRUE, data_size, data ) )
             {
+            CLIENT_DEBUG("BleCmdVehicleInterval  FAILED");
             BC_motocon_send_can_related_data( BLE_RSP_CMD_VEHICLE_INFORMATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL );
+            }
+        else
+            {
+            CLIENT_DEBUG("BleCmdVehicleInterval  SUCCESS");
             }
         break;
 
     case BLE_REQ_CMD_FFD:
         if( FALSE == client_app_ble_req_freeze_frame_data( data_size, data ) )
             {
+            CLIENT_DEBUG("BleCmdFFD  FAILED");
             BC_motocon_send_can_related_data( BLE_RSP_CMD_FFD, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,NULL );
+            }
+        else
+            {
+            CLIENT_DEBUG("BleCmdFFD  SUCCESS");
             }
         break;
 
