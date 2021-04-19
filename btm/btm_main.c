@@ -43,6 +43,7 @@
 #define TASK_NAME                   ( "bt_task" )
 #define MSG_QUEUE_LENGTH            ( 10 )
 #define BT_MAX_PAIRED_DEVICE_NUM    ( 8 )
+#define ENABLED                     ( 1 )
 
 #define EVENT_MSG_RECEIVED          ( 1 << 0 )
 
@@ -1216,11 +1217,11 @@ reset_status.factory_reset_callback_func_ptr = callback_func_ptr;
 
 BTM_unpair_all_dev();
 
-if( pdTRUE != EEPM_set_BT_en( 0, &eeprom_write_BT_enable_callback ) )
+if( pdTRUE != EEPM_set_BT_en( ENABLED, &eeprom_write_BT_enable_callback ) )
     {
     PRINTF( "reset BT en fail\r\n" );
     }
-if( pdTRUE != EEPM_set_BT_autoconn( 0, &eeprom_write_BT_autocon_callback ) )
+if( pdTRUE != EEPM_set_BT_autoconn( ENABLED, &eeprom_write_BT_autocon_callback ) )
     {
     PRINTF( "reset BT autoconn fail\r\n" );
     }

@@ -692,7 +692,8 @@ void ApplicationApplication_OnPhoneCallStateChangedSlot( ApplicationApplication 
   {
     case EnumPhoneCallStateINCOMING_STARTED :
     {
-      if ( _this->IsDisclaimerDismissed && !_this->IsFactoryTest )
+      if (( _this->IsDisclaimerDismissed && !_this->IsFactoryTest ) && !EwGetAutoObject( 
+          &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsRunningReset )
       {
         TelephoneTEL01_IncomingCall IncomingCallDialog = EwNewObject( TelephoneTEL01_IncomingCall, 
           0 );

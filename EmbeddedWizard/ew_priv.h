@@ -73,7 +73,6 @@ int  ew_power_ignition_status( void );
 void ew_power_update_ignoff_task_status( uint32_t task );
 
 XBool ew_is_debug_build( void );
-void ew_reset_to_factory_default( void );
 void ew_done_factory_reset( void );
 void ew_reboot_system( void );
 

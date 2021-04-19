@@ -1083,3 +1083,64 @@ enum EEPROMTest
   $rect <10,60,220,100>
   item READ_LAST_PAGE;
 }
+
+$rect <730,120,930,160>
+enum Language
+{
+  $rect <10,10,210,50>
+  item ENGLISH;
+
+  $rect <10,60,210,100>
+  item FRENCH;
+
+  $rect <10,110,210,150>
+  item GERMAN;
+
+  $rect <10,160,210,200>
+  item ITALIAN;
+
+  $rect <10,210,210,250>
+  item JAPANESE;
+
+  $rect <10,260,210,300>
+  item SPANISH;
+
+  $rect <10,310,210,350>
+  item TRADITIONAL_CHINESE;
+
+  $rect <10,360,210,400>
+  item SIMPLIFIED_CHINESE;
+
+  $rect <10,410,210,450>
+  item GREEK;
+
+  $rect <220,10,420,50>
+  item FINNISH;
+
+  $rect <220,60,420,100>
+  item HINDI;
+
+  $rect <220,110,420,150>
+  item INDONESIAN;
+
+  $rect <220,160,420,200>
+  item POLISH;
+
+  $rect <220,210,420,250>
+  item PORTUGUESE;
+
+  $rect <220,260,420,300>
+  item THAI;
+
+  $rect <220,310,420,350>
+  item VIETNAMESE;
+
+  $rect <220,360,420,400>
+  item KOREAN;
+
+  $rect <220,410,420,450>
+  item MALAY;
+
+  $rect <430,10,630,50>
+  item TOTAL;
+}

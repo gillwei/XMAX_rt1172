@@ -1466,4 +1466,3 @@ void EW_notify_inspection_request
     EwBspEventTrigger();
 #endif
 }
-

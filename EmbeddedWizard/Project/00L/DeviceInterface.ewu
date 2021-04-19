@@ -142,47 +142,49 @@ class SystemDeviceClass : Templates::DeviceClass
   $rect <30,520,250,560>
   method void ResetToFactoryDefault()
   {
-    FactoryResetTimer.Enabled = true;
+    IsRunningReset = true;
     $if !$prototyper
       native
       {
-        ew_reset_to_factory_default();
+        EW_reset_to_factory_default();
       }
     $endif
+    FactoryResetTimer.Enabled = true;
   }
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <30,570,250,610>
+  $rect <30,570,270,610>
   $output true
   method void NotifyFactoryResetComplete()
   {
     FactoryResetTimer.Enabled = false;
-    notifyobservers ^FactoryResetComplete;
+    FactoryResetCompletedSystemEvent.Trigger( null, false );
   }
 
   // Device Interface for Factory Reset
   note group Note4
   {
-    attr Bounds = <10,480,580,690>;
+    attr Bounds = <10,480,550,720>;
   }
 
-  $rect <270,520,520,560>
+  $rect <290,520,530,560>
   object Core::Timer FactoryResetTimer
   {
     preset OnTrigger = OnFactoryResetTimeoutSlot;
-    preset Period = 2000;
+    preset Period = 0;
+    preset Begin = 2000;
     preset Enabled = false;
   }
 
-  $rect <270,570,520,610>
+  $rect <290,570,530,610>
   slot OnFactoryResetTimeoutSlot
   {
-    FactoryResetTimer.Enabled = false;
+    trace "all reset timeout";
     NotifyFactoryResetComplete();
   }
 
-  $rect <270,620,520,660>
+  $rect <330,620,530,660>
   method void RebootSystem()
   {
     $if !$prototyper
@@ -192,9 +194,6 @@ class SystemDeviceClass : Templates::DeviceClass
       }
     $endif
   }
-
-  $rect <30,620,250,660>
-  property bool FactoryResetComplete = false;
 
   $rect <750,300,950,340>
   method void SetTFTDutyCycle( arg int32 aDutyCycle )
@@ -375,19 +374,19 @@ class SystemDeviceClass : Templates::DeviceClass
   // Opening Flow Control
   note group Note6
   {
-    attr Bounds = <440,700,1120,910>;
+    attr Bounds = <450,740,1130,950>;
   }
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <455,746,665,786>
+  $rect <465,786,675,826>
   $output true
   method void StartOpening()
   {
     OpeningSystemEvent.Trigger( null, false );
   }
 
-  $rect <455,796,665,836>
+  $rect <465,836,675,876>
   object Core::SystemEvent OpeningSystemEvent;
 
   $rect <470,220,670,260>
@@ -403,7 +402,7 @@ class SystemDeviceClass : Templates::DeviceClass
     return IsValid;
   }
 
-  $rect <675,746,885,786>
+  $rect <685,786,895,826>
   method bool IsTFTBacklightOn()
   {
     var bool IsBacklightOn = false;
@@ -418,10 +417,10 @@ class SystemDeviceClass : Templates::DeviceClass
     return IsBacklightOn;
   }
 
-  $rect <900,747,1100,787>
+  $rect <910,787,1110,827>
   property Enum::OperationMode OperationMode;
 
-  $rect <900,797,1100,837>
+  $rect <910,837,1110,877>
   onset OperationMode
   {
     if( pure OperationMode != value )
@@ -436,7 +435,7 @@ class SystemDeviceClass : Templates::DeviceClass
     }
   }
 
-  $rect <899,847,1099,887>
+  $rect <909,887,1109,927>
   onget OperationMode
   {
     $if !$prototyper
@@ -455,7 +454,7 @@ class SystemDeviceClass : Templates::DeviceClass
     return pure OperationMode;
   }
 
-  $rect <675,796,885,836>
+  $rect <685,836,895,876>
   method bool IsOperationModeReady()
   {
     var bool IsOperationModeReady;
@@ -473,17 +472,17 @@ class SystemDeviceClass : Templates::DeviceClass
   // Inspection Mode
   note group Note7
   {
-    attr Bounds = <10,700,310,1160>;
+    attr Bounds = <10,740,310,1200>;
   }
 
-  $rect <30,1040,290,1080>
+  $rect <30,1080,290,1120>
   object Core::SystemEvent InspectionDisplaySystemEvent;
 
-  $rect <30,890,290,930>
+  $rect <30,930,290,970>
   object Core::SystemEvent InspectionModeSystemEvent;
 
   // Notifiy the inspection display pattern to test
-  $rect <30,740,290,780>
+  $rect <30,780,290,820>
   $output true
   method void NotifyInspectionRequest( arg Enum::InspectionMode aMode, arg Enum::InspectionDisplay aDisplayPattern )
   {
@@ -491,20 +490,20 @@ class SystemDeviceClass : Templates::DeviceClass
     InspectionMode = aMode;
   }
 
-  $rect <30,790,230,830>
+  $rect <30,830,230,870>
   property Enum::InspectionMode InspectionMode = Enum::InspectionMode.NONE;
 
-  $rect <30,840,230,880>
+  $rect <30,880,230,920>
   onset InspectionMode
   {
     pure InspectionMode = value;
     InspectionModeSystemEvent.Trigger( null, false );
   }
 
-  $rect <30,940,260,980>
+  $rect <30,980,260,1020>
   property Enum::InspectionDisplay InspectionDisplayPattern;
 
-  $rect <30,990,290,1030>
+  $rect <30,1030,290,1070>
   onset InspectionDisplayPattern
   {
     if ( pure InspectionDisplayPattern != value )
@@ -514,7 +513,7 @@ class SystemDeviceClass : Templates::DeviceClass
     }
   }
 
-  $rect <30,1090,250,1130>
+  $rect <30,1130,250,1170>
   method void SendInspectionResponse( arg Enum::InspectionMode aMode, arg uint8 aRes )
   {
     $if !$prototyper
@@ -648,6 +647,12 @@ class SystemDeviceClass : Templates::DeviceClass
       $endif
     }
   }
+
+  $rect <30,620,320,660>
+  object Core::SystemEvent FactoryResetCompletedSystemEvent;
+
+  $rect <30,670,230,710>
+  var bool IsRunningReset;
 }
 
 $rect <20,110,220,150>

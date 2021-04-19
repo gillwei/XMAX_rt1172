@@ -465,7 +465,9 @@ class Application : Core::Root
     {
       case Enum::PhoneCallState.INCOMING_STARTED:
       {
-        if( IsDisclaimerDismissed && !IsFactoryTest )
+        if( IsDisclaimerDismissed &&
+            !IsFactoryTest &&
+            !DeviceInterface::SystemDevice.IsRunningReset )
         {
           var Telephone::TEL01_IncomingCall IncomingCallDialog = new Telephone::TEL01_IncomingCall;
           PresentDialog( IncomingCallDialog, null, null, null, null, null, null, null, null, false );

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _MenuUpDownPushButtonSet_H
-#define _MenuUpDownPushButtonSet_H
+#ifndef _SettingsSET43_ResetMenu_H
+#define _SettingsSET43_ResetMenu_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,9 +42,20 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
+#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
-#include "_MenuPushButton.h"
+#include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
+#include "_MenuBaseMenuView.h"
+#include "_MenuVerticalMenu.h"
+#include "_ViewsImage.h"
+#include "_ViewsRectangle.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -88,26 +99,26 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::UpDownPushButtonSet */
-#ifndef _MenuUpDownPushButtonSet_
-  EW_DECLARE_CLASS( MenuUpDownPushButtonSet )
-#define _MenuUpDownPushButtonSet_
+/* Forward declaration of the class Menu::ItemBase */
+#ifndef _MenuItemBase_
+  EW_DECLARE_CLASS( MenuItemBase )
+#define _MenuItemBase_
+#endif
+
+/* Forward declaration of the class Settings::SET43_ResetMenu */
+#ifndef _SettingsSET43_ResetMenu_
+  EW_DECLARE_CLASS( SettingsSET43_ResetMenu )
+#define _SettingsSET43_ResetMenu_
 #endif
 
 
-/* Deklaration of class : 'Menu::UpDownPushButtonSet' */
-EW_DEFINE_FIELDS( MenuUpDownPushButtonSet, ComponentsBaseComponent )
-  EW_PROPERTY( OnUpButtonActivated, XSlot )
-  EW_PROPERTY( OnDownButtonActivated, XSlot )
-  EW_OBJECT  ( UpButton,        MenuPushButton )
-  EW_OBJECT  ( DownButton,      MenuPushButton )
-  EW_PROPERTY( UpButtonTitle,   XString )
-  EW_PROPERTY( DownButtonTitle, XString )
-  EW_PROPERTY( DownButtonEnabled, XBool )
-EW_END_OF_FIELDS( MenuUpDownPushButtonSet )
+/* Deklaration of class : 'Settings::SET43_ResetMenu' */
+EW_DEFINE_FIELDS( SettingsSET43_ResetMenu, MenuBaseMenuView )
+  EW_ARRAY   ( ItemTitleArray,  XString, [4])
+EW_END_OF_FIELDS( SettingsSET43_ResetMenu )
 
-/* Virtual Method Table (VMT) for the class : 'Menu::UpDownPushButtonSet' */
-EW_DEFINE_METHODS( MenuUpDownPushButtonSet, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET43_ResetMenu' */
+EW_DEFINE_METHODS( SettingsSET43_ResetMenu, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -152,50 +163,55 @@ EW_DEFINE_METHODS( MenuUpDownPushButtonSet, ComponentsBaseComponent )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( MenuUpDownPushButtonSet _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( MenuUpDownPushButtonSet _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( MenuUpDownPushButtonSet _this, XBool value )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( MenuUpDownPushButtonSet )
+  EW_METHOD( LoadItemClass,     XClass )( SettingsSET43_ResetMenu _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( SettingsSET43_ResetMenu _this, XInt32 
+    aItemNo )
+  EW_METHOD( OnItemActivate,    void )( SettingsSET43_ResetMenu _this, XInt32 aItemNo, 
+    MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+EW_END_OF_METHODS( SettingsSET43_ResetMenu )
 
-/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortDownKeyActivated()' */
-void MenuUpDownPushButtonSet_OnShortDownKeyActivated( MenuUpDownPushButtonSet _this );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET43_ResetMenu_Init( SettingsSET43_ResetMenu _this, XHandle aArg );
 
-/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortUpKeyActivated()' */
-void MenuUpDownPushButtonSet_OnShortUpKeyActivated( MenuUpDownPushButtonSet _this );
+/* 'C' function for method : 'Settings::SET43_ResetMenu.LoadItemClass()' */
+XClass SettingsSET43_ResetMenu_LoadItemClass( SettingsSET43_ResetMenu _this, XInt32 
+  aItemNo );
 
-/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnSetDDModeEnabled()' */
-void MenuUpDownPushButtonSet_OnSetDDModeEnabled( MenuUpDownPushButtonSet _this, 
-  XBool value );
+/* 'C' function for method : 'Settings::SET43_ResetMenu.LoadItemTitle()' */
+XString SettingsSET43_ResetMenu_LoadItemTitle( SettingsSET43_ResetMenu _this, XInt32 
+  aItemNo );
 
-/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnActivateSlot()' */
-void MenuUpDownPushButtonSet_OnActivateSlot( MenuUpDownPushButtonSet _this, XObject 
-  sender );
-
-/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnSetUpButtonTitle()' */
-void MenuUpDownPushButtonSet_OnSetUpButtonTitle( MenuUpDownPushButtonSet _this, 
-  XString value );
-
-/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnSetDownButtonTitle()' */
-void MenuUpDownPushButtonSet_OnSetDownButtonTitle( MenuUpDownPushButtonSet _this, 
-  XString value );
-
-/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnSetDownButtonEnabled()' */
-void MenuUpDownPushButtonSet_OnSetDownButtonEnabled( MenuUpDownPushButtonSet _this, 
-  XBool value );
+/* 'C' function for method : 'Settings::SET43_ResetMenu.OnItemActivate()' */
+void SettingsSET43_ResetMenu_OnItemActivate( SettingsSET43_ResetMenu _this, XInt32 
+  aItemNo, MenuItemBase aMenuItem );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _MenuUpDownPushButtonSet_H */
+#endif /* _SettingsSET43_ResetMenu_H */
 
 /* Embedded Wizard */

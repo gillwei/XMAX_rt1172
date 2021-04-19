@@ -2009,7 +2009,8 @@ void MenuPushButton_UpdateViewState( MenuPushButton _this, XSet aState )
 /* 'C' function for method : 'Menu::PushButton.OnShortEnterKeyActivated()' */
 void MenuPushButton_OnShortEnterKeyActivated( MenuPushButton _this )
 {
-  if ((( 0 == _this->Super1.KeyHandler.Repetition ) && _this->Focusable ) && _this->ButtonEnabled )
+  if (((( 0 == _this->Super1.KeyHandler.Repetition ) && _this->Focusable ) && _this->ButtonEnabled ) 
+      && !ComponentsBaseComponent_IsDDModeEffected((ComponentsBaseComponent)_this ))
   {
     CoreGroup_InvalidateViewState((CoreGroup)_this );
 
@@ -2188,6 +2189,18 @@ void MenuUpDownPushButtonSet_OnShortUpKeyActivated( MenuUpDownPushButtonSet _thi
   CoreGroup__OnSetFocus( _this, ((CoreView)&_this->UpButton ));
 }
 
+/* 'C' function for method : 'Menu::UpDownPushButtonSet.OnSetDDModeEnabled()' */
+void MenuUpDownPushButtonSet_OnSetDDModeEnabled( MenuUpDownPushButtonSet _this, 
+  XBool value )
+{
+  if ( _this->Super1.DDModeEnabled != value )
+  {
+    _this->Super1.DDModeEnabled = value;
+    ComponentsBaseComponent__OnSetDDModeEnabled( &_this->UpButton, value );
+    ComponentsBaseComponent__OnSetDDModeEnabled( &_this->DownButton, value );
+  }
+}
+
 /* 'C' function for method : 'Menu::UpDownPushButtonSet.OnActivateSlot()' */
 void MenuUpDownPushButtonSet_OnActivateSlot( MenuUpDownPushButtonSet _this, XObject 
   sender )
@@ -2286,7 +2299,7 @@ EW_DEFINE_CLASS( MenuUpDownPushButtonSet, ComponentsBaseComponent, OnUpButtonAct
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseComponent_OnSetDDModeEnabled,
+  MenuUpDownPushButtonSet_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuUpDownPushButtonSet )

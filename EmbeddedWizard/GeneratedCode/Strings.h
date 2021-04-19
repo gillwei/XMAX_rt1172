@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/04/15 09:06:41 */
+   Generated: 2021/04/19 14:39:30 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -312,6 +312,30 @@ extern const XStringRes StringsSET28_SW_UPDATE;
 
 /* User defined constant: 'Strings::SET35_LICENSE' */
 extern const XStringRes StringsSET35_LICENSE;
+
+/* User defined constant: 'Strings::SET38_RESET_TO_FACTORY' */
+extern const XStringRes StringsSET38_RESET_TO_FACTORY;
+
+/* User defined constant: 'Strings::SET39_DELETE_PAIRING' */
+extern const XStringRes StringsSET39_DELETE_PAIRING;
+
+/* User defined constant: 'Strings::SET40_CANNOT_EXECUTE' */
+extern const XStringRes StringsSET40_CANNOT_EXECUTE;
+
+/* User defined constant: 'Strings::SET42_RESET_COMPLETE' */
+extern const XStringRes StringsSET42_RESET_COMPLETE;
+
+/* User defined constant: 'Strings::SET43_TRIP_MILEAGE_RESET' */
+extern const XStringRes StringsSET43_TRIP_MILEAGE_RESET;
+
+/* User defined constant: 'Strings::SET43_MAINTENANCE_RESET' */
+extern const XStringRes StringsSET43_MAINTENANCE_RESET;
+
+/* User defined constant: 'Strings::SET43_VEHICLE_INFO' */
+extern const XStringRes StringsSET43_VEHICLE_INFO;
+
+/* User defined constant: 'Strings::SET43_ALL_RESET' */
+extern const XStringRes StringsSET43_ALL_RESET;
 
 /* User defined constant: 'Strings::TCS01_TCS' */
 extern const XStringRes StringsTCS01_TCS;

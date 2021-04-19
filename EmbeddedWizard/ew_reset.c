@@ -18,15 +18,17 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "Enum.h"
 #include "EEPM_pub.h"
 #include "BTM_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define DEFAULT_HOME_INDEX          ( 1 )
-#define DEFAULT_METER_INDEX         ( 0 )
-#define DEFAULT_LANGUAGE            ( 0 )
+#define DEFAULT_HOME_GROUP              ( 1 )
+#define DEFAULT_NAVI_VIEW_SETTING       ( 0 )
+#define DEFAULT_METER_DISPLAY_SETTING   ( 0 )
+#define DEFAULT_LANGUAGE                ( EnumLanguageENGLISH ) //TODO: depends on SKU
 
 #define FACTORY_RESET_BT_MANAGER    ( 1 << 0 )
 #define FACTORY_RESET_LANGUAGE      ( 1 << 1 )
@@ -150,30 +152,28 @@ update_factory_reset_status( FACTORY_RESET_BT_MANAGER );
 
 /*********************************************************************
 *
-* @private
-* ew_reset_to_factory_default
+* @public
+* EW_reset_to_factory_default
 *
 * Run factory reset
 *
 *********************************************************************/
-void ew_reset_to_factory_default
+void EW_reset_to_factory_default
     (
     void
     )
 {
 factory_reset_status = 0;
-uint8_t last_page = ( DEFAULT_METER_INDEX ) |
-                    ( DEFAULT_HOME_INDEX << LAST_PAGE_HOME_GROUP_SHIFT );
+uint8_t last_page = ( DEFAULT_HOME_GROUP << LAST_PAGE_HOME_GROUP_SHIFT ) |
+                    ( DEFAULT_NAVI_VIEW_SETTING << LAST_PAGE_NAVI_SETTING_SHIFT ) |
+                    ( DEFAULT_METER_DISPLAY_SETTING );
 if( pdFALSE == EEPM_set_last_page( last_page, &EW_eeprom_set_last_page_callback ) )
     {
     EwPrint( "reset page false\r\n" );
     }
-
 if( pdFALSE == EEPM_set_language( DEFAULT_LANGUAGE, &EW_eeprom_set_language_callback ) )
     {
     EwPrint( "reset lang false\r\n" );
     }
-
 BTM_reset_factory_default( &EW_btm_reset_callback );
 }
-

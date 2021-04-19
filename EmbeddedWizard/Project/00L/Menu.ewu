@@ -1362,7 +1362,10 @@ class PushButton : Components::BaseComponent
   $rect <260,200,490,240>
   inherited method OnShortEnterKeyActivated()
   {
-    if( false == KeyHandler.Repetition && Focusable && ButtonEnabled )
+    if( false == KeyHandler.Repetition &&
+        Focusable &&
+        ButtonEnabled &&
+        !IsDDModeEffected() )
     {
       InvalidateViewState();
 
@@ -1539,6 +1542,17 @@ class UpDownPushButtonSet : Components::BaseComponent
     Focus = UpButton;
   }
 
+  $rect <340,120,540,160>
+  inherited onset DDModeEnabled
+  {
+    if( pure DDModeEnabled != value )
+    {
+      pure DDModeEnabled = value;
+      UpButton.DDModeEnabled = value;
+      DownButton.DDModeEnabled = value;
+    }
+  }
+
   $rect <20,20,160,60>
   object Menu::PushButton UpButton
   {
@@ -1633,6 +1647,24 @@ class UpDownPushButtonSet : Components::BaseComponent
       DownButton.ButtonEnabled = value;
     }
   }
+
+  $reorder IsDDModeEffected 1
+  $reorder OnSetDDModeEnabled 1
+  $reorder OnDownKeyReleased 1
+  $reorder OnUpKeyReleased 1
+  $reorder UpButton 1
+  $reorder DownButton 1
+  $reorder OnActivateSlot 1
+  $reorder OnUpButtonActivated 1
+  $reorder OnDownButtonActivated 1
+  $reorder UpButtonTitle 1
+  $reorder OnSetUpButtonTitle 1
+  $reorder DownButtonTitle 1
+  $reorder OnSetDownButtonTitle 1
+  $reorder UpButtonEnabled 1
+  $reorder OnSetUpButtonEnabled 1
+  $reorder DownButtonEnabled 1
+  $reorder OnSetDownButtonEnabled 1
 }
 
 $rect <230,110,430,150>

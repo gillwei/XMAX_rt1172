@@ -68,13 +68,11 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x000000C6, /* ratio 72.73 % */
+  0x0000008C, /* ratio 80.00 % */
   0xB8001F00, 0x80098452, 0x00EA0030, 0x0C600370, 0xCA003400, 0x20039000, 0x690042C9,
-  0xC001D000, 0x22C0C3B1, 0x490E2E4F, 0x44A4B138, 0x6E2D1B86, 0xC006D894, 0x19088848,
-  0x8008899E, 0x0029800C, 0xA37800D8, 0x000E8011, 0xB8023820, 0x460891F0, 0xB4007300,
-  0xE93498CC, 0x6D3AA3CB, 0x5088CD1A, 0x4999CF27, 0xF0F47283, 0x9ECECA51, 0x01E62908,
-  0x4DE802C0, 0xB27B299A, 0xECD3EA44, 0x29148548, 0x53F9EC9E, 0x018E50AB, 0x00000001,
-  0x00000000
+  0xC001D000, 0x22C0C2F1, 0x98023044, 0x488DA003, 0x3C872492, 0x0006C914, 0x33210019,
+  0x06F96C22, 0x009199C0, 0xE0047040, 0x0014A3E1, 0xA4223735, 0x8B000798, 0x44A6009C,
+  0xA99158D4, 0x75249344, 0x90A95520, 0x0C894522, 0xB9D54A37, 0x00406773, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -86,24 +84,23 @@ static const XRect _Const0004 = {{ -134, 38 }, { 0, 272 }};
 static const XRect _Const0005 = {{ 0, 38 }, { 480, 49 }};
 static const XStringRes _Const0006 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0007 = { _StringsDefault0, 0x0011 };
-static const XStringRes _Const0008 = { _StringsDefault0, 0x002E };
-static const XRect _Const0009 = {{ 0, 0 }, { 134, 234 }};
-static const XRect _Const000A = {{ -81, -143 }, { -31, -93 }};
-static const XRect _Const000B = {{ 9, 10 }, { 59, 60 }};
-static const XRect _Const000C = {{ 27, 88 }, { 77, 138 }};
-static const XRect _Const000D = {{ 9, 166 }, { 59, 216 }};
-static const XRect _Const000E = {{ -81, 231 }, { -31, 281 }};
-static const XRect _Const000F = {{ 0, 0 }, { 0, 0 }};
-static const XRect _Const0010 = {{ -1, 249 }, { 41, 291 }};
-static const XRect _Const0011 = {{ 13, 74 }, { 91, 152 }};
-static const XRect _Const0012 = {{ 0, 70 }, { 122, 156 }};
-static const XStringRes _Const0013 = { _StringsDefault0, 0x0045 };
-static const XRect _Const0014 = {{ 0, 0 }, { 480, 234 }};
-static const XRect _Const0015 = {{ 0, 58 }, { 480, 168 }};
-static const XRect _Const0016 = {{ 138, 92 }, { 469, 135 }};
-static const XRect _Const0017 = {{ 121, 17 }, { 439, 50 }};
-static const XColor _Const0018 = { 0x6B, 0x6B, 0x6B, 0xFF };
-static const XRect _Const0019 = {{ 121, 173 }, { 439, 206 }};
+static const XRect _Const0008 = {{ 0, 0 }, { 134, 234 }};
+static const XRect _Const0009 = {{ -81, -143 }, { -31, -93 }};
+static const XRect _Const000A = {{ 9, 10 }, { 59, 60 }};
+static const XRect _Const000B = {{ 27, 88 }, { 77, 138 }};
+static const XRect _Const000C = {{ 9, 166 }, { 59, 216 }};
+static const XRect _Const000D = {{ -81, 231 }, { -31, 281 }};
+static const XRect _Const000E = {{ 0, 0 }, { 0, 0 }};
+static const XRect _Const000F = {{ -1, 249 }, { 41, 291 }};
+static const XRect _Const0010 = {{ 13, 74 }, { 91, 152 }};
+static const XRect _Const0011 = {{ 0, 70 }, { 122, 156 }};
+static const XStringRes _Const0012 = { _StringsDefault0, 0x0028 };
+static const XRect _Const0013 = {{ 0, 0 }, { 480, 234 }};
+static const XRect _Const0014 = {{ 0, 58 }, { 480, 168 }};
+static const XRect _Const0015 = {{ 138, 92 }, { 469, 135 }};
+static const XRect _Const0016 = {{ 121, 17 }, { 439, 50 }};
+static const XColor _Const0017 = { 0x6B, 0x6B, 0x6B, 0xFF };
+static const XRect _Const0018 = {{ 121, 173 }, { 439, 206 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -350,7 +347,6 @@ void LauncherLNC_Main_OnCurrentItemChangedSlot( LauncherLNC_Main _this, XObject
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s%e", EwLoadString( &_Const0007 ), _this->LNC_RotaryPlate.CurrentItem );
   _this->PreviousItem = _this->LNC_RotaryPlate.PreviousItem;
   _this->CurrentItem = _this->LNC_RotaryPlate.CurrentItem;
   _this->NextItem = _this->LNC_RotaryPlate.NextItem;
@@ -588,7 +584,7 @@ void LauncherLNC_Main_DismissChildDialogs( LauncherLNC_Main _this )
 {
   while ( CoreGroup_CountDialogs((CoreGroup)_this ) > 0 )
   {
-    EwTrace( "%s%$", EwLoadString( &_Const0008 ), EwClassOf(((XObject)CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+    EwTrace( "%s%$", EwLoadString( &_Const0007 ), EwClassOf(((XObject)CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
       0 ))));
     CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
     0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -756,51 +752,51 @@ void LauncherLNC_RotaryPlate__Init( LauncherLNC_RotaryPlate _this, XObject aLink
   _this->_VMT = EW_CLASS( LauncherLNC_RotaryPlate );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0009 );
+  CoreRectView__OnSetBounds( _this, _Const0008 );
   _this->RotationDirection = EnumRotationDirectionCLOCKWISE;
-  _this->IconPositions[ 0 ] = _Const000A;
-  _this->IconPositions[ 1 ] = _Const000B;
-  _this->IconPositions[ 2 ] = _Const000C;
-  _this->IconPositions[ 3 ] = _Const000D;
-  _this->IconPositions[ 4 ] = _Const000E;
+  _this->IconPositions[ 0 ] = _Const0009;
+  _this->IconPositions[ 1 ] = _Const000A;
+  _this->IconPositions[ 2 ] = _Const000B;
+  _this->IconPositions[ 3 ] = _Const000C;
+  _this->IconPositions[ 4 ] = _Const000D;
   _this->SelectedIconIdx = 1;
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->RectEffect0, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->RectEffect0, 150 );
-  _this->RectEffect0.Value2 = _Const000F;
-  _this->RectEffect0.Value1 = _Const000F;
+  _this->RectEffect0.Value2 = _Const000E;
+  _this->RectEffect0.Value1 = _Const000E;
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->RectEffect1, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->RectEffect1, 150 );
-  _this->RectEffect1.Value2 = _Const000F;
-  _this->RectEffect1.Value1 = _Const000F;
+  _this->RectEffect1.Value2 = _Const000E;
+  _this->RectEffect1.Value1 = _Const000E;
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->RectEffect2, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->RectEffect2, 150 );
-  _this->RectEffect2.Value2 = _Const000F;
-  _this->RectEffect2.Value1 = _Const000F;
+  _this->RectEffect2.Value2 = _Const000E;
+  _this->RectEffect2.Value1 = _Const000E;
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->RectEffect3, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->RectEffect3, 150 );
-  _this->RectEffect3.Value2 = _Const000F;
-  _this->RectEffect3.Value1 = _Const000F;
+  _this->RectEffect3.Value2 = _Const000E;
+  _this->RectEffect3.Value1 = _Const000E;
   CoreTimer_OnSetPeriod( &_this->SelectedAnimationTimer, 100 );
-  CoreRectView__OnSetBounds( &_this->BaseImage, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->BaseImage, _Const0008 );
   CoreView_OnSetLayout((CoreView)&_this->Icon0, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Icon0, _Const000B );
+  CoreRectView__OnSetBounds( &_this->Icon0, _Const000A );
   ViewsImage_OnSetFrameNumber( &_this->Icon0, 1 );
   CoreView_OnSetLayout((CoreView)&_this->Icon1, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Icon1, _Const000C );
+  CoreRectView__OnSetBounds( &_this->Icon1, _Const000B );
   ViewsImage_OnSetFrameNumber( &_this->Icon1, 1 );
   ViewsImage_OnSetVisible( &_this->Icon1, 0 );
   CoreView_OnSetLayout((CoreView)&_this->Icon2, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Icon2, _Const000D );
+  CoreRectView__OnSetBounds( &_this->Icon2, _Const000C );
   ViewsImage_OnSetFrameNumber( &_this->Icon2, 1 );
   CoreView_OnSetLayout((CoreView)&_this->Icon3, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Icon3, _Const0010 );
+  CoreRectView__OnSetBounds( &_this->Icon3, _Const000F );
   ViewsImage_OnSetFrameNumber( &_this->Icon3, 1 );
   CoreView_OnSetLayout((CoreView)&_this->IconSelectedLarge, CoreLayoutAlignToLeft 
   | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->IconSelectedLarge, _Const0011 );
+  CoreRectView__OnSetBounds( &_this->IconSelectedLarge, _Const0010 );
   ViewsImage_OnSetFrameNumber( &_this->IconSelectedLarge, 1 );
   ViewsImage_OnSetVisible( &_this->IconSelectedLarge, 1 );
-  CoreRectView__OnSetBounds( &_this->HighlightImage, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->HighlightImage, _Const0011 );
   ViewsImage_OnSetVisible( &_this->HighlightImage, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BaseImage ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Icon0 ), 0 );
@@ -989,7 +985,7 @@ void LauncherLNC_RotaryPlate_SetItems( LauncherLNC_RotaryPlate _this, XEnum aPre
   XInt32 PeviousIconIdx;
   XInt32 NextIconIdx;
 
-  EwTrace( "%s%e", EwLoadString( &_Const0013 ), aCurrentItem );
+  EwTrace( "%s%e", EwLoadString( &_Const0012 ), aCurrentItem );
   _this->PreviousItem = aPreviousItem;
   _this->CurrentItem = aCurrentItem;
   _this->NextItem = aNextItem;
@@ -1352,21 +1348,21 @@ void LauncherLNC_Base__Init( LauncherLNC_Base _this, XObject aLink, XHandle aArg
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0001 );
   CoreView_OnSetLayout((CoreView)&_this->Background, CoreLayoutAlignToBottom | CoreLayoutAlignToLeft );
-  CoreRectView__OnSetBounds( &_this->Background, _Const0014 );
-  CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0015 );
-  CoreRectView__OnSetBounds( &_this->CurrentItemTitleText, _Const0016 );
+  CoreRectView__OnSetBounds( &_this->Background, _Const0013 );
+  CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0014 );
+  CoreRectView__OnSetBounds( &_this->CurrentItemTitleText, _Const0015 );
   ViewsText_OnSetAlignment( &_this->CurrentItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  CoreRectView__OnSetBounds( &_this->PreviousItemTitleText, _Const0017 );
+  CoreRectView__OnSetBounds( &_this->PreviousItemTitleText, _Const0016 );
   ViewsText_OnSetAlignment( &_this->PreviousItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->PreviousItemTitleText, 0 );
-  ViewsText_OnSetColor( &_this->PreviousItemTitleText, _Const0018 );
-  CoreRectView__OnSetBounds( &_this->NextItemTitleText, _Const0019 );
+  ViewsText_OnSetColor( &_this->PreviousItemTitleText, _Const0017 );
+  CoreRectView__OnSetBounds( &_this->NextItemTitleText, _Const0018 );
   ViewsText_OnSetAlignment( &_this->NextItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->NextItemTitleText, 0 );
-  ViewsText_OnSetColor( &_this->NextItemTitleText, _Const0018 );
+  ViewsText_OnSetColor( &_this->NextItemTitleText, _Const0017 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ImgLCBlueline ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->CurrentItemTitleText ), 0 );

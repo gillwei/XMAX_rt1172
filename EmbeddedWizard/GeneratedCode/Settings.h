@@ -61,6 +61,11 @@
 #include "_SettingsSET30_QRCode.h"
 #include "_SettingsSET35_LegalMenu.h"
 #include "_SettingsSET37_3rdPartyLicenses.h"
+#include "_SettingsSET38_ConfirmAllReset.h"
+#include "_SettingsSET39_DeletePairedDevice.h"
+#include "_SettingsSET41_ResetInProgress.h"
+#include "_SettingsSET42_ResetCompleted.h"
+#include "_SettingsSET43_ResetMenu.h"
 #include "_SettingsSET9_10_11_BtConnectionResult.h"
 #include "_SettingsTimeoutDialog.h"
 

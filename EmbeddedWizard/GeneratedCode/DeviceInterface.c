@@ -50,36 +50,38 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x0000025A, /* ratio 53.82 % */
-  0xB8002500, 0x000A6452, 0x00C2003A, 0x80107390, 0x16750010, 0x20037002, 0x540044C9,
-  0x30019400, 0x000021A7, 0x04160619, 0x1BC00680, 0x421C7700, 0x22D14894, 0x3B1B8CC5,
-  0x91A29422, 0x0D364AE3, 0xF1000075, 0x9104C011, 0xE4D00051, 0x0024C639, 0xA6793532,
-  0xE193C9B1, 0xF3488546, 0xD220BCF4, 0x4B845189, 0x9A9000CD, 0x9C422971, 0x4C90871B,
-  0x4D4CF178, 0x7E793AA4, 0x2AF550C4, 0x015BAC80, 0xD5889104, 0x25B14226, 0xBB345215,
-  0xA9CEED11, 0xD5D64F6D, 0x4E2E752A, 0x00DB2B31, 0xEF764BC0, 0x7B690059, 0x04591042,
-  0x70854E00, 0xF8C5F66C, 0x8DE28016, 0x10363F91, 0x43256449, 0x524F7585, 0x2D800D0C,
-  0x0D1727C1, 0x10F8446E, 0x46D9C467, 0x4CAD8F05, 0xB0622151, 0x08563F7F, 0xD4AE10DC,
-  0x0C8D0887, 0x21106004, 0x591D95EA, 0x1C891033, 0x5694F280, 0xED64326A, 0xB8E0F881,
-  0xAEAAC650, 0x4E215629, 0x22C9CD9C, 0x2F563B0C, 0x7B47BE00, 0x99DEF052, 0x9D260030,
-  0x02A80265, 0xE7D23320, 0x01F47D9B, 0x1001C67D, 0xB1E3495E, 0x00659E67, 0x6D927764,
-  0x5ED7919E, 0xD4F58F59, 0x00004053, 0x00000000
+  0x00000282, /* ratio 53.58 % */
+  0xB8002900, 0x000C2452, 0x80010736, 0x40072000, 0x1C730019, 0x70A3A002, 0x00348022,
+  0x037C48DA, 0x00458EA0, 0x2C0C2400, 0xC1A2C532, 0x74851486, 0x0DC00864, 0x012D2480,
+  0x91189150, 0x230CC822, 0xC001A24B, 0x95000EF1, 0x84BA1B1E, 0xC3E672E9, 0xD0A4009A,
+  0xA290895C, 0x27208A8E, 0xB4928C8C, 0x009E18E2, 0x885C48C8, 0x86C2E231, 0xCD6A0D0F,
+  0x85C01203, 0x52B04E91, 0x000668C4, 0x291899D9, 0x04387C22, 0x2E834EC0, 0xFAD448CF,
+  0x0C482174, 0x045ED568, 0x106C96D0, 0x5A216B96, 0xA6377BAC, 0xA17C87DE, 0x31CC0D9A,
+  0x87006171, 0xA9598A11, 0xBC003191, 0x05671E00, 0x842CB7D0, 0x1A124591, 0xB218A384,
+  0x1F1AC1CC, 0x60D90696, 0x0D959124, 0xE8E6260D, 0xC0003672, 0x2CC49F04, 0x426530F9,
+  0x56B1C58F, 0xB5200BB6, 0xE79B834B, 0xD940AE4A, 0x3FB75B22, 0x08191A2D, 0xDD4524A0,
+  0x66FA232B, 0xC5255230, 0x48AD3EED, 0x43DBE86C, 0xA1D8CB75, 0xB12DE730, 0x088441AE,
+  0x48B67FBD, 0xD1683997, 0x1024815A, 0x772D6941, 0x0C4C591D, 0x00155486, 0x7815A6B0,
+  0xC1F481AE, 0x265D837B, 0xF5F44EDF, 0xEA425F77, 0x47908471, 0xD9E001B1, 0x65957B7F,
+  0x00004062, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XStringRes _Const0000 = { _StringsDefault0, 0x0002 };
-static const XStringRes _Const0001 = { _StringsDefault0, 0x0014 };
-static const XStringRes _Const0002 = { _StringsDefault0, 0x002D };
-static const XStringRes _Const0003 = { _StringsDefault0, 0x0040 };
-static const XStringRes _Const0004 = { _StringsDefault0, 0x0057 };
-static const XStringRes _Const0005 = { _StringsDefault0, 0x006F };
-static const XStringRes _Const0006 = { _StringsDefault0, 0x0086 };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x0096 };
-static const XStringRes _Const0008 = { _StringsDefault0, 0x00A3 };
-static const XStringRes _Const0009 = { _StringsDefault0, 0x00BB };
-static const XStringRes _Const000A = { _StringsDefault0, 0x00D0 };
-static const XStringRes _Const000B = { _StringsDefault0, 0x00DC };
-static const XStringRes _Const000C = { _StringsDefault0, 0x00FA };
+static const XStringRes _Const0001 = { _StringsDefault0, 0x0016 };
+static const XStringRes _Const0002 = { _StringsDefault0, 0x0028 };
+static const XStringRes _Const0003 = { _StringsDefault0, 0x0041 };
+static const XStringRes _Const0004 = { _StringsDefault0, 0x0054 };
+static const XStringRes _Const0005 = { _StringsDefault0, 0x006B };
+static const XStringRes _Const0006 = { _StringsDefault0, 0x0083 };
+static const XStringRes _Const0007 = { _StringsDefault0, 0x009A };
+static const XStringRes _Const0008 = { _StringsDefault0, 0x00AA };
+static const XStringRes _Const0009 = { _StringsDefault0, 0x00B7 };
+static const XStringRes _Const000A = { _StringsDefault0, 0x00CF };
+static const XStringRes _Const000B = { _StringsDefault0, 0x00E4 };
+static const XStringRes _Const000C = { _StringsDefault0, 0x00F0 };
 static const XStringRes _Const000D = { _StringsDefault0, 0x010E };
+static const XStringRes _Const000E = { _StringsDefault0, 0x0122 };
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
@@ -114,12 +116,14 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
   CoreSystemEvent__Init( &_this->OpeningSystemEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->InspectionDisplaySystemEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->InspectionModeSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->FactoryResetCompletedSystemEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceSystemDeviceClass );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreTimer_OnSetPeriod( &_this->FactoryResetTimer, 2000 );
+  CoreTimer_OnSetPeriod( &_this->FactoryResetTimer, 0 );
+  CoreTimer_OnSetBegin( &_this->FactoryResetTimer, 2000 );
   CoreTimer_OnSetEnabled( &_this->FactoryResetTimer, 0 );
   _this->BrightnessLevel = 7;
   _this->InspectionMode = EnumInspectionModeNONE;
@@ -140,6 +144,7 @@ void DeviceInterfaceSystemDeviceClass__ReInit( DeviceInterfaceSystemDeviceClass 
   CoreSystemEvent__ReInit( &_this->OpeningSystemEvent );
   CoreSystemEvent__ReInit( &_this->InspectionDisplaySystemEvent );
   CoreSystemEvent__ReInit( &_this->InspectionModeSystemEvent );
+  CoreSystemEvent__ReInit( &_this->FactoryResetCompletedSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::SystemDeviceClass' */
@@ -156,6 +161,7 @@ void DeviceInterfaceSystemDeviceClass__Done( DeviceInterfaceSystemDeviceClass _t
   CoreSystemEvent__Done( &_this->OpeningSystemEvent );
   CoreSystemEvent__Done( &_this->InspectionDisplaySystemEvent );
   CoreSystemEvent__Done( &_this->InspectionModeSystemEvent );
+  CoreSystemEvent__Done( &_this->FactoryResetCompletedSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -252,13 +258,20 @@ XString DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( DeviceInterfaceSy
   return _this->SoftwareVersion;
 }
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ResetToFactoryDefault()' */
+void DeviceInterfaceSystemDeviceClass_ResetToFactoryDefault( DeviceInterfaceSystemDeviceClass _this )
+{
+  _this->IsRunningReset = 1;
+  EW_reset_to_factory_default();
+  CoreTimer_OnSetEnabled( &_this->FactoryResetTimer, 1 );
+}
+
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
 void DeviceInterfaceSystemDeviceClass_NotifyFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this )
 {
   CoreTimer_OnSetEnabled( &_this->FactoryResetTimer, 0 );
-  EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete, 
-    DeviceInterfaceSystemDeviceClass_OnSetFactoryResetComplete ), 0 );
+  CoreSystemEvent_Trigger( &_this->FactoryResetCompletedSystemEvent, 0, 0 );
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyFactoryResetComplete()' */
@@ -274,8 +287,17 @@ void DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot( DeviceInterface
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  CoreTimer_OnSetEnabled( &_this->FactoryResetTimer, 0 );
+  EwTrace( "%s", EwLoadString( &_Const0000 ));
   DeviceInterfaceSystemDeviceClass_NotifyFactoryResetComplete( _this );
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.RebootSystem()' */
+void DeviceInterfaceSystemDeviceClass_RebootSystem( DeviceInterfaceSystemDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ew_reboot_system();
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetTFTDutyCycle()' */
@@ -307,7 +329,7 @@ void DeviceInterfaceSystemDeviceClass_StartBurnInTest( DeviceInterfaceSystemDevi
 {
   FactoryTestContext TestContext;
 
-  EwTrace( "%s", EwLoadString( &_Const0000 ));
+  EwTrace( "%s", EwLoadString( &_Const0001 ));
   TestContext = EwNewObject( FactoryTestContext, 0 );
   TestContext->TestItem = EnumFactoryTestBurnInStart;
   CoreSystemEvent_Trigger( &_this->FactoryTestSystemEvent, ((XObject)TestContext ), 
@@ -346,7 +368,7 @@ void DeviceInterfaceSystemDeviceClass_ShowBurnInTestResult( DeviceInterfaceSyste
 {
   FactoryTestContext TestContext;
 
-  EwTrace( "%s%b", EwLoadString( &_Const0001 ), aResult );
+  EwTrace( "%s%b", EwLoadString( &_Const0002 ), aResult );
   TestContext = EwNewObject( FactoryTestContext, 0 );
   TestContext->TestItem = EnumFactoryTestBurnInResult;
 
@@ -376,7 +398,7 @@ void DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult( void* _this, XBool
 void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this, 
   XString aQrCodeStr )
 {
-  EwTrace( "%s", EwLoadString( &_Const0002 ));
+  EwTrace( "%s", EwLoadString( &_Const0003 ));
   _this->QrCodeText = EwShareString( aQrCodeStr );
   CoreSystemEvent_Trigger( &_this->QrCodeSystemEvent, 0, 0 );
 }
@@ -770,19 +792,6 @@ void DeviceInterfaceSystemDeviceClass_OnSetHomeType( DeviceInterfaceSystemDevice
     MeterDisplaySetting = EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay;
     ew_set_last_page( HomeGroup, MeterDisplaySetting, NavigationViewSetting );
   }
-}
-
-/* Default onget method for the property 'FactoryResetComplete' */
-XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this )
-{
-  return _this->FactoryResetComplete;
-}
-
-/* Default onset method for the property 'FactoryResetComplete' */
-void DeviceInterfaceSystemDeviceClass_OnSetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this, 
-  XBool value )
-{
-  _this->FactoryResetComplete = value;
 }
 
 /* Variants derived from the class : 'DeviceInterface::SystemDeviceClass' */
@@ -1272,7 +1281,7 @@ void DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( DeviceInterfaceMe
 void DeviceInterfaceMediaManagerDeviceClass_NotifyTitleChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aTitle )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0003 ), aTitle ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0004 ), aTitle ));
   _this->IsTitleReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetTitle( _this, aTitle );
 }
@@ -1289,7 +1298,7 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyTitleChanged( void* _this, XS
 void DeviceInterfaceMediaManagerDeviceClass_NotifyArtistChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aArtist )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0004 ), aArtist ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0005 ), aArtist ));
   _this->IsArtistReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( _this, aArtist );
 }
@@ -1306,7 +1315,7 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyArtistChanged( void* _this, X
 void DeviceInterfaceMediaManagerDeviceClass_NotifyAlbumChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aAlbum )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0005 ), aAlbum ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0006 ), aAlbum ));
   _this->IsAlbumReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum( _this, aAlbum );
 }
@@ -1376,8 +1385,8 @@ void DeviceInterfaceMediaManagerDeviceClass_GetTrackInfo( DeviceInterfaceMediaMa
 void DeviceInterfaceMediaManagerDeviceClass_NotifyPlayBackTimeChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XInt32 aElapsedTimeSec, XInt32 aDurationTimeSec )
 {
-  EwTrace( "%s%i", EwLoadString( &_Const0006 ), aElapsedTimeSec );
-  EwTrace( "%s%i", EwLoadString( &_Const0007 ), aDurationTimeSec );
+  EwTrace( "%s%i", EwLoadString( &_Const0007 ), aElapsedTimeSec );
+  EwTrace( "%s%i", EwLoadString( &_Const0008 ), aDurationTimeSec );
   _this->ElapsedTimeSec = aElapsedTimeSec;
   _this->DurationTimeSec = aDurationTimeSec;
   CoreSystemEvent_Trigger( &_this->NotifyPlayBackTimeChangedSystemEvent, 0, 0 );
@@ -1578,7 +1587,7 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( DeviceInterfaceBluet
 void DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this, 
   XBool value )
 {
-  EwTrace( "%s%b", EwLoadString( &_Const0008 ), value );
+  EwTrace( "%s%b", EwLoadString( &_Const0009 ), value );
 
   if ( _this->BluetoothEnable != value )
   {
@@ -1729,8 +1738,8 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( DeviceInterfaceBluetoo
 void DeviceInterfaceBluetoothDeviceClass_NotifyBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this, 
   XEnum status, XString version )
 {
-  EwTrace( "%s%e", EwLoadString( &_Const0009 ), status );
-  EwTrace( "%s%s", EwLoadString( &_Const000A ), version );
+  EwTrace( "%s%e", EwLoadString( &_Const000A ), status );
+  EwTrace( "%s%s", EwLoadString( &_Const000B ), version );
   DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( _this, status );
 }
 
@@ -2616,7 +2625,7 @@ XBool DeviceInterfaceNotificationDeviceClass__IsPhoneCallStateActive( void* _thi
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallStateChanged( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000B ));
+  EwTrace( "%s", EwLoadString( &_Const000C ));
   CoreSystemEvent_Trigger( &_this->PhoneCallStateChangedSystemEvent, 0, 0 );
 }
 
@@ -2630,7 +2639,7 @@ void DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallStateChanged( void* 
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyListUpdated( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000C ));
+  EwTrace( "%s", EwLoadString( &_Const000D ));
   CoreSystemEvent_Trigger( &_this->NotificationListUpdatedSystemEvent, 0, 0 );
 }
 
@@ -2857,7 +2866,7 @@ void DeviceInterfaceNotificationDeviceClass_PhoneCallVolumeControl( DeviceInterf
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallVolumeChanged( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000D ));
+  EwTrace( "%s", EwLoadString( &_Const000E ));
   CoreSystemEvent_Trigger( &_this->PhoneCallVolumeChangedSystemEvent, 0, 0 );
 }
 

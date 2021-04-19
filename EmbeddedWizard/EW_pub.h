@@ -37,6 +37,7 @@ typedef enum
 void EW_init( void );
 void EW_notify_opening_event( const opening_event event );
 bool EW_get_operation_mode( EnumOperationMode* mode );
+void EW_reset_to_factory_default( void );
 
 uint32_t EW_get_ccuid( void );
 uint16_t EW_get_qrcode_dummy( void );

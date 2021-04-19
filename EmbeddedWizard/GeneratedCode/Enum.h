@@ -516,6 +516,30 @@ typedef enum
   EnumEEPROMTestREAD_LAST_PAGE          = 1
 } EnumEEPROMTest;
 
+/* User defined enumeration: 'Enum::Language' */
+typedef enum
+{
+  EnumLanguageENGLISH                   = 0,
+  EnumLanguageFRENCH                    = 1,
+  EnumLanguageGERMAN                    = 2,
+  EnumLanguageITALIAN                   = 3,
+  EnumLanguageJAPANESE                  = 4,
+  EnumLanguageSPANISH                   = 5,
+  EnumLanguageTRADITIONAL_CHINESE       = 6,
+  EnumLanguageSIMPLIFIED_CHINESE        = 7,
+  EnumLanguageGREEK                     = 8,
+  EnumLanguageFINNISH                   = 9,
+  EnumLanguageHINDI                     = 10,
+  EnumLanguageINDONESIAN                = 11,
+  EnumLanguagePOLISH                    = 12,
+  EnumLanguagePORTUGUESE                = 13,
+  EnumLanguageTHAI                      = 14,
+  EnumLanguageVIETNAMESE                = 15,
+  EnumLanguageKOREAN                    = 16,
+  EnumLanguageMALAY                     = 17,
+  EnumLanguageTOTAL                     = 18
+} EnumLanguage;
+
 #ifdef __cplusplus
   }
 #endif

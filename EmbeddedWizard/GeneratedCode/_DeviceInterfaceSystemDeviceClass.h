@@ -68,6 +68,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( OpeningSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( InspectionDisplaySystemEvent, CoreSystemEvent )
   EW_OBJECT  ( InspectionModeSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( FactoryResetCompletedSystemEvent, CoreSystemEvent )
   EW_PROPERTY( SoftwareVersion, XString )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
@@ -77,8 +78,8 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( InspectionDisplayPattern, XEnum )
   EW_PROPERTY( InspectionMode,  XEnum )
   EW_PROPERTY( OperationMode,   XEnum )
+  EW_VARIABLE( IsRunningReset,  XBool )
   EW_VARIABLE( IsHopperTestMode, XBool )
-  EW_PROPERTY( FactoryResetComplete, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceSystemDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::SystemDeviceClass' */
@@ -125,6 +126,9 @@ XString DeviceInterfaceSystemDeviceClass_OnGetESN( DeviceInterfaceSystemDeviceCl
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetSoftwareVersion()' */
 XString DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( DeviceInterfaceSystemDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ResetToFactoryDefault()' */
+void DeviceInterfaceSystemDeviceClass_ResetToFactoryDefault( DeviceInterfaceSystemDeviceClass _this );
+
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
 void DeviceInterfaceSystemDeviceClass_NotifyFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );
@@ -138,6 +142,9 @@ void DeviceInterfaceSystemDeviceClass__NotifyFactoryResetComplete( void* _this )
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnFactoryResetTimeoutSlot()' */
 void DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot( DeviceInterfaceSystemDeviceClass _this, 
   XObject sender );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.RebootSystem()' */
+void DeviceInterfaceSystemDeviceClass_RebootSystem( DeviceInterfaceSystemDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetTFTDutyCycle()' */
 void DeviceInterfaceSystemDeviceClass_SetTFTDutyCycle( DeviceInterfaceSystemDeviceClass _this, 
@@ -275,13 +282,6 @@ void DeviceInterfaceSystemDeviceClass__UpdateLastPage( void* _this );
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetHomeType()' */
 void DeviceInterfaceSystemDeviceClass_OnSetHomeType( DeviceInterfaceSystemDeviceClass _this, 
   XEnum value );
-
-/* Default onget method for the property 'FactoryResetComplete' */
-XBool DeviceInterfaceSystemDeviceClass_OnGetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );
-
-/* Default onset method for the property 'FactoryResetComplete' */
-void DeviceInterfaceSystemDeviceClass_OnSetFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this, 
-  XBool value );
 
 #ifdef __cplusplus
   }

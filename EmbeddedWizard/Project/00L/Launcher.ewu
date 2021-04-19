@@ -110,8 +110,6 @@ class LNC_Main : Components::BaseComponent
   $rect <250,570,490,610>
   slot OnCurrentItemChangedSlot
   {
-    trace "OnCurrentItemChangedSlot: ", LNC_RotaryPlate.CurrentItem;
-
     PreviousItem = LNC_RotaryPlate.PreviousItem;
     CurrentItem = LNC_RotaryPlate.CurrentItem;
     NextItem = LNC_RotaryPlate.NextItem;

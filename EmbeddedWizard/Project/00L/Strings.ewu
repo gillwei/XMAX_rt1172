@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/04/15 09:06:41
+// Generated: 2021/04/19 14:39:30
 
 $output false
 const string ARGUMENT_STR =
@@ -822,6 +822,54 @@ $output false
 const string SET35_LICENSE =
 (
   Default = "3rd party licenses";
+);
+
+$output false
+const string SET38_RESET_TO_FACTORY =
+(
+  Default = "Reset LinkCard to factory settings?";
+);
+
+$output false
+const string SET39_DELETE_PAIRING =
+(
+  Default = "Please delete the pairing record on the smartphones.\nOtherwise, you may not be able to reconnect with LinkCard in the future.";
+);
+
+$output false
+const string SET40_CANNOT_EXECUTE =
+(
+  Default = "Cannot execute while driving.";
+);
+
+$output false
+const string SET42_RESET_COMPLETE =
+(
+  Default = "Reset complete.";
+);
+
+$output false
+const string SET43_TRIP_MILEAGE_RESET =
+(
+  Default = "Trip mileage reset";
+);
+
+$output false
+const string SET43_MAINTENANCE_RESET =
+(
+  Default = "Maintenance reset";
+);
+
+$output false
+const string SET43_VEHICLE_INFO =
+(
+  Default = "Vehicle info.";
+);
+
+$output false
+const string SET43_ALL_RESET =
+(
+  Default = "All reset";
 );
 
 $output false

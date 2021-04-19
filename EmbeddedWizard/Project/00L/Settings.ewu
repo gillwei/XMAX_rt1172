@@ -96,11 +96,7 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
   $rect <510,160,710,200>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
-
+    aMenuItem; //suppress warning
     var Components::BaseComponent Dialog = null;
 
     switch( Settings[aItemNo] )
@@ -113,7 +109,7 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
           Dialog = new Settings::SET03_ConnectionSettingMenu;
         }
       }
-      case Enum::MainSettingItem.INFORMATION_RESET:;
+      case Enum::MainSettingItem.INFORMATION_RESET: Dialog = new Settings::SET43_ResetMenu;
       case Enum::MainSettingItem.CLOCK:;
       case Enum::MainSettingItem.BRIGHTNESS: Dialog = new Brightness::BRT01_BrightnessSettingMenu;
       case Enum::MainSettingItem.UNIT: Dialog = new Unit::UNT01_UnitSettingMenu;
@@ -180,17 +176,13 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
   $rect <10,340,210,380>
   inherited property DDModeEnabled = true;
 
-  $rect <10,340,210,380>
+  $rect <10,390,210,430>
   inherited var SlideOutEffectEnabled = true;
 
   $rect <510,20,710,60>
   inherited method LoadItemClass()
   {
-    // suppress warning
-    if( aItemNo )
-    {
-      // empty body
-    }
+    aItemNo; // suppress warning
     return Menu::ItemBase;
   }
 
@@ -536,7 +528,7 @@ class SoftwareUpdate : Menu::BaseMenuView
   $rect <520,200,720,240>
   slot OnUpdate
   {
-    PresentDialogWithSlideInEffect( new Settings::InProgress );
+    PresentDialogWithSlideInEffect( new Settings::SET41_ResetInProgress );
   }
 
   $rect <520,20,720,60>
@@ -615,129 +607,162 @@ class SoftwareUpdateCompleted : Menu::BaseMenuView
   }
 }
 
-$rect <940,340,1140,380>
+$rect <710,340,920,380>
 $output false
-class AllReset : Menu::BaseMenuView
+class SET38_ConfirmAllReset : Components::BaseMainBG
 {
   $rect <10,300,210,340>
   inherited property Bounds = <0,0,480,272>;
 
+  $rect <10,350,210,390>
+  inherited property DDModeEnabled = true;
+
   $rect <20,20,160,60>
   object Views::Text Text
   {
-    preset Bounds = <10,45,470,169>;
-    preset String = "Reset LinkCard to factory settings?";
+    preset Bounds = <10,46,470,170>;
+    preset String = Strings::SET38_RESET_TO_FACTORY;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <510,200,710,240>
-  slot OnButtonYes
+  $rect <220,350,430,390>
+  slot OnOkActivatedSlot
   {
-    //TODO: Check BLE record exist or not -> UpdateBLEStatus method. If no, switch to Error page.
-    postsignal OnYes;
+    if( 0 < DeviceInterface::BluetoothDevice.PairedDeviceNum )
+    {
+      Owner.SwitchToDialog( new Settings::SET39_DeletePairedDevice, null, null, null, null, null, null, null, null, null, false );
+    }
+    else
+    {
+      Owner.SwitchToDialog( new Settings::SET41_ResetInProgress, null, null, null, null, null, null, null, null, null, false );
+    }
   }
 
-  $rect <510,250,710,290>
-  slot OnButtonNo
+  $rect <220,300,430,340>
+  slot OnCancelActivatedSlot
   {
-    postsignal OnNo;
+    OnShortHomeKeyActivated();
   }
-
-  $rect <520,20,720,60>
-  property slot OnYes;
-
-  $rect <750,20,950,60>
-  property slot OnNo;
-
-  $rect <750,70,950,110>
-  method bool UpdateBLEStatus()
-  {
-    // TODO return true if BLE record exist
-    // If not, switich to error page.
-    return true;
-  }
-
-  $rect <970,20,1170,60>
-  var int32 FocusIdx = 1;
 
   $rect <20,20,160,60>
   object Menu::UpDownPushButtonSet UpDownPushButtonSet
   {
     preset Bounds = <165,176,315,259>;
-    preset OnUpButtonActivated = OnButtonNo;
-    preset OnDownButtonActivated = OnButtonYes;
+    preset PassHomeKey = true;
+    preset PassMagicKey = true;
+    preset DDModeEnabled = true;
+    preset OnUpButtonActivated = OnCancelActivatedSlot;
+    preset OnDownButtonActivated = OnOkActivatedSlot;
+    preset UpButtonTitle = Strings::GEN_CANCEL;
+    preset DownButtonTitle = Strings::GEN_OK;
+    preset DownButtonEnabled = true;
   }
 }
 
-$rect <940,390,1140,430>
+$rect <710,390,940,430>
 $output false
-class AllResetPairingDevice : Menu::BaseMenuView
-{
-  $rect <10,300,210,340>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <530,80,730,120>
-  inherited method Init()
-  {
-    // TO DO: read BLE record here.
-  }
-
-  $rect <20,20,160,60>
-  object WidgetSet::PushButton PushButton
-  {
-    preset Bounds = <150,190,300,240>;
-    preset OnRelease = OnButtonOk;
-    preset Label = "OK";
-    preset Appearance = UIConfig::PushButtonConfig;
-  }
-
-  $rect <530,140,730,180>
-  slot OnButtonOk
-  {
-    postsignal OnOK;
-  }
-
-  $rect <530,20,730,60>
-  property slot OnOK;
-
-  $reorder LoadItemChecked 1
-}
-
-$rect <940,440,1140,480>
-$output false
-class InProgress : Menu::BaseMenuView
+class SET39_DeletePairedDevice : Components::BaseMainBG
 {
   $rect <10,290,210,330>
-  inherited property Bounds = <0,0,480,272>;
+  inherited method Init()
+  {
+    trace "Init SET39";
+  }
+
+  $rect <10,340,210,380>
+  inherited property DDModeEnabled = true;
+
+  $rect <230,290,430,330>
+  slot OnOkSelectedSlot
+  {
+    Owner.SwitchToDialog( new Settings::SET41_ResetInProgress, null, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <20,20,160,60>
+  object Menu::PushButton PushButton
+  {
+    preset Bounds = <165,219,315,259>;
+    preset DDModeEnabled = true;
+    preset Title = Strings::GEN_OK;
+    preset OnActivate = OnOkSelectedSlot;
+  }
 
   $rect <20,20,160,60>
   object Views::Text Text
   {
-    preset Bounds = <110,100,350,150>;
-    preset String = "Please wait...";
+    preset Bounds = <10,46,470,201>;
+    preset WrapText = true;
+    preset String = Strings::SET39_DELETE_PAIRING;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }
 
-$rect <1160,350,1360,390>
+$rect <710,440,920,480>
 $output false
-class AllResetCompleted : Menu::BaseMenuView
+class SET41_ResetInProgress : Components::BaseMainBG
 {
-  $rect <510,170,710,210>
-  inherited property Bounds = <0,0,480,272>;
+  $rect <10,300,190,340>
+  inherited method Init()
+  {
+    trace "Init SET41";
+    if( DeviceInterface::VehicleDevice.DDModeActivated )
+    {
+      var Settings::TimeoutDialog Dialog = new Settings::TimeoutDialog;
+      Dialog.Message = Strings::SET40_CANNOT_EXECUTE;
+      Dialog.DismissAfterTimeout = true;
+      Owner.SwitchToDialog( Dialog, null, null, null, null, null, null, null, null, null, false );
+    }
+    else
+    {
+      DeviceInterface::SystemDevice.ResetToFactoryDefault();
+    }
+  }
+
+  $rect <210,300,440,340>
+  inherited method OnShortHomeKeyActivated()
+  {
+    // neglect home key event
+  }
+
+  $rect <210,350,440,390>
+  inherited method OnLongHomeKeyActivated()
+  {
+    // neglect home key event
+  }
+
+  $rect <10,350,190,390>
+  inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text Text
+  object Views::Image LoadingAnimation
   {
-    preset Bounds = <100,95,360,170>;
-    preset String = "Completed.";
+    preset Bounds = <193,54,287,148>;
+    preset Animated = true;
+    preset Bitmap = Resource::LoadingAnimation;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text LoadingText
+  {
+    preset Bounds = <10,156,470,187>;
+    preset String = Strings::GEN_PLEASE_WAIT;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  // TODO: Inform system to reboot.
-  note legend Note
+  $rect <460,300,760,340>
+  object Core::SystemEventHandler FactoryResetCompletedEventHandler
   {
-    attr Bounds = <530,10,870,150>;
+    preset OnEvent = OnFactoryResetCompletedSlot;
+    preset Event = DeviceInterface::SystemDevice.FactoryResetCompletedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <460,350,730,390>
+  slot OnFactoryResetCompletedSlot
+  {
+    trace "OnFactoryResetCompleted";
+    PresentDialog( new Settings::SET42_ResetCompleted, null, null, null, null, null, null, null, null, false );
   }
 }
 
@@ -822,165 +847,6 @@ class SET37_3rdPartyLicenses : Components::BaseMainBG
   slot OnLineNumUpdatedSlot
   {
     Scrollbar.ListItems = ThirdPartyLicenseText.NoOfLines;
-  }
-}
-
-$rect <1160,400,1360,440>
-$output false
-class AllResetFailed : Menu::BaseMenuView
-{
-  $rect <10,290,210,330>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <20,20,160,60>
-  object Views::Text Text
-  {
-    preset Bounds = <10,40,470,220>;
-    preset WrapText = true;
-    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignHorzLeft, AlignVertCenter];
-    preset String = "System cannot execute all reset.\nAll reset cannot be executed while driving.";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <510,10,700,50>
-  object Core::Timer CountDownTimer
-  {
-    preset OnTrigger = OnFailedReturnEvent;
-    preset Period = 5000;
-    preset Enabled = true;
-  }
-
-  $rect <510,60,710,100>
-  slot OnFailedReturnEvent
-  {
-    CountDownTimer.Enabled = false;
-    postsignal OnFailed;
-  }
-
-  $rect <720,10,920,50>
-  property slot OnFailed;
-
-  // TODO: Based on CAN message, Abort signal will be delivered.
-  // In this case, we show this page and go back to system settings page.
-  note group Note
-  {
-    attr Bounds = <540,190,1120,280>;
-  }
-}
-
-$rect <720,380,920,420>
-$output false
-class Reset : Components::BaseComponent
-{
-  $rect <520,10,720,50>
-  inherited method Init()
-  {
-    var Settings::AllReset all_reset = new Settings::AllReset;
-
-    all_reset.OnYes = OnAllResetYesSlot;
-    all_reset.OnNo = OnAllResetNoSlot;
-    PresentDialog( all_reset, null, null, null, null, null, null, null, null, false );
-  }
-
-  $rect <10,290,210,330>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <520,60,720,100>
-  slot OnAllResetYesSlot
-  {
-    if( !DeviceInterface::SystemDevice.IsHopperTestMode )
-    {
-      StartFactoryReset();
-    }
-    else
-    {
-      Owner.DismissDialog( this, null, null, null, null, null, false );
-    }
-  }
-
-  $rect <520,110,720,150>
-  slot OnAllResetNoSlot
-  {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
-
-  $rect <520,160,720,200>
-  slot OnAllResetPairingDeviceOK
-  {
-    StartFactoryReset();
-  }
-
-  $rect <520,210,720,250>
-  slot OnAllResetFailed
-  {
-    var Core::Group dialog = (Core::Group)sender;
-    DismissDialog( dialog, null, null, null, null, null, false );
-    SlideOutDialog( this );
-  }
-
-  $rect <520,260,720,300>
-  slot OnAllResetFinished
-  {
-    var Settings::AllResetCompleted all_reset_completed = new Settings::AllResetCompleted;
-    var Core::Group dialog = (Core::Group)sender;
-
-    DismissDialog( dialog, null, null, null, null, null, false );
-    PresentDialog( all_reset_completed, null, null, null, null, null, null, null, null, false );
-  }
-
-  $rect <520,520,790,560>
-  object Core::Timer SystemRebootCountDownTimer
-  {
-    preset OnTrigger = OnSystemRebootTriggeredSlot;
-    preset Period = 2000;
-  }
-
-  $rect <520,570,790,610>
-  slot OnSystemRebootTriggeredSlot
-  {
-    trace "OnSystemRebootTriggered";
-    SystemRebootCountDownTimer.Enabled = false;
-    DeviceInterface::SystemDevice.RebootSystem();
-  }
-
-  $rect <520,460,790,500>
-  method void ShowResetCompleteDialog()
-  {
-    if( null != BusyDialog )
-    {
-      DismissDialog( BusyDialog, null, null, null, null, null, false );
-      BusyDialog = null;
-    }
-    var Settings::AllResetCompleted AllResetCompletedDialog = new Settings::AllResetCompleted;
-    PresentDialog( AllResetCompletedDialog, null, null, null, null, null, null, null, null, false );
-    SystemRebootCountDownTimer.Enabled = true;
-  }
-
-  $rect <810,310,1010,350>
-  var Settings::InProgress BusyDialog;
-
-  $rect <520,310,720,350>
-  method void StartFactoryReset()
-  {
-    trace "StartFactoryReset";
-    BusyDialog = new Settings::InProgress;
-    PresentDialog( BusyDialog, null, null, null, null, null, null, null, null, false );
-    DeviceInterface::SystemDevice.ResetToFactoryDefault();
-  }
-
-  $rect <520,360,720,400>
-  object Core::PropertyObserver ResetResultObserver
-  {
-    preset OnEvent = OnResetCompleteSlot;
-    preset Outlet = ^DeviceInterface::SystemDevice.FactoryResetComplete;
-  }
-
-  // This slot method is executed when the associated property observer 'PropertyObserver' \
-  // is notified.
-  $rect <520,410,720,450>
-  slot OnResetCompleteSlot
-  {
-    ShowResetCompleteDialog();
   }
 }
 
@@ -1093,7 +959,7 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
   {
     preset Bounds = <165,219,315,259>;
     preset DDModeEnabled = true;
-    preset Title = "Cancel";
+    preset Title = Strings::GEN_CANCEL;
     preset OnActivate = OnCancelSlot;
   }
 
@@ -1458,11 +1324,7 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
   $rect <520,20,720,60>
   inherited method LoadItemClass()
   {
-    //to suppress warning
-    if( aItemNo >= 0 )
-    {
-      // empty body
-    }
+    aItemNo; //to suppress warning
     return Menu::ItemCheckMark;
   }
 
@@ -1599,7 +1461,6 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
     }
   }
 
-  $reorder LoadItemUnitValue 1
   $reorder PairedDeviceNum 1
   $reorder UpdatePairedDeviceNum 1
   $reorder RefreshListObserver 1
@@ -2493,3 +2354,120 @@ class LicenseDetail : Core::Group
 $rect <20,560,250,600>
 $output false
 const int32 DETAIL_TOTAL_LINE_NUM = 7;
+
+$rect <710,290,920,330>
+$output false
+class SET43_ResetMenu : Menu::BaseMenuView
+{
+  $rect <10,290,190,330>
+  inherited method Init()
+  {
+    trace "Init SET43";
+  }
+
+  $rect <10,340,210,380>
+  inherited property DDModeEnabled = true;
+
+  $rect <10,390,210,430>
+  inherited var SlideOutEffectEnabled = true;
+
+  $rect <510,20,710,60>
+  inherited method LoadItemClass()
+  {
+    aItemNo; // suppress warning
+    return Menu::ItemBase;
+  }
+
+  $rect <510,70,710,110>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+      {
+      title = ItemTitleArray[aItemNo];
+      }
+    return title;
+  }
+
+  $rect <510,120,710,160>
+  inherited method OnItemActivate()
+  {
+    aMenuItem; //suppress warning
+
+    switch( aItemNo )
+    {
+      case 0:;
+      case 1:;
+      case 3: SlideInDialog( new Settings::SET38_ConfirmAllReset );
+      default :;
+    }
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset DDModeEnabled = true;
+    preset NoOfItems = 4;
+    preset ArrowScrollBarVisible = true;
+  }
+
+  $rect <730,70,930,110>
+  array string ItemTitleArray[ 4 ] =
+  (
+    Default[0] = Strings::SET43_TRIP_MILEAGE_RESET;
+    Default[1] = Strings::SET43_MAINTENANCE_RESET;
+    Default[2] = Strings::SET43_VEHICLE_INFO;
+    Default[3] = Strings::SET43_ALL_RESET;
+  );
+}
+
+$rect <710,490,920,530>
+$output false
+class SET42_ResetCompleted : Components::BaseMainBG
+{
+  $rect <10,300,190,340>
+  inherited method Init()
+  {
+    trace "Init SET42";
+  }
+
+  $rect <210,300,440,340>
+  inherited method OnShortHomeKeyActivated()
+  {
+    // neglect home key event
+  }
+
+  $rect <210,350,440,390>
+  inherited method OnLongHomeKeyActivated()
+  {
+    // neglect home key event
+  }
+
+  $rect <10,350,190,390>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Text MessageText
+  {
+    preset Bounds = <10,50,470,236>;
+    preset Ellipsis = true;
+    preset WrapText = true;
+    preset String = Strings::SET42_RESET_COMPLETE;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <460,300,660,340>
+  object Core::Timer TimeoutTimer
+  {
+    preset OnTrigger = OnTimeoutSlot;
+    preset Period = 0;
+    preset Begin = 2000;
+    preset Enabled = true;
+  }
+
+  $rect <460,350,660,390>
+  slot OnTimeoutSlot
+  {
+    DeviceInterface::SystemDevice.RebootSystem();
+  }
+}
