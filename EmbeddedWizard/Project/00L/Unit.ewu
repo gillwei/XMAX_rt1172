@@ -81,6 +81,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
         if( null != MileageMenu )
         {
           MileageMenu.MileageUpdateSignal = OnUnitValueUpdateSlot;
+          MileageMenu.ResetHighlightPosition();
           SlideInDialog( MileageMenu );
         }
       }
@@ -89,6 +90,8 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
         if( null != FuelMenu )
         {
           FuelMenu.FuelUpdateSignal = OnUnitValueUpdateSlot;
+          FuelMenu.ResetHighlightPosition();
+
           if( Enum::MileageSettingItem.KM == DeviceInterface::VehicleDevice.CurrentMileageSetting )
           {
             FuelMenu.ItemEnabledArray[( int32 )Enum::FuelSettingItem.KM_L] = true;
@@ -111,6 +114,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
         if( null != PressureMenu )
         {
           PressureMenu.PressureUpdateSignal = OnUnitValueUpdateSlot;
+          PressureMenu.ResetHighlightPosition();
           SlideInDialog( PressureMenu );
         }
       }
@@ -119,6 +123,7 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
         if( null != TempMenu )
         {
           TempMenu.TempUpdateSignal = OnUnitValueUpdateSlot;
+          TempMenu.ResetHighlightPosition();
           SlideInDialog( TempMenu );
         }
       }
@@ -465,8 +470,6 @@ class UNT02_MileageSettingMenu : Menu::BaseMenuView
   {
     CheckMarkUpdateTimer.Enabled = false;
     signal MileageUpdateSignal;
-    Menu.MenuList.SelectedItem = 0;
-    Menu.MoveFocusFrame();
     OnShortHomeKeyActivated();
   }
 
@@ -500,6 +503,13 @@ class UNT02_MileageSettingMenu : Menu::BaseMenuView
       Menu.InvalidateItems( (int32)Enum::MileageSettingItem.KM, (int32)Enum::MileageSettingItem.MILE );
       CheckMarkUpdateTimer.Enabled = true;
     }
+  }
+
+  $rect <780,100,980,140>
+  method void ResetHighlightPosition()
+  {
+    Menu.MenuList.SelectedItem = 0;
+    Menu.MoveFocusFrame();
   }
 }
 
@@ -689,8 +699,6 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
   {
     CheckMarkUpdateTimer.Enabled = false;
     signal FuelUpdateSignal;
-    Menu.MenuList.SelectedItem = 0;
-    Menu.MoveFocusFrame();
     OnShortHomeKeyActivated();
   }
 
@@ -728,6 +736,13 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
       Menu.InvalidateItems( (int32)Enum::FuelSettingItem.KM_L, (int32)Enum::FuelSettingItem.L_PER_HUNDRED_KM );
       CheckMarkUpdateTimer.Enabled = true;
     }
+  }
+
+  $rect <750,120,950,160>
+  method void ResetHighlightPosition()
+  {
+    Menu.MenuList.SelectedItem = 0;
+    Menu.MoveFocusFrame();
   }
 }
 
@@ -879,8 +894,6 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
   {
     CheckMarkUpdateTimer.Enabled = false;
     signal PressureUpdateSignal;
-    Menu.MenuList.SelectedItem = 0;
-    Menu.MoveFocusFrame();
     OnShortHomeKeyActivated();
   }
 
@@ -912,6 +925,13 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
       Menu.InvalidateItems( (int32)Enum::PressureSettingItem.PSI, (int32)Enum::PressureSettingItem.KGF );
       CheckMarkUpdateTimer.Enabled = true;
     }
+  }
+
+  $rect <750,150,950,190>
+  method void ResetHighlightPosition()
+  {
+    Menu.MenuList.SelectedItem = 0;
+    Menu.MoveFocusFrame();
   }
 }
 
@@ -1041,8 +1061,6 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
   {
     CheckMarkUpdateTimer.Enabled = false;
     signal TempUpdateSignal;
-    Menu.MenuList.SelectedItem = 0;
-    Menu.MoveFocusFrame();
     OnShortHomeKeyActivated();
   }
 
@@ -1075,5 +1093,12 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
       Menu.InvalidateItems( ( int32 )Enum::TemperatureSettingItem.TEMP_C, ( int32 )Enum::TemperatureSettingItem.TEMP_F );
       CheckMarkUpdateTimer.Enabled = true;
     }
+  }
+
+  $rect <750,120,950,160>
+  method void ResetHighlightPosition()
+  {
+    Menu.MenuList.SelectedItem = 0;
+    Menu.MoveFocusFrame();
   }
 }

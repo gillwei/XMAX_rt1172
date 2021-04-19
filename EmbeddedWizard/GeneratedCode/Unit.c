@@ -230,6 +230,7 @@ void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this,
       if ( _this->MileageMenu != 0 )
       {
         _this->MileageMenu->MileageUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
+        UnitUNT02_MileageSettingMenu_ResetHighlightPosition( _this->MileageMenu );
         ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->MileageMenu ));
       }
     }
@@ -240,6 +241,7 @@ void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this,
       if ( _this->FuelMenu != 0 )
       {
         _this->FuelMenu->FuelUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
+        UnitUNT03_FuelSettingMenu_ResetHighlightPosition( _this->FuelMenu );
 
         if ( EnumMileageSettingItemKM == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
             DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting )
@@ -266,6 +268,7 @@ void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this,
       if ( _this->PressureMenu != 0 )
       {
         _this->PressureMenu->PressureUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
+        UnitUNT04_PressureSettingMenu_ResetHighlightPosition( _this->PressureMenu );
         ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->PressureMenu ));
       }
     }
@@ -276,6 +279,7 @@ void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this,
       if ( _this->TempMenu != 0 )
       {
         _this->TempMenu->TempUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
+        UnitUNT05_TemperatureSettingMenu_ResetHighlightPosition( _this->TempMenu );
         ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->TempMenu ));
       }
     }
@@ -756,8 +760,6 @@ void UnitUNT02_MileageSettingMenu_OnCheckMarkUpdateSlot( UnitUNT02_MileageSettin
 
   CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 0 );
   EwSignal( _this->MileageUpdateSignal, ((XObject)_this ));
-  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
-  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
   ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
 }
 
@@ -797,6 +799,13 @@ void UnitUNT02_MileageSettingMenu_OnVehicleDataReceivedSlot( UnitUNT02_MileageSe
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
     CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
   }
+}
+
+/* 'C' function for method : 'Unit::UNT02_MileageSettingMenu.ResetHighlightPosition()' */
+void UnitUNT02_MileageSettingMenu_ResetHighlightPosition( UnitUNT02_MileageSettingMenu _this )
+{
+  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
+  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
 }
 
 /* Variants derived from the class : 'Unit::UNT02_MileageSettingMenu' */
@@ -1153,8 +1162,6 @@ void UnitUNT03_FuelSettingMenu_OnCheckMarkUpdateSlot( UnitUNT03_FuelSettingMenu 
 
   CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 0 );
   EwSignal( _this->FuelUpdateSignal, ((XObject)_this ));
-  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
-  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
   ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
 }
 
@@ -1199,6 +1206,13 @@ void UnitUNT03_FuelSettingMenu_OnVehicleDataReceivedSlot( UnitUNT03_FuelSettingM
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
     CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
   }
+}
+
+/* 'C' function for method : 'Unit::UNT03_FuelSettingMenu.ResetHighlightPosition()' */
+void UnitUNT03_FuelSettingMenu_ResetHighlightPosition( UnitUNT03_FuelSettingMenu _this )
+{
+  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
+  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
 }
 
 /* Variants derived from the class : 'Unit::UNT03_FuelSettingMenu' */
@@ -1473,8 +1487,6 @@ void UnitUNT04_PressureSettingMenu_OnCheckMarkUpdateSlot( UnitUNT04_PressureSett
 
   CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 0 );
   EwSignal( _this->PressureUpdateSignal, ((XObject)_this ));
-  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
-  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
   ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
 }
 
@@ -1519,6 +1531,13 @@ void UnitUNT04_PressureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT04_Pressure
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
     CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
   }
+}
+
+/* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.ResetHighlightPosition()' */
+void UnitUNT04_PressureSettingMenu_ResetHighlightPosition( UnitUNT04_PressureSettingMenu _this )
+{
+  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
+  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
 }
 
 /* Variants derived from the class : 'Unit::UNT04_PressureSettingMenu' */
@@ -1770,8 +1789,6 @@ void UnitUNT05_TemperatureSettingMenu_OnCheckMarkUpdateSlot( UnitUNT05_Temperatu
 
   CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 0 );
   EwSignal( _this->TempUpdateSignal, ((XObject)_this ));
-  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
-  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
   ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
 }
 
@@ -1811,6 +1828,13 @@ void UnitUNT05_TemperatureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT05_Tempe
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
     CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
   }
+}
+
+/* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.ResetHighlightPosition()' */
+void UnitUNT05_TemperatureSettingMenu_ResetHighlightPosition( UnitUNT05_TemperatureSettingMenu _this )
+{
+  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
+  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
 }
 
 /* Variants derived from the class : 'Unit::UNT05_TemperatureSettingMenu' */

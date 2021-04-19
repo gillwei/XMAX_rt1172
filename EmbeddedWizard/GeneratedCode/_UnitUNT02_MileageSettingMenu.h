@@ -220,6 +220,9 @@ void UnitUNT02_MileageSettingMenu_OnCheckMarkUpdateSlot( UnitUNT02_MileageSettin
 void UnitUNT02_MileageSettingMenu_OnVehicleDataReceivedSlot( UnitUNT02_MileageSettingMenu _this, 
   XObject sender );
 
+/* 'C' function for method : 'Unit::UNT02_MileageSettingMenu.ResetHighlightPosition()' */
+void UnitUNT02_MileageSettingMenu_ResetHighlightPosition( UnitUNT02_MileageSettingMenu _this );
+
 #ifdef __cplusplus
   }
 #endif

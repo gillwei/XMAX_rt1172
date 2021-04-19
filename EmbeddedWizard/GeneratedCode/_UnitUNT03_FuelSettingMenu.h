@@ -226,6 +226,9 @@ void UnitUNT03_FuelSettingMenu_OnCheckMarkUpdateSlot( UnitUNT03_FuelSettingMenu 
 void UnitUNT03_FuelSettingMenu_OnVehicleDataReceivedSlot( UnitUNT03_FuelSettingMenu _this, 
   XObject sender );
 
+/* 'C' function for method : 'Unit::UNT03_FuelSettingMenu.ResetHighlightPosition()' */
+void UnitUNT03_FuelSettingMenu_ResetHighlightPosition( UnitUNT03_FuelSettingMenu _this );
+
 #ifdef __cplusplus
   }
 #endif

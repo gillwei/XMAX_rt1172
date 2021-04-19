@@ -220,6 +220,9 @@ void UnitUNT05_TemperatureSettingMenu_OnCheckMarkUpdateSlot( UnitUNT05_Temperatu
 void UnitUNT05_TemperatureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT05_TemperatureSettingMenu _this, 
   XObject sender );
 
+/* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.ResetHighlightPosition()' */
+void UnitUNT05_TemperatureSettingMenu_ResetHighlightPosition( UnitUNT05_TemperatureSettingMenu _this );
+
 #ifdef __cplusplus
   }
 #endif

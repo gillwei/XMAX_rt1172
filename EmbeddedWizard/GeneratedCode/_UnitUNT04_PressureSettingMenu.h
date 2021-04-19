@@ -220,6 +220,9 @@ void UnitUNT04_PressureSettingMenu_OnCheckMarkUpdateSlot( UnitUNT04_PressureSett
 void UnitUNT04_PressureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT04_PressureSettingMenu _this, 
   XObject sender );
 
+/* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.ResetHighlightPosition()' */
+void UnitUNT04_PressureSettingMenu_ResetHighlightPosition( UnitUNT04_PressureSettingMenu _this );
+
 #ifdef __cplusplus
   }
 #endif
