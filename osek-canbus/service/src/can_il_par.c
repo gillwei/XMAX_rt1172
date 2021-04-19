@@ -527,7 +527,7 @@ il_can0_tx7_fact_insp1_ga_txfrm_init_data[IL_CAN0_TX7_FACT_INSP1_GA_TXFRM_LEN] =
 
 static uint8 const
 il_can0_tx8_fact_insp_ns_res_txfrm_init_data[IL_CAN0_TX8_FACT_INSP_NS_RES_TXFRM_LEN] =
-    { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
+    { 0x00,  0x00,  0x55,  0x55,  0x55,  0x55,  0x55,  0x55 };
 
 
 /*------------------------------------------------------
