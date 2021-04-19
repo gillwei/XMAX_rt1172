@@ -21,7 +21,7 @@
             <file path="board/pin_mux.h" update_enabled="true"/>
          </generated_project_files>
          <pins_profile>
-            <processor_version>9.0.0</processor_version>
+            <processor_version>9.0.1</processor_version>
             <power_domains/>
             <pin_labels>
                <pin_label pin_num="B15" pin_signal="GPIO_SD_B1_04" label="TFT_RESET" identifier="TFT_RESET"/>
@@ -147,6 +147,7 @@
                <pin_label pin_num="F14" pin_signal="GPIO_SD_B2_04" label="TFT_SPI_CSB"/>
                <pin_label pin_num="B16" pin_signal="GPIO_SD_B1_00" label="TFT_BL_EN" identifier="TFT_BL_EN"/>
                <pin_label pin_num="B17" pin_signal="GPIO_SD_B1_03" label="TFT_RESET" identifier="TFT_RESET"/>
+               <pin_label pin_num="G17" pin_signal="GPIO_AD_35" label="BT_RST_N_2" identifier="BT_RST_N_2"/>
             </pin_labels>
          </pins_profile>
          <functions_list>
@@ -419,6 +420,12 @@
                         <pin_feature name="identifier" value=""/>
                      </pin_features>
                   </pin>
+                  <pin peripheral="GPIO10" signal="gpio_io, 02" pin_num="G17" pin_signal="GPIO_AD_35">
+                     <pin_features>
+                        <pin_feature name="direction" value="OUTPUT"/>
+                        <pin_feature name="gpio_init_state" value="true"/>
+                     </pin_features>
+                  </pin>
                </pins>
             </function>
             <function name="BOARD_InitLcdifPins">
@@ -620,7 +627,7 @@
             <file path="board/clock_config.h" update_enabled="true"/>
          </generated_project_files>
          <clocks_profile>
-            <processor_version>9.0.0</processor_version>
+            <processor_version>9.0.1</processor_version>
          </clocks_profile>
          <clock_configurations>
             <clock_configuration name="BOARD_BootClockRUN">
@@ -881,30 +888,37 @@
       <periphs name="Peripherals" version="9.0" enabled="false" update_project_code="true">
          <generated_project_files/>
          <peripherals_profile>
-            <processor_version>9.0.0</processor_version>
+            <processor_version>9.0.1</processor_version>
          </peripherals_profile>
          <functional_groups>
-            <functional_group name="BOARD_InitPeripherals" uuid="b2f672ee-b3f3-419f-ada6-776ea6d34369" called_from_default_init="true" id_prefix="" core="cm7">
+            <functional_group name="BOARD_InitPeripherals" uuid="7c696c2e-0ccd-474b-8e04-446730aee2c2" called_from_default_init="true" id_prefix="" core="cm7">
                <description></description>
                <options/>
                <dependencies/>
-               <instances/>
+               <instances>
+                  <instance name="NVIC" uuid="8ff1b75e-fc16-4385-9506-82ff65658bf9" type="nvic" type_id="nvic_57b5eef3774cc60acaede6f5b8bddc67" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="nvic">
+                        <array name="interrupt_table"/>
+                        <array name="interrupts"/>
+                     </config_set>
+                  </instance>
+               </instances>
             </functional_group>
          </functional_groups>
          <components>
-            <component name="system" uuid="f05be130-8f69-4e6a-b57e-5a058845027f" type_id="system_54b53072540eeeb8f8e9343e71f28176">
+            <component name="system" uuid="6c32b293-db81-4f97-8116-8b3eaa0b288b" type_id="system_54b53072540eeeb8f8e9343e71f28176">
                <config_set_global name="global_system_definitions">
                   <setting name="user_definitions" value=""/>
                   <setting name="user_includes" value=""/>
                </config_set_global>
             </component>
-            <component name="msg" uuid="5033d674-71c5-43ac-ae39-12bb0c98a7aa" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
+            <component name="msg" uuid="e57cd4ec-3f2c-47f8-8c4f-57f3f63ebab3" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
                <config_set_global name="global_messages"/>
             </component>
-            <component name="generic_uart" uuid="0dcaafc4-6bd1-462b-b595-cf9ad5c6db0d" type_id="generic_uart_8cae00565451cf2346eb1b8c624e73a6">
+            <component name="generic_uart" uuid="35169729-4e31-4d1c-875a-3b1e81e2e307" type_id="generic_uart_8cae00565451cf2346eb1b8c624e73a6">
                <config_set_global name="global_uart"/>
             </component>
-            <component name="generic_can" uuid="41d81c54-24e3-4263-8a45-ccf594654fc5" type_id="generic_can_1bfdd78b1af214566c1f23cf6a582d80">
+            <component name="generic_can" uuid="4edaa4cc-c100-40e1-af71-3b5220363440" type_id="generic_can_1bfdd78b1af214566c1f23cf6a582d80">
                <config_set_global name="global_can"/>
             </component>
          </components>

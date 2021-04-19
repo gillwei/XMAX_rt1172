@@ -10,7 +10,7 @@ product: Pins v9.0
 processor: MIMXRT1172xxxxx
 package_id: MIMXRT1172AVM8A
 mcu_data: ksdk2_0
-processor_version: 9.0.0
+processor_version: 9.0.1
 pin_labels:
 - {pin_num: B15, pin_signal: GPIO_SD_B1_04, label: TFT_RESET, identifier: TFT_RESET}
 - {pin_num: C15, pin_signal: GPIO_SD_B1_02, label: TFT_CONNECTED, identifier: TFT_CONNECTED}
@@ -135,6 +135,7 @@ pin_labels:
 - {pin_num: F14, pin_signal: GPIO_SD_B2_04, label: TFT_SPI_CSB}
 - {pin_num: B16, pin_signal: GPIO_SD_B1_00, label: TFT_BL_EN, identifier: TFT_BL_EN}
 - {pin_num: B17, pin_signal: GPIO_SD_B1_03, label: TFT_RESET, identifier: TFT_RESET}
+- {pin_num: G17, pin_signal: GPIO_AD_35, label: BT_RST_N_2, identifier: BT_RST_N_2}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -201,6 +202,7 @@ BOARD_InitPins:
   - {pin_num: B16, peripheral: GPIO10, signal: 'gpio_io, 03', pin_signal: GPIO_SD_B1_00, direction: OUTPUT, gpio_init_state: 'true'}
   - {pin_num: M13, peripheral: GPIO9, signal: 'gpio_io, 03', pin_signal: GPIO_AD_04, direction: OUTPUT}
   - {pin_num: U9, peripheral: SNVS, signal: snvs_lp_pmic_on_req, pin_signal: PMIC_ON_REQ, identifier: ''}
+  - {pin_num: G17, peripheral: GPIO10, signal: 'gpio_io, 02', pin_signal: GPIO_AD_35, direction: OUTPUT, gpio_init_state: 'true'}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -349,6 +351,15 @@ void BOARD_InitPins(void) {
   /* Initialize GPIO functionality on GPIO_AD_28 (pin L17) */
   GPIO_PinInit(GPIO9, 27U, &CAN_STBY_config);
 
+  /* GPIO configuration of BT_RST_N_2 on GPIO_AD_35 (pin G17) */
+  gpio_pin_config_t BT_RST_N_2_config = {
+      .direction = kGPIO_DigitalOutput,
+      .outputLogic = 1U,
+      .interruptMode = kGPIO_NoIntmode
+  };
+  /* Initialize GPIO functionality on GPIO_AD_35 (pin G17) */
+  GPIO_PinInit(GPIO10, 2U, &BT_RST_N_2_config);
+
   /* GPIO configuration of TFT_BL_EN on GPIO_SD_B1_00 (pin B16) */
   gpio_pin_config_t TFT_BL_EN_config = {
       .direction = kGPIO_DigitalOutput,
@@ -465,6 +476,9 @@ void BOARD_InitPins(void) {
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_33_LPI2C1_SDA,           /* GPIO_AD_33 is configured as LPI2C1_SDA */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_33 */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AD_35_GPIO10_IO02,          /* GPIO_AD_35 is configured as GPIO10_IO02 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_EMC_B2_03_GPIO8_IO13,       /* GPIO_EMC_B2_03 is configured as GPIO8_IO13 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */

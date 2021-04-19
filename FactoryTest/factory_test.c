@@ -257,11 +257,6 @@ static void esn_write_cb
     void*   data
     );
 
-static uint8 get_hw_id
-    (
-    uint8 * hw_id_data
-    );
-
 static void get_sku_id
     (
     uint8 * sku_id_data
@@ -1395,7 +1390,7 @@ packageIopToCanData( &esn_id, BIT_32_DATA_LEN );
 * @brief get HW_ID depends on the gpio input
 *
 *********************************************************************/
-static uint8 get_hw_id
+uint8 get_hw_id
     (
     uint8 * hw_id_data
     )

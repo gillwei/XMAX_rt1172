@@ -172,6 +172,7 @@ static const uint8_t          tx_carrier_low_ch_data[7] = { 0x0, 0x02, 0x0, 0x0,
 static const uint8_t          tx_carrier_mid_ch_data[7] = { 0x0, 0x29, 0x0, 0x0, 0x08, 0x02, 0x0 };
 static const uint8_t          tx_carrier_hi_ch_data[7] = { 0x0, 0x50, 0x0, 0x0, 0x08, 0x02, 0x0 };
 static hci_resp_type_t        current_resp_event = RESPONSE_NO_EVENT;
+static uint8_t                hw_id = 0;
 
 /*--------------------------------------------------------------------
                             PROCEDURES
@@ -238,6 +239,8 @@ rx_buffer_handle = circular_buffer_init( "HCI task_rx", hci_rx_data, HCI_RX_BUFF
 tx_command_opcode = 0;
 
 memset( &hci_status, 0, sizeof( hci_status_t ) );
+hw_id = get_hw_id( NULL );
+PRINTF( "%s detect HW ID: %d\r\n", __FUNCTION__, hw_id );
 
 xUpdateTimer = xTimerCreate( "UpdateTimer",           /* A text name, purely to help debugging. */
                              UPDATE_TICK_PERIOD_MS,   /* The timer period, in this case 50 ms. */
@@ -286,9 +289,23 @@ IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_GPIO9_IO02,    /* GPIO_AD_03 is configured a
 GPIO_PinInit( GPIO9, 2U, &uart_cts_config );
 GPIO_PinWrite( GPIO9, 2, 1 );
 
-GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
+if( hw_id < 2 )
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
+    }
+else
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_2_PERIPHERAL, BOARD_INITPINS_BT_RST_N_2_CHANNEL, 0 );
+    }
 vTaskDelay( pdMS_TO_TICKS( BT_RESET_GPIO_DELAY ) );
-GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
+if( hw_id < 2 )
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
+    }
+else
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_2_PERIPHERAL, BOARD_INITPINS_BT_RST_N_2_CHANNEL, 1 );
+    }
 HCI_wait_for_resp_start( resp_event );
 }
 
@@ -315,9 +332,23 @@ IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_GPIO9_IO02,    /* GPIO_AD_03 is configured a
 GPIO_PinInit( GPIO9, 2U, &uart_cts_config );
 GPIO_PinWrite( GPIO9, 2, 0 );
 
-GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
+if( hw_id < 2 )
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
+    }
+else
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_2_PERIPHERAL, BOARD_INITPINS_BT_RST_N_2_CHANNEL, 0 );
+    }
 vTaskDelay( pdMS_TO_TICKS( BT_RESET_GPIO_DELAY ) );
-GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
+if( hw_id < 2 )
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
+    }
+else
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_2_PERIPHERAL, BOARD_INITPINS_BT_RST_N_2_CHANNEL, 1 );
+    }
 vTaskDelay( pdMS_TO_TICKS( BT_RESET_RECONFIG_DELAY ) );
 }
 
@@ -343,7 +374,14 @@ IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_GPIO9_IO02,    /* GPIO_AD_03 is configured a
 GPIO_PinInit( GPIO9, 2U, &uart_cts_config );
 GPIO_PinWrite( GPIO9, 2, 1 );
 
-GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
+if( hw_id < 2 )
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
+    }
+else
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_2_PERIPHERAL, BOARD_INITPINS_BT_RST_N_2_CHANNEL, 0 );
+    }
 }
 
 /*********************************************************************
@@ -358,7 +396,14 @@ void HCI_BT_on
     void
     )
 {
-GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
+if( hw_id < 2 )
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
+    }
+else
+    {
+    GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_2_PERIPHERAL, BOARD_INITPINS_BT_RST_N_2_CHANNEL, 1 );
+    }
 vTaskDelay( pdMS_TO_TICKS( BT_RESET_RECONFIG_DELAY ) );
 
 // Reconfigure GPIO1_IO21 to BT UART RTS

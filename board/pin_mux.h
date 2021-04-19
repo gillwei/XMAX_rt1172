@@ -262,6 +262,17 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_WDOG_B_GPIO_PIN                                        3U   /*!< GPIO pin number */
 #define BOARD_INITPINS_WDOG_B_GPIO_PIN_MASK                           (1U << 3U)   /*!< GPIO pin mask */
 
+/* GPIO_AD_35 (coord G17), BT_RST_N_2 */
+/* Routed pin properties */
+#define BOARD_INITPINS_BT_RST_N_2_PERIPHERAL                              GPIO10   /*!< Peripheral name */
+#define BOARD_INITPINS_BT_RST_N_2_SIGNAL                                 gpio_io   /*!< Signal name */
+#define BOARD_INITPINS_BT_RST_N_2_CHANNEL                                     2U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_BT_RST_N_2_GPIO                                    GPIO10   /*!< GPIO peripheral base pointer */
+#define BOARD_INITPINS_BT_RST_N_2_GPIO_PIN                                    2U   /*!< GPIO pin number */
+#define BOARD_INITPINS_BT_RST_N_2_GPIO_PIN_MASK                       (1U << 2U)   /*!< GPIO pin mask */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *

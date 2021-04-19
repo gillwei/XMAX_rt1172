@@ -15,7 +15,7 @@ product: Clocks v7.0
 processor: MIMXRT1172xxxxx
 package_id: MIMXRT1172AVM8A
 mcu_data: ksdk2_0
-processor_version: 9.0.0
+processor_version: 9.0.1
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 #include "clock_config.h"
@@ -41,6 +41,29 @@ void BOARD_InitBootClocks(void)
 {
     BOARD_BootClockRUN();
 }
+
+#if defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1)
+#if defined(XIP_BOOT_HEADER_DCD_ENABLE) && (XIP_BOOT_HEADER_DCD_ENABLE == 1)
+/* This function should not run from SDRAM since it will change SEMC configuration. */
+AT_QUICKACCESS_SECTION_CODE(void UpdateSemcClock(void));
+void UpdateSemcClock(void)
+{
+    /* Enable self-refresh mode and update semc clock root to 200MHz. */
+    SEMC->IPCMD = 0xA55A000D;
+    while ((SEMC->INTR & 0x3) == 0)
+        ;
+    SEMC->INTR                                = 0x3;
+    SEMC->DCCR                                = 0x0B;
+    /*
+    * Currently we are using SEMC parameter which fit both 166MHz and 200MHz, only
+    * need to change the SEMC clock root here. If customer is using their own DCD and
+    * want to switch from 166MHz to 200MHz, extra SEMC configuration might need to be
+    * adjusted here to fine tune the SDRAM performance
+    */
+    CCM->CLOCK_ROOT[kCLOCK_Root_Semc].CONTROL = 0x602;
+}
+#endif
+#endif
 
 /*******************************************************************************
  ********************** Configuration BOARD_BootClockRUN ***********************
@@ -232,7 +255,7 @@ settings:
 const clock_arm_pll_config_t armPllConfig_BOARD_BootClockRUN =
     {
         .postDivider = kCLOCK_PllPostDiv2,        /* Post divider, 0 - DIV by 2, 1 - DIV by 4, 2 - DIV by 8, 3 - DIV by 1 */
-        .loopDivider = 166,                       /* PLL Loop divider, Fout = Fin * 41.5 */
+        .loopDivider = 166,                       /* PLL Loop divider, Fout = Fin * ( loopDivider / ( 2 * postDivider ) ) */
     };
 
 const clock_sys_pll2_config_t sysPll2Config_BOARD_BootClockRUN =
@@ -298,8 +321,6 @@ void BOARD_BootClockRUN(void)
     }
 #endif
 
-    /* PLL LDO shall be enabled first before enable PLLs */
-
     /* Config CLK_1M */
     CLOCK_OSC_Set1MHzOutputBehavior(kCLOCK_1MHzOutEnableFreeRunning1Mhz);
 
@@ -330,6 +351,9 @@ void BOARD_BootClockRUN(void)
     CLOCK_SetRootClock(kCLOCK_Root_M4, &rootCfg);
     CLOCK_SetRootClock(kCLOCK_Root_Bus_Lpsr, &rootCfg);
 
+    /*
+    * if DCD is used, please make sure the clock source of SEMC is not changed in the following PLL/PFD configuration code.
+    */
     /* Init Arm Pll. */
     CLOCK_InitArmPll(&armPllConfig_BOARD_BootClockRUN);
 
@@ -378,7 +402,7 @@ void BOARD_BootClockRUN(void)
     /* Init Video Pll. */
     CLOCK_InitVideoPll(&videoPllConfig_BOARD_BootClockRUN);
 
-    /* Moduel clock root configurations. */
+    /* Module clock root configurations. */
     /* Configure M7 using ARM_PLL_CLK */
     rootCfg.mux = kCLOCK_M7_ClockRoot_MuxArmPllOut;
     rootCfg.div = 2;
@@ -404,6 +428,12 @@ void BOARD_BootClockRUN(void)
     rootCfg.mux = kCLOCK_SEMC_ClockRoot_MuxSysPll2Pfd1;
     rootCfg.div = 3;
     CLOCK_SetRootClock(kCLOCK_Root_Semc, &rootCfg);
+#endif
+
+#if defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1)
+#if defined(XIP_BOOT_HEADER_DCD_ENABLE) && (XIP_BOOT_HEADER_DCD_ENABLE == 1)
+    UpdateSemcClock();
+#endif
 #endif
 
     /* Configure CSSYS using OSC_RC_48M_DIV2 */
