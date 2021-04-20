@@ -38,6 +38,6 @@ echo Merge BT F/W and MCU F/W within one Merged File...
 if "%BT_ADDRESS%" NEQ "" (
     srec_cat.exe ..\submodule\cyw89820\Release_FW\BT_mdflash.bin -Binary -offset %BT_ADDRESS% ..\Debug\LinkCard-RT1172.bin -Binary -o boot_image.bin -Binary
     if "%BT_VERSION%" NEQ "" (
-        srec_cat.exe boot_image.bin -Binary -E 0x800000 0x800002 -GEN 0x800000 0x800002 -CONSTant_Big_Endian %BT_VERSION% 2 -O boot_image.bin -Binary
+        srec_cat.exe boot_image.bin -Binary -E 0xE00000 0xE00002 -GEN 0xE00000 0xE00002 -CONSTant_Big_Endian %BT_VERSION% 2 -O boot_image.bin -Binary
 	)
 )
