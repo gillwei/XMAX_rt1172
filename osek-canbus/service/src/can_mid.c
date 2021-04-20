@@ -43,6 +43,10 @@
 #define MID_MSG_CAN_ID_DEMO                             0xFFFFFFFF
 #define MID_MSG_SVC_ID_DEMO                             0xFF
 
+#define MID_MSG_TCFS_INIT                               0xFF
+#define MID_MSG_BRZEGR_INIT                             0xFF
+
+
 /*--------------------------------------------------------------------
                             TYPES
 --------------------------------------------------------------------*/
@@ -75,6 +79,52 @@ mid_msg_t mid_msg_inst[] =
     { TX4_REQ_REPRGRM_INFO_CAN0_ID,RX9_RES_RPRGRM_INFO_CAN0_ID, MID_MSG_SID_REPROG,              MID_RES_SID_REPROG         },
     { TX2_REQ_SUPPORT_CAN0_ID,     RX2_RES_SUPPORT_CAN0_ID,     MID_MSG_SID_SUPP_FUNC_LIST,      MID_RES_SID_SUPP_FUNC_LIST },
 };
+
+/*------------------------------------------------------
+Init the message initial values in middle layer
+------------------------------------------------------*/
+void mid_sfl_init
+    (
+    void
+    )
+{
+supp_func_list.tcfs                     = MID_MSG_TCFS_INIT;
+supp_func_list.brzegr                   = MID_MSG_BRZEGR_INIT;
+
+supp_func_list.sfl.bit.trip1            = 0;
+supp_func_list.sfl.bit.trip2            = 0;
+supp_func_list.sfl.bit.Ftrip            = 0;
+supp_func_list.sfl.bit.mt_brgtnss_adj   = 0;
+supp_func_list.sfl.bit.clk              = 0;
+supp_func_list.sfl.bit.tcs              = 0;
+supp_func_list.sfl.bit.grip_warmer      = 0;
+supp_func_list.sfl.bit.seat_heater      = 0;
+
+supp_func_list.sfl.bit.wind_scrn        = 0;
+supp_func_list.sfl.bit.oil_trip         = 1;
+supp_func_list.sfl.bit.Vbelt_trip       = 0;
+supp_func_list.sfl.bit.Free1            = 0;
+supp_func_list.sfl.bit.Free2            = 0;
+supp_func_list.sfl.bit.avg_spd          = 0;
+supp_func_list.sfl.bit.crt_fuel         = 1;
+supp_func_list.sfl.bit.avg_fuel         = 1;
+
+supp_func_list.sfl.bit.fuel_cons        = 0;
+supp_func_list.sfl.bit.air              = 0;
+supp_func_list.sfl.bit.bat              = 0;
+supp_func_list.sfl.bit.coolant          = 0;
+supp_func_list.sfl.bit.rng              = 0;
+supp_func_list.sfl.bit.tire_frnt        = 0;
+supp_func_list.sfl.bit.tire_frnt_r      = 0;
+supp_func_list.sfl.bit.tire_frnt_l      = 0;
+
+supp_func_list.sfl.bit.tire_rear        = 0;
+supp_func_list.sfl.bit.tip_time         = 1;
+supp_func_list.sfl.bit.cruise           = 0;
+supp_func_list.sfl.bit.rsv              = 0;
+
+supp_func_list.sfl.bit.unused           = 0;
+}
 
 /*------------------------------------------------------
 Init the message list
@@ -794,6 +844,11 @@ void can_mid_init
     )
 {
 EnumOperationMode mode = EnumOperationModeNORMAL;
+
+/*------------------------------------------------------
+Init the supported function list
+------------------------------------------------------*/
+mid_sfl_init();
 
 /*------------------------------------------------------
 Init message list

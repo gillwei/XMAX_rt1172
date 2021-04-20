@@ -2222,7 +2222,7 @@ il_can0_rx_nm_and_lp_bk_rxfrm_init_data[IL_CAN0_RX_NM_AND_LP_BK_RXFRM_LEN] =
 
 static uint8 const
 il_can0_rx0_ecu_indct_stat_rxfrm_init_data[IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_LEN] =
-    { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
+    { 0x00,  0x00,  0x00,  0x02,  0x00,  0x00 };
 
 static uint8 const
 il_can0_rx1_ecu_com_data_rxfrm_init_data[IL_CAN0_RX1_ECU_COM_DATA_RXFRM_LEN] =
@@ -2234,7 +2234,7 @@ il_can0_rx2_res_support_rxfrm_init_data[IL_CAN0_RX2_RES_SUPPORT_RXFRM_LEN] =
 
 static uint8 const
 il_can0_rx3_brgthnss_ctrl_rxfrm_init_data[IL_CAN0_RX3_BRGTHNSS_CTRL_RXFRM_LEN] =
-    { 0x00,  0x00,  0x00 };
+    { 0x07,  0xC3,  0x00 };
 
 static uint8 const
 il_can0_rx4_res_mt_func_cnt_rxfrm_init_data[IL_CAN0_RX4_RES_MT_FUNC_CNT_RXFRM_LEN] =
@@ -2242,7 +2242,7 @@ il_can0_rx4_res_mt_func_cnt_rxfrm_init_data[IL_CAN0_RX4_RES_MT_FUNC_CNT_RXFRM_LE
 
 static uint8 const
 il_can0_rx5_vehicle_info_rxfrm_init_data[IL_CAN0_RX5_VEHICLE_INFO_RXFRM_LEN] =
-    { 0x00,  0x00,  0x00 };
+    { 0x00,  0x00,  0x06 };
 
 static uint8 const
 il_can0_rx6_funcsw_stat_rxfrm_init_data[IL_CAN0_RX6_FUNCSW_STAT_RXFRM_LEN] =
@@ -2250,11 +2250,11 @@ il_can0_rx6_funcsw_stat_rxfrm_init_data[IL_CAN0_RX6_FUNCSW_STAT_RXFRM_LEN] =
 
 static uint8 const
 il_can0_rx7_fuel_rate_rxfrm_init_data[IL_CAN0_RX7_FUEL_RATE_RXFRM_LEN] =
-    { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
+    { 0xFF,  0xC0,  0xFF,  0xC0,  0xFF,  0xC0,  0xFF,  0xC0 };
 
 static uint8 const
 il_can0_rx8_odo_trip_rxfrm_init_data[IL_CAN0_RX8_ODO_TRIP_RXFRM_LEN] =
-    { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
+    { 0xFF,  0xFF,  0xFF,  0x0F,  0xFF,  0xF0,  0xFF,  0xFF };
 
 static uint8 const
 il_can0_rx9_res_rprgrm_info_rxfrm_init_data[IL_CAN0_RX9_RES_RPRGRM_INFO_RXFRM_LEN] =
@@ -2266,19 +2266,19 @@ il_can0_rxa_vehicle_info_2_rxfrm_init_data[IL_CAN0_RXA_VEHICLE_INFO_2_RXFRM_LEN]
 
 static uint8 const
 il_can0_rxb_vehicle_info_3_rxfrm_init_data[IL_CAN0_RXB_VEHICLE_INFO_3_RXFRM_LEN] =
-    { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
+    { 0xFF,  0xF8,  0xFF,  0xFF,  0xFF,  0xFF,  0x00,  0x00 };
 
 static uint8 const
 il_can0_rxc_vehicle_info_4_rxfrm_init_data[IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_LEN] =
-    { 0x00,  0x00,  0x00 };
+    { 0xFF,  0xFC,  0x00 };
 
 static uint8 const
 il_can0_rxd_maint_trip_rxfrm_init_data[IL_CAN0_RXD_MAINT_TRIP_RXFRM_LEN] =
-    { 0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00,  0x00 };
+    { 0xFF,  0xFF,  0xFF,  0xFF,  0xFF,  0xFF,  0xFC,  0x00 };
 
 static uint8 const
 il_can0_rxe_heater_stat_rxfrm_init_data[IL_CAN0_RXE_HEATER_STAT_RXFRM_LEN] =
-    { 0x00,  0x00,  0x00,  0x00 };
+    { 0x15,  0xA1,  0x5A,  0x00 };
 
 static uint8 const
 il_can0_rxf_fact_insp_ns_rxfrm_init_data[IL_CAN0_RXF_FACT_INSP_NS_RXFRM_LEN] =
