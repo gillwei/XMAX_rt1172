@@ -257,6 +257,10 @@ void ComponentsBaseComponent_OnUpKeyReleased( ComponentsBaseComponent _this );
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnUpKeyReleased()' */
 void ComponentsBaseComponent__OnUpKeyReleased( void* _this );
 
+/* 'C' function for method : 'Components::BaseComponent.OnSetMagicKeyEnabled()' */
+void ComponentsBaseComponent_OnSetMagicKeyEnabled( ComponentsBaseComponent _this, 
+  XBool value );
+
 #ifdef __cplusplus
   }
 #endif

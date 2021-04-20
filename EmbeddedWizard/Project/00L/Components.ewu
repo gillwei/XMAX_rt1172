@@ -193,7 +193,7 @@ class BaseComponent : Core::Group
   // Key Handle
   note group Note5
   {
-    attr Bounds = <20,10,1380,320>;
+    attr Bounds = <20,10,1380,360>;
   }
 
   $rect <255,210,485,250>
@@ -261,10 +261,10 @@ class BaseComponent : Core::Group
   $rect <1160,260,1360,300>
   property bool PassMagicKey = false;
 
-  $rect <40,380,240,420>
+  $rect <40,420,240,460>
   property bool DDModeEnabled = false;
 
-  $rect <40,480,240,520>
+  $rect <40,520,240,560>
   method bool IsDDModeEffected()
   {
     return ( DDModeEnabled && DeviceInterface::VehicleDevice.DDModeActivated );
@@ -273,10 +273,10 @@ class BaseComponent : Core::Group
   // Driver Distraction Mode
   note group Note7
   {
-    attr Bounds = <20,330,260,540>;
+    attr Bounds = <20,370,260,580>;
   }
 
-  $rect <40,430,240,470>
+  $rect <40,470,240,510>
   onset DDModeEnabled
   {
     if( pure DDModeEnabled != value )
@@ -299,6 +299,16 @@ class BaseComponent : Core::Group
 
   $rect <950,260,1150,300>
   property bool MagicKeyEnabled = false;
+
+  $rect <950,310,1160,350>
+  onset MagicKeyEnabled
+  {
+    if( pure MagicKeyEnabled != value )
+    {
+      pure MagicKeyEnabled = value;
+      DeviceInterface::SystemDevice.SetMagicKeyEnabled( value );
+    }
+  }
 }
 
 $rect <20,70,220,110>

@@ -517,6 +517,18 @@ void ComponentsBaseComponent__OnUpKeyReleased( void* _this )
   ((ComponentsBaseComponent)_this)->_VMT->OnUpKeyReleased((ComponentsBaseComponent)_this );
 }
 
+/* 'C' function for method : 'Components::BaseComponent.OnSetMagicKeyEnabled()' */
+void ComponentsBaseComponent_OnSetMagicKeyEnabled( ComponentsBaseComponent _this, 
+  XBool value )
+{
+  if ( _this->MagicKeyEnabled != value )
+  {
+    _this->MagicKeyEnabled = value;
+    DeviceInterfaceSystemDeviceClass_SetMagicKeyEnabled( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+    DeviceInterfaceSystemDeviceClass ), value );
+  }
+}
+
 /* Variants derived from the class : 'Components::BaseComponent' */
 EW_DEFINE_CLASS_VARIANTS( ComponentsBaseComponent )
 EW_END_OF_CLASS_VARIANTS( ComponentsBaseComponent )
