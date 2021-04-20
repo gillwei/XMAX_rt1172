@@ -714,7 +714,7 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
     }
   }
 
-  $rect <510,110,710,150>
+  $rect <510,110,720,150>
   inherited method OnShortDownKeyActivated()
   {
     switch( DeviceInterface::VehicleDevice.CurrentVehicleFunction )
@@ -744,7 +744,7 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
     }
   }
 
-  $rect <510,50,710,90>
+  $rect <510,50,720,90>
   inherited method OnShortUpKeyActivated()
   {
     switch( DeviceInterface::VehicleDevice.CurrentVehicleFunction )
@@ -780,7 +780,7 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
     OnShortHomeKeyActivated();
   }
 
-  $rect <510,230,710,270>
+  $rect <510,230,720,270>
   inherited method OnDownKeyReleased()
   {
     switch( DeviceInterface::VehicleDevice.CurrentVehicleFunction )
@@ -796,7 +796,7 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
     }
   }
 
-  $rect <510,170,710,210>
+  $rect <510,170,720,210>
   inherited method OnUpKeyReleased()
   {
     switch( DeviceInterface::VehicleDevice.CurrentVehicleFunction )

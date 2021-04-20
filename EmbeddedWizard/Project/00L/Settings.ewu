@@ -2134,6 +2134,9 @@ class SET28_SystemInfo : Components::BaseMainBG
   $rect <10,340,210,380>
   inherited property DDModeEnabled = true;
 
+  $rect <10,390,210,430>
+  inherited property MagicKeyEnabled = true;
+
   $rect <20,20,160,60>
   object Views::Text ESN
   {

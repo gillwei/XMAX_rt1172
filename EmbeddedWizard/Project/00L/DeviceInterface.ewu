@@ -195,7 +195,7 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <750,300,950,340>
+  $rect <1010,320,1210,360>
   method void SetTFTDutyCycle( arg int32 aDutyCycle )
   {
     $if !$prototyper
@@ -212,7 +212,7 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <750,350,950,390>
+  $rect <1010,370,1210,410>
   property int32 BrightnessLevel = 7;
 
   $rect <250,170,450,210>
@@ -281,15 +281,15 @@ class SystemDeviceClass : Templates::DeviceClass
   // Device Interface for QR code
   note group Note5
   {
-    attr Bounds = <610,480,1120,690>;
+    attr Bounds = <610,530,1120,690>;
   }
 
-  $rect <870,520,1070,560>
+  $rect <870,570,1070,610>
   object Core::SystemEvent QrCodeSystemEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <650,520,850,560>
+  $rect <650,570,850,610>
   $output true
   method void NotifyQrCodeReady( arg string aQrCodeStr )
   {
@@ -298,7 +298,7 @@ class SystemDeviceClass : Templates::DeviceClass
     QrCodeSystemEvent.Trigger( null, false );
   }
 
-  $rect <650,570,850,610>
+  $rect <650,620,850,660>
   method void GetQrCode( arg int32 pixelnum )
   {
     $if !$prototyper
@@ -368,7 +368,7 @@ class SystemDeviceClass : Templates::DeviceClass
   $rect <680,170,930,210>
   object Core::SystemEvent UpdateLocalTimeSystemEvent;
 
-  $rect <870,570,1070,610>
+  $rect <870,620,1070,660>
   property string QrCodeText;
 
   // Opening Flow Control
@@ -389,7 +389,7 @@ class SystemDeviceClass : Templates::DeviceClass
   $rect <465,836,675,876>
   object Core::SystemEvent OpeningSystemEvent;
 
-  $rect <470,220,670,260>
+  $rect <770,350,970,390>
   method bool IsKeyStateValid()
   {
     var bool IsValid = true;
@@ -653,6 +653,40 @@ class SystemDeviceClass : Templates::DeviceClass
 
   $rect <30,670,230,710>
   var bool IsRunningReset;
+
+  $rect <770,400,970,440>
+  method void SetKeyTriggerMode( arg Core::KeyCode aKey, arg Enum::KeyTriggerMode aMode )
+  {
+    $if !$prototyper
+      native( aKey, aMode )
+      {
+        VI_key_set_trigger_mode( aKey, aMode );
+      }
+    $else
+    // suppress warning
+    aKey;
+    aMode;
+    $endif
+  }
+
+  // Interfaces for factory test
+  note group Note8
+  {
+    attr Bounds = <750,300,990,520>;
+  }
+
+  $rect <770,450,970,490>
+  method void SetMagicKeyEnabled( arg bool aEnabled )
+  {
+    $if !$prototyper
+      native( aEnabled )
+      {
+        VI_key_set_magic_key_enabled( aEnabled );
+      }
+    $else
+    aEnabled; // suppress warning
+    $endif
+  }
 }
 
 $rect <20,110,220,150>

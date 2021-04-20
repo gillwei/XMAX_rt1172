@@ -794,6 +794,26 @@ void DeviceInterfaceSystemDeviceClass_OnSetHomeType( DeviceInterfaceSystemDevice
   }
 }
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetKeyTriggerMode()' */
+void DeviceInterfaceSystemDeviceClass_SetKeyTriggerMode( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aKey, XEnum aMode )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  VI_key_set_trigger_mode( aKey, aMode );
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetMagicKeyEnabled()' */
+void DeviceInterfaceSystemDeviceClass_SetMagicKeyEnabled( DeviceInterfaceSystemDeviceClass _this, 
+  XBool aEnabled )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  VI_key_set_magic_key_enabled( aEnabled );
+}
+
 /* Variants derived from the class : 'DeviceInterface::SystemDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )

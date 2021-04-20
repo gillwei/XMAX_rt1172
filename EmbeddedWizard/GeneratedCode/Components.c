@@ -84,6 +84,9 @@ void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink
   _this->KeyHandler.OnRelease = EwNewSlot( _this, ComponentsBaseComponent_OnKeyReleaseSlot );
   _this->KeyHandler.OnPress = EwNewSlot( _this, ComponentsBaseComponent_OnKeyPressSlot );
   _this->KeyHandler.OnHold = EwNewSlot( _this, ComponentsBaseComponent_OnKeyHoldSlot );
+
+  /* Call the user defined constructor */
+  ComponentsBaseComponent_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'Components::BaseComponent' */
@@ -107,6 +110,26 @@ void ComponentsBaseComponent__Done( ComponentsBaseComponent _this )
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void ComponentsBaseComponent_Init( ComponentsBaseComponent _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  DeviceInterfaceSystemDeviceClass_SetKeyTriggerMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), CoreKeyCodeUp, _this->UpKeyTriggerMode );
+  DeviceInterfaceSystemDeviceClass_SetKeyTriggerMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), CoreKeyCodeDown, _this->DownKeyTriggerMode );
+  DeviceInterfaceSystemDeviceClass_SetKeyTriggerMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), CoreKeyCodeOk, _this->EnterKeyTriggerMode );
+  DeviceInterfaceSystemDeviceClass_SetKeyTriggerMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), CoreKeyCodeHome, _this->HomeKeyTriggerMode );
+  DeviceInterfaceSystemDeviceClass_SetMagicKeyEnabled( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), _this->MagicKeyEnabled );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnKeyPressSlot()' */

@@ -4,7 +4,17 @@ $rect <20,20,220,60>
 $output false
 class BaseComponent : Core::Group
 {
-  $rect <40,57,240,97>
+  $rect <40,60,220,100>
+  inherited method Init()
+  {
+    DeviceInterface::SystemDevice.SetKeyTriggerMode( Core::KeyCode.Up, UpKeyTriggerMode );
+    DeviceInterface::SystemDevice.SetKeyTriggerMode( Core::KeyCode.Down, DownKeyTriggerMode );
+    DeviceInterface::SystemDevice.SetKeyTriggerMode( Core::KeyCode.Ok, EnterKeyTriggerMode );
+    DeviceInterface::SystemDevice.SetKeyTriggerMode( Core::KeyCode.Home, HomeKeyTriggerMode );
+    DeviceInterface::SystemDevice.SetMagicKeyEnabled( MagicKeyEnabled );
+  }
+
+  $rect <40,110,240,150>
   object Core::KeyPressHandler KeyHandler
   {
     preset OnRelease = OnKeyReleaseSlot;
@@ -12,7 +22,7 @@ class BaseComponent : Core::Group
     preset OnHold = OnKeyHoldSlot;
   }
 
-  $rect <40,110,240,150>
+  $rect <40,160,240,200>
   slot OnKeyPressSlot
   {
     $if $prototyper
@@ -92,7 +102,7 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <40,160,240,200>
+  $rect <40,210,240,250>
   slot OnKeyHoldSlot
   {
     if( !IsDDModeEffected() )
@@ -108,7 +118,7 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <40,210,240,250>
+  $rect <40,260,240,300>
   slot OnKeyReleaseSlot
   {
     if( !KeyHandler.Repetition )
@@ -165,17 +175,17 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <260,110,490,150>
+  $rect <255,110,485,150>
   method void OnShortDownKeyActivated()
   {
   }
 
-  $rect <260,60,490,100>
+  $rect <255,60,485,100>
   method void OnShortUpKeyActivated()
   {
   }
 
-  $rect <260,160,490,200>
+  $rect <255,160,485,200>
   method void OnShortEnterKeyActivated()
   {
   }
@@ -183,42 +193,42 @@ class BaseComponent : Core::Group
   // Key Handle
   note group Note5
   {
-    attr Bounds = <20,10,1430,320>;
+    attr Bounds = <20,10,1380,320>;
   }
 
-  $rect <260,210,490,250>
+  $rect <255,210,485,250>
   method void OnShortHomeKeyActivated()
   {
   }
 
-  $rect <990,60,1190,100>
+  $rect <950,60,1150,100>
   property Enum::KeyTriggerMode UpKeyTriggerMode = Enum::KeyTriggerMode.ON;
 
-  $rect <990,110,1190,150>
+  $rect <950,110,1150,150>
   property Enum::KeyTriggerMode DownKeyTriggerMode = Enum::KeyTriggerMode.ON;
 
-  $rect <990,160,1190,200>
+  $rect <950,160,1150,200>
   property Enum::KeyTriggerMode EnterKeyTriggerMode = Enum::KeyTriggerMode.OFF;
 
-  $rect <990,210,1190,250>
+  $rect <950,210,1150,250>
   property Enum::KeyTriggerMode HomeKeyTriggerMode = Enum::KeyTriggerMode.OFF;
 
-  $rect <510,110,740,150>
+  $rect <495,110,725,150>
   method void OnLongDownKeyActivated()
   {
   }
 
-  $rect <510,60,740,100>
+  $rect <495,60,725,100>
   method void OnLongUpKeyActivated()
   {
   }
 
-  $rect <510,160,740,200>
+  $rect <495,160,725,200>
   method void OnLongEnterKeyActivated()
   {
   }
 
-  $rect <510,210,740,250>
+  $rect <495,210,725,250>
   method void OnLongHomeKeyActivated()
   {
     if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
@@ -231,24 +241,24 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <1210,60,1410,100>
+  $rect <1160,60,1360,100>
   property bool PassUpKey = false;
 
-  $rect <1210,110,1410,150>
+  $rect <1160,110,1360,150>
   property bool PassDownKey = false;
 
-  $rect <1211,160,1411,200>
+  $rect <1161,160,1361,200>
   property bool PassHomeKey = false;
 
-  $rect <1210,210,1410,250>
+  $rect <1160,210,1360,250>
   property bool PassEnterKey = false;
 
-  $rect <260,260,490,300>
+  $rect <255,260,485,300>
   method void OnShortMagicKeyActivated()
   {
   }
 
-  $rect <1210,260,1410,300>
+  $rect <1160,260,1360,300>
   property bool PassMagicKey = false;
 
   $rect <40,380,240,420>
@@ -276,16 +286,19 @@ class BaseComponent : Core::Group
   }
 
   // Callback when down key of on trigger mode is released
-  $rect <760,110,970,150>
+  $rect <734,110,944,150>
   method void OnDownKeyReleased()
   {
   }
 
   // Callback when up key of on trigger mode is released
-  $rect <760,160,970,200>
+  $rect <734,160,944,200>
   method void OnUpKeyReleased()
   {
   }
+
+  $rect <950,260,1150,300>
+  property bool MagicKeyEnabled = false;
 }
 
 $rect <20,70,220,110>
@@ -565,7 +578,7 @@ class BaseMainBG : Components::BaseComponent
   var Core::Direction SlideDirection;
 }
 
-$rect <20,170,220,210>
+$rect <20,120,220,160>
 $output false
 class DDModeMask : Core::Group
 {

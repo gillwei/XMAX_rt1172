@@ -4548,6 +4548,7 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0001 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  _this->Super2.MagicKeyEnabled = 1;
   CoreRectView__OnSetBounds( &_this->ESN, _Const003F );
   ViewsText_OnSetString( &_this->ESN, EwLoadString( &StringsSET28_ESN ));
   CoreRectView__OnSetBounds( &_this->SoftwareVersionTitle, _Const0040 );

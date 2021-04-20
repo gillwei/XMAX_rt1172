@@ -18,6 +18,7 @@
 #include "semphr.h"
 #include "ewrte.h"
 #include "fsl_debug_console.h"
+#include "Enum.h"
 #include "EW_pub.h"
 
 /*--------------------------------------------------------------------
@@ -45,6 +46,15 @@ typedef enum
     KEY_DETECTION_STATE_INVALID  /**< invalid key detection state: more than one key are pressed */
     } vi_key_detection_state;
 
+typedef enum
+    {
+    KEY_UP,
+    KEY_DOWN,
+    KEY_HOME,
+    KEY_ENTER,
+    KEY_TOTAL
+    } key_type;
+
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
 --------------------------------------------------------------------*/
@@ -66,6 +76,8 @@ static uint32_t vi_key_event  = 0;
 static CoreKeyCode press_key_code   = CoreKeyCodeNoKey;
 static CoreKeyCode release_key_code = CoreKeyCodeNoKey;
 static CoreKeyCode last_key_code    = CoreKeyCodeNoKey;
+static EnumKeyTriggerMode key_trigger_modes[KEY_TOTAL];
+static bool is_magic_key_enabled;
 
 static TimerHandle_t magic_key_timer_handle = NULL;
 
@@ -248,7 +260,7 @@ if( CoreKeyCodeNoKey != press_key_code )
 
 if( CoreKeyCodeNoKey != release_key_code )
     {
-    EW_send_key_event( current_key_code, KEY_STATE_RELEASE );
+    EW_send_key_event( release_key_code, KEY_STATE_RELEASE );
     current_key_code = CoreKeyCodeNoKey;
     release_key_code = CoreKeyCodeNoKey;
     }
@@ -265,6 +277,97 @@ if( long_press_state )
         disable_long_press_detection_state();
         }
     }
+}
+
+/*********************************************************************
+*
+* @public
+* VI_key_set_trigger_mode
+*
+* Set key trigger mode
+*
+* @param key_code Key code
+* @param trigger_mode On/off trigger mode
+*
+*********************************************************************/
+void VI_key_set_trigger_mode
+    (
+    const CoreKeyCode key_code,
+    const EnumKeyTriggerMode trigger_mode
+    )
+{
+switch( key_code )
+    {
+    case CoreKeyCodeUp:
+        key_trigger_modes[KEY_UP] = trigger_mode;
+        break;
+    case CoreKeyCodeDown:
+        key_trigger_modes[KEY_DOWN] = trigger_mode;
+        break;
+    case CoreKeyCodeOk:
+        key_trigger_modes[KEY_ENTER] = trigger_mode;
+        break;
+    case CoreKeyCodeHome:
+        key_trigger_modes[KEY_HOME] = trigger_mode;
+        break;
+    default:
+        break;
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* VI_key_set_magic_key_enabled
+*
+* Set magic key enable/disable
+*
+* @param enabled Enable/disable status
+*
+*********************************************************************/
+void VI_key_set_magic_key_enabled
+    (
+    const bool enabled
+    )
+{
+is_magic_key_enabled = enabled;
+}
+
+/*********************************************************************
+*
+* @private
+* get_key_trigger_mode
+*
+* Get key trigger mode
+*
+* @param key_code Key code
+* @return Key trigger mode
+*
+*********************************************************************/
+static EnumKeyTriggerMode get_key_trigger_mode
+    (
+    const CoreKeyCode key_code
+    )
+{
+EnumKeyTriggerMode trigger_mode = EnumKeyTriggerModeON;
+switch( key_code )
+    {
+    case CoreKeyCodeUp:
+        trigger_mode = key_trigger_modes[KEY_UP];
+        break;
+    case CoreKeyCodeDown:
+        trigger_mode = key_trigger_modes[KEY_DOWN];
+        break;
+    case CoreKeyCodeOk:
+        trigger_mode = key_trigger_modes[KEY_ENTER];
+        break;
+    case CoreKeyCodeHome:
+        trigger_mode = key_trigger_modes[KEY_HOME];
+        break;
+    default:
+        break;
+    }
+return trigger_mode;
 }
 
 /*********************************************************************
@@ -311,13 +414,10 @@ switch( key_detection_state )
             PRINTF( "Err: invalid key state\r\n" );
             key_detection_state = KEY_DETECTION_STATE_INVALID;
             disable_long_press_detection_state();
-            if( CoreKeyCodeNoKey != current_key_code )
-                {
-                send_key_release( current_key_code );
-                }
 
-            if( ( CoreKeyCodeUp == last_key_code && CoreKeyCodeDown == key_code ) ||
-                ( CoreKeyCodeDown == last_key_code && CoreKeyCodeUp == key_code ) )
+            if( is_magic_key_enabled &&
+                ( ( CoreKeyCodeUp == last_key_code && CoreKeyCodeDown == key_code ) ||
+                  ( CoreKeyCodeDown == last_key_code && CoreKeyCodeUp == key_code ) ) )
                 {
                 vi_key_event |= KEY_EVENT_FLAG_MAGIC_KEY_START_COUNT;
                 }
@@ -325,6 +425,12 @@ switch( key_detection_state )
         break;
 
     case KEY_DETECTION_STATE_INVALID:
+        if( EnumKeyTriggerModeON == get_key_trigger_mode( key_code ) &&
+            current_key_code == key_code  )
+            {
+            send_key_release( key_code );
+            }
+
         if( 0 == num_key_pressed )
             {
             key_detection_state = KEY_DETECTION_STATE_VALID;

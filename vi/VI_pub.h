@@ -62,6 +62,8 @@ extern "C"{
 #define DEFAULT_TACHO_REDZONE               ( 0xFF )
 
 void VI_init( void );
+void VI_key_set_trigger_mode( const CoreKeyCode key_code, const EnumKeyTriggerMode trigger_mode );
+void VI_key_set_magic_key_enabled( const bool enabled );
 bool VI_is_key_state_valid( void );
 void VI_notify_vehicle_data_changed( const il_rx_frm_index_t message_frame, const uint16_t signal_id, const uint32_t data );
 bool VI_is_dd_mode_activated( void );

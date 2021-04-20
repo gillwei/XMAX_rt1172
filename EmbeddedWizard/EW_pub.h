@@ -45,7 +45,7 @@ uint16_t EW_get_qrcode_passkey( void );
 
 void EW_notify_navi_map_update( void );
 void EW_notify_engine_speed_changed( int speed );
-void EW_send_key_event( CoreKeyCode code, key_state state );
+void EW_send_key_event( const CoreKeyCode code, const key_state state );
 void EW_clear_key_state( void );
 void EW_notify_title_changed( void );
 void EW_notify_album_changed( void );

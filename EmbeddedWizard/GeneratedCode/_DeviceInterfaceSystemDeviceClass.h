@@ -283,6 +283,14 @@ void DeviceInterfaceSystemDeviceClass__UpdateLastPage( void* _this );
 void DeviceInterfaceSystemDeviceClass_OnSetHomeType( DeviceInterfaceSystemDeviceClass _this, 
   XEnum value );
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetKeyTriggerMode()' */
+void DeviceInterfaceSystemDeviceClass_SetKeyTriggerMode( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aKey, XEnum aMode );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetMagicKeyEnabled()' */
+void DeviceInterfaceSystemDeviceClass_SetMagicKeyEnabled( DeviceInterfaceSystemDeviceClass _this, 
+  XBool aEnabled );
+
 #ifdef __cplusplus
   }
 #endif

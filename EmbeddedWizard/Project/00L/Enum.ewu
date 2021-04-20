@@ -973,7 +973,7 @@ enum VolumeControl
   item TOTAL;
 }
 
-$rect <30,650,230,690>
+$rect <260,570,460,610>
 $output false
 enum HeaterSettingStatusType
 {

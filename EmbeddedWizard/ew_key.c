@@ -83,8 +83,8 @@ return key_event;
 *********************************************************************/
 void EW_send_key_event
     (
-    CoreKeyCode code,
-    key_state   state
+    const CoreKeyCode code,
+    const key_state   state
     )
 {
 ew_key_event key_event = {code, state};
@@ -114,4 +114,3 @@ void ew_key_init
 queue_key_events = xQueueCreate( QUEUE_LENGTH, sizeof( ew_key_event ) );
 configASSERT( NULL != queue_key_events );
 }
-

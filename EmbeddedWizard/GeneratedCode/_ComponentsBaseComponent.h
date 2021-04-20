@@ -95,6 +95,7 @@ EW_DEFINE_FIELDS( ComponentsBaseComponent, CoreGroup )
   EW_PROPERTY( EnterKeyTriggerMode, XEnum )
   EW_PROPERTY( DownKeyTriggerMode, XEnum )
   EW_PROPERTY( UpKeyTriggerMode, XEnum )
+  EW_PROPERTY( MagicKeyEnabled, XBool )
   EW_PROPERTY( DDModeEnabled,   XBool )
   EW_PROPERTY( PassMagicKey,    XBool )
   EW_PROPERTY( PassEnterKey,    XBool )
@@ -162,6 +163,11 @@ EW_DEFINE_METHODS( ComponentsBaseComponent, CoreGroup )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( ComponentsBaseComponent )
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void ComponentsBaseComponent_Init( ComponentsBaseComponent _this, XHandle aArg );
 
 /* 'C' function for method : 'Components::BaseComponent.OnKeyPressSlot()' */
 void ComponentsBaseComponent_OnKeyPressSlot( ComponentsBaseComponent _this, XObject 
