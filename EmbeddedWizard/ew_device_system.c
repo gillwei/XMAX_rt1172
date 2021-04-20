@@ -1116,7 +1116,6 @@ bool EW_get_operation_mode
     EnumOperationMode* mode
     )
 {
-PRINTF( "%s %d %d\r\n", __FUNCTION__, is_op_mode_ready, operation_mode );
 *mode = operation_mode;
 return is_op_mode_ready;
 }

@@ -19,7 +19,7 @@
 
 #include "pin_mux.h"
 #include "clock_config.h"
-
+#include "GRM_pub_prj.h"
 #include "EW_pub.h"
 #include "PERIPHERAL_pub.h"
 #include "EEPM_pub.h"
@@ -97,7 +97,7 @@ BOARD_InitBootPins();
 BOARD_BootClockRUN();
 BOARD_InitDebugConsole();
 
-PRINTF( "%s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE );
+PRINTF( "%s %s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE, SW_PART_NUMBER );
 
 if( GET_BOOT_RESET_FLAGS & IOMUXC_SNVS_GPR_GPR32_GPR( Enter_SNVS_Mode_Flag ) )
     {
