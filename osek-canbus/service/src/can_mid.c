@@ -718,7 +718,7 @@ while( l_node_p->next != NULL )
                 Client judge as communication error if there is no response
                 even though Client send the request message for 3 times.
                 ------------------------------------------------------*/
-                if( ( *l_node_time_p ) > MID_MSG_RE_SEND_TIME_LONG )
+                if( ( *l_node_time_p ) >= MID_MSG_RE_SEND_TIME_LONG )
                     {
                     ( *l_node_status_p ) = MID_MSG_STAT_COMM_ERR;
 
