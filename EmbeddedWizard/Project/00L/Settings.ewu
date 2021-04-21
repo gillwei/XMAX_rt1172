@@ -947,7 +947,10 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
     }
     else
     {
-      postsignal OnCancelSlot;
+      var Settings::TimeoutDialog PairingFailDialog = new Settings::TimeoutDialog;
+      PairingFailDialog.Message = Strings::SET07_PAIRING_FAILED;
+      PairingFailDialog.DismissAfterTimeout = true;
+      Owner.SwitchToDialog( PairingFailDialog, null, null, null, null, null, null, null, null, null, false );
     }
   }
 

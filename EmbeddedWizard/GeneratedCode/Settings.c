@@ -1982,8 +1982,12 @@ void SettingsSET06_BtcDiscovarable_UpdateCountDownTimeSlot( SettingsSET06_BtcDis
   }
   else
   {
-    EwPostSignal( EwNewSlot( _this, SettingsSET06_BtcDiscovarable_OnCancelSlot ), 
-      ((XObject)_this ));
+    SettingsTimeoutDialog PairingFailDialog = EwNewObject( SettingsTimeoutDialog, 
+      0 );
+    SettingsTimeoutDialog_OnSetMessage( PairingFailDialog, EwLoadString( &StringsSET07_PAIRING_FAILED ));
+    PairingFailDialog->DismissAfterTimeout = 1;
+    CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)PairingFailDialog ), 
+    0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
   }
 }
 
