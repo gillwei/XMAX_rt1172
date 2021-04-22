@@ -69,17 +69,6 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_VDD_3V3_PGOOD_GPIO_PIN                                 9U   /*!< GPIO pin number */
 #define BOARD_INITPINS_VDD_3V3_PGOOD_GPIO_PIN_MASK                    (1U << 9U)   /*!< GPIO pin mask */
 
-/* GPIO_AD_09 (coord R16), VDD_3.3VON_PGOOD */
-/* Routed pin properties */
-#define BOARD_INITPINS_VDD_3V3ON_PGOOD_PERIPHERAL                          GPIO9   /*!< Peripheral name */
-#define BOARD_INITPINS_VDD_3V3ON_PGOOD_SIGNAL                            gpio_io   /*!< Signal name */
-#define BOARD_INITPINS_VDD_3V3ON_PGOOD_CHANNEL                                8U   /*!< Signal channel */
-
-/* Symbols to be used with GPIO driver */
-#define BOARD_INITPINS_VDD_3V3ON_PGOOD_GPIO                                GPIO9   /*!< GPIO peripheral base pointer */
-#define BOARD_INITPINS_VDD_3V3ON_PGOOD_GPIO_PIN                               8U   /*!< GPIO pin number */
-#define BOARD_INITPINS_VDD_3V3ON_PGOOD_GPIO_PIN_MASK                  (1U << 8U)   /*!< GPIO pin mask */
-
 /* GPIO_AD_11 (coord P16), 5V_CAN_PGOOD */
 /* Routed pin properties */
 #define BOARD_INITPINS_CAN_PGOOD_PERIPHERAL                                GPIO9   /*!< Peripheral name */
@@ -262,16 +251,16 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_WDOG_B_GPIO_PIN                                        3U   /*!< GPIO pin number */
 #define BOARD_INITPINS_WDOG_B_GPIO_PIN_MASK                           (1U << 3U)   /*!< GPIO pin mask */
 
-/* GPIO_AD_35 (coord G17), BT_RST_N_2 */
+/* GPIO_SD_B1_04 (coord B15), BT_RST_N_2 */
 /* Routed pin properties */
 #define BOARD_INITPINS_BT_RST_N_2_PERIPHERAL                              GPIO10   /*!< Peripheral name */
 #define BOARD_INITPINS_BT_RST_N_2_SIGNAL                                 gpio_io   /*!< Signal name */
-#define BOARD_INITPINS_BT_RST_N_2_CHANNEL                                     2U   /*!< Signal channel */
+#define BOARD_INITPINS_BT_RST_N_2_CHANNEL                                     7U   /*!< Signal channel */
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITPINS_BT_RST_N_2_GPIO                                    GPIO10   /*!< GPIO peripheral base pointer */
-#define BOARD_INITPINS_BT_RST_N_2_GPIO_PIN                                    2U   /*!< GPIO pin number */
-#define BOARD_INITPINS_BT_RST_N_2_GPIO_PIN_MASK                       (1U << 2U)   /*!< GPIO pin mask */
+#define BOARD_INITPINS_BT_RST_N_2_GPIO_PIN                                    7U   /*!< GPIO pin number */
+#define BOARD_INITPINS_BT_RST_N_2_GPIO_PIN_MASK                       (1U << 7U)   /*!< GPIO pin mask */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

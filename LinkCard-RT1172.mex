@@ -24,7 +24,7 @@
             <processor_version>9.0.1</processor_version>
             <power_domains/>
             <pin_labels>
-               <pin_label pin_num="B15" pin_signal="GPIO_SD_B1_04" label="TFT_RESET" identifier="TFT_RESET"/>
+               <pin_label pin_num="B15" pin_signal="GPIO_SD_B1_04" label="BT_RST_N_2" identifier="BT_RST_N_2"/>
                <pin_label pin_num="C15" pin_signal="GPIO_SD_B1_02" label="TFT_CONNECTED" identifier="TFT_CONNECTED"/>
                <pin_label pin_num="M17" pin_signal="GPIO_AD_29" label="TFT_BL_PWM" identifier="TFT_BL_PWM"/>
                <pin_label pin_num="D15" pin_signal="GPIO_SD_B1_01" label="TFT_ASIL" identifier="TFT_ASIL"/>
@@ -285,6 +285,7 @@
                   <pin peripheral="GPIO10" signal="gpio_io, 04" pin_num="D15" pin_signal="GPIO_SD_B1_01">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="pull_down_pull_up_config" value="Pull_Up"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO13" signal="gpio_io, 00" pin_num="T8" pin_signal="WAKEUP">
@@ -305,15 +306,10 @@
                         <pin_feature name="pull_keeper_select" value="Keeper"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="GPIO9" signal="gpio_io, 08" pin_num="R16" pin_signal="GPIO_AD_09">
-                     <pin_features>
-                        <pin_feature name="direction" value="INPUT"/>
-                        <pin_feature name="pull_keeper_select" value="Keeper"/>
-                     </pin_features>
-                  </pin>
                   <pin peripheral="GPIO9" signal="gpio_io, 10" pin_num="P16" pin_signal="GPIO_AD_11">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="pull_keeper_select" value="Keeper"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO9" signal="gpio_io, 26" pin_num="N16" pin_signal="GPIO_AD_27">
@@ -337,41 +333,49 @@
                   <pin peripheral="GPIO8" signal="gpio_io, 14" pin_num="M1" pin_signal="GPIO_EMC_B2_04">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="pull_down_pull_up_config" value="No_Pull"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO8" signal="gpio_io, 15" pin_num="N1" pin_signal="GPIO_EMC_B2_05">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="pull_down_pull_up_config" value="No_Pull"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO8" signal="gpio_io, 18" pin_num="P1" pin_signal="GPIO_EMC_B2_08">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="pull_down_pull_up_config" value="No_Pull"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO8" signal="gpio_io, 13" pin_num="R1" pin_signal="GPIO_EMC_B2_03">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="pull_down_pull_up_config" value="No_Pull"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO8" signal="gpio_io, 22" pin_num="M2" pin_signal="GPIO_EMC_B2_12">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="pull_down_pull_up_config" value="No_Pull"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO8" signal="gpio_io, 19" pin_num="N2" pin_signal="GPIO_EMC_B2_09">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="pull_down_pull_up_config" value="No_Pull"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO8" signal="gpio_io, 26" pin_num="P2" pin_signal="GPIO_EMC_B2_16">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="pull_down_pull_up_config" value="No_Pull"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIO8" signal="gpio_io, 20" pin_num="R2" pin_signal="GPIO_EMC_B2_10">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="pull_down_pull_up_config" value="No_Pull"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="LPADC1" signal="A, 1_5" pin_num="N17" pin_signal="GPIO_AD_16">
@@ -420,7 +424,7 @@
                         <pin_feature name="identifier" value=""/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="GPIO10" signal="gpio_io, 02" pin_num="G17" pin_signal="GPIO_AD_35">
+                  <pin peripheral="GPIO10" signal="gpio_io, 07" pin_num="B15" pin_signal="GPIO_SD_B1_04">
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
                         <pin_feature name="gpio_init_state" value="true"/>
@@ -891,12 +895,12 @@
             <processor_version>9.0.1</processor_version>
          </peripherals_profile>
          <functional_groups>
-            <functional_group name="BOARD_InitPeripherals" uuid="7c696c2e-0ccd-474b-8e04-446730aee2c2" called_from_default_init="true" id_prefix="" core="cm7">
+            <functional_group name="BOARD_InitPeripherals" uuid="f767b35a-a6c9-4195-8da3-fe1e97f39ce6" called_from_default_init="true" id_prefix="" core="cm7">
                <description></description>
                <options/>
                <dependencies/>
                <instances>
-                  <instance name="NVIC" uuid="8ff1b75e-fc16-4385-9506-82ff65658bf9" type="nvic" type_id="nvic_57b5eef3774cc60acaede6f5b8bddc67" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                  <instance name="NVIC" uuid="5d389c63-e0b4-4cfb-8f7f-29a4b17094c1" type="nvic" type_id="nvic_57b5eef3774cc60acaede6f5b8bddc67" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
                      <config_set name="nvic">
                         <array name="interrupt_table"/>
                         <array name="interrupts"/>
@@ -906,19 +910,19 @@
             </functional_group>
          </functional_groups>
          <components>
-            <component name="system" uuid="6c32b293-db81-4f97-8116-8b3eaa0b288b" type_id="system_54b53072540eeeb8f8e9343e71f28176">
+            <component name="system" uuid="0a0c00be-2e80-4255-a0ee-2feb4ac653f2" type_id="system_54b53072540eeeb8f8e9343e71f28176">
                <config_set_global name="global_system_definitions">
                   <setting name="user_definitions" value=""/>
                   <setting name="user_includes" value=""/>
                </config_set_global>
             </component>
-            <component name="msg" uuid="e57cd4ec-3f2c-47f8-8c4f-57f3f63ebab3" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
+            <component name="msg" uuid="fd763e72-27c0-487d-8220-884d07870862" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
                <config_set_global name="global_messages"/>
             </component>
-            <component name="generic_uart" uuid="35169729-4e31-4d1c-875a-3b1e81e2e307" type_id="generic_uart_8cae00565451cf2346eb1b8c624e73a6">
+            <component name="generic_uart" uuid="19c46fce-957a-45cb-9f06-e9b3c6730ca1" type_id="generic_uart_8cae00565451cf2346eb1b8c624e73a6">
                <config_set_global name="global_uart"/>
             </component>
-            <component name="generic_can" uuid="4edaa4cc-c100-40e1-af71-3b5220363440" type_id="generic_can_1bfdd78b1af214566c1f23cf6a582d80">
+            <component name="generic_can" uuid="2158ea56-4d75-4634-aca9-afa2052b21a5" type_id="generic_can_1bfdd78b1af214566c1f23cf6a582d80">
                <config_set_global name="global_can"/>
             </component>
          </components>
