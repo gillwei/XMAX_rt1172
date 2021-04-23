@@ -429,6 +429,15 @@ EW_DECLARE_BITMAP_RES( ResourceSplitLineMiddle )
 /* Bitmap resource : 'Resource::TempUnit' */
 EW_DECLARE_BITMAP_RES( ResourceTempUnit )
 
+/* Bitmap resource : 'Resource::ClockArrow' */
+EW_DECLARE_BITMAP_RES( ResourceClockArrow )
+
+/* Bitmap resource : 'Resource::ClockColon' */
+EW_DECLARE_BITMAP_RES( ResourceClockColon )
+
+/* Bitmap resource : 'Resource::ClockDayTimeText' */
+EW_DECLARE_BITMAP_RES( ResourceClockDayTimeText )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

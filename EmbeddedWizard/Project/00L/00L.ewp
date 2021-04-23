@@ -309,3 +309,9 @@ unit Color
 {
   attr Directory = .\;
 }
+
+$rect <520,950,720,990>
+unit Clock
+{
+  attr Directory = .\;
+}

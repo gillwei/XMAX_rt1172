@@ -1,0 +1,201 @@
+/*******************************************************************************
+*
+* E M B E D D E D   W I Z A R D   P R O J E C T
+*
+*                                                Copyright (c) TARA Systems GmbH
+*                                    written by Paul Banach and Manfred Schweyer
+*
+********************************************************************************
+*
+* This file was generated automatically by Embedded Wizard Studio.
+*
+* Please do not make any modifications of this file! The modifications are lost
+* when the file is generated again by Embedded Wizard Studio!
+*
+* The template of this heading text can be found in the file 'head.ewt' in the
+* directory 'Platforms' of your Embedded Wizard installation directory. If you
+* wish to adapt this text, please copy the template file 'head.ewt' into your
+* project directory and edit the copy only. Please avoid any modifications of
+* the original template file!
+*
+* Version  : 10.00
+* Profile  : iMX_RT
+* Platform : NXP.iMX_RT_VGLite.RGBA8888
+*
+*******************************************************************************/
+
+#ifndef _ClockCLK03_SetClock_H
+#define _ClockCLK03_SetClock_H
+
+#ifdef __cplusplus
+  extern "C"
+  {
+#endif
+
+#include "ewrte.h"
+#if EW_RTE_VERSION != 0x000A0000
+  #error Wrong version of Embedded Wizard Runtime Environment.
+#endif
+
+#include "ewgfx.h"
+#if EW_GFX_VERSION != 0x000A0000
+  #error Wrong version of Embedded Wizard Graphics Engine.
+#endif
+
+#include "_ComponentsBaseMainBG.h"
+#include "_ComponentsDDModeMask.h"
+#include "_CoreKeyPressHandler.h"
+#include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
+#include "_MenuUpDownPushButtonSet.h"
+#include "_ViewsImage.h"
+#include "_ViewsRectangle.h"
+#include "_ViewsText.h"
+
+/* Forward declaration of the class Clock::CLK03_SetClock */
+#ifndef _ClockCLK03_SetClock_
+  EW_DECLARE_CLASS( ClockCLK03_SetClock )
+#define _ClockCLK03_SetClock_
+#endif
+
+/* Forward declaration of the class Core::DialogContext */
+#ifndef _CoreDialogContext_
+  EW_DECLARE_CLASS( CoreDialogContext )
+#define _CoreDialogContext_
+#endif
+
+/* Forward declaration of the class Core::Group */
+#ifndef _CoreGroup_
+  EW_DECLARE_CLASS( CoreGroup )
+#define _CoreGroup_
+#endif
+
+/* Forward declaration of the class Core::LayoutContext */
+#ifndef _CoreLayoutContext_
+  EW_DECLARE_CLASS( CoreLayoutContext )
+#define _CoreLayoutContext_
+#endif
+
+/* Forward declaration of the class Core::TaskQueue */
+#ifndef _CoreTaskQueue_
+  EW_DECLARE_CLASS( CoreTaskQueue )
+#define _CoreTaskQueue_
+#endif
+
+/* Forward declaration of the class Core::View */
+#ifndef _CoreView_
+  EW_DECLARE_CLASS( CoreView )
+#define _CoreView_
+#endif
+
+/* Forward declaration of the class Effects::Fader */
+#ifndef _EffectsFader_
+  EW_DECLARE_CLASS( EffectsFader )
+#define _EffectsFader_
+#endif
+
+/* Forward declaration of the class Graphics::Canvas */
+#ifndef _GraphicsCanvas_
+  EW_DECLARE_CLASS( GraphicsCanvas )
+#define _GraphicsCanvas_
+#endif
+
+
+/* Deklaration of class : 'Clock::CLK03_SetClock' */
+EW_DEFINE_FIELDS( ClockCLK03_SetClock, ComponentsBaseMainBG )
+  EW_PROPERTY( OnTimeUpdateSignal, XSlot )
+  EW_PROPERTY( OnTimeCancelSignal, XSlot )
+  EW_OBJECT  ( Title,           ViewsText )
+  EW_OBJECT  ( DayText,         ViewsText )
+  EW_OBJECT  ( MonthText,       ViewsText )
+  EW_OBJECT  ( SlashDay,        ViewsText )
+  EW_OBJECT  ( SlashMonth,      ViewsText )
+  EW_OBJECT  ( YearText,        ViewsText )
+  EW_OBJECT  ( TimeFormat,      ViewsText )
+  EW_OBJECT  ( HourText,        ViewsText )
+  EW_OBJECT  ( MinuteText,      ViewsText )
+  EW_OBJECT  ( Colon,           ViewsText )
+  EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
+EW_END_OF_FIELDS( ClockCLK03_SetClock )
+
+/* Virtual Method Table (VMT) for the class : 'Clock::CLK03_SetClock' */
+EW_DEFINE_METHODS( ClockCLK03_SetClock, ComponentsBaseMainBG )
+  EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
+    aOutline )
+  EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
+  EW_METHOD( Draw,              void )( CoreGroup _this, GraphicsCanvas aCanvas, 
+    XRect aClip, XPoint aOffset, XInt32 aOpacity, XBool aBlend )
+  EW_METHOD( HandleEvent,       XObject )( CoreView _this, CoreEvent aEvent )
+  EW_METHOD( CursorHitTest,     CoreCursorHit )( CoreGroup _this, XRect aArea, XInt32 
+    aFinger, XInt32 aStrikeCount, CoreView aDedicatedView, XSet aRetargetReason )
+  EW_METHOD( ArrangeView,       XPoint )( CoreRectView _this, XRect aBounds, XEnum 
+    aFormation )
+  EW_METHOD( MoveView,          void )( CoreRectView _this, XPoint aOffset, XBool 
+    aFastMove )
+  EW_METHOD( GetExtent,         XRect )( CoreRectView _this )
+  EW_METHOD( ChangeViewState,   void )( CoreGroup _this, XSet aSetState, XSet aClearState )
+  EW_METHOD( OnSetBounds,       void )( CoreGroup _this, XRect value )
+  EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
+  EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
+  EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
+  EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
+  EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
+  EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
+  EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
+  EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
+  EW_METHOD( DismissDialog,     void )( CoreGroup _this, CoreGroup aDialogGroup, 
+    EffectsTransition aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, 
+    EffectsTransition aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, 
+    XBool aCombine )
+  EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
+  EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
+    aFilter )
+  EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
+  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
+  EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
+  EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
+  EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
+    aFilter )
+  EW_METHOD( FindSiblingView,   CoreView )( CoreGroup _this, CoreView aView, XSet 
+    aFilter )
+  EW_METHOD( RestackTop,        void )( CoreGroup _this, CoreView aView )
+  EW_METHOD( Restack,           void )( CoreGroup _this, CoreView aView, XInt32 
+    aOrder )
+  EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
+  EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
+    aOrder )
+  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ClockCLK03_SetClock _this )
+  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
+EW_END_OF_METHODS( ClockCLK03_SetClock )
+
+/* 'C' function for method : 'Clock::CLK03_SetClock.OnShortHomeKeyActivated()' */
+void ClockCLK03_SetClock_OnShortHomeKeyActivated( ClockCLK03_SetClock _this );
+
+/* 'C' function for method : 'Clock::CLK03_SetClock.OnOkActivatedSlot()' */
+void ClockCLK03_SetClock_OnOkActivatedSlot( ClockCLK03_SetClock _this, XObject sender );
+
+/* 'C' function for method : 'Clock::CLK03_SetClock.OnCancelActivatedSlot()' */
+void ClockCLK03_SetClock_OnCancelActivatedSlot( ClockCLK03_SetClock _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Clock::CLK03_SetClock.SetTime()' */
+void ClockCLK03_SetClock_SetTime( ClockCLK03_SetClock _this, XUInt16 aNewYear, XUInt8 
+  aNewMonth, XUInt8 aNewDay, XString aNewFormat, XUInt8 aNewHour, XUInt8 aNewMinute );
+
+#ifdef __cplusplus
+  }
+#endif
+
+#endif /* _ClockCLK03_SetClock_H */
+
+/* Embedded Wizard */

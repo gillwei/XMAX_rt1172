@@ -2695,3 +2695,45 @@ resource Resources::Bitmap TempUnit
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
+
+// Clock
+note group Note21
+{
+  attr Bounds = <670,1440,1080,1600>;
+}
+
+$rect <680,1490,840,1530>
+$output false
+resource Resources::Bitmap ClockArrow
+{
+  attr bitmapfile FileName = .\Res\clock\arrow_sel.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <680,1540,840,1580>
+$output false
+resource Resources::Bitmap ClockColon
+{
+  attr bitmapfile FileName = .\Res\clock\mark_colon.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <880,1490,1040,1530>
+$output false
+resource Resources::Bitmap ClockDayTimeText
+{
+  attr bitmapfile FileName = .\Res\clock\daytime_txt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}

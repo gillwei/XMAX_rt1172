@@ -1148,3 +1148,26 @@ enum Language
   $rect <430,10,630,50>
   item TOTAL;
 }
+
+$rect <30,630,230,670>
+$output false
+enum TimeType
+{
+  $rect <10,10,210,50>
+  item YEAR;
+
+  $rect <220,10,420,50>
+  item MONTH;
+
+  $rect <430,10,630,50>
+  item DAY;
+
+  $rect <640,10,840,50>
+  item FORMAT;
+
+  $rect <10,70,210,110>
+  item HOUR;
+
+  $rect <220,70,420,110>
+  item MINUTE;
+}

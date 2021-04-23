@@ -702,6 +702,56 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
     return IsQrCodeReady;
   }
+
+  $rect <460,1070,660,1110>
+  var bool IsAutoAdjusted = true;
+
+  // Clock Setting
+  note group Note9
+  {
+    attr Bounds = <450,980,1130,1130>;
+  }
+
+  $rect <460,1020,660,1060>
+  method void NotifyTimeRequest()
+  {
+    $if !$prototyper
+      native
+      {
+        BC_motocon_send_vehicle_setting_request();
+      }
+    $endif
+  }
+
+  $rect <670,1070,870,1110>
+  var DeviceInterface::RtcTime CurrentAdjustTime;
+
+  $rect <670,1020,870,1060>
+  method void SetRtcTime( arg DeviceInterface::RtcTime aNewTime )
+  {
+    $if !$prototyper
+      var uint16 NewTimeYear = aNewTime.Year;
+      var uint8 NewTimeMonth = aNewTime.Month;
+      var uint8 NewTimeDay = aNewTime.Day;
+      var uint8 NewTimeHour = aNewTime.Hour;
+      var uint8 NewTimeMinute = aNewTime.Minute;
+      var uint8 NewTimeSecond = aNewTime.Second;
+
+      native( NewTimeYear, NewTimeMonth, NewTimeDay, NewTimeHour, NewTimeMinute, NewTimeSecond )
+      {
+        snvs_lp_srtc_datetime_t srtc_time;
+        srtc_time.year = NewTimeYear;
+        srtc_time.month = NewTimeMonth;
+        srtc_time.day = NewTimeDay;
+        srtc_time.hour = NewTimeHour;
+        srtc_time.minute = NewTimeMinute;
+        srtc_time.second = NewTimeSecond;
+        ew_set_rtc_time( &srtc_time );
+      }
+    $else
+      aNewTime;
+    $endif
+  }
 }
 
 $rect <20,110,220,150>

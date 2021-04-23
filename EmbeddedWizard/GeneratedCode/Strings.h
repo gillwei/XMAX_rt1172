@@ -91,6 +91,21 @@ extern const XStringRes StringsBRT01_TFT_DISPLAY;
 /* User defined constant: 'Strings::BRT01_SPEED_METER' */
 extern const XStringRes StringsBRT01_SPEED_METER;
 
+/* User defined constant: 'Strings::CLK01_AUTO_ADJUSTMENT' */
+extern const XStringRes StringsCLK01_AUTO_ADJUSTMENT;
+
+/* User defined constant: 'Strings::CLK01_MANUAL_ADJUSTMENT' */
+extern const XStringRes StringsCLK01_MANUAL_ADJUSTMENT;
+
+/* User defined constant: 'Strings::CLK02_AM' */
+extern const XStringRes StringsCLK02_AM;
+
+/* User defined constant: 'Strings::CLK02_PM' */
+extern const XStringRes StringsCLK02_PM;
+
+/* User defined constant: 'Strings::CLK03_SET_CLOCK' */
+extern const XStringRes StringsCLK03_SET_CLOCK;
+
 /* User defined constant: 'Strings::GPW01_GRIP_WARMER' */
 extern const XStringRes StringsGPW01_GRIP_WARMER;
 

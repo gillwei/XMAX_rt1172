@@ -36,3 +36,4 @@ module Telephone                file "Telephone.c";
 module TCS                      file "TCS.c";
 module Inspection               file "Inspection.c";
 module Color                    file "Color.c";
+module Clock                    file "Clock.c";

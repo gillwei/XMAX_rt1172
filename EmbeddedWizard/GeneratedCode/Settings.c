@@ -26,6 +26,7 @@
 
 #include "ewlocale.h"
 #include "_BrightnessBRT01_BrightnessSettingMenu.h"
+#include "_ClockCLK01_ClockSettingMenu.h"
 #include "_ComponentsBaseComponent.h"
 #include "_ComponentsBaseMainBG.h"
 #include "_CoreGroup.h"
@@ -433,7 +434,8 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
     break;
 
     case EnumMainSettingItemCLOCK :
-      ;
+      Dialog = ((ComponentsBaseComponent)EwNewObject( ClockCLK01_ClockSettingMenu, 
+      0 ));
     break;
 
     case EnumMainSettingItemBRIGHTNESS :

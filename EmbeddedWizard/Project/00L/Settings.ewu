@@ -110,7 +110,7 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
         }
       }
       case Enum::MainSettingItem.INFORMATION_RESET: Dialog = new Settings::SET43_ResetMenu;
-      case Enum::MainSettingItem.CLOCK:;
+      case Enum::MainSettingItem.CLOCK: Dialog = new Clock::CLK01_ClockSettingMenu;
       case Enum::MainSettingItem.BRIGHTNESS: Dialog = new Brightness::BRT01_BrightnessSettingMenu;
       case Enum::MainSettingItem.UNIT: Dialog = new Unit::UNT01_UnitSettingMenu;
       case Enum::MainSettingItem.GRIP_WARMER:

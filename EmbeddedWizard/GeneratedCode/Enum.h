@@ -541,6 +541,17 @@ typedef enum
   EnumLanguageTOTAL                     = 18
 } EnumLanguage;
 
+/* User defined enumeration: 'Enum::TimeType' */
+typedef enum
+{
+  EnumTimeTypeYEAR                      = 0,
+  EnumTimeTypeMONTH                     = 1,
+  EnumTimeTypeDAY                       = 2,
+  EnumTimeTypeFORMAT                    = 3,
+  EnumTimeTypeHOUR                      = 4,
+  EnumTimeTypeMINUTE                    = 5
+} EnumTimeType;
+
 #ifdef __cplusplus
   }
 #endif

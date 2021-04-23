@@ -1,0 +1,873 @@
+﻿$version 10.00
+
+$rect <30,210,230,250>
+$output false
+const int32 ITEM_WIDTH_LARGE = 92;
+
+$rect <30,260,230,300>
+$output false
+const int32 ITEM_WIDTH_SMALL = 56;
+
+$rect <500,20,700,60>
+$output false
+class TimePicker : Core::Group
+{
+  $rect <0,140,200,180>
+  inherited property Bounds = <0,0,92,100>;
+
+  $rect <0,200,200,240>
+  inherited method UpdateLayout()
+  {
+    super( aSize );
+
+    switch( Width )
+    {
+      case Clock::ITEM_WIDTH_LARGE:
+      {
+        TimeText.Bounds = <0,22,92,78>;
+        BackgroundFrame.Bounds = <0,22,92,78>;
+      }
+      case Clock::ITEM_WIDTH_SMALL:
+      {
+        switch( TimePickerType )
+        {
+          case Enum::TimeType.MONTH, Enum::TimeType.DAY, Enum::TimeType.HOUR, Enum::TimeType.MINUTE: TimeText.Bounds = <9,22,47,78>;
+          case Enum::TimeType.FORMAT: TimeText.Bounds = <0,22,56,78>;
+          default:;
+        }
+        BackgroundFrame.Bounds = <0,22,56,78>;
+        TimePickerButtons.Bounds = <0,0,58,100>;
+      }
+      default:;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image TimePickerButtons
+  {
+    preset Bounds = <17,0,75,100>;
+    preset Bitmap = Resource::ClockArrow;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Border BackgroundFrame
+  {
+    preset Bounds = <0,22,92,78>;
+    preset Color = #333333FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TimeText
+  {
+    preset Bounds = <0,22,92,78>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium32pt;
+  }
+
+  $rect <230,140,430,180>
+  property int32 Width;
+
+  $rect <460,140,660,180>
+  property int32 Time;
+
+  $rect <460,180,660,220>
+  onset Time
+  {
+    pure Time = value;
+    TimeText.String = string( Time );
+  }
+
+  $rect <700,140,900,180>
+  property bool ArrowVisibility;
+
+  $rect <700,180,900,220>
+  onset ArrowVisibility
+  {
+    if( pure ArrowVisibility != value )
+    {
+      pure ArrowVisibility = value;
+      TimePickerButtons.Visible = ArrowVisibility;
+    }
+  }
+
+  $rect <230,200,430,240>
+  property Enum::TimeType TimePickerType;
+}
+
+$rect <270,20,470,60>
+$output false
+class CLK02_ClockManualAdjustment : Components::BaseMainBG
+{
+  $rect <530,30,730,70>
+  inherited method Init()
+  {
+    var DeviceInterface::RtcTime CurrentTime = DeviceInterface::SystemDevice.GetLocalTime();
+    DeviceInterface::SystemDevice.CurrentAdjustTime = new DeviceInterface::RtcTime;
+    SetClockComponent = new Clock::CLK03_SetClock;
+    SetClockComponent.OnTimeUpdateSignal = OnTimeUpdateSlot;
+    SetClockComponent.OnTimeCancelSignal = OnTimeCancelSlot;
+
+    YearTimePicker.Time = CurrentTime.Year;
+
+    MonthTimePicker.Time = CurrentTime.Month;
+    MonthTimePicker.TimeText.Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+
+    DayTimePicker.Time = CurrentTime.Day;
+    DayTimePicker.TimeText.Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+
+    if( CurrentTime.Hour < 12 )
+    {
+      if( CurrentTime.Hour == 0 )
+      {
+        HourPicker.Time = 12;
+      }
+      else
+      {
+        HourPicker.Time = CurrentTime.Hour;
+      }
+      TimeFormatPicker.TimeText.String = Strings::CLK02_AM;
+    }
+    else if( CurrentTime.Hour >= 12 )
+    {
+      if( CurrentTime.Hour == 12 )
+      {
+        HourPicker.Time = 12;
+      }
+      else
+      {
+        HourPicker.Time = CurrentTime.Hour - 12;
+      }
+      TimeFormatPicker.TimeText.String = Strings::CLK02_PM;
+    }
+    HourPicker.TimeText.Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+
+    MinutePicker.Time = CurrentTime.Minute;
+    if( MinutePicker.Time < 10 )
+    {
+      MinutePicker.TimeText.String = string( MinutePicker.Time, 2 );
+    }
+  }
+
+  $rect <230,350,430,390>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+    YearTimePicker.ArrowVisibility = true;
+  }
+
+  $rect <530,160,730,200>
+  inherited method OnShortDownKeyActivated()
+  {
+    DecreaseCurrentTime();
+  }
+
+  $rect <530,90,730,130>
+  inherited method OnShortUpKeyActivated()
+  {
+    IncreaseCurrentTime();
+  }
+
+  $rect <530,220,730,260>
+  inherited method OnShortEnterKeyActivated()
+  {
+    if( TimePickerIdx < (int32)Enum::TimeType.MINUTE )
+    {
+      MoveFocusFrame();
+      TimePickerIdx++;
+    }
+    else if( TimePickerIdx == (int32)Enum::TimeType.MINUTE )
+    {
+      MinutePicker.ArrowVisibility = false;
+      TimePickerIdx = 0;
+      SetClockComponent.SetTime( (uint16)YearTimePicker.Time, (uint8)MonthTimePicker.Time, (uint8)DayTimePicker.Time, TimeFormatPicker.TimeText.String, (uint8)HourPicker.Time, (uint8)MinutePicker.Time );
+      FocusFrame.Bounds = Clock::FOCUSFRAME_ORI_POS;
+      PresentDialog( SetClockComponent, null, null, null, null, null, null, null, null, false );
+    }
+    else
+    {
+      // empty
+    }
+  }
+
+  $rect <10,350,210,390>
+  inherited property DDModeEnabled = true;
+
+  $rect <10,410,210,450>
+  inherited var SlideOutEffectEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Image DayTimeText
+  {
+    preset Bounds = <22,67,458,99>;
+    preset Bitmap = Resource::ClockDayTimeText;
+  }
+
+  $rect <20,20,160,60>
+  object Clock::TimePicker YearTimePicker
+  {
+    preset Bounds = <23,100,115,200>;
+    preset Width = Clock::ITEM_WIDTH_LARGE;
+    preset TimePickerType = Enum::TimeType.YEAR;
+  }
+
+  $rect <20,20,160,60>
+  object Clock::TimePicker MonthTimePicker
+  {
+    preset Bounds = <126,100,182,200>;
+    preset Width = Clock::ITEM_WIDTH_SMALL;
+    preset TimePickerType = Enum::TimeType.MONTH;
+  }
+
+  $rect <20,20,160,60>
+  object Clock::TimePicker DayTimePicker
+  {
+    preset Bounds = <193,100,249,200>;
+    preset Width = Clock::ITEM_WIDTH_SMALL;
+    preset TimePickerType = Enum::TimeType.DAY;
+  }
+
+  $rect <20,20,160,60>
+  object Clock::TimePicker TimeFormatPicker
+  {
+    preset Bounds = <267,100,323,200>;
+    preset Width = Clock::ITEM_WIDTH_SMALL;
+    preset TimePickerType = Enum::TimeType.FORMAT;
+  }
+
+  $rect <20,20,160,60>
+  object Clock::TimePicker HourPicker
+  {
+    preset Bounds = <334,100,390,200>;
+    preset Width = Clock::ITEM_WIDTH_SMALL;
+    preset TimePickerType = Enum::TimeType.HOUR;
+  }
+
+  $rect <20,20,160,60>
+  object Clock::TimePicker MinutePicker
+  {
+    preset Bounds = <401,100,457,200>;
+    preset Width = Clock::ITEM_WIDTH_SMALL;
+    preset TimePickerType = Enum::TimeType.MINUTE;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ColonMark
+  {
+    preset Bounds = <390,135,401,163>;
+    preset Bitmap = Resource::ClockColon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Border FocusFrame
+  {
+    preset Bounds = <23,122,115,178>;
+    preset Width = 3;
+    preset Color = #0072FFFF;
+  }
+
+  $rect <770,90,970,130>
+  method void MoveFocusFrame()
+  {
+    var Enum::TimeType CurrentTimeType = (Enum::TimeType)TimePickerIdx;
+
+    switch( CurrentTimeType )
+    {
+      case Enum::TimeType.YEAR:
+      {
+        FocusFrame.Bounds = <126,122,182,178>;
+        YearTimePicker.ArrowVisibility = false;
+        MonthTimePicker.ArrowVisibility = true;
+      }
+      case Enum::TimeType.MONTH:
+      {
+        FocusFrame.Bounds.x1 = FocusFrame.Bounds.x1 + 67;
+        FocusFrame.Bounds.x2 = FocusFrame.Bounds.x2 + 67;
+        MonthTimePicker.ArrowVisibility = false;
+        DayTimePicker.ArrowVisibility = true;
+      }
+      case Enum::TimeType.DAY:
+      {
+        FocusFrame.Bounds.x1 = FocusFrame.Bounds.x1 + 74;
+        FocusFrame.Bounds.x2 = FocusFrame.Bounds.x2 + 74;
+        DayTimePicker.ArrowVisibility = false;
+        TimeFormatPicker.ArrowVisibility = true;
+      }
+      case Enum::TimeType.FORMAT:
+      {
+        FocusFrame.Bounds.x1 = FocusFrame.Bounds.x1 + 67;
+        FocusFrame.Bounds.x2 = FocusFrame.Bounds.x2 + 67;
+        TimeFormatPicker.ArrowVisibility = false;
+        HourPicker.ArrowVisibility = true;
+      }
+      case Enum::TimeType.HOUR:
+      {
+        FocusFrame.Bounds.x1 = FocusFrame.Bounds.x1 + 67;
+        FocusFrame.Bounds.x2 = FocusFrame.Bounds.x2 + 67;
+        HourPicker.ArrowVisibility = false;
+        MinutePicker.ArrowVisibility = true;
+      }
+      default:;
+    }
+  }
+
+  $rect <220,300,420,340>
+  var int32 TimePickerIdx = 0;
+
+  $rect <770,150,970,190>
+  method void IncreaseCurrentTime()
+  {
+    var Enum::TimeType CurrentTimeType = (Enum::TimeType)TimePickerIdx;
+
+    switch( CurrentTimeType )
+    {
+      case Enum::TimeType.YEAR:
+      {
+        if( YearTimePicker.Time < Clock::MAX_YEAR )
+        {
+          YearTimePicker.Time += 1;
+        }
+        else
+        {
+          YearTimePicker.Time = Clock::MIN_YEAR;
+        }
+      }
+      case Enum::TimeType.MONTH:
+      {
+        if( MonthTimePicker.Time < 12 )
+        {
+          MonthTimePicker.Time += 1;
+        }
+        else
+        {
+          MonthTimePicker.Time = 1;
+        }
+        SetValidDay();
+      }
+      case Enum::TimeType.DAY:
+      {
+        if( DayTimePicker.Time < GetMaxDayOfMonth() )
+        {
+          DayTimePicker.Time += 1;
+        }
+        else
+        {
+          DayTimePicker.Time = 1;
+        }
+      }
+      case Enum::TimeType.FORMAT:
+      {
+        if( Strings::CLK02_AM == TimeFormatPicker.TimeText.String )
+        {
+          TimeFormatPicker.TimeText.String = Strings::CLK02_PM;
+        }
+        else
+        {
+          TimeFormatPicker.TimeText.String = Strings::CLK02_AM;
+        }
+      }
+      case Enum::TimeType.HOUR:
+      {
+        if( HourPicker.Time < 12 )
+        {
+          HourPicker.Time += 1;
+        }
+        else
+        {
+          HourPicker.Time = 1;
+        }
+      }
+      case Enum::TimeType.MINUTE:
+      {
+        if( MinutePicker.Time < 59 )
+        {
+          MinutePicker.Time += 1;
+        }
+        else
+        {
+          MinutePicker.Time = 0;
+        }
+
+        if( MinutePicker.Time < 10 )
+        {
+          MinutePicker.TimeText.String = string( MinutePicker.Time, 2 );
+        }
+      }
+      default:;
+    }
+  }
+
+  $rect <770,220,970,260>
+  method void DecreaseCurrentTime()
+  {
+    var Enum::TimeType CurrentTimeType = (Enum::TimeType)TimePickerIdx;
+
+    switch( CurrentTimeType )
+    {
+      case Enum::TimeType.YEAR:
+      {
+        if( YearTimePicker.Time > Clock::MIN_YEAR )
+        {
+          YearTimePicker.Time -= 1;
+        }
+        else
+        {
+          YearTimePicker.Time = Clock::MAX_YEAR;
+        }
+      }
+      case Enum::TimeType.MONTH:
+      {
+        if( MonthTimePicker.Time > 1 )
+        {
+          MonthTimePicker.Time -= 1;
+        }
+        else
+        {
+          MonthTimePicker.Time = 12;
+        }
+        SetValidDay();
+      }
+      case Enum::TimeType.DAY:
+      {
+        if( DayTimePicker.Time > 1 )
+        {
+          DayTimePicker.Time -= 1;
+        }
+        else
+        {
+          DayTimePicker.Time = GetMaxDayOfMonth();
+        }
+      }
+      case Enum::TimeType.FORMAT:
+      {
+        if( Strings::CLK02_AM == TimeFormatPicker.TimeText.String )
+        {
+          TimeFormatPicker.TimeText.String = Strings::CLK02_PM;
+        }
+        else
+        {
+          TimeFormatPicker.TimeText.String = Strings::CLK02_AM;
+        }
+      }
+      case Enum::TimeType.HOUR:
+      {
+        if( HourPicker.Time > 1 )
+        {
+          HourPicker.Time -= 1;
+        }
+        else
+        {
+          HourPicker.Time = 12;
+        }
+      }
+      case Enum::TimeType.MINUTE:
+      {
+        if( MinutePicker.Time > 0 )
+        {
+          MinutePicker.Time -= 1;
+        }
+        else
+        {
+          MinutePicker.Time = 59;
+        }
+
+        if( MinutePicker.Time < 10 )
+        {
+          MinutePicker.TimeText.String = string( MinutePicker.Time, 2 );
+        }
+      }
+      default:;
+    }
+  }
+
+  $rect <990,90,1190,130>
+  method bool IsLeapYear()
+  {
+    return ( ( YearTimePicker.Time % 4 == 0 ) && ( YearTimePicker.Time % 100 != 0 ) )
+           || ( YearTimePicker.Time % 400 == 0 );
+  }
+
+  $rect <990,150,1190,190>
+  method int32 GetMaxDayOfMonth()
+  {
+    var int32 maxday;
+    if( MonthTimePicker.Time != 0 )
+    {
+      maxday = ValidDayArray[MonthTimePicker.Time];
+      if( MonthTimePicker.Time == 2 && IsLeapYear() )
+      {
+        maxday = 29;
+      }
+    }
+    return maxday;
+  }
+
+  $rect <530,340,730,380>
+  slot OnTimeUpdateSlot
+  {
+    signal OnRestoreFocusFrameSignal;
+    Owner.DismissDialog( this, Effect::NoSlideOut, null, null, null, null, false );
+  }
+
+  $rect <10,300,210,340>
+  var Clock::CLK03_SetClock SetClockComponent;
+
+  $rect <530,280,730,320>
+  slot OnTimeCancelSlot
+  {
+    InvalidateViewState();
+  }
+
+  $rect <772,29,972,69>
+  array int32 ValidDayArray[ 13 ] =
+  (
+    Default[0] = 0;
+    Default[1] = 31;
+    Default[2] = 28;
+    Default[3] = 31;
+    Default[4] = 30;
+    Default[5] = 31;
+    Default[6] = 30;
+    Default[7] = 31;
+    Default[8] = 31;
+    Default[9] = 30;
+    Default[10] = 31;
+    Default[11] = 30;
+    Default[12] = 31;
+  );
+
+  $rect <760,290,960,330>
+  method void SetValidDay()
+  {
+    if( MonthTimePicker.Time != 0 &&
+        DayTimePicker.Time > ValidDayArray[MonthTimePicker.Time] ||
+        DayTimePicker.Time == 0 )
+    {
+      DayTimePicker.Time = ValidDayArray[MonthTimePicker.Time];
+      if( MonthTimePicker.Time == 2 && IsLeapYear() )
+      {
+        DayTimePicker.Time = 29;
+      }
+    }
+  }
+
+  $rect <10,460,210,500>
+  var slot OnRestoreFocusFrameSignal;
+}
+
+$rect <30,20,230,60>
+$output false
+class CLK01_ClockSettingMenu : Menu::BaseMenuView
+{
+  $rect <250,310,450,350>
+  inherited method Init()
+  {
+    if( DeviceInterface::SystemDevice.IsAutoAdjusted && DeviceInterface::BluetoothDevice.IsMotoconConnected() )
+    {
+      DeviceInterface::SystemDevice.NotifyTimeRequest();
+    }
+
+  }
+
+  $rect <20,310,220,350>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,370,220,410>
+  inherited var SlideOutEffectEnabled = true;
+
+  $rect <520,30,720,70>
+  inherited method LoadItemClass()
+  {
+    var class ClassType = null;
+    if( aItemNo < ItemClassArray.size )
+    {
+      ClassType = ItemClassArray[aItemNo];
+    }
+    return ClassType;
+  }
+
+  $rect <520,90,720,130>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    if( aItemNo < ItemTitleArray.size )
+      {
+      title = ItemTitleArray[aItemNo];
+      }
+    return title;
+  }
+
+  $rect <520,270,720,310>
+  inherited method OnItemActivate()
+  {
+    var bool IsChecked;
+    var Menu::ItemCheckbox CheckBoxItem = ( Menu::ItemCheckbox )aMenuItem;
+    if( null != CheckBoxItem )
+    {
+      IsChecked = CheckBoxItem.Checked;
+    }
+
+    switch( aItemNo )
+    {
+      case 0:
+      {
+        DeviceInterface::SystemDevice.IsAutoAdjusted = IsChecked;
+        Menu.InvalidateItems( 0, ItemTitleArray.size - 1 );
+        if( IsChecked )
+        {
+          DeviceInterface::SystemDevice.NotifyTimeRequest();
+        }
+      }
+      case 1:
+      {
+        if( !DeviceInterface::SystemDevice.IsAutoAdjusted )
+        {
+          ClockManualAdjComponent = new Clock::CLK02_ClockManualAdjustment;
+          ClockManualAdjComponent.OnRestoreFocusFrameSignal = OnRestoreFocusFrameUpdateSlot;
+          SlideInDialog( ClockManualAdjComponent );
+        }
+      }
+      default:;
+    }
+  }
+
+  $rect <520,150,720,190>
+  inherited method LoadItemChecked()
+  {
+    var bool IsChecked = false;
+    switch( aItemNo )
+    {
+      case 0: IsChecked = DeviceInterface::SystemDevice.IsAutoAdjusted;
+      default:;
+    }
+    return IsChecked;
+  }
+
+  $rect <520,210,720,250>
+  inherited method LoadItemEnabled()
+  {
+    var bool ItemEnabled = true;
+    if( aItemNo > 0 )
+    {
+      ItemEnabled = !DeviceInterface::SystemDevice.IsAutoAdjusted;
+    }
+    return ItemEnabled;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset DDModeEnabled = true;
+    preset NoOfItems = 2;
+  }
+
+  $rect <760,30,960,70>
+  array string ItemTitleArray[ 2 ] =
+  (
+    Default[0] = Strings::CLK01_AUTO_ADJUSTMENT;
+    Default[1] = Strings::CLK01_MANUAL_ADJUSTMENT;
+  );
+
+  $rect <760,80,960,120>
+  array class ItemClassArray[ 2 ] =
+  (
+    Default[0] = Menu::ItemCheckbox;
+    Default[1] = Menu::ItemBase;
+  );
+
+  $rect <20,430,220,470>
+  var Clock::CLK02_ClockManualAdjustment ClockManualAdjComponent;
+
+  $rect <250,360,450,400>
+  slot OnRestoreFocusFrameUpdateSlot
+  {
+    Menu.RestoreFocusFrame();
+  }
+}
+
+$rect <270,80,470,120>
+$output false
+class CLK03_SetClock : Components::BaseMainBG
+{
+  $rect <490,300,690,340>
+  inherited method OnShortHomeKeyActivated()
+  {
+    signal OnTimeCancelSignal;
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <0,300,200,340>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Text Title
+  {
+    preset Bounds = <16,60,465,91>;
+    preset String = Strings::CLK03_SET_CLOCK;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DayText
+  {
+    preset Bounds = <69,111,107,145>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium32pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text MonthText
+  {
+    preset Bounds = <120,111,158,145>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium32pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text SlashDay
+  {
+    preset Bounds = <109,114,120,142>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = "/";
+    preset Font = Fonts::NotoSansMedium32pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text SlashMonth
+  {
+    preset Bounds = <160,114,171,142>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = "/";
+    preset Font = Fonts::NotoSansMedium32pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text YearText
+  {
+    preset Bounds = <171,111,245,145>;
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium32pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text TimeFormat
+  {
+    preset Bounds = <267,111,318,145>;
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium32pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text HourText
+  {
+    preset Bounds = <321,111,359,145>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium32pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text MinuteText
+  {
+    preset Bounds = <372,111,410,145>;
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium32pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Colon
+  {
+    preset Bounds = <360,112,371,140>;
+    preset String = ":";
+    preset Font = Fonts::NotoSansMedium32pt;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::UpDownPushButtonSet UpDownPushButtonSet
+  {
+    preset Bounds = <165,176,315,259>;
+    preset PassHomeKey = true;
+    preset PassMagicKey = true;
+    preset DDModeEnabled = true;
+    preset OnUpButtonActivated = OnCancelActivatedSlot;
+    preset OnDownButtonActivated = OnOkActivatedSlot;
+    preset UpButtonTitle = Strings::GEN_CANCEL;
+    preset DownButtonTitle = Strings::GEN_OK;
+    preset DownButtonEnabled = true;
+  }
+
+  $rect <220,350,430,390>
+  slot OnOkActivatedSlot
+  {
+    DeviceInterface::SystemDevice.SetRtcTime( DeviceInterface::SystemDevice.CurrentAdjustTime );
+    // TODO: Send time to Meter.
+    signal OnTimeUpdateSignal;
+  }
+
+  $rect <220,300,430,340>
+  slot OnCancelActivatedSlot
+  {
+    OnShortHomeKeyActivated();
+  }
+
+  $rect <0,400,200,440>
+  property slot OnTimeUpdateSignal;
+
+  $rect <220,400,420,440>
+  method void SetTime( arg uint16 aNewYear, arg uint8 aNewMonth, arg uint8 aNewDay, arg string aNewFormat, arg uint8 aNewHour, arg uint8 aNewMinute )
+  {
+    YearText.String = string( aNewYear );
+    DeviceInterface::SystemDevice.CurrentAdjustTime.Year = aNewYear;
+
+    MonthText.String = string( aNewMonth );
+    DeviceInterface::SystemDevice.CurrentAdjustTime.Month = aNewMonth;
+
+    DayText.String = string( aNewDay );
+    DeviceInterface::SystemDevice.CurrentAdjustTime.Day = aNewDay;
+
+    TimeFormat.String = aNewFormat;
+
+    HourText.String = string( aNewHour );
+    DeviceInterface::SystemDevice.CurrentAdjustTime.Hour = aNewHour;
+    if( Strings::CLK02_PM == TimeFormat.String )
+    {
+      if( aNewHour < 12 )
+      {
+        DeviceInterface::SystemDevice.CurrentAdjustTime.Hour += 12;
+      }
+    }
+    else
+    {
+      if( aNewHour == 12 )
+      {
+        DeviceInterface::SystemDevice.CurrentAdjustTime.Hour -= 12;
+      }
+    }
+
+    MinuteText.String = string( aNewMinute );
+    DeviceInterface::SystemDevice.CurrentAdjustTime.Minute = aNewMinute;
+
+    if( aNewMinute < 10 )
+    {
+      MinuteText.String = string( aNewMinute, 2 );
+    }
+  }
+
+  $rect <0,350,200,390>
+  property slot OnTimeCancelSignal;
+}
+
+$rect <30,160,230,200>
+$output false
+const rect FOCUSFRAME_ORI_POS = <23,122,115,178>;
+
+$rect <30,310,230,350>
+$output false
+const int32 MAX_YEAR = 2099;
+
+$rect <30,360,230,400>
+$output false
+const int32 MIN_YEAR = 2018;

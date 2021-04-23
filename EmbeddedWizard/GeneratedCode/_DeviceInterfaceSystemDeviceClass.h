@@ -61,6 +61,7 @@
 
 /* Deklaration of class : 'DeviceInterface::SystemDeviceClass' */
 EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
+  EW_VARIABLE( CurrentAdjustTime, DeviceInterfaceRtcTime )
   EW_OBJECT  ( FactoryTestSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( FactoryResetTimer, CoreTimer )
   EW_OBJECT  ( QrCodeSystemEvent, CoreSystemEvent )
@@ -78,6 +79,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( InspectionDisplayPattern, XEnum )
   EW_PROPERTY( InspectionMode,  XEnum )
   EW_PROPERTY( OperationMode,   XEnum )
+  EW_VARIABLE( IsAutoAdjusted,  XBool )
   EW_VARIABLE( IsRunningReset,  XBool )
   EW_VARIABLE( IsHopperTestMode, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceSystemDeviceClass )
@@ -293,6 +295,13 @@ void DeviceInterfaceSystemDeviceClass_SetMagicKeyEnabled( DeviceInterfaceSystemD
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsQrCodeReady()' */
 XBool DeviceInterfaceSystemDeviceClass_IsQrCodeReady( DeviceInterfaceSystemDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.NotifyTimeRequest()' */
+void DeviceInterfaceSystemDeviceClass_NotifyTimeRequest( DeviceInterfaceSystemDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetRtcTime()' */
+void DeviceInterfaceSystemDeviceClass_SetRtcTime( DeviceInterfaceSystemDeviceClass _this, 
+  DeviceInterfaceRtcTime aNewTime );
 
 #ifdef __cplusplus
   }

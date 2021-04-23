@@ -131,7 +131,7 @@ resource Resources::Font NotoSansMedium32pt
   attr fontname FontName = Noto Sans Med;
   attr fontheight Height = 32;
   attr fontquality Quality = Medium;
-  attr fontranges Ranges = '0'-'9',':','-';
+  attr fontranges Ranges = '0'-'9',':','-','A','M','P','/';
   attr fontaspectratio AspectRatio = 1.0;
   attr fontbold Bold = false;
   attr fontitalic Italic = false;

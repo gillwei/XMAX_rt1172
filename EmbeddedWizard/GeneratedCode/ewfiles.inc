@@ -38,4 +38,5 @@ EMWIFILES := \
 	Telephone.c \
 	TCS.c \
 	Inspection.c \
-	Color.c
+	Color.c \
+	Clock.c

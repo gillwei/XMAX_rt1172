@@ -747,6 +747,24 @@ RTC_get_DateTime( srtc_datetime );
 /*********************************************************************
 *
 * @private
+* ew_set_rtc_time
+*
+* Set RTC time
+*
+* @param srtc_datetime The pointer to the rtc datetime
+*
+*********************************************************************/
+void ew_set_rtc_time
+    (
+    snvs_lp_srtc_datetime_t* srtc_datetime
+    )
+{
+RTC_set_DateTime( srtc_datetime );
+}
+
+/*********************************************************************
+*
+* @private
 * ew_is_debug_build
 *
 * Return if the current build is debug build

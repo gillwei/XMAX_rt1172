@@ -851,4 +851,22 @@ EW_RES_WITHOUT_VARIANTS( ResourceSplitLineMiddle )
 /* Table with links to derived variants of the bitmap resource : 'Resource::TempUnit' */
 EW_RES_WITHOUT_VARIANTS( ResourceTempUnit )
 
+/* Include a file containing the bitmap resource : 'Resource::ClockArrow' */
+#include "_ResourceClockArrow.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ClockArrow' */
+EW_RES_WITHOUT_VARIANTS( ResourceClockArrow )
+
+/* Include a file containing the bitmap resource : 'Resource::ClockColon' */
+#include "_ResourceClockColon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ClockColon' */
+EW_RES_WITHOUT_VARIANTS( ResourceClockColon )
+
+/* Include a file containing the bitmap resource : 'Resource::ClockDayTimeText' */
+#include "_ResourceClockDayTimeText.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ClockDayTimeText' */
+EW_RES_WITHOUT_VARIANTS( ResourceClockDayTimeText )
+
 /* Embedded Wizard */

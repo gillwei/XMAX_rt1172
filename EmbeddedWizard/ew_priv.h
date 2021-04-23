@@ -133,6 +133,7 @@ int ew_get_weather_week_day( void );
 
 void ew_get_copyright( const int index, uint8_t** copyright_title, uint8_t** copyright_content );
 int ew_get_num_of_licenses( void );
+void ew_set_rtc_time( snvs_lp_srtc_datetime_t* srtc_datetime );
 
 #ifdef __cplusplus
 }

@@ -127,6 +127,7 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
   CoreTimer_OnSetEnabled( &_this->FactoryResetTimer, 0 );
   _this->BrightnessLevel = 7;
   _this->InspectionMode = EnumInspectionModeNONE;
+  _this->IsAutoAdjusted = 1;
   _this->FactoryResetTimer.OnTrigger = EwNewSlot( _this, DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot );
 }
 
@@ -827,12 +828,53 @@ XBool DeviceInterfaceSystemDeviceClass_IsQrCodeReady( DeviceInterfaceSystemDevic
   return IsQrCodeReady;
 }
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.NotifyTimeRequest()' */
+void DeviceInterfaceSystemDeviceClass_NotifyTimeRequest( DeviceInterfaceSystemDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  BC_motocon_send_vehicle_setting_request();
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetRtcTime()' */
+void DeviceInterfaceSystemDeviceClass_SetRtcTime( DeviceInterfaceSystemDeviceClass _this, 
+  DeviceInterfaceRtcTime aNewTime )
+{
+  XUInt16 NewTimeYear;
+  XUInt8 NewTimeMonth;
+  XUInt8 NewTimeDay;
+  XUInt8 NewTimeHour;
+  XUInt8 NewTimeMinute;
+  XUInt8 NewTimeSecond;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NewTimeYear = aNewTime->Year;
+  NewTimeMonth = aNewTime->Month;
+  NewTimeDay = aNewTime->Day;
+  NewTimeHour = aNewTime->Hour;
+  NewTimeMinute = aNewTime->Minute;
+  NewTimeSecond = aNewTime->Second;
+  {
+    snvs_lp_srtc_datetime_t srtc_time;
+    srtc_time.year = NewTimeYear;
+    srtc_time.month = NewTimeMonth;
+    srtc_time.day = NewTimeDay;
+    srtc_time.hour = NewTimeHour;
+    srtc_time.minute = NewTimeMinute;
+    srtc_time.second = NewTimeSecond;
+    ew_set_rtc_time( &srtc_time );
+  }
+}
+
 /* Variants derived from the class : 'DeviceInterface::SystemDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::SystemDeviceClass' */
-EW_DEFINE_CLASS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass, FactoryTestSystemEvent, 
+EW_DEFINE_CLASS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass, CurrentAdjustTime, 
                  FactoryTestSystemEvent, FactoryTestSystemEvent, FactoryTestSystemEvent, 
                  SoftwareVersion, BrightnessLevel, "DeviceInterface::SystemDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceSystemDeviceClass )
