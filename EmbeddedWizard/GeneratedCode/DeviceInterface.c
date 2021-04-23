@@ -814,6 +814,19 @@ void DeviceInterfaceSystemDeviceClass_SetMagicKeyEnabled( DeviceInterfaceSystemD
   VI_key_set_magic_key_enabled( aEnabled );
 }
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsQrCodeReady()' */
+XBool DeviceInterfaceSystemDeviceClass_IsQrCodeReady( DeviceInterfaceSystemDeviceClass _this )
+{
+  XBool IsQrCodeReady;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsQrCodeReady = 0;
+  IsQrCodeReady = ew_is_qrcode_ready();
+  return IsQrCodeReady;
+}
+
 /* Variants derived from the class : 'DeviceInterface::SystemDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )

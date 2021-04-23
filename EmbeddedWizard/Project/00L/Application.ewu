@@ -92,29 +92,25 @@ class Application : Core::Root
       {
         case Enum::FactoryTest.Display:
         {
+          CheckOpeningTimer.Enabled = false;
           var Factory::DisplayManual FactoryTestDialog = (Factory::DisplayManual)FindDialogByClass( Factory::DisplayManual );
           if( null == FactoryTestDialog )
           {
             FactoryTestDialog = new Factory::DisplayManual;
-            FactoryTestDialog.StackingPriority = 1;
             PresentDialog( FactoryTestDialog, null, null, null, null, null, null, null, null, false );
           }
           FactoryTestDialog.PatternIdx = TestContext.Data;
-          IsFactoryTest = true;
         }
         case Enum::FactoryTest.BurnInStart:
         {
+          CheckOpeningTimer.Enabled = false;
           var Factory::DisplayAutoRun DisplayAutoRunDialog = new Factory::DisplayAutoRun;
           DisplayAutoRunDialog.BurnInEnabled = true;
-          DisplayAutoRunDialog.StackingPriority = 1;
           PresentDialog( DisplayAutoRunDialog, null, null, null, null, null, null, null, null, false );
-          IsFactoryTest = true;
         }
         case Enum::FactoryTest.Quit:
         {
           DismissFactoryTestDialog();
-          StatusBarVisible = true;
-          IsFactoryTest = false;
         }
         default:;
       }
@@ -334,10 +330,11 @@ class Application : Core::Root
     }
 
     IsFactoryModeDialogDisplayed = false;
-    DeviceInterface::SystemDevice.OperationMode = Enum::OperationMode.NORMAL;
-
     DeviceInterface::BluetoothDevice.GetBluetoothEnable();
-    ShowDisclaimer();
+    if( Enum::OperationMode.NORMAL == DeviceInterface::SystemDevice.OperationMode )
+    {
+      ShowDisclaimer();
+    }
   }
 
   $rect <530,40,780,80>
@@ -417,7 +414,8 @@ class Application : Core::Root
   {
     var bool IsTFTBacklightOn = DeviceInterface::SystemDevice.IsTFTBacklightOn();
     if( IsTFTBacklightOn &&
-        DeviceInterface::SystemDevice.IsOperationModeReady() )
+        DeviceInterface::SystemDevice.IsOperationModeReady() &&
+        Enum::OperationMode.PRODUCTION_TEST != DeviceInterface::SystemDevice.OperationMode )
     {
       trace "TFT bl ", IsTFTBacklightOn;
       CheckOpeningTimer.Enabled = false;
@@ -466,7 +464,7 @@ class Application : Core::Root
       case Enum::PhoneCallState.INCOMING_STARTED:
       {
         if( IsDisclaimerDismissed &&
-            !IsFactoryTest &&
+            Enum::OperationMode.NORMAL == DeviceInterface::SystemDevice.OperationMode &&
             !DeviceInterface::SystemDevice.IsRunningReset )
         {
           var Telephone::TEL01_IncomingCall IncomingCallDialog = new Telephone::TEL01_IncomingCall;
@@ -479,9 +477,6 @@ class Application : Core::Root
 
   $rect <40,530,270,570>
   var bool IsDisclaimerDismissed = false;
-
-  $rect <40,810,270,850>
-  var bool IsFactoryTest = false;
 
   // Inspection Mode
   note group Note7

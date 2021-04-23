@@ -337,10 +337,15 @@ void OpenOPN02_FactoryMode__Done( OpenOPN02_FactoryMode _this )
 void OpenOPN02_FactoryMode_Init( OpenOPN02_FactoryMode _this, XHandle aArg )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
   EwTrace( "%s", EwLoadString( &_Const0009 ));
+
+  if ( DeviceInterfaceSystemDeviceClass_IsQrCodeReady( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+      DeviceInterfaceSystemDeviceClass )))
+  {
+    EwPostSignal( EwNewSlot( _this, OpenOPN02_FactoryMode_OnQrCodeReadySlot ), ((XObject)_this ));
+  }
 }
 
 /* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortDownKeyActivated()' */

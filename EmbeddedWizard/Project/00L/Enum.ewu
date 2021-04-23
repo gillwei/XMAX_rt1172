@@ -887,7 +887,11 @@ enum OperationMode
   $rect <10,110,210,150>
   item INSPECTION;
 
+  // Display test/Burn-in test in the production line
   $rect <10,160,210,200>
+  item PRODUCTION_TEST;
+
+  $rect <10,210,210,250>
   item TOTAL;
 }
 

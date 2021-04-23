@@ -23,10 +23,10 @@
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define TEST_BURN_IN_PROC_MS                ( 1000 )
-#define TEST_BURN_IN_INIT_DELAY_SEC         ( 3 )    // time to wait before start burn-in
+#define TEST_BURN_IN_INIT_DELAY_SEC         ( 1 )    // time to wait before start burn-in
 #define TEST_BURN_IN_START_SEC              ( 1810 ) // start time of burning
 #define TEST_BURN_IN_DURATION_SEC           ( 25 )   // duration of burn-in test
-#define TEST_BURN_IN_SHOW_RESULT_SEC        ( 6 )
+#define TEST_BURN_IN_SHOW_RESULT_SEC        ( 10 )
 #define TEST_BURN_IN_RESULT                 ( true )
 
 /*--------------------------------------------------------------------
@@ -74,8 +74,8 @@
     test_burn_in_time_sec++;
     if( TEST_BURN_IN_INIT_DELAY_SEC == test_burn_in_time_sec )
         {
-        EW_start_burn_in();
         test_burn_in_time_sec = TEST_BURN_IN_START_SEC;
+        EW_start_burn_in();
         }
     else if( ( TEST_BURN_IN_START_SEC + TEST_BURN_IN_DURATION_SEC ) > test_burn_in_time_sec )
         {

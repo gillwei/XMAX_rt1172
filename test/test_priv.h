@@ -16,8 +16,8 @@ extern "C"{
 
 #define TEST_TICK_PERIOD_MS    ( 10 )
 
-void test_factory_int( void );
-void test_factory_proc( void );
+void test_production_int( void );
+void test_production_proc( void );
 void test_inspection_int( void );
 void test_inspection_proc( void );
 void test_burnin_int( void );

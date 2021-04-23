@@ -414,7 +414,8 @@ typedef enum
   EnumOperationModeNORMAL               = 0,
   EnumOperationModeFACTORY              = 1,
   EnumOperationModeINSPECTION           = 2,
-  EnumOperationModeTOTAL                = 3
+  EnumOperationModePRODUCTION_TEST      = 3,
+  EnumOperationModeTOTAL                = 4
 } EnumOperationMode;
 
 /* User defined enumeration: 'Enum::NaviTurnStatusType' */

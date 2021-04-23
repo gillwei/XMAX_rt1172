@@ -1,9 +1,9 @@
 /*********************************************************************
 * @file
-* test_factory.c
+* test_display.c
 *
 * @brief
-* Test module - Factory test
+* Test module - display test
 *
 * Copyright 2020 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
@@ -22,8 +22,8 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define TEST_FACTORY_PERIOD_MS              ( 1000 )
-#define TEST_FACTORY_DISPLAY_PATTERN_NUM    ( 17 )
+#define TEST_PRODUCTION_PERIOD_MS               ( 1000 )
+#define TEST_PRODUCTION_DISPLAY_PATTERN_NUM     ( 17 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -40,9 +40,9 @@
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
-#if( UNIT_TEST_FACTORY )
-    static const int TEST_FACTORY_TICK_COUNT = ( TEST_FACTORY_PERIOD_MS / TEST_TICK_PERIOD_MS );
-    static int test_factory_tick = 0;
+#if( UNIT_TEST_PRODUCTION )
+    static const int TEST_PRODUCTION_TICK_COUNT = ( TEST_PRODUCTION_PERIOD_MS / TEST_TICK_PERIOD_MS );
+    static int test_production_tick = 0;
     static int test_factory_display_pattern_idx = 1;
 #endif
 
@@ -53,23 +53,23 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
-#if( UNIT_TEST_FACTORY )
+#if( UNIT_TEST_PRODUCTION )
     /*********************************************************************
     *
     * @private
-    * test_factory_display
+    * test_production_display
     *
     * Test factory display pattern
     *
     *********************************************************************/
-    void test_factory_display
+    void test_production_display
         (
         void
         )
     {
     PRINTF( "%s %d\r\n", __FUNCTION__, test_factory_display_pattern_idx );
 
-    if( test_factory_display_pattern_idx <= TEST_FACTORY_DISPLAY_PATTERN_NUM )
+    if( test_factory_display_pattern_idx <= TEST_PRODUCTION_DISPLAY_PATTERN_NUM )
         {
         EW_test_display_pattern( test_factory_display_pattern_idx );
         test_factory_display_pattern_idx++;
@@ -84,33 +84,33 @@
     /*********************************************************************
     *
     * @public
-    * test_factory_proc
+    * test_production_proc
     *
-    * Test module - proc unit test for factory test
+    * Test module - proc unit test for production test
     *
     *********************************************************************/
-    void test_factory_proc
+    void test_production_proc
         (
         void
         )
     {
-    if( test_factory_tick == 0 )
+    if( test_production_tick == 0 )
         {
-        test_factory_tick = TEST_FACTORY_TICK_COUNT;
-        test_factory_display();
+        test_production_tick = TEST_PRODUCTION_TICK_COUNT;
+        test_production_display();
         }
-    test_factory_tick--;
+    test_production_tick--;
     }
 
     /*********************************************************************
     *
     * @public
-    * test_factory_int
+    * test_production_int
     *
-    * Test module - init unit test for factory test
+    * Test module - init unit test for production test
     *
     *********************************************************************/
-    void test_factory_int
+    void test_production_int
         (
         void
         )
@@ -118,5 +118,3 @@
     return;
     }
 #endif
-
-

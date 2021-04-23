@@ -92,6 +92,10 @@ class OPN02_FactoryMode : Components::BaseComponent
   inherited method Init()
   {
     trace "Init OPN02";
+    if( DeviceInterface::SystemDevice.IsQrCodeReady() )
+    {
+      postsignal OnQrCodeReadySlot;
+    }
   }
 
   $rect <10,290,190,330>

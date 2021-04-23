@@ -281,7 +281,7 @@ class SystemDeviceClass : Templates::DeviceClass
   // Device Interface for QR code
   note group Note5
   {
-    attr Bounds = <610,530,1120,690>;
+    attr Bounds = <610,530,1120,720>;
   }
 
   $rect <870,570,1070,610>
@@ -298,7 +298,7 @@ class SystemDeviceClass : Templates::DeviceClass
     QrCodeSystemEvent.Trigger( null, false );
   }
 
-  $rect <650,620,850,660>
+  $rect <650,670,850,710>
   method void GetQrCode( arg int32 pixelnum )
   {
     $if !$prototyper
@@ -686,6 +686,21 @@ class SystemDeviceClass : Templates::DeviceClass
     $else
     aEnabled; // suppress warning
     $endif
+  }
+
+  $rect <650,620,850,660>
+  method bool IsQrCodeReady()
+  {
+    var bool IsQrCodeReady = false;
+    $if !$prototyper
+      native( IsQrCodeReady )
+      {
+        IsQrCodeReady = ew_is_qrcode_ready();
+      }
+    $else
+      IsQrCodeReady = true;
+    $endif
+    return IsQrCodeReady;
   }
 }
 

@@ -291,6 +291,9 @@ void DeviceInterfaceSystemDeviceClass_SetKeyTriggerMode( DeviceInterfaceSystemDe
 void DeviceInterfaceSystemDeviceClass_SetMagicKeyEnabled( DeviceInterfaceSystemDeviceClass _this, 
   XBool aEnabled );
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsQrCodeReady()' */
+XBool DeviceInterfaceSystemDeviceClass_IsQrCodeReady( DeviceInterfaceSystemDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif

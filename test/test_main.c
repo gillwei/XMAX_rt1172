@@ -69,8 +69,8 @@
     {
     while( true )
         {
-        #if( UNIT_TEST_FACTORY )
-            test_factory_proc();
+        #if( UNIT_TEST_PRODUCTION )
+            test_production_proc();
         #endif
 
         #if( UNIT_TEST_INSPECTION )
@@ -143,8 +143,8 @@
     {
     create_task();
 
-    #if( UNIT_TEST_FACTORY )
-        test_factory_int();
+    #if( UNIT_TEST_PRODUCTION )
+        test_production_int();
     #endif
 
     #if( UNIT_TEST_INSPECTION )

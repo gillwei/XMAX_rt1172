@@ -41,7 +41,7 @@ void EW_reset_to_factory_default( void );
 
 uint32_t EW_get_ccuid( void );
 uint16_t EW_get_qrcode_dummy( void );
-uint16_t EW_get_qrcode_passkey( void );
+uint32_t EW_get_qrcode_passkey( void );
 
 void EW_notify_navi_map_update( void );
 void EW_notify_engine_speed_changed( int speed );

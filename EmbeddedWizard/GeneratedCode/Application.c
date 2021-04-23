@@ -252,39 +252,36 @@ void ApplicationApplication_OnFactoryTestEventSlot( ApplicationApplication _this
     {
       case EnumFactoryTestDisplay :
       {
-        FactoryDisplayManual FactoryTestDialog = EwCastObject( CoreGroup_FindDialogByClass((CoreGroup)_this, 
-          EW_CLASS( FactoryDisplayManual )), FactoryDisplayManual );
+        FactoryDisplayManual FactoryTestDialog;
+        CoreTimer_OnSetEnabled( &_this->CheckOpeningTimer, 0 );
+        FactoryTestDialog = EwCastObject( CoreGroup_FindDialogByClass((CoreGroup)_this, 
+        EW_CLASS( FactoryDisplayManual )), FactoryDisplayManual );
 
         if ( FactoryTestDialog == 0 )
         {
           FactoryTestDialog = EwNewObject( FactoryDisplayManual, 0 );
-          CoreView_OnSetStackingPriority((CoreView)FactoryTestDialog, 1 );
           CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)FactoryTestDialog ), 
           0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
         }
 
         FactoryDisplayManual_OnSetPatternIdx( FactoryTestDialog, TestContext->Data );
-        _this->IsFactoryTest = 1;
       }
       break;
 
       case EnumFactoryTestBurnInStart :
       {
-        FactoryDisplayAutoRun DisplayAutoRunDialog = EwNewObject( FactoryDisplayAutoRun, 
-          0 );
+        FactoryDisplayAutoRun DisplayAutoRunDialog;
+        CoreTimer_OnSetEnabled( &_this->CheckOpeningTimer, 0 );
+        DisplayAutoRunDialog = EwNewObject( FactoryDisplayAutoRun, 0 );
         FactoryDisplayAutoRun_OnSetBurnInEnabled( DisplayAutoRunDialog, 1 );
-        CoreView_OnSetStackingPriority((CoreView)DisplayAutoRunDialog, 1 );
         CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)DisplayAutoRunDialog ), 
         0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-        _this->IsFactoryTest = 1;
       }
       break;
 
       case EnumFactoryTestQuit :
       {
         ApplicationApplication_DismissFactoryTestDialog( _this );
-        ApplicationApplication_OnSetStatusBarVisible( _this, 1 );
-        _this->IsFactoryTest = 0;
       }
       break;
 
@@ -560,11 +557,14 @@ void ApplicationApplication_OnOpeningFinishedSlot( ApplicationApplication _this,
   }
 
   _this->IsFactoryModeDialogDisplayed = 0;
-  DeviceInterfaceSystemDeviceClass_OnSetOperationMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-  DeviceInterfaceSystemDeviceClass ), EnumOperationModeNORMAL );
   DeviceInterfaceBluetoothDeviceClass_GetBluetoothEnable( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
   DeviceInterfaceBluetoothDeviceClass ));
-  ApplicationApplication_ShowDisclaimer( _this );
+
+  if ( EnumOperationModeNORMAL == DeviceInterfaceSystemDeviceClass_OnGetOperationMode( 
+      EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
+  {
+    ApplicationApplication_ShowDisclaimer( _this );
+  }
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -635,8 +635,10 @@ void ApplicationApplication_OnCheckOpeningSlot( ApplicationApplication _this, XO
   IsTFTBacklightOn = DeviceInterfaceSystemDeviceClass_IsTFTBacklightOn( EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ));
 
-  if ( IsTFTBacklightOn && DeviceInterfaceSystemDeviceClass_IsOperationModeReady( 
-      EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
+  if (( IsTFTBacklightOn && DeviceInterfaceSystemDeviceClass_IsOperationModeReady( 
+      EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ))) 
+      && ( EnumOperationModePRODUCTION_TEST != DeviceInterfaceSystemDeviceClass_OnGetOperationMode( 
+      EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ))))
   {
     EwTrace( "%s%b", EwLoadString( &_Const0005 ), IsTFTBacklightOn );
     CoreTimer_OnSetEnabled( &_this->CheckOpeningTimer, 0 );
@@ -692,8 +694,9 @@ void ApplicationApplication_OnPhoneCallStateChangedSlot( ApplicationApplication 
   {
     case EnumPhoneCallStateINCOMING_STARTED :
     {
-      if (( _this->IsDisclaimerDismissed && !_this->IsFactoryTest ) && !EwGetAutoObject( 
-          &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsRunningReset )
+      if (( _this->IsDisclaimerDismissed && ( EnumOperationModeNORMAL == DeviceInterfaceSystemDeviceClass_OnGetOperationMode( 
+          EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))) 
+          && !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsRunningReset )
       {
         TelephoneTEL01_IncomingCall IncomingCallDialog = EwNewObject( TelephoneTEL01_IncomingCall, 
           0 );

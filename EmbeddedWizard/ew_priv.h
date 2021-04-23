@@ -64,6 +64,7 @@ EnumNavigationView ew_get_navigation_view_setting( void );
 void ew_get_esn( void );
 void ew_get_rtc_time( snvs_lp_srtc_datetime_t* srtc_datetime );
 void ew_request_qrcode( int pixel_per_mod );
+bool ew_is_qrcode_ready( void );
 void ew_set_operation_mode( EnumOperationMode mode );
 bool ew_is_operation_mode_ready( void );
 int  ew_handle_special_characters( const uint8_t* in_str, uint8_t** out_str );

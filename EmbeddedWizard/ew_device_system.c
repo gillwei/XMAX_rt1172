@@ -168,10 +168,13 @@ static void ew_get_info_from_eeprom( void );
     static int is_esn_read = 0;
     static int is_factory_reset_complete = 0;
     static int is_qrcode_ready = 0;
+    static bool notify_qrcode_ready;
     static uint32_t ccuid;
     static uint32_t qrcode_passkey;
     static uint16_t qrcode_dummy;
-    static uint8_t  operation_mode = EnumOperationModeNORMAL;
+    static EnumOperationMode operation_mode = EnumOperationModeNORMAL;
+    static EnumOperationMode operation_mode_in_eep = EnumOperationModeNORMAL;
+    static bool     is_running_production_test;
     static bool     is_tft_backlight_on;
     static bool     is_op_mode_ready;
     static bool     is_ccuid_ready;
@@ -458,13 +461,9 @@ static void start_factory_qrcode_generation
     void
     )
 {
-if( is_op_mode_ready &&
-    EnumOperationModeFACTORY == operation_mode )
-    {
-    QR_generate_qrcode( esn, 4 );
-    //TODO:
-    //QR_generate_qrcode( ccuid, qrcode_passkey, qrcode_dummy );
-    }
+QR_generate_qrcode( esn, 4 );
+//TODO:
+//QR_generate_qrcode( ccuid, qrcode_passkey, qrcode_dummy );
 }
 
 /*********************************************************************
@@ -640,16 +639,16 @@ void EW_read_operation_mode_callback
 {
 if( result )
     {
-    operation_mode = *(uint8_t*)value;
-    PRINTF( "rd op mode 0x%x\r\n", operation_mode );
+    operation_mode_in_eep = *(uint8_t*)value;
+    PRINTF( "rd op mode 0x%x\r\n", operation_mode_in_eep );
 
-    if( EEPROM_INVALID_VAL_1_BYTE == operation_mode )
+    if( EEPROM_INVALID_VAL_1_BYTE == operation_mode_in_eep )
         {
-        operation_mode = EnumOperationModeFACTORY;
+        operation_mode_in_eep = EnumOperationModeFACTORY;
         }
-    else if( EnumOperationModeTOTAL <= operation_mode )
+    else if( EnumOperationModeTOTAL <= operation_mode_in_eep )
         {
-        operation_mode = EnumOperationModeNORMAL;
+        operation_mode_in_eep = EnumOperationModeNORMAL;
         }
     else
         {
@@ -659,11 +658,10 @@ if( result )
 else
     {
     PRINTF( "rd op mode fail\r\n" );
-    operation_mode = EnumOperationModeNORMAL;
     }
 
+ew_set_operation_mode( operation_mode_in_eep );
 is_op_mode_ready = true;
-EW_notify_opening_event( OPENING_EVENT_OP_MODE_READY );
 }
 
 /*********************************************************************
@@ -888,6 +886,10 @@ return ew_str_idx;
         {
         factory_test_event &= ~FACTORY_TEST_EVENT_DISP_QUIT;
         DeviceInterfaceSystemDeviceClass_QuitTest( device_object );
+
+        is_running_production_test = false;
+        ew_set_operation_mode( operation_mode_in_eep );
+
         need_update = 1;
         }
     return need_update;
@@ -1090,14 +1092,47 @@ void ew_set_operation_mode
     )
 {
 PRINTF( "%s %d\r\n", __FUNCTION__, mode );
-operation_mode = mode;
-client_appl_operation_mode_switch();
+EnumOperationMode last_operation_mode = operation_mode;
 
-/* no need to write EnumOperationModeINSPECTION to EEPROM */
-if( EnumOperationModeNORMAL == mode ||
-    EnumOperationModeFACTORY == mode )
+switch( mode )
     {
-    EEPM_set_operation_mode( operation_mode, NULL );
+    case EnumOperationModeNORMAL:
+    case EnumOperationModeFACTORY:
+        if( operation_mode_in_eep != mode )
+            {
+            EEPM_set_operation_mode( mode, NULL );
+            }
+
+        if( !is_running_production_test )
+            {
+            operation_mode = mode;
+            if( EnumOperationModePRODUCTION_TEST == last_operation_mode )
+                {
+                EW_notify_opening_event( OPENING_EVENT_OP_MODE_READY );
+                }
+            }
+        break;
+
+    case EnumOperationModeINSPECTION:
+        if( EnumOperationModeFACTORY == operation_mode )
+            {
+            operation_mode = mode;
+            }
+        break;
+
+    case EnumOperationModePRODUCTION_TEST:
+        is_running_production_test = true;
+        operation_mode = mode;
+        break;
+
+    default:
+        PRINTF( "%s invalid %d\r\n", __FUNCTION__, mode );
+        break;
+    }
+
+if( last_operation_mode != operation_mode )
+    {
+    client_appl_operation_mode_switch();
     }
 }
 
@@ -1188,7 +1223,7 @@ return qrcode_dummy;
 * @return QR code passkey
 *
 *********************************************************************/
-uint16_t EW_get_qrcode_passkey
+uint32_t EW_get_qrcode_passkey
     (
     void
     )
@@ -1212,9 +1247,9 @@ return qrcode_passkey;
         )
     {
     int need_update = 0;
-    if( is_qrcode_ready )
+    if( notify_qrcode_ready )
         {
-        is_qrcode_ready = 0;
+        notify_qrcode_ready = false;
         XString qrcode_str = EwNewStringAnsi( qr_code );
         DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( device_object, qrcode_str );
         need_update = 1;
@@ -1289,6 +1324,7 @@ void EW_test_display_pattern
     )
 {
 #ifdef _DeviceInterfaceSystemDeviceClass_
+    ew_set_operation_mode( EnumOperationModePRODUCTION_TEST );
     factory_test_disp_pattern_idx = index;
     factory_test_event |= FACTORY_TEST_EVENT_DISP_PATTERN;
     EwBspEventTrigger();
@@ -1328,6 +1364,8 @@ void EW_start_burn_in
     )
 {
 #ifdef _DeviceInterfaceSystemDeviceClass_
+    PRINTF( "%s\r\n", __FUNCTION__ );
+    ew_set_operation_mode( EnumOperationModePRODUCTION_TEST );
     factory_test_event |= FACTORY_TEST_EVENT_BURNIN_START;
     EwBspEventTrigger();
 #endif
@@ -1392,9 +1430,26 @@ void EW_notify_qrcode_ready
 {
 #ifdef _DeviceInterfaceSystemDeviceClass_
     is_qrcode_ready = 1;
+    notify_qrcode_ready = true;
     strncpy( qr_code, qr_code_text, sizeof( qr_code ) );
     EwBspEventTrigger();
 #endif
+}
+
+/*********************************************************************
+*
+* @private
+* ew_is_qrcode_ready
+*
+* Get if QR code is ready
+*
+*********************************************************************/
+bool ew_is_qrcode_ready
+    (
+    void
+    )
+{
+return is_qrcode_ready;
 }
 
 /*********************************************************************
