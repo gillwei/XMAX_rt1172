@@ -70,6 +70,11 @@ void pwm_init
     void
     );
 
+void gpio_init
+    (
+    void
+    );
+
 #ifdef __cplusplus
 }
 #endif

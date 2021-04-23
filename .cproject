@@ -1159,4 +1159,7 @@
 		<core>cm7</core>
 		<coreId>cm7_MIMXRT1176xxxxx</coreId>
 	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="LinkCard-RT1172.null.1244401886" name="LinkCard-RT1172"/>
+	</storageModule>
 </cproject>

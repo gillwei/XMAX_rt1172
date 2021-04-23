@@ -121,6 +121,16 @@ void PERIPHERAL_i2c_read_data
     void ( *callback_func_ptr ) ( status_t )
     );
 
+uint8_t PERIPHERAL_get_hw_id
+    (
+    void
+    );
+
+uint8_t PERIPHERAL_get_sku_id
+    (
+    void
+    );
+
 #ifdef __cplusplus
 }
 #endif

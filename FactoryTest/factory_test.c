@@ -257,6 +257,11 @@ static void esn_write_cb
     void*   data
     );
 
+static uint8 get_hw_id
+    (
+    uint8 * hw_id_data
+    );
+
 static void get_sku_id
     (
     uint8 * sku_id_data
@@ -879,8 +884,8 @@ switch( inst_id )
         sw_version_ascii[2] = ASCII_BYTE_DOT;
         sw_version_ascii[3] = ASCII_BYTE_OFFSET + ( SW_VERSION % 100 / 10 );
         sw_version_ascii[4] = ASCII_BYTE_OFFSET + ( SW_VERSION % 10 );
-        hw_version[0]       = ASCII_BYTE_OFFSET + ( get_hw_id( NULL_PTR ) / 10 );
-        hw_version[1]       = ASCII_BYTE_OFFSET + ( get_hw_id( NULL_PTR ) % 10 );
+        hw_version[0]       = ASCII_BYTE_OFFSET + ( PERIPHERAL_get_hw_id() / 10 );
+        hw_version[1]       = ASCII_BYTE_OFFSET + ( PERIPHERAL_get_hw_id() % 10 );
 
         memcpy( &iop_Data[0],  &product_id, sizeof( product_id ) );
         memcpy( &iop_Data[2],  &sw_version, sizeof( sw_version ) );
@@ -1390,7 +1395,7 @@ packageIopToCanData( &esn_id, BIT_32_DATA_LEN );
 * @brief get HW_ID depends on the gpio input
 *
 *********************************************************************/
-uint8 get_hw_id
+static uint8 get_hw_id
     (
     uint8 * hw_id_data
     )

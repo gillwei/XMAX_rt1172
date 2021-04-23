@@ -239,7 +239,7 @@ rx_buffer_handle = circular_buffer_init( "HCI task_rx", hci_rx_data, HCI_RX_BUFF
 tx_command_opcode = 0;
 
 memset( &hci_status, 0, sizeof( hci_status_t ) );
-hw_id = get_hw_id( NULL );
+hw_id = PERIPHERAL_get_hw_id();
 PRINTF( "%s detect HW ID: %d\r\n", __FUNCTION__, hw_id );
 
 xUpdateTimer = xTimerCreate( "UpdateTimer",           /* A text name, purely to help debugging. */
@@ -289,7 +289,7 @@ IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_GPIO9_IO02,    /* GPIO_AD_03 is configured a
 GPIO_PinInit( GPIO9, 2U, &uart_cts_config );
 GPIO_PinWrite( GPIO9, 2, 1 );
 
-if( hw_id < 2 )
+if( hw_id < HW_ID_2_RT1172 )
     {
     GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
     }
@@ -298,7 +298,7 @@ else
     GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_2_PERIPHERAL, BOARD_INITPINS_BT_RST_N_2_CHANNEL, 0 );
     }
 vTaskDelay( pdMS_TO_TICKS( BT_RESET_GPIO_DELAY ) );
-if( hw_id < 2 )
+if( hw_id < HW_ID_2_RT1172 )
     {
     GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
     }
@@ -332,7 +332,7 @@ IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_GPIO9_IO02,    /* GPIO_AD_03 is configured a
 GPIO_PinInit( GPIO9, 2U, &uart_cts_config );
 GPIO_PinWrite( GPIO9, 2, 0 );
 
-if( hw_id < 2 )
+if( hw_id < HW_ID_2_RT1172 )
     {
     GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
     }
@@ -341,7 +341,7 @@ else
     GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_2_PERIPHERAL, BOARD_INITPINS_BT_RST_N_2_CHANNEL, 0 );
     }
 vTaskDelay( pdMS_TO_TICKS( BT_RESET_GPIO_DELAY ) );
-if( hw_id < 2 )
+if( hw_id < HW_ID_2_RT1172 )
     {
     GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
     }
@@ -374,7 +374,7 @@ IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_GPIO9_IO02,    /* GPIO_AD_03 is configured a
 GPIO_PinInit( GPIO9, 2U, &uart_cts_config );
 GPIO_PinWrite( GPIO9, 2, 1 );
 
-if( hw_id < 2 )
+if( hw_id < HW_ID_2_RT1172 )
     {
     GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 0 );
     }
@@ -396,7 +396,7 @@ void HCI_BT_on
     void
     )
 {
-if( hw_id < 2 )
+if( hw_id < HW_ID_2_RT1172 )
     {
     GPIO_PinWrite( BOARD_INITPINS_BT_RST_N_PERIPHERAL, BOARD_INITPINS_BT_RST_N_CHANNEL, 1 );
     }

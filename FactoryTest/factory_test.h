@@ -152,11 +152,6 @@ void sent_iop_bd_address
     void
     );
 
-uint8 get_hw_id
-    (
-    uint8 * hw_id_data
-    );
-
 #ifdef __cplusplus
 }
 #endif

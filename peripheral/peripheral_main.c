@@ -69,6 +69,7 @@ uart_init();
 adc_init();
 i2c_init();
 pwm_init();
+gpio_init();
 }
 
 

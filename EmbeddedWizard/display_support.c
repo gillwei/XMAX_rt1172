@@ -406,7 +406,14 @@ static void control_TFT_BL_EN
     uint8_t on_off
     )
 {
-GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN, !on_off );
+if( PERIPHERAL_get_hw_id() == HW_ID_0_RT1176 )
+    {
+    GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN, on_off );
+    }
+else
+    {
+    GPIO_WritePinOutput( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN, !on_off );
+    }
 }
 
 /*********************************************************************
@@ -424,7 +431,16 @@ bool display_is_tft_backlight_on
     void
     )
 {
-return ( STD_LOW == GPIO_PinRead( BOARD_INITPINS_TFT_CONNECTED_GPIO, BOARD_INITPINS_TFT_CONNECTED_GPIO_PIN ) );
+bool ret_val = false;
+if( PERIPHERAL_get_hw_id() == HW_ID_0_RT1176 )
+    {
+    ret_val = ( STD_HIGH == GPIO_PinRead( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN ) );
+    }
+else
+    {
+    ret_val = ( STD_LOW == GPIO_PinRead( BOARD_INITPINS_TFT_BL_EN_GPIO, BOARD_INITPINS_TFT_BL_EN_GPIO_PIN ) );
+    }
+return ret_val;
 }
 
 /*********************************************************************
