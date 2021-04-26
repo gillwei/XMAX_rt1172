@@ -661,7 +661,10 @@ switch( message_frame_id )
         process_ecu_legacy_com_data( signal_id, data );
         break;
     case IL_CAN0_RX3_BRGTHNSS_CTRL_IDX:
-        process_brightness_control_response( signal_id, data );
+        if( EnumOperationModeNORMAL == operation_mode )
+            {
+            process_brightness_control_response( signal_id, data );
+            }
         break;
     case IL_CAN0_RX5_VEHICLE_INFO_IDX:
         process_vehicle_info( signal_id, data );
