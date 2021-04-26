@@ -332,6 +332,16 @@ typedef struct
 
 typedef enum
     {
+    BC_MOTOCON_CELL_NO_CONNECTION,
+    BC_MOTOCON_CELL_NO_SIGNAL,
+    BC_MOTOCON_CELL_LV1,
+    BC_MOTOCON_CELL_LV2,
+    BC_MOTOCON_CELL_LV3,
+    BC_MOTOCON_CELL_LV4
+    } bc_motocon_cell_signal_t;
+
+typedef enum
+    {
     BC_MOTOCON_CALL_STARTED = 0x01,
     BC_MOTOCON_CALL_ENDED
     } bc_motocon_call_state_t;

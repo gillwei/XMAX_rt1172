@@ -53,7 +53,7 @@ typedef struct
     void ( *volume_controllable_callback ) ( const bool enable );
     void ( *ota_update_info_callback ) ( const bc_motocon_ota_update_info_t* info );
     void ( *ccuid_request_callback ) ( void );
-    void ( *cell_signal_callback ) ( const uint8_t level );
+    void ( *cell_signal_callback ) ( const bc_motocon_cell_signal_t level );
     void ( *call_changed_callback ) ( const bc_motocon_call_state_t call_state );
     } bc_motocon_callback_t;
 
