@@ -58,8 +58,9 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000014, /* ratio 120.00 % */
-  0xB8000900, 0x8005E452, 0xEA090283, 0x60F0C838, 0x00000040, 0x00000000
+  0x0000002E, /* ratio 104.35 % */
+  0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x98002180, 0x00025800, 0x00188006,
+  0x58181232, 0x004645E4, 0xF8EA091B, 0x00203248, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -81,19 +82,20 @@ static const XRect _Const000E = {{ 390, 135 }, { 401, 163 }};
 static const XRect _Const000F = {{ 23, 122 }, { 115, 178 }};
 static const XColor _Const0010 = { 0x00, 0x72, 0xFF, 0xFF };
 static const XRect _Const0011 = {{ 126, 122 }, { 182, 178 }};
-static const XRect _Const0012 = {{ 16, 60 }, { 465, 91 }};
-static const XRect _Const0013 = {{ 69, 111 }, { 107, 145 }};
-static const XRect _Const0014 = {{ 120, 111 }, { 158, 145 }};
-static const XRect _Const0015 = {{ 109, 114 }, { 120, 142 }};
-static const XStringRes _Const0016 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0017 = {{ 160, 114 }, { 171, 142 }};
-static const XRect _Const0018 = {{ 171, 111 }, { 245, 145 }};
-static const XRect _Const0019 = {{ 267, 111 }, { 318, 145 }};
-static const XRect _Const001A = {{ 321, 111 }, { 359, 145 }};
-static const XRect _Const001B = {{ 372, 111 }, { 410, 145 }};
-static const XRect _Const001C = {{ 360, 112 }, { 371, 140 }};
-static const XStringRes _Const001D = { _StringsDefault0, 0x0006 };
-static const XRect _Const001E = {{ 165, 176 }, { 315, 259 }};
+static const XStringRes _Const0012 = { _StringsDefault0, 0x0002 };
+static const XRect _Const0013 = {{ 16, 60 }, { 465, 91 }};
+static const XRect _Const0014 = {{ 69, 111 }, { 107, 145 }};
+static const XRect _Const0015 = {{ 120, 111 }, { 158, 145 }};
+static const XRect _Const0016 = {{ 109, 114 }, { 120, 142 }};
+static const XStringRes _Const0017 = { _StringsDefault0, 0x000F };
+static const XRect _Const0018 = {{ 160, 114 }, { 171, 142 }};
+static const XRect _Const0019 = {{ 171, 111 }, { 245, 145 }};
+static const XRect _Const001A = {{ 267, 111 }, { 318, 145 }};
+static const XRect _Const001B = {{ 321, 111 }, { 359, 145 }};
+static const XRect _Const001C = {{ 372, 111 }, { 410, 145 }};
+static const XRect _Const001D = {{ 360, 112 }, { 371, 140 }};
+static const XStringRes _Const001E = { _StringsDefault0, 0x0013 };
+static const XRect _Const001F = {{ 165, 176 }, { 315, 259 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -972,13 +974,7 @@ void ClockCLK01_ClockSettingMenu_Init( ClockCLK01_ClockSettingMenu _this, XHandl
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  if ( EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsAutoAdjusted 
-      && DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( EwGetAutoObject( 
-      &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
-  {
-    DeviceInterfaceSystemDeviceClass_NotifyTimeRequest( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-    DeviceInterfaceSystemDeviceClass ));
-  }
+  EwTrace( "%s", EwLoadString( &_Const0012 ));
 }
 
 /* 'C' function for method : 'Clock::CLK01_ClockSettingMenu.LoadItemClass()' */
@@ -1025,11 +1021,12 @@ void ClockCLK01_ClockSettingMenu_OnItemActivate( ClockCLK01_ClockSettingMenu _th
   {
     case 0 :
     {
-      EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsAutoAdjusted 
-      = IsChecked;
+      DeviceInterfaceSystemDeviceClass_OnSetIsClockAutoAdj( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+      DeviceInterfaceSystemDeviceClass ), IsChecked );
       MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
 
-      if ( IsChecked )
+      if ( IsChecked && DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( 
+          EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
       {
         DeviceInterfaceSystemDeviceClass_NotifyTimeRequest( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
         DeviceInterfaceSystemDeviceClass ));
@@ -1039,7 +1036,8 @@ void ClockCLK01_ClockSettingMenu_OnItemActivate( ClockCLK01_ClockSettingMenu _th
 
     case 1 :
     {
-      if ( !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsAutoAdjusted )
+      if ( !DeviceInterfaceSystemDeviceClass_OnGetIsClockAutoAdj( EwGetAutoObject( 
+          &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
       {
         _this->ClockManualAdjComponent = EwNewObject( ClockCLK02_ClockManualAdjustment, 
         0 );
@@ -1069,7 +1067,8 @@ XBool ClockCLK01_ClockSettingMenu_LoadItemChecked( ClockCLK01_ClockSettingMenu _
   switch ( aItemNo )
   {
     case 0 :
-      IsChecked = EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsAutoAdjusted;
+      IsChecked = DeviceInterfaceSystemDeviceClass_OnGetIsClockAutoAdj( EwGetAutoObject( 
+      &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ));
     break;
 
     default : 
@@ -1092,7 +1091,8 @@ XBool ClockCLK01_ClockSettingMenu_LoadItemEnabled( ClockCLK01_ClockSettingMenu _
 
   if ( aItemNo > 0 )
   {
-    ItemEnabled = (XBool)!EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsAutoAdjusted;
+    ItemEnabled = (XBool)!DeviceInterfaceSystemDeviceClass_OnGetIsClockAutoAdj( 
+    EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ));
   }
 
   return ItemEnabled;
@@ -1203,37 +1203,37 @@ void ClockCLK03_SetClock__Init( ClockCLK03_SetClock _this, XObject aLink, XHandl
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->Title, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->Title, _Const0013 );
   ViewsText_OnSetString( &_this->Title, EwLoadString( &StringsCLK03_SET_CLOCK ));
-  CoreRectView__OnSetBounds( &_this->DayText, _Const0013 );
+  CoreRectView__OnSetBounds( &_this->DayText, _Const0014 );
   ViewsText_OnSetAlignment( &_this->DayText, ViewsTextAlignmentAlignHorzRight | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayText, 0 );
-  CoreRectView__OnSetBounds( &_this->MonthText, _Const0014 );
+  CoreRectView__OnSetBounds( &_this->MonthText, _Const0015 );
   ViewsText_OnSetAlignment( &_this->MonthText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->MonthText, 0 );
-  CoreRectView__OnSetBounds( &_this->SlashDay, _Const0015 );
+  CoreRectView__OnSetBounds( &_this->SlashDay, _Const0016 );
   ViewsText_OnSetAlignment( &_this->SlashDay, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->SlashDay, EwLoadString( &_Const0016 ));
-  CoreRectView__OnSetBounds( &_this->SlashMonth, _Const0017 );
+  ViewsText_OnSetString( &_this->SlashDay, EwLoadString( &_Const0017 ));
+  CoreRectView__OnSetBounds( &_this->SlashMonth, _Const0018 );
   ViewsText_OnSetAlignment( &_this->SlashMonth, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->SlashMonth, EwLoadString( &_Const0016 ));
-  CoreRectView__OnSetBounds( &_this->YearText, _Const0018 );
+  ViewsText_OnSetString( &_this->SlashMonth, EwLoadString( &_Const0017 ));
+  CoreRectView__OnSetBounds( &_this->YearText, _Const0019 );
   ViewsText_OnSetString( &_this->YearText, 0 );
-  CoreRectView__OnSetBounds( &_this->TimeFormat, _Const0019 );
+  CoreRectView__OnSetBounds( &_this->TimeFormat, _Const001A );
   ViewsText_OnSetString( &_this->TimeFormat, 0 );
-  CoreRectView__OnSetBounds( &_this->HourText, _Const001A );
+  CoreRectView__OnSetBounds( &_this->HourText, _Const001B );
   ViewsText_OnSetAlignment( &_this->HourText, ViewsTextAlignmentAlignHorzRight | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->HourText, 0 );
-  CoreRectView__OnSetBounds( &_this->MinuteText, _Const001B );
+  CoreRectView__OnSetBounds( &_this->MinuteText, _Const001C );
   ViewsText_OnSetString( &_this->MinuteText, 0 );
-  CoreRectView__OnSetBounds( &_this->Colon, _Const001C );
-  ViewsText_OnSetString( &_this->Colon, EwLoadString( &_Const001D ));
-  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const001E );
+  CoreRectView__OnSetBounds( &_this->Colon, _Const001D );
+  ViewsText_OnSetString( &_this->Colon, EwLoadString( &_Const001E ));
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const001F );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->UpDownPushButtonSet, 1 );
@@ -1337,6 +1337,8 @@ void ClockCLK03_SetClock_OnOkActivatedSlot( ClockCLK03_SetClock _this, XObject s
   DeviceInterfaceSystemDeviceClass_SetRtcTime( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass ), EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass )->CurrentAdjustTime );
+  DeviceInterfaceSystemDeviceClass_SendManualAdjTimeToMeter( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ));
   EwSignal( _this->OnTimeUpdateSignal, ((XObject)_this ));
 }
 

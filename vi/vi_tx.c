@@ -519,6 +519,27 @@ PRINTF( "%s %d\r\n", __FUNCTION__, operation_code );
 
 /*********************************************************************
 *
+* @private
+* send_meter_time
+*
+* Send meter current time
+*
+* @param cur_time Current time
+*
+*********************************************************************/
+static void send_meter_time
+    (
+    const uint64_t cur_time
+    )
+{
+dll_frm_index_t l_frm_index;
+can_mid_sig_set( &l_frm_index, IL_CAN0_CLK_DATE_RESP_DATA_TXSIG_HANDLE, IL_CAN0_CLK_DATE_RESP_DATA_TXSIG_NBYTES, (uint8_t*)&cur_time );
+can_mid_frm_send( l_frm_index );
+PRINTF( "%s %d\r\n", __FUNCTION__, cur_time );
+}
+
+/*********************************************************************
+*
 * @public
 * VI_send_inspection_response
 *
@@ -651,6 +672,9 @@ switch( tx_type )
         break;
     case EnumVehicleTxTypeBUTTON_STATUS_AUDIO:
         send_meter_heater_operation( (uint8_t)data );
+        break;
+    case EnumVehicleTxTypeCLOCK_DATE:
+        send_meter_time( data );
         break;
     case EnumVehicleTxTypeWIND_SCREEN_OPERATION:
         send_meter_windscreen_operation( (uint8_t)data );

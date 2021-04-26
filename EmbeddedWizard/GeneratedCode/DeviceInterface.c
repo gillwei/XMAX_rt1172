@@ -127,7 +127,6 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
   CoreTimer_OnSetEnabled( &_this->FactoryResetTimer, 0 );
   _this->BrightnessLevel = 7;
   _this->InspectionMode = EnumInspectionModeNONE;
-  _this->IsAutoAdjusted = 1;
   _this->FactoryResetTimer.OnTrigger = EwNewSlot( _this, DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot );
 }
 
@@ -834,7 +833,10 @@ void DeviceInterfaceSystemDeviceClass_NotifyTimeRequest( DeviceInterfaceSystemDe
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  BC_motocon_send_vehicle_setting_request();
+  {
+    BC_motocon_set_request_from_clock();
+    BC_motocon_send_vehicle_setting_request();
+  }
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetRtcTime()' */
@@ -867,6 +869,38 @@ void DeviceInterfaceSystemDeviceClass_SetRtcTime( DeviceInterfaceSystemDeviceCla
     srtc_time.second = NewTimeSecond;
     ew_set_rtc_time( &srtc_time );
   }
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SendManualAdjTimeToMeter()' */
+void DeviceInterfaceSystemDeviceClass_SendManualAdjTimeToMeter( DeviceInterfaceSystemDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  VI_clock_send_rtc_time_to_meter();
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetIsClockAutoAdj()' */
+void DeviceInterfaceSystemDeviceClass_OnSetIsClockAutoAdj( DeviceInterfaceSystemDeviceClass _this, 
+  XBool value )
+{
+  if ( _this->IsClockAutoAdj != value )
+  {
+    XBool ClockAutoAdjStatus;
+    _this->IsClockAutoAdj = value;
+    ClockAutoAdjStatus = value;
+    ew_set_clk_auto_adj( ClockAutoAdjStatus );
+  }
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetIsClockAutoAdj()' */
+XBool DeviceInterfaceSystemDeviceClass_OnGetIsClockAutoAdj( DeviceInterfaceSystemDeviceClass _this )
+{
+  XBool ClockAutoAdjStatus = 0;
+
+  ClockAutoAdjStatus = EW_get_clk_auto_adj();
+  _this->IsClockAutoAdj = ClockAutoAdjStatus;
+  return _this->IsClockAutoAdj;
 }
 
 /* Variants derived from the class : 'DeviceInterface::SystemDeviceClass' */

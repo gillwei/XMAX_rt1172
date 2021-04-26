@@ -32,6 +32,8 @@ extern "C" {
 #define LAST_PAGE_NAVIGATION_SETTING_MASK   ( 0x3 )
 #define LAST_PAGE_METER_DISP_SETTING_MASK   ( 0xF )
 
+#define DEFAULT_CLK_AUTO_ADJUSTMENT     ( 1 )
+
 typedef struct
     {
     CoreKeyCode code;
@@ -129,6 +131,7 @@ int ew_get_weather_week_day( void );
 void ew_get_copyright( const int index, uint8_t** copyright_title, uint8_t** copyright_content );
 int ew_get_num_of_licenses( void );
 void ew_set_rtc_time( snvs_lp_srtc_datetime_t* srtc_datetime );
+void ew_set_clk_auto_adj( bool is_clk_auto_adj );
 
 #ifdef __cplusplus
 }

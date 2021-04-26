@@ -79,7 +79,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( InspectionDisplayPattern, XEnum )
   EW_PROPERTY( InspectionMode,  XEnum )
   EW_PROPERTY( OperationMode,   XEnum )
-  EW_VARIABLE( IsAutoAdjusted,  XBool )
+  EW_PROPERTY( IsClockAutoAdj,  XBool )
   EW_VARIABLE( IsRunningReset,  XBool )
   EW_VARIABLE( IsHopperTestMode, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceSystemDeviceClass )
@@ -302,6 +302,16 @@ void DeviceInterfaceSystemDeviceClass_NotifyTimeRequest( DeviceInterfaceSystemDe
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetRtcTime()' */
 void DeviceInterfaceSystemDeviceClass_SetRtcTime( DeviceInterfaceSystemDeviceClass _this, 
   DeviceInterfaceRtcTime aNewTime );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SendManualAdjTimeToMeter()' */
+void DeviceInterfaceSystemDeviceClass_SendManualAdjTimeToMeter( DeviceInterfaceSystemDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetIsClockAutoAdj()' */
+void DeviceInterfaceSystemDeviceClass_OnSetIsClockAutoAdj( DeviceInterfaceSystemDeviceClass _this, 
+  XBool value );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetIsClockAutoAdj()' */
+XBool DeviceInterfaceSystemDeviceClass_OnGetIsClockAutoAdj( DeviceInterfaceSystemDeviceClass _this );
 
 #ifdef __cplusplus
   }

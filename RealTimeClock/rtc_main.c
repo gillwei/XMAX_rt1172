@@ -17,6 +17,7 @@
 #include "clock_config.h"
 
 #include "RTC_pub.h"
+#include <time.h>
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -84,14 +85,14 @@ SNVS_LP_SRTC_StartTimer( SNVS );
 /*********************************************************************
 *
 * @public
-* RTC_set_DateTime
+* RTC_set_dateTime
 *
 * @brief set the RTC with specified datetime
 *
 * @param datetime pointer of specified datetime value
 *
 *********************************************************************/
-status_t RTC_set_DateTime
+status_t RTC_set_dateTime
     (
     snvs_lp_srtc_datetime_t * datetime
     )
@@ -104,17 +105,50 @@ return ret;
 /*********************************************************************
 *
 * @public
-* RTC_get_DateTime
+* RTC_get_datetime
 *
 * @brief get the RTC datetime
 *
 * @param datetime pointer of returned datetime
 *
 *********************************************************************/
-void RTC_get_DateTime
+void RTC_get_datetime
     (
     snvs_lp_srtc_datetime_t * datetime
     )
 {
 SNVS_LP_SRTC_GetDatetime( SNVS, datetime );
+}
+
+/*********************************************************************
+*
+* @public
+* RTC_convert_datetime_to_epoch_sec
+*
+* @brief Convert RTC datetime to second
+*
+* @param datetime pointer of returned datetime
+*
+*********************************************************************/
+uint64_t RTC_convert_datetime_to_epoch_sec
+    (
+    const snvs_lp_srtc_datetime_t* datetime
+    )
+{
+uint64_t timestamp;
+struct tm converted_time;
+time_t epoch_time;
+
+converted_time.tm_year = datetime->year - 1900;
+converted_time.tm_mon = datetime->month - 1;
+converted_time.tm_mday = datetime->day;
+converted_time.tm_hour = datetime->hour;
+converted_time.tm_min = datetime->minute;
+converted_time.tm_sec = datetime->second;
+converted_time.tm_isdst = -1;
+epoch_time = mktime( &converted_time );
+timestamp = epoch_time;
+
+PRINTF( "%s %d\r\n", __FUNCTION__, timestamp );
+return timestamp;
 }

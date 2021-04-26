@@ -563,10 +563,7 @@ class CLK01_ClockSettingMenu : Menu::BaseMenuView
   $rect <250,310,450,350>
   inherited method Init()
   {
-    if( DeviceInterface::SystemDevice.IsAutoAdjusted && DeviceInterface::BluetoothDevice.IsMotoconConnected() )
-    {
-      DeviceInterface::SystemDevice.NotifyTimeRequest();
-    }
+    trace "Init CLK01";
 
   }
 
@@ -612,16 +609,16 @@ class CLK01_ClockSettingMenu : Menu::BaseMenuView
     {
       case 0:
       {
-        DeviceInterface::SystemDevice.IsAutoAdjusted = IsChecked;
+        DeviceInterface::SystemDevice.IsClockAutoAdj = IsChecked;
         Menu.InvalidateItems( 0, ItemTitleArray.size - 1 );
-        if( IsChecked )
+        if( IsChecked && DeviceInterface::BluetoothDevice.IsMotoconConnected() )
         {
           DeviceInterface::SystemDevice.NotifyTimeRequest();
         }
       }
       case 1:
       {
-        if( !DeviceInterface::SystemDevice.IsAutoAdjusted )
+        if( !DeviceInterface::SystemDevice.IsClockAutoAdj )
         {
           ClockManualAdjComponent = new Clock::CLK02_ClockManualAdjustment;
           ClockManualAdjComponent.OnRestoreFocusFrameSignal = OnRestoreFocusFrameUpdateSlot;
@@ -638,7 +635,7 @@ class CLK01_ClockSettingMenu : Menu::BaseMenuView
     var bool IsChecked = false;
     switch( aItemNo )
     {
-      case 0: IsChecked = DeviceInterface::SystemDevice.IsAutoAdjusted;
+      case 0: IsChecked = DeviceInterface::SystemDevice.IsClockAutoAdj;
       default:;
     }
     return IsChecked;
@@ -650,7 +647,7 @@ class CLK01_ClockSettingMenu : Menu::BaseMenuView
     var bool ItemEnabled = true;
     if( aItemNo > 0 )
     {
-      ItemEnabled = !DeviceInterface::SystemDevice.IsAutoAdjusted;
+      ItemEnabled = !DeviceInterface::SystemDevice.IsClockAutoAdj;
     }
     return ItemEnabled;
   }
@@ -803,7 +800,7 @@ class CLK03_SetClock : Components::BaseMainBG
   slot OnOkActivatedSlot
   {
     DeviceInterface::SystemDevice.SetRtcTime( DeviceInterface::SystemDevice.CurrentAdjustTime );
-    // TODO: Send time to Meter.
+    DeviceInterface::SystemDevice.SendManualAdjTimeToMeter();
     signal OnTimeUpdateSignal;
   }
 

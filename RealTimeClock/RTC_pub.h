@@ -51,14 +51,19 @@ void RTC_init
     void
     );
 
-status_t RTC_set_DateTime
+status_t RTC_set_dateTime
     (
     snvs_lp_srtc_datetime_t * datetime
     );
 
-void RTC_get_DateTime
+void RTC_get_datetime
     (
     snvs_lp_srtc_datetime_t * datetime
+    );
+
+uint64_t RTC_convert_datetime_to_epoch_sec
+    (
+    const snvs_lp_srtc_datetime_t * datetime
     );
 
 #ifdef __cplusplus

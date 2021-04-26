@@ -19,6 +19,7 @@ extern "C" {
 #include "Core.h"
 #include "MM_pub_ams_type.h"
 #include "BTM_pub.h"
+#include "RTC_pub.h"
 
 #define UPDATE_TIME_PERIOD_MS           ( 500 )
 
@@ -94,6 +95,8 @@ void EW_notify_active_tbt_item_update( int index );
 void EW_notify_notification_list_updated( void );
 void EW_notify_phone_call_state_changed( void );
 void EW_notify_phone_call_volume_changed( void );
+
+bool EW_get_clk_auto_adj( void );
 
 #ifdef __cplusplus
 }

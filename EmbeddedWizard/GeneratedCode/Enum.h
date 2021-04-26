@@ -270,14 +270,15 @@ typedef enum
   EnumVehicleTxTypeHEATER_SELECT        = 7,
   EnumVehicleTxTypeHEATER_LEVEL         = 8,
   EnumVehicleTxTypeBUTTON_STATUS_AUDIO  = 9,
-  EnumVehicleTxTypeWIND_SCREEN_OPERATION = 10,
-  EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION = 11,
-  EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL = 12,
-  EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL = 13,
-  EnumVehicleTxTypeCHG_METER_INFO       = 14,
-  EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION = 15,
-  EnumVehicleTxTypeTCS                  = 16,
-  EnumVehicleTxTypeRESET_METER          = 17
+  EnumVehicleTxTypeCLOCK_DATE           = 10,
+  EnumVehicleTxTypeWIND_SCREEN_OPERATION = 11,
+  EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION = 12,
+  EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL = 13,
+  EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL = 14,
+  EnumVehicleTxTypeCHG_METER_INFO       = 15,
+  EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION = 16,
+  EnumVehicleTxTypeTCS                  = 17,
+  EnumVehicleTxTypeRESET_METER          = 18
 } EnumVehicleTxType;
 
 /* User defined enumeration: 'Enum::DataType' */

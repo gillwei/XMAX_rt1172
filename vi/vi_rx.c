@@ -379,7 +379,7 @@ switch( signal_id )
         break;
     case IL_CAN0_VEHICLE_INFO_3_CLK_ADJST_RXSIG_HANDLE:
         rx_vehicle_info.clock_adj_status = (bool)data;
-        /* TODO: respond to meter the current UNIX time */
+        vi_clock_notify_meter_clk_adj_status_changed( data );
         break;
     case IL_CAN0_VEHICLE_INFO_3_AIR_RXSIG_HANDLE:
         rx_vehicle_info.air_temperature = (uint8_t)data;

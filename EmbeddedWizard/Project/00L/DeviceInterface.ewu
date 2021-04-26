@@ -703,13 +703,10 @@ class SystemDeviceClass : Templates::DeviceClass
     return IsQrCodeReady;
   }
 
-  $rect <460,1070,660,1110>
-  var bool IsAutoAdjusted = true;
-
   // Clock Setting
   note group Note9
   {
-    attr Bounds = <450,980,1130,1130>;
+    attr Bounds = <450,980,1130,1200>;
   }
 
   $rect <460,1020,660,1060>
@@ -718,6 +715,7 @@ class SystemDeviceClass : Templates::DeviceClass
     $if !$prototyper
       native
       {
+        BC_motocon_set_request_from_clock();
         BC_motocon_send_vehicle_setting_request();
       }
     $endif
@@ -751,6 +749,52 @@ class SystemDeviceClass : Templates::DeviceClass
     $else
       aNewTime;
     $endif
+  }
+
+  $rect <890,1020,1090,1060>
+  method void SendManualAdjTimeToMeter()
+  {
+    $if !$prototyper
+      native
+      {
+        VI_clock_send_rtc_time_to_meter();
+      }
+    $endif
+  }
+
+  $rect <460,1070,660,1110>
+  property bool IsClockAutoAdj;
+
+  $rect <460,1110,660,1150>
+  onset IsClockAutoAdj
+  {
+    if( pure IsClockAutoAdj != value )
+    {
+      // Remember the property's new value.
+      pure IsClockAutoAdj = value;
+
+      $if !$prototyper
+        var bool ClockAutoAdjStatus = value;
+        native( ClockAutoAdjStatus )
+        {
+          ew_set_clk_auto_adj( ClockAutoAdjStatus );
+        }
+      $endif
+    }
+  }
+
+  $rect <460,1150,660,1190>
+  onget IsClockAutoAdj
+  {
+    $if !$prototyper
+      var bool ClockAutoAdjStatus;
+      native( ClockAutoAdjStatus )
+      {
+        ClockAutoAdjStatus = EW_get_clk_auto_adj();
+      }
+      pure IsClockAutoAdj = ClockAutoAdjStatus;
+    $endif
+    return pure IsClockAutoAdj;
   }
 }
 

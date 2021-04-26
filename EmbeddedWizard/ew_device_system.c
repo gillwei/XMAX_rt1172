@@ -183,6 +183,8 @@ static void ew_get_info_from_eeprom( void );
     static bool     is_qrcode_passkey_ready;
     static bool     is_qrcode_dummy_ready;
     static bool     is_last_page_read;
+    static bool     clk_auto_adj_status;
+    static uint8_t  clk_auto_adj_status_in_eep = 0;
 #endif
 
 static uint32_t esn;
@@ -677,6 +679,39 @@ is_op_mode_ready = true;
 
 /*********************************************************************
 *
+* @public
+* EW_get_clock_auto_adj_callback
+*
+* Callback of reading clock auto adjustment status from EEPROM
+*
+* @param result True if read success. False if read fail.
+* @param value Pointer to the clock auto adjustment status of uint8_t* type
+*
+*********************************************************************/
+void EW_get_clock_auto_adj_callback
+    (
+    bool  result,
+    void* value
+    )
+{
+if( result )
+    {
+    clk_auto_adj_status_in_eep = *(uint8_t*)value;
+    PRINTF( "rd clk auto adj 0x%x\r\n", clk_auto_adj_status_in_eep );
+    if( EEPROM_INVALID_VAL_1_BYTE == clk_auto_adj_status_in_eep )
+        {
+        clk_auto_adj_status_in_eep = DEFAULT_CLK_AUTO_ADJUSTMENT;
+        }
+    clk_auto_adj_status = (bool)clk_auto_adj_status_in_eep;
+    }
+else
+    {
+    PRINTF( "rd clock auto status fail\r\n" );
+    }
+}
+
+/*********************************************************************
+*
 * @private
 * ew_get_esn
 *
@@ -734,6 +769,10 @@ if( pdFALSE == EEPM_get_last_page( &EW_get_last_page_callback ) )
     {
     EwPrint( "get last page err\r\n" );
     }
+if( pdFALSE == EEPM_get_clk_auto_adjustment( &EW_get_clock_auto_adj_callback ) )
+    {
+    EwPrint( "get clk auto adjustment err\r\n" );
+    }
 #endif
 }
 
@@ -752,7 +791,7 @@ void ew_get_rtc_time
     snvs_lp_srtc_datetime_t* srtc_datetime
     )
 {
-RTC_get_DateTime( srtc_datetime );
+RTC_get_datetime( srtc_datetime );
 }
 
 /*********************************************************************
@@ -770,7 +809,59 @@ void ew_set_rtc_time
     snvs_lp_srtc_datetime_t* srtc_datetime
     )
 {
-RTC_set_DateTime( srtc_datetime );
+RTC_set_dateTime( srtc_datetime );
+}
+
+/*********************************************************************
+*
+* @private
+* EW_get_clk_auto_adj
+*
+* Get clock auto adjustment status
+*
+* @return status of clock auto adjustment setting
+*
+*********************************************************************/
+bool EW_get_clk_auto_adj
+    (
+    void
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, clk_auto_adj_status );
+return clk_auto_adj_status ? true : false;
+}
+
+/*********************************************************************
+*
+* @private
+* ew_set_clk_auto_adj
+*
+* Set clock auto adjustment status
+*
+* @param is_clk_auto_adj clock auto adjustment status
+*
+*********************************************************************/
+void ew_set_clk_auto_adj
+    (
+    bool is_clk_auto_adj
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, is_clk_auto_adj );
+uint8_t auto_adj = 0;
+
+if( is_clk_auto_adj )
+    {
+    auto_adj = 1;
+    }
+
+if( pdFALSE == EEPM_set_clk_auto_adjustment( auto_adj, NULL ) )
+    {
+    EwPrint( "set clk auto adjustment err\r\n" );
+    }
+else
+    {
+    clk_auto_adj_status = auto_adj;
+    }
 }
 
 /*********************************************************************

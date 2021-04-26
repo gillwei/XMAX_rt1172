@@ -17,6 +17,7 @@
 #include "Enum.h"
 #include "EW_pub.h"
 #include "NTF_pub.h"
+#include "VI_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -27,6 +28,7 @@
 --------------------------------------------------------------------*/
 void bc_motocon_listener_connection_status( const bool connected );
 void bc_motocon_datetime_received( const bc_motocon_time_t* time );
+void bc_motocon_datetime_changed( void );
 void bc_motocon_listener_language_type( const uint8_t language_type );
 void bc_motocon_notification_received( const bc_motocon_notification_v2_t* notification );
 void bc_motocon_listener_battery( const uint8_t battery, const bc_motocon_battery_t battery_type );
@@ -59,7 +61,7 @@ static bc_motocon_callback_t motocon_callback =
     NULL,                                   // weather_location_callback
     NULL,                                   // weather_info_callback
     NULL,                                   // vehicle_info_subscribe_callback
-    NULL,                                   // datetime_changed_callback
+    bc_motocon_datetime_changed,            // datetime_changed_callback
     bc_motocon_datetime_received,           // vehicle_datetime_callback
     bc_motocon_listener_language_type,      // language_type_callback
     NULL,                                   // device_name_callback
@@ -88,6 +90,7 @@ static notification_callback_t motocon_notification_callback =
     BC_motocon_phonecall_volume_control_callback
     };
 static bool is_ntf_connected;
+static bool is_request_from_clock = false;
 
 static uint8_t phone_language_type;
 static uint8_t phone_battery_percentage;
@@ -167,12 +170,40 @@ EW_notify_motocon_event_received( EnumMotoConRxEventCONNECTION_STATUS );
 if( connected )
     {
     BC_motocon_send_language_type_request();
+    /* update RTC time and meter clock if Auto Adjustment is enabled */
+    if( EW_get_clk_auto_adj() )
+        {
+        is_request_from_clock = true;
+        }
     BC_motocon_send_vehicle_setting_request();
     }
 else
     {
     phone_volume_controllable = false;
     notify_motocon_notification_disconnected();
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_datetime_changed
+*
+* Callback function when receiving the datetime change notification
+* via MotoCon
+*
+*********************************************************************/
+void bc_motocon_datetime_changed
+    (
+    void
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+/* update RTC time and meter clock if Auto Adjustment is enabled */
+if( EW_get_clk_auto_adj() )
+    {
+    is_request_from_clock = true;
+    BC_motocon_send_vehicle_setting_request();
     }
 }
 
@@ -192,6 +223,25 @@ void bc_motocon_datetime_received
     )
 {
 BC_MOTOCON_PRINTF( "%s %d %d/%d %d:%d:%d\r\n", __FUNCTION__, time->year, time->mon, time->day, time->hour, time->min, time->sec );
+if( EW_get_clk_auto_adj() )
+    {
+    snvs_lp_srtc_datetime_t srtc_datetime;
+
+    srtc_datetime.year = time->year;
+    srtc_datetime.month = time->mon;
+    srtc_datetime.day = time->day;
+    srtc_datetime.hour = time->hour;
+    srtc_datetime.minute = time->min;
+    srtc_datetime.second = time->sec;
+    RTC_set_dateTime( &srtc_datetime );
+
+    // The variable is_request_from_clock is only set to True when the datetime request is from clock.
+    if( is_request_from_clock )
+        {
+        is_request_from_clock = false;
+        VI_clock_notify_meter_time_updated( srtc_datetime );
+        }
+    }
 }
 
 /*********************************************************************
@@ -632,6 +682,23 @@ uint32_t BC_motocon_get_phonecall_volume
 {
 BC_MOTOCON_PRINTF( "%s %d\r\n", __FUNCTION__, phone_call_volume );
 return phone_call_volume;
+}
+
+/*********************************************************************
+*
+* @public
+* BC_motocon_set_request_from_clock
+*
+* Set if the time request is from clock
+*
+*********************************************************************/
+void BC_motocon_set_request_from_clock
+    (
+    void
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+is_request_from_clock = true;
 }
 
 /*********************************************************************

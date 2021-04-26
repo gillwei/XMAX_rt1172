@@ -19,6 +19,7 @@ extern "C"{
 #include "vi_priv.h"
 #include "CAN_pub.h"
 #include "Enum.h"
+#include "RTC_pub.h"
 
 #define CAN_TIMEOUT_ERROR_1     ( 1 )
 #define CAN_TIMEOUT_ERROR_2     ( 2 )
@@ -80,6 +81,8 @@ void VI_send_inspection_response( const EnumInspectionMode mode, const uint8_t f
 void VI_notify_ydt_detected( void );
 void VI_trip_time_count( void );
 void VI_trip_time_save( void );
+void VI_clock_notify_meter_time_updated( const snvs_lp_srtc_datetime_t datetime );
+void VI_clock_send_rtc_time_to_meter( void );
 
 #ifdef __cplusplus
 }

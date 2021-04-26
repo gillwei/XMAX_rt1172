@@ -703,7 +703,7 @@ switch( inst_id )
                 snvs_lp_srtc_datetime_t datetime;
                 uint8_t iop_data[8];
 
-                RTC_get_DateTime( &datetime );
+                RTC_get_datetime( &datetime );
 
                 iop_data[0] = datetime.month;
                 iop_data[1] = datetime.day;
@@ -845,7 +845,7 @@ switch( inst_id )
         datetime.minute = data[6];
         datetime.second = data[7];
 
-        RTC_set_DateTime( &datetime );
+        RTC_set_dateTime( &datetime );
         IOPDone = true;
         }
         break;

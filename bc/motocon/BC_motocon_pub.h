@@ -141,6 +141,8 @@ uint8_t BC_motocon_get_phone_cell_signal_level( void );
 
 uint32_t BC_motocon_get_phonecall_volume( void );
 
+void BC_motocon_set_request_from_clock( void );
+
 #ifdef __cplusplus
 }
 #endif
