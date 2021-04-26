@@ -27,7 +27,7 @@ extern "C"{
 #define LPI2C_MASTER_BASEADDR   ( LPI2C1 )
 #define LPI2C_BAUDRATE          ( 100000U )
 #define LPI2C_CLOCK             ( BOARD_BOOTCLOCKRUN_LPI2C1_CLK_ROOT )
-#define LPI2C_SIZE_OF_QUEUE     ( 8 )
+#define LPI2C_SIZE_OF_QUEUE     ( 16 )
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -79,10 +79,10 @@ static void i2c_main
 
 PERIPHERAL_i2c_write_data
 
-@return None
+@return Result of enqueue i2c write operation
 */
 /*================================================================================================*/
-void PERIPHERAL_i2c_write_data
+BaseType_t PERIPHERAL_i2c_write_data
     (
     uint8_t  device_addr,
     uint8_t* data,
@@ -103,7 +103,7 @@ xfer_data.masterXfer.dataSize = size;
 xfer_data.masterXfer.flags = kLPI2C_TransferDefaultFlag;
 xfer_data.callback_func_ptr = callback_func_ptr;
 
-xQueueSend( i2c_queue, &xfer_data, 0 );
+return xQueueSend( i2c_queue, &xfer_data, 0 );
 }
 
 /*================================================================================================*/
@@ -113,10 +113,10 @@ xQueueSend( i2c_queue, &xfer_data, 0 );
 
 PERIPHERAL_i2c_read_data
 
-@return None
+@return Result of enqueue i2c read operation
 */
 /*================================================================================================*/
-void PERIPHERAL_i2c_read_data
+BaseType_t PERIPHERAL_i2c_read_data
     (
     uint8_t  device_addr,
     uint8_t* data,
@@ -137,7 +137,7 @@ xfer_data.masterXfer.dataSize = size;
 xfer_data.masterXfer.flags = kLPI2C_TransferDefaultFlag;
 xfer_data.callback_func_ptr = callback_func_ptr;
 
-xQueueSend( i2c_queue, &xfer_data, 0 );
+return xQueueSend( i2c_queue, &xfer_data, 0 );
 }
 
 /*================================================================================================*/

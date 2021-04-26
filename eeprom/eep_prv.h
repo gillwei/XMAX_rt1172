@@ -16,6 +16,9 @@ extern "C" {
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
 #include "fsl_common.h"
+#include "FreeRTOSConfig.h"
+#include "projdefs.h"
+#include "portmacro.h"
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
@@ -44,201 +47,213 @@ extern "C" {
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
-void eep_set_ESN_number
+BaseType_t eep_set_ESN_number
     (
     uint32_t* number_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_ESN_number
+BaseType_t eep_get_ESN_number
     (
     uint32_t* number_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_id_page_lock
+BaseType_t eep_set_id_page_lock
     (
     uint8_t* is_lock,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_BT_en
+BaseType_t eep_set_BT_en
     (
     uint8_t* is_en_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_BT_en
+BaseType_t eep_get_BT_en
     (
     uint8_t* is_en_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_BT_auto_conn
+BaseType_t eep_set_BT_auto_conn
     (
     uint8_t* is_auto_conn_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_BT_auto_conn
+BaseType_t eep_get_BT_auto_conn
     (
     uint8_t* is_auto_conn_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_last_page
+BaseType_t eep_set_last_page
     (
     uint8_t* page_num_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_last_page
+BaseType_t eep_get_last_page
     (
     uint8_t* page_num_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_language
+BaseType_t eep_set_language
     (
     uint8_t* language_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_language
+BaseType_t eep_get_language
     (
     uint8_t* language_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_start_burn_in
+BaseType_t eep_set_start_burn_in
     (
     uint8_t* start_burn_in_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_start_burn_in
+BaseType_t eep_get_start_burn_in
     (
     uint8_t* start_burn_in_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_burn_in_result
+BaseType_t eep_set_burn_in_result
     (
     uint8_t* burn_in_result_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_burn_in_result
+BaseType_t eep_get_burn_in_result
     (
     uint8_t* burn_in_result_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_bd_address
+BaseType_t eep_set_bd_address
     (
     uint8_t* bd_address_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_bd_address
+BaseType_t eep_get_bd_address
     (
     uint8_t* bd_address_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_burn_in_time
+BaseType_t eep_set_burn_in_time
     (
     uint32_t* burn_in_time_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_burn_in_time
+BaseType_t eep_get_burn_in_time
     (
     uint32_t* burn_in_time_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_burn_in_target_time
+BaseType_t eep_set_burn_in_target_time
     (
     uint32_t* burn_in_target_time_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_burn_in_target_time
+BaseType_t eep_get_burn_in_target_time
     (
     uint32_t* burn_in_target_time_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_ccu_id
+BaseType_t eep_set_ccu_id
     (
     uint32_t* ccu_id_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_ccu_id
+BaseType_t eep_get_ccu_id
     (
     uint32_t* ccu_id_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_passkey
+BaseType_t eep_set_passkey
     (
     uint32_t* pass_key_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_passkey
+BaseType_t eep_get_passkey
     (
     uint32_t* pass_key_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_dummy
+BaseType_t eep_set_dummy
     (
     uint16_t* dummy_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_dummy
+BaseType_t eep_get_dummy
     (
     uint16_t* dummy_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_trip_time
+BaseType_t eep_set_trip_time
     (
     uint32_t* trip_time_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_trip_time
+BaseType_t eep_get_trip_time
     (
     uint32_t* trip_time_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_mode
+BaseType_t eep_set_mode
     (
     uint8_t* operation_mode_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_mode
+BaseType_t eep_get_mode
     (
     uint8_t* operation_mode_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_set_supported_function
+BaseType_t eep_set_supported_function
     (
     uint8_t* sup_func_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void eep_get_supported_function
+BaseType_t eep_get_supported_function
     (
     uint8_t* sup_func_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_clk_auto_adjustment
+    (
+    uint8_t* auto_adjustment_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_clk_auto_adjustment
+    (
+    uint8_t* auto_adjustment_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 

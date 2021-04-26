@@ -101,7 +101,7 @@ void PERIPHERAL_init
     void
     );
 
-void PERIPHERAL_i2c_write_data
+BaseType_t PERIPHERAL_i2c_write_data
     (
     uint8_t  device_addr,
     uint8_t* data,
@@ -111,7 +111,7 @@ void PERIPHERAL_i2c_write_data
     void ( *callback_func_ptr ) ( status_t )
     );
 
-void PERIPHERAL_i2c_read_data
+BaseType_t PERIPHERAL_i2c_read_data
     (
     uint8_t  device_addr,
     uint8_t* data,

@@ -40,6 +40,7 @@ extern "C" {
 #define TRIP_TIME_LENGTH                     ( 4 )
 #define OPERATION_MODE_LENGTH                ( 1 )
 #define SUPPORTED_FUNCTION_LENGTH            ( 6 )
+#define CLOCK_AUTO_ADJUSTMENT_LENGTH         ( 1 )
 
 #define EEPROM_INVALID_VAL_1_BYTE            ( 0xFF )
 #define EEPROM_INVALID_VAL_2_BYTE            ( 0xFFFF )
@@ -64,6 +65,7 @@ typedef uint8_t EEPM_block_config_type; enum
     EEPM_BLOCK_CONFIG_TRIP_TIME,
     EEPM_BLOCK_CONFIG_OPERATION_MODE,
     EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION,
+    EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT,
 
     EEPM_BLOCK_CONFIG_CNT
     };
@@ -277,6 +279,16 @@ BaseType_t EEPM_get_supported_function
     void (*callback_ptr)(bool, void*)
     );
 
+BaseType_t EEPM_set_clk_auto_adjustment
+    (
+    uint8_t auto_adjustment,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_clk_auto_adjustment
+    (
+    void (*callback_ptr)(bool, void*)
+    );
 #ifdef __cplusplus
 }
 #endif
