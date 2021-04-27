@@ -55,6 +55,7 @@
 #include "can_mid.h"
 #include "CAN_pub.h"
 #include "CAN_app.h"
+#include "client_ble_cmd.h"
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -213,7 +214,7 @@ if( p_rmd->data[0] == 0xAA )
     }
 else if(p_rmd->data[0] == 0xFF && (p_rmd->data[1] == 0xFF) )
     {
-    client_appl_ble_req_command_dispatch(rx_cmd, data_length, nm_simu_ble_data );
+    client_ble_cmd_enter_queue(rx_cmd, data_length, nm_simu_ble_data );
     }
 else
     {

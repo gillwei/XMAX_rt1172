@@ -103,5 +103,10 @@ extern client_ReturnType client_mem_reset_data
     void
     );
 
+uint16  client_mem_get_iden_data_storage_length
+    (
+    void
+    );
+
 #endif
 

@@ -16,6 +16,8 @@
 #include "can_tp.h"
 #include "client_dcm_appl.h"
 #include "client_mem.h"
+#include "client_ble_cmd.h"
+
 uint32 os_task_time = 0;
 
 /*--------------------------------------------------------------------
@@ -658,7 +660,9 @@ if( is_client_diag_state( CLIENT_DIAG_STATE_IDLE ) )
     {
     client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_READ_DTC_STATUS_SERVICE_ID;
     client_diag_msg_context.req_data[BYTE_NUM_1] = status_code;
-    client_diag_msg_context.req_data_len = 0x02;
+    client_diag_msg_context.req_data[BYTE_NUM_2] = 0xFF;
+    client_diag_msg_context.req_data[BYTE_NUM_3] = 0xFF;
+    client_diag_msg_context.req_data_len = 0x04;
     client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
     return_value = client_diag_tx_wrapper( channel_id );
     }
@@ -803,6 +807,7 @@ void client_diag_init
     can_hw_inst_t   const hw_inst           //!< [in] CAN hardware instance
     )
 {
+client_ble_cmd_init();
 if( CAN_CONTROLLER_2 == hw_inst )
     {
     client_dcm_init();

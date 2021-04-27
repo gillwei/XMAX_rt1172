@@ -208,15 +208,16 @@ if( TRUE == client_mem_read_init_dtc_data[channel_id].empty_flag)
     }
 else if( TRUE == client_mem_read_init_dtc_data[channel_id].overflow_flag )
     {
-    *result = CLIENT_MEM_OVERFLOW;
+    *result = E_NOT_OK;
     }
 else
     {
-    *result = CLIENT_MEM_NORMAL;
+    *result = E_NOT_OK;
     }
 
 *resp_length = client_mem_read_init_dtc_data[channel_id].length;
 *resp_data =  client_mem_read_init_dtc_data[channel_id].mem_data;
+*result = E_OK;
 
 return E_OK;
 }
@@ -270,7 +271,7 @@ if( 0x0000 < client_mem_indentifier_data.length )
     {
     client_mem_indentifier_data.empty_flag = FALSE;
     }
-PRINTF("current storage length %d \r\n", client_mem_indentifier_data.length );
+PRINTF("client_mem_storage_identifier_data - current storage length %d \r\n", client_mem_indentifier_data.length );
 
 return E_OK;
 }
@@ -310,6 +311,23 @@ else
 return E_OK;
 }
 
+
+uint16  client_mem_get_iden_data_storage_length
+    (
+    void
+    )
+{
+if( TRUE == client_mem_indentifier_data.empty_flag)
+    {
+    return 0;
+    }
+else
+    {
+    return client_mem_indentifier_data.length;
+    }
+}
+
+
  /*!******************************************************************************
  *
  * @public
@@ -324,26 +342,7 @@ return E_OK;
      )
  {
  client_ReturnType return_value = 1;
-
- uint32 index = 0;
- switch( command )
-     {
-     case 0x010B:
-     PRINTF("Read Comman data %d byte \r\n", size);
-     }
-
- for(; index < size; )
-     {
-     PRINTF("%X ", data[index]);
-     index++;
-     if( 0 == (index % 30))
-         {
-         PRINTF("\r\n");
-         }
-     }
- PRINTF("\r\nsend data end \r\n");
-
- BC_motocon_send_can_related_data( command, size, data, &client_appl_cmd_rsp_result_notify );
+ client_appl_response_can_related_data( command, size, data, &client_appl_cmd_rsp_result_notify );
  return return_value;
  }
 

@@ -97,7 +97,7 @@ client_appl_request_frame_type curr_dtc_status_frame;
 client_appl_request_frame_type next_req_dtc_status_frame;
 uint8 nrc_resend_timer;
 uint8 timeout_resend_timer;
-process_flow_result_type peocess_result;
+process_flow_result_type process_result;
 }client_appl_detect_connected_server_infos_type;
 
 typedef struct
@@ -108,7 +108,7 @@ client_appl_request_frame_type curr_dtc_status_frame;
 client_appl_request_frame_type next_req_dtc_status_frame;
 uint8 resend_timer;
 uint8 receive_SNS_timer;
-process_flow_result_type peocess_result;
+process_flow_result_type process_result;
 boolean is_cycle_transmission;
 uint16 cycle_tarns_interval_time;
 boolean is_storge_init_dtc;/*This parameter shall be puted in the last*/
@@ -125,7 +125,7 @@ client_appl_request_frame_type curr_req_frame;
 client_appl_request_frame_type next_req_frame;
 uint8 resend_timer;
 uint8 receive_SNS_timer;
-process_flow_result_type peocess_result;
+process_flow_result_type process_result;
 }client_appl_read_data_by_comon_id_type;
 
 typedef struct
@@ -140,7 +140,7 @@ client_appl_request_frame_type curr_req_frame;
 client_appl_request_frame_type next_req_frame;
 uint8 resend_timer;
 uint8 receive_SNS_timer;
-process_flow_result_type peocess_result;
+process_flow_result_type process_result;
 boolean is_cycle_transmission;
 uint32 cycle_tarns_interval_time;
 }client_appl_read_data_by_local_id_type;
@@ -158,7 +158,7 @@ client_appl_request_frame_type curr_request_frame;
 client_appl_request_frame_type next_request_frame;
 uint8 resend_timer;
 uint8 receive_SNS_timer;
-process_flow_result_type peocess_result;
+process_flow_result_type process_result;
 }client_appl_read_freeze_frame_data_type;
 
 
@@ -251,6 +251,14 @@ extern void client_appl_cmd_rsp_result_notify
     (
     const uint8 vlaue
     );
+
+extern void client_appl_response_can_related_data
+   (
+   const uint16 command,
+   const uint32_t                  size,
+   const uint8_t*                  data,
+   void ( *result_callback )( const uint8 )
+   );
 #endif
 
 
