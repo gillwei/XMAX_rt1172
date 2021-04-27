@@ -250,7 +250,8 @@ typedef enum
   EnumVehicleRxTypeSUPPORT_FUNC_GRIP_WARMER = 42,
   EnumVehicleRxTypeSUPPORT_FUNC_SEAT_HEATER = 43,
   EnumVehicleRxTypeSUPPORT_FUNC_WIND_SCREEN = 44,
-  EnumVehicleRxTypeSUPPORT_FUNC_AIR_TEMPERATURE = 45
+  EnumVehicleRxTypeSUPPORT_FUNC_AIR_TEMPERATURE = 45,
+  EnumVehicleRxTypeYDT_DETECTED         = 46
 } EnumVehicleRxType;
 
 /* User defined enumeration: 'Enum::VehicleTxType' */

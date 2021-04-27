@@ -1,0 +1,70 @@
+﻿$version 10.00
+
+$rect <20,20,220,60>
+$output false
+class YDT01_Main : Components::BaseMainBG
+{
+  $rect <10,290,210,330>
+  inherited method Init()
+  {
+    trace "Init YDT01";
+    PushButton.PassEnterKey = true;
+    DisableTimer.Enabled = true;
+
+  }
+
+  $rect <520,190,720,230>
+  inherited method OnShortEnterKeyActivated()
+  {
+  }
+
+  $rect <520,80,720,120>
+  inherited method OnShortHomeKeyActivated()
+  {
+    // ignore short home key event
+  }
+
+  $rect <520,130,720,170>
+  inherited method OnLongHomeKeyActivated()
+  {
+    // ignore long home key event
+  }
+
+  $rect <20,20,160,60>
+  object Menu::PushButton PushButton
+  {
+    preset Bounds = <165,219,315,259>;
+    preset Title = Strings::GEN_OK;
+    preset OnActivate = OnOkSelectedSlot;
+  }
+
+  $rect <230,290,430,330>
+  slot OnOkSelectedSlot
+  {
+    DismissThisDialog();
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <10,46,470,201>;
+    preset WrapText = true;
+    preset String = Strings::YDT01_MESSAGE;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <460,290,660,330>
+  object Core::Timer DisableTimer
+  {
+    preset OnTrigger = OnDisableSlot;
+    preset Period = 0;
+    preset Begin = 1000;
+  }
+
+  $rect <460,340,660,380>
+  slot OnDisableSlot
+  {
+    DisableTimer.Enabled = false;
+    PushButton.PassEnterKey = false;
+  }
+}

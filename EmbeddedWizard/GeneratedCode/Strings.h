@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/04/19 14:39:30 */
+   Generated: 2021/04/27 17:52:20 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -399,6 +399,9 @@ extern const XStringRes StringsUNT05_UNIT_TEMPERATURE_F;
 
 /* User defined constant: 'Strings::WSC01_WIND_SCREEN' */
 extern const XStringRes StringsWSC01_WIND_SCREEN;
+
+/* User defined constant: 'Strings::YDT01_MESSAGE' */
+extern const XStringRes StringsYDT01_MESSAGE;
 
 /* User defined constant: 'Strings::DEV_TEST_CHINESE' */
 extern const XStringRes StringsDEV_TEST_CHINESE;

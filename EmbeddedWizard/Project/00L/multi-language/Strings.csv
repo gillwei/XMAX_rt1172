@@ -169,6 +169,8 @@ UNT04_UNIT_PRESSURE_KGF,kgf/cm²,,,,,,,
 UNT05_UNIT_TEMPERATURE_C,℃,,,,,,,
 UNT05_UNIT_TEMPERATURE_F,℉,,,,,,,
 WSC01_WIND_SCREEN,Wind Screen,,,,,,,
+YDT01_MESSAGE,"YDT / GST device connection has been detected.
+Some functions are limited.",,,,,,,
 DEV_TEST_CHINESE,台灣國際航電台湾国际航电，；。（）［］？！＼／０１２３４５６７８９,,,,,,,
 DEV_TEST_JAPANESE,"あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん
 がぎぐげござじずぜぞばびぶべぼぱぴぷぺぽ

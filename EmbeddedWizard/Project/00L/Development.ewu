@@ -70,6 +70,7 @@ class DEV_Main : Menu::BaseMenuView
         PresentDialog( InspectionDialog, null, null, null, null, null, null, null, null, false );
       }
       case 10: PresentDialog( new Development::DEV_EEPROMTest, null, null, null, null, null, null, null, null, false );
+      case 11: PresentDialog( new YDT::YDT01_Main, null, null, null, null, null, null, null, null, false );
       default:;
     }
   }
@@ -96,7 +97,7 @@ class DEV_Main : Menu::BaseMenuView
   }
 
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 11 ] =
+  array string ItemTitleArray[ 12 ] =
   (
     Default[0] = "Factory Mode";
     Default[1] = "Hopper Test Mode";
@@ -109,6 +110,7 @@ class DEV_Main : Menu::BaseMenuView
     Default[8] = "Font Test";
     Default[9] = "Inspection Test";
     Default[10] = "EEPROM Test";
+    Default[11] = "YDT Test";
   );
 
   $reorder HideFocusFrameTimer 1

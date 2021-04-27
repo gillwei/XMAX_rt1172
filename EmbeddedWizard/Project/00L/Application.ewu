@@ -554,4 +554,32 @@ class Application : Core::Root
     }
     SwitchToHome( MeterHomeType );
   }
+
+  // YDT
+  note group PhoneNote1
+  {
+    attr Bounds = <330,910,620,1120>;
+  }
+
+  $rect <334,970,614,1010>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <334,1020,614,1060>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = (DeviceInterface::VehicleDataClass)VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData &&
+        Enum::VehicleRxType.YDT_DETECTED == VehicleData.RxType &&
+        !DeviceInterface::SystemDevice.IsRunningReset )
+    {
+      var YDT::YDT01_Main YdtDialog = new YDT::YDT01_Main;
+      PresentDialog( YdtDialog, null, null, null, null, null, null, null, null, false );
+    }
+  }
 }

@@ -77,6 +77,7 @@ void VI_rx_support_function_received( const mid_msg_supp_func_t* const support_f
 void VI_rx_reprogram_info_response( const uint8 svc_id, const uint8 svc_data_size, const uint8* svc_data_p );
 void VI_rx_mt_func_cont_info_response( const uint8 svc_id, const uint8 svc_data_size, const uint8* svc_data_p );
 void VI_send_inspection_response( const EnumInspectionMode mode, const uint8_t fainsres );
+void VI_notify_ydt_detected( void );
 
 #ifdef __cplusplus
 }

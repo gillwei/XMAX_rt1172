@@ -39,4 +39,5 @@ EMWIFILES := \
 	TCS.c \
 	Inspection.c \
 	Color.c \
-	Clock.c
+	Clock.c \
+	YDT.c

@@ -119,6 +119,7 @@ EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( CheckOpeningTimer, CoreTimer )
   EW_OBJECT  ( PhoneCallStateChangedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( InspectionModeEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( IsFactoryModeDialogDisplayed, XBool )
   EW_VARIABLE( IsDisclaimerDismissed, XBool )
   EW_PROPERTY( StatusBarVisible, XBool )
@@ -259,6 +260,11 @@ void ApplicationApplication_StopInspection( ApplicationApplication _this );
 
 /* 'C' function for method : 'Application::Application.SwitchToMeterHome()' */
 void ApplicationApplication_SwitchToMeterHome( ApplicationApplication _this );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void ApplicationApplication_OnVehicleDataReceivedSlot( ApplicationApplication _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }

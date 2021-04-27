@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentDEV_Main_H
-#define _DevelopmentDEV_Main_H
+#ifndef _YDTYDT01_Main_H
+#define _YDTYDT01_Main_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,20 +42,15 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuVerticalMenu.h"
+#include "_MenuPushButton.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -87,12 +82,6 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::DEV_Main */
-#ifndef _DevelopmentDEV_Main_
-  EW_DECLARE_CLASS( DevelopmentDEV_Main )
-#define _DevelopmentDEV_Main_
-#endif
-
 /* Forward declaration of the class Effects::Fader */
 #ifndef _EffectsFader_
   EW_DECLARE_CLASS( EffectsFader )
@@ -105,20 +94,22 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBase */
-#ifndef _MenuItemBase_
-  EW_DECLARE_CLASS( MenuItemBase )
-#define _MenuItemBase_
+/* Forward declaration of the class YDT::YDT01_Main */
+#ifndef _YDTYDT01_Main_
+  EW_DECLARE_CLASS( YDTYDT01_Main )
+#define _YDTYDT01_Main_
 #endif
 
 
-/* Deklaration of class : 'Development::DEV_Main' */
-EW_DEFINE_FIELDS( DevelopmentDEV_Main, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [12])
-EW_END_OF_FIELDS( DevelopmentDEV_Main )
+/* Deklaration of class : 'YDT::YDT01_Main' */
+EW_DEFINE_FIELDS( YDTYDT01_Main, ComponentsBaseMainBG )
+  EW_OBJECT  ( PushButton,      MenuPushButton )
+  EW_OBJECT  ( Text,            ViewsText )
+  EW_OBJECT  ( DisableTimer,    CoreTimer )
+EW_END_OF_FIELDS( YDTYDT01_Main )
 
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_Main' */
-EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'YDT::YDT01_Main' */
+EW_DEFINE_METHODS( YDTYDT01_Main, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -165,47 +156,42 @@ EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( YDTYDT01_Main _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( YDTYDT01_Main _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongHomeKeyActivated, void )( YDTYDT01_Main _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_Main _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_Main _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_Main _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_Main _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( DevelopmentDEV_Main )
+EW_END_OF_METHODS( YDTYDT01_Main )
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemClass()' */
-XClass DevelopmentDEV_Main_LoadItemClass( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void YDTYDT01_Main_Init( YDTYDT01_Main _this, XHandle aArg );
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemTitle()' */
-XString DevelopmentDEV_Main_LoadItemTitle( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'YDT::YDT01_Main.OnShortEnterKeyActivated()' */
+void YDTYDT01_Main_OnShortEnterKeyActivated( YDTYDT01_Main _this );
 
-/* 'C' function for method : 'Development::DEV_Main.OnItemActivate()' */
-void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItemNo, 
-  MenuItemBase aMenuItem );
+/* 'C' function for method : 'YDT::YDT01_Main.OnShortHomeKeyActivated()' */
+void YDTYDT01_Main_OnShortHomeKeyActivated( YDTYDT01_Main _this );
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemChecked()' */
-XBool DevelopmentDEV_Main_LoadItemChecked( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'YDT::YDT01_Main.OnLongHomeKeyActivated()' */
+void YDTYDT01_Main_OnLongHomeKeyActivated( YDTYDT01_Main _this );
+
+/* 'C' function for method : 'YDT::YDT01_Main.OnOkSelectedSlot()' */
+void YDTYDT01_Main_OnOkSelectedSlot( YDTYDT01_Main _this, XObject sender );
+
+/* 'C' function for method : 'YDT::YDT01_Main.OnDisableSlot()' */
+void YDTYDT01_Main_OnDisableSlot( YDTYDT01_Main _this, XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentDEV_Main_H */
+#endif /* _YDTYDT01_Main_H */
 
 /* Embedded Wizard */

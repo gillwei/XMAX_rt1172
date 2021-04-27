@@ -520,6 +520,9 @@ enum VehicleRxType
 
   $rect <850,260,1050,300>
   item SUPPORT_FUNC_AIR_TEMPERATURE;
+
+  $rect <850,310,1050,350>
+  item YDT_DETECTED;
 }
 
 $rect <260,270,460,310>

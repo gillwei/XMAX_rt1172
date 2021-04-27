@@ -69,7 +69,7 @@ note group Note3
 // Project Units
 note group Note5
 {
-  attr Bounds = <270,140,730,1000>;
+  attr Bounds = <270,140,730,1050>;
 }
 
 // This is a profile member for the project. This profile controls the code generation \
@@ -312,6 +312,12 @@ unit Color
 
 $rect <520,950,720,990>
 unit Clock
+{
+  attr Directory = .\;
+}
+
+$rect <290,1000,490,1040>
+unit YDT
 {
   attr Directory = .\;
 }

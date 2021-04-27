@@ -35,6 +35,7 @@
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
+#include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectSlideTransitionNoFade.h"
 #include "_EffectsTransition.h"
@@ -59,6 +60,7 @@
 #include "_TelephoneTEL01_IncomingCall.h"
 #include "_TopTOP01_Disclaimer.h"
 #include "_ViewsRectangle.h"
+#include "_YDTYDT01_Main.h"
 #include "Application.h"
 #include "Color.h"
 #include "DeviceInterface.h"
@@ -103,6 +105,7 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreTimer__Init( &_this->CheckOpeningTimer, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->InspectionModeEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( ApplicationApplication );
@@ -136,6 +139,9 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   _this->InspectionModeEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnInspectionModeEventSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->InspectionModeEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->InspectionModeSystemEvent );
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
 
   /* Call the user defined constructor */
   ApplicationApplication_Init( _this, aArg );
@@ -156,6 +162,7 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
   CoreTimer__ReInit( &_this->CheckOpeningTimer );
   CoreSystemEventHandler__ReInit( &_this->PhoneCallStateChangedEventHandler );
   CoreSystemEventHandler__ReInit( &_this->InspectionModeEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
 }
 
 /* Finalizer method for the class 'Application::Application' */
@@ -173,6 +180,7 @@ void ApplicationApplication__Done( ApplicationApplication _this )
   CoreTimer__Done( &_this->CheckOpeningTimer );
   CoreSystemEventHandler__Done( &_this->PhoneCallStateChangedEventHandler );
   CoreSystemEventHandler__Done( &_this->InspectionModeEventHandler );
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   CoreRoot__Done( &_this->_Super );
@@ -806,6 +814,27 @@ void ApplicationApplication_SwitchToMeterHome( ApplicationApplication _this )
   }
 
   ApplicationApplication_SwitchToHome( _this, MeterHomeType );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void ApplicationApplication_OnVehicleDataReceivedSlot( ApplicationApplication _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if ((( VehicleData != 0 ) && ( EnumVehicleRxTypeYDT_DETECTED == VehicleData->RxType )) 
+      && !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsRunningReset )
+  {
+    YDTYDT01_Main YdtDialog = EwNewObject( YDTYDT01_Main, 0 );
+    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)YdtDialog ), 0, 0, 0, 
+    0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
 }
 
 /* Variants derived from the class : 'Application::Application' */

@@ -40,6 +40,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "factory_test.h"
+#include "VI_pub.h"
 
 /*--------------------------------------------------------------------
                             MACROS
@@ -312,6 +313,7 @@ if( p_rmd != NULL )
             {
             /* for detecting ydt online */
             client_appl_set_ydt_connect_state( TRUE );
+            VI_notify_ydt_detected();
             }
         else
             {

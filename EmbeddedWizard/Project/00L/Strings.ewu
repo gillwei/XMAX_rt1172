@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/04/19 14:39:30
+// Generated: 2021/04/27 17:52:20
 
 $output false
 const string ARGUMENT_STR =
@@ -966,6 +966,12 @@ $output false
 const string WSC01_WIND_SCREEN =
 (
   Default = "Wind Screen";
+);
+
+$output false
+const string YDT01_MESSAGE =
+(
+  Default = "YDT / GST device connection has been detected.\nSome functions are limited.";
 );
 
 $output false

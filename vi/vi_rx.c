@@ -776,6 +776,22 @@ return ( ( rx_vehicle_supported_functions >> function ) & 0x1 );
 /*********************************************************************
 *
 * @public
+* VI_notify_ydt_detected
+*
+* Notify if the YDT is detected
+*
+*********************************************************************/
+void VI_notify_ydt_detected
+    (
+    void
+    )
+{
+EW_notify_vi_data_received( EnumVehicleRxTypeYDT_DETECTED );
+}
+
+/*********************************************************************
+*
+* @public
 * VI_get_rx_data_uint
 *
 * Get vehicle rx data of uint32 type
