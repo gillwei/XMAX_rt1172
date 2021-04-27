@@ -505,11 +505,35 @@ EW_RES_WITHOUT_VARIANTS( ResourceOpeningFadeIn )
 /* Table with links to derived variants of the bitmap resource : 'Resource::OpeningFadeOut' */
 EW_RES_WITHOUT_VARIANTS( ResourceOpeningFadeOut )
 
+/* Include a file containing the bitmap resource : 'Resource::SafeCamEU' */
+#include "_ResourceSafeCamEU.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamEU' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeCamEU )
+
 /* Include a file containing the bitmap resource : 'Resource::NaviShadowLine' */
 #include "_ResourceNaviShadowLine.h"
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::NaviShadowLine' */
 EW_RES_WITHOUT_VARIANTS( ResourceNaviShadowLine )
+
+/* Include a file containing the bitmap resource : 'Resource::SafeCamMobileEU' */
+#include "_ResourceSafeCamMobileEU.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamMobileEU' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeCamMobileEU )
+
+/* Include a file containing the bitmap resource : 'Resource::SafeCamMobileNA' */
+#include "_ResourceSafeCamMobileNA.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamMobileNA' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeCamMobileNA )
+
+/* Include a file containing the bitmap resource : 'Resource::SafeCamRedLight' */
+#include "_ResourceSafeCamRedLight.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamRedLight' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeCamRedLight )
 
 /* Include a file containing the bitmap resource : 'Resource::SpeedLimitIcon' */
 #include "_ResourceSpeedLimitIcon.h"
@@ -541,6 +565,12 @@ EW_RES_WITHOUT_VARIANTS( ResourceZoomInDayFocusIcon )
 /* Table with links to derived variants of the bitmap resource : 'Resource::SafeAvrgCamEU' */
 EW_RES_WITHOUT_VARIANTS( ResourceSafeAvrgCamEU )
 
+/* Include a file containing the bitmap resource : 'Resource::SafeCamVariableEU' */
+#include "_ResourceSafeCamVariableEU.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamVariableEU' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeCamVariableEU )
+
 /* Include a file containing the bitmap resource : 'Resource::ZoomOutDayFocusIcon' */
 #include "_ResourceZoomOutDayFocusIcon.h"
 
@@ -564,6 +594,24 @@ EW_RES_WITHOUT_VARIANTS( ResourceCurRdIcon )
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamTempEU' */
 EW_RES_WITHOUT_VARIANTS( ResourceSafeCamTempEU )
+
+/* Include a file containing the bitmap resource : 'Resource::SafeCamLifemobileEU' */
+#include "_ResourceSafeCamLifemobileEU.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamLifemobileEU' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeCamLifemobileEU )
+
+/* Include a file containing the bitmap resource : 'Resource::SafeCamRealTimeEU' */
+#include "_ResourceSafeCamRealTimeEU.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamRealTimeEU' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeCamRealTimeEU )
+
+/* Include a file containing the bitmap resource : 'Resource::SafeCamRiskZone' */
+#include "_ResourceSafeCamRiskZone.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamRiskZone' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeCamRiskZone )
 
 /* Include a file containing the bitmap resource : 'Resource::ZoomOutNightFocusIcon' */
 #include "_ResourceZoomOutNightFocusIcon.h"
@@ -868,5 +916,11 @@ EW_RES_WITHOUT_VARIANTS( ResourceClockColon )
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::ClockDayTimeText' */
 EW_RES_WITHOUT_VARIANTS( ResourceClockDayTimeText )
+
+/* Include a file containing the bitmap resource : 'Resource::SafeCamSchoolZone' */
+#include "_ResourceSafeCamSchoolZone.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamSchoolZone' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeCamSchoolZone )
 
 /* Embedded Wizard */

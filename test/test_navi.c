@@ -235,6 +235,7 @@ typedef enum
         uint8_t* str,
         uint8_t str_size,
         navi_event_type navi_event_type,
+        navi_event_camera_type navi_camera_type,
         uint8_t visibility
         )
     {
@@ -275,12 +276,13 @@ typedef enum
                 }
             }
         event.event_type = navi_event_type;
+        event.camera_type = navi_camera_type;
         event.visibility = visibility;
         event.desc_size = str_size;
 
         navi_data_obj.navi_event = event;
 
-        PRINTF( "Event update: %s, %d, %d, %d\r\n", str, str_size, navi_event_type, visibility );
+        PRINTF( "Event update: %s, %d, %d, %d, %d\r\n", str, str_size, navi_event_type, navi_camera_type, visibility );
         EW_notify_navi_event_update();
         }
     else
@@ -404,7 +406,7 @@ typedef enum
                     else
                     {
                     daynight_mode = 1;
-                    } 
+                    }
                 }
                 break;
             case TEST_NAVI_EVENT:
@@ -414,7 +416,7 @@ typedef enum
                     {
                     is_navi_event_sent = true;
                     is_route_guidance_started = true;
-                    test_navi_event( navi_event_message, strlen( ( char* ) navi_event_message ), NAVIEVENT_TYPE_CAMERA, 1 );
+                    test_navi_event( navi_event_message, strlen( ( char* ) navi_event_message ), NAVIEVENT_TYPE_CAMERA, NAVI_CAM_TYPE_USER, 1 );
                     }
                 }
                 break;

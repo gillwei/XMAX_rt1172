@@ -1167,7 +1167,48 @@ enum Language
   item TOTAL;
 }
 
-$rect <960,420,1160,460>
+$rect <500,570,700,610>
+$output false
+enum NaviCameraType
+{
+  $rect <10,10,210,50>
+  item CHECK_FIXED;
+
+  $rect <220,10,420,50>
+  item CHECK_TEMPORARY;
+
+  $rect <430,10,630,50>
+  item MOBILE;
+
+  $rect <10,70,210,110>
+  item AVERAGE;
+
+  $rect <220,70,420,110>
+  item VARIABLE;
+
+  $rect <430,70,630,110>
+  item RED_LIGHT;
+
+  $rect <10,130,210,170>
+  item USER;
+
+  $rect <220,130,420,170>
+  item MOBILE_ZONE;
+
+  $rect <430,130,630,170>
+  item DANGEROUS_ZONE;
+
+  $rect <10,190,210,230>
+  item DANGEROUS_POINT;
+
+  $rect <220,190,420,230>
+  item RISK_ZONE;
+
+  $rect <430,190,630,230>
+  item UNKNOWN;
+}
+
+$rect <30,630,230,670>
 $output false
 enum TimeType
 {

@@ -350,7 +350,10 @@ class NAV01_DefaultView : Home::BaseHome
 
     if( NaviData.NaviEventVisibility )
     {
-      NaviEventObject.SetupAlert( NaviData.NaviEventType, NaviData.NaviEventSpeed, NaviData.NaviEventDist );
+      var Enum::NaviAlertType NaviEvent = ( Enum::NaviAlertType )NaviData.NaviEventType;
+      var Enum::NaviCameraType NaviCamera = ( Enum::NaviCameraType )NaviData.NaviCameraType;
+
+      NaviEventObject.SetAlert( NaviEvent, NaviCamera, NaviData.NaviEventSpeed, NaviData.NaviEventDist );
       NaviEventEnLargeEffect.Enabled = true;
     }
   }
@@ -1027,12 +1030,11 @@ class NaviAlert : Core::Group
   property slot DismissAlertSignal;
 
   $rect <240,140,440,180>
-  method void SetupAlert( arg int32 aNaviEventType, arg string aNaviEventSpeed, arg string aNaviEventDist )
+  method void SetAlert( arg Enum::NaviAlertType aNaviEventType, arg Enum::NaviCameraType aNaviCameraType, arg string aNaviEventSpeed, arg string aNaviEventDist )
   {
-    // TODO: Handle different type of alert.
     switch( aNaviEventType )
     {
-      case ( int32 )Enum::NaviAlertType.SCHOOL:
+      case Enum::NaviAlertType.SCHOOL:
       {
         if( AlertMessage.NaviSpeed.Visible )
         {
@@ -1044,12 +1046,12 @@ class NaviAlert : Core::Group
            AlertMessage.NaviSpeedUnit.Visible = false;
         }
 
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamTempEU;
-        AlertMessage.EventType.String = "School Zone";
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamSchoolZone;
+        AlertMessage.EventType.String = Strings::NAV01_SCHOOL_ZONE;
         AlertMessage.NaviEventBg.Color = #E27F07FF;
         NaviDistBg.Color = #E27F07FF;
       }
-      case ( int32 )Enum::NaviAlertType.CAMERA:
+      case Enum::NaviAlertType.CAMERA:
       {
         if( !AlertMessage.NaviSpeed.Visible )
         {
@@ -1061,8 +1063,7 @@ class NaviAlert : Core::Group
            AlertMessage.NaviSpeedUnit.Visible = true;
         }
 
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeAvrgCamEU;
-        AlertMessage.EventType.String = "Average Speed Camera";
+        SetCamera( aNaviCameraType );
         AlertMessage.NaviEventBg.Color = #AA1415FF;
         NaviDistBg.Color = #AA1415FF;
       }
@@ -1134,6 +1135,70 @@ class NaviAlert : Core::Group
     IsShrinkFinished = true;
     SuspendTimer.Period = 3000;
     SuspendTimer.Enabled = true;
+  }
+
+  $rect <240,190,440,230>
+  method void SetCamera( arg Enum::NaviCameraType aNaviCameraType )
+  {
+    switch( aNaviCameraType )
+    {
+      case Enum::NaviCameraType.CHECK_FIXED:
+      {
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamEU;
+        AlertMessage.EventType.String = Strings::NAV01_CHECK_FIXED;
+      }
+      case Enum::NaviCameraType.CHECK_TEMPORARY:
+      {
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamTempEU;
+        AlertMessage.EventType.String = Strings::NAV01_CHECK_TEMPORARY;
+      }
+      case Enum::NaviCameraType.MOBILE:
+      {
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamMobileEU;
+        AlertMessage.EventType.String = Strings::NAV01_MOBILE;
+      }
+      case Enum::NaviCameraType.AVERAGE:
+      {
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeAvrgCamEU;
+        AlertMessage.EventType.String = Strings::NAV01_AVERAGE;
+      }
+      case Enum::NaviCameraType.VARIABLE:
+      {
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamVariableEU;
+        AlertMessage.EventType.String = Strings::NAV01_VARIABLE;
+      }
+      case Enum::NaviCameraType.RED_LIGHT:
+      {
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamRedLight;
+        AlertMessage.EventType.String = Strings::NAV01_RED_LIGHT;
+      }
+      case Enum::NaviCameraType.USER:
+      {
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamRealTimeEU;
+        AlertMessage.EventType.String = Strings::NAV01_USER;
+      }
+      case Enum::NaviCameraType.MOBILE_ZONE:
+      {
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamLifemobileEU;
+        AlertMessage.EventType.String = Strings::NAV01_MOBILE_ZONE;
+      }
+      case Enum::NaviCameraType.DANGEROUS_ZONE, Enum::NaviCameraType.DANGEROUS_POINT:
+      {
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamRiskZone;
+        AlertMessage.EventType.String = Strings::NAV01_DANGEROUS_ZONE;
+      }
+      case Enum::NaviCameraType.RISK_ZONE:
+      {
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamRiskZone;
+        AlertMessage.EventType.String = Strings::NAV01_RISK_ZONE;
+      }
+      case Enum::NaviCameraType.UNKNOWN:
+      {
+        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamMobileNA;
+        AlertMessage.EventType.String = Strings::NAV01_UNKNOWN;
+      }
+      default:;
+    }
   }
 }
 

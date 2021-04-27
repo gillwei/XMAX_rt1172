@@ -164,13 +164,16 @@ void NavigationNaviAlert_ShrinkAlert( NavigationNaviAlert _this );
 void NavigationNaviAlert_OnSuspendUpdateSlot( NavigationNaviAlert _this, XObject 
   sender );
 
-/* 'C' function for method : 'Navigation::NaviAlert.SetupAlert()' */
-void NavigationNaviAlert_SetupAlert( NavigationNaviAlert _this, XInt32 aNaviEventType, 
-  XString aNaviEventSpeed, XString aNaviEventDist );
+/* 'C' function for method : 'Navigation::NaviAlert.SetAlert()' */
+void NavigationNaviAlert_SetAlert( NavigationNaviAlert _this, XEnum aNaviEventType, 
+  XEnum aNaviCameraType, XString aNaviEventSpeed, XString aNaviEventDist );
 
 /* 'C' function for method : 'Navigation::NaviAlert.OnNaviEventShrinkFinishSlot()' */
 void NavigationNaviAlert_OnNaviEventShrinkFinishSlot( NavigationNaviAlert _this, 
   XObject sender );
+
+/* 'C' function for method : 'Navigation::NaviAlert.SetCamera()' */
+void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCameraType );
 
 #ifdef __cplusplus
   }

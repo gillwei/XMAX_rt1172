@@ -58,6 +58,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceNaviDataClass, XObject )
   EW_VARIABLE( DayNightMode,    XInt32 )
   EW_VARIABLE( SpeedLimit,      XInt32 )
   EW_VARIABLE( NaviEventType,   XInt32 )
+  EW_VARIABLE( NaviCameraType,  XInt32 )
   EW_VARIABLE( NaviEventVisibility, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceNaviDataClass )
 

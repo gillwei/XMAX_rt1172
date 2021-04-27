@@ -205,6 +205,42 @@ extern const XStringRes StringsMNT01_FREE1;
 /* User defined constant: 'Strings::MNT01_FREE2' */
 extern const XStringRes StringsMNT01_FREE2;
 
+/* User defined constant: 'Strings::NAV01_CHECK_FIXED' */
+extern const XStringRes StringsNAV01_CHECK_FIXED;
+
+/* User defined constant: 'Strings::NAV01_CHECK_TEMPORARY' */
+extern const XStringRes StringsNAV01_CHECK_TEMPORARY;
+
+/* User defined constant: 'Strings::NAV01_MOBILE' */
+extern const XStringRes StringsNAV01_MOBILE;
+
+/* User defined constant: 'Strings::NAV01_AVERAGE' */
+extern const XStringRes StringsNAV01_AVERAGE;
+
+/* User defined constant: 'Strings::NAV01_VARIABLE' */
+extern const XStringRes StringsNAV01_VARIABLE;
+
+/* User defined constant: 'Strings::NAV01_RED_LIGHT' */
+extern const XStringRes StringsNAV01_RED_LIGHT;
+
+/* User defined constant: 'Strings::NAV01_USER' */
+extern const XStringRes StringsNAV01_USER;
+
+/* User defined constant: 'Strings::NAV01_MOBILE_ZONE' */
+extern const XStringRes StringsNAV01_MOBILE_ZONE;
+
+/* User defined constant: 'Strings::NAV01_DANGEROUS_ZONE' */
+extern const XStringRes StringsNAV01_DANGEROUS_ZONE;
+
+/* User defined constant: 'Strings::NAV01_RISK_ZONE' */
+extern const XStringRes StringsNAV01_RISK_ZONE;
+
+/* User defined constant: 'Strings::NAV01_UNKNOWN' */
+extern const XStringRes StringsNAV01_UNKNOWN;
+
+/* User defined constant: 'Strings::NAV01_SCHOOL_ZONE' */
+extern const XStringRes StringsNAV01_SCHOOL_ZONE;
+
 /* User defined constant: 'Strings::NAV06_STOP_NAVIGATION' */
 extern const XStringRes StringsNAV06_STOP_NAVIGATION;
 

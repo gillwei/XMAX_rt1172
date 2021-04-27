@@ -264,8 +264,20 @@ EW_DECLARE_BITMAP_RES( ResourceOpeningFadeIn )
 /* Bitmap resource : 'Resource::OpeningFadeOut' */
 EW_DECLARE_BITMAP_RES( ResourceOpeningFadeOut )
 
+/* Bitmap resource : 'Resource::SafeCamEU' */
+EW_DECLARE_BITMAP_RES( ResourceSafeCamEU )
+
 /* Bitmap resource : 'Resource::NaviShadowLine' */
 EW_DECLARE_BITMAP_RES( ResourceNaviShadowLine )
+
+/* Bitmap resource : 'Resource::SafeCamMobileEU' */
+EW_DECLARE_BITMAP_RES( ResourceSafeCamMobileEU )
+
+/* Bitmap resource : 'Resource::SafeCamMobileNA' */
+EW_DECLARE_BITMAP_RES( ResourceSafeCamMobileNA )
+
+/* Bitmap resource : 'Resource::SafeCamRedLight' */
+EW_DECLARE_BITMAP_RES( ResourceSafeCamRedLight )
 
 /* Bitmap resource : 'Resource::SpeedLimitIcon' */
 EW_DECLARE_BITMAP_RES( ResourceSpeedLimitIcon )
@@ -282,6 +294,9 @@ EW_DECLARE_BITMAP_RES( ResourceZoomInDayFocusIcon )
 /* Bitmap resource : 'Resource::SafeAvrgCamEU' */
 EW_DECLARE_BITMAP_RES( ResourceSafeAvrgCamEU )
 
+/* Bitmap resource : 'Resource::SafeCamVariableEU' */
+EW_DECLARE_BITMAP_RES( ResourceSafeCamVariableEU )
+
 /* Bitmap resource : 'Resource::ZoomOutDayFocusIcon' */
 EW_DECLARE_BITMAP_RES( ResourceZoomOutDayFocusIcon )
 
@@ -293,6 +308,15 @@ EW_DECLARE_BITMAP_RES( ResourceCurRdIcon )
 
 /* Bitmap resource : 'Resource::SafeCamTempEU' */
 EW_DECLARE_BITMAP_RES( ResourceSafeCamTempEU )
+
+/* Bitmap resource : 'Resource::SafeCamLifemobileEU' */
+EW_DECLARE_BITMAP_RES( ResourceSafeCamLifemobileEU )
+
+/* Bitmap resource : 'Resource::SafeCamRealTimeEU' */
+EW_DECLARE_BITMAP_RES( ResourceSafeCamRealTimeEU )
+
+/* Bitmap resource : 'Resource::SafeCamRiskZone' */
+EW_DECLARE_BITMAP_RES( ResourceSafeCamRiskZone )
 
 /* Bitmap resource : 'Resource::ZoomOutNightFocusIcon' */
 EW_DECLARE_BITMAP_RES( ResourceZoomOutNightFocusIcon )
@@ -437,6 +461,9 @@ EW_DECLARE_BITMAP_RES( ResourceClockColon )
 
 /* Bitmap resource : 'Resource::ClockDayTimeText' */
 EW_DECLARE_BITMAP_RES( ResourceClockDayTimeText )
+
+/* Bitmap resource : 'Resource::SafeCamSchoolZone' */
+EW_DECLARE_BITMAP_RES( ResourceSafeCamSchoolZone )
 
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_

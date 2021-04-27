@@ -1094,6 +1094,7 @@ DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( D
         case 4:
           {
             NaviData->NaviEventType = navi_obj->navi_event.event_type;
+            NaviData->NaviCameraType = navi_obj->navi_event.camera_type;
             NaviData->NaviEventDist = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.dist, ( int )strlen( navi_obj->navi_event.dist ) );
             NaviData->NaviEventSpeed = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.speed, ( int )strlen( navi_obj->navi_event.speed ) );
             NaviData->NaviEventVisibility = navi_obj->navi_event.visibility;

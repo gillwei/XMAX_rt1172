@@ -973,7 +973,7 @@ $rect <880,1770,1080,1810>
 $output false
 resource Resources::Bitmap SafeCamEU
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_eu.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_eu.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -981,7 +981,7 @@ resource Resources::Bitmap SafeCamEU
   attr bitmapmode Mode = Default;
 }
 
-$rect <860,1940,1060,1980>
+$rect <870,1920,1070,1960>
 $output false
 resource Resources::Bitmap NaviShadowLine
 {
@@ -997,7 +997,7 @@ $rect <450,1820,650,1860>
 $output false
 resource Resources::Bitmap SafeCamMobileEU
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_mobile_eu.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_mobile_eu.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1009,7 +1009,7 @@ $rect <660,1820,860,1860>
 $output false
 resource Resources::Bitmap SafeCamMobileNA
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_mobile_na.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_mobile_na.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1017,11 +1017,11 @@ resource Resources::Bitmap SafeCamMobileNA
   attr bitmapmode Mode = Default;
 }
 
-$rect <450,1880,650,1920>
+$rect <450,1870,650,1910>
 $output false
 resource Resources::Bitmap SafeCamRedLight
 {
-  attr bitmapfile FileName;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_redlight.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1029,11 +1029,11 @@ resource Resources::Bitmap SafeCamRedLight
   attr bitmapmode Mode = Default;
 }
 
-$rect <650,1880,850,1920>
+$rect <660,1870,860,1910>
 $output false
 resource Resources::Bitmap SafeCamRedLightEU
 {
-  attr bitmapfile FileName;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_redlight_eu.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1041,11 +1041,11 @@ resource Resources::Bitmap SafeCamRedLightEU
   attr bitmapmode Mode = Default;
 }
 
-$rect <640,1940,840,1980>
+$rect <660,1920,860,1960>
 $output false
 resource Resources::Bitmap SafeCamVariableNA
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_variable_na.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_variable_na.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1105,7 +1105,7 @@ $rect <460,1770,660,1810>
 $output false
 resource Resources::Bitmap SafeAvrgCamEU
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_avrg_eu.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_avrg_eu.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1113,11 +1113,11 @@ resource Resources::Bitmap SafeAvrgCamEU
   attr bitmapmode Mode = Default;
 }
 
-$rect <440,1940,640,1980>
+$rect <450,1920,650,1960>
 $output false
 resource Resources::Bitmap SafeCamVariableEU
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_variable_eu.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_variable_eu.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1129,7 +1129,7 @@ $rect <670,1770,870,1810>
 $output false
 resource Resources::Bitmap SafeAvrgCamNA
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_avrg_na.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_avrg_na.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1165,7 +1165,7 @@ $rect <870,1820,1070,1860>
 $output false
 resource Resources::Bitmap SafeCamNA
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_na.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_na.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1173,11 +1173,11 @@ resource Resources::Bitmap SafeCamNA
   attr bitmapmode Mode = Default;
 }
 
-$rect <870,1880,1070,1920>
+$rect <870,1870,1070,1910>
 $output false
 resource Resources::Bitmap SafeCamRedLightNA
 {
-  attr bitmapfile FileName;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_redlight_na.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1189,7 +1189,7 @@ $rect <240,1820,440,1860>
 $output false
 resource Resources::Bitmap SafeCamLifemobileNA
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_livemobile_na.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_livemobile_na.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1197,11 +1197,11 @@ resource Resources::Bitmap SafeCamLifemobileNA
   attr bitmapmode Mode = Default;
 }
 
-$rect <240,1880,440,1920>
+$rect <240,1870,440,1910>
 $output false
 resource Resources::Bitmap SafeCamRealTimeNA
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_realtime_na.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_realtime_na.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1209,11 +1209,11 @@ resource Resources::Bitmap SafeCamRealTimeNA
   attr bitmapmode Mode = Default;
 }
 
-$rect <230,1940,430,1980>
+$rect <230,1920,430,1960>
 $output false
 resource Resources::Bitmap SafeCamTempNA
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_temp_na.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_temp_na.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1237,7 +1237,7 @@ $rect <240,1770,440,1810>
 $output false
 resource Resources::Bitmap SafeCamTempEU
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_temp_eu.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_temp_eu.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1249,7 +1249,7 @@ $rect <20,1820,220,1860>
 $output false
 resource Resources::Bitmap SafeCamLifemobileEU
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_livemobile_eu.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_livemobile_eu.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1257,11 +1257,11 @@ resource Resources::Bitmap SafeCamLifemobileEU
   attr bitmapmode Mode = Default;
 }
 
-$rect <20,1880,220,1920>
+$rect <20,1870,220,1910>
 $output false
 resource Resources::Bitmap SafeCamRealTimeEU
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_realtime_eu.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_realtime_eu.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1269,11 +1269,11 @@ resource Resources::Bitmap SafeCamRealTimeEU
   attr bitmapmode Mode = Default;
 }
 
-$rect <20,1940,220,1980>
+$rect <20,1920,220,1960>
 $output false
 resource Resources::Bitmap SafeCamRiskZone
 {
-  attr bitmapfile FileName = .\Res\navi\icon_std_safe_cam_riskzone.png;
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_cam_riskzone.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2731,6 +2731,42 @@ $output false
 resource Resources::Bitmap ClockDayTimeText
 {
   attr bitmapfile FileName = .\Res\clock\daytime_txt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <20,1970,220,2010>
+$output false
+resource Resources::Bitmap SafeCamSchoolZone
+{
+  attr bitmapfile FileName = .\Res\navi\eventicon\icon_std_safe_schoolzone.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1570,460,1770,500>
+$output false
+resource Resources::Bitmap NaviTurnArrwDstntnFlgIrgTbt
+{
+  attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_dstntn_flg_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1570,1050,1770,1090>
+$output false
+resource Resources::Bitmap NaviTurnArrwDstntnFlgIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_dstntn_flg_Irg_28.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;

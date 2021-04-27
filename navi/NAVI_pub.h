@@ -22,6 +22,7 @@ extern "C"{
 #define MAX_TBT_DESCRIPTION_SIZE     ( 64 )
 #define MAX_TBT_DIST_UNIT_SIZE       ( 16 )
 
+// TODO: Once navilite protocol defines event & camera type, we will reuse them and remove the following event & camera enum.
 typedef enum
     {
     NAVIEVENT_TYPE_TRAFFIC,
@@ -32,9 +33,26 @@ typedef enum
     NAVIEVENT_TYPE_OTHER
     } navi_event_type;
 
+typedef enum
+    {
+    NAVI_CAM_TYPE_CHECK_FIXED,
+    NAVI_CAM_TYPE_CHECK_TEMPORARY,
+    NAVI_CAM_TYPE_MOBILE,
+    NAVI_CAM_TYPE_AVERAGE,
+    NAVI_CAM_TYPE_VARIABLE,
+    NAVI_CAM_TYPE_RED_LIGHT,
+    NAVI_CAM_TYPE_USER,
+    NAVI_CAM_TYPE_MOBILE_ZONE,
+    NAVI_CAM_TYPE_DANGEROUS_ZONE,
+    NAVI_CAM_TYPE_DANGEROUS_POINT,
+    NAVI_CAM_TYPE_RISK_ZONE,
+    NAVI_CAM_TYPE_UNKNOWN
+    } navi_event_camera_type;
+
 typedef struct
     {
     navi_event_type event_type;
+    navi_event_camera_type camera_type;
     char speed[MAX_STR_SIZE];
     char dist[MAX_STR_SIZE];
     uint8_t desc_size;

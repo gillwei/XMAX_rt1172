@@ -892,6 +892,7 @@ class NavigationDeviceClass : Templates::DeviceClass
           case 4:
             {
               NaviData->NaviEventType = navi_obj->navi_event.event_type;
+              NaviData->NaviCameraType = navi_obj->navi_event.camera_type;
               NaviData->NaviEventDist = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.dist, ( int )strlen( navi_obj->navi_event.dist ) );
               NaviData->NaviEventSpeed = EwNewStringUtf8( ( const unsigned char* )navi_obj->navi_event.speed, ( int )strlen( navi_obj->navi_event.speed ) );
               NaviData->NaviEventVisibility = navi_obj->navi_event.visibility;
@@ -2300,6 +2301,9 @@ class NaviDataClass
 
   $rect <280,180,480,220>
   var string NaviEventSpeed;
+
+  $rect <490,60,690,100>
+  var int32 NaviCameraType;
 }
 
 $rect <751,190,951,230>

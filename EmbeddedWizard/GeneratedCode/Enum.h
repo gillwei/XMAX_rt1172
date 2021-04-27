@@ -332,6 +332,16 @@ typedef enum
   EnumNaviDataTypeNAVI_TBT_ACTIVE_TBT   = 7
 } EnumNaviDataType;
 
+/* User defined enumeration: 'Enum::NaviAlertType' */
+typedef enum
+{
+  EnumNaviAlertTypeTRAFFIC              = 0,
+  EnumNaviAlertTypeSPEED                = 1,
+  EnumNaviAlertTypeCAMERA               = 2,
+  EnumNaviAlertTypeBORDER               = 3,
+  EnumNaviAlertTypeSCHOOL               = 4
+} EnumNaviAlertType;
+
 /* User defined enumeration: 'Enum::NaviAlertAnimationType' */
 typedef enum
 {
@@ -546,6 +556,23 @@ typedef enum
   EnumLanguageMALAY                     = 17,
   EnumLanguageTOTAL                     = 18
 } EnumLanguage;
+
+/* User defined enumeration: 'Enum::NaviCameraType' */
+typedef enum
+{
+  EnumNaviCameraTypeCHECK_FIXED         = 0,
+  EnumNaviCameraTypeCHECK_TEMPORARY     = 1,
+  EnumNaviCameraTypeMOBILE              = 2,
+  EnumNaviCameraTypeAVERAGE             = 3,
+  EnumNaviCameraTypeVARIABLE            = 4,
+  EnumNaviCameraTypeRED_LIGHT           = 5,
+  EnumNaviCameraTypeUSER                = 6,
+  EnumNaviCameraTypeMOBILE_ZONE         = 7,
+  EnumNaviCameraTypeDANGEROUS_ZONE      = 8,
+  EnumNaviCameraTypeDANGEROUS_POINT     = 9,
+  EnumNaviCameraTypeRISK_ZONE           = 10,
+  EnumNaviCameraTypeUNKNOWN             = 11
+} EnumNaviCameraType;
 
 /* User defined enumeration: 'Enum::TimeType' */
 typedef enum
