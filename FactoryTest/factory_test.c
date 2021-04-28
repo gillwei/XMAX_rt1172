@@ -103,6 +103,13 @@ extern "C"{
 #define FACTORY_RST_FLAG_NEXIST ( 0 )
 #define FACTORY_RST_FLAG_EXIST  ( 1 )
 
+// For QRcode IOP
+#define QRCODE_STATUS_INVALID       ( 0x00 )
+#define QRCODE_STATUS_CCUID_OK      ( 0x01 )
+#define QRCODE_STATUS_PASSKEY_OK    ( 0x02 )
+#define QRCODE_STATUS_DUMMY_OK      ( 0x04 )
+#define QRCODE_STATUS_SUCCESS       ( QRCODE_STATUS_CCUID_OK | QRCODE_STATUS_PASSKEY_OK | QRCODE_STATUS_DUMMY_OK )
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -160,6 +167,9 @@ static uint32_t CAN_test_ID[]   = { 0x4C0, 0x100, 0x200, 0x400, 0x110, 0x220, 0x
 
 //For BTC auto confirm
 static bool  accept_next_pairing = false;
+
+//QRCODE
+static uint8_t qrcode_write_status = 0;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -332,6 +342,24 @@ static void operation_mode_write_cb
     );
 
 static void operation_mode_read_cb
+    (
+    bool    status,
+    void*   data
+    );
+
+static void ccuid_write_cb
+    (
+    bool    status,
+    void*   data
+    );
+
+static void passkey_write_cb
+    (
+    bool    status,
+    void*   data
+    );
+
+static void dummy_write_cb
     (
     bool    status,
     void*   data
@@ -1215,6 +1243,25 @@ switch( IOPSubId )
         }
         break;
 
+    case IOP_VIM_PKT_QRCODE_CMD:
+        {
+        uint8_t ccuid[QRCODE_CCUID_LENGTH] = { 0 };
+        uint32_t passkey = 0;
+        uint16_t dummy = 0;
+        memcpy( ccuid, &data[0], QRCODE_CCUID_LENGTH );
+        memcpy( &passkey, &data[8], QRCODE_PASSKEY_LENGTH );
+        memcpy( &dummy, &data[12], QRCODE_DUMMY_LENGTH );
+
+        qrcode_write_status = QRCODE_STATUS_INVALID;
+
+        EEPM_set_qrcode_ccuid( ccuid, ccuid_write_cb );
+        EEPM_set_qrcode_passkey( passkey, passkey_write_cb );
+        EEPM_set_qrcode_dummy( dummy, dummy_write_cb );
+
+        EW_change_unit_id( ccuid, passkey, dummy );
+        }
+        break;
+
     default:
         IOPDone = true;
         break;
@@ -1756,6 +1803,72 @@ if( status == TRUE )
 
     packageIopToCanData( &iop_Data, sizeof( iop_Data ) );
     }
+}
+
+/*********************************************************************
+*
+* @private
+* ccuid_write_cb
+*
+* @brief callback function for ccudid write operation.
+*
+*********************************************************************/
+static void ccuid_write_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+if( status == TRUE )
+    {
+    qrcode_write_status |= QRCODE_STATUS_CCUID_OK;
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* passkey_write_cb
+*
+* @brief callback function for pass key write operation.
+*
+*********************************************************************/
+static void passkey_write_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+if( status == TRUE )
+    {
+    qrcode_write_status |= QRCODE_STATUS_PASSKEY_OK;
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* dummy_write_cb
+*
+* @brief callback function for dummy write operation.
+*
+*********************************************************************/
+static void dummy_write_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+uint8_t ret = E_NOT_OK;
+if( status == TRUE )
+    {
+    qrcode_write_status |= QRCODE_STATUS_DUMMY_OK;
+    }
+if( qrcode_write_status == QRCODE_STATUS_SUCCESS )
+    {
+    ret = E_OK;
+    }
+packageIopToCanData( &ret, sizeof( ret ) );
 }
 /*********************************************************************
 *
