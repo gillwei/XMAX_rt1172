@@ -65,7 +65,8 @@ void VI_init( void );
 void VI_key_set_trigger_mode( const CoreKeyCode key_code, const EnumKeyTriggerMode trigger_mode );
 void VI_key_set_magic_key_enabled( const bool enabled );
 bool VI_is_key_state_valid( void );
-void VI_notify_vehicle_data_changed( const il_rx_frm_index_t message_frame, const uint16_t signal_id, const uint32_t data );
+void VI_notify_vehicle_cyc_frm_changed( const il_rx_frm_index_t msg_idx, const uint16_t sig_hnd, const uint32_t data );
+void VI_notify_vehicle_event_frm_changed( const il_rx_frm_index_t msg_idx, const can_msg_t* msg_data_p );
 bool VI_is_dd_mode_activated( void );
 bool VI_is_function_supported( const EnumVehicleSupportedFunction feature );
 void VI_set_supported_function( const EnumVehicleSupportedFunction feature, const bool supported );
@@ -73,7 +74,8 @@ void VI_set_tx_data( int tx_data_type, uint64_t data );
 bool VI_get_rx_data_uint( const EnumVehicleRxType rx_type, uint32_t* data );
 bool VI_get_rx_data_float( const EnumVehicleRxType rx_type, float* data );
 void VI_rx_support_function_received( const mid_msg_supp_func_t* const support_functions );
-void VI_rx_positive_response_received( const uint32_t can_id, const uint8_t request_service_id );
+void VI_rx_reprogram_info_response( const uint8 svc_id, const uint8 svc_data_size, const uint8* svc_data_p );
+void VI_rx_mt_func_cont_info_response( const uint8 svc_id, const uint8 svc_data_size, const uint8* svc_data_p );
 void VI_send_inspection_response( const EnumInspectionMode mode, const uint8_t fainsres );
 
 #ifdef __cplusplus

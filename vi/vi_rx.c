@@ -23,6 +23,7 @@
 #include "EW_pub.h"
 #include "PERIPHERAL_pub.h"
 #include "EEPM_pub.h"
+#include "CAN_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -308,29 +309,6 @@ switch( signal_id )
 /*********************************************************************
 *
 * @private
-* process_reprogram_info_response
-*
-* @param signal_id The CAN signal id
-* @param data The received CAN data
-*
-*********************************************************************/
-static void process_reprogram_info_response
-    (
-    const uint16_t signal_id,
-    const uint32_t data
-    )
-{
-switch( signal_id )
-    {
-    default:
-        PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
-        break;
-    }
-}
-
-/*********************************************************************
-*
-* @private
 * process_vehicle_info_2
 *
 * @param signal_id The CAN signal id
@@ -594,36 +572,34 @@ switch( fainsreq )
 *********************************************************************/
 static void process_factory_inspection_request
     (
-    const uint16_t signal_id,
-    const uint32_t data
+    void
     )
 {
-static uint8_t mefareq = 0;
-switch( signal_id )
+uint32_t  l_fact_req     = 0;
+uint32_t  l_fact_reqCode = 0;
+
+/*------------------------------------------------------
+Get the signals' value
+------------------------------------------------------*/
+nim_app_sig_get( IL_CAN0_FACT_INSP_NS_REQ_RXSIG_HANDLE, IL_CAN0_FACT_INSP_NS_REQ_RXSIG_NBYTES, &l_fact_req );
+nim_app_sig_get( IL_CAN0_FACT_INSP_NS_REQCODE_RXSIG_HANDLE, IL_CAN0_FACT_INSP_NS_REQCODE_RXSIG_NBYTES, &l_fact_reqCode );
+
+/*------------------------------------------------------
+Handle the factory request
+------------------------------------------------------*/
+switch( l_fact_req )
     {
-    case IL_CAN0_FACT_INSP_NS_REQ_RXSIG_HANDLE:
-        mefareq = (uint8_t)data;
+    case EnumInspectionModeNONE:
+        VI_send_inspection_response( (uint8_t)l_fact_req, POSITIVE_RESPONSE );
         break;
-    case IL_CAN0_FACT_INSP_NS_REQCODE_RXSIG_HANDLE:
-        PRINTF( "%s mefareq: %d\r\n", __FUNCTION__, mefareq );
-        switch( mefareq )
-            {
-            case EnumInspectionModeNONE:
-                VI_send_inspection_response( mefareq, POSITIVE_RESPONSE );
-                break;
-            case EnumInspectionModeDISPLAY:
-                notify_inspection_display_request( (uint8_t)data );
-                break;
-            case EnumInspectionModeEND:
-                EW_notify_inspection_request( EnumInspectionModeEND, EnumInspectionDisplayTOTAL );
-                break;
-            default:
-                VI_send_inspection_response( mefareq, NEGATIVE_RESPONSE );
-                break;
-            }
+    case EnumInspectionModeDISPLAY:
+        notify_inspection_display_request( (uint8_t)l_fact_reqCode );
+        break;
+    case EnumInspectionModeEND:
+        EW_notify_inspection_request( EnumInspectionModeEND, EnumInspectionDisplayTOTAL );
         break;
     default:
-        PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
+        VI_send_inspection_response( (uint8_t)l_fact_req, NEGATIVE_RESPONSE );
         break;
     }
 }
@@ -631,81 +607,126 @@ switch( signal_id )
 /*********************************************************************
 *
 * @public
-* VI_notify_vehicle_data_changed
+* VI_notify_vehicle_cyc_frm_changed
+*
+* For cyclic CAN RX messages handling
 *
 * @param message_frame The received CAN message frame id
 * @param signal_id The CAN signal id
 * @param data The received CAN data
 *
 *********************************************************************/
-void VI_notify_vehicle_data_changed
+void VI_notify_vehicle_cyc_frm_changed
     (
-    const il_rx_frm_index_t message_frame_id,
-    const uint16_t          signal_id,
+    const il_rx_frm_index_t msg_idx,
+    const uint16_t          sig_hnd,
     const uint32_t          data
     )
 {
 #if( DEBUG_RX_CAN_SUPPORT )
-    PRINTF( "vi 0x%x 0x%x 0x%x\r\n", message_frame_id, signal_id, data );
+    PRINTF( "vi 0x%x 0x%x 0x%x\r\n", msg_idx, sig_hnd, data );
 #endif
 
+/*------------------------------------------------------
+Fetch operation mode
+------------------------------------------------------*/
 EnumOperationMode operation_mode;
 EW_get_operation_mode( &operation_mode );
 
-switch( message_frame_id )
+switch( msg_idx )
     {
     case IL_CAN0_RX0_ECU_INDCT_STAT_IDX:
-        process_ecu_indicate_status( signal_id, data );
+        process_ecu_indicate_status( sig_hnd, data );
         break;
     case IL_CAN0_RX1_ECU_COM_DATA_IDX:
-        process_ecu_legacy_com_data( signal_id, data );
+        process_ecu_legacy_com_data( sig_hnd, data );
         break;
     case IL_CAN0_RX3_BRGTHNSS_CTRL_IDX:
         if( EnumOperationModeNORMAL == operation_mode )
             {
-            process_brightness_control_response( signal_id, data );
+            process_brightness_control_response( sig_hnd, data );
             }
         break;
     case IL_CAN0_RX5_VEHICLE_INFO_IDX:
-        process_vehicle_info( signal_id, data );
+        process_vehicle_info( sig_hnd, data );
         break;
     case IL_CAN0_RX6_FUNCSW_STAT_IDX:
-        process_function_software_status( signal_id, data );
+        process_function_software_status( sig_hnd, data );
         break;
     case IL_CAN0_RX7_FUEL_RATE_IDX:
-        process_fuel_rate( signal_id, data );
+        process_fuel_rate( sig_hnd, data );
         break;
     case IL_CAN0_RX8_ODO_TRIP_IDX:
-        process_odo_trip_value( signal_id, data );
-        break;
-    case IL_CAN0_RX9_RES_RPRGRM_INFO_IDX:
-        process_reprogram_info_response( signal_id, data );
+        process_odo_trip_value( sig_hnd, data );
         break;
     case IL_CAN0_RXA_VEHICLE_INFO_2_IDX:
-        process_vehicle_info_2( signal_id, data );
+        process_vehicle_info_2( sig_hnd, data );
         break;
     case IL_CAN0_RXB_VEHICLE_INFO_3_IDX:
-        process_vehicle_info_3( signal_id, data );
+        process_vehicle_info_3( sig_hnd, data );
         break;
     case IL_CAN0_RXC_VEHICLE_INFO_4_IDX:
-        process_vehicle_info_4( signal_id, data );
+        process_vehicle_info_4( sig_hnd, data );
         break;
     case IL_CAN0_RXD_MAINT_TRIP_IDX:
-        process_maintenance_trip( signal_id, data );
+        process_maintenance_trip( sig_hnd, data );
         break;
     case IL_CAN0_RXE_HEATER_STAT_IDX:
-        process_heater_status( signal_id, data );
+        process_heater_status( sig_hnd, data );
         break;
+    default:
+#if( DEBUG_RX_CAN_SUPPORT )
+        PRINTF( "%s drop message frame id: 0x%x\r\n", __FUNCTION__, msg_idx );
+#endif
+        break;
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* VI_notify_vehicle_event_frm_changed
+*
+* For event CAN RX messages handling
+*
+* @param message_frame The received CAN message frame id
+* @param signal_id The CAN signal id
+* @param data The received CAN data
+*
+*********************************************************************/
+void VI_notify_vehicle_event_frm_changed
+    (
+    const il_rx_frm_index_t msg_idx,
+    const can_msg_t*        msg_data_p
+    )
+{
+#if( DEBUG_RX_CAN_SUPPORT )
+    PRINTF( "vi 0x%x 0x%x 0x%x\r\n", msg_idx);
+#endif
+
+/*------------------------------------------------------
+Fetch operation mode
+------------------------------------------------------*/
+EnumOperationMode operation_mode;
+EW_get_operation_mode( &operation_mode );
+
+/*------------------------------------------------------
+Handle meter request or event messages
+------------------------------------------------------*/
+switch( msg_idx )
+    {
     case IL_CAN0_RXF_FACT_INSP_NS_REQ_IDX:
         if( EnumOperationModeFACTORY == operation_mode ||
             EnumOperationModeINSPECTION == operation_mode )
             {
-            process_factory_inspection_request( signal_id, data );
+            process_factory_inspection_request();
             }
         break;
+
     default:
+
 #if( DEBUG_RX_CAN_SUPPORT )
-        PRINTF( "%s drop message frame id: 0x%x\r\n", __FUNCTION__, message_frame_id );
+        PRINTF( "%s drop message frame id: 0x%x\r\n", __FUNCTION__, msg_idx );
 #endif
         break;
     }
@@ -1324,24 +1345,50 @@ set_supported_function( supported_functions, SUPPORTED_FUNCTION_DATA_SOURCE_CAN 
 
 /*********************************************************************
 *
-* @public
-* VI_rx_positive_response_received
+* @private
+* VI_rx_reprogram_info_response
 *
-* Notify from CAN stack that positive response is received
-*
-* @param can_id CAN message
-* @param request_service_id Request service id
+* @param signal_id The CAN signal id
+* @param data The received CAN data
 *
 *********************************************************************/
-void VI_rx_positive_response_received
+void VI_rx_reprogram_info_response
     (
-    const uint32_t can_id,
-    const uint8_t  request_service_id
+    const uint8    svc_id,
+    const uint8    svc_data_size,
+    const uint8*   svc_data_p
     )
 {
-#if( DEBUG_RX_CAN_SUPPORT )
-    PRINTF( "%s: can id 0x%x, svc id: 0x%x\r\n", __FUNCTION__, can_id, request_service_id );
-#endif
+switch( svc_id )
+    {
+    default:
+        PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id);
+        break;
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* VI_rx_mt_func_cont_info_response
+*
+* @param signal_id The CAN signal id
+* @param data The received CAN data
+*
+*********************************************************************/
+void VI_rx_mt_func_cont_info_response
+    (
+    const uint8    svc_id,
+    const uint8    svc_data_size,
+    const uint8*   svc_data_p
+    )
+{
+switch( svc_id )
+    {
+    default:
+        PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id);
+        break;
+    }
 }
 
 /*********************************************************************

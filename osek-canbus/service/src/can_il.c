@@ -485,6 +485,7 @@ static void save_receive_frame
     )
 {
 il_rxfrm_info_t     const * l_p_rxfrm_info;
+il_rx_per_info_t    const * l_p_per_info;
 il_rxfrm_t          const * l_p_rxfrm;
 uint8                     * l_p_status;
 dll_frm_index_t             l_num_frames;
@@ -514,7 +515,8 @@ if( ( frame_index < l_num_frames ) && ( p_rmd != NULL ) )
     ------------------------------------------------------*/
     l_p_rxfrm  = &( l_p_rxfrm_info->p_il_rxfrm[frame_index] );
     l_p_status = &( l_p_rxfrm_info->p_status[frame_index] );
-    l_rmd_dlc  = p_rmd->dlc;
+    l_p_per_info = l_p_rxfrm->p_per_info;
+    l_rmd_dlc    = p_rmd->dlc;
     if( l_rmd_dlc >= l_p_rxfrm->lmin )
         {
         /*------------------------------------------------------
@@ -560,7 +562,7 @@ if( ( frame_index < l_num_frames ) && ( p_rmd != NULL ) )
         need to be parsed when it is processed in the receive
         task.
         ------------------------------------------------------*/
-        if( l_data_changed != FALSE )
+        if( ( l_data_changed != FALSE ) || ( l_p_per_info == NULL ) )
             {
             can_util_set_status_bits( l_p_status, IL_RX_STATUS_DATA_CHANGED );
             can_util_copy_bytes( l_temp_data, l_p_rxfrm->p_data, l_p_rxfrm->dlc );

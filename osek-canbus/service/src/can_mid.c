@@ -398,8 +398,9 @@ void can_mid_resp_cb
     can_msg_t const * const mid_msg_p
     )
 {
-uint8            l_rs        = 0;
-uint8            l_svc_id    = 0;
+uint8            l_rs         = 0;
+uint8            l_svc_id     = 0;
+uint8*           l_svc_data_p = NULL;
 uint32           l_can_id    = mid_msg_p->id;
 uint32           l_msg_len   = mid_msg_p->size;
 uint8            l_resp_type = mid_msg_p->data[MID_MSG_RESMFNC_IDX];
@@ -473,20 +474,21 @@ if( l_resp_type == MID_MSG_NRES_NACK )
 else
     {
     /*------------------------------------------------------
+    Data modify
+    ------------------------------------------------------*/
+    memcpy( l_node_pos_resp_p->data, mid_msg_p->data, l_msg_len );
+
+    /*------------------------------------------------------
     Handle the positive response message
     ------------------------------------------------------*/
     *l_node_wait_p   = 0;
     *l_node_time_p   = 0;
     *l_node_status_p = MID_MSG_STAT_INITED;
      l_svc_id        = l_pos_resp_svc_id;
+     l_svc_data_p    = &( l_node_pos_resp_p->data[MID_MSG_RESPROCDTL_IDX] );
 
     /*------------------------------------------------------
-    Data modify
-    ------------------------------------------------------*/
-    memcpy( l_node_pos_resp_p->data, mid_msg_p->data, l_msg_len );
-
-    /*------------------------------------------------------
-    Set the function list
+    Handle the function list positive response
     ------------------------------------------------------*/
     if( ( l_can_id == RX2_RES_SUPPORT_CAN0_ID ) &&
         ( supp_func_list_syc == FALSE ) &&
@@ -497,11 +499,25 @@ else
         VI_rx_support_function_received( &supp_func_list );
         }
 
+    /*------------------------------------------------------
+    Handle reprogram positive response
+    ------------------------------------------------------*/
+    if( l_can_id == RX9_RES_RPRGRM_INFO_CAN0_ID )
+        {
+        VI_rx_reprogram_info_response( l_svc_id, l_msg_len,l_svc_data_p );
+        }
+
+    /*------------------------------------------------------
+    Handle positive response of Meter function control
+    ------------------------------------------------------*/
+    if( l_can_id == RX4_RES_MT_FUNC_CNT_CAN0_ID )
+        {
+        VI_rx_mt_func_cont_info_response( l_svc_id, l_msg_len,l_svc_data_p );
+        }
+
 #if( DEBUG_RX_CAN_SUPPORT )
     PRINTF( "Pos resp %x %x!\r\n", l_can_id, l_svc_id );
 #endif
-
-    VI_rx_positive_response_received( l_can_id, l_svc_id );
     }
 }
 

@@ -713,9 +713,14 @@ il_app_frm_get( msg_index, &app_can_msg_rx );
 #endif
 
 /*------------------------------------------------------
-Other module can add their event message handler here
+Handle responses messages from meter
 ------------------------------------------------------*/
 can_mid_resp_cb( &app_can_msg_rx );
+
+/*------------------------------------------------------
+Handle request or event messages from meter
+------------------------------------------------------*/
+VI_notify_vehicle_event_frm_changed( msg_index, &app_can_msg_rx );
 }
 
 /*!*******************************************************************
@@ -888,7 +893,7 @@ nim_app_sig_get( sig_handle, num_bytes,&l_sig_val );
 /*------------------------------------------------------
 Handle the changed signal value
 ------------------------------------------------------*/
-VI_notify_vehicle_data_changed( msg_index, sig_handle, l_sig_val );
+VI_notify_vehicle_cyc_frm_changed( msg_index, sig_handle, l_sig_val );
 
 switch( msg_index )
     {
