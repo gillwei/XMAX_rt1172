@@ -157,6 +157,9 @@ static const uint8_t default_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0xff, 0xff, 0xff
 static boolean CAN_ID_test_flag = FALSE;
 static uint32_t CAN_test_ID[]   = { 0x4C0, 0x100, 0x200, 0x400, 0x110, 0x220, 0x440, 0x480, 0x111, 0x222, 0x444, 0x488, 0x4C7 };
 
+//For BTC auto confirm
+static bool  accept_next_pairing = false;
+
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -1193,7 +1196,10 @@ switch( IOPSubId )
 
     case IOP_BT_ACCEPT_NEXT_PAIR_REQUEST:
         {
-
+        if( false == BT_UPDATE_get_BT_update_status() )
+            {
+            accept_next_pairing = true;
+            }
         IOPDone = true;
         }
         break;
@@ -1967,6 +1973,40 @@ for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
 IOPInstId = IOP_BT_ADDR_DATA;
 packageIopToCanData( &bd_addr_rev, sizeof( bd_addr_rev ) );
 }
+
+/*********************************************************************
+*
+* @public
+* return auto confirm status
+*
+* @brief if true, next user confirm request will be accepted
+*
+*********************************************************************/
+bool return_accept_next_pairing
+    (
+    void
+    )
+{
+return accept_next_pairing;
+}
+
+/*********************************************************************
+*
+* @public
+* set auto confirm status
+*
+* @brief If already accept pairing confirm on BT manager, set accept_next_pairing
+* false
+*
+*********************************************************************/
+void set_accept_next_pairing_false
+    (
+    void
+    )
+{
+accept_next_pairing = false;
+}
+
 
 #ifdef __cplusplus
 }

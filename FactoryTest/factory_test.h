@@ -152,6 +152,16 @@ void sent_iop_bd_address
     void
     );
 
+bool return_accept_next_pairing
+    (
+    void
+    );
+
+void set_accept_next_pairing_false
+    (
+    void
+    );
+
 #ifdef __cplusplus
 }
 #endif

@@ -1849,6 +1849,13 @@ uint32_t numeric_code = 0;
 uint8_t  device_name_char[BT_DEVICE_NAME_LEN];
 memcpy( &( device_name_char ), &( p_data[USER_CONFIRM_EVT_PIN_CODE_LENGTH] ), BT_DEVICE_NAME_LEN );
 
+if( return_accept_next_pairing() )
+    {
+    PRINTF( "Accept Next Pairing Confirm and return confirm\r\n" );
+    send_user_confirm_passkey_result( true );
+    set_accept_next_pairing_false();
+    }
+
 /* BTC Pairing user confirmation request event */
 if( BTM_DISCOVERABLE_STATE_BTC == btm_discoverable_state )
     {
