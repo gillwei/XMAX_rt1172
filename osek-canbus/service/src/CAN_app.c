@@ -777,6 +777,16 @@ Handle responses messages from meter
 ------------------------------------------------------*/
 can_mid_resp_cb( &app_can_msg_rx );
 
+/*Demo use case for software update*/
+#if 0
+    if( app_can_msg_rx.id == 0x5AF )
+        {
+        if( app_can_msg_rx.data[0] == 0xB0 && app_can_msg_rx.data[1] == 0xC0 )
+            {
+            ota_jump_to_bootloader();
+            }
+        }
+#endif
 /*------------------------------------------------------
 Handle request or event messages from meter
 ------------------------------------------------------*/

@@ -1,3 +1,6 @@
 [submodule "submodule/cyw89820"]
 	path = submodule/cyw89820
 	url = ssh://gerrit.garmin.com.tw:29418/autooem/products/cypress/cyw89820
+[submodule "submodule/rt1172_bootloader"]
+	path = submodule/rt1172_bootloader
+	url = ssh://gerrit.garmin.com.tw:29418/autooem/products/nxp/rt1172_bootloader

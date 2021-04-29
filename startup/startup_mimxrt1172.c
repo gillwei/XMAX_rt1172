@@ -838,6 +838,7 @@ extern unsigned int __data_section_table;
 extern unsigned int __data_section_table_end;
 extern unsigned int __bss_section_table;
 extern unsigned int __bss_section_table_end;
+extern unsigned int __base_SRAM_OC2_NO_INIT;
 
 //*****************************************************************************
 // Reset entry point for your code.
@@ -941,7 +942,11 @@ void ResetISR(void) {
     while (SectionTableAddr < &__bss_section_table_end) {
         ExeAddr = *SectionTableAddr++;
         SectionLen = *SectionTableAddr++;
-        bss_init(ExeAddr, SectionLen);
+        if( ExeAddr != (unsigned int)&__base_SRAM_OC2_NO_INIT )
+            {
+            bss_init(ExeAddr, SectionLen);
+            }
+
     }
 
 

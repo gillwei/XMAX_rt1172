@@ -40,7 +40,7 @@
 #include "QR_pub.h"
 #include "WEA_pub.h"
 #include "NTF_pub.h"
-
+#include "OTA_pub.h"
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -97,7 +97,14 @@ BOARD_BootClockRUN();
 BOARD_InitDebugConsole();
 
 PRINTF( "%s %s %s %s\r\n", __DATE__, __TIME__, BUILD_TYPE, SW_PART_NUMBER );
-
+if( OTA_get_sys_parition() == OTA_SYS_PARTITION_B )
+    {
+    PRINTF( "Sys B\r\n" );
+    }
+else
+    {
+    PRINTF( "Sys A\r\n" );
+    }
 if( GET_BOOT_RESET_FLAGS & IOMUXC_SNVS_GPR_GPR32_GPR( Enter_SNVS_Mode_Flag ) )
     {
     PRINTF( "Boot from SNVS\r\n" );
@@ -134,6 +141,7 @@ MM_init();
 QR_init();
 WEA_init();
 NTF_init();
+OTA_init();
 
 #if( UNIT_TEST_ENABLE )
     TEST_init();
