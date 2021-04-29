@@ -752,7 +752,7 @@ switch( inst_id )
             case IOP_BT_GET_BDADDR:
                 {
                 uint8_t dummy_bd_address[BT_DEVICE_ADDRESS_LEN] = {0};
-                if( BT_UPDATE_get_BT_update_status() )
+                if( true == BT_UPDATE_get_BT_update_status() )
                     {
                     IOPInstId = IOP_BT_ADDR_DATA;
                     packageIopToCanData( &dummy_bd_address, sizeof( dummy_bd_address ) );
@@ -767,21 +767,30 @@ switch( inst_id )
 
             case IOP_BT_POWER_ON:
                 {
-                HCI_BT_on();
+                if( false == BT_UPDATE_get_BT_update_status() )
+                    {
+                    HCI_BT_on();
+                    }
                 IOPDone = true;
                 }
                 break;
 
             case IOP_BT_POWER_OFF:
                 {
-                HCI_BT_off();
+                if( false == BT_UPDATE_get_BT_update_status() )
+                    {
+                    HCI_BT_off();
+                    }
                 IOPDone = true;
                 }
                 break;
 
             case IOP_BT_SET_TEST_MODE:
                 {
-                HCI_set_test_mode();
+                if( false == BT_UPDATE_get_BT_update_status() )
+                    {
+                    HCI_set_test_mode();
+                    }
                 IOPDone = true;
                 }
                 break;
@@ -790,20 +799,26 @@ switch( inst_id )
                 {
                 uint8_t resp_data[8] = { 0x8C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  };
                 bool bt_test_mode = false;
-                bt_test_mode = HCI_get_test_mode_state();
-                IOPInstId = IOP_EVNT_DATA;
-                resp_data[2] =  bt_test_mode;
-                packageIopToCanData( &resp_data, sizeof( resp_data ) );
+                if( false == BT_UPDATE_get_BT_update_status() )
+                    {
+                    bt_test_mode = HCI_get_test_mode_state();
+                    IOPInstId = IOP_EVNT_DATA;
+                    resp_data[2] =  bt_test_mode;
+                    packageIopToCanData( &resp_data, sizeof( resp_data ) );
+                    }
                 }
                 break;
 
             case IOP_BT_CLEAR_PAIRINGS:
                 {
                 uint8_t paired_dev_num;
-                paired_dev_num = BTM_get_paired_device_num();
-                for( uint8_t i = 0; i < paired_dev_num; i++ )
+                if( false == BT_UPDATE_get_BT_update_status() )
                     {
-                    BTM_unpair_paired_device( i );
+                    paired_dev_num = BTM_get_paired_device_num();
+                    for( uint8_t i = 0; i < paired_dev_num; i++ )
+                        {
+                        BTM_unpair_paired_device( i );
+                        }
                     }
                 IOPDone = true;
                 }
@@ -905,15 +920,18 @@ switch( inst_id )
     case IOP_BT_SET_BDADDR:
         {
         uint8_t temp_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        BTM_get_local_device_address( temp_bd_addr );
-        // Check the BD address have not been set, or set bd address are default address
-        if( ( BT_DEVICE_ADDRESS_LEN == size ) && ( 0 == memcmp( default_bd_addr, temp_bd_addr, BT_DEVICE_ADDRESS_LEN ) ) )
+        if( false == BT_UPDATE_get_BT_update_status() )
             {
-            BTM_IOP_set_local_device_address( data );
-            }
-        else if ( ( BT_DEVICE_ADDRESS_LEN == size ) && ( 0 == memcmp( default_bd_addr, data, BT_DEVICE_ADDRESS_LEN ) ) )
-            {
-            BTM_IOP_set_local_device_address( data );
+            BTM_get_local_device_address( temp_bd_addr );
+            // Check the BD address have not been set, or set bd address are default address
+            if( ( BT_DEVICE_ADDRESS_LEN == size ) && ( 0 == memcmp( default_bd_addr, temp_bd_addr, BT_DEVICE_ADDRESS_LEN ) ) )
+                {
+                BTM_IOP_set_local_device_address( data );
+                }
+            else if ( ( BT_DEVICE_ADDRESS_LEN == size ) && ( 0 == memcmp( default_bd_addr, data, BT_DEVICE_ADDRESS_LEN ) ) )
+                {
+                BTM_IOP_set_local_device_address( data );
+                }
             }
         IOPDone = true;
         }
@@ -921,14 +939,20 @@ switch( inst_id )
 
     case IOP_BT_TX_CARRIER_FREQ:
         {
-        HCI_tx_carrier_cmd( data[0] );
+        if( false == BT_UPDATE_get_BT_update_status() )
+            {
+            HCI_tx_carrier_cmd( data[0] );
+            }
         IOPDone = true;
         }
         break;
 
     case IOP_MFI_START_COPROCESSOR_TEST:
         {
-        HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_GET_AUTH_CHIP_INFO, NULL, 0 );
+        if( false == BT_UPDATE_get_BT_update_status() )
+            {
+            HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_GET_AUTH_CHIP_INFO, NULL, 0 );
+            }
         HCI_wait_for_resp_start( RESPONSE_MFI_CHIP_VER );
         IOPDone = true;
         }
@@ -1176,7 +1200,10 @@ switch( IOPSubId )
 
     case IOP_BT_SET_TO_ACTIVE:
         {
-        BTM_set_discoverable_state( true );
+        if( false == BT_UPDATE_get_BT_update_status() )
+            {
+            BTM_set_discoverable_state( true );
+            }
         IOPDone = true;
         }
         break;
