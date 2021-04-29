@@ -165,7 +165,6 @@ EW_DEFINE_CLASS( HomeHOM11_TachoVisualizer, HomeBaseHome, Title, Title, Title, T
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -290,7 +289,6 @@ EW_DEFINE_CLASS( HomeHOM12_EcoVisualizer, HomeBaseHome, Title, Title, Title, Tit
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -415,7 +413,6 @@ EW_DEFINE_CLASS( HomeHOM13_SpeedVisualizer, HomeBaseHome, Title, Title, Title, T
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -523,8 +520,8 @@ void HomeBaseHome_ReturnToHome( HomeBaseHome _this )
 
   if ( MenuDialog != 0 )
   {
-    CoreGroup__DismissDialog( _this, ((CoreGroup)MenuDialog ), 0, 0, 0, EwNullSlot, 
-    EwNullSlot, 0 );
+    CoreGroup_DismissDialog((CoreGroup)_this, ((CoreGroup)MenuDialog ), 0, 0, 0, 
+    EwNullSlot, EwNullSlot, 0 );
   }
 }
 
@@ -608,7 +605,6 @@ EW_DEFINE_CLASS( HomeBaseHome, ComponentsBaseMainBG, _None, _None, _None, _None,
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -723,7 +719,6 @@ EW_DEFINE_CLASS( HomeHOM03_VehicleInfo, HomeBaseHome, Title, Title, Title, Title
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,

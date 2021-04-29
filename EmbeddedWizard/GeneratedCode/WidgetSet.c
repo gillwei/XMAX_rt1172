@@ -1292,7 +1292,6 @@ EW_DEFINE_CLASS( WidgetSetHorizontalSlider, CoreGroup, frameView4, OnUpdate, Out
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,

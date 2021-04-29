@@ -3307,16 +3307,6 @@ void CoreGroup_DismissDialog( CoreGroup _this, CoreGroup aDialogGroup, EffectsTr
       dismissTransition ), aComplete, aCancel, aCombine );
 }
 
-/* Wrapper function for the virtual method : 'Core::Group.DismissDialog()' */
-void CoreGroup__DismissDialog( void* _this, CoreGroup aDialogGroup, EffectsTransition 
-  aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, EffectsTransition 
-  aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, XBool aCombine )
-{
-  ((CoreGroup)_this)->_VMT->DismissDialog((CoreGroup)_this, aDialogGroup, aOverrideDismissTransition
-  , aOverrideOverlayTransition, aOverrideRestoreTransition, aComplete, aCancel, 
-  aCombine );
-}
-
 /* The method PresentDialog() schedules an operation to show in context of 'this' 
    component another component passed in the parameter aDialogGroup. The operation 
    to show the component is performed with an animation specified in the parameter 
@@ -4335,7 +4325,6 @@ EW_DEFINE_CLASS( CoreGroup, CoreRectView, first, Opacity, Opacity, Opacity, Opac
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -5911,7 +5900,6 @@ EW_DEFINE_CLASS( CoreRoot, CoreGroup, keyLastTarget, cursorHoldTimer, cursorHold
   CoreGroup_OnSetVisible,
   CoreRoot_IsCurrentDialog,
   CoreRoot_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreRoot_DispatchEvent,
   CoreRoot_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -7575,7 +7563,6 @@ EW_DEFINE_CLASS( CoreVerticalList, CoreGroup, itemsPool, OnUpdate, invalidTail,
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreVerticalList_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,

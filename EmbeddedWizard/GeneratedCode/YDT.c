@@ -189,7 +189,6 @@ EW_DEFINE_CLASS( YDTYDT01_Main, ComponentsBaseMainBG, PushButton, PushButton, Pu
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,

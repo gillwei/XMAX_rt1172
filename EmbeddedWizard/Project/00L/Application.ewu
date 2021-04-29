@@ -85,7 +85,7 @@ class Application : Core::Root
   $rect <40,710,270,750>
   slot OnFactoryTestEventSlot
   {
-    var Factory::TestContext TestContext = ( Factory::TestContext )FactoryTestEventHandler.Context;
+    var Factory::TestContext TestContext = (Factory::TestContext)FactoryTestEventHandler.Context;
     if( null != TestContext )
     {
       switch( TestContext.TestItem )

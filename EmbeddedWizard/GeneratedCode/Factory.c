@@ -25,7 +25,6 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
-#include "_ApplicationApplication.h"
 #include "_CoreGroup.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
@@ -82,6 +81,8 @@ static const XStringRes _Const0010 = { _StringsDefault0, 0x0034 };
 static const XStringRes _Const0011 = { _StringsDefault0, 0x0047 };
 static const XColor _Const0012 = { 0xBA, 0xBA, 0xBA, 0xFF };
 static const XColor _Const0013 = { 0x40, 0x40, 0x40, 0xFF };
+static const XColor _Const0014 = { 0xAA, 0xAA, 0xAA, 0xFF };
+static const XColor _Const0015 = { 0x55, 0x55, 0x55, 0xFF };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -215,7 +216,7 @@ void FactoryDisplayAutoRun_Init( FactoryDisplayAutoRun _this, XHandle aArg )
 /* 'C' function for method : 'Factory::DisplayAutoRun.OnShortHomeKeyActivated()' */
 void FactoryDisplayAutoRun_OnShortHomeKeyActivated( FactoryDisplayAutoRun _this )
 {
-  CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  CoreGroup_DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
 }
 
@@ -443,7 +444,6 @@ EW_DEFINE_CLASS( FactoryDisplayAutoRun, ComponentsBaseComponent, TimerNextPatter
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -484,10 +484,10 @@ void FactoryMain__Init( FactoryMain _this, XObject aLink, XHandle aArg )
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0010 ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0011 ));
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0010 ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0011 ));
 }
 
 /* Re-Initializer for the class 'Factory::Main' */
@@ -507,60 +507,10 @@ void FactoryMain__Done( FactoryMain _this )
   MenuBaseMenuView__Done( &_this->_Super );
 }
 
-/* The method DismissDialog() schedules an operation to hide again the component 
-   passed in the parameter aDialogGroup. The component has to be presented by a 
-   preceding @PresentDialog() or @SwitchToDialog() method invocation. Calling the 
-   method DismissDialog() causes the corresponding entry to be removed from the 
-   internal stack containing all dialogs existing at the moment in context of 'this' 
-   owner component. The dialog component on top of the stack is considered as the 
-   active dialog - the dialog, the user may interact with. Other dialogs lying in 
-   the background are automatically deactivated and they are suppressed from being 
-   able to receive and process user inputs. Accordingly, applying the dismiss operation 
-   on the actually active (top) dialog causes the dialog existing eventually behind 
-   it to restore its active state.
-   The operation to hide the component is performed with an animation specified 
-   at its presentation time (in the parameter aDismissTransition of the method @PresentDialog() 
-   or @SwitchToDialog()). Alternatively, other transition to hide the component 
-   can be specified in the parameter aOverrideDismissTransition.
-   Dismissing a dialog may affect the visibility state of the dialog component lying 
-   further in the background. In particular, the component in the background will 
-   schedule a restore transition as expected to be after the dialog overlaying it 
-   is dismissed. When dismissing a dialog, which is not the active one (not on top 
-   of the stack), the component in the background will also schedule an overlay 
-   transition as resulting from the new overlaying dialog component. Which transitions 
-   are performed results primarily from the parameters aOverlayTransition and aRestoreTransition 
-   specified at the presentation time of the background dialog component and the 
-   parameters aOverrideRestoreTransition specified at the presentation time of the 
-   overlaying (just dismissed) dialog component. Furthermore, you can override this 
-   behavior by specifying other animations in the parameters aOverrideOverlayTransition 
-   and aOverrideRestoreTransition in the invocation of the method DismissDialog().
-   The both parameters aComplete and aCancel can be provided with references to 
-   slot methods, which are signaled as soon as the dismiss operation is finished 
-   (aComplete) or it has been canceled (aCancel) due to other transition being scheduled 
-   for the same GUI component aDialogGroup making the actual operation obsolete.
-   The dismiss operation is enqueued, so calling @SwitchToDialog(), @PresentDialog() 
-   and DismissDialog() several times in sequence for different components in context 
-   of 'this' owner component causes the resulting transitions to be executed strictly 
-   one after another. This behavior can be changed by passing the value 'true' in 
-   the parameter aCombine. In this case, the new operation will be executed together 
-   with last prepared but not yet started operation. In this manner several independent 
-   transitions can run simultaneously. */
-void FactoryMain_DismissDialog( FactoryMain _this, CoreGroup aDialogGroup, EffectsTransition 
-  aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, EffectsTransition 
-  aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, XBool aCombine )
-{
-  ApplicationApplication App;
-
-  CoreGroup_DismissDialog((CoreGroup)_this, aDialogGroup, aOverrideDismissTransition, 
-  aOverrideOverlayTransition, aOverrideRestoreTransition, aComplete, aCancel, aCombine );
-  App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
-  ApplicationApplication_OnSetStatusBarVisible( App, 1 );
-}
-
 /* 'C' function for method : 'Factory::Main.OnShortHomeKeyActivated()' */
 void FactoryMain_OnShortHomeKeyActivated( FactoryMain _this )
 {
-  CoreGroup__DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  CoreGroup_DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
 }
 
@@ -569,9 +519,7 @@ XClass FactoryMain_LoadItemClass( FactoryMain _this, XInt32 aItemNo )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return EW_CLASS( MenuItemBase );
 }
@@ -593,29 +541,19 @@ XString FactoryMain_LoadItemTitle( FactoryMain _this, XInt32 aItemNo )
 void FactoryMain_OnItemActivate( FactoryMain _this, XInt32 aItemNo, MenuItemBase 
   aMenuItem )
 {
-  ApplicationApplication App;
-
-  if ( aMenuItem == 0 )
-    ;
-
-  App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aMenuItem );
 
   switch ( aItemNo )
   {
     case 0 :
-    {
-      ApplicationApplication_OnSetStatusBarVisible( App, 0 );
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( FactoryDisplayManual, 
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    }
     break;
 
     case 1 :
-    {
-      ApplicationApplication_OnSetStatusBarVisible( App, 0 );
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( FactoryDisplayAutoRun, 
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    }
     break;
 
     default : 
@@ -648,7 +586,6 @@ EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, ItemTitleArray, ItemTitleArray,
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  FactoryMain_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -706,7 +643,7 @@ void FactoryDisplayManual__Init( FactoryDisplayManual _this, XObject aLink, XHan
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  _this->TotalPatternNum = 17;
+  _this->TotalPatternNum = 19;
   CoreRectView__OnSetBounds( &_this->FullScreen, _Const0000 );
   ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0005 );
   CoreRectView__OnSetBounds( &_this->CenterBlock, _Const0002 );
@@ -781,7 +718,7 @@ void FactoryDisplayManual_OnShortUpKeyActivated( FactoryDisplayManual _this )
 /* 'C' function for method : 'Factory::DisplayManual.OnShortHomeKeyActivated()' */
 void FactoryDisplayManual_OnShortHomeKeyActivated( FactoryDisplayManual _this )
 {
-  CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  CoreGroup_DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
 }
 
@@ -798,12 +735,14 @@ void FactoryDisplayManual_OnSetPatternIdx( FactoryDisplayManual _this, XInt32 va
 /* 'C' function for method : 'Factory::DisplayManual.DisplayPattern()' */
 void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPatternIdx )
 {
+  ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
+  ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
+  ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
+
   switch ( aPatternIdx )
   {
     case 0 :
     {
-      ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
-      ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
       ViewsBorder_OnSetVisible( &_this->OuterFrame, 1 );
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0005 );
     }
@@ -819,75 +758,38 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
     break;
 
     case 2 :
-    {
-      ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
-      ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
-      ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0007 );
-    }
     break;
 
     case 3 :
-    {
-      ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
-      ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
-      ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0008 );
-    }
     break;
 
     case 4 :
-    {
-      ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
-      ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
-      ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0009 );
-    }
     break;
 
     case 5 :
-    {
-      ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
-      ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
-      ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0001 );
-    }
     break;
 
     case 6 :
-    {
-      ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
-      ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
-      ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0005 );
-    }
     break;
 
     case 7 :
-    {
-      ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
-      ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
-      ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0012 );
-    }
     break;
 
     case 8 :
     {
-      ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
       ViewsRectangle_OnSetVisible( &_this->CenterBlock, 1 );
-      ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const000A );
     }
     break;
 
     case 9 :
-    {
-      ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
-      ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
-      ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const000A );
-    }
     break;
 
     case 10 :
@@ -896,17 +798,11 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ResourcesBitmap ));
       ViewsImage_OnSetFrameNumber( &_this->ImagePattern, 1 );
       ViewsImage_OnSetVisible( &_this->ImagePattern, 1 );
-      ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
     }
     break;
 
     case 11 :
-    {
-      ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
-      ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
-      ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0012 );
-    }
     break;
 
     case 12 :
@@ -948,12 +844,15 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
     break;
 
     case 16 :
-    {
-      ViewsImage_OnSetVisible( &_this->ImagePattern, 0 );
-      ViewsRectangle_OnSetVisible( &_this->CenterBlock, 0 );
-      ViewsBorder_OnSetVisible( &_this->OuterFrame, 0 );
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0013 );
-    }
+    break;
+
+    case 17 :
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0014 );
+    break;
+
+    case 18 :
+      ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0015 );
     break;
 
     default : 
@@ -986,7 +885,6 @@ EW_DEFINE_CLASS( FactoryDisplayManual, ComponentsBaseComponent, FullScreen, Full
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,

@@ -574,7 +574,7 @@ void LauncherLNC_Main_OnSlideOutFinishedSlot( LauncherLNC_Main _this, XObject se
 
   if ( !_this->BaseSlideOutEffect.Super1.Enabled && !_this->RotaryPlateSlideOutEffect.Super1.Enabled )
   {
-    CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, 
+    CoreGroup_DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, 
     EwNullSlot, EwNullSlot, 0 );
   }
 }
@@ -586,7 +586,7 @@ void LauncherLNC_Main_DismissChildDialogs( LauncherLNC_Main _this )
   {
     EwTrace( "%s%$", EwLoadString( &_Const0007 ), EwClassOf(((XObject)CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
       0 ))));
-    CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+    CoreGroup_DismissDialog((CoreGroup)_this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
     0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
   }
 }
@@ -698,7 +698,6 @@ EW_DEFINE_CLASS( LauncherLNC_Main, ComponentsBaseComponent, BaseSlideInEffect, B
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -1299,7 +1298,6 @@ EW_DEFINE_CLASS( LauncherLNC_RotaryPlate, ComponentsBaseComponent, Icons, OnIcon
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -1512,7 +1510,6 @@ EW_DEFINE_CLASS( LauncherLNC_Base, CoreGroup, Background, Background, Background
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,

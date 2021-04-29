@@ -270,7 +270,6 @@ EW_DEFINE_CLASS( ClockTimePicker, CoreGroup, TimePickerButtons, TimePickerButton
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   ClockTimePicker_UpdateLayout,
@@ -835,7 +834,7 @@ void ClockCLK02_ClockManualAdjustment_OnTimeUpdateSlot( ClockCLK02_ClockManualAd
   EW_UNUSED_ARG( sender );
 
   EwSignal( _this->OnRestoreFocusFrameSignal, ((XObject)_this ));
-  CoreGroup__DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), ((EffectsTransition)EwGetAutoObject( 
+  CoreGroup_DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), ((EffectsTransition)EwGetAutoObject( 
   &EffectNoSlideOut, EffectSlideTransitionNoFade )), 0, 0, EwNullSlot, EwNullSlot, 
   0 );
 }
@@ -894,7 +893,6 @@ EW_DEFINE_CLASS( ClockCLK02_ClockManualAdjustment, ComponentsBaseMainBG, SetCloc
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -1136,7 +1134,6 @@ EW_DEFINE_CLASS( ClockCLK01_ClockSettingMenu, MenuBaseMenuView, ClockManualAdjCo
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -1322,7 +1319,7 @@ void ClockCLK03_SetClock__Done( ClockCLK03_SetClock _this )
 void ClockCLK03_SetClock_OnShortHomeKeyActivated( ClockCLK03_SetClock _this )
 {
   EwSignal( _this->OnTimeCancelSignal, ((XObject)_this ));
-  CoreGroup__DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  CoreGroup_DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
 }
 
@@ -1422,7 +1419,6 @@ EW_DEFINE_CLASS( ClockCLK03_SetClock, ComponentsBaseMainBG, OnTimeUpdateSignal,
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,

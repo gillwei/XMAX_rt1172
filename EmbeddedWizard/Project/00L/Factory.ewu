@@ -232,14 +232,6 @@ class Main : Menu::BaseMenuView
   $rect <10,300,210,340>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <510,160,730,200>
-  inherited method DismissDialog()
-  {
-    super( aDialogGroup, aOverrideDismissTransition, aOverrideOverlayTransition, aOverrideRestoreTransition, aComplete, aCancel, aCombine );
-    var Application::Application App = ( Application::Application )GetRoot();
-    App.StatusBarVisible = true;
-  }
-
   $rect <230,300,460,340>
   inherited method OnShortHomeKeyActivated()
   {
@@ -249,11 +241,7 @@ class Main : Menu::BaseMenuView
   $rect <510,10,710,50>
   inherited method LoadItemClass()
   {
-    // suppress warning
-    if( aItemNo >= 0 )
-    {
-      // empty body
-    }
+    aItemNo; // suppress warning
     return Menu::ItemBase;
   }
 
@@ -271,27 +259,21 @@ class Main : Menu::BaseMenuView
   $rect <510,110,710,150>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
-
-    var Application::Application App = ( Application::Application )GetRoot();
+    aMenuItem; // suppress warning
 
     switch( aItemNo )
     {
-      case 0:
-      {
-        App.StatusBarVisible = false;
-        PresentDialog( new Factory::DisplayManual, null, null, null, null, null, null, null, null, false );
-      }
-      case 1:
-      {
-        App.StatusBarVisible = false;
-        PresentDialog( new Factory::DisplayAutoRun, null, null, null, null, null, null, null, null, false );
-      }
+      case 0: PresentDialog( new Factory::DisplayManual, null, null, null, null, null, null, null, null, false );
+      case 1: PresentDialog( new Factory::DisplayAutoRun, null, null, null, null, null, null, null, null, false );
       default:;
     }
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = ItemTitleArray.size;
+    preset ItemHeight = Menu::ItemHeightSmall;
   }
 
   $rect <730,60,930,100>
@@ -301,27 +283,15 @@ class Main : Menu::BaseMenuView
     Default[1] = "Display (Auto Run)";
   );
 
-  $rect <20,20,160,60>
-  inherited object Menu
-  {
-    preset NoOfItems = ItemTitleArray.size;
-    preset ItemHeight = Menu::ItemHeightSmall;
-  }
-
-  $reorder LoadItemClass 4
-  $reorder LoadItemTitle 4
-  $reorder OnItemActivate 4
-  $reorder LoadItemChecked 4
-  $reorder SlideInMenu 1
   $reorder HideFocusFrameTimer 1
   $reorder OnHideFocusFrameTimeoutSlot 1
-  $reorder ChildMenu 1
   $reorder OnDialogSlideInCompletedSlot 1
   $reorder PresentDialogWithSlideInEffect 1
   $reorder SlideOutEffectEnabled 1
-  $reorder OnDialogSlideOutCompletedSlot 1
-  $reorder OwnerMenu 1
-  $reorder SlideOutMenu 1
+  $reorder LoadItemClass 4
+  $reorder LoadItemTitle 4
+  $reorder OnItemActivate 3
+  $reorder LoadItemChecked 4
   $reorder DismissMenuWithSlideOutEffect 1
   $reorder SlideDirection 1
   $reorder ItemTitleArray 1
@@ -333,7 +303,7 @@ class DisplayManual : Components::BaseComponent
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <230,340,430,380>
+  $rect <230,340,460,380>
   inherited method OnShortDownKeyActivated()
   {
     var int32 NextIdx = PatternIdx + 1;
@@ -344,7 +314,7 @@ class DisplayManual : Components::BaseComponent
     PatternIdx = NextIdx;
   }
 
-  $rect <230,290,430,330>
+  $rect <230,290,460,330>
   inherited method OnShortUpKeyActivated()
   {
     var int32 PreviousIdx = PatternIdx - 1;
@@ -362,7 +332,7 @@ class DisplayManual : Components::BaseComponent
   }
 
   $rect <510,10,710,50>
-  var int32 TotalPatternNum = 17;
+  var int32 TotalPatternNum = 19;
 
   $rect <510,60,710,100>
   property int32 PatternIdx = 0;
@@ -380,12 +350,14 @@ class DisplayManual : Components::BaseComponent
   $rect <510,160,710,200>
   method void DisplayPattern( arg int32 aPatternIdx )
   {
+    ImagePattern.Visible = false;
+    CenterBlock.Visible = false;
+    OuterFrame.Visible = false;
+
     switch( aPatternIdx )
     {
       case 0: // full black with white frame
       {
-        ImagePattern.Visible = false;
-        CenterBlock.Visible = false;
         OuterFrame.Visible = true;
         FullScreen.Color = #000000FF;
       }
@@ -395,76 +367,25 @@ class DisplayManual : Components::BaseComponent
         ImagePattern.FrameNumber = 0;
         ImagePattern.Visible = true;
       }
-      case 2: // full red
-      {
-        ImagePattern.Visible = false;
-        CenterBlock.Visible = false;
-        OuterFrame.Visible = false;
-        FullScreen.Color = #FF0000FF;
-      }
-      case 3: // full green
-      {
-        ImagePattern.Visible = false;
-        CenterBlock.Visible = false;
-        OuterFrame.Visible = false;
-        FullScreen.Color = #00FF00FF;
-      }
-      case 4: // full blue
-      {
-        ImagePattern.Visible = false;
-        CenterBlock.Visible = false;
-        OuterFrame.Visible = false;
-        FullScreen.Color = #0000FFFF;
-      }
-      case 5: // full white
-      {
-        ImagePattern.Visible = false;
-        CenterBlock.Visible = false;
-        OuterFrame.Visible = false;
-        FullScreen.Color = #FFFFFFFF;
-      }
-      case 6: // full black
-      {
-        ImagePattern.Visible = false;
-        CenterBlock.Visible = false;
-        OuterFrame.Visible = false;
-        FullScreen.Color = #000000FF;
-      }
-      case 7: // gray186
-      {
-        ImagePattern.Visible = false;
-        CenterBlock.Visible = false;
-        OuterFrame.Visible = false;
-        FullScreen.Color = #BABABAFF;
-      }
+      case 2: FullScreen.Color = #FF0000FF; // full red
+      case 3: FullScreen.Color = #00FF00FF; // full green
+      case 4: FullScreen.Color = #0000FFFF; // full blue
+      case 5: FullScreen.Color = #FFFFFFFF; // full white
+      case 6: FullScreen.Color = #000000FF; // full black
+      case 7: FullScreen.Color = #BABABAFF; // gray186
       case 8: // crosstalk
       {
-        ImagePattern.Visible = false;
         CenterBlock.Visible = true;
-        OuterFrame.Visible = false;
         FullScreen.Color = #808080FF; // gray128
       }
-      case 9: // gray128
-      {
-        ImagePattern.Visible = false;
-        CenterBlock.Visible = false;
-        OuterFrame.Visible = false;
-        FullScreen.Color = #808080FF;
-      }
+      case 9: FullScreen.Color = #808080FF; // gray128
       case 10: // chessboard
       {
         ImagePattern.Bitmap = Resource::DisplayTest;
         ImagePattern.FrameNumber = 1;
         ImagePattern.Visible = true;
-        CenterBlock.Visible = false;
       }
-      case 11: // gray186
-      {
-        ImagePattern.Visible = false;
-        CenterBlock.Visible = false;
-        OuterFrame.Visible = false;
-        FullScreen.Color = #BABABAFF;
-      }
+      case 11: FullScreen.Color = #BABABAFF; // gray186
       case 12: // color ball
       {
         ImagePattern.Bitmap = Resource::DisplayTest;
@@ -492,13 +413,9 @@ class DisplayManual : Components::BaseComponent
         ImagePattern.FrameNumber = 0;
         ImagePattern.Visible = true;
       }
-      case 16: // gray64
-      {
-        ImagePattern.Visible = false;
-        CenterBlock.Visible = false;
-        OuterFrame.Visible = false;
-        FullScreen.Color = #404040FF;
-      }
+      case 16: FullScreen.Color = #404040FF; // gray64
+      case 17: FullScreen.Color = #AAAAAAFF; // gray170
+      case 18: FullScreen.Color = #555555FF; // gray85
       default:;
     }
   }

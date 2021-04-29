@@ -338,16 +338,16 @@ void ApplicationApplication_DismissFactoryTestDialog( ApplicationApplication _th
 
   if ( FactoryTestDialog != 0 )
   {
-    CoreGroup__DismissDialog( _this, FactoryTestDialog, 0, 0, 0, EwNullSlot, EwNullSlot, 
-    0 );
+    CoreGroup_DismissDialog((CoreGroup)_this, FactoryTestDialog, 0, 0, 0, EwNullSlot, 
+    EwNullSlot, 0 );
   }
 
   FactoryTestDialog = CoreGroup_FindDialogByClass((CoreGroup)_this, EW_CLASS( FactoryDisplayManual ));
 
   if ( FactoryTestDialog != 0 )
   {
-    CoreGroup__DismissDialog( _this, FactoryTestDialog, 0, 0, 0, EwNullSlot, EwNullSlot, 
-    0 );
+    CoreGroup_DismissDialog((CoreGroup)_this, FactoryTestDialog, 0, 0, 0, EwNullSlot, 
+    EwNullSlot, 0 );
   }
 }
 
@@ -392,7 +392,7 @@ void ApplicationApplication_SwitchToHome( ApplicationApplication _this, XEnum aH
         }
         else
         {
-          CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+          CoreGroup_DismissDialog((CoreGroup)_this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
           0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
         }
       }
@@ -406,7 +406,7 @@ void ApplicationApplication_SwitchToHome( ApplicationApplication _this, XEnum aH
       {
         while ( CoreGroup_CountDialogs((CoreGroup)_this ) > 0 )
         {
-          CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+          CoreGroup_DismissDialog((CoreGroup)_this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
           0 ), ((EffectsTransition)EwGetAutoObject( &EffectNoSlideOut, EffectSlideTransitionNoFade )), 
           0, 0, EwNullSlot, EwNullSlot, 1 );
         }
@@ -560,8 +560,8 @@ void ApplicationApplication_OnOpeningFinishedSlot( ApplicationApplication _this,
 
   if ( OpeningDialog != 0 )
   {
-    CoreGroup__DismissDialog( _this, OpeningDialog, 0, 0, 0, EwNullSlot, EwNullSlot, 
-    0 );
+    CoreGroup_DismissDialog((CoreGroup)_this, OpeningDialog, 0, 0, 0, EwNullSlot, 
+    EwNullSlot, 0 );
   }
 
   _this->IsFactoryModeDialogDisplayed = 0;
@@ -625,7 +625,7 @@ void ApplicationApplication_ReturnToHome( ApplicationApplication _this )
     }
     else
     {
-      CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+      CoreGroup_DismissDialog((CoreGroup)_this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
       0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }
   }
@@ -680,7 +680,7 @@ void ApplicationApplication_OnSlideInHomeFinishedSlot( ApplicationApplication _t
 
   while ( 1 < CoreGroup_CountDialogs((CoreGroup)_this ))
   {
-    CoreGroup__DismissDialog( _this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+    CoreGroup_DismissDialog((CoreGroup)_this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
     DialogIdx ), ((EffectsTransition)EwGetAutoObject( &EffectNoSlideOut, EffectSlideTransitionNoFade )), 
     0, 0, EwNullSlot, EwNullSlot, 0 );
   }
@@ -780,8 +780,8 @@ void ApplicationApplication_StopInspection( ApplicationApplication _this )
 
   if ( InspectionDialog != 0 )
   {
-    CoreGroup__DismissDialog( _this, ((CoreGroup)InspectionDialog ), 0, 0, 0, EwNullSlot, 
-    EwNullSlot, 0 );
+    CoreGroup_DismissDialog((CoreGroup)_this, ((CoreGroup)InspectionDialog ), 0, 
+    0, 0, EwNullSlot, EwNullSlot, 0 );
   }
 
   DeviceInterfaceSystemDeviceClass_SendInspectionResponse( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
@@ -863,7 +863,6 @@ EW_DEFINE_CLASS( ApplicationApplication, CoreRoot, FactoryTestEventHandler, Fact
   CoreGroup_OnSetVisible,
   CoreRoot_IsCurrentDialog,
   CoreRoot_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreRoot_DispatchEvent,
   CoreRoot_BroadcastEvent,
   CoreGroup_UpdateLayout,

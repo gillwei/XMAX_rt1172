@@ -150,10 +150,6 @@ EW_DEFINE_METHODS( ApplicationApplication, CoreRoot )
   EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreRoot _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreRoot _this, XBool aRecursive )
-  EW_METHOD( DismissDialog,     void )( CoreGroup _this, CoreGroup aDialogGroup, 
-    EffectsTransition aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, 
-    EffectsTransition aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, 
-    XBool aCombine )
   EW_METHOD( DispatchEvent,     XObject )( CoreRoot _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreRoot _this, CoreEvent aEvent, XSet 
     aFilter )

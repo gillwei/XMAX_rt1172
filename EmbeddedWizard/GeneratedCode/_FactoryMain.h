@@ -93,12 +93,6 @@
 #define _EffectsFader_
 #endif
 
-/* Forward declaration of the class Effects::Transition */
-#ifndef _EffectsTransition_
-  EW_DECLARE_CLASS( EffectsTransition )
-#define _EffectsTransition_
-#endif
-
 /* Forward declaration of the class Factory::Main */
 #ifndef _FactoryMain_
   EW_DECLARE_CLASS( FactoryMain )
@@ -148,10 +142,6 @@ EW_DEFINE_METHODS( FactoryMain, MenuBaseMenuView )
   EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
   EW_METHOD( IsActiveDialog,    XBool )( CoreGroup _this, XBool aRecursive )
-  EW_METHOD( DismissDialog,     void )( FactoryMain _this, CoreGroup aDialogGroup, 
-    EffectsTransition aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, 
-    EffectsTransition aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, 
-    XBool aCombine )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
@@ -194,48 +184,6 @@ EW_DEFINE_METHODS( FactoryMain, MenuBaseMenuView )
   EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( FactoryMain )
-
-/* The method DismissDialog() schedules an operation to hide again the component 
-   passed in the parameter aDialogGroup. The component has to be presented by a 
-   preceding @PresentDialog() or @SwitchToDialog() method invocation. Calling the 
-   method DismissDialog() causes the corresponding entry to be removed from the 
-   internal stack containing all dialogs existing at the moment in context of 'this' 
-   owner component. The dialog component on top of the stack is considered as the 
-   active dialog - the dialog, the user may interact with. Other dialogs lying in 
-   the background are automatically deactivated and they are suppressed from being 
-   able to receive and process user inputs. Accordingly, applying the dismiss operation 
-   on the actually active (top) dialog causes the dialog existing eventually behind 
-   it to restore its active state.
-   The operation to hide the component is performed with an animation specified 
-   at its presentation time (in the parameter aDismissTransition of the method @PresentDialog() 
-   or @SwitchToDialog()). Alternatively, other transition to hide the component 
-   can be specified in the parameter aOverrideDismissTransition.
-   Dismissing a dialog may affect the visibility state of the dialog component lying 
-   further in the background. In particular, the component in the background will 
-   schedule a restore transition as expected to be after the dialog overlaying it 
-   is dismissed. When dismissing a dialog, which is not the active one (not on top 
-   of the stack), the component in the background will also schedule an overlay 
-   transition as resulting from the new overlaying dialog component. Which transitions 
-   are performed results primarily from the parameters aOverlayTransition and aRestoreTransition 
-   specified at the presentation time of the background dialog component and the 
-   parameters aOverrideRestoreTransition specified at the presentation time of the 
-   overlaying (just dismissed) dialog component. Furthermore, you can override this 
-   behavior by specifying other animations in the parameters aOverrideOverlayTransition 
-   and aOverrideRestoreTransition in the invocation of the method DismissDialog().
-   The both parameters aComplete and aCancel can be provided with references to 
-   slot methods, which are signaled as soon as the dismiss operation is finished 
-   (aComplete) or it has been canceled (aCancel) due to other transition being scheduled 
-   for the same GUI component aDialogGroup making the actual operation obsolete.
-   The dismiss operation is enqueued, so calling @SwitchToDialog(), @PresentDialog() 
-   and DismissDialog() several times in sequence for different components in context 
-   of 'this' owner component causes the resulting transitions to be executed strictly 
-   one after another. This behavior can be changed by passing the value 'true' in 
-   the parameter aCombine. In this case, the new operation will be executed together 
-   with last prepared but not yet started operation. In this manner several independent 
-   transitions can run simultaneously. */
-void FactoryMain_DismissDialog( FactoryMain _this, CoreGroup aDialogGroup, EffectsTransition 
-  aOverrideDismissTransition, EffectsTransition aOverrideOverlayTransition, EffectsTransition 
-  aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, XBool aCombine );
 
 /* 'C' function for method : 'Factory::Main.OnShortHomeKeyActivated()' */
 void FactoryMain_OnShortHomeKeyActivated( FactoryMain _this );

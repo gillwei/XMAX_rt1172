@@ -554,7 +554,6 @@ EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, KeyHandler, KeyHandler, Key
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -743,7 +742,7 @@ void ComponentsBaseMainBG_DismissThisDialog( ComponentsBaseMainBG _this )
         ViewsBorder_OnSetVisible( &MenuDialog->Menu.FocusFrame, 1 );
       }
 
-      CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), ((EffectsTransition)EwGetAutoObject( 
+      CoreGroup_DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), ((EffectsTransition)EwGetAutoObject( 
       &EffectNoSlideOut, EffectSlideTransitionNoFade )), 0, 0, EwNullSlot, EwNullSlot, 
       0 );
     }
@@ -882,7 +881,7 @@ void ComponentsBaseMainBG_SlideOutDialog( ComponentsBaseMainBG _this )
 /* 'C' function for method : 'Components::BaseMainBG.DismissMenuWithSlideOutEffect()' */
 void ComponentsBaseMainBG_DismissMenuWithSlideOutEffect( ComponentsBaseMainBG _this )
 {
-  CoreGroup__DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), ((EffectsTransition)EwGetAutoObject( 
+  CoreGroup_DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), ((EffectsTransition)EwGetAutoObject( 
   &EffectSlideOutTransition, EffectSlideTransitionNoFade )), 0, 0, EwNewSlot( _this, 
   ComponentsBaseMainBG_OnDialogSlideOutCompletedSlot ), EwNullSlot, 0 );
 }
@@ -912,7 +911,6 @@ EW_DEFINE_CLASS( ComponentsBaseMainBG, ComponentsBaseComponent, ChildDialog, Mai
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
@@ -1018,7 +1016,6 @@ EW_DEFINE_CLASS( ComponentsDDModeMask, CoreGroup, DDModeBG, DDModeBG, DDModeBG,
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,
   CoreGroup_IsActiveDialog,
-  CoreGroup_DismissDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   CoreGroup_UpdateLayout,
