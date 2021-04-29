@@ -231,7 +231,7 @@ class BaseComponent : Core::Group
   $rect <495,210,725,250>
   method void OnLongHomeKeyActivated()
   {
-    if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
       var Application::Application App = ( Application::Application )GetRoot();
       if( null != App )
@@ -611,3 +611,7 @@ class DDModeMask : Core::Group
     preset Bitmap = Resource::IconDDActive;
   }
 }
+
+$rect <250,20,610,60>
+$output false
+const int32 ACTIVATE_LONG_PRESS_REPETITION_COUNT = 1;

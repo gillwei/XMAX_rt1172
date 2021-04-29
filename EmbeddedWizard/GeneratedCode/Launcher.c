@@ -38,12 +38,14 @@
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsRectEffect.h"
 #include "_InfoINF01_MeterDisplaySettingMenu.h"
+#include "_InfoINF26_ODO_TRIP_SettingMenu.h"
 #include "_LauncherLNC_Base.h"
 #include "_LauncherLNC_Main.h"
 #include "_LauncherLNC_RotaryPlate.h"
 #include "_MediaMED01_MediaUI.h"
 #include "_NavigationNAV06_NaviSettingMenu.h"
 #include "_NotificationNTF01_NotificationList.h"
+#include "_PopPOP04_Reset.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
 #include "_PopPOP09_BleConnectionErrorUI.h"
 #include "_ResourcesBitmap.h"
@@ -334,6 +336,42 @@ void LauncherLNC_Main_OnLongEnterKeyActivated( LauncherLNC_Main _this )
       }
       break;
 
+      case EnumLauncherItemODO_TRIP :
+      {
+        DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+          EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+          EnumVehicleRxTypeODO_TRIP_DISPLAY );
+        XEnum OdoTripSetting = (XEnum)VehicleData->DataUInt32;
+        XEnum SelectedMeterInfo = EnumMeterInfoTOTAL;
+
+        switch ( OdoTripSetting )
+        {
+          case EnumOdoTripSettingItemTRIP1 :
+            SelectedMeterInfo = EnumMeterInfoTRIP1;
+          break;
+
+          case EnumOdoTripSettingItemTRIP2 :
+            SelectedMeterInfo = EnumMeterInfoTRIP2;
+          break;
+
+          case EnumOdoTripSettingItemTRIP_F :
+            SelectedMeterInfo = EnumMeterInfoTRIP_F;
+          break;
+
+          default : 
+            ;
+        }
+
+        if ( EnumMeterInfoTOTAL != SelectedMeterInfo )
+        {
+          PopPOP04_Reset ResetDialog = EwNewObject( PopPOP04_Reset, 0 );
+          ResetDialog->SelectedMeterInfo = SelectedMeterInfo;
+          CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ResetDialog ), 0, 
+          0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+        }
+      }
+      break;
+
       default : 
         ;
     }
@@ -478,7 +516,8 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
     break;
 
     case EnumLauncherItemODO_TRIP :
-      ;
+      ItemDialog = ((ComponentsBaseComponent)EwNewObject( InfoINF26_ODO_TRIP_SettingMenu, 
+      0 ));
     break;
 
     case EnumLauncherItemMETER_DISPLAY :

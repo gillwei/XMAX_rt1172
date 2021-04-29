@@ -1102,3 +1102,7 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
     Menu.MoveFocusFrame();
   }
 }
+
+$rect <50,130,250,170>
+$output false
+const float KM_TO_MILE_SCALE = 0.625;

@@ -1922,7 +1922,7 @@ class VehicleDeviceClass : Templates::DeviceClass
     var bool IsSupported = false;
 
     $if !$prototyper
-      var int32 FeatureId = ( int32 )aVehicleFeature;
+      var int32 FeatureId = (int32)aVehicleFeature;
       native( IsSupported, FeatureId )
       {
         IsSupported = VI_is_function_supported( FeatureId );

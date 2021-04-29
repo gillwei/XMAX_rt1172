@@ -43,6 +43,7 @@
 #endif
 
 #include "_InfoINF01_MeterDisplaySettingMenu.h"
+#include "_InfoINF26_ODO_TRIP_SettingMenu.h"
 
 #ifdef __cplusplus
   }

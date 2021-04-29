@@ -155,3 +155,273 @@ class INF01_MeterDisplaySettingMenu : Menu::BaseMenuView
   $rect <510,220,730,260>
   var Enum::HomeType SelectedHomeType;
 }
+
+$rect <10,60,280,100>
+$output false
+class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
+{
+  $rect <0,290,200,330>
+  inherited method Init()
+  {
+    trace "Init INF26";
+
+    SetNoOfMenuItems();
+    GetMileageSetting();
+    GetSelectedOdoTrip();
+  }
+
+  $rect <510,20,710,60>
+  inherited method LoadItemClass()
+  {
+    aItemNo; //suppress warning
+    return Menu::ItemValueUnitCheckmark;
+  }
+
+  $rect <510,70,710,110>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    switch( SupportedSetting[aItemNo] )
+    {
+      case Enum::MeterInfo.ODO: Title = Strings::INF26_ODO;
+      case Enum::MeterInfo.TRIP1: Title = Strings::INF26_TRIP_1;
+      case Enum::MeterInfo.TRIP2: Title = Strings::INF26_TRIP_2;
+      case Enum::MeterInfo.TRIP_F: Title = Strings::INF26_TRIP_F;
+      default:;
+    }
+    return Title;
+  }
+
+  $rect <510,270,710,310>
+  inherited method OnItemActivate()
+  {
+    aMenuItem; // suppress warning
+
+    if( SelectedItem == SupportedSetting[aItemNo] )
+    {
+      CheckMarkUpdateTimer.Enabled = true;
+    }
+    else
+    {
+      IsWaitingForResponse = true;
+      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.CHG_METER_INFO, (uint32)SupportedSetting[aItemNo] );
+    }
+  }
+
+  $rect <510,120,710,160>
+  inherited method LoadItemChecked()
+  {
+    var bool checked = false;
+    if( SelectedItem == SupportedSetting[aItemNo] )
+    {
+      checked = true;
+    }
+    return checked;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+  }
+
+  $rect <510,220,710,260>
+  inherited method LoadItemUnit()
+  {
+    aItemNo; // suppress warning
+
+    var string UnitString;
+    switch( MileageSetting )
+    {
+      case Enum::MileageSettingItem.KM: UnitString = Strings::UNT02_UNIT_MILEAGE_KILOMETER;
+      case Enum::MileageSettingItem.MILE: UnitString = Strings::UNT02_UNIT_MILEAGE_MILE;
+      default:;
+    }
+
+    return UnitString;
+  }
+
+  $rect <510,170,710,210>
+  inherited method LoadItemValue()
+  {
+    var string Value;
+    var DeviceInterface::VehicleDataClass VehicleData;
+
+    switch( SupportedSetting[aItemNo] )
+    {
+      case Enum::MeterInfo.ODO: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.ODOMETER_VALUE );
+      case Enum::MeterInfo.TRIP1: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TRIP1_VALUE );
+      case Enum::MeterInfo.TRIP2: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TRIP2_VALUE );
+      case Enum::MeterInfo.TRIP_F: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.F_TRIP );
+      default: VehicleData.Valid = false;
+    }
+
+    if( VehicleData.Valid )
+    {
+      if( Enum::MileageSettingItem.MILE == MileageSetting )
+      {
+        VehicleData.DataFloat *= Unit::KM_TO_MILE_SCALE;
+      }
+      Value = string( VehicleData.DataFloat, 0, 1 );
+    }
+    else
+    {
+      Value = Strings::GEN_THREE_HYPHENS;
+    }
+
+    return Value;
+  }
+
+  $rect <510,320,760,360>
+  inherited method OnItemLongEnterKeyActivate()
+  {
+    aMenuItem; // suppress warning
+
+    if( Enum::MeterInfo.TRIP1 == SupportedSetting[aItemNo] ||
+        Enum::MeterInfo.TRIP2 == SupportedSetting[aItemNo] ||
+        Enum::MeterInfo.TRIP_F == SupportedSetting[aItemNo] )
+    {
+      var Pop::POP04_Reset ResetDialog = new Pop::POP04_Reset;
+      ResetDialog.SelectedMeterInfo = SupportedSetting[aItemNo];
+      PresentDialog( ResetDialog, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
+  $rect <510,390,730,430>
+  object Core::Timer CheckMarkUpdateTimer
+  {
+    preset OnTrigger = OnCheckMarkUpdateSlot;
+    preset Period = 0;
+    preset Begin = Menu::DELAY_TIME_CHECKMARK;
+  }
+
+  $rect <510,440,730,480>
+  slot OnCheckMarkUpdateSlot
+  {
+    DismissThisDialog();
+  }
+
+  $rect <720,70,920,110>
+  array Enum::MeterInfo SupportedSetting[ 4 ];
+
+  $rect <0,390,200,430>
+  method void GetMileageSetting()
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MILEAGE_UNIT );
+    if( Enum::MileageSettingItem.MILE == VehicleData.DataUInt32 )
+    {
+      MileageSetting = Enum::MileageSettingItem.MILE;
+    }
+    else
+    {
+      MileageSetting = Enum::MileageSettingItem.KM;
+    }
+  }
+
+  $rect <0,440,200,480>
+  var Enum::MileageSettingItem MileageSetting;
+
+  $rect <0,340,200,380>
+  method void SetNoOfMenuItems()
+  {
+    var int32 i;
+    var int32 NoOfItems;
+    var Enum::MeterInfo SettingItem;
+
+    for( i = 0; i < AllSettings.size; i++ )
+    {
+      SettingItem = AllSettings[i];
+      switch( SettingItem )
+      {
+        case Enum::MeterInfo.TRIP1:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TRIP1 ) )
+          {
+            SupportedSetting[NoOfItems] = SettingItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::MeterInfo.TRIP2:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TRIP2 ) )
+          {
+            SupportedSetting[NoOfItems] = SettingItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::MeterInfo.TRIP_F:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.F_TRIP ) )
+          {
+            SupportedSetting[NoOfItems] = SettingItem;
+            NoOfItems++;
+          }
+        }
+        default:
+        {
+          SupportedSetting[NoOfItems] = SettingItem;
+          NoOfItems++;
+        }
+      }
+    }
+
+    Menu.NoOfItems = NoOfItems;
+  }
+
+  $rect <0,490,200,530>
+  method void GetSelectedOdoTrip()
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.ODO_TRIP_DISPLAY );
+    if( (int32)Enum::OdoTripSettingItem.TOTAL > VehicleData.DataUInt32 )
+    {
+      var Enum::OdoTripSettingItem SettingItem = (Enum::OdoTripSettingItem)VehicleData.DataUInt32;
+      switch( SettingItem )
+      {
+        case Enum::OdoTripSettingItem.ODO: SelectedItem = Enum::MeterInfo.ODO;
+        case Enum::OdoTripSettingItem.TRIP1: SelectedItem = Enum::MeterInfo.TRIP1;
+        case Enum::OdoTripSettingItem.TRIP2: SelectedItem = Enum::MeterInfo.TRIP2;
+        case Enum::OdoTripSettingItem.TRIP_F: SelectedItem = Enum::MeterInfo.TRIP_F;
+        default:;
+      }
+    }
+  }
+
+  $rect <0,540,200,580>
+  var Enum::MeterInfo SelectedItem = Enum::MeterInfo.TOTAL;
+
+  $rect <510,490,730,530>
+  var bool IsWaitingForResponse;
+
+  $rect <510,540,790,580>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <510,590,770,630>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = (DeviceInterface::VehicleDataClass)VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData &&
+        Enum::VehicleRxType.ODO_TRIP_DISPLAY == VehicleData.RxType &&
+        IsWaitingForResponse )
+    {
+      GetSelectedOdoTrip();
+      Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );
+      CheckMarkUpdateTimer.Enabled = true;
+    }
+  }
+
+  $rect <940,70,1140,110>
+  array Enum::MeterInfo AllSettings[ 4 ] =
+  (
+    Default[0] = Enum::MeterInfo.ODO;
+    Default[1] = Enum::MeterInfo.TRIP1;
+    Default[2] = Enum::MeterInfo.TRIP2;
+    Default[3] = Enum::MeterInfo.TRIP_F;
+  );
+}

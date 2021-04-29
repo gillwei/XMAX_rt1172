@@ -423,6 +423,7 @@ switch( signal_id )
         break;
     case IL_CAN0_VEHICLE_INFO_4_ODO_TRIP_DIS_RXSIG_HANDLE:
         rx_vehicle_info.odo_trip_display = (odo_trip_display_enum)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeODO_TRIP_DISPLAY );
         break;
     case IL_CAN0_VEHICLE_INFO_4_FTRIP_HRD_RST_RXSIG_HANDLE:
         rx_vehicle_info.fuel_trip_hard_reset = (bool)data;

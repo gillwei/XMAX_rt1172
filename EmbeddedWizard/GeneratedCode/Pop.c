@@ -33,10 +33,12 @@
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceMotoConContext.h"
+#include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_DeviceInterfaceWeatherDeviceClass.h"
 #include "_MenuUpDownPushButtonSet.h"
 #include "_PopPOP01_PleaseWait.h"
 #include "_PopPOP02_ConnectionError.h"
+#include "_PopPOP04_Reset.h"
 #include "_PopPOP07_TROUBLE_SHOOTING.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
 #include "_PopPOP09_BleConnectionErrorUI.h"
@@ -91,6 +93,8 @@ static const XRect _Const0018 = {{ 0, 115 }, { 480, 119 }};
 static const XRect _Const0019 = {{ 0, 186 }, { 480, 190 }};
 static const XRect _Const001A = {{ 0, 257 }, { 480, 261 }};
 static const XStringRes _Const001B = { _StringsDefault0, 0x000F };
+static const XRect _Const001C = {{ 10, 46 }, { 470, 170 }};
+static const XRect _Const001D = {{ 0, 36 }, { 480, 38 }};
 
 /* Initializer for the class 'Pop::POP08_WeatherLoadingUI' */
 void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject aLink, XHandle aArg )
@@ -1071,5 +1075,146 @@ EW_DEFINE_CLASS( PopPOP01_PleaseWait, ComponentsBaseMainBG, LoadingText, Loading
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( PopPOP01_PleaseWait )
+
+/* Initializer for the class 'Pop::POP04_Reset' */
+void PopPOP04_Reset__Init( PopPOP04_Reset _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( PopPOP04_Reset );
+
+  /* ... then construct all embedded objects */
+  ViewsText__Init( &_this->ConnectionFailedMessage, &_this->_XObject, 0 );
+  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( PopPOP04_Reset );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( &_this->ConnectionFailedMessage, _Const001C );
+  ViewsText_OnSetString( &_this->ConnectionFailedMessage, EwLoadString( &StringsGEN_RESET_QUESTION_MARK ));
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const000D );
+  _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
+  _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_CANCEL ));
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_OK ));
+  MenuUpDownPushButtonSet_OnSetDownButtonEnabled( &_this->UpDownPushButtonSet, 1 );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const001D );
+  ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
+  | ViewsImageAlignmentScaleToFit );
+  CoreGroup__Add( _this, ((CoreView)&_this->ConnectionFailedMessage ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
+  ViewsText_OnSetFont( &_this->ConnectionFailedMessage, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  _this->UpDownPushButtonSet.OnUpButtonActivated = EwNewSlot( _this, PopPOP04_Reset_OnCancelButtonActivatedSlot );
+  _this->UpDownPushButtonSet.OnDownButtonActivated = EwNewSlot( _this, PopPOP04_Reset_OnOkButtonActivatedSlot );
+  ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
+  ResourcesBitmap ));
+}
+
+/* Re-Initializer for the class 'Pop::POP04_Reset' */
+void PopPOP04_Reset__ReInit( PopPOP04_Reset _this )
+{
+  /* At first re-initialize the super class ... */
+  ComponentsBaseMainBG__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsText__ReInit( &_this->ConnectionFailedMessage );
+  MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
+  ViewsImage__ReInit( &_this->Divider );
+}
+
+/* Finalizer method for the class 'Pop::POP04_Reset' */
+void PopPOP04_Reset__Done( PopPOP04_Reset _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+
+  /* Finalize all embedded objects */
+  ViewsText__Done( &_this->ConnectionFailedMessage );
+  MenuUpDownPushButtonSet__Done( &_this->UpDownPushButtonSet );
+  ViewsImage__Done( &_this->Divider );
+
+  /* Don't forget to deinitialize the super class ... */
+  ComponentsBaseMainBG__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Pop::POP04_Reset.OnOkButtonActivatedSlot()' */
+void PopPOP04_Reset_OnOkButtonActivatedSlot( PopPOP04_Reset _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeRESET_METER, (XUInt32)_this->SelectedMeterInfo );
+  ComponentsBaseMainBG_DismissThisDialog((ComponentsBaseMainBG)_this );
+}
+
+/* 'C' function for method : 'Pop::POP04_Reset.OnCancelButtonActivatedSlot()' */
+void PopPOP04_Reset_OnCancelButtonActivatedSlot( PopPOP04_Reset _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ComponentsBaseMainBG_DismissThisDialog((ComponentsBaseMainBG)_this );
+}
+
+/* Variants derived from the class : 'Pop::POP04_Reset' */
+EW_DEFINE_CLASS_VARIANTS( PopPOP04_Reset )
+EW_END_OF_CLASS_VARIANTS( PopPOP04_Reset )
+
+/* Virtual Method Table (VMT) for the class : 'Pop::POP04_Reset' */
+EW_DEFINE_CLASS( PopPOP04_Reset, ComponentsBaseMainBG, ConnectionFailedMessage, 
+                 ConnectionFailedMessage, ConnectionFailedMessage, ConnectionFailedMessage, 
+                 SelectedMeterInfo, SelectedMeterInfo, "Pop::POP04_Reset" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseMainBG_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+EW_END_OF_CLASS( PopPOP04_Reset )
 
 /* Embedded Wizard */

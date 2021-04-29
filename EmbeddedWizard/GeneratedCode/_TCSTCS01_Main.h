@@ -184,6 +184,10 @@ EW_DEFINE_METHODS( TCSTCS01_Main, MenuBaseMenuView )
   EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemToggle,    XBool )( TCSTCS01_Main _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUnit,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
 EW_END_OF_METHODS( TCSTCS01_Main )
 
 /* The method Init() is invoked automatically after the component has been created. 

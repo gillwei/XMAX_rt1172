@@ -94,7 +94,7 @@ class ItemBase : Components::BaseComponent
   // HardKey Event Handler
   note group Note2
   {
-    attr Bounds = <290,100,550,350>;
+    attr Bounds = <290,100,550,400>;
   }
 
   // State management
@@ -191,6 +191,21 @@ class ItemBase : Components::BaseComponent
   $rect <790,220,990,260>
   property int32 Height = Menu::ItemHeightTall;
 
+  $rect <310,340,540,380>
+  inherited method OnLongEnterKeyActivated()
+  {
+    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    {
+      postsignal OnLongEnterKeyActivate;
+    }
+  }
+
+  // The property 'OnActivate' can refer to a slot method, which will receive a signal \
+  // as soon as the user has activated (pressed and released) the item. Thereupon \
+  // the method's logic will be executed.
+  $rect <790,320,1010,360>
+  property slot OnLongEnterKeyActivate = null;
+
   $reorder Init 1
   $reorder OnSetOpacity 1
   $reorder OnGetEmbedded 1
@@ -247,6 +262,33 @@ class ItemBase : Components::BaseComponent
   $reorder AlphaBlended 2
   $reorder Visible 2
   $reorder Enabled 1
+  $reorder OnLongHomeKeyActivated 1
+  $reorder PassUpKey 1
+  $reorder PassDownKey 1
+  $reorder PassHomeKey 1
+  $reorder PassEnterKey 1
+  $reorder OnShortMagicKeyActivated 1
+  $reorder PassMagicKey 1
+  $reorder DDModeEnabled 1
+  $reorder IsDDModeEffected 1
+  $reorder OnSetDDModeEnabled 1
+  $reorder OnDownKeyReleased 1
+  $reorder OnUpKeyReleased 1
+  $reorder MagicKeyEnabled 1
+  $reorder OnSetMagicKeyEnabled 1
+  $reorder Note2 1
+  $reorder Note4 1
+  $reorder HighlightRect 1
+  $reorder ListDivider 1
+  $reorder OnActivate 1
+  $reorder Note3 1
+  $reorder FocusFrameFlashTimer 1
+  $reorder OnFocusFrameFlashTimer 1
+  $reorder SetTitle 1
+  $reorder Title 1
+  $reorder Focusable 1
+  $reorder OnSetFocusable 1
+  $reorder Height 1
 }
 
 $rect <460,110,660,150>
@@ -338,14 +380,14 @@ class VerticalMenu : Components::BaseComponent
 
   // This method is called by 'VerticalList' every time the list loads or updates \
   // an item.
-  $rect <460,290,660,330>
+  $rect <490,290,690,330>
   slot OnLoadItemSlot
   {
     var int32 ItemNo = MenuList.Item;
-    var Menu::ItemWrapper Item = ( Menu::ItemWrapper )MenuList.View;
+    var Menu::ItemWrapper Item = (Menu::ItemWrapper)MenuList.View;
     if( null != Item )
     {
-      var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )Owner;
+      var Menu::BaseMenuView OwnerMenu = (Menu::BaseMenuView)Owner;
       if( null != OwnerMenu )
       {
         Item.Height = ItemHeight;
@@ -353,12 +395,14 @@ class VerticalMenu : Components::BaseComponent
         Item.Title = OwnerMenu.LoadItemTitle( ItemNo );
         Item.Enabled = OwnerMenu.LoadItemEnabled( ItemNo );
         Item.OnActivate = OnItemActivateSlot;
+        Item.OnLongEnterKeyActivate = OnLongEnterKeyActivatedSlot;
         Item.Focusable = Focusable;
         Item.DDModeEnabled = DDModeEnabled;
       }
 
       if( Menu::ItemCheckbox == Item.ItemClass ||
-          Menu::ItemCheckMark == Item.ItemClass )
+          Menu::ItemCheckMark == Item.ItemClass ||
+          Menu::ItemValueUnitCheckmark == Item.ItemClass )
       {
         Item.Checked = OwnerMenu.LoadItemChecked( ItemNo );
         Item.ToggleEnabled = OwnerMenu.LoadItemToggle( ItemNo );
@@ -366,7 +410,7 @@ class VerticalMenu : Components::BaseComponent
 
       if( Menu::ItemBaseValue == Item.ItemClass )
       {
-        Item.ItemValue = OwnerMenu.LoadItemBaseValue( ItemNo );
+        Item.Value = OwnerMenu.LoadItemBaseValue( ItemNo );
       }
       else if( Menu::ItemNotification == Item.ItemClass )
       {
@@ -374,6 +418,11 @@ class VerticalMenu : Components::BaseComponent
         Item.ReceivedTime = OwnerMenu.LoadItemReceivedTime( ItemNo );
         Item.Category = OwnerMenu.LoadItemCategory( ItemNo );
         Item.Uid = OwnerMenu.LoadItemUid( ItemNo );
+      }
+      else if( Menu::ItemValueUnitCheckmark == Item.ItemClass )
+      {
+        Item.Value = OwnerMenu.LoadItemValue( ItemNo );
+        Item.Unit = OwnerMenu.LoadItemUnit( ItemNo );
       }
       else
       {
@@ -384,7 +433,7 @@ class VerticalMenu : Components::BaseComponent
     }
   }
 
-  $rect <460,340,660,380>
+  $rect <490,340,690,380>
   slot OnItemActivateSlot
   {
     var Menu::ItemBase MenuItem = null;
@@ -394,7 +443,7 @@ class VerticalMenu : Components::BaseComponent
       var Core::View Menu = WrapperItem.FindNextView( null, Core::ViewState[] );
       if( null != Menu )
       {
-        MenuItem = ( Menu::ItemBase )Menu;
+        MenuItem = (Menu::ItemBase)Menu;
       }
     }
 
@@ -524,7 +573,7 @@ class VerticalMenu : Components::BaseComponent
     MenuList.Bounds.y2 = MenuList.Bounds.y1 + ItemHeight * ItemNumPerPage;
   }
 
-  $rect <690,290,940,330>
+  $rect <930,290,1180,330>
   method void SwitchToPageOfSelectedItem()
   {
     var int32 CurrentPageIdx = ( -1 ) * MenuList.ScrollOffset / MenuList.Bounds.h;
@@ -559,7 +608,7 @@ class VerticalMenu : Components::BaseComponent
     }
   }
 
-  $rect <690,340,940,380>
+  $rect <930,340,1180,380>
   object Effects::Int32Effect PageScrollEffect
   {
     preset OnFinished = OnPageScrolledSlot;
@@ -571,7 +620,7 @@ class VerticalMenu : Components::BaseComponent
     preset Outlet = ^MenuList.ScrollOffset;
   }
 
-  $rect <690,390,940,430>
+  $rect <930,390,1180,430>
   slot OnPageScrolledSlot
   {
     FocusFrame.Visible = true;
@@ -666,6 +715,27 @@ class VerticalMenu : Components::BaseComponent
     if( 0 < NoOfItems )
     {
       FocusFrame.Visible = true;
+    }
+  }
+
+  $rect <490,390,750,430>
+  slot OnLongEnterKeyActivatedSlot
+  {
+    var Menu::ItemBase MenuItem = null;
+    var Menu::ItemWrapper WrapperItem = (Menu::ItemWrapper)sender;
+    if( null != WrapperItem )
+    {
+      var Core::View Menu = WrapperItem.FindNextView( null, Core::ViewState[] );
+      if( null != Menu )
+      {
+        MenuItem = (Menu::ItemBase)Menu;
+      }
+    }
+
+    var Menu::BaseMenuView OwnerMenu = (Menu::BaseMenuView)Owner;
+    if( null != OwnerMenu )
+    {
+      OwnerMenu.OnItemLongEnterKeyActivate( MenuList.SelectedItem, MenuItem );
     }
   }
 }
@@ -809,6 +879,7 @@ class ItemWrapper : Core::Group
       var Menu::ItemBase Item = ( Menu::ItemBase )new value;
       Item.Height = Height;
       Item.OnActivate = OnActivateSlot;
+      Item.OnLongEnterKeyActivate = OnLongEnterKeyActivatedSlot;
       Add( Item, 0 );
     }
   }
@@ -880,20 +951,29 @@ class ItemWrapper : Core::Group
           CheckMarkMenuItem.Checked = value;
         }
       }
+
+      if( Menu::ItemValueUnitCheckmark == ( classof view ) )
+      {
+        var Menu::ItemValueUnitCheckmark MenuItem = (Menu::ItemValueUnitCheckmark)view;
+        if( MenuItem != null )
+        {
+          MenuItem.Checked = value;
+        }
+      }
     }
   }
 
-  $rect <220,140,420,180>
-  slot OnEnterHoldSlot
+  $rect <220,140,470,180>
+  slot OnLongEnterKeyActivatedSlot
   {
-    postsignal OnEnterHold, sender;
+    postsignal OnLongEnterKeyActivate;
   }
 
   // The property 'OnActivate' can refer to a slot method, which will receive a signal \
   // as soon as the user has activated (pressed and released) the item. Thereupon \
   // the method's logic will be executed.
-  $rect <220,190,420,230>
-  property slot OnEnterHold = null;
+  $rect <220,190,450,230>
+  property slot OnLongEnterKeyActivate = null;
 
   $rect <670,290,870,330>
   property bool Focusable = true;
@@ -941,20 +1021,36 @@ class ItemWrapper : Core::Group
   }
 
   $rect <40,720,240,760>
-  property string ItemValue;
+  property string Value;
 
   $rect <40,760,240,800>
-  onset ItemValue
+  onset Value
   {
-    if( pure ItemValue != value )
+    if( pure Value != value )
     {
-      pure ItemValue = value;
+      pure Value = value;
 
       var Core::View view = FindNextView( null, Core::ViewState[] );
-      var Menu::ItemBaseValue MenuItem = ( Menu::ItemBaseValue )view;
-      if( MenuItem != null )
+
+      if( Menu::ItemBaseValue == ( classof view ) )
       {
-        MenuItem.ItemValue = value;
+        var Menu::ItemBaseValue MenuItem = (Menu::ItemBaseValue)view;
+        if( MenuItem != null )
+        {
+          MenuItem.Value = value;
+        }
+      }
+      else if( Menu::ItemValueUnitCheckmark == ( classof view ) )
+      {
+        var Menu::ItemValueUnitCheckmark MenuItem = (Menu::ItemValueUnitCheckmark)view;
+        if( MenuItem != null )
+        {
+          MenuItem.Value = value;
+        }
+      }
+      else
+      {
+        // empty
       }
     }
   }
@@ -1051,6 +1147,25 @@ class ItemWrapper : Core::Group
       if( null != CheckboxMenuItem )
       {
         CheckboxMenuItem.ToggleEnabled = value;
+      }
+    }
+  }
+
+  $rect <310,720,510,760>
+  property string Unit;
+
+  $rect <310,760,510,800>
+  onset Unit
+  {
+    if( pure Unit != value )
+    {
+      pure Unit = value;
+
+      var Core::View view = FindNextView( null, Core::ViewState[] );
+      var Menu::ItemValueUnitCheckmark MenuItem = (Menu::ItemValueUnitCheckmark)view;
+      if( MenuItem != null )
+      {
+        MenuItem.Unit = value;
       }
     }
   }
@@ -1205,12 +1320,9 @@ class BaseMenuView : Components::BaseMainBG
   $rect <230,290,430,330>
   method void OnItemActivate( arg int32 aItemNo, arg Menu::ItemBase aMenuItem )
   {
-    // to suppress warning
-    if( null == aMenuItem || aItemNo < 0 )
-    {
-      // empty body
-    }
-
+    // suppress warning
+    aMenuItem;
+    aItemNo;
   }
 
   // For general menu item
@@ -1254,16 +1366,13 @@ class BaseMenuView : Components::BaseMainBG
   // For menu item which has value
   note group Note8
   {
-    attr Bounds = <520,430,780,550>;
+    attr Bounds = <520,410,810,510>;
   }
 
-  $rect <550,490,750,530>
+  $rect <540,450,740,490>
   method string LoadItemBaseValue( arg int32 aItemNo )
   {
-    if( aItemNo >= 0 )
-    {
-      // empty body to suppress warning
-    }
+    aItemNo; // suppress warning
     return "";
   }
 
@@ -1318,6 +1427,34 @@ class BaseMenuView : Components::BaseMainBG
   {
     aItemNo; //suppress warning
     return true;
+  }
+
+  // For value, unit, checkmark menu item
+  note group Note10
+  {
+    attr Bounds = <520,520,860,670>;
+  }
+
+  $rect <540,560,740,600>
+  method string LoadItemUnit( arg int32 aItemNo )
+  {
+    aItemNo; // suppress warning
+    return "";
+  }
+
+  $rect <540,610,740,650>
+  method string LoadItemValue( arg int32 aItemNo )
+  {
+    aItemNo; // suppress warning
+    return "";
+  }
+
+  $rect <230,340,480,380>
+  method void OnItemLongEnterKeyActivate( arg int32 aItemNo, arg Menu::ItemBase aMenuItem )
+  {
+    // suppress warning
+    aMenuItem;
+    aItemNo;
   }
 
   $reorder BlackBG 1
@@ -1832,12 +1969,12 @@ class ItemBaseValue : Menu::ItemBase
     {
       case Menu::ItemHeightSmall:
       {
-        ItemValueText.Bounds = <290,7,417,43>;
+        ValueText.Bounds = <290,7,417,43>;
       }
       case Menu::ItemHeightTall:
       {
         Title.Bounds = <37,1,193,69>;
-        ItemValueText.Bounds = <385,1,418,69>;
+        ValueText.Bounds = <385,1,418,69>;
       }
       default:;
     }
@@ -1852,17 +1989,17 @@ class ItemBaseValue : Menu::ItemBase
 
       if( value )
       {
-        ItemValueText.Color = #FFFFFFFF;
+        ValueText.Color = #FFFFFFFF;
       }
       else
       {
-        ItemValueText.Color = #646464FF;
+        ValueText.Color = #646464FF;
       }
     }
   }
 
   $rect <20,20,160,60>
-  object Views::Text ItemValueText
+  object Views::Text ValueText
   {
     preset Bounds = <290,9,417,43>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -1871,15 +2008,15 @@ class ItemBaseValue : Menu::ItemBase
   }
 
   $rect <220,110,420,150>
-  property string ItemValue;
+  property string Value;
 
   $rect <220,150,420,190>
-  onset ItemValue
+  onset Value
   {
-    if( pure ItemValue != value )
+    if( pure Value != value )
     {
-      pure ItemValue = value;
-      ItemValueText.String = value;
+      pure Value = value;
+      ValueText.String = value;
     }
 
 
@@ -1941,7 +2078,7 @@ class ItemNotification : Menu::ItemBase
     if( pure Message != value )
     {
       pure Message = value;
-      MessageText.String = Message;
+      MessageText.String = value;
     }
 
   }
@@ -1955,7 +2092,7 @@ class ItemNotification : Menu::ItemBase
     if( pure ReceivedTime != value )
     {
       pure ReceivedTime = value;
-      ReceivedTimeText.String = ReceivedTime;
+      ReceivedTimeText.String = value;
     }
 
   }
@@ -1997,4 +2134,55 @@ class ItemNotification : Menu::ItemBase
 
   $rect <740,120,940,160>
   property uint32 Uid;
+}
+
+$rect <230,260,450,300>
+$output false
+class ItemValueUnitCheckmark : Menu::ItemCheckMark
+{
+  $rect <20,20,160,60>
+  object Views::Text ValueText
+  {
+    preset Bounds = <145,9,300,43>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text UnitText
+  {
+    preset Bounds = <306,9,366,43>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <10,90,210,130>
+  property string Value;
+
+  $rect <10,130,210,170>
+  onset Value
+  {
+    if( pure Value != value )
+    {
+      pure Value = value;
+      ValueText.String = value;
+    }
+
+  }
+
+  $rect <250,90,450,130>
+  property string Unit;
+
+  $rect <250,130,450,170>
+  onset Unit
+  {
+    if( pure Unit != value )
+    {
+      pure Unit = value;
+      UnitText.String = value;
+    }
+
+  }
 }

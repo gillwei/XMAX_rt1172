@@ -276,6 +276,9 @@ EW_DEFINE_CLASS( TCSTCS01_Main, MenuBaseMenuView, VehicleDataReceivedEventHandle
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
   TCSTCS01_Main_LoadItemToggle,
+  MenuBaseMenuView_LoadItemUnit,
+  MenuBaseMenuView_LoadItemValue,
+  MenuBaseMenuView_OnItemLongEnterKeyActivate,
 EW_END_OF_CLASS( TCSTCS01_Main )
 
 /* Embedded Wizard */

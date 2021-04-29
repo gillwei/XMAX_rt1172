@@ -39,6 +39,7 @@
 #include "_MenuItemCheckMark.h"
 #include "_MenuItemCheckbox.h"
 #include "_MenuItemNotification.h"
+#include "_MenuItemValueUnitCheckmark.h"
 #include "_MenuItemWrapper.h"
 #include "_MenuPushButton.h"
 #include "_MenuScrollbar.h"
@@ -123,6 +124,8 @@ static const XRect _Const0030 = {{ 68, 36 }, { 439, 66 }};
 static const XRect _Const0031 = {{ 376, 8 }, { 439, 38 }};
 static const XStringRes _Const0032 = { _StringsDefault0, 0x002E };
 static const XRect _Const0033 = {{ 13, 11 }, { 63, 61 }};
+static const XRect _Const0034 = {{ 145, 9 }, { 300, 43 }};
+static const XRect _Const0035 = {{ 306, 9 }, { 366, 43 }};
 
 /* Initializer for the class 'Menu::ItemBase' */
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
@@ -328,6 +331,15 @@ void MenuItemBase_OnSetFocusable( MenuItemBase _this, XBool value )
   }
 }
 
+/* 'C' function for method : 'Menu::ItemBase.OnLongEnterKeyActivated()' */
+void MenuItemBase_OnLongEnterKeyActivated( MenuItemBase _this )
+{
+  if ( 1 == _this->Super1.KeyHandler.RepetitionCount )
+  {
+    EwPostSignal( _this->OnLongEnterKeyActivate, ((XObject)_this ));
+  }
+}
+
 /* Variants derived from the class : 'Menu::ItemBase' */
 EW_DEFINE_CLASS_VARIANTS( MenuItemBase )
 EW_END_OF_CLASS_VARIANTS( MenuItemBase )
@@ -371,7 +383,7 @@ EW_DEFINE_CLASS( MenuItemBase, ComponentsBaseComponent, OnActivate, OnActivate,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
-  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  MenuItemBase_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
@@ -574,12 +586,13 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
       CoreGroup__OnSetEnabled( Item, MenuBaseMenuView__LoadItemEnabled( OwnerMenu, 
       ItemNo ));
       Item->OnActivate = EwNewSlot( _this, MenuVerticalMenu_OnItemActivateSlot );
+      Item->OnLongEnterKeyActivate = EwNewSlot( _this, MenuVerticalMenu_OnLongEnterKeyActivatedSlot );
       MenuItemWrapper_OnSetFocusable( Item, _this->Focusable );
       MenuItemWrapper_OnSetDDModeEnabled( Item, _this->Super1.DDModeEnabled );
     }
 
-    if (( EW_CLASS( MenuItemCheckbox ) == Item->ItemClass ) || ( EW_CLASS( MenuItemCheckMark ) 
-        == Item->ItemClass ))
+    if ((( EW_CLASS( MenuItemCheckbox ) == Item->ItemClass ) || ( EW_CLASS( MenuItemCheckMark ) 
+        == Item->ItemClass )) || ( EW_CLASS( MenuItemValueUnitCheckmark ) == Item->ItemClass ))
     {
       MenuItemWrapper_OnSetChecked( Item, MenuBaseMenuView__LoadItemChecked( OwnerMenu, 
       ItemNo ));
@@ -589,8 +602,8 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
 
     if ( EW_CLASS( MenuItemBaseValue ) == Item->ItemClass )
     {
-      MenuItemWrapper_OnSetItemValue( Item, MenuBaseMenuView__LoadItemBaseValue( 
-      OwnerMenu, ItemNo ));
+      MenuItemWrapper_OnSetValue( Item, MenuBaseMenuView__LoadItemBaseValue( OwnerMenu, 
+      ItemNo ));
     }
     else
       if ( EW_CLASS( MenuItemNotification ) == Item->ItemClass )
@@ -605,7 +618,15 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
         ItemNo ));
       }
       else
-        ;
+        if ( EW_CLASS( MenuItemValueUnitCheckmark ) == Item->ItemClass )
+        {
+          MenuItemWrapper_OnSetValue( Item, MenuBaseMenuView__LoadItemValue( OwnerMenu, 
+          ItemNo ));
+          MenuItemWrapper_OnSetUnit( Item, MenuBaseMenuView__LoadItemUnit( OwnerMenu, 
+          ItemNo ));
+        }
+        else
+          ;
 
     CoreRectView__OnSetBounds( Item, EwSetRectSize( Item->Super2.Bounds, EwNewPoint( 
     EwGetRectW( _this->MenuList.Super2.Bounds ), _this->MenuList.ItemHeight )));
@@ -843,6 +864,33 @@ void MenuVerticalMenu_RestoreFocusFrame( MenuVerticalMenu _this )
   }
 }
 
+/* 'C' function for method : 'Menu::VerticalMenu.OnLongEnterKeyActivatedSlot()' */
+void MenuVerticalMenu_OnLongEnterKeyActivatedSlot( MenuVerticalMenu _this, XObject 
+  sender )
+{
+  MenuItemBase MenuItem = 0;
+  MenuItemWrapper WrapperItem = EwCastObject( sender, MenuItemWrapper );
+  MenuBaseMenuView OwnerMenu;
+
+  if ( WrapperItem != 0 )
+  {
+    CoreView Menu = CoreGroup__FindNextView( WrapperItem, 0, 0 );
+
+    if ( Menu != 0 )
+    {
+      MenuItem = EwCastObject( Menu, MenuItemBase );
+    }
+  }
+
+  OwnerMenu = EwCastObject( _this->Super4.Owner, MenuBaseMenuView );
+
+  if ( OwnerMenu != 0 )
+  {
+    MenuBaseMenuView__OnItemLongEnterKeyActivate( OwnerMenu, _this->MenuList.SelectedItem, 
+    MenuItem );
+  }
+}
+
 /* Variants derived from the class : 'Menu::VerticalMenu' */
 EW_DEFINE_CLASS_VARIANTS( MenuVerticalMenu )
 EW_END_OF_CLASS_VARIANTS( MenuVerticalMenu )
@@ -1058,7 +1106,7 @@ EW_DEFINE_CLASS( MenuItemCheckbox, MenuItemBase, CheckboxIcon, CheckboxIcon, Che
   ComponentsBaseComponent_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
-  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  MenuItemBase_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
@@ -1142,6 +1190,7 @@ void MenuItemWrapper_OnSetItemClass( MenuItemWrapper _this, XClass value )
     Item = EwCastObject( EwNewObjectIndirect( value, 0 ), MenuItemBase );
     Item->Height = _this->Height;
     Item->OnActivate = EwNewSlot( _this, MenuItemWrapper_OnActivateSlot );
+    Item->OnLongEnterKeyActivate = EwNewSlot( _this, MenuItemWrapper_OnLongEnterKeyActivatedSlot );
     CoreGroup__Add( _this, ((CoreView)Item ), 0 );
   }
 }
@@ -1197,7 +1246,27 @@ void MenuItemWrapper_OnSetChecked( MenuItemWrapper _this, XBool value )
         MenuItemCheckMark_OnSetChecked( CheckMarkMenuItem, value );
       }
     }
+
+    if ( EW_CLASS( MenuItemValueUnitCheckmark ) == EwClassOf(((XObject)view )))
+    {
+      MenuItemValueUnitCheckmark MenuItem = EwCastObject( view, MenuItemValueUnitCheckmark );
+
+      if ( MenuItem != 0 )
+      {
+        MenuItemCheckMark_OnSetChecked((MenuItemCheckMark)MenuItem, value );
+      }
+    }
   }
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnLongEnterKeyActivatedSlot()' */
+void MenuItemWrapper_OnLongEnterKeyActivatedSlot( MenuItemWrapper _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  EwPostSignal( _this->OnLongEnterKeyActivate, ((XObject)_this ));
 }
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetFocusable()' */
@@ -1236,21 +1305,36 @@ void MenuItemWrapper_OnSetDDModeEnabled( MenuItemWrapper _this, XBool value )
   }
 }
 
-/* 'C' function for method : 'Menu::ItemWrapper.OnSetItemValue()' */
-void MenuItemWrapper_OnSetItemValue( MenuItemWrapper _this, XString value )
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetValue()' */
+void MenuItemWrapper_OnSetValue( MenuItemWrapper _this, XString value )
 {
-  if ( EwCompString( _this->ItemValue, value ) != 0 )
+  if ( EwCompString( _this->Value, value ) != 0 )
   {
     CoreView view;
-    MenuItemBaseValue MenuItem;
-    _this->ItemValue = EwShareString( value );
+    _this->Value = EwShareString( value );
     view = CoreGroup__FindNextView( _this, 0, 0 );
-    MenuItem = EwCastObject( view, MenuItemBaseValue );
 
-    if ( MenuItem != 0 )
+    if ( EW_CLASS( MenuItemBaseValue ) == EwClassOf(((XObject)view )))
     {
-      MenuItemBaseValue_OnSetItemValue( MenuItem, value );
+      MenuItemBaseValue MenuItem = EwCastObject( view, MenuItemBaseValue );
+
+      if ( MenuItem != 0 )
+      {
+        MenuItemBaseValue_OnSetValue( MenuItem, value );
+      }
     }
+    else
+      if ( EW_CLASS( MenuItemValueUnitCheckmark ) == EwClassOf(((XObject)view )))
+      {
+        MenuItemValueUnitCheckmark MenuItem = EwCastObject( view, MenuItemValueUnitCheckmark );
+
+        if ( MenuItem != 0 )
+        {
+          MenuItemValueUnitCheckmark_OnSetValue( MenuItem, value );
+        }
+      }
+      else
+        ;
   }
 }
 
@@ -1340,6 +1424,24 @@ void MenuItemWrapper_OnSetToggleEnabled( MenuItemWrapper _this, XBool value )
     if ( CheckboxMenuItem != 0 )
     {
       CheckboxMenuItem->ToggleEnabled = value;
+    }
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetUnit()' */
+void MenuItemWrapper_OnSetUnit( MenuItemWrapper _this, XString value )
+{
+  if ( EwCompString( _this->Unit, value ) != 0 )
+  {
+    CoreView view;
+    MenuItemValueUnitCheckmark MenuItem;
+    _this->Unit = EwShareString( value );
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    MenuItem = EwCastObject( view, MenuItemValueUnitCheckmark );
+
+    if ( MenuItem != 0 )
+    {
+      MenuItemValueUnitCheckmark_OnSetUnit( MenuItem, value );
     }
   }
 }
@@ -1663,9 +1765,8 @@ void MenuBaseMenuView_OnItemActivate( MenuBaseMenuView _this, XInt32 aItemNo, Me
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if (( aMenuItem == 0 ) || ( aItemNo < 0 ))
-    ;
+  EW_UNUSED_ARG( aMenuItem );
+  EW_UNUSED_ARG( aItemNo );
 }
 
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.OnItemActivate()' */
@@ -1717,9 +1818,7 @@ XString MenuBaseMenuView_LoadItemBaseValue( MenuBaseMenuView _this, XInt32 aItem
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return 0;
 }
@@ -1823,6 +1922,58 @@ XBool MenuBaseMenuView__LoadItemToggle( void* _this, XInt32 aItemNo )
   , aItemNo );
 }
 
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemUnit()' */
+XString MenuBaseMenuView_LoadItemUnit( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemUnit()' */
+XString MenuBaseMenuView__LoadItemUnit( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_VMT->LoadItemUnit((MenuBaseMenuView)_this, 
+  aItemNo );
+}
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemValue()' */
+XString MenuBaseMenuView_LoadItemValue( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemValue()' */
+XString MenuBaseMenuView__LoadItemValue( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_VMT->LoadItemValue((MenuBaseMenuView)_this, 
+  aItemNo );
+}
+
+/* 'C' function for method : 'Menu::BaseMenuView.OnItemLongEnterKeyActivate()' */
+void MenuBaseMenuView_OnItemLongEnterKeyActivate( MenuBaseMenuView _this, XInt32 
+  aItemNo, MenuItemBase aMenuItem )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aMenuItem );
+  EW_UNUSED_ARG( aItemNo );
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.OnItemLongEnterKeyActivate()' */
+void MenuBaseMenuView__OnItemLongEnterKeyActivate( void* _this, XInt32 aItemNo, 
+  MenuItemBase aMenuItem )
+{
+  ((MenuBaseMenuView)_this)->_VMT->OnItemLongEnterKeyActivate((MenuBaseMenuView)_this
+  , aItemNo, aMenuItem );
+}
+
 /* Variants derived from the class : 'Menu::BaseMenuView' */
 EW_DEFINE_CLASS_VARIANTS( MenuBaseMenuView )
 EW_END_OF_CLASS_VARIANTS( MenuBaseMenuView )
@@ -1883,6 +2034,9 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, Menu, Menu, Menu, Menu,
   MenuBaseMenuView_LoadItemCategory,
   MenuBaseMenuView_LoadItemUid,
   MenuBaseMenuView_LoadItemToggle,
+  MenuBaseMenuView_LoadItemUnit,
+  MenuBaseMenuView_LoadItemValue,
+  MenuBaseMenuView_OnItemLongEnterKeyActivate,
 EW_END_OF_CLASS( MenuBaseMenuView )
 
 /* Initializer for the class 'Menu::PushButton' */
@@ -2422,7 +2576,7 @@ EW_DEFINE_CLASS( MenuItemCheckMark, MenuItemBase, CheckMark, CheckMark, CheckMar
   ComponentsBaseComponent_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
-  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  MenuItemBase_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
@@ -2598,18 +2752,18 @@ void MenuItemBaseValue__Init( MenuItemBaseValue _this, XObject aLink, XHandle aA
   _this->_GCT = EW_CLASS_GCT( MenuItemBaseValue );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->ItemValueText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->ValueText, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( MenuItemBaseValue );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->ItemValueText, _Const002A );
-  ViewsText_OnSetAlignment( &_this->ItemValueText, ViewsTextAlignmentAlignHorzRight 
+  CoreRectView__OnSetBounds( &_this->ValueText, _Const002A );
+  ViewsText_OnSetAlignment( &_this->ValueText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ItemValueText, 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->ItemValueText ), 0 );
-  ViewsText_OnSetFont( &_this->ItemValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetString( &_this->ValueText, 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ValueText ), 0 );
+  ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
 }
 
@@ -2620,7 +2774,7 @@ void MenuItemBaseValue__ReInit( MenuItemBaseValue _this )
   MenuItemBase__ReInit( &_this->_Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->ItemValueText );
+  ViewsText__ReInit( &_this->ValueText );
 }
 
 /* Finalizer method for the class 'Menu::ItemBaseValue' */
@@ -2630,7 +2784,7 @@ void MenuItemBaseValue__Done( MenuItemBaseValue _this )
   _this->_Super._VMT = EW_CLASS( MenuItemBase );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->ItemValueText );
+  ViewsText__Done( &_this->ValueText );
 
   /* Don't forget to deinitialize the super class ... */
   MenuItemBase__Done( &_this->_Super );
@@ -2651,14 +2805,14 @@ void MenuItemBaseValue_UpdateLayout( MenuItemBaseValue _this, XPoint aSize )
   {
     case 56 :
     {
-      CoreRectView__OnSetBounds( &_this->ItemValueText, _Const002B );
+      CoreRectView__OnSetBounds( &_this->ValueText, _Const002B );
     }
     break;
 
     case 74 :
     {
       CoreRectView__OnSetBounds( &_this->Super1.Title, _Const002C );
-      CoreRectView__OnSetBounds( &_this->ItemValueText, _Const002D );
+      CoreRectView__OnSetBounds( &_this->ValueText, _Const002D );
     }
     break;
 
@@ -2676,22 +2830,22 @@ void MenuItemBaseValue_OnSetEnabled( MenuItemBaseValue _this, XBool value )
 
     if ( value )
     {
-      ViewsText_OnSetColor( &_this->ItemValueText, _Const0002 );
+      ViewsText_OnSetColor( &_this->ValueText, _Const0002 );
     }
     else
     {
-      ViewsText_OnSetColor( &_this->ItemValueText, _Const0008 );
+      ViewsText_OnSetColor( &_this->ValueText, _Const0008 );
     }
   }
 }
 
-/* 'C' function for method : 'Menu::ItemBaseValue.OnSetItemValue()' */
-void MenuItemBaseValue_OnSetItemValue( MenuItemBaseValue _this, XString value )
+/* 'C' function for method : 'Menu::ItemBaseValue.OnSetValue()' */
+void MenuItemBaseValue_OnSetValue( MenuItemBaseValue _this, XString value )
 {
-  if ( EwCompString( _this->ItemValue, value ) != 0 )
+  if ( EwCompString( _this->Value, value ) != 0 )
   {
-    _this->ItemValue = EwShareString( value );
-    ViewsText_OnSetString( &_this->ItemValueText, value );
+    _this->Value = EwShareString( value );
+    ViewsText_OnSetString( &_this->ValueText, value );
   }
 }
 
@@ -2700,8 +2854,8 @@ EW_DEFINE_CLASS_VARIANTS( MenuItemBaseValue )
 EW_END_OF_CLASS_VARIANTS( MenuItemBaseValue )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::ItemBaseValue' */
-EW_DEFINE_CLASS( MenuItemBaseValue, MenuItemBase, ItemValueText, ItemValueText, 
-                 ItemValueText, ItemValueText, ItemValue, _None, "Menu::ItemBaseValue" )
+EW_DEFINE_CLASS( MenuItemBaseValue, MenuItemBase, ValueText, ValueText, ValueText, 
+                 ValueText, Value, _None, "Menu::ItemBaseValue" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -2738,7 +2892,7 @@ EW_DEFINE_CLASS( MenuItemBaseValue, MenuItemBase, ItemValueText, ItemValueText,
   ComponentsBaseComponent_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
-  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  MenuItemBase_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
@@ -2830,7 +2984,7 @@ void MenuItemNotification_OnSetMessage( MenuItemNotification _this, XString valu
   if ( EwCompString( _this->Message, value ) != 0 )
   {
     _this->Message = EwShareString( value );
-    ViewsText_OnSetString( &_this->MessageText, _this->Message );
+    ViewsText_OnSetString( &_this->MessageText, value );
   }
 }
 
@@ -2841,7 +2995,7 @@ void MenuItemNotification_OnSetReceivedTime( MenuItemNotification _this, XString
   if ( EwCompString( _this->ReceivedTime, value ) != 0 )
   {
     _this->ReceivedTime = EwShareString( value );
-    ViewsText_OnSetString( &_this->ReceivedTimeText, _this->ReceivedTime );
+    ViewsText_OnSetString( &_this->ReceivedTimeText, value );
   }
 }
 
@@ -2913,12 +3067,143 @@ EW_DEFINE_CLASS( MenuItemNotification, MenuItemBase, MessageText, MessageText, M
   ComponentsBaseComponent_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
-  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  MenuItemBase_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseComponent_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuItemNotification )
+
+/* Initializer for the class 'Menu::ItemValueUnitCheckmark' */
+void MenuItemValueUnitCheckmark__Init( MenuItemValueUnitCheckmark _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuItemCheckMark__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( MenuItemValueUnitCheckmark );
+
+  /* ... then construct all embedded objects */
+  ViewsText__Init( &_this->ValueText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->UnitText, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( MenuItemValueUnitCheckmark );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( &_this->ValueText, _Const0034 );
+  ViewsText_OnSetAlignment( &_this->ValueText, ViewsTextAlignmentAlignHorzRight 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->ValueText, 0 );
+  CoreRectView__OnSetBounds( &_this->UnitText, _Const0035 );
+  ViewsText_OnSetAlignment( &_this->UnitText, ViewsTextAlignmentAlignHorzLeft | 
+  ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->UnitText, 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ValueText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->UnitText ), 0 );
+  ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->UnitText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+}
+
+/* Re-Initializer for the class 'Menu::ItemValueUnitCheckmark' */
+void MenuItemValueUnitCheckmark__ReInit( MenuItemValueUnitCheckmark _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuItemCheckMark__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsText__ReInit( &_this->ValueText );
+  ViewsText__ReInit( &_this->UnitText );
+}
+
+/* Finalizer method for the class 'Menu::ItemValueUnitCheckmark' */
+void MenuItemValueUnitCheckmark__Done( MenuItemValueUnitCheckmark _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( MenuItemCheckMark );
+
+  /* Finalize all embedded objects */
+  ViewsText__Done( &_this->ValueText );
+  ViewsText__Done( &_this->UnitText );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuItemCheckMark__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Menu::ItemValueUnitCheckmark.OnSetValue()' */
+void MenuItemValueUnitCheckmark_OnSetValue( MenuItemValueUnitCheckmark _this, XString 
+  value )
+{
+  if ( EwCompString( _this->Value, value ) != 0 )
+  {
+    _this->Value = EwShareString( value );
+    ViewsText_OnSetString( &_this->ValueText, value );
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemValueUnitCheckmark.OnSetUnit()' */
+void MenuItemValueUnitCheckmark_OnSetUnit( MenuItemValueUnitCheckmark _this, XString 
+  value )
+{
+  if ( EwCompString( _this->Unit, value ) != 0 )
+  {
+    _this->Unit = EwShareString( value );
+    ViewsText_OnSetString( &_this->UnitText, value );
+  }
+}
+
+/* Variants derived from the class : 'Menu::ItemValueUnitCheckmark' */
+EW_DEFINE_CLASS_VARIANTS( MenuItemValueUnitCheckmark )
+EW_END_OF_CLASS_VARIANTS( MenuItemValueUnitCheckmark )
+
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemValueUnitCheckmark' */
+EW_DEFINE_CLASS( MenuItemValueUnitCheckmark, MenuItemCheckMark, ValueText, ValueText, 
+                 ValueText, ValueText, Value, _None, "Menu::ItemValueUnitCheckmark" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  MenuItemBase_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  MenuItemCheckMark_UpdateLayout,
+  MenuItemBase_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  MenuItemBase_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  MenuItemBase_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+EW_END_OF_CLASS( MenuItemValueUnitCheckmark )
 
 /* Embedded Wizard */

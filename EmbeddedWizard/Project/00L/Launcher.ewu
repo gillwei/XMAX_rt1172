@@ -61,7 +61,7 @@ class LNC_Main : Components::BaseComponent
   $rect <0,530,230,570>
   inherited method OnLongEnterKeyActivated()
   {
-    if( 1 == KeyHandler.RepetitionCount )
+    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
       var Components::BaseComponent ItemDialog = null;
 
@@ -80,6 +80,25 @@ class LNC_Main : Components::BaseComponent
           DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.HEATER_SELECT, SeatHeater_GripWarmer::GRIP_WARMER );
           ItemDialog = new SeatHeater_GripWarmer::SHT02_GPW02_Main;
           PresentDialog( ItemDialog, null, null, null, null, null, null, null, null, false );
+        }
+        case Enum::LauncherItem.ODO_TRIP:
+        {
+          var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.ODO_TRIP_DISPLAY );
+          var Enum::OdoTripSettingItem OdoTripSetting = (Enum::OdoTripSettingItem)VehicleData.DataUInt32;
+          var Enum::MeterInfo SelectedMeterInfo = Enum::MeterInfo.TOTAL;
+          switch( OdoTripSetting )
+          {
+            case Enum::OdoTripSettingItem.TRIP1: SelectedMeterInfo = Enum::MeterInfo.TRIP1;
+            case Enum::OdoTripSettingItem.TRIP2: SelectedMeterInfo = Enum::MeterInfo.TRIP2;
+            case Enum::OdoTripSettingItem.TRIP_F: SelectedMeterInfo = Enum::MeterInfo.TRIP_F;
+            default:;
+          }
+          if( Enum::MeterInfo.TOTAL != SelectedMeterInfo )
+          {
+            var Pop::POP04_Reset ResetDialog = new Pop::POP04_Reset;
+            ResetDialog.SelectedMeterInfo = SelectedMeterInfo;
+            PresentDialog( ResetDialog, null, null, null, null, null, null, null, null, false );
+          }
         }
         default:;
       }
@@ -206,7 +225,7 @@ class LNC_Main : Components::BaseComponent
     return BaseItemPrevious;
   }
 
-  $rect <0,530,230,570>
+  $rect <0,570,230,610>
   slot OnSelectedAnimationFinishedSlot
   {
     var Components::BaseComponent ItemDialog = null;
@@ -243,7 +262,7 @@ class LNC_Main : Components::BaseComponent
           ItemDialog = new Pop::POP09_BleConnectionErrorUI;
         }
       }
-      case Enum::LauncherItem.ODO_TRIP:;
+      case Enum::LauncherItem.ODO_TRIP: ItemDialog = new Info::INF26_ODO_TRIP_SettingMenu;
       case Enum::LauncherItem.METER_DISPLAY: ItemDialog = new Info::INF01_MeterDisplaySettingMenu;
       case Enum::LauncherItem.NAVIGATION: ItemDialog = new Navigation::NAV06_NaviSettingMenu;
       case Enum::LauncherItem.NOTIFICATION:

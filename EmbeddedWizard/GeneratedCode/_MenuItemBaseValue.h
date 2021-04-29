@@ -100,8 +100,8 @@
 
 /* Deklaration of class : 'Menu::ItemBaseValue' */
 EW_DEFINE_FIELDS( MenuItemBaseValue, MenuItemBase )
-  EW_OBJECT  ( ItemValueText,   ViewsText )
-  EW_PROPERTY( ItemValue,       XString )
+  EW_OBJECT  ( ValueText,       ViewsText )
+  EW_PROPERTY( Value,           XString )
 EW_END_OF_FIELDS( MenuItemBaseValue )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::ItemBaseValue' */
@@ -152,7 +152,7 @@ EW_DEFINE_METHODS( MenuItemBaseValue, MenuItemBase )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongEnterKeyActivated, void )( MenuItemBase _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
@@ -172,8 +172,8 @@ void MenuItemBaseValue_UpdateLayout( MenuItemBaseValue _this, XPoint aSize );
 /* 'C' function for method : 'Menu::ItemBaseValue.OnSetEnabled()' */
 void MenuItemBaseValue_OnSetEnabled( MenuItemBaseValue _this, XBool value );
 
-/* 'C' function for method : 'Menu::ItemBaseValue.OnSetItemValue()' */
-void MenuItemBaseValue_OnSetItemValue( MenuItemBaseValue _this, XString value );
+/* 'C' function for method : 'Menu::ItemBaseValue.OnSetValue()' */
+void MenuItemBaseValue_OnSetValue( MenuItemBaseValue _this, XString value );
 
 #ifdef __cplusplus
   }

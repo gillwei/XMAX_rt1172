@@ -258,6 +258,10 @@ void MenuVerticalMenu_RestoreScrollbar( MenuVerticalMenu _this );
 /* 'C' function for method : 'Menu::VerticalMenu.RestoreFocusFrame()' */
 void MenuVerticalMenu_RestoreFocusFrame( MenuVerticalMenu _this );
 
+/* 'C' function for method : 'Menu::VerticalMenu.OnLongEnterKeyActivatedSlot()' */
+void MenuVerticalMenu_OnLongEnterKeyActivatedSlot( MenuVerticalMenu _this, XObject 
+  sender );
+
 #ifdef __cplusplus
   }
 #endif

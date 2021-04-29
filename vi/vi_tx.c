@@ -441,6 +441,60 @@ PRINTF( "%s %d\r\n", __FUNCTION__, level );
 /*********************************************************************
 *
 * @private
+* change_meter_info
+*
+* Change meter info (ODO/TRIP1/TRIP2/TRIP-F)
+*
+* @param meter_info Meter info to change
+*
+*********************************************************************/
+static void change_meter_info
+    (
+    const EnumMeterInfo meter_info
+    )
+{
+uint8_t procdtl = 0;
+uint8_t odo_trip_type = 0;
+
+switch( meter_info )
+    {
+    case EnumMeterInfoODO:
+        procdtl = MID_MSG_PROCDTL_VC_INFO_CHNG_TO_ODO;
+        odo_trip_type = IL_VT_DEV_CTRL_CHG_METER_ODO;
+        break;
+    case EnumMeterInfoTRIP1:
+        procdtl = MID_MSG_PROCDTL_VC_INFO_RST_CHNG_TO_TRIP1;
+        odo_trip_type = IL_VT_DEV_CTRL_CHG_METER_TRIP1;
+        break;
+    case EnumMeterInfoTRIP2:
+        procdtl = MID_MSG_PROCDTL_VC_INFO_RST_CHNG_TO_TRIP2;
+        odo_trip_type = IL_VT_DEV_CTRL_CHG_METER_TRIP2;
+        break;
+    case EnumMeterInfoTRIP_F:
+        procdtl = MID_MSG_PROCDTL_VC_INFO_RST_CHNG_TO_TRIPF;
+        odo_trip_type = IL_VT_DEV_CTRL_CHG_METER_TRIPF;
+        break;
+    default:
+        break;
+    }
+
+if( 0 != procdtl )
+    {
+    /* H'584 */
+    can_mid_req( TX0_REQ_MT_FUNC_CNT_CAN0_ID, IL_CAN0_TX0_REQ_MT_FUNC_CNT_TXFRM_LEN, MID_MSG_SID_VC_INFO_CHNG_MT_LCD, procdtl );
+
+    /* H'5CA */
+    dll_frm_index_t l_frm_index2;
+    can_mid_sig_set( &l_frm_index2, IL_CAN0_DEV_CTRL_CHG_METER_TXSIG_HANDLE, IL_CAN0_DEV_CTRL_CHG_METER_TXSIG_NBYTES, &odo_trip_type );
+    can_mid_frm_send( l_frm_index2 );
+
+    PRINTF( "%s %d 0x%x\r\n", __FUNCTION__, odo_trip_type, procdtl );
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * send_meter_windscreen_operation
 *
 * Send meter wind screen operation
@@ -484,6 +538,64 @@ dll_frm_index_t l_frm_index;
 can_mid_sig_set( &l_frm_index, IL_CAN0_FACT_INSP_NS_RES_TXSIG_HANDLE, IL_CAN0_FACT_INSP_NS_RES_TXSIG_NBYTES, &mode );
 can_mid_sig_set( &l_frm_index, IL_CAN0_FACT_INSP_NS_RESCODE_TXSIG_HANDLE, IL_CAN0_FACT_INSP_NS_RESCODE_TXSIG_NBYTES, &fainsres );
 can_mid_frm_send( l_frm_index );
+}
+
+/*********************************************************************
+*
+* @private
+* reset_meter
+*
+* Reset meter info (TRIP1/TRIP2/TRIP-F)
+*
+* @param meter_info Meter info to reset
+*
+*********************************************************************/
+static void reset_meter
+    (
+    const EnumMeterInfo meter_info
+    )
+{
+uint8_t procdtl = 0;
+
+switch( meter_info )
+    {
+    case EnumMeterInfoTRIP1:
+        procdtl = MID_MSG_PROCDTL_VC_INFO_RST_CHNG_TO_TRIP1;
+        break;
+    case EnumMeterInfoTRIP2:
+        procdtl = MID_MSG_PROCDTL_VC_INFO_RST_CHNG_TO_TRIP2;
+        break;
+    case EnumMeterInfoTRIP_F:
+        procdtl = MID_MSG_PROCDTL_VC_INFO_RST_CHNG_TO_TRIPF;
+        break;
+    case EnumMeterInfoAVG_SPEED:
+        procdtl = MID_MSG_PROCDTL_VC_INFO_RST_AVG_SPEED;
+        break;
+    case EnumMeterInfoAVG_FUEL:
+        procdtl = MID_MSG_PROCDTL_VC_INFO_RST_AVG_FUEL;
+        break;
+    case EnumMeterInfoFUEL_CONSUMPTION:
+        procdtl = MID_MSG_PROCDTL_VC_INFO_RST_FUEL_CONS;
+        break;
+    case EnumMeterInfoMAINTENANCE_TRIP1:
+        procdtl = MID_MSG_PROCDTL_MAINT_INFO_RST_AT_TOP;
+        break;
+    case EnumMeterInfoMAINTENANCE_TRIP2:
+        procdtl = MID_MSG_PROCDTL_MAINT_INFO_RST_AT_MID;
+        break;
+    case EnumMeterInfoMAINTENANCE_TRIP3:
+        procdtl = MID_MSG_PROCDTL_MAINT_INFO_RST_AT_BOT;
+        break;
+    default:
+        break;
+    }
+
+if( 0 != procdtl )
+    {
+    /* H'584 */
+    can_mid_req( TX0_REQ_MT_FUNC_CNT_CAN0_ID, IL_CAN0_TX0_REQ_MT_FUNC_CNT_TXFRM_LEN, MID_MSG_SID_VC_INFO_RST, procdtl );
+    PRINTF( "%s 0x%x\r\n", __FUNCTION__, procdtl );
+    }
 }
 
 /*********************************************************************
@@ -547,12 +659,16 @@ switch( tx_type )
         send_meter_seat_heater_change_level( (uint8_t)data );
         break;
     case EnumVehicleTxTypeCHG_METER_INFO:
+        change_meter_info( (EnumMeterInfo)data );
         break;
     case EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION:
         send_tft_brightness_operation( (uint8_t)data );
         break;
     case EnumVehicleTxTypeTCS:
         send_tcs_status( (uint8_t)data );
+        break;
+    case EnumVehicleTxTypeRESET_METER:
+        reset_meter( (EnumMeterInfo)data );
         break;
     default:
         PRINTF( "Err: %s invalid tx type %d\r\n", __FUNCTION__, tx_type );

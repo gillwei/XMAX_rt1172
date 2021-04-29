@@ -96,10 +96,12 @@
 /* This is a GUI component. */
 EW_DEFINE_FIELDS( MenuItemWrapper, CoreGroup )
   EW_PROPERTY( OnActivate,      XSlot )
+  EW_PROPERTY( OnLongEnterKeyActivate, XSlot )
   EW_PROPERTY( Title,           XString )
-  EW_PROPERTY( ItemValue,       XString )
+  EW_PROPERTY( Value,           XString )
   EW_PROPERTY( Message,         XString )
   EW_PROPERTY( ReceivedTime,    XString )
+  EW_PROPERTY( Unit,            XString )
   EW_PROPERTY( ItemClass,       XClass )
   EW_PROPERTY( Height,          XInt32 )
   EW_PROPERTY( Uid,             XUInt32 )
@@ -172,14 +174,18 @@ void MenuItemWrapper_OnActivateSlot( MenuItemWrapper _this, XObject sender );
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetChecked()' */
 void MenuItemWrapper_OnSetChecked( MenuItemWrapper _this, XBool value );
 
+/* 'C' function for method : 'Menu::ItemWrapper.OnLongEnterKeyActivatedSlot()' */
+void MenuItemWrapper_OnLongEnterKeyActivatedSlot( MenuItemWrapper _this, XObject 
+  sender );
+
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetFocusable()' */
 void MenuItemWrapper_OnSetFocusable( MenuItemWrapper _this, XBool value );
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetDDModeEnabled()' */
 void MenuItemWrapper_OnSetDDModeEnabled( MenuItemWrapper _this, XBool value );
 
-/* 'C' function for method : 'Menu::ItemWrapper.OnSetItemValue()' */
-void MenuItemWrapper_OnSetItemValue( MenuItemWrapper _this, XString value );
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetValue()' */
+void MenuItemWrapper_OnSetValue( MenuItemWrapper _this, XString value );
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetMessage()' */
 void MenuItemWrapper_OnSetMessage( MenuItemWrapper _this, XString value );
@@ -195,6 +201,9 @@ void MenuItemWrapper_OnSetUid( MenuItemWrapper _this, XUInt32 value );
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetToggleEnabled()' */
 void MenuItemWrapper_OnSetToggleEnabled( MenuItemWrapper _this, XBool value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetUnit()' */
+void MenuItemWrapper_OnSetUnit( MenuItemWrapper _this, XString value );
 
 #ifdef __cplusplus
   }

@@ -515,6 +515,9 @@ EW_DEFINE_CLASS( NotificationNTF01_NotificationList, MenuBaseMenuView, Notificat
   NotificationNTF01_NotificationList_LoadItemCategory,
   NotificationNTF01_NotificationList_LoadItemUid,
   MenuBaseMenuView_LoadItemToggle,
+  MenuBaseMenuView_LoadItemUnit,
+  MenuBaseMenuView_LoadItemValue,
+  MenuBaseMenuView_OnItemLongEnterKeyActivate,
 EW_END_OF_CLASS( NotificationNTF01_NotificationList )
 
 /* Initializer for the class 'Notification::NTF02_NotificationDetail' */

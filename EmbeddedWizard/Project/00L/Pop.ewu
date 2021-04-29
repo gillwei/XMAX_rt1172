@@ -1,6 +1,6 @@
 ﻿$version 10.00
 
-$rect <10,160,250,200>
+$rect <10,210,250,250>
 $output false
 class POP08_WeatherLoadingUI : Components::BaseMainBG
 {
@@ -84,7 +84,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
   }
 }
 
-$rect <10,210,210,250>
+$rect <10,260,210,300>
 $output false
 class POP09_BleConnectionErrorUI : Components::BaseMainBG
 {
@@ -268,7 +268,7 @@ class POP02_ConnectionError : Components::BaseComponent
   }
 }
 
-$rect <10,110,260,150>
+$rect <10,160,260,200>
 $output false
 class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
 {
@@ -475,5 +475,55 @@ class POP01_PleaseWait : Components::BaseMainBG
     {
       Owner.SwitchToDialog( new Pop::POP02_ConnectionError, null, null, null, null, null, null, null, null, null, false );
     }
+  }
+}
+
+$rect <10,110,210,150>
+$output false
+class POP04_Reset : Components::BaseMainBG
+{
+  $rect <20,20,160,60>
+  object Views::Text ConnectionFailedMessage
+  {
+    preset Bounds = <10,46,470,170>;
+    preset String = Strings::GEN_RESET_QUESTION_MARK;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::UpDownPushButtonSet UpDownPushButtonSet
+  {
+    preset Bounds = <165,176,315,259>;
+    preset PassHomeKey = true;
+    preset PassMagicKey = true;
+    preset OnUpButtonActivated = OnCancelButtonActivatedSlot;
+    preset OnDownButtonActivated = OnOkButtonActivatedSlot;
+    preset UpButtonTitle = Strings::GEN_CANCEL;
+    preset DownButtonTitle = Strings::GEN_OK;
+    preset DownButtonEnabled = true;
+  }
+
+  $rect <510,250,760,290>
+  slot OnOkButtonActivatedSlot
+  {
+    DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.RESET_METER, (uint32)SelectedMeterInfo );
+    DismissThisDialog();
+  }
+
+  $rect <510,200,760,240>
+  slot OnCancelButtonActivatedSlot
+  {
+    DismissThisDialog();
+  }
+
+  $rect <510,150,710,190>
+  property Enum::MeterInfo SelectedMeterInfo;
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,36,480,38>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
   }
 }

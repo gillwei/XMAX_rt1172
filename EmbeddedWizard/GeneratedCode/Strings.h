@@ -67,6 +67,9 @@ extern const XStringRes StringsGEN_MIDDLE;
 /* User defined constant: 'Strings::GEN_HIGH' */
 extern const XStringRes StringsGEN_HIGH;
 
+/* User defined constant: 'Strings::GEN_RESET_QUESTION_MARK' */
+extern const XStringRes StringsGEN_RESET_QUESTION_MARK;
+
 /* User defined constant: 'Strings::GEN_BLUETOOTH' */
 extern const XStringRes StringsGEN_BLUETOOTH;
 
@@ -117,6 +120,18 @@ extern const XStringRes StringsINF01_ECHO_VISUALIZER;
 
 /* User defined constant: 'Strings::INF01_SPEED_VISUALIZER' */
 extern const XStringRes StringsINF01_SPEED_VISUALIZER;
+
+/* User defined constant: 'Strings::INF26_ODO' */
+extern const XStringRes StringsINF26_ODO;
+
+/* User defined constant: 'Strings::INF26_TRIP_1' */
+extern const XStringRes StringsINF26_TRIP_1;
+
+/* User defined constant: 'Strings::INF26_TRIP_2' */
+extern const XStringRes StringsINF26_TRIP_2;
+
+/* User defined constant: 'Strings::INF26_TRIP_F' */
+extern const XStringRes StringsINF26_TRIP_F;
 
 /* User defined constant: 'Strings::LNC_METER_DISPLAY' */
 extern const XStringRes StringsLNC_METER_DISPLAY;

@@ -13,7 +13,7 @@ class HOM11_TachoVisualizer : Home::BaseHome
   $rect <220,280,450,320>
   inherited method OnLongEnterKeyActivated()
   {
-    if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
       PresentDialog( new Info::INF01_MeterDisplaySettingMenu, null, null, null, null, null, null, null, null, false );
     }
@@ -45,7 +45,7 @@ class HOM12_EcoVisualizer : Home::BaseHome
   $rect <210,280,440,320>
   inherited method OnLongEnterKeyActivated()
   {
-    if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
       PresentDialog( new Info::INF01_MeterDisplaySettingMenu, null, null, null, null, null, null, null, null, false );
     }
@@ -77,7 +77,7 @@ class HOM13_SpeedVisualizer : Home::BaseHome
   $rect <210,280,440,320>
   inherited method OnLongEnterKeyActivated()
   {
-    if( Home::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
       PresentDialog( new Info::INF01_MeterDisplaySettingMenu, null, null, null, null, null, null, null, null, false );
     }
@@ -109,7 +109,7 @@ class BaseHome : Components::BaseMainBG
   $rect <220,290,450,330>
   inherited method OnShortHomeKeyActivated()
   {
-    var Enum::HomeType NextHomeType = GetNextHomeType( HomeType );
+    var Enum::HomeType NextHomeType = GetNextHomeType( HomeType );
     var Application::Application App = ( Application::Application )GetRoot();
     if( null != App )
     {
@@ -183,10 +183,6 @@ class BaseHome : Components::BaseMainBG
     return NextHomeType;
   }
 }
-
-$rect <240,10,600,50>
-$output false
-const int32 ACTIVATE_LONG_PRESS_REPETITION_COUNT = 1;
 
 $rect <10,210,210,250>
 $output false

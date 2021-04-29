@@ -142,7 +142,7 @@ enum KeyTriggerMode
   item OFF;
 }
 
-$rect <260,70,460,110>
+$rect <960,20,1160,60>
 $output false
 enum MainSettingItem
 {
@@ -180,7 +180,7 @@ enum MainSettingItem
   item TOTAL;
 }
 
-$rect <260,120,460,160>
+$rect <960,70,1160,110>
 $output false
 enum NaviSettingItem
 {
@@ -579,6 +579,9 @@ enum VehicleTxType
 
   $rect <220,310,420,350>
   item TCS;
+
+  $rect <220,360,420,400>
+  item RESET_METER;
 }
 
 $rect <260,320,460,360>
@@ -741,7 +744,7 @@ enum MotoConRxEvent
   item PHONE_CELL_SIGNAL_LEVEL;
 }
 
-$rect <960,220,1160,260>
+$rect <960,320,1160,360>
 $output false
 enum TemperatureSettingItem
 {
@@ -787,7 +790,7 @@ enum WeatherTimeType
   item WEATHER_AFTER_6DAY;
 }
 
-$rect <960,20,1160,60>
+$rect <960,120,1160,160>
 $output false
 enum UnitSettingItem
 {
@@ -804,7 +807,7 @@ enum UnitSettingItem
   item TEMPERATURE;
 }
 
-$rect <960,70,1160,110>
+$rect <960,170,1160,210>
 $output false
 enum MileageSettingItem
 {
@@ -815,7 +818,7 @@ enum MileageSettingItem
   item MILE;
 }
 
-$rect <960,120,1160,160>
+$rect <960,220,1160,260>
 $output false
 enum FuelSettingItem
 {
@@ -829,7 +832,7 @@ enum FuelSettingItem
   item L_PER_HUNDRED_KM;
 }
 
-$rect <960,170,1160,210>
+$rect <960,270,1160,310>
 $output false
 enum PressureSettingItem
 {
@@ -877,7 +880,7 @@ enum ReceptionStatus
   item ERROR;
 }
 
-$rect <500,520,700,560>
+$rect <260,70,460,110>
 $output false
 enum OperationMode
 {
@@ -1091,7 +1094,7 @@ enum EEPROMTest
   item READ_LAST_PAGE;
 }
 
-$rect <730,120,930,160>
+$rect <260,120,460,160>
 enum Language
 {
   $rect <10,10,210,50>
@@ -1152,7 +1155,7 @@ enum Language
   item TOTAL;
 }
 
-$rect <30,630,230,670>
+$rect <960,420,1160,460>
 $output false
 enum TimeType
 {
@@ -1173,4 +1176,62 @@ enum TimeType
 
   $rect <220,70,420,110>
   item MINUTE;
+}
+
+$rect <730,120,930,160>
+$output false
+enum MeterInfo
+{
+  $rect <10,10,210,50>
+  item ODO;
+
+  $rect <10,60,210,100>
+  item TRIP1;
+
+  $rect <10,110,210,150>
+  item TRIP2;
+
+  $rect <10,160,210,200>
+  item TRIP_F;
+
+  $rect <10,210,210,250>
+  item AVG_SPEED;
+
+  $rect <10,260,210,300>
+  item AVG_FUEL;
+
+  $rect <220,10,420,50>
+  item FUEL_CONSUMPTION;
+
+  $rect <220,60,420,100>
+  item MAINTENANCE_TRIP1;
+
+  $rect <220,110,420,150>
+  item MAINTENANCE_TRIP2;
+
+  $rect <220,160,420,200>
+  item MAINTENANCE_TRIP3;
+
+  $rect <220,210,420,250>
+  item TOTAL;
+}
+
+$rect <960,370,1160,410>
+$output false
+enum OdoTripSettingItem
+{
+  $rect <10,10,210,50>
+  item ODO;
+
+  $rect <10,60,210,100>
+  item TRIP1;
+
+  $rect <10,110,210,150>
+  item TRIP2;
+
+  $rect <10,160,210,200>
+  item TRIP_F;
+
+  $rect <10,210,210,250>
+  item TOTAL;
 }

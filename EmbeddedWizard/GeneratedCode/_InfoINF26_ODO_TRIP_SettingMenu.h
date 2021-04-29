@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _NavigationNAV08_NaviChageViewMenu_H
-#define _NavigationNAV08_NaviChageViewMenu_H
+#ifndef _InfoINF26_ODO_TRIP_SettingMenu_H
+#define _InfoINF26_ODO_TRIP_SettingMenu_H
 
 #ifdef __cplusplus
   extern "C"
@@ -99,28 +99,32 @@
 #define _GraphicsCanvas_
 #endif
 
+/* Forward declaration of the class Info::INF26_ODO_TRIP_SettingMenu */
+#ifndef _InfoINF26_ODO_TRIP_SettingMenu_
+  EW_DECLARE_CLASS( InfoINF26_ODO_TRIP_SettingMenu )
+#define _InfoINF26_ODO_TRIP_SettingMenu_
+#endif
+
 /* Forward declaration of the class Menu::ItemBase */
 #ifndef _MenuItemBase_
   EW_DECLARE_CLASS( MenuItemBase )
 #define _MenuItemBase_
 #endif
 
-/* Forward declaration of the class Navigation::NAV08_NaviChageViewMenu */
-#ifndef _NavigationNAV08_NaviChageViewMenu_
-  EW_DECLARE_CLASS( NavigationNAV08_NaviChageViewMenu )
-#define _NavigationNAV08_NaviChageViewMenu_
-#endif
 
-
-/* Deklaration of class : 'Navigation::NAV08_NaviChageViewMenu' */
-EW_DEFINE_FIELDS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
+/* Deklaration of class : 'Info::INF26_ODO_TRIP_SettingMenu' */
+EW_DEFINE_FIELDS( InfoINF26_ODO_TRIP_SettingMenu, MenuBaseMenuView )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
-  EW_ARRAY   ( ItemTitleArray,  XString, [3])
-  EW_VARIABLE( NaviScreenIdx,   XInt32 )
-EW_END_OF_FIELDS( NavigationNAV08_NaviChageViewMenu )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
+  EW_ARRAY   ( AllSettings,     XEnum, [4])
+  EW_VARIABLE( SelectedItem,    XEnum )
+  EW_VARIABLE( MileageSetting,  XEnum )
+  EW_ARRAY   ( SupportedSetting, XEnum, [4])
+  EW_VARIABLE( IsWaitingForResponse, XBool )
+EW_END_OF_FIELDS( InfoINF26_ODO_TRIP_SettingMenu )
 
-/* Virtual Method Table (VMT) for the class : 'Navigation::NAV08_NaviChageViewMenu' */
-EW_DEFINE_METHODS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Info::INF26_ODO_TRIP_SettingMenu' */
+EW_DEFINE_METHODS( InfoINF26_ODO_TRIP_SettingMenu, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -173,14 +177,14 @@ EW_DEFINE_METHODS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( NavigationNAV08_NaviChageViewMenu _this, 
+  EW_METHOD( LoadItemClass,     XClass )( InfoINF26_ODO_TRIP_SettingMenu _this, 
     XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( NavigationNAV08_NaviChageViewMenu _this, 
+  EW_METHOD( LoadItemTitle,     XString )( InfoINF26_ODO_TRIP_SettingMenu _this, 
     XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( NavigationNAV08_NaviChageViewMenu _this, 
-    XInt32 aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( NavigationNAV08_NaviChageViewMenu _this, 
-    XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( InfoINF26_ODO_TRIP_SettingMenu _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( InfoINF26_ODO_TRIP_SettingMenu _this, XInt32 
+    aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -188,36 +192,70 @@ EW_DEFINE_METHODS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUnit,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
-    aItemNo, MenuItemBase aMenuItem )
-EW_END_OF_METHODS( NavigationNAV08_NaviChageViewMenu )
+  EW_METHOD( LoadItemUnit,      XString )( InfoINF26_ODO_TRIP_SettingMenu _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemValue,     XString )( InfoINF26_ODO_TRIP_SettingMenu _this, 
+    XInt32 aItemNo )
+  EW_METHOD( OnItemLongEnterKeyActivate, void )( InfoINF26_ODO_TRIP_SettingMenu _this, 
+    XInt32 aItemNo, MenuItemBase aMenuItem )
+EW_END_OF_METHODS( InfoINF26_ODO_TRIP_SettingMenu )
 
-/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemClass()' */
-XClass NavigationNAV08_NaviChageViewMenu_LoadItemClass( NavigationNAV08_NaviChageViewMenu _this, 
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void InfoINF26_ODO_TRIP_SettingMenu_Init( InfoINF26_ODO_TRIP_SettingMenu _this, 
+  XHandle aArg );
+
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.LoadItemClass()' */
+XClass InfoINF26_ODO_TRIP_SettingMenu_LoadItemClass( InfoINF26_ODO_TRIP_SettingMenu _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemTitle()' */
-XString NavigationNAV08_NaviChageViewMenu_LoadItemTitle( NavigationNAV08_NaviChageViewMenu _this, 
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.LoadItemTitle()' */
+XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemTitle( InfoINF26_ODO_TRIP_SettingMenu _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.OnItemActivate()' */
-void NavigationNAV08_NaviChageViewMenu_OnItemActivate( NavigationNAV08_NaviChageViewMenu _this, 
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.OnItemActivate()' */
+void InfoINF26_ODO_TRIP_SettingMenu_OnItemActivate( InfoINF26_ODO_TRIP_SettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemChecked()' */
-XBool NavigationNAV08_NaviChageViewMenu_LoadItemChecked( NavigationNAV08_NaviChageViewMenu _this, 
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.LoadItemChecked()' */
+XBool InfoINF26_ODO_TRIP_SettingMenu_LoadItemChecked( InfoINF26_ODO_TRIP_SettingMenu _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.OnCheckMarkUpdateSlot()' */
-void NavigationNAV08_NaviChageViewMenu_OnCheckMarkUpdateSlot( NavigationNAV08_NaviChageViewMenu _this, 
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.LoadItemUnit()' */
+XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemUnit( InfoINF26_ODO_TRIP_SettingMenu _this, 
+  XInt32 aItemNo );
+
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.LoadItemValue()' */
+XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemValue( InfoINF26_ODO_TRIP_SettingMenu _this, 
+  XInt32 aItemNo );
+
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.OnItemLongEnterKeyActivate()' */
+void InfoINF26_ODO_TRIP_SettingMenu_OnItemLongEnterKeyActivate( InfoINF26_ODO_TRIP_SettingMenu _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
+
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.OnCheckMarkUpdateSlot()' */
+void InfoINF26_ODO_TRIP_SettingMenu_OnCheckMarkUpdateSlot( InfoINF26_ODO_TRIP_SettingMenu _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.GetMileageSetting()' */
+void InfoINF26_ODO_TRIP_SettingMenu_GetMileageSetting( InfoINF26_ODO_TRIP_SettingMenu _this );
+
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.SetNoOfMenuItems()' */
+void InfoINF26_ODO_TRIP_SettingMenu_SetNoOfMenuItems( InfoINF26_ODO_TRIP_SettingMenu _this );
+
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.GetSelectedOdoTrip()' */
+void InfoINF26_ODO_TRIP_SettingMenu_GetSelectedOdoTrip( InfoINF26_ODO_TRIP_SettingMenu _this );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void InfoINF26_ODO_TRIP_SettingMenu_OnVehicleDataReceivedSlot( InfoINF26_ODO_TRIP_SettingMenu _this, 
   XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _NavigationNAV08_NaviChageViewMenu_H */
+#endif /* _InfoINF26_ODO_TRIP_SettingMenu_H */
 
 /* Embedded Wizard */

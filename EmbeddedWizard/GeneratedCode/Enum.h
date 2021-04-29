@@ -273,7 +273,8 @@ typedef enum
   EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL = 13,
   EnumVehicleTxTypeCHG_METER_INFO       = 14,
   EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION = 15,
-  EnumVehicleTxTypeTCS                  = 16
+  EnumVehicleTxTypeTCS                  = 16,
+  EnumVehicleTxTypeRESET_METER          = 17
 } EnumVehicleTxType;
 
 /* User defined enumeration: 'Enum::DataType' */
@@ -552,6 +553,32 @@ typedef enum
   EnumTimeTypeHOUR                      = 4,
   EnumTimeTypeMINUTE                    = 5
 } EnumTimeType;
+
+/* User defined enumeration: 'Enum::MeterInfo' */
+typedef enum
+{
+  EnumMeterInfoODO                      = 0,
+  EnumMeterInfoTRIP1                    = 1,
+  EnumMeterInfoTRIP2                    = 2,
+  EnumMeterInfoTRIP_F                   = 3,
+  EnumMeterInfoAVG_SPEED                = 4,
+  EnumMeterInfoAVG_FUEL                 = 5,
+  EnumMeterInfoFUEL_CONSUMPTION         = 6,
+  EnumMeterInfoMAINTENANCE_TRIP1        = 7,
+  EnumMeterInfoMAINTENANCE_TRIP2        = 8,
+  EnumMeterInfoMAINTENANCE_TRIP3        = 9,
+  EnumMeterInfoTOTAL                    = 10
+} EnumMeterInfo;
+
+/* User defined enumeration: 'Enum::OdoTripSettingItem' */
+typedef enum
+{
+  EnumOdoTripSettingItemODO             = 0,
+  EnumOdoTripSettingItemTRIP1           = 1,
+  EnumOdoTripSettingItemTRIP2           = 2,
+  EnumOdoTripSettingItemTRIP_F          = 3,
+  EnumOdoTripSettingItemTOTAL           = 4
+} EnumOdoTripSettingItem;
 
 #ifdef __cplusplus
   }
