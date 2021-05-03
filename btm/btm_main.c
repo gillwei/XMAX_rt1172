@@ -182,7 +182,7 @@ static uint8_t local_device_name[BT_DEVICE_NAME_LEN];       /* local device name
 static uint8_t local_device_address[BT_DEVICE_ADDRESS_LEN]; /* local MAC address */
 
 static bt_device_info paired_device_list[BT_MAX_PAIRED_DEVICE_NUM];
-static uint8_t bt_sw_version[BT_SW_VERSION_LEN];            /* BT SW Major version and Minor version  */
+static uint8_t bt_sw_version[BT_SW_VERSION_LEN];                /* BT SW Major version and Minor version  */
 static uint8_t connect_request_bd_addrress_rev[BT_DEVICE_NAME_LEN]; /* connect command device address */
 static uint8_t autoconnect_pair_device_index = 0;               /* Record current auto connect paired device index */
 
@@ -1826,6 +1826,7 @@ bool BTM_is_bt_connected
     void
     )
 {
+PRINTF( "BTM_is_bt_connected:%d\r\n", btm_btc_connection_status.BTC_is_connected );
 return btm_btc_connection_status.BTC_is_connected;
 }
 
@@ -2205,7 +2206,15 @@ event_group = xEventGroupCreate();
 configASSERT( NULL != event_group );
 
 // Initialize static parameters
+for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
+    {
+    memset( &(paired_device_list[i]), 0, sizeof( bt_device_info ) );
+    }
 memset( connect_request_bd_addrress_rev, 0, BT_DEVICE_NAME_LEN );
+memset( bt_sw_version, 0, BT_SW_VERSION_LEN );
+memset( local_device_name, 0, BT_DEVICE_NAME_LEN );
+btm_btc_connection_status.BTC_is_connected = false;
+btm_btc_connection_status.current_connection_handle = 0;
 
 ble_pairing_fail_count = 0;
 create_btm_timeout_timer();
