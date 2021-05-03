@@ -522,7 +522,7 @@ static uint8 client_appl_get_first_connected_server_id
 uint8 index = 0;
 uint8 return_value = NO_SERVER_CONNECT;
 
-for( ; index <= SUPPORT_SERVER_NUM; index++ )
+for( ; index < SUPPORT_SERVER_NUM; index++ )
     {
     if( SUPPORT_SERVER_NUM == index)
         {
@@ -556,7 +556,7 @@ static uint8 client_appl_get_next_connected_server_id
 uint8 index = get_current_connect_server_id();
 uint8 return_value = NO_SERVER_CONNECT;
 
-for( index++ ; index <= SUPPORT_SERVER_NUM; index++ )
+for( index++ ; index < SUPPORT_SERVER_NUM; index++ )
     {
     if( SUPPORT_SERVER_NUM == index)
         {
@@ -588,7 +588,7 @@ static uint8 client_appl_get_last_detected_server_index
 {
 uint8 temp  = 0;
 uint8 index = 0;
-for( ; temp <= SUPPORT_SERVER_NUM; temp++ )
+for( ; temp < SUPPORT_SERVER_NUM; temp++ )
     {
     if( server_list_detect_infos[temp].server_connect_status_default == SERVER_CONNECT )
         {
@@ -723,7 +723,7 @@ client_ReturnType client_appl_init
 uint8 index = 0;
 
 /*for server list detect*/
-for( ; index <= SUPPORT_SERVER_NUM; index++ )
+for( ; index < SUPPORT_SERVER_NUM; index++ )
     {
     server_list_detect_infos[index].server_id = index;
     server_list_detect_infos[index].ecu_identifier = server_ecu_identifier[index];
@@ -1202,7 +1202,7 @@ if( FALSE == check_result )
     }
 else
     {
-    for( ; index <= SUPPORT_SERVER_NUM; index++ )
+    for( ; index < SUPPORT_SERVER_NUM; index++ )
         {
         if( SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
             {
@@ -1231,7 +1231,7 @@ uint8 client_appl_channel_mapping
 uint8 return_value = NO_SERVER_CONNECT;
 uint8 index = 0x00;
 
-for( ; index <= SUPPORT_SERVER_NUM; index++ )
+for( ; index < SUPPORT_SERVER_NUM; index++ )
     {
      if( server_list_detect_infos[index].ecu_identifier == server_code \
         && SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
@@ -1690,7 +1690,7 @@ uint8 result = 0x00;
 /*const*/ uint8* data_ptr =  NULL;
 uint16 data_length = 0;
 
-for( ; current_send_channel_id <= SUPPORT_SERVER_NUM; current_send_channel_id++ )
+for( ; current_send_channel_id < SUPPORT_SERVER_NUM; current_send_channel_id++ )
     {
     if( SERVER_CONNECT == server_list_detect_infos[current_send_channel_id].server_connect_status_default )
         {
@@ -2463,7 +2463,7 @@ uint8 index = 0x00;
 
 if( !read_dtc_infos.is_storge_init_dtc )
     {
-    for( ; index <= SUPPORT_SERVER_NUM; index++ )
+    for( ; index < SUPPORT_SERVER_NUM; index++ )
         {
         read_dtc_infos.is_storge_init_dtc |= client_mem_get_storage_init_dtc_state( index );
         }
