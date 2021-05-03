@@ -168,9 +168,9 @@ static uint16_t               resp_timer_count;
 static const uint8_t          allow_connection_const_data[3] = { 0x02, 0x00, 0x02 };
 static bool                   tx_carrier_cmd_called = false;
 static uint8_t                tx_carrier_cmd_data = 0;
-static const uint8_t          tx_carrier_low_ch_data[7] = { 0x0, 0x02, 0x0, 0x0, 0x08, 0x02, 0x0 };
-static const uint8_t          tx_carrier_mid_ch_data[7] = { 0x0, 0x29, 0x0, 0x0, 0x08, 0x02, 0x0 };
-static const uint8_t          tx_carrier_hi_ch_data[7] = { 0x0, 0x50, 0x0, 0x0, 0x08, 0x02, 0x0 };
+static const uint8_t          tx_carrier_low_ch_data[7] = { 0x0, 0x02, 0x0, 0x0, 0x09, 0x0, 0x0 };
+static const uint8_t          tx_carrier_mid_ch_data[7] = { 0x0, 0x29, 0x0, 0x0, 0x09, 0x0, 0x0 };
+static const uint8_t          tx_carrier_hi_ch_data[7] = { 0x0, 0x50, 0x0, 0x0, 0x09, 0x0, 0x0 };
 static hci_resp_type_t        current_resp_event = RESPONSE_NO_EVENT;
 static uint8_t                hw_id = 0;
 
