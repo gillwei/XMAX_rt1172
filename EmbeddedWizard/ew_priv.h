@@ -32,10 +32,6 @@ extern "C" {
 #define LAST_PAGE_NAVIGATION_SETTING_MASK   ( 0x3 )
 #define LAST_PAGE_METER_DISP_SETTING_MASK   ( 0xF )
 
-#define IGN_OFF_TASK_CLOSE_DISPLAY      ( 1 << 0 )
-#define IGN_OFF_TASK_WRITE_LAST_PAGE    ( 1 << 1 )
-#define IGN_OFF_TASK_ALL                ( IGN_OFF_TASK_CLOSE_DISPLAY | IGN_OFF_TASK_WRITE_LAST_PAGE )
-
 typedef struct
     {
     CoreKeyCode code;
@@ -71,7 +67,6 @@ int  ew_handle_special_characters( const uint8_t* in_str, uint8_t** out_str );
 
 void ew_power_init( void );
 int  ew_power_ignition_status( void );
-void ew_power_update_ignoff_task_status( uint32_t task );
 
 XBool ew_is_debug_build( void );
 void ew_done_factory_reset( void );

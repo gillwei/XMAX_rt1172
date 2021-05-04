@@ -203,6 +203,7 @@ void vi_key_init( void );
 void vi_key_status_changed( const CoreKeyCode key_code, const int key_status );
 void vi_key_proc( void );
 void vi_rx_init( void );
+void vi_trip_time_init( void );
 
 #ifdef __cplusplus
 }

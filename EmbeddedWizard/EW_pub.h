@@ -22,6 +22,11 @@ extern "C" {
 
 #define UPDATE_TIME_PERIOD_MS           ( 500 )
 
+#define IGN_OFF_TASK_DISPLAY_OFF        ( 1 << 0 )
+#define IGN_OFF_TASK_WRITE_LAST_PAGE    ( 1 << 1 )
+#define IGN_OFF_TASK_WRITE_TRIP_TIME    ( 1 << 2 )
+#define IGN_OFF_TASK_ALL                ( IGN_OFF_TASK_DISPLAY_OFF | IGN_OFF_TASK_WRITE_LAST_PAGE | IGN_OFF_TASK_WRITE_TRIP_TIME )
+
 typedef enum
     {
     KEY_STATE_RELEASE,
@@ -38,6 +43,7 @@ void EW_init( void );
 void EW_notify_opening_event( const opening_event event );
 bool EW_get_operation_mode( EnumOperationMode* mode );
 void EW_reset_to_factory_default( void );
+void EW_power_update_ignoff_task_status( uint32_t task );
 
 uint32_t EW_get_ccuid( void );
 uint16_t EW_get_qrcode_dummy( void );

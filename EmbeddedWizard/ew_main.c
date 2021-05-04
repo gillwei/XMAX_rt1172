@@ -257,7 +257,7 @@ void EwDone( void )
   /* deinitialize display */
   EwBspDisplayDone();
 
-  ew_power_update_ignoff_task_status( IGN_OFF_TASK_CLOSE_DISPLAY );
+  EW_power_update_ignoff_task_status( IGN_OFF_TASK_DISPLAY_OFF );
 }
 
 /*******************************************************************************

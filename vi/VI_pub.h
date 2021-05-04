@@ -78,6 +78,9 @@ void VI_rx_reprogram_info_response( const uint8 svc_id, const uint8 svc_data_siz
 void VI_rx_mt_func_cont_info_response( const uint8 svc_id, const uint8 svc_data_size, const uint8* svc_data_p );
 void VI_send_inspection_response( const EnumInspectionMode mode, const uint8_t fainsres );
 void VI_notify_ydt_detected( void );
+void VI_trip_time_count( void );
+void VI_trip_time_save( void );
+bool VI_trip_time_get_current( uint32_t* current_trip_time_sec );
 
 #ifdef __cplusplus
 }

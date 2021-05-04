@@ -27,7 +27,9 @@
 #include "RTC_pub.h"
 #include "PM_pub.h"
 #include "QR_pub.h"
+#include "VI_pub.h"
 #include "client_dcm_appl.h"
+
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -309,15 +311,24 @@ static void update_time_task_main
     void* arg
     )
 {
-TickType_t last_wake_ticks;
-
-last_wake_ticks = xTaskGetTickCount();
+TickType_t last_wake_ticks = xTaskGetTickCount();
+static bool is_one_second = false;
 
 while( 1 )
     {
     is_update_time = 1;
     EwBspEventTrigger();
+
+    /* count in 500ms */
     NTF_update_active_call_duration();
+
+    /* count in 1s */
+    if( is_one_second )
+        {
+        VI_trip_time_count();
+        }
+    is_one_second = !is_one_second;
+
     vTaskDelayUntil( &last_wake_ticks, update_time_period_ticks );
     }
 vTaskDelete( NULL );

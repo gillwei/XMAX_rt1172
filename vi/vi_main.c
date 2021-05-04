@@ -112,4 +112,5 @@ void VI_init
 create_task();
 vi_rx_init();
 vi_key_init();
+vi_trip_time_init();
 }

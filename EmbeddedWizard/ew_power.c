@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include "EEPM_pub.h"
 #include "PM_pub.h"
+#include "VI_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -55,15 +56,15 @@ static uint32_t ignition_off_task_status = 0;
 
 /*********************************************************************
 *
-* @private
-* ew_update_ignition_off_status
+* @public
+* EW_power_update_ignoff_task_status
 *
 * Unregister callback to PM if all tasks are done
 *
-* @param task IGN_OFF_TASK_CLOSE_DISPLAY or IGN_OFF_TASK_WRITE_LAST_PAGE
+* @param task Ignitition off task
 *
 *********************************************************************/
-void ew_power_update_ignoff_task_status
+void EW_power_update_ignoff_task_status
     (
     uint32_t task
     )
@@ -97,7 +98,7 @@ if( !result )
     {
     EwPrint( "EW set last page fail\r\n" );
     }
-ew_power_update_ignoff_task_status( IGN_OFF_TASK_WRITE_LAST_PAGE );
+EW_power_update_ignoff_task_status( IGN_OFF_TASK_WRITE_LAST_PAGE );
 }
 
 /*********************************************************************
@@ -144,6 +145,9 @@ if( PM_IGN_OFF == ignition_status )
         {
         EwPrint( "Err: set last page\r\n" );
         }
+
+    // write trip time to EEPROM
+    VI_trip_time_save();
 
     // wake up EW task from Blocked state
     EwBspEventTrigger();
