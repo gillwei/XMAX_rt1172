@@ -419,7 +419,8 @@ class VerticalMenu : Components::BaseComponent
         Item.Category = OwnerMenu.LoadItemCategory( ItemNo );
         Item.Uid = OwnerMenu.LoadItemUid( ItemNo );
       }
-      else if( Menu::ItemValueUnitCheckmark == Item.ItemClass )
+      else if( Menu::ItemValueUnitCheckmark == Item.ItemClass ||
+               Menu::ItemValueUnit == Item.ItemClass )
       {
         Item.Value = OwnerMenu.LoadItemValue( ItemNo );
         Item.Unit = OwnerMenu.LoadItemUnit( ItemNo );
@@ -922,7 +923,7 @@ class ItemWrapper : Core::Group
     attr Bounds = <20,250,1120,470>;
   }
 
-  // For ItemCheckbox and ItemCheckMark
+  // For item with checkbox or checkmark
   note group Note7
   {
     attr Bounds = <20,500,530,650>;
@@ -1014,7 +1015,7 @@ class ItemWrapper : Core::Group
     }
   }
 
-  // For ItemBaseValue
+  // For item with unit/value
   note group Note8
   {
     attr Bounds = <20,670,530,830>;
@@ -1035,6 +1036,14 @@ class ItemWrapper : Core::Group
       if( Menu::ItemBaseValue == ( classof view ) )
       {
         var Menu::ItemBaseValue MenuItem = (Menu::ItemBaseValue)view;
+        if( MenuItem != null )
+        {
+          MenuItem.Value = value;
+        }
+      }
+      else if( Menu::ItemValueUnit == ( classof view ) )
+      {
+        var Menu::ItemValueUnit MenuItem = (Menu::ItemValueUnit)view;
         if( MenuItem != null )
         {
           MenuItem.Value = value;
@@ -1151,21 +1160,36 @@ class ItemWrapper : Core::Group
     }
   }
 
-  $rect <310,720,510,760>
+  $rect <260,720,460,760>
   property string Unit;
 
-  $rect <310,760,510,800>
+  $rect <260,760,460,800>
   onset Unit
   {
     if( pure Unit != value )
     {
       pure Unit = value;
-
       var Core::View view = FindNextView( null, Core::ViewState[] );
-      var Menu::ItemValueUnitCheckmark MenuItem = (Menu::ItemValueUnitCheckmark)view;
-      if( MenuItem != null )
+
+      if( Menu::ItemValueUnit == ( classof view ) )
       {
-        MenuItem.Unit = value;
+        var Menu::ItemValueUnit MenuItem = (Menu::ItemValueUnit)view;
+        if( MenuItem != null )
+        {
+          MenuItem.Unit = value;
+        }
+      }
+      else if( Menu::ItemValueUnitCheckmark == ( classof view ) )
+      {
+        var Menu::ItemValueUnitCheckmark MenuItem = (Menu::ItemValueUnitCheckmark)view;
+        if( MenuItem != null )
+        {
+          MenuItem.Unit = value;
+        }
+      }
+      else
+      {
+        // empty
       }
     }
   }
@@ -1296,6 +1320,14 @@ class BaseMenuView : Components::BaseMainBG
 {
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
+
+  // super( value );
+  $rect <10,340,210,380>
+  inherited onset DDModeEnabled
+  {
+    super( value );
+    Menu.DDModeEnabled = value;
+  }
 
   $rect <550,50,750,90>
   method class LoadItemClass( arg int32 aItemNo )
@@ -1863,7 +1895,6 @@ class ItemCheckMark : Menu::ItemBase
       pure Font = value;
       Title.Font = value;
     }
-
   }
 }
 
@@ -2018,8 +2049,6 @@ class ItemBaseValue : Menu::ItemBase
       pure Value = value;
       ValueText.String = value;
     }
-
-
   }
 }
 
@@ -2094,7 +2123,6 @@ class ItemNotification : Menu::ItemBase
       pure ReceivedTime = value;
       ReceivedTimeText.String = value;
     }
-
   }
 
   $rect <490,120,690,160>
@@ -2121,7 +2149,6 @@ class ItemNotification : Menu::ItemBase
         CategoryIcon.Visible = false;
       }
     }
-
   }
 
   $rect <20,20,160,60>
@@ -2136,7 +2163,7 @@ class ItemNotification : Menu::ItemBase
   property uint32 Uid;
 }
 
-$rect <230,260,450,300>
+$rect <230,310,450,350>
 $output false
 class ItemValueUnitCheckmark : Menu::ItemCheckMark
 {
@@ -2169,7 +2196,6 @@ class ItemValueUnitCheckmark : Menu::ItemCheckMark
       pure Value = value;
       ValueText.String = value;
     }
-
   }
 
   $rect <250,90,450,130>
@@ -2183,6 +2209,54 @@ class ItemValueUnitCheckmark : Menu::ItemCheckMark
       pure Unit = value;
       UnitText.String = value;
     }
+  }
+}
 
+$rect <230,260,430,300>
+$output false
+class ItemValueUnit : Menu::ItemBase
+{
+  $rect <20,20,160,60>
+  object Views::Text ValueText
+  {
+    preset Bounds = <200,1,351,69>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text UnitText
+  {
+    preset Bounds = <357,1,417,69>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <10,90,210,130>
+  property string Value;
+
+  $rect <10,130,210,170>
+  onset Value
+  {
+    if( pure Value != value )
+    {
+      pure Value = value;
+      ValueText.String = value;
+    }
+  }
+
+  $rect <250,90,450,130>
+  property string Unit;
+
+  $rect <250,130,450,170>
+  onset Unit
+  {
+    if( pure Unit != value )
+    {
+      pure Unit = value;
+      UnitText.String = value;
+    }
   }
 }

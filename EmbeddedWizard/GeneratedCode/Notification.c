@@ -501,7 +501,7 @@ EW_DEFINE_CLASS( NotificationNTF01_NotificationList, MenuBaseMenuView, Notificat
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  MenuBaseMenuView_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
   NotificationNTF01_NotificationList_LoadItemClass,

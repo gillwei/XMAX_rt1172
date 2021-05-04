@@ -262,7 +262,7 @@ EW_DEFINE_CLASS( TCSTCS01_Main, MenuBaseMenuView, VehicleDataReceivedEventHandle
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  MenuBaseMenuView_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
   TCSTCS01_Main_LoadItemClass,

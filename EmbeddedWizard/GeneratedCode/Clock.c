@@ -1155,7 +1155,7 @@ EW_DEFINE_CLASS( ClockCLK01_ClockSettingMenu, MenuBaseMenuView, ClockManualAdjCo
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  MenuBaseMenuView_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
   ClockCLK01_ClockSettingMenu_LoadItemClass,

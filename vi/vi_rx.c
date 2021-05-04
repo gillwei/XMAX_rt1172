@@ -296,9 +296,11 @@ switch( signal_id )
         break;
     case IL_CAN0_ODO_TRIP1_METER_RXSIG_HANDLE:
         rx_odo_trip.trip1_value_km = data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeTRIP1_VALUE );
         break;
     case IL_CAN0_ODO_TRIP2_METER_RXSIG_HANDLE:
         rx_odo_trip.trip2_value_km = data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeTRIP2_VALUE );
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -414,6 +416,7 @@ switch( signal_id )
     {
     case IL_CAN0_VEHICLE_INFO_4_FTRIP_RXSIG_HANDLE:
         rx_vehicle_info.fuel_tripmeter_km = (uint16_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeF_TRIP );
         break;
     case IL_CAN0_VEHICLE_INFO_4_LOW_FUEL_WRN_RXSIG_HANDLE:
         rx_vehicle_info.low_fuel_warning = (bool)data;

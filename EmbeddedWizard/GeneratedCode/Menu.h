@@ -49,6 +49,7 @@
 #include "_MenuItemCheckMark.h"
 #include "_MenuItemCheckbox.h"
 #include "_MenuItemNotification.h"
+#include "_MenuItemValueUnit.h"
 #include "_MenuItemValueUnitCheckmark.h"
 #include "_MenuItemWrapper.h"
 #include "_MenuPushButton.h"

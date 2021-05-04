@@ -39,16 +39,19 @@
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
+#include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsInt32Effect.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
 #include "_MenuItemCheckMark.h"
 #include "_MenuItemCheckbox.h"
+#include "_MenuItemValueUnit.h"
 #include "_MenuPushButton.h"
 #include "_MenuScrollbar.h"
 #include "_MenuUpDownPushButtonSet.h"
 #include "_MenuVerticalMenu.h"
+#include "_PopPOP04_Reset.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesExternBitmap.h"
 #include "_ResourcesFont.h"
@@ -77,6 +80,7 @@
 #include "_SettingsSET41_ResetInProgress.h"
 #include "_SettingsSET42_ResetCompleted.h"
 #include "_SettingsSET43_ResetMenu.h"
+#include "_SettingsSET45_TripMileageReset.h"
 #include "_SettingsSET9_10_11_BtConnectionResult.h"
 #include "_SettingsTimeoutDialog.h"
 #include "_TCSTCS01_Main.h"
@@ -98,7 +102,7 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000404, /* ratio 50.97 % */
+  0x0000041E, /* ratio 50.47 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x8A002980, 0x0002A000, 0x00198006,
   0x68240A32, 0x8642A110, 0xA44A210E, 0x46473188, 0x1E0B1B00, 0xE1B0B84C, 0x011388C3,
   0xE31000D0, 0x458186A4, 0x0234AC9E, 0x31800C20, 0x9000DF2D, 0x000F2003, 0x00CA0029,
@@ -117,7 +121,7 @@ static const unsigned int _StringsDefault0[] =
   0x2C15C456, 0x7450C569, 0x18071963, 0x75AE1F4E, 0x6A587212, 0xEF9710E9, 0x4AE208B1,
   0xD0C42216, 0xA78D5E58, 0xC9DF795B, 0x86A28000, 0x6A597776, 0x9194CE8A, 0xEA1D9403,
   0x4800A41D, 0x38042726, 0x529F274D, 0x11050914, 0x65094450, 0x2E725595, 0x90A3E966,
-  0xA35184CD, 0xD31AB18D, 0x949E8C4C, 0x00004051, 0x00000000
+  0xA35184CD, 0xD31AB18D, 0x54A28C4C, 0xCDBCA3A9, 0xBC49E99A, 0x00000406, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -195,6 +199,7 @@ static const XRect _Const0046 = {{ 0, 61 }, { 388, 1301 }};
 static const XStringRes _Const0047 = { _StringsDefault0, 0x01D8 };
 static const XStringRes _Const0048 = { _StringsDefault0, 0x01E8 };
 static const XStringRes _Const0049 = { _StringsDefault0, 0x01F5 };
+static const XStringRes _Const004A = { _StringsDefault0, 0x0202 };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -545,7 +550,7 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, _None, _None,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  MenuBaseMenuView_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET01_MainSettingMenu_LoadItemClass,
@@ -758,7 +763,7 @@ EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, ItemTitl
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  MenuBaseMenuView_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET03_ConnectionSettingMenu_LoadItemClass,
@@ -1016,7 +1021,7 @@ EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, ItemTitleArray,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  MenuBaseMenuView_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET04_BtSettingMenu_LoadItemClass,
@@ -1167,7 +1172,7 @@ EW_DEFINE_CLASS( SettingsSET35_LegalMenu, MenuBaseMenuView, _None, _None, _None,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  MenuBaseMenuView_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET35_LegalMenu_LoadItemClass,
@@ -2954,7 +2959,7 @@ EW_DEFINE_CLASS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView, RefreshLis
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  MenuBaseMenuView_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET17_BtcPairedDeviceList_LoadItemClass,
@@ -3218,7 +3223,7 @@ EW_DEFINE_CLASS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView, Devic
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  MenuBaseMenuView_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET19_BtcPairedDeviceOperation_LoadItemClass,
@@ -5018,7 +5023,8 @@ void SettingsSET43_ResetMenu_OnItemActivate( SettingsSET43_ResetMenu _this, XInt
   switch ( aItemNo )
   {
     case 0 :
-      ;
+      ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)EwNewObject( 
+      SettingsSET45_TripMileageReset, 0 )));
     break;
 
     case 1 :
@@ -5081,7 +5087,7 @@ EW_DEFINE_CLASS( SettingsSET43_ResetMenu, MenuBaseMenuView, ItemTitleArray, Item
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  MenuBaseMenuView_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
   SettingsSET43_ResetMenu_LoadItemClass,
@@ -5248,5 +5254,373 @@ EW_DEFINE_CLASS( SettingsSET42_ResetCompleted, ComponentsBaseMainBG, MessageText
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( SettingsSET42_ResetCompleted )
+
+/* Initializer for the class 'Settings::SET45_TripMileageReset' */
+void SettingsSET45_TripMileageReset__Init( SettingsSET45_TripMileageReset _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( SettingsSET45_TripMileageReset );
+
+  /* ... then construct all embedded objects */
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( SettingsSET45_TripMileageReset );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  _this->Super2.SlideOutEffectEnabled = 1;
+  MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 74 );
+  _this->AllSettings[ 0 ] = EnumMeterInfoTRIP1;
+  _this->AllSettings[ 1 ] = EnumMeterInfoTRIP2;
+  _this->AllSettings[ 2 ] = EnumMeterInfoTRIP_F;
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, SettingsSET45_TripMileageReset_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
+
+  /* Call the user defined constructor */
+  SettingsSET45_TripMileageReset_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Settings::SET45_TripMileageReset' */
+void SettingsSET45_TripMileageReset__ReInit( SettingsSET45_TripMileageReset _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuBaseMenuView__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
+}
+
+/* Finalizer method for the class 'Settings::SET45_TripMileageReset' */
+void SettingsSET45_TripMileageReset__Done( SettingsSET45_TripMileageReset _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+
+  /* Finalize all embedded objects */
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuBaseMenuView__Done( &_this->_Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET45_TripMileageReset_Init( SettingsSET45_TripMileageReset _this, 
+  XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const004A ));
+  SettingsSET45_TripMileageReset_SetNoOfMenuItems( _this );
+  SettingsSET45_TripMileageReset_GetMileageSetting( _this );
+}
+
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemClass()' */
+XClass SettingsSET45_TripMileageReset_LoadItemClass( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return EW_CLASS( MenuItemValueUnit );
+}
+
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemTitle()' */
+XString SettingsSET45_TripMileageReset_LoadItemTitle( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo )
+{
+  XString Title = 0;
+
+  switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 3 )])
+  {
+    case EnumMeterInfoTRIP1 :
+      Title = EwLoadString( &StringsINF26_TRIP_1 );
+    break;
+
+    case EnumMeterInfoTRIP2 :
+      Title = EwLoadString( &StringsINF26_TRIP_2 );
+    break;
+
+    case EnumMeterInfoTRIP_F :
+      Title = EwLoadString( &StringsINF26_TRIP_F );
+    break;
+
+    default : 
+      ;
+  }
+
+  return Title;
+}
+
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.OnItemActivate()' */
+void SettingsSET45_TripMileageReset_OnItemActivate( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem )
+{
+  PopPOP04_Reset ResetDialog;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aMenuItem );
+
+  ResetDialog = EwNewObject( PopPOP04_Reset, 0 );
+  ResetDialog->SelectedMeterInfo = _this->SupportedSetting[ EwCheckIndex( aItemNo, 
+  3 )];
+  CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ResetDialog ), 0, 0, 0, 
+  0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemUnit()' */
+XString SettingsSET45_TripMileageReset_LoadItemUnit( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo )
+{
+  XString UnitString;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aItemNo );
+
+  UnitString = 0;
+
+  switch ( _this->MileageSetting )
+  {
+    case EnumMileageSettingItemKM :
+      UnitString = EwLoadString( &StringsUNT02_UNIT_MILEAGE_KILOMETER );
+    break;
+
+    case EnumMileageSettingItemMILE :
+      UnitString = EwLoadString( &StringsUNT02_UNIT_MILEAGE_MILE );
+    break;
+
+    default : 
+      ;
+  }
+
+  return UnitString;
+}
+
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemValue()' */
+XString SettingsSET45_TripMileageReset_LoadItemValue( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo )
+{
+  XString Value;
+  DeviceInterfaceVehicleDataClass VehicleData = 0;
+
+  switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 3 )])
+  {
+    case EnumMeterInfoTRIP1 :
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTRIP1_VALUE );
+    break;
+
+    case EnumMeterInfoTRIP2 :
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTRIP2_VALUE );
+    break;
+
+    case EnumMeterInfoTRIP_F :
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeF_TRIP );
+    break;
+
+    default : 
+      VehicleData->Valid = 0;
+  }
+
+  if ( VehicleData->Valid )
+  {
+    if ( EnumMileageSettingItemMILE == _this->MileageSetting )
+    {
+      VehicleData->DataFloat *= 0.625000f;
+    }
+
+    Value = EwNewStringFloat( VehicleData->DataFloat, 0, 1 );
+  }
+  else
+  {
+    Value = EwLoadString( &StringsGEN_THREE_HYPHENS );
+  }
+
+  return Value;
+}
+
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.GetMileageSetting()' */
+void SettingsSET45_TripMileageReset_GetMileageSetting( SettingsSET45_TripMileageReset _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeMILEAGE_UNIT );
+
+  if ( 1 == VehicleData->DataUInt32 )
+  {
+    _this->MileageSetting = EnumMileageSettingItemMILE;
+  }
+  else
+  {
+    _this->MileageSetting = EnumMileageSettingItemKM;
+  }
+}
+
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.SetNoOfMenuItems()' */
+void SettingsSET45_TripMileageReset_SetNoOfMenuItems( SettingsSET45_TripMileageReset _this )
+{
+  XInt32 i;
+  XInt32 NoOfItems = 0;
+  XEnum SettingItem;
+
+  for ( i = 0; i < 3; i++ )
+  {
+    SettingItem = _this->AllSettings[ EwCheckIndex( i, 3 )];
+
+    switch ( SettingItem )
+    {
+      case EnumMeterInfoTRIP1 :
+      {
+        if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            EnumVehicleSupportedFunctionTRIP1 ))
+        {
+          _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
+          NoOfItems++;
+        }
+      }
+      break;
+
+      case EnumMeterInfoTRIP2 :
+      {
+        if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            EnumVehicleSupportedFunctionTRIP2 ))
+        {
+          _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
+          NoOfItems++;
+        }
+      }
+      break;
+
+      case EnumMeterInfoTRIP_F :
+      {
+        if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            EnumVehicleSupportedFunctionF_TRIP ))
+        {
+          _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
+          NoOfItems++;
+        }
+      }
+      break;
+
+      default : 
+      {
+        _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
+        NoOfItems++;
+      }
+    }
+  }
+
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, NoOfItems );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET45_TripMileageReset_OnVehicleDataReceivedSlot( SettingsSET45_TripMileageReset _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if ( VehicleData != 0 )
+  {
+    switch ( VehicleData->RxType )
+    {
+      case EnumVehicleRxTypeTRIP1_VALUE :
+      case EnumVehicleRxTypeTRIP2_VALUE :
+      case EnumVehicleRxTypeF_TRIP :
+      {
+        MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
+        - 1 );
+      }
+      break;
+
+      default : 
+        ;
+    }
+  }
+}
+
+/* Variants derived from the class : 'Settings::SET45_TripMileageReset' */
+EW_DEFINE_CLASS_VARIANTS( SettingsSET45_TripMileageReset )
+EW_END_OF_CLASS_VARIANTS( SettingsSET45_TripMileageReset )
+
+/* Virtual Method Table (VMT) for the class : 'Settings::SET45_TripMileageReset' */
+EW_DEFINE_CLASS( SettingsSET45_TripMileageReset, MenuBaseMenuView, VehicleDataReceivedEventHandler, 
+                 VehicleDataReceivedEventHandler, VehicleDataReceivedEventHandler, 
+                 VehicleDataReceivedEventHandler, AllSettings, AllSettings, "Settings::SET45_TripMileageReset" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseMainBG_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  MenuBaseMenuView_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+  SettingsSET45_TripMileageReset_LoadItemClass,
+  SettingsSET45_TripMileageReset_LoadItemTitle,
+  SettingsSET45_TripMileageReset_OnItemActivate,
+  MenuBaseMenuView_LoadItemChecked,
+  MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
+  SettingsSET45_TripMileageReset_LoadItemUnit,
+  SettingsSET45_TripMileageReset_LoadItemValue,
+  MenuBaseMenuView_OnItemLongEnterKeyActivate,
+EW_END_OF_CLASS( SettingsSET45_TripMileageReset )
 
 /* Embedded Wizard */

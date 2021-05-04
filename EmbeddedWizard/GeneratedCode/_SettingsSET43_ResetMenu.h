@@ -168,7 +168,7 @@ EW_DEFINE_METHODS( SettingsSET43_ResetMenu, MenuBaseMenuView )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnSetDDModeEnabled, void )( MenuBaseMenuView _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
   EW_METHOD( LoadItemClass,     XClass )( SettingsSET43_ResetMenu _this, XInt32 

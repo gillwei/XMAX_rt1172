@@ -463,7 +463,7 @@ EW_DEFINE_CLASS( SeatHeater_GripWarmerSHT02_GPW02_Main, MenuBaseMenuView, ScaleI
   ComponentsBaseComponent_OnLongEnterKeyActivated,
   ComponentsBaseComponent_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  MenuBaseMenuView_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
   SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemClass,

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _MenuBaseMenuView_H
-#define _MenuBaseMenuView_H
+#ifndef _SettingsSET45_TripMileageReset_H
+#define _SettingsSET45_TripMileageReset_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,14 +42,20 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
+#include "_MenuBaseMenuView.h"
 #include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -93,26 +99,29 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::BaseMenuView */
-#ifndef _MenuBaseMenuView_
-  EW_DECLARE_CLASS( MenuBaseMenuView )
-#define _MenuBaseMenuView_
-#endif
-
 /* Forward declaration of the class Menu::ItemBase */
 #ifndef _MenuItemBase_
   EW_DECLARE_CLASS( MenuItemBase )
 #define _MenuItemBase_
 #endif
 
+/* Forward declaration of the class Settings::SET45_TripMileageReset */
+#ifndef _SettingsSET45_TripMileageReset_
+  EW_DECLARE_CLASS( SettingsSET45_TripMileageReset )
+#define _SettingsSET45_TripMileageReset_
+#endif
 
-/* Deklaration of class : 'Menu::BaseMenuView' */
-EW_DEFINE_FIELDS( MenuBaseMenuView, ComponentsBaseMainBG )
-  EW_OBJECT  ( Menu,            MenuVerticalMenu )
-EW_END_OF_FIELDS( MenuBaseMenuView )
 
-/* Virtual Method Table (VMT) for the class : 'Menu::BaseMenuView' */
-EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseMainBG )
+/* Deklaration of class : 'Settings::SET45_TripMileageReset' */
+EW_DEFINE_FIELDS( SettingsSET45_TripMileageReset, MenuBaseMenuView )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
+  EW_ARRAY   ( AllSettings,     XEnum, [3])
+  EW_VARIABLE( MileageSetting,  XEnum )
+  EW_ARRAY   ( SupportedSetting, XEnum, [3])
+EW_END_OF_FIELDS( SettingsSET45_TripMileageReset )
+
+/* Virtual Method Table (VMT) for the class : 'Settings::SET45_TripMileageReset' */
+EW_DEFINE_METHODS( SettingsSET45_TripMileageReset, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -165,10 +174,12 @@ EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseMainBG )
   EW_METHOD( OnSetDDModeEnabled, void )( MenuBaseMenuView _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( MenuBaseMenuView _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemClass,     XClass )( SettingsSET45_TripMileageReset _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( SettingsSET45_TripMileageReset _this, 
+    XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( SettingsSET45_TripMileageReset _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -177,107 +188,55 @@ EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseMainBG )
   EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUnit,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUnit,      XString )( SettingsSET45_TripMileageReset _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemValue,     XString )( SettingsSET45_TripMileageReset _this, 
+    XInt32 aItemNo )
   EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
     aItemNo, MenuItemBase aMenuItem )
-EW_END_OF_METHODS( MenuBaseMenuView )
+EW_END_OF_METHODS( SettingsSET45_TripMileageReset )
 
-/* super( value ); */
-void MenuBaseMenuView_OnSetDDModeEnabled( MenuBaseMenuView _this, XBool value );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET45_TripMileageReset_Init( SettingsSET45_TripMileageReset _this, 
+  XHandle aArg );
 
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemClass()' */
-XClass MenuBaseMenuView_LoadItemClass( MenuBaseMenuView _this, XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemClass()' */
+XClass SettingsSET45_TripMileageReset_LoadItemClass( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo );
 
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemClass()' */
-XClass MenuBaseMenuView__LoadItemClass( void* _this, XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemTitle()' */
+XString SettingsSET45_TripMileageReset_LoadItemTitle( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemTitle()' */
-XString MenuBaseMenuView_LoadItemTitle( MenuBaseMenuView _this, XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.OnItemActivate()' */
+void SettingsSET45_TripMileageReset_OnItemActivate( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemTitle()' */
-XString MenuBaseMenuView__LoadItemTitle( void* _this, XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemUnit()' */
+XString SettingsSET45_TripMileageReset_LoadItemUnit( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Menu::BaseMenuView.OnItemActivate()' */
-void MenuBaseMenuView_OnItemActivate( MenuBaseMenuView _this, XInt32 aItemNo, MenuItemBase 
-  aMenuItem );
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemValue()' */
+XString SettingsSET45_TripMileageReset_LoadItemValue( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo );
 
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.OnItemActivate()' */
-void MenuBaseMenuView__OnItemActivate( void* _this, XInt32 aItemNo, MenuItemBase 
-  aMenuItem );
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.GetMileageSetting()' */
+void SettingsSET45_TripMileageReset_GetMileageSetting( SettingsSET45_TripMileageReset _this );
 
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemChecked()' */
-XBool MenuBaseMenuView_LoadItemChecked( MenuBaseMenuView _this, XInt32 aItemNo );
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.SetNoOfMenuItems()' */
+void SettingsSET45_TripMileageReset_SetNoOfMenuItems( SettingsSET45_TripMileageReset _this );
 
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemChecked()' */
-XBool MenuBaseMenuView__LoadItemChecked( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemEnabled()' */
-XBool MenuBaseMenuView_LoadItemEnabled( MenuBaseMenuView _this, XInt32 aItemNo );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemEnabled()' */
-XBool MenuBaseMenuView__LoadItemEnabled( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemBaseValue()' */
-XString MenuBaseMenuView_LoadItemBaseValue( MenuBaseMenuView _this, XInt32 aItemNo );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemBaseValue()' */
-XString MenuBaseMenuView__LoadItemBaseValue( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemMessage()' */
-XString MenuBaseMenuView_LoadItemMessage( MenuBaseMenuView _this, XInt32 aItemNo );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemMessage()' */
-XString MenuBaseMenuView__LoadItemMessage( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemReceivedTime()' */
-XString MenuBaseMenuView_LoadItemReceivedTime( MenuBaseMenuView _this, XInt32 aItemNo );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemReceivedTime()' */
-XString MenuBaseMenuView__LoadItemReceivedTime( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemCategory()' */
-XEnum MenuBaseMenuView_LoadItemCategory( MenuBaseMenuView _this, XInt32 aItemNo );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemCategory()' */
-XEnum MenuBaseMenuView__LoadItemCategory( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemUid()' */
-XUInt32 MenuBaseMenuView_LoadItemUid( MenuBaseMenuView _this, XInt32 aItemNo );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemUid()' */
-XUInt32 MenuBaseMenuView__LoadItemUid( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemToggle()' */
-XBool MenuBaseMenuView_LoadItemToggle( MenuBaseMenuView _this, XInt32 aItemNo );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemToggle()' */
-XBool MenuBaseMenuView__LoadItemToggle( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemUnit()' */
-XString MenuBaseMenuView_LoadItemUnit( MenuBaseMenuView _this, XInt32 aItemNo );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemUnit()' */
-XString MenuBaseMenuView__LoadItemUnit( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.LoadItemValue()' */
-XString MenuBaseMenuView_LoadItemValue( MenuBaseMenuView _this, XInt32 aItemNo );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemValue()' */
-XString MenuBaseMenuView__LoadItemValue( void* _this, XInt32 aItemNo );
-
-/* 'C' function for method : 'Menu::BaseMenuView.OnItemLongEnterKeyActivate()' */
-void MenuBaseMenuView_OnItemLongEnterKeyActivate( MenuBaseMenuView _this, XInt32 
-  aItemNo, MenuItemBase aMenuItem );
-
-/* Wrapper function for the virtual method : 'Menu::BaseMenuView.OnItemLongEnterKeyActivate()' */
-void MenuBaseMenuView__OnItemLongEnterKeyActivate( void* _this, XInt32 aItemNo, 
-  MenuItemBase aMenuItem );
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET45_TripMileageReset_OnVehicleDataReceivedSlot( SettingsSET45_TripMileageReset _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _MenuBaseMenuView_H */
+#endif /* _SettingsSET45_TripMileageReset_H */
 
 /* Embedded Wizard */

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentDEV_EEPROMTest_H
-#define _DevelopmentDEV_EEPROMTest_H
+#ifndef _MenuItemValueUnit_H
+#define _MenuItemValueUnit_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,20 +42,12 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
-#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuVerticalMenu.h"
+#include "_MenuItemBase.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -87,12 +79,6 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::DEV_EEPROMTest */
-#ifndef _DevelopmentDEV_EEPROMTest_
-  EW_DECLARE_CLASS( DevelopmentDEV_EEPROMTest )
-#define _DevelopmentDEV_EEPROMTest_
-#endif
-
 /* Forward declaration of the class Effects::Fader */
 #ifndef _EffectsFader_
   EW_DECLARE_CLASS( EffectsFader )
@@ -105,20 +91,23 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBase */
-#ifndef _MenuItemBase_
-  EW_DECLARE_CLASS( MenuItemBase )
-#define _MenuItemBase_
+/* Forward declaration of the class Menu::ItemValueUnit */
+#ifndef _MenuItemValueUnit_
+  EW_DECLARE_CLASS( MenuItemValueUnit )
+#define _MenuItemValueUnit_
 #endif
 
 
-/* Deklaration of class : 'Development::DEV_EEPROMTest' */
-EW_DEFINE_FIELDS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [2])
-EW_END_OF_FIELDS( DevelopmentDEV_EEPROMTest )
+/* Deklaration of class : 'Menu::ItemValueUnit' */
+EW_DEFINE_FIELDS( MenuItemValueUnit, MenuItemBase )
+  EW_OBJECT  ( ValueText,       ViewsText )
+  EW_OBJECT  ( UnitText,        ViewsText )
+  EW_PROPERTY( Value,           XString )
+  EW_PROPERTY( Unit,            XString )
+EW_END_OF_FIELDS( MenuItemValueUnit )
 
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_EEPROMTest' */
-EW_DEFINE_METHODS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemValueUnit' */
+EW_DEFINE_METHODS( MenuItemValueUnit, MenuItemBase )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -137,7 +126,7 @@ EW_DEFINE_METHODS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
-  EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
+  EW_METHOD( OnSetEnabled,      void )( MenuItemBase _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
@@ -145,8 +134,8 @@ EW_DEFINE_METHODS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
-  EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
-  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
+  EW_METHOD( UpdateLayout,      void )( MenuItemBase _this, XPoint aSize )
+  EW_METHOD( UpdateViewState,   void )( MenuItemBase _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
@@ -161,52 +150,28 @@ EW_DEFINE_METHODS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView )
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
+  EW_METHOD( OnShortEnterKeyActivated, void )( MenuItemBase _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongEnterKeyActivated, void )( MenuItemBase _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( MenuBaseMenuView _this, XBool value )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_EEPROMTest _this, XInt32 
-    aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_EEPROMTest _this, XInt32 
-    aItemNo )
-  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_EEPROMTest _this, XInt32 
-    aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUnit,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
-    aItemNo, MenuItemBase aMenuItem )
-EW_END_OF_METHODS( DevelopmentDEV_EEPROMTest )
+EW_END_OF_METHODS( MenuItemValueUnit )
 
-/* 'C' function for method : 'Development::DEV_EEPROMTest.LoadItemClass()' */
-XClass DevelopmentDEV_EEPROMTest_LoadItemClass( DevelopmentDEV_EEPROMTest _this, 
-  XInt32 aItemNo );
+/* 'C' function for method : 'Menu::ItemValueUnit.OnSetValue()' */
+void MenuItemValueUnit_OnSetValue( MenuItemValueUnit _this, XString value );
 
-/* 'C' function for method : 'Development::DEV_EEPROMTest.LoadItemTitle()' */
-XString DevelopmentDEV_EEPROMTest_LoadItemTitle( DevelopmentDEV_EEPROMTest _this, 
-  XInt32 aItemNo );
-
-/* 'C' function for method : 'Development::DEV_EEPROMTest.OnItemActivate()' */
-void DevelopmentDEV_EEPROMTest_OnItemActivate( DevelopmentDEV_EEPROMTest _this, 
-  XInt32 aItemNo, MenuItemBase aMenuItem );
+/* 'C' function for method : 'Menu::ItemValueUnit.OnSetUnit()' */
+void MenuItemValueUnit_OnSetUnit( MenuItemValueUnit _this, XString value );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentDEV_EEPROMTest_H */
+#endif /* _MenuItemValueUnit_H */
 
 /* Embedded Wizard */
