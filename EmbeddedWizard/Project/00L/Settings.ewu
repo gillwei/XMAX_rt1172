@@ -2403,7 +2403,7 @@ class SET43_ResetMenu : Menu::BaseMenuView
     switch( aItemNo )
     {
       case 0: SlideInDialog( new Settings::SET45_TripMileageReset );
-      case 1:;
+      case 1: SlideInDialog( new Maintenance::MNT01_MaintenanceReset );
       case 3: SlideInDialog( new Settings::SET38_ConfirmAllReset );
       default :;
     }

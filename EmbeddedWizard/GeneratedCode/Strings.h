@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/04/27 17:52:20 */
+   Generated: 2021/05/04 10:27:17 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -162,6 +162,18 @@ extern const XStringRes StringsLNC_SETTINGS;
 
 /* User defined constant: 'Strings::MED02_DEV_UNAVAILABLE' */
 extern const XStringRes StringsMED02_DEV_UNAVAILABLE;
+
+/* User defined constant: 'Strings::MNT01_OIL' */
+extern const XStringRes StringsMNT01_OIL;
+
+/* User defined constant: 'Strings::MNT01_V_BELT' */
+extern const XStringRes StringsMNT01_V_BELT;
+
+/* User defined constant: 'Strings::MNT01_FREE1' */
+extern const XStringRes StringsMNT01_FREE1;
+
+/* User defined constant: 'Strings::MNT01_FREE2' */
+extern const XStringRes StringsMNT01_FREE2;
 
 /* User defined constant: 'Strings::NAV06_STOP_NAVIGATION' */
 extern const XStringRes StringsNAV06_STOP_NAVIGATION;

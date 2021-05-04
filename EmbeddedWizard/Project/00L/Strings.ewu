@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/04/27 17:52:20
+// Generated: 2021/05/04 10:27:17
 
 $output false
 const string ARGUMENT_STR =
@@ -447,9 +447,15 @@ const string MNT01_V_BELT =
 );
 
 $output false
-const string MNT01_FREE =
+const string MNT01_FREE1 =
 (
-  Default = "FREE";
+  Default = "FREE 1";
+);
+
+$output false
+const string MNT01_FREE2 =
+(
+  Default = "FREE 2";
 );
 
 $output false

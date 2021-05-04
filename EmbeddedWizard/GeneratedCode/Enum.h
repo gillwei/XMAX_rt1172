@@ -580,6 +580,16 @@ typedef enum
   EnumOdoTripSettingItemTOTAL           = 4
 } EnumOdoTripSettingItem;
 
+/* User defined enumeration: 'Enum::MaintenanceResetMenuItem' */
+typedef enum
+{
+  EnumMaintenanceResetMenuItemOIL       = 0,
+  EnumMaintenanceResetMenuItemV_BELT    = 1,
+  EnumMaintenanceResetMenuItemFREE1     = 2,
+  EnumMaintenanceResetMenuItemFREE2     = 3,
+  EnumMaintenanceResetMenuItemTOTAL     = 4
+} EnumMaintenanceResetMenuItem;
+
 #ifdef __cplusplus
   }
 #endif

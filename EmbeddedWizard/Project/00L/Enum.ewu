@@ -1235,3 +1235,23 @@ enum OdoTripSettingItem
   $rect <10,210,210,250>
   item TOTAL;
 }
+
+$rect <960,470,1200,510>
+$output false
+enum MaintenanceResetMenuItem
+{
+  $rect <10,10,210,50>
+  item OIL;
+
+  $rect <10,60,210,100>
+  item V_BELT;
+
+  $rect <10,110,210,150>
+  item FREE1;
+
+  $rect <10,160,210,200>
+  item FREE2;
+
+  $rect <10,210,210,250>
+  item TOTAL;
+}

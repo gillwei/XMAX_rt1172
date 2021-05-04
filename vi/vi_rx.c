@@ -456,12 +456,15 @@ switch( signal_id )
     {
     case IL_CAN0_MAINT_TRIP_1_RXSIG_HANDLE:
         rx_maintenance_trip.trip1_km = data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeMAINTENANCE_TRIP1 );
         break;
     case IL_CAN0_MAINT_TRIP_2_RXSIG_HANDLE:
         rx_maintenance_trip.trip2_km = data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeMAINTENANCE_TRIP2 );
         break;
     case IL_CAN0_MAINT_TRIP_3_RXSIG_HANDLE:
         rx_maintenance_trip.trip3_km = data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeMAINTENANCE_TRIP3 );
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );

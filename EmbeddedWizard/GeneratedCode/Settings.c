@@ -42,6 +42,7 @@
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsInt32Effect.h"
+#include "_MaintenanceMNT01_MaintenanceReset.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
 #include "_MenuItemCheckMark.h"
@@ -5028,7 +5029,8 @@ void SettingsSET43_ResetMenu_OnItemActivate( SettingsSET43_ResetMenu _this, XInt
     break;
 
     case 1 :
-      ;
+      ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)EwNewObject( 
+      MaintenanceMNT01_MaintenanceReset, 0 )));
     break;
 
     case 3 :

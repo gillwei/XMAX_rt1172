@@ -40,4 +40,5 @@ EMWIFILES := \
 	Inspection.c \
 	Color.c \
 	Clock.c \
-	YDT.c
+	YDT.c \
+	Maintenance.c

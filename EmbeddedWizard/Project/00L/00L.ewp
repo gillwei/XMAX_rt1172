@@ -321,3 +321,9 @@ unit YDT
 {
   attr Directory = .\;
 }
+
+$rect <520,1000,720,1040>
+unit Maintenance
+{
+  attr Directory = .\;
+}
