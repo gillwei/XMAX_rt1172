@@ -42,7 +42,7 @@
 #define TEST_NAVILITE_PRINT_FREEMEM 0
 
 // Run forever or once
-#define TEST_NAVILITE_RUN_FOREVER 1
+#define TEST_NAVILITE_RUN_FOREVER 0
 
 
 // NOTE: Turn specific test function on for testing purpose
@@ -82,6 +82,9 @@
 // MCU INFO REPORT command from MCU
 #define TEST_NAVILITE_SERVICETYPE_MCU_ESN_UPDATE 0
 #define TEST_NAVILITE_SERVICETYPE_MCU_SYSINFO_UPDATE 0
+
+// MCU VEHICLE REPORT command from MCU
+#define TEST_NAVILITE_SERVICETYPE_MCU_METER_SPEED_UPDATE 0
 
 // APP request command from MCU
 #define TEST_NAVILITE_SERVICETYPE_APP_START_ROUTE_REQUEST 0
@@ -163,7 +166,7 @@
     static int i = 0;
     navilite_message frame = { 0 };
     PRINTF( "\r\n ---- NAVILITE UNIT TESTS (%d) ----\r\n", i++ );
-    vTaskDelay(  1500 / portTICK_PERIOD_MS );
+    vTaskDelay( 1500 / portTICK_PERIOD_MS );
 
     #if( TEST_NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
         PRINTF( "[NAVILITE-TESTUNIT] - NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE\r\n" );
@@ -238,7 +241,7 @@
 
         NAVILITE_send_as_mobile_raw( raw_msg_list_size, sizeof( raw_msg_list_size ) / sizeof(uint8_t) );
         NAVILITE_send_as_mobile_raw( raw_msg_list_data, sizeof( raw_msg_list_data ) / sizeof(uint8_t) );
-        vTaskDelay(  1000 / portTICK_PERIOD_MS );
+        vTaskDelay( 1000 / portTICK_PERIOD_MS );
 
     #endif
 
@@ -442,7 +445,7 @@
             frame = NAVILITE_pack_frame_update_routecalcprogress( progress );
             PRINTF("[NAVILITE-MOBILE-SIM] SIMULATE CALC PROGRESS = %d\r\n", frame.data_value );
             NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
-            vTaskDelay(  1600 / portTICK_PERIOD_MS );
+            vTaskDelay( 1600 / portTICK_PERIOD_MS );
             }
     #endif
 
@@ -470,7 +473,7 @@
         PRINTF( "[NAVILITE-TESTUNIT] - NAVILITE_SERVICETYPE_DIALOG_EVENT_UPDATE\r\n" );
         frame = NAVILITE_pack_frame_update_dialog_event( 123, NAVILITE_DIALOGTYPE_OK, (uint8_t*)"Choose a route", 14, 5, 100 );
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
-        vTaskDelay(  1500 / portTICK_PERIOD_MS );
+        vTaskDelay( 1500 / portTICK_PERIOD_MS );
         PRINTF( "[NAVILITE-TESTUNIT] - NAVILITE_SERVICETYPE_DIALOG_DISMISS_UPDATE\r\n" );
         frame = NAVILITE_pack_frame_update_dialog_dismiss( 123 );
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
@@ -494,7 +497,7 @@
 
     #if( !TEST_NAVILITE_RUN_FOREVER )
         PRINTF( "\r\n== End of TEST ==\r\n" );
-	    while( 1 ) ;
+        while( 1 ) ;
     #endif
     }
 
@@ -520,35 +523,35 @@
 
     #if( TEST_NAVILITE_SERVICETYPE_MCU_ESN_UPDATE )
         PRINTF( "Wait 15s to begin\r\n ");
-        vTaskDelay(  15000 / portTICK_PERIOD_MS );
+        vTaskDelay( 15000 / portTICK_PERIOD_MS );
         PRINTF( "[TEST_NAVILITE_SERVICETYPE_MCU_ESN_UPDATE]\r\n" );
         NAVILITE_report_app_esn( "012345678" );
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_MCU_SYSINFO_UPDATE )
         PRINTF( "Wait 15s to begin\r\n ");
-        vTaskDelay(  15000 / portTICK_PERIOD_MS );
+        vTaskDelay( 15000 / portTICK_PERIOD_MS );
         PRINTF( "[TEST_NAVILITE_SERVICETYPE_MCU_SYSINFO_UPDATE]\r\n" );
         NAVILITE_report_app_sysinfo( "SYSINFO: NaviLite ver 1.0 / LinkCard Demo Test" );
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_APP_START_ROUTE_REQUEST )
         PRINTF( "Wait 15s to begin\r\n ");
-        vTaskDelay(  15000 / portTICK_PERIOD_MS );
+        vTaskDelay( 15000 / portTICK_PERIOD_MS );
         PRINTF( "[NAVILITE_SERVICETYPE_APP_START_ROUTE_REQUEST]\r\n" );
         NAVILITE_request_app_startroute( 0 );
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_APP_STOP_ROUTE_REQUEST )
         PRINTF( "wait 15s ...\r\n");
-        vTaskDelay(  15000 / portTICK_PERIOD_MS );
+        vTaskDelay( 15000 / portTICK_PERIOD_MS );
         PRINTF( "[NAVILITE_SERVICETYPE_APP_STOP_ROUTE_REQUEST]\r\n" );
         NAVILITE_request_app_stoproute();
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_APP_SKIP_NEXT_WAYPOINT_REQUEST )
         PRINTF( "wait 15s ...\r\n");
-        vTaskDelay(  15000 / portTICK_PERIOD_MS );
+        vTaskDelay( 15000 / portTICK_PERIOD_MS );
         PRINTF( "[NAVILITE_SERVICETYPE_APP_SKIP_NEXT_WAYPOINT_REQUEST]\r\n" );
         NAVILITE_request_app_skip_nextwaypoint();
     #endif
@@ -557,14 +560,14 @@
         PRINTF( "[NAVILITE_SERVICETYPE_APP_MAP_ZOOM_IN_REQUEST]\r\n" );
         NAVILITE_request_app_zoomin();
         PRINTF( "wait 15s ...\r\n");
-        vTaskDelay(  15000 / portTICK_PERIOD_MS );
+        vTaskDelay( 15000 / portTICK_PERIOD_MS );
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_APP_MAP_ZOOM_OUT_REQUEST )
         PRINTF( "[NAVILITE_SERVICETYPE_APP_MAP_ZOOM_OUT_REQUEST]\r\n" );
         NAVILITE_request_app_zoomout();
         PRINTF( "wait 15s ...\r\n");
-        vTaskDelay(  15000 / portTICK_PERIOD_MS );
+        vTaskDelay( 15000 / portTICK_PERIOD_MS );
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_APP_GO_HOME_REQUEST )
@@ -576,7 +579,7 @@
         PRINTF( "send with with NAVILITE_ROUTE_LAST_STOP\r\n" );
         NAVILITE_request_app_gohome( NAVILITE_ROUTE_LAST_STOP );
         PRINTF( "wait 15s ...\r\n");
-        vTaskDelay(  15000 / portTICK_PERIOD_MS );
+        vTaskDelay( 15000 / portTICK_PERIOD_MS );
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_APP_GO_OFFICE_REQUEST )
@@ -588,7 +591,7 @@
         PRINTF( "send with with NAVILITE_ROUTE_LAST_STOP\r\n" );
         NAVILITE_request_app_gooffice( NAVILITE_ROUTE_LAST_STOP );
         PRINTF( "wait 15s ...\r\n");
-        vTaskDelay(  15000 / portTICK_PERIOD_MS );
+        vTaskDelay( 15000 / portTICK_PERIOD_MS );
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_APP_GET_FAVORITE_LIST_REQUEST )
@@ -603,23 +606,36 @@
         PRINTF( "[NAVILITE_SERVICETYPE_APP_START_IMAGE_FRAME_REQUEST]\r\n" );
         NAVILITE_request_app_start_imageframe_update();
         PRINTF( "wait 15s ...\r\n");
-        vTaskDelay(  15000 / portTICK_PERIOD_MS );
+        vTaskDelay( 15000 / portTICK_PERIOD_MS );
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_APP_STOP_IMAGE_FRAME_REQUEST )
         PRINTF( "[NAVILITE_SERVICETYPE_APP_STOP_IMAGE_FRAME_REQUEST]\r\n" );
         NAVILITE_request_app_stop_imageframe_update();
         PRINTF( "wait 15s ...\r\n");
-        vTaskDelay(  15000 / portTICK_PERIOD_MS );
+        vTaskDelay( 15000 / portTICK_PERIOD_MS );
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_APP_GET_RECENT_LIST_REQUEST )
         PRINTF( "[NAVILITE_SERVICETYPE_APP_GET_RECENT_LIST_REQUEST]\r\n" );
     #endif
 
-        }
+    #if( TEST_NAVILITE_SERVICETYPE_MCU_METER_SPEED_UPDATE )
+        PRINTF( "Send UNIT KPH - 0 to 100 to app using TEST_NAVILITE_SERVICETYPE_MCU_METER_SPEED_UPDATE\r\n" );
+        for( int i = 0; i < 10; i++ )
+            {
+            NAVILITE_report_app_vehicle_speed( NAVILITE_SPEED_UNIT_KPH, 10 * i );
+            vTaskDelay( 1500 / portTICK_PERIOD_MS );
+            }
+        PRINTF( "Send UNIT MPH - 0 to 100 to app\r\n" );
+        for( int i = 0; i < 10; i++ )
+            {
+            NAVILITE_report_app_vehicle_speed( NAVILITE_SPEED_UNIT_MPH, 10 * i );
+            vTaskDelay( 1500 / portTICK_PERIOD_MS );
+            }
     #endif
-
+    }
+#endif
 
 #if( UNIT_TEST_NAVILITE )
     /*********************************************************************

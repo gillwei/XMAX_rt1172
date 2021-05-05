@@ -50,6 +50,9 @@
 // simulation tick speed for hmi test local mode
 #define NAVILITE_LOOP_TICK_DEFAULT 5000
 
+// runloop tick threadhold
+#define NAVILITE_RUNLOOP_TICK_DEFAULT 1000
+
 // disable function not ready
 #define NAVILITE_FUNC_DISABLED 0
 

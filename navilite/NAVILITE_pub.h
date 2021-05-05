@@ -197,6 +197,7 @@ typedef void ( *navilite_callback_func_speedlimit )( uint16_t speed_limit ); // 
 typedef void ( *navilite_callback_func_viapointcount )( uint8_t via_point_count ); // via point count
 typedef void ( *navilite_callback_func_navigationstatus )( uint8_t navigation_status ); // navigation status
 typedef void ( *navilite_callback_func_dialogevent )( uint8_t dialog_id, navilite_dialog_type dialog_type, uint8_t* message, uint8_t message_size, uint8_t timeout, uint8_t default_choice ); // dialog event
+typedef void ( *navilite_callback_func_runloopevent )( void ); // runloop event for running any jobs
 
 /* Helper Utitilty (indirect callback API) */
 typedef void ( *navilite_callback_func_tbtmodestatus )( uint8_t is_tbt ); // when TBT/image is updated, this callback will fire
@@ -228,6 +229,7 @@ typedef struct tagNAVILITE_CONTENT_UPDATE_CALLBACKS
     navilite_callback_func_viapointcount callback_func_viapointcount;
     navilite_callback_func_navigationstatus callback_func_navigationstatus;
     navilite_callback_func_dialogevent callback_func_dialogevent;
+    navilite_callback_func_runloopevent callback_func_runloopevent;
     } navilite_content_update_callbacks_type;
 
 typedef struct tagNAVILITE_ACK_STATE_CALLBACKS
@@ -278,6 +280,7 @@ void NAVILITE_event_injection( void );
 void NAVILITE_init( void );
 void NAVILITE_connect( navilite_conn_mode_type mode );
 navilite_conn_mode_type NAVILITE_get_connect_mode();
+bool NAVILITE_is_connected( void );
 void NAVILITE_disconnect( void );
 
 /* NaviLight Content Notification API */
@@ -302,6 +305,7 @@ bool NAVILITE_register_update_callback_viapointcount( navilite_callback_func_via
 bool NAVILITE_register_update_callback_routecalcprogress( navilite_callback_func_routecalcprogress callback_func );
 bool NAVILITE_register_update_callback_bt_timeout( navilite_callback_func_bt_timeout callback_func );
 bool NAVILITE_register_update_callback_dialogevent( navilite_callback_func_dialogevent callback_func );
+bool NAVILITE_register_update_callback_runloopevent( navilite_callback_func_runloopevent callback_func );
 
 /* NaviLight Connection Event API */
 bool NAVILITE_register_update_callback_preconnected();
@@ -332,6 +336,7 @@ bool NAVILITE_request_app_stop_imageframe_update(); //! request navilite mobile 
 bool NAVILITE_request_app_enable_content_update( navilite_content_type content_type, navilite_switch_type enable ); //! request navilite mobile app to enable dedicated content update
 
 /* NaviLite vehicle or other info report to Mobile App */
+bool NAVILITE_report_app_vehicle_speed( navilite_speed_unit_type speed_unit, uint16_t speed_value );         //! report meter speed to navilite mobile app
 bool NAVILITE_report_app_service_ack( uint8_t service_ack );         //! report meter speed to navilite mobile app
 bool NAVILITE_report_app_esn( uint8_t* esn );                //! report device ID to navilite mobile app
 bool NAVILITE_report_app_sysinfo( uint8_t* sysinfo );             //! report device ID to navilite mobile app

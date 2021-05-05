@@ -135,6 +135,12 @@ extern "C" {
         uint8_t dialog_id,
         navilite_button_type button_type
         );
+
+    navilite_message NAVILITE_pack_frame_app_report_vehicle_speed
+        (
+        navilite_speed_unit_type speed_unit,
+        uint16_t speed_value
+        );
 #endif
 
 #ifdef __cplusplus

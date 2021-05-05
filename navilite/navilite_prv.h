@@ -51,6 +51,7 @@ void navilite_setup_queue_buffer( void );
 void navilite_receive_buffer_and_parse( StreamBufferHandle_t buffer_handle );
 bool navilite_parse_data_inner( uint8_t *data, uint32_t data_len );
 void navilite_extra_parse( uint8_t* data, uint8_t data_len );
+void navilite_vim_runloop( void );
 
 #ifdef __cplusplus
 }

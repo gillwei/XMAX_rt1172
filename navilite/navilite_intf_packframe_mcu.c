@@ -347,7 +347,7 @@
     frame.payload_size = strlen( (char*)sysinfo );
     frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_POINTER;
     frame.data_pointer = sysinfo;
-    return frame; // @TODO: need to release the memory from this pointer after use from caller!
+    return frame;
     }
 
     /*********************************************************************
@@ -408,5 +408,38 @@
     frame.data_pointer = packValues;
     return frame;
     }
+
+    /*********************************************************************
+     *
+     * @public
+     * NAVILITE_pack_frame_app_report_vehicle_speed
+     *
+     * Send vehicle speed to app side
+     *
+     * @param speed_unit unit of speed
+     * @param vehicle_speed vehicle speed to report
+     * @return navilite_message return navilite_message copy to caller
+     *
+     *********************************************************************/
+     navilite_message NAVILITE_pack_frame_app_report_vehicle_speed
+         (
+         navilite_speed_unit_type speed_unit,
+         uint16_t vehicle_speed
+         )
+     {
+     navilite_message frame = { 0 };
+     int full_data_size = sizeof( uint8_t ) * 3;
+     uint8_t* packValues = (uint8_t*)malloc( full_data_size );
+     packValues[0] = speed_unit;
+     *( (uint16_t*)&packValues[1] ) = vehicle_speed;
+     strncpy( (char*)frame.magic_code, (char*)MAGIC_CODE, MAGIC_CODE_SIZE );
+     frame.version = PROTOCOL_VERSION;
+     frame.frame_type = NAVILITE_FRAMETYPE_MOBILE_UPDATE;
+     frame.service_type = NAVILITE_SERVICETYPE_MCU_METER_SPEED_UPDATE;
+     frame.payload_size = full_data_size;
+     frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_POINTER;
+     frame.data_pointer = packValues;
+     return frame;
+     }
 #endif
 

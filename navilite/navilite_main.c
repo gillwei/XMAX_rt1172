@@ -73,6 +73,7 @@ navilite_content_update_callbacks_type navilite_content_update_callbacks;
 static TaskHandle_t xTaskNaviLite;
 static StreamBufferHandle_t xQueueBuffer = NULL;
 static navilite_conn_mode_type conn_mode = 0;
+static bool navilite_is_connected = false;
 static navilite_session_status_type navilite_session_status;
 
 // generic poi list (tbt/fav/gas)
@@ -91,6 +92,7 @@ static uint8_t image_type = 0;
 --------------------------------------------------------------------*/
 #define NAVILITE_DEBUG false
 #define NAVILITE_DEBUG_DETAIL false
+#define NAVILITE_TEST_IOP_SPEED false
 
 /*--------------------------------------------------------------------
                               PROCEDURES
@@ -192,10 +194,12 @@ PRINTF(" \r\n#### BT STATUS PATH changed: %d ####\r\n", conn_path );
 if( connection_is_up )
     {
     NAVILITE_connect( conn_path );
+    navilite_is_connected = true;
     }
 else
     {
     NAVILITE_disconnect();
+    navilite_is_connected = false;
     }
 }
 
@@ -213,6 +217,7 @@ static void task_main
     )
 {
 uint32_t notifiy_events;
+TickType_t tick_start ;
 
 #if( TEST_NAVILITE )
     navilite_hmi_init_setup();
@@ -224,7 +229,7 @@ for( ;; )
     xTaskNotifyWait( 0x00,      /* Don't clear any notification bits on entry. */
                      ULONG_MAX, /* Reset the notification value to 0 on exit. */
                      &notifiy_events, /* Notified value pass out in ulNotifiedValue. */
-                     portMAX_DELAY ); /* Block indefinitely. */
+                     pdMS_TO_TICKS( 1000 ) );
 
     if( ( notifiy_events & EVENT_NAVILITE_CONNECT ) != 0 )
         {
@@ -240,6 +245,15 @@ for( ;; )
     if( ( notifiy_events & EVENT_NAVILITE_QUEUE_AVAIL ) != 0 )
         {
         navilite_receive_buffer_and_parse( xQueueBuffer );
+        }
+    if( navilite_content_update_callbacks.callback_func_runloopevent &&
+        #if( !NAVILITE_TEST_IOP_SPEED )
+            NAVILITE_is_connected() &&
+        #endif
+        ( xTaskGetTickCount() - tick_start ) >= NAVILITE_RUNLOOP_TICK_DEFAULT )
+        {
+        navilite_content_update_callbacks.callback_func_runloopevent();
+        tick_start = xTaskGetTickCount();
         }
     }
 vTaskDelete( NULL );
@@ -324,6 +338,7 @@ navilite_content_update_callbacks.callback_func_tbtmodestatus = NULL;
 navilite_content_update_callbacks.callback_func_speedlimit = NULL;
 navilite_content_update_callbacks.callback_func_viapointcount = NULL;
 navilite_content_update_callbacks.callback_func_navigationstatus = NULL;
+navilite_content_update_callbacks.callback_func_runloopevent = NULL;
 
 // Session variables init (TBT/FAV/GAS)
 for( int i = 0; i < NAVILITE_SESSION_INDEX_SIZE; i++ )
@@ -348,6 +363,9 @@ BTM_add_connection_info_callback( navilite_bt_connection_info_handler );
 
 // Setup HCI data callback
 HCI_spp_iap2_add_data_callback( ( spp_iap2_data_callback )NAVILITE_queue_hci_buffer );
+
+// Setup runloop event for job running (vehicle speed reporting)
+NAVILITE_register_update_callback_runloopevent( navilite_vim_runloop );
 
 create_task();
 
@@ -393,6 +411,23 @@ navilite_conn_mode_type NAVILITE_get_connect_mode
     )
 {
 return conn_mode;
+}
+
+/*********************************************************************
+*
+* @public
+* NAVILITE_is_connected
+*
+* @return true if navilite connection is connected
+*         false otherwise
+*
+*********************************************************************/
+bool NAVILITE_is_connected
+    (
+    void
+    )
+{
+return navilite_is_connected;
 }
 
 /*********************************************************************

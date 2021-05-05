@@ -559,4 +559,25 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     return ret;
     }
 
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_register_update_callback_runloop
+    *
+    * Register runloop for running extra jobs periodically
+    *
+    * @param callback_func callback function for running extra jobs periodically
+    * @return The result of the callback registering
+    *
+    *********************************************************************/
+    bool NAVILITE_register_update_callback_runloopevent
+        (
+        navilite_callback_func_runloopevent callback_func
+        )
+    {
+    bool ret = true;
+    navilite_content_update_callbacks.callback_func_runloopevent = callback_func;
+    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    return ret;
+    }
 #endif

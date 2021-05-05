@@ -123,6 +123,30 @@
     /*********************************************************************
     *
     * @public
+    * NAVILITE_report_app_vehicle_speed
+    *
+    * Send meter speed to app side
+    *
+    * @param speed_unit speed unit
+    * @param speed_value speed value
+    * @return true when success
+    *         false when failed
+    *
+    *********************************************************************/
+    bool NAVILITE_report_app_vehicle_speed
+        (
+        navilite_speed_unit_type speed_unit,
+        uint16_t speed_value
+        )
+    {
+    navilite_message frame = NAVILITE_pack_frame_app_report_vehicle_speed( speed_unit, speed_value );
+    bool ret = NAVILITE_send( (uint8_t*)&frame, sizeof( navilite_message ) );
+    return ret;
+    }
+
+    /*********************************************************************
+    *
+    * @public
     * NAVILITE_report_app_dialog_select
     *
     * Send dialog selection (dialog_id/button_type) to app side

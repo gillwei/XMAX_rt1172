@@ -115,6 +115,12 @@ typedef enum tagNAVILITE_ROUTE_OPTION_TYPE
     NAVILITE_ROUTE_UNKNOWN = 0
     } navilite_route_option_type;
 
+typedef enum tagNAVILITE_SPEED_UNIT_TYPE
+    {
+    NAVILITE_SPEED_UNIT_KPH = 0, /* kph */
+    NAVILITE_SPEED_UNIT_MPH = 1, /* mph */
+    } navilite_speed_unit_type;
+
 typedef enum tagNAVILITE_FRAME_TYPE
     {
     NAVILITE_FRAMETYPE_MOBILE_REQUEST = 0x01,
