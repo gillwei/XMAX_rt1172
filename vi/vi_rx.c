@@ -195,7 +195,7 @@ switch( signal_id )
         EW_notify_vi_data_received( EnumVehicleRxTypeTEMPERATURE_UNIT );
         break;
     case IL_CAN0_VEHICLE_INFO_FUEL_CON_UNIT_RXSIG_HANDLE:
-        rx_unit_setting.fuel_unit = ( fuel_unit_enum )data;
+        rx_unit_setting.fuel_consumption_unit = ( fuel_consumption_unit_enum )data;
         EW_notify_vi_data_received( EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT );
         break;
     default:
@@ -258,9 +258,11 @@ switch( signal_id )
     {
     case IL_CAN0_FUEL_RATE_AVE_RXSIG_HANDLE:
         rx_fuel_rate.average_consumption = (uint16_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeFUEL_RATE_AVERAGE );
         break;
     case IL_CAN0_FUEL_RATE_AVG_SPD_RXSIG_HANDLE:
         rx_fuel_rate.average_speed_km = (uint16_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeAVERAGE_SPEED );
         break;
     case IL_CAN0_FUEL_RATE_INST_RXSIG_HANDLE:
         rx_fuel_rate.instant_consumption = (uint16_t)data;
@@ -373,6 +375,7 @@ switch( signal_id )
     {
     case IL_CAN0_VEHICLE_INFO_3_FUEL_CON_RXSIG_HANDLE:
         rx_vehicle_info.fuel_cons = (uint16_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeFUEL_CONSUMPTION );
         break;
     case IL_CAN0_VEHICLE_INFO_3_CLK_ADJST_RXSIG_HANDLE:
         rx_vehicle_info.clock_adj_status = (bool)data;
@@ -843,7 +846,7 @@ switch( rx_type )
         *data = rx_unit_setting.temperature_unit;
         break;
     case EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT:
-        *data = rx_unit_setting.fuel_unit;
+        *data = rx_unit_setting.fuel_consumption_unit;
         break;
     case EnumVehicleRxTypeRANGE_DISTANCE:
         if( INVALID_RANGE_DISTANCE != rx_fuel_rate.range_distance_km )
@@ -994,6 +997,9 @@ switch( rx_type )
         break;
     case EnumVehicleRxTypeSEAT_HEATER_STATUS:
         *data = rx_seat_heater_status.setting;
+        break;
+    case EnumVehicleRxTypeTRIP_TIME:
+        is_valid = vi_trip_time_get_current( data );
         break;
     default:
         PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );
@@ -1459,12 +1465,10 @@ static void init_rx_data
     void
     )
 {
-rx_unit_setting.fuel_unit = FUEL_UNIT_L_100KM;
-
 rx_unit_setting.mileage_unit     = MILEAGE_UNIT_KM;
 rx_unit_setting.pressure_unit    = PRESSURE_UNIT_PSI;
 rx_unit_setting.temperature_unit = TEMPERATURE_UNIT_DEG_C;
-rx_unit_setting.fuel_unit        = FUEL_UNIT_L_100KM;
+rx_unit_setting.fuel_consumption_unit = FUEL_CONSUMPTION_UNIT_L_100KM;
 
 rx_fuel_rate.instant_consumption = INVALID_INSTANT_CONSUMPTION;
 rx_fuel_rate.average_consumption = INVALID_AVERAGE_CONSUMPTION;

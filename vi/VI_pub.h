@@ -80,7 +80,6 @@ void VI_send_inspection_response( const EnumInspectionMode mode, const uint8_t f
 void VI_notify_ydt_detected( void );
 void VI_trip_time_count( void );
 void VI_trip_time_save( void );
-bool VI_trip_time_get_current( uint32_t* current_trip_time_sec );
 
 #ifdef __cplusplus
 }

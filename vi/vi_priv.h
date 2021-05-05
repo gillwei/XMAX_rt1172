@@ -59,12 +59,12 @@ typedef enum
 
 typedef enum
     {
-    FUEL_UNIT_KM_L        = 0,
-    FUEL_UNIT_MILE_GAL    = 1,
-    FUEL_UNIT_MILE_LMPGAL = 2,
-    FUEL_UNIT_L_100KM     = 3,
-    FUEL_UNIT_TOTAL
-    } fuel_unit_enum;
+    FUEL_CONSUMPTION_UNIT_KM_L        = 0,
+    FUEL_CONSUMPTION_UNIT_MILE_GAL    = 1,
+    FUEL_CONSUMPTION_UNIT_MILE_LMPGAL = 2,
+    FUEL_CONSUMPTION_UNIT_L_100KM     = 3,
+    FUEL_CONSUMPTION_UNIT_TOTAL
+    } fuel_consumption_unit_enum;
 
 typedef enum
     {
@@ -103,7 +103,7 @@ typedef struct
     mileage_unit_enum     mileage_unit;     /**< mileage unit */
     pressure_unit_enum    pressure_unit;    /**< pressure unit */
     temperature_unit_enum temperature_unit; /**< temperature unit */
-    fuel_unit_enum        fuel_unit;        /**< fuel unit */
+    fuel_consumption_unit_enum fuel_consumption_unit; /**< fuel consumption unit */
     } rx_unit_setting_struct;
 
 typedef struct
@@ -204,6 +204,8 @@ void vi_key_status_changed( const CoreKeyCode key_code, const int key_status );
 void vi_key_proc( void );
 void vi_rx_init( void );
 void vi_trip_time_init( void );
+bool vi_trip_time_get_current( uint32_t* current_trip_time_sec );
+void vi_trip_time_reset( void );
 
 #ifdef __cplusplus
 }

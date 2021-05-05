@@ -181,6 +181,8 @@ EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseMainBG )
   EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
     aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemHour,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( MenuBaseMenuView )
 
 /* super( value ); */
@@ -273,6 +275,18 @@ void MenuBaseMenuView_OnItemLongEnterKeyActivate( MenuBaseMenuView _this, XInt32
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.OnItemLongEnterKeyActivate()' */
 void MenuBaseMenuView__OnItemLongEnterKeyActivate( void* _this, XInt32 aItemNo, 
   MenuItemBase aMenuItem );
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemHour()' */
+XString MenuBaseMenuView_LoadItemHour( MenuBaseMenuView _this, XInt32 aItemNo );
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemHour()' */
+XString MenuBaseMenuView__LoadItemHour( void* _this, XInt32 aItemNo );
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemMinute()' */
+XString MenuBaseMenuView_LoadItemMinute( MenuBaseMenuView _this, XInt32 aItemNo );
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemMinute()' */
+XString MenuBaseMenuView__LoadItemMinute( void* _this, XInt32 aItemNo );
 
 #ifdef __cplusplus
   }

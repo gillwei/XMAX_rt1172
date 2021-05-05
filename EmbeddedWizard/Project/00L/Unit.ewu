@@ -1106,3 +1106,23 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
 $rect <50,130,250,170>
 $output false
 const float KM_TO_MILE_SCALE = 0.625;
+
+$rect <50,180,270,220>
+$output false
+const float LITER_TO_USGAL_SCALE = 0.264;
+
+$rect <50,230,320,270>
+$output false
+const float LITER_TO_IMPERIAL_GAL_SCALE = 0.22;
+
+$rect <330,130,620,170>
+$output false
+const float KM_L_TO_US_GALLON_SCALE = 2.367;
+
+$rect <330,180,630,220>
+$output false
+const float KM_L_TO_IMPERIAL_GALLON_SCALE = 2.841;
+
+$rect <330,230,630,270>
+$output false
+const uint32 L_100KM_SCALE_TO_KM_L = 100;

@@ -111,6 +111,14 @@ void DeviceInterfaceVehicleDeviceClass__NotifyDataReceived( void* _this, XEnum a
 /* The following define announces the presence of the method DeviceInterface::VehicleDeviceClass.NotifyDataReceived(). */
 #define _DeviceInterfaceVehicleDeviceClass__NotifyDataReceived_
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.ClampDataFloat()' */
+XFloat DeviceInterfaceVehicleDeviceClass_ClampDataFloat( DeviceInterfaceVehicleDeviceClass _this, 
+  XFloat aData, XFloat aMin, XFloat aMax );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.RoundDownDataFloat()' */
+XFloat DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( DeviceInterfaceVehicleDeviceClass _this, 
+  XFloat aData, XFloat aResolution );
+
 #ifdef __cplusplus
   }
 #endif

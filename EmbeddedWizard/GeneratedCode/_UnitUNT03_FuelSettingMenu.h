@@ -195,6 +195,8 @@ EW_DEFINE_METHODS( UnitUNT03_FuelSettingMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
     aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemHour,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( UnitUNT03_FuelSettingMenu )
 
 /* 'C' function for method : 'Unit::UNT03_FuelSettingMenu.LoadItemClass()' */

@@ -523,6 +523,12 @@ enum VehicleRxType
 
   $rect <850,310,1050,350>
   item YDT_DETECTED;
+
+  $rect <850,360,1050,400>
+  item TRIP_TIME;
+
+  $rect <850,410,1050,450>
+  item TOTAL;
 }
 
 $rect <260,270,460,310>
@@ -825,11 +831,14 @@ enum FuelSettingItem
   $rect <10,10,210,50>
   item KM_L;
 
-  $rect <240,10,440,50>
+  $rect <10,60,210,100>
   item MPG;
 
-  $rect <460,10,660,50>
+  $rect <10,110,210,150>
   item L_PER_HUNDRED_KM;
+
+  $rect <10,160,210,200>
+  item TOTAL;
 }
 
 $rect <960,270,1160,310>
@@ -1213,6 +1222,9 @@ enum MeterInfo
   item MAINTENANCE_TRIP3;
 
   $rect <220,210,420,250>
+  item TRIP_TIME;
+
+  $rect <220,260,420,300>
   item TOTAL;
 }
 
@@ -1251,6 +1263,27 @@ enum MaintenanceResetMenuItem
 
   $rect <10,160,210,200>
   item FREE2;
+
+  $rect <10,210,210,250>
+  item TOTAL;
+}
+
+// Meter fuel consumption unit defined in CAN H'5A0
+$rect <500,520,730,560>
+$output false
+enum MeterFuelConsumptionUnit
+{
+  $rect <10,10,210,50>
+  item KM_PER_LITER;
+
+  $rect <10,60,210,100>
+  item MILE_PER_US_GAL;
+
+  $rect <10,110,240,150>
+  item MILE_PER_IMPERIAL_GAL;
+
+  $rect <10,160,210,200>
+  item L_PER_100KM;
 
   $rect <10,210,210,250>
   item TOTAL;

@@ -170,8 +170,8 @@ else
 
 /*********************************************************************
 *
-* @public
-* VI_trip_time_get_current
+* @private
+* vi_trip_time_get_current
 *
 * Get current trip time
 *
@@ -179,13 +179,29 @@ else
 * @return Valid status of trip time
 *
 *********************************************************************/
-bool VI_trip_time_get_current
+bool vi_trip_time_get_current
     (
     uint32_t* current_trip_time_sec
     )
 {
 *current_trip_time_sec = trip_time_sec;
 return is_trip_time_valid;
+}
+
+/*********************************************************************
+*
+* @private
+* vi_trip_time_reset
+*
+* Reset trip time
+*
+*********************************************************************/
+void vi_trip_time_reset
+    (
+    void
+    )
+{
+trip_time_sec = 0;
 }
 
 /*********************************************************************

@@ -2048,6 +2048,49 @@ class VehicleDeviceClass : Templates::DeviceClass
 
   $rect <20,580,220,620>
   var Enum::VehicleSupportedFunction CurrentVehicleFunction;
+
+  $rect <280,280,480,320>
+  method uint32 ClampDataUInt32( arg uint32 aData, arg uint32 aMin, arg uint32 aMax )
+  {
+    if( aData < aMin )
+    {
+      aData = aMin;
+    }
+    else if( aData > aMax )
+    {
+      aData = aMax;
+    }
+    else
+    {
+      // empty
+    }
+    return aData;
+  }
+
+  $rect <280,330,480,370>
+  method float ClampDataFloat( arg float aData, arg float aMin, arg float aMax )
+  {
+    if( aData < aMin )
+    {
+      aData = aMin;
+    }
+    else if( aData > aMax )
+    {
+      aData = aMax;
+    }
+    else
+    {
+      // empty
+    }
+    return aData;
+  }
+
+  $rect <280,380,480,420>
+  method float RoundDownDataFloat( arg float aData, arg float aResolution )
+  {
+    return ( (int32)( aData / aResolution ) ) * aResolution;
+
+  }
 }
 
 $rect <500,70,700,110>

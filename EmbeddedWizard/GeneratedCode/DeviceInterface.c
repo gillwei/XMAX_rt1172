@@ -2315,6 +2315,38 @@ void DeviceInterfaceVehicleDeviceClass__NotifyDataReceived( void* _this, XEnum a
   , aRxType );
 }
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.ClampDataFloat()' */
+XFloat DeviceInterfaceVehicleDeviceClass_ClampDataFloat( DeviceInterfaceVehicleDeviceClass _this, 
+  XFloat aData, XFloat aMin, XFloat aMax )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  if ( aData < aMin )
+  {
+    aData = aMin;
+  }
+  else
+    if ( aData > aMax )
+    {
+      aData = aMax;
+    }
+    else
+      ;
+
+  return aData;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.RoundDownDataFloat()' */
+XFloat DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( DeviceInterfaceVehicleDeviceClass _this, 
+  XFloat aData, XFloat aResolution )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  return (XInt32)( aData / aResolution ) * aResolution;
+}
+
 /* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )

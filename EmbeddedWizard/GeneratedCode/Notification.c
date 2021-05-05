@@ -518,6 +518,8 @@ EW_DEFINE_CLASS( NotificationNTF01_NotificationList, MenuBaseMenuView, Notificat
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( NotificationNTF01_NotificationList )
 
 /* Initializer for the class 'Notification::NTF02_NotificationDetail' */

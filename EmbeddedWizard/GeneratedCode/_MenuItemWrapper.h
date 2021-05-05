@@ -205,6 +205,12 @@ void MenuItemWrapper_OnSetToggleEnabled( MenuItemWrapper _this, XBool value );
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetUnit()' */
 void MenuItemWrapper_OnSetUnit( MenuItemWrapper _this, XString value );
 
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetHour()' */
+void MenuItemWrapper_OnSetHour( MenuItemWrapper _this, XString value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetMinute()' */
+void MenuItemWrapper_OnSetMinute( MenuItemWrapper _this, XString value );
+
 #ifdef __cplusplus
   }
 #endif

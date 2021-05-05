@@ -47,7 +47,9 @@
 #include "_MenuItemBase.h"
 #include "_MenuItemCheckMark.h"
 #include "_MenuItemCheckbox.h"
+#include "_MenuItemTimeHourMinute.h"
 #include "_MenuItemValueUnit.h"
+#include "_MenuItemValueUnit2.h"
 #include "_MenuPushButton.h"
 #include "_MenuScrollbar.h"
 #include "_MenuUpDownPushButtonSet.h"
@@ -82,6 +84,7 @@
 #include "_SettingsSET42_ResetCompleted.h"
 #include "_SettingsSET43_ResetMenu.h"
 #include "_SettingsSET45_TripMileageReset.h"
+#include "_SettingsSET46_VehicleInfoReset.h"
 #include "_SettingsSET9_10_11_BtConnectionResult.h"
 #include "_SettingsTimeoutDialog.h"
 #include "_TCSTCS01_Main.h"
@@ -123,6 +126,14 @@ static const unsigned int _StringsDefault0[] =
   0xD0C42216, 0xA78D5E58, 0xC9DF795B, 0x86A28000, 0x6A597776, 0x9194CE8A, 0xEA1D9403,
   0x4800A41D, 0x38042726, 0x529F274D, 0x11050914, 0x65094450, 0x2E725595, 0x90A3E966,
   0xA35184CD, 0xD31AB18D, 0x54A28C4C, 0xCDBCA3A9, 0xBC49E99A, 0x00000406, 0x00000000
+};
+
+/* Compressed strings for the language 'Default'. */
+static const unsigned int _StringsDefault1[] =
+{
+  0x0000001E, /* ratio 133.33 % */
+  0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x8A002980, 0x8002A000, 0x001B0006,
+  0x10046A32, 0x00000010, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -201,6 +212,7 @@ static const XStringRes _Const0047 = { _StringsDefault0, 0x01D8 };
 static const XStringRes _Const0048 = { _StringsDefault0, 0x01E8 };
 static const XStringRes _Const0049 = { _StringsDefault0, 0x01F5 };
 static const XStringRes _Const004A = { _StringsDefault0, 0x0202 };
+static const XStringRes _Const004B = { _StringsDefault1, 0x0002 };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -568,6 +580,8 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, _None, _None,
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( SettingsSET01_MainSettingMenu )
 
 /* Initializer for the class 'Settings::SET03_ConnectionSettingMenu' */
@@ -781,6 +795,8 @@ EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, ItemTitl
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( SettingsSET03_ConnectionSettingMenu )
 
 /* Initializer for the class 'Settings::SET04_BtSettingMenu' */
@@ -1039,6 +1055,8 @@ EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, ItemTitleArray,
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( SettingsSET04_BtSettingMenu )
 
 /* Initializer for the class 'Settings::SET35_LegalMenu' */
@@ -1190,6 +1208,8 @@ EW_DEFINE_CLASS( SettingsSET35_LegalMenu, MenuBaseMenuView, _None, _None, _None,
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( SettingsSET35_LegalMenu )
 
 /* Initializer for the class 'Settings::SET38_ConfirmAllReset' */
@@ -2977,6 +2997,8 @@ EW_DEFINE_CLASS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView, RefreshLis
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( SettingsSET17_BtcPairedDeviceList )
 
 /* Initializer for the class 'Settings::SET19_BtcPairedDeviceOperation' */
@@ -3241,6 +3263,8 @@ EW_DEFINE_CLASS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView, Devic
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( SettingsSET19_BtcPairedDeviceOperation )
 
 /* Initializer for the class 'Settings::SET18_DeleteBleDevice' */
@@ -5033,6 +5057,11 @@ void SettingsSET43_ResetMenu_OnItemActivate( SettingsSET43_ResetMenu _this, XInt
       MaintenanceMNT01_MaintenanceReset, 0 )));
     break;
 
+    case 2 :
+      ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)EwNewObject( 
+      SettingsSET46_VehicleInfoReset, 0 )));
+    break;
+
     case 3 :
       ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)EwNewObject( 
       SettingsSET38_ConfirmAllReset, 0 )));
@@ -5106,6 +5135,8 @@ EW_DEFINE_CLASS( SettingsSET43_ResetMenu, MenuBaseMenuView, ItemTitleArray, Item
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( SettingsSET43_ResetMenu )
 
 /* Initializer for the class 'Settings::SET42_ResetCompleted' */
@@ -5623,6 +5654,604 @@ EW_DEFINE_CLASS( SettingsSET45_TripMileageReset, MenuBaseMenuView, VehicleDataRe
   SettingsSET45_TripMileageReset_LoadItemUnit,
   SettingsSET45_TripMileageReset_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( SettingsSET45_TripMileageReset )
+
+/* Initializer for the class 'Settings::SET46_VehicleInfoReset' */
+void SettingsSET46_VehicleInfoReset__Init( SettingsSET46_VehicleInfoReset _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( SettingsSET46_VehicleInfoReset );
+
+  /* ... then construct all embedded objects */
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( SettingsSET46_VehicleInfoReset );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  _this->Super2.SlideOutEffectEnabled = 1;
+  MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 74 );
+  MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
+  _this->AllSettings[ 0 ] = EnumMeterInfoAVG_SPEED;
+  _this->AllSettings[ 1 ] = EnumMeterInfoAVG_FUEL;
+  _this->AllSettings[ 2 ] = EnumMeterInfoTRIP_TIME;
+  _this->AllSettings[ 3 ] = EnumMeterInfoFUEL_CONSUMPTION;
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, SettingsSET46_VehicleInfoReset_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
+
+  /* Call the user defined constructor */
+  SettingsSET46_VehicleInfoReset_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Settings::SET46_VehicleInfoReset' */
+void SettingsSET46_VehicleInfoReset__ReInit( SettingsSET46_VehicleInfoReset _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuBaseMenuView__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
+}
+
+/* Finalizer method for the class 'Settings::SET46_VehicleInfoReset' */
+void SettingsSET46_VehicleInfoReset__Done( SettingsSET46_VehicleInfoReset _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+
+  /* Finalize all embedded objects */
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuBaseMenuView__Done( &_this->_Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET46_VehicleInfoReset_Init( SettingsSET46_VehicleInfoReset _this, 
+  XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const004B ));
+  SettingsSET46_VehicleInfoReset_SetNoOfMenuItems( _this );
+  SettingsSET46_VehicleInfoReset_GetUnitSetting( _this );
+}
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemClass()' */
+XClass SettingsSET46_VehicleInfoReset_LoadItemClass( SettingsSET46_VehicleInfoReset _this, 
+  XInt32 aItemNo )
+{
+  XClass ItemClass = EW_CLASS( MenuItemValueUnit2 );
+
+  if ( EnumMeterInfoTRIP_TIME == _this->SupportedSetting[ EwCheckIndex( aItemNo, 
+      4 )])
+  {
+    ItemClass = EW_CLASS( MenuItemTimeHourMinute );
+  }
+
+  return ItemClass;
+}
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemTitle()' */
+XString SettingsSET46_VehicleInfoReset_LoadItemTitle( SettingsSET46_VehicleInfoReset _this, 
+  XInt32 aItemNo )
+{
+  XString Title = 0;
+
+  switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 4 )])
+  {
+    case EnumMeterInfoAVG_FUEL :
+      Title = EwLoadString( &StringsHOM03_AVG_FUEL );
+    break;
+
+    case EnumMeterInfoAVG_SPEED :
+      Title = EwLoadString( &StringsHOM03_AVG_SPEED );
+    break;
+
+    case EnumMeterInfoTRIP_TIME :
+      Title = EwLoadString( &StringsHOM03_TRIP_TIME );
+    break;
+
+    case EnumMeterInfoFUEL_CONSUMPTION :
+      Title = EwLoadString( &StringsHOM03_FUEL_CONSUMPTION );
+    break;
+
+    default : 
+      ;
+  }
+
+  return Title;
+}
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.OnItemActivate()' */
+void SettingsSET46_VehicleInfoReset_OnItemActivate( SettingsSET46_VehicleInfoReset _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem )
+{
+  PopPOP04_Reset ResetDialog;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aMenuItem );
+
+  ResetDialog = EwNewObject( PopPOP04_Reset, 0 );
+  ResetDialog->SelectedMeterInfo = _this->SupportedSetting[ EwCheckIndex( aItemNo, 
+  4 )];
+  CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ResetDialog ), 0, 0, 0, 
+  0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemUnit()' */
+XString SettingsSET46_VehicleInfoReset_LoadItemUnit( SettingsSET46_VehicleInfoReset _this, 
+  XInt32 aItemNo )
+{
+  XString UnitString = 0;
+
+  switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 4 )])
+  {
+    case EnumMeterInfoAVG_SPEED :
+    {
+      if ( EnumMileageSettingItemMILE == _this->MileageUnit )
+      {
+        UnitString = EwLoadString( &StringsGEN_SPEED_MILE_PER_HOUR );
+      }
+      else
+      {
+        UnitString = EwLoadString( &StringsGEN_SPEED_KM_PER_HOUR );
+      }
+    }
+    break;
+
+    case EnumMeterInfoAVG_FUEL :
+    {
+      switch ( _this->FuelConsumptionUnit )
+      {
+        case EnumMeterFuelConsumptionUnitKM_PER_LITER :
+          UnitString = EwLoadString( &StringsUNT03_UNIT_FUEL_KM_PER_LITER );
+        break;
+
+        case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
+        case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
+          UnitString = EwLoadString( &StringsUNT03_UNIT_FUEL_MILE_PER_GALLON );
+        break;
+
+        case EnumMeterFuelConsumptionUnitL_PER_100KM :
+          UnitString = EwLoadString( &StringsUNT03_UNIT_FUEL_LITER_PER_HUNDRED_KM );
+        break;
+
+        default : 
+          ;
+      }
+    }
+    break;
+
+    case EnumMeterInfoFUEL_CONSUMPTION :
+    {
+      switch ( _this->FuelConsumptionUnit )
+      {
+        case EnumMeterFuelConsumptionUnitKM_PER_LITER :
+        case EnumMeterFuelConsumptionUnitL_PER_100KM :
+          UnitString = EwLoadString( &StringsGEN_FUEL_UNIT_LITTER );
+        break;
+
+        case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
+        case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
+          UnitString = EwLoadString( &StringsGEN_FUEL_UNIT_GALLON );
+        break;
+
+        default : 
+          ;
+      }
+    }
+    break;
+
+    default : 
+      ;
+  }
+
+  return UnitString;
+}
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemValue()' */
+XString SettingsSET46_VehicleInfoReset_LoadItemValue( SettingsSET46_VehicleInfoReset _this, 
+  XInt32 aItemNo )
+{
+  XString ValueStr = 0;
+  DeviceInterfaceVehicleDataClass VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 
+    0 );
+
+  switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 4 )])
+  {
+    case EnumMeterInfoAVG_SPEED :
+    {
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeAVERAGE_SPEED );
+
+      if ( VehicleData->Valid )
+      {
+        if ( EnumMileageSettingItemMILE == _this->MileageUnit )
+        {
+          VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
+        }
+
+        ValueStr = EwNewStringUInt( VehicleData->DataUInt32, 0, 1 );
+      }
+    }
+    break;
+
+    case EnumMeterInfoAVG_FUEL :
+    {
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeFUEL_RATE_AVERAGE );
+
+      if ( VehicleData->Valid )
+      {
+        switch ( _this->FuelConsumptionUnit )
+        {
+          case EnumMeterFuelConsumptionUnitKM_PER_LITER :
+          {
+            VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+            EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            VehicleData->DataFloat, 0.000000f, 99.900002f );
+          }
+          break;
+
+          case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
+          {
+            VehicleData->DataFloat *= 2.367000f;
+            VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+            EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            VehicleData->DataFloat, 0.000000f, 199.899994f );
+          }
+          break;
+
+          case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
+          {
+            VehicleData->DataFloat *= 2.841000f;
+            VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+            EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            VehicleData->DataFloat, 0.000000f, 199.899994f );
+          }
+          break;
+
+          case EnumMeterFuelConsumptionUnitL_PER_100KM :
+          {
+            VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+            EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            VehicleData->DataFloat, 99.900002f, 99.900002f );
+          }
+          break;
+
+          default : 
+            ;
+        }
+
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.100000f );
+        ValueStr = EwNewStringFloat( VehicleData->DataFloat, 0, 1 );
+      }
+    }
+    break;
+
+    case EnumMeterInfoFUEL_CONSUMPTION :
+    {
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeFUEL_CONSUMPTION );
+
+      if ( VehicleData->Valid )
+      {
+        switch ( _this->FuelConsumptionUnit )
+        {
+          case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
+            VehicleData->DataFloat *= 0.264000f;
+          break;
+
+          case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
+            VehicleData->DataFloat *= 0.220000f;
+          break;
+
+          case EnumMeterFuelConsumptionUnitL_PER_100KM :
+          {
+            if ( 0.000000f < VehicleData->DataFloat )
+            {
+              VehicleData->DataFloat = 100 / VehicleData->DataFloat;
+            }
+            else
+            {
+              VehicleData->DataFloat = 99.900002f;
+            }
+          }
+          break;
+
+          default : 
+            ;
+        }
+
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 99.900002f );
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.100000f );
+        ValueStr = EwNewStringFloat( VehicleData->DataFloat, 0, 1 );
+      }
+    }
+    break;
+
+    default : 
+      VehicleData->Valid = 0;
+  }
+
+  if ( !VehicleData->Valid )
+  {
+    ValueStr = EwLoadString( &StringsGEN_THREE_HYPHENS );
+  }
+
+  return ValueStr;
+}
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemHour()' */
+XString SettingsSET46_VehicleInfoReset_LoadItemHour( SettingsSET46_VehicleInfoReset _this, 
+  XInt32 aItemNo )
+{
+  XString HourString = EwLoadString( &StringsGEN_THREE_HYPHENS );
+
+  if ( EnumMeterInfoTRIP_TIME == _this->SupportedSetting[ EwCheckIndex( aItemNo, 
+      4 )])
+  {
+    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      EnumVehicleRxTypeTRIP_TIME );
+
+    if ( VehicleData->Valid )
+    {
+      XInt32 TripTimeSec = (XInt32)VehicleData->DataUInt32;
+      HourString = EwNewStringInt( TripTimeSec / 3600, 0, 10 );
+    }
+  }
+
+  return HourString;
+}
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemMinute()' */
+XString SettingsSET46_VehicleInfoReset_LoadItemMinute( SettingsSET46_VehicleInfoReset _this, 
+  XInt32 aItemNo )
+{
+  XString MinuteString = EwLoadString( &StringsGEN_THREE_HYPHENS );
+
+  if ( EnumMeterInfoTRIP_TIME == _this->SupportedSetting[ EwCheckIndex( aItemNo, 
+      4 )])
+  {
+    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      EnumVehicleRxTypeTRIP_TIME );
+
+    if ( VehicleData->Valid )
+    {
+      XInt32 TripTimeSec = (XInt32)VehicleData->DataUInt32;
+      XInt32 TripTimeMinute = ( TripTimeSec / 60 ) - (( TripTimeSec / 3600 ) * 60 );
+      MinuteString = EwNewStringInt( TripTimeMinute, 2, 10 );
+    }
+  }
+
+  return MinuteString;
+}
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.GetUnitSetting()' */
+void SettingsSET46_VehicleInfoReset_GetUnitSetting( SettingsSET46_VehicleInfoReset _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeMILEAGE_UNIT );
+
+  if ( 1 == VehicleData->DataUInt32 )
+  {
+    _this->MileageUnit = EnumMileageSettingItemMILE;
+  }
+  else
+  {
+    _this->MileageUnit = EnumMileageSettingItemKM;
+  }
+
+  VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT );
+
+  if ( 4 > VehicleData->DataUInt32 )
+  {
+    _this->FuelConsumptionUnit = (XEnum)VehicleData->DataUInt32;
+  }
+}
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.SetNoOfMenuItems()' */
+void SettingsSET46_VehicleInfoReset_SetNoOfMenuItems( SettingsSET46_VehicleInfoReset _this )
+{
+  XInt32 i;
+  XInt32 NoOfItems = 0;
+  XEnum SettingItem;
+
+  for ( i = 0; i < 4; i++ )
+  {
+    SettingItem = _this->AllSettings[ EwCheckIndex( i, 4 )];
+
+    switch ( SettingItem )
+    {
+      case EnumMeterInfoAVG_SPEED :
+      {
+        if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            EnumVehicleSupportedFunctionAVG_SPEED ))
+        {
+          _this->SupportedSetting[ EwCheckIndex( NoOfItems, 4 )] = SettingItem;
+          NoOfItems++;
+        }
+      }
+      break;
+
+      case EnumMeterInfoAVG_FUEL :
+      {
+        if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            EnumVehicleSupportedFunctionAVG_FUEL ))
+        {
+          _this->SupportedSetting[ EwCheckIndex( NoOfItems, 4 )] = SettingItem;
+          NoOfItems++;
+        }
+      }
+      break;
+
+      case EnumMeterInfoFUEL_CONSUMPTION :
+      {
+        if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            EnumVehicleSupportedFunctionFUEL_CONSUMPTION ))
+        {
+          _this->SupportedSetting[ EwCheckIndex( NoOfItems, 4 )] = SettingItem;
+          NoOfItems++;
+        }
+      }
+      break;
+
+      default : 
+      {
+        _this->SupportedSetting[ EwCheckIndex( NoOfItems, 4 )] = SettingItem;
+        NoOfItems++;
+      }
+    }
+  }
+
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, NoOfItems );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET46_VehicleInfoReset_OnVehicleDataReceivedSlot( SettingsSET46_VehicleInfoReset _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if ( VehicleData != 0 )
+  {
+    switch ( VehicleData->RxType )
+    {
+      case EnumVehicleRxTypeAVERAGE_SPEED :
+        SettingsSET46_VehicleInfoReset_ReloadItem( _this, EnumMeterInfoAVG_SPEED );
+      break;
+
+      case EnumVehicleRxTypeFUEL_RATE_AVERAGE :
+        SettingsSET46_VehicleInfoReset_ReloadItem( _this, EnumMeterInfoAVG_FUEL );
+      break;
+
+      case EnumVehicleRxTypeTRIP_TIME :
+        SettingsSET46_VehicleInfoReset_ReloadItem( _this, EnumMeterInfoTRIP_TIME );
+      break;
+
+      case EnumVehicleRxTypeFUEL_CONSUMPTION :
+        SettingsSET46_VehicleInfoReset_ReloadItem( _this, EnumMeterInfoFUEL_CONSUMPTION );
+      break;
+
+      default : 
+        ;
+    }
+  }
+}
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.ReloadItem()' */
+void SettingsSET46_VehicleInfoReset_ReloadItem( SettingsSET46_VehicleInfoReset _this, 
+  XEnum aMeterInfo )
+{
+  XInt32 i;
+
+  for ( i = 0; i < 4; i++ )
+  {
+    if ( aMeterInfo == _this->SupportedSetting[ EwCheckIndex( i, 4 )])
+    {
+      MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, i, i );
+      break;
+    }
+  }
+}
+
+/* Variants derived from the class : 'Settings::SET46_VehicleInfoReset' */
+EW_DEFINE_CLASS_VARIANTS( SettingsSET46_VehicleInfoReset )
+EW_END_OF_CLASS_VARIANTS( SettingsSET46_VehicleInfoReset )
+
+/* Virtual Method Table (VMT) for the class : 'Settings::SET46_VehicleInfoReset' */
+EW_DEFINE_CLASS( SettingsSET46_VehicleInfoReset, MenuBaseMenuView, VehicleDataReceivedEventHandler, 
+                 VehicleDataReceivedEventHandler, VehicleDataReceivedEventHandler, 
+                 VehicleDataReceivedEventHandler, FuelConsumptionUnit, FuelConsumptionUnit, 
+                 "Settings::SET46_VehicleInfoReset" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseMainBG_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  MenuBaseMenuView_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+  SettingsSET46_VehicleInfoReset_LoadItemClass,
+  SettingsSET46_VehicleInfoReset_LoadItemTitle,
+  SettingsSET46_VehicleInfoReset_OnItemActivate,
+  MenuBaseMenuView_LoadItemChecked,
+  MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
+  SettingsSET46_VehicleInfoReset_LoadItemUnit,
+  SettingsSET46_VehicleInfoReset_LoadItemValue,
+  MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  SettingsSET46_VehicleInfoReset_LoadItemHour,
+  SettingsSET46_VehicleInfoReset_LoadItemMinute,
+EW_END_OF_CLASS( SettingsSET46_VehicleInfoReset )
 
 /* Embedded Wizard */

@@ -39,7 +39,9 @@
 #include "_MenuItemCheckMark.h"
 #include "_MenuItemCheckbox.h"
 #include "_MenuItemNotification.h"
+#include "_MenuItemTimeHourMinute.h"
 #include "_MenuItemValueUnit.h"
+#include "_MenuItemValueUnit2.h"
 #include "_MenuItemValueUnitCheckmark.h"
 #include "_MenuItemWrapper.h"
 #include "_MenuPushButton.h"
@@ -129,6 +131,12 @@ static const XRect _Const0034 = {{ 145, 9 }, { 300, 43 }};
 static const XRect _Const0035 = {{ 306, 9 }, { 366, 43 }};
 static const XRect _Const0036 = {{ 200, 1 }, { 351, 69 }};
 static const XRect _Const0037 = {{ 357, 1 }, { 417, 69 }};
+static const XRect _Const0038 = {{ 212, 0 }, { 286, 70 }};
+static const XRect _Const0039 = {{ 325, 0 }, { 359, 70 }};
+static const XRect _Const003A = {{ 290, 0 }, { 321, 70 }};
+static const XRect _Const003B = {{ 363, 0 }, { 417, 70 }};
+static const XRect _Const003C = {{ 212, 1 }, { 286, 69 }};
+static const XRect _Const003D = {{ 290, 1 }, { 417, 69 }};
 
 /* Initializer for the class 'Menu::ItemBase' */
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
@@ -621,8 +629,9 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
         ItemNo ));
       }
       else
-        if (( EW_CLASS( MenuItemValueUnitCheckmark ) == Item->ItemClass ) || ( EW_CLASS( 
-            MenuItemValueUnit ) == Item->ItemClass ))
+        if ((( EW_CLASS( MenuItemValueUnitCheckmark ) == Item->ItemClass ) || ( 
+            EW_CLASS( MenuItemValueUnit ) == Item->ItemClass )) || ( EW_CLASS( MenuItemValueUnit2 ) 
+            == Item->ItemClass ))
         {
           MenuItemWrapper_OnSetValue( Item, MenuBaseMenuView__LoadItemValue( OwnerMenu, 
           ItemNo ));
@@ -630,7 +639,15 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
           ItemNo ));
         }
         else
-          ;
+          if ( EW_CLASS( MenuItemTimeHourMinute ) == Item->ItemClass )
+          {
+            MenuItemWrapper_OnSetHour( Item, MenuBaseMenuView__LoadItemHour( OwnerMenu, 
+            ItemNo ));
+            MenuItemWrapper_OnSetMinute( Item, MenuBaseMenuView__LoadItemMinute( 
+            OwnerMenu, ItemNo ));
+          }
+          else
+            ;
 
     CoreRectView__OnSetBounds( Item, EwSetRectSize( Item->Super2.Bounds, EwNewPoint( 
     EwGetRectW( _this->MenuList.Super2.Bounds ), _this->MenuList.ItemHeight )));
@@ -1338,17 +1355,27 @@ void MenuItemWrapper_OnSetValue( MenuItemWrapper _this, XString value )
         }
       }
       else
-        if ( EW_CLASS( MenuItemValueUnitCheckmark ) == EwClassOf(((XObject)view )))
+        if ( EW_CLASS( MenuItemValueUnit2 ) == EwClassOf(((XObject)view )))
         {
-          MenuItemValueUnitCheckmark MenuItem = EwCastObject( view, MenuItemValueUnitCheckmark );
+          MenuItemValueUnit2 MenuItem = EwCastObject( view, MenuItemValueUnit2 );
 
           if ( MenuItem != 0 )
           {
-            MenuItemValueUnitCheckmark_OnSetValue( MenuItem, value );
+            MenuItemValueUnit_OnSetValue((MenuItemValueUnit)MenuItem, value );
           }
         }
         else
-          ;
+          if ( EW_CLASS( MenuItemValueUnitCheckmark ) == EwClassOf(((XObject)view )))
+          {
+            MenuItemValueUnitCheckmark MenuItem = EwCastObject( view, MenuItemValueUnitCheckmark );
+
+            if ( MenuItem != 0 )
+            {
+              MenuItemValueUnitCheckmark_OnSetValue( MenuItem, value );
+            }
+          }
+          else
+            ;
   }
 }
 
@@ -1461,17 +1488,73 @@ void MenuItemWrapper_OnSetUnit( MenuItemWrapper _this, XString value )
       }
     }
     else
-      if ( EW_CLASS( MenuItemValueUnitCheckmark ) == EwClassOf(((XObject)view )))
+      if ( EW_CLASS( MenuItemValueUnit2 ) == EwClassOf(((XObject)view )))
       {
-        MenuItemValueUnitCheckmark MenuItem = EwCastObject( view, MenuItemValueUnitCheckmark );
+        MenuItemValueUnit2 MenuItem = EwCastObject( view, MenuItemValueUnit2 );
 
         if ( MenuItem != 0 )
         {
-          MenuItemValueUnitCheckmark_OnSetUnit( MenuItem, value );
+          MenuItemValueUnit_OnSetUnit((MenuItemValueUnit)MenuItem, value );
         }
       }
       else
-        ;
+        if ( EW_CLASS( MenuItemValueUnitCheckmark ) == EwClassOf(((XObject)view )))
+        {
+          MenuItemValueUnitCheckmark MenuItem = EwCastObject( view, MenuItemValueUnitCheckmark );
+
+          if ( MenuItem != 0 )
+          {
+            MenuItemValueUnitCheckmark_OnSetUnit( MenuItem, value );
+          }
+        }
+        else
+          ;
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetHour()' */
+void MenuItemWrapper_OnSetHour( MenuItemWrapper _this, XString value )
+{
+  if ( EwCompString( _this->Value, value ) != 0 )
+  {
+    CoreView view;
+    _this->Value = EwShareString( value );
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+
+    if ( EW_CLASS( MenuItemTimeHourMinute ) == EwClassOf(((XObject)view )))
+    {
+      MenuItemTimeHourMinute MenuItem = EwCastObject( view, MenuItemTimeHourMinute );
+
+      if ( MenuItem != 0 )
+      {
+        MenuItemTimeHourMinute_OnSetHour( MenuItem, value );
+      }
+    }
+    else
+      ;
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetMinute()' */
+void MenuItemWrapper_OnSetMinute( MenuItemWrapper _this, XString value )
+{
+  if ( EwCompString( _this->Unit, value ) != 0 )
+  {
+    CoreView view;
+    _this->Unit = EwShareString( value );
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+
+    if ( EW_CLASS( MenuItemTimeHourMinute ) == EwClassOf(((XObject)view )))
+    {
+      MenuItemTimeHourMinute MenuItem = EwCastObject( view, MenuItemTimeHourMinute );
+
+      if ( MenuItem != 0 )
+      {
+        MenuItemTimeHourMinute_OnSetMinute( MenuItem, value );
+      }
+    }
+    else
+      ;
   }
 }
 
@@ -2010,6 +2093,40 @@ void MenuBaseMenuView__OnItemLongEnterKeyActivate( void* _this, XInt32 aItemNo,
   , aItemNo, aMenuItem );
 }
 
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemHour()' */
+XString MenuBaseMenuView_LoadItemHour( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemHour()' */
+XString MenuBaseMenuView__LoadItemHour( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_VMT->LoadItemHour((MenuBaseMenuView)_this, 
+  aItemNo );
+}
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemMinute()' */
+XString MenuBaseMenuView_LoadItemMinute( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemMinute()' */
+XString MenuBaseMenuView__LoadItemMinute( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_VMT->LoadItemMinute((MenuBaseMenuView)_this
+  , aItemNo );
+}
+
 /* Variants derived from the class : 'Menu::BaseMenuView' */
 EW_DEFINE_CLASS_VARIANTS( MenuBaseMenuView )
 EW_END_OF_CLASS_VARIANTS( MenuBaseMenuView )
@@ -2073,6 +2190,8 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, Menu, Menu, Menu, Menu,
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( MenuBaseMenuView )
 
 /* Initializer for the class 'Menu::PushButton' */
@@ -3370,5 +3489,239 @@ EW_DEFINE_CLASS( MenuItemValueUnit, MenuItemBase, ValueText, ValueText, ValueTex
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuItemValueUnit )
+
+/* Initializer for the class 'Menu::ItemTimeHourMinute' */
+void MenuItemTimeHourMinute__Init( MenuItemTimeHourMinute _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuItemBase__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( MenuItemTimeHourMinute );
+
+  /* ... then construct all embedded objects */
+  ViewsText__Init( &_this->HourValueText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->MinuteValueText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->HourText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->MinuteText, &_this->_XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( MenuItemTimeHourMinute );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( &_this->HourValueText, _Const0038 );
+  ViewsText_OnSetAlignment( &_this->HourValueText, ViewsTextAlignmentAlignHorzRight 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->HourValueText, 0 );
+  CoreRectView__OnSetBounds( &_this->MinuteValueText, _Const0039 );
+  ViewsText_OnSetAlignment( &_this->MinuteValueText, ViewsTextAlignmentAlignHorzCenter 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->MinuteValueText, 0 );
+  CoreRectView__OnSetBounds( &_this->HourText, _Const003A );
+  ViewsText_OnSetAlignment( &_this->HourText, ViewsTextAlignmentAlignHorzLeft | 
+  ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->HourText, EwLoadString( &StringsGEN_HOUR_ABBREVIATION ));
+  CoreRectView__OnSetBounds( &_this->MinuteText, _Const003B );
+  ViewsText_OnSetAlignment( &_this->MinuteText, ViewsTextAlignmentAlignHorzCenter 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->MinuteText, EwLoadString( &StringsGEN_MINUTE_ABBREVIATION ));
+  CoreGroup__Add( _this, ((CoreView)&_this->HourValueText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->MinuteValueText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->HourText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->MinuteText ), 0 );
+  ViewsText_OnSetFont( &_this->HourValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->MinuteValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->HourText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->MinuteText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+}
+
+/* Re-Initializer for the class 'Menu::ItemTimeHourMinute' */
+void MenuItemTimeHourMinute__ReInit( MenuItemTimeHourMinute _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuItemBase__ReInit( &_this->_Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsText__ReInit( &_this->HourValueText );
+  ViewsText__ReInit( &_this->MinuteValueText );
+  ViewsText__ReInit( &_this->HourText );
+  ViewsText__ReInit( &_this->MinuteText );
+}
+
+/* Finalizer method for the class 'Menu::ItemTimeHourMinute' */
+void MenuItemTimeHourMinute__Done( MenuItemTimeHourMinute _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( MenuItemBase );
+
+  /* Finalize all embedded objects */
+  ViewsText__Done( &_this->HourValueText );
+  ViewsText__Done( &_this->MinuteValueText );
+  ViewsText__Done( &_this->HourText );
+  ViewsText__Done( &_this->MinuteText );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuItemBase__Done( &_this->_Super );
+}
+
+/* 'C' function for method : 'Menu::ItemTimeHourMinute.OnSetHour()' */
+void MenuItemTimeHourMinute_OnSetHour( MenuItemTimeHourMinute _this, XString value )
+{
+  if ( EwCompString( _this->Hour, value ) != 0 )
+  {
+    _this->Hour = EwShareString( value );
+    ViewsText_OnSetString( &_this->HourValueText, value );
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemTimeHourMinute.OnSetMinute()' */
+void MenuItemTimeHourMinute_OnSetMinute( MenuItemTimeHourMinute _this, XString value )
+{
+  if ( EwCompString( _this->Minute, value ) != 0 )
+  {
+    _this->Minute = EwShareString( value );
+    ViewsText_OnSetString( &_this->MinuteValueText, value );
+  }
+}
+
+/* Variants derived from the class : 'Menu::ItemTimeHourMinute' */
+EW_DEFINE_CLASS_VARIANTS( MenuItemTimeHourMinute )
+EW_END_OF_CLASS_VARIANTS( MenuItemTimeHourMinute )
+
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemTimeHourMinute' */
+EW_DEFINE_CLASS( MenuItemTimeHourMinute, MenuItemBase, HourValueText, HourValueText, 
+                 HourValueText, HourValueText, Hour, _None, "Menu::ItemTimeHourMinute" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  MenuItemBase_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  MenuItemBase_UpdateLayout,
+  MenuItemBase_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  MenuItemBase_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  MenuItemBase_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+EW_END_OF_CLASS( MenuItemTimeHourMinute )
+
+/* Initializer for the class 'Menu::ItemValueUnit2' */
+void MenuItemValueUnit2__Init( MenuItemValueUnit2 _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuItemValueUnit__Init( &_this->_Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_GCT = EW_CLASS_GCT( MenuItemValueUnit2 );
+
+  /* Setup the VMT pointer */
+  _this->_VMT = EW_CLASS( MenuItemValueUnit2 );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( &_this->Super1.ValueText, _Const003C );
+  CoreRectView__OnSetBounds( &_this->Super1.UnitText, _Const003D );
+}
+
+/* Re-Initializer for the class 'Menu::ItemValueUnit2' */
+void MenuItemValueUnit2__ReInit( MenuItemValueUnit2 _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuItemValueUnit__ReInit( &_this->_Super );
+}
+
+/* Finalizer method for the class 'Menu::ItemValueUnit2' */
+void MenuItemValueUnit2__Done( MenuItemValueUnit2 _this )
+{
+  /* Finalize this class */
+  _this->_Super._VMT = EW_CLASS( MenuItemValueUnit );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuItemValueUnit__Done( &_this->_Super );
+}
+
+/* Variants derived from the class : 'Menu::ItemValueUnit2' */
+EW_DEFINE_CLASS_VARIANTS( MenuItemValueUnit2 )
+EW_END_OF_CLASS_VARIANTS( MenuItemValueUnit2 )
+
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemValueUnit2' */
+EW_DEFINE_CLASS( MenuItemValueUnit2, MenuItemValueUnit, _None, _None, _None, _None, 
+                 _None, _None, "Menu::ItemValueUnit2" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  MenuItemBase_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  MenuItemBase_UpdateLayout,
+  MenuItemBase_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  MenuItemBase_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  MenuItemBase_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+EW_END_OF_CLASS( MenuItemValueUnit2 )
 
 /* Embedded Wizard */

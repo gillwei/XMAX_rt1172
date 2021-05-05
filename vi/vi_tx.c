@@ -19,6 +19,7 @@
 #include "fsl_debug_console.h"
 #include "vi_priv.h"
 #include "VI_pub.h"
+#include "EW_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -585,6 +586,11 @@ switch( meter_info )
         break;
     case EnumMeterInfoMAINTENANCE_TRIP3:
         procdtl = MID_MSG_PROCDTL_MAINT_INFO_RST_AT_BOT;
+        break;
+    case EnumMeterInfoTRIP_TIME:
+        /* trip time is kept in LinkCard, not in meter, so no need to send CAN message to meter */
+        vi_trip_time_reset();
+        EW_notify_vi_data_received( EnumVehicleRxTypeTRIP_TIME );
         break;
     default:
         break;

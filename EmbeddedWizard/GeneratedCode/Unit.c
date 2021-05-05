@@ -577,6 +577,8 @@ EW_DEFINE_CLASS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView, UnitItemValue, Veh
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( UnitUNT01_UnitSettingMenu )
 
 /* Initializer for the class 'Unit::UNT02_MileageSettingMenu' */
@@ -874,6 +876,8 @@ EW_DEFINE_CLASS( UnitUNT02_MileageSettingMenu, MenuBaseMenuView, MileageUpdateSi
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( UnitUNT02_MileageSettingMenu )
 
 /* Initializer for the class 'Unit::UnitValueClass' */
@@ -1283,6 +1287,8 @@ EW_DEFINE_CLASS( UnitUNT03_FuelSettingMenu, MenuBaseMenuView, FuelUpdateSignal,
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( UnitUNT03_FuelSettingMenu )
 
 /* Initializer for the class 'Unit::UNT04_PressureSettingMenu' */
@@ -1610,6 +1616,8 @@ EW_DEFINE_CLASS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView, PressureUpdate
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( UnitUNT04_PressureSettingMenu )
 
 /* Initializer for the class 'Unit::UNT05_TemperatureSettingMenu' */
@@ -1909,6 +1917,8 @@ EW_DEFINE_CLASS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView, TempUpdateS
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( UnitUNT05_TemperatureSettingMenu )
 
 /* Embedded Wizard */

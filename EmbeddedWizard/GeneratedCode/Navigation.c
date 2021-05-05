@@ -1149,6 +1149,8 @@ EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, _None, _None
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( NavigationNAV06_NaviSettingMenu )
 
 /* Initializer for the class 'Navigation::NAV08_NaviChageViewMenu' */
@@ -1403,6 +1405,8 @@ EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, CheckMarkU
   MenuBaseMenuView_LoadItemUnit,
   MenuBaseMenuView_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( NavigationNAV08_NaviChageViewMenu )
 
 /* Initializer for the class 'Navigation::NaviCurrentRoad' */

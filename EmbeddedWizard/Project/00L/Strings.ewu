@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/05/04 10:27:17
+// Generated: 2021/05/05 13:21:15
 
 $output false
 const string ARGUMENT_STR =
@@ -72,6 +72,18 @@ const string GEN_HIGH =
 );
 
 $output false
+const string GEN_HOUR_ABBREVIATION =
+(
+  Default = "h";
+);
+
+$output false
+const string GEN_MINUTE_ABBREVIATION =
+(
+  Default = "min";
+);
+
+$output false
 const string GEN_RESET_QUESTION_MARK =
 (
   Default = "Reset?";
@@ -93,6 +105,30 @@ $output false
 const string GEN_PLEASE_WAIT =
 (
   Default = "Please wait\u2026";
+);
+
+$output false
+const string GEN_SPEED_KM_PER_HOUR =
+(
+  Default = "km/h";
+);
+
+$output false
+const string GEN_SPEED_MILE_PER_HOUR =
+(
+  Default = "mile/h";
+);
+
+$output false
+const string GEN_FUEL_UNIT_LITTER =
+(
+  Default = "L";
+);
+
+$output false
+const string GEN_FUEL_UNIT_GALLON =
+(
+  Default = "gal";
 );
 
 $output false

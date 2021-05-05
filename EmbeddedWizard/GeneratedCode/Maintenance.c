@@ -273,7 +273,7 @@ XString MaintenanceMNT01_MaintenanceReset_LoadItemValue( MaintenanceMNT01_Mainte
   {
     if ( EnumMileageSettingItemMILE == _this->MileageSetting )
     {
-      VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.650000f );
+      VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
     }
 
     Value = EwNewStringUInt( VehicleData->DataUInt32, 0, 0 );
@@ -488,6 +488,8 @@ EW_DEFINE_CLASS( MaintenanceMNT01_MaintenanceReset, MenuBaseMenuView, VehicleDat
   MaintenanceMNT01_MaintenanceReset_LoadItemUnit,
   MaintenanceMNT01_MaintenanceReset_LoadItemValue,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
 EW_END_OF_CLASS( MaintenanceMNT01_MaintenanceReset )
 
 /* Embedded Wizard */

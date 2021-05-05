@@ -67,6 +67,7 @@
 #include "_SettingsSET42_ResetCompleted.h"
 #include "_SettingsSET43_ResetMenu.h"
 #include "_SettingsSET45_TripMileageReset.h"
+#include "_SettingsSET46_VehicleInfoReset.h"
 #include "_SettingsSET9_10_11_BtConnectionResult.h"
 #include "_SettingsTimeoutDialog.h"
 

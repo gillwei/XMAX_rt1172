@@ -392,7 +392,7 @@ class VerticalMenu : Components::BaseComponent
       {
         Item.Height = ItemHeight;
         Item.ItemClass = OwnerMenu.LoadItemClass( ItemNo );
-        Item.Title = OwnerMenu.LoadItemTitle( ItemNo );
+        Item.Title = OwnerMenu.LoadItemTitle( ItemNo );
         Item.Enabled = OwnerMenu.LoadItemEnabled( ItemNo );
         Item.OnActivate = OnItemActivateSlot;
         Item.OnLongEnterKeyActivate = OnLongEnterKeyActivatedSlot;
@@ -420,10 +420,16 @@ class VerticalMenu : Components::BaseComponent
         Item.Uid = OwnerMenu.LoadItemUid( ItemNo );
       }
       else if( Menu::ItemValueUnitCheckmark == Item.ItemClass ||
-               Menu::ItemValueUnit == Item.ItemClass )
+               Menu::ItemValueUnit == Item.ItemClass ||
+               Menu::ItemValueUnit2 == Item.ItemClass )
       {
         Item.Value = OwnerMenu.LoadItemValue( ItemNo );
         Item.Unit = OwnerMenu.LoadItemUnit( ItemNo );
+      }
+      else if( Menu::ItemTimeHourMinute == Item.ItemClass )
+      {
+        Item.Hour = OwnerMenu.LoadItemHour( ItemNo );
+        Item.Minute = OwnerMenu.LoadItemMinute( ItemNo );
       }
       else
       {
@@ -1049,6 +1055,14 @@ class ItemWrapper : Core::Group
           MenuItem.Value = value;
         }
       }
+      else if( Menu::ItemValueUnit2 == ( classof view ) )
+      {
+        var Menu::ItemValueUnit2 MenuItem = (Menu::ItemValueUnit2)view;
+        if( MenuItem != null )
+        {
+          MenuItem.Value = value;
+        }
+      }
       else if( Menu::ItemValueUnitCheckmark == ( classof view ) )
       {
         var Menu::ItemValueUnitCheckmark MenuItem = (Menu::ItemValueUnitCheckmark)view;
@@ -1179,12 +1193,79 @@ class ItemWrapper : Core::Group
           MenuItem.Unit = value;
         }
       }
+      else if( Menu::ItemValueUnit2 == ( classof view ) )
+      {
+        var Menu::ItemValueUnit2 MenuItem = (Menu::ItemValueUnit2)view;
+        if( MenuItem != null )
+        {
+          MenuItem.Unit = value;
+        }
+      }
       else if( Menu::ItemValueUnitCheckmark == ( classof view ) )
       {
         var Menu::ItemValueUnitCheckmark MenuItem = (Menu::ItemValueUnitCheckmark)view;
         if( MenuItem != null )
         {
           MenuItem.Unit = value;
+        }
+      }
+      else
+      {
+        // empty
+      }
+    }
+  }
+
+  // For item with unit/value
+  note group Note10
+  {
+    attr Bounds = <550,670,1060,830>;
+  }
+
+  $rect <570,720,770,760>
+  property string Hour;
+
+  $rect <570,760,770,800>
+  onset Hour
+  {
+    if( pure Value != value )
+    {
+      pure Value = value;
+
+      var Core::View view = FindNextView( null, Core::ViewState[] );
+
+      if( Menu::ItemTimeHourMinute == ( classof view ) )
+      {
+        var Menu::ItemTimeHourMinute MenuItem = (Menu::ItemTimeHourMinute)view;
+        if( MenuItem != null )
+        {
+          MenuItem.Hour = value;
+        }
+      }
+      else
+      {
+        // empty
+      }
+    }
+  }
+
+  $rect <790,720,990,760>
+  property string Minute;
+
+  $rect <790,760,990,800>
+  onset Minute
+  {
+    if( pure Unit != value )
+    {
+      pure Unit = value;
+      var Core::View view = FindNextView( null, Core::ViewState[] );
+
+      if( Menu::ItemTimeHourMinute == ( classof view ) )
+      {
+        var Menu::ItemTimeHourMinute MenuItem = (Menu::ItemTimeHourMinute)view;
+        if( MenuItem != null )
+        {
+          MenuItem.Minute = value;
         }
       }
       else
@@ -1487,6 +1568,26 @@ class BaseMenuView : Components::BaseMainBG
     // suppress warning
     aMenuItem;
     aItemNo;
+  }
+
+  // For item with hour and minute
+  note group Note11
+  {
+    attr Bounds = <520,680,860,830>;
+  }
+
+  $rect <540,720,740,760>
+  method string LoadItemHour( arg int32 aItemNo )
+  {
+    aItemNo; // suppress warning
+    return "";
+  }
+
+  $rect <540,770,740,810>
+  method string LoadItemMinute( arg int32 aItemNo )
+  {
+    aItemNo; // suppress warning
+    return "";
   }
 
   $reorder BlackBG 1
@@ -2163,7 +2264,7 @@ class ItemNotification : Menu::ItemBase
   property uint32 Uid;
 }
 
-$rect <230,310,450,350>
+$rect <230,360,450,400>
 $output false
 class ItemValueUnitCheckmark : Menu::ItemCheckMark
 {
@@ -2258,5 +2359,95 @@ class ItemValueUnit : Menu::ItemBase
       pure Unit = value;
       UnitText.String = value;
     }
+  }
+}
+
+$rect <230,410,430,450>
+$output false
+class ItemTimeHourMinute : Menu::ItemBase
+{
+  $rect <20,20,160,60>
+  object Views::Text HourValueText
+  {
+    preset Bounds = <212,0,286,70>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text MinuteValueText
+  {
+    preset Bounds = <325,0,359,70>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text HourText
+  {
+    preset Bounds = <290,0,321,70>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = Strings::GEN_HOUR_ABBREVIATION;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text MinuteText
+  {
+    preset Bounds = <363,0,417,70>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = Strings::GEN_MINUTE_ABBREVIATION;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <10,90,210,130>
+  property string Hour;
+
+  $rect <10,130,210,170>
+  onset Hour
+  {
+    if( pure Hour != value )
+    {
+      pure Hour = value;
+      HourValueText.String = value;
+    }
+
+  }
+
+  $rect <250,90,450,130>
+  property string Minute;
+
+  $rect <250,130,450,170>
+  onset Minute
+  {
+    if( pure Minute != value )
+    {
+      pure Minute = value;
+      MinuteValueText.String = value;
+    }
+
+  }
+}
+
+$rect <10,160,210,200>
+$output false
+const int32 INVALID_TIME = -1;
+
+$rect <230,310,430,350>
+$output false
+class ItemValueUnit2 : Menu::ItemValueUnit
+{
+  $rect <20,20,160,60>
+  inherited object ValueText
+  {
+    preset Bounds = <212,1,286,69>;
+  }
+
+  $rect <20,20,160,60>
+  inherited object UnitText
+  {
+    preset Bounds = <290,1,417,69>;
   }
 }

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _UnitUNT01_UnitSettingMenu_H
-#define _UnitUNT01_UnitSettingMenu_H
+#ifndef _SettingsSET46_VehicleInfoReset_H
+#define _SettingsSET46_VehicleInfoReset_H
 
 #ifdef __cplusplus
   extern "C"
@@ -105,59 +105,24 @@
 #define _MenuItemBase_
 #endif
 
-/* Forward declaration of the class Unit::UNT01_UnitSettingMenu */
-#ifndef _UnitUNT01_UnitSettingMenu_
-  EW_DECLARE_CLASS( UnitUNT01_UnitSettingMenu )
-#define _UnitUNT01_UnitSettingMenu_
-#endif
-
-/* Forward declaration of the class Unit::UNT02_MileageSettingMenu */
-#ifndef _UnitUNT02_MileageSettingMenu_
-  EW_DECLARE_CLASS( UnitUNT02_MileageSettingMenu )
-#define _UnitUNT02_MileageSettingMenu_
-#endif
-
-/* Forward declaration of the class Unit::UNT03_FuelSettingMenu */
-#ifndef _UnitUNT03_FuelSettingMenu_
-  EW_DECLARE_CLASS( UnitUNT03_FuelSettingMenu )
-#define _UnitUNT03_FuelSettingMenu_
-#endif
-
-/* Forward declaration of the class Unit::UNT04_PressureSettingMenu */
-#ifndef _UnitUNT04_PressureSettingMenu_
-  EW_DECLARE_CLASS( UnitUNT04_PressureSettingMenu )
-#define _UnitUNT04_PressureSettingMenu_
-#endif
-
-/* Forward declaration of the class Unit::UNT05_TemperatureSettingMenu */
-#ifndef _UnitUNT05_TemperatureSettingMenu_
-  EW_DECLARE_CLASS( UnitUNT05_TemperatureSettingMenu )
-#define _UnitUNT05_TemperatureSettingMenu_
-#endif
-
-/* Forward declaration of the class Unit::UnitValueClass */
-#ifndef _UnitUnitValueClass_
-  EW_DECLARE_CLASS( UnitUnitValueClass )
-#define _UnitUnitValueClass_
+/* Forward declaration of the class Settings::SET46_VehicleInfoReset */
+#ifndef _SettingsSET46_VehicleInfoReset_
+  EW_DECLARE_CLASS( SettingsSET46_VehicleInfoReset )
+#define _SettingsSET46_VehicleInfoReset_
 #endif
 
 
-/* Deklaration of class : 'Unit::UNT01_UnitSettingMenu' */
-EW_DEFINE_FIELDS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView )
-  EW_VARIABLE( UnitItemValue,   UnitUnitValueClass )
-  EW_VARIABLE( MileageMenu,     UnitUNT02_MileageSettingMenu )
-  EW_VARIABLE( FuelMenu,        UnitUNT03_FuelSettingMenu )
-  EW_VARIABLE( PressureMenu,    UnitUNT04_PressureSettingMenu )
-  EW_VARIABLE( TempMenu,        UnitUNT05_TemperatureSettingMenu )
+/* Deklaration of class : 'Settings::SET46_VehicleInfoReset' */
+EW_DEFINE_FIELDS( SettingsSET46_VehicleInfoReset, MenuBaseMenuView )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
-  EW_ARRAY   ( ItemTitleArray,  XString, [4])
-  EW_ARRAY   ( ItemValueArray,  XString, [4])
-  EW_ARRAY   ( ItemVehicleRxTypeArray, XEnum, [4])
-  EW_VARIABLE( IsFuelEnabled,   XBool )
-EW_END_OF_FIELDS( UnitUNT01_UnitSettingMenu )
+  EW_VARIABLE( FuelConsumptionUnit, XEnum )
+  EW_ARRAY   ( AllSettings,     XEnum, [4])
+  EW_VARIABLE( MileageUnit,     XEnum )
+  EW_ARRAY   ( SupportedSetting, XEnum, [4])
+EW_END_OF_FIELDS( SettingsSET46_VehicleInfoReset )
 
-/* Virtual Method Table (VMT) for the class : 'Unit::UNT01_UnitSettingMenu' */
-EW_DEFINE_METHODS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET46_VehicleInfoReset' */
+EW_DEFINE_METHODS( SettingsSET46_VehicleInfoReset, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -210,75 +175,85 @@ EW_DEFINE_METHODS( UnitUNT01_UnitSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnSetDDModeEnabled, void )( MenuBaseMenuView _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( UnitUNT01_UnitSettingMenu _this, XInt32 
-    aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( UnitUNT01_UnitSettingMenu _this, XInt32 
-    aItemNo )
-  EW_METHOD( OnItemActivate,    void )( UnitUNT01_UnitSettingMenu _this, XInt32 
+  EW_METHOD( LoadItemClass,     XClass )( SettingsSET46_VehicleInfoReset _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( SettingsSET46_VehicleInfoReset _this, 
+    XInt32 aItemNo )
+  EW_METHOD( OnItemActivate,    void )( SettingsSET46_VehicleInfoReset _this, XInt32 
     aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( UnitUNT01_UnitSettingMenu _this, XInt32 
-    aItemNo )
-  EW_METHOD( LoadItemBaseValue, XString )( UnitUNT01_UnitSettingMenu _this, XInt32 
-    aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUnit,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUnit,      XString )( SettingsSET46_VehicleInfoReset _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemValue,     XString )( SettingsSET46_VehicleInfoReset _this, 
+    XInt32 aItemNo )
   EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
     aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemHour,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( UnitUNT01_UnitSettingMenu )
+  EW_METHOD( LoadItemHour,      XString )( SettingsSET46_VehicleInfoReset _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemMinute,    XString )( SettingsSET46_VehicleInfoReset _this, 
+    XInt32 aItemNo )
+EW_END_OF_METHODS( SettingsSET46_VehicleInfoReset )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aArg );
+void SettingsSET46_VehicleInfoReset_Init( SettingsSET46_VehicleInfoReset _this, 
+  XHandle aArg );
 
-/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemClass()' */
-XClass UnitUNT01_UnitSettingMenu_LoadItemClass( UnitUNT01_UnitSettingMenu _this, 
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemClass()' */
+XClass SettingsSET46_VehicleInfoReset_LoadItemClass( SettingsSET46_VehicleInfoReset _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemTitle()' */
-XString UnitUNT01_UnitSettingMenu_LoadItemTitle( UnitUNT01_UnitSettingMenu _this, 
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemTitle()' */
+XString SettingsSET46_VehicleInfoReset_LoadItemTitle( SettingsSET46_VehicleInfoReset _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.OnItemActivate()' */
-void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this, 
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.OnItemActivate()' */
+void SettingsSET46_VehicleInfoReset_OnItemActivate( SettingsSET46_VehicleInfoReset _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemEnabled()' */
-XBool UnitUNT01_UnitSettingMenu_LoadItemEnabled( UnitUNT01_UnitSettingMenu _this, 
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemUnit()' */
+XString SettingsSET46_VehicleInfoReset_LoadItemUnit( SettingsSET46_VehicleInfoReset _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemBaseValue()' */
-XString UnitUNT01_UnitSettingMenu_LoadItemBaseValue( UnitUNT01_UnitSettingMenu _this, 
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemValue()' */
+XString SettingsSET46_VehicleInfoReset_LoadItemValue( SettingsSET46_VehicleInfoReset _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.OnUnitValueUpdateSlot()' */
-void UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot( UnitUNT01_UnitSettingMenu _this, 
-  XObject sender );
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemHour()' */
+XString SettingsSET46_VehicleInfoReset_LoadItemHour( SettingsSET46_VehicleInfoReset _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.OnGetPressureEnabled()' */
-XBool UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( UnitUNT01_UnitSettingMenu _this );
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.LoadItemMinute()' */
+XString SettingsSET46_VehicleInfoReset_LoadItemMinute( SettingsSET46_VehicleInfoReset _this, 
+  XInt32 aItemNo );
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.GetUnitSetting()' */
+void SettingsSET46_VehicleInfoReset_GetUnitSetting( SettingsSET46_VehicleInfoReset _this );
+
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.SetNoOfMenuItems()' */
+void SettingsSET46_VehicleInfoReset_SetNoOfMenuItems( SettingsSET46_VehicleInfoReset _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void UnitUNT01_UnitSettingMenu_OnVehicleDataReceivedSlot( UnitUNT01_UnitSettingMenu _this, 
+void SettingsSET46_VehicleInfoReset_OnVehicleDataReceivedSlot( SettingsSET46_VehicleInfoReset _this, 
   XObject sender );
 
-/* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.UpdateUnitValue()' */
-void UnitUNT01_UnitSettingMenu_UpdateUnitValue( UnitUNT01_UnitSettingMenu _this, 
-  XEnum aReceivedUnitType );
+/* 'C' function for method : 'Settings::SET46_VehicleInfoReset.ReloadItem()' */
+void SettingsSET46_VehicleInfoReset_ReloadItem( SettingsSET46_VehicleInfoReset _this, 
+  XEnum aMeterInfo );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _UnitUNT01_UnitSettingMenu_H */
+#endif /* _SettingsSET46_VehicleInfoReset_H */
 
 /* Embedded Wizard */

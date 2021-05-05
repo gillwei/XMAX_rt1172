@@ -251,7 +251,9 @@ typedef enum
   EnumVehicleRxTypeSUPPORT_FUNC_SEAT_HEATER = 43,
   EnumVehicleRxTypeSUPPORT_FUNC_WIND_SCREEN = 44,
   EnumVehicleRxTypeSUPPORT_FUNC_AIR_TEMPERATURE = 45,
-  EnumVehicleRxTypeYDT_DETECTED         = 46
+  EnumVehicleRxTypeYDT_DETECTED         = 46,
+  EnumVehicleRxTypeTRIP_TIME            = 47,
+  EnumVehicleRxTypeTOTAL                = 48
 } EnumVehicleRxType;
 
 /* User defined enumeration: 'Enum::VehicleTxType' */
@@ -381,7 +383,8 @@ typedef enum
 {
   EnumFuelSettingItemKM_L               = 0,
   EnumFuelSettingItemMPG                = 1,
-  EnumFuelSettingItemL_PER_HUNDRED_KM   = 2
+  EnumFuelSettingItemL_PER_HUNDRED_KM   = 2,
+  EnumFuelSettingItemTOTAL              = 3
 } EnumFuelSettingItem;
 
 /* User defined enumeration: 'Enum::PressureSettingItem' */
@@ -567,7 +570,8 @@ typedef enum
   EnumMeterInfoMAINTENANCE_TRIP1        = 7,
   EnumMeterInfoMAINTENANCE_TRIP2        = 8,
   EnumMeterInfoMAINTENANCE_TRIP3        = 9,
-  EnumMeterInfoTOTAL                    = 10
+  EnumMeterInfoTRIP_TIME                = 10,
+  EnumMeterInfoTOTAL                    = 11
 } EnumMeterInfo;
 
 /* User defined enumeration: 'Enum::OdoTripSettingItem' */
@@ -589,6 +593,16 @@ typedef enum
   EnumMaintenanceResetMenuItemFREE2     = 3,
   EnumMaintenanceResetMenuItemTOTAL     = 4
 } EnumMaintenanceResetMenuItem;
+
+/* Meter fuel consumption unit defined in CAN H'5A0 */
+typedef enum
+{
+  EnumMeterFuelConsumptionUnitKM_PER_LITER = 0,
+  EnumMeterFuelConsumptionUnitMILE_PER_US_GAL = 1,
+  EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL = 2,
+  EnumMeterFuelConsumptionUnitL_PER_100KM = 3,
+  EnumMeterFuelConsumptionUnitTOTAL     = 4
+} EnumMeterFuelConsumptionUnit;
 
 #ifdef __cplusplus
   }

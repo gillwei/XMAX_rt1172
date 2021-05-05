@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/05/04 10:27:17 */
+   Generated: 2021/05/05 13:21:15 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -67,6 +67,12 @@ extern const XStringRes StringsGEN_MIDDLE;
 /* User defined constant: 'Strings::GEN_HIGH' */
 extern const XStringRes StringsGEN_HIGH;
 
+/* User defined constant: 'Strings::GEN_HOUR_ABBREVIATION' */
+extern const XStringRes StringsGEN_HOUR_ABBREVIATION;
+
+/* User defined constant: 'Strings::GEN_MINUTE_ABBREVIATION' */
+extern const XStringRes StringsGEN_MINUTE_ABBREVIATION;
+
 /* User defined constant: 'Strings::GEN_RESET_QUESTION_MARK' */
 extern const XStringRes StringsGEN_RESET_QUESTION_MARK;
 
@@ -78,6 +84,18 @@ extern const XStringRes StringsGEN_THREE_HYPHENS;
 
 /* User defined constant: 'Strings::GEN_PLEASE_WAIT' */
 extern const XStringRes StringsGEN_PLEASE_WAIT;
+
+/* User defined constant: 'Strings::GEN_SPEED_KM_PER_HOUR' */
+extern const XStringRes StringsGEN_SPEED_KM_PER_HOUR;
+
+/* User defined constant: 'Strings::GEN_SPEED_MILE_PER_HOUR' */
+extern const XStringRes StringsGEN_SPEED_MILE_PER_HOUR;
+
+/* User defined constant: 'Strings::GEN_FUEL_UNIT_LITTER' */
+extern const XStringRes StringsGEN_FUEL_UNIT_LITTER;
+
+/* User defined constant: 'Strings::GEN_FUEL_UNIT_GALLON' */
+extern const XStringRes StringsGEN_FUEL_UNIT_GALLON;
 
 /* User defined constant: 'Strings::TOP01_WARNING' */
 EW_DECLARE_CONST( StringsTOP01_WARNING )
@@ -111,6 +129,18 @@ extern const XStringRes StringsCLK03_SET_CLOCK;
 
 /* User defined constant: 'Strings::GPW01_GRIP_WARMER' */
 extern const XStringRes StringsGPW01_GRIP_WARMER;
+
+/* User defined constant: 'Strings::HOM03_AVG_SPEED' */
+extern const XStringRes StringsHOM03_AVG_SPEED;
+
+/* User defined constant: 'Strings::HOM03_AVG_FUEL' */
+extern const XStringRes StringsHOM03_AVG_FUEL;
+
+/* User defined constant: 'Strings::HOM03_TRIP_TIME' */
+extern const XStringRes StringsHOM03_TRIP_TIME;
+
+/* User defined constant: 'Strings::HOM03_FUEL_CONSUMPTION' */
+extern const XStringRes StringsHOM03_FUEL_CONSUMPTION;
 
 /* User defined constant: 'Strings::INF01_TACHO_VISUALIZER' */
 extern const XStringRes StringsINF01_TACHO_VISUALIZER;
