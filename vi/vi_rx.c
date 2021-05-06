@@ -1239,23 +1239,23 @@ if( pdTRUE == xSemaphoreTake( supported_function_semaphore_handle, ticks_to_wait
 
         // Notify UI if the supported functions are changed
         sfl_diff = last_supported_functions ^ rx_vehicle_supported_functions;
-        if( ( sfl_diff >> VEHICLE_FEATURE_CLOCK ) & 0x1 )
+        if( ( sfl_diff >> EnumVehicleSupportedFunctionCLOCK ) & 0x1 )
             {
             EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_CLOCK );
             }
-        if( ( sfl_diff >> VEHICLE_FEATURE_GRIP_HEATER ) & 0x1 )
+        if( ( sfl_diff >> EnumVehicleSupportedFunctionGRIP_WARMER ) & 0x1 )
             {
             EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_GRIP_WARMER );
             }
-        if( ( sfl_diff >> VEHICLE_FEATURE_SEAT_HEATER ) & 0x1 )
+        if( ( sfl_diff >> EnumVehicleSupportedFunctionSEAT_HEATER ) & 0x1 )
             {
             EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_SEAT_HEATER );
             }
-        if( ( sfl_diff >> VEHICLE_FEATURE_WIND_SCREEN ) & 0x1 )
+        if( ( sfl_diff >> EnumVehicleSupportedFunctionWIND_SCREEN ) & 0x1 )
             {
             EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_WIND_SCREEN );
             }
-        if( ( sfl_diff >> VEHICLE_FEATURE_AIR_TEMPERATURE ) & 0x1 )
+        if( ( sfl_diff >> EnumVehicleSupportedFunctionAIR_TEMPERATURE ) & 0x1 )
             {
             EW_notify_vi_data_received( EnumVehicleRxTypeSUPPORT_FUNC_AIR_TEMPERATURE );
             }
@@ -1265,8 +1265,8 @@ if( pdTRUE == xSemaphoreTake( supported_function_semaphore_handle, ticks_to_wait
             ( is_tacho_setting_changed || ( 0 != sfl_diff ) ) )
             {
             PRINTF( "%s w\r\n", __FUNCTION__ );
-            // Bit 8 of byte 5 is used for checking if data is valid. (0: valid. 1: invalid)
-            clear_bit( supported_functions[5], 8 );
+            // MSB of byte 5 is used for checking if data is valid. (0: valid. 1: invalid)
+            clear_bit( supported_functions[5], 7 );
             EEPM_set_supported_function( supported_functions, &VI_write_supported_function_callback );
             }
         }
@@ -1335,32 +1335,33 @@ uint32_t sfl = 0;
 PRINTF( "%s, grip warmer: %d\r\n", __FUNCTION__, support_functions->sfl.bit.grip_warmer );
 PRINTF( "%s, seat heater: %d\r\n", __FUNCTION__, support_functions->sfl.bit.seat_heater );
 
-set_sfl( &sfl, VEHICLE_FEATURE_TRIP2, support_functions->sfl.bit.trip2 );
-set_sfl( &sfl, VEHICLE_FEATURE_F_TRIP, support_functions->sfl.bit.Ftrip );
-set_sfl( &sfl, VEHICLE_FEATURE_METER_BRIGHTNESS_ADJ, support_functions->sfl.bit.mt_brgtnss_adj );
-set_sfl( &sfl, VEHICLE_FEATURE_CLOCK, support_functions->sfl.bit.clk );
-set_sfl( &sfl, VEHICLE_FEATURE_TCS, support_functions->sfl.bit.tcs );
-set_sfl( &sfl, VEHICLE_FEATURE_GRIP_HEATER, support_functions->sfl.bit.grip_warmer );
-set_sfl( &sfl, VEHICLE_FEATURE_SEAT_HEATER, support_functions->sfl.bit.seat_heater );
-set_sfl( &sfl, VEHICLE_FEATURE_WIND_SCREEN, support_functions->sfl.bit.wind_scrn );
-set_sfl( &sfl, VEHICLE_FEATURE_OIL_TRIP, support_functions->sfl.bit.oil_trip );
-set_sfl( &sfl, VEHICLE_FEATURE_V_BELT_TRIP, support_functions->sfl.bit.Vbelt_trip );
-set_sfl( &sfl, VEHICLE_FEATURE_FREE1, support_functions->sfl.bit.Free1 );
-set_sfl( &sfl, VEHICLE_FEATURE_FREE2, support_functions->sfl.bit.Free2 );
-set_sfl( &sfl, VEHICLE_FEATURE_AVG_SPEED, support_functions->sfl.bit.avg_spd );
-set_sfl( &sfl, VEHICLE_FEATURE_CURRENT_FUEL, support_functions->sfl.bit.crt_fuel );
-set_sfl( &sfl, VEHICLE_FEATURE_AVG_FUEL, support_functions->sfl.bit.avg_fuel );
-set_sfl( &sfl, VEHICLE_FEATURE_FUEL_CONSUMPTION, support_functions->sfl.bit.fuel_cons );
-set_sfl( &sfl, VEHICLE_FEATURE_AIR_TEMPERATURE, support_functions->sfl.bit.air );
-set_sfl( &sfl, VEHICLE_FEATURE_BATTERY_VOLTAGE, support_functions->sfl.bit.bat );
-set_sfl( &sfl, VEHICLE_FEATURE_COOLANT, support_functions->sfl.bit.coolant );
-set_sfl( &sfl, VEHICLE_FEATURE_DRIVING_RANGE, support_functions->sfl.bit.rng );
-set_sfl( &sfl, VEHICLE_FEATURE_TIRE_FRONT, support_functions->sfl.bit.tire_frnt );
-set_sfl( &sfl, VEHICLE_FEATURE_TIRE_FRONT_RIGHT, support_functions->sfl.bit.tire_frnt_r );
-set_sfl( &sfl, VEHICLE_FEATURE_TIRE_FRONT_LEFT, support_functions->sfl.bit.tire_frnt_l );
-set_sfl( &sfl, VEHICLE_FEATURE_TIRE_REAR, support_functions->sfl.bit.tire_rear );
-set_sfl( &sfl, VEHICLE_FEATURE_TRIP_TIME, support_functions->sfl.bit.tip_time );
-set_sfl( &sfl, VEHICLE_FEATURE_CRUISE, support_functions->sfl.bit.cruise );
+set_sfl( &sfl, EnumVehicleSupportedFunctionTRIP1, support_functions->sfl.bit.trip1 );
+set_sfl( &sfl, EnumVehicleSupportedFunctionTRIP2, support_functions->sfl.bit.trip2 );
+set_sfl( &sfl, EnumVehicleSupportedFunctionF_TRIP, support_functions->sfl.bit.Ftrip );
+set_sfl( &sfl, EnumVehicleSupportedFunctionMETER_BRIGHTNESS_ADJ, support_functions->sfl.bit.mt_brgtnss_adj );
+set_sfl( &sfl, EnumVehicleSupportedFunctionCLOCK, support_functions->sfl.bit.clk );
+set_sfl( &sfl, EnumVehicleSupportedFunctionTCS, support_functions->sfl.bit.tcs );
+set_sfl( &sfl, EnumVehicleSupportedFunctionGRIP_WARMER, support_functions->sfl.bit.grip_warmer );
+set_sfl( &sfl, EnumVehicleSupportedFunctionSEAT_HEATER, support_functions->sfl.bit.seat_heater );
+set_sfl( &sfl, EnumVehicleSupportedFunctionWIND_SCREEN, support_functions->sfl.bit.wind_scrn );
+set_sfl( &sfl, EnumVehicleSupportedFunctionOIL_TRIP, support_functions->sfl.bit.oil_trip );
+set_sfl( &sfl, EnumVehicleSupportedFunctionV_BELT_TRIP, support_functions->sfl.bit.Vbelt_trip );
+set_sfl( &sfl, EnumVehicleSupportedFunctionFREE_1, support_functions->sfl.bit.Free1 );
+set_sfl( &sfl, EnumVehicleSupportedFunctionFREE_2, support_functions->sfl.bit.Free2 );
+set_sfl( &sfl, EnumVehicleSupportedFunctionAVG_SPEED, support_functions->sfl.bit.avg_spd );
+set_sfl( &sfl, EnumVehicleSupportedFunctionCURRENT_FUEL, support_functions->sfl.bit.crt_fuel );
+set_sfl( &sfl, EnumVehicleSupportedFunctionAVG_FUEL, support_functions->sfl.bit.avg_fuel );
+set_sfl( &sfl, EnumVehicleSupportedFunctionFUEL_CONSUMPTION, support_functions->sfl.bit.fuel_cons );
+set_sfl( &sfl, EnumVehicleSupportedFunctionAIR_TEMPERATURE, support_functions->sfl.bit.air );
+set_sfl( &sfl, EnumVehicleSupportedFunctionBATTERY_VOLTAGE, support_functions->sfl.bit.bat );
+set_sfl( &sfl, EnumVehicleSupportedFunctionCOOLANT, support_functions->sfl.bit.coolant );
+set_sfl( &sfl, EnumVehicleSupportedFunctionRANGE_DISTANCE, support_functions->sfl.bit.rng );
+set_sfl( &sfl, EnumVehicleSupportedFunctionTIRE_FRONT, support_functions->sfl.bit.tire_frnt );
+set_sfl( &sfl, EnumVehicleSupportedFunctionTIRE_FRONT_RIGHT, support_functions->sfl.bit.tire_frnt_r );
+set_sfl( &sfl, EnumVehicleSupportedFunctionTIRE_FRONT_LEFT, support_functions->sfl.bit.tire_frnt_l );
+set_sfl( &sfl, EnumVehicleSupportedFunctionTIRE_REAR, support_functions->sfl.bit.tire_rear );
+set_sfl( &sfl, EnumVehicleSupportedFunctionTRIP_TIME, support_functions->sfl.bit.tip_time );
+set_sfl( &sfl, EnumVehicleSupportedFunctionCRUISE, support_functions->sfl.bit.cruise );
 
 supported_functions[0] = support_functions->tcfs;
 supported_functions[1] = support_functions->brzegr;
@@ -1377,15 +1378,18 @@ set_supported_function( supported_functions, SUPPORTED_FUNCTION_DATA_SOURCE_CAN 
 * @private
 * VI_rx_reprogram_info_response
 *
-* @param signal_id The CAN signal id
-* @param data The received CAN data
+* Callback function of reprogram info response (CAN message H'5AF)
+*
+* @param svc_id Signal id
+* @param svc_data_size Response data size
+* @param svc_data_p Pointer to the response data
 *
 *********************************************************************/
 void VI_rx_reprogram_info_response
     (
-    const uint8    svc_id,
-    const uint8    svc_data_size,
-    const uint8*   svc_data_p
+    const uint8_t  svc_id,
+    const uint8_t  svc_data_size,
+    const uint8_t* svc_data_p
     )
 {
 switch( svc_id )
@@ -1401,15 +1405,18 @@ switch( svc_id )
 * @private
 * VI_rx_mt_func_cont_info_response
 *
-* @param signal_id The CAN signal id
-* @param data The received CAN data
+* Callback function of reset meter info response (CAN message H'585)
+*
+* @param svc_id Signal id
+* @param svc_data_size Response data size
+* @param svc_data_p Pointer to the response data
 *
 *********************************************************************/
 void VI_rx_mt_func_cont_info_response
     (
-    const uint8    svc_id,
-    const uint8    svc_data_size,
-    const uint8*   svc_data_p
+    const uint8_t  svc_id,
+    const uint8_t  svc_data_size,
+    const uint8_t* svc_data_p
     )
 {
 switch( svc_id )
@@ -1437,10 +1444,10 @@ PRINTF( "%s\r\n", __FUNCTION__ );
 uint8_t  init_value[SUPPORTED_FUNCTION_LENGTH];
 uint32_t sfl = 0;
 
-set_sfl( &sfl, VEHICLE_FEATURE_OIL_TRIP, true );
-set_sfl( &sfl, VEHICLE_FEATURE_CURRENT_FUEL, true );
-set_sfl( &sfl, VEHICLE_FEATURE_AVG_FUEL, true );
-set_sfl( &sfl, VEHICLE_FEATURE_TRIP_TIME, true );
+set_sfl( &sfl, EnumVehicleSupportedFunctionOIL_TRIP, true );
+set_sfl( &sfl, EnumVehicleSupportedFunctionCURRENT_FUEL, true );
+set_sfl( &sfl, EnumVehicleSupportedFunctionAVG_FUEL, true );
+set_sfl( &sfl, EnumVehicleSupportedFunctionTRIP_TIME, true );
 
 init_value[0] = DEFAULT_TACHO_FULLSCALE;
 init_value[1] = DEFAULT_TACHO_REDZONE;
@@ -1535,7 +1542,7 @@ if( result )
     PRINTF( "rd sf %02x%02x%02x%02x%02x%02x\r\n", supported_functions[0], supported_functions[1], supported_functions[2],
                                                   supported_functions[3], supported_functions[4], supported_functions[5] );
     // The initial data from EEPROM is all 0xFF.
-    // Bit 8 of byte 5 is used for checking if the supported function from EEPROM is valid.
+    // MSB of byte 5 is used for checking if the supported function from EEPROM is valid.
     // (0: valid. 1: invalid)
     if( 0 == ( supported_functions[5] & 0x80 ) )
         {

@@ -483,9 +483,26 @@ class DEV_VehicleSupportedFunction : Menu::BaseMenuView
         IsChecked = CheckBoxItem.Checked;
       }
 
-      native( aItemNo, IsChecked )
+      var int32 VehicleFeatureNum = Enum::VehicleSupportedFunction.TOTAL;
+      native( aItemNo, IsChecked, VehicleFeatureNum )
       {
-        VI_set_supported_function( aItemNo, IsChecked );
+        if( 0 == aItemNo )
+        {
+          for( int i = 0; i < VehicleFeatureNum; i++ )
+          {
+            VI_set_supported_function( i, IsChecked );
+          }
+        }
+        else
+        {
+          // offset 1 for the toggle all option
+          VI_set_supported_function( aItemNo - 1 , IsChecked );
+        }
+      }
+
+      if( 0 == aItemNo )
+      {
+        Menu.InvalidateItems( 1, Menu.NoOfItems - 1 );
       }
     $endif
   }
@@ -493,13 +510,30 @@ class DEV_VehicleSupportedFunction : Menu::BaseMenuView
   $rect <510,110,710,150>
   inherited method LoadItemChecked()
   {
-    var bool IsFunctionSupported = false;
+    var bool IsChecked = false;
     $if !$prototyper
-      IsFunctionSupported = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( ( Enum::VehicleSupportedFunction )aItemNo );
+      if( 0 == aItemNo )
+      {
+        var bool IsAllEnabled = true;
+        var int32 i;
+        for( i = 0; i < (int32)Enum::VehicleSupportedFunction.TOTAL; i++ )
+        {
+          if( !DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( (Enum::VehicleSupportedFunction)i ) )
+          {
+            IsAllEnabled = false;
+            break;
+          }
+        }
+        IsChecked = IsAllEnabled;
+      }
+      else
+      {
+        IsChecked = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( (Enum::VehicleSupportedFunction)( aItemNo - 1 ) ); // offset 1 for the toggle all option
+      }
     $else
       aItemNo; // suppress warning
     $endif
-    return IsFunctionSupported;
+    return IsChecked;
   }
 
   $rect <20,20,160,60>
@@ -511,36 +545,38 @@ class DEV_VehicleSupportedFunction : Menu::BaseMenuView
     preset ScrollbarVisible = false;
   }
 
+  // The sequence is the same as the Enum::VehicleSupportedFunction.
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 27 ] =
+  array string ItemTitleArray[ 28 ] =
   (
-    Default[0] = "Trip 1";
-    Default[1] = "Trip 2";
-    Default[2] = "F-Trip";
-    Default[3] = "Meter Brightness Adj";
-    Default[4] = "Clock";
-    Default[5] = "TCS";
-    Default[6] = "Grip Warmer";
-    Default[7] = "Seat Heater";
-    Default[8] = "Wind Screen";
-    Default[9] = "Oil Trip";
-    Default[10] = "V-Belt Trip";
-    Default[11] = "Free 1";
-    Default[12] = "Free 2";
-    Default[13] = "Avg Speed";
-    Default[14] = "Current Fuel";
-    Default[15] = "Avg Fuel";
-    Default[16] = "Fuel Consumption";
-    Default[17] = "Air Temperature";
-    Default[18] = "Battery Voltage";
-    Default[19] = "Coolant";
-    Default[20] = "Range Distance";
-    Default[21] = "Tire Front";
-    Default[22] = "Tire Front Right";
-    Default[23] = "Tire Front Left";
-    Default[24] = "Tire Rear";
-    Default[25] = "Trip Time";
-    Default[26] = "Cruise";
+    Default[0] = "Toggle All";
+    Default[1] = "Trip 1";
+    Default[2] = "Trip 2";
+    Default[3] = "F-Trip";
+    Default[4] = "Meter Brightness Adj";
+    Default[5] = "Clock";
+    Default[6] = "TCS";
+    Default[7] = "Grip Warmer";
+    Default[8] = "Seat Heater";
+    Default[9] = "Wind Screen";
+    Default[10] = "Oil Trip";
+    Default[11] = "V-Belt Trip";
+    Default[12] = "Free 1";
+    Default[13] = "Free 2";
+    Default[14] = "Avg Speed";
+    Default[15] = "Current Fuel";
+    Default[16] = "Avg Fuel";
+    Default[17] = "Fuel Consumption";
+    Default[18] = "Air Temperature";
+    Default[19] = "Battery Voltage";
+    Default[20] = "Coolant";
+    Default[21] = "Range Distance";
+    Default[22] = "Tire Front";
+    Default[23] = "Tire Front Right";
+    Default[24] = "Tire Front Left";
+    Default[25] = "Tire Rear";
+    Default[26] = "Trip Time";
+    Default[27] = "Cruise";
   );
 
   $reorder SlideInDialog 4

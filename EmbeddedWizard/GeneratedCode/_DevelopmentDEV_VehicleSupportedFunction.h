@@ -114,7 +114,7 @@
 
 /* Deklaration of class : 'Development::DEV_VehicleSupportedFunction' */
 EW_DEFINE_FIELDS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [27])
+  EW_ARRAY   ( ItemTitleArray,  XString, [28])
 EW_END_OF_FIELDS( DevelopmentDEV_VehicleSupportedFunction )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_VehicleSupportedFunction' */

@@ -199,7 +199,8 @@ typedef enum
   EnumVehicleSupportedFunctionTIRE_FRONT_LEFT = 23,
   EnumVehicleSupportedFunctionTIRE_REAR = 24,
   EnumVehicleSupportedFunctionTRIP_TIME = 25,
-  EnumVehicleSupportedFunctionCRUISE    = 26
+  EnumVehicleSupportedFunctionCRUISE    = 26,
+  EnumVehicleSupportedFunctionTOTAL     = 27
 } EnumVehicleSupportedFunction;
 
 /* User defined enumeration: 'Enum::VehicleRxType' */

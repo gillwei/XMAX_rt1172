@@ -377,6 +377,9 @@ enum VehicleSupportedFunction
 
   $rect <440,310,640,350>
   item CRUISE;
+
+  $rect <440,360,640,400>
+  item TOTAL;
 }
 
 $rect <260,220,460,260>

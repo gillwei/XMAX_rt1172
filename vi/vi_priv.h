@@ -160,38 +160,6 @@ typedef struct
     uint8_t redzone;        /**< tachometer red zone start (100rpm) */
     } rx_tacho_setting_struct;
 
-/* note: this define should be consistent with EnumVehicleFeature in Enum.h */
-typedef enum
-    {
-    VEHICLE_FEATURE_TRIP1            = 0,
-    VEHICLE_FEATURE_TRIP2            = 1,
-    VEHICLE_FEATURE_F_TRIP           = 2,
-    VEHICLE_FEATURE_METER_BRIGHTNESS_ADJ = 3,
-    VEHICLE_FEATURE_CLOCK            = 4,
-    VEHICLE_FEATURE_TCS              = 5,
-    VEHICLE_FEATURE_GRIP_HEATER      = 6,
-    VEHICLE_FEATURE_SEAT_HEATER      = 7,
-    VEHICLE_FEATURE_WIND_SCREEN      = 8,
-    VEHICLE_FEATURE_OIL_TRIP         = 9,    /**< maintenance oil trip */
-    VEHICLE_FEATURE_V_BELT_TRIP      = 10,   /**< maintenance V-Belt trip */
-    VEHICLE_FEATURE_FREE1            = 11,   /**< maintenance trip1 */
-    VEHICLE_FEATURE_FREE2            = 12,   /**< maintenance trip2 */
-    VEHICLE_FEATURE_AVG_SPEED        = 13,
-    VEHICLE_FEATURE_CURRENT_FUEL     = 14,
-    VEHICLE_FEATURE_AVG_FUEL         = 15,
-    VEHICLE_FEATURE_FUEL_CONSUMPTION = 16,
-    VEHICLE_FEATURE_AIR_TEMPERATURE  = 17,
-    VEHICLE_FEATURE_BATTERY_VOLTAGE  = 18,
-    VEHICLE_FEATURE_COOLANT          = 19,
-    VEHICLE_FEATURE_DRIVING_RANGE    = 20,
-    VEHICLE_FEATURE_TIRE_FRONT       = 21,   /**< front tire pressure */
-    VEHICLE_FEATURE_TIRE_FRONT_RIGHT = 22,   /**< front right tire pressure */
-    VEHICLE_FEATURE_TIRE_FRONT_LEFT  = 23,   /**< front left tire pressure */
-    VEHICLE_FEATURE_TIRE_REAR        = 24,   /**< rear tire pressure */
-    VEHICLE_FEATURE_TRIP_TIME        = 25,
-    VEHICLE_FEATURE_CRUISE           = 26
-    } vehicle_feature_enum;
-
 typedef enum
     {
     SUPPORTED_FUNCTION_DATA_SOURCE_UI,
