@@ -986,14 +986,14 @@ flexcan_EnableInterrupts( l_p_flexcan_regs,  (uint32_t)( FLEXCAN_TXWARNING_INT_E
                                                          FLEXCAN_BUSOFF_INT_EN      | FLEXCAN_ERROR_INT_EN ) );
 
 /*------------------------------------------------------
+Set interrupts in NVIC.
+------------------------------------------------------*/
+(void)NVIC_SetPriority( (IRQn_Type)(s_flexcanRxWarningIRQ[CAN2_INSTANCE]), configLIBRARY_LOWEST_INTERRUPT_PRIORITY );
+
+/*------------------------------------------------------
 Enable interrupts in NVIC.
 ------------------------------------------------------*/
 (void)EnableIRQ((IRQn_Type)(s_flexcanRxWarningIRQ[CAN2_INSTANCE]));
-(void)EnableIRQ((IRQn_Type)(s_flexcanTxWarningIRQ[CAN2_INSTANCE]));
-(void)EnableIRQ((IRQn_Type)(s_flexcanWakeUpIRQ[CAN2_INSTANCE]));
-(void)EnableIRQ((IRQn_Type)(s_flexcanErrorIRQ[CAN2_INSTANCE]));
-(void)EnableIRQ((IRQn_Type)(s_flexcanBusOffIRQ[CAN2_INSTANCE]));
-(void)EnableIRQ((IRQn_Type)(s_flexcanMbIRQ[CAN2_INSTANCE]));
 
 return CAN_RC_OK;
 }

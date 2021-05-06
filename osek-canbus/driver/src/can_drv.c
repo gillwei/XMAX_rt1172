@@ -1514,6 +1514,11 @@ can_rmd_t     * l_p_next_rx_in;
 uint8           l_can_rxq_size;
 
 /*------------------------------------------------------
+Critical interrupt status
+------------------------------------------------------*/
+UBaseType_t uxSavedInterruptStatus;
+
+/*------------------------------------------------------
 Initialize the returned RMD pointer
 ------------------------------------------------------*/
 l_p_next_rx_in = NULL;
@@ -1546,7 +1551,9 @@ if( 0 == ( can_status[hw_inst] & CAN_DRV_RX_SUSPEND ) )
         /*----------------------------------------------
         Increment Number in the Receive Queue
         ----------------------------------------------*/
+        uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
         l_p_can_rxq_status->qnum++;
+        taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
 
         /*--------------------------------------
         Save the largest Q size
