@@ -60,6 +60,42 @@ extern const XRect NavigationTIMETEXT_W_NAVI_BOUNDS;
 /* User defined constant: 'Navigation::NAVIFLAG_W_NAVI_BOUNDS' */
 extern const XRect NavigationNAVIFLAG_W_NAVI_BOUNDS;
 
+/* User defined constant: 'Navigation::ZOOMIN_W_NAVI_BOUNDS' */
+extern const XRect NavigationZOOMIN_W_NAVI_BOUNDS;
+
+/* User defined constant: 'Navigation::ZOOMOUT_W_NAVI_BOUNDS' */
+extern const XRect NavigationZOOMOUT_W_NAVI_BOUNDS;
+
+/* User defined constant: 'Navigation::ZOOMIN_WO_NAVI_BOUNDS' */
+extern const XRect NavigationZOOMIN_WO_NAVI_BOUNDS;
+
+/* User defined constant: 'Navigation::ZOOMOUT_WO_NAVI_BOUNDS' */
+extern const XRect NavigationZOOMOUT_WO_NAVI_BOUNDS;
+
+/* User defined constant: 'Navigation::CURRENT_ROAD_W_NAVI_BOUNDS' */
+extern const XRect NavigationCURRENT_ROAD_W_NAVI_BOUNDS;
+
+/* User defined constant: 'Navigation::CURRENT_ROAD_WO_NAVI_BOUNDS' */
+extern const XRect NavigationCURRENT_ROAD_WO_NAVI_BOUNDS;
+
+/* User defined constant: 'Navigation::ROAD_BG_W_NAVI_BOUNDS' */
+extern const XRect NavigationROAD_BG_W_NAVI_BOUNDS;
+
+/* User defined constant: 'Navigation::ROAD_BG_WO_NAVI_BOUNDS' */
+extern const XRect NavigationROAD_BG_WO_NAVI_BOUNDS;
+
+/* User defined constant: 'Navigation::ROADNAME_W_NAVI_BOUNDS' */
+extern const XRect NavigationROADNAME_W_NAVI_BOUNDS;
+
+/* User defined constant: 'Navigation::ROADNAME_WO_NAVI_BOUNDS' */
+extern const XRect NavigationROADNAME_WO_NAVI_BOUNDS;
+
+/* User defined constant: 'Navigation::CURRENT_ROAD_SHRINK_ALERT' */
+extern const XRect NavigationCURRENT_ROAD_SHRINK_ALERT;
+
+/* User defined constant: 'Navigation::ALERT_MESSAGE_BOUNDS' */
+extern const XRect NavigationALERT_MESSAGE_BOUNDS;
+
 #ifdef __cplusplus
   }
 #endif

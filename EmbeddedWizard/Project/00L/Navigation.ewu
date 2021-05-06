@@ -16,8 +16,6 @@ class NAV01_DefaultView : Home::BaseHome
       postsignal OnMapUpdateSlot;
     }
     signal OnNavigatingStatusUpdateSlot;
-    signal OnCurRdUpdateSlot;
-    signal OnETAUpdateSlot;
     signal OnDayNightModeUpdateSlot;
     signal OnSpeedLimitUpdateSlot;
     signal OnNaviIncidentUpdateSlot;
@@ -105,6 +103,13 @@ class NAV01_DefaultView : Home::BaseHome
   }
 
   $rect <20,20,160,60>
+  object Navigation::NaviETA ETAComponent
+  {
+    preset Bounds = <10,228,120,259>;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
   object Views::Rectangle RoadNameBg
   {
     preset Bounds = <130,226,480,272>;
@@ -112,9 +117,19 @@ class NAV01_DefaultView : Home::BaseHome
   }
 
   $rect <20,20,160,60>
-  object Navigation::NaviCurrentRoad CurrentRoadObject
+  object Navigation::NaviCurrentRoad CurrentRoadWithGuide
   {
-    preset Bounds = <140,228,470,259>;
+    preset Bounds = Navigation::CURRENT_ROAD_W_NAVI_BOUNDS;
+    preset Visible = false;
+    preset RoadNameTextBounds = Navigation::ROADNAME_W_NAVI_BOUNDS;
+  }
+
+  $rect <20,20,160,60>
+  object Navigation::NaviCurrentRoad CurrentRoadWithOutGuide
+  {
+    preset Bounds = Navigation::CURRENT_ROAD_WO_NAVI_BOUNDS;
+    preset Visible = true;
+    preset RoadNameTextBounds = Navigation::ROADNAME_WO_NAVI_BOUNDS;
   }
 
   $rect <20,20,160,60>
@@ -126,18 +141,11 @@ class NAV01_DefaultView : Home::BaseHome
   }
 
   $rect <20,20,160,60>
-  object Navigation::NaviETA NaviETAObject
-  {
-    preset Bounds = <10,228,120,259>;
-    preset Visible = true;
-  }
-
-  $rect <20,20,160,60>
   object Views::Image ZoomInButton
   {
     preset Bounds = <9,122,49,162>;
     preset Bitmap = Resource::ZoomInDayIcon;
-    preset Visible = false;
+    preset Visible = true;
   }
 
   $rect <20,20,160,60>
@@ -145,7 +153,7 @@ class NAV01_DefaultView : Home::BaseHome
   {
     preset Bounds = <9,170,49,210>;
     preset Bitmap = Resource::ZoomOutDayIcon;
-    preset Visible = false;
+    preset Visible = true;
   }
 
   $rect <20,20,160,60>
@@ -179,9 +187,10 @@ class NAV01_DefaultView : Home::BaseHome
   slot OnCurRdUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.CURRENT_ROAD );
-    CurrentRoadObject.RoadName = NaviData.CurrentRoad;
-    CurrentRoadObject.SetItemBounds( false );
-
+    CurrentRoadWithGuide.RoadName = NaviData.CurrentRoad;
+    CurrentRoadWithGuide.SetItemBounds( false );
+    CurrentRoadWithOutGuide.RoadName = NaviData.CurrentRoad;
+    CurrentRoadWithOutGuide.SetItemBounds( false );
 
   }
 
@@ -198,7 +207,7 @@ class NAV01_DefaultView : Home::BaseHome
   slot OnETAUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.ETA );
-    NaviETAObject.ETA = NaviData.ETA;
+    ETAComponent.ETA = NaviData.ETA;
   }
 
   $rect <520,270,740,310>
@@ -366,14 +375,14 @@ class NAV01_DefaultView : Home::BaseHome
     preset CycleDuration = 500;
     preset Value2;
     preset Value1;
-    preset Outlet = ^CurrentRoadObject.Bounds;
+    preset Outlet = ^CurrentRoadWithGuide.Bounds;
   }
 
   $rect <1050,430,1250,470>
   slot OnCurrentRoadShiftEffectFinishSlot
   {
-    CurrentRoadObject.Bounds = <140,228,470,259>;
-    CurrentRoadObject.UpdateItemBounds( Enum::NaviAlertAnimationType.Dismiss, CurrentRoadObject.Bounds.w );
+    CurrentRoadWithGuide.Bounds = Navigation::CURRENT_ROAD_W_NAVI_BOUNDS;
+    CurrentRoadWithGuide.UpdateItemBounds( Enum::NaviAlertAnimationType.Dismiss, CurrentRoadWithGuide.Bounds.w );
     CurrentRoadShiftEffect.Enabled = false;
   }
 
@@ -402,8 +411,8 @@ class NAV01_DefaultView : Home::BaseHome
 
     // According to GUI spec, the current road area is loacted to a new position after shrinking the alert.
     // In this case, all items in current road object needs to be updated before shrinking the alert.
-    CurrentRoadObject.Bounds = <134,228,310,259>;
-    CurrentRoadObject.UpdateItemBounds( Enum::NaviAlertAnimationType.Shrink, CurrentRoadObject.Bounds.w );
+    CurrentRoadWithGuide.Bounds = Navigation::CURRENT_ROAD_SHRINK_ALERT;
+    CurrentRoadWithGuide.UpdateItemBounds( Enum::NaviAlertAnimationType.Shrink, CurrentRoadWithGuide.Bounds.w );
 
     NaviEventObject.ShrinkAlert();
 
@@ -425,19 +434,21 @@ class NAV01_DefaultView : Home::BaseHome
   slot OnNaviEventDismissFinishSlot
   {
     NaviEventDismissEffect.Enabled = false;
+    // Reset Alert message bounds for next alert.
+    NaviEventObject.AlertMessage.Bounds = Navigation::ALERT_MESSAGE_BOUNDS;
   }
 
   $rect <1050,190,1250,230>
   slot DismissAlert
   {
     // Need to adjust the position of CurrentRoadShiftEffect dynamically since the origin position of CurrentRoadObject content could be varied.
-    CurrentRoadShiftEffect.Value1 = CurrentRoadObject.Bounds;
+    CurrentRoadShiftEffect.Value1 = CurrentRoadWithGuide.Bounds;
 
     var rect NewCurrentRoadObjectBounds;
-    NewCurrentRoadObjectBounds.x1 = CurrentRoadObject.NaviIconX1Pos + ArrivalBg.Bounds.w;
-    NewCurrentRoadObjectBounds.x2 = NewCurrentRoadObjectBounds.x1 + CurrentRoadObject.Bounds.w;
-    NewCurrentRoadObjectBounds.y1 = CurrentRoadObject.Bounds.y1;
-    NewCurrentRoadObjectBounds.y2 = CurrentRoadObject.Bounds.y2;
+    NewCurrentRoadObjectBounds.x1 = CurrentRoadWithGuide.NaviIconX1Pos + ArrivalBg.Bounds.w;
+    NewCurrentRoadObjectBounds.x2 = NewCurrentRoadObjectBounds.x1 + CurrentRoadWithGuide.Bounds.w;
+    NewCurrentRoadObjectBounds.y1 = CurrentRoadWithGuide.Bounds.y1;
+    NewCurrentRoadObjectBounds.y2 = CurrentRoadWithGuide.Bounds.y2;
 
     // No need to do animation when the calculated x1 coordinate is less than the x1 coordinate of CurrentRoadObject.
     if( NewCurrentRoadObjectBounds.x1 > CurrentRoadShiftEffect.Value1.x1 )
@@ -449,8 +460,8 @@ class NAV01_DefaultView : Home::BaseHome
     {
       // Reset the items of CurrentRoadObject to origin position.
       CurrentRoadShiftEffect.Enabled = false;
-      CurrentRoadObject.Bounds = <140,228,470,259>;
-      CurrentRoadObject.UpdateItemBounds( Enum::NaviAlertAnimationType.Dismiss, CurrentRoadObject.Bounds.w );
+      CurrentRoadWithGuide.Bounds = <140,228,470,259>;
+      CurrentRoadWithGuide.UpdateItemBounds( Enum::NaviAlertAnimationType.Dismiss, CurrentRoadWithGuide.Bounds.w );
     }
 
     NaviEventDismissEffect.Enabled = true;
@@ -482,16 +493,8 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <750,430,990,470>
   slot OnNavigatingStatusUpdateSlot
   {
-    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
-    {
-      ZoomInButton.Bounds = <130,122,170,162>;
-      ZoomOutButton.Bounds = <130,170,170,210>;
-    }
-    else
-    {
-      ZoomInButton.Bounds = <9,122,49,162>;
-      ZoomOutButton.Bounds = <9,170,49,210>;
-    }
+    SetItemBounds();
+    signal OnCurRdUpdateSlot;
     signal OnETAUpdateSlot;
   }
 
@@ -550,6 +553,27 @@ class NAV01_DefaultView : Home::BaseHome
         Enum::VehicleRxType.VEHICLE_SPEED_REAL == VehicleData.RxType )
     {
       signal OnSpeedLimitUpdateSlot;
+    }
+  }
+
+  $rect <930,750,1130,790>
+  method void SetItemBounds()
+  {
+    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    {
+      ZoomInButton.Bounds = Navigation::ZOOMIN_W_NAVI_BOUNDS;
+      ZoomOutButton.Bounds = Navigation::ZOOMOUT_W_NAVI_BOUNDS;
+      RoadNameBg.Bounds = Navigation::ROAD_BG_W_NAVI_BOUNDS;
+      CurrentRoadWithGuide.Visible = true;
+      CurrentRoadWithOutGuide.Visible = false;
+    }
+    else
+    {
+      ZoomInButton.Bounds = Navigation::ZOOMIN_WO_NAVI_BOUNDS;
+      ZoomOutButton.Bounds = Navigation::ZOOMOUT_WO_NAVI_BOUNDS;
+      RoadNameBg.Bounds = Navigation::ROAD_BG_WO_NAVI_BOUNDS;
+      CurrentRoadWithGuide.Visible = false;
+      CurrentRoadWithOutGuide.Visible = true;
     }
   }
 }
@@ -927,9 +951,6 @@ class NaviCurrentRoad : Core::Group
     }
   }
 
-  $rect <10,130,210,170>
-  var rect RoadNameTextBounds = <24,0,330,31>;
-
   $rect <10,170,210,210>
   var rect NaviIconBounds = <0,8,20,28>;
 
@@ -950,6 +971,9 @@ class NaviCurrentRoad : Core::Group
 
   $rect <0,230,200,270>
   var int32 NaviIconX1Pos;
+
+  $rect <10,120,210,160>
+  property rect RoadNameTextBounds;
 }
 
 $rect <20,260,220,300>
@@ -959,8 +983,11 @@ class NaviAlert : Core::Group
   $rect <0,90,200,130>
   inherited property Bounds = <0,0,480,46>;
 
-  $rect <54,-3,254,37>
-  object Navigation::NaviAlertMessage AlertMessage;
+  $rect <20,20,160,60>
+  object Navigation::NaviAlertMessage AlertMessage
+  {
+    preset Bounds = Navigation::ALERT_MESSAGE_BOUNDS;
+  }
 
   $rect <20,20,160,60>
   object Views::Rectangle NaviDistBg
@@ -1365,16 +1392,16 @@ class NaviETA : Core::Group
   }
 }
 
-$rect <580,20,780,60>
+$rect <290,20,490,60>
 $output false
 class NAV05_TBTView : Home::BaseHome
 {
   $rect <520,530,720,570>
   inherited method Init()
   {
-    signal OnCurRdUpdateSlot;
-    signal OnETAUpdateSlot;
+    signal OnNavigatingStatusUpdateSlot;
     signal OnActiveTbtItemUpdateSlot;
+    signal OnSpeedLimitUpdateSlot;
   }
 
   $rect <0,300,200,340>
@@ -1408,7 +1435,7 @@ class NAV05_TBTView : Home::BaseHome
   }
 
   $rect <20,20,160,60>
-  object Navigation::NaviETA NaviETAObject
+  object Navigation::NaviETA ETAComponent
   {
     preset Bounds = <10,228,120,259>;
   }
@@ -1421,7 +1448,7 @@ class NAV05_TBTView : Home::BaseHome
   }
 
   $rect <20,20,160,60>
-  object Navigation::NaviCurrentRoad CurrentRoadObject
+  object Navigation::NaviCurrentRoad CurrentRoadComponent
   {
     preset Bounds = <140,228,470,259>;
   }
@@ -1506,7 +1533,7 @@ class NAV05_TBTView : Home::BaseHome
   slot OnETAUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.ETA );
-    NaviETAObject.ETA = NaviData.ETA;
+    ETAComponent.ETA = NaviData.ETA;
   }
 
   $rect <520,260,740,300>
@@ -1521,10 +1548,10 @@ class NAV05_TBTView : Home::BaseHome
   $rect <740,260,970,300>
   slot OnCurRdUpdateSlot
   {
-    // if navigation doesn't start, arrival time area should be hidden.
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.CURRENT_ROAD );
-    CurrentRoadObject.RoadName = NaviData.CurrentRoad;
-    CurrentRoadObject.SetItemBounds( false );
+    SetCurrentRoadBounds();
+    CurrentRoadComponent.RoadName = NaviData.CurrentRoad;
+    CurrentRoadComponent.SetItemBounds( false );
 
 
   }
@@ -1673,9 +1700,42 @@ class NAV05_TBTView : Home::BaseHome
   {
     attr Bounds = <0,350,480,480>;
   }
+
+  $rect <980,210,1190,250>
+  object Core::SystemEventHandler NavigatingStatusUpdateEventHandler
+  {
+    preset OnEvent = OnNavigatingStatusUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.NavigatingStatusUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <1210,210,1370,250>
+  slot OnNavigatingStatusUpdateSlot
+  {
+    signal OnCurRdUpdateSlot;
+    signal OnETAUpdateSlot;
+  }
+
+  $rect <940,590,1140,630>
+  method void SetCurrentRoadBounds()
+  {
+    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    {
+      RoadNameBg.Bounds = Navigation::ROAD_BG_W_NAVI_BOUNDS;
+      CurrentRoadComponent.Bounds = Navigation::CURRENT_ROAD_W_NAVI_BOUNDS;
+      CurrentRoadComponent.RoadNameTextBounds = Navigation::ROADNAME_W_NAVI_BOUNDS;
+    }
+    else
+    {
+      RoadNameBg.Bounds = Navigation::ROAD_BG_WO_NAVI_BOUNDS;
+      CurrentRoadComponent.Bounds = Navigation::CURRENT_ROAD_WO_NAVI_BOUNDS;
+      CurrentRoadComponent.RoadNameTextBounds = Navigation::ROADNAME_WO_NAVI_BOUNDS;
+    }
+  }
 }
 
-$rect <580,70,780,110>
+$rect <290,70,490,110>
 $output false
 class NAV03_TBTListView : Home::BaseHome
 {
@@ -1775,7 +1835,7 @@ class NAV03_TBTListView : Home::BaseHome
   }
 }
 
-$rect <790,20,990,60>
+$rect <500,20,700,60>
 $output false
 class TbtInfoItem : Core::Group
 {
@@ -1833,7 +1893,7 @@ class TbtInfoItem : Core::Group
   }
 }
 
-$rect <790,70,990,110>
+$rect <500,70,700,110>
 $output false
 class TbtListMenu : Menu::VerticalMenu
 {
@@ -1928,10 +1988,58 @@ class TbtListMenu : Menu::VerticalMenu
   }
 }
 
-$rect <320,20,520,60>
+$rect <720,30,920,70>
 $output false
 const rect TIMETEXT_W_NAVI_BOUNDS = <22,2,84,33>;
 
-$rect <320,60,520,100>
+$rect <720,70,920,110>
 $output false
 const rect NAVIFLAG_W_NAVI_BOUNDS = <0,6,20,28>;
+
+$rect <720,150,920,190>
+$output false
+const rect ZOOMIN_W_NAVI_BOUNDS = <130,122,170,162>;
+
+$rect <720,200,920,240>
+$output false
+const rect ZOOMOUT_W_NAVI_BOUNDS = <130,170,170,210>;
+
+$rect <720,250,920,290>
+$output false
+const rect ZOOMIN_WO_NAVI_BOUNDS = <9,122,49,162>;
+
+$rect <720,300,920,340>
+$output false
+const rect ZOOMOUT_WO_NAVI_BOUNDS = <9,170,49,210>;
+
+$rect <930,150,1130,190>
+$output false
+const rect CURRENT_ROAD_W_NAVI_BOUNDS = <140,228,470,259>;
+
+$rect <930,200,1130,240>
+$output false
+const rect CURRENT_ROAD_WO_NAVI_BOUNDS = <10,228,470,259>;
+
+$rect <930,250,1130,290>
+$output false
+const rect ROAD_BG_W_NAVI_BOUNDS = <130,226,480,272>;
+
+$rect <930,300,1130,340>
+$output false
+const rect ROAD_BG_WO_NAVI_BOUNDS = <0,226,480,272>;
+
+$rect <930,30,1130,70>
+$output false
+const rect ROADNAME_W_NAVI_BOUNDS = <24,0,330,31>;
+
+$rect <930,70,1130,110>
+$output false
+const rect ROADNAME_WO_NAVI_BOUNDS = <24,0,460,31>;
+
+$rect <1150,30,1350,70>
+$output false
+const rect CURRENT_ROAD_SHRINK_ALERT = <134,228,310,259>;
+
+$rect <1150,70,1350,110>
+$output false
+const rect ALERT_MESSAGE_BOUNDS = <0,0,405,46>;

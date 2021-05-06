@@ -116,10 +116,11 @@ EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( MapUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( MapImage,        ViewsImage )
   EW_OBJECT  ( ArrivalBg,       ViewsRectangle )
+  EW_OBJECT  ( ETAComponent,    NavigationNaviETA )
   EW_OBJECT  ( RoadNameBg,      ViewsRectangle )
-  EW_OBJECT  ( CurrentRoadObject, NavigationNaviCurrentRoad )
+  EW_OBJECT  ( CurrentRoadWithGuide, NavigationNaviCurrentRoad )
+  EW_OBJECT  ( CurrentRoadWithOutGuide, NavigationNaviCurrentRoad )
   EW_OBJECT  ( Shadow,          ViewsImage )
-  EW_OBJECT  ( NaviETAObject,   NavigationNaviETA )
   EW_OBJECT  ( ZoomInButton,    ViewsImage )
   EW_OBJECT  ( ZoomOutButton,   ViewsImage )
   EW_OBJECT  ( SpeedLimitIcon,  ViewsImage )
@@ -278,6 +279,9 @@ void NavigationNAV01_DefaultView_OnSpeedLimitFlickeringSlot( NavigationNAV01_Def
    receives an event. */
 void NavigationNAV01_DefaultView_OnVehicleSpeedUpdateSlot( NavigationNAV01_DefaultView _this, 
   XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.SetItemBounds()' */
+void NavigationNAV01_DefaultView_SetItemBounds( NavigationNAV01_DefaultView _this );
 
 #ifdef __cplusplus
   }

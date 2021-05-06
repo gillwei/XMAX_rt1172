@@ -423,6 +423,7 @@ typedef enum
             case TEST_NAVI_ROUTE_GUIDANCE_STATUS:
                 {
                 test_navi_navigating_status( is_route_guidance_started );
+                is_route_guidance_started = !is_route_guidance_started;
                 }
                 break;
             case TEST_NAVI_TBT_LIST:

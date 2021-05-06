@@ -100,9 +100,9 @@ EW_DEFINE_FIELDS( NavigationNaviCurrentRoad, CoreGroup )
   EW_OBJECT  ( NaviIconCurRd,   ViewsImage )
   EW_OBJECT  ( RoadNameText,    ViewsText )
   EW_PROPERTY( RoadName,        XString )
-  EW_VARIABLE( RoadNameTextBounds, XRect )
   EW_VARIABLE( NaviIconBounds,  XRect )
   EW_VARIABLE( NaviIconX1Pos,   XInt32 )
+  EW_PROPERTY( RoadNameTextBounds, XRect )
 EW_END_OF_FIELDS( NavigationNaviCurrentRoad )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NaviCurrentRoad' */

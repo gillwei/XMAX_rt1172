@@ -113,9 +113,9 @@
 EW_DEFINE_FIELDS( NavigationNAV05_TBTView, HomeBaseHome )
   EW_OBJECT  ( NaviTBTViewBg,   ViewsWallpaper )
   EW_OBJECT  ( ArrivalBg,       ViewsRectangle )
-  EW_OBJECT  ( NaviETAObject,   NavigationNaviETA )
+  EW_OBJECT  ( ETAComponent,    NavigationNaviETA )
   EW_OBJECT  ( RoadNameBg,      ViewsRectangle )
-  EW_OBJECT  ( CurrentRoadObject, NavigationNaviCurrentRoad )
+  EW_OBJECT  ( CurrentRoadComponent, NavigationNaviCurrentRoad )
   EW_OBJECT  ( SpeedLimitIcon,  ViewsImage )
   EW_OBJECT  ( SpeedLimitText,  ViewsText )
   EW_OBJECT  ( NextTurnDist,    ViewsText )
@@ -129,6 +129,7 @@ EW_DEFINE_FIELDS( NavigationNAV05_TBTView, HomeBaseHome )
   EW_OBJECT  ( SpeedLimitUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( SpeedLimitFlickeringTimer, CoreTimer )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( NavigationNAV05_TBTView )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV05_TBTView' */
@@ -227,6 +228,14 @@ void NavigationNAV05_TBTView_OnSpeedLimitFlickeringSlot( NavigationNAV05_TBTView
    receives an event. */
 void NavigationNAV05_TBTView_OnVehicleSpeedUpdateSlot( NavigationNAV05_TBTView _this, 
   XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV05_TBTView_OnNavigatingStatusUpdateSlot( NavigationNAV05_TBTView _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV05_TBTView.SetCurrentRoadBounds()' */
+void NavigationNAV05_TBTView_SetCurrentRoadBounds( NavigationNAV05_TBTView _this );
 
 #ifdef __cplusplus
   }
