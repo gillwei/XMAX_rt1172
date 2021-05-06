@@ -2555,6 +2555,14 @@ class SET45_TripMileageReset : Menu::BaseMenuView
       {
         VehicleData.DataFloat *= Unit::KM_TO_MILE_SCALE;
       }
+
+      switch( SupportedSetting[aItemNo] )
+      {
+        case Enum::MeterInfo.TRIP1: VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_METER_TRIP_1 );
+        case Enum::MeterInfo.TRIP2: VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_METER_TRIP_2 );
+        case Enum::MeterInfo.TRIP_F: VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_METER_TRIP_F );
+        default:;
+      }
       Value = string( VehicleData.DataFloat, 0, 1 );
     }
     else
@@ -2798,7 +2806,7 @@ class SET46_VehicleInfoReset : Menu::BaseMenuView
           {
             VehicleData.DataUInt32 *= Unit::KM_TO_MILE_SCALE;
           }
-
+          VehicleData.DataUInt32 = DeviceInterface::VehicleDevice.ClampDataUInt32( VehicleData.DataUInt32, 0, Settings::MAX_AVERAGE_SPEED );
           ValueStr = string( VehicleData.DataUInt32, 0, 1 );
         }
       }
@@ -3043,7 +3051,7 @@ $rect <1120,110,1360,150>
 $output false
 const float MAX_FUEL_CONSUMPTION = 99.9;
 
-$rect <1120,210,1430,250>
+$rect <1120,210,1450,250>
 $output false
 const float MAX_AVERAGE_FUEL_KM_PER_LITER = 99.9;
 
@@ -3057,10 +3065,82 @@ const float MAX_AVERAGE_FUEL_LITER_PER_100KM = 99.9;
 
 $rect <1120,310,1450,350>
 $output false
-const float MIN_AVERAGE_FUEL_LITER_PER_100KM = 99.9;
+const float MIN_AVERAGE_FUEL_LITER_PER_100KM = 1.0;
 
-// Constants
+// Range of the Vehicle Info
 note group Note1
 {
-  attr Bounds = <1090,10,1480,680>;
+  attr Bounds = <1090,10,1780,680>;
 }
+
+$rect <1120,410,1390,450>
+$output false
+const float MAX_METER_TRIP_1 = 9999.9;
+
+$rect <1480,410,1750,450>
+$output false
+const int32 MIN_TEMPERATURE_DEG_C = -30;
+
+$rect <1480,460,1750,500>
+$output false
+const int32 MAX_TEMPERATURE_DEG_C = 128;
+
+$rect <1480,510,1750,550>
+$output false
+const int32 MIN_TEMPERATURE_DEG_F = -22;
+
+$rect <1480,560,1750,600>
+$output false
+const int32 MAX_TEMPERATURE_DEG_F = 263;
+
+$rect <1480,610,1760,650>
+$output false
+const int32 MAX_RANGE = 999;
+
+$rect <1480,60,1750,100>
+$output false
+const float MAX_CURRENT_FUEL_KM_L = 99.9;
+
+$rect <1480,110,1750,150>
+$output false
+const float MAX_CURRENT_FUEL_MPG = 199.9;
+
+$rect <1480,160,1750,200>
+$output false
+const int32 MAX_CURRENT_FUEL_L_100KM = 99.9;
+
+$rect <1480,210,1750,250>
+$output false
+const float MIN_CURRENT_FUEL_L_100KM = 1.0;
+
+$rect <1480,260,1750,300>
+$output false
+const float MIN_BATTERY_VOLTAGE = 9.0;
+
+$rect <1480,310,1750,350>
+$output false
+const float MAX_BATTERY_VOLTAGE = 16.0;
+
+$rect <1480,360,1750,400>
+$output false
+const int32 MAX_CRUISE = 999;
+
+$rect <1120,610,1390,650>
+$output false
+const int32 MAX_TIRE_PRESSURE = 51;
+
+$rect <1120,560,1390,600>
+$output false
+const int32 MAX_MAINTENANCE_TRIP = 99999;
+
+$rect <1120,460,1390,500>
+$output false
+const float MAX_METER_TRIP_2 = 9999.9;
+
+$rect <1120,510,1390,550>
+$output false
+const float MAX_METER_TRIP_F = 999.9;
+
+$rect <1120,360,1390,400>
+$output false
+const int32 MAX_METER_ODO = 999999;

@@ -5472,6 +5472,30 @@ XString SettingsSET45_TripMileageReset_LoadItemValue( SettingsSET45_TripMileageR
       VehicleData->DataFloat *= 0.625000f;
     }
 
+    switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 3 )])
+    {
+      case EnumMeterInfoTRIP1 :
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 9999.900391f );
+      break;
+
+      case EnumMeterInfoTRIP2 :
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 9999.900391f );
+      break;
+
+      case EnumMeterInfoTRIP_F :
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 999.900024f );
+      break;
+
+      default : 
+        ;
+    }
+
     Value = EwNewStringFloat( VehicleData->DataFloat, 0, 1 );
   }
   else
@@ -5882,6 +5906,9 @@ XString SettingsSET46_VehicleInfoReset_LoadItemValue( SettingsSET46_VehicleInfoR
           VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
         }
 
+        VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataUInt32, 0, 999 );
         ValueStr = EwNewStringUInt( VehicleData->DataUInt32, 0, 1 );
       }
     }
@@ -5926,7 +5953,7 @@ XString SettingsSET46_VehicleInfoReset_LoadItemValue( SettingsSET46_VehicleInfoR
           {
             VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
             EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-            VehicleData->DataFloat, 99.900002f, 99.900002f );
+            VehicleData->DataFloat, 1.000000f, 99.900002f );
           }
           break;
 

@@ -651,18 +651,27 @@ void StatusBarMain_UpdateAirTemperature( StatusBarMain _this )
     {
       if ( AirTemperatureContext->Valid )
       {
+        XFloat AirTemperature;
+
         if ( EnumTemperatureSettingItemTEMP_F == (XEnum)TemepratureUnitContext->DataUInt32 )
         {
           ViewsImage_OnSetFrameNumber( &_this->UnitImage, 1 );
-          ViewsText_OnSetString( &_this->AirTemperatureText, EwNewStringFloat(( 
-          AirTemperatureContext->DataFloat * 1.800000f ) + 32, 0, 0 ));
+          AirTemperature = ( AirTemperatureContext->DataFloat * 1.800000f ) + 32;
+          AirTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
+          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), AirTemperature, 
+          -22.000000f, 263.000000f );
         }
         else
         {
           ViewsImage_OnSetFrameNumber( &_this->UnitImage, 0 );
-          ViewsText_OnSetString( &_this->AirTemperatureText, EwNewStringFloat( AirTemperatureContext->DataFloat, 
-          0, 0 ));
+          AirTemperature = AirTemperatureContext->DataFloat;
+          AirTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
+          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), AirTemperature, 
+          -30.000000f, 128.000000f );
         }
+
+        ViewsText_OnSetString( &_this->AirTemperatureText, EwNewStringFloat( AirTemperature, 
+        0, 0 ));
       }
       else
       {

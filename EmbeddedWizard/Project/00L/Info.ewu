@@ -247,7 +247,9 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
   {
     var string Value;
     var DeviceInterface::VehicleDataClass VehicleData;
+    var int32 NumOfDecimalDigits = 1;
 
+    // get value
     switch( SupportedSetting[aItemNo] )
     {
       case Enum::MeterInfo.ODO: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.ODOMETER_VALUE );
@@ -257,13 +259,28 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
       default: VehicleData.Valid = false;
     }
 
+    // set display limit and format
     if( VehicleData.Valid )
     {
       if( Enum::MileageSettingItem.MILE == MileageSetting )
       {
         VehicleData.DataFloat *= Unit::KM_TO_MILE_SCALE;
       }
-      Value = string( VehicleData.DataFloat, 0, 1 );
+
+      switch( SupportedSetting[aItemNo] )
+      {
+        case Enum::MeterInfo.ODO:
+        {
+          VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_METER_ODO );
+          NumOfDecimalDigits = 0;
+        }
+        case Enum::MeterInfo.TRIP1: VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_METER_TRIP_1 );
+        case Enum::MeterInfo.TRIP2: VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_METER_TRIP_2 );
+        case Enum::MeterInfo.TRIP_F: VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_METER_TRIP_F );
+        default:;
+      }
+
+      Value = string( VehicleData.DataFloat, 0, NumOfDecimalDigits );
     }
     else
     {

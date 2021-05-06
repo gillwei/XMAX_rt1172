@@ -2611,6 +2611,28 @@ void DeviceInterfaceVehicleDeviceClass__NotifyDataReceived( void* _this, XEnum a
   , aRxType );
 }
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.ClampDataUInt32()' */
+XUInt32 DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( DeviceInterfaceVehicleDeviceClass _this, 
+  XUInt32 aData, XUInt32 aMin, XUInt32 aMax )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  if ( aData < aMin )
+  {
+    aData = aMin;
+  }
+  else
+    if ( aData > aMax )
+    {
+      aData = aMax;
+    }
+    else
+      ;
+
+  return aData;
+}
+
 /* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.ClampDataFloat()' */
 XFloat DeviceInterfaceVehicleDeviceClass_ClampDataFloat( DeviceInterfaceVehicleDeviceClass _this, 
   XFloat aData, XFloat aMin, XFloat aMax )

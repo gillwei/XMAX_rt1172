@@ -564,6 +564,7 @@ XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemValue( InfoINF26_ODO_TRIP_Setting
 {
   XString Value;
   DeviceInterfaceVehicleDataClass VehicleData = 0;
+  XInt32 NumOfDecimalDigits = 1;
 
   switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 4 )])
   {
@@ -598,7 +599,40 @@ XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemValue( InfoINF26_ODO_TRIP_Setting
       VehicleData->DataFloat *= 0.625000f;
     }
 
-    Value = EwNewStringFloat( VehicleData->DataFloat, 0, 1 );
+    switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 4 )])
+    {
+      case EnumMeterInfoODO :
+      {
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 999999.000000f );
+        NumOfDecimalDigits = 0;
+      }
+      break;
+
+      case EnumMeterInfoTRIP1 :
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 9999.900391f );
+      break;
+
+      case EnumMeterInfoTRIP2 :
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 9999.900391f );
+      break;
+
+      case EnumMeterInfoTRIP_F :
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 999.900024f );
+      break;
+
+      default : 
+        ;
+    }
+
+    Value = EwNewStringFloat( VehicleData->DataFloat, 0, NumOfDecimalDigits );
   }
   else
   {

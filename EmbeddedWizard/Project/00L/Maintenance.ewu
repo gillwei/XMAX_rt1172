@@ -105,6 +105,7 @@ class MNT01_MaintenanceReset : Menu::BaseMenuView
       {
         VehicleData.DataUInt32 *= Unit::KM_TO_MILE_SCALE;
       }
+      VehicleData.DataUInt32 = DeviceInterface::VehicleDevice.ClampDataUInt32( VehicleData.DataUInt32, 0, Settings::MAX_MAINTENANCE_TRIP );
       Value = string( VehicleData.DataUInt32, 0, 0 );
     }
     else

@@ -276,6 +276,9 @@ XString MaintenanceMNT01_MaintenanceReset_LoadItemValue( MaintenanceMNT01_Mainte
       VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
     }
 
+    VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    VehicleData->DataUInt32, 0, 99999 );
     Value = EwNewStringUInt( VehicleData->DataUInt32, 0, 0 );
   }
   else

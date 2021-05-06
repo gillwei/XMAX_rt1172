@@ -501,16 +501,21 @@ class Main : Core::Group
       {
         if( AirTemperatureContext.Valid )
         {
+          var float AirTemperature;
           if( Enum::TemperatureSettingItem.TEMP_F == (Enum::TemperatureSettingItem)TemepratureUnitContext.DataUInt32 )
           {
             UnitImage.FrameNumber = 1;
-            AirTemperatureText.String = string( AirTemperatureContext.DataFloat * 1.8 + 32, 0, 0 );
+            AirTemperature = AirTemperatureContext.DataFloat * 1.8 + 32;
+            AirTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( AirTemperature, Settings::MIN_TEMPERATURE_DEG_F, Settings::MAX_TEMPERATURE_DEG_F );
           }
           else
           {
             UnitImage.FrameNumber = 0;
-            AirTemperatureText.String = string( AirTemperatureContext.DataFloat, 0, 0 );
+            AirTemperature = AirTemperatureContext.DataFloat;
+            AirTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( AirTemperature, Settings::MIN_TEMPERATURE_DEG_C, Settings::MAX_TEMPERATURE_DEG_C );
           }
+
+          AirTemperatureText.String = string( AirTemperature, 0, 0 );
         }
         else
         {
