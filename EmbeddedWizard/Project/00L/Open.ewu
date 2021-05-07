@@ -158,14 +158,6 @@ class OPN02_FactoryMode : Components::BaseComponent
   $rect <220,390,450,430>
   property slot OnFactoryModeFinished;
 
-  $rect <20,20,160,60>
-  object Views::Image QrCodeImage
-  {
-    preset Bounds = <174,71,306,203>;
-    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
-    preset Bitmap = Resource::QrCodeExternBitmap;
-  }
-
   $rect <470,290,720,330>
   object Core::SystemEventHandler QrCodeReadyEventHandler
   {
@@ -178,7 +170,12 @@ class OPN02_FactoryMode : Components::BaseComponent
   $rect <470,340,720,380>
   slot OnQrCodeReadySlot
   {
-    Resource::QrCodeExternBitmap.Name = Resource::EXTERN_BMP_QRCODE;
+    $if !$prototyper
+      trace "OnQrCodeReady";
+      QrCodeImage.Bitmap = Resource::QrCodeExternBitmap;
+      Resource::QrCodeExternBitmap.Name = Resource::EXTERN_BMP_QRCODE;
+      Resource::QrCodeExternBitmap.Reload();
+    $endif
   }
 
   $rect <20,20,160,60>
@@ -196,5 +193,18 @@ class OPN02_FactoryMode : Components::BaseComponent
     preset Bounds = <0,44,480,46>;
     preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
     preset Bitmap = Resource::StatusBarDivider;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle WhiteMargin
+  {
+    preset Bounds = <174,71,306,203>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image QrCodeImage
+  {
+    preset Bounds = <174,71,306,203>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
   }
 }

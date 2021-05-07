@@ -170,24 +170,23 @@ static void ew_get_info_from_eeprom( void );
     static int is_factory_reset_complete = 0;
     static int is_qrcode_ready = 0;
     static bool notify_qrcode_ready;
-    static uint32_t ccuid;
-    static uint32_t qrcode_passkey;
-    static uint16_t qrcode_dummy;
+    static uint8_t  ccuid_variance[CCUID_VARIANCE_LENGTH]; /* alphanumeric */
+    static uint32_t passkey;
+    static uint16_t unit_id_dummy;
     static EnumOperationMode operation_mode = EnumOperationModeNORMAL;
     static EnumOperationMode operation_mode_in_eep = EnumOperationModeNORMAL;
     static bool     is_running_production_test;
     static bool     is_tft_backlight_on;
     static bool     is_op_mode_ready;
     static bool     is_ccuid_ready;
-    static bool     is_qrcode_passkey_ready;
-    static bool     is_qrcode_dummy_ready;
+    static bool     is_passkey_ready;
+    static bool     is_unit_id_dummy_ready;
     static bool     is_last_page_read;
     static bool     clk_auto_adj_status;
     static uint8_t  clk_auto_adj_status_in_eep = 0;
 #endif
 
 static uint32_t esn;
-static char qr_code[UNIT_ID_LEN + 1];
 
 AT_BOARDSDRAM_SECTION( uint8_t ew_string[EW_STRING_LEN] );
 
@@ -463,19 +462,39 @@ return navigation_view_setting;
 /*********************************************************************
 *
 * @private
-* start_factory_qrcode_generation
+* generate_unit_id_qrcode
 *
-* Start QR code generation for factory mode
+* Generate QR code of UNIT ID
 *
 *********************************************************************/
-static void start_factory_qrcode_generation
+static void generate_unit_id_qrcode
     (
     void
     )
 {
-QR_generate_qrcode( esn, 4 );
-//TODO:
-//QR_generate_qrcode( ccuid, qrcode_passkey, qrcode_dummy );
+/* Text of QR code includes
+   1. CCUID:   14 alphanumeric number ( 6 fixed prefix +  8 randomn )
+   2. Passkey: 6  digits (random number from 0 to 9)
+   3. Dummy:   4  digits (random number from 0 to 9) */
+int32_t i = 0;
+uint8_t qrcode_text[UNIT_ID_LENGTH + 1];
+uint8_t temp[8];
+
+memcpy( qrcode_text, CCUID_PREFIX, CCUID_PREFIX_LENGTH );
+i = CCUID_PREFIX_LENGTH;
+
+memcpy( &qrcode_text[i], ccuid_variance, CCUID_VARIANCE_LENGTH );
+i += CCUID_VARIANCE_LENGTH;
+
+snprintf( (char*)temp, 8, "%06d", passkey );
+memcpy( &qrcode_text[i], temp, PASSKEY_LENGTH );
+i += PASSKEY_LENGTH;
+
+snprintf( (char*)temp, 8, "%04d", unit_id_dummy );
+memcpy( &qrcode_text[i], temp, UNIT_ID_DUMMY_LENGTH );
+qrcode_text[UNIT_ID_LENGTH] = '\0';
+
+QR_generate( qrcode_text, UNIT_ID_LENGTH );
 }
 
 /*********************************************************************
@@ -510,7 +529,7 @@ if( EEPROM_INVALID_VAL_4_BYTE != esn )
 * Callback of reading CCUID from EEPROM
 *
 * @param result True if read success. False if read fail.
-* @param value The pointer to the CCUID of uint32_t* type
+* @param value The pointer to the CCUID variance of uint8_t* type
 *
 *********************************************************************/
 void EW_read_qrcode_ccuid_callback
@@ -521,15 +540,34 @@ void EW_read_qrcode_ccuid_callback
 {
 if( result )
     {
-    ccuid = *(uint32_t*)value;
-    PRINTF( "rd ccuid 0x%x\r\n", ccuid );
+    memcpy( ccuid_variance, (uint8_t*)value, CCUID_VARIANCE_LENGTH );
+    PRINTF( "rd ccuid %s\r\n", ccuid_variance );
+
+    // set to all zero if ccuid is invalid
+    int  i = 0;
+    bool is_valid = false;
+    for( i = 0; i < CCUID_VARIANCE_LENGTH; i++ )
+        {
+        if( EEPROM_INVALID_VAL_1_BYTE != ccuid_variance[i] )
+            {
+            is_valid = true;
+            break;
+            }
+        }
+    if( !is_valid )
+        {
+        for( i = 0; i < CCUID_VARIANCE_LENGTH; i++ )
+            {
+            ccuid_variance[i] = '0';
+            }
+        }
+
+    is_ccuid_ready = true;
     }
 else
     {
     PRINTF( "rd ccuid fail\r\n" );
     }
-
-is_ccuid_ready = true;
 }
 
 /*********************************************************************
@@ -551,33 +589,32 @@ void EW_read_passkey_callback
 {
 if( result )
     {
-    qrcode_passkey = *(uint32_t*)value;
-    PRINTF( "rd passkey %u\r\n", qrcode_passkey );
-    if( EEPROM_INVALID_VAL_4_BYTE == qrcode_passkey )
+    passkey = *(uint32_t*)value;
+    PRINTF( "rd passkey %u\r\n", passkey );
+    if( EEPROM_INVALID_VAL_4_BYTE == passkey )
         {
-        qrcode_passkey = 0;
+        passkey = 0;
         }
+    is_passkey_ready = true;
     }
 else
     {
     PRINTF( "rd passkey fail\r\n" );
     }
-
-is_qrcode_passkey_ready = true;
 }
 
 /*********************************************************************
 *
 * @public
-* EW_read_qrcode_dummy_callback
+* EW_read_unit_id_dummy_callback
 *
-* Callback of reading qrcode dummy from EEPROM
+* Callback of reading UNIT ID dummy from EEPROM
 *
 * @param result True if read success. False if read fail.
 * @param value The pointer to the QR code dummy of uint16_t* type
 *
 *********************************************************************/
-void EW_read_qrcode_dummy_callback
+void EW_read_unit_id_dummy_callback
     (
     bool  result,
     void* value
@@ -585,16 +622,26 @@ void EW_read_qrcode_dummy_callback
 {
 if( result )
     {
-    qrcode_dummy = *(uint16_t*)value;
-    PRINTF( "rd qrcode dummy 0x%x\r\n", qrcode_dummy );
+    unit_id_dummy = *(uint16_t*)value;
+    PRINTF( "rd dummy 0x%x\r\n", unit_id_dummy );
+    if( EEPROM_INVALID_VAL_2_BYTE == unit_id_dummy )
+        {
+        unit_id_dummy = 0;
+        }
+    is_unit_id_dummy_ready = true;
+
+    if( EnumOperationModeFACTORY == operation_mode &&
+        is_ccuid_ready &&
+        is_passkey_ready &&
+        !is_qrcode_ready ) /* QR code could be ready due to the generation triggered by IOP */
+        {
+        generate_unit_id_qrcode();
+        }
     }
 else
     {
     PRINTF( "rd qrcode dummy fail\r\n" );
     }
-
-is_qrcode_dummy_ready = true;
-start_factory_qrcode_generation();
 }
 
 /*********************************************************************
@@ -754,13 +801,13 @@ if( pdFALSE == EEPM_get_ESN( &EW_read_esn_callback ) )
     }
 if( pdFALSE == EEPM_get_qrcode_ccuid( &EW_read_qrcode_ccuid_callback ) )
     {
-    EwPrint( "get ccuid fail\r\n" );
+    EwPrint( "get ccuid_variance fail\r\n" );
     }
 if( pdFALSE == EEPM_get_qrcode_passkey( &EW_read_passkey_callback ) )
     {
     EwPrint( "get passkey fail\r\n" );
     }
-if( pdFALSE == EEPM_get_qrcode_dummy( &EW_read_qrcode_dummy_callback ) )
+if( pdFALSE == EEPM_get_qrcode_dummy( &EW_read_unit_id_dummy_callback ) )
     {
     EwPrint( "get dummy fail\r\n" );
     }
@@ -1182,17 +1229,20 @@ PM_system_reset();
 *
 * Request to generate QR code
 *
-* @param pixel_per_mod Pixel per QR code module
-*
 *********************************************************************/
 void ew_request_qrcode
     (
-    int pixel_per_mod
+    void
     )
 {
-QR_generate_qrcode( esn, pixel_per_mod );
-//TODO:
-//QR_generate_qrcode( ccuid, qrcode_passkey, qrcode_dummy );
+if( is_qrcode_ready )
+    {
+    EW_notify_qrcode_ready();
+    }
+else
+    {
+    generate_unit_id_qrcode();
+    }
 }
 
 /*********************************************************************
@@ -1323,13 +1373,13 @@ return esn;
 * @return CCUID
 *
 *********************************************************************/
-uint32_t EW_get_ccuid
+uint8_t* EW_get_ccuid
     (
     void
     )
 {
-PRINTF( "%s %d\r\n", __FUNCTION__, ccuid );
-return ccuid;
+PRINTF( "%s %d\r\n", __FUNCTION__, ccuid_variance );
+return ccuid_variance;
 }
 
 /*********************************************************************
@@ -1347,8 +1397,8 @@ uint16_t EW_get_qrcode_dummy
     void
     )
 {
-PRINTF( "%s %d\r\n", __FUNCTION__, qrcode_dummy );
-return qrcode_dummy;
+PRINTF( "%s %d\r\n", __FUNCTION__, unit_id_dummy );
+return unit_id_dummy;
 }
 
 /*********************************************************************
@@ -1366,8 +1416,8 @@ uint32_t EW_get_qrcode_passkey
     void
     )
 {
-PRINTF( "%s %d\r\n", __FUNCTION__, qrcode_passkey );
-return qrcode_passkey;
+PRINTF( "%s %d\r\n", __FUNCTION__, passkey );
+return passkey;
 }
 
 /*********************************************************************
@@ -1388,8 +1438,7 @@ return qrcode_passkey;
     if( notify_qrcode_ready )
         {
         notify_qrcode_ready = false;
-        XString qrcode_str = EwNewStringAnsi( qr_code );
-        DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( device_object, qrcode_str );
+        DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( device_object );
         need_update = 1;
         }
     return need_update;
@@ -1563,15 +1612,41 @@ void EW_show_burn_in_result
 *********************************************************************/
 void EW_notify_qrcode_ready
     (
-    const char* qr_code_text
+    void
     )
 {
 #ifdef _DeviceInterfaceSystemDeviceClass_
     is_qrcode_ready = 1;
     notify_qrcode_ready = true;
-    strncpy( qr_code, qr_code_text, sizeof( qr_code ) );
     EwBspEventTrigger();
 #endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_change_unit_id
+*
+* Update UNIT ID
+*
+*********************************************************************/
+void EW_change_unit_id
+    (
+    const uint8_t* new_ccuid_variance,
+    const uint32_t new_passkey,
+    const uint16_t new_dummy
+    )
+{
+memcpy( ccuid_variance, new_ccuid_variance, CCUID_VARIANCE_LENGTH );
+is_ccuid_ready = true;
+
+passkey = new_passkey;
+is_passkey_ready = true;
+
+unit_id_dummy = new_dummy;
+is_unit_id_dummy_ready = true;
+
+generate_unit_id_qrcode();
 }
 
 /*********************************************************************
@@ -1580,6 +1655,8 @@ void EW_notify_qrcode_ready
 * ew_is_qrcode_ready
 *
 * Get if QR code is ready
+*
+* @return True if the QR code is ready
 *
 *********************************************************************/
 bool ew_is_qrcode_ready

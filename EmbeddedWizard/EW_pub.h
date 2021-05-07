@@ -21,6 +21,13 @@ extern "C" {
 #include "BTM_pub.h"
 #include "RTC_pub.h"
 
+#define CCUID_PREFIX                    "000603" /* product id: 00, device type id: 06, supplier id: 03 */
+#define CCUID_PREFIX_LENGTH             ( 6 )
+#define CCUID_VARIANCE_LENGTH           ( 8 )
+#define PASSKEY_LENGTH                  ( 6 )
+#define UNIT_ID_DUMMY_LENGTH            ( 4 )
+#define UNIT_ID_LENGTH                  ( 24 )
+
 #define UPDATE_TIME_PERIOD_MS           ( 500 )
 #define ESN_STR_MAX_LEN                 ( 10 )
 
@@ -47,7 +54,7 @@ bool EW_get_operation_mode( EnumOperationMode* mode );
 void EW_reset_to_factory_default( void );
 void EW_power_update_ignoff_task_status( uint32_t task );
 
-uint32_t EW_get_ccuid( void );
+uint8_t* EW_get_ccuid( void );
 uint16_t EW_get_qrcode_dummy( void );
 uint32_t EW_get_qrcode_passkey( void );
 uint32_t EW_get_esn( void );
@@ -79,7 +86,8 @@ void EW_notify_bt_fw_update_status( EnumBtFwStatus status, char* version );
 void EW_notify_ble_pairing_state_changed( const EnumBlePairingState state, const uint32_t param );
 void EW_notify_motocon_event_received( const EnumMotoConRxEvent event );
 
-void EW_notify_qrcode_ready( const char* qr_code_text );
+void EW_notify_qrcode_ready( void );
+void EW_change_unit_id( const uint8_t* new_ccuid_variance, const uint32_t new_passkey, const uint16_t new_dummy );
 
 void EW_notify_dd_mode_state_changed( void );
 void EW_notify_vi_data_received( const EnumVehicleRxType rx_type );

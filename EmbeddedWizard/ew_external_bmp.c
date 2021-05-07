@@ -172,13 +172,11 @@ XRect         bmp_lock_area;
 XBitmapLock*  lock;
 unsigned int* dest;
 int           ofs;
-int           x;
-int           y;
-unsigned int  alpha        = ALPHA_DEFAULT;
 qrcode_buf_handle_struct* buf_handle = QR_get_qrcode_buf();
-uint8_t*      argb_buffer  = buf_handle->addr;
-int           image_width  = buf_handle->image_width;
-int           image_height = buf_handle->image_height;
+uint8_t*      modules      = buf_handle->modules;
+int           image_width  = buf_handle->module_num * QRCODE_PIXEL_PER_MODULE;
+int           image_height = buf_handle->module_num * QRCODE_PIXEL_PER_MODULE;
+unsigned int  alpha        = ALPHA_DEFAULT;
 
 /* create a new bitmap with the previously determined size */
 frame_size.X = image_width;
@@ -210,21 +208,20 @@ ofs  = ( lock->Pitch1Y / 4 ) - image_width;
  * Do this row-by-row and column-by-column.
  * After one row is finished adjust the 'dest' pointer to refer to the next row.
  * After one column is finished increment the 'dest' pointer only. */
-int pixel_per_mod = QR_pixel_per_mod();
-for( y = 0; y < image_height; y++, dest += ofs )
+for( int y = 0; y < image_height; y++, dest += ofs )
     {
-    for( x = 0; x < image_width; x++, dest++ )
+    for( int x = 0; x < image_width; x++, dest++ )
         {
-        if( argb_buffer[( ( y / pixel_per_mod ) * ( image_height / pixel_per_mod ) + ( x / pixel_per_mod ) )] == 0x00 )
+        if( 0x00 == modules[( ( y / QRCODE_PIXEL_PER_MODULE ) * ( image_height / QRCODE_PIXEL_PER_MODULE ) + ( x / QRCODE_PIXEL_PER_MODULE ) )] )
             {
             *dest = 0x00 | ( alpha << EW_COLOR_CHANNEL_BIT_OFFSET_ALPHA );
             }
         else
             {
-            *dest = ( ( 0xFF << EW_COLOR_CHANNEL_BIT_OFFSET_RED ) |
-                    ( 0xFF << EW_COLOR_CHANNEL_BIT_OFFSET_GREEN ) |
-                    ( 0xFF << EW_COLOR_CHANNEL_BIT_OFFSET_BLUE )  |
-                    ( alpha << EW_COLOR_CHANNEL_BIT_OFFSET_ALPHA ) );
+            *dest = ( ( 0xFF  << EW_COLOR_CHANNEL_BIT_OFFSET_RED ) |
+                      ( 0xFF  << EW_COLOR_CHANNEL_BIT_OFFSET_GREEN ) |
+                      ( 0xFF  << EW_COLOR_CHANNEL_BIT_OFFSET_BLUE )  |
+                      ( alpha << EW_COLOR_CHANNEL_BIT_OFFSET_ALPHA ) );
             }
         }
     }

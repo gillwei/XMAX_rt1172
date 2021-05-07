@@ -50,20 +50,19 @@
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault0[] =
 {
-  0x00000282, /* ratio 53.58 % */
+  0x0000025C, /* ratio 53.64 % */
   0xB8002900, 0x000C2452, 0x80010736, 0x40072000, 0x1C730019, 0x70A3A002, 0x00348022,
   0x037C48DA, 0x00458EA0, 0x2C0C2400, 0xC1A2C532, 0x74851486, 0x0DC00864, 0x012D2480,
   0x91189150, 0x230CC822, 0xC001A24B, 0x95000EF1, 0x84BA1B1E, 0xC3E672E9, 0xD0A4009A,
-  0xA290895C, 0x27208A8E, 0xB4928C8C, 0x009E18E2, 0x885C48C8, 0x86C2E231, 0xCD6A0D0F,
-  0x85C01203, 0x52B04E91, 0x000668C4, 0x291899D9, 0x04387C22, 0x2E834EC0, 0xFAD448CF,
-  0x0C482174, 0x045ED568, 0x106C96D0, 0x5A216B96, 0xA6377BAC, 0xA17C87DE, 0x31CC0D9A,
-  0x87006171, 0xA9598A11, 0xBC003191, 0x05671E00, 0x842CB7D0, 0x1A124591, 0xB218A384,
-  0x1F1AC1CC, 0x60D90696, 0x0D959124, 0xE8E6260D, 0xC0003672, 0x2CC49F04, 0x426530F9,
-  0x56B1C58F, 0xB5200BB6, 0xE79B834B, 0xD940AE4A, 0x3FB75B22, 0x08191A2D, 0xDD4524A0,
-  0x66FA232B, 0xC5255230, 0x48AD3EED, 0x43DBE86C, 0xA1D8CB75, 0xB12DE730, 0x088441AE,
-  0x48B67FBD, 0xD1683997, 0x1024815A, 0x772D6941, 0x0C4C591D, 0x00155486, 0x7815A6B0,
-  0xC1F481AE, 0x265D837B, 0xF5F44EDF, 0xEA425F77, 0x47908471, 0xD9E001B1, 0x65957B7F,
-  0x00004062, 0x00000000
+  0xA290895C, 0x2F208A8E, 0xD3C2748C, 0x00334622, 0x68BCC8F2, 0x21C3E111, 0x741A7600,
+  0x19224679, 0x82174F00, 0x2AB530C4, 0x0159ABC5, 0x16F96104, 0x62B045A2, 0x787D9663,
+  0x00482D36, 0xE5520952, 0xD6AB1758, 0xACC508B9, 0xC01788D4, 0x017B0058, 0x000A85F4,
+  0x0922C8C2, 0xCBB1C20D, 0x8D462B77, 0x6C82FD0F, 0xCAC89230, 0x72EB0686, 0x001A2974,
+  0x624F825B, 0x32987C96, 0x55DA47A1, 0x80058709, 0xC541A5D9, 0x6857295E, 0x56AE1BAB,
+  0x0C8D1495, 0x62925004, 0x5B1195EA, 0x1C891833, 0x569F7280, 0xED6C3624, 0x0055B881,
+  0xD9400186, 0x58225ABD, 0x36110883, 0xEBF16C77, 0xCF91C7EE, 0xD8281482, 0x4CF0D72D,
+  0x02AD22B8, 0xE7D9F360, 0x81F4819D, 0x35C58577, 0xB9E54EDE, 0xD9425E87, 0x47908471,
+  0x18D001A0, 0x65FD667C, 0x00004061, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -71,17 +70,16 @@ static const XStringRes _Const0000 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0001 = { _StringsDefault0, 0x0016 };
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0028 };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x0041 };
-static const XStringRes _Const0004 = { _StringsDefault0, 0x0054 };
-static const XStringRes _Const0005 = { _StringsDefault0, 0x006B };
-static const XStringRes _Const0006 = { _StringsDefault0, 0x0083 };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x009A };
-static const XStringRes _Const0008 = { _StringsDefault0, 0x00AA };
-static const XStringRes _Const0009 = { _StringsDefault0, 0x00B7 };
-static const XStringRes _Const000A = { _StringsDefault0, 0x00CF };
-static const XStringRes _Const000B = { _StringsDefault0, 0x00E4 };
-static const XStringRes _Const000C = { _StringsDefault0, 0x00F0 };
-static const XStringRes _Const000D = { _StringsDefault0, 0x010E };
-static const XStringRes _Const000E = { _StringsDefault0, 0x0122 };
+static const XStringRes _Const0004 = { _StringsDefault0, 0x0058 };
+static const XStringRes _Const0005 = { _StringsDefault0, 0x0070 };
+static const XStringRes _Const0006 = { _StringsDefault0, 0x0087 };
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0097 };
+static const XStringRes _Const0008 = { _StringsDefault0, 0x00A4 };
+static const XStringRes _Const0009 = { _StringsDefault0, 0x00BC };
+static const XStringRes _Const000A = { _StringsDefault0, 0x00D1 };
+static const XStringRes _Const000B = { _StringsDefault0, 0x00DD };
+static const XStringRes _Const000C = { _StringsDefault0, 0x00FB };
+static const XStringRes _Const000D = { _StringsDefault0, 0x010F };
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
@@ -397,29 +395,24 @@ void DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult( void* _this, XBool
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this, 
-  XString aQrCodeStr )
+void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const0003 ));
-  _this->QrCodeText = EwShareString( aQrCodeStr );
   CoreSystemEvent_Trigger( &_this->QrCodeSystemEvent, 0, 0 );
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyQrCodeReady()' */
-void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this, XString aQrCodeStr )
+void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this )
 {
-  DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady((DeviceInterfaceSystemDeviceClass)_this
-  , aQrCodeStr );
+  DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady((DeviceInterfaceSystemDeviceClass)_this );
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetQrCode()' */
-void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClass _this, 
-  XInt32 pixelnum )
+void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClass _this )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  ew_request_qrcode( pixelnum );
+  ew_request_qrcode();
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetLocalTime()' */
@@ -1654,7 +1647,7 @@ void DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( DeviceInterfaceMe
 void DeviceInterfaceMediaManagerDeviceClass_NotifyTitleChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aTitle )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0004 ), aTitle ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0003 ), aTitle ));
   _this->IsTitleReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetTitle( _this, aTitle );
 }
@@ -1671,7 +1664,7 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyTitleChanged( void* _this, XS
 void DeviceInterfaceMediaManagerDeviceClass_NotifyArtistChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aArtist )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0005 ), aArtist ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0004 ), aArtist ));
   _this->IsArtistReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( _this, aArtist );
 }
@@ -1688,7 +1681,7 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyArtistChanged( void* _this, X
 void DeviceInterfaceMediaManagerDeviceClass_NotifyAlbumChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aAlbum )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0006 ), aAlbum ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0005 ), aAlbum ));
   _this->IsAlbumReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum( _this, aAlbum );
 }
@@ -1758,8 +1751,8 @@ void DeviceInterfaceMediaManagerDeviceClass_GetTrackInfo( DeviceInterfaceMediaMa
 void DeviceInterfaceMediaManagerDeviceClass_NotifyPlayBackTimeChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XInt32 aElapsedTimeSec, XInt32 aDurationTimeSec )
 {
-  EwTrace( "%s%i", EwLoadString( &_Const0007 ), aElapsedTimeSec );
-  EwTrace( "%s%i", EwLoadString( &_Const0008 ), aDurationTimeSec );
+  EwTrace( "%s%i", EwLoadString( &_Const0006 ), aElapsedTimeSec );
+  EwTrace( "%s%i", EwLoadString( &_Const0007 ), aDurationTimeSec );
   _this->ElapsedTimeSec = aElapsedTimeSec;
   _this->DurationTimeSec = aDurationTimeSec;
   CoreSystemEvent_Trigger( &_this->NotifyPlayBackTimeChangedSystemEvent, 0, 0 );
@@ -1990,7 +1983,7 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( DeviceInterfaceBluet
 void DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this, 
   XBool value )
 {
-  EwTrace( "%s%b", EwLoadString( &_Const0009 ), value );
+  EwTrace( "%s%b", EwLoadString( &_Const0008 ), value );
 
   if ( _this->BluetoothEnable != value )
   {
@@ -2141,8 +2134,8 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( DeviceInterfaceBluetoo
 void DeviceInterfaceBluetoothDeviceClass_NotifyBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this, 
   XEnum status, XString version )
 {
-  EwTrace( "%s%e", EwLoadString( &_Const000A ), status );
-  EwTrace( "%s%s", EwLoadString( &_Const000B ), version );
+  EwTrace( "%s%e", EwLoadString( &_Const0009 ), status );
+  EwTrace( "%s%s", EwLoadString( &_Const000A ), version );
   DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( _this, status );
 }
 
@@ -3589,7 +3582,7 @@ XBool DeviceInterfaceNotificationDeviceClass__IsPhoneCallStateActive( void* _thi
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallStateChanged( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000C ));
+  EwTrace( "%s", EwLoadString( &_Const000B ));
   CoreSystemEvent_Trigger( &_this->PhoneCallStateChangedSystemEvent, 0, 0 );
 }
 
@@ -3603,7 +3596,7 @@ void DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallStateChanged( void* 
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyListUpdated( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000D ));
+  EwTrace( "%s", EwLoadString( &_Const000C ));
   CoreSystemEvent_Trigger( &_this->NotificationListUpdatedSystemEvent, 0, 0 );
 }
 
@@ -3830,7 +3823,7 @@ void DeviceInterfaceNotificationDeviceClass_PhoneCallVolumeControl( DeviceInterf
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallVolumeChanged( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000E ));
+  EwTrace( "%s", EwLoadString( &_Const000D ));
   CoreSystemEvent_Trigger( &_this->PhoneCallVolumeChangedSystemEvent, 0, 0 );
 }
 

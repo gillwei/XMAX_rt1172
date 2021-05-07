@@ -1749,99 +1749,91 @@ class SET30_QRCode : Components::BaseMainBG
   $rect <550,20,750,60>
   inherited method Init()
   {
-    DeviceInterface::SystemDevice.GetQrCode( PixelPerModule );
+    DeviceInterface::SystemDevice.GetQrCode();
+  }
+
+  $rect <250,390,470,430>
+  inherited method OnShortDownKeyActivated()
+  {
+    BrightnessDownButton.DisplayHighlightAnimation();
+  }
+
+  $rect <250,340,470,380>
+  inherited method OnShortUpKeyActivated()
+  {
+    BrightnessUpButton.DisplayHighlightAnimation();
   }
 
   $rect <10,290,210,330>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <550,180,750,220>
-  inherited method OnShortDownKeyActivated()
-  {
-    if( PixelPerModule > 1 )
-    {
-      PixelPerModule--;
-      DeviceInterface::SystemDevice.GetQrCode( PixelPerModule );
-    }
-    else
-    {
-      trace "please press up";
-    }
-  }
-
-  $rect <550,130,750,170>
-  inherited method OnShortUpKeyActivated()
-  {
-    if( PixelPerModule < 4 )
-    {
-      PixelPerModule++;
-      DeviceInterface::SystemDevice.GetQrCode( PixelPerModule );
-    }
-    else
-    {
-      trace "please press down";
-    }
-  }
-
-  $rect <10,340,210,380>
   inherited property DDModeEnabled = true;
 
-  $rect <550,70,750,110>
-  object Core::SystemEventHandler QrCodeUpdateEventHandler
+  $rect <550,70,790,110>
+  object Core::SystemEventHandler QrCodeReadyEventHandler
   {
-    preset OnEvent = OnQrCodeUpdateSlot;
+    preset OnEvent = OnQrCodeReadySlot;
     preset Event = DeviceInterface::SystemDevice.QrCodeSystemEvent;
   }
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,70,950,110>
-  slot OnQrCodeUpdateSlot
+  $rect <550,120,790,160>
+  slot OnQrCodeReadySlot
   {
-    Resource::QrCodeExternBitmap.Name = "QRCode" + string( PixelPerModule );
-    PixelText.String = string( PixelPerModule ) + " Pixel";
-    var float QrCodeWidth = 33 * PixelPerModule * 0.01935;
-    QrCodeWidthText.String = "Width: " + string( QrCodeWidth ) + " cm";
-    QrCodeContent.String = "QR Code content:\n" + DeviceInterface::SystemDevice.QrCodeText;
+    $if !$prototyper
+      trace "OnQrCodeReady";
+      QrCodeImage.Bitmap = Resource::QrCodeExternBitmap;
+      Resource::QrCodeExternBitmap.Name = Resource::EXTERN_BMP_QRCODE;
+      Resource::QrCodeExternBitmap.Reload();
+    $endif
   }
 
   $rect <20,20,160,60>
-  object Views::Image QrCode
+  object Views::Rectangle WhiteMargin
   {
-    preset Bounds = <20,98,207,227>;
+    preset Bounds = <174,63,306,195>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image QrCodeImage
+  {
+    preset Bounds = <174,63,306,195>;
     preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter];
-    preset Bitmap = Resource::QrCodeExternBitmap;
-  }
-
-  $rect <550,240,750,280>
-  var int32 PixelPerModule = 1;
-
-  $rect <20,20,160,60>
-  object Views::Text PixelText
-  {
-    preset Bounds = <210,48,398,98>;
-    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
-    preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
   $rect <20,20,160,60>
-  object Views::Text QrCodeWidthText
+  object Menu::PushButton PushButton
   {
-    preset Bounds = <210,192,442,240>;
-    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
-    preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Bounds = <165,219,315,259>;
+    preset DDModeEnabled = true;
+    preset Title = Strings::GEN_OK;
+    preset OnActivate = OnOkSelectedSlot;
+  }
+
+  $rect <250,290,450,330>
+  slot OnOkSelectedSlot
+  {
+    DismissThisDialog();
   }
 
   $rect <20,20,160,60>
-  object Views::Text QrCodeContent
+  object Telephone::ImageButton BrightnessUpButton
   {
-    preset Bounds = <210,98,463,192>;
-    preset WrapText = true;
-    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
-    preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Bounds = <0,39,94,114>;
+    preset ForegroundBmp = Resource::PhoneVolumeUp;
+  }
+
+  $rect <20,20,160,60>
+  object Telephone::ImageButton BrightnessDownButton
+  {
+    preset Bounds = <0,189,94,264>;
+    preset ForegroundBmp = Resource::PhoneVolumeDown;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image BrightnessIcon
+  {
+    preset Bounds = <0,114,95,189>;
+    preset Bitmap = Resource::Brightness;
   }
 }
 
@@ -2187,7 +2179,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   $rect <520,160,760,200>
   slot OnUnitIdButtonActivatedSlot
   {
-    this.PresentDialog( new Settings::SET30_QRCode, null, null, null, null, null, null, null, null, false );
+    PresentDialog( new Settings::SET30_QRCode, null, null, null, null, null, null, null, null, false );
   }
 
   $rect <20,20,160,60>

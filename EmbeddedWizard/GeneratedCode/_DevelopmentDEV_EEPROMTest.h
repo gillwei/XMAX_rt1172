@@ -114,7 +114,7 @@
 
 /* Deklaration of class : 'Development::DEV_EEPROMTest' */
 EW_DEFINE_FIELDS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [2])
+  EW_ARRAY   ( ItemTitleArray,  XString, [5])
 EW_END_OF_FIELDS( DevelopmentDEV_EEPROMTest )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_EEPROMTest' */

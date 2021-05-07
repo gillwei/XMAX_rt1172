@@ -19,21 +19,18 @@
 #include <string.h>
 #include "semphr.h"
 #include "fsl_debug_console.h"
-#include "EW_pub.h"
 #include "ricmoo_qrcode/qrcode.h"
 #include "QR_pub.h"
-#include "EEPM_pub.h"
+#include "EW_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define QRCODE_WIDTH_MODULE         ( 33 )
-#define QRCODE_MARGIN               ( 4 )
-#define QRCODE_BUF_SIZE_BYTE        ( 1120 ) // 32 bytes alignment
-#define QRCODE_VERSION              ( 2 )    // version 2 stands for 25x25
-#define ESN_STR_MAX_LEN             ( 10 )
-#define INVALID_ESN                 ( 0xFFFFFFFF )
-#define UNIT_ID_LEN                 ( 24 )
+#define QRCODE_VERSION              ( 2 )   /* version 2 */
+#define QRCODE_V2_MODULE_NUM        ( 25 )  /* number of modules for version 2 */
+#define QRCODE_BUF_SIZE_BYTE        ( 640 ) /* (25*25) alignment 32 */
+#define TRANSITION_TABLE_LEN        ( 24 )
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -49,11 +46,10 @@
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
-AT_BOARDSDRAM_SECTION( uint8_t qrcode_buf[QRCODE_BUF_SIZE_BYTE] );
-static char qr_code_text[UNIT_ID_LEN + 1];
+AT_BOARDSDRAM_SECTION( uint8_t qrcode_modules[QRCODE_BUF_SIZE_BYTE] );
 static qrcode_buf_handle_struct qrcode_buf_handle;
-static const int rule_lookup_table[UNIT_ID_LEN] = {7,14,20,0,12,17,6,22,2,13,10,1,16,19,8,21,23,5,15,3,9,18,4,11};
-static uint32_t qr_pixel_num;
+static const uint8_t unit_id_transposition_table[TRANSITION_TABLE_LEN] = {7,14,20,0,12,17,6,22,2,13,10,1,16,19,8,21,23,5,15,3,9,18,4,11};
+
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -65,29 +61,95 @@ static uint32_t qr_pixel_num;
 /*********************************************************************
 *
 * @private
-* qr_encrypt_unit_id
+* qr_encrypt_with_transposition_cipher
 *
-* Encrypt unit id by using rule_lookup_table.
+* Encrypt with transposition cipher.
 *
-* @param esn Electronic Serial Number.
+* @param plaintext Pointer to the plaintext buffer
+* @param text_length Text length of plaintext and ciphertext
+* @param transposition_table Pointer to the transposition table
+* @param ciphertext Pointer to the ciphertext buffer
 *
 *********************************************************************/
-static void qr_encrypt_unit_id
+static void qr_encrypt_with_transposition_cipher
     (
-    char* esn
+    const uint8_t* plaintext,
+    const uint32_t text_length,
+    const uint8_t* transposition_table,
+    uint8_t*       ciphertext
     )
 {
-char unit_id_text[UNIT_ID_LEN + 1];
-strncpy( unit_id_text, "ABCD", sizeof( unit_id_text ) );
-strncat( unit_id_text, esn, ESN_STR_MAX_LEN + 1 );
-strncat( unit_id_text, "1234567890", 10 );
-unit_id_text[UNIT_ID_LEN] = '\0';
-
-for( int i = 0; i < UNIT_ID_LEN; i++ )
+for( int i = 0; i < text_length; i++ )
     {
-    qr_code_text[rule_lookup_table[i]] = unit_id_text[i];
+    ciphertext[transposition_table[i]] = plaintext[i];
     }
-PRINTF( "QR code text: %s \n\r", qr_code_text );
+}
+
+/*********************************************************************
+*
+* @public
+* QR_generate_qrcode
+*
+* Generate QR code of the text
+*
+* @param text Text to generate QR code
+* @param text_size Text length not including NULL terminator
+*
+*********************************************************************/
+void QR_generate
+    (
+    const uint8_t* text,
+    const uint32_t text_length
+    )
+{
+QRCode  qrcode;
+uint8_t modules[qrcode_getBufferSize( QRCODE_VERSION )];
+if( TRANSITION_TABLE_LEN == text_length )
+    {
+    uint8_t  ciphertext[TRANSITION_TABLE_LEN + 1] = {'\0'};
+    qrcode_buf_handle.module_num = QRCODE_V2_MODULE_NUM;
+
+    qr_encrypt_with_transposition_cipher( text, text_length, unit_id_transposition_table, ciphertext );
+    PRINTF( "%s %s %s\r\n", __FUNCTION__, text, ciphertext );
+    qrcode_initText( &qrcode, modules, QRCODE_VERSION, ECC_QUARTILE, ciphertext );
+
+    if( qrcode.size > 0 )
+        {
+        /* set to full white */
+        memset( qrcode_buf_handle.modules, 0xFF, QRCODE_BUF_SIZE_BYTE );
+
+        for( int y = 0; y < QRCODE_V2_MODULE_NUM; y++ ) /* vertical direction */
+            {
+            for( int x = 0; x < QRCODE_V2_MODULE_NUM; x++ ) /* horizontal direction */
+                {
+                if( qrcode_getModule( &qrcode, x, y) )
+                    {
+                    qrcode_buf_handle.modules[y * QRCODE_V2_MODULE_NUM + x] = 0x00;
+                    }
+                }
+            }
+
+        EW_notify_qrcode_ready();
+        }
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* QR_get_qrcode_buf
+*
+* Get the QR code buffer handle.
+*
+* @return The pointer to RGB buffer of QR code.
+*
+*********************************************************************/
+qrcode_buf_handle_struct* QR_get_qrcode_buf
+    (
+    void
+    )
+{
+return &qrcode_buf_handle;
 }
 
 /*********************************************************************
@@ -103,96 +165,5 @@ void QR_init
     void
     )
 {
-qrcode_buf_handle.addr = ( void* )qrcode_buf;
-}
-
-/*********************************************************************
-*
-* @public
-* QR_generate_qrcode
-*
-* Write QR code to RGB buffer.
-*
-* @param esn Electronic Serial Number.
-* @param pixel_per_mod Pixel per module.
-*
-*********************************************************************/
-void QR_generate_qrcode
-    (
-    uint32_t esn,
-    uint32_t pixel_per_mod
-    )
-{
-uint32_t qrcode_width_pixel = pixel_per_mod * QRCODE_WIDTH_MODULE;
-qrcode_buf_handle.image_width = qrcode_width_pixel;
-qrcode_buf_handle.image_height = qrcode_width_pixel;
-qr_pixel_num = pixel_per_mod;
-
-unsigned char* bgra_buf = qrcode_buf_handle.addr;
-QRCode qrcode;
-uint8_t qrcodeData[qrcode_getBufferSize( QRCODE_VERSION )];
-char esn_decimal[ESN_STR_MAX_LEN + 1];
-
-if( INVALID_ESN != esn )
-    {
-    sprintf( esn_decimal, "%u", esn );
-    qr_encrypt_unit_id( esn_decimal );
-    }
-PRINTF( "ESN: %s \n\r", esn_decimal );
-
-qrcode_initText( &qrcode, qrcodeData, QRCODE_VERSION, ECC_QUARTILE, qr_code_text );
-
-if( qrcode.size > 0 )
-    {
-    // set to full white
-    memset( qrcode_buf_handle.addr, 0xFF, QRCODE_BUF_SIZE_BYTE );
-
-    for( int y = 0; y < QRCODE_WIDTH_MODULE; y++ ) // vertical direction
-        {
-        for( int x = 0; x < QRCODE_WIDTH_MODULE; x++ ) // horizontal direction
-            {
-            if( qrcode_getModule( &qrcode, x - QRCODE_MARGIN, y - QRCODE_MARGIN ) )
-                {
-                bgra_buf[y * QRCODE_WIDTH_MODULE + x] = 0x00;
-                }
-            }
-        }
-    EW_notify_qrcode_ready( qr_code_text );
-    }
-}
-
-/*********************************************************************
-*
-* @public
-* QR_get_qrcode_buf
-*
-* Get the QR code buffer handle.
-*
-* @return The pointer to RGB buffer contained QR code.
-*
-*********************************************************************/
-qrcode_buf_handle_struct* QR_get_qrcode_buf
-    (
-    void
-    )
-{
-return &qrcode_buf_handle;
-}
-
-/*********************************************************************
-*
-* @public
-* QR_pixel_per_mod
-*
-* Get the current pixel per module of QR code.
-*
-* @return The current pixel per module of QR code.
-*
-*********************************************************************/
-uint32_t QR_pixel_per_mod
-    (
-    void
-    )
-{
-return qr_pixel_num;
+qrcode_buf_handle.modules = qrcode_modules;
 }

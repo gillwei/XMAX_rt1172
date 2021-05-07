@@ -17,11 +17,12 @@ extern "C"{
 #include <stdbool.h>
 #include <stdint.h>
 
+#define QRCODE_PIXEL_PER_MODULE     ( 4 )
+
 typedef struct
     {
-    uint32_t image_width;         /**< image width (pixel) */
-    uint32_t image_height;        /**< image height (pixel) */
-    uint8_t* addr;                /**< pointer to buffer */
+    uint32_t module_num;          /**< number of modules in a row/column */
+    uint8_t* modules;             /**< pointer to buffer */
     } qrcode_buf_handle_struct;
 
 void QR_init
@@ -29,18 +30,13 @@ void QR_init
     void
     );
 
-void QR_generate_qrcode
+void QR_generate
     (
-    uint32_t esn,
-    uint32_t pixel_per_mod
+    const uint8_t* text,
+    const uint32_t text_length
     );
 
 qrcode_buf_handle_struct* QR_get_qrcode_buf
-    (
-    void
-    );
-
-uint32_t QR_pixel_per_mod
     (
     void
     );

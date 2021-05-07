@@ -1131,6 +1131,18 @@ enum EEPROMTest
 
   $rect <10,60,220,100>
   item READ_LAST_PAGE;
+
+  $rect <10,110,220,150>
+  item WRITE_CCUID;
+
+  $rect <10,160,220,200>
+  item WRITE_PASSKEY;
+
+  $rect <10,210,220,250>
+  item WRITE_DUMMY;
+
+  $rect <10,260,220,300>
+  item TOTAL;
 }
 
 $rect <260,120,460,160>

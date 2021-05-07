@@ -85,6 +85,11 @@ void ResourcesExternBitmap_Init( ResourcesExternBitmap _this, XHandle aArg );
 /* 'C' function for method : 'Resources::ExternBitmap.OnSetName()' */
 void ResourcesExternBitmap_OnSetName( ResourcesExternBitmap _this, XString value );
 
+/* The method Reload() triggers the extern bitmap object to reload the image file 
+   identified by the property @Name. This method is useful if the image file content 
+   has changed at the runtime. */
+void ResourcesExternBitmap_Reload( ResourcesExternBitmap _this );
+
 /* 'C' function for method : 'Resources::ExternBitmap.load()' */
 void ResourcesExternBitmap_load( ResourcesExternBitmap _this, XObject sender );
 

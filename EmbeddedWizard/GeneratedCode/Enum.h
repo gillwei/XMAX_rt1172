@@ -539,7 +539,11 @@ typedef enum
 typedef enum
 {
   EnumEEPROMTestWRITE_LAST_PAGE_FF      = 0,
-  EnumEEPROMTestREAD_LAST_PAGE          = 1
+  EnumEEPROMTestREAD_LAST_PAGE          = 1,
+  EnumEEPROMTestWRITE_CCUID             = 2,
+  EnumEEPROMTestWRITE_PASSKEY           = 3,
+  EnumEEPROMTestWRITE_DUMMY             = 4,
+  EnumEEPROMTestTOTAL                   = 5
 } EnumEEPROMTest;
 
 /* User defined enumeration: 'Enum::Language' */

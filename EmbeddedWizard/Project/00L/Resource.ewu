@@ -825,7 +825,7 @@ resource Resources::Bitmap IconWeatherPercentage
 // Brightness Settings
 note group Note12
 {
-  attr Bounds = <10,1150,251,1350>;
+  attr Bounds = <10,1150,250,1420>;
 }
 
 $rect <31,1190,231,1230>
@@ -3013,6 +3013,18 @@ $output false
 resource Resources::Bitmap IconUnitVolt
 {
   attr bitmapfile FileName = .\Res\vehicle_info\infounit_v.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,1340,230,1380>
+$output false
+resource Resources::Bitmap Brightness
+{
+  attr bitmapfile FileName = .\Res\brightness\brightness_icon.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;

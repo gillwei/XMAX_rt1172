@@ -47,9 +47,10 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
+#include "_MenuPushButton.h"
+#include "_TelephoneImageButton.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -102,12 +103,13 @@
 
 /* Deklaration of class : 'Settings::SET30_QRCode' */
 EW_DEFINE_FIELDS( SettingsSET30_QRCode, ComponentsBaseMainBG )
-  EW_OBJECT  ( QrCodeUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( QrCode,          ViewsImage )
-  EW_OBJECT  ( PixelText,       ViewsText )
-  EW_OBJECT  ( QrCodeWidthText, ViewsText )
-  EW_OBJECT  ( QrCodeContent,   ViewsText )
-  EW_VARIABLE( PixelPerModule,  XInt32 )
+  EW_OBJECT  ( QrCodeReadyEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( WhiteMargin,     ViewsRectangle )
+  EW_OBJECT  ( QrCodeImage,     ViewsImage )
+  EW_OBJECT  ( PushButton,      MenuPushButton )
+  EW_OBJECT  ( BrightnessUpButton, TelephoneImageButton )
+  EW_OBJECT  ( BrightnessDownButton, TelephoneImageButton )
+  EW_OBJECT  ( BrightnessIcon,  ViewsImage )
 EW_END_OF_FIELDS( SettingsSET30_QRCode )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET30_QRCode' */
@@ -179,7 +181,11 @@ void SettingsSET30_QRCode_OnShortUpKeyActivated( SettingsSET30_QRCode _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsSET30_QRCode_OnQrCodeUpdateSlot( SettingsSET30_QRCode _this, XObject 
+void SettingsSET30_QRCode_OnQrCodeReadySlot( SettingsSET30_QRCode _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Settings::SET30_QRCode.OnOkSelectedSlot()' */
+void SettingsSET30_QRCode_OnOkSelectedSlot( SettingsSET30_QRCode _this, XObject 
   sender );
 
 #ifdef __cplusplus

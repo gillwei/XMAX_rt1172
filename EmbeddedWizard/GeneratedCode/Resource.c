@@ -1031,4 +1031,10 @@ EW_RES_WITHOUT_VARIANTS( ResourceDialogBackground )
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitVolt' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconUnitVolt )
 
+/* Include a file containing the bitmap resource : 'Resource::Brightness' */
+#include "_ResourceBrightness.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::Brightness' */
+EW_RES_WITHOUT_VARIANTS( ResourceBrightness )
+
 /* Embedded Wizard */

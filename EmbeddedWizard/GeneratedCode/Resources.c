@@ -238,6 +238,14 @@ void ResourcesExternBitmap_OnSetName( ResourcesExternBitmap _this, XString value
   EwPostSignal( EwNewSlot( _this, ResourcesExternBitmap_load ), ((XObject)_this ));
 }
 
+/* The method Reload() triggers the extern bitmap object to reload the image file 
+   identified by the property @Name. This method is useful if the image file content 
+   has changed at the runtime. */
+void ResourcesExternBitmap_Reload( ResourcesExternBitmap _this )
+{
+  EwPostSignal( EwNewSlot( _this, ResourcesExternBitmap_load ), ((XObject)_this ));
+}
+
 /* 'C' function for method : 'Resources::ExternBitmap.load()' */
 void ResourcesExternBitmap_load( ResourcesExternBitmap _this, XObject sender )
 {

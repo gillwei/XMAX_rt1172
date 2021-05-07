@@ -147,13 +147,21 @@ switch( test_item )
     case EnumEEPROMTestREAD_LAST_PAGE:
         EEPM_get_last_page( &read_1byte_cb );
         break;
+    case EnumEEPROMTestWRITE_CCUID: /* 8 alphanumeric (0-9, A-F) */
+        EEPM_set_qrcode_ccuid( (uint8_t*)"1234CDEF", eepm_test_write_cb );
+        break;
+    case EnumEEPROMTestWRITE_PASSKEY: /* 6 digits */
+        EEPM_set_qrcode_passkey( 987654, eepm_test_write_cb );
+        break;
+    case EnumEEPROMTestWRITE_DUMMY: /* 4 digits */
+        EEPM_set_qrcode_dummy( 928, eepm_test_write_cb );
+        break;
     default:
         break;
     }
 }
 
 #if( UNIT_TEST_EEPROM )
-
     static void eepm_test_read_cb
         (
         bool    status,

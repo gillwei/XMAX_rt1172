@@ -293,26 +293,18 @@ class SystemDeviceClass : Templates::DeviceClass
   // about a particular system event.
   $rect <650,570,850,610>
   $output true
-  method void NotifyQrCodeReady( arg string aQrCodeStr )
+  method void NotifyQrCodeReady()
   {
-    trace "QR code is ready";
-    QrCodeText = aQrCodeStr;
     QrCodeSystemEvent.Trigger( null, false );
   }
 
   $rect <650,670,850,710>
-  method void GetQrCode( arg int32 pixelnum )
+  method void GetQrCode()
   {
     $if !$prototyper
-      native( pixelnum )
+      native
       {
-        ew_request_qrcode( pixelnum );
-      }
-    $else
-      // suppress warning
-      if( pixelnum > 0 )
-      {
-        // empty body
+        ew_request_qrcode();
       }
     $endif
   }
@@ -369,9 +361,6 @@ class SystemDeviceClass : Templates::DeviceClass
 
   $rect <680,170,930,210>
   object Core::SystemEvent UpdateLocalTimeSystemEvent;
-
-  $rect <870,620,1070,660>
-  property string QrCodeText;
 
   // Opening Flow Control
   note group Note6

@@ -73,7 +73,6 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( SoftwareVersion, XString )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
-  EW_PROPERTY( QrCodeText,      XString )
   EW_PROPERTY( BrightnessLevel, XInt32 )
   EW_PROPERTY( HomeType,        XEnum )
   EW_PROPERTY( InspectionDisplayPattern, XEnum )
@@ -188,18 +187,16 @@ void DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult( void* _this, XBool
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this, 
-  XString aQrCodeStr );
+void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this );
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyQrCodeReady()' */
-void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this, XString aQrCodeStr );
+void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this );
 
 /* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyQrCodeReady(). */
 #define _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetQrCode()' */
-void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClass _this, 
-  XInt32 pixelnum );
+void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetLocalTime()' */
 DeviceInterfaceRtcTime DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this );

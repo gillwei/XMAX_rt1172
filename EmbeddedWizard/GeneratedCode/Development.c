@@ -115,7 +115,7 @@ static const unsigned int _StringsDefault1[] =
 /* Compressed strings for the language 'Default'. */
 static const unsigned int _StringsDefault2[] =
 {
-  0x000003CE, /* ratio 52.16 % */
+  0x00000422, /* ratio 52.55 % */
   0xB8001D00, 0x800AE452, 0x00DC0034, 0x04000320, 0xC6002980, 0xA0039000, 0x0084C54C,
   0x58182E32, 0x0041C9E4, 0xA0021A6C, 0x9C23F132, 0x1204008C, 0x05A002B4, 0x43172100,
   0x924911D2, 0x1993C222, 0x52347013, 0x8745A2D2, 0x24EA5031, 0x4FA293C8, 0x32503291,
@@ -132,9 +132,18 @@ static const unsigned int _StringsDefault2[] =
   0x8444583D, 0xDFD8A5FA, 0x58BA308A, 0x8A058CA4, 0x2762A2D4, 0x45E3B7F5, 0xE1089519,
   0x57F1F989, 0x1A2C0017, 0x1D8CE319, 0x462388DA, 0xA267D64F, 0x88AA5584, 0x6E2F9165,
   0xA692A1C9, 0x85A60935, 0x91C055B7, 0x045D9D8C, 0x81C74491, 0xDA47A7A4, 0x4CE3C769,
-  0x5194883A, 0x64191C06, 0x013F7053, 0x8A9E8220, 0x9B9226C9, 0x10EA2DAE, 0x01E0000C,
-  0x653C4F00, 0xAB4116E4, 0x8698A459, 0x28D4868B, 0x69D60782, 0xA128A2D1, 0x00001014,
-  0x00000000
+  0xD194883A, 0x64191C05, 0xE93F7053, 0x226C98A9, 0x439AE9B9, 0x07800030, 0x94F13C00,
+  0xAD046A51, 0x1A629166, 0x8228B486, 0x1B79D607, 0xFA1904A1, 0x69226511, 0x001555A5,
+  0x6C000124, 0x0338CD40, 0x56C2678D, 0x9128A504, 0x0849505A, 0x8C90EAA1, 0xD104414D,
+  0x2166B78B, 0x74000E52, 0x36000378, 0xAD035000, 0x1014A128, 0x00000000
+};
+
+/* Compressed strings for the language 'Default'. */
+static const unsigned int _StringsDefault3[] =
+{
+  0x0000002A, /* ratio 114.29 % */
+  0xB8002700, 0x000AE452, 0x00D20039, 0x0CA003A0, 0xC8001000, 0xA003A800, 0x7900454D,
+  0x0180021E, 0x19000720, 0x18007000, 0x40401249, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -227,7 +236,10 @@ static const XStringRes _Const0055 = { _StringsDefault2, 0x018B };
 static const XRect _Const0056 = {{ 10, 50 }, { 470, 236 }};
 static const XStringRes _Const0057 = { _StringsDefault2, 0x01A6 };
 static const XStringRes _Const0058 = { _StringsDefault2, 0x01BB };
-static const XStringRes _Const0059 = { _StringsDefault2, 0x01D4 };
+static const XStringRes _Const0059 = { _StringsDefault2, 0x01D2 };
+static const XStringRes _Const005A = { _StringsDefault2, 0x01E3 };
+static const XStringRes _Const005B = { _StringsDefault2, 0x01FA };
+static const XStringRes _Const005C = { _StringsDefault3, 0x0002 };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -1827,10 +1839,15 @@ void DevelopmentDEV_EEPROMTest__Init( DevelopmentDEV_EEPROMTest _this, XObject a
   _this->_VMT = EW_CLASS( DevelopmentDEV_EEPROMTest );
 
   /* ... and initialize objects, variables, properties, etc. */
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 5 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
+  MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
+  MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
   _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0058 ));
   _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0059 ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const005A ));
+  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const005B ));
+  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const005C ));
 }
 
 /* Re-Initializer for the class 'Development::DEV_EEPROMTest' */
@@ -1867,9 +1884,9 @@ XString DevelopmentDEV_EEPROMTest_LoadItemTitle( DevelopmentDEV_EEPROMTest _this
 {
   XString Title = 0;
 
-  if ( aItemNo < 2 )
+  if ( aItemNo < 5 )
   {
-    Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 2 )];
+    Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 5 )];
   }
 
   return Title;

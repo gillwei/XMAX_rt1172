@@ -519,6 +519,9 @@ EW_DECLARE_BITMAP_RES( ResourceDialogBackground )
 /* Bitmap resource : 'Resource::IconUnitVolt' */
 EW_DECLARE_BITMAP_RES( ResourceIconUnitVolt )
 
+/* Bitmap resource : 'Resource::Brightness' */
+EW_DECLARE_BITMAP_RES( ResourceBrightness )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

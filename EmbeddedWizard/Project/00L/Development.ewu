@@ -818,12 +818,17 @@ class DEV_EEPROMTest : Menu::BaseMenuView
   {
     preset NoOfItems = ItemTitleArray.size;
     preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+    preset ArrowScrollBarVisible = true;
   }
 
   $rect <730,70,930,110>
-  array string ItemTitleArray[ 2 ] =
+  array string ItemTitleArray[ 5 ] =
   (
-    Default[0] = "Write \"last page\" 0xFF";
-    Default[1] = "Read \"last page\"";
+    Default[0] = "Write last page 0xFF";
+    Default[1] = "Read last page";
+    Default[2] = "Write CCUID 1234CDEF";
+    Default[3] = "Write PASSKEY 987654";
+    Default[4] = "Write dummy 0928";
   );
 }

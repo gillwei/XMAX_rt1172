@@ -852,8 +852,8 @@ int8_t qrcode_initBytes(QRCode *qrcode, uint8_t *modules, uint8_t version, uint8
     return 0;
 }
 
-int8_t qrcode_initText(QRCode *qrcode, uint8_t *modules, uint8_t version, uint8_t ecc, const char *data) {
-    return qrcode_initBytes(qrcode, modules, version, ecc, (uint8_t*)data, strlen(data));
+int8_t qrcode_initText(QRCode *qrcode, uint8_t *modules, uint8_t version, uint8_t ecc, uint8_t* data) {
+    return qrcode_initBytes( qrcode, modules, version, ecc, data, strlen( (char*)data ) );
 }
 
 bool qrcode_getModule(QRCode *qrcode, uint8_t x, uint8_t y) {
