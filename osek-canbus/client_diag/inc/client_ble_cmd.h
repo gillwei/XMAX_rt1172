@@ -43,4 +43,11 @@ ble_command_type* client_ble_cmd_pull_queue
     (
     void
     );
+
+extern void client_ble_cmd_enter_queue
+    (
+    uint16 command,
+    uint32 data_size,
+    uint8* data
+    );
 #endif

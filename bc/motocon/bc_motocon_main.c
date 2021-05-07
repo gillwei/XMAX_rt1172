@@ -364,7 +364,6 @@ for(; index < size; index++)
     }
     BC_MOTOCON_PRINTF( " \r\n");
 #endif
-BC_MOTOCON_PRINTF( "%s, command: %d, size: %d\r\n", __FUNCTION__, command, size );
 if( command == BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE )
     {
     uint8_t data[3];

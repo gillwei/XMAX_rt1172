@@ -312,8 +312,8 @@ if( p_rmd != NULL )
         else if( TRUE == l_can_defined_ydt_id_match )
             {
             /* for detecting ydt online */
-            client_appl_set_ydt_connect_state( TRUE );
             VI_notify_ydt_detected();
+            client_appl_set_ydt_connect_state();
             }
         else
             {

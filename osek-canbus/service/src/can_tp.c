@@ -68,7 +68,7 @@ Maximum Useable Data Bytes by Frame Type
 /*------------------------------------------------------
 Flow Control Frame Number of Data Bytes
 ------------------------------------------------------*/
-#define TP_FCF_NUM_BYTES            (0x03u)
+#define TP_FCF_NUM_BYTES            (0x08u)
 
 /*------------------------------------------------------
 Macros Used for Byte Masks and Other Manipulations
@@ -2999,7 +2999,7 @@ uint8                 * l_p_rcv_pkt;
 uint16                  l_rcv_pkt_size;
 uint16                  l_num_bytes;
 TP_RC                  l_return_code;
-
+uint8                   index;
 /*------------------------------------------------------
 Get the Receive process state and status information
 from the TP channel info. Process the Receive data frame
@@ -3079,7 +3079,10 @@ switch( frame_type )
                 l_p_tmd_data[0] = TP_NP_FCF_OVFLW_PCI;
                 l_p_tmd_data[1] = l_p_recv_xfr->block_size;
                 l_p_tmd_data[2] = l_p_recv_xfr->st_min;
-
+                for( index = 3; index < TP_FCF_NUM_BYTES; index++ )
+                    {
+                    l_p_tmd_data[index] = 0x55;
+                    }
                 l_p_recv_xfr->state = TP_NS_RECV_WOVFTXC;
                 schedule_transfer_timeout( l_p_recv_xfr->n_ar_timeout, &( l_p_recv_xfr->timer ) );
                 (void) can_transmit( hw_inst, l_p_tmd );
@@ -3209,10 +3212,12 @@ switch( frame_type )
                             l_p_tmd_data[1] = l_p_recv_xfr->block_size;
                             //l_p_tmd_data[2] = l_p_recv_xfr->st_min;
                             l_p_tmd_data[2] = 0x0b;
-
+                            for( index = 3; index < TP_FCF_NUM_BYTES; index++ )
+                                {
+                                l_p_tmd_data[index] = 0x55;
+                                }
                             l_p_recv_xfr->state = TP_NS_RECV_WCTSTXC;
                             schedule_transfer_timeout( l_p_recv_xfr->n_ar_timeout, &( l_p_recv_xfr->timer ) );
-
                             (void) can_transmit( hw_inst, l_p_tmd );
                             }
                         else

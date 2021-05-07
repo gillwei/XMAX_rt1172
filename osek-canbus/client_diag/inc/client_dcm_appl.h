@@ -217,7 +217,7 @@ client_get_current_process_flow
 
 extern void client_appl_set_ydt_connect_state
     (
-    boolean connect_state
+    void
     );
 
 extern void client_appl_operation_mode_switch
@@ -240,11 +240,6 @@ extern void client_appl_ble_req_command_dispatch
     uint16 req_command,
     uint32 data_size,
     uint8* data
-    );
-
-extern void client_appl_set_ydt_connect_state
-    (
-    boolean connect_state
     );
 
 extern void client_appl_cmd_rsp_result_notify

@@ -25,7 +25,7 @@
 /*Micro switch for DEBUG*/
 #define APPL_DEBUG                                   (TRUE)
 #define APPL_PENDING                                 (TRUE )
-#define CLIENT_DEBUG(x)   PRINTF("[%s-%s-%s]:%s",__FILE__,__TIME__,__func__, x)
+#define CLIENT_DEBUG(x)   PRINTF("[%s-%s-%s]:%s\r\n",__FILE__,__TIME__,__func__, x)
 
 
 /*--------------------------------------------------------------------
@@ -33,6 +33,8 @@
 --------------------------------------------------------------------*/
 /*define yamaha diagnostic tools connected state*/
 /*define BLE connected state*/
+static boolean ydt_timer_flag = FALSE;
+static uint16 ydt_timer_count = 0x0000;
 static boolean ydt_connected_state = FALSE;
 static boolean ble_connected_state = FALSE;
 static EnumOperationMode sys_operation_mode = EnumOperationModeTOTAL;
@@ -52,7 +54,6 @@ static client_appl_server_list_detect_type server_list_detect_infos[SUPPORT_SERV
 static client_appl_detect_connected_server_infos_type detect_connected_server_infos ={0};
 
 /*for read DTC*/
-static boolean is_read_init_dtc =  FALSE;
 static client_appl_read_dtc_infos_type read_dtc_infos = { 0 };
 
 /*for common identifier data*/
@@ -104,7 +105,7 @@ char* print_end[PROCESS_RESULT_MAX] = {0};
 #define set_current_conncet_server_id( value )       ( current_connect_server_id = value )
 #define get_current_connect_server_id()              ( current_connect_server_id )
 #define decrease_delay_timer()                       ( delay_timer_count -- )
-#define set_client_app_cmd_rsp_state( state )        ( client_app_cmd_rsp_state = state )
+#define set_client_app_cmd_rsp_state( state )        client_app_cmd_rsp_state = state; PRINTF(" Current send state:%d\r\n",client_app_cmd_rsp_state)
 #define get_client_app_cmd_rsp_state()               ( client_app_cmd_rsp_state )
 #define is_client_app_cmd_rsp_state(state)           ( client_app_cmd_rsp_state == state? TRUE: FALSE )
 
@@ -320,16 +321,38 @@ static client_process_flow_handler_type client_process_flow_handler[SUPPORT_FUCN
 
 /*!*******************************************************************
 * @public
+* Function name: client_appl_enter_ydt_handler
+* Description:   this function will disconnect the diagnostic server
+with all servers
+*********************************************************************/
+static void client_appl_enter_ydt_handler
+    (
+    void
+    )
+{
+CLIENT_DEBUG("Detect Yamaha Detect tools online");
+client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
+client_mem_reset_data();
+}
+
+/*!*******************************************************************
+* @public
 * Function name: client_appl_set_ydt_connect_state
 * Description:  Set current YAMAHA diagnostic tools connect state
 * Usage:   Called by can driver
 *********************************************************************/
 void client_appl_set_ydt_connect_state
     (
-    boolean connect_state
+    void
     )
 {
-ydt_connected_state = connect_state;
+if( FALSE == ydt_connected_state )
+    {
+    ydt_connected_state = TRUE;
+    client_appl_enter_ydt_handler();
+    }
+ydt_timer_flag = TRUE;
+ydt_timer_count = 10000;/*50s*/
 }
 
 /*!*******************************************************************
@@ -344,20 +367,6 @@ static boolean client_appl_get_ydt_connect_state
     )
 {
 return ydt_connected_state;
-}
-
-/*!*******************************************************************
-* @public
-* Function name: client_appl_enter_ydt_handler
-* Description:   this function will disconnect the diagnostic server
-with all servers
-*********************************************************************/
-static void client_appl_enter_ydt_handler
-    (
-    void
-    )
-{
-client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
 }
 
 /*!*******************************************************************
@@ -894,10 +903,6 @@ boolean client_appl_diagnostic_enable
 /*Check the Yamaha diagnostic tools connect state*/
 if( TRUE == client_appl_get_ydt_connect_state() )
     {
-    if( PROCESS_FLOW_IDLE != client_process_flow_state )
-        {
-        client_appl_enter_ydt_handler();
-        }
     return FALSE;
     }
 
@@ -959,7 +964,7 @@ else if( PROCESS_FLOW_INIT_RDTCBS == client_process_flow_state )
     }
 else if( PROCESS_FLOW_MONITOR == client_process_flow_state )
     {
-    if( (PROCESS_RESULT_SUCCESS == read_local_monitor_infos.process_result ) && ( TRUE == read_local_monitor_infos.is_cycle_transmission ) && ( CMD_RSP_PROCESSING != client_app_cmd_rsp_state ) )
+    if( ( PROCESS_RESULT_END == read_local_monitor_infos.process_result ) && ( TRUE == read_local_monitor_infos.is_cycle_transmission ) && ( is_client_app_cmd_rsp_state( CMD_RSP_DONE ) ) )
         {
         return TRUE;
         }
@@ -973,6 +978,29 @@ return FALSE;
 }
 
 
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_delay_ydt_online
+* Description  : this function will calculate the time of last ydt request
+* usage        : called periodly
+*********************************************************************************/
+void client_appl_delay_ydt_online
+    (
+    void
+    )
+{
+if( TRUE == ydt_timer_flag )
+    {
+    ydt_timer_count--;
+    if( 0x0000 == ydt_timer_count )
+        {
+        CLIENT_DEBUG("Detect Yamaha Detect tools lost connect");
+        ydt_timer_flag = FALSE;
+        client_appl_init();
+        }
+    }
+}
 
 /*!******************************************************************************
 *
@@ -987,6 +1015,8 @@ void client_appl_main_5ms_handler
     void
     )
 {
+client_appl_delay_ydt_online();
+
 if( FALSE == client_appl_diagnostic_enable() )
     {
     client_appl_check_ble_command( FALSE );
@@ -1501,7 +1531,7 @@ if( data_size !=  0x02 )/*server_code*/
 
 client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
 set_current_conncet_server_id( channel_id );
-read_loacl_market_infos.connected_server_id = channel_id;
+read_local_monitor_infos.connected_server_id = channel_id;
 read_local_monitor_infos.local_id_list = (uint8*)support_monitor_data_id_list;
 read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
 read_local_monitor_infos.current_local_data_index = 0x00;
@@ -1955,6 +1985,7 @@ else
     {
     if( NULL != ble_command_ptr )
         {
+        set_client_app_cmd_rsp_state( CMD_RSP_IDLE );
         client_appl_ble_req_command_dispatch( ble_command_ptr->ble_command, ble_command_ptr->data_length, ble_command_ptr->command_data );
         }
     else
@@ -2010,9 +2041,7 @@ static void client_appl_send_faild_to_motocon
     client_process_flow_type process_flow
     )
 {
-uint32 resp_length = 0;
 uint16 resp_command = 0;
-uint16 current_ecu_number = 0x0000;
 
 switch( process_flow )
     {
@@ -2043,6 +2072,8 @@ switch( process_flow )
     client_appl_response_can_related_data( resp_command, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
 
 }
+
+
 /**************************Dividing line***************************/
 /********************For server detect*****************************/
  /*!******************************************************************************
@@ -2624,12 +2655,11 @@ switch( read_dtc_infos.curr_dtc_status_frame )
         if( FALSE == read_dtc_infos.is_storge_init_dtc )
         {
         client_mem_storage_init_dtc_data( connect_server_id, (uint16)0X02, (uint8*)&swap_server_code_u16 );
-        client_mem_storage_init_dtc_data( connect_server_id, resp_lenth, ( resp_data + 1 ));
+        client_mem_storage_init_dtc_data( connect_server_id, ( resp_lenth - 1), ( resp_data + 1 ));
         }
         else
         {
-        client_mem_storage_init_dtc_data( connect_server_id, (uint16)0X02, (uint8*)&swap_server_code_u16 );
-        client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth, ( resp_data + 1 ) );
+        client_mem_storage_identifier_data( get_current_connect_server_id(), ( resp_lenth - 1 ), ( resp_data + 1 ) );
         }
         read_dtc_infos.process_result = PROCESS_RESULT_END;
         break;
