@@ -56,6 +56,8 @@ static uint8_t write_bd_address[BD_ADDRESS_LENGTH]; // Use for store compare bd 
 static uint8_t read_bd_address[BD_ADDRESS_LENGTH];  // Use for store compare bd address value
 static uint8_t write_sup_func[SUPPORTED_FUNCTION_LENGTH];
 static uint8_t read_sup_func[SUPPORTED_FUNCTION_LENGTH];
+static uint8_t write_ccuid[QRCODE_CCUID_LENGTH];
+static uint8_t read_ccuid[QRCODE_CCUID_LENGTH];
 
 /*--------------------------------------------------------------------
                         PROTOTYPES
@@ -653,7 +655,31 @@ static void eepm_qrcode_ccuid_r_callback
     status_t status
     )
 {
-eepm_r_callback( EEPM_BLOCK_CONFIG_QRCODE_CCUID, status );
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].cb_write )
+            {
+            if( 0 == memcmp( write_ccuid, read_ccuid, QRCODE_CCUID_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].callback_ptr( rtn, read_ccuid );
+    }
 }
 
 /*================================================================================================*/
@@ -1571,18 +1597,18 @@ return rtn;
 /*================================================================================================*/
 BaseType_t EEPM_set_qrcode_ccuid
     (
-    uint32_t ccuid,
+    uint8_t * ccuid,
     void (*callback_ptr)(bool, void*)
     )
 {
 BaseType_t rtn = pdTRUE;
 if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].semaphore, ( TickType_t ) 0 ) == pdTRUE )
     {
-    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].write_val = ccuid;
     eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].need_verified = true;
     eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].callback_ptr = callback_ptr;
-    rtn = eep_set_ccu_id( &( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].write_val ), eepm_qrcode_ccuid_w_callback );
-    eep_get_ccu_id( &( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].read_val ), eepm_qrcode_ccuid_r_callback );
+    memcpy( write_ccuid, ccuid, QRCODE_CCUID_LENGTH );
+    rtn = eep_set_ccu_id( write_ccuid, eepm_qrcode_ccuid_w_callback );
+    eep_get_ccu_id( read_ccuid, eepm_qrcode_ccuid_r_callback );
     }
 else
     {
@@ -1613,7 +1639,7 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].semaphore, ( TickT
     eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].write_val = 0;
     eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_QRCODE_CCUID].callback_ptr = callback_ptr;
-    rtn = eep_get_ccu_id( &( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_PASSKEY].read_val ), eepm_qrcode_ccuid_r_callback );
+    eep_get_ccu_id( read_ccuid, eepm_qrcode_ccuid_r_callback );
     }
 else
     {

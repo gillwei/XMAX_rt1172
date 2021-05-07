@@ -602,12 +602,12 @@ return PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 /*================================================================================================*/
 BaseType_t eep_set_ccu_id
     (
-    uint32_t* ccu_id_ptr,
+    uint8_t* ccu_id_ptr,
     void ( *callback_func_ptr ) ( status_t )
     )
 {
 return PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
-                                  (uint8_t *)ccu_id_ptr,
+                                  ccu_id_ptr,
                                   block_config_list[EEPM_BLOCK_CONFIG_QRCODE_CCUID].length,
                                   block_config_list[EEPM_BLOCK_CONFIG_QRCODE_CCUID].start_addr,
                                   EEPROM_SUB_ADDR_SIZE,
@@ -625,12 +625,12 @@ return PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
 /*================================================================================================*/
 BaseType_t eep_get_ccu_id
     (
-    uint32_t* ccu_id_ptr,
+    uint8_t* ccu_id_ptr,
     void ( *callback_func_ptr ) ( status_t )
     )
 {
 return PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
-                                 (uint8_t *)ccu_id_ptr,
+                                 ccu_id_ptr,
                                  block_config_list[EEPM_BLOCK_CONFIG_QRCODE_CCUID].length,
                                  block_config_list[EEPM_BLOCK_CONFIG_QRCODE_CCUID].start_addr,
                                  EEPROM_SUB_ADDR_SIZE,

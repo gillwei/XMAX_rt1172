@@ -175,13 +175,13 @@ BaseType_t eep_get_burn_in_target_time
 
 BaseType_t eep_set_ccu_id
     (
-    uint32_t* ccu_id_ptr,
+    uint8_t* ccu_id_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
 BaseType_t eep_get_ccu_id
     (
-    uint32_t* ccu_id_ptr,
+    uint8_t* ccu_id_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 

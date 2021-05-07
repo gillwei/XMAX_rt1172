@@ -34,7 +34,7 @@ extern "C" {
 #define BD_ADDRESS_LENGTH                    ( 6 )
 #define BURN_IN_TIME_LENGTH                  ( 4 )
 #define BURN_IN_TARGET_TIME_LENGTH           ( 4 )
-#define QRCODE_CCUID_LENGTH                  ( 4 )
+#define QRCODE_CCUID_LENGTH                  ( 8 )
 #define QRCODE_PASSKEY_LENGTH                ( 4 )
 #define QRCODE_DUMMY_LENGTH                  ( 2 )
 #define TRIP_TIME_LENGTH                     ( 4 )
@@ -215,7 +215,7 @@ BaseType_t EEPM_get_burn_in_target_time
 
 BaseType_t EEPM_set_qrcode_ccuid
     (
-    uint32_t ccuid,
+    uint8_t * ccuid,
     void (*callback_ptr)(bool, void*)
     );
 

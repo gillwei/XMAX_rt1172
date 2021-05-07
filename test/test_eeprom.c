@@ -58,7 +58,7 @@
     static uint32_t test_eeprom_tick = 0;
     static uint8_t test_eepm_flag = 0;
     #if( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_QRCODE_CCUID )
-        uint32_t test_ccuid = 0x1234ABEF;
+        uint8_t ccuid[QRCODE_CCUID_LENGTH] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08 };
     #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_QRCODE_PASSKEY )
         uint32_t pass_key = 0x12345678;
     #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_QRCODE_DUMMY )
@@ -176,7 +176,7 @@ switch( test_item )
     if( test_eepm_flag == TEST_EEPM_STEP_WRITE )
         {
         #if( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_QRCODE_CCUID )
-            EEPM_set_qrcode_ccuid( test_ccuid, eepm_test_write_cb );
+            EEPM_set_qrcode_ccuid( ccuid, eepm_test_write_cb );
         #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_QRCODE_PASSKEY )
             EEPM_set_qrcode_passkey( pass_key, eepm_test_write_cb );
         #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_QRCODE_DUMMY )
