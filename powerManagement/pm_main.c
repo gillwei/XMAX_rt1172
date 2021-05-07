@@ -5,7 +5,7 @@
 * @brief
 * power management module
 *
-* Copyright 2020 by Garmin Ltd. or its subsidiaries.
+* Copyright 2021 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 
 #ifdef __cplusplus
@@ -13,7 +13,7 @@ extern "C"{
 #endif
 
 /*--------------------------------------------------------------------
-                        GENERAL INCLUDES
+                           GENERAL INCLUDES
 --------------------------------------------------------------------*/
 #include "PM_pub.h"
 #include "FreeRTOS.h"
@@ -27,30 +27,34 @@ extern "C"{
 #include "pin_mux.h"
 #include "GRM_pub_prj.h"
 #include "display_support.h"
-/*--------------------------------------------------------------------
-                        Definitions
---------------------------------------------------------------------*/
-#define GPC_CPU_MODE_CTRL GPC_CPU_MODE_CTRL_0
+#include "PERIPHERAL_pub.h"
 
-#define WAKEUP_GPIO                     GPIO13
-#define WAKEUP_GPIO_PIN                 ( 0U )
+/*--------------------------------------------------------------------
+                           LITERAL CONSTANTS
+--------------------------------------------------------------------*/
+#define GPC_CPU_MODE_CTRL               GPC_CPU_MODE_CTRL_0
+
+#define WAKEUP_GPIO                     BOARD_INITPINS_IGN_WAKE_GPIO
+#define WAKEUP_GPIO_PIN                 BOARD_INITPINS_IGN_WAKE_GPIO_PIN
 #define WAKEUP_IRQ                      GPIO13_Combined_0_31_IRQn
 #define WAKEUP_IRQ_HANDLER              GPIO13_Combined_0_31_IRQHandler
 
-#define TASK_TIME_DELAY                 ( 10 )
+#define PM_TASK_TIME_DELAY              ( 10 )
+#define PM_MONITOR_TIME_DELAY           ( 1000 )
 #define GO_TO_SLEEP_TIME_MS             ( 40 )
-#define GO_TO_SLEEP_COUNTER             ( GO_TO_SLEEP_TIME_MS / TASK_TIME_DELAY )
+#define GO_TO_SLEEP_COUNTER             ( GO_TO_SLEEP_TIME_MS / PM_TASK_TIME_DELAY )
 #define FORCE_SLEEP_TIME_MS             ( 100 )
-#define FORCE_SLEEP_COUNTER             ( FORCE_SLEEP_TIME_MS / TASK_TIME_DELAY )
+#define FORCE_SLEEP_COUNTER             ( FORCE_SLEEP_TIME_MS / PM_TASK_TIME_DELAY )
 
 #define MAX_MODULE_NUMBER               ( 10 )
 #define MAX_MODULE_NAME                 ( 32 )
-/*--------------------------------------------------------------------
-                        LITERAL CONSTANTS
---------------------------------------------------------------------*/
+
+#define MAX_OPERATION_VOLTAGE           ( 16500 )
+#define MIN_OPERATION_VOLTAGE           ( 7500 )
+#define SHUTDOWN_CONFIRM_COUNT          ( 5 )
 
 /*--------------------------------------------------------------------
-                        TYPES
+                                 TYPES
 --------------------------------------------------------------------*/
 typedef struct
     {
@@ -58,31 +62,34 @@ typedef struct
     void ( *callback_func_ptr ) ( bool );
     bool is_registered;
     }pm_callback_type;
+
 /*--------------------------------------------------------------------
-                        PROJECT INCLUDES
+                           PROJECT INCLUDES
 --------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------
-                        MEMORY CONSTANTS
+                           MEMORY CONSTANTS
 --------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------
-                        VARIABLES
+                               VARIABLES
 --------------------------------------------------------------------*/
 static int              register_cb_index    = 0;
 static int              unregister_cb_number = 0;
-static TickType_t       task_delay           = pdMS_TO_TICKS( TASK_TIME_DELAY );
+static TickType_t       pm_task_delay        = pdMS_TO_TICKS( PM_TASK_TIME_DELAY );
+static TickType_t       pm_monitor_delay     = pdMS_TO_TICKS( PM_MONITOR_TIME_DELAY );
 static pm_callback_type module_cb[MAX_MODULE_NUMBER];
-static bool             start_snvs    = false;
+static bool             start_snvs           = false;
+
+static uint8_t          shut_down_counter    = 0;
 
 /*--------------------------------------------------------------------
-                        PROTOTYPES
+                                MACROS
 --------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------
-                        PROCEDURES
+                              PROCEDURES
 --------------------------------------------------------------------*/
-
 static void set_wakeup_config
     (
     void
@@ -103,6 +110,11 @@ static void pm_main
     void* arg
     );
 
+static void pm_monitor
+    (
+    void* arg
+    );
+
 static void pm_create_task
     (
     void
@@ -114,6 +126,11 @@ static bool go_to_snvs_timeout
     );
 
 static bool force_snvs_timeout
+    (
+    void
+    );
+
+static void go_to_snvs_mode
     (
     void
     );
@@ -156,16 +173,14 @@ static void enable_wakeup_source
 GPC_CM_EnableIrqWakeup( GPC_CPU_MODE_CTRL, irq, true );
 }
 
-/*================================================================================================*/
-/**
-@brief   disable_wakeup_source
-@details
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
-
+/*********************************************************************
+*
+* @private
+* disable_wakeup_source
+*
+* @brief disable wakeup irq
+*
+*********************************************************************/
 static void disable_wakeup_source
     (
     uint32_t irq
@@ -173,16 +188,15 @@ static void disable_wakeup_source
 {
 GPC_CM_EnableIrqWakeup( GPC_CPU_MODE_CTRL, irq, false );
 }
-/*================================================================================================*/
-/**
-@brief   WAKEUP_IRQ_HANDLER
-@details
 
-@return None
-@retval None
-*/
-/*================================================================================================*/
-
+/*********************************************************************
+*
+* @private
+* WAKEUP_IRQ_HANDLER
+*
+* @brief IRQ handler for wakeup source
+*
+*********************************************************************/
 void WAKEUP_IRQ_HANDLER
     (
     void
@@ -197,16 +211,14 @@ if( ( 1U << WAKEUP_GPIO_PIN ) & GPIO_GetPinsInterruptFlags( WAKEUP_GPIO ) )
 SDK_ISR_EXIT_BARRIER;
 }
 
-/*================================================================================================*/
-/**
-@brief   PM_init
-@details
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
-
+/*********************************************************************
+*
+* @public
+* PM_init
+*
+* @brief initial function to create pm related task
+*
+*********************************************************************/
 void PM_init
     (
     void
@@ -215,15 +227,14 @@ void PM_init
 pm_create_task();
 }
 
-/*================================================================================================*/
-/**
-@brief   PM_register_callback
-@details
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
+/*********************************************************************
+*
+* @public
+* PM_register_callback
+*
+* @brief the function for other task to register a pm notification callback
+*
+*********************************************************************/
 void PM_register_callback
     (
     const char* const    name,
@@ -236,15 +247,14 @@ module_cb[register_cb_index].is_registered = true;
 register_cb_index++;
 }
 
-/*================================================================================================*/
-/**
-@brief   PM_unregister_callback
-@details
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
+/*********************************************************************
+*
+* @public
+* PM_register_callback
+*
+* @brief the function for other task to unregister a pm notification callback
+*
+*********************************************************************/
 void PM_unregister_callback
     (
     const char* const    moduleName
@@ -265,16 +275,14 @@ for( int idx = 0; idx < register_cb_index; idx++ )
     }
 }
 
-/*================================================================================================*/
-/**
-@brief   PM_system_reset
-@details
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
-
+/*********************************************************************
+*
+* @public
+* PM_system_reset
+*
+* @brief the function to perform system reset
+*
+*********************************************************************/
 void PM_system_reset
     (
     void
@@ -283,40 +291,46 @@ void PM_system_reset
 NVIC_SystemReset();
 }
 
-/*================================================================================================*/
-/**
-@brief   pm_create_task
-@details
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
+/*********************************************************************
+*
+* @private
+* pm_create_task
+*
+* @brief The function to create PM related freeRTOS task
+*
+*********************************************************************/
 static void pm_create_task
     (
     void
     )
 {
-if( pdPASS == xTaskCreate( pm_main, "pm_main", ( configMINIMAL_STACK_SIZE ), NULL, TASK_PRIO_PM, NULL ) )
+if( pdPASS == xTaskCreate( pm_main, "pm_main", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_PM, NULL ) )
     {
-    PRINTF("%s ok\r\n", __FUNCTION__ );
+    PRINTF( "pm_main create ok\r\n" );
     }
 else
     {
-    PRINTF("%s fail\r\n", __FUNCTION__ );
+    PRINTF( "pm_main create fail\r\n" );
+    }
+
+if( pdPASS == xTaskCreate( pm_monitor, "pm_monitor", configMINIMAL_STACK_SIZE * 2, NULL, TASK_PRIO_PM, NULL ) )
+    {
+    PRINTF( "pm_monitor create ok\r\n" );
+    }
+else
+    {
+    PRINTF( "pm_monitor create fail\r\n" );
     }
 }
 
-/*================================================================================================*/
-/**
-@brief   notify_pm_callback
-@detail
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
-
+/*********************************************************************
+*
+* @private
+* notify_pm_callback
+*
+* @brief The function to notifty all registered module with ACC status
+*
+*********************************************************************/
 static void notify_pm_callback
     (
     volatile bool ign_status
@@ -328,15 +342,15 @@ for( int idx = 0; idx < register_cb_index; idx++ )
     }
 }
 
-/*================================================================================================*/
-/**
-@brief   go_to_snvs_timeout
-@detail
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
+/*********************************************************************
+*
+* @private
+* go_to_snvs_timeout
+*
+* @brief The function is to check whether the SNVS timeout condition
+*        is fulfill
+*
+*********************************************************************/
 static bool go_to_snvs_timeout
     (
     volatile bool ign_status
@@ -363,15 +377,15 @@ if( !start_snvs )
 return start_snvs;
 }
 
-/*================================================================================================*/
-/**
-@brief   force_snvs_timeout
-@details
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
+/*********************************************************************
+*
+* @private
+* force_snvs_timeout
+*
+* @brief The function is to check whether the SNVS force timeout
+*        condition is fulfill
+*
+*********************************************************************/
 static bool force_snvs_timeout
     (
     void
@@ -391,15 +405,14 @@ if( !force_snvs )
 return force_snvs;
 }
 
-/*================================================================================================*/
-/**
-@brief   pm_main
-@details
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
+/*********************************************************************
+*
+* @private
+* pm_main
+*
+* @brief This task checks the ign state and decide to go to SNVS or not.
+*
+*********************************************************************/
 static void pm_main
     (
     void* arg
@@ -421,25 +434,76 @@ while( true )
             }
         if( force_snvs_timeout() )
             {
-            set_wakeup_config();
-            snvs_pre_handler();
-            enter_snvs();
+            go_to_snvs_mode();
             }
         }
-    vTaskDelay( task_delay );
+    vTaskDelay( pm_task_delay );
     }
 vTaskDelete( NULL );
 }
 
-/*================================================================================================*/
-/**
-@brief   disable_all_wakeup_source
-@details
+/*********************************************************************
+*
+* @private
+* pm_monitor
+*
+* @brief This task monitors if the voltage is in range or not.
+*
+*********************************************************************/
+static void pm_monitor
+    (
+    void* arg
+    )
+{
+static uint16_t vbatt_voltage = 0;
 
-@return None
-@retval None
-*/
-/*================================================================================================*/
+while( true )
+    {
+    vbatt_voltage = PERIPHERAL_adc_get_vbatt_converted();
+
+    if( ( vbatt_voltage >= MAX_OPERATION_VOLTAGE ) || ( vbatt_voltage <= MIN_OPERATION_VOLTAGE ) )
+        {
+        if( ++shut_down_counter == SHUTDOWN_CONFIRM_COUNT )
+            {
+            go_to_snvs_mode();
+            }
+        }
+    else
+        {
+        shut_down_counter = 0;
+        }
+
+    vTaskDelay( pm_monitor_delay );
+    }
+vTaskDelete( NULL );
+}
+
+/*********************************************************************
+*
+* @private
+* go_to_snvs_mode
+*
+* @brief This function control the MCU to go into SNVS mode
+*
+*********************************************************************/
+static void go_to_snvs_mode
+    (
+    void
+    )
+{
+set_wakeup_config();
+snvs_pre_handler();
+enter_snvs();
+}
+
+/*********************************************************************
+*
+* @private
+* disable_all_wakeup_source
+*
+* @brief This function disable all the wakeup source
+*
+*********************************************************************/
 static void disable_all_wakeup_source
     (
     GPC_CPU_MODE_CTRL_Type *base
@@ -451,16 +515,15 @@ for( i = 0; i < GPC_CPU_MODE_CTRL_CM_IRQ_WAKEUP_MASK_COUNT; i++ )
     base->CM_IRQ_WAKEUP_MASK[i] |= 0xFFFFFFFF;
     }
 }
-/*================================================================================================*/
-/**
-@brief   set_wakeup_config
-@details
 
-@return None
-@retval None
-*/
-/*================================================================================================*/
-
+/*********************************************************************
+*
+* @private
+* set_wakeup_config
+*
+* @brief This function setup wakeup source config
+*
+*********************************************************************/
 static void set_wakeup_config
     (
     void
@@ -473,16 +536,14 @@ disable_all_wakeup_source( GPC_CPU_MODE_CTRL );
 enable_wakeup_source( WAKEUP_IRQ );
 }
 
-/*================================================================================================*/
-/**
-@brief   snvs_pre_handler
-@details
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
-
+/*********************************************************************
+*
+* @private
+* snvs_pre_handler
+*
+* @brief This function do the function before we shutdown the system
+*
+*********************************************************************/
 static void snvs_pre_handler
     (
     void
@@ -492,16 +553,14 @@ PRINTF("Now shutting down the system...\r\n");
 display_pre_handler();
 }
 
-/*================================================================================================*/
-/**
-@brief   enter_snvs
-@details
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
-
+/*********************************************************************
+*
+* @private
+* enter_snvs
+*
+* @brief This function set the register for MCU to go into SNVS
+*
+*********************************************************************/
 static void enter_snvs
     (
     void
