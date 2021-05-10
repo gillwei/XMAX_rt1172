@@ -362,6 +362,9 @@ CoreView CoreVerticalList_releaseHeadItem( CoreVerticalList _this );
 /* 'C' function for method : 'Core::VerticalList.confirmHeadItem()' */
 CoreView CoreVerticalList_confirmHeadItem( CoreVerticalList _this );
 
+/* 'C' function for method : 'Core::VerticalList.OnSetEndless()' */
+void CoreVerticalList_OnSetEndless( CoreVerticalList _this, XBool value );
+
 /* 'C' function for method : 'Core::VerticalList.OnSetScrollOffset()' */
 void CoreVerticalList_OnSetScrollOffset( CoreVerticalList _this, XInt32 value );
 

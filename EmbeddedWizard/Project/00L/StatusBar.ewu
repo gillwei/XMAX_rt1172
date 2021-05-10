@@ -495,33 +495,19 @@ class Main : Core::Group
   {
     if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.AIR_TEMPERATURE ) )
     {
-      var DeviceInterface::VehicleDataClass AirTemperatureContext = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.AIR_TEMPERATURE );
       var DeviceInterface::VehicleDataClass TemepratureUnitContext = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TEMPERATURE_UNIT );
-      if( null != AirTemperatureContext && null != TemepratureUnitContext )
+      if( null != TemepratureUnitContext )
       {
-        if( AirTemperatureContext.Valid )
+        if( Enum::TemperatureSettingItem.TEMP_F == (Enum::TemperatureSettingItem)TemepratureUnitContext.DataUInt32 )
         {
-          var float AirTemperature;
-          if( Enum::TemperatureSettingItem.TEMP_F == (Enum::TemperatureSettingItem)TemepratureUnitContext.DataUInt32 )
-          {
-            UnitImage.FrameNumber = 1;
-            AirTemperature = AirTemperatureContext.DataFloat * 1.8 + 32;
-            AirTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( AirTemperature, Settings::MIN_TEMPERATURE_DEG_F, Settings::MAX_TEMPERATURE_DEG_F );
-          }
-          else
-          {
-            UnitImage.FrameNumber = 0;
-            AirTemperature = AirTemperatureContext.DataFloat;
-            AirTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( AirTemperature, Settings::MIN_TEMPERATURE_DEG_C, Settings::MAX_TEMPERATURE_DEG_C );
-          }
-
-          AirTemperatureText.String = string( AirTemperature, 0, 0 );
+          UnitImage.FrameNumber = 1;
         }
         else
         {
-          AirTemperatureText.String = Strings::GEN_THREE_HYPHENS;
+          UnitImage.FrameNumber = 0;
         }
 
+        AirTemperatureText.String = DeviceInterface::VehicleDevice.AirTemperatureStr;
         AirTemperatureText.Visible = true;
         UnitImage.Visible = true;
       }

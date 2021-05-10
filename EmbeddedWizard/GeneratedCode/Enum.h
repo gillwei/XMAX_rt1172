@@ -255,7 +255,11 @@ typedef enum
   EnumVehicleRxTypeSUPPORT_FUNC_AIR_TEMPERATURE = 45,
   EnumVehicleRxTypeYDT_DETECTED         = 46,
   EnumVehicleRxTypeTRIP_TIME            = 47,
-  EnumVehicleRxTypeTOTAL                = 48
+  EnumVehicleRxTypeTIRE_FRONT           = 48,
+  EnumVehicleRxTypeTIRE_REAR            = 49,
+  EnumVehicleRxTypeTIRE_FRONT_RIGHT     = 50,
+  EnumVehicleRxTypeTIRE_FRONT_LEFT      = 51,
+  EnumVehicleRxTypeTOTAL                = 52
 } EnumVehicleRxType;
 
 /* User defined enumeration: 'Enum::VehicleTxType' */
@@ -655,6 +659,26 @@ typedef enum
   EnumNaviButtonTypeNO                  = 3,
   EnumNaviButtonTypeTOTAL               = 4
 } EnumNaviButtonType;
+
+/* User defined enumeration: 'Enum::VehicleInfoMenuItem' */
+typedef enum
+{
+  EnumVehicleInfoMenuItemAVG_SPEED      = 0,
+  EnumVehicleInfoMenuItemAVG_FUEL       = 1,
+  EnumVehicleInfoMenuItemINST_FUEL      = 2,
+  EnumVehicleInfoMenuItemTRIP_TIME      = 3,
+  EnumVehicleInfoMenuItemRANGE          = 4,
+  EnumVehicleInfoMenuItemFUEL_CONSUMPTION = 5,
+  EnumVehicleInfoMenuItemAIR_TEMPERATURE = 6,
+  EnumVehicleInfoMenuItemCOOLANT_TEMPERATURE = 7,
+  EnumVehicleInfoMenuItemBATTERY        = 8,
+  EnumVehicleInfoMenuItemTIRE_FRONT_RIGHT = 9,
+  EnumVehicleInfoMenuItemTIRE_FRONT_LEFT = 10,
+  EnumVehicleInfoMenuItemTIRE_FRONT     = 11,
+  EnumVehicleInfoMenuItemTIRE_REAR      = 12,
+  EnumVehicleInfoMenuItemCRUISE         = 13,
+  EnumVehicleInfoMenuItemTOTAL          = 14
+} EnumVehicleInfoMenuItem;
 
 #ifdef __cplusplus
   }

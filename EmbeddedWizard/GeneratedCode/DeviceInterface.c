@@ -2665,6 +2665,513 @@ XFloat DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( DeviceInterfaceVehi
   return (XInt32)( aData / aResolution ) * aResolution;
 }
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetMileageUnit()' */
+XEnum DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeMILEAGE_UNIT );
+
+  if ( 1 == VehicleData->DataUInt32 )
+  {
+    _this->MileageUnit = EnumMileageSettingItemMILE;
+  }
+  else
+  {
+    _this->MileageUnit = EnumMileageSettingItemKM;
+  }
+
+  return _this->MileageUnit;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetFuelConsumptionUnit()' */
+XEnum DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT );
+
+  if ( 4 > VehicleData->DataUInt32 )
+  {
+    _this->FuelConsumptionUnit = (XEnum)VehicleData->DataUInt32;
+  }
+
+  return _this->FuelConsumptionUnit;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetAvgSpeedStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetAvgSpeedStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeAVERAGE_SPEED );
+
+  if ( VehicleData->Valid )
+  {
+    if ( EnumMileageSettingItemMILE == DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( 
+        _this ))
+    {
+      VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
+    }
+
+    VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    VehicleData->DataUInt32, 0, 999 );
+    _this->AvgSpeedStr = EwShareString( EwNewStringUInt( VehicleData->DataUInt32, 
+    0, 1 ));
+  }
+  else
+  {
+    _this->AvgSpeedStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+
+  return _this->AvgSpeedStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetAvgFuelRateStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetAvgFuelRateStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeFUEL_RATE_AVERAGE );
+
+  if ( VehicleData->Valid )
+  {
+    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ConvertFuelRate( 
+    _this, VehicleData->DataFloat );
+
+    switch ( DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( _this ))
+    {
+      case EnumMeterFuelConsumptionUnitKM_PER_LITER :
+      {
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 99.900002f );
+      }
+      break;
+
+      case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
+      case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
+      {
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 199.899994f );
+      }
+      break;
+
+      case EnumMeterFuelConsumptionUnitL_PER_100KM :
+      {
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 1.000000f, 99.900002f );
+      }
+      break;
+
+      default : 
+        ;
+    }
+
+    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    VehicleData->DataFloat, 0.100000f );
+    _this->AvgFuelRateStr = EwShareString( EwNewStringFloat( VehicleData->DataFloat, 
+    0, 1 ));
+  }
+  else
+  {
+    _this->AvgFuelRateStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+
+  return _this->AvgFuelRateStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetFuelConStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetFuelConStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeFUEL_CONSUMPTION );
+
+  if ( VehicleData->Valid )
+  {
+    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ConvertFuelCons( 
+    _this, VehicleData->DataFloat );
+    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
+    &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), VehicleData->DataFloat, 
+    0.000000f, 99.900002f );
+    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    VehicleData->DataFloat, 0.100000f );
+    _this->FuelConStr = EwShareString( EwNewStringFloat( VehicleData->DataFloat, 
+    0, 1 ));
+  }
+  else
+  {
+    _this->FuelConStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+
+  return _this->FuelConStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTripTimeHourStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetTripTimeHourStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeTRIP_TIME );
+
+  if ( VehicleData->Valid )
+  {
+    XUInt32 TripTimeHour = VehicleData->DataUInt32 / 3600;
+
+    if ( 99 < TripTimeHour )
+    {
+      TripTimeHour = 99;
+    }
+
+    _this->TripTimeHourStr = EwShareString( EwNewStringUInt( TripTimeHour, 0, 10 ));
+  }
+  else
+  {
+    _this->TripTimeHourStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+
+  return _this->TripTimeHourStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTripTimeMinuteStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetTripTimeMinuteStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeTRIP_TIME );
+
+  if ( VehicleData->Valid )
+  {
+    XUInt32 TripTimeHour = VehicleData->DataUInt32 / 3600;
+    XUInt32 TripTimeMinute;
+
+    if ( 99 < TripTimeHour )
+    {
+      TripTimeHour = 99;
+    }
+
+    TripTimeMinute = ( VehicleData->DataUInt32 / 60 ) - ( TripTimeHour * 60 );
+
+    if ( 99 < TripTimeMinute )
+    {
+      TripTimeMinute = 99;
+    }
+
+    _this->TripTimeMinuteStr = EwShareString( EwNewStringUInt( TripTimeMinute, 2, 
+    10 ));
+  }
+  else
+  {
+    _this->TripTimeMinuteStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+
+  return _this->TripTimeMinuteStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTemperatureUnit()' */
+XEnum DeviceInterfaceVehicleDeviceClass_OnGetTemperatureUnit( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeTEMPERATURE_UNIT );
+
+  _this->TemperatureUnit = (XEnum)VehicleData->DataUInt32;
+  return _this->TemperatureUnit;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetCoolantTemperatureStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetCoolantTemperatureStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeCOOLANT_TEMPERATURE );
+
+  if ( VehicleData->Valid )
+  {
+    XFloat CoolantTemperature;
+
+    if ( EnumTemperatureSettingItemTEMP_F == DeviceInterfaceVehicleDeviceClass_OnGetTemperatureUnit( 
+        _this ))
+    {
+      CoolantTemperature = ( VehicleData->DataFloat * 1.800000f ) + 32;
+      CoolantTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), CoolantTemperature, 
+      -22.000000f, 263.000000f );
+    }
+    else
+    {
+      CoolantTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), VehicleData->DataFloat, 
+      -30.000000f, 128.000000f );
+    }
+
+    CoolantTemperature = EwMathFloor( CoolantTemperature );
+    _this->CoolantTemperatureStr = EwShareString( EwNewStringFloat( CoolantTemperature, 
+    0, 0 ));
+  }
+  else
+  {
+    _this->CoolantTemperatureStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+
+  return _this->CoolantTemperatureStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetInstantFuelRateStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetInstantFuelRateStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeFUEL_RATE_INSTANT );
+
+  if ( VehicleData->Valid )
+  {
+    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ConvertFuelRate( 
+    _this, VehicleData->DataFloat );
+
+    switch ( DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( _this ))
+    {
+      case EnumMeterFuelConsumptionUnitKM_PER_LITER :
+      {
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 99.900002f );
+      }
+      break;
+
+      case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
+      case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
+      {
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 0.000000f, 199.899994f );
+      }
+      break;
+
+      case EnumMeterFuelConsumptionUnitL_PER_100KM :
+      {
+        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        VehicleData->DataFloat, 1.000000f, 99.900002f );
+      }
+      break;
+
+      default : 
+        ;
+    }
+
+    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    VehicleData->DataFloat, 0.100000f );
+    _this->InstantFuelRateStr = EwShareString( EwNewStringFloat( VehicleData->DataFloat, 
+    0, 1 ));
+  }
+  else
+  {
+    _this->InstantFuelRateStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+
+  return _this->InstantFuelRateStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.ConvertFuelCons()' */
+XFloat DeviceInterfaceVehicleDeviceClass_ConvertFuelCons( DeviceInterfaceVehicleDeviceClass _this, 
+  XFloat aFuelCons )
+{
+  XFloat ConvertedFuelCons = aFuelCons;
+
+  switch ( DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( _this ))
+  {
+    case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
+      ConvertedFuelCons = aFuelCons * 0.264000f;
+    break;
+
+    case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
+      ConvertedFuelCons = aFuelCons * 0.220000f;
+    break;
+
+    default : 
+      ;
+  }
+
+  return ConvertedFuelCons;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetRangeStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetRangeStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeRANGE_DISTANCE );
+
+  if ( VehicleData->Valid )
+  {
+    if ( EnumMileageSettingItemMILE == DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( 
+        _this ))
+    {
+      VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
+    }
+
+    VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    VehicleData->DataUInt32, 0, 999 );
+    _this->RangeStr = EwShareString( EwNewStringUInt( VehicleData->DataUInt32, 0, 
+    1 ));
+  }
+  else
+  {
+    _this->RangeStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+
+  return _this->RangeStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetBatteryStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetBatteryStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeBATTERY_VOLTAGE );
+
+  if ( VehicleData->Valid )
+  {
+    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
+    &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), VehicleData->DataFloat, 
+    9.000000f, 16.000000f );
+    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    VehicleData->DataFloat, 0.100000f );
+    _this->BatteryStr = EwShareString( EwNewStringFloat( VehicleData->DataFloat, 
+    0, 1 ));
+  }
+  else
+  {
+    _this->BatteryStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+
+  return _this->BatteryStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetPressureUnit()' */
+XEnum DeviceInterfaceVehicleDeviceClass_OnGetPressureUnit( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypePRESSURE_UNIT );
+
+  _this->PressureUnit = (XEnum)VehicleData->DataUInt32;
+  return _this->PressureUnit;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.ConvertFuelRate()' */
+XFloat DeviceInterfaceVehicleDeviceClass_ConvertFuelRate( DeviceInterfaceVehicleDeviceClass _this, 
+  XFloat aFuelRate )
+{
+  XFloat ConvertedFuelRate = aFuelRate;
+
+  switch ( DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( _this ))
+  {
+    case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
+      ConvertedFuelRate = aFuelRate * 2.367000f;
+    break;
+
+    case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
+      ConvertedFuelRate = aFuelRate * 2.841000f;
+    break;
+
+    case EnumMeterFuelConsumptionUnitL_PER_100KM :
+    {
+      if ( 0.000000f < aFuelRate )
+      {
+        ConvertedFuelRate = 100 / aFuelRate;
+      }
+      else
+      {
+        ConvertedFuelRate = 99.900002f;
+      }
+    }
+    break;
+
+    default : 
+      ;
+  }
+
+  return ConvertedFuelRate;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetAirTemperatureStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetAirTemperatureStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeAIR_TEMPERATURE );
+
+  if ( VehicleData->Valid )
+  {
+    XFloat AirTemperature;
+
+    if ( EnumTemperatureSettingItemTEMP_F == DeviceInterfaceVehicleDeviceClass_OnGetTemperatureUnit( 
+        _this ))
+    {
+      AirTemperature = ( VehicleData->DataFloat * 1.800000f ) + 32;
+      AirTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), AirTemperature, 
+      -22.000000f, 263.000000f );
+    }
+    else
+    {
+      AirTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), VehicleData->DataFloat, 
+      -30.000000f, 128.000000f );
+    }
+
+    AirTemperature = EwMathFloor( AirTemperature );
+    _this->AirTemperatureStr = EwShareString( EwNewStringFloat( AirTemperature, 
+    0, 0 ));
+  }
+  else
+  {
+    _this->AirTemperatureStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+
+  return _this->AirTemperatureStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetCruiseSpeedStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetCruiseSpeedStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeCRUISE_SPEED );
+
+  if ( VehicleData->Valid )
+  {
+    if ( EnumMileageSettingItemMILE == DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( 
+        _this ))
+    {
+      VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
+    }
+
+    VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    VehicleData->DataUInt32, 0, 999 );
+    _this->CruiseSpeedStr = EwShareString( EwNewStringUInt( VehicleData->DataUInt32, 
+    0, 1 ));
+  }
+  else
+  {
+    _this->CruiseSpeedStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+
+  return _this->CruiseSpeedStr;
+}
+
 /* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
@@ -2672,7 +3179,7 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::VehicleDeviceClass' */
 EW_DEFINE_CLASS( DeviceInterfaceVehicleDeviceClass, TemplatesDeviceClass, DDModeStateChangedSystemEvent, 
                  DDModeStateChangedSystemEvent, DDModeStateChangedSystemEvent, DDModeStateChangedSystemEvent, 
-                 CurrentVehicleFunction, CurrentVehicleFunction, "DeviceInterface::VehicleDeviceClass" )
+                 AvgSpeedStr, PressureUnit, "DeviceInterface::VehicleDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceVehicleDeviceClass )
 
 /* User defined auto object: 'DeviceInterface::VehicleDevice' */

@@ -62,6 +62,21 @@
 EW_DEFINE_FIELDS( DeviceInterfaceVehicleDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( DDModeStateChangedSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( VehicleDataReceivedSystemEvent, CoreSystemEvent )
+  EW_PROPERTY( AvgSpeedStr,     XString )
+  EW_PROPERTY( AvgFuelRateStr,  XString )
+  EW_PROPERTY( FuelConStr,      XString )
+  EW_PROPERTY( TripTimeHourStr, XString )
+  EW_PROPERTY( TripTimeMinuteStr, XString )
+  EW_PROPERTY( CoolantTemperatureStr, XString )
+  EW_PROPERTY( InstantFuelRateStr, XString )
+  EW_PROPERTY( RangeStr,        XString )
+  EW_PROPERTY( BatteryStr,      XString )
+  EW_PROPERTY( AirTemperatureStr, XString )
+  EW_PROPERTY( CruiseSpeedStr,  XString )
+  EW_PROPERTY( PressureUnit,    XEnum )
+  EW_PROPERTY( TemperatureUnit, XEnum )
+  EW_PROPERTY( FuelConsumptionUnit, XEnum )
+  EW_PROPERTY( MileageUnit,     XEnum )
   EW_VARIABLE( CurrentVehicleFunction, XEnum )
   EW_VARIABLE( CurrentTempSetting, XEnum )
   EW_VARIABLE( CurrentPressureSetting, XEnum )
@@ -122,6 +137,59 @@ XFloat DeviceInterfaceVehicleDeviceClass_ClampDataFloat( DeviceInterfaceVehicleD
 /* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.RoundDownDataFloat()' */
 XFloat DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( DeviceInterfaceVehicleDeviceClass _this, 
   XFloat aData, XFloat aResolution );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetMileageUnit()' */
+XEnum DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetFuelConsumptionUnit()' */
+XEnum DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetAvgSpeedStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetAvgSpeedStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetAvgFuelRateStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetAvgFuelRateStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetFuelConStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetFuelConStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTripTimeHourStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetTripTimeHourStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTripTimeMinuteStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetTripTimeMinuteStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTemperatureUnit()' */
+XEnum DeviceInterfaceVehicleDeviceClass_OnGetTemperatureUnit( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetCoolantTemperatureStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetCoolantTemperatureStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetInstantFuelRateStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetInstantFuelRateStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.ConvertFuelCons()' */
+XFloat DeviceInterfaceVehicleDeviceClass_ConvertFuelCons( DeviceInterfaceVehicleDeviceClass _this, 
+  XFloat aFuelCons );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetRangeStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetRangeStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetBatteryStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetBatteryStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetPressureUnit()' */
+XEnum DeviceInterfaceVehicleDeviceClass_OnGetPressureUnit( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.ConvertFuelRate()' */
+XFloat DeviceInterfaceVehicleDeviceClass_ConvertFuelRate( DeviceInterfaceVehicleDeviceClass _this, 
+  XFloat aFuelRate );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetAirTemperatureStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetAirTemperatureStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetCruiseSpeedStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetCruiseSpeedStr( DeviceInterfaceVehicleDeviceClass _this );
 
 #ifdef __cplusplus
   }

@@ -2792,89 +2792,13 @@ class SET46_VehicleInfoReset : Menu::BaseMenuView
   inherited method LoadItemValue()
   {
     var string ValueStr;
-    var DeviceInterface::VehicleDataClass VehicleData = new DeviceInterface::VehicleDataClass;
 
     switch( SupportedSetting[aItemNo] )
     {
-      case Enum::MeterInfo.AVG_SPEED:
-      {
-        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.AVERAGE_SPEED );
-        if( VehicleData.Valid )
-        {
-          // convert unit from km to mile
-          if( Enum::MileageSettingItem.MILE == MileageUnit )
-          {
-            VehicleData.DataUInt32 *= Unit::KM_TO_MILE_SCALE;
-          }
-          VehicleData.DataUInt32 = DeviceInterface::VehicleDevice.ClampDataUInt32( VehicleData.DataUInt32, 0, Settings::MAX_AVERAGE_SPEED );
-          ValueStr = string( VehicleData.DataUInt32, 0, 1 );
-        }
-      }
-      case Enum::MeterInfo.AVG_FUEL:
-      {
-        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.FUEL_RATE_AVERAGE );
-        if( VehicleData.Valid )
-        {
-          switch( FuelConsumptionUnit )
-          {
-            case Enum::MeterFuelConsumptionUnit.KM_PER_LITER:
-            {
-              VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_AVERAGE_FUEL_KM_PER_LITER );
-            }
-            case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL:
-            {
-              VehicleData.DataFloat *= Unit::KM_L_TO_US_GALLON_SCALE;
-              VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_AVERAGE_FUEL_MPG );
-            }
-            case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL:
-            {
-              VehicleData.DataFloat *= Unit::KM_L_TO_IMPERIAL_GALLON_SCALE;
-              VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_AVERAGE_FUEL_MPG );
-            }
-            case Enum::MeterFuelConsumptionUnit.L_PER_100KM:
-            {
-              VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, Settings::MIN_AVERAGE_FUEL_LITER_PER_100KM, Settings::MAX_AVERAGE_FUEL_LITER_PER_100KM );
-            }
-            default:;
-          }
-
-          VehicleData.DataFloat = DeviceInterface::VehicleDevice.RoundDownDataFloat( VehicleData.DataFloat, 0.1 );
-          ValueStr = string( VehicleData.DataFloat, 0, 1 );
-        }
-      }
-      case Enum::MeterInfo.FUEL_CONSUMPTION:
-      {
-        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.FUEL_CONSUMPTION );
-        if( VehicleData.Valid )
-        {
-          switch( FuelConsumptionUnit )
-          {
-            case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL: VehicleData.DataFloat *= Unit::LITER_TO_USGAL_SCALE;
-            case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL: VehicleData.DataFloat *= Unit::LITER_TO_IMPERIAL_GAL_SCALE;
-            case Enum::MeterFuelConsumptionUnit.L_PER_100KM:
-            {
-              if( 0.0 < VehicleData.DataFloat )
-              {
-                VehicleData.DataFloat = Unit::L_100KM_SCALE_TO_KM_L / VehicleData.DataFloat;
-              }
-              else
-              {
-                VehicleData.DataFloat = Settings::MAX_FUEL_CONSUMPTION;
-              }
-            }
-            default:;
-          }
-          VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_FUEL_CONSUMPTION );
-          VehicleData.DataFloat = DeviceInterface::VehicleDevice.RoundDownDataFloat( VehicleData.DataFloat, 0.1 );
-          ValueStr = string( VehicleData.DataFloat, 0, 1 );
-        }
-      }
-      default: VehicleData.Valid = false;
-    }
-
-    if( !VehicleData.Valid )
-    {
-      ValueStr = Strings::GEN_THREE_HYPHENS;
+      case Enum::MeterInfo.AVG_SPEED: ValueStr = DeviceInterface::VehicleDevice.AvgSpeedStr;
+      case Enum::MeterInfo.AVG_FUEL: ValueStr = DeviceInterface::VehicleDevice.AvgFuelRateStr;
+      case Enum::MeterInfo.FUEL_CONSUMPTION: ValueStr = DeviceInterface::VehicleDevice.FuelConStr;
+      default: ValueStr = Strings::GEN_THREE_HYPHENS;
     }
 
     return ValueStr;
@@ -2888,12 +2812,7 @@ class SET46_VehicleInfoReset : Menu::BaseMenuView
     var string HourString = Strings::GEN_THREE_HYPHENS;
     if( Enum::MeterInfo.TRIP_TIME == SupportedSetting[aItemNo] )
     {
-      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TRIP_TIME );
-      if( VehicleData.Valid )
-      {
-        var int32 TripTimeSec = (int32)VehicleData.DataUInt32;
-        HourString = string( TripTimeSec / 3600 );
-      }
+      HourString = DeviceInterface::VehicleDevice.TripTimeHourStr;
     }
     return HourString;
   }
@@ -2906,13 +2825,7 @@ class SET46_VehicleInfoReset : Menu::BaseMenuView
     var string MinuteString = Strings::GEN_THREE_HYPHENS;
     if( Enum::MeterInfo.TRIP_TIME == SupportedSetting[aItemNo] )
     {
-      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TRIP_TIME );
-      if( VehicleData.Valid )
-      {
-        var int32 TripTimeSec = (int32)VehicleData.DataUInt32;
-        var int32 TripTimeMinute = ( TripTimeSec / 60 ) - ( TripTimeSec / 3600 ) * 60;
-        MinuteString = string( TripTimeMinute, 2 );
-      }
+      MinuteString = DeviceInterface::VehicleDevice.TripTimeMinuteStr;
     }
     return MinuteString;
   }
@@ -3047,100 +2960,108 @@ $rect <1120,60,1360,100>
 $output false
 const uint32 MAX_AVERAGE_SPEED = 999;
 
-$rect <1120,110,1360,150>
+$rect <1120,160,1360,200>
 $output false
 const float MAX_FUEL_CONSUMPTION = 99.9;
 
-$rect <1120,210,1450,250>
+$rect <1120,260,1420,300>
 $output false
-const float MAX_AVERAGE_FUEL_KM_PER_LITER = 99.9;
+const float MAX_FUEL_RATE_KM_PER_LITER = 99.9;
 
-$rect <1120,160,1360,200>
+$rect <1120,210,1360,250>
 $output false
 const float MAX_AVERAGE_FUEL_MPG = 199.9;
 
-$rect <1120,260,1450,300>
+$rect <1120,310,1420,350>
 $output false
-const float MAX_AVERAGE_FUEL_LITER_PER_100KM = 99.9;
+const float MAX_FUEL_RATE_LITER_PER_100KM = 99.9;
 
-$rect <1120,310,1450,350>
+$rect <1120,360,1420,400>
 $output false
-const float MIN_AVERAGE_FUEL_LITER_PER_100KM = 1.0;
+const float MIN_FUEL_RATE_LITER_PER_100KM = 1.0;
 
 // Range of the Vehicle Info
 note group Note1
 {
-  attr Bounds = <1090,10,1780,680>;
+  attr Bounds = <1090,10,1750,730>;
 }
-
-$rect <1120,410,1390,450>
-$output false
-const float MAX_METER_TRIP_1 = 9999.9;
-
-$rect <1480,410,1750,450>
-$output false
-const int32 MIN_TEMPERATURE_DEG_C = -30;
-
-$rect <1480,460,1750,500>
-$output false
-const int32 MAX_TEMPERATURE_DEG_C = 128;
-
-$rect <1480,510,1750,550>
-$output false
-const int32 MIN_TEMPERATURE_DEG_F = -22;
-
-$rect <1480,560,1750,600>
-$output false
-const int32 MAX_TEMPERATURE_DEG_F = 263;
-
-$rect <1480,610,1760,650>
-$output false
-const int32 MAX_RANGE = 999;
-
-$rect <1480,60,1750,100>
-$output false
-const float MAX_CURRENT_FUEL_KM_L = 99.9;
-
-$rect <1480,110,1750,150>
-$output false
-const float MAX_CURRENT_FUEL_MPG = 199.9;
-
-$rect <1480,160,1750,200>
-$output false
-const int32 MAX_CURRENT_FUEL_L_100KM = 99.9;
-
-$rect <1480,210,1750,250>
-$output false
-const float MIN_CURRENT_FUEL_L_100KM = 1.0;
-
-$rect <1480,260,1750,300>
-$output false
-const float MIN_BATTERY_VOLTAGE = 9.0;
-
-$rect <1480,310,1750,350>
-$output false
-const float MAX_BATTERY_VOLTAGE = 16.0;
-
-$rect <1480,360,1750,400>
-$output false
-const int32 MAX_CRUISE = 999;
-
-$rect <1120,610,1390,650>
-$output false
-const int32 MAX_TIRE_PRESSURE = 51;
-
-$rect <1120,560,1390,600>
-$output false
-const int32 MAX_MAINTENANCE_TRIP = 99999;
 
 $rect <1120,460,1390,500>
 $output false
-const float MAX_METER_TRIP_2 = 9999.9;
+const float MAX_METER_TRIP_1 = 9999.9;
+
+$rect <1450,410,1720,450>
+$output false
+const int32 MIN_TEMPERATURE_DEG_C = -30;
+
+$rect <1450,460,1720,500>
+$output false
+const int32 MAX_TEMPERATURE_DEG_C = 128;
+
+$rect <1450,510,1720,550>
+$output false
+const int32 MIN_TEMPERATURE_DEG_F = -22;
+
+$rect <1450,560,1720,600>
+$output false
+const int32 MAX_TEMPERATURE_DEG_F = 263;
+
+$rect <1450,60,1720,100>
+$output false
+const int32 MAX_RANGE = 999;
+
+$rect <1450,110,1720,150>
+$output false
+const float MAX_CURRENT_FUEL_KM_L = 99.9;
+
+$rect <1450,160,1720,200>
+$output false
+const float MAX_CURRENT_FUEL_MPG = 199.9;
+
+$rect <1450,210,1720,250>
+$output false
+const int32 MAX_CURRENT_FUEL_L_100KM = 99.9;
+
+$rect <1450,260,1720,300>
+$output false
+const float MIN_CURRENT_FUEL_L_100KM = 1.0;
+
+$rect <1450,310,1720,350>
+$output false
+const float MIN_BATTERY_VOLTAGE = 9.0;
+
+$rect <1450,360,1720,400>
+$output false
+const float MAX_BATTERY_VOLTAGE = 16.0;
+
+$rect <1120,660,1390,700>
+$output false
+const int32 MAX_TIRE_PRESSURE = 51;
+
+$rect <1120,610,1390,650>
+$output false
+const int32 MAX_MAINTENANCE_TRIP = 99999;
 
 $rect <1120,510,1390,550>
 $output false
+const float MAX_METER_TRIP_2 = 9999.9;
+
+$rect <1120,560,1390,600>
+$output false
 const float MAX_METER_TRIP_F = 999.9;
 
-$rect <1120,360,1390,400>
+$rect <1120,410,1390,450>
 $output false
 const int32 MAX_METER_ODO = 999999;
+
+$rect <1450,610,1720,650>
+$output false
+const int32 MAX_TRIP_TIME_HOUR = 99;
+
+$rect <1450,660,1720,700>
+$output false
+const int32 MAX_TRIP_TIME_MINUTE = 99;
+
+$rect <1120,110,1360,150>
+$output false
+const uint32 MAX_CRUISE_SPEED = 999;

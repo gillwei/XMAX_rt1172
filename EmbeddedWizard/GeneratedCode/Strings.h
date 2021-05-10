@@ -136,11 +136,41 @@ extern const XStringRes StringsHOM03_AVG_SPEED;
 /* User defined constant: 'Strings::HOM03_AVG_FUEL' */
 extern const XStringRes StringsHOM03_AVG_FUEL;
 
+/* User defined constant: 'Strings::HOM03_INST_FUEL' */
+extern const XStringRes StringsHOM03_INST_FUEL;
+
 /* User defined constant: 'Strings::HOM03_TRIP_TIME' */
 extern const XStringRes StringsHOM03_TRIP_TIME;
 
+/* User defined constant: 'Strings::HOM03_RANGE' */
+extern const XStringRes StringsHOM03_RANGE;
+
 /* User defined constant: 'Strings::HOM03_FUEL_CONSUMPTION' */
 extern const XStringRes StringsHOM03_FUEL_CONSUMPTION;
+
+/* User defined constant: 'Strings::HOM03_AIR' */
+extern const XStringRes StringsHOM03_AIR;
+
+/* User defined constant: 'Strings::HOM03_COOLANT' */
+extern const XStringRes StringsHOM03_COOLANT;
+
+/* User defined constant: 'Strings::HOM03_BATTERY' */
+extern const XStringRes StringsHOM03_BATTERY;
+
+/* User defined constant: 'Strings::HOM03_FRONT_R' */
+extern const XStringRes StringsHOM03_FRONT_R;
+
+/* User defined constant: 'Strings::HOM03_FRONT_L' */
+extern const XStringRes StringsHOM03_FRONT_L;
+
+/* User defined constant: 'Strings::HOM03_FRONT' */
+extern const XStringRes StringsHOM03_FRONT;
+
+/* User defined constant: 'Strings::HOM03_REAR' */
+extern const XStringRes StringsHOM03_REAR;
+
+/* User defined constant: 'Strings::HOM03_CRUISE' */
+extern const XStringRes StringsHOM03_CRUISE;
 
 /* User defined constant: 'Strings::INF01_TACHO_VISUALIZER' */
 extern const XStringRes StringsINF01_TACHO_VISUALIZER;

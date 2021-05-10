@@ -534,6 +534,18 @@ enum VehicleRxType
   item TRIP_TIME;
 
   $rect <850,410,1050,450>
+  item TIRE_FRONT;
+
+  $rect <850,460,1050,500>
+  item TIRE_REAR;
+
+  $rect <1070,10,1270,50>
+  item TIRE_FRONT_RIGHT;
+
+  $rect <1070,60,1270,100>
+  item TIRE_FRONT_LEFT;
+
+  $rect <1070,110,1270,150>
   item TOTAL;
 }
 
@@ -1301,7 +1313,7 @@ enum OdoTripSettingItem
   item TOTAL;
 }
 
-$rect <960,470,1200,510>
+$rect <960,420,1200,460>
 $output false
 enum MaintenanceResetMenuItem
 {
@@ -1382,5 +1394,55 @@ enum NaviButtonType
   item NO;
 
   $rect <220,60,420,100>
+  item TOTAL;
+}
+
+$rect <960,470,1160,510>
+$output false
+enum VehicleInfoMenuItem
+{
+  $rect <10,10,210,50>
+  item AVG_SPEED;
+
+  $rect <10,60,210,100>
+  item AVG_FUEL;
+
+  $rect <10,110,210,150>
+  item INST_FUEL;
+
+  $rect <10,160,210,200>
+  item TRIP_TIME;
+
+  $rect <10,210,210,250>
+  item RANGE;
+
+  $rect <230,10,430,50>
+  item FUEL_CONSUMPTION;
+
+  $rect <230,60,430,100>
+  item AIR_TEMPERATURE;
+
+  $rect <230,110,430,150>
+  item COOLANT_TEMPERATURE;
+
+  $rect <230,160,430,200>
+  item BATTERY;
+
+  $rect <230,210,430,250>
+  item TIRE_FRONT_RIGHT;
+
+  $rect <460,10,660,50>
+  item TIRE_FRONT_LEFT;
+
+  $rect <460,60,660,100>
+  item TIRE_FRONT;
+
+  $rect <460,110,660,150>
+  item TIRE_REAR;
+
+  $rect <460,160,660,200>
+  item CRUISE;
+
+  $rect <460,210,660,250>
   item TOTAL;
 }

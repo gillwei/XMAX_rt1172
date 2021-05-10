@@ -465,8 +465,59 @@ EW_DECLARE_BITMAP_RES( ResourceClockDayTimeText )
 /* Bitmap resource : 'Resource::SafeCamSchoolZone' */
 EW_DECLARE_BITMAP_RES( ResourceSafeCamSchoolZone )
 
+/* Bitmap resource : 'Resource::IconInfo' */
+EW_DECLARE_BITMAP_RES( ResourceIconInfo )
+
+/* Bitmap resource : 'Resource::InfoDivider' */
+EW_DECLARE_BITMAP_RES( ResourceInfoDivider )
+
+/* Bitmap resource : 'Resource::IconUnitDegC' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitDegC )
+
+/* Bitmap resource : 'Resource::IconUnitDegF' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitDegF )
+
+/* Bitmap resource : 'Resource::IconUnitGal' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitGal )
+
+/* Bitmap resource : 'Resource::IconUnitHour' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitHour )
+
+/* Bitmap resource : 'Resource::IconUnitKGF_CM2' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitKGF_CM2 )
+
+/* Bitmap resource : 'Resource::IconUnitKM' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitKM )
+
+/* Bitmap resource : 'Resource::IconUnitKM_L' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitKM_L )
+
+/* Bitmap resource : 'Resource::IconUnitKPA' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitKPA )
+
+/* Bitmap resource : 'Resource::IconUnitL' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitL )
+
+/* Bitmap resource : 'Resource::IconUnitL_100KM' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitL_100KM )
+
+/* Bitmap resource : 'Resource::IconUnitMile' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitMile )
+
+/* Bitmap resource : 'Resource::IconUnitMinute' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitMinute )
+
+/* Bitmap resource : 'Resource::IconUnitMPG' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitMPG )
+
+/* Bitmap resource : 'Resource::IconUnitPSI' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitPSI )
+
 /* Bitmap resource : 'Resource::DialogBackground' */
 EW_DECLARE_BITMAP_RES( ResourceDialogBackground )
+
+/* Bitmap resource : 'Resource::IconUnitVolt' */
+EW_DECLARE_BITMAP_RES( ResourceIconUnitVolt )
 
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_

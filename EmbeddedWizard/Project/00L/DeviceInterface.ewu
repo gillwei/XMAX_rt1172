@@ -2389,6 +2389,458 @@ class VehicleDeviceClass : Templates::DeviceClass
     return ( (int32)( aData / aResolution ) ) * aResolution;
 
   }
+
+  $rect <600,40,800,80>
+  property Enum::MileageSettingItem MileageUnit;
+
+  $rect <600,80,800,120>
+  onset MileageUnit
+  {
+    if( pure MileageUnit != value )
+    {
+      pure MileageUnit = value;
+    }
+  }
+
+  $rect <600,120,800,160>
+  onget MileageUnit
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MILEAGE_UNIT );
+    if( Enum::MileageSettingItem.MILE == VehicleData.DataUInt32 )
+    {
+      pure MileageUnit = Enum::MileageSettingItem.MILE;
+    }
+    else
+    {
+      pure MileageUnit = Enum::MileageSettingItem.KM;
+    }
+
+    return pure MileageUnit;
+  }
+
+  $rect <830,40,1070,80>
+  property Enum::MeterFuelConsumptionUnit FuelConsumptionUnit;
+
+  $rect <830,80,1070,120>
+  onset FuelConsumptionUnit
+  {
+    if ( pure FuelConsumptionUnit == value )
+    {
+      pure FuelConsumptionUnit = value;
+    }
+  }
+
+  $rect <830,120,1070,160>
+  onget FuelConsumptionUnit
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT );
+    if( (uint32)Enum::MeterFuelConsumptionUnit.TOTAL > VehicleData.DataUInt32 )
+    {
+      pure FuelConsumptionUnit = (Enum::MeterFuelConsumptionUnit)VehicleData.DataUInt32;
+    }
+    return pure FuelConsumptionUnit;
+  }
+
+  $rect <610,250,830,290>
+  property string AvgSpeedStr;
+
+  $rect <610,290,830,330>
+  onget AvgSpeedStr
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.AVERAGE_SPEED );
+    if( VehicleData.Valid )
+    {
+      // convert unit from km to mile
+      if( Enum::MileageSettingItem.MILE == MileageUnit )
+      {
+        VehicleData.DataUInt32 *= Unit::KM_TO_MILE_SCALE;
+      }
+      VehicleData.DataUInt32 = DeviceInterface::VehicleDevice.ClampDataUInt32( VehicleData.DataUInt32, 0, Settings::MAX_AVERAGE_SPEED );
+      pure AvgSpeedStr = string( VehicleData.DataUInt32, 0, 1 );
+    }
+    else
+    {
+      pure AvgSpeedStr = Strings::GEN_THREE_HYPHENS;
+    }
+
+    return pure AvgSpeedStr;
+  }
+
+  $rect <610,350,830,390>
+  property string AvgFuelRateStr;
+
+  $rect <610,390,830,430>
+  onget AvgFuelRateStr
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.FUEL_RATE_AVERAGE );
+    if( VehicleData.Valid )
+    {
+      VehicleData.DataFloat = ConvertFuelRate( VehicleData.DataFloat );
+
+      switch( FuelConsumptionUnit )
+      {
+        case Enum::MeterFuelConsumptionUnit.KM_PER_LITER:
+        {
+          VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_FUEL_RATE_KM_PER_LITER );
+        }
+        case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL,
+             Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL:
+        {
+          VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_AVERAGE_FUEL_MPG );
+        }
+        case Enum::MeterFuelConsumptionUnit.L_PER_100KM:
+        {
+          VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, Settings::MIN_FUEL_RATE_LITER_PER_100KM, Settings::MAX_FUEL_RATE_LITER_PER_100KM );
+        }
+        default:;
+      }
+
+      VehicleData.DataFloat = DeviceInterface::VehicleDevice.RoundDownDataFloat( VehicleData.DataFloat, 0.1 );
+      pure AvgFuelRateStr = string( VehicleData.DataFloat, 0, 1 );
+    }
+    else
+    {
+      pure AvgFuelRateStr = Strings::GEN_THREE_HYPHENS;
+    }
+
+    return pure AvgFuelRateStr;
+  }
+
+  $rect <610,560,830,600>
+  property string FuelConStr;
+
+  $rect <610,600,830,640>
+  onget FuelConStr
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.FUEL_CONSUMPTION );
+    if( VehicleData.Valid )
+    {
+      VehicleData.DataFloat = ConvertFuelCons( VehicleData.DataFloat );
+      VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_FUEL_CONSUMPTION );
+      VehicleData.DataFloat = DeviceInterface::VehicleDevice.RoundDownDataFloat( VehicleData.DataFloat, 0.1 );
+      pure FuelConStr = string( VehicleData.DataFloat, 0, 1 );
+    }
+    else
+    {
+      pure FuelConStr = Strings::GEN_THREE_HYPHENS;
+    }
+
+    return pure FuelConStr;
+  }
+
+  $rect <870,250,1080,290>
+  property string TripTimeHourStr;
+
+  $rect <870,290,1080,330>
+  onget TripTimeHourStr
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TRIP_TIME );
+    if( VehicleData.Valid )
+    {
+      var uint32 TripTimeHour = VehicleData.DataUInt32 / 3600;
+      if( Settings::MAX_TRIP_TIME_HOUR < TripTimeHour )
+      {
+        TripTimeHour = Settings::MAX_TRIP_TIME_HOUR;
+      }
+      pure TripTimeHourStr = string( TripTimeHour );
+    }
+    else
+    {
+      pure TripTimeHourStr = Strings::GEN_THREE_HYPHENS;
+    }
+    return pure TripTimeHourStr;
+  }
+
+  $rect <870,350,1090,390>
+  property string TripTimeMinuteStr;
+
+  $rect <870,390,1090,430>
+  onget TripTimeMinuteStr
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TRIP_TIME );
+    if( VehicleData.Valid )
+    {
+      var uint32 TripTimeHour = VehicleData.DataUInt32 / 3600;
+      if( Settings::MAX_TRIP_TIME_HOUR < TripTimeHour )
+      {
+        TripTimeHour = Settings::MAX_TRIP_TIME_HOUR;
+      }
+      
+      var uint32 TripTimeMinute = ( VehicleData.DataUInt32 / 60 ) - ( TripTimeHour ) * 60;
+      if( Settings::MAX_TRIP_TIME_MINUTE < TripTimeMinute )
+      {
+        TripTimeMinute =  Settings::MAX_TRIP_TIME_MINUTE;
+      }
+      pure TripTimeMinuteStr = string( TripTimeMinute, 2 );
+    }
+    else
+    {
+      pure TripTimeMinuteStr = Strings::GEN_THREE_HYPHENS;
+    }
+    return pure TripTimeMinuteStr;
+  }
+
+  // Unit Setting
+  note group UnitSettingNote
+  {
+    attr Bounds = <580,0,1590,180>;
+  }
+
+  $rect <1090,40,1300,80>
+  property Enum::TemperatureSettingItem TemperatureUnit;
+
+  $rect <1090,80,1300,120>
+  onset TemperatureUnit
+  {
+    if( pure TemperatureUnit != value )
+    {
+      pure TemperatureUnit = value;
+    }
+  }
+
+  $rect <1090,120,1300,160>
+  onget TemperatureUnit
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TEMPERATURE_UNIT );
+    pure TemperatureUnit = (Enum::TemperatureSettingItem)VehicleData.DataUInt32;
+    return pure TemperatureUnit;
+  }
+
+  $rect <1130,250,1380,290>
+  property string CoolantTemperatureStr;
+
+  $rect <1130,290,1380,330>
+  onget CoolantTemperatureStr
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.COOLANT_TEMPERATURE );
+    if( VehicleData.Valid )
+    {
+      var float CoolantTemperature;
+      if( Enum::TemperatureSettingItem.TEMP_F == TemperatureUnit )
+      {
+        CoolantTemperature = VehicleData.DataFloat * 1.8 + 32;
+        CoolantTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( CoolantTemperature, Settings::MIN_TEMPERATURE_DEG_F, Settings::MAX_TEMPERATURE_DEG_F );
+      }
+      else
+      {
+        CoolantTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, Settings::MIN_TEMPERATURE_DEG_C, Settings::MAX_TEMPERATURE_DEG_C );
+      }
+
+      CoolantTemperature = math_floor( CoolantTemperature );
+      pure CoolantTemperatureStr = string( CoolantTemperature, 0, 0 );
+    }
+    else
+    {
+      pure CoolantTemperatureStr = Strings::GEN_THREE_HYPHENS;
+    }
+    return pure CoolantTemperatureStr;
+  }
+
+  $rect <610,450,830,490>
+  property string InstantFuelRateStr;
+
+  $rect <610,490,830,530>
+  onget InstantFuelRateStr
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.FUEL_RATE_INSTANT );
+    if( VehicleData.Valid )
+    {
+      VehicleData.DataFloat = ConvertFuelRate( VehicleData.DataFloat );
+      switch( FuelConsumptionUnit )
+      {
+        case Enum::MeterFuelConsumptionUnit.KM_PER_LITER:
+        {
+          VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_FUEL_RATE_KM_PER_LITER );
+        }
+        case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL,
+             Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL:
+        {
+          VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_AVERAGE_FUEL_MPG );
+        }
+        case Enum::MeterFuelConsumptionUnit.L_PER_100KM:
+        {
+          VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, Settings::MIN_FUEL_RATE_LITER_PER_100KM, Settings::MAX_FUEL_RATE_LITER_PER_100KM );
+        }
+        default:;
+      }
+      VehicleData.DataFloat = DeviceInterface::VehicleDevice.RoundDownDataFloat( VehicleData.DataFloat, 0.1 );
+      pure InstantFuelRateStr = string( VehicleData.DataFloat, 0, 1 );
+    }
+    else
+    {
+      pure InstantFuelRateStr = Strings::GEN_THREE_HYPHENS;
+    }
+
+    return pure InstantFuelRateStr;
+  }
+
+  $rect <610,710,830,750>
+  method float ConvertFuelCons( arg float aFuelCons )
+  {
+    var float ConvertedFuelCons = aFuelCons;
+
+    switch( FuelConsumptionUnit )
+    {
+      case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL: ConvertedFuelCons = aFuelCons * Unit::LITER_TO_USGAL_SCALE;
+      case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL: ConvertedFuelCons = aFuelCons * Unit::LITER_TO_IMPERIAL_GAL_SCALE;
+      default:;
+    }
+
+    return ConvertedFuelCons;
+  }
+
+  $rect <870,450,1090,490>
+  property string RangeStr;
+
+  $rect <870,490,1090,530>
+  onget RangeStr
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.RANGE_DISTANCE );
+    if( VehicleData.Valid )
+    {
+      // convert unit from km to mile
+      if( Enum::MileageSettingItem.MILE == MileageUnit )
+      {
+        VehicleData.DataUInt32 *= Unit::KM_TO_MILE_SCALE;
+      }
+      VehicleData.DataUInt32 = DeviceInterface::VehicleDevice.ClampDataUInt32( VehicleData.DataUInt32, 0, Settings::MAX_RANGE );
+      pure RangeStr = string( VehicleData.DataUInt32, 0, 1 );
+    }
+    else
+    {
+      pure RangeStr = Strings::GEN_THREE_HYPHENS;
+    }
+
+    return pure RangeStr;
+  }
+
+  $rect <870,560,1090,600>
+  property string BatteryStr;
+
+  $rect <870,600,1090,640>
+  onget BatteryStr
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.BATTERY_VOLTAGE );
+    if( VehicleData.Valid )
+    {
+      VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, Settings::MIN_BATTERY_VOLTAGE, Settings::MAX_BATTERY_VOLTAGE );
+      VehicleData.DataFloat = DeviceInterface::VehicleDevice.RoundDownDataFloat( VehicleData.DataFloat, 0.1 );
+      pure BatteryStr = string( VehicleData.DataFloat, 0, 1 );
+    }
+    else
+    {
+      pure BatteryStr = Strings::GEN_THREE_HYPHENS;
+    }
+
+    return pure BatteryStr;
+  }
+
+  $rect <1330,40,1530,80>
+  property Enum::PressureSettingItem PressureUnit;
+
+  $rect <1330,80,1530,120>
+  onset PressureUnit
+  {
+    if( pure PressureUnit != value )
+    {
+      pure PressureUnit = value;
+    }
+  }
+
+  $rect <1330,120,1530,160>
+  onget PressureUnit
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.PRESSURE_UNIT );
+    pure PressureUnit = (Enum::PressureSettingItem)VehicleData.DataUInt32;
+    return pure PressureUnit;
+  }
+
+  // Value String
+  note group UnitSettingNote1
+  {
+    attr Bounds = <580,200,1590,780>;
+  }
+
+  $rect <610,660,830,700>
+  method float ConvertFuelRate( arg float aFuelRate )
+  {
+    var float ConvertedFuelRate = aFuelRate;
+
+    switch( FuelConsumptionUnit )
+    {
+      case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL: ConvertedFuelRate = aFuelRate * Unit::KM_L_TO_US_GALLON_SCALE;
+      case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL: ConvertedFuelRate = aFuelRate * Unit::KM_L_TO_IMPERIAL_GALLON_SCALE;
+      case Enum::MeterFuelConsumptionUnit.L_PER_100KM:
+      {
+        if( 0.0 < aFuelRate )
+        {
+          ConvertedFuelRate = Unit::L_100KM_SCALE_TO_KM_L / aFuelRate;
+        }
+        else
+        {
+          ConvertedFuelRate = Settings::MAX_FUEL_CONSUMPTION;
+        }
+      }
+      default:;
+    }
+
+    return ConvertedFuelRate;
+  }
+
+  $rect <1130,350,1380,390>
+  property string AirTemperatureStr;
+
+  $rect <1130,390,1380,430>
+  onget AirTemperatureStr
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.AIR_TEMPERATURE );
+    if( VehicleData.Valid )
+    {
+      var float AirTemperature;
+      if( Enum::TemperatureSettingItem.TEMP_F == TemperatureUnit )
+      {
+        AirTemperature = VehicleData.DataFloat * 1.8 + 32;
+        AirTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( AirTemperature, Settings::MIN_TEMPERATURE_DEG_F, Settings::MAX_TEMPERATURE_DEG_F );
+      }
+      else
+      {
+        AirTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, Settings::MIN_TEMPERATURE_DEG_C, Settings::MAX_TEMPERATURE_DEG_C );
+      }
+
+      AirTemperature = math_floor( AirTemperature );
+      pure AirTemperatureStr = string( AirTemperature, 0, 0 );
+    }
+    else
+    {
+      pure AirTemperatureStr = Strings::GEN_THREE_HYPHENS;
+    }
+    return pure AirTemperatureStr;
+  }
+
+  $rect <1130,450,1350,490>
+  property string CruiseSpeedStr;
+
+  $rect <1130,490,1350,530>
+  onget CruiseSpeedStr
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.CRUISE_SPEED );
+    if( VehicleData.Valid )
+    {
+      // convert unit from km to mile
+      if( Enum::MileageSettingItem.MILE == MileageUnit )
+      {
+        VehicleData.DataUInt32 *= Unit::KM_TO_MILE_SCALE;
+      }
+      VehicleData.DataUInt32 = DeviceInterface::VehicleDevice.ClampDataUInt32( VehicleData.DataUInt32, 0, Settings::MAX_CRUISE_SPEED );
+      pure CruiseSpeedStr = string( VehicleData.DataUInt32, 0, 1 );
+    }
+    else
+    {
+      pure CruiseSpeedStr = Strings::GEN_THREE_HYPHENS;
+    }
+
+    return pure CruiseSpeedStr;
+  }
 }
 
 $rect <500,70,700,110>

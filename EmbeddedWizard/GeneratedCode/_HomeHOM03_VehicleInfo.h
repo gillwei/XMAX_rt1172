@@ -47,9 +47,9 @@
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_HomeBaseHome.h"
+#include "_HomeVehicleInfoMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Components::BaseMainBG */
 #ifndef _ComponentsBaseMainBG_
@@ -108,7 +108,8 @@
 
 /* Deklaration of class : 'Home::HOM03_VehicleInfo' */
 EW_DEFINE_FIELDS( HomeHOM03_VehicleInfo, HomeBaseHome )
-  EW_OBJECT  ( Title,           ViewsText )
+  EW_OBJECT  ( IconInfo,        ViewsImage )
+  EW_OBJECT  ( VehicleInfoMenu, HomeVehicleInfoMenu )
 EW_END_OF_FIELDS( HomeHOM03_VehicleInfo )
 
 /* Virtual Method Table (VMT) for the class : 'Home::HOM03_VehicleInfo' */
@@ -153,13 +154,13 @@ EW_DEFINE_METHODS( HomeHOM03_VehicleInfo, HomeBaseHome )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( HomeHOM03_VehicleInfo _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( HomeHOM03_VehicleInfo _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongEnterKeyActivated, void )( HomeHOM03_VehicleInfo _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
@@ -171,6 +172,15 @@ EW_END_OF_METHODS( HomeHOM03_VehicleInfo )
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
 void HomeHOM03_VehicleInfo_Init( HomeHOM03_VehicleInfo _this, XHandle aArg );
+
+/* 'C' function for method : 'Home::HOM03_VehicleInfo.OnShortDownKeyActivated()' */
+void HomeHOM03_VehicleInfo_OnShortDownKeyActivated( HomeHOM03_VehicleInfo _this );
+
+/* 'C' function for method : 'Home::HOM03_VehicleInfo.OnShortUpKeyActivated()' */
+void HomeHOM03_VehicleInfo_OnShortUpKeyActivated( HomeHOM03_VehicleInfo _this );
+
+/* 'C' function for method : 'Home::HOM03_VehicleInfo.OnLongEnterKeyActivated()' */
+void HomeHOM03_VehicleInfo_OnLongEnterKeyActivated( HomeHOM03_VehicleInfo _this );
 
 #ifdef __cplusplus
   }

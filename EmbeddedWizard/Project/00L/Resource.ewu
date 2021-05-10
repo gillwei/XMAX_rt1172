@@ -2750,11 +2750,233 @@ resource Resources::Bitmap SafeCamSchoolZone
   attr bitmapmode Mode = Default;
 }
 
+// Vehicle Info Units
+note group Note22
+{
+  attr Bounds = <10,2590,910,2900>;
+}
+
+$rect <40,2650,240,2690>
+$output false
+resource Resources::Bitmap IconInfo
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\icon_homeinfo.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <40,2700,240,2740>
+$output false
+resource Resources::Bitmap InfoDivider
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\info_line.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <40,2750,240,2790>
+$output false
+resource Resources::Bitmap IconUnitDegC
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_deg_c.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <40,2800,240,2840>
+$output false
+resource Resources::Bitmap IconUnitDegF
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_deg_f.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <40,2850,240,2890>
+$output false
+resource Resources::Bitmap IconUnitGal
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_gal.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <260,2650,460,2690>
+$output false
+resource Resources::Bitmap IconUnitHour
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_hr.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <260,2700,460,2740>
+$output false
+resource Resources::Bitmap IconUnitKGF_CM2
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_kgf_cm2.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <260,2750,460,2790>
+$output false
+resource Resources::Bitmap IconUnitKM
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_km.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <260,2800,460,2840>
+$output false
+resource Resources::Bitmap IconUnitKM_H
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_km_h.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <260,2850,460,2890>
+$output false
+resource Resources::Bitmap IconUnitKM_L
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_km_l.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <470,2650,670,2690>
+$output false
+resource Resources::Bitmap IconUnitKPA
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_kpa.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <470,2700,670,2740>
+$output false
+resource Resources::Bitmap IconUnitL
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_l.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <470,2750,670,2790>
+$output false
+resource Resources::Bitmap IconUnitL_100KM
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_l_100km.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <470,2800,670,2840>
+$output false
+resource Resources::Bitmap IconUnitMile
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_mile.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <470,2850,670,2890>
+$output false
+resource Resources::Bitmap IconUnitMinute
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_min.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <690,2650,890,2690>
+$output false
+resource Resources::Bitmap IconUnitMPG
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_mpg.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <690,2700,890,2740>
+$output false
+resource Resources::Bitmap IconUnitMPH
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_mph.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
 $rect <1570,460,1770,500>
 $output false
 resource Resources::Bitmap NaviTurnArrwDstntnFlgIrgTbt
 {
   attr bitmapfile FileName = .\Res\navi\nextturnicon\d_turnarrw_dstntn_flg_Irg_tbt.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <690,2750,890,2790>
+$output false
+resource Resources::Bitmap IconUnitPSI
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_psi.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2779,6 +3001,18 @@ $output false
 resource Resources::Bitmap DialogBackground
 {
   attr bitmapfile FileName = .\Res\navi\ixww22_lc_navi_dialog_bg .png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <690,2800,890,2840>
+$output false
+resource Resources::Bitmap IconUnitVolt
+{
+  attr bitmapfile FileName = .\Res\vehicle_info\infounit_v.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;

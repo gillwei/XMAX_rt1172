@@ -189,7 +189,7 @@ class BaseHome : Components::BaseMainBG
   }
 }
 
-$rect <10,210,210,250>
+$rect <290,60,490,100>
 $output false
 class HOM03_VehicleInfo : Home::BaseHome
 {
@@ -199,15 +199,705 @@ class HOM03_VehicleInfo : Home::BaseHome
     trace "Init HOM03";
   }
 
+  $rect <230,340,460,380>
+  inherited method OnShortDownKeyActivated()
+  {
+    VehicleInfoMenu.ScrollUp();
+  }
+
+  $rect <230,290,460,330>
+  inherited method OnShortUpKeyActivated()
+  {
+    VehicleInfoMenu.ScrollDown();
+  }
+
+  $rect <230,390,460,430>
+  inherited method OnLongEnterKeyActivated()
+  {
+    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    {
+      PresentDialog( new Settings::SET46_VehicleInfoReset, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
   $rect <10,340,190,380>
   inherited var HomeType = Enum::HomeType.VEHICLE_INFO;
 
   $rect <20,20,160,60>
+  object Views::Image IconInfo
+  {
+    preset Bounds = <17,51,67,101>;
+    preset Bitmap = Resource::IconInfo;
+  }
+
+  $rect <20,20,160,60>
+  object Home::VehicleInfoMenu VehicleInfoMenu
+  {
+    preset Bounds = <80,40,480,268>;
+  }
+}
+
+$rect <290,110,490,150>
+$output false
+class VehicleInfoMenu : Core::Group
+{
+  $rect <0,290,180,330>
+  inherited method Init()
+  {
+    InitItems();
+    SetDividers();
+    SetArrowIcons();
+
+    if( VerticalList.NoOfItems < 3 )
+    {
+      VerticalList.Bounds.h = VerticalList.ItemHeight * VerticalList.NoOfItems; 
+    }
+    else
+    {
+      VerticalList.Bounds.h = Bounds.h;
+    }
+  }
+
+  $rect <0,240,180,280>
+  inherited property Bounds = <0,0,400,228>;
+
+  $rect <20,20,160,60>
+  object Core::VerticalList VerticalList
+  {
+    preset Bounds = <0,0,400,228>;
+    preset OnLoadItem = OnLoadItem;
+    preset Endless = true;
+    preset ItemHeight = 76;
+    preset ItemClass = Home::ItemVehicleInfo;
+  }
+
+  // This method is called by 'VerticalList' every time the list loads or updates \
+  // an item.
+  $rect <210,240,410,280>
+  slot OnLoadItem
+  {
+    var int32 ItemNo = VerticalList.Item;
+
+    var Home::ItemVehicleInfo MenuItem = (Home::ItemVehicleInfo)VerticalList.View;
+    if( null != MenuItem )
+    {
+      MenuItem.Title.String = LoadItemTitle( ItemNo );
+      MenuItem.IconUnit.Bitmap = LoadItemUnitIconBmp( ItemNo );
+
+      if( Enum::VehicleInfoMenuItem.TRIP_TIME == Items[ItemNo] )
+      {
+        MenuItem.HourText.String = LoadItemHour( ItemNo );
+        MenuItem.HourText.Visible = true;
+
+        MenuItem.MinuteText.String = LoadItemMinute( ItemNo );
+        MenuItem.MinuteText.Visible = true;
+
+        MenuItem.HourIcon.Visible = true;
+        MenuItem.Value.Visible = false;
+      }
+      else
+      {
+        MenuItem.Value.String = LoadItemValue( ItemNo );
+        MenuItem.Value.Visible = true;
+
+        MenuItem.HourText.Visible = false;
+        MenuItem.MinuteText.Visible = false;
+        MenuItem.HourIcon.Visible = false;
+      }
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider1
+  {
+    preset Bounds = <1,70,360,77>;
+    preset Bitmap = Resource::InfoDivider;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider2
+  {
+    preset Bounds = <1,148,360,155>;
+    preset Bitmap = Resource::InfoDivider;
+  }
+
+  $rect <0,340,180,380>
+  method void InitItems()
+  {
+    var int32 i;
+    var int32 NoOfItems;
+    var Enum::VehicleInfoMenuItem MenuItem;
+
+    for( i = 0; i < (int32)Enum::VehicleInfoMenuItem.TOTAL; i++ )
+    {
+      MenuItem = (Enum::VehicleInfoMenuItem)i;
+      switch( MenuItem )
+      {
+        case Enum::VehicleInfoMenuItem.AVG_SPEED:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.AVG_SPEED ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::VehicleInfoMenuItem.AVG_FUEL:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.AVG_FUEL ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::VehicleInfoMenuItem.INST_FUEL:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.CURRENT_FUEL ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::VehicleInfoMenuItem.RANGE:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.RANGE_DISTANCE ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::VehicleInfoMenuItem.FUEL_CONSUMPTION:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.FUEL_CONSUMPTION ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::VehicleInfoMenuItem.AIR_TEMPERATURE:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.AIR_TEMPERATURE ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::VehicleInfoMenuItem.COOLANT_TEMPERATURE:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.COOLANT ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::VehicleInfoMenuItem.BATTERY:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.BATTERY_VOLTAGE ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::VehicleInfoMenuItem.TIRE_FRONT:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_FRONT ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::VehicleInfoMenuItem.TIRE_REAR:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_REAR ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::VehicleInfoMenuItem.TIRE_FRONT_RIGHT:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_REAR ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        case Enum::VehicleInfoMenuItem.TIRE_FRONT_LEFT:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_FRONT_LEFT ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
+        default:
+        {
+          Items[NoOfItems] = MenuItem;
+          NoOfItems++;
+        }
+      }
+    }
+
+    VerticalList.NoOfItems = NoOfItems;
+  }
+
+  $rect <660,240,860,280>
+  array Enum::VehicleInfoMenuItem Items[ 14 ];
+
+  $rect <210,290,410,330>
+  method string LoadItemTitle( arg int32 aItemNo )
+  {
+    var string Title;
+    switch( Items[aItemNo] )
+    {
+      case Enum::VehicleInfoMenuItem.AVG_SPEED: Title = Strings::HOM03_AVG_SPEED;
+      case Enum::VehicleInfoMenuItem.AVG_FUEL: Title = Strings::HOM03_AVG_FUEL;
+      case Enum::VehicleInfoMenuItem.INST_FUEL: Title = Strings::HOM03_INST_FUEL;
+      case Enum::VehicleInfoMenuItem.TRIP_TIME: Title = Strings::HOM03_TRIP_TIME;
+      case Enum::VehicleInfoMenuItem.RANGE: Title = Strings::HOM03_RANGE;
+      case Enum::VehicleInfoMenuItem.FUEL_CONSUMPTION: Title = Strings::HOM03_FUEL_CONSUMPTION;
+      case Enum::VehicleInfoMenuItem.AIR_TEMPERATURE: Title = Strings::HOM03_AIR;
+      case Enum::VehicleInfoMenuItem.COOLANT_TEMPERATURE: Title = Strings::HOM03_COOLANT;
+      case Enum::VehicleInfoMenuItem.BATTERY: Title = Strings::HOM03_BATTERY;
+      case Enum::VehicleInfoMenuItem.TIRE_FRONT_RIGHT: Title = Strings::HOM03_FRONT_R;
+      case Enum::VehicleInfoMenuItem.TIRE_FRONT_LEFT: Title = Strings::HOM03_FRONT_L;
+      case Enum::VehicleInfoMenuItem.TIRE_FRONT: Title = Strings::HOM03_FRONT;
+      case Enum::VehicleInfoMenuItem.TIRE_REAR: Title = Strings::HOM03_REAR;
+      case Enum::VehicleInfoMenuItem.CRUISE: Title = Strings::HOM03_CRUISE;
+      default:;
+    }
+    return Title;
+  }
+
+  $rect <0,390,180,430>
+  method void SetDividers()
+  {
+    if( 1 <= VerticalList.NoOfItems )
+    {
+      Divider1.Visible = true;
+    }
+    else
+    {
+      Divider1.Visible = false;
+    }
+
+    if( 2 <= VerticalList.NoOfItems )
+    {
+      Divider2.Visible = true;
+    }
+    else
+    {
+      Divider2.Visible = false;
+    }
+  }
+
+  $rect <210,390,410,430>
+  method Resources::Bitmap LoadItemUnitIconBmp( arg int32 aItemNo )
+  {
+    var Resources::Bitmap IconBitmap;
+    switch( Items[aItemNo] )
+    {
+      case Enum::VehicleInfoMenuItem.AVG_SPEED,
+           Enum::VehicleInfoMenuItem.RANGE,
+           Enum::VehicleInfoMenuItem.CRUISE:
+      {
+        if( Enum::MileageSettingItem.KM == DeviceInterface::VehicleDevice.MileageUnit )
+        {
+          IconBitmap = Resource::IconUnitKM;
+        }
+        else
+        {
+          IconBitmap = Resource::IconUnitMile;
+        }
+      }
+      case Enum::VehicleInfoMenuItem.AVG_FUEL,
+           Enum::VehicleInfoMenuItem.INST_FUEL:
+      {
+        switch( DeviceInterface::VehicleDevice.FuelConsumptionUnit )
+        {
+          case Enum::MeterFuelConsumptionUnit.KM_PER_LITER: IconBitmap = Resource::IconUnitKM_L;
+          case Enum::MeterFuelConsumptionUnit.L_PER_100KM: IconBitmap = Resource::IconUnitL_100KM;
+          case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL,
+               Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL: IconBitmap = Resource::IconUnitMPG;
+          default:;
+        }
+      }
+      case Enum::VehicleInfoMenuItem.TRIP_TIME: IconBitmap = Resource::IconUnitMinute;
+      case Enum::VehicleInfoMenuItem.FUEL_CONSUMPTION:
+      {
+        switch( DeviceInterface::VehicleDevice.FuelConsumptionUnit )
+        {
+          case Enum::MeterFuelConsumptionUnit.KM_PER_LITER,
+               Enum::MeterFuelConsumptionUnit.L_PER_100KM: IconBitmap = Resource::IconUnitL;
+          case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL,
+               Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL: IconBitmap = Resource::IconUnitGal;
+          default:;
+        }
+      }
+
+      case Enum::VehicleInfoMenuItem.AIR_TEMPERATURE,
+           Enum::VehicleInfoMenuItem.COOLANT_TEMPERATURE:
+      {
+        if( Enum::TemperatureSettingItem.TEMP_C == DeviceInterface::VehicleDevice.TemperatureUnit )
+        {
+          IconBitmap = Resource::IconUnitDegC;
+        }
+        else
+        {
+          IconBitmap = Resource::IconUnitDegF;
+        }
+      }
+
+      case Enum::VehicleInfoMenuItem.BATTERY: IconBitmap = Resource::IconUnitVolt;
+      case Enum::VehicleInfoMenuItem.TIRE_FRONT,
+           Enum::VehicleInfoMenuItem.TIRE_REAR,
+           Enum::VehicleInfoMenuItem.TIRE_FRONT_RIGHT,
+           Enum::VehicleInfoMenuItem.TIRE_FRONT_LEFT:
+      {
+        switch( DeviceInterface::VehicleDevice.PressureUnit )
+        {
+          case Enum::PressureSettingItem.KGF: IconBitmap = Resource::IconUnitKGF_CM2;
+          case Enum::PressureSettingItem.KPA: IconBitmap = Resource::IconUnitKPA;
+          case Enum::PressureSettingItem.PSI: IconBitmap = Resource::IconUnitPSI;
+          default:;
+        }
+      }
+      default:;
+    }
+    return IconBitmap;
+  }
+
+  $rect <210,340,410,380>
+  method string LoadItemValue( arg int32 aItemNo )
+  {
+    var string ValueStr;
+    switch( Items[aItemNo] )
+    {
+      case Enum::VehicleInfoMenuItem.AVG_SPEED: ValueStr = DeviceInterface::VehicleDevice.AvgSpeedStr;
+      case Enum::VehicleInfoMenuItem.AVG_FUEL: ValueStr = DeviceInterface::VehicleDevice.AvgFuelRateStr;
+      case Enum::VehicleInfoMenuItem.INST_FUEL: ValueStr = DeviceInterface::VehicleDevice.InstantFuelRateStr;
+      case Enum::VehicleInfoMenuItem.RANGE: ValueStr = DeviceInterface::VehicleDevice.RangeStr;
+      case Enum::VehicleInfoMenuItem.FUEL_CONSUMPTION: ValueStr = DeviceInterface::VehicleDevice.FuelConStr;
+      case Enum::VehicleInfoMenuItem.AIR_TEMPERATURE: ValueStr = DeviceInterface::VehicleDevice.AirTemperatureStr;
+      case Enum::VehicleInfoMenuItem.COOLANT_TEMPERATURE: ValueStr = DeviceInterface::VehicleDevice.CoolantTemperatureStr;
+      case Enum::VehicleInfoMenuItem.BATTERY: ValueStr = DeviceInterface::VehicleDevice.BatteryStr;
+      case Enum::VehicleInfoMenuItem.TIRE_FRONT_RIGHT: ValueStr = Strings::GEN_THREE_HYPHENS;
+      case Enum::VehicleInfoMenuItem.TIRE_FRONT_LEFT: ValueStr = Strings::GEN_THREE_HYPHENS;
+      case Enum::VehicleInfoMenuItem.CRUISE: ValueStr = DeviceInterface::VehicleDevice.CruiseSpeedStr;
+      default:;
+    }
+    return ValueStr;
+  }
+
+  $rect <660,290,860,330>
+  method void ScrollUp()
+  {
+    if( !RowScrollEffect.Enabled &&
+        1 < VerticalList.NoOfItems )
+    {
+      RowScrollEffect.Value1 = VerticalList.ScrollOffset;
+      RowScrollEffect.Value2 = VerticalList.ScrollOffset - 76;
+      RowScrollEffect.Enabled = true;
+    }
+  }
+
+  $rect <660,340,860,380>
+  method void ScrollDown()
+  {
+    if( !RowScrollEffect.Enabled &&
+        1 < VerticalList.NoOfItems )
+    {
+      RowScrollEffect.Value1 = VerticalList.ScrollOffset;
+      RowScrollEffect.Value2 = VerticalList.ScrollOffset + 76;
+      RowScrollEffect.Enabled = true;
+    }
+  }
+
+  $rect <0,440,180,480>
+  method void SetArrowIcons()
+  {
+    if( 1 < VerticalList.NoOfItems )
+    {
+      UpArrowIcon.Visible = true;
+      DownArrowIcon.Visible = true;
+    }
+    else
+    {
+      UpArrowIcon.Visible = false;
+      DownArrowIcon.Visible = false;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image UpArrowIcon
+  {
+    preset Bounds = <361,1,393,33>;
+    preset Bitmap = Resource::PageUpDown;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DownArrowIcon
+  {
+    preset Bounds = <361,185,393,217>;
+    preset FrameNumber = 1;
+    preset Bitmap = Resource::PageUpDown;
+  }
+
+  $rect <430,340,630,380>
+  method string LoadItemHour( arg int32 aItemNo )
+  {
+    var string HourString;
+    if( Enum::VehicleInfoMenuItem.TRIP_TIME == Items[aItemNo] )
+    {
+      HourString = DeviceInterface::VehicleDevice.TripTimeHourStr;
+    }
+    return HourString;
+  }
+
+  $rect <430,390,630,430>
+  method string LoadItemMinute( arg int32 aItemNo )
+  {
+    var string MinuteString;
+    if( Enum::VehicleInfoMenuItem.TRIP_TIME == Items[aItemNo] )
+    {
+      MinuteString = DeviceInterface::VehicleDevice.TripTimeMinuteStr;
+    }
+    return MinuteString;
+  }
+
+  $rect <660,390,910,430>
+  object Effects::Int32Effect RowScrollEffect
+  {
+    preset Exponent = 4.19;
+    preset Timing = Effects::Timing.Exp_Out;
+    preset NoOfCycles = 1;
+    preset CycleDuration = 200;
+    preset InitialDelay = 50;
+    preset Outlet = ^VerticalList.ScrollOffset;
+  }
+
+  $rect <940,240,1220,280>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <940,290,1180,330>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData )
+    {
+      switch( VehicleData.RxType )
+      {
+        /* unit changed (not expect to happen) */
+        case Enum::VehicleRxType.TEMPERATURE_UNIT:
+        {
+          ReloadItem( Enum::VehicleInfoMenuItem.AIR_TEMPERATURE );
+          ReloadItem( Enum::VehicleInfoMenuItem.COOLANT_TEMPERATURE );
+        }
+        case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT:
+        {
+          ReloadItem( Enum::VehicleInfoMenuItem.AVG_FUEL );
+          ReloadItem( Enum::VehicleInfoMenuItem.INST_FUEL );
+          ReloadItem( Enum::VehicleInfoMenuItem.FUEL_CONSUMPTION );
+        }
+        case Enum::VehicleRxType.MILEAGE_UNIT:
+        {
+          ReloadItem( Enum::VehicleInfoMenuItem.AVG_SPEED );
+          ReloadItem( Enum::VehicleInfoMenuItem.RANGE );
+          ReloadItem( Enum::VehicleInfoMenuItem.CRUISE );
+        }
+        case Enum::VehicleRxType.PRESSURE_UNIT:
+        {
+          ReloadItem( Enum::VehicleInfoMenuItem.TIRE_FRONT );
+          ReloadItem( Enum::VehicleInfoMenuItem.TIRE_REAR );
+          ReloadItem( Enum::VehicleInfoMenuItem.TIRE_FRONT_LEFT );
+          ReloadItem( Enum::VehicleInfoMenuItem.TIRE_FRONT_RIGHT );
+        }
+
+        /* value changed */
+        case Enum::VehicleRxType.AVERAGE_SPEED: ReloadItem( Enum::VehicleInfoMenuItem.AVG_SPEED );
+        case Enum::VehicleRxType.FUEL_RATE_AVERAGE: ReloadItem( Enum::VehicleInfoMenuItem.AVG_FUEL );
+        case Enum::VehicleRxType.FUEL_RATE_INSTANT: ReloadItem( Enum::VehicleInfoMenuItem.INST_FUEL );
+        case Enum::VehicleRxType.TRIP_TIME: ReloadItem( Enum::VehicleInfoMenuItem.TRIP_TIME );
+        case Enum::VehicleRxType.RANGE_DISTANCE: ReloadItem( Enum::VehicleInfoMenuItem.RANGE );
+        case Enum::VehicleRxType.FUEL_CONSUMPTION: ReloadItem( Enum::VehicleInfoMenuItem.FUEL_CONSUMPTION );
+        case Enum::VehicleRxType.AIR_TEMPERATURE: ReloadItem( Enum::VehicleInfoMenuItem.AIR_TEMPERATURE );
+        case Enum::VehicleRxType.COOLANT_TEMPERATURE: ReloadItem( Enum::VehicleInfoMenuItem.COOLANT_TEMPERATURE );
+        case Enum::VehicleRxType.BATTERY_VOLTAGE: ReloadItem( Enum::VehicleInfoMenuItem.BATTERY );
+        case Enum::VehicleRxType.TIRE_FRONT: ReloadItem( Enum::VehicleInfoMenuItem.TIRE_FRONT );
+        case Enum::VehicleRxType.TIRE_REAR: ReloadItem( Enum::VehicleInfoMenuItem.TIRE_REAR );
+        case Enum::VehicleRxType.TIRE_FRONT_LEFT: ReloadItem( Enum::VehicleInfoMenuItem.TIRE_FRONT_LEFT );
+        case Enum::VehicleRxType.TIRE_FRONT_RIGHT: ReloadItem( Enum::VehicleInfoMenuItem.TIRE_FRONT_RIGHT );
+        case Enum::VehicleRxType.CRUISE_SPEED: ReloadItem( Enum::VehicleInfoMenuItem.CRUISE );
+        default:;
+      }
+    }
+  }
+
+  $rect <940,340,1140,380>
+  method void ReloadItem( arg Enum::VehicleInfoMenuItem aVehicleInfoItem )
+  {
+    var int32 i;
+    for( i = 0; i < VerticalList.NoOfItems; i++ )
+    {
+      if( i < Items.size && aVehicleInfoItem == Items[i] )
+      {
+        VerticalList.InvalidateItems( i, i );
+        break;
+      }
+    }
+  }
+}
+
+$rect <290,160,490,200>
+$output false
+class ItemVehicleInfo : Components::BaseComponent
+{
+  $rect <0,105,190,145>
+  inherited property Bounds = <0,0,400,76>;
+
+  $rect <0,160,200,200>
+  inherited property PassUpKey = true;
+
+  $rect <0,210,200,250>
+  inherited property PassDownKey = true;
+
+  $rect <20,20,160,60>
   object Views::Text Title
   {
-    preset Bounds = <72,113,403,156>;
-    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
-    preset String = "[HOM 03]";
+    preset Layout = Core::Layout[AlignToLeft, AlignToTop];
+    preset Bounds = <5,19,142,52>;
+    preset Ellipsis = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #FFFFFFFF;
   }
+
+  $rect <20,20,160,60>
+  object Views::Image IconUnit
+  {
+    preset Bounds = <286,14,344,56>;
+    preset Bitmap = Resource::IconUnitKM_L;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Value
+  {
+    preset Layout = Core::Layout[AlignToLeft, AlignToTop];
+    preset Bounds = <149,8,281,65>;
+    preset Ellipsis = true;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium40pt;
+    preset Color = #FFFFFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text MinuteText
+  {
+    preset Layout = Core::Layout[AlignToLeft, AlignToTop];
+    preset Bounds = <231,8,281,65>;
+    preset Ellipsis = true;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium40pt;
+    preset Color = #FFFFFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text HourText
+  {
+    preset Layout = Core::Layout[AlignToLeft, AlignToTop];
+    preset Bounds = <146,8,196,65>;
+    preset Ellipsis = true;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium40pt;
+    preset Color = #FFFFFFFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image HourIcon
+  {
+    preset Bounds = <200,14,227,56>;
+    preset Bitmap = Resource::IconUnitHour;
+    preset Visible = false;
+  }
+
+  $reorder Init 1
+  $reorder OnSetOpacity 1
+  $reorder OnGetEmbedded 1
+  $reorder OnSetEmbedded 1
+  $reorder OnGetAlphaBlended 1
+  $reorder OnSetAlphaBlended 1
+  $reorder OnGetVisible 1
+  $reorder OnSetVisible 1
+  $reorder FindActiveDialogByClass 1
+  $reorder FindDialogByClass 1
+  $reorder FindCurrentDialog 1
+  $reorder IsCurrentDialog 1
+  $reorder IsActiveDialog 1
+  $reorder IsDialog 1
+  $reorder GetIndexOfDialog 1
+  $reorder GetDialogAtIndex 1
+  $reorder CountDialogs 1
+  $reorder SwitchToDialog 1
+  $reorder DismissDialog 1
+  $reorder PresentDialog 1
+  $reorder ObtainFocus 1
+  $reorder HasViewState 1
+  $reorder LocalPosition 1
+  $reorder GlobalPosition 1
+  $reorder DispatchEvent 1
+  $reorder BroadcastEventAtPosition 1
+  $reorder BroadcastEvent 1
+  $reorder UpdateLayout 1
+  $reorder UpdateViewState 1
+  $reorder InvalidateViewState 1
+  $reorder InvalidateArea 1
+  $reorder GetIndexOfView 1
+  $reorder GetViewAtIndex 1
+  $reorder CountViews 1
+  $reorder FindViewInDirection 1
+  $reorder FindViewWithinArea 1
+  $reorder FindViewAtPosition 1
+  $reorder FindPrevView 1
+  $reorder FindNextView 1
+  $reorder FindSiblingView 1
+  $reorder GetContentArea 1
+  $reorder FadeGroup 1
+  $reorder RestackBehind 1
+  $reorder RestackBack 1
+  $reorder RestackTop 1
+  $reorder Restack 1
+  $reorder Remove 1
+  $reorder AddBehind 1
+  $reorder Add 1
+  $reorder Focus 1
+  $reorder Buffered 1
+  $reorder Opacity 2
+  $reorder Embedded 2
+  $reorder AlphaBlended 2
+  $reorder Visible 2
+  $reorder Enabled 1
+  $reorder OnLongHomeKeyActivated 1
+  $reorder PassUpKey 1
+  $reorder PassDownKey 1
+  $reorder PassHomeKey 1
+  $reorder PassEnterKey 1
+  $reorder OnShortMagicKeyActivated 1
+  $reorder PassMagicKey 1
+  $reorder DDModeEnabled 1
+  $reorder IsDDModeEffected 1
+  $reorder OnSetDDModeEnabled 1
+  $reorder OnDownKeyReleased 1
+  $reorder OnUpKeyReleased 1
+  $reorder MagicKeyEnabled 1
+  $reorder OnSetMagicKeyEnabled 1
+  $reorder Title 1
 }

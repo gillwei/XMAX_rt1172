@@ -5888,139 +5888,27 @@ XString SettingsSET46_VehicleInfoReset_LoadItemUnit( SettingsSET46_VehicleInfoRe
 XString SettingsSET46_VehicleInfoReset_LoadItemValue( SettingsSET46_VehicleInfoReset _this, 
   XInt32 aItemNo )
 {
-  XString ValueStr = 0;
-  DeviceInterfaceVehicleDataClass VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 
-    0 );
+  XString ValueStr;
 
   switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 4 )])
   {
     case EnumMeterInfoAVG_SPEED :
-    {
-      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeAVERAGE_SPEED );
-
-      if ( VehicleData->Valid )
-      {
-        if ( EnumMileageSettingItemMILE == _this->MileageUnit )
-        {
-          VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
-        }
-
-        VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
-        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-        VehicleData->DataUInt32, 0, 999 );
-        ValueStr = EwNewStringUInt( VehicleData->DataUInt32, 0, 1 );
-      }
-    }
+      ValueStr = DeviceInterfaceVehicleDeviceClass_OnGetAvgSpeedStr( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
     break;
 
     case EnumMeterInfoAVG_FUEL :
-    {
-      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeFUEL_RATE_AVERAGE );
-
-      if ( VehicleData->Valid )
-      {
-        switch ( _this->FuelConsumptionUnit )
-        {
-          case EnumMeterFuelConsumptionUnitKM_PER_LITER :
-          {
-            VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
-            EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-            VehicleData->DataFloat, 0.000000f, 99.900002f );
-          }
-          break;
-
-          case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
-          {
-            VehicleData->DataFloat *= 2.367000f;
-            VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
-            EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-            VehicleData->DataFloat, 0.000000f, 199.899994f );
-          }
-          break;
-
-          case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
-          {
-            VehicleData->DataFloat *= 2.841000f;
-            VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
-            EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-            VehicleData->DataFloat, 0.000000f, 199.899994f );
-          }
-          break;
-
-          case EnumMeterFuelConsumptionUnitL_PER_100KM :
-          {
-            VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
-            EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-            VehicleData->DataFloat, 1.000000f, 99.900002f );
-          }
-          break;
-
-          default : 
-            ;
-        }
-
-        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
-        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-        VehicleData->DataFloat, 0.100000f );
-        ValueStr = EwNewStringFloat( VehicleData->DataFloat, 0, 1 );
-      }
-    }
+      ValueStr = DeviceInterfaceVehicleDeviceClass_OnGetAvgFuelRateStr( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
     break;
 
     case EnumMeterInfoFUEL_CONSUMPTION :
-    {
-      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeFUEL_CONSUMPTION );
-
-      if ( VehicleData->Valid )
-      {
-        switch ( _this->FuelConsumptionUnit )
-        {
-          case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
-            VehicleData->DataFloat *= 0.264000f;
-          break;
-
-          case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
-            VehicleData->DataFloat *= 0.220000f;
-          break;
-
-          case EnumMeterFuelConsumptionUnitL_PER_100KM :
-          {
-            if ( 0.000000f < VehicleData->DataFloat )
-            {
-              VehicleData->DataFloat = 100 / VehicleData->DataFloat;
-            }
-            else
-            {
-              VehicleData->DataFloat = 99.900002f;
-            }
-          }
-          break;
-
-          default : 
-            ;
-        }
-
-        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
-        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-        VehicleData->DataFloat, 0.000000f, 99.900002f );
-        VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
-        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-        VehicleData->DataFloat, 0.100000f );
-        ValueStr = EwNewStringFloat( VehicleData->DataFloat, 0, 1 );
-      }
-    }
+      ValueStr = DeviceInterfaceVehicleDeviceClass_OnGetFuelConStr( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
     break;
 
     default : 
-      VehicleData->Valid = 0;
-  }
-
-  if ( !VehicleData->Valid )
-  {
-    ValueStr = EwLoadString( &StringsGEN_THREE_HYPHENS );
+      ValueStr = EwLoadString( &StringsGEN_THREE_HYPHENS );
   }
 
   return ValueStr;
@@ -6035,15 +5923,8 @@ XString SettingsSET46_VehicleInfoReset_LoadItemHour( SettingsSET46_VehicleInfoRe
   if ( EnumMeterInfoTRIP_TIME == _this->SupportedSetting[ EwCheckIndex( aItemNo, 
       4 )])
   {
-    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-      EnumVehicleRxTypeTRIP_TIME );
-
-    if ( VehicleData->Valid )
-    {
-      XInt32 TripTimeSec = (XInt32)VehicleData->DataUInt32;
-      HourString = EwNewStringInt( TripTimeSec / 3600, 0, 10 );
-    }
+    HourString = DeviceInterfaceVehicleDeviceClass_OnGetTripTimeHourStr( EwGetAutoObject( 
+    &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
   }
 
   return HourString;
@@ -6058,16 +5939,8 @@ XString SettingsSET46_VehicleInfoReset_LoadItemMinute( SettingsSET46_VehicleInfo
   if ( EnumMeterInfoTRIP_TIME == _this->SupportedSetting[ EwCheckIndex( aItemNo, 
       4 )])
   {
-    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-      EnumVehicleRxTypeTRIP_TIME );
-
-    if ( VehicleData->Valid )
-    {
-      XInt32 TripTimeSec = (XInt32)VehicleData->DataUInt32;
-      XInt32 TripTimeMinute = ( TripTimeSec / 60 ) - (( TripTimeSec / 3600 ) * 60 );
-      MinuteString = EwNewStringInt( TripTimeMinute, 2, 10 );
-    }
+    MinuteString = DeviceInterfaceVehicleDeviceClass_OnGetTripTimeMinuteStr( EwGetAutoObject( 
+    &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
   }
 
   return MinuteString;

@@ -47,6 +47,8 @@
 #include "_HomeHOM11_TachoVisualizer.h"
 #include "_HomeHOM12_EcoVisualizer.h"
 #include "_HomeHOM13_SpeedVisualizer.h"
+#include "_HomeItemVehicleInfo.h"
+#include "_HomeVehicleInfoMenu.h"
 
 #ifdef __cplusplus
   }

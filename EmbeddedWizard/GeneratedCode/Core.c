@@ -7359,6 +7359,21 @@ CoreView CoreVerticalList_confirmHeadItem( CoreVerticalList _this )
   return item;
 }
 
+/* 'C' function for method : 'Core::VerticalList.OnSetEndless()' */
+void CoreVerticalList_OnSetEndless( CoreVerticalList _this, XBool value )
+{
+  if ( _this->Endless == value )
+    return;
+
+  _this->Endless = value;
+
+  while ( CoreVerticalList_releaseHeadItem( _this ) != 0 )
+    ;
+
+  CoreGroup_InvalidateViewState((CoreGroup)_this );
+  CoreGroup__InvalidateArea( _this, EwGetRectORect( _this->Super2.Bounds ));
+}
+
 /* 'C' function for method : 'Core::VerticalList.OnSetScrollOffset()' */
 void CoreVerticalList_OnSetScrollOffset( CoreVerticalList _this, XInt32 value )
 {

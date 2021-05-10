@@ -66,6 +66,9 @@ EW_DECLARE_FONT_RES( FontsNotoSansBold24pt )
 /* Font resource : 'Fonts::NotoSansBold38pt' */
 EW_DECLARE_FONT_RES( FontsNotoSansBold38pt )
 
+/* This is a font resource. */
+EW_DECLARE_FONT_RES( FontsNotoSansMedium40pt )
+
 #ifdef __cplusplus
   }
 #endif

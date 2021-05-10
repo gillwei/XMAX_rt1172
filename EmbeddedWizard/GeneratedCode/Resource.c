@@ -923,10 +923,112 @@ EW_RES_WITHOUT_VARIANTS( ResourceClockDayTimeText )
 /* Table with links to derived variants of the bitmap resource : 'Resource::SafeCamSchoolZone' */
 EW_RES_WITHOUT_VARIANTS( ResourceSafeCamSchoolZone )
 
+/* Include a file containing the bitmap resource : 'Resource::IconInfo' */
+#include "_ResourceIconInfo.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconInfo' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconInfo )
+
+/* Include a file containing the bitmap resource : 'Resource::InfoDivider' */
+#include "_ResourceInfoDivider.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::InfoDivider' */
+EW_RES_WITHOUT_VARIANTS( ResourceInfoDivider )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitDegC' */
+#include "_ResourceIconUnitDegC.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitDegC' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitDegC )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitDegF' */
+#include "_ResourceIconUnitDegF.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitDegF' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitDegF )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitGal' */
+#include "_ResourceIconUnitGal.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitGal' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitGal )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitHour' */
+#include "_ResourceIconUnitHour.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitHour' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitHour )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitKGF_CM2' */
+#include "_ResourceIconUnitKGF_CM2.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitKGF_CM2' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitKGF_CM2 )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitKM' */
+#include "_ResourceIconUnitKM.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitKM' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitKM )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitKM_L' */
+#include "_ResourceIconUnitKM_L.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitKM_L' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitKM_L )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitKPA' */
+#include "_ResourceIconUnitKPA.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitKPA' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitKPA )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitL' */
+#include "_ResourceIconUnitL.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitL' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitL )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitL_100KM' */
+#include "_ResourceIconUnitL_100KM.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitL_100KM' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitL_100KM )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitMile' */
+#include "_ResourceIconUnitMile.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitMile' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitMile )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitMinute' */
+#include "_ResourceIconUnitMinute.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitMinute' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitMinute )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitMPG' */
+#include "_ResourceIconUnitMPG.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitMPG' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitMPG )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitPSI' */
+#include "_ResourceIconUnitPSI.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitPSI' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitPSI )
+
 /* Include a file containing the bitmap resource : 'Resource::DialogBackground' */
 #include "_ResourceDialogBackground.h"
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::DialogBackground' */
 EW_RES_WITHOUT_VARIANTS( ResourceDialogBackground )
+
+/* Include a file containing the bitmap resource : 'Resource::IconUnitVolt' */
+#include "_ResourceIconUnitVolt.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitVolt' */
+EW_RES_WITHOUT_VARIANTS( ResourceIconUnitVolt )
 
 /* Embedded Wizard */

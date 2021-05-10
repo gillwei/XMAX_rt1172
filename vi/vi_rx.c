@@ -266,9 +266,11 @@ switch( signal_id )
         break;
     case IL_CAN0_FUEL_RATE_INST_RXSIG_HANDLE:
         rx_fuel_rate.instant_consumption = (uint16_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeFUEL_RATE_INSTANT );
         break;
     case IL_CAN0_FUEL_RATE_RANGE_DIST_RXSIG_HANDLE:
         rx_fuel_rate.range_distance_km = (uint16_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeRANGE_DISTANCE );
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -386,13 +388,16 @@ switch( signal_id )
         EW_notify_vi_data_received( EnumVehicleRxTypeAIR_TEMPERATURE );
         break;
     case IL_CAN0_VEHICLE_INFO_3_COOLANT_RXSIG_HANDLE:
-        rx_vehicle_info.coolant_temperature = (int8_t)data;
+        rx_vehicle_info.coolant_temperature = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeCOOLANT_TEMPERATURE );
         break;
     case IL_CAN0_VEHICLE_INFO_3_BAT_RXSIG_HANDLE:
         rx_vehicle_info.battery_voltage = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeBATTERY_VOLTAGE );
         break;
     case IL_CAN0_VEHICLE_INFO_3_CRUISE_RXSIG_HANDLE:
         rx_vehicle_info.cruise_speed = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeCRUISE_SPEED );
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );

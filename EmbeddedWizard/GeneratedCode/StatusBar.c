@@ -47,7 +47,6 @@
 #include "Fonts.h"
 #include "Resource.h"
 #include "StatusBar.h"
-#include "Strings.h"
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
@@ -640,44 +639,23 @@ void StatusBarMain_UpdateAirTemperature( StatusBarMain _this )
   if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
       &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleSupportedFunctionAIR_TEMPERATURE ))
   {
-    DeviceInterfaceVehicleDataClass AirTemperatureContext = DeviceInterfaceVehicleDeviceClass_GetData( 
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-      EnumVehicleRxTypeAIR_TEMPERATURE );
     DeviceInterfaceVehicleDataClass TemepratureUnitContext = DeviceInterfaceVehicleDeviceClass_GetData( 
       EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
       EnumVehicleRxTypeTEMPERATURE_UNIT );
 
-    if (( AirTemperatureContext != 0 ) && ( TemepratureUnitContext != 0 ))
+    if ( TemepratureUnitContext != 0 )
     {
-      if ( AirTemperatureContext->Valid )
+      if ( EnumTemperatureSettingItemTEMP_F == (XEnum)TemepratureUnitContext->DataUInt32 )
       {
-        XFloat AirTemperature;
-
-        if ( EnumTemperatureSettingItemTEMP_F == (XEnum)TemepratureUnitContext->DataUInt32 )
-        {
-          ViewsImage_OnSetFrameNumber( &_this->UnitImage, 1 );
-          AirTemperature = ( AirTemperatureContext->DataFloat * 1.800000f ) + 32;
-          AirTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
-          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), AirTemperature, 
-          -22.000000f, 263.000000f );
-        }
-        else
-        {
-          ViewsImage_OnSetFrameNumber( &_this->UnitImage, 0 );
-          AirTemperature = AirTemperatureContext->DataFloat;
-          AirTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
-          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), AirTemperature, 
-          -30.000000f, 128.000000f );
-        }
-
-        ViewsText_OnSetString( &_this->AirTemperatureText, EwNewStringFloat( AirTemperature, 
-        0, 0 ));
+        ViewsImage_OnSetFrameNumber( &_this->UnitImage, 1 );
       }
       else
       {
-        ViewsText_OnSetString( &_this->AirTemperatureText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
+        ViewsImage_OnSetFrameNumber( &_this->UnitImage, 0 );
       }
 
+      ViewsText_OnSetString( &_this->AirTemperatureText, DeviceInterfaceVehicleDeviceClass_OnGetAirTemperatureStr( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )));
       ViewsText_OnSetVisible( &_this->AirTemperatureText, 1 );
       ViewsImage_OnSetVisible( &_this->UnitImage, 1 );
     }

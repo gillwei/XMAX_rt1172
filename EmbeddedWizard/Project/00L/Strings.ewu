@@ -297,9 +297,9 @@ const string HOM03_AVG_FUEL =
 );
 
 $output false
-const string HOM03_CURRENT_FUEL =
+const string HOM03_INST_FUEL =
 (
-  Default = "CRNT FUEL";
+  Default = "INST FUEL";
 );
 
 $output false

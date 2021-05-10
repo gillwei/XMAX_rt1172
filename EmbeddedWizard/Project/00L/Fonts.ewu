@@ -196,3 +196,20 @@ resource Resources::Font NotoSansBold38pt
   attr fontkerning Kerning = true;
   attr fontrowdistance RowDistance;
 }
+
+// This is a font resource.
+$rect <10,330,270,370>
+$output false
+resource Resources::Font NotoSansMedium40pt
+{
+  attr fontname FontName = Noto Sans Med;
+  attr fontheight Height = 40;
+  attr fontquality Quality = Medium;
+  attr fontranges Ranges = '0'-'9','-','.';
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontheightmode HeightMode = Popular;
+  attr fontrowdistance RowDistance;
+}
