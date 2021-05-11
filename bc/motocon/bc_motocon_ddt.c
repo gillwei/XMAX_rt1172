@@ -20,8 +20,8 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define DDT_TO_PHONE_SEMAPHORE_TIMEOUT_MS ( 100 )
-#define DDT_TO_PHONE_TIMEOUT_MS ( 3000 )
+#define DDT_TO_PHONE_SEMAPHORE_TIMEOUT_TICKS ( pdMS_TO_TICKS( 100 ) )
+#define DDT_TO_PHONE_TIMEOUT_TICKS ( pdMS_TO_TICKS( 3000 ) )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -96,15 +96,15 @@ ddt_can.data_type = BC_MOTOCON_DDT_CAN_DATA_NOTIFY;
 ddt_to_phone_id = BC_MOTOCON_DDT_INACTIVE_ID;
 
 ddt_to_phone.semaphore = xSemaphoreCreateBinary();
-ddt_to_phone.timer = xTimerCreate( "DdtToPhoneTimer", DDT_TO_PHONE_TIMEOUT_MS, pdTRUE, ( void * ) &ddt_to_phone, ddt_to_phone_timeout );
+ddt_to_phone.timer = xTimerCreate( "DdtToPhoneTimer", DDT_TO_PHONE_TIMEOUT_TICKS, pdTRUE, ( void * ) &ddt_to_phone, ddt_to_phone_timeout );
 configASSERT( NULL != ddt_to_phone.semaphore && NULL != ddt_to_phone.timer );
 
 ddt_vehicle_information.semaphore = xSemaphoreCreateBinary();
-ddt_vehicle_information.timer = xTimerCreate( "DdtVehicleInfoTimer", DDT_TO_PHONE_TIMEOUT_MS, pdTRUE, ( void * ) &ddt_vehicle_information, ddt_to_phone_timeout );
+ddt_vehicle_information.timer = xTimerCreate( "DdtVehicleInfoTimer", DDT_TO_PHONE_TIMEOUT_TICKS, pdTRUE, ( void * ) &ddt_vehicle_information, ddt_to_phone_timeout );
 configASSERT( NULL != ddt_vehicle_information.semaphore && NULL != ddt_vehicle_information.timer );
 
 ddt_can.semaphore = xSemaphoreCreateBinary();
-ddt_can.timer = xTimerCreate( "DdtCanTimer", DDT_TO_PHONE_TIMEOUT_MS, pdTRUE, ( void * ) &ddt_can, ddt_to_phone_timeout );
+ddt_can.timer = xTimerCreate( "DdtCanTimer", DDT_TO_PHONE_TIMEOUT_TICKS, pdTRUE, ( void * ) &ddt_can, ddt_to_phone_timeout );
 configASSERT( NULL != ddt_can.semaphore && NULL != ddt_can.timer );
 
 bc_motocon_ddt_reset();
@@ -396,7 +396,7 @@ switch( type )
     }
 BaseType_t result = xTimerStop( ddt->timer, 0 );
 configASSERT( result == pdPASS );
-if( pdTRUE == xSemaphoreTake( ddt->semaphore, DDT_TO_PHONE_SEMAPHORE_TIMEOUT_MS ) )
+if( pdTRUE == xSemaphoreTake( ddt->semaphore, DDT_TO_PHONE_SEMAPHORE_TIMEOUT_TICKS ) )
     {
     if( ddt->id == BC_MOTOCON_DDT_INACTIVE_ID )
         {
@@ -481,7 +481,7 @@ BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
 BaseType_t result = xTimerStop( timer_handle, 0 );
 configASSERT( result == pdPASS );
 bc_motocon_ddt_to_phone_t* ddt = ( bc_motocon_ddt_to_phone_t* ) pvTimerGetTimerID( timer_handle );
-if( ddt != NULL && pdTRUE == xSemaphoreTake( ddt->semaphore, DDT_TO_PHONE_SEMAPHORE_TIMEOUT_MS ) )
+if( ddt != NULL && pdTRUE == xSemaphoreTake( ddt->semaphore, DDT_TO_PHONE_SEMAPHORE_TIMEOUT_TICKS ) )
     {
     if( ddt->id != BC_MOTOCON_DDT_INACTIVE_ID )
         {

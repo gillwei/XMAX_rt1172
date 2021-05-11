@@ -25,7 +25,7 @@
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define MOTOCON_ALIVE_TIMEOUT_COUNT ( 3 )
-#define MOTOCON_ALIVE_INTERVAL_MS ( 3000 )
+#define MOTOCON_ALIVE_INTERVAL_TICKS ( pdMS_TO_TICKS( 3000 ) )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -90,7 +90,7 @@ bc_motocon_set_connected( false );
 bc_motocon_ddt_init();
 alive_count = 0;
 alive_id = 0;
-alive_send_timer = xTimerCreate( "MotoconAliveTimer", MOTOCON_ALIVE_INTERVAL_MS, pdTRUE, ( void * ) 0, send_alive_request );
+alive_send_timer = xTimerCreate( "MotoconAliveTimer", MOTOCON_ALIVE_INTERVAL_TICKS, pdTRUE, ( void * ) 0, send_alive_request );
 configASSERT( NULL != alive_send_timer );
 }
 
@@ -187,7 +187,7 @@ static void reset_alive_timer
 if( bc_motocon_connected )
     {
     alive_count = 0;
-    BaseType_t result = xTimerStart( alive_send_timer, MOTOCON_ALIVE_INTERVAL_MS );
+    BaseType_t result = xTimerStart( alive_send_timer, MOTOCON_ALIVE_INTERVAL_TICKS );
     configASSERT( result == pdPASS );
     }
 }
