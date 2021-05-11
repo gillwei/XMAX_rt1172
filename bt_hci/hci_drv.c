@@ -25,6 +25,7 @@
 #include "pin_mux.h"
 #include "factory_test.h"
 #include "fsl_iomuxc.h"
+#include "hci_control_api_extend.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -989,7 +990,8 @@ static void UpdateTimerCallback
     TimerHandle_t xTimerHandle
     )
 {
-uint8_t    sw_version[6] = { 0x19, 0x03, 0xFF, 0x01, 0x00, 0x01 };
+uint8_t dummy_data[1] = { 0 };
+
 if( UPDATE_TIMER_RESET_500MS == update_timer_count )
     {
     xEventGroupSetBits( event_group, EVENT_HCI_RESET );
@@ -1000,7 +1002,7 @@ if( ( UPDATE_TIMER_TWO_SECONDS == update_timer_count ) && ( INIT_STATE_REQUEST_V
     {
     // send request garmin sw version command
     PRINTF( "Request BT SW version...\n\r" );
-    PERIPHERAL_uart_tx_data( sizeof( sw_version ), sw_version );
+    HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_SW_VERSION, dummy_data, sizeof( dummy_data ) );
     }
 
 // After boot 3 seconds, check whether SW version is received or not
