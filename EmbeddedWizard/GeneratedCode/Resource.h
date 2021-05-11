@@ -345,8 +345,98 @@ EW_DECLARE_BITMAP_RES( ResourceSignalLevelIcon )
 /* Bitmap resource : 'Resource::NaviTBTViewBg' */
 EW_DECLARE_BITMAP_RES( ResourceNaviTBTViewBg )
 
+/* Bitmap resource : 'Resource::NaviTurnArrwArvngLIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwArvngLIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwArvngRIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwArvngRIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwArvngViaLIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwArvngViaLIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwArvngViaRIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwArvngViaRIrgTbt )
+
 /* Bitmap resource : 'Resource::NaviTurnArrwContinueIrgTbt' */
 EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwContinueIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwDrivetoIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwDrivetoIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwExitLIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwExitLIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwExitRIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwExitRIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnarrwFerryIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnarrwFerryIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwKeepLIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwKeepLIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwKeepRIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwKeepRIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout45IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout45IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout90IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout90IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout135IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout135IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout180IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout180IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout225IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout225IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout270IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout270IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout315IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout315IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout360IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout360IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro45IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro45IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro90IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro90IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro135IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro135IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro180IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro180IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro225IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro225IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro270IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro270IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro315IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro315IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro360IrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro360IrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuroGenericIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuroGenericIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutGenericIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutGenericIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwShrpturnLIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwShrpturnLIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwShrpturnRIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwShrpturnRIrgTbt )
 
 /* Bitmap resource : 'Resource::NaviTurnArrwTurnLIrgTbt' */
 EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwTurnLIrgTbt )
@@ -354,14 +444,122 @@ EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwTurnLIrgTbt )
 /* Bitmap resource : 'Resource::NaviTurnArrwTurnRIrgTbt' */
 EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwTurnRIrgTbt )
 
+/* Bitmap resource : 'Resource::NaviTurnArrwUturnLIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwUturnLIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwUturnRIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwUturnRIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwViaFlgIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwViaFlgIrgTbt )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwArvngLIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwArvngLIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwArvngRIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwArvngRIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwArvngViaLIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwArvngViaLIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwArvngViaRIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwArvngViaRIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwContinuelrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwContinuelrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwDriveTolrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwDriveTolrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwExitLIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwExitLIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwExitRIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwExitRIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwFerryIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwFerryIrg28 )
+
 /* Bitmap resource : 'Resource::NaviTurnArrwKeepLIrg28' */
 EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwKeepLIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwKeepRIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwKeepRIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout45Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout45Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout90Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout90Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout135Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout135Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout180Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout180Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout225Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout225Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout270Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout270Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout315Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout315Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundabout360Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundabout360Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro45Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro45Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro90Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro90Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro135Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro135Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro180Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro180Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro225Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro225Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro270Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro270Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro315Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro315Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro360Irg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuro360Irg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuroGenericIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutEuroGenericIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwRoundaboutGenericIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwRoundaboutGenericIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwShrpturnLIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwShrpturnLIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwShrpturnRIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwShrpturnRIrg28 )
 
 /* Bitmap resource : 'Resource::NaviTurnArrwTurnLIrg28' */
 EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwTurnLIrg28 )
 
 /* Bitmap resource : 'Resource::NaviTurnArrwTurnRIrg28' */
 EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwTurnRIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwUturnLIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwUturnLIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwUturnRIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwUturnRIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwViaflgIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwViaflgIrg28 )
 
 /* Bitmap resource : 'Resource::ScaleIndicatorWindowLow' */
 EW_DECLARE_BITMAP_RES( ResourceScaleIndicatorWindowLow )
@@ -509,6 +707,12 @@ EW_DECLARE_BITMAP_RES( ResourceIconUnitMinute )
 
 /* Bitmap resource : 'Resource::IconUnitMPG' */
 EW_DECLARE_BITMAP_RES( ResourceIconUnitMPG )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwDstntnFlgIrg28' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwDstntnFlgIrg28 )
+
+/* Bitmap resource : 'Resource::NaviTurnArrwDstntnFlgIrgTbt' */
+EW_DECLARE_BITMAP_RES( ResourceNaviTurnArrwDstntnFlgIrgTbt )
 
 /* Bitmap resource : 'Resource::IconUnitPSI' */
 EW_DECLARE_BITMAP_RES( ResourceIconUnitPSI )

@@ -28,7 +28,6 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define MAX_TBT_SIZE            50
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -47,12 +46,14 @@ typedef bool ( *speed_limit_update )( navilite_callback_func_speedlimit cb );
 typedef bool ( *home_setting_update )( navilite_callback_func_homelocationsetting cb );
 typedef bool ( *office_setting_update )( navilite_callback_func_officelocationsetting cb );
 typedef bool ( *active_tbt_update )( navilite_callback_func_activetbtitem cb );
-typedef bool ( *tbt_list_update )( navilite_callback_func_nexttbtlist cb );
 typedef bool ( *esn_update )( navilite_callback_func_esn_sent cb );
 typedef bool ( *route_cal_update )( navilite_callback_func_routecalcprogress cb );
 typedef bool ( *zoom_level_update )( navilite_callback_func_zoomlevel cb );
 typedef bool ( *dialog_event_update )( navilite_callback_func_dialogevent cb );
 typedef bool ( *via_point_update )( navilite_callback_func_viapointcount cb );
+typedef bool ( *next_turn_dist_update )( navilite_callback_func_nextturndistance cb );
+typedef bool ( *active_tbt_item_update )( navilite_callback_func_activetbtitem cb );
+typedef bool ( *tbt_list_update )( navilite_callback_func_nexttbtlist cb );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -83,7 +84,10 @@ static generic_fc_ptr navi_funtion_table[NAVILITE_FUNC_CNT] =
     (generic_fc_ptr)NAVILITE_register_update_callback_routecalcprogress,
     (generic_fc_ptr)NAVILITE_register_update_callback_zoomlevel,
     (generic_fc_ptr)NAVILITE_register_update_callback_dialogevent,
-    (generic_fc_ptr)NAVILITE_register_update_callback_viapointcount
+    (generic_fc_ptr)NAVILITE_register_update_callback_viapointcount,
+    (generic_fc_ptr)NAVILITE_register_update_callback_nextturndistance,
+    (generic_fc_ptr)NAVILITE_register_update_callback_activetbtlistitem,
+    (generic_fc_ptr)NAVILITE_register_update_callback_tbtlist
     };
 
 static navi_data_type navi_data_obj;
@@ -580,19 +584,11 @@ EW_notify_via_point_update();
 *********************************************************************/
 static void navi_active_tbt_update
     (
-    uint8_t index
+    uint16_t active_tbt_index
     )
 {
-//TODO: Wait for navilite protocol to support this function.
-PRINTF( "%s: Active TBT index : %d\r\n", __FUNCTION__, index );
-if( MAX_TBT_SIZE > index )
-    {
-    EW_notify_active_tbt_item_update( index );
-    }
-else
-    {
-    PRINTF( "%s: Invalid active TBT index\r\n", __FUNCTION__ );
-    }
+PRINTF( "%s: Active TBT index : %d\r\n", __FUNCTION__, active_tbt_index );
+navi_update_active_tbt_item( active_tbt_index );
 }
 
 /*********************************************************************
@@ -617,6 +613,8 @@ static void navi_next_turn_dist_update
     )
 {
 PRINTF( "%s: Next turn index:%d, Next turn dist: %d, unit:%s, unit size:%d \r\n", __FUNCTION__, icon_index, distance, unit_str, unit_str_size );
+
+navi_set_tbt_item( icon_index, distance, (uint8_t*)unit_str, unit_str_size );
 }
 
 /*********************************************************************
@@ -626,18 +624,49 @@ PRINTF( "%s: Next turn index:%d, Next turn dist: %d, unit:%s, unit size:%d \r\n"
 *
 * Notify navigation module that TBT list is updated.
 *
-* @param list_addr   TBT list address.
-* @param list_size   TBT list size.
+* @param action                         TBT update action type.
+* @param list_item                      Received tbt list item.
+* @param list_item_no                   The number of tbt list item.
+* @param list_total_items               Total tbt list items for the received tbt list.
+* @param list_total_items_recevied      Current index of received tbt item.
+* @param has_more_items_on_next_request Indicates whether there are more tbt items after the received tbt list.
 *
 *********************************************************************/
 static void navi_tbt_list_update
     (
-    navilite_tbt_list_type *list_addr,
-    uint8_t list_size
+    navilite_tbt_list_action_type action,
+    navilite_tbt_list_type* list_item,
+    uint16_t list_item_no,
+    uint16_t list_total_items,
+    uint16_t list_total_items_recevied,
+    uint8_t has_more_items_on_next_request
     )
 {
-//TODO: Wait for navilite protocol to support this function.
-PRINTF( "%s: Size:%d \r\n", __FUNCTION__, list_size );
+PRINTF( "%s: Tbt list item index:%d \r\n", __FUNCTION__, list_item->list_item_index );
+int result = ERR_NONE;
+switch( action )
+    {
+    case NAVILITE_TBTLIST_ACTION_LISTSIZE:
+        navi_notify_more_tbt_item( has_more_items_on_next_request, list_total_items );
+        break;
+    case NAVILITE_TBTLIST_ACTION_ITEMADD:
+        // The received tbt item's index always starts from 1.
+        if( list_item->list_item_index >= 1 &&
+            list_item->list_item_index <= list_total_items )
+            {
+            navi_add_tbt_item( list_item );
+            }
+        else
+            {
+            PRINTF( "%s: Unexpected list item index or tbt buffer is full\r\n", __FUNCTION__ );
+            result = ERR_BUF_FULL;
+            }
+        break;
+    default: 
+        PRINTF( "%s: Unexpected type\r\n", __FUNCTION__ );
+        break;
+    }
+PRINTF( "%s: Result: %d\r\n", __FUNCTION__, result );
 }
 
 /*********************************************************************
@@ -917,6 +946,7 @@ void NAVI_init
 {
 bool result;
 navi_event_init();
+navi_tbt_init();
 
 for( int i = 0; i < NAVILITE_FUNC_CNT; i++ )
     {
@@ -972,6 +1002,15 @@ for( int i = 0; i < NAVILITE_FUNC_CNT; i++ )
             break;
         case NAVILITE_FUNC_VIA_POINT_UPDATE:
             result = ( (via_point_update)navi_funtion_table[i] )( navi_via_point_update );
+            break;
+        case NAVILITE_FUNC_NEXT_TURN_DIST_UPDATE:
+            result = ( (next_turn_dist_update)navi_funtion_table[i] )( navi_next_turn_dist_update );
+            break;
+        case NAVILITE_FUNC_ACTIVE_TBT_UPDATE:
+            result = ( (active_tbt_item_update)navi_funtion_table[i] )( navi_active_tbt_update );
+            break;
+        case NAVILITE_FUNC_TBT_LIST_UPDATE:
+            result = ( (tbt_list_update)navi_funtion_table[i] )( navi_tbt_list_update );
             break;
         default:
             PRINTF( "Unexpected navilite function.\r\n" );

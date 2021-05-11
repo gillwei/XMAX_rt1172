@@ -454,9 +454,44 @@ typedef enum
 /* User defined enumeration: 'Enum::NaviTurnStatusType' */
 typedef enum
 {
-  EnumNaviTurnStatusTypeCONTINUE_LEFT   = 0,
-  EnumNaviTurnStatusTypeTURN_LEFT       = 1,
-  EnumNaviTurnStatusTypeTURN_RIGHT      = 2
+  EnumNaviTurnStatusTypeDEST_FLAG       = 0,
+  EnumNaviTurnStatusTypeARRVIAL_LEFT    = 1,
+  EnumNaviTurnStatusTypeARRIVAL_RIGHT   = 2,
+  EnumNaviTurnStatusTypeDEST_VIA_FLAG   = 3,
+  EnumNaviTurnStatusTypeARRIVAL_VIA_LEFT = 4,
+  EnumNaviTurnStatusTypeARRIVAL_VIA_RIGHT = 5,
+  EnumNaviTurnStatusTypeKEEP_LEFT       = 6,
+  EnumNaviTurnStatusTypeKEEP_RIGHT      = 7,
+  EnumNaviTurnStatusTypeCONTINUE        = 8,
+  EnumNaviTurnStatusTypeDRIVETO         = 9,
+  EnumNaviTurnStatusTypeEXIT_LEFT       = 10,
+  EnumNaviTurnStatusTypeEXIT_RIGHT      = 11,
+  EnumNaviTurnStatusTypeEXIT_UNSPEC     = 12,
+  EnumNaviTurnStatusTypeFERRY           = 13,
+  EnumNaviTurnStatusTypeROUNDABOUT_GEN  = 14,
+  EnumNaviTurnStatusTypeROUNDABOUT_45   = 15,
+  EnumNaviTurnStatusTypeROUNDABOUT_90   = 16,
+  EnumNaviTurnStatusTypeROUNDABOUT_135  = 17,
+  EnumNaviTurnStatusTypeROUNDABOUT_180  = 18,
+  EnumNaviTurnStatusTypeROUNDABOUT_225  = 19,
+  EnumNaviTurnStatusTypeROUNDABOUT_270  = 20,
+  EnumNaviTurnStatusTypeROUNDABOUT_315  = 21,
+  EnumNaviTurnStatusTypeROUNDABOUT_360  = 22,
+  EnumNaviTurnStatusTypeROUNDABOUT_EU_GEN = 23,
+  EnumNaviTurnStatusTypeROUNDABOUT_EU_45 = 24,
+  EnumNaviTurnStatusTypeROUNDABOUT_EU_90 = 25,
+  EnumNaviTurnStatusTypeROUNDABOUT_EU_135 = 26,
+  EnumNaviTurnStatusTypeROUNDABOUT_EU_180 = 27,
+  EnumNaviTurnStatusTypeROUNDABOUT_EU_225 = 28,
+  EnumNaviTurnStatusTypeROUNDABOUT_EU_270 = 29,
+  EnumNaviTurnStatusTypeROUNDABOUT_EU_315 = 30,
+  EnumNaviTurnStatusTypeROUNDABOUT_EU_360 = 31,
+  EnumNaviTurnStatusTypeSHARP_TURN_LEFT = 32,
+  EnumNaviTurnStatusTypeSHARP_TURN_RIGHT = 33,
+  EnumNaviTurnStatusTypeTURN_LEFT       = 34,
+  EnumNaviTurnStatusTypeTURN_RIGHT      = 35,
+  EnumNaviTurnStatusTypeUTURN_LEFT      = 36,
+  EnumNaviTurnStatusTypeUTURN_RIGHT     = 37
 } EnumNaviTurnStatusType;
 
 /* User defined enumeration: 'Enum::SeatHeaterGripWarmerLevelType' */

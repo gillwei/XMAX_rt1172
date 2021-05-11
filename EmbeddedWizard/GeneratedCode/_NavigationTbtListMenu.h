@@ -42,13 +42,10 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_CoreKeyPressHandler.h"
+#include "_CoreGroup.h"
 #include "_CoreVerticalList.h"
 #include "_EffectsInt32Effect.h"
 #include "_MenuArrowScrollBar.h"
-#include "_MenuScrollbar.h"
-#include "_MenuVerticalMenu.h"
-#include "_ViewsBorder.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -56,10 +53,10 @@
 #define _CoreDialogContext_
 #endif
 
-/* Forward declaration of the class Core::Group */
-#ifndef _CoreGroup_
-  EW_DECLARE_CLASS( CoreGroup )
-#define _CoreGroup_
+/* Forward declaration of the class Core::KeyPressHandler */
+#ifndef _CoreKeyPressHandler_
+  EW_DECLARE_CLASS( CoreKeyPressHandler )
+#define _CoreKeyPressHandler_
 #endif
 
 /* Forward declaration of the class Core::LayoutContext */
@@ -100,12 +97,16 @@
 
 
 /* Deklaration of class : 'Navigation::TbtListMenu' */
-EW_DEFINE_FIELDS( NavigationTbtListMenu, MenuVerticalMenu )
-  EW_VARIABLE( ActiveTbtIdx,    XInt32 )
+EW_DEFINE_FIELDS( NavigationTbtListMenu, CoreGroup )
+  EW_OBJECT  ( VerticalList,    CoreVerticalList )
+  EW_OBJECT  ( ArrowScrollBar,  MenuArrowScrollBar )
+  EW_OBJECT  ( PageScrollEffect, EffectsInt32Effect )
+  EW_PROPERTY( NoOfItems,       XInt32 )
+  EW_PROPERTY( ArrowScrollBarVisible, XBool )
 EW_END_OF_FIELDS( NavigationTbtListMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::TbtListMenu' */
-EW_DEFINE_METHODS( NavigationTbtListMenu, MenuVerticalMenu )
+EW_DEFINE_METHODS( NavigationTbtListMenu, CoreGroup )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -133,7 +134,7 @@ EW_DEFINE_METHODS( NavigationTbtListMenu, MenuVerticalMenu )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
   EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
-  EW_METHOD( UpdateViewState,   void )( MenuVerticalMenu _this, XSet aState )
+  EW_METHOD( UpdateViewState,   void )( NavigationTbtListMenu _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
@@ -146,35 +147,55 @@ EW_DEFINE_METHODS( NavigationTbtListMenu, MenuVerticalMenu )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( NavigationTbtListMenu _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( NavigationTbtListMenu _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
-  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLoadItemSlot,    void )( NavigationTbtListMenu _this, XObject sender )
 EW_END_OF_METHODS( NavigationTbtListMenu )
 
-/* 'C' function for method : 'Navigation::TbtListMenu.OnShortDownKeyActivated()' */
-void NavigationTbtListMenu_OnShortDownKeyActivated( NavigationTbtListMenu _this );
-
-/* 'C' function for method : 'Navigation::TbtListMenu.OnShortUpKeyActivated()' */
-void NavigationTbtListMenu_OnShortUpKeyActivated( NavigationTbtListMenu _this );
+/* The method UpdateViewState() is invoked automatically after the state of the 
+   component has been changed. This method can be overridden and filled with logic 
+   to ensure the visual aspect of the component does reflect its current state. 
+   For example, the 'enabled' state of the component can affect its colors (disabled 
+   components may appear pale). In this case the logic of the method should modify 
+   the respective color properties accordingly to the current 'enabled' state. 
+   The current state of the component is passed as a set in the parameter aState. 
+   It reflects the very basic component state like its visibility or the ability 
+   to react to user inputs. Beside this common state, the method can also involve 
+   any other variables used in the component as long as they reflect its current 
+   state. For example, the toggle switch component can take in account its toggle 
+   state 'on' or 'off' and change accordingly the location of the slider, etc.
+   Usually, this method will be invoked automatically by the framework. Optionally 
+   you can request its invocation by using the method @InvalidateViewState(). */
+void NavigationTbtListMenu_UpdateViewState( NavigationTbtListMenu _this, XSet aState );
 
 /* This method is called by 'VerticalList' every time the list loads or updates 
    an item. */
-void NavigationTbtListMenu_OnLoadItemSlot( NavigationTbtListMenu _this, XObject 
-  sender );
+void NavigationTbtListMenu_OnLoadItem( NavigationTbtListMenu _this, XObject sender );
+
+/* 'C' function for method : 'Navigation::TbtListMenu.ScrollUp()' */
+void NavigationTbtListMenu_ScrollUp( NavigationTbtListMenu _this );
+
+/* 'C' function for method : 'Navigation::TbtListMenu.ScrollDown()' */
+void NavigationTbtListMenu_ScrollDown( NavigationTbtListMenu _this );
 
 /* 'C' function for method : 'Navigation::TbtListMenu.ShowTbtListItemIcon()' */
 void NavigationTbtListMenu_ShowTbtListItemIcon( NavigationTbtListMenu _this, XInt32 
   index );
+
+/* 'C' function for method : 'Navigation::TbtListMenu.InvalidateItems()' */
+void NavigationTbtListMenu_InvalidateItems( NavigationTbtListMenu _this, XInt32 
+  aStart, XInt32 aEnd );
+
+/* 'C' function for method : 'Navigation::TbtListMenu.OnSetNoOfItems()' */
+void NavigationTbtListMenu_OnSetNoOfItems( NavigationTbtListMenu _this, XInt32 value );
+
+/* 'C' function for method : 'Navigation::TbtListMenu.OnSetArrowScrollBarVisible()' */
+void NavigationTbtListMenu_OnSetArrowScrollBarVisible( NavigationTbtListMenu _this, 
+  XBool value );
+
+/* 'C' function for method : 'Navigation::TbtListMenu.OnPageScrolledSlot()' */
+void NavigationTbtListMenu_OnPageScrolledSlot( NavigationTbtListMenu _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Navigation::TbtListMenu.SwitchToPageOfSelectedItem()' */
+void NavigationTbtListMenu_SwitchToPageOfSelectedItem( NavigationTbtListMenu _this );
 
 #ifdef __cplusplus
   }

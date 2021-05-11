@@ -25,6 +25,8 @@ extern "C"{
 #define MAX_TBT_DESCRIPTION_SIZE     ( 64 )
 #define MAX_TBT_DIST_UNIT_SIZE       ( 16 )
 #define MAX_EVENT_QUEUE_SIZE         ( 10 )
+#define MAX_TBT_SIZE                 ( 50 )
+#define TBT_UPDATE_IDX               ( 39 )     // This is the predefined index that navi app will send more tbt items if tbt list size is over 50.
 
 typedef enum
     {
@@ -45,6 +47,9 @@ typedef enum
     NAVILITE_FUNC_ZOOM_LEVEL_UPDATE,
     NAVILITE_FUNC_DIALOG_EVENT_UPDATE,
     NAVILITE_FUNC_VIA_POINT_UPDATE,
+    NAVILITE_FUNC_NEXT_TURN_DIST_UPDATE,
+    NAVILITE_FUNC_ACTIVE_TBT_UPDATE,
+    NAVILITE_FUNC_TBT_LIST_UPDATE,
     NAVILITE_FUNC_CNT
     } navilite_func;
 
@@ -109,6 +114,10 @@ void NAVI_send_go_home_request( void );
 void NAVI_send_go_office_request( void );
 EnumNaviZoomInOutStatusType NAVI_get_zoom_inout_status( void );
 void NAVI_get_alert_distance( char** dist );
+bool NAVI_is_tbt_message_displayed( void );
+uint16_t NAVI_get_tbt_list_size( void );
+void NAVI_reset_tbt_buffer( void );
+bool NAVI_get_tbt_item( const int tbt_index, uint32_t* icon_index, uint16_t* distance, char** dist_unit, char** description );
 
 #ifdef __cplusplus
 }

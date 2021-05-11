@@ -74,7 +74,6 @@ EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( NaviIncidentUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( NavigatingStatusUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( TbtListUpdateEvent, CoreSystemEvent )
-  EW_OBJECT  ( ActiveTbtItemUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( RouteCalProgressUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( ZoomLevelUpdateEventHandler, CoreSystemEvent )
   EW_OBJECT  ( DialogEventUpdateEvent, CoreSystemEvent )
@@ -82,8 +81,6 @@ EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( HomeSettingUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( OfficeSettingUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( AlertDistanceUpdateEvent, CoreSystemEvent )
-  EW_VARIABLE( ActiveTbtItemIdx, XInt32 )
-  EW_VARIABLE( TbtListSize,     XInt32 )
   EW_VARIABLE( CurrentHome,     XEnum )
   EW_VARIABLE( IsZoomInOutStatusReceived, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceNavigationDeviceClass )
@@ -174,27 +171,13 @@ void DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate( void* _
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyTbtListUpdate( DeviceInterfaceNavigationDeviceClass _this, 
-  XInt32 aNewTbtListSize );
+void DeviceInterfaceNavigationDeviceClass_NotifyTbtListUpdate( DeviceInterfaceNavigationDeviceClass _this );
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyTbtListUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate( void* _this, XInt32 
-  aNewTbtListSize );
+void DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate( void* _this );
 
 /* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyTbtListUpdate(). */
 #define _DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate_
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyActiveTbtItemUpdate( DeviceInterfaceNavigationDeviceClass _this, 
-  XInt32 aNewActiveTbtItemIdx );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyActiveTbtItemUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyActiveTbtItemUpdate( void* _this, 
-  XInt32 aNewActiveTbtItemIdx );
-
-/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyActiveTbtItemUpdate(). */
-#define _DeviceInterfaceNavigationDeviceClass__NotifyActiveTbtItemUpdate_
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviTbtData()' */
 DeviceInterfaceNaviTbtDataClass DeviceInterfaceNavigationDeviceClass_GetNaviTbtData( DeviceInterfaceNavigationDeviceClass _this, 
@@ -312,6 +295,15 @@ void DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate( void* _thi
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetAlertDistance()' */
 XString DeviceInterfaceNavigationDeviceClass_GetAlertDistance( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsTbtMessageDisplayed()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsTbtMessageDisplayed( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetTbtListSize()' */
+XInt32 DeviceInterfaceNavigationDeviceClass_GetTbtListSize( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ResetTbtBuffer()' */
+void DeviceInterfaceNavigationDeviceClass_ResetTbtBuffer( DeviceInterfaceNavigationDeviceClass _this );
 
 #ifdef __cplusplus
   }

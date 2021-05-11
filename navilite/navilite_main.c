@@ -27,6 +27,7 @@
 #include "NAVILITE_pub.h"
 #include "navilite_util.h"
 #include "NAVI_pub.h"
+#include "TEST_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS

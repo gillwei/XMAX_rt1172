@@ -221,8 +221,6 @@ typedef enum
         )
     {
     PRINTF( "Active Tbt item index: %d\r\n", index );
-
-    EW_notify_active_tbt_item_update( index );
     }
 
     /*********************************************************************

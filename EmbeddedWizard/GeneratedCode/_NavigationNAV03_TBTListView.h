@@ -110,7 +110,8 @@
 EW_DEFINE_FIELDS( NavigationNAV03_TBTListView, HomeBaseHome )
   EW_OBJECT  ( TbtList,         NavigationTbtListMenu )
   EW_OBJECT  ( TbtListUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( ActiveTbtItemUpdateEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( Divider,         ViewsImage )
 EW_END_OF_FIELDS( NavigationNAV03_TBTListView )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV03_TBTListView' */
@@ -155,8 +156,8 @@ EW_DEFINE_METHODS( NavigationNAV03_TBTListView, HomeBaseHome )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( NavigationNAV03_TBTListView _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( NavigationNAV03_TBTListView _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
@@ -175,6 +176,12 @@ EW_END_OF_METHODS( NavigationNAV03_TBTListView )
 void NavigationNAV03_TBTListView_Init( NavigationNAV03_TBTListView _this, XHandle 
   aArg );
 
+/* 'C' function for method : 'Navigation::NAV03_TBTListView.OnShortDownKeyActivated()' */
+void NavigationNAV03_TBTListView_OnShortDownKeyActivated( NavigationNAV03_TBTListView _this );
+
+/* 'C' function for method : 'Navigation::NAV03_TBTListView.OnShortUpKeyActivated()' */
+void NavigationNAV03_TBTListView_OnShortUpKeyActivated( NavigationNAV03_TBTListView _this );
+
 /* 'C' function for method : 'Navigation::NAV03_TBTListView.OnLongEnterKeyActivated()' */
 void NavigationNAV03_TBTListView_OnLongEnterKeyActivated( NavigationNAV03_TBTListView _this );
 
@@ -185,7 +192,7 @@ void NavigationNAV03_TBTListView_OnTbtListUpdateSlot( NavigationNAV03_TBTListVie
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void NavigationNAV03_TBTListView_OnActiveTbtItemUpdateSlot( NavigationNAV03_TBTListView _this, 
+void NavigationNAV03_TBTListView_OnNavigatingStatusUpdateSlot( NavigationNAV03_TBTListView _this, 
   XObject sender );
 
 #ifdef __cplusplus

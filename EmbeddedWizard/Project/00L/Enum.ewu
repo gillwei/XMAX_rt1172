@@ -968,22 +968,119 @@ $rect <500,170,700,210>
 $output false
 enum NaviTurnStatusType
 {
+  $rect <10,110,210,150>
+  item DEST_FLAG;
+
   $rect <10,10,210,50>
-  item CONTINUE_LEFT;
+  item ARRVIAL_LEFT;
 
   $rect <220,10,420,50>
-  item TURN_LEFT;
+  item ARRIVAL_RIGHT;
+
+  $rect <220,110,420,150>
+  item DEST_VIA_FLAG;
 
   $rect <430,10,630,50>
+  item ARRIVAL_VIA_LEFT;
+
+  $rect <10,60,210,100>
+  item ARRIVAL_VIA_RIGHT;
+
+  $rect <430,170,630,210>
+  item KEEP_LEFT;
+
+  $rect <10,230,210,270>
+  item KEEP_RIGHT;
+
+  $rect <220,60,420,100>
+  item CONTINUE;
+
+  $rect <430,60,630,100>
+  item DRIVETO;
+
+  $rect <430,110,630,150>
+  item EXIT_LEFT;
+
+  $rect <10,170,210,210>
+  item EXIT_RIGHT;
+
+  $rect <220,710,420,750>
+  item EXIT_UNSPEC;
+
+  $rect <220,170,420,210>
+  item FERRY;
+
+  $rect <10,590,210,630>
+  item ROUNDABOUT_GEN;
+
+  $rect <220,230,420,270>
+  item ROUNDABOUT_45;
+
+  $rect <430,230,630,270>
+  item ROUNDABOUT_90;
+
+  $rect <10,290,210,330>
+  item ROUNDABOUT_135;
+
+  $rect <220,290,420,330>
+  item ROUNDABOUT_180;
+
+  $rect <430,290,630,330>
+  item ROUNDABOUT_225;
+
+  $rect <10,350,210,390>
+  item ROUNDABOUT_270;
+
+  $rect <220,350,420,390>
+  item ROUNDABOUT_315;
+
+  $rect <430,350,630,390>
+  item ROUNDABOUT_360;
+
+  $rect <430,530,630,570>
+  item ROUNDABOUT_EU_GEN;
+
+  $rect <10,410,210,450>
+  item ROUNDABOUT_EU_45;
+
+  $rect <220,410,420,450>
+  item ROUNDABOUT_EU_90;
+
+  $rect <430,410,630,450>
+  item ROUNDABOUT_EU_135;
+
+  $rect <10,470,210,510>
+  item ROUNDABOUT_EU_180;
+
+  $rect <220,470,420,510>
+  item ROUNDABOUT_EU_225;
+
+  $rect <430,470,630,510>
+  item ROUNDABOUT_EU_270;
+
+  $rect <10,530,210,570>
+  item ROUNDABOUT_EU_315;
+
+  $rect <220,530,420,570>
+  item ROUNDABOUT_EU_360;
+
+  $rect <220,590,420,630>
+  item SHARP_TURN_LEFT;
+
+  $rect <430,590,630,630>
+  item SHARP_TURN_RIGHT;
+
+  $rect <10,650,210,690>
+  item TURN_LEFT;
+
+  $rect <220,650,420,690>
   item TURN_RIGHT;
 
-  // TODO:
-  // Have to confirm with navi app team about the definition of each index of arrow \
-  // image in order to finish the enum definition.
-  note group Note
-  {
-    attr Bounds = <670,10,970,210>;
-  }
+  $rect <430,650,630,690>
+  item UTURN_LEFT;
+
+  $rect <10,710,210,750>
+  item UTURN_RIGHT;
 }
 
 $rect <30,570,230,610>

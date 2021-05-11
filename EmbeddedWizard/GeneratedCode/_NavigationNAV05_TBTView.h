@@ -125,7 +125,7 @@ EW_DEFINE_FIELDS( NavigationNAV05_TBTView, HomeBaseHome )
   EW_OBJECT  ( ETAUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( CurRdUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( RecalculateMessage, ViewsText )
-  EW_OBJECT  ( ActiveTbtItemUpdateEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( TbtListUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( SpeedLimitUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( SpeedLimitFlickeringTimer, CoreTimer )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
@@ -209,7 +209,7 @@ void NavigationNAV05_TBTView_OnCurRdUpdateSlot( NavigationNAV05_TBTView _this, X
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void NavigationNAV05_TBTView_OnActiveTbtItemUpdateSlot( NavigationNAV05_TBTView _this, 
+void NavigationNAV05_TBTView_OnTbtListUpdateSlot( NavigationNAV05_TBTView _this, 
   XObject sender );
 
 /* 'C' function for method : 'Navigation::NAV05_TBTView.ShowNextTurnIcon()' */

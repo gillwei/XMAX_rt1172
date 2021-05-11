@@ -1700,7 +1700,7 @@ class NAV05_TBTView : Home::BaseHome
   inherited method Init()
   {
     signal OnNavigatingStatusUpdateSlot;
-    signal OnActiveTbtItemUpdateSlot;
+    signal OnTbtListUpdateSlot;
     signal OnSpeedLimitUpdateSlot;
   }
 
@@ -1712,7 +1712,20 @@ class NAV05_TBTView : Home::BaseHome
   {
     if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
-      PresentDialog( new Navigation::NAV06_NaviSettingMenu, null, null, null, null, null, null, null, null, false );
+      if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
+      {
+        PresentDialog( new Pop::POP09_POP14_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
+      }
+      else if( !DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+      {
+        PresentDialog( new Pop::POP17_AppInitSettingError, null, null, null, null, null, null, null, null, false );
+      }
+      else
+      {
+        // Leave navigation home screen so that stop map frame request.
+        DeviceInterface::NavigationDevice.StopMapFrameRequest();
+        PresentDialog( new Navigation::NAV06_NaviSettingMenu, null, null, null, null, null, null, null, null, false );
+      }
     }
   }
 
@@ -1783,7 +1796,7 @@ class NAV05_TBTView : Home::BaseHome
   $rect <20,20,160,60>
   object Views::Text NextTurnDistUnit
   {
-    preset Bounds = <254,82,278,112>;
+    preset Bounds = <254,82,302,112>;
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Visible = false;
@@ -1799,6 +1812,7 @@ class NAV05_TBTView : Home::BaseHome
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Color = #CFCFCFFF;
+    preset Visible = false;
   }
 
   $rect <20,20,160,60>
@@ -1860,6 +1874,8 @@ class NAV05_TBTView : Home::BaseHome
   object Views::Text RecalculateMessage
   {
     preset Bounds = <104,75,376,199>;
+    preset Ellipsis = true;
+    preset WrapText = true;
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Color = #CFCFCFFF;
@@ -1873,20 +1889,21 @@ class NAV05_TBTView : Home::BaseHome
   }
 
   $rect <520,310,720,350>
-  object Core::SystemEventHandler ActiveTbtItemUpdateEventHandler
+  object Core::SystemEventHandler TbtListUpdateEventHandler
   {
-    preset OnEvent = OnActiveTbtItemUpdateSlot;
-    preset Event = DeviceInterface::NavigationDevice.ActiveTbtItemUpdateEvent;
+    preset OnEvent = OnTbtListUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.TbtListUpdateEvent;
   }
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
   $rect <730,310,960,350>
-  slot OnActiveTbtItemUpdateSlot
+  slot OnTbtListUpdateSlot
   {
     if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
     {
-      var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( DeviceInterface::NavigationDevice.ActiveTbtItemIdx );
+      // The top item of tbt list is always the active tbt item.
+      var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( 0 );
       ShowNextTurnIcon( NaviTbtData.IconIdx );
 
       if( !NextTurnDist.Visible )
@@ -1897,6 +1914,11 @@ class NAV05_TBTView : Home::BaseHome
       if( !NextTurnDistUnit.Visible )
       {
         NextTurnDistUnit.Visible = true;
+      }
+
+      if( !NextTurnDescription.Visible )
+      {
+        NextTurnDescription.Visible = true;
       }
 
       NextTurnDistUnit.String = NaviTbtData.DistUnit;
@@ -1916,9 +1938,44 @@ class NAV05_TBTView : Home::BaseHome
     var Enum::NaviTurnStatusType NaviTurnStatus = ( Enum::NaviTurnStatusType ) index;
     switch( NaviTurnStatus )
     {
-      case Enum::NaviTurnStatusType.CONTINUE_LEFT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwContinueIrgTbt;
+      case Enum::NaviTurnStatusType.ARRVIAL_LEFT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngLIrgTbt;
+      case Enum::NaviTurnStatusType.ARRIVAL_RIGHT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngRIrgTbt;
+      case Enum::NaviTurnStatusType.ARRIVAL_VIA_LEFT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngViaLIrgTbt;
+      case Enum::NaviTurnStatusType.ARRIVAL_VIA_RIGHT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngViaRIrgTbt;
+      case Enum::NaviTurnStatusType.CONTINUE: NextTurnIcon.Bitmap = Resource::NaviTurnArrwContinueIrgTbt;
+      case Enum::NaviTurnStatusType.DRIVETO: NextTurnIcon.Bitmap = Resource::NaviTurnArrwDrivetoIrgTbt;
+      case Enum::NaviTurnStatusType.DEST_FLAG: NextTurnIcon.Bitmap = Resource::NaviTurnArrwDstntnFlgIrgTbt;
+      case Enum::NaviTurnStatusType.DEST_VIA_FLAG: NextTurnIcon.Bitmap = Resource::NaviTurnArrwViaFlgIrgTbt;
+      case Enum::NaviTurnStatusType.EXIT_LEFT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwExitLIrgTbt;
+      case Enum::NaviTurnStatusType.EXIT_RIGHT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwExitRIrgTbt;
+      case Enum::NaviTurnStatusType.FERRY: NextTurnIcon.Bitmap = Resource::NaviTurnarrwFerryIrgTbt;
+      case Enum::NaviTurnStatusType.KEEP_LEFT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwKeepLIrgTbt;
+      case Enum::NaviTurnStatusType.KEEP_RIGHT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwKeepRIrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_45: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout45IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_90: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout90IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_135: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout135IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_180: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout180IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_225: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout225IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_270: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout270IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_315: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout315IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_360: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout360IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_EU_45: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro45IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_EU_90: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro90IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_EU_135: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro135IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_EU_180: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro180IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_EU_225: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro225IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_EU_270: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro270IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_EU_315: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro315IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_EU_360: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro360IrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_EU_GEN: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuroGenericIrgTbt;
+      case Enum::NaviTurnStatusType.ROUNDABOUT_GEN: NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutGenericIrgTbt;
+      case Enum::NaviTurnStatusType.SHARP_TURN_LEFT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwShrpturnLIrgTbt;
+      case Enum::NaviTurnStatusType.SHARP_TURN_RIGHT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwShrpturnRIrgTbt;
       case Enum::NaviTurnStatusType.TURN_LEFT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwTurnLIrgTbt;
       case Enum::NaviTurnStatusType.TURN_RIGHT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwTurnRIrgTbt;
+      case Enum::NaviTurnStatusType.UTURN_LEFT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwUturnLIrgTbt;
+      case Enum::NaviTurnStatusType.UTURN_RIGHT: NextTurnIcon.Bitmap = Resource::NaviTurnArrwUturnRIrgTbt;
+      case Enum::NaviTurnStatusType.EXIT_UNSPEC: NextTurnIcon.Bitmap = null;
       default:;
     }
   }
@@ -2024,33 +2081,15 @@ class NAV05_TBTView : Home::BaseHome
   $rect <940,590,1140,630>
   method void SetRecalculatingStatus( arg int32 aNewRouteCalProgress )
   {
-    if( aNewRouteCalProgress < 100 )
-    {
-      NextTurnIcon.Visible = false;
-      NextTurnDescription.Visible = false;
-      NextTurnDistUnit.Visible = false;
-      NextTurnDist.Visible = false;
-      SpeedLimitText.Visible = false;
-      SpeedLimitIcon.Visible = false;
-      ETAComponent.ETA = 0;
-      RecalculateMessage.String = "Recalculating " + string( aNewRouteCalProgress ) + " %%...";
-      RecalculateMessage.Visible = true;
-    }
-    else if( aNewRouteCalProgress == 100 )
-    {
-      NextTurnIcon.Visible = true;
-      NextTurnDescription.Visible = true;
-      NextTurnDistUnit.Visible = true;
-      NextTurnDist.Visible = true;
-      SpeedLimitText.Visible = true;
-      SpeedLimitIcon.Visible = true;
-      RecalculateMessage.Visible = false;
-      signal OnETAUpdateSlot;
-    }
-    else
-    {
-      // empty
-    }
+    NextTurnIcon.Visible = false;
+    NextTurnDescription.Visible = false;
+    NextTurnDistUnit.Visible = false;
+    NextTurnDist.Visible = false;
+    SpeedLimitText.Visible = false;
+    SpeedLimitIcon.Visible = false;
+    ETAComponent.ETA = 0;
+    RecalculateMessage.String = "Recalculating " + string( aNewRouteCalProgress ) + " %%";
+    RecalculateMessage.Visible = true;
   }
 
   $rect <990,270,1200,310>
@@ -2065,6 +2104,22 @@ class NAV05_TBTView : Home::BaseHome
   $rect <1220,270,1380,310>
   slot OnNavigatingStatusUpdateSlot
   {
+    if( !DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    {
+      NextTurnDist.Visible = false;
+      NextTurnIcon.Visible = false;
+      NextTurnDistUnit.Visible = false;
+      NextTurnDescription.Visible = false;
+    }
+    else
+    {
+      NextTurnDist.Visible = true;
+      NextTurnIcon.Visible = true;
+      NextTurnDistUnit.Visible = true;
+      NextTurnDescription.Visible = true;
+      RecalculateMessage.Visible = false;
+    }
+
     signal OnCurRdUpdateSlot;
     signal OnETAUpdateSlot;
   }
@@ -2095,19 +2150,44 @@ $rect <290,70,490,110>
 $output false
 class NAV03_TBTListView : Home::BaseHome
 {
-  $rect <530,260,730,300>
+  $rect <530,240,730,280>
   inherited method Init()
   {
     trace "TBT List View init";
     signal OnTbtListUpdateSlot;
   }
 
-  $rect <750,260,950,300>
+  $rect <740,290,940,330>
+  inherited method OnShortDownKeyActivated()
+  {
+    TbtList.ScrollDown();
+  }
+
+  $rect <530,290,730,330>
+  inherited method OnShortUpKeyActivated()
+  {
+    TbtList.ScrollUp();
+  }
+
+  $rect <740,240,940,280>
   inherited method OnLongEnterKeyActivated()
   {
     if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
-      PresentDialog( new Navigation::NAV06_NaviSettingMenu, null, null, null, null, null, null, null, null, false );
+      if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
+      {
+        PresentDialog( new Pop::POP09_POP14_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
+      }
+      else if( !DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+      {
+        PresentDialog( new Pop::POP17_AppInitSettingError, null, null, null, null, null, null, null, null, false );
+      }
+      else
+      {
+        // Leave navigation home screen so that stop map frame request.
+        DeviceInterface::NavigationDevice.StopMapFrameRequest();
+        PresentDialog( new Navigation::NAV06_NaviSettingMenu, null, null, null, null, null, null, null, null, false );
+      }
     }
   }
 
@@ -2126,22 +2206,20 @@ class NAV03_TBTListView : Home::BaseHome
   // Method
   note group Note8
   {
-    attr Bounds = <510,200,1230,340>;
+    attr Bounds = <510,200,1230,360>;
   }
 
   $rect <20,20,160,60>
   object Navigation::TbtListMenu TbtList
   {
     preset Bounds = <0,36,480,272>;
-    preset PassHomeKey = true;
-    preset PassEnterKey = true;
     preset ArrowScrollBarVisible = true;
   }
 
   // System Event
   note group Note7
   {
-    attr Bounds = <510,380,1230,540>;
+    attr Bounds = <510,380,1230,550>;
   }
 
   $rect <530,420,730,460>
@@ -2156,25 +2234,15 @@ class NAV03_TBTListView : Home::BaseHome
   $rect <740,420,940,460>
   slot OnTbtListUpdateSlot
   {
-    TbtList.NoOfItems = DeviceInterface::NavigationDevice.TbtListSize;
-    TbtList.ActiveTbtIdx = DeviceInterface::NavigationDevice.ActiveTbtItemIdx;
-    TbtList.InvalidateItems( 0, DeviceInterface::NavigationDevice.TbtListSize - 1 );
-  }
-
-  $rect <530,470,730,510>
-  object Core::SystemEventHandler ActiveTbtItemUpdateEventHandler
-  {
-    preset OnEvent = OnActiveTbtItemUpdateSlot;
-    preset Event = DeviceInterface::NavigationDevice.ActiveTbtItemUpdateEvent;
-  }
-
-  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
-  // receives an event.
-  $rect <740,470,940,510>
-  slot OnActiveTbtItemUpdateSlot
-  {
-    TbtList.ActiveTbtIdx = DeviceInterface::NavigationDevice.ActiveTbtItemIdx;
-    TbtList.InvalidateItems( TbtList.ActiveTbtIdx, TbtList.ActiveTbtIdx );
+    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    {
+      if( DeviceInterface::NavigationDevice.IsTbtMessageDisplayed() )
+      {
+      // TODO: show message to inform user that there are more TBT items.
+      }
+      TbtList.NoOfItems = DeviceInterface::NavigationDevice.GetTbtListSize();
+      TbtList.InvalidateItems( 0, TbtList.NoOfItems-1 );
+    }
   }
 
   // TODO:
@@ -2188,6 +2256,34 @@ class NAV03_TBTListView : Home::BaseHome
   note group Note6
   {
     attr Bounds = <510,50,1230,160>;
+  }
+
+  $rect <530,470,740,510>
+  object Core::SystemEventHandler NavigatingStatusUpdateEventHandler
+  {
+    preset OnEvent = OnNavigatingStatusUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.NavigatingStatusUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <750,470,990,510>
+  slot OnNavigatingStatusUpdateSlot
+  {
+    // Clear all items displayed on the tbt list.
+    if( !DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    {
+      TbtList.NoOfItems = 0;
+      DeviceInterface::NavigationDevice.ResetTbtBuffer();
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,36,480,38>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
   }
 }
 
@@ -2216,6 +2312,7 @@ class TbtInfoItem : Core::Group
   object Views::Text NextTurnDist
   {
     preset Bounds = <62,19,106,53>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansBold24pt;
   }
@@ -2224,6 +2321,7 @@ class TbtInfoItem : Core::Group
   object Views::Text NextTurnDistUnit
   {
     preset Bounds = <106,19,154,53>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
@@ -2246,101 +2344,6 @@ class TbtInfoItem : Core::Group
     preset Bounds = <0,72,480,74>;
     preset Alignment = Views::ImageAlignment[ScaleToFit];
     preset Bitmap = Resource::ListDivider3;
-  }
-}
-
-$rect <500,70,700,110>
-$output false
-class TbtListMenu : Menu::VerticalMenu
-{
-  $rect <10,280,210,320>
-  inherited property Bounds = <0,0,480,236>;
-
-  $rect <510,110,710,150>
-  inherited method OnShortDownKeyActivated()
-  {
-    var int32 NextItemIdx = MenuList.SelectedItem + 1;
-    if( NextItemIdx < MenuList.NoOfItems )
-    {
-      MenuList.SelectedItem = NextItemIdx;
-      SwitchToPageOfSelectedItem();
-      MoveFocusFrame();
-    }
-  }
-
-  $rect <510,60,710,100>
-  inherited method OnShortUpKeyActivated()
-  {
-    var int32 PrevItemIdx = MenuList.SelectedItem - 1;
-    if( PrevItemIdx >= 0 )
-    {
-      MenuList.SelectedItem = PrevItemIdx;
-      SwitchToPageOfSelectedItem();
-      MoveFocusFrame();
-    }
-  }
-
-  $rect <20,20,160,60>
-  inherited object MenuList
-  {
-    preset ItemClass = Navigation::TbtInfoItem;
-  }
-
-  $rect <510,10,710,50>
-  inherited slot OnLoadItemSlot
-  {
-    var Navigation::TbtInfoItem item = ( Navigation::TbtInfoItem )MenuList.View;
-    if( item != null )
-    {
-      var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( MenuList.Item );
-
-      // Avoid build error.
-      if( NaviTbtData.ListIdx < 0 )
-      {
-
-      }
-      ShowTbtListItemIcon( NaviTbtData.IconIdx );
-
-      item.NextTurnDistUnit.String = NaviTbtData.DistUnit;
-      item.NextTurnDist.String = string( NaviTbtData.Distance );
-      item.NextTurnDescription.String = NaviTbtData.TbtDescription;
-
-      item.TbtItemBg.Visible = false;
-      if( ActiveTbtIdx == MenuList.Item )
-      {
-        item.TbtItemBg.Visible = true;
-      }
-
-      item.Bounds.size = point( MenuList.Bounds.w, MenuList.ItemHeight );
-    }
-  }
-
-  $rect <730,60,930,100>
-  var int32 ActiveTbtIdx;
-
-  $rect <510,170,710,210>
-  method void ShowTbtListItemIcon( arg int32 index )
-  {
-    var Navigation::TbtInfoItem item = ( Navigation::TbtInfoItem )MenuList.View;
-    if( item != null )
-    {
-      var Enum::NaviTurnStatusType NaviTurnStatus = ( Enum::NaviTurnStatusType ) index;
-      switch( NaviTurnStatus )
-      {
-        case Enum::NaviTurnStatusType.CONTINUE_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwKeepLIrg28;
-        case Enum::NaviTurnStatusType.TURN_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwTurnLIrg28;
-        case Enum::NaviTurnStatusType.TURN_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwTurnRIrg28;
-        default:;
-      }
-    }
-  }
-
-  // TODO:
-  // 1. Integrate with navi protocol.
-  // 2. Complete the ShowTbtListItemIcon. (Match enum type to correct image.)
-  note group Note5
-  {
-    attr Bounds = <780,170,1260,370>;
   }
 }
 
@@ -2564,3 +2567,222 @@ const rect CURRENT_ROAD_SHRINK_ALERT = <134,228,310,259>;
 $rect <1150,70,1350,110>
 $output false
 const rect ALERT_MESSAGE_BOUNDS = <0,0,405,46>;
+
+$rect <500,70,700,110>
+$output false
+class TbtListMenu : Core::Group
+{
+  $rect <10,250,210,290>
+  inherited property Bounds = <0,0,480,236>;
+
+  $rect <20,300,220,340>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+    // set arrow scroll bar
+    if( ArrowScrollBarVisible )
+    {
+      var int32 NoOfPages = NoOfItems / 3;
+      if( NoOfItems > ( NoOfPages * 3 ) )
+      {
+        NoOfPages++;
+      }
+      ArrowScrollBar.NoOfPages = NoOfPages;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Core::VerticalList VerticalList
+  {
+    preset Bounds = <0,2,444,224>;
+    preset OnLoadItem = OnLoadItem;
+    preset SelectedItem = 0;
+    preset ItemHeight = Menu::ItemHeightTall;
+    preset ItemClass = Navigation::TbtInfoItem;
+  }
+
+  // This method is called by 'VerticalList' every time the list loads or updates \
+  // an item.
+  $rect <560,50,760,90>
+  slot OnLoadItem
+  {
+    var Navigation::TbtInfoItem item = ( Navigation::TbtInfoItem )VerticalList.View;
+    if( item != null )
+    {
+      var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( VerticalList.Item );
+
+      ShowTbtListItemIcon( NaviTbtData.IconIdx );
+
+      item.NextTurnDistUnit.String = NaviTbtData.DistUnit;
+      item.NextTurnDist.String = string( NaviTbtData.Distance );
+      item.NextTurnDescription.String = NaviTbtData.TbtDescription;
+
+      item.TbtItemBg.Visible = false;
+      if( 0 == VerticalList.Item )
+      {
+        item.TbtItemBg.Visible = true;
+      }
+
+      item.Bounds.size = point( VerticalList.Bounds.w, VerticalList.ItemHeight );
+    }
+  }
+
+  $rect <560,130,760,170>
+  method void ScrollUp()
+  {
+    var int32 PrevItemIdx = VerticalList.SelectedItem - 3;
+    if( PrevItemIdx >= 0 )
+    {
+      VerticalList.SelectedItem = PrevItemIdx;
+      SwitchToPageOfSelectedItem();
+    }
+  }
+
+  $rect <560,180,760,220>
+  method void ScrollDown()
+  {
+    var int32 NextItemIdx = VerticalList.SelectedItem + 3;
+    if( NextItemIdx < VerticalList.NoOfItems )
+    {
+      VerticalList.SelectedItem = NextItemIdx;
+      SwitchToPageOfSelectedItem();
+    }
+  }
+
+  $rect <810,110,1010,150>
+  method void ShowTbtListItemIcon( arg int32 index )
+  {
+    var Navigation::TbtInfoItem item = ( Navigation::TbtInfoItem )VerticalList.View;
+    if( item != null )
+    {
+      var Enum::NaviTurnStatusType NaviTurnStatus = ( Enum::NaviTurnStatusType ) index;
+      switch( NaviTurnStatus )
+      {
+        case Enum::NaviTurnStatusType.ARRVIAL_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngLIrg28;
+        case Enum::NaviTurnStatusType.ARRIVAL_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngRIrg28;
+        case Enum::NaviTurnStatusType.ARRIVAL_VIA_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngViaLIrg28;
+        case Enum::NaviTurnStatusType.ARRIVAL_VIA_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngViaRIrg28;
+        case Enum::NaviTurnStatusType.CONTINUE: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwContinuelrg28;
+        case Enum::NaviTurnStatusType.DRIVETO: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwDriveTolrg28;
+        case Enum::NaviTurnStatusType.DEST_FLAG: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwDstntnFlgIrg28;
+        case Enum::NaviTurnStatusType.DEST_VIA_FLAG: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwViaflgIrg28;
+        case Enum::NaviTurnStatusType.EXIT_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwExitLIrg28;
+        case Enum::NaviTurnStatusType.EXIT_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwExitRIrg28;
+        case Enum::NaviTurnStatusType.FERRY: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwFerryIrg28;
+        case Enum::NaviTurnStatusType.KEEP_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwKeepLIrg28;
+        case Enum::NaviTurnStatusType.KEEP_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwKeepRIrg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_45: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout45Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_90: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout90Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_135: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout135Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_180: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout180Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_225: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout225Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_270: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout270Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_315: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout315Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_360: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout360Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_45: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro45Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_90: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro90Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_135: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro135Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_180: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro180Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_225: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro225Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_270: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro270Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_315: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro315Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_360: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro360Irg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_GEN: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuroGenericIrg28;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_GEN: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutGenericIrg28;
+        case Enum::NaviTurnStatusType.SHARP_TURN_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwShrpturnLIrg28;
+        case Enum::NaviTurnStatusType.SHARP_TURN_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwShrpturnRIrg28;
+        case Enum::NaviTurnStatusType.TURN_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwTurnLIrg28;
+        case Enum::NaviTurnStatusType.TURN_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwTurnRIrg28;
+        case Enum::NaviTurnStatusType.UTURN_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwUturnLIrg28;
+        case Enum::NaviTurnStatusType.UTURN_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwUturnRIrg28;
+        case Enum::NaviTurnStatusType.EXIT_UNSPEC: item.NextTurnIcon.Bitmap = null;
+        default:;
+      }
+    }
+  }
+
+  $rect <10,420,210,460>
+  method void InvalidateItems( arg int32 aStart, arg int32 aEnd )
+  {
+    VerticalList.InvalidateItems( aStart, aEnd );
+  }
+
+  $rect <260,260,460,300>
+  property int32 NoOfItems = 0;
+
+  $rect <260,300,460,340>
+  onset NoOfItems
+  {
+    if( pure NoOfItems != value )
+    {
+      pure NoOfItems = value;
+      VerticalList.NoOfItems = value;
+
+      // move focus to the item before the last item when the last item is deleted
+      if( 0 < VerticalList.NoOfItems &&
+          VerticalList.SelectedItem >= VerticalList.NoOfItems )
+      {
+        VerticalList.SelectedItem = VerticalList.NoOfItems - 1;
+        SwitchToPageOfSelectedItem();
+      }
+
+      InvalidateViewState();
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Menu::ArrowScrollBar ArrowScrollBar
+  {
+    preset Bounds = <441,5,473,221>;
+    preset Visible = false;
+  }
+
+  $rect <270,350,510,390>
+  property bool ArrowScrollBarVisible = false;
+
+  $rect <270,390,510,430>
+  onset ArrowScrollBarVisible
+  {
+    if( pure ArrowScrollBarVisible != value )
+    {
+      pure ArrowScrollBarVisible = value;
+      ArrowScrollBar.Visible = value;
+    }
+  }
+
+  $rect <800,280,1050,320>
+  slot OnPageScrolledSlot
+  {
+    if( ArrowScrollBarVisible )
+    {
+      var int32 PageIdxOfSelectedItem = VerticalList.SelectedItem / 3;
+      ArrowScrollBar.CurrentPageIdx = PageIdxOfSelectedItem;
+    }
+  }
+
+  $rect <800,240,1050,280>
+  object Effects::Int32Effect PageScrollEffect
+  {
+    preset OnFinished = OnPageScrolledSlot;
+    preset Exponent = 4.19;
+    preset Timing = Effects::Timing.Exp_Out;
+    preset NoOfCycles = 1;
+    preset CycleDuration = 200;
+    preset InitialDelay = 50;
+    preset Outlet = ^VerticalList.ScrollOffset;
+  }
+
+  $rect <810,170,1060,210>
+  method void SwitchToPageOfSelectedItem()
+  {
+    var int32 CurrentPageIdx = ( -1 ) * VerticalList.ScrollOffset / VerticalList.Bounds.h;
+    var int32 PageIdxOfSelectedItem = VerticalList.SelectedItem / 3;
+
+    if( CurrentPageIdx != PageIdxOfSelectedItem )
+    {
+      PageScrollEffect.Value1 = VerticalList.ScrollOffset;
+      PageScrollEffect.Value2 = ( -1 ) * PageIdxOfSelectedItem * VerticalList.Bounds.h;
+      PageScrollEffect.Enabled = true;
+    }
+  }
+}

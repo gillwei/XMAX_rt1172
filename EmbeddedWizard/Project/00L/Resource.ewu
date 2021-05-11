@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <30,2070,230,2110>
 $output false
@@ -1930,18 +1930,6 @@ resource Resources::Bitmap NaviTurnArrwDriveTolrg28
   attr bitmapmode Mode = Default;
 }
 
-$rect <1370,680,1570,720>
-$output false
-resource Resources::Bitmap NaviTurnArrwDstntnFlg28
-{
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_dstntn_flg_28.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
 $rect <1580,680,1780,720>
 $output false
 resource Resources::Bitmap NaviTurnArrwExitLIrg28
@@ -2948,6 +2936,18 @@ resource Resources::Bitmap IconUnitMPG
   attr bitmapmode Mode = Default;
 }
 
+$rect <1370,680,1570,720>
+$output false
+resource Resources::Bitmap NaviTurnArrwDstntnFlgIrg28
+{
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_dstntn_flg_Irg_28.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
 $rect <690,2700,890,2740>
 $output false
 resource Resources::Bitmap IconUnitMPH
@@ -2977,18 +2977,6 @@ $output false
 resource Resources::Bitmap IconUnitPSI
 {
   attr bitmapfile FileName = .\Res\vehicle_info\infounit_psi.png;
-  attr bitmapformat Format = Native;
-  attr framesize FrameSize;
-  attr framedelay FrameDelay;
-  attr bitmapdithering Dithering = Auto;
-  attr bitmapmode Mode = Default;
-}
-
-$rect <1570,1050,1770,1090>
-$output false
-resource Resources::Bitmap NaviTurnArrwDstntnFlgIrg28
-{
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_dstntn_flg_Irg_28.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
