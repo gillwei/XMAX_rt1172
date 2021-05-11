@@ -20,6 +20,7 @@
 #include "HCI_pub.h"
 #include "hci_prv.h"
 #include "cycfg_gatt_db.h"
+#include "BTM_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -82,7 +83,7 @@ static const char BLE_CLIENT_UUID_TABLE[BLE_CLIENT_TOTAL][UUID_128BIT_LEN] =
 
 ble_client_struct                ble_clients[BLE_CLIENT_TOTAL];
 ble_server_struct                ble_servers[BLE_SERVER_TOTAL];
-static uint16_t                  connection_handle = 0;
+static uint16_t                  ble_connection_handle = 0;
 static bool                      is_ble_connected = false;
 gatt_write_request_state_struct  gatt_write_request_state = GATT_WRITE_REQUEST_STATE_IDLE;
 static QueueHandle_t             gatt_write_quest_queue_handle;
@@ -135,7 +136,7 @@ static int clear_status
 BLE_PRINTF( "%s\r\n", __FUNCTION__ );
 
 // clear characteristic handles
-connection_handle = 0;
+ble_connection_handle = 0;
 for( int i = 0; i < BLE_CLIENT_TOTAL; i++ )
     {
     ble_clients[i].start_handle  = 0;
@@ -212,6 +213,27 @@ if( NULL != ble_servers[0].callback &&
 
 /*********************************************************************
 *
+* @public
+* HCI_le_disconnect_ble
+*
+* If the BLE authentication error or encounter other errors, BLE disconnect
+*
+*********************************************************************/
+void HCI_le_disconnect_ble
+    (
+    void
+    )
+{
+uint8_t ble_conn_handle_arry[2] = { 0 };
+ble_conn_handle_arry[0] = (uint8_t)ble_connection_handle;
+ble_conn_handle_arry[1] = (uint8_t)( ble_connection_handle >> 8 );
+HCI_wiced_send_command( HCI_CONTROL_LE_COMMAND_DISCONNECT, ble_conn_handle_arry, sizeof( ble_conn_handle_arry ) );
+hci_set_wait_command_status( true );  // Wait for command status
+HCI_wait_for_resp_start( RESPONSE_CHECK_COMMAND_STATUS );
+}
+
+/*********************************************************************
+*
 * @private
 * hci_le_event_received
 *
@@ -230,17 +252,30 @@ int hci_le_event_received
     const uint16_t length
     )
 {
+uint16_t discon_connection_handle = 0;
+uint8_t  discon_reason = 0;
+
 switch( opcode )
     {
     case HCI_CONTROL_LE_EVENT_CONNECTED:
         is_ble_connected = true;
-        connection_handle = WORD_LITTLE( data[7], data[8] );
-        BLE_PRINTF( "LE_EVENT_CONNECTED, conn handle: 0x%x\r\n", connection_handle );
+        ble_connection_handle = WORD_LITTLE( data[BT_DEVICE_ADDRESS_LEN + 1], data[BT_DEVICE_ADDRESS_LEN + 2] );
+        BLE_PRINTF( "LE_EVENT_CONNECTED, conn handle: 0x%04x\r\n", ble_connection_handle );
         notify_ble_connected();
         break;
 
     case HCI_CONTROL_LE_EVENT_DISCONNECTED:
-        BLE_PRINTF( "LE_EVENT_DISCONNECTED\r\n" );
+        discon_connection_handle = WORD_LITTLE( data[0], data[1] );
+        discon_reason = data[2];
+        BLE_PRINTF( "LE_EVENT_DISCONNECTED: conn handle:%04x discon reason:%d\r\n", discon_connection_handle, discon_reason );
+        if( discon_connection_handle == ble_connection_handle )
+            {
+            ble_connection_handle = 0;
+            }
+        else
+            {
+            BLE_PRINTF( "ERROR return disconnection handle:0x%04x connection handle:%04x\r\n", discon_connection_handle, ble_connection_handle );
+            }
         is_ble_connected = false;
         clear_status();
         notify_ble_disconnected();
@@ -281,6 +316,7 @@ const char device_name_data[8] = { 'L', 'I', 'N', 'K', 'C', 'A', 'R', 'D' };
 switch( opcode )
     {
     case HCI_CONTROL_GATT_EVENT_COMMAND_STATUS:
+        hci_gatt_receive_command_status( data[0] );
         BLE_PRINTF( "GATT_EVENT_COMMAND_STATUS: %d\r\n", data[0] );
         break;
 
@@ -501,8 +537,8 @@ BLE_PRINTF( "%s handle: 0x%x, len: %d\r\n", __FUNCTION__, handle, length );
 
 if( BLE_GATT_WRITE_REQUEST_DATA_MAX_LEN >= length )
     {
-    send_data[0] = connection_handle & 0xff;
-    send_data[1] = ( connection_handle >> 8 ) & 0xff;
+    send_data[0] = ble_connection_handle & 0xff;
+    send_data[1] = ( ble_connection_handle >> 8 ) & 0xff;
     send_data[2] = handle & 0xff;
     send_data[3] = ( handle >> 8 )& 0xff;
     memcpy( &send_data[GATT_WRITE_REQUEST_HEADER_LENGTH], data, length );

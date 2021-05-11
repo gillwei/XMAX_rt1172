@@ -180,6 +180,16 @@ void hci_le_init
     void
     );
 
+void hci_set_wait_command_status
+    (
+    bool new_command_status
+    );
+
+void hci_gatt_receive_command_status
+    (
+    uint8_t receive_command_status
+    );
+
 #ifdef __cplusplus
 }
 #endif

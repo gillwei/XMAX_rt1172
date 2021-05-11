@@ -174,6 +174,7 @@ static const uint8_t          tx_carrier_mid_ch_data[7] = { 0x0, 0x29, 0x0, 0x0,
 static const uint8_t          tx_carrier_hi_ch_data[7] = { 0x0, 0x50, 0x0, 0x0, 0x09, 0x0, 0x0 };
 static hci_resp_type_t        current_resp_event = RESPONSE_NO_EVENT;
 static uint8_t                hw_id = 0;
+static bool                   wait_command_status = false;
 
 /*--------------------------------------------------------------------
                             PROCEDURES
@@ -1096,15 +1097,24 @@ switch( current_resp_event )
         break;
 
     /* After CW transmit and reset, deassert CW Transmit flag */
-        case RESPONSE_RESET_TX_CARRIER_CMD:
-            if( resp_timer_count >= RESPONSE_TIMER_ONE_SECOND )
-                {
-                hci_wait_for_resp_stop();
-                hci_reconfig_uart_normal();
-                tx_carrier_cmd_called = false;
-                PRINTF( "Tx Carrier command TEST END\n\r" );
-                }
-            break;
+    case RESPONSE_RESET_TX_CARRIER_CMD:
+        if( resp_timer_count >= RESPONSE_TIMER_ONE_SECOND )
+            {
+            hci_wait_for_resp_stop();
+            hci_reconfig_uart_normal();
+            tx_carrier_cmd_called = false;
+            PRINTF( "Tx Carrier command TEST END\n\r" );
+            }
+        break;
+
+    case RESPONSE_CHECK_COMMAND_STATUS:
+        if( resp_timer_count >= RESPONSE_TIMER_ONE_SECOND )
+            {
+            hci_wait_for_resp_stop();
+            hci_set_wait_command_status( false );
+            PRINTF( "ERROR: Not receive BT / BLE command status\r\n" );
+            }
+        break;
 
     default:
         break;
@@ -1200,6 +1210,42 @@ IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_LPUART7_RTS_B, /* GPIO_AD_B1_05 is configure
                   0U);                                /* Software Input On Field: Input Path is determined by functionality */
 
 PERIPHERAL_uart_port_reconfig( true, true, ORIGINAL_BAUD_RATE );
+}
+
+/*********************************************************************
+*
+* @public
+* hci_set_wait_command_status
+*
+* Set HCI driver wait command status
+*
+*********************************************************************/
+void hci_set_wait_command_status
+    (
+    bool new_wait_command_status
+    )
+{
+wait_command_status = new_wait_command_status;
+}
+
+/*********************************************************************
+*
+* @public
+* hci_gatt_receive_command_status
+*
+* Receive GATT command status
+*
+*********************************************************************/
+void hci_gatt_receive_command_status
+    (
+    uint8_t receive_command_status
+    )
+{
+hci_wait_for_resp_stop();
+if( HCI_CONTROL_STATUS_SUCCESS != receive_command_status )
+    {
+    PRINTF( "%s fail:%d\r\n", __FUNCTION__, receive_command_status );
+    }
 }
 
 /*********************************************************************
