@@ -150,6 +150,7 @@ static uint32_t                     burnInTime             = 0;
 static uint32_t                     burnInTargetTime       = BURN_IN_QUAL_DFT_TIME;
 static uint32_t                     burnInElapseTime       = 0;
 static IOP_set_BurnIn_state_type    burnInState            = IOP_BURNIN_STATE_NONE;
+static boolean                      burnInPassFlag         = FALSE;
 
 static const uint8_t default_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 
@@ -1790,6 +1791,11 @@ while( TRUE )
         {
         case IOP_BURNIN_STAGE_NOT_START:
             {
+            if( burnInPassFlag )
+                {
+                EW_update_burn_in_time( burnInTime );
+                EW_show_burn_in_result( true );
+                }
             }
             break;
         case IOP_BURNIN_STAGE_START:
@@ -1821,6 +1827,7 @@ while( TRUE )
                     EEPM_set_start_burn_in( FALSE, burnin_start_write_cb );
                     burnInStage = IOP_BURNIN_STAGE_PASS;
                     EW_show_burn_in_result( true );
+                    burnInPassFlag = TRUE;
                     }
                 }
             else
