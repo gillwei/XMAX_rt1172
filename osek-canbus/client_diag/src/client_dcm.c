@@ -31,7 +31,7 @@ static client_msg_context_type client_diag_msg_context = { 0 };
 static uint8 client_diag_rx_buffer[CLIENT_RX_MAX_BUFFER_LEN] = { 0 };
 static uint8 client_diag_tx_buffer[CLIENT_TX_MAX_BUFFER_LEN] = { 0 };
 
-static uint32 g_pclient_timer= 0;
+static uint32 g_pclient_timer = 0;
 static boolean g_pclient_timer_start_falg = FALSE;
 static uint32 g_s3_timer = 0x0;
 
@@ -440,6 +440,11 @@ client_dcm_SOM_indication
     tp_chan_index_t const  tp_channel
     )
 {
+if( TRUE == is_client_diag_state( CLIENT_DIAG_STATE_IDLE ))
+    {
+    return;
+    }
+
 /*response of functional address request*/
 if( CLIENT_ADDRESS_FUNCTIONAL == client_diag_msg_context.address_type )
     {
@@ -489,6 +494,11 @@ client_diag_rx_wrapper
 //PRINTF("Received channel--%d    time:%d    \r\n",tp_channel, os_task_time);
 //PRINTF("data: %d, %d\r\n",rx_buffer[0],rx_buffer[1] );
 /*response of functional address request*/
+if( TRUE == is_client_diag_state( CLIENT_DIAG_STATE_IDLE ))
+    {
+    return;
+    }
+
 if( CLIENT_ADDRESS_FUNCTIONAL == client_diag_msg_context.address_type )
     {
     if( TP_N_OK != result )

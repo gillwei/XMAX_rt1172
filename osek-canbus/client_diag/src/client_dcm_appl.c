@@ -352,7 +352,7 @@ if( FALSE == ydt_connected_state )
     client_appl_enter_ydt_handler();
     }
 ydt_timer_flag = TRUE;
-ydt_timer_count = 10000;/*50s*/
+ydt_timer_count = 1000;/*5s*/
 }
 
 /*!*******************************************************************
@@ -1531,7 +1531,7 @@ if( data_size !=  0x02 )/*server_code*/
 
 client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
 set_current_conncet_server_id( channel_id );
-read_local_monitor_infos.connected_server_id = channel_id;
+read_loacl_market_infos.connected_server_id = channel_id;
 read_local_monitor_infos.local_id_list = (uint8*)support_monitor_data_id_list;
 read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
 read_local_monitor_infos.current_local_data_index = 0x00;

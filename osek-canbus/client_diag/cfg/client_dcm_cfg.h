@@ -24,7 +24,7 @@
 
 
 /*Config for Diagnostic Comunication module*/
-#define P_CLIENT_TIME                          (100)
+#define P_CLIENT_TIME                          (10)
 #define P_CLIENT_STAER_TIME                    (1000)
 /*Reference to PGWW20, S3_client is set to 4000ms/5ms period*/
 #define S3_TIME                                (800)
