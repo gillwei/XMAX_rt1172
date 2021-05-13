@@ -78,7 +78,30 @@ typedef enum tagIL_RX_FRM_INDEX_TYPE //!< Interaction Layer receive frames index
     IL_CAN0_RXE_HEATER_STAT_IDX,
     IL_CAN0_RXF_FACT_INSP_NS_REQ_IDX,
     IL_CAN0_RXG_FACT_INSP2_GA_IDX,
-    IL_CAN0_RXH_ECU_INDCT_STAT1_IDX,
+    IL_CAN0_RXH_VH_EG_SPD_IDX,
+    IL_CAN0_RXI_TPMS_STAT_IDX,
+
+    /*------------------------------------------------------
+    Supplement CAN frames
+    ------------------------------------------------------*/
+    IL_CAN0_RXJ_MT_SYS_MOD_IDX,
+    IL_CAN0_RXK_GRIP_W_BTN_STAT_IDX,
+    IL_CAN0_RXL_MT_GEAR_POS_IDX,
+    IL_CAN0_RXM_ODO_TRIP_VAL_IDX,
+    IL_CAN0_RXN_MT_SET_INFO_IDX,
+    IL_CAN0_RXO_ECU_SYS_MOD_IDX,
+    IL_CAN0_RXP_APS_ETV_IDX,
+    IL_CAN0_RXQ_DIAG_EGMOD_IDX,
+    IL_CAN0_RXR_EG_STAT_IDX,
+    IL_CAN0_RXS_ECU_GEAR_POS_IDX,
+    IL_CAN0_RXT_ECU_STAT_TCU_IDX,
+    IL_CAN0_RXU_ECVT_STAT_TCU_IDX,
+    IL_CAN0_RXV_ABS_PRESS_IDX,
+    IL_CAN0_RXW_ABS_STAT_IDX,
+    IL_CAN0_RXX_SMT_STAT_IDX,
+    IL_CAN0_RXY_TLCU_COM_DATA_IDX,
+    IL_CAN0_RXZ0_TLCU_SIG_IDX,
+    IL_CAN0_RXZ1_TCU_STAT_ECU_IDX,
 
     IL_RX_FRM_INDEX_ERRORS
     }il_rx_frm_index_t;

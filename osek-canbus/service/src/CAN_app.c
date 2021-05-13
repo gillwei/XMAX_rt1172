@@ -442,11 +442,11 @@ il_rxfrm_info_t     const *l_p_rxfrm_info;
 
 uint8                     *l_p_frm_FUNCSW_status;
 uint8                     *l_p_frm_ECU_indct_status;
-uint8                     *l_p_frm_ECU_indct1_status;
+uint8                     *l_p_frm_VH_eg_spd;
 
 boolean                    l_toe2_FUNCSW_status;
 boolean                    l_toe2_ECU_indct_status;
-boolean                    l_toe2_ECU_indct1_status;
+boolean                    l_toe2_VH_eg_spd;
 
 /*------------------------------------------------------
 Get the receive frame information and service all of
@@ -459,14 +459,14 @@ Get the receive frame status
 ------------------------------------------------------*/
 l_p_frm_FUNCSW_status     = &( l_p_rxfrm_info->p_status[IL_CAN0_RX6_FUNCSW_STAT_IDX] );
 l_p_frm_ECU_indct_status  = &( l_p_rxfrm_info->p_status[IL_CAN0_RX0_ECU_INDCT_STAT_IDX] );
-l_p_frm_ECU_indct1_status = &( l_p_rxfrm_info->p_status[IL_CAN0_RXH_ECU_INDCT_STAT1_IDX] );
+l_p_frm_VH_eg_spd         = &( l_p_rxfrm_info->p_status[IL_CAN0_RXH_VH_EG_SPD_IDX] );
 
 /*------------------------------------------------------
 Get the receive frame timeout error1 status
 ------------------------------------------------------*/
 l_toe2_FUNCSW_status     = ( ( *l_p_frm_FUNCSW_status )     & IL_RX_STATUS_TIMEOUT2 );
 l_toe2_ECU_indct_status  = ( ( *l_p_frm_ECU_indct_status )  & IL_RX_STATUS_TIMEOUT2 );
-l_toe2_ECU_indct1_status = ( ( *l_p_frm_ECU_indct1_status ) & IL_RX_STATUS_TIMEOUT2 );
+l_toe2_VH_eg_spd         = ( ( *l_p_frm_VH_eg_spd ) & IL_RX_STATUS_TIMEOUT2 );
 
 #if( DEBUG_RX_CAN_SUPPORT )
     timeout_trig ? PRINTF( " Frm:%x TOE2 happens!\r\n", rmh ) : PRINTF( " Frm:%x TOE2 clears!\r\n", rmh );
@@ -490,7 +490,7 @@ else
         {
         /*------------------------------------------------------
         Some Vehicle type use ECU_indct(0x209) and some use
-        ECU_indct1(0x20A)
+        VH_eg_spd(0x20A)
         ------------------------------------------------------*/
         if( ( l_toe2_FUNCSW_status == FALSE ) &&
             ( l_toe2_ECU_indct_status == FALSE ) )
@@ -506,7 +506,7 @@ else
     else
         {
         if( ( l_toe2_FUNCSW_status == FALSE ) &&
-            ( l_toe2_ECU_indct1_status == FALSE ) )
+            ( l_toe2_VH_eg_spd == FALSE ) )
             {
             //TBD TOE2 clears handler
             can_app_timeout_error2[CAN_CONTROLLER_2] = timeout_trig;

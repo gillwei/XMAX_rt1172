@@ -129,15 +129,63 @@ Message Buffer Receive IDs
 #define RXF_FACT_INSP_NS_REQ            0x60A
 #define CAN0_RXF_FACT_INSP_NS_REQ_STD   FLEXCAN_ID_STD(RXF_FACT_INSP_NS_REQ)
 
-#define RXF_FACT_INSP2_GA               0x691
-#define CAN0_RXF_FACT_INSP2_GA_STD      FLEXCAN_ID_STD(RXF_FACT_INSP2_GA)
+#define RXG_FACT_INSP2_GA               0x691
+#define CAN0_RXG_FACT_INSP2_GA_STD      FLEXCAN_ID_STD(RXG_FACT_INSP2_GA)
 
-#define RX_NM_AND_LP_BK                 0x226
+#define RXH_VH_EG_SPD                   0x20A
+#define CAN0_RXH_VH_EG_SPD_STD          FLEXCAN_ID_STD(RXH_VH_EG_SPD)
+
+/*----------------------------------------------------------
+Supplement CAN IDs
+----------------------------------------------------------*/
+#define RXI_TPMS_STAT                   0x550
+#define CAN0_RXI_TPMS_STAT_STD          FLEXCAN_ID_STD(RXI_TPMS_STAT)
+#define RXJ_MT_SYS_MOD                  0x226
+#define CAN0_RXJ_MT_SYS_MOD_STD         FLEXCAN_ID_STD(RXJ_MT_SYS_MOD)
+#define RXK_GRIP_W_BTN_STAT             0x22E
+#define CAN0_RXK_GRIP_W_BTN_STAT_STD    FLEXCAN_ID_STD(RXK_GRIP_W_BTN_STAT)
+#define RXL_MT_GEAR_POS                 0x236
+#define CAN0_RXL_MT_GEAR_POS_STD        FLEXCAN_ID_STD(RXL_MT_GEAR_POS)
+#define RXM_ODO_TRIP_VAL                0x2A1
+#define CAN0_RXM_ODO_TRIP_VAL_STD       FLEXCAN_ID_STD(RXM_ODO_TRIP_VAL)
+#define RXN_MT_SET_INFO                 0x590
+#define CAN0_RXN_MT_SET_INFO_STD        FLEXCAN_ID_STD(RXN_MT_SET_INFO)
+#define RXO_ECU_SYS_MOD                 0x215
+#define CAN0_RXO_ECU_SYS_MOD_STD        FLEXCAN_ID_STD(RXO_ECU_SYS_MOD)
+#define RXP_APS_ETV                     0x216
+#define CAN0_RXP_APS_ETV_STD            FLEXCAN_ID_STD(RXP_APS_ETV)
+#define RXQ_DIAG_EGMOD                  0x23A
+#define CAN0_RXQ_DIAG_EGMOD_STD         FLEXCAN_ID_STD(RXQ_DIAG_EGMOD)
+#define RXR_EG_STAT                     0x23E
+#define CAN0_RXR_EG_STAT_STD            FLEXCAN_ID_STD(RXR_EG_STAT)
+#define RXS_ECU_GEAR_POS                0x245
+#define CAN0_RXS_ECU_GEAR_POS_STD       FLEXCAN_ID_STD(RXS_ECU_GEAR_POS)
+#define RXT_ECU_STAT_TCU                0x2AA
+#define CAN0_RXT_ECU_STAT_TCU_STD       FLEXCAN_ID_STD(RXT_ECU_STAT_TCU)
+#define RXU_ECVT_STAT_TCU               0x2AB
+#define CAN0_RXU_ECVT_STAT_TCU_STD      FLEXCAN_ID_STD(RXU_ECVT_STAT_TCU)
+#define RXV_ABS_PRESS                   0x260
+#define CAN0_RXV_ABS_PRESS_STD          FLEXCAN_ID_STD(RXV_ABS_PRESS)
+#define RXW_ABS_STAT                    0x268
+#define CAN0_RXW_ABS_STAT_STD           FLEXCAN_ID_STD(RXW_ABS_STAT)
+#define RXX_SMT_STAT                    0x555
+#define CAN0_RXX_SMT_STAT_STD           FLEXCAN_ID_STD(RXX_SMT_STAT)
+#define RXY_TLCU_COM_DATA               0x404
+#define CAN0_RXY_TLCU_COM_DATA_STD      FLEXCAN_ID_STD(RXY_TLCU_COM_DATA)
+#define RXZ0_TLCU_SIG                   0x2B1
+#define CAN0_RXZ0_TLCU_SIG_STD          FLEXCAN_ID_STD(RXZ0_TLCU_SIG)
+#define RXZ1_TCU_STAT_ECU               0x2BA
+#define CAN0_RXZ1_TCU_STAT_ECU_STD      FLEXCAN_ID_STD(RXZ1_TCU_STAT_ECU)
+
+/*----------------------------------------------------------
+Network CAN IDs
+----------------------------------------------------------*/
+#define RX_NM_AND_LP_BK                 0x126
 #define CAN0_RX_NM_AND_LP_BK_STD        FLEXCAN_ID_STD(RX_NM_AND_LP_BK)
 
-#define RXG_ECU_INDCT_STAT1             0x20A
-#define CAN0_RXG_ECU_INDCT_STAT1_STD    FLEXCAN_ID_STD(RXG_ECU_INDCT_STAT1)
-
+/*----------------------------------------------------------
+Diagnostic CAN IDs
+----------------------------------------------------------*/
 #define RX_DAIG_SEG1_MSK0               (RX_MB_DEF_MSK     & RX_MB_DEF_MSK_BIT(0) )
 #define RX_DAIG_SEG1_MSK1               (RX_DAIG_SEG1_MSK0 & RX_MB_DEF_MSK_BIT(1) )
 #define RX_DAIG_SEG1_MSK                (RX_DAIG_SEG1_MSK1 & RX_MB_DEF_MSK_BIT(2) )
@@ -180,18 +228,6 @@ Message Buffer Receive IDs
 #define RX_DAIG_SEG7_MSK                (RX_DAIG_SEG7_MSK2 & RX_MB_DEF_MSK_BIT(3) )
 #define RX_DAIG_SEG7_YDT                0x7E0
 #define CAN0_RX_DAIG_SEG7_YDT_STD       FLEXCAN_ID_STD(RX_DAIG_SEG7_YDT)
-
-/*----------------------------------------------------------
-Message Buffer Transmit IDs
-----------------------------------------------------------*/
-#define TX0_REQ_MT_FUNC_CNT             0x584
-#define CAN0_TX0_REQ_MT_FUNC_CNT_STD    FLEXCAN_ID_STD(TX0_REQ_MT_FUNC_CNT)
-
-#define TX_DIAG_RELATED                 0x4D1
-#define CAN0_TX_DIAG_RELATED_STD        FLEXCAN_ID_STD(TX_DIAG_RELATED)
-
-#define TX_NM_AND_LP_BK                 0x226
-#define CAN0_TX_NM_AND_LP_BK_STD        FLEXCAN_ID_STD(TX_NM_AND_LP_BK)
 
 #ifdef __cplusplus
 }

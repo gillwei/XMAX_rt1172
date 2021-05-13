@@ -339,7 +339,7 @@ static void send_meter_heater_operation
     uint8_t operation_code
     )
 {
-can_mid_sig_set( &heater_frm_index, IL_CAN0_HEATER_LVL_BTN_STAT_AUD_TXSIG_HANDLE, IL_CAN0_HEATER_LVL_BTN_STAT_AUD_TXSIG_NBYTES, &operation_code );
+can_mid_sig_set( &heater_frm_index, IL_CAN0_HEATER_LVL_BTN_STAT_HEATER_TXSIG_HANDLE, IL_CAN0_HEATER_LVL_BTN_STAT_HEATER_TXSIG_NBYTES, &operation_code );
 can_mid_frm_send( heater_frm_index );
 
 // Reset heater_frm_index to 0.

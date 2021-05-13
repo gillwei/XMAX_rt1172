@@ -80,12 +80,12 @@ TX1_SYS_INFO Enumerations
 #define     IL_VT_SYS_INFO_LANG_KOREAN                                  17
 #define     IL_VT_SYS_INFO_LANG_MALAY                                   18
 
-#define     IL_VT_SYS_INFO_FUEL_UNIT_L                                  0
-#define     IL_VT_SYS_INFO_FUEL_UNIT_GALLON                             1
+#define     IL_VT_SYS_INFO_FUEL_CON_UNIT_L                              0
+#define     IL_VT_SYS_INFO_FUEL_CON_UNIT_GALLON                         1
 
-#define     IL_VT_SYS_INFO_FUEL_CON_UNIT_KMPL                           0
-#define     IL_VT_SYS_INFO_FUEL_CON_UNIT_MGP                            1
-#define     IL_VT_SYS_INFO_FUEL_CON_UNIT_LP100KM                        2
+#define     IL_VT_SYS_INFO_FUEL_UNIT_KMPL                               0
+#define     IL_VT_SYS_INFO_FUEL_UNIT_MGP                                1
+#define     IL_VT_SYS_INFO_FUEL_UNIT_LP100KM                            2
 
 
 /*------------------------------------------------------
@@ -100,8 +100,8 @@ TX3_HEATER_LEVEL Enumerations
 #define     IL_VT_HEATER_LVL_LV_MID                                     1
 #define     IL_VT_HEATER_LVL_LV_HI                                      2
 
-#define     IL_VT_HEATER_LVL_BTN_STAT_AUD_DOWN                          0
-#define     IL_VT_HEATER_LVL_BTN_STAT_AUD_UP                            1
+#define     IL_VT_HEATER_LVL_BTN_STAT_HEATER_DOWN                       0
+#define     IL_VT_HEATER_LVL_BTN_STAT_HEATER_UP                         1
 
 
 /*------------------------------------------------------
@@ -216,6 +216,14 @@ RXE_HEATER_STAT Enumerations
 #define     IL_VT_HEATER_STAT_CRNT_SH_STAT_LO                           1
 #define     IL_VT_HEATER_STAT_CRNT_SH_STAT_MID                          2
 #define     IL_VT_HEATER_STAT_CRNT_SH_STAT_HI                           3
+
+
+/*------------------------------------------------------
+RXI_TPMS_STAT Enumerations
+------------------------------------------------------*/
+
+#define     IL_VT_TPMS_SENSOR_EQUIP_FLG_NOT_MOUNT                       0
+#define     IL_VT_TPMS_SENSOR_EQUIP_FLG_MOUNTED                         1
 
 #ifdef __cplusplus
 }

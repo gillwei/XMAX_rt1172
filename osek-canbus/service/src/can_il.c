@@ -2980,11 +2980,15 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         ------------------------------------------------------*/
         if( ( l_i_frm_index == IL_CAN0_RX6_FUNCSW_STAT_RXFRM_INDEX )    ||
             ( l_i_frm_index == IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_INDEX ) ||
-            ( l_i_frm_index == IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_INDEX ) )
+            ( l_i_frm_index == IL_CAN0_RXH_VH_EG_SPD_RXFRM_INDEX ) )
             {
             rx_hardkey_ECU_status_handle( l_new_frame, l_p_frm_status, l_p_per_info, l_p_rxfrm, l_frm_handle );
             }
-        else
+        /*------------------------------------------------------
+        Supplement CAN IDs's indexs are above IL_CAN0_RXJ_MT_SYS_MOD_RXFRM_INDEX
+        not need to handle timeout error
+        ------------------------------------------------------*/
+        else if( l_i_frm_index <= IL_CAN0_RXJ_MT_SYS_MOD_RXFRM_INDEX )
             {
             /*------------------------------------------------------
             Handle the periodic frame
@@ -3181,11 +3185,11 @@ if( l_hw_inst == hw_inst )
         ------------------------------------------------------*/
         if( p_rmd->identifier == RX0_ECU_INDCT_STAT_CAN0_ID )
             {
-            l_ecu_status_frm_index = DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXH_ECU_INDCT_STAT1_RXFRM_HANDLE );
+            l_ecu_status_frm_index = DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RXH_VH_EG_SPD_RXFRM_HANDLE );
             l_p_frm_status         = &( l_p_rxfrm_info->p_status[l_ecu_status_frm_index] );
             ( *l_p_frm_status )   |= IL_RX_STATUS_TIMEOUT2_DIS;
             }
-        else if( p_rmd->identifier == RXH_ECU_INDCT_STAT1_CAN0_ID )
+        else if( p_rmd->identifier == RXH_VH_EG_SPD_CAN0_ID )
             {
             l_ecu_status_frm_index = DLL_GET_INDEX_FROM_FRAME_HANDLE( IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_HANDLE );
             l_p_frm_status         = &( l_p_rxfrm_info->p_status[l_ecu_status_frm_index] );
