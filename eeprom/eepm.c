@@ -58,6 +58,8 @@ static uint8_t write_sup_func[SUPPORTED_FUNCTION_LENGTH];
 static uint8_t read_sup_func[SUPPORTED_FUNCTION_LENGTH];
 static uint8_t write_ccuid[QRCODE_CCUID_LENGTH];
 static uint8_t read_ccuid[QRCODE_CCUID_LENGTH];
+static uint8_t write_auto_connect_sequence[AUTO_CONNECT_SEQUENCE_LENGTH]; // Use for store compare bd address value
+static uint8_t read_auto_connect_sequence[AUTO_CONNECT_SEQUENCE_LENGTH]; // Use for store compare bd address value
 
 /*--------------------------------------------------------------------
                         PROTOTYPES
@@ -949,6 +951,64 @@ static void eepm_fuel_consumption_r_callback
     )
 {
 eepm_r_callback( EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_con_seq_w_callback
+@details eepm_auto_con_seq_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_auto_con_seq_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_con_seq_r_callback
+@details eepm_auto_con_seq_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_auto_con_seq_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].cb_write )
+            {
+            if( 0 == memcmp( write_auto_connect_sequence, read_auto_connect_sequence, AUTO_CONNECT_SEQUENCE_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr( rtn, read_auto_connect_sequence );
+    }
 }
 
 /*================================================================================================*/
@@ -2082,7 +2142,6 @@ else
 return rtn;
 }
 
-
 /*================================================================================================*/
 /**
 @brief   EEPM_get_fuel_consumption
@@ -2092,7 +2151,6 @@ return rtn;
 @retval None
 */
 /*================================================================================================*/
-
 BaseType_t EEPM_get_fuel_consumption
     (
     void (*callback_ptr)(bool, void*)
@@ -2105,6 +2163,67 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].semaphore, ( T
     eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].callback_ptr = callback_ptr;
     rtn = eep_get_fuel_consumption( &( eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].read_val ), eepm_fuel_consumption_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_auto_connect_sequence
+@details EEPM_set_auto_connect_sequence
+
+@return Result of enqueue set auto connection sequence
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_auto_connect_sequence
+    (
+    uint8_t *auto_connect_sequence,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr = callback_ptr;
+    memcpy( write_auto_connect_sequence, auto_connect_sequence, AUTO_CONNECT_SEQUENCE_LENGTH );
+    rtn = eep_set_auto_connect_sequence( write_auto_connect_sequence, eepm_auto_con_seq_w_callback );
+    eep_get_auto_connect_sequence( read_auto_connect_sequence, eepm_auto_con_seq_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_auto_connect_sequence
+@details EEPM_get_auto_connect_sequence
+
+@return Result of enqueue get auto connection sequence
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_get_auto_connect_sequence
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr = callback_ptr;
+    rtn = eep_get_auto_connect_sequence( read_auto_connect_sequence, eepm_auto_con_seq_r_callback );
     }
 else
     {

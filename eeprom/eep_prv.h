@@ -256,6 +256,17 @@ BaseType_t eep_get_clk_auto_adjustment
     uint8_t* auto_adjustment_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
+BaseType_t eep_set_auto_connect_sequence
+    (
+    uint8_t* auto_connect_seq_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_auto_connect_sequence
+    (
+    uint8_t* auto_connect_seq_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
 
 BaseType_t eep_set_fuel_consumption
     (

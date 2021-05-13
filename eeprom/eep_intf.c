@@ -48,6 +48,7 @@ extern "C"{
 #define SUPPORTED_FUNCTION_START_SUB_ADDR    ( OPERATION_MODE_START_SUB_ADDR        + OPERATION_MODE_LENGTH         )
 #define CLOCK_AUTO_ADJUSTMENT_START_SUB_ADDR ( SUPPORTED_FUNCTION_START_SUB_ADDR    + SUPPORTED_FUNCTION_LENGTH     )
 #define FUEL_CONSUMPTION_START_SUB_ADDR      ( CLOCK_AUTO_ADJUSTMENT_START_SUB_ADDR + CLOCK_AUTO_ADJUSTMENT_LENGTH  )
+#define AUTO_CONNECT_SEQUENCE_SUB_ADDR       ( FUEL_CONSUMPTION_START_SUB_ADDR + FUEL_CONSUMPTION_LENGTH  )
 
 // reserved for future newly add data..
 #define NEXT_START_SUB_ADDR                  ( FUEL_CONSUMPTION_START_SUB_ADDR      + FUEL_CONSUMPTION_LENGTH       )
@@ -97,6 +98,7 @@ eeprom_block_config_type block_config_list[EEPM_BLOCK_CONFIG_CNT] = \
     { SUPPORTED_FUNCTION_START_SUB_ADDR,    SUPPORTED_FUNCTION_LENGTH          }, //EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION
     { CLOCK_AUTO_ADJUSTMENT_START_SUB_ADDR, CLOCK_AUTO_ADJUSTMENT_LENGTH       }, //EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT
     { FUEL_CONSUMPTION_START_SUB_ADDR,      FUEL_CONSUMPTION_LENGTH            }, //EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION
+    { AUTO_CONNECT_SEQUENCE_SUB_ADDR,       AUTO_CONNECT_SEQUENCE_LENGTH       }, //EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE
 };
 
 
@@ -962,6 +964,51 @@ return PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
                                  callback_func_ptr );
 }
 
+/*================================================================================================*/
+/**
+@brief   eep_set_auto_connect_sequence
+@details eep_set_auto_connect_sequence
+
+@return Result of enqueue i2c write operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t eep_set_auto_connect_sequence
+    (
+    uint8_t* auto_connect_seq_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+return PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                                  auto_connect_seq_ptr,
+                                  block_config_list[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].length,
+                                  block_config_list[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].start_addr,
+                                  EEPROM_SUB_ADDR_SIZE,
+                                  callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_auto_connect_sequence
+@details eep_get_auto_connect_sequence
+
+@return Result of enqueue i2c read operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t eep_get_auto_connect_sequence
+    (
+    uint8_t* auto_connect_seq_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+return PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                                 auto_connect_seq_ptr,
+                                 block_config_list[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].length,
+                                 block_config_list[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].start_addr,
+                                 EEPROM_SUB_ADDR_SIZE,
+                                 callback_func_ptr );
+}
 
 #ifdef __cplusplus
 }

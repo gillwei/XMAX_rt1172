@@ -232,6 +232,12 @@ static int BTM_unpair_all_dev
     void
     );
 
+static void eeprom_read_auto_connect_seq_callback
+    (
+    bool  result,
+    void* data
+    );
+
 /*********************************************************************
 *
 * @private
@@ -251,6 +257,27 @@ if( false == status )
     PRINTF( "%s status false!\r\n", __FUNCTION__ );
     }
 }
+
+/*********************************************************************
+*
+* @private
+* auto_conn_seq_write_cb
+*
+* @brief callback function for Auto connection sequence write operation.
+*
+*********************************************************************/
+static void auto_conn_seq_write_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+if( false == status )
+    {
+    PRINTF( "%s status false!\r\n", __FUNCTION__ );
+    }
+}
+
 
 /*********************************************************************
 *
@@ -933,7 +960,7 @@ if( reset_status.is_running_factory_reset )
 * @private
 * eeprom_write_BT_autocon_callback
 *
-* EEPROM write BT auto connection callback
+* EEPROM write BT auto connection sequence callback
 *
 *********************************************************************/
 static void eeprom_write_BT_autocon_callback
@@ -947,6 +974,26 @@ if( reset_status.is_running_factory_reset )
     reset_status.autoconn.is_done = 1;
     reset_status.autoconn.is_success = ( uint8_t )result;
     update_factory_reset_status();
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* eeprom_read_auto_connect_seq_callback
+*
+* EEPROM read BT auto connection sequence callback
+*
+*********************************************************************/
+static void eeprom_read_auto_connect_seq_callback
+    (
+    bool  result,
+    void* data
+    )
+{
+if( false == result )
+    {
+    PRINTF( "%s result fail!\r\n", __FUNCTION__ );
     }
 }
 

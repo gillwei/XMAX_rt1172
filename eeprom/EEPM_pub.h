@@ -42,6 +42,7 @@ extern "C" {
 #define SUPPORTED_FUNCTION_LENGTH            ( 6 )
 #define CLOCK_AUTO_ADJUSTMENT_LENGTH         ( 1 )
 #define FUEL_CONSUMPTION_LENGTH              ( 4 )
+#define AUTO_CONNECT_SEQUENCE_LENGTH         ( 8 )
 
 #define EEPROM_INVALID_VAL_1_BYTE            ( 0xFF )
 #define EEPROM_INVALID_VAL_2_BYTE            ( 0xFFFF )
@@ -68,6 +69,7 @@ typedef uint8_t EEPM_block_config_type; enum
     EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION,
     EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT,
     EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION,
+    EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE,
 
     EEPM_BLOCK_CONFIG_CNT
     };
@@ -299,6 +301,17 @@ BaseType_t EEPM_set_fuel_consumption
     );
 
 BaseType_t EEPM_get_fuel_consumption
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_auto_connect_sequence
+    (
+    uint8_t *auto_connect_sequence,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_auto_connect_sequence
     (
     void (*callback_ptr)(bool, void*)
     );
