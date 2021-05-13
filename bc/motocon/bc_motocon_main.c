@@ -252,7 +252,7 @@ BC_MOTOCON_PRINTF( "%s, %d\r\n", __FUNCTION__, alive_id );
 if( alive_count >= MOTOCON_ALIVE_TIMEOUT_COUNT )
     {
     BC_MOTOCON_PRINTF( "%s, disconnect ble.\r\n", __FUNCTION__ );
-    // TODO: call ble disconnect api.
+    HCI_le_disconnect_ble();
     }
 else
     {
