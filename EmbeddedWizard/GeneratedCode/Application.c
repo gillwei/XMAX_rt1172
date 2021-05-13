@@ -831,9 +831,14 @@ void ApplicationApplication_OnVehicleDataReceivedSlot( ApplicationApplication _t
   if ((( VehicleData != 0 ) && ( EnumVehicleRxTypeYDT_DETECTED == VehicleData->RxType )) 
       && !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsRunningReset )
   {
-    YDTYDT01_Main YdtDialog = EwNewObject( YDTYDT01_Main, 0 );
-    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)YdtDialog ), 0, 0, 0, 
-    0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    YDTYDT01_Main YDTDialog = EwCastObject( CoreGroup_FindDialogByClass((CoreGroup)_this, 
+      EW_CLASS( YDTYDT01_Main )), YDTYDT01_Main );
+
+    if ( YDTDialog == 0 )
+    {
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( YDTYDT01_Main, 
+      0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    }
   }
 }
 

@@ -578,8 +578,11 @@ class Application : Core::Root
         Enum::VehicleRxType.YDT_DETECTED == VehicleData.RxType &&
         !DeviceInterface::SystemDevice.IsRunningReset )
     {
-      var YDT::YDT01_Main YdtDialog = new YDT::YDT01_Main;
-      PresentDialog( YdtDialog, null, null, null, null, null, null, null, null, false );
+      var YDT::YDT01_Main YDTDialog = (YDT::YDT01_Main)FindDialogByClass( YDT::YDT01_Main );
+      if( null == YDTDialog )
+      {
+        PresentDialog( new YDT::YDT01_Main, null, null, null, null, null, null, null, null, false );
+      }
     }
   }
 }

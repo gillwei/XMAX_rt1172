@@ -70,7 +70,15 @@ class DEV_Main : Menu::BaseMenuView
         PresentDialog( InspectionDialog, null, null, null, null, null, null, null, null, false );
       }
       case 10: PresentDialog( new Development::DEV_EEPROMTest, null, null, null, null, null, null, null, null, false );
-      case 11: PresentDialog( new YDT::YDT01_Main, null, null, null, null, null, null, null, null, false );
+      case 11:
+      {
+        // Test if YDT dialog is popped again when the YDT dialog is already displayled.
+        var int32 i;
+        for( i = 0; i < 3; i++ )
+        {
+          DeviceInterface::VehicleDevice.NotifyDataReceived( Enum::VehicleRxType.YDT_DETECTED );
+        }
+      }
       default:;
     }
   }

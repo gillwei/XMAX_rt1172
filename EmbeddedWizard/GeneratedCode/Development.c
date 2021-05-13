@@ -52,7 +52,6 @@
 #include "_ResourcesFont.h"
 #include "_ViewsText.h"
 #include "_ViewsWallpaper.h"
-#include "_YDTYDT01_Main.h"
 #include "Core.h"
 #include "Development.h"
 #include "DeviceInterface.h"
@@ -421,8 +420,15 @@ void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItem
     break;
 
     case 11 :
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( YDTYDT01_Main, 
-      0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    {
+      XInt32 i;
+
+      for ( i = 0; i < 3; i++ )
+      {
+        DeviceInterfaceVehicleDeviceClass_NotifyDataReceived( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeYDT_DETECTED );
+      }
+    }
     break;
 
     default : 
