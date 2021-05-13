@@ -5063,8 +5063,15 @@ void SettingsSET43_ResetMenu_OnItemActivate( SettingsSET43_ResetMenu _this, XInt
     break;
 
     case 3 :
-      ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)EwNewObject( 
-      SettingsSET38_ConfirmAllReset, 0 )));
+    {
+      if ( EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode )
+        ;
+      else
+      {
+        ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)EwNewObject( 
+        SettingsSET38_ConfirmAllReset, 0 )));
+      }
+    }
     break;
 
     default : 
