@@ -942,6 +942,7 @@ void EW_notify_via_point_update
 {
 #ifdef _DeviceInterfaceNavigationDeviceClass_
     is_via_point_update = 1;
+    num_of_via_point = via_point_num;
     EwBspEventTrigger();
 #endif
 }

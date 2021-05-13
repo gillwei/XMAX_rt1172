@@ -550,7 +550,7 @@ static void navi_via_point_update
     )
 {
 PRINTF( "%s: Number of via point : %d\r\n", __FUNCTION__, via_point_count );
-
+EW_notify_via_point_update( via_point_count );
 }
 
 /*********************************************************************

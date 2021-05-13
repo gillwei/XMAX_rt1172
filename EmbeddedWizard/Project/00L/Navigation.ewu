@@ -500,16 +500,12 @@ class NAV01_DefaultView : Home::BaseHome
 
   // TODO:
   // 1. Integrate with navi protocol.
-  // 2. Zoom in/out request.
-  // 3. When GUI spec area is updated(ETA area is hidden when there is no navigation), \
-  // adjust the position of current road area, current road text view and shadow \
-  // area.
-  // 4. Switch to other home group when short pressing home key.
-  // 5. Elaborate alert animation logic if possible.
-  // 6. Add the rest of alert string.
+  // 2. Handle the route calculation failed case.
+  // 3. Elaborate alert animation logic if possible.
+
   note group Note5
   {
-    attr Bounds = <0,300,480,660>;
+    attr Bounds = <0,300,480,460>;
   }
 
   $rect <520,430,730,470>
@@ -524,19 +520,7 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <750,430,990,470>
   slot OnNavigatingStatusUpdateSlot
   {
-    // Handle the route calculation failed case, normal stop navigation won't enter the if condition.
-    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.NAVI_ROUTE_CAL_PROGRESS );
-    if( !DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() &&
-        NaviData.RouteCalProgress > 0 )
-    {
-      var Navigation::NaviDialog Dialog = new Navigation::NaviDialog;
-      Dialog.DialogType = Enum::NaviDialogType.DIALOG_OK;
-      Dialog.DialogButton = Menu::PushButton;
-      Dialog.DialogMessage = Strings::NAV01_NO_DESTINATION;
-      Dialog.OnDialogDismiss = OnNaviDialogDismissSlot;
-      PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
-      Mask.Visible = true;
-    }
+    // TODO: Handle the route calculation failed case.
     SetItemBounds();
     signal OnCurRdUpdateSlot;
     signal OnETAUpdateSlot;
@@ -688,40 +672,7 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
   $rect <10,360,210,400>
   inherited method Init()
   {
-    var int32 i;
-    var int32 NoOfItems = 0;
-    var Enum::NaviSettingItem NaviSettingItem;
-
-    for( i = 0; i < (int32)Enum::NaviSettingItem.TOTAL; i++ )
-    {
-      NaviSettingItem = (Enum::NaviSettingItem)i;
-      switch( NaviSettingItem )
-      {
-        case Enum::NaviSettingItem.StopNavigation:
-        {
-          if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
-          {
-            NaviSettings[NoOfItems] = NaviSettingItem;
-            NoOfItems++;
-          }
-        }
-        case Enum::NaviSettingItem.SkipNextStop:
-        {
-          if( DeviceInterface::NavigationDevice.ViaPointNum > 0 )
-          {
-            NaviSettings[NoOfItems] = NaviSettingItem;
-            NoOfItems++;
-          }
-        }
-        default:
-        {
-          NaviSettings[NoOfItems] = NaviSettingItem;
-          NoOfItems++;
-        }
-      }
-    }
-
-    Menu.NoOfItems = NoOfItems;
+    SetNaviSettingMenuItem();
   }
 
   $rect <0,300,200,340>
@@ -985,7 +936,8 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
         }
         case Enum::NaviSettingItem.SkipNextStop:
         {
-          if( DeviceInterface::NavigationDevice.ViaPointNum > 0 )
+          if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() &&
+              DeviceInterface::NavigationDevice.ViaPointNum > 0 )
           {
             NaviSettings[NoOfItems] = NaviSettingItem;
             NoOfItems++;

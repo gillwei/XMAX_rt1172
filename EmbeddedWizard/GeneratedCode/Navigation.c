@@ -839,27 +839,8 @@ void NavigationNAV01_DefaultView_DismissAlert( NavigationNAV01_DefaultView _this
 void NavigationNAV01_DefaultView_OnNavigatingStatusUpdateSlot( NavigationNAV01_DefaultView _this, 
   XObject sender )
 {
-  DeviceInterfaceNaviDataClass NaviData;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
-
-  NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
-  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeNAVI_ROUTE_CAL_PROGRESS );
-
-  if ( !DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
-      &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
-      && ( NaviData->RouteCalProgress > 0 ))
-  {
-    NavigationNaviDialog Dialog = EwNewObject( NavigationNaviDialog, 0 );
-    NavigationNaviDialog_OnSetDialogType( Dialog, EnumNaviDialogTypeDIALOG_OK );
-    NavigationNaviDialog_OnSetDialogButton( Dialog, EW_CLASS( MenuPushButton ));
-    NavigationNaviDialog_OnSetDialogMessage( Dialog, EwLoadString( &StringsNAV01_NO_DESTINATION ));
-    Dialog->OnDialogDismiss = EwNewSlot( _this, NavigationNAV01_DefaultView_OnNaviDialogDismissSlot );
-    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)Dialog ), 0, 0, 0, 0, 
-    0, 0, EwNullSlot, EwNullSlot, 0 );
-    ViewsRectangle_OnSetVisible( &_this->Mask, 1 );
-  }
 
   NavigationNAV01_DefaultView_SetItemBounds( _this );
   EwSignal( EwNewSlot( _this, NavigationNAV01_DefaultView_OnCurRdUpdateSlot ), ((XObject)_this ));
@@ -1113,52 +1094,10 @@ void NavigationNAV06_NaviSettingMenu__Done( NavigationNAV06_NaviSettingMenu _thi
 void NavigationNAV06_NaviSettingMenu_Init( NavigationNAV06_NaviSettingMenu _this, 
   XHandle aArg )
 {
-  XInt32 i;
-  XInt32 NoOfItems;
-  XEnum NaviSettingItem;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  NoOfItems = 0;
-
-  for ( i = 0; i < 7; i++ )
-  {
-    NaviSettingItem = (XEnum)i;
-
-    switch ( NaviSettingItem )
-    {
-      case EnumNaviSettingItemStopNavigation :
-      {
-        if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
-            &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
-        {
-          _this->NaviSettings[ EwCheckIndex( NoOfItems, 7 )] = NaviSettingItem;
-          NoOfItems++;
-        }
-      }
-      break;
-
-      case EnumNaviSettingItemSkipNextStop :
-      {
-        if ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->ViaPointNum 
-            > 0 )
-        {
-          _this->NaviSettings[ EwCheckIndex( NoOfItems, 7 )] = NaviSettingItem;
-          NoOfItems++;
-        }
-      }
-      break;
-
-      default : 
-      {
-        _this->NaviSettings[ EwCheckIndex( NoOfItems, 7 )] = NaviSettingItem;
-        NoOfItems++;
-      }
-    }
-  }
-
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, NoOfItems );
+  NavigationNAV06_NaviSettingMenu_SetNaviSettingMenuItem( _this );
 }
 
 /* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.OnShortHomeKeyActivated()' */
@@ -1495,8 +1434,10 @@ void NavigationNAV06_NaviSettingMenu_SetNaviSettingMenuItem( NavigationNAV06_Nav
 
       case EnumNaviSettingItemSkipNextStop :
       {
-        if ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->ViaPointNum 
-            > 0 )
+        if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
+            &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
+            && ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->ViaPointNum 
+            > 0 ))
         {
           _this->NaviSettings[ EwCheckIndex( NoOfItems, 7 )] = NaviSettingItem;
           NoOfItems++;

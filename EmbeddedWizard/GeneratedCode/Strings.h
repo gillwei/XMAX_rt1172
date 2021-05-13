@@ -271,9 +271,6 @@ extern const XStringRes StringsNAV01_UNKNOWN;
 /* User defined constant: 'Strings::NAV01_SCHOOL_ZONE' */
 extern const XStringRes StringsNAV01_SCHOOL_ZONE;
 
-/* User defined constant: 'Strings::NAV01_NO_DESTINATION' */
-extern const XStringRes StringsNAV01_NO_DESTINATION;
-
 /* User defined constant: 'Strings::NAV06_STOP_NAVIGATION' */
 extern const XStringRes StringsNAV06_STOP_NAVIGATION;
 
