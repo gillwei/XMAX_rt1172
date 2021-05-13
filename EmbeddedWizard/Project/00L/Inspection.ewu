@@ -133,17 +133,16 @@ class TFT01_ColorGradient : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Border BlackFrame
+  object Views::Rectangle BlackFrame
   {
-    preset Bounds = <6,6,474,264>;
-    preset Width = 5;
+    preset Bounds = <19,17,461,253>;
     preset Color = #000000FF;
   }
 
   $rect <20,20,160,60>
   object Views::Rectangle StripRed
   {
-    preset Bounds = <11,11,469,73>;
+    preset Bounds = <24,23,456,79>;
     preset ColorBL = Color::RED;
     preset ColorBR = Color::BLACK;
     preset ColorTR = Color::BLACK;
@@ -153,7 +152,7 @@ class TFT01_ColorGradient : Core::Group
   $rect <20,20,160,60>
   object Views::Rectangle StripGreen
   {
-    preset Bounds = <11,73,469,135>;
+    preset Bounds = <24,79,456,135>;
     preset ColorBL = Color::GREEN;
     preset ColorBR = Color::BLACK;
     preset ColorTR = Color::BLACK;
@@ -163,7 +162,7 @@ class TFT01_ColorGradient : Core::Group
   $rect <20,20,160,60>
   object Views::Rectangle SripBlue
   {
-    preset Bounds = <11,135,469,197>;
+    preset Bounds = <24,135,456,191>;
     preset ColorBL = Color::BLUE;
     preset ColorBR = Color::BLACK;
     preset ColorTR = Color::BLACK;
@@ -173,7 +172,7 @@ class TFT01_ColorGradient : Core::Group
   $rect <20,20,160,60>
   object Views::Rectangle StripWhite
   {
-    preset Bounds = <11,197,469,259>;
+    preset Bounds = <24,191,456,247>;
     preset ColorBR = #000000FF;
     preset ColorTR = #000000FF;
   }

@@ -32,7 +32,6 @@
 #include "_InspectionTFT_Main.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesExternBitmap.h"
-#include "_ViewsBorder.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "Color.h"
@@ -52,11 +51,11 @@ static const unsigned int _StringsDefault0[] =
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XColor _Const0001 = { 0x00, 0x00, 0x00, 0xFF };
 static const XColor _Const0002 = { 0x00, 0xFF, 0x00, 0xFF };
-static const XRect _Const0003 = {{ 6, 6 }, { 474, 264 }};
-static const XRect _Const0004 = {{ 11, 11 }, { 469, 73 }};
-static const XRect _Const0005 = {{ 11, 73 }, { 469, 135 }};
-static const XRect _Const0006 = {{ 11, 135 }, { 469, 197 }};
-static const XRect _Const0007 = {{ 11, 197 }, { 469, 259 }};
+static const XRect _Const0003 = {{ 19, 17 }, { 461, 253 }};
+static const XRect _Const0004 = {{ 24, 23 }, { 456, 79 }};
+static const XRect _Const0005 = {{ 24, 79 }, { 456, 135 }};
+static const XRect _Const0006 = {{ 24, 135 }, { 456, 191 }};
+static const XRect _Const0007 = {{ 24, 191 }, { 456, 247 }};
 static const XColor _Const0008 = { 0x7F, 0x7F, 0x7F, 0xFF };
 static const XRect _Const0009 = {{ 120, 68 }, { 240, 136 }};
 static const XRect _Const000A = {{ 240, 136 }, { 360, 204 }};
@@ -286,7 +285,7 @@ void InspectionTFT01_ColorGradient__Init( InspectionTFT01_ColorGradient _this, X
 
   /* ... then construct all embedded objects */
   ViewsRectangle__Init( &_this->GeenBG, &_this->_XObject, 0 );
-  ViewsBorder__Init( &_this->BlackFrame, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->BlackFrame, &_this->_XObject, 0 );
   ViewsRectangle__Init( &_this->StripRed, &_this->_XObject, 0 );
   ViewsRectangle__Init( &_this->StripGreen, &_this->_XObject, 0 );
   ViewsRectangle__Init( &_this->SripBlue, &_this->_XObject, 0 );
@@ -300,8 +299,7 @@ void InspectionTFT01_ColorGradient__Init( InspectionTFT01_ColorGradient _this, X
   CoreRectView__OnSetBounds( &_this->GeenBG, _Const0000 );
   ViewsRectangle_OnSetColor( &_this->GeenBG, _Const0002 );
   CoreRectView__OnSetBounds( &_this->BlackFrame, _Const0003 );
-  ViewsBorder_OnSetWidth( &_this->BlackFrame, 5 );
-  ViewsBorder_OnSetColor( &_this->BlackFrame, _Const0001 );
+  ViewsRectangle_OnSetColor( &_this->BlackFrame, _Const0001 );
   CoreRectView__OnSetBounds( &_this->StripRed, _Const0004 );
   ViewsRectangle_OnSetColorBL( &_this->StripRed, ColorRED );
   ViewsRectangle_OnSetColorBR( &_this->StripRed, ColorBLACK );
@@ -336,7 +334,7 @@ void InspectionTFT01_ColorGradient__ReInit( InspectionTFT01_ColorGradient _this 
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->GeenBG );
-  ViewsBorder__ReInit( &_this->BlackFrame );
+  ViewsRectangle__ReInit( &_this->BlackFrame );
   ViewsRectangle__ReInit( &_this->StripRed );
   ViewsRectangle__ReInit( &_this->StripGreen );
   ViewsRectangle__ReInit( &_this->SripBlue );
@@ -351,7 +349,7 @@ void InspectionTFT01_ColorGradient__Done( InspectionTFT01_ColorGradient _this )
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->GeenBG );
-  ViewsBorder__Done( &_this->BlackFrame );
+  ViewsRectangle__Done( &_this->BlackFrame );
   ViewsRectangle__Done( &_this->StripRed );
   ViewsRectangle__Done( &_this->StripGreen );
   ViewsRectangle__Done( &_this->SripBlue );

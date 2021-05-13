@@ -43,7 +43,6 @@
 #endif
 
 #include "_CoreGroup.h"
-#include "_ViewsBorder.h"
 #include "_ViewsRectangle.h"
 
 /* Forward declaration of the class Core::DialogContext */
@@ -98,7 +97,7 @@
 /* Deklaration of class : 'Inspection::TFT01_ColorGradient' */
 EW_DEFINE_FIELDS( InspectionTFT01_ColorGradient, CoreGroup )
   EW_OBJECT  ( GeenBG,          ViewsRectangle )
-  EW_OBJECT  ( BlackFrame,      ViewsBorder )
+  EW_OBJECT  ( BlackFrame,      ViewsRectangle )
   EW_OBJECT  ( StripRed,        ViewsRectangle )
   EW_OBJECT  ( StripGreen,      ViewsRectangle )
   EW_OBJECT  ( SripBlue,        ViewsRectangle )
