@@ -83,11 +83,8 @@ EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( OfficeSettingUpdateEvent, CoreSystemEvent )
   EW_VARIABLE( ActiveTbtItemIdx, XInt32 )
   EW_VARIABLE( TbtListSize,     XInt32 )
-  EW_VARIABLE( ViaPointNum,     XInt32 )
   EW_VARIABLE( CurrentHome,     XEnum )
-  EW_VARIABLE( IsOfficeSet,     XBool )
-  EW_VARIABLE( IsHomeSet,       XBool )
-  EW_VARIABLE( IsZoomLevelButtonEnabled, XBool )
+  EW_VARIABLE( IsZoomInOutStatusReceived, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceNavigationDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::NavigationDeviceClass' */
@@ -217,12 +214,10 @@ void DeviceInterfaceNavigationDeviceClass__NotifyRouteCalProgressUpdate( void* _
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyZoomLevelUpdate( DeviceInterfaceNavigationDeviceClass _this, 
-  XBool aNewZoomLevelButtonStatus );
+void DeviceInterfaceNavigationDeviceClass_NotifyZoomLevelUpdate( DeviceInterfaceNavigationDeviceClass _this );
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyZoomLevelUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate( void* _this, XBool 
-  aNewZoomLevelButtonStatus );
+void DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate( void* _this );
 
 /* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyZoomLevelUpdate(). */
 #define _DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate_
@@ -249,12 +244,10 @@ void DeviceInterfaceNavigationDeviceClass_SendSelectedDialog( DeviceInterfaceNav
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyViaPointUpdate( DeviceInterfaceNavigationDeviceClass _this, 
-  XInt32 aNewViaPointNum );
+void DeviceInterfaceNavigationDeviceClass_NotifyViaPointUpdate( DeviceInterfaceNavigationDeviceClass _this );
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyViaPointUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate( void* _this, XInt32 
-  aNewViaPointNum );
+void DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate( void* _this );
 
 /* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyViaPointUpdate(). */
 #define _DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate_
@@ -268,8 +261,8 @@ XBool DeviceInterfaceNavigationDeviceClass_GetNaviAppInitSettingStatus( DeviceIn
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StopRoute()' */
 void DeviceInterfaceNavigationDeviceClass_StopRoute( DeviceInterfaceNavigationDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.SkipNextWaypoint()' */
-void DeviceInterfaceNavigationDeviceClass_SkipNextWaypoint( DeviceInterfaceNavigationDeviceClass _this );
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.SkipNextStop()' */
+void DeviceInterfaceNavigationDeviceClass_SkipNextStop( DeviceInterfaceNavigationDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GoHome()' */
 void DeviceInterfaceNavigationDeviceClass_GoHome( DeviceInterfaceNavigationDeviceClass _this );
@@ -279,24 +272,20 @@ void DeviceInterfaceNavigationDeviceClass_GoOffice( DeviceInterfaceNavigationDev
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyHomeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this, 
-  XBool aNewHomeSettingStatus );
+void DeviceInterfaceNavigationDeviceClass_NotifyHomeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this );
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyHomeSettingUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate( void* _this, 
-  XBool aNewHomeSettingStatus );
+void DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate( void* _this );
 
 /* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyHomeSettingUpdate(). */
 #define _DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate_
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyOfficeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this, 
-  XBool aNewOfficeSettingStatus );
+void DeviceInterfaceNavigationDeviceClass_NotifyOfficeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this );
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyOfficeSettingUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate( void* _this, 
-  XBool aNewOfficeSettingStatus );
+void DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate( void* _this );
 
 /* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyOfficeSettingUpdate(). */
 #define _DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate_
@@ -306,6 +295,9 @@ void DeviceInterfaceNavigationDeviceClass_ZoomInRequest( DeviceInterfaceNavigati
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ZoomOutRequest()' */
 void DeviceInterfaceNavigationDeviceClass_ZoomOutRequest( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetZoomInOutStatus()' */
+XEnum DeviceInterfaceNavigationDeviceClass_GetZoomInOutStatus( DeviceInterfaceNavigationDeviceClass _this );
 
 #ifdef __cplusplus
   }

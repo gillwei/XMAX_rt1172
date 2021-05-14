@@ -1359,7 +1359,7 @@ uint32_t EW_get_esn
     void
     )
 {
-PRINTF( "%s %d\r\n", __FUNCTION__, esn );
+PRINTF( "%s\r\n", __FUNCTION__ );
 return esn;
 }
 

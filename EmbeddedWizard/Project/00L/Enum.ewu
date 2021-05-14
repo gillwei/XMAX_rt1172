@@ -719,10 +719,19 @@ enum NaviDataType
   $rect <10,120,210,160>
   item DIALOG_EVENT;
 
+  $rect <220,120,420,160>
+  item VIA_POINT;
+
+  $rect <430,120,630,160>
+  item HOME;
+
   $rect <10,180,210,220>
+  item OFFICE;
+
+  $rect <10,230,210,270>
   item NAVI_TBT_LIST;
 
-  $rect <220,180,420,220>
+  $rect <220,230,420,270>
   item NAVI_TBT_ACTIVE_TBT;
 }
 
@@ -1463,4 +1472,18 @@ enum VehicleInfoMenuItem
 
   $rect <460,210,660,250>
   item TOTAL;
+}
+
+$rect <500,740,700,780>
+$output false
+enum NaviZoomInOutStatusType
+{
+  $rect <10,10,210,50>
+  item REACH_MAXIMUM;
+
+  $rect <220,10,420,50>
+  item REACH_MINIMUM;
+
+  $rect <430,10,630,50>
+  item NORMAL;
 }

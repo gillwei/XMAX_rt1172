@@ -337,8 +337,11 @@ typedef enum
   EnumNaviDataTypeNAVI_EVENT            = 4,
   EnumNaviDataTypeNAVI_ROUTE_CAL_PROGRESS = 5,
   EnumNaviDataTypeDIALOG_EVENT          = 6,
-  EnumNaviDataTypeNAVI_TBT_LIST         = 7,
-  EnumNaviDataTypeNAVI_TBT_ACTIVE_TBT   = 8
+  EnumNaviDataTypeVIA_POINT             = 7,
+  EnumNaviDataTypeHOME                  = 8,
+  EnumNaviDataTypeOFFICE                = 9,
+  EnumNaviDataTypeNAVI_TBT_LIST         = 10,
+  EnumNaviDataTypeNAVI_TBT_ACTIVE_TBT   = 11
 } EnumNaviDataType;
 
 /* User defined enumeration: 'Enum::NaviAlertType' */
@@ -685,6 +688,14 @@ typedef enum
   EnumVehicleInfoMenuItemCRUISE         = 13,
   EnumVehicleInfoMenuItemTOTAL          = 14
 } EnumVehicleInfoMenuItem;
+
+/* User defined enumeration: 'Enum::NaviZoomInOutStatusType' */
+typedef enum
+{
+  EnumNaviZoomInOutStatusTypeREACH_MAXIMUM = 0,
+  EnumNaviZoomInOutStatusTypeREACH_MINIMUM = 1,
+  EnumNaviZoomInOutStatusTypeNORMAL     = 2
+} EnumNaviZoomInOutStatusType;
 
 #ifdef __cplusplus
   }

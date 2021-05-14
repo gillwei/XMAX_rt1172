@@ -26,9 +26,15 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <950,670,1180,710>
   inherited method OnShortDownKeyActivated()
   {
-    if( ZoomOutButton.Visible && DeviceInterface::NavigationDevice.IsZoomLevelButtonEnabled )
+    var Enum::NaviZoomInOutStatusType ZoomInOutStatus = DeviceInterface::NavigationDevice.GetZoomInOutStatus();
+    trace "ZoomInOutStatus: ", ZoomInOutStatus;
+    trace "IsZoomInOutStatusReceived: ", DeviceInterface::NavigationDevice.IsZoomInOutStatusReceived;
+
+    if( ZoomOutButton.Visible &&
+        DeviceInterface::NavigationDevice.IsZoomInOutStatusReceived &&
+        Enum::NaviZoomInOutStatusType.REACH_MAXIMUM != ZoomInOutStatus )
     {
-      DeviceInterface::NavigationDevice.IsZoomLevelButtonEnabled = false;
+      DeviceInterface::NavigationDevice.IsZoomInOutStatusReceived = false;
       ZoomButtonStatus = 1;
       StartHighlight();
       DeviceInterface::NavigationDevice.ZoomOutRequest();
@@ -38,9 +44,15 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <720,670,950,710>
   inherited method OnShortUpKeyActivated()
   {
-    if( ZoomInButton.Visible && DeviceInterface::NavigationDevice.IsZoomLevelButtonEnabled )
+    var Enum::NaviZoomInOutStatusType ZoomInOutStatus = DeviceInterface::NavigationDevice.GetZoomInOutStatus();
+    trace "ZoomInOutStatus: ", ZoomInOutStatus;
+    trace "IsZoomInOutStatusReceived: ", DeviceInterface::NavigationDevice.IsZoomInOutStatusReceived;
+
+    if( ZoomInButton.Visible &&
+        DeviceInterface::NavigationDevice.IsZoomInOutStatusReceived &&
+        Enum::NaviZoomInOutStatusType.REACH_MINIMUM != ZoomInOutStatus )
     {
-      DeviceInterface::NavigationDevice.IsZoomLevelButtonEnabled = false;
+      DeviceInterface::NavigationDevice.IsZoomInOutStatusReceived = false;
       ZoomButtonStatus = 0;
       StartHighlight();
       DeviceInterface::NavigationDevice.ZoomInRequest();
@@ -502,7 +514,6 @@ class NAV01_DefaultView : Home::BaseHome
   // 1. Integrate with navi protocol.
   // 2. Handle the route calculation failed case.
   // 3. Elaborate alert animation logic if possible.
-
   note group Note5
   {
     attr Bounds = <0,300,480,460>;
@@ -549,7 +560,7 @@ class NAV01_DefaultView : Home::BaseHome
   // System Event
   note group Note7
   {
-    attr Bounds = <500,150,1020,580>;
+    attr Bounds = <500,150,1020,590>;
   }
 
   // Rider Alert Animation
@@ -729,7 +740,7 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
       case Enum::NaviSettingItem.SkipNextStop:
       {
         SelectedItem = Enum::NaviSettingItem.SkipNextStop;
-        DeviceInterface::NavigationDevice.SkipNextWaypoint();
+        DeviceInterface::NavigationDevice.SkipNextStop();
       }
       case Enum::NaviSettingItem.GoHome:
       {
@@ -808,22 +819,31 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
   $rect <930,130,1130,170>
   slot OnHomeSettingUpdateSlot
   {
-    if( DeviceInterface::NavigationDevice.IsHomeSet &&
-        SelectedItem == Enum::NaviSettingItem.GoHome )
+    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.HOME );
+
+    if( null != NaviData )
     {
-      SelectedItem = Enum::NaviSettingItem.TOTAL;
-      var Application::Application App = ( Application::Application )GetRoot();
-      if( null != App )
+      if( NaviData.IsHomeSet &&
+          SelectedItem == Enum::NaviSettingItem.GoHome )
       {
-        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
-        App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+        SelectedItem = Enum::NaviSettingItem.TOTAL;
+        var Application::Application App = ( Application::Application )GetRoot();
+        if( null != App )
+        {
+          DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+          App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+        }
+      }
+      else
+      {
+        var Pop::POP03_HomeOfficeSettingError HomeSettingError = new Pop::POP03_HomeOfficeSettingError;
+        HomeSettingError.ErrorMessage = Strings::POP03_NO_HOME_LOCATION;
+        PresentDialog( HomeSettingError, null, null, null, null, null, null, null, null, false );
       }
     }
     else
     {
-      var Pop::POP03_HomeOfficeSettingError HomeSettingError = new Pop::POP03_HomeOfficeSettingError;
-      HomeSettingError.ErrorMessage = Strings::POP03_NO_HOME_LOCATION;
-      PresentDialog( HomeSettingError, null, null, null, null, null, null, null, null, false );
+      trace "HomeSetting navi data error";
     }
   }
 
@@ -839,22 +859,31 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
   $rect <940,190,1140,230>
   slot OnOfficeSettingUpdateSlot
   {
-    if( DeviceInterface::NavigationDevice.IsOfficeSet &&
-        SelectedItem == Enum::NaviSettingItem.GoToWork )
+    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.OFFICE );
+
+    if( null != NaviData )
     {
-      SelectedItem = Enum::NaviSettingItem.TOTAL;
-      var Application::Application App = ( Application::Application )GetRoot();
-      if( null != App )
+      if( NaviData.IsOfficeSet &&
+          SelectedItem == Enum::NaviSettingItem.GoToWork )
       {
-        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
-        App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+        SelectedItem = Enum::NaviSettingItem.TOTAL;
+        var Application::Application App = ( Application::Application )GetRoot();
+        if( null != App )
+        {
+          DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+          App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+        }
+      }
+      else
+      {
+        var Pop::POP03_HomeOfficeSettingError OfficeSettingError = new Pop::POP03_HomeOfficeSettingError;
+        OfficeSettingError.ErrorMessage = Strings::POP03_NO_OFFICE_LOCATION;
+        PresentDialog( OfficeSettingError, null, null, null, null, null, null, null, null, false );
       }
     }
     else
     {
-      var Pop::POP03_HomeOfficeSettingError OfficeSettingError = new Pop::POP03_HomeOfficeSettingError;
-      OfficeSettingError.ErrorMessage = Strings::POP03_NO_OFFICE_LOCATION;
-      PresentDialog( OfficeSettingError, null, null, null, null, null, null, null, null, false );
+      trace "OfficeSetting navi data error";
     }
   }
 
@@ -909,6 +938,11 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
         App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
       }
     }
+    else
+    {
+      SetNaviSettingMenuItem();
+      Menu.InvalidateItems( 0, Menu.NoOfItems-1 );
+    }
   }
 
   $rect <10,420,210,460>
@@ -936,11 +970,19 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
         }
         case Enum::NaviSettingItem.SkipNextStop:
         {
-          if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() &&
-              DeviceInterface::NavigationDevice.ViaPointNum > 0 )
+          var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.VIA_POINT );
+          if( null != NaviData )
           {
-            NaviSettings[NoOfItems] = NaviSettingItem;
-            NoOfItems++;
+            if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() &&
+                NaviData.ViaPoints > 0 )
+            {
+              NaviSettings[NoOfItems] = NaviSettingItem;
+              NoOfItems++;
+            }
+          }
+          else
+          {
+            trace "SkipNextStop: navi data error";
           }
         }
         default:

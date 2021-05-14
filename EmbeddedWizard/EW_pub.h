@@ -103,11 +103,11 @@ void EW_notify_navigating_status_update( void );
 void EW_notify_tbt_list_update( int size );
 void EW_notify_active_tbt_item_update( int index );
 void EW_notify_route_cal_progress_update( void );
-void EW_notify_zoom_level_update( const bool zoom_level_button_status );
+void EW_notify_zoom_level_update( void );
 void EW_notify_dialog_event_update( void );
-void EW_notify_via_point_update( const int via_point_num );
-void EW_notify_home_setting_update( const bool is_home_set );
-void EW_notify_office_setting_update( const bool is_office_set );
+void EW_notify_via_point_update( void );
+void EW_notify_home_setting_update( void );
+void EW_notify_office_setting_update( void );
 
 
 void EW_notify_notification_list_updated( void );

@@ -74,6 +74,9 @@ typedef struct
     uint8_t daynight;
     navi_event_stat navi_event;
     uint8_t is_navigating;
+    uint8_t is_home_set;
+    uint8_t is_office_set;
+    uint8_t via_points;
     uint8_t route_cal_progress;
     } navi_data_type;
 
@@ -104,6 +107,7 @@ void NAVI_send_stop_route_request( void );
 void NAVI_send_skip_next_waypoint_request( void );
 void NAVI_send_go_home_request( void );
 void NAVI_send_go_office_request( void );
+EnumNaviZoomInOutStatusType NAVI_get_zoom_inout_status( void );
 
 #ifdef __cplusplus
 }

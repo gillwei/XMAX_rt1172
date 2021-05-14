@@ -174,10 +174,6 @@
 
     static int active_tbt_item_idx;
     static int tbt_list_size;
-    static bool is_zoom_level_button_displayed;
-    static int num_of_via_point = 0;
-    static bool home_setting_status;
-    static bool office_setting_status;
 #endif
 /*--------------------------------------------------------------------
                                 MACROS
@@ -540,7 +536,7 @@ bool ew_navi_is_route_guidance_started
         {
         is_zoom_level_update = 0;
         need_update = 1;
-        DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate( device_object, is_zoom_level_button_displayed );
+        DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate( device_object );
         }
     return need_update;
     }
@@ -590,7 +586,7 @@ bool ew_navi_is_route_guidance_started
         {
         is_via_point_update = 0;
         need_update = 1;
-        DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate( device_object, num_of_via_point );
+        DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate( device_object );
         }
     return need_update;
     }
@@ -615,7 +611,7 @@ bool ew_navi_is_route_guidance_started
         {
         is_home_setting_update = 0;
         need_update = 1;
-        DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate( device_object, home_setting_status );
+        DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate( device_object );
         }
     return need_update;
     }
@@ -640,7 +636,7 @@ bool ew_navi_is_route_guidance_started
         {
         is_office_setting_update = 0;
         need_update = 1;
-        DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate( device_object, office_setting_status );
+        DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate( device_object );
         }
     return need_update;
     }
@@ -898,12 +894,11 @@ void EW_notify_route_cal_progress_update
 *********************************************************************/
 void EW_notify_zoom_level_update
     (
-    const bool zoom_level_button_status
+    void
     )
 {
 #ifdef _DeviceInterfaceNavigationDeviceClass_
     is_zoom_level_update = 1;
-    is_zoom_level_button_displayed = zoom_level_button_status;
     EwBspEventTrigger();
 #endif
 }
@@ -937,12 +932,11 @@ void EW_notify_dialog_event_update
 *********************************************************************/
 void EW_notify_via_point_update
     (
-    const int via_point_num
+    void
     )
 {
 #ifdef _DeviceInterfaceNavigationDeviceClass_
     is_via_point_update = 1;
-    num_of_via_point = via_point_num;
     EwBspEventTrigger();
 #endif
 }
@@ -957,11 +951,10 @@ void EW_notify_via_point_update
 *********************************************************************/
 void EW_notify_home_setting_update
     (
-    const bool is_home_set
+    void
     )
 {
 #ifdef _DeviceInterfaceNavigationDeviceClass_
-    home_setting_status = is_home_set;
     is_home_setting_update = 1;
     EwBspEventTrigger();
 #endif
@@ -977,11 +970,10 @@ void EW_notify_home_setting_update
 *********************************************************************/
 void EW_notify_office_setting_update
     (
-    const bool is_office_set
+    void
     )
 {
 #ifdef _DeviceInterfaceNavigationDeviceClass_
-    office_setting_status = is_office_set;
     is_office_setting_update = 1;
     EwBspEventTrigger();
 #endif

@@ -78,14 +78,19 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000114, /* ratio 62.32 % */
-  0xB8000D00, 0x8009A452, 0x00E00030, 0x60607858, 0xDE002911, 0x6640041C, 0x0E028021,
-  0x636800D7, 0x8E438091, 0x046E330C, 0x1A0002F0, 0x023E098B, 0x0D800348, 0x4D243280,
-  0xB0E0445A, 0x3A9B0005, 0x885CEA6E, 0x90422091, 0x042A1D17, 0x4E48B3DA, 0xE61D1D18,
-  0x2090285C, 0x8B16A3D2, 0xD4EA4D3E, 0x10870462, 0xE8998E61, 0x969D6B72, 0x04ACE913,
-  0x19C006E0, 0x3A502000, 0x40025B4C, 0xE000175B, 0xC1585DC2, 0x42001521, 0xCB4DDC00,
-  0x001CEC64, 0x195AD362, 0xDA0EF30B, 0x8A5965B1, 0x0016B9E5, 0x5245AA0A, 0x101C9C58,
-  0x00000000
+  0x00000234, /* ratio 58.87 % */
+  0xB8002900, 0x800B4452, 0xB4010737, 0x80049001, 0x004F001B, 0x074001D4, 0x008A14C0,
+  0x389C60C2, 0x000E8007, 0xF4880020, 0xC348B030, 0x2211068E, 0x61F0D85C, 0x2F1589C4,
+  0x9158D456, 0x00290023, 0x931800CA, 0x001A4013, 0xF1927A76, 0x00245208, 0x649B2503,
+  0x28C70004, 0x12488249, 0x5179D42E, 0x3F8AC567, 0xFA299E1F, 0x9FD06350, 0x5CD28721,
+  0x1CA7521A, 0x9E116700, 0x60921915, 0xE0003344, 0xB549E4FE, 0x0E9F55E7, 0xD90D6C01,
+  0xB0DE2815, 0x3516674B, 0xDAE1368B, 0xAE2F04A2, 0x49D4DBC1, 0x65183C4F, 0x91FA6C26,
+  0x45AFD2EF, 0x58D462C5, 0xC2DA70B6, 0xC4940F22, 0x50E35089, 0x2E4A0591, 0x4092285E,
+  0x4400D649, 0xE00D5C13, 0x46340005, 0xCBC6BC13, 0xDC6DA7A6, 0x6C941122, 0x47F88001,
+  0x9751C4E2, 0x353B08D4, 0x4BCDA6C1, 0xD461847E, 0x228FC135, 0x3EA41291, 0x22F3A8DD,
+  0xA497ABDC, 0xE8C2322E, 0xF6353C9E, 0xF7B139E6, 0x8B7AACD8, 0x304DD48A, 0xF7000964,
+  0xAFD0005D, 0x9285645F, 0x04200054, 0xC4860100, 0x551D5E04, 0x78159214, 0x514774E9,
+  0x9154FDF0, 0x8001F572, 0xA5047882, 0x0186D460, 0x00000001, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -108,69 +113,74 @@ static const XRect _Const000F = {{ 0, 226 }, { 480, 272 }};
 static const XRect _Const0010 = {{ 370, 226 }, { 480, 272 }};
 static const XColor _Const0011 = { 0x00, 0x00, 0x00, 0x80 };
 static const XStringRes _Const0012 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0013 = {{ 0, 0 }, { 0, 0 }};
-static const XRect _Const0014 = {{ 140, 228 }, { 470, 259 }};
-static const XRect _Const0015 = {{ 0, 0 }, { 330, 31 }};
-static const XRect _Const0016 = {{ 0, 8 }, { 20, 28 }};
-static const XRect _Const0017 = {{ 24, 0 }, { 330, 31 }};
-static const XStringRes _Const0018 = { _StringsDefault0, 0x0008 };
-static const XRect _Const0019 = {{ 0, 0 }, { 480, 46 }};
-static const XRect _Const001A = {{ 405, 0 }, { 480, 46 }};
-static const XColor _Const001B = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const001C = {{ 445, 9 }, { 470, 31 }};
-static const XRect _Const001D = {{ 405, 3 }, { 443, 33 }};
-static const XStringRes _Const001E = { _StringsDefault0, 0x000F };
-static const XStringRes _Const001F = { _StringsDefault0, 0x0014 };
-static const XStringRes _Const0020 = { _StringsDefault0, 0x0018 };
-static const XStringRes _Const0021 = { _StringsDefault0, 0x001F };
-static const XRect _Const0022 = {{ 370, 0 }, { 480, 46 }};
-static const XColor _Const0023 = { 0xE2, 0x7F, 0x07, 0xFF };
-static const XColor _Const0024 = { 0xAA, 0x14, 0x15, 0xFF };
-static const XRect _Const0025 = {{ 0, 0 }, { 405, 46 }};
-static const XRect _Const0026 = {{ 10, 8 }, { 30, 28 }};
-static const XRect _Const0027 = {{ 34, 2 }, { 315, 33 }};
-static const XRect _Const0028 = {{ 325, 3 }, { 352, 33 }};
-static const XRect _Const0029 = {{ 354, 9 }, { 395, 31 }};
-static const XRect _Const002A = {{ 0, 0 }, { 110, 33 }};
-static const XRect _Const002B = {{ 19, 7 }, { 39, 29 }};
-static const XRect _Const002C = {{ 41, 2 }, { 92, 33 }};
-static const XRect _Const002D = {{ 84, 9 }, { 110, 31 }};
-static const XStringRes _Const002E = { _StringsDefault0, 0x0028 };
-static const XStringRes _Const002F = { _StringsDefault0, 0x0030 };
-static const XStringRes _Const0030 = { _StringsDefault0, 0x0035 };
-static const XStringRes _Const0031 = { _StringsDefault0, 0x003A };
-static const XStringRes _Const0032 = { _StringsDefault0, 0x003F };
-static const XStringRes _Const0033 = { _StringsDefault0, 0x0043 };
-static const XStringRes _Const0034 = { _StringsDefault0, 0x0049 };
-static const XRect _Const0035 = {{ 0, 38 }, { 480, 226 }};
-static const XRect _Const0036 = {{ 186, 68 }, { 254, 116 }};
-static const XRect _Const0037 = {{ 254, 82 }, { 278, 112 }};
-static const XRect _Const0038 = {{ 186, 117 }, { 408, 210 }};
-static const XColor _Const0039 = { 0xCF, 0xCF, 0xCF, 0xFF };
-static const XRect _Const003A = {{ 28, 54 }, { 178, 204 }};
-static const XRect _Const003B = {{ 104, 75 }, { 376, 199 }};
-static const XStringRes _Const003C = { _StringsDefault0, 0x004E };
-static const XStringRes _Const003D = { _StringsDefault0, 0x0052 };
-static const XStringRes _Const003E = { _StringsDefault0, 0x0063 };
-static const XRect _Const003F = {{ 0, 36 }, { 480, 272 }};
-static const XStringRes _Const0040 = { _StringsDefault0, 0x006C };
-static const XRect _Const0041 = {{ 0, 0 }, { 480, 74 }};
-static const XRect _Const0042 = {{ 20, 0 }, { 440, 72 }};
-static const XColor _Const0043 = { 0x1E, 0x47, 0x8C, 0xFF };
-static const XRect _Const0044 = {{ 30, 22 }, { 58, 50 }};
-static const XRect _Const0045 = {{ 62, 19 }, { 106, 53 }};
-static const XRect _Const0046 = {{ 106, 19 }, { 154, 53 }};
-static const XRect _Const0047 = {{ 155, 5 }, { 430, 72 }};
-static const XColor _Const0048 = { 0xC8, 0xC8, 0xC8, 0xFF };
-static const XRect _Const0049 = {{ 0, 72 }, { 480, 74 }};
-static const XRect _Const004A = {{ 0, 0 }, { 480, 236 }};
-static const XRect _Const004B = {{ 0, 0 }, { 340, 252 }};
-static const XRect _Const004C = {{ 15, 13 }, { 325, 190 }};
-static const XStringRes _Const004D = { _StringsDefault0, 0x0081 };
-static const XStringRes _Const004E = { _StringsDefault0, 0x0086 };
-static const XRect _Const004F = {{ 69, 154 }, { 271, 240 }};
-static const XRect _Const0050 = {{ 15, 13 }, { 325, 144 }};
-static const XRect _Const0051 = {{ 69, 200 }, { 271, 240 }};
+static const XStringRes _Const0013 = { _StringsDefault0, 0x0016 };
+static const XStringRes _Const0014 = { _StringsDefault0, 0x0034 };
+static const XRect _Const0015 = {{ 0, 0 }, { 0, 0 }};
+static const XRect _Const0016 = {{ 140, 228 }, { 470, 259 }};
+static const XStringRes _Const0017 = { _StringsDefault0, 0x003A };
+static const XStringRes _Const0018 = { _StringsDefault0, 0x0058 };
+static const XStringRes _Const0019 = { _StringsDefault0, 0x0078 };
+static const XRect _Const001A = {{ 0, 0 }, { 330, 31 }};
+static const XRect _Const001B = {{ 0, 8 }, { 20, 28 }};
+static const XRect _Const001C = {{ 24, 0 }, { 330, 31 }};
+static const XStringRes _Const001D = { _StringsDefault0, 0x0098 };
+static const XRect _Const001E = {{ 0, 0 }, { 480, 46 }};
+static const XRect _Const001F = {{ 405, 0 }, { 480, 46 }};
+static const XColor _Const0020 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const0021 = {{ 445, 9 }, { 470, 31 }};
+static const XRect _Const0022 = {{ 405, 3 }, { 443, 33 }};
+static const XStringRes _Const0023 = { _StringsDefault0, 0x009F };
+static const XStringRes _Const0024 = { _StringsDefault0, 0x00A4 };
+static const XStringRes _Const0025 = { _StringsDefault0, 0x00A8 };
+static const XStringRes _Const0026 = { _StringsDefault0, 0x00AF };
+static const XRect _Const0027 = {{ 370, 0 }, { 480, 46 }};
+static const XColor _Const0028 = { 0xE2, 0x7F, 0x07, 0xFF };
+static const XColor _Const0029 = { 0xAA, 0x14, 0x15, 0xFF };
+static const XRect _Const002A = {{ 0, 0 }, { 405, 46 }};
+static const XRect _Const002B = {{ 10, 8 }, { 30, 28 }};
+static const XRect _Const002C = {{ 34, 2 }, { 315, 33 }};
+static const XRect _Const002D = {{ 325, 3 }, { 352, 33 }};
+static const XRect _Const002E = {{ 354, 9 }, { 395, 31 }};
+static const XRect _Const002F = {{ 0, 0 }, { 110, 33 }};
+static const XRect _Const0030 = {{ 19, 7 }, { 39, 29 }};
+static const XRect _Const0031 = {{ 41, 2 }, { 92, 33 }};
+static const XRect _Const0032 = {{ 84, 9 }, { 110, 31 }};
+static const XStringRes _Const0033 = { _StringsDefault0, 0x00B8 };
+static const XStringRes _Const0034 = { _StringsDefault0, 0x00C0 };
+static const XStringRes _Const0035 = { _StringsDefault0, 0x00C5 };
+static const XStringRes _Const0036 = { _StringsDefault0, 0x00CA };
+static const XStringRes _Const0037 = { _StringsDefault0, 0x00CF };
+static const XStringRes _Const0038 = { _StringsDefault0, 0x00D3 };
+static const XStringRes _Const0039 = { _StringsDefault0, 0x00D9 };
+static const XRect _Const003A = {{ 0, 38 }, { 480, 226 }};
+static const XRect _Const003B = {{ 186, 68 }, { 254, 116 }};
+static const XRect _Const003C = {{ 254, 82 }, { 278, 112 }};
+static const XRect _Const003D = {{ 186, 117 }, { 408, 210 }};
+static const XColor _Const003E = { 0xCF, 0xCF, 0xCF, 0xFF };
+static const XRect _Const003F = {{ 28, 54 }, { 178, 204 }};
+static const XRect _Const0040 = {{ 104, 75 }, { 376, 199 }};
+static const XStringRes _Const0041 = { _StringsDefault0, 0x00DE };
+static const XStringRes _Const0042 = { _StringsDefault0, 0x00E2 };
+static const XStringRes _Const0043 = { _StringsDefault0, 0x00F3 };
+static const XRect _Const0044 = {{ 0, 36 }, { 480, 272 }};
+static const XStringRes _Const0045 = { _StringsDefault0, 0x00FC };
+static const XRect _Const0046 = {{ 0, 0 }, { 480, 74 }};
+static const XRect _Const0047 = {{ 20, 0 }, { 440, 72 }};
+static const XColor _Const0048 = { 0x1E, 0x47, 0x8C, 0xFF };
+static const XRect _Const0049 = {{ 30, 22 }, { 58, 50 }};
+static const XRect _Const004A = {{ 62, 19 }, { 106, 53 }};
+static const XRect _Const004B = {{ 106, 19 }, { 154, 53 }};
+static const XRect _Const004C = {{ 155, 5 }, { 430, 72 }};
+static const XColor _Const004D = { 0xC8, 0xC8, 0xC8, 0xFF };
+static const XRect _Const004E = {{ 0, 72 }, { 480, 74 }};
+static const XRect _Const004F = {{ 0, 0 }, { 480, 236 }};
+static const XRect _Const0050 = {{ 0, 0 }, { 340, 252 }};
+static const XRect _Const0051 = {{ 15, 13 }, { 325, 190 }};
+static const XStringRes _Const0052 = { _StringsDefault0, 0x0111 };
+static const XStringRes _Const0053 = { _StringsDefault0, 0x0116 };
+static const XRect _Const0054 = {{ 69, 154 }, { 271, 240 }};
+static const XRect _Const0055 = {{ 15, 13 }, { 325, 144 }};
+static const XRect _Const0056 = {{ 69, 200 }, { 271, 240 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -474,10 +484,18 @@ void NavigationNAV01_DefaultView_Init( NavigationNAV01_DefaultView _this, XHandl
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnShortDownKeyActivated()' */
 void NavigationNAV01_DefaultView_OnShortDownKeyActivated( NavigationNAV01_DefaultView _this )
 {
-  if ( ViewsImage_OnGetVisible( &_this->ZoomOutButton ) && EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-      DeviceInterfaceNavigationDeviceClass )->IsZoomLevelButtonEnabled )
+  XEnum ZoomInOutStatus = DeviceInterfaceNavigationDeviceClass_GetZoomInOutStatus( 
+    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
+
+  EwTrace( "%s%e", EwLoadString( &_Const0012 ), ZoomInOutStatus );
+  EwTrace( "%s%b", EwLoadString( &_Const0013 ), EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+    DeviceInterfaceNavigationDeviceClass )->IsZoomInOutStatusReceived );
+
+  if (( ViewsImage_OnGetVisible( &_this->ZoomOutButton ) && EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass )->IsZoomInOutStatusReceived ) && ( EnumNaviZoomInOutStatusTypeREACH_MAXIMUM 
+      != ZoomInOutStatus ))
   {
-    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->IsZoomLevelButtonEnabled 
+    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->IsZoomInOutStatusReceived 
     = 0;
     _this->ZoomButtonStatus = 1;
     NavigationNAV01_DefaultView_StartHighlight( _this );
@@ -489,10 +507,18 @@ void NavigationNAV01_DefaultView_OnShortDownKeyActivated( NavigationNAV01_Defaul
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnShortUpKeyActivated()' */
 void NavigationNAV01_DefaultView_OnShortUpKeyActivated( NavigationNAV01_DefaultView _this )
 {
-  if ( ViewsImage_OnGetVisible( &_this->ZoomInButton ) && EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-      DeviceInterfaceNavigationDeviceClass )->IsZoomLevelButtonEnabled )
+  XEnum ZoomInOutStatus = DeviceInterfaceNavigationDeviceClass_GetZoomInOutStatus( 
+    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
+
+  EwTrace( "%s%e", EwLoadString( &_Const0012 ), ZoomInOutStatus );
+  EwTrace( "%s%b", EwLoadString( &_Const0013 ), EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+    DeviceInterfaceNavigationDeviceClass )->IsZoomInOutStatusReceived );
+
+  if (( ViewsImage_OnGetVisible( &_this->ZoomInButton ) && EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass )->IsZoomInOutStatusReceived ) && ( EnumNaviZoomInOutStatusTypeREACH_MINIMUM 
+      != ZoomInOutStatus ))
   {
-    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->IsZoomLevelButtonEnabled 
+    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->IsZoomInOutStatusReceived 
     = 0;
     _this->ZoomButtonStatus = 0;
     NavigationNAV01_DefaultView_StartHighlight( _this );
@@ -538,7 +564,7 @@ void NavigationNAV01_DefaultView_OnMapUpdateSlot( NavigationNAV01_DefaultView _t
 
   _this->MapFrameIdx = _this->MapFrameIdx + 1;
   ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceExternBitmap, ResourcesExternBitmap ), 
-  EwConcatString( EwLoadString( &_Const0012 ), EwNewStringInt( _this->MapFrameIdx, 
+  EwConcatString( EwLoadString( &_Const0014 ), EwNewStringInt( _this->MapFrameIdx, 
   0, 10 )));
 }
 
@@ -776,7 +802,7 @@ void NavigationNAV01_DefaultView_DismissAlert( NavigationNAV01_DefaultView _this
   EW_UNUSED_ARG( sender );
 
   _this->CurrentRoadShiftEffect.Value1 = _this->CurrentRoadWithGuide.Super2.Bounds;
-  NewCurrentRoadObjectBounds = _Const0013;
+  NewCurrentRoadObjectBounds = _Const0015;
   NewCurrentRoadObjectBounds.Point1.X = ( _this->CurrentRoadWithGuide.NaviIconX1Pos 
   + EwGetRectW( _this->ArrivalBg.Super1.Bounds ));
   NewCurrentRoadObjectBounds.Point2.X = ( NewCurrentRoadObjectBounds.Point1.X + 
@@ -792,7 +818,7 @@ void NavigationNAV01_DefaultView_DismissAlert( NavigationNAV01_DefaultView _this
   else
   {
     EffectsEffect_OnSetEnabled((EffectsEffect)&_this->CurrentRoadShiftEffect, 0 );
-    CoreRectView__OnSetBounds( &_this->CurrentRoadWithGuide, _Const0014 );
+    CoreRectView__OnSetBounds( &_this->CurrentRoadWithGuide, _Const0016 );
     NavigationNaviCurrentRoad_UpdateItemBounds( &_this->CurrentRoadWithGuide, EnumNaviAlertAnimationTypeDismiss, 
     EwGetRectW( _this->CurrentRoadWithGuide.Super2.Bounds ));
   }
@@ -1153,7 +1179,7 @@ void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSetting
     case EnumNaviSettingItemSkipNextStop :
     {
       _this->SelectedItem = EnumNaviSettingItemSkipNextStop;
-      DeviceInterfaceNavigationDeviceClass_SkipNextWaypoint( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass_SkipNextStop( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
       DeviceInterfaceNavigationDeviceClass ));
     }
     break;
@@ -1235,33 +1261,42 @@ XBool NavigationNAV06_NaviSettingMenu_LoadItemEnabled( NavigationNAV06_NaviSetti
 void NavigationNAV06_NaviSettingMenu_OnHomeSettingUpdateSlot( NavigationNAV06_NaviSettingMenu _this, 
   XObject sender )
 {
+  DeviceInterfaceNaviDataClass NaviData;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  if ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->IsHomeSet 
-      && ( _this->SelectedItem == EnumNaviSettingItemGoHome ))
-  {
-    ApplicationApplication App;
-    _this->SelectedItem = EnumNaviSettingItemTOTAL;
-    App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+  NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeHOME );
 
-    if ( App != 0 )
+  if ( NaviData != 0 )
+  {
+    if ( NaviData->IsHomeSet && ( _this->SelectedItem == EnumNaviSettingItemGoHome ))
     {
-      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
-      = EnumHomeTypeNAVI_DEFAULT_VIEW;
-      ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-      DeviceInterfaceNavigationDeviceClass )->CurrentHome );
+      ApplicationApplication App;
+      _this->SelectedItem = EnumNaviSettingItemTOTAL;
+      App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+
+      if ( App != 0 )
+      {
+        EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+        = EnumHomeTypeNAVI_DEFAULT_VIEW;
+        ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+        DeviceInterfaceNavigationDeviceClass )->CurrentHome );
+      }
+    }
+    else
+    {
+      PopPOP03_HomeOfficeSettingError HomeSettingError = EwNewObject( PopPOP03_HomeOfficeSettingError, 
+        0 );
+      PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( HomeSettingError, EwLoadString( 
+      &StringsPOP03_NO_HOME_LOCATION ));
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)HomeSettingError ), 
+      0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }
   }
   else
-  {
-    PopPOP03_HomeOfficeSettingError HomeSettingError = EwNewObject( PopPOP03_HomeOfficeSettingError, 
-      0 );
-    PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( HomeSettingError, EwLoadString( 
-    &StringsPOP03_NO_HOME_LOCATION ));
-    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)HomeSettingError ), 0, 
-    0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
+    EwTrace( "%s", EwLoadString( &_Const0017 ));
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -1269,33 +1304,42 @@ void NavigationNAV06_NaviSettingMenu_OnHomeSettingUpdateSlot( NavigationNAV06_Na
 void NavigationNAV06_NaviSettingMenu_OnOfficeSettingUpdateSlot( NavigationNAV06_NaviSettingMenu _this, 
   XObject sender )
 {
+  DeviceInterfaceNaviDataClass NaviData;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  if ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->IsOfficeSet 
-      && ( _this->SelectedItem == EnumNaviSettingItemGoToWork ))
-  {
-    ApplicationApplication App;
-    _this->SelectedItem = EnumNaviSettingItemTOTAL;
-    App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+  NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeOFFICE );
 
-    if ( App != 0 )
+  if ( NaviData != 0 )
+  {
+    if ( NaviData->IsOfficeSet && ( _this->SelectedItem == EnumNaviSettingItemGoToWork ))
     {
-      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
-      = EnumHomeTypeNAVI_DEFAULT_VIEW;
-      ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-      DeviceInterfaceNavigationDeviceClass )->CurrentHome );
+      ApplicationApplication App;
+      _this->SelectedItem = EnumNaviSettingItemTOTAL;
+      App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+
+      if ( App != 0 )
+      {
+        EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+        = EnumHomeTypeNAVI_DEFAULT_VIEW;
+        ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+        DeviceInterfaceNavigationDeviceClass )->CurrentHome );
+      }
+    }
+    else
+    {
+      PopPOP03_HomeOfficeSettingError OfficeSettingError = EwNewObject( PopPOP03_HomeOfficeSettingError, 
+        0 );
+      PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( OfficeSettingError, EwLoadString( 
+      &StringsPOP03_NO_OFFICE_LOCATION ));
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)OfficeSettingError ), 
+      0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }
   }
   else
-  {
-    PopPOP03_HomeOfficeSettingError OfficeSettingError = EwNewObject( PopPOP03_HomeOfficeSettingError, 
-      0 );
-    PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( OfficeSettingError, EwLoadString( 
-    &StringsPOP03_NO_OFFICE_LOCATION ));
-    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)OfficeSettingError ), 
-    0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
+    EwTrace( "%s", EwLoadString( &_Const0018 ));
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -1348,6 +1392,12 @@ void NavigationNAV06_NaviSettingMenu_OnViaPointUpdateSlot( NavigationNAV06_NaviS
       ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
       DeviceInterfaceNavigationDeviceClass )->CurrentHome );
   }
+  else
+  {
+    NavigationNAV06_NaviSettingMenu_SetNaviSettingMenuItem( _this );
+    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
+    - 1 );
+  }
 }
 
 /* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.SetNaviSettingMenuItem()' */
@@ -1373,14 +1423,24 @@ void NavigationNAV06_NaviSettingMenu_SetNaviSettingMenuItem( NavigationNAV06_Nav
       break;
 
       case EnumNaviSettingItemSkipNextStop :
-        if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
-            &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
-            && ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->ViaPointNum 
-            > 0 ))
+      {
+        DeviceInterfaceNaviDataClass NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( 
+          EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), 
+          EnumNaviDataTypeVIA_POINT );
+
+        if ( NaviData != 0 )
         {
-          _this->NaviSettings[ EwCheckIndex( NoOfItems, 7 )] = NaviSettingItem;
-          NoOfItems++;
+          if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
+              &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
+              && ( NaviData->ViaPoints > 0 ))
+          {
+            _this->NaviSettings[ EwCheckIndex( NoOfItems, 7 )] = NaviSettingItem;
+            NoOfItems++;
+          }
         }
+        else
+          EwTrace( "%s", EwLoadString( &_Const0019 ));
+      }
       break;
 
       default : 
@@ -1716,10 +1776,10 @@ void NavigationNaviCurrentRoad__Init( NavigationNaviCurrentRoad _this, XObject a
   _this->_.VMT = EW_CLASS( NavigationNaviCurrentRoad );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0015 );
-  CoreRectView__OnSetBounds( &_this->NaviIconCurRd, _Const0016 );
+  CoreRectView__OnSetBounds( _this, _Const001A );
+  CoreRectView__OnSetBounds( &_this->NaviIconCurRd, _Const001B );
   ViewsImage_OnSetVisible( &_this->NaviIconCurRd, 0 );
-  CoreRectView__OnSetBounds( &_this->RoadNameText, _Const0017 );
+  CoreRectView__OnSetBounds( &_this->RoadNameText, _Const001C );
   ViewsText_OnSetAlignment( &_this->RoadNameText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->RoadNameText, 0 );
@@ -1763,8 +1823,8 @@ void NavigationNaviCurrentRoad_SetItemBounds( NavigationNaviCurrentRoad _this, X
   if ( EwCompRect( _this->RoadNameText.Super1.Bounds, _this->RoadNameTextBounds ))
     CoreRectView__OnSetBounds( &_this->RoadNameText, _this->RoadNameTextBounds );
 
-  if ( EwCompRect( _this->NaviIconCurRd.Super1.Bounds, _Const0016 ))
-    CoreRectView__OnSetBounds( &_this->NaviIconCurRd, _Const0016 );
+  if ( EwCompRect( _this->NaviIconCurRd.Super1.Bounds, _Const001B ))
+    CoreRectView__OnSetBounds( &_this->NaviIconCurRd, _Const001B );
 
   if ( !ViewsImage_OnGetVisible( &_this->NaviIconCurRd ))
     ViewsImage_OnSetVisible( &_this->NaviIconCurRd, 1 );
@@ -1774,7 +1834,7 @@ void NavigationNaviCurrentRoad_SetItemBounds( NavigationNaviCurrentRoad _this, X
   if ( EwGetRectW( ViewsText_GetContentArea( &_this->RoadNameText )) < EwGetRectW( 
       _this->RoadNameText.Super1.Bounds ))
   {
-    XRect NewRoadNameBounds = _Const0013;
+    XRect NewRoadNameBounds = _Const0015;
     XRect NewCurIcnBounds;
     NewRoadNameBounds.Point1.X = ViewsText_GetContentArea( &_this->RoadNameText ).Point1.X;
     NewRoadNameBounds.Point2.X = ( NewRoadNameBounds.Point1.X + EwGetRectW( ViewsText_GetContentArea( 
@@ -1782,7 +1842,7 @@ void NavigationNaviCurrentRoad_SetItemBounds( NavigationNaviCurrentRoad _this, X
     NewRoadNameBounds.Point1.Y = _this->RoadNameText.Super1.Bounds.Point1.Y;
     NewRoadNameBounds.Point2.Y = _this->RoadNameText.Super1.Bounds.Point2.Y;
     CoreRectView__OnSetBounds( &_this->RoadNameText, NewRoadNameBounds );
-    NewCurIcnBounds = _Const0013;
+    NewCurIcnBounds = _Const0015;
     NewCurIcnBounds.Point1.X = ( _this->RoadNameText.Super1.Bounds.Point1.X - 24 );
     NewCurIcnBounds.Point2.X = ( NewCurIcnBounds.Point1.X + EwGetRectW( _this->NaviIconCurRd.Super1.Bounds ));
     NewCurIcnBounds.Point1.Y = _this->NaviIconCurRd.Super1.Bounds.Point1.Y;
@@ -1808,7 +1868,7 @@ void NavigationNaviCurrentRoad_OnSetRoadName( NavigationNaviCurrentRoad _this, X
   ViewsText_OnSetString( &_this->RoadNameText, _this->RoadName );
 
   if ( !EwCompString( _this->RoadNameText.String, 0 ))
-    ViewsText_OnSetString( &_this->RoadNameText, EwLoadString( &_Const0018 ));
+    ViewsText_OnSetString( &_this->RoadNameText, EwLoadString( &_Const001D ));
 }
 
 /* 'C' function for method : 'Navigation::NaviCurrentRoad.UpdateItemBounds()' */
@@ -1895,28 +1955,28 @@ void NavigationNaviAlert__Init( NavigationNaviAlert _this, XObject aLink, XHandl
   _this->_.VMT = EW_CLASS( NavigationNaviAlert );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0019 );
+  CoreRectView__OnSetBounds( _this, _Const001E );
   CoreRectView__OnSetBounds( &_this->AlertMessage, NavigationALERT_MESSAGE_BOUNDS );
-  CoreRectView__OnSetBounds( &_this->NaviDistBg, _Const001A );
-  ViewsRectangle_OnSetColor( &_this->NaviDistBg, _Const001B );
-  CoreRectView__OnSetBounds( &_this->DistUnit, _Const001C );
+  CoreRectView__OnSetBounds( &_this->NaviDistBg, _Const001F );
+  ViewsRectangle_OnSetColor( &_this->NaviDistBg, _Const0020 );
+  CoreRectView__OnSetBounds( &_this->DistUnit, _Const0021 );
   ViewsText_OnSetAlignment( &_this->DistUnit, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DistUnit, 0 );
-  CoreRectView__OnSetBounds( &_this->Distance, _Const001D );
+  CoreRectView__OnSetBounds( &_this->Distance, _Const0022 );
   ViewsText_OnSetAlignment( &_this->Distance, ViewsTextAlignmentAlignHorzRight | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Distance, 0 );
   CoreTimer_OnSetPeriod( &_this->SuspendTimer, 8000 );
-  _this->DistUnitTextArray[ 0 ] = EwShareString( EwLoadString( &_Const001E ));
-  _this->DistUnitTextArray[ 1 ] = EwShareString( EwLoadString( &_Const001F ));
-  _this->SpeedUnitTextArray[ 0 ] = EwShareString( EwLoadString( &_Const0020 ));
-  _this->SpeedUnitTextArray[ 1 ] = EwShareString( EwLoadString( &_Const0021 ));
+  _this->DistUnitTextArray[ 0 ] = EwShareString( EwLoadString( &_Const0023 ));
+  _this->DistUnitTextArray[ 1 ] = EwShareString( EwLoadString( &_Const0024 ));
+  _this->SpeedUnitTextArray[ 0 ] = EwShareString( EwLoadString( &_Const0025 ));
+  _this->SpeedUnitTextArray[ 1 ] = EwShareString( EwLoadString( &_Const0026 ));
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->NaviEventShrinkEffect, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->NaviEventShrinkEffect, 
   500 );
-  _this->NaviEventShrinkEffect.Value2 = _Const0022;
-  _this->NaviEventShrinkEffect.Value1 = _Const0019;
+  _this->NaviEventShrinkEffect.Value2 = _Const0027;
+  _this->NaviEventShrinkEffect.Value1 = _Const001E;
   CoreGroup__Add( _this, ((CoreView)&_this->AlertMessage ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NaviDistBg ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DistUnit ), 0 );
@@ -2013,8 +2073,8 @@ void NavigationNaviAlert_SetAlert( NavigationNaviAlert _this, XEnum aNaviEventTy
       ViewsImage_OnSetBitmap( &_this->AlertMessage.NaviAlertIcon, EwLoadResource( 
       &ResourceSafeCamSchoolZone, ResourcesBitmap ));
       ViewsText_OnSetString( &_this->AlertMessage.EventType, EwLoadString( &StringsNAV01_SCHOOL_ZONE ));
-      ViewsRectangle_OnSetColor( &_this->AlertMessage.NaviEventBg, _Const0023 );
-      ViewsRectangle_OnSetColor( &_this->NaviDistBg, _Const0023 );
+      ViewsRectangle_OnSetColor( &_this->AlertMessage.NaviEventBg, _Const0028 );
+      ViewsRectangle_OnSetColor( &_this->NaviDistBg, _Const0028 );
     }
     break;
 
@@ -2027,8 +2087,8 @@ void NavigationNaviAlert_SetAlert( NavigationNaviAlert _this, XEnum aNaviEventTy
         ViewsText_OnSetVisible( &_this->AlertMessage.NaviSpeedUnit, 1 );
 
       NavigationNaviAlert_SetCamera( _this, aNaviCameraType );
-      ViewsRectangle_OnSetColor( &_this->AlertMessage.NaviEventBg, _Const0024 );
-      ViewsRectangle_OnSetColor( &_this->NaviDistBg, _Const0024 );
+      ViewsRectangle_OnSetColor( &_this->AlertMessage.NaviEventBg, _Const0029 );
+      ViewsRectangle_OnSetColor( &_this->NaviDistBg, _Const0029 );
     }
     break;
 
@@ -2244,19 +2304,19 @@ void NavigationNaviAlertMessage__Init( NavigationNaviAlertMessage _this, XObject
   _this->_.VMT = EW_CLASS( NavigationNaviAlertMessage );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0025 );
-  CoreRectView__OnSetBounds( &_this->NaviEventBg, _Const0025 );
-  ViewsRectangle_OnSetColor( &_this->NaviEventBg, _Const001B );
+  CoreRectView__OnSetBounds( _this, _Const002A );
+  CoreRectView__OnSetBounds( &_this->NaviEventBg, _Const002A );
+  ViewsRectangle_OnSetColor( &_this->NaviEventBg, _Const0020 );
   ViewsRectangle_OnSetVisible( &_this->NaviEventBg, 1 );
-  CoreRectView__OnSetBounds( &_this->NaviAlertIcon, _Const0026 );
-  CoreRectView__OnSetBounds( &_this->EventType, _Const0027 );
+  CoreRectView__OnSetBounds( &_this->NaviAlertIcon, _Const002B );
+  CoreRectView__OnSetBounds( &_this->EventType, _Const002C );
   ViewsText_OnSetAlignment( &_this->EventType, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->EventType, 0 );
-  CoreRectView__OnSetBounds( &_this->NaviSpeed, _Const0028 );
+  CoreRectView__OnSetBounds( &_this->NaviSpeed, _Const002D );
   ViewsText_OnSetString( &_this->NaviSpeed, 0 );
   ViewsText_OnSetVisible( &_this->NaviSpeed, 0 );
-  CoreRectView__OnSetBounds( &_this->NaviSpeedUnit, _Const0029 );
+  CoreRectView__OnSetBounds( &_this->NaviSpeedUnit, _Const002E );
   ViewsText_OnSetString( &_this->NaviSpeedUnit, 0 );
   ViewsText_OnSetVisible( &_this->NaviSpeedUnit, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NaviEventBg ), 0 );
@@ -2362,15 +2422,15 @@ void NavigationNaviETA__Init( NavigationNaviETA _this, XObject aLink, XHandle aA
   _this->_.VMT = EW_CLASS( NavigationNaviETA );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const002A );
-  CoreRectView__OnSetBounds( &_this->NaviIconFlag, _Const002B );
+  CoreRectView__OnSetBounds( _this, _Const002F );
+  CoreRectView__OnSetBounds( &_this->NaviIconFlag, _Const0030 );
   ViewsImage_OnSetVisible( &_this->NaviIconFlag, 1 );
-  CoreRectView__OnSetBounds( &_this->TimeText, _Const002C );
+  CoreRectView__OnSetBounds( &_this->TimeText, _Const0031 );
   ViewsText_OnSetAlignment( &_this->TimeText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->TimeText, 0 );
   ViewsText_OnSetVisible( &_this->TimeText, 0 );
-  CoreRectView__OnSetBounds( &_this->AmPmText, _Const002D );
+  CoreRectView__OnSetBounds( &_this->AmPmText, _Const0032 );
   ViewsText_OnSetAlignment( &_this->AmPmText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->AmPmText, 0 );
@@ -2431,7 +2491,7 @@ void NavigationNaviETA_OnSetETA( NavigationNaviETA _this, XInt32 value )
   }
   else
   {
-    ViewsText_OnSetString( &_this->TimeText, EwLoadString( &_Const002E ));
+    ViewsText_OnSetString( &_this->TimeText, EwLoadString( &_Const0033 ));
     ViewsText_OnSetVisible( &_this->AmPmText, 0 );
   }
 }
@@ -2449,10 +2509,10 @@ void NavigationNaviETA_FormatTime( NavigationNaviETA _this )
   if ( hour > 0 )
   {
     if ( hour < 12 )
-      ViewsText_OnSetString( &_this->AmPmText, EwLoadString( &_Const002F ));
+      ViewsText_OnSetString( &_this->AmPmText, EwLoadString( &_Const0034 ));
     else
     {
-      ViewsText_OnSetString( &_this->AmPmText, EwLoadString( &_Const0030 ));
+      ViewsText_OnSetString( &_this->AmPmText, EwLoadString( &_Const0035 ));
 
       if ( hour > 12 )
         hour = hour - 12;
@@ -2460,21 +2520,21 @@ void NavigationNaviETA_FormatTime( NavigationNaviETA _this )
 
     if ( min < 10 )
       eta = EwConcatString( EwConcatString( EwNewStringInt( hour, 0, 10 ), EwLoadString( 
-      &_Const0031 )), EwNewStringInt( min, 0, 10 ));
+      &_Const0036 )), EwNewStringInt( min, 0, 10 ));
     else
       eta = EwConcatString( EwConcatString( EwNewStringInt( hour, 0, 10 ), EwLoadString( 
-      &_Const0032 )), EwNewStringInt( min, 0, 10 ));
+      &_Const0037 )), EwNewStringInt( min, 0, 10 ));
   }
   else
   {
     if ( min < 10 )
-      eta = EwConcatString( EwLoadString( &_Const0033 ), EwNewStringInt( min, 0, 
+      eta = EwConcatString( EwLoadString( &_Const0038 ), EwNewStringInt( min, 0, 
       10 ));
     else
-      eta = EwConcatString( EwLoadString( &_Const0034 ), EwNewStringInt( min, 0, 
+      eta = EwConcatString( EwLoadString( &_Const0039 ), EwNewStringInt( min, 0, 
       10 ));
 
-    ViewsText_OnSetString( &_this->AmPmText, EwLoadString( &_Const002F ));
+    ViewsText_OnSetString( &_this->AmPmText, EwLoadString( &_Const0034 ));
   }
 
   ViewsText_OnSetString( &_this->TimeText, eta );
@@ -2556,38 +2616,38 @@ void NavigationNAV05_TBTView__Init( NavigationNAV05_TBTView _this, XObject aLink
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0002 );
   _this->Super1.HomeType = EnumHomeTypeNAVI_NEXT_TURN;
-  CoreRectView__OnSetBounds( &_this->NaviTBTViewBg, _Const0035 );
+  CoreRectView__OnSetBounds( &_this->NaviTBTViewBg, _Const003A );
   CoreRectView__OnSetBounds( &_this->ArrivalBg, _Const0003 );
   ViewsRectangle_OnSetColor( &_this->ArrivalBg, _Const0004 );
   ViewsRectangle_OnSetVisible( &_this->ArrivalBg, 1 );
   CoreRectView__OnSetBounds( &_this->ETAComponent, _Const0005 );
   CoreRectView__OnSetBounds( &_this->RoadNameBg, _Const0006 );
   ViewsRectangle_OnSetColor( &_this->RoadNameBg, _Const0007 );
-  CoreRectView__OnSetBounds( &_this->CurrentRoadComponent, _Const0014 );
+  CoreRectView__OnSetBounds( &_this->CurrentRoadComponent, _Const0016 );
   CoreRectView__OnSetBounds( &_this->SpeedLimitIcon, _Const000B );
   ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
   CoreRectView__OnSetBounds( &_this->SpeedLimitText, _Const000C );
   ViewsText_OnSetString( &_this->SpeedLimitText, 0 );
   ViewsText_OnSetColor( &_this->SpeedLimitText, _Const0001 );
   ViewsText_OnSetVisible( &_this->SpeedLimitText, 0 );
-  CoreRectView__OnSetBounds( &_this->NextTurnDist, _Const0036 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDist, _Const003B );
   ViewsText_OnSetString( &_this->NextTurnDist, 0 );
   ViewsText_OnSetVisible( &_this->NextTurnDist, 0 );
-  CoreRectView__OnSetBounds( &_this->NextTurnDistUnit, _Const0037 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDistUnit, _Const003C );
   ViewsText_OnSetString( &_this->NextTurnDistUnit, 0 );
   ViewsText_OnSetVisible( &_this->NextTurnDistUnit, 0 );
-  CoreRectView__OnSetBounds( &_this->NextTurnDescription, _Const0038 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDescription, _Const003D );
   ViewsText_OnSetEllipsis( &_this->NextTurnDescription, 1 );
   ViewsText_OnSetWrapText( &_this->NextTurnDescription, 1 );
   ViewsText_OnSetAlignment( &_this->NextTurnDescription, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->NextTurnDescription, 0 );
-  ViewsText_OnSetColor( &_this->NextTurnDescription, _Const0039 );
-  CoreRectView__OnSetBounds( &_this->NextTurnIcon, _Const003A );
+  ViewsText_OnSetColor( &_this->NextTurnDescription, _Const003E );
+  CoreRectView__OnSetBounds( &_this->NextTurnIcon, _Const003F );
   ViewsImage_OnSetVisible( &_this->NextTurnIcon, 0 );
-  CoreRectView__OnSetBounds( &_this->RecalculateMessage, _Const003B );
+  CoreRectView__OnSetBounds( &_this->RecalculateMessage, _Const0040 );
   ViewsText_OnSetString( &_this->RecalculateMessage, 0 );
-  ViewsText_OnSetColor( &_this->RecalculateMessage, _Const0039 );
+  ViewsText_OnSetColor( &_this->RecalculateMessage, _Const003E );
   ViewsText_OnSetVisible( &_this->RecalculateMessage, 0 );
   CoreTimer_OnSetPeriod( &_this->SpeedLimitFlickeringTimer, 300 );
   CoreGroup__Add( _this, ((CoreView)&_this->NaviTBTViewBg ), 0 );
@@ -2783,7 +2843,7 @@ void NavigationNAV05_TBTView_OnActiveTbtItemUpdateSlot( NavigationNAV05_TBTView 
       ViewsText_OnSetVisible( &_this->NextTurnDistUnit, 1 );
 
     ViewsText_OnSetString( &_this->NextTurnDistUnit, 0 );
-    ViewsText_OnSetString( &_this->NextTurnDist, EwLoadString( &_Const003C ));
+    ViewsText_OnSetString( &_this->NextTurnDist, EwLoadString( &_Const0041 ));
     ViewsText_OnSetString( &_this->NextTurnDescription, 0 );
   }
 }
@@ -2917,8 +2977,8 @@ void NavigationNAV05_TBTView_SetRecalculatingStatus( NavigationNAV05_TBTView _th
     ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
     NavigationNaviETA_OnSetETA( &_this->ETAComponent, 0 );
     ViewsText_OnSetString( &_this->RecalculateMessage, EwConcatString( EwConcatString( 
-    EwLoadString( &_Const003D ), EwNewStringInt( aNewRouteCalProgress, 0, 10 )), 
-    EwLoadString( &_Const003E )));
+    EwLoadString( &_Const0042 ), EwNewStringInt( aNewRouteCalProgress, 0, 10 )), 
+    EwLoadString( &_Const0043 )));
     ViewsText_OnSetVisible( &_this->RecalculateMessage, 1 );
   }
   else
@@ -3036,7 +3096,7 @@ void NavigationNAV03_TBTListView__Init( NavigationNAV03_TBTListView _this, XObje
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->Super2.BlackBG, _Const0000 );
   _this->Super1.HomeType = EnumHomeTypeNAVI_TURN_BY_TURN;
-  CoreRectView__OnSetBounds( &_this->TbtList, _Const003F );
+  CoreRectView__OnSetBounds( &_this->TbtList, _Const0044 );
   _this->TbtList.Super2.PassHomeKey = 1;
   _this->TbtList.Super2.PassEnterKey = 1;
   MenuVerticalMenu_OnSetArrowScrollBarVisible((MenuVerticalMenu)&_this->TbtList, 
@@ -3089,7 +3149,7 @@ void NavigationNAV03_TBTListView_Init( NavigationNAV03_TBTListView _this, XHandl
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0040 ));
+  EwTrace( "%s", EwLoadString( &_Const0045 ));
   EwSignal( EwNewSlot( _this, NavigationNAV03_TBTListView_OnTbtListUpdateSlot ), 
     ((XObject)_this ));
 }
@@ -3205,23 +3265,23 @@ void NavigationTbtInfoItem__Init( NavigationTbtInfoItem _this, XObject aLink, XH
   _this->_.VMT = EW_CLASS( NavigationTbtInfoItem );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0041 );
-  CoreRectView__OnSetBounds( &_this->TbtItemBg, _Const0042 );
-  ViewsRectangle_OnSetColor( &_this->TbtItemBg, _Const0043 );
+  CoreRectView__OnSetBounds( _this, _Const0046 );
+  CoreRectView__OnSetBounds( &_this->TbtItemBg, _Const0047 );
+  ViewsRectangle_OnSetColor( &_this->TbtItemBg, _Const0048 );
   ViewsRectangle_OnSetVisible( &_this->TbtItemBg, 0 );
-  CoreRectView__OnSetBounds( &_this->NextTurnIcon, _Const0044 );
-  CoreRectView__OnSetBounds( &_this->NextTurnDist, _Const0045 );
+  CoreRectView__OnSetBounds( &_this->NextTurnIcon, _Const0049 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDist, _Const004A );
   ViewsText_OnSetString( &_this->NextTurnDist, 0 );
-  CoreRectView__OnSetBounds( &_this->NextTurnDistUnit, _Const0046 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDistUnit, _Const004B );
   ViewsText_OnSetString( &_this->NextTurnDistUnit, 0 );
-  CoreRectView__OnSetBounds( &_this->NextTurnDescription, _Const0047 );
+  CoreRectView__OnSetBounds( &_this->NextTurnDescription, _Const004C );
   ViewsText_OnSetEllipsis( &_this->NextTurnDescription, 1 );
   ViewsText_OnSetWrapText( &_this->NextTurnDescription, 1 );
   ViewsText_OnSetAlignment( &_this->NextTurnDescription, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString( &_this->NextTurnDescription, 0 );
-  ViewsText_OnSetColor( &_this->NextTurnDescription, _Const0048 );
-  CoreRectView__OnSetBounds( &_this->ListDivider, _Const0049 );
+  ViewsText_OnSetColor( &_this->NextTurnDescription, _Const004D );
+  CoreRectView__OnSetBounds( &_this->ListDivider, _Const004E );
   ViewsImage_OnSetAlignment( &_this->ListDivider, ViewsImageAlignmentScaleToFit );
   CoreGroup__Add( _this, ((CoreView)&_this->TbtItemBg ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NextTurnIcon ), 0 );
@@ -3324,7 +3384,7 @@ void NavigationTbtListMenu__Init( NavigationTbtListMenu _this, XObject aLink, XH
   _this->_.VMT = EW_CLASS( NavigationTbtListMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const004A );
+  CoreRectView__OnSetBounds( _this, _Const004F );
   CoreVerticalList_OnSetItemClass( &_this->Super1.MenuList, EW_CLASS( NavigationTbtInfoItem ));
 }
 
@@ -3389,7 +3449,7 @@ void NavigationTbtListMenu_OnLoadItemSlot( NavigationTbtListMenu _this, XObject
     DeviceInterfaceNavigationDeviceClass ), _this->Super1.MenuList.Item );
     NavigationTbtListMenu_ShowTbtListItemIcon( _this, 0 );
     ViewsText_OnSetString( &item->NextTurnDistUnit, 0 );
-    ViewsText_OnSetString( &item->NextTurnDist, EwLoadString( &_Const003C ));
+    ViewsText_OnSetString( &item->NextTurnDist, EwLoadString( &_Const0041 ));
     ViewsText_OnSetString( &item->NextTurnDescription, 0 );
     ViewsRectangle_OnSetVisible( &item->TbtItemBg, 0 );
 
@@ -3503,9 +3563,9 @@ void NavigationNaviDialog__Init( NavigationNaviDialog _this, XObject aLink, XHan
   _this->_.VMT = EW_CLASS( NavigationNaviDialog );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const004B );
-  CoreRectView__OnSetBounds( &_this->DialogBackground, _Const004B );
-  CoreRectView__OnSetBounds( &_this->DialogContent, _Const004C );
+  CoreRectView__OnSetBounds( _this, _Const0050 );
+  CoreRectView__OnSetBounds( &_this->DialogBackground, _Const0050 );
+  CoreRectView__OnSetBounds( &_this->DialogContent, _Const0051 );
   ViewsText_OnSetWrapText( &_this->DialogContent, 1 );
   ViewsText_OnSetString( &_this->DialogContent, 0 );
   _this->CountDownTime = 10;
@@ -3564,11 +3624,11 @@ void NavigationNaviDialog_OnSetDialogButton( NavigationNaviDialog _this, XClass
         &StringsGEN_YES ));
         MenuUpDownPushButtonSet_OnSetDownButtonTitle( _this->ButtonSet, EwConcatString( 
         EwConcatString( EwConcatString( EwLoadString( &StringsGEN_NO ), EwLoadString( 
-        &_Const004D )), EwNewStringInt( _this->CountDownTime, 0, 10 )), EwLoadString( 
-        &_Const004E )));
-        CoreRectView__OnSetBounds( _this->ButtonSet, _Const004F );
+        &_Const0052 )), EwNewStringInt( _this->CountDownTime, 0, 10 )), EwLoadString( 
+        &_Const0053 )));
+        CoreRectView__OnSetBounds( _this->ButtonSet, _Const0054 );
         CoreGroup__Add( _this, ((CoreView)_this->ButtonSet ), 0 );
-        CoreRectView__OnSetBounds( &_this->DialogContent, _Const0050 );
+        CoreRectView__OnSetBounds( &_this->DialogContent, _Const0055 );
       }
       break;
 
@@ -3576,10 +3636,10 @@ void NavigationNaviDialog_OnSetDialogButton( NavigationNaviDialog _this, XClass
       {
         MenuPushButton Button = EwCastObject( EwNewObjectIndirect( value, 0 ), MenuPushButton );
         Button->OnActivate = EwNewSlot( _this, NavigationNaviDialog_OnOkActivatedSlot );
-        CoreRectView__OnSetBounds( Button, _Const0051 );
+        CoreRectView__OnSetBounds( Button, _Const0056 );
         MenuPushButton_OnSetTitle( Button, EwGetVariantOfString( &StringsGEN_OK ));
         CoreGroup__Add( _this, ((CoreView)Button ), 0 );
-        CoreRectView__OnSetBounds( &_this->DialogContent, _Const004C );
+        CoreRectView__OnSetBounds( &_this->DialogContent, _Const0051 );
       }
       break;
 
@@ -3639,8 +3699,8 @@ void NavigationNaviDialog_UpdateCountDownTimeSlot( NavigationNaviDialog _this, X
     _this->CountDownTime--;
     MenuUpDownPushButtonSet_OnSetDownButtonTitle( _this->ButtonSet, EwConcatString( 
     EwConcatString( EwConcatString( EwLoadString( &StringsGEN_NO ), EwLoadString( 
-    &_Const004D )), EwNewStringInt( _this->CountDownTime, 0, 10 )), EwLoadString( 
-    &_Const004E )));
+    &_Const0052 )), EwNewStringInt( _this->CountDownTime, 0, 10 )), EwLoadString( 
+    &_Const0053 )));
     CoreGroup_InvalidateViewState((CoreGroup)_this );
   }
   else

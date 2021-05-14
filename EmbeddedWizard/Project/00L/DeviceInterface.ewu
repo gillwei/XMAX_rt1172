@@ -936,6 +936,15 @@ class NavigationDeviceClass : Templates::DeviceClass
         case EnumNaviDataTypeNAVI_ROUTE_CAL_PROGRESS:
           NaviData->RouteCalProgress = navi_obj->route_cal_progress; 
           break;
+        case EnumNaviDataTypeVIA_POINT:
+          NaviData->ViaPoints = navi_obj->via_points;
+          break;
+        case EnumNaviDataTypeHOME:
+          NaviData->IsHomeSet = (bool)navi_obj->is_home_set;
+          break;
+        case EnumNaviDataTypeOFFICE:
+          NaviData->IsOfficeSet = (bool)navi_obj->is_office_set;
+          break;
         default:
           break;
       }
@@ -1069,14 +1078,11 @@ class NavigationDeviceClass : Templates::DeviceClass
   // about a particular system event.
   $rect <20,570,220,610>
   $output true
-  method void NotifyZoomLevelUpdate( arg bool aNewZoomLevelButtonStatus )
+  method void NotifyZoomLevelUpdate()
   {
-    IsZoomLevelButtonEnabled = aNewZoomLevelButtonStatus;
+    IsZoomInOutStatusReceived = true;
     ZoomLevelUpdateEventHandler.Trigger( null, false );
   }
-
-  $rect <710,90,910,130>
-  var bool IsZoomLevelButtonEnabled = true;
 
   $rect <230,620,430,660>
   object Core::SystemEvent DialogEventUpdateEvent;
@@ -1151,14 +1157,10 @@ class NavigationDeviceClass : Templates::DeviceClass
   // about a particular system event.
   $rect <450,520,650,560>
   $output true
-  method void NotifyViaPointUpdate( arg int32 aNewViaPointNum )
+  method void NotifyViaPointUpdate()
   {
-    ViaPointNum = aNewViaPointNum;
     ViaPointUpdateEvent.Trigger( null, false );
   }
-
-  $rect <710,140,910,180>
-  var int32 ViaPointNum;
 
   $rect <690,210,890,250>
   method bool GetNaviConnectStatus()
@@ -1202,7 +1204,7 @@ class NavigationDeviceClass : Templates::DeviceClass
   }
 
   $rect <690,360,890,400>
-  method void SkipNextWaypoint()
+  method void SkipNextStop()
   {
     $if !$prototyper
       native
@@ -1241,17 +1243,10 @@ class NavigationDeviceClass : Templates::DeviceClass
   // about a particular system event.
   $rect <450,570,650,610>
   $output true
-  method void NotifyHomeSettingUpdate( arg bool aNewHomeSettingStatus )
+  method void NotifyHomeSettingUpdate()
   {
-    IsHomeSet = aNewHomeSettingStatus;
     HomeSettingUpdateEvent.Trigger( null, false );
   }
-
-  $rect <920,40,1120,80>
-  var bool IsHomeSet;
-
-  $rect <920,90,1120,130>
-  var bool IsOfficeSet;
 
   $rect <660,620,860,660>
   object Core::SystemEvent OfficeSettingUpdateEvent;
@@ -1260,9 +1255,8 @@ class NavigationDeviceClass : Templates::DeviceClass
   // about a particular system event.
   $rect <460,620,660,660>
   $output true
-  method void NotifyOfficeSettingUpdate( arg bool aNewOfficeSettingStatus )
+  method void NotifyOfficeSettingUpdate()
   {
-    IsOfficeSet = aNewOfficeSettingStatus;
     OfficeSettingUpdateEvent.Trigger( null, false );
   }
 
@@ -1287,6 +1281,24 @@ class NavigationDeviceClass : Templates::DeviceClass
       }
     $endif
   }
+
+  $rect <700,150,900,190>
+  method Enum::NaviZoomInOutStatusType GetZoomInOutStatus()
+  {
+    $if !$prototyper
+      var Enum::NaviZoomInOutStatusType ZoomInOutStatus;
+      native( ZoomInOutStatus )
+      {
+        ZoomInOutStatus = NAVI_get_zoom_inout_status();
+      }
+      return ZoomInOutStatus;
+    $else
+      return Enum::NaviZoomInOutStatusType.NORMAL;
+    $endif
+  }
+
+  $rect <710,90,910,130>
+  var bool IsZoomInOutStatusReceived = true;
 }
 
 $rect <20,340,230,380>
@@ -3104,6 +3116,18 @@ class NaviDataClass
   $rect <80,220,280,260>
   $output true
   var int32 RouteCalProgress;
+
+  $rect <280,220,480,260>
+  $output true
+  var int32 ViaPoints;
+
+  $rect <490,100,690,140>
+  $output true
+  var bool IsHomeSet;
+
+  $rect <490,140,690,180>
+  $output true
+  var bool IsOfficeSet;
 }
 
 $rect <751,190,951,230>

@@ -90,6 +90,8 @@ static navi_data_type navi_data_obj;
 static navi_dialog_type navi_dialog_obj;
 static bool is_navi_app_connected;
 static bool is_navi_app_init_setting_completed;
+static EnumNaviZoomInOutStatusType zoom_inout_status = EnumNaviZoomInOutStatusTypeNORMAL;
+
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -269,6 +271,7 @@ PRINTF( "%s: %d\r\n", __FUNCTION__, mode );
 uint32_t esn = EW_get_esn();
 char esn_decimal[ESN_STR_MAX_LEN + 1];
 sprintf( esn_decimal, "%010u", esn );
+PRINTF( "%s: ESN: %s \r\n", __FUNCTION__, esn_decimal );
 NAVILITE_report_app_esn( ( uint8_t* )esn_decimal );
 }
 
@@ -404,6 +407,12 @@ static void navi_navigation_status_update
 PRINTF( "%s: Is route guidance started : %d\r\n", __FUNCTION__, is_navigating );
 navi_data_obj.is_navigating = is_navigating;
 
+// clean via point when route guidance is stopped.
+if( 0 == navi_data_obj.is_navigating )
+    {
+    navi_data_obj.via_points = 0;
+    }
+
 EW_notify_navigating_status_update();
 }
 
@@ -423,7 +432,9 @@ static void navi_home_setting_update
     )
 {
 PRINTF( "%s: Home location : %d\r\n", __FUNCTION__, is_home_set );
-EW_notify_home_setting_update( is_home_set );
+navi_data_obj.is_home_set = is_home_set;
+
+EW_notify_home_setting_update();
 }
 
 /*********************************************************************
@@ -442,7 +453,9 @@ static void navi_office_setting_update
     )
 {
 PRINTF( "%s: Office location : %d\r\n", __FUNCTION__, is_office_set );
-EW_notify_office_setting_update( is_office_set );
+navi_data_obj.is_office_set = is_office_set;
+
+EW_notify_office_setting_update();
 }
 
 /*********************************************************************
@@ -485,16 +498,17 @@ static void navi_zoom_level_update
 PRINTF( "%s: Zoom level is updated: %d, %d\r\n", __FUNCTION__, current_level, max_level );
 if( current_level == max_level )
     {
-    EW_notify_zoom_level_update( false );
+    zoom_inout_status = EnumNaviZoomInOutStatusTypeREACH_MAXIMUM;
     }
 else if( current_level == 0 )
     {
-    EW_notify_zoom_level_update( false );
+    zoom_inout_status = EnumNaviZoomInOutStatusTypeREACH_MINIMUM;
     }
 else
     {
-    EW_notify_zoom_level_update( true );
+    zoom_inout_status = EnumNaviZoomInOutStatusTypeNORMAL;
     }
+EW_notify_zoom_level_update();
 }
 
 /*********************************************************************
@@ -550,7 +564,8 @@ static void navi_via_point_update
     )
 {
 PRINTF( "%s: Number of via point : %d\r\n", __FUNCTION__, via_point_count );
-EW_notify_via_point_update( via_point_count );
+navi_data_obj.via_points = via_point_count;
+EW_notify_via_point_update();
 }
 
 /*********************************************************************
@@ -779,6 +794,23 @@ bool NAVI_get_navi_app_setup_status
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
 return is_navi_app_init_setting_completed;
+}
+
+/*********************************************************************
+*
+* @public
+* NAVI_get_zoom_inout_status
+*
+* Get the current zoom in/out button status
+*
+*********************************************************************/
+EnumNaviZoomInOutStatusType NAVI_get_zoom_inout_status
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+return zoom_inout_status;
 }
 
 /*********************************************************************

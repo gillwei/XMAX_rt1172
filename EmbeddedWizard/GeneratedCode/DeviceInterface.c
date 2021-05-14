@@ -943,7 +943,7 @@ void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDevice
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->CurrentHome = EnumHomeTypeNAVI_DEFAULT_VIEW;
-  _this->IsZoomLevelButtonEnabled = 1;
+  _this->IsZoomInOutStatusReceived = 1;
 }
 
 /* Re-Initializer for the class 'DeviceInterface::NavigationDeviceClass' */
@@ -1144,6 +1144,15 @@ DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( D
       case EnumNaviDataTypeNAVI_ROUTE_CAL_PROGRESS:
         NaviData->RouteCalProgress = navi_obj->route_cal_progress; 
         break;
+      case EnumNaviDataTypeVIA_POINT:
+        NaviData->ViaPoints = navi_obj->via_points;
+        break;
+      case EnumNaviDataTypeHOME:
+        NaviData->IsHomeSet = (bool)navi_obj->is_home_set;
+        break;
+      case EnumNaviDataTypeOFFICE:
+        NaviData->IsOfficeSet = (bool)navi_obj->is_office_set;
+        break;
       default:
         break;
     }
@@ -1263,19 +1272,16 @@ void DeviceInterfaceNavigationDeviceClass__NotifyRouteCalProgressUpdate( void* _
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyZoomLevelUpdate( DeviceInterfaceNavigationDeviceClass _this, 
-  XBool aNewZoomLevelButtonStatus )
+void DeviceInterfaceNavigationDeviceClass_NotifyZoomLevelUpdate( DeviceInterfaceNavigationDeviceClass _this )
 {
-  _this->IsZoomLevelButtonEnabled = aNewZoomLevelButtonStatus;
+  _this->IsZoomInOutStatusReceived = 1;
   CoreSystemEvent_Trigger( &_this->ZoomLevelUpdateEventHandler, 0, 0 );
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyZoomLevelUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate( void* _this, XBool 
-  aNewZoomLevelButtonStatus )
+void DeviceInterfaceNavigationDeviceClass__NotifyZoomLevelUpdate( void* _this )
 {
-  DeviceInterfaceNavigationDeviceClass_NotifyZoomLevelUpdate((DeviceInterfaceNavigationDeviceClass)_this
-  , aNewZoomLevelButtonStatus );
+  DeviceInterfaceNavigationDeviceClass_NotifyZoomLevelUpdate((DeviceInterfaceNavigationDeviceClass)_this );
 }
 
 /* This method is intended to be called by the device to notify the GUI application 
@@ -1346,19 +1352,15 @@ void DeviceInterfaceNavigationDeviceClass_SendSelectedDialog( DeviceInterfaceNav
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyViaPointUpdate( DeviceInterfaceNavigationDeviceClass _this, 
-  XInt32 aNewViaPointNum )
+void DeviceInterfaceNavigationDeviceClass_NotifyViaPointUpdate( DeviceInterfaceNavigationDeviceClass _this )
 {
-  _this->ViaPointNum = aNewViaPointNum;
   CoreSystemEvent_Trigger( &_this->ViaPointUpdateEvent, 0, 0 );
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyViaPointUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate( void* _this, XInt32 
-  aNewViaPointNum )
+void DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate( void* _this )
 {
-  DeviceInterfaceNavigationDeviceClass_NotifyViaPointUpdate((DeviceInterfaceNavigationDeviceClass)_this
-  , aNewViaPointNum );
+  DeviceInterfaceNavigationDeviceClass_NotifyViaPointUpdate((DeviceInterfaceNavigationDeviceClass)_this );
 }
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviConnectStatus()' */
@@ -1396,8 +1398,8 @@ void DeviceInterfaceNavigationDeviceClass_StopRoute( DeviceInterfaceNavigationDe
   NAVI_send_stop_route_request();
 }
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.SkipNextWaypoint()' */
-void DeviceInterfaceNavigationDeviceClass_SkipNextWaypoint( DeviceInterfaceNavigationDeviceClass _this )
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.SkipNextStop()' */
+void DeviceInterfaceNavigationDeviceClass_SkipNextStop( DeviceInterfaceNavigationDeviceClass _this )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
@@ -1425,36 +1427,28 @@ void DeviceInterfaceNavigationDeviceClass_GoOffice( DeviceInterfaceNavigationDev
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyHomeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this, 
-  XBool aNewHomeSettingStatus )
+void DeviceInterfaceNavigationDeviceClass_NotifyHomeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this )
 {
-  _this->IsHomeSet = aNewHomeSettingStatus;
   CoreSystemEvent_Trigger( &_this->HomeSettingUpdateEvent, 0, 0 );
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyHomeSettingUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate( void* _this, 
-  XBool aNewHomeSettingStatus )
+void DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate( void* _this )
 {
-  DeviceInterfaceNavigationDeviceClass_NotifyHomeSettingUpdate((DeviceInterfaceNavigationDeviceClass)_this
-  , aNewHomeSettingStatus );
+  DeviceInterfaceNavigationDeviceClass_NotifyHomeSettingUpdate((DeviceInterfaceNavigationDeviceClass)_this );
 }
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyOfficeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this, 
-  XBool aNewOfficeSettingStatus )
+void DeviceInterfaceNavigationDeviceClass_NotifyOfficeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this )
 {
-  _this->IsOfficeSet = aNewOfficeSettingStatus;
   CoreSystemEvent_Trigger( &_this->OfficeSettingUpdateEvent, 0, 0 );
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyOfficeSettingUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate( void* _this, 
-  XBool aNewOfficeSettingStatus )
+void DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate( void* _this )
 {
-  DeviceInterfaceNavigationDeviceClass_NotifyOfficeSettingUpdate((DeviceInterfaceNavigationDeviceClass)_this
-  , aNewOfficeSettingStatus );
+  DeviceInterfaceNavigationDeviceClass_NotifyOfficeSettingUpdate((DeviceInterfaceNavigationDeviceClass)_this );
 }
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ZoomInRequest()' */
@@ -1473,6 +1467,19 @@ void DeviceInterfaceNavigationDeviceClass_ZoomOutRequest( DeviceInterfaceNavigat
   EW_UNUSED_ARG( _this );
 
   NAVI_send_zoom_out_request();
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetZoomInOutStatus()' */
+XEnum DeviceInterfaceNavigationDeviceClass_GetZoomInOutStatus( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XEnum ZoomInOutStatus;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ZoomInOutStatus = EnumNaviZoomInOutStatusTypeREACH_MAXIMUM;
+  ZoomInOutStatus = NAVI_get_zoom_inout_status();
+  return ZoomInOutStatus;
 }
 
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */
