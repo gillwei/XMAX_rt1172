@@ -31,6 +31,7 @@
                                  TYPES
 --------------------------------------------------------------------*/
 void MM_receive_music_info( const bc_motocon_bt_music_meta_data_t* music_meta_data );
+void MM_receive_volume_updated( const uint8_t level, const bc_motocon_volume_type_t type );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -62,6 +63,9 @@ static bc_motocon_callback_t music_callback =
     NULL,
     NULL,
     NULL,
+    MM_receive_volume_updated,
+    NULL,
+    NULL,
     NULL,
     NULL,
     NULL,
@@ -78,7 +82,7 @@ static bc_motocon_callback_t music_callback =
 
 /*********************************************************************
 *
-* @private
+* @public
 * MM_receive_music_info
 *
 * Receive music information from MotoCon SDK.
@@ -131,6 +135,32 @@ if( ( music_meta_data->duration_time - media_player->duration_sec ) >= 0.5 )
     }
 
 EW_notify_motocon_music_info_changed();
+}
+
+/*********************************************************************
+*
+* @public
+* MM_receive_volume_updated
+*
+* Receive volume information from MotoCon SDK.
+* @param level Level of volume info.
+* @param type  Volume type.
+*
+*********************************************************************/
+void MM_receive_volume_updated
+    (
+    const uint8_t level,
+    const bc_motocon_volume_type_t type
+    )
+{
+if( BC_MOTOCON_VOLUME_MEDIA == type )
+    {
+    mm_media_player_obj* media_player = NULL;
+    media_player = MM_ams_gatt_get_media_player_state();
+    PRINTF( "%s: %d\r\n", __FUNCTION__, level );
+    media_player->playback_volume = (float)level/100;
+    EW_notify_volume_changed();
+    }
 }
 
 /*********************************************************************

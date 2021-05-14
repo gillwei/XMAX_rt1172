@@ -54,6 +54,10 @@
     static int ew_notify_motocon_music_info_changed( void );
 #endif
 
+#ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyMediaVolumeUpdated_
+    static int ew_notify_volume_info_changed( void );
+#endif
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -78,6 +82,7 @@
     static int is_playback_time_changed = 0;
     static int is_ams_ble_connected = 0;
     static int is_motocon_music_info_changed = 0;
+    static int is_volume_changed = 0;
 
     mm_device_function* const mm_function_lookup_table[] =
         {
@@ -97,7 +102,10 @@
             ew_notify_ams_connected_status_changed,
         #endif
         #ifdef _DeviceInterfaceMediaManagerDeviceClass__NotfiyMotoConMusicInfoUpdated_
-            ew_notify_motocon_music_info_changed
+            ew_notify_motocon_music_info_changed,
+        #endif
+        #ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyMediaVolumeUpdated_
+            ew_notify_volume_info_changed
         #endif
         };
 
@@ -368,6 +376,31 @@ return need_update;
 /*********************************************************************
 *
 * @private
+* ew_notify_volume_info_changed
+*
+* Notify volume info received from AMS/MotoCon SDK to EW GUI.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceMediaManagerDeviceClass__NotifyMediaVolumeUpdated_
+static int ew_notify_volume_info_changed
+    (
+    void
+    )
+{
+int need_update = 0;
+if( is_volume_changed )
+    {
+    is_volume_changed = 0;
+    DeviceInterfaceMediaManagerDeviceClass__NotifyMediaVolumeUpdated( device_object );
+    need_update = 1;
+    }
+return need_update;
+}
+#endif
+
+/*********************************************************************
+*
+* @private
 * ew_get_media_player_state
 *
 * Obtain media player state data.
@@ -397,6 +430,7 @@ void ew_send_command
     ams_remote_command command
     )
 {
+EwPrint( "%s: MM_send_command: %d\r\n", __FUNCTION__, command );
 if( !MM_send_command( command ) )
     {
     EwPrint( "Send command Failed in MM_send_command\r\n" );
@@ -513,6 +547,25 @@ void EW_notify_motocon_music_info_changed
 {
 #ifdef _DeviceInterfaceMediaManagerDeviceClass_
     is_motocon_music_info_changed = 1;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_volume_changed
+*
+* Inform EW GUI the volume info is received.
+*
+*********************************************************************/
+void EW_notify_volume_changed
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceMediaManagerDeviceClass_
+    is_volume_changed = 1;
     EwBspEventTrigger();
 #endif
 }

@@ -129,6 +129,8 @@ EW_DEFINE_FIELDS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_OBJECT  ( MotoConEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( BleConnectionRecoveryTimer, CoreTimer )
   EW_OBJECT  ( AmsBleConnectionEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( MediaVolumeUpdateEventHandler, CoreSystemEventHandler )
+  EW_PROPERTY( Volume,          XFloat )
 EW_END_OF_FIELDS( MediaMED01_MediaUI )
 
 /* Virtual Method Table (VMT) for the class : 'Media::MED01_MediaUI' */
@@ -173,8 +175,8 @@ EW_DEFINE_METHODS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortDownKeyActivated, void )( MediaMED01_MediaUI _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( MediaMED01_MediaUI _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( MediaMED01_MediaUI _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( MediaMED01_MediaUI _this )
@@ -191,6 +193,12 @@ EW_END_OF_METHODS( MediaMED01_MediaUI )
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
 void MediaMED01_MediaUI_Init( MediaMED01_MediaUI _this, XHandle aArg );
+
+/* 'C' function for method : 'Media::MED01_MediaUI.OnShortDownKeyActivated()' */
+void MediaMED01_MediaUI_OnShortDownKeyActivated( MediaMED01_MediaUI _this );
+
+/* 'C' function for method : 'Media::MED01_MediaUI.OnShortUpKeyActivated()' */
+void MediaMED01_MediaUI_OnShortUpKeyActivated( MediaMED01_MediaUI _this );
 
 /* 'C' function for method : 'Media::MED01_MediaUI.OnShortEnterKeyActivated()' */
 void MediaMED01_MediaUI_OnShortEnterKeyActivated( MediaMED01_MediaUI _this );
@@ -253,6 +261,13 @@ void MediaMED01_MediaUI_OnAmsBleConnectedStatusUpdateSlot( MediaMED01_MediaUI _t
 
 /* 'C' function for method : 'Media::MED01_MediaUI.UpdateMediaInfoItem()' */
 void MediaMED01_MediaUI_UpdateMediaInfoItem( MediaMED01_MediaUI _this, XEnum aNewStatus );
+
+/* 'C' function for method : 'Media::MED01_MediaUI.OnSetVolume()' */
+void MediaMED01_MediaUI_OnSetVolume( MediaMED01_MediaUI _this, XFloat value );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void MediaMED01_MediaUI_OnVolumeUpdateSlot( MediaMED01_MediaUI _this, XObject sender );
 
 #ifdef __cplusplus
   }

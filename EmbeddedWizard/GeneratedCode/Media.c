@@ -104,6 +104,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CoreSystemEventHandler__Init( &_this->MotoConEventHandler, &_this->_XObject, 0 );
   CoreTimer__Init( &_this->BleConnectionRecoveryTimer, &_this->_XObject, 0 );
   CoreSystemEventHandler__Init( &_this->AmsBleConnectionEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->MediaVolumeUpdateEventHandler, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( MediaMED01_MediaUI );
@@ -226,6 +227,9 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   _this->AmsBleConnectionEventHandler.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnAmsBleConnectedStatusUpdateSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->AmsBleConnectionEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->NotifyAmsBleConnectedStatusSystemEvent );
+  _this->MediaVolumeUpdateEventHandler.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnVolumeUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->MediaVolumeUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->NotifyMediaVolumeUpdateSystemEvent );
 
   /* Call the user defined constructor */
   MediaMED01_MediaUI_Init( _this, aArg );
@@ -262,6 +266,7 @@ void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
   CoreSystemEventHandler__ReInit( &_this->MotoConEventHandler );
   CoreTimer__ReInit( &_this->BleConnectionRecoveryTimer );
   CoreSystemEventHandler__ReInit( &_this->AmsBleConnectionEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->MediaVolumeUpdateEventHandler );
 }
 
 /* Finalizer method for the class 'Media::MED01_MediaUI' */
@@ -295,6 +300,7 @@ void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
   CoreSystemEventHandler__Done( &_this->MotoConEventHandler );
   CoreTimer__Done( &_this->BleConnectionRecoveryTimer );
   CoreSystemEventHandler__Done( &_this->AmsBleConnectionEventHandler );
+  CoreSystemEventHandler__Done( &_this->MediaVolumeUpdateEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_Super );
@@ -323,6 +329,28 @@ void MediaMED01_MediaUI_Init( MediaMED01_MediaUI _this, XHandle aArg )
       != 0 ))
   {
     EwSignal( EwNewSlot( _this, MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot ), ((XObject)_this ));
+  }
+}
+
+/* 'C' function for method : 'Media::MED01_MediaUI.OnShortDownKeyActivated()' */
+void MediaMED01_MediaUI_OnShortDownKeyActivated( MediaMED01_MediaUI _this )
+{
+  if ( _this->Volume > 0.000000f )
+  {
+    MediaMED01_MediaUI_StartHighlight( _this, &_this->ControlDownBG );
+    DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+    DeviceInterfaceMediaManagerDeviceClass ), EnumMusicControlTypeVolumeDown );
+  }
+}
+
+/* 'C' function for method : 'Media::MED01_MediaUI.OnShortUpKeyActivated()' */
+void MediaMED01_MediaUI_OnShortUpKeyActivated( MediaMED01_MediaUI _this )
+{
+  if ( _this->Volume < 1.000000f )
+  {
+    MediaMED01_MediaUI_StartHighlight( _this, &_this->ControlUpBG );
+    DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+    DeviceInterfaceMediaManagerDeviceClass ), EnumMusicControlTypeVolumeUp );
   }
 }
 
@@ -670,13 +698,45 @@ void MediaMED01_MediaUI_UpdateMediaInfoItem( MediaMED01_MediaUI _this, XEnum aNe
   }
 }
 
+/* 'C' function for method : 'Media::MED01_MediaUI.OnSetVolume()' */
+void MediaMED01_MediaUI_OnSetVolume( MediaMED01_MediaUI _this, XFloat value )
+{
+  _this->Volume = value;
+
+  if ( _this->Volume >= 1.000000f )
+  {
+    ViewsImage_OnSetFrameNumber( &_this->VolumeUpButton, 1 );
+  }
+  else
+    if ( _this->Volume <= 0.000000f )
+    {
+      ViewsImage_OnSetFrameNumber( &_this->VolumeDownButton, 1 );
+    }
+    else
+    {
+      ViewsImage_OnSetFrameNumber( &_this->VolumeUpButton, 0 );
+      ViewsImage_OnSetFrameNumber( &_this->VolumeDownButton, 0 );
+    }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void MediaMED01_MediaUI_OnVolumeUpdateSlot( MediaMED01_MediaUI _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  MediaMED01_MediaUI_OnSetVolume( _this, DeviceInterfaceMediaManagerDeviceClass_GetVolume( 
+  EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )));
+}
+
 /* Variants derived from the class : 'Media::MED01_MediaUI' */
 EW_DEFINE_CLASS_VARIANTS( MediaMED01_MediaUI )
 EW_END_OF_CLASS_VARIANTS( MediaMED01_MediaUI )
 
 /* Virtual Method Table (VMT) for the class : 'Media::MED01_MediaUI' */
 EW_DEFINE_CLASS( MediaMED01_MediaUI, ComponentsBaseMainBG, HighlightBG, Title, Title, 
-                 Title, _None, _None, "Media::MED01_MediaUI" )
+                 Title, Volume, Volume, "Media::MED01_MediaUI" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -707,8 +767,8 @@ EW_DEFINE_CLASS( MediaMED01_MediaUI, ComponentsBaseMainBG, HighlightBG, Title, T
   CoreGroup_Restack,
   CoreGroup_Remove,
   CoreGroup_Add,
-  ComponentsBaseComponent_OnShortDownKeyActivated,
-  ComponentsBaseComponent_OnShortUpKeyActivated,
+  MediaMED01_MediaUI_OnShortDownKeyActivated,
+  MediaMED01_MediaUI_OnShortUpKeyActivated,
   MediaMED01_MediaUI_OnShortEnterKeyActivated,
   ComponentsBaseMainBG_OnShortHomeKeyActivated,
   MediaMED01_MediaUI_OnLongDownKeyActivated,

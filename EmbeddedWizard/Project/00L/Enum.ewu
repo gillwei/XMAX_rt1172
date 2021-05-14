@@ -46,6 +46,12 @@ enum MusicControlType
 
   $rect <650,10,850,50>
   item PrevTrack;
+
+  $rect <10,60,210,100>
+  item VolumeUp;
+
+  $rect <220,60,420,100>
+  item VolumeDown;
 }
 
 $rect <30,170,230,210>

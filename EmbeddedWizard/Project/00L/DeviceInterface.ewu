@@ -1377,32 +1377,32 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   property int32 DurationTimeSec = 0;
 
   $rect <720,470,940,510>
-  method void SendRemoteCommand( arg Enum::MusicControlType cmd_type )
+  method void SendRemoteCommand( arg Enum::MusicControlType MusicCommandType )
   {
     $if !$prototyper
-    var int32 cmd_idx = ( int32 )cmd_type;
-    // suppress warning
-    if( cmd_idx )
-    {
-      // empty body
-    }
-    native( cmd_idx )
+    native( MusicCommandType )
     {
       ams_remote_command cmd = AMS_REMOTE_COMMAND_CNT;
 
-      switch( cmd_idx )
+      switch( MusicCommandType )
       {
-        case 0:
+        case EnumMusicControlTypePlay:
           cmd = AMS_REMOTE_COMMAND_PLAY;
           break;
-        case 1:
+        case EnumMusicControlTypePause:
           cmd = AMS_REMOTE_COMMAND_PAUSE;
           break;
-        case 2:
+        case EnumMusicControlTypeNextTrack:
           cmd = AMS_REMOTE_COMMAND_NEXT_TRACK;
           break;
-        case 3:
+        case EnumMusicControlTypePrevTrack:
           cmd = AMS_REMOTE_COMMAND_PREVIOUS_TRACK;
+          break;
+        case EnumMusicControlTypeVolumeUp:
+          cmd = AMS_REMOTE_COMMAND_VOLUME_UP;
+          break;
+        case EnumMusicControlTypeVolumeDown:
+          cmd = AMS_REMOTE_COMMAND_VOLUME_DOWN;
           break;
         default:
           break;
@@ -1418,7 +1418,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   // An interface to set/get data from device
   note group Note1
   {
-    attr Bounds = <10,430,1040,540>;
+    attr Bounds = <10,430,1170,540>;
   }
 
   $rect <350,240,550,280>
@@ -1571,6 +1571,34 @@ class MediaManagerDeviceClass : Templates::DeviceClass
   method void NotifyAmsBleConnectedStatusChanged()
   {
     NotifyAmsBleConnectedStatusSystemEvent.Trigger( null, false );
+  }
+
+  $rect <50,660,250,700>
+  object Core::SystemEvent NotifyMediaVolumeUpdateSystemEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <260,660,460,700>
+  $output true
+  method void NotifyMediaVolumeUpdated()
+  {
+    NotifyMediaVolumeUpdateSystemEvent.Trigger( null, false );
+  }
+
+  $rect <960,470,1160,510>
+  method float GetVolume()
+  {
+    var float Volume;
+    $if !$prototyper
+    native ( Volume )
+    {
+      mm_media_player_obj* mp_state = NULL;
+      mp_state = ew_get_media_player_state();
+      Volume = mp_state->playback_volume;
+    }
+    $endif
+    return Volume;
+
   }
 }
 

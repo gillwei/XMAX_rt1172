@@ -58,7 +58,9 @@ typedef enum
   EnumMusicControlTypePlay              = 0,
   EnumMusicControlTypePause             = 1,
   EnumMusicControlTypeNextTrack         = 2,
-  EnumMusicControlTypePrevTrack         = 3
+  EnumMusicControlTypePrevTrack         = 3,
+  EnumMusicControlTypeVolumeUp          = 4,
+  EnumMusicControlTypeVolumeDown        = 5
 } EnumMusicControlType;
 
 /* User defined enumeration: 'Enum::BtDeviceConnectionResult' */

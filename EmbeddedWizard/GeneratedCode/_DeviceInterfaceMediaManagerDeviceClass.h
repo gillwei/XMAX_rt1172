@@ -57,6 +57,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceMediaManagerDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( NotifyPlayBackTimeChangedSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( NotifyMotoConMusicUpdatedSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( NotifyAmsBleConnectedStatusSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( NotifyMediaVolumeUpdateSystemEvent, CoreSystemEvent )
   EW_PROPERTY( Title,           XString )
   EW_PROPERTY( Album,           XString )
   EW_PROPERTY( Artist,          XString )
@@ -86,7 +87,7 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( DeviceInterfaceMediaMan
 
 /* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.SendRemoteCommand()' */
 void DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( DeviceInterfaceMediaManagerDeviceClass _this, 
-  XEnum cmd_type );
+  XEnum MusicCommandType );
 
 /* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.NotifyTitleChanged()' */
 void DeviceInterfaceMediaManagerDeviceClass_NotifyTitleChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
@@ -164,6 +165,19 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyAmsBleConnectedStatusChanged(
 
 /* The following define announces the presence of the method DeviceInterface::MediaManagerDeviceClass.NotifyAmsBleConnectedStatusChanged(). */
 #define _DeviceInterfaceMediaManagerDeviceClass__NotifyAmsBleConnectedStatusChanged_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceMediaManagerDeviceClass_NotifyMediaVolumeUpdated( DeviceInterfaceMediaManagerDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::MediaManagerDeviceClass.NotifyMediaVolumeUpdated()' */
+void DeviceInterfaceMediaManagerDeviceClass__NotifyMediaVolumeUpdated( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::MediaManagerDeviceClass.NotifyMediaVolumeUpdated(). */
+#define _DeviceInterfaceMediaManagerDeviceClass__NotifyMediaVolumeUpdated_
+
+/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.GetVolume()' */
+XFloat DeviceInterfaceMediaManagerDeviceClass_GetVolume( DeviceInterfaceMediaManagerDeviceClass _this );
 
 /* Default onget method for the property 'Title' */
 XString DeviceInterfaceMediaManagerDeviceClass_OnGetTitle( DeviceInterfaceMediaManagerDeviceClass _this );

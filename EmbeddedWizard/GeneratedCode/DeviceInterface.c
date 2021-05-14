@@ -1527,6 +1527,7 @@ void DeviceInterfaceMediaManagerDeviceClass__Init( DeviceInterfaceMediaManagerDe
   CoreSystemEvent__Init( &_this->NotifyPlayBackTimeChangedSystemEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->NotifyMotoConMusicUpdatedSystemEvent, &_this->_XObject, 0 );
   CoreSystemEvent__Init( &_this->NotifyAmsBleConnectedStatusSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->NotifyMediaVolumeUpdateSystemEvent, &_this->_XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_VMT = EW_CLASS( DeviceInterfaceMediaManagerDeviceClass );
@@ -1542,6 +1543,7 @@ void DeviceInterfaceMediaManagerDeviceClass__ReInit( DeviceInterfaceMediaManager
   CoreSystemEvent__ReInit( &_this->NotifyPlayBackTimeChangedSystemEvent );
   CoreSystemEvent__ReInit( &_this->NotifyMotoConMusicUpdatedSystemEvent );
   CoreSystemEvent__ReInit( &_this->NotifyAmsBleConnectedStatusSystemEvent );
+  CoreSystemEvent__ReInit( &_this->NotifyMediaVolumeUpdateSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::MediaManagerDeviceClass' */
@@ -1554,6 +1556,7 @@ void DeviceInterfaceMediaManagerDeviceClass__Done( DeviceInterfaceMediaManagerDe
   CoreSystemEvent__Done( &_this->NotifyPlayBackTimeChangedSystemEvent );
   CoreSystemEvent__Done( &_this->NotifyMotoConMusicUpdatedSystemEvent );
   CoreSystemEvent__Done( &_this->NotifyAmsBleConnectedStatusSystemEvent );
+  CoreSystemEvent__Done( &_this->NotifyMediaVolumeUpdateSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_Super );
@@ -1612,34 +1615,33 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( DeviceInterfaceMediaMan
 
 /* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.SendRemoteCommand()' */
 void DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( DeviceInterfaceMediaManagerDeviceClass _this, 
-  XEnum cmd_type )
+  XEnum MusicCommandType )
 {
-  XInt32 cmd_idx;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  cmd_idx = cmd_type;
-
-  if ( !!cmd_idx )
-    ;
 
   {
     ams_remote_command cmd = AMS_REMOTE_COMMAND_CNT;
 
-    switch( cmd_idx )
+    switch( MusicCommandType )
     {
-      case 0:
+      case EnumMusicControlTypePlay:
         cmd = AMS_REMOTE_COMMAND_PLAY;
         break;
-      case 1:
+      case EnumMusicControlTypePause:
         cmd = AMS_REMOTE_COMMAND_PAUSE;
         break;
-      case 2:
+      case EnumMusicControlTypeNextTrack:
         cmd = AMS_REMOTE_COMMAND_NEXT_TRACK;
         break;
-      case 3:
+      case EnumMusicControlTypePrevTrack:
         cmd = AMS_REMOTE_COMMAND_PREVIOUS_TRACK;
+        break;
+      case EnumMusicControlTypeVolumeUp:
+        cmd = AMS_REMOTE_COMMAND_VOLUME_UP;
+        break;
+      case EnumMusicControlTypeVolumeDown:
+        cmd = AMS_REMOTE_COMMAND_VOLUME_DOWN;
         break;
       default:
         break;
@@ -1811,6 +1813,36 @@ void DeviceInterfaceMediaManagerDeviceClass_NotifyAmsBleConnectedStatusChanged( 
 void DeviceInterfaceMediaManagerDeviceClass__NotifyAmsBleConnectedStatusChanged( void* _this )
 {
   DeviceInterfaceMediaManagerDeviceClass_NotifyAmsBleConnectedStatusChanged((DeviceInterfaceMediaManagerDeviceClass)_this );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceMediaManagerDeviceClass_NotifyMediaVolumeUpdated( DeviceInterfaceMediaManagerDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->NotifyMediaVolumeUpdateSystemEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::MediaManagerDeviceClass.NotifyMediaVolumeUpdated()' */
+void DeviceInterfaceMediaManagerDeviceClass__NotifyMediaVolumeUpdated( void* _this )
+{
+  DeviceInterfaceMediaManagerDeviceClass_NotifyMediaVolumeUpdated((DeviceInterfaceMediaManagerDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.GetVolume()' */
+XFloat DeviceInterfaceMediaManagerDeviceClass_GetVolume( DeviceInterfaceMediaManagerDeviceClass _this )
+{
+  XFloat Volume;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Volume = 0.000000f;
+  {
+    mm_media_player_obj* mp_state = NULL;
+    mp_state = ew_get_media_player_state();
+    Volume = mp_state->playback_volume;
+  }
+  return Volume;
 }
 
 /* Default onget method for the property 'Title' */

@@ -354,13 +354,34 @@ while( true )
                         PRINTF( "%s, previous track command can not be sent due to disconnection of AMS and MotoCon\r\n", __FUNCTION__ );
                         }
                     break;
-                // TODO: Enable when implementing volume control SCR.
-                /*case AMS_REMOTE_COMMAND_VOLUME_UP:
-                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_VOLUME_UP );
+                case AMS_REMOTE_COMMAND_VOLUME_UP:
+                    if( BC_ams_is_ams_connected() )
+                        {
+                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_VOLUME_UP );
+                        }
+                    else if( BC_motocon_is_connected() )
+                        {
+                        BC_motocon_send_volume_control( BC_MOTOCON_MEDIA_VOLUME_UP );
+                        }
+                    else
+                        {
+                        PRINTF( "%s, volume up command can not be sent due to disconnection of AMS and MotoCon\r\n", __FUNCTION__ );
+                        }
                     break;
                 case AMS_REMOTE_COMMAND_VOLUME_DOWN:
-                    BC_ams_send_remote_control( AMS_REMOTE_COMMAND_VOLUME_DOWN );
-                    break;*/
+                    if( BC_ams_is_ams_connected() )
+                        {
+                        BC_ams_send_remote_control( AMS_REMOTE_COMMAND_VOLUME_DOWN );
+                        }
+                    else if( BC_motocon_is_connected() )
+                        {
+                        BC_motocon_send_volume_control( BC_MOTOCON_MEDIA_VOLUME_DOWN );
+                        }
+                    else
+                        {
+                        PRINTF( "%s, volume down command can not be sent due to disconnection of AMS and MotoCon\r\n", __FUNCTION__ );
+                        }
+                    break;
                 default:
                     break;
                 }

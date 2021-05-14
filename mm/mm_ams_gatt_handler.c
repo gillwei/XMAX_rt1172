@@ -236,11 +236,11 @@ switch( player_attribute_id )
             }
         }
         break;
-    // TODO: Enable when implementing volume control SCR.
-    /*case AMS_PLAYER_ATTRIBUTE_ID_VOLUME:
+    case AMS_PLAYER_ATTRIBUTE_ID_VOLUME:
+        PRINTF( "Volume: %s\r\n", value );
         mp->playback_volume = ( float )atof( value );
-        PRINTF( "Volume: %.2f\r\n", mp->playback_volume );
-        break;*/
+        EW_notify_volume_changed();
+        break;
     default:
         PRINTF( "Invalid attribute id: %d\r\n", player_attribute_id );
         break;
