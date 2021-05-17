@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -50,7 +50,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x00000040, /* ratio 93.75 % */
   0xB8003D00, 0x000AA452, 0x00CA0037, 0x4E0003C0, 0x00630042, 0x064879D0, 0x76000800,
@@ -95,16 +95,16 @@ static const XRect _Const0009 = {{ 13, 112 }, { 91, 190 }};
 void SeatHeater_GripWarmerSHT02_GPW02_Main__Init( SeatHeater_GripWarmerSHT02_GPW02_Main _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SeatHeater_GripWarmerSHT02_GPW02_Main );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SeatHeater_GripWarmerSHT02_GPW02_Main );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SeatHeater_GripWarmerSHT02_GPW02_Main );
+  _this->_.VMT = EW_CLASS( SeatHeater_GripWarmerSHT02_GPW02_Main );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -126,7 +126,7 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main__Init( SeatHeater_GripWarmerSHT02_GPW
 void SeatHeater_GripWarmerSHT02_GPW02_Main__ReInit( SeatHeater_GripWarmerSHT02_GPW02_Main _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
@@ -136,13 +136,13 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main__ReInit( SeatHeater_GripWarmerSHT02_G
 void SeatHeater_GripWarmerSHT02_GPW02_Main__Done( SeatHeater_GripWarmerSHT02_GPW02_Main _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -172,9 +172,7 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_Init( SeatHeater_GripWarmerSHT02_GPW0
       SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH );
     }
     else
-    {
       EwTrace( "%s", EwLoadString( &_Const0000 ));
-    }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.LoadItemClass()' */
@@ -183,9 +181,7 @@ XClass SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemClass( SeatHeater_GripWarme
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( !!aItemNo )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return EW_CLASS( MenuItemBaseValue );
 }
@@ -197,9 +193,7 @@ XString SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemTitle( SeatHeater_GripWarm
   XString title = 0;
 
   if ( aItemNo < 3 )
-  {
     title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 3 )];
-  }
 
   return title;
 }
@@ -208,8 +202,8 @@ XString SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemTitle( SeatHeater_GripWarm
 void SeatHeater_GripWarmerSHT02_GPW02_Main_OnItemActivate( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  if ( aMenuItem == 0 )
-    ;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aMenuItem );
 
   SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( _this->ScaleIndicator, (XInt32)_this->ItemValueArray[ 
   EwCheckIndex( aItemNo, 3 )]);
@@ -250,8 +244,7 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_OnItemActivate( SeatHeater_GripWarmer
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -262,10 +255,8 @@ XString SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemBaseValue( SeatHeater_Grip
   XString val = 0;
 
   if ( aItemNo < 3 )
-  {
     val = EwNewStringUInt( _this->ItemValueArray[ EwCheckIndex( aItemNo, 3 )], 0, 
     10 );
-  }
 
   return val;
 }
@@ -293,20 +284,14 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_OnVehicleDataReceivedSlot( SeatHeater
   if ((( VehicleData != 0 ) && ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
       DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction == EnumVehicleSupportedFunctionSEAT_HEATER )) 
       && IsSeatHeaterValueReceived )
-  {
     SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, VehicleData->RxType );
-  }
   else
     if ((( VehicleData != 0 ) && ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction == EnumVehicleSupportedFunctionGRIP_WARMER )) 
         && IsGripWarmerValueReceived )
-    {
       SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, VehicleData->RxType );
-    }
     else
-    {
       EwTrace( "%s", EwLoadString( &_Const0000 ));
-    }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.UpdateLevel()' */
@@ -321,15 +306,11 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
     case EnumVehicleRxTypeGRIP_WARMER_VALUE_LOW :
     {
       if ( aNewType == EnumVehicleRxTypeSEAT_HEATER_VALUE_LOW )
-      {
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeSEAT_HEATER_VALUE_LOW );
-      }
       else
-      {
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeGRIP_WARMER_VALUE_LOW );
-      }
 
       if ((((( VehicleData != 0 ) && VehicleData->Valid ) && ( _this->ItemValueArray[ 
           0 ] != VehicleData->DataUInt32 )) && ( 10 >= VehicleData->DataUInt32 )) 
@@ -338,10 +319,8 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
         _this->ItemValueArray[ 0 ] = VehicleData->DataUInt32;
 
         if ( EnumSeatHeaterGripWarmerLevelTypeLOW == _this->ScaleIndicator->ScaleIndicatorType )
-        {
           SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( _this->ScaleIndicator, 
           (XInt32)VehicleData->DataUInt32 );
-        }
 
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 0 );
       }
@@ -352,15 +331,11 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
     case EnumVehicleRxTypeGRIP_WARMER_VALUE_MIDDLE :
     {
       if ( aNewType == EnumVehicleRxTypeSEAT_HEATER_VALUE_MIDDLE )
-      {
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeSEAT_HEATER_VALUE_MIDDLE );
-      }
       else
-      {
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeGRIP_WARMER_VALUE_MIDDLE );
-      }
 
       if ((((( VehicleData != 0 ) && VehicleData->Valid ) && ( _this->ItemValueArray[ 
           1 ] != VehicleData->DataUInt32 )) && ( 10 >= VehicleData->DataUInt32 )) 
@@ -369,10 +344,8 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
         _this->ItemValueArray[ 1 ] = VehicleData->DataUInt32;
 
         if ( EnumSeatHeaterGripWarmerLevelTypeMID == _this->ScaleIndicator->ScaleIndicatorType )
-        {
           SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( _this->ScaleIndicator, 
           (XInt32)VehicleData->DataUInt32 );
-        }
 
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 1, 1 );
       }
@@ -383,15 +356,11 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
     case EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH :
     {
       if ( aNewType == EnumVehicleRxTypeSEAT_HEATER_VALUE_HIGH )
-      {
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeSEAT_HEATER_VALUE_HIGH );
-      }
       else
-      {
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH );
-      }
 
       if ((((( VehicleData != 0 ) && VehicleData->Valid ) && ( _this->ItemValueArray[ 
           2 ] != VehicleData->DataUInt32 )) && ( 10 >= VehicleData->DataUInt32 )) 
@@ -400,18 +369,15 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
         _this->ItemValueArray[ 2 ] = VehicleData->DataUInt32;
 
         if ( EnumSeatHeaterGripWarmerLevelTypeHIGH == _this->ScaleIndicator->ScaleIndicatorType )
-        {
           SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( _this->ScaleIndicator, 
           (XInt32)VehicleData->DataUInt32 );
-        }
 
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 2, 2 );
       }
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -488,18 +454,18 @@ EW_END_OF_CLASS( SeatHeater_GripWarmerSHT02_GPW02_Main )
 void SeatHeater_GripWarmerScaleIndicator__Init( SeatHeater_GripWarmerScaleIndicator _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SeatHeater_GripWarmerScaleIndicator );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SeatHeater_GripWarmerScaleIndicator );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->ScaleIndicatorWindow, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ScaleIndicatorBg, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ScaleIndicatorBar, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->ScaleIndicatorWindow, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ScaleIndicatorBg, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ScaleIndicatorBar, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SeatHeater_GripWarmerScaleIndicator );
+  _this->_.VMT = EW_CLASS( SeatHeater_GripWarmerScaleIndicator );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0001 );
@@ -509,7 +475,6 @@ void SeatHeater_GripWarmerScaleIndicator__Init( SeatHeater_GripWarmerScaleIndica
   CoreRectView__OnSetBounds( &_this->ScaleIndicatorWindow, _Const0002 );
   CoreRectView__OnSetBounds( &_this->ScaleIndicatorBg, _Const0002 );
   CoreRectView__OnSetBounds( &_this->ScaleIndicatorBar, _Const0003 );
-  _this->ScaleIndicatorBarOriBounds = _Const0003;
   CoreGroup__Add( _this, ((CoreView)&_this->ScaleIndicatorWindow ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ScaleIndicatorBg ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ScaleIndicatorBar ), 0 );
@@ -525,7 +490,7 @@ void SeatHeater_GripWarmerScaleIndicator__Init( SeatHeater_GripWarmerScaleIndica
 void SeatHeater_GripWarmerScaleIndicator__ReInit( SeatHeater_GripWarmerScaleIndicator _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->ScaleIndicatorWindow );
@@ -537,7 +502,7 @@ void SeatHeater_GripWarmerScaleIndicator__ReInit( SeatHeater_GripWarmerScaleIndi
 void SeatHeater_GripWarmerScaleIndicator__Done( SeatHeater_GripWarmerScaleIndicator _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->ScaleIndicatorWindow );
@@ -545,27 +510,23 @@ void SeatHeater_GripWarmerScaleIndicator__Done( SeatHeater_GripWarmerScaleIndica
   ViewsImage__Done( &_this->ScaleIndicatorBar );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::ScaleIndicator.OnShortDownKeyActivated()' */
 void SeatHeater_GripWarmerScaleIndicator_OnShortDownKeyActivated( SeatHeater_GripWarmerScaleIndicator _this )
 {
   if ( 1 < _this->LevelValue )
-  {
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeBUTTON_STATUS_AUDIO, 0 );
-  }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::ScaleIndicator.OnShortUpKeyActivated()' */
 void SeatHeater_GripWarmerScaleIndicator_OnShortUpKeyActivated( SeatHeater_GripWarmerScaleIndicator _this )
 {
   if ( 10 > _this->LevelValue )
-  {
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeBUTTON_STATUS_AUDIO, 1 );
-  }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::ScaleIndicator.OnShortEnterKeyActivated()' */
@@ -599,8 +560,7 @@ void SeatHeater_GripWarmerScaleIndicator_OnSetScaleIndicatorType( SeatHeater_Gri
         ResourcesBitmap ));
       break;
 
-      default : 
-        ;
+      default :; 
     }
   }
 }
@@ -615,12 +575,10 @@ void SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( SeatHeater_GripWarmerS
     _this->LevelValue = value;
     ViewsImage_OnSetFrameNumber( &_this->ScaleIndicatorBar, 1 );
     NewBounds = _Const0004;
-    NewBounds.Point1.X = _this->ScaleIndicatorBarOriBounds.Point1.X;
-    NewBounds.Point1.Y = ( _this->ScaleIndicatorBarOriBounds.Point1.Y - ( 18 * ( 
-    _this->LevelValue - 1 )));
-    NewBounds.Point2.X = _this->ScaleIndicatorBarOriBounds.Point2.X;
-    NewBounds.Point2.Y = ( _this->ScaleIndicatorBarOriBounds.Point2.Y - ( 18 * ( 
-    _this->LevelValue - 1 )));
+    NewBounds.Point1.X = 230;
+    NewBounds.Point1.Y = ( 219 - ( 18 * ( _this->LevelValue - 1 )));
+    NewBounds.Point2.X = 355;
+    NewBounds.Point2.Y = ( 238 - ( 18 * ( _this->LevelValue - 1 )));
     CoreRectView__OnSetBounds( &_this->ScaleIndicatorBar, NewBounds );
   }
 }
@@ -681,24 +639,24 @@ EW_END_OF_CLASS( SeatHeater_GripWarmerScaleIndicator )
 void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__Init( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->ImgLCBlueline, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->CurrentItemTitleText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ControlUpBg, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ControlDownBg, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ControlDownButton, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ControlUpButton, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->VehicleFunctionIcon, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->HighlightTimer, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->ImgLCBlueline, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->CurrentItemTitleText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ControlUpBg, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ControlDownBg, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ControlDownButton, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ControlUpButton, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->VehicleFunctionIcon, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->HighlightTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction );
+  _this->_.VMT = EW_CLASS( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0005 );
@@ -747,7 +705,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__Init( SeatHeater_Gr
 void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__ReInit( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->ImgLCBlueline );
@@ -765,7 +723,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__ReInit( SeatHeater_
 void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__Done( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->ImgLCBlueline );
@@ -779,7 +737,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__Done( SeatHeater_Gr
   CoreTimer__Done( &_this->HighlightTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -817,9 +775,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_Init( SeatHeater_Gri
         ResourcesBitmap ));
       }
       else
-      {
         EwTrace( "%s", EwLoadString( &_Const0000 ));
-      }
 }
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -846,7 +802,6 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateViewState( Sea
       DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction == EnumVehicleSupportedFunctionGRIP_WARMER ))
   {
     if (( 0 <= (XUInt32)_this->HeaterSettingStatus ) && ( 3 >= (XUInt32)_this->HeaterSettingStatus ))
-    {
       switch ( _this->HeaterSettingStatus )
       {
         case EnumHeaterSettingStatusTypeOFF :
@@ -861,15 +816,11 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateViewState( Sea
         {
           if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
               == EnumVehicleSupportedFunctionSEAT_HEATER )
-          {
             ViewsImage_OnSetBitmap( &_this->VehicleFunctionIcon, EwLoadResource( 
             &ResourceIconSeatHeater1Large, ResourcesBitmap ));
-          }
           else
-          {
             ViewsImage_OnSetBitmap( &_this->VehicleFunctionIcon, EwLoadResource( 
             &ResourceIconGripWarmer1Large, ResourcesBitmap ));
-          }
 
           ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 0 );
           ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 0 );
@@ -881,15 +832,11 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateViewState( Sea
         {
           if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
               == EnumVehicleSupportedFunctionSEAT_HEATER )
-          {
             ViewsImage_OnSetBitmap( &_this->VehicleFunctionIcon, EwLoadResource( 
             &ResourceIconSeatHeater2Large, ResourcesBitmap ));
-          }
           else
-          {
             ViewsImage_OnSetBitmap( &_this->VehicleFunctionIcon, EwLoadResource( 
             &ResourceIconGripWarmer2Large, ResourcesBitmap ));
-          }
 
           ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 0 );
           ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 0 );
@@ -901,15 +848,11 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateViewState( Sea
         {
           if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
               == EnumVehicleSupportedFunctionSEAT_HEATER )
-          {
             ViewsImage_OnSetBitmap( &_this->VehicleFunctionIcon, EwLoadResource( 
             &ResourceIconSeatHeater3Large, ResourcesBitmap ));
-          }
           else
-          {
             ViewsImage_OnSetBitmap( &_this->VehicleFunctionIcon, EwLoadResource( 
             &ResourceIconGripWarmer3Large, ResourcesBitmap ));
-          }
 
           ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 1 );
           ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 0 );
@@ -917,10 +860,8 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateViewState( Sea
         }
         break;
 
-        default : 
-          ;
+        default :; 
       }
-    }
   }
   else
     if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
@@ -931,9 +872,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateViewState( Sea
       ViewsImage_OnSetVisible( &_this->VehicleFunctionIcon, 1 );
     }
     else
-    {
       EwTrace( "%s", EwLoadString( &_Const0000 ));
-    }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT01_GPW01_WSC01_VehicleFunction.OnShortDownKeyActivated()' */
@@ -942,7 +881,6 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnShortDownKeyActiva
   switch ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction )
   {
     case EnumVehicleSupportedFunctionSEAT_HEATER :
-    {
       if ( 0 < (XUInt32)_this->HeaterSettingStatus )
       {
         SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( _this, 
@@ -951,11 +889,9 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnShortDownKeyActiva
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL, 
         1 );
       }
-    }
     break;
 
     case EnumVehicleSupportedFunctionGRIP_WARMER :
-    {
       if ( 0 < (XUInt32)_this->HeaterSettingStatus )
       {
         SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( _this, 
@@ -964,7 +900,6 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnShortDownKeyActiva
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL, 
         1 );
       }
-    }
     break;
 
     case EnumVehicleSupportedFunctionWIND_SCREEN :
@@ -976,8 +911,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnShortDownKeyActiva
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -987,7 +921,6 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnShortUpKeyActivate
   switch ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction )
   {
     case EnumVehicleSupportedFunctionSEAT_HEATER :
-    {
       if ( 3 > (XUInt32)_this->HeaterSettingStatus )
       {
         SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( _this, 
@@ -996,11 +929,9 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnShortUpKeyActivate
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL, 
         2 );
       }
-    }
     break;
 
     case EnumVehicleSupportedFunctionGRIP_WARMER :
-    {
       if ( 3 > (XUInt32)_this->HeaterSettingStatus )
       {
         SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( _this, 
@@ -1009,7 +940,6 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnShortUpKeyActivate
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL, 
         2 );
       }
-    }
     break;
 
     case EnumVehicleSupportedFunctionWIND_SCREEN :
@@ -1021,8 +951,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnShortUpKeyActivate
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -1058,8 +987,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnDownKeyReleased( S
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -1089,8 +1017,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnUpKeyReleased( Sea
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -1108,10 +1035,8 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnVehicleDataReceive
 
   if (( VehicleData != 0 ) && (( EnumVehicleRxTypeGRIP_WARMER_STATUS == VehicleData->RxType ) 
       || ( EnumVehicleRxTypeSEAT_HEATER_STATUS == VehicleData->RxType )))
-  {
     SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateHeaterLevel( _this, 
     VehicleData->RxType );
-  }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT01_GPW01_WSC01_VehicleFunction.UpdateHeaterLevel()' */
@@ -1150,8 +1075,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateHeaterLevel( S
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 

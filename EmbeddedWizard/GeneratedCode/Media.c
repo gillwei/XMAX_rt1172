@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -49,7 +49,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x00000014, /* ratio 120.00 % */
   0xB8000900, 0x80074452, 0xC2090283, 0x60F0C838, 0x00000040, 0x00000000
@@ -74,40 +74,40 @@ static const XStringRes _Const000C = { _StringsDefault0, 0x0006 };
 void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MediaMED01_MediaUI );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MediaMED01_MediaUI );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Title, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->Artist, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->Album, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->ElapsedTimeSec, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TotalTimeSec, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->PlaybackTimeEventHandler, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->PlayPauseBG, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->PlayPauseButton, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ControlDownBG, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->PreviousTrackButton, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->VolumeDownButton, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ControlUpBG, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->NextTrackButton, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->VolumeUpButton, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->HighlightTimer, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->TitleObserver, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->AlbumObserver, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->ArtistObserver, &_this->_XObject, 0 );
-  WidgetSetHorizontalSlider__Init( &_this->SeekBar, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->MotoConMusicInfoEventHandler, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->ErrorMessage, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->MotoConEventHandler, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->BleConnectionRecoveryTimer, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->AmsBleConnectionEventHandler, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->MediaVolumeUpdateEventHandler, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->Artist, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->Album, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ElapsedTimeSec, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TotalTimeSec, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->PlaybackTimeEventHandler, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->PlayPauseBG, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->PlayPauseButton, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ControlDownBG, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->PreviousTrackButton, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->VolumeDownButton, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ControlUpBG, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->NextTrackButton, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->VolumeUpButton, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->HighlightTimer, &_this->_.XObject, 0 );
+  CorePropertyObserver__Init( &_this->TitleObserver, &_this->_.XObject, 0 );
+  CorePropertyObserver__Init( &_this->AlbumObserver, &_this->_.XObject, 0 );
+  CorePropertyObserver__Init( &_this->ArtistObserver, &_this->_.XObject, 0 );
+  WidgetSetHorizontalSlider__Init( &_this->SeekBar, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->MotoConMusicInfoEventHandler, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ErrorMessage, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->MotoConEventHandler, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->BleConnectionRecoveryTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->AmsBleConnectionEventHandler, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->MediaVolumeUpdateEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MediaMED01_MediaUI );
+  _this->_.VMT = EW_CLASS( MediaMED01_MediaUI );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -239,7 +239,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
 void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Title );
@@ -273,7 +273,7 @@ void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
 void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Title );
@@ -303,7 +303,7 @@ void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
   CoreSystemEventHandler__Done( &_this->MediaVolumeUpdateEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -327,9 +327,7 @@ void MediaMED01_MediaUI_Init( MediaMED01_MediaUI _this, XHandle aArg )
       != 0 ) && ( EwCompString( EwLoadString( &StringsGEN_THREE_HYPHENS ), EwGetAutoObject( 
       &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->Title ) 
       != 0 ))
-  {
     EwSignal( EwNewSlot( _this, MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot ), ((XObject)_this ));
-  }
 }
 
 /* 'C' function for method : 'Media::MED01_MediaUI.OnShortDownKeyActivated()' */
@@ -384,15 +382,11 @@ void MediaMED01_MediaUI_OnPlayPauseSlot( MediaMED01_MediaUI _this, XObject sende
 
   if ( 0 == DeviceInterfaceMediaManagerDeviceClass_GetPlayBackStateInfo( EwGetAutoObject( 
       &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )))
-  {
     DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
     DeviceInterfaceMediaManagerDeviceClass ), EnumMusicControlTypePlay );
-  }
   else
-  {
     DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
     DeviceInterfaceMediaManagerDeviceClass ), EnumMusicControlTypePause );
-  }
 }
 
 /* 'C' function for method : 'Media::MED01_MediaUI.OnPrevTrackSlot()' */
@@ -440,17 +434,13 @@ void MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot( MediaMED01_MediaUI _this, XObj
   EW_UNUSED_ARG( sender );
 
   if ( !ViewsText_OnGetVisible( &_this->ElapsedTimeSec ))
-  {
     ViewsText_OnSetVisible( &_this->ElapsedTimeSec, 1 );
-  }
 
   ViewsText_OnSetString( &_this->ElapsedTimeSec, MediaMED01_MediaUI_FormatTimeText( 
   _this, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->ElapsedTimeSec ));
 
   if ( !ViewsText_OnGetVisible( &_this->TotalTimeSec ))
-  {
     ViewsText_OnSetVisible( &_this->TotalTimeSec, 1 );
-  }
 
   ViewsText_OnSetString( &_this->TotalTimeSec, MediaMED01_MediaUI_FormatTimeText( 
   _this, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->DurationTimeSec ));
@@ -458,9 +448,7 @@ void MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot( MediaMED01_MediaUI _this, XObj
   if ( 0 != EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->DurationTimeSec )
   {
     if ( !CoreGroup_OnGetVisible((CoreGroup)&_this->SeekBar ))
-    {
       CoreGroup__OnSetVisible( &_this->SeekBar, 1 );
-    }
 
     WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->SeekBar, ( EwGetAutoObject( 
     &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->ElapsedTimeSec 
@@ -489,18 +477,14 @@ XString MediaMED01_MediaUI_FormatTimeText( MediaMED01_MediaUI _this, XInt32 Time
     TimeText = EwConcatString( EwNewStringInt( Hour, 0, 10 ), EwLoadString( &_Const000B ));
 
     if ( Minute < 10 )
-    {
       TimeText = EwConcatString( TimeText, EwLoadString( &_Const000C ));
-    }
   }
 
   TimeText = EwConcatString( EwConcatString( TimeText, EwNewStringInt( Minute, 0, 
   10 )), EwLoadString( &_Const000B ));
 
   if ( Second < 10 )
-  {
     TimeText = EwConcatString( TimeText, EwLoadString( &_Const000C ));
-  }
 
   TimeText = EwConcatString( TimeText, EwNewStringInt( Second, 0, 10 ));
   return TimeText;
@@ -533,57 +517,39 @@ void MediaMED01_MediaUI_OnTrackInfoUpdateSlot( MediaMED01_MediaUI _this, XObject
   EW_UNUSED_ARG( sender );
 
   if ( !ViewsText_OnGetVisible( &_this->Title ))
-  {
     ViewsText_OnSetVisible( &_this->Title, 1 );
-  }
 
   ViewsText_OnSetString( &_this->Title, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
   DeviceInterfaceMediaManagerDeviceClass )->Title );
 
   if ( !EwCompString( _this->Title.String, 0 ))
-  {
     ViewsText_OnSetString( &_this->Title, EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   if ( !ViewsText_OnGetVisible( &_this->Album ))
-  {
     ViewsText_OnSetVisible( &_this->Album, 1 );
-  }
 
   ViewsText_OnSetString( &_this->Album, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
   DeviceInterfaceMediaManagerDeviceClass )->Album );
 
   if ( !EwCompString( _this->Album.String, 0 ))
-  {
     ViewsText_OnSetString( &_this->Album, EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   if ( !ViewsText_OnGetVisible( &_this->Artist ))
-  {
     ViewsText_OnSetVisible( &_this->Artist, 1 );
-  }
 
   ViewsText_OnSetString( &_this->Artist, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
   DeviceInterfaceMediaManagerDeviceClass )->Artist );
 
   if ( !EwCompString( _this->Artist.String, 0 ))
-  {
     ViewsText_OnSetString( &_this->Artist, EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   if (( !EwCompString( _this->Title.String, EwLoadString( &StringsGEN_THREE_HYPHENS )) 
       && !EwCompString( _this->Album.String, EwLoadString( &StringsGEN_THREE_HYPHENS ))) 
       && !EwCompString( _this->Artist.String, EwLoadString( &StringsGEN_THREE_HYPHENS )))
-  {
     MediaMED01_MediaUI_UpdateMediaInfoItem( _this, EnumReceptionStatusERROR );
-  }
   else
-  {
     if ( ViewsText_OnGetVisible( &_this->ErrorMessage ))
-    {
       ViewsText_OnSetVisible( &_this->ErrorMessage, 0 );
-    }
-  }
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -603,9 +569,7 @@ void MediaMED01_MediaUI_OnMotoConMusicInfoUpdateSlot( MediaMED01_MediaUI _this,
       != 0 ) && ( EwCompString( EwLoadString( &StringsGEN_THREE_HYPHENS ), EwGetAutoObject( 
       &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->Title ) 
       != 0 ))
-  {
     EwSignal( EwNewSlot( _this, MediaMED01_MediaUI_OnPlaybackTimeUpdateSlot ), ((XObject)_this ));
-  }
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -624,13 +588,9 @@ void MediaMED01_MediaUI_OnMotoConEventReceived( MediaMED01_MediaUI _this, XObjec
   {
     if ( !DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( EwGetAutoObject( 
         &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
-    {
       MediaMED01_MediaUI_UpdateMediaInfoItem( _this, EnumReceptionStatusERROR );
-    }
     else
-    {
       CoreTimer_OnSetEnabled( &_this->BleConnectionRecoveryTimer, 1 );
-    }
   }
 }
 
@@ -655,13 +615,9 @@ void MediaMED01_MediaUI_OnAmsBleConnectedStatusUpdateSlot( MediaMED01_MediaUI _t
 
   if ( !DeviceInterfaceMediaManagerDeviceClass_IsAmsConnected( EwGetAutoObject( 
       &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )))
-  {
     MediaMED01_MediaUI_UpdateMediaInfoItem( _this, EnumReceptionStatusERROR );
-  }
   else
-  {
     CoreTimer_OnSetEnabled( &_this->BleConnectionRecoveryTimer, 1 );
-  }
 }
 
 /* 'C' function for method : 'Media::MED01_MediaUI.UpdateMediaInfoItem()' */
@@ -693,8 +649,7 @@ void MediaMED01_MediaUI_UpdateMediaInfoItem( MediaMED01_MediaUI _this, XEnum aNe
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -704,14 +659,10 @@ void MediaMED01_MediaUI_OnSetVolume( MediaMED01_MediaUI _this, XFloat value )
   _this->Volume = value;
 
   if ( _this->Volume >= 1.000000f )
-  {
     ViewsImage_OnSetFrameNumber( &_this->VolumeUpButton, 1 );
-  }
   else
     if ( _this->Volume <= 0.000000f )
-    {
       ViewsImage_OnSetFrameNumber( &_this->VolumeDownButton, 1 );
-    }
     else
     {
       ViewsImage_OnSetFrameNumber( &_this->VolumeUpButton, 0 );

@@ -962,12 +962,12 @@ typedef struct XBmpRes
 
 #define EW_BITMAP_CLUT( aName, aLangId )                                       \
   };                                                                           \
-  const unsigned int _cl_##aName##aLangId[] =                                  \
+  EW_BITMAP_PIXEL_PRAGMA const unsigned int _cl_##aName##aLangId[] =           \
   {
 
 #define EW_BITMAP_CLUT_EMPTY( aName, aLangId )                                 \
   };                                                                           \
-  const unsigned int _cl_##aName##aLangId[] =                                  \
+  EW_BITMAP_PIXEL_PRAGMA const unsigned int _cl_##aName##aLangId[] =           \
   {                                                                            \
     0
 

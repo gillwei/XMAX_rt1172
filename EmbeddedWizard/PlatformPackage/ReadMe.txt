@@ -58,6 +58,15 @@ Platform Specific Release Notes (Version History of GFX and RTE):
   The following section contains additonal platform specific changes, related to
   Graphics Engine (GFX) or Runtime Environment (RTE):
 
+* Version 11.00
+  - Linker section definitions: The set of defines have been enhanced to control
+    the location of all types of constant data. The following defines are supported:
+    EW_USE_EXTERNAL_FLASH, EW_BITMAP_PIXEL_SECTION_NAME, EW_FONT_PIXEL_SECTION_NAME,
+    EW_FONT_DATA_SECTION_NAME, EW_CONST_STRING_SECTION_NAME
+  - A set of new macros are introduced to reduce the code size of the binary
+    application: EW_DONT_USE_GRADIENTS, EW_DONT_USE_COMRESSION,
+    EW_DONT_USE_NATIVE_SURFACES, EW_DONT_USE_NATIVE_SURFACES_AS_DESTINATION.
+
 * Version 10.00
   - Enhancement of Runtime Environment to support int64 datatypes.
   - Additional math functions added to Runtime Environment.

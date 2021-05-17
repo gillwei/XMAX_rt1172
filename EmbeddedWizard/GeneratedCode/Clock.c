@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -56,7 +56,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x0000002E, /* ratio 104.35 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x98002180, 0x00025800, 0x00188006,
@@ -122,18 +122,18 @@ static const XRect _Const001F = {{ 165, 176 }, { 315, 259 }};
 void ClockTimePicker__Init( ClockTimePicker _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ClockTimePicker );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( ClockTimePicker );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->TimePickerButtons, &_this->_XObject, 0 );
-  ViewsBorder__Init( &_this->BackgroundFrame, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TimeText, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->TimePickerButtons, &_this->_.XObject, 0 );
+  ViewsBorder__Init( &_this->BackgroundFrame, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TimeText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ClockTimePicker );
+  _this->_.VMT = EW_CLASS( ClockTimePicker );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -158,7 +158,7 @@ void ClockTimePicker__Init( ClockTimePicker _this, XObject aLink, XHandle aArg )
 void ClockTimePicker__ReInit( ClockTimePicker _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->TimePickerButtons );
@@ -170,7 +170,7 @@ void ClockTimePicker__ReInit( ClockTimePicker _this )
 void ClockTimePicker__Done( ClockTimePicker _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->TimePickerButtons );
@@ -178,7 +178,7 @@ void ClockTimePicker__Done( ClockTimePicker _this )
   ViewsText__Done( &_this->TimeText );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 
@@ -216,8 +216,7 @@ void ClockTimePicker_UpdateLayout( ClockTimePicker _this, XPoint aSize )
           CoreRectView__OnSetBounds( &_this->TimeText, _Const0005 );
         break;
 
-        default : 
-          ;
+        default :; 
       }
 
       CoreRectView__OnSetBounds( &_this->BackgroundFrame, _Const0005 );
@@ -225,8 +224,7 @@ void ClockTimePicker_UpdateLayout( ClockTimePicker _this, XPoint aSize )
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -290,24 +288,24 @@ EW_END_OF_CLASS( ClockTimePicker )
 void ClockCLK02_ClockManualAdjustment__Init( ClockCLK02_ClockManualAdjustment _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ClockCLK02_ClockManualAdjustment );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( ClockCLK02_ClockManualAdjustment );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->DayTimeText, &_this->_XObject, 0 );
-  ClockTimePicker__Init( &_this->YearTimePicker, &_this->_XObject, 0 );
-  ClockTimePicker__Init( &_this->MonthTimePicker, &_this->_XObject, 0 );
-  ClockTimePicker__Init( &_this->DayTimePicker, &_this->_XObject, 0 );
-  ClockTimePicker__Init( &_this->TimeFormatPicker, &_this->_XObject, 0 );
-  ClockTimePicker__Init( &_this->HourPicker, &_this->_XObject, 0 );
-  ClockTimePicker__Init( &_this->MinutePicker, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ColonMark, &_this->_XObject, 0 );
-  ViewsBorder__Init( &_this->FocusFrame, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->DayTimeText, &_this->_.XObject, 0 );
+  ClockTimePicker__Init( &_this->YearTimePicker, &_this->_.XObject, 0 );
+  ClockTimePicker__Init( &_this->MonthTimePicker, &_this->_.XObject, 0 );
+  ClockTimePicker__Init( &_this->DayTimePicker, &_this->_.XObject, 0 );
+  ClockTimePicker__Init( &_this->TimeFormatPicker, &_this->_.XObject, 0 );
+  ClockTimePicker__Init( &_this->HourPicker, &_this->_.XObject, 0 );
+  ClockTimePicker__Init( &_this->MinutePicker, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ColonMark, &_this->_.XObject, 0 );
+  ViewsBorder__Init( &_this->FocusFrame, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ClockCLK02_ClockManualAdjustment );
+  _this->_.VMT = EW_CLASS( ClockCLK02_ClockManualAdjustment );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -369,7 +367,7 @@ void ClockCLK02_ClockManualAdjustment__Init( ClockCLK02_ClockManualAdjustment _t
 void ClockCLK02_ClockManualAdjustment__ReInit( ClockCLK02_ClockManualAdjustment _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->DayTimeText );
@@ -387,7 +385,7 @@ void ClockCLK02_ClockManualAdjustment__ReInit( ClockCLK02_ClockManualAdjustment 
 void ClockCLK02_ClockManualAdjustment__Done( ClockCLK02_ClockManualAdjustment _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->DayTimeText );
@@ -401,7 +399,7 @@ void ClockCLK02_ClockManualAdjustment__Done( ClockCLK02_ClockManualAdjustment _t
   ViewsBorder__Done( &_this->FocusFrame );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -433,13 +431,9 @@ void ClockCLK02_ClockManualAdjustment_Init( ClockCLK02_ClockManualAdjustment _th
   if ( CurrentTime->Hour < 12 )
   {
     if ( CurrentTime->Hour == 0 )
-    {
       ClockTimePicker_OnSetTime( &_this->HourPicker, 12 );
-    }
     else
-    {
       ClockTimePicker_OnSetTime( &_this->HourPicker, CurrentTime->Hour );
-    }
 
     ViewsText_OnSetString( &_this->TimeFormatPicker.TimeText, EwLoadString( &StringsCLK02_AM ));
   }
@@ -447,13 +441,9 @@ void ClockCLK02_ClockManualAdjustment_Init( ClockCLK02_ClockManualAdjustment _th
     if ( CurrentTime->Hour >= 12 )
     {
       if ( CurrentTime->Hour == 12 )
-      {
         ClockTimePicker_OnSetTime( &_this->HourPicker, 12 );
-      }
       else
-      {
         ClockTimePicker_OnSetTime( &_this->HourPicker, CurrentTime->Hour - 12 );
-      }
 
       ViewsText_OnSetString( &_this->TimeFormatPicker.TimeText, EwLoadString( &StringsCLK02_PM ));
     }
@@ -463,10 +453,8 @@ void ClockCLK02_ClockManualAdjustment_Init( ClockCLK02_ClockManualAdjustment _th
   ClockTimePicker_OnSetTime( &_this->MinutePicker, CurrentTime->Minute );
 
   if ( _this->MinutePicker.Time < 10 )
-  {
     ViewsText_OnSetString( &_this->MinutePicker.TimeText, EwNewStringInt( _this->MinutePicker.Time, 
     2, 10 ));
-  }
 }
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -522,8 +510,6 @@ void ClockCLK02_ClockManualAdjustment_OnShortEnterKeyActivated( ClockCLK02_Clock
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)_this->SetClockComponent ), 
       0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }
-    else
-      ;
 }
 
 /* 'C' function for method : 'Clock::CLK02_ClockManualAdjustment.MoveFocusFrame()' */
@@ -585,8 +571,7 @@ void ClockCLK02_ClockManualAdjustment_MoveFocusFrame( ClockCLK02_ClockManualAdju
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -598,101 +583,66 @@ void ClockCLK02_ClockManualAdjustment_IncreaseCurrentTime( ClockCLK02_ClockManua
   switch ( CurrentTimeType )
   {
     case EnumTimeTypeYEAR :
-    {
       if ( _this->YearTimePicker.Time < 2099 )
-      {
         ClockTimePicker_OnSetTime( &_this->YearTimePicker, _this->YearTimePicker.Time 
         + 1 );
-      }
       else
-      {
         ClockTimePicker_OnSetTime( &_this->YearTimePicker, 2018 );
-      }
-    }
     break;
 
     case EnumTimeTypeMONTH :
     {
       if ( _this->MonthTimePicker.Time < 12 )
-      {
         ClockTimePicker_OnSetTime( &_this->MonthTimePicker, _this->MonthTimePicker.Time 
         + 1 );
-      }
       else
-      {
         ClockTimePicker_OnSetTime( &_this->MonthTimePicker, 1 );
-      }
 
       ClockCLK02_ClockManualAdjustment_SetValidDay( _this );
     }
     break;
 
     case EnumTimeTypeDAY :
-    {
       if ( _this->DayTimePicker.Time < ClockCLK02_ClockManualAdjustment_GetMaxDayOfMonth( 
           _this ))
-      {
         ClockTimePicker_OnSetTime( &_this->DayTimePicker, _this->DayTimePicker.Time 
         + 1 );
-      }
       else
-      {
         ClockTimePicker_OnSetTime( &_this->DayTimePicker, 1 );
-      }
-    }
     break;
 
     case EnumTimeTypeFORMAT :
-    {
       if ( !EwCompString( EwLoadString( &StringsCLK02_AM ), _this->TimeFormatPicker.TimeText.String ))
-      {
         ViewsText_OnSetString( &_this->TimeFormatPicker.TimeText, EwLoadString( 
         &StringsCLK02_PM ));
-      }
       else
-      {
         ViewsText_OnSetString( &_this->TimeFormatPicker.TimeText, EwLoadString( 
         &StringsCLK02_AM ));
-      }
-    }
     break;
 
     case EnumTimeTypeHOUR :
-    {
       if ( _this->HourPicker.Time < 12 )
-      {
         ClockTimePicker_OnSetTime( &_this->HourPicker, _this->HourPicker.Time + 
         1 );
-      }
       else
-      {
         ClockTimePicker_OnSetTime( &_this->HourPicker, 1 );
-      }
-    }
     break;
 
     case EnumTimeTypeMINUTE :
     {
       if ( _this->MinutePicker.Time < 59 )
-      {
         ClockTimePicker_OnSetTime( &_this->MinutePicker, _this->MinutePicker.Time 
         + 1 );
-      }
       else
-      {
         ClockTimePicker_OnSetTime( &_this->MinutePicker, 0 );
-      }
 
       if ( _this->MinutePicker.Time < 10 )
-      {
         ViewsText_OnSetString( &_this->MinutePicker.TimeText, EwNewStringInt( _this->MinutePicker.Time, 
         2, 10 ));
-      }
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -704,101 +654,66 @@ void ClockCLK02_ClockManualAdjustment_DecreaseCurrentTime( ClockCLK02_ClockManua
   switch ( CurrentTimeType )
   {
     case EnumTimeTypeYEAR :
-    {
       if ( _this->YearTimePicker.Time > 2018 )
-      {
         ClockTimePicker_OnSetTime( &_this->YearTimePicker, _this->YearTimePicker.Time 
         - 1 );
-      }
       else
-      {
         ClockTimePicker_OnSetTime( &_this->YearTimePicker, 2099 );
-      }
-    }
     break;
 
     case EnumTimeTypeMONTH :
     {
       if ( _this->MonthTimePicker.Time > 1 )
-      {
         ClockTimePicker_OnSetTime( &_this->MonthTimePicker, _this->MonthTimePicker.Time 
         - 1 );
-      }
       else
-      {
         ClockTimePicker_OnSetTime( &_this->MonthTimePicker, 12 );
-      }
 
       ClockCLK02_ClockManualAdjustment_SetValidDay( _this );
     }
     break;
 
     case EnumTimeTypeDAY :
-    {
       if ( _this->DayTimePicker.Time > 1 )
-      {
         ClockTimePicker_OnSetTime( &_this->DayTimePicker, _this->DayTimePicker.Time 
         - 1 );
-      }
       else
-      {
         ClockTimePicker_OnSetTime( &_this->DayTimePicker, ClockCLK02_ClockManualAdjustment_GetMaxDayOfMonth( 
         _this ));
-      }
-    }
     break;
 
     case EnumTimeTypeFORMAT :
-    {
       if ( !EwCompString( EwLoadString( &StringsCLK02_AM ), _this->TimeFormatPicker.TimeText.String ))
-      {
         ViewsText_OnSetString( &_this->TimeFormatPicker.TimeText, EwLoadString( 
         &StringsCLK02_PM ));
-      }
       else
-      {
         ViewsText_OnSetString( &_this->TimeFormatPicker.TimeText, EwLoadString( 
         &StringsCLK02_AM ));
-      }
-    }
     break;
 
     case EnumTimeTypeHOUR :
-    {
       if ( _this->HourPicker.Time > 1 )
-      {
         ClockTimePicker_OnSetTime( &_this->HourPicker, _this->HourPicker.Time - 
         1 );
-      }
       else
-      {
         ClockTimePicker_OnSetTime( &_this->HourPicker, 12 );
-      }
-    }
     break;
 
     case EnumTimeTypeMINUTE :
     {
       if ( _this->MinutePicker.Time > 0 )
-      {
         ClockTimePicker_OnSetTime( &_this->MinutePicker, _this->MinutePicker.Time 
         - 1 );
-      }
       else
-      {
         ClockTimePicker_OnSetTime( &_this->MinutePicker, 59 );
-      }
 
       if ( _this->MinutePicker.Time < 10 )
-      {
         ViewsText_OnSetString( &_this->MinutePicker.TimeText, EwNewStringInt( _this->MinutePicker.Time, 
         2, 10 ));
-      }
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -820,9 +735,7 @@ XInt32 ClockCLK02_ClockManualAdjustment_GetMaxDayOfMonth( ClockCLK02_ClockManual
 
     if (( _this->MonthTimePicker.Time == 2 ) && ClockCLK02_ClockManualAdjustment_IsLeapYear( 
         _this ))
-    {
       maxday = 29;
-    }
   }
 
   return maxday;
@@ -863,9 +776,7 @@ void ClockCLK02_ClockManualAdjustment_SetValidDay( ClockCLK02_ClockManualAdjustm
 
     if (( _this->MonthTimePicker.Time == 2 ) && ClockCLK02_ClockManualAdjustment_IsLeapYear( 
         _this ))
-    {
       ClockTimePicker_OnSetTime( &_this->DayTimePicker, 29 );
-    }
   }
 }
 
@@ -925,13 +836,13 @@ EW_END_OF_CLASS( ClockCLK02_ClockManualAdjustment )
 void ClockCLK01_ClockSettingMenu__Init( ClockCLK01_ClockSettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ClockCLK01_ClockSettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( ClockCLK01_ClockSettingMenu );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ClockCLK01_ClockSettingMenu );
+  _this->_.VMT = EW_CLASS( ClockCLK01_ClockSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -951,17 +862,17 @@ void ClockCLK01_ClockSettingMenu__Init( ClockCLK01_ClockSettingMenu _this, XObje
 void ClockCLK01_ClockSettingMenu__ReInit( ClockCLK01_ClockSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Clock::CLK01_ClockSettingMenu' */
 void ClockCLK01_ClockSettingMenu__Done( ClockCLK01_ClockSettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -984,9 +895,7 @@ XClass ClockCLK01_ClockSettingMenu_LoadItemClass( ClockCLK01_ClockSettingMenu _t
   XClass ClassType = 0;
 
   if ( aItemNo < 2 )
-  {
     ClassType = _this->ItemClassArray[ EwCheckIndex( aItemNo, 2 )];
-  }
 
   return ClassType;
 }
@@ -998,9 +907,7 @@ XString ClockCLK01_ClockSettingMenu_LoadItemTitle( ClockCLK01_ClockSettingMenu _
   XString title = 0;
 
   if ( aItemNo < 2 )
-  {
     title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 2 )];
-  }
 
   return title;
 }
@@ -1013,9 +920,7 @@ void ClockCLK01_ClockSettingMenu_OnItemActivate( ClockCLK01_ClockSettingMenu _th
   MenuItemCheckbox CheckBoxItem = EwCastObject( aMenuItem, MenuItemCheckbox );
 
   if ( CheckBoxItem != 0 )
-  {
     IsChecked = CheckBoxItem->Checked;
-  }
 
   switch ( aItemNo )
   {
@@ -1027,15 +932,12 @@ void ClockCLK01_ClockSettingMenu_OnItemActivate( ClockCLK01_ClockSettingMenu _th
 
       if ( IsChecked && DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( 
           EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
-      {
         DeviceInterfaceSystemDeviceClass_NotifyTimeRequest( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
         DeviceInterfaceSystemDeviceClass ));
-      }
     }
     break;
 
     case 1 :
-    {
       if ( !DeviceInterfaceSystemDeviceClass_OnGetIsClockAutoAdj( EwGetAutoObject( 
           &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
       {
@@ -1045,11 +947,9 @@ void ClockCLK01_ClockSettingMenu_OnItemActivate( ClockCLK01_ClockSettingMenu _th
         ClockCLK01_ClockSettingMenu_OnRestoreFocusFrameUpdateSlot );
         ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->ClockManualAdjComponent ));
       }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -1071,8 +971,7 @@ XBool ClockCLK01_ClockSettingMenu_LoadItemChecked( ClockCLK01_ClockSettingMenu _
       &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ));
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return IsChecked;
@@ -1090,10 +989,8 @@ XBool ClockCLK01_ClockSettingMenu_LoadItemEnabled( ClockCLK01_ClockSettingMenu _
   ItemEnabled = 1;
 
   if ( aItemNo > 0 )
-  {
     ItemEnabled = (XBool)!DeviceInterfaceSystemDeviceClass_OnGetIsClockAutoAdj( 
     EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ));
-  }
 
   return ItemEnabled;
 }
@@ -1180,26 +1077,26 @@ EW_END_OF_CLASS( ClockCLK01_ClockSettingMenu )
 void ClockCLK03_SetClock__Init( ClockCLK03_SetClock _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ClockCLK03_SetClock );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( ClockCLK03_SetClock );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Title, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->MonthText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->SlashDay, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->SlashMonth, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->YearText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TimeFormat, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->HourText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->MinuteText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->Colon, &_this->_XObject, 0 );
-  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->MonthText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->SlashDay, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->SlashMonth, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->YearText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TimeFormat, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->HourText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->MinuteText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->Colon, &_this->_.XObject, 0 );
+  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ClockCLK03_SetClock );
+  _this->_.VMT = EW_CLASS( ClockCLK03_SetClock );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -1281,7 +1178,7 @@ void ClockCLK03_SetClock__Init( ClockCLK03_SetClock _this, XObject aLink, XHandl
 void ClockCLK03_SetClock__ReInit( ClockCLK03_SetClock _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Title );
@@ -1301,7 +1198,7 @@ void ClockCLK03_SetClock__ReInit( ClockCLK03_SetClock _this )
 void ClockCLK03_SetClock__Done( ClockCLK03_SetClock _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Title );
@@ -1317,7 +1214,7 @@ void ClockCLK03_SetClock__Done( ClockCLK03_SetClock _this )
   MenuUpDownPushButtonSet__Done( &_this->UpDownPushButtonSet );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Clock::CLK03_SetClock.OnShortHomeKeyActivated()' */
@@ -1375,30 +1272,22 @@ void ClockCLK03_SetClock_SetTime( ClockCLK03_SetClock _this, XUInt16 aNewYear, X
   if ( !EwCompString( EwLoadString( &StringsCLK02_PM ), _this->TimeFormat.String ))
   {
     if ( aNewHour < 12 )
-    {
       ( _tmpO0 = EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->CurrentAdjustTime, 
       ((DeviceInterfaceRtcTime)_tmpO0)->Hour = (XUInt8)(((DeviceInterfaceRtcTime)_tmpO0)->Hour 
       + 12 ));
-    }
   }
   else
-  {
     if ( aNewHour == 12 )
-    {
       ( _tmpO0 = EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->CurrentAdjustTime, 
       ((DeviceInterfaceRtcTime)_tmpO0)->Hour = (XUInt8)(((DeviceInterfaceRtcTime)_tmpO0)->Hour 
       - 12 ));
-    }
-  }
 
   ViewsText_OnSetString( &_this->MinuteText, EwNewStringInt( aNewMinute, 0, 10 ));
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->CurrentAdjustTime->Minute 
   = aNewMinute;
 
   if ( aNewMinute < 10 )
-  {
     ViewsText_OnSetString( &_this->MinuteText, EwNewStringInt( aNewMinute, 2, 10 ));
-  }
 }
 
 /* Variants derived from the class : 'Clock::CLK03_SetClock' */
@@ -1407,7 +1296,7 @@ EW_END_OF_CLASS_VARIANTS( ClockCLK03_SetClock )
 
 /* Virtual Method Table (VMT) for the class : 'Clock::CLK03_SetClock' */
 EW_DEFINE_CLASS( ClockCLK03_SetClock, ComponentsBaseMainBG, OnTimeUpdateSignal, 
-                 OnTimeUpdateSignal, Title, Title, _None, _None, "Clock::CLK03_SetClock" )
+                 OnTimeUpdateSignal, Title, Title, _.VMT, _.VMT, "Clock::CLK03_SetClock" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

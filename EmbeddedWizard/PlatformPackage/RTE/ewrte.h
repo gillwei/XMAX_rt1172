@@ -38,7 +38,7 @@
 #endif
 
 /* The current version of the Runtime Environment. */
-#define EW_RTE_VERSION 0x000A0000
+#define EW_RTE_VERSION 0x000B0000
 
 
 /* Assigning zero (0) to the EW_PRINT_MEMORY_USAGE macro should turn it off
@@ -521,13 +521,6 @@ typedef struct _XClassVariant XClassVariant;
 #define EW_VTHISPTR()                                                          \
   XObject _vthis;
 
-#define _Super   _.Super
-#define _VMT     _.VMT
-#define _XObject _.XObject
-#define _Link    _.Link
-#define _Mark    _.Mark
-#define _GCT     _XObject._.GCT
-
 
 /*******************************************************************************
 * MACRO:
@@ -667,8 +660,6 @@ typedef struct _XClassVariant XClassVariant;
 #define EW_END_OF_CLASS( aClass )                                              \
     0                                                                          \
   };
-
-#define _None  _.VMT
 
 
 /*******************************************************************************
@@ -987,30 +978,30 @@ typedef struct _XClassVariant XClassVariant;
 #define EW_VCLASS( aClass )     (&__vmt_##aClass)
 #define EW_CLASS_GCT( aClass )  ((const struct _vmt_XObject*)EW_CLASS( aClass ))
 #define EW_VCLASS_GCT( aClass ) ((const struct _vmt_XObject*)EW_VCLASS( aClass ))
-#define Super1                  _Super
-#define Super2                  Super1._Super
-#define Super3                  Super2._Super
-#define Super4                  Super3._Super
-#define Super5                  Super4._Super
-#define Super6                  Super5._Super
-#define Super7                  Super6._Super
-#define Super8                  Super7._Super
-#define Super9                  Super8._Super
-#define Super10                 Super9._Super
-#define Super11                 Super10._Super
-#define Super12                 Super11._Super
-#define Super13                 Super12._Super
-#define Super14                 Super13._Super
-#define Super15                 Super14._Super
-#define Super16                 Super15._Super
-#define Super17                 Super16._Super
-#define Super18                 Super17._Super
-#define Super19                 Super18._Super
-#define Super20                 Super19._Super
-#define Super21                 Super20._Super
-#define Super22                 Super21._Super
-#define Super23                 Super22._Super
-#define Super24                 Super23._Super
+#define Super1                  _.Super
+#define Super2                  Super1._.Super
+#define Super3                  Super2._.Super
+#define Super4                  Super3._.Super
+#define Super5                  Super4._.Super
+#define Super6                  Super5._.Super
+#define Super7                  Super6._.Super
+#define Super8                  Super7._.Super
+#define Super9                  Super8._.Super
+#define Super10                 Super9._.Super
+#define Super11                 Super10._.Super
+#define Super12                 Super11._.Super
+#define Super13                 Super12._.Super
+#define Super14                 Super13._.Super
+#define Super15                 Super14._.Super
+#define Super16                 Super15._.Super
+#define Super17                 Super16._.Super
+#define Super18                 Super17._.Super
+#define Super19                 Super18._.Super
+#define Super20                 Super19._.Super
+#define Super21                 Super20._.Super
+#define Super22                 Super21._.Super
+#define Super23                 Super22._.Super
+#define Super24                 Super23._.Super
 
 
 /*******************************************************************************
@@ -1340,8 +1331,8 @@ void EwDetachObjectVariant
 *******************************************************************************/
 void* EwCastObject
 ( 
-  register XObject             aObject, 
-  register const void*         aClass
+  XObject           aObject, 
+  const void*       aClass
 );
 
 #define EwCastObject( aObject, aClass )                                        \
@@ -1382,8 +1373,8 @@ void* EwCastObject
 *******************************************************************************/
 XClass EwCastClass
 ( 
-  register XClass              aClass, 
-  register const void*         aDesiredClass
+  XClass            aClass, 
+  const void*       aDesiredClass
 );
 
 #define EwCastClass( aClass, aDesiredClass )                                   \
@@ -1410,7 +1401,7 @@ XClass EwCastClass
 *******************************************************************************/
 XClass EwClassOf
 ( 
-  register XObject             aObject
+  XObject           aObject
 );
 
 
@@ -1441,7 +1432,7 @@ XClass EwClassOf
 *******************************************************************************/
 void EwLockObject
 ( 
-  register XObject             aObject
+  XObject           aObject
 );
 
 #define EwLockObject( aObject )                                                \
@@ -1474,7 +1465,7 @@ void EwLockObject
 *******************************************************************************/
 void EwUnlockObject
 ( 
-  register XObject             aObject
+  XObject           aObject
 );
 
 #define EwUnlockObject( aObject )                                              \
@@ -1840,6 +1831,29 @@ typedef struct
   const void*       Block;
   XUInt16           Offset;
 } XStringRes;
+
+
+/* The macro EW_CONST_STRING_SECTION_NAME is used to determine the section where
+   the linker should locate the memory areas containing constant strings. */
+#if defined EW_CONST_STRING_SECTION_NAME && !defined EW_CONST_STRING_PRAGMA
+  #define EW_STRINGIZE( aArg )      EW_STRINGIZE_ARG( aArg )
+  #define EW_STRINGIZE_ARG( aArg )  #aArg
+
+  #if defined __ICCARM__
+    #define EW_CONST_STRING_PRAGMA                                             \
+      _Pragma(EW_STRINGIZE(location=EW_STRINGIZE( EW_CONST_STRING_SECTION_NAME )))
+  #elif defined __CC_ARM
+    #define EW_CONST_STRING_PRAGMA                                             \
+      __attribute__((section ( EW_STRINGIZE( EW_CONST_STRING_SECTION_NAME ))))
+  #elif defined __GNUC__
+    #define EW_CONST_STRING_PRAGMA                                             \
+      __attribute__((section ( EW_STRINGIZE( EW_CONST_STRING_SECTION_NAME ))))
+  #endif
+#endif
+
+#ifndef EW_CONST_STRING_PRAGMA
+  #define EW_CONST_STRING_PRAGMA
+#endif
 
 
 /******************************************************************************
@@ -6828,8 +6842,8 @@ int EwStylesContains
 *******************************************************************************/
 const void* EwGetVariantOf
 ( 
-  register const XVariant* aVariant,
-  int                      aSize
+  const XVariant*   aVariant,
+  int               aSize
 );
 
 #define EwGetVariantOf( aVariant, aKind )                                      \
@@ -7272,7 +7286,7 @@ XString EwNewString
 *******************************************************************************/
 XString EwNewStringAnsi
 ( 
-  register const char* aAnsi 
+  const char*       aAnsi 
 );
 
 
@@ -7686,7 +7700,7 @@ XString EwConcatCharString
 *******************************************************************************/
 XChar EwGetStringChar
 ( 
-  register XString  aString, 
+  XString           aString, 
   XInt32            aIndex 
 );
 
@@ -7724,9 +7738,9 @@ XChar EwGetStringChar
 *******************************************************************************/
 XString EwSetStringChar
 ( 
-  register XString  aString, 
-  XInt32            aIndex,
-  XChar             aChar 
+  XString          aString, 
+  XInt32           aIndex,
+  XChar            aChar 
 );
 
 

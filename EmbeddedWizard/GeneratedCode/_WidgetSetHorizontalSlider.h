@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -120,9 +120,9 @@
    thumb, the affected property is automatically updated to reflect the slider's 
    current value. On the other hand, when the referred property is modified by another 
    one, the slider is automatically notified to remain in sync with the property.
-   This approach follows the Controller-View programming paradigm. Here the slider 
-   represents the 'View' and the property referred via 'Outlet' can be seen as a 
-   part of the 'Controller'.
+   This approach follows the Model-View-Controller (MVC) programming paradigm. Here 
+   the slider represents the 'View' and 'Controller' and the property referred via 
+   'Outlet' can be seen as a part of the 'Model'.
    During its lifetime the slider remains always in one of the four states: 'disabled', 
    'default', 'focused' and 'active'. The state 'disabled' is true for every not 
    available slider (the property @Enabled of the slider is 'false'). Such sliders 
@@ -193,25 +193,15 @@
    For more details regarding the customization of the slider see the description 
    of WidgetSet::HorizontalSliderConfig class. */
 EW_DEFINE_FIELDS( WidgetSetHorizontalSlider, CoreGroup )
-  EW_VARIABLE( frameView4,      ViewsFrame )
   EW_VARIABLE( imageView,       ViewsImage )
   EW_VARIABLE( frameView3,      ViewsFrame )
   EW_VARIABLE( frameView2,      ViewsFrame )
-  EW_VARIABLE( frameView1,      ViewsFrame )
   EW_PROPERTY( Appearance,      WidgetSetHorizontalSliderConfig )
-  EW_PROPERTY( OnUpdate,        XSlot )
-  EW_PROPERTY( OnChange,        XSlot )
-  EW_PROPERTY( OnEnd,           XSlot )
-  EW_PROPERTY( OnStart,         XSlot )
-  EW_PROPERTY( Outlet,          XRef )
   EW_OBJECT  ( RepetitionTimer, CoreTimer )
   EW_OBJECT  ( KeyHandlerLeft,  CoreKeyPressHandler )
   EW_OBJECT  ( KeyHandlerRight, CoreKeyPressHandler )
   EW_OBJECT  ( TouchHandler,    CoreSimpleTouchHandler )
   EW_VARIABLE( touchStartValue, XInt32 )
-  EW_PROPERTY( StepSize,        XInt32 )
-  EW_PROPERTY( MaxValue,        XInt32 )
-  EW_PROPERTY( MinValue,        XInt32 )
   EW_PROPERTY( CurrentValue,    XInt32 )
   EW_VARIABLE( touchActive,     XBool )
 EW_END_OF_FIELDS( WidgetSetHorizontalSlider )

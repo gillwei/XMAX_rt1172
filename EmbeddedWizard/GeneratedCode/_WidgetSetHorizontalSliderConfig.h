@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -134,77 +134,16 @@
    constraints for the widget itself. You can, for example, limit the slider to 
    not shrink below a specified width or height. */
 EW_DEFINE_FIELDS( WidgetSetHorizontalSliderConfig, WidgetSetWidgetConfig )
-  EW_PROPERTY( CoverActive,     ResourcesBitmap )
-  EW_PROPERTY( CoverFocused,    ResourcesBitmap )
-  EW_PROPERTY( CoverDisabled,   ResourcesBitmap )
-  EW_PROPERTY( CoverDefault,    ResourcesBitmap )
-  EW_PROPERTY( ThumbActive,     ResourcesBitmap )
   EW_PROPERTY( ThumbFocused,    ResourcesBitmap )
-  EW_PROPERTY( ThumbDisabled,   ResourcesBitmap )
   EW_PROPERTY( ThumbDefault,    ResourcesBitmap )
-  EW_PROPERTY( TrackRightActive, ResourcesBitmap )
   EW_PROPERTY( TrackRightFocused, ResourcesBitmap )
-  EW_PROPERTY( TrackRightDisabled, ResourcesBitmap )
   EW_PROPERTY( TrackRightDefault, ResourcesBitmap )
-  EW_PROPERTY( TrackLeftActive, ResourcesBitmap )
   EW_PROPERTY( TrackLeftFocused, ResourcesBitmap )
-  EW_PROPERTY( TrackLeftDisabled, ResourcesBitmap )
   EW_PROPERTY( TrackLeftDefault, ResourcesBitmap )
-  EW_PROPERTY( FaceActive,      ResourcesBitmap )
-  EW_PROPERTY( FaceFocused,     ResourcesBitmap )
-  EW_PROPERTY( FaceDisabled,    ResourcesBitmap )
-  EW_PROPERTY( FaceDefault,     ResourcesBitmap )
-  EW_PROPERTY( KeyRepeatPeriod, XInt32 )
-  EW_PROPERTY( KeyRepeatDelay,  XInt32 )
-  EW_PROPERTY( CoverTintActive, XColor )
-  EW_PROPERTY( CoverTintFocused, XColor )
-  EW_PROPERTY( CoverTintDisabled, XColor )
-  EW_PROPERTY( CoverTintDefault, XColor )
-  EW_PROPERTY( CoverFrameActive, XInt32 )
-  EW_PROPERTY( CoverFrameFocused, XInt32 )
-  EW_PROPERTY( CoverFrameDisabled, XInt32 )
-  EW_PROPERTY( CoverFrameDefault, XInt32 )
-  EW_PROPERTY( ThumbMarginRight, XInt32 )
-  EW_PROPERTY( ThumbMarginLeft, XInt32 )
-  EW_PROPERTY( ThumbTintActive, XColor )
-  EW_PROPERTY( ThumbTintFocused, XColor )
-  EW_PROPERTY( ThumbTintDisabled, XColor )
-  EW_PROPERTY( ThumbTintDefault, XColor )
-  EW_PROPERTY( ThumbFrameActive, XInt32 )
-  EW_PROPERTY( ThumbFrameFocused, XInt32 )
-  EW_PROPERTY( ThumbFrameDisabled, XInt32 )
-  EW_PROPERTY( ThumbFrameDefault, XInt32 )
-  EW_PROPERTY( TrackRightTintActive, XColor )
-  EW_PROPERTY( TrackRightTintFocused, XColor )
-  EW_PROPERTY( TrackRightTintDisabled, XColor )
-  EW_PROPERTY( TrackRightTintDefault, XColor )
-  EW_PROPERTY( TrackRightFrameActive, XInt32 )
   EW_PROPERTY( TrackRightFrameFocused, XInt32 )
-  EW_PROPERTY( TrackRightFrameDisabled, XInt32 )
   EW_PROPERTY( TrackRightFrameDefault, XInt32 )
-  EW_PROPERTY( TrackLeftTintActive, XColor )
-  EW_PROPERTY( TrackLeftTintFocused, XColor )
-  EW_PROPERTY( TrackLeftTintDisabled, XColor )
-  EW_PROPERTY( TrackLeftTintDefault, XColor )
-  EW_PROPERTY( TrackLeftFrameActive, XInt32 )
   EW_PROPERTY( TrackLeftFrameFocused, XInt32 )
-  EW_PROPERTY( TrackLeftFrameDisabled, XInt32 )
   EW_PROPERTY( TrackLeftFrameDefault, XInt32 )
-  EW_PROPERTY( FaceTintActive,  XColor )
-  EW_PROPERTY( FaceTintFocused, XColor )
-  EW_PROPERTY( FaceTintDisabled, XColor )
-  EW_PROPERTY( FaceTintDefault, XColor )
-  EW_PROPERTY( FaceFrameActive, XInt32 )
-  EW_PROPERTY( FaceFrameFocused, XInt32 )
-  EW_PROPERTY( FaceFrameDisabled, XInt32 )
-  EW_PROPERTY( FaceFrameDefault, XInt32 )
-  EW_PROPERTY( WidgetMaxSize,   XPoint )
-  EW_PROPERTY( WidgetMinSize,   XPoint )
-  EW_PROPERTY( KeyCodeLeft,     XEnum )
-  EW_PROPERTY( KeyCodeRight,    XEnum )
-  EW_PROPERTY( TrackLeftWithEdge, XBool )
-  EW_PROPERTY( TrackRightWithEdge, XBool )
-  EW_PROPERTY( ThumbUpdateAtTouch, XBool )
 EW_END_OF_FIELDS( WidgetSetHorizontalSliderConfig )
 
 /* Virtual Method Table (VMT) for the class : 'WidgetSet::HorizontalSliderConfig' */

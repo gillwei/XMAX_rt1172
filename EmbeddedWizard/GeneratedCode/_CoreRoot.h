@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -166,13 +166,10 @@
 EW_DEFINE_FIELDS( CoreRoot, CoreGroup )
   EW_VARIABLE( keyLastTarget,   XObject )
   EW_VARIABLE( modalGroups,     CoreModalContext )
-  EW_VARIABLE( cursorCaptureView, CoreView )
   EW_ARRAY   ( cursorTargetView, CoreView, [10])
   EW_VARIABLE( canvas,          GraphicsCanvas )
-  EW_PROPERTY( VirtualKeyboard, CoreGroup )
   EW_OBJECT  ( cursorHoldTimer, CoreTimer )
   EW_VARIABLE( updateLock,      XInt32 )
-  EW_VARIABLE( animationLock,   XInt32 )
   EW_VARIABLE( currentEventTimestamp, XUInt32 )
   EW_ARRAY   ( cursorSequelCounter, XInt32, [10])
   EW_ARRAY   ( cursorSequelArea, XRect, [10])
@@ -191,12 +188,9 @@ EW_DEFINE_FIELDS( CoreRoot, CoreGroup )
   EW_ARRAY   ( regionsArea,     XInt32, [4])
   EW_ARRAY   ( regions,         XRect, [4])
   EW_VARIABLE( noOfRegions,     XInt32 )
-  EW_PROPERTY( CursorDragLimit, XInt32 )
-  EW_PROPERTY( CursorSequelDelay, XInt32 )
   EW_VARIABLE( keyLastCode,     XEnum )
   EW_VARIABLE( keyLastCharCode, XChar )
   EW_VARIABLE( hasRootFocus,    XBool )
-  EW_VARIABLE( keyLastLocked,   XBool )
 EW_END_OF_FIELDS( CoreRoot )
 
 /* Virtual Method Table (VMT) for the class : 'Core::Root' */
@@ -250,31 +244,7 @@ EW_END_OF_METHODS( CoreRoot )
    owner group. */
 CoreRoot CoreRoot_GetRoot( CoreRoot _this );
 
-/* The method Draw() is invoked automatically if parts of the view should be redrawn 
-   on the screen. This can occur when e.g. the view has been moved or the appearance 
-   of the view has changed before.
-   Draw() is invoked automatically by the framework, you never will need to invoke 
-   this method directly. However you can request an invocation of this method by 
-   calling the method InvalidateArea() of the views @Owner. Usually this is also 
-   unnecessary unless you are developing your own view.
-   The passed parameters determine the drawing destination aCanvas and the area 
-   to redraw aClip in the coordinate space of the canvas. The parameter aOffset 
-   contains the displacement between the origin of the views owner and the origin 
-   of the canvas. You will need it to convert views coordinates into these of the 
-   canvas.
-   The parameter aOpacity contains the opacity descended from this view's @Owner. 
-   It lies in range 0 .. 255. If the view implements its own 'Opacity', 'Color', 
-   etc. properties, the Draw() method should calculate the resulting real opacity 
-   by mixing the values of these properties with the one passed in aOpacity parameter.
-   The parameter aBlend contains the blending mode descended from this view's @Owner. 
-   It determines, whether the view should be drawn with alpha-blending active or 
-   not. If aBlend is false, the outputs of the view should overwrite the corresponding 
-   pixel in the drawing destination aCanvas. If aBlend is true, the outputs should 
-   be mixed with the pixel already stored in aCanvas. For this purpose all Graphics 
-   Engine functions provide a parameter to specify the mode for the respective drawing 
-   operation. If the view implements its own 'Blend' property, the Draw() method 
-   should calculate the resulting real blend mode by using logical AND operation 
-   of the value of the property and the one passed in aBlend parameter. */
+/* 'C' function for method : 'Core::Root.Draw()' */
 void CoreRoot_Draw( CoreRoot _this, GraphicsCanvas aCanvas, XRect aClip, XPoint 
   aOffset, XInt32 aOpacity, XBool aBlend );
 

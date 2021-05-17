@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -53,7 +53,7 @@
 #include "Weather.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x000000B0, /* ratio 65.91 % */
   0xB8000B00, 0x00066452, 0x0A120034, 0x60E32824, 0x8B0B0042, 0xD09870C4, 0x5322C0C0,
@@ -186,45 +186,45 @@ static const XRect _Const005F = {{ 0, 0 }, { 441, 224 }};
 void WeatherWeatherDayViewUI__Init( WeatherWeatherDayViewUI _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( WeatherWeatherDayViewUI );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( WeatherWeatherDayViewUI );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->CurrentLocationText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->ChanceOfRainText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->PerOfRainIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->TempUnitIcon, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->WeekDayText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->WeatherIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->WeatherHorizLine, &_this->_XObject, 0 );
-  ViewsLine__Init( &_this->DivideLineLeft, &_this->_XObject, 0 );
-  ViewsLine__Init( &_this->DivideLineRight, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TimeInterval3h, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TimeInterval2h, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TimeInterval1h, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Weather1h, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Weather2h, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Weather3h, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->ChanceOfRain1h, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->ChanceOfRain2h, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->ChanceOfRain3h, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->WeaPerIcon1h, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->WeaPerIcon2h, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->WeaPerIcon3h, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->Temp1h, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->Temp2h, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->Temp3h, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->TempUnit1h, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->TempUnit2h, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->TempUnit3h, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->MinTempText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TempTextSlash, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->MaxTempText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->CurrentLocationText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ChanceOfRainText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->PerOfRainIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->TempUnitIcon, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->WeekDayText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->WeatherIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->WeatherHorizLine, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->DivideLineLeft, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->DivideLineRight, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TimeInterval3h, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TimeInterval2h, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TimeInterval1h, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Weather1h, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Weather2h, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Weather3h, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ChanceOfRain1h, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ChanceOfRain2h, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ChanceOfRain3h, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->WeaPerIcon1h, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->WeaPerIcon2h, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->WeaPerIcon3h, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->Temp1h, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->Temp2h, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->Temp3h, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->TempUnit1h, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->TempUnit2h, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->TempUnit3h, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->MinTempText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TempTextSlash, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->MaxTempText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( WeatherWeatherDayViewUI );
+  _this->_.VMT = EW_CLASS( WeatherWeatherDayViewUI );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -319,8 +319,6 @@ void WeatherWeatherDayViewUI__Init( WeatherWeatherDayViewUI _this, XObject aLink
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->MaxTempText, 0 );
   ViewsText_OnSetColor( &_this->MaxTempText, _Const002F );
-  _this->MinTempTextBounds = _Const002A;
-  _this->TempTextSlashBounds = _Const002C;
   CoreGroup__Add( _this, ((CoreView)&_this->CurrentLocationText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ChanceOfRainText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PerOfRainIcon ), 0 );
@@ -416,7 +414,7 @@ void WeatherWeatherDayViewUI__Init( WeatherWeatherDayViewUI _this, XObject aLink
 void WeatherWeatherDayViewUI__ReInit( WeatherWeatherDayViewUI _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->CurrentLocationText );
@@ -455,7 +453,7 @@ void WeatherWeatherDayViewUI__ReInit( WeatherWeatherDayViewUI _this )
 void WeatherWeatherDayViewUI__Done( WeatherWeatherDayViewUI _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->CurrentLocationText );
@@ -490,7 +488,7 @@ void WeatherWeatherDayViewUI__Done( WeatherWeatherDayViewUI _this )
   ViewsText__Done( &_this->MaxTempText );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -530,10 +528,8 @@ void WeatherWeatherDayViewUI_OnWeatherLocUpdateSlot( WeatherWeatherDayViewUI _th
   EW_UNUSED_ARG( sender );
 
   if ( EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->IsWeatherInfoReceived )
-  {
     ViewsText_OnSetString( &_this->CurrentLocationText, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
     DeviceInterfaceWeatherDeviceClass )->WeatherLocation );
-  }
 }
 
 /* 'C' function for method : 'Weather::WeatherDayViewUI.OnWeatherInfoUpdateSlot()' */
@@ -555,8 +551,8 @@ void WeatherWeatherDayViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherDayViewUI _t
         XInt32 TempShiftPixel;
         XRect NewSlashBounds;
         XRect NewMinBounds;
-        CoreRectView__OnSetBounds( &_this->MinTempText, _this->MinTempTextBounds );
-        CoreRectView__OnSetBounds( &_this->TempTextSlash, _this->TempTextSlashBounds );
+        CoreRectView__OnSetBounds( &_this->MinTempText, _Const002A );
+        CoreRectView__OnSetBounds( &_this->TempTextSlash, _Const002C );
         ViewsImage_OnSetFrameNumber( &_this->WeatherIcon, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
         DeviceInterfaceWeatherDeviceClass )->WeatherType );
         ViewsText_OnSetString( &_this->ChanceOfRainText, EwNewStringInt( EwGetAutoObject( 
@@ -566,15 +562,11 @@ void WeatherWeatherDayViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherDayViewUI _t
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTEMPERATURE_UNIT );
 
         if ((XEnum)VehicleData->DataUInt32 == EnumTemperatureSettingItemTEMP_F )
-        {
           ViewsImage_OnSetBitmap( &_this->TempUnitIcon, EwLoadResource( &ResourceIconTempDegF, 
           ResourcesBitmap ));
-        }
         else
-        {
           ViewsImage_OnSetBitmap( &_this->TempUnitIcon, EwLoadResource( &ResourceIconTempDegC, 
           ResourcesBitmap ));
-        }
 
         ViewsText_OnSetString( &_this->MinTempText, EwNewStringInt( EwGetAutoObject( 
         &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->MinTemperature, 
@@ -636,8 +628,7 @@ void WeatherWeatherDayViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherDayViewUI _t
       }
       break;
 
-      default : 
-        ;
+      default :; 
     }
   }
 }
@@ -651,11 +642,9 @@ void WeatherWeatherDayViewUI_OnWeekDayUpdateSlot( WeatherWeatherDayViewUI _this,
   EW_UNUSED_ARG( sender );
 
   if ( 7 > EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeekDay )
-  {
     ViewsText_OnSetString( &_this->WeekDayText, _this->WeekDayTextArray[ EwCheckIndex( 
     EwGetAutoObject( &DeviceInterfaceWeatherDevice, DeviceInterfaceWeatherDeviceClass )->WeekDay, 
     7 )]);
-  }
 }
 
 /* Variants derived from the class : 'Weather::WeatherDayViewUI' */
@@ -664,7 +653,7 @@ EW_END_OF_CLASS_VARIANTS( WeatherWeatherDayViewUI )
 
 /* Virtual Method Table (VMT) for the class : 'Weather::WeatherDayViewUI' */
 EW_DEFINE_CLASS( WeatherWeatherDayViewUI, CoreGroup, CurrentLocationText, CurrentLocationText, 
-                 CurrentLocationText, CurrentLocationText, WeekDayTextArray, MinTempTextBounds, 
+                 CurrentLocationText, CurrentLocationText, WeekDayTextArray, WeaItemIdxArray, 
                  "Weather::WeatherDayViewUI" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
@@ -702,16 +691,16 @@ EW_END_OF_CLASS( WeatherWeatherDayViewUI )
 void WeatherWEA01_Main__Init( WeatherWEA01_Main _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( WeatherWEA01_Main );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( WeatherWEA01_Main );
 
   /* ... then construct all embedded objects */
-  WeatherWeatherList__Init( &_this->WeatherListView, &_this->_XObject, 0 );
+  WeatherWeatherList__Init( &_this->WeatherListView, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( WeatherWEA01_Main );
+  _this->_.VMT = EW_CLASS( WeatherWEA01_Main );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0030 );
@@ -724,7 +713,7 @@ void WeatherWEA01_Main__Init( WeatherWEA01_Main _this, XObject aLink, XHandle aA
 void WeatherWEA01_Main__ReInit( WeatherWEA01_Main _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   WeatherWeatherList__ReInit( &_this->WeatherListView );
@@ -734,13 +723,13 @@ void WeatherWEA01_Main__ReInit( WeatherWEA01_Main _this )
 void WeatherWEA01_Main__Done( WeatherWEA01_Main _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   WeatherWeatherList__Done( &_this->WeatherListView );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Weather::WEA01_Main.OnShortHomeKeyActivated()' */
@@ -749,9 +738,7 @@ void WeatherWEA01_Main_OnShortHomeKeyActivated( WeatherWEA01_Main _this )
   ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
   if ( App != 0 )
-  {
     ApplicationApplication_ReturnToLauncher( App );
-  }
 }
 
 /* Variants derived from the class : 'Weather::WEA01_Main' */
@@ -760,7 +747,7 @@ EW_END_OF_CLASS_VARIANTS( WeatherWEA01_Main )
 
 /* Virtual Method Table (VMT) for the class : 'Weather::WEA01_Main' */
 EW_DEFINE_CLASS( WeatherWEA01_Main, ComponentsBaseMainBG, WeatherListView, WeatherListView, 
-                 WeatherListView, WeatherListView, _None, _None, "Weather::WEA01_Main" )
+                 WeatherListView, WeatherListView, _.VMT, _.VMT, "Weather::WEA01_Main" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -809,69 +796,69 @@ EW_END_OF_CLASS( WeatherWEA01_Main )
 void WeatherWeatherWeekViewUI__Init( WeatherWeatherWeekViewUI _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( WeatherWeatherWeekViewUI );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( WeatherWeatherWeekViewUI );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->DayOneWeather, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayOneText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayOneChanceOfRain, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayOneMinTemp, &_this->_XObject, 0 );
-  ViewsLine__Init( &_this->DivideLineUpLeft, &_this->_XObject, 0 );
-  ViewsLine__Init( &_this->DivideLineUpRight, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayTwoWeather, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayOneRainPerIcon, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayTwoText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayTwoChanceOfRain, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayTwoRainPerIcon, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayTwoMinTemp, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayThreeWeather, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayThreeText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayThreeChanceOfRain, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayThreeRainPerIcon, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayThreeMinTemp, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->WeatherLineUp, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->WeatherLineDown, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayFourWeather, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayFiveWeather, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DaySixWeather, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayFourText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayFiveText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DaySixText, &_this->_XObject, 0 );
-  ViewsLine__Init( &_this->DivideLineDownLeft, &_this->_XObject, 0 );
-  ViewsLine__Init( &_this->DivideLineDownRight, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayFourChanceOfRain, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayFiveChanceOfRain, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DaySixChanceOfRain, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayFourRainPerIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayFiveRainPerIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DaySixRainPerIcon, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayFourMinTemp, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayFiveMinTemp, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DaySixMinTemp, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayOneTempUnit, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayTwoTempUnit, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayThreeTempUnit, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayFourTempUnit, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DayFiveTempUnit, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DaySixTempUnit, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayOneTempSlash, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayOneMaxTemp, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayTwoTempSlash, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayTwoMaxTemp, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayThreeTempSlash, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayThreeMaxTemp, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayFourTempSlash, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayFourMaxTemp, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayFiveTempSlash, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DayFiveMaxTemp, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DaySixTempSlash, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DaySixMaxTemp, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->DayOneWeather, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayOneText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayOneChanceOfRain, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayOneMinTemp, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->DivideLineUpLeft, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->DivideLineUpRight, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayTwoWeather, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayOneRainPerIcon, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayTwoText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayTwoChanceOfRain, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayTwoRainPerIcon, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayTwoMinTemp, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayThreeWeather, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayThreeText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayThreeChanceOfRain, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayThreeRainPerIcon, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayThreeMinTemp, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->WeatherLineUp, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->WeatherLineDown, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayFourWeather, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayFiveWeather, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DaySixWeather, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayFourText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayFiveText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DaySixText, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->DivideLineDownLeft, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->DivideLineDownRight, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayFourChanceOfRain, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayFiveChanceOfRain, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DaySixChanceOfRain, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayFourRainPerIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayFiveRainPerIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DaySixRainPerIcon, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayFourMinTemp, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayFiveMinTemp, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DaySixMinTemp, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayOneTempUnit, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayTwoTempUnit, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayThreeTempUnit, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayFourTempUnit, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DayFiveTempUnit, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DaySixTempUnit, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayOneTempSlash, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayOneMaxTemp, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayTwoTempSlash, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayTwoMaxTemp, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayThreeTempSlash, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayThreeMaxTemp, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayFourTempSlash, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayFourMaxTemp, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayFiveTempSlash, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DayFiveMaxTemp, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DaySixTempSlash, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DaySixMaxTemp, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( WeatherWeatherWeekViewUI );
+  _this->_.VMT = EW_CLASS( WeatherWeatherWeekViewUI );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -1243,7 +1230,7 @@ void WeatherWeatherWeekViewUI__Init( WeatherWeatherWeekViewUI _this, XObject aLi
 void WeatherWeatherWeekViewUI__ReInit( WeatherWeatherWeekViewUI _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->DayOneWeather );
@@ -1306,7 +1293,7 @@ void WeatherWeatherWeekViewUI__ReInit( WeatherWeatherWeekViewUI _this )
 void WeatherWeatherWeekViewUI__Done( WeatherWeatherWeekViewUI _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->DayOneWeather );
@@ -1365,7 +1352,7 @@ void WeatherWeatherWeekViewUI__Done( WeatherWeatherWeekViewUI _this )
   ViewsText__Done( &_this->DaySixMaxTemp );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -1641,8 +1628,7 @@ void WeatherWeatherWeekViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherWeekViewUI 
       }
       break;
 
-      default : 
-        ;
+      default :; 
     }
   }
 }
@@ -1714,18 +1700,18 @@ EW_END_OF_CLASS( WeatherWeatherWeekViewUI )
 void WeatherWeatherList__Init( WeatherWeatherList _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( WeatherWeatherList );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( WeatherWeatherList );
 
   /* ... then construct all embedded objects */
-  CoreVerticalList__Init( &_this->VerticalList, &_this->_XObject, 0 );
-  MenuArrowScrollBar__Init( &_this->ArrowScrollBar, &_this->_XObject, 0 );
-  EffectsInt32Effect__Init( &_this->PageScrollEffect, &_this->_XObject, 0 );
+  CoreVerticalList__Init( &_this->VerticalList, &_this->_.XObject, 0 );
+  MenuArrowScrollBar__Init( &_this->ArrowScrollBar, &_this->_.XObject, 0 );
+  EffectsInt32Effect__Init( &_this->PageScrollEffect, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( WeatherWeatherList );
+  _this->_.VMT = EW_CLASS( WeatherWeatherList );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const005C );
@@ -1754,7 +1740,7 @@ void WeatherWeatherList__Init( WeatherWeatherList _this, XObject aLink, XHandle 
 void WeatherWeatherList__ReInit( WeatherWeatherList _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreVerticalList__ReInit( &_this->VerticalList );
@@ -1766,7 +1752,7 @@ void WeatherWeatherList__ReInit( WeatherWeatherList _this )
 void WeatherWeatherList__Done( WeatherWeatherList _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   CoreVerticalList__Done( &_this->VerticalList );
@@ -1774,7 +1760,7 @@ void WeatherWeatherList__Done( WeatherWeatherList _this )
   EffectsInt32Effect__Done( &_this->PageScrollEffect );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Weather::WeatherList.OnShortDownKeyActivated()' */
@@ -1832,8 +1818,7 @@ void WeatherWeatherList_OnLoadItem( WeatherWeatherList _this, XObject sender )
         WeatherWeatherItemWrapper_OnSetItemClass( item, EW_CLASS( WeatherWeatherWeekViewUI ));
       break;
 
-      default : 
-        ;
+      default :; 
     }
 
     CoreRectView__OnSetBounds( item, EwSetRectSize( item->Super2.Bounds, EwNewPoint( 
@@ -1856,7 +1841,7 @@ EW_END_OF_CLASS_VARIANTS( WeatherWeatherList )
 
 /* Virtual Method Table (VMT) for the class : 'Weather::WeatherList' */
 EW_DEFINE_CLASS( WeatherWeatherList, ComponentsBaseComponent, VerticalList, VerticalList, 
-                 VerticalList, VerticalList, _None, _None, "Weather::WeatherList" )
+                 VerticalList, VerticalList, _.VMT, _.VMT, "Weather::WeatherList" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1905,13 +1890,13 @@ EW_END_OF_CLASS( WeatherWeatherList )
 void WeatherWeatherItemWrapper__Init( WeatherWeatherItemWrapper _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( WeatherWeatherItemWrapper );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( WeatherWeatherItemWrapper );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( WeatherWeatherItemWrapper );
+  _this->_.VMT = EW_CLASS( WeatherWeatherItemWrapper );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const005F );
@@ -1921,17 +1906,17 @@ void WeatherWeatherItemWrapper__Init( WeatherWeatherItemWrapper _this, XObject a
 void WeatherWeatherItemWrapper__ReInit( WeatherWeatherItemWrapper _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Weather::WeatherItemWrapper' */
 void WeatherWeatherItemWrapper__Done( WeatherWeatherItemWrapper _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Weather::WeatherItemWrapper.OnSetItemClass()' */
@@ -1943,9 +1928,7 @@ void WeatherWeatherItemWrapper_OnSetItemClass( WeatherWeatherItemWrapper _this,
     _this->ItemClass = value;
 
     if ( CoreGroup__CountViews( _this ) > 0 )
-    {
       CoreGroup__Remove( _this, CoreGroup__FindNextView( _this, 0, 0 ));
-    }
 
     switch ( _this->ItemIdx )
     {
@@ -1965,8 +1948,7 @@ void WeatherWeatherItemWrapper_OnSetItemClass( WeatherWeatherItemWrapper _this,
       }
       break;
 
-      default : 
-        ;
+      default :; 
     }
   }
 }
@@ -1976,8 +1958,8 @@ EW_DEFINE_CLASS_VARIANTS( WeatherWeatherItemWrapper )
 EW_END_OF_CLASS_VARIANTS( WeatherWeatherItemWrapper )
 
 /* Virtual Method Table (VMT) for the class : 'Weather::WeatherItemWrapper' */
-EW_DEFINE_CLASS( WeatherWeatherItemWrapper, CoreGroup, _None, _None, _None, _None, 
-                 _None, _None, "Weather::WeatherItemWrapper" )
+EW_DEFINE_CLASS( WeatherWeatherItemWrapper, CoreGroup, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, "Weather::WeatherItemWrapper" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

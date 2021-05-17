@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -40,7 +40,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x0000001E, /* ratio 133.33 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x9E002A00, 0x00028000, 0x00188006,
@@ -62,21 +62,21 @@ static const XStringRes _Const0008 = { _StringsDefault0, 0x0002 };
 void TopTOP01_Disclaimer__Init( TopTOP01_Disclaimer _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( TopTOP01_Disclaimer );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( TopTOP01_Disclaimer );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->BlackBackground, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DisclaimerText, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->TopBar, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->IconWarning, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->WarningText, &_this->_XObject, 0 );
-  MenuPushButton__Init( &_this->AcceptButton, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->BlackBackground, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DisclaimerText, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->TopBar, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->IconWarning, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->WarningText, &_this->_.XObject, 0 );
+  MenuPushButton__Init( &_this->AcceptButton, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( TopTOP01_Disclaimer );
+  _this->_.VMT = EW_CLASS( TopTOP01_Disclaimer );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -122,7 +122,7 @@ void TopTOP01_Disclaimer__Init( TopTOP01_Disclaimer _this, XObject aLink, XHandl
 void TopTOP01_Disclaimer__ReInit( TopTOP01_Disclaimer _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->BlackBackground );
@@ -137,7 +137,7 @@ void TopTOP01_Disclaimer__ReInit( TopTOP01_Disclaimer _this )
 void TopTOP01_Disclaimer__Done( TopTOP01_Disclaimer _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->BlackBackground );
@@ -148,7 +148,7 @@ void TopTOP01_Disclaimer__Done( TopTOP01_Disclaimer _this )
   MenuPushButton__Done( &_this->AcceptButton );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -172,16 +172,14 @@ void TopTOP01_Disclaimer_Init( TopTOP01_Disclaimer _this, XHandle aArg )
    automatism by a user defined algorithm. */
 void TopTOP01_Disclaimer_UpdateLayout( TopTOP01_Disclaimer _this, XPoint aSize )
 {
-  XInt32 WarningIconGapPixel;
   XInt32 TotalWidth;
   XInt32 Margin;
   XInt32 Width;
   XRect NewBounds;
 
   CoreGroup_UpdateLayout((CoreGroup)_this, aSize );
-  WarningIconGapPixel = 3;
-  TotalWidth = ( EwGetRectW( _this->IconWarning.Super1.Bounds ) + WarningIconGapPixel ) 
-  + EwGetRectW( ViewsText_GetContentArea( &_this->WarningText ));
+  TotalWidth = ( EwGetRectW( _this->IconWarning.Super1.Bounds ) + 3 ) + EwGetRectW( 
+  ViewsText_GetContentArea( &_this->WarningText ));
   Margin = ( EwGetRectW( _this->Super3.Bounds ) - TotalWidth ) / 2;
   Width = EwGetRectW( _this->IconWarning.Super1.Bounds );
   NewBounds = _this->IconWarning.Super1.Bounds;
@@ -190,7 +188,7 @@ void TopTOP01_Disclaimer_UpdateLayout( TopTOP01_Disclaimer _this, XPoint aSize )
   CoreRectView__OnSetBounds( &_this->IconWarning, NewBounds );
   Width = EwGetRectW( _this->WarningText.Super1.Bounds );
   NewBounds = _this->WarningText.Super1.Bounds;
-  NewBounds.Point1.X = ( _this->IconWarning.Super1.Bounds.Point2.X + WarningIconGapPixel );
+  NewBounds.Point1.X = ( _this->IconWarning.Super1.Bounds.Point2.X + 3 );
   NewBounds.Point2.X = ( NewBounds.Point1.X + Width );
   CoreRectView__OnSetBounds( &_this->WarningText, NewBounds );
 }
@@ -217,8 +215,8 @@ EW_END_OF_CLASS_VARIANTS( TopTOP01_Disclaimer )
 
 /* Virtual Method Table (VMT) for the class : 'Top::TOP01_Disclaimer' */
 EW_DEFINE_CLASS( TopTOP01_Disclaimer, ComponentsBaseComponent, OnAcceptButtonClicked, 
-                 OnAcceptButtonClicked, BlackBackground, BlackBackground, _None, 
-                 _None, "Top::TOP01_Disclaimer" )
+                 OnAcceptButtonClicked, BlackBackground, BlackBackground, _.VMT, 
+                 _.VMT, "Top::TOP01_Disclaimer" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

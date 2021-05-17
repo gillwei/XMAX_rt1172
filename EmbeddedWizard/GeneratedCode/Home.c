@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -62,7 +62,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x0000006C, /* ratio 70.37 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x9E002400, 0x20026800, 0x18004546,
@@ -117,16 +117,16 @@ static const XRect _Const0013 = {{ 200, 14 }, { 227, 56 }};
 void HomeHOM11_TachoVisualizer__Init( HomeHOM11_TachoVisualizer _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  HomeBaseHome__Init( &_this->_Super, aLink, aArg );
+  HomeBaseHome__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( HomeHOM11_TachoVisualizer );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeHOM11_TachoVisualizer );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Title, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( HomeHOM11_TachoVisualizer );
+  _this->_.VMT = EW_CLASS( HomeHOM11_TachoVisualizer );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.HomeType = EnumHomeTypeTACHO_VISUALIZER;
@@ -145,7 +145,7 @@ void HomeHOM11_TachoVisualizer__Init( HomeHOM11_TachoVisualizer _this, XObject a
 void HomeHOM11_TachoVisualizer__ReInit( HomeHOM11_TachoVisualizer _this )
 {
   /* At first re-initialize the super class ... */
-  HomeBaseHome__ReInit( &_this->_Super );
+  HomeBaseHome__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Title );
@@ -155,13 +155,13 @@ void HomeHOM11_TachoVisualizer__ReInit( HomeHOM11_TachoVisualizer _this )
 void HomeHOM11_TachoVisualizer__Done( HomeHOM11_TachoVisualizer _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( HomeBaseHome );
+  _this->_.Super._.VMT = EW_CLASS( HomeBaseHome );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Title );
 
   /* Don't forget to deinitialize the super class ... */
-  HomeBaseHome__Done( &_this->_Super );
+  HomeBaseHome__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -180,10 +180,8 @@ void HomeHOM11_TachoVisualizer_Init( HomeHOM11_TachoVisualizer _this, XHandle aA
 void HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated( HomeHOM11_TachoVisualizer _this )
 {
   if ( 1 == _this->Super3.KeyHandler.RepetitionCount )
-  {
     CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( InfoINF01_MeterDisplaySettingMenu, 
     0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* Variants derived from the class : 'Home::HOM11_TachoVisualizer' */
@@ -192,7 +190,7 @@ EW_END_OF_CLASS_VARIANTS( HomeHOM11_TachoVisualizer )
 
 /* Virtual Method Table (VMT) for the class : 'Home::HOM11_TachoVisualizer' */
 EW_DEFINE_CLASS( HomeHOM11_TachoVisualizer, HomeBaseHome, Title, Title, Title, Title, 
-                 _None, _None, "Home::HOM11_TachoVisualizer" )
+                 _.VMT, _.VMT, "Home::HOM11_TachoVisualizer" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -241,16 +239,16 @@ EW_END_OF_CLASS( HomeHOM11_TachoVisualizer )
 void HomeHOM12_EcoVisualizer__Init( HomeHOM12_EcoVisualizer _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  HomeBaseHome__Init( &_this->_Super, aLink, aArg );
+  HomeBaseHome__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( HomeHOM12_EcoVisualizer );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeHOM12_EcoVisualizer );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Title, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( HomeHOM12_EcoVisualizer );
+  _this->_.VMT = EW_CLASS( HomeHOM12_EcoVisualizer );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.HomeType = EnumHomeTypeECO_VISUALIZER;
@@ -269,7 +267,7 @@ void HomeHOM12_EcoVisualizer__Init( HomeHOM12_EcoVisualizer _this, XObject aLink
 void HomeHOM12_EcoVisualizer__ReInit( HomeHOM12_EcoVisualizer _this )
 {
   /* At first re-initialize the super class ... */
-  HomeBaseHome__ReInit( &_this->_Super );
+  HomeBaseHome__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Title );
@@ -279,13 +277,13 @@ void HomeHOM12_EcoVisualizer__ReInit( HomeHOM12_EcoVisualizer _this )
 void HomeHOM12_EcoVisualizer__Done( HomeHOM12_EcoVisualizer _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( HomeBaseHome );
+  _this->_.Super._.VMT = EW_CLASS( HomeBaseHome );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Title );
 
   /* Don't forget to deinitialize the super class ... */
-  HomeBaseHome__Done( &_this->_Super );
+  HomeBaseHome__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -304,10 +302,8 @@ void HomeHOM12_EcoVisualizer_Init( HomeHOM12_EcoVisualizer _this, XHandle aArg )
 void HomeHOM12_EcoVisualizer_OnLongEnterKeyActivated( HomeHOM12_EcoVisualizer _this )
 {
   if ( 1 == _this->Super3.KeyHandler.RepetitionCount )
-  {
     CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( InfoINF01_MeterDisplaySettingMenu, 
     0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* Variants derived from the class : 'Home::HOM12_EcoVisualizer' */
@@ -316,7 +312,7 @@ EW_END_OF_CLASS_VARIANTS( HomeHOM12_EcoVisualizer )
 
 /* Virtual Method Table (VMT) for the class : 'Home::HOM12_EcoVisualizer' */
 EW_DEFINE_CLASS( HomeHOM12_EcoVisualizer, HomeBaseHome, Title, Title, Title, Title, 
-                 _None, _None, "Home::HOM12_EcoVisualizer" )
+                 _.VMT, _.VMT, "Home::HOM12_EcoVisualizer" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -365,16 +361,16 @@ EW_END_OF_CLASS( HomeHOM12_EcoVisualizer )
 void HomeHOM13_SpeedVisualizer__Init( HomeHOM13_SpeedVisualizer _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  HomeBaseHome__Init( &_this->_Super, aLink, aArg );
+  HomeBaseHome__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( HomeHOM13_SpeedVisualizer );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeHOM13_SpeedVisualizer );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Title, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( HomeHOM13_SpeedVisualizer );
+  _this->_.VMT = EW_CLASS( HomeHOM13_SpeedVisualizer );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.HomeType = EnumHomeTypeSPEED_VISUALIZER;
@@ -393,7 +389,7 @@ void HomeHOM13_SpeedVisualizer__Init( HomeHOM13_SpeedVisualizer _this, XObject a
 void HomeHOM13_SpeedVisualizer__ReInit( HomeHOM13_SpeedVisualizer _this )
 {
   /* At first re-initialize the super class ... */
-  HomeBaseHome__ReInit( &_this->_Super );
+  HomeBaseHome__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Title );
@@ -403,13 +399,13 @@ void HomeHOM13_SpeedVisualizer__ReInit( HomeHOM13_SpeedVisualizer _this )
 void HomeHOM13_SpeedVisualizer__Done( HomeHOM13_SpeedVisualizer _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( HomeBaseHome );
+  _this->_.Super._.VMT = EW_CLASS( HomeBaseHome );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Title );
 
   /* Don't forget to deinitialize the super class ... */
-  HomeBaseHome__Done( &_this->_Super );
+  HomeBaseHome__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -428,10 +424,8 @@ void HomeHOM13_SpeedVisualizer_Init( HomeHOM13_SpeedVisualizer _this, XHandle aA
 void HomeHOM13_SpeedVisualizer_OnLongEnterKeyActivated( HomeHOM13_SpeedVisualizer _this )
 {
   if ( 1 == _this->Super3.KeyHandler.RepetitionCount )
-  {
     CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( InfoINF01_MeterDisplaySettingMenu, 
     0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* Variants derived from the class : 'Home::HOM13_SpeedVisualizer' */
@@ -440,7 +434,7 @@ EW_END_OF_CLASS_VARIANTS( HomeHOM13_SpeedVisualizer )
 
 /* Virtual Method Table (VMT) for the class : 'Home::HOM13_SpeedVisualizer' */
 EW_DEFINE_CLASS( HomeHOM13_SpeedVisualizer, HomeBaseHome, Title, Title, Title, Title, 
-                 _None, _None, "Home::HOM13_SpeedVisualizer" )
+                 _.VMT, _.VMT, "Home::HOM13_SpeedVisualizer" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -489,30 +483,30 @@ EW_END_OF_CLASS( HomeHOM13_SpeedVisualizer )
 void HomeBaseHome__Init( HomeBaseHome _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( HomeBaseHome );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeBaseHome );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( HomeBaseHome );
+  _this->_.VMT = EW_CLASS( HomeBaseHome );
 }
 
 /* Re-Initializer for the class 'Home::BaseHome' */
 void HomeBaseHome__ReInit( HomeBaseHome _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Home::BaseHome' */
 void HomeBaseHome__Done( HomeBaseHome _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Home::BaseHome.OnShortEnterKeyActivated()' */
@@ -529,33 +523,26 @@ void HomeBaseHome_OnShortHomeKeyActivated( HomeBaseHome _this )
   ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
   if ( App != 0 )
-  {
     switch ( NextHomeType )
     {
       case EnumHomeTypeTACHO_VISUALIZER :
       case EnumHomeTypeSPEED_VISUALIZER :
       case EnumHomeTypeECO_VISUALIZER :
-      {
         ApplicationApplication_SlideInHome( App, NextHomeType );
-      }
       break;
 
       case EnumHomeTypeNAVI_DEFAULT_VIEW :
       case EnumHomeTypeNAVI_NEXT_TURN :
       case EnumHomeTypeNAVI_TURN_BY_TURN :
-      {
         ApplicationApplication_SwitchToHome( App, NextHomeType );
-      }
       break;
 
       case EnumHomeTypeVEHICLE_INFO :
         ApplicationApplication_SlideInHome( App, NextHomeType );
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* 'C' function for method : 'Home::BaseHome.ReturnToHome()' */
@@ -565,10 +552,8 @@ void HomeBaseHome_ReturnToHome( HomeBaseHome _this )
     0 ), MenuBaseMenuView );
 
   if ( MenuDialog != 0 )
-  {
     CoreGroup_DismissDialog((CoreGroup)_this, ((CoreGroup)MenuDialog ), 0, 0, 0, 
     EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* 'C' function for method : 'Home::BaseHome.GetNextHomeType()' */
@@ -586,23 +571,15 @@ XEnum HomeBaseHome_GetNextHomeType( HomeBaseHome _this, XEnum aCurrentHomeType )
     case EnumHomeTypeTACHO_VISUALIZER :
     case EnumHomeTypeECO_VISUALIZER :
     case EnumHomeTypeSPEED_VISUALIZER :
-    {
       if ( !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
           &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
-      {
         NextHomeType = EnumHomeTypeVEHICLE_INFO;
-      }
       else
         if ( !DeviceInterfaceNavigationDeviceClass_GetNaviAppInitSettingStatus( 
             EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
-        {
           NextHomeType = EnumHomeTypeVEHICLE_INFO;
-        }
         else
-        {
           NextHomeType = EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome;
-        }
-    }
     break;
 
     case EnumHomeTypeNAVI_DEFAULT_VIEW :
@@ -616,7 +593,6 @@ XEnum HomeBaseHome_GetNextHomeType( HomeBaseHome _this, XEnum aCurrentHomeType )
     break;
 
     case EnumHomeTypeVEHICLE_INFO :
-    {
       switch ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay )
       {
         case EnumMeterDisplayTACHOMETER :
@@ -631,14 +607,11 @@ XEnum HomeBaseHome_GetNextHomeType( HomeBaseHome _this, XEnum aCurrentHomeType )
           NextHomeType = EnumHomeTypeSPEED_VISUALIZER;
         break;
 
-        default : 
-          ;
+        default :; 
       }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return NextHomeType;
@@ -649,8 +622,8 @@ EW_DEFINE_CLASS_VARIANTS( HomeBaseHome )
 EW_END_OF_CLASS_VARIANTS( HomeBaseHome )
 
 /* Virtual Method Table (VMT) for the class : 'Home::BaseHome' */
-EW_DEFINE_CLASS( HomeBaseHome, ComponentsBaseMainBG, _None, _None, _None, _None, 
-                 _None, _None, "Home::BaseHome" )
+EW_DEFINE_CLASS( HomeBaseHome, ComponentsBaseMainBG, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, "Home::BaseHome" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -699,17 +672,17 @@ EW_END_OF_CLASS( HomeBaseHome )
 void HomeHOM03_VehicleInfo__Init( HomeHOM03_VehicleInfo _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  HomeBaseHome__Init( &_this->_Super, aLink, aArg );
+  HomeBaseHome__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( HomeHOM03_VehicleInfo );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeHOM03_VehicleInfo );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->IconInfo, &_this->_XObject, 0 );
-  HomeVehicleInfoMenu__Init( &_this->VehicleInfoMenu, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->IconInfo, &_this->_.XObject, 0 );
+  HomeVehicleInfoMenu__Init( &_this->VehicleInfoMenu, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( HomeHOM03_VehicleInfo );
+  _this->_.VMT = EW_CLASS( HomeHOM03_VehicleInfo );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.HomeType = EnumHomeTypeVEHICLE_INFO;
@@ -727,7 +700,7 @@ void HomeHOM03_VehicleInfo__Init( HomeHOM03_VehicleInfo _this, XObject aLink, XH
 void HomeHOM03_VehicleInfo__ReInit( HomeHOM03_VehicleInfo _this )
 {
   /* At first re-initialize the super class ... */
-  HomeBaseHome__ReInit( &_this->_Super );
+  HomeBaseHome__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->IconInfo );
@@ -738,14 +711,14 @@ void HomeHOM03_VehicleInfo__ReInit( HomeHOM03_VehicleInfo _this )
 void HomeHOM03_VehicleInfo__Done( HomeHOM03_VehicleInfo _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( HomeBaseHome );
+  _this->_.Super._.VMT = EW_CLASS( HomeBaseHome );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->IconInfo );
   HomeVehicleInfoMenu__Done( &_this->VehicleInfoMenu );
 
   /* Don't forget to deinitialize the super class ... */
-  HomeBaseHome__Done( &_this->_Super );
+  HomeBaseHome__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -776,10 +749,8 @@ void HomeHOM03_VehicleInfo_OnShortUpKeyActivated( HomeHOM03_VehicleInfo _this )
 void HomeHOM03_VehicleInfo_OnLongEnterKeyActivated( HomeHOM03_VehicleInfo _this )
 {
   if ( 1 == _this->Super3.KeyHandler.RepetitionCount )
-  {
     CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( SettingsSET46_VehicleInfoReset, 
     0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* Variants derived from the class : 'Home::HOM03_VehicleInfo' */
@@ -788,7 +759,7 @@ EW_END_OF_CLASS_VARIANTS( HomeHOM03_VehicleInfo )
 
 /* Virtual Method Table (VMT) for the class : 'Home::HOM03_VehicleInfo' */
 EW_DEFINE_CLASS( HomeHOM03_VehicleInfo, HomeBaseHome, IconInfo, IconInfo, IconInfo, 
-                 IconInfo, _None, _None, "Home::HOM03_VehicleInfo" )
+                 IconInfo, _.VMT, _.VMT, "Home::HOM03_VehicleInfo" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -837,22 +808,22 @@ EW_END_OF_CLASS( HomeHOM03_VehicleInfo )
 void HomeVehicleInfoMenu__Init( HomeVehicleInfoMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( HomeVehicleInfoMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeVehicleInfoMenu );
 
   /* ... then construct all embedded objects */
-  CoreVerticalList__Init( &_this->VerticalList, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider1, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider2, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->UpArrowIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DownArrowIcon, &_this->_XObject, 0 );
-  EffectsInt32Effect__Init( &_this->RowScrollEffect, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreVerticalList__Init( &_this->VerticalList, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider1, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider2, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->UpArrowIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DownArrowIcon, &_this->_.XObject, 0 );
+  EffectsInt32Effect__Init( &_this->RowScrollEffect, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( HomeVehicleInfoMenu );
+  _this->_.VMT = EW_CLASS( HomeVehicleInfoMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0007 );
@@ -898,7 +869,7 @@ void HomeVehicleInfoMenu__Init( HomeVehicleInfoMenu _this, XObject aLink, XHandl
 void HomeVehicleInfoMenu__ReInit( HomeVehicleInfoMenu _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreVerticalList__ReInit( &_this->VerticalList );
@@ -914,7 +885,7 @@ void HomeVehicleInfoMenu__ReInit( HomeVehicleInfoMenu _this )
 void HomeVehicleInfoMenu__Done( HomeVehicleInfoMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   CoreVerticalList__Done( &_this->VerticalList );
@@ -926,7 +897,7 @@ void HomeVehicleInfoMenu__Done( HomeVehicleInfoMenu _this )
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -942,15 +913,11 @@ void HomeVehicleInfoMenu_Init( HomeVehicleInfoMenu _this, XHandle aArg )
   HomeVehicleInfoMenu_SetArrowIcons( _this );
 
   if ( _this->VerticalList.NoOfItems < 3 )
-  {
     CoreRectView__OnSetBounds( &_this->VerticalList, EwSetRectH( _this->VerticalList.Super2.Bounds, 
     _this->VerticalList.ItemHeight * _this->VerticalList.NoOfItems ));
-  }
   else
-  {
     CoreRectView__OnSetBounds( &_this->VerticalList, EwSetRectH( _this->VerticalList.Super2.Bounds, 
     EwGetRectH( _this->Super2.Bounds )));
-  }
 }
 
 /* This method is called by 'VerticalList' every time the list loads or updates 
@@ -1011,7 +978,6 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
     switch ( MenuItem )
     {
       case EnumVehicleInfoMenuItemAVG_SPEED :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionAVG_SPEED ))
@@ -1019,11 +985,9 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumVehicleInfoMenuItemAVG_FUEL :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionAVG_FUEL ))
@@ -1031,11 +995,9 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumVehicleInfoMenuItemINST_FUEL :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionCURRENT_FUEL ))
@@ -1043,11 +1005,9 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumVehicleInfoMenuItemRANGE :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionRANGE_DISTANCE ))
@@ -1055,11 +1015,9 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumVehicleInfoMenuItemFUEL_CONSUMPTION :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionFUEL_CONSUMPTION ))
@@ -1067,11 +1025,9 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumVehicleInfoMenuItemAIR_TEMPERATURE :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionAIR_TEMPERATURE ))
@@ -1079,11 +1035,9 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumVehicleInfoMenuItemCOOLANT_TEMPERATURE :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionCOOLANT ))
@@ -1091,11 +1045,9 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumVehicleInfoMenuItemBATTERY :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionBATTERY_VOLTAGE ))
@@ -1103,11 +1055,9 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumVehicleInfoMenuItemTIRE_FRONT :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionTIRE_FRONT ))
@@ -1115,11 +1065,9 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumVehicleInfoMenuItemTIRE_REAR :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionTIRE_REAR ))
@@ -1127,11 +1075,9 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumVehicleInfoMenuItemTIRE_FRONT_RIGHT :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionTIRE_REAR ))
@@ -1139,11 +1085,9 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumVehicleInfoMenuItemTIRE_FRONT_LEFT :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionTIRE_FRONT_LEFT ))
@@ -1151,7 +1095,6 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
         }
-      }
       break;
 
       default : 
@@ -1228,8 +1171,7 @@ XString HomeVehicleInfoMenu_LoadItemTitle( HomeVehicleInfoMenu _this, XInt32 aIt
       Title = EwLoadString( &StringsHOM03_CRUISE );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return Title;
@@ -1239,22 +1181,14 @@ XString HomeVehicleInfoMenu_LoadItemTitle( HomeVehicleInfoMenu _this, XInt32 aIt
 void HomeVehicleInfoMenu_SetDividers( HomeVehicleInfoMenu _this )
 {
   if ( 1 <= _this->VerticalList.NoOfItems )
-  {
     ViewsImage_OnSetVisible( &_this->Divider1, 1 );
-  }
   else
-  {
     ViewsImage_OnSetVisible( &_this->Divider1, 0 );
-  }
 
   if ( 2 <= _this->VerticalList.NoOfItems )
-  {
     ViewsImage_OnSetVisible( &_this->Divider2, 1 );
-  }
   else
-  {
     ViewsImage_OnSetVisible( &_this->Divider2, 0 );
-  }
 }
 
 /* 'C' function for method : 'Home::VehicleInfoMenu.LoadItemUnitIconBmp()' */
@@ -1268,22 +1202,15 @@ ResourcesBitmap HomeVehicleInfoMenu_LoadItemUnitIconBmp( HomeVehicleInfoMenu _th
     case EnumVehicleInfoMenuItemAVG_SPEED :
     case EnumVehicleInfoMenuItemRANGE :
     case EnumVehicleInfoMenuItemCRUISE :
-    {
       if ( EnumMileageSettingItemKM == DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( 
           EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
-      {
         IconBitmap = EwLoadResource( &ResourceIconUnitKM, ResourcesBitmap );
-      }
       else
-      {
         IconBitmap = EwLoadResource( &ResourceIconUnitMile, ResourcesBitmap );
-      }
-    }
     break;
 
     case EnumVehicleInfoMenuItemAVG_FUEL :
     case EnumVehicleInfoMenuItemINST_FUEL :
-    {
       switch ( DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( EwGetAutoObject( 
               &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
       {
@@ -1300,10 +1227,8 @@ ResourcesBitmap HomeVehicleInfoMenu_LoadItemUnitIconBmp( HomeVehicleInfoMenu _th
           IconBitmap = EwLoadResource( &ResourceIconUnitMPG, ResourcesBitmap );
         break;
 
-        default : 
-          ;
+        default :; 
       }
-    }
     break;
 
     case EnumVehicleInfoMenuItemTRIP_TIME :
@@ -1311,7 +1236,6 @@ ResourcesBitmap HomeVehicleInfoMenu_LoadItemUnitIconBmp( HomeVehicleInfoMenu _th
     break;
 
     case EnumVehicleInfoMenuItemFUEL_CONSUMPTION :
-    {
       switch ( DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( EwGetAutoObject( 
               &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
       {
@@ -1325,25 +1249,17 @@ ResourcesBitmap HomeVehicleInfoMenu_LoadItemUnitIconBmp( HomeVehicleInfoMenu _th
           IconBitmap = EwLoadResource( &ResourceIconUnitGal, ResourcesBitmap );
         break;
 
-        default : 
-          ;
+        default :; 
       }
-    }
     break;
 
     case EnumVehicleInfoMenuItemAIR_TEMPERATURE :
     case EnumVehicleInfoMenuItemCOOLANT_TEMPERATURE :
-    {
       if ( EnumTemperatureSettingItemTEMP_C == DeviceInterfaceVehicleDeviceClass_OnGetTemperatureUnit( 
           EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
-      {
         IconBitmap = EwLoadResource( &ResourceIconUnitDegC, ResourcesBitmap );
-      }
       else
-      {
         IconBitmap = EwLoadResource( &ResourceIconUnitDegF, ResourcesBitmap );
-      }
-    }
     break;
 
     case EnumVehicleInfoMenuItemBATTERY :
@@ -1354,7 +1270,6 @@ ResourcesBitmap HomeVehicleInfoMenu_LoadItemUnitIconBmp( HomeVehicleInfoMenu _th
     case EnumVehicleInfoMenuItemTIRE_REAR :
     case EnumVehicleInfoMenuItemTIRE_FRONT_RIGHT :
     case EnumVehicleInfoMenuItemTIRE_FRONT_LEFT :
-    {
       switch ( DeviceInterfaceVehicleDeviceClass_OnGetPressureUnit( EwGetAutoObject( 
               &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
       {
@@ -1370,14 +1285,11 @@ ResourcesBitmap HomeVehicleInfoMenu_LoadItemUnitIconBmp( HomeVehicleInfoMenu _th
           IconBitmap = EwLoadResource( &ResourceIconUnitPSI, ResourcesBitmap );
         break;
 
-        default : 
-          ;
+        default :; 
       }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return IconBitmap;
@@ -1443,8 +1355,7 @@ XString HomeVehicleInfoMenu_LoadItemValue( HomeVehicleInfoMenu _this, XInt32 aIt
       &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return ValueStr;
@@ -1494,10 +1405,8 @@ XString HomeVehicleInfoMenu_LoadItemHour( HomeVehicleInfoMenu _this, XInt32 aIte
 
   if ( EnumVehicleInfoMenuItemTRIP_TIME == _this->Items[ EwCheckIndex( aItemNo, 
       14 )])
-  {
     HourString = DeviceInterfaceVehicleDeviceClass_OnGetTripTimeHourStr( EwGetAutoObject( 
     &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
-  }
 
   return HourString;
 }
@@ -1509,10 +1418,8 @@ XString HomeVehicleInfoMenu_LoadItemMinute( HomeVehicleInfoMenu _this, XInt32 aI
 
   if ( EnumVehicleInfoMenuItemTRIP_TIME == _this->Items[ EwCheckIndex( aItemNo, 
       14 )])
-  {
     MinuteString = DeviceInterfaceVehicleDeviceClass_OnGetTripTimeMinuteStr( EwGetAutoObject( 
     &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
-  }
 
   return MinuteString;
 }
@@ -1530,7 +1437,6 @@ void HomeVehicleInfoMenu_OnVehicleDataReceivedSlot( HomeVehicleInfoMenu _this, X
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
   if ( VehicleData != 0 )
-  {
     switch ( VehicleData->RxType )
     {
       case EnumVehicleRxTypeTEMPERATURE_UNIT :
@@ -1621,10 +1527,8 @@ void HomeVehicleInfoMenu_OnVehicleDataReceivedSlot( HomeVehicleInfoMenu _this, X
         HomeVehicleInfoMenu_ReloadItem( _this, EnumVehicleInfoMenuItemCRUISE );
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* 'C' function for method : 'Home::VehicleInfoMenu.ReloadItem()' */
@@ -1633,13 +1537,11 @@ void HomeVehicleInfoMenu_ReloadItem( HomeVehicleInfoMenu _this, XEnum aVehicleIn
   XInt32 i;
 
   for ( i = 0; i < _this->VerticalList.NoOfItems; i++ )
-  {
     if (( i < 14 ) && ( aVehicleInfoItem == _this->Items[ EwCheckIndex( i, 14 )]))
     {
       CoreVerticalList_InvalidateItems( &_this->VerticalList, i, i );
       break;
     }
-  }
 }
 
 /* Variants derived from the class : 'Home::VehicleInfoMenu' */
@@ -1685,21 +1587,21 @@ EW_END_OF_CLASS( HomeVehicleInfoMenu )
 void HomeItemVehicleInfo__Init( HomeItemVehicleInfo _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( HomeItemVehicleInfo );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeItemVehicleInfo );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Title, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->IconUnit, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->Value, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->MinuteText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->HourText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->HourIcon, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->IconUnit, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->Value, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->MinuteText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->HourText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->HourIcon, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( HomeItemVehicleInfo );
+  _this->_.VMT = EW_CLASS( HomeItemVehicleInfo );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const000C );
@@ -1758,7 +1660,7 @@ void HomeItemVehicleInfo__Init( HomeItemVehicleInfo _this, XObject aLink, XHandl
 void HomeItemVehicleInfo__ReInit( HomeItemVehicleInfo _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Title );
@@ -1773,7 +1675,7 @@ void HomeItemVehicleInfo__ReInit( HomeItemVehicleInfo _this )
 void HomeItemVehicleInfo__Done( HomeItemVehicleInfo _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Title );
@@ -1784,7 +1686,7 @@ void HomeItemVehicleInfo__Done( HomeItemVehicleInfo _this )
   ViewsImage__Done( &_this->HourIcon );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'Home::ItemVehicleInfo' */
@@ -1793,7 +1695,7 @@ EW_END_OF_CLASS_VARIANTS( HomeItemVehicleInfo )
 
 /* Virtual Method Table (VMT) for the class : 'Home::ItemVehicleInfo' */
 EW_DEFINE_CLASS( HomeItemVehicleInfo, ComponentsBaseComponent, Title, Title, Title, 
-                 Title, _None, _None, "Home::ItemVehicleInfo" )
+                 Title, _.VMT, _.VMT, "Home::ItemVehicleInfo" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

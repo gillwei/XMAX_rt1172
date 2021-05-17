@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -60,7 +60,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x00000038, /* ratio 92.86 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x9E002800, 0x0300043C, 0x18000C80,
@@ -103,20 +103,20 @@ static const XRect _Const001D = {{ 0, 36 }, { 480, 38 }};
 void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( PopPOP08_WeatherLoadingUI );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP08_WeatherLoadingUI );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->LoadingText, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->WeatherLoadingObserver, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->LoadingAnimation, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->ConnectionFailedTimer, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->MotoConConnectionEventHandler, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->LoadingText, &_this->_.XObject, 0 );
+  CorePropertyObserver__Init( &_this->WeatherLoadingObserver, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->ConnectionFailedTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->MotoConConnectionEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( PopPOP08_WeatherLoadingUI );
+  _this->_.VMT = EW_CLASS( PopPOP08_WeatherLoadingUI );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->LoadingText, _Const0000 );
@@ -148,7 +148,7 @@ void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject a
 void PopPOP08_WeatherLoadingUI__ReInit( PopPOP08_WeatherLoadingUI _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->LoadingText );
@@ -162,7 +162,7 @@ void PopPOP08_WeatherLoadingUI__ReInit( PopPOP08_WeatherLoadingUI _this )
 void PopPOP08_WeatherLoadingUI__Done( PopPOP08_WeatherLoadingUI _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->LoadingText );
@@ -172,7 +172,7 @@ void PopPOP08_WeatherLoadingUI__Done( PopPOP08_WeatherLoadingUI _this )
   CoreSystemEventHandler__Done( &_this->MotoConConnectionEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -230,15 +230,10 @@ void PopPOP08_WeatherLoadingUI_OnMotoConConnectionUpdateEvent( PopPOP08_WeatherL
 
   MotoConContext = EwCastObject( _this->MotoConConnectionEventHandler.Context, DeviceInterfaceMotoConContext );
 
-  if ( EnumMotoConRxEventCONNECTION_STATUS == MotoConContext->RxEvent )
-  {
-    if ( !DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( EwGetAutoObject( 
-        &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
-    {
-      EwSignal( EwNewSlot( _this, PopPOP08_WeatherLoadingUI_OnConnectionFailedUpdateSlot ), 
-        ((XObject)_this ));
-    }
-  }
+  if (( EnumMotoConRxEventCONNECTION_STATUS == MotoConContext->RxEvent ) && !DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( 
+      EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
+    EwSignal( EwNewSlot( _this, PopPOP08_WeatherLoadingUI_OnConnectionFailedUpdateSlot ), 
+      ((XObject)_this ));
 }
 
 /* Variants derived from the class : 'Pop::POP08_WeatherLoadingUI' */
@@ -247,7 +242,7 @@ EW_END_OF_CLASS_VARIANTS( PopPOP08_WeatherLoadingUI )
 
 /* Virtual Method Table (VMT) for the class : 'Pop::POP08_WeatherLoadingUI' */
 EW_DEFINE_CLASS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG, LoadingText, LoadingText, 
-                 LoadingText, LoadingText, _None, _None, "Pop::POP08_WeatherLoadingUI" )
+                 LoadingText, LoadingText, _.VMT, _.VMT, "Pop::POP08_WeatherLoadingUI" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -296,17 +291,17 @@ EW_END_OF_CLASS( PopPOP08_WeatherLoadingUI )
 void PopPOP09_POP14_BleConnectionErrorUI__Init( PopPOP09_POP14_BleConnectionErrorUI _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( PopPOP09_POP14_BleConnectionErrorUI );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP09_POP14_BleConnectionErrorUI );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->ConnectionFailedMessage, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->CountDownTimer, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->ConnectionFailedMessage, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( PopPOP09_POP14_BleConnectionErrorUI );
+  _this->_.VMT = EW_CLASS( PopPOP09_POP14_BleConnectionErrorUI );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->ConnectionFailedMessage, _Const0002 );
@@ -323,7 +318,7 @@ void PopPOP09_POP14_BleConnectionErrorUI__Init( PopPOP09_POP14_BleConnectionErro
 void PopPOP09_POP14_BleConnectionErrorUI__ReInit( PopPOP09_POP14_BleConnectionErrorUI _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ConnectionFailedMessage );
@@ -334,14 +329,14 @@ void PopPOP09_POP14_BleConnectionErrorUI__ReInit( PopPOP09_POP14_BleConnectionEr
 void PopPOP09_POP14_BleConnectionErrorUI__Done( PopPOP09_POP14_BleConnectionErrorUI _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->ConnectionFailedMessage );
   CoreTimer__Done( &_this->CountDownTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Pop::POP09_POP14_BleConnectionErrorUI.OnLauncherScreenUpdateSlot()' */
@@ -357,9 +352,7 @@ void PopPOP09_POP14_BleConnectionErrorUI_OnLauncherScreenUpdateSlot( PopPOP09_PO
   App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
   if ( App != 0 )
-  {
     ApplicationApplication_ReturnToLauncher( App );
-  }
 }
 
 /* Variants derived from the class : 'Pop::POP09_POP14_BleConnectionErrorUI' */
@@ -369,7 +362,7 @@ EW_END_OF_CLASS_VARIANTS( PopPOP09_POP14_BleConnectionErrorUI )
 /* Virtual Method Table (VMT) for the class : 'Pop::POP09_POP14_BleConnectionErrorUI' */
 EW_DEFINE_CLASS( PopPOP09_POP14_BleConnectionErrorUI, ComponentsBaseMainBG, ConnectionFailedMessage, 
                  ConnectionFailedMessage, ConnectionFailedMessage, ConnectionFailedMessage, 
-                 _None, _None, "Pop::POP09_POP14_BleConnectionErrorUI" )
+                 _.VMT, _.VMT, "Pop::POP09_POP14_BleConnectionErrorUI" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -418,24 +411,24 @@ EW_END_OF_CLASS( PopPOP09_POP14_BleConnectionErrorUI )
 void PopPOP02_ConnectionError__Init( PopPOP02_ConnectionError _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( PopPOP02_ConnectionError );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP02_ConnectionError );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->BlackBackground, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->CheckText, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->TopBar, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ErrorIcon, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->ConnectionErrText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ErrorBTIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ErrorNavigationIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ErrorPhoneLockIcon, &_this->_XObject, 0 );
-  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->BlackBackground, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->CheckText, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->TopBar, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ErrorIcon, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ConnectionErrText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ErrorBTIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ErrorNavigationIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ErrorPhoneLockIcon, &_this->_.XObject, 0 );
+  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( PopPOP02_ConnectionError );
+  _this->_.VMT = EW_CLASS( PopPOP02_ConnectionError );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0003 );
@@ -510,7 +503,7 @@ void PopPOP02_ConnectionError__Init( PopPOP02_ConnectionError _this, XObject aLi
 void PopPOP02_ConnectionError__ReInit( PopPOP02_ConnectionError _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->BlackBackground );
@@ -528,7 +521,7 @@ void PopPOP02_ConnectionError__ReInit( PopPOP02_ConnectionError _this )
 void PopPOP02_ConnectionError__Done( PopPOP02_ConnectionError _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->BlackBackground );
@@ -542,7 +535,7 @@ void PopPOP02_ConnectionError__Done( PopPOP02_ConnectionError _this )
   MenuUpDownPushButtonSet__Done( &_this->UpDownPushButtonSet );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -567,16 +560,14 @@ void PopPOP02_ConnectionError_Init( PopPOP02_ConnectionError _this, XHandle aArg
 void PopPOP02_ConnectionError_UpdateLayout( PopPOP02_ConnectionError _this, XPoint 
   aSize )
 {
-  XInt32 TextIconGapPixel;
   XInt32 TotalWidth;
   XInt32 Margin;
   XInt32 Width;
   XRect NewBounds;
 
   CoreGroup_UpdateLayout((CoreGroup)_this, aSize );
-  TextIconGapPixel = 3;
-  TotalWidth = ( EwGetRectW( _this->ErrorIcon.Super1.Bounds ) + TextIconGapPixel ) 
-  + EwGetRectW( ViewsText_GetContentArea( &_this->ConnectionErrText ));
+  TotalWidth = ( EwGetRectW( _this->ErrorIcon.Super1.Bounds ) + 3 ) + EwGetRectW( 
+  ViewsText_GetContentArea( &_this->ConnectionErrText ));
   Margin = ( EwGetRectW( _this->Super3.Bounds ) - TotalWidth ) / 2;
   Width = EwGetRectW( _this->ErrorIcon.Super1.Bounds );
   NewBounds = _this->ErrorIcon.Super1.Bounds;
@@ -585,7 +576,7 @@ void PopPOP02_ConnectionError_UpdateLayout( PopPOP02_ConnectionError _this, XPoi
   CoreRectView__OnSetBounds( &_this->ErrorIcon, NewBounds );
   Width = EwGetRectW( _this->ConnectionErrText.Super1.Bounds );
   NewBounds = _this->ConnectionErrText.Super1.Bounds;
-  NewBounds.Point1.X = ( _this->ErrorIcon.Super1.Bounds.Point2.X + TextIconGapPixel );
+  NewBounds.Point1.X = ( _this->ErrorIcon.Super1.Bounds.Point2.X + 3 );
   NewBounds.Point2.X = ( NewBounds.Point1.X + Width );
   CoreRectView__OnSetBounds( &_this->ConnectionErrText, NewBounds );
 }
@@ -616,9 +607,7 @@ void PopPOP02_ConnectionError_OnOkButtonActivatedSlot( PopPOP02_ConnectionError 
   App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
   if ( App != 0 )
-  {
     ApplicationApplication_SwitchToHome( App, EnumHomeTypeVEHICLE_INFO );
-  }
 }
 
 /* 'C' function for method : 'Pop::POP02_ConnectionError.OnDetailsButtonActivatedSlot()' */
@@ -638,7 +627,7 @@ EW_END_OF_CLASS_VARIANTS( PopPOP02_ConnectionError )
 
 /* Virtual Method Table (VMT) for the class : 'Pop::POP02_ConnectionError' */
 EW_DEFINE_CLASS( PopPOP02_ConnectionError, ComponentsBaseComponent, BlackBackground, 
-                 BlackBackground, BlackBackground, BlackBackground, _None, _None, 
+                 BlackBackground, BlackBackground, BlackBackground, _.VMT, _.VMT, 
                  "Pop::POP02_ConnectionError" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
@@ -688,26 +677,26 @@ EW_END_OF_CLASS( PopPOP02_ConnectionError )
 void PopPOP07_TROUBLE_SHOOTING__Init( PopPOP07_TROUBLE_SHOOTING _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( PopPOP07_TROUBLE_SHOOTING );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP07_TROUBLE_SHOOTING );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ErrorPhoneLockIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ErrorBTIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ErrorNavigationIcon, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TroubleShootingText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TroubleShootingText1, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TroubleShootingText2, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TroubleShootingText3, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider1, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider2, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider3, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ErrorPhoneLockIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ErrorBTIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ErrorNavigationIcon, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TroubleShootingText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TroubleShootingText1, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TroubleShootingText2, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TroubleShootingText3, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider1, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider2, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider3, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( PopPOP07_TROUBLE_SHOOTING );
+  _this->_.VMT = EW_CLASS( PopPOP07_TROUBLE_SHOOTING );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->Super1.BlackBG, _Const0003 );
@@ -802,7 +791,7 @@ void PopPOP07_TROUBLE_SHOOTING__Init( PopPOP07_TROUBLE_SHOOTING _this, XObject a
 void PopPOP07_TROUBLE_SHOOTING__ReInit( PopPOP07_TROUBLE_SHOOTING _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->Divider );
@@ -822,7 +811,7 @@ void PopPOP07_TROUBLE_SHOOTING__ReInit( PopPOP07_TROUBLE_SHOOTING _this )
 void PopPOP07_TROUBLE_SHOOTING__Done( PopPOP07_TROUBLE_SHOOTING _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->Divider );
@@ -838,7 +827,7 @@ void PopPOP07_TROUBLE_SHOOTING__Done( PopPOP07_TROUBLE_SHOOTING _this )
   ViewsImage__Done( &_this->Divider3 );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Pop::POP07_TROUBLE_SHOOTING.OnShortEnterKeyActivated()' */
@@ -847,9 +836,7 @@ void PopPOP07_TROUBLE_SHOOTING_OnShortEnterKeyActivated( PopPOP07_TROUBLE_SHOOTI
   ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
   if ( App != 0 )
-  {
     ApplicationApplication_SwitchToHome( App, EnumHomeTypeVEHICLE_INFO );
-  }
 }
 
 /* 'C' function for method : 'Pop::POP07_TROUBLE_SHOOTING.OnLongHomeKeyActivated()' */
@@ -858,9 +845,7 @@ void PopPOP07_TROUBLE_SHOOTING_OnLongHomeKeyActivated( PopPOP07_TROUBLE_SHOOTING
   ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
   if ( App != 0 )
-  {
     ApplicationApplication_SwitchToHome( App, EnumHomeTypeVEHICLE_INFO );
-  }
 }
 
 /* Variants derived from the class : 'Pop::POP07_TROUBLE_SHOOTING' */
@@ -869,7 +854,7 @@ EW_END_OF_CLASS_VARIANTS( PopPOP07_TROUBLE_SHOOTING )
 
 /* Virtual Method Table (VMT) for the class : 'Pop::POP07_TROUBLE_SHOOTING' */
 EW_DEFINE_CLASS( PopPOP07_TROUBLE_SHOOTING, ComponentsBaseMainBG, Divider, Divider, 
-                 Divider, Divider, _None, _None, "Pop::POP07_TROUBLE_SHOOTING" )
+                 Divider, Divider, _.VMT, _.VMT, "Pop::POP07_TROUBLE_SHOOTING" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -918,18 +903,18 @@ EW_END_OF_CLASS( PopPOP07_TROUBLE_SHOOTING )
 void PopPOP01_PleaseWait__Init( PopPOP01_PleaseWait _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( PopPOP01_PleaseWait );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP01_PleaseWait );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->LoadingText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->LoadingAnimation, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->ConnectionFailedTimer, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->LoadingText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->ConnectionFailedTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( PopPOP01_PleaseWait );
+  _this->_.VMT = EW_CLASS( PopPOP01_PleaseWait );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->Super1.BlackBG, _Const0003 );
@@ -957,7 +942,7 @@ void PopPOP01_PleaseWait__Init( PopPOP01_PleaseWait _this, XObject aLink, XHandl
 void PopPOP01_PleaseWait__ReInit( PopPOP01_PleaseWait _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->LoadingText );
@@ -969,7 +954,7 @@ void PopPOP01_PleaseWait__ReInit( PopPOP01_PleaseWait _this )
 void PopPOP01_PleaseWait__Done( PopPOP01_PleaseWait _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->LoadingText );
@@ -977,7 +962,7 @@ void PopPOP01_PleaseWait__Done( PopPOP01_PleaseWait _this )
   CoreTimer__Done( &_this->ConnectionFailedTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -998,9 +983,7 @@ void PopPOP01_PleaseWait_OnShortHomeKeyActivated( PopPOP01_PleaseWait _this )
   ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
   if ( App != 0 )
-  {
     ApplicationApplication_SwitchToMeterHome( App );
-  }
 }
 
 /* 'C' function for method : 'Pop::POP01_PleaseWait.OnLongHomeKeyActivated()' */
@@ -1009,9 +992,7 @@ void PopPOP01_PleaseWait_OnLongHomeKeyActivated( PopPOP01_PleaseWait _this )
   ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
   if ( App != 0 )
-  {
     ApplicationApplication_SwitchToMeterHome( App );
-  }
 }
 
 /* 'C' function for method : 'Pop::POP01_PleaseWait.OnConnectionFailedUpdateSlot()' */
@@ -1022,10 +1003,8 @@ void PopPOP01_PleaseWait_OnConnectionFailedUpdateSlot( PopPOP01_PleaseWait _this
   EW_UNUSED_ARG( sender );
 
   if ( _this->Super5.Owner != 0 )
-  {
     CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( PopPOP02_ConnectionError, 
     0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* Variants derived from the class : 'Pop::POP01_PleaseWait' */
@@ -1034,7 +1013,7 @@ EW_END_OF_CLASS_VARIANTS( PopPOP01_PleaseWait )
 
 /* Virtual Method Table (VMT) for the class : 'Pop::POP01_PleaseWait' */
 EW_DEFINE_CLASS( PopPOP01_PleaseWait, ComponentsBaseMainBG, LoadingText, LoadingText, 
-                 LoadingText, LoadingText, _None, _None, "Pop::POP01_PleaseWait" )
+                 LoadingText, LoadingText, _.VMT, _.VMT, "Pop::POP01_PleaseWait" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1083,18 +1062,18 @@ EW_END_OF_CLASS( PopPOP01_PleaseWait )
 void PopPOP04_Reset__Init( PopPOP04_Reset _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( PopPOP04_Reset );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP04_Reset );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->ConnectionFailedMessage, &_this->_XObject, 0 );
-  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->ConnectionFailedMessage, &_this->_.XObject, 0 );
+  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( PopPOP04_Reset );
+  _this->_.VMT = EW_CLASS( PopPOP04_Reset );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->ConnectionFailedMessage, _Const001C );
@@ -1125,7 +1104,7 @@ void PopPOP04_Reset__Init( PopPOP04_Reset _this, XObject aLink, XHandle aArg )
 void PopPOP04_Reset__ReInit( PopPOP04_Reset _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ConnectionFailedMessage );
@@ -1137,7 +1116,7 @@ void PopPOP04_Reset__ReInit( PopPOP04_Reset _this )
 void PopPOP04_Reset__Done( PopPOP04_Reset _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->ConnectionFailedMessage );
@@ -1145,7 +1124,7 @@ void PopPOP04_Reset__Done( PopPOP04_Reset _this )
   ViewsImage__Done( &_this->Divider );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Pop::POP04_Reset.OnOkButtonActivatedSlot()' */
@@ -1224,17 +1203,17 @@ EW_END_OF_CLASS( PopPOP04_Reset )
 void PopPOP17_AppInitSettingError__Init( PopPOP17_AppInitSettingError _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( PopPOP17_AppInitSettingError );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP17_AppInitSettingError );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->AppInitSettingFailedMessage, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->CountDownTimer, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->AppInitSettingFailedMessage, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( PopPOP17_AppInitSettingError );
+  _this->_.VMT = EW_CLASS( PopPOP17_AppInitSettingError );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->AppInitSettingFailedMessage, _Const0002 );
@@ -1252,7 +1231,7 @@ void PopPOP17_AppInitSettingError__Init( PopPOP17_AppInitSettingError _this, XOb
 void PopPOP17_AppInitSettingError__ReInit( PopPOP17_AppInitSettingError _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->AppInitSettingFailedMessage );
@@ -1263,14 +1242,14 @@ void PopPOP17_AppInitSettingError__ReInit( PopPOP17_AppInitSettingError _this )
 void PopPOP17_AppInitSettingError__Done( PopPOP17_AppInitSettingError _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->AppInitSettingFailedMessage );
   CoreTimer__Done( &_this->CountDownTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Pop::POP17_AppInitSettingError.OnLauncherScreenUpdateSlot()' */
@@ -1286,9 +1265,7 @@ void PopPOP17_AppInitSettingError_OnLauncherScreenUpdateSlot( PopPOP17_AppInitSe
   App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
   if ( App != 0 )
-  {
     ApplicationApplication_ReturnToLauncher( App );
-  }
 }
 
 /* Variants derived from the class : 'Pop::POP17_AppInitSettingError' */
@@ -1298,7 +1275,7 @@ EW_END_OF_CLASS_VARIANTS( PopPOP17_AppInitSettingError )
 /* Virtual Method Table (VMT) for the class : 'Pop::POP17_AppInitSettingError' */
 EW_DEFINE_CLASS( PopPOP17_AppInitSettingError, ComponentsBaseMainBG, AppInitSettingFailedMessage, 
                  AppInitSettingFailedMessage, AppInitSettingFailedMessage, AppInitSettingFailedMessage, 
-                 _None, _None, "Pop::POP17_AppInitSettingError" )
+                 _.VMT, _.VMT, "Pop::POP17_AppInitSettingError" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1347,17 +1324,17 @@ EW_END_OF_CLASS( PopPOP17_AppInitSettingError )
 void PopPOP03_HomeOfficeSettingError__Init( PopPOP03_HomeOfficeSettingError _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( PopPOP03_HomeOfficeSettingError );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP03_HomeOfficeSettingError );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->HomeOfficeSettingFailedMessage, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->CountDownTimer, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->HomeOfficeSettingFailedMessage, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( PopPOP03_HomeOfficeSettingError );
+  _this->_.VMT = EW_CLASS( PopPOP03_HomeOfficeSettingError );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->HomeOfficeSettingFailedMessage, _Const0002 );
@@ -1375,7 +1352,7 @@ void PopPOP03_HomeOfficeSettingError__Init( PopPOP03_HomeOfficeSettingError _thi
 void PopPOP03_HomeOfficeSettingError__ReInit( PopPOP03_HomeOfficeSettingError _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->HomeOfficeSettingFailedMessage );
@@ -1386,14 +1363,14 @@ void PopPOP03_HomeOfficeSettingError__ReInit( PopPOP03_HomeOfficeSettingError _t
 void PopPOP03_HomeOfficeSettingError__Done( PopPOP03_HomeOfficeSettingError _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->HomeOfficeSettingFailedMessage );
   CoreTimer__Done( &_this->CountDownTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Pop::POP03_HomeOfficeSettingError.OnLauncherScreenUpdateSlot()' */
@@ -1435,7 +1412,7 @@ EW_END_OF_CLASS_VARIANTS( PopPOP03_HomeOfficeSettingError )
 /* Virtual Method Table (VMT) for the class : 'Pop::POP03_HomeOfficeSettingError' */
 EW_DEFINE_CLASS( PopPOP03_HomeOfficeSettingError, ComponentsBaseMainBG, HomeOfficeSettingFailedMessage, 
                  HomeOfficeSettingFailedMessage, HomeOfficeSettingFailedMessage, 
-                 HomeOfficeSettingFailedMessage, ErrorMessage, _None, "Pop::POP03_HomeOfficeSettingError" )
+                 HomeOfficeSettingFailedMessage, ErrorMessage, _.VMT, "Pop::POP03_HomeOfficeSettingError" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

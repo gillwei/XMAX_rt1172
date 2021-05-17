@@ -137,6 +137,14 @@
 #endif
 
 
+/* Drawing operations use Native or optionally Screen surfaces as destination.
+   Verify whether at least one of the surface types is available. */
+#if defined EW_DONT_USE_NATIVE_SURFACES_AS_DESTINATION &&                      \
+   !defined EW_USE_PIXEL_FORMAT_SCREEN
+  #error "No surface type able to serve as destination in drawing operations."
+#endif
+
+
 /* Platform specific drawing operations involving screen surface as the
    destination? */
 #if defined EwGfxScreenDrawLineSolid ||                                        \
@@ -576,6 +584,71 @@
 #endif
 
 
+/* Check if there is at least one drawing operation redirected to low-level
+   driver. If not, the mapping to driver can be eliminated. */
+#if defined EwNeedNativeSurface || defined EwNeedScreenSurface
+  #define EW_NEED_DRIVER_TABLES
+#endif
+
+
+/* Ignore all Software Pixel Driver worker functions responsable for the
+   operations with color gradients if this functionality is not needed. */
+#ifdef EW_DONT_USE_GRADIENTS
+  #define EwFillRowGradient                             0
+  #define EwFillRowGradientBlend                        0
+  #define EwCopyNativeRowGradient                       0
+  #define EwCopyNativeRowGradientBlend                  0
+  #define EwCopyIndex8RowGradient                       0
+  #define EwCopyIndex8RowGradientBlend                  0
+  #define EwCopyAlpha8RowGradient                       0
+  #define EwCopyAlpha8RowGradientBlend                  0
+  #define EwCopyRGB565RowGradient                       0
+  #define EwCopyRGB565RowGradientBlend                  0
+  #define EwWarpNativeRowGradient                       0
+  #define EwWarpNativeRowFilterGradient                 0
+  #define EwWarpNativeRowGradientBlend                  0
+  #define EwWarpNativeRowFilterGradientBlend            0
+  #define EwWarpIndex8RowGradient                       0
+  #define EwWarpIndex8RowFilterGradient                 0
+  #define EwWarpIndex8RowGradientBlend                  0
+  #define EwWarpIndex8RowFilterGradientBlend            0
+  #define EwWarpAlpha8RowGradient                       0
+  #define EwWarpAlpha8RowFilterGradient                 0
+  #define EwWarpAlpha8RowGradientBlend                  0
+  #define EwWarpAlpha8RowFilterGradientBlend            0
+  #define EwWarpRGB565RowGradient                       0
+  #define EwWarpRGB565RowFilterGradient                 0
+  #define EwWarpRGB565RowGradientBlend                  0
+  #define EwWarpRGB565RowFilterGradientBlend            0
+  #define EwScreenFillRowGradient                       0
+  #define EwScreenFillRowGradientBlend                  0
+  #define EwScreenCopyNativeRowGradient                 0
+  #define EwScreenCopyNativeRowGradientBlend            0
+  #define EwScreenCopyIndex8RowGradient                 0
+  #define EwScreenCopyIndex8RowGradientBlend            0
+  #define EwScreenCopyAlpha8RowGradient                 0
+  #define EwScreenCopyAlpha8RowGradientBlend            0
+  #define EwScreenCopyRGB565RowGradient                 0
+  #define EwScreenCopyRGB565RowGradientBlend            0
+  #define EwScreenWarpNativeRowGradient                 0
+  #define EwScreenWarpNativeRowFilterGradient           0
+  #define EwScreenWarpNativeRowGradientBlend            0
+  #define EwScreenWarpNativeRowFilterGradientBlend      0
+  #define EwScreenWarpIndex8RowGradient                 0
+  #define EwScreenWarpIndex8RowFilterGradient           0
+  #define EwScreenWarpIndex8RowGradientBlend            0
+  #define EwScreenWarpIndex8RowFilterGradientBlend      0
+  #define EwScreenWarpAlpha8RowGradient                 0
+  #define EwScreenWarpAlpha8RowFilterGradient           0
+  #define EwScreenWarpAlpha8RowGradientBlend            0
+  #define EwScreenWarpAlpha8RowFilterGradientBlend      0
+  #define EwScreenWarpRGB565RowGradient                 0
+  #define EwScreenWarpRGB565RowFilterGradient           0
+  #define EwScreenWarpRGB565RowGradientBlend            0
+  #define EwScreenWarpRGB565RowFilterGradientBlend      0
+#endif
+
+
 /* Ignore all Software Pixel Driver worker functions responsable for the
    warp operations if this functionality is not needed. */
 #ifdef EW_DONT_USE_WARP_FUNCTIONS
@@ -663,6 +736,133 @@
   #define EwScreenWarpRGB565RowSolidBlend               0
   #define EwScreenWarpRGB565RowFilterGradientBlend      0
   #define EwScreenWarpRGB565RowFilterSolidBlend         0
+#endif
+
+
+/* Ignore all Software Pixel Driver worker functions using Native surface
+   type as drawing destination. */
+#ifdef EW_DONT_USE_NATIVE_SURFACES_AS_DESTINATION
+  #define EwSetPixelSolid                               0
+  #define EwSetPixelSolidBlend                          0
+  #define EwFillRowSolid                                0
+  #define EwFillRowSolidBlend                           0
+  #define EwFillRowGradient                             0
+  #define EwFillRowGradientBlend                        0
+  #define EwCopyNativeRow                               0
+  #define EwCopyNativeRowBlend                          0
+  #define EwCopyNativeRowSolid                          0
+  #define EwCopyNativeRowSolidBlend                     0
+  #define EwCopyNativeRowGradient                       0
+  #define EwCopyNativeRowGradientBlend                  0
+  #define EwWarpNativeRow                               0
+  #define EwWarpNativeRowFilter                         0
+  #define EwWarpNativeRowBlend                          0
+  #define EwWarpNativeRowFilterBlend                    0
+  #define EwWarpNativeRowGradient                       0
+  #define EwWarpNativeRowSolid                          0
+  #define EwWarpNativeRowFilterGradient                 0
+  #define EwWarpNativeRowFilterSolid                    0
+  #define EwWarpNativeRowGradientBlend                  0
+  #define EwWarpNativeRowSolidBlend                     0
+  #define EwWarpNativeRowFilterGradientBlend            0
+  #define EwWarpNativeRowFilterSolidBlend               0
+  #define EwCopyIndex8Row                               0
+  #define EwCopyIndex8RowBlend                          0
+  #define EwCopyIndex8RowSolid                          0
+  #define EwCopyIndex8RowSolidBlend                     0
+  #define EwCopyIndex8RowGradient                       0
+  #define EwCopyIndex8RowGradientBlend                  0
+  #define EwWarpIndex8Row                               0
+  #define EwWarpIndex8RowFilter                         0
+  #define EwWarpIndex8RowBlend                          0
+  #define EwWarpIndex8RowFilterBlend                    0
+  #define EwWarpIndex8RowGradient                       0
+  #define EwWarpIndex8RowSolid                          0
+  #define EwWarpIndex8RowFilterGradient                 0
+  #define EwWarpIndex8RowFilterSolid                    0
+  #define EwWarpIndex8RowGradientBlend                  0
+  #define EwWarpIndex8RowSolidBlend                     0
+  #define EwWarpIndex8RowFilterGradientBlend            0
+  #define EwWarpIndex8RowFilterSolidBlend               0
+  #define EwCopyAlpha8Row                               0
+  #define EwCopyAlpha8RowBlend                          0
+  #define EwCopyAlpha8RowSolid                          0
+  #define EwCopyAlpha8RowSolidBlend                     0
+  #define EwCopyAlpha8RowGradient                       0
+  #define EwCopyAlpha8RowGradientBlend                  0
+  #define EwWarpAlpha8Row                               0
+  #define EwWarpAlpha8RowFilter                         0
+  #define EwWarpAlpha8RowBlend                          0
+  #define EwWarpAlpha8RowFilterBlend                    0
+  #define EwWarpAlpha8RowGradient                       0
+  #define EwWarpAlpha8RowSolid                          0
+  #define EwWarpAlpha8RowFilterGradient                 0
+  #define EwWarpAlpha8RowFilterSolid                    0
+  #define EwWarpAlpha8RowGradientBlend                  0
+  #define EwWarpAlpha8RowSolidBlend                     0
+  #define EwWarpAlpha8RowFilterGradientBlend            0
+  #define EwWarpAlpha8RowFilterSolidBlend               0
+  #define EwCopyRGB565Row                               0
+  #define EwCopyRGB565RowBlend                          0
+  #define EwCopyRGB565RowSolid                          0
+  #define EwCopyRGB565RowSolidBlend                     0
+  #define EwCopyRGB565RowGradient                       0
+  #define EwCopyRGB565RowGradientBlend                  0
+  #define EwWarpRGB565Row                               0
+  #define EwWarpRGB565RowFilter                         0
+  #define EwWarpRGB565RowBlend                          0
+  #define EwWarpRGB565RowFilterBlend                    0
+  #define EwWarpRGB565RowGradient                       0
+  #define EwWarpRGB565RowSolid                          0
+  #define EwWarpRGB565RowFilterGradient                 0
+  #define EwWarpRGB565RowFilterSolid                    0
+  #define EwWarpRGB565RowGradientBlend                  0
+  #define EwWarpRGB565RowSolidBlend                     0
+  #define EwWarpRGB565RowFilterGradientBlend            0
+  #define EwWarpRGB565RowFilterSolidBlend               0
+#endif
+
+
+/* Ignore all Software Pixel Driver worker functions responsable for the
+   copy/warp operations involving Native surfaces if this functionality
+   is not needed. */
+#ifdef EW_DONT_USE_NATIVE_SURFACES
+  #define EwCopyNativeRow                               0
+  #define EwCopyNativeRowBlend                          0
+  #define EwCopyNativeRowSolid                          0
+  #define EwCopyNativeRowSolidBlend                     0
+  #define EwCopyNativeRowGradient                       0
+  #define EwCopyNativeRowGradientBlend                  0
+  #define EwWarpNativeRow                               0
+  #define EwWarpNativeRowFilter                         0
+  #define EwWarpNativeRowBlend                          0
+  #define EwWarpNativeRowFilterBlend                    0
+  #define EwWarpNativeRowGradient                       0
+  #define EwWarpNativeRowSolid                          0
+  #define EwWarpNativeRowFilterGradient                 0
+  #define EwWarpNativeRowFilterSolid                    0
+  #define EwWarpNativeRowGradientBlend                  0
+  #define EwWarpNativeRowSolidBlend                     0
+  #define EwWarpNativeRowFilterGradientBlend            0
+  #define EwWarpNativeRowFilterSolidBlend               0
+  #define EwScreenCopyNativeRow                         0
+  #define EwScreenCopyNativeRowBlend                    0
+  #define EwScreenCopyNativeRowSolid                    0
+  #define EwScreenCopyNativeRowSolidBlend               0
+  #define EwScreenCopyNativeRowGradient                 0
+  #define EwScreenCopyNativeRowGradientBlend            0
+  #define EwScreenWarpNativeRow                         0
+  #define EwScreenWarpNativeRowFilter                   0
+  #define EwScreenWarpNativeRowBlend                    0
+  #define EwScreenWarpNativeRowFilterBlend              0
+  #define EwScreenWarpNativeRowGradient                 0
+  #define EwScreenWarpNativeRowSolid                    0
+  #define EwScreenWarpNativeRowFilterGradient           0
+  #define EwScreenWarpNativeRowFilterSolid              0
+  #define EwScreenWarpNativeRowGradientBlend            0
+  #define EwScreenWarpNativeRowSolidBlend               0
+  #define EwScreenWarpNativeRowFilterGradientBlend      0
+  #define EwScreenWarpNativeRowFilterSolidBlend         0
 #endif
 
 
@@ -1372,14 +1572,6 @@ static const XCopyWorker CopyWorkers[] =
   #define EwGfxTileNativeBlend                     0
 #endif
 
-#ifndef EwGfxTileNativeSolid
-  #define EwGfxTileNativeSolid                     0
-#endif
-
-#ifndef EwGfxTileNativeSolidBlend
-  #define EwGfxTileNativeSolidBlend                0
-#endif
-
 #ifndef EwGfxTileNativeGradient
   #define EwGfxTileNativeGradient                  0
 #endif
@@ -1389,11 +1581,19 @@ static const XCopyWorker CopyWorkers[] =
 #endif
 
 #ifndef EwGfxTileNativeLinearGradient
-  #define EwGfxTileNativeLinearGradient            0
+  #define EwGfxTileNativeLinearGradient            EwGfxTileNativeGradient
 #endif
 
 #ifndef EwGfxTileNativeLinearGradientBlend
-  #define EwGfxTileNativeLinearGradientBlend       0
+  #define EwGfxTileNativeLinearGradientBlend       EwGfxTileNativeGradientBlend
+#endif
+
+#ifndef EwGfxTileNativeSolid
+  #define EwGfxTileNativeSolid                     EwGfxTileNativeLinearGradient
+#endif
+
+#ifndef EwGfxTileNativeSolidBlend
+  #define EwGfxTileNativeSolidBlend                EwGfxTileNativeLinearGradientBlend
 #endif
 
 #ifndef EwGfxTileIndex8
@@ -1402,14 +1602,6 @@ static const XCopyWorker CopyWorkers[] =
 
 #ifndef EwGfxTileIndex8Blend
   #define EwGfxTileIndex8Blend                     0
-#endif
-
-#ifndef EwGfxTileIndex8Solid
-  #define EwGfxTileIndex8Solid                     0
-#endif
-
-#ifndef EwGfxTileIndex8SolidBlend
-  #define EwGfxTileIndex8SolidBlend                0
 #endif
 
 #ifndef EwGfxTileIndex8Gradient
@@ -1421,19 +1613,19 @@ static const XCopyWorker CopyWorkers[] =
 #endif
 
 #ifndef EwGfxTileIndex8LinearGradient
-  #define EwGfxTileIndex8LinearGradient            0
+  #define EwGfxTileIndex8LinearGradient            EwGfxTileIndex8Gradient
 #endif
 
 #ifndef EwGfxTileIndex8LinearGradientBlend
-  #define EwGfxTileIndex8LinearGradientBlend       0
+  #define EwGfxTileIndex8LinearGradientBlend       EwGfxTileIndex8GradientBlend
 #endif
 
-#ifndef EwGfxTileAlpha8Solid
-  #define EwGfxTileAlpha8Solid                     0
+#ifndef EwGfxTileIndex8Solid
+  #define EwGfxTileIndex8Solid                     EwGfxTileIndex8LinearGradient
 #endif
 
-#ifndef EwGfxTileAlpha8SolidBlend
-  #define EwGfxTileAlpha8SolidBlend                0
+#ifndef EwGfxTileIndex8SolidBlend
+  #define EwGfxTileIndex8SolidBlend                EwGfxTileIndex8LinearGradientBlend
 #endif
 
 #ifndef EwGfxTileAlpha8Gradient
@@ -1445,23 +1637,23 @@ static const XCopyWorker CopyWorkers[] =
 #endif
 
 #ifndef EwGfxTileAlpha8LinearGradient
-  #define EwGfxTileAlpha8LinearGradient            0
+  #define EwGfxTileAlpha8LinearGradient            EwGfxTileAlpha8Gradient
 #endif
 
 #ifndef EwGfxTileAlpha8LinearGradientBlend
-  #define EwGfxTileAlpha8LinearGradientBlend       0
+  #define EwGfxTileAlpha8LinearGradientBlend       EwGfxTileAlpha8GradientBlend
+#endif
+
+#ifndef EwGfxTileAlpha8Solid
+  #define EwGfxTileAlpha8Solid                     EwGfxTileAlpha8LinearGradient
+#endif
+
+#ifndef EwGfxTileAlpha8SolidBlend
+  #define EwGfxTileAlpha8SolidBlend                EwGfxTileAlpha8LinearGradientBlend
 #endif
 
 #ifndef EwGfxTileRGB565
   #define EwGfxTileRGB565                          0
-#endif
-
-#ifndef EwGfxTileRGB565Solid
-  #define EwGfxTileRGB565Solid                     0
-#endif
-
-#ifndef EwGfxTileRGB565SolidBlend
-  #define EwGfxTileRGB565SolidBlend                0
 #endif
 
 #ifndef EwGfxTileRGB565Gradient
@@ -1473,11 +1665,19 @@ static const XCopyWorker CopyWorkers[] =
 #endif
 
 #ifndef EwGfxTileRGB565LinearGradient
-  #define EwGfxTileRGB565LinearGradient            0
+  #define EwGfxTileRGB565LinearGradient            EwGfxTileRGB565Gradient
 #endif
 
 #ifndef EwGfxTileRGB565LinearGradientBlend
-  #define EwGfxTileRGB565LinearGradientBlend       0
+  #define EwGfxTileRGB565LinearGradientBlend       EwGfxTileRGB565GradientBlend
+#endif
+
+#ifndef EwGfxTileRGB565Solid
+  #define EwGfxTileRGB565Solid                     EwGfxTileRGB565LinearGradient
+#endif
+
+#ifndef EwGfxTileRGB565SolidBlend
+  #define EwGfxTileRGB565SolidBlend                EwGfxTileRGB565LinearGradientBlend
 #endif
 
 #ifndef EwGfxScreenTileNative
@@ -1486,14 +1686,6 @@ static const XCopyWorker CopyWorkers[] =
 
 #ifndef EwGfxScreenTileNativeBlend
   #define EwGfxScreenTileNativeBlend               0
-#endif
-
-#ifndef EwGfxScreenTileNativeSolid
-  #define EwGfxScreenTileNativeSolid               0
-#endif
-
-#ifndef EwGfxScreenTileNativeSolidBlend
-  #define EwGfxScreenTileNativeSolidBlend          0
 #endif
 
 #ifndef EwGfxScreenTileNativeGradient
@@ -1505,11 +1697,19 @@ static const XCopyWorker CopyWorkers[] =
 #endif
 
 #ifndef EwGfxScreenTileNativeLinearGradient
-  #define EwGfxScreenTileNativeLinearGradient      0
+  #define EwGfxScreenTileNativeLinearGradient      EwGfxScreenTileNativeGradient
 #endif
 
 #ifndef EwGfxScreenTileNativeLinearGradientBlend
-  #define EwGfxScreenTileNativeLinearGradientBlend 0
+  #define EwGfxScreenTileNativeLinearGradientBlend EwGfxScreenTileNativeGradientBlend
+#endif
+
+#ifndef EwGfxScreenTileNativeSolid
+  #define EwGfxScreenTileNativeSolid               EwGfxScreenTileNativeLinearGradient
+#endif
+
+#ifndef EwGfxScreenTileNativeSolidBlend
+  #define EwGfxScreenTileNativeSolidBlend          EwGfxScreenTileNativeLinearGradientBlend
 #endif
 
 #ifndef EwGfxScreenTileIndex8
@@ -1518,14 +1718,6 @@ static const XCopyWorker CopyWorkers[] =
 
 #ifndef EwGfxScreenTileIndex8Blend
   #define EwGfxScreenTileIndex8Blend               0
-#endif
-
-#ifndef EwGfxScreenTileIndex8Solid
-  #define EwGfxScreenTileIndex8Solid               0
-#endif
-
-#ifndef EwGfxScreenTileIndex8SolidBlend
-  #define EwGfxScreenTileIndex8SolidBlend          0
 #endif
 
 #ifndef EwGfxScreenTileIndex8Gradient
@@ -1537,19 +1729,19 @@ static const XCopyWorker CopyWorkers[] =
 #endif
 
 #ifndef EwGfxScreenTileIndex8LinearGradient
-  #define EwGfxScreenTileIndex8LinearGradient      0
+  #define EwGfxScreenTileIndex8LinearGradient      EwGfxScreenTileIndex8Gradient
 #endif
 
 #ifndef EwGfxScreenTileIndex8LinearGradientBlend
-  #define EwGfxScreenTileIndex8LinearGradientBlend 0
+  #define EwGfxScreenTileIndex8LinearGradientBlend EwGfxScreenTileIndex8GradientBlend
 #endif
 
-#ifndef EwGfxScreenTileAlpha8Solid
-  #define EwGfxScreenTileAlpha8Solid               0
+#ifndef EwGfxScreenTileIndex8Solid
+  #define EwGfxScreenTileIndex8Solid               EwGfxScreenTileIndex8LinearGradient
 #endif
 
-#ifndef EwGfxScreenTileAlpha8SolidBlend
-  #define EwGfxScreenTileAlpha8SolidBlend          0
+#ifndef EwGfxScreenTileIndex8SolidBlend
+  #define EwGfxScreenTileIndex8SolidBlend          EwGfxScreenTileIndex8LinearGradientBlend
 #endif
 
 #ifndef EwGfxScreenTileAlpha8Gradient
@@ -1561,23 +1753,23 @@ static const XCopyWorker CopyWorkers[] =
 #endif
 
 #ifndef EwGfxScreenTileAlpha8LinearGradient
-  #define EwGfxScreenTileAlpha8LinearGradient      0
+  #define EwGfxScreenTileAlpha8LinearGradient      EwGfxScreenTileAlpha8Gradient
 #endif
 
 #ifndef EwGfxScreenTileAlpha8LinearGradientBlend
-  #define EwGfxScreenTileAlpha8LinearGradientBlend 0
+  #define EwGfxScreenTileAlpha8LinearGradientBlend EwGfxScreenTileAlpha8GradientBlend
+#endif
+
+#ifndef EwGfxScreenTileAlpha8Solid
+  #define EwGfxScreenTileAlpha8Solid               EwGfxScreenTileAlpha8LinearGradient
+#endif
+
+#ifndef EwGfxScreenTileAlpha8SolidBlend
+  #define EwGfxScreenTileAlpha8SolidBlend          EwGfxScreenTileAlpha8LinearGradientBlend
 #endif
 
 #ifndef EwGfxScreenTileRGB565
   #define EwGfxScreenTileRGB565                    0
-#endif
-
-#ifndef EwGfxScreenTileRGB565Solid
-  #define EwGfxScreenTileRGB565Solid               0
-#endif
-
-#ifndef EwGfxScreenTileRGB565SolidBlend
-  #define EwGfxScreenTileRGB565SolidBlend          0
 #endif
 
 #ifndef EwGfxScreenTileRGB565Gradient
@@ -1589,11 +1781,19 @@ static const XCopyWorker CopyWorkers[] =
 #endif
 
 #ifndef EwGfxScreenTileRGB565LinearGradient
-  #define EwGfxScreenTileRGB565LinearGradient      0
+  #define EwGfxScreenTileRGB565LinearGradient      EwGfxScreenTileRGB565Gradient
 #endif
 
 #ifndef EwGfxScreenTileRGB565LinearGradientBlend
-  #define EwGfxScreenTileRGB565LinearGradientBlend 0
+  #define EwGfxScreenTileRGB565LinearGradientBlend EwGfxScreenTileRGB565GradientBlend
+#endif
+
+#ifndef EwGfxScreenTileRGB565Solid
+  #define EwGfxScreenTileRGB565Solid               EwGfxScreenTileRGB565LinearGradient
+#endif
+
+#ifndef EwGfxScreenTileRGB565SolidBlend
+  #define EwGfxScreenTileRGB565SolidBlend          EwGfxScreenTileRGB565LinearGradientBlend
 #endif
 
 

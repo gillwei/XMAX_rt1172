@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -51,11 +51,6 @@
 
 /* Deklaration of class : 'DeviceInterface::NaviTbtDataClass' */
 EW_DEFINE_FIELDS( DeviceInterfaceNaviTbtDataClass, XObject )
-  EW_VARIABLE( DistUnit,        XString )
-  EW_VARIABLE( TbtDescription,  XString )
-  EW_VARIABLE( IconIdx,         XInt32 )
-  EW_VARIABLE( ListIdx,         XInt32 )
-  EW_VARIABLE( Distance,        XInt32 )
 EW_END_OF_FIELDS( DeviceInterfaceNaviTbtDataClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::NaviTbtDataClass' */

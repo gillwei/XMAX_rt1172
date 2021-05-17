@@ -190,6 +190,11 @@ extern const int EwPixelDriverVariant;
 *   Clut    - Pointer to the (optional) color table of the surface. In order
 *     to cover all color formats, a single entry of the clut is always 32 bit
 *     wide - even when the target color format is 16 or 8 bit wide.
+*   Reader  - This value is optional and exists on target systems configured to
+*     store constant surfaces (resources) in a not directly accessible memory
+*     area. In this case the Pixel Driver will invoke the specified function
+*     Reader to ensure that the data referenced by the pointer is loaded in a
+*     RAM area and return the pointer to the loaded data entry within this area.
 *
 *******************************************************************************/
 typedef struct
@@ -201,6 +206,10 @@ typedef struct
   int               Pitch2X;
   int               Pitch2Y;
   unsigned int*     Clut;
+
+#ifdef EW_USE_READER_FOR_CONST_SURFACES 
+  XFlashAreaReaderProc Reader;
+#endif
 } XSurfaceMemory;
 
 

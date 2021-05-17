@@ -82,16 +82,34 @@
   #define TOOLCHAIN_STRING "unknown"
 #endif
 
+#ifdef EW_DONT_USE_WARP_FUNCTIONS
+  #define WARP_FUNCTION_SUPPORT_STRING "disabled"
+#else
+  #define WARP_FUNCTION_SUPPORT_STRING "enabled"
+#endif
+
 #ifdef EW_DONT_USE_PATH_FUNCTIONS
   #define VECTOR_GRAPHICS_SUPPORT_STRING "disabled"
 #else
   #define VECTOR_GRAPHICS_SUPPORT_STRING "enabled"
 #endif
 
-#ifdef EW_DONT_USE_WARP_FUNCTIONS
-  #define WARP_FUNCTION_SUPPORT_STRING "disabled"
+#ifdef EW_DONT_USE_BIDI_FUNCTIONS
+  #define BIDI_TEXT_SUPPORT_STRING "disabled"
 #else
-  #define WARP_FUNCTION_SUPPORT_STRING "enabled"
+  #define BIDI_TEXT_SUPPORT_STRING "enabled"
+#endif
+
+#ifdef EW_DONT_USE_GRADIENTS
+  #define GRADIENTS_SUPPORT_STRING "disabled"
+#else
+  #define GRADIENTS_SUPPORT_STRING "enabled"
+#endif
+
+#ifdef EW_DONT_USE_COMPRESSION
+  #define COMPRESSION_SUPPORT_STRING "disabled"
+#else
+  #define COMPRESSION_SUPPORT_STRING "enabled"
 #endif
 
 #ifdef EW_DONT_USE_INDEX8_SURFACES
@@ -106,10 +124,16 @@
   #define RGB565_SURFACE_SUPPORT_STRING "enabled"
 #endif
 
-#ifdef EW_DONT_USE_BIDI_FUNCTIONS
-  #define BIDI_TEXT_SUPPORT_STRING "disabled"
+#ifdef EW_DONT_USE_NATIVE_SURFACES
+  #define NATIVE_SURFACE_SUPPORT_STRING "disabled"
 #else
-  #define BIDI_TEXT_SUPPORT_STRING "enabled"
+  #define NATIVE_SURFACE_SUPPORT_STRING "enabled"
+#endif
+
+#ifdef EW_DONT_USE_NATIVE_SURFACES_AS_DESTINATION
+  #define NATIVE_DESTINATION_SURFACE_SUPPORT_STRING "disabled"
+#else
+  #define NATIVE_DESTINATION_SURFACE_SUPPORT_STRING "enabled"
 #endif
 
 #if EW_USE_GRAPHICS_ACCELERATOR == 1

@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -45,7 +45,7 @@
 #include "Effects.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x0000019E, /* ratio 53.14 % */
   0xB8008500, 0x000A8452, 0x00F20039, 0x0DC00348, 0x40003380, 0xE003A000, 0x0083C44D,
@@ -91,13 +91,13 @@ static const XStringRes _Const0005 = { _StringsDefault0, 0x00A9 };
 void EffectsEffect__Init( EffectsEffect _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsEffect );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsEffect );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsEffect );
+  _this->_.VMT = EW_CLASS( EffectsEffect );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->invCycleDuration = 0.001000f;
@@ -114,17 +114,17 @@ void EffectsEffect__Init( EffectsEffect _this, XObject aLink, XHandle aArg )
 void EffectsEffect__ReInit( EffectsEffect _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::Effect' */
 void EffectsEffect__Done( EffectsEffect _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Effects::Effect.timerSlot()' */
@@ -165,7 +165,6 @@ void EffectsEffect_timerSlot( EffectsEffect _this, XObject sender )
   if ( done )
   {
     EffectsEffect_OnSetEnabled( _this, 0 );
-    EwSignal( _this->privateOnFinished, ((XObject)_this ));
     EwSignal( _this->OnFinished, ((XObject)_this ));
   }
 }
@@ -209,20 +208,10 @@ void EffectsEffect_run( EffectsEffect _this, XFloat aFrame )
     EwCheckIndex( bounces, 12 )] + ( 1.000000f - sum );
   }
 
-  if ( _this->Symmetric )
-  {
-    if ( aFrame < 0.500000f )
-      aFrame = aFrame * 2.000000f;
-    else
-      aFrame = 2.000000f - ( aFrame * 2.000000f );
-  }
-
   switch ( _this->Timing )
   {
     case EffectsTimingPower_In :
-    {
       aFrame = EwMathPow( aFrame, _this->Exponent );
-    }
     break;
 
     case EffectsTimingPower_Out :
@@ -247,10 +236,8 @@ void EffectsEffect_run( EffectsEffect _this, XFloat aFrame )
     break;
 
     case EffectsTimingExp_In :
-    {
       aFrame = ( EwMathPow( 2.718000f, _this->Exponent * aFrame ) - 1.000000f ) 
       / ( EwMathPow( 2.718000f, _this->Exponent ) - 1.000000f );
-    }
     break;
 
     case EffectsTimingExp_Out :
@@ -279,15 +266,11 @@ void EffectsEffect_run( EffectsEffect _this, XFloat aFrame )
     break;
 
     case EffectsTimingSine_In :
-    {
       aFrame = 1.000000f - EwMathCos( aFrame * 90.000000f );
-    }
     break;
 
     case EffectsTimingSine_Out :
-    {
       aFrame = EwMathSin( aFrame * 90.000000f );
-    }
     break;
 
     case EffectsTimingSine_InOut :
@@ -309,9 +292,7 @@ void EffectsEffect_run( EffectsEffect _this, XFloat aFrame )
     break;
 
     case EffectsTimingCircle_In :
-    {
       aFrame = 1.000000f - EwMathSqrt( 1.000000f - ( aFrame * aFrame ));
-    }
     break;
 
     case EffectsTimingCircle_Out :
@@ -340,10 +321,8 @@ void EffectsEffect_run( EffectsEffect _this, XFloat aFrame )
     break;
 
     case EffectsTimingBack_In :
-    {
       aFrame = (( aFrame * aFrame ) * aFrame ) - (( aFrame * _this->Amplitude ) 
       * EwMathSin( aFrame * 180.000000f ));
-    }
     break;
 
     case EffectsTimingBack_Out :
@@ -376,10 +355,8 @@ void EffectsEffect_run( EffectsEffect _this, XFloat aFrame )
     break;
 
     case EffectsTimingElastic_In :
-    {
       aFrame = (( aFrame * aFrame ) * aFrame ) * EwMathSin(( aFrame * 90.000000f ) 
       * (XFloat)( 1 + ( 4 * _this->Oscillations )));
-    }
     break;
 
     case EffectsTimingElastic_Out :
@@ -502,7 +479,6 @@ void EffectsEffect_run( EffectsEffect _this, XFloat aFrame )
     break;
 
     default : 
-    {
       if ( _this->useBezier2 )
       {
         XFloat f = aFrame;
@@ -519,12 +495,7 @@ void EffectsEffect_run( EffectsEffect _this, XFloat aFrame )
           aFrame = ((( nf2 * f ) * ( _this->curveFactor1 + 1.000000f )) + (( nf 
           * f2 ) * ( _this->curveFactor2 + 2.000000f ))) + ( f2 * f );
         }
-    }
   }
-
-  if ((( _this->Noise > 0.000000f ) && ( aFrame > 0.000000f )) && ( aFrame < 1.000000f ))
-    aFrame = aFrame + EwMathRandFloat( -_this->Noise * 0.100000f, _this->Noise * 
-    0.100000f );
 
   EffectsEffect__Animate( _this, aFrame );
   EwSignal( _this->OnAnimate, ((XObject)_this ));
@@ -545,7 +516,7 @@ XBool EffectsEffect_runRevRev( EffectsEffect _this )
 
   delay = _this->InitialDelay;
   period0 = _this->InitialDelay + _this->CycleDuration;
-  periodN = _this->InterCycleDelay + _this->CycleDuration;
+  periodN = _this->CycleDuration;
   done = 0;
   frame = _this->lastFrame;
 
@@ -568,7 +539,7 @@ XBool EffectsEffect_runRevRev( EffectsEffect _this )
     _this->cycleCounter = 1;
 
   if ( _this->cycleCounter > 0 )
-    delay = _this->InterCycleDelay;
+    delay = 0;
 
   if (( _this->cycleCounter >= _this->NoOfCycles ) && ( _this->NoOfCycles > 0 ))
   {
@@ -597,7 +568,7 @@ XBool EffectsEffect_runRevFwd( EffectsEffect _this )
   XInt32 time = (XInt32)( _this->startTime - _this->timer->Time );
   XInt32 delay = _this->InitialDelay;
   XInt32 period0 = _this->InitialDelay + _this->CycleDuration;
-  XInt32 periodN = _this->InterCycleDelay + _this->CycleDuration;
+  XInt32 periodN = _this->CycleDuration;
   XBool done = 0;
   XFloat frame = _this->lastFrame;
 
@@ -628,7 +599,7 @@ XBool EffectsEffect_runRevFwd( EffectsEffect _this )
   }
 
   if ( _this->cycleCounter > 0 )
-    delay = _this->InterCycleDelay;
+    delay = 0;
 
   if ( time < 0 )
   {
@@ -657,7 +628,7 @@ XBool EffectsEffect_runFwdRev( EffectsEffect _this )
   XInt32 time = (XInt32)( _this->startTime - _this->timer->Time );
   XInt32 delay = _this->InitialDelay;
   XInt32 period0 = _this->InitialDelay + _this->CycleDuration;
-  XInt32 periodN = _this->InterCycleDelay + _this->CycleDuration;
+  XInt32 periodN = _this->CycleDuration;
   XBool done = 0;
   XFloat frame = _this->lastFrame;
 
@@ -688,7 +659,7 @@ XBool EffectsEffect_runFwdRev( EffectsEffect _this )
   }
 
   if ( _this->cycleCounter > 0 )
-    delay = _this->InterCycleDelay;
+    delay = 0;
 
   if ( time < 0 )
   {
@@ -726,7 +697,7 @@ XBool EffectsEffect_runFwdFwd( EffectsEffect _this )
 
   delay = _this->InitialDelay;
   period0 = _this->InitialDelay + _this->CycleDuration;
-  periodN = _this->InterCycleDelay + _this->CycleDuration;
+  periodN = _this->CycleDuration;
   done = 0;
   frame = _this->lastFrame;
 
@@ -749,7 +720,7 @@ XBool EffectsEffect_runFwdFwd( EffectsEffect _this )
     _this->cycleCounter = 1;
 
   if ( _this->cycleCounter > 0 )
-    delay = _this->InterCycleDelay;
+    delay = 0;
 
   if (( _this->cycleCounter >= _this->NoOfCycles ) && ( _this->NoOfCycles > 0 ))
   {
@@ -1010,7 +981,7 @@ void EffectsEffect_Animate( EffectsEffect _this, XFloat aProgress )
 /* Wrapper function for the virtual method : 'Effects::Effect.Animate()' */
 void EffectsEffect__Animate( void* _this, XFloat aProgress )
 {
-  ((EffectsEffect)_this)->_VMT->Animate((EffectsEffect)_this, aProgress );
+  ((EffectsEffect)_this)->_.VMT->Animate((EffectsEffect)_this, aProgress );
 }
 
 /* Variants derived from the class : 'Effects::Effect' */
@@ -1018,8 +989,8 @@ EW_DEFINE_CLASS_VARIANTS( EffectsEffect )
 EW_END_OF_CLASS_VARIANTS( EffectsEffect )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::Effect' */
-EW_DEFINE_CLASS( EffectsEffect, XObject, timingList, privateOnFinished, direction, 
-                 direction, direction, direction, "Effects::Effect" )
+EW_DEFINE_CLASS( EffectsEffect, XObject, timingList, OnFinished, direction, direction, 
+                 direction, direction, "Effects::Effect" )
   EffectsEffect_Animate,
 EW_END_OF_CLASS( EffectsEffect )
 
@@ -1027,13 +998,13 @@ EW_END_OF_CLASS( EffectsEffect )
 void EffectsInt32Effect__Init( EffectsInt32Effect _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  EffectsEffect__Init( &_this->_Super, aLink, aArg );
+  EffectsEffect__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsInt32Effect );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsInt32Effect );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsInt32Effect );
+  _this->_.VMT = EW_CLASS( EffectsInt32Effect );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Value2 = 255;
@@ -1043,17 +1014,17 @@ void EffectsInt32Effect__Init( EffectsInt32Effect _this, XObject aLink, XHandle 
 void EffectsInt32Effect__ReInit( EffectsInt32Effect _this )
 {
   /* At first re-initialize the super class ... */
-  EffectsEffect__ReInit( &_this->_Super );
+  EffectsEffect__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::Int32Effect' */
 void EffectsInt32Effect__Done( EffectsInt32Effect _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( EffectsEffect );
+  _this->_.Super._.VMT = EW_CLASS( EffectsEffect );
 
   /* Don't forget to deinitialize the super class ... */
-  EffectsEffect__Done( &_this->_Super );
+  EffectsEffect__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Effects::Int32Effect.Animate()' */
@@ -1080,13 +1051,13 @@ EW_END_OF_CLASS( EffectsInt32Effect )
 void EffectsPointEffect__Init( EffectsPointEffect _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  EffectsEffect__Init( &_this->_Super, aLink, aArg );
+  EffectsEffect__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsPointEffect );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsPointEffect );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsPointEffect );
+  _this->_.VMT = EW_CLASS( EffectsPointEffect );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Value2 = _Const0000;
@@ -1096,17 +1067,17 @@ void EffectsPointEffect__Init( EffectsPointEffect _this, XObject aLink, XHandle 
 void EffectsPointEffect__ReInit( EffectsPointEffect _this )
 {
   /* At first re-initialize the super class ... */
-  EffectsEffect__ReInit( &_this->_Super );
+  EffectsEffect__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::PointEffect' */
 void EffectsPointEffect__Done( EffectsPointEffect _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( EffectsEffect );
+  _this->_.Super._.VMT = EW_CLASS( EffectsEffect );
 
   /* Don't forget to deinitialize the super class ... */
-  EffectsEffect__Done( &_this->_Super );
+  EffectsEffect__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Effects::PointEffect.Animate()' */
@@ -1118,9 +1089,6 @@ void EffectsPointEffect_Animate( EffectsPointEffect _this, XFloat aProgress )
   x = x + (XInt32)EwMathRound((XFloat)( _this->Value2.X - x ) * aProgress );
   y = y + (XInt32)EwMathRound((XFloat)( _this->Value2.Y - y ) * aProgress );
   _this->Value = EwNewPoint( x, y );
-
-  if ( _this->Outlet.Object != 0 )
-    EwOnSetPoint( _this->Outlet, _this->Value );
 }
 
 /* Variants derived from the class : 'Effects::PointEffect' */
@@ -1128,8 +1096,8 @@ EW_DEFINE_CLASS_VARIANTS( EffectsPointEffect )
 EW_END_OF_CLASS_VARIANTS( EffectsPointEffect )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::PointEffect' */
-EW_DEFINE_CLASS( EffectsPointEffect, EffectsEffect, Outlet, Outlet, Outlet, Value, 
-                 Value, Value, "Effects::PointEffect" )
+EW_DEFINE_CLASS( EffectsPointEffect, EffectsEffect, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, "Effects::PointEffect" )
   EffectsPointEffect_Animate,
 EW_END_OF_CLASS( EffectsPointEffect )
 
@@ -1137,13 +1105,13 @@ EW_END_OF_CLASS( EffectsPointEffect )
 void EffectsRectEffect__Init( EffectsRectEffect _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  EffectsEffect__Init( &_this->_Super, aLink, aArg );
+  EffectsEffect__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsRectEffect );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsRectEffect );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsRectEffect );
+  _this->_.VMT = EW_CLASS( EffectsRectEffect );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Value2 = _Const0001;
@@ -1153,17 +1121,17 @@ void EffectsRectEffect__Init( EffectsRectEffect _this, XObject aLink, XHandle aA
 void EffectsRectEffect__ReInit( EffectsRectEffect _this )
 {
   /* At first re-initialize the super class ... */
-  EffectsEffect__ReInit( &_this->_Super );
+  EffectsEffect__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::RectEffect' */
 void EffectsRectEffect__Done( EffectsRectEffect _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( EffectsEffect );
+  _this->_.Super._.VMT = EW_CLASS( EffectsEffect );
 
   /* Don't forget to deinitialize the super class ... */
-  EffectsEffect__Done( &_this->_Super );
+  EffectsEffect__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Effects::RectEffect.Animate()' */
@@ -1198,19 +1166,20 @@ EW_END_OF_CLASS( EffectsRectEffect )
 void EffectsFader__Init( EffectsFader _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsFader );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsFader );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsFader );
+  _this->_.VMT = EW_CLASS( EffectsFader );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->RemoveIfHidden = 1;
   _this->RestackTopmost = 1;
   _this->AssignFocus = 1;
   _this->UseCurrentState = 1;
+  _this->Enabled = 1;
   _this->Visible = 1;
 }
 
@@ -1218,17 +1187,17 @@ void EffectsFader__Init( EffectsFader _this, XObject aLink, XHandle aArg )
 void EffectsFader__ReInit( EffectsFader _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::Fader' */
 void EffectsFader__Done( EffectsFader _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* The method Complete() is intended to be called by the implementation of your 
@@ -1256,7 +1225,7 @@ XBool EffectsFader_IsFinished( EffectsFader _this )
 /* Wrapper function for the virtual method : 'Effects::Fader.IsFinished()' */
 XBool EffectsFader__IsFinished( void* _this )
 {
-  return ((EffectsFader)_this)->_VMT->IsFinished((EffectsFader)_this );
+  return ((EffectsFader)_this)->_.VMT->IsFinished((EffectsFader)_this );
 }
 
 /* The method OnEnd() is invoked automatically just in the moment, when this fader 
@@ -1278,7 +1247,7 @@ void EffectsFader_OnEnd( EffectsFader _this )
 /* Wrapper function for the virtual method : 'Effects::Fader.OnEnd()' */
 void EffectsFader__OnEnd( void* _this )
 {
-  ((EffectsFader)_this)->_VMT->OnEnd((EffectsFader)_this );
+  ((EffectsFader)_this)->_.VMT->OnEnd((EffectsFader)_this );
 }
 
 /* The method OnStart() is invoked automatically just in the moment, when the fader 
@@ -1307,7 +1276,7 @@ void EffectsFader_OnStart( EffectsFader _this )
 /* Wrapper function for the virtual method : 'Effects::Fader.OnStart()' */
 void EffectsFader__OnStart( void* _this )
 {
-  ((EffectsFader)_this)->_VMT->OnStart((EffectsFader)_this );
+  ((EffectsFader)_this)->_.VMT->OnStart((EffectsFader)_this );
 }
 
 /* Variants derived from the class : 'Effects::Fader' */
@@ -1326,33 +1295,32 @@ EW_END_OF_CLASS( EffectsFader )
 void EffectsVisibilityFader__Init( EffectsVisibilityFader _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  EffectsFader__Init( &_this->_Super, aLink, aArg );
+  EffectsFader__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsVisibilityFader );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsVisibilityFader );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsVisibilityFader );
+  _this->_.VMT = EW_CLASS( EffectsVisibilityFader );
 
   /* ... and initialize objects, variables, properties, etc. */
-  _this->ShowAtStart = 1;
 }
 
 /* Re-Initializer for the class 'Effects::VisibilityFader' */
 void EffectsVisibilityFader__ReInit( EffectsVisibilityFader _this )
 {
   /* At first re-initialize the super class ... */
-  EffectsFader__ReInit( &_this->_Super );
+  EffectsFader__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::VisibilityFader' */
 void EffectsVisibilityFader__Done( EffectsVisibilityFader _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( EffectsFader );
+  _this->_.Super._.VMT = EW_CLASS( EffectsFader );
 
   /* Don't forget to deinitialize the super class ... */
-  EffectsFader__Done( &_this->_Super );
+  EffectsFader__Done( &_this->_.Super );
 }
 
 /* The method IsFinished() should return 'true' if the fader has finalized its fading 
@@ -1376,23 +1344,15 @@ XBool EffectsVisibilityFader_IsFinished( EffectsVisibilityFader _this )
    evaluate the properties @UseCurrentState, @AssignFocus and @RestackTopmost. */
 void EffectsVisibilityFader_OnEnd( EffectsVisibilityFader _this )
 {
-  if (( _this->Super1.Visible && !_this->ShowAtStart ) && !_this->Super1.UseCurrentState )
-    CoreRectView__OnSetBounds( _this->Super1.Group, EwSetRectOrigin( _this->Super1.Group->Super1.Bounds, 
-    _this->Position ));
-
-  if ( _this->Super1.Visible && !_this->ShowAtStart )
-  {
-    CoreGroup__OnSetOpacity( _this->Super1.Group, 255 );
-    CoreGroup__OnSetVisible( _this->Super1.Group, 1 );
-  }
-
-  if (( !_this->Super1.Visible && !_this->HideAtStart ) && ( _this->Super1.Group->Super2.Owner 
-      != 0 ))
+  if ( !_this->Super1.Visible && ( _this->Super1.Group->Super2.Owner != 0 ))
     CoreGroup__OnSetVisible( _this->Super1.Group, 0 );
 
   if (( !_this->Super1.Visible && _this->Super1.RemoveIfHidden ) && ( _this->Super1.Group->Super2.Owner 
       != 0 ))
     CoreGroup__Remove( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
+
+  if ( !_this->Super1.Enabled )
+    CoreGroup__OnSetEnabled( _this->Super1.Group, 0 );
 }
 
 /* The method OnStart() is invoked automatically just in the moment, when the fader 
@@ -1415,6 +1375,9 @@ void EffectsVisibilityFader_OnEnd( EffectsVisibilityFader _this )
    causing other pending faders to wait. */
 void EffectsVisibilityFader_OnStart( EffectsVisibilityFader _this )
 {
+  if ( _this->Super1.Enabled )
+    CoreGroup__OnSetEnabled( _this->Super1.Group, 1 );
+
   if (( _this->Super1.Visible || _this->Super1.AddToOwner ) && ( _this->Super1.Group->Super2.Owner 
       == 0 ))
   {
@@ -1428,19 +1391,15 @@ void EffectsVisibilityFader_OnStart( EffectsVisibilityFader _this )
   if ( _this->Super1.Visible && _this->Super1.AssignFocus )
     CoreGroup__OnSetFocus( _this->Super1.Group->Super2.Owner, ((CoreView)_this->Super1.Group ));
 
-  if (( _this->Super1.Visible && _this->ShowAtStart ) && !_this->Super1.UseCurrentState )
+  if ( _this->Super1.Visible && !_this->Super1.UseCurrentState )
     CoreRectView__OnSetBounds( _this->Super1.Group, EwSetRectOrigin( _this->Super1.Group->Super1.Bounds, 
     _this->Position ));
 
-  if ( _this->Super1.Visible && _this->ShowAtStart )
+  if ( _this->Super1.Visible )
   {
     CoreGroup__OnSetOpacity( _this->Super1.Group, 255 );
     CoreGroup__OnSetVisible( _this->Super1.Group, 1 );
   }
-
-  if (( !_this->Super1.Visible && _this->HideAtStart ) && ( _this->Super1.Group->Super2.Owner 
-      != 0 ))
-    CoreGroup__OnSetVisible( _this->Super1.Group, 0 );
 
   if ( !_this->Super1.Visible && ( _this->Super1.Owner->Focus == (CoreView)_this->Super1.Group ))
     CoreGroup__OnSetFocus( _this->Super1.Owner, 0 );
@@ -1454,8 +1413,8 @@ EW_DEFINE_CLASS_VARIANTS( EffectsVisibilityFader )
 EW_END_OF_CLASS_VARIANTS( EffectsVisibilityFader )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::VisibilityFader' */
-EW_DEFINE_CLASS( EffectsVisibilityFader, EffectsFader, _None, _None, _None, _None, 
-                 _None, _None, "Effects::VisibilityFader" )
+EW_DEFINE_CLASS( EffectsVisibilityFader, EffectsFader, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, "Effects::VisibilityFader" )
   EffectsVisibilityFader_IsFinished,
   EffectsVisibilityFader_OnEnd,
   EffectsVisibilityFader_OnStart,
@@ -1465,24 +1424,24 @@ EW_END_OF_CLASS( EffectsVisibilityFader )
 void EffectsPositionFader__Init( EffectsPositionFader _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  EffectsFader__Init( &_this->_Super, aLink, aArg );
+  EffectsFader__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsPositionFader );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsPositionFader );
 
   /* ... then construct all embedded objects */
-  EffectsInt32Effect__Init( &_this->OpacityEffect, &_this->_XObject, 0 );
-  EffectsPointEffect__Init( &_this->PositionEffect, &_this->_XObject, 0 );
+  EffectsInt32Effect__Init( &_this->OpacityEffect, &_this->_.XObject, 0 );
+  EffectsPointEffect__Init( &_this->PositionEffect, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsPositionFader );
+  _this->_.VMT = EW_CLASS( EffectsPositionFader );
 }
 
 /* Re-Initializer for the class 'Effects::PositionFader' */
 void EffectsPositionFader__ReInit( EffectsPositionFader _this )
 {
   /* At first re-initialize the super class ... */
-  EffectsFader__ReInit( &_this->_Super );
+  EffectsFader__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   EffectsInt32Effect__ReInit( &_this->OpacityEffect );
@@ -1493,14 +1452,14 @@ void EffectsPositionFader__ReInit( EffectsPositionFader _this )
 void EffectsPositionFader__Done( EffectsPositionFader _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( EffectsFader );
+  _this->_.Super._.VMT = EW_CLASS( EffectsFader );
 
   /* Finalize all embedded objects */
   EffectsInt32Effect__Done( &_this->OpacityEffect );
   EffectsPointEffect__Done( &_this->PositionEffect );
 
   /* Don't forget to deinitialize the super class ... */
-  EffectsFader__Done( &_this->_Super );
+  EffectsFader__Done( &_this->_.Super );
 }
 
 /* The method IsFinished() should return 'true' if the fader has finalized its fading 
@@ -1540,6 +1499,9 @@ void EffectsPositionFader_OnEnd( EffectsPositionFader _this )
 
   if ( _this->Buffered )
     CoreGroup__OnSetBuffered( _this->Super1.Group, _this->wasBuffered );
+
+  if ( !_this->Super1.Enabled )
+    CoreGroup__OnSetEnabled( _this->Super1.Group, 0 );
 }
 
 /* The method OnStart() is invoked automatically just in the moment, when the fader 
@@ -1593,6 +1555,9 @@ void EffectsPositionFader_OnStart( EffectsPositionFader _this )
   }
 
   _this->wasBuffered = CoreGroup_OnGetBuffered( _this->Super1.Group );
+
+  if ( _this->Super1.Enabled )
+    CoreGroup__OnSetEnabled( _this->Super1.Group, 1 );
 
   if (( _this->Super1.Visible || _this->Super1.AddToOwner ) && ( _this->Super1.Group->Super2.Owner 
       == 0 ))
@@ -1659,15 +1624,12 @@ void EffectsPositionFader_OnStart( EffectsPositionFader _this )
   if ( _this->Buffered )
     CoreGroup__OnSetBuffered( _this->Super1.Group, 1 );
 
-  _this->PositionEffect.Outlet = EwNullRef;
   EffectsEffect_OnSetReversed((EffectsEffect)&_this->PositionEffect, 0 );
-  _this->PositionEffect.Super1.Symmetric = 0;
   _this->PositionEffect.Super1.OnFinished = EwNewSlot( _this, EffectsPositionFader_onFinished );
   _this->PositionEffect.Super1.OnAnimate = EwNewSlot( _this, EffectsPositionFader_onAnimate );
   _this->OpacityEffect.Outlet = EwNewRef( _this->Super1.Group, CoreGroup_OnGetOpacity, 
   CoreGroup__OnSetOpacity );
   EffectsEffect_OnSetReversed((EffectsEffect)&_this->OpacityEffect, 0 );
-  _this->OpacityEffect.Super1.Symmetric = 0;
   _this->OpacityEffect.Super1.OnFinished = EwNewSlot( _this, EffectsPositionFader_onFinished );
   _this->OpacityEffect.Super1.OnAnimate = EwNullSlot;
   EffectsEffect_OnSetEnabled((EffectsEffect)&_this->PositionEffect, (XBool)EwCompPoint( 
@@ -1712,30 +1674,30 @@ EW_END_OF_CLASS( EffectsPositionFader )
 void EffectsTransition__Init( EffectsTransition _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsTransition );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsTransition );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsTransition );
+  _this->_.VMT = EW_CLASS( EffectsTransition );
 }
 
 /* Re-Initializer for the class 'Effects::Transition' */
 void EffectsTransition__ReInit( EffectsTransition _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::Transition' */
 void EffectsTransition__Done( EffectsTransition _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* The method CreatePresentFader() creates an object of one of the classes descending 
@@ -1755,7 +1717,7 @@ EffectsFader EffectsTransition_CreatePresentFader( EffectsTransition _this )
 /* Wrapper function for the virtual method : 'Effects::Transition.CreatePresentFader()' */
 EffectsFader EffectsTransition__CreatePresentFader( void* _this )
 {
-  return ((EffectsTransition)_this)->_VMT->CreatePresentFader((EffectsTransition)_this );
+  return ((EffectsTransition)_this)->_.VMT->CreatePresentFader((EffectsTransition)_this );
 }
 
 /* The method CreateDismissFader() creates an object of one of the classes descending 
@@ -1776,7 +1738,7 @@ EffectsFader EffectsTransition_CreateDismissFader( EffectsTransition _this )
 /* Wrapper function for the virtual method : 'Effects::Transition.CreateDismissFader()' */
 EffectsFader EffectsTransition__CreateDismissFader( void* _this )
 {
-  return ((EffectsTransition)_this)->_VMT->CreateDismissFader((EffectsTransition)_this );
+  return ((EffectsTransition)_this)->_.VMT->CreateDismissFader((EffectsTransition)_this );
 }
 
 /* The method CreateRestoreFader() creates an object of one of the classes descending 
@@ -1795,7 +1757,7 @@ EffectsFader EffectsTransition_CreateRestoreFader( EffectsTransition _this )
 /* Wrapper function for the virtual method : 'Effects::Transition.CreateRestoreFader()' */
 EffectsFader EffectsTransition__CreateRestoreFader( void* _this )
 {
-  return ((EffectsTransition)_this)->_VMT->CreateRestoreFader((EffectsTransition)_this );
+  return ((EffectsTransition)_this)->_.VMT->CreateRestoreFader((EffectsTransition)_this );
 }
 
 /* The method CreateOverlayFader() creates an object of one of the classes descending 
@@ -1813,7 +1775,7 @@ EffectsFader EffectsTransition_CreateOverlayFader( EffectsTransition _this )
 /* Wrapper function for the virtual method : 'Effects::Transition.CreateOverlayFader()' */
 EffectsFader EffectsTransition__CreateOverlayFader( void* _this )
 {
-  return ((EffectsTransition)_this)->_VMT->CreateOverlayFader((EffectsTransition)_this );
+  return ((EffectsTransition)_this)->_.VMT->CreateOverlayFader((EffectsTransition)_this );
 }
 
 /* Variants derived from the class : 'Effects::Transition' */
@@ -1821,8 +1783,8 @@ EW_DEFINE_CLASS_VARIANTS( EffectsTransition )
 EW_END_OF_CLASS_VARIANTS( EffectsTransition )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::Transition' */
-EW_DEFINE_CLASS( EffectsTransition, XObject, _None, _None, _None, _None, _None, 
-                 _None, "Effects::Transition" )
+EW_DEFINE_CLASS( EffectsTransition, XObject, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "Effects::Transition" )
   EffectsTransition_CreatePresentFader,
   EffectsTransition_CreateDismissFader,
   EffectsTransition_CreateRestoreFader,
@@ -1833,34 +1795,32 @@ EW_END_OF_CLASS( EffectsTransition )
 void EffectsShowHideTransition__Init( EffectsShowHideTransition _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  EffectsTransition__Init( &_this->_Super, aLink, aArg );
+  EffectsTransition__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsShowHideTransition );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsShowHideTransition );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsShowHideTransition );
+  _this->_.VMT = EW_CLASS( EffectsShowHideTransition );
 
   /* ... and initialize objects, variables, properties, etc. */
-  _this->Alignment = EffectsDialogAlignmentAlignHorzCenter | EffectsDialogAlignmentAlignVertCenter;
-  _this->ShowAtStart = 1;
 }
 
 /* Re-Initializer for the class 'Effects::ShowHideTransition' */
 void EffectsShowHideTransition__ReInit( EffectsShowHideTransition _this )
 {
   /* At first re-initialize the super class ... */
-  EffectsTransition__ReInit( &_this->_Super );
+  EffectsTransition__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::ShowHideTransition' */
 void EffectsShowHideTransition__Done( EffectsShowHideTransition _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( EffectsTransition );
+  _this->_.Super._.VMT = EW_CLASS( EffectsTransition );
 
   /* Don't forget to deinitialize the super class ... */
-  EffectsTransition__Done( &_this->_Super );
+  EffectsTransition__Done( &_this->_.Super );
 }
 
 /* The method CreatePresentFader() creates an object of one of the classes descending 
@@ -1874,10 +1834,10 @@ EffectsFader EffectsShowHideTransition_CreatePresentFader( EffectsShowHideTransi
   EffectsVisibilityFader fader = EwNewObject( EffectsVisibilityFader, 0 );
 
   fader->Super1.Visible = 1;
+  fader->Super1.Enabled = 1;
   fader->Super1.AssignFocus = 0;
   fader->Super1.RestackTopmost = 1;
   fader->Super1.UseCurrentState = 0;
-  fader->ShowAtStart = _this->ShowAtStart;
   fader->Super1.OnInitialize = EwNewSlot( _this, EffectsShowHideTransition_onInitializeIn );
   return ((EffectsFader)fader );
 }
@@ -1891,10 +1851,14 @@ EffectsFader EffectsShowHideTransition_CreatePresentFader( EffectsShowHideTransi
    does nothing and returns 'null'. */
 EffectsFader EffectsShowHideTransition_CreateDismissFader( EffectsShowHideTransition _this )
 {
-  EffectsVisibilityFader fader = EwNewObject( EffectsVisibilityFader, 0 );
+  EffectsVisibilityFader fader;
 
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  fader = EwNewObject( EffectsVisibilityFader, 0 );
   fader->Super1.Visible = 0;
-  fader->HideAtStart = _this->HideAtStart;
+  fader->Super1.Enabled = 0;
   fader->Super1.RemoveIfHidden = 1;
   return ((EffectsFader)fader );
 }
@@ -1912,6 +1876,7 @@ EffectsFader EffectsShowHideTransition_CreateRestoreFader( EffectsShowHideTransi
   EffectsFader fader = EffectsTransition_CreateRestoreFader((EffectsTransition)_this );
 
   fader->RestackTopmost = 0;
+  fader->Enabled = 1;
   return fader;
 }
 
@@ -1924,12 +1889,16 @@ EffectsFader EffectsShowHideTransition_CreateRestoreFader( EffectsShowHideTransi
    of this method redirects the operation to the method @CreateDismissFader(). */
 EffectsFader EffectsShowHideTransition_CreateOverlayFader( EffectsShowHideTransition _this )
 {
-  EffectsVisibilityFader fader = EwNewObject( EffectsVisibilityFader, 0 );
+  EffectsVisibilityFader fader;
 
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  fader = EwNewObject( EffectsVisibilityFader, 0 );
   fader->Super1.Visible = 0;
+  fader->Super1.Enabled = 1;
   fader->Super1.AddToOwner = 1;
   fader->Super1.RemoveIfHidden = 0;
-  fader->HideAtStart = _this->HideAtStart;
   return ((EffectsFader)fader );
 }
 
@@ -1937,30 +1906,20 @@ EffectsFader EffectsShowHideTransition_CreateOverlayFader( EffectsShowHideTransi
 void EffectsShowHideTransition_onInitializeIn( EffectsShowHideTransition _this, 
   XObject sender )
 {
-  EffectsVisibilityFader fader = EwCastObject( sender, EffectsVisibilityFader );
-  XSet align = _this->Alignment;
-  XRect bounds = EwGetRectORect( fader->Super1.Owner->Super1.Bounds );
-  XPoint size = EwGetRectSize( fader->Super1.Group->Super1.Bounds );
+  EffectsVisibilityFader fader;
+  XRect bounds;
+  XPoint size;
   XPoint pos;
 
-  bounds.Point1.X = ( bounds.Point1.X + _this->MarginLeft );
-  bounds.Point2.X = ( bounds.Point2.X - _this->MarginRight );
-  bounds.Point1.Y = ( bounds.Point1.Y + _this->MarginTop );
-  bounds.Point2.Y = ( bounds.Point2.Y - _this->MarginBottom );
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  fader = EwCastObject( sender, EffectsVisibilityFader );
+  bounds = EwGetRectORect( fader->Super1.Owner->Super1.Bounds );
+  size = EwGetRectSize( fader->Super1.Group->Super1.Bounds );
   pos = bounds.Point1;
-
-  if ((( align & EffectsDialogAlignmentAlignHorzRight ) == EffectsDialogAlignmentAlignHorzRight ))
-    pos.X = ( bounds.Point2.X - size.X );
-  else
-    if ((( align & EffectsDialogAlignmentAlignHorzCenter ) == EffectsDialogAlignmentAlignHorzCenter ))
-      pos.X = (( bounds.Point1.X + ( EwGetRectW( bounds ) / 2 )) - ( size.X / 2 ));
-
-  if ((( align & EffectsDialogAlignmentAlignVertBottom ) == EffectsDialogAlignmentAlignVertBottom ))
-    pos.Y = ( bounds.Point2.Y - size.Y );
-  else
-    if ((( align & EffectsDialogAlignmentAlignVertCenter ) == EffectsDialogAlignmentAlignVertCenter ))
-      pos.Y = (( bounds.Point1.Y + ( EwGetRectH( bounds ) / 2 )) - ( size.Y / 2 ));
-
+  pos.X = (( bounds.Point1.X + ( EwGetRectW( bounds ) / 2 )) - ( size.X / 2 ));
+  pos.Y = (( bounds.Point1.Y + ( EwGetRectH( bounds ) / 2 )) - ( size.Y / 2 ));
   fader->Position = pos;
 }
 
@@ -1969,8 +1928,8 @@ EW_DEFINE_CLASS_VARIANTS( EffectsShowHideTransition )
 EW_END_OF_CLASS_VARIANTS( EffectsShowHideTransition )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::ShowHideTransition' */
-EW_DEFINE_CLASS( EffectsShowHideTransition, EffectsTransition, _None, _None, _None, 
-                 _None, _None, _None, "Effects::ShowHideTransition" )
+EW_DEFINE_CLASS( EffectsShowHideTransition, EffectsTransition, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, "Effects::ShowHideTransition" )
   EffectsShowHideTransition_CreatePresentFader,
   EffectsShowHideTransition_CreateDismissFader,
   EffectsShowHideTransition_CreateRestoreFader,
@@ -1981,20 +1940,15 @@ EW_END_OF_CLASS( EffectsShowHideTransition )
 void EffectsSlideTransition__Init( EffectsSlideTransition _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  EffectsTransition__Init( &_this->_Super, aLink, aArg );
+  EffectsTransition__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsSlideTransition );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsSlideTransition );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsSlideTransition );
+  _this->_.VMT = EW_CLASS( EffectsSlideTransition );
 
   /* ... and initialize objects, variables, properties, etc. */
-  _this->Alignment = EffectsDialogAlignmentAlignHorzCenter | EffectsDialogAlignmentAlignVertCenter;
-  _this->Elasticity = 0.500000f;
-  _this->Bounces = 3;
-  _this->Oscillations = 3;
-  _this->Amplitude = 0.500000f;
   _this->Exponent = 3.000000f;
   _this->Timing = EffectsTimingFastIn_EaseOut;
   _this->Duration = 500;
@@ -2005,17 +1959,17 @@ void EffectsSlideTransition__Init( EffectsSlideTransition _this, XObject aLink, 
 void EffectsSlideTransition__ReInit( EffectsSlideTransition _this )
 {
   /* At first re-initialize the super class ... */
-  EffectsTransition__ReInit( &_this->_Super );
+  EffectsTransition__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::SlideTransition' */
 void EffectsSlideTransition__Done( EffectsSlideTransition _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( EffectsTransition );
+  _this->_.Super._.VMT = EW_CLASS( EffectsTransition );
 
   /* Don't forget to deinitialize the super class ... */
-  EffectsTransition__Done( &_this->_Super );
+  EffectsTransition__Done( &_this->_.Super );
 }
 
 /* The method CreatePresentFader() creates an object of one of the classes descending 
@@ -2029,23 +1983,25 @@ EffectsFader EffectsSlideTransition_CreatePresentFader( EffectsSlideTransition _
   EffectsPositionFader fader = EwNewObject( EffectsPositionFader, 0 );
 
   fader->Super1.Visible = 1;
+  fader->Super1.Enabled = 1;
   fader->Super1.AssignFocus = 0;
   fader->Super1.RestackTopmost = 1;
   fader->Super1.UseCurrentState = 1;
   fader->Buffered = _this->Buffered;
   fader->Super1.OnInitialize = EwNewSlot( _this, EffectsSlideTransition_onInitializeIn );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&fader->OpacityEffect, _this->Duration );
+  EffectsEffect_OnSetInitialDelay((EffectsEffect)&fader->OpacityEffect, 0 );
   fader->OpacityEffect.Value1 = 0;
   fader->OpacityEffect.Value2 = 255;
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&fader->PositionEffect, _this->Duration );
   EffectsEffect_OnSetTiming((EffectsEffect)&fader->PositionEffect, _this->Timing );
-  EffectsEffect_OnSetTimingCustom1((EffectsEffect)&fader->PositionEffect, _this->TimingCustom1 );
-  EffectsEffect_OnSetTimingCustom2((EffectsEffect)&fader->PositionEffect, _this->TimingCustom2 );
+  EffectsEffect_OnSetTimingCustom1((EffectsEffect)&fader->PositionEffect, 0.000000f );
+  EffectsEffect_OnSetTimingCustom2((EffectsEffect)&fader->PositionEffect, 0.000000f );
   EffectsEffect_OnSetExponent((EffectsEffect)&fader->PositionEffect, _this->Exponent );
-  EffectsEffect_OnSetAmplitude((EffectsEffect)&fader->PositionEffect, _this->Amplitude );
-  EffectsEffect_OnSetOscillations((EffectsEffect)&fader->PositionEffect, _this->Oscillations );
-  EffectsEffect_OnSetBounces((EffectsEffect)&fader->PositionEffect, _this->Bounces );
-  EffectsEffect_OnSetElasticity((EffectsEffect)&fader->PositionEffect, _this->Elasticity );
+  EffectsEffect_OnSetAmplitude((EffectsEffect)&fader->PositionEffect, 0.500000f );
+  EffectsEffect_OnSetOscillations((EffectsEffect)&fader->PositionEffect, 3 );
+  EffectsEffect_OnSetBounces((EffectsEffect)&fader->PositionEffect, 3 );
+  EffectsEffect_OnSetElasticity((EffectsEffect)&fader->PositionEffect, 0.500000f );
   return ((EffectsFader)fader );
 }
 
@@ -2061,6 +2017,7 @@ EffectsFader EffectsSlideTransition_CreateDismissFader( EffectsSlideTransition _
   EffectsPositionFader fader = EwNewObject( EffectsPositionFader, 0 );
 
   fader->Super1.Visible = 0;
+  fader->Super1.Enabled = 0;
   fader->Super1.RemoveIfHidden = 1;
   fader->Super1.UseCurrentState = 1;
   fader->Buffered = _this->Buffered;
@@ -2068,15 +2025,16 @@ EffectsFader EffectsSlideTransition_CreateDismissFader( EffectsSlideTransition _
   fader->OpacityEffect.Value1 = 255;
   fader->OpacityEffect.Value2 = 0;
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&fader->OpacityEffect, _this->Duration );
+  EffectsEffect_OnSetInitialDelay((EffectsEffect)&fader->OpacityEffect, 0 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&fader->PositionEffect, _this->Duration );
   EffectsEffect_OnSetTiming((EffectsEffect)&fader->PositionEffect, _this->Timing );
-  EffectsEffect_OnSetTimingCustom1((EffectsEffect)&fader->PositionEffect, _this->TimingCustom1 );
-  EffectsEffect_OnSetTimingCustom2((EffectsEffect)&fader->PositionEffect, _this->TimingCustom2 );
+  EffectsEffect_OnSetTimingCustom1((EffectsEffect)&fader->PositionEffect, 0.000000f );
+  EffectsEffect_OnSetTimingCustom2((EffectsEffect)&fader->PositionEffect, 0.000000f );
   EffectsEffect_OnSetExponent((EffectsEffect)&fader->PositionEffect, _this->Exponent );
-  EffectsEffect_OnSetAmplitude((EffectsEffect)&fader->PositionEffect, _this->Amplitude );
-  EffectsEffect_OnSetOscillations((EffectsEffect)&fader->PositionEffect, _this->Oscillations );
-  EffectsEffect_OnSetBounces((EffectsEffect)&fader->PositionEffect, _this->Bounces );
-  EffectsEffect_OnSetElasticity((EffectsEffect)&fader->PositionEffect, _this->Elasticity );
+  EffectsEffect_OnSetAmplitude((EffectsEffect)&fader->PositionEffect, 0.500000f );
+  EffectsEffect_OnSetOscillations((EffectsEffect)&fader->PositionEffect, 3 );
+  EffectsEffect_OnSetBounces((EffectsEffect)&fader->PositionEffect, 3 );
+  EffectsEffect_OnSetElasticity((EffectsEffect)&fader->PositionEffect, 0.500000f );
   return ((EffectsFader)fader );
 }
 
@@ -2093,6 +2051,7 @@ EffectsFader EffectsSlideTransition_CreateRestoreFader( EffectsSlideTransition _
   EffectsFader fader = EffectsTransition_CreateRestoreFader((EffectsTransition)_this );
 
   fader->RestackTopmost = 0;
+  fader->Enabled = 1;
   return fader;
 }
 
@@ -2109,6 +2068,7 @@ EffectsFader EffectsSlideTransition_CreateOverlayFader( EffectsSlideTransition _
 
   fader->AddToOwner = 1;
   fader->RemoveIfHidden = 0;
+  fader->Enabled = 1;
   return fader;
 }
 
@@ -2117,29 +2077,12 @@ void EffectsSlideTransition_onInitializeIn( EffectsSlideTransition _this, XObjec
   sender )
 {
   EffectsPositionFader fader = EwCastObject( sender, EffectsPositionFader );
-  XSet align = _this->Alignment;
   XRect bounds = EwGetRectORect( fader->Super1.Owner->Super1.Bounds );
   XPoint size = EwGetRectSize( fader->Super1.Group->Super1.Bounds );
-  XPoint pos;
+  XPoint pos = bounds.Point1;
 
-  bounds.Point1.X = ( bounds.Point1.X + _this->MarginLeft );
-  bounds.Point2.X = ( bounds.Point2.X - _this->MarginRight );
-  bounds.Point1.Y = ( bounds.Point1.Y + _this->MarginTop );
-  bounds.Point2.Y = ( bounds.Point2.Y - _this->MarginBottom );
-  pos = bounds.Point1;
-
-  if ((( align & EffectsDialogAlignmentAlignHorzRight ) == EffectsDialogAlignmentAlignHorzRight ))
-    pos.X = ( bounds.Point2.X - size.X );
-  else
-    if ((( align & EffectsDialogAlignmentAlignHorzCenter ) == EffectsDialogAlignmentAlignHorzCenter ))
-      pos.X = (( bounds.Point1.X + ( EwGetRectW( bounds ) / 2 )) - ( size.X / 2 ));
-
-  if ((( align & EffectsDialogAlignmentAlignVertBottom ) == EffectsDialogAlignmentAlignVertBottom ))
-    pos.Y = ( bounds.Point2.Y - size.Y );
-  else
-    if ((( align & EffectsDialogAlignmentAlignVertCenter ) == EffectsDialogAlignmentAlignVertCenter ))
-      pos.Y = (( bounds.Point1.Y + ( EwGetRectH( bounds ) / 2 )) - ( size.Y / 2 ));
-
+  pos.X = (( bounds.Point1.X + ( EwGetRectW( bounds ) / 2 )) - ( size.X / 2 ));
+  pos.Y = (( bounds.Point1.Y + ( EwGetRectH( bounds ) / 2 )) - ( size.Y / 2 ));
   fader->PositionEffect.Value2 = pos;
 
   if (((( fader->Super1.Group->Super2.Owner == 0 ) || !CoreGroup_OnGetVisible( fader->Super1.Group )) 
@@ -2191,8 +2134,7 @@ void EffectsSlideTransition_onInitializeIn( EffectsSlideTransition _this, XObjec
       }
       break;
 
-      default : 
-        ;
+      default :; 
     }
 
     CoreRectView__OnSetBounds( fader->Super1.Group, EwSetRectOrigin( fader->Super1.Group->Super1.Bounds, 
@@ -2252,8 +2194,7 @@ void EffectsSlideTransition_onInitializeOut( EffectsSlideTransition _this, XObje
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   fader->PositionEffect.Value2 = pos;
@@ -2264,8 +2205,8 @@ EW_DEFINE_CLASS_VARIANTS( EffectsSlideTransition )
 EW_END_OF_CLASS_VARIANTS( EffectsSlideTransition )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::SlideTransition' */
-EW_DEFINE_CLASS( EffectsSlideTransition, EffectsTransition, _None, _None, _None, 
-                 _None, _None, _None, "Effects::SlideTransition" )
+EW_DEFINE_CLASS( EffectsSlideTransition, EffectsTransition, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, "Effects::SlideTransition" )
   EffectsSlideTransition_CreatePresentFader,
   EffectsSlideTransition_CreateDismissFader,
   EffectsSlideTransition_CreateRestoreFader,
@@ -2276,30 +2217,30 @@ EW_END_OF_CLASS( EffectsSlideTransition )
 void EffectsEffectTimerClass__Init( EffectsEffectTimerClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreTimer__Init( &_this->_Super, aLink, aArg );
+  CoreTimer__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsEffectTimerClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsEffectTimerClass );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsEffectTimerClass );
+  _this->_.VMT = EW_CLASS( EffectsEffectTimerClass );
 }
 
 /* Re-Initializer for the class 'Effects::EffectTimerClass' */
 void EffectsEffectTimerClass__ReInit( EffectsEffectTimerClass _this )
 {
   /* At first re-initialize the super class ... */
-  CoreTimer__ReInit( &_this->_Super );
+  CoreTimer__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::EffectTimerClass' */
 void EffectsEffectTimerClass__Done( EffectsEffectTimerClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreTimer );
+  _this->_.Super._.VMT = EW_CLASS( CoreTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreTimer__Done( &_this->_Super );
+  CoreTimer__Done( &_this->_.Super );
 }
 
 /* The method Trigger() will be invoked when the timer is expired (when the interval 
@@ -2317,8 +2258,8 @@ EW_DEFINE_CLASS_VARIANTS( EffectsEffectTimerClass )
 EW_END_OF_CLASS_VARIANTS( EffectsEffectTimerClass )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::EffectTimerClass' */
-EW_DEFINE_CLASS( EffectsEffectTimerClass, CoreTimer, _None, _None, _None, _None, 
-                 _None, _None, "Effects::EffectTimerClass" )
+EW_DEFINE_CLASS( EffectsEffectTimerClass, CoreTimer, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, "Effects::EffectTimerClass" )
   EffectsEffectTimerClass_Trigger,
 EW_END_OF_CLASS( EffectsEffectTimerClass )
 
@@ -2343,30 +2284,30 @@ EW_END_OF_AUTOOBJECT_VARIANTS( EffectsEffectTimer )
 void EffectsTimingList__Init( EffectsTimingList _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsTimingList );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsTimingList );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsTimingList );
+  _this->_.VMT = EW_CLASS( EffectsTimingList );
 }
 
 /* Re-Initializer for the class 'Effects::TimingList' */
 void EffectsTimingList__ReInit( EffectsTimingList _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::TimingList' */
 void EffectsTimingList__Done( EffectsTimingList _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'Effects::TimingList' */
@@ -2374,38 +2315,38 @@ EW_DEFINE_CLASS_VARIANTS( EffectsTimingList )
 EW_END_OF_CLASS_VARIANTS( EffectsTimingList )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::TimingList' */
-EW_DEFINE_CLASS( EffectsTimingList, XObject, _None, _None, _None, _None, _None, 
-                 _None, "Effects::TimingList" )
+EW_DEFINE_CLASS( EffectsTimingList, XObject, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "Effects::TimingList" )
 EW_END_OF_CLASS( EffectsTimingList )
 
 /* Initializer for the class 'Effects::FaderTask' */
 void EffectsFaderTask__Init( EffectsFaderTask _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreTask__Init( &_this->_Super, aLink, aArg );
+  CoreTask__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( EffectsFaderTask );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( EffectsFaderTask );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( EffectsFaderTask );
+  _this->_.VMT = EW_CLASS( EffectsFaderTask );
 }
 
 /* Re-Initializer for the class 'Effects::FaderTask' */
 void EffectsFaderTask__ReInit( EffectsFaderTask _this )
 {
   /* At first re-initialize the super class ... */
-  CoreTask__ReInit( &_this->_Super );
+  CoreTask__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Effects::FaderTask' */
 void EffectsFaderTask__Done( EffectsFaderTask _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreTask );
+  _this->_.Super._.VMT = EW_CLASS( CoreTask );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreTask__Done( &_this->_Super );
+  CoreTask__Done( &_this->_.Super );
 }
 
 /* The method OnComplete() is called when the task is done with its work. The default 
@@ -2607,7 +2548,7 @@ EW_DEFINE_CLASS_VARIANTS( EffectsFaderTask )
 EW_END_OF_CLASS_VARIANTS( EffectsFaderTask )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::FaderTask' */
-EW_DEFINE_CLASS( EffectsFaderTask, CoreTask, last, _None, _None, _None, _None, _None, 
+EW_DEFINE_CLASS( EffectsFaderTask, CoreTask, last, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
                  "Effects::FaderTask" )
   EffectsFaderTask_OnComplete,
   EffectsFaderTask_OnCancel,

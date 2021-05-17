@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -50,7 +50,7 @@
 #include "Resource.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x000000B8, /* ratio 76.09 % */
   0xB8001700, 0x00060452, 0x2A0E3A83, 0x20D0684C, 0x06110000, 0x20022116, 0x0039800D,
@@ -109,29 +109,28 @@ static const XColor _Const0015 = { 0x55, 0x55, 0x55, 0xFF };
 void FactoryDisplayAutoRun__Init( FactoryDisplayAutoRun _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( FactoryDisplayAutoRun );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( FactoryDisplayAutoRun );
 
   /* ... then construct all embedded objects */
-  CoreTimer__Init( &_this->TimerNextPattern, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->FullScreen, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->CenterBlock, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ImagePattern, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->BurnInTimeText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->BurnInResultText, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->FactoryTestEventHandler, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->TimerNextPattern, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->FullScreen, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->CenterBlock, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ImagePattern, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->BurnInTimeText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->BurnInResultText, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->FactoryTestEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( FactoryDisplayAutoRun );
+  _this->_.VMT = EW_CLASS( FactoryDisplayAutoRun );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
   _this->PatternIdx = -1;
   CoreTimer_OnSetPeriod( &_this->TimerNextPattern, 1000 );
   CoreTimer_OnSetEnabled( &_this->TimerNextPattern, 1 );
-  _this->TotalPatternNum = 11;
   CoreRectView__OnSetBounds( &_this->FullScreen, _Const0000 );
   ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0001 );
   CoreRectView__OnSetBounds( &_this->CenterBlock, _Const0002 );
@@ -171,7 +170,7 @@ void FactoryDisplayAutoRun__Init( FactoryDisplayAutoRun _this, XObject aLink, XH
 void FactoryDisplayAutoRun__ReInit( FactoryDisplayAutoRun _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->TimerNextPattern );
@@ -187,7 +186,7 @@ void FactoryDisplayAutoRun__ReInit( FactoryDisplayAutoRun _this )
 void FactoryDisplayAutoRun__Done( FactoryDisplayAutoRun _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->TimerNextPattern );
@@ -199,7 +198,7 @@ void FactoryDisplayAutoRun__Done( FactoryDisplayAutoRun _this )
   CoreSystemEventHandler__Done( &_this->FactoryTestEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -284,8 +283,7 @@ void FactoryDisplayAutoRun_DisplayPattern( FactoryDisplayAutoRun _this, XInt32 a
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -311,10 +309,8 @@ void FactoryDisplayAutoRun_OnTimerNextPatternSlot( FactoryDisplayAutoRun _this,
 
   Idx = _this->PatternIdx + 1;
 
-  if ( Idx >= _this->TotalPatternNum )
-  {
+  if ( Idx >= 11 )
     Idx = 0;
-  }
 
   FactoryDisplayAutoRun_OnSetPatternIdx( _this, Idx );
 }
@@ -345,25 +341,18 @@ void FactoryDisplayAutoRun_OnFactoryTestEventReceivedSlot( FactoryDisplayAutoRun
   TestContext = EwCastObject( _this->FactoryTestEventHandler.Context, FactoryTestContext );
 
   if ( TestContext != 0 )
-  {
     switch ( TestContext->TestItem )
     {
       case EnumFactoryTestBurnInTimeUpdate :
-      {
         FactoryDisplayAutoRun_UpdateBurnInTime( _this, TestContext->Data );
-      }
       break;
 
       case EnumFactoryTestBurnInResult :
-      {
         FactoryDisplayAutoRun_ShowBurnInTestResult( _this, TestContext->Data );
-      }
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* 'C' function for method : 'Factory::DisplayAutoRun.UpdateBurnInTime()' */
@@ -378,17 +367,13 @@ void FactoryDisplayAutoRun_UpdateBurnInTime( FactoryDisplayAutoRun _this, XInt32
   time_str = EwConcatString( EwNewStringInt( hour, 0, 10 ), EwLoadString( &_Const000C ));
 
   if ( minute < 10 )
-  {
     time_str = EwConcatString( time_str, EwLoadString( &_Const000D ));
-  }
 
   time_str = EwConcatString( time_str, EwConcatString( EwNewStringInt( minute, 0, 
   10 ), EwLoadString( &_Const000C )));
 
   if ( second < 10 )
-  {
     time_str = EwConcatStringChar( time_str, '0' );
-  }
 
   time_str = EwConcatString( time_str, EwNewStringInt( second, 0, 10 ));
   ViewsText_OnSetString( &_this->BurnInTimeText, time_str );
@@ -474,13 +459,13 @@ EW_END_OF_CLASS( FactoryDisplayAutoRun )
 void FactoryMain__Init( FactoryMain _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( FactoryMain );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( FactoryMain );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( FactoryMain );
+  _this->_.VMT = EW_CLASS( FactoryMain );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -494,17 +479,17 @@ void FactoryMain__Init( FactoryMain _this, XObject aLink, XHandle aArg )
 void FactoryMain__ReInit( FactoryMain _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Factory::Main' */
 void FactoryMain__Done( FactoryMain _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Factory::Main.OnShortHomeKeyActivated()' */
@@ -530,9 +515,7 @@ XString FactoryMain_LoadItemTitle( FactoryMain _this, XInt32 aItemNo )
   XString Title = 0;
 
   if ( aItemNo < 2 )
-  {
     Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 2 )];
-  }
 
   return Title;
 }
@@ -556,8 +539,7 @@ void FactoryMain_OnItemActivate( FactoryMain _this, XInt32 aItemNo, MenuItemBase
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -567,7 +549,7 @@ EW_END_OF_CLASS_VARIANTS( FactoryMain )
 
 /* Virtual Method Table (VMT) for the class : 'Factory::Main' */
 EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, ItemTitleArray, ItemTitleArray, 
-                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _None, "Factory::Main" )
+                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _.VMT, "Factory::Main" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -632,23 +614,22 @@ EW_END_OF_CLASS( FactoryMain )
 void FactoryDisplayManual__Init( FactoryDisplayManual _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( FactoryDisplayManual );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( FactoryDisplayManual );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->FullScreen, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->CenterBlock, &_this->_XObject, 0 );
-  ViewsBorder__Init( &_this->OuterFrame, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ImagePattern, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->FullScreen, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->CenterBlock, &_this->_.XObject, 0 );
+  ViewsBorder__Init( &_this->OuterFrame, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ImagePattern, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( FactoryDisplayManual );
+  _this->_.VMT = EW_CLASS( FactoryDisplayManual );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  _this->TotalPatternNum = 19;
   CoreRectView__OnSetBounds( &_this->FullScreen, _Const0000 );
   ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0005 );
   CoreRectView__OnSetBounds( &_this->CenterBlock, _Const0002 );
@@ -669,7 +650,7 @@ void FactoryDisplayManual__Init( FactoryDisplayManual _this, XObject aLink, XHan
 void FactoryDisplayManual__ReInit( FactoryDisplayManual _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->FullScreen );
@@ -682,7 +663,7 @@ void FactoryDisplayManual__ReInit( FactoryDisplayManual _this )
 void FactoryDisplayManual__Done( FactoryDisplayManual _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->FullScreen );
@@ -691,7 +672,7 @@ void FactoryDisplayManual__Done( FactoryDisplayManual _this )
   ViewsImage__Done( &_this->ImagePattern );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Factory::DisplayManual.OnShortDownKeyActivated()' */
@@ -699,10 +680,8 @@ void FactoryDisplayManual_OnShortDownKeyActivated( FactoryDisplayManual _this )
 {
   XInt32 NextIdx = _this->PatternIdx + 1;
 
-  if ( NextIdx >= _this->TotalPatternNum )
-  {
+  if ( NextIdx >= 19 )
     NextIdx = 0;
-  }
 
   FactoryDisplayManual_OnSetPatternIdx( _this, NextIdx );
 }
@@ -713,9 +692,7 @@ void FactoryDisplayManual_OnShortUpKeyActivated( FactoryDisplayManual _this )
   XInt32 PreviousIdx = _this->PatternIdx - 1;
 
   if ( PreviousIdx < 0 )
-  {
-    PreviousIdx = _this->TotalPatternNum - 1;
-  }
+    PreviousIdx = 18;
 
   FactoryDisplayManual_OnSetPatternIdx( _this, PreviousIdx );
 }
@@ -860,8 +837,7 @@ void FactoryDisplayManual_DisplayPattern( FactoryDisplayManual _this, XInt32 aPa
       ViewsRectangle_OnSetColor( &_this->FullScreen, _Const0015 );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -871,7 +847,7 @@ EW_END_OF_CLASS_VARIANTS( FactoryDisplayManual )
 
 /* Virtual Method Table (VMT) for the class : 'Factory::DisplayManual' */
 EW_DEFINE_CLASS( FactoryDisplayManual, ComponentsBaseComponent, FullScreen, FullScreen, 
-                 FullScreen, FullScreen, TotalPatternNum, TotalPatternNum, "Factory::DisplayManual" )
+                 FullScreen, FullScreen, PatternIdx, PatternIdx, "Factory::DisplayManual" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -920,30 +896,30 @@ EW_END_OF_CLASS( FactoryDisplayManual )
 void FactoryTestContext__Init( FactoryTestContext _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( FactoryTestContext );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( FactoryTestContext );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( FactoryTestContext );
+  _this->_.VMT = EW_CLASS( FactoryTestContext );
 }
 
 /* Re-Initializer for the class 'Factory::TestContext' */
 void FactoryTestContext__ReInit( FactoryTestContext _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Factory::TestContext' */
 void FactoryTestContext__Done( FactoryTestContext _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'Factory::TestContext' */
@@ -951,8 +927,8 @@ EW_DEFINE_CLASS_VARIANTS( FactoryTestContext )
 EW_END_OF_CLASS_VARIANTS( FactoryTestContext )
 
 /* Virtual Method Table (VMT) for the class : 'Factory::TestContext' */
-EW_DEFINE_CLASS( FactoryTestContext, XObject, _None, _None, _None, _None, _None, 
-                 _None, "Factory::TestContext" )
+EW_DEFINE_CLASS( FactoryTestContext, XObject, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "Factory::TestContext" )
 EW_END_OF_CLASS( FactoryTestContext )
 
 /* Embedded Wizard */

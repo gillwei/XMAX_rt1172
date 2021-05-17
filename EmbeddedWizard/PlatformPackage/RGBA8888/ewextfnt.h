@@ -50,7 +50,7 @@
 
   #if defined __ICCARM__
     #define EW_FONT_PIXEL_PRAGMA                                               \
-      _Pragma(EW_STRINGIZE(location=EW_STRINGIZE( EW_BITMAP_PIXEL_SECTION_NAME )))
+      _Pragma(EW_STRINGIZE(location=EW_STRINGIZE( EW_FONT_PIXEL_SECTION_NAME )))
   #elif defined __CC_ARM
     #define EW_FONT_PIXEL_PRAGMA                                               \
       __attribute__((section ( EW_STRINGIZE( EW_FONT_PIXEL_SECTION_NAME ))))
@@ -62,6 +62,29 @@
 
 #ifndef EW_FONT_PIXEL_PRAGMA
   #define EW_FONT_PIXEL_PRAGMA
+#endif
+
+
+/* The macro EW_FONT_DATA_SECTION_NAME is used to determine the section where
+   the linker should locate the memory areas containing glyph metrics data. */
+#if defined EW_FONT_DATA_SECTION_NAME && !defined EW_FONT_DATA_PRAGMA
+  #define EW_STRINGIZE( aArg )      EW_STRINGIZE_ARG( aArg )
+  #define EW_STRINGIZE_ARG( aArg )  #aArg
+
+  #if defined __ICCARM__
+    #define EW_FONT_DATA_PRAGMA                                                \
+      _Pragma(EW_STRINGIZE(location=EW_STRINGIZE( EW_FONT_DATA_SECTION_NAME )))
+  #elif defined __CC_ARM
+    #define EW_FONT_DATA_PRAGMA                                                \
+      __attribute__((section ( EW_STRINGIZE( EW_FONT_DATA_SECTION_NAME ))))
+  #elif defined __GNUC__
+    #define EW_FONT_DATA_PRAGMA                                                \
+      __attribute__((section ( EW_STRINGIZE( EW_FONT_DATA_SECTION_NAME ))))
+  #endif
+#endif
+
+#ifndef EW_FONT_DATA_PRAGMA
+  #define EW_FONT_DATA_PRAGMA
 #endif
 
 
@@ -190,7 +213,7 @@ typedef struct XFntRes
     aDefChar,                                                                  \
     #aName                                                                     \
   };                                                                           \
-  const XFntGlyphRes ___##aName[] =                                            \
+  EW_FONT_DATA_PRAGMA const XFntGlyphRes ___##aName[] =                        \
   {
 
 #define EW_GLYPH( aCode, aOriginX, aOriginY, aWidth, aHeight, aAdvance,        \
@@ -213,13 +236,13 @@ typedef struct XFntRes
 
 #define EW_FONT_KERNING_CODES( aName )                                         \
   };                                                                           \
-  const unsigned int _kc_##aName[] =                                           \
+  EW_FONT_DATA_PRAGMA const unsigned int _kc_##aName[] =                       \
   {
 
 #define EW_FONT_KERNING_VALUES( aName )                                        \
     0                                                                          \
   };                                                                           \
-  const unsigned char _kv_##aName[] =                                          \
+  EW_FONT_DATA_PRAGMA const unsigned char _kv_##aName[] =                      \
   {
 
 #define EW_END_OF_FONT_RES( aName )                                            \

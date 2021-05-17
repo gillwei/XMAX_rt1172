@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -48,7 +48,7 @@
 #include "Strings.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x0000025C, /* ratio 53.64 % */
   0xB8002900, 0x000C2452, 0x80010736, 0x40072000, 0x1C730019, 0x70A3A002, 0x00348022,
@@ -103,23 +103,23 @@ static const XStringRes _Const000D = { _StringsDefault0, 0x010F };
 void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  TemplatesDeviceClass__Init( &_this->_Super, aLink, aArg );
+  TemplatesDeviceClass__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceSystemDeviceClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceSystemDeviceClass );
 
   /* ... then construct all embedded objects */
-  CoreSystemEvent__Init( &_this->FactoryTestSystemEvent, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->FactoryResetTimer, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->QrCodeSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->UpdateLocalTimeSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->OpeningSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->InspectionDisplaySystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->InspectionModeSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->FactoryResetCompletedSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->FactoryTestSystemEvent, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->FactoryResetTimer, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->QrCodeSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->UpdateLocalTimeSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->OpeningSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->InspectionDisplaySystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->InspectionModeSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->FactoryResetCompletedSystemEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceSystemDeviceClass );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceSystemDeviceClass );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreTimer_OnSetPeriod( &_this->FactoryResetTimer, 0 );
@@ -134,7 +134,7 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
 void DeviceInterfaceSystemDeviceClass__ReInit( DeviceInterfaceSystemDeviceClass _this )
 {
   /* At first re-initialize the super class ... */
-  TemplatesDeviceClass__ReInit( &_this->_Super );
+  TemplatesDeviceClass__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->FactoryTestSystemEvent );
@@ -151,7 +151,7 @@ void DeviceInterfaceSystemDeviceClass__ReInit( DeviceInterfaceSystemDeviceClass 
 void DeviceInterfaceSystemDeviceClass__Done( DeviceInterfaceSystemDeviceClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( TemplatesDeviceClass );
+  _this->_.Super._.VMT = EW_CLASS( TemplatesDeviceClass );
 
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->FactoryTestSystemEvent );
@@ -164,7 +164,7 @@ void DeviceInterfaceSystemDeviceClass__Done( DeviceInterfaceSystemDeviceClass _t
   CoreSystemEvent__Done( &_this->FactoryResetCompletedSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
-  TemplatesDeviceClass__Done( &_this->_Super );
+  TemplatesDeviceClass__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.QuitTest()' */
@@ -233,9 +233,7 @@ void DeviceInterfaceSystemDeviceClass_OnSetESN( DeviceInterfaceSystemDeviceClass
 XString DeviceInterfaceSystemDeviceClass_OnGetESN( DeviceInterfaceSystemDeviceClass _this )
 {
   if ( !EwCompString( 0, _this->ESN ))
-  {
     ew_get_esn();
-  }
 
   return _this->ESN;
 }
@@ -373,13 +371,9 @@ void DeviceInterfaceSystemDeviceClass_ShowBurnInTestResult( DeviceInterfaceSyste
   TestContext->TestItem = EnumFactoryTestBurnInResult;
 
   if ( aResult )
-  {
     TestContext->Data = 1;
-  }
   else
-  {
     TestContext->Data = 0;
-  }
 
   CoreSystemEvent_Trigger( &_this->FactoryTestSystemEvent, ((XObject)TestContext ), 
   0 );
@@ -633,7 +627,6 @@ void DeviceInterfaceSystemDeviceClass_NotifyLastPageRead( DeviceInterfaceSystemD
   switch ( HomeGroup )
   {
     case EnumHomeGroupMETER :
-    {
       switch ( MeterDisplaySetting )
       {
         case EnumMeterDisplayTACHOMETER :
@@ -651,7 +644,6 @@ void DeviceInterfaceSystemDeviceClass_NotifyLastPageRead( DeviceInterfaceSystemD
         default : 
           _this->HomeType = EnumHomeTypeTACHO_VISUALIZER;
       }
-    }
     break;
 
     case EnumHomeGroupNAVIGATION :
@@ -662,8 +654,7 @@ void DeviceInterfaceSystemDeviceClass_NotifyLastPageRead( DeviceInterfaceSystemD
       _this->HomeType = EnumHomeTypeVEHICLE_INFO;
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -925,30 +916,30 @@ EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceSystemDevice )
 void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDeviceClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  TemplatesDeviceClass__Init( &_this->_Super, aLink, aArg );
+  TemplatesDeviceClass__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceNavigationDeviceClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceNavigationDeviceClass );
 
   /* ... then construct all embedded objects */
-  CoreSystemEvent__Init( &_this->MapUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->CurRdUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->ETAUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->DayNightModeUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->SpeedLimitUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->NaviIncidentUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->NavigatingStatusUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->TbtListUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->ActiveTbtItemUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->RouteCalProgressUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->ZoomLevelUpdateEventHandler, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->DialogEventUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->ViaPointUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->HomeSettingUpdateEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->OfficeSettingUpdateEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->MapUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->CurRdUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->ETAUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->DayNightModeUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->SpeedLimitUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->NaviIncidentUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->NavigatingStatusUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->TbtListUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->ActiveTbtItemUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->RouteCalProgressUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->ZoomLevelUpdateEventHandler, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->DialogEventUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->ViaPointUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->HomeSettingUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->OfficeSettingUpdateEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceNavigationDeviceClass );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceNavigationDeviceClass );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->CurrentHome = EnumHomeTypeNAVI_DEFAULT_VIEW;
@@ -959,7 +950,7 @@ void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDevice
 void DeviceInterfaceNavigationDeviceClass__ReInit( DeviceInterfaceNavigationDeviceClass _this )
 {
   /* At first re-initialize the super class ... */
-  TemplatesDeviceClass__ReInit( &_this->_Super );
+  TemplatesDeviceClass__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->MapUpdateEvent );
@@ -983,7 +974,7 @@ void DeviceInterfaceNavigationDeviceClass__ReInit( DeviceInterfaceNavigationDevi
 void DeviceInterfaceNavigationDeviceClass__Done( DeviceInterfaceNavigationDeviceClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( TemplatesDeviceClass );
+  _this->_.Super._.VMT = EW_CLASS( TemplatesDeviceClass );
 
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->MapUpdateEvent );
@@ -1003,7 +994,7 @@ void DeviceInterfaceNavigationDeviceClass__Done( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Done( &_this->OfficeSettingUpdateEvent );
 
   /* Don't forget to deinitialize the super class ... */
-  TemplatesDeviceClass__Done( &_this->_Super );
+  TemplatesDeviceClass__Done( &_this->_.Super );
 }
 
 /* This method is intended to be called by the device to notify the GUI application 
@@ -1511,26 +1502,26 @@ EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceNavigationDevice )
 void DeviceInterfaceMediaManagerDeviceClass__Init( DeviceInterfaceMediaManagerDeviceClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  TemplatesDeviceClass__Init( &_this->_Super, aLink, aArg );
+  TemplatesDeviceClass__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceMediaManagerDeviceClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceMediaManagerDeviceClass );
 
   /* ... then construct all embedded objects */
-  CoreSystemEvent__Init( &_this->NotifyPlayBackTimeChangedSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->NotifyMotoConMusicUpdatedSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->NotifyAmsBleConnectedStatusSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->NotifyMediaVolumeUpdateSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->NotifyPlayBackTimeChangedSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->NotifyMotoConMusicUpdatedSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->NotifyAmsBleConnectedStatusSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->NotifyMediaVolumeUpdateSystemEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceMediaManagerDeviceClass );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceMediaManagerDeviceClass );
 }
 
 /* Re-Initializer for the class 'DeviceInterface::MediaManagerDeviceClass' */
 void DeviceInterfaceMediaManagerDeviceClass__ReInit( DeviceInterfaceMediaManagerDeviceClass _this )
 {
   /* At first re-initialize the super class ... */
-  TemplatesDeviceClass__ReInit( &_this->_Super );
+  TemplatesDeviceClass__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->NotifyPlayBackTimeChangedSystemEvent );
@@ -1543,7 +1534,7 @@ void DeviceInterfaceMediaManagerDeviceClass__ReInit( DeviceInterfaceMediaManager
 void DeviceInterfaceMediaManagerDeviceClass__Done( DeviceInterfaceMediaManagerDeviceClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( TemplatesDeviceClass );
+  _this->_.Super._.VMT = EW_CLASS( TemplatesDeviceClass );
 
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->NotifyPlayBackTimeChangedSystemEvent );
@@ -1552,7 +1543,7 @@ void DeviceInterfaceMediaManagerDeviceClass__Done( DeviceInterfaceMediaManagerDe
   CoreSystemEvent__Done( &_this->NotifyMediaVolumeUpdateSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
-  TemplatesDeviceClass__Done( &_this->_Super );
+  TemplatesDeviceClass__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'DeviceInterface::MediaManagerDeviceClass.OnSetTitle()' */
@@ -1560,13 +1551,9 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetTitle( DeviceInterfaceMediaMana
   XString value )
 {
   if ( _this->IsTitleReceived || _this->IsInit )
-  {
     _this->Title = EwShareString( value );
-  }
   else
-  {
     _this->Title = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceMediaManagerDeviceClass_OnGetTitle, 
     DeviceInterfaceMediaManagerDeviceClass_OnSetTitle ), 0 );
@@ -1577,13 +1564,9 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum( DeviceInterfaceMediaMana
   XString value )
 {
   if ( _this->IsAlbumReceived || _this->IsInit )
-  {
     _this->Album = EwShareString( value );
-  }
   else
-  {
     _this->Album = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceMediaManagerDeviceClass_OnGetAlbum, 
     DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum ), 0 );
@@ -1594,13 +1577,9 @@ void DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( DeviceInterfaceMediaMan
   XString value )
 {
   if ( _this->IsArtistReceived || _this->IsInit )
-  {
     _this->Artist = EwShareString( value );
-  }
   else
-  {
     _this->Artist = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceMediaManagerDeviceClass_OnGetArtist, 
     DeviceInterfaceMediaManagerDeviceClass_OnSetArtist ), 0 );
@@ -1883,28 +1862,28 @@ EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceMediaManagerDevice )
 void DeviceInterfaceBluetoothDeviceClass__Init( DeviceInterfaceBluetoothDeviceClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  TemplatesDeviceClass__Init( &_this->_Super, aLink, aArg );
+  TemplatesDeviceClass__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceBluetoothDeviceClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceBluetoothDeviceClass );
 
   /* ... then construct all embedded objects */
-  CoreSystemEvent__Init( &_this->BtcPairingChangedSystemEvent, &_this->_XObject, 0 );
-  DeviceInterfaceBluetoothPairedDeviceInfo__Init( &_this->PairedDeviceObj, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->BlePairingStateChangedEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->MotoConSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->PairedDeviceUpdatedSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->BtcConnectionResultSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->BtcPairingChangedSystemEvent, &_this->_.XObject, 0 );
+  DeviceInterfaceBluetoothPairedDeviceInfo__Init( &_this->PairedDeviceObj, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->BlePairingStateChangedEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->MotoConSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->PairedDeviceUpdatedSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->BtcConnectionResultSystemEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceBluetoothDeviceClass );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceBluetoothDeviceClass );
 }
 
 /* Re-Initializer for the class 'DeviceInterface::BluetoothDeviceClass' */
 void DeviceInterfaceBluetoothDeviceClass__ReInit( DeviceInterfaceBluetoothDeviceClass _this )
 {
   /* At first re-initialize the super class ... */
-  TemplatesDeviceClass__ReInit( &_this->_Super );
+  TemplatesDeviceClass__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->BtcPairingChangedSystemEvent );
@@ -1919,7 +1898,7 @@ void DeviceInterfaceBluetoothDeviceClass__ReInit( DeviceInterfaceBluetoothDevice
 void DeviceInterfaceBluetoothDeviceClass__Done( DeviceInterfaceBluetoothDeviceClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( TemplatesDeviceClass );
+  _this->_.Super._.VMT = EW_CLASS( TemplatesDeviceClass );
 
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->BtcPairingChangedSystemEvent );
@@ -1930,7 +1909,7 @@ void DeviceInterfaceBluetoothDeviceClass__Done( DeviceInterfaceBluetoothDeviceCl
   CoreSystemEvent__Done( &_this->BtcConnectionResultSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
-  TemplatesDeviceClass__Done( &_this->_Super );
+  TemplatesDeviceClass__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetPairedDeviceAtItem()' */
@@ -2384,30 +2363,30 @@ EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceBluetoothDevice )
 void DeviceInterfaceBluetoothPairedDeviceInfo__Init( DeviceInterfaceBluetoothPairedDeviceInfo _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceBluetoothPairedDeviceInfo );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceBluetoothPairedDeviceInfo );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceBluetoothPairedDeviceInfo );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceBluetoothPairedDeviceInfo );
 }
 
 /* Re-Initializer for the class 'DeviceInterface::BluetoothPairedDeviceInfo' */
 void DeviceInterfaceBluetoothPairedDeviceInfo__ReInit( DeviceInterfaceBluetoothPairedDeviceInfo _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'DeviceInterface::BluetoothPairedDeviceInfo' */
 void DeviceInterfaceBluetoothPairedDeviceInfo__Done( DeviceInterfaceBluetoothPairedDeviceInfo _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'DeviceInterface::BluetoothPairedDeviceInfo' */
@@ -2423,30 +2402,30 @@ EW_END_OF_CLASS( DeviceInterfaceBluetoothPairedDeviceInfo )
 void DeviceInterfaceRtcTime__Init( DeviceInterfaceRtcTime _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceRtcTime );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceRtcTime );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceRtcTime );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceRtcTime );
 }
 
 /* Re-Initializer for the class 'DeviceInterface::RtcTime' */
 void DeviceInterfaceRtcTime__ReInit( DeviceInterfaceRtcTime _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'DeviceInterface::RtcTime' */
 void DeviceInterfaceRtcTime__Done( DeviceInterfaceRtcTime _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'DeviceInterface::RtcTime' */
@@ -2454,25 +2433,25 @@ EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceRtcTime )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceRtcTime )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::RtcTime' */
-EW_DEFINE_CLASS( DeviceInterfaceRtcTime, XObject, _None, _None, _None, _None, _None, 
-                 _None, "DeviceInterface::RtcTime" )
+EW_DEFINE_CLASS( DeviceInterfaceRtcTime, XObject, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "DeviceInterface::RtcTime" )
 EW_END_OF_CLASS( DeviceInterfaceRtcTime )
 
 /* Initializer for the class 'DeviceInterface::VehicleDeviceClass' */
 void DeviceInterfaceVehicleDeviceClass__Init( DeviceInterfaceVehicleDeviceClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  TemplatesDeviceClass__Init( &_this->_Super, aLink, aArg );
+  TemplatesDeviceClass__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceVehicleDeviceClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceVehicleDeviceClass );
 
   /* ... then construct all embedded objects */
-  CoreSystemEvent__Init( &_this->DDModeStateChangedSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->VehicleDataReceivedSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->DDModeStateChangedSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->VehicleDataReceivedSystemEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceVehicleDeviceClass );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceVehicleDeviceClass );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->CurrentMeterDisplay = EnumMeterDisplayTACHOMETER;
@@ -2482,7 +2461,7 @@ void DeviceInterfaceVehicleDeviceClass__Init( DeviceInterfaceVehicleDeviceClass 
 void DeviceInterfaceVehicleDeviceClass__ReInit( DeviceInterfaceVehicleDeviceClass _this )
 {
   /* At first re-initialize the super class ... */
-  TemplatesDeviceClass__ReInit( &_this->_Super );
+  TemplatesDeviceClass__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->DDModeStateChangedSystemEvent );
@@ -2493,14 +2472,14 @@ void DeviceInterfaceVehicleDeviceClass__ReInit( DeviceInterfaceVehicleDeviceClas
 void DeviceInterfaceVehicleDeviceClass__Done( DeviceInterfaceVehicleDeviceClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( TemplatesDeviceClass );
+  _this->_.Super._.VMT = EW_CLASS( TemplatesDeviceClass );
 
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->DDModeStateChangedSystemEvent );
   CoreSystemEvent__Done( &_this->VehicleDataReceivedSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
-  TemplatesDeviceClass__Done( &_this->_Super );
+  TemplatesDeviceClass__Done( &_this->_.Super );
 }
 
 /* This method is intended to be called by the device to notify the GUI application 
@@ -2578,9 +2557,7 @@ DeviceInterfaceVehicleDataClass DeviceInterfaceVehicleDeviceClass_GetData( Devic
       || ( EnumVehicleRxTypeAIR_TEMPERATURE == aVehicleRxType )) || ( EnumVehicleRxTypeCOOLANT_TEMPERATURE 
       == aVehicleRxType )) || ( EnumVehicleRxTypeBATTERY_VOLTAGE == aVehicleRxType )) 
       || ( EnumVehicleRxTypeF_TRIP == aVehicleRxType ))
-  {
     VehicleData->DataType = EnumDataTypeFLOAT;
-  }
 
   RxTypeId = aVehicleRxType;
   Valid = 0;
@@ -2644,16 +2621,10 @@ XUInt32 DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( DeviceInterfaceVehicl
   EW_UNUSED_ARG( _this );
 
   if ( aData < aMin )
-  {
     aData = aMin;
-  }
   else
     if ( aData > aMax )
-    {
       aData = aMax;
-    }
-    else
-      ;
 
   return aData;
 }
@@ -2666,16 +2637,10 @@ XFloat DeviceInterfaceVehicleDeviceClass_ClampDataFloat( DeviceInterfaceVehicleD
   EW_UNUSED_ARG( _this );
 
   if ( aData < aMin )
-  {
     aData = aMin;
-  }
   else
     if ( aData > aMax )
-    {
       aData = aMax;
-    }
-    else
-      ;
 
   return aData;
 }
@@ -2698,13 +2663,9 @@ XEnum DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( DeviceInterfaceVehicle
     EnumVehicleRxTypeMILEAGE_UNIT );
 
   if ( 1 == VehicleData->DataUInt32 )
-  {
     _this->MileageUnit = EnumMileageSettingItemMILE;
-  }
   else
-  {
     _this->MileageUnit = EnumMileageSettingItemKM;
-  }
 
   return _this->MileageUnit;
 }
@@ -2717,9 +2678,7 @@ XEnum DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( DeviceInterfac
     EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT );
 
   if ( 4 > VehicleData->DataUInt32 )
-  {
     _this->FuelConsumptionUnit = (XEnum)VehicleData->DataUInt32;
-  }
 
   return _this->FuelConsumptionUnit;
 }
@@ -2735,9 +2694,7 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetAvgSpeedStr( DeviceInterfaceVehic
   {
     if ( EnumMileageSettingItemMILE == DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( 
         _this ))
-    {
       VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
-    }
 
     VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
@@ -2746,9 +2703,7 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetAvgSpeedStr( DeviceInterfaceVehic
     0, 1 ));
   }
   else
-  {
     _this->AvgSpeedStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   return _this->AvgSpeedStr;
 }
@@ -2768,32 +2723,25 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetAvgFuelRateStr( DeviceInterfaceVe
     switch ( DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( _this ))
     {
       case EnumMeterFuelConsumptionUnitKM_PER_LITER :
-      {
         VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
         EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
         VehicleData->DataFloat, 0.000000f, 99.900002f );
-      }
       break;
 
       case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
       case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
-      {
         VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
         EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
         VehicleData->DataFloat, 0.000000f, 199.899994f );
-      }
       break;
 
       case EnumMeterFuelConsumptionUnitL_PER_100KM :
-      {
         VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
         EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
         VehicleData->DataFloat, 1.000000f, 99.900002f );
-      }
       break;
 
-      default : 
-        ;
+      default :; 
     }
 
     VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
@@ -2803,9 +2751,7 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetAvgFuelRateStr( DeviceInterfaceVe
     0, 1 ));
   }
   else
-  {
     _this->AvgFuelRateStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   return _this->AvgFuelRateStr;
 }
@@ -2831,9 +2777,7 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetFuelConStr( DeviceInterfaceVehicl
     0, 1 ));
   }
   else
-  {
     _this->FuelConStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   return _this->FuelConStr;
 }
@@ -2850,16 +2794,12 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetTripTimeHourStr( DeviceInterfaceV
     XUInt32 TripTimeHour = VehicleData->DataUInt32 / 3600;
 
     if ( 99 < TripTimeHour )
-    {
       TripTimeHour = 99;
-    }
 
     _this->TripTimeHourStr = EwShareString( EwNewStringUInt( TripTimeHour, 0, 10 ));
   }
   else
-  {
     _this->TripTimeHourStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   return _this->TripTimeHourStr;
 }
@@ -2877,24 +2817,18 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetTripTimeMinuteStr( DeviceInterfac
     XUInt32 TripTimeMinute;
 
     if ( 99 < TripTimeHour )
-    {
       TripTimeHour = 99;
-    }
 
     TripTimeMinute = ( VehicleData->DataUInt32 / 60 ) - ( TripTimeHour * 60 );
 
     if ( 99 < TripTimeMinute )
-    {
       TripTimeMinute = 99;
-    }
 
     _this->TripTimeMinuteStr = EwShareString( EwNewStringUInt( TripTimeMinute, 2, 
     10 ));
   }
   else
-  {
     _this->TripTimeMinuteStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   return _this->TripTimeMinuteStr;
 }
@@ -2930,20 +2864,16 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetCoolantTemperatureStr( DeviceInte
       -22.000000f, 263.000000f );
     }
     else
-    {
       CoolantTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
       &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), VehicleData->DataFloat, 
       -30.000000f, 128.000000f );
-    }
 
     CoolantTemperature = EwMathFloor( CoolantTemperature );
     _this->CoolantTemperatureStr = EwShareString( EwNewStringFloat( CoolantTemperature, 
     0, 0 ));
   }
   else
-  {
     _this->CoolantTemperatureStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   return _this->CoolantTemperatureStr;
 }
@@ -2963,32 +2893,25 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetInstantFuelRateStr( DeviceInterfa
     switch ( DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( _this ))
     {
       case EnumMeterFuelConsumptionUnitKM_PER_LITER :
-      {
         VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
         EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
         VehicleData->DataFloat, 0.000000f, 99.900002f );
-      }
       break;
 
       case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
       case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
-      {
         VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
         EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
         VehicleData->DataFloat, 0.000000f, 199.899994f );
-      }
       break;
 
       case EnumMeterFuelConsumptionUnitL_PER_100KM :
-      {
         VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( 
         EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
         VehicleData->DataFloat, 1.000000f, 99.900002f );
-      }
       break;
 
-      default : 
-        ;
+      default :; 
     }
 
     VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
@@ -2998,9 +2921,7 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetInstantFuelRateStr( DeviceInterfa
     0, 1 ));
   }
   else
-  {
     _this->InstantFuelRateStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   return _this->InstantFuelRateStr;
 }
@@ -3021,8 +2942,7 @@ XFloat DeviceInterfaceVehicleDeviceClass_ConvertFuelCons( DeviceInterfaceVehicle
       ConvertedFuelCons = aFuelCons * 0.220000f;
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return ConvertedFuelCons;
@@ -3039,9 +2959,7 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetRangeStr( DeviceInterfaceVehicleD
   {
     if ( EnumMileageSettingItemMILE == DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( 
         _this ))
-    {
       VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
-    }
 
     VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
@@ -3050,9 +2968,7 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetRangeStr( DeviceInterfaceVehicleD
     1 ));
   }
   else
-  {
     _this->RangeStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   return _this->RangeStr;
 }
@@ -3076,9 +2992,7 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetBatteryStr( DeviceInterfaceVehicl
     0, 1 ));
   }
   else
-  {
     _this->BatteryStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   return _this->BatteryStr;
 }
@@ -3111,20 +3025,13 @@ XFloat DeviceInterfaceVehicleDeviceClass_ConvertFuelRate( DeviceInterfaceVehicle
     break;
 
     case EnumMeterFuelConsumptionUnitL_PER_100KM :
-    {
       if ( 0.000000f < aFuelRate )
-      {
         ConvertedFuelRate = 100 / aFuelRate;
-      }
       else
-      {
         ConvertedFuelRate = 99.900002f;
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return ConvertedFuelRate;
@@ -3150,20 +3057,16 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetAirTemperatureStr( DeviceInterfac
       -22.000000f, 263.000000f );
     }
     else
-    {
       AirTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
       &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), VehicleData->DataFloat, 
       -30.000000f, 128.000000f );
-    }
 
     AirTemperature = EwMathFloor( AirTemperature );
     _this->AirTemperatureStr = EwShareString( EwNewStringFloat( AirTemperature, 
     0, 0 ));
   }
   else
-  {
     _this->AirTemperatureStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   return _this->AirTemperatureStr;
 }
@@ -3179,9 +3082,7 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetCruiseSpeedStr( DeviceInterfaceVe
   {
     if ( EnumMileageSettingItemMILE == DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( 
         _this ))
-    {
       VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
-    }
 
     VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
@@ -3190,9 +3091,7 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetCruiseSpeedStr( DeviceInterfaceVe
     0, 1 ));
   }
   else
-  {
     _this->CruiseSpeedStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   return _this->CruiseSpeedStr;
 }
@@ -3224,30 +3123,30 @@ EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceVehicleDevice )
 void DeviceInterfaceWeatherDeviceClass__Init( DeviceInterfaceWeatherDeviceClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  TemplatesDeviceClass__Init( &_this->_Super, aLink, aArg );
+  TemplatesDeviceClass__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceWeatherDeviceClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceWeatherDeviceClass );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceWeatherDeviceClass );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceWeatherDeviceClass );
 }
 
 /* Re-Initializer for the class 'DeviceInterface::WeatherDeviceClass' */
 void DeviceInterfaceWeatherDeviceClass__ReInit( DeviceInterfaceWeatherDeviceClass _this )
 {
   /* At first re-initialize the super class ... */
-  TemplatesDeviceClass__ReInit( &_this->_Super );
+  TemplatesDeviceClass__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'DeviceInterface::WeatherDeviceClass' */
 void DeviceInterfaceWeatherDeviceClass__Done( DeviceInterfaceWeatherDeviceClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( TemplatesDeviceClass );
+  _this->_.Super._.VMT = EW_CLASS( TemplatesDeviceClass );
 
   /* Don't forget to deinitialize the super class ... */
-  TemplatesDeviceClass__Done( &_this->_Super );
+  TemplatesDeviceClass__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'DeviceInterface::WeatherDeviceClass.GetWeatherInfo()' */
@@ -3363,9 +3262,7 @@ XInt32 DeviceInterfaceWeatherDeviceClass_ConvertTemperature( DeviceInterfaceWeat
   Temp = aTemperature;
 
   if ( EnumTemperatureSettingItemTEMP_F == aTempUnit )
-  {
     Temp = (( aTemperature * 9 ) + 160 ) / 5;
-  }
 
   return Temp;
 }
@@ -3403,13 +3300,13 @@ EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceWeatherDevice )
 void DeviceInterfaceVehicleDataClass__Init( DeviceInterfaceVehicleDataClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceVehicleDataClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceVehicleDataClass );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceVehicleDataClass );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceVehicleDataClass );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->DataType = EnumDataTypeUINT32;
@@ -3419,17 +3316,17 @@ void DeviceInterfaceVehicleDataClass__Init( DeviceInterfaceVehicleDataClass _thi
 void DeviceInterfaceVehicleDataClass__ReInit( DeviceInterfaceVehicleDataClass _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'DeviceInterface::VehicleDataClass' */
 void DeviceInterfaceVehicleDataClass__Done( DeviceInterfaceVehicleDataClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'DeviceInterface::VehicleDataClass' */
@@ -3437,38 +3334,38 @@ EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceVehicleDataClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDataClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::VehicleDataClass' */
-EW_DEFINE_CLASS( DeviceInterfaceVehicleDataClass, XObject, _None, _None, _None, 
-                 _None, _None, _None, "DeviceInterface::VehicleDataClass" )
+EW_DEFINE_CLASS( DeviceInterfaceVehicleDataClass, XObject, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, "DeviceInterface::VehicleDataClass" )
 EW_END_OF_CLASS( DeviceInterfaceVehicleDataClass )
 
 /* Initializer for the class 'DeviceInterface::NaviDataClass' */
 void DeviceInterfaceNaviDataClass__Init( DeviceInterfaceNaviDataClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceNaviDataClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceNaviDataClass );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceNaviDataClass );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceNaviDataClass );
 }
 
 /* Re-Initializer for the class 'DeviceInterface::NaviDataClass' */
 void DeviceInterfaceNaviDataClass__ReInit( DeviceInterfaceNaviDataClass _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NaviDataClass' */
 void DeviceInterfaceNaviDataClass__Done( DeviceInterfaceNaviDataClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'DeviceInterface::NaviDataClass' */
@@ -3484,30 +3381,30 @@ EW_END_OF_CLASS( DeviceInterfaceNaviDataClass )
 void DeviceInterfaceMotoConContext__Init( DeviceInterfaceMotoConContext _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceMotoConContext );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceMotoConContext );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceMotoConContext );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceMotoConContext );
 }
 
 /* Re-Initializer for the class 'DeviceInterface::MotoConContext' */
 void DeviceInterfaceMotoConContext__ReInit( DeviceInterfaceMotoConContext _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'DeviceInterface::MotoConContext' */
 void DeviceInterfaceMotoConContext__Done( DeviceInterfaceMotoConContext _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'DeviceInterface::MotoConContext' */
@@ -3515,33 +3412,33 @@ EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceMotoConContext )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceMotoConContext )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::MotoConContext' */
-EW_DEFINE_CLASS( DeviceInterfaceMotoConContext, XObject, _None, _None, _None, _None, 
-                 _None, _None, "DeviceInterface::MotoConContext" )
+EW_DEFINE_CLASS( DeviceInterfaceMotoConContext, XObject, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, "DeviceInterface::MotoConContext" )
 EW_END_OF_CLASS( DeviceInterfaceMotoConContext )
 
 /* Initializer for the class 'DeviceInterface::NotificationDeviceClass' */
 void DeviceInterfaceNotificationDeviceClass__Init( DeviceInterfaceNotificationDeviceClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  TemplatesDeviceClass__Init( &_this->_Super, aLink, aArg );
+  TemplatesDeviceClass__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceNotificationDeviceClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceNotificationDeviceClass );
 
   /* ... then construct all embedded objects */
-  CoreSystemEvent__Init( &_this->NotificationListUpdatedSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->PhoneCallStateChangedSystemEvent, &_this->_XObject, 0 );
-  CoreSystemEvent__Init( &_this->PhoneCallVolumeChangedSystemEvent, &_this->_XObject, 0 );
+  CoreSystemEvent__Init( &_this->NotificationListUpdatedSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->PhoneCallStateChangedSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->PhoneCallVolumeChangedSystemEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceNotificationDeviceClass );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceNotificationDeviceClass );
 }
 
 /* Re-Initializer for the class 'DeviceInterface::NotificationDeviceClass' */
 void DeviceInterfaceNotificationDeviceClass__ReInit( DeviceInterfaceNotificationDeviceClass _this )
 {
   /* At first re-initialize the super class ... */
-  TemplatesDeviceClass__ReInit( &_this->_Super );
+  TemplatesDeviceClass__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->NotificationListUpdatedSystemEvent );
@@ -3553,7 +3450,7 @@ void DeviceInterfaceNotificationDeviceClass__ReInit( DeviceInterfaceNotification
 void DeviceInterfaceNotificationDeviceClass__Done( DeviceInterfaceNotificationDeviceClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( TemplatesDeviceClass );
+  _this->_.Super._.VMT = EW_CLASS( TemplatesDeviceClass );
 
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->NotificationListUpdatedSystemEvent );
@@ -3561,7 +3458,7 @@ void DeviceInterfaceNotificationDeviceClass__Done( DeviceInterfaceNotificationDe
   CoreSystemEvent__Done( &_this->PhoneCallVolumeChangedSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
-  TemplatesDeviceClass__Done( &_this->_Super );
+  TemplatesDeviceClass__Done( &_this->_.Super );
 }
 
 /* This method is intended to be called by the device to notify the GUI application 
@@ -3911,30 +3808,30 @@ EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceNotificationDevice )
 void DeviceInterfaceNaviTbtDataClass__Init( DeviceInterfaceNaviTbtDataClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceNaviTbtDataClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceNaviTbtDataClass );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceNaviTbtDataClass );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceNaviTbtDataClass );
 }
 
 /* Re-Initializer for the class 'DeviceInterface::NaviTbtDataClass' */
 void DeviceInterfaceNaviTbtDataClass__ReInit( DeviceInterfaceNaviTbtDataClass _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NaviTbtDataClass' */
 void DeviceInterfaceNaviTbtDataClass__Done( DeviceInterfaceNaviTbtDataClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'DeviceInterface::NaviTbtDataClass' */
@@ -3942,38 +3839,38 @@ EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNaviTbtDataClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNaviTbtDataClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::NaviTbtDataClass' */
-EW_DEFINE_CLASS( DeviceInterfaceNaviTbtDataClass, XObject, DistUnit, DistUnit, DistUnit, 
-                 DistUnit, DistUnit, IconIdx, "DeviceInterface::NaviTbtDataClass" )
+EW_DEFINE_CLASS( DeviceInterfaceNaviTbtDataClass, XObject, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, "DeviceInterface::NaviTbtDataClass" )
 EW_END_OF_CLASS( DeviceInterfaceNaviTbtDataClass )
 
 /* Initializer for the class 'DeviceInterface::DateTime' */
 void DeviceInterfaceDateTime__Init( DeviceInterfaceDateTime _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceDateTime );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceDateTime );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceDateTime );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceDateTime );
 }
 
 /* Re-Initializer for the class 'DeviceInterface::DateTime' */
 void DeviceInterfaceDateTime__ReInit( DeviceInterfaceDateTime _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'DeviceInterface::DateTime' */
 void DeviceInterfaceDateTime__Done( DeviceInterfaceDateTime _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'DeviceInterface::DateTime' */
@@ -3982,37 +3879,37 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceDateTime )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::DateTime' */
 EW_DEFINE_CLASS( DeviceInterfaceDateTime, XObject, Hour, Hour, Hour, Hour, Hour, 
-                 _None, "DeviceInterface::DateTime" )
+                 _.VMT, "DeviceInterface::DateTime" )
 EW_END_OF_CLASS( DeviceInterfaceDateTime )
 
 /* Initializer for the class 'DeviceInterface::NotificationContext' */
 void DeviceInterfaceNotificationContext__Init( DeviceInterfaceNotificationContext _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DeviceInterfaceNotificationContext );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceNotificationContext );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DeviceInterfaceNotificationContext );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceNotificationContext );
 }
 
 /* Re-Initializer for the class 'DeviceInterface::NotificationContext' */
 void DeviceInterfaceNotificationContext__ReInit( DeviceInterfaceNotificationContext _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NotificationContext' */
 void DeviceInterfaceNotificationContext__Done( DeviceInterfaceNotificationContext _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'DeviceInterface::NotificationContext' */

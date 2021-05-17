@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -65,7 +65,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x0000006C, /* ratio 81.48 % */
   0xB8002D00, 0x0009E452, 0x00A60037, 0x4E800328, 0xD80085C2, 0x10D31C40, 0x49001922,
@@ -142,19 +142,19 @@ static const XRect _Const003D = {{ 290, 1 }, { 417, 69 }};
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuItemBase );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemBase );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->HighlightRect, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ListDivider, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->FocusFrameFlashTimer, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->Title, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->HighlightRect, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ListDivider, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->FocusFrameFlashTimer, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuItemBase );
+  _this->_.VMT = EW_CLASS( MenuItemBase );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -190,7 +190,7 @@ void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
 void MenuItemBase__ReInit( MenuItemBase _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->HighlightRect );
@@ -203,7 +203,7 @@ void MenuItemBase__ReInit( MenuItemBase _this )
 void MenuItemBase__Done( MenuItemBase _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->HighlightRect );
@@ -212,7 +212,7 @@ void MenuItemBase__Done( MenuItemBase _this )
   ViewsText__Done( &_this->Title );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 
@@ -236,8 +236,7 @@ void MenuItemBase_UpdateLayout( MenuItemBase _this, XPoint aSize )
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -260,21 +259,15 @@ void MenuItemBase_UpdateViewState( MenuItemBase _this, XSet aState )
   CoreGroup_UpdateViewState((CoreGroup)_this, aState );
 
   if ( _this->FocusFrameFlashTimer.Enabled )
-  {
     ViewsRectangle_OnSetVisible( &_this->HighlightRect, 1 );
-  }
   else
     if ((( aState & CoreViewStateFocused ) == CoreViewStateFocused ))
     {
       if ( _this->Focusable )
-      {
         ViewsRectangle_OnSetVisible( &_this->HighlightRect, 0 );
-      }
     }
     else
-    {
       ViewsRectangle_OnSetVisible( &_this->HighlightRect, 0 );
-    }
 }
 
 /* 'C' function for method : 'Menu::ItemBase.OnSetEnabled()' */
@@ -286,13 +279,9 @@ void MenuItemBase_OnSetEnabled( MenuItemBase _this, XBool value )
     CoreGroup_OnSetEnabled((CoreGroup)_this, value );
 
     if ( value )
-    {
       ViewsText_OnSetColor( &_this->Title, _Const0002 );
-    }
     else
-    {
       ViewsText_OnSetColor( &_this->Title, _Const0008 );
-    }
   }
 }
 
@@ -328,27 +317,21 @@ void MenuItemBase_OnFocusFrameFlashTimer( MenuItemBase _this, XObject sender )
 void MenuItemBase_SetTitle( MenuItemBase _this, XString aTitle )
 {
   if ( EwCompString( _this->Title.String, aTitle ) != 0 )
-  {
     ViewsText_OnSetString( &_this->Title, aTitle );
-  }
 }
 
 /* 'C' function for method : 'Menu::ItemBase.OnSetFocusable()' */
 void MenuItemBase_OnSetFocusable( MenuItemBase _this, XBool value )
 {
   if ( _this->Focusable != value )
-  {
     _this->Focusable = value;
-  }
 }
 
 /* 'C' function for method : 'Menu::ItemBase.OnLongEnterKeyActivated()' */
 void MenuItemBase_OnLongEnterKeyActivated( MenuItemBase _this )
 {
   if ( 1 == _this->Super1.KeyHandler.RepetitionCount )
-  {
     EwPostSignal( _this->OnLongEnterKeyActivate, ((XObject)_this ));
-  }
 }
 
 /* Variants derived from the class : 'Menu::ItemBase' */
@@ -406,20 +389,20 @@ EW_END_OF_CLASS( MenuItemBase )
 void MenuVerticalMenu__Init( MenuVerticalMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuVerticalMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuVerticalMenu );
 
   /* ... then construct all embedded objects */
-  CoreVerticalList__Init( &_this->MenuList, &_this->_XObject, 0 );
-  MenuScrollbar__Init( &_this->Scrollbar, &_this->_XObject, 0 );
-  ViewsBorder__Init( &_this->FocusFrame, &_this->_XObject, 0 );
-  MenuArrowScrollBar__Init( &_this->ArrowScrollBar, &_this->_XObject, 0 );
-  EffectsInt32Effect__Init( &_this->PageScrollEffect, &_this->_XObject, 0 );
+  CoreVerticalList__Init( &_this->MenuList, &_this->_.XObject, 0 );
+  MenuScrollbar__Init( &_this->Scrollbar, &_this->_.XObject, 0 );
+  ViewsBorder__Init( &_this->FocusFrame, &_this->_.XObject, 0 );
+  MenuArrowScrollBar__Init( &_this->ArrowScrollBar, &_this->_.XObject, 0 );
+  EffectsInt32Effect__Init( &_this->PageScrollEffect, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuVerticalMenu );
+  _this->_.VMT = EW_CLASS( MenuVerticalMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0009 );
@@ -461,7 +444,7 @@ void MenuVerticalMenu__Init( MenuVerticalMenu _this, XObject aLink, XHandle aArg
 void MenuVerticalMenu__ReInit( MenuVerticalMenu _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreVerticalList__ReInit( &_this->MenuList );
@@ -475,7 +458,7 @@ void MenuVerticalMenu__ReInit( MenuVerticalMenu _this )
 void MenuVerticalMenu__Done( MenuVerticalMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   CoreVerticalList__Done( &_this->MenuList );
@@ -485,7 +468,7 @@ void MenuVerticalMenu__Done( MenuVerticalMenu _this )
   EffectsInt32Effect__Done( &_this->PageScrollEffect );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -511,9 +494,7 @@ void MenuVerticalMenu_UpdateViewState( MenuVerticalMenu _this, XSet aState )
     XInt32 NoOfPages = _this->NoOfItems / _this->ItemNumPerPage;
 
     if ( _this->NoOfItems > ( NoOfPages * _this->ItemNumPerPage ))
-    {
       NoOfPages++;
-    }
 
     MenuArrowScrollBar_OnSetNoOfPages( &_this->ArrowScrollBar, NoOfPages );
   }
@@ -521,13 +502,9 @@ void MenuVerticalMenu_UpdateViewState( MenuVerticalMenu _this, XSet aState )
   if ( _this->ScrollbarVisible )
   {
     if ( _this->ItemNumPerPage < _this->NoOfItems )
-    {
       CoreGroup__OnSetVisible( &_this->Scrollbar, 1 );
-    }
     else
-    {
       CoreGroup__OnSetVisible( &_this->Scrollbar, 0 );
-    }
   }
 }
 
@@ -612,10 +589,8 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
     }
 
     if ( EW_CLASS( MenuItemBaseValue ) == Item->ItemClass )
-    {
       MenuItemWrapper_OnSetValue( Item, MenuBaseMenuView__LoadItemBaseValue( OwnerMenu, 
       ItemNo ));
-    }
     else
       if ( EW_CLASS( MenuItemNotification ) == Item->ItemClass )
       {
@@ -646,8 +621,6 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
             MenuItemWrapper_OnSetMinute( Item, MenuBaseMenuView__LoadItemMinute( 
             OwnerMenu, ItemNo ));
           }
-          else
-            ;
 
     CoreRectView__OnSetBounds( Item, EwSetRectSize( Item->Super2.Bounds, EwNewPoint( 
     EwGetRectW( _this->MenuList.Super2.Bounds ), _this->MenuList.ItemHeight )));
@@ -657,7 +630,7 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
 /* Wrapper function for the virtual method : 'Menu::VerticalMenu.OnLoadItemSlot()' */
 void MenuVerticalMenu__OnLoadItemSlot( void* _this, XObject sender )
 {
-  ((MenuVerticalMenu)_this)->_VMT->OnLoadItemSlot((MenuVerticalMenu)_this, sender );
+  ((MenuVerticalMenu)_this)->_.VMT->OnLoadItemSlot((MenuVerticalMenu)_this, sender );
 }
 
 /* 'C' function for method : 'Menu::VerticalMenu.OnItemActivateSlot()' */
@@ -672,17 +645,13 @@ void MenuVerticalMenu_OnItemActivateSlot( MenuVerticalMenu _this, XObject sender
     CoreView Menu = CoreGroup__FindNextView( WrapperItem, 0, 0 );
 
     if ( Menu != 0 )
-    {
       MenuItem = EwCastObject( Menu, MenuItemBase );
-    }
   }
 
   OwnerMenu = EwCastObject( _this->Super4.Owner, MenuBaseMenuView );
 
   if ( OwnerMenu != 0 )
-  {
     MenuBaseMenuView__OnItemActivate( OwnerMenu, _this->MenuList.SelectedItem, MenuItem );
-  }
 }
 
 /* 'C' function for method : 'Menu::VerticalMenu.OnSetNoOfItems()' */
@@ -695,13 +664,9 @@ void MenuVerticalMenu_OnSetNoOfItems( MenuVerticalMenu _this, XInt32 value )
     MenuScrollbar_OnSetListItems( &_this->Scrollbar, value );
 
     if ( 0 == value )
-    {
       ViewsBorder_OnSetVisible( &_this->FocusFrame, 0 );
-    }
     else
-    {
       ViewsBorder_OnSetVisible( &_this->FocusFrame, 1 );
-    }
 
     if (( 0 < _this->MenuList.NoOfItems ) && ( _this->MenuList.SelectedItem >= _this->MenuList.NoOfItems ))
     {
@@ -817,9 +782,7 @@ void MenuVerticalMenu_HideArrowScrollBar( MenuVerticalMenu _this )
 void MenuVerticalMenu_RestoreArrowScrollBar( MenuVerticalMenu _this )
 {
   if ( _this->ArrowScrollBarVisible )
-  {
     CoreGroup__OnSetVisible( &_this->ArrowScrollBar, 1 );
-  }
 }
 
 /* 'C' function for method : 'Menu::VerticalMenu.OnSetScrollbarVisible()' */
@@ -871,18 +834,14 @@ void MenuVerticalMenu_HideScrollbar( MenuVerticalMenu _this )
 void MenuVerticalMenu_RestoreScrollbar( MenuVerticalMenu _this )
 {
   if ( _this->ScrollbarVisible && ( _this->Scrollbar.PageNum > 0 ))
-  {
     CoreGroup__OnSetVisible( &_this->Scrollbar, 1 );
-  }
 }
 
 /* 'C' function for method : 'Menu::VerticalMenu.RestoreFocusFrame()' */
 void MenuVerticalMenu_RestoreFocusFrame( MenuVerticalMenu _this )
 {
   if ( 0 < _this->NoOfItems )
-  {
     ViewsBorder_OnSetVisible( &_this->FocusFrame, 1 );
-  }
 }
 
 /* 'C' function for method : 'Menu::VerticalMenu.OnLongEnterKeyActivatedSlot()' */
@@ -898,18 +857,14 @@ void MenuVerticalMenu_OnLongEnterKeyActivatedSlot( MenuVerticalMenu _this, XObje
     CoreView Menu = CoreGroup__FindNextView( WrapperItem, 0, 0 );
 
     if ( Menu != 0 )
-    {
       MenuItem = EwCastObject( Menu, MenuItemBase );
-    }
   }
 
   OwnerMenu = EwCastObject( _this->Super4.Owner, MenuBaseMenuView );
 
   if ( OwnerMenu != 0 )
-  {
     MenuBaseMenuView__OnItemLongEnterKeyActivate( OwnerMenu, _this->MenuList.SelectedItem, 
     MenuItem );
-  }
 }
 
 /* Variants derived from the class : 'Menu::VerticalMenu' */
@@ -968,16 +923,16 @@ EW_END_OF_CLASS( MenuVerticalMenu )
 void MenuItemCheckbox__Init( MenuItemCheckbox _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuItemBase__Init( &_this->_Super, aLink, aArg );
+  MenuItemBase__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuItemCheckbox );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemCheckbox );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->CheckboxIcon, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->CheckboxIcon, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuItemCheckbox );
+  _this->_.VMT = EW_CLASS( MenuItemCheckbox );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0010 );
@@ -991,7 +946,7 @@ void MenuItemCheckbox__Init( MenuItemCheckbox _this, XObject aLink, XHandle aArg
 void MenuItemCheckbox__ReInit( MenuItemCheckbox _this )
 {
   /* At first re-initialize the super class ... */
-  MenuItemBase__ReInit( &_this->_Super );
+  MenuItemBase__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->CheckboxIcon );
@@ -1001,13 +956,13 @@ void MenuItemCheckbox__ReInit( MenuItemCheckbox _this )
 void MenuItemCheckbox__Done( MenuItemCheckbox _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuItemBase );
+  _this->_.Super._.VMT = EW_CLASS( MenuItemBase );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->CheckboxIcon );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuItemBase__Done( &_this->_Super );
+  MenuItemBase__Done( &_this->_.Super );
 }
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 
@@ -1030,8 +985,7 @@ void MenuItemCheckbox_UpdateLayout( MenuItemCheckbox _this, XPoint aSize )
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -1043,15 +997,11 @@ void MenuItemCheckbox_OnSetEnabled( MenuItemCheckbox _this, XBool value )
     MenuItemBase_OnSetEnabled((MenuItemBase)_this, value );
 
     if ( value )
-    {
       ViewsImage_OnSetBitmap( &_this->CheckboxIcon, EwLoadResource( &ResourceCheckboxNormal, 
       ResourcesBitmap ));
-    }
     else
-    {
       ViewsImage_OnSetBitmap( &_this->CheckboxIcon, EwLoadResource( &ResourceCheckboxDisable, 
       ResourcesBitmap ));
-    }
   }
 }
 
@@ -1061,9 +1011,7 @@ void MenuItemCheckbox_OnShortEnterKeyActivated( MenuItemCheckbox _this )
   MenuItemBase_OnShortEnterKeyActivated((MenuItemBase)_this );
 
   if ( _this->ToggleEnabled )
-  {
     MenuItemCheckbox_OnSetChecked( _this, (XBool)!_this->Checked );
-  }
 }
 
 /* 'C' function for method : 'Menu::ItemCheckbox.OnSetChecked()' */
@@ -1074,13 +1022,9 @@ void MenuItemCheckbox_OnSetChecked( MenuItemCheckbox _this, XBool value )
     _this->Checked = value;
 
     if ( value )
-    {
       ViewsImage_OnSetFrameNumber( &_this->CheckboxIcon, 1 );
-    }
     else
-    {
       ViewsImage_OnSetFrameNumber( &_this->CheckboxIcon, 0 );
-    }
   }
 }
 
@@ -1139,13 +1083,13 @@ EW_END_OF_CLASS( MenuItemCheckbox )
 void MenuItemWrapper__Init( MenuItemWrapper _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuItemWrapper );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemWrapper );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuItemWrapper );
+  _this->_.VMT = EW_CLASS( MenuItemWrapper );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -1158,17 +1102,17 @@ void MenuItemWrapper__Init( MenuItemWrapper _this, XObject aLink, XHandle aArg )
 void MenuItemWrapper__ReInit( MenuItemWrapper _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Menu::ItemWrapper' */
 void MenuItemWrapper__Done( MenuItemWrapper _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnGetEnabled()' */
@@ -1189,9 +1133,7 @@ void MenuItemWrapper_OnSetEnabled( MenuItemWrapper _this, XBool value )
     ItemBase = EwCastObject( view, MenuItemBase );
 
     if ( ItemBase != 0 )
-    {
       CoreGroup__OnSetEnabled( ItemBase, value );
-    }
   }
 }
 
@@ -1204,9 +1146,7 @@ void MenuItemWrapper_OnSetItemClass( MenuItemWrapper _this, XClass value )
     _this->ItemClass = value;
 
     if ( CoreGroup__CountViews( _this ) > 0 )
-    {
       CoreGroup__Remove( _this, CoreGroup__FindNextView( _this, 0, 0 ));
-    }
 
     Item = EwCastObject( EwNewObjectIndirect( value, 0 ), MenuItemBase );
     Item->Height = _this->Height;
@@ -1228,9 +1168,7 @@ void MenuItemWrapper_OnSetTitle( MenuItemWrapper _this, XString value )
     MenuItem = EwCastObject( view, MenuItemBase );
 
     if ( MenuItem != 0 )
-    {
       MenuItemBase_SetTitle( MenuItem, _this->Title );
-    }
   }
 }
 
@@ -1255,17 +1193,13 @@ void MenuItemWrapper_OnSetChecked( MenuItemWrapper _this, XBool value )
     CheckboxMenuItem = EwCastObject( view, MenuItemCheckbox );
 
     if ( CheckboxMenuItem != 0 )
-    {
       MenuItemCheckbox_OnSetChecked( CheckboxMenuItem, value );
-    }
     else
     {
       MenuItemCheckMark CheckMarkMenuItem = EwCastObject( view, MenuItemCheckMark );
 
       if ( CheckMarkMenuItem != 0 )
-      {
         MenuItemCheckMark_OnSetChecked( CheckMarkMenuItem, value );
-      }
     }
 
     if ( EW_CLASS( MenuItemValueUnitCheckmark ) == EwClassOf(((XObject)view )))
@@ -1273,9 +1207,7 @@ void MenuItemWrapper_OnSetChecked( MenuItemWrapper _this, XBool value )
       MenuItemValueUnitCheckmark MenuItem = EwCastObject( view, MenuItemValueUnitCheckmark );
 
       if ( MenuItem != 0 )
-      {
         MenuItemCheckMark_OnSetChecked((MenuItemCheckMark)MenuItem, value );
-      }
     }
   }
 }
@@ -1302,9 +1234,7 @@ void MenuItemWrapper_OnSetFocusable( MenuItemWrapper _this, XBool value )
     Item = EwCastObject( view, MenuItemBase );
 
     if ( Item != 0 )
-    {
       MenuItemBase_OnSetFocusable( Item, value );
-    }
   }
 }
 
@@ -1320,9 +1250,7 @@ void MenuItemWrapper_OnSetDDModeEnabled( MenuItemWrapper _this, XBool value )
     Item = EwCastObject( view, MenuItemBase );
 
     if ( Item != 0 )
-    {
       ComponentsBaseComponent__OnSetDDModeEnabled( Item, value );
-    }
   }
 }
 
@@ -1340,9 +1268,7 @@ void MenuItemWrapper_OnSetValue( MenuItemWrapper _this, XString value )
       MenuItemBaseValue MenuItem = EwCastObject( view, MenuItemBaseValue );
 
       if ( MenuItem != 0 )
-      {
         MenuItemBaseValue_OnSetValue( MenuItem, value );
-      }
     }
     else
       if ( EW_CLASS( MenuItemValueUnit ) == EwClassOf(((XObject)view )))
@@ -1350,9 +1276,7 @@ void MenuItemWrapper_OnSetValue( MenuItemWrapper _this, XString value )
         MenuItemValueUnit MenuItem = EwCastObject( view, MenuItemValueUnit );
 
         if ( MenuItem != 0 )
-        {
           MenuItemValueUnit_OnSetValue( MenuItem, value );
-        }
       }
       else
         if ( EW_CLASS( MenuItemValueUnit2 ) == EwClassOf(((XObject)view )))
@@ -1360,9 +1284,7 @@ void MenuItemWrapper_OnSetValue( MenuItemWrapper _this, XString value )
           MenuItemValueUnit2 MenuItem = EwCastObject( view, MenuItemValueUnit2 );
 
           if ( MenuItem != 0 )
-          {
             MenuItemValueUnit_OnSetValue((MenuItemValueUnit)MenuItem, value );
-          }
         }
         else
           if ( EW_CLASS( MenuItemValueUnitCheckmark ) == EwClassOf(((XObject)view )))
@@ -1370,12 +1292,8 @@ void MenuItemWrapper_OnSetValue( MenuItemWrapper _this, XString value )
             MenuItemValueUnitCheckmark MenuItem = EwCastObject( view, MenuItemValueUnitCheckmark );
 
             if ( MenuItem != 0 )
-            {
               MenuItemValueUnitCheckmark_OnSetValue( MenuItem, value );
-            }
           }
-          else
-            ;
   }
 }
 
@@ -1391,9 +1309,7 @@ void MenuItemWrapper_OnSetMessage( MenuItemWrapper _this, XString value )
     NotificationItem = EwCastObject( view, MenuItemNotification );
 
     if ( NotificationItem != 0 )
-    {
       MenuItemNotification_OnSetMessage( NotificationItem, value );
-    }
   }
 }
 
@@ -1409,9 +1325,7 @@ void MenuItemWrapper_OnSetReceivedTime( MenuItemWrapper _this, XString value )
     NotificationItem = EwCastObject( view, MenuItemNotification );
 
     if ( NotificationItem != 0 )
-    {
       MenuItemNotification_OnSetReceivedTime( NotificationItem, value );
-    }
   }
 }
 
@@ -1427,9 +1341,7 @@ void MenuItemWrapper_OnSetCategory( MenuItemWrapper _this, XEnum value )
     NotificationItem = EwCastObject( view, MenuItemNotification );
 
     if ( NotificationItem != 0 )
-    {
       MenuItemNotification_OnSetCategory( NotificationItem, value );
-    }
   }
 }
 
@@ -1445,9 +1357,7 @@ void MenuItemWrapper_OnSetUid( MenuItemWrapper _this, XUInt32 value )
     NotificationItem = EwCastObject( view, MenuItemNotification );
 
     if ( NotificationItem != 0 )
-    {
       NotificationItem->Uid = value;
-    }
   }
 }
 
@@ -1463,9 +1373,7 @@ void MenuItemWrapper_OnSetToggleEnabled( MenuItemWrapper _this, XBool value )
     CheckboxMenuItem = EwCastObject( view, MenuItemCheckbox );
 
     if ( CheckboxMenuItem != 0 )
-    {
       CheckboxMenuItem->ToggleEnabled = value;
-    }
   }
 }
 
@@ -1483,9 +1391,7 @@ void MenuItemWrapper_OnSetUnit( MenuItemWrapper _this, XString value )
       MenuItemValueUnit MenuItem = EwCastObject( view, MenuItemValueUnit );
 
       if ( MenuItem != 0 )
-      {
         MenuItemValueUnit_OnSetUnit( MenuItem, value );
-      }
     }
     else
       if ( EW_CLASS( MenuItemValueUnit2 ) == EwClassOf(((XObject)view )))
@@ -1493,9 +1399,7 @@ void MenuItemWrapper_OnSetUnit( MenuItemWrapper _this, XString value )
         MenuItemValueUnit2 MenuItem = EwCastObject( view, MenuItemValueUnit2 );
 
         if ( MenuItem != 0 )
-        {
           MenuItemValueUnit_OnSetUnit((MenuItemValueUnit)MenuItem, value );
-        }
       }
       else
         if ( EW_CLASS( MenuItemValueUnitCheckmark ) == EwClassOf(((XObject)view )))
@@ -1503,12 +1407,8 @@ void MenuItemWrapper_OnSetUnit( MenuItemWrapper _this, XString value )
           MenuItemValueUnitCheckmark MenuItem = EwCastObject( view, MenuItemValueUnitCheckmark );
 
           if ( MenuItem != 0 )
-          {
             MenuItemValueUnitCheckmark_OnSetUnit( MenuItem, value );
-          }
         }
-        else
-          ;
   }
 }
 
@@ -1526,12 +1426,8 @@ void MenuItemWrapper_OnSetHour( MenuItemWrapper _this, XString value )
       MenuItemTimeHourMinute MenuItem = EwCastObject( view, MenuItemTimeHourMinute );
 
       if ( MenuItem != 0 )
-      {
         MenuItemTimeHourMinute_OnSetHour( MenuItem, value );
-      }
     }
-    else
-      ;
   }
 }
 
@@ -1549,12 +1445,8 @@ void MenuItemWrapper_OnSetMinute( MenuItemWrapper _this, XString value )
       MenuItemTimeHourMinute MenuItem = EwCastObject( view, MenuItemTimeHourMinute );
 
       if ( MenuItem != 0 )
-      {
         MenuItemTimeHourMinute_OnSetMinute( MenuItem, value );
-      }
     }
-    else
-      ;
   }
 }
 
@@ -1601,18 +1493,18 @@ EW_END_OF_CLASS( MenuItemWrapper )
 void MenuScrollbar__Init( MenuScrollbar _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuScrollbar );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuScrollbar );
 
   /* ... then construct all embedded objects */
-  ViewsLine__Init( &_this->Track, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->Bar, &_this->_XObject, 0 );
-  EffectsRectEffect__Init( &_this->ScrollEffect, &_this->_XObject, 0 );
+  ViewsLine__Init( &_this->Track, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->Bar, &_this->_.XObject, 0 );
+  EffectsRectEffect__Init( &_this->ScrollEffect, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuScrollbar );
+  _this->_.VMT = EW_CLASS( MenuScrollbar );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0015 );
@@ -1635,7 +1527,7 @@ void MenuScrollbar__Init( MenuScrollbar _this, XObject aLink, XHandle aArg )
 void MenuScrollbar__ReInit( MenuScrollbar _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsLine__ReInit( &_this->Track );
@@ -1647,7 +1539,7 @@ void MenuScrollbar__ReInit( MenuScrollbar _this )
 void MenuScrollbar__Done( MenuScrollbar _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsLine__Done( &_this->Track );
@@ -1655,7 +1547,7 @@ void MenuScrollbar__Done( MenuScrollbar _this )
   EffectsRectEffect__Done( &_this->ScrollEffect );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -1735,15 +1627,11 @@ void MenuScrollbar_UpdatePageNum( MenuScrollbar _this )
       _this->PageNum = _this->ListItems / _this->PageItems;
 
       if ( _this->ListItems > ( _this->PageNum * _this->PageItems ))
-      {
         _this->PageNum = _this->PageNum + 1;
-      }
 
       ViewsRectangle_OnSetVisible( &_this->Bar, 1 );
       ViewsLine_OnSetVisible( &_this->Track, 1 );
     }
-    else
-      ;
 }
 
 /* Variants derived from the class : 'Menu::Scrollbar' */
@@ -1789,16 +1677,16 @@ EW_END_OF_CLASS( MenuScrollbar )
 void MenuBaseMenuView__Init( MenuBaseMenuView _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuBaseMenuView );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuBaseMenuView );
 
   /* ... then construct all embedded objects */
-  MenuVerticalMenu__Init( &_this->Menu, &_this->_XObject, 0 );
+  MenuVerticalMenu__Init( &_this->Menu, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const001A );
@@ -1814,7 +1702,7 @@ void MenuBaseMenuView__Init( MenuBaseMenuView _this, XObject aLink, XHandle aArg
 void MenuBaseMenuView__ReInit( MenuBaseMenuView _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   MenuVerticalMenu__ReInit( &_this->Menu );
@@ -1824,13 +1712,13 @@ void MenuBaseMenuView__ReInit( MenuBaseMenuView _this )
 void MenuBaseMenuView__Done( MenuBaseMenuView _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   MenuVerticalMenu__Done( &_this->Menu );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* super( value ); */
@@ -1845,9 +1733,7 @@ XClass MenuBaseMenuView_LoadItemClass( MenuBaseMenuView _this, XInt32 aItemNo )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return 0;
 }
@@ -1855,8 +1741,8 @@ XClass MenuBaseMenuView_LoadItemClass( MenuBaseMenuView _this, XInt32 aItemNo )
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemClass()' */
 XClass MenuBaseMenuView__LoadItemClass( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemClass((MenuBaseMenuView)_this, 
-  aItemNo );
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemClass((MenuBaseMenuView)_this
+  , aItemNo );
 }
 
 /* 'C' function for method : 'Menu::BaseMenuView.LoadItemTitle()' */
@@ -1864,9 +1750,7 @@ XString MenuBaseMenuView_LoadItemTitle( MenuBaseMenuView _this, XInt32 aItemNo )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return 0;
 }
@@ -1874,8 +1758,8 @@ XString MenuBaseMenuView_LoadItemTitle( MenuBaseMenuView _this, XInt32 aItemNo )
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemTitle()' */
 XString MenuBaseMenuView__LoadItemTitle( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemTitle((MenuBaseMenuView)_this, 
-  aItemNo );
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemTitle((MenuBaseMenuView)_this
+  , aItemNo );
 }
 
 /* 'C' function for method : 'Menu::BaseMenuView.OnItemActivate()' */
@@ -1892,7 +1776,7 @@ void MenuBaseMenuView_OnItemActivate( MenuBaseMenuView _this, XInt32 aItemNo, Me
 void MenuBaseMenuView__OnItemActivate( void* _this, XInt32 aItemNo, MenuItemBase 
   aMenuItem )
 {
-  ((MenuBaseMenuView)_this)->_VMT->OnItemActivate((MenuBaseMenuView)_this, aItemNo
+  ((MenuBaseMenuView)_this)->_.VMT->OnItemActivate((MenuBaseMenuView)_this, aItemNo
   , aMenuItem );
 }
 
@@ -1909,7 +1793,7 @@ XBool MenuBaseMenuView_LoadItemChecked( MenuBaseMenuView _this, XInt32 aItemNo )
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemChecked()' */
 XBool MenuBaseMenuView__LoadItemChecked( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemChecked((MenuBaseMenuView)_this
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemChecked((MenuBaseMenuView)_this
   , aItemNo );
 }
 
@@ -1918,9 +1802,7 @@ XBool MenuBaseMenuView_LoadItemEnabled( MenuBaseMenuView _this, XInt32 aItemNo )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return 1;
 }
@@ -1928,7 +1810,7 @@ XBool MenuBaseMenuView_LoadItemEnabled( MenuBaseMenuView _this, XInt32 aItemNo )
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemEnabled()' */
 XBool MenuBaseMenuView__LoadItemEnabled( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemEnabled((MenuBaseMenuView)_this
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemEnabled((MenuBaseMenuView)_this
   , aItemNo );
 }
 
@@ -1945,7 +1827,7 @@ XString MenuBaseMenuView_LoadItemBaseValue( MenuBaseMenuView _this, XInt32 aItem
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemBaseValue()' */
 XString MenuBaseMenuView__LoadItemBaseValue( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemBaseValue((MenuBaseMenuView)_this
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemBaseValue((MenuBaseMenuView)_this
   , aItemNo );
 }
 
@@ -1954,9 +1836,7 @@ XString MenuBaseMenuView_LoadItemMessage( MenuBaseMenuView _this, XInt32 aItemNo
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return 0;
 }
@@ -1964,7 +1844,7 @@ XString MenuBaseMenuView_LoadItemMessage( MenuBaseMenuView _this, XInt32 aItemNo
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemMessage()' */
 XString MenuBaseMenuView__LoadItemMessage( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemMessage((MenuBaseMenuView)_this
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemMessage((MenuBaseMenuView)_this
   , aItemNo );
 }
 
@@ -1973,9 +1853,7 @@ XString MenuBaseMenuView_LoadItemReceivedTime( MenuBaseMenuView _this, XInt32 aI
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return 0;
 }
@@ -1983,7 +1861,7 @@ XString MenuBaseMenuView_LoadItemReceivedTime( MenuBaseMenuView _this, XInt32 aI
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemReceivedTime()' */
 XString MenuBaseMenuView__LoadItemReceivedTime( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemReceivedTime((MenuBaseMenuView)_this
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemReceivedTime((MenuBaseMenuView)_this
   , aItemNo );
 }
 
@@ -1992,9 +1870,7 @@ XEnum MenuBaseMenuView_LoadItemCategory( MenuBaseMenuView _this, XInt32 aItemNo 
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return EnumNotificationCategoryMESSAGE;
 }
@@ -2002,7 +1878,7 @@ XEnum MenuBaseMenuView_LoadItemCategory( MenuBaseMenuView _this, XInt32 aItemNo 
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemCategory()' */
 XEnum MenuBaseMenuView__LoadItemCategory( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemCategory((MenuBaseMenuView)_this
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemCategory((MenuBaseMenuView)_this
   , aItemNo );
 }
 
@@ -2011,9 +1887,7 @@ XUInt32 MenuBaseMenuView_LoadItemUid( MenuBaseMenuView _this, XInt32 aItemNo )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return 0;
 }
@@ -2021,7 +1895,8 @@ XUInt32 MenuBaseMenuView_LoadItemUid( MenuBaseMenuView _this, XInt32 aItemNo )
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemUid()' */
 XUInt32 MenuBaseMenuView__LoadItemUid( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemUid((MenuBaseMenuView)_this, aItemNo );
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemUid((MenuBaseMenuView)_this, 
+  aItemNo );
 }
 
 /* 'C' function for method : 'Menu::BaseMenuView.LoadItemToggle()' */
@@ -2037,7 +1912,7 @@ XBool MenuBaseMenuView_LoadItemToggle( MenuBaseMenuView _this, XInt32 aItemNo )
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemToggle()' */
 XBool MenuBaseMenuView__LoadItemToggle( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemToggle((MenuBaseMenuView)_this
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemToggle((MenuBaseMenuView)_this
   , aItemNo );
 }
 
@@ -2054,7 +1929,7 @@ XString MenuBaseMenuView_LoadItemUnit( MenuBaseMenuView _this, XInt32 aItemNo )
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemUnit()' */
 XString MenuBaseMenuView__LoadItemUnit( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemUnit((MenuBaseMenuView)_this, 
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemUnit((MenuBaseMenuView)_this, 
   aItemNo );
 }
 
@@ -2071,8 +1946,8 @@ XString MenuBaseMenuView_LoadItemValue( MenuBaseMenuView _this, XInt32 aItemNo )
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemValue()' */
 XString MenuBaseMenuView__LoadItemValue( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemValue((MenuBaseMenuView)_this, 
-  aItemNo );
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemValue((MenuBaseMenuView)_this
+  , aItemNo );
 }
 
 /* 'C' function for method : 'Menu::BaseMenuView.OnItemLongEnterKeyActivate()' */
@@ -2089,7 +1964,7 @@ void MenuBaseMenuView_OnItemLongEnterKeyActivate( MenuBaseMenuView _this, XInt32
 void MenuBaseMenuView__OnItemLongEnterKeyActivate( void* _this, XInt32 aItemNo, 
   MenuItemBase aMenuItem )
 {
-  ((MenuBaseMenuView)_this)->_VMT->OnItemLongEnterKeyActivate((MenuBaseMenuView)_this
+  ((MenuBaseMenuView)_this)->_.VMT->OnItemLongEnterKeyActivate((MenuBaseMenuView)_this
   , aItemNo, aMenuItem );
 }
 
@@ -2106,7 +1981,7 @@ XString MenuBaseMenuView_LoadItemHour( MenuBaseMenuView _this, XInt32 aItemNo )
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemHour()' */
 XString MenuBaseMenuView__LoadItemHour( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemHour((MenuBaseMenuView)_this, 
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemHour((MenuBaseMenuView)_this, 
   aItemNo );
 }
 
@@ -2123,7 +1998,7 @@ XString MenuBaseMenuView_LoadItemMinute( MenuBaseMenuView _this, XInt32 aItemNo 
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemMinute()' */
 XString MenuBaseMenuView__LoadItemMinute( void* _this, XInt32 aItemNo )
 {
-  return ((MenuBaseMenuView)_this)->_VMT->LoadItemMinute((MenuBaseMenuView)_this
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemMinute((MenuBaseMenuView)_this
   , aItemNo );
 }
 
@@ -2133,7 +2008,7 @@ EW_END_OF_CLASS_VARIANTS( MenuBaseMenuView )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::BaseMenuView' */
 EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, Menu, Menu, Menu, Menu, 
-                 _None, _None, "Menu::BaseMenuView" )
+                 _.VMT, _.VMT, "Menu::BaseMenuView" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -2198,19 +2073,19 @@ EW_END_OF_CLASS( MenuBaseMenuView )
 void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuPushButton );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuPushButton );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->Background, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TitleText, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->FocusFrameFlashTimer, &_this->_XObject, 0 );
-  ViewsBorder__Init( &_this->FocusBorder, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->Background, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TitleText, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->FocusFrameFlashTimer, &_this->_.XObject, 0 );
+  ViewsBorder__Init( &_this->FocusBorder, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuPushButton );
+  _this->_.VMT = EW_CLASS( MenuPushButton );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const001C );
@@ -2229,7 +2104,6 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
   CoreRectView__OnSetBounds( &_this->FocusBorder, _Const001C );
   ViewsBorder_OnSetWidth( &_this->FocusBorder, 2 );
   ViewsBorder_OnSetColor( &_this->FocusBorder, _Const000D );
-  _this->Focusable = 1;
   _this->ButtonEnabled = 1;
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->TitleText ), 0 );
@@ -2243,7 +2117,7 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
 void MenuPushButton__ReInit( MenuPushButton _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->Background );
@@ -2256,7 +2130,7 @@ void MenuPushButton__ReInit( MenuPushButton _this )
 void MenuPushButton__Done( MenuPushButton _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->Background );
@@ -2265,7 +2139,7 @@ void MenuPushButton__Done( MenuPushButton _this )
   ViewsBorder__Done( &_this->FocusBorder );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -2287,19 +2161,13 @@ void MenuPushButton_UpdateViewState( MenuPushButton _this, XSet aState )
   CoreGroup_UpdateViewState((CoreGroup)_this, aState );
 
   if ( _this->FocusFrameFlashTimer.Enabled )
-  {
     ViewsRectangle_OnSetColor( &_this->Background, _Const001F );
-  }
   else
     if ((( aState & CoreViewStateFocused ) == CoreViewStateFocused ))
     {
       ViewsRectangle_OnSetColor( &_this->Background, _Const001D );
-
-      if ( _this->Focusable )
-      {
-        ViewsBorder_OnSetColor( &_this->FocusBorder, _Const000D );
-        ViewsBorder_OnSetWidth( &_this->FocusBorder, 3 );
-      }
+      ViewsBorder_OnSetColor( &_this->FocusBorder, _Const000D );
+      ViewsBorder_OnSetWidth( &_this->FocusBorder, 3 );
     }
     else
     {
@@ -2312,8 +2180,8 @@ void MenuPushButton_UpdateViewState( MenuPushButton _this, XSet aState )
 /* 'C' function for method : 'Menu::PushButton.OnShortEnterKeyActivated()' */
 void MenuPushButton_OnShortEnterKeyActivated( MenuPushButton _this )
 {
-  if (((( 0 == _this->Super1.KeyHandler.Repetition ) && _this->Focusable ) && _this->ButtonEnabled ) 
-      && !ComponentsBaseComponent_IsDDModeEffected((ComponentsBaseComponent)_this ))
+  if ((( 0 == _this->Super1.KeyHandler.Repetition ) && _this->ButtonEnabled ) && 
+      !ComponentsBaseComponent_IsDDModeEffected((ComponentsBaseComponent)_this ))
   {
     CoreGroup_InvalidateViewState((CoreGroup)_this );
 
@@ -2357,13 +2225,9 @@ void MenuPushButton_OnSetButtonEnabled( MenuPushButton _this, XBool value )
     _this->ButtonEnabled = value;
 
     if ( value )
-    {
       ViewsText_OnSetColor( &_this->TitleText, _Const0002 );
-    }
     else
-    {
       ViewsText_OnSetColor( &_this->TitleText, _Const0008 );
-    }
   }
 }
 
@@ -2422,17 +2286,17 @@ EW_END_OF_CLASS( MenuPushButton )
 void MenuUpDownPushButtonSet__Init( MenuUpDownPushButtonSet _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuUpDownPushButtonSet );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuUpDownPushButtonSet );
 
   /* ... then construct all embedded objects */
-  MenuPushButton__Init( &_this->UpButton, &_this->_XObject, 0 );
-  MenuPushButton__Init( &_this->DownButton, &_this->_XObject, 0 );
+  MenuPushButton__Init( &_this->UpButton, &_this->_.XObject, 0 );
+  MenuPushButton__Init( &_this->DownButton, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuUpDownPushButtonSet );
+  _this->_.VMT = EW_CLASS( MenuUpDownPushButtonSet );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0021 );
@@ -2458,7 +2322,7 @@ void MenuUpDownPushButtonSet__Init( MenuUpDownPushButtonSet _this, XObject aLink
 void MenuUpDownPushButtonSet__ReInit( MenuUpDownPushButtonSet _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   MenuPushButton__ReInit( &_this->UpButton );
@@ -2469,14 +2333,14 @@ void MenuUpDownPushButtonSet__ReInit( MenuUpDownPushButtonSet _this )
 void MenuUpDownPushButtonSet__Done( MenuUpDownPushButtonSet _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   MenuPushButton__Done( &_this->UpButton );
   MenuPushButton__Done( &_this->DownButton );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Menu::UpDownPushButtonSet.OnShortDownKeyActivated()' */
@@ -2508,16 +2372,10 @@ void MenuUpDownPushButtonSet_OnActivateSlot( MenuUpDownPushButtonSet _this, XObj
   sender )
 {
   if (((XObject)&_this->DownButton ) == sender )
-  {
     EwPostSignal( _this->OnDownButtonActivated, ((XObject)_this ));
-  }
   else
     if (((XObject)&_this->UpButton ) == sender )
-    {
       EwPostSignal( _this->OnUpButtonActivated, ((XObject)_this ));
-    }
-    else
-      ;
 }
 
 /* 'C' function for method : 'Menu::UpDownPushButtonSet.OnSetUpButtonTitle()' */
@@ -2609,16 +2467,16 @@ EW_END_OF_CLASS( MenuUpDownPushButtonSet )
 void MenuItemCheckMark__Init( MenuItemCheckMark _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuItemBase__Init( &_this->_Super, aLink, aArg );
+  MenuItemBase__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuItemCheckMark );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemCheckMark );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->CheckMark, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->CheckMark, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuItemCheckMark );
+  _this->_.VMT = EW_CLASS( MenuItemCheckMark );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0025 );
@@ -2634,7 +2492,7 @@ void MenuItemCheckMark__Init( MenuItemCheckMark _this, XObject aLink, XHandle aA
 void MenuItemCheckMark__ReInit( MenuItemCheckMark _this )
 {
   /* At first re-initialize the super class ... */
-  MenuItemBase__ReInit( &_this->_Super );
+  MenuItemBase__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->CheckMark );
@@ -2644,13 +2502,13 @@ void MenuItemCheckMark__ReInit( MenuItemCheckMark _this )
 void MenuItemCheckMark__Done( MenuItemCheckMark _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuItemBase );
+  _this->_.Super._.VMT = EW_CLASS( MenuItemBase );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->CheckMark );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuItemBase__Done( &_this->_Super );
+  MenuItemBase__Done( &_this->_.Super );
 }
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 
@@ -2673,8 +2531,7 @@ void MenuItemCheckMark_UpdateLayout( MenuItemCheckMark _this, XPoint aSize )
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -2743,17 +2600,17 @@ EW_END_OF_CLASS( MenuItemCheckMark )
 void MenuArrowScrollBar__Init( MenuArrowScrollBar _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuArrowScrollBar );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuArrowScrollBar );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->UpArrowIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DownArrowIcon, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->UpArrowIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DownArrowIcon, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuArrowScrollBar );
+  _this->_.VMT = EW_CLASS( MenuArrowScrollBar );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0027 );
@@ -2772,7 +2629,7 @@ void MenuArrowScrollBar__Init( MenuArrowScrollBar _this, XObject aLink, XHandle 
 void MenuArrowScrollBar__ReInit( MenuArrowScrollBar _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->UpArrowIcon );
@@ -2783,14 +2640,14 @@ void MenuArrowScrollBar__ReInit( MenuArrowScrollBar _this )
 void MenuArrowScrollBar__Done( MenuArrowScrollBar _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->UpArrowIcon );
   ViewsImage__Done( &_this->DownArrowIcon );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -2819,22 +2676,14 @@ void MenuArrowScrollBar_UpdateViewState( MenuArrowScrollBar _this, XSet aState )
   else
   {
     if ( 0 == _this->CurrentPageIdx )
-    {
       ViewsImage_OnSetVisible( &_this->UpArrowIcon, 0 );
-    }
     else
-    {
       ViewsImage_OnSetVisible( &_this->UpArrowIcon, 1 );
-    }
 
     if (( _this->NoOfPages - 1 ) == _this->CurrentPageIdx )
-    {
       ViewsImage_OnSetVisible( &_this->DownArrowIcon, 0 );
-    }
     else
-    {
       ViewsImage_OnSetVisible( &_this->DownArrowIcon, 1 );
-    }
   }
 }
 
@@ -2901,16 +2750,16 @@ EW_END_OF_CLASS( MenuArrowScrollBar )
 void MenuItemBaseValue__Init( MenuItemBaseValue _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuItemBase__Init( &_this->_Super, aLink, aArg );
+  MenuItemBase__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuItemBaseValue );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemBaseValue );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->ValueText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->ValueText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuItemBaseValue );
+  _this->_.VMT = EW_CLASS( MenuItemBaseValue );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->ValueText, _Const002A );
@@ -2926,7 +2775,7 @@ void MenuItemBaseValue__Init( MenuItemBaseValue _this, XObject aLink, XHandle aA
 void MenuItemBaseValue__ReInit( MenuItemBaseValue _this )
 {
   /* At first re-initialize the super class ... */
-  MenuItemBase__ReInit( &_this->_Super );
+  MenuItemBase__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ValueText );
@@ -2936,13 +2785,13 @@ void MenuItemBaseValue__ReInit( MenuItemBaseValue _this )
 void MenuItemBaseValue__Done( MenuItemBaseValue _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuItemBase );
+  _this->_.Super._.VMT = EW_CLASS( MenuItemBase );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->ValueText );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuItemBase__Done( &_this->_Super );
+  MenuItemBase__Done( &_this->_.Super );
 }
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 
@@ -2959,9 +2808,7 @@ void MenuItemBaseValue_UpdateLayout( MenuItemBaseValue _this, XPoint aSize )
   switch ( _this->Super1.Height )
   {
     case 56 :
-    {
       CoreRectView__OnSetBounds( &_this->ValueText, _Const002B );
-    }
     break;
 
     case 74 :
@@ -2971,8 +2818,7 @@ void MenuItemBaseValue_UpdateLayout( MenuItemBaseValue _this, XPoint aSize )
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -2984,13 +2830,9 @@ void MenuItemBaseValue_OnSetEnabled( MenuItemBaseValue _this, XBool value )
     MenuItemBase_OnSetEnabled((MenuItemBase)_this, value );
 
     if ( value )
-    {
       ViewsText_OnSetColor( &_this->ValueText, _Const0002 );
-    }
     else
-    {
       ViewsText_OnSetColor( &_this->ValueText, _Const0008 );
-    }
   }
 }
 
@@ -3010,7 +2852,7 @@ EW_END_OF_CLASS_VARIANTS( MenuItemBaseValue )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::ItemBaseValue' */
 EW_DEFINE_CLASS( MenuItemBaseValue, MenuItemBase, ValueText, ValueText, ValueText, 
-                 ValueText, Value, _None, "Menu::ItemBaseValue" )
+                 ValueText, Value, _.VMT, "Menu::ItemBaseValue" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -3059,18 +2901,18 @@ EW_END_OF_CLASS( MenuItemBaseValue )
 void MenuItemNotification__Init( MenuItemNotification _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuItemBase__Init( &_this->_Super, aLink, aArg );
+  MenuItemBase__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuItemNotification );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemNotification );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->MessageText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->ReceivedTimeText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->CategoryIcon, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->MessageText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ReceivedTimeText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->CategoryIcon, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuItemNotification );
+  _this->_.VMT = EW_CLASS( MenuItemNotification );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->Super1.HighlightRect, _Const002E );
@@ -3110,7 +2952,7 @@ void MenuItemNotification__Init( MenuItemNotification _this, XObject aLink, XHan
 void MenuItemNotification__ReInit( MenuItemNotification _this )
 {
   /* At first re-initialize the super class ... */
-  MenuItemBase__ReInit( &_this->_Super );
+  MenuItemBase__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->MessageText );
@@ -3122,7 +2964,7 @@ void MenuItemNotification__ReInit( MenuItemNotification _this )
 void MenuItemNotification__Done( MenuItemNotification _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuItemBase );
+  _this->_.Super._.VMT = EW_CLASS( MenuItemBase );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->MessageText );
@@ -3130,7 +2972,7 @@ void MenuItemNotification__Done( MenuItemNotification _this )
   ViewsImage__Done( &_this->CategoryIcon );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuItemBase__Done( &_this->_Super );
+  MenuItemBase__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Menu::ItemNotification.OnSetMessage()' */
@@ -3173,9 +3015,7 @@ void MenuItemNotification_OnSetCategory( MenuItemNotification _this, XEnum value
         ViewsImage_OnSetVisible( &_this->CategoryIcon, 1 );
       }
       else
-      {
         ViewsImage_OnSetVisible( &_this->CategoryIcon, 0 );
-      }
   }
 }
 
@@ -3234,17 +3074,17 @@ EW_END_OF_CLASS( MenuItemNotification )
 void MenuItemValueUnitCheckmark__Init( MenuItemValueUnitCheckmark _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuItemCheckMark__Init( &_this->_Super, aLink, aArg );
+  MenuItemCheckMark__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuItemValueUnitCheckmark );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemValueUnitCheckmark );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->ValueText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->UnitText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->ValueText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->UnitText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuItemValueUnitCheckmark );
+  _this->_.VMT = EW_CLASS( MenuItemValueUnitCheckmark );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->ValueText, _Const0034 );
@@ -3267,7 +3107,7 @@ void MenuItemValueUnitCheckmark__Init( MenuItemValueUnitCheckmark _this, XObject
 void MenuItemValueUnitCheckmark__ReInit( MenuItemValueUnitCheckmark _this )
 {
   /* At first re-initialize the super class ... */
-  MenuItemCheckMark__ReInit( &_this->_Super );
+  MenuItemCheckMark__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ValueText );
@@ -3278,14 +3118,14 @@ void MenuItemValueUnitCheckmark__ReInit( MenuItemValueUnitCheckmark _this )
 void MenuItemValueUnitCheckmark__Done( MenuItemValueUnitCheckmark _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuItemCheckMark );
+  _this->_.Super._.VMT = EW_CLASS( MenuItemCheckMark );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->ValueText );
   ViewsText__Done( &_this->UnitText );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuItemCheckMark__Done( &_this->_Super );
+  MenuItemCheckMark__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Menu::ItemValueUnitCheckmark.OnSetValue()' */
@@ -3316,7 +3156,7 @@ EW_END_OF_CLASS_VARIANTS( MenuItemValueUnitCheckmark )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::ItemValueUnitCheckmark' */
 EW_DEFINE_CLASS( MenuItemValueUnitCheckmark, MenuItemCheckMark, ValueText, ValueText, 
-                 ValueText, ValueText, Value, _None, "Menu::ItemValueUnitCheckmark" )
+                 ValueText, ValueText, Value, _.VMT, "Menu::ItemValueUnitCheckmark" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -3365,17 +3205,17 @@ EW_END_OF_CLASS( MenuItemValueUnitCheckmark )
 void MenuItemValueUnit__Init( MenuItemValueUnit _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuItemBase__Init( &_this->_Super, aLink, aArg );
+  MenuItemBase__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuItemValueUnit );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemValueUnit );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->ValueText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->UnitText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->ValueText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->UnitText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuItemValueUnit );
+  _this->_.VMT = EW_CLASS( MenuItemValueUnit );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->ValueText, _Const0036 );
@@ -3398,7 +3238,7 @@ void MenuItemValueUnit__Init( MenuItemValueUnit _this, XObject aLink, XHandle aA
 void MenuItemValueUnit__ReInit( MenuItemValueUnit _this )
 {
   /* At first re-initialize the super class ... */
-  MenuItemBase__ReInit( &_this->_Super );
+  MenuItemBase__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ValueText );
@@ -3409,14 +3249,14 @@ void MenuItemValueUnit__ReInit( MenuItemValueUnit _this )
 void MenuItemValueUnit__Done( MenuItemValueUnit _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuItemBase );
+  _this->_.Super._.VMT = EW_CLASS( MenuItemBase );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->ValueText );
   ViewsText__Done( &_this->UnitText );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuItemBase__Done( &_this->_Super );
+  MenuItemBase__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Menu::ItemValueUnit.OnSetValue()' */
@@ -3445,7 +3285,7 @@ EW_END_OF_CLASS_VARIANTS( MenuItemValueUnit )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::ItemValueUnit' */
 EW_DEFINE_CLASS( MenuItemValueUnit, MenuItemBase, ValueText, ValueText, ValueText, 
-                 ValueText, Value, _None, "Menu::ItemValueUnit" )
+                 ValueText, Value, _.VMT, "Menu::ItemValueUnit" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -3494,19 +3334,19 @@ EW_END_OF_CLASS( MenuItemValueUnit )
 void MenuItemTimeHourMinute__Init( MenuItemTimeHourMinute _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuItemBase__Init( &_this->_Super, aLink, aArg );
+  MenuItemBase__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuItemTimeHourMinute );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemTimeHourMinute );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->HourValueText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->MinuteValueText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->HourText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->MinuteText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->HourValueText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->MinuteValueText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->HourText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->MinuteText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuItemTimeHourMinute );
+  _this->_.VMT = EW_CLASS( MenuItemTimeHourMinute );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->HourValueText, _Const0038 );
@@ -3543,7 +3383,7 @@ void MenuItemTimeHourMinute__Init( MenuItemTimeHourMinute _this, XObject aLink, 
 void MenuItemTimeHourMinute__ReInit( MenuItemTimeHourMinute _this )
 {
   /* At first re-initialize the super class ... */
-  MenuItemBase__ReInit( &_this->_Super );
+  MenuItemBase__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->HourValueText );
@@ -3556,7 +3396,7 @@ void MenuItemTimeHourMinute__ReInit( MenuItemTimeHourMinute _this )
 void MenuItemTimeHourMinute__Done( MenuItemTimeHourMinute _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuItemBase );
+  _this->_.Super._.VMT = EW_CLASS( MenuItemBase );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->HourValueText );
@@ -3565,7 +3405,7 @@ void MenuItemTimeHourMinute__Done( MenuItemTimeHourMinute _this )
   ViewsText__Done( &_this->MinuteText );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuItemBase__Done( &_this->_Super );
+  MenuItemBase__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Menu::ItemTimeHourMinute.OnSetHour()' */
@@ -3594,7 +3434,7 @@ EW_END_OF_CLASS_VARIANTS( MenuItemTimeHourMinute )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::ItemTimeHourMinute' */
 EW_DEFINE_CLASS( MenuItemTimeHourMinute, MenuItemBase, HourValueText, HourValueText, 
-                 HourValueText, HourValueText, Hour, _None, "Menu::ItemTimeHourMinute" )
+                 HourValueText, HourValueText, Hour, _.VMT, "Menu::ItemTimeHourMinute" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -3643,13 +3483,13 @@ EW_END_OF_CLASS( MenuItemTimeHourMinute )
 void MenuItemValueUnit2__Init( MenuItemValueUnit2 _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuItemValueUnit__Init( &_this->_Super, aLink, aArg );
+  MenuItemValueUnit__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MenuItemValueUnit2 );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemValueUnit2 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MenuItemValueUnit2 );
+  _this->_.VMT = EW_CLASS( MenuItemValueUnit2 );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->Super1.ValueText, _Const003C );
@@ -3660,17 +3500,17 @@ void MenuItemValueUnit2__Init( MenuItemValueUnit2 _this, XObject aLink, XHandle 
 void MenuItemValueUnit2__ReInit( MenuItemValueUnit2 _this )
 {
   /* At first re-initialize the super class ... */
-  MenuItemValueUnit__ReInit( &_this->_Super );
+  MenuItemValueUnit__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Menu::ItemValueUnit2' */
 void MenuItemValueUnit2__Done( MenuItemValueUnit2 _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuItemValueUnit );
+  _this->_.Super._.VMT = EW_CLASS( MenuItemValueUnit );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuItemValueUnit__Done( &_this->_Super );
+  MenuItemValueUnit__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'Menu::ItemValueUnit2' */
@@ -3678,8 +3518,8 @@ EW_DEFINE_CLASS_VARIANTS( MenuItemValueUnit2 )
 EW_END_OF_CLASS_VARIANTS( MenuItemValueUnit2 )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::ItemValueUnit2' */
-EW_DEFINE_CLASS( MenuItemValueUnit2, MenuItemValueUnit, _None, _None, _None, _None, 
-                 _None, _None, "Menu::ItemValueUnit2" )
+EW_DEFINE_CLASS( MenuItemValueUnit2, MenuItemValueUnit, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, "Menu::ItemValueUnit2" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

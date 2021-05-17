@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -128,26 +128,16 @@
    additional decorations can be drawn. */
 EW_DEFINE_FIELDS( ViewsText, CoreRectView )
   EW_PROPERTY( Font,            ResourcesFont )
-  EW_PROPERTY( OnUpdate,        XSlot )
   EW_VARIABLE( flowString,      XString )
   EW_PROPERTY( String,          XString )
-  EW_VARIABLE( bidiContext,     XHandle )
   EW_VARIABLE( textSize,        XPoint )
-  EW_PROPERTY( Padding,         XInt32 )
   EW_PROPERTY( RowDistance,     XInt32 )
-  EW_PROPERTY( ColorBL,         XColor )
-  EW_PROPERTY( ColorBR,         XColor )
-  EW_PROPERTY( ColorTR,         XColor )
-  EW_PROPERTY( ColorTL,         XColor )
-  EW_PROPERTY( WrapWidth,       XInt32 )
   EW_PROPERTY( ScrollOffset,    XPoint )
   EW_PROPERTY( Alignment,       XSet )
-  EW_PROPERTY( Opacity,         XInt32 )
-  EW_PROPERTY( Orientation,     XEnum )
+  EW_PROPERTY( Color,           XColor )
   EW_PROPERTY( WrapText,        XBool )
   EW_PROPERTY( AutoSize,        XBool )
   EW_PROPERTY( Ellipsis,        XBool )
-  EW_PROPERTY( EnableBidiText,  XBool )
   EW_VARIABLE( reparsed,        XBool )
 EW_END_OF_FIELDS( ViewsText )
 
@@ -204,12 +194,6 @@ void ViewsText_Draw( ViewsText _this, GraphicsCanvas aCanvas, XRect aClip, XPoin
 /* 'C' function for method : 'Views::Text.OnSetBounds()' */
 void ViewsText_OnSetBounds( ViewsText _this, XRect value );
 
-/* 'C' function for method : 'Views::Text.freeBidi()' */
-void ViewsText_freeBidi( ViewsText _this, XHandle aBidi );
-
-/* 'C' function for method : 'Views::Text.createBidi()' */
-XHandle ViewsText_createBidi( ViewsText _this, XInt32 aSize );
-
 /* 'C' function for method : 'Views::Text.preOnUpdateSlot()' */
 void ViewsText_preOnUpdateSlot( ViewsText _this, XObject sender );
 
@@ -258,13 +242,6 @@ void ViewsText_OnSetVisible( ViewsText _this, XBool value );
    of the entire text paragraph. If the text starts with an LTR (left-to-right) 
    sign or the property @EnableBidiText is 'false', this method returns 'false'. */
 XBool ViewsText_IsBaseDirectionRTL( ViewsText _this );
-
-/* The method IsBidiText() returns 'true' if the text specified in the property 
-   @String contains any right-to-left contents or any other Bidi algorithm specific 
-   control codes requiring the Bidi processing of this text. Please note, if the 
-   property @EnableBidiText is false, the text is not processed by the Bidi algorithm 
-   and this method returns 'false'. */
-XBool ViewsText_IsBidiText( ViewsText _this );
 
 /* The method GetNoOfRows() returns the total number of text rows currently displayed 
    in the text view. It is useful when the application needs to iterate through 

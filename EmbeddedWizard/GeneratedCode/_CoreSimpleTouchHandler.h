@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -128,12 +128,8 @@
    the handlers during the design time. */
 EW_DEFINE_FIELDS( CoreSimpleTouchHandler, CoreQuadView )
   EW_PROPERTY( OnDrag,          XSlot )
-  EW_PROPERTY( OnLeave,         XSlot )
-  EW_PROPERTY( OnEnter,         XSlot )
-  EW_PROPERTY( OnHold,          XSlot )
   EW_PROPERTY( OnRelease,       XSlot )
   EW_PROPERTY( OnPress,         XSlot )
-  EW_VARIABLE( stateRetargetReason, XSet )
   EW_VARIABLE( state,           XUInt32 )
   EW_VARIABLE( Finger,          XInt32 )
   EW_VARIABLE( Time,            XUInt32 )
@@ -142,14 +138,8 @@ EW_DEFINE_FIELDS( CoreSimpleTouchHandler, CoreQuadView )
   EW_VARIABLE( Offset,          XPoint )
   EW_VARIABLE( HittingPos,      XPoint )
   EW_VARIABLE( CurrentPos,      XPoint )
-  EW_PROPERTY( RetargetDelay,   XInt32 )
   EW_PROPERTY( RetargetOffset,  XInt32 )
-  EW_PROPERTY( RetargetCondition, XSet )
-  EW_PROPERTY( NoOfFingers,     XInt32 )
-  EW_PROPERTY( LimitToFinger,   XInt32 )
   EW_PROPERTY( MaxStrikeCount,  XInt32 )
-  EW_PROPERTY( MinStrikeCount,  XInt32 )
-  EW_PROPERTY( EnableMultiTouch, XBool )
   EW_VARIABLE( Down,            XBool )
   EW_VARIABLE( Inside,          XBool )
   EW_VARIABLE( AutoDeflected,   XBool )

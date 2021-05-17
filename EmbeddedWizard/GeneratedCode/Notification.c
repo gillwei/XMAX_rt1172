@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -57,7 +57,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x00000168, /* ratio 62.22 % */
   0xB8001500, 0x8009C452, 0x00400037, 0x0C200320, 0x010D3A00, 0xB0306C48, 0x6E001248,
@@ -123,18 +123,18 @@ static const XStringRes _Const0019 = { _StringsDefault0, 0x00A8 };
 void NotificationNTF01_NotificationList__Init( NotificationNTF01_NotificationList _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( NotificationNTF01_NotificationList );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( NotificationNTF01_NotificationList );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->NotificationListUpdatedSystemEventHandler, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->NoDataText, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->NoDataTimeoutTimer, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->NotificationListUpdatedSystemEventHandler, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->NoDataText, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->NoDataTimeoutTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( NotificationNTF01_NotificationList );
+  _this->_.VMT = EW_CLASS( NotificationNTF01_NotificationList );
 
   /* ... and initialize objects, variables, properties, etc. */
   MenuVerticalMenu_OnSetScrollbarVisible( &_this->Super1.Menu, 1 );
@@ -161,7 +161,7 @@ void NotificationNTF01_NotificationList__Init( NotificationNTF01_NotificationLis
 void NotificationNTF01_NotificationList__ReInit( NotificationNTF01_NotificationList _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->NotificationListUpdatedSystemEventHandler );
@@ -173,7 +173,7 @@ void NotificationNTF01_NotificationList__ReInit( NotificationNTF01_NotificationL
 void NotificationNTF01_NotificationList__Done( NotificationNTF01_NotificationList _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->NotificationListUpdatedSystemEventHandler );
@@ -181,7 +181,7 @@ void NotificationNTF01_NotificationList__Done( NotificationNTF01_NotificationLis
   CoreTimer__Done( &_this->NoDataTimeoutTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -227,32 +227,24 @@ XString NotificationNTF01_NotificationList_LoadItemTitle( NotificationNTF01_Noti
     NotificationIdx );
 
     if ( 0 < EwGetStringLength( _this->NotificationData->Title ))
-    {
       Title = _this->NotificationData->Title;
-    }
 
     if ( 0 < EwGetStringLength( _this->NotificationData->Subtitle ))
     {
       if ( 0 < EwGetStringLength( Title ))
-      {
         Title = EwConcatString( Title, EwLoadString( &_Const0004 ));
-      }
 
       Title = EwConcatString( Title, _this->NotificationData->Subtitle );
     }
 
     if ( 0 == EwGetStringLength( Title ))
-    {
       Title = EwLoadString( &StringsGEN_THREE_HYPHENS );
-    }
 
     if (( EnumNotificationCategoryMISSED_CALL == _this->NotificationData->Category ) 
         && ( 1 < _this->NotificationData->CallRepetition ))
-    {
       Title = EwConcatString( Title, EwConcatString( EwConcatString( EwLoadString( 
       &_Const0005 ), EwNewStringInt( _this->NotificationData->CallRepetition, 0, 
       10 )), EwLoadString( &_Const0006 )));
-    }
   }
 
   return Title;
@@ -272,10 +264,8 @@ XString NotificationNTF01_NotificationList_LoadItemReceivedTime( NotificationNTF
   if ( DeviceInterfaceNotificationDeviceClass_OnGetNotificationNum( EwGetAutoObject( 
       &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )) 
       > 0 )
-  {
     ReceivedTime = EwConcatString( EwConcatString( _this->NotificationData->ReceivedTime->Hour, 
     EwLoadString( &_Const0007 )), _this->NotificationData->ReceivedTime->Minute );
-  }
 
   return ReceivedTime;
 }
@@ -294,9 +284,7 @@ XEnum NotificationNTF01_NotificationList_LoadItemCategory( NotificationNTF01_Not
   if ( DeviceInterfaceNotificationDeviceClass_OnGetNotificationNum( EwGetAutoObject( 
       &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )) 
       > 0 )
-  {
     Category = _this->NotificationData->Category;
-  }
 
   return Category;
 }
@@ -357,17 +345,11 @@ XString NotificationNTF01_NotificationList_LoadItemMessage( NotificationNTF01_No
     if ( DeviceInterfaceNotificationDeviceClass_OnGetNotificationNum( EwGetAutoObject( 
         &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )) 
         > 0 )
-    {
       Message = EwStringLeft( _this->NotificationData->Message, 64 );
-    }
 
     if ( 0 == EwGetStringLength( Message ))
-    {
       Message = EwLoadString( &StringsGEN_THREE_HYPHENS );
-    }
   }
-  else
-    ;
 
   return Message;
 }
@@ -406,18 +388,14 @@ void NotificationNTF01_NotificationList_OnNotificationListUpdatedSlot( Notificat
         EwLoadString( &_Const000A ), BufferIdx );
 
       if (( 0 <= BufferIdx ) && ( BufferIdx < _this->Super1.Menu.NoOfItems ))
-      {
         MenuVerticalMenu_OnSetSelectedItem( &_this->Super1.Menu, ( _this->Super1.Menu.NoOfItems 
         - BufferIdx ) - 1 );
-      }
     }
   }
   else
   {
     if ( CoreGroup__IsCurrentDialog( _this ))
-    {
       CoreTimer_OnSetEnabled( &_this->NoDataTimeoutTimer, 1 );
-    }
 
     ViewsText_OnSetVisible( &_this->NoDataText, 1 );
     MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 0 );
@@ -433,9 +411,7 @@ void NotificationNTF01_NotificationList_OnNoDataTimeoutSlot( NotificationNTF01_N
   EW_UNUSED_ARG( sender );
 
   if (( _this->Super6.Owner != 0 ) && CoreGroup__IsCurrentDialog( _this ))
-  {
     ComponentsBaseMainBG_DismissThisDialog((ComponentsBaseMainBG)_this );
-  }
 }
 
 /* 'C' function for method : 'Notification::NTF01_NotificationList.OnNotificationDetailDismissSlot()' */
@@ -448,9 +424,7 @@ void NotificationNTF01_NotificationList_OnNotificationDetailDismissSlot( Notific
   EwTrace( "%s", EwLoadString( &_Const000B ));
 
   if ( 0 == _this->Super1.Menu.NoOfItems )
-  {
     CoreTimer_OnSetEnabled( &_this->NoDataTimeoutTimer, 1 );
-  }
 }
 
 /* Variants derived from the class : 'Notification::NTF01_NotificationList' */
@@ -526,19 +500,19 @@ EW_END_OF_CLASS( NotificationNTF01_NotificationList )
 void NotificationNTF02_NotificationDetail__Init( NotificationNTF02_NotificationDetail _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( NotificationNTF02_NotificationDetail );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( NotificationNTF02_NotificationDetail );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->GrayBG, &_this->_XObject, 0 );
-  MenuScrollbar__Init( &_this->Scrollbar, &_this->_XObject, 0 );
-  NotificationNotificationDetailText__Init( &_this->NotificationText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->GrayBG, &_this->_.XObject, 0 );
+  MenuScrollbar__Init( &_this->Scrollbar, &_this->_.XObject, 0 );
+  NotificationNotificationDetailText__Init( &_this->NotificationText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( NotificationNTF02_NotificationDetail );
+  _this->_.VMT = EW_CLASS( NotificationNTF02_NotificationDetail );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -569,7 +543,7 @@ void NotificationNTF02_NotificationDetail__Init( NotificationNTF02_NotificationD
 void NotificationNTF02_NotificationDetail__ReInit( NotificationNTF02_NotificationDetail _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->GrayBG );
@@ -582,7 +556,7 @@ void NotificationNTF02_NotificationDetail__ReInit( NotificationNTF02_Notificatio
 void NotificationNTF02_NotificationDetail__Done( NotificationNTF02_NotificationDetail _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->GrayBG );
@@ -591,7 +565,7 @@ void NotificationNTF02_NotificationDetail__Done( NotificationNTF02_NotificationD
   ViewsImage__Done( &_this->Divider );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -665,7 +639,7 @@ EW_END_OF_CLASS_VARIANTS( NotificationNTF02_NotificationDetail )
 
 /* Virtual Method Table (VMT) for the class : 'Notification::NTF02_NotificationDetail' */
 EW_DEFINE_CLASS( NotificationNTF02_NotificationDetail, ComponentsBaseMainBG, NotificationData, 
-                 OnDismiss, GrayBG, GrayBG, _None, _None, "Notification::NTF02_NotificationDetail" )
+                 OnDismiss, GrayBG, GrayBG, _.VMT, _.VMT, "Notification::NTF02_NotificationDetail" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -714,19 +688,19 @@ EW_END_OF_CLASS( NotificationNTF02_NotificationDetail )
 void NotificationNotificationDetailText__Init( NotificationNotificationDetailText _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( NotificationNotificationDetailText );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( NotificationNotificationDetailText );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->TitleText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->ReceivedTimeText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->MessageText, &_this->_XObject, 0 );
-  EffectsInt32Effect__Init( &_this->ScrollEffect, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->TitleText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ReceivedTimeText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->MessageText, &_this->_.XObject, 0 );
+  EffectsInt32Effect__Init( &_this->ScrollEffect, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( NotificationNotificationDetailText );
+  _this->_.VMT = EW_CLASS( NotificationNotificationDetailText );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0012 );
@@ -754,9 +728,6 @@ void NotificationNotificationDetailText__Init( NotificationNotificationDetailTex
   | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString( &_this->MessageText, 0 );
   ViewsText_OnSetColor( &_this->MessageText, _Const0014 );
-  _this->TitleInitBounds = _Const0013;
-  _this->ReceivedTimeInitBounds = _Const0015;
-  _this->MessageInitBounds = _Const0016;
   EffectsEffect_OnSetExponent((EffectsEffect)&_this->ScrollEffect, 4.190000f );
   EffectsEffect_OnSetTiming((EffectsEffect)&_this->ScrollEffect, EffectsTimingExp_Out );
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->ScrollEffect, 1 );
@@ -781,7 +752,7 @@ void NotificationNotificationDetailText__Init( NotificationNotificationDetailTex
 void NotificationNotificationDetailText__ReInit( NotificationNotificationDetailText _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->TitleText );
@@ -794,7 +765,7 @@ void NotificationNotificationDetailText__ReInit( NotificationNotificationDetailT
 void NotificationNotificationDetailText__Done( NotificationNotificationDetailText _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->TitleText );
@@ -803,7 +774,7 @@ void NotificationNotificationDetailText__Done( NotificationNotificationDetailTex
   EffectsInt32Effect__Done( &_this->ScrollEffect );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Notification::NotificationDetailText.OnSetScrollOffsetY()' */
@@ -814,17 +785,17 @@ void NotificationNotificationDetailText_OnSetScrollOffsetY( NotificationNotifica
   {
     XRect NewBounds;
     _this->ScrollOffsetY = value;
-    NewBounds = _this->TitleInitBounds;
+    NewBounds = _Const0013;
     NewBounds.Point1.Y = value;
-    NewBounds.Point2.Y = ( NewBounds.Point1.Y + EwGetRectH( _this->TitleInitBounds ));
+    NewBounds.Point2.Y = ( NewBounds.Point1.Y + 30 );
     CoreRectView__OnSetBounds( &_this->TitleText, NewBounds );
-    NewBounds = _this->ReceivedTimeInitBounds;
+    NewBounds = _Const0015;
     NewBounds.Point1.Y = value;
-    NewBounds.Point2.Y = ( NewBounds.Point1.Y + EwGetRectH( _this->ReceivedTimeInitBounds ));
+    NewBounds.Point2.Y = ( NewBounds.Point1.Y + 30 );
     CoreRectView__OnSetBounds( &_this->ReceivedTimeText, NewBounds );
-    NewBounds = _this->MessageInitBounds;
-    NewBounds.Point1.Y = ( NewBounds.Point1.Y + value );
-    NewBounds.Point2.Y = ( NewBounds.Point1.Y + EwGetRectH( _this->MessageInitBounds ));
+    NewBounds = _Const0016;
+    NewBounds.Point1.Y = ( 30 + value );
+    NewBounds.Point2.Y = ( NewBounds.Point1.Y + 1230 );
     CoreRectView__OnSetBounds( &_this->MessageText, NewBounds );
   }
 }
@@ -839,14 +810,10 @@ XInt32 NotificationNotificationDetailText_ScrollDownPage( NotificationNotificati
       - EwGetRectH( _this->Super2.Bounds );
 
     if ( MaxScrollOffset < 0 )
-    {
       MaxScrollOffset = 0;
-    }
 
     if ( EwGetInt32Abs( NextScrollOffsetY ) > MaxScrollOffset )
-    {
       NextScrollOffsetY = -1 * MaxScrollOffset;
-    }
 
     _this->ScrollEffect.Value1 = _this->ScrollOffsetY;
     _this->ScrollEffect.Value2 = NextScrollOffsetY;
@@ -874,9 +841,7 @@ XInt32 NotificationNotificationDetailText_ScrollUpPage( NotificationNotification
     XInt32 NextScrollOffsetY = _this->ScrollOffsetY + EwGetRectH( _this->Super2.Bounds );
 
     if ( NextScrollOffsetY > 0 )
-    {
       NextScrollOffsetY = 0;
-    }
 
     _this->ScrollEffect.Value1 = _this->ScrollOffsetY;
     _this->ScrollEffect.Value2 = NextScrollOffsetY;
@@ -899,26 +864,20 @@ void NotificationNotificationDetailText_OnSetNotificationData( NotificationNotif
     ViewsText_OnSetString( &_this->TitleText, value->Title );
 
     if ( 0 < EwGetStringLength( value->Title ))
-    {
       ViewsText_OnSetString( &_this->TitleText, value->Title );
-    }
 
     if ( 0 < EwGetStringLength( value->Subtitle ))
     {
       if ( 0 < EwGetStringLength( _this->TitleText.String ))
-      {
         ViewsText_OnSetString( &_this->TitleText, EwConcatString( _this->TitleText.String, 
         EwLoadString( &_Const0004 )));
-      }
 
       ViewsText_OnSetString( &_this->TitleText, EwConcatString( _this->TitleText.String, 
       value->Subtitle ));
     }
 
     if ( 0 == EwGetStringLength( _this->TitleText.String ))
-    {
       ViewsText_OnSetString( &_this->TitleText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
-    }
 
     ViewsText_OnSetString( &_this->ReceivedTimeText, EwConcatString( EwConcatString( 
     _this->NotificationData->ReceivedTime->Hour, EwLoadString( &_Const0007 )), _this->NotificationData->ReceivedTime->Minute ));
@@ -929,9 +888,7 @@ void NotificationNotificationDetailText_OnSetNotificationData( NotificationNotif
       value->Message ));
 
       if ( 0 == EwGetStringLength( _this->MessageText.String ))
-      {
         ViewsText_OnSetString( &_this->MessageText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
-      }
     }
 
     NotificationNotificationDetailText_UpdateLineNum( _this );

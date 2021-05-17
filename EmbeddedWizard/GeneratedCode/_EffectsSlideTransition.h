@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -72,6 +72,9 @@
    owner. This can be modified by using the property @Alignment. Furthermore, with 
    the four properties @MarginLeft, @MarginRight, @MarginTop and @MarginBottom the 
    area to align the component within its owner can be limited.
+   The transition animates the position and the opacity of the affected GUI component 
+   simultanously. If the opacity animation is not desired, you can disable it explicitly 
+   by using the properties @OpacityFadeIn and @OpacityFadeOut.
    How long the transition should take is determined in the property @Duration, 
    which is per default 500 ms. The exact timing (easing) is configured with the 
    property @Timing. The class implements an extensive set of various timing functions. 
@@ -84,18 +87,7 @@
    additionally enable the buffering mode for the affected GUI component while it 
    performs the animation. */
 EW_DEFINE_FIELDS( EffectsSlideTransition, EffectsTransition )
-  EW_PROPERTY( MarginBottom,    XInt32 )
-  EW_PROPERTY( MarginRight,     XInt32 )
-  EW_PROPERTY( MarginTop,       XInt32 )
-  EW_PROPERTY( MarginLeft,      XInt32 )
-  EW_PROPERTY( Alignment,       XSet )
-  EW_PROPERTY( Elasticity,      XFloat )
-  EW_PROPERTY( Bounces,         XInt32 )
-  EW_PROPERTY( Oscillations,    XInt32 )
-  EW_PROPERTY( Amplitude,       XFloat )
   EW_PROPERTY( Exponent,        XFloat )
-  EW_PROPERTY( TimingCustom2,   XFloat )
-  EW_PROPERTY( TimingCustom1,   XFloat )
   EW_PROPERTY( Duration,        XInt32 )
   EW_PROPERTY( Direction,       XEnum )
   EW_PROPERTY( Timing,          XEnum )

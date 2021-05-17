@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -57,7 +57,6 @@
 EW_DEFINE_FIELDS( CorePropertyObserver, XObject )
   EW_PROPERTY( OnEvent,         XSlot )
   EW_PROPERTY( Outlet,          XRef )
-  EW_PROPERTY( Enabled,         XBool )
 EW_END_OF_FIELDS( CorePropertyObserver )
 
 /* Virtual Method Table (VMT) for the class : 'Core::PropertyObserver' */

@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -50,7 +50,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x0000000C, /* ratio 166.67 % */
   0xB8000900, 0x80074452, 0x04010883, 0x00000004, 0x00000000
@@ -87,35 +87,35 @@ static const XStringRes _Const0014 = { _StringsDefault0, 0x0002 };
 void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( StatusBarMain );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( StatusBarMain );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->Background, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
-  StatusBarClock__Init( &_this->Clock, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->MotoConEventHandler, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->BatteryIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->HeadsetIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->AppIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->BtIcon, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->BTEnabledObserver, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->PairdDeviceChangedObserver, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->SignalLevelIcon, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->PhoneIcon, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->NotificationListUpdatedSystemEventHandler, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->MessageIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->GripWarmerIcon, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->SeatHeaterIcon, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->AirTemperatureText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->UnitImage, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->Background, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
+  StatusBarClock__Init( &_this->Clock, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->MotoConEventHandler, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->BatteryIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->HeadsetIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->AppIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->BtIcon, &_this->_.XObject, 0 );
+  CorePropertyObserver__Init( &_this->BTEnabledObserver, &_this->_.XObject, 0 );
+  CorePropertyObserver__Init( &_this->PairdDeviceChangedObserver, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->SignalLevelIcon, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->PhoneIcon, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->NotificationListUpdatedSystemEventHandler, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->MessageIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->GripWarmerIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->SeatHeaterIcon, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->AirTemperatureText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->UnitImage, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( StatusBarMain );
+  _this->_.VMT = EW_CLASS( StatusBarMain );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -214,7 +214,7 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
 void StatusBarMain__ReInit( StatusBarMain _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->Background );
@@ -243,7 +243,7 @@ void StatusBarMain__ReInit( StatusBarMain _this )
 void StatusBarMain__Done( StatusBarMain _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->Background );
@@ -268,7 +268,7 @@ void StatusBarMain__Done( StatusBarMain _this )
   ViewsImage__Done( &_this->UnitImage );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -304,8 +304,7 @@ void StatusBarMain_OnMotoConEventReceived( StatusBarMain _this, XObject sender )
       StatusBarMain_UpdatePhoneCellSignalLevelIcon( _this );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -323,9 +322,7 @@ void StatusBarMain_UpdateMotoConConnectionStatus( StatusBarMain _this )
     ViewsImage_OnSetVisible( &_this->SignalLevelIcon, 0 );
   }
   else
-  {
     StatusBarMain_UpdateAppIcon( _this );
-  }
 }
 
 /* 'C' function for method : 'StatusBar::Main.UpdateBatteryIcon()' */
@@ -346,44 +343,28 @@ void StatusBarMain_UpdateBatteryIcon( StatusBarMain _this )
   if ( _this->IsMotoConConnected )
   {
     if ( IsBatteryCharging )
-    {
       ViewsImage_OnSetBitmap( &_this->BatteryIcon, EwLoadResource( &ResourceBatteryChagingIcon, 
       ResourcesBitmap ));
-    }
     else
-    {
       ViewsImage_OnSetBitmap( &_this->BatteryIcon, EwLoadResource( &ResourceBatteryNotChagingIcon, 
       ResourcesBitmap ));
-    }
 
     if ( PhoneBatteryPercentage >= 81 )
-    {
       ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 5 );
-    }
     else
       if ( PhoneBatteryPercentage >= 61 )
-      {
         ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 4 );
-      }
       else
         if ( PhoneBatteryPercentage >= 41 )
-        {
           ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 3 );
-        }
         else
           if ( PhoneBatteryPercentage >= 16 )
-          {
             ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 2 );
-          }
           else
             if ( PhoneBatteryPercentage >= 4 )
-            {
               ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 1 );
-            }
             else
-            {
               ViewsImage_OnSetFrameNumber( &_this->BatteryIcon, 0 );
-            }
 
     ViewsImage_OnSetVisible( &_this->BatteryIcon, 1 );
   }
@@ -403,13 +384,9 @@ void StatusBarMain_UpdateHeadsetIcon( StatusBarMain _this )
   }
 
   if ( _this->IsMotoConConnected && IsHeadsetConnected )
-  {
     ViewsImage_OnSetVisible( &_this->HeadsetIcon, 1 );
-  }
   else
-  {
     ViewsImage_OnSetVisible( &_this->HeadsetIcon, 0 );
-  }
 }
 
 /* This slot method is executed when the associated property observer 'PropertyObserver' 
@@ -424,20 +401,14 @@ void StatusBarMain_OnBtcConnectionStatusChangedSlot( StatusBarMain _this, XObjec
   {
     if ( DeviceInterfaceBluetoothDeviceClass_IsBtConnected( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
         DeviceInterfaceBluetoothDeviceClass )))
-    {
       ViewsImage_OnSetFrameNumber( &_this->BtIcon, 1 );
-    }
     else
-    {
       ViewsImage_OnSetFrameNumber( &_this->BtIcon, 0 );
-    }
 
     ViewsImage_OnSetVisible( &_this->BtIcon, 1 );
   }
   else
-  {
     ViewsImage_OnSetVisible( &_this->BtIcon, 0 );
-  }
 }
 
 /* 'C' function for method : 'StatusBar::Main.UpdateAppIcon()' */
@@ -455,13 +426,9 @@ void StatusBarMain_UpdateAppIcon( StatusBarMain _this )
     }
 
     if ( IsPhoneThermalHigh )
-    {
       ViewsImage_OnSetFrameNumber( &_this->AppIcon, 1 );
-    }
     else
-    {
       ViewsImage_OnSetFrameNumber( &_this->AppIcon, 0 );
-    }
   }
 
   ViewsImage_OnSetVisible( &_this->AppIcon, _this->IsMotoConConnected );
@@ -476,9 +443,7 @@ void StatusBarMain_UpdatePhoneCellSignalLevelIcon( StatusBarMain _this )
     PhoneCellSignalLevel = BC_motocon_get_phone_cell_signal_level();
 
     if ( 0 == PhoneCellSignalLevel )
-    {
       ViewsImage_OnSetVisible( &_this->SignalLevelIcon, 0 );
-    }
     else
       if ( 5 >= PhoneCellSignalLevel )
       {
@@ -486,8 +451,6 @@ void StatusBarMain_UpdatePhoneCellSignalLevelIcon( StatusBarMain _this )
         - 1 );
         ViewsImage_OnSetVisible( &_this->SignalLevelIcon, 1 );
       }
-      else
-        ;
   }
 
   ViewsImage_OnSetVisible( &_this->SignalLevelIcon, _this->IsMotoConConnected );
@@ -505,7 +468,6 @@ void StatusBarMain_OnVehicleDataReceivedSlot( StatusBarMain _this, XObject sende
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
   if ( VehicleData != 0 )
-  {
     switch ( VehicleData->RxType )
     {
       case EnumVehicleRxTypeSUPPORT_FUNC_CLOCK :
@@ -516,30 +478,22 @@ void StatusBarMain_OnVehicleDataReceivedSlot( StatusBarMain _this, XObject sende
 
       case EnumVehicleRxTypeSUPPORT_FUNC_GRIP_WARMER :
       case EnumVehicleRxTypeGRIP_WARMER_STATUS :
-      {
         StatusBarMain_UpdateGripWarmerIcon( _this );
-      }
       break;
 
       case EnumVehicleRxTypeSUPPORT_FUNC_SEAT_HEATER :
       case EnumVehicleRxTypeSEAT_HEATER_STATUS :
-      {
         StatusBarMain_UpdateSeatHeaterIcon( _this );
-      }
       break;
 
       case EnumVehicleRxTypeTEMPERATURE_UNIT :
       case EnumVehicleRxTypeAIR_TEMPERATURE :
       case EnumVehicleRxTypeSUPPORT_FUNC_AIR_TEMPERATURE :
-      {
         StatusBarMain_UpdateAirTemperature( _this );
-      }
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* 'C' function for method : 'StatusBar::Main.OnUpdatePhoneIconSlot()' */
@@ -563,9 +517,7 @@ void StatusBarMain_OnUpdatePhoneIconSlot( StatusBarMain _this, XObject sender )
       ViewsImage_OnSetVisible( &_this->PhoneIcon, 1 );
     }
     else
-    {
       ViewsImage_OnSetVisible( &_this->PhoneIcon, 0 );
-    }
 }
 
 /* This slot method is executed when the associated property observer 'PropertyObserver' 
@@ -578,13 +530,9 @@ void StatusBarMain_OnNotificationListUpdatedSlot( StatusBarMain _this, XObject s
   if ( 0 < DeviceInterfaceNotificationDeviceClass_GetNotificationNumOfCategory( 
       EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ), 
       EnumNotificationCategoryMESSAGE ))
-  {
     ViewsImage_OnSetVisible( &_this->MessageIcon, 1 );
-  }
   else
-  {
     ViewsImage_OnSetVisible( &_this->MessageIcon, 0 );
-  }
 
   EwSignal( EwNewSlot( _this, StatusBarMain_OnUpdatePhoneIconSlot ), ((XObject)_this ));
 }
@@ -606,9 +554,7 @@ void StatusBarMain_UpdateGripWarmerIcon( StatusBarMain _this )
     }
   }
   else
-  {
     ViewsImage_OnSetVisible( &_this->GripWarmerIcon, 0 );
-  }
 }
 
 /* 'C' function for method : 'StatusBar::Main.UpdateSeatHeaterIcon()' */
@@ -628,9 +574,7 @@ void StatusBarMain_UpdateSeatHeaterIcon( StatusBarMain _this )
     }
   }
   else
-  {
     ViewsImage_OnSetVisible( &_this->SeatHeaterIcon, 0 );
-  }
 }
 
 /* 'C' function for method : 'StatusBar::Main.UpdateAirTemperature()' */
@@ -646,13 +590,9 @@ void StatusBarMain_UpdateAirTemperature( StatusBarMain _this )
     if ( TemepratureUnitContext != 0 )
     {
       if ( EnumTemperatureSettingItemTEMP_F == (XEnum)TemepratureUnitContext->DataUInt32 )
-      {
         ViewsImage_OnSetFrameNumber( &_this->UnitImage, 1 );
-      }
       else
-      {
         ViewsImage_OnSetFrameNumber( &_this->UnitImage, 0 );
-      }
 
       ViewsText_OnSetString( &_this->AirTemperatureText, DeviceInterfaceVehicleDeviceClass_OnGetAirTemperatureStr( 
       EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )));
@@ -710,19 +650,19 @@ EW_END_OF_CLASS( StatusBarMain )
 void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( StatusBarClock );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( StatusBarClock );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->ClockHourText, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->OnUpdateLocalTimeEventHandler, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->ClockMinuteText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->ClockColonText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->ClockHourText, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->OnUpdateLocalTimeEventHandler, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ClockMinuteText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ClockColonText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( StatusBarClock );
+  _this->_.VMT = EW_CLASS( StatusBarClock );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const000F );
@@ -762,7 +702,7 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
 void StatusBarClock__ReInit( StatusBarClock _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ClockHourText );
@@ -775,7 +715,7 @@ void StatusBarClock__ReInit( StatusBarClock _this )
 void StatusBarClock__Done( StatusBarClock _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->ClockHourText );
@@ -784,7 +724,7 @@ void StatusBarClock__Done( StatusBarClock _this )
   ViewsText__Done( &_this->ClockColonText );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'StatusBar::Clock.OnUpdateLocalTimeSlot()' */
@@ -799,9 +739,7 @@ void StatusBarClock_OnUpdateLocalTimeSlot( StatusBarClock _this, XObject sender 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ));
 
   if ( CurrentTime->Hour > 12 )
-  {
     CurrentTime->Hour = (XUInt8)( CurrentTime->Hour - 12 );
-  }
 
   ViewsText_OnSetString( &_this->ClockHourText, EwNewStringInt( CurrentTime->Hour, 
   0, 10 ));
@@ -817,7 +755,7 @@ EW_END_OF_CLASS_VARIANTS( StatusBarClock )
 
 /* Virtual Method Table (VMT) for the class : 'StatusBar::Clock' */
 EW_DEFINE_CLASS( StatusBarClock, CoreGroup, ClockHourText, ClockHourText, ClockHourText, 
-                 ClockHourText, _None, _None, "StatusBar::Clock" )
+                 ClockHourText, _.VMT, _.VMT, "StatusBar::Clock" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

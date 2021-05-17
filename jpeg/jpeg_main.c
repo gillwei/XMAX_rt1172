@@ -37,7 +37,7 @@
 
 #define JPEG_BUFFER_SIZE_BYTE ( 65 * 1024 )
 #define JPEG_BUFFER_NUM       ( 2 )
-#define RGB_BUFFER_SIZE_BYTE  ( FRAME_BUFFER_WIDTH * FRAME_BUFFER_HEIGHT * BYTE_PER_PIXEL )
+#define RGB_BUFFER_SIZE_BYTE  ( EW_FRAME_BUFFER_WIDTH * EW_FRAME_BUFFER_HEIGHT * BYTE_PER_PIXEL )
 #define RGB_BUF_TAKE_SEMAPHORE_TIMEOUT_MS ( 1000 )
 
 /*--------------------------------------------------------------------
@@ -111,8 +111,8 @@ jpg_buffer_aligned = ( uint8_t* ) jpeg_obj->buf_info.addr;
 jpeg_mem_src( &cinfo, jpg_buffer_aligned, jpeg_obj->size_byte );
 
 jpeg_read_header( &cinfo, true );
-if( FRAME_BUFFER_WIDTH  >= cinfo.image_width  && 0 < cinfo.image_width &&
-    FRAME_BUFFER_HEIGHT >= cinfo.image_height && 0 < cinfo.image_height )
+if( EW_FRAME_BUFFER_WIDTH  >= cinfo.image_width  && 0 < cinfo.image_width &&
+    EW_FRAME_BUFFER_HEIGHT >= cinfo.image_height && 0 < cinfo.image_height )
     {
     jpeg_obj->buf_info.image_width  = cinfo.image_width;
     jpeg_obj->buf_info.image_height = cinfo.image_height;

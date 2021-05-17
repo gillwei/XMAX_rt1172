@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -79,13 +79,13 @@ static const XRect _Const0008 = {{ 173, 93 }, { 307, 112 }};
 void BrightnessBRT01_BrightnessSettingMenu__Init( BrightnessBRT01_BrightnessSettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( BrightnessBRT01_BrightnessSettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( BrightnessBRT01_BrightnessSettingMenu );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( BrightnessBRT01_BrightnessSettingMenu );
+  _this->_.VMT = EW_CLASS( BrightnessBRT01_BrightnessSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -103,17 +103,17 @@ void BrightnessBRT01_BrightnessSettingMenu__Init( BrightnessBRT01_BrightnessSett
 void BrightnessBRT01_BrightnessSettingMenu__ReInit( BrightnessBRT01_BrightnessSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Brightness::BRT01_BrightnessSettingMenu' */
 void BrightnessBRT01_BrightnessSettingMenu__Done( BrightnessBRT01_BrightnessSettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -131,9 +131,7 @@ void BrightnessBRT01_BrightnessSettingMenu_Init( BrightnessBRT01_BrightnessSetti
 
   if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
       &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleSupportedFunctionMETER_BRIGHTNESS_ADJ ))
-  {
     NoOfItems++;
-  }
 
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, NoOfItems );
 }
@@ -150,9 +148,7 @@ XClass BrightnessBRT01_BrightnessSettingMenu_LoadItemClass( BrightnessBRT01_Brig
   ItemClass = 0;
 
   if ( aItemNo >= 0 )
-  {
     ItemClass = EW_CLASS( MenuItemBase );
-  }
 
   return ItemClass;
 }
@@ -178,8 +174,7 @@ XString BrightnessBRT01_BrightnessSettingMenu_LoadItemTitle( BrightnessBRT01_Bri
       Title = EwLoadString( &StringsBRT01_SPEED_METER );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return Title;
@@ -189,8 +184,8 @@ XString BrightnessBRT01_BrightnessSettingMenu_LoadItemTitle( BrightnessBRT01_Bri
 void BrightnessBRT01_BrightnessSettingMenu_OnItemActivate( BrightnessBRT01_BrightnessSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  if ( aMenuItem == 0 )
-    ;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aMenuItem );
 
   switch ( aItemNo )
   {
@@ -204,8 +199,7 @@ void BrightnessBRT01_BrightnessSettingMenu_OnItemActivate( BrightnessBRT01_Brigh
       BrightnessBRT03_MeterBrightness, 0 )));
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -214,8 +208,8 @@ EW_DEFINE_CLASS_VARIANTS( BrightnessBRT01_BrightnessSettingMenu )
 EW_END_OF_CLASS_VARIANTS( BrightnessBRT01_BrightnessSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Brightness::BRT01_BrightnessSettingMenu' */
-EW_DEFINE_CLASS( BrightnessBRT01_BrightnessSettingMenu, MenuBaseMenuView, _None, 
-                 _None, _None, _None, _None, _None, "Brightness::BRT01_BrightnessSettingMenu" )
+EW_DEFINE_CLASS( BrightnessBRT01_BrightnessSettingMenu, MenuBaseMenuView, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, "Brightness::BRT01_BrightnessSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -280,18 +274,18 @@ EW_END_OF_CLASS( BrightnessBRT01_BrightnessSettingMenu )
 void BrightnessBRT02_TFTBrightness__Init( BrightnessBRT02_TFTBrightness _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( BrightnessBRT02_TFTBrightness );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( BrightnessBRT02_TFTBrightness );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->Base, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->LevelBar, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->Base, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->LevelBar, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( BrightnessBRT02_TFTBrightness );
+  _this->_.VMT = EW_CLASS( BrightnessBRT02_TFTBrightness );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -322,7 +316,7 @@ void BrightnessBRT02_TFTBrightness__Init( BrightnessBRT02_TFTBrightness _this, X
 void BrightnessBRT02_TFTBrightness__ReInit( BrightnessBRT02_TFTBrightness _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->Base );
@@ -334,7 +328,7 @@ void BrightnessBRT02_TFTBrightness__ReInit( BrightnessBRT02_TFTBrightness _this 
 void BrightnessBRT02_TFTBrightness__Done( BrightnessBRT02_TFTBrightness _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->Base );
@@ -342,7 +336,7 @@ void BrightnessBRT02_TFTBrightness__Done( BrightnessBRT02_TFTBrightness _this )
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -388,22 +382,18 @@ void BrightnessBRT02_TFTBrightness_UpdateViewState( BrightnessBRT02_TFTBrightnes
 void BrightnessBRT02_TFTBrightness_OnShortDownKeyActivated( BrightnessBRT02_TFTBrightness _this )
 {
   if ( 1 < _this->BrightnessLevel )
-  {
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION, 
     1 );
-  }
 }
 
 /* 'C' function for method : 'Brightness::BRT02_TFTBrightness.OnShortUpKeyActivated()' */
 void BrightnessBRT02_TFTBrightness_OnShortUpKeyActivated( BrightnessBRT02_TFTBrightness _this )
 {
   if ( 3 > _this->BrightnessLevel )
-  {
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION, 
     2 );
-  }
 }
 
 /* 'C' function for method : 'Brightness::BRT02_TFTBrightness.OnShortEnterKeyActivated()' */
@@ -447,9 +437,7 @@ void BrightnessBRT02_TFTBrightness_OnVehicleDataReceivedSlot( BrightnessBRT02_TF
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
   if (( VehicleData != 0 ) && ( EnumVehicleRxTypeTFT_BRIGHTNESS_LEVEL == VehicleData->RxType ))
-  {
     BrightnessBRT02_TFTBrightness_UpdateBrightnessLevel( _this );
-  }
 }
 
 /* 'C' function for method : 'Brightness::BRT02_TFTBrightness.UpdateBrightnessLevel()' */
@@ -521,18 +509,18 @@ EW_END_OF_CLASS( BrightnessBRT02_TFTBrightness )
 void BrightnessBRT03_MeterBrightness__Init( BrightnessBRT03_MeterBrightness _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( BrightnessBRT03_MeterBrightness );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( BrightnessBRT03_MeterBrightness );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->Base, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->LevelBar, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->Base, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->LevelBar, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( BrightnessBRT03_MeterBrightness );
+  _this->_.VMT = EW_CLASS( BrightnessBRT03_MeterBrightness );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -566,7 +554,7 @@ void BrightnessBRT03_MeterBrightness__Init( BrightnessBRT03_MeterBrightness _thi
 void BrightnessBRT03_MeterBrightness__ReInit( BrightnessBRT03_MeterBrightness _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->Base );
@@ -578,7 +566,7 @@ void BrightnessBRT03_MeterBrightness__ReInit( BrightnessBRT03_MeterBrightness _t
 void BrightnessBRT03_MeterBrightness__Done( BrightnessBRT03_MeterBrightness _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->Base );
@@ -586,7 +574,7 @@ void BrightnessBRT03_MeterBrightness__Done( BrightnessBRT03_MeterBrightness _thi
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -632,22 +620,18 @@ void BrightnessBRT03_MeterBrightness_UpdateViewState( BrightnessBRT03_MeterBrigh
 void BrightnessBRT03_MeterBrightness_OnShortDownKeyActivated( BrightnessBRT03_MeterBrightness _this )
 {
   if ( 1 < _this->BrightnessLevel )
-  {
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION, 
     1 );
-  }
 }
 
 /* 'C' function for method : 'Brightness::BRT03_MeterBrightness.OnShortUpKeyActivated()' */
 void BrightnessBRT03_MeterBrightness_OnShortUpKeyActivated( BrightnessBRT03_MeterBrightness _this )
 {
   if ( 6 > _this->BrightnessLevel )
-  {
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION, 
     2 );
-  }
 }
 
 /* 'C' function for method : 'Brightness::BRT03_MeterBrightness.OnShortEnterKeyActivated()' */
@@ -691,9 +675,7 @@ void BrightnessBRT03_MeterBrightness_OnVehicleDataReceivedSlot( BrightnessBRT03_
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
   if (( VehicleData != 0 ) && ( EnumVehicleRxTypeMETER_BRIGHTNESS_LEVEL == VehicleData->RxType ))
-  {
     BrightnessBRT03_MeterBrightness_UpdateBrightnessLevel( _this );
-  }
 }
 
 /* 'C' function for method : 'Brightness::BRT03_MeterBrightness.UpdateBrightnessLevel()' */

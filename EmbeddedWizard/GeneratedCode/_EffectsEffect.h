@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -97,7 +97,6 @@
 EW_DEFINE_FIELDS( EffectsEffect, XObject )
   EW_VARIABLE( timingList,      EffectsTimingList )
   EW_VARIABLE( timer,           CoreTimer )
-  EW_VARIABLE( privateOnFinished, XSlot )
   EW_PROPERTY( OnFinished,      XSlot )
   EW_PROPERTY( OnAnimate,       XSlot )
   EW_VARIABLE( direction,       XInt32 )
@@ -113,16 +112,13 @@ EW_DEFINE_FIELDS( EffectsEffect, XObject )
   EW_PROPERTY( Oscillations,    XInt32 )
   EW_PROPERTY( Amplitude,       XFloat )
   EW_PROPERTY( Exponent,        XFloat )
-  EW_PROPERTY( Noise,           XFloat )
   EW_PROPERTY( TimingCustom2,   XFloat )
   EW_PROPERTY( TimingCustom1,   XFloat )
   EW_PROPERTY( NoOfCycles,      XInt32 )
   EW_PROPERTY( CycleDuration,   XInt32 )
-  EW_PROPERTY( InterCycleDelay, XInt32 )
   EW_PROPERTY( InitialDelay,    XInt32 )
   EW_PROPERTY( Timing,          XEnum )
   EW_PROPERTY( Enabled,         XBool )
-  EW_PROPERTY( Symmetric,       XBool )
   EW_PROPERTY( Reversed,        XBool )
   EW_VARIABLE( useBezier2,      XBool )
   EW_VARIABLE( useBezier3,      XBool )

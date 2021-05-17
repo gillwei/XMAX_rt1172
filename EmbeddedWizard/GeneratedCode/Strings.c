@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -28,7 +28,7 @@
 #include "Strings.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x00000414, /* ratio 55.94 % */
   0xB8000B00, 0x8004A452, 0x0A120039, 0xC004F824, 0x12008492, 0x04322C0C, 0x6E001840,
@@ -55,7 +55,7 @@ static const unsigned int _StringsDefault0[] =
 };
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault1[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault1[] =
 {
   0x0000040C, /* ratio 52.51 % */
   0xB8001900, 0x0008C452, 0x009E0029, 0x0A800270, 0x50001000, 0x0290041C, 0x04814580,
@@ -81,7 +81,7 @@ static const unsigned int _StringsDefault1[] =
 };
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault2[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault2[] =
 {
   0x000004B6, /* ratio 49.09 % */
   0xB8002500, 0x000A6452, 0x00DE003A, 0x04000380, 0xC2003700, 0x2003B000, 0x1133800D,
@@ -109,7 +109,7 @@ static const unsigned int _StringsDefault2[] =
 };
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault3[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault3[] =
 {
   0x00000482, /* ratio 50.95 % */
   0xB8002700, 0x000A8452, 0x00C20039, 0x0E800318, 0xDE003480, 0x00037000, 0x11218004,
@@ -136,7 +136,7 @@ static const unsigned int _StringsDefault3[] =
 };
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault4[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault4[] =
 {
   0x00000478, /* ratio 46.85 % */
   0xB800EB00, 0x000A0452, 0x00CA0036, 0x4E600308, 0x00200042, 0x50887990, 0x11879D21,
@@ -162,7 +162,7 @@ static const unsigned int _StringsDefault4[] =
 };
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault5[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault5[] =
 {
   0x00000406, /* ratio 52.04 % */
   0xB8000D00, 0x800A0452, 0x009C0024, 0x60616858, 0x00610041, 0x472001A4, 0x00370022,
@@ -188,7 +188,7 @@ static const unsigned int _StringsDefault5[] =
 };
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault6[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault6[] =
 {
   0x00000372, /* ratio 99.32 % */
   0xB8000900, 0x08406452, 0x12040000, 0x8010704C, 0xAE458183, 0xC0034800, 0x0032000D,
@@ -226,7 +226,7 @@ static const unsigned int _StringsDefault6[] =
 };
 
 /* Compressed strings for the language 'French'. */
-static const unsigned int _StringsFrench0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsFrench0[] =
 {
   0x000001EA, /* ratio 55.51 % */
   0xB8001500, 0x00082452, 0xD4010737, 0x4006C001, 0x00720019, 0xB0308448, 0x002B0020,
@@ -242,7 +242,7 @@ static const unsigned int _StringsFrench0[] =
 };
 
 /* Compressed strings for the language 'German'. */
-static const unsigned int _StringsGerman0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsGerman0[] =
 {
   0x0000015E, /* ratio 61.71 % */
   0xB8001900, 0x00082452, 0xC8010731, 0xC0065001, 0x18680018, 0xA0037002, 0x458182A2,
@@ -256,7 +256,7 @@ static const unsigned int _StringsGerman0[] =
 };
 
 /* Compressed strings for the language 'Italian'. */
-static const unsigned int _StringsItalian0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsItalian0[] =
 {
   0x00000172, /* ratio 60.54 % */
   0xB8001500, 0x00082452, 0xD4010737, 0x2186C001, 0x22003080, 0x10581836, 0x008B1580,
@@ -270,7 +270,7 @@ static const unsigned int _StringsItalian0[] =
 };
 
 /* Compressed strings for the language 'Japanese'. */
-static const unsigned int _StringsJapanese0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsJapanese0[] =
 {
   0x000000B6, /* ratio 98.90 % */
   0xB8001100, 0x8C15A452, 0xC1E63071, 0x1D6305D8, 0x0A00000C, 0x66622C0C, 0x102A1291,
@@ -283,7 +283,7 @@ static const unsigned int _StringsJapanese0[] =
 };
 
 /* Compressed strings for the language 'SimplifiedChinese'. */
-static const unsigned int _StringsSimplifiedChinese0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsSimplifiedChinese0[] =
 {
   0x00000096, /* ratio 101.33 % */
   0xB8000B00, 0x1E0DC452, 0x00005B4D, 0xDAD04810, 0x146D4414, 0x66622C32, 0x0A2A1291,
@@ -295,7 +295,7 @@ static const unsigned int _StringsSimplifiedChinese0[] =
 };
 
 /* Compressed strings for the language 'Spanish'. */
-static const unsigned int _StringsSpanish0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsSpanish0[] =
 {
   0x000001D4, /* ratio 54.70 % */
   0xB8000F00, 0x800AC452, 0x00D80030, 0xE1A00328, 0x86458182, 0x06E0041C, 0x098598C0,
@@ -311,7 +311,7 @@ static const unsigned int _StringsSpanish0[] =
 };
 
 /* Compressed strings for the language 'TraditionalChinese'. */
-static const unsigned int _StringsTraditionalChinese0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsTraditionalChinese0[] =
 {
   0x000000A0, /* ratio 100.00 % */
   0xB8000B00, 0x1E174452, 0x00005B4D, 0xDAD04810, 0x146D4414, 0x66622C32, 0x0A2A1291,

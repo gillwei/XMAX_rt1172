@@ -253,8 +253,8 @@ unsigned int* dest;
 int           ofs;
 int           x;
 int           y;
-int           image_width  = FRAME_BUFFER_WIDTH;
-int           image_height = FRAME_BUFFER_HEIGHT;
+int           image_width  = EW_FRAME_BUFFER_WIDTH;
+int           image_height = EW_FRAME_BUFFER_HEIGHT;
 
 /* create a new bitmap with the previously determined size */
 frame_size.X = image_width;

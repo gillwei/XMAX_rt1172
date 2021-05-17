@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -65,22 +65,20 @@ static const XRect _Const0007 = {{ 195, 62 }, { 285, 152 }};
 void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ComponentsBaseComponent );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( ComponentsBaseComponent );
 
   /* ... then construct all embedded objects */
-  CoreKeyPressHandler__Init( &_this->KeyHandler, &_this->_XObject, 0 );
+  CoreKeyPressHandler__Init( &_this->KeyHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->UpKeyTriggerMode = EnumKeyTriggerModeON;
   _this->DownKeyTriggerMode = EnumKeyTriggerModeON;
-  _this->EnterKeyTriggerMode = EnumKeyTriggerModeOFF;
-  _this->HomeKeyTriggerMode = EnumKeyTriggerModeOFF;
   _this->KeyHandler.OnRelease = EwNewSlot( _this, ComponentsBaseComponent_OnKeyReleaseSlot );
   _this->KeyHandler.OnPress = EwNewSlot( _this, ComponentsBaseComponent_OnKeyPressSlot );
   _this->KeyHandler.OnHold = EwNewSlot( _this, ComponentsBaseComponent_OnKeyHoldSlot );
@@ -93,7 +91,7 @@ void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink
 void ComponentsBaseComponent__ReInit( ComponentsBaseComponent _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreKeyPressHandler__ReInit( &_this->KeyHandler );
@@ -103,13 +101,13 @@ void ComponentsBaseComponent__ReInit( ComponentsBaseComponent _this )
 void ComponentsBaseComponent__Done( ComponentsBaseComponent _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   CoreKeyPressHandler__Done( &_this->KeyHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -125,9 +123,9 @@ void ComponentsBaseComponent_Init( ComponentsBaseComponent _this, XHandle aArg )
   DeviceInterfaceSystemDeviceClass_SetKeyTriggerMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass ), CoreKeyCodeDown, _this->DownKeyTriggerMode );
   DeviceInterfaceSystemDeviceClass_SetKeyTriggerMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-  DeviceInterfaceSystemDeviceClass ), CoreKeyCodeOk, _this->EnterKeyTriggerMode );
+  DeviceInterfaceSystemDeviceClass ), CoreKeyCodeOk, EnumKeyTriggerModeOFF );
   DeviceInterfaceSystemDeviceClass_SetKeyTriggerMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-  DeviceInterfaceSystemDeviceClass ), CoreKeyCodeHome, _this->HomeKeyTriggerMode );
+  DeviceInterfaceSystemDeviceClass ), CoreKeyCodeHome, EnumKeyTriggerModeOFF );
   DeviceInterfaceSystemDeviceClass_SetMagicKeyEnabled( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass ), _this->MagicKeyEnabled );
 }
@@ -142,87 +140,41 @@ void ComponentsBaseComponent_OnKeyPressSlot( ComponentsBaseComponent _this, XObj
   switch ( _this->KeyHandler.Code )
   {
     case CoreKeyCodeUp :
-    {
       if ( _this->PassUpKey )
-      {
         _this->KeyHandler.Continue = 1;
-      }
       else
-      {
         if (( EnumKeyTriggerModeON == _this->UpKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
             _this ))
-        {
           ComponentsBaseComponent__OnShortUpKeyActivated( _this );
-        }
-      }
-    }
     break;
 
     case CoreKeyCodeDown :
-    {
       if ( _this->PassDownKey )
-      {
         _this->KeyHandler.Continue = 1;
-      }
       else
-      {
         if (( EnumKeyTriggerModeON == _this->DownKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
             _this ))
-        {
           ComponentsBaseComponent__OnShortDownKeyActivated( _this );
-        }
-      }
-    }
     break;
 
     case CoreKeyCodeOk :
-    {
       if ( _this->PassEnterKey )
-      {
         _this->KeyHandler.Continue = 1;
-      }
-      else
-      {
-        if (( EnumKeyTriggerModeON == _this->EnterKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
-            _this ))
-        {
-          ComponentsBaseComponent__OnShortEnterKeyActivated( _this );
-        }
-      }
-    }
     break;
 
     case CoreKeyCodeHome :
-    {
       if ( _this->PassHomeKey )
-      {
         _this->KeyHandler.Continue = 1;
-      }
-      else
-      {
-        if ( EnumKeyTriggerModeON == _this->HomeKeyTriggerMode )
-        {
-          ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
-        }
-      }
-    }
     break;
 
     case CoreKeyCodeF9 :
-    {
       if ( _this->PassMagicKey )
-      {
         _this->KeyHandler.Continue = 1;
-      }
       else
-      {
         ComponentsBaseComponent__OnShortMagicKeyActivated( _this );
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -234,7 +186,6 @@ void ComponentsBaseComponent_OnKeyHoldSlot( ComponentsBaseComponent _this, XObje
   EW_UNUSED_ARG( sender );
 
   if ( !ComponentsBaseComponent_IsDDModeEffected( _this ))
-  {
     switch ( _this->KeyHandler.Code )
     {
       case CoreKeyCodeUp :
@@ -253,10 +204,8 @@ void ComponentsBaseComponent_OnKeyHoldSlot( ComponentsBaseComponent _this, XObje
         ComponentsBaseComponent__OnLongHomeKeyActivated( _this );
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnKeyReleaseSlot()' */
@@ -267,66 +216,41 @@ void ComponentsBaseComponent_OnKeyReleaseSlot( ComponentsBaseComponent _this, XO
   EW_UNUSED_ARG( sender );
 
   if ( !_this->KeyHandler.Repetition )
-  {
     switch ( _this->KeyHandler.Code )
     {
       case CoreKeyCodeUp :
-      {
         if ((( EnumKeyTriggerModeOFF == _this->UpKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
             _this )) && DeviceInterfaceSystemDeviceClass_IsKeyStateValid( EwGetAutoObject( 
             &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
-        {
           ComponentsBaseComponent__OnShortUpKeyActivated( _this );
-        }
         else
-        {
           ComponentsBaseComponent__OnUpKeyReleased( _this );
-        }
-      }
       break;
 
       case CoreKeyCodeDown :
-      {
         if ((( EnumKeyTriggerModeOFF == _this->DownKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
             _this )) && DeviceInterfaceSystemDeviceClass_IsKeyStateValid( EwGetAutoObject( 
             &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
-        {
           ComponentsBaseComponent__OnShortDownKeyActivated( _this );
-        }
         else
-        {
           ComponentsBaseComponent__OnDownKeyReleased( _this );
-        }
-      }
       break;
 
       case CoreKeyCodeOk :
-      {
-        if ((( EnumKeyTriggerModeOFF == _this->EnterKeyTriggerMode ) && !ComponentsBaseComponent_IsDDModeEffected( 
-            _this )) && DeviceInterfaceSystemDeviceClass_IsKeyStateValid( EwGetAutoObject( 
-            &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
-        {
+        if ( !ComponentsBaseComponent_IsDDModeEffected( _this ) && DeviceInterfaceSystemDeviceClass_IsKeyStateValid( 
+            EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
           ComponentsBaseComponent__OnShortEnterKeyActivated( _this );
-        }
-      }
       break;
 
       case CoreKeyCodeHome :
-      {
-        if (( EnumKeyTriggerModeOFF == _this->HomeKeyTriggerMode ) && DeviceInterfaceSystemDeviceClass_IsKeyStateValid( 
-            EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
-        {
+        if ( DeviceInterfaceSystemDeviceClass_IsKeyStateValid( EwGetAutoObject( 
+            &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
           ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
-        }
-      }
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
   else
-  {
     switch ( _this->KeyHandler.Code )
     {
       case CoreKeyCodeUp :
@@ -337,10 +261,8 @@ void ComponentsBaseComponent_OnKeyReleaseSlot( ComponentsBaseComponent _this, XO
         ComponentsBaseComponent__OnDownKeyReleased( _this );
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnShortDownKeyActivated()' */
@@ -353,7 +275,7 @@ void ComponentsBaseComponent_OnShortDownKeyActivated( ComponentsBaseComponent _t
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortDownKeyActivated()' */
 void ComponentsBaseComponent__OnShortDownKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnShortDownKeyActivated((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_.VMT->OnShortDownKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnShortUpKeyActivated()' */
@@ -366,7 +288,7 @@ void ComponentsBaseComponent_OnShortUpKeyActivated( ComponentsBaseComponent _thi
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortUpKeyActivated()' */
 void ComponentsBaseComponent__OnShortUpKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnShortUpKeyActivated((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_.VMT->OnShortUpKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnShortEnterKeyActivated()' */
@@ -379,7 +301,7 @@ void ComponentsBaseComponent_OnShortEnterKeyActivated( ComponentsBaseComponent _
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortEnterKeyActivated()' */
 void ComponentsBaseComponent__OnShortEnterKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnShortEnterKeyActivated((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_.VMT->OnShortEnterKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnShortHomeKeyActivated()' */
@@ -392,7 +314,7 @@ void ComponentsBaseComponent_OnShortHomeKeyActivated( ComponentsBaseComponent _t
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortHomeKeyActivated()' */
 void ComponentsBaseComponent__OnShortHomeKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnShortHomeKeyActivated((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_.VMT->OnShortHomeKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnLongDownKeyActivated()' */
@@ -405,7 +327,7 @@ void ComponentsBaseComponent_OnLongDownKeyActivated( ComponentsBaseComponent _th
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongDownKeyActivated()' */
 void ComponentsBaseComponent__OnLongDownKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnLongDownKeyActivated((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_.VMT->OnLongDownKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnLongUpKeyActivated()' */
@@ -418,7 +340,7 @@ void ComponentsBaseComponent_OnLongUpKeyActivated( ComponentsBaseComponent _this
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongUpKeyActivated()' */
 void ComponentsBaseComponent__OnLongUpKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnLongUpKeyActivated((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_.VMT->OnLongUpKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnLongEnterKeyActivated()' */
@@ -431,7 +353,7 @@ void ComponentsBaseComponent_OnLongEnterKeyActivated( ComponentsBaseComponent _t
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongEnterKeyActivated()' */
 void ComponentsBaseComponent__OnLongEnterKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnLongEnterKeyActivated((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_.VMT->OnLongEnterKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnLongHomeKeyActivated()' */
@@ -442,16 +364,14 @@ void ComponentsBaseComponent_OnLongHomeKeyActivated( ComponentsBaseComponent _th
     ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
     if ( App != 0 )
-    {
       ApplicationApplication_ReturnToHome( App );
-    }
   }
 }
 
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnLongHomeKeyActivated()' */
 void ComponentsBaseComponent__OnLongHomeKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnLongHomeKeyActivated((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_.VMT->OnLongHomeKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnShortMagicKeyActivated()' */
@@ -464,7 +384,7 @@ void ComponentsBaseComponent_OnShortMagicKeyActivated( ComponentsBaseComponent _
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnShortMagicKeyActivated()' */
 void ComponentsBaseComponent__OnShortMagicKeyActivated( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnShortMagicKeyActivated((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_.VMT->OnShortMagicKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.IsDDModeEffected()' */
@@ -479,15 +399,13 @@ void ComponentsBaseComponent_OnSetDDModeEnabled( ComponentsBaseComponent _this,
   XBool value )
 {
   if ( _this->DDModeEnabled != value )
-  {
     _this->DDModeEnabled = value;
-  }
 }
 
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnSetDDModeEnabled()' */
 void ComponentsBaseComponent__OnSetDDModeEnabled( void* _this, XBool value )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnSetDDModeEnabled((ComponentsBaseComponent)_this
+  ((ComponentsBaseComponent)_this)->_.VMT->OnSetDDModeEnabled((ComponentsBaseComponent)_this
   , value );
 }
 
@@ -501,7 +419,7 @@ void ComponentsBaseComponent_OnDownKeyReleased( ComponentsBaseComponent _this )
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnDownKeyReleased()' */
 void ComponentsBaseComponent__OnDownKeyReleased( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnDownKeyReleased((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_.VMT->OnDownKeyReleased((ComponentsBaseComponent)_this );
 }
 
 /* Callback when up key of on trigger mode is released */
@@ -514,7 +432,7 @@ void ComponentsBaseComponent_OnUpKeyReleased( ComponentsBaseComponent _this )
 /* Wrapper function for the virtual method : 'Components::BaseComponent.OnUpKeyReleased()' */
 void ComponentsBaseComponent__OnUpKeyReleased( void* _this )
 {
-  ((ComponentsBaseComponent)_this)->_VMT->OnUpKeyReleased((ComponentsBaseComponent)_this );
+  ((ComponentsBaseComponent)_this)->_.VMT->OnUpKeyReleased((ComponentsBaseComponent)_this );
 }
 
 /* 'C' function for method : 'Components::BaseComponent.OnSetMagicKeyEnabled()' */
@@ -535,7 +453,7 @@ EW_END_OF_CLASS_VARIANTS( ComponentsBaseComponent )
 
 /* Virtual Method Table (VMT) for the class : 'Components::BaseComponent' */
 EW_DEFINE_CLASS( ComponentsBaseComponent, CoreGroup, KeyHandler, KeyHandler, KeyHandler, 
-                 KeyHandler, HomeKeyTriggerMode, HomeKeyTriggerMode, "Components::BaseComponent" )
+                 KeyHandler, DownKeyTriggerMode, DownKeyTriggerMode, "Components::BaseComponent" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -584,20 +502,20 @@ EW_END_OF_CLASS( ComponentsBaseComponent )
 void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ComponentsBaseMainBG );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( ComponentsBaseMainBG );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->MainBottomBG, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->BlackBG, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->DDModeStateChangedHandler, &_this->_XObject, 0 );
-  ComponentsDDModeMask__Init( &_this->DDModeMask, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->HideFocusFrameTimer, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->MainBottomBG, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->BlackBG, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->DDModeStateChangedHandler, &_this->_.XObject, 0 );
+  ComponentsDDModeMask__Init( &_this->DDModeMask, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->HideFocusFrameTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -628,7 +546,7 @@ void ComponentsBaseMainBG__Init( ComponentsBaseMainBG _this, XObject aLink, XHan
 void ComponentsBaseMainBG__ReInit( ComponentsBaseMainBG _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->MainBottomBG );
@@ -642,7 +560,7 @@ void ComponentsBaseMainBG__ReInit( ComponentsBaseMainBG _this )
 void ComponentsBaseMainBG__Done( ComponentsBaseMainBG _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->MainBottomBG );
@@ -652,7 +570,7 @@ void ComponentsBaseMainBG__Done( ComponentsBaseMainBG _this )
   CoreTimer__Done( &_this->HideFocusFrameTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -675,14 +593,10 @@ void ComponentsBaseMainBG_OnShortHomeKeyActivated( ComponentsBaseMainBG _this )
     ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
     if ( App != 0 )
-    {
       ApplicationApplication_ReturnToLauncher( App );
-    }
   }
   else
-  {
     ComponentsBaseMainBG_DismissThisDialog( _this );
-  }
 }
 
 /* 'C' function for method : 'Components::BaseMainBG.OnSetDDModeEnabled()' */
@@ -711,16 +625,10 @@ void ComponentsBaseMainBG_UpdateDDModeMask( ComponentsBaseMainBG _this )
   {
     if ( !DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
-    {
       CoreGroup__OnSetVisible( &_this->DDModeMask, 0 );
-    }
     else
-    {
       if ( CoreGroup__IsCurrentDialog( _this ))
-      {
         CoreGroup__OnSetVisible( &_this->DDModeMask, 1 );
-      }
-    }
   }
 }
 
@@ -728,25 +636,19 @@ void ComponentsBaseMainBG_UpdateDDModeMask( ComponentsBaseMainBG _this )
 void ComponentsBaseMainBG_DismissThisDialog( ComponentsBaseMainBG _this )
 {
   if ( _this->SlideOutEffectEnabled )
-  {
     ComponentsBaseMainBG_SlideOutDialog( _this );
-  }
   else
-  {
     if ( _this->Super4.Owner != 0 )
     {
       MenuBaseMenuView MenuDialog = EwCastObject( _this->Super4.Owner, MenuBaseMenuView );
 
       if ( MenuDialog != 0 )
-      {
         ViewsBorder_OnSetVisible( &MenuDialog->Menu.FocusFrame, 1 );
-      }
 
       CoreGroup_DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), ((EffectsTransition)EwGetAutoObject( 
       &EffectNoSlideOut, EffectSlideTransitionNoFade )), 0, 0, EwNullSlot, EwNullSlot, 
       0 );
     }
-  }
 }
 
 /* 'C' function for method : 'Components::BaseMainBG.SlideInDialog()' */
@@ -791,13 +693,9 @@ void ComponentsBaseMainBG_OnHideFocusFrameTimeoutSlot( ComponentsBaseMainBG _thi
   CoreTimer_OnSetEnabled( &_this->HideFocusFrameTimer, 0 );
 
   if ( CoreDirectionLeft == _this->SlideDirection )
-  {
     ComponentsBaseMainBG_PresentDialogWithSlideInEffect( _this, ((CoreGroup)_this->ChildDialog ));
-  }
   else
-  {
     ComponentsBaseMainBG_DismissMenuWithSlideOutEffect( _this );
-  }
 }
 
 /* 'C' function for method : 'Components::BaseMainBG.OnDialogSlideInCompletedSlot()' */
@@ -814,14 +712,10 @@ void ComponentsBaseMainBG_OnDialogSlideInCompletedSlot( ComponentsBaseMainBG _th
   if ( ChildMenu != 0 )
   {
     if ( ChildMenu->Menu.NoOfItems > 0 )
-    {
       ViewsBorder_OnSetVisible( &ChildMenu->Menu.FocusFrame, 1 );
-    }
 
     if ( ChildMenu->Menu.ArrowScrollBarVisible )
-    {
       MenuVerticalMenu_RestoreArrowScrollBar( &ChildMenu->Menu );
-    }
   }
 
   _this->ChildDialog = 0;
@@ -832,11 +726,9 @@ void ComponentsBaseMainBG_PresentDialogWithSlideInEffect( ComponentsBaseMainBG _
   CoreGroup aView )
 {
   if ( aView != 0 )
-  {
     CoreGroup_PresentDialog((CoreGroup)_this, aView, ((EffectsTransition)EwGetAutoObject( 
     &EffectSlideInTransition, EffectSlideTransitionNoFade )), 0, 0, 0, 0, 0, EwNewSlot( 
     _this, ComponentsBaseMainBG_OnDialogSlideInCompletedSlot ), EwNullSlot, 0 );
-  }
 }
 
 /* 'C' function for method : 'Components::BaseMainBG.OnDialogSlideOutCompletedSlot()' */
@@ -941,17 +833,17 @@ EW_END_OF_CLASS( ComponentsBaseMainBG )
 void ComponentsDDModeMask__Init( ComponentsDDModeMask _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ComponentsDDModeMask );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( ComponentsDDModeMask );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->DDModeBG, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->DDModeIcon, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->DDModeBG, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DDModeIcon, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ComponentsDDModeMask );
+  _this->_.VMT = EW_CLASS( ComponentsDDModeMask );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0005 );
@@ -970,7 +862,7 @@ void ComponentsDDModeMask__Init( ComponentsDDModeMask _this, XObject aLink, XHan
 void ComponentsDDModeMask__ReInit( ComponentsDDModeMask _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->DDModeBG );
@@ -981,14 +873,14 @@ void ComponentsDDModeMask__ReInit( ComponentsDDModeMask _this )
 void ComponentsDDModeMask__Done( ComponentsDDModeMask _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->DDModeBG );
   ViewsImage__Done( &_this->DDModeIcon );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'Components::DDModeMask' */
@@ -997,7 +889,7 @@ EW_END_OF_CLASS_VARIANTS( ComponentsDDModeMask )
 
 /* Virtual Method Table (VMT) for the class : 'Components::DDModeMask' */
 EW_DEFINE_CLASS( ComponentsDDModeMask, CoreGroup, DDModeBG, DDModeBG, DDModeBG, 
-                 DDModeBG, _None, _None, "Components::DDModeMask" )
+                 DDModeBG, _.VMT, _.VMT, "Components::DDModeMask" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

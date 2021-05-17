@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -41,85 +41,48 @@
 #include "WidgetSet.h"
 
 /* Constant values used in this 'C' module only. */
-static const XColor _Const0000 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const0001 = {{ 0, 0 }, { 200, 50 }};
-static const XPoint _Const0002 = { 0, 50 };
-static const XPoint _Const0003 = { 200, 50 };
-static const XPoint _Const0004 = { 200, 0 };
-static const XPoint _Const0005 = { 0, 0 };
+static const XRect _Const0000 = {{ 0, 0 }, { 200, 50 }};
+static const XPoint _Const0001 = { 0, 50 };
+static const XPoint _Const0002 = { 200, 50 };
+static const XPoint _Const0003 = { 200, 0 };
+static const XPoint _Const0004 = { 0, 0 };
+static const XColor _Const0005 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const0006 = {{ -8, -8 }, { 9, 9 }};
 
 /* Initializer for the class 'WidgetSet::HorizontalSliderConfig' */
 void WidgetSetHorizontalSliderConfig__Init( WidgetSetHorizontalSliderConfig _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  WidgetSetWidgetConfig__Init( &_this->_Super, aLink, aArg );
+  WidgetSetWidgetConfig__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( WidgetSetHorizontalSliderConfig );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( WidgetSetHorizontalSliderConfig );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( WidgetSetHorizontalSliderConfig );
+  _this->_.VMT = EW_CLASS( WidgetSetHorizontalSliderConfig );
 
   /* ... and initialize objects, variables, properties, etc. */
-  _this->KeyCodeRight = CoreKeyCodeRight;
-  _this->KeyCodeLeft = CoreKeyCodeLeft;
-  _this->CoverTintActive = _Const0000;
-  _this->CoverTintFocused = _Const0000;
-  _this->CoverTintDisabled = _Const0000;
-  _this->CoverTintDefault = _Const0000;
-  _this->CoverFrameActive = -1;
-  _this->CoverFrameFocused = -1;
-  _this->CoverFrameDisabled = -1;
-  _this->CoverFrameDefault = -1;
-  _this->ThumbTintActive = _Const0000;
-  _this->ThumbTintFocused = _Const0000;
-  _this->ThumbTintDisabled = _Const0000;
-  _this->ThumbTintDefault = _Const0000;
-  _this->ThumbFrameActive = -1;
-  _this->ThumbFrameFocused = -1;
-  _this->ThumbFrameDisabled = -1;
-  _this->ThumbFrameDefault = -1;
-  _this->TrackRightTintActive = _Const0000;
-  _this->TrackRightTintFocused = _Const0000;
-  _this->TrackRightTintDisabled = _Const0000;
-  _this->TrackRightTintDefault = _Const0000;
-  _this->TrackRightFrameActive = -1;
   _this->TrackRightFrameFocused = -1;
-  _this->TrackRightFrameDisabled = -1;
   _this->TrackRightFrameDefault = -1;
-  _this->TrackLeftTintActive = _Const0000;
-  _this->TrackLeftTintFocused = _Const0000;
-  _this->TrackLeftTintDisabled = _Const0000;
-  _this->TrackLeftTintDefault = _Const0000;
-  _this->TrackLeftFrameActive = -1;
   _this->TrackLeftFrameFocused = -1;
-  _this->TrackLeftFrameDisabled = -1;
   _this->TrackLeftFrameDefault = -1;
-  _this->FaceTintActive = _Const0000;
-  _this->FaceTintFocused = _Const0000;
-  _this->FaceTintDisabled = _Const0000;
-  _this->FaceTintDefault = _Const0000;
-  _this->FaceFrameActive = -1;
-  _this->FaceFrameFocused = -1;
-  _this->FaceFrameDisabled = -1;
-  _this->FaceFrameDefault = -1;
 }
 
 /* Re-Initializer for the class 'WidgetSet::HorizontalSliderConfig' */
 void WidgetSetHorizontalSliderConfig__ReInit( WidgetSetHorizontalSliderConfig _this )
 {
   /* At first re-initialize the super class ... */
-  WidgetSetWidgetConfig__ReInit( &_this->_Super );
+  WidgetSetWidgetConfig__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'WidgetSet::HorizontalSliderConfig' */
 void WidgetSetHorizontalSliderConfig__Done( WidgetSetHorizontalSliderConfig _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( WidgetSetWidgetConfig );
+  _this->_.Super._.VMT = EW_CLASS( WidgetSetWidgetConfig );
 
   /* Don't forget to deinitialize the super class ... */
-  WidgetSetWidgetConfig__Done( &_this->_Super );
+  WidgetSetWidgetConfig__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'WidgetSet::HorizontalSliderConfig.OnSetThumbFocused()' */
@@ -237,39 +200,39 @@ EW_DEFINE_CLASS_VARIANTS( WidgetSetHorizontalSliderConfig )
 EW_END_OF_CLASS_VARIANTS( WidgetSetHorizontalSliderConfig )
 
 /* Virtual Method Table (VMT) for the class : 'WidgetSet::HorizontalSliderConfig' */
-EW_DEFINE_CLASS( WidgetSetHorizontalSliderConfig, WidgetSetWidgetConfig, CoverActive, 
-                 KeyRepeatPeriod, KeyRepeatPeriod, KeyRepeatPeriod, KeyRepeatPeriod, 
-                 KeyRepeatPeriod, "WidgetSet::HorizontalSliderConfig" )
+EW_DEFINE_CLASS( WidgetSetHorizontalSliderConfig, WidgetSetWidgetConfig, ThumbFocused, 
+                 TrackRightFrameFocused, TrackRightFrameFocused, TrackRightFrameFocused, 
+                 TrackRightFrameFocused, TrackRightFrameFocused, "WidgetSet::HorizontalSliderConfig" )
 EW_END_OF_CLASS( WidgetSetHorizontalSliderConfig )
 
 /* Initializer for the class 'WidgetSet::WidgetConfig' */
 void WidgetSetWidgetConfig__Init( WidgetSetWidgetConfig _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( WidgetSetWidgetConfig );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( WidgetSetWidgetConfig );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( WidgetSetWidgetConfig );
+  _this->_.VMT = EW_CLASS( WidgetSetWidgetConfig );
 }
 
 /* Re-Initializer for the class 'WidgetSet::WidgetConfig' */
 void WidgetSetWidgetConfig__ReInit( WidgetSetWidgetConfig _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'WidgetSet::WidgetConfig' */
 void WidgetSetWidgetConfig__Done( WidgetSetWidgetConfig _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'WidgetSet::WidgetConfig.onInvalidate()' */
@@ -286,30 +249,30 @@ EW_DEFINE_CLASS_VARIANTS( WidgetSetWidgetConfig )
 EW_END_OF_CLASS_VARIANTS( WidgetSetWidgetConfig )
 
 /* Virtual Method Table (VMT) for the class : 'WidgetSet::WidgetConfig' */
-EW_DEFINE_CLASS( WidgetSetWidgetConfig, XObject, _None, _None, _None, _None, _None, 
-                 _None, "WidgetSet::WidgetConfig" )
+EW_DEFINE_CLASS( WidgetSetWidgetConfig, XObject, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "WidgetSet::WidgetConfig" )
 EW_END_OF_CLASS( WidgetSetWidgetConfig )
 
 /* Initializer for the class 'WidgetSet::HorizontalSlider' */
 void WidgetSetHorizontalSlider__Init( WidgetSetHorizontalSlider _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( WidgetSetHorizontalSlider );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( WidgetSetHorizontalSlider );
 
   /* ... then construct all embedded objects */
-  CoreTimer__Init( &_this->RepetitionTimer, &_this->_XObject, 0 );
-  CoreKeyPressHandler__Init( &_this->KeyHandlerLeft, &_this->_XObject, 0 );
-  CoreKeyPressHandler__Init( &_this->KeyHandlerRight, &_this->_XObject, 0 );
-  CoreSimpleTouchHandler__Init( &_this->TouchHandler, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->RepetitionTimer, &_this->_.XObject, 0 );
+  CoreKeyPressHandler__Init( &_this->KeyHandlerLeft, &_this->_.XObject, 0 );
+  CoreKeyPressHandler__Init( &_this->KeyHandlerRight, &_this->_.XObject, 0 );
+  CoreSimpleTouchHandler__Init( &_this->TouchHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( WidgetSetHorizontalSlider );
+  _this->_.VMT = EW_CLASS( WidgetSetHorizontalSlider );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0001 );
+  CoreRectView__OnSetBounds( _this, _Const0000 );
   CoreTimer_OnSetPeriod( &_this->RepetitionTimer, 0 );
   CoreTimer_OnSetBegin( &_this->RepetitionTimer, 50 );
   _this->KeyHandlerLeft.Filter = CoreKeyCodeLeft;
@@ -317,14 +280,12 @@ void WidgetSetHorizontalSlider__Init( WidgetSetHorizontalSlider _this, XObject a
   CoreView_OnSetLayout((CoreView)&_this->TouchHandler, CoreLayoutAlignToBottom | 
   CoreLayoutAlignToLeft | CoreLayoutAlignToRight | CoreLayoutAlignToTop | CoreLayoutResizeHorz 
   | CoreLayoutResizeVert );
-  CoreQuadView_OnSetPoint4((CoreQuadView)&_this->TouchHandler, _Const0002 );
-  CoreQuadView_OnSetPoint3((CoreQuadView)&_this->TouchHandler, _Const0003 );
-  CoreQuadView_OnSetPoint2((CoreQuadView)&_this->TouchHandler, _Const0004 );
-  CoreQuadView_OnSetPoint1((CoreQuadView)&_this->TouchHandler, _Const0005 );
+  CoreQuadView_OnSetPoint4((CoreQuadView)&_this->TouchHandler, _Const0001 );
+  CoreQuadView_OnSetPoint3((CoreQuadView)&_this->TouchHandler, _Const0002 );
+  CoreQuadView_OnSetPoint2((CoreQuadView)&_this->TouchHandler, _Const0003 );
+  CoreQuadView_OnSetPoint1((CoreQuadView)&_this->TouchHandler, _Const0004 );
   CoreSimpleTouchHandler_OnSetRetargetOffset( &_this->TouchHandler, 16 );
   CoreSimpleTouchHandler_OnSetMaxStrikeCount( &_this->TouchHandler, 100 );
-  _this->StepSize = 1;
-  _this->MaxValue = 100;
   _this->CurrentValue = 50;
   CoreGroup__Add( _this, ((CoreView)&_this->TouchHandler ), 0 );
   _this->RepetitionTimer.OnTrigger = EwNewSlot( _this, WidgetSetHorizontalSlider_onRepetitionTimer );
@@ -341,7 +302,7 @@ void WidgetSetHorizontalSlider__Init( WidgetSetHorizontalSlider _this, XObject a
 void WidgetSetHorizontalSlider__ReInit( WidgetSetHorizontalSlider _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->RepetitionTimer );
@@ -354,7 +315,7 @@ void WidgetSetHorizontalSlider__ReInit( WidgetSetHorizontalSlider _this )
 void WidgetSetHorizontalSlider__Done( WidgetSetHorizontalSlider _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->RepetitionTimer );
@@ -363,33 +324,24 @@ void WidgetSetHorizontalSlider__Done( WidgetSetHorizontalSlider _this )
   CoreSimpleTouchHandler__Done( &_this->TouchHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'WidgetSet::HorizontalSlider.OnSetBounds()' */
 void WidgetSetHorizontalSlider_OnSetBounds( WidgetSetHorizontalSlider _this, XRect 
   value )
 {
-  if ( EwCompRect( _this->Super2.Bounds, value ))
-    EwPostSignal( _this->OnUpdate, ((XObject)_this ));
-
   if ( _this->Appearance != 0 )
   {
     XPoint cs = EwGetRectSize( value );
     XPoint ns = cs;
     XPoint delta;
 
-    if ( ns.X < _this->Appearance->WidgetMinSize.X )
-      ns.X = _this->Appearance->WidgetMinSize.X;
+    if ( ns.X < 0 )
+      ns.X = 0;
 
-    if ( ns.Y < _this->Appearance->WidgetMinSize.Y )
-      ns.Y = _this->Appearance->WidgetMinSize.Y;
-
-    if (( _this->Appearance->WidgetMaxSize.X > 0 ) && ( ns.X > _this->Appearance->WidgetMaxSize.X ))
-      ns.X = _this->Appearance->WidgetMaxSize.X;
-
-    if (( _this->Appearance->WidgetMaxSize.Y > 0 ) && ( ns.Y > _this->Appearance->WidgetMaxSize.Y ))
-      ns.Y = _this->Appearance->WidgetMaxSize.Y;
+    if ( ns.Y < 0 )
+      ns.Y = 0;
 
     delta = EwMovePointNeg( ns, cs );
 
@@ -450,11 +402,9 @@ void WidgetSetHorizontalSlider_OnSetBounds( WidgetSetHorizontalSlider _this, XRe
 void WidgetSetHorizontalSlider_UpdateViewState( WidgetSetHorizontalSlider _this, 
   XSet aState )
 {
-  XBool needsFace;
   XBool needsTrackLeft;
   XBool needsTrackRight;
   XBool needsThumb;
-  XBool needsCover;
   XBool restack;
   XRect area;
   XPoint thumbSize;
@@ -468,37 +418,15 @@ void WidgetSetHorizontalSlider_UpdateViewState( WidgetSetHorizontalSlider _this,
   XInt32 newThumbPos;
 
   CoreGroup_UpdateViewState((CoreGroup)_this, aState );
-  needsFace = (XBool)(( _this->Appearance != 0 ) && (((( _this->Appearance->FaceDefault 
-  != 0 ) || ( _this->Appearance->FaceDisabled != 0 )) || ( _this->Appearance->FaceFocused 
-  != 0 )) || ( _this->Appearance->FaceActive != 0 )));
-  needsTrackLeft = (XBool)(( _this->Appearance != 0 ) && (((( _this->Appearance->TrackLeftDefault 
-  != 0 ) || ( _this->Appearance->TrackLeftDisabled != 0 )) || ( _this->Appearance->TrackLeftFocused 
-  != 0 )) || ( _this->Appearance->TrackLeftActive != 0 )));
-  needsTrackRight = (XBool)(( _this->Appearance != 0 ) && (((( _this->Appearance->TrackRightDefault 
-  != 0 ) || ( _this->Appearance->TrackRightDisabled != 0 )) || ( _this->Appearance->TrackRightFocused 
-  != 0 )) || ( _this->Appearance->TrackRightActive != 0 )));
-  needsThumb = (XBool)(( _this->Appearance != 0 ) && (((( _this->Appearance->ThumbDefault 
-  != 0 ) || ( _this->Appearance->ThumbDisabled != 0 )) || ( _this->Appearance->ThumbFocused 
-  != 0 )) || ( _this->Appearance->ThumbActive != 0 )));
-  needsCover = (XBool)(( _this->Appearance != 0 ) && (((( _this->Appearance->CoverDefault 
-  != 0 ) || ( _this->Appearance->CoverDisabled != 0 )) || ( _this->Appearance->CoverFocused 
-  != 0 )) || ( _this->Appearance->CoverActive != 0 )));
+  needsTrackLeft = (XBool)(( _this->Appearance != 0 ) && (( _this->Appearance->TrackLeftDefault 
+  != 0 ) || ( _this->Appearance->TrackLeftFocused != 0 )));
+  needsTrackRight = (XBool)(( _this->Appearance != 0 ) && (( _this->Appearance->TrackRightDefault 
+  != 0 ) || ( _this->Appearance->TrackRightFocused != 0 )));
+  needsThumb = (XBool)(( _this->Appearance != 0 ) && (( _this->Appearance->ThumbDefault 
+  != 0 ) || ( _this->Appearance->ThumbFocused != 0 )));
   restack = 0;
   area = EwGetRectORect( _this->Super2.Bounds );
-  thumbSize = _Const0005;
-
-  if ( needsFace && ( _this->frameView1 == 0 ))
-  {
-    _this->frameView1 = EwNewObject( ViewsFrame, 0 );
-    CoreGroup__Add( _this, ((CoreView)_this->frameView1 ), 0 );
-    restack = 1;
-  }
-  else
-    if ( !needsFace && ( _this->frameView1 != 0 ))
-    {
-      CoreGroup__Remove( _this, ((CoreView)_this->frameView1 ));
-      _this->frameView1 = 0;
-    }
+  thumbSize = _Const0004;
 
   if ( needsTrackLeft && ( _this->frameView2 == 0 ))
   {
@@ -539,24 +467,8 @@ void WidgetSetHorizontalSlider_UpdateViewState( WidgetSetHorizontalSlider _this,
       _this->imageView = 0;
     }
 
-  if ( needsCover && ( _this->frameView4 == 0 ))
-  {
-    _this->frameView4 = EwNewObject( ViewsFrame, 0 );
-    CoreGroup__Add( _this, ((CoreView)_this->frameView4 ), 0 );
-    restack = 1;
-  }
-  else
-    if ( !needsCover && ( _this->frameView4 != 0 ))
-    {
-      CoreGroup__Remove( _this, ((CoreView)_this->frameView4 ));
-      _this->frameView4 = 0;
-    }
-
   if ( restack )
   {
-    if ( _this->frameView1 != 0 )
-      CoreGroup__RestackTop( _this, ((CoreView)_this->frameView1 ));
-
     if ( _this->frameView2 != 0 )
       CoreGroup__RestackTop( _this, ((CoreView)_this->frameView2 ));
 
@@ -565,241 +477,110 @@ void WidgetSetHorizontalSlider_UpdateViewState( WidgetSetHorizontalSlider _this,
 
     if ( _this->imageView != 0 )
       CoreGroup__RestackTop( _this, ((CoreView)_this->imageView ));
-
-    if ( _this->frameView4 != 0 )
-      CoreGroup__RestackTop( _this, ((CoreView)_this->frameView4 ));
   }
 
   isEnabled = (( aState & CoreViewStateEnabled ) == CoreViewStateEnabled );
   isFocused = (( aState & CoreViewStateFocused ) == CoreViewStateFocused );
   isPressed = (XBool)(( _this->touchActive || _this->KeyHandlerRight.Down ) || _this->KeyHandlerLeft.Down );
 
-  if ( _this->frameView1 != 0 )
-  {
-    ResourcesBitmap bitmap = 0;
-    XInt32 frameNo = -1;
-    XColor tint = _Const0000;
-
-    if ( !isEnabled )
-    {
-      bitmap = _this->Appearance->FaceDisabled;
-      frameNo = _this->Appearance->FaceFrameDisabled;
-      tint = _this->Appearance->FaceTintDisabled;
-    }
-    else
-      if ( isPressed )
-      {
-        bitmap = _this->Appearance->FaceActive;
-        frameNo = _this->Appearance->FaceFrameActive;
-        tint = _this->Appearance->FaceTintActive;
-      }
-      else
-        if ( isFocused )
-        {
-          bitmap = _this->Appearance->FaceFocused;
-          frameNo = _this->Appearance->FaceFrameFocused;
-          tint = _this->Appearance->FaceTintFocused;
-        }
-        else
-        {
-          bitmap = _this->Appearance->FaceDefault;
-          frameNo = _this->Appearance->FaceFrameDefault;
-          tint = _this->Appearance->FaceTintDefault;
-        }
-
-    ViewsFrame_OnSetAnimated( _this->frameView1, (XBool)( frameNo < 0 ));
-    ViewsFrame_OnSetColor( _this->frameView1, tint );
-
-    if ( frameNo < 0 )
-      frameNo = 0;
-
-    ViewsFrame_OnSetFrameNumber( _this->frameView1, frameNo );
-    ViewsFrame_OnSetBitmap( _this->frameView1, bitmap );
-  }
-
   if ( _this->frameView2 != 0 )
   {
-    ResourcesBitmap bitmap = 0;
-    XInt32 frameNo = -1;
-    XColor tint = _Const0000;
-    XSet edges = GraphicsEdgesBottom | GraphicsEdgesInterior | GraphicsEdgesLeft 
-      | GraphicsEdgesTop;
+    ResourcesBitmap bitmap;
+    XInt32 frameNo;
 
     if ( !isEnabled )
     {
-      bitmap = _this->Appearance->TrackLeftDisabled;
-      frameNo = _this->Appearance->TrackLeftFrameDisabled;
-      tint = _this->Appearance->TrackLeftTintDisabled;
+      bitmap = 0;
+      frameNo = -1;
     }
     else
       if ( isPressed )
       {
-        bitmap = _this->Appearance->TrackLeftActive;
-        frameNo = _this->Appearance->TrackLeftFrameActive;
-        tint = _this->Appearance->TrackLeftTintActive;
+        bitmap = 0;
+        frameNo = -1;
       }
       else
         if ( isFocused )
         {
           bitmap = _this->Appearance->TrackLeftFocused;
           frameNo = _this->Appearance->TrackLeftFrameFocused;
-          tint = _this->Appearance->TrackLeftTintFocused;
         }
         else
         {
           bitmap = _this->Appearance->TrackLeftDefault;
           frameNo = _this->Appearance->TrackLeftFrameDefault;
-          tint = _this->Appearance->TrackLeftTintDefault;
         }
 
     ViewsFrame_OnSetAnimated( _this->frameView2, (XBool)( frameNo < 0 ));
-    ViewsFrame_OnSetColor( _this->frameView2, tint );
+    ViewsFrame_OnSetColor( _this->frameView2, _Const0005 );
 
     if ( frameNo < 0 )
       frameNo = 0;
 
-    if ( _this->Appearance->TrackLeftWithEdge )
-      edges = GraphicsEdgesBottom | GraphicsEdgesInterior | GraphicsEdgesLeft | 
-      GraphicsEdgesRight | GraphicsEdgesTop;
-
     ViewsFrame_OnSetFrameNumber( _this->frameView2, frameNo );
     ViewsFrame_OnSetBitmap( _this->frameView2, bitmap );
-    ViewsFrame_OnSetEdges( _this->frameView2, edges );
+    ViewsFrame_OnSetEdges( _this->frameView2, GraphicsEdgesBottom | GraphicsEdgesInterior 
+    | GraphicsEdgesLeft | GraphicsEdgesTop );
   }
 
   if ( _this->frameView3 != 0 )
   {
-    ResourcesBitmap bitmap = 0;
-    XInt32 frameNo = -1;
-    XColor tint = _Const0000;
-    XSet edges = GraphicsEdgesBottom | GraphicsEdgesInterior | GraphicsEdgesRight 
-      | GraphicsEdgesTop;
+    ResourcesBitmap bitmap;
+    XInt32 frameNo;
 
     if ( !isEnabled )
     {
-      bitmap = _this->Appearance->TrackRightDisabled;
-      frameNo = _this->Appearance->TrackRightFrameDisabled;
-      tint = _this->Appearance->TrackRightTintDisabled;
+      bitmap = 0;
+      frameNo = -1;
     }
     else
       if ( isPressed )
       {
-        bitmap = _this->Appearance->TrackRightActive;
-        frameNo = _this->Appearance->TrackRightFrameActive;
-        tint = _this->Appearance->TrackRightTintActive;
+        bitmap = 0;
+        frameNo = -1;
       }
       else
         if ( isFocused )
         {
           bitmap = _this->Appearance->TrackRightFocused;
           frameNo = _this->Appearance->TrackRightFrameFocused;
-          tint = _this->Appearance->TrackRightTintFocused;
         }
         else
         {
           bitmap = _this->Appearance->TrackRightDefault;
           frameNo = _this->Appearance->TrackRightFrameDefault;
-          tint = _this->Appearance->TrackRightTintDefault;
         }
 
     ViewsFrame_OnSetAnimated( _this->frameView3, (XBool)( frameNo < 0 ));
-    ViewsFrame_OnSetColor( _this->frameView3, tint );
+    ViewsFrame_OnSetColor( _this->frameView3, _Const0005 );
 
     if ( frameNo < 0 )
       frameNo = 0;
-
-    if ( _this->Appearance->TrackRightWithEdge )
-      edges = GraphicsEdgesBottom | GraphicsEdgesInterior | GraphicsEdgesLeft | 
-      GraphicsEdgesRight | GraphicsEdgesTop;
 
     ViewsFrame_OnSetFrameNumber( _this->frameView3, frameNo );
     ViewsFrame_OnSetBitmap( _this->frameView3, bitmap );
-    ViewsFrame_OnSetEdges( _this->frameView3, edges );
-  }
-
-  if ( _this->frameView4 != 0 )
-  {
-    ResourcesBitmap bitmap = 0;
-    XInt32 frameNo = -1;
-    XColor tint = _Const0000;
-
-    if ( !isEnabled )
-    {
-      bitmap = _this->Appearance->CoverDisabled;
-      frameNo = _this->Appearance->CoverFrameDisabled;
-      tint = _this->Appearance->CoverTintDisabled;
-    }
-    else
-      if ( isPressed )
-      {
-        bitmap = _this->Appearance->CoverActive;
-        frameNo = _this->Appearance->CoverFrameActive;
-        tint = _this->Appearance->CoverTintActive;
-      }
-      else
-        if ( isFocused )
-        {
-          bitmap = _this->Appearance->CoverFocused;
-          frameNo = _this->Appearance->CoverFrameFocused;
-          tint = _this->Appearance->CoverTintFocused;
-        }
-        else
-        {
-          bitmap = _this->Appearance->CoverDefault;
-          frameNo = _this->Appearance->CoverFrameDefault;
-          tint = _this->Appearance->CoverTintDefault;
-        }
-
-    ViewsFrame_OnSetAnimated( _this->frameView4, (XBool)( frameNo < 0 ));
-    ViewsFrame_OnSetColor( _this->frameView4, tint );
-
-    if ( frameNo < 0 )
-      frameNo = 0;
-
-    ViewsFrame_OnSetFrameNumber( _this->frameView4, frameNo );
-    ViewsFrame_OnSetBitmap( _this->frameView4, bitmap );
+    ViewsFrame_OnSetEdges( _this->frameView3, GraphicsEdgesBottom | GraphicsEdgesInterior 
+    | GraphicsEdgesRight | GraphicsEdgesTop );
   }
 
   if ( _this->imageView != 0 )
   {
-    ResourcesBitmap bitmap = 0;
-    XInt32 frameNo = -1;
-    XColor tint = _Const0000;
+    ResourcesBitmap bitmap;
 
     if ( !isEnabled )
-    {
-      bitmap = _this->Appearance->ThumbDisabled;
-      frameNo = _this->Appearance->ThumbFrameDisabled;
-      tint = _this->Appearance->ThumbTintDisabled;
-    }
+      bitmap = 0;
     else
       if ( isPressed )
-      {
-        bitmap = _this->Appearance->ThumbActive;
-        frameNo = _this->Appearance->ThumbFrameActive;
-        tint = _this->Appearance->ThumbTintActive;
-      }
+        bitmap = 0;
       else
         if ( isFocused )
-        {
           bitmap = _this->Appearance->ThumbFocused;
-          frameNo = _this->Appearance->ThumbFrameFocused;
-          tint = _this->Appearance->ThumbTintFocused;
-        }
         else
-        {
           bitmap = _this->Appearance->ThumbDefault;
-          frameNo = _this->Appearance->ThumbFrameDefault;
-          tint = _this->Appearance->ThumbTintDefault;
-        }
 
-    ViewsImage_OnSetAnimated( _this->imageView, (XBool)( frameNo < 0 ));
-    ViewsImage_OnSetColor( _this->imageView, tint );
-
-    if ( frameNo < 0 )
-      frameNo = 0;
-
-    ViewsImage_OnSetFrameNumber( _this->imageView, frameNo );
+    ViewsImage_OnSetAnimated( _this->imageView, 1 );
+    ViewsImage_OnSetColor( _this->imageView, _Const0005 );
+    ViewsImage_OnSetFrameNumber( _this->imageView, 0 );
     ViewsImage_OnSetBitmap( _this->imageView, bitmap );
   }
 
@@ -808,35 +589,16 @@ void WidgetSetHorizontalSlider_UpdateViewState( WidgetSetHorizontalSlider _this,
 
   marginLeft = thumbSize.X / 2;
   marginRight = thumbSize.X - marginLeft;
-
-  if ( _this->Appearance != 0 )
-  {
-    marginLeft = marginLeft + _this->Appearance->ThumbMarginLeft;
-    marginRight = marginRight + _this->Appearance->ThumbMarginRight;
-  }
-
   minPos = marginLeft;
   maxPos = EwGetRectW( area ) - marginRight;
-  newThumbPos = marginLeft;
-
-  if ( _this->MaxValue != _this->MinValue )
-    newThumbPos = (XInt32)(((XFloat)( WidgetSetHorizontalSlider_OnGetCurrentValue( 
-    _this ) - _this->MinValue ) * (XFloat)( maxPos - minPos )) / (XFloat)( _this->MaxValue 
-    - _this->MinValue )) + minPos;
+  newThumbPos = (XInt32)(((XFloat)WidgetSetHorizontalSlider_OnGetCurrentValue( _this ) 
+  * (XFloat)( maxPos - minPos )) / 100.000000f ) + minPos;
 
   if ( newThumbPos < 0 )
     newThumbPos = 0;
 
   if ( newThumbPos > EwGetRectW( area ))
     newThumbPos = EwGetRectW( area );
-
-  if (( _this->frameView1 != 0 ) && ( _this->frameView1->Bitmap != 0 ))
-  {
-    XInt32 h = _this->frameView1->Bitmap->FrameSize.Y;
-    CoreRectView__OnSetBounds( _this->frameView1, EwNewRect( 0, ( EwGetRectH( area ) 
-    / 2 ) - ( h / 2 ), EwGetRectW( area ), (( EwGetRectH( area ) / 2 ) - ( h / 2 )) 
-    + h ));
-  }
 
   if (( _this->frameView2 != 0 ) && ( _this->frameView2->Bitmap != 0 ))
   {
@@ -846,8 +608,7 @@ void WidgetSetHorizontalSlider_UpdateViewState( WidgetSetHorizontalSlider _this,
     + s.Y ));
     ViewsFrame_OnSetNoEdgesLimit( _this->frameView2, EwSetPointX( _this->frameView2->NoEdgesLimit, 
     EwGetRectW( area ) - ( s.X / 3 )));
-    ViewsFrame_OnSetVisible( _this->frameView2, (XBool)( !_this->Appearance->TrackLeftWithEdge 
-    || ( newThumbPos >= (( s.X / 3 ) * 2 ))));
+    ViewsFrame_OnSetVisible( _this->frameView2, 1 );
   }
 
   if (( _this->frameView3 != 0 ) && ( _this->frameView3->Bitmap != 0 ))
@@ -858,21 +619,12 @@ void WidgetSetHorizontalSlider_UpdateViewState( WidgetSetHorizontalSlider _this,
     - ( s.Y / 2 )) + s.Y ));
     ViewsFrame_OnSetNoEdgesLimit( _this->frameView3, EwSetPointX( _this->frameView3->NoEdgesLimit, 
     EwGetRectW( area ) - ( s.X / 3 )));
-    ViewsFrame_OnSetVisible( _this->frameView3, (XBool)( !_this->Appearance->TrackRightWithEdge 
-    || (( EwGetRectW( area ) - newThumbPos ) >= (( s.X / 3 ) * 2 ))));
-  }
-
-  if (( _this->frameView4 != 0 ) && ( _this->frameView4->Bitmap != 0 ))
-  {
-    XInt32 h = _this->frameView4->Bitmap->FrameSize.Y;
-    CoreRectView__OnSetBounds( _this->frameView4, EwNewRect( 0, ( EwGetRectH( area ) 
-    / 2 ) - ( h / 2 ), EwGetRectW( area ), (( EwGetRectH( area ) / 2 ) - ( h / 2 )) 
-    + h ));
+    ViewsFrame_OnSetVisible( _this->frameView3, 1 );
   }
 
   if (( _this->imageView != 0 ) && ( _this->imageView->Bitmap != 0 ))
   {
-    XRect thumbArea = EwNewRect2Point( _Const0005, thumbSize );
+    XRect thumbArea = EwNewRect2Point( _Const0004, thumbSize );
     CoreRectView__OnSetBounds( _this->imageView, EwMoveRectPos( EwMoveRectNeg( thumbArea, 
     EwGetRectCenter( thumbArea )), EwNewPoint( newThumbPos, EwGetRectH( area ) / 
     2 )));
@@ -891,17 +643,8 @@ void WidgetSetHorizontalSlider_onConfigChanged( WidgetSetHorizontalSlider _this,
 
   oldKeyCodeRight = _this->KeyHandlerRight.Filter;
   oldKeyCodeLeft = _this->KeyHandlerLeft.Filter;
-
-  if ( _this->Appearance != 0 )
-  {
-    _this->KeyHandlerRight.Filter = _this->Appearance->KeyCodeRight;
-    _this->KeyHandlerLeft.Filter = _this->Appearance->KeyCodeLeft;
-  }
-  else
-  {
-    _this->KeyHandlerRight.Filter = CoreKeyCodeRight;
-    _this->KeyHandlerLeft.Filter = CoreKeyCodeLeft;
-  }
+  _this->KeyHandlerRight.Filter = CoreKeyCodeRight;
+  _this->KeyHandlerLeft.Filter = CoreKeyCodeLeft;
 
   if (((( oldKeyCodeRight == CoreKeyCodeNoKey ) || ( oldKeyCodeLeft == CoreKeyCodeNoKey )) 
       && ( _this->KeyHandlerRight.Filter != CoreKeyCodeNoKey )) && ( _this->KeyHandlerLeft.Filter 
@@ -913,22 +656,13 @@ void WidgetSetHorizontalSlider_onConfigChanged( WidgetSetHorizontalSlider _this,
       == CoreKeyCodeNoKey )))
     CoreView__ChangeViewState( _this, 0, CoreViewStateFocusable );
 
-  if ( _this->Appearance != 0 )
-  {
-    CoreTimer_OnSetBegin( &_this->RepetitionTimer, _this->Appearance->KeyRepeatDelay );
-    CoreTimer_OnSetPeriod( &_this->RepetitionTimer, _this->Appearance->KeyRepeatPeriod );
-  }
-  else
-  {
-    CoreTimer_OnSetBegin( &_this->RepetitionTimer, 0 );
-    CoreTimer_OnSetPeriod( &_this->RepetitionTimer, 0 );
-  }
+  CoreTimer_OnSetBegin( &_this->RepetitionTimer, 0 );
+  CoreTimer_OnSetPeriod( &_this->RepetitionTimer, 0 );
 
   if ( _this->Appearance != 0 )
     CoreRectView__OnSetBounds( _this, _this->Super2.Bounds );
 
   CoreGroup_InvalidateViewState((CoreGroup)_this );
-  EwPostSignal( _this->OnUpdate, ((XObject)_this ));
 }
 
 /* 'C' function for method : 'WidgetSet::HorizontalSlider.onRepetitionTimer()' */
@@ -944,11 +678,10 @@ void WidgetSetHorizontalSlider_onRepetitionTimer( WidgetSetHorizontalSlider _thi
 
   oldValue = WidgetSetHorizontalSlider_OnGetCurrentValue( _this );
   newValue = oldValue;
-  delta = _this->StepSize;
+  delta = 1;
 
-  if (( _this->KeyHandlerLeft.Down && ( _this->MaxValue > _this->MinValue )) || 
-      ( _this->KeyHandlerRight.Down && ( _this->MaxValue < _this->MinValue )))
-    delta = -delta;
+  if ( _this->KeyHandlerLeft.Down )
+    delta = -1;
 
   if ( oldValue < 0 )
   {
@@ -974,14 +707,6 @@ void WidgetSetHorizontalSlider_onRepetitionTimer( WidgetSetHorizontalSlider _thi
 
   if ( oldValue == WidgetSetHorizontalSlider_OnGetCurrentValue( _this ))
     return;
-
-  EwPostSignal( _this->OnChange, ((XObject)_this ));
-
-  if ( _this->Outlet.Object != 0 )
-  {
-    EwOnSetInt32( _this->Outlet, WidgetSetHorizontalSlider_OnGetCurrentValue( _this ));
-    EwNotifyRefObservers( _this->Outlet, 0 );
-  }
 }
 
 /* 'C' function for method : 'WidgetSet::HorizontalSlider.onReleaseKey()' */
@@ -994,7 +719,6 @@ void WidgetSetHorizontalSlider_onReleaseKey( WidgetSetHorizontalSlider _this, XO
   CoreSimpleTouchHandler_OnSetEnabled( &_this->TouchHandler, 1 );
   CoreGroup_InvalidateViewState((CoreGroup)_this );
   CoreTimer_OnSetEnabled( &_this->RepetitionTimer, 0 );
-  EwPostSignal( _this->OnEnd, ((XObject)_this ));
 }
 
 /* 'C' function for method : 'WidgetSet::HorizontalSlider.onPressKey()' */
@@ -1007,16 +731,13 @@ void WidgetSetHorizontalSlider_onPressKey( WidgetSetHorizontalSlider _this, XObj
 
   CoreSimpleTouchHandler_OnSetEnabled( &_this->TouchHandler, 0 );
   CoreGroup_InvalidateViewState((CoreGroup)_this );
-  EwPostSignal( _this->OnStart, ((XObject)_this ));
   CoreTimer_OnSetEnabled( &_this->RepetitionTimer, 1 );
   oldValue = WidgetSetHorizontalSlider_OnGetCurrentValue( _this );
   newValue = oldValue;
-  delta = _this->StepSize;
+  delta = 1;
 
-  if ((( sender == ((XObject)&_this->KeyHandlerLeft )) && ( _this->MaxValue > _this->MinValue )) 
-      || (( sender == ((XObject)&_this->KeyHandlerRight )) && ( _this->MaxValue 
-      < _this->MinValue )))
-    delta = -delta;
+  if ( sender == ((XObject)&_this->KeyHandlerLeft ))
+    delta = -1;
 
   if ( oldValue < 0 )
   {
@@ -1042,24 +763,13 @@ void WidgetSetHorizontalSlider_onPressKey( WidgetSetHorizontalSlider _this, XObj
 
   if ( oldValue == WidgetSetHorizontalSlider_OnGetCurrentValue( _this ))
     return;
-
-  EwPostSignal( _this->OnChange, ((XObject)_this ));
-
-  if ( _this->Outlet.Object != 0 )
-  {
-    EwOnSetInt32( _this->Outlet, WidgetSetHorizontalSlider_OnGetCurrentValue( _this ));
-    EwNotifyRefObservers( _this->Outlet, 0 );
-  }
 }
 
 /* 'C' function for method : 'WidgetSet::HorizontalSlider.onDragTouch()' */
 void WidgetSetHorizontalSlider_onDragTouch( WidgetSetHorizontalSlider _this, XObject 
   sender )
 {
-  XInt32 marginLeft;
-  XInt32 marginRight;
   XPoint delta;
-  XInt32 minPos;
   XInt32 maxPos;
   XInt32 oldValue;
   XInt32 newValue;
@@ -1070,40 +780,21 @@ void WidgetSetHorizontalSlider_onDragTouch( WidgetSetHorizontalSlider _this, XOb
   if ( !_this->touchActive )
     return;
 
-  marginLeft = 0;
-  marginRight = 0;
-
-  if ( _this->Appearance != 0 )
-  {
-    marginLeft = _this->Appearance->ThumbMarginLeft;
-    marginRight = _this->Appearance->ThumbMarginRight;
-  }
-
   delta = EwMovePointNeg( _this->TouchHandler.CurrentPos, _this->TouchHandler.HittingPos );
-  minPos = marginLeft;
-  maxPos = EwGetRectW( _this->Super2.Bounds ) - marginRight;
+  maxPos = EwGetRectW( _this->Super2.Bounds );
   oldValue = WidgetSetHorizontalSlider_OnGetCurrentValue( _this );
   newValue = oldValue;
 
   if (( _this->imageView != 0 ) && ( _this->imageView->Bitmap != 0 ))
     maxPos = maxPos - EwGetRectW( _this->imageView->Super1.Bounds );
 
-  if ( maxPos > minPos )
-    newValue = (XInt32)(((XFloat)delta.X * (XFloat)( _this->MaxValue - _this->MinValue )) 
-    / (XFloat)( maxPos - minPos )) + _this->touchStartValue;
+  if ( maxPos > 0 )
+    newValue = (XInt32)(((XFloat)delta.X * 100.000000f ) / (XFloat)maxPos ) + _this->touchStartValue;
 
-  WidgetSetHorizontalSlider_OnSetCurrentValue( _this, newValue - ( newValue % _this->StepSize ));
+  WidgetSetHorizontalSlider_OnSetCurrentValue( _this, newValue );
 
   if ( oldValue == WidgetSetHorizontalSlider_OnGetCurrentValue( _this ))
     return;
-
-  EwPostSignal( _this->OnChange, ((XObject)_this ));
-
-  if ( _this->Outlet.Object != 0 )
-  {
-    EwOnSetInt32( _this->Outlet, WidgetSetHorizontalSlider_OnGetCurrentValue( _this ));
-    EwNotifyRefObservers( _this->Outlet, 0 );
-  }
 }
 
 /* 'C' function for method : 'WidgetSet::HorizontalSlider.onReleaseTouch()' */
@@ -1120,32 +811,26 @@ void WidgetSetHorizontalSlider_onReleaseTouch( WidgetSetHorizontalSlider _this,
   _this->KeyHandlerRight.Enabled = 1;
   _this->KeyHandlerLeft.Enabled = 1;
   CoreGroup_InvalidateViewState((CoreGroup)_this );
-  EwPostSignal( _this->OnEnd, ((XObject)_this ));
 }
 
 /* 'C' function for method : 'WidgetSet::HorizontalSlider.onPressTouch()' */
 void WidgetSetHorizontalSlider_onPressTouch( WidgetSetHorizontalSlider _this, XObject 
   sender )
 {
-  XInt32 dragLimit;
   XRect touchArea;
   XBool hasThumb;
   XBool insideThumb;
-  XBool adjustAtTouch;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  dragLimit = CoreView__GetRoot( _this )->CursorDragLimit;
-  touchArea = EwMoveRectPos( EwNewRect2Point( EwNewPoint( -dragLimit, -dragLimit ), 
-  EwNewPoint( dragLimit + 1, dragLimit + 1 )), _this->TouchHandler.CurrentPos );
+  touchArea = EwMoveRectPos( _Const0006, _this->TouchHandler.CurrentPos );
   hasThumb = (XBool)(( _this->imageView != 0 ) && ( _this->imageView->Bitmap != 
   0 ));
   insideThumb = (XBool)( hasThumb && !EwIsRectEmpty( EwIntersectRect( _this->imageView->Super1.Bounds, 
   touchArea )));
-  adjustAtTouch = (XBool)(( _this->Appearance != 0 ) && _this->Appearance->ThumbUpdateAtTouch );
 
-  if (( hasThumb && !insideThumb ) && !adjustAtTouch )
+  if ( hasThumb && !insideThumb )
   {
     CoreRoot root = CoreView__GetRoot( _this );
     CoreSimpleTouchHandler_OnSetEnabled( &_this->TouchHandler, 0 );
@@ -1157,57 +842,8 @@ void WidgetSetHorizontalSlider_onPressTouch( WidgetSetHorizontalSlider _this, XO
   _this->touchActive = 1;
   _this->KeyHandlerRight.Enabled = 0;
   _this->KeyHandlerLeft.Enabled = 0;
-  EwPostSignal( _this->OnStart, ((XObject)_this ));
   CoreGroup_InvalidateViewState((CoreGroup)_this );
   _this->touchStartValue = WidgetSetHorizontalSlider_OnGetCurrentValue( _this );
-
-  if ( adjustAtTouch && !insideThumb )
-  {
-    XInt32 marginLeft = 0;
-    XInt32 marginRight = 0;
-    XInt32 thumbWidth = 0;
-    XInt32 hitPos;
-    XInt32 minPos;
-    XInt32 maxPos;
-    XInt32 oldValue;
-    XInt32 newValue;
-
-    if ( _this->Appearance != 0 )
-    {
-      marginLeft = _this->Appearance->ThumbMarginLeft;
-      marginRight = _this->Appearance->ThumbMarginRight;
-    }
-
-    if (( _this->imageView != 0 ) && ( _this->imageView->Bitmap != 0 ))
-      thumbWidth = EwGetRectW( _this->imageView->Super1.Bounds );
-
-    hitPos = _this->TouchHandler.HittingPos.X - ( thumbWidth / 2 );
-    minPos = marginLeft;
-    maxPos = ( EwGetRectW( _this->Super2.Bounds ) - marginRight ) - thumbWidth;
-    oldValue = WidgetSetHorizontalSlider_OnGetCurrentValue( _this );
-    newValue = oldValue;
-
-    if ( maxPos > minPos )
-      newValue = (XInt32)(((XFloat)( hitPos - minPos ) * (XFloat)( _this->MaxValue 
-      - _this->MinValue )) / (XFloat)( maxPos - minPos )) + _this->MinValue;
-
-    WidgetSetHorizontalSlider_OnSetCurrentValue( _this, newValue - ( newValue % 
-    _this->StepSize ));
-
-    if ( oldValue == WidgetSetHorizontalSlider_OnGetCurrentValue( _this ))
-      return;
-
-    EwPostSignal( _this->OnChange, ((XObject)_this ));
-
-    if ( _this->Outlet.Object != 0 )
-    {
-      EwOnSetInt32( _this->Outlet, WidgetSetHorizontalSlider_OnGetCurrentValue( 
-      _this ));
-      EwNotifyRefObservers( _this->Outlet, 0 );
-    }
-
-    _this->touchStartValue = WidgetSetHorizontalSlider_OnGetCurrentValue( _this );
-  }
 }
 
 /* 'C' function for method : 'WidgetSet::HorizontalSlider.OnGetCurrentValue()' */
@@ -1215,22 +851,11 @@ XInt32 WidgetSetHorizontalSlider_OnGetCurrentValue( WidgetSetHorizontalSlider _t
 {
   XInt32 value = _this->CurrentValue;
 
-  if ( _this->MinValue > _this->MaxValue )
-  {
-    if ( value < _this->MaxValue )
-      value = _this->MaxValue;
+  if ( value < 0 )
+    value = 0;
 
-    if ( value > _this->MinValue )
-      value = _this->MinValue;
-  }
-  else
-  {
-    if ( value < _this->MinValue )
-      value = _this->MinValue;
-
-    if ( value > _this->MaxValue )
-      value = _this->MaxValue;
-  }
+  if ( value > 100 )
+    value = 100;
 
   return value;
 }
@@ -1244,7 +869,6 @@ void WidgetSetHorizontalSlider_OnSetCurrentValue( WidgetSetHorizontalSlider _thi
 
   _this->CurrentValue = value;
   CoreGroup_InvalidateViewState((CoreGroup)_this );
-  EwPostSignal( _this->OnUpdate, ((XObject)_this ));
 }
 
 /* 'C' function for method : 'WidgetSet::HorizontalSlider.OnSetAppearance()' */
@@ -1272,8 +896,9 @@ EW_DEFINE_CLASS_VARIANTS( WidgetSetHorizontalSlider )
 EW_END_OF_CLASS_VARIANTS( WidgetSetHorizontalSlider )
 
 /* Virtual Method Table (VMT) for the class : 'WidgetSet::HorizontalSlider' */
-EW_DEFINE_CLASS( WidgetSetHorizontalSlider, CoreGroup, frameView4, OnUpdate, Outlet, 
-                 RepetitionTimer, touchStartValue, touchStartValue, "WidgetSet::HorizontalSlider" )
+EW_DEFINE_CLASS( WidgetSetHorizontalSlider, CoreGroup, imageView, RepetitionTimer, 
+                 RepetitionTimer, RepetitionTimer, touchStartValue, touchStartValue, 
+                 "WidgetSet::HorizontalSlider" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

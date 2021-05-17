@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -47,7 +47,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x00000060, /* ratio 83.33 % */
   0xB8001F00, 0x00092452, 0x00D20037, 0x040003A0, 0x8A002A00, 0x00026000, 0x00188006,
@@ -74,18 +74,18 @@ static const XStringRes _Const000C = { _StringsDefault0, 0x0023 };
 void TelephoneImageButton__Init( TelephoneImageButton _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( TelephoneImageButton );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( TelephoneImageButton );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->BackgroundImage, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ForegroundImage, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->HighlightTimer, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->BackgroundImage, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ForegroundImage, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->HighlightTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( TelephoneImageButton );
+  _this->_.VMT = EW_CLASS( TelephoneImageButton );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -107,7 +107,7 @@ void TelephoneImageButton__Init( TelephoneImageButton _this, XObject aLink, XHan
 void TelephoneImageButton__ReInit( TelephoneImageButton _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->BackgroundImage );
@@ -119,7 +119,7 @@ void TelephoneImageButton__ReInit( TelephoneImageButton _this )
 void TelephoneImageButton__Done( TelephoneImageButton _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->BackgroundImage );
@@ -127,7 +127,7 @@ void TelephoneImageButton__Done( TelephoneImageButton _this )
   CoreTimer__Done( &_this->HighlightTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Telephone::ImageButton.OnSetForegroundBmp()' */
@@ -213,23 +213,23 @@ EW_END_OF_CLASS( TelephoneImageButton )
 void TelephoneTEL01_IncomingCall__Init( TelephoneTEL01_IncomingCall _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( TelephoneTEL01_IncomingCall );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( TelephoneTEL01_IncomingCall );
 
   /* ... then construct all embedded objects */
-  TelephoneImageButton__Init( &_this->AnswerButton, &_this->_XObject, 0 );
-  TelephoneImageButton__Init( &_this->DeclineButton, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ForegroundImage, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->CallerText, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->DismissTimer, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->KeyEnableTimer, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
+  TelephoneImageButton__Init( &_this->AnswerButton, &_this->_.XObject, 0 );
+  TelephoneImageButton__Init( &_this->DeclineButton, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ForegroundImage, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->CallerText, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->DismissTimer, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->KeyEnableTimer, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( TelephoneTEL01_IncomingCall );
+  _this->_.VMT = EW_CLASS( TelephoneTEL01_IncomingCall );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->AnswerButton, _Const0001 );
@@ -282,7 +282,7 @@ void TelephoneTEL01_IncomingCall__Init( TelephoneTEL01_IncomingCall _this, XObje
 void TelephoneTEL01_IncomingCall__ReInit( TelephoneTEL01_IncomingCall _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   TelephoneImageButton__ReInit( &_this->AnswerButton );
@@ -299,7 +299,7 @@ void TelephoneTEL01_IncomingCall__ReInit( TelephoneTEL01_IncomingCall _this )
 void TelephoneTEL01_IncomingCall__Done( TelephoneTEL01_IncomingCall _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   TelephoneImageButton__Done( &_this->AnswerButton );
@@ -312,7 +312,7 @@ void TelephoneTEL01_IncomingCall__Done( TelephoneTEL01_IncomingCall _this )
   ViewsImage__Done( &_this->Divider );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -328,15 +328,11 @@ void TelephoneTEL01_IncomingCall_Init( TelephoneTEL01_IncomingCall _this, XHandl
   EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )));
 
   if ( 0 == EwGetStringLength( _this->CallerText.String ))
-  {
     ViewsText_OnSetString( &_this->CallerText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   if ( 1 >= ViewsText_GetNoOfRows( &_this->CallerText ))
-  {
     ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzCenter 
     | ViewsTextAlignmentAlignVertTop );
-  }
   else
   {
     ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
@@ -407,16 +403,13 @@ void TelephoneTEL01_IncomingCall_OnPhoneCallStateChangedSlot( TelephoneTEL01_Inc
       CoreTimer_OnSetEnabled( &_this->DismissTimer, 0 );
 
       if ( _this->Super5.Owner != 0 )
-      {
         CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( 
         TelephoneTEL02_ActiveCall, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 
         0 );
-      }
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -496,26 +489,26 @@ EW_END_OF_CLASS( TelephoneTEL01_IncomingCall )
 void TelephoneTEL02_ActiveCall__Init( TelephoneTEL02_ActiveCall _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( TelephoneTEL02_ActiveCall );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( TelephoneTEL02_ActiveCall );
 
   /* ... then construct all embedded objects */
-  TelephoneImageButton__Init( &_this->VolumeUpButton, &_this->_XObject, 0 );
-  TelephoneImageButton__Init( &_this->VolumeDownButton, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ForegroundImage, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->CallerText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->DurationText, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->UpdateDurationTimer, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->PhoneCallVolumeChangedEventHandler, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Image, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->DismissTimer, &_this->_XObject, 0 );
+  TelephoneImageButton__Init( &_this->VolumeUpButton, &_this->_.XObject, 0 );
+  TelephoneImageButton__Init( &_this->VolumeDownButton, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ForegroundImage, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->CallerText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DurationText, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->UpdateDurationTimer, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->PhoneCallVolumeChangedEventHandler, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Image, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->DismissTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( TelephoneTEL02_ActiveCall );
+  _this->_.VMT = EW_CLASS( TelephoneTEL02_ActiveCall );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->VolumeUpButton, _Const0001 );
@@ -581,7 +574,7 @@ void TelephoneTEL02_ActiveCall__Init( TelephoneTEL02_ActiveCall _this, XObject a
 void TelephoneTEL02_ActiveCall__ReInit( TelephoneTEL02_ActiveCall _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   TelephoneImageButton__ReInit( &_this->VolumeUpButton );
@@ -601,7 +594,7 @@ void TelephoneTEL02_ActiveCall__ReInit( TelephoneTEL02_ActiveCall _this )
 void TelephoneTEL02_ActiveCall__Done( TelephoneTEL02_ActiveCall _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   TelephoneImageButton__Done( &_this->VolumeUpButton );
@@ -617,7 +610,7 @@ void TelephoneTEL02_ActiveCall__Done( TelephoneTEL02_ActiveCall _this )
   CoreTimer__Done( &_this->DismissTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -694,8 +687,7 @@ void TelephoneTEL02_ActiveCall_OnPhoneCallStateChangedSlot( TelephoneTEL02_Activ
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -717,18 +709,14 @@ void TelephoneTEL02_ActiveCall_OnUpdateDurationSlot( TelephoneTEL02_ActiveCall _
     XUInt32 DurationMinute = ( TotalDurationSec / 60 ) - ( DurationHour * 60 );
 
     if ( DurationHour > 0 )
-    {
       ViewsText_OnSetString( &_this->DurationText, EwConcatString( EwConcatString( 
       EwConcatString( EwConcatString( EwNewStringUInt( DurationHour, 0, 10 ), EwLoadString( 
       &_Const000B )), EwNewStringUInt( DurationMinute, 2, 10 )), EwLoadString( &_Const000B )), 
       EwNewStringUInt( DurationSec, 2, 10 )));
-    }
     else
-    {
       ViewsText_OnSetString( &_this->DurationText, EwConcatString( EwConcatString( 
       EwNewStringUInt( DurationMinute, 0, 10 ), EwLoadString( &_Const000B )), EwNewStringUInt( 
       DurationSec, 2, 10 )));
-    }
   }
 }
 
@@ -747,16 +735,12 @@ void TelephoneTEL02_ActiveCall_OnPhoneCallVolumeChangedSlot( TelephoneTEL02_Acti
     EwTrace( "%s%u", EwLoadString( &_Const000C ), _this->PhoneCallVolume );
 
     if ( 0 == _this->PhoneCallVolume )
-    {
       TelephoneImageButton_OnSetForegroundFrameNumber( &_this->VolumeDownButton, 
       1 );
-    }
     else
       if ( 100 == _this->PhoneCallVolume )
-      {
         TelephoneImageButton_OnSetForegroundFrameNumber( &_this->VolumeUpButton, 
         1 );
-      }
       else
       {
         TelephoneImageButton_OnSetForegroundFrameNumber( &_this->VolumeDownButton, 
@@ -784,15 +768,11 @@ void TelephoneTEL02_ActiveCall_UpdateCaller( TelephoneTEL02_ActiveCall _this )
   EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )));
 
   if ( 0 == EwGetStringLength( _this->CallerText.String ))
-  {
     ViewsText_OnSetString( &_this->CallerText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
-  }
 
   if ( 1 >= ViewsText_GetNoOfRows( &_this->CallerText ))
-  {
     ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzCenter 
     | ViewsTextAlignmentAlignVertTop );
-  }
   else
   {
     ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzLeft 

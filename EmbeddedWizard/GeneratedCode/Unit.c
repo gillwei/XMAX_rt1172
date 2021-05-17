@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -73,16 +73,16 @@ static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 void UnitUNT01_UnitSettingMenu__Init( UnitUNT01_UnitSettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( UnitUNT01_UnitSettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( UnitUNT01_UnitSettingMenu );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( UnitUNT01_UnitSettingMenu );
+  _this->_.VMT = EW_CLASS( UnitUNT01_UnitSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -113,7 +113,7 @@ void UnitUNT01_UnitSettingMenu__Init( UnitUNT01_UnitSettingMenu _this, XObject a
 void UnitUNT01_UnitSettingMenu__ReInit( UnitUNT01_UnitSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
@@ -123,13 +123,13 @@ void UnitUNT01_UnitSettingMenu__ReInit( UnitUNT01_UnitSettingMenu _this )
 void UnitUNT01_UnitSettingMenu__Done( UnitUNT01_UnitSettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -138,14 +138,12 @@ void UnitUNT01_UnitSettingMenu__Done( UnitUNT01_UnitSettingMenu _this )
 void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aArg )
 {
   XInt32 NoOfItems;
-  XInt32 ItemIdx;
   XInt32 i;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
   NoOfItems = 3;
-  ItemIdx = 2;
 
   if ( UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( _this ))
   {
@@ -154,10 +152,7 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
   }
 
   if ( NoOfItems < 4 )
-  {
-    _this->ItemVehicleRxTypeArray[ EwCheckIndex( ItemIdx, 4 )] = _this->ItemVehicleRxTypeArray[ 
-    3 ];
-  }
+    _this->ItemVehicleRxTypeArray[ 2 ] = _this->ItemVehicleRxTypeArray[ 3 ];
 
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, NoOfItems );
   _this->UnitItemValue = EwNewObject( UnitUnitValueClass, 0 );
@@ -166,10 +161,8 @@ void UnitUNT01_UnitSettingMenu_Init( UnitUNT01_UnitSettingMenu _this, XHandle aA
   _this->TempMenu = EwNewObject( UnitUNT05_TemperatureSettingMenu, 0 );
 
   for ( i = 0; i < NoOfItems; i++ )
-  {
     UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, _this->ItemVehicleRxTypeArray[ 
     EwCheckIndex( i, 4 )]);
-  }
 }
 
 /* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.LoadItemClass()' */
@@ -178,9 +171,7 @@ XClass UnitUNT01_UnitSettingMenu_LoadItemClass( UnitUNT01_UnitSettingMenu _this,
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( !!aItemNo )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return EW_CLASS( MenuItemBaseValue );
 }
@@ -209,8 +200,7 @@ XString UnitUNT01_UnitSettingMenu_LoadItemTitle( UnitUNT01_UnitSettingMenu _this
       title = EwLoadString( &StringsUNT01_UNIT_TEMPERATURE );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return title;
@@ -226,18 +216,15 @@ void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this,
   switch ( _this->ItemVehicleRxTypeArray[ EwCheckIndex( aItemNo, 4 )])
   {
     case EnumVehicleRxTypeMILEAGE_UNIT :
-    {
       if ( _this->MileageMenu != 0 )
       {
         _this->MileageMenu->MileageUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
         UnitUNT02_MileageSettingMenu_ResetHighlightPosition( _this->MileageMenu );
         ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->MileageMenu ));
       }
-    }
     break;
 
     case EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT :
-    {
       if ( _this->FuelMenu != 0 )
       {
         _this->FuelMenu->FuelUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
@@ -260,33 +247,27 @@ void UnitUNT01_UnitSettingMenu_OnItemActivate( UnitUNT01_UnitSettingMenu _this,
         MenuVerticalMenu_InvalidateItems( &_this->FuelMenu->Super1.Menu, 0, 2 );
         ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->FuelMenu ));
       }
-    }
     break;
 
     case EnumVehicleRxTypePRESSURE_UNIT :
-    {
       if ( _this->PressureMenu != 0 )
       {
         _this->PressureMenu->PressureUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
         UnitUNT04_PressureSettingMenu_ResetHighlightPosition( _this->PressureMenu );
         ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->PressureMenu ));
       }
-    }
     break;
 
     case EnumVehicleRxTypeTEMPERATURE_UNIT :
-    {
       if ( _this->TempMenu != 0 )
       {
         _this->TempMenu->TempUpdateSignal = EwNewSlot( _this, UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot );
         UnitUNT05_TemperatureSettingMenu_ResetHighlightPosition( _this->TempMenu );
         ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)_this->TempMenu ));
       }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -297,9 +278,7 @@ XBool UnitUNT01_UnitSettingMenu_LoadItemEnabled( UnitUNT01_UnitSettingMenu _this
   XBool ItemEnabled = 1;
 
   if ( aItemNo == 1 )
-  {
     ItemEnabled = _this->IsFuelEnabled;
-  }
 
   return ItemEnabled;
 }
@@ -311,9 +290,7 @@ XString UnitUNT01_UnitSettingMenu_LoadItemBaseValue( UnitUNT01_UnitSettingMenu _
   XString val = 0;
 
   if ( aItemNo < 4 )
-  {
     val = _this->ItemValueArray[ EwCheckIndex( aItemNo, 4 )];
-  }
 
   return val;
 }
@@ -323,33 +300,21 @@ void UnitUNT01_UnitSettingMenu_OnUnitValueUpdateSlot( UnitUNT01_UnitSettingMenu 
   XObject sender )
 {
   if ( sender == (XObject)_this->MileageMenu )
-  {
     UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, EnumVehicleRxTypeMILEAGE_UNIT );
-  }
   else
     if ( sender == (XObject)_this->FuelMenu )
-    {
       UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT );
-    }
     else
       if ( sender == (XObject)_this->PressureMenu )
-      {
         UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, EnumVehicleRxTypePRESSURE_UNIT );
-      }
       else
         if ( sender == (XObject)_this->TempMenu )
-        {
           UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, EnumVehicleRxTypeTEMPERATURE_UNIT );
-        }
 
   if ( UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( _this ))
-  {
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 3 );
-  }
   else
-  {
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
-  }
 }
 
 /* 'C' function for method : 'Unit::UNT01_UnitSettingMenu.OnGetPressureEnabled()' */
@@ -390,13 +355,9 @@ void UnitUNT01_UnitSettingMenu_OnVehicleDataReceivedSlot( UnitUNT01_UnitSettingM
     UnitUNT01_UnitSettingMenu_UpdateUnitValue( _this, VehicleData->RxType );
 
     if ( UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( _this ))
-    {
       MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 3 );
-    }
     else
-    {
       MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
-    }
   }
 }
 
@@ -430,7 +391,6 @@ void UnitUNT01_UnitSettingMenu_UpdateUnitValue( UnitUNT01_UnitSettingMenu _this,
       &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT );
 
       if ( VehicleData != 0 )
-      {
         switch ( VehicleData->DataUInt32 )
         {
           case 0 :
@@ -462,10 +422,8 @@ void UnitUNT01_UnitSettingMenu_UpdateUnitValue( UnitUNT01_UnitSettingMenu _this,
           }
           break;
 
-          default : 
-            ;
+          default :; 
         }
-      }
     }
     break;
 
@@ -492,15 +450,11 @@ void UnitUNT01_UnitSettingMenu_UpdateUnitValue( UnitUNT01_UnitSettingMenu _this,
       if (( VehicleData != 0 ) && ( 2 > (XInt32)VehicleData->DataUInt32 ))
       {
         if ( UnitUNT01_UnitSettingMenu_OnGetPressureEnabled( _this ))
-        {
           _this->ItemValueArray[ 3 ] = EwShareString( _this->UnitItemValue->ItemTemperatureUnitArray[ 
           EwCheckIndex((XInt32)VehicleData->DataUInt32, 2 )]);
-        }
         else
-        {
           _this->ItemValueArray[ 2 ] = EwShareString( _this->UnitItemValue->ItemTemperatureUnitArray[ 
           EwCheckIndex((XInt32)VehicleData->DataUInt32, 2 )]);
-        }
 
         EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting 
         = (XEnum)VehicleData->DataUInt32;
@@ -508,8 +462,7 @@ void UnitUNT01_UnitSettingMenu_UpdateUnitValue( UnitUNT01_UnitSettingMenu _this,
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -585,17 +538,17 @@ EW_END_OF_CLASS( UnitUNT01_UnitSettingMenu )
 void UnitUNT02_MileageSettingMenu__Init( UnitUNT02_MileageSettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( UnitUNT02_MileageSettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( UnitUNT02_MileageSettingMenu );
 
   /* ... then construct all embedded objects */
-  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( UnitUNT02_MileageSettingMenu );
+  _this->_.VMT = EW_CLASS( UnitUNT02_MileageSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -617,7 +570,7 @@ void UnitUNT02_MileageSettingMenu__Init( UnitUNT02_MileageSettingMenu _this, XOb
 void UnitUNT02_MileageSettingMenu__ReInit( UnitUNT02_MileageSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
@@ -628,14 +581,14 @@ void UnitUNT02_MileageSettingMenu__ReInit( UnitUNT02_MileageSettingMenu _this )
 void UnitUNT02_MileageSettingMenu__Done( UnitUNT02_MileageSettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->CheckMarkUpdateTimer );
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Unit::UNT02_MileageSettingMenu.LoadItemClass()' */
@@ -650,9 +603,7 @@ XClass UnitUNT02_MileageSettingMenu_LoadItemClass( UnitUNT02_MileageSettingMenu 
   ItemClass = 0;
 
   if ( aItemNo >= 0 )
-  {
     ItemClass = EW_CLASS( MenuItemCheckMark );
-  }
 
   return ItemClass;
 }
@@ -664,9 +615,7 @@ XString UnitUNT02_MileageSettingMenu_LoadItemTitle( UnitUNT02_MileageSettingMenu
   XString title = 0;
 
   if ( aItemNo < 2 )
-  {
     title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 2 )];
-  }
 
   return title;
 }
@@ -681,37 +630,24 @@ void UnitUNT02_MileageSettingMenu_OnItemActivate( UnitUNT02_MileageSettingMenu _
   switch ( aItemNo )
   {
     case 0 :
-    {
       if ( EnumMileageSettingItemKM == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting )
-      {
         CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-      }
       else
-      {
         DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMILEAGE_UNIT, 0 );
-      }
-    }
     break;
 
     case 1 :
-    {
       if ( EnumMileageSettingItemMILE == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting )
-      {
         CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-      }
       else
-      {
         DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMILEAGE_UNIT, 1 );
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -729,27 +665,18 @@ XBool UnitUNT02_MileageSettingMenu_LoadItemChecked( UnitUNT02_MileageSettingMenu
   switch ( aItemNo )
   {
     case 0 :
-    {
       if ( EnumMileageSettingItemKM == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting )
-      {
         IsChecked = 1;
-      }
-    }
     break;
 
     case 1 :
-    {
       if ( EnumMileageSettingItemMILE == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentMileageSetting )
-      {
         IsChecked = 1;
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return IsChecked;
@@ -796,8 +723,7 @@ void UnitUNT02_MileageSettingMenu_OnVehicleDataReceivedSlot( UnitUNT02_MileageSe
         = EnumMileageSettingItemMILE;
       break;
 
-      default : 
-        ;
+      default :; 
     }
 
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
@@ -819,7 +745,7 @@ EW_END_OF_CLASS_VARIANTS( UnitUNT02_MileageSettingMenu )
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT02_MileageSettingMenu' */
 EW_DEFINE_CLASS( UnitUNT02_MileageSettingMenu, MenuBaseMenuView, MileageUpdateSignal, 
                  MileageUpdateSignal, CheckMarkUpdateTimer, CheckMarkUpdateTimer, 
-                 ItemTitleArray, _None, "Unit::UNT02_MileageSettingMenu" )
+                 ItemTitleArray, _.VMT, "Unit::UNT02_MileageSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -884,13 +810,13 @@ EW_END_OF_CLASS( UnitUNT02_MileageSettingMenu )
 void UnitUnitValueClass__Init( UnitUnitValueClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( UnitUnitValueClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( UnitUnitValueClass );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( UnitUnitValueClass );
+  _this->_.VMT = EW_CLASS( UnitUnitValueClass );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->ItemMileageUnitArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT02_UNIT_MILEAGE_KILOMETER ));
@@ -909,17 +835,17 @@ void UnitUnitValueClass__Init( UnitUnitValueClass _this, XObject aLink, XHandle 
 void UnitUnitValueClass__ReInit( UnitUnitValueClass _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Unit::UnitValueClass' */
 void UnitUnitValueClass__Done( UnitUnitValueClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'Unit::UnitValueClass' */
@@ -929,24 +855,24 @@ EW_END_OF_CLASS_VARIANTS( UnitUnitValueClass )
 /* Virtual Method Table (VMT) for the class : 'Unit::UnitValueClass' */
 EW_DEFINE_CLASS( UnitUnitValueClass, XObject, ItemMileageUnitArray, ItemMileageUnitArray, 
                  ItemMileageUnitArray, ItemMileageUnitArray, ItemMileageUnitArray, 
-                 _None, "Unit::UnitValueClass" )
+                 _.VMT, "Unit::UnitValueClass" )
 EW_END_OF_CLASS( UnitUnitValueClass )
 
 /* Initializer for the class 'Unit::UNT03_FuelSettingMenu' */
 void UnitUNT03_FuelSettingMenu__Init( UnitUNT03_FuelSettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( UnitUNT03_FuelSettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( UnitUNT03_FuelSettingMenu );
 
   /* ... then construct all embedded objects */
-  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( UnitUNT03_FuelSettingMenu );
+  _this->_.VMT = EW_CLASS( UnitUNT03_FuelSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -968,7 +894,7 @@ void UnitUNT03_FuelSettingMenu__Init( UnitUNT03_FuelSettingMenu _this, XObject a
 void UnitUNT03_FuelSettingMenu__ReInit( UnitUNT03_FuelSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
@@ -979,14 +905,14 @@ void UnitUNT03_FuelSettingMenu__ReInit( UnitUNT03_FuelSettingMenu _this )
 void UnitUNT03_FuelSettingMenu__Done( UnitUNT03_FuelSettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->CheckMarkUpdateTimer );
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Unit::UNT03_FuelSettingMenu.LoadItemClass()' */
@@ -1001,9 +927,7 @@ XClass UnitUNT03_FuelSettingMenu_LoadItemClass( UnitUNT03_FuelSettingMenu _this,
   ItemClass = 0;
 
   if ( aItemNo >= 0 )
-  {
     ItemClass = EW_CLASS( MenuItemCheckMark );
-  }
 
   return ItemClass;
 }
@@ -1015,9 +939,7 @@ XString UnitUNT03_FuelSettingMenu_LoadItemTitle( UnitUNT03_FuelSettingMenu _this
   XString title = 0;
 
   if ( aItemNo < 3 )
-  {
     title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 3 )];
-  }
 
   return title;
 }
@@ -1032,55 +954,36 @@ void UnitUNT03_FuelSettingMenu_OnItemActivate( UnitUNT03_FuelSettingMenu _this,
   switch ( aItemNo )
   {
     case 0 :
-    {
       if ( EnumFuelSettingItemKM_L == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
-      {
         CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-      }
       else
-      {
         DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
         0 );
-      }
-    }
     break;
 
     case 1 :
-    {
       if ( EnumFuelSettingItemL_PER_HUNDRED_KM == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
-      {
         CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-      }
       else
-      {
         DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
         2 );
-      }
-    }
     break;
 
     case 2 :
-    {
       if ( EnumFuelSettingItemMPG == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
-      {
         CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-      }
       else
-      {
         DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeFUEL_CONSUMPTION_UNIT, 
         1 );
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -1098,37 +1001,24 @@ XBool UnitUNT03_FuelSettingMenu_LoadItemChecked( UnitUNT03_FuelSettingMenu _this
   switch ( aItemNo )
   {
     case 0 :
-    {
       if ( EnumFuelSettingItemKM_L == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
-      {
         IsChecked = 1;
-      }
-    }
     break;
 
     case 1 :
-    {
       if ( EnumFuelSettingItemL_PER_HUNDRED_KM == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
-      {
         IsChecked = 1;
-      }
-    }
     break;
 
     case 2 :
-    {
       if ( EnumFuelSettingItemMPG == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentFuelSetting )
-      {
         IsChecked = 1;
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return IsChecked;
@@ -1154,8 +1044,7 @@ XBool UnitUNT03_FuelSettingMenu_LoadItemEnabled( UnitUNT03_FuelSettingMenu _this
       ItemEnabled = _this->ItemEnabledArray[ 1 ];
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return ItemEnabled;
@@ -1207,8 +1096,7 @@ void UnitUNT03_FuelSettingMenu_OnVehicleDataReceivedSlot( UnitUNT03_FuelSettingM
         = EnumFuelSettingItemL_PER_HUNDRED_KM;
       break;
 
-      default : 
-        ;
+      default :; 
     }
 
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
@@ -1295,17 +1183,17 @@ EW_END_OF_CLASS( UnitUNT03_FuelSettingMenu )
 void UnitUNT04_PressureSettingMenu__Init( UnitUNT04_PressureSettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( UnitUNT04_PressureSettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( UnitUNT04_PressureSettingMenu );
 
   /* ... then construct all embedded objects */
-  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( UnitUNT04_PressureSettingMenu );
+  _this->_.VMT = EW_CLASS( UnitUNT04_PressureSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -1327,7 +1215,7 @@ void UnitUNT04_PressureSettingMenu__Init( UnitUNT04_PressureSettingMenu _this, X
 void UnitUNT04_PressureSettingMenu__ReInit( UnitUNT04_PressureSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
@@ -1338,14 +1226,14 @@ void UnitUNT04_PressureSettingMenu__ReInit( UnitUNT04_PressureSettingMenu _this 
 void UnitUNT04_PressureSettingMenu__Done( UnitUNT04_PressureSettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->CheckMarkUpdateTimer );
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.LoadItemClass()' */
@@ -1360,9 +1248,7 @@ XClass UnitUNT04_PressureSettingMenu_LoadItemClass( UnitUNT04_PressureSettingMen
   ItemClass = 0;
 
   if ( aItemNo >= 0 )
-  {
     ItemClass = EW_CLASS( MenuItemCheckMark );
-  }
 
   return ItemClass;
 }
@@ -1374,9 +1260,7 @@ XString UnitUNT04_PressureSettingMenu_LoadItemTitle( UnitUNT04_PressureSettingMe
   XString title = 0;
 
   if ( aItemNo < 3 )
-  {
     title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 3 )];
-  }
 
   return title;
 }
@@ -1391,52 +1275,33 @@ void UnitUNT04_PressureSettingMenu_OnItemActivate( UnitUNT04_PressureSettingMenu
   switch ( aItemNo )
   {
     case 0 :
-    {
       if ( EnumPressureSettingItemKPA == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
-      {
         CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-      }
       else
-      {
         DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 1 );
-      }
-    }
     break;
 
     case 1 :
-    {
       if ( EnumPressureSettingItemPSI == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
-      {
         CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-      }
       else
-      {
         DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 0 );
-      }
-    }
     break;
 
     case 2 :
-    {
       if ( EnumPressureSettingItemKGF == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
-      {
         CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-      }
       else
-      {
         DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypePRESSURE_UNIT, 2 );
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -1454,37 +1319,24 @@ XBool UnitUNT04_PressureSettingMenu_LoadItemChecked( UnitUNT04_PressureSettingMe
   switch ( aItemNo )
   {
     case 0 :
-    {
       if ( EnumPressureSettingItemKPA == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
-      {
         IsChecked = 1;
-      }
-    }
     break;
 
     case 1 :
-    {
       if ( EnumPressureSettingItemPSI == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
-      {
         IsChecked = 1;
-      }
-    }
     break;
 
     case 2 :
-    {
       if ( EnumPressureSettingItemKGF == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
-      {
         IsChecked = 1;
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return IsChecked;
@@ -1536,8 +1388,7 @@ void UnitUNT04_PressureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT04_Pressure
         = EnumPressureSettingItemKGF;
       break;
 
-      default : 
-        ;
+      default :; 
     }
 
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
@@ -1559,7 +1410,7 @@ EW_END_OF_CLASS_VARIANTS( UnitUNT04_PressureSettingMenu )
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT04_PressureSettingMenu' */
 EW_DEFINE_CLASS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView, PressureUpdateSignal, 
                  PressureUpdateSignal, CheckMarkUpdateTimer, CheckMarkUpdateTimer, 
-                 ItemTitleArray, _None, "Unit::UNT04_PressureSettingMenu" )
+                 ItemTitleArray, _.VMT, "Unit::UNT04_PressureSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1624,17 +1475,17 @@ EW_END_OF_CLASS( UnitUNT04_PressureSettingMenu )
 void UnitUNT05_TemperatureSettingMenu__Init( UnitUNT05_TemperatureSettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( UnitUNT05_TemperatureSettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( UnitUNT05_TemperatureSettingMenu );
 
   /* ... then construct all embedded objects */
-  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( UnitUNT05_TemperatureSettingMenu );
+  _this->_.VMT = EW_CLASS( UnitUNT05_TemperatureSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -1656,7 +1507,7 @@ void UnitUNT05_TemperatureSettingMenu__Init( UnitUNT05_TemperatureSettingMenu _t
 void UnitUNT05_TemperatureSettingMenu__ReInit( UnitUNT05_TemperatureSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
@@ -1667,14 +1518,14 @@ void UnitUNT05_TemperatureSettingMenu__ReInit( UnitUNT05_TemperatureSettingMenu 
 void UnitUNT05_TemperatureSettingMenu__Done( UnitUNT05_TemperatureSettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->CheckMarkUpdateTimer );
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.LoadItemClass()' */
@@ -1689,9 +1540,7 @@ XClass UnitUNT05_TemperatureSettingMenu_LoadItemClass( UnitUNT05_TemperatureSett
   ItemClass = 0;
 
   if ( aItemNo >= 0 )
-  {
     ItemClass = EW_CLASS( MenuItemCheckMark );
-  }
 
   return ItemClass;
 }
@@ -1703,9 +1552,7 @@ XString UnitUNT05_TemperatureSettingMenu_LoadItemTitle( UnitUNT05_TemperatureSet
   XString title = 0;
 
   if ( aItemNo < 2 )
-  {
     title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 2 )];
-  }
 
   return title;
 }
@@ -1720,39 +1567,26 @@ void UnitUNT05_TemperatureSettingMenu_OnItemActivate( UnitUNT05_TemperatureSetti
   switch ( aItemNo )
   {
     case 0 :
-    {
       if ( EnumTemperatureSettingItemTEMP_C == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting )
-      {
         CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-      }
       else
-      {
         DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTEMPERATURE_UNIT, 
         0 );
-      }
-    }
     break;
 
     case 1 :
-    {
       if ( EnumTemperatureSettingItemTEMP_F == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting )
-      {
         CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-      }
       else
-      {
         DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTEMPERATURE_UNIT, 
         1 );
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -1770,27 +1604,18 @@ XBool UnitUNT05_TemperatureSettingMenu_LoadItemChecked( UnitUNT05_TemperatureSet
   switch ( aItemNo )
   {
     case 0 :
-    {
       if ( EnumTemperatureSettingItemTEMP_C == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting )
-      {
         IsChecked = 1;
-      }
-    }
     break;
 
     case 1 :
-    {
       if ( EnumTemperatureSettingItemTEMP_F == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentTempSetting )
-      {
         IsChecked = 1;
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return IsChecked;
@@ -1837,8 +1662,7 @@ void UnitUNT05_TemperatureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT05_Tempe
         = EnumTemperatureSettingItemTEMP_F;
       break;
 
-      default : 
-        ;
+      default :; 
     }
 
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 1 );
@@ -1860,7 +1684,7 @@ EW_END_OF_CLASS_VARIANTS( UnitUNT05_TemperatureSettingMenu )
 /* Virtual Method Table (VMT) for the class : 'Unit::UNT05_TemperatureSettingMenu' */
 EW_DEFINE_CLASS( UnitUNT05_TemperatureSettingMenu, MenuBaseMenuView, TempUpdateSignal, 
                  TempUpdateSignal, CheckMarkUpdateTimer, CheckMarkUpdateTimer, ItemTitleArray, 
-                 _None, "Unit::UNT05_TemperatureSettingMenu" )
+                 _.VMT, "Unit::UNT05_TemperatureSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

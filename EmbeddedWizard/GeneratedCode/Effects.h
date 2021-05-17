@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -90,20 +90,6 @@ typedef enum
   EffectsTimingFastIn_FastOut           = 25,
   EffectsTimingCustom                   = 26
 } EffectsTiming;
-
-/* The definition Effects::DialogAlignment determines the set of constraints to 
-   control how dialog components are aligned within the boundary area of their owners 
-   when the dialogs are presented. See also Effects::FadeInOutTransition, Effects::ScaleTransition, 
-   Effects::ShowHideTransition and Effects::SlideTransition. */
-typedef enum
-{
-  EffectsDialogAlignmentAlignHorzLeft   = 0x00000001,
-  EffectsDialogAlignmentAlignHorzCenter = 0x00000002,
-  EffectsDialogAlignmentAlignHorzRight  = 0x00000004,
-  EffectsDialogAlignmentAlignVertTop    = 0x00000008,
-  EffectsDialogAlignmentAlignVertCenter = 0x00000010,
-  EffectsDialogAlignmentAlignVertBottom = 0x00000020
-} EffectsDialogAlignment;
 
 /* The global autoobject Effects::EffectTimer triggers all actually active animation 
    effects. In this way all effects will run simultanously. Per default the timer 

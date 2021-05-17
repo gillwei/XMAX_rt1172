@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -62,7 +62,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x0000043A, /* ratio 49.91 % */
   0xB8001F00, 0x8008C452, 0x00C60030, 0x0DE003A0, 0xF2003900, 0xA0010000, 0x64004349,
@@ -88,7 +88,7 @@ static const unsigned int _StringsDefault0[] =
 };
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault1[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault1[] =
 {
   0x00000416, /* ratio 48.95 % */
   0xB8003D00, 0x800A6452, 0x00DC0032, 0x04000320, 0xEA003680, 0x20039800, 0x0D31800D,
@@ -113,7 +113,7 @@ static const unsigned int _StringsDefault1[] =
 };
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault2[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault2[] =
 {
   0x00000422, /* ratio 52.55 % */
   0xB8001D00, 0x800AE452, 0x00DC0034, 0x04000320, 0xC6002980, 0xA0039000, 0x0084C54C,
@@ -139,7 +139,7 @@ static const unsigned int _StringsDefault2[] =
 };
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault3[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault3[] =
 {
   0x0000002A, /* ratio 114.29 % */
   0xB8002700, 0x000AE452, 0x00D20039, 0x0CA003A0, 0xC8001000, 0xA003A800, 0x7900454D,
@@ -270,13 +270,13 @@ static const XStringRes _Const005C = { _StringsDefault3, 0x0002 };
 void DevelopmentDEV_Main__Init( DevelopmentDEV_Main _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_Main );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DevelopmentDEV_Main );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DevelopmentDEV_Main );
+  _this->_.VMT = EW_CLASS( DevelopmentDEV_Main );
 
   /* ... and initialize objects, variables, properties, etc. */
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 12 );
@@ -300,17 +300,17 @@ void DevelopmentDEV_Main__Init( DevelopmentDEV_Main _this, XObject aLink, XHandl
 void DevelopmentDEV_Main__ReInit( DevelopmentDEV_Main _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Development::DEV_Main' */
 void DevelopmentDEV_Main__Done( DevelopmentDEV_Main _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Development::DEV_Main.LoadItemClass()' */
@@ -320,8 +320,6 @@ XClass DevelopmentDEV_Main_LoadItemClass( DevelopmentDEV_Main _this, XInt32 aIte
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  ItemClass = 0;
 
   switch ( aItemNo )
   {
@@ -343,9 +341,7 @@ XString DevelopmentDEV_Main_LoadItemTitle( DevelopmentDEV_Main _this, XInt32 aIt
   XString Title = 0;
 
   if ( aItemNo < 12 )
-  {
     Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 12 )];
-  }
 
   return Title;
 }
@@ -360,19 +356,13 @@ void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItem
   switch ( aItemNo )
   {
     case 0 :
-    {
       if ( EnumOperationModeFACTORY == DeviceInterfaceSystemDeviceClass_OnGetOperationMode( 
           EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))
-      {
         DeviceInterfaceSystemDeviceClass_OnSetOperationMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
         DeviceInterfaceSystemDeviceClass ), EnumOperationModeNORMAL );
-      }
       else
-      {
         DeviceInterfaceSystemDeviceClass_OnSetOperationMode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
         DeviceInterfaceSystemDeviceClass ), EnumOperationModeFACTORY );
-      }
-    }
     break;
 
     case 1 :
@@ -436,15 +426,12 @@ void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItem
       XInt32 i;
 
       for ( i = 0; i < 3; i++ )
-      {
         DeviceInterfaceVehicleDeviceClass_NotifyDataReceived( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
         DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeYDT_DETECTED );
-      }
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -469,8 +456,7 @@ XBool DevelopmentDEV_Main_LoadItemChecked( DevelopmentDEV_Main _this, XInt32 aIt
       IsChecked = EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode;
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return IsChecked;
@@ -482,7 +468,7 @@ EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_Main )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_Main' */
 EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, ItemTitleArray, ItemTitleArray, 
-                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _None, "Development::DEV_Main" )
+                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _.VMT, "Development::DEV_Main" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -547,17 +533,17 @@ EW_END_OF_CLASS( DevelopmentDEV_Main )
 void DevelopmentDEV_RealTimeClock__Init( DevelopmentDEV_RealTimeClock _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_RealTimeClock );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DevelopmentDEV_RealTimeClock );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->OnUpdateLocalTimeEventHandler, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TimeText, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->OnUpdateLocalTimeEventHandler, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TimeText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DevelopmentDEV_RealTimeClock );
+  _this->_.VMT = EW_CLASS( DevelopmentDEV_RealTimeClock );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const000C );
@@ -577,7 +563,7 @@ void DevelopmentDEV_RealTimeClock__Init( DevelopmentDEV_RealTimeClock _this, XOb
 void DevelopmentDEV_RealTimeClock__ReInit( DevelopmentDEV_RealTimeClock _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->OnUpdateLocalTimeEventHandler );
@@ -588,14 +574,14 @@ void DevelopmentDEV_RealTimeClock__ReInit( DevelopmentDEV_RealTimeClock _this )
 void DevelopmentDEV_RealTimeClock__Done( DevelopmentDEV_RealTimeClock _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->OnUpdateLocalTimeEventHandler );
   ViewsText__Done( &_this->TimeText );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Development::DEV_RealTimeClock.OnShortHomeKeyActivated()' */
@@ -633,7 +619,7 @@ EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_RealTimeClock )
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_RealTimeClock' */
 EW_DEFINE_CLASS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG, OnUpdateLocalTimeEventHandler, 
                  OnUpdateLocalTimeEventHandler, OnUpdateLocalTimeEventHandler, OnUpdateLocalTimeEventHandler, 
-                 _None, _None, "Development::DEV_RealTimeClock" )
+                 _.VMT, _.VMT, "Development::DEV_RealTimeClock" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -682,17 +668,17 @@ EW_END_OF_CLASS( DevelopmentDEV_RealTimeClock )
 void DevelopmentDEV_Bluetooth__Init( DevelopmentDEV_Bluetooth _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_Bluetooth );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DevelopmentDEV_Bluetooth );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->BtSwVersionTitle, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->BtSwVersionText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->BtSwVersionTitle, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->BtSwVersionText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DevelopmentDEV_Bluetooth );
+  _this->_.VMT = EW_CLASS( DevelopmentDEV_Bluetooth );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const000C );
@@ -715,7 +701,7 @@ void DevelopmentDEV_Bluetooth__Init( DevelopmentDEV_Bluetooth _this, XObject aLi
 void DevelopmentDEV_Bluetooth__ReInit( DevelopmentDEV_Bluetooth _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->BtSwVersionTitle );
@@ -726,14 +712,14 @@ void DevelopmentDEV_Bluetooth__ReInit( DevelopmentDEV_Bluetooth _this )
 void DevelopmentDEV_Bluetooth__Done( DevelopmentDEV_Bluetooth _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->BtSwVersionTitle );
   ViewsText__Done( &_this->BtSwVersionText );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Development::DEV_Bluetooth.OnShortHomeKeyActivated()' */
@@ -749,7 +735,7 @@ EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_Bluetooth )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_Bluetooth' */
 EW_DEFINE_CLASS( DevelopmentDEV_Bluetooth, ComponentsBaseMainBG, BtSwVersionTitle, 
-                 BtSwVersionTitle, BtSwVersionTitle, BtSwVersionTitle, _None, _None, 
+                 BtSwVersionTitle, BtSwVersionTitle, BtSwVersionTitle, _.VMT, _.VMT, 
                  "Development::DEV_Bluetooth" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
@@ -799,18 +785,18 @@ EW_END_OF_CLASS( DevelopmentDEV_Bluetooth )
 void DevelopmentDEV_TFTBrightness__Init( DevelopmentDEV_TFTBrightness _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_TFTBrightness );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DevelopmentDEV_TFTBrightness );
 
   /* ... then construct all embedded objects */
-  ViewsWallpaper__Init( &_this->ChessboardImage, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->LevelText, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->HideLevelTimer, &_this->_XObject, 0 );
+  ViewsWallpaper__Init( &_this->ChessboardImage, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->LevelText, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->HideLevelTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DevelopmentDEV_TFTBrightness );
+  _this->_.VMT = EW_CLASS( DevelopmentDEV_TFTBrightness );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const000C );
@@ -846,7 +832,7 @@ void DevelopmentDEV_TFTBrightness__Init( DevelopmentDEV_TFTBrightness _this, XOb
 void DevelopmentDEV_TFTBrightness__ReInit( DevelopmentDEV_TFTBrightness _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsWallpaper__ReInit( &_this->ChessboardImage );
@@ -858,7 +844,7 @@ void DevelopmentDEV_TFTBrightness__ReInit( DevelopmentDEV_TFTBrightness _this )
 void DevelopmentDEV_TFTBrightness__Done( DevelopmentDEV_TFTBrightness _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsWallpaper__Done( &_this->ChessboardImage );
@@ -866,7 +852,7 @@ void DevelopmentDEV_TFTBrightness__Done( DevelopmentDEV_TFTBrightness _this )
   CoreTimer__Done( &_this->HideLevelTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -909,13 +895,9 @@ void DevelopmentDEV_TFTBrightness_UpdateViewState( DevelopmentDEV_TFTBrightness 
   if ( App != 0 )
   {
     if ((( aState & CoreViewStateDialog ) == CoreViewStateDialog ))
-    {
       ApplicationApplication_OnSetStatusBarVisible( App, 0 );
-    }
     else
-    {
       ApplicationApplication_OnSetStatusBarVisible( App, 1 );
-    }
   }
 }
 
@@ -925,13 +907,9 @@ void DevelopmentDEV_TFTBrightness_OnShortDownKeyActivated( DevelopmentDEV_TFTBri
   XInt32 NextBrightnessLevel = _this->BrightnessLevel - 1;
 
   if ( 0 <= NextBrightnessLevel )
-  {
     DevelopmentDEV_TFTBrightness_OnSetBrightnessLevel( _this, NextBrightnessLevel );
-  }
   else
-  {
     DevelopmentDEV_TFTBrightness_ShowLevelText( _this );
-  }
 }
 
 /* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortUpKeyActivated()' */
@@ -940,13 +918,9 @@ void DevelopmentDEV_TFTBrightness_OnShortUpKeyActivated( DevelopmentDEV_TFTBrigh
   XInt32 NextBrightnessLevel = _this->BrightnessLevel + 1;
 
   if ( 11 > NextBrightnessLevel )
-  {
     DevelopmentDEV_TFTBrightness_OnSetBrightnessLevel( _this, NextBrightnessLevel );
-  }
   else
-  {
     DevelopmentDEV_TFTBrightness_ShowLevelText( _this );
-  }
 }
 
 /* 'C' function for method : 'Development::DEV_TFTBrightness.OnShortHomeKeyActivated()' */
@@ -969,10 +943,8 @@ void DevelopmentDEV_TFTBrightness_OnSetBrightnessLevel( DevelopmentDEV_TFTBright
 
     if ( EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->BrightnessLevel 
         != value )
-    {
       EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->BrightnessLevel 
       = value;
-    }
 
     DeviceInterfaceSystemDeviceClass_SetTFTDutyCycle( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
     DeviceInterfaceSystemDeviceClass ), _this->BrightnessList[ EwCheckIndex( _this->BrightnessLevel, 
@@ -1054,13 +1026,13 @@ EW_END_OF_CLASS( DevelopmentDEV_TFTBrightness )
 void DevelopmentDEV_MotoCon__Init( DevelopmentDEV_MotoCon _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_MotoCon );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DevelopmentDEV_MotoCon );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DevelopmentDEV_MotoCon );
+  _this->_.VMT = EW_CLASS( DevelopmentDEV_MotoCon );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const000C );
@@ -1101,17 +1073,17 @@ void DevelopmentDEV_MotoCon__Init( DevelopmentDEV_MotoCon _this, XObject aLink, 
 void DevelopmentDEV_MotoCon__ReInit( DevelopmentDEV_MotoCon _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Development::DEV_MotoCon' */
 void DevelopmentDEV_MotoCon__Done( DevelopmentDEV_MotoCon _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Development::DEV_MotoCon.OnShortHomeKeyActivated()' */
@@ -1139,9 +1111,7 @@ XString DevelopmentDEV_MotoCon_LoadItemTitle( DevelopmentDEV_MotoCon _this, XInt
   XString Title = 0;
 
   if ( aItemNo < 28 )
-  {
     Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 28 )];
-  }
 
   return Title;
 }
@@ -1163,7 +1133,7 @@ EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_MotoCon )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_MotoCon' */
 EW_DEFINE_CLASS( DevelopmentDEV_MotoCon, MenuBaseMenuView, ItemTitleArray, ItemTitleArray, 
-                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _None, "Development::DEV_MotoCon" )
+                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _.VMT, "Development::DEV_MotoCon" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1228,13 +1198,13 @@ EW_END_OF_CLASS( DevelopmentDEV_MotoCon )
 void DevelopmentDEV_VehicleSupportedFunction__Init( DevelopmentDEV_VehicleSupportedFunction _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_VehicleSupportedFunction );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DevelopmentDEV_VehicleSupportedFunction );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DevelopmentDEV_VehicleSupportedFunction );
+  _this->_.VMT = EW_CLASS( DevelopmentDEV_VehicleSupportedFunction );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const000C );
@@ -1276,17 +1246,17 @@ void DevelopmentDEV_VehicleSupportedFunction__Init( DevelopmentDEV_VehicleSuppor
 void DevelopmentDEV_VehicleSupportedFunction__ReInit( DevelopmentDEV_VehicleSupportedFunction _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Development::DEV_VehicleSupportedFunction' */
 void DevelopmentDEV_VehicleSupportedFunction__Done( DevelopmentDEV_VehicleSupportedFunction _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.OnShortHomeKeyActivated()' */
@@ -1302,9 +1272,7 @@ XClass DevelopmentDEV_VehicleSupportedFunction_LoadItemClass( DevelopmentDEV_Veh
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return EW_CLASS( MenuItemCheckbox );
 }
@@ -1316,9 +1284,7 @@ XString DevelopmentDEV_VehicleSupportedFunction_LoadItemTitle( DevelopmentDEV_Ve
   XString Title = 0;
 
   if ( aItemNo < 28 )
-  {
     Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 28 )];
-  }
 
   return Title;
 }
@@ -1332,9 +1298,7 @@ void DevelopmentDEV_VehicleSupportedFunction_OnItemActivate( DevelopmentDEV_Vehi
   XInt32 VehicleFeatureNum;
 
   if ( CheckBoxItem != 0 )
-  {
     IsChecked = CheckBoxItem->Checked;
-  }
 
   VehicleFeatureNum = 27;
   {
@@ -1353,10 +1317,8 @@ void DevelopmentDEV_VehicleSupportedFunction_OnItemActivate( DevelopmentDEV_Vehi
   }
 
   if ( 0 == aItemNo )
-  {
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 1, _this->Super1.Menu.NoOfItems 
     - 1 );
-  }
 }
 
 /* 'C' function for method : 'Development::DEV_VehicleSupportedFunction.LoadItemChecked()' */
@@ -1368,31 +1330,25 @@ XBool DevelopmentDEV_VehicleSupportedFunction_LoadItemChecked( DevelopmentDEV_Ve
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  IsChecked = 0;
-
   if ( 0 == aItemNo )
   {
     XBool IsAllEnabled = 1;
     XInt32 i;
 
     for ( i = 0; i < 27; i++ )
-    {
       if ( !DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
           &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), (XEnum)i ))
       {
         IsAllEnabled = 0;
         break;
       }
-    }
 
     IsChecked = IsAllEnabled;
   }
   else
-  {
     IsChecked = DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
     &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), (XEnum)( 
     aItemNo - 1 ));
-  }
 
   return IsChecked;
 }
@@ -1404,7 +1360,7 @@ EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_VehicleSupportedFunction )
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_VehicleSupportedFunction' */
 EW_DEFINE_CLASS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView, ItemTitleArray, 
                  ItemTitleArray, ItemTitleArray, ItemTitleArray, ItemTitleArray, 
-                 _None, "Development::DEV_VehicleSupportedFunction" )
+                 _.VMT, "Development::DEV_VehicleSupportedFunction" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1469,13 +1425,13 @@ EW_END_OF_CLASS( DevelopmentDEV_VehicleSupportedFunction )
 void DevelopmentDEV_FontMenu__Init( DevelopmentDEV_FontMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_FontMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DevelopmentDEV_FontMenu );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DevelopmentDEV_FontMenu );
+  _this->_.VMT = EW_CLASS( DevelopmentDEV_FontMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 6 );
@@ -1493,17 +1449,17 @@ void DevelopmentDEV_FontMenu__Init( DevelopmentDEV_FontMenu _this, XObject aLink
 void DevelopmentDEV_FontMenu__ReInit( DevelopmentDEV_FontMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Development::DEV_FontMenu' */
 void DevelopmentDEV_FontMenu__Done( DevelopmentDEV_FontMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Development::DEV_FontMenu.LoadItemClass()' */
@@ -1512,9 +1468,7 @@ XClass DevelopmentDEV_FontMenu_LoadItemClass( DevelopmentDEV_FontMenu _this, XIn
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return EW_CLASS( MenuItemBase );
 }
@@ -1526,9 +1480,7 @@ XString DevelopmentDEV_FontMenu_LoadItemTitle( DevelopmentDEV_FontMenu _this, XI
   XString Title = 0;
 
   if ( aItemNo < 6 )
-  {
     Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 6 )];
-  }
 
   return Title;
 }
@@ -1594,8 +1546,7 @@ void DevelopmentDEV_FontMenu_OnItemActivate( DevelopmentDEV_FontMenu _this, XInt
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)Dialog ));
@@ -1607,7 +1558,7 @@ EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_FontMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_FontMenu' */
 EW_DEFINE_CLASS( DevelopmentDEV_FontMenu, MenuBaseMenuView, ItemTitleArray, ItemTitleArray, 
-                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _None, "Development::DEV_FontMenu" )
+                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _.VMT, "Development::DEV_FontMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1672,16 +1623,16 @@ EW_END_OF_CLASS( DevelopmentDEV_FontMenu )
 void DevelopmentDEV_FontTest__Init( DevelopmentDEV_FontTest _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_FontTest );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DevelopmentDEV_FontTest );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Text, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Text, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DevelopmentDEV_FontTest );
+  _this->_.VMT = EW_CLASS( DevelopmentDEV_FontTest );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.SlideOutEffectEnabled = 1;
@@ -1700,7 +1651,7 @@ void DevelopmentDEV_FontTest__Init( DevelopmentDEV_FontTest _this, XObject aLink
 void DevelopmentDEV_FontTest__ReInit( DevelopmentDEV_FontTest _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Text );
@@ -1710,13 +1661,13 @@ void DevelopmentDEV_FontTest__ReInit( DevelopmentDEV_FontTest _this )
 void DevelopmentDEV_FontTest__Done( DevelopmentDEV_FontTest _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Text );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Development::DEV_FontTest.OnShortDownKeyActivated()' */
@@ -1726,10 +1677,8 @@ void DevelopmentDEV_FontTest_OnShortDownKeyActivated( DevelopmentDEV_FontTest _t
   XPoint _tmpJ0;
   if (( EwGetInt32Abs( _this->Text.ScrollOffset.Y ) + _this->PageScrollOffset ) 
       < ( ViewsText_GetNoOfRows( &_this->Text ) * _this->RowDistance ))
-  {
     ( _tmpJ0 = _this->Text.ScrollOffset, ViewsText_OnSetScrollOffset( &_this->Text, 
     EwSetPointY( _tmpJ0, _tmpJ0.Y - _this->PageScrollOffset )));
-  }
 }
 
 /* 'C' function for method : 'Development::DEV_FontTest.OnShortUpKeyActivated()' */
@@ -1738,10 +1687,8 @@ void DevelopmentDEV_FontTest_OnShortUpKeyActivated( DevelopmentDEV_FontTest _thi
   XInt32 OffsetY = _this->Text.ScrollOffset.Y + _this->PageScrollOffset;
 
   if ( OffsetY <= 0 )
-  {
     ViewsText_OnSetScrollOffset( &_this->Text, EwSetPointY( _this->Text.ScrollOffset, 
     OffsetY ));
-  }
 }
 
 /* 'C' function for method : 'Development::DEV_FontTest.OnSetTestFont()' */
@@ -1754,9 +1701,7 @@ void DevelopmentDEV_FontTest_OnSetTestFont( DevelopmentDEV_FontTest _this, Resou
     ViewsText_OnSetFont( &_this->Text, value );
 
     if ( EwLoadResource( &FontsNotoSansCjkJpMedium28pt, ResourcesFont ) == value )
-    {
       _this->RowDistance = 36;
-    }
 
     _this->PageScrollOffset = ( EwGetRectH( _this->Text.Super1.Bounds ) / _this->RowDistance ) 
     * _this->RowDistance;
@@ -1830,13 +1775,13 @@ EW_END_OF_CLASS( DevelopmentDEV_FontTest )
 void DevelopmentDEV_EEPROMTest__Init( DevelopmentDEV_EEPROMTest _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( DevelopmentDEV_EEPROMTest );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DevelopmentDEV_EEPROMTest );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( DevelopmentDEV_EEPROMTest );
+  _this->_.VMT = EW_CLASS( DevelopmentDEV_EEPROMTest );
 
   /* ... and initialize objects, variables, properties, etc. */
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 5 );
@@ -1854,17 +1799,17 @@ void DevelopmentDEV_EEPROMTest__Init( DevelopmentDEV_EEPROMTest _this, XObject a
 void DevelopmentDEV_EEPROMTest__ReInit( DevelopmentDEV_EEPROMTest _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Development::DEV_EEPROMTest' */
 void DevelopmentDEV_EEPROMTest__Done( DevelopmentDEV_EEPROMTest _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Development::DEV_EEPROMTest.LoadItemClass()' */
@@ -1885,9 +1830,7 @@ XString DevelopmentDEV_EEPROMTest_LoadItemTitle( DevelopmentDEV_EEPROMTest _this
   XString Title = 0;
 
   if ( aItemNo < 5 )
-  {
     Title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 5 )];
-  }
 
   return Title;
 }
@@ -1912,7 +1855,7 @@ EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_EEPROMTest )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_EEPROMTest' */
 EW_DEFINE_CLASS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView, ItemTitleArray, ItemTitleArray, 
-                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _None, "Development::DEV_EEPROMTest" )
+                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _.VMT, "Development::DEV_EEPROMTest" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

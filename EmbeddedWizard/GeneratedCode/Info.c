@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -45,7 +45,7 @@
 #include "Strings.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x00000038, /* ratio 92.86 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x004E8300, 0x03000118, 0x18000C40,
@@ -81,16 +81,16 @@ static const XStringRes _Const0001 = { _StringsDefault0, 0x000F };
 void InfoINF01_MeterDisplaySettingMenu__Init( InfoINF01_MeterDisplaySettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( InfoINF01_MeterDisplaySettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( InfoINF01_MeterDisplaySettingMenu );
 
   /* ... then construct all embedded objects */
-  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( InfoINF01_MeterDisplaySettingMenu );
+  _this->_.VMT = EW_CLASS( InfoINF01_MeterDisplaySettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super2.SlideOutEffectEnabled = 1;
@@ -110,7 +110,7 @@ void InfoINF01_MeterDisplaySettingMenu__Init( InfoINF01_MeterDisplaySettingMenu 
 void InfoINF01_MeterDisplaySettingMenu__ReInit( InfoINF01_MeterDisplaySettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
@@ -120,13 +120,13 @@ void InfoINF01_MeterDisplaySettingMenu__ReInit( InfoINF01_MeterDisplaySettingMen
 void InfoINF01_MeterDisplaySettingMenu__Done( InfoINF01_MeterDisplaySettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->CheckMarkUpdateTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -166,9 +166,7 @@ void InfoINF01_MeterDisplaySettingMenu_UpdateViewState( InfoINF01_MeterDisplaySe
     HomeBaseHome HomeDialog = EwCastObject( _this->Super6.Owner, HomeBaseHome );
 
     if ( HomeDialog != 0 )
-    {
       _this->Super2.SlideOutEffectEnabled = 0;
-    }
   }
 }
 
@@ -178,9 +176,7 @@ XClass InfoINF01_MeterDisplaySettingMenu_LoadItemClass( InfoINF01_MeterDisplaySe
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( !!aItemNo )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return EW_CLASS( MenuItemCheckMark );
 }
@@ -192,9 +188,7 @@ XString InfoINF01_MeterDisplaySettingMenu_LoadItemTitle( InfoINF01_MeterDisplayS
   XString title = 0;
 
   if ( aItemNo < 3 )
-  {
     title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 3 )];
-  }
 
   return title;
 }
@@ -203,8 +197,8 @@ XString InfoINF01_MeterDisplaySettingMenu_LoadItemTitle( InfoINF01_MeterDisplayS
 void InfoINF01_MeterDisplaySettingMenu_OnItemActivate( InfoINF01_MeterDisplaySettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  if ( aMenuItem == 0 )
-    ;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aMenuItem );
 
   _this->SelectedHomeType = EnumHomeTypeTOTAL;
 
@@ -234,8 +228,7 @@ void InfoINF01_MeterDisplaySettingMenu_OnItemActivate( InfoINF01_MeterDisplaySet
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
@@ -257,37 +250,24 @@ XBool InfoINF01_MeterDisplaySettingMenu_LoadItemChecked( InfoINF01_MeterDisplayS
   switch ( aItemNo )
   {
     case 0 :
-    {
       if ( EnumMeterDisplayTACHOMETER == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay )
-      {
         checked = 1;
-      }
-    }
     break;
 
     case 1 :
-    {
       if ( EnumMeterDisplayECHO_METER == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay )
-      {
         checked = 1;
-      }
-    }
     break;
 
     case 2 :
-    {
       if ( EnumMeterDisplaySPEED_METER == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentMeterDisplay )
-      {
         checked = 1;
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return checked;
@@ -305,9 +285,7 @@ void InfoINF01_MeterDisplaySettingMenu_OnCheckMarkUpdateSlot( InfoINF01_MeterDis
     ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
     if ( App != 0 )
-    {
       ApplicationApplication_SwitchToHome( App, _this->SelectedHomeType );
-    }
   }
 }
 
@@ -383,17 +361,17 @@ EW_END_OF_CLASS( InfoINF01_MeterDisplaySettingMenu )
 void InfoINF26_ODO_TRIP_SettingMenu__Init( InfoINF26_ODO_TRIP_SettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( InfoINF26_ODO_TRIP_SettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( InfoINF26_ODO_TRIP_SettingMenu );
 
   /* ... then construct all embedded objects */
-  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreTimer__Init( &_this->CheckMarkUpdateTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( InfoINF26_ODO_TRIP_SettingMenu );
+  _this->_.VMT = EW_CLASS( InfoINF26_ODO_TRIP_SettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
@@ -418,7 +396,7 @@ void InfoINF26_ODO_TRIP_SettingMenu__Init( InfoINF26_ODO_TRIP_SettingMenu _this,
 void InfoINF26_ODO_TRIP_SettingMenu__ReInit( InfoINF26_ODO_TRIP_SettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreTimer__ReInit( &_this->CheckMarkUpdateTimer );
@@ -429,14 +407,14 @@ void InfoINF26_ODO_TRIP_SettingMenu__ReInit( InfoINF26_ODO_TRIP_SettingMenu _thi
 void InfoINF26_ODO_TRIP_SettingMenu__Done( InfoINF26_ODO_TRIP_SettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreTimer__Done( &_this->CheckMarkUpdateTimer );
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -489,8 +467,7 @@ XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemTitle( InfoINF26_ODO_TRIP_Setting
       Title = EwLoadString( &StringsINF26_TRIP_F );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return Title;
@@ -504,9 +481,7 @@ void InfoINF26_ODO_TRIP_SettingMenu_OnItemActivate( InfoINF26_ODO_TRIP_SettingMe
   EW_UNUSED_ARG( aMenuItem );
 
   if ( _this->SelectedItem == _this->SupportedSetting[ EwCheckIndex( aItemNo, 4 )])
-  {
     CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-  }
   else
   {
     _this->IsWaitingForResponse = 1;
@@ -523,9 +498,7 @@ XBool InfoINF26_ODO_TRIP_SettingMenu_LoadItemChecked( InfoINF26_ODO_TRIP_Setting
   XBool checked = 0;
 
   if ( _this->SelectedItem == _this->SupportedSetting[ EwCheckIndex( aItemNo, 4 )])
-  {
     checked = 1;
-  }
 
   return checked;
 }
@@ -551,8 +524,7 @@ XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemUnit( InfoINF26_ODO_TRIP_SettingM
       UnitString = EwLoadString( &StringsUNT02_UNIT_MILEAGE_MILE );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return UnitString;
@@ -595,9 +567,7 @@ XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemValue( InfoINF26_ODO_TRIP_Setting
   if ( VehicleData->Valid )
   {
     if ( EnumMileageSettingItemMILE == _this->MileageSetting )
-    {
       VehicleData->DataFloat *= 0.625000f;
-    }
 
     switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 4 )])
     {
@@ -628,16 +598,13 @@ XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemValue( InfoINF26_ODO_TRIP_Setting
         VehicleData->DataFloat, 0.000000f, 999.900024f );
       break;
 
-      default : 
-        ;
+      default :; 
     }
 
     Value = EwNewStringFloat( VehicleData->DataFloat, 0, NumOfDecimalDigits );
   }
   else
-  {
     Value = EwLoadString( &StringsGEN_THREE_HYPHENS );
-  }
 
   return Value;
 }
@@ -680,13 +647,9 @@ void InfoINF26_ODO_TRIP_SettingMenu_GetMileageSetting( InfoINF26_ODO_TRIP_Settin
     EnumVehicleRxTypeMILEAGE_UNIT );
 
   if ( 1 == VehicleData->DataUInt32 )
-  {
     _this->MileageSetting = EnumMileageSettingItemMILE;
-  }
   else
-  {
     _this->MileageSetting = EnumMileageSettingItemKM;
-  }
 }
 
 /* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.SetNoOfMenuItems()' */
@@ -703,7 +666,6 @@ void InfoINF26_ODO_TRIP_SettingMenu_SetNoOfMenuItems( InfoINF26_ODO_TRIP_Setting
     switch ( SettingItem )
     {
       case EnumMeterInfoTRIP1 :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionTRIP1 ))
@@ -711,11 +673,9 @@ void InfoINF26_ODO_TRIP_SettingMenu_SetNoOfMenuItems( InfoINF26_ODO_TRIP_Setting
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 4 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumMeterInfoTRIP2 :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionTRIP2 ))
@@ -723,11 +683,9 @@ void InfoINF26_ODO_TRIP_SettingMenu_SetNoOfMenuItems( InfoINF26_ODO_TRIP_Setting
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 4 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumMeterInfoTRIP_F :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionF_TRIP ))
@@ -735,7 +693,6 @@ void InfoINF26_ODO_TRIP_SettingMenu_SetNoOfMenuItems( InfoINF26_ODO_TRIP_Setting
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 4 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       default : 
@@ -778,8 +735,7 @@ void InfoINF26_ODO_TRIP_SettingMenu_GetSelectedOdoTrip( InfoINF26_ODO_TRIP_Setti
         _this->SelectedItem = EnumMeterInfoTRIP_F;
       break;
 
-      default : 
-        ;
+      default :; 
     }
   }
 }

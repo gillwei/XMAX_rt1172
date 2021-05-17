@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -36,7 +36,7 @@
 #include "YDT.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x0000001E, /* ratio 133.33 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x88002C80, 0x0002A000, 0x00188006,
@@ -52,18 +52,18 @@ static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
 void YDTYDT01_Main__Init( YDTYDT01_Main _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( YDTYDT01_Main );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( YDTYDT01_Main );
 
   /* ... then construct all embedded objects */
-  MenuPushButton__Init( &_this->PushButton, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->Text, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->DisableTimer, &_this->_XObject, 0 );
+  MenuPushButton__Init( &_this->PushButton, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->Text, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->DisableTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( YDTYDT01_Main );
+  _this->_.VMT = EW_CLASS( YDTYDT01_Main );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->PushButton, _Const0000 );
@@ -88,7 +88,7 @@ void YDTYDT01_Main__Init( YDTYDT01_Main _this, XObject aLink, XHandle aArg )
 void YDTYDT01_Main__ReInit( YDTYDT01_Main _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   MenuPushButton__ReInit( &_this->PushButton );
@@ -100,7 +100,7 @@ void YDTYDT01_Main__ReInit( YDTYDT01_Main _this )
 void YDTYDT01_Main__Done( YDTYDT01_Main _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   MenuPushButton__Done( &_this->PushButton );
@@ -108,7 +108,7 @@ void YDTYDT01_Main__Done( YDTYDT01_Main _this )
   CoreTimer__Done( &_this->DisableTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -170,7 +170,7 @@ EW_END_OF_CLASS_VARIANTS( YDTYDT01_Main )
 
 /* Virtual Method Table (VMT) for the class : 'YDT::YDT01_Main' */
 EW_DEFINE_CLASS( YDTYDT01_Main, ComponentsBaseMainBG, PushButton, PushButton, PushButton, 
-                 PushButton, _None, _None, "YDT::YDT01_Main" )
+                 PushButton, _.VMT, _.VMT, "YDT::YDT01_Main" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

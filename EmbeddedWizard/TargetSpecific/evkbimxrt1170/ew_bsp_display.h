@@ -24,6 +24,11 @@
 *   target.
 *   This template is responsible to initialize the display hardware of the board
 *   and to provide the necessary access to update the display content.
+*   The color format of the framebuffer has to correspond to the color format
+*   of the Graphics Engine.
+*
+*   Important: This file is intended to be used as a template. Please adapt the
+*   implementation according your particular hardware.
 *
 *******************************************************************************/
 
@@ -63,26 +68,27 @@
 *     it refers to the first framebuffer (not the currently active front-buffer).
 *     If the display is updated from a scrach-pad buffer, the pointer refers to
 *     the scratch-pad buffer memory.
-*   DoubleBuffer   - Pointer to the second framebuffer or scratch-pad buffer in
-*     case of double-buffering.
-*   BufferWidth    - Width of the framebuffer(s) / scratch-pad buffer(s) in pixel.
-*   BufferHeight   - Height of the framebuffer(s) / scratch-pad buffer(s) in pixel.
-*   DisplayWidth   - Width of the display in pixel.
-*   DisplayHeight  - Height of the display in pixel.
+*   DoubleBuffer   - Pointer to the second framebuffer in case of double-buffering.
+*     If the display is updated from a scrach-pad buffer, the pointer refers to
+*     the second scratch-pad buffer memory in case of double-buffering.
+*   BufferWidth,
+*   BufferHeight   - Size of the framebuffer(s) / scratch-pad buffer(s) in pixel.
+*   DisplayWidth,
+*   DisplayHeight  - Size of the display in pixel.
 *   UpdateMode     - The display update mode (normal, partial, scratch-pad).
 *   Context        - Optional pointer to a target specific struct.
 *
 ******************************************************************************/
 typedef struct
 {
-  void* FrameBuffer;
-  void* DoubleBuffer;
-  int   BufferWidth;
-  int   BufferHeight;
-  int   DisplayWidth;
-  int   DisplayHeight;
-  int   UpdateMode;
-  void* Context;
+  void*             FrameBuffer;
+  void*             DoubleBuffer;
+  int               BufferWidth;
+  int               BufferHeight;
+  int               DisplayWidth;
+  int               DisplayHeight;
+  int               UpdateMode;
+  void*             Context;
 } XDisplayInfo;
 
 
@@ -95,6 +101,8 @@ typedef struct
 *   the display parameter.
 *
 * ARGUMENTS:
+*   aGuiWidth,
+*   aGuiHeight   - Size of the GUI in pixel.
 *   aDisplayInfo - Display info data structure.
 *
 * RETURN VALUE:
@@ -103,7 +111,9 @@ typedef struct
 *******************************************************************************/
 int EwBspDisplayInit
 (
-  XDisplayInfo*               aDisplayInfo
+  int               aGuiWidth,
+  int               aGuiHeight,
+  XDisplayInfo*     aDisplayInfo
 );
 
 
@@ -115,7 +125,7 @@ int EwBspDisplayInit
 *   The function EwBspDisplayDone deinitializes the display hardware.
 *
 * ARGUMENTS:
-*   None
+*   aDisplayInfo - Display info data structure.
 *
 * RETURN VALUE:
 *   None
@@ -123,7 +133,7 @@ int EwBspDisplayInit
 *******************************************************************************/
 void EwBspDisplayDone
 (
-  void
+  XDisplayInfo*     aDisplayInfo
 );
 
 
@@ -150,7 +160,7 @@ void EwBspDisplayDone
 *******************************************************************************/
 int EwBspDisplayGetUpdateArea
 (
-  XRect* aUpdateRect
+  XRect*            aUpdateRect
 );
 
 
@@ -208,11 +218,11 @@ void EwBspDisplayWaitForCompletion
 *******************************************************************************/
 void EwBspDisplayCommitBuffer
 (
-  void*                       aAddress,
-  int                         aX,
-  int                         aY,
-  int                         aWidth,
-  int                         aHeight
+  void*             aAddress,
+  int               aX,
+  int               aY,
+  int               aWidth,
+  int               aHeight
 );
 
 
@@ -235,7 +245,7 @@ void EwBspDisplayCommitBuffer
 *******************************************************************************/
 void EwBspDisplaySetClut
 (
-  unsigned long*              aClut
+  unsigned long*    aClut
 );
 
 

@@ -401,6 +401,68 @@ void EwFntDone
 
 /*******************************************************************************
 * FUNCTION:
+*   EwFntGetResource
+*
+* DESCRIPTION:
+*   The function EwFntGetResource() has the job to find or create a new resource
+*   descriptor matching the attributes specified in the function parameters. The
+*   returned resource can thereupon be passed to EwLoadFont() function in order
+*   to use the font.
+*
+*   Please note: this function allows the caller to flexibly create fonts on
+*   target systems supporting a TrueType font engine. In the case, you are using
+*   the version without TrueType font engine integration, all fonts are already
+*   stored as prerasterized glyphs. Dynamic creation of a font with different
+*   attributes is in such case not possible and the function will return null.
+*
+* ARGUMENTS:
+*   aName        - A unique name of the TrueType font stored as zero terminated
+*     ASCII string (e.g. "Arial"). The function limits the evaluation to the
+*     first 31 characters from the string.
+*   aHeight      - The desired height of the font in pixel.
+*   aBold        - This parameter determines, whether a bold or a normal style
+*     of the font should be used at the runtime. A bold font will be used if
+*     this parameter contains a value != 0.
+*   aItalic      - This parameter determines, whether an italic or a normal
+*     style of the font should be used at the runtime. An italic font is used
+*     if this parameter contains a value != 0.
+*   aAspectRatio - The AspectRatio parameter defines the desired aspect ratio
+*     of the font in the range from 0.25 to 4.0. The default value is 1.0 - in
+*     this case the aspect ratio of the font corresponds to the origin design
+*     of the font.
+*   aNoOfColors  - Desired quality of the font glyphs to raster. Only the 
+*     values 2, 4 or 16 are valid.
+*   aKerning     - Determines whether kerning data should be used for this
+*     font. In such case the value has to be != 0.
+*   aRowDistance - The desired distance between two consecutive text rows. If
+*     the value is == 0, the distance is calculated on the base of the font
+*     metrics.
+*   aPopularMode - If != 0, calculate the font size similarly to how other
+*     application it does. If == 0, the mode compatible to older Embedded
+*     Wizard version is used.
+*
+* RETURN VALUE:
+*   Returns a pointer to a data structure representing the font resource. If
+*   the target system does not support the dynamic font creation, the function
+*   will return null.
+*
+*******************************************************************************/
+const struct XFntRes* EwFntGetResource
+(
+  const char*       aName,
+  int               aHeight,
+  int               aBold,
+  int               aItalic,
+  float             aAspectRatio,
+  int               aNoOfColors,
+  int               aKerning,
+  int               aRowDistance,
+  int               aPopularMode
+);
+
+
+/*******************************************************************************
+* FUNCTION:
 *   EwFntOpen
 *
 * DESCRIPTION:

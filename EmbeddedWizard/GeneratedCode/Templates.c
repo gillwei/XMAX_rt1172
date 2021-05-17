@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -32,30 +32,30 @@
 void TemplatesDeviceClass__Init( TemplatesDeviceClass _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  XObject__Init( &_this->_Super, aLink, aArg );
+  XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( TemplatesDeviceClass );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( TemplatesDeviceClass );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( TemplatesDeviceClass );
+  _this->_.VMT = EW_CLASS( TemplatesDeviceClass );
 }
 
 /* Re-Initializer for the class 'Templates::DeviceClass' */
 void TemplatesDeviceClass__ReInit( TemplatesDeviceClass _this )
 {
   /* At first re-initialize the super class ... */
-  XObject__ReInit( &_this->_Super );
+  XObject__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Templates::DeviceClass' */
 void TemplatesDeviceClass__Done( TemplatesDeviceClass _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( XObject );
+  _this->_.Super._.VMT = EW_CLASS( XObject );
 
   /* Don't forget to deinitialize the super class ... */
-  XObject__Done( &_this->_Super );
+  XObject__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'Templates::DeviceClass' */
@@ -63,8 +63,8 @@ EW_DEFINE_CLASS_VARIANTS( TemplatesDeviceClass )
 EW_END_OF_CLASS_VARIANTS( TemplatesDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'Templates::DeviceClass' */
-EW_DEFINE_CLASS( TemplatesDeviceClass, XObject, _None, _None, _None, _None, _None, 
-                 _None, "Templates::DeviceClass" )
+EW_DEFINE_CLASS( TemplatesDeviceClass, XObject, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "Templates::DeviceClass" )
 EW_END_OF_CLASS( TemplatesDeviceClass )
 
 /* Embedded Wizard */

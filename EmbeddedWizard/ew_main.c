@@ -173,19 +173,19 @@ int EwInit( void )
 
   /* initialize display */
   EwPrint( "Initialize Display...                        " );
-  CHECK_HANDLE( EwBspDisplayInit( &DisplayInfo ));
+  CHECK_HANDLE( EwBspDisplayInit( EwScreenSize.X, EwScreenSize.Y, &DisplayInfo ));
 
   #if EW_MEMORY_POOL_SIZE > 0
-  /* initialize heap manager */
-  EwPrint( "Initialize Memory Manager...                 " );
-  EwInitHeap( 0 );
+    /* initialize heap manager */
+    EwPrint( "Initialize Memory Manager...                 " );
+    EwInitHeap( 0 );
     EwAddHeapMemoryPool( (void*)EW_MEMORY_POOL_ADDR, EW_MEMORY_POOL_SIZE );
 
     #if EW_EXTRA_POOL_SIZE > 0
       EwAddHeapMemoryPool( (void*)EW_EXTRA_POOL_ADDR, EW_EXTRA_POOL_SIZE );
-  #endif
+    #endif
 
-  EwPrint( "[OK]\n" );
+    EwPrint( "[OK]\n" );
   #endif
 
   /* initialize the Graphics Engine and Runtime Environment */
@@ -255,7 +255,10 @@ void EwDone( void )
   EwPrint( "[OK]\n" );
 
   /* deinitialize display */
-  EwBspDisplayDone();
+  EwBspDisplayDone( &DisplayInfo );
+
+  Viewport   = 0;
+  RootObject = 0;
 
   EW_power_update_ignoff_task_status( IGN_OFF_TASK_DISPLAY_OFF );
 }
@@ -441,57 +444,68 @@ static void EwUpdate( XViewport* aViewport, CoreRoot aApplication )
 *******************************************************************************/
 void EwPrintSystemInfo( void )
 {
-EwPrint( "---------------------------------------------\n" );
-EwPrint( "Target system                                %s      \n", PLATFORM_STRING );
-EwPrint( "Color format                                 %s      \n", EW_FRAME_BUFFER_COLOR_FORMAT_STRING );
-#if EW_MEMORY_POOL_SIZE > 0
-EwPrint( "MemoryPool address                           0x%08X  \n", EW_MEMORY_POOL_ADDR );
-EwPrint( "MemoryPool size                              %u bytes\n", EW_MEMORY_POOL_SIZE );
-#endif
-#if EW_EXTRA_POOL_SIZE > 0
-EwPrint( "ExtraPool address                            0x%08X  \n", EW_EXTRA_POOL_ADDR );
-EwPrint( "ExtraPool size                               %u bytes\n", EW_EXTRA_POOL_SIZE );
-#endif
-#if EW_USE_SCRATCHPAD_BUFFER == 1
-EwPrint( "Scratch-pad buffer address                   0x%08X  \n", DisplayInfo.FrameBuffer );
-EwPrint( "Scratch-pad buffer size                      %u pixel\n", DisplayInfo.BufferWidth * DisplayInfo.BufferHeight );
-#else
-EwPrint( "Framebuffer address                          0x%08X  \n", DisplayInfo.FrameBuffer );
-#endif
-#if EW_USE_DOUBLE_BUFFER == 1
-EwPrint( "Doublebuffer address                         0x%08X  \n", DisplayInfo.DoubleBuffer );
-#endif
-#if EW_USE_OFFSCREEN_BUFFER == 1
-EwPrint( "Off-screen buffer                            used    \n" );
-#endif
-EwPrint( "Framebuffer size                             %u x %u \n", DisplayInfo.BufferWidth, DisplayInfo.BufferHeight );
-EwPrint( "EwScreenSize                                 %d x %d \n", EwScreenSize.X, EwScreenSize.Y );
-EwPrint( "Graphics accelerator                         %s      \n", GRAPHICS_ACCELERATOR_STRING );
-EwPrint( "Vector graphics support                      %s      \n", VECTOR_GRAPHICS_SUPPORT_STRING );
-EwPrint( "Warp function support                        %s      \n", WARP_FUNCTION_SUPPORT_STRING );
-EwPrint( "Index8 bitmap resource format                %s      \n", INDEX8_SURFACE_SUPPORT_STRING );
-EwPrint( "RGB565 bitmap resource format                %s      \n", RGB565_SURFACE_SUPPORT_STRING );
-EwPrint( "Bidirectional text support                   %s      \n", BIDI_TEXT_SUPPORT_STRING );
-EwPrint( "Operating system                             %s      \n", OPERATING_SYSTEM_STRING );
-EwPrint( "External flash device                        %s      \n", EXTERNAL_FLASH_STRING );
-#ifdef EW_BITMAP_PIXEL_SECTION_NAME
-EwPrint( "Linker section for bitmap pixel data         %s      \n", EW_STRINGIZE( EW_BITMAP_PIXEL_SECTION_NAME ));
-#endif
-#ifdef EW_FONT_PIXEL_SECTION_NAME
-EwPrint( "Linker section for font pixel data           %s      \n", EW_STRINGIZE( EW_FONT_PIXEL_SECTION_NAME ));
-#endif
-EwPrint( "Toolchain                                    %s      \n", TOOLCHAIN_STRING );
-#ifdef COMPILER_VERSION_STRING
-EwPrint( "C-Compiler version                           %s      \n", COMPILER_VERSION_STRING );
-#endif
-EwPrint( "Build date and time                          %s, %s  \n", __DATE__, __TIME__ );
-EwPrint( "Runtime Environment (RTE) version            %u.%02u \n", EW_RTE_VERSION >> 16, EW_RTE_VERSION & 0xFF );
-EwPrint( "Graphics Engine (GFX) version                %u.%02u \n", EW_GFX_VERSION >> 16, EW_GFX_VERSION & 0xFF );
-EwPrint( "Max surface cache size                       %u bytes\n", EW_MAX_SURFACE_CACHE_SIZE );
-EwPrint( "Glyph cache size                             %u x %u \n", EW_MAX_GLYPH_SURFACE_WIDTH, EW_MAX_GLYPH_SURFACE_HEIGHT );
-EwPrint( "Max issue tasks                              %u      \n", EW_MAX_ISSUE_TASKS );
-EwPrint( "Surface rotation                             %u      \n", EW_SURFACE_ROTATION );
-EwPrint( "---------------------------------------------\n" );
+  EwPrint( "---------------------------------------------\n" );
+  EwPrint( "Target system                                %s      \n", EW_PLATFORM_STRING );
+  EwPrint( "Color format                                 %s      \n", EW_FRAME_BUFFER_COLOR_FORMAT_STRING );
+  #if EW_MEMORY_POOL_SIZE > 0
+  EwPrint( "MemoryPool address                           0x%08X  \n", EW_MEMORY_POOL_ADDR );
+  EwPrint( "MemoryPool size                              %u bytes\n", EW_MEMORY_POOL_SIZE );
+  #endif
+  #if EW_EXTRA_POOL_SIZE > 0
+  EwPrint( "ExtraPool address                            0x%08X  \n", EW_EXTRA_POOL_ADDR );
+  EwPrint( "ExtraPool size                               %u bytes\n", EW_EXTRA_POOL_SIZE );
+  #endif
+  #if EW_USE_SCRATCHPAD_BUFFER == 1
+  EwPrint( "Scratch-pad buffer address                   0x%08X  \n", DisplayInfo.FrameBuffer );
+  EwPrint( "Scratch-pad buffer size                      %u pixel\n", DisplayInfo.BufferWidth * DisplayInfo.BufferHeight );
+  #else
+  EwPrint( "Framebuffer address                          0x%08X  \n", DisplayInfo.FrameBuffer );
+  #endif
+  #if EW_USE_DOUBLE_BUFFER == 1
+  EwPrint( "Doublebuffer address                         0x%08X  \n", DisplayInfo.DoubleBuffer );
+  #endif
+  #if EW_USE_OFFSCREEN_BUFFER == 1
+  EwPrint( "Off-screen buffer                            used    \n" );
+  #endif
+  EwPrint( "Display size                                 %u x %u \n", DisplayInfo.DisplayWidth, DisplayInfo.DisplayHeight );
+  EwPrint( "Framebuffer size                             %u x %u \n", DisplayInfo.BufferWidth, DisplayInfo.BufferHeight );
+  EwPrint( "EwScreenSize                                 %d x %d \n", EwScreenSize.X, EwScreenSize.Y );
+  EwPrint( "Graphics accelerator                         %s      \n", GRAPHICS_ACCELERATOR_STRING );
+  EwPrint( "Warp function support                        %s      \n", WARP_FUNCTION_SUPPORT_STRING );
+  EwPrint( "Vector graphics support                      %s      \n", VECTOR_GRAPHICS_SUPPORT_STRING );
+  EwPrint( "Bidirectional text support                   %s      \n", BIDI_TEXT_SUPPORT_STRING );
+  EwPrint( "Gradients support                            %s      \n", GRADIENTS_SUPPORT_STRING );
+  EwPrint( "Compression support                          %s      \n", COMPRESSION_SUPPORT_STRING );
+  EwPrint( "Index8 bitmap resource format                %s      \n", INDEX8_SURFACE_SUPPORT_STRING );
+  EwPrint( "RGB565 bitmap resource format                %s      \n", RGB565_SURFACE_SUPPORT_STRING );
+  EwPrint( "Native bitmap resource format                %s      \n", NATIVE_SURFACE_SUPPORT_STRING );
+  EwPrint( "Native destination bitmap support            %s      \n", NATIVE_DESTINATION_SURFACE_SUPPORT_STRING );
+  EwPrint( "Operating system                             %s      \n", OPERATING_SYSTEM_STRING );
+  EwPrint( "External Flash memory                        %s      \n", EXTERNAL_FLASH_STRING );
+  #ifdef EW_BITMAP_PIXEL_SECTION_NAME
+  EwPrint( "Linker section for bitmap pixel              %s      \n", EW_STRINGIZE( EW_BITMAP_PIXEL_SECTION_NAME ));
+  #endif
+  #ifdef EW_FONT_PIXEL_SECTION_NAME
+  EwPrint( "Linker section for font pixel                %s      \n", EW_STRINGIZE( EW_FONT_PIXEL_SECTION_NAME ));
+  #endif
+  #ifdef EW_FONT_DATA_SECTION_NAME
+  EwPrint( "Linker section for font metrics              %s      \n", EW_STRINGIZE( EW_FONT_DATA_SECTION_NAME ));
+  #endif
+  #ifdef EW_CONST_STRING_SECTION_NAME
+  EwPrint( "Linker section for string constants          %s      \n", EW_STRINGIZE( EW_CONST_STRING_SECTION_NAME ));
+  #endif
+  EwPrint( "Toolchain                                    %s      \n", TOOLCHAIN_STRING );
+  #ifdef COMPILER_VERSION_STRING
+  EwPrint( "C-Compiler version                           %s      \n", COMPILER_VERSION_STRING );
+  #endif
+  EwPrint( "Build date and time                          %s, %s  \n", __DATE__, __TIME__ );
+  EwPrint( "Runtime Environment (RTE) version            %u.%02u \n", EW_RTE_VERSION >> 16, EW_RTE_VERSION & 0xFF );
+  EwPrint( "Graphics Engine (GFX) version                %u.%02u \n", EW_GFX_VERSION >> 16, EW_GFX_VERSION & 0xFF );
+  EwPrint( "Max surface cache size                       %u bytes\n", EW_MAX_SURFACE_CACHE_SIZE );
+  EwPrint( "Glyph cache size                             %u x %u \n", EW_MAX_GLYPH_SURFACE_WIDTH, EW_MAX_GLYPH_SURFACE_HEIGHT );
+  EwPrint( "Max issue tasks                              %u      \n", EW_MAX_ISSUE_TASKS );
+  EwPrint( "Surface rotation                             %u      \n", EW_SURFACE_ROTATION );
+  EwPrint( "---------------------------------------------\n" );
 }
 /* msy, mli */
 

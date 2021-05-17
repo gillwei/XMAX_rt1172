@@ -33,7 +33,7 @@
 /* ******************************************************************************
    Following macros configure the application.
 
-   PLATFORM_STRING - This macro contains the name of the development platform.
+   EW_PLATFORM_STRING - This macro contains the name of the development platform.
 
    SDRAM_BASE_ADDR, SDRAM_SIZE_BYTES - These macros define the start address and
    the size of the SDRAM that can be used for framebuffer and heap manager.
@@ -49,8 +49,24 @@
    of the realtime clock. The value RTC_DEFAULT_TIME is used as start value for
    the RTC in case that it is not already initialized with a value higher than
    RTC_MINIMUM_TIME.
+
+   EW_USE_EXTERNAL_FLASH - Flag to enable/disable the usage of the external
+   FLASH device.
+
+   EW_BITMAP_PIXEL_SECTION_NAME - Macro to define the section name for the
+   bitmap pixel data of bitmap resources. The section name is used in the linker
+   file to locate the data to a dedicated read-only memory area.
+
+   EW_FONT_PIXEL_SECTION_NAME, EW_FONT_DATA_SECTION_NAME - Macros to define the
+   section name for font pixel data and font metrics of font resources. The
+   section names are used in the linker file to locate the data to a dedicated
+   read-only memory area.
+
+   EW_CONST_STRING_SECTION_NAME - Macro to define the section name for all
+   string constants. The section name is used in the linker file to locate the
+   data to a dedicated read-only memory area.
    **************************************************************************** */
-#define PLATFORM_STRING       "IMXRT1170-EVK"
+#define EW_PLATFORM_STRING    "IMXRT1170-EVK"
 
 #define SDRAM_BASE_ADDR       0x80000000
 #define SDRAM_SIZE_BYTES      (16 * 1024 * 1024)
@@ -60,6 +76,17 @@
 
 #define RTC_MINIMUM_TIME      978307200      /* 01/01/2001 */
 #define RTC_DEFAULT_TIME      1575158400     /* 01/12/2019 */
+
+#define EW_USE_EXTERNAL_FLASH 0
+
+#if EW_USE_EXTERNAL_FLASH == 1
+
+  #define EW_BITMAP_PIXEL_SECTION_NAME .SectionEwResource
+  #define EW_FONT_PIXEL_SECTION_NAME   .SectionEwResource
+  #define EW_FONT_DATA_SECTION_NAME    .SectionEwResource
+  #define EW_CONST_STRING_SECTION_NAME .SectionEwResource
+
+#endif
 
 
 /* ******************************************************************************
@@ -96,15 +123,21 @@
    and the final graphics is then copied into the framebuffer (write access).
    Please note, that this option is not supported for each display integration.
 
-   FRAME_BUFFER_WIDTH and FRAME_BUFFER_HEIGHT - This macros define the physical
+   EW_DISPLAY_WIDTH and EW_DISPLAY_HEIGHT - These macros define the physical
+   dimension of the display in pixel. Typically this corresponds to the attribute
+   ScreenSize defined within the profile of the Embedded Wizard GUI project.
+
+   EW_FRAME_BUFFER_WIDTH and EW_FRAME_BUFFER_HEIGHT - These macros define the
    size of the framebuffer in pixel. Typically this size corresponds to the
-   attribute ScreenSize defined within the profile of the GUI application.
+   size of the display. However, due to hardware requirements or necessary
+   memory alignments, the size of the framebuffer might differ from the display
+   size.
 
-   FRAME_BUFFER_ADDR, FRAME_BUFFER_SIZE - These macros define the start address
-   and the size (in bytes) of the framebuffer.
+   EW_FRAME_BUFFER_ADDR, EW_FRAME_BUFFER_SIZE - These macros define the start
+   address and the size (in bytes) of the framebuffer.
 
-   DOUBLE_BUFFER_ADDR, DOUBLE_BUFFER_SIZE - These macros define the start address
-   and the size (in bytes) of the optional double-buffer.
+   EW_DOUBLE_BUFFER_ADDR, EW_DOUBLE_BUFFER_SIZE - These macros define the start
+   address and the size (in bytes) of the optional double-buffer.
 
    EW_USE_GRAPHICS_ACCELERATOR - Flag to switch on/off the usage of the graphics
    accelerator within the target (if available).
@@ -112,23 +145,64 @@
    Graphics Engine to be recompiled with the new setting. As such it works only
    for customers who have licensed the 'Professional' edition.
    **************************************************************************** */
-#define EW_USE_DOUBLE_BUFFER              1
+#define EW_USE_DOUBLE_BUFFER            1
 
-#define FRAME_BUFFER_WIDTH              480
-#define FRAME_BUFFER_HEIGHT             272
+#define EW_DISPLAY_WIDTH                480
+#define EW_DISPLAY_HEIGHT               272
+#define EW_FRAME_BUFFER_WIDTH           480
+#define EW_FRAME_BUFFER_HEIGHT          272
 
 /* calculated addresses for framebuffer(s) */
-#define FRAME_BUFFER_SIZE     FRAME_BUFFER_WIDTH * FRAME_BUFFER_HEIGHT * FRAME_BUFFER_DEPTH
+#define EW_FRAME_BUFFER_SIZE  EW_FRAME_BUFFER_WIDTH * EW_FRAME_BUFFER_HEIGHT * EW_FRAME_BUFFER_DEPTH
 
 #if EW_USE_DOUBLE_BUFFER == 1
-    #define DOUBLE_BUFFER_SIZE  FRAME_BUFFER_SIZE
+    #define EW_DOUBLE_BUFFER_SIZE  EW_FRAME_BUFFER_SIZE
 #else
-    #define DOUBLE_BUFFER_ADDR  0
-    #define DOUBLE_BUFFER_SIZE  0
-    #define NUMBER_OF_FIELDS    3
+    #define EW_DOUBLE_BUFFER_ADDR  0
+    #define EW_DOUBLE_BUFFER_SIZE  0
+    #define EW_NUMBER_OF_FIELDS    3
 #endif
 
 #define EW_USE_GRAPHICS_ACCELERATOR     1
+
+
+/* ******************************************************************************
+   Following macros configure the touch device integration.
+
+   EW_TOUCH_AREA_MIN_X - This macro defines the raw touch value of the leftmost
+   position on the touch screen. This value represents the x value reported by
+   the touch driver when touching on the top left corner of the display.
+
+   EW_TOUCH_AREA_MIN_Y - This macro defines the raw touch value of the topmost
+   position on the touch screen. This value represents the y value reported by
+   the touch driver when touching on the top left corner of the display.
+
+   EW_TOUCH_AREA_MAX_X - This macro defines the raw touch value of the rightmost
+   position on the touch screen. This value represents the x value reported by
+   the touch driver when touching on the bottom right corner of the display.
+
+   EW_TOUCH_AREA_MAX_Y - This macro defines the raw touch value of the bottommost
+   position on the touch screen. This value represents the y value reported by
+   the touch driver when touching on the bottom right corner of the display.
+
+   EW_TOUCH_SWAP_XY - This macro can be used to exchange the x and y values
+   provided by the touch driver.
+
+   EW_PRINT_TOUCH_DATA - This macro prints all touch data reported by the touch
+   driver on the console. This is helpful to test and calibrate the touch device.
+
+   EW_PRINT_TOUCH_EVENTS - This macro prints all touch events that are provided
+   to the GUI application.
+   **************************************************************************** */
+#define EW_TOUCH_AREA_MIN_X                    0
+#define EW_TOUCH_AREA_MIN_Y                    0
+#define EW_TOUCH_AREA_MAX_X                    0
+#define EW_TOUCH_AREA_MAX_Y                    0
+#define EW_TOUCH_SWAP_XY                       0
+
+// #define EW_PRINT_TOUCH_DATA
+// #define EW_PRINT_TOUCH_EVENTS
+
 
 /* ******************************************************************************
    Following macros configure the memory area used for the Embedded Wizard heap
@@ -369,6 +443,13 @@
    process bidirectional text, as it is usually required to display right-to-left
    Arabic or Hebrew scripts, are removed.
 
+   EW_DONT_USE_GRADIENTS - If this macro is defined, all drawing functions for
+   gradients are removed from the binary.
+
+   EW_DONT_USE_COMRESSION - This macro can be defined only if neither compressed
+   bitmaps nor compressed strings are used in the project. Doing this eliminates
+   the compression relevant code from the binary.
+
    EW_DONT_USE_INDEX8_SURFACES - If this macro is defined, the support for INDEX8
    bitmap format is removed. Thereupon creation, loading and displaying of images
    stored in INDEX8 format is not possible anymore.
@@ -376,12 +457,25 @@
    EW_DONT_USE_RGB565_SURFACES - If this macro is defined, the support for RGB565
    bitmap format is removed. Thereupon creation, loading and displaying of images
    stored in RGB565 format is not possible anymore.
+
+   EW_DONT_USE_NATIVE_SURFACES - If this macro is defined, the support for Native
+   bitmap format is removed. Thereupon creation, loading and displaying of images
+   stored in Native format is not possible anymore.
+
+   EW_DONT_USE_NATIVE_SURFACES_AS_DESTINATION - If this macro is defined all
+   graphical operations using a Native surface as destination are eliminated.
+   This makes sense only when the alternative destination surface format Screen
+   is defined. Otherwise no graphics outputs are possible.
    **************************************************************************** */
-//#define EW_DONT_USE_WARP_FUNCTIONS
-//#define EW_DONT_USE_PATH_FUNCTIONS
-//#define EW_DONT_USE_BIDI_FUNCTIONS
-//#define EW_DONT_USE_INDEX8_SURFACES
-//#define EW_DONT_USE_RGB565_SURFACES
+// #define EW_DONT_USE_WARP_FUNCTIONS
+// #define EW_DONT_USE_PATH_FUNCTIONS
+// #define EW_DONT_USE_BIDI_FUNCTIONS
+// #define EW_DONT_USE_GRADIENTS
+// #define EW_DONT_USE_COMPRESSION
+// #define EW_DONT_USE_INDEX8_SURFACES
+// #define EW_DONT_USE_RGB565_SURFACES
+// #define EW_DONT_USE_NATIVE_SURFACES
+// #define EW_DONT_USE_NATIVE_SURFACES_AS_DESTINATION
 
 #endif /* EWCONFIG_H */
 

@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -105,7 +105,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x000003A0, /* ratio 50.00 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x8A002980, 0x0002A000, 0x00198006,
@@ -228,13 +228,13 @@ static const XStringRes _Const0045 = { _StringsDefault0, 0x01C3 };
 void SettingsSET01_MainSettingMenu__Init( SettingsSET01_MainSettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET01_MainSettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET01_MainSettingMenu );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET01_MainSettingMenu );
+  _this->_.VMT = EW_CLASS( SettingsSET01_MainSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -250,17 +250,17 @@ void SettingsSET01_MainSettingMenu__Init( SettingsSET01_MainSettingMenu _this, X
 void SettingsSET01_MainSettingMenu__ReInit( SettingsSET01_MainSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Settings::SET01_MainSettingMenu' */
 void SettingsSET01_MainSettingMenu__Done( SettingsSET01_MainSettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -285,7 +285,6 @@ void SettingsSET01_MainSettingMenu_Init( SettingsSET01_MainSettingMenu _this, XH
     switch ( SettingItem )
     {
       case EnumMainSettingItemTRACTION_CONTROL :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionTCS ))
@@ -293,11 +292,9 @@ void SettingsSET01_MainSettingMenu_Init( SettingsSET01_MainSettingMenu _this, XH
           _this->Settings[ EwCheckIndex( NoOfItems, 10 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumMainSettingItemGRIP_WARMER :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionGRIP_WARMER ))
@@ -305,11 +302,9 @@ void SettingsSET01_MainSettingMenu_Init( SettingsSET01_MainSettingMenu _this, XH
           _this->Settings[ EwCheckIndex( NoOfItems, 10 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumMainSettingItemSEAT_HEATER :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionSEAT_HEATER ))
@@ -317,7 +312,6 @@ void SettingsSET01_MainSettingMenu_Init( SettingsSET01_MainSettingMenu _this, XH
           _this->Settings[ EwCheckIndex( NoOfItems, 10 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       default : 
@@ -343,9 +337,7 @@ XClass SettingsSET01_MainSettingMenu_LoadItemClass( SettingsSET01_MainSettingMen
   ItemClass = 0;
 
   if ( aItemNo >= 0 )
-  {
     ItemClass = EW_CLASS( MenuItemBase );
-  }
 
   return ItemClass;
 }
@@ -398,8 +390,7 @@ XString SettingsSET01_MainSettingMenu_LoadItemTitle( SettingsSET01_MainSettingMe
       Title = EwLoadString( &StringsSET01_INFO_RESET );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return Title;
@@ -423,13 +414,9 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
     break;
 
     case EnumMainSettingItemCONNECTION :
-    {
       if ( !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode )
-      {
         Dialog = ((ComponentsBaseComponent)EwNewObject( SettingsSET03_ConnectionSettingMenu, 
         0 ));
-      }
-    }
     break;
 
     case EnumMainSettingItemINFORMATION_RESET :
@@ -482,8 +469,7 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
       Dialog = ((ComponentsBaseComponent)EwNewObject( SettingsSET35_LegalMenu, 0 ));
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   if ( Dialog != 0 )
@@ -491,14 +477,10 @@ void SettingsSET01_MainSettingMenu_OnItemActivate( SettingsSET01_MainSettingMenu
     MenuBaseMenuView MenuDialog = EwCastObject( Dialog, MenuBaseMenuView );
 
     if ( MenuDialog != 0 )
-    {
       ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)MenuDialog ));
-    }
     else
-    {
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)Dialog ), 0, 0, 0, 0, 
       0, 0, EwNullSlot, EwNullSlot, 0 );
-    }
   }
 }
 
@@ -507,8 +489,8 @@ EW_DEFINE_CLASS_VARIANTS( SettingsSET01_MainSettingMenu )
 EW_END_OF_CLASS_VARIANTS( SettingsSET01_MainSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET01_MainSettingMenu' */
-EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, _None, _None, 
-                 _None, _None, _None, _None, "Settings::SET01_MainSettingMenu" )
+EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, _.VMT, "Settings::SET01_MainSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -573,13 +555,13 @@ EW_END_OF_CLASS( SettingsSET01_MainSettingMenu )
 void SettingsSET03_ConnectionSettingMenu__Init( SettingsSET03_ConnectionSettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET03_ConnectionSettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET03_ConnectionSettingMenu );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET03_ConnectionSettingMenu );
+  _this->_.VMT = EW_CLASS( SettingsSET03_ConnectionSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -597,17 +579,17 @@ void SettingsSET03_ConnectionSettingMenu__Init( SettingsSET03_ConnectionSettingM
 void SettingsSET03_ConnectionSettingMenu__ReInit( SettingsSET03_ConnectionSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Settings::SET03_ConnectionSettingMenu' */
 void SettingsSET03_ConnectionSettingMenu__Done( SettingsSET03_ConnectionSettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -641,9 +623,7 @@ XString SettingsSET03_ConnectionSettingMenu_LoadItemTitle( SettingsSET03_Connect
   XString title = 0;
 
   if ( aItemNo < 2 )
-  {
     title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 2 )];
-  }
 
   return title;
 }
@@ -652,8 +632,8 @@ XString SettingsSET03_ConnectionSettingMenu_LoadItemTitle( SettingsSET03_Connect
 void SettingsSET03_ConnectionSettingMenu_OnItemActivate( SettingsSET03_ConnectionSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  if ( aMenuItem == 0 )
-    ;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aMenuItem );
 
   switch ( aItemNo )
   {
@@ -666,8 +646,7 @@ void SettingsSET03_ConnectionSettingMenu_OnItemActivate( SettingsSET03_Connectio
       SettingsSET03_ConnectionSettingMenu_HandleYConnectAppPairing( _this );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -692,16 +671,12 @@ void SettingsSET03_ConnectionSettingMenu_HandleYConnectAppPairing( SettingsSET03
       SettingsSET03_ConnectionSettingMenu_PresentDialogWithTimeout( _this, Message );
     }
     else
-    {
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( SettingsSET22_BleAdvertising, 
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    }
   }
   else
-  {
     SettingsSET03_ConnectionSettingMenu_PresentDialogWithTimeout( _this, EwLoadString( 
     &StringsSET20_COMPLETE_BT_PAIRING_FIRST ));
-  }
 }
 
 /* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.PresentDialogWithTimeout()' */
@@ -723,7 +698,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET03_ConnectionSettingMenu )
 /* Virtual Method Table (VMT) for the class : 'Settings::SET03_ConnectionSettingMenu' */
 EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, ItemTitleArray, 
                  ItemTitleArray, ItemTitleArray, ItemTitleArray, ItemTitleArray, 
-                 _None, "Settings::SET03_ConnectionSettingMenu" )
+                 _.VMT, "Settings::SET03_ConnectionSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -788,13 +763,13 @@ EW_END_OF_CLASS( SettingsSET03_ConnectionSettingMenu )
 void SettingsSET04_BtSettingMenu__Init( SettingsSET04_BtSettingMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET04_BtSettingMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET04_BtSettingMenu );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET04_BtSettingMenu );
+  _this->_.VMT = EW_CLASS( SettingsSET04_BtSettingMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -820,17 +795,17 @@ void SettingsSET04_BtSettingMenu__Init( SettingsSET04_BtSettingMenu _this, XObje
 void SettingsSET04_BtSettingMenu__ReInit( SettingsSET04_BtSettingMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Settings::SET04_BtSettingMenu' */
 void SettingsSET04_BtSettingMenu__Done( SettingsSET04_BtSettingMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -854,9 +829,7 @@ XClass SettingsSET04_BtSettingMenu_LoadItemClass( SettingsSET04_BtSettingMenu _t
   XClass ClassType = 0;
 
   if ( aItemNo < 4 )
-  {
     ClassType = _this->ItemClassArray[ EwCheckIndex( aItemNo, 4 )];
-  }
 
   return ClassType;
 }
@@ -868,9 +841,7 @@ XString SettingsSET04_BtSettingMenu_LoadItemTitle( SettingsSET04_BtSettingMenu _
   XString title = 0;
 
   if ( aItemNo < 4 )
-  {
     title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 4 )];
-  }
 
   return title;
 }
@@ -883,9 +854,7 @@ void SettingsSET04_BtSettingMenu_OnItemActivate( SettingsSET04_BtSettingMenu _th
   MenuItemCheckbox CheckBoxItem = EwCastObject( aMenuItem, MenuItemCheckbox );
 
   if ( CheckBoxItem != 0 )
-  {
     IsChecked = CheckBoxItem->Checked;
-  }
 
   switch ( aItemNo )
   {
@@ -898,19 +867,13 @@ void SettingsSET04_BtSettingMenu_OnItemActivate( SettingsSET04_BtSettingMenu _th
     break;
 
     case 1 :
-    {
       if ( DeviceInterfaceBluetoothDeviceClass_OnGetIsMaxPairedDevice( EwGetAutoObject( 
           &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
-      {
         CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( SettingsSET05_BtcMaxPairedDevice, 
         0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-      }
       else
-      {
         CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( SettingsSET06_BtcDiscovarable, 
         0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-      }
-    }
     break;
 
     case 2 :
@@ -923,8 +886,7 @@ void SettingsSET04_BtSettingMenu_OnItemActivate( SettingsSET04_BtSettingMenu _th
       DeviceInterfaceBluetoothDeviceClass ), IsChecked );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -950,8 +912,7 @@ XBool SettingsSET04_BtSettingMenu_LoadItemChecked( SettingsSET04_BtSettingMenu _
       &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ));
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return IsChecked;
@@ -969,9 +930,7 @@ XBool SettingsSET04_BtSettingMenu_LoadItemEnabled( SettingsSET04_BtSettingMenu _
   ItemEnabled = 1;
 
   if ( aItemNo > 0 )
-  {
     ItemEnabled = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BluetoothEnable;
-  }
 
   return ItemEnabled;
 }
@@ -1048,13 +1007,13 @@ EW_END_OF_CLASS( SettingsSET04_BtSettingMenu )
 void SettingsSET35_LegalMenu__Init( SettingsSET35_LegalMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET35_LegalMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET35_LegalMenu );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET35_LegalMenu );
+  _this->_.VMT = EW_CLASS( SettingsSET35_LegalMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -1067,17 +1026,17 @@ void SettingsSET35_LegalMenu__Init( SettingsSET35_LegalMenu _this, XObject aLink
 void SettingsSET35_LegalMenu__ReInit( SettingsSET35_LegalMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Settings::SET35_LegalMenu' */
 void SettingsSET35_LegalMenu__Done( SettingsSET35_LegalMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Settings::SET35_LegalMenu.LoadItemClass()' */
@@ -1092,9 +1051,7 @@ XClass SettingsSET35_LegalMenu_LoadItemClass( SettingsSET35_LegalMenu _this, XIn
   ItemClass = 0;
 
   if ( aItemNo >= 0 )
-  {
     ItemClass = EW_CLASS( MenuItemBase );
-  }
 
   return ItemClass;
 }
@@ -1111,9 +1068,7 @@ XString SettingsSET35_LegalMenu_LoadItemTitle( SettingsSET35_LegalMenu _this, XI
   Title = 0;
 
   if ( aItemNo >= 0 )
-  {
     Title = EwLoadString( &StringsSET35_LICENSE );
-  }
 
   return Title;
 }
@@ -1135,8 +1090,8 @@ EW_DEFINE_CLASS_VARIANTS( SettingsSET35_LegalMenu )
 EW_END_OF_CLASS_VARIANTS( SettingsSET35_LegalMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET35_LegalMenu' */
-EW_DEFINE_CLASS( SettingsSET35_LegalMenu, MenuBaseMenuView, _None, _None, _None, 
-                 _None, _None, _None, "Settings::SET35_LegalMenu" )
+EW_DEFINE_CLASS( SettingsSET35_LegalMenu, MenuBaseMenuView, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, "Settings::SET35_LegalMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1201,17 +1156,17 @@ EW_END_OF_CLASS( SettingsSET35_LegalMenu )
 void SettingsSET38_ConfirmAllReset__Init( SettingsSET38_ConfirmAllReset _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET38_ConfirmAllReset );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET38_ConfirmAllReset );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Text, &_this->_XObject, 0 );
-  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Text, &_this->_.XObject, 0 );
+  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET38_ConfirmAllReset );
+  _this->_.VMT = EW_CLASS( SettingsSET38_ConfirmAllReset );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0001 );
@@ -1239,7 +1194,7 @@ void SettingsSET38_ConfirmAllReset__Init( SettingsSET38_ConfirmAllReset _this, X
 void SettingsSET38_ConfirmAllReset__ReInit( SettingsSET38_ConfirmAllReset _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Text );
@@ -1250,14 +1205,14 @@ void SettingsSET38_ConfirmAllReset__ReInit( SettingsSET38_ConfirmAllReset _this 
 void SettingsSET38_ConfirmAllReset__Done( SettingsSET38_ConfirmAllReset _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Text );
   MenuUpDownPushButtonSet__Done( &_this->UpDownPushButtonSet );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Settings::SET38_ConfirmAllReset.OnOkActivatedSlot()' */
@@ -1269,15 +1224,11 @@ void SettingsSET38_ConfirmAllReset_OnOkActivatedSlot( SettingsSET38_ConfirmAllRe
 
   if ( 0 < DeviceInterfaceBluetoothDeviceClass_OnGetPairedDeviceNum( EwGetAutoObject( 
       &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
-  {
     CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET39_DeletePairedDevice, 
     0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
   else
-  {
     CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET41_ResetInProgress, 
     0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* 'C' function for method : 'Settings::SET38_ConfirmAllReset.OnCancelActivatedSlot()' */
@@ -1296,7 +1247,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET38_ConfirmAllReset )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET38_ConfirmAllReset' */
 EW_DEFINE_CLASS( SettingsSET38_ConfirmAllReset, ComponentsBaseMainBG, Text, Text, 
-                 Text, Text, _None, _None, "Settings::SET38_ConfirmAllReset" )
+                 Text, Text, _.VMT, _.VMT, "Settings::SET38_ConfirmAllReset" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1345,17 +1296,17 @@ EW_END_OF_CLASS( SettingsSET38_ConfirmAllReset )
 void SettingsSET39_DeletePairedDevice__Init( SettingsSET39_DeletePairedDevice _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET39_DeletePairedDevice );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET39_DeletePairedDevice );
 
   /* ... then construct all embedded objects */
-  MenuPushButton__Init( &_this->PushButton, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->Text, &_this->_XObject, 0 );
+  MenuPushButton__Init( &_this->PushButton, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->Text, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET39_DeletePairedDevice );
+  _this->_.VMT = EW_CLASS( SettingsSET39_DeletePairedDevice );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -1379,7 +1330,7 @@ void SettingsSET39_DeletePairedDevice__Init( SettingsSET39_DeletePairedDevice _t
 void SettingsSET39_DeletePairedDevice__ReInit( SettingsSET39_DeletePairedDevice _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   MenuPushButton__ReInit( &_this->PushButton );
@@ -1390,14 +1341,14 @@ void SettingsSET39_DeletePairedDevice__ReInit( SettingsSET39_DeletePairedDevice 
 void SettingsSET39_DeletePairedDevice__Done( SettingsSET39_DeletePairedDevice _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   MenuPushButton__Done( &_this->PushButton );
   ViewsText__Done( &_this->Text );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -1430,7 +1381,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET39_DeletePairedDevice )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET39_DeletePairedDevice' */
 EW_DEFINE_CLASS( SettingsSET39_DeletePairedDevice, ComponentsBaseMainBG, PushButton, 
-                 PushButton, PushButton, PushButton, _None, _None, "Settings::SET39_DeletePairedDevice" )
+                 PushButton, PushButton, PushButton, _.VMT, _.VMT, "Settings::SET39_DeletePairedDevice" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1479,18 +1430,18 @@ EW_END_OF_CLASS( SettingsSET39_DeletePairedDevice )
 void SettingsSET41_ResetInProgress__Init( SettingsSET41_ResetInProgress _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET41_ResetInProgress );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET41_ResetInProgress );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->LoadingAnimation, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->LoadingText, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->FactoryResetCompletedEventHandler, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->LoadingText, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->FactoryResetCompletedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET41_ResetInProgress );
+  _this->_.VMT = EW_CLASS( SettingsSET41_ResetInProgress );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -1516,7 +1467,7 @@ void SettingsSET41_ResetInProgress__Init( SettingsSET41_ResetInProgress _this, X
 void SettingsSET41_ResetInProgress__ReInit( SettingsSET41_ResetInProgress _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->LoadingAnimation );
@@ -1528,7 +1479,7 @@ void SettingsSET41_ResetInProgress__ReInit( SettingsSET41_ResetInProgress _this 
 void SettingsSET41_ResetInProgress__Done( SettingsSET41_ResetInProgress _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->LoadingAnimation );
@@ -1536,7 +1487,7 @@ void SettingsSET41_ResetInProgress__Done( SettingsSET41_ResetInProgress _this )
   CoreSystemEventHandler__Done( &_this->FactoryResetCompletedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -1560,10 +1511,8 @@ void SettingsSET41_ResetInProgress_Init( SettingsSET41_ResetInProgress _this, XH
     0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
   }
   else
-  {
     DeviceInterfaceSystemDeviceClass_ResetToFactoryDefault( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
     DeviceInterfaceSystemDeviceClass ));
-  }
 }
 
 /* 'C' function for method : 'Settings::SET41_ResetInProgress.OnShortHomeKeyActivated()' */
@@ -1599,7 +1548,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET41_ResetInProgress )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET41_ResetInProgress' */
 EW_DEFINE_CLASS( SettingsSET41_ResetInProgress, ComponentsBaseMainBG, LoadingAnimation, 
-                 LoadingAnimation, LoadingAnimation, LoadingAnimation, _None, _None, 
+                 LoadingAnimation, LoadingAnimation, LoadingAnimation, _.VMT, _.VMT, 
                  "Settings::SET41_ResetInProgress" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
@@ -1649,17 +1598,17 @@ EW_END_OF_CLASS( SettingsSET41_ResetInProgress )
 void SettingsSET37_3rdPartyLicenses__Init( SettingsSET37_3rdPartyLicenses _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET37_3rdPartyLicenses );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET37_3rdPartyLicenses );
 
   /* ... then construct all embedded objects */
-  MenuScrollbar__Init( &_this->Scrollbar, &_this->_XObject, 0 );
-  SettingsLicenseDetail__Init( &_this->ThirdPartyLicenseText, &_this->_XObject, 0 );
+  MenuScrollbar__Init( &_this->Scrollbar, &_this->_.XObject, 0 );
+  SettingsLicenseDetail__Init( &_this->ThirdPartyLicenseText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET37_3rdPartyLicenses );
+  _this->_.VMT = EW_CLASS( SettingsSET37_3rdPartyLicenses );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -1681,7 +1630,7 @@ void SettingsSET37_3rdPartyLicenses__Init( SettingsSET37_3rdPartyLicenses _this,
 void SettingsSET37_3rdPartyLicenses__ReInit( SettingsSET37_3rdPartyLicenses _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   MenuScrollbar__ReInit( &_this->Scrollbar );
@@ -1692,14 +1641,14 @@ void SettingsSET37_3rdPartyLicenses__ReInit( SettingsSET37_3rdPartyLicenses _thi
 void SettingsSET37_3rdPartyLicenses__Done( SettingsSET37_3rdPartyLicenses _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   MenuScrollbar__Done( &_this->Scrollbar );
   SettingsLicenseDetail__Done( &_this->ThirdPartyLicenseText );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -1778,7 +1727,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET37_3rdPartyLicenses )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET37_3rdPartyLicenses' */
 EW_DEFINE_CLASS( SettingsSET37_3rdPartyLicenses, ComponentsBaseMainBG, Scrollbar, 
-                 Scrollbar, Scrollbar, Scrollbar, _None, _None, "Settings::SET37_3rdPartyLicenses" )
+                 Scrollbar, Scrollbar, Scrollbar, _.VMT, _.VMT, "Settings::SET37_3rdPartyLicenses" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1827,21 +1776,21 @@ EW_END_OF_CLASS( SettingsSET37_3rdPartyLicenses )
 void SettingsSET06_BtcDiscovarable__Init( SettingsSET06_BtcDiscovarable _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET06_BtcDiscovarable );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET06_BtcDiscovarable );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->DiscoverableText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->TimeLeftText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->NameText, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->CountDownTimer, &_this->_XObject, 0 );
-  MenuPushButton__Init( &_this->PushButton, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->BtcPairingStateChangeEventHandler, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->DiscoverableText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->TimeLeftText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->NameText, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
+  MenuPushButton__Init( &_this->PushButton, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->BtcPairingStateChangeEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET06_BtcDiscovarable );
+  _this->_.VMT = EW_CLASS( SettingsSET06_BtcDiscovarable );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -1892,7 +1841,7 @@ void SettingsSET06_BtcDiscovarable__Init( SettingsSET06_BtcDiscovarable _this, X
 void SettingsSET06_BtcDiscovarable__ReInit( SettingsSET06_BtcDiscovarable _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->DiscoverableText );
@@ -1907,7 +1856,7 @@ void SettingsSET06_BtcDiscovarable__ReInit( SettingsSET06_BtcDiscovarable _this 
 void SettingsSET06_BtcDiscovarable__Done( SettingsSET06_BtcDiscovarable _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->DiscoverableText );
@@ -1918,7 +1867,7 @@ void SettingsSET06_BtcDiscovarable__Done( SettingsSET06_BtcDiscovarable _this )
   CoreSystemEventHandler__Done( &_this->BtcPairingStateChangeEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -1984,14 +1933,10 @@ void SettingsSET06_BtcDiscovarable_UpdateCountDownTimeSlot( SettingsSET06_BtcDis
     Second = _this->CountDownTimeSec % 60;
 
     if ( Second < 10 )
-    {
       SecondStr = EwConcatString( EwLoadString( &_Const0014 ), EwNewStringInt( Second, 
       0, 10 ));
-    }
     else
-    {
       SecondStr = EwNewStringInt( Second, 0, 10 );
-    }
 
     ViewsText_OnSetString( &_this->TimeLeftText, EwConcatString( EwConcatString( 
     EwConcatString( EwLoadString( &StringsSET06_TIME_LEFT ), EwNewStringInt( _this->CountDownTimeSec 
@@ -2017,7 +1962,6 @@ void SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot( SettingsSET06_Bt
   EW_UNUSED_ARG( sender );
 
   if ( _this->Super5.Owner != 0 )
-  {
     switch ( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BtcPairingState )
     {
       case EnumBtcPairingStateFAIL :
@@ -2045,10 +1989,8 @@ void SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot( SettingsSET06_Bt
       }
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* Variants derived from the class : 'Settings::SET06_BtcDiscovarable' */
@@ -2107,21 +2049,21 @@ EW_END_OF_CLASS( SettingsSET06_BtcDiscovarable )
 void SettingsSET9_10_11_BtConnectionResult__Init( SettingsSET9_10_11_BtConnectionResult _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET9_10_11_BtConnectionResult );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET9_10_11_BtConnectionResult );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Message, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->ConnectPairedDeviceResultHandler, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->DismissTimer, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->LoadingAnimation, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->LoadingText, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Message, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ConnectPairedDeviceResultHandler, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->DismissTimer, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->LoadingText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET9_10_11_BtConnectionResult );
+  _this->_.VMT = EW_CLASS( SettingsSET9_10_11_BtConnectionResult );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -2162,7 +2104,7 @@ void SettingsSET9_10_11_BtConnectionResult__Init( SettingsSET9_10_11_BtConnectio
 void SettingsSET9_10_11_BtConnectionResult__ReInit( SettingsSET9_10_11_BtConnectionResult _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Message );
@@ -2177,7 +2119,7 @@ void SettingsSET9_10_11_BtConnectionResult__ReInit( SettingsSET9_10_11_BtConnect
 void SettingsSET9_10_11_BtConnectionResult__Done( SettingsSET9_10_11_BtConnectionResult _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Message );
@@ -2188,7 +2130,7 @@ void SettingsSET9_10_11_BtConnectionResult__Done( SettingsSET9_10_11_BtConnectio
   ViewsText__Done( &_this->LoadingText );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -2280,7 +2222,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET9_10_11_BtConnectionResult )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET9_10_11_BtConnectionResult' */
 EW_DEFINE_CLASS( SettingsSET9_10_11_BtConnectionResult, ComponentsBaseMainBG, Message, 
-                 Message, Message, Message, DeviceName, _None, "Settings::SET9_10_11_BtConnectionResult" )
+                 Message, Message, Message, DeviceName, _.VMT, "Settings::SET9_10_11_BtConnectionResult" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -2329,17 +2271,17 @@ EW_END_OF_CLASS( SettingsSET9_10_11_BtConnectionResult )
 void SettingsSET05_BtcMaxPairedDevice__Init( SettingsSET05_BtcMaxPairedDevice _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET05_BtcMaxPairedDevice );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET05_BtcMaxPairedDevice );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Text, &_this->_XObject, 0 );
-  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Text, &_this->_.XObject, 0 );
+  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET05_BtcMaxPairedDevice );
+  _this->_.VMT = EW_CLASS( SettingsSET05_BtcMaxPairedDevice );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -2368,7 +2310,7 @@ void SettingsSET05_BtcMaxPairedDevice__Init( SettingsSET05_BtcMaxPairedDevice _t
 void SettingsSET05_BtcMaxPairedDevice__ReInit( SettingsSET05_BtcMaxPairedDevice _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Text );
@@ -2379,14 +2321,14 @@ void SettingsSET05_BtcMaxPairedDevice__ReInit( SettingsSET05_BtcMaxPairedDevice 
 void SettingsSET05_BtcMaxPairedDevice__Done( SettingsSET05_BtcMaxPairedDevice _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Text );
   MenuUpDownPushButtonSet__Done( &_this->UpDownPushButtonSet );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -2410,10 +2352,8 @@ void SettingsSET05_BtcMaxPairedDevice_OnYesActivatedSlot( SettingsSET05_BtcMaxPa
   EW_UNUSED_ARG( sender );
 
   if ( _this->Super5.Owner != 0 )
-  {
     CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET17_BtcPairedDeviceList, 
     0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* 'C' function for method : 'Settings::SET05_BtcMaxPairedDevice.OnNoActivatedSlot()' */
@@ -2424,10 +2364,8 @@ void SettingsSET05_BtcMaxPairedDevice_OnNoActivatedSlot( SettingsSET05_BtcMaxPai
   EW_UNUSED_ARG( sender );
 
   if ( _this->Super5.Owner != 0 )
-  {
     CoreGroup_DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, 
     EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* Variants derived from the class : 'Settings::SET05_BtcMaxPairedDevice' */
@@ -2436,7 +2374,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET05_BtcMaxPairedDevice )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET05_BtcMaxPairedDevice' */
 EW_DEFINE_CLASS( SettingsSET05_BtcMaxPairedDevice, ComponentsBaseMainBG, Text, Text, 
-                 Text, Text, _None, _None, "Settings::SET05_BtcMaxPairedDevice" )
+                 Text, Text, _.VMT, _.VMT, "Settings::SET05_BtcMaxPairedDevice" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -2485,19 +2423,19 @@ EW_END_OF_CLASS( SettingsSET05_BtcMaxPairedDevice )
 void SettingsSET08_BtcPairDevice__Init( SettingsSET08_BtcPairDevice _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET08_BtcPairDevice );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET08_BtcPairDevice );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->PairText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->PasskeyText, &_this->_XObject, 0 );
-  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->BtcPairingStateChangeEventHandler, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->PairText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->PasskeyText, &_this->_.XObject, 0 );
+  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->BtcPairingStateChangeEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET08_BtcPairDevice );
+  _this->_.VMT = EW_CLASS( SettingsSET08_BtcPairDevice );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -2538,7 +2476,7 @@ void SettingsSET08_BtcPairDevice__Init( SettingsSET08_BtcPairDevice _this, XObje
 void SettingsSET08_BtcPairDevice__ReInit( SettingsSET08_BtcPairDevice _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->PairText );
@@ -2551,7 +2489,7 @@ void SettingsSET08_BtcPairDevice__ReInit( SettingsSET08_BtcPairDevice _this )
 void SettingsSET08_BtcPairDevice__Done( SettingsSET08_BtcPairDevice _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->PairText );
@@ -2560,7 +2498,7 @@ void SettingsSET08_BtcPairDevice__Done( SettingsSET08_BtcPairDevice _this )
   CoreSystemEventHandler__Done( &_this->BtcPairingStateChangeEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -2632,7 +2570,6 @@ void SettingsSET08_BtcPairDevice_OnBtcPairingStateChangeSlot( SettingsSET08_BtcP
   EW_UNUSED_ARG( sender );
 
   if ( _this->Super5.Owner != 0 )
-  {
     switch ( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BtcPairingState )
     {
       case EnumBtcPairingStateFAIL :
@@ -2657,10 +2594,8 @@ void SettingsSET08_BtcPairDevice_OnBtcPairingStateChangeSlot( SettingsSET08_BtcP
       }
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* Variants derived from the class : 'Settings::SET08_BtcPairDevice' */
@@ -2669,7 +2604,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET08_BtcPairDevice )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET08_BtcPairDevice' */
 EW_DEFINE_CLASS( SettingsSET08_BtcPairDevice, ComponentsBaseMainBG, PairText, PairText, 
-                 PairText, PairText, _None, _None, "Settings::SET08_BtcPairDevice" )
+                 PairText, PairText, _.VMT, _.VMT, "Settings::SET08_BtcPairDevice" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -2718,18 +2653,18 @@ EW_END_OF_CLASS( SettingsSET08_BtcPairDevice )
 void SettingsSET17_BtcPairedDeviceList__Init( SettingsSET17_BtcPairedDeviceList _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET17_BtcPairedDeviceList );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET17_BtcPairedDeviceList );
 
   /* ... then construct all embedded objects */
-  CorePropertyObserver__Init( &_this->RefreshListObserver, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->NoDataText, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->NoDataTimeoutTimer, &_this->_XObject, 0 );
+  CorePropertyObserver__Init( &_this->RefreshListObserver, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->NoDataText, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->NoDataTimeoutTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET17_BtcPairedDeviceList );
+  _this->_.VMT = EW_CLASS( SettingsSET17_BtcPairedDeviceList );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -2759,7 +2694,7 @@ void SettingsSET17_BtcPairedDeviceList__Init( SettingsSET17_BtcPairedDeviceList 
 void SettingsSET17_BtcPairedDeviceList__ReInit( SettingsSET17_BtcPairedDeviceList _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CorePropertyObserver__ReInit( &_this->RefreshListObserver );
@@ -2771,7 +2706,7 @@ void SettingsSET17_BtcPairedDeviceList__ReInit( SettingsSET17_BtcPairedDeviceLis
 void SettingsSET17_BtcPairedDeviceList__Done( SettingsSET17_BtcPairedDeviceList _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CorePropertyObserver__Done( &_this->RefreshListObserver );
@@ -2779,7 +2714,7 @@ void SettingsSET17_BtcPairedDeviceList__Done( SettingsSET17_BtcPairedDeviceList 
   CoreTimer__Done( &_this->NoDataTimeoutTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -2810,12 +2745,7 @@ XClass SettingsSET17_BtcPairedDeviceList_LoadItemClass( SettingsSET17_BtcPairedD
 XString SettingsSET17_BtcPairedDeviceList_LoadItemTitle( SettingsSET17_BtcPairedDeviceList _this, 
   XInt32 aItemNo )
 {
-  XString Title;
-
-  if ( aItemNo > 0 )
-    ;
-
-  Title = 0;
+  XString Title = 0;
 
   if ( _this->PairedDeviceNum > 0 )
   {
@@ -2831,12 +2761,7 @@ XString SettingsSET17_BtcPairedDeviceList_LoadItemTitle( SettingsSET17_BtcPaired
 void SettingsSET17_BtcPairedDeviceList_OnItemActivate( SettingsSET17_BtcPairedDeviceList _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  MenuItemCheckMark BtDeviceItem;
-
-  if ( aItemNo >= 0 )
-    ;
-
-  BtDeviceItem = EwCastObject( aMenuItem, MenuItemCheckMark );
+  MenuItemCheckMark BtDeviceItem = EwCastObject( aMenuItem, MenuItemCheckMark );
 
   if ( BtDeviceItem != 0 )
   {
@@ -2855,15 +2780,13 @@ XBool SettingsSET17_BtcPairedDeviceList_LoadItemChecked( SettingsSET17_BtcPaired
 {
   XBool result;
 
-  if ( aItemNo > 0 )
-    ;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aItemNo );
 
   result = 0;
 
   if ( _this->PairedDeviceNum > 0 )
-  {
     result = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceObj.IsConnected;
-  }
 
   return result;
 }
@@ -2913,9 +2836,7 @@ void SettingsSET17_BtcPairedDeviceList_OnNoDataTimeoutSlot( SettingsSET17_BtcPai
   EW_UNUSED_ARG( sender );
 
   if ( _this->Super6.Owner != 0 )
-  {
     ComponentsBaseMainBG_SlideOutDialog((ComponentsBaseMainBG)_this );
-  }
 }
 
 /* Variants derived from the class : 'Settings::SET17_BtcPairedDeviceList' */
@@ -2990,13 +2911,13 @@ EW_END_OF_CLASS( SettingsSET17_BtcPairedDeviceList )
 void SettingsSET19_BtcPairedDeviceOperation__Init( SettingsSET19_BtcPairedDeviceOperation _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET19_BtcPairedDeviceOperation );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET19_BtcPairedDeviceOperation );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET19_BtcPairedDeviceOperation );
+  _this->_.VMT = EW_CLASS( SettingsSET19_BtcPairedDeviceOperation );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -3012,17 +2933,17 @@ void SettingsSET19_BtcPairedDeviceOperation__Init( SettingsSET19_BtcPairedDevice
 void SettingsSET19_BtcPairedDeviceOperation__ReInit( SettingsSET19_BtcPairedDeviceOperation _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Settings::SET19_BtcPairedDeviceOperation' */
 void SettingsSET19_BtcPairedDeviceOperation__Done( SettingsSET19_BtcPairedDeviceOperation _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -3044,9 +2965,7 @@ XClass SettingsSET19_BtcPairedDeviceOperation_LoadItemClass( SettingsSET19_BtcPa
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
-
-  if ( aItemNo >= 0 )
-    ;
+  EW_UNUSED_ARG( aItemNo );
 
   return EW_CLASS( MenuItemBase );
 }
@@ -3076,8 +2995,7 @@ XString SettingsSET19_BtcPairedDeviceOperation_LoadItemTitle( SettingsSET19_BtcP
       title = EwLoadString( &StringsSET19_DISCONNECT );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return title;
@@ -3105,9 +3023,7 @@ void SettingsSET19_BtcPairedDeviceOperation_OnItemActivate( SettingsSET19_BtcPai
         OwnerMenu = EwCastObject( _this->Super6.Owner, MenuBaseMenuView );
 
         if ( OwnerMenu != 0 )
-        {
           ViewsBorder_OnSetVisible( &OwnerMenu->Menu.FocusFrame, 1 );
-        }
 
         CoreGroup_SwitchToDialog( _this->Super6.Owner, ((CoreGroup)Dialog ), 0, 
         0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -3131,9 +3047,7 @@ void SettingsSET19_BtcPairedDeviceOperation_OnItemActivate( SettingsSET19_BtcPai
       OwnerMenu = EwCastObject( _this->Super6.Owner, MenuBaseMenuView );
 
       if ( OwnerMenu != 0 )
-      {
         ViewsBorder_OnSetVisible( &OwnerMenu->Menu.FocusFrame, 1 );
-      }
 
       CoreGroup_SwitchToDialog( _this->Super6.Owner, ((CoreGroup)Dialog ), 0, 0, 
       0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -3177,8 +3091,7 @@ XBool SettingsSET19_BtcPairedDeviceOperation_LoadItemEnabled( SettingsSET19_BtcP
       OptionEnabled = _this->IsConnected;
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return OptionEnabled;
@@ -3256,16 +3169,16 @@ EW_END_OF_CLASS( SettingsSET19_BtcPairedDeviceOperation )
 void SettingsSET18_DeleteBleDevice__Init( SettingsSET18_DeleteBleDevice _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET18_DeleteBleDevice );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET18_DeleteBleDevice );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Text, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->Text, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET18_DeleteBleDevice );
+  _this->_.VMT = EW_CLASS( SettingsSET18_DeleteBleDevice );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -3285,7 +3198,7 @@ void SettingsSET18_DeleteBleDevice__Init( SettingsSET18_DeleteBleDevice _this, X
 void SettingsSET18_DeleteBleDevice__ReInit( SettingsSET18_DeleteBleDevice _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Text );
@@ -3295,13 +3208,13 @@ void SettingsSET18_DeleteBleDevice__ReInit( SettingsSET18_DeleteBleDevice _this 
 void SettingsSET18_DeleteBleDevice__Done( SettingsSET18_DeleteBleDevice _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Text );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -3332,7 +3245,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET18_DeleteBleDevice )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET18_DeleteBleDevice' */
 EW_DEFINE_CLASS( SettingsSET18_DeleteBleDevice, ComponentsBaseMainBG, Text, Text, 
-                 Text, Text, DeviceName, _None, "Settings::SET18_DeleteBleDevice" )
+                 Text, Text, DeviceName, _.VMT, "Settings::SET18_DeleteBleDevice" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -3381,19 +3294,19 @@ EW_END_OF_CLASS( SettingsSET18_DeleteBleDevice )
 void SettingsBtFwUpdateDialog__Init( SettingsBtFwUpdateDialog _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsBtFwUpdateDialog );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsBtFwUpdateDialog );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->Rectangle, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->StatusText, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->BtFwStatusObserver, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->RemoveDialogTimer, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->Rectangle, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->StatusText, &_this->_.XObject, 0 );
+  CorePropertyObserver__Init( &_this->BtFwStatusObserver, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->RemoveDialogTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsBtFwUpdateDialog );
+  _this->_.VMT = EW_CLASS( SettingsBtFwUpdateDialog );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0001 );
@@ -3419,7 +3332,7 @@ void SettingsBtFwUpdateDialog__Init( SettingsBtFwUpdateDialog _this, XObject aLi
 void SettingsBtFwUpdateDialog__ReInit( SettingsBtFwUpdateDialog _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->Rectangle );
@@ -3432,7 +3345,7 @@ void SettingsBtFwUpdateDialog__ReInit( SettingsBtFwUpdateDialog _this )
 void SettingsBtFwUpdateDialog__Done( SettingsBtFwUpdateDialog _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->Rectangle );
@@ -3441,7 +3354,7 @@ void SettingsBtFwUpdateDialog__Done( SettingsBtFwUpdateDialog _this )
   CoreTimer__Done( &_this->RemoveDialogTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* This slot method is executed when the associated property observer 'PropertyObserver' 
@@ -3468,8 +3381,7 @@ void SettingsBtFwUpdateDialog_OnBtFwStatusUpdateSlot( SettingsBtFwUpdateDialog _
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -3490,7 +3402,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsBtFwUpdateDialog )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::BtFwUpdateDialog' */
 EW_DEFINE_CLASS( SettingsBtFwUpdateDialog, CoreGroup, Rectangle, Rectangle, Rectangle, 
-                 Rectangle, _None, _None, "Settings::BtFwUpdateDialog" )
+                 Rectangle, _.VMT, _.VMT, "Settings::BtFwUpdateDialog" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -3527,17 +3439,17 @@ EW_END_OF_CLASS( SettingsBtFwUpdateDialog )
 void SettingsTimeoutDialog__Init( SettingsTimeoutDialog _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsTimeoutDialog );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsTimeoutDialog );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->MessageText, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->TimeoutTimer, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->MessageText, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->TimeoutTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsTimeoutDialog );
+  _this->_.VMT = EW_CLASS( SettingsTimeoutDialog );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -3558,7 +3470,7 @@ void SettingsTimeoutDialog__Init( SettingsTimeoutDialog _this, XObject aLink, XH
 void SettingsTimeoutDialog__ReInit( SettingsTimeoutDialog _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->MessageText );
@@ -3569,14 +3481,14 @@ void SettingsTimeoutDialog__ReInit( SettingsTimeoutDialog _this )
 void SettingsTimeoutDialog__Done( SettingsTimeoutDialog _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->MessageText );
   CoreTimer__Done( &_this->TimeoutTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Settings::TimeoutDialog.OnSetMessage()' */
@@ -3595,24 +3507,15 @@ void SettingsTimeoutDialog_OnTimeoutSlot( SettingsTimeoutDialog _this, XObject s
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  if ( _this->DismissAfterTimeout )
-  {
-    if ( _this->Super5.Owner != 0 )
-    {
-      CoreGroup_DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, 
-      EwNullSlot, EwNullSlot, 0 );
-    }
-  }
-  else
-  {
-    EwPostSignal( _this->OnTimeout, ((XObject)_this ));
-  }
+  if ( _this->DismissAfterTimeout && ( _this->Super5.Owner != 0 ))
+    CoreGroup_DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, 
+    EwNullSlot, EwNullSlot, 0 );
 }
 
 /* Wrapper function for the virtual method : 'Settings::TimeoutDialog.OnTimeoutSlot()' */
 void SettingsTimeoutDialog__OnTimeoutSlot( void* _this, XObject sender )
 {
-  ((SettingsTimeoutDialog)_this)->_VMT->OnTimeoutSlot((SettingsTimeoutDialog)_this
+  ((SettingsTimeoutDialog)_this)->_.VMT->OnTimeoutSlot((SettingsTimeoutDialog)_this
   , sender );
 }
 
@@ -3621,7 +3524,7 @@ EW_DEFINE_CLASS_VARIANTS( SettingsTimeoutDialog )
 EW_END_OF_CLASS_VARIANTS( SettingsTimeoutDialog )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::TimeoutDialog' */
-EW_DEFINE_CLASS( SettingsTimeoutDialog, ComponentsBaseMainBG, OnTimeout, OnTimeout, 
+EW_DEFINE_CLASS( SettingsTimeoutDialog, ComponentsBaseMainBG, MessageText, MessageText, 
                  MessageText, MessageText, Message, DismissAfterTimeout, "Settings::TimeoutDialog" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
@@ -3672,22 +3575,22 @@ EW_END_OF_CLASS( SettingsTimeoutDialog )
 void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET30_QRCode );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET30_QRCode );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->QrCodeReadyEventHandler, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->WhiteMargin, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->QrCodeImage, &_this->_XObject, 0 );
-  MenuPushButton__Init( &_this->PushButton, &_this->_XObject, 0 );
-  TelephoneImageButton__Init( &_this->BrightnessUpButton, &_this->_XObject, 0 );
-  TelephoneImageButton__Init( &_this->BrightnessDownButton, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->BrightnessIcon, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->QrCodeReadyEventHandler, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->WhiteMargin, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->QrCodeImage, &_this->_.XObject, 0 );
+  MenuPushButton__Init( &_this->PushButton, &_this->_.XObject, 0 );
+  TelephoneImageButton__Init( &_this->BrightnessUpButton, &_this->_.XObject, 0 );
+  TelephoneImageButton__Init( &_this->BrightnessDownButton, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->BrightnessIcon, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET30_QRCode );
+  _this->_.VMT = EW_CLASS( SettingsSET30_QRCode );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -3726,7 +3629,7 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
 void SettingsSET30_QRCode__ReInit( SettingsSET30_QRCode _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->QrCodeReadyEventHandler );
@@ -3742,7 +3645,7 @@ void SettingsSET30_QRCode__ReInit( SettingsSET30_QRCode _this )
 void SettingsSET30_QRCode__Done( SettingsSET30_QRCode _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->QrCodeReadyEventHandler );
@@ -3754,7 +3657,7 @@ void SettingsSET30_QRCode__Done( SettingsSET30_QRCode _this )
   ViewsImage__Done( &_this->BrightnessIcon );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -3815,7 +3718,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET30_QRCode )
 /* Virtual Method Table (VMT) for the class : 'Settings::SET30_QRCode' */
 EW_DEFINE_CLASS( SettingsSET30_QRCode, ComponentsBaseMainBG, QrCodeReadyEventHandler, 
                  QrCodeReadyEventHandler, QrCodeReadyEventHandler, QrCodeReadyEventHandler, 
-                 _None, _None, "Settings::SET30_QRCode" )
+                 _.VMT, _.VMT, "Settings::SET30_QRCode" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -3864,20 +3767,20 @@ EW_END_OF_CLASS( SettingsSET30_QRCode )
 void SettingsSET22_BleAdvertising__Init( SettingsSET22_BleAdvertising _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET22_BleAdvertising );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET22_BleAdvertising );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->DeviceNameText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->WaitText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->LocalDeviceNameText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Image, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->BlePairingStateChangedEventHandler, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->DeviceNameText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->WaitText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->LocalDeviceNameText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Image, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->BlePairingStateChangedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET22_BleAdvertising );
+  _this->_.VMT = EW_CLASS( SettingsSET22_BleAdvertising );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -3916,7 +3819,7 @@ void SettingsSET22_BleAdvertising__Init( SettingsSET22_BleAdvertising _this, XOb
 void SettingsSET22_BleAdvertising__ReInit( SettingsSET22_BleAdvertising _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->DeviceNameText );
@@ -3930,7 +3833,7 @@ void SettingsSET22_BleAdvertising__ReInit( SettingsSET22_BleAdvertising _this )
 void SettingsSET22_BleAdvertising__Done( SettingsSET22_BleAdvertising _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->DeviceNameText );
@@ -3940,7 +3843,7 @@ void SettingsSET22_BleAdvertising__Done( SettingsSET22_BleAdvertising _this )
   CoreSystemEventHandler__Done( &_this->BlePairingStateChangedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -3983,7 +3886,6 @@ void SettingsSET22_BleAdvertising_OnBlePairingStateChangedSlot( SettingsSET22_Bl
   EW_UNUSED_ARG( sender );
 
   if ( _this->Super5.Owner != 0 )
-  {
     switch ( DeviceInterfaceBluetoothDeviceClass_OnGetBlePairingState( EwGetAutoObject( 
             &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
     {
@@ -4030,10 +3932,8 @@ void SettingsSET22_BleAdvertising_OnBlePairingStateChangedSlot( SettingsSET22_Bl
       }
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* Variants derived from the class : 'Settings::SET22_BleAdvertising' */
@@ -4042,7 +3942,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET22_BleAdvertising )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET22_BleAdvertising' */
 EW_DEFINE_CLASS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG, DeviceNameText, 
-                 DeviceNameText, DeviceNameText, DeviceNameText, _None, _None, "Settings::SET22_BleAdvertising" )
+                 DeviceNameText, DeviceNameText, DeviceNameText, _.VMT, _.VMT, "Settings::SET22_BleAdvertising" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -4091,13 +3991,13 @@ EW_END_OF_CLASS( SettingsSET22_BleAdvertising )
 void SettingsSET23_BlePairingFail__Init( SettingsSET23_BlePairingFail _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  SettingsTimeoutDialog__Init( &_this->_Super, aLink, aArg );
+  SettingsTimeoutDialog__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET23_BlePairingFail );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET23_BlePairingFail );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET23_BlePairingFail );
+  _this->_.VMT = EW_CLASS( SettingsSET23_BlePairingFail );
 
   /* ... and initialize objects, variables, properties, etc. */
   ViewsText_OnSetString( &_this->Super1.MessageText, EwLoadString( &StringsSET23_PAIRING_FAILED ));
@@ -4107,17 +4007,17 @@ void SettingsSET23_BlePairingFail__Init( SettingsSET23_BlePairingFail _this, XOb
 void SettingsSET23_BlePairingFail__ReInit( SettingsSET23_BlePairingFail _this )
 {
   /* At first re-initialize the super class ... */
-  SettingsTimeoutDialog__ReInit( &_this->_Super );
+  SettingsTimeoutDialog__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Settings::SET23_BlePairingFail' */
 void SettingsSET23_BlePairingFail__Done( SettingsSET23_BlePairingFail _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( SettingsTimeoutDialog );
+  _this->_.Super._.VMT = EW_CLASS( SettingsTimeoutDialog );
 
   /* Don't forget to deinitialize the super class ... */
-  SettingsTimeoutDialog__Done( &_this->_Super );
+  SettingsTimeoutDialog__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Settings::SET23_BlePairingFail.OnTimeoutSlot()' */
@@ -4130,15 +4030,11 @@ void SettingsSET23_BlePairingFail_OnTimeoutSlot( SettingsSET23_BlePairingFail _t
   if ( DeviceInterfaceBluetoothDeviceClass_GetBlePairingFailCount( EwGetAutoObject( 
       &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )) > 
       1 )
-  {
     CoreGroup_SwitchToDialog( _this->Super6.Owner, ((CoreGroup)EwNewObject( SettingsSET24_CheckPairingRecord, 
     0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
   else
-  {
     CoreGroup_DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, 
     EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* Variants derived from the class : 'Settings::SET23_BlePairingFail' */
@@ -4146,8 +4042,8 @@ EW_DEFINE_CLASS_VARIANTS( SettingsSET23_BlePairingFail )
 EW_END_OF_CLASS_VARIANTS( SettingsSET23_BlePairingFail )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET23_BlePairingFail' */
-EW_DEFINE_CLASS( SettingsSET23_BlePairingFail, SettingsTimeoutDialog, _None, _None, 
-                 _None, _None, _None, _None, "Settings::SET23_BlePairingFail" )
+EW_DEFINE_CLASS( SettingsSET23_BlePairingFail, SettingsTimeoutDialog, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, _.VMT, "Settings::SET23_BlePairingFail" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -4197,17 +4093,17 @@ EW_END_OF_CLASS( SettingsSET23_BlePairingFail )
 void SettingsSET24_CheckPairingRecord__Init( SettingsSET24_CheckPairingRecord _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET24_CheckPairingRecord );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET24_CheckPairingRecord );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->MessageText, &_this->_XObject, 0 );
-  MenuPushButton__Init( &_this->PushButton, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->MessageText, &_this->_.XObject, 0 );
+  MenuPushButton__Init( &_this->PushButton, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET24_CheckPairingRecord );
+  _this->_.VMT = EW_CLASS( SettingsSET24_CheckPairingRecord );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -4230,7 +4126,7 @@ void SettingsSET24_CheckPairingRecord__Init( SettingsSET24_CheckPairingRecord _t
 void SettingsSET24_CheckPairingRecord__ReInit( SettingsSET24_CheckPairingRecord _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->MessageText );
@@ -4241,14 +4137,14 @@ void SettingsSET24_CheckPairingRecord__ReInit( SettingsSET24_CheckPairingRecord 
 void SettingsSET24_CheckPairingRecord__Done( SettingsSET24_CheckPairingRecord _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->MessageText );
   MenuPushButton__Done( &_this->PushButton );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -4281,7 +4177,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET24_CheckPairingRecord )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET24_CheckPairingRecord' */
 EW_DEFINE_CLASS( SettingsSET24_CheckPairingRecord, ComponentsBaseMainBG, MessageText, 
-                 MessageText, MessageText, MessageText, _None, _None, "Settings::SET24_CheckPairingRecord" )
+                 MessageText, MessageText, MessageText, _.VMT, _.VMT, "Settings::SET24_CheckPairingRecord" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -4330,17 +4226,17 @@ EW_END_OF_CLASS( SettingsSET24_CheckPairingRecord )
 void SettingsSET25_BlePincode__Init( SettingsSET25_BlePincode _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET25_BlePincode );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET25_BlePincode );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->BleStateChangedEventHandler, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->PincodeText, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->BleStateChangedEventHandler, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->PincodeText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET25_BlePincode );
+  _this->_.VMT = EW_CLASS( SettingsSET25_BlePincode );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -4361,7 +4257,7 @@ void SettingsSET25_BlePincode__Init( SettingsSET25_BlePincode _this, XObject aLi
 void SettingsSET25_BlePincode__ReInit( SettingsSET25_BlePincode _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->BleStateChangedEventHandler );
@@ -4372,14 +4268,14 @@ void SettingsSET25_BlePincode__ReInit( SettingsSET25_BlePincode _this )
 void SettingsSET25_BlePincode__Done( SettingsSET25_BlePincode _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->BleStateChangedEventHandler );
   ViewsText__Done( &_this->PincodeText );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -4421,10 +4317,8 @@ void SettingsSET25_BlePincode_UpdateViewState( SettingsSET25_BlePincode _this, X
 
   if ((( aState & CoreViewStateDialog ) == CoreViewStateDialog ) && ( _this->Super5.Owner 
       != 0 ))
-  {
     EwPostSignal( EwNewSlot( _this, SettingsSET25_BlePincode_OnBlePairingStateChangedSlot ), 
       ((XObject)_this ));
-  }
 }
 
 /* 'C' function for method : 'Settings::SET25_BlePincode.OnShortHomeKeyActivated()' */
@@ -4444,17 +4338,14 @@ void SettingsSET25_BlePincode_OnBlePairingStateChangedSlot( SettingsSET25_BlePin
   EW_UNUSED_ARG( sender );
 
   if ( _this->Super5.Owner != 0 )
-  {
     switch ( DeviceInterfaceBluetoothDeviceClass_OnGetBlePairingState( EwGetAutoObject( 
             &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
     {
       case EnumBlePairingStateFAIL :
       case EnumBlePairingStateTIMEOUT :
-      {
         CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( 
         SettingsSET23_BlePairingFail, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 
         0 );
-      }
       break;
 
       case EnumBlePairingStateSUCCESSFUL :
@@ -4468,10 +4359,8 @@ void SettingsSET25_BlePincode_OnBlePairingStateChangedSlot( SettingsSET25_BlePin
       }
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* Variants derived from the class : 'Settings::SET25_BlePincode' */
@@ -4481,7 +4370,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET25_BlePincode )
 /* Virtual Method Table (VMT) for the class : 'Settings::SET25_BlePincode' */
 EW_DEFINE_CLASS( SettingsSET25_BlePincode, ComponentsBaseMainBG, BleStateChangedEventHandler, 
                  BleStateChangedEventHandler, BleStateChangedEventHandler, BleStateChangedEventHandler, 
-                 _None, _None, "Settings::SET25_BlePincode" )
+                 _.VMT, _.VMT, "Settings::SET25_BlePincode" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -4530,22 +4419,22 @@ EW_END_OF_CLASS( SettingsSET25_BlePincode )
 void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET28_SystemInfo );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET28_SystemInfo );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->ESN, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->SoftwareVersionTitle, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->EsnText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->SoftwareVersionText, &_this->_XObject, 0 );
-  CorePropertyObserver__Init( &_this->EsnObserver, &_this->_XObject, 0 );
-  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->ESN, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->SoftwareVersionTitle, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->EsnText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->SoftwareVersionText, &_this->_.XObject, 0 );
+  CorePropertyObserver__Init( &_this->EsnObserver, &_this->_.XObject, 0 );
+  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET28_SystemInfo );
+  _this->_.VMT = EW_CLASS( SettingsSET28_SystemInfo );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0001 );
@@ -4602,7 +4491,7 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
 void SettingsSET28_SystemInfo__ReInit( SettingsSET28_SystemInfo _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ESN );
@@ -4618,7 +4507,7 @@ void SettingsSET28_SystemInfo__ReInit( SettingsSET28_SystemInfo _this )
 void SettingsSET28_SystemInfo__Done( SettingsSET28_SystemInfo _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->ESN );
@@ -4630,7 +4519,7 @@ void SettingsSET28_SystemInfo__Done( SettingsSET28_SystemInfo _this )
   ViewsImage__Done( &_this->Divider );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -4683,7 +4572,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET28_SystemInfo )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET28_SystemInfo' */
 EW_DEFINE_CLASS( SettingsSET28_SystemInfo, ComponentsBaseMainBG, ESN, ESN, ESN, 
-                 ESN, _None, _None, "Settings::SET28_SystemInfo" )
+                 ESN, _.VMT, _.VMT, "Settings::SET28_SystemInfo" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -4732,18 +4621,18 @@ EW_END_OF_CLASS( SettingsSET28_SystemInfo )
 void SettingsLicenseDetail__Init( SettingsLicenseDetail _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsLicenseDetail );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsLicenseDetail );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->TitleText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->LicenseText, &_this->_XObject, 0 );
-  EffectsInt32Effect__Init( &_this->ScrollEffect, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->TitleText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->LicenseText, &_this->_.XObject, 0 );
+  EffectsInt32Effect__Init( &_this->ScrollEffect, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsLicenseDetail );
+  _this->_.VMT = EW_CLASS( SettingsLicenseDetail );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const003E );
@@ -4762,7 +4651,6 @@ void SettingsLicenseDetail__Init( SettingsLicenseDetail _this, XObject aLink, XH
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->ScrollEffect, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->ScrollEffect, 200 );
   EffectsEffect_OnSetInitialDelay((EffectsEffect)&_this->ScrollEffect, 0 );
-  _this->TitleInitBounds = _Const003F;
   _this->LicenseInitBounds = _Const0040;
   CoreGroup__Add( _this, ((CoreView)&_this->TitleText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LicenseText ), 0 );
@@ -4780,7 +4668,7 @@ void SettingsLicenseDetail__Init( SettingsLicenseDetail _this, XObject aLink, XH
 void SettingsLicenseDetail__ReInit( SettingsLicenseDetail _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->TitleText );
@@ -4792,7 +4680,7 @@ void SettingsLicenseDetail__ReInit( SettingsLicenseDetail _this )
 void SettingsLicenseDetail__Done( SettingsLicenseDetail _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->TitleText );
@@ -4800,7 +4688,7 @@ void SettingsLicenseDetail__Done( SettingsLicenseDetail _this )
   EffectsInt32Effect__Done( &_this->ScrollEffect );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Settings::LicenseDetail.ScrollUpPage()' */
@@ -4811,9 +4699,7 @@ XInt32 SettingsLicenseDetail_ScrollUpPage( SettingsLicenseDetail _this )
     XInt32 NextScrollOffsetY = _this->ScrollOffsetY + EwGetRectH( _this->Super2.Bounds );
 
     if ( NextScrollOffsetY > 0 )
-    {
       NextScrollOffsetY = 0;
-    }
 
     _this->ScrollEffect.Value1 = _this->ScrollOffsetY;
     _this->ScrollEffect.Value2 = NextScrollOffsetY;
@@ -4836,14 +4722,10 @@ XInt32 SettingsLicenseDetail_ScrollDownPage( SettingsLicenseDetail _this )
       - EwGetRectH( _this->Super2.Bounds );
 
     if ( MaxScrollOffset < 0 )
-    {
       MaxScrollOffset = 0;
-    }
 
     if ( EwGetInt32Abs( NextScrollOffsetY ) > MaxScrollOffset )
-    {
       NextScrollOffsetY = -1 * MaxScrollOffset;
-    }
 
     _this->ScrollEffect.Value1 = _this->ScrollOffsetY;
     _this->ScrollEffect.Value2 = NextScrollOffsetY;
@@ -4864,9 +4746,9 @@ void SettingsLicenseDetail_OnSetScrollOffsetY( SettingsLicenseDetail _this, XInt
   {
     XRect NewBounds;
     _this->ScrollOffsetY = value;
-    NewBounds = _this->TitleInitBounds;
+    NewBounds = _Const003F;
     NewBounds.Point1.Y = value;
-    NewBounds.Point2.Y = ( NewBounds.Point1.Y + EwGetRectH( _this->TitleInitBounds ));
+    NewBounds.Point2.Y = ( NewBounds.Point1.Y + 31 );
     CoreRectView__OnSetBounds( &_this->TitleText, NewBounds );
     NewBounds = _this->LicenseInitBounds;
     NewBounds.Point1.Y = ( NewBounds.Point1.Y + value );
@@ -4931,13 +4813,13 @@ EW_END_OF_CLASS( SettingsLicenseDetail )
 void SettingsSET43_ResetMenu__Init( SettingsSET43_ResetMenu _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET43_ResetMenu );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET43_ResetMenu );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET43_ResetMenu );
+  _this->_.VMT = EW_CLASS( SettingsSET43_ResetMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -4958,17 +4840,17 @@ void SettingsSET43_ResetMenu__Init( SettingsSET43_ResetMenu _this, XObject aLink
 void SettingsSET43_ResetMenu__ReInit( SettingsSET43_ResetMenu _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Settings::SET43_ResetMenu' */
 void SettingsSET43_ResetMenu__Done( SettingsSET43_ResetMenu _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -5001,9 +4883,7 @@ XString SettingsSET43_ResetMenu_LoadItemTitle( SettingsSET43_ResetMenu _this, XI
   XString title = 0;
 
   if ( aItemNo < 4 )
-  {
     title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 4 )];
-  }
 
   return title;
 }
@@ -5033,19 +4913,12 @@ void SettingsSET43_ResetMenu_OnItemActivate( SettingsSET43_ResetMenu _this, XInt
     break;
 
     case 3 :
-    {
-      if ( EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode )
-        ;
-      else
-      {
+      if ( !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsHopperTestMode )
         ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)EwNewObject( 
         SettingsSET38_ConfirmAllReset, 0 )));
-      }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -5055,7 +4928,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET43_ResetMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET43_ResetMenu' */
 EW_DEFINE_CLASS( SettingsSET43_ResetMenu, MenuBaseMenuView, ItemTitleArray, ItemTitleArray, 
-                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _None, "Settings::SET43_ResetMenu" )
+                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _.VMT, "Settings::SET43_ResetMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -5120,17 +4993,17 @@ EW_END_OF_CLASS( SettingsSET43_ResetMenu )
 void SettingsSET42_ResetCompleted__Init( SettingsSET42_ResetCompleted _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET42_ResetCompleted );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET42_ResetCompleted );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->MessageText, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->TimeoutTimer, &_this->_XObject, 0 );
+  ViewsText__Init( &_this->MessageText, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->TimeoutTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET42_ResetCompleted );
+  _this->_.VMT = EW_CLASS( SettingsSET42_ResetCompleted );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -5154,7 +5027,7 @@ void SettingsSET42_ResetCompleted__Init( SettingsSET42_ResetCompleted _this, XOb
 void SettingsSET42_ResetCompleted__ReInit( SettingsSET42_ResetCompleted _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->MessageText );
@@ -5165,14 +5038,14 @@ void SettingsSET42_ResetCompleted__ReInit( SettingsSET42_ResetCompleted _this )
 void SettingsSET42_ResetCompleted__Done( SettingsSET42_ResetCompleted _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->MessageText );
   CoreTimer__Done( &_this->TimeoutTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -5220,7 +5093,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET42_ResetCompleted )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET42_ResetCompleted' */
 EW_DEFINE_CLASS( SettingsSET42_ResetCompleted, ComponentsBaseMainBG, MessageText, 
-                 MessageText, MessageText, MessageText, _None, _None, "Settings::SET42_ResetCompleted" )
+                 MessageText, MessageText, MessageText, _.VMT, _.VMT, "Settings::SET42_ResetCompleted" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -5269,16 +5142,16 @@ EW_END_OF_CLASS( SettingsSET42_ResetCompleted )
 void SettingsSET45_TripMileageReset__Init( SettingsSET45_TripMileageReset _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET45_TripMileageReset );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET45_TripMileageReset );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET45_TripMileageReset );
+  _this->_.VMT = EW_CLASS( SettingsSET45_TripMileageReset );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -5299,7 +5172,7 @@ void SettingsSET45_TripMileageReset__Init( SettingsSET45_TripMileageReset _this,
 void SettingsSET45_TripMileageReset__ReInit( SettingsSET45_TripMileageReset _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
@@ -5309,13 +5182,13 @@ void SettingsSET45_TripMileageReset__ReInit( SettingsSET45_TripMileageReset _thi
 void SettingsSET45_TripMileageReset__Done( SettingsSET45_TripMileageReset _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -5363,8 +5236,7 @@ XString SettingsSET45_TripMileageReset_LoadItemTitle( SettingsSET45_TripMileageR
       Title = EwLoadString( &StringsINF26_TRIP_F );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return Title;
@@ -5407,8 +5279,7 @@ XString SettingsSET45_TripMileageReset_LoadItemUnit( SettingsSET45_TripMileageRe
       UnitString = EwLoadString( &StringsUNT02_UNIT_MILEAGE_MILE );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return UnitString;
@@ -5445,9 +5316,7 @@ XString SettingsSET45_TripMileageReset_LoadItemValue( SettingsSET45_TripMileageR
   if ( VehicleData->Valid )
   {
     if ( EnumMileageSettingItemMILE == _this->MileageSetting )
-    {
       VehicleData->DataFloat *= 0.625000f;
-    }
 
     switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 3 )])
     {
@@ -5469,16 +5338,13 @@ XString SettingsSET45_TripMileageReset_LoadItemValue( SettingsSET45_TripMileageR
         VehicleData->DataFloat, 0.000000f, 999.900024f );
       break;
 
-      default : 
-        ;
+      default :; 
     }
 
     Value = EwNewStringFloat( VehicleData->DataFloat, 0, 1 );
   }
   else
-  {
     Value = EwLoadString( &StringsGEN_THREE_HYPHENS );
-  }
 
   return Value;
 }
@@ -5491,13 +5357,9 @@ void SettingsSET45_TripMileageReset_GetMileageSetting( SettingsSET45_TripMileage
     EnumVehicleRxTypeMILEAGE_UNIT );
 
   if ( 1 == VehicleData->DataUInt32 )
-  {
     _this->MileageSetting = EnumMileageSettingItemMILE;
-  }
   else
-  {
     _this->MileageSetting = EnumMileageSettingItemKM;
-  }
 }
 
 /* 'C' function for method : 'Settings::SET45_TripMileageReset.SetNoOfMenuItems()' */
@@ -5514,7 +5376,6 @@ void SettingsSET45_TripMileageReset_SetNoOfMenuItems( SettingsSET45_TripMileageR
     switch ( SettingItem )
     {
       case EnumMeterInfoTRIP1 :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionTRIP1 ))
@@ -5522,11 +5383,9 @@ void SettingsSET45_TripMileageReset_SetNoOfMenuItems( SettingsSET45_TripMileageR
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumMeterInfoTRIP2 :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionTRIP2 ))
@@ -5534,11 +5393,9 @@ void SettingsSET45_TripMileageReset_SetNoOfMenuItems( SettingsSET45_TripMileageR
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumMeterInfoTRIP_F :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionF_TRIP ))
@@ -5546,7 +5403,6 @@ void SettingsSET45_TripMileageReset_SetNoOfMenuItems( SettingsSET45_TripMileageR
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       default : 
@@ -5573,22 +5429,17 @@ void SettingsSET45_TripMileageReset_OnVehicleDataReceivedSlot( SettingsSET45_Tri
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
   if ( VehicleData != 0 )
-  {
     switch ( VehicleData->RxType )
     {
       case EnumVehicleRxTypeTRIP1_VALUE :
       case EnumVehicleRxTypeTRIP2_VALUE :
       case EnumVehicleRxTypeF_TRIP :
-      {
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
         - 1 );
-      }
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* Variants derived from the class : 'Settings::SET45_TripMileageReset' */
@@ -5663,16 +5514,16 @@ EW_END_OF_CLASS( SettingsSET45_TripMileageReset )
 void SettingsSET46_VehicleInfoReset__Init( SettingsSET46_VehicleInfoReset _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( SettingsSET46_VehicleInfoReset );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET46_VehicleInfoReset );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( SettingsSET46_VehicleInfoReset );
+  _this->_.VMT = EW_CLASS( SettingsSET46_VehicleInfoReset );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -5695,7 +5546,7 @@ void SettingsSET46_VehicleInfoReset__Init( SettingsSET46_VehicleInfoReset _this,
 void SettingsSET46_VehicleInfoReset__ReInit( SettingsSET46_VehicleInfoReset _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
@@ -5705,13 +5556,13 @@ void SettingsSET46_VehicleInfoReset__ReInit( SettingsSET46_VehicleInfoReset _thi
 void SettingsSET46_VehicleInfoReset__Done( SettingsSET46_VehicleInfoReset _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -5736,9 +5587,7 @@ XClass SettingsSET46_VehicleInfoReset_LoadItemClass( SettingsSET46_VehicleInfoRe
 
   if ( EnumMeterInfoTRIP_TIME == _this->SupportedSetting[ EwCheckIndex( aItemNo, 
       4 )])
-  {
     ItemClass = EW_CLASS( MenuItemTimeHourMinute );
-  }
 
   return ItemClass;
 }
@@ -5767,8 +5616,7 @@ XString SettingsSET46_VehicleInfoReset_LoadItemTitle( SettingsSET46_VehicleInfoR
       Title = EwLoadString( &StringsHOM03_FUEL_CONSUMPTION );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return Title;
@@ -5799,20 +5647,13 @@ XString SettingsSET46_VehicleInfoReset_LoadItemUnit( SettingsSET46_VehicleInfoRe
   switch ( _this->SupportedSetting[ EwCheckIndex( aItemNo, 4 )])
   {
     case EnumMeterInfoAVG_SPEED :
-    {
       if ( EnumMileageSettingItemMILE == _this->MileageUnit )
-      {
         UnitString = EwLoadString( &StringsGEN_SPEED_MILE_PER_HOUR );
-      }
       else
-      {
         UnitString = EwLoadString( &StringsGEN_SPEED_KM_PER_HOUR );
-      }
-    }
     break;
 
     case EnumMeterInfoAVG_FUEL :
-    {
       switch ( _this->FuelConsumptionUnit )
       {
         case EnumMeterFuelConsumptionUnitKM_PER_LITER :
@@ -5828,14 +5669,11 @@ XString SettingsSET46_VehicleInfoReset_LoadItemUnit( SettingsSET46_VehicleInfoRe
           UnitString = EwLoadString( &StringsUNT03_UNIT_FUEL_LITER_PER_HUNDRED_KM );
         break;
 
-        default : 
-          ;
+        default :; 
       }
-    }
     break;
 
     case EnumMeterInfoFUEL_CONSUMPTION :
-    {
       switch ( _this->FuelConsumptionUnit )
       {
         case EnumMeterFuelConsumptionUnitKM_PER_LITER :
@@ -5848,14 +5686,11 @@ XString SettingsSET46_VehicleInfoReset_LoadItemUnit( SettingsSET46_VehicleInfoRe
           UnitString = EwLoadString( &StringsGEN_FUEL_UNIT_GALLON );
         break;
 
-        default : 
-          ;
+        default :; 
       }
-    }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return UnitString;
@@ -5899,10 +5734,8 @@ XString SettingsSET46_VehicleInfoReset_LoadItemHour( SettingsSET46_VehicleInfoRe
 
   if ( EnumMeterInfoTRIP_TIME == _this->SupportedSetting[ EwCheckIndex( aItemNo, 
       4 )])
-  {
     HourString = DeviceInterfaceVehicleDeviceClass_OnGetTripTimeHourStr( EwGetAutoObject( 
     &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
-  }
 
   return HourString;
 }
@@ -5915,10 +5748,8 @@ XString SettingsSET46_VehicleInfoReset_LoadItemMinute( SettingsSET46_VehicleInfo
 
   if ( EnumMeterInfoTRIP_TIME == _this->SupportedSetting[ EwCheckIndex( aItemNo, 
       4 )])
-  {
     MinuteString = DeviceInterfaceVehicleDeviceClass_OnGetTripTimeMinuteStr( EwGetAutoObject( 
     &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
-  }
 
   return MinuteString;
 }
@@ -5931,21 +5762,15 @@ void SettingsSET46_VehicleInfoReset_GetUnitSetting( SettingsSET46_VehicleInfoRes
     EnumVehicleRxTypeMILEAGE_UNIT );
 
   if ( 1 == VehicleData->DataUInt32 )
-  {
     _this->MileageUnit = EnumMileageSettingItemMILE;
-  }
   else
-  {
     _this->MileageUnit = EnumMileageSettingItemKM;
-  }
 
   VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
   DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT );
 
   if ( 4 > VehicleData->DataUInt32 )
-  {
     _this->FuelConsumptionUnit = (XEnum)VehicleData->DataUInt32;
-  }
 }
 
 /* 'C' function for method : 'Settings::SET46_VehicleInfoReset.SetNoOfMenuItems()' */
@@ -5962,7 +5787,6 @@ void SettingsSET46_VehicleInfoReset_SetNoOfMenuItems( SettingsSET46_VehicleInfoR
     switch ( SettingItem )
     {
       case EnumMeterInfoAVG_SPEED :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionAVG_SPEED ))
@@ -5970,11 +5794,9 @@ void SettingsSET46_VehicleInfoReset_SetNoOfMenuItems( SettingsSET46_VehicleInfoR
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 4 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumMeterInfoAVG_FUEL :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionAVG_FUEL ))
@@ -5982,11 +5804,9 @@ void SettingsSET46_VehicleInfoReset_SetNoOfMenuItems( SettingsSET46_VehicleInfoR
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 4 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumMeterInfoFUEL_CONSUMPTION :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionFUEL_CONSUMPTION ))
@@ -5994,7 +5814,6 @@ void SettingsSET46_VehicleInfoReset_SetNoOfMenuItems( SettingsSET46_VehicleInfoR
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 4 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       default : 
@@ -6021,7 +5840,6 @@ void SettingsSET46_VehicleInfoReset_OnVehicleDataReceivedSlot( SettingsSET46_Veh
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
   if ( VehicleData != 0 )
-  {
     switch ( VehicleData->RxType )
     {
       case EnumVehicleRxTypeAVERAGE_SPEED :
@@ -6040,10 +5858,8 @@ void SettingsSET46_VehicleInfoReset_OnVehicleDataReceivedSlot( SettingsSET46_Veh
         SettingsSET46_VehicleInfoReset_ReloadItem( _this, EnumMeterInfoFUEL_CONSUMPTION );
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* 'C' function for method : 'Settings::SET46_VehicleInfoReset.ReloadItem()' */
@@ -6053,13 +5869,11 @@ void SettingsSET46_VehicleInfoReset_ReloadItem( SettingsSET46_VehicleInfoReset _
   XInt32 i;
 
   for ( i = 0; i < 4; i++ )
-  {
     if ( aMeterInfo == _this->SupportedSetting[ EwCheckIndex( i, 4 )])
     {
       MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, i, i );
       break;
     }
-  }
 }
 
 /* Variants derived from the class : 'Settings::SET46_VehicleInfoReset' */

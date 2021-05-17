@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -40,16 +40,16 @@
 void TCSTCS01_Main__Init( TCSTCS01_Main _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( TCSTCS01_Main );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( TCSTCS01_Main );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( TCSTCS01_Main );
+  _this->_.VMT = EW_CLASS( TCSTCS01_Main );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -68,7 +68,7 @@ void TCSTCS01_Main__Init( TCSTCS01_Main _this, XObject aLink, XHandle aArg )
 void TCSTCS01_Main__ReInit( TCSTCS01_Main _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
@@ -78,13 +78,13 @@ void TCSTCS01_Main__ReInit( TCSTCS01_Main _this )
 void TCSTCS01_Main__Done( TCSTCS01_Main _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -101,9 +101,7 @@ void TCSTCS01_Main_Init( TCSTCS01_Main _this, XHandle aArg )
   DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTC_MODE );
 
   if ( VehicleData != 0 )
-  {
     _this->IsTCSEnabled = !!VehicleData->DataUInt32;
-  }
 }
 
 /* 'C' function for method : 'TCS::TCS01_Main.LoadItemClass()' */
@@ -112,9 +110,7 @@ XClass TCSTCS01_Main_LoadItemClass( TCSTCS01_Main _this, XInt32 aItemNo )
   XClass ClassType = 0;
 
   if ( aItemNo < _this->Super1.Menu.NoOfItems )
-  {
     ClassType = EW_CLASS( MenuItemCheckbox );
-  }
 
   return ClassType;
 }
@@ -125,9 +121,7 @@ XString TCSTCS01_Main_LoadItemTitle( TCSTCS01_Main _this, XInt32 aItemNo )
   XString title = 0;
 
   if ( aItemNo < _this->Super1.Menu.NoOfItems )
-  {
     title = EwLoadString( &StringsTCS01_TCS );
-  }
 
   return title;
 }
@@ -166,9 +160,7 @@ XBool TCSTCS01_Main_LoadItemChecked( TCSTCS01_Main _this, XInt32 aItemNo )
   XBool IsChecked = 0;
 
   if ( aItemNo < _this->Super1.Menu.NoOfItems )
-  {
     IsChecked = _this->IsTCSEnabled;
-  }
 
   return IsChecked;
 }
@@ -210,8 +202,6 @@ void TCSTCS01_Main_OnVehicleDataReceivedSlot( TCSTCS01_Main _this, XObject sende
         _this->IsTCSEnabled = 0;
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 0 );
       }
-      else
-        ;
   }
 }
 

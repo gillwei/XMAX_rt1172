@@ -196,16 +196,16 @@
 #endif
 
 /* Validate the maximum glyph surface size */
-#if ( EW_MAX_GLYPH_SURFACE_WIDTH < 64 )
-  #error "The glyph surface width is less than 64."
+#if ( EW_MAX_GLYPH_SURFACE_WIDTH < 32 )
+  #error "The glyph surface width is less than 32."
 #endif
 
 #if ( EW_MAX_GLYPH_SURFACE_WIDTH > EW_MAX_SURFACE_WIDTH )
   #error "The glyph surface size exceeds the maximum surface size."
 #endif
 
-#if ( EW_MAX_GLYPH_SURFACE_HEIGHT < 64 )
-  #error "The glyph surface height is less than 64."
+#if ( EW_MAX_GLYPH_SURFACE_HEIGHT < 32 )
+  #error "The glyph surface height is less than 32."
 #endif
 
 #if ( EW_MAX_GLYPH_SURFACE_HEIGHT > EW_MAX_SURFACE_HEIGHT )

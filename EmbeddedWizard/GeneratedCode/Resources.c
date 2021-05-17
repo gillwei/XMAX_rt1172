@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -31,7 +31,7 @@
 #include "Resources.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x00000056, /* ratio 97.67 % */
   0xB8005300, 0x000A8452, 0x00CA0034, 0x0E000100, 0xDE003900, 0x10F84C34, 0x79001D00,
@@ -47,13 +47,13 @@ static const XStringRes _Const0001 = { _StringsDefault0, 0x0002 };
 void ResourcesBitmap__Init( ResourcesBitmap _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreResource__Init( &_this->_Super, aLink, aArg );
+  CoreResource__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ResourcesBitmap );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( ResourcesBitmap );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ResourcesBitmap );
+  _this->_.VMT = EW_CLASS( ResourcesBitmap );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->NoOfFrames = 1;
@@ -66,7 +66,7 @@ void ResourcesBitmap__Init( ResourcesBitmap _this, XObject aLink, XHandle aArg )
 void ResourcesBitmap__ReInit( ResourcesBitmap _this )
 {
   /* At first re-initialize the super class ... */
-  CoreResource__ReInit( &_this->_Super );
+  CoreResource__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Resources::Bitmap' */
@@ -76,10 +76,10 @@ void ResourcesBitmap__Done( ResourcesBitmap _this )
   ResourcesBitmap_Done( _this );
 
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreResource );
+  _this->_.Super._.VMT = EW_CLASS( CoreResource );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreResource__Done( &_this->_Super );
+  CoreResource__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Resources::Bitmap.Done()' */
@@ -153,7 +153,7 @@ void ResourcesBitmap_OnSetFrameSize( ResourcesBitmap _this, XPoint value )
 /* Wrapper function for the virtual method : 'Resources::Bitmap.OnSetFrameSize()' */
 void ResourcesBitmap__OnSetFrameSize( void* _this, XPoint value )
 {
-  ((ResourcesBitmap)_this)->_VMT->OnSetFrameSize((ResourcesBitmap)_this, value );
+  ((ResourcesBitmap)_this)->_.VMT->OnSetFrameSize((ResourcesBitmap)_this, value );
 }
 
 /* 'C' function for method : 'Resources::Bitmap.Update()' */
@@ -166,7 +166,7 @@ void ResourcesBitmap_Update( ResourcesBitmap _this )
 /* Wrapper function for the virtual method : 'Resources::Bitmap.Update()' */
 void ResourcesBitmap__Update( void* _this )
 {
-  ((ResourcesBitmap)_this)->_VMT->Update((ResourcesBitmap)_this );
+  ((ResourcesBitmap)_this)->_.VMT->Update((ResourcesBitmap)_this );
 }
 
 /* Variants derived from the class : 'Resources::Bitmap' */
@@ -174,8 +174,8 @@ EW_DEFINE_CLASS_VARIANTS( ResourcesBitmap )
 EW_END_OF_CLASS_VARIANTS( ResourcesBitmap )
 
 /* Virtual Method Table (VMT) for the class : 'Resources::Bitmap' */
-EW_DEFINE_CLASS( ResourcesBitmap, CoreResource, _None, _None, _None, _None, _None, 
-                 _None, "Resources::Bitmap" )
+EW_DEFINE_CLASS( ResourcesBitmap, CoreResource, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "Resources::Bitmap" )
   ResourcesBitmap_OnSetFrameSize,
   ResourcesBitmap_Update,
 EW_END_OF_CLASS( ResourcesBitmap )
@@ -190,13 +190,13 @@ EW_RES_WITHOUT_VARIANTS( ResourcesDefaultBitmap )
 void ResourcesExternBitmap__Init( ResourcesExternBitmap _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ResourcesBitmap__Init( &_this->_Super, aLink, aArg );
+  ResourcesBitmap__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ResourcesExternBitmap );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( ResourcesExternBitmap );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ResourcesExternBitmap );
+  _this->_.VMT = EW_CLASS( ResourcesExternBitmap );
 
   /* Call the user defined constructor */
   ResourcesExternBitmap_Init( _this, aArg );
@@ -206,17 +206,17 @@ void ResourcesExternBitmap__Init( ResourcesExternBitmap _this, XObject aLink, XH
 void ResourcesExternBitmap__ReInit( ResourcesExternBitmap _this )
 {
   /* At first re-initialize the super class ... */
-  ResourcesBitmap__ReInit( &_this->_Super );
+  ResourcesBitmap__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Resources::ExternBitmap' */
 void ResourcesExternBitmap__Done( ResourcesExternBitmap _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ResourcesBitmap );
+  _this->_.Super._.VMT = EW_CLASS( ResourcesBitmap );
 
   /* Don't forget to deinitialize the super class ... */
-  ResourcesBitmap__Done( &_this->_Super );
+  ResourcesBitmap__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Resources::ExternBitmap.Init()' */
@@ -303,7 +303,7 @@ EW_END_OF_CLASS_VARIANTS( ResourcesExternBitmap )
 
 /* Virtual Method Table (VMT) for the class : 'Resources::ExternBitmap' */
 EW_DEFINE_CLASS( ResourcesExternBitmap, ResourcesBitmap, Name, Name, Name, Name, 
-                 Name, _None, "Resources::ExternBitmap" )
+                 Name, _.VMT, "Resources::ExternBitmap" )
   ResourcesBitmap_OnSetFrameSize,
   ResourcesBitmap_Update,
 EW_END_OF_CLASS( ResourcesExternBitmap )
@@ -312,13 +312,13 @@ EW_END_OF_CLASS( ResourcesExternBitmap )
 void ResourcesFont__Init( ResourcesFont _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreResource__Init( &_this->_Super, aLink, aArg );
+  CoreResource__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( ResourcesFont );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( ResourcesFont );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( ResourcesFont );
+  _this->_.VMT = EW_CLASS( ResourcesFont );
 
   /* Call the user defined constructor */
   ResourcesFont_Init( _this, aArg );
@@ -328,7 +328,7 @@ void ResourcesFont__Init( ResourcesFont _this, XObject aLink, XHandle aArg )
 void ResourcesFont__ReInit( ResourcesFont _this )
 {
   /* At first re-initialize the super class ... */
-  CoreResource__ReInit( &_this->_Super );
+  CoreResource__ReInit( &_this->_.Super );
 }
 
 /* Finalizer method for the class 'Resources::Font' */
@@ -338,14 +338,26 @@ void ResourcesFont__Done( ResourcesFont _this )
   ResourcesFont_Done( _this );
 
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreResource );
+  _this->_.Super._.VMT = EW_CLASS( CoreResource );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreResource__Done( &_this->_Super );
+  CoreResource__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Resources::Font.Done()' */
 void ResourcesFont_Done( ResourcesFont _this )
+{
+  ResourcesFont_freeFont( _this );
+}
+
+/* 'C' function for method : 'Resources::Font.Init()' */
+void ResourcesFont_Init( ResourcesFont _this, XHandle aArg )
+{
+  ResourcesFont_loadFont( _this, aArg );
+}
+
+/* 'C' function for method : 'Resources::Font.freeFont()' */
+void ResourcesFont_freeFont( ResourcesFont _this )
 {
   XHandle handle;
 
@@ -360,15 +372,15 @@ void ResourcesFont_Done( ResourcesFont _this )
   _this->Leading = 0;
 }
 
-/* 'C' function for method : 'Resources::Font.Init()' */
-void ResourcesFont_Init( ResourcesFont _this, XHandle aArg )
+/* 'C' function for method : 'Resources::Font.loadFont()' */
+void ResourcesFont_loadFont( ResourcesFont _this, XHandle aFontResource )
 {
   XHandle handle;
   XInt32 ascent;
   XInt32 descent;
   XInt32 leading;
 
-  if ( aArg == 0 )
+  if ( aFontResource == 0 )
     return;
 
   handle = 0;
@@ -376,8 +388,8 @@ void ResourcesFont_Init( ResourcesFont _this, XHandle aArg )
   descent = 0;
   leading = 0;
   {
-    /* aArg is a pointer to a memory where the font resource is stored. */
-    XFont* font = EwLoadFont((const XFntRes*)aArg );
+    /* aFontResource is a pointer to a memory where the font resource is stored. */
+    XFont* font = EwLoadFont((const XFntRes*)aFontResource );
 
     /* After the font has been loaded query its ascent and descent. */
     if ( font )
@@ -456,49 +468,13 @@ XInt32 ResourcesFont_GetTextAdvance( ResourcesFont _this, XString aString, XInt3
   return advance;
 }
 
-/* Default onget method for the property 'Leading' */
-XInt32 ResourcesFont_OnGetLeading( ResourcesFont _this )
-{
-  return _this->Leading;
-}
-
-/* Wrapper function for the non virtual method : 'Resources::Font.OnGetLeading()' */
-XInt32 ResourcesFont__OnGetLeading( void* _this )
-{
-  return ResourcesFont_OnGetLeading((ResourcesFont)_this );
-}
-
-/* Default onget method for the property 'Descent' */
-XInt32 ResourcesFont_OnGetDescent( ResourcesFont _this )
-{
-  return _this->Descent;
-}
-
-/* Wrapper function for the non virtual method : 'Resources::Font.OnGetDescent()' */
-XInt32 ResourcesFont__OnGetDescent( void* _this )
-{
-  return ResourcesFont_OnGetDescent((ResourcesFont)_this );
-}
-
-/* Default onget method for the property 'Ascent' */
-XInt32 ResourcesFont_OnGetAscent( ResourcesFont _this )
-{
-  return _this->Ascent;
-}
-
-/* Wrapper function for the non virtual method : 'Resources::Font.OnGetAscent()' */
-XInt32 ResourcesFont__OnGetAscent( void* _this )
-{
-  return ResourcesFont_OnGetAscent((ResourcesFont)_this );
-}
-
 /* Variants derived from the class : 'Resources::Font' */
 EW_DEFINE_CLASS_VARIANTS( ResourcesFont )
 EW_END_OF_CLASS_VARIANTS( ResourcesFont )
 
 /* Virtual Method Table (VMT) for the class : 'Resources::Font' */
-EW_DEFINE_CLASS( ResourcesFont, CoreResource, _None, _None, _None, _None, _None, 
-                 _None, "Resources::Font" )
+EW_DEFINE_CLASS( ResourcesFont, CoreResource, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "Resources::Font" )
 EW_END_OF_CLASS( ResourcesFont )
 
 /* Include a file containing the bitmap resource : 'Resources::WhiteBitmapStripe' */

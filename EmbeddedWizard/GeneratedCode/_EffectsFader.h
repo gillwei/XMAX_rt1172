@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -76,6 +76,10 @@
    determined in the property @Visible. Initializing this property with 'true' indicates, 
    that the affected component should become or/and remain visible during and after 
    the transition.
+   - The variable @Enabled controls whether the affected component should become 
+   enabled or disabled (should be able to react to user inputs) after the fader 
+   has finished its operation. Usually, initialize this property with 'true' for 
+   the fade-in and with 'false' for the fade-out operation.
    - As soon as all involved animation effects has finalized their work, the fader 
    should invoke its method @Complete().
    - By overriding the method @OnEnd() the implementation of the fader can additionally 
@@ -101,6 +105,7 @@ EW_DEFINE_FIELDS( EffectsFader, XObject )
   EW_VARIABLE( onComplete,      XSlot )
   EW_PROPERTY( OnInitialize,    XSlot )
   EW_PROPERTY( Visible,         XBool )
+  EW_PROPERTY( Enabled,         XBool )
   EW_PROPERTY( UseCurrentState, XBool )
   EW_PROPERTY( AddToOwner,      XBool )
   EW_PROPERTY( AssignFocus,     XBool )

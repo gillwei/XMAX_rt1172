@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <20,10,220,50>
 inline Inline
@@ -3041,37 +3041,46 @@ class VehicleDataClass
 }
 
 $rect <21,380,221,420>
-$output false
 class NaviDataClass
 {
   $rect <80,60,280,100>
+  $output true
   var string CurrentRoad;
 
   $rect <80,100,280,140>
+  $output true
   var int32 ETA;
 
   $rect <80,140,280,180>
+  $output true
   var int32 DayNightMode;
 
   $rect <80,180,280,220>
+  $output true
   var int32 SpeedLimit;
 
   $rect <280,60,480,100>
+  $output true
   var Enum::NaviAlertType NaviEventType;
 
   $rect <280,100,480,140>
+  $output true
   var string NaviEventDist;
 
   $rect <280,140,480,180>
+  $output true
   var bool NaviEventVisibility;
 
   $rect <280,180,480,220>
+  $output true
   var string NaviEventSpeed;
 
   $rect <490,60,690,100>
+  $output true
   var Enum::NaviCameraType NaviCameraType;
 
   $rect <80,220,280,260>
+  $output true
   var int32 RouteCalProgress;
 }
 
@@ -3141,7 +3150,7 @@ class NotificationDeviceClass : Templates::DeviceClass
       var string ReceivedHour = "";
       var string ReceivedMinute = "";
 
-      native( aItemNo, Uid, Title, Subtitle, Message, Category, ReceivedHour, ReceivedMinute )
+      native( aItemNo, Uid, CallRepetition, Title, Subtitle, Message, Category, ReceivedHour, ReceivedMinute )
       {
         uint32_t notification_uid;
         uint16_t call_repetition;

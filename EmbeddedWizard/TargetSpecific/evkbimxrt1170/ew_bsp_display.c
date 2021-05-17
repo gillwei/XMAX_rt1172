@@ -24,6 +24,11 @@
 *   target.
 *   This template is responsible to initialize the display hardware of the board
 *   and to provide the necessary access to update the display content.
+*   The color format of the framebuffer has to correspond to the color format
+*   of the Graphics Engine.
+*
+*   Important: This file is intended to be used as a template. Please adapt the
+*   implementation according your particular hardware.
 *
 *******************************************************************************/
 
@@ -51,9 +56,9 @@
   #error "selected EW_FRAME_BUFFER_COLOR_FORMAT not supported"
 #endif
 
-AT_BOARDSDRAM_SECTION( uint8_t FRAME_BUFFER_ADDR[FRAME_BUFFER_SIZE] );
+AT_BOARDSDRAM_SECTION( uint8_t EW_FRAME_BUFFER_ADDR[EW_FRAME_BUFFER_SIZE] );
 #if( EW_USE_DOUBLE_BUFFER == 1 )
-    AT_BOARDSDRAM_SECTION( uint8_t DOUBLE_BUFFER_ADDR[FRAME_BUFFER_SIZE] );
+    AT_BOARDSDRAM_SECTION( uint8_t EW_DOUBLE_BUFFER_ADDR[EW_FRAME_BUFFER_SIZE] );
 #endif
 
 static fbdev_t         g_fbdev;
@@ -71,16 +76,26 @@ extern const dc_fb_t   g_dc;
 *   the display parameter.
 *
 * ARGUMENTS:
+*   aGuiWidth,
+*   aGuiHeight   - Size of the GUI in pixel.
 *   aDisplayInfo - Display info data structure.
 *
 * RETURN VALUE:
 *   Returns 1 if successful, 0 otherwise.
 *
 *******************************************************************************/
-int EwBspDisplayInit( XDisplayInfo* aDisplayInfo )
+int EwBspDisplayInit( int aGuiWidth, int aGuiHeight, XDisplayInfo* aDisplayInfo )
 {
   status_t        status;
   void*           buffer;
+
+  EW_UNUSED_ARG( aGuiWidth );
+  EW_UNUSED_ARG( aGuiHeight );
+
+  /* check and clean display info structure */
+  if ( !aDisplayInfo )
+    return 0;
+  memset( aDisplayInfo, 0, sizeof( XDisplayInfo ));
 
   status = BOARD_PrepareVGLiteController();
   if ( status != kStatus_Success )
@@ -104,12 +119,12 @@ int EwBspDisplayInit( XDisplayInfo* aDisplayInfo )
   }
 
   g_fbInfo.bufInfo.pixelFormat = EW_BSP_DISPLAY_PIXEL_FORMAT;
-  g_fbInfo.bufInfo.width       = FRAME_BUFFER_WIDTH;
-  g_fbInfo.bufInfo.height      = FRAME_BUFFER_HEIGHT;
-  g_fbInfo.bufInfo.strideBytes = FRAME_BUFFER_WIDTH * FRAME_BUFFER_DEPTH;
+  g_fbInfo.bufInfo.width       = EW_FRAME_BUFFER_WIDTH;
+  g_fbInfo.bufInfo.height      = EW_FRAME_BUFFER_HEIGHT;
+  g_fbInfo.bufInfo.strideBytes = EW_FRAME_BUFFER_WIDTH * EW_FRAME_BUFFER_DEPTH;
   g_fbInfo.bufferCount         = 2;
-  g_fbInfo.buffers[ 0 ]        = (void*)FRAME_BUFFER_ADDR;
-  g_fbInfo.buffers[ 1 ]        = (void*)DOUBLE_BUFFER_ADDR;
+  g_fbInfo.buffers[ 0 ]        = (void*)EW_FRAME_BUFFER_ADDR;
+  g_fbInfo.buffers[ 1 ]        = (void*)EW_DOUBLE_BUFFER_ADDR;
 
   status = FBDEV_SetFrameBufferInfo( &g_fbdev, &g_fbInfo );
   if ( status != kStatus_Success )
@@ -119,25 +134,21 @@ int EwBspDisplayInit( XDisplayInfo* aDisplayInfo )
   }
 
   buffer = FBDEV_GetFrameBuffer( &g_fbdev, 0 );
-  memset( buffer, 0, FRAME_BUFFER_SIZE );
-  L1CACHE_CleanDCacheByRange( (uint32_t)buffer, FRAME_BUFFER_SIZE );
+  memset( buffer, 0, EW_FRAME_BUFFER_SIZE );
+  L1CACHE_CleanDCacheByRange( (uint32_t)buffer, EW_FRAME_BUFFER_SIZE );
   FBDEV_SetFrameBuffer( &g_fbdev, buffer, 0 );
 
   FBDEV_Enable( &g_fbdev );
 
   /* return the current display configuration */
-  if ( aDisplayInfo )
-  {
-    memset( aDisplayInfo, 0, sizeof( XDisplayInfo ));
-    aDisplayInfo->FrameBuffer   = (void*)FRAME_BUFFER_ADDR;
-    aDisplayInfo->DoubleBuffer  = (void*)DOUBLE_BUFFER_ADDR;
-    aDisplayInfo->BufferWidth   = FRAME_BUFFER_WIDTH;
-    aDisplayInfo->BufferHeight  = FRAME_BUFFER_HEIGHT;
-    aDisplayInfo->DisplayWidth  = FRAME_BUFFER_WIDTH;
-    aDisplayInfo->DisplayHeight = FRAME_BUFFER_HEIGHT;
+  aDisplayInfo->FrameBuffer    = (void*)EW_FRAME_BUFFER_ADDR;
+  aDisplayInfo->DoubleBuffer   = (void*)EW_DOUBLE_BUFFER_ADDR;
+  aDisplayInfo->BufferWidth    = EW_FRAME_BUFFER_WIDTH;
+  aDisplayInfo->BufferHeight   = EW_FRAME_BUFFER_HEIGHT;
+  aDisplayInfo->DisplayWidth   = EW_DISPLAY_WIDTH;
+  aDisplayInfo->DisplayHeight  = EW_DISPLAY_HEIGHT;
+  aDisplayInfo->UpdateMode     = EW_BSP_DISPLAY_UPDATE_NORMAL;
 
-    aDisplayInfo->UpdateMode    = EW_BSP_DISPLAY_UPDATE_NORMAL;
-  }
   return 1;
 }
 
@@ -149,14 +160,16 @@ int EwBspDisplayInit( XDisplayInfo* aDisplayInfo )
 *   The function EwBspDisplayDone deinitializes the display hardware.
 *
 * ARGUMENTS:
-*   None
+*   aDisplayInfo - Display info data structure.
 *
 * RETURN VALUE:
 *   None
 *
 *******************************************************************************/
-void EwBspDisplayDone( void )
+void EwBspDisplayDone( XDisplayInfo* aDisplayInfo )
 {
+EW_UNUSED_ARG( aDisplayInfo );
+
 /* close display */
 FBDEV_Disable( &g_fbdev );
 FBDEV_Close( &g_fbdev );

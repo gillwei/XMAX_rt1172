@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -40,7 +40,7 @@
 #include "Resource.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x00000026, /* ratio 115.79 % */
   0xB8002300, 0x80088452, 0x00E60034, 0x0D800380, 0xF2003080, 0xF0D23000, 0x00318020,
@@ -65,19 +65,19 @@ static const XStringRes _Const000B = { _StringsDefault0, 0x0002 };
 void InspectionTFT_Main__Init( InspectionTFT_Main _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( InspectionTFT_Main );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( InspectionTFT_Main );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->FullScreen, &_this->_XObject, 0 );
-  InspectionTFT10_CrossTalk__Init( &_this->CrossTalk, &_this->_XObject, 0 );
-  InspectionTFT09_Flicker__Init( &_this->Flicker, &_this->_XObject, 0 );
-  InspectionTFT01_ColorGradient__Init( &_this->ColorGradient, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->FullScreen, &_this->_.XObject, 0 );
+  InspectionTFT10_CrossTalk__Init( &_this->CrossTalk, &_this->_.XObject, 0 );
+  InspectionTFT09_Flicker__Init( &_this->Flicker, &_this->_.XObject, 0 );
+  InspectionTFT01_ColorGradient__Init( &_this->ColorGradient, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( InspectionTFT_Main );
+  _this->_.VMT = EW_CLASS( InspectionTFT_Main );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -100,7 +100,7 @@ void InspectionTFT_Main__Init( InspectionTFT_Main _this, XObject aLink, XHandle 
 void InspectionTFT_Main__ReInit( InspectionTFT_Main _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_Super );
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->FullScreen );
@@ -113,7 +113,7 @@ void InspectionTFT_Main__ReInit( InspectionTFT_Main _this )
 void InspectionTFT_Main__Done( InspectionTFT_Main _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->FullScreen );
@@ -122,7 +122,7 @@ void InspectionTFT_Main__Done( InspectionTFT_Main _this )
   InspectionTFT01_ColorGradient__Done( &_this->ColorGradient );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_Super );
+  ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Inspection::TFT_Main.OnShortDownKeyActivated()' */
@@ -131,9 +131,7 @@ void InspectionTFT_Main_OnShortDownKeyActivated( InspectionTFT_Main _this )
   XInt32 NextPatternIdx = _this->Pattern + 1;
 
   if ( NextPatternIdx >= 9 )
-  {
     NextPatternIdx = 1;
-  }
 
   InspectionTFT_Main_OnSetPattern( _this, (XEnum)NextPatternIdx );
 }
@@ -144,9 +142,7 @@ void InspectionTFT_Main_OnShortUpKeyActivated( InspectionTFT_Main _this )
   XInt32 PreviousIdx = _this->Pattern - 1;
 
   if ( PreviousIdx <= 0 )
-  {
     PreviousIdx = 8;
-  }
 
   InspectionTFT_Main_OnSetPattern( _this, (XEnum)PreviousIdx );
 }
@@ -218,8 +214,7 @@ void InspectionTFT_Main_DisplayPattern( InspectionTFT_Main _this, XEnum aPattern
       CoreGroup__OnSetVisible( &_this->CrossTalk, 1 );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 }
 
@@ -278,21 +273,21 @@ EW_END_OF_CLASS( InspectionTFT_Main )
 void InspectionTFT01_ColorGradient__Init( InspectionTFT01_ColorGradient _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( InspectionTFT01_ColorGradient );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( InspectionTFT01_ColorGradient );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->GeenBG, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->BlackFrame, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->StripRed, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->StripGreen, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->SripBlue, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->StripWhite, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->GeenBG, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->BlackFrame, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->StripRed, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->StripGreen, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->SripBlue, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->StripWhite, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( InspectionTFT01_ColorGradient );
+  _this->_.VMT = EW_CLASS( InspectionTFT01_ColorGradient );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -330,7 +325,7 @@ void InspectionTFT01_ColorGradient__Init( InspectionTFT01_ColorGradient _this, X
 void InspectionTFT01_ColorGradient__ReInit( InspectionTFT01_ColorGradient _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->GeenBG );
@@ -345,7 +340,7 @@ void InspectionTFT01_ColorGradient__ReInit( InspectionTFT01_ColorGradient _this 
 void InspectionTFT01_ColorGradient__Done( InspectionTFT01_ColorGradient _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->GeenBG );
@@ -356,7 +351,7 @@ void InspectionTFT01_ColorGradient__Done( InspectionTFT01_ColorGradient _this )
   ViewsRectangle__Done( &_this->StripWhite );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'Inspection::TFT01_ColorGradient' */
@@ -365,7 +360,7 @@ EW_END_OF_CLASS_VARIANTS( InspectionTFT01_ColorGradient )
 
 /* Virtual Method Table (VMT) for the class : 'Inspection::TFT01_ColorGradient' */
 EW_DEFINE_CLASS( InspectionTFT01_ColorGradient, CoreGroup, GeenBG, GeenBG, GeenBG, 
-                 GeenBG, _None, _None, "Inspection::TFT01_ColorGradient" )
+                 GeenBG, _.VMT, _.VMT, "Inspection::TFT01_ColorGradient" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -402,18 +397,18 @@ EW_END_OF_CLASS( InspectionTFT01_ColorGradient )
 void InspectionTFT10_CrossTalk__Init( InspectionTFT10_CrossTalk _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( InspectionTFT10_CrossTalk );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( InspectionTFT10_CrossTalk );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->GrayBG, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->RectanbleBlack, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->RectangleWhite, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->GrayBG, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->RectanbleBlack, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->RectangleWhite, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( InspectionTFT10_CrossTalk );
+  _this->_.VMT = EW_CLASS( InspectionTFT10_CrossTalk );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -432,7 +427,7 @@ void InspectionTFT10_CrossTalk__Init( InspectionTFT10_CrossTalk _this, XObject a
 void InspectionTFT10_CrossTalk__ReInit( InspectionTFT10_CrossTalk _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->GrayBG );
@@ -444,7 +439,7 @@ void InspectionTFT10_CrossTalk__ReInit( InspectionTFT10_CrossTalk _this )
 void InspectionTFT10_CrossTalk__Done( InspectionTFT10_CrossTalk _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->GrayBG );
@@ -452,7 +447,7 @@ void InspectionTFT10_CrossTalk__Done( InspectionTFT10_CrossTalk _this )
   ViewsRectangle__Done( &_this->RectangleWhite );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* Variants derived from the class : 'Inspection::TFT10_CrossTalk' */
@@ -461,7 +456,7 @@ EW_END_OF_CLASS_VARIANTS( InspectionTFT10_CrossTalk )
 
 /* Virtual Method Table (VMT) for the class : 'Inspection::TFT10_CrossTalk' */
 EW_DEFINE_CLASS( InspectionTFT10_CrossTalk, CoreGroup, GrayBG, GrayBG, GrayBG, GrayBG, 
-                 _None, _None, "Inspection::TFT10_CrossTalk" )
+                 _.VMT, _.VMT, "Inspection::TFT10_CrossTalk" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -498,16 +493,16 @@ EW_END_OF_CLASS( InspectionTFT10_CrossTalk )
 void InspectionTFT09_Flicker__Init( InspectionTFT09_Flicker _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( InspectionTFT09_Flicker );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( InspectionTFT09_Flicker );
 
   /* ... then construct all embedded objects */
-  ViewsImage__Init( &_this->FlickerImage, &_this->_XObject, 0 );
+  ViewsImage__Init( &_this->FlickerImage, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( InspectionTFT09_Flicker );
+  _this->_.VMT = EW_CLASS( InspectionTFT09_Flicker );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -525,7 +520,7 @@ void InspectionTFT09_Flicker__Init( InspectionTFT09_Flicker _this, XObject aLink
 void InspectionTFT09_Flicker__ReInit( InspectionTFT09_Flicker _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->FlickerImage );
@@ -535,13 +530,13 @@ void InspectionTFT09_Flicker__ReInit( InspectionTFT09_Flicker _this )
 void InspectionTFT09_Flicker__Done( InspectionTFT09_Flicker _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->FlickerImage );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -574,7 +569,7 @@ EW_END_OF_CLASS_VARIANTS( InspectionTFT09_Flicker )
 
 /* Virtual Method Table (VMT) for the class : 'Inspection::TFT09_Flicker' */
 EW_DEFINE_CLASS( InspectionTFT09_Flicker, ComponentsBaseComponent, FlickerImage, 
-                 FlickerImage, FlickerImage, FlickerImage, _None, _None, "Inspection::TFT09_Flicker" )
+                 FlickerImage, FlickerImage, FlickerImage, _.VMT, _.VMT, "Inspection::TFT09_Flicker" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

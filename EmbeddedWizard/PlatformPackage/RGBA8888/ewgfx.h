@@ -155,7 +155,7 @@
 #endif
 
 /* The current version of the Graphics Engine. */
-#define EW_GFX_VERSION 0x000A0000
+#define EW_GFX_VERSION 0x000B0000
 
 
 /******************************************************************************
@@ -1101,6 +1101,68 @@ void EwModifyBitmapPalette
 void EwFlushBitmap
 (
   XBitmap*          aBitmap
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwGetFontResource
+*
+* DESCRIPTION:
+*   The function EwGetFontResource() has the job to find or create a resource
+*   descriptor matching the attributes specified in the function parameters. The
+*   returned resource can thereupon be passed to EwLoadFont() function in order
+*   to use the font.
+*
+*   Please note: this function allows the caller to dynamically create fonts on
+*   target systems supporting a TrueType font engine. In the case, you are using
+*   the version WITHOUT TrueType font engine integration, all fonts are already
+*   stored as prerasterized glyphs. Dynamic creation of a font with different
+*   attributes is in such case not possible and the function will return null.
+*
+* ARGUMENTS:
+*   aName        - A unique name of the TrueType font stored as zero terminated
+*     widechar string (e.g. "Arial"). The function limits the evaluation to the
+*     first 31 characters from the string.
+*   aHeight      - The desired height of the font in pixel.
+*   aBold        - This parameter determines, whether a bold or a normal style
+*     of the font should be used at the runtime. A bold font will be used if
+*     this parameter contains a value != 0.
+*   aItalic      - This parameter determines, whether an italic or a normal
+*     style of the font should be used at the runtime. An italic font is used
+*     if this parameter contains a value != 0.
+*   aAspectRatio - The AspectRatio parameter defines the desired aspect ratio
+*     of the font in the range from 0.25 to 4.0. The default value is 1.0 - in
+*     this case the aspect ratio of the font corresponds to the origin design
+*     of the font.
+*   aNoOfColors  - Desired quality of the font glyphs to raster. Only the 
+*     values 2, 4 or 16 are valid.
+*   aKerning     - Determines whether kerning data should be used for this
+*     font. In such case the value has to be != 0.
+*   aRowDistance - The desired distance between two consecutive text rows. If
+*     the value is == 0, the distance is calculated on the base of the font
+*     metrics.
+*   aPopularMode - If != 0, calculate the font size similarly to how other
+*     application it does. If == 0, the mode compatible to older Embedded
+*     Wizard version is used.
+*
+* RETURN VALUE:
+*   Returns a pointer to a data structure representing the font resource. If
+*   the target system does not support the dynamic font creation, the function
+*   will return null.
+*
+*******************************************************************************/
+const struct XFntRes* EwGetFontResource
+(
+  XString           aName,
+  XInt32            aHeight,
+  XBool             aBold,
+  XBool             aItalic,
+  XFloat            aAspectRatio,
+  XInt32            aNoOfColors,
+  XBool             aKerning,
+  XInt32            aRowDistance,
+  XBool             aPopularMode
 );
 
 
@@ -2158,6 +2220,51 @@ XFloat EwGetSubPathNodeY
   XPath*            aPath,
   XInt32            aSubPathNo,
   XInt32            aNodeNo
+);
+
+
+/*******************************************************************************
+* FUNCTION:
+*   EwSetNoOfSubPathEdges
+*
+* DESCRIPTION:
+*   The function EwSetNoOfSubPathEdges() provides a convenient way to change the
+*   number of edges (straight line segments) the affected sub-path uses actually
+*   to store its coordinates. In this manner, the sub-path can be truncated or
+*   enhanced by new nodes.
+*
+*   In case the sub-path grows, the new appended nodes are pre-initialized with
+*   the coordinates X=0, Y=0. Also, please note the maximum capacity (maximum
+*   number of edges) the sub-path is able to store. This value is determined in
+*   the invocation of the EwInitSubPath() function.
+*
+*   In order to query the number of edges stored actually in the sub-path use
+*   the functions EwGetNoOfSubPathEdges(). The number of still free edges can
+*   be queried by the function EwGetNoOfFreeSubPathEdges();
+*
+* ARGUMENTS:
+*   aPath       - Pointer to the path containing the affected sub-path.
+*   aSubPathNo  - Number identifying the sub-path within aPath to query the
+*     information. The first sub-path has the number 0. The second 1, and so
+*     far.
+*   aNoOfEdges  - Number of edges to adapt the sub-path.
+*
+* RETURN VALUE:
+*   Returns the number of edges added or removed from the sub-path. The positive
+*   value represents the number of edges added to the sub-path. If the value is
+*   negative, it represents the number of truncated edges. 
+*
+*   If the sub-path has not been initialized previously by calling the function
+*   EwInitSubPath(), the sub-path has been closed by EwCloseSubPath() or there
+*   is no sufficient memory in the sub-path for the new edges, the function 
+*   fails and returns 0.
+*
+*******************************************************************************/
+XInt32 EwSetNoOfSubPathEdges
+(
+  XPath*            aPath,
+  XInt32            aSubPathNo,
+  XInt32            aNoOfEdges
 );
 
 

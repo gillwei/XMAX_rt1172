@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -46,7 +46,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x00000058, /* ratio 90.91 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0xA0002780, 0x00027000, 0x00188006,
@@ -71,19 +71,19 @@ static const XStringRes _Const000A = { _StringsDefault0, 0x001C };
 void OpenOPN01_BootupAnimation__Init( OpenOPN01_BootupAnimation _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( OpenOPN01_BootupAnimation );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( OpenOPN01_BootupAnimation );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->BlackBackground, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->BootupAnimation, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->FadeOutTimer, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->HoldTimer, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->BlackBackground, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->BootupAnimation, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->FadeOutTimer, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->HoldTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( OpenOPN01_BootupAnimation );
+  _this->_.VMT = EW_CLASS( OpenOPN01_BootupAnimation );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -113,7 +113,7 @@ void OpenOPN01_BootupAnimation__Init( OpenOPN01_BootupAnimation _this, XObject a
 void OpenOPN01_BootupAnimation__ReInit( OpenOPN01_BootupAnimation _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->BlackBackground );
@@ -126,7 +126,7 @@ void OpenOPN01_BootupAnimation__ReInit( OpenOPN01_BootupAnimation _this )
 void OpenOPN01_BootupAnimation__Done( OpenOPN01_BootupAnimation _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->BlackBackground );
@@ -135,7 +135,7 @@ void OpenOPN01_BootupAnimation__Done( OpenOPN01_BootupAnimation _this )
   CoreTimer__Done( &_this->HoldTimer );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -246,22 +246,22 @@ EW_END_OF_CLASS( OpenOPN01_BootupAnimation )
 void OpenOPN02_FactoryMode__Init( OpenOPN02_FactoryMode _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( OpenOPN02_FactoryMode );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( OpenOPN02_FactoryMode );
 
   /* ... then construct all embedded objects */
-  ViewsRectangle__Init( &_this->FullBlackBG, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->PressEnterTwiceText, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->QrCodeReadyEventHandler, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->FactoryModeText, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Divider, &_this->_XObject, 0 );
-  ViewsRectangle__Init( &_this->WhiteMargin, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->QrCodeImage, &_this->_XObject, 0 );
+  ViewsRectangle__Init( &_this->FullBlackBG, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->PressEnterTwiceText, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->QrCodeReadyEventHandler, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->FactoryModeText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->WhiteMargin, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->QrCodeImage, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( OpenOPN02_FactoryMode );
+  _this->_.VMT = EW_CLASS( OpenOPN02_FactoryMode );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -304,7 +304,7 @@ void OpenOPN02_FactoryMode__Init( OpenOPN02_FactoryMode _this, XObject aLink, XH
 void OpenOPN02_FactoryMode__ReInit( OpenOPN02_FactoryMode _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->FullBlackBG );
@@ -320,7 +320,7 @@ void OpenOPN02_FactoryMode__ReInit( OpenOPN02_FactoryMode _this )
 void OpenOPN02_FactoryMode__Done( OpenOPN02_FactoryMode _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->FullBlackBG );
@@ -332,7 +332,7 @@ void OpenOPN02_FactoryMode__Done( OpenOPN02_FactoryMode _this )
   ViewsImage__Done( &_this->QrCodeImage );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -347,9 +347,7 @@ void OpenOPN02_FactoryMode_Init( OpenOPN02_FactoryMode _this, XHandle aArg )
 
   if ( DeviceInterfaceSystemDeviceClass_IsQrCodeReady( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
       DeviceInterfaceSystemDeviceClass )))
-  {
     EwPostSignal( EwNewSlot( _this, OpenOPN02_FactoryMode_OnQrCodeReadySlot ), ((XObject)_this ));
-  }
 }
 
 /* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortDownKeyActivated()' */
@@ -362,7 +360,6 @@ void OpenOPN02_FactoryMode_OnShortDownKeyActivated( OpenOPN02_FactoryMode _this 
 void OpenOPN02_FactoryMode_OnShortUpKeyActivated( OpenOPN02_FactoryMode _this )
 {
   _this->EnterButtonPressedCount = 0;
-  EW_change_unit_id( "A22BCDEF", 123456, 2021 );
 }
 
 /* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortEnterKeyActivated()' */

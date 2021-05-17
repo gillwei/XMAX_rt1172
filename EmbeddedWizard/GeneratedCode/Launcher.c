@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -70,7 +70,7 @@
 #include "Views.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x0000008C, /* ratio 80.00 % */
   0xB8001F00, 0x80098452, 0x00EA0030, 0x0C600370, 0xCA003400, 0x20039000, 0x690042C9,
@@ -131,23 +131,23 @@ static const XRect _Const0018 = {{ 121, 173 }, { 439, 206 }};
 void LauncherLNC_Main__Init( LauncherLNC_Main _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( LauncherLNC_Main );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( LauncherLNC_Main );
 
   /* ... then construct all embedded objects */
-  EffectsRectEffect__Init( &_this->BaseSlideInEffect, &_this->_XObject, 0 );
-  EffectsRectEffect__Init( &_this->BaseSlideOutEffect, &_this->_XObject, 0 );
-  EffectsRectEffect__Init( &_this->RotaryPlateSlideInEffect, &_this->_XObject, 0 );
-  EffectsRectEffect__Init( &_this->RotaryPlateSlideOutEffect, &_this->_XObject, 0 );
-  LauncherLNC_Base__Init( &_this->LNC_Base, &_this->_XObject, 0 );
-  LauncherLNC_RotaryPlate__Init( &_this->LNC_RotaryPlate, &_this->_XObject, 0 );
-  ViewsWallpaper__Init( &_this->StatusBarShadowImage, &_this->_XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  EffectsRectEffect__Init( &_this->BaseSlideInEffect, &_this->_.XObject, 0 );
+  EffectsRectEffect__Init( &_this->BaseSlideOutEffect, &_this->_.XObject, 0 );
+  EffectsRectEffect__Init( &_this->RotaryPlateSlideInEffect, &_this->_.XObject, 0 );
+  EffectsRectEffect__Init( &_this->RotaryPlateSlideOutEffect, &_this->_.XObject, 0 );
+  LauncherLNC_Base__Init( &_this->LNC_Base, &_this->_.XObject, 0 );
+  LauncherLNC_RotaryPlate__Init( &_this->LNC_RotaryPlate, &_this->_.XObject, 0 );
+  ViewsWallpaper__Init( &_this->StatusBarShadowImage, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( LauncherLNC_Main );
+  _this->_.VMT = EW_CLASS( LauncherLNC_Main );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
@@ -218,7 +218,7 @@ void LauncherLNC_Main__Init( LauncherLNC_Main _this, XObject aLink, XHandle aArg
 void LauncherLNC_Main__ReInit( LauncherLNC_Main _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   EffectsRectEffect__ReInit( &_this->BaseSlideInEffect );
@@ -235,7 +235,7 @@ void LauncherLNC_Main__ReInit( LauncherLNC_Main _this )
 void LauncherLNC_Main__Done( LauncherLNC_Main _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   EffectsRectEffect__Done( &_this->BaseSlideInEffect );
@@ -248,7 +248,7 @@ void LauncherLNC_Main__Done( LauncherLNC_Main _this )
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -287,13 +287,9 @@ void LauncherLNC_Main_OnShortUpKeyActivated( LauncherLNC_Main _this )
 /* 'C' function for method : 'Launcher::LNC_Main.OnShortEnterKeyActivated()' */
 void LauncherLNC_Main_OnShortEnterKeyActivated( LauncherLNC_Main _this )
 {
-  if (( EnumLauncherItemSETTINGS == _this->CurrentItem ) && DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
-    ;
-  else
-  {
+  if ( !(( EnumLauncherItemSETTINGS == _this->CurrentItem ) && DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ))))
     LauncherLNC_RotaryPlate_StartSelectedAnimation( &_this->LNC_RotaryPlate );
-  }
 }
 
 /* 'C' function for method : 'Launcher::LNC_Main.OnShortHomeKeyActivated()' */
@@ -360,8 +356,7 @@ void LauncherLNC_Main_OnLongEnterKeyActivated( LauncherLNC_Main _this )
             SelectedMeterInfo = EnumMeterInfoTRIP_F;
           break;
 
-          default : 
-            ;
+          default :; 
         }
 
         if ( EnumMeterInfoTOTAL != SelectedMeterInfo )
@@ -374,8 +369,7 @@ void LauncherLNC_Main_OnLongEnterKeyActivated( LauncherLNC_Main _this )
       }
       break;
 
-      default : 
-        ;
+      default :; 
     }
   }
 }
@@ -410,26 +404,21 @@ XEnum LauncherLNC_Main_GetInitialSelectedItem( LauncherLNC_Main _this )
 /* 'C' function for method : 'Launcher::LNC_Main.GetNextItem()' */
 XEnum LauncherLNC_Main_GetNextItem( LauncherLNC_Main _this, XEnum aBaseItem )
 {
-  XUInt32 TotalItemNum = 11;
   XEnum BaseItemNext = aBaseItem;
   XBool bypass = 0;
 
   do
   {
-    BaseItemNext = (XEnum)(((XUInt32)BaseItemNext + 1 ) % TotalItemNum );
+    BaseItemNext = (XEnum)(((XUInt32)BaseItemNext + 1 ) % 11 );
 
     if ((((( EnumLauncherItemSEAT_HEATER == BaseItemNext ) && !_this->SeatHeaterEnabled ) 
         || (( EnumLauncherItemGRIP_WARMER == BaseItemNext ) && !_this->GripWarmerEnabled )) 
         || (( EnumLauncherItemWIND_SCREEN == BaseItemNext ) && !_this->WindScreenEnabled )) 
         || (( EnumLauncherItemPHONE == BaseItemNext ) && !DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( 
         EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ))))
-    {
       bypass = 1;
-    }
     else
-    {
       bypass = 0;
-    }
   }
   while ( bypass );
 
@@ -439,27 +428,21 @@ XEnum LauncherLNC_Main_GetNextItem( LauncherLNC_Main _this, XEnum aBaseItem )
 /* 'C' function for method : 'Launcher::LNC_Main.GetPreviousItem()' */
 XEnum LauncherLNC_Main_GetPreviousItem( LauncherLNC_Main _this, XEnum aBaseItem )
 {
-  XUInt32 TotalItemNum = 11;
   XEnum BaseItemPrevious = aBaseItem;
   XBool bypass = 0;
 
   do
   {
-    BaseItemPrevious = (XEnum)((((XUInt32)BaseItemPrevious + TotalItemNum ) - 1 ) 
-    % TotalItemNum );
+    BaseItemPrevious = (XEnum)((((XUInt32)BaseItemPrevious + 11 ) - 1 ) % 11 );
 
     if ((((( EnumLauncherItemSEAT_HEATER == BaseItemPrevious ) && !_this->SeatHeaterEnabled ) 
         || (( EnumLauncherItemGRIP_WARMER == BaseItemPrevious ) && !_this->GripWarmerEnabled )) 
         || (( EnumLauncherItemWIND_SCREEN == BaseItemPrevious ) && !_this->WindScreenEnabled )) 
         || (( EnumLauncherItemPHONE == BaseItemPrevious ) && !DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( 
         EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ))))
-    {
       bypass = 1;
-    }
     else
-    {
       bypass = 0;
-    }
   }
   while ( bypass );
 
@@ -480,41 +463,27 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
   switch ( _this->CurrentItem )
   {
     case EnumLauncherItemPHONE :
-    {
       if ( DeviceInterfaceNotificationDeviceClass_IsPhoneCallStateActive( EwGetAutoObject( 
           &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )))
-      {
         ItemDialog = ((ComponentsBaseComponent)EwNewObject( TelephoneTEL02_ActiveCall, 
         0 ));
-      }
       else
-      {
         ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
-      }
-    }
     break;
 
     case EnumLauncherItemMUSIC :
-    {
       if ( DeviceInterfaceMediaManagerDeviceClass_IsAmsConnected( EwGetAutoObject( 
           &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )))
-      {
         ItemDialog = ((ComponentsBaseComponent)EwNewObject( MediaMED01_MediaUI, 
         0 ));
-      }
       else
         if ( DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( EwGetAutoObject( 
             &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
-        {
           ItemDialog = ((ComponentsBaseComponent)EwNewObject( MediaMED01_MediaUI, 
           0 ));
-        }
         else
-        {
           ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
           0 ));
-        }
-    }
     break;
 
     case EnumLauncherItemODO_TRIP :
@@ -528,58 +497,38 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
     break;
 
     case EnumLauncherItemNAVIGATION :
-    {
       if ( !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
           &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
-      {
         ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
         0 ));
-      }
       else
         if ( !DeviceInterfaceNavigationDeviceClass_GetNaviAppInitSettingStatus( 
             EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
-        {
           ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP17_AppInitSettingError, 
           0 ));
-        }
         else
-        {
           ItemDialog = ((ComponentsBaseComponent)EwNewObject( NavigationNAV06_NaviSettingMenu, 
           0 ));
-        }
-    }
     break;
 
     case EnumLauncherItemNOTIFICATION :
-    {
       if ( DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( EwGetAutoObject( 
           &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
-      {
         ItemDialog = ((ComponentsBaseComponent)EwNewObject( NotificationNTF01_NotificationList, 
         0 ));
-      }
       else
-      {
         ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
         0 ));
-      }
-    }
     break;
 
     case EnumLauncherItemWEATHER :
-    {
       if ( DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( EwGetAutoObject( 
           &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
-      {
         ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP08_WeatherLoadingUI, 
         0 ));
-      }
       else
-      {
         ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
         0 ));
-      }
-    }
     break;
 
     case EnumLauncherItemSETTINGS :
@@ -614,15 +563,12 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
     }
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   if ( ItemDialog != 0 )
-  {
     CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ItemDialog ), 0, 0, 0, 
     0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* 'C' function for method : 'Launcher::LNC_Main.OnSlideOutFinishedSlot()' */
@@ -632,10 +578,8 @@ void LauncherLNC_Main_OnSlideOutFinishedSlot( LauncherLNC_Main _this, XObject se
   EW_UNUSED_ARG( sender );
 
   if ( !_this->BaseSlideOutEffect.Super1.Enabled && !_this->RotaryPlateSlideOutEffect.Super1.Enabled )
-  {
     CoreGroup_DismissDialog( _this->Super4.Owner, ((CoreGroup)_this ), 0, 0, 0, 
     EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* Dismiss dialogs presented from launcher */
@@ -677,7 +621,6 @@ void LauncherLNC_Main_OnVehicleDataReceivedSlot( LauncherLNC_Main _this, XObject
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
   if ( VehicleData != 0 )
-  {
     switch ( VehicleData->RxType )
     {
       case EnumVehicleRxTypeSUPPORT_FUNC_GRIP_WARMER :
@@ -705,10 +648,8 @@ void LauncherLNC_Main_OnVehicleDataReceivedSlot( LauncherLNC_Main _this, XObject
           || ( EnumLauncherItemGRIP_WARMER == _this->NextItem ));
 
         if ( IsGripWarmerItemDisplayed )
-        {
           LauncherLNC_RotaryPlate_SetItems( &_this->LNC_RotaryPlate, _this->PreviousItem, 
           _this->CurrentItem, _this->NextItem );
-        }
       }
       break;
 
@@ -719,17 +660,13 @@ void LauncherLNC_Main_OnVehicleDataReceivedSlot( LauncherLNC_Main _this, XObject
           || ( EnumLauncherItemSEAT_HEATER == _this->NextItem ));
 
         if ( IsSeatHeaterItemDisplayed )
-        {
           LauncherLNC_RotaryPlate_SetItems( &_this->LNC_RotaryPlate, _this->PreviousItem, 
           _this->CurrentItem, _this->NextItem );
-        }
       }
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* Variants derived from the class : 'Launcher::LNC_Main' */
@@ -787,27 +724,27 @@ EW_END_OF_CLASS( LauncherLNC_Main )
 void LauncherLNC_RotaryPlate__Init( LauncherLNC_RotaryPlate _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseComponent__Init( &_this->_Super, aLink, aArg );
+  ComponentsBaseComponent__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( LauncherLNC_RotaryPlate );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( LauncherLNC_RotaryPlate );
 
   /* ... then construct all embedded objects */
-  EffectsRectEffect__Init( &_this->RectEffect0, &_this->_XObject, 0 );
-  EffectsRectEffect__Init( &_this->RectEffect1, &_this->_XObject, 0 );
-  EffectsRectEffect__Init( &_this->RectEffect2, &_this->_XObject, 0 );
-  EffectsRectEffect__Init( &_this->RectEffect3, &_this->_XObject, 0 );
-  CoreTimer__Init( &_this->SelectedAnimationTimer, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->BaseImage, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Icon0, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Icon1, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Icon2, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->Icon3, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->IconSelectedLarge, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->HighlightImage, &_this->_XObject, 0 );
+  EffectsRectEffect__Init( &_this->RectEffect0, &_this->_.XObject, 0 );
+  EffectsRectEffect__Init( &_this->RectEffect1, &_this->_.XObject, 0 );
+  EffectsRectEffect__Init( &_this->RectEffect2, &_this->_.XObject, 0 );
+  EffectsRectEffect__Init( &_this->RectEffect3, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->SelectedAnimationTimer, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->BaseImage, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Icon0, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Icon1, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Icon2, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Icon3, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->IconSelectedLarge, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->HighlightImage, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( LauncherLNC_RotaryPlate );
+  _this->_.VMT = EW_CLASS( LauncherLNC_RotaryPlate );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0008 );
@@ -891,7 +828,7 @@ void LauncherLNC_RotaryPlate__Init( LauncherLNC_RotaryPlate _this, XObject aLink
 void LauncherLNC_RotaryPlate__ReInit( LauncherLNC_RotaryPlate _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseComponent__ReInit( &_this->_Super );
+  ComponentsBaseComponent__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   EffectsRectEffect__ReInit( &_this->RectEffect0 );
@@ -912,7 +849,7 @@ void LauncherLNC_RotaryPlate__ReInit( LauncherLNC_RotaryPlate _this )
 void LauncherLNC_RotaryPlate__Done( LauncherLNC_RotaryPlate _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( ComponentsBaseComponent );
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseComponent );
 
   /* Finalize all embedded objects */
   EffectsRectEffect__Done( &_this->RectEffect0 );
@@ -929,7 +866,7 @@ void LauncherLNC_RotaryPlate__Done( LauncherLNC_RotaryPlate _this )
   ViewsImage__Done( &_this->HighlightImage );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseComponent__Done( &_this->_Super );
+  ComponentsBaseComponent__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Launcher::LNC_RotaryPlate.OnShortDownKeyActivated()' */
@@ -957,13 +894,9 @@ void LauncherLNC_RotaryPlate_StartIconRotation( LauncherLNC_RotaryPlate _this, X
   LNCMainDialog = EwCastObject( _this->Super4.Owner, LauncherLNC_Main );
 
   if ( EnumRotationDirectionCLOCKWISE == aDirection )
-  {
     _this->HiddenItem = LauncherLNC_Main_GetPreviousItem( LNCMainDialog, _this->PreviousItem );
-  }
   else
-  {
     _this->HiddenItem = LauncherLNC_Main_GetNextItem( LNCMainDialog, _this->NextItem );
-  }
 
   HiddenIconIdx = ( _this->SelectedIconIdx + 2 ) % 4;
   ViewsImage_OnSetBitmap( _this->Icons[ EwCheckIndex( HiddenIconIdx, 4 )], LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( 
@@ -972,7 +905,6 @@ void LauncherLNC_RotaryPlate_StartIconRotation( LauncherLNC_RotaryPlate _this, X
   ViewsImage_OnSetVisible( _this->Icons[ EwCheckIndex( _this->SelectedIconIdx, 4 )], 
   1 );
   IconIdx = 0;
-  i = 0;
 
   for ( i = 0; i < 4; i = i + 1 )
   {
@@ -992,13 +924,9 @@ void LauncherLNC_RotaryPlate_StartIconRotation( LauncherLNC_RotaryPlate _this, X
     }
 
     if ( _this->SelectedIconIdx == IconIdx )
-    {
       Effect->Super1.OnFinished = EwNewSlot( _this, LauncherLNC_RotaryPlate_OnIconRotationFinished );
-    }
     else
-    {
       Effect->Super1.OnFinished = EwNullSlot;
-    }
 
     Effect->Outlet = EwNewRef( _this->Icons[ EwCheckIndex( IconIdx, 4 )], CoreRectView_OnGetBounds, 
     CoreRectView__OnSetBounds );
@@ -1133,8 +1061,7 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( LauncherLNC_
             IconBitmap = EwLoadResource( &ResourceIconSeatHeater3Small, ResourcesBitmap );
           break;
 
-          default : 
-            ;
+          default :; 
         }
       }
     }
@@ -1168,8 +1095,7 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( LauncherLNC_
             IconBitmap = EwLoadResource( &ResourceIconGripWarmer3Small, ResourcesBitmap );
           break;
 
-          default : 
-            ;
+          default :; 
         }
       }
     }
@@ -1179,8 +1105,7 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( LauncherLNC_
       IconBitmap = EwLoadResource( &ResourceIconWindScreenSmall, ResourcesBitmap );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return IconBitmap;
@@ -1260,8 +1185,7 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetLargeIconResourceOfItem( LauncherLNC_
             IconBitmap = EwLoadResource( &ResourceIconSeatHeater3Large, ResourcesBitmap );
           break;
 
-          default : 
-            ;
+          default :; 
         }
       }
     }
@@ -1295,8 +1219,7 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetLargeIconResourceOfItem( LauncherLNC_
             IconBitmap = EwLoadResource( &ResourceIconGripWarmer3Large, ResourcesBitmap );
           break;
 
-          default : 
-            ;
+          default :; 
         }
       }
     }
@@ -1306,8 +1229,7 @@ ResourcesBitmap LauncherLNC_RotaryPlate_GetLargeIconResourceOfItem( LauncherLNC_
       IconBitmap = EwLoadResource( &ResourceIconWindScreenLarge, ResourcesBitmap );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return IconBitmap;
@@ -1387,20 +1309,20 @@ EW_END_OF_CLASS( LauncherLNC_RotaryPlate )
 void LauncherLNC_Base__Init( LauncherLNC_Base _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  CoreGroup__Init( &_this->_Super, aLink, aArg );
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( LauncherLNC_Base );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( LauncherLNC_Base );
 
   /* ... then construct all embedded objects */
-  ViewsWallpaper__Init( &_this->Background, &_this->_XObject, 0 );
-  ViewsImage__Init( &_this->ImgLCBlueline, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->CurrentItemTitleText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->PreviousItemTitleText, &_this->_XObject, 0 );
-  ViewsText__Init( &_this->NextItemTitleText, &_this->_XObject, 0 );
+  ViewsWallpaper__Init( &_this->Background, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->ImgLCBlueline, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->CurrentItemTitleText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->PreviousItemTitleText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->NextItemTitleText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( LauncherLNC_Base );
+  _this->_.VMT = EW_CLASS( LauncherLNC_Base );
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0001 );
@@ -1441,7 +1363,7 @@ void LauncherLNC_Base__Init( LauncherLNC_Base _this, XObject aLink, XHandle aArg
 void LauncherLNC_Base__ReInit( LauncherLNC_Base _this )
 {
   /* At first re-initialize the super class ... */
-  CoreGroup__ReInit( &_this->_Super );
+  CoreGroup__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   ViewsWallpaper__ReInit( &_this->Background );
@@ -1455,7 +1377,7 @@ void LauncherLNC_Base__ReInit( LauncherLNC_Base _this )
 void LauncherLNC_Base__Done( LauncherLNC_Base _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( CoreGroup );
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
 
   /* Finalize all embedded objects */
   ViewsWallpaper__Done( &_this->Background );
@@ -1465,7 +1387,7 @@ void LauncherLNC_Base__Done( LauncherLNC_Base _this )
   ViewsText__Done( &_this->NextItemTitleText );
 
   /* Don't forget to deinitialize the super class ... */
-  CoreGroup__Done( &_this->_Super );
+  CoreGroup__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Launcher::LNC_Base.GetStringOfLauncherItem()' */
@@ -1525,8 +1447,7 @@ XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum
       Title = EwLoadString( &StringsWSC01_WIND_SCREEN );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return Title;
@@ -1550,7 +1471,7 @@ EW_END_OF_CLASS_VARIANTS( LauncherLNC_Base )
 
 /* Virtual Method Table (VMT) for the class : 'Launcher::LNC_Base' */
 EW_DEFINE_CLASS( LauncherLNC_Base, CoreGroup, Background, Background, Background, 
-                 Background, _None, _None, "Launcher::LNC_Base" )
+                 Background, _.VMT, _.VMT, "Launcher::LNC_Base" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

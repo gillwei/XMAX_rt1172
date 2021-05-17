@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -80,6 +80,12 @@ void ResourcesFont_Done( ResourcesFont _this );
 /* 'C' function for method : 'Resources::Font.Init()' */
 void ResourcesFont_Init( ResourcesFont _this, XHandle aArg );
 
+/* 'C' function for method : 'Resources::Font.freeFont()' */
+void ResourcesFont_freeFont( ResourcesFont _this );
+
+/* 'C' function for method : 'Resources::Font.loadFont()' */
+void ResourcesFont_loadFont( ResourcesFont _this, XHandle aFontResource );
+
 /* 'C' function for method : 'Resources::Font.GetFlowTextAdvance()' */
 XInt32 ResourcesFont_GetFlowTextAdvance( ResourcesFont _this, XString aFlowString );
 
@@ -96,33 +102,6 @@ XString ResourcesFont_ParseFlowString( ResourcesFont _this, XString aString, XIn
    -1, all signs until the end of the string will be evaluated. */
 XInt32 ResourcesFont_GetTextAdvance( ResourcesFont _this, XString aString, XInt32 
   aOffset, XInt32 aCount );
-
-/* Default onget method for the property 'Leading' */
-XInt32 ResourcesFont_OnGetLeading( ResourcesFont _this );
-
-/* Wrapper function for the non virtual method : 'Resources::Font.OnGetLeading()' */
-XInt32 ResourcesFont__OnGetLeading( void* _this );
-
-/* The following define announces the presence of the method Resources::Font.OnGetLeading(). */
-#define _ResourcesFont__OnGetLeading_
-
-/* Default onget method for the property 'Descent' */
-XInt32 ResourcesFont_OnGetDescent( ResourcesFont _this );
-
-/* Wrapper function for the non virtual method : 'Resources::Font.OnGetDescent()' */
-XInt32 ResourcesFont__OnGetDescent( void* _this );
-
-/* The following define announces the presence of the method Resources::Font.OnGetDescent(). */
-#define _ResourcesFont__OnGetDescent_
-
-/* Default onget method for the property 'Ascent' */
-XInt32 ResourcesFont_OnGetAscent( ResourcesFont _this );
-
-/* Wrapper function for the non virtual method : 'Resources::Font.OnGetAscent()' */
-XInt32 ResourcesFont__OnGetAscent( void* _this );
-
-/* The following define announces the presence of the method Resources::Font.OnGetAscent(). */
-#define _ResourcesFont__OnGetAscent_
 
 #ifdef __cplusplus
   }

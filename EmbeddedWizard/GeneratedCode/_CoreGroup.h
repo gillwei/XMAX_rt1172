@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -145,11 +145,15 @@
    are available. 
    - Although the screen redraw is performed automatically by the framework, the 
    method InvalidateArea() can be used to request an explicit screen update for 
-   the given area of the group.
+   the given area of the group. Furthermore, by overriding the methods @DrawBackground() 
+   and @DrawForeground() the descending class can implement additional code to draw 
+   the areas behind and in front of the enclosed views programmatically.
    - If the size of the group changes, all enclosed views are arranged automatically 
    accordingly to their @Layout properties. If more sophisticated arrangement is 
    desired the method @UpdateLayout() can be overridden and filled with the appropriate 
-   logic to calculate the position and size of views.
+   logic to calculate the position and size of views. If your application case it 
+   requires, you can trigger the layout update explicitly by invoking the method 
+   @InvalidateLayout().
    - Although the delivery of user input events to the views is performed automatically 
    by the framework, the both methods @DispatchEvent() and @BroadcastEvent() can 
    be used to feed the group and its views with any additional user defined events.
@@ -265,31 +269,7 @@ EW_END_OF_METHODS( CoreGroup )
    statements. */
 void CoreGroup_Init( CoreGroup _this, XHandle aArg );
 
-/* The method Draw() is invoked automatically if parts of the view should be redrawn 
-   on the screen. This can occur when e.g. the view has been moved or the appearance 
-   of the view has changed before.
-   Draw() is invoked automatically by the framework, you never will need to invoke 
-   this method directly. However you can request an invocation of this method by 
-   calling the method InvalidateArea() of the views @Owner. Usually this is also 
-   unnecessary unless you are developing your own view.
-   The passed parameters determine the drawing destination aCanvas and the area 
-   to redraw aClip in the coordinate space of the canvas. The parameter aOffset 
-   contains the displacement between the origin of the views owner and the origin 
-   of the canvas. You will need it to convert views coordinates into these of the 
-   canvas.
-   The parameter aOpacity contains the opacity descended from this view's @Owner. 
-   It lies in range 0 .. 255. If the view implements its own 'Opacity', 'Color', 
-   etc. properties, the Draw() method should calculate the resulting real opacity 
-   by mixing the values of these properties with the one passed in aOpacity parameter.
-   The parameter aBlend contains the blending mode descended from this view's @Owner. 
-   It determines, whether the view should be drawn with alpha-blending active or 
-   not. If aBlend is false, the outputs of the view should overwrite the corresponding 
-   pixel in the drawing destination aCanvas. If aBlend is true, the outputs should 
-   be mixed with the pixel already stored in aCanvas. For this purpose all Graphics 
-   Engine functions provide a parameter to specify the mode for the respective drawing 
-   operation. If the view implements its own 'Blend' property, the Draw() method 
-   should calculate the resulting real blend mode by using logical AND operation 
-   of the value of the property and the one passed in aBlend parameter. */
+/* 'C' function for method : 'Core::Group.Draw()' */
 void CoreGroup_Draw( CoreGroup _this, GraphicsCanvas aCanvas, XRect aClip, XPoint 
   aOffset, XInt32 aOpacity, XBool aBlend );
 
@@ -401,6 +381,80 @@ void CoreGroup_OnSetVisible( CoreGroup _this, XBool value );
 
 /* Wrapper function for the virtual method : 'Core::Group.OnSetVisible()' */
 void CoreGroup__OnSetVisible( void* _this, XBool value );
+
+/* The method DrawForeground() is invoked automatically if parts of the GUI component 
+   should be redrawn on the screen. This can occur when e.g. the component has been 
+   moved or the appearance of the enclosed views has changed before.
+   DrawForeground() is invoked after all other views existing inside the component 
+   are drawn. Thus it can be used to implement sophisticated foreground drawing 
+   operations. By overriding this method in a descending class the desired drawing 
+   operations can be implemented individually.
+   This method is invoked by the framework, so you never will need to invoke this 
+   method directly. However you can request an invocation of this method by calling 
+   the method @InvalidateArea().
+   The passed parameters determine the drawing destination aCanvas and the area 
+   to redraw aClip in the coordinate space of the canvas. The parameter aOffset 
+   contains the displacement between the origin of the GUI component and the origin 
+   of the canvas. You will need it to convert the drawing coordinates into these 
+   of the canvas.
+   The parameter aOpacity contains the resulting @Opacity value to apply on the 
+   drawn contents. It lies in range 0 .. 255. The parameter aBlend contains the 
+   resulting @AlphaBlended mode to apply. It determines, whether the drawing operations 
+   should be performed with alpha-blending active or not. If aBlend is false, the 
+   drawn contents should overwrite the corresponding pixel in the drawing destination 
+   aCanvas. If aBlend is true, the outputs should be mixed with the pixel already 
+   stored in aCanvas. For this purpose all Graphics Engine functions provide a parameter 
+   to specify the mode for the respective drawing operation.
+   Please note also the method @DrawBackground(), which is invoked before the views 
+   belonging to the component have begun their drawing operations. */
+void CoreGroup_DrawForeground( CoreGroup _this, GraphicsCanvas aCanvas, XRect aClip, 
+  XPoint aOffset, XInt32 aOpacity, XBool aBlend );
+
+/* The method DrawBackground() is invoked automatically if parts of the GUI component 
+   should be redrawn on the screen. This can occur when e.g. the component has been 
+   moved or the appearance of the enclosed views has changed before.
+   DrawBackground() is invoked before all other views existing inside the component 
+   are drawn. Thus it can be used to implement sophisticated background filling 
+   operations. By overriding this method in a descending class the desired drawing 
+   operations can be implemented individually.
+   This method is invoked by the framework, so you never will need to invoke this 
+   method directly. However you can request an invocation of this method by calling 
+   the method @InvalidateArea().
+   The passed parameters determine the drawing destination aCanvas and the area 
+   to redraw aClip in the coordinate space of the canvas. The parameter aOffset 
+   contains the displacement between the origin of the GUI component and the origin 
+   of the canvas. You will need it to convert the drawing coordinates into these 
+   of the canvas.
+   The parameter aOpacity contains the resulting @Opacity value to apply on the 
+   drawn contents. It lies in range 0 .. 255. The parameter aBlend contains the 
+   resulting @AlphaBlended mode to apply. It determines, whether the drawing operations 
+   should be performed with alpha-blending active or not. If aBlend is false, the 
+   drawn contents should overwrite the corresponding pixel in the drawing destination 
+   aCanvas. If aBlend is true, the outputs should be mixed with the pixel already 
+   stored in aCanvas. For this purpose all Graphics Engine functions provide a parameter 
+   to specify the mode for the respective drawing operation.
+   Please note also the method @DrawForeground(), which is invoked after all views 
+   belonging to the component have finalized their drawing operations. */
+void CoreGroup_DrawBackground( CoreGroup _this, GraphicsCanvas aCanvas, XRect aClip, 
+  XPoint aOffset, XInt32 aOpacity, XBool aBlend );
+
+/* The method GetMinimalSize() provides a common interface to ask the component 
+   for the minimum possible size it can assume by still correctly displaying the 
+   contents enclosed inside it. This information can thereupon be used in complex 
+   layout application cases to equally adjust multiple components, etc.
+
+   The default implementation of this method does nothing and returns <0,0> value. 
+   If necessary, you can override the method and implement an algorithm to calculate 
+   from the actual content of the GUI component its minimum size. For example, if 
+   the component displays some text, the calculation can take in account the space 
+   needed for this text. */
+XPoint CoreGroup_GetMinimalSize( CoreGroup _this );
+
+/* Wrapper function for the non virtual method : 'Core::Group.GetMinimalSize()' */
+XPoint CoreGroup__GetMinimalSize( void* _this );
+
+/* The following define announces the presence of the method Core::Group.GetMinimalSize(). */
+#define _CoreGroup__GetMinimalSize_
 
 /* The method FindDialogByClass() searches the tree of subordinated components for 
    the one, which acts actually as a dialog and it is an instance of the specified 
@@ -615,12 +669,6 @@ void CoreGroup_PresentDialog( CoreGroup _this, CoreGroup aDialogGroup, EffectsTr
   EffectsTransition aRestoreTransition, EffectsTransition aOverrideOverlayTransition, 
   EffectsTransition aOverrideRestoreTransition, XSlot aComplete, XSlot aCancel, 
   XBool aCombine );
-
-/* The method LocalPosition() converts the given position aPoint from the screen 
-   coordinate space to the coordinate space of this component and returns the calculated 
-   position. In the case the component isn't visible within the application, the 
-   method can fail and return a wrong position. */
-XPoint CoreGroup_LocalPosition( CoreGroup _this, XPoint aPoint );
 
 /* The method DispatchEvent() feeds the component with the event passed in the parameter 
    aEvent and propagates it along the so-called focus path. This focus path leads 

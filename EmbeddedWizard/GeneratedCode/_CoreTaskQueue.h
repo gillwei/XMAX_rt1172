@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -81,11 +81,9 @@
    job quickly, use timers or effects to delay execution and when the job is done 
    inform the queue about its completion. */
 EW_DEFINE_FIELDS( CoreTaskQueue, XObject )
-  EW_VARIABLE( toContinue,      CoreTask )
   EW_VARIABLE( current,         CoreTask )
   EW_VARIABLE( last,            CoreTask )
   EW_VARIABLE( first,           CoreTask )
-  EW_PROPERTY( OnDone,          XSlot )
   EW_VARIABLE( isInOnStart,     XBool )
 EW_END_OF_FIELDS( CoreTaskQueue )
 
@@ -99,8 +97,14 @@ void CoreTaskQueue_completeTask( CoreTaskQueue _this );
 /* 'C' function for method : 'Core::TaskQueue.onDispatchNext()' */
 void CoreTaskQueue_onDispatchNext( CoreTaskQueue _this, XObject sender );
 
-/* 'C' function for method : 'Core::TaskQueue.onPreDispatchNext()' */
-void CoreTaskQueue_onPreDispatchNext( CoreTaskQueue _this, XObject sender );
+/* 'C' function for method : 'Core::TaskQueue.onPreDispatchNext3()' */
+void CoreTaskQueue_onPreDispatchNext3( CoreTaskQueue _this, XObject sender );
+
+/* 'C' function for method : 'Core::TaskQueue.onPreDispatchNext2()' */
+void CoreTaskQueue_onPreDispatchNext2( CoreTaskQueue _this, XObject sender );
+
+/* 'C' function for method : 'Core::TaskQueue.onPreDispatchNext1()' */
+void CoreTaskQueue_onPreDispatchNext1( CoreTaskQueue _this, XObject sender );
 
 /* The method CancelTask() allows the application to remove a previously registered 
    task from the task queue. The affected task is determined by the parameter aTask.

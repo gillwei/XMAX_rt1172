@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -103,7 +103,6 @@ EW_DEFINE_FIELDS( FactoryDisplayManual, ComponentsBaseComponent )
   EW_OBJECT  ( CenterBlock,     ViewsRectangle )
   EW_OBJECT  ( OuterFrame,      ViewsBorder )
   EW_OBJECT  ( ImagePattern,    ViewsImage )
-  EW_VARIABLE( TotalPatternNum, XInt32 )
   EW_PROPERTY( PatternIdx,      XInt32 )
 EW_END_OF_FIELDS( FactoryDisplayManual )
 

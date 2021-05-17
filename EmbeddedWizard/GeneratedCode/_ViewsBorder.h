@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -33,12 +33,12 @@
 #endif
 
 #include "ewrte.h"
-#if EW_RTE_VERSION != 0x000A0000
+#if EW_RTE_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Runtime Environment.
 #endif
 
 #include "ewgfx.h"
-#if EW_GFX_VERSION != 0x000A0000
+#if EW_GFX_VERSION != 0x000B0000
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
@@ -89,10 +89,7 @@
    menus, etc. */
 EW_DEFINE_FIELDS( ViewsBorder, CoreRectView )
   EW_PROPERTY( Width,           XInt32 )
-  EW_PROPERTY( ColorBL,         XColor )
-  EW_PROPERTY( ColorBR,         XColor )
-  EW_PROPERTY( ColorTR,         XColor )
-  EW_PROPERTY( ColorTL,         XColor )
+  EW_PROPERTY( Color,           XColor )
 EW_END_OF_FIELDS( ViewsBorder )
 
 /* Virtual Method Table (VMT) for the class : 'Views::Border' */

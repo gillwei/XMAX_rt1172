@@ -18,7 +18,7 @@
 * project directory and edit the copy only. Please avoid any modifications of
 * the original template file!
 *
-* Version  : 10.00
+* Version  : 11.00
 * Profile  : iMX_RT
 * Platform : NXP.iMX_RT_VGLite.RGBA8888
 *
@@ -39,7 +39,7 @@
 #include "Strings.h"
 
 /* Compressed strings for the language 'Default'. */
-static const unsigned int _StringsDefault0[] =
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
   0x0000001E, /* ratio 133.33 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x9C002680, 0x0002A000, 0x00188006,
@@ -74,16 +74,16 @@ static const XStringRes _Const0000 = { _StringsDefault0, 0x0002 };
 void MaintenanceMNT01_MaintenanceReset__Init( MaintenanceMNT01_MaintenanceReset _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  MenuBaseMenuView__Init( &_this->_Super, aLink, aArg );
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_GCT = EW_CLASS_GCT( MaintenanceMNT01_MaintenanceReset );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MaintenanceMNT01_MaintenanceReset );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
-  _this->_VMT = EW_CLASS( MaintenanceMNT01_MaintenanceReset );
+  _this->_.VMT = EW_CLASS( MaintenanceMNT01_MaintenanceReset );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
@@ -101,7 +101,7 @@ void MaintenanceMNT01_MaintenanceReset__Init( MaintenanceMNT01_MaintenanceReset 
 void MaintenanceMNT01_MaintenanceReset__ReInit( MaintenanceMNT01_MaintenanceReset _this )
 {
   /* At first re-initialize the super class ... */
-  MenuBaseMenuView__ReInit( &_this->_Super );
+  MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
@@ -111,13 +111,13 @@ void MaintenanceMNT01_MaintenanceReset__ReInit( MaintenanceMNT01_MaintenanceRese
 void MaintenanceMNT01_MaintenanceReset__Done( MaintenanceMNT01_MaintenanceReset _this )
 {
   /* Finalize this class */
-  _this->_Super._VMT = EW_CLASS( MenuBaseMenuView );
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
-  MenuBaseMenuView__Done( &_this->_Super );
+  MenuBaseMenuView__Done( &_this->_.Super );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -169,8 +169,7 @@ XString MaintenanceMNT01_MaintenanceReset_LoadItemTitle( MaintenanceMNT01_Mainte
       Title = EwLoadString( &StringsMNT01_FREE2 );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return Title;
@@ -202,15 +201,12 @@ void MaintenanceMNT01_MaintenanceReset_OnItemActivate( MaintenanceMNT01_Maintena
       ResetDialog->SelectedMeterInfo = EnumMeterInfoMAINTENANCE_TRIP3;
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   if ( EnumMeterInfoTOTAL != ResetDialog->SelectedMeterInfo )
-  {
     CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ResetDialog ), 0, 0, 0, 
     0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-  }
 }
 
 /* 'C' function for method : 'Maintenance::MNT01_MaintenanceReset.LoadItemUnit()' */
@@ -234,8 +230,7 @@ XString MaintenanceMNT01_MaintenanceReset_LoadItemUnit( MaintenanceMNT01_Mainten
       UnitString = EwLoadString( &StringsUNT02_UNIT_MILEAGE_MILE );
     break;
 
-    default : 
-      ;
+    default :; 
   }
 
   return UnitString;
@@ -272,9 +267,7 @@ XString MaintenanceMNT01_MaintenanceReset_LoadItemValue( MaintenanceMNT01_Mainte
   if ( VehicleData->Valid )
   {
     if ( EnumMileageSettingItemMILE == _this->MileageSetting )
-    {
       VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
-    }
 
     VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
@@ -282,9 +275,7 @@ XString MaintenanceMNT01_MaintenanceReset_LoadItemValue( MaintenanceMNT01_Mainte
     Value = EwNewStringUInt( VehicleData->DataUInt32, 0, 0 );
   }
   else
-  {
     Value = EwLoadString( &StringsGEN_THREE_HYPHENS );
-  }
 
   return Value;
 }
@@ -297,13 +288,9 @@ void MaintenanceMNT01_MaintenanceReset_GetMileageSetting( MaintenanceMNT01_Maint
     EnumVehicleRxTypeMILEAGE_UNIT );
 
   if ( 1 == VehicleData->DataUInt32 )
-  {
     _this->MileageSetting = EnumMileageSettingItemMILE;
-  }
   else
-  {
     _this->MileageSetting = EnumMileageSettingItemKM;
-  }
 }
 
 /* 'C' function for method : 'Maintenance::MNT01_MaintenanceReset.SetNoOfMenuItems()' */
@@ -320,7 +307,6 @@ void MaintenanceMNT01_MaintenanceReset_SetNoOfMenuItems( MaintenanceMNT01_Mainte
     switch ( SettingItem )
     {
       case EnumMaintenanceResetMenuItemOIL :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionOIL_TRIP ))
@@ -328,11 +314,9 @@ void MaintenanceMNT01_MaintenanceReset_SetNoOfMenuItems( MaintenanceMNT01_Mainte
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumMaintenanceResetMenuItemV_BELT :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionV_BELT_TRIP ))
@@ -340,11 +324,9 @@ void MaintenanceMNT01_MaintenanceReset_SetNoOfMenuItems( MaintenanceMNT01_Mainte
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumMaintenanceResetMenuItemFREE1 :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionFREE_1 ))
@@ -352,11 +334,9 @@ void MaintenanceMNT01_MaintenanceReset_SetNoOfMenuItems( MaintenanceMNT01_Mainte
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       case EnumMaintenanceResetMenuItemFREE2 :
-      {
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionFREE_2 ))
@@ -364,7 +344,6 @@ void MaintenanceMNT01_MaintenanceReset_SetNoOfMenuItems( MaintenanceMNT01_Mainte
           _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
           NoOfItems++;
         }
-      }
       break;
 
       default : 
@@ -395,7 +374,6 @@ void MaintenanceMNT01_MaintenanceReset_OnVehicleDataReceivedSlot( MaintenanceMNT
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
   if ( VehicleData != 0 )
-  {
     switch ( VehicleData->RxType )
     {
       case EnumVehicleRxTypeMAINTENANCE_TRIP1 :
@@ -410,10 +388,8 @@ void MaintenanceMNT01_MaintenanceReset_OnVehicleDataReceivedSlot( MaintenanceMNT
         MaintenanceMNT01_MaintenanceReset_ReloadItem( _this, 2 );
       break;
 
-      default : 
-        ;
+      default :; 
     }
-  }
 }
 
 /* 'C' function for method : 'Maintenance::MNT01_MaintenanceReset.ReloadItem()' */
@@ -421,9 +397,7 @@ void MaintenanceMNT01_MaintenanceReset_ReloadItem( MaintenanceMNT01_MaintenanceR
   XInt32 aItemNo )
 {
   if ( aItemNo < _this->Super1.Menu.NoOfItems )
-  {
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, aItemNo, aItemNo );
-  }
 }
 
 /* Variants derived from the class : 'Maintenance::MNT01_MaintenanceReset' */
