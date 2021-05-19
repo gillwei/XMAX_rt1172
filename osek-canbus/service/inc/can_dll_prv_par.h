@@ -584,6 +584,7 @@ Index 0.
 #define     TP_DIAG_ID_REP_CAN0_CHN22_FCF_TXFRM_HANDLE        (0xF02D)
 #define     TP_DIAG_ID_REP_CAN0_CHN22_NUM_TX_FRAMES           (0x0001)
 /*For receive  server -> client*/
+/*Notes: ECU will not received message 0x4DF,received filter*/
 #define     TP_DIAG_ID_REQ_CAN0_CHN22_CAN_ID                  (0x04DF)
 #define     TP_DIAG_ID_REQ_CAN0_CHN22_SFFFFC_TXFRM_HANDLE     (0xF016)
 #define     TP_DIAG_ID_REQ_CAN0_CHN22_NUM_RX_FRAMES           (0x0001)

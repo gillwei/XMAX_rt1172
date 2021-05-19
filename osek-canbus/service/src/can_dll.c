@@ -286,9 +286,22 @@ if( p_rmd != NULL )
 
                 case DLL_RX_TP_FRAME:
                     /*------------------------------------------------------
+                    Dispatch to detct Yamaha Diagnostic tools
+                    ------------------------------------------------------*/
+                    if( ( RX_DAIG_SEG5_YDT_CAN0_ID == p_rmd->identifier )\
+                        || ( RX_DAIG_SEG6_YDT_CAN0_ID == p_rmd->identifier )\
+                        || ( RX_DAIG_SEG7_YDT_CAN0_ID == p_rmd->identifier ) )
+                        {
+                        VI_notify_ydt_detected();
+                        client_appl_set_ydt_connect_state();
+                        }
+                    /*------------------------------------------------------
                     Dispatch to Transport Layer
                     ------------------------------------------------------*/
-                    tp_hook_receive( p_rmd, hw_inst );
+                    else
+                        {
+                        tp_hook_receive( p_rmd, hw_inst );
+                        }
                     break;
 
                 case DLL_RX_FT_FRAME:

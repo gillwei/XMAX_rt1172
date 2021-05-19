@@ -9,7 +9,7 @@
 
 typedef void (*appl_period_func_ptr)(void);
 typedef void (*appl_postive_response_dispatch_ptr)(uint8 * resp_data,uint16 resp_lenth,uint8 channel_id);
-typedef void (*appl_negative_response_dispatch_ptr)(uint8 service_id,uint8 nrc);
+typedef void (*appl_negative_response_dispatch_ptr)(uint8 service_id,uint8 nrc, uint8 channel_id);
 typedef void (*apppl_response_timeout_notify_ptr)(void);
 typedef void (*appl_RCPP_notify_ptr)(void);
 
@@ -193,7 +193,8 @@ extern void
 client_appl_negative_response_dispatch
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     );
 
 extern void

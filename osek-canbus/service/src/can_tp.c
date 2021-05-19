@@ -3143,7 +3143,10 @@ switch( frame_type )
                     l_p_tmd_data[0] = TP_NP_FCF_CTS_PCI;
                     l_p_tmd_data[1] = l_p_recv_xfr->block_size;
                     l_p_tmd_data[TP_GPNUM_2] = l_p_recv_xfr->st_min;
-
+                    for( index = 3; index < TP_FCF_NUM_BYTES; index++ )
+                        {
+                        l_p_tmd_data[index] = 0x55;
+                        }
                     l_p_recv_xfr->state = TP_NS_RECV_WCTSTXC;
                     schedule_transfer_timeout( l_p_recv_xfr->n_ar_timeout, &( l_p_recv_xfr->timer ) );
                     (void) can_transmit( hw_inst, l_p_tmd );
@@ -3210,8 +3213,7 @@ switch( frame_type )
                             l_p_tmd_data = p_tp_chan_info->p_fcf_tmd_data;
                             l_p_tmd_data[0] = TP_NP_FCF_CTS_PCI;
                             l_p_tmd_data[1] = l_p_recv_xfr->block_size;
-                            //l_p_tmd_data[2] = l_p_recv_xfr->st_min;
-                            l_p_tmd_data[2] = 0x0b;
+                            l_p_tmd_data[2] = l_p_recv_xfr->st_min;
                             for( index = 3; index < TP_FCF_NUM_BYTES; index++ )
                                 {
                                 l_p_tmd_data[index] = 0x55;

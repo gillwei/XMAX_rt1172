@@ -177,7 +177,8 @@ static void client_appl_read_initial_dtc_status_positive_response_handler
 static void client_appl_read_initial_dtc_status_negative_response_handler
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     );
 
 static void client_appl_read_initial_dtc_status_timeout_notify
@@ -203,7 +204,8 @@ static void client_appl_read_data_by_common_identifier_positive_response_handler
 static void client_appl_read_data_by_common_identifier_negative_response_handler
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     );
 
 static void client_appl_read_data_by_common_identifier_timeout_notify
@@ -229,7 +231,8 @@ static void client_appl_read_data_by_local_identifier_market_positive_response_h
 static void client_appl_read_data_by_local_identifier_market_negative_response_handler
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     );
 
 static void client_appl_read_data_by_local_identifier_market_timeout_notify
@@ -254,7 +257,8 @@ static void client_appl_read_data_by_local_identifier_monitor_positive_response_
 static void client_appl_read_data_by_local_identifier_monitor_negative_response_handler
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     );
 
 static void client_appl_read_data_by_local_identifier_monitor_timeout_notify
@@ -278,7 +282,8 @@ static void client_appl_read_freeze_frame_data_positive_response_handler
 static void client_appl_read_freeze_frame_data_negative_response_handler
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     );
 
 static void client_appl_read_freeze_frame_data_timeout_notify
@@ -307,7 +312,7 @@ void client_appl_check_ble_command
     );
 
 
-static client_process_flow_handler_type client_process_flow_handler[SUPPORT_FUCNTION_NUMS] =
+static client_process_flow_handler_type client_process_flow_handler[SUPPORT_FUCNTION_NUMS - 1] =
 {
     { PROCESS_FLOW_DETECT_SERVER, &client_appl_detect_connected_server_handler_5ms, &client_appl_detect_connected_server_positive_response_handler, &client_appl_detect_connected_server_negative_response_handler, &client_appl_detect_connected_server_response_timeout_notify },
     { PROCESS_FLOW_EXTEND_SERVER, &client_appl_server_detect_req_extend_session_5ms, &client_appl_server_detect_req_extend_session_positive_response_handler, &client_appl_server_detect_req_extend_session_negative_response_handler, &client_appl_server_detect_req_extend_session_timeout_notify },
@@ -504,6 +509,13 @@ delay_timer_count = delay_time;
 }
 
 
+static void client_appl_clear_delay_timer
+    (
+    void
+    )
+{
+delay_timer_count = 0x00000;
+}
 /*!*******************************************************************
 * @public
 * Function name: client_appl_get_current_connected_server_id
@@ -634,13 +646,16 @@ static boolean client_appl_set_current_process_flow_step
     )
 {
 client_process_flow_state = next_process_flow;
+/*5ms*20 = 100ms*/
+client_appl_set_delay_timer( 40 );
+
 switch( client_process_flow_state )
     {
     case PROCESS_FLOW_IDLE:
         set_current_conncet_server_id( NO_SERVER_CONNECT );
         /*initial structure*/
         /*clear the read_dtc_infos except the read_dtc_infos.is_storge_init_dtc*/
-        /*sizof( read_dtc_infos) = 12, Byte alignment */
+        /*sizeof ( read_dtc_infos) = 12, Byte alignment */
         (void)memset( &read_dtc_infos, 0x00, sizeof( read_dtc_infos ) - 2 );
         (void)memset( &read_common_identifier_infos, 0x00, sizeof( read_common_identifier_infos ));
         (void)memset( &read_loacl_market_infos, 0x00, sizeof( read_loacl_market_infos ) );
@@ -650,7 +665,6 @@ switch( client_process_flow_state )
         break;
 
     case PROCESS_FLOW_DETECT_SERVER:
-        client_appl_set_delay_timer( 2000 );/*5ms*2000 = 10s*/
         set_current_conncet_server_id( SUPPORT_SERVER_NUM );
         break;
 
@@ -1057,7 +1071,10 @@ void client_appl_positive_response_dispatch
      uint8 channel_id
      )
 {
-client_process_flow_handler[client_process_flow_state].postive_response_dispatch( resp_data, resp_lenth, channel_id );
+if( client_process_flow_state < PROCESS_FLOW_IDLE )
+    {
+    client_process_flow_handler[client_process_flow_state].postive_response_dispatch( resp_data, resp_lenth, channel_id );
+    }
 }
 
 /*!******************************************************************************
@@ -1070,10 +1087,14 @@ client_process_flow_handler[client_process_flow_state].postive_response_dispatch
 void client_appl_negative_response_dispatch
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     )
 {
-client_process_flow_handler[client_process_flow_state].negative_response_dispatch( service_id, nrc );
+if( client_process_flow_state < PROCESS_FLOW_IDLE )
+    {
+client_process_flow_handler[client_process_flow_state].negative_response_dispatch( service_id, nrc, channel_id );
+    }
 }
 
 
@@ -2355,7 +2376,7 @@ switch( detect_connected_server_infos.curr_dtc_status_frame )
     default:
         break;
     }
-/*shoudld reset timer when received a positive response*/
+/*should reset timer when received a positive response*/
 detect_connected_server_infos.nrc_resend_timer = 0x00;
 detect_connected_server_infos.timeout_resend_timer = 0x00;
 }
@@ -2549,6 +2570,14 @@ switch( read_dtc_infos.next_req_dtc_status_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
+        /*The received flow for a function address is end with timeout*/
+        /*Wait fucntionl address request timeout*/
+        client_appl_set_delay_timer( DCMM_APP_DELAY_100_MS );
+        client_dcm_req_diagnostic_default_session_functional();
+        client_appl_read_initial_dtc_frame_status_change();
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
         client_dcm_req_diagnostic_extend_session( read_dtc_infos.connected_server_id );
         client_appl_read_initial_dtc_frame_status_change();
         break;
@@ -2642,6 +2671,11 @@ static void client_appl_read_initial_dtc_status_positive_response_handler
 uint8 connect_server_id = 0xFF;
 uint16 swap_server_code_u16 = 0x0000;
 
+if( channel_id != read_dtc_infos.connected_server_id )
+    {
+    return;
+    }
+
 switch( read_dtc_infos.curr_dtc_status_frame )
     {
     case REQ_ORIGINAL_FRAME:
@@ -2665,7 +2699,25 @@ switch( read_dtc_infos.curr_dtc_status_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
-        read_dtc_infos.next_req_dtc_status_frame = REQ_ORIGINAL_FRAME;
+        if( DCM_10h_DEFAULT_ID == resp_data[BYTE_NUM_1] )
+            {
+            read_dtc_infos.next_req_dtc_status_frame = REQ_EXTEND_SESSION_FRAME;
+            }
+        else
+            {
+            read_dtc_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            }
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
+        if( DCM_10h_EXTEND_ID == resp_data[BYTE_NUM_1] )
+            {
+            read_dtc_infos.next_req_dtc_status_frame = REQ_ORIGINAL_FRAME;
+            }
+        else
+            {
+            read_dtc_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            }
         break;
 
     default:
@@ -2683,9 +2735,15 @@ switch( read_dtc_infos.curr_dtc_status_frame )
 static void client_appl_read_initial_dtc_status_negative_response_handler
 (
 uint8 service_id,
-uint8 nrc
+uint8 nrc,
+uint8 channel_id
 )
 {
+if( channel_id != read_dtc_infos.connected_server_id )
+    {
+    return;
+    }
+
 switch( read_dtc_infos.curr_dtc_status_frame )
     {
     case REQ_ORIGINAL_FRAME:
@@ -2715,17 +2773,14 @@ switch( read_dtc_infos.curr_dtc_status_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
-        read_dtc_infos.next_req_dtc_status_frame = PROCESS_RESULT_NRC_GR;
-        break;
-
+    case REQ_EXTEND_SESSION_FRAME:
     case REQ_RESEND_FRAME:
-        read_dtc_infos.next_req_dtc_status_frame = PROCESS_RESULT_NRC_GR;
+        read_dtc_infos.process_result = PROCESS_RESULT_NRC_GR;
         break;
 
     default:
         break;
     }
-
 }
 
 /*!******************************************************************************
@@ -2747,6 +2802,21 @@ switch( read_dtc_infos.curr_dtc_status_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
+        /*Request default sesson within function address*/
+        /*The actual received end with timeout*/
+        /*So the next req frame will be extend frame when have been received a positive resonse fot current channenl*/
+        if( REQ_EXTEND_SESSION_FRAME != read_dtc_infos.next_req_dtc_status_frame )
+            {
+            read_dtc_infos.process_result = PROCESS_RESULT_NRC_GR;
+            }
+        else
+            {
+            /*do nothing*/
+            }
+        client_appl_clear_delay_timer();
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
         read_dtc_infos.process_result = PROCESS_RESULT_NRC_GR;
         break;
 
@@ -2801,10 +2871,17 @@ switch( read_common_identifier_infos.next_req_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
-        client_dcm_req_diagnostic_extend_session( read_common_identifier_infos.connected_server_id );
+        /*The received flow for a function address is end with timeout*/
+        /*Wait fucntionl address request timeout*/
+        client_appl_set_delay_timer( DCMM_APP_DELAY_100_MS );
+        client_dcm_req_diagnostic_default_session_functional();
         client_appl_request_status_change();
         break;
 
+    case REQ_EXTEND_SESSION_FRAME:
+        client_dcm_req_diagnostic_extend_session( read_common_identifier_infos.connected_server_id );
+        client_appl_request_status_change();
+        break;
     case REQ_RESEND_FRAME:
         common_identifier = read_common_identifier_infos.common_id_list[read_common_identifier_infos.current_common_data_index];
         client_dcm_req_common_indentifier( read_common_identifier_infos.connected_server_id, common_identifier );
@@ -2879,6 +2956,11 @@ static void client_appl_read_data_by_common_identifier_positive_response_handler
 {
 uint16 resp_identifier = 0x0000;
 
+if( channel_id != read_common_identifier_infos.connected_server_id )
+    {
+    return;
+    }
+
 switch( read_common_identifier_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
@@ -2897,6 +2979,17 @@ switch( read_common_identifier_infos.curr_req_frame )
 
     case REQ_DEFAULT_SESSION_FRAME:
         if( DCM_10h_DEFAULT_ID == resp_data[BYTE_NUM_1] )
+            {
+            read_common_identifier_infos.next_req_frame = REQ_EXTEND_SESSION_FRAME;
+            }
+        else
+            {
+            read_common_identifier_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            }
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
+        if( DCM_10h_EXTEND_ID == resp_data[BYTE_NUM_1] )
             {
             read_common_identifier_infos.next_req_frame = REQ_ORIGINAL_FRAME;
             }
@@ -2922,9 +3015,15 @@ switch( read_common_identifier_infos.curr_req_frame )
 static void client_appl_read_data_by_common_identifier_negative_response_handler
 (
 uint8 service_id,
-uint8 nrc
+uint8 nrc,
+uint8 channel_id
 )
 {
+if( channel_id != read_common_identifier_infos.connected_server_id )
+    {
+    return;
+    }
+
 switch( read_common_identifier_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
@@ -2959,9 +3058,7 @@ switch( read_common_identifier_infos.curr_req_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
-        read_common_identifier_infos.process_result = PROCESS_RESULT_NRC_GR;
-        break;
-
+    case REQ_EXTEND_SESSION_FRAME:
     case REQ_RESEND_FRAME:
         read_common_identifier_infos.process_result = PROCESS_RESULT_NRC_GR;
         break;
@@ -2990,6 +3087,21 @@ switch( read_common_identifier_infos.curr_req_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
+        /*Request default sesson within function address*/
+        /*The actual received end with timeout*/
+        /*So the next req frame will be extend frame when have been received a positive resonse fot current channenl*/
+        if( REQ_EXTEND_SESSION_FRAME != read_common_identifier_infos.next_req_frame )
+            {
+            read_common_identifier_infos.process_result = PROCESS_RESULT_NRC_GR;
+            }
+        else
+            {
+            /*do nothing*/
+            }
+        client_appl_clear_delay_timer();
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
         read_common_identifier_infos.process_result = PROCESS_RESULT_NRC_GR;
         break;
 
@@ -3035,6 +3147,15 @@ switch( read_loacl_market_infos.next_req_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
+        /*The received flow for a function address is end with timeout*/
+        /*Wait fucntionl address request timeout*/
+        client_appl_set_delay_timer( DCMM_APP_DELAY_100_MS );
+        client_dcm_req_diagnostic_default_session_functional();
+        read_loacl_market_infos.curr_req_frame = read_loacl_market_infos.next_req_frame;
+        read_loacl_market_infos.next_req_frame = REQ_NO_FRAME;
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
         client_dcm_req_diagnostic_extend_session( read_loacl_market_infos.connected_server_id );
         read_loacl_market_infos.curr_req_frame = read_loacl_market_infos.next_req_frame;
         read_loacl_market_infos.next_req_frame = REQ_NO_FRAME;
@@ -3110,6 +3231,12 @@ static void client_appl_read_data_by_local_identifier_market_positive_response_h
 )
 {
 uint8 resp_identifier = 0x00;
+
+if( channel_id != read_loacl_market_infos.connected_server_id )
+    {
+    return;
+    }
+
 switch( read_loacl_market_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
@@ -3129,7 +3256,25 @@ switch( read_loacl_market_infos.curr_req_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
-        read_loacl_market_infos.next_req_frame = REQ_ORIGINAL_FRAME;
+         if( DCM_10h_DEFAULT_ID == resp_data[BYTE_NUM_1] )
+            {
+            read_loacl_market_infos.next_req_frame = REQ_EXTEND_SESSION_FRAME;
+            }
+         else
+            {
+            read_loacl_market_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            }
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
+        if( DCM_10h_EXTEND_ID == resp_data[BYTE_NUM_1] )
+            {
+            read_loacl_market_infos.next_req_frame = REQ_ORIGINAL_FRAME;
+            }
+        else
+            {
+            read_loacl_market_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            }
         break;
 
     default:
@@ -3147,9 +3292,15 @@ switch( read_loacl_market_infos.curr_req_frame )
 static void client_appl_read_data_by_local_identifier_market_negative_response_handler
 (
 uint8 service_id,
-uint8 nrc
+uint8 nrc,
+uint8 channel_id
 )
 {
+if( channel_id != read_loacl_market_infos.connected_server_id )
+    {
+    return;
+    }
+
 switch( read_loacl_market_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
@@ -3179,9 +3330,7 @@ switch( read_loacl_market_infos.curr_req_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
-        read_loacl_market_infos.process_result = PROCESS_RESULT_NRC_GR;
-        break;
-
+    case REQ_EXTEND_SESSION_FRAME:
     case REQ_RESEND_FRAME:
         read_loacl_market_infos.process_result = PROCESS_RESULT_NRC_GR;
         break;
@@ -3210,6 +3359,21 @@ switch( read_loacl_market_infos.curr_req_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
+        /*Request default sesson within function address*/
+        /*The actual received end with timeout*/
+        /*So the next req frame will be extend frame when have been received a positive resonse fot current channenl*/
+        if( REQ_EXTEND_SESSION_FRAME != read_loacl_market_infos.next_req_frame )
+            {
+            read_loacl_market_infos.process_result = PROCESS_RESULT_NRC_GR;
+            }
+        else
+            {
+            /*do nothing*/
+            }
+        client_appl_clear_delay_timer();
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
         read_loacl_market_infos.process_result = PROCESS_RESULT_NRC_GR;
         break;
 
@@ -3256,6 +3420,15 @@ switch( read_local_monitor_infos.next_req_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
+        /*The received flow for a function address is end with timeout*/
+        /*Wait fucntionl address request timeout*/
+        client_appl_set_delay_timer( DCMM_APP_DELAY_100_MS );
+        client_dcm_req_diagnostic_default_session_functional();
+        read_local_monitor_infos.curr_req_frame = read_local_monitor_infos.next_req_frame;
+        read_local_monitor_infos.next_req_frame = REQ_NO_FRAME;
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
         client_dcm_req_diagnostic_extend_session( read_local_monitor_infos.connected_server_id );
         read_local_monitor_infos.curr_req_frame = read_local_monitor_infos.next_req_frame;
         read_local_monitor_infos.next_req_frame = REQ_NO_FRAME;
@@ -3338,6 +3511,11 @@ static void client_appl_read_data_by_local_identifier_monitor_positive_response_
  uint8 channel_id
 )
 {
+if( channel_id != read_local_monitor_infos.connected_server_id )
+    {
+    return;
+    }
+
 switch( read_local_monitor_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
@@ -3362,9 +3540,27 @@ switch( read_local_monitor_infos.curr_req_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
-        read_local_monitor_infos.next_req_frame = REQ_ORIGINAL_FRAME;
+        if( DCM_10h_DEFAULT_ID == resp_data[BYTE_NUM_1] )
+            {
+            read_local_monitor_infos.next_req_frame = REQ_EXTEND_SESSION_FRAME;
+            }
+        else
+            {
+            read_local_monitor_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            }
         break;
 
+    case REQ_EXTEND_SESSION_FRAME:
+       if( DCM_10h_EXTEND_ID == resp_data[BYTE_NUM_1] )
+            {
+            read_local_monitor_infos.next_req_frame = REQ_ORIGINAL_FRAME;
+            }
+        else
+            {
+            read_local_monitor_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            }
+        break;
+        break;
     default:
         break;
     }
@@ -3381,9 +3577,15 @@ switch( read_local_monitor_infos.curr_req_frame )
 static void client_appl_read_data_by_local_identifier_monitor_negative_response_handler
 (
 uint8 service_id,
-uint8 nrc
+uint8 nrc,
+uint8 channel_id
 )
 {
+if( channel_id != read_local_monitor_infos.connected_server_id )
+    {
+    return;
+    }
+
 switch( read_local_monitor_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
@@ -3413,9 +3615,7 @@ switch( read_local_monitor_infos.curr_req_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
-        read_local_monitor_infos.process_result = PROCESS_RESULT_NRC_GR;
-        break;
-
+    case REQ_EXTEND_SESSION_FRAME:
     case REQ_RESEND_FRAME:
         read_local_monitor_infos.process_result = PROCESS_RESULT_NRC_GR;
         break;
@@ -3442,6 +3642,21 @@ switch( read_local_monitor_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
         read_local_monitor_infos.next_req_frame = REQ_RESEND_FRAME;
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
+        /*Request default sesson within function address*/
+        /*The actual received end with timeout*/
+        /*So the next req frame will be extend frame when have been received a positive resonse fot current channenl*/
+        if( REQ_EXTEND_SESSION_FRAME != read_local_monitor_infos.next_req_frame )
+            {
+            read_local_monitor_infos.process_result = PROCESS_RESULT_NRC_GR;
+            }
+        else
+            {
+            /*do nothing*/
+            }
+        client_appl_clear_delay_timer();
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
@@ -3514,9 +3729,18 @@ switch( read_freeze_frame_data_infos.next_request_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
+        /*The received flow for a function address is end with timeout*/
+        /*Wait fucntionl address request timeout*/
+        client_appl_set_delay_timer( DCMM_APP_DELAY_100_MS );
+        client_dcm_req_diagnostic_default_session_functional();
+        client_appl_req_frame_status_switch();
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
         client_dcm_req_diagnostic_extend_session( read_freeze_frame_data_infos.connected_server_id );
         client_appl_req_frame_status_switch();
         break;
+
 
     case REQ_RESEND_FRAME:
         if( REQ_FFD_FRAME == read_freeze_frame_data_infos.prev_request_frame )
@@ -3583,6 +3807,11 @@ static void client_appl_read_freeze_frame_data_positive_response_handler
 {
 uint8 amount_of_list = 0;
 
+if( channel_id != read_freeze_frame_data_infos.connected_server_id )
+    {
+    return;
+    }
+
 switch( read_freeze_frame_data_infos.curr_request_frame )
     {
     case REQ_ORIGINAL_FRAME:
@@ -3596,7 +3825,25 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
-        client_appl_set_next_ffd_frame_frame( read_freeze_frame_data_infos.prev_request_frame );
+        if( DCM_10h_DEFAULT_ID == resp_data[BYTE_NUM_1] )
+            {
+            client_appl_set_next_ffd_frame_frame( REQ_EXTEND_SESSION_FRAME );
+            }
+        else
+            {
+             read_freeze_frame_data_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            }
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
+        if( DCM_10h_EXTEND_ID == resp_data[BYTE_NUM_1] )
+            {
+            client_appl_set_next_ffd_frame_frame( read_freeze_frame_data_infos.prev_request_frame );
+            }
+        else
+            {
+             read_freeze_frame_data_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            }
         break;
 
     case REQ_RESEND_FRAME:
@@ -3687,9 +3934,15 @@ if( REQ_ORIGINAL_FRAME == read_freeze_frame_data_infos.curr_request_frame
 static void client_appl_read_freeze_frame_data_negative_response_handler
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     )
 {
+if( channel_id != read_freeze_frame_data_infos.connected_server_id )
+    {
+    return;
+    }
+
 switch( read_freeze_frame_data_infos.curr_request_frame )
     {
     case REQ_ORIGINAL_FRAME:
@@ -3726,6 +3979,7 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
+    case REQ_EXTEND_SESSION_FRAME:
         read_freeze_frame_data_infos.process_result = PROCESS_RESULT_NRC_GR;
         break;
 
@@ -3827,6 +4081,21 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
+        /*Request default sesson within function address*/
+        /*The actual received end with timeout*/
+        /*So the next req frame will be extend frame when have been received a positive resonse fot current channenl*/
+        if( REQ_EXTEND_SESSION_FRAME != read_freeze_frame_data_infos.next_request_frame )
+            {
+            read_freeze_frame_data_infos.process_result = PROCESS_RESULT_NRC_GR;
+            }
+        else
+            {
+            /*do nothing*/
+            }
+        client_appl_clear_delay_timer();
+        break;
+
+    case REQ_EXTEND_SESSION_FRAME:
         read_freeze_frame_data_infos.process_result = PROCESS_RESULT_NRC_GR;
         break;
 

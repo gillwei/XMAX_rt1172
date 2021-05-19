@@ -128,7 +128,6 @@ if( CLIENT_UN_INITIALIZATION == g_client_init_state )
     client_diag_msg_context.req_data = client_diag_tx_buffer;
     client_diag_msg_context.resp_data = client_diag_rx_buffer;
     client_diag_msg_context.is_receive = FALSE;
-
     prev_connect_ecu_id = 0XFF;
     }
 }
@@ -265,9 +264,9 @@ if( TRUE == client_diag_msg_context.is_receive )
             {
             return_value = E_RX_FORMAT_ERROR;
             }
+        /*Check whether the NRC length is correct*/
         else if( NEGATIVE_RESPONSE_LENTH != client_diag_msg_context.resp_data_len )
             {
-            /*Check whether the response data length is correct*/
             return_value = E_RX_FORMAT_ERROR;
             }
         else if( DCM_NRC_RESPONSE_PENDING == client_diag_msg_context.resp_data[BYTE_NUM_2] )
@@ -276,7 +275,8 @@ if( TRUE == client_diag_msg_context.is_receive )
             if( CLIENT_ADDRESS_FUNCTIONAL == client_diag_msg_context.address_type )
                 {
                 /*response RCPP when request by functional address is not allowable*/
-                return_value = E_RX_FORMAT_ERROR;
+                /*Pending confirm*/
+                return E_RX_INVALID;
                 }
             else
                 {
@@ -285,7 +285,7 @@ if( TRUE == client_diag_msg_context.is_receive )
             }
         else
             {
-            client_appl_negative_response_dispatch( client_diag_msg_context.resp_data[BYTE_NUM_1], client_diag_msg_context.resp_data[BYTE_NUM_2] );
+            client_appl_negative_response_dispatch( client_diag_msg_context.resp_data[BYTE_NUM_1], client_diag_msg_context.resp_data[BYTE_NUM_2], client_diag_msg_context.resp_channel );
             return_value =  E_OK;
             }
         }
@@ -317,10 +317,13 @@ if( TRUE == client_diag_msg_context.is_receive )
         }
     else if( E_RX_FORMAT_ERROR == return_value )
         {
-        /*when received a error_format message,wait p2 timeout and set diagnostic state*/
+        /*when received a error_format message,handle as timeout*/
+        set_client_diag_state( CLIENT_DIAG_STATE_IDLE );
+        client_appl_response_timeout_notify();
         }
     else
         {
+        /*for E_RX_INVALID*/
         }
     }
 return return_value;
@@ -372,20 +375,21 @@ if( channel_id >= TP_CAN0_NUM_CHANNELS )
     return E_NOT_OK;
     }
 
-if( 0x0000 != client_diag_msg_context.req_data_len ) /* network layer doesn't check for 0 byte message */
+/* network layer doesn't send for 0 byte message */
+if( 0x0000 == client_diag_msg_context.req_data_len )
     {
-    if( is_client_diag_state( CLIENT_DIAG_STATE_IDLE ))
-        {
-        set_client_diag_state( CLIENT_DIAG_STATE_REQUEST );
-        client_diag_msg_context.req_channel = channel_id;
-        tp_transmit(client_diag_msg_context.req_data, client_diag_msg_context.req_data_len, channel_id, CAN_CONTROLLER_2 );/*turan*/
-        }
-    else
-        {
-        /*a new request message when last message is processing,abandon the new request*/
-        }
+    return E_NOT_OK;
     }
-return E_OK;
+
+/*we will execute new request if current state is not idle */
+if( FALSE == is_client_diag_state( CLIENT_DIAG_STATE_IDLE ) )
+    {
+    set_client_diag_state( CLIENT_DIAG_STATE_IDLE );
+    }
+
+set_client_diag_state( CLIENT_DIAG_STATE_REQUEST );
+client_diag_msg_context.req_channel = channel_id;
+tp_transmit(client_diag_msg_context.req_data, client_diag_msg_context.req_data_len, channel_id, CAN_CONTROLLER_2 );/*turan*/
 }
 
 /*!******************************************************************************
@@ -402,14 +406,13 @@ void client_diag_tx_complete
     uint8 channel_id
     )
 {
-//PRINTF("TX complete channel:%d-----time:%d\r\n",channel_id, os_task_time);
-    /* TBD
+/*
 if( TP_N_OK != result )
     {
     set_client_diag_state( CLIENT_DIAG_STATE_IDLE );
     return;
     }
-    */
+*/
 if( is_client_diag_state( CLIENT_DIAG_STATE_REQUEST ) )
     {
     set_client_diag_state( CLIENT_DIAG_STATE_CONFIRM );
@@ -490,8 +493,6 @@ client_diag_rx_wrapper
     tp_chan_index_t const  tp_channel
     )
 {
-
-//PRINTF("Received channel--%d    time:%d    \r\n",tp_channel, os_task_time);
 //PRINTF("data: %d, %d\r\n",rx_buffer[0],rx_buffer[1] );
 /*response of functional address request*/
 if( TRUE == is_client_diag_state( CLIENT_DIAG_STATE_IDLE ))
@@ -512,14 +513,15 @@ if( CLIENT_ADDRESS_FUNCTIONAL == client_diag_msg_context.address_type )
     }
 else if( CLIENT_ADDRESS_PHYSICAL == client_diag_msg_context.address_type )
     {
-    /*PENDING*/
-    if( TP_N_OK != result )
+    if( tp_channel != client_diag_msg_context.req_channel )
         {
-        set_client_diag_state( CLIENT_DIAG_STATE_IDLE );
         return;
         }
-    else if( tp_channel != client_diag_msg_context.req_channel )
+    else if( TP_N_OK != result )
         {
+        set_client_diag_state( CLIENT_DIAG_STATE_IDLE );
+        /*RX cause TP layer parameter timeout */
+        client_appl_response_timeout_notify();
         return;
         }
     else if( is_client_diag_state( CLIENT_DIAG_STATE_CONFIRM )
@@ -556,20 +558,11 @@ client_ReturnType client_dcm_req_diagnostic_default_session_functional
     )
 {
 client_ReturnType return_value;
-
-if( is_client_diag_state( CLIENT_DIAG_STATE_IDLE ) )
-    {
-    client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_DIAGNOSTC_SESSION_SERVICE_ID;
-    client_diag_msg_context.req_data[BYTE_NUM_1] = DCM_10h_DEFAULT_ID;
-    client_diag_msg_context.req_data_len = 0x02;
-    client_diag_msg_context.address_type = CLIENT_ADDRESS_FUNCTIONAL;
-    return_value = client_diag_tx_wrapper( 5 );
-    }
-else
-    {
-    return_value = E_BUSY;
-    }
-
+client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_DIAGNOSTC_SESSION_SERVICE_ID;
+client_diag_msg_context.req_data[BYTE_NUM_1] = DCM_10h_DEFAULT_ID;
+client_diag_msg_context.req_data_len = 0x02;
+client_diag_msg_context.address_type = CLIENT_ADDRESS_FUNCTIONAL;
+return_value = client_diag_tx_wrapper( TP_CAN0_NUM_CHANNELS - 1 );
 return return_value;
 }
 
@@ -586,20 +579,11 @@ client_ReturnType client_dcm_req_diagnostic_default_session_physical
     )
 {
 client_ReturnType return_value;
-
-if( is_client_diag_state( CLIENT_DIAG_STATE_IDLE ) )
-    {
-    client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_DIAGNOSTC_SESSION_SERVICE_ID;
-    client_diag_msg_context.req_data[BYTE_NUM_1] = DCM_10h_DEFAULT_ID;
-    client_diag_msg_context.req_data_len = 0x02;
-    client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
-    return_value = client_diag_tx_wrapper( channel_id );
-    }
-else
-    {
-    return_value = E_BUSY;
-    }
-
+client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_DIAGNOSTC_SESSION_SERVICE_ID;
+client_diag_msg_context.req_data[BYTE_NUM_1] = DCM_10h_DEFAULT_ID;
+client_diag_msg_context.req_data_len = 0x02;
+client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
+return_value = client_diag_tx_wrapper( channel_id );
 return return_value;
 }
 
@@ -616,20 +600,11 @@ client_ReturnType client_dcm_req_diagnostic_extend_session
     )
 {
 client_ReturnType return_value;
-
-if( is_client_diag_state( CLIENT_DIAG_STATE_IDLE ) )
-    {
-    client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_DIAGNOSTC_SESSION_SERVICE_ID;
-    client_diag_msg_context.req_data[BYTE_NUM_1] = DCM_10h_EXTEND_ID;
-    client_diag_msg_context.req_data_len = 0x02;
-    client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
-    return_value = client_diag_tx_wrapper( channel_id );
-    }
-else
-    {
-    return_value = E_BUSY;
-    }
-
+client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_DIAGNOSTC_SESSION_SERVICE_ID;
+client_diag_msg_context.req_data[BYTE_NUM_1] = DCM_10h_EXTEND_ID;
+client_diag_msg_context.req_data_len = 0x02;
+client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
+return_value = client_diag_tx_wrapper( channel_id );
 return return_value;
 }
 
@@ -665,22 +640,13 @@ client_ReturnType client_dcm_req_read_dtc_status_code
     )
 {
 client_ReturnType return_value;
-
-if( is_client_diag_state( CLIENT_DIAG_STATE_IDLE ) )
-    {
-    client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_READ_DTC_STATUS_SERVICE_ID;
-    client_diag_msg_context.req_data[BYTE_NUM_1] = status_code;
-    client_diag_msg_context.req_data[BYTE_NUM_2] = 0xFF;
-    client_diag_msg_context.req_data[BYTE_NUM_3] = 0xFF;
-    client_diag_msg_context.req_data_len = 0x04;
-    client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
-    return_value = client_diag_tx_wrapper( channel_id );
-    }
-else
-    {
-    return_value = E_BUSY;
-    }
-
+client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_READ_DTC_STATUS_SERVICE_ID;
+client_diag_msg_context.req_data[BYTE_NUM_1] = status_code;
+client_diag_msg_context.req_data[BYTE_NUM_2] = 0xFF;
+client_diag_msg_context.req_data[BYTE_NUM_3] = 0xFF;
+client_diag_msg_context.req_data_len = 0x04;
+client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
+return_value = client_diag_tx_wrapper( channel_id );
 return return_value;
 }
 
@@ -699,20 +665,12 @@ client_ReturnType client_dcm_req_common_indentifier
 {
 client_ReturnType return_value;
 
-if( is_client_diag_state( CLIENT_DIAG_STATE_IDLE ) )
-    {
-    client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_READ_COMMON_INDENTIFIER;
-    client_diag_msg_context.req_data[BYTE_NUM_1] = (uint8)(common_id >> 8);
-    client_diag_msg_context.req_data[BYTE_NUM_2] = (uint8)common_id;
-    client_diag_msg_context.req_data_len = DCM_22h_REQ_DATA_LEN;
-    client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
-    return_value = client_diag_tx_wrapper( channel_id );
-    }
-else
-    {
-    return_value = E_BUSY;
-    }
-
+client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_READ_COMMON_INDENTIFIER;
+client_diag_msg_context.req_data[BYTE_NUM_1] = (uint8)(common_id >> 8);
+client_diag_msg_context.req_data[BYTE_NUM_2] = (uint8)common_id;
+client_diag_msg_context.req_data_len = DCM_22h_REQ_DATA_LEN;
+client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
+return_value = client_diag_tx_wrapper( channel_id );
 return return_value;
 }
 
@@ -729,20 +687,11 @@ client_ReturnType client_dcm_req_local_indentifier
     )
 {
 client_ReturnType return_value;
-
-if( is_client_diag_state( CLIENT_DIAG_STATE_IDLE ) )
-    {
-    client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_READ_LOCAL_INDENTIFIER;
-    client_diag_msg_context.req_data[BYTE_NUM_1] = local_id;
-    client_diag_msg_context.req_data_len = DMC_21h_REQ_DATA_LEN;
-    client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
-    return_value = client_diag_tx_wrapper( channel_id );
-    }
-else
-    {
-    return_value = E_BUSY;
-    }
-
+client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_READ_LOCAL_INDENTIFIER;
+client_diag_msg_context.req_data[BYTE_NUM_1] = local_id;
+client_diag_msg_context.req_data_len = DMC_21h_REQ_DATA_LEN;
+client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
+return_value = client_diag_tx_wrapper( channel_id );
 return return_value;
 }
 
@@ -762,22 +711,13 @@ client_ReturnType client_dcm_req_freeze_frame_data
     )
 {
 client_ReturnType return_value;
-
-if( is_client_diag_state( CLIENT_DIAG_STATE_IDLE ) )
-    {
-    client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_READ_FREEZE_FRAME_DATA_SERVICE_ID;
-    client_diag_msg_context.req_data[BYTE_NUM_1] = freeze_frame_number;
-    client_diag_msg_context.req_data[BYTE_NUM_2] = DCM_12h_RECMID;
-    client_diag_msg_context.req_data[BYTE_NUM_3] = record_local_id;
-    client_diag_msg_context.req_data_len = DCM_12h_REQ_DATA_LEN;
-    client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
-    return_value = client_diag_tx_wrapper( channel_id );
-    }
-else
-    {
-    return_value = E_BUSY;
-    }
-
+client_diag_msg_context.req_data[BYTE_NUM_0] = DCM_READ_FREEZE_FRAME_DATA_SERVICE_ID;
+client_diag_msg_context.req_data[BYTE_NUM_1] = freeze_frame_number;
+client_diag_msg_context.req_data[BYTE_NUM_2] = DCM_12h_RECMID;
+client_diag_msg_context.req_data[BYTE_NUM_3] = record_local_id;
+client_diag_msg_context.req_data_len = DCM_12h_REQ_DATA_LEN;
+client_diag_msg_context.address_type = CLIENT_ADDRESS_PHYSICAL;
+return_value = client_diag_tx_wrapper( channel_id );
 return return_value;
 }
 

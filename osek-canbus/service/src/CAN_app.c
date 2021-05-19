@@ -203,6 +203,7 @@ nm_app_hook_process_receive
 CAN frame from can stack lower layer
 ------------------------------------------------------*/
 #if( TRUE == APPL_CMD_DBUG )
+/*For simulate APP ble Command with Canlayer*/
 can_msg_t   l_can_msg_rx;
 uint8 dlc = 0x00;
 /*--------------------------------------------------

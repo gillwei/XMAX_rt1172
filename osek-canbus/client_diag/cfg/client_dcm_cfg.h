@@ -165,4 +165,8 @@
 #define DCM_TESTER_PERSNET_SERVICE_ID          (0x3E)
 #define DCM_3Eh_REQ_DATA_LEN                   (0x02)
 #define DCM_3Eh_NO_RESPONSE                    (0x02)
+
+
+
+#define DCMM_APP_DELAY_100_MS                  (0x14)
 #endif
