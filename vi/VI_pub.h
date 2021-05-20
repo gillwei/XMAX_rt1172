@@ -36,7 +36,7 @@ extern "C"{
 #define INVALID_TRIP1_VALUE                 ( 0xFFFFF )
 #define INVALID_TRIP2_VALUE                 ( 0xFFFFF )
 
-#define INVALID_FUEL_CONS                   ( 0x1FF )
+#define INVALID_FUEL_CONS                   ( 0x1FFF )
 #define INVALID_AIR_TEMPERATURE             ( 0xFF )
 #define INVALID_COOLANT_TEMPERATURE         ( 0xFF )
 #define INVALID_BATTERY_VOLTAGE             ( 0xFF )
