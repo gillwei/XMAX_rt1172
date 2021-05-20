@@ -297,6 +297,7 @@ switch( signal_id )
     {
     case IL_CAN0_ODO_TRIP_ODOMETER_RXSIG_HANDLE:
         rx_odo_trip.odo_value_km = data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeODOMETER_VALUE );
         break;
     case IL_CAN0_ODO_TRIP1_METER_RXSIG_HANDLE:
         rx_odo_trip.trip1_value_km = data;
@@ -424,7 +425,7 @@ switch( signal_id )
     {
     case IL_CAN0_VEHICLE_INFO_4_FTRIP_RXSIG_HANDLE:
         rx_vehicle_info.fuel_tripmeter_km = (uint16_t)data;
-        EW_notify_vi_data_received( EnumVehicleRxTypeF_TRIP );
+        EW_notify_vi_data_received( EnumVehicleRxTypeTRIP_F_VALUE );
         break;
     case IL_CAN0_VEHICLE_INFO_4_LOW_FUEL_WRN_RXSIG_HANDLE:
         rx_vehicle_info.low_fuel_warning = (bool)data;
@@ -1127,7 +1128,7 @@ switch( rx_type )
             is_valid = false;
             }
         break;
-    case EnumVehicleRxTypeF_TRIP:
+    case EnumVehicleRxTypeTRIP_F_VALUE:
         if( INVALID_FUEL_TRIPMETER != rx_vehicle_info.fuel_tripmeter_km )
             {
             *data = rx_vehicle_info.fuel_tripmeter_km * 0.1;

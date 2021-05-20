@@ -280,7 +280,7 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
         // display value of TRIP-F when low fuel warning is on, otherwise, display "---"
         if( DeviceInterface::VehicleDevice.LowFuelWarning )
         {
-          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.F_TRIP );
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TRIP_F_VALUE );
         }
         else
         {
@@ -471,7 +471,7 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
         case Enum::VehicleRxType.ODOMETER_VALUE,
              Enum::VehicleRxType.TRIP1_VALUE,
              Enum::VehicleRxType.TRIP2_VALUE,
-             Enum::VehicleRxType.F_TRIP,
+             Enum::VehicleRxType.TRIP_F_VALUE,
              Enum::VehicleRxType.LOW_FUEL_WARNING:
         {
           Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );

@@ -2556,7 +2556,7 @@ DeviceInterfaceVehicleDataClass DeviceInterfaceVehicleDeviceClass_GetData( Devic
       == aVehicleRxType )) || ( EnumVehicleRxTypeFUEL_CONSUMPTION == aVehicleRxType )) 
       || ( EnumVehicleRxTypeAIR_TEMPERATURE == aVehicleRxType )) || ( EnumVehicleRxTypeCOOLANT_TEMPERATURE 
       == aVehicleRxType )) || ( EnumVehicleRxTypeBATTERY_VOLTAGE == aVehicleRxType )) 
-      || ( EnumVehicleRxTypeF_TRIP == aVehicleRxType ))
+      || ( EnumVehicleRxTypeTRIP_F_VALUE == aVehicleRxType ))
     VehicleData->DataType = EnumDataTypeFLOAT;
 
   RxTypeId = aVehicleRxType;

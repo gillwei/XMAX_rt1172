@@ -234,7 +234,7 @@ typedef enum
   EnumVehicleRxTypeCOOLANT_TEMPERATURE  = 22,
   EnumVehicleRxTypeBATTERY_VOLTAGE      = 23,
   EnumVehicleRxTypeCRUISE_SPEED         = 24,
-  EnumVehicleRxTypeF_TRIP               = 25,
+  EnumVehicleRxTypeTRIP_F_VALUE         = 25,
   EnumVehicleRxTypeLOW_FUEL_WARNING     = 26,
   EnumVehicleRxTypeFUEL_RESERVE         = 27,
   EnumVehicleRxTypeODO_TRIP_DISPLAY     = 28,

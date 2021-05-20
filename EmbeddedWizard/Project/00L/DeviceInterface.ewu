@@ -2282,7 +2282,7 @@ class VehicleDeviceClass : Templates::DeviceClass
           Enum::VehicleRxType.AIR_TEMPERATURE == aVehicleRxType ||
           Enum::VehicleRxType.COOLANT_TEMPERATURE == aVehicleRxType ||
           Enum::VehicleRxType.BATTERY_VOLTAGE == aVehicleRxType ||
-          Enum::VehicleRxType.F_TRIP == aVehicleRxType )
+          Enum::VehicleRxType.TRIP_F_VALUE == aVehicleRxType )
       {
         VehicleData.DataType = Enum::DataType.FLOAT;
       }

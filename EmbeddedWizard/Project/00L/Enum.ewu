@@ -471,7 +471,7 @@ enum VehicleRxType
   item CRUISE_SPEED;
 
   $rect <430,260,630,300>
-  item F_TRIP;
+  item TRIP_F_VALUE;
 
   $rect <430,310,630,350>
   item LOW_FUEL_WARNING;

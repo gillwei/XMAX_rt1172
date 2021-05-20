@@ -5327,7 +5327,7 @@ XString SettingsSET45_TripMileageReset_LoadItemValue( SettingsSET45_TripMileageR
       if ( DeviceInterfaceVehicleDeviceClass_OnGetLowFuelWarning( EwGetAutoObject( 
           &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeF_TRIP );
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTRIP_F_VALUE );
       else
       {
         VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 0 );
@@ -5459,7 +5459,7 @@ void SettingsSET45_TripMileageReset_OnVehicleDataReceivedSlot( SettingsSET45_Tri
     {
       case EnumVehicleRxTypeTRIP1_VALUE :
       case EnumVehicleRxTypeTRIP2_VALUE :
-      case EnumVehicleRxTypeF_TRIP :
+      case EnumVehicleRxTypeTRIP_F_VALUE :
       case EnumVehicleRxTypeLOW_FUEL_WARNING :
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
         - 1 );

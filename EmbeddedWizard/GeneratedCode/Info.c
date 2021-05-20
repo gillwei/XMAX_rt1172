@@ -578,7 +578,7 @@ XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemValue( InfoINF26_ODO_TRIP_Setting
       if ( DeviceInterfaceVehicleDeviceClass_OnGetLowFuelWarning( EwGetAutoObject( 
           &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeF_TRIP );
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTRIP_F_VALUE );
       else
       {
         VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 0 );
@@ -794,7 +794,7 @@ void InfoINF26_ODO_TRIP_SettingMenu_OnVehicleDataReceivedSlot( InfoINF26_ODO_TRI
       case EnumVehicleRxTypeODOMETER_VALUE :
       case EnumVehicleRxTypeTRIP1_VALUE :
       case EnumVehicleRxTypeTRIP2_VALUE :
-      case EnumVehicleRxTypeF_TRIP :
+      case EnumVehicleRxTypeTRIP_F_VALUE :
       case EnumVehicleRxTypeLOW_FUEL_WARNING :
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
         - 1 );
