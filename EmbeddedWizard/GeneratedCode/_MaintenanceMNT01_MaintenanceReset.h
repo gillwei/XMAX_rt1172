@@ -115,6 +115,7 @@
 /* Deklaration of class : 'Maintenance::MNT01_MaintenanceReset' */
 EW_DEFINE_FIELDS( MaintenanceMNT01_MaintenanceReset, MenuBaseMenuView )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
+  EW_VARIABLE( NoOfSupportedItem, XInt32 )
   EW_VARIABLE( MileageSetting,  XEnum )
   EW_ARRAY   ( SupportedSetting, XEnum, [3])
 EW_END_OF_FIELDS( MaintenanceMNT01_MaintenanceReset )

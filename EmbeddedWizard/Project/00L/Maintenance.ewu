@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <10,10,240,50>
 $output false
@@ -46,20 +46,23 @@ class MNT01_MaintenanceReset : Menu::BaseMenuView
   {
     aMenuItem; // suppress warning
 
-    var Pop::POP04_Reset ResetDialog = new Pop::POP04_Reset;
-    ResetDialog.SelectedMeterInfo = Enum::MeterInfo.TOTAL;
-
-    switch( aItemNo )
+    if( 0 < NoOfSupportedItem )
     {
-      case 0: ResetDialog.SelectedMeterInfo = Enum::MeterInfo.MAINTENANCE_TRIP1;
-      case 1: ResetDialog.SelectedMeterInfo = Enum::MeterInfo.MAINTENANCE_TRIP2;
-      case 2: ResetDialog.SelectedMeterInfo = Enum::MeterInfo.MAINTENANCE_TRIP3;
-      default:;
-    }
+      var Pop::POP04_Reset ResetDialog = new Pop::POP04_Reset;
+      ResetDialog.SelectedMeterInfo = Enum::MeterInfo.TOTAL;
 
-    if( Enum::MeterInfo.TOTAL != ResetDialog.SelectedMeterInfo )
-    {
-      PresentDialog( ResetDialog, null, null, null, null, null, null, null, null, false );
+      switch( aItemNo )
+      {
+        case 0: ResetDialog.SelectedMeterInfo = Enum::MeterInfo.MAINTENANCE_TRIP1;
+        case 1: ResetDialog.SelectedMeterInfo = Enum::MeterInfo.MAINTENANCE_TRIP2;
+        case 2: ResetDialog.SelectedMeterInfo = Enum::MeterInfo.MAINTENANCE_TRIP3;
+        default:;
+      }
+
+      if( Enum::MeterInfo.TOTAL != ResetDialog.SelectedMeterInfo )
+      {
+        PresentDialog( ResetDialog, null, null, null, null, null, null, null, null, false );
+      }
     }
   }
 
@@ -91,12 +94,21 @@ class MNT01_MaintenanceReset : Menu::BaseMenuView
     var string Value;
     var DeviceInterface::VehicleDataClass VehicleData;
 
-    switch( aItemNo )
+    if( 0 < NoOfSupportedItem )
     {
-      case 0: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP1 );
-      case 1: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP2 );
-      case 2: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP3 );
-      default: VehicleData.Valid = false;
+      switch( aItemNo )
+      {
+        case 0: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP1 );
+        case 1: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP2 );
+        case 2: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP3 );
+        default: VehicleData.Valid = false;
+      }
+    }
+    else
+    {
+      // when no maintenance item, display OIL "---"
+      VehicleData = new DeviceInterface::VehicleDataClass;
+      VehicleData.Valid = false;
     }
 
     if( VehicleData.Valid )
@@ -140,8 +152,8 @@ class MNT01_MaintenanceReset : Menu::BaseMenuView
   method void SetNoOfMenuItems()
   {
     var int32 i;
-    var int32 NoOfItems;
     var Enum::MaintenanceResetMenuItem SettingItem;
+    NoOfSupportedItem = 0;
 
     for( i = 0; i < (int32)Enum::MaintenanceResetMenuItem.TOTAL; i++ )
     {
@@ -152,48 +164,53 @@ class MNT01_MaintenanceReset : Menu::BaseMenuView
         {
           if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.OIL_TRIP ) )
           {
-            SupportedSetting[NoOfItems] = SettingItem;
-            NoOfItems++;
+            SupportedSetting[NoOfSupportedItem] = SettingItem;
+            NoOfSupportedItem++;
           }
         }
         case Enum::MaintenanceResetMenuItem.V_BELT:
         {
           if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.V_BELT_TRIP ) )
           {
-            SupportedSetting[NoOfItems] = SettingItem;
-            NoOfItems++;
+            SupportedSetting[NoOfSupportedItem] = SettingItem;
+            NoOfSupportedItem++;
           }
         }
         case Enum::MaintenanceResetMenuItem.FREE1:
         {
           if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.FREE_1 ) )
           {
-            SupportedSetting[NoOfItems] = SettingItem;
-            NoOfItems++;
+            SupportedSetting[NoOfSupportedItem] = SettingItem;
+            NoOfSupportedItem++;
           }
         }
         case Enum::MaintenanceResetMenuItem.FREE2:
         {
           if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.FREE_2 ) )
           {
-            SupportedSetting[NoOfItems] = SettingItem;
-            NoOfItems++;
+            SupportedSetting[NoOfSupportedItem] = SettingItem;
+            NoOfSupportedItem++;
           }
         }
-        default:
-        {
-          SupportedSetting[NoOfItems] = SettingItem;
-          NoOfItems++;
-        }
+        default:;
       }
 
-      if( Maintenance::MAX_MAINTENANCE_RESET_ITEM_NUM <= NoOfItems )
+      if( Maintenance::MAX_MAINTENANCE_RESET_ITEM_NUM <= NoOfSupportedItem )
       {
         break;
       }
     }
 
-    Menu.NoOfItems = NoOfItems;
+    if( 0 == NoOfSupportedItem )
+    {
+      // display OIL "---" when no maintenance item
+      SupportedSetting[NoOfSupportedItem] = Enum::MaintenanceResetMenuItem.OIL;
+      Menu.NoOfItems = 1;
+    }
+    else
+    {
+      Menu.NoOfItems = NoOfSupportedItem;
+    }
   }
 
   $rect <510,290,790,330>
@@ -229,6 +246,9 @@ class MNT01_MaintenanceReset : Menu::BaseMenuView
       Menu.InvalidateItems( aItemNo, aItemNo );
     }
   }
+
+  $rect <0,490,200,530>
+  var int32 NoOfSupportedItem;
 }
 
 $rect <10,60,340,100>

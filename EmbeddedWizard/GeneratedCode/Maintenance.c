@@ -179,34 +179,35 @@ XString MaintenanceMNT01_MaintenanceReset_LoadItemTitle( MaintenanceMNT01_Mainte
 void MaintenanceMNT01_MaintenanceReset_OnItemActivate( MaintenanceMNT01_MaintenanceReset _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  PopPOP04_Reset ResetDialog;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aMenuItem );
 
-  ResetDialog = EwNewObject( PopPOP04_Reset, 0 );
-  ResetDialog->SelectedMeterInfo = EnumMeterInfoTOTAL;
-
-  switch ( aItemNo )
+  if ( 0 < _this->NoOfSupportedItem )
   {
-    case 0 :
-      ResetDialog->SelectedMeterInfo = EnumMeterInfoMAINTENANCE_TRIP1;
-    break;
+    PopPOP04_Reset ResetDialog = EwNewObject( PopPOP04_Reset, 0 );
+    ResetDialog->SelectedMeterInfo = EnumMeterInfoTOTAL;
 
-    case 1 :
-      ResetDialog->SelectedMeterInfo = EnumMeterInfoMAINTENANCE_TRIP2;
-    break;
+    switch ( aItemNo )
+    {
+      case 0 :
+        ResetDialog->SelectedMeterInfo = EnumMeterInfoMAINTENANCE_TRIP1;
+      break;
 
-    case 2 :
-      ResetDialog->SelectedMeterInfo = EnumMeterInfoMAINTENANCE_TRIP3;
-    break;
+      case 1 :
+        ResetDialog->SelectedMeterInfo = EnumMeterInfoMAINTENANCE_TRIP2;
+      break;
 
-    default :; 
+      case 2 :
+        ResetDialog->SelectedMeterInfo = EnumMeterInfoMAINTENANCE_TRIP3;
+      break;
+
+      default :; 
+    }
+
+    if ( EnumMeterInfoTOTAL != ResetDialog->SelectedMeterInfo )
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ResetDialog ), 0, 0, 
+      0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
   }
-
-  if ( EnumMeterInfoTOTAL != ResetDialog->SelectedMeterInfo )
-    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)ResetDialog ), 0, 0, 0, 
-    0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Maintenance::MNT01_MaintenanceReset.LoadItemUnit()' */
@@ -243,25 +244,31 @@ XString MaintenanceMNT01_MaintenanceReset_LoadItemValue( MaintenanceMNT01_Mainte
   XString Value;
   DeviceInterfaceVehicleDataClass VehicleData = 0;
 
-  switch ( aItemNo )
+  if ( 0 < _this->NoOfSupportedItem )
+    switch ( aItemNo )
+    {
+      case 0 :
+        VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP1 );
+      break;
+
+      case 1 :
+        VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP2 );
+      break;
+
+      case 2 :
+        VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP3 );
+      break;
+
+      default : 
+        VehicleData->Valid = 0;
+    }
+  else
   {
-    case 0 :
-      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP1 );
-    break;
-
-    case 1 :
-      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP2 );
-    break;
-
-    case 2 :
-      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP3 );
-    break;
-
-    default : 
-      VehicleData->Valid = 0;
+    VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 0 );
+    VehicleData->Valid = 0;
   }
 
   if ( VehicleData->Valid )
@@ -297,8 +304,9 @@ void MaintenanceMNT01_MaintenanceReset_GetMileageSetting( MaintenanceMNT01_Maint
 void MaintenanceMNT01_MaintenanceReset_SetNoOfMenuItems( MaintenanceMNT01_MaintenanceReset _this )
 {
   XInt32 i;
-  XInt32 NoOfItems = 0;
   XEnum SettingItem;
+
+  _this->NoOfSupportedItem = 0;
 
   for ( i = 0; i < 4; i++ )
   {
@@ -311,8 +319,9 @@ void MaintenanceMNT01_MaintenanceReset_SetNoOfMenuItems( MaintenanceMNT01_Mainte
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionOIL_TRIP ))
         {
-          _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
-          NoOfItems++;
+          _this->SupportedSetting[ EwCheckIndex( _this->NoOfSupportedItem, 3 )] 
+          = SettingItem;
+          _this->NoOfSupportedItem++;
         }
       break;
 
@@ -321,8 +330,9 @@ void MaintenanceMNT01_MaintenanceReset_SetNoOfMenuItems( MaintenanceMNT01_Mainte
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionV_BELT_TRIP ))
         {
-          _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
-          NoOfItems++;
+          _this->SupportedSetting[ EwCheckIndex( _this->NoOfSupportedItem, 3 )] 
+          = SettingItem;
+          _this->NoOfSupportedItem++;
         }
       break;
 
@@ -331,8 +341,9 @@ void MaintenanceMNT01_MaintenanceReset_SetNoOfMenuItems( MaintenanceMNT01_Mainte
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionFREE_1 ))
         {
-          _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
-          NoOfItems++;
+          _this->SupportedSetting[ EwCheckIndex( _this->NoOfSupportedItem, 3 )] 
+          = SettingItem;
+          _this->NoOfSupportedItem++;
         }
       break;
 
@@ -341,24 +352,28 @@ void MaintenanceMNT01_MaintenanceReset_SetNoOfMenuItems( MaintenanceMNT01_Mainte
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
             EnumVehicleSupportedFunctionFREE_2 ))
         {
-          _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
-          NoOfItems++;
+          _this->SupportedSetting[ EwCheckIndex( _this->NoOfSupportedItem, 3 )] 
+          = SettingItem;
+          _this->NoOfSupportedItem++;
         }
       break;
 
-      default : 
-      {
-        _this->SupportedSetting[ EwCheckIndex( NoOfItems, 3 )] = SettingItem;
-        NoOfItems++;
-      }
+      default :; 
     }
 
-    if ( 3 <= NoOfItems )
+    if ( 3 <= _this->NoOfSupportedItem )
       goto _EXIT_LOOP_1;
   }
 
   _EXIT_LOOP_1:
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, NoOfItems );
+
+  if ( 0 == _this->NoOfSupportedItem )
+  {
+    _this->SupportedSetting[ EwCheckIndex( _this->NoOfSupportedItem, 3 )] = EnumMaintenanceResetMenuItemOIL;
+    MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 1 );
+  }
+  else
+    MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, _this->NoOfSupportedItem );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -407,7 +422,7 @@ EW_END_OF_CLASS_VARIANTS( MaintenanceMNT01_MaintenanceReset )
 /* Virtual Method Table (VMT) for the class : 'Maintenance::MNT01_MaintenanceReset' */
 EW_DEFINE_CLASS( MaintenanceMNT01_MaintenanceReset, MenuBaseMenuView, VehicleDataReceivedEventHandler, 
                  VehicleDataReceivedEventHandler, VehicleDataReceivedEventHandler, 
-                 VehicleDataReceivedEventHandler, MileageSetting, MileageSetting, 
+                 VehicleDataReceivedEventHandler, NoOfSupportedItem, NoOfSupportedItem, 
                  "Maintenance::MNT01_MaintenanceReset" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
