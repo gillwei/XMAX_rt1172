@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/05/12 17:05:14 */
+   Generated: 2021/05/20 15:42:27 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -60,6 +60,9 @@ extern const XStringRes StringsGEN_NO;
 
 /* User defined constant: 'Strings::GEN_LOW' */
 extern const XStringRes StringsGEN_LOW;
+
+/* User defined constant: 'Strings::GEN_LOW_ABBREVIATION' */
+extern const XStringRes StringsGEN_LOW_ABBREVIATION;
 
 /* User defined constant: 'Strings::GEN_MIDDLE' */
 extern const XStringRes StringsGEN_MIDDLE;

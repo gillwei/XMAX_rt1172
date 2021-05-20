@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/05/12 17:05:14
+// Generated: 2021/05/20 15:42:27
 
 $output false
 const string ARGUMENT_STR =
@@ -57,6 +57,12 @@ $output false
 const string GEN_LOW =
 (
   Default = "Low";
+);
+
+$output false
+const string GEN_LOW_ABBREVIATION =
+(
+  Default = "Lo";
 );
 
 $output false

@@ -6,6 +6,7 @@ GEN_CANCEL,Cancel,キャンセル,Annuler,Cancelar,Annulla,Abbrechen,取消,取�
 GEN_YES,Yes,,,,,,,
 GEN_NO,No,,,,,,,
 GEN_LOW,Low,,,,,,,
+GEN_LOW_ABBREVIATION,Lo,,,,,,,
 GEN_MIDDLE,Mid,,,,,,,
 GEN_HIGH,High,,,,,,,
 GEN_HOUR_ABBREVIATION,h,,,,,,,

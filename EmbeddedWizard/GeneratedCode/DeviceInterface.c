@@ -2957,15 +2957,20 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetRangeStr( DeviceInterfaceVehicleD
 
   if ( VehicleData->Valid )
   {
-    if ( EnumMileageSettingItemMILE == DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( 
-        _this ))
-      VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
+    if ( 0 == VehicleData->DataUInt32 )
+      _this->RangeStr = EwShareString( EwLoadString( &StringsGEN_LOW_ABBREVIATION ));
+    else
+    {
+      if ( EnumMileageSettingItemMILE == DeviceInterfaceVehicleDeviceClass_OnGetMileageUnit( 
+          _this ))
+        VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
 
-    VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
-    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-    VehicleData->DataUInt32, 0, 999 );
-    _this->RangeStr = EwShareString( EwNewStringUInt( VehicleData->DataUInt32, 0, 
-    1 ));
+      VehicleData->DataUInt32 = DeviceInterfaceVehicleDeviceClass_ClampDataUInt32( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      VehicleData->DataUInt32, 0, 999 );
+      _this->RangeStr = EwShareString( EwNewStringUInt( VehicleData->DataUInt32, 
+      0, 1 ));
+    }
   }
   else
     _this->RangeStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));

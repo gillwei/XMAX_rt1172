@@ -2715,13 +2715,20 @@ class VehicleDeviceClass : Templates::DeviceClass
     var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.RANGE_DISTANCE );
     if( VehicleData.Valid )
     {
-      // convert unit from km to mile
-      if( Enum::MileageSettingItem.MILE == MileageUnit )
+      if( 0 == VehicleData.DataUInt32 )
       {
-        VehicleData.DataUInt32 *= Unit::KM_TO_MILE_SCALE;
+        pure RangeStr = Strings::GEN_LOW_ABBREVIATION;
       }
-      VehicleData.DataUInt32 = DeviceInterface::VehicleDevice.ClampDataUInt32( VehicleData.DataUInt32, 0, Settings::MAX_RANGE );
-      pure RangeStr = string( VehicleData.DataUInt32, 0, 1 );
+      else
+      {
+        // convert unit from km to mile
+        if( Enum::MileageSettingItem.MILE == MileageUnit )
+        {
+          VehicleData.DataUInt32 *= Unit::KM_TO_MILE_SCALE;
+        }
+        VehicleData.DataUInt32 = DeviceInterface::VehicleDevice.ClampDataUInt32( VehicleData.DataUInt32, 0, Settings::MAX_RANGE );
+        pure RangeStr = string( VehicleData.DataUInt32, 0, 1 );
+      }
     }
     else
     {
