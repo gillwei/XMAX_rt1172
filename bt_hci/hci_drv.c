@@ -1175,8 +1175,15 @@ void HCI_wait_for_resp_start
     hci_resp_type_t input_resp_event
     )
 {
-current_resp_event = input_resp_event;
-xTimerStart( xRespTimer, 0 );
+if( RESPONSE_NO_EVENT == current_resp_event )
+    {
+    current_resp_event = input_resp_event;
+    xTimerStart( xRespTimer, 0 );
+    }
+else
+    {
+    PRINTF( "%s ERROR: Already on response event\r\n", __FUNCTION__ );
+    }
 }
 
 /*********************************************************************

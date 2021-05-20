@@ -110,6 +110,8 @@ extern "C"{
 #define QRCODE_STATUS_FUSED3_OK     ( 0x04 )
 #define QRCODE_STATUS_SUCCESS       ( QRCODE_STATUS_FUSED1_OK | QRCODE_STATUS_FUSED2_OK | QRCODE_STATUS_FUSED3_OK )
 
+#define AUTH_CHIP_RESULT_FAIL        0 // For IOP_MFI_START_COPROCESSOR_TEST test
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -984,8 +986,12 @@ switch( inst_id )
         if( false == BT_UPDATE_get_BT_update_status() )
             {
             HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_GET_AUTH_CHIP_INFO, NULL, 0 );
+            HCI_wait_for_resp_start( RESPONSE_MFI_CHIP_VER );
             }
-        HCI_wait_for_resp_start( RESPONSE_MFI_CHIP_VER );
+        else
+            {
+            receive_auth_chip_ver( AUTH_CHIP_RESULT_FAIL );
+            }
         IOPDone = true;
         }
         break;
