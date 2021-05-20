@@ -42,4 +42,7 @@ const XColor ColorWHITE = { 0xFF, 0xFF, 0xFF, 0xFF };
 /* User defined constant: 'Color::BLACK' */
 const XColor ColorBLACK = { 0x00, 0x00, 0x00, 0xFF };
 
+/* User defined constant: 'Color::GRAY_FOR_DISABLED' */
+const XColor ColorGRAY_FOR_DISABLED = { 0x64, 0x64, 0x64, 0xFF };
+
 /* Embedded Wizard */

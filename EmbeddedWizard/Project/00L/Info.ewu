@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <10,10,280,50>
 $output false
@@ -192,7 +192,7 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
     return Title;
   }
 
-  $rect <510,270,710,310>
+  $rect <510,320,710,360>
   inherited method OnItemActivate()
   {
     aMenuItem; // suppress warning
@@ -217,6 +217,26 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
       checked = true;
     }
     return checked;
+  }
+
+  $rect <510,270,710,310>
+  inherited method LoadItemEnabled()
+  {
+    var bool ItemEnabled = true;
+    if( Enum::MeterInfo.TRIP_F == SupportedSetting[aItemNo] )
+    {
+      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.LOW_FUEL_WARNING );
+      if( VehicleData.Valid )
+      {
+        // enabled TRIP-F only when the low fuel warning is on.
+        // (disable TRIP-F when the low fuel warning is off.)
+        if( false == (bool)VehicleData.DataUInt32 )
+        {
+          ItemEnabled = false;
+        }
+      }
+    }
+    return ItemEnabled;
   }
 
   $rect <20,20,160,60>
@@ -255,7 +275,19 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
       case Enum::MeterInfo.ODO: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.ODOMETER_VALUE );
       case Enum::MeterInfo.TRIP1: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TRIP1_VALUE );
       case Enum::MeterInfo.TRIP2: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TRIP2_VALUE );
-      case Enum::MeterInfo.TRIP_F: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.F_TRIP );
+      case Enum::MeterInfo.TRIP_F:
+      {
+        // display value of TRIP-F when low fuel warning is on, otherwise, display "---"
+        if( DeviceInterface::VehicleDevice.LowFuelWarning )
+        {
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.F_TRIP );
+        }
+        else
+        {
+          VehicleData = new DeviceInterface::VehicleDataClass;
+          VehicleData.Valid = false;
+        }
+      }
       default: VehicleData.Valid = false;
     }
 
@@ -290,7 +322,7 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
     return Value;
   }
 
-  $rect <510,320,760,360>
+  $rect <510,370,760,410>
   inherited method OnItemLongEnterKeyActivate()
   {
     aMenuItem; // suppress warning
@@ -305,7 +337,7 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
     }
   }
 
-  $rect <510,390,730,430>
+  $rect <220,340,440,380>
   object Core::Timer CheckMarkUpdateTimer
   {
     preset OnTrigger = OnCheckMarkUpdateSlot;
@@ -313,7 +345,7 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
     preset Begin = Menu::DELAY_TIME_CHECKMARK;
   }
 
-  $rect <510,440,730,480>
+  $rect <220,390,440,430>
   slot OnCheckMarkUpdateSlot
   {
     DismissThisDialog();
@@ -407,10 +439,10 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
   $rect <0,540,200,580>
   var Enum::MeterInfo SelectedItem = Enum::MeterInfo.TOTAL;
 
-  $rect <510,490,730,530>
+  $rect <220,440,440,480>
   var bool IsWaitingForResponse;
 
-  $rect <510,540,790,580>
+  $rect <220,490,500,530>
   object Core::SystemEventHandler VehicleDataReceivedEventHandler
   {
     preset OnEvent = OnVehicleDataReceivedSlot;
@@ -419,17 +451,33 @@ class INF26_ODO_TRIP_SettingMenu : Menu::BaseMenuView
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <510,590,770,630>
+  $rect <220,540,480,580>
   slot OnVehicleDataReceivedSlot
   {
     var DeviceInterface::VehicleDataClass VehicleData = (DeviceInterface::VehicleDataClass)VehicleDataReceivedEventHandler.Context;
-    if( null != VehicleData &&
-        Enum::VehicleRxType.ODO_TRIP_DISPLAY == VehicleData.RxType &&
-        IsWaitingForResponse )
+    if( null != VehicleData )
     {
-      GetSelectedOdoTrip();
-      Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );
-      CheckMarkUpdateTimer.Enabled = true;
+      switch( VehicleData.RxType )
+      {
+        case Enum::VehicleRxType.ODO_TRIP_DISPLAY:
+        {
+          if( IsWaitingForResponse )
+          {
+            GetSelectedOdoTrip();
+            Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );
+            CheckMarkUpdateTimer.Enabled = true;
+          }
+        }
+        case Enum::VehicleRxType.ODOMETER_VALUE,
+             Enum::VehicleRxType.TRIP1_VALUE,
+             Enum::VehicleRxType.TRIP2_VALUE,
+             Enum::VehicleRxType.F_TRIP,
+             Enum::VehicleRxType.LOW_FUEL_WARNING:
+        {
+          Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );
+        }
+        default:;
+      }
     }
   }
 

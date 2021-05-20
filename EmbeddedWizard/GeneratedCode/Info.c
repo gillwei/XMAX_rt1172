@@ -503,6 +503,25 @@ XBool InfoINF26_ODO_TRIP_SettingMenu_LoadItemChecked( InfoINF26_ODO_TRIP_Setting
   return checked;
 }
 
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.LoadItemEnabled()' */
+XBool InfoINF26_ODO_TRIP_SettingMenu_LoadItemEnabled( InfoINF26_ODO_TRIP_SettingMenu _this, 
+  XInt32 aItemNo )
+{
+  XBool ItemEnabled = 1;
+
+  if ( EnumMeterInfoTRIP_F == _this->SupportedSetting[ EwCheckIndex( aItemNo, 4 )])
+  {
+    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      EnumVehicleRxTypeLOW_FUEL_WARNING );
+
+    if ( VehicleData->Valid && ( 0 == !!VehicleData->DataUInt32 ))
+      ItemEnabled = 0;
+  }
+
+  return ItemEnabled;
+}
+
 /* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.LoadItemUnit()' */
 XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemUnit( InfoINF26_ODO_TRIP_SettingMenu _this, 
   XInt32 aItemNo )
@@ -556,8 +575,15 @@ XString InfoINF26_ODO_TRIP_SettingMenu_LoadItemValue( InfoINF26_ODO_TRIP_Setting
     break;
 
     case EnumMeterInfoTRIP_F :
-      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeF_TRIP );
+      if ( DeviceInterfaceVehicleDeviceClass_OnGetLowFuelWarning( EwGetAutoObject( 
+          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+        VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeF_TRIP );
+      else
+      {
+        VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 0 );
+        VehicleData->Valid = 0;
+      }
     break;
 
     default : 
@@ -752,14 +778,30 @@ void InfoINF26_ODO_TRIP_SettingMenu_OnVehicleDataReceivedSlot( InfoINF26_ODO_TRI
 
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
-  if ((( VehicleData != 0 ) && ( EnumVehicleRxTypeODO_TRIP_DISPLAY == VehicleData->RxType )) 
-      && _this->IsWaitingForResponse )
-  {
-    InfoINF26_ODO_TRIP_SettingMenu_GetSelectedOdoTrip( _this );
-    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
-    - 1 );
-    CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
-  }
+  if ( VehicleData != 0 )
+    switch ( VehicleData->RxType )
+    {
+      case EnumVehicleRxTypeODO_TRIP_DISPLAY :
+        if ( _this->IsWaitingForResponse )
+        {
+          InfoINF26_ODO_TRIP_SettingMenu_GetSelectedOdoTrip( _this );
+          MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
+          - 1 );
+          CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
+        }
+      break;
+
+      case EnumVehicleRxTypeODOMETER_VALUE :
+      case EnumVehicleRxTypeTRIP1_VALUE :
+      case EnumVehicleRxTypeTRIP2_VALUE :
+      case EnumVehicleRxTypeF_TRIP :
+      case EnumVehicleRxTypeLOW_FUEL_WARNING :
+        MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
+        - 1 );
+      break;
+
+      default :; 
+    }
 }
 
 /* Variants derived from the class : 'Info::INF26_ODO_TRIP_SettingMenu' */
@@ -816,7 +858,7 @@ EW_DEFINE_CLASS( InfoINF26_ODO_TRIP_SettingMenu, MenuBaseMenuView, CheckMarkUpda
   InfoINF26_ODO_TRIP_SettingMenu_LoadItemTitle,
   InfoINF26_ODO_TRIP_SettingMenu_OnItemActivate,
   InfoINF26_ODO_TRIP_SettingMenu_LoadItemChecked,
-  MenuBaseMenuView_LoadItemEnabled,
+  InfoINF26_ODO_TRIP_SettingMenu_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
   MenuBaseMenuView_LoadItemMessage,
   MenuBaseMenuView_LoadItemReceivedTime,

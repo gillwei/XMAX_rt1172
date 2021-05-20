@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <10,10,210,50>
 $output false
@@ -19,3 +19,7 @@ const color WHITE = #FFFFFFFF;
 $rect <10,210,210,250>
 $output false
 const color BLACK = #000000FF;
+
+$rect <10,260,210,300>
+$output false
+const color GRAY_FOR_DISABLED = #646464FF;

@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <230,10,430,50>
 $output false
@@ -6,6 +6,21 @@ class ItemBase : Components::BaseComponent
 {
   $rect <0,105,190,145>
   inherited property Bounds = <0,0,480,74>;
+
+  $rect <570,220,760,260>
+  inherited onset Enabled
+  {
+    super( value );
+
+    if( value )
+    {
+      Title.Color = Color::WHITE;
+    }
+    else
+    {
+      Title.Color = Color::GRAY_FOR_DISABLED;
+    }
+  }
 
   $rect <0,150,190,190>
   inherited method UpdateLayout()
@@ -43,25 +58,6 @@ class ItemBase : Components::BaseComponent
     else
     {
       HighlightRect.Visible = false;
-    }
-  }
-
-  $rect <570,220,760,260>
-  inherited onset Enabled
-  {
-    if( pure Enabled != value )
-    {
-      pure Enabled = value;
-      super( value );
-
-      if( value )
-      {
-        Title.Color = #FFFFFFFF;
-      }
-      else
-      {
-        Title.Color = #646464FF;
-      }
     }
   }
 
@@ -392,7 +388,7 @@ class VerticalMenu : Components::BaseComponent
       {
         Item.Height = ItemHeight;
         Item.ItemClass = OwnerMenu.LoadItemClass( ItemNo );
-        Item.Title = OwnerMenu.LoadItemTitle( ItemNo );
+        Item.Title = OwnerMenu.LoadItemTitle( ItemNo );
         Item.Enabled = OwnerMenu.LoadItemEnabled( ItemNo );
         Item.OnActivate = OnItemActivateSlot;
         Item.OnLongEnterKeyActivate = OnLongEnterKeyActivatedSlot;
@@ -428,7 +424,7 @@ class VerticalMenu : Components::BaseComponent
       }
       else if( Menu::ItemTimeHourMinute == Item.ItemClass )
       {
-        Item.Hour = OwnerMenu.LoadItemHour( ItemNo );
+        Item.Hour = OwnerMenu.LoadItemHour( ItemNo );
         Item.Minute = OwnerMenu.LoadItemMinute( ItemNo );
       }
       else
@@ -751,6 +747,21 @@ $rect <230,60,430,100>
 $output false
 class ItemCheckbox : Menu::ItemBase
 {
+  $rect <0,180,190,220>
+  inherited onset Enabled
+  {
+    super( value );
+
+    if( value )
+    {
+      CheckboxIcon.Bitmap = Resource::CheckboxNormal;
+    }
+    else
+    {
+      CheckboxIcon.Bitmap = Resource::CheckboxDisable;
+    }
+  }
+
   $rect <0,230,190,270>
   inherited method UpdateLayout()
   {
@@ -764,23 +775,6 @@ class ItemCheckbox : Menu::ItemBase
         CheckboxIcon.Bounds = <371,2,421,52>;
       }
       default:;
-    }
-  }
-
-  $rect <0,180,190,220>
-  inherited onset Enabled
-  {
-    if( pure Enabled != value )
-    {
-      super( value );
-      if( value )
-      {
-        CheckboxIcon.Bitmap = Resource::CheckboxNormal;
-      }
-      else
-      {
-        CheckboxIcon.Bitmap = Resource::CheckboxDisable;
-      }
     }
   }
 
@@ -1228,7 +1222,7 @@ class ItemWrapper : Core::Group
   $rect <570,760,770,800>
   onset Hour
   {
-    if( pure Value != value )
+    if( pure Value != value )
     {
       pure Value = value;
 
@@ -1460,10 +1454,7 @@ class BaseMenuView : Components::BaseMainBG
   $rect <550,160,750,200>
   method bool LoadItemEnabled( arg int32 aItemNo )
   {
-    if( aItemNo >= 0 )
-    {
-      // empty body to suppress warning
-    }
+    aItemNo; // suppress warning
     return true;
   }
 
@@ -2268,6 +2259,25 @@ $rect <230,360,450,400>
 $output false
 class ItemValueUnitCheckmark : Menu::ItemCheckMark
 {
+  $rect <10,180,200,220>
+  inherited onset Enabled
+  {
+    super( value );
+
+    if( value )
+    {
+      ValueText.Color = Color::WHITE;
+      UnitText.Color = Color::WHITE;
+      CheckMark.FrameNumber = 1;
+    }
+    else
+    {
+      ValueText.Color = Color::GRAY_FOR_DISABLED;
+      UnitText.Color = Color::GRAY_FOR_DISABLED;
+      CheckMark.FrameNumber = 0;
+    }
+  }
+
   $rect <20,20,160,60>
   object Views::Text ValueText
   {
@@ -2317,6 +2327,23 @@ $rect <230,260,430,300>
 $output false
 class ItemValueUnit : Menu::ItemBase
 {
+  $rect <8,202,198,242>
+  inherited onset Enabled
+  {
+    super( value );
+
+    if( value )
+    {
+      ValueText.Color = Color::WHITE;
+      UnitText.Color = Color::WHITE;
+    }
+    else
+    {
+      ValueText.Color = Color::GRAY_FOR_DISABLED;
+      UnitText.Color = Color::GRAY_FOR_DISABLED;
+    }
+  }
+
   $rect <20,20,160,60>
   object Views::Text ValueText
   {

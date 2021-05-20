@@ -181,7 +181,8 @@ EW_DEFINE_METHODS( SettingsSET45_TripMileageReset, MenuBaseMenuView )
   EW_METHOD( OnItemActivate,    void )( SettingsSET45_TripMileageReset _this, XInt32 
     aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( SettingsSET45_TripMileageReset _this, XInt32 
+    aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -215,6 +216,10 @@ XString SettingsSET45_TripMileageReset_LoadItemTitle( SettingsSET45_TripMileageR
 /* 'C' function for method : 'Settings::SET45_TripMileageReset.OnItemActivate()' */
 void SettingsSET45_TripMileageReset_OnItemActivate( SettingsSET45_TripMileageReset _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
+
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemEnabled()' */
+XBool SettingsSET45_TripMileageReset_LoadItemEnabled( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo );
 
 /* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemUnit()' */
 XString SettingsSET45_TripMileageReset_LoadItemUnit( SettingsSET45_TripMileageReset _this, 

@@ -3096,6 +3096,19 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetCruiseSpeedStr( DeviceInterfaceVe
   return _this->CruiseSpeedStr;
 }
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetLowFuelWarning()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetLowFuelWarning( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeLOW_FUEL_WARNING );
+
+  if ( VehicleData->Valid )
+    _this->LowFuelWarning = !!VehicleData->DataUInt32;
+
+  return _this->LowFuelWarning;
+}
+
 /* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )

@@ -161,6 +161,9 @@ EW_DEFINE_METHODS( MenuItemCheckbox, MenuItemBase )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuItemCheckbox )
 
+/* 'C' function for method : 'Menu::ItemCheckbox.OnSetEnabled()' */
+void MenuItemCheckbox_OnSetEnabled( MenuItemCheckbox _this, XBool value );
+
 /* The method UpdateLayout() is invoked automatically after the size of the component 
    has been changed. This method can be overridden and filled with logic to perform 
    a sophisticated arrangement calculation for one or more enclosed views. In this 
@@ -169,9 +172,6 @@ EW_END_OF_METHODS( MenuItemCheckbox )
    property. UpdateLayout() gives the derived components a chance to extend this 
    automatism by a user defined algorithm. */
 void MenuItemCheckbox_UpdateLayout( MenuItemCheckbox _this, XPoint aSize );
-
-/* 'C' function for method : 'Menu::ItemCheckbox.OnSetEnabled()' */
-void MenuItemCheckbox_OnSetEnabled( MenuItemCheckbox _this, XBool value );
 
 /* 'C' function for method : 'Menu::ItemCheckbox.OnShortEnterKeyActivated()' */
 void MenuItemCheckbox_OnShortEnterKeyActivated( MenuItemCheckbox _this );

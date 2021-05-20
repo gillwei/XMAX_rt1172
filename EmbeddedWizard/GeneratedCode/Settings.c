@@ -5258,6 +5258,25 @@ void SettingsSET45_TripMileageReset_OnItemActivate( SettingsSET45_TripMileageRes
   0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
+/* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemEnabled()' */
+XBool SettingsSET45_TripMileageReset_LoadItemEnabled( SettingsSET45_TripMileageReset _this, 
+  XInt32 aItemNo )
+{
+  XBool ItemEnabled = 1;
+
+  if ( EnumMeterInfoTRIP_F == _this->SupportedSetting[ EwCheckIndex( aItemNo, 3 )])
+  {
+    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      EnumVehicleRxTypeLOW_FUEL_WARNING );
+
+    if ( VehicleData->Valid && ( 0 == !!VehicleData->DataUInt32 ))
+      ItemEnabled = 0;
+  }
+
+  return ItemEnabled;
+}
+
 /* 'C' function for method : 'Settings::SET45_TripMileageReset.LoadItemUnit()' */
 XString SettingsSET45_TripMileageReset_LoadItemUnit( SettingsSET45_TripMileageReset _this, 
   XInt32 aItemNo )
@@ -5305,8 +5324,15 @@ XString SettingsSET45_TripMileageReset_LoadItemValue( SettingsSET45_TripMileageR
     break;
 
     case EnumMeterInfoTRIP_F :
-      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeF_TRIP );
+      if ( DeviceInterfaceVehicleDeviceClass_OnGetLowFuelWarning( EwGetAutoObject( 
+          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+        VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeF_TRIP );
+      else
+      {
+        VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 0 );
+        VehicleData->Valid = 0;
+      }
     break;
 
     default : 
@@ -5434,6 +5460,7 @@ void SettingsSET45_TripMileageReset_OnVehicleDataReceivedSlot( SettingsSET45_Tri
       case EnumVehicleRxTypeTRIP1_VALUE :
       case EnumVehicleRxTypeTRIP2_VALUE :
       case EnumVehicleRxTypeF_TRIP :
+      case EnumVehicleRxTypeLOW_FUEL_WARNING :
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
         - 1 );
       break;
@@ -5496,7 +5523,7 @@ EW_DEFINE_CLASS( SettingsSET45_TripMileageReset, MenuBaseMenuView, VehicleDataRe
   SettingsSET45_TripMileageReset_LoadItemTitle,
   SettingsSET45_TripMileageReset_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
-  MenuBaseMenuView_LoadItemEnabled,
+  SettingsSET45_TripMileageReset_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
   MenuBaseMenuView_LoadItemMessage,
   MenuBaseMenuView_LoadItemReceivedTime,

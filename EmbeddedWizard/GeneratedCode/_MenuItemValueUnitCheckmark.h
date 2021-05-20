@@ -126,7 +126,8 @@ EW_DEFINE_METHODS( MenuItemValueUnitCheckmark, MenuItemCheckMark )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
-  EW_METHOD( OnSetEnabled,      void )( MenuItemBase _this, XBool value )
+  EW_METHOD( OnSetEnabled,      void )( MenuItemValueUnitCheckmark _this, XBool 
+    value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
@@ -161,6 +162,10 @@ EW_DEFINE_METHODS( MenuItemValueUnitCheckmark, MenuItemCheckMark )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuItemValueUnitCheckmark )
+
+/* 'C' function for method : 'Menu::ItemValueUnitCheckmark.OnSetEnabled()' */
+void MenuItemValueUnitCheckmark_OnSetEnabled( MenuItemValueUnitCheckmark _this, 
+  XBool value );
 
 /* 'C' function for method : 'Menu::ItemValueUnitCheckmark.OnSetValue()' */
 void MenuItemValueUnitCheckmark_OnSetValue( MenuItemValueUnitCheckmark _this, XString 

@@ -2858,6 +2858,21 @@ class VehicleDeviceClass : Templates::DeviceClass
 
     return pure CruiseSpeedStr;
   }
+
+  $rect <610,800,820,840>
+  property bool LowFuelWarning;
+
+  $rect <610,850,820,890>
+  onget LowFuelWarning
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.LOW_FUEL_WARNING );
+    if( VehicleData.Valid )
+    {
+      pure LowFuelWarning = (bool)VehicleData.DataUInt32;
+    }
+
+    return pure LowFuelWarning;
+  }
 }
 
 $rect <500,70,700,110>

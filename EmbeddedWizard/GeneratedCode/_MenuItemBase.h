@@ -166,6 +166,9 @@ EW_DEFINE_METHODS( MenuItemBase, ComponentsBaseComponent )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuItemBase )
 
+/* 'C' function for method : 'Menu::ItemBase.OnSetEnabled()' */
+void MenuItemBase_OnSetEnabled( MenuItemBase _this, XBool value );
+
 /* The method UpdateLayout() is invoked automatically after the size of the component 
    has been changed. This method can be overridden and filled with logic to perform 
    a sophisticated arrangement calculation for one or more enclosed views. In this 
@@ -190,9 +193,6 @@ void MenuItemBase_UpdateLayout( MenuItemBase _this, XPoint aSize );
    Usually, this method will be invoked automatically by the framework. Optionally 
    you can request its invocation by using the method @InvalidateViewState(). */
 void MenuItemBase_UpdateViewState( MenuItemBase _this, XSet aState );
-
-/* 'C' function for method : 'Menu::ItemBase.OnSetEnabled()' */
-void MenuItemBase_OnSetEnabled( MenuItemBase _this, XBool value );
 
 /* 'C' function for method : 'Menu::ItemBase.OnShortEnterKeyActivated()' */
 void MenuItemBase_OnShortEnterKeyActivated( MenuItemBase _this );

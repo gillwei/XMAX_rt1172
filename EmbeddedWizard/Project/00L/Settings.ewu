@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <320,380,520,420>
 inline Inline
@@ -2515,6 +2515,26 @@ class SET45_TripMileageReset : Menu::BaseMenuView
     PresentDialog( ResetDialog, null, null, null, null, null, null, null, null, false );
   }
 
+  $rect <510,270,710,310>
+  inherited method LoadItemEnabled()
+  {
+    var bool ItemEnabled = true;
+    if( Enum::MeterInfo.TRIP_F == SupportedSetting[aItemNo] )
+    {
+      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.LOW_FUEL_WARNING );
+      if( VehicleData.Valid )
+      {
+        // enabled TRIP-F only when the low fuel warning is on.
+        // (disable TRIP-F when the low fuel warning is off.)
+        if( false == (bool)VehicleData.DataUInt32 )
+        {
+          ItemEnabled = false;
+        }
+      }
+    }
+    return ItemEnabled;
+  }
+
   $rect <20,20,160,60>
   inherited object Menu
   {
@@ -2547,7 +2567,19 @@ class SET45_TripMileageReset : Menu::BaseMenuView
     {
       case Enum::MeterInfo.TRIP1: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TRIP1_VALUE );
       case Enum::MeterInfo.TRIP2: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TRIP2_VALUE );
-      case Enum::MeterInfo.TRIP_F: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.F_TRIP );
+      case Enum::MeterInfo.TRIP_F:
+      {
+        // display value of TRIP-F when low fuel warning is on, otherwise, display "---"
+        if( DeviceInterface::VehicleDevice.LowFuelWarning )
+        {
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.F_TRIP );
+        }
+        else
+        {
+          VehicleData = new DeviceInterface::VehicleDataClass;
+          VehicleData.Valid = false;
+        }
+      }
       default: VehicleData.Valid = false;
     }
 
@@ -2650,7 +2682,7 @@ class SET45_TripMileageReset : Menu::BaseMenuView
     Default[2] = Enum::MeterInfo.TRIP_F;
   );
 
-  $rect <510,290,790,330>
+  $rect <510,340,790,380>
   object Core::SystemEventHandler VehicleDataReceivedEventHandler
   {
     preset OnEvent = OnVehicleDataReceivedSlot;
@@ -2659,7 +2691,7 @@ class SET45_TripMileageReset : Menu::BaseMenuView
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <510,340,750,380>
+  $rect <510,390,750,430>
   slot OnVehicleDataReceivedSlot
   {
     var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
@@ -2669,7 +2701,8 @@ class SET45_TripMileageReset : Menu::BaseMenuView
       {
         case Enum::VehicleRxType.TRIP1_VALUE,
              Enum::VehicleRxType.TRIP2_VALUE,
-             Enum::VehicleRxType.F_TRIP:
+             Enum::VehicleRxType.F_TRIP,
+             Enum::VehicleRxType.LOW_FUEL_WARNING:
         {
           Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );
         }

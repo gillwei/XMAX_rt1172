@@ -185,7 +185,8 @@ EW_DEFINE_METHODS( InfoINF26_ODO_TRIP_SettingMenu, MenuBaseMenuView )
     aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( InfoINF26_ODO_TRIP_SettingMenu _this, XInt32 
     aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( InfoINF26_ODO_TRIP_SettingMenu _this, XInt32 
+    aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -222,6 +223,10 @@ void InfoINF26_ODO_TRIP_SettingMenu_OnItemActivate( InfoINF26_ODO_TRIP_SettingMe
 
 /* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.LoadItemChecked()' */
 XBool InfoINF26_ODO_TRIP_SettingMenu_LoadItemChecked( InfoINF26_ODO_TRIP_SettingMenu _this, 
+  XInt32 aItemNo );
+
+/* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.LoadItemEnabled()' */
+XBool InfoINF26_ODO_TRIP_SettingMenu_LoadItemEnabled( InfoINF26_ODO_TRIP_SettingMenu _this, 
   XInt32 aItemNo );
 
 /* 'C' function for method : 'Info::INF26_ODO_TRIP_SettingMenu.LoadItemUnit()' */

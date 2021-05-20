@@ -126,7 +126,7 @@ EW_DEFINE_METHODS( MenuItemValueUnit, MenuItemBase )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
-  EW_METHOD( OnSetEnabled,      void )( MenuItemBase _this, XBool value )
+  EW_METHOD( OnSetEnabled,      void )( MenuItemValueUnit _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
@@ -161,6 +161,9 @@ EW_DEFINE_METHODS( MenuItemValueUnit, MenuItemBase )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuItemValueUnit )
+
+/* 'C' function for method : 'Menu::ItemValueUnit.OnSetEnabled()' */
+void MenuItemValueUnit_OnSetEnabled( MenuItemValueUnit _this, XBool value );
 
 /* 'C' function for method : 'Menu::ItemValueUnit.OnSetValue()' */
 void MenuItemValueUnit_OnSetValue( MenuItemValueUnit _this, XString value );

@@ -83,6 +83,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceVehicleDeviceClass, TemplatesDeviceClass )
   EW_VARIABLE( CurrentFuelSetting, XEnum )
   EW_VARIABLE( CurrentMileageSetting, XEnum )
   EW_VARIABLE( CurrentMeterDisplay, XEnum )
+  EW_PROPERTY( LowFuelWarning,  XBool )
   EW_PROPERTY( DDModeActivated, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceVehicleDeviceClass )
 
@@ -190,6 +191,9 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetAirTemperatureStr( DeviceInterfac
 
 /* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetCruiseSpeedStr()' */
 XString DeviceInterfaceVehicleDeviceClass_OnGetCruiseSpeedStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetLowFuelWarning()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetLowFuelWarning( DeviceInterfaceVehicleDeviceClass _this );
 
 #ifdef __cplusplus
   }

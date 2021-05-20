@@ -428,6 +428,7 @@ switch( signal_id )
         break;
     case IL_CAN0_VEHICLE_INFO_4_LOW_FUEL_WRN_RXSIG_HANDLE:
         rx_vehicle_info.low_fuel_warning = (bool)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeLOW_FUEL_WARNING );
         break;
     case IL_CAN0_VEHICLE_INFO_4_FUEL_RSV_RXSIG_HANDLE:
         rx_vehicle_info.fuel_reserve = (bool)data;

@@ -57,6 +57,9 @@ extern const XColor ColorWHITE;
 /* User defined constant: 'Color::BLACK' */
 extern const XColor ColorBLACK;
 
+/* User defined constant: 'Color::GRAY_FOR_DISABLED' */
+extern const XColor ColorGRAY_FOR_DISABLED;
+
 #ifdef __cplusplus
   }
 #endif
