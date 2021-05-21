@@ -445,10 +445,6 @@ if( l_resp_type == MID_MSG_NRES_NACK )
         *l_node_status_p = MID_MSG_STAT_WAIT_RES_LONG;
          l_svc_id        = l_neg_resp_svc_id;
 
-#if( DEBUG_RX_CAN_SUPPORT )
-        PRINTF("Neg resp %x %x!\r\n", l_can_id, l_svc_id );
-#endif
-
         //TBD nodity upper layer (resending is in the mid_task)
         }
     else if( l_rs == MID_MSG_NRES_RS_NOT_SUPP )
@@ -464,11 +460,15 @@ if( l_resp_type == MID_MSG_NRES_NACK )
              l_svc_id        = l_neg_resp_svc_id;
             }
 
-#if( DEBUG_RX_CAN_SUPPORT )
-        PRINTF("Not supp %x %x!\r\n", l_can_id, l_svc_id );
-#endif
-
         //TBD notity upper layer to handle no supported service ID
+        }
+
+    /*------------------------------------------------------
+    Handle reprogram Negative response
+    ------------------------------------------------------*/
+    if( l_can_id == RX9_RES_RPRGRM_INFO_CAN0_ID )
+        {
+        VI_rx_reprogram_info_response( l_resp_type, l_svc_id, l_msg_len,l_svc_data_p );
         }
     }
 else
@@ -504,7 +504,7 @@ else
     ------------------------------------------------------*/
     if( l_can_id == RX9_RES_RPRGRM_INFO_CAN0_ID )
         {
-        VI_rx_reprogram_info_response( l_svc_id, l_msg_len,l_svc_data_p );
+        VI_rx_reprogram_info_response( l_resp_type, l_svc_id, l_msg_len,l_svc_data_p );
         }
 
     /*------------------------------------------------------

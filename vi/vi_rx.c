@@ -1392,16 +1392,37 @@ set_supported_function( supported_functions, SUPPORTED_FUNCTION_DATA_SOURCE_CAN 
 *********************************************************************/
 void VI_rx_reprogram_info_response
     (
+    const uint8_t  svc_type,
     const uint8_t  svc_id,
     const uint8_t  svc_data_size,
     const uint8_t* svc_data_p
     )
 {
-switch( svc_id )
+if( svc_type == MID_MSG_NRES_NACK )
     {
-    default:
-        PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id);
-        break;
+    switch( svc_id )
+        {
+        case MID_MSG_NRES_RS_NOT_SUPP:
+
+            break;
+
+        case MID_MSG_NRES_RS_WAIT_REQ:
+            //Nothing to do ( Middle layer handles it )
+            break;
+
+        default:
+            PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id);
+            break;
+        }
+    }
+else
+    {
+    switch( svc_id )
+        {
+        default:
+            PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id);
+            break;
+        }
     }
 }
 
