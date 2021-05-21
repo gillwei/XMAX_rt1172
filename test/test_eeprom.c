@@ -35,6 +35,7 @@
 #define TEST_EEPM_DATA_MODE                ( 5 )
 #define TEST_EEPM_DATA_SUP_FUNC            ( 6 )
 #define TEST_EEPM_DATA_CLK_AUTO_ADJUSTMENT ( 7 )
+#define TEST_EEPM_DATA_FUEL_CONSUMPTION    ( 8 )
 
 #define TEST_EEPM_DATA_ID                  ( TEST_EEPM_DATA_NONE )
 
@@ -71,6 +72,8 @@
         uint8_t sup_func[SUPPORTED_FUNCTION_LENGTH] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };
     #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_CLK_AUTO_ADJUSTMENT )
         uint8_t auto_adj = 10;
+    #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_FUEL_CONSUMPTION )
+        uint32_t fuel_consumption = 0x12345678;
     #else
         //Do nothing
     #endif
@@ -197,6 +200,8 @@ switch( test_item )
             EEPM_set_supported_function( sup_func, eepm_test_write_cb );
         #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_CLK_AUTO_ADJUSTMENT )
             EEPM_set_clk_auto_adjustment( auto_adj, eepm_test_write_cb );
+        #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_FUEL_CONSUMPTION )
+            EEPM_set_fuel_consumption( fuel_consumption, eepm_test_write_cb );
         #else
             //Do nothing
         #endif
@@ -218,6 +223,8 @@ switch( test_item )
             EEPM_get_supported_function( eepm_test_read_cb );
         #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_CLK_AUTO_ADJUSTMENT )
             EEPM_get_clk_auto_adjustment( eepm_test_read_cb );
+        #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_FUEL_CONSUMPTION )
+            EEPM_get_fuel_consumption( eepm_test_read_cb );
         #else
             //Do nothing
         #endif
@@ -290,6 +297,8 @@ switch( test_item )
         uint8_t eepm_data[SUPPORTED_FUNCTION_LENGTH] = { 0 };
     #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_CLK_AUTO_ADJUSTMENT )
         uint8_t eepm_data[CLOCK_AUTO_ADJUSTMENT_LENGTH] = { 0 };
+    #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_FUEL_CONSUMPTION )
+        uint8_t eepm_data[FUEL_CONSUMPTION_LENGTH] = { 0 };
     #else
         uint8_t eepm_data[4] = { 0 };
     #endif

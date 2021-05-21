@@ -41,6 +41,7 @@ extern "C" {
 #define OPERATION_MODE_LENGTH                ( 1 )
 #define SUPPORTED_FUNCTION_LENGTH            ( 6 )
 #define CLOCK_AUTO_ADJUSTMENT_LENGTH         ( 1 )
+#define FUEL_CONSUMPTION_LENGTH              ( 4 )
 
 #define EEPROM_INVALID_VAL_1_BYTE            ( 0xFF )
 #define EEPROM_INVALID_VAL_2_BYTE            ( 0xFFFF )
@@ -66,6 +67,7 @@ typedef uint8_t EEPM_block_config_type; enum
     EEPM_BLOCK_CONFIG_OPERATION_MODE,
     EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION,
     EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT,
+    EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION,
 
     EEPM_BLOCK_CONFIG_CNT
     };
@@ -289,6 +291,18 @@ BaseType_t EEPM_get_clk_auto_adjustment
     (
     void (*callback_ptr)(bool, void*)
     );
+
+BaseType_t EEPM_set_fuel_consumption
+    (
+    uint32_t fuelconsumption,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_fuel_consumption
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
 #ifdef __cplusplus
 }
 #endif

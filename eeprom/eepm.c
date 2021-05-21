@@ -919,6 +919,40 @@ eepm_r_callback( EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT, status );
 
 /*================================================================================================*/
 /**
+@brief   eepm_fuel_consumption_w_callback
+@details eepm_fuel_consumption_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_fuel_consumption_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_fuel_consumption_r_callback
+@details eepm_fuel_consumption_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_fuel_consumption_r_callback
+    (
+    status_t status
+    )
+{
+eepm_r_callback( EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION, status );
+}
+
+/*================================================================================================*/
+/**
 @brief   EEPM_init
 @details EEPM_init
 
@@ -2009,6 +2043,68 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT].semaphore, 
     eepm_data[EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT].callback_ptr = callback_ptr;
     rtn = eep_get_clk_auto_adjustment( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT].read_val ), eepm_auto_adjustment_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_fuel_consumption
+@details EEPM_set_fuel_consumption
+
+@return Result of enqueue set fuel consumption operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_fuel_consumption
+    (
+    uint32_t fuelconsumption,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].write_val = fuelconsumption;
+    eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].callback_ptr = callback_ptr;
+    rtn = eep_set_fuel_consumption( &( eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].write_val ), eepm_fuel_consumption_w_callback );
+    eep_get_fuel_consumption( &( eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].read_val ), eepm_fuel_consumption_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_fuel_consumption
+@details EEPM_get_fuel_consumption
+
+@return Result of enqueue get fuel consumption operation
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_fuel_consumption
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].callback_ptr = callback_ptr;
+    rtn = eep_get_fuel_consumption( &( eepm_data[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].read_val ), eepm_fuel_consumption_r_callback );
     }
 else
     {

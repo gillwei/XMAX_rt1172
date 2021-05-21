@@ -47,9 +47,10 @@ extern "C"{
 #define OPERATION_MODE_START_SUB_ADDR        ( TRIP_TIME_START_SUB_ADDR             + TRIP_TIME_LENGTH              )
 #define SUPPORTED_FUNCTION_START_SUB_ADDR    ( OPERATION_MODE_START_SUB_ADDR        + OPERATION_MODE_LENGTH         )
 #define CLOCK_AUTO_ADJUSTMENT_START_SUB_ADDR ( SUPPORTED_FUNCTION_START_SUB_ADDR    + SUPPORTED_FUNCTION_LENGTH     )
+#define FUEL_CONSUMPTION_START_SUB_ADDR      ( CLOCK_AUTO_ADJUSTMENT_START_SUB_ADDR + CLOCK_AUTO_ADJUSTMENT_LENGTH  )
 
 // reserved for future newly add data..
-#define NEXT_START_SUB_ADDR                  ( CLOCK_AUTO_ADJUSTMENT_START_SUB_ADDR + CLOCK_AUTO_ADJUSTMENT_LENGTH  )
+#define NEXT_START_SUB_ADDR                  ( FUEL_CONSUMPTION_START_SUB_ADDR      + FUEL_CONSUMPTION_LENGTH       )
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
@@ -95,6 +96,7 @@ eeprom_block_config_type block_config_list[EEPM_BLOCK_CONFIG_CNT] = \
     { OPERATION_MODE_START_SUB_ADDR,        OPERATION_MODE_LENGTH              }, //EEPM_BLOCK_CONFIG_OPERATION_MODE
     { SUPPORTED_FUNCTION_START_SUB_ADDR,    SUPPORTED_FUNCTION_LENGTH          }, //EEPM_BLOCK_CONFIG_SUPPORTED_FUNCTION
     { CLOCK_AUTO_ADJUSTMENT_START_SUB_ADDR, CLOCK_AUTO_ADJUSTMENT_LENGTH       }, //EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT
+    { FUEL_CONSUMPTION_START_SUB_ADDR,      FUEL_CONSUMPTION_LENGTH            }, //EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION
 };
 
 
@@ -913,6 +915,53 @@ return PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
                                  EEPROM_SUB_ADDR_SIZE,
                                  callback_func_ptr );
 }
+
+/*================================================================================================*/
+/**
+@brief   eep_set_fuel_consumption
+@details eep_set_fuel_consumption
+
+@return Result of enqueue i2c write operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t eep_set_fuel_consumption
+    (
+    uint32_t* fuel_consumption_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+return PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                                  (uint8_t *)fuel_consumption_ptr,
+                                  block_config_list[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].length,
+                                  block_config_list[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].start_addr,
+                                  EEPROM_SUB_ADDR_SIZE,
+                                  callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_fuel_consumption
+@details eep_get_fuel_consumption
+
+@return Result of enqueue i2c read operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t eep_get_fuel_consumption
+    (
+    uint32_t* fuel_consumption_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+return PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                                 (uint8_t *)fuel_consumption_ptr,
+                                 block_config_list[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].length,
+                                 block_config_list[EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION].start_addr,
+                                 EEPROM_SUB_ADDR_SIZE,
+                                 callback_func_ptr );
+}
+
 
 #ifdef __cplusplus
 }

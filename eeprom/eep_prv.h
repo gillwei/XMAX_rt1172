@@ -257,6 +257,18 @@ BaseType_t eep_get_clk_auto_adjustment
     void ( *callback_func_ptr ) ( status_t )
     );
 
+BaseType_t eep_set_fuel_consumption
+    (
+    uint32_t* fuel_consumption_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_fuel_consumption
+    (
+    uint32_t* fuel_consumption_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
 #ifdef __cplusplus
 }
 #endif
