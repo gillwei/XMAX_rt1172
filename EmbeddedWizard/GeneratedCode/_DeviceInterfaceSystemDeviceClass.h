@@ -70,6 +70,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( InspectionDisplaySystemEvent, CoreSystemEvent )
   EW_OBJECT  ( InspectionModeSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( FactoryResetCompletedSystemEvent, CoreSystemEvent )
+  EW_OBJECT  ( SystemDataReceivedSystemEvent, CoreSystemEvent )
   EW_PROPERTY( SoftwareVersion, XString )
   EW_PROPERTY( ESN,             XString )
   EW_PROPERTY( BtSoftwareVersion, XString )
@@ -78,6 +79,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( InspectionDisplayPattern, XEnum )
   EW_PROPERTY( InspectionMode,  XEnum )
   EW_PROPERTY( OperationMode,   XEnum )
+  EW_PROPERTY( IsSoftwareUpdateEnabled, XBool )
   EW_PROPERTY( IsClockAutoAdj,  XBool )
   EW_VARIABLE( IsRunningReset,  XBool )
   EW_VARIABLE( IsHopperTestMode, XBool )
@@ -309,6 +311,24 @@ void DeviceInterfaceSystemDeviceClass_OnSetIsClockAutoAdj( DeviceInterfaceSystem
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetIsClockAutoAdj()' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetIsClockAutoAdj( DeviceInterfaceSystemDeviceClass _this );
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceSystemDeviceClass_NotifySystemEventReceived( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aSystemRxEvent );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifySystemEventReceived()' */
+void DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived( void* _this, XEnum 
+  aSystemRxEvent );
+
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifySystemEventReceived(). */
+#define _DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived_
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.StartOTA()' */
+void DeviceInterfaceSystemDeviceClass_StartOTA( DeviceInterfaceSystemDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetIsSoftwareUpdateEnabled()' */
+XBool DeviceInterfaceSystemDeviceClass_OnGetIsSoftwareUpdateEnabled( DeviceInterfaceSystemDeviceClass _this );
 
 #ifdef __cplusplus
   }

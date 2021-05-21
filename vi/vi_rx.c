@@ -1453,10 +1453,10 @@ void VI_rx_reprogram_info_response
 {
 if( svc_type == MID_MSG_NRES_NACK )
     {
-    switch( svc_id )
+    switch( svc_data_p[0] )
         {
         case MID_MSG_NRES_RS_NOT_SUPP:
-
+            EW_notify_system_event_received( EnumSystemRxEventREPROGRAM_REJECTED );
             break;
 
         case MID_MSG_NRES_RS_WAIT_REQ:
@@ -1464,16 +1464,28 @@ if( svc_type == MID_MSG_NRES_NACK )
             break;
 
         default:
-            PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id);
+            PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id );
             break;
         }
     }
 else
     {
-    switch( svc_id )
+    switch( svc_data_p[0] )
         {
+        case MID_MSG_PROGSTS_START_REQ:
+            EW_notify_system_event_received( EnumSystemRxEventREPROGRAM_ACCEPTED );
+            break;
+
+        case MID_MSG_PROGSTS_COMPLETE_REQ:
+            //TBD
+            break;
+
+        case MID_MSG_PROGSTS_FAILED:
+            //TBD
+            break;
+
         default:
-            PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id);
+            PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id );
             break;
         }
     }
@@ -1501,7 +1513,7 @@ void VI_rx_mt_func_cont_info_response
 switch( svc_id )
     {
     default:
-        PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id);
+        PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id );
         break;
     }
 }

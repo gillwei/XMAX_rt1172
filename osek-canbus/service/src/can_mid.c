@@ -454,6 +454,7 @@ Handle resp date by different type(positive or negative)
 if( l_resp_type == MID_MSG_NRES_NACK )
     {
     l_rs = mid_msg_p->data[MID_MSG_NRES_RS_IDX];
+    l_svc_data_p = mid_msg_p->data[MID_MSG_NRES_RS_IDX];
     if( l_rs == MID_MSG_NRES_RS_WAIT_REQ )
         {
         *l_node_wait_p   = 0;

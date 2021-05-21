@@ -582,5 +582,6 @@ void EW_init
 {
 create_task();
 ew_key_init();
+ew_system_int();
 }
 

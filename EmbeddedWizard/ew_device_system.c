@@ -22,12 +22,15 @@
 #include <stdio.h>
 #include "FreeRTOS.h"
 #include "task.h"
+#include "semphr.h"
 #include "EEPM_pub.h"
 #include "GRM_pub_prj.h"
 #include "RTC_pub.h"
 #include "PM_pub.h"
 #include "QR_pub.h"
 #include "VI_pub.h"
+#include "OTA_pub.h"
+#include "BC_motocon_pub.h"
 #include "client_dcm_appl.h"
 
 /*--------------------------------------------------------------------
@@ -35,6 +38,10 @@
 --------------------------------------------------------------------*/
 #ifdef _DeviceInterfaceSystemDeviceClass_
     typedef int system_device_function( void );
+#endif
+
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived_
+    static int notify_system_event_received( void );
 #endif
 
 #ifdef _DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime_
@@ -86,6 +93,7 @@
 #define UPDATE_TIME_TASK_STACK_SIZE     ( configMINIMAL_STACK_SIZE )
 
 #define EW_STRING_LEN               ( 1024 )
+#define SYSTEM_EVENT_QUEUE_SIZE     ( 32 )
 
 #define UNIT_ID_LEN                 ( 24 )
 
@@ -119,6 +127,9 @@ static void ew_get_info_from_eeprom( void );
         #ifdef _DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime_
             ew_system_update_local_time,
         #endif
+        #ifdef _DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived_
+            notify_system_event_received,
+        #endif
         #ifdef _DeviceInterfaceSystemDeviceClass__TestDisplayPattern_
             ew_sytem_test_display_pattern,
         #endif
@@ -151,6 +162,7 @@ static void ew_get_info_from_eeprom( void );
         #endif
         };
     const int num_of_system_func = sizeof( system_function_lookup_table )/sizeof( system_device_function* );
+    static QueueHandle_t system_rx_event_queue;
 
     static EnumHomeGroup      home_group;
     static EnumMeterDisplay   meter_display_setting;
@@ -197,6 +209,26 @@ AT_BOARDSDRAM_SECTION( uint8_t ew_string[EW_STRING_LEN] );
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+
+/*********************************************************************
+*
+* @private
+* ew_system_int
+*
+* Embedded Wizard system initialization
+*
+*********************************************************************/
+void ew_system_int
+    (
+    void
+    )
+{
+if( NULL == system_rx_event_queue )
+    {
+    system_rx_event_queue = xQueueCreate( SYSTEM_EVENT_QUEUE_SIZE, sizeof( EnumSystemRxEvent ) );
+    configASSERT( NULL != system_rx_event_queue );
+    }
+}
 
 /*********************************************************************
 *
@@ -986,6 +1018,32 @@ return ew_str_idx;
 /*********************************************************************
 *
 * @private
+* notify_system_event_received
+*
+* Notify EW GUI the received system event
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived_
+static int notify_system_event_received
+    (
+    void
+    )
+{
+int need_update = 0;
+
+EnumSystemRxEvent system_rx_event;
+while( pdPASS == xQueueReceive( system_rx_event_queue, &system_rx_event, 0 ) )
+    {
+    DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived( device_object, system_rx_event );
+    need_update = 1;
+    }
+return need_update;
+}
+#endif
+
+/*********************************************************************
+*
+* @private
 * ew_system_update_local_time
 *
 * Notify EW GUI to update time
@@ -1688,6 +1746,26 @@ PRINTF( "%s\r\n", __FUNCTION__ );
 
 /*********************************************************************
 *
+* @private
+* ew_start_ota
+*
+* Start OTA
+*
+*********************************************************************/
+void ew_start_ota
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+
+bc_motocon_ota_update_info_t* ota_info = BC_motocon_get_ota_update_info();
+OTA_set_update_packet( ota_info->enable, ota_info->new_firmware_ver, ota_info->total_size, ota_info->number_of_packages );
+OTA_jump_to_bootloader();
+}
+
+/*********************************************************************
+*
 * @public
 * EW_notify_opening_event
 *
@@ -1735,4 +1813,29 @@ void EW_notify_inspection_request
     is_inspection_request_received = true;
     EwBspEventTrigger();
 #endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_software_event_received
+*
+* Enqueue the received system event
+*
+* @param system_rx_event Received system event
+*
+*********************************************************************/
+void EW_notify_system_event_received
+    (
+    const EnumSystemRxEvent system_rx_event
+    )
+{
+if( pdTRUE == xQueueSend( system_rx_event_queue, &system_rx_event, 0 ) )
+    {
+    EwBspEventTrigger();
+    }
+else
+    {
+    EwPrint( "%s err\r\n", __FUNCTION__ );
+    }
 }

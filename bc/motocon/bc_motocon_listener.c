@@ -18,6 +18,7 @@
 #include "EW_pub.h"
 #include "NTF_pub.h"
 #include "VI_pub.h"
+#include "OTA_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -36,6 +37,7 @@ void bc_motocon_incoming_call_received( const bc_motocon_incoming_call_info_t* i
 void bc_motocon_listener_phone_thermal( const bc_motocon_thermal_state_t thermal_state );
 void bc_motocon_listener_bt_headset_state( const bc_motocon_bt_headset_state_t headset_state );
 void bc_motocon_volume_changed( const uint8_t level, const bc_motocon_volume_type_t type );
+void bc_motocon_ota_update_info( const bc_motocon_ota_update_info_t* info );
 void bc_motocon_phone_volume_controllable( const bool enable );
 void bc_motocon_listener_phone_signal_level( const uint8_t level );
 void bc_motocon_phonecall_state_changed( const bc_motocon_call_state_t call_state );
@@ -57,30 +59,20 @@ void BC_motocon_phonecall_volume_control_callback( const EnumVolumeControl contr
 --------------------------------------------------------------------*/
 static bc_motocon_callback_t motocon_callback =
     {
-    bc_motocon_listener_connection_status,  // connected_status_changed_callback
-    NULL,                                   // weather_location_callback
-    NULL,                                   // weather_info_callback
-    NULL,                                   // vehicle_info_subscribe_callback
-    bc_motocon_datetime_changed,            // datetime_changed_callback
-    bc_motocon_datetime_received,           // vehicle_datetime_callback
-    bc_motocon_listener_language_type,      // language_type_callback
-    NULL,                                   // device_name_callback
-    bc_motocon_notification_received,       // notification_callback
-    NULL,                                   // can_related_callback
-    NULL,                                   // can_request_callback
-    NULL,                                   // injection_request_callback
-    bc_motocon_listener_battery,            // battery_callback
-    NULL,                                   // bt_music_meta_data_callback
-    bc_motocon_incoming_call_received,      // incoming_call_info_callback
-    bc_motocon_listener_phone_thermal,      // thermal_callback
-    bc_motocon_listener_bt_headset_state,   // bt_headset_state_callback
-    bc_motocon_volume_changed,              // volume_level_callback
-    NULL,                                   // notification_category_callback
-    bc_motocon_phone_volume_controllable,   // volume_controllable_callback
-    NULL,                                   // ota_update_info_callback
-    NULL,                                   // ccuid_request_callback
-    bc_motocon_listener_phone_signal_level, // cell_signal_callback
-    bc_motocon_phonecall_state_changed      // call_changed_callback
+    .connected_status_changed_callback = bc_motocon_listener_connection_status,
+    .datetime_changed_callback         = bc_motocon_datetime_changed,
+    .vehicle_datetime_callback         = bc_motocon_datetime_received,
+    .language_type_callback            = bc_motocon_listener_language_type,
+    .notification_callback             = bc_motocon_notification_received,
+    .battery_callback                  = bc_motocon_listener_battery,
+    .incoming_call_info_callback       = bc_motocon_incoming_call_received,
+    .thermal_callback                  = bc_motocon_listener_phone_thermal,
+    .bt_headset_state_callback         = bc_motocon_listener_bt_headset_state,
+    .volume_level_callback             = bc_motocon_volume_changed,
+    .volume_controllable_callback      = bc_motocon_phone_volume_controllable,
+    .ota_update_info_callback          = bc_motocon_ota_update_info,
+    .cell_signal_callback              = bc_motocon_listener_phone_signal_level,
+    .call_changed_callback             = bc_motocon_phonecall_state_changed
     };
 
 static notification_callback_t motocon_notification_callback =
@@ -101,6 +93,7 @@ static bc_motocon_thermal_state_t phone_thermal_state;
 static bc_motocon_bt_headset_state_t phone_headset_state;
 static uint32_t phone_call_volume;
 static bool motocon_connected;
+static bc_motocon_ota_update_info_t ota_update_info;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -109,6 +102,40 @@ static bool motocon_connected;
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+
+/*********************************************************************
+*
+* @private
+* send_linkcard_info
+*
+* Send LinkCard info for checking if there is a new software update
+*
+*********************************************************************/
+static void send_linkcard_info
+    (
+    void
+    )
+{
+bc_motocon_ota_linkcard_info_t info;
+uint32_t esn = EW_get_esn();
+
+info.current_firmware_ver = SW_VERSION;
+info.serial_number[0] = ( esn >> 24 ) & 0xFF;
+info.serial_number[1] = ( esn >> 16 ) & 0xFF;
+info.serial_number[2] = ( esn >> 8  ) & 0xFF;
+info.serial_number[3] = esn & 0xFF;
+if( OTA_SYS_PARTITION_A == OTA_get_sys_parition() )
+    {
+    info.new_program_position = OTA_SYS_PARTITION_B;
+    }
+else
+    {
+    info.new_program_position = OTA_SYS_PARTITION_A;
+    }
+
+BC_motocon_send_ota_linkcard_info( &info );
+}
+
 /*********************************************************************
 *
 * @private
@@ -170,17 +197,22 @@ EW_notify_motocon_event_received( EnumMotoConRxEventCONNECTION_STATUS );
 if( connected )
     {
     BC_motocon_send_language_type_request();
+    BC_motocon_send_vehicle_setting_request();
+    send_linkcard_info();
+
     /* update RTC time and meter clock if Auto Adjustment is enabled */
     if( EW_get_clk_auto_adj() )
         {
         is_request_from_clock = true;
         }
-    BC_motocon_send_vehicle_setting_request();
     }
 else
     {
     phone_volume_controllable = false;
     notify_motocon_notification_disconnected();
+
+    memset( &ota_update_info, 0, sizeof( bc_motocon_ota_update_info_t ) );
+    EW_notify_system_event_received( EnumSystemRxEventSW_UPDATE_DISABLE );
     }
 }
 
@@ -388,6 +420,35 @@ if( BC_MOTOCON_VOLUME_PHONE == type )
     {
     phone_call_volume = level;
     EW_notify_phone_call_volume_changed();
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_ota_update_info
+*
+* OTA update information callback
+*
+* @param info Pointer to OTA update information
+*
+*********************************************************************/
+void bc_motocon_ota_update_info
+    (
+    const bc_motocon_ota_update_info_t* info
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+
+memcpy( &ota_update_info, info, sizeof( bc_motocon_ota_update_info_t ) );
+
+if( info->enable )
+    {
+    EW_notify_system_event_received( EnumSystemRxEventSW_UPDATE_ENABLE );
+    }
+else
+    {
+    EW_notify_system_event_received( EnumSystemRxEventSW_UPDATE_DISABLE );
     }
 }
 
@@ -682,6 +743,24 @@ uint32_t BC_motocon_get_phonecall_volume
 {
 BC_MOTOCON_PRINTF( "%s %d\r\n", __FUNCTION__, phone_call_volume );
 return phone_call_volume;
+}
+
+/*********************************************************************
+*
+* @public
+* BC_motocon_get_ota_update_info
+*
+* Get OTA update info
+*
+* @return Pointer to OTA update info
+*
+*********************************************************************/
+bc_motocon_ota_update_info_t* BC_motocon_get_ota_update_info
+    (
+    void
+    )
+{
+return &ota_update_info;
 }
 
 /*********************************************************************

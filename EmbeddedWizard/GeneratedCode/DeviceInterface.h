@@ -53,6 +53,7 @@
 #include "_DeviceInterfaceNotificationContext.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
+#include "_DeviceInterfaceSystemData.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"

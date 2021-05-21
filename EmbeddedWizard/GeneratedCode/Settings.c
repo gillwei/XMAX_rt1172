@@ -38,6 +38,7 @@
 #include "_DevelopmentDEV_Main.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
+#include "_DeviceInterfaceSystemData.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
@@ -74,6 +75,7 @@
 #include "_SettingsSET23_BlePairingFail.h"
 #include "_SettingsSET24_CheckPairingRecord.h"
 #include "_SettingsSET25_BlePincode.h"
+#include "_SettingsSET27_ConfirmUpdate.h"
 #include "_SettingsSET28_SystemInfo.h"
 #include "_SettingsSET30_QRCode.h"
 #include "_SettingsSET35_LegalMenu.h"
@@ -4432,6 +4434,7 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   CorePropertyObserver__Init( &_this->EsnObserver, &_this->_.XObject, 0 );
   MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ReceivedSystemEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( SettingsSET28_SystemInfo );
@@ -4480,8 +4483,12 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), DeviceInterfaceSystemDeviceClass_OnGetESN, 
   DeviceInterfaceSystemDeviceClass_OnSetESN ));
   _this->UpDownPushButtonSet.OnUpButtonActivated = EwNewSlot( _this, SettingsSET28_SystemInfo_OnUnitIdButtonActivatedSlot );
+  _this->UpDownPushButtonSet.OnDownButtonActivated = EwNewSlot( _this, SettingsSET28_SystemInfo_OnSoftwareUpdateButtonActivatedSlot );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
+  _this->ReceivedSystemEventHandler.OnEvent = EwNewSlot( _this, SettingsSET28_SystemInfo_OnSystemEventReceived );
+  CoreSystemEventHandler_OnSetEvent( &_this->ReceivedSystemEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->SystemDataReceivedSystemEvent );
 
   /* Call the user defined constructor */
   SettingsSET28_SystemInfo_Init( _this, aArg );
@@ -4501,6 +4508,7 @@ void SettingsSET28_SystemInfo__ReInit( SettingsSET28_SystemInfo _this )
   CorePropertyObserver__ReInit( &_this->EsnObserver );
   MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
   ViewsImage__ReInit( &_this->Divider );
+  CoreSystemEventHandler__ReInit( &_this->ReceivedSystemEventHandler );
 }
 
 /* Finalizer method for the class 'Settings::SET28_SystemInfo' */
@@ -4517,6 +4525,7 @@ void SettingsSET28_SystemInfo__Done( SettingsSET28_SystemInfo _this )
   CorePropertyObserver__Done( &_this->EsnObserver );
   MenuUpDownPushButtonSet__Done( &_this->UpDownPushButtonSet );
   ViewsImage__Done( &_this->Divider );
+  CoreSystemEventHandler__Done( &_this->ReceivedSystemEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
@@ -4533,6 +4542,8 @@ void SettingsSET28_SystemInfo_Init( SettingsSET28_SystemInfo _this, XHandle aArg
   ViewsText_OnSetString( &_this->EsnText, DeviceInterfaceSystemDeviceClass_OnGetESN( 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
   ViewsText_OnSetString( &_this->SoftwareVersionText, DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( 
+  EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
+  MenuUpDownPushButtonSet_OnSetDownButtonEnabled( &_this->UpDownPushButtonSet, DeviceInterfaceSystemDeviceClass_OnGetIsSoftwareUpdateEnabled( 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
 }
 
@@ -4563,6 +4574,46 @@ void SettingsSET28_SystemInfo_OnUnitIdButtonActivatedSlot( SettingsSET28_SystemI
   EW_UNUSED_ARG( sender );
 
   CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( SettingsSET30_QRCode, 
+  0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET28_SystemInfo_OnSystemEventReceived( SettingsSET28_SystemInfo _this, 
+  XObject sender )
+{
+  DeviceInterfaceSystemData SystemData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  SystemData = EwCastObject( _this->ReceivedSystemEventHandler.Context, DeviceInterfaceSystemData );
+
+  if ( SystemData != 0 )
+    switch ( SystemData->RxEvent )
+    {
+      case EnumSystemRxEventSW_UPDATE_ENABLE :
+        MenuUpDownPushButtonSet_OnSetDownButtonEnabled( &_this->UpDownPushButtonSet, 
+        1 );
+      break;
+
+      case EnumSystemRxEventSW_UPDATE_DISABLE :
+        MenuUpDownPushButtonSet_OnSetDownButtonEnabled( &_this->UpDownPushButtonSet, 
+        0 );
+      break;
+
+      default :; 
+    }
+}
+
+/* 'C' function for method : 'Settings::SET28_SystemInfo.OnSoftwareUpdateButtonActivatedSlot()' */
+void SettingsSET28_SystemInfo_OnSoftwareUpdateButtonActivatedSlot( SettingsSET28_SystemInfo _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( SettingsSET27_ConfirmUpdate, 
   0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
@@ -5971,5 +6022,180 @@ EW_DEFINE_CLASS( SettingsSET46_VehicleInfoReset, MenuBaseMenuView, VehicleDataRe
   SettingsSET46_VehicleInfoReset_LoadItemHour,
   SettingsSET46_VehicleInfoReset_LoadItemMinute,
 EW_END_OF_CLASS( SettingsSET46_VehicleInfoReset )
+
+/* Initializer for the class 'Settings::SET27_ConfirmUpdate' */
+void SettingsSET27_ConfirmUpdate__Init( SettingsSET27_ConfirmUpdate _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET27_ConfirmUpdate );
+
+  /* ... then construct all embedded objects */
+  ViewsText__Init( &_this->Text, &_this->_.XObject, 0 );
+  MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ReceivedSystemEventHandler, &_this->_.XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( SettingsSET27_ConfirmUpdate );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
+  CoreRectView__OnSetBounds( &_this->Text, _Const0002 );
+  ViewsText_OnSetString( &_this->Text, EwLoadString( &StringsSET27_UPDATE_SYSTEM ));
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0003 );
+  _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
+  _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
+  ComponentsBaseComponent__OnSetDDModeEnabled( &_this->UpDownPushButtonSet, 1 );
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_CANCEL ));
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_OK ));
+  MenuUpDownPushButtonSet_OnSetDownButtonEnabled( &_this->UpDownPushButtonSet, 1 );
+  CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
+  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  _this->UpDownPushButtonSet.OnUpButtonActivated = EwNewSlot( _this, SettingsSET27_ConfirmUpdate_OnCancelActivatedSlot );
+  _this->UpDownPushButtonSet.OnDownButtonActivated = EwNewSlot( _this, SettingsSET27_ConfirmUpdate_OnOkActivatedSlot );
+  _this->ReceivedSystemEventHandler.OnEvent = EwNewSlot( _this, SettingsSET27_ConfirmUpdate_OnSystemEventReceived );
+  CoreSystemEventHandler_OnSetEvent( &_this->ReceivedSystemEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->SystemDataReceivedSystemEvent );
+}
+
+/* Re-Initializer for the class 'Settings::SET27_ConfirmUpdate' */
+void SettingsSET27_ConfirmUpdate__ReInit( SettingsSET27_ConfirmUpdate _this )
+{
+  /* At first re-initialize the super class ... */
+  ComponentsBaseMainBG__ReInit( &_this->_.Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsText__ReInit( &_this->Text );
+  MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
+  CoreSystemEventHandler__ReInit( &_this->ReceivedSystemEventHandler );
+}
+
+/* Finalizer method for the class 'Settings::SET27_ConfirmUpdate' */
+void SettingsSET27_ConfirmUpdate__Done( SettingsSET27_ConfirmUpdate _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
+
+  /* Finalize all embedded objects */
+  ViewsText__Done( &_this->Text );
+  MenuUpDownPushButtonSet__Done( &_this->UpDownPushButtonSet );
+  CoreSystemEventHandler__Done( &_this->ReceivedSystemEventHandler );
+
+  /* Don't forget to deinitialize the super class ... */
+  ComponentsBaseMainBG__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Settings::SET27_ConfirmUpdate.OnOkActivatedSlot()' */
+void SettingsSET27_ConfirmUpdate_OnOkActivatedSlot( SettingsSET27_ConfirmUpdate _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( sender );
+
+  DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeREQUEST_REPROGRAM, 0 );
+}
+
+/* 'C' function for method : 'Settings::SET27_ConfirmUpdate.OnCancelActivatedSlot()' */
+void SettingsSET27_ConfirmUpdate_OnCancelActivatedSlot( SettingsSET27_ConfirmUpdate _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET27_ConfirmUpdate_OnSystemEventReceived( SettingsSET27_ConfirmUpdate _this, 
+  XObject sender )
+{
+  DeviceInterfaceSystemData SystemData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  SystemData = EwCastObject( _this->ReceivedSystemEventHandler.Context, DeviceInterfaceSystemData );
+
+  if ( SystemData != 0 )
+    switch ( SystemData->RxEvent )
+    {
+      case EnumSystemRxEventREPROGRAM_ACCEPTED :
+        DeviceInterfaceSystemDeviceClass_StartOTA( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+        DeviceInterfaceSystemDeviceClass ));
+      break;
+
+      case EnumSystemRxEventREPROGRAM_REJECTED :
+      {
+        SettingsTimeoutDialog Dialog = EwNewObject( SettingsTimeoutDialog, 0 );
+        SettingsTimeoutDialog_OnSetMessage( Dialog, EwLoadString( &StringsSET29_DRIVING_NO_SW_UPDATE ));
+        Dialog->DismissAfterTimeout = 1;
+        CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)Dialog ), 0, 
+        0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+      }
+      break;
+
+      default :; 
+    }
+}
+
+/* Variants derived from the class : 'Settings::SET27_ConfirmUpdate' */
+EW_DEFINE_CLASS_VARIANTS( SettingsSET27_ConfirmUpdate )
+EW_END_OF_CLASS_VARIANTS( SettingsSET27_ConfirmUpdate )
+
+/* Virtual Method Table (VMT) for the class : 'Settings::SET27_ConfirmUpdate' */
+EW_DEFINE_CLASS( SettingsSET27_ConfirmUpdate, ComponentsBaseMainBG, Text, Text, 
+                 Text, Text, _.VMT, _.VMT, "Settings::SET27_ConfirmUpdate" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseMainBG_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+EW_END_OF_CLASS( SettingsSET27_ConfirmUpdate )
 
 /* Embedded Wizard */

@@ -143,6 +143,8 @@ uint32_t BC_motocon_get_phonecall_volume( void );
 
 void BC_motocon_set_request_from_clock( void );
 
+bc_motocon_ota_update_info_t* BC_motocon_get_ota_update_info( void );
+
 #ifdef __cplusplus
 }
 #endif

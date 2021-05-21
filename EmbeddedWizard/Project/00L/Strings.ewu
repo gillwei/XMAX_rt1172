@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/05/20 15:42:27
+// Generated: 2021/05/25 08:12:42
 
 $output false
 const string ARGUMENT_STR =
@@ -945,6 +945,12 @@ const string SET26_PAIRING_SUCCESSFUL =
 );
 
 $output false
+const string SET27_UPDATE_SYSTEM =
+(
+  Default = "Update system ?";
+);
+
+$output false
 const string SET28_ESN =
 (
   Default = "Electronic Serial Number";
@@ -966,6 +972,12 @@ $output false
 const string SET28_SW_UPDATE =
 (
   Default = "Software update";
+);
+
+$output false
+const string SET29_DRIVING_NO_SW_UPDATE =
+(
+  Default = "Software update cannot be executed while driving.";
 );
 
 $output false

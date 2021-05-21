@@ -38,6 +38,7 @@
 #include "_DeviceInterfaceNotificationContext.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
+#include "_DeviceInterfaceSystemData.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
@@ -117,6 +118,7 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
   CoreSystemEvent__Init( &_this->InspectionDisplaySystemEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->InspectionModeSystemEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->FactoryResetCompletedSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->SystemDataReceivedSystemEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( DeviceInterfaceSystemDeviceClass );
@@ -145,6 +147,7 @@ void DeviceInterfaceSystemDeviceClass__ReInit( DeviceInterfaceSystemDeviceClass 
   CoreSystemEvent__ReInit( &_this->InspectionDisplaySystemEvent );
   CoreSystemEvent__ReInit( &_this->InspectionModeSystemEvent );
   CoreSystemEvent__ReInit( &_this->FactoryResetCompletedSystemEvent );
+  CoreSystemEvent__ReInit( &_this->SystemDataReceivedSystemEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::SystemDeviceClass' */
@@ -162,6 +165,7 @@ void DeviceInterfaceSystemDeviceClass__Done( DeviceInterfaceSystemDeviceClass _t
   CoreSystemEvent__Done( &_this->InspectionDisplaySystemEvent );
   CoreSystemEvent__Done( &_this->InspectionModeSystemEvent );
   CoreSystemEvent__Done( &_this->FactoryResetCompletedSystemEvent );
+  CoreSystemEvent__Done( &_this->SystemDataReceivedSystemEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_.Super );
@@ -887,6 +891,49 @@ XBool DeviceInterfaceSystemDeviceClass_OnGetIsClockAutoAdj( DeviceInterfaceSyste
   ClockAutoAdjStatus = EW_get_clk_auto_adj();
   _this->IsClockAutoAdj = ClockAutoAdjStatus;
   return _this->IsClockAutoAdj;
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceSystemDeviceClass_NotifySystemEventReceived( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aSystemRxEvent )
+{
+  DeviceInterfaceSystemData SystemDataContext = EwNewObject( DeviceInterfaceSystemData, 
+    0 );
+
+  SystemDataContext->RxEvent = aSystemRxEvent;
+  CoreSystemEvent_Trigger( &_this->SystemDataReceivedSystemEvent, ((XObject)SystemDataContext ), 
+  0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifySystemEventReceived()' */
+void DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived( void* _this, XEnum 
+  aSystemRxEvent )
+{
+  DeviceInterfaceSystemDeviceClass_NotifySystemEventReceived((DeviceInterfaceSystemDeviceClass)_this
+  , aSystemRxEvent );
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.StartOTA()' */
+void DeviceInterfaceSystemDeviceClass_StartOTA( DeviceInterfaceSystemDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ew_start_ota();
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetIsSoftwareUpdateEnabled()' */
+XBool DeviceInterfaceSystemDeviceClass_OnGetIsSoftwareUpdateEnabled( DeviceInterfaceSystemDeviceClass _this )
+{
+  XBool IsEnabled = 0;
+
+  {
+    bc_motocon_ota_update_info_t* ota_update_info = BC_motocon_get_ota_update_info();
+    IsEnabled = ota_update_info->enable;
+  }
+  _this->IsSoftwareUpdateEnabled = IsEnabled;
+  return _this->IsSoftwareUpdateEnabled;
 }
 
 /* Variants derived from the class : 'DeviceInterface::SystemDeviceClass' */
@@ -4040,5 +4087,44 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNotificationContext )
 EW_DEFINE_CLASS( DeviceInterfaceNotificationContext, XObject, ReceivedTime, Title, 
                  Title, Title, Title, Uid, "DeviceInterface::NotificationContext" )
 EW_END_OF_CLASS( DeviceInterfaceNotificationContext )
+
+/* Initializer for the class 'DeviceInterface::SystemData' */
+void DeviceInterfaceSystemData__Init( DeviceInterfaceSystemData _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceSystemData );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( DeviceInterfaceSystemData );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::SystemData' */
+void DeviceInterfaceSystemData__ReInit( DeviceInterfaceSystemData _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_.Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::SystemData' */
+void DeviceInterfaceSystemData__Done( DeviceInterfaceSystemData _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_.Super );
+}
+
+/* Variants derived from the class : 'DeviceInterface::SystemData' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceSystemData )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceSystemData )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::SystemData' */
+EW_DEFINE_CLASS( DeviceInterfaceSystemData, XObject, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, "DeviceInterface::SystemData" )
+EW_END_OF_CLASS( DeviceInterfaceSystemData )
 
 /* Embedded Wizard */

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSET28_SystemInfo_H
-#define _SettingsSET28_SystemInfo_H
+#ifndef _SettingsSET27_ConfirmUpdate_H
+#define _SettingsSET27_ConfirmUpdate_H
 
 #ifdef __cplusplus
   extern "C"
@@ -45,7 +45,6 @@
 #include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
-#include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_MenuUpDownPushButtonSet.h"
@@ -95,27 +94,22 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::SET28_SystemInfo */
-#ifndef _SettingsSET28_SystemInfo_
-  EW_DECLARE_CLASS( SettingsSET28_SystemInfo )
-#define _SettingsSET28_SystemInfo_
+/* Forward declaration of the class Settings::SET27_ConfirmUpdate */
+#ifndef _SettingsSET27_ConfirmUpdate_
+  EW_DECLARE_CLASS( SettingsSET27_ConfirmUpdate )
+#define _SettingsSET27_ConfirmUpdate_
 #endif
 
 
-/* Deklaration of class : 'Settings::SET28_SystemInfo' */
-EW_DEFINE_FIELDS( SettingsSET28_SystemInfo, ComponentsBaseMainBG )
-  EW_OBJECT  ( ESN,             ViewsText )
-  EW_OBJECT  ( SoftwareVersionTitle, ViewsText )
-  EW_OBJECT  ( EsnText,         ViewsText )
-  EW_OBJECT  ( SoftwareVersionText, ViewsText )
-  EW_OBJECT  ( EsnObserver,     CorePropertyObserver )
+/* Deklaration of class : 'Settings::SET27_ConfirmUpdate' */
+EW_DEFINE_FIELDS( SettingsSET27_ConfirmUpdate, ComponentsBaseMainBG )
+  EW_OBJECT  ( Text,            ViewsText )
   EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
-  EW_OBJECT  ( Divider,         ViewsImage )
   EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
-EW_END_OF_FIELDS( SettingsSET28_SystemInfo )
+EW_END_OF_FIELDS( SettingsSET27_ConfirmUpdate )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SET28_SystemInfo' */
-EW_DEFINE_METHODS( SettingsSET28_SystemInfo, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET27_ConfirmUpdate' */
+EW_DEFINE_METHODS( SettingsSET27_ConfirmUpdate, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -164,42 +158,29 @@ EW_DEFINE_METHODS( SettingsSET28_SystemInfo, ComponentsBaseMainBG )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortMagicKeyActivated, void )( SettingsSET28_SystemInfo _this )
+  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( SettingsSET28_SystemInfo )
+EW_END_OF_METHODS( SettingsSET27_ConfirmUpdate )
 
-/* The method Init() is invoked automatically after the component has been created. 
-   This method can be overridden and filled with logic containing additional initialization 
-   statements. */
-void SettingsSET28_SystemInfo_Init( SettingsSET28_SystemInfo _this, XHandle aArg );
-
-/* 'C' function for method : 'Settings::SET28_SystemInfo.OnShortMagicKeyActivated()' */
-void SettingsSET28_SystemInfo_OnShortMagicKeyActivated( SettingsSET28_SystemInfo _this );
-
-/* This slot method is executed when the associated property observer 'PropertyObserver' 
-   is notified. */
-void SettingsSET28_SystemInfo_OnEsnReceivedSlot( SettingsSET28_SystemInfo _this, 
+/* 'C' function for method : 'Settings::SET27_ConfirmUpdate.OnOkActivatedSlot()' */
+void SettingsSET27_ConfirmUpdate_OnOkActivatedSlot( SettingsSET27_ConfirmUpdate _this, 
   XObject sender );
 
-/* 'C' function for method : 'Settings::SET28_SystemInfo.OnUnitIdButtonActivatedSlot()' */
-void SettingsSET28_SystemInfo_OnUnitIdButtonActivatedSlot( SettingsSET28_SystemInfo _this, 
+/* 'C' function for method : 'Settings::SET27_ConfirmUpdate.OnCancelActivatedSlot()' */
+void SettingsSET27_ConfirmUpdate_OnCancelActivatedSlot( SettingsSET27_ConfirmUpdate _this, 
   XObject sender );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsSET28_SystemInfo_OnSystemEventReceived( SettingsSET28_SystemInfo _this, 
-  XObject sender );
-
-/* 'C' function for method : 'Settings::SET28_SystemInfo.OnSoftwareUpdateButtonActivatedSlot()' */
-void SettingsSET28_SystemInfo_OnSoftwareUpdateButtonActivatedSlot( SettingsSET28_SystemInfo _this, 
+void SettingsSET27_ConfirmUpdate_OnSystemEventReceived( SettingsSET27_ConfirmUpdate _this, 
   XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSET28_SystemInfo_H */
+#endif /* _SettingsSET27_ConfirmUpdate_H */
 
 /* Embedded Wizard */

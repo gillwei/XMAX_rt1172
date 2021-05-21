@@ -28,7 +28,7 @@ class SystemDeviceClass : Templates::DeviceClass
   // Interface to get system info
   note group Note1
   {
-    attr Bounds = <10,10,1160,280>;
+    attr Bounds = <10,10,1160,380>;
   }
 
   $rect <250,70,450,110>
@@ -55,10 +55,10 @@ class SystemDeviceClass : Templates::DeviceClass
   // Interfaces for factory test
   note group Note3
   {
-    attr Bounds = <10,300,740,460>;
+    attr Bounds = <10,400,740,560>;
   }
 
-  $rect <40,390,240,430>
+  $rect <40,490,240,530>
   $output true
   method void QuitTest()
   {
@@ -67,12 +67,12 @@ class SystemDeviceClass : Templates::DeviceClass
     FactoryTestSystemEvent.Trigger( TestContext, false );
   }
 
-  $rect <490,390,710,430>
+  $rect <490,490,710,530>
   object Core::SystemEvent FactoryTestSystemEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <40,340,240,380>
+  $rect <40,440,240,480>
   $output true
   method void TestDisplayPattern( arg int32 aIdx )
   {
@@ -141,7 +141,7 @@ class SystemDeviceClass : Templates::DeviceClass
     return pure SoftwareVersion;
   }
 
-  $rect <30,520,250,560>
+  $rect <30,620,250,660>
   method void ResetToFactoryDefault()
   {
     IsRunningReset = true;
@@ -156,7 +156,7 @@ class SystemDeviceClass : Templates::DeviceClass
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <30,570,270,610>
+  $rect <30,670,270,710>
   $output true
   method void NotifyFactoryResetComplete()
   {
@@ -167,10 +167,10 @@ class SystemDeviceClass : Templates::DeviceClass
   // Device Interface for Factory Reset
   note group Note4
   {
-    attr Bounds = <10,480,550,720>;
+    attr Bounds = <10,580,550,820>;
   }
 
-  $rect <290,520,530,560>
+  $rect <290,620,530,660>
   object Core::Timer FactoryResetTimer
   {
     preset OnTrigger = OnFactoryResetTimeoutSlot;
@@ -179,14 +179,14 @@ class SystemDeviceClass : Templates::DeviceClass
     preset Enabled = false;
   }
 
-  $rect <290,570,530,610>
+  $rect <290,670,530,710>
   slot OnFactoryResetTimeoutSlot
   {
     trace "all reset timeout";
     NotifyFactoryResetComplete();
   }
 
-  $rect <330,620,530,660>
+  $rect <330,720,530,760>
   method void RebootSystem()
   {
     $if !$prototyper
@@ -197,7 +197,7 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <1010,320,1210,360>
+  $rect <1010,420,1210,460>
   method void SetTFTDutyCycle( arg int32 aDutyCycle )
   {
     $if !$prototyper
@@ -214,7 +214,7 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <1010,370,1210,410>
+  $rect <1010,470,1210,510>
   property int32 BrightnessLevel = 7;
 
   $rect <250,170,450,210>
@@ -239,7 +239,7 @@ class SystemDeviceClass : Templates::DeviceClass
     return pure BtSoftwareVersion;
   }
 
-  $rect <250,340,470,380>
+  $rect <250,440,470,480>
   $output true
   method void StartBurnInTest()
   {
@@ -249,7 +249,7 @@ class SystemDeviceClass : Templates::DeviceClass
     FactoryTestSystemEvent.Trigger( TestContext, false );
   }
 
-  $rect <250,390,470,430>
+  $rect <250,490,470,530>
   $output true
   method void UpdateBurnInTestTime( arg uint32 aTimeSec )
   {
@@ -259,7 +259,7 @@ class SystemDeviceClass : Templates::DeviceClass
     FactoryTestSystemEvent.Trigger( TestContext, false );
   }
 
-  $rect <499,340,709,380>
+  $rect <499,440,709,480>
   $output true
   method void ShowBurnInTestResult( arg bool aResult )
   {
@@ -283,22 +283,22 @@ class SystemDeviceClass : Templates::DeviceClass
   // Device Interface for QR code
   note group Note5
   {
-    attr Bounds = <610,530,1120,720>;
+    attr Bounds = <610,630,1120,820>;
   }
 
-  $rect <870,570,1070,610>
+  $rect <870,670,1070,710>
   object Core::SystemEvent QrCodeSystemEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <650,570,850,610>
+  $rect <650,670,850,710>
   $output true
   method void NotifyQrCodeReady()
   {
     QrCodeSystemEvent.Trigger( null, false );
   }
 
-  $rect <650,670,850,710>
+  $rect <650,770,850,810>
   method void GetQrCode()
   {
     $if !$prototyper
@@ -365,22 +365,22 @@ class SystemDeviceClass : Templates::DeviceClass
   // Opening Flow Control
   note group Note6
   {
-    attr Bounds = <450,740,1130,950>;
+    attr Bounds = <450,840,1130,1050>;
   }
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <465,786,675,826>
+  $rect <465,886,675,926>
   $output true
   method void StartOpening()
   {
     OpeningSystemEvent.Trigger( null, false );
   }
 
-  $rect <465,836,675,876>
+  $rect <465,936,675,976>
   object Core::SystemEvent OpeningSystemEvent;
 
-  $rect <770,350,970,390>
+  $rect <770,450,970,490>
   method bool IsKeyStateValid()
   {
     var bool IsValid = true;
@@ -393,7 +393,7 @@ class SystemDeviceClass : Templates::DeviceClass
     return IsValid;
   }
 
-  $rect <685,786,895,826>
+  $rect <685,886,895,926>
   method bool IsTFTBacklightOn()
   {
     var bool IsBacklightOn = false;
@@ -408,10 +408,10 @@ class SystemDeviceClass : Templates::DeviceClass
     return IsBacklightOn;
   }
 
-  $rect <910,787,1110,827>
+  $rect <910,887,1110,927>
   property Enum::OperationMode OperationMode;
 
-  $rect <910,837,1110,877>
+  $rect <910,937,1110,977>
   onset OperationMode
   {
     if( pure OperationMode != value )
@@ -426,7 +426,7 @@ class SystemDeviceClass : Templates::DeviceClass
     }
   }
 
-  $rect <909,887,1109,927>
+  $rect <909,987,1109,1027>
   onget OperationMode
   {
     $if !$prototyper
@@ -445,7 +445,7 @@ class SystemDeviceClass : Templates::DeviceClass
     return pure OperationMode;
   }
 
-  $rect <685,836,895,876>
+  $rect <685,936,895,976>
   method bool IsOperationModeReady()
   {
     var bool IsOperationModeReady;
@@ -463,17 +463,17 @@ class SystemDeviceClass : Templates::DeviceClass
   // Inspection Mode
   note group Note7
   {
-    attr Bounds = <10,740,310,1200>;
+    attr Bounds = <10,840,310,1300>;
   }
 
-  $rect <30,1080,290,1120>
+  $rect <30,1180,290,1220>
   object Core::SystemEvent InspectionDisplaySystemEvent;
 
-  $rect <30,930,290,970>
+  $rect <30,1030,290,1070>
   object Core::SystemEvent InspectionModeSystemEvent;
 
   // Notifiy the inspection display pattern to test
-  $rect <30,780,290,820>
+  $rect <30,880,290,920>
   $output true
   method void NotifyInspectionRequest( arg Enum::InspectionMode aMode, arg Enum::InspectionDisplay aDisplayPattern )
   {
@@ -481,20 +481,20 @@ class SystemDeviceClass : Templates::DeviceClass
     InspectionMode = aMode;
   }
 
-  $rect <30,830,230,870>
+  $rect <30,930,230,970>
   property Enum::InspectionMode InspectionMode = Enum::InspectionMode.NONE;
 
-  $rect <30,880,230,920>
+  $rect <30,980,230,1020>
   onset InspectionMode
   {
     pure InspectionMode = value;
     InspectionModeSystemEvent.Trigger( null, false );
   }
 
-  $rect <30,980,260,1020>
+  $rect <30,1080,260,1120>
   property Enum::InspectionDisplay InspectionDisplayPattern;
 
-  $rect <30,1030,290,1070>
+  $rect <30,1130,290,1170>
   onset InspectionDisplayPattern
   {
     if ( pure InspectionDisplayPattern != value )
@@ -504,7 +504,7 @@ class SystemDeviceClass : Templates::DeviceClass
     }
   }
 
-  $rect <30,1130,250,1170>
+  $rect <30,1230,250,1270>
   method void SendInspectionResponse( arg Enum::InspectionMode aMode, arg uint8 aRes )
   {
     $if !$prototyper
@@ -639,13 +639,13 @@ class SystemDeviceClass : Templates::DeviceClass
     }
   }
 
-  $rect <30,620,320,660>
+  $rect <30,720,320,760>
   object Core::SystemEvent FactoryResetCompletedSystemEvent;
 
-  $rect <30,670,230,710>
+  $rect <30,770,230,810>
   var bool IsRunningReset;
 
-  $rect <770,400,970,440>
+  $rect <770,500,970,540>
   method void SetKeyTriggerMode( arg Core::KeyCode aKey, arg Enum::KeyTriggerMode aMode )
   {
     $if !$prototyper
@@ -663,10 +663,10 @@ class SystemDeviceClass : Templates::DeviceClass
   // Interfaces for factory test
   note group Note8
   {
-    attr Bounds = <750,300,990,520>;
+    attr Bounds = <750,400,990,620>;
   }
 
-  $rect <770,450,970,490>
+  $rect <770,550,970,590>
   method void SetMagicKeyEnabled( arg bool aEnabled )
   {
     $if !$prototyper
@@ -679,7 +679,7 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <650,620,850,660>
+  $rect <650,720,850,760>
   method bool IsQrCodeReady()
   {
     var bool IsQrCodeReady = false;
@@ -697,10 +697,10 @@ class SystemDeviceClass : Templates::DeviceClass
   // Clock Setting
   note group Note9
   {
-    attr Bounds = <450,980,1130,1200>;
+    attr Bounds = <450,1080,1130,1300>;
   }
 
-  $rect <460,1020,660,1060>
+  $rect <460,1120,660,1160>
   method void NotifyTimeRequest()
   {
     $if !$prototyper
@@ -712,10 +712,10 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <670,1070,870,1110>
+  $rect <670,1170,870,1210>
   var DeviceInterface::RtcTime CurrentAdjustTime;
 
-  $rect <670,1020,870,1060>
+  $rect <670,1120,870,1160>
   method void SetRtcTime( arg DeviceInterface::RtcTime aNewTime )
   {
     $if !$prototyper
@@ -742,7 +742,7 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <890,1020,1090,1060>
+  $rect <890,1120,1090,1160>
   method void SendManualAdjTimeToMeter()
   {
     $if !$prototyper
@@ -753,10 +753,10 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <460,1070,660,1110>
+  $rect <460,1170,660,1210>
   property bool IsClockAutoAdj;
 
-  $rect <460,1110,660,1150>
+  $rect <460,1210,660,1250>
   onset IsClockAutoAdj
   {
     if( pure IsClockAutoAdj != value )
@@ -774,7 +774,7 @@ class SystemDeviceClass : Templates::DeviceClass
     }
   }
 
-  $rect <460,1150,660,1190>
+  $rect <460,1250,660,1290>
   onget IsClockAutoAdj
   {
     $if !$prototyper
@@ -786,6 +786,50 @@ class SystemDeviceClass : Templates::DeviceClass
       pure IsClockAutoAdj = ClockAutoAdjStatus;
     $endif
     return pure IsClockAutoAdj;
+  }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,1320,300,1360>
+  $output true
+  method void NotifySystemEventReceived( arg Enum::SystemRxEvent aSystemRxEvent )
+  {
+    var DeviceInterface::SystemData SystemDataContext = new DeviceInterface::SystemData;
+    SystemDataContext.RxEvent = aSystemRxEvent;
+    SystemDataReceivedSystemEvent.Trigger( SystemDataContext, false );
+  }
+
+  // This object represents an individual system event.
+  $rect <20,1370,300,1410>
+  object Core::SystemEvent SystemDataReceivedSystemEvent;
+
+  $rect <20,1420,220,1460>
+  method void StartOTA()
+  {
+    $if !$prototyper
+      native
+      {
+        ew_start_ota();
+      }
+    $endif
+  }
+
+  $rect <250,270,510,310>
+  property bool IsSoftwareUpdateEnabled;
+
+  $rect <250,320,520,360>
+  onget IsSoftwareUpdateEnabled
+  {
+    $if !$prototyper
+      var bool IsEnabled = false;
+      native( IsEnabled )
+      {
+        bc_motocon_ota_update_info_t* ota_update_info = BC_motocon_get_ota_update_info();
+        IsEnabled = ota_update_info->enable;
+      }
+      pure IsSoftwareUpdateEnabled = IsEnabled;
+    $endif
+    return pure IsSoftwareUpdateEnabled;
   }
 }
 
@@ -1606,7 +1650,7 @@ class MediaManagerDeviceClass : Templates::DeviceClass
 $rect <261,344,461,384>
 autoobject DeviceInterface::MediaManagerDeviceClass MediaManagerDevice;
 
-$rect <750,70,950,110>
+$rect <810,70,1010,110>
 $output false
 class BluetoothDeviceClass : Templates::DeviceClass
 {
@@ -2163,10 +2207,10 @@ class BluetoothDeviceClass : Templates::DeviceClass
   }
 }
 
-$rect <750,110,950,150>
+$rect <810,110,1010,150>
 autoobject DeviceInterface::BluetoothDeviceClass BluetoothDevice;
 
-$rect <750,150,950,190>
+$rect <810,150,1010,190>
 $output false
 class BluetoothPairedDeviceInfo
 {
@@ -2200,7 +2244,7 @@ class RtcTime
   var uint8 Second;
 }
 
-$rect <500,110,700,150>
+$rect <560,110,760,150>
 $output false
 class VehicleDeviceClass : Templates::DeviceClass
 {
@@ -2977,10 +3021,10 @@ class VehicleDeviceClass : Templates::DeviceClass
   }
 }
 
-$rect <500,70,700,110>
+$rect <560,70,760,110>
 autoobject DeviceInterface::VehicleDeviceClass VehicleDevice;
 
-$rect <260,70,460,110>
+$rect <320,70,520,110>
 $output false
 class WeatherDeviceClass : Templates::DeviceClass
 {
@@ -3134,10 +3178,10 @@ class WeatherDeviceClass : Templates::DeviceClass
   }
 }
 
-$rect <260,110,460,150>
+$rect <320,110,520,150>
 autoobject DeviceInterface::WeatherDeviceClass WeatherDevice;
 
-$rect <500,150,700,190>
+$rect <560,150,760,190>
 $output false
 class VehicleDataClass
 {
@@ -3213,7 +3257,7 @@ class NaviDataClass
   var bool IsOfficeSet;
 }
 
-$rect <751,190,951,230>
+$rect <811,190,1011,230>
 $output false
 class MotoConContext
 {
@@ -3631,6 +3675,14 @@ class NotificationContext
   var string Subtitle;
 }
 
-$rect <20,190,300,230>
+$rect <20,230,300,270>
 $output false
 const uint8 INSPECTION_NEGATIVE_RESPONSE = 0xFF;
+
+$rect <20,190,220,230>
+$output false
+class SystemData
+{
+  $rect <10,10,210,50>
+  var Enum::SystemRxEvent RxEvent;
+}

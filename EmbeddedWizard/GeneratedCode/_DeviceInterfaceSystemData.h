@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef Settings_H
-#define Settings_H
+#ifndef _DeviceInterfaceSystemData_H
+#define _DeviceInterfaceSystemData_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,40 +42,26 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_SettingsBtFwUpdateDialog.h"
-#include "_SettingsLicenseDetail.h"
-#include "_SettingsSET01_MainSettingMenu.h"
-#include "_SettingsSET03_ConnectionSettingMenu.h"
-#include "_SettingsSET04_BtSettingMenu.h"
-#include "_SettingsSET05_BtcMaxPairedDevice.h"
-#include "_SettingsSET06_BtcDiscovarable.h"
-#include "_SettingsSET08_BtcPairDevice.h"
-#include "_SettingsSET17_BtcPairedDeviceList.h"
-#include "_SettingsSET18_DeleteBleDevice.h"
-#include "_SettingsSET19_BtcPairedDeviceOperation.h"
-#include "_SettingsSET22_BleAdvertising.h"
-#include "_SettingsSET23_BlePairingFail.h"
-#include "_SettingsSET24_CheckPairingRecord.h"
-#include "_SettingsSET25_BlePincode.h"
-#include "_SettingsSET27_ConfirmUpdate.h"
-#include "_SettingsSET28_SystemInfo.h"
-#include "_SettingsSET30_QRCode.h"
-#include "_SettingsSET35_LegalMenu.h"
-#include "_SettingsSET37_3rdPartyLicenses.h"
-#include "_SettingsSET38_ConfirmAllReset.h"
-#include "_SettingsSET39_DeletePairedDevice.h"
-#include "_SettingsSET41_ResetInProgress.h"
-#include "_SettingsSET42_ResetCompleted.h"
-#include "_SettingsSET43_ResetMenu.h"
-#include "_SettingsSET45_TripMileageReset.h"
-#include "_SettingsSET46_VehicleInfoReset.h"
-#include "_SettingsSET9_10_11_BtConnectionResult.h"
-#include "_SettingsTimeoutDialog.h"
+/* Forward declaration of the class DeviceInterface::SystemData */
+#ifndef _DeviceInterfaceSystemData_
+  EW_DECLARE_CLASS( DeviceInterfaceSystemData )
+#define _DeviceInterfaceSystemData_
+#endif
+
+
+/* Deklaration of class : 'DeviceInterface::SystemData' */
+EW_DEFINE_FIELDS( DeviceInterfaceSystemData, XObject )
+  EW_VARIABLE( RxEvent,         XEnum )
+EW_END_OF_FIELDS( DeviceInterfaceSystemData )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::SystemData' */
+EW_DEFINE_METHODS( DeviceInterfaceSystemData, XObject )
+EW_END_OF_METHODS( DeviceInterfaceSystemData )
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* Settings_H */
+#endif /* _DeviceInterfaceSystemData_H */
 
 /* Embedded Wizard */

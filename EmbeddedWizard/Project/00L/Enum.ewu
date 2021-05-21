@@ -621,6 +621,12 @@ enum VehicleTxType
 
   $rect <220,360,420,400>
   item RESET_METER;
+
+  $rect <220,410,420,450>
+  item REQUEST_REPROGRAM;
+
+  $rect <220,460,420,500>
+  item TOTAL;
 }
 
 $rect <260,320,460,360>
@@ -1492,4 +1498,24 @@ enum NaviZoomInOutStatusType
 
   $rect <430,10,630,50>
   item NORMAL;
+}
+
+$rect <730,170,930,210>
+$output false
+enum SystemRxEvent
+{
+  $rect <10,10,230,50>
+  item SW_UPDATE_ENABLE;
+
+  $rect <10,60,230,100>
+  item SW_UPDATE_DISABLE;
+
+  $rect <10,110,230,150>
+  item REPROGRAM_ACCEPTED;
+
+  $rect <10,160,230,200>
+  item REPROGRAM_REJECTED;
+
+  $rect <10,210,230,250>
+  item TOTAL;
 }

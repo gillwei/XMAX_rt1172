@@ -635,6 +635,24 @@ if( 0 != procdtl )
 /*********************************************************************
 *
 * @private
+* send_reprogrm_start_request
+*
+* Send reprogram start request
+*
+*********************************************************************/
+static void send_reprogrm_start_request
+    (
+    void
+    )
+{
+/* H'5B3 */
+can_mid_req( TX4_REQ_REPRGRM_INFO_CAN0_ID, IL_CAN0_TX4_REQ_REPRGRM_INFO_TXFRM_LEN, MID_MSG_SID_REPROG, MID_MSG_PROGSTS_START_REQ );
+PRINTF( "%s\r\n", __FUNCTION__ );
+}
+
+/*********************************************************************
+*
+* @private
 * VI_set_tx_data
 *
 * Send data from UI to CAN stack
@@ -704,6 +722,9 @@ switch( tx_type )
         break;
     case EnumVehicleTxTypeRESET_METER:
         reset_meter( (EnumMeterInfo)data );
+        break;
+    case EnumVehicleTxTypeREQUEST_REPROGRAM:
+        send_reprogrm_start_request();
         break;
     default:
         PRINTF( "Err: %s invalid tx type %d\r\n", __FUNCTION__, tx_type );

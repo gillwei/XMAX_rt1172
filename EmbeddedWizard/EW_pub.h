@@ -53,6 +53,7 @@ void EW_notify_opening_event( const opening_event event );
 bool EW_get_operation_mode( EnumOperationMode* mode );
 void EW_reset_to_factory_default( void );
 void EW_power_update_ignoff_task_status( uint32_t task );
+void EW_notify_system_event_received( const EnumSystemRxEvent system_rx_event );
 
 uint8_t* EW_get_ccuid( void );
 uint16_t EW_get_qrcode_dummy( void );

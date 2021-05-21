@@ -457,141 +457,7 @@ class SET35_LegalMenu : Menu::BaseMenuView
   $reorder LoadItemBaseValue 4
 }
 
-$rect <820,110,1020,150>
-$output false
-class SoftwareUpdate : Menu::BaseMenuView
-{
-  $rect <10,300,210,340>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <520,140,720,180>
-  inherited method OnShortDownKeyActivated()
-  {
-    var int32 NextFocusIdx = FocusIdx + 1;
-    if( NextFocusIdx >= FocusList.size )
-      {
-      NextFocusIdx = FocusList.size - 1;
-      }
-
-    if( FocusIdx != NextFocusIdx )
-      {
-      FocusIdx = NextFocusIdx;
-      Focus = FocusList[NextFocusIdx];
-      }
-  }
-
-  $rect <520,80,720,120>
-  inherited method OnShortUpKeyActivated()
-  {
-    var int32 NextFocusIdx = FocusIdx - 1;
-    if( NextFocusIdx < 0 )
-      {
-      NextFocusIdx = 0;
-      }
-
-    if( FocusIdx != NextFocusIdx )
-      {
-      FocusIdx = NextFocusIdx;
-      Focus = FocusList[NextFocusIdx];
-      }
-  }
-
-  $rect <20,20,160,60>
-  object WidgetSet::PushButton ButtonNo
-  {
-    preset Bounds = <290,200,440,250>;
-    preset IconFrameActive = -1;
-    preset IconFrame = 0;
-    preset Label = "No";
-    preset Appearance = UIConfig::PushButtonConfig;
-  }
-
-  $rect <20,20,160,60>
-  object WidgetSet::PushButton ButtonYes
-  {
-    preset Bounds = <40,203,190,253>;
-    preset OnRelease = OnUpdate;
-    preset IconFrameActive = -1;
-    preset IconFrame = 0;
-    preset Label = "Yes";
-    preset Appearance = UIConfig::PushButtonConfig;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Text Text
-  {
-    preset Bounds = <90,80,370,150>;
-    preset String = "Update system?";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <520,200,720,240>
-  slot OnUpdate
-  {
-    PresentDialogWithSlideInEffect( new Settings::SET41_ResetInProgress );
-  }
-
-  $rect <520,20,720,60>
-  var int32 FocusIdx = 1;
-
-  $rect <740,20,940,60>
-  array Core::View FocusList[ 2 ] =
-  (
-    Default[0] = ButtonYes;
-    Default[1] = ButtonNo;
-  );
-}
-
-$rect <820,160,1020,200>
-$output false
-class SoftwareUpdateError : Menu::BaseMenuView
-{
-  $rect <10,300,210,340>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <20,20,160,60>
-  object Views::Text Text
-  {
-    preset Bounds = <15,70,460,220>;
-    preset WrapText = true;
-    preset String = "System cannot execute software update.\nSoftware update cannot be executed\nwhile driving.";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-}
-
-$rect <820,60,1020,100>
-$output false
-class SoftwareUpdateRetry : Menu::BaseMenuView
-{
-  $rect <20,300,220,340>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <20,20,160,60>
-  object Views::Text Message
-  {
-    preset Bounds = <7,50,464,194>;
-    preset WrapText = true;
-    preset String = "Failed\nConfirmed USB connection.Please make sure you've inserted USB and the update file is in the USB device.";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <20,20,160,60>
-  object WidgetSet::PushButton RetryButton
-  {
-    preset Bounds = <140,200,320,250>;
-    preset OnRelease = OnRetry;
-    preset Label = "Retry";
-    preset Appearance = UIConfig::PushButtonConfig;
-  }
-
-  $rect <520,30,720,70>
-  slot OnRetry
-  {
-    SlideOutDialog( this );
-  }
-}
-
-$rect <600,430,810,470>
+$rect <600,480,810,520>
 $output false
 class SET38_ConfirmAllReset : Components::BaseMainBG
 {
@@ -643,7 +509,7 @@ class SET38_ConfirmAllReset : Components::BaseMainBG
   }
 }
 
-$rect <600,480,830,520>
+$rect <600,530,830,570>
 $output false
 class SET39_DeletePairedDevice : Components::BaseMainBG
 {
@@ -681,7 +547,7 @@ class SET39_DeletePairedDevice : Components::BaseMainBG
   }
 }
 
-$rect <600,530,810,570>
+$rect <600,580,810,620>
 $output false
 class SET41_ResetInProgress : Components::BaseMainBG
 {
@@ -2094,6 +1960,8 @@ class SET28_SystemInfo : Components::BaseMainBG
   {
     EsnText.String = DeviceInterface::SystemDevice.ESN;
     SoftwareVersionText.String = DeviceInterface::SystemDevice.SoftwareVersion;
+    UpDownPushButtonSet.DownButtonEnabled = DeviceInterface::SystemDevice.IsSoftwareUpdateEnabled;
+
     $if $prototyper
       // for screenshot
       EsnText.String = "XXXXXXXXX";
@@ -2171,6 +2039,7 @@ class SET28_SystemInfo : Components::BaseMainBG
     preset PassMagicKey = true;
     preset DDModeEnabled = true;
     preset OnUpButtonActivated = OnUnitIdButtonActivatedSlot;
+    preset OnDownButtonActivated = OnSoftwareUpdateButtonActivatedSlot;
     preset UpButtonTitle = Strings::SET28_UNIT_ID;
     preset DownButtonTitle = Strings::SET28_SW_UPDATE;
     preset DownButtonEnabled = false;
@@ -2188,6 +2057,36 @@ class SET28_SystemInfo : Components::BaseMainBG
     preset Bounds = <0,36,480,38>;
     preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
     preset Bitmap = Resource::StatusBarDivider;
+  }
+
+  $rect <530,380,790,420>
+  object Core::SystemEventHandler ReceivedSystemEventHandler
+  {
+    preset OnEvent = OnSystemEventReceived;
+    preset Event = DeviceInterface::SystemDevice.SystemDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <530,420,790,460>
+  slot OnSystemEventReceived
+  {
+    var DeviceInterface::SystemData SystemData = ( DeviceInterface::SystemData )ReceivedSystemEventHandler.Context;
+    if( null != SystemData )
+    {
+      switch( SystemData.RxEvent )
+      {
+        case Enum::SystemRxEvent.SW_UPDATE_ENABLE: UpDownPushButtonSet.DownButtonEnabled = true;
+        case Enum::SystemRxEvent.SW_UPDATE_DISABLE: UpDownPushButtonSet.DownButtonEnabled = false;
+        default:;
+      }
+    }
+  }
+
+  $rect <520,210,840,250>
+  slot OnSoftwareUpdateButtonActivatedSlot
+  {
+    PresentDialog( new Settings::SET27_ConfirmUpdate, null, null, null, null, null, null, null, null, false );
   }
 }
 
@@ -2337,7 +2236,7 @@ $rect <20,560,250,600>
 $output false
 const int32 DETAIL_TOTAL_LINE_NUM = 7;
 
-$rect <600,380,810,420>
+$rect <600,430,810,470>
 $output false
 class SET43_ResetMenu : Menu::BaseMenuView
 {
@@ -2414,7 +2313,7 @@ class SET43_ResetMenu : Menu::BaseMenuView
   );
 }
 
-$rect <600,580,810,620>
+$rect <600,630,810,670>
 $output false
 class SET42_ResetCompleted : Components::BaseMainBG
 {
@@ -2465,7 +2364,7 @@ class SET42_ResetCompleted : Components::BaseMainBG
   }
 }
 
-$rect <840,380,1060,420>
+$rect <840,430,1060,470>
 $output false
 class SET45_TripMileageReset : Menu::BaseMenuView
 {
@@ -2712,7 +2611,7 @@ class SET45_TripMileageReset : Menu::BaseMenuView
   }
 }
 
-$rect <840,430,1060,470>
+$rect <840,480,1060,520>
 $output false
 class SET46_VehicleInfoReset : Menu::BaseMenuView
 {
@@ -3100,3 +2999,75 @@ const int32 MAX_TRIP_TIME_MINUTE = 99;
 $rect <1120,110,1360,150>
 $output false
 const uint32 MAX_CRUISE_SPEED = 999;
+
+$rect <820,60,1030,100>
+$output false
+class SET27_ConfirmUpdate : Components::BaseMainBG
+{
+  $rect <10,300,210,340>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Text Text
+  {
+    preset Bounds = <10,46,470,170>;
+    preset String = Strings::SET27_UPDATE_SYSTEM;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <220,340,430,380>
+  slot OnOkActivatedSlot
+  {
+    DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.REQUEST_REPROGRAM, 0 );
+  }
+
+  $rect <220,300,430,340>
+  slot OnCancelActivatedSlot
+  {
+    OnShortHomeKeyActivated();
+  }
+
+  $rect <20,20,160,60>
+  object Menu::UpDownPushButtonSet UpDownPushButtonSet
+  {
+    preset Bounds = <165,176,315,259>;
+    preset PassHomeKey = true;
+    preset PassMagicKey = true;
+    preset DDModeEnabled = true;
+    preset OnUpButtonActivated = OnCancelActivatedSlot;
+    preset OnDownButtonActivated = OnOkActivatedSlot;
+    preset UpButtonTitle = Strings::GEN_CANCEL;
+    preset DownButtonTitle = Strings::GEN_OK;
+    preset DownButtonEnabled = true;
+  }
+
+  $rect <460,300,720,340>
+  object Core::SystemEventHandler ReceivedSystemEventHandler
+  {
+    preset OnEvent = OnSystemEventReceived;
+    preset Event = DeviceInterface::SystemDevice.SystemDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <460,340,720,380>
+  slot OnSystemEventReceived
+  {
+    var DeviceInterface::SystemData SystemData = ( DeviceInterface::SystemData )ReceivedSystemEventHandler.Context;
+    if( null != SystemData )
+    {
+      switch( SystemData.RxEvent )
+      {
+        case Enum::SystemRxEvent.REPROGRAM_ACCEPTED: DeviceInterface::SystemDevice.StartOTA();
+        case Enum::SystemRxEvent.REPROGRAM_REJECTED:
+        {
+          var Settings::TimeoutDialog Dialog = new Settings::TimeoutDialog;
+          Dialog.Message = Strings::SET29_DRIVING_NO_SW_UPDATE;
+          Dialog.DismissAfterTimeout = true;
+          Owner.SwitchToDialog( Dialog, null, null, null, null, null, null, null, null, null, false );
+        }
+        default:;
+      }
+    }
+  }
+}

@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/05/20 15:42:27 */
+   Generated: 2021/05/25 08:12:42 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -448,6 +448,9 @@ extern const XStringRes StringsSET25_PIN;
 /* User defined constant: 'Strings::SET26_PAIRING_SUCCESSFUL' */
 extern const XStringRes StringsSET26_PAIRING_SUCCESSFUL;
 
+/* User defined constant: 'Strings::SET27_UPDATE_SYSTEM' */
+extern const XStringRes StringsSET27_UPDATE_SYSTEM;
+
 /* User defined constant: 'Strings::SET28_ESN' */
 extern const XStringRes StringsSET28_ESN;
 
@@ -459,6 +462,9 @@ extern const XStringRes StringsSET28_UNIT_ID;
 
 /* User defined constant: 'Strings::SET28_SW_UPDATE' */
 extern const XStringRes StringsSET28_SW_UPDATE;
+
+/* User defined constant: 'Strings::SET29_DRIVING_NO_SW_UPDATE' */
+extern const XStringRes StringsSET29_DRIVING_NO_SW_UPDATE;
 
 /* User defined constant: 'Strings::SET35_LICENSE' */
 extern const XStringRes StringsSET35_LICENSE;

@@ -287,7 +287,9 @@ typedef enum
   EnumVehicleTxTypeCHG_METER_INFO       = 15,
   EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION = 16,
   EnumVehicleTxTypeTCS                  = 17,
-  EnumVehicleTxTypeRESET_METER          = 18
+  EnumVehicleTxTypeRESET_METER          = 18,
+  EnumVehicleTxTypeREQUEST_REPROGRAM    = 19,
+  EnumVehicleTxTypeTOTAL                = 20
 } EnumVehicleTxType;
 
 /* User defined enumeration: 'Enum::DataType' */
@@ -698,6 +700,16 @@ typedef enum
   EnumNaviZoomInOutStatusTypeREACH_MINIMUM = 1,
   EnumNaviZoomInOutStatusTypeNORMAL     = 2
 } EnumNaviZoomInOutStatusType;
+
+/* User defined enumeration: 'Enum::SystemRxEvent' */
+typedef enum
+{
+  EnumSystemRxEventSW_UPDATE_ENABLE     = 0,
+  EnumSystemRxEventSW_UPDATE_DISABLE    = 1,
+  EnumSystemRxEventREPROGRAM_ACCEPTED   = 2,
+  EnumSystemRxEventREPROGRAM_REJECTED   = 3,
+  EnumSystemRxEventTOTAL                = 4
+} EnumSystemRxEvent;
 
 #ifdef __cplusplus
   }

@@ -40,6 +40,9 @@ typedef struct
     key_state   state;
     } ew_key_event;
 
+void ew_system_int( void );
+void ew_start_ota( void );
+
 void ew_device_interface_init( void );
 void ew_device_interface_deinit( void );
 int  ew_device_interface_process( void );
