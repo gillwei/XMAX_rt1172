@@ -95,6 +95,11 @@ nm_busoff_retry_timer[CAN_NUM_INSTANCES];
 static uint8
 nm_busoff_retry_count[CAN_NUM_INSTANCES];
 
+/*------------------------------------------------------
+TOE delay reinit after Bus Off recovery
+------------------------------------------------------*/
+extern uint16 il_timeout_err_check_cnt;
+
 /*--------------------------------------------------------------------
                             PROCEDURES
 --------------------------------------------------------------------*/
@@ -372,6 +377,7 @@ if( nm_state[hw_inst] != NM_STATE_SLEEP )
         ( ( l_status & NM_STATUS_BUSOFF_REINIT_PNDG ) != 0 )    &&
         ( 0 == nm_busoff_retry_timer[hw_inst] ) )
         {
+        il_timeout_err_check_cnt = IL_RX_TIMEOUT_CHECK_START_TICK;
         nm_busoff_retry_count[hw_inst] = 0;
         can_util_clear_status_bits( &( nm_status[hw_inst] ),
                                     NM_STATUS_BUSOFF_REINIT_PNDG );

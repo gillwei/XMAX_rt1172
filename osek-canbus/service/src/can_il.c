@@ -90,11 +90,6 @@ At least one type of transmission is pending
                                               IL_TX_STATUS_PERIODIC_PENDING )
 
 /*------------------------------------------------------
-Receive Frame timeout error start tick(50*10ms)
-------------------------------------------------------*/
-#define IL_RX_TIMEOUT_CHECK_START_TICK      (50)
-
-/*------------------------------------------------------
 Receive Frame timeout error 2 judge conditions number
 ------------------------------------------------------*/
 #define IL_RX_TOE2_JUDGE_COND_NUM           (3)
@@ -163,7 +158,7 @@ static uint8   il_status[CAN_NUM_INSTANCES];
 /*------------------------------------------------------
 IL timeout error check start cnt
 ------------------------------------------------------*/
-static uint16  il_timeout_err_check_cnt = IL_RX_TIMEOUT_CHECK_START_TICK;
+uint16  il_timeout_err_check_cnt = IL_RX_TIMEOUT_CHECK_START_TICK;
 
 /*--------------------------------------------------------------------
                             PROCEDURES
