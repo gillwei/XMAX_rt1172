@@ -125,6 +125,7 @@ EW_DEFINE_FIELDS( SeatHeater_GripWarmerSHT02_GPW02_Main, MenuBaseMenuView )
   EW_ARRAY   ( ItemTitleArray,  XString, [3])
   EW_ARRAY   ( ItemValueArray,  XUInt32, [3])
   EW_VARIABLE( ItemIdx,         XInt32 )
+  EW_ARRAY   ( ItemValidStatusArray, XBool, [3])
 EW_END_OF_FIELDS( SeatHeater_GripWarmerSHT02_GPW02_Main )
 
 /* Virtual Method Table (VMT) for the class : 'SeatHeater_GripWarmer::SHT02_GPW02_Main' */
