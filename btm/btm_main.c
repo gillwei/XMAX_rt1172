@@ -60,6 +60,9 @@
 #define HCI_ERR_PEER_USER                 0x13
 #define HCI_ERR_CONN_CAUSE_LOCAL_HOST     0x16
 
+#define HCI_ERR_PEER_USER                 0x13
+#define HCI_ERR_CONN_CAUSE_LOCAL_HOST     0x16
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -104,6 +107,15 @@ typedef enum
     BT_NON_CONNECTABLE,
     BT_CONNECTABLE
     } wiced_bt_connectability_t;
+
+/** Auto connect sequence state */
+typedef enum
+    {
+    AUTO_CONNECT_IDLE,
+    AUTO_CONNECT_START,
+    AUTO_CONNECT_SEQUENCE_DEVICE_CONNECT,
+    AUTO_CONNECT_SEQUENCE_DEVICE_UNPAIRED
+    } bt_auto_connect_seq_evt_t;
 
 typedef struct
     {
@@ -212,7 +224,10 @@ static btm_pairing_state_t          btm_pairing_state = BTM_PAIRING_STATE_NON; /
 static btm_discoverable_state_t     btm_discoverable_state = BTM_DISCOVERABLE_STATE_NON; /* BTC and BLE pairing event state  */
 static uint8_t                      connect_device_unpair_idx = 0; /* Used for the Authentication error return, the connect device is now unpaired */
 static TimerHandle_t                autoconnect_timer_handle;
-
+static uint8_t                      auto_connect_sequence[AUTO_CONNECT_SEQUENCE_LENGTH]; /* Auto connect sequence */
+static bt_auto_connect_seq_evt_t    bt_auto_connect_seq_evt = AUTO_CONNECT_IDLE;  /* Read auto connect sequence event */
+static uint8_t                      connect_dev_index = 0;
+static uint8_t                      unpair_dev_index = 0;
 reset_status_type reset_status;
 
 /*--------------------------------------------------------------------
@@ -425,14 +440,62 @@ void start_autoconnect_timer
     )
 {
 PRINTF( "%s and first autoconnect\r\n", __FUNCTION__ );
-
-autoconnect_pair_device_index = 0;
-BTM_connect_paired_device( autoconnect_pair_device_index );
-autoconnect_pair_device_index += 1;
-
-BaseType_t result = xTimerStart( autoconnect_timer_handle, 0 );
-configASSERT( result == pdPASS );
+bt_auto_connect_seq_evt = AUTO_CONNECT_START;
+autoconnect_pair_device_index = 1;
+EEPM_get_auto_connect_sequence( &eeprom_read_auto_connect_seq_callback );
 }
+
+/*********************************************************************
+*
+* @private
+* autoconnect_connect_device
+*
+* Implement on first time auto connect and auto connect timer callback
+*
+* @return bool return the auto connect start result
+*
+*********************************************************************/
+static bool autoconnect_connect_device
+    (
+    void
+    )
+{
+// If auto connect sequence number match autoconnect index, Connect device
+for( uint8_t i = 0; i < paired_device_num; i++ )
+    {
+    // Check the auto_connect_sequence, if larger than paired device number, must be ERROR
+    if( auto_connect_sequence[i] > paired_device_num )
+        {
+        auto_connect_sequence[i] = 0;
+        }
+
+    if( auto_connect_sequence[i] == autoconnect_pair_device_index )
+        {
+        // Start BTC connect
+        BTM_connect_paired_device( i );
+        break;
+        }
+    }
+
+if( ( autoconnect_pair_device_index > 0 ) && ( autoconnect_pair_device_index < paired_device_num ) )
+    {
+    autoconnect_pair_device_index ++;
+    return true;
+    }
+else if( autoconnect_pair_device_index == paired_device_num  )
+    {
+    stop_autoconnect_timer();
+    return false;
+    }
+else
+    {
+    PRINTF( "ERROR autoconnect_pair_device_index:%d\r\n", autoconnect_pair_device_index );
+    stop_autoconnect_timer();
+    return false;
+    }
+
+}
+
 
 /*********************************************************************
 *
@@ -449,36 +512,15 @@ static void autoconnect_timer_callback
     TimerHandle_t timer_handle
     )
 {
+
 // If there is no paired device or the BTC is already connected
-if( ( 0 == paired_device_num ) || ( true == btm_btc_connection_status.BTC_is_connected ) )
+if( ( 0 == paired_device_num ) || ( true == btm_btc_connection_status.BTC_is_connected ) || ( autoconnect_pair_device_index > paired_device_num ) )
     {
     stop_autoconnect_timer();
     return;
     }
 
-/* autoconnect_pair_device_index start from 1 */
-/* When the paired device num is 1 and already did first autoconnect */
-if( autoconnect_pair_device_index == paired_device_num )
-    {
-    autoconnect_pair_device_index = 0;
-    BTM_connect_paired_device( autoconnect_pair_device_index );
-    }
-/* When the autoconnect device is the last one, connect to the device and reset autoconnect device index */
-else if( autoconnect_pair_device_index == ( paired_device_num - 1 ) )
-    {
-    BTM_connect_paired_device( autoconnect_pair_device_index );
-    autoconnect_pair_device_index = 0;
-    }
-else if( autoconnect_pair_device_index < ( paired_device_num - 1 ) )
-    {
-    BTM_connect_paired_device( autoconnect_pair_device_index );
-    autoconnect_pair_device_index += 1;
-    }
-else
-    {
-    PRINTF( "ERROR: autoconnect_pair_device_index:%d paired_device_num:%d\r\n", autoconnect_pair_device_index, paired_device_num );
-    return;
-    }
+autoconnect_connect_device();
 }
 
 /*********************************************************************
@@ -559,6 +601,7 @@ data[1] = BT_CONNECTABLE;
 is_bt_discoverable = true;
 btm_discoverable_state = BTM_DISCOVERABLE_STATE_BTC;
 PRINTF("%s\n\r", __FUNCTION__ );
+stop_autoconnect_timer();
 HCI_wiced_send_command( HCI_CONTROL_COMMAND_SET_VISIBILITY, &(data[0]), sizeof( data ) );
 }
 
@@ -713,6 +756,7 @@ static void unpair_device
     )
 {
 uint8_t pair_dev_ind_arry[1] = {0};
+BaseType_t result;
 
 pair_dev_ind_arry[0] = pair_dev_index;
 
@@ -734,6 +778,15 @@ else
         }
     // Unpair device through HCI command
     HCI_wiced_send_command( HCI_CONTROL_COMMAND_UNBOND, pair_dev_ind_arry, sizeof( uint8_t ) );
+    }
+
+// Modify auto connect sequence
+unpair_dev_index = pair_dev_index;
+bt_auto_connect_seq_evt = AUTO_CONNECT_SEQUENCE_DEVICE_UNPAIRED;
+result = EEPM_get_auto_connect_sequence( &eeprom_read_auto_connect_seq_callback );
+if( result != pdPASS )
+    {
+    PRINTF( "%s EEPM_get_auto_connect_sequence ERROR result:%d\r\n", __FUNCTION__, result );
     }
 }
 
@@ -980,9 +1033,11 @@ if( reset_status.is_running_factory_reset )
 /*********************************************************************
 *
 * @private
+*
 * eeprom_read_auto_connect_seq_callback
 *
-* EEPROM read BT auto connection sequence callback
+* EEPROM read BT auto connection sequence callback, after read auto connect sequence,
+* start auto connect
 *
 *********************************************************************/
 static void eeprom_read_auto_connect_seq_callback
@@ -991,15 +1046,95 @@ static void eeprom_read_auto_connect_seq_callback
     void* data
     )
 {
+BaseType_t timer_start_result;
+uint8_t    unpaired_dev_autocon_index = 0;
+uint8_t    temp_auto_connect_sequence[AUTO_CONNECT_SEQUENCE_LENGTH] = { 0 };
+
 if( false == result )
     {
     PRINTF( "%s result fail!\r\n", __FUNCTION__ );
+    }
+
+memcpy( auto_connect_sequence, (uint8_t *)data, AUTO_CONNECT_SEQUENCE_LENGTH );
+
+switch( bt_auto_connect_seq_evt )
+    {
+    case AUTO_CONNECT_START:
+        if( true == autoconnect_connect_device() )
+            {
+            timer_start_result = xTimerStart( autoconnect_timer_handle, 0 );
+            configASSERT( timer_start_result == pdPASS );
+            }
+        break;
+
+    /* Device connect, modify auto connect sequence */
+    case AUTO_CONNECT_SEQUENCE_DEVICE_CONNECT:
+        // If the auto connect number is 0, all previous auto connect number need to add 1
+        // Ex. { 3, 2, 1, 4, 0, 0, 0, 0 } connect index 4, become { 4, 3, 2, 5, 1, 0, 0, 0 }
+        // If the auto connect number is non-zero, auto connect sequence number smaller than original auto connect number need to add 1
+        // Ex. { 3, 2, 1, 4, 0, 0, 0, 0 } connect index 1, become { 3, 1, 2, 4, 0, 0, 0, 0 }
+        if( 0 == auto_connect_sequence[connect_dev_index] )
+            {
+            for( uint8_t i = 0; i < AUTO_CONNECT_SEQUENCE_LENGTH; i++ )
+                {
+                if( auto_connect_sequence[i] > 0 )
+                    {
+                    auto_connect_sequence[i]++;
+                    }
+                }
+            }
+        else
+            {
+            for( uint8_t i = 0; i < AUTO_CONNECT_SEQUENCE_LENGTH; i++ )
+                {
+                if( ( auto_connect_sequence[i] > 0 ) && ( auto_connect_sequence[i] <= auto_connect_sequence[connect_dev_index] ) )
+                    {
+                    auto_connect_sequence[i]++;
+                    }
+                }
+            }
+        // Allocate the current connect device sequence number 1
+        auto_connect_sequence[connect_dev_index] = 1;
+
+        result = EEPM_set_auto_connect_sequence( auto_connect_sequence, auto_conn_seq_write_cb  );
+        if( result != pdPASS )
+            {
+            PRINTF( "EEPM_set_auto_connect_sequence result ERROR:%d\r\n", result );
+            }
+        break;
+
+    case AUTO_CONNECT_SEQUENCE_DEVICE_UNPAIRED:
+        unpaired_dev_autocon_index = auto_connect_sequence[unpair_dev_index];
+        // Move all auto connect sequence after unpaired_dev_autocon_index move forward 1
+        // Check auto_connect_sequence number, for auto connect value is larger than unpaired_dev_autocon_index, minus 1
+        // Keep the last byte of auto_connect_sequence is 0
+        // Ex. auto_connect_sequence { 3, 4, 1, 2, 0, 0, 0, 0 } delete unpair_dev_index 2, become { 2, 3, 1, 0, 0, 0, 0, 0 }
+        memcpy( temp_auto_connect_sequence, auto_connect_sequence, unpair_dev_index );
+        memcpy( &(temp_auto_connect_sequence[unpair_dev_index]), &(auto_connect_sequence[unpair_dev_index + 1]), AUTO_CONNECT_SEQUENCE_LENGTH - 1 - unpair_dev_index );
+        memcpy( auto_connect_sequence, temp_auto_connect_sequence, AUTO_CONNECT_SEQUENCE_LENGTH );
+        for( uint8_t i = 0; i < AUTO_CONNECT_SEQUENCE_LENGTH; i++ )
+            {
+            if( auto_connect_sequence[i] > unpaired_dev_autocon_index )
+                {
+                auto_connect_sequence[i] -= 1;
+                }
+            }
+        result = EEPM_set_auto_connect_sequence( auto_connect_sequence, auto_conn_seq_write_cb  );
+        if( result != pdPASS )
+            {
+            PRINTF( "EEPM_set_auto_connect_sequence result ERROR:%d\r\n", result );
+            }
+        break;
+
+    default:
+        break;
     }
 }
 
 /*********************************************************************
 *
 * @private
+*
 * get_settings_from_eeprom
 *
 * Get enable and auto connection settings from EEPROM
@@ -1072,7 +1207,7 @@ for( uint32_t i = 0; i < connection_info_length; i++ )
     }
 PRINTF( "\r\n" );
 
-// Received BT connected event
+// Received SPP or iAP2 connected event
 if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) )
     {
     uint8_t connect_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
@@ -1096,7 +1231,13 @@ if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_le
              paired_device_list[i].connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
              paired_device_list[i].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
              paired_device_list[i].connection_path_type = connection_path;
+
              EW_notify_bt_paired_device_status_changed();
+
+             // For modify auto connect sequence and write to EEPROM
+             connect_dev_index = i;
+             bt_auto_connect_seq_evt = AUTO_CONNECT_SEQUENCE_DEVICE_CONNECT;
+             EEPM_get_auto_connect_sequence( &eeprom_read_auto_connect_seq_callback );
              break;
              }
         }
@@ -1148,7 +1289,6 @@ connection_handle = (uint16_t)p_data[3];
 connection_handle += (uint16_t)( p_data[4] << 8 );
 memcpy( bd_address, &(p_data[5]), BT_DEVICE_ADDRESS_LEN );
 
-
 /* For previous connected device, set to disconnect and call UI */
 if( ( CONNECTION_STATUS_DISCONNECTED == is_connected ) && ( BT_TRANSPORT_BR_EDR == transport ) )
     {
@@ -1165,7 +1305,7 @@ if( ( CONNECTION_STATUS_DISCONNECTED == is_connected ) && ( BT_TRANSPORT_BR_EDR 
             EW_notify_bt_paired_device_status_changed();
             if( ( reason == HCI_ERR_CONN_CAUSE_LOCAL_HOST ) || ( reason == HCI_ERR_PEER_USER ) )
                 {
-                stop_autoconnect_timer();
+                // User disconnect, do nothing
                 }
             else
                 {
@@ -1174,7 +1314,6 @@ if( ( CONNECTION_STATUS_DISCONNECTED == is_connected ) && ( BT_TRANSPORT_BR_EDR 
             break;
             }
         }
-
     }
 
 return ERR_NONE;
@@ -1334,6 +1473,12 @@ if( pdTRUE != EEPM_set_BT_en( ENABLED, &eeprom_write_BT_enable_callback ) )
 if( pdTRUE != EEPM_set_BT_autoconn( ENABLED, &eeprom_write_BT_autocon_callback ) )
     {
     PRINTF( "reset BT autoconn fail\r\n" );
+    }
+/* Set all auto connect sequence to 0, and store to EEPROM */
+memset( auto_connect_sequence, 0, AUTO_CONNECT_SEQUENCE_LENGTH );
+if( pdTRUE != EEPM_set_auto_connect_sequence( auto_connect_sequence, auto_conn_seq_write_cb  ) )
+    {
+    PRINTF( "reset BT auto_connect_sequence fail\r\n" );
     }
 }
 

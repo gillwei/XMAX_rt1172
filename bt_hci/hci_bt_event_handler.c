@@ -27,13 +27,16 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define AUTH_CHIP_VER_LENGTH  8
+#define AUTH_CHIP_VER_LENGTH              8
 #define AUTH_CHIP_VER_ARRY (const uint8_t [])  { 0x07, 0x01, 0x03, 0x00, 0x00, 0x00, 0x03, 0x00 }
 
-#define PAIR_DEV_LIST_TOTAL_NUM_BYTE 0
-#define PAIR_DEV_LIST_INDEX_BYTE     1
+#define PAIR_DEV_LIST_TOTAL_NUM_BYTE      0
+#define PAIR_DEV_LIST_INDEX_BYTE          1
 
-#define SPP_IAP2_DATA_CB_MAX_NUM     3
+#define SPP_IAP2_DATA_CB_MAX_NUM          3
+
+#define CONNECTION_STATUS_CONNECTED_BYTE  0
+#define CONNECTION_STATUS_REASON_BYTE     1
 
 /*--------------------------------------------------------------------
                                 TYPES
@@ -198,7 +201,7 @@ switch( cmd_opcode )
        break;
 
     default:
-            break;
+       break;
 
     }
 }
