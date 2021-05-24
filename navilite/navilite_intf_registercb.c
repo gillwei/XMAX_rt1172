@@ -265,7 +265,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
         )
     {
     bool ret = true;
-    navilite_content_update_callbacks.callback_func_nextturndistance = *callback_func;
+    navilite_content_update_callbacks.callback_func_nextturndistance = callback_func;
     NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }

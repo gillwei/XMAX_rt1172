@@ -27,6 +27,13 @@ extern "C" {
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define ENABLE_NAVILITE_DEBUG_LOG ( 0 )
+
+#if( ENABLE_NAVILITE_DEBUG_LOG )
+    #define NAVILITE_PRINTF PRINTF
+#else
+    #define NAVILITE_PRINTF(fmt,...)
+#endif
 
 /*--------------------------------------------------------------------
                         TYPES

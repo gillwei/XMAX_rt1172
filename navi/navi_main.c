@@ -347,7 +347,7 @@ EW_notify_speed_limit_update();
 *********************************************************************/
 static void navi_day_night_update
     (
-    navilite_daynight_type dn_mode
+    navilite_daynight_mode_type dn_mode
     )
 {
 PRINTF( "%s: Day night mode : %d\r\n", __FUNCTION__, dn_mode );
@@ -603,18 +603,20 @@ else
 * Notify navigation module that next turn distance is updated.
 *
 * @param icon_index            Index of Tbt icon.
-* @param next_turn_dist        String of next turn distance.
-* @param dist_size             Size of next turn distance string.
+* @param distance              Next turn distance
+* @param unit_str              String of next turn distance unit
+* @param unit_str_size         Size of next turn distance unit string.
 *
 *********************************************************************/
 static void navi_next_turn_dist_update
     (
     uint8_t icon_index,
-    uint8_t* next_turn_dist,
-    uint8_t dist_size
+    uint32_t distance,
+    uint8_t* unit_str,
+    uint8_t unit_str_size
     )
 {
-PRINTF( "%s: Next turn index:%d, Next turn dist: %s, Size:%d \r\n", __FUNCTION__, icon_index, next_turn_dist, dist_size );
+PRINTF( "%s: Next turn index:%d, Next turn dist: %d, unit:%s, unit size:%d \r\n", __FUNCTION__, icon_index, distance, unit_str, unit_str_size );
 }
 
 /*********************************************************************

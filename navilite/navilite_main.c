@@ -63,11 +63,17 @@ static TaskHandle_t xTaskNaviLite;
 static StreamBufferHandle_t xQueueBuffer = NULL;
 static navilite_conn_mode_type conn_mode = 0;
 static navilite_session_status_type navilite_session_status;
+static uint16_t session_tbtlist_size_total = 0;
+static uint16_t session_tbtlist_size_last_total = 0;
+static uint16_t session_tbtlist_size_counter = 0;
+static uint16_t session_tbtlist_item_counter = 0;  // used for counting list items under same list index
+static navilite_tbt_list_type* session_tbtlist_data_ptr = NULL;
 
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
 #define NAVILITE_DEBUG false
+#define NAVILITE_DEBUG_DETAIL false
 
 /*--------------------------------------------------------------------
                               PROCEDURES
@@ -780,15 +786,22 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
     if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_NAVIEVENTTEXTUPDATE )
         {
         uint8_t icon_index = 0;
-        uint8_t distance_str_size = 0;
+        uint32_t distance = 0;
+        uint8_t dist_unit_str_size = 0;
+        uint8_t* dist_unit_str = NULL;
+
         int i = 0;
         // parsing the icon index
         // read one byte for icon index
         icon_index = (uint8_t)data[idx++];
-        // read str size for distance
-        distance_str_size = (uint8_t)data[idx++];
+        // distance
+        distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+        idx+=4;
+        // unit string size
+        dist_unit_str_size = (uint8_t)data[idx++];
+
         // read the str bytes for distance
-        for ( i = 0; i < distance_str_size; i++ )
+        for ( i = 0; i < dist_unit_str_size; i++ )
             {
             navilite_buffer[i] = (uint8_t)data[idx++];
             }
@@ -796,7 +809,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         if( navilite_content_update_callbacks.callback_func_nextturndistance )
             {
             // Callback API for next turn distance notification update
-            navilite_content_update_callbacks.callback_func_nextturndistance( icon_index, (uint8_t*)navilite_buffer, distance_str_size );
+            navilite_content_update_callbacks.callback_func_nextturndistance( icon_index, distance, (uint8_t*)navilite_buffer, dist_unit_str_size );
             }
         }
 

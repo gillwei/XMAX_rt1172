@@ -413,7 +413,7 @@ NAVILITE_PRINTF( "\r\n[NAVILITE-CB] navigation status:%d", is_navigating );
 *********************************************************************/
 static void hmi_update_callback_daynightmode
     (
-    navilite_daynight_type mode
+    navilite_daynight_mode_type mode
     )
 {
 NAVILITE_PRINTF( "\r\n[NAVILITE-CB] daynight mode: %d", mode );
@@ -498,19 +498,26 @@ NAVILITE_PRINTF( "\r\n" );
 * Callback API for next turn distance
 *
 * @param icon_index icon index to show
-* @param distance distance string
-* @param distance_size distance string size
+* @param distance distance variable (uint32_t), requires float conversion
+* @param dist_unit_str unit string (UTF8)
+* @param dist_unit_size unit string size
 *
 *********************************************************************/
 static void hmi_update_callback_nextturndistance
     (
     uint8_t icon_index,
-    uint8_t* distance,
-    uint8_t distance_size
+    uint32_t distance,
+    uint8_t* dist_unit_str,
+    uint8_t dist_unit_size
     )
 {
-NAVILITE_PRINTF( "[NAVILITE-CB] NextTurnDistance icon_index:%d, distance_size:%d, distance_str:", icon_index, distance_size );
-NAVILITE_print_utf8( distance, distance_size );
+// Float value conversion for distance during hmi integration
+// NOTE: since float number console print requires another library, so
+// here uses float value * 100 to show integer value instead without modifying existed project's setting.
+// ex: float float_dist;
+//     float_dist = (float)NAVILITE_bytes_to_float( distance );
+NAVILITE_PRINTF( "[NAVILITE-CB] NextTurnDistance icon_index:%d, distance:%d, dist_unit_size:%d, dist_unit_str:", icon_index, distance, dist_unit_size );
+NAVILITE_print_utf8( dist_unit_str, dist_unit_size );
 NAVILITE_PRINTF( "\r\n" );
 }
 
