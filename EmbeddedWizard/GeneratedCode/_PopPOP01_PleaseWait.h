@@ -102,9 +102,11 @@
 
 /* Deklaration of class : 'Pop::POP01_PleaseWait' */
 EW_DEFINE_FIELDS( PopPOP01_PleaseWait, ComponentsBaseMainBG )
+  EW_PROPERTY( NaviAppConnectedSlot, XSlot )
   EW_OBJECT  ( LoadingText,     ViewsText )
   EW_OBJECT  ( LoadingAnimation, ViewsImage )
   EW_OBJECT  ( ConnectionFailedTimer, CoreTimer )
+  EW_OBJECT  ( NaviConnectUpdateEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( PopPOP01_PleaseWait )
 
 /* Virtual Method Table (VMT) for the class : 'Pop::POP01_PleaseWait' */
@@ -177,6 +179,11 @@ void PopPOP01_PleaseWait_OnLongHomeKeyActivated( PopPOP01_PleaseWait _this );
 /* 'C' function for method : 'Pop::POP01_PleaseWait.OnConnectionFailedUpdateSlot()' */
 void PopPOP01_PleaseWait_OnConnectionFailedUpdateSlot( PopPOP01_PleaseWait _this, 
   XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void PopPOP01_PleaseWait_OnNaviConnectUpdateSlot( PopPOP01_PleaseWait _this, XObject 
+  sender );
 
 #ifdef __cplusplus
   }

@@ -298,6 +298,7 @@ if( NAVILITE_CONN_TBD != mode )
     {
     is_navi_app_connected = true;
     is_navi_app_init_setting_completed = true;
+    EW_notify_connect_status_update();
     }
 }
 
@@ -317,6 +318,7 @@ static void navi_disconnect_update
 PRINTF( "%s: %d\r\n", __FUNCTION__, mode );
 is_navi_app_connected = false;
 is_navi_app_init_setting_completed = false;
+EW_notify_disconnect_status_update();
 }
 
 /*********************************************************************
@@ -760,6 +762,23 @@ void NAVI_stop_map_update
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
 NAVILITE_request_app_stop_imageframe_update();
+}
+
+/*********************************************************************
+*
+* @public
+* NAVI_start_map_update
+*
+* Start map update
+*
+*********************************************************************/
+void NAVI_start_map_update
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+NAVILITE_request_app_start_imageframe_update();
 }
 
 /*********************************************************************

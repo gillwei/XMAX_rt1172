@@ -49,6 +49,7 @@
 #include "_HomeBaseHome.h"
 #include "_NavigationNaviCurrentRoad.h"
 #include "_NavigationNaviETA.h"
+#include "_PopPOP16_NaviLoadingUI.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -131,6 +132,7 @@ EW_DEFINE_FIELDS( NavigationNAV05_TBTView, HomeBaseHome )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( RouteCalProgressUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( NaviDisconnectEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( NavigationNAV05_TBTView )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV05_TBTView' */
@@ -187,6 +189,7 @@ EW_DEFINE_METHODS( NavigationNAV05_TBTView, HomeBaseHome )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
+  EW_METHOD( ReturnToHome,      void )( HomeBaseHome _this )
 EW_END_OF_METHODS( NavigationNAV05_TBTView )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -246,6 +249,14 @@ void NavigationNAV05_TBTView_OnNavigatingStatusUpdateSlot( NavigationNAV05_TBTVi
 
 /* 'C' function for method : 'Navigation::NAV05_TBTView.SetItemBounds()' */
 void NavigationNAV05_TBTView_SetItemBounds( NavigationNAV05_TBTView _this );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV05_TBTView_OnNaviDisconnectUpdateSlot( NavigationNAV05_TBTView _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV05_TBTView.UpdateActiveTbtItem()' */
+void NavigationNAV05_TBTView_UpdateActiveTbtItem( NavigationNAV05_TBTView _this );
 
 #ifdef __cplusplus
   }

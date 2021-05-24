@@ -47,6 +47,7 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
+#include "_PopPOP16_NaviLoadingUI.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 
@@ -101,7 +102,10 @@
 
 /* Deklaration of class : 'Home::BaseHome' */
 EW_DEFINE_FIELDS( HomeBaseHome, ComponentsBaseMainBG )
+  EW_OBJECT  ( NaviConnectFailedTimer, CoreTimer )
+  EW_OBJECT  ( LoadingAnimation, PopPOP16_NaviLoadingUI )
   EW_VARIABLE( HomeType,        XEnum )
+  EW_PROPERTY( AccessNaviView,  XBool )
 EW_END_OF_FIELDS( HomeBaseHome )
 
 /* Virtual Method Table (VMT) for the class : 'Home::BaseHome' */
@@ -158,6 +162,7 @@ EW_DEFINE_METHODS( HomeBaseHome, ComponentsBaseMainBG )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
+  EW_METHOD( ReturnToHome,      void )( HomeBaseHome _this )
 EW_END_OF_METHODS( HomeBaseHome )
 
 /* 'C' function for method : 'Home::BaseHome.OnShortEnterKeyActivated()' */
@@ -169,8 +174,17 @@ void HomeBaseHome_OnShortHomeKeyActivated( HomeBaseHome _this );
 /* 'C' function for method : 'Home::BaseHome.ReturnToHome()' */
 void HomeBaseHome_ReturnToHome( HomeBaseHome _this );
 
+/* Wrapper function for the virtual method : 'Home::BaseHome.ReturnToHome()' */
+void HomeBaseHome__ReturnToHome( void* _this );
+
 /* 'C' function for method : 'Home::BaseHome.GetNextHomeType()' */
 XEnum HomeBaseHome_GetNextHomeType( HomeBaseHome _this, XEnum aCurrentHomeType );
+
+/* 'C' function for method : 'Home::BaseHome.OnSetAccessNaviView()' */
+void HomeBaseHome_OnSetAccessNaviView( HomeBaseHome _this, XBool value );
+
+/* 'C' function for method : 'Home::BaseHome.OnNaviConnectFailedSlot()' */
+void HomeBaseHome_OnNaviConnectFailedSlot( HomeBaseHome _this, XObject sender );
 
 #ifdef __cplusplus
   }

@@ -262,6 +262,10 @@ void ApplicationApplication_SwitchToMeterHome( ApplicationApplication _this );
 void ApplicationApplication_OnVehicleDataReceivedSlot( ApplicationApplication _this, 
   XObject sender );
 
+/* 'C' function for method : 'Application::Application.ShowNaviHome()' */
+void ApplicationApplication_ShowNaviHome( ApplicationApplication _this, XObject 
+  sender );
+
 #ifdef __cplusplus
   }
 #endif

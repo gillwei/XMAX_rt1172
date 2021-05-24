@@ -39,8 +39,18 @@ class Application : Core::Root
         Enum::HomeType.NAVI_NEXT_TURN    == DeviceInterface::SystemDevice.HomeType ||
         Enum::HomeType.NAVI_TURN_BY_TURN == DeviceInterface::SystemDevice.HomeType )
     {
-      //TODO: check if navigation app is connected / destination is set before switching to the navigation group
-      GetRoot().SwitchToDialog( new Pop::POP01_PleaseWait, null, null, null, null, null, null, null, null, null, false );
+      if( DeviceInterface::NavigationDevice.GetNaviConnectStatus() &&
+        DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+      {
+        signal ShowNaviHome;
+      }
+      else
+      {
+        DeviceInterface::NavigationDevice.IsNaviLoadingDialogDisplayed = true;
+        var Pop::POP01_PleaseWait NaviLoadingDialog = new Pop::POP01_PleaseWait;
+        NaviLoadingDialog.NaviAppConnectedSlot = ShowNaviHome;
+        GetRoot().SwitchToDialog( NaviLoadingDialog, null, null, null, null, null, null, null, null, null, false );
+      }
     }
     else
     {
@@ -583,5 +593,29 @@ class Application : Core::Root
         PresentDialog( new YDT::YDT01_Main, null, null, null, null, null, null, null, null, false );
       }
     }
+  }
+
+  $rect <990,620,1190,660>
+  slot ShowNaviHome
+  {
+    var Application::Application App = ( Application::Application )GetRoot();
+    if( null != App )
+    {
+      if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+      {
+        App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+      }
+      else
+      {
+        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+        App.SwitchToHome( Enum::HomeType.NAVI_DEFAULT_VIEW );
+      }
+    }
+  }
+
+  // For Navi Screen
+  note group Note8
+  {
+    attr Bounds = <950,560,1240,690>;
   }
 }

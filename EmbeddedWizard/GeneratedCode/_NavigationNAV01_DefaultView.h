@@ -51,6 +51,7 @@
 #include "_NavigationNaviAlert.h"
 #include "_NavigationNaviCurrentRoad.h"
 #include "_NavigationNaviETA.h"
+#include "_PopPOP16_NaviLoadingUI.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -114,7 +115,6 @@
 /* Deklaration of class : 'Navigation::NAV01_DefaultView' */
 EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( Background,      ViewsRectangle )
-  EW_OBJECT  ( MapUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( MapImage,        ViewsImage )
   EW_OBJECT  ( ArrivalBg,       ViewsRectangle )
   EW_OBJECT  ( ETAComponent,    NavigationNaviETA )
@@ -126,6 +126,10 @@ EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( ZoomOutButton,   ViewsImage )
   EW_OBJECT  ( SpeedLimitIcon,  ViewsImage )
   EW_OBJECT  ( SpeedLimitText,  ViewsText )
+  EW_OBJECT  ( NaviEventObject, NavigationNaviAlert )
+  EW_OBJECT  ( StatusBarShadowImage, ViewsWallpaper )
+  EW_OBJECT  ( Mask,            ViewsRectangle )
+  EW_OBJECT  ( MapUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( CurRdUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( ETAUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( DayNightModeUpdateEventHandler, CoreSystemEventHandler )
@@ -133,15 +137,13 @@ EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( SpeedLimitUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NaviIncidentUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( CurrentRoadShiftEffect, EffectsRectEffect )
-  EW_OBJECT  ( NaviEventObject, NavigationNaviAlert )
-  EW_OBJECT  ( StatusBarShadowImage, ViewsWallpaper )
   EW_OBJECT  ( NaviEventEnLargeEffect, EffectsRectEffect )
   EW_OBJECT  ( NaviEventDismissEffect, EffectsRectEffect )
   EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( SpeedLimitFlickeringTimer, CoreTimer )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NaviDialogEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( Mask,            ViewsRectangle )
+  EW_OBJECT  ( NaviDisconnectEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( MapFrameIdx,     XInt32 )
   EW_VARIABLE( ZoomButtonStatus, XInt32 )
   EW_VARIABLE( IsEventDisplaying, XBool )
@@ -201,6 +203,7 @@ EW_DEFINE_METHODS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
+  EW_METHOD( ReturnToHome,      void )( NavigationNAV01_DefaultView _this )
 EW_END_OF_METHODS( NavigationNAV01_DefaultView )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -217,6 +220,9 @@ void NavigationNAV01_DefaultView_OnShortUpKeyActivated( NavigationNAV01_DefaultV
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnLongEnterKeyActivated()' */
 void NavigationNAV01_DefaultView_OnLongEnterKeyActivated( NavigationNAV01_DefaultView _this );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.ReturnToHome()' */
+void NavigationNAV01_DefaultView_ReturnToHome( NavigationNAV01_DefaultView _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
@@ -295,6 +301,11 @@ void NavigationNAV01_DefaultView_OnNaviDialogEventUpdateSlot( NavigationNAV01_De
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnNaviDialogDismissSlot()' */
 void NavigationNAV01_DefaultView_OnNaviDialogDismissSlot( NavigationNAV01_DefaultView _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV01_DefaultView_OnNaviDisconnectUpdateSlot( NavigationNAV01_DefaultView _this, 
   XObject sender );
 
 #ifdef __cplusplus

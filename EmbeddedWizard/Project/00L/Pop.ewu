@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <10,210,250,250>
 $output false
@@ -414,6 +414,7 @@ class POP01_PleaseWait : Components::BaseMainBG
   inherited method Init()
   {
     trace "Init POP01";
+
   }
 
   $rect <530,340,760,380>
@@ -471,11 +472,34 @@ class POP01_PleaseWait : Components::BaseMainBG
   $rect <530,220,750,260>
   slot OnConnectionFailedUpdateSlot
   {
+    ConnectionFailedTimer.Enabled = false;
     if( null != Owner )
     {
       Owner.SwitchToDialog( new Pop::POP02_ConnectionError, null, null, null, null, null, null, null, null, null, false );
     }
   }
+
+  $rect <780,170,980,210>
+  object Core::SystemEventHandler NaviConnectUpdateEventHandler
+  {
+    preset OnEvent = OnNaviConnectUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.ConnectStatusUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <980,170,1180,210>
+  slot OnNaviConnectUpdateSlot
+  {
+    ConnectionFailedTimer.Enabled = false;
+    signal NaviAppConnectedSlot;
+  }
+
+  $rect <780,300,980,340>
+  property slot NaviAppConnectedSlot;
+
+  $reorder LoadingText 2
+  $reorder LoadingAnimation 2
 }
 
 $rect <10,110,210,150>
@@ -586,12 +610,7 @@ class POP03_HomeOfficeSettingError : Components::BaseMainBG
   slot OnLauncherScreenUpdateSlot
   {
     CountDownTimer.Enabled = false;
-    var Application::Application App = ( Application::Application )GetRoot();
-    if( null != App )
-    {
-      DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
-      App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
-    }
+    signal ReturnToNaviHomeSlot;
   }
 
   $rect <570,150,770,190>
@@ -602,9 +621,58 @@ class POP03_HomeOfficeSettingError : Components::BaseMainBG
   {
     if( pure ErrorMessage != value )
     {
-    // Remember the property's new value.
-    pure ErrorMessage = value;
-    HomeOfficeSettingFailedMessage.String = ErrorMessage;
+      // Remember the property's new value.
+      pure ErrorMessage = value;
+      HomeOfficeSettingFailedMessage.String = ErrorMessage;
     }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,36,480,38>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
+  }
+
+  $rect <570,250,770,290>
+  property slot ReturnToNaviHomeSlot;
+}
+
+$rect <280,60,480,100>
+$output false
+class POP16_NaviLoadingUI : Core::Group
+{
+  $rect <0,250,200,290>
+  inherited property Bounds = <0,0,480,234>;
+
+  $rect <20,20,160,60>
+  object Views::Image NaviLoadingMainBottom
+  {
+    preset Bounds = <0,144,480,234>;
+    preset Bitmap = Resource::MainBG;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle NaviLoadingBlackBG
+  {
+    preset Bounds = <0,0,480,144>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text NaviLoadingText
+  {
+    preset Bounds = <10,118,470,149>;
+    preset String = Strings::GEN_PLEASE_WAIT;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image NaviLoadingAnimation
+  {
+    preset Bounds = <193,18,287,110>;
+    preset Animated = true;
+    preset Bitmap = Resource::LoadingAnimation;
   }
 }

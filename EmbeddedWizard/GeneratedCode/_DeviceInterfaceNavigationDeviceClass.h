@@ -81,7 +81,10 @@ EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( HomeSettingUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( OfficeSettingUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( AlertDistanceUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( ConnectStatusUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( DisconnectStatusUpdateEvent, CoreSystemEvent )
   EW_VARIABLE( CurrentHome,     XEnum )
+  EW_VARIABLE( IsNaviLoadingDialogDisplayed, XBool )
   EW_VARIABLE( IsZoomInOutStatusReceived, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceNavigationDeviceClass )
 
@@ -295,6 +298,29 @@ void DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate( void* _thi
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetAlertDistance()' */
 XString DeviceInterfaceNavigationDeviceClass_GetAlertDistance( DeviceInterfaceNavigationDeviceClass _this );
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyNaviConnectUpdate( DeviceInterfaceNavigationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNaviConnectUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyNaviConnectUpdate( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyNaviConnectUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyNaviConnectUpdate_
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyNaviDisconnectUpdate( DeviceInterfaceNavigationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNaviDisconnectUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyNaviDisconnectUpdate( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyNaviDisconnectUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyNaviDisconnectUpdate_
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StartMapFrameRequest()' */
+void DeviceInterfaceNavigationDeviceClass_StartMapFrameRequest( DeviceInterfaceNavigationDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsTbtMessageDisplayed()' */
 XBool DeviceInterfaceNavigationDeviceClass_IsTbtMessageDisplayed( DeviceInterfaceNavigationDeviceClass _this );

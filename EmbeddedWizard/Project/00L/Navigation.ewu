@@ -4,26 +4,29 @@ $rect <20,20,260,60>
 $output false
 class NAV01_DefaultView : Home::BaseHome
 {
-  $rect <520,670,720,710>
+  $rect <520,700,720,740>
   inherited method Init()
   {
-    if( DeviceInterface::NavigationDevice.IsMapFrameReady() )
-    {
-      if( !Shadow.Visible )
-      {
-        Shadow.Visible = true;
-      }
-      postsignal OnMapUpdateSlot;
-    }
     SetItemBounds();
     signal OnCurRdUpdateSlot;
     signal OnETAUpdateSlot;
     signal OnDayNightModeUpdateSlot;
     signal OnSpeedLimitUpdateSlot;
     signal OnNaviIncidentUpdateSlot;
+
+    if( DeviceInterface::NavigationDevice.IsNaviLoadingDialogDisplayed )
+    {
+      DeviceInterface::NavigationDevice.IsNaviLoadingDialogDisplayed = false;
+      AccessNaviView = false;
+    }
+    else
+    {
+      AccessNaviView = true;
+    }
+    DeviceInterface::NavigationDevice.StartMapFrameRequest();
   }
 
-  $rect <950,670,1180,710>
+  $rect <950,700,1180,740>
   inherited method OnShortDownKeyActivated()
   {
     var Enum::NaviZoomInOutStatusType ZoomInOutStatus = DeviceInterface::NavigationDevice.GetZoomInOutStatus();
@@ -41,7 +44,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <720,670,950,710>
+  $rect <720,700,950,740>
   inherited method OnShortUpKeyActivated()
   {
     var Enum::NaviZoomInOutStatusType ZoomInOutStatus = DeviceInterface::NavigationDevice.GetZoomInOutStatus();
@@ -59,10 +62,11 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <720,710,940,750>
+  $rect <720,740,940,780>
   inherited method OnLongEnterKeyActivated()
   {
-    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    if( !NaviConnectFailedTimer.Enabled &&
+        Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
       if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
       {
@@ -81,38 +85,17 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <730,50,930,90>
-  inherited var HomeType = Enum::HomeType.NAVI_DEFAULT_VIEW;
+  $rect <20,20,160,60>
+  inherited object MainBottomBG;
+
+  $rect <20,20,160,60>
+  inherited object BlackBG;
 
   $rect <20,20,160,60>
   object Views::Rectangle Background
   {
     preset Bounds = <0,38,480,272>;
     preset Color = #000000FF;
-  }
-
-  $rect <520,50,720,90>
-  var int32 MapFrameIdx = 0;
-
-  $rect <520,190,750,230>
-  object Core::SystemEventHandler MapUpdateEventHandler
-  {
-    preset OnEvent = OnMapUpdateSlot;
-    preset Event = DeviceInterface::NavigationDevice.MapUpdateEvent;
-  }
-
-  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
-  // receives an event.
-  $rect <750,190,990,230>
-  slot OnMapUpdateSlot
-  {
-    if( !Shadow.Visible )
-    {
-      Shadow.Visible = true;
-    }
-
-    MapFrameIdx = MapFrameIdx + 1;
-    Resource::ExternBitmap.Name = "Map" + string( MapFrameIdx );
   }
 
   $rect <20,20,160,60>
@@ -203,6 +186,74 @@ class NAV01_DefaultView : Home::BaseHome
     preset Visible = false;
   }
 
+  $rect <20,20,160,60>
+  object Navigation::NaviAlert NaviEventObject
+  {
+    preset Bounds = <480,226,480,272>;
+    preset DismissAlertSignal = DismissAlert;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Wallpaper StatusBarShadowImage
+  {
+    preset Bounds = <0,38,480,49>;
+    preset Bitmap = Resource::StatusBarShadow;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Mask
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #00000080;
+    preset Visible = false;
+  }
+
+  $rect <520,930,720,970>
+  inherited method ReturnToHome()
+  {
+    super();
+    AccessNaviView = true;
+    LoadingAnimation.Visible = true;
+    DeviceInterface::NavigationDevice.StartMapFrameRequest();
+  }
+
+  $rect <730,50,930,90>
+  inherited var HomeType = Enum::HomeType.NAVI_DEFAULT_VIEW;
+
+  $rect <20,20,160,60>
+  inherited object LoadingAnimation
+  {
+    preset StackingPriority = 1;
+  }
+
+  $rect <520,50,720,90>
+  var int32 MapFrameIdx = 0;
+
+  $rect <520,190,750,230>
+  object Core::SystemEventHandler MapUpdateEventHandler
+  {
+    preset OnEvent = OnMapUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.MapUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <750,190,990,230>
+  slot OnMapUpdateSlot
+  {
+    if( DeviceInterface::NavigationDevice.IsMapFrameReady() )
+    {
+      if( !Shadow.Visible )
+      {
+        Shadow.Visible = true;
+      }
+      AccessNaviView = false;
+
+      MapFrameIdx = MapFrameIdx + 1;
+      Resource::ExternBitmap.Name = "Map" + string( MapFrameIdx );
+    }
+  }
+
   $rect <520,310,740,350>
   object Core::SystemEventHandler CurRdUpdateEventHandler
   {
@@ -268,7 +319,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <720,760,920,800>
+  $rect <720,790,920,830>
   method void StartHighlight()
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.DAYNIGHT );
@@ -305,7 +356,7 @@ class NAV01_DefaultView : Home::BaseHome
     HighlightTimer.Enabled = true;
   }
 
-  $rect <520,760,710,800>
+  $rect <520,790,710,830>
   object Core::Timer HighlightTimer
   {
     preset OnTrigger = OnHighlightEndSlot;
@@ -313,7 +364,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Enabled = false;
   }
 
-  $rect <930,760,1130,800>
+  $rect <930,790,1130,830>
   slot OnHighlightEndSlot
   {
     HighlightTimer.Enabled = false;
@@ -440,20 +491,6 @@ class NAV01_DefaultView : Home::BaseHome
     CurrentRoadShiftEffect.Enabled = false;
   }
 
-  $rect <20,20,160,60>
-  object Navigation::NaviAlert NaviEventObject
-  {
-    preset Bounds = <480,226,480,272>;
-    preset DismissAlertSignal = DismissAlert;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Wallpaper StatusBarShadowImage
-  {
-    preset Bounds = <0,38,480,49>;
-    preset Bitmap = Resource::StatusBarShadow;
-  }
-
   $rect <1050,230,1250,270>
   object Effects::RectEffect NaviEventEnLargeEffect
   {
@@ -556,14 +593,14 @@ class NAV01_DefaultView : Home::BaseHome
     signal OnETAUpdateSlot;
   }
 
-  $rect <520,820,710,860>
+  $rect <520,850,710,890>
   object Core::Timer SpeedLimitFlickeringTimer
   {
     preset OnTrigger = OnSpeedLimitFlickeringSlot;
     preset Period = 300;
   }
 
-  $rect <720,820,920,860>
+  $rect <720,850,920,890>
   slot OnSpeedLimitFlickeringSlot
   {
     SpeedLimitIcon.Visible = !SpeedLimitIcon.Visible;
@@ -579,7 +616,7 @@ class NAV01_DefaultView : Home::BaseHome
   // System Event
   note group Note7
   {
-    attr Bounds = <500,150,1020,590>;
+    attr Bounds = <500,150,1020,640>;
   }
 
   // Rider Alert Animation
@@ -591,7 +628,7 @@ class NAV01_DefaultView : Home::BaseHome
   // Method
   note group Note9
   {
-    attr Bounds = <500,620,1380,890>;
+    attr Bounds = <500,650,1380,1000>;
   }
 
   $rect <520,480,720,520>
@@ -614,7 +651,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <1140,820,1340,860>
+  $rect <1140,850,1340,890>
   method void SetItemBounds()
   {
     if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
@@ -683,20 +720,46 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <20,20,160,60>
-  object Views::Rectangle Mask
-  {
-    preset Bounds = <0,0,480,272>;
-    preset Color = #00000080;
-    preset Visible = false;
-  }
-
-  $rect <930,820,1130,860>
+  $rect <930,850,1130,890>
   slot OnNaviDialogDismissSlot
   {
     Mask.Visible = false;
 
   }
+
+  $rect <520,580,720,620>
+  object Core::SystemEventHandler NaviDisconnectEventHandler
+  {
+    preset OnEvent = OnNaviDisconnectUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.DisconnectStatusUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <730,580,930,620>
+  slot OnNaviDisconnectUpdateSlot
+  {
+    if( null != Owner )
+    {
+      Owner.SwitchToDialog( new Pop::POP02_ConnectionError, null, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
+  $reorder Background 17
+  $reorder MapImage 17
+  $reorder ArrivalBg 17
+  $reorder ETAComponent 17
+  $reorder RoadNameBg 17
+  $reorder CurrentRoadWithGuide 17
+  $reorder CurrentRoadWithOutGuide 17
+  $reorder Shadow 17
+  $reorder ZoomInButton 17
+  $reorder ZoomOutButton 17
+  $reorder SpeedLimitIcon 17
+  $reorder SpeedLimitText 17
+  $reorder NaviEventObject 17
+  $reorder StatusBarShadowImage 17
+  $reorder Mask 17
 }
 
 $rect <20,80,260,120>
@@ -715,7 +778,15 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
   $rect <250,300,480,340>
   inherited method OnShortHomeKeyActivated()
   {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
+    var Launcher::LNC_Main LauncherMain = ( Launcher::LNC_Main )Owner;
+    if( null != LauncherMain )
+    {
+      Owner.DismissDialog( this, null, null, null, null, null, false );
+    }
+    else
+    {
+      signal ReturnToNaviHome;
+    }
   }
 
   $rect <520,110,720,150>
@@ -850,16 +921,13 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
           SelectedItem == Enum::NaviSettingItem.GoHome )
       {
         SelectedItem = Enum::NaviSettingItem.TOTAL;
-        var Application::Application App = ( Application::Application )GetRoot();
-        if( null != App )
-        {
-          DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
-          App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
-        }
+        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+        signal ReturnToNaviHome;
       }
       else
       {
         var Pop::POP03_HomeOfficeSettingError HomeSettingError = new Pop::POP03_HomeOfficeSettingError;
+        HomeSettingError.ReturnToNaviHomeSlot = ReturnToNaviHome;
         HomeSettingError.ErrorMessage = Strings::POP03_NO_HOME_LOCATION;
         PresentDialog( HomeSettingError, null, null, null, null, null, null, null, null, false );
       }
@@ -890,16 +958,13 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
           SelectedItem == Enum::NaviSettingItem.GoToWork )
       {
         SelectedItem = Enum::NaviSettingItem.TOTAL;
-        var Application::Application App = ( Application::Application )GetRoot();
-        if( null != App )
-        {
-          DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
-          App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
-        }
+        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+        signal ReturnToNaviHome;
       }
       else
       {
         var Pop::POP03_HomeOfficeSettingError OfficeSettingError = new Pop::POP03_HomeOfficeSettingError;
+        OfficeSettingError.ReturnToNaviHomeSlot = ReturnToNaviHome;
         OfficeSettingError.ErrorMessage = Strings::POP03_NO_OFFICE_LOCATION;
         PresentDialog( OfficeSettingError, null, null, null, null, null, null, null, null, false );
       }
@@ -926,12 +991,8 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
         SelectedItem == Enum::NaviSettingItem.StopNavigation )
     {
       SelectedItem = Enum::NaviSettingItem.TOTAL;
-      var Application::Application App = ( Application::Application )GetRoot();
-      if( null != App )
-      {
-        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
-        App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
-      }
+      DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+      signal ReturnToNaviHome;
     }
     else
     {
@@ -955,11 +1016,7 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
     if( SelectedItem == Enum::NaviSettingItem.SkipNextStop )
     {
       SelectedItem = Enum::NaviSettingItem.TOTAL;
-      var Application::Application App = ( Application::Application )GetRoot();
-      if( null != App )
-      {
-        App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
-      }
+      signal ReturnToNaviHome;
     }
     else
     {
@@ -971,7 +1028,7 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
   $rect <10,420,210,460>
   var Enum::NaviSettingItem SelectedItem = Enum::NaviSettingItem.TOTAL;
 
-  $rect <247,366,447,406>
+  $rect <10,470,210,510>
   method void SetNaviSettingMenuItem()
   {
     var int32 i;
@@ -1017,6 +1074,16 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
     }
 
     Menu.NoOfItems = NoOfItems;
+  }
+
+  $rect <280,420,480,460>
+  slot ReturnToNaviHome
+  {
+    var Application::Application App = ( Application::Application )GetRoot();
+    if( null != App )
+    {
+      App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+    }
   }
 }
 
@@ -1722,6 +1789,20 @@ class NAV05_TBTView : Home::BaseHome
     signal OnNavigatingStatusUpdateSlot;
     signal OnTbtListUpdateSlot;
     signal OnSpeedLimitUpdateSlot;
+
+    // If there is no route guidance, LC will not receive tbt data. Therefore, we don't need loading animation.
+    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    {
+      if( DeviceInterface::NavigationDevice.IsNaviLoadingDialogDisplayed )
+      {
+        DeviceInterface::NavigationDevice.IsNaviLoadingDialogDisplayed = false;
+        AccessNaviView = false;
+      }
+      else
+      {
+        AccessNaviView = true;
+      }
+    }
   }
 
   $rect <0,300,200,340>
@@ -1730,7 +1811,8 @@ class NAV05_TBTView : Home::BaseHome
   $rect <740,530,940,570>
   inherited method OnLongEnterKeyActivated()
   {
-    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    if( !NaviConnectFailedTimer.Enabled &&
+        Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
       if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
       {
@@ -1742,8 +1824,6 @@ class NAV05_TBTView : Home::BaseHome
       }
       else
       {
-        // Leave navigation home screen so that stop map frame request.
-        DeviceInterface::NavigationDevice.StopMapFrameRequest();
         PresentDialog( new Navigation::NAV06_NaviSettingMenu, null, null, null, null, null, null, null, null, false );
       }
     }
@@ -1903,7 +1983,7 @@ class NAV05_TBTView : Home::BaseHome
   // Method
   note group Note8
   {
-    attr Bounds = <500,490,1380,670>;
+    attr Bounds = <500,490,1370,680>;
   }
 
   $rect <520,310,720,350>
@@ -1918,37 +1998,16 @@ class NAV05_TBTView : Home::BaseHome
   $rect <730,310,960,350>
   slot OnTbtListUpdateSlot
   {
-    // The top item of tbt list is always the active tbt item.
-    var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( 0 );
-    ShowNextTurnIcon( NaviTbtData.IconIdx );
-
-    if( !NextTurnDist.Visible )
+    // Receive tbt data so that hide loading animation.
+    if( NaviConnectFailedTimer.Enabled )
     {
-      NextTurnDist.Visible = true;
+      AccessNaviView = false;
     }
 
-    if( !NextTurnDistUnit.Visible )
+    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
     {
-      NextTurnDistUnit.Visible = true;
+      UpdateActiveTbtItem();
     }
-
-    if( !NextTurnDescription.Visible )
-    {
-      NextTurnDescription.Visible = true;
-    }
-
-    NextTurnDistUnit.String = NaviTbtData.DistUnit;
-
-    if( 0.0 == NaviTbtData.Distance.fract )
-    {
-      NextTurnDist.String = string( (int32)NaviTbtData.Distance );
-    }
-    else
-    {
-      NextTurnDist.String = string( NaviTbtData.Distance, 0 , 1 );
-    }
-
-    NextTurnDescription.String = NaviTbtData.TbtDescription;
   }
 
   $rect <950,530,1150,570>
@@ -2168,6 +2227,107 @@ class NAV05_TBTView : Home::BaseHome
       ArrivalBg.Visible = false;
     }
   }
+
+  $rect <990,320,1190,360>
+  object Core::SystemEventHandler NaviDisconnectEventHandler
+  {
+    preset OnEvent = OnNaviDisconnectUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.DisconnectStatusUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <1200,320,1400,360>
+  slot OnNaviDisconnectUpdateSlot
+  {
+    if( null != Owner )
+    {
+      Owner.SwitchToDialog( new Pop::POP02_ConnectionError, null, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
+  $rect <1160,590,1360,630>
+  method void UpdateActiveTbtItem()
+  {
+    // The top item of tbt list is always the active tbt item.
+    var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( 0 );
+    ShowNextTurnIcon( NaviTbtData.IconIdx );
+
+    if( !NextTurnDist.Visible )
+    {
+      NextTurnDist.Visible = true;
+    }
+
+    if( !NextTurnDistUnit.Visible )
+    {
+      NextTurnDistUnit.Visible = true;
+    }
+
+    if( !NextTurnDescription.Visible )
+    {
+      NextTurnDescription.Visible = true;
+    }
+
+    NextTurnDistUnit.String = NaviTbtData.DistUnit;
+
+    if( 0.0 == NaviTbtData.Distance.fract )
+    {
+      NextTurnDist.String = string( (int32)NaviTbtData.Distance );
+    }
+    else
+    {
+      NextTurnDist.String = string( NaviTbtData.Distance, 0 , 1 );
+    }
+
+    NextTurnDescription.String = NaviTbtData.TbtDescription;
+  }
+
+  $rect <20,20,160,60>
+  inherited object LoadingAnimation
+  {
+    preset StackingPriority = 1;
+  }
+
+  $reorder NaviConnectFailedTimer 4
+  $reorder OnNaviConnectFailedSlot 4
+  $reorder NaviTBTViewBg 4
+  $reorder ArrivalBg 4
+  $reorder ETAComponent 4
+  $reorder RoadNameBg 4
+  $reorder CurrentRoadComponent 4
+  $reorder SpeedLimitIcon 4
+  $reorder SpeedLimitText 4
+  $reorder NextTurnDist 4
+  $reorder NextTurnDistUnit 4
+  $reorder NextTurnDescription 4
+  $reorder NextTurnIcon 4
+  $reorder Note6 4
+  $reorder Note7 4
+  $reorder ETAUpdateEventHandler 4
+  $reorder OnETAUpdateSlot 4
+  $reorder CurRdUpdateEventHandler 4
+  $reorder OnCurRdUpdateSlot 4
+  $reorder RecalculateMessage 4
+  $reorder Note8 4
+  $reorder TbtListUpdateEventHandler 4
+  $reorder OnTbtListUpdateSlot 4
+  $reorder ShowNextTurnIcon 4
+  $reorder SpeedLimitUpdateEventHandler 4
+  $reorder OnSpeedLimitUpdateSlot 4
+  $reorder SpeedLimitFlickeringTimer 4
+  $reorder OnSpeedLimitFlickeringSlot 4
+  $reorder VehicleDataReceivedEventHandler 4
+  $reorder OnVehicleSpeedUpdateSlot 4
+  $reorder Note5 4
+  $reorder RouteCalProgressUpdateEventHandler 4
+  $reorder OnRouteCalProgressUpdateSlot 4
+  $reorder SetRecalculatingStatus 4
+  $reorder NavigatingStatusUpdateEventHandler 4
+  $reorder OnNavigatingStatusUpdateSlot 4
+  $reorder SetItemBounds 4
+  $reorder NaviDisconnectEventHandler 4
+  $reorder OnNaviDisconnectUpdateSlot 4
+  $reorder UpdateActiveTbtItem 4
 }
 
 $rect <290,70,490,110>
@@ -2179,6 +2339,20 @@ class NAV03_TBTListView : Home::BaseHome
   {
     trace "TBT List View init";
     signal OnTbtListUpdateSlot;
+
+    // If there is no route guidance, LC will not receive tbt data. Therefore, we don't need loading animation.
+    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    {
+      if( DeviceInterface::NavigationDevice.IsNaviLoadingDialogDisplayed )
+      {
+        DeviceInterface::NavigationDevice.IsNaviLoadingDialogDisplayed = false;
+        AccessNaviView = false;
+      }
+      else
+      {
+        AccessNaviView = true;
+      }
+    }
   }
 
   $rect <740,290,940,330>
@@ -2196,7 +2370,8 @@ class NAV03_TBTListView : Home::BaseHome
   $rect <740,240,940,280>
   inherited method OnLongEnterKeyActivated()
   {
-    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    if( !NaviConnectFailedTimer.Enabled &&
+        Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
       if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
       {
@@ -2208,8 +2383,6 @@ class NAV03_TBTListView : Home::BaseHome
       }
       else
       {
-        // Leave navigation home screen so that stop map frame request.
-        DeviceInterface::NavigationDevice.StopMapFrameRequest();
         PresentDialog( new Navigation::NAV06_NaviSettingMenu, null, null, null, null, null, null, null, null, false );
       }
     }
@@ -2230,7 +2403,7 @@ class NAV03_TBTListView : Home::BaseHome
   // Method
   note group Note8
   {
-    attr Bounds = <510,200,1230,360>;
+    attr Bounds = <510,200,1230,400>;
   }
 
   $rect <20,20,160,60>
@@ -2243,10 +2416,10 @@ class NAV03_TBTListView : Home::BaseHome
   // System Event
   note group Note7
   {
-    attr Bounds = <510,380,1230,550>;
+    attr Bounds = <510,420,1230,740>;
   }
 
-  $rect <530,420,730,460>
+  $rect <530,460,730,500>
   object Core::SystemEventHandler TbtListUpdateEventHandler
   {
     preset OnEvent = OnTbtListUpdateSlot;
@@ -2255,15 +2428,25 @@ class NAV03_TBTListView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <740,420,940,460>
+  $rect <740,460,940,500>
   slot OnTbtListUpdateSlot
   {
+    // Receive tbt data so that hide loading animation.
+    if( NaviConnectFailedTimer.Enabled )
+    {
+      AccessNaviView = false;
+    }
+
     if( DeviceInterface::NavigationDevice.IsTbtMessageDisplayed() )
     {
     // TODO: show message to inform user that there are more TBT items.
     }
-    TbtList.NoOfItems = DeviceInterface::NavigationDevice.GetTbtListSize();
-    TbtList.InvalidateItems( 0, TbtList.NoOfItems-1 );
+
+    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    {
+      TbtList.NoOfItems = DeviceInterface::NavigationDevice.GetTbtListSize();
+      TbtList.InvalidateItems( 0, TbtList.NoOfItems-1 );
+    }
   }
 
   // TODO:
@@ -2279,7 +2462,7 @@ class NAV03_TBTListView : Home::BaseHome
     attr Bounds = <510,50,1230,160>;
   }
 
-  $rect <530,470,740,510>
+  $rect <530,510,740,550>
   object Core::SystemEventHandler NavigatingStatusUpdateEventHandler
   {
     preset OnEvent = OnNavigatingStatusUpdateSlot;
@@ -2288,13 +2471,32 @@ class NAV03_TBTListView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,470,990,510>
+  $rect <750,510,990,550>
   slot OnNavigatingStatusUpdateSlot
   {
     // Clear all items displayed on the tbt list.
     if( !DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
     {
       TbtList.NoOfItems = 0;
+      // TODO: return to default view when route is finished. Need to consider how to handle start a new route/add as next stop/add as last stop.
+    }
+  }
+
+  $rect <530,650,730,690>
+  object Core::SystemEventHandler NaviDisconnectEventHandler
+  {
+    preset OnEvent = OnNaviDisconnectUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.DisconnectStatusUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <740,650,940,690>
+  slot OnNaviDisconnectUpdateSlot
+  {
+    if( null != Owner )
+    {
+      Owner.SwitchToDialog( new Pop::POP02_ConnectionError, null, null, null, null, null, null, null, null, null, false );
     }
   }
 
@@ -2305,6 +2507,27 @@ class NAV03_TBTListView : Home::BaseHome
     preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
     preset Bitmap = Resource::StatusBarDivider;
   }
+
+  $rect <20,20,160,60>
+  inherited object LoadingAnimation
+  {
+    preset StackingPriority = 1;
+  }
+
+  $reorder NaviConnectFailedTimer 4
+  $reorder OnNaviConnectFailedSlot 4
+  $reorder Note8 4
+  $reorder TbtList 4
+  $reorder Note7 4
+  $reorder TbtListUpdateEventHandler 4
+  $reorder OnTbtListUpdateSlot 4
+  $reorder Note5 4
+  $reorder Note6 4
+  $reorder NavigatingStatusUpdateEventHandler 4
+  $reorder OnNavigatingStatusUpdateSlot 4
+  $reorder NaviDisconnectEventHandler 4
+  $reorder OnNaviDisconnectUpdateSlot 4
+  $reorder Divider 4
 }
 
 $rect <500,20,700,60>
@@ -2812,10 +3035,6 @@ class TbtListMenu : Core::Group
     }
   }
 }
-
-$rect <720,360,920,400>
-$output false
-const string DISTANCE_UNIT_MILE = "mi";
 
 $rect <720,430,920,470>
 $output false

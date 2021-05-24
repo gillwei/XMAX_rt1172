@@ -1315,19 +1315,19 @@ class NavigationDeviceClass : Templates::DeviceClass
   $rect <710,90,910,130>
   var bool IsZoomInOutStatusReceived = true;
 
-  $rect <240,710,440,750>
+  $rect <230,690,430,730>
   object Core::SystemEvent AlertDistanceUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <30,710,230,750>
+  $rect <20,690,220,730>
   $output true
   method void NotifyAlertDistanceUpdate()
   {
     AlertDistanceUpdateEvent.Trigger( null, false );
   }
 
-  $rect <470,720,670,760>
+  $rect <460,690,660,730>
   method string GetAlertDistance()
   {
     $if !$prototyper
@@ -1339,6 +1339,41 @@ class NavigationDeviceClass : Templates::DeviceClass
         Dist = EwNewStringUtf8( ( const unsigned char* )dist, ( int )strlen( dist ) );
       }
       return Dist;
+    $endif
+  }
+
+  $rect <220,760,420,800>
+  object Core::SystemEvent ConnectStatusUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,760,220,800>
+  $output true
+  method void NotifyNaviConnectUpdate()
+  {
+    ConnectStatusUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <220,810,420,850>
+  object Core::SystemEvent DisconnectStatusUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <20,810,220,850>
+  $output true
+  method void NotifyNaviDisconnectUpdate()
+  {
+    DisconnectStatusUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <920,150,1120,190>
+  method void StartMapFrameRequest()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_start_map_update();
+      }
     $endif
   }
 
@@ -1371,6 +1406,9 @@ class NavigationDeviceClass : Templates::DeviceClass
       return 0;
     $endif
   }
+
+  $rect <920,40,1120,80>
+  var bool IsNaviLoadingDialogDisplayed = false;
 }
 
 $rect <20,340,230,380>

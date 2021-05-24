@@ -44,6 +44,7 @@
 #include "_PopPOP07_TROUBLE_SHOOTING.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
 #include "_PopPOP09_POP14_BleConnectionErrorUI.h"
+#include "_PopPOP16_NaviLoadingUI.h"
 #include "_PopPOP17_AppInitSettingError.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
@@ -98,6 +99,11 @@ static const XRect _Const001A = {{ 0, 257 }, { 480, 261 }};
 static const XStringRes _Const001B = { _StringsDefault0, 0x000F };
 static const XRect _Const001C = {{ 10, 46 }, { 470, 170 }};
 static const XRect _Const001D = {{ 0, 36 }, { 480, 38 }};
+static const XRect _Const001E = {{ 0, 0 }, { 480, 234 }};
+static const XRect _Const001F = {{ 0, 144 }, { 480, 234 }};
+static const XRect _Const0020 = {{ 0, 0 }, { 480, 144 }};
+static const XRect _Const0021 = {{ 10, 118 }, { 470, 149 }};
+static const XRect _Const0022 = {{ 193, 18 }, { 287, 110 }};
 
 /* Initializer for the class 'Pop::POP08_WeatherLoadingUI' */
 void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject aLink, XHandle aArg )
@@ -912,6 +918,7 @@ void PopPOP01_PleaseWait__Init( PopPOP01_PleaseWait _this, XObject aLink, XHandl
   ViewsText__Init( &_this->LoadingText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->ConnectionFailedTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->NaviConnectUpdateEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( PopPOP01_PleaseWait );
@@ -933,6 +940,9 @@ void PopPOP01_PleaseWait__Init( PopPOP01_PleaseWait _this, XObject aLink, XHandl
   ViewsImage_OnSetBitmap( &_this->LoadingAnimation, EwLoadResource( &ResourceLoadingAnimation, 
   ResourcesBitmap ));
   _this->ConnectionFailedTimer.OnTrigger = EwNewSlot( _this, PopPOP01_PleaseWait_OnConnectionFailedUpdateSlot );
+  _this->NaviConnectUpdateEventHandler.OnEvent = EwNewSlot( _this, PopPOP01_PleaseWait_OnNaviConnectUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->NaviConnectUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->ConnectStatusUpdateEvent );
 
   /* Call the user defined constructor */
   PopPOP01_PleaseWait_Init( _this, aArg );
@@ -948,6 +958,7 @@ void PopPOP01_PleaseWait__ReInit( PopPOP01_PleaseWait _this )
   ViewsText__ReInit( &_this->LoadingText );
   ViewsImage__ReInit( &_this->LoadingAnimation );
   CoreTimer__ReInit( &_this->ConnectionFailedTimer );
+  CoreSystemEventHandler__ReInit( &_this->NaviConnectUpdateEventHandler );
 }
 
 /* Finalizer method for the class 'Pop::POP01_PleaseWait' */
@@ -960,6 +971,7 @@ void PopPOP01_PleaseWait__Done( PopPOP01_PleaseWait _this )
   ViewsText__Done( &_this->LoadingText );
   ViewsImage__Done( &_this->LoadingAnimation );
   CoreTimer__Done( &_this->ConnectionFailedTimer );
+  CoreSystemEventHandler__Done( &_this->NaviConnectUpdateEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
@@ -1002,9 +1014,23 @@ void PopPOP01_PleaseWait_OnConnectionFailedUpdateSlot( PopPOP01_PleaseWait _this
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
+  CoreTimer_OnSetEnabled( &_this->ConnectionFailedTimer, 0 );
+
   if ( _this->Super5.Owner != 0 )
     CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( PopPOP02_ConnectionError, 
     0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void PopPOP01_PleaseWait_OnNaviConnectUpdateSlot( PopPOP01_PleaseWait _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  CoreTimer_OnSetEnabled( &_this->ConnectionFailedTimer, 0 );
+  EwSignal( _this->NaviAppConnectedSlot, ((XObject)_this ));
 }
 
 /* Variants derived from the class : 'Pop::POP01_PleaseWait' */
@@ -1012,8 +1038,8 @@ EW_DEFINE_CLASS_VARIANTS( PopPOP01_PleaseWait )
 EW_END_OF_CLASS_VARIANTS( PopPOP01_PleaseWait )
 
 /* Virtual Method Table (VMT) for the class : 'Pop::POP01_PleaseWait' */
-EW_DEFINE_CLASS( PopPOP01_PleaseWait, ComponentsBaseMainBG, LoadingText, LoadingText, 
-                 LoadingText, LoadingText, _.VMT, _.VMT, "Pop::POP01_PleaseWait" )
+EW_DEFINE_CLASS( PopPOP01_PleaseWait, ComponentsBaseMainBG, NaviAppConnectedSlot, 
+                 NaviAppConnectedSlot, LoadingText, LoadingText, _.VMT, _.VMT, "Pop::POP01_PleaseWait" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1332,6 +1358,7 @@ void PopPOP03_HomeOfficeSettingError__Init( PopPOP03_HomeOfficeSettingError _thi
   /* ... then construct all embedded objects */
   ViewsText__Init( &_this->HomeOfficeSettingFailedMessage, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( PopPOP03_HomeOfficeSettingError );
@@ -1342,10 +1369,16 @@ void PopPOP03_HomeOfficeSettingError__Init( PopPOP03_HomeOfficeSettingError _thi
   ViewsText_OnSetString( &_this->HomeOfficeSettingFailedMessage, 0 );
   CoreTimer_OnSetPeriod( &_this->CountDownTimer, 2000 );
   CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const001D );
+  ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
+  | ViewsImageAlignmentScaleToFit );
   CoreGroup__Add( _this, ((CoreView)&_this->HomeOfficeSettingFailedMessage ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
   ViewsText_OnSetFont( &_this->HomeOfficeSettingFailedMessage, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->CountDownTimer.OnTrigger = EwNewSlot( _this, PopPOP03_HomeOfficeSettingError_OnLauncherScreenUpdateSlot );
+  ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
+  ResourcesBitmap ));
 }
 
 /* Re-Initializer for the class 'Pop::POP03_HomeOfficeSettingError' */
@@ -1357,6 +1390,7 @@ void PopPOP03_HomeOfficeSettingError__ReInit( PopPOP03_HomeOfficeSettingError _t
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->HomeOfficeSettingFailedMessage );
   CoreTimer__ReInit( &_this->CountDownTimer );
+  ViewsImage__ReInit( &_this->Divider );
 }
 
 /* Finalizer method for the class 'Pop::POP03_HomeOfficeSettingError' */
@@ -1368,6 +1402,7 @@ void PopPOP03_HomeOfficeSettingError__Done( PopPOP03_HomeOfficeSettingError _thi
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->HomeOfficeSettingFailedMessage );
   CoreTimer__Done( &_this->CountDownTimer );
+  ViewsImage__Done( &_this->Divider );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
@@ -1377,21 +1412,11 @@ void PopPOP03_HomeOfficeSettingError__Done( PopPOP03_HomeOfficeSettingError _thi
 void PopPOP03_HomeOfficeSettingError_OnLauncherScreenUpdateSlot( PopPOP03_HomeOfficeSettingError _this, 
   XObject sender )
 {
-  ApplicationApplication App;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
   CoreTimer_OnSetEnabled( &_this->CountDownTimer, 0 );
-  App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
-
-  if ( App != 0 )
-  {
-    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
-    = EnumHomeTypeNAVI_DEFAULT_VIEW;
-    ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-    DeviceInterfaceNavigationDeviceClass )->CurrentHome );
-  }
+  EwSignal( _this->ReturnToNaviHomeSlot, ((XObject)_this ));
 }
 
 /* 'C' function for method : 'Pop::POP03_HomeOfficeSettingError.OnSetErrorMessage()' */
@@ -1410,9 +1435,9 @@ EW_DEFINE_CLASS_VARIANTS( PopPOP03_HomeOfficeSettingError )
 EW_END_OF_CLASS_VARIANTS( PopPOP03_HomeOfficeSettingError )
 
 /* Virtual Method Table (VMT) for the class : 'Pop::POP03_HomeOfficeSettingError' */
-EW_DEFINE_CLASS( PopPOP03_HomeOfficeSettingError, ComponentsBaseMainBG, HomeOfficeSettingFailedMessage, 
-                 HomeOfficeSettingFailedMessage, HomeOfficeSettingFailedMessage, 
-                 HomeOfficeSettingFailedMessage, ErrorMessage, _.VMT, "Pop::POP03_HomeOfficeSettingError" )
+EW_DEFINE_CLASS( PopPOP03_HomeOfficeSettingError, ComponentsBaseMainBG, ReturnToNaviHomeSlot, 
+                 ReturnToNaviHomeSlot, HomeOfficeSettingFailedMessage, HomeOfficeSettingFailedMessage, 
+                 ErrorMessage, _.VMT, "Pop::POP03_HomeOfficeSettingError" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1456,5 +1481,112 @@ EW_DEFINE_CLASS( PopPOP03_HomeOfficeSettingError, ComponentsBaseMainBG, HomeOffi
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( PopPOP03_HomeOfficeSettingError )
+
+/* Initializer for the class 'Pop::POP16_NaviLoadingUI' */
+void PopPOP16_NaviLoadingUI__Init( PopPOP16_NaviLoadingUI _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP16_NaviLoadingUI );
+
+  /* ... then construct all embedded objects */
+  ViewsImage__Init( &_this->NaviLoadingMainBottom, &_this->_.XObject, 0 );
+  ViewsRectangle__Init( &_this->NaviLoadingBlackBG, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->NaviLoadingText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->NaviLoadingAnimation, &_this->_.XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( PopPOP16_NaviLoadingUI );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const001E );
+  CoreRectView__OnSetBounds( &_this->NaviLoadingMainBottom, _Const001F );
+  CoreRectView__OnSetBounds( &_this->NaviLoadingBlackBG, _Const0020 );
+  ViewsRectangle_OnSetColor( &_this->NaviLoadingBlackBG, _Const0004 );
+  CoreRectView__OnSetBounds( &_this->NaviLoadingText, _Const0021 );
+  ViewsText_OnSetString( &_this->NaviLoadingText, EwLoadString( &StringsGEN_PLEASE_WAIT ));
+  CoreRectView__OnSetBounds( &_this->NaviLoadingAnimation, _Const0022 );
+  ViewsImage_OnSetAnimated( &_this->NaviLoadingAnimation, 1 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingMainBottom ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingBlackBG ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingAnimation ), 0 );
+  ViewsImage_OnSetBitmap( &_this->NaviLoadingMainBottom, EwLoadResource( &ResourceMainBG, 
+  ResourcesBitmap ));
+  ViewsText_OnSetFont( &_this->NaviLoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsImage_OnSetBitmap( &_this->NaviLoadingAnimation, EwLoadResource( &ResourceLoadingAnimation, 
+  ResourcesBitmap ));
+}
+
+/* Re-Initializer for the class 'Pop::POP16_NaviLoadingUI' */
+void PopPOP16_NaviLoadingUI__ReInit( PopPOP16_NaviLoadingUI _this )
+{
+  /* At first re-initialize the super class ... */
+  CoreGroup__ReInit( &_this->_.Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsImage__ReInit( &_this->NaviLoadingMainBottom );
+  ViewsRectangle__ReInit( &_this->NaviLoadingBlackBG );
+  ViewsText__ReInit( &_this->NaviLoadingText );
+  ViewsImage__ReInit( &_this->NaviLoadingAnimation );
+}
+
+/* Finalizer method for the class 'Pop::POP16_NaviLoadingUI' */
+void PopPOP16_NaviLoadingUI__Done( PopPOP16_NaviLoadingUI _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
+
+  /* Finalize all embedded objects */
+  ViewsImage__Done( &_this->NaviLoadingMainBottom );
+  ViewsRectangle__Done( &_this->NaviLoadingBlackBG );
+  ViewsText__Done( &_this->NaviLoadingText );
+  ViewsImage__Done( &_this->NaviLoadingAnimation );
+
+  /* Don't forget to deinitialize the super class ... */
+  CoreGroup__Done( &_this->_.Super );
+}
+
+/* Variants derived from the class : 'Pop::POP16_NaviLoadingUI' */
+EW_DEFINE_CLASS_VARIANTS( PopPOP16_NaviLoadingUI )
+EW_END_OF_CLASS_VARIANTS( PopPOP16_NaviLoadingUI )
+
+/* Virtual Method Table (VMT) for the class : 'Pop::POP16_NaviLoadingUI' */
+EW_DEFINE_CLASS( PopPOP16_NaviLoadingUI, CoreGroup, NaviLoadingMainBottom, NaviLoadingMainBottom, 
+                 NaviLoadingMainBottom, NaviLoadingMainBottom, _.VMT, _.VMT, "Pop::POP16_NaviLoadingUI" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+EW_END_OF_CLASS( PopPOP16_NaviLoadingUI )
 
 /* Embedded Wizard */

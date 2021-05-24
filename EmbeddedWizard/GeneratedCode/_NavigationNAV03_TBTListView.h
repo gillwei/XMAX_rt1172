@@ -48,6 +48,7 @@
 #include "_CoreTimer.h"
 #include "_HomeBaseHome.h"
 #include "_NavigationTbtListMenu.h"
+#include "_PopPOP16_NaviLoadingUI.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 
@@ -111,6 +112,7 @@ EW_DEFINE_FIELDS( NavigationNAV03_TBTListView, HomeBaseHome )
   EW_OBJECT  ( TbtList,         NavigationTbtListMenu )
   EW_OBJECT  ( TbtListUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( NaviDisconnectEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( Divider,         ViewsImage )
 EW_END_OF_FIELDS( NavigationNAV03_TBTListView )
 
@@ -168,6 +170,7 @@ EW_DEFINE_METHODS( NavigationNAV03_TBTListView, HomeBaseHome )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
+  EW_METHOD( ReturnToHome,      void )( HomeBaseHome _this )
 EW_END_OF_METHODS( NavigationNAV03_TBTListView )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -193,6 +196,11 @@ void NavigationNAV03_TBTListView_OnTbtListUpdateSlot( NavigationNAV03_TBTListVie
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
 void NavigationNAV03_TBTListView_OnNavigatingStatusUpdateSlot( NavigationNAV03_TBTListView _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV03_TBTListView_OnNaviDisconnectUpdateSlot( NavigationNAV03_TBTListView _this, 
   XObject sender );
 
 #ifdef __cplusplus

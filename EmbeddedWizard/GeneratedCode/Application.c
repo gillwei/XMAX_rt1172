@@ -33,6 +33,7 @@
 #include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
+#include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
@@ -213,8 +214,23 @@ void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _th
       == EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->HomeType )) 
       || ( EnumHomeTypeNAVI_TURN_BY_TURN == EwGetAutoObject( &DeviceInterfaceSystemDevice, 
       DeviceInterfaceSystemDeviceClass )->HomeType ))
-    CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
-    PopPOP01_PleaseWait, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  {
+    if ( DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
+        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
+        && DeviceInterfaceNavigationDeviceClass_GetNaviAppInitSettingStatus( EwGetAutoObject( 
+        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+      EwSignal( EwNewSlot( _this, ApplicationApplication_ShowNaviHome ), ((XObject)_this ));
+    else
+    {
+      PopPOP01_PleaseWait NaviLoadingDialog;
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->IsNaviLoadingDialogDisplayed 
+      = 1;
+      NaviLoadingDialog = EwNewObject( PopPOP01_PleaseWait, 0 );
+      NaviLoadingDialog->NaviAppConnectedSlot = EwNewSlot( _this, ApplicationApplication_ShowNaviHome );
+      CoreGroup_SwitchToDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)NaviLoadingDialog ), 
+      0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    }
+  }
   else
   {
     CoreGroup HomeDialog = ApplicationApplication_HomeDialogOfHomeType( _this, EwGetAutoObject( 
@@ -365,7 +381,7 @@ void ApplicationApplication_SwitchToHome( ApplicationApplication _this, XEnum aH
             0 ), HomeBaseHome );
 
           if ( HomeDialog != 0 )
-            HomeBaseHome_ReturnToHome( HomeDialog );
+            HomeBaseHome__ReturnToHome( HomeDialog );
 
           break;
         }
@@ -587,7 +603,7 @@ void ApplicationApplication_ReturnToHome( ApplicationApplication _this )
       0 ), HomeBaseHome );
 
     if ( Dialog != 0 )
-      HomeBaseHome_ReturnToHome( Dialog );
+      HomeBaseHome__ReturnToHome( Dialog );
     else
       CoreGroup_DismissDialog((CoreGroup)_this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
       0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -784,6 +800,32 @@ void ApplicationApplication_OnVehicleDataReceivedSlot( ApplicationApplication _t
     if ( YDTDialog == 0 )
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( YDTYDT01_Main, 
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
+}
+
+/* 'C' function for method : 'Application::Application.ShowNaviHome()' */
+void ApplicationApplication_ShowNaviHome( ApplicationApplication _this, XObject 
+  sender )
+{
+  ApplicationApplication App;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+
+  if ( App != 0 )
+  {
+    if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
+        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+      ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass )->CurrentHome );
+    else
+    {
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+      = EnumHomeTypeNAVI_DEFAULT_VIEW;
+      ApplicationApplication_SwitchToHome( App, EnumHomeTypeNAVI_DEFAULT_VIEW );
+    }
   }
 }
 

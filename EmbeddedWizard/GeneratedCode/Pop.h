@@ -49,6 +49,7 @@
 #include "_PopPOP07_TROUBLE_SHOOTING.h"
 #include "_PopPOP08_WeatherLoadingUI.h"
 #include "_PopPOP09_POP14_BleConnectionErrorUI.h"
+#include "_PopPOP16_NaviLoadingUI.h"
 #include "_PopPOP17_AppInitSettingError.h"
 
 #ifdef __cplusplus

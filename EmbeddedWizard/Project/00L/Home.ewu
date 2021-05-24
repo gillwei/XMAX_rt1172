@@ -103,32 +103,43 @@ class BaseHome : Components::BaseMainBG
   $rect <220,340,450,380>
   inherited method OnShortEnterKeyActivated()
   {
-    GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
+    // When loading animation is displayed, enter key operation should not be executed.
+    if( !NaviConnectFailedTimer.Enabled )
+    {
+      GetRoot().PresentDialog( new Launcher::LNC_Main, null, null, null, null, null, null, null, null, false );
+    }
   }
 
   $rect <220,290,450,330>
   inherited method OnShortHomeKeyActivated()
   {
-    var Enum::HomeType NextHomeType = GetNextHomeType( HomeType );
-    var Application::Application App = ( Application::Application )GetRoot();
-    if( null != App )
+    // When loading animation is displayed, home key operation should not be executed.
+    if( !NaviConnectFailedTimer.Enabled )
     {
-      switch( NextHomeType )
+      var Enum::HomeType NextHomeType = GetNextHomeType( HomeType );
+      var Application::Application App = ( Application::Application )GetRoot();
+      if( null != App )
       {
-        case Enum::HomeType.TACHO_VISUALIZER,
-             Enum::HomeType.SPEED_VISUALIZER,
-             Enum::HomeType.ECO_VISUALIZER:
+        switch( NextHomeType )
         {
-          App.SlideInHome( NextHomeType );
+          case Enum::HomeType.TACHO_VISUALIZER,
+               Enum::HomeType.SPEED_VISUALIZER,
+               Enum::HomeType.ECO_VISUALIZER:
+          {
+            App.SlideInHome( NextHomeType );
+          }
+          case Enum::HomeType.NAVI_DEFAULT_VIEW,
+               Enum::HomeType.NAVI_NEXT_TURN,
+               Enum::HomeType.NAVI_TURN_BY_TURN:
+          {
+            App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+          }
+          case Enum::HomeType.VEHICLE_INFO:
+          {
+            App.SlideInHome( NextHomeType );
+          }
+          default:;
         }
-        case Enum::HomeType.NAVI_DEFAULT_VIEW,
-             Enum::HomeType.NAVI_NEXT_TURN,
-             Enum::HomeType.NAVI_TURN_BY_TURN:
-        {
-          App.SwitchToHome( NextHomeType );
-        }
-        case Enum::HomeType.VEHICLE_INFO: App.SlideInHome( NextHomeType );
-        default:;
       }
     }
   }
@@ -186,6 +197,40 @@ class BaseHome : Components::BaseMainBG
       default:;
     }
     return NextHomeType;
+  }
+
+  $rect <474,354,674,394>
+  property bool AccessNaviView;
+
+  $rect <474,394,674,434>
+  onset AccessNaviView
+  {
+    // Remember the property's new value.
+    pure AccessNaviView = value;
+
+    NaviConnectFailedTimer.Enabled = value;
+    LoadingAnimation.Visible = value;
+  }
+
+  $rect <430,470,630,510>
+  object Core::Timer NaviConnectFailedTimer
+  {
+    preset OnTrigger = OnNaviConnectFailedSlot;
+    preset Period = 3000;
+  }
+
+  $rect <430,510,630,550>
+  slot OnNaviConnectFailedSlot
+  {
+    AccessNaviView = false;
+    PresentDialog( new Pop::POP02_ConnectionError, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <20,20,160,60>
+  object Pop::POP16_NaviLoadingUI LoadingAnimation
+  {
+    preset Bounds = <0,38,480,272>;
+    preset Visible = false;
   }
 }
 

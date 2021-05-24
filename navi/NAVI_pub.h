@@ -98,6 +98,7 @@ void NAVI_init( void );
 void NAVI_jpeg_data_received( uint32_t jpeg_size, uint8_t* buffer_addr );
 navi_data_type* NAVI_get_navi_obj( void );
 bool NAVI_get_navigation_status( void );
+void NAVI_start_map_update( void );
 void NAVI_stop_map_update( void );
 bool NAVI_get_event( navi_event_type* event_data );
 void NAVI_remove_event_from_buffer( void );

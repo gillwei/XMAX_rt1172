@@ -86,6 +86,14 @@
     static int ew_notify_office_setting_update( void );
 #endif
 
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviConnectUpdate_
+    static int ew_notify_connect_status_update( void );
+#endif
+
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviDisconnectUpdate_
+    static int ew_notify_disconnect_status_update( void );
+#endif
+
 #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate_
     static int ew_notify_navi_alert_dist_update( void );
 #endif
@@ -151,6 +159,12 @@
         #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate_
             ew_notify_navi_tbt_list_update,
         #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviConnectUpdate_
+            ew_notify_connect_status_update,
+        #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviDisconnectUpdate_
+            ew_notify_disconnect_status_update,
+        #endif
         #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate_
             ew_notify_navi_alert_dist_update
         #endif
@@ -170,6 +184,8 @@
     static int is_via_point_update = 0;
     static int is_home_setting_update = 0;
     static int is_office_setting_update = 0;
+    static int is_navi_app_connected = 0;
+    static int is_navi_app_disconnected = 0;
     static int is_alert_distance_update = 0;
 
 #endif
@@ -668,6 +684,56 @@ bool ew_navi_is_route_guidance_started
 /*********************************************************************
 *
 * @private
+* ew_notify_connect_status_update
+*
+* Notify EW GUI that navi app is connected.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviConnectUpdate_
+    static int ew_notify_connect_status_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_navi_app_connected )
+        {
+        is_navi_app_connected = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyNaviConnectUpdate( device_object );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_notify_disconnect_status_update
+*
+* Notify EW GUI that navi app is disconnected.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviDisconnectUpdate_
+    static int ew_notify_disconnect_status_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_navi_app_disconnected )
+        {
+        is_navi_app_disconnected = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyNaviDisconnectUpdate( device_object );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
 * ew_notify_navi_alert_dist_update
 *
 * Notify EW GUI that new alert distance has received.
@@ -952,6 +1018,44 @@ void EW_notify_office_setting_update
 {
 #ifdef _DeviceInterfaceNavigationDeviceClass_
     is_office_setting_update = 1;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_connect_status_update
+*
+* Notify Embedded Wizard that navi app is connected.
+*
+*********************************************************************/
+void EW_notify_connect_status_update
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    is_navi_app_connected = 1;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_disconnect_status_update
+*
+* Notify Embedded Wizard that navi app is disconnected.
+*
+*********************************************************************/
+void EW_notify_disconnect_status_update
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    is_navi_app_disconnected = 1;
     EwBspEventTrigger();
 #endif
 }

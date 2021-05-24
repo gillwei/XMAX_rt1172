@@ -102,8 +102,10 @@
 
 /* Deklaration of class : 'Pop::POP03_HomeOfficeSettingError' */
 EW_DEFINE_FIELDS( PopPOP03_HomeOfficeSettingError, ComponentsBaseMainBG )
+  EW_PROPERTY( ReturnToNaviHomeSlot, XSlot )
   EW_OBJECT  ( HomeOfficeSettingFailedMessage, ViewsText )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
+  EW_OBJECT  ( Divider,         ViewsImage )
   EW_PROPERTY( ErrorMessage,    XString )
 EW_END_OF_FIELDS( PopPOP03_HomeOfficeSettingError )
 

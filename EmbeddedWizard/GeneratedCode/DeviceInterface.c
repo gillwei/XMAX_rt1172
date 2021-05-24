@@ -962,6 +962,8 @@ void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Init( &_this->HomeSettingUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->OfficeSettingUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->AlertDistanceUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->ConnectStatusUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->DisconnectStatusUpdateEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( DeviceInterfaceNavigationDeviceClass );
@@ -993,6 +995,8 @@ void DeviceInterfaceNavigationDeviceClass__ReInit( DeviceInterfaceNavigationDevi
   CoreSystemEvent__ReInit( &_this->HomeSettingUpdateEvent );
   CoreSystemEvent__ReInit( &_this->OfficeSettingUpdateEvent );
   CoreSystemEvent__ReInit( &_this->AlertDistanceUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->ConnectStatusUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->DisconnectStatusUpdateEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NavigationDeviceClass' */
@@ -1017,6 +1021,8 @@ void DeviceInterfaceNavigationDeviceClass__Done( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Done( &_this->HomeSettingUpdateEvent );
   CoreSystemEvent__Done( &_this->OfficeSettingUpdateEvent );
   CoreSystemEvent__Done( &_this->AlertDistanceUpdateEvent );
+  CoreSystemEvent__Done( &_this->ConnectStatusUpdateEvent );
+  CoreSystemEvent__Done( &_this->DisconnectStatusUpdateEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_.Super );
@@ -1509,6 +1515,41 @@ XString DeviceInterfaceNavigationDeviceClass_GetAlertDistance( DeviceInterfaceNa
     Dist = EwNewStringUtf8( ( const unsigned char* )dist, ( int )strlen( dist ) );
   }
   return Dist;
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyNaviConnectUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->ConnectStatusUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNaviConnectUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyNaviConnectUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyNaviConnectUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyNaviDisconnectUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->DisconnectStatusUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNaviDisconnectUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyNaviDisconnectUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyNaviDisconnectUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StartMapFrameRequest()' */
+void DeviceInterfaceNavigationDeviceClass_StartMapFrameRequest( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_start_map_update();
 }
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsTbtMessageDisplayed()' */

@@ -30,6 +30,7 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreRoot.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_CoreVerticalList.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
@@ -46,6 +47,8 @@
 #include "_InfoINF01_MeterDisplaySettingMenu.h"
 #include "_LauncherLNC_Main.h"
 #include "_MenuBaseMenuView.h"
+#include "_PopPOP02_ConnectionError.h"
+#include "_PopPOP16_NaviLoadingUI.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "_SettingsSET46_VehicleInfoReset.h"
@@ -75,22 +78,23 @@ static const XRect _Const0000 = {{ 72, 113 }, { 403, 156 }};
 static const XStringRes _Const0001 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0002 = { _StringsDefault0, 0x000F };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x001C };
-static const XRect _Const0004 = {{ 17, 51 }, { 67, 101 }};
-static const XRect _Const0005 = {{ 80, 40 }, { 480, 268 }};
-static const XStringRes _Const0006 = { _StringsDefault0, 0x0029 };
-static const XRect _Const0007 = {{ 0, 0 }, { 400, 228 }};
-static const XRect _Const0008 = {{ 1, 70 }, { 360, 77 }};
-static const XRect _Const0009 = {{ 1, 148 }, { 360, 155 }};
-static const XRect _Const000A = {{ 361, 1 }, { 393, 33 }};
-static const XRect _Const000B = {{ 361, 185 }, { 393, 217 }};
-static const XRect _Const000C = {{ 0, 0 }, { 400, 76 }};
-static const XRect _Const000D = {{ 5, 19 }, { 142, 52 }};
-static const XColor _Const000E = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const000F = {{ 286, 14 }, { 344, 56 }};
-static const XRect _Const0010 = {{ 149, 8 }, { 281, 65 }};
-static const XRect _Const0011 = {{ 231, 8 }, { 281, 65 }};
-static const XRect _Const0012 = {{ 146, 8 }, { 196, 65 }};
-static const XRect _Const0013 = {{ 200, 14 }, { 227, 56 }};
+static const XRect _Const0004 = {{ 0, 38 }, { 480, 272 }};
+static const XRect _Const0005 = {{ 17, 51 }, { 67, 101 }};
+static const XRect _Const0006 = {{ 80, 40 }, { 480, 268 }};
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0029 };
+static const XRect _Const0008 = {{ 0, 0 }, { 400, 228 }};
+static const XRect _Const0009 = {{ 1, 70 }, { 360, 77 }};
+static const XRect _Const000A = {{ 1, 148 }, { 360, 155 }};
+static const XRect _Const000B = {{ 361, 1 }, { 393, 33 }};
+static const XRect _Const000C = {{ 361, 185 }, { 393, 217 }};
+static const XRect _Const000D = {{ 0, 0 }, { 400, 76 }};
+static const XRect _Const000E = {{ 5, 19 }, { 142, 52 }};
+static const XColor _Const000F = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const0010 = {{ 286, 14 }, { 344, 56 }};
+static const XRect _Const0011 = {{ 149, 8 }, { 281, 65 }};
+static const XRect _Const0012 = {{ 231, 8 }, { 281, 65 }};
+static const XRect _Const0013 = {{ 146, 8 }, { 196, 65 }};
+static const XRect _Const0014 = {{ 200, 14 }, { 227, 56 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -233,6 +237,7 @@ EW_DEFINE_CLASS( HomeHOM11_TachoVisualizer, HomeBaseHome, Title, Title, Title, T
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
+  HomeBaseHome_ReturnToHome,
 EW_END_OF_CLASS( HomeHOM11_TachoVisualizer )
 
 /* Initializer for the class 'Home::HOM12_EcoVisualizer' */
@@ -355,6 +360,7 @@ EW_DEFINE_CLASS( HomeHOM12_EcoVisualizer, HomeBaseHome, Title, Title, Title, Tit
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
+  HomeBaseHome_ReturnToHome,
 EW_END_OF_CLASS( HomeHOM12_EcoVisualizer )
 
 /* Initializer for the class 'Home::HOM13_SpeedVisualizer' */
@@ -477,6 +483,7 @@ EW_DEFINE_CLASS( HomeHOM13_SpeedVisualizer, HomeBaseHome, Title, Title, Title, T
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
+  HomeBaseHome_ReturnToHome,
 EW_END_OF_CLASS( HomeHOM13_SpeedVisualizer )
 
 /* Initializer for the class 'Home::BaseHome' */
@@ -488,8 +495,19 @@ void HomeBaseHome__Init( HomeBaseHome _this, XObject aLink, XHandle aArg )
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_.XObject._.GCT = EW_CLASS_GCT( HomeBaseHome );
 
+  /* ... then construct all embedded objects */
+  CoreTimer__Init( &_this->NaviConnectFailedTimer, &_this->_.XObject, 0 );
+  PopPOP16_NaviLoadingUI__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
+
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( HomeBaseHome );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreTimer_OnSetPeriod( &_this->NaviConnectFailedTimer, 3000 );
+  CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0004 );
+  CoreGroup__OnSetVisible( &_this->LoadingAnimation, 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
+  _this->NaviConnectFailedTimer.OnTrigger = EwNewSlot( _this, HomeBaseHome_OnNaviConnectFailedSlot );
 }
 
 /* Re-Initializer for the class 'Home::BaseHome' */
@@ -497,6 +515,10 @@ void HomeBaseHome__ReInit( HomeBaseHome _this )
 {
   /* At first re-initialize the super class ... */
   ComponentsBaseMainBG__ReInit( &_this->_.Super );
+
+  /* ... then re-construct all embedded objects */
+  CoreTimer__ReInit( &_this->NaviConnectFailedTimer );
+  PopPOP16_NaviLoadingUI__ReInit( &_this->LoadingAnimation );
 }
 
 /* Finalizer method for the class 'Home::BaseHome' */
@@ -505,6 +527,10 @@ void HomeBaseHome__Done( HomeBaseHome _this )
   /* Finalize this class */
   _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
+  /* Finalize all embedded objects */
+  CoreTimer__Done( &_this->NaviConnectFailedTimer );
+  PopPOP16_NaviLoadingUI__Done( &_this->LoadingAnimation );
+
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
 }
@@ -512,37 +538,42 @@ void HomeBaseHome__Done( HomeBaseHome _this )
 /* 'C' function for method : 'Home::BaseHome.OnShortEnterKeyActivated()' */
 void HomeBaseHome_OnShortEnterKeyActivated( HomeBaseHome _this )
 {
-  CoreGroup_PresentDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
-  LauncherLNC_Main, 0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  if ( !_this->NaviConnectFailedTimer.Enabled )
+    CoreGroup_PresentDialog((CoreGroup)CoreView__GetRoot( _this ), ((CoreGroup)EwNewObject( 
+    LauncherLNC_Main, 0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Home::BaseHome.OnShortHomeKeyActivated()' */
 void HomeBaseHome_OnShortHomeKeyActivated( HomeBaseHome _this )
 {
-  XEnum NextHomeType = HomeBaseHome_GetNextHomeType( _this, _this->HomeType );
-  ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+  if ( !_this->NaviConnectFailedTimer.Enabled )
+  {
+    XEnum NextHomeType = HomeBaseHome_GetNextHomeType( _this, _this->HomeType );
+    ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
-  if ( App != 0 )
-    switch ( NextHomeType )
-    {
-      case EnumHomeTypeTACHO_VISUALIZER :
-      case EnumHomeTypeSPEED_VISUALIZER :
-      case EnumHomeTypeECO_VISUALIZER :
-        ApplicationApplication_SlideInHome( App, NextHomeType );
-      break;
+    if ( App != 0 )
+      switch ( NextHomeType )
+      {
+        case EnumHomeTypeTACHO_VISUALIZER :
+        case EnumHomeTypeSPEED_VISUALIZER :
+        case EnumHomeTypeECO_VISUALIZER :
+          ApplicationApplication_SlideInHome( App, NextHomeType );
+        break;
 
-      case EnumHomeTypeNAVI_DEFAULT_VIEW :
-      case EnumHomeTypeNAVI_NEXT_TURN :
-      case EnumHomeTypeNAVI_TURN_BY_TURN :
-        ApplicationApplication_SwitchToHome( App, NextHomeType );
-      break;
+        case EnumHomeTypeNAVI_DEFAULT_VIEW :
+        case EnumHomeTypeNAVI_NEXT_TURN :
+        case EnumHomeTypeNAVI_TURN_BY_TURN :
+          ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+          DeviceInterfaceNavigationDeviceClass )->CurrentHome );
+        break;
 
-      case EnumHomeTypeVEHICLE_INFO :
-        ApplicationApplication_SlideInHome( App, NextHomeType );
-      break;
+        case EnumHomeTypeVEHICLE_INFO :
+          ApplicationApplication_SlideInHome( App, NextHomeType );
+        break;
 
-      default :; 
-    }
+        default :; 
+      }
+  }
 }
 
 /* 'C' function for method : 'Home::BaseHome.ReturnToHome()' */
@@ -554,6 +585,12 @@ void HomeBaseHome_ReturnToHome( HomeBaseHome _this )
   if ( MenuDialog != 0 )
     CoreGroup_DismissDialog((CoreGroup)_this, ((CoreGroup)MenuDialog ), 0, 0, 0, 
     EwNullSlot, EwNullSlot, 0 );
+}
+
+/* Wrapper function for the virtual method : 'Home::BaseHome.ReturnToHome()' */
+void HomeBaseHome__ReturnToHome( void* _this )
+{
+  ((HomeBaseHome)_this)->_.VMT->ReturnToHome((HomeBaseHome)_this );
 }
 
 /* 'C' function for method : 'Home::BaseHome.GetNextHomeType()' */
@@ -617,13 +654,33 @@ XEnum HomeBaseHome_GetNextHomeType( HomeBaseHome _this, XEnum aCurrentHomeType )
   return NextHomeType;
 }
 
+/* 'C' function for method : 'Home::BaseHome.OnSetAccessNaviView()' */
+void HomeBaseHome_OnSetAccessNaviView( HomeBaseHome _this, XBool value )
+{
+  _this->AccessNaviView = value;
+  CoreTimer_OnSetEnabled( &_this->NaviConnectFailedTimer, value );
+  CoreGroup__OnSetVisible( &_this->LoadingAnimation, value );
+}
+
+/* 'C' function for method : 'Home::BaseHome.OnNaviConnectFailedSlot()' */
+void HomeBaseHome_OnNaviConnectFailedSlot( HomeBaseHome _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  HomeBaseHome_OnSetAccessNaviView( _this, 0 );
+  CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( PopPOP02_ConnectionError, 
+  0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
 /* Variants derived from the class : 'Home::BaseHome' */
 EW_DEFINE_CLASS_VARIANTS( HomeBaseHome )
 EW_END_OF_CLASS_VARIANTS( HomeBaseHome )
 
 /* Virtual Method Table (VMT) for the class : 'Home::BaseHome' */
-EW_DEFINE_CLASS( HomeBaseHome, ComponentsBaseMainBG, _.VMT, _.VMT, _.VMT, _.VMT, 
-                 _.VMT, _.VMT, "Home::BaseHome" )
+EW_DEFINE_CLASS( HomeBaseHome, ComponentsBaseMainBG, NaviConnectFailedTimer, NaviConnectFailedTimer, 
+                 NaviConnectFailedTimer, NaviConnectFailedTimer, HomeType, HomeType, 
+                 "Home::BaseHome" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -666,6 +723,7 @@ EW_DEFINE_CLASS( HomeBaseHome, ComponentsBaseMainBG, _.VMT, _.VMT, _.VMT, _.VMT,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
+  HomeBaseHome_ReturnToHome,
 EW_END_OF_CLASS( HomeBaseHome )
 
 /* Initializer for the class 'Home::HOM03_VehicleInfo' */
@@ -686,8 +744,8 @@ void HomeHOM03_VehicleInfo__Init( HomeHOM03_VehicleInfo _this, XObject aLink, XH
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.HomeType = EnumHomeTypeVEHICLE_INFO;
-  CoreRectView__OnSetBounds( &_this->IconInfo, _Const0004 );
-  CoreRectView__OnSetBounds( &_this->VehicleInfoMenu, _Const0005 );
+  CoreRectView__OnSetBounds( &_this->IconInfo, _Const0005 );
+  CoreRectView__OnSetBounds( &_this->VehicleInfoMenu, _Const0006 );
   CoreGroup__Add( _this, ((CoreView)&_this->IconInfo ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->VehicleInfoMenu ), 0 );
   ViewsImage_OnSetBitmap( &_this->IconInfo, EwLoadResource( &ResourceIconInfo, ResourcesBitmap ));
@@ -730,7 +788,7 @@ void HomeHOM03_VehicleInfo_Init( HomeHOM03_VehicleInfo _this, XHandle aArg )
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0006 ));
+  EwTrace( "%s", EwLoadString( &_Const0007 ));
 }
 
 /* 'C' function for method : 'Home::HOM03_VehicleInfo.OnShortDownKeyActivated()' */
@@ -802,6 +860,7 @@ EW_DEFINE_CLASS( HomeHOM03_VehicleInfo, HomeBaseHome, IconInfo, IconInfo, IconIn
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
+  HomeBaseHome_ReturnToHome,
 EW_END_OF_CLASS( HomeHOM03_VehicleInfo )
 
 /* Initializer for the class 'Home::VehicleInfoMenu' */
@@ -826,15 +885,15 @@ void HomeVehicleInfoMenu__Init( HomeVehicleInfoMenu _this, XObject aLink, XHandl
   _this->_.VMT = EW_CLASS( HomeVehicleInfoMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0007 );
-  CoreRectView__OnSetBounds( &_this->VerticalList, _Const0007 );
+  CoreRectView__OnSetBounds( _this, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->VerticalList, _Const0008 );
   CoreVerticalList_OnSetEndless( &_this->VerticalList, 1 );
   CoreVerticalList_OnSetItemHeight( &_this->VerticalList, 76 );
   CoreVerticalList_OnSetItemClass( &_this->VerticalList, EW_CLASS( HomeItemVehicleInfo ));
-  CoreRectView__OnSetBounds( &_this->Divider1, _Const0008 );
-  CoreRectView__OnSetBounds( &_this->Divider2, _Const0009 );
-  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const000A );
-  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const000B );
+  CoreRectView__OnSetBounds( &_this->Divider1, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->Divider2, _Const000A );
+  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const000B );
+  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const000C );
   ViewsImage_OnSetFrameNumber( &_this->DownArrowIcon, 1 );
   EffectsEffect_OnSetExponent((EffectsEffect)&_this->RowScrollEffect, 4.190000f );
   EffectsEffect_OnSetTiming((EffectsEffect)&_this->RowScrollEffect, EffectsTimingExp_Out );
@@ -1615,37 +1674,37 @@ void HomeItemVehicleInfo__Init( HomeItemVehicleInfo _this, XObject aLink, XHandl
   _this->_.VMT = EW_CLASS( HomeItemVehicleInfo );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const000C );
+  CoreRectView__OnSetBounds( _this, _Const000D );
   _this->Super1.PassUpKey = 1;
   _this->Super1.PassDownKey = 1;
   CoreView_OnSetLayout((CoreView)&_this->Title, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Title, _Const000D );
+  CoreRectView__OnSetBounds( &_this->Title, _Const000E );
   ViewsText_OnSetEllipsis( &_this->Title, 1 );
   ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Title, 0 );
-  ViewsText_OnSetColor( &_this->Title, _Const000E );
-  CoreRectView__OnSetBounds( &_this->IconUnit, _Const000F );
+  ViewsText_OnSetColor( &_this->Title, _Const000F );
+  CoreRectView__OnSetBounds( &_this->IconUnit, _Const0010 );
   CoreView_OnSetLayout((CoreView)&_this->Value, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Value, _Const0010 );
+  CoreRectView__OnSetBounds( &_this->Value, _Const0011 );
   ViewsText_OnSetEllipsis( &_this->Value, 1 );
   ViewsText_OnSetAlignment( &_this->Value, ViewsTextAlignmentAlignHorzRight | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Value, 0 );
-  ViewsText_OnSetColor( &_this->Value, _Const000E );
+  ViewsText_OnSetColor( &_this->Value, _Const000F );
   CoreView_OnSetLayout((CoreView)&_this->MinuteText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->MinuteText, _Const0011 );
+  CoreRectView__OnSetBounds( &_this->MinuteText, _Const0012 );
   ViewsText_OnSetEllipsis( &_this->MinuteText, 1 );
   ViewsText_OnSetAlignment( &_this->MinuteText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->MinuteText, 0 );
-  ViewsText_OnSetColor( &_this->MinuteText, _Const000E );
+  ViewsText_OnSetColor( &_this->MinuteText, _Const000F );
   CoreView_OnSetLayout((CoreView)&_this->HourText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->HourText, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->HourText, _Const0013 );
   ViewsText_OnSetEllipsis( &_this->HourText, 1 );
   ViewsText_OnSetAlignment( &_this->HourText, ViewsTextAlignmentAlignHorzRight | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->HourText, 0 );
-  ViewsText_OnSetColor( &_this->HourText, _Const000E );
-  CoreRectView__OnSetBounds( &_this->HourIcon, _Const0013 );
+  ViewsText_OnSetColor( &_this->HourText, _Const000F );
+  CoreRectView__OnSetBounds( &_this->HourIcon, _Const0014 );
   ViewsImage_OnSetVisible( &_this->HourIcon, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->IconUnit ), 0 );
