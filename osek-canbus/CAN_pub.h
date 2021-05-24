@@ -83,6 +83,11 @@ void can_mid_frm_send
     dll_frm_index_t frm_index
     );
 
+void can_mid_fuel_cons_pm_cb
+    (
+    bool status
+    );
+
 #ifdef __cplusplus
 }
 #endif

@@ -26,7 +26,12 @@
 #include "task.h"
 #include <string.h>
 
+#include "EEPM_pub.h"
 #include "EW_pub.h"
+#include "PM_pub.h"
+#include "CAN_pub.h"
+#include "BC_motocon_pub.h"
+
 #include "can_mid.h"
 
 /*--------------------------------------------------------------------
@@ -45,6 +50,8 @@
 
 #define MID_MSG_TCFS_INIT                               0xFF
 #define MID_MSG_BRZEGR_INIT                             0xFF
+
+#define MID_FUEL_CONS_CALC_TIME                         200 //!< 200 * 5ms = 1000ms
 
 
 /*--------------------------------------------------------------------
@@ -79,6 +86,15 @@ mid_msg_t mid_msg_inst[] =
     { TX4_REQ_REPRGRM_INFO_CAN0_ID,RX9_RES_RPRGRM_INFO_CAN0_ID, MID_MSG_SID_REPROG,              MID_RES_SID_REPROG         },
     { TX2_REQ_SUPPORT_CAN0_ID,     RX2_RES_SUPPORT_CAN0_ID,     MID_MSG_SID_SUPP_FUNC_LIST,      MID_RES_SID_SUPP_FUNC_LIST },
 };
+
+/*------------------------------------------------------
+Fuel consumption
+------------------------------------------------------*/
+static uint32 fuel_cons_pre          = 0;
+static uint32 fuel_cons_curr         = 0;
+static bool   fuel_cons_read_status  = FALSE;
+static bool   fuel_cons_write_status = FALSE;
+static bool   ign_status             = PM_IGN_ON;
 
 /*------------------------------------------------------
 Init the message initial values in middle layer
@@ -630,6 +646,341 @@ transmit_frame( CAN_CONTROLLER_2, frm_index );
 }
 
 /*------------------------------------------------------
+Handshake with Meter to get supported functions list
+------------------------------------------------------*/
+static can_ret_code_t
+can_mid_hand_shake
+    (
+    void
+    )
+{
+can_ret_code_t  l_ret_code  = CAN_RC_NOT_AVAILABLE;
+
+/*------------------------------------------------------
+Only one byte for function list request
+------------------------------------------------------*/
+l_ret_code = can_mid_req( TX2_REQ_SUPPORT_CAN0_ID,    IL_CAN0_TX2_REQ_SUPPORT_TXFRM_LEN,
+                          MID_MSG_SID_SUPP_FUNC_LIST, MID_MSG_PADDING_DATA );
+return l_ret_code;
+}
+
+#if( DEBUG_TX_CAN_SUPPORT )
+/*------------------------------------------------------
+Positive and negative test
+------------------------------------------------------*/
+static can_ret_code_t
+can_mid_pos_neg_test
+    (
+    void
+    )
+{
+can_ret_code_t  l_ret_code  = CAN_RC_NOT_AVAILABLE;
+
+/*------------------------------------------------------
+Positive test
+------------------------------------------------------*/
+l_ret_code = can_mid_req( TX0_REQ_MT_FUNC_CNT_CAN0_ID, IL_CAN0_TX0_REQ_MT_FUNC_CNT_TXFRM_LEN,
+                          MID_MSG_SID_UNIT_CHNG, MID_MSG_PROCDTL_CHNG_DIST_UNIT_TO_MILE );
+
+/*------------------------------------------------------
+Negative test
+------------------------------------------------------*/
+l_ret_code = can_mid_req( TX4_REQ_REPRGRM_INFO_CAN0_ID, IL_CAN0_TX4_REQ_REPRGRM_INFO_TXFRM_LEN,
+                          MID_MSG_SID_REPROG, MID_MSG_PROGSTS_START_REQ );
+
+return l_ret_code;
+}
+
+/*------------------------------------------------------
+No response test
+------------------------------------------------------*/
+static can_ret_code_t
+can_mid_no_resp_test
+    (
+    void
+    )
+{
+dll_frm_index_t  l_frm_index;
+
+uint8  bnt_status = IL_VT_HEATER_LVL_BTN_STAT_HEATER_UP;
+uint8  lvl_lv     = IL_VT_HEATER_LVL_LV_MID;
+uint8  lvl_select = IL_VT_HEATER_LVL_SLECT_RIDER_SEAT_HEATER;
+
+/*------------------------------------------------------
+Fill the frame with different signals' values
+------------------------------------------------------*/
+can_mid_sig_set(
+                &l_frm_index,
+                 IL_CAN0_HEATER_LVL_BTN_STAT_HEATER_TXSIG_HANDLE,
+                 IL_CAN0_HEATER_LVL_BTN_STAT_HEATER_TXSIG_NBYTES,
+                &bnt_status
+                );
+
+can_mid_sig_set(
+                &l_frm_index,
+                IL_CAN0_HEATER_LVL_LV_TXSIG_HANDLE,
+                IL_CAN0_HEATER_LVL_LV_TXSIG_NBYTES,
+                &lvl_lv
+                );
+
+can_mid_sig_set(
+                &l_frm_index,
+                IL_CAN0_HEATER_LVL_SLECT_TXSIG_HANDLE,
+                IL_CAN0_HEATER_LVL_SLECT_TXSIG_NBYTES,
+                &lvl_select
+                );
+
+/*------------------------------------------------------
+Send frame
+------------------------------------------------------*/
+can_mid_frm_send( l_frm_index );
+}
+#endif
+
+/*------------------------------------------------------
+Get supported functions
+------------------------------------------------------*/
+mid_msg_supp_func_t*
+can_mid_get_supp_func_list
+    (
+    void
+    )
+{
+return ( &supp_func_list );
+}
+
+/*------------------------------------------------------
+Fuel consumption set call back
+------------------------------------------------------*/
+void can_mid_fuel_cons_set_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+uint8 fuel_cons[4] = { 0 };
+
+if( status == TRUE )
+    {
+    fuel_cons_write_status = status;
+    memcpy( fuel_cons, data, sizeof(fuel_cons) );
+
+    fuel_cons_curr        = ( fuel_cons[3] << SHIFT_THREE_BYTES ) |
+                            ( fuel_cons[2] << SHIFT_TWO_BYTES )   |
+                            ( fuel_cons[1] << SHIFT_ONE_BYTE )    |
+                            ( fuel_cons[0] );
+
+#if( SYC_CAN_SUPPORT )
+    PRINTF( "Set fuel consumption:%d\r\n", fuel_cons_curr );
+#endif
+    }
+}
+
+/*------------------------------------------------------
+Fuel consumption get call back
+------------------------------------------------------*/
+void can_mid_fuel_cons_get_cb
+    (
+    bool    status,
+    void*   data
+    )
+{
+uint8 fuel_cons[4] = { 0 };
+
+/*------------------------------------------------------
+Get the fuel consumption in the eeprom successfully
+------------------------------------------------------*/
+if( status == TRUE )
+    {
+    fuel_cons_read_status = status;
+    memcpy( fuel_cons, data, sizeof(fuel_cons) );
+
+    fuel_cons_pre         = ( fuel_cons[3] << SHIFT_THREE_BYTES ) |
+                            ( fuel_cons[3] << SHIFT_TWO_BYTES )   |
+                            ( fuel_cons[1] << SHIFT_ONE_BYTE )    |
+                            ( fuel_cons[0] );
+#if( SYC_CAN_SUPPORT )
+    PRINTF( "Get fuel consumption:%d\r\n", fuel_cons_pre );
+#endif
+    }
+}
+
+/*------------------------------------------------------
+Read the previous consumption eeprom every IGN ON
+------------------------------------------------------*/
+void can_mid_fuel_cons_init
+    (
+    void
+    )
+{
+EEPM_get_fuel_consumption( can_mid_fuel_cons_get_cb );
+}
+
+/*------------------------------------------------------
+Write the current consumption to eeprom every IGN OFF
+------------------------------------------------------*/
+void can_mid_fuel_cons_deinit
+    (
+    uint32 fuel_cons
+    )
+{
+EEPM_set_fuel_consumption( fuel_cons, can_mid_fuel_cons_set_cb );
+}
+
+/*------------------------------------------------------
+Send fuel consumption when Bt connected after IGN ON
+------------------------------------------------------*/
+void can_mid_send_fuel_cons
+    (
+    void
+    )
+{
+static bool fuel_cons_syned = FALSE;
+
+/*------------------------------------------------------
+Send Fuel consumption to APP once after getting the value
+successfully, IGN ON, and BT connetcted
+------------------------------------------------------*/
+if( fuel_cons_syned == FALSE      &&
+    fuel_cons_read_status == TRUE &&
+    BC_motocon_is_connected() )
+    {
+    fuel_cons_syned = TRUE;
+
+    /*------------------------------------------------------
+    Send to APP
+    ------------------------------------------------------*/
+    BC_motocon_send_injection_quantity( (uint8*)&fuel_cons_pre );
+    }
+}
+
+/*------------------------------------------------------
+Fuel consumption power manager status call back
+------------------------------------------------------*/
+void can_mid_fuel_cons_pm_cb
+    (
+    bool status
+    )
+{
+ign_status = status;
+
+if( ign_status == PM_IGN_OFF )
+    {
+    fuel_cons_pre = fuel_cons_curr;
+    can_mid_fuel_cons_deinit( fuel_cons_pre );
+    }
+}
+
+/*------------------------------------------------------
+Calculate the fuel consumption by EG_status(0x23E) every
+1000ms and store it when IGN OFF
+------------------------------------------------------*/
+void can_mid_fuel_cons_calc_task
+    (
+    void
+    )
+{
+static uint32 fuel_cons_calc_tick = 0;
+uint32 fuel_cons_instans          = 0;
+
+/*------------------------------------------------------
+Injection value effects after IGN on
+------------------------------------------------------*/
+if( ign_status == PM_IGN_ON )
+    {
+    /*------------------------------------------------------
+    Send fuel consumption to APP one time
+    ------------------------------------------------------*/
+    can_mid_send_fuel_cons();
+
+    /*------------------------------------------------------
+    Get the injection value from ram in EG_status every 1000ms
+    ------------------------------------------------------*/
+    if( fuel_cons_calc_tick < MID_FUEL_CONS_CALC_TIME )
+        {
+        fuel_cons_calc_tick++;
+        if( fuel_cons_calc_tick >= MID_FUEL_CONS_CALC_TIME )
+            {
+            fuel_cons_calc_tick = 0;
+
+            nim_app_sig_get( IL_CAN0_EG_STAT_INJECT_RXSIG_HANDLE, IL_CAN0_EG_STAT_INJECT_RXSIG_NBYTES, &fuel_cons_instans );
+            fuel_cons_curr += fuel_cons_instans;
+            }
+        }
+    }
+}
+
+/*------------------------------------------------------
+Init CAN middle layer module
+------------------------------------------------------*/
+void can_mid_init
+    (
+    void
+    )
+{
+EnumOperationMode mode = EnumOperationModeNORMAL;
+
+/*------------------------------------------------------
+Regiter the power manager call back for CAN middle layer
+------------------------------------------------------*/
+PM_register_callback( "CANbus",  can_mid_fuel_cons_pm_cb );
+
+/*------------------------------------------------------
+Read the fuel consumption from eeprom
+------------------------------------------------------*/
+can_mid_fuel_cons_init();
+
+/*------------------------------------------------------
+Init the supported function list
+------------------------------------------------------*/
+mid_sfl_init();
+
+/*------------------------------------------------------
+Init message list
+------------------------------------------------------*/
+mid_msg_list_init();
+
+/*------------------------------------------------------
+Get Operation Mode
+------------------------------------------------------*/
+if( EW_get_operation_mode( &mode ) )
+    {
+    /*------------------------------------------------------
+    Handshake request(0x581) should not be sended when the
+    operation mode is Factory or Inspection
+    ------------------------------------------------------*/
+    if( EnumOperationModeNORMAL == mode )
+        {
+        /*------------------------------------------------------
+        Handshake with Meter to check out those functions
+        it supports
+        ------------------------------------------------------*/
+        can_mid_hand_shake();
+        }
+    }
+else
+    {
+    /*------------------------------------------------------
+    Handshake with Meter to check out those functions
+    it supports
+    ------------------------------------------------------*/
+    can_mid_hand_shake();
+    }
+
+#if( DEBUG_TX_CAN_SUPPORT )
+/*------------------------------------------------------
+No response test case
+------------------------------------------------------*/
+can_mid_no_resp_test();
+
+/*------------------------------------------------------
+Positive and negative test case
+------------------------------------------------------*/
+can_mid_pos_neg_test();
+#endif
+}
+
+/*------------------------------------------------------
 Middle layer request  and response message task
 ------------------------------------------------------*/
 void can_mid_task
@@ -643,6 +994,11 @@ uint16          *l_node_wait_p    = NULL;
 mid_msg_stat_t  *l_node_status_p  = NULL;
 can_msg_t       *l_node_req_p     = NULL;
 mid_msg_lst      l_node_p         = msg_lst_head;
+
+/*------------------------------------------------------
+Fuel consumption task
+------------------------------------------------------*/
+can_mid_fuel_cons_calc_task();
 
 /*------------------------------------------------------
 There is no request message in the list
@@ -757,170 +1113,5 @@ while( l_node_p->next != NULL )
             break;
         }
     }
-}
-
-/*------------------------------------------------------
-Handshake with Meter to get supported functions list
-------------------------------------------------------*/
-static can_ret_code_t
-can_mid_hand_shake
-    (
-    void
-    )
-{
-can_ret_code_t  l_ret_code  = CAN_RC_NOT_AVAILABLE;
-
-/*------------------------------------------------------
-Only one byte for function list request
-------------------------------------------------------*/
-l_ret_code = can_mid_req( TX2_REQ_SUPPORT_CAN0_ID,    IL_CAN0_TX2_REQ_SUPPORT_TXFRM_LEN,
-                          MID_MSG_SID_SUPP_FUNC_LIST, MID_MSG_PADDING_DATA );
-return l_ret_code;
-}
-
-#if( DEBUG_TX_CAN_SUPPORT )
-/*------------------------------------------------------
-Positive and negative test
-------------------------------------------------------*/
-static can_ret_code_t
-can_mid_pos_neg_test
-    (
-    void
-    )
-{
-can_ret_code_t  l_ret_code  = CAN_RC_NOT_AVAILABLE;
-
-/*------------------------------------------------------
-Positive test
-------------------------------------------------------*/
-l_ret_code = can_mid_req( TX0_REQ_MT_FUNC_CNT_CAN0_ID, IL_CAN0_TX0_REQ_MT_FUNC_CNT_TXFRM_LEN,
-                          MID_MSG_SID_UNIT_CHNG, MID_MSG_PROCDTL_CHNG_DIST_UNIT_TO_MILE );
-
-/*------------------------------------------------------
-Negative test
-------------------------------------------------------*/
-l_ret_code = can_mid_req( TX4_REQ_REPRGRM_INFO_CAN0_ID, IL_CAN0_TX4_REQ_REPRGRM_INFO_TXFRM_LEN,
-                          MID_MSG_SID_REPROG, MID_MSG_PROGSTS_START_REQ );
-
-return l_ret_code;
-}
-
-/*------------------------------------------------------
-No response test
-------------------------------------------------------*/
-static can_ret_code_t
-can_mid_no_resp_test
-    (
-    void
-    )
-{
-dll_frm_index_t  l_frm_index;
-
-uint8  bnt_status = IL_VT_HEATER_LVL_BTN_STAT_AUD_UP;
-uint8  lvl_lv     = IL_VT_HEATER_LVL_LV_MID;
-uint8  lvl_select = IL_VT_HEATER_LVL_SLECT_RIDER_SEAT_HEATER;
-
-/*------------------------------------------------------
-Fill the frame with different signals' values
-------------------------------------------------------*/
-can_mid_sig_set(
-                &l_frm_index,
-                 IL_CAN0_HEATER_LVL_BTN_STAT_AUD_TXSIG_HANDLE,
-                 IL_CAN0_HEATER_LVL_BTN_STAT_AUD_TXSIG_NBYTES,
-                &bnt_status
-                );
-
-can_mid_sig_set(
-                &l_frm_index,
-                IL_CAN0_HEATER_LVL_LV_TXSIG_HANDLE,
-                IL_CAN0_HEATER_LVL_LV_TXSIG_NBYTES,
-                &lvl_lv
-                );
-
-can_mid_sig_set(
-                &l_frm_index,
-                IL_CAN0_HEATER_LVL_SLECT_TXSIG_HANDLE,
-                IL_CAN0_HEATER_LVL_SLECT_TXSIG_NBYTES,
-                &lvl_select
-                );
-
-/*------------------------------------------------------
-Send frame
-------------------------------------------------------*/
-can_mid_frm_send( l_frm_index );
-}
-#endif
-
-/*------------------------------------------------------
-Init CAN middle layer module
-------------------------------------------------------*/
-void can_mid_init
-    (
-    void
-    )
-{
-EnumOperationMode mode = EnumOperationModeNORMAL;
-
-/*------------------------------------------------------
-Init the supported function list
-------------------------------------------------------*/
-mid_sfl_init();
-
-/*------------------------------------------------------
-Init message list
-------------------------------------------------------*/
-mid_msg_list_init();
-
-/*------------------------------------------------------
-Get Operation Mode
-------------------------------------------------------*/
-if( EW_get_operation_mode( &mode ) )
-    {
-    /*------------------------------------------------------
-    Handshake request(0x581) should not be sended when the
-    operation mode is Factory or Inspection
-    ------------------------------------------------------*/
-    if( EnumOperationModeNORMAL == mode )
-        {
-        /*------------------------------------------------------
-        Handshake with Meter to check out those functions
-        it supports
-        ------------------------------------------------------*/
-        can_mid_hand_shake();
-        }
-    }
-else
-    {
-    /*------------------------------------------------------
-    Handshake with Meter to check out those functions
-    it supports
-    ------------------------------------------------------*/
-    can_mid_hand_shake();
-    }
-
-#if( DEBUG_TX_CAN_SUPPORT )
-/*------------------------------------------------------
-No response test case
-------------------------------------------------------*/
-can_mid_no_resp_test();
-
-/*------------------------------------------------------
-Positive and negative test case
-------------------------------------------------------*/
-can_mid_pos_neg_test();
-#endif
-
-}
-
-/*------------------------------------------------------
-Get supported functions
-------------------------------------------------------*/
-mid_msg_supp_func_t*
-can_mid_get_supp_func_list
-    (
-    void
-    )
-{
-return ( &supp_func_list );
 }
 
