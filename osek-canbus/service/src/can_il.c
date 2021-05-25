@@ -64,11 +64,6 @@ number of bits
 #define IL_DIV_BY_8( _byte )    ( ( _byte ) >> 3 )
 
 /*------------------------------------------------------
-Signal changed status bit definitions
-------------------------------------------------------*/
-#define IL_SIG_STATUS_VALUE_CHNGD           (0x1 << 0)
-
-/*------------------------------------------------------
 Transmit frame status bit definitions
 ------------------------------------------------------*/
 #define IL_TX_STATUS_EVENT_PENDING          (0x1 << 0)
@@ -950,18 +945,16 @@ for( l_i_signal = 0; l_i_signal < l_num_frame_signals; l_i_signal++ )
 
                 if( l_sig_value_changed != FALSE )
                     {
-                    can_util_copy_bytes( &( l_temp_sig_buf[0] ),
-                                         &( l_p_rxsig->p_data[0] ),
-                                         l_sig_size );
-
+                    can_util_copy_bytes( &( l_temp_sig_buf[0] ), &( l_p_rxsig->p_data[0] ), l_sig_size );
                     can_util_set_status_bits( l_p_sig_status, IL_SIG_STATUS_VALUE_CHNGD );
-
-                    if( ( ( l_p_rxsig->attributes & IL_RX_SIG_ATTR_NOTIFY_CHANGE ) != 0 ) &&
-                          ( notify_enable != FALSE ) )
-                        {
-                        il_app_hook_sig_changed_handle( frm_index, l_sig_handle, l_sig_size );
-                        }
                     }
+                }
+
+            if( ( ( l_p_rxsig->attributes & IL_RX_SIG_ATTR_NOTIFY_CHANGE ) != 0 ) &&
+                  ( notify_enable != FALSE ) &&
+                  ( *l_p_sig_status & IL_SIG_STATUS_VALUE_CHNGD ) )
+                {
+                il_app_hook_sig_changed_handle( frm_index, l_sig_handle, l_sig_size );
                 }
             }
 

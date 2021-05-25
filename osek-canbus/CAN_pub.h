@@ -36,6 +36,14 @@ void il_app_frm_timeout2_get
     boolean           *p_timeout_err2
     );
 
+void il_app_frm_sig_set_status
+    (
+    il_rx_frm_index_t const frm_index,
+    uint8             const frm_stat_bit_mask,
+    il_sig_handle_t   const sig_handle,
+    uint8             const sig_stat_bit_mask
+    );
+
 void nim_app_sig_put
     (
     il_sig_handle_t         const sig_handle,

@@ -42,6 +42,7 @@
 #include "can_nm.h"
 #include "can_tp.h"
 #include "can_svcs.h"
+#include "can_util.h"
 #include "can_nim_signals.h"
 
 #include "fsl_debug_console.h"
@@ -71,8 +72,9 @@
 #define PM_IGN_ON                       ( 0 )
 #define PM_IGN_OFF                      ( 1 )
 
-#if( (DEBUG_TX_CAN_SUPPORT)&&(DEBUG_RX_CAN_SUPPORT) )
-    #define CAN_APP_SIG_DEBUG_TICK      200;//!< 200 * 5 = 1000ms
+#if( (DEBUG_TX_CAN_SUPPORT)||(DEBUG_RX_CAN_SUPPORT) )
+    #define CAN_APP_SIG_DEBUG_TICK      200 //!< 200 * 5  = 1000ms
+    #define CAN_APP_FRM_DEBUG_TICK      1000//!< 1000 * 5 = 5ms
 #endif
 
 #include "client_dcm_appl.h"
@@ -685,6 +687,64 @@ return l_ret_code;
 /*!*******************************************************************
 *
 * @private
+* interaction layer frame set status
+*
+* Set a CAN message status
+*
+* @return none
+*
+*********************************************************************/
+void
+il_app_frm_sig_set_status
+    (
+    il_rx_frm_index_t const frm_index,
+    uint8             const frm_stat_bit_mask,
+    il_sig_handle_t   const sig_handle,
+    uint8             const sig_stat_bit_mask
+    )
+{
+il_rxfrm_info_t   const * l_p_rxfrm_info;
+uint8                   * l_p_frm_status;
+
+il_rxsig_info_t   const * l_p_rxsig_info;
+uint8                   * l_p_sig_status;
+il_sig_index_t            l_sig_index;
+il_sig_index_t            l_num_signals;
+
+/*------------------------------------------------------
+Get the signal handle and number
+------------------------------------------------------*/
+l_p_rxsig_info = il_get_rxsig_info_ptr( CAN_CONTROLLER_2 );
+l_num_signals  = l_p_rxsig_info->num_signals;
+l_sig_index    = IL_GET_INDEX_FROM_SIGNAL_HANDLE( sig_handle );
+
+if( frm_index   >= IL_RX_FRM_INDEX_ERRORS ||
+    l_sig_index >= l_num_signals )
+    {
+    return;
+    }
+
+/*------------------------------------------------------
+Get the receive frame information
+------------------------------------------------------*/
+l_p_rxfrm_info = il_get_rxfrm_info_ptr( CAN_CONTROLLER_2 );
+
+/*------------------------------------------------------
+Get the frame status pointer and Set the status with mask
+------------------------------------------------------*/
+l_p_sig_status = &( l_p_rxsig_info->p_status[l_sig_index] );
+can_util_set_status_bits( l_p_sig_status, sig_stat_bit_mask );
+
+/*------------------------------------------------------
+Get the frame status pointer and Set the status with mask
+------------------------------------------------------*/
+l_p_frm_status = &( l_p_rxfrm_info->p_status[frm_index] );
+can_util_set_status_bits( l_p_frm_status, frm_stat_bit_mask );
+}
+
+/*!*******************************************************************
+*
+* @private
 * Interaction Layer CAN message frame reception notification
 *
 * This function is the Interaction Layer CAN frame reception callback
@@ -1045,6 +1105,21 @@ void app_task
     can_hw_inst_t   const hw_inst       //!< [in] CAN hardware instance
     )
 {
+#if( DEBUG_RX_CAN_SUPPORT )
+static uint32 test_tick = 0;
+
+if( ( test_tick++ ) >= CAN_APP_FRM_DEBUG_TICK )
+    {
+    test_tick = 0;
+
+    /*------------------------------------------------------
+    Middle layer to handle request messages;
+    ------------------------------------------------------*/
+    il_app_frm_sig_set_status( IL_CAN0_RX3_BRGTHNSS_CTRL_IDX, ( IL_RX_STATUS_PENDING | IL_RX_STATUS_DATA_CHANGED ),
+                               IL_CAN0_BRTNSS_CTRL_MT_TFT_DUTY_RXSIG_HANDLE, IL_SIG_STATUS_VALUE_CHNGD );
+    }
+#endif
+
 /*------------------------------------------------------
 Middle layer to handle request messages;
 ------------------------------------------------------*/

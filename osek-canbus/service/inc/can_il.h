@@ -44,6 +44,11 @@ Receive frame status bits
 #define IL_RX_STATUS_TIMEOUT2_DIS           (0x1 << 5)
 
 /*------------------------------------------------------
+Signal changed status bit definitions
+------------------------------------------------------*/
+#define IL_SIG_STATUS_VALUE_CHNGD           (0x1 << 0)
+
+/*------------------------------------------------------
 General usage literals for bit and byte manipulation
 ------------------------------------------------------*/
 #define IL_NUM_BITS_IN_BYTE                 (8)
