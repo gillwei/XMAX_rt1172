@@ -366,7 +366,7 @@ ydt_timer_count = 1000;/*5s*/
 * Description:  Get current YAMAH diagnostic tools connect state
 * Usage: Called by client_appl_main_5ms_handler
 *********************************************************************/
-static boolean client_appl_get_ydt_connect_state
+ boolean client_appl_get_ydt_connect_state
     (
     void
     )
@@ -971,14 +971,14 @@ if( ( PROCESS_FLOW_IDLE == client_process_flow_state ) && ( CMD_RSP_PROCESSING !
     }
 else if( PROCESS_FLOW_INIT_RDTCBS == client_process_flow_state )
     {
-    if( ( TRUE == read_dtc_infos.is_cycle_transmission ) && ( PROCESS_RESULT_END == read_dtc_infos.process_result ) && ( is_client_app_cmd_rsp_state( CMD_RSP_DONE) ) )
+    if( ( TRUE == read_dtc_infos.is_cycle_transmission ) && ( PROCESS_RESULT_INIT != read_dtc_infos.process_result ) && ( is_client_app_cmd_rsp_state( CMD_RSP_DONE) ) )
         {
         return TRUE;
         }
     }
 else if( PROCESS_FLOW_MONITOR == client_process_flow_state )
     {
-    if( ( PROCESS_RESULT_END == read_local_monitor_infos.process_result ) && ( TRUE == read_local_monitor_infos.is_cycle_transmission ) && ( is_client_app_cmd_rsp_state( CMD_RSP_DONE ) ) )
+    if( ( PROCESS_RESULT_INIT != read_local_monitor_infos.process_result ) && ( TRUE == read_local_monitor_infos.is_cycle_transmission ) && ( is_client_app_cmd_rsp_state( CMD_RSP_DONE ) ) )
         {
         return TRUE;
         }
@@ -1552,7 +1552,7 @@ if( data_size !=  0x02 )/*server_code*/
 
 client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
 set_current_conncet_server_id( channel_id );
-read_loacl_market_infos.connected_server_id = channel_id;
+read_local_monitor_infos.connected_server_id = channel_id;
 read_local_monitor_infos.local_id_list = (uint8*)support_monitor_data_id_list;
 read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
 read_local_monitor_infos.current_local_data_index = 0x00;

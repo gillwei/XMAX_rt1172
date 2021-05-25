@@ -2032,7 +2032,13 @@ tp_n_frame_t            l_frame_type;
 tp_n_pci_t              l_pci_byte;
 tp_n_pci_t              l_pci_msnibble;
 boolean                 l_ch_match;
+boolean                 l_ydt_online;
 
+l_ydt_online = client_appl_get_ydt_connect_state();
+if( TRUE == l_ydt_online )
+    {
+    return;
+    }
 
 //uint32 rx_id = p_rmd->identifier;
 /*------------------------------------------------------
