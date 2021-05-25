@@ -43,6 +43,7 @@
 #endif
 
 #include "_CoreGroup.h"
+#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_EffectsRectEffect.h"
 #include "_NavigationNaviAlertMessage.h"
@@ -107,6 +108,7 @@ EW_DEFINE_FIELDS( NavigationNaviAlert, CoreGroup )
   EW_OBJECT  ( Distance,        ViewsText )
   EW_OBJECT  ( SuspendTimer,    CoreTimer )
   EW_OBJECT  ( NaviEventShrinkEffect, EffectsRectEffect )
+  EW_OBJECT  ( AlertDistanceUpdate, CoreSystemEventHandler )
   EW_ARRAY   ( DistUnitTextArray, XString, [2])
   EW_ARRAY   ( SpeedUnitTextArray, XString, [2])
   EW_VARIABLE( IsEnlargeFinished, XBool )
@@ -174,6 +176,11 @@ void NavigationNaviAlert_OnNaviEventShrinkFinishSlot( NavigationNaviAlert _this,
 
 /* 'C' function for method : 'Navigation::NaviAlert.SetCamera()' */
 void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCameraType );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNaviAlert_OnAlertDistanceUpdateSlot( NavigationNaviAlert _this, XObject 
+  sender );
 
 #ifdef __cplusplus
   }

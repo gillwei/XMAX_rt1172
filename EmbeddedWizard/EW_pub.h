@@ -116,6 +116,7 @@ void EW_notify_phone_call_state_changed( void );
 void EW_notify_phone_call_volume_changed( void );
 
 bool EW_get_clk_auto_adj( void );
+void EW_notify_alert_distance_update( void );
 
 #ifdef __cplusplus
 }

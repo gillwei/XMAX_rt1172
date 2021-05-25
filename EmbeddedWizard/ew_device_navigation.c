@@ -90,6 +90,10 @@
     static int ew_notify_office_setting_update( void );
 #endif
 
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate_
+    static int ew_notify_navi_alert_dist_update( void );
+#endif
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -152,7 +156,10 @@
             ew_notify_navi_tbt_list_update,
         #endif
         #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyActiveTbtItemUpdate_
-            ew_notify_navi_active_tbt_item_update
+            ew_notify_navi_active_tbt_item_update,
+        #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate_
+            ew_notify_navi_alert_dist_update
         #endif
         };
     const int num_of_navi_func = sizeof( navi_function_lookup_table )/sizeof( device_function* );
@@ -171,6 +178,7 @@
     static int is_via_point_update = 0;
     static int is_home_setting_update = 0;
     static int is_office_setting_update = 0;
+    static int is_alert_distance_update = 0;
 
     static int active_tbt_item_idx;
     static int tbt_list_size;
@@ -694,6 +702,31 @@ bool ew_navi_is_route_guidance_started
 
 /*********************************************************************
 *
+* @private
+* ew_notify_navi_alert_dist_update
+*
+* Notify EW GUI that new alert distance has received.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate_
+    static int ew_notify_navi_alert_dist_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_alert_distance_update )
+        {
+        is_alert_distance_update = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate( device_object );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
 * @public
 * EW_notify_navi_map_update
 *
@@ -975,6 +1008,25 @@ void EW_notify_office_setting_update
 {
 #ifdef _DeviceInterfaceNavigationDeviceClass_
     is_office_setting_update = 1;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_alert_distance_update
+*
+* Notify Embedded Wizard that alert distance is updated.
+*
+*********************************************************************/
+void EW_notify_alert_distance_update
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    is_alert_distance_update = 1;
     EwBspEventTrigger();
 #endif
 }

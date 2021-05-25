@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <20,20,260,60>
 $output false
@@ -478,7 +478,6 @@ class NAV01_DefaultView : Home::BaseHome
     // Reset Alert message bounds for next alert.
     NaviEventObject.AlertMessage.Bounds = Navigation::ALERT_MESSAGE_BOUNDS;
     IsEventDisplaying = false;
-    signal OnNaviIncidentUpdateSlot;
   }
 
   $rect <1050,190,1250,230>
@@ -1309,6 +1308,7 @@ class NaviAlert : Core::Group
     else if( IsShrinkFinished )
     {
       IsShrinkFinished = false;
+      SuspendTimer.Period = 8000;
       signal DismissAlertSignal;
     }
     else
@@ -1496,6 +1496,33 @@ class NaviAlert : Core::Group
       default:;
     }
   }
+
+  $rect <500,310,700,350>
+  object Core::SystemEventHandler AlertDistanceUpdate
+  {
+    preset OnEvent = OnAlertDistanceUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.AlertDistanceUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <700,310,900,350>
+  slot OnAlertDistanceUpdateSlot
+  {
+    var string distance = DeviceInterface::NavigationDevice.GetAlertDistance();
+    var int32 i;
+    var int32 idx;
+    for( i = 0; i < DistUnitTextArray.size ; i++ )
+    {
+      idx = distance.find( DistUnitTextArray[i], 0 );
+      if( idx > -1 )
+      {
+        DistUnit.String = DistUnitTextArray[i];
+        Distance.String = distance.remove( idx - 1 , DistUnitTextArray[i].length + 1 );
+        break;
+      }
+    }
+  }
 }
 
 $rect <20,310,220,350>
@@ -1532,7 +1559,7 @@ class NaviAlertMessage : Core::Group
   $rect <20,20,160,60>
   object Views::Text NaviSpeed
   {
-    preset Bounds = <325,3,352,33>;
+    preset Bounds = <315,3,352,33>;
     preset String = "";
     preset Font = Fonts::NotoSansMedium22pt;
     preset Visible = false;

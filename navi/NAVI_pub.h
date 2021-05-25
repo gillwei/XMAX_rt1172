@@ -64,7 +64,7 @@ typedef struct
     char dist[MAX_STR_SIZE];
     uint8_t desc_size;
     uint8_t visibility;
-    } navi_event_stat;
+    } navi_event_type;
 
 typedef struct
     {
@@ -72,7 +72,7 @@ typedef struct
     uint32_t eta;
     uint32_t speed_limit;
     uint8_t daynight;
-    navi_event_stat navi_event;
+    navi_event_type navi_event;
     uint8_t is_navigating;
     uint8_t is_home_set;
     uint8_t is_office_set;
@@ -94,8 +94,8 @@ void NAVI_jpeg_data_received( uint32_t jpeg_size, uint8_t* buffer_addr );
 navi_data_type* NAVI_get_navi_obj( void );
 bool NAVI_get_navigation_status( void );
 void NAVI_stop_map_update( void );
-bool NAVI_get_event( navi_event_stat* event_data );
-void NAVI_reset_event_buffer( void );
+bool NAVI_get_event( navi_event_type* event_data );
+void NAVI_remove_event_from_buffer( void );
 void NAVI_send_zoom_in_request( void );
 void NAVI_send_zoom_out_request( void );
 EnumNaviDialogType NAVI_get_dialog_type( void );
@@ -108,6 +108,7 @@ void NAVI_send_skip_next_waypoint_request( void );
 void NAVI_send_go_home_request( void );
 void NAVI_send_go_office_request( void );
 EnumNaviZoomInOutStatusType NAVI_get_zoom_inout_status( void );
+void NAVI_get_alert_distance( char** dist );
 
 #ifdef __cplusplus
 }

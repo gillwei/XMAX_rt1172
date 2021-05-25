@@ -139,7 +139,7 @@ static const XColor _Const0029 = { 0xAA, 0x14, 0x15, 0xFF };
 static const XRect _Const002A = {{ 0, 0 }, { 405, 46 }};
 static const XRect _Const002B = {{ 10, 8 }, { 30, 28 }};
 static const XRect _Const002C = {{ 34, 2 }, { 315, 33 }};
-static const XRect _Const002D = {{ 325, 3 }, { 352, 33 }};
+static const XRect _Const002D = {{ 315, 3 }, { 352, 33 }};
 static const XRect _Const002E = {{ 354, 9 }, { 395, 31 }};
 static const XRect _Const002F = {{ 0, 0 }, { 110, 33 }};
 static const XRect _Const0030 = {{ 19, 7 }, { 39, 29 }};
@@ -788,8 +788,6 @@ void NavigationNAV01_DefaultView_OnNaviEventDismissFinishSlot( NavigationNAV01_D
   EffectsEffect_OnSetEnabled((EffectsEffect)&_this->NaviEventDismissEffect, 0 );
   CoreRectView__OnSetBounds( &_this->NaviEventObject.AlertMessage, NavigationALERT_MESSAGE_BOUNDS );
   _this->IsEventDisplaying = 0;
-  EwSignal( EwNewSlot( _this, NavigationNAV01_DefaultView_OnNaviIncidentUpdateSlot ), 
-    ((XObject)_this ));
 }
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.DismissAlert()' */
@@ -1950,6 +1948,7 @@ void NavigationNaviAlert__Init( NavigationNaviAlert _this, XObject aLink, XHandl
   ViewsText__Init( &_this->Distance, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->SuspendTimer, &_this->_.XObject, 0 );
   EffectsRectEffect__Init( &_this->NaviEventShrinkEffect, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->AlertDistanceUpdate, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( NavigationNaviAlert );
@@ -1989,6 +1988,9 @@ void NavigationNaviAlert__Init( NavigationNaviAlert _this, XObject aLink, XHandl
   _this->NaviEventShrinkEffect.Super1.OnFinished = EwNewSlot( _this, NavigationNaviAlert_OnNaviEventShrinkFinishSlot );
   _this->NaviEventShrinkEffect.Outlet = EwNewRef( &_this->AlertMessage, CoreRectView_OnGetBounds, 
   CoreRectView__OnSetBounds );
+  _this->AlertDistanceUpdate.OnEvent = EwNewSlot( _this, NavigationNaviAlert_OnAlertDistanceUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->AlertDistanceUpdate, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->AlertDistanceUpdateEvent );
 }
 
 /* Re-Initializer for the class 'Navigation::NaviAlert' */
@@ -2004,6 +2006,7 @@ void NavigationNaviAlert__ReInit( NavigationNaviAlert _this )
   ViewsText__ReInit( &_this->Distance );
   CoreTimer__ReInit( &_this->SuspendTimer );
   EffectsRectEffect__ReInit( &_this->NaviEventShrinkEffect );
+  CoreSystemEventHandler__ReInit( &_this->AlertDistanceUpdate );
 }
 
 /* Finalizer method for the class 'Navigation::NaviAlert' */
@@ -2019,6 +2022,7 @@ void NavigationNaviAlert__Done( NavigationNaviAlert _this )
   ViewsText__Done( &_this->Distance );
   CoreTimer__Done( &_this->SuspendTimer );
   EffectsRectEffect__Done( &_this->NaviEventShrinkEffect );
+  CoreSystemEventHandler__Done( &_this->AlertDistanceUpdate );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );
@@ -2049,6 +2053,7 @@ void NavigationNaviAlert_OnSuspendUpdateSlot( NavigationNaviAlert _this, XObject
     if ( _this->IsShrinkFinished )
     {
       _this->IsShrinkFinished = 0;
+      CoreTimer_OnSetPeriod( &_this->SuspendTimer, 8000 );
       EwSignal( _this->DismissAlertSignal, ((XObject)_this ));
     }
 }
@@ -2241,6 +2246,37 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     break;
 
     default :; 
+  }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNaviAlert_OnAlertDistanceUpdateSlot( NavigationNaviAlert _this, XObject 
+  sender )
+{
+  XString distance;
+  XInt32 i;
+  XInt32 idx;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  distance = DeviceInterfaceNavigationDeviceClass_GetAlertDistance( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
+
+  for ( i = 0; i < 2; i++ )
+  {
+    idx = EwStringFind( distance, _this->DistUnitTextArray[ EwCheckIndex( i, 2 )], 
+    0 );
+
+    if ( idx > -1 )
+    {
+      ViewsText_OnSetString( &_this->DistUnit, _this->DistUnitTextArray[ EwCheckIndex( 
+      i, 2 )]);
+      ViewsText_OnSetString( &_this->Distance, EwStringRemove( distance, idx - 1, 
+      EwGetStringLength( _this->DistUnitTextArray[ EwCheckIndex( i, 2 )]) + 1 ));
+      break;
+    }
   }
 }
 

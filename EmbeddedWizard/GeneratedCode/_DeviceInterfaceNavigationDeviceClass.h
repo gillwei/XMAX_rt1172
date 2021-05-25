@@ -81,6 +81,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( ViaPointUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( HomeSettingUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( OfficeSettingUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( AlertDistanceUpdateEvent, CoreSystemEvent )
   EW_VARIABLE( ActiveTbtItemIdx, XInt32 )
   EW_VARIABLE( TbtListSize,     XInt32 )
   EW_VARIABLE( CurrentHome,     XEnum )
@@ -298,6 +299,19 @@ void DeviceInterfaceNavigationDeviceClass_ZoomOutRequest( DeviceInterfaceNavigat
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetZoomInOutStatus()' */
 XEnum DeviceInterfaceNavigationDeviceClass_GetZoomInOutStatus( DeviceInterfaceNavigationDeviceClass _this );
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyAlertDistanceUpdate( DeviceInterfaceNavigationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyAlertDistanceUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyAlertDistanceUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate_
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetAlertDistance()' */
+XString DeviceInterfaceNavigationDeviceClass_GetAlertDistance( DeviceInterfaceNavigationDeviceClass _this );
 
 #ifdef __cplusplus
   }

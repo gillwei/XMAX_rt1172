@@ -960,7 +960,7 @@ class NavigationDeviceClass : Templates::DeviceClass
           break;
         case EnumNaviDataTypeNAVI_EVENT:
           {
-            navi_event_stat navi_event_obj;
+            navi_event_type navi_event_obj;
             bool is_event_retrieved = NAVI_get_event( &navi_event_obj );
             if( is_event_retrieved )
             {
@@ -972,7 +972,6 @@ class NavigationDeviceClass : Templates::DeviceClass
             }
             else
             {
-              NAVI_reset_event_buffer();
               NaviData = NULL;
             }
           }
@@ -1343,6 +1342,33 @@ class NavigationDeviceClass : Templates::DeviceClass
 
   $rect <710,90,910,130>
   var bool IsZoomInOutStatusReceived = true;
+
+  $rect <240,710,440,750>
+  object Core::SystemEvent AlertDistanceUpdateEvent;
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about a particular system event.
+  $rect <30,710,230,750>
+  $output true
+  method void NotifyAlertDistanceUpdate()
+  {
+    AlertDistanceUpdateEvent.Trigger( null, false );
+  }
+
+  $rect <470,720,670,760>
+  method string GetAlertDistance()
+  {
+    $if !$prototyper
+      var string Dist;
+      native( Dist )
+      {
+        char* dist;
+        NAVI_get_alert_distance( &dist );
+        Dist = EwNewStringUtf8( ( const unsigned char* )dist, ( int )strlen( dist ) );
+      }
+      return Dist;
+    $endif
+  }
 }
 
 $rect <20,340,230,380>

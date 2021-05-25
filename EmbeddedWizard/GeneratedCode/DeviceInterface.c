@@ -984,6 +984,7 @@ void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Init( &_this->ViaPointUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->HomeSettingUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->OfficeSettingUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->AlertDistanceUpdateEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( DeviceInterfaceNavigationDeviceClass );
@@ -1015,6 +1016,7 @@ void DeviceInterfaceNavigationDeviceClass__ReInit( DeviceInterfaceNavigationDevi
   CoreSystemEvent__ReInit( &_this->ViaPointUpdateEvent );
   CoreSystemEvent__ReInit( &_this->HomeSettingUpdateEvent );
   CoreSystemEvent__ReInit( &_this->OfficeSettingUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->AlertDistanceUpdateEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NavigationDeviceClass' */
@@ -1039,6 +1041,7 @@ void DeviceInterfaceNavigationDeviceClass__Done( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Done( &_this->ViaPointUpdateEvent );
   CoreSystemEvent__Done( &_this->HomeSettingUpdateEvent );
   CoreSystemEvent__Done( &_this->OfficeSettingUpdateEvent );
+  CoreSystemEvent__Done( &_this->AlertDistanceUpdateEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_.Super );
@@ -1171,7 +1174,7 @@ DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( D
         break;
       case EnumNaviDataTypeNAVI_EVENT:
         {
-          navi_event_stat navi_event_obj;
+          navi_event_type navi_event_obj;
           bool is_event_retrieved = NAVI_get_event( &navi_event_obj );
           if( is_event_retrieved )
           {
@@ -1183,7 +1186,6 @@ DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( D
           }
           else
           {
-            NAVI_reset_event_buffer();
             NaviData = NULL;
           }
         }
@@ -1527,6 +1529,36 @@ XEnum DeviceInterfaceNavigationDeviceClass_GetZoomInOutStatus( DeviceInterfaceNa
   ZoomInOutStatus = EnumNaviZoomInOutStatusTypeREACH_MAXIMUM;
   ZoomInOutStatus = NAVI_get_zoom_inout_status();
   return ZoomInOutStatus;
+}
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyAlertDistanceUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->AlertDistanceUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyAlertDistanceUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyAlertDistanceUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetAlertDistance()' */
+XString DeviceInterfaceNavigationDeviceClass_GetAlertDistance( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XString Dist;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Dist = 0;
+  {
+    char* dist;
+    NAVI_get_alert_distance( &dist );
+    Dist = EwNewStringUtf8( ( const unsigned char* )dist, ( int )strlen( dist ) );
+  }
+  return Dist;
 }
 
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */
