@@ -796,9 +796,22 @@ if( status == TRUE )
     memcpy( fuel_cons, data, sizeof(fuel_cons) );
 
     fuel_cons_pre         = ( fuel_cons[3] << SHIFT_THREE_BYTES ) |
-                            ( fuel_cons[3] << SHIFT_TWO_BYTES )   |
+                            ( fuel_cons[2] << SHIFT_TWO_BYTES )   |
                             ( fuel_cons[1] << SHIFT_ONE_BYTE )    |
                             ( fuel_cons[0] );
+
+    /*------------------------------------------------------
+    If this is the first time to read fuel consumption,reset
+    fuel_cons_pre
+    ------------------------------------------------------*/
+    if( fuel_cons[3] == 0xFF &&
+        fuel_cons[2] == 0xFF &&
+        fuel_cons[1] == 0xFF &&
+        fuel_cons[0] == 0xFF )
+        {
+        fuel_cons_pre = 0;
+        }
+
 #if( SYC_CAN_SUPPORT )
     PRINTF( "Get fuel consumption:%d\r\n", fuel_cons_pre );
 #endif
