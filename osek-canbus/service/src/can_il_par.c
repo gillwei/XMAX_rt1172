@@ -3779,7 +3779,7 @@ il_can0_rxa_vehicle_info_2_rxfrm_init_data[IL_CAN0_RXA_VEHICLE_INFO_2_RXFRM_LEN]
 
 static uint8 const
 il_can0_rxb_vehicle_info_3_rxfrm_init_data[IL_CAN0_RXB_VEHICLE_INFO_3_RXFRM_LEN] =
-    { 0xFF,  0xF8,  0xFF,  0xFF,  0xFF,  0xFF,  0x00,  0x00 };
+    { 0xFF,  0xFC,  0xFF,  0xFF,  0xFF,  0xFF,  0x00,  0x00 };
 
 static uint8 const
 il_can0_rxc_vehicle_info_4_rxfrm_init_data[IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_LEN] =
