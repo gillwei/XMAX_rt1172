@@ -160,6 +160,13 @@ typedef struct
     uint8_t redzone;        /**< tachometer red zone start (100rpm) */
     } rx_tacho_setting_struct;
 
+typedef struct
+    {
+    uint8_t front;              /**< front tire pressure (psi) */
+    uint8_t rear;               /**< rear tire pressure (psi) */
+    bool    sensor_equipped;    /**< pressure sensor equipped */
+    } rx_tire_pressure_struct;
+
 typedef enum
     {
     SUPPORTED_FUNCTION_DATA_SOURCE_UI,

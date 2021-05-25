@@ -57,6 +57,7 @@ static rx_heater_status_struct      rx_grip_warmer_status;
 static rx_heater_status_struct      rx_seat_heater_status;
 static rx_maintenance_trip_struct   rx_maintenance_trip;
 static rx_tacho_setting_struct      rx_tacho_setting;
+static rx_tire_pressure_struct      rx_tire_pressure;
 
 static uint32_t rx_vehicle_supported_functions = 0;
 static bool     is_dd_mode_activated = false;
@@ -540,6 +541,41 @@ switch( signal_id )
 /*********************************************************************
 *
 * @private
+* process_tpms_status
+*
+* @param signal_id CAN signal id
+* @param data Received CAN data
+*
+*********************************************************************/
+static void process_tpms_status
+    (
+    const uint16_t signal_id,
+    const uint32_t data
+    )
+{
+switch( signal_id )
+    {
+    case IL_CAN0_TPMS_SENSOR_EQUIP_FLG_RXSIG_HANDLE:
+        rx_tire_pressure.sensor_equipped = (bool)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeTIRE_SENSOR_EQUIPPED );
+        break;
+    case IL_CAN0_TPMS_STAT_TIRE_PRESS_FR_RXSIG_HANDLE:
+        rx_tire_pressure.front = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeTIRE_FRONT );
+        break;
+    case IL_CAN0_TPMS_STAT_TIRE_PRESS_RR_RXSIG_HANDLE:
+        rx_tire_pressure.rear = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeTIRE_REAR );
+        break;
+    default:
+        PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
+        break;
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * notify_inspection_display_request
 *
 * Notify inspection display test pattern
@@ -690,6 +726,9 @@ switch( msg_idx )
         break;
     case IL_CAN0_RXE_HEATER_STAT_IDX:
         process_heater_status( sig_hnd, data );
+        break;
+    case IL_CAN0_RXI_TPMS_STAT_IDX:
+        process_tpms_status( sig_hnd, data );
         break;
     default:
 #if( DEBUG_RX_CAN_SUPPORT )
@@ -1008,6 +1047,9 @@ switch( rx_type )
     case EnumVehicleRxTypeTRIP_TIME:
         is_valid = vi_trip_time_get_current( data );
         break;
+    case EnumVehicleRxTypeTIRE_SENSOR_EQUIPPED:
+        *data = (uint32_t)rx_tire_pressure.sensor_equipped;
+        break;
     default:
         PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );
         is_valid = false;
@@ -1137,6 +1179,12 @@ switch( rx_type )
             {
             is_valid = false;
             }
+        break;
+    case EnumVehicleRxTypeTIRE_FRONT:
+        *data = rx_tire_pressure.front * 0.2;
+        break;
+    case EnumVehicleRxTypeTIRE_REAR:
+        *data = rx_tire_pressure.rear * 0.2;
         break;
     default:
         PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );

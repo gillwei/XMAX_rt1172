@@ -1293,7 +1293,7 @@ void UnitUNT04_PressureSettingMenu_OnItemActivate( UnitUNT04_PressureSettingMenu
     break;
 
     case 2 :
-      if ( EnumPressureSettingItemKGF == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      if ( EnumPressureSettingItemKGF_PER_CM2 == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
         CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
       else
@@ -1331,7 +1331,7 @@ XBool UnitUNT04_PressureSettingMenu_LoadItemChecked( UnitUNT04_PressureSettingMe
     break;
 
     case 2 :
-      if ( EnumPressureSettingItemKGF == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+      if ( EnumPressureSettingItemKGF_PER_CM2 == EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
           DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting )
         IsChecked = 1;
     break;
@@ -1385,7 +1385,7 @@ void UnitUNT04_PressureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT04_Pressure
 
       case 2 :
         EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentPressureSetting 
-        = EnumPressureSettingItemKGF;
+        = EnumPressureSettingItemKGF_PER_CM2;
       break;
 
       default :; 

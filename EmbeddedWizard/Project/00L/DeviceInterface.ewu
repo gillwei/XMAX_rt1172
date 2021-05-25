@@ -934,7 +934,7 @@ class NavigationDeviceClass : Templates::DeviceClass
           }
           break;
         case EnumNaviDataTypeNAVI_ROUTE_CAL_PROGRESS:
-          NaviData->RouteCalProgress = navi_obj->route_cal_progress; 
+          NaviData->RouteCalProgress = navi_obj->route_cal_progress;
           break;
         case EnumNaviDataTypeVIA_POINT:
           NaviData->ViaPoints = navi_obj->via_points;
@@ -2294,7 +2294,11 @@ class VehicleDeviceClass : Templates::DeviceClass
           Enum::VehicleRxType.AIR_TEMPERATURE == aVehicleRxType ||
           Enum::VehicleRxType.COOLANT_TEMPERATURE == aVehicleRxType ||
           Enum::VehicleRxType.BATTERY_VOLTAGE == aVehicleRxType ||
-          Enum::VehicleRxType.TRIP_F_VALUE == aVehicleRxType )
+          Enum::VehicleRxType.TRIP_F_VALUE == aVehicleRxType ||
+          Enum::VehicleRxType.TIRE_FRONT == aVehicleRxType ||
+          Enum::VehicleRxType.TIRE_REAR == aVehicleRxType ||
+          Enum::VehicleRxType.TIRE_FRONT_LEFT == aVehicleRxType ||
+          Enum::VehicleRxType.TIRE_FRONT_RIGHT == aVehicleRxType )
       {
         VehicleData.DataType = Enum::DataType.FLOAT;
       }
@@ -2334,10 +2338,7 @@ class VehicleDeviceClass : Templates::DeviceClass
       VehicleData.Valid = Valid;
     $else
       // suppress warning
-      if( ( int32 )aVehicleRxType >= 0 )
-      {
-        // empty
-      }
+      aVehicleRxType;
     $endif
 
     return VehicleData;
@@ -2594,7 +2595,7 @@ class VehicleDeviceClass : Templates::DeviceClass
       {
         TripTimeHour = Settings::MAX_TRIP_TIME_HOUR;
       }
-      
+
       var uint32 TripTimeMinute = ( VehicleData.DataUInt32 / 60 ) - ( TripTimeHour ) * 60;
       if( Settings::MAX_TRIP_TIME_MINUTE < TripTimeMinute )
       {
@@ -2794,7 +2795,7 @@ class VehicleDeviceClass : Templates::DeviceClass
   // Value String
   note group UnitSettingNote1
   {
-    attr Bounds = <580,200,1590,780>;
+    attr Bounds = <580,200,1590,830>;
   }
 
   $rect <610,660,830,700>
@@ -2878,10 +2879,10 @@ class VehicleDeviceClass : Templates::DeviceClass
     return pure CruiseSpeedStr;
   }
 
-  $rect <610,800,820,840>
+  $rect <270,560,480,600>
   property bool LowFuelWarning;
 
-  $rect <610,850,820,890>
+  $rect <270,610,480,650>
   onget LowFuelWarning
   {
     var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.LOW_FUEL_WARNING );
@@ -2891,6 +2892,88 @@ class VehicleDeviceClass : Templates::DeviceClass
     }
 
     return pure LowFuelWarning;
+  }
+
+  $rect <1130,560,1360,600>
+  property string TireFrontPressureStr;
+
+  $rect <1130,600,1360,640>
+  onget TireFrontPressureStr
+  {
+    pure TireFrontPressureStr = GetTirePressureStr( Enum::VehicleRxType.TIRE_FRONT );
+    return pure TireFrontPressureStr;
+  }
+
+  $rect <280,430,500,470>
+  method uint32 RoundDownDataUint32( arg uint32 aData, arg uint32 aResolution )
+  {
+    return ( (uint32)( aData / aResolution ) ) * aResolution;
+
+  }
+
+  $rect <1130,760,1360,800>
+  method string GetTirePressureStr( arg Enum::VehicleRxType aTireType )
+  {
+    if( TireSensorEquipped )
+    {
+      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( aTireType );
+      if( 0.0 < VehicleData.DataFloat )
+      {
+        switch( PressureUnit )
+        {
+          case Enum::PressureSettingItem.PSI:
+          {
+            // rown down to zero decimal place
+            VehicleData.DataFloat = math_floor( VehicleData.DataFloat );
+            pure TireFrontPressureStr = string( VehicleData.DataFloat, 0, 0 );
+          }
+          case Enum::PressureSettingItem.KPA:
+          {
+            VehicleData.DataFloat /= Unit::KPA_TO_PSI_GAL_SCALE;
+            var uint32 pressure = DeviceInterface::VehicleDevice.RoundDownDataUint32( (uint32)VehicleData.DataFloat, 10 );
+            pure TireFrontPressureStr = string( pressure );
+          }
+          case Enum::PressureSettingItem.KGF_PER_CM2:
+          {
+            VehicleData.DataFloat /= Unit::KGF_PRE_CM2_TO_PSI_SCALE;
+            VehicleData.DataFloat = DeviceInterface::VehicleDevice.RoundDownDataFloat( VehicleData.DataFloat, 0.1 );
+            pure TireFrontPressureStr = string( VehicleData.DataFloat, 0, 1 );
+          }
+          default:;
+        }
+      }
+      else
+      {
+        pure TireFrontPressureStr = Strings::GEN_THREE_HYPHENS;
+      }
+    }
+    else
+    {
+      pure TireFrontPressureStr = Strings::GEN_THREE_HYPHENS;
+    }
+
+    return pure TireFrontPressureStr;
+  }
+
+  $rect <1130,660,1360,700>
+  property string TireRearPressureStr;
+
+  $rect <1130,700,1360,740>
+  onget TireRearPressureStr
+  {
+    pure TireRearPressureStr = GetTirePressureStr( Enum::VehicleRxType.TIRE_REAR );
+    return pure TireRearPressureStr;
+  }
+
+  $rect <270,680,490,720>
+  property bool TireSensorEquipped;
+
+  $rect <270,720,500,760>
+  onget TireSensorEquipped
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TIRE_SENSOR_EQUIPPED );
+    pure TireSensorEquipped = (bool)VehicleData.DataUInt32;
+    return pure TireSensorEquipped;
   }
 }
 

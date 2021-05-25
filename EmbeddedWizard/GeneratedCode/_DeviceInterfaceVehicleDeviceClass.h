@@ -73,6 +73,8 @@ EW_DEFINE_FIELDS( DeviceInterfaceVehicleDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( BatteryStr,      XString )
   EW_PROPERTY( AirTemperatureStr, XString )
   EW_PROPERTY( CruiseSpeedStr,  XString )
+  EW_PROPERTY( TireFrontPressureStr, XString )
+  EW_PROPERTY( TireRearPressureStr, XString )
   EW_PROPERTY( PressureUnit,    XEnum )
   EW_PROPERTY( TemperatureUnit, XEnum )
   EW_PROPERTY( FuelConsumptionUnit, XEnum )
@@ -83,6 +85,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceVehicleDeviceClass, TemplatesDeviceClass )
   EW_VARIABLE( CurrentFuelSetting, XEnum )
   EW_VARIABLE( CurrentMileageSetting, XEnum )
   EW_VARIABLE( CurrentMeterDisplay, XEnum )
+  EW_PROPERTY( TireSensorEquipped, XBool )
   EW_PROPERTY( LowFuelWarning,  XBool )
   EW_PROPERTY( DDModeActivated, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceVehicleDeviceClass )
@@ -194,6 +197,23 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetCruiseSpeedStr( DeviceInterfaceVe
 
 /* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetLowFuelWarning()' */
 XBool DeviceInterfaceVehicleDeviceClass_OnGetLowFuelWarning( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTireFrontPressureStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetTireFrontPressureStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.RoundDownDataUint32()' */
+XUInt32 DeviceInterfaceVehicleDeviceClass_RoundDownDataUint32( DeviceInterfaceVehicleDeviceClass _this, 
+  XUInt32 aData, XUInt32 aResolution );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.GetTirePressureStr()' */
+XString DeviceInterfaceVehicleDeviceClass_GetTirePressureStr( DeviceInterfaceVehicleDeviceClass _this, 
+  XEnum aTireType );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTireRearPressureStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetTireRearPressureStr( DeviceInterfaceVehicleDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTireSensorEquipped()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetTireSensorEquipped( DeviceInterfaceVehicleDeviceClass _this );
 
 #ifdef __cplusplus
   }

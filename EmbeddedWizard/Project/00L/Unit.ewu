@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <50,30,250,70>
 $output false
@@ -811,13 +811,13 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
       }
       case 2:
       {
-        if( Enum::PressureSettingItem.KGF == DeviceInterface::VehicleDevice.CurrentPressureSetting )
+        if( Enum::PressureSettingItem.KGF_PER_CM2 == DeviceInterface::VehicleDevice.CurrentPressureSetting )
         {
           CheckMarkUpdateTimer.Enabled = true;
         }
         else
         {
-          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, (uint32)Enum::PressureSettingItem.KGF );
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.PRESSURE_UNIT, (uint32)Enum::PressureSettingItem.KGF_PER_CM2 );
         }
       }
       default:;
@@ -846,7 +846,7 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
       }
       case 2:
       {
-        if( Enum::PressureSettingItem.KGF == DeviceInterface::VehicleDevice.CurrentPressureSetting )
+        if( Enum::PressureSettingItem.KGF_PER_CM2 == DeviceInterface::VehicleDevice.CurrentPressureSetting )
         {
           IsChecked = true;
         }
@@ -918,11 +918,11 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
       {
         case 0: DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.PSI;
         case 1: DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.KPA;
-        case 2: DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.KGF;
+        case 2: DeviceInterface::VehicleDevice.CurrentPressureSetting = Enum::PressureSettingItem.KGF_PER_CM2;
         default:;
       }
 
-      Menu.InvalidateItems( (int32)Enum::PressureSettingItem.PSI, (int32)Enum::PressureSettingItem.KGF );
+      Menu.InvalidateItems( (int32)Enum::PressureSettingItem.PSI, (int32)Enum::PressureSettingItem.KGF_PER_CM2 );
       CheckMarkUpdateTimer.Enabled = true;
     }
   }
@@ -1126,3 +1126,11 @@ const float KM_L_TO_IMPERIAL_GALLON_SCALE = 2.841;
 $rect <330,230,630,270>
 $output false
 const uint32 L_100KM_SCALE_TO_KM_L = 100;
+
+$rect <50,280,320,320>
+$output false
+const float KPA_TO_PSI_GAL_SCALE = 0.145;
+
+$rect <50,330,320,370>
+$output false
+const float KGF_PRE_CM2_TO_PSI_SCALE = 14.2;

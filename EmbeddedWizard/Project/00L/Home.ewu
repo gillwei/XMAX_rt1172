@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <10,60,210,100>
 $output false
@@ -415,7 +415,7 @@ class VehicleInfoMenu : Core::Group
         }
         case Enum::VehicleInfoMenuItem.TIRE_FRONT_RIGHT:
         {
-          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_REAR ) )
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.TIRE_FRONT_RIGHT ) )
           {
             Items[NoOfItems] = MenuItem;
             NoOfItems++;
@@ -555,7 +555,7 @@ class VehicleInfoMenu : Core::Group
       {
         switch( DeviceInterface::VehicleDevice.PressureUnit )
         {
-          case Enum::PressureSettingItem.KGF: IconBitmap = Resource::IconUnitKGF_CM2;
+          case Enum::PressureSettingItem.KGF_PER_CM2: IconBitmap = Resource::IconUnitKGF_CM2;
           case Enum::PressureSettingItem.KPA: IconBitmap = Resource::IconUnitKPA;
           case Enum::PressureSettingItem.PSI: IconBitmap = Resource::IconUnitPSI;
           default:;
@@ -580,6 +580,8 @@ class VehicleInfoMenu : Core::Group
       case Enum::VehicleInfoMenuItem.AIR_TEMPERATURE: ValueStr = DeviceInterface::VehicleDevice.AirTemperatureStr;
       case Enum::VehicleInfoMenuItem.COOLANT_TEMPERATURE: ValueStr = DeviceInterface::VehicleDevice.CoolantTemperatureStr;
       case Enum::VehicleInfoMenuItem.BATTERY: ValueStr = DeviceInterface::VehicleDevice.BatteryStr;
+      case Enum::VehicleInfoMenuItem.TIRE_FRONT: ValueStr = DeviceInterface::VehicleDevice.TireFrontPressureStr;
+      case Enum::VehicleInfoMenuItem.TIRE_REAR: ValueStr = DeviceInterface::VehicleDevice.TireRearPressureStr;
       case Enum::VehicleInfoMenuItem.TIRE_FRONT_RIGHT: ValueStr = Strings::GEN_THREE_HYPHENS;
       case Enum::VehicleInfoMenuItem.TIRE_FRONT_LEFT: ValueStr = Strings::GEN_THREE_HYPHENS;
       case Enum::VehicleInfoMenuItem.CRUISE: ValueStr = DeviceInterface::VehicleDevice.CruiseSpeedStr;
@@ -710,7 +712,8 @@ class VehicleInfoMenu : Core::Group
           ReloadItem( Enum::VehicleInfoMenuItem.RANGE );
           ReloadItem( Enum::VehicleInfoMenuItem.CRUISE );
         }
-        case Enum::VehicleRxType.PRESSURE_UNIT:
+        case Enum::VehicleRxType.PRESSURE_UNIT,
+             Enum::VehicleRxType.TIRE_SENSOR_EQUIPPED:
         {
           ReloadItem( Enum::VehicleInfoMenuItem.TIRE_FRONT );
           ReloadItem( Enum::VehicleInfoMenuItem.TIRE_REAR );

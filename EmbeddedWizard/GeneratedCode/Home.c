@@ -1080,7 +1080,7 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
       case EnumVehicleInfoMenuItemTIRE_FRONT_RIGHT :
         if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
             &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-            EnumVehicleSupportedFunctionTIRE_REAR ))
+            EnumVehicleSupportedFunctionTIRE_FRONT_RIGHT ))
         {
           _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
           NoOfItems++;
@@ -1273,7 +1273,7 @@ ResourcesBitmap HomeVehicleInfoMenu_LoadItemUnitIconBmp( HomeVehicleInfoMenu _th
       switch ( DeviceInterfaceVehicleDeviceClass_OnGetPressureUnit( EwGetAutoObject( 
               &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
       {
-        case EnumPressureSettingItemKGF :
+        case EnumPressureSettingItemKGF_PER_CM2 :
           IconBitmap = EwLoadResource( &ResourceIconUnitKGF_CM2, ResourcesBitmap );
         break;
 
@@ -1339,6 +1339,16 @@ XString HomeVehicleInfoMenu_LoadItemValue( HomeVehicleInfoMenu _this, XInt32 aIt
 
     case EnumVehicleInfoMenuItemBATTERY :
       ValueStr = DeviceInterfaceVehicleDeviceClass_OnGetBatteryStr( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
+    break;
+
+    case EnumVehicleInfoMenuItemTIRE_FRONT :
+      ValueStr = DeviceInterfaceVehicleDeviceClass_OnGetTireFrontPressureStr( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
+    break;
+
+    case EnumVehicleInfoMenuItemTIRE_REAR :
+      ValueStr = DeviceInterfaceVehicleDeviceClass_OnGetTireRearPressureStr( EwGetAutoObject( 
       &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
     break;
 
@@ -1463,6 +1473,7 @@ void HomeVehicleInfoMenu_OnVehicleDataReceivedSlot( HomeVehicleInfoMenu _this, X
       break;
 
       case EnumVehicleRxTypePRESSURE_UNIT :
+      case EnumVehicleRxTypeTIRE_SENSOR_EQUIPPED :
       {
         HomeVehicleInfoMenu_ReloadItem( _this, EnumVehicleInfoMenuItemTIRE_FRONT );
         HomeVehicleInfoMenu_ReloadItem( _this, EnumVehicleInfoMenuItemTIRE_REAR );

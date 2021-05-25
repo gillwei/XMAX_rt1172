@@ -551,7 +551,13 @@ enum VehicleRxType
   $rect <1070,60,1270,100>
   item TIRE_FRONT_LEFT;
 
-  $rect <1070,110,1270,150>
+  $rect <1070,110,1290,150>
+  item TIRE_SENSOR_EQUIPPED;
+
+  $rect <1070,160,1270,200>
+  item TFT_DUTY;
+
+  $rect <1070,210,1270,250>
   item TOTAL;
 }
 
@@ -891,7 +897,7 @@ enum PressureSettingItem
   item KPA;
 
   $rect <430,10,630,50>
-  item KGF;
+  item KGF_PER_CM2;
 }
 
 $rect <30,320,230,360>

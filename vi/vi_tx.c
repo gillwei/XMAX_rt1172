@@ -172,7 +172,7 @@ switch( pressure_setting )
         unit_change_req = MID_MSG_PROCDTL_CHNG_PRSS_UNIT_TO_KPA;
         unit_val = IL_VT_VEHICLE_INFO_PRESS_UNIT_KPA;
         break;
-    case EnumPressureSettingItemKGF:
+    case EnumPressureSettingItemKGF_PER_CM2:
         unit_change_req = MID_MSG_PROCDTL_CHNG_PRSS_UNIT_TO_GKGFPSCM;
         unit_val = IL_VT_VEHICLE_INFO_PRESS_UNIT_KGFPCM2;
         break;

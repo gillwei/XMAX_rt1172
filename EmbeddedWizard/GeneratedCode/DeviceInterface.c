@@ -1142,7 +1142,7 @@ DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( D
         }
         break;
       case EnumNaviDataTypeNAVI_ROUTE_CAL_PROGRESS:
-        NaviData->RouteCalProgress = navi_obj->route_cal_progress; 
+        NaviData->RouteCalProgress = navi_obj->route_cal_progress;
         break;
       case EnumNaviDataTypeVIA_POINT:
         NaviData->ViaPoints = navi_obj->via_points;
@@ -2557,13 +2557,16 @@ DeviceInterfaceVehicleDataClass DeviceInterfaceVehicleDeviceClass_GetData( Devic
 
   VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 0 );
 
-  if (((((((((( EnumVehicleRxTypeFUEL_RATE_INSTANT == aVehicleRxType ) || ( EnumVehicleRxTypeFUEL_RATE_AVERAGE 
-      == aVehicleRxType )) || ( EnumVehicleRxTypeODOMETER_VALUE == aVehicleRxType )) 
-      || ( EnumVehicleRxTypeTRIP1_VALUE == aVehicleRxType )) || ( EnumVehicleRxTypeTRIP2_VALUE 
-      == aVehicleRxType )) || ( EnumVehicleRxTypeFUEL_CONSUMPTION == aVehicleRxType )) 
-      || ( EnumVehicleRxTypeAIR_TEMPERATURE == aVehicleRxType )) || ( EnumVehicleRxTypeCOOLANT_TEMPERATURE 
-      == aVehicleRxType )) || ( EnumVehicleRxTypeBATTERY_VOLTAGE == aVehicleRxType )) 
-      || ( EnumVehicleRxTypeTRIP_F_VALUE == aVehicleRxType ))
+  if (((((((((((((( EnumVehicleRxTypeFUEL_RATE_INSTANT == aVehicleRxType ) || ( 
+      EnumVehicleRxTypeFUEL_RATE_AVERAGE == aVehicleRxType )) || ( EnumVehicleRxTypeODOMETER_VALUE 
+      == aVehicleRxType )) || ( EnumVehicleRxTypeTRIP1_VALUE == aVehicleRxType )) 
+      || ( EnumVehicleRxTypeTRIP2_VALUE == aVehicleRxType )) || ( EnumVehicleRxTypeFUEL_CONSUMPTION 
+      == aVehicleRxType )) || ( EnumVehicleRxTypeAIR_TEMPERATURE == aVehicleRxType )) 
+      || ( EnumVehicleRxTypeCOOLANT_TEMPERATURE == aVehicleRxType )) || ( EnumVehicleRxTypeBATTERY_VOLTAGE 
+      == aVehicleRxType )) || ( EnumVehicleRxTypeTRIP_F_VALUE == aVehicleRxType )) 
+      || ( EnumVehicleRxTypeTIRE_FRONT == aVehicleRxType )) || ( EnumVehicleRxTypeTIRE_REAR 
+      == aVehicleRxType )) || ( EnumVehicleRxTypeTIRE_FRONT_LEFT == aVehicleRxType )) 
+      || ( EnumVehicleRxTypeTIRE_FRONT_RIGHT == aVehicleRxType ))
     VehicleData->DataType = EnumDataTypeFLOAT;
 
   RxTypeId = aVehicleRxType;
@@ -3119,6 +3122,98 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetLowFuelWarning( DeviceInterfaceVehi
     _this->LowFuelWarning = !!VehicleData->DataUInt32;
 
   return _this->LowFuelWarning;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTireFrontPressureStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetTireFrontPressureStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  _this->TireFrontPressureStr = EwShareString( DeviceInterfaceVehicleDeviceClass_GetTirePressureStr( 
+  _this, EnumVehicleRxTypeTIRE_FRONT ));
+  return _this->TireFrontPressureStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.RoundDownDataUint32()' */
+XUInt32 DeviceInterfaceVehicleDeviceClass_RoundDownDataUint32( DeviceInterfaceVehicleDeviceClass _this, 
+  XUInt32 aData, XUInt32 aResolution )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  return ( aData / aResolution ) * aResolution;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.GetTirePressureStr()' */
+XString DeviceInterfaceVehicleDeviceClass_GetTirePressureStr( DeviceInterfaceVehicleDeviceClass _this, 
+  XEnum aTireType )
+{
+  if ( DeviceInterfaceVehicleDeviceClass_OnGetTireSensorEquipped( _this ))
+  {
+    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      aTireType );
+
+    if ( 0.000000f < VehicleData->DataFloat )
+      switch ( DeviceInterfaceVehicleDeviceClass_OnGetPressureUnit( _this ))
+      {
+        case EnumPressureSettingItemPSI :
+        {
+          VehicleData->DataFloat = EwMathFloor( VehicleData->DataFloat );
+          _this->TireFrontPressureStr = EwShareString( EwNewStringFloat( VehicleData->DataFloat, 
+          0, 0 ));
+        }
+        break;
+
+        case EnumPressureSettingItemKPA :
+        {
+          XUInt32 pressure;
+          VehicleData->DataFloat /= 0.145000f;
+          pressure = DeviceInterfaceVehicleDeviceClass_RoundDownDataUint32( EwGetAutoObject( 
+          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), (XInt32)VehicleData->DataFloat, 
+          10 );
+          _this->TireFrontPressureStr = EwShareString( EwNewStringUInt( pressure, 
+          0, 10 ));
+        }
+        break;
+
+        case EnumPressureSettingItemKGF_PER_CM2 :
+        {
+          VehicleData->DataFloat /= 14.200000f;
+          VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+          EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+          VehicleData->DataFloat, 0.100000f );
+          _this->TireFrontPressureStr = EwShareString( EwNewStringFloat( VehicleData->DataFloat, 
+          0, 1 ));
+        }
+        break;
+
+        default :; 
+      }
+    else
+      _this->TireFrontPressureStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  }
+  else
+    _this->TireFrontPressureStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));
+
+  return _this->TireFrontPressureStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTireRearPressureStr()' */
+XString DeviceInterfaceVehicleDeviceClass_OnGetTireRearPressureStr( DeviceInterfaceVehicleDeviceClass _this )
+{
+  _this->TireRearPressureStr = EwShareString( DeviceInterfaceVehicleDeviceClass_GetTirePressureStr( 
+  _this, EnumVehicleRxTypeTIRE_REAR ));
+  return _this->TireRearPressureStr;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTireSensorEquipped()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetTireSensorEquipped( DeviceInterfaceVehicleDeviceClass _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeTIRE_SENSOR_EQUIPPED );
+
+  _this->TireSensorEquipped = !!VehicleData->DataUInt32;
+  return _this->TireSensorEquipped;
 }
 
 /* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */

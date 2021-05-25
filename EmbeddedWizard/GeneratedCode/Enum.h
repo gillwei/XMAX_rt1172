@@ -261,7 +261,9 @@ typedef enum
   EnumVehicleRxTypeTIRE_REAR            = 49,
   EnumVehicleRxTypeTIRE_FRONT_RIGHT     = 50,
   EnumVehicleRxTypeTIRE_FRONT_LEFT      = 51,
-  EnumVehicleRxTypeTOTAL                = 52
+  EnumVehicleRxTypeTIRE_SENSOR_EQUIPPED = 52,
+  EnumVehicleRxTypeTFT_DUTY             = 53,
+  EnumVehicleRxTypeTOTAL                = 54
 } EnumVehicleRxType;
 
 /* User defined enumeration: 'Enum::VehicleTxType' */
@@ -415,7 +417,7 @@ typedef enum
 {
   EnumPressureSettingItemPSI            = 0,
   EnumPressureSettingItemKPA            = 1,
-  EnumPressureSettingItemKGF            = 2
+  EnumPressureSettingItemKGF_PER_CM2    = 2
 } EnumPressureSettingItem;
 
 /* User defined enumeration: 'Enum::BtcPairingState' */
