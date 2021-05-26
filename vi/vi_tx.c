@@ -24,6 +24,7 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define UNIX_TIME_BYTES     ( 5 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -532,10 +533,16 @@ static void send_meter_time
     const uint64_t cur_time
     )
 {
+uint8_t unix_time[UNIX_TIME_BYTES];
+unix_time[0] = ( cur_time >> 32 ) & 0xFF;
+unix_time[1] = ( cur_time >> 24 ) & 0xFF;
+unix_time[2] = ( cur_time >> 16 ) & 0xFF;
+unix_time[3] = ( cur_time >> 8 ) & 0xFF;
+unix_time[4] = cur_time & 0xFF;
+
 dll_frm_index_t l_frm_index;
-can_mid_sig_set( &l_frm_index, IL_CAN0_CLK_DATE_RESP_DATA_TXSIG_HANDLE, IL_CAN0_CLK_DATE_RESP_DATA_TXSIG_NBYTES, (uint8_t*)&cur_time );
+can_mid_sig_set( &l_frm_index, IL_CAN0_CLK_DATE_RESP_DATA_TXSIG_HANDLE, IL_CAN0_CLK_DATE_RESP_DATA_TXSIG_NBYTES, unix_time );
 can_mid_frm_send( l_frm_index );
-PRINTF( "%s %d\r\n", __FUNCTION__, cur_time );
 }
 
 /*********************************************************************
@@ -642,8 +649,6 @@ void VI_set_tx_data
     uint64_t data
     )
 {
-PRINTF( "%s 0x%x, 0x%x\r\n", __FUNCTION__, tx_type, data );
-
 switch( tx_type )
     {
     case EnumVehicleTxTypeLANGUAGE:

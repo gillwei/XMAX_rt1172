@@ -123,8 +123,6 @@ static void clock_timer_callback
 snvs_lp_srtc_datetime_t srtc_datetime;
 uint32_t clk_adj_status;
 
-PRINTF( "%s %d\r\n", __FUNCTION__,  clk_update_state );
-
 switch( clk_update_state )
     {
     case CLK_UPDATE_STATE_WAITING_10_SEC:
@@ -165,8 +163,6 @@ void VI_clock_notify_meter_time_updated
     const snvs_lp_srtc_datetime_t datetime
     )
 {
-PRINTF( "%s %d:%02d:%02d\r\n", __FUNCTION__, datetime.hour, datetime.minute, datetime.second );
-
 stop_timer();
 
 /* If the current second is 50 or later, wait 10 seconds before sending clock to meter */
@@ -201,7 +197,6 @@ void VI_clock_send_rtc_time_to_meter
 snvs_lp_srtc_datetime_t datetime;
 RTC_get_datetime( &datetime );
 VI_clock_notify_meter_time_updated( datetime );
-PRINTF( "%s %d:%02d:%02d\r\n", __FUNCTION__, datetime.hour, datetime.minute, datetime.second );
 }
 
 /*********************************************************************

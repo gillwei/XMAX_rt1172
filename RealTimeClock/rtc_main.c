@@ -149,6 +149,5 @@ converted_time.tm_isdst = -1;
 epoch_time = mktime( &converted_time );
 timestamp = epoch_time;
 
-PRINTF( "%s %d\r\n", __FUNCTION__, timestamp );
 return timestamp;
 }

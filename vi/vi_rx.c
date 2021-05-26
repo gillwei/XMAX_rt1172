@@ -1050,6 +1050,9 @@ switch( rx_type )
     case EnumVehicleRxTypeTIRE_SENSOR_EQUIPPED:
         *data = (uint32_t)rx_tire_pressure.sensor_equipped;
         break;
+    case EnumVehicleRxTypeTFT_DUTY:
+        *data = (uint32_t)rx_brightness_control.tft_duty;
+        break;
     default:
         PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );
         is_valid = false;
