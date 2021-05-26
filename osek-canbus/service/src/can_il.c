@@ -954,6 +954,7 @@ for( l_i_signal = 0; l_i_signal < l_num_frame_signals; l_i_signal++ )
                   ( notify_enable != FALSE ) &&
                   ( *l_p_sig_status & IL_SIG_STATUS_VALUE_CHNGD ) )
                 {
+                can_util_clear_status_bits( l_p_sig_status, IL_SIG_STATUS_VALUE_CHNGD );
                 il_app_hook_sig_changed_handle( frm_index, l_sig_handle, l_sig_size );
                 }
             }
