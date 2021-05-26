@@ -137,7 +137,7 @@ SET05_MAX_DEVICES,"Max number of devices reached.
 Do you want to edit paired device list?",,,,,,,
 SET06_DISCOVERABLE,"Now discoverable by other
 Bluetooth devices.",,,,,,,
-SET06_NAME,"Name : ""%s""",,,,,,,
+SET06_NAME,Name : %s,,,,,,,
 SET06_TIME_LEFT,Time left : ,,,,,,,
 SET07_PAIRING_FAILED,Bluetooth pairing failed.,,,,,,,
 SET08_PAIR_WITH,"Pair with

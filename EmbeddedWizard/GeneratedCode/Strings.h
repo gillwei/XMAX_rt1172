@@ -43,7 +43,11 @@
 #endif
 
 /* This file is generated automatically.
+<<<<<<< HEAD
    Generated: 2021/05/25 08:12:42 */
+=======
+   Generated: 2021/05/26 11:42:22 */
+>>>>>>> 48d74f7... Modify device name display in [SET 06]
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -390,6 +394,9 @@ extern const XStringRes StringsSET05_MAX_DEVICES;
 
 /* User defined constant: 'Strings::SET06_DISCOVERABLE' */
 extern const XStringRes StringsSET06_DISCOVERABLE;
+
+/* User defined constant: 'Strings::SET06_NAME' */
+extern const XStringRes StringsSET06_NAME;
 
 /* User defined constant: 'Strings::SET06_TIME_LEFT' */
 extern const XStringRes StringsSET06_TIME_LEFT;

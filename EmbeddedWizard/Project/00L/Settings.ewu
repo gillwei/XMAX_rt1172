@@ -709,8 +709,12 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
   {
     trace "init SET06";
     DeviceInterface::BluetoothDevice.Discoverable = true;
-    NameText.String += DeviceInterface::BluetoothDevice.LocalDeviceName;
     CountDownTimer.Enabled = true;
+
+    var string ProcessString = Strings::SET06_NAME;
+    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
+    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+    NameText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.LocalDeviceName + ProcessString.right( RightIdx );
   }
 
   $rect <200,340,430,380>
@@ -765,7 +769,7 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
     preset Ellipsis = true;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
-    preset String = "Name:";
+    preset String = Strings::SET06_NAME;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 

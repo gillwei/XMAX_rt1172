@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/05/25 08:12:42
+// Generated: 2021/05/28 10:02:22
 
 $output false
 const string ARGUMENT_STR =
@@ -827,7 +827,7 @@ const string SET06_DISCOVERABLE =
 $output false
 const string SET06_NAME =
 (
-  Default = "Name : \"%s\"";
+  Default = "Name : %s";
 );
 
 $output false
