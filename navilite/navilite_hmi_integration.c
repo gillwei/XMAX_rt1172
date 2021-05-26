@@ -21,6 +21,8 @@
 #include "EW_pub.h"
 #include "NAVILITE_pub.h"
 #include "NAVI_pub.h"
+#include "NAVILITE_util.h"
+
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -71,7 +73,7 @@ if( 1 == result )
     }
 else
     {
-    PRINTF( "%s fail %d\r\n", __FUNCTION__, result );
+    NAVILITE_PRINTF( "%s fail %d\r\n", __FUNCTION__, result );
     }
 }
 
@@ -88,7 +90,7 @@ void navilite_hmi_init_setup
     void
     )
 {
-PRINTF( "[NAVILITE-HMI] hmi init setup code can be placed here if necessary !\r\n" );
+NAVILITE_PRINTF( "[NAVILITE-HMI] hmi init setup code can be placed here if necessary !\r\n" );
 }
 
 /*********************************************************************
@@ -106,7 +108,7 @@ static void hmi_update_callback_preconnected
     uint8_t mode
     )
 {
-PRINTF( "[NAVILITE-HMI] NAVILITE session pre-connected (ESN not acked yet)!\r\n" );
+NAVILITE_PRINTF( "[NAVILITE-HMI] NAVILITE session pre-connected (ESN not acked yet)!\r\n" );
 // Send ESN to establish navilite session
 // Once the ESN ack is received, the hmi_update_callback_connected will be called
 #if( NAVILITE_ESN_REPORT_SUPPORT )
@@ -130,7 +132,7 @@ static void hmi_update_callback_connected
     uint8_t mode
     )
 {
-PRINTF( "[NAVILITE-HMI] NAVILITE session connected!\r\n" );
+NAVILITE_PRINTF( "[NAVILITE-HMI] NAVILITE session connected!\r\n" );
 }
 
 /*********************************************************************
@@ -148,7 +150,7 @@ static void hmi_update_callback_disconnected
     uint8_t mode
     )
 {
-PRINTF( "[NAVILITE-HMI] NAVILITE session disconnected!\r\n" );
+NAVILITE_PRINTF( "[NAVILITE-HMI] NAVILITE session disconnected!\r\n" );
 }
 
 /*********************************************************************
@@ -164,14 +166,14 @@ static void hmi_update_callback_esn_sent
     void
     )
 {
-PRINTF( "[ESN acked] ESN ID is sent to app!\r\n" );
+NAVILITE_PRINTF( "[ESN acked] ESN ID is sent to app!\r\n" );
 if( NAVILITE_request_app_start_imageframe_update() == true )
     {
-    PRINTF( "[NAVILITE-CB] Start Image Frame Update Request Sent!\r\n" );
+    NAVILITE_PRINTF( "[NAVILITE-CB] Start Image Frame Update Request Sent!\r\n" );
     }
 else
     {
-    PRINTF( "[NAVILITE-CB] Start Image Frame Update Request Failed!\r\n" );
+    NAVILITE_PRINTF( "[NAVILITE-CB] Start Image Frame Update Request Failed!\r\n" );
     }
 }
 
@@ -194,12 +196,12 @@ static void hmi_update_callback_imageframe
     navilite_image_type mode
     )
 {
-PRINTF( "\r\n[ImageFrame] image size = %d, addr = 0x%x mode=%d, FB=%d,FB1=%d,FB256=%d,LB=%d\r\n", image_size, image, mode, image[ 0 ], image[ 1 ], image[ 256 ], image[ image_size - 1 ] );
+NAVILITE_PRINTF( "\r\n[ImageFrame] image size = %d, addr = 0x%x mode=%d, FB=%d,FB1=%d,FB256=%d,LB=%d\r\n", image_size, image, mode, image[ 0 ], image[ 1 ], image[ 256 ], image[ image_size - 1 ] );
 
 if( image_size > 0 && JPEG_is_valid( image, image_size ) )
     {
     uint8_t* jpeg_buf = (uint8_t*)JPEG_get_jpeg_buffer();
-    PRINTF( "DEBUG: JPEG_get_jpeg_buffer = 0x%x\r\n",jpeg_buf );
+    NAVILITE_PRINTF( "DEBUG: JPEG_get_jpeg_buffer = 0x%x\r\n",jpeg_buf );
     if( NULL != jpeg_buf )
         {
         memcpy( jpeg_buf, image, image_size );
@@ -207,12 +209,12 @@ if( image_size > 0 && JPEG_is_valid( image, image_size ) )
         }
     else
         {
-        PRINTF( "# ERROR: JPEG BUFFER NOT AVAIL\r\n" );
+        NAVILITE_PRINTF( "# ERROR: JPEG BUFFER NOT AVAIL\r\n" );
         }
     }
 else
     {
-    PRINTF( "# ERROR: INVALID JPEG DATA\r\n");
+    NAVILITE_PRINTF( "# ERROR: INVALID JPEG DATA\r\n");
     }
 }
 
@@ -234,16 +236,16 @@ static void hmi_update_callback_currentroadname
     uint8_t str_size
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] [RoadName：%d]:", str_size );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] [RoadName：%d]:", str_size );
 if( str != NULL)
     {
     NAVILITE_print_utf8( str, str_size );
     }
 else
     {
-    PRINTF( "<NULL>" );
+    NAVILITE_PRINTF( "<NULL>" );
     }
-PRINTF( "\r\n" );
+NAVILITE_PRINTF( "\r\n" );
 }
 
 /*********************************************************************
@@ -261,7 +263,7 @@ static void  hmi_update_callback_eta
     uint32_t value
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] [ETA value]:%d\r\n", value );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] [ETA value]:%d\r\n", value );
 }
 
 /*********************************************************************
@@ -279,7 +281,7 @@ static void  hmi_update_callback_bt_timeout
     uint8_t value
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] [BT timeout value]:%d\r\n", value );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] [BT timeout value]:%d\r\n", value );
 }
 
 /*********************************************************************
@@ -297,7 +299,7 @@ static void hmi_update_callback_speedlimit
     uint16_t speed_limit
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] [speed limit:%d]", speed_limit );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] [speed limit:%d]", speed_limit );
 }
 
 /*********************************************************************
@@ -322,9 +324,9 @@ static void hmi_update_callback_navieventtext
     uint8_t visibility
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] [ NaviEvent event_type: %d, extra subtype:%d visibility:%d event_text:", navi_event_type, navi_event_extra_subtype, visibility );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] [ NaviEvent event_type: %d, extra subtype:%d visibility:%d event_text:", navi_event_type, navi_event_extra_subtype, visibility );
 NAVILITE_print_utf8( str, str_size );
-PRINTF( "\r\n" );
+NAVILITE_PRINTF( "\r\n" );
 }
 
 /*********************************************************************
@@ -342,7 +344,7 @@ static void hmi_update_callback_homelocationsetting
     uint8_t is_home_location
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] home location setting:%d", is_home_location );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] home location setting:%d", is_home_location );
 }
 
 /*********************************************************************
@@ -360,7 +362,7 @@ static void hmi_update_callback_officelocationsetting
     uint8_t is_office_location
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] office location setting:%d", is_office_location );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] office location setting:%d", is_office_location );
 }
 
 /*********************************************************************
@@ -378,7 +380,7 @@ static void hmi_update_callback_viapointcount
     uint8_t via_point_count
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] via point count:%d", via_point_count );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] via point count:%d", via_point_count );
 }
 
 /*********************************************************************
@@ -396,7 +398,7 @@ static void hmi_update_callback_navigationstatus
     uint8_t is_navigating
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] navigation status:%d", is_navigating );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] navigation status:%d", is_navigating );
 }
 
 /*********************************************************************
@@ -414,7 +416,7 @@ static void hmi_update_callback_daynightmode
     navilite_daynight_type mode
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] daynight mode: %d", mode );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] daynight mode: %d", mode );
 }
 
 /*********************************************************************
@@ -434,7 +436,7 @@ static void hmi_update_callback_zoomlevel
     uint8_t max_level
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] zoom level: current:%d, max(%d) ", current_level, max_level );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] zoom level: current:%d, max(%d) ", current_level, max_level );
 }
 
 /*********************************************************************
@@ -452,7 +454,7 @@ static void hmi_update_callback_routecalcprogress  //timeout:10s and automatical
     uint8_t progress
     )
 {
-PRINTF( "\r\n[NAVILITE-CB] Route Calc Progress: %d ", progress );
+NAVILITE_PRINTF( "\r\n[NAVILITE-CB] Route Calc Progress: %d ", progress );
 }
 
 /*********************************************************************
@@ -478,14 +480,14 @@ static void hmi_update_callback_dialogevent
 {
 if( dialog_type != NAVILITE_DIALOGTYPE_DISMISS_DIALOG )
     {
-    PRINTF( "[NAVILITE-CB] DIALOG_SHOW(dialog_id:%d, dialog_type:%d, dialog_size:%d, message:", dialog_id, dialog_type, message_size );
+    NAVILITE_PRINTF( "[NAVILITE-CB] DIALOG_SHOW(dialog_id:%d, dialog_type:%d, dialog_size:%d, message:", dialog_id, dialog_type, message_size );
     NAVILITE_print_utf8( message, message_size );
     }
 else
     {
-    PRINTF( "[NAVILITE-CB] DIALOG_DISMISS(dialog_id:%d)", dialog_id );
+    NAVILITE_PRINTF( "[NAVILITE-CB] DIALOG_DISMISS(dialog_id:%d)", dialog_id );
     }
-PRINTF( "\r\n" );
+NAVILITE_PRINTF( "\r\n" );
 }
 
 /*********************************************************************
@@ -507,9 +509,9 @@ static void hmi_update_callback_nextturndistance
     uint8_t distance_size
     )
 {
-PRINTF( "[NAVILITE-CB] NextTurnDistance icon_index:%d, distance_size:%d, distance_str:", icon_index, distance_size );
+NAVILITE_PRINTF( "[NAVILITE-CB] NextTurnDistance icon_index:%d, distance_size:%d, distance_str:", icon_index, distance_size );
 NAVILITE_print_utf8( distance, distance_size );
-PRINTF( "\r\n" );
+NAVILITE_PRINTF( "\r\n" );
 }
 
 /*********************************************************************
@@ -527,7 +529,7 @@ void NAVILITE_hmi_integration_setup
 {
 // HMI integration example to setup user-defined callbacks.
 // when data is received, the user-defined callback will be triggered.
-PRINTF("\r\n[HMI integration setup by registering the navi content API's callbacks for image mode, roadname update, and etc]\r\n");
+NAVILITE_PRINTF("\r\n[HMI integration setup by registering the navi content API's callbacks for image mode, roadname update, and etc]\r\n");
 NAVILITE_register_update_callback_preconnected( hmi_update_callback_preconnected );
 NAVILITE_register_update_callback_connected( hmi_update_callback_connected );
 NAVILITE_register_update_callback_disconnected( hmi_update_callback_disconnected );

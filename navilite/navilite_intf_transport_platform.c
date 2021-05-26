@@ -76,7 +76,7 @@ bool NAVILITE_send
     )
 {
 #if( NAVILITE_SERIAL_SEND_SUPPORT == 0 )
-    PRINTF( "\r\n*** NAVILITE_send() not enabled or implemented! ***\r\n" );
+    NAVILITE_PRINTF( "\r\n*** NAVILITE_send() not enabled or implemented! ***\r\n" );
     return false;
 #endif
 
@@ -93,25 +93,25 @@ memcpy( (char*)navilite_send_buffer, (char*)frame, dataoffset = sizeof( navilite
 if ( frame->payload_data_type == NAVILITE_PAYLOAD_DATA_TYPE_AS_POINTER )
     {
     memcpy( (char*)navilite_send_buffer + FIELD_PAYLOADDATA_OFFSET, (char*)frame->data_pointer, frame->payload_size );
-    PRINTF( "# payload data retrieved from pointer:%p", frame->data_pointer );
+    NAVILITE_PRINTF( "# payload data retrieved from pointer:%p", frame->data_pointer );
 
     // print the payload frame content
     for( i = 0; i < frame->payload_size; i++ )
         {
-        PRINTF( "[0x%x]", navilite_send_buffer[FIELD_PAYLOADDATA_OFFSET + i] );
+        NAVILITE_PRINTF( "[0x%x]", navilite_send_buffer[FIELD_PAYLOADDATA_OFFSET + i] );
         }
-    PRINTF( "\r\n" );
+    NAVILITE_PRINTF( "\r\n" );
     }
 else
     {
-    PRINTF( "data value: 0x%x from value type", navilite_send_buffer[FIELD_PAYLOADDATA_OFFSET] );
+    NAVILITE_PRINTF( "data value: 0x%x from value type", navilite_send_buffer[FIELD_PAYLOADDATA_OFFSET] );
     }
 
 // @TODO: implement a queue buffer to handling serial send if available
 
 #if( NAVILITE_SERIAL_SEND_SUPPORT == 1 )
     // Note: full frame header size - payload pointer filed + real data size = actual data frame to be sent!!
-    PRINTF( "# SEND SIZE:%d", FIELD_PAYLOADDATA_OFFSET + frame->payload_size );
+    NAVILITE_PRINTF( "# SEND SIZE:%d", FIELD_PAYLOADDATA_OFFSET + frame->payload_size );
 
     // print the payload frame content
     NAVILITE_print_frame( frame );
@@ -148,7 +148,7 @@ bool NAVILITE_receive
     )
 {
 bool ret = false;
-PRINTF( "@TODO:  NAVILITE_receive(%s,%d)" , data, data_size );
+NAVILITE_PRINTF( "@TODO:  NAVILITE_receive(%s,%d)" , data, data_size );
 // @TODO: implement a queue buffer to handling serial receive if available
 return ret;
 }

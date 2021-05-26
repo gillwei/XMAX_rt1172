@@ -68,7 +68,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_preconnected = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -90,7 +90,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_connected = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -112,7 +112,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_disconnected = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -134,7 +134,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_imageframe = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -156,7 +156,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_eta = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -178,7 +178,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_bt_timeout = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -200,7 +200,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_viapointcount = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -222,7 +222,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_speedlimit = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -244,7 +244,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_currentroadname = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -266,7 +266,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_nextturndistance = *callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -288,7 +288,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_nexttbtist = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -310,7 +310,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_activetbtitem = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -333,7 +333,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_navieventtext = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -356,7 +356,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_homelocationsetting = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -379,7 +379,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_officelocationsetting = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -401,7 +401,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_zoomlevel = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -423,7 +423,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_routecalcprogress = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -445,7 +445,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_daynightmode = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -467,7 +467,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_esn_sent = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -489,7 +489,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_navigationstatus = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
@@ -511,7 +511,7 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     {
     bool ret = true;
     navilite_content_update_callbacks.callback_func_dialogevent = callback_func;
-    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
 
