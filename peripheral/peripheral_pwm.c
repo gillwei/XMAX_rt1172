@@ -37,7 +37,6 @@
 
 #define MIN_DUTY_CYCLE_VALUE                    ( 0 )
 #define MAX_DUTY_CYCLE_VALUE                    ( 100 )
-#define DEFAULT_DUTY_CYCLE_VALUE                ( MAX_DUTY_CYCLE_VALUE )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -206,8 +205,6 @@ flexio_config_t fxioUserConfig;
  */
 FLEXIO_GetDefaultConfig( &fxioUserConfig );
 FLEXIO_Init( DISPLAY_FLEXIO_BASEADDR, &fxioUserConfig );
-
-PERIPHERAL_pwm_set_display_dutycycle( DEFAULT_DUTY_CYCLE_VALUE );
 } /* pwm_init() */
 
 /*********************************************************************

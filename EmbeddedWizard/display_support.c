@@ -25,6 +25,8 @@
 #include "PM_pub.h"
 #include "PERIPHERAL_pub.h"
 #include "EW_pub.h"
+#include "CAN_pub.h"
+#include "VI_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -42,12 +44,23 @@
 
 #define DEMO_LCDIF LCDIFV2
 
-#define STD_HIGH                ( 1u ) /* Physical state 5V or 3.3V */
-#define STD_LOW                 ( 0u ) /* Physical state 0V */
+#define STD_HIGH                    ( 1u ) /* Physical state 5V or 3.3V */
+#define STD_LOW                     ( 0u ) /* Physical state 0V */
 
-#define MIN_DELAY_START_TIME    ( 2000 )
-#define T4_TIMEOUT_AFTER_RESET  ( 200 )
-#define FAULT_MONITOR_DURATION  ( 10 )
+#define MIN_DELAY_START_TIME        ( 2000 )
+#define T4_TIMEOUT_AFTER_RESET      ( 200 )
+#define WAIT_MODE_DELAY_TIME        ( 50 )
+#define FAULT_MONITOR_DURATION      ( 10 )
+#define TEMP_MONITOR_DURATION       ( 100 )
+
+#define TEMP_START_DERATING         ( 95 * 1000 )
+#define TEMP_FINISH_DERATING        ( 75 * 1000 )
+#define DERATING_CONTINUOUS_COUNT   ( 5000 / TEMP_MONITOR_DURATION )
+#define DERATING_ANIMATION_STEP     ( 400 / TEMP_MONITOR_DURATION )
+#define DERATING_ANIMATION_FINAL    ( 500 / TEMP_MONITOR_DURATION )
+
+#define MAX_TFT_LEVEL               ( sizeof( tft_level_table ) - 1 )
+#define DEFAULT_MANUAL_TFT_LEVEL    ( 7 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -78,12 +91,7 @@ static const dc_fb_lcdifv2_config_t s_dcFbLcdifv2Config = {
     .vbp           = DEMO_VBP,
     .polarityFlags = DEMO_LCDIF_POL_FLAGS,
     .lineOrder     = kLCDIFV2_LineOrderRGB,
-/* CM4 is domain 1, CM7 is domain 0. */
-#if (__CORTEX_M <= 4)
-    .domain = 1,
-#else
-    .domain = 0,
-#endif
+    .domain        = 0, /* CM4 is domain 1, CM7 is domain 0. */
 };
 
 const dc_fb_t g_dc = {
@@ -93,6 +101,25 @@ const dc_fb_t g_dc = {
 };
 
 static bool pm_status = PM_IGN_ON;
+
+static EnumOperationMode operation_mode;
+
+// Manual Adjustment
+static const uint8 tft_level_table[]    = { 1, 3, 6, 11, 18, 27, 38, 50, 65, 81, 100 };
+static bool manual_adj_flag             = FALSE;
+static uint8_t tft_manual_level         = 0;
+
+// Derating
+static bool derating_flag               = FALSE;
+static bool derating_animation_flag     = FALSE;
+static uint8_t derating_start_counter   = 0;
+static uint8_t derating_stop_counter    = 0;
+static uint8_t derating_animation_count = 0;
+static uint32_t tft_record_duty         = 0;
+
+static uint32_t temp_start = TEMP_START_DERATING;
+static uint32_t temp_stop = TEMP_FINISH_DERATING;
+
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -111,6 +138,11 @@ static void display_monitor_create_task
     );
 
 static void display_monitor_task
+    (
+    void* arg
+    );
+
+static void display_temp_monitor_task
     (
     void* arg
     );
@@ -344,11 +376,20 @@ static void display_monitor_create_task
 {
 if( pdPASS == xTaskCreate( display_monitor_task, "display_monitor_task", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_DISPLAY, NULL ) )
     {
-    PRINTF("%s ok\r\n", __FUNCTION__ );
+    PRINTF( "display_monitor_task create ok\r\n" );
     }
 else
     {
-    PRINTF("%s fail\r\n", __FUNCTION__ );
+    PRINTF( "display_monitor_task create fail\r\n" );
+    }
+
+if( pdPASS == xTaskCreate( display_temp_monitor_task, "display_temp_monitor_task", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_DISPLAY, NULL ) )
+    {
+    PRINTF( "display_temp_monitor_task create ok\r\n" );
+    }
+else
+    {
+    PRINTF( "display_temp_monitor_task create fail\r\n" );
     }
 }
 
@@ -372,6 +413,19 @@ control_TFT_BL_EN( STD_HIGH );
 
 EW_notify_opening_event( OPENING_EVENT_TFT_BACKLIGHT_ON );
 
+vTaskDelay( WAIT_MODE_DELAY_TIME );
+EW_get_operation_mode( &operation_mode );
+
+if( EnumOperationModeNORMAL == operation_mode )
+    {
+    il_app_frm_sig_set_status( IL_CAN0_RX3_BRGTHNSS_CTRL_IDX, ( IL_RX_STATUS_PENDING | IL_RX_STATUS_DATA_CHANGED ),
+                               IL_CAN0_BRTNSS_CTRL_MT_TFT_DUTY_RXSIG_HANDLE, IL_SIG_STATUS_VALUE_CHNGD );
+    }
+else
+    {
+    PERIPHERAL_pwm_set_display_dutycycle( DEFAULT_DUTY_CYCLE_VALUE );
+    }
+
 /* Wait until display initialization done */
 vTaskDelay( MIN_DELAY_START_TIME );
 while( true )
@@ -387,6 +441,97 @@ while( true )
             }
         }
     vTaskDelay( FAULT_MONITOR_DURATION );
+    }
+vTaskDelete( NULL );
+}
+
+/*********************************************************************
+*
+* @private
+* display_temp_monitor_task
+*
+* @brief This task monitors if the temperature is too high and do the derating.
+*
+*********************************************************************/
+static void display_temp_monitor_task
+    (
+    void* arg
+    )
+{
+while( true )
+    {
+    if( derating_flag == false )
+        {
+        if( PERIPHERAL_adc_get_tft_ntc_converted() >= temp_start )
+            {
+            if( derating_start_counter++ == DERATING_CONTINUOUS_COUNT )
+                {
+                // EW_notify_system_event_received( EnumSystemRxEventTFT_DERATING_ON );
+                derating_flag = true;
+                derating_stop_counter = 0;
+                VI_get_rx_data_uint( EnumVehicleRxTypeTFT_DUTY, &tft_record_duty );
+                derating_animation_flag = TRUE;
+                }
+            }
+        else
+            {
+            derating_start_counter = 0;
+            }
+        }
+    else
+        {
+        if( PERIPHERAL_adc_get_tft_ntc_converted() <= temp_stop )
+            {
+            if( derating_stop_counter++ == DERATING_CONTINUOUS_COUNT )
+                {
+                // EW_notify_system_event_received( EnumSystemRxEventTFT_DERATING_OFF );
+                derating_flag = false;
+                derating_start_counter = 0;
+                VI_get_rx_data_uint( EnumVehicleRxTypeTFT_DUTY, &tft_record_duty );
+                derating_animation_flag = TRUE;
+                }
+            }
+        else
+            {
+            derating_stop_counter = 0;
+            }
+        }
+    if( derating_animation_flag == TRUE )
+        {
+        if( ( tft_record_duty * TFT_DUTY_FACTOR ) > tft_level_table[5] ) // LVL6
+            {
+            uint8_t tft_offset = ( ( tft_record_duty * TFT_DUTY_FACTOR ) - tft_level_table[5] ) / 5;
+            if( derating_animation_count < DERATING_ANIMATION_STEP )
+                {
+                derating_animation_count++;
+                if( derating_start_counter != 0 )
+                    {
+                    PERIPHERAL_pwm_set_display_dutycycle( ( tft_record_duty * TFT_DUTY_FACTOR ) - derating_animation_count * tft_offset );
+                    }
+                else if( derating_stop_counter != 0 )
+                    {
+                    PERIPHERAL_pwm_set_display_dutycycle( tft_level_table[5] + derating_animation_count * tft_offset );
+                    }
+                }
+            else if( derating_animation_count++ < DERATING_ANIMATION_FINAL )
+                {
+                if( derating_start_counter != 0 )
+                    {
+                    PERIPHERAL_pwm_set_display_dutycycle( tft_level_table[5] );
+                    }
+                else if( derating_stop_counter != 0 )
+                    {
+                    PERIPHERAL_pwm_set_display_dutycycle( ( tft_record_duty * TFT_DUTY_FACTOR ) );
+                    }
+                }
+            else
+                {
+                derating_animation_count = 0;
+                derating_animation_flag = FALSE;
+                }
+            }
+        }
+    vTaskDelay( TEMP_MONITOR_DURATION );
     }
 vTaskDelete( NULL );
 }
@@ -457,4 +602,149 @@ void display_pre_handler
     )
 {
 GPIO_WritePinOutput( BOARD_INITPINS_TFT_RESET_GPIO, BOARD_INITPINS_TFT_RESET_GPIO_PIN, STD_HIGH );  // RESET off
+}
+
+/*********************************************************************
+*
+* @public
+* DISP_update_tft_brightness
+*
+* public function to update tft brightness depends on different mode
+*
+*********************************************************************/
+void DISP_update_tft_brightness
+    (
+    uint8_t duty_cycle
+    )
+{
+EW_get_operation_mode( &operation_mode );
+if( EnumOperationModeNORMAL == operation_mode )
+    {
+    if( manual_adj_flag == FALSE && derating_flag == FALSE )
+        {
+        PERIPHERAL_pwm_set_display_dutycycle( duty_cycle );
+        }
+    }
+}
+
+
+/*********************************************************************
+*
+* @public
+* DISP_set_tft_brightness_manual_adjustment
+*
+* set whether now is in manual adjustment or not
+*
+*********************************************************************/
+void DISP_set_tft_brightness_manual_adjustment
+    (
+    bool manual_adjustment
+    )
+{
+manual_adj_flag = manual_adjustment;
+if( manual_adjustment )
+    {
+    tft_manual_level = DEFAULT_MANUAL_TFT_LEVEL;
+    PERIPHERAL_pwm_set_display_dutycycle( tft_level_table[tft_manual_level] );
+    }
+else
+    {
+    uint32_t tft_duty;
+    VI_get_rx_data_uint( EnumVehicleRxTypeTFT_DUTY, &tft_duty );
+    DISP_update_tft_brightness( (uint8_t)( tft_duty * TFT_DUTY_FACTOR ) );
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* DISP_adjust_tft_brightness_level_up
+*
+* Adjust one-step up tft brightness
+*
+*********************************************************************/
+void DISP_adjust_tft_brightness_level_up
+    (
+    void
+    )
+{
+if( tft_manual_level < MAX_TFT_LEVEL )
+    {
+    tft_manual_level++;
+    }
+PERIPHERAL_pwm_set_display_dutycycle( tft_level_table[tft_manual_level] );
+}
+
+/*********************************************************************
+*
+* @public
+* DISP_adjust_tft_brightness_level_down
+*
+* Adjust one-step down tft brightness
+*
+*********************************************************************/
+void DISP_adjust_tft_brightness_level_down
+    (
+    void
+    )
+{
+if( tft_manual_level > 0 )
+    {
+    tft_manual_level--;
+    }
+PERIPHERAL_pwm_set_display_dutycycle( tft_level_table[tft_manual_level] );
+}
+
+/*********************************************************************
+*
+* @public
+* DISP_is_current_tft_brighness_level_max
+*
+* check if current brightness level is maximum
+*
+* @return True if current brightness is maximum
+*
+*********************************************************************/
+bool DISP_is_current_tft_brighness_level_max
+    (
+    void
+    )
+{
+return ( tft_manual_level == MAX_TFT_LEVEL );
+}
+
+/*********************************************************************
+*
+* @public
+* DISP_is_current_tft_brighness_level_min
+*
+* check if current brightness level is minimum
+*
+* @return True if current brightness is minimum
+*
+*********************************************************************/
+bool DISP_is_current_tft_brighness_level_min
+    (
+    void
+    )
+{
+return ( tft_manual_level == 0 );
+}
+
+/*********************************************************************
+*
+* @public
+* DISP_is_tft_derating_on
+*
+* check if now is derating or not
+*
+* @return derating flag
+*
+*********************************************************************/
+bool DISP_is_tft_derating_on
+    (
+    void
+    )
+{
+return derating_flag;
 }

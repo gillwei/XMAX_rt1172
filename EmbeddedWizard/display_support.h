@@ -87,6 +87,41 @@ bool display_is_tft_backlight_on
     void
     );
 
+void DISP_update_tft_brightness
+    (
+    uint8_t duty_cycle
+    );
+
+void DISP_set_tft_brightness_manual_adjustment
+    (
+    bool manual_adjustment
+    );
+
+void DISP_adjust_tft_brightness_level_up
+    (
+    void
+    );
+
+void DISP_adjust_tft_brightness_level_down
+    (
+    void
+    );
+
+bool DISP_is_current_tft_brighness_level_max
+    (
+    void
+    );
+
+bool DISP_is_current_tft_brighness_level_min
+    (
+    void
+    );
+
+bool DISP_is_tft_derating_on
+    (
+    void
+    );
+
 #ifdef __cplusplus
 }
 #endif

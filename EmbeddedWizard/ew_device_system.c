@@ -32,6 +32,7 @@
 #include "OTA_pub.h"
 #include "BC_motocon_pub.h"
 #include "client_dcm_appl.h"
+#include "display_support.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -1251,6 +1252,14 @@ switch( mode )
             if( EnumOperationModePRODUCTION_TEST == last_operation_mode )
                 {
                 EW_notify_opening_event( OPENING_EVENT_OP_MODE_READY );
+                }
+
+            if( EnumOperationModeFACTORY == last_operation_mode &&
+                EnumOperationModeNORMAL == mode )
+                {
+                uint32_t tft_duty;
+                VI_get_rx_data_uint( EnumVehicleRxTypeTFT_DUTY, &tft_duty );
+                DISP_update_tft_brightness( (uint8_t)( tft_duty * TFT_DUTY_FACTOR ) );
                 }
             }
         break;

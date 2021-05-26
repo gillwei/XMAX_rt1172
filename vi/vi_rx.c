@@ -21,7 +21,7 @@
 #include "vi_priv.h"
 #include "VI_pub.h"
 #include "EW_pub.h"
-#include "PERIPHERAL_pub.h"
+#include "display_support.h"
 #include "EEPM_pub.h"
 #include "CAN_pub.h"
 
@@ -71,7 +71,6 @@ static const int32_t ticks_to_wait = pdMS_TO_TICKS( 500 );
 #define set_bit( data, offset )   ( ( data ) |=  ( 1 << ( offset ) ) )
 #define clear_bit( data, offset ) ( ( data ) &= ~( 1 << ( offset ) ) )
 
-#define TFT_DUTY_FACTOR           100 / 1023.0
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
@@ -150,7 +149,7 @@ switch( signal_id )
     {
     case IL_CAN0_BRTNSS_CTRL_MT_TFT_DUTY_RXSIG_HANDLE:
         rx_brightness_control.tft_duty = (uint16_t)data;
-        PERIPHERAL_pwm_set_display_dutycycle( (uint8_t)( data * TFT_DUTY_FACTOR ) );
+        DISP_update_tft_brightness( (uint8_t)( data * TFT_DUTY_FACTOR ) );
         break;
     case IL_CAN0_BRTNSS_CTRL_LCD_LV_RXSIG_HANDLE:
         rx_brightness_control.lcd_brightness_level = (uint8_t)data;
@@ -695,10 +694,7 @@ switch( msg_idx )
         process_ecu_legacy_com_data( sig_hnd, data );
         break;
     case IL_CAN0_RX3_BRGTHNSS_CTRL_IDX:
-        if( EnumOperationModeNORMAL == operation_mode )
-            {
-            process_brightness_control_response( sig_hnd, data );
-            }
+        process_brightness_control_response( sig_hnd, data );
         break;
     case IL_CAN0_RX5_VEHICLE_INFO_IDX:
         process_vehicle_info( sig_hnd, data );
