@@ -114,6 +114,11 @@ uint16 cycle_tarns_interval_time;
 boolean is_storge_init_dtc;/*This parameter shall be puted in the last*/
 }client_appl_read_dtc_infos_type;
 
+typedef struct
+{
+uint32 ble_server_code;
+uint8 channel;
+}client_appl_ble_server_code_mapping_type;
 
 typedef struct
 {

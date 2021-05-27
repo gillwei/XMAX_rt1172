@@ -224,11 +224,13 @@ return E_OK;
 
 void client_mem_storage_server_code
     (
-    uint16 server_code
+    uint32 server_code
     )
 {
-client_mem_indentifier_data.mem_data[0] = (uint8)( server_code >> 8 );
-client_mem_indentifier_data.mem_data[1] = (uint8)server_code;
+client_mem_indentifier_data.mem_data[BYTE_NUM_0] = (uint8)( server_code >> 24 );
+client_mem_indentifier_data.mem_data[BYTE_NUM_1] = (uint8)( server_code >> 16 );
+client_mem_indentifier_data.mem_data[BYTE_NUM_2] = (uint8)( server_code >> 8);
+client_mem_indentifier_data.mem_data[BYTE_NUM_3] = (uint8)server_code;
 }
 /*!******************************************************************************
 *
@@ -411,7 +413,7 @@ client_ReturnType client_mem_reset_data
 {
 (void)memset( client_mem_indentifier_data.mem_data, 0x00, client_mem_indentifier_data.length );
 client_mem_indentifier_data.empty_flag = TRUE;
-client_mem_indentifier_data.length = 0x02;
+client_mem_indentifier_data.length = PROTO_SERVER_LEN;
 client_mem_indentifier_data.overflow_flag = FALSE;
 return E_OK;
 }

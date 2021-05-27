@@ -41,7 +41,7 @@ uint8 queue_rear = 0x00;
 * Function name: client_ble_cmd_init
 * Description: initial module
 *********************************************************************/
-client_ble_cmd_init
+void client_ble_cmd_init
     (
     void
     )
@@ -52,7 +52,7 @@ for( ; index < BLE_CMD_QUEUE_COUNT; index++ )
     {
     ble_command_queue[index].ble_command = 0;
     ble_command_queue[index].data_length = 0;
-    ble_command_queue[index].command_data = &queue_data_zone[index];
+    ble_command_queue[index].command_data = (uint8*)&queue_data_zone[index];
     }
 queue_front = 0;
 queue_rear = 0;

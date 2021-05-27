@@ -47,7 +47,7 @@ static client_appl_cmd_rsp_state_type client_app_cmd_rsp_state = CMD_RSP_IDLE;
 static uint8 current_connect_server_id   = 0xFF;
 static uint8 default_server_list_detect_amount = 0x00;
 static uint8 extend_server_list_detect_amount = 0x00;
-static uint16 connected_server_list[SUPPORT_SERVER_NUM] = {0};
+static uint32 connected_server_list[SUPPORT_SERVER_NUM] = {0};
 static const uint16 server_ecu_identifier[SUPPORT_SERVER_NUM] = SERVER_ECU_LIST;
 static client_appl_server_detect_step_type server_detect_step = SERVER_DETECT_INIT;
 static client_appl_server_list_detect_type server_list_detect_infos[SUPPORT_SERVER_NUM] = {0};
@@ -66,7 +66,8 @@ static uint8 rx_market_data_id_list[SUPPORT_MARKET_COUNT] = { 0 };
 static const uint8 support_market_data_id_list[SUPPORT_MARKET_COUNT]= SUPPORT_MARKET_IDS_LIST;
 static uint8 rx_monitor_data_id_list[SUPPORT_MONITOR_COUNT] = { 0 };
 static boolean support_id_received_flag[SUPPORT_MONITOR_COUNT] = { FALSE };
-static boolean response_support_monitor_data_id_list[18] = { 0 };
+/* SUPPORT_MONITOR_COUNT suuport id + 1 server code */
+static uint32 response_support_monitor_data_id_list[SUPPORT_MONITOR_COUNT + 1] = { 0 };
 static const uint8 support_monitor_data_id_list[SUPPORT_MONITOR_COUNT] = SUPPORT_MONITOR_IDS_LIST;
 static client_appl_read_data_by_local_id_type read_loacl_market_infos = {0};
 static client_appl_read_data_by_local_id_type read_local_monitor_infos = {0};
@@ -99,6 +100,8 @@ char* print_header[SUPPORT_FUCNTION_NUMS] = {0};
 char* print_end[PROCESS_RESULT_MAX] = {0};
 #endif
 
+const client_appl_ble_server_code_mapping_type client_appl_ble_server_code_mapping[SUPPORT_SERVER_NUM] = BLE_SERVER_CODE_MAPPING;
+
 /*------------------------------------------------------------------
 *                          MACROS
 -------------------------------------------------------------------*/
@@ -121,7 +124,8 @@ static void  client_appl_detect_connected_server_handler_5ms
 static void client_appl_detect_connected_server_negative_response_handler
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     );
 
 static void client_appl_detect_connected_server_positive_response_handler
@@ -152,7 +156,8 @@ static void client_appl_server_detect_req_extend_session_positive_response_handl
 static void client_appl_server_detect_req_extend_session_negative_response_handler
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     );
 
 static void client_appl_server_detect_req_extend_session_timeout_notify
@@ -478,6 +483,21 @@ return ( ( data >> 8 ) |
 
 /*!*******************************************************************
 * @public
+* Function name: clent_appl_data_swap_u32
+* Description: big endian to little endian
+*********************************************************************/
+static uint32 client_app_data_swap_u32
+    (
+    uint32 data
+    )
+{
+return ( ( ( data << 24 ) & 0xFF000000 ) |
+       ( ( data << 8 ) & 0x00FF0000 )|
+       ( ( data >> 8 ) & 0x0000FF00 )|
+       ( ( data >> 24 ) & 0x000000FF ) );
+}
+/*!*******************************************************************
+* @public
 * Function name: client_appl_data_cpy
 * Description:   this function implement memory data copy function
 *********************************************************************/
@@ -774,7 +794,7 @@ operation_mode_switch_flag = FALSE;
 (void)memset( &read_common_identifier_infos, 0x00, sizeof( read_common_identifier_infos ));
 (void)memset( &detect_connected_server_infos, 0x00, sizeof( detect_connected_server_infos ));
 
-
+client_mem_reset_data();
 /*After IG-ON, first enter detect connected server process flow*/
 client_appl_set_current_process_flow_step( PROCESS_FLOW_DETECT_SERVER );
 
@@ -1210,16 +1230,9 @@ return return_value;
 *********************************************************************************/
 boolean client_appl_ble_req_connect_server_list
     (
-    uint32 data_size,
-    uint8* data
+    void
     )
 {
-/*check command*/
-if( 0 != data_size )
-    {
-    return FALSE;
-    }
-
 /*Check whether the data has been read  */
 if( ( SERVER_DETECT_DEFAULT_DONE == server_detect_step ) && ( 0x00 < default_server_list_detect_amount ) )
     {
@@ -1244,8 +1257,8 @@ void client_appl_ble_rsp_connect_server_list
     )
 {
 uint8 index = 0x00;
+uint32 resp_data_pos = 0;
 uint32 resp_data_length = 0;
-uint16* data_ptr = &connected_server_list[0];
 
 if( FALSE == check_result )
     {
@@ -1257,9 +1270,9 @@ else
         {
         if( SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
             {
-            resp_data_length += 0x02; /*ECU code length: 2 bytes*/
-            *data_ptr = clent_appl_data_swap_u16( server_list_detect_infos[index].ecu_identifier );
-            data_ptr++;/*pointer movement*/
+            resp_data_length += PROTO_SERVER_LEN; /*ECU code length: 4 bytes*/
+            connected_server_list[resp_data_pos] = client_app_data_swap_u32( client_appl_ble_server_code_mapping[index].ble_server_code );
+            resp_data_pos++;
             }
         }
         client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)connected_server_list, &client_appl_cmd_rsp_result_notify );
@@ -1276,7 +1289,7 @@ else
 *********************************************************************************/
 uint8 client_appl_channel_mapping
     (
-    uint16 server_code
+    uint32 server_code
     )
 {
 uint8 return_value = NO_SERVER_CONNECT;
@@ -1284,12 +1297,20 @@ uint8 index = 0x00;
 
 for( ; index < SUPPORT_SERVER_NUM; index++ )
     {
-     if( server_list_detect_infos[index].ecu_identifier == server_code \
-        && SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
+    if( server_code == client_appl_ble_server_code_mapping[index].ble_server_code )
         {
-        return_value = index;
+        return_value = client_appl_ble_server_code_mapping[index].channel;
         break;
         }
+    }
+
+if( ( return_value != NO_SERVER_CONNECT ) && ( SERVER_CONNECT == server_list_detect_infos[return_value].server_connect_status_default ) )
+    {
+    /*do nothing*/
+    }
+else
+    {
+    return_value =  NO_SERVER_CONNECT;
     }
 
 return return_value;
@@ -1309,31 +1330,31 @@ boolean client_appl_ble_req_malfunction
     )
 {
 uint8 channel_id = 0xFF;
-uint8 status_code = 0x00;
-uint16 server_code = 0x0000;
-uint32 interval_time = 0x00000000;
+uint8 status_code = 0;
+uint32 server_code = 0;
+uint32 interval_time = 0;
 
 /*check data length*/
 if( FALSE == is_request_interval )
     {
-    /*2 bytes server + 1byte status*/
-    if( 0x03 != data_size )
+    /*4 bytes server + 1byte status*/
+    if( MAL_CMD_LEN != data_size )
         {
         return FALSE;
         }
     }
 else
     {
-    /*2 bytes server + 1byte status + 4 bytes interval_time*/
-    if( 0x07 != data_size )
+    /*4 bytes server + 1byte status + 4 bytes interval_time*/
+    if( MAL_INTER_CMD_LEN != data_size )
         {
         return FALSE;
         }
     }
 
 /*Check server code and status code*/
-server_code = byte_merge_u16( data ) ;
-status_code = *( data + 2 );
+server_code = byte_merge_u32( data ) ;
+status_code = *( data + PROTO_SERVER_LEN );
 channel_id = client_appl_channel_mapping( server_code );
 if( NO_SERVER_CONNECT == channel_id  )
     {
@@ -1368,19 +1389,19 @@ switch( status_code )
 /*Check interval time*/
 if( TRUE == is_request_interval )
     {
-    interval_time = byte_merge_u32( data + 3 );
-    if( 0x00000000 == interval_time )
+    interval_time = byte_merge_u32( data + MAL_CMD_LEN );
+    if( STOP_INTER_TIME == interval_time )
         {
         read_dtc_infos.is_cycle_transmission = FALSE;
-        read_dtc_infos.cycle_tarns_interval_time = 0x00000000;
+        read_dtc_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
         }
     else
         {
         /*received data uint: MS*/
         /*The minimum interval time shall be 100ms*/
-        if( interval_time <= 100 )
+        if( interval_time <= MIN_INTER_TIME )
             {
-            interval_time = 100;
+            interval_time = MIN_INTER_TIME;
             }
         read_dtc_infos.is_cycle_transmission = TRUE;
         read_dtc_infos.cycle_tarns_interval_time = interval_time / 5 ;
@@ -1389,7 +1410,7 @@ if( TRUE == is_request_interval )
 else
     {
     read_dtc_infos.is_cycle_transmission = FALSE;
-    read_dtc_infos.cycle_tarns_interval_time = 0x00000000;
+    read_dtc_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
     }
 read_dtc_infos.connected_server_id = channel_id;
 read_dtc_infos.current_STADTC = status_code;
@@ -1416,50 +1437,76 @@ uint8 index = 0;
 boolean read_all_id = FALSE;
 uint8 received_id_amount = 0x00;
 uint8 channel_id = NO_SERVER_CONNECT;
-uint16 server_code = byte_merge_u16( data );
+uint32 server_code = byte_merge_u32( data );
+uint32 data_element = 0;
+uint8 data_addr_offset = 0;
 
+/*check server code */
 channel_id = client_appl_channel_mapping( server_code );
 if( NO_SERVER_CONNECT == channel_id )
     {
     return FALSE;
     }
 
-if( 0x03 == data_size )
+/*Check data length */
+if( PROTO_VID_FIXED_LEN > data_size  )
     {
-    read_all_id = *( data + BLE_REQ_SERVER_CODE_LENGTH );
-    if( TRUE == read_all_id )
-        {
-        client_appl_set_current_process_flow_step( PROCESS_FLOW_RDBCID );
-        set_current_conncet_server_id( channel_id );
-        read_common_identifier_infos.connected_server_id = channel_id;
-        read_common_identifier_infos.common_id_list = (uint16*)support_common_data_id_list;
-        read_common_identifier_infos.common_data_amount = SUPPORT_COMMON_COUNT;
-        read_common_identifier_infos.current_common_data_index = 0x00;
-        return TRUE;
-        }
-    else
+    return FALSE;
+    }
+else if( PROTO_VID_FIXED_LEN == data_size )
+    {
+    read_all_id = *( data + PROTO_VID_ID_LEN );
+    }
+else
+    {
+    if( ( data_size - PROTO_VID_FIXED_LEN ) % PROTO_VID_ID_LEN != 0x00 )
         {
         return FALSE;
         }
+    else
+        {
+        received_id_amount = ( data_size - PROTO_VID_FIXED_LEN ) / PROTO_VID_ID_LEN;
+        read_all_id = *( data + data_size - 1);
+        }
     }
-else if( 0x04 <= data_size )/*server_code + 1 id*/
+
+/*command data handle*/
+if( TRUE == read_all_id )
     {
-    received_id_amount = (uint8)( data_size - 2 ) / 2;
-    client_appl_data_cpy( (uint8*)rx_comman_data_id_list, data + 2, data_size - 2 );
+    client_appl_set_current_process_flow_step( PROCESS_FLOW_RDBCID );
+    set_current_conncet_server_id( channel_id );
+    read_common_identifier_infos.connected_server_id = channel_id;
+    read_common_identifier_infos.common_id_list = (uint16*)support_common_data_id_list;
+    read_common_identifier_infos.common_data_amount = SUPPORT_COMMON_COUNT;
+    read_common_identifier_infos.current_common_data_index = 0x00;
+    return TRUE;
+    }
+else if( 0x01 <= received_id_amount )
+    {
+    for( index = 0; index < received_id_amount; index ++ )
+        {
+        data_addr_offset = PROTO_SERVER_LEN + index*PROTO_VID_ID_LEN;
+        data_element = byte_merge_u32( data + data_addr_offset );
+        rx_comman_data_id_list[index] = (uint16)data_element;
+        }
     client_appl_set_current_process_flow_step( PROCESS_FLOW_RDBCID );
     set_current_conncet_server_id( channel_id );
     read_common_identifier_infos.connected_server_id = channel_id;
     read_common_identifier_infos.common_id_list = rx_comman_data_id_list;
+    #if 0
     for( index = 0; index < received_id_amount; index++ )
         {
         rx_comman_data_id_list[index] = clent_appl_data_swap_u16( rx_comman_data_id_list[index] );
         }
+    #endif
     read_common_identifier_infos.common_data_amount = received_id_amount;
     read_common_identifier_infos.current_common_data_index = 0x00;
     return TRUE;
     }
-
-return FALSE;
+else
+    {
+    return FALSE;
+    }
 }
 
 
@@ -1475,44 +1522,63 @@ boolean client_appl_ble_req_market_data
     uint8* data
     )
 {
-boolean read_all_id = FALSE;
+uint8 index = 0;
+uint8 data_addr_offset = 0;
 uint8 received_id_amount = 0x00;
 uint8 channel_id = NO_SERVER_CONNECT;
-uint16 server_code = byte_merge_u16( data );
+uint32 data_element = 0;
+uint32 server_code = byte_merge_u32( data );
+boolean read_all_id = FALSE;
 
+
+/*check server code */
 channel_id = client_appl_channel_mapping( server_code );
 if( NO_SERVER_CONNECT == channel_id )
     {
     return FALSE;
     }
 
-if( 0x02 >= data_size)
-{
-return FALSE;
-}
-
-if( 0x03 == data_size )
+/*Check data length */
+if( PROTO_MARKET_FIXED_LEN > data_size  )
     {
-    read_all_id = *( data + BLE_REQ_SERVER_CODE_LENGTH );
-    if( TRUE == read_all_id )
-        {
-        client_appl_set_current_process_flow_step( PROCESS_FLOW_MARKET );
-        set_current_conncet_server_id( channel_id );
-        read_loacl_market_infos.connected_server_id = channel_id;
-        read_loacl_market_infos.local_id_list = (uint8*)support_market_data_id_list;
-        read_loacl_market_infos.amount_local_data = SUPPORT_MARKET_COUNT;
-        read_loacl_market_infos.current_local_data_index = 0x00;
-        return TRUE;
-        }
-    else
-        {
-        return FALSE;
-        }
+    return FALSE;
+    }
+else if( PROTO_MARKET_FIXED_LEN == data_size )
+    {
+    read_all_id = *( data + PROTO_MARIKET_ID_LEN );
     }
 else
     {
-    received_id_amount = (uint8)( data_size - 2 );
-    client_appl_data_cpy( (uint8*)rx_market_data_id_list, data + 2, data_size - 2 );
+    if( ( data_size - PROTO_MARKET_FIXED_LEN ) % PROTO_MARIKET_ID_LEN != 0x00 )
+        {
+        return FALSE;
+        }
+    else
+        {
+        received_id_amount = ( data_size - PROTO_MARKET_FIXED_LEN ) / PROTO_MARIKET_ID_LEN;
+        read_all_id = *( data + data_size - 1);
+        }
+    }
+
+/*command data handle*/
+if( TRUE == read_all_id )
+    {
+    client_appl_set_current_process_flow_step( PROCESS_FLOW_MARKET );
+    set_current_conncet_server_id( channel_id );
+    read_loacl_market_infos.connected_server_id = channel_id;
+    read_loacl_market_infos.local_id_list = (uint8*)support_market_data_id_list;
+    read_loacl_market_infos.amount_local_data = SUPPORT_MARKET_COUNT;
+    read_loacl_market_infos.current_local_data_index = 0x00;
+    return TRUE;
+    }
+else if( 0x01 <= received_id_amount )
+    {
+    for( index = 0; index < received_id_amount; index++ )
+        {
+        data_addr_offset = PROTO_SERVER_LEN + index*PROTO_MARKET_FIXED_LEN;
+        data_element = byte_merge_u32( data + data_addr_offset );
+        rx_market_data_id_list[index] = (uint8)data_element;
+        }
     client_appl_set_current_process_flow_step( PROCESS_FLOW_MARKET );
     set_current_conncet_server_id( channel_id );
     read_loacl_market_infos.connected_server_id = channel_id;
@@ -1520,6 +1586,10 @@ else
     read_loacl_market_infos.amount_local_data = received_id_amount;
     read_loacl_market_infos.current_local_data_index = 0x00;
     return TRUE;
+    }
+else
+    {
+    return FALSE;
     }
 }
 
@@ -1537,15 +1607,17 @@ boolean client_appl_ble_req_vehicle_information_supproted_list
     )
 {
 uint8 channel_id = NO_SERVER_CONNECT;
-uint16 server_code = byte_merge_u16( data );
-channel_id = client_appl_channel_mapping( server_code );
 
+/*Check server code*/
+uint32 server_code = byte_merge_u32( data );
+channel_id = client_appl_channel_mapping( server_code );
 if( NO_SERVER_CONNECT == channel_id )
     {
     return FALSE;
     }
 
-if( data_size !=  0x02 )/*server_code*/
+/*check data length*/
+if( PROTO_SERVER_LEN != data_size )/*server_code*/
     {
     return FALSE;
     }
@@ -1575,72 +1647,127 @@ boolean client_appl_ble_req_vehicle_information
     )
 {
 uint8 channel_id = NO_SERVER_CONNECT;
-uint32 interval_time = 0;
+uint32 interval_time= 0;
 uint8 received_id_amount = 0x00;
+boolean read_all_id = FALSE;
+uint8 inter_addr_offset = 0;
+uint32 id_data = 0;
+uint8 index = 0;
 
-uint16 server_code = byte_merge_u16( data );
+/*Check server code */
+uint32 server_code = byte_merge_u32( data );
 channel_id = client_appl_channel_mapping( server_code );
-
-if( (  data_size < 0x03 ) || ( data_size > ( 0x02 + SUPPORT_MONITOR_COUNT ) ) )
-    {
-    return FALSE;
-    }
-
-
 if( NO_SERVER_CONNECT == channel_id )
     {
     return FALSE;
     }
 
-
-
-if( TRUE != is_request_interval )
+/*check data length*/
+if( FALSE == is_request_interval )
     {
-    received_id_amount = (uint8)( data_size - 2 );
-    read_local_monitor_infos.is_cycle_transmission = FALSE;
-    read_local_monitor_infos.cycle_tarns_interval_time = 0x00000000;
+    if( PROTO_VIF_FIXED_LEN > data_size )
+        {
+        return FALSE;
+        }
+    else if( PROTO_VIF_FIXED_LEN == data_size )
+        {
+        read_all_id = *( data + PROTO_SERVER_LEN );
+        }
+    else
+        {
+        if( ( data_size - PROTO_VIF_FIXED_LEN ) % PROTO_VIF_ID_LEN != 0x00 )
+            {
+            return FALSE;
+            }
+        else
+            {
+            received_id_amount = ( data_size - PROTO_VIF_FIXED_LEN ) / PROTO_VIF_ID_LEN;
+            read_all_id = *( data + data_size - 1);/*PROTO_VIF_ALL_ID_LEN*/
+            }
+        }
     }
 else
     {
-    /*Inter_time_length_ 0x04 */
-    /*server_code_length_0x02 */
-    received_id_amount = (uint8)( data_size - 4 - 2 );
-    interval_time = byte_merge_u32( data + data_size - 4 );
-    if( 0x00000000 == interval_time )
+    if( PROTO_VIF_INTER_FIXED_LEN > data_size )
+        {
+        return FALSE;
+        }
+    else if( PROTO_VIF_INTER_FIXED_LEN == data_size )
+        {
+        read_all_id = *( data + PROTO_SERVER_LEN );
+        }
+    else
+        {
+        if( ( data_size - PROTO_VIF_INTER_FIXED_LEN ) % PROTO_VIF_ID_LEN != 0x00 )
+            {
+            return FALSE;
+            }
+        else
+            {
+            received_id_amount = ( data_size - PROTO_VIF_INTER_FIXED_LEN ) / PROTO_VIF_ID_LEN;
+            read_all_id = *( data + data_size - 5);/*PROTO_VIF_ALL_ID_LEN + PROTO_VIF_ALL_ID_LEN*/
+            }
+        }
+    }
+
+
+
+/*data handle*/
+if( TRUE == is_request_interval )
+    {
+    inter_addr_offset = PROTO_VIF_INTER_OFFSET( data_size );
+    interval_time = byte_merge_u32( data + inter_addr_offset );
+    if( STOP_INTER_TIME == interval_time )
         {
         read_local_monitor_infos.is_cycle_transmission = FALSE;
-        read_local_monitor_infos.cycle_tarns_interval_time = 0x00000000;
+        read_local_monitor_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
         }
     else
         {
         /*received data uint: MS*/
-        /*The minimum time shall be 5ms*/
-        if( interval_time < 5 )
+        /*The minimum interval time shall be 100ms*/
+        if( interval_time <= MIN_INTER_TIME )
             {
-            interval_time = 5;
+            interval_time = MIN_INTER_TIME;
             }
         read_local_monitor_infos.is_cycle_transmission = TRUE;
-        read_local_monitor_infos.cycle_tarns_interval_time = interval_time / 5;
+        read_local_monitor_infos.cycle_tarns_interval_time = interval_time/5;
         }
     }
-
-if( 0x00 < received_id_amount )
+else
     {
-    client_appl_data_cpy( (uint8*)rx_monitor_data_id_list, data + 2, received_id_amount );
-    client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
-    set_current_conncet_server_id( channel_id );
-    read_local_monitor_infos.connected_server_id = channel_id;
-    set_current_conncet_server_id( channel_id );
+    read_local_monitor_infos.is_cycle_transmission = FALSE;
+    read_local_monitor_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
+    }
+
+
+if( TRUE == read_all_id )
+    {
+    read_local_monitor_infos.local_id_list = (uint8*)support_monitor_data_id_list;
+    read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
+    }
+else if( 0 < received_id_amount )
+    {
+    for( index = 0; index < received_id_amount; index ++ )
+        {
+        id_data = byte_merge_u32(data + PROTO_SERVER_LEN + index*PROTO_VIF_ID_LEN );
+        rx_monitor_data_id_list[index] = (uint8 )id_data;
+        }
     read_local_monitor_infos.local_id_list = rx_monitor_data_id_list;
     read_local_monitor_infos.amount_local_data = received_id_amount;
-    read_local_monitor_infos.current_local_data_index = 0x00;
-    read_local_monitor_infos.is_request_support_list_flow = FALSE;
-    return TRUE;
     }
 else
     {
     return FALSE;
     }
+
+client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
+read_local_monitor_infos.current_local_data_index = 0x00;
+read_local_monitor_infos.is_request_support_list_flow = FALSE;
+read_local_monitor_infos.connected_server_id = channel_id;
+set_current_conncet_server_id( channel_id );
+
+return TRUE;
 }
 
 
@@ -1657,16 +1784,17 @@ boolean client_app_ble_req_freeze_frame_data
     )
 {
 uint8 channel_id = NO_SERVER_CONNECT;
-uint16 server_code = 0x0000;
+uint32 server_code = 0;
 
-if( 0x02 != (uint8)data_size )
+/*Check server code*/
+server_code = byte_merge_u32( data );
+channel_id = client_appl_channel_mapping( server_code );
+if( NO_SERVER_CONNECT == channel_id )
     {
     return FALSE;
     }
 
-server_code = byte_merge_u16( data );
-channel_id = client_appl_channel_mapping( server_code );
-if( NO_SERVER_CONNECT == channel_id )
+if( PROTO_FFFD_LEN != (uint8)data_size )
     {
     return FALSE;
     }
@@ -1674,7 +1802,6 @@ if( NO_SERVER_CONNECT == channel_id )
 client_appl_set_current_process_flow_step( PROCESS_FLOW_RFFD );
 set_current_conncet_server_id( channel_id );
 read_freeze_frame_data_infos.connected_server_id = channel_id;
-CLIENT_DEBUG("BleCmdFFD  SUCCESS");
 
 return TRUE;
 }
@@ -1795,15 +1922,15 @@ void client_appl_rsp_server_list_after_ble_connect
 {
 uint8 index = 0x00;
 uint32 resp_data_length = 0;
-uint16* data_ptr = &connected_server_list[0];
+uint8 resp_data_pos = 0;
 
 for( ; index < SUPPORT_SERVER_NUM; index++ )
     {
     if( SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
         {
-        resp_data_length += 0x02; /*ECU code length: 2 bytes*/
-        *data_ptr = clent_appl_data_swap_u16( server_list_detect_infos[index].ecu_identifier );
-        data_ptr++;/*pointer movement*/
+        resp_data_length += PROTO_SERVER_LEN; /*ECU code length: 4 bytes*/
+        connected_server_list[resp_data_pos] = client_app_data_swap_u32( client_appl_ble_server_code_mapping[index].ble_server_code );
+        resp_data_pos++;
         }
     }
 
@@ -1879,7 +2006,7 @@ switch( req_command )
 
     case BLE_REQ_CMD_SERVERLIST:
         CLIENT_DEBUG("BleCmdReqServerList SUCCESS\r\n");
-        client_appl_ble_rsp_connect_server_list( client_appl_ble_req_connect_server_list( data_size, data ) );
+        client_appl_ble_rsp_connect_server_list( client_appl_ble_req_connect_server_list());
         break;
 
     case BLE_REQ_CMD_MALFUNCTION:
@@ -2029,25 +2156,28 @@ static void client_appl_ble_rsp_request_support_monitor_list
 {
 uint8 index = 0x00;
 uint16 server_code = 0x0000;
-uint8* data_ptr = &response_support_monitor_data_id_list[2];
+uint32* data_ptr = &response_support_monitor_data_id_list[BYTE_NUM_1];
 uint8 data_length = 0x00;
+uint8 server_id = 0;
+
 
 if( TRUE == read_local_monitor_infos.is_request_support_list_flow )
     {
-    server_code = server_list_detect_infos[read_local_monitor_infos.connected_server_id].ecu_identifier;
-    response_support_monitor_data_id_list[0] = (uint8)(server_code >> 8 );
-    response_support_monitor_data_id_list[1] = (uint8)server_code;
+    server_id = server_list_detect_infos[read_local_monitor_infos.connected_server_id].server_id;
+    server_code = client_appl_ble_server_code_mapping[server_id].ble_server_code;
+    response_support_monitor_data_id_list[BYTE_NUM_0] = client_app_data_swap_u32( server_code );
+
     for( index = 0; index < SUPPORT_MONITOR_COUNT; index++ )
         {
         if( TRUE == read_local_monitor_infos.support_id_received_flag_array[index] )
             {
-            data_length++;
-            *data_ptr = read_local_monitor_infos.local_id_list[index];
-            data_ptr++;
+            *( data_ptr ) = client_app_data_swap_u32( (uint32)read_local_monitor_infos.local_id_list[index] );
+            data_length += PROTO_VIF_ID_LEN;
+            data_ptr ++;
             }
         }
     }
-    client_appl_response_can_related_data( BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST, (uint32)( data_length + 2 ), response_support_monitor_data_id_list, &client_appl_cmd_rsp_result_notify );
+    client_appl_response_can_related_data( BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST, (uint32)( data_length + PROTO_SERVER_LEN ), (uint8*)response_support_monitor_data_id_list, &client_appl_cmd_rsp_result_notify );
 }
 
 
@@ -2225,7 +2355,8 @@ if( SERVER_UN_CONNECT == server_list_detect_infos[channel_id].server_connect_sta
 static void client_appl_detect_connected_server_negative_response_handler
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     )
 {
 /*do nothing*/
@@ -2261,7 +2392,6 @@ static void client_appl_server_detect_req_extend_session_5ms
     )
 {
 uint8 index = 0x00;
-uint16 ecu_id = 0x0000;
 
 switch( detect_connected_server_infos.next_req_dtc_status_frame )
     {
@@ -2287,7 +2417,6 @@ if( PROCESS_RESULT_INIT != detect_connected_server_infos.process_result )
             if( SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_extend )
                 {
                 extend_server_list_detect_amount++;
-                ecu_id = clent_appl_data_swap_u16( server_list_detect_infos[index].ecu_identifier );
                 #if(APPL_DEBUG)
                 PRINTF("Client detect channel %d servers-extend session\r\n", index );
                 #endif
@@ -2392,7 +2521,8 @@ detect_connected_server_infos.timeout_resend_timer = 0x00;
 static void client_appl_server_detect_req_extend_session_negative_response_handler
     (
     uint8 service_id,
-    uint8 nrc
+    uint8 nrc,
+    uint8 channel_id
     )
 {
 switch( detect_connected_server_infos.curr_dtc_status_frame )
@@ -2553,6 +2683,8 @@ static void client_appl_req_initial_dtc_status_handler_5ms
     void
     )
 {
+uint32 server_code = 0;
+
 switch( read_dtc_infos.next_req_dtc_status_frame )
     {
     case REQ_NO_FRAME:
@@ -2621,7 +2753,8 @@ if( PROCESS_RESULT_INIT != read_dtc_infos.process_result )
             #if (APPL_DEBUG )
             client_appl_debug_printf( read_dtc_infos.process_result );
             #endif
-            client_mem_storage_server_code( server_list_detect_infos[read_dtc_infos.connected_server_id].ecu_identifier );
+            server_code =  client_appl_ble_server_code_mapping[read_dtc_infos.connected_server_id].ble_server_code ;
+            client_mem_storage_server_code( server_code );
             if( PROCESS_RESULT_END == read_dtc_infos.process_result )
                 {
                 client_mem_send_can_data();
@@ -2669,7 +2802,7 @@ static void client_appl_read_initial_dtc_status_positive_response_handler
 )
 {
 uint8 connect_server_id = 0xFF;
-uint16 swap_server_code_u16 = 0x0000;
+uint32 server_code = 0;
 
 if( channel_id != read_dtc_infos.connected_server_id )
     {
@@ -2684,17 +2817,23 @@ switch( read_dtc_infos.curr_dtc_status_frame )
         /*04 DE: server code*/
         /*23 4E:  diagnostic trouble code*/
         /*A1: status code */
-        connect_server_id = get_current_connect_server_id();
-        swap_server_code_u16 = clent_appl_data_swap_u16( server_list_detect_infos[connect_server_id].ecu_identifier );
+
+
         if( FALSE == read_dtc_infos.is_storge_init_dtc )
-        {
-        client_mem_storage_init_dtc_data( connect_server_id, (uint16)0X02, (uint8*)&swap_server_code_u16 );
-        client_mem_storage_init_dtc_data( connect_server_id, ( resp_lenth - 1), ( resp_data + 1 ));
-        }
+            {
+            /*Positive response format*/
+            connect_server_id = get_current_connect_server_id();
+            server_code = client_app_data_swap_u32( client_appl_ble_server_code_mapping[connect_server_id].ble_server_code );
+            /* RDDRCSPR + DTC number + LIST DTC */
+            client_mem_storage_init_dtc_data( connect_server_id, (uint16)PROTO_SERVER_LEN, (uint8*)&server_code );
+            /* 2 bytes consist of 1 byte RDDRCSPR and 1 byte DTC number*/
+            client_mem_storage_init_dtc_data( connect_server_id, ( resp_lenth - 2), ( resp_data + 2 ));
+            }
         else
-        {
-        client_mem_storage_identifier_data( get_current_connect_server_id(), ( resp_lenth - 1 ), ( resp_data + 1 ) );
-        }
+            {
+            /* 2 bytes consist of 1 byte RDDRCSPR and 1 byte DTC number*/
+            client_mem_storage_identifier_data( get_current_connect_server_id(), ( resp_lenth - 2 ), ( resp_data + 2 ) );
+            }
         read_dtc_infos.process_result = PROCESS_RESULT_END;
         break;
 
@@ -2861,6 +3000,7 @@ static void client_appl_read_data_by_common_identifier_handler_5ms
     )
 {
 uint16 common_identifier = 0x0000;
+uint32 server_code = 0;
 
 switch( read_common_identifier_infos.next_req_frame )
     {
@@ -2918,7 +3058,8 @@ if( PROCESS_RESULT_INIT != read_common_identifier_infos.process_result )
                 #endif
 
                 /*have been already all identifier data of current server*/
-                client_mem_storage_server_code( server_list_detect_infos[read_common_identifier_infos.connected_server_id].ecu_identifier );
+                server_code = client_appl_ble_server_code_mapping[read_common_identifier_infos.connected_server_id].ble_server_code ;
+                client_mem_storage_server_code( server_code );
                 client_mem_send_can_data();
                 }
             else
@@ -2955,6 +3096,7 @@ static void client_appl_read_data_by_common_identifier_positive_response_handler
 )
 {
 uint16 resp_identifier = 0x0000;
+uint32 resp_swap_id_u32 = 0;
 
 if( channel_id != read_common_identifier_infos.connected_server_id )
     {
@@ -2968,7 +3110,10 @@ switch( read_common_identifier_infos.curr_req_frame )
          resp_identifier = (uint16)( resp_data[BYTE_NUM_1] << 8 | resp_data[BYTE_NUM_2] );
          if( resp_identifier == read_common_identifier_infos.common_id_list[read_common_identifier_infos.current_common_data_index] )
             {
-            client_mem_storage_identifier_data( read_common_identifier_infos.connected_server_id, resp_lenth - 1, resp_data + 1 );
+            resp_swap_id_u32 = client_app_data_swap_u32( (uint32)resp_identifier );
+            client_mem_storage_identifier_data( read_common_identifier_infos.connected_server_id, PROTO_VID_ID_LEN, (uint8*)&resp_swap_id_u32 );
+            /*3 bytes = 1 byte 0x61 + 2 bytes common id*/
+            client_mem_storage_identifier_data( read_common_identifier_infos.connected_server_id, resp_lenth - 3, resp_data + 3 );
             read_common_identifier_infos.process_result = PROCESS_RESULT_SUCCESS;
             }
          else
@@ -3136,6 +3281,7 @@ static void client_appl_read_data_by_local_identifier_market_handler_5ms
     )
 {
 uint8 market_id = 0x00;
+uint32 server_code = 0;
 
 switch( read_loacl_market_infos.next_req_frame )
     {
@@ -3198,7 +3344,8 @@ if( PROCESS_RESULT_INIT != read_loacl_market_infos.process_result )
                 client_appl_debug_printf( read_loacl_market_infos.process_result );
                 #endif
                 /*step 1:response data to upper layer and reset buff*/
-                client_mem_storage_server_code( server_list_detect_infos[read_loacl_market_infos.connected_server_id].ecu_identifier );
+                server_code = client_appl_ble_server_code_mapping[read_loacl_market_infos.connected_server_id].ble_server_code ;
+                client_mem_storage_server_code( server_code );
                 client_mem_send_can_data();
                 }
             else
@@ -3231,6 +3378,7 @@ static void client_appl_read_data_by_local_identifier_market_positive_response_h
 )
 {
 uint8 resp_identifier = 0x00;
+uint32 resp_id_swap_u32 = 0;
 
 if( channel_id != read_loacl_market_infos.connected_server_id )
     {
@@ -3242,9 +3390,12 @@ switch( read_loacl_market_infos.curr_req_frame )
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
         resp_identifier = resp_data[BYTE_NUM_1];
-        if(resp_identifier == read_loacl_market_infos.local_id_list[read_loacl_market_infos.current_local_data_index])
+        if(  resp_identifier == read_loacl_market_infos.local_id_list[read_loacl_market_infos.current_local_data_index])
             {
-            client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth - 1, resp_data + 1 );
+            resp_id_swap_u32 = client_app_data_swap_u32( (uint32) resp_identifier );
+            client_mem_storage_identifier_data( get_current_connect_server_id(),PROTO_MARIKET_ID_LEN , (uint8*)&resp_id_swap_u32 );
+            /*2 bytes = 1 byte 0x62 + 1 byte market id*/
+            client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth - 2, resp_data + 2 );
             read_loacl_market_infos.process_result = PROCESS_RESULT_SUCCESS;
             }
         else
@@ -3409,6 +3560,7 @@ static void client_appl_read_data_by_local_identifier_monitor_handler_5ms
     )
 {
 uint8 monitor_id = 0x0000;
+uint32 server_code = 0;
 
 switch( read_local_monitor_infos.next_req_frame )
     {
@@ -3470,7 +3622,8 @@ if( PROCESS_RESULT_INIT != read_local_monitor_infos.process_result )
                 }
             else if( 0x02 < client_mem_get_iden_data_storage_length() )
                 {
-                client_mem_storage_server_code( server_list_detect_infos[read_local_monitor_infos.connected_server_id].ecu_identifier );
+                server_code = client_appl_ble_server_code_mapping[read_local_monitor_infos.connected_server_id].ble_server_code ;
+                client_mem_storage_server_code( server_code );
                 client_mem_send_can_data();
                 }
            else
@@ -3511,6 +3664,8 @@ static void client_appl_read_data_by_local_identifier_monitor_positive_response_
  uint8 channel_id
 )
 {
+uint32 resp_id_swap_u32 = 0;
+
 if( channel_id != read_local_monitor_infos.connected_server_id )
     {
     return;
@@ -3520,17 +3675,25 @@ switch( read_local_monitor_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
-        if( resp_data[1] == read_local_monitor_infos.local_id_list[read_local_monitor_infos.current_local_data_index] )
+        if( resp_data[BYTE_NUM_1] == read_local_monitor_infos.local_id_list[read_local_monitor_infos.current_local_data_index] )
             {
-            client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth - 1 , resp_data  +1 );
             read_local_monitor_infos.process_result = PROCESS_RESULT_SUCCESS;
+
             if( read_local_monitor_infos.current_local_data_index == read_local_monitor_infos.amount_local_data - 1 )
                 {
                 read_local_monitor_infos.process_result = PROCESS_RESULT_END;
                 }
+
             if( TRUE == read_local_monitor_infos.is_request_support_list_flow )
                 {
                 read_local_monitor_infos.support_id_received_flag_array[read_local_monitor_infos.current_local_data_index] = TRUE;
+                }
+            else
+                {
+                resp_id_swap_u32 = client_app_data_swap_u32( (uint32) resp_data[BYTE_NUM_1] );
+                client_mem_storage_identifier_data( get_current_connect_server_id(), PROTO_VIF_ID_LEN, (uint8*)&resp_id_swap_u32 );
+            /*2 bytes = 1 byte 0x62 + 1 byte market id*/
+                client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth - 2 , resp_data + 2 );
                 }
             }
         else
@@ -3720,6 +3883,7 @@ static void client_appl_read_freeze_frame_data_handler_5ms
     )
 {
 uint8 req_identifier = 0x00;
+uint32 server_code = 0;
 
 switch( read_freeze_frame_data_infos.next_request_frame )
 {
@@ -3775,7 +3939,8 @@ if( PROCESS_RESULT_INIT != read_freeze_frame_data_infos.process_result )
             client_appl_debug_printf( read_freeze_frame_data_infos.process_result );
             #endif
             /*have been already all identifier data of current server*/
-            client_mem_storage_server_code( server_list_detect_infos[read_loacl_market_infos.connected_server_id].ecu_identifier );
+            server_code =  client_appl_ble_server_code_mapping[read_dtc_infos.connected_server_id].ble_server_code ;
+            client_mem_storage_server_code( server_code );
             client_mem_send_can_data();
             }
          else

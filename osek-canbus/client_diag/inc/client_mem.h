@@ -50,7 +50,7 @@ extern client_ReturnType client_mem_storage_identifier_data
 
 extern void client_mem_storage_server_code
     (
-    uint16 server_code
+    uint32 server_code
     );
 
 boolean client_mem_get_storage_init_dtc_state

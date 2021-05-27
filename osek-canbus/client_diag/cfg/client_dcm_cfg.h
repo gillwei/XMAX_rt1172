@@ -73,6 +73,32 @@
                                                  0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F\
                                                }
 /***********************for ble command***************************/
+/*server code and channel mapping*/
+#define BLE_SERVER_CODE_MAPPING              {\
+                                                { 0x000004E0, 0x00 },\
+                                                { 0x000004E1, 0x01 },\
+                                                { 0x000004E2, 0x02 },\
+                                                { 0x000004E3, 0x03 },\
+                                                { 0x000004E4, 0x04 },\
+                                                { 0x000004E5, 0x05 },\
+                                                { 0x000004E6, 0x06 },\
+                                                { 0x000004E7, 0x07 },\
+                                                { 0x000004D1, 0x08 },\
+                                                { 0x000004D2, 0x09 },\
+                                                { 0x000004D3, 0x0A },\
+                                                { 0x000004D4, 0x0B },\
+                                                { 0x000004D5, 0x0C },\
+                                                { 0x000004D6, 0x0D },\
+                                                { 0x000004C0, 0x0E },\
+                                                { 0x000004C1, 0x0F },\
+                                                { 0x000004C2, 0x10 },\
+                                                { 0x000004C3, 0x11 },\
+                                                { 0x000004C4, 0x12 },\
+                                                { 0x000004C5, 0x13 },\
+                                                { 0x000004C6, 0x14 },\
+                                                { 0x000004C7, 0x15 }\
+                                             }
+
 /*req_comand*/
 #define BLE_REQ_CMD_AUTHENTICATION             (0x0101)
 #define BLE_REQ_CMD_SERVERLIST                 (0x0103)
@@ -101,11 +127,42 @@
 #define BLE_REQ_SERVER_CODE_LENGTH             (0x02)
 #define BLE_REQ_COMMON_ID_LENTGH               (0x02)
 #define BLE_REQ_LOCAL_ID_LENGTH                (0x02)
+
 /***********************McMalfunctionStatus**********************/
 #define BLE_CMD_MAL_STATUS_MARK                (0x01)
 #define BLE_CMD_MAL_STATUS_TRIANGLE            (0x02)
 #define BLE_CMD_MAL_STATUS_FULL                (0x03)
 #define BLE_CMD_MAL_STATUS_TEMPORARY           (0x04)
+
+
+/************************protobuf*******************************/
+#define PROTO_SERVER_LEN                       ( 0x04 )
+#define PROTO_MAL_STATUS_LEN                   ( 0x01 )
+#define PROTO_MAL_INTER_LEN                    ( 0x04 )
+#define MAL_CMD_LEN                            ( PROTO_SERVER_LEN + PROTO_MAL_STATUS_LEN )
+#define MAL_INTER_CMD_LEN                      ( MAL_CMD_LEN + PROTO_MAL_INTER_LEN )
+#define STOP_INTER_TIME                        ( 0x00000000 )
+#define MIN_INTER_TIME                         ( 100 )
+
+/*VI vehicle  identification*/
+#define PROTO_VID_ID_LEN                       ( 0x04 )
+#define PROTO_VID_ALL_ID_LEN                   ( 0x01 )
+#define PROTO_VID_FIXED_LEN                    ( 0x05 )/*PROTO_SERVER_LEN + PROTO_VID_ALL_ID_LEN*/
+
+
+#define PROTO_MARIKET_ID_LEN                   ( 0x04 )
+#define PROTO_MARKET_ALL_LEN                   ( 0x01 )
+#define PROTO_MARKET_FIXED_LEN                 ( 0x05 ) /*PROTO_MARIKET_ID_LEN + PROTO_MARKET_ALL_LEN */
+
+#define PROTO_VIF_ID_LEN                       ( 0x04 )
+#define PROTO_VIF_ALL_ID_LEN                   ( 0x01 )
+#define PROTO_VIF_INTER_LEN                    ( 0x04 )
+#define PROTO_VIF_FIXED_LEN                    ( 0x05 )
+#define PROTO_VIF_INTER_FIXED_LEN              ( 0x09 )
+#define PROTO_VIF_INTER_OFFSET(base_addr)      ( base_addr - PROTO_VIF_INTER_LEN )
+
+#define PROTO_FFFD_LEN                         ( 0x04 )
+
 
 /*for ble authentication*/
 #define BLE_AUT_CCU_ID_OFFSET_ADDR             (0x00)
