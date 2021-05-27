@@ -43,11 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-<<<<<<< HEAD
-   Generated: 2021/05/25 08:12:42 */
-=======
-   Generated: 2021/05/26 11:42:22 */
->>>>>>> 48d74f7... Modify device name display in [SET 06]
+   Generated: 2021/05/28 10:02:22 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */

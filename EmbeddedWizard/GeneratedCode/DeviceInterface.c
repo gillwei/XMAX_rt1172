@@ -2833,9 +2833,6 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetAvgFuelRateStr( DeviceInterfaceVe
       default :; 
     }
 
-    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
-    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-    VehicleData->DataFloat, 0.100000f );
     _this->AvgFuelRateStr = EwShareString( EwNewStringFloat( VehicleData->DataFloat, 
     0, 1 ));
   }
@@ -2859,9 +2856,6 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetFuelConStr( DeviceInterfaceVehicl
     VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
     &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), VehicleData->DataFloat, 
     0.000000f, 99.900002f );
-    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
-    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-    VehicleData->DataFloat, 0.100000f );
     _this->FuelConStr = EwShareString( EwNewStringFloat( VehicleData->DataFloat, 
     0, 1 ));
   }
@@ -3003,9 +2997,6 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetInstantFuelRateStr( DeviceInterfa
       default :; 
     }
 
-    VehicleData->DataFloat = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
-    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-    VehicleData->DataFloat, 0.100000f );
     _this->InstantFuelRateStr = EwShareString( EwNewStringFloat( VehicleData->DataFloat, 
     0, 1 ));
   }
@@ -3024,11 +3015,21 @@ XFloat DeviceInterfaceVehicleDeviceClass_ConvertFuelCons( DeviceInterfaceVehicle
   switch ( DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( _this ))
   {
     case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
+    {
       ConvertedFuelCons = aFuelCons * 0.264000f;
+      ConvertedFuelCons = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      ConvertedFuelCons, 0.100000f );
+    }
     break;
 
     case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
+    {
       ConvertedFuelCons = aFuelCons * 0.220000f;
+      ConvertedFuelCons = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      ConvertedFuelCons, 0.100000f );
+    }
     break;
 
     default :; 
@@ -3111,16 +3112,31 @@ XFloat DeviceInterfaceVehicleDeviceClass_ConvertFuelRate( DeviceInterfaceVehicle
   switch ( DeviceInterfaceVehicleDeviceClass_OnGetFuelConsumptionUnit( _this ))
   {
     case EnumMeterFuelConsumptionUnitMILE_PER_US_GAL :
+    {
       ConvertedFuelRate = aFuelRate * 2.367000f;
+      ConvertedFuelRate = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      ConvertedFuelRate, 0.100000f );
+    }
     break;
 
     case EnumMeterFuelConsumptionUnitMILE_PER_IMPERIAL_GAL :
+    {
       ConvertedFuelRate = aFuelRate * 2.841000f;
+      ConvertedFuelRate = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      ConvertedFuelRate, 0.100000f );
+    }
     break;
 
     case EnumMeterFuelConsumptionUnitL_PER_100KM :
       if ( 0.000000f < aFuelRate )
+      {
         ConvertedFuelRate = 100 / aFuelRate;
+        ConvertedFuelRate = DeviceInterfaceVehicleDeviceClass_RoundDownDataFloat( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        ConvertedFuelRate, 0.100000f );
+      }
       else
         ConvertedFuelRate = 99.900002f;
     break;

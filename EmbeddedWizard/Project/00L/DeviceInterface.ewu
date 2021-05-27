@@ -2595,7 +2595,6 @@ class VehicleDeviceClass : Templates::DeviceClass
         default:;
       }
 
-      VehicleData.DataFloat = DeviceInterface::VehicleDevice.RoundDownDataFloat( VehicleData.DataFloat, 0.1 );
       pure AvgFuelRateStr = string( VehicleData.DataFloat, 0, 1 );
     }
     else
@@ -2617,7 +2616,6 @@ class VehicleDeviceClass : Templates::DeviceClass
     {
       VehicleData.DataFloat = ConvertFuelCons( VehicleData.DataFloat );
       VehicleData.DataFloat = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, 0, Settings::MAX_FUEL_CONSUMPTION );
-      VehicleData.DataFloat = DeviceInterface::VehicleDevice.RoundDownDataFloat( VehicleData.DataFloat, 0.1 );
       pure FuelConStr = string( VehicleData.DataFloat, 0, 1 );
     }
     else
@@ -2763,7 +2761,6 @@ class VehicleDeviceClass : Templates::DeviceClass
         }
         default:;
       }
-      VehicleData.DataFloat = DeviceInterface::VehicleDevice.RoundDownDataFloat( VehicleData.DataFloat, 0.1 );
       pure InstantFuelRateStr = string( VehicleData.DataFloat, 0, 1 );
     }
     else
@@ -2781,8 +2778,16 @@ class VehicleDeviceClass : Templates::DeviceClass
 
     switch( FuelConsumptionUnit )
     {
-      case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL: ConvertedFuelCons = aFuelCons * Unit::LITER_TO_USGAL_SCALE;
-      case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL: ConvertedFuelCons = aFuelCons * Unit::LITER_TO_IMPERIAL_GAL_SCALE;
+      case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL:
+      {
+        ConvertedFuelCons = aFuelCons * Unit::LITER_TO_USGAL_SCALE;
+        ConvertedFuelCons = DeviceInterface::VehicleDevice.RoundDownDataFloat( ConvertedFuelCons, 0.1 );
+      }
+      case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL:
+      {
+        ConvertedFuelCons = aFuelCons * Unit::LITER_TO_IMPERIAL_GAL_SCALE;
+        ConvertedFuelCons = DeviceInterface::VehicleDevice.RoundDownDataFloat( ConvertedFuelCons, 0.1 );
+      }
       default:;
     }
 
@@ -2875,13 +2880,22 @@ class VehicleDeviceClass : Templates::DeviceClass
 
     switch( FuelConsumptionUnit )
     {
-      case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL: ConvertedFuelRate = aFuelRate * Unit::KM_L_TO_US_GALLON_SCALE;
-      case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL: ConvertedFuelRate = aFuelRate * Unit::KM_L_TO_IMPERIAL_GALLON_SCALE;
+      case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL: 
+      {
+        ConvertedFuelRate = aFuelRate * Unit::KM_L_TO_US_GALLON_SCALE;
+        ConvertedFuelRate = DeviceInterface::VehicleDevice.RoundDownDataFloat( ConvertedFuelRate, 0.1 );
+      }
+      case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL: 
+      {
+        ConvertedFuelRate = aFuelRate * Unit::KM_L_TO_IMPERIAL_GALLON_SCALE;
+        ConvertedFuelRate = DeviceInterface::VehicleDevice.RoundDownDataFloat( ConvertedFuelRate, 0.1 );
+      }
       case Enum::MeterFuelConsumptionUnit.L_PER_100KM:
       {
         if( 0.0 < aFuelRate )
         {
           ConvertedFuelRate = Unit::L_100KM_SCALE_TO_KM_L / aFuelRate;
+          ConvertedFuelRate = DeviceInterface::VehicleDevice.RoundDownDataFloat( ConvertedFuelRate, 0.1 );
         }
         else
         {
