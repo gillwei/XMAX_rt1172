@@ -193,6 +193,10 @@ switch( cmd_opcode )
        BTM_receive_pairing_clt_evt( p_data, data_len );
        break;
 
+    case HCI_CONTROL_EVENT_CONNECTION_STATUS:
+       BTM_receive_connection_status( p_data, data_len );
+       break;
+
     default:
             break;
 
@@ -237,12 +241,12 @@ switch( cmd_opcode )
     case HCI_CONTROL_SPP_EVENT_CONNECTED:
         connection_is_up = true;
         BTM_notify_EW_connection_status( BT_CONNECTION_SUCCESS );
-        BTM_connection_info_update( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_SPP );
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_SPP );
         break;
 
     case HCI_CONTROL_SPP_EVENT_DISCONNECTED:
         connection_is_up = false;
-        BTM_connection_info_update( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_SPP );
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_SPP );
         break;
 
     case HCI_CONTROL_SPP_EVENT_CONNECTION_FAILED:
@@ -298,12 +302,12 @@ switch( cmd_opcode )
     case HCI_CONTROL_IAP2_EVENT_CONNECTED:
         connection_is_up = true;
         BTM_notify_EW_connection_status( BT_CONNECTION_SUCCESS );
-        BTM_connection_info_update( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_IAP2 );
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_IAP2 );
         break;
 
     case HCI_CONTROL_IAP2_EVENT_DISCONNECTED:
         connection_is_up = false;
-        BTM_connection_info_update( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_IAP2 );
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_IAP2 );
         break;
 
     case HCI_CONTROL_IAP2_EVENT_CONNECTION_FAILED:

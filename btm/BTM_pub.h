@@ -185,12 +185,18 @@ void BTM_pairing_info_update
     const uint8_t *pairing_info
     );
 
-void BTM_connection_info_update
+void BTM_BTC_spp_connected
     (
     const bool     connection_is_up,
     const uint32_t  connection_info_length,
     const uint8_t* connection_info,
     const bt_connection_path_type connection_path
+    );
+
+int BTM_receive_connection_status
+    (
+    const uint8_t *p_data,
+    const uint32_t length
     );
 
 void BTM_get_connection_info

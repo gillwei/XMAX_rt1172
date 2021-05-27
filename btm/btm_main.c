@@ -57,6 +57,8 @@
 #define BTM_TIMER_SIXTY_SECONDS    ( 60000 / BTM_TICK_PERIOD_MS )
 #define USER_CONFIRM_EVT_PIN_CODE_LENGTH  sizeof( uint32_t )
 #define USER_CONFIRM_RESULT_DATA_LENGTH   ( USER_CONFIRM_EVT_PIN_CODE_LENGTH + BT_DEVICE_NAME_LEN )
+#define HCI_ERR_PEER_USER                 0x13
+#define HCI_ERR_CONN_CAUSE_LOCAL_HOST     0x16
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -158,6 +160,20 @@ typedef enum BTM_DISCOVERABLE_STATE
     BTM_DISCOVERABLE_STATE_BTC,
     BTM_DISCOVERABLE_STATE_BLE
     } btm_discoverable_state_t;
+
+/** BR/EDR ACL connection status */
+typedef enum
+    {
+    CONNECTION_STATUS_DISCONNECTED,
+    CONNECTION_STATUS_CONNECTED
+    } btm_acl_connection_status_t;
+
+/* BT module WICED_BT_TRANSPORT_TYPE tra */
+typedef enum
+    {
+    BT_TRANSPORT_BR_EDR = 1,
+    BT_TRANSPORT_LE = 2
+    } wiced_bt_transport_t;
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -983,7 +999,7 @@ EW_notify_bt_connection_result( bt_connection_type );
 /*********************************************************************
 *
 * @public
-* BTM_connection_info_update
+* BTM_BTC_spp_connected
 *
 * Update BT manager connection information, including connection status,
 * remote device address, connection handle, and connection type for connected
@@ -994,7 +1010,7 @@ EW_notify_bt_connection_result( bt_connection_type );
 * @param connection_info   BTC connection handle 2 bytes or address/handle 8 bytes
 * @param connection_path   bt spp or bt iap2 if connected
 *********************************************************************/
-void BTM_connection_info_update
+void BTM_BTC_spp_connected
     (
     const bool                    connection_is_up,
     const uint32_t                connection_info_length,
@@ -1009,27 +1025,8 @@ for( uint32_t i = 0; i < connection_info_length; i++ )
     }
 PRINTF( "\r\n" );
 
-// Received BT disconnected event
-if( ( CONNECTION_HANDLE_LENGTH == connection_info_length ) && ( false == connection_is_up ) )
-    {
-    /* Set BTC connect status false */
-    btm_btc_connection_status.BTC_is_connected = false;
-    btm_btc_connection_status.current_connection_handle = 0;
-
-    /* For previous connected device, set to disconnect and call UI */
-    for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
-        {
-        if( true == paired_device_list[i].is_connected )
-            {
-            paired_device_list[i].is_connected = false;
-            paired_device_list[i].connection_handle = 0;
-            }
-        }
-    EW_notify_bt_paired_device_status_changed();
-    BTM_init_autoconnect();
-    }
 // Received BT connected event
-else if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) )
+if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) )
     {
     uint8_t connect_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
 
@@ -1057,6 +1054,11 @@ else if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_in
              }
         }
     }
+// Received SPP disconnected event
+else if( false == connection_is_up  )
+    {
+    // Action on ACL status disconnected,  BTM_receive_connection_status
+    }
 
 // fire callbacks defined by users
 for( int i = 0; i < BT_INFO_CB_MAX_NUM; i++ )
@@ -1068,6 +1070,67 @@ for( int i = 0; i < BT_INFO_CB_MAX_NUM; i++ )
         }
     }
 
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_receive_connection_status
+*
+* Receive BT module connection status
+*
+** @param btc_ACL_status
+** BTC ACL connect or disconnect status
+** @param reason
+** Connect or disconnect reason
+**
+*********************************************************************/
+int BTM_receive_connection_status
+    (
+    const uint8_t *p_data,
+    const uint32_t data_length
+    )
+{
+uint8_t              is_connected = p_data[0];
+uint8_t              reason = p_data[1];
+wiced_bt_transport_t transport = p_data[2];
+uint16_t             connection_handle = 0;
+uint8_t              bd_address[BT_DEVICE_ADDRESS_LEN] = { 0 };
+
+connection_handle = (uint16_t)p_data[3];
+connection_handle += (uint16_t)( p_data[4] << 8 );
+memcpy( bd_address, &(p_data[5]), BT_DEVICE_ADDRESS_LEN );
+
+
+/* For previous connected device, set to disconnect and call UI */
+if( ( CONNECTION_STATUS_DISCONNECTED == is_connected ) && ( BT_TRANSPORT_BR_EDR == transport ) )
+    {
+    for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
+        {
+        if( 0 == memcmp( paired_device_list[i].device_address, bd_address, BT_DEVICE_ADDRESS_LEN ) )
+            {
+            /* Set BTC connect status false */
+            btm_btc_connection_status.BTC_is_connected = false;
+            btm_btc_connection_status.current_connection_handle = 0;
+            /* Set paired device connect status false */
+            paired_device_list[i].is_connected = false;
+            paired_device_list[i].connection_handle = 0;
+            EW_notify_bt_paired_device_status_changed();
+            if( ( reason == HCI_ERR_CONN_CAUSE_LOCAL_HOST ) || ( reason == HCI_ERR_PEER_USER ) )
+                {
+                stop_autoconnect_timer();
+                }
+            else
+                {
+                BTM_init_autoconnect();
+                }
+            break;
+            }
+        }
+
+    }
+
+return ERR_NONE;
 }
 
 /*********************************************************************
