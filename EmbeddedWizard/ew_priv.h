@@ -74,7 +74,6 @@ void ew_power_init( void );
 int  ew_power_ignition_status( void );
 
 XBool ew_is_debug_build( void );
-void ew_done_factory_reset( void );
 void ew_reboot_system( void );
 
 void ew_device_navi_init( void );

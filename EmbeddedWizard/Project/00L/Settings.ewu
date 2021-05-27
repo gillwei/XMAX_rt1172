@@ -599,20 +599,30 @@ class SET41_ResetInProgress : Components::BaseMainBG
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <460,300,760,340>
-  object Core::SystemEventHandler FactoryResetCompletedEventHandler
+  $rect <470,300,730,340>
+  object Core::SystemEventHandler ReceivedSystemEventHandler
   {
-    preset OnEvent = OnFactoryResetCompletedSlot;
-    preset Event = DeviceInterface::SystemDevice.FactoryResetCompletedSystemEvent;
+    preset OnEvent = OnSystemEventReceived;
+    preset Event = DeviceInterface::SystemDevice.SystemDataReceivedSystemEvent;
   }
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <460,350,730,390>
-  slot OnFactoryResetCompletedSlot
+  $rect <470,340,730,380>
+  slot OnSystemEventReceived
   {
-    trace "OnFactoryResetCompleted";
-    PresentDialog( new Settings::SET42_ResetCompleted, null, null, null, null, null, null, null, null, false );
+    var DeviceInterface::SystemData SystemData = ( DeviceInterface::SystemData )ReceivedSystemEventHandler.Context;
+    if( null != SystemData )
+    {
+      switch( SystemData.RxEvent )
+      {
+        case Enum::SystemRxEvent.FACTORY_RESET_COMPLETED:
+        {
+          PresentDialog( new Settings::SET42_ResetCompleted, null, null, null, null, null, null, null, null, false );
+        }
+        default:;
+      }
+    }
   }
 }
 
@@ -2325,6 +2335,7 @@ class SET42_ResetCompleted : Components::BaseMainBG
   inherited method Init()
   {
     trace "Init SET42";
+    DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.REBOOT_REQUEST, 0 );
   }
 
   $rect <210,300,440,340>
@@ -2352,20 +2363,67 @@ class SET42_ResetCompleted : Components::BaseMainBG
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <460,300,660,340>
-  object Core::Timer TimeoutTimer
+  $rect <470,300,730,340>
+  object Core::SystemEventHandler ReceivedSystemEventHandler
   {
-    preset OnTrigger = OnTimeoutSlot;
+    preset OnEvent = OnSystemEventReceived;
+    preset Event = DeviceInterface::SystemDevice.SystemDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <470,350,730,390>
+  slot OnSystemEventReceived
+  {
+    var DeviceInterface::SystemData SystemData = ( DeviceInterface::SystemData )ReceivedSystemEventHandler.Context;
+    if( null != SystemData )
+    {
+      switch( SystemData.RxEvent )
+      {
+        case Enum::SystemRxEvent.REBOOT_ACCEPTED,
+             Enum::SystemRxEvent.REBOOT_REJECTED:
+        {
+          if( IsHoldTimerFinished )
+          {
+            DeviceInterface::SystemDevice.RebootSystem();
+          }
+          else
+          {
+            IsRebootResponseReceived = true;
+          }
+        }
+        default:;
+      }
+    }
+  }
+
+  $rect <760,300,960,340>
+  object Core::Timer HoldTimer
+  {
+    preset OnTrigger = OnHoldTimerFinishedSlot;
     preset Period = 0;
     preset Begin = 2000;
     preset Enabled = true;
   }
 
-  $rect <460,350,660,390>
-  slot OnTimeoutSlot
+  $rect <760,350,990,390>
+  slot OnHoldTimerFinishedSlot
   {
-    DeviceInterface::SystemDevice.RebootSystem();
+    if( IsRebootResponseReceived )
+    {
+      DeviceInterface::SystemDevice.RebootSystem();
+    }
+    else
+    {
+      IsHoldTimerFinished = true;
+    }
   }
+
+  $rect <760,400,960,440>
+  var bool IsHoldTimerFinished;
+
+  $rect <470,400,720,440>
+  var bool IsRebootResponseReceived;
 }
 
 $rect <840,430,1060,470>

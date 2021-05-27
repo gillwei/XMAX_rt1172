@@ -60,10 +60,6 @@
     static int ew_system_notify_esn( void );
 #endif
 
-#ifdef _DeviceInterfaceSystemDeviceClass__NotifyFactoryResetComplete_
-    static int ew_notify_factory_reset_complete( void );
-#endif
-
 #ifdef _DeviceInterfaceSystemDeviceClass__StartBurnInTest_
     static int ew_start_burn_in_test( void );
 #endif
@@ -139,9 +135,6 @@ static void ew_get_info_from_eeprom( void );
         #ifdef _DeviceInterfaceSystemDeviceClass__NotifyEsnRead_
             ew_system_notify_esn,
         #endif
-        #ifdef _DeviceInterfaceSystemDeviceClass__NotifyFactoryResetComplete_
-            ew_notify_factory_reset_complete,
-        #endif
         #ifdef _DeviceInterfaceSystemDeviceClass__StartBurnInTest_
             ew_start_burn_in_test,
         #endif
@@ -179,7 +172,6 @@ static void ew_get_info_from_eeprom( void );
     static EnumInspectionDisplay inspection_display_pattern = 0;
 
     static int is_esn_read = 0;
-    static int is_factory_reset_complete = 0;
     static int is_qrcode_ready = 0;
     static bool notify_qrcode_ready;
     static uint8_t  ccuid_variance[CCUID_VARIANCE_LENGTH]; /* alphanumeric */
@@ -1222,47 +1214,6 @@ return need_update;
     return need_update;
     }
 #endif
-
-/*********************************************************************
-*
-* @private
-* ew_notify_factory_reset_complete
-*
-* Notify the factory reset result to EW
-*
-*********************************************************************/
-#ifdef _DeviceInterfaceSystemDeviceClass__NotifyFactoryResetComplete_
-    static int ew_notify_factory_reset_complete
-        (
-        void
-        )
-    {
-    int need_update = 0;
-    if( is_factory_reset_complete )
-        {
-        is_factory_reset_complete = 0;
-        DeviceInterfaceSystemDeviceClass_NotifyFactoryResetComplete( device_object );
-        need_update = 1;
-        }
-    return need_update;
-    }
-#endif
-
-/*********************************************************************
-*
-* @private
-* ew_done_factory_reset
-*
-* Set the flag is_factory_reset_complete when data is reset
-*
-*********************************************************************/
-void ew_done_factory_reset
-    (
-    void
-    )
-{
-is_factory_reset_complete = 1;
-}
 
 /*********************************************************************
 *

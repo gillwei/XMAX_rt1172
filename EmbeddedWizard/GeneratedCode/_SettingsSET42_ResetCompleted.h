@@ -103,7 +103,10 @@
 /* Deklaration of class : 'Settings::SET42_ResetCompleted' */
 EW_DEFINE_FIELDS( SettingsSET42_ResetCompleted, ComponentsBaseMainBG )
   EW_OBJECT  ( MessageText,     ViewsText )
-  EW_OBJECT  ( TimeoutTimer,    CoreTimer )
+  EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( HoldTimer,       CoreTimer )
+  EW_VARIABLE( IsRebootResponseReceived, XBool )
+  EW_VARIABLE( IsHoldTimerFinished, XBool )
 EW_END_OF_FIELDS( SettingsSET42_ResetCompleted )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET42_ResetCompleted' */
@@ -174,8 +177,13 @@ void SettingsSET42_ResetCompleted_OnShortHomeKeyActivated( SettingsSET42_ResetCo
 /* 'C' function for method : 'Settings::SET42_ResetCompleted.OnLongHomeKeyActivated()' */
 void SettingsSET42_ResetCompleted_OnLongHomeKeyActivated( SettingsSET42_ResetCompleted _this );
 
-/* 'C' function for method : 'Settings::SET42_ResetCompleted.OnTimeoutSlot()' */
-void SettingsSET42_ResetCompleted_OnTimeoutSlot( SettingsSET42_ResetCompleted _this, 
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET42_ResetCompleted_OnSystemEventReceived( SettingsSET42_ResetCompleted _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Settings::SET42_ResetCompleted.OnHoldTimerFinishedSlot()' */
+void SettingsSET42_ResetCompleted_OnHoldTimerFinishedSlot( SettingsSET42_ResetCompleted _this, 
   XObject sender );
 
 #ifdef __cplusplus

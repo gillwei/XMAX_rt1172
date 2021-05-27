@@ -73,7 +73,7 @@ static void update_factory_reset_status
 factory_reset_status |= status;
 if( FACTORY_RESET_TOTAL == factory_reset_status )
     {
-    ew_done_factory_reset();
+    EW_notify_system_event_received( EnumSystemRxEventFACTORY_RESET_COMPLETED );
     }
 }
 

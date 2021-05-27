@@ -42,6 +42,7 @@
                                VARIABLES
 --------------------------------------------------------------------*/
 static dll_frm_index_t heater_frm_index;
+static uint8_t progsts;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -646,8 +647,62 @@ static void send_reprogrm_start_request
     )
 {
 /* H'5B3 */
+progsts = MID_MSG_PROGSTS_START_REQ;
 can_mid_req( TX4_REQ_REPRGRM_INFO_CAN0_ID, IL_CAN0_TX4_REQ_REPRGRM_INFO_TXFRM_LEN, MID_MSG_SID_REPROG, MID_MSG_PROGSTS_START_REQ );
 PRINTF( "%s\r\n", __FUNCTION__ );
+}
+
+/*********************************************************************
+*
+* @private
+* send_reboot_request
+*
+* Send reboot request
+*
+*********************************************************************/
+static void send_reboot_request
+    (
+    void
+    )
+{
+/* H'5B3 */
+progsts = MID_MSG_PROGSTS_COMPLETE_REQ;
+can_mid_req( TX4_REQ_REPRGRM_INFO_CAN0_ID, IL_CAN0_TX4_REQ_REPRGRM_INFO_TXFRM_LEN, MID_MSG_SID_REPROG, MID_MSG_PROGSTS_COMPLETE_REQ );
+PRINTF( "%s\r\n", __FUNCTION__ );
+}
+
+/*********************************************************************
+*
+* @private
+* vi_get_progsts
+*
+* Return pogsts sent in H'5B3
+*
+* @return progsts
+*
+*********************************************************************/
+uint8_t vi_get_progsts
+    (
+    void
+    )
+{
+return progsts;
+}
+
+/*********************************************************************
+*
+* @private
+* vi_clear_progsts
+*
+* Clear pogsts
+*
+*********************************************************************/
+void vi_clear_progsts
+    (
+    void
+    )
+{
+progsts = 0;
 }
 
 /*********************************************************************
@@ -725,6 +780,9 @@ switch( tx_type )
         break;
     case EnumVehicleTxTypeREQUEST_REPROGRAM:
         send_reprogrm_start_request();
+        break;
+    case EnumVehicleTxTypeREBOOT_REQUEST:
+        send_reboot_request();
         break;
     default:
         PRINTF( "Err: %s invalid tx type %d\r\n", __FUNCTION__, tx_type );

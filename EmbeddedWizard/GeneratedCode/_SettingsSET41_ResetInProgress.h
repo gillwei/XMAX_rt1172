@@ -104,7 +104,7 @@
 EW_DEFINE_FIELDS( SettingsSET41_ResetInProgress, ComponentsBaseMainBG )
   EW_OBJECT  ( LoadingAnimation, ViewsImage )
   EW_OBJECT  ( LoadingText,     ViewsText )
-  EW_OBJECT  ( FactoryResetCompletedEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( SettingsSET41_ResetInProgress )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET41_ResetInProgress' */
@@ -177,7 +177,7 @@ void SettingsSET41_ResetInProgress_OnLongHomeKeyActivated( SettingsSET41_ResetIn
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsSET41_ResetInProgress_OnFactoryResetCompletedSlot( SettingsSET41_ResetInProgress _this, 
+void SettingsSET41_ResetInProgress_OnSystemEventReceived( SettingsSET41_ResetInProgress _this, 
   XObject sender );
 
 #ifdef __cplusplus

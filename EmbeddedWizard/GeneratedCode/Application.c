@@ -660,7 +660,7 @@ void ApplicationApplication_OnPhoneCallStateChangedSlot( ApplicationApplication 
     case EnumPhoneCallStateINCOMING_STARTED :
       if (( _this->IsDisclaimerDismissed && ( EnumOperationModeNORMAL == DeviceInterfaceSystemDeviceClass_OnGetOperationMode( 
           EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))) 
-          && !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsRunningReset )
+          && !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsRunningFactoryReset )
       {
         TelephoneTEL01_IncomingCall IncomingCallDialog = EwNewObject( TelephoneTEL01_IncomingCall, 
           0 );
@@ -776,7 +776,7 @@ void ApplicationApplication_OnVehicleDataReceivedSlot( ApplicationApplication _t
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
   if ((( VehicleData != 0 ) && ( EnumVehicleRxTypeYDT_DETECTED == VehicleData->RxType )) 
-      && !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsRunningReset )
+      && !EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->IsRunningFactoryReset )
   {
     YDTYDT01_Main YDTDialog = EwCastObject( CoreGroup_FindDialogByClass((CoreGroup)_this, 
       EW_CLASS( YDTYDT01_Main )), YDTYDT01_Main );

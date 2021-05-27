@@ -626,6 +626,9 @@ enum VehicleTxType
   item REQUEST_REPROGRAM;
 
   $rect <220,460,420,500>
+  item REBOOT_REQUEST;
+
+  $rect <430,10,630,50>
   item TOTAL;
 }
 
@@ -1517,5 +1520,14 @@ enum SystemRxEvent
   item REPROGRAM_REJECTED;
 
   $rect <10,210,230,250>
+  item FACTORY_RESET_COMPLETED;
+
+  $rect <10,260,230,300>
+  item REBOOT_ACCEPTED;
+
+  $rect <10,310,230,350>
+  item REBOOT_REJECTED;
+
+  $rect <10,360,230,400>
   item TOTAL;
 }

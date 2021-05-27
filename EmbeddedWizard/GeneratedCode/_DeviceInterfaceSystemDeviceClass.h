@@ -43,7 +43,6 @@
 #endif
 
 #include "_CoreSystemEvent.h"
-#include "_CoreTimer.h"
 #include "_TemplatesDeviceClass.h"
 
 /* Forward declaration of the class DeviceInterface::RtcTime */
@@ -63,13 +62,11 @@
 EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_VARIABLE( CurrentAdjustTime, DeviceInterfaceRtcTime )
   EW_OBJECT  ( FactoryTestSystemEvent, CoreSystemEvent )
-  EW_OBJECT  ( FactoryResetTimer, CoreTimer )
   EW_OBJECT  ( QrCodeSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( UpdateLocalTimeSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( OpeningSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( InspectionDisplaySystemEvent, CoreSystemEvent )
   EW_OBJECT  ( InspectionModeSystemEvent, CoreSystemEvent )
-  EW_OBJECT  ( FactoryResetCompletedSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( SystemDataReceivedSystemEvent, CoreSystemEvent )
   EW_PROPERTY( SoftwareVersion, XString )
   EW_PROPERTY( ESN,             XString )
@@ -79,9 +76,9 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_PROPERTY( InspectionDisplayPattern, XEnum )
   EW_PROPERTY( InspectionMode,  XEnum )
   EW_PROPERTY( OperationMode,   XEnum )
+  EW_PROPERTY( IsRunningFactoryReset, XBool )
   EW_PROPERTY( IsSoftwareUpdateEnabled, XBool )
   EW_PROPERTY( IsClockAutoAdj,  XBool )
-  EW_VARIABLE( IsRunningReset,  XBool )
   EW_VARIABLE( IsHopperTestMode, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceSystemDeviceClass )
 
@@ -131,20 +128,6 @@ XString DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( DeviceInterfaceSy
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ResetToFactoryDefault()' */
 void DeviceInterfaceSystemDeviceClass_ResetToFactoryDefault( DeviceInterfaceSystemDeviceClass _this );
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceSystemDeviceClass_NotifyFactoryResetComplete( DeviceInterfaceSystemDeviceClass _this );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyFactoryResetComplete()' */
-void DeviceInterfaceSystemDeviceClass__NotifyFactoryResetComplete( void* _this );
-
-/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyFactoryResetComplete(). */
-#define _DeviceInterfaceSystemDeviceClass__NotifyFactoryResetComplete_
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnFactoryResetTimeoutSlot()' */
-void DeviceInterfaceSystemDeviceClass_OnFactoryResetTimeoutSlot( DeviceInterfaceSystemDeviceClass _this, 
-  XObject sender );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.RebootSystem()' */
 void DeviceInterfaceSystemDeviceClass_RebootSystem( DeviceInterfaceSystemDeviceClass _this );

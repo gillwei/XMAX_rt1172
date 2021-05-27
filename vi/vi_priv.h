@@ -183,6 +183,8 @@ bool vi_trip_time_get_current( uint32_t* current_trip_time_sec );
 void vi_trip_time_reset( void );
 void vi_clock_init( void );
 void vi_clock_notify_meter_clk_adj_status_changed( const uint32_t clock_adj_status );
+uint8_t vi_get_progsts( void );
+void vi_clear_progsts( void );
 
 #ifdef __cplusplus
 }

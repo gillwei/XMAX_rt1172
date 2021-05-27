@@ -289,7 +289,8 @@ typedef enum
   EnumVehicleTxTypeTCS                  = 17,
   EnumVehicleTxTypeRESET_METER          = 18,
   EnumVehicleTxTypeREQUEST_REPROGRAM    = 19,
-  EnumVehicleTxTypeTOTAL                = 20
+  EnumVehicleTxTypeREBOOT_REQUEST       = 20,
+  EnumVehicleTxTypeTOTAL                = 21
 } EnumVehicleTxType;
 
 /* User defined enumeration: 'Enum::DataType' */
@@ -708,7 +709,10 @@ typedef enum
   EnumSystemRxEventSW_UPDATE_DISABLE    = 1,
   EnumSystemRxEventREPROGRAM_ACCEPTED   = 2,
   EnumSystemRxEventREPROGRAM_REJECTED   = 3,
-  EnumSystemRxEventTOTAL                = 4
+  EnumSystemRxEventFACTORY_RESET_COMPLETED = 4,
+  EnumSystemRxEventREBOOT_ACCEPTED      = 5,
+  EnumSystemRxEventREBOOT_REJECTED      = 6,
+  EnumSystemRxEventTOTAL                = 7
 } EnumSystemRxEvent;
 
 #ifdef __cplusplus

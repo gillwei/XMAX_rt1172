@@ -1451,12 +1451,27 @@ void VI_rx_reprogram_info_response
     const uint8_t* svc_data_p
     )
 {
+uint8_t progsts = 0;
+
 if( svc_type == MID_MSG_NRES_NACK )
     {
     switch( svc_data_p[0] )
         {
         case MID_MSG_NRES_RS_NOT_SUPP:
-            EW_notify_system_event_received( EnumSystemRxEventREPROGRAM_REJECTED );
+            progsts = vi_get_progsts();
+            if( MID_MSG_PROGSTS_START_REQ == progsts )
+                {
+                EW_notify_system_event_received( EnumSystemRxEventREPROGRAM_REJECTED );
+                }
+            else if( MID_MSG_PROGSTS_COMPLETE_REQ == progsts )
+                {
+                EW_notify_system_event_received( EnumSystemRxEventREBOOT_ACCEPTED );
+                }
+            else
+                {
+                PRINTF( "%s invalid progsts: 0x%x\r\n", __FUNCTION__, progsts );
+                }
+            vi_clear_progsts();
             break;
 
         case MID_MSG_NRES_RS_WAIT_REQ:
@@ -1477,7 +1492,7 @@ else
             break;
 
         case MID_MSG_PROGSTS_COMPLETE_REQ:
-            //TBD
+            EW_notify_system_event_received( EnumSystemRxEventREBOOT_ACCEPTED );
             break;
 
         case MID_MSG_PROGSTS_FAILED:
@@ -1488,6 +1503,8 @@ else
             PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id );
             break;
         }
+
+    vi_clear_progsts();
     }
 }
 
