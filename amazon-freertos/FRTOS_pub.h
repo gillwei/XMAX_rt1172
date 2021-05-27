@@ -18,7 +18,9 @@ extern "C"{
 #include "task.h"
 
 void FRTOS_stat_init( void );
-void FRTOS_print_task_status( TaskHandle_t task_handle );
+void FRTOS_stat_timer_config( void );
+int  FRTOS_stat_timer_count( void );
+void FRTOS_print_task_status( const TaskHandle_t task_handle );
 
 #ifdef __cplusplus
 }

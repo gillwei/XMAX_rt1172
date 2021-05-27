@@ -15,18 +15,17 @@
 #include "event_groups.h"
 #include "task.h"
 #include "semphr.h"
-//TODO: apply after EW import
-// #include "ewrte.h"
+#include "ewrte.h"
 #include "fsl_debug_console.h"
 #include "fsl_debug_console_conf.h"
-// #include "fsl_gpt.h"
+#include "fsl_gpt.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define STAT_GPT                GPT2
 #define STAT_PRINT_PERIOD_MS    ( 2000 )
-#define STAT_PRINT_BUFFER_SIZE  ( 512 )
+#define STAT_PRINT_BUFFER_SIZE  ( 1024 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -100,7 +99,7 @@ void FRTOS_print_task_status
     * @return the counter of the timer
     *
     *********************************************************************/
-    int frtos_stat_timer_count
+    int FRTOS_stat_timer_count
         (
         void
         )
@@ -116,7 +115,7 @@ void FRTOS_print_task_status
     * Config and start the timer for FreeRTOS run-time statistics
     *
     *********************************************************************/
-    void frtos_stat_timer_config
+    void FRTOS_stat_timer_config
         (
         void
         )

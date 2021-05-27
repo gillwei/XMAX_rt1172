@@ -41,6 +41,10 @@
 #include "WEA_pub.h"
 #include "NTF_pub.h"
 #include "OTA_pub.h"
+#if( RTOS_STAT_ENABLE == 1)
+    #include "FRTOS_pub.h"
+#endif
+
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -145,6 +149,10 @@ OTA_init();
 
 #if( UNIT_TEST_ENABLE )
     TEST_init();
+#endif
+
+#if( RTOS_STAT_ENABLE == 1)
+    FRTOS_stat_init();
 #endif
 
 vCAN_nim_create_task();

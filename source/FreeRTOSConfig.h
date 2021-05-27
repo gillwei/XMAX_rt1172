@@ -80,9 +80,14 @@
 #define configUSE_DAEMON_TASK_STARTUP_HOOK      0
 
 /* Run time and task stats gathering related definitions. */
-#define configGENERATE_RUN_TIME_STATS           0
 #define configUSE_TRACE_FACILITY                1
-#define configUSE_STATS_FORMATTING_FUNCTIONS    0
+#if( RTOS_STAT_ENABLE == 1)
+    #define configGENERATE_RUN_TIME_STATS           1
+    #define configUSE_STATS_FORMATTING_FUNCTIONS    1
+#else
+    #define configGENERATE_RUN_TIME_STATS           0
+    #define configUSE_STATS_FORMATTING_FUNCTIONS    0
+#endif
 
 /* Task aware debugging. */
 #define configRECORD_STACK_HIGH_ADDRESS         1
@@ -154,5 +159,10 @@ standard names. */
 #define vPortSVCHandler SVC_Handler
 #define xPortPendSVHandler PendSV_Handler
 #define xPortSysTickHandler SysTick_Handler
+
+#if( configGENERATE_RUN_TIME_STATS == 1 )
+    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() FRTOS_stat_timer_config()
+    #define portGET_RUN_TIME_COUNTER_VALUE()         FRTOS_stat_timer_count()
+#endif
 
 #endif /* FREERTOS_CONFIG_H */
