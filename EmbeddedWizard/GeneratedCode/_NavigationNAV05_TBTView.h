@@ -244,8 +244,8 @@ void NavigationNAV05_TBTView_SetRecalculatingStatus( NavigationNAV05_TBTView _th
 void NavigationNAV05_TBTView_OnNavigatingStatusUpdateSlot( NavigationNAV05_TBTView _this, 
   XObject sender );
 
-/* 'C' function for method : 'Navigation::NAV05_TBTView.SetCurrentRoadBounds()' */
-void NavigationNAV05_TBTView_SetCurrentRoadBounds( NavigationNAV05_TBTView _this );
+/* 'C' function for method : 'Navigation::NAV05_TBTView.SetItemBounds()' */
+void NavigationNAV05_TBTView_SetItemBounds( NavigationNAV05_TBTView _this );
 
 #ifdef __cplusplus
   }

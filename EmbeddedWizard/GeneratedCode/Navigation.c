@@ -877,6 +877,8 @@ void NavigationNAV01_DefaultView_SetItemBounds( NavigationNAV01_DefaultView _thi
     CoreRectView__OnSetBounds( &_this->ZoomOutButton, NavigationZOOMOUT_W_NAVI_BOUNDS );
     CoreRectView__OnSetBounds( &_this->RoadNameBg, NavigationROAD_BG_W_NAVI_BOUNDS );
     CoreGroup__OnSetVisible( &_this->CurrentRoadWithGuide, 1 );
+    CoreGroup__OnSetVisible( &_this->ETAComponent, 1 );
+    ViewsRectangle_OnSetVisible( &_this->ArrivalBg, 1 );
     CoreGroup__OnSetVisible( &_this->CurrentRoadWithOutGuide, 0 );
   }
   else
@@ -885,6 +887,8 @@ void NavigationNAV01_DefaultView_SetItemBounds( NavigationNAV01_DefaultView _thi
     CoreRectView__OnSetBounds( &_this->ZoomOutButton, NavigationZOOMOUT_WO_NAVI_BOUNDS );
     CoreRectView__OnSetBounds( &_this->RoadNameBg, NavigationROAD_BG_WO_NAVI_BOUNDS );
     CoreGroup__OnSetVisible( &_this->CurrentRoadWithGuide, 0 );
+    CoreGroup__OnSetVisible( &_this->ETAComponent, 0 );
+    ViewsRectangle_OnSetVisible( &_this->ArrivalBg, 0 );
     CoreGroup__OnSetVisible( &_this->CurrentRoadWithOutGuide, 1 );
   }
 }
@@ -2851,7 +2855,7 @@ void NavigationNAV05_TBTView_OnCurRdUpdateSlot( NavigationNAV05_TBTView _this, X
 
   NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
   &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeCURRENT_ROAD );
-  NavigationNAV05_TBTView_SetCurrentRoadBounds( _this );
+  NavigationNAV05_TBTView_SetItemBounds( _this );
   NavigationNaviCurrentRoad_OnSetRoadName( &_this->CurrentRoadComponent, NaviData->CurrentRoad );
   NavigationNaviCurrentRoad_SetItemBounds( &_this->CurrentRoadComponent, 0 );
 }
@@ -3043,8 +3047,8 @@ void NavigationNAV05_TBTView_OnNavigatingStatusUpdateSlot( NavigationNAV05_TBTVi
   EwSignal( EwNewSlot( _this, NavigationNAV05_TBTView_OnETAUpdateSlot ), ((XObject)_this ));
 }
 
-/* 'C' function for method : 'Navigation::NAV05_TBTView.SetCurrentRoadBounds()' */
-void NavigationNAV05_TBTView_SetCurrentRoadBounds( NavigationNAV05_TBTView _this )
+/* 'C' function for method : 'Navigation::NAV05_TBTView.SetItemBounds()' */
+void NavigationNAV05_TBTView_SetItemBounds( NavigationNAV05_TBTView _this )
 {
   if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
       &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
@@ -3052,12 +3056,16 @@ void NavigationNAV05_TBTView_SetCurrentRoadBounds( NavigationNAV05_TBTView _this
     CoreRectView__OnSetBounds( &_this->RoadNameBg, NavigationROAD_BG_W_NAVI_BOUNDS );
     CoreRectView__OnSetBounds( &_this->CurrentRoadComponent, NavigationCURRENT_ROAD_W_NAVI_BOUNDS );
     _this->CurrentRoadComponent.RoadNameTextBounds = NavigationROADNAME_W_NAVI_BOUNDS;
+    CoreGroup__OnSetVisible( &_this->ETAComponent, 1 );
+    ViewsRectangle_OnSetVisible( &_this->ArrivalBg, 1 );
   }
   else
   {
     CoreRectView__OnSetBounds( &_this->RoadNameBg, NavigationROAD_BG_WO_NAVI_BOUNDS );
     CoreRectView__OnSetBounds( &_this->CurrentRoadComponent, NavigationCURRENT_ROAD_WO_NAVI_BOUNDS );
     _this->CurrentRoadComponent.RoadNameTextBounds = NavigationROADNAME_WO_NAVI_BOUNDS;
+    CoreGroup__OnSetVisible( &_this->ETAComponent, 0 );
+    ViewsRectangle_OnSetVisible( &_this->ArrivalBg, 0 );
   }
 }
 

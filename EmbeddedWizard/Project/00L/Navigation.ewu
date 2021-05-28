@@ -603,6 +603,8 @@ class NAV01_DefaultView : Home::BaseHome
       ZoomOutButton.Bounds = Navigation::ZOOMOUT_W_NAVI_BOUNDS;
       RoadNameBg.Bounds = Navigation::ROAD_BG_W_NAVI_BOUNDS;
       CurrentRoadWithGuide.Visible = true;
+      ETAComponent.Visible = true;
+      ArrivalBg.Visible = true;
       CurrentRoadWithOutGuide.Visible = false;
     }
     else
@@ -611,6 +613,8 @@ class NAV01_DefaultView : Home::BaseHome
       ZoomOutButton.Bounds = Navigation::ZOOMOUT_WO_NAVI_BOUNDS;
       RoadNameBg.Bounds = Navigation::ROAD_BG_WO_NAVI_BOUNDS;
       CurrentRoadWithGuide.Visible = false;
+      ETAComponent.Visible = false;
+      ArrivalBg.Visible = false;
       CurrentRoadWithOutGuide.Visible = true;
     }
   }
@@ -1845,7 +1849,7 @@ class NAV05_TBTView : Home::BaseHome
   slot OnCurRdUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.CURRENT_ROAD );
-    SetCurrentRoadBounds();
+    SetItemBounds();
     CurrentRoadComponent.RoadName = NaviData.CurrentRoad;
     CurrentRoadComponent.SetItemBounds( false );
 
@@ -2066,19 +2070,23 @@ class NAV05_TBTView : Home::BaseHome
   }
 
   $rect <1160,530,1360,570>
-  method void SetCurrentRoadBounds()
+  method void SetItemBounds()
   {
     if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
     {
       RoadNameBg.Bounds = Navigation::ROAD_BG_W_NAVI_BOUNDS;
       CurrentRoadComponent.Bounds = Navigation::CURRENT_ROAD_W_NAVI_BOUNDS;
       CurrentRoadComponent.RoadNameTextBounds = Navigation::ROADNAME_W_NAVI_BOUNDS;
+      ETAComponent.Visible = true;
+      ArrivalBg.Visible = true;
     }
     else
     {
       RoadNameBg.Bounds = Navigation::ROAD_BG_WO_NAVI_BOUNDS;
       CurrentRoadComponent.Bounds = Navigation::CURRENT_ROAD_WO_NAVI_BOUNDS;
       CurrentRoadComponent.RoadNameTextBounds = Navigation::ROADNAME_WO_NAVI_BOUNDS;
+      ETAComponent.Visible = false;
+      ArrivalBg.Visible = false;
     }
   }
 }
