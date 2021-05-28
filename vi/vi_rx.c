@@ -1455,10 +1455,10 @@ uint8_t progsts = 0;
 
 if( svc_type == MID_MSG_NRES_NACK )
     {
+    progsts = vi_get_progsts();
     switch( svc_data_p[0] )
         {
         case MID_MSG_NRES_RS_NOT_SUPP:
-            progsts = vi_get_progsts();
             if( MID_MSG_PROGSTS_START_REQ == progsts )
                 {
                 EW_notify_system_event_received( EnumSystemRxEventREPROGRAM_REJECTED );
@@ -1475,7 +1475,11 @@ if( svc_type == MID_MSG_NRES_NACK )
             break;
 
         case MID_MSG_NRES_RS_WAIT_REQ:
-            //Nothing to do ( Middle layer handles it )
+            if( MID_MSG_PROGSTS_START_REQ == progsts )
+                {
+                EW_notify_system_event_received( EnumSystemRxEventREPROGRAM_REJECTED );
+                }
+            vi_clear_progsts();
             break;
 
         default:
