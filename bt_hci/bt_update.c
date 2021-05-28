@@ -665,7 +665,7 @@ while( pdFALSE == section_nowrite )
     for( uint8_t i = 0; i < MAX_UPDATE_DATA_LENGTH; i += 4 )
         {
         check_val_uint32 = *( (volatile uint32_t *)( bt_flash_addr + i ) );
-        if( check_val_uint32 != 0xffffffff )
+        if( check_val_uint32 != 0 )
             {
             section_nowrite = pdFALSE;
             break;
