@@ -40,7 +40,7 @@ extern "C"{
 #define UART_TX_DMA_REQUEST      ( kDmaRequestMuxLPUART7Tx )
 
 /* UART RX buffer */
-#define UART_RX_BUFFER_NOM_SIZE   ( 1024 * 32 )
+#define UART_RX_BUFFER_NOM_SIZE   ( 1024 * 64 )
 #define UART_RX_BUFFER_SIZE       ( UART_RX_BUFFER_NOM_SIZE - 1 )
 #define UART_RX_CYCLE_CALC(x)     ( (x) & UART_RX_BUFFER_SIZE )
 
