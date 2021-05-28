@@ -55,7 +55,7 @@ HCI Task Parameters
 #define EVENT_HCI_RESET               ( 1 << 3 )
 #define EVENT_PROC_GATT_WRITE_REQUEST ( 1 << 4 )
 
-#define HCI_RX_BUFFER_SIZE  ( 32 * 1024 )
+#define HCI_RX_BUFFER_SIZE  ( 64 * 1024 )
 AT_NONCACHEABLE_SECTION(uint8_t hci_rx_data[HCI_RX_BUFFER_SIZE]);
 
 #if HCI_TX_QUEUE_ENABLE
