@@ -109,7 +109,7 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x0000035C, /* ratio 49.30 % */
+  0x00000376, /* ratio 48.76 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x8A002980, 0x0002A000, 0x00198006,
   0x68240A32, 0x8642A110, 0xA44A210E, 0x46473188, 0x1E0B1B00, 0xE1B0B84C, 0x011388C3,
   0xE31000D0, 0x45818124, 0x803C9C14, 0x8A8EA313, 0x54E23540, 0x4865B1E8, 0xDA2D1498,
@@ -124,8 +124,8 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
   0x5DA779D7, 0x87DDDE7A, 0xD0007A9A, 0xA3041196, 0x778514AD, 0x18D6D443, 0x4791A656,
   0x51BF611F, 0x326EDC16, 0x8A62D000, 0x5805B9B9, 0xE465338B, 0xEA2A5AC0, 0x69002336,
   0x87000681, 0x1D06BD04, 0x05811456, 0x81AA8091, 0x3E6D1B45, 0x8CA3958A, 0x1184CD67,
-  0x1941648C, 0xA22F4CD3, 0x968C6384, 0x5AA3C95D, 0x1C297193, 0x752D3345, 0x010149D2,
-  0x00000000
+  0x1941648C, 0xA22F4CD3, 0x968C6384, 0x5AA3C95D, 0x1C297193, 0x452D3345, 0xBA636565,
+  0x6C49D9E8, 0x00000406, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -197,6 +197,7 @@ static const XStringRes _Const0040 = { _StringsDefault0, 0x017A };
 static const XStringRes _Const0041 = { _StringsDefault0, 0x0187 };
 static const XStringRes _Const0042 = { _StringsDefault0, 0x0194 };
 static const XStringRes _Const0043 = { _StringsDefault0, 0x01A1 };
+static const XStringRes _Const0044 = { _StringsDefault0, 0x01AE };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -6118,6 +6119,9 @@ void SettingsSET27_ConfirmUpdate__Init( SettingsSET27_ConfirmUpdate _this, XObje
   _this->ReceivedSystemEventHandler.OnEvent = EwNewSlot( _this, SettingsSET27_ConfirmUpdate_OnSystemEventReceived );
   CoreSystemEventHandler_OnSetEvent( &_this->ReceivedSystemEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->SystemDataReceivedSystemEvent );
+
+  /* Call the user defined constructor */
+  SettingsSET27_ConfirmUpdate_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'Settings::SET27_ConfirmUpdate' */
@@ -6145,6 +6149,21 @@ void SettingsSET27_ConfirmUpdate__Done( SettingsSET27_ConfirmUpdate _this )
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET27_ConfirmUpdate_Init( SettingsSET27_ConfirmUpdate _this, XHandle 
+  aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const0044 ));
+  DeviceInterfaceSystemDeviceClass_SaveLastStatus( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ));
 }
 
 /* 'C' function for method : 'Settings::SET27_ConfirmUpdate.OnOkActivatedSlot()' */

@@ -313,6 +313,9 @@ void DeviceInterfaceSystemDeviceClass_StartOTA( DeviceInterfaceSystemDeviceClass
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetIsSoftwareUpdateEnabled()' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetIsSoftwareUpdateEnabled( DeviceInterfaceSystemDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SaveLastStatus()' */
+void DeviceInterfaceSystemDeviceClass_SaveLastStatus( DeviceInterfaceSystemDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif

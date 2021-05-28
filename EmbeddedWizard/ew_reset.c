@@ -21,6 +21,7 @@
 #include "Enum.h"
 #include "EEPM_pub.h"
 #include "BTM_pub.h"
+#include "VI_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -70,6 +71,7 @@ static void update_factory_reset_status
     uint32_t status
     )
 {
+PRINTF( "%s 0x%02x\r\n", __FUNCTION__, status );
 factory_reset_status |= status;
 if( FACTORY_RESET_TOTAL == factory_reset_status )
     {
@@ -164,6 +166,10 @@ void EW_reset_to_factory_default
     )
 {
 factory_reset_status = 0;
+
+/* save trip time before system reboot after all reset */
+VI_trip_time_save();
+
 uint8_t last_page = ( DEFAULT_HOME_GROUP << LAST_PAGE_HOME_GROUP_SHIFT ) |
                     ( DEFAULT_NAVI_VIEW_SETTING << LAST_PAGE_NAVI_SETTING_SHIFT ) |
                     ( DEFAULT_METER_DISPLAY_SETTING );

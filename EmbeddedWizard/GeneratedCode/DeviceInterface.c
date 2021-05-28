@@ -897,6 +897,15 @@ XBool DeviceInterfaceSystemDeviceClass_OnGetIsSoftwareUpdateEnabled( DeviceInter
   return _this->IsSoftwareUpdateEnabled;
 }
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SaveLastStatus()' */
+void DeviceInterfaceSystemDeviceClass_SaveLastStatus( DeviceInterfaceSystemDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ew_save_last_status();
+}
+
 /* Variants derived from the class : 'DeviceInterface::SystemDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )

@@ -3066,7 +3066,14 @@ $rect <820,60,1030,100>
 $output false
 class SET27_ConfirmUpdate : Components::BaseMainBG
 {
-  $rect <10,300,210,340>
+  $rect <10,300,190,340>
+  inherited method Init()
+  {
+    trace "Init SET27";
+    DeviceInterface::SystemDevice.SaveLastStatus();
+  }
+
+  $rect <10,340,190,380>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>

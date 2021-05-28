@@ -801,6 +801,17 @@ class SystemDeviceClass : Templates::DeviceClass
 
   $rect <50,720,270,760>
   property bool IsRunningFactoryReset;
+
+  $rect <26,270,230,310>
+  method void SaveLastStatus()
+  {
+    $if !$prototyper
+      native
+      {
+        ew_save_last_status();
+      }
+    $endif
+  }
 }
 
 $rect <20,110,220,150>

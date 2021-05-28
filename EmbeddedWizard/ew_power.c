@@ -69,10 +69,13 @@ void EW_power_update_ignoff_task_status
     uint32_t task
     )
 {
-ignition_off_task_status |= task;
-if( IGN_OFF_TASK_ALL == ignition_off_task_status )
+if( PM_IGN_OFF == ew_ignition_status )
     {
-    PM_unregister_callback( EW_MODULE_NAME );
+    ignition_off_task_status |= task;
+    if( IGN_OFF_TASK_ALL == ignition_off_task_status )
+        {
+        PM_unregister_callback( EW_MODULE_NAME );
+        }
     }
 }
 
@@ -106,6 +109,8 @@ EW_power_update_ignoff_task_status( IGN_OFF_TASK_WRITE_LAST_PAGE );
 * @private
 * ew_power_ignition_status
 *
+* Return the ignition status
+*
 * @return Ignition status
 *
 *********************************************************************/
@@ -115,6 +120,35 @@ inline int ew_power_ignition_status
     )
 {
 return ew_ignition_status;
+}
+
+/*********************************************************************
+*
+* @private
+* ew_save_last_status
+*
+* Save the last status including last page, language and trip time
+*
+*********************************************************************/
+void ew_save_last_status
+    (
+    void
+    )
+{
+// write last page to EEPROM
+uint8_t last_page = ( ( ew_get_last_home_group() & LAST_PAGE_HOME_GROUP_MASK ) << LAST_PAGE_HOME_GROUP_SHIFT ) |
+                    ( ( ew_get_navigation_view_setting() & LAST_PAGE_NAVIGATION_SETTING_MASK ) << LAST_PAGE_NAVI_SETTING_SHIFT ) |
+                    ( ew_get_meter_display_setting() & LAST_PAGE_METER_DISP_SETTING_MASK );
+EwPrint( "last pg 0x%x\r\n", last_page );
+if( pdFALSE == EEPM_set_last_page( last_page, &EW_power_write_last_page_callback ) )
+    {
+    EwPrint( "Err: set last page\r\n" );
+    }
+
+//TODO: save language to EEPROM
+
+// write trip time to EEPROM
+VI_trip_time_save();
 }
 
 /*********************************************************************
@@ -134,20 +168,8 @@ void EW_ignition_off_callback
 {
 if( PM_IGN_OFF == ignition_status )
     {
-    ew_ignition_status = 1;
-
-    // write last page to EEPROM
-    uint8_t last_page = ( ( ew_get_last_home_group() & LAST_PAGE_HOME_GROUP_MASK ) << LAST_PAGE_HOME_GROUP_SHIFT ) |
-                        ( ( ew_get_navigation_view_setting() & LAST_PAGE_NAVIGATION_SETTING_MASK ) << LAST_PAGE_NAVI_SETTING_SHIFT ) |
-                        ( ew_get_meter_display_setting() & LAST_PAGE_METER_DISP_SETTING_MASK );
-    EwPrint( "last pg 0x%x\r\n", last_page );
-    if( pdFALSE == EEPM_set_last_page( last_page, &EW_power_write_last_page_callback ) )
-        {
-        EwPrint( "Err: set last page\r\n" );
-        }
-
-    // write trip time to EEPROM
-    VI_trip_time_save();
+    ew_ignition_status = PM_IGN_OFF;
+    ew_save_last_status();
 
     // wake up EW task from Blocked state
     EwBspEventTrigger();

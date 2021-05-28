@@ -137,15 +137,14 @@ void VI_trip_time_count
 if( is_trip_time_valid &&
     MAX_TRIP_TIME_SEC > trip_time_sec )
     {
-    uint32_t next_trip_time_sec = trip_time_sec + 1;
+    uint32_t last_trip_time_sec = trip_time_sec;
+    trip_time_sec++;
 
     // notify UI trip time changed in minute resolution
-    if( ( next_trip_time_sec / 60 ) != ( trip_time_sec / 60 ) )
+    if( ( trip_time_sec / 60 ) != ( last_trip_time_sec / 60 ) )
         {
         EW_notify_vi_data_received( EnumVehicleRxTypeTRIP_TIME );
         }
-
-    trip_time_sec = next_trip_time_sec;
     }
 }
 
@@ -162,6 +161,7 @@ void VI_trip_time_save
     void
     )
 {
+PRINTF( "%s %d %d\r\n", __FUNCTION__, is_trip_time_valid, trip_time_sec );
 if( is_trip_time_valid )
     {
     if( pdFALSE == EEPM_set_trip_time( trip_time_sec, VI_trip_time_write_cb ) )
