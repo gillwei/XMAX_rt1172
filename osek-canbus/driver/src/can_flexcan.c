@@ -1824,7 +1824,7 @@ can_hw_transmit
 flexcan_regs_t      *l_p_flexcan_regs   = NULL;
 can_ret_code_t       l_ret_code         = CAN_RC_NOT_AVAILABLE;
 uint32               l_tx_mb_code       = 0;
-uint8                l_tx_mb_index      = 0;
+static uint8         l_tx_mb_index      = CAN_HMB_TX_START;
 uint8                l_tx_mb_timout_idx = 0;
 
 /*------------------------------------------------------
@@ -1837,27 +1837,14 @@ Check first if CAN is on line
 ------------------------------------------------------*/
 if( ( can_hw_status[hw_inst] & CAN_HW_ONLINE ) != 0 )
     {
-    /*------------------------------------------------------
-    Find out a Message Buffer can be used for Transmission
-    ------------------------------------------------------*/
-    for( l_tx_mb_index = CAN_HMB_TX_START; l_tx_mb_index < CAN_HMB_ALL; l_tx_mb_index++ )
-        {
-        /*------------------------------------------------------
-        Get the CODE of a Message Buffer
-        ------------------------------------------------------*/
-        l_tx_mb_code = flexcan_getTxMbCode( l_p_flexcan_regs, l_tx_mb_index );
-        if( FLEXCAN_TXMB_INACTIVE == l_tx_mb_code )
-            {
-            break;
-            }
-        }
+    l_tx_mb_index++;
 
     /*------------------------------------------------------
     If there is no Tx Message Buffer to be used
     ------------------------------------------------------*/
-    if( l_tx_mb_index == CAN_HMB_ALL )
+    if( l_tx_mb_index >= CAN_HMB_ALL )
         {
-        return ( l_ret_code = CAN_RC_FAIL );
+        l_tx_mb_index = CAN_HMB_TX_START;
         }
 
     /*--------------------------------------------------
