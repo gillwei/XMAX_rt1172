@@ -54,6 +54,7 @@ extern "C"{
 
 /*Test SPP*/
 #define OTA_TEST_SPP            0
+#define OTA_TEST_TASK           0
 /*--------------------------------------------------------------------
                             TYPES
 --------------------------------------------------------------------*/
@@ -92,7 +93,7 @@ bool ota_info_received = false;
 #define DATA_STREAM_HANDLE_STATE_WAIT_LEN 0x02
 #define DATA_STREAM_HANDLE_STATE_WAIT_EOT 0x03
 
-uint8_t data_stream_rcv_buf[5000];
+uint8_t data_stream_rcv_buf[16];
 
 bool data_stream_esc_received = false;
 uint32_t data_stream_received_len;
@@ -113,6 +114,7 @@ uint32_t data_stream_expected_len_byte_count;
 * ota task.
 *
 *********************************************************************/
+#if OTA_TEST_TASK
 void ota_task
     (
     void* arg
@@ -125,6 +127,7 @@ while( 1 )
     }
 vTaskDelete( NULL );
 }
+#endif
 
 void ota_stream_data_handle
     (
@@ -299,6 +302,8 @@ ota_str[3*i] = '\0';
 PRINTF( "SPP receive data:%s\r\n", ota_str );
 }
 #endif
+
+#if OTA_TEST_TASK
 void ota_create_task
     (
     void
@@ -318,7 +323,7 @@ else
 #endif
 
 }
-
+#endif
 /*!*******************************************************************
 *
 * @public
@@ -332,7 +337,9 @@ void OTA_init
     void
     )
 {
+#if OTA_TEST_TASK
 ota_create_task();
+#endif
 }
 
 /*!*******************************************************************
