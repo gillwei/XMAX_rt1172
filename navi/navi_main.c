@@ -412,9 +412,11 @@ PRINTF( "%s: Is route guidance started : %d\r\n", __FUNCTION__, is_navigating );
 navi_data_obj.is_navigating = is_navigating;
 
 // clean via point when route guidance is stopped.
+// clean tbt buffer when route guidance is stopped.
 if( 0 == navi_data_obj.is_navigating )
     {
     navi_data_obj.via_points = 0;
+    NAVI_reset_tbt_buffer();
     }
 
 EW_notify_navigating_status_update();
@@ -642,15 +644,16 @@ static void navi_tbt_list_update
     uint8_t has_more_items_on_next_request
     )
 {
-PRINTF( "%s: Tbt list item index:%d \r\n", __FUNCTION__, list_item->list_item_index );
 int result = ERR_NONE;
 switch( action )
     {
     case NAVILITE_TBTLIST_ACTION_LISTSIZE:
+        PRINTF( "%s: Tbt list size:%d \r\n", __FUNCTION__, list_total_items );
         navi_notify_more_tbt_item( has_more_items_on_next_request, list_total_items );
         break;
     case NAVILITE_TBTLIST_ACTION_ITEMADD:
         // The received tbt item's index always starts from 1.
+        PRINTF( "%s: Tbt list item index:%d \r\n", __FUNCTION__, list_item->list_item_index );
         if( list_item->list_item_index >= 1 &&
             list_item->list_item_index <= list_total_items )
             {
@@ -682,7 +685,7 @@ bool NAVI_get_navigation_status
     void
     )
 {
-PRINTF( "%s\r\n", __FUNCTION__ );
+PRINTF( "%s: Navigation Status: %d\r\n", __FUNCTION__, navi_data_obj.is_navigating );
 return navi_data_obj.is_navigating? true : false;
 }
 

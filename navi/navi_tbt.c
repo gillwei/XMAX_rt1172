@@ -86,7 +86,7 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
     switch( tbt_list_state )
         {
         case TBT_LIST_STATE_CHECK_40TH_ACTIVE_TBT_IDX:
-            if( ( tbt_list_item->list_item_index - 1 ) - TBT_UPDATE_IDX >= 0 )
+            if( ( ( tbt_list_item->list_item_index - 1 ) - TBT_UPDATE_IDX ) >= 0 )
                 {
                 index = ( tbt_list_item->list_item_index - 1 ) - TBT_UPDATE_IDX;
                 }
@@ -112,7 +112,7 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
             {
             navi_tbt_buffer[index].description[MAX_TBT_DESCRIPTION_SIZE-1] = '\0';
             }
-        
+
         memcpy( navi_tbt_buffer[index].dist_unit, tbt_list_item->distance_unit, MAX_TBT_DIST_UNIT_SIZE );
         if( tbt_list_item->dist_unit_size < MAX_TBT_DIST_UNIT_SIZE )
             {
@@ -123,12 +123,25 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
             navi_tbt_buffer[index].dist_unit[MAX_TBT_DIST_UNIT_SIZE-1] = '\0';
             }
 
-        float float_val = 0;
-        float_val = NAVILITE_bytes_to_float( tbt_list_item->distance );
-        navi_tbt_buffer[index].distance = (int)( (float)float_val );
+        float dist_in_float = 0.0;
+        dist_in_float = NAVILITE_bytes_to_float( tbt_list_item->distance );
+
+        if( !strncmp( navi_tbt_buffer[index].dist_unit, "km", 2 ) ||
+            !strncmp( navi_tbt_buffer[index].dist_unit, "mi", 2 ) )
+            {
+            navi_tbt_buffer[index].distance = (int)( dist_in_float*1000 );
+            }
+        else
+            {
+            navi_tbt_buffer[index].distance = (int)( dist_in_float );
+            }
         navi_tbt_buffer[index].list_idx = ( tbt_list_item->list_item_index - 1 );
         navi_tbt_buffer[index].icon_idx = tbt_list_item->icon_index;
-        EW_notify_tbt_list_update();
+        if( index == ( num_of_tbt_list_item - 1 ) )
+            {
+            PRINTF( "%s: Receive all tbt list items and notify UI\r\n", __FUNCTION__ );
+            EW_notify_tbt_list_update();
+            }
         }
     xSemaphoreGive( tbt_semphr_hndl );
     }
@@ -226,10 +239,6 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
     {
     // For LC, active tbt item is always on the top of tbt list based on the UX spec.
     navi_tbt_buffer[0].icon_idx = icon_index;
-    float float_val = 0;
-    float_val = NAVILITE_bytes_to_float( distance );
-    navi_tbt_buffer[0].distance = (int)( (float)float_val );
-
     memcpy( navi_tbt_buffer[0].dist_unit, distance_unit, MAX_TBT_DIST_UNIT_SIZE );
     if( distance_unit_size < MAX_TBT_DIST_UNIT_SIZE )
         {
@@ -238,6 +247,18 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
     else
         {
         navi_tbt_buffer[0].dist_unit[MAX_TBT_DIST_UNIT_SIZE-1] = '\0';
+        }
+
+    float dist_in_float = 0.0;
+    dist_in_float = NAVILITE_bytes_to_float( distance );
+    if( !strncmp( navi_tbt_buffer[0].dist_unit, "km", 2 ) ||
+        !strncmp( navi_tbt_buffer[0].dist_unit, "mi", 2 ) )
+        {
+        navi_tbt_buffer[0].distance = (int)( dist_in_float*1000 );
+        }
+    else
+        {
+        navi_tbt_buffer[0].distance = (int)( dist_in_float );
         }
     PRINTF( "%s, %d, %d %s\r\n", __FUNCTION__, navi_tbt_buffer[0].icon_idx, navi_tbt_buffer[0].distance, navi_tbt_buffer[0].dist_unit );
     EW_notify_tbt_list_update();

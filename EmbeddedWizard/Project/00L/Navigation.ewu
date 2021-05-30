@@ -1787,8 +1787,7 @@ class NAV05_TBTView : Home::BaseHome
   $rect <20,20,160,60>
   object Views::Text NextTurnDist
   {
-    preset Bounds = <186,68,254,116>;
-    preset String = "";
+    preset Bounds = <186,68,270,116>;
     preset Font = Fonts::NotoSansBold38pt;
     preset Visible = false;
   }
@@ -1796,8 +1795,7 @@ class NAV05_TBTView : Home::BaseHome
   $rect <20,20,160,60>
   object Views::Text NextTurnDistUnit
   {
-    preset Bounds = <254,82,302,112>;
-    preset String = "";
+    preset Bounds = <270,82,318,112>;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Visible = false;
   }
@@ -1900,31 +1898,37 @@ class NAV05_TBTView : Home::BaseHome
   $rect <730,310,960,350>
   slot OnTbtListUpdateSlot
   {
-    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    // The top item of tbt list is always the active tbt item.
+    var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( 0 );
+    ShowNextTurnIcon( NaviTbtData.IconIdx );
+
+    if( !NextTurnDist.Visible )
     {
-      // The top item of tbt list is always the active tbt item.
-      var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( 0 );
-      ShowNextTurnIcon( NaviTbtData.IconIdx );
-
-      if( !NextTurnDist.Visible )
-      {
-        NextTurnDist.Visible = true;
-      }
-
-      if( !NextTurnDistUnit.Visible )
-      {
-        NextTurnDistUnit.Visible = true;
-      }
-
-      if( !NextTurnDescription.Visible )
-      {
-        NextTurnDescription.Visible = true;
-      }
-
-      NextTurnDistUnit.String = NaviTbtData.DistUnit;
-      NextTurnDist.String = string( NaviTbtData.Distance );
-      NextTurnDescription.String = NaviTbtData.TbtDescription;
+      NextTurnDist.Visible = true;
     }
+
+    if( !NextTurnDistUnit.Visible )
+    {
+      NextTurnDistUnit.Visible = true;
+    }
+
+    if( !NextTurnDescription.Visible )
+    {
+      NextTurnDescription.Visible = true;
+    }
+
+    NextTurnDistUnit.String = NaviTbtData.DistUnit;
+    if( Strings::UNT02_UNIT_MILEAGE_KILOMETER == NaviTbtData.DistUnit ||
+        Navigation::DISTANCE_UNIT_MILE == NaviTbtData.DistUnit )
+    {
+      var float Distance = (float)NaviTbtData.Distance/1000;
+      NextTurnDist.String = string( Distance, 0 , 1 );
+    }
+    else
+    {
+      NextTurnDist.String = string( NaviTbtData.Distance );
+    }
+    NextTurnDescription.String = NaviTbtData.TbtDescription;
   }
 
   $rect <950,530,1150,570>
@@ -2234,15 +2238,12 @@ class NAV03_TBTListView : Home::BaseHome
   $rect <740,420,940,460>
   slot OnTbtListUpdateSlot
   {
-    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    if( DeviceInterface::NavigationDevice.IsTbtMessageDisplayed() )
     {
-      if( DeviceInterface::NavigationDevice.IsTbtMessageDisplayed() )
-      {
-      // TODO: show message to inform user that there are more TBT items.
-      }
-      TbtList.NoOfItems = DeviceInterface::NavigationDevice.GetTbtListSize();
-      TbtList.InvalidateItems( 0, TbtList.NoOfItems-1 );
+    // TODO: show message to inform user that there are more TBT items.
     }
+    TbtList.NoOfItems = DeviceInterface::NavigationDevice.GetTbtListSize();
+    TbtList.InvalidateItems( 0, TbtList.NoOfItems-1 );
   }
 
   // TODO:
@@ -2274,7 +2275,6 @@ class NAV03_TBTListView : Home::BaseHome
     if( !DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
     {
       TbtList.NoOfItems = 0;
-      DeviceInterface::NavigationDevice.ResetTbtBuffer();
     }
   }
 
@@ -2311,18 +2311,16 @@ class TbtInfoItem : Core::Group
   $rect <20,20,160,60>
   object Views::Text NextTurnDist
   {
-    preset Bounds = <62,19,106,53>;
-    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
-    preset String = "";
+    preset Bounds = <58,19,117,53>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
     preset Font = Fonts::NotoSansBold24pt;
   }
 
   $rect <20,20,160,60>
   object Views::Text NextTurnDistUnit
   {
-    preset Bounds = <106,19,154,53>;
-    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
-    preset String = "";
+    preset Bounds = <117,19,154,53>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
@@ -2614,7 +2612,16 @@ class TbtListMenu : Core::Group
       ShowTbtListItemIcon( NaviTbtData.IconIdx );
 
       item.NextTurnDistUnit.String = NaviTbtData.DistUnit;
-      item.NextTurnDist.String = string( NaviTbtData.Distance );
+      if( Strings::UNT02_UNIT_MILEAGE_KILOMETER == NaviTbtData.DistUnit ||
+          Navigation::DISTANCE_UNIT_MILE == NaviTbtData.DistUnit )
+      {
+        var float Distance = (float)NaviTbtData.Distance/1000;
+        item.NextTurnDist.String = string( Distance, 0 , 1 );
+      }
+      else
+      {
+        item.NextTurnDist.String = string( NaviTbtData.Distance );
+      }
       item.NextTurnDescription.String = NaviTbtData.TbtDescription;
 
       item.TbtItemBg.Visible = false;
@@ -2786,3 +2793,7 @@ class TbtListMenu : Core::Group
     }
   }
 }
+
+$rect <720,360,920,400>
+$output false
+const string DISTANCE_UNIT_MILE = "mi";

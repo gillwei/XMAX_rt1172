@@ -302,9 +302,6 @@ XBool DeviceInterfaceNavigationDeviceClass_IsTbtMessageDisplayed( DeviceInterfac
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetTbtListSize()' */
 XInt32 DeviceInterfaceNavigationDeviceClass_GetTbtListSize( DeviceInterfaceNavigationDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ResetTbtBuffer()' */
-void DeviceInterfaceNavigationDeviceClass_ResetTbtBuffer( DeviceInterfaceNavigationDeviceClass _this );
-
 #ifdef __cplusplus
   }
 #endif

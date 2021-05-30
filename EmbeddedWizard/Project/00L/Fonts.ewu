@@ -165,7 +165,7 @@ resource Resources::Font NotoSansBold24pt
   attr fontheight Height = 24;
   attr fontheightmode HeightMode = Popular;
   attr fontquality Quality = Medium;
-  attr fontranges Ranges = 0x30-0x39;
+  attr fontranges Ranges = 0x30-0x39,'.';
   attr fontaspectratio AspectRatio = 1.0;
   attr fontbold Bold = false;
   attr fontitalic Italic = false;
@@ -189,7 +189,7 @@ resource Resources::Font NotoSansBold38pt
   attr fontheight Height = 38;
   attr fontheightmode HeightMode = Popular;
   attr fontquality Quality = Medium;
-  attr fontranges Ranges = 0x20-0xFF;
+  attr fontranges Ranges = 0x20-0xFF,'.';
   attr fontaspectratio AspectRatio = 1.0;
   attr fontbold Bold = false;
   attr fontitalic Italic = false;

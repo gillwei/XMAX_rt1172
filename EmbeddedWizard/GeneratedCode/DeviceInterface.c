@@ -1529,15 +1529,6 @@ XInt32 DeviceInterfaceNavigationDeviceClass_GetTbtListSize( DeviceInterfaceNavig
   return TbtListSize;
 }
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ResetTbtBuffer()' */
-void DeviceInterfaceNavigationDeviceClass_ResetTbtBuffer( DeviceInterfaceNavigationDeviceClass _this )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  NAVI_reset_tbt_buffer();
-}
-
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )

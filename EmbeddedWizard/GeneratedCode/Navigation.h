@@ -97,6 +97,9 @@ extern const XRect NavigationCURRENT_ROAD_SHRINK_ALERT;
 /* User defined constant: 'Navigation::ALERT_MESSAGE_BOUNDS' */
 extern const XRect NavigationALERT_MESSAGE_BOUNDS;
 
+/* User defined constant: 'Navigation::DISTANCE_UNIT_MILE' */
+extern const XStringRes NavigationDISTANCE_UNIT_MILE;
+
 #ifdef __cplusplus
   }
 #endif

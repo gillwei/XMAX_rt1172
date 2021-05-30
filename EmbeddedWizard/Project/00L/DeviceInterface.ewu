@@ -1356,17 +1356,6 @@ class NavigationDeviceClass : Templates::DeviceClass
       return 0;
     $endif
   }
-
-  $rect <920,420,1120,460>
-  method void ResetTbtBuffer()
-  {
-    $if !$prototyper
-      native
-      {
-        NAVI_reset_tbt_buffer();
-      }
-    $endif
-  }
 }
 
 $rect <20,340,230,380>
