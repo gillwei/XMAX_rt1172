@@ -82,7 +82,7 @@ extern "C"{
 
 #define BURN_IN_TASK_TIME       ( 1000 )
 #define BURN_IN_QUAL_DFT_TIME   ( 8 * 60 * 60 )
-#define BURN_IN_QUAL_TEMP       ( 60 * 1000 )
+#define BURN_IN_QUAL_TEMP       ( 55 * 1000 )
 #define BURN_IN_QUAL_MIN_TIME   ( 1 * 60 * 60 )
 #define BURN_IN_QUAL_MAX_TIME   ( BURN_IN_QUAL_DFT_TIME )
 #define BURN_IN_SUCCESS         ( 1 )
