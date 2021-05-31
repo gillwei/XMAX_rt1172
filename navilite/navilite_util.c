@@ -289,3 +289,27 @@ PRINTF( "\r\nPayLoad Type:%d", msg->payload_data_type );
 PRINTF( "\r\nPayload Size:%d", msg->payload_size );
 PRINTF( "\r\nPayload value:%d\r\n", msg->data_value );
 }
+
+/*********************************************************************
+*
+* @public
+* NAVILITE_print_raw_data
+*
+* print the raw data bytes
+* @param data data pointer to print
+* @param data_len byte length of data pointer
+*
+*********************************************************************/
+void NAVILITE_print_raw_data
+    (
+    uint8_t* data,
+    uint8_t data_len
+    )
+{
+PRINTF( "== HEX DATA DUMP ===\r\n" );
+for( int i = 0; i < data_len; i++ )
+    {
+    PRINTF( "%x ,", data[i] );
+    }
+PRINTF( "\r\n" );
+}

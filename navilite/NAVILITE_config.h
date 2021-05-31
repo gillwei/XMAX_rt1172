@@ -60,7 +60,7 @@
 #define NAVILITE_JPEG_BUFFER_MAX_SIZE ( 65 * 1024 )
 
 // buffer queue max timeout
-#define NAVILITE_QUEUE_BUFFER_TIMEOUT 500
+#define NAVILITE_QUEUE_BUFFER_TIMEOUT 900
 
 // buffer size for unit test which contains image data (at max 35K payload data)
 #define NAVILITE_PROTOCOL_BUFFER_SIZE_FOR_UNIT_TEST 1024

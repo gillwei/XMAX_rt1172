@@ -33,7 +33,7 @@
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define NAVILITE_TASK_PRIORITY   ( TASK_PRIO_NAVILITE_PROTOCOL )
-#define NAVILITE_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 5 )
+#define NAVILITE_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 6 )
 #define NAVILITE_TASK_NAME       "navilite_task"
 #define EVENT_NAVILITE_CONNECT ( 1 << 0 )
 #define EVENT_NAVILITE_DISCONNECT ( 1 << 1 )
@@ -53,6 +53,8 @@
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
+AT_BOARDSDRAM_SECTION( uint8_t navilite_command_buffer[NAVILITE_QUEUE_BUFFER_SIZE * 2] );
+AT_BOARDSDRAM_SECTION( uint8_t navilite_command_buffer_unused_alignment[256 * 2 - NAVILITE_QUEUE_BUFFER_SIZE * 2] );
 AT_BOARDSDRAM_SECTION( uint8_t navilite_buffer[1024 * 4] );
 AT_BOARDSDRAM_SECTION( uint8_t navilite_jpg_buffer[NAVILITE_JPEG_BUFFER_MAX_SIZE] );
 AT_BOARDSDRAM_SECTION( uint8_t navilite_queue_buffer[NAVILITE_QUEUE_BUFFER_SIZE] );
@@ -521,13 +523,13 @@ void navilite_receive_buffer_and_parse
     )
 {
 size_t received_bytes;
+int token_start_frame = 0;
 int buffer_remained = 0;
-int pos = 0;
-int t1 = 0;
-int t2 = 0;
-int fc = 0;
-int step = 0;
-bool is_jpeg_mode = false;
+int token_char = 0;
+int token_index = 0;
+static int token_next = 110;
+static int token_level = 0;
+static int jpeg_mode = 0;
 
 
 while( ( buffer_remained = xStreamBufferBytesAvailable( buffer_handle ) > 0 ) )
@@ -537,56 +539,149 @@ while( ( buffer_remained = xStreamBufferBytesAvailable( buffer_handle ) > 0 ) )
             sizeof( navilite_queue_buffer ),
             portMAX_DELAY );
 
-    fc = navilite_frame_count( navilite_queue_buffer, received_bytes );
+    for( int i = 0; i < received_bytes; i++ )
+        {
+        token_char = navilite_queue_buffer[i];
 
-    if( fc <= 1 )
+        if( token_char == token_next && token_level == 0 )
+            {
+            token_next = 65;
+            token_level = 1;
+            }
+        else if( token_char == token_next && token_level == 1 )
+            {
+            token_next = 108;
+            token_level = 2;
+            }
+        else if( token_char == token_next && token_level == 2 )
+            {
+            token_next = 64;
+            token_level = 3;
+            }
+        else if( token_char == token_next && token_level == 3 )
+            {
+            token_next = 110;
+            token_level = 0;
+            token_start_frame ++;
+            }
+
+        navilite_command_buffer[token_index++] = token_char;
+
+        if( token_start_frame == 1 )
+            {
+            token_start_frame = 0;
+            token_index -= 4;
+            jpeg_mode = NAVILITE_parse_data( navilite_command_buffer, token_index );
+            token_index = 0;
+            token_index += 4;
+            strncpy( (char*)navilite_command_buffer, MAGIC_CODE, 4 );
+            token_start_frame = 0;
+            }
+        else if( token_start_frame > 1 )
+            {
+            token_start_frame = 0;
+            token_index -= 4;
+            jpeg_mode = NAVILITE_parse_data( navilite_command_buffer, token_index );
+
+            token_index = 0;
+            token_index += 4;
+            strncpy( (char*)navilite_command_buffer, MAGIC_CODE, 4 );
+            token_start_frame = 1;
+            }
+        else if( token_index >= received_bytes )
+            {
+            jpeg_mode = NAVILITE_parse_data( navilite_command_buffer, token_index );
+            token_index = 0;
+            }
+
+        if( jpeg_mode )
+            {
+            token_level = 0;
+            }
+
+        }
+
+    if( received_bytes < NAVILITE_QUEUE_BUFFER_SIZE )
+        {
+        jpeg_mode = NAVILITE_parse_data( navilite_command_buffer, token_index );
+        }
+}
+}
+
+/*********************************************************************
+*
+* @private
+* navilite_extra_parse
+*
+*  Parse the buffer with data pointer, and data length for extra
+*  purpose
+*
+* @param data data pointer to parse
+* @param data_len data length of the data pointer
+*
+*********************************************************************/
+void navilite_extra_parse
+    (
+    uint8_t* data,
+    uint8_t data_len
+    )
+{
+int pos = 0;
+int t1 = 0;
+int t2 = 0;
+int fc = 0;
+int step = 0;
+bool is_jpeg_mode = false;
+
+fc = navilite_frame_count( data, data_len );
+
+if( fc <= 1 )
     {
-        t1 = ( navilite_find_next_pos( navilite_queue_buffer , received_bytes ) );
+    t1 = ( navilite_find_next_pos( data, data_len ) );
 
-        if( is_jpeg_mode && ( t1 > 0 ) )
-            {
-            is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer, t1 );
-            is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer + t1, received_bytes - t1 );
-            }
-        else
-            {
-            is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer, received_bytes );
-            }
+    if( is_jpeg_mode && ( t1 > 0 ) )
+        {
+        is_jpeg_mode = navilite_parse_data_inner( data, t1 );
+        is_jpeg_mode = navilite_parse_data_inner( data + t1, data_len - t1 );
+        }
+    else
+        {
+        is_jpeg_mode = navilite_parse_data_inner( data, data_len );
+        }
     }
 
-    if( fc > 1 )
+if( fc > 1 )
     {
-        t2 = navilite_find_next_pos( navilite_queue_buffer + 1, received_bytes );
-        t1 = ( navilite_find_next_pos( navilite_queue_buffer , received_bytes ) );
-        step = 0;
+    t2 = navilite_find_next_pos( data + 1, data_len );
+    t1 = ( navilite_find_next_pos( data, data_len ) );
+    step = 0;
 
-        if( !is_jpeg_mode && ( t1 > t2 ) )
+    if( !is_jpeg_mode && ( t1 > t2 ) )
+        {
+        is_jpeg_mode = navilite_parse_data_inner( data, t1 );
+        }
+
+    if( is_jpeg_mode && ( t1 > 0 ) )
+        {
+        is_jpeg_mode = navilite_parse_data_inner( data, t1 );
+        }
+
+    while ( ( step <= fc ) )
+        {
+        if( t1 >= 0 )
             {
-            is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer, t1 );
+            int hc = navilite_frame_count( data + t1, data_len - t1 );
+            if( hc <= 0 ) {
+                break;
             }
 
-        if( is_jpeg_mode && ( t1 > 0 ) )
-            {
-            is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer, t1 );
+            is_jpeg_mode = navilite_parse_data_inner( data + t1, t2 - t1 + 1 );
+
+            t1 = t2 + 1;
+            pos = navilite_find_next_pos( data + t1 + 1, data_len - t1 ) ;
+            t2 = t1 + ( ( pos < 0 ) ? ( data_len - t1 ) : pos );
             }
-
-        while ( ( step <= fc ) )
-            {
-            if( t1 >= 0 )
-                {
-                int hc = navilite_frame_count( navilite_queue_buffer + t1, received_bytes - t1 );
-                if( hc <= 0 ) {
-                    break;
-                }
-
-                is_jpeg_mode = NAVILITE_parse_data( navilite_queue_buffer + t1, t2 - t1 + 1 );
-
-                t1 = t2 + 1;
-                pos = navilite_find_next_pos( navilite_queue_buffer + t1 + 1 , received_bytes - t1 ) ;
-                t2 = t1 + ( (pos < 0) ? ( received_bytes - t1 ) : pos);
-                }
-            step++;
-            }
+        step++;
         }
     }
 }
@@ -683,8 +778,6 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
     PRINTF("}\r\n");
 #endif
 
-    strncpy( (char*)data, (char*)navilite_packet.magic_code, 4 );
-
     // magic code
     idx += 4;
 
@@ -745,9 +838,9 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
             is_jpeg_mode = 1;
             }
         jpg_current_size = 0;
-        memcpy( navilite_jpg_buffer, data + idx, data_len );
+        memcpy( navilite_jpg_buffer, data + idx, data_len - idx );
         jpg_current_size += ( data_len - idx );
-        idx += data_len;
+        idx += ( data_len - idx );
         }
 
     // NAVILITE_SERVICETYPE_CURROADNAME_UPDATE
@@ -1116,14 +1209,14 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
     }
 else if( is_jpeg_mode )
     {
-    for( idx = 0; idx < data_len; idx++ )
+    for( idx = 0; ( idx < data_len ) && is_jpeg_mode; idx++ )
         {
         if( jpg_current_size < NAVILITE_JPEG_BUFFER_MAX_SIZE )
             {
-            navilite_jpg_buffer[jpg_current_size++] = (uint8_t)data[idx];
+            navilite_jpg_buffer[jpg_current_size] = (uint8_t)data[idx];
             }
 
-        if( ( ( image_frame_update_payload_size == jpg_current_size ) ) &&
+        if( ( ( ( image_frame_update_payload_size - 1 ) == jpg_current_size ) ) &&
             navilite_content_update_callbacks.callback_func_imageframe != NULL &&
             jpg_current_size <= NAVILITE_JPEG_BUFFER_MAX_SIZE )
             {
@@ -1131,9 +1224,10 @@ else if( is_jpeg_mode )
             navilite_content_update_callbacks.callback_func_imageframe( navilite_jpg_buffer, image_frame_update_payload_size, NAVILITE_IMAGE_NAVIGATION );
             is_jpeg_mode = 0;
             jpg_current_size = 0;
+            break; // check if any left bytes in the MTU for non-jpeg data
             }
 
-        if( ( ( image_frame_update_payload_size == jpg_current_size ) ) &&
+        if( ( ( ( image_frame_update_payload_size - 1 ) == jpg_current_size ) ) &&
             image_frame_update_payload_size > NAVILITE_JPEG_BUFFER_MAX_SIZE )
             {
             is_jpeg_mode = 0;
@@ -1141,8 +1235,502 @@ else if( is_jpeg_mode )
             PRINTF( "WARNING: exceeds %d jpeg max buffer size, skip this jpeg image", image_frame_update_payload_size );
             navilite_ack_reply();
             }
+        jpg_current_size++;
+        }
+    if( !is_jpeg_mode && ( data_len - idx - 1 ) > 0 )
+        {
+        navilite_extra_parse( &data[idx + 1], data_len - idx - 1 );
         }
     // Otherwise, the map frame update's payload data is parsing until next frame request!
     }
+return is_jpeg_mode;
+}
+
+/*********************************************************************
+*
+* @private
+* navilite_parse_data_inner
+*
+* Parse NAVILITE protocol for inner use
+*
+* @param data data pointer of NAVILITE protocol stream
+* @param data_len data length of the data pointer received
+* @return return true if jpeg mode is available
+*                false if jpeg not available
+*********************************************************************/
+bool navilite_parse_data_inner
+    (
+    uint8_t *data,
+    uint32_t data_len
+    )
+{
+uint32_t idx = 0;
+navilite_message navilite_packet;
+static uint8_t is_jpeg_mode = 0;
+static int image_frame_update_payload_size = 0;
+static int jpg_current_size = 0;
+
+if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
+    {
+    // check connection
+    if( navilite_session_status.inited == 0 &&
+    navilite_content_update_callbacks.callback_func_connected )
+        {
+        navilite_session_status.inited = 1;
+        navilite_content_update_callbacks.callback_func_connected( 0 );
+        }
+
+    // magic code
+    idx += 4;
+
+    // navilite version
+    navilite_packet.version = data[idx++];
+#if( NAVILITE_DEBUG )
+    PRINTF( "\r\nversion:%d\r\n", navilite_packet.version );
+#endif
+    // navlite frame type
+    navilite_packet.frame_type = data[idx++];
+#if( NAVILITE_DEBUG )
+    PRINTF( "frame type:%d\r\n", navilite_packet.frame_type );
+#endif
+    // navlite service type
+    navilite_packet.service_type = data[idx++];
+#if( NAVILITE_DEBUG )
+    PRINTF( "service type:%d\r\n", navilite_packet.service_type );
+#endif
+
+    // navlite payload size ; little-endian format
+    navilite_packet.payload_size =(uint32_t)(
+            (data[idx + 3] << 24)| (data[idx + 2] << 16) | (data[idx + 1] << 8) | (data[idx + 0] << 0));
+
+    idx += 4;
+#if( NAVILITE_DEBUG )
+    PRINTF( "!payload size: [%d]\r\n", navilite_packet.payload_size );
+#endif
+    // navilite payload type (value/ptr)
+    navilite_packet.payload_data_type = data[idx++];
+#if( NAVILITE_DEBUG )
+    PRINTF( "payload data type:%s\r\n", navilite_packet.payload_data_type == NAVILITE_PAYLOAD_DATA_TYPE_AS_POINTER
+            ? "pointer":"value" );
+#endif
+    if( navilite_packet.payload_data_type == NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE )
+        {
+        // read the data value of the packet (not payload part)
+        navilite_packet.data_value = (uint16_t)( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 );
+#if( NAVILITE_DEBUG )
+        PRINTF( ">>%d %d ; Value (uint16_t) = %d\r\n", data[idx + 1], data[idx + 0], navilite_packet.data_value );
+#endif
+        idx += 2;
+        }
+
+    // NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
+        {
+        if( is_jpeg_mode == 0 )
+            {
+            image_frame_update_payload_size = navilite_packet.payload_size;
+            is_jpeg_mode = 1;
+            }
+        jpg_current_size = 0;
+        memcpy( navilite_jpg_buffer, data + idx, data_len - idx );
+        jpg_current_size += ( data_len - idx );
+        idx += ( data_len - idx );
+        }
+
+    // NAVILITE_SERVICETYPE_CURROADNAME_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_CURROADNAME_UPDATE )
+        {
+        // complete frame request contains ALL in one!!!
+        memcpy( navilite_buffer, data + idx, data_len );
+        idx += data_len;
+        navilite_buffer[idx] = 0;
+
+        if( navilite_content_update_callbacks.callback_func_currentroadname )
+            {
+            // Callback API for RoadName notification update
+            navilite_content_update_callbacks.callback_func_currentroadname( navilite_buffer, navilite_packet.payload_size );
+            }
+        }
+    else if( navilite_packet.payload_size == 0 && navilite_content_update_callbacks.callback_func_currentroadname )
+        {
+            // Used for clearing the road name on HMI
+            navilite_content_update_callbacks.callback_func_currentroadname( NULL, 0 );
+        }
+
+    // NAVILITE_SERVICETYPE_ETA_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_ETA_UPDATE )
+        {
+        uint32_t value = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+
+        if( navilite_content_update_callbacks.callback_func_eta )
+            {
+            // Callback API for ETA notification update
+            navilite_content_update_callbacks.callback_func_eta( value );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_BT_THROUGHPUT_TIMEOUT_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_BT_THROUGHPUT_TIMEOUT_UPDATE )
+        {
+        uint8_t value = navilite_packet.data_value; // this value will be calculated in HMI for proper absolute time
+
+        if( navilite_content_update_callbacks.callback_func_bt_timeout )
+            {
+            // Callback API for BT timeout notification update
+            navilite_content_update_callbacks.callback_func_bt_timeout( value );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_ROUTE_CALC_PROGRESS_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_ROUTE_CALC_PROGRESS_UPDATE )
+        {
+        uint8_t progress = 0;
+        progress = (uint8_t)navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_routecalcprogress )
+            {
+            navilite_content_update_callbacks.callback_func_routecalcprogress( progress );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_DAYNIGHT_MODE_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_DAYNIGHT_MODE_UPDATE )
+        {
+        uint8_t mode = 0;
+        mode = (uint8_t)navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_daynightmode )
+            {
+            navilite_content_update_callbacks.callback_func_daynightmode( mode );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_MAP_ZOOM_LEVEL_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_MAP_ZOOM_LEVEL_UPDATE )
+        {
+        uint8_t currentLevel = 0;
+        uint8_t maxLevel = 0;
+
+        currentLevel = (uint8_t)data[idx++];
+        maxLevel = (uint8_t)data[idx++];
+
+        if( navilite_content_update_callbacks.callback_func_zoomlevel )
+            {
+            // Callback API for zoom level update
+            navilite_content_update_callbacks.callback_func_zoomlevel( currentLevel, maxLevel );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_HOMESETTING_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_HOMESETTING_UPDATE )
+        {
+        uint8_t value = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_homelocationsetting )
+            {
+            // Callback API for home setting notification update
+            navilite_content_update_callbacks.callback_func_homelocationsetting( value );
+            // Update the session status for home setting status, used for blocking type API
+            navilite_session_status.home_status = value;
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_OFFICESETTING_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_OFFICESETTING_UPDATE )
+        {
+        uint8_t setting_value = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_officelocationsetting )
+            {
+            // Callback API for home setting notification update
+            navilite_content_update_callbacks.callback_func_officelocationsetting( setting_value );
+            // Update the session status for office setting status, used for blocking type API
+            navilite_session_status.office_status = setting_value;
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_VIA_POINT_COUNT_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_VIA_POINT_COUNT_UPDATE )
+        {
+        uint8_t value = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_viapointcount )
+            {
+            // Callback API for via point count notification update
+            navilite_content_update_callbacks.callback_func_viapointcount( value );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_SPEED_LIMIT_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_SPEED_LIMIT_UPDATE )
+        {
+        uint16_t value = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_speedlimit )
+            {
+            // Callback API for speed limit notification update
+            navilite_content_update_callbacks.callback_func_speedlimit( value );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_NAVIEVENTTEXTUPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_NAVIEVENTTEXTUPDATE )
+        {
+        uint8_t event_type;
+        uint8_t event_extra_subtype;
+        uint8_t visibilty;
+        uint8_t event_str_size;
+        int i = 0;
+        // parsing the navi text packet
+        // read one byte for event type
+        event_type = (uint8_t)data[idx++];
+        // read one byte for extra subtype
+        event_extra_subtype = (uint8_t)data[idx++];
+        // read one byte for visibility
+        visibilty = (uint8_t)data[idx++];
+        // read one byte for navi text string size
+        event_str_size = (uint8_t)data[idx++];
+        // read the str size bytes for navi text
+        for ( i = 0; i < event_str_size; i++ )
+            {
+            navilite_buffer[i] = (uint8_t)data[idx++];
+            }
+        navilite_buffer[i++] = 0; // store the navi text on navilite buffer
+        if( navilite_content_update_callbacks.callback_func_navieventtext )
+            {
+            // Callback API for navi event text notification update
+            navilite_content_update_callbacks.callback_func_navieventtext( (uint8_t*)navilite_buffer, event_str_size, event_type, event_extra_subtype, visibilty );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_NEXTTURNDIST_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_NEXTTURNDIST_UPDATE )
+        {
+        uint8_t icon_index = 0;
+        uint32_t distance = 0;
+        uint8_t dist_unit_str_size = 0;
+
+        int i = 0;
+        // parsing the icon index
+        // read one byte for icon index
+        icon_index = (uint8_t)data[idx++];
+        // distance
+        distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+        idx+=4;
+        // unit string size
+        dist_unit_str_size = (uint8_t)data[idx++];
+
+        // read the str bytes for distance
+        for ( i = 0; i < dist_unit_str_size; i++ )
+            {
+            navilite_buffer[i] = (uint8_t)data[idx++];
+            }
+        navilite_buffer[i++] = 0; // store the navi text on navilite buffer
+        if( navilite_content_update_callbacks.callback_func_nextturndistance )
+            {
+            // Callback API for next turn distance notification update
+            navilite_content_update_callbacks.callback_func_nextturndistance( icon_index, distance, (uint8_t*)navilite_buffer, dist_unit_str_size );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_ACTIVETURBLIST_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_ACTIVETURBLIST_UPDATE )
+        {
+        uint16_t active_tbt_index = 0; // app will inform current active tbt list to let HMI know what tbt list should be shown
+        active_tbt_index = (uint16_t)navilite_packet.data_value;
+        // fire callback when available
+        if( navilite_content_update_callbacks.callback_func_activetbtitem )
+            {
+            // Callback API for next turn distance notification update
+            navilite_content_update_callbacks.callback_func_activetbtitem( active_tbt_index );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_TBTLIST_UPDATE  (list SIZE/hasMoreData notify)
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_TBTLIST_UPDATE )
+        {
+        uint16_t list_item_count = 0;
+        uint8_t has_more_items = 0;
+        // list item count extraction
+        for( ; idx < data_len; idx++ )
+            {
+            list_item_count = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+            // has more data in next request for UI to show more data on item lists(> 50);
+            idx += 2;
+            has_more_items = data[idx++];
+            }
+        session_tbtlist_size_total = list_item_count;
+        session_tbtlist_item_counter = 0; // reset the counter when this command is received
+        PRINTF( "[NAVILITE_BEGIN TBT LIST ITEM SIZE: %d, reset session_tbtlist_item_counter = 0]\r\n", session_tbtlist_size_total );
+
+        if( session_tbtlist_size_last_total != session_tbtlist_size_counter)
+            {
+            session_tbtlist_size_last_total = session_tbtlist_size_total;
+            PRINTF( "#WARNING: previous tbtlist is not completely received! SHOULD HAVE %d lists but only %d lists received\r\n", session_tbtlist_size_last_total, session_tbtlist_size_counter );
+            }
+        if( navilite_content_update_callbacks.callback_func_nexttbtist )
+            {
+            navilite_content_update_callbacks.callback_func_nexttbtist
+                (
+                NAVILITE_TBTLIST_ACTION_LISTSIZE,
+                NULL,
+                0,
+                session_tbtlist_size_total,  // total items will be updated later by NAVILITE_SERVICETYPE_TBTLIST_DATA_UPDATE
+                0,
+                has_more_items // has more item on next request?
+                );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_TBTLIST_DATA_UPDATE  // list item data notify
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type ==  NAVILITE_SERVICETYPE_TBTLIST_DATA_UPDATE )
+        {
+
+        if( session_tbtlist_size_total == 0 )
+            {
+            PRINTF( "#ERROR: session_tbtlist_size_total = 0 ; NAVILITE_SERVICETYPE_TBTLIST_UPDATE request need to be issued first from app!\r\n" );
+            }
+
+            session_tbtlist_size_counter ++;
+            uint16_t list_item_index = 0;
+            uint8_t icon_index = 0;
+            uint8_t desc_str_size;
+            uint8_t dist_unit_str_size;
+            uint32_t distance = 0;
+            uint8_t* desc_str = NULL;
+            uint8_t* dist_unit_str = NULL;
+
+            for( ; idx < data_len; idx++ )
+                {
+                // list index
+                list_item_index = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+                idx += 2;
+                // icon index
+                icon_index = (uint8_t)data[idx++];
+                // desc_size
+                desc_str_size = (uint8_t)data[idx++];
+                // dist_unit_size;
+                dist_unit_str_size = (uint8_t)data[idx++];
+                // distance
+                distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+                idx += sizeof( distance ); // now point to distance unit string portion
+                // store the distance unit string
+                dist_unit_str = navilite_buffer;
+                // copy the unit string to buffer
+                memcpy( navilite_buffer, data + idx, dist_unit_str_size );
+                idx += dist_unit_str_size;
+                // store the desc string pointer
+                desc_str = navilite_buffer + idx;
+                // copy the desc string to buffer
+                memcpy( navilite_buffer + idx, data + idx , desc_str_size );
+                idx += data_len;
+                if( navilite_content_update_callbacks.callback_func_nexttbtist )
+                    {
+                    // prepare list item data
+                    session_tbtlist_data.list_item_index = list_item_index;
+                    session_tbtlist_data.icon_index = icon_index;
+                    session_tbtlist_data.desc_size = desc_str_size;
+                    session_tbtlist_data.dist_unit_size = dist_unit_str_size;
+                    session_tbtlist_data.distance= distance;
+                    session_tbtlist_data.distance_unit = dist_unit_str;
+                    session_tbtlist_data.desc = desc_str;
+                    // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                    navilite_content_update_callbacks.callback_func_nexttbtist( NAVILITE_TBTLIST_ACTION_ITEMADD, &session_tbtlist_data, list_item_index, session_tbtlist_size_total, ++session_tbtlist_item_counter, 0 );
+                    }
+                }
+        }
+
+    // NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK
+    if( navilite_packet.service_type == NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK )
+        {
+        if( navilite_content_update_callbacks.callback_func_esn_sent )
+            {
+            navilite_content_update_callbacks.callback_func_esn_sent();
+            }
+
+        // Once ESN is acked, the navilite session is established
+        if( navilite_content_update_callbacks.callback_func_connected )
+            {
+            navilite_content_update_callbacks.callback_func_connected( 0 );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_DIALOG_EVENT_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_DIALOG_EVENT_UPDATE )
+        {
+        uint8_t dialog_id;
+        navilite_dialog_type dialog_type;
+        uint8_t message_size;
+        int i = 0;
+
+        dialog_id = (uint8_t)( data[idx++] );
+        dialog_type = (uint8_t)( data[idx++] );
+        message_size = (uint8_t)( data[idx++] );
+        // read the str size bytes for dialog text
+        for ( i = 0; i < message_size; i++ )
+            {
+            navilite_buffer[i] = (uint8_t)data[idx++];
+            }
+        navilite_buffer[i++] = 0;
+
+        if( navilite_content_update_callbacks.callback_func_dialogevent )
+            {
+            // Callback API for dialog prompt
+            navilite_content_update_callbacks.callback_func_dialogevent( dialog_id, dialog_type, navilite_buffer, message_size );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_NAVIGATION_STATUS_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_NAVIGATION_STATUS_UPDATE )
+        {
+        uint16_t status = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_navigationstatus )
+            {
+            // Callback API for navigation status notification update
+            navilite_content_update_callbacks.callback_func_navigationstatus( status );
+            // Update the session status for navigation status, used for blocking type API
+            navilite_session_status.navigation_status = status;
+            }
+        }
+
+    // Non image frame update operations
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type !=  NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
+        {
+        is_jpeg_mode = 0;
+        }
+
+    }
+else if( is_jpeg_mode )
+    {
+    for( idx = 0; ( idx < data_len ) && is_jpeg_mode; idx++ )
+        {
+        if( jpg_current_size < NAVILITE_JPEG_BUFFER_MAX_SIZE )
+            {
+            navilite_jpg_buffer[jpg_current_size] = (uint8_t)data[idx];
+            }
+
+        if( ( ( ( image_frame_update_payload_size - 1 ) == jpg_current_size ) ) &&
+            navilite_content_update_callbacks.callback_func_imageframe != NULL &&
+            jpg_current_size <= NAVILITE_JPEG_BUFFER_MAX_SIZE )
+            {
+            navilite_ack_reply();
+            navilite_content_update_callbacks.callback_func_imageframe( navilite_jpg_buffer, image_frame_update_payload_size, NAVILITE_IMAGE_NAVIGATION );
+            is_jpeg_mode = 0;
+            jpg_current_size = 0;
+            break; // check if any left bytes in the MTU for non-jpeg data
+            }
+
+        if( ( ( ( image_frame_update_payload_size - 1 ) == jpg_current_size ) ) &&
+            image_frame_update_payload_size > NAVILITE_JPEG_BUFFER_MAX_SIZE )
+            {
+            is_jpeg_mode = 0;
+            image_frame_update_payload_size = 0;
+            PRINTF( "WARNING: exceeds %d jpeg max buffer size, skip this jpeg image", image_frame_update_payload_size );
+            navilite_ack_reply();
+            }
+        jpg_current_size++;
+        }
+   }
 return is_jpeg_mode;
 }

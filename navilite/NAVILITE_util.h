@@ -80,6 +80,12 @@ void NAVILITE_print_frame
     navilite_message* msg
     );
 
+void NAVILITE_print_raw_data
+    (
+    uint8_t* data,
+    uint8_t data_len
+    );
+
 #ifdef __cplusplus
 }
 #endif
