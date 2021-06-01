@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <20,10,220,50>
 inline Inline
@@ -81,6 +81,7 @@ class DEV_Main : Menu::BaseMenuView
       }
       case 12: PresentDialog( new Navigation::NAV03_TBTListView, null, null, null, null, null, null, null, null, false );
       case 13: PresentDialog( new Navigation::NAV05_TBTView, null, null, null, null, null, null, null, null, false );
+      case 14: PresentDialog( new Weather::WEA01_Main, null, null, null, null, null, null, null, null, false );
       default:;
     }
   }
@@ -107,7 +108,7 @@ class DEV_Main : Menu::BaseMenuView
   }
 
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 14 ] =
+  array string ItemTitleArray[ 15 ] =
   (
     Default[0] = "Factory Mode";
     Default[1] = "Hopper Test Mode";
@@ -123,6 +124,7 @@ class DEV_Main : Menu::BaseMenuView
     Default[11] = "YDT Test";
     Default[12] = "TBT List Test";
     Default[13] = "TBT View Test";
+    Default[14] = "Weather View Test";
   );
 
   $reorder HideFocusFrameTimer 1

@@ -196,7 +196,7 @@ PRINTF( "%s, Wea info is received\r\n", __FUNCTION__ );
 if( NUM_WEA_ITEM > weather_info->time )
     {
     weather_info_obj[weather_info->time].time = weather_info->time;
-    weather_info_obj[weather_info->time].type = weather_info->time;
+    weather_info_obj[weather_info->time].type = weather_info->type;
     weather_info_obj[weather_info->time].temperature = weather_info->temperature;
     weather_info_obj[weather_info->time].temperature_max = weather_info->temperature_max;
     weather_info_obj[weather_info->time].temperature_min = weather_info->temperature_min;

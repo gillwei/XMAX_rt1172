@@ -3367,13 +3367,102 @@ void DeviceInterfaceWeatherDeviceClass_GetWeatherInfo( DeviceInterfaceWeatherDev
 
   {
     bc_motocon_weather_info_t* w_obj = NULL;
-    w_obj = ew_get_weather_info_obj( aWeaItemIdx );
+    #if( !UNIT_TEST_WEA )
+      w_obj = ew_get_weather_info_obj( aWeaItemIdx );
+    #else
+      w_obj = TEST_get_weather_obj( aWeaItemIdx );
+    #endif
+
     WTime = w_obj->time;
-    WType = w_obj->type;
     WTemp = (int)w_obj->temperature;
     TempMin = (int)w_obj->temperature_min;
     TempMax = (int)w_obj->temperature_max;
     RainProb = w_obj->rain_probability;
+
+    switch( w_obj->type )
+    {
+      case BC_MOTOCON_WEATHER_SUNNY:
+        WType = EnumWeatherIconTypeSUNNY;
+        break;
+      case BC_MOTOCON_WEATHER_PARTLY_CLOUDY_DAY:
+        WType = EnumWeatherIconTypePARTLY_CLOUDY_DAY;
+        break;
+      case BC_MOTOCON_WEATHER_CLOUDY_DAY:
+        WType = EnumWeatherIconTypeCLOUDY_DAY;
+        break;
+      case BC_MOTOCON_WEATHER_RAIN:
+        WType = EnumWeatherIconTypeRAIN;
+        break;
+      case BC_MOTOCON_WEATHER_SNOW:
+        WType = EnumWeatherIconTypeSNOW;
+        break;
+      case BC_MOTOCON_WEATHER_WIND:
+        WType = EnumWeatherIconTypeWIND;
+        break;
+      case BC_MOTOCON_WEATHER_RAIN_STORM_MIX:
+        WType = EnumWeatherIconTypeRAIN_STORM_MIX;
+        break;
+      case BC_MOTOCON_WEATHER_RAIN_SNOW_MIX:
+        WType = EnumWeatherIconTypeRAIN_SNOW_MIX;
+        break;
+      case BC_MOTOCON_WEATHER_FOG:
+        WType = EnumWeatherIconTypeFOG;
+        break;
+      case BC_MOTOCON_WEATHER_SMOG:
+        WType = EnumWeatherIconTypeSMOG;
+        break;
+      case BC_MOTOCON_WEATHER_HAIL:
+        WType = EnumWeatherIconTypeHAIL;
+        break;
+      case BC_MOTOCON_WEATHER_SCATTERED_SHOWERS_DAY:
+        WType = EnumWeatherIconTypeSCATTERED_SHOWERS_DAY;
+        break;
+      case BC_MOTOCON_WEATHER_SCATTERED_STORM_DAY:
+        WType = EnumWeatherIconTypeSCATTERED_STORM_DAY;
+        break;
+      case BC_MOTOCON_WEATHER_NO_DATA:
+        WType = EnumWeatherIconTypeNO_DATA;
+        break;
+      case BC_MOTOCON_WEATHER_RAIN_LIGHT:
+        WType = EnumWeatherIconTypeRAIN_LIGHT;
+        break;
+      case BC_MOTOCON_WEATHER_RAIN_HEAVY:
+        WType = EnumWeatherIconTypeRAIN_HEAVY;
+        break;
+      case BC_MOTOCON_WEATHER_SNOW_LIGHT:
+        WType = EnumWeatherIconTypeSNOW_LIGHT;
+        break;
+      case BC_MOTOCON_WEATHER_SNOW_HEAVY:
+        WType = EnumWeatherIconTypeSNOW_HEAVY;
+        break;
+      case BC_MOTOCON_WEATHER_RAIN_SNOW_MIX_LIGHT:
+        WType = EnumWeatherIconTypeRAIN_SNOW_MIX_LIGHT;
+        break;
+      case BC_MOTOCON_WEATHER_RAIN_SNOW_MIX_HEAVY:
+        WType = EnumWeatherIconTypeRAIN_SNOW_MIX_HEAVY;
+        break;
+      case BC_MOTOCON_WEATHER_CLOUDY:
+        WType = EnumWeatherIconTypeCLOUDY;
+        break;
+      case BC_MOTOCON_WEATHER_CLEAR:
+        WType = EnumWeatherIconTypeCLEAR;
+        break;
+      case BC_MOTOCON_WEATHER_PARTLY_CLOUDY_NIGHT:
+        WType = EnumWeatherIconTypePARTLY_CLOUDY_NIGHT;
+        break;
+      case BC_MOTOCON_WEATHER_CLOUDY_NIGHT:
+        WType = EnumWeatherIconTypeCLOUDY_NIGHT;
+        break;
+      case BC_MOTOCON_WEATHER_SCATTERED_SHOWERS_NIGHT:
+        WType = EnumWeatherIconTypeSCATTERED_SHOWERS_NIGHT;
+        break;
+      case BC_MOTOCON_WEATHER_SCATTERED_STORM_NIGHT:
+        WType = EnumWeatherIconTypeSCATTERED_STORM_NIGHT;
+        break;
+      default:
+        EwPrint( "Unexpected weather type is received\r\n" );
+        break;
+    }
   }
   _this->WeatherTime = WTime;
   _this->WeatherType = WType;
@@ -3406,7 +3495,11 @@ void DeviceInterfaceWeatherDeviceClass_GetWeatherLoc( DeviceInterfaceWeatherDevi
 
   {
     char* cur_loc;
-    ew_get_weather_loc( &cur_loc );
+    #if( !UNIT_TEST_WEA )
+      ew_get_weather_loc( &cur_loc );
+    #else
+      TEST_weather_location( &cur_loc );
+    #endif
     CurrentLoc = EwNewStringUtf8( (const unsigned char*) cur_loc, (int)strlen( cur_loc ) );
   }
   _this->WeatherLocation = EwShareString( CurrentLoc );
@@ -3436,7 +3529,12 @@ void DeviceInterfaceWeatherDeviceClass_GetWeekDay( DeviceInterfaceWeatherDeviceC
   XInt32 NewWeekDay = 0;
 
   {
-    int week_day = ew_get_weather_week_day();
+    int week_day;
+    #if( !UNIT_TEST_WEA )
+      week_day = ew_get_weather_week_day();
+    #else
+      week_day = TEST_weather_weekday();
+    #endif
     NewWeekDay = week_day;
   }
   _this->WeekDay = NewWeekDay;

@@ -34,6 +34,8 @@ void test_vi_int( void );
 void test_vi_proc( void );
 void test_notification_int( void );
 void test_notification_proc( void );
+void test_wea_int( void );
+void test_wea_proc( void );
 
 #ifdef __cplusplus
 }

@@ -105,6 +105,10 @@
             test_notification_proc();
         #endif
 
+        #if( UNIT_TEST_WEA )
+            test_wea_proc();
+        #endif
+
         vTaskDelay( TEST_TASK_DELAY_TICKS );
         }
 
@@ -179,6 +183,9 @@
         test_notification_int();
     #endif
 
+    #if( UNIT_TEST_WEA )
+        test_wea_int();
+    #endif
     }
 #endif
 

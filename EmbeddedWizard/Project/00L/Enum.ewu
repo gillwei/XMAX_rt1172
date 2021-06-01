@@ -1639,3 +1639,85 @@ enum MotoConTx
   $rect <10,60,210,100>
   item TOTAL;
 }
+
+$rect <30,690,230,730>
+enum WeatherIconType
+{
+  $rect <10,10,210,50>
+  item SUNNY;
+
+  $rect <220,10,420,50>
+  item PARTLY_CLOUDY_DAY;
+
+  $rect <430,10,630,50>
+  item CLOUDY_DAY;
+
+  $rect <10,70,210,110>
+  item RAIN;
+
+  $rect <220,70,420,110>
+  item SNOW;
+
+  $rect <434,71,634,111>
+  item WIND;
+
+  $rect <10,130,210,170>
+  item RAIN_STORM_MIX;
+
+  $rect <220,130,420,170>
+  item RAIN_SNOW_MIX;
+
+  $rect <430,130,630,170>
+  item FOG;
+
+  $rect <10,190,210,230>
+  item SMOG;
+
+  $rect <220,190,420,230>
+  item HAIL;
+
+  $rect <430,190,630,230>
+  item SCATTERED_SHOWERS_DAY;
+
+  $rect <10,250,210,290>
+  item SCATTERED_STORM_DAY;
+
+  $rect <220,250,420,290>
+  item NO_DATA;
+
+  $rect <430,250,630,290>
+  item RAIN_LIGHT;
+
+  $rect <10,310,210,350>
+  item RAIN_HEAVY;
+
+  $rect <220,310,420,350>
+  item SNOW_LIGHT;
+
+  $rect <430,310,630,350>
+  item SNOW_HEAVY;
+
+  $rect <10,370,210,410>
+  item RAIN_SNOW_MIX_LIGHT;
+
+  $rect <220,370,420,410>
+  item RAIN_SNOW_MIX_HEAVY;
+
+  $rect <430,370,630,410>
+  item CLOUDY;
+
+  $rect <10,430,210,470>
+  item CLEAR;
+
+  $rect <220,430,420,470>
+  item PARTLY_CLOUDY_NIGHT;
+
+  $rect <430,430,630,470>
+  item CLOUDY_NIGHT;
+
+  $rect <10,490,210,530>
+  item SCATTERED_SHOWERS_NIGHT;
+
+  $rect <220,490,420,530>
+  item SCATTERED_STORM_NIGHT;
+}

@@ -757,6 +757,37 @@ typedef enum
   EnumMotoConTxTOTAL                    = 1
 } EnumMotoConTx;
 
+/* User defined enumeration: 'Enum::WeatherIconType' */
+typedef enum
+{
+  EnumWeatherIconTypeSUNNY              = 0,
+  EnumWeatherIconTypePARTLY_CLOUDY_DAY  = 1,
+  EnumWeatherIconTypeCLOUDY_DAY         = 2,
+  EnumWeatherIconTypeRAIN               = 3,
+  EnumWeatherIconTypeSNOW               = 4,
+  EnumWeatherIconTypeWIND               = 5,
+  EnumWeatherIconTypeRAIN_STORM_MIX     = 6,
+  EnumWeatherIconTypeRAIN_SNOW_MIX      = 7,
+  EnumWeatherIconTypeFOG                = 8,
+  EnumWeatherIconTypeSMOG               = 9,
+  EnumWeatherIconTypeHAIL               = 10,
+  EnumWeatherIconTypeSCATTERED_SHOWERS_DAY = 11,
+  EnumWeatherIconTypeSCATTERED_STORM_DAY = 12,
+  EnumWeatherIconTypeNO_DATA            = 13,
+  EnumWeatherIconTypeRAIN_LIGHT         = 14,
+  EnumWeatherIconTypeRAIN_HEAVY         = 15,
+  EnumWeatherIconTypeSNOW_LIGHT         = 16,
+  EnumWeatherIconTypeSNOW_HEAVY         = 17,
+  EnumWeatherIconTypeRAIN_SNOW_MIX_LIGHT = 18,
+  EnumWeatherIconTypeRAIN_SNOW_MIX_HEAVY = 19,
+  EnumWeatherIconTypeCLOUDY             = 20,
+  EnumWeatherIconTypeCLEAR              = 21,
+  EnumWeatherIconTypePARTLY_CLOUDY_NIGHT = 22,
+  EnumWeatherIconTypeCLOUDY_NIGHT       = 23,
+  EnumWeatherIconTypeSCATTERED_SHOWERS_NIGHT = 24,
+  EnumWeatherIconTypeSCATTERED_STORM_NIGHT = 25
+} EnumWeatherIconType;
+
 #ifdef __cplusplus
   }
 #endif

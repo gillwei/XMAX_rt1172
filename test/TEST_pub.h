@@ -24,9 +24,11 @@ extern "C"{
 #define UNIT_TEST_EEPROM        ( 0 )
 #define UNIT_TEST_VI            ( 0 )
 #define UNIT_TEST_NOTIFICATION  ( 0 )
-#define UNIT_TEST_ENABLE        ( UNIT_TEST_INSPECTION | UNIT_TEST_PRODUCTION | UNIT_TEST_BURNIN | UNIT_TEST_JPEG | UNIT_TEST_ADC | UNIT_TEST_NAVI | UNIT_TEST_EEPROM | UNIT_TEST_VI | UNIT_TEST_NOTIFICATION | UNIT_TEST_NAVILITE )
+#define UNIT_TEST_WEA           ( 0 )
+#define UNIT_TEST_ENABLE        ( UNIT_TEST_INSPECTION | UNIT_TEST_PRODUCTION | UNIT_TEST_BURNIN | UNIT_TEST_JPEG | UNIT_TEST_ADC | UNIT_TEST_NAVI | UNIT_TEST_EEPROM | UNIT_TEST_VI | UNIT_TEST_NOTIFICATION | UNIT_TEST_NAVILITE || UNIT_TEST_WEA )
 
 #include "NAVI_pub.h"
+#include "BC_motocon_pub.h"
 #include "Enum.h"
 
 void TEST_init( void );
@@ -39,6 +41,9 @@ bool TEST_navi_get_route_guidance_status( void );
 void TEST_get_navi_tbt_data( const int active_tbt_index, uint32_t* list_index, uint32_t* icon_index, uint16_t* distance, char** dist_unit, char** description );
 EnumNaviDialogType TEST_navi_get_dialog_type( void );
 void TEST_navi_get_dialog_message( char** message );
+void TEST_weather_location( char** wea_loc );
+int TEST_weather_weekday( void );
+bc_motocon_weather_info_t* TEST_get_weather_obj( const int index );
 
 #ifdef __cplusplus
 }
