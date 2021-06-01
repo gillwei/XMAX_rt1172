@@ -6093,6 +6093,7 @@ void SettingsSET27_ConfirmUpdate__Init( SettingsSET27_ConfirmUpdate _this, XObje
   ViewsText__Init( &_this->Text, &_this->_.XObject, 0 );
   MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->ReceivedSystemEventHandler, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->HoldTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( SettingsSET27_ConfirmUpdate );
@@ -6110,6 +6111,8 @@ void SettingsSET27_ConfirmUpdate__Init( SettingsSET27_ConfirmUpdate _this, XObje
   MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
   &StringsGEN_OK ));
   MenuUpDownPushButtonSet_OnSetDownButtonEnabled( &_this->UpDownPushButtonSet, 1 );
+  CoreTimer_OnSetPeriod( &_this->HoldTimer, 0 );
+  CoreTimer_OnSetBegin( &_this->HoldTimer, 2000 );
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
   ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
@@ -6119,6 +6122,7 @@ void SettingsSET27_ConfirmUpdate__Init( SettingsSET27_ConfirmUpdate _this, XObje
   _this->ReceivedSystemEventHandler.OnEvent = EwNewSlot( _this, SettingsSET27_ConfirmUpdate_OnSystemEventReceived );
   CoreSystemEventHandler_OnSetEvent( &_this->ReceivedSystemEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->SystemDataReceivedSystemEvent );
+  _this->HoldTimer.OnTrigger = EwNewSlot( _this, SettingsSET27_ConfirmUpdate_OnHoldTimerSlot );
 
   /* Call the user defined constructor */
   SettingsSET27_ConfirmUpdate_Init( _this, aArg );
@@ -6134,6 +6138,7 @@ void SettingsSET27_ConfirmUpdate__ReInit( SettingsSET27_ConfirmUpdate _this )
   ViewsText__ReInit( &_this->Text );
   MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
   CoreSystemEventHandler__ReInit( &_this->ReceivedSystemEventHandler );
+  CoreTimer__ReInit( &_this->HoldTimer );
 }
 
 /* Finalizer method for the class 'Settings::SET27_ConfirmUpdate' */
@@ -6146,6 +6151,7 @@ void SettingsSET27_ConfirmUpdate__Done( SettingsSET27_ConfirmUpdate _this )
   ViewsText__Done( &_this->Text );
   MenuUpDownPushButtonSet__Done( &_this->UpDownPushButtonSet );
   CoreSystemEventHandler__Done( &_this->ReceivedSystemEventHandler );
+  CoreTimer__Done( &_this->HoldTimer );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
@@ -6174,6 +6180,8 @@ void SettingsSET27_ConfirmUpdate_OnOkActivatedSlot( SettingsSET27_ConfirmUpdate 
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( sender );
 
+  DeviceInterfaceBluetoothDeviceClass_SendMotoConCommand( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
+  DeviceInterfaceBluetoothDeviceClass ), EnumMotoConTxCREATE_OTA_CONNECTION );
   DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
   DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeREQUEST_REPROGRAM, 0 );
 }
@@ -6204,8 +6212,7 @@ void SettingsSET27_ConfirmUpdate_OnSystemEventReceived( SettingsSET27_ConfirmUpd
     switch ( SystemData->RxEvent )
     {
       case EnumSystemRxEventREPROGRAM_ACCEPTED :
-        DeviceInterfaceSystemDeviceClass_StartOTA( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-        DeviceInterfaceSystemDeviceClass ));
+        CoreTimer_OnSetEnabled( &_this->HoldTimer, 1 );
       break;
 
       case EnumSystemRxEventREPROGRAM_REJECTED :
@@ -6220,6 +6227,18 @@ void SettingsSET27_ConfirmUpdate_OnSystemEventReceived( SettingsSET27_ConfirmUpd
 
       default :; 
     }
+}
+
+/* 'C' function for method : 'Settings::SET27_ConfirmUpdate.OnHoldTimerSlot()' */
+void SettingsSET27_ConfirmUpdate_OnHoldTimerSlot( SettingsSET27_ConfirmUpdate _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( sender );
+
+  DeviceInterfaceSystemDeviceClass_StartOTA( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ));
 }
 
 /* Variants derived from the class : 'Settings::SET27_ConfirmUpdate' */

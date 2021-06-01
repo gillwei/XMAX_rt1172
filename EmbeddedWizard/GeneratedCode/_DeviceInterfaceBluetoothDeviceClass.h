@@ -226,6 +226,17 @@ XUInt32 DeviceInterfaceBluetoothDeviceClass_GetBtcPasskey( DeviceInterfaceBlueto
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBtcPairingDeviceName()' */
 XString DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( DeviceInterfaceBluetoothDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.SendMotoConCommand()' */
+void DeviceInterfaceBluetoothDeviceClass_SendMotoConCommand( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum aTxCmd );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.SendMotoConCommand()' */
+void DeviceInterfaceBluetoothDeviceClass__SendMotoConCommand( void* _this, XEnum 
+  aTxCmd );
+
+/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.SendMotoConCommand(). */
+#define _DeviceInterfaceBluetoothDeviceClass__SendMotoConCommand_
+
 /* Default onget method for the property 'BtFwStatus' */
 XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this );
 

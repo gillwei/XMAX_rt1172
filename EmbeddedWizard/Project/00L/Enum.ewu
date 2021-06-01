@@ -1628,3 +1628,14 @@ enum SystemRxEvent
   $rect <10,360,230,400>
   item TOTAL;
 }
+
+$rect <730,470,930,510>
+$output false
+enum MotoConTx
+{
+  $rect <10,10,210,50>
+  item CREATE_OTA_CONNECTION;
+
+  $rect <10,60,210,100>
+  item TOTAL;
+}

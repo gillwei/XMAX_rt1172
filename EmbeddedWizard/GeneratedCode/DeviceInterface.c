@@ -2378,6 +2378,24 @@ XString DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( DeviceInter
   return PairingDeviceName;
 }
 
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.SendMotoConCommand()' */
+void DeviceInterfaceBluetoothDeviceClass_SendMotoConCommand( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum aTxCmd )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ew_send_motocon_command( aTxCmd );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.SendMotoConCommand()' */
+void DeviceInterfaceBluetoothDeviceClass__SendMotoConCommand( void* _this, XEnum 
+  aTxCmd )
+{
+  DeviceInterfaceBluetoothDeviceClass_SendMotoConCommand((DeviceInterfaceBluetoothDeviceClass)_this
+  , aTxCmd );
+}
+
 /* Default onget method for the property 'BtFwStatus' */
 XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this )
 {

@@ -106,6 +106,7 @@ EW_DEFINE_FIELDS( SettingsSET27_ConfirmUpdate, ComponentsBaseMainBG )
   EW_OBJECT  ( Text,            ViewsText )
   EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
   EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( HoldTimer,       CoreTimer )
 EW_END_OF_FIELDS( SettingsSET27_ConfirmUpdate )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET27_ConfirmUpdate' */
@@ -181,6 +182,10 @@ void SettingsSET27_ConfirmUpdate_OnCancelActivatedSlot( SettingsSET27_ConfirmUpd
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
 void SettingsSET27_ConfirmUpdate_OnSystemEventReceived( SettingsSET27_ConfirmUpdate _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Settings::SET27_ConfirmUpdate.OnHoldTimerSlot()' */
+void SettingsSET27_ConfirmUpdate_OnHoldTimerSlot( SettingsSET27_ConfirmUpdate _this, 
   XObject sender );
 
 #ifdef __cplusplus

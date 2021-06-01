@@ -72,6 +72,7 @@ int  ew_handle_special_characters( const uint8_t* in_str, uint8_t** out_str );
 
 void ew_power_init( void );
 int  ew_power_ignition_status( void );
+void ew_save_last_status( void );
 
 XBool ew_is_debug_build( void );
 void ew_reboot_system( void );
@@ -116,6 +117,7 @@ uint32_t ew_get_ble_pincode( void );
 EnumBlePairingState ew_get_ble_pairing_state( void );
 uint32_t ew_get_btc_passkey( void );
 void ew_set_ble_advertisement( const bool enable );
+void ew_send_motocon_command( const EnumMotoConTx command );
 
 void ew_device_vi_init( void );
 void ew_device_vi_deinit( void );

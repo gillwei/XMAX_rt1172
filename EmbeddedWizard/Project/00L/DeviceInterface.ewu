@@ -2218,6 +2218,18 @@ class BluetoothDeviceClass : Templates::DeviceClass
     $endif
     return PairingDeviceName;
   }
+
+  $rect <380,860,630,900>
+  $output true
+  method void SendMotoConCommand( arg Enum::MotoConTx aTxCmd )
+  {
+    $if !$prototyper
+      native( aTxCmd )
+      {
+        ew_send_motocon_command( aTxCmd );
+      }
+    $endif
+  }
 }
 
 $rect <810,110,1010,150>
@@ -2867,12 +2879,12 @@ class VehicleDeviceClass : Templates::DeviceClass
 
     switch( FuelConsumptionUnit )
     {
-      case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL: 
+      case Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL:
       {
         ConvertedFuelRate = aFuelRate * Unit::KM_L_TO_US_GALLON_SCALE;
         ConvertedFuelRate = DeviceInterface::VehicleDevice.RoundDownDataFloat( ConvertedFuelRate, 0.1 );
       }
-      case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL: 
+      case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL:
       {
         ConvertedFuelRate = aFuelRate * Unit::KM_L_TO_IMPERIAL_GALLON_SCALE;
         ConvertedFuelRate = DeviceInterface::VehicleDevice.RoundDownDataFloat( ConvertedFuelRate, 0.1 );

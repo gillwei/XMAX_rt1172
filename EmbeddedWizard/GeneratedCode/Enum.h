@@ -750,6 +750,13 @@ typedef enum
   EnumSystemRxEventTOTAL                = 7
 } EnumSystemRxEvent;
 
+/* User defined enumeration: 'Enum::MotoConTx' */
+typedef enum
+{
+  EnumMotoConTxCREATE_OTA_CONNECTION    = 0,
+  EnumMotoConTxTOTAL                    = 1
+} EnumMotoConTx;
+
 #ifdef __cplusplus
   }
 #endif

@@ -24,6 +24,7 @@
 #include "BTM_pub.h"
 #include <string.h>
 #include "semphr.h"
+#include "BC_motocon_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -973,5 +974,30 @@ if( pdTRUE == xQueueSend( motocon_rx_event_queue_handle, &event, 0 ) )
 else
     {
     PRINTF( "Err: %s queue\r\n", __FUNCTION__ );
+    }
+}
+
+/*********************************************************************
+* @private
+* ew_send_motocon_command
+*
+* Send MotoCon command
+*
+* @param command MotoCon command
+*
+*********************************************************************/
+void ew_send_motocon_command
+    (
+    const EnumMotoConTx command
+    )
+{
+PRINTF( "%s, %d\r\n", __FUNCTION__, command );
+switch( command )
+    {
+    case EnumMotoConTxCREATE_OTA_CONNECTION:
+        BC_motocon_send_create_ota_request();
+        break;
+    default:
+        break;
     }
 }
