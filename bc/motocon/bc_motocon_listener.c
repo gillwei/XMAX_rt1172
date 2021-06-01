@@ -23,6 +23,7 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define MOTOCON_LINKCARD_MODEL      ( 1 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -120,6 +121,7 @@ bc_motocon_ota_linkcard_info_t info;
 uint32_t esn = EW_get_esn();
 
 info.current_firmware_ver = SW_VERSION;
+info.linkcard_model = MOTOCON_LINKCARD_MODEL;
 info.serial_number[0] = ( esn >> 24 ) & 0xFF;
 info.serial_number[1] = ( esn >> 16 ) & 0xFF;
 info.serial_number[2] = ( esn >> 8  ) & 0xFF;
