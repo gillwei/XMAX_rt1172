@@ -14,6 +14,8 @@
 extern "C"{
 #endif
 
+#include "BC_motocon_pub_type.h"
+
 #define ENABLE_BC_ANCS_DEBUG_LOG   ( 1 )
 #if( ENABLE_BC_ANCS_DEBUG_LOG )
     #define BC_ANCS_PRINTF PRINTF
@@ -23,6 +25,7 @@ extern "C"{
 
 void bc_ancs_init( void );
 void bc_ancs_process_gatt_notification( void );
+void bc_ancs_set_category_filter( const bc_motocon_notification_category_t* new_category_filter );
 
 #ifdef __cplusplus
 }

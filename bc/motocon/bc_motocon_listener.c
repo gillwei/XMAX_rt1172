@@ -39,6 +39,7 @@ void bc_motocon_incoming_call_received( const bc_motocon_incoming_call_info_t* i
 void bc_motocon_listener_phone_thermal( const bc_motocon_thermal_state_t thermal_state );
 void bc_motocon_listener_bt_headset_state( const bc_motocon_bt_headset_state_t headset_state );
 void bc_motocon_volume_changed( const uint8_t level, const bc_motocon_volume_type_t type );
+void bc_motocon_notification_category_changed( const bc_motocon_notification_category_t* notification_category );
 void bc_motocon_ota_update_info( const bc_motocon_ota_update_info_t* info );
 void bc_motocon_phone_volume_controllable( const bool enable );
 void bc_motocon_listener_phone_signal_level( const uint8_t level );
@@ -72,6 +73,7 @@ static bc_motocon_callback_t motocon_callback =
     .thermal_callback                  = bc_motocon_listener_phone_thermal,
     .bt_headset_state_callback         = bc_motocon_listener_bt_headset_state,
     .volume_level_callback             = bc_motocon_volume_changed,
+    .notification_category_callback    = bc_motocon_notification_category_changed,
     .volume_controllable_callback      = bc_motocon_phone_volume_controllable,
     .ota_update_info_callback          = bc_motocon_ota_update_info,
     .cell_signal_callback              = bc_motocon_listener_phone_signal_level,
@@ -449,6 +451,24 @@ if( BC_MOTOCON_VOLUME_PHONE == type )
     phone_call_volume = level;
     EW_notify_phone_call_volume_changed();
     }
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_phone_volume_controllable
+*
+* Notify phone volume controllable status
+*
+* @param enable Phone volume controllable status
+*
+*********************************************************************/
+void bc_motocon_notification_category_changed
+    (
+    const bc_motocon_notification_category_t* notification_category
+    )
+{
+bc_ancs_set_category_filter( notification_category );
 }
 
 /*********************************************************************

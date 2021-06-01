@@ -189,6 +189,7 @@ typedef struct
 static QueueHandle_t gatt_notification_queue_handle;
 
 static uint8_t ancs_notification_messsage_buffer[NOTIFICATION_MESSAGE_MAX_LEN];
+static bc_motocon_notification_category_t category_filter;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -197,6 +198,66 @@ static uint8_t ancs_notification_messsage_buffer[NOTIFICATION_MESSAGE_MAX_LEN];
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+
+/*********************************************************************
+*
+* @private
+* is_category_enabled
+*
+* @param category_id ANCS notification category id
+* @return Enabled/disable status of the notification category
+*
+*********************************************************************/
+static bool is_category_enabled
+    (
+    const uint8_t category_id
+    )
+{
+bool enabled = false;
+
+switch( category_id )
+    {
+    case ANCS_CATEGORY_ID_OTHER:
+        break;
+    case ANCS_CATEGORY_ID_INCOMING_CALL:
+        enabled = category_filter.incoming_call;
+        break;
+    case ANCS_CATEGORY_ID_MISSED_CALL:
+        enabled = category_filter.missed_call;
+        break;
+    case ANCS_CATEGORY_ID_VOICE_MAIL:
+        enabled = category_filter.voice_mail;
+        break;
+    case ANCS_CATEGORY_ID_SOCIAL:
+        enabled = category_filter.social;
+        break;
+    case ANCS_CATEGORY_ID_SCHEDULE:
+        enabled = category_filter.schedule;
+        break;
+    case ANCS_CATEGORY_ID_EMAIL:
+        enabled = category_filter.email;
+        break;
+    case ANCS_CATEGORY_ID_NEWS:
+        enabled = category_filter.news;
+        break;
+    case ANCS_CATEGORY_ID_HEALTH_AND_FITNESS:
+        enabled = category_filter.healthAndFitness;
+        break;
+    case ANCS_CATEGORY_ID_BUSINESS_AND_FINANCE:
+        enabled = category_filter.businessAndFinance;
+        break;
+    case ANCS_CATEGORY_ID_LOCATION:
+        enabled = category_filter.location;
+        break;
+    case ANCS_CATEGORY_ID_ENTERTAINMENT:
+        enabled = category_filter.entertainment;
+        break;
+    default:
+        break;
+    }
+
+return enabled;
+}
 
 /*********************************************************************
 *
@@ -653,30 +714,49 @@ while( i < length )
 
 if( ERR_NONE == get_category_from_dictionary( notification_uid, &category_id ) )
     {
-    BC_ANCS_PRINTF( "%s uid: %d, category: %d\r\n", __FUNCTION__, notification_uid, category_id );
-    if( ANCS_CATEGORY_ID_INCOMING_CALL == category_id )
+    BC_ANCS_PRINTF( "%s uid: %d, cat: %d (%d)\r\n", __FUNCTION__, notification_uid, category_id, is_category_enabled( category_id ) );
+    if( is_category_enabled( category_id ) )
         {
-        NTF_notify_incoming_call_started( notification_uid, title, IPHONE_CALL_VOLUME_CONTROLLABLE );
-        }
-    else
-        {
-        if( !memcmp( negative_action_label, "End Call", 8 ) &&
-            !memcmp( body, "Active Call", 11 ) )
+        if( ANCS_CATEGORY_ID_INCOMING_CALL == category_id )
             {
-            NTF_notify_active_call_started( notification_uid, title, IPHONE_CALL_VOLUME_CONTROLLABLE );
+            NTF_notify_incoming_call_started( notification_uid, title, IPHONE_CALL_VOLUME_CONTROLLABLE );
             }
         else
             {
-            EnumNotificationCategory category = EnumNotificationCategoryMESSAGE;
-            if( ANCS_CATEGORY_ID_MISSED_CALL == category_id )
+            if( !memcmp( negative_action_label, "End Call", 8 ) &&
+                !memcmp( body, "Active Call", 11 ) )
                 {
-                category = EnumNotificationCategoryMISSED_CALL;
+                NTF_notify_active_call_started( notification_uid, title, IPHONE_CALL_VOLUME_CONTROLLABLE );
                 }
-            notification_time_t received_time = parse_ancs_date_string( datetime );
-            NTF_add_notification( notification_uid, title, subtitle, body, category, received_time );
+            else
+                {
+                EnumNotificationCategory category = EnumNotificationCategoryMESSAGE;
+                if( ANCS_CATEGORY_ID_MISSED_CALL == category_id )
+                    {
+                    category = EnumNotificationCategoryMISSED_CALL;
+                    }
+                notification_time_t received_time = parse_ancs_date_string( datetime );
+                NTF_add_notification( notification_uid, title, subtitle, body, category, received_time );
+                }
             }
         }
     }
+}
+
+/*********************************************************************
+*
+* @private
+* bc_ancs_set_category_filter
+*
+* @param new_category_filter Pointer to the notification category enable/disable status
+*
+*********************************************************************/
+void bc_ancs_set_category_filter
+    (
+    const bc_motocon_notification_category_t* new_category_filter
+    )
+{
+memcpy( &category_filter, new_category_filter, sizeof( bc_motocon_notification_category_t ) );
 }
 
 /*********************************************************************
@@ -868,6 +948,7 @@ for( int i = 0; i < DICTIONARY_SIZE; i++ )
     }
 
 ancs_notification_attributes_received_size = 0;
+memset( &category_filter, 0, sizeof( bc_motocon_notification_category_t ) );
 }
 
 /*********************************************************************
