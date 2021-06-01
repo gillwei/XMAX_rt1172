@@ -251,8 +251,10 @@ static void send_alive_request
 BC_MOTOCON_PRINTF( "%s, %d\r\n", __FUNCTION__, alive_id );
 if( alive_count >= MOTOCON_ALIVE_TIMEOUT_COUNT )
     {
-    BC_MOTOCON_PRINTF( "%s, disconnect ble.\r\n", __FUNCTION__ );
-    HCI_le_disconnect_ble();
+    BC_MOTOCON_PRINTF( "%s, disconnect ble. (sim)\r\n", __FUNCTION__ );
+    // disable disconnect function for sv testing.
+    //BC_MOTOCON_PRINTF( "%s, disconnect ble.\r\n", __FUNCTION__ );
+    //HCI_le_disconnect_ble();
     }
 else
     {
