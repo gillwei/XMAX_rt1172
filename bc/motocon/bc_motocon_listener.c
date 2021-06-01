@@ -262,6 +262,9 @@ void bc_motocon_datetime_received
     )
 {
 BC_MOTOCON_PRINTF( "%s %d %d/%d %d:%d:%d\r\n", __FUNCTION__, time->year, time->mon, time->day, time->hour, time->min, time->sec );
+
+bc_ancs_set_phone_connected_time( time );
+
 if( EW_get_clk_auto_adj() )
     {
     snvs_lp_srtc_datetime_t srtc_datetime;

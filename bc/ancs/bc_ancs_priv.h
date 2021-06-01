@@ -26,6 +26,7 @@ extern "C"{
 void bc_ancs_init( void );
 void bc_ancs_process_gatt_notification( void );
 void bc_ancs_set_category_filter( const bc_motocon_notification_category_t* new_category_filter );
+void bc_ancs_set_phone_connected_time( const bc_motocon_time_t* smartphone_time );
 
 #ifdef __cplusplus
 }

@@ -86,6 +86,8 @@
 
 #define IPHONE_CALL_VOLUME_CONTROLLABLE                 ( false )
 
+#define INVALID_SMARTPHONE_TIME_YEAR                    ( 0 )
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -190,6 +192,7 @@ static QueueHandle_t gatt_notification_queue_handle;
 
 static uint8_t ancs_notification_messsage_buffer[NOTIFICATION_MESSAGE_MAX_LEN];
 static bc_motocon_notification_category_t category_filter;
+static notification_time_t phone_connected_time;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -257,6 +260,89 @@ switch( category_id )
     }
 
 return enabled;
+}
+
+/*********************************************************************
+*
+* @private
+* is_received_after_connected
+*
+* @param received_time notification received time
+* @return True if the notification received after smartphone being connected
+*
+*********************************************************************/
+static bool is_received_after_connected
+    (
+    const notification_time_t received_time
+    )
+{
+bool result = true;
+
+if( phone_connected_time.year > received_time.year )
+    {
+    result = false;
+    }
+else
+    {
+    if( phone_connected_time.month > received_time.month )
+        {
+        result = false;
+        }
+    else
+        {
+        if( phone_connected_time.day > received_time.day )
+            {
+            result = false;
+            }
+        else
+            {
+            if( phone_connected_time.hour > received_time.hour )
+                {
+                result = false;
+                }
+            else
+                {
+                if( phone_connected_time.minute > received_time.minute )
+                    {
+                    result = false;
+                    }
+                else
+                    {
+                    if( phone_connected_time.second > received_time.second )
+                        {
+                        result = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+return result;
+}
+
+/*********************************************************************
+*
+* @private
+* bc_ancs_set_phone_connected_time
+*
+* @param smartphone_time Pointer to the smartphone time
+*
+*********************************************************************/
+void bc_ancs_set_phone_connected_time
+    (
+    const bc_motocon_time_t* smartphone_time
+    )
+{
+if( INVALID_SMARTPHONE_TIME_YEAR == phone_connected_time.year )
+    {
+    phone_connected_time.year   = smartphone_time->year;
+    phone_connected_time.month  = smartphone_time->mon;
+    phone_connected_time.day    = smartphone_time->day;
+    phone_connected_time.hour   = smartphone_time->hour;
+    phone_connected_time.minute = smartphone_time->min;
+    phone_connected_time.second = smartphone_time->sec;
+    }
 }
 
 /*********************************************************************
@@ -736,7 +822,10 @@ if( ERR_NONE == get_category_from_dictionary( notification_uid, &category_id ) )
                     category = EnumNotificationCategoryMISSED_CALL;
                     }
                 notification_time_t received_time = parse_ancs_date_string( datetime );
-                NTF_add_notification( notification_uid, title, subtitle, body, category, received_time );
+                if( is_received_after_connected( received_time  ) )
+                    {
+                    NTF_add_notification( notification_uid, title, subtitle, body, category, received_time );
+                    }
                 }
             }
         }
@@ -949,6 +1038,8 @@ for( int i = 0; i < DICTIONARY_SIZE; i++ )
 
 ancs_notification_attributes_received_size = 0;
 memset( &category_filter, 0, sizeof( bc_motocon_notification_category_t ) );
+
+phone_connected_time.year = INVALID_SMARTPHONE_TIME_YEAR;
 }
 
 /*********************************************************************
@@ -1262,6 +1353,8 @@ void bc_ancs_init
     void
     )
 {
+phone_connected_time.year = INVALID_SMARTPHONE_TIME_YEAR;
+
 gatt_notification_queue_handle = xQueueCreate( GATT_NOTIFICATION_DATA_QUEUE_SIZE, sizeof( gatt_notification_struct ) );
 configASSERT( NULL != gatt_notification_queue_handle );
 
