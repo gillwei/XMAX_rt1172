@@ -14,14 +14,14 @@
 #include "FreeRTOS.h"
 #include "event_groups.h"
 #include "task.h"
-
 #include "semphr.h"
 #include "ewrte.h"
+#include "ewconfig.h"
 #include "fsl_debug_console.h"
 #include "fsl_common.h"
 #include "jpeglib.h"
 #include "JPEG_pub.h"
-#include "ewconfig.h"
+#include "jpeg_priv.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -102,7 +102,10 @@ uint8_t*      rgb_buffer = rgb_buf_info.addr;
 JSAMPROW      row_pointer[1] = {0}; /* Output row rgb_buffer */
 uint32_t      row_stride     = 0;   /* physical row width in image rgb_buffer */
 int           result = RESULT_SUCCESS;
-uint32_t      start_tick = xTaskGetTickCount();
+
+#if( ENABLE_JPEG_DEBUG_LOG )
+    uint32_t      start_tick = xTaskGetTickCount();
+#endif
 
 cinfo.err = jpeg_std_error( &jerr );
 jpeg_create_decompress( &cinfo );
@@ -133,7 +136,7 @@ if( EW_FRAME_BUFFER_WIDTH  >= cinfo.image_width  && 0 < cinfo.image_width &&
     jpeg_finish_decompress( &cinfo );
     jpeg_destroy_decompress( &cinfo );
 
-    PRINTF( "%s: %d ms\r\n", __FUNCTION__, ( xTaskGetTickCount() - start_tick ) );
+    JPEG_PRINTF( "%s: %d ms\r\n", __FUNCTION__, ( xTaskGetTickCount() - start_tick ) );
     }
 else
     {
@@ -162,7 +165,7 @@ static int jpeg_decode_proc
     int buffer_idx
     )
 {
-PRINTF( "%s, buf idx %d\r\n", __FUNCTION__, buffer_idx );
+JPEG_PRINTF( "%s, buf idx %d\r\n", __FUNCTION__, buffer_idx );
 int result = RESULT_SUCCESS;
 jpeg_object* jpeg_obj = &jpeg_objs[buffer_idx];
 
@@ -397,7 +400,7 @@ void JPEG_notify_received
     void     ( *callback_func_ptr )( int )
     )
 {
-PRINTF( "%s, 0x%x\r\n", __FUNCTION__, buffer_addr );
+JPEG_PRINTF( "%s, 0x%x\r\n", __FUNCTION__, buffer_addr );
 configASSERT( NULL != callback_func_ptr );
 
 for( int i = 0; i < JPEG_BUFFER_NUM; i++ )
@@ -456,7 +459,7 @@ if( pdTRUE == xSemaphoreTake( rgb_buf_semaphore, 0 ) )
     {
     get_rgb_buffer_handle = &rgb_buf_info;
     }
-PRINTF( "%s 0x%x\r\n", __FUNCTION__, get_rgb_buffer_handle );
+JPEG_PRINTF( "%s 0x%x\r\n", __FUNCTION__, get_rgb_buffer_handle );
 return get_rgb_buffer_handle;
 }
 
@@ -473,7 +476,7 @@ void JPEG_give_rgb
     void
     )
 {
-PRINTF( "%s\r\n", __FUNCTION__ );
+JPEG_PRINTF( "%s\r\n", __FUNCTION__ );
 xSemaphoreGive( rgb_buf_semaphore );
 }
 
