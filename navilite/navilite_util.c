@@ -309,7 +309,7 @@ void NAVILITE_print_raw_data
 PRINTF( "== HEX DATA DUMP ===\r\n" );
 for( int i = 0; i < data_len; i++ )
     {
-    PRINTF( "%x ,", data[i] );
+    PRINTF( "0x%02x ,", data[i] );
     }
 PRINTF( "\r\n" );
 }

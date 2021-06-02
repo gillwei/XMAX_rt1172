@@ -22,6 +22,7 @@
 #include "NAVI_pub.h"
 #include "navi_priv.h"
 #include "NAVILITE_pub.h"
+#include "TEST_pub.h"
 #include "error_code.h"
 #include <stdio.h>
 
@@ -749,6 +750,9 @@ switch( action )
         PRINTF( "%s: Unexpected type\r\n", __FUNCTION__ );
         break;
     }
+#if( UNIT_TEST_NAVILITE )
+    hmi_update_callback_tbtlist( action, list_item, list_item_no , list_total_items, list_total_items_recevied, has_more_items_on_next_request );
+#endif
 }
 
 /*********************************************************************

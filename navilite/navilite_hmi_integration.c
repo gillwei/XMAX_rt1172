@@ -22,6 +22,7 @@
 #include "NAVILITE_pub.h"
 #include "NAVI_pub.h"
 #include "NAVILITE_util.h"
+#include "TEST_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -758,9 +759,12 @@ void NAVILITE_hmi_integration_setup
 // HMI integration example to setup user-defined callbacks.
 // when data is received, the user-defined callback will be triggered.
 NAVILITE_PRINTF("\r\n[HMI integration setup by registering the navi content API's callbacks for image mode, roadname update, and etc]\r\n");
-NAVILITE_register_update_callback_preconnected( hmi_update_callback_preconnected );
-NAVILITE_register_update_callback_connected( hmi_update_callback_connected );
-NAVILITE_register_update_callback_disconnected( hmi_update_callback_disconnected );
+#if( TEST_NAVILITE )
+    // uncomment those if you want to override hmi's callback
+    // NAVILITE_register_update_callback_preconnected( hmi_update_callback_preconnected );
+    // NAVILITE_register_update_callback_connected( hmi_update_callback_connected );
+    // NAVILITE_register_update_callback_disconnected( hmi_update_callback_disconnected );
+#endif
 NAVILITE_register_update_callback_esn_sent( hmi_update_callback_esn_sent );
 NAVILITE_register_update_callback_imageframe( hmi_update_callback_imageframe );
 NAVILITE_register_update_callback_currentroadname( hmi_update_callback_currentroadname );
@@ -781,5 +785,4 @@ NAVILITE_register_update_callback_activetbtlistitem( hmi_update_callback_activet
 NAVILITE_register_update_callback_tbtlist( hmi_update_callback_tbtlist );
 NAVILITE_register_update_callback_favlist( hmi_update_callback_favlist );
 NAVILITE_register_update_callback_gaslist( hmi_update_callback_gaslist );
-
 }

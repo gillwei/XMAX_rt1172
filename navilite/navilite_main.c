@@ -83,7 +83,6 @@ static uint32_t session_list_item_counter[NAVILITE_SESSION_INDEX_SIZE]= { 0 };  
 static navilite_tbt_list_type session_tbt_list_data[NAVILITE_SESSION_INDEX_SIZE] = { 0 };
 static navilite_poi_list_type session_poi_list_data[NAVILITE_SESSION_INDEX_SIZE] = { 0 };
 
-
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
@@ -212,7 +211,10 @@ static void task_main
 {
 uint32_t notifiy_events;
 
-navilite_hmi_init_setup();
+#if( TEST_NAVILITE )
+    navilite_hmi_init_setup();
+#endif
+
 
 for( ;; )
     {
@@ -441,7 +443,7 @@ if( xQueueBuffer == NULL)
 *********************************************************************/
 void NAVILITE_queue_hci_buffer
     (
-    uint8_t *data,
+    uint8_t* data,
     uint32_t data_len
     )
 {
@@ -743,7 +745,7 @@ static void navilite_ack_reply
 *********************************************************************/
 bool NAVILITE_parse_data
     (
-    uint8_t *data,
+    uint8_t* data,
     uint32_t data_len
     )
 {
@@ -763,7 +765,7 @@ static int jpg_current_size = 0;
 // when frame request come with a full header, then check if the header has nAl@.
 // if no, in general. it wll be map update frame request because it will have fragmented data
 
-if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
+if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
     {
     // check connection
     if( navilite_session_status.inited == 0 &&
@@ -1073,13 +1075,11 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         uint16_t list_item_count = 0;
         uint8_t has_more_items = 0;
         // list item count extraction
-        for( ; idx < data_len; idx++ )
-            {
-            list_item_count = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
-            // has more data in next request for UI to show more data on item lists(> 50);
-            idx += 2;
-            has_more_items = data[idx++];
-            }
+        list_item_count = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+        // has more data in next request for UI to show more data on item lists(> 50);
+        idx += 2;
+        has_more_items = data[idx++];
+
         session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST] = list_item_count;
         session_list_item_counter[NAVILITE_SESSION_INDEX_TBTLIST] = 0; // reset the counter when this command is received
         PRINTF( "[NAVILITE_BEGIN TBT LIST ITEM SIZE: %d, reset session_tbtlist_item_counter = 0]\r\n", session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST] );
@@ -1121,43 +1121,40 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
             uint8_t* desc_str = NULL;
             uint8_t* dist_unit_str = NULL;
 
-            for( ; idx < data_len; idx++ )
+            // list index
+            list_item_index = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+            idx += 2;
+            // icon index
+            icon_index = (uint8_t)data[idx++];
+            // desc_size
+            desc_str_size = (uint8_t)data[idx++];
+            // dist_unit_size;
+            dist_unit_str_size = (uint8_t)data[idx++];
+            // distance
+            distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+            idx += sizeof( distance ); // now point to distance unit string portion
+            // store the distance unit string
+            dist_unit_str = navilite_buffer;
+            // copy the unit string to buffer
+            memcpy( navilite_buffer, data + idx, dist_unit_str_size );
+            idx += dist_unit_str_size;
+            // store the desc string pointer
+            desc_str = navilite_buffer + idx;
+            // copy the desc string to buffer
+            memcpy( navilite_buffer + idx, data + idx , desc_str_size );
+            idx += data_len;
+            if( navilite_content_update_callbacks.callback_func_nexttbtist )
                 {
-                // list index
-                list_item_index = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
-                idx += 2;
-                // icon index
-                icon_index = (uint8_t)data[idx++];
-                // desc_size
-                desc_str_size = (uint8_t)data[idx++];
-                // dist_unit_size;
-                dist_unit_str_size = (uint8_t)data[idx++];
-                // distance
-                distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
-                idx += sizeof( distance ); // now point to distance unit string portion
-                // store the distance unit string
-                dist_unit_str = navilite_buffer;
-                // copy the unit string to buffer
-                memcpy( navilite_buffer, data + idx, dist_unit_str_size );
-                idx += dist_unit_str_size;
-                // store the desc string pointer
-                desc_str = navilite_buffer + idx;
-                // copy the desc string to buffer
-                memcpy( navilite_buffer + idx, data + idx , desc_str_size );
-                idx += data_len;
-                if( navilite_content_update_callbacks.callback_func_nexttbtist )
-                    {
-                    // prepare list item data
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].list_item_index = list_item_index;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].icon_index = icon_index;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].desc_size = desc_str_size;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].dist_unit_size = dist_unit_str_size;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].distance = distance;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].distance_unit = dist_unit_str;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].desc = desc_str;
-                    // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
-                    navilite_content_update_callbacks.callback_func_nexttbtist( NAVILITE_TBTLIST_ACTION_ITEMADD, &session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_TBTLIST], 0 );
-                    }
+                // prepare list item data
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].list_item_index = list_item_index;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].icon_index = icon_index;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].desc_size = desc_str_size;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].dist_unit_size = dist_unit_str_size;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].distance = distance;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].distance_unit = dist_unit_str;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].desc = desc_str;
+                // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                navilite_content_update_callbacks.callback_func_nexttbtist( NAVILITE_TBTLIST_ACTION_ITEMADD, &session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_TBTLIST], 0 );
                 }
         }
 
@@ -1209,41 +1206,38 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
             uint8_t* desc_str = NULL;
             uint8_t* dist_unit_str = NULL;
 
-            for( ; idx < data_len; idx++ )
+            // list index
+            list_item_index = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+            idx += sizeof( list_item_index );
+            // desc_size
+            desc_str_size = (uint8_t)data[idx++];
+            // dist_unit_size;
+            dist_unit_str_size = (uint8_t)data[idx++];
+            // distance
+            distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+            idx += sizeof( distance ); // now point to distance unit string portion
+            // store the distance unit string
+            dist_unit_str = navilite_buffer;
+            // copy the unit string to buffer
+            memcpy( navilite_buffer, data + idx, dist_unit_str_size );
+            idx += dist_unit_str_size;
+            // store the desc string pointer
+            desc_str = navilite_buffer + idx;
+            // copy the desc string to buffer
+            memcpy( navilite_buffer + idx, data + idx, desc_str_size );
+            idx += data_len;
+            if( navilite_content_update_callbacks.callback_func_nextfavlist )
                 {
-                // list index
-                list_item_index = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
-                idx += sizeof( list_item_index );
-                // desc_size
-                desc_str_size = (uint8_t)data[idx++];
-                // dist_unit_size;
-                dist_unit_str_size = (uint8_t)data[idx++];
-                // distance
-                distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
-                idx += sizeof( distance ); // now point to distance unit string portion
-                // store the distance unit string
-                dist_unit_str = navilite_buffer;
-                // copy the unit string to buffer
-                memcpy( navilite_buffer, data + idx, dist_unit_str_size );
-                idx += dist_unit_str_size;
-                // store the desc string pointer
-                desc_str = navilite_buffer + idx;
-                // copy the desc string to buffer
-                memcpy( navilite_buffer + idx, data + idx, desc_str_size );
-                idx += data_len;
-                if( navilite_content_update_callbacks.callback_func_nextfavlist )
-                    {
-                    // prepare list item data
-                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].list_item_index = list_item_index;
-                    // session_list_data_ptr[NAVILITE_SESSION_INDEX_FAVLIST].icon_index = icon_index;
-                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc_size = desc_str_size;
-                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].dist_unit_size = dist_unit_str_size;
-                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance = distance;
-                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance_unit = dist_unit_str;
-                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc = desc_str;
-                    // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
-                    navilite_content_update_callbacks.callback_func_nextfavlist( NAVILITE_POILIST_ACTION_ITEMADD, &session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_FAVLIST], 0 );
-                    }
+                // prepare list item data
+                session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].list_item_index = list_item_index;
+                // session_list_data_ptr[NAVILITE_SESSION_INDEX_FAVLIST].icon_index = icon_index;
+                session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc_size = desc_str_size;
+                session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].dist_unit_size = dist_unit_str_size;
+                session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance = distance;
+                session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance_unit = dist_unit_str;
+                session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc = desc_str;
+                // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                navilite_content_update_callbacks.callback_func_nextfavlist( NAVILITE_POILIST_ACTION_ITEMADD, &session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_FAVLIST], 0 );
                 }
         }
 
@@ -1391,7 +1385,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         }
 
     // Non image frame update operations
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type !=  NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type != NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
         {
         is_jpeg_mode = 0;
         }
@@ -1450,7 +1444,7 @@ return is_jpeg_mode;
 *********************************************************************/
 bool navilite_parse_data_inner
     (
-    uint8_t *data,
+    uint8_t* data,
     uint32_t data_len
     )
 {
@@ -1775,10 +1769,10 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
     // NAVILITE_SERVICETYPE_TBTLIST_DATA_UPDATE  // list item data notify
     if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_TBTLIST_DATA_UPDATE )
         {
-
+        PRINTF( "!!LIST_DATA_UPDATE!!\r\n" );
         if( session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST] == 0 )
             {
-            PRINTF( "#ERROR: session_tbtlist_size_total = 0 ; NAVILITE_SERVICETYPE_TBTLIST_UPDATE request need to be issued first from app!\r\n" );
+            PRINTF( "!ERROR: session_tbtlist_size_total = 0 ; NAVILITE_SERVICETYPE_TBTLIST_UPDATE request need to be issued first from app!\r\n" );
             }
 
             session_list_size_counter[NAVILITE_SESSION_INDEX_TBTLIST]++;
@@ -1790,43 +1784,40 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
             uint8_t* desc_str = NULL;
             uint8_t* dist_unit_str = NULL;
 
-            for( ; idx < data_len; idx++ )
+            // list index
+            list_item_index = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+            idx += 2;
+            // icon index
+            icon_index = (uint8_t)data[idx++];
+            // desc_size
+            desc_str_size = (uint8_t)data[idx++];
+            // dist_unit_size;
+            dist_unit_str_size = (uint8_t)data[idx++];
+            // distance
+            distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+            idx += sizeof( distance ); // now point to distance unit string portion
+            // store the distance unit string
+            dist_unit_str = navilite_buffer;
+            // copy the unit string to buffer
+            memcpy( navilite_buffer, data + idx, dist_unit_str_size );
+            idx += dist_unit_str_size;
+            // store the desc string pointer
+            desc_str = navilite_buffer + idx;
+            // copy the desc string to buffer
+            memcpy( navilite_buffer + idx, data + idx, desc_str_size );
+            idx += data_len;
+            if( navilite_content_update_callbacks.callback_func_nexttbtist )
                 {
-                // list index
-                list_item_index = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
-                idx += 2;
-                // icon index
-                icon_index = (uint8_t)data[idx++];
-                // desc_size
-                desc_str_size = (uint8_t)data[idx++];
-                // dist_unit_size;
-                dist_unit_str_size = (uint8_t)data[idx++];
-                // distance
-                distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
-                idx += sizeof( distance ); // now point to distance unit string portion
-                // store the distance unit string
-                dist_unit_str = navilite_buffer;
-                // copy the unit string to buffer
-                memcpy( navilite_buffer, data + idx, dist_unit_str_size );
-                idx += dist_unit_str_size;
-                // store the desc string pointer
-                desc_str = navilite_buffer + idx;
-                // copy the desc string to buffer
-                memcpy( navilite_buffer + idx, data + idx, desc_str_size );
-                idx += data_len;
-                if( navilite_content_update_callbacks.callback_func_nexttbtist )
-                    {
-                    // prepare list item data
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].list_item_index = list_item_index;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].icon_index = icon_index;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].desc_size = desc_str_size;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].dist_unit_size = dist_unit_str_size;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].distance = distance;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].distance_unit = dist_unit_str;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].desc = desc_str;
-                    // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
-                    navilite_content_update_callbacks.callback_func_nexttbtist( NAVILITE_TBTLIST_ACTION_ITEMADD, &session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_TBTLIST], 0 );
-                    }
+                // prepare list item data
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].list_item_index = list_item_index;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].icon_index = icon_index;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].desc_size = desc_str_size;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].dist_unit_size = dist_unit_str_size;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].distance = distance;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].distance_unit = dist_unit_str;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].desc = desc_str;
+                // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                navilite_content_update_callbacks.callback_func_nexttbtist( NAVILITE_TBTLIST_ACTION_ITEMADD, &session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_TBTLIST], 0 );
                 }
         }
 
@@ -1878,41 +1869,38 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
             uint8_t* desc_str = NULL;
             uint8_t* dist_unit_str = NULL;
 
-            for( ; idx < data_len; idx++ )
+            // list index
+            list_item_index = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+            idx += sizeof( list_item_index );
+            // desc size
+            desc_str_size = (uint8_t)data[idx++];
+            // dist_unit_size;
+            dist_unit_str_size = (uint8_t)data[idx++];
+            // distance
+            distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+            idx += sizeof( distance ); // now point to distance unit string portion
+            // store the distance unit string
+            dist_unit_str = navilite_buffer;
+            // copy the unit string to buffer
+            memcpy( navilite_buffer, data + idx, dist_unit_str_size );
+            idx += dist_unit_str_size;
+            // store the desc string pointer
+            desc_str = navilite_buffer + idx;
+            // copy the desc string to buffer
+            memcpy( navilite_buffer + idx, data + idx, desc_str_size );
+            idx += data_len;
+            if( navilite_content_update_callbacks.callback_func_nextfavlist )
                 {
-                // list index
-                list_item_index = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
-                idx += sizeof( list_item_index );
-                // desc size
-                desc_str_size = (uint8_t)data[idx++];
-                // dist_unit_size;
-                dist_unit_str_size = (uint8_t)data[idx++];
-                // distance
-                distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
-                idx += sizeof( distance ); // now point to distance unit string portion
-                // store the distance unit string
-                dist_unit_str = navilite_buffer;
-                // copy the unit string to buffer
-                memcpy( navilite_buffer, data + idx, dist_unit_str_size );
-                idx += dist_unit_str_size;
-                // store the desc string pointer
-                desc_str = navilite_buffer + idx;
-                // copy the desc string to buffer
-                memcpy( navilite_buffer + idx, data + idx, desc_str_size );
-                idx += data_len;
-                if( navilite_content_update_callbacks.callback_func_nextfavlist )
-                    {
-                    // prepare list item data
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].list_item_index = list_item_index;
-                    // session_list_data_ptr[NAVILITE_SESSION_INDEX_FAVLIST].icon_index = icon_index;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc_size = desc_str_size;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].dist_unit_size = dist_unit_str_size;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance = distance;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance_unit = dist_unit_str;
-                    session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc = desc_str;
-                    // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
-                    navilite_content_update_callbacks.callback_func_nextfavlist( NAVILITE_POILIST_ACTION_ITEMADD, &session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_FAVLIST], 0 );
-                    }
+                // prepare list item data
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].list_item_index = list_item_index;
+                // session_list_data_ptr[NAVILITE_SESSION_INDEX_FAVLIST].icon_index = icon_index;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc_size = desc_str_size;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].dist_unit_size = dist_unit_str_size;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance = distance;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance_unit = dist_unit_str;
+                session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc = desc_str;
+                // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                navilite_content_update_callbacks.callback_func_nextfavlist( NAVILITE_POILIST_ACTION_ITEMADD, &session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_FAVLIST], 0 );
                 }
         }
 
@@ -1976,7 +1964,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         }
 
     // Non image frame update operations
-    if( navilite_packet.payload_size > 0 && navilite_packet.service_type !=  NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type != NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
         {
         is_jpeg_mode = 0;
         }

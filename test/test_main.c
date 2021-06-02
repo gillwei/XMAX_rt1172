@@ -24,7 +24,7 @@
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define TEST_TASK_PRIORITY   ( tskIDLE_PRIORITY )
-#define TEST_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 2 )
+#define TEST_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE * ( 2 + ( UNIT_TEST_NAVILITE ) * 7 ) )
 #define TEST_TASK_NAME       "test_task"
 
 /*--------------------------------------------------------------------
@@ -109,6 +109,10 @@
             test_wea_proc();
         #endif
 
+        #if( UNIT_TEST_NAVILITE )
+            test_navilite_proc();
+        #endif
+
         vTaskDelay( TEST_TASK_DELAY_TICKS );
         }
 
@@ -185,6 +189,10 @@
 
     #if( UNIT_TEST_WEA )
         test_wea_int();
+    #endif
+
+    #if( UNIT_TEST_NAVILITE )
+        test_navilite_int();
     #endif
     }
 #endif

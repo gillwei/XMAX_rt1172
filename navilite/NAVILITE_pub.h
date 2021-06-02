@@ -299,6 +299,7 @@ void NAVILITE_queue_hci_buffer( uint8_t*, uint32_t );
 
 /* NaviLite transportation API */
 bool NAVILITE_send( uint8_t*, uint32_t );
+bool NAVILITE_send_as_mobile( uint8_t*, uint32_t );
 bool NAVILITE_receive( uint8_t*, uint32_t );
 
 /* NaviLite App Request API (Request Mobile App to do something) */

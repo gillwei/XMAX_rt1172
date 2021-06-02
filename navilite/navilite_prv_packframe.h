@@ -21,6 +21,10 @@ extern "C" {
 #include "navilite_prv_packframe_mcu.h"
 #endif
 
+#if( NAVILITE_LOCAL_HMI_TEST_MODE || UNIT_TEST_NAVILITE )
+#include "navilite_prv_packframe_mobile.h"
+#endif
+
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -53,4 +57,4 @@ extern "C" {
 }
 #endif
 
-#endif /*NAVILITE_PUB_H */
+#endif /* NAVILITE_PRV_PACKFRAME_H */
