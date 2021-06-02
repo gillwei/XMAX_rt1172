@@ -466,7 +466,7 @@ while( true )
             {
             if( derating_start_counter++ == DERATING_CONTINUOUS_COUNT )
                 {
-                // EW_notify_system_event_received( EnumSystemRxEventTFT_DERATING_ON );
+                EW_notify_system_event_received( EnumSystemRxEventTFT_DERATING_ON );
                 derating_flag = true;
                 derating_stop_counter = 0;
                 VI_get_rx_data_uint( EnumVehicleRxTypeTFT_DUTY, &tft_record_duty );
@@ -484,7 +484,7 @@ while( true )
             {
             if( derating_stop_counter++ == DERATING_CONTINUOUS_COUNT )
                 {
-                // EW_notify_system_event_received( EnumSystemRxEventTFT_DERATING_OFF );
+                EW_notify_system_event_received( EnumSystemRxEventTFT_DERATING_OFF );
                 derating_flag = false;
                 derating_start_counter = 0;
                 VI_get_rx_data_uint( EnumVehicleRxTypeTFT_DUTY, &tft_record_duty );

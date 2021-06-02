@@ -747,7 +747,10 @@ typedef enum
   EnumSystemRxEventFACTORY_RESET_COMPLETED = 4,
   EnumSystemRxEventREBOOT_ACCEPTED      = 5,
   EnumSystemRxEventREBOOT_REJECTED      = 6,
-  EnumSystemRxEventTOTAL                = 7
+  EnumSystemRxEventTFT_DERATING_ON      = 7,
+  EnumSystemRxEventTFT_DERATING_OFF     = 8,
+  EnumSystemRxEventUNIT_ID_UPDATED      = 9,
+  EnumSystemRxEventTOTAL                = 10
 } EnumSystemRxEvent;
 
 /* User defined enumeration: 'Enum::MotoConTx' */
@@ -787,6 +790,24 @@ typedef enum
   EnumWeatherIconTypeSCATTERED_SHOWERS_NIGHT = 24,
   EnumWeatherIconTypeSCATTERED_STORM_NIGHT = 25
 } EnumWeatherIconType;
+
+/* User defined enumeration: 'Enum::SystemTxCmd' */
+typedef enum
+{
+  EnumSystemTxCmdENABLE_TFT_BRIGHTNESS_MANUAL_ADJ = 0,
+  EnumSystemTxCmdDISABLE_TFT_BRIGHTNESS_MANUAL_ADJ = 1,
+  EnumSystemTxCmdADJ_TFT_BRIGHTNESS_LEVEL_UP = 2,
+  EnumSystemTxCmdADJ_TFT_BRIGHTNESS_LEVEL_DOWN = 3,
+  EnumSystemTxCmdTOTAL                  = 4
+} EnumSystemTxCmd;
+
+/* User defined enumeration: 'Enum::SystemStatus' */
+typedef enum
+{
+  EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MAX = 0,
+  EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MIN = 1,
+  EnumSystemStatusTOTAL                 = 2
+} EnumSystemStatus;
 
 #ifdef __cplusplus
   }

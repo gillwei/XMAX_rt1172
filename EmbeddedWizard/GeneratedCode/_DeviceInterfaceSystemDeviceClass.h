@@ -305,6 +305,14 @@ XBool DeviceInterfaceSystemDeviceClass_OnGetIsSoftwareUpdateEnabled( DeviceInter
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SaveLastStatus()' */
 void DeviceInterfaceSystemDeviceClass_SaveLastStatus( DeviceInterfaceSystemDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SendSystemCommand()' */
+void DeviceInterfaceSystemDeviceClass_SendSystemCommand( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aCmd );
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetSystemStatus()' */
+XInt32 DeviceInterfaceSystemDeviceClass_GetSystemStatus( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aStatusType );
+
 #ifdef __cplusplus
   }
 #endif

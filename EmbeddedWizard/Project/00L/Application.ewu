@@ -12,7 +12,6 @@ class Application : Core::Root
       signal OnStartOpeningSlot;
 
       // for screenshot
-      DeviceInterface::SystemDevice.NotifyUpdateLocalTime();
       StatusBar.BtIcon.Visible = true;
       StatusBar.BatteryIcon.Visible = true;
       StatusBar.HeadsetIcon.Visible = true;

@@ -1763,3 +1763,69 @@ else
     EwPrint( "%s err\r\n", __FUNCTION__ );
     }
 }
+
+/*********************************************************************
+*
+* @private
+* ew_send_system_command
+*
+* Enqueue the received system event
+*
+* @param system_rx_event Received system event
+*
+*********************************************************************/
+void ew_send_system_command
+    (
+    const EnumSystemTxCmd command
+    )
+{
+switch( command )
+    {
+    case EnumSystemTxCmdENABLE_TFT_BRIGHTNESS_MANUAL_ADJ:
+        DISP_set_tft_brightness_manual_adjustment( true );
+        break;
+    case EnumSystemTxCmdDISABLE_TFT_BRIGHTNESS_MANUAL_ADJ:
+        DISP_set_tft_brightness_manual_adjustment( false );
+        break;
+    case EnumSystemTxCmdADJ_TFT_BRIGHTNESS_LEVEL_UP:
+        DISP_adjust_tft_brightness_level_up();
+        break;
+    case EnumSystemTxCmdADJ_TFT_BRIGHTNESS_LEVEL_DOWN:
+        DISP_adjust_tft_brightness_level_down();
+        break;
+    default:
+        break;
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* ew_system_get_status
+*
+* Return the system status
+*
+* @param status_type System status type
+*
+*********************************************************************/
+int32_t ew_system_get_status
+    (
+    const EnumSystemStatus status_type
+    )
+{
+int32_t status;
+
+switch( status_type )
+    {
+    case EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MAX:
+        status = DISP_is_current_tft_brighness_level_max();
+        break;
+    case EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MIN:
+        status = DISP_is_current_tft_brighness_level_min();
+        break;
+    default:
+        break;
+    }
+
+return status;
+}

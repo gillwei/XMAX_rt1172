@@ -56,6 +56,8 @@ int ew_device_test_proc( void );
 void ew_device_system_init( void );
 void ew_device_system_deinit( void );
 int ew_device_system_proc( void );
+void ew_send_system_command( const EnumSystemTxCmd command );
+int32_t ew_system_get_status( const EnumSystemStatus status_type );
 void ew_get_software_version( char* version );
 void ew_get_bt_software_version( char* version );
 void ew_set_last_page( const EnumHomeGroup home_group, const EnumMeterDisplay meter_display_setting, const EnumNavigationView navigation_view_setting );

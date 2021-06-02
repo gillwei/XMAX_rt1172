@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <10,20,210,60>
 $output false
@@ -6,6 +6,21 @@ class ImageButton : Core::Group
 {
   $rect <0,90,200,130>
   inherited property Bounds = <0,0,94,75>;
+
+  $rect <700,140,880,180>
+  inherited onset Enabled
+  {
+    super( value );
+
+    if( value )
+    {
+      ForegroundFrameNumber = 0;
+    }
+    else
+    {
+      ForegroundFrameNumber = 1;
+    }
+  }
 
   $rect <20,20,160,60>
   object Views::Image BackgroundImage
@@ -59,8 +74,11 @@ class ImageButton : Core::Group
   $rect <440,140,670,180>
   method void DisplayHighlightAnimation()
   {
-    BackgroundImage.FrameNumber = 1;
-    HighlightTimer.Enabled = true;
+    if( Enabled )
+    {
+      BackgroundImage.FrameNumber = 1;
+      HighlightTimer.Enabled = true;
+    }
   }
 
   $rect <440,240,630,280>

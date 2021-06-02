@@ -1626,22 +1626,42 @@ $rect <600,110,800,150>
 $output false
 class SET30_QRCode : Components::BaseMainBG
 {
-  $rect <550,20,750,60>
+  $rect <10,340,210,380>
   inherited method Init()
   {
     DeviceInterface::SystemDevice.GetQrCode();
+    DeviceInterface::SystemDevice.SendSystemCommand( Enum::SystemTxCmd.ENABLE_TFT_BRIGHTNESS_MANUAL_ADJ );
+    postsignal UpdateBrightnessButtonEnabled;
   }
 
   $rect <250,390,470,430>
   inherited method OnShortDownKeyActivated()
   {
     BrightnessDownButton.DisplayHighlightAnimation();
+    DeviceInterface::SystemDevice.SendSystemCommand( Enum::SystemTxCmd.ADJ_TFT_BRIGHTNESS_LEVEL_DOWN );
+    postsignal UpdateBrightnessButtonEnabled;
   }
 
   $rect <250,340,470,380>
   inherited method OnShortUpKeyActivated()
   {
     BrightnessUpButton.DisplayHighlightAnimation();
+    DeviceInterface::SystemDevice.SendSystemCommand( Enum::SystemTxCmd.ADJ_TFT_BRIGHTNESS_LEVEL_UP );
+    postsignal UpdateBrightnessButtonEnabled;
+  }
+
+  $rect <250,440,480,480>
+  inherited method OnShortHomeKeyActivated()
+  {
+    DeviceInterface::SystemDevice.SendSystemCommand( Enum::SystemTxCmd.DISABLE_TFT_BRIGHTNESS_MANUAL_ADJ );
+    super();
+  }
+
+  $rect <250,490,480,530>
+  inherited method OnLongHomeKeyActivated()
+  {
+    DeviceInterface::SystemDevice.SendSystemCommand( Enum::SystemTxCmd.DISABLE_TFT_BRIGHTNESS_MANUAL_ADJ );
+    super();
   }
 
   $rect <10,290,210,330>
@@ -1692,6 +1712,7 @@ class SET30_QRCode : Components::BaseMainBG
   $rect <250,290,450,330>
   slot OnOkSelectedSlot
   {
+    DeviceInterface::SystemDevice.SendSystemCommand( Enum::SystemTxCmd.DISABLE_TFT_BRIGHTNESS_MANUAL_ADJ );
     DismissThisDialog();
   }
 
@@ -1714,6 +1735,28 @@ class SET30_QRCode : Components::BaseMainBG
   {
     preset Bounds = <0,114,95,189>;
     preset Bitmap = Resource::Brightness;
+  }
+
+  $rect <506,290,790,330>
+  slot UpdateBrightnessButtonEnabled
+  {
+    if( DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.IS_TFT_BRIGHTNESS_LEVEL_MAX ) )
+    {
+      BrightnessUpButton.Enabled = false;
+    }
+    else
+    {
+      BrightnessUpButton.Enabled = true;
+    }
+
+    if( DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.IS_TFT_BRIGHTNESS_LEVEL_MIN ) )
+    {
+      BrightnessDownButton.Enabled = false;
+    }
+    else
+    {
+      BrightnessDownButton.Enabled = true;
+    }
   }
 }
 

@@ -758,7 +758,7 @@ class SystemDeviceClass : Templates::DeviceClass
   $rect <20,1370,300,1410>
   object Core::SystemEvent SystemDataReceivedSystemEvent;
 
-  $rect <20,1420,220,1460>
+  $rect <20,1520,220,1560>
   method void StartOTA()
   {
     $if !$prototyper
@@ -799,6 +799,33 @@ class SystemDeviceClass : Templates::DeviceClass
         ew_save_last_status();
       }
     $endif
+  }
+
+  $rect <20,1420,300,1460>
+  method void SendSystemCommand( arg Enum::SystemTxCmd aCmd )
+  {
+    $if !$prototyper
+      native( aCmd )
+      {
+        ew_send_system_command( aCmd );
+      }
+    $else
+      // suppress warning
+      aCmd;
+    $endif
+  }
+
+  $rect <20,1470,300,1510>
+  method int32 GetSystemStatus( arg Enum::SystemStatus aStatusType )
+  {
+    var int32 Status;
+    $if !$prototyper
+      native( aStatusType, Status )
+      {
+        Status = ew_system_get_status( aStatusType );
+      }
+    $endif
+    return Status;
   }
 }
 

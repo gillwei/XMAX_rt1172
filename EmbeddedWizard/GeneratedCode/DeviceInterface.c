@@ -890,6 +890,30 @@ void DeviceInterfaceSystemDeviceClass_SaveLastStatus( DeviceInterfaceSystemDevic
   ew_save_last_status();
 }
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SendSystemCommand()' */
+void DeviceInterfaceSystemDeviceClass_SendSystemCommand( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aCmd )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ew_send_system_command( aCmd );
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetSystemStatus()' */
+XInt32 DeviceInterfaceSystemDeviceClass_GetSystemStatus( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aStatusType )
+{
+  XInt32 Status;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Status = 0;
+  Status = ew_system_get_status( aStatusType );
+  return Status;
+}
+
 /* Variants derived from the class : 'DeviceInterface::SystemDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceSystemDeviceClass )

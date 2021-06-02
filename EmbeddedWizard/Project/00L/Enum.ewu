@@ -1626,6 +1626,15 @@ enum SystemRxEvent
   item REBOOT_REJECTED;
 
   $rect <10,360,230,400>
+  item TFT_DERATING_ON;
+
+  $rect <10,410,230,450>
+  item TFT_DERATING_OFF;
+
+  $rect <10,460,230,500>
+  item UNIT_ID_UPDATED;
+
+  $rect <10,510,230,550>
   item TOTAL;
 }
 
@@ -1720,4 +1729,38 @@ enum WeatherIconType
 
   $rect <220,490,420,530>
   item SCATTERED_STORM_NIGHT;
+}
+
+$rect <730,220,930,260>
+$output false
+enum SystemTxCmd
+{
+  $rect <10,10,340,50>
+  item ENABLE_TFT_BRIGHTNESS_MANUAL_ADJ;
+
+  $rect <10,60,340,100>
+  item DISABLE_TFT_BRIGHTNESS_MANUAL_ADJ;
+
+  $rect <10,110,320,150>
+  item ADJ_TFT_BRIGHTNESS_LEVEL_UP;
+
+  $rect <10,160,320,200>
+  item ADJ_TFT_BRIGHTNESS_LEVEL_DOWN;
+
+  $rect <10,210,230,250>
+  item TOTAL;
+}
+
+$rect <730,270,930,310>
+$output false
+enum SystemStatus
+{
+  $rect <10,10,290,50>
+  item IS_TFT_BRIGHTNESS_LEVEL_MAX;
+
+  $rect <10,60,290,100>
+  item IS_TFT_BRIGHTNESS_LEVEL_MIN;
+
+  $rect <10,110,230,150>
+  item TOTAL;
 }

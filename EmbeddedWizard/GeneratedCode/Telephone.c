@@ -130,6 +130,17 @@ void TelephoneImageButton__Done( TelephoneImageButton _this )
   CoreGroup__Done( &_this->_.Super );
 }
 
+/* 'C' function for method : 'Telephone::ImageButton.OnSetEnabled()' */
+void TelephoneImageButton_OnSetEnabled( TelephoneImageButton _this, XBool value )
+{
+  CoreGroup_OnSetEnabled((CoreGroup)_this, value );
+
+  if ( value )
+    TelephoneImageButton_OnSetForegroundFrameNumber( _this, 0 );
+  else
+    TelephoneImageButton_OnSetForegroundFrameNumber( _this, 1 );
+}
+
 /* 'C' function for method : 'Telephone::ImageButton.OnSetForegroundBmp()' */
 void TelephoneImageButton_OnSetForegroundBmp( TelephoneImageButton _this, ResourcesBitmap 
   value )
@@ -155,8 +166,11 @@ void TelephoneImageButton_OnSetForegroundFrameNumber( TelephoneImageButton _this
 /* 'C' function for method : 'Telephone::ImageButton.DisplayHighlightAnimation()' */
 void TelephoneImageButton_DisplayHighlightAnimation( TelephoneImageButton _this )
 {
-  ViewsImage_OnSetFrameNumber( &_this->BackgroundImage, 1 );
-  CoreTimer_OnSetEnabled( &_this->HighlightTimer, 1 );
+  if ( CoreGroup__OnGetEnabled( _this ))
+  {
+    ViewsImage_OnSetFrameNumber( &_this->BackgroundImage, 1 );
+    CoreTimer_OnSetEnabled( &_this->HighlightTimer, 1 );
+  }
 }
 
 /* 'C' function for method : 'Telephone::ImageButton.OnHighlightEndSlot()' */
@@ -190,7 +204,7 @@ EW_DEFINE_CLASS( TelephoneImageButton, CoreGroup, ForegroundBmp, BackgroundImage
   CoreGroup_OnSetFocus,
   CoreGroup_OnSetBuffered,
   CoreGroup_OnGetEnabled,
-  CoreGroup_OnSetEnabled,
+  TelephoneImageButton_OnSetEnabled,
   CoreGroup_OnSetOpacity,
   CoreGroup_OnSetVisible,
   CoreGroup_IsCurrentDialog,

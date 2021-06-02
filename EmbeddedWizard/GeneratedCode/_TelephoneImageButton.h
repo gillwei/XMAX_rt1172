@@ -130,7 +130,7 @@ EW_DEFINE_METHODS( TelephoneImageButton, CoreGroup )
   EW_METHOD( OnSetFocus,        void )( CoreGroup _this, CoreView value )
   EW_METHOD( OnSetBuffered,     void )( CoreGroup _this, XBool value )
   EW_METHOD( OnGetEnabled,      XBool )( CoreGroup _this )
-  EW_METHOD( OnSetEnabled,      void )( CoreGroup _this, XBool value )
+  EW_METHOD( OnSetEnabled,      void )( TelephoneImageButton _this, XBool value )
   EW_METHOD( OnSetOpacity,      void )( CoreGroup _this, XInt32 value )
   EW_METHOD( OnSetVisible,      void )( CoreGroup _this, XBool value )
   EW_METHOD( IsCurrentDialog,   XBool )( CoreGroup _this )
@@ -153,6 +153,9 @@ EW_DEFINE_METHODS( TelephoneImageButton, CoreGroup )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
 EW_END_OF_METHODS( TelephoneImageButton )
+
+/* 'C' function for method : 'Telephone::ImageButton.OnSetEnabled()' */
+void TelephoneImageButton_OnSetEnabled( TelephoneImageButton _this, XBool value );
 
 /* 'C' function for method : 'Telephone::ImageButton.OnSetForegroundBmp()' */
 void TelephoneImageButton_OnSetForegroundBmp( TelephoneImageButton _this, ResourcesBitmap 

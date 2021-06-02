@@ -3686,23 +3686,50 @@ void SettingsSET30_QRCode__Done( SettingsSET30_QRCode _this )
 void SettingsSET30_QRCode_Init( SettingsSET30_QRCode _this, XHandle aArg )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
   DeviceInterfaceSystemDeviceClass_GetQrCode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass ));
+  DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdENABLE_TFT_BRIGHTNESS_MANUAL_ADJ );
+  EwPostSignal( EwNewSlot( _this, SettingsSET30_QRCode_UpdateBrightnessButtonEnabled ), 
+    ((XObject)_this ));
 }
 
 /* 'C' function for method : 'Settings::SET30_QRCode.OnShortDownKeyActivated()' */
 void SettingsSET30_QRCode_OnShortDownKeyActivated( SettingsSET30_QRCode _this )
 {
   TelephoneImageButton_DisplayHighlightAnimation( &_this->BrightnessDownButton );
+  DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdADJ_TFT_BRIGHTNESS_LEVEL_DOWN );
+  EwPostSignal( EwNewSlot( _this, SettingsSET30_QRCode_UpdateBrightnessButtonEnabled ), 
+    ((XObject)_this ));
 }
 
 /* 'C' function for method : 'Settings::SET30_QRCode.OnShortUpKeyActivated()' */
 void SettingsSET30_QRCode_OnShortUpKeyActivated( SettingsSET30_QRCode _this )
 {
   TelephoneImageButton_DisplayHighlightAnimation( &_this->BrightnessUpButton );
+  DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdADJ_TFT_BRIGHTNESS_LEVEL_UP );
+  EwPostSignal( EwNewSlot( _this, SettingsSET30_QRCode_UpdateBrightnessButtonEnabled ), 
+    ((XObject)_this ));
+}
+
+/* 'C' function for method : 'Settings::SET30_QRCode.OnShortHomeKeyActivated()' */
+void SettingsSET30_QRCode_OnShortHomeKeyActivated( SettingsSET30_QRCode _this )
+{
+  DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdDISABLE_TFT_BRIGHTNESS_MANUAL_ADJ );
+  ComponentsBaseMainBG_OnShortHomeKeyActivated((ComponentsBaseMainBG)_this );
+}
+
+/* 'C' function for method : 'Settings::SET30_QRCode.OnLongHomeKeyActivated()' */
+void SettingsSET30_QRCode_OnLongHomeKeyActivated( SettingsSET30_QRCode _this )
+{
+  DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdDISABLE_TFT_BRIGHTNESS_MANUAL_ADJ );
+  ComponentsBaseComponent_OnLongHomeKeyActivated((ComponentsBaseComponent)_this );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -3728,7 +3755,29 @@ void SettingsSET30_QRCode_OnOkSelectedSlot( SettingsSET30_QRCode _this, XObject
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
+  DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdDISABLE_TFT_BRIGHTNESS_MANUAL_ADJ );
   ComponentsBaseMainBG_DismissThisDialog((ComponentsBaseMainBG)_this );
+}
+
+/* 'C' function for method : 'Settings::SET30_QRCode.UpdateBrightnessButtonEnabled()' */
+void SettingsSET30_QRCode_UpdateBrightnessButtonEnabled( SettingsSET30_QRCode _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+      DeviceInterfaceSystemDeviceClass ), EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MAX ))
+    CoreGroup__OnSetEnabled( &_this->BrightnessUpButton, 0 );
+  else
+    CoreGroup__OnSetEnabled( &_this->BrightnessUpButton, 1 );
+
+  if ( !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+      DeviceInterfaceSystemDeviceClass ), EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MIN ))
+    CoreGroup__OnSetEnabled( &_this->BrightnessDownButton, 0 );
+  else
+    CoreGroup__OnSetEnabled( &_this->BrightnessDownButton, 1 );
 }
 
 /* Variants derived from the class : 'Settings::SET30_QRCode' */
@@ -3772,11 +3821,11 @@ EW_DEFINE_CLASS( SettingsSET30_QRCode, ComponentsBaseMainBG, QrCodeReadyEventHan
   SettingsSET30_QRCode_OnShortDownKeyActivated,
   SettingsSET30_QRCode_OnShortUpKeyActivated,
   ComponentsBaseComponent_OnShortEnterKeyActivated,
-  ComponentsBaseMainBG_OnShortHomeKeyActivated,
+  SettingsSET30_QRCode_OnShortHomeKeyActivated,
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   ComponentsBaseComponent_OnLongEnterKeyActivated,
-  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  SettingsSET30_QRCode_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
