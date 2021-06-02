@@ -252,15 +252,19 @@ class NAV01_DefaultView : Home::BaseHome
   slot OnDayNightModeUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.DAYNIGHT );
-    if( NaviData.DayNightMode )
+    if( Navigation::DAY_MODE == NaviData.DayNightMode )
+    {
+      ZoomInButton.Bitmap = Resource::ZoomInDayIcon;
+      ZoomOutButton.Bitmap = Resource::ZoomOutDayIcon;
+    }
+    else if( Navigation::NIGHT_MODE == NaviData.DayNightMode )
     {
       ZoomInButton.Bitmap = Resource::ZoomInNightIcon;
       ZoomOutButton.Bitmap = Resource::ZoomOutNightIcon;
     }
     else
     {
-      ZoomInButton.Bitmap = Resource::ZoomInDayIcon;
-      ZoomOutButton.Bitmap = Resource::ZoomOutDayIcon;
+      // empty.
     }
   }
 
@@ -270,24 +274,32 @@ class NAV01_DefaultView : Home::BaseHome
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.DAYNIGHT );
     if( !ZoomButtonStatus )
     {
-      if( NaviData.DayNightMode )
+      if( Navigation::NIGHT_MODE == NaviData.DayNightMode )
       {
         ZoomInButton.Bitmap = Resource::ZoomInNightFocusIcon;
       }
-      else
+      else if( Navigation::DAY_MODE == NaviData.DayNightMode )
       {
         ZoomInButton.Bitmap = Resource::ZoomInDayFocusIcon;
+      }
+      else
+      {
+        // empty.
       }
     }
     else
     {
-      if( NaviData.DayNightMode )
+      if( Navigation::NIGHT_MODE == NaviData.DayNightMode )
       {
         ZoomOutButton.Bitmap = Resource::ZoomOutNightFocusIcon;
       }
-      else
+      else if( Navigation::DAY_MODE == NaviData.DayNightMode )
       {
         ZoomOutButton.Bitmap = Resource::ZoomOutDayFocusIcon;
+      }
+      else
+      {
+        // empty.
       }
     }
     HighlightTimer.Enabled = true;
@@ -308,24 +320,32 @@ class NAV01_DefaultView : Home::BaseHome
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.DAYNIGHT );
     if( !ZoomButtonStatus )
     {
-      if( NaviData.DayNightMode )
+      if( Navigation::NIGHT_MODE == NaviData.DayNightMode )
       {
         ZoomInButton.Bitmap = Resource::ZoomInNightIcon;
       }
-      else
+      else if( Navigation::DAY_MODE == NaviData.DayNightMode )
       {
         ZoomInButton.Bitmap = Resource::ZoomInDayIcon;
+      }
+      else
+      {
+        // empty.
       }
     }
     else
     {
-      if( NaviData.DayNightMode )
+      if( Navigation::NIGHT_MODE == NaviData.DayNightMode )
       {
         ZoomOutButton.Bitmap = Resource::ZoomOutNightIcon;
       }
-      else
+      else if( Navigation::DAY_MODE == NaviData.DayNightMode )
       {
         ZoomOutButton.Bitmap = Resource::ZoomOutDayIcon;
+      }
+      else
+      {
+        // empty.
       }
     }
   }
@@ -2797,3 +2817,11 @@ class TbtListMenu : Core::Group
 $rect <720,360,920,400>
 $output false
 const string DISTANCE_UNIT_MILE = "mi";
+
+$rect <720,430,920,470>
+$output false
+const int32 DAY_MODE = 1;
+
+$rect <720,480,920,520>
+$output false
+const int32 NIGHT_MODE = 2;

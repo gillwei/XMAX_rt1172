@@ -620,20 +620,21 @@ void NavigationNAV01_DefaultView_OnDayNightModeUpdateSlot( NavigationNAV01_Defau
   NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
   &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeDAYNIGHT );
 
-  if ( !!NaviData->DayNightMode )
-  {
-    ViewsImage_OnSetBitmap( &_this->ZoomInButton, EwLoadResource( &ResourceZoomInNightIcon, 
-    ResourcesBitmap ));
-    ViewsImage_OnSetBitmap( &_this->ZoomOutButton, EwLoadResource( &ResourceZoomOutNightIcon, 
-    ResourcesBitmap ));
-  }
-  else
+  if ( 1 == NaviData->DayNightMode )
   {
     ViewsImage_OnSetBitmap( &_this->ZoomInButton, EwLoadResource( &ResourceZoomInDayIcon, 
     ResourcesBitmap ));
     ViewsImage_OnSetBitmap( &_this->ZoomOutButton, EwLoadResource( &ResourceZoomOutDayIcon, 
     ResourcesBitmap ));
   }
+  else
+    if ( 2 == NaviData->DayNightMode )
+    {
+      ViewsImage_OnSetBitmap( &_this->ZoomInButton, EwLoadResource( &ResourceZoomInNightIcon, 
+      ResourcesBitmap ));
+      ViewsImage_OnSetBitmap( &_this->ZoomOutButton, EwLoadResource( &ResourceZoomOutNightIcon, 
+      ResourcesBitmap ));
+    }
 }
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.StartHighlight()' */
@@ -645,20 +646,22 @@ void NavigationNAV01_DefaultView_StartHighlight( NavigationNAV01_DefaultView _th
 
   if ( !!!_this->ZoomButtonStatus )
   {
-    if ( !!NaviData->DayNightMode )
+    if ( 2 == NaviData->DayNightMode )
       ViewsImage_OnSetBitmap( &_this->ZoomInButton, EwLoadResource( &ResourceZoomInNightFocusIcon, 
       ResourcesBitmap ));
     else
-      ViewsImage_OnSetBitmap( &_this->ZoomInButton, EwLoadResource( &ResourceZoomInDayFocusIcon, 
-      ResourcesBitmap ));
+      if ( 1 == NaviData->DayNightMode )
+        ViewsImage_OnSetBitmap( &_this->ZoomInButton, EwLoadResource( &ResourceZoomInDayFocusIcon, 
+        ResourcesBitmap ));
   }
   else
-    if ( !!NaviData->DayNightMode )
+    if ( 2 == NaviData->DayNightMode )
       ViewsImage_OnSetBitmap( &_this->ZoomOutButton, EwLoadResource( &ResourceZoomOutNightFocusIcon, 
       ResourcesBitmap ));
     else
-      ViewsImage_OnSetBitmap( &_this->ZoomOutButton, EwLoadResource( &ResourceZoomOutDayFocusIcon, 
-      ResourcesBitmap ));
+      if ( 1 == NaviData->DayNightMode )
+        ViewsImage_OnSetBitmap( &_this->ZoomOutButton, EwLoadResource( &ResourceZoomOutDayFocusIcon, 
+        ResourcesBitmap ));
 
   CoreTimer_OnSetEnabled( &_this->HighlightTimer, 1 );
 }
@@ -678,20 +681,22 @@ void NavigationNAV01_DefaultView_OnHighlightEndSlot( NavigationNAV01_DefaultView
 
   if ( !!!_this->ZoomButtonStatus )
   {
-    if ( !!NaviData->DayNightMode )
+    if ( 2 == NaviData->DayNightMode )
       ViewsImage_OnSetBitmap( &_this->ZoomInButton, EwLoadResource( &ResourceZoomInNightIcon, 
       ResourcesBitmap ));
     else
-      ViewsImage_OnSetBitmap( &_this->ZoomInButton, EwLoadResource( &ResourceZoomInDayIcon, 
-      ResourcesBitmap ));
+      if ( 1 == NaviData->DayNightMode )
+        ViewsImage_OnSetBitmap( &_this->ZoomInButton, EwLoadResource( &ResourceZoomInDayIcon, 
+        ResourcesBitmap ));
   }
   else
-    if ( !!NaviData->DayNightMode )
+    if ( 2 == NaviData->DayNightMode )
       ViewsImage_OnSetBitmap( &_this->ZoomOutButton, EwLoadResource( &ResourceZoomOutNightIcon, 
       ResourcesBitmap ));
     else
-      ViewsImage_OnSetBitmap( &_this->ZoomOutButton, EwLoadResource( &ResourceZoomOutDayIcon, 
-      ResourcesBitmap ));
+      if ( 1 == NaviData->DayNightMode )
+        ViewsImage_OnSetBitmap( &_this->ZoomOutButton, EwLoadResource( &ResourceZoomOutDayIcon, 
+        ResourcesBitmap ));
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
