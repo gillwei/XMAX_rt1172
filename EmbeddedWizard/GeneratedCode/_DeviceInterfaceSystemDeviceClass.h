@@ -63,7 +63,6 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_VARIABLE( CurrentAdjustTime, DeviceInterfaceRtcTime )
   EW_OBJECT  ( FactoryTestSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( QrCodeSystemEvent, CoreSystemEvent )
-  EW_OBJECT  ( UpdateLocalTimeSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( OpeningSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( InspectionDisplaySystemEvent, CoreSystemEvent )
   EW_OBJECT  ( InspectionModeSystemEvent, CoreSystemEvent )
@@ -185,16 +184,6 @@ void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClas
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetLocalTime()' */
 DeviceInterfaceRtcTime DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this );
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceSystemDeviceClass_NotifyUpdateLocalTime( DeviceInterfaceSystemDeviceClass _this );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyUpdateLocalTime()' */
-void DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime( void* _this );
-
-/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyUpdateLocalTime(). */
-#define _DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime_
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */

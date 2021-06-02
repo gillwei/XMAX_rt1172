@@ -323,18 +323,6 @@ class SystemDeviceClass : Templates::DeviceClass
     return CurrentLocalTime;
   }
 
-  // This method is intended to be called by the device to notify the GUI application \
-  // about a particular system event.
-  $rect <681,70,930,110>
-  $output true
-  method void NotifyUpdateLocalTime()
-  {
-    UpdateLocalTimeSystemEvent.Trigger( null, false );
-  }
-
-  $rect <680,170,930,210>
-  object Core::SystemEvent UpdateLocalTimeSystemEvent;
-
   // Opening Flow Control
   note group Note6
   {

@@ -44,10 +44,6 @@
     static int notify_system_event_received( void );
 #endif
 
-#ifdef _DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime_
-    static int ew_system_update_local_time( void );
-#endif
-
 #ifdef _DeviceInterfaceSystemDeviceClass__TestDisplayPattern_
     static int ew_sytem_test_display_pattern( void );
 #endif
@@ -120,9 +116,6 @@ static void ew_get_info_from_eeprom( void );
     static DeviceInterfaceSystemDeviceClass device_object = 0;
     system_device_function* const system_function_lookup_table[] =
         {
-        #ifdef _DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime_
-            ew_system_update_local_time,
-        #endif
         #ifdef _DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived_
             notify_system_event_received,
         #endif
@@ -164,7 +157,6 @@ static void ew_get_info_from_eeprom( void );
     static int      factory_test_disp_pattern_idx = 0;
     static bool     factory_test_burn_in_result = false;
     static uint32_t factory_test_burn_in_time_sec = 0;
-    static int      is_update_time = 0;
     static TickType_t update_time_period_ticks = pdMS_TO_TICKS( UPDATE_TIME_PERIOD_MS );
 
     static bool     is_inspection_request_received = false;
@@ -340,9 +332,6 @@ static bool is_one_second = false;
 
 while( 1 )
     {
-    is_update_time = 1;
-    EwBspEventTrigger();
-
     /* count in 500ms */
     NTF_update_active_call_duration();
 
@@ -1031,31 +1020,6 @@ while( pdPASS == xQueueReceive( system_rx_event_queue, &system_rx_event, 0 ) )
     }
 return need_update;
 }
-#endif
-
-/*********************************************************************
-*
-* @private
-* ew_system_update_local_time
-*
-* Notify EW GUI to update time
-*
-*********************************************************************/
-#ifdef _DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime_
-    static int ew_system_update_local_time
-        (
-        void
-        )
-    {
-    int need_update = 0;
-    if( is_update_time )
-        {
-        is_update_time = 0;
-        DeviceInterfaceSystemDeviceClass_NotifyUpdateLocalTime( device_object );
-        need_update = 1;
-        }
-    return need_update;
-    }
 #endif
 
 /*********************************************************************

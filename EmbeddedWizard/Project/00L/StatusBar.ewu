@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <550,10,750,50>
 inline Inline
@@ -570,13 +570,6 @@ class Clock : Core::Group
     ClockColonText.Visible = !ClockColonText.Visible;
   }
 
-  $rect <210,50,480,90>
-  object Core::SystemEventHandler OnUpdateLocalTimeEventHandler
-  {
-    preset OnEvent = OnUpdateLocalTimeSlot;
-    preset Event = DeviceInterface::SystemDevice.UpdateLocalTimeSystemEvent;
-  }
-
   $rect <20,20,160,60>
   object Views::Text ClockMinuteText
   {
@@ -597,6 +590,14 @@ class Clock : Core::Group
     preset Font = Fonts::NotoSansMedium32pt;
     preset Color = #FFFFFFFF;
     preset Visible = false;
+  }
+
+  $rect <220,50,420,90>
+  object Core::Timer UpdateClockTimer
+  {
+    preset OnTrigger = OnUpdateLocalTimeSlot;
+    preset Period = 500;
+    preset Enabled = true;
   }
 }
 

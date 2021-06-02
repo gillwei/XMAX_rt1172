@@ -109,7 +109,6 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
   /* ... then construct all embedded objects */
   CoreSystemEvent__Init( &_this->FactoryTestSystemEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->QrCodeSystemEvent, &_this->_.XObject, 0 );
-  CoreSystemEvent__Init( &_this->UpdateLocalTimeSystemEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->OpeningSystemEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->InspectionDisplaySystemEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->InspectionModeSystemEvent, &_this->_.XObject, 0 );
@@ -132,7 +131,6 @@ void DeviceInterfaceSystemDeviceClass__ReInit( DeviceInterfaceSystemDeviceClass 
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->FactoryTestSystemEvent );
   CoreSystemEvent__ReInit( &_this->QrCodeSystemEvent );
-  CoreSystemEvent__ReInit( &_this->UpdateLocalTimeSystemEvent );
   CoreSystemEvent__ReInit( &_this->OpeningSystemEvent );
   CoreSystemEvent__ReInit( &_this->InspectionDisplaySystemEvent );
   CoreSystemEvent__ReInit( &_this->InspectionModeSystemEvent );
@@ -148,7 +146,6 @@ void DeviceInterfaceSystemDeviceClass__Done( DeviceInterfaceSystemDeviceClass _t
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->FactoryTestSystemEvent );
   CoreSystemEvent__Done( &_this->QrCodeSystemEvent );
-  CoreSystemEvent__Done( &_this->UpdateLocalTimeSystemEvent );
   CoreSystemEvent__Done( &_this->OpeningSystemEvent );
   CoreSystemEvent__Done( &_this->InspectionDisplaySystemEvent );
   CoreSystemEvent__Done( &_this->InspectionModeSystemEvent );
@@ -413,19 +410,6 @@ DeviceInterfaceRtcTime DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInte
   CurrentLocalTime->Minute = RtcMinute;
   CurrentLocalTime->Second = RtcSecond;
   return CurrentLocalTime;
-}
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceSystemDeviceClass_NotifyUpdateLocalTime( DeviceInterfaceSystemDeviceClass _this )
-{
-  CoreSystemEvent_Trigger( &_this->UpdateLocalTimeSystemEvent, 0, 0 );
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyUpdateLocalTime()' */
-void DeviceInterfaceSystemDeviceClass__NotifyUpdateLocalTime( void* _this )
-{
-  DeviceInterfaceSystemDeviceClass_NotifyUpdateLocalTime((DeviceInterfaceSystemDeviceClass)_this );
 }
 
 /* This method is intended to be called by the device to notify the GUI application 

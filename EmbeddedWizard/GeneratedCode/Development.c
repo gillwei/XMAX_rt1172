@@ -28,7 +28,6 @@
 #include "_ApplicationApplication.h"
 #include "_ComponentsBaseMainBG.h"
 #include "_CoreGroup.h"
-#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DevelopmentDEV_Bluetooth.h"
@@ -564,8 +563,8 @@ void DevelopmentDEV_RealTimeClock__Init( DevelopmentDEV_RealTimeClock _this, XOb
   _this->_.XObject._.GCT = EW_CLASS_GCT( DevelopmentDEV_RealTimeClock );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->OnUpdateLocalTimeEventHandler, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->TimeText, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->UpdateLocalTimeTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( DevelopmentDEV_RealTimeClock );
@@ -576,12 +575,12 @@ void DevelopmentDEV_RealTimeClock__Init( DevelopmentDEV_RealTimeClock _this, XOb
   ViewsText_OnSetAlignment( &_this->TimeText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->TimeText, 0 );
+  CoreTimer_OnSetPeriod( &_this->UpdateLocalTimeTimer, 500 );
+  CoreTimer_OnSetEnabled( &_this->UpdateLocalTimeTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->TimeText ), 0 );
-  _this->OnUpdateLocalTimeEventHandler.OnEvent = EwNewSlot( _this, DevelopmentDEV_RealTimeClock_OnUpdateLocalTimeSlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->OnUpdateLocalTimeEventHandler, &EwGetAutoObject( 
-  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->UpdateLocalTimeSystemEvent );
   ViewsText_OnSetFont( &_this->TimeText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
+  _this->UpdateLocalTimeTimer.OnTrigger = EwNewSlot( _this, DevelopmentDEV_RealTimeClock_OnUpdateLocalTimeSlot );
 }
 
 /* Re-Initializer for the class 'Development::DEV_RealTimeClock' */
@@ -591,8 +590,8 @@ void DevelopmentDEV_RealTimeClock__ReInit( DevelopmentDEV_RealTimeClock _this )
   ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  CoreSystemEventHandler__ReInit( &_this->OnUpdateLocalTimeEventHandler );
   ViewsText__ReInit( &_this->TimeText );
+  CoreTimer__ReInit( &_this->UpdateLocalTimeTimer );
 }
 
 /* Finalizer method for the class 'Development::DEV_RealTimeClock' */
@@ -602,8 +601,8 @@ void DevelopmentDEV_RealTimeClock__Done( DevelopmentDEV_RealTimeClock _this )
   _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
-  CoreSystemEventHandler__Done( &_this->OnUpdateLocalTimeEventHandler );
   ViewsText__Done( &_this->TimeText );
+  CoreTimer__Done( &_this->UpdateLocalTimeTimer );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
@@ -642,9 +641,8 @@ EW_DEFINE_CLASS_VARIANTS( DevelopmentDEV_RealTimeClock )
 EW_END_OF_CLASS_VARIANTS( DevelopmentDEV_RealTimeClock )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_RealTimeClock' */
-EW_DEFINE_CLASS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG, OnUpdateLocalTimeEventHandler, 
-                 OnUpdateLocalTimeEventHandler, OnUpdateLocalTimeEventHandler, OnUpdateLocalTimeEventHandler, 
-                 _.VMT, _.VMT, "Development::DEV_RealTimeClock" )
+EW_DEFINE_CLASS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG, TimeText, TimeText, 
+                 TimeText, TimeText, _.VMT, _.VMT, "Development::DEV_RealTimeClock" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

@@ -153,20 +153,13 @@ class DEV_RealTimeClock : Components::BaseMainBG
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
-  $rect <530,120,810,160>
+  $rect <530,120,760,160>
   slot OnUpdateLocalTimeSlot
   {
     var DeviceInterface::RtcTime CurrentTime = DeviceInterface::SystemDevice.GetLocalTime();
 
     TimeText.String = string( CurrentTime.Year, 4 ) + "/" + string( CurrentTime.Month, 2 ) + "/"+ string( CurrentTime.Day, 2 ) + " "
                       + string( CurrentTime.Hour, 2 ) + ":" + string( CurrentTime.Minute, 2 ) + ":" + string( CurrentTime.Second, 2 );
-  }
-
-  $rect <530,70,800,110>
-  object Core::SystemEventHandler OnUpdateLocalTimeEventHandler
-  {
-    preset OnEvent = OnUpdateLocalTimeSlot;
-    preset Event = DeviceInterface::SystemDevice.UpdateLocalTimeSystemEvent;
   }
 
   $rect <20,20,160,60>
@@ -176,6 +169,14 @@ class DEV_RealTimeClock : Components::BaseMainBG
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <530,70,760,110>
+  object Core::Timer UpdateLocalTimeTimer
+  {
+    preset OnTrigger = OnUpdateLocalTimeSlot;
+    preset Period = 500;
+    preset Enabled = true;
   }
 }
 

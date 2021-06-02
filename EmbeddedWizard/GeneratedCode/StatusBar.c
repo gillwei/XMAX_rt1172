@@ -27,6 +27,7 @@
 #include "ewlocale.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceMotoConContext.h"
@@ -657,9 +658,9 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
 
   /* ... then construct all embedded objects */
   ViewsText__Init( &_this->ClockHourText, &_this->_.XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->OnUpdateLocalTimeEventHandler, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->ClockMinuteText, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->ClockColonText, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->UpdateClockTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( StatusBarClock );
@@ -684,18 +685,18 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
   ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const0014 ));
   ViewsText_OnSetColor( &_this->ClockColonText, _Const0011 );
   ViewsText_OnSetVisible( &_this->ClockColonText, 0 );
+  CoreTimer_OnSetPeriod( &_this->UpdateClockTimer, 500 );
+  CoreTimer_OnSetEnabled( &_this->UpdateClockTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockHourText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockMinuteText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockColonText ), 0 );
   ViewsText_OnSetFont( &_this->ClockHourText, EwLoadResource( &FontsNotoSansMedium32pt, 
   ResourcesFont ));
-  _this->OnUpdateLocalTimeEventHandler.OnEvent = EwNewSlot( _this, StatusBarClock_OnUpdateLocalTimeSlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->OnUpdateLocalTimeEventHandler, &EwGetAutoObject( 
-  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->UpdateLocalTimeSystemEvent );
   ViewsText_OnSetFont( &_this->ClockMinuteText, EwLoadResource( &FontsNotoSansMedium32pt, 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->ClockColonText, EwLoadResource( &FontsNotoSansMedium32pt, 
   ResourcesFont ));
+  _this->UpdateClockTimer.OnTrigger = EwNewSlot( _this, StatusBarClock_OnUpdateLocalTimeSlot );
 }
 
 /* Re-Initializer for the class 'StatusBar::Clock' */
@@ -706,9 +707,9 @@ void StatusBarClock__ReInit( StatusBarClock _this )
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ClockHourText );
-  CoreSystemEventHandler__ReInit( &_this->OnUpdateLocalTimeEventHandler );
   ViewsText__ReInit( &_this->ClockMinuteText );
   ViewsText__ReInit( &_this->ClockColonText );
+  CoreTimer__ReInit( &_this->UpdateClockTimer );
 }
 
 /* Finalizer method for the class 'StatusBar::Clock' */
@@ -719,9 +720,9 @@ void StatusBarClock__Done( StatusBarClock _this )
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->ClockHourText );
-  CoreSystemEventHandler__Done( &_this->OnUpdateLocalTimeEventHandler );
   ViewsText__Done( &_this->ClockMinuteText );
   ViewsText__Done( &_this->ClockColonText );
+  CoreTimer__Done( &_this->UpdateClockTimer );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );

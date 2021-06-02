@@ -102,8 +102,8 @@
 
 /* Deklaration of class : 'Development::DEV_RealTimeClock' */
 EW_DEFINE_FIELDS( DevelopmentDEV_RealTimeClock, ComponentsBaseMainBG )
-  EW_OBJECT  ( OnUpdateLocalTimeEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( TimeText,        ViewsText )
+  EW_OBJECT  ( UpdateLocalTimeTimer, CoreTimer )
 EW_END_OF_FIELDS( DevelopmentDEV_RealTimeClock )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_RealTimeClock' */
