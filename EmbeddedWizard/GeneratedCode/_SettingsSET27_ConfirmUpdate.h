@@ -107,7 +107,6 @@ EW_DEFINE_FIELDS( SettingsSET27_ConfirmUpdate, ComponentsBaseMainBG )
   EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
   EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( HoldTimer,       CoreTimer )
-  EW_VARIABLE( IsReprogramAccepted, XBool )
 EW_END_OF_FIELDS( SettingsSET27_ConfirmUpdate )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET27_ConfirmUpdate' */

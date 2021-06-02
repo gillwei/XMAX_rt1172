@@ -3087,10 +3087,6 @@ class SET27_ConfirmUpdate : Components::BaseMainBG
   $rect <220,340,430,380>
   slot OnOkActivatedSlot
   {
-    /* To wait 2 seconds for sending create OTA connection reauest */
-    HoldTimer.Enabled = true;
-
-    DeviceInterface::BluetoothDevice.SendMotoConCommand( Enum::MotoConTx.CREATE_OTA_CONNECTION );
     DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.REQUEST_REPROGRAM, 0 );
   }
 
@@ -3133,11 +3129,9 @@ class SET27_ConfirmUpdate : Components::BaseMainBG
       {
         case Enum::SystemRxEvent.REPROGRAM_ACCEPTED:
         {
-          IsReprogramAccepted = true;
-          if( !HoldTimer.Enabled )
-          {
-            DeviceInterface::SystemDevice.StartOTA();
-          }
+          /* To wait 2 seconds for sending create OTA connection reauest */
+          HoldTimer.Enabled = true;
+          DeviceInterface::BluetoothDevice.SendMotoConCommand( Enum::MotoConTx.CREATE_OTA_CONNECTION );
         }
         case Enum::SystemRxEvent.REPROGRAM_REJECTED:
         {
@@ -3162,12 +3156,6 @@ class SET27_ConfirmUpdate : Components::BaseMainBG
   $rect <760,340,960,380>
   slot OnHoldTimerSlot
   {
-    if( IsReprogramAccepted )
-    {
-      DeviceInterface::SystemDevice.StartOTA();
-    }
+    DeviceInterface::SystemDevice.StartOTA();
   }
-
-  $rect <460,390,660,430>
-  var bool IsReprogramAccepted;
 }

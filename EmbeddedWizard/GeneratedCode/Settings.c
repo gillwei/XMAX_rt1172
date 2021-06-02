@@ -6177,11 +6177,9 @@ void SettingsSET27_ConfirmUpdate_OnOkActivatedSlot( SettingsSET27_ConfirmUpdate 
   XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( sender );
 
-  CoreTimer_OnSetEnabled( &_this->HoldTimer, 1 );
-  DeviceInterfaceBluetoothDeviceClass_SendMotoConCommand( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
-  DeviceInterfaceBluetoothDeviceClass ), EnumMotoConTxCREATE_OTA_CONNECTION );
   DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
   DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeREQUEST_REPROGRAM, 0 );
 }
@@ -6213,11 +6211,10 @@ void SettingsSET27_ConfirmUpdate_OnSystemEventReceived( SettingsSET27_ConfirmUpd
     {
       case EnumSystemRxEventREPROGRAM_ACCEPTED :
       {
-        _this->IsReprogramAccepted = 1;
-
-        if ( !_this->HoldTimer.Enabled )
-          DeviceInterfaceSystemDeviceClass_StartOTA( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-          DeviceInterfaceSystemDeviceClass ));
+        CoreTimer_OnSetEnabled( &_this->HoldTimer, 1 );
+        DeviceInterfaceBluetoothDeviceClass_SendMotoConCommand( EwGetAutoObject( 
+        &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 
+        EnumMotoConTxCREATE_OTA_CONNECTION );
       }
       break;
 
@@ -6240,11 +6237,11 @@ void SettingsSET27_ConfirmUpdate_OnHoldTimerSlot( SettingsSET27_ConfirmUpdate _t
   XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( sender );
 
-  if ( _this->IsReprogramAccepted )
-    DeviceInterfaceSystemDeviceClass_StartOTA( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-    DeviceInterfaceSystemDeviceClass ));
+  DeviceInterfaceSystemDeviceClass_StartOTA( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ));
 }
 
 /* Variants derived from the class : 'Settings::SET27_ConfirmUpdate' */
@@ -6253,7 +6250,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET27_ConfirmUpdate )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET27_ConfirmUpdate' */
 EW_DEFINE_CLASS( SettingsSET27_ConfirmUpdate, ComponentsBaseMainBG, Text, Text, 
-                 Text, Text, IsReprogramAccepted, IsReprogramAccepted, "Settings::SET27_ConfirmUpdate" )
+                 Text, Text, _.VMT, _.VMT, "Settings::SET27_ConfirmUpdate" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
