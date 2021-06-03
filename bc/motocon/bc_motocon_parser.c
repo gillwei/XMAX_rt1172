@@ -142,8 +142,7 @@ switch( command_code )
         break;
 
     case BC_MOTOCON_COMMAND_CODE_CCUID_REQUEST:
-        bc_motocon_set_connected( true );
-        ret = bc_motocon_parser_ccuid_request( bytes, length );
+        ret = bc_motocon_parser_ccuid_request();
         break;
 
     case BC_MOTOCON_COMMAND_CODE_PHONE_CELL_SIGNAL_LEVEL_RESPONSE:
@@ -156,6 +155,10 @@ switch( command_code )
 
     case BC_MOTOCON_COMMAND_CODE_ALIVE_CHECK_RESPONSE:
         ret = bc_motocon_parser_alive_response( bytes, length );
+        break;
+
+    case BC_MOTOCON_COMMAND_CODE_IGNITION_STATE_REQUEST:
+        ret = bc_motocon_parser_ignition_state_request();
         break;
 
     default:
@@ -186,6 +189,8 @@ const bc_motocon_command_code_t command_code = TWO_BYTE_BIG( bytes, 0 );
 switch( command_code )
     {
     case BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_REQUEST:
+        bc_motocon_set_connected( true );
+
     case BC_MOTOCON_COMMAND_CODE_MALFUNCTION_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_MALFUNCTION_INTERVAL_SETTING_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_IDENTIFICATION_REQUEST:
@@ -910,18 +915,25 @@ bc_motocon_parse_result_t bc_motocon_parser_notification_category
     const uint32_t length
     )
 {
-if( length == 9 )
+if( length == 14 )
     {
     bc_motocon_notification_category_t category;
-    category.incoming_call = bytes[2];
-    category.missed_call = bytes[3];
-    category.voice_mail = bytes[4];
-    category.social = bytes[5];
-    category.schedule = bytes[6];
-    category.email = bytes[7];
-    category.news = bytes[8];
-    BC_MOTOCON_PRINTF( "%s, incoming_call: %d, missed_call: %d, voice_mail: %d, social: %d, schedule: %d, email: %d, news: %d, \r\n", __FUNCTION__,
-        category.incoming_call, category.missed_call, category.voice_mail, category.social, category.schedule, category.email, category.news );
+    category.other = bytes[2];
+    category.incoming_call = bytes[3];
+    category.missed_call = bytes[4];
+    category.voice_mail = bytes[5];
+    category.social = bytes[6];
+    category.schedule = bytes[7];
+    category.email = bytes[8];
+    category.news = bytes[9];
+    category.healthAndFitness = bytes[10];
+    category.businessAndFinance = bytes[11];
+    category.location = bytes[12];
+    category.entertainment = bytes[13];
+    BC_MOTOCON_PRINTF( "%s, other: %d, incoming_call: %d, missed_call: %d, voice_mail: %d, social: %d, schedule: %d, email: %d\r\n", __FUNCTION__,
+        category.other, category.incoming_call, category.missed_call, category.voice_mail, category.social, category.schedule, category.email );
+    BC_MOTOCON_PRINTF( "%s, news: %d, healthAndFitness: %d, businessAndFinance: %d, location: %d, entertainment: %d\r\n", __FUNCTION__,
+        category.news, category.healthAndFitness, category.businessAndFinance, category.location, category.entertainment );
     for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
         {
         if( NULL != bc_motocon_callbacks[i] &&
@@ -1113,13 +1125,12 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 * @private
 * bc_motocon_parser_ccuid_request
 *
-* Parse ota update info and post callback.
+* Parse ccuid request and post callback.
 *
 *********************************************************************/
 bc_motocon_parse_result_t bc_motocon_parser_ccuid_request
     (
-    const uint8_t* bytes,
-    const uint32_t length
+    void
     )
 {
 BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
@@ -1214,4 +1225,29 @@ if( length == 3 )
     return BC_MOTOCON_PARSE_SUCCESS;
     }
 return BC_MOTOCON_PARSE_INVALID_INPUT;
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_parser_ignition_state_request
+*
+* Parse ignition state and post callback.
+*
+*********************************************************************/
+bc_motocon_parse_result_t bc_motocon_parser_ignition_state_request
+    (
+    void
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
+    {
+    if( NULL != bc_motocon_callbacks[i] &&
+        NULL != bc_motocon_callbacks[i]->ignition_state_request_callback )
+        {
+        bc_motocon_callbacks[i]->ignition_state_request_callback();
+        }
+    }
+return BC_MOTOCON_PARSE_SUCCESS;
 }

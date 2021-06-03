@@ -104,7 +104,9 @@ typedef uint16_t bc_motocon_command_code_t; enum
     BC_MOTOCON_COMMAND_CODE_PHONE_CELL_SIGNAL_LEVEL_RESPONSE               = 0x0133,
     BC_MOTOCON_COMMAND_CODE_CALL_CHANGE_NOTIFICATION                       = 0x0134,
     BC_MOTOCON_COMMAND_CODE_ALIVE_CHECK_REQUEST                            = 0x0135,
-    BC_MOTOCON_COMMAND_CODE_ALIVE_CHECK_RESPONSE                           = 0x0136
+    BC_MOTOCON_COMMAND_CODE_ALIVE_CHECK_RESPONSE                           = 0x0136,
+    BC_MOTOCON_COMMAND_CODE_IGNITION_STATE_REQUEST                         = 0x0137,
+    BC_MOTOCON_COMMAND_CODE_IGNITION_STATE_RESPONSE                        = 0x0138
     };/* end of bc_motocon_command_code_t */
 
 typedef enum
@@ -297,6 +299,7 @@ typedef enum
 
 typedef struct
     {
+    bool other;
     bool incoming_call;
     bool missed_call;
     bool voice_mail;
@@ -304,6 +307,10 @@ typedef struct
     bool schedule;
     bool email;
     bool news;
+    bool healthAndFitness;
+    bool businessAndFinance;
+    bool location;
+    bool entertainment;
     } bc_motocon_notification_category_t;
 
 typedef struct
@@ -353,6 +360,12 @@ typedef enum
     BC_MOTOCON_NOTIFICATION_CATEGORY_MESSAGE,
     BC_MOTOCON_NOTIFICATION_CATEGORY_MISSED_CALL
     } bc_motocon_notification_type_t;
+
+typedef enum
+    {
+    BC_MOTOCON_IGNITION_STATE_OFF,
+    BC_MOTOCON_IGNITION_STATE_ON
+    } bc_motocon_ignition_state_t;
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES

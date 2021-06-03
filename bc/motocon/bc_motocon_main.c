@@ -742,6 +742,30 @@ return bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 2 );
 /*********************************************************************
 *
 * @public
+* BC_motocon_send_ignition_state_response
+*
+* Send ignition state via BLE.
+*
+* @return bc_motocon_send_result_t
+* Result of send command
+*
+*********************************************************************/
+bc_motocon_send_result_t BC_motocon_send_ignition_state_response
+    (
+    const bc_motocon_ignition_state_t state
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+uint8_t data[3];
+data[0] = BC_MOTOCON_COMMAND_CODE_IGNITION_STATE_RESPONSE >> 8;
+data[1] = BC_MOTOCON_COMMAND_CODE_IGNITION_STATE_RESPONSE & 0xFF;
+data[2] = state;
+return bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 3 );
+}
+
+/*********************************************************************
+*
+* @public
 * bc_motocon_send_data
 *
 * Send data via BLE.

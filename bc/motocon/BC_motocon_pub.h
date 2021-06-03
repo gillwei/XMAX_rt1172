@@ -55,6 +55,7 @@ typedef struct
     void ( *ccuid_request_callback ) ( void );
     void ( *cell_signal_callback ) ( const bc_motocon_cell_signal_t level );
     void ( *call_changed_callback ) ( const bc_motocon_call_state_t call_state );
+    void ( *ignition_state_request_callback ) ( void );
     } bc_motocon_callback_t;
 
 typedef enum
@@ -126,6 +127,8 @@ bc_motocon_send_result_t BC_motocon_send_ota_linkcard_info( const bc_motocon_ota
 bc_motocon_send_result_t BC_motocon_send_ccuid_response( const uint8_t* ccuid );
 
 bc_motocon_send_result_t BC_motocon_send_cell_signal_request( void );
+
+bc_motocon_send_result_t BC_motocon_send_ignition_state_response( const bc_motocon_ignition_state_t state );
 
 uint8_t BC_motocon_get_language_type( void );
 
