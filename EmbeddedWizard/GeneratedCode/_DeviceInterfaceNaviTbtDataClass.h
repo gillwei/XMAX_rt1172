@@ -54,7 +54,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceNaviTbtDataClass, XObject )
   EW_VARIABLE( DistUnit,        XString )
   EW_VARIABLE( TbtDescription,  XString )
   EW_VARIABLE( IconIdx,         XInt32 )
-  EW_VARIABLE( Distance,        XInt32 )
+  EW_VARIABLE( Distance,        XFloat )
 EW_END_OF_FIELDS( DeviceInterfaceNaviTbtDataClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::NaviTbtDataClass' */

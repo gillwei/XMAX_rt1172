@@ -1938,16 +1938,16 @@ class NAV05_TBTView : Home::BaseHome
     }
 
     NextTurnDistUnit.String = NaviTbtData.DistUnit;
-    if( Strings::UNT02_UNIT_MILEAGE_KILOMETER == NaviTbtData.DistUnit ||
-        Navigation::DISTANCE_UNIT_MILE == NaviTbtData.DistUnit )
+
+    if( 0.0 == NaviTbtData.Distance.fract )
     {
-      var float Distance = (float)NaviTbtData.Distance/1000;
-      NextTurnDist.String = string( Distance, 0 , 1 );
+      NextTurnDist.String = string( (int32)NaviTbtData.Distance );
     }
     else
     {
-      NextTurnDist.String = string( NaviTbtData.Distance );
+      NextTurnDist.String = string( NaviTbtData.Distance, 0 , 1 );
     }
+
     NextTurnDescription.String = NaviTbtData.TbtDescription;
   }
 
@@ -2632,15 +2632,14 @@ class TbtListMenu : Core::Group
       ShowTbtListItemIcon( NaviTbtData.IconIdx );
 
       item.NextTurnDistUnit.String = NaviTbtData.DistUnit;
-      if( Strings::UNT02_UNIT_MILEAGE_KILOMETER == NaviTbtData.DistUnit ||
-          Navigation::DISTANCE_UNIT_MILE == NaviTbtData.DistUnit )
+
+      if( 0.0 == NaviTbtData.Distance.fract )
       {
-        var float Distance = (float)NaviTbtData.Distance/1000;
-        item.NextTurnDist.String = string( Distance, 0 , 1 );
+        item.NextTurnDist.String = string( (int32)NaviTbtData.Distance );
       }
       else
       {
-        item.NextTurnDist.String = string( NaviTbtData.Distance );
+        item.NextTurnDist.String = string( NaviTbtData.Distance, 0 , 1 );
       }
       item.NextTurnDescription.String = NaviTbtData.TbtDescription;
 

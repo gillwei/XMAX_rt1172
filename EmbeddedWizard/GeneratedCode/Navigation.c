@@ -82,19 +82,19 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000230, /* ratio 57.14 % */
-  0xB8000B00, 0x800DA452, 0x52120034, 0x0B445818, 0x010F3780, 0xC0024C18, 0x0027800D,
-  0x03A000EA, 0x0046CA60, 0x9C6A3E61, 0x00074003, 0x78010910, 0xA4914860, 0x27108843,
-  0xF198BC56, 0x218E47A3, 0x20048E39, 0x00194005, 0x041E7C63, 0x99284760, 0x1A532792,
-  0x2404D860, 0x57293800, 0xD1124412, 0x3F8F4FE0, 0x68447239, 0x8B524CF1, 0x44228B21,
-  0x53A73479, 0x00E53F94, 0x6D510B50, 0x31049442, 0x1730019A, 0x42ABD061, 0xFAED0EB5,
-  0xA4D8A9D5, 0x44863F65, 0xDB70B6BB, 0x788B7094, 0xAA14335C, 0x6C78A113, 0xD508847E,
-  0x44B04A24, 0x8A759287, 0xC35A6933, 0x601E1385, 0xC86213D8, 0x120509A3, 0x21306C64,
-  0x01AD8601, 0x112D5E8C, 0x68000BC0, 0x3D802652, 0xDBD08D94, 0x602213B9, 0x714002D8,
-  0xA78BC593, 0xB6321866, 0x9D5022EA, 0x23093433, 0x26826BE5, 0x58252E13, 0xE7CA7A9D,
-  0x204653DD, 0x4868342D, 0xFA3541DF, 0x8015CB36, 0x19DA9457, 0x80012CA2, 0x0C0AC27E,
-  0x021000A9, 0x264A3F40, 0x11C49143, 0xF50C564A, 0xB5491DD3, 0xCB471087, 0x0A128411,
-  0x429431D6, 0x0406144A, 0x00000000
+  0x00000226, /* ratio 58.18 % */
+  0xB8002900, 0x800B4452, 0xB4010737, 0x80049001, 0x004F001B, 0x074001D4, 0x008A14C0,
+  0x389C60C2, 0x000E8007, 0xF4880020, 0xC348B030, 0x2211068E, 0x61F0D85C, 0x2F1589C4,
+  0x9158D456, 0x00290023, 0x931800CA, 0x001A4013, 0xF1927A76, 0x00245208, 0x649B2503,
+  0x28C70004, 0x12488249, 0x5179D42E, 0x3F8AC567, 0xFA299E1F, 0x9FD06350, 0x5CD28721,
+  0x1CA7521A, 0x9E116700, 0x60921915, 0xE0003344, 0xB549E4FE, 0x0E9F55E7, 0xD90D6C01,
+  0xB0DE2815, 0x3516674B, 0xDAE1368B, 0xAE2F04A2, 0x49D4DBC1, 0x65183C4F, 0x91FA6C26,
+  0x45AFD2EF, 0x58D462C5, 0xC2DA70B6, 0xC4940F22, 0x50E35089, 0x2E4A0591, 0x4092285E,
+  0x4400D649, 0xE00D5C13, 0x46340005, 0xCBC6BC13, 0xDC6DA7A6, 0x6C941122, 0x47F88001,
+  0x9751C4E2, 0x353B08D4, 0x4BCDA6C1, 0xD461847E, 0x228FC135, 0x3EA41291, 0x22F3A8DD,
+  0x18468DDC, 0xC6A793DD, 0xF6273CDE, 0x6F559B1E, 0x4325ECD1, 0x5F300096, 0x54928564,
+  0x90010800, 0xBC13243F, 0x9214551D, 0x74E97815, 0xFDED5147, 0x04729154, 0x75428485,
+  0xD460A525, 0x00010184, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -116,27 +116,27 @@ static const XRect _Const000E = {{ 0, 38 }, { 480, 49 }};
 static const XRect _Const000F = {{ 0, 226 }, { 480, 272 }};
 static const XRect _Const0010 = {{ 370, 226 }, { 480, 272 }};
 static const XColor _Const0011 = { 0x00, 0x00, 0x00, 0x80 };
-static const XStringRes _Const0012 = { _StringsDefault0, 0x0007 };
-static const XStringRes _Const0013 = { _StringsDefault0, 0x001B };
-static const XStringRes _Const0014 = { _StringsDefault0, 0x0039 };
+static const XStringRes _Const0012 = { _StringsDefault0, 0x0002 };
+static const XStringRes _Const0013 = { _StringsDefault0, 0x0016 };
+static const XStringRes _Const0014 = { _StringsDefault0, 0x0034 };
 static const XRect _Const0015 = {{ 0, 0 }, { 0, 0 }};
 static const XRect _Const0016 = {{ 140, 228 }, { 470, 259 }};
-static const XStringRes _Const0017 = { _StringsDefault0, 0x003F };
-static const XStringRes _Const0018 = { _StringsDefault0, 0x005D };
-static const XStringRes _Const0019 = { _StringsDefault0, 0x007D };
+static const XStringRes _Const0017 = { _StringsDefault0, 0x003A };
+static const XStringRes _Const0018 = { _StringsDefault0, 0x0058 };
+static const XStringRes _Const0019 = { _StringsDefault0, 0x0078 };
 static const XRect _Const001A = {{ 0, 0 }, { 330, 31 }};
 static const XRect _Const001B = {{ 0, 8 }, { 20, 28 }};
 static const XRect _Const001C = {{ 24, 0 }, { 330, 31 }};
-static const XStringRes _Const001D = { _StringsDefault0, 0x009D };
+static const XStringRes _Const001D = { _StringsDefault0, 0x0098 };
 static const XRect _Const001E = {{ 0, 0 }, { 480, 46 }};
 static const XRect _Const001F = {{ 405, 0 }, { 480, 46 }};
 static const XColor _Const0020 = { 0xFF, 0xFF, 0xFF, 0xFF };
 static const XRect _Const0021 = {{ 445, 9 }, { 470, 31 }};
 static const XRect _Const0022 = {{ 405, 3 }, { 443, 33 }};
-static const XStringRes _Const0023 = { _StringsDefault0, 0x00A4 };
-static const XStringRes _Const0024 = { _StringsDefault0, 0x00A9 };
-static const XStringRes _Const0025 = { _StringsDefault0, 0x00AD };
-static const XStringRes _Const0026 = { _StringsDefault0, 0x00B4 };
+static const XStringRes _Const0023 = { _StringsDefault0, 0x009F };
+static const XStringRes _Const0024 = { _StringsDefault0, 0x00A4 };
+static const XStringRes _Const0025 = { _StringsDefault0, 0x00A8 };
+static const XStringRes _Const0026 = { _StringsDefault0, 0x00AF };
 static const XRect _Const0027 = {{ 370, 0 }, { 480, 46 }};
 static const XColor _Const0028 = { 0xE2, 0x7F, 0x07, 0xFF };
 static const XColor _Const0029 = { 0xAA, 0x14, 0x15, 0xFF };
@@ -149,13 +149,13 @@ static const XRect _Const002F = {{ 0, 0 }, { 110, 33 }};
 static const XRect _Const0030 = {{ 19, 7 }, { 39, 29 }};
 static const XRect _Const0031 = {{ 41, 2 }, { 92, 33 }};
 static const XRect _Const0032 = {{ 84, 9 }, { 110, 31 }};
-static const XStringRes _Const0033 = { _StringsDefault0, 0x00BD };
-static const XStringRes _Const0034 = { _StringsDefault0, 0x00C5 };
-static const XStringRes _Const0035 = { _StringsDefault0, 0x00CA };
-static const XStringRes _Const0036 = { _StringsDefault0, 0x00CF };
-static const XStringRes _Const0037 = { _StringsDefault0, 0x00D4 };
-static const XStringRes _Const0038 = { _StringsDefault0, 0x00D8 };
-static const XStringRes _Const0039 = { _StringsDefault0, 0x00DE };
+static const XStringRes _Const0033 = { _StringsDefault0, 0x00B8 };
+static const XStringRes _Const0034 = { _StringsDefault0, 0x00C0 };
+static const XStringRes _Const0035 = { _StringsDefault0, 0x00C5 };
+static const XStringRes _Const0036 = { _StringsDefault0, 0x00CA };
+static const XStringRes _Const0037 = { _StringsDefault0, 0x00CF };
+static const XStringRes _Const0038 = { _StringsDefault0, 0x00D3 };
+static const XStringRes _Const0039 = { _StringsDefault0, 0x00D9 };
 static const XRect _Const003A = {{ 0, 38 }, { 480, 226 }};
 static const XRect _Const003B = {{ 186, 68 }, { 270, 116 }};
 static const XRect _Const003C = {{ 270, 82 }, { 318, 112 }};
@@ -163,11 +163,11 @@ static const XRect _Const003D = {{ 186, 117 }, { 408, 210 }};
 static const XColor _Const003E = { 0xCF, 0xCF, 0xCF, 0xFF };
 static const XRect _Const003F = {{ 28, 54 }, { 178, 204 }};
 static const XRect _Const0040 = {{ 104, 75 }, { 376, 199 }};
-static const XStringRes _Const0041 = { _StringsDefault0, 0x00E3 };
-static const XStringRes _Const0042 = { _StringsDefault0, 0x00F4 };
+static const XStringRes _Const0041 = { _StringsDefault0, 0x00DE };
+static const XStringRes _Const0042 = { _StringsDefault0, 0x00EF };
 static const XRect _Const0043 = {{ 0, 36 }, { 480, 272 }};
 static const XRect _Const0044 = {{ 0, 36 }, { 480, 38 }};
-static const XStringRes _Const0045 = { _StringsDefault0, 0x00FA };
+static const XStringRes _Const0045 = { _StringsDefault0, 0x00F5 };
 static const XRect _Const0046 = {{ 0, 0 }, { 480, 74 }};
 static const XRect _Const0047 = {{ 20, 0 }, { 440, 72 }};
 static const XColor _Const0048 = { 0x1E, 0x47, 0x8C, 0xFF };
@@ -179,8 +179,8 @@ static const XColor _Const004D = { 0xC8, 0xC8, 0xC8, 0xFF };
 static const XRect _Const004E = {{ 0, 72 }, { 480, 74 }};
 static const XRect _Const004F = {{ 0, 0 }, { 340, 252 }};
 static const XRect _Const0050 = {{ 15, 13 }, { 325, 190 }};
-static const XStringRes _Const0051 = { _StringsDefault0, 0x010F };
-static const XStringRes _Const0052 = { _StringsDefault0, 0x0114 };
+static const XStringRes _Const0051 = { _StringsDefault0, 0x010A };
+static const XStringRes _Const0052 = { _StringsDefault0, 0x010F };
 static const XRect _Const0053 = {{ 69, 154 }, { 271, 240 }};
 static const XRect _Const0054 = {{ 15, 13 }, { 325, 144 }};
 static const XRect _Const0055 = {{ 69, 200 }, { 271, 240 }};
@@ -2912,16 +2912,12 @@ void NavigationNAV05_TBTView_OnTbtListUpdateSlot( NavigationNAV05_TBTView _this,
 
   ViewsText_OnSetString( &_this->NextTurnDistUnit, NaviTbtData->DistUnit );
 
-  if ( !EwCompString( EwLoadString( &StringsUNT02_UNIT_MILEAGE_KILOMETER ), NaviTbtData->DistUnit ) 
-      || !EwCompString( EwLoadString( &NavigationDISTANCE_UNIT_MILE ), NaviTbtData->DistUnit ))
-  {
-    XFloat Distance = (XFloat)NaviTbtData->Distance / 1000;
-    ViewsText_OnSetString( &_this->NextTurnDist, EwNewStringFloat( Distance, 0, 
-    1 ));
-  }
-  else
-    ViewsText_OnSetString( &_this->NextTurnDist, EwNewStringInt( NaviTbtData->Distance, 
+  if ( 0.000000f == EwMathFract( NaviTbtData->Distance ))
+    ViewsText_OnSetString( &_this->NextTurnDist, EwNewStringInt((XInt32)NaviTbtData->Distance, 
     0, 10 ));
+  else
+    ViewsText_OnSetString( &_this->NextTurnDist, EwNewStringFloat( NaviTbtData->Distance, 
+    0, 1 ));
 
   ViewsText_OnSetString( &_this->NextTurnDescription, NaviTbtData->TbtDescription );
 }
@@ -4037,16 +4033,12 @@ void NavigationTbtListMenu_OnLoadItem( NavigationTbtListMenu _this, XObject send
     NavigationTbtListMenu_ShowTbtListItemIcon( _this, NaviTbtData->IconIdx );
     ViewsText_OnSetString( &item->NextTurnDistUnit, NaviTbtData->DistUnit );
 
-    if ( !EwCompString( EwLoadString( &StringsUNT02_UNIT_MILEAGE_KILOMETER ), NaviTbtData->DistUnit ) 
-        || !EwCompString( EwLoadString( &NavigationDISTANCE_UNIT_MILE ), NaviTbtData->DistUnit ))
-    {
-      XFloat Distance = (XFloat)NaviTbtData->Distance / 1000;
-      ViewsText_OnSetString( &item->NextTurnDist, EwNewStringFloat( Distance, 0, 
-      1 ));
-    }
-    else
-      ViewsText_OnSetString( &item->NextTurnDist, EwNewStringInt( NaviTbtData->Distance, 
+    if ( 0.000000f == EwMathFract( NaviTbtData->Distance ))
+      ViewsText_OnSetString( &item->NextTurnDist, EwNewStringInt((XInt32)NaviTbtData->Distance, 
       0, 10 ));
+    else
+      ViewsText_OnSetString( &item->NextTurnDist, EwNewStringFloat( NaviTbtData->Distance, 
+      0, 1 ));
 
     ViewsText_OnSetString( &item->NextTurnDescription, NaviTbtData->TbtDescription );
     ViewsRectangle_OnSetVisible( &item->TbtItemBg, 0 );
@@ -4395,8 +4387,5 @@ EW_DEFINE_CLASS( NavigationTbtListMenu, CoreGroup, VerticalList, VerticalList, V
   CoreGroup_Remove,
   CoreGroup_Add,
 EW_END_OF_CLASS( NavigationTbtListMenu )
-
-/* User defined constant: 'Navigation::DISTANCE_UNIT_MILE' */
-const XStringRes NavigationDISTANCE_UNIT_MILE = { _StringsDefault0, 0x0002 };
 
 /* Embedded Wizard */

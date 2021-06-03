@@ -123,18 +123,7 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
             navi_tbt_buffer[index].dist_unit[MAX_TBT_DIST_UNIT_SIZE-1] = '\0';
             }
 
-        float dist_in_float = 0.0;
-        dist_in_float = NAVILITE_bytes_to_float( tbt_list_item->distance );
-
-        if( !strncmp( navi_tbt_buffer[index].dist_unit, "km", 2 ) ||
-            !strncmp( navi_tbt_buffer[index].dist_unit, "mi", 2 ) )
-            {
-            navi_tbt_buffer[index].distance = (int)( dist_in_float*1000 );
-            }
-        else
-            {
-            navi_tbt_buffer[index].distance = (int)( dist_in_float );
-            }
+        navi_tbt_buffer[index].distance = NAVILITE_bytes_to_float( tbt_list_item->distance );
         navi_tbt_buffer[index].list_idx = ( tbt_list_item->list_item_index - 1 );
         navi_tbt_buffer[index].icon_idx = tbt_list_item->icon_index;
         if( index == ( num_of_tbt_list_item - 1 ) )
@@ -171,7 +160,7 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
         {
         navi_tbt_buffer[i].list_idx = 0;
         navi_tbt_buffer[i].icon_idx = 0;
-        navi_tbt_buffer[i].distance = 0;
+        navi_tbt_buffer[i].distance = 0.0;
         memset( navi_tbt_buffer[i].dist_unit, 0, MAX_TBT_DIST_UNIT_SIZE );
         memset( navi_tbt_buffer[i].description, 0, MAX_TBT_DESCRIPTION_SIZE );
         }
@@ -195,7 +184,7 @@ bool NAVI_get_tbt_item
     (
     const int tbt_index,
     uint32_t* icon_index,
-    uint16_t* distance,
+    float* distance,
     char** dist_unit,
     char** description
     )
@@ -211,7 +200,6 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
         *dist_unit = navi_tbt_buffer[tbt_index].dist_unit;
         *description = navi_tbt_buffer[tbt_index].description;
         }
-    PRINTF( "%s, %d, %d, %d, %s\r\n", __FUNCTION__, tbt_index, *icon_index, *distance, *dist_unit );
     xSemaphoreGive( tbt_semphr_hndl );
     }
 return res;
@@ -249,18 +237,7 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
         navi_tbt_buffer[0].dist_unit[MAX_TBT_DIST_UNIT_SIZE-1] = '\0';
         }
 
-    float dist_in_float = 0.0;
-    dist_in_float = NAVILITE_bytes_to_float( distance );
-    if( !strncmp( navi_tbt_buffer[0].dist_unit, "km", 2 ) ||
-        !strncmp( navi_tbt_buffer[0].dist_unit, "mi", 2 ) )
-        {
-        navi_tbt_buffer[0].distance = (int)( dist_in_float*1000 );
-        }
-    else
-        {
-        navi_tbt_buffer[0].distance = (int)( dist_in_float );
-        }
-    PRINTF( "%s, %d, %d %s\r\n", __FUNCTION__, navi_tbt_buffer[0].icon_idx, navi_tbt_buffer[0].distance, navi_tbt_buffer[0].dist_unit );
+    navi_tbt_buffer[0].distance = NAVILITE_bytes_to_float( distance );
     EW_notify_tbt_list_update();
     xSemaphoreGive( tbt_semphr_hndl );
     }

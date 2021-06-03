@@ -1017,7 +1017,7 @@ class NavigationDeviceClass : Templates::DeviceClass
       native( NaviTbtData, aTbtItemIdx )
       {
         uint32_t icon_idx;
-        uint16_t distance;
+        float distance;
         char* dist_unit;
         char* description;
         NAVI_get_tbt_item( aTbtItemIdx, &icon_idx, &distance, &dist_unit, &description );
@@ -3802,7 +3802,7 @@ class NaviTbtDataClass
 
   $rect <260,40,460,80>
   $output true
-  var int32 Distance;
+  var float Distance;
 
   $rect <270,100,470,140>
   $output true

@@ -89,7 +89,7 @@ typedef struct
     {
     uint32_t list_idx;
     uint32_t icon_idx;
-    uint16_t distance;
+    float    distance;
     char     dist_unit[MAX_TBT_DIST_UNIT_SIZE];
     char     description[MAX_TBT_DESCRIPTION_SIZE];
     }navi_tbt_data_type;
@@ -117,7 +117,7 @@ void NAVI_get_alert_distance( char** dist );
 bool NAVI_is_tbt_message_displayed( void );
 uint16_t NAVI_get_tbt_list_size( void );
 void NAVI_reset_tbt_buffer( void );
-bool NAVI_get_tbt_item( const int tbt_index, uint32_t* icon_index, uint16_t* distance, char** dist_unit, char** description );
+bool NAVI_get_tbt_item( const int tbt_index, uint32_t* icon_index, float* distance, char** dist_unit, char** description );
 
 #ifdef __cplusplus
 }

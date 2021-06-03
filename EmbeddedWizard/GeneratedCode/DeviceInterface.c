@@ -1211,7 +1211,7 @@ DeviceInterfaceNaviTbtDataClass DeviceInterfaceNavigationDeviceClass_GetNaviTbtD
   NaviTbtData = EwNewObject( DeviceInterfaceNaviTbtDataClass, 0 );
   {
     uint32_t icon_idx;
-    uint16_t distance;
+    float distance;
     char* dist_unit;
     char* description;
     NAVI_get_tbt_item( aTbtItemIdx, &icon_idx, &distance, &dist_unit, &description );
