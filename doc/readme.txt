@@ -1,17 +1,18 @@
 Overview
 ========
-The GPIO Example project is a demonstration program that uses the KSDK software to manipulate the general-purpose
-outputs.
-The example is supported by the set, clear, and toggle write-only registers for each port output data register. The 
-example take turns to shine the LED.
-
+The Hello World demo application provides a sanity check for the new SDK build environments and board bring up. The Hello
+World demo prints the "Hello World" string to the terminal using the SDK UART drivers. The purpose of this demo is to
+show how to use the UART, and to provide a simple project for debugging and further development.
+Note: Please input one character at a time. If you input too many characters each time, the receiver may overflow
+because the low level UART uses simple polling way for receiving. If you want to try inputting many characters each time,
+just define DEBUG_CONSOLE_TRANSFER_NON_BLOCKING in your project to use the advanced debug console utility.
 
 Toolchain supported
 ===================
-- IAR embedded Workbench  8.50.1
-- Keil MDK  5.30
-- MCUXpresso  11.2.0
-- GCC ARM Embedded  9.2.1
+- IAR embedded Workbench  8.50.9
+- Keil MDK  5.33
+- GCC ARM Embedded  9.3.1
+- MCUXpresso  11.3.0
 
 Hardware requirements
 =====================
@@ -37,9 +38,15 @@ Prepare the Demo
 
 Running the demo
 ================
-These instructions are displayed/shown on the terminal window:
+The log below shows the output of the hello world demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-GPIO Driver example
-The LED is blinking.
+hello world.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-And you will find 1 LED is taking turns to shine.
+
+Note:
+To download binary into qspiflash and boot from qspiflash directly, following steps are needed:
+1. Compile flash target of the project, and get the binaray file "hello_world.bin".
+3. Set the SW1: 1 off 2 off 3 on 4 off, then power on the board and connect USB cable to J11.
+4. Drop the binaray into disk "RT1170-EVK" on PC.
+5. Wait for the disk disappear and appear again which will take couple of seconds.
+7. Reset the board by pressing SW3 or power off and on the board. 

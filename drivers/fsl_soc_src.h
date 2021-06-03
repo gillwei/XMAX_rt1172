@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019-2020 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -18,8 +18,8 @@
 
 /*! @name Driver version */
 /*@{*/
-/*! @brief SRC driver version 2.0.0. */
-#define FSL_SRC_DRIVER_VERSION (MAKE_VERSION(2, 0, 0))
+/*! @brief SRC driver version 2.1.0. */
+#define FSL_SRC_DRIVER_VERSION (MAKE_VERSION(2, 1, 0))
 /*@}*/
 
 #define SRC_SLICE_ADDRESS_OFFSET (0x200U)
@@ -36,6 +36,52 @@
 #define SRC_SLICE_STAT_UNDER_RST_MASK (0x1U)
 #define SRC_SLICE_STAT_RST_BY_HW_MASK (0x4U)
 #define SRC_SLICE_STAT_RST_BY_SW_MASK (0x8U)
+
+#define SRC_WHITE_LIST_VALUE(coreName)  (1UL << (uint32_t)(coreName))
+#define SRC_ASSIGN_LIST_VALUE(coreName) (1UL << (uint32_t)(coreName))
+
+#define SRC_SLICE_AUTHEN_DOMAIN_MODE_MASK   (0x1U)
+#define SRC_SLICE_AUTHEN_SETPOINT_MODE_MASK (0x2U)
+
+#define SRC_SLICE_AUTHEN_LOCK_MODE_MASK  (0x80U)
+#define SRC_SLICE_AUTHEN_LOCK_MODE_SHIFT (7U)
+#define SRC_SLICE_AUTHEN_LOCK_MODE(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_LOCK_MODE_SHIFT)) & SRC_SLICE_AUTHEN_LOCK_MODE_MASK)
+
+#define SRC_SLICE_AUTHEN_ASSIGN_LIST_MASK  (0xF00U)
+#define SRC_SLICE_AUTHEN_ASSIGN_LIST_SHIFT (8U)
+#define SRC_SLICE_AUTHEN_ASSIGN_LIST(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_ASSIGN_LIST_SHIFT)) & SRC_SLICE_AUTHEN_ASSIGN_LIST_MASK)
+
+#define SRC_SLICE_AUTHEN_LOCK_ASSIGN_MASK  (0x8000U)
+#define SRC_SLICE_AUTHEN_LOCK_ASSIGN_SHIFT (15)
+#define SRC_SLICE_AUTHEN_LOCK_ASSIGN(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_LOCK_ASSIGN_SHIFT)) & SRC_SLICE_AUTHEN_LOCK_ASSIGN_MASK)
+
+#define SRC_SLICE_AUTHEN_WHITE_LIST_MASK  (0xF0000U)
+#define SRC_SLICE_AUTHEN_WHITE_LIST_SHIFT (16U)
+#define SRC_SLICE_AUTHEN_WHITE_LIST(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_WHITE_LIST_SHIFT)) & SRC_SLICE_AUTHEN_WHITE_LIST_MASK)
+
+#define SRC_SLICE_AUTHEN_LOCK_LIST_MASK  (0x800000U)
+#define SRC_SLICE_AUTHEN_LOCK_LIST_SHIFT (23U)
+#define SRC_SLICE_AUTHEN_LOCK_LIST(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_LOCK_LIST_SHIFT)) & SRC_SLICE_AUTHEN_LOCK_LIST_MASK)
+
+#define SRC_SLICE_AUTHEN_USER_MASK  (0x1000000U)
+#define SRC_SLICE_AUTHEN_USER_SHIFT (24U)
+#define SRC_SLICE_AUTHEN_USER(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_USER_SHIFT)) & SRC_SLICE_AUTHEN_USER_MASK)
+
+#define SRC_SLICE_AUTHEN_NONSECURE_MASK  (0x2000000U)
+#define SRC_SLICE_AUTHEN_NONSECURE_SHIFT (25U)
+#define SRC_SLICE_AUTHEN_NONSECURE(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_NONSECURE_SHIFT)) & SRC_SLICE_AUTHEN_NONSECURE_MASK)
+
+#define SRC_SLICE_AUTHEN_LOCK_SETTING_MASK  (0x80000000U)
+#define SRC_SLICE_AUTHEN_LOCK_SETTING_SHIFT (31U)
+#define SRC_SLICE_AUTHEN_LOCK_SETTING(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_LOCK_SETTING_SHIFT)) & SRC_SLICE_AUTHEN_LOCK_SETTING_MASK)
 
 /*!
  * @brief System core.
@@ -176,6 +222,33 @@ enum _src_setpoint_selection
     kSRC_SetPoint14AssertReset = 1UL << 14UL, /*!< In setpoint14 will assert slice reset. */
     kSRC_SetPoint15AssertReset = 1UL << 15UL, /*!< In setpoint15 will assert slice reset. */
 };
+
+/*!
+ * @brief The index of each general purpose register.
+ */
+typedef enum _src_general_purpose_register_index
+{
+    kSRC_GeneralPurposeRegister1 = 0U, /*!< The index of General Purpose Register1. */
+    kSRC_GeneralPurposeRegister2,      /*!< The index of General Purpose Register2. */
+    kSRC_GeneralPurposeRegister3,      /*!< The index of General Purpose Register3. */
+    kSRC_GeneralPurposeRegister4,      /*!< The index of General Purpose Register4. */
+    kSRC_GeneralPurposeRegister5,      /*!< The index of General Purpose Register5. */
+    kSRC_GeneralPurposeRegister6,      /*!< The index of General Purpose Register6. */
+    kSRC_GeneralPurposeRegister7,      /*!< The index of General Purpose Register7. */
+    kSRC_GeneralPurposeRegister8,      /*!< The index of General Purpose Register8. */
+    kSRC_GeneralPurposeRegister9,      /*!< The index of General Purpose Register9. */
+    kSRC_GeneralPurposeRegister10,     /*!< The index of General Purpose Register10. */
+    kSRC_GeneralPurposeRegister11,     /*!< The index of General Purpose Register11. */
+    kSRC_GeneralPurposeRegister12,     /*!< The index of General Purpose Register12. */
+    kSRC_GeneralPurposeRegister13,     /*!< The index of General Purpose Register13. */
+    kSRC_GeneralPurposeRegister14,     /*!< The index of General Purpose Register14. */
+    kSRC_GeneralPurposeRegister15,     /*!< The index of General Purpose Register15. */
+    kSRC_GeneralPurposeRegister16,     /*!< The index of General Purpose Register16. */
+    kSRC_GeneralPurposeRegister17,     /*!< The index of General Purpose Register17. */
+    kSRC_GeneralPurposeRegister18,     /*!< The index of General Purpose Register18. */
+    kSRC_GeneralPurposeRegister19,     /*!< The index of General Purpose Register19. */
+    kSRC_GeneralPurposeRegister20,     /*!< The index of General Purpose Register20. */
+} src_general_purpose_register_index_t;
 
 /*!
  * @brief The structure of setpoint authentication.
@@ -368,15 +441,196 @@ void SRC_AssertSliceSoftwareReset(SRC_Type *base, src_reset_slice_name_t sliceNa
  */
 
 /*!
- * @brief Sets setpoint authentication for the selected reset slice.
+ * @brief Allows/disallows user mode access
  *
  * @param base SRC peripheral base address.
- * @param sliceName The selected reset slice. See @ref src_reset_slice_name_t for more details.
- * @param authentication Pointer to the structure. See @ref src_setpoint_authentication_t for more details.
+ * @param sliceName The slice name to set, please refer to @ref src_reset_slice_name_t for details.
+ * @param enable Used to control user mode access.
+ *              - \b true Allow user mode access.
+ *              - \b false Disallow user mode access.
  */
-void SRC_SetSliceSetPointAuthentication(SRC_Type *base,
-                                        src_reset_slice_name_t sliceName,
-                                        src_setpoint_authentication_t *authentication);
+static inline void SRC_AllowUserModeAccess(SRC_Type *base, src_reset_slice_name_t sliceName, bool enable)
+{
+    uint32_t authRegAddr;
+
+    authRegAddr = SRC_GET_SLICE_REGISTER_ADDRESS(base, sliceName, SRC_SLICE_AUTHENTICATION_REGISTER_OFFSET);
+
+    if (enable)
+    {
+        *(volatile uint32_t *)authRegAddr |= SRC_SLICE_AUTHEN_USER_MASK;
+    }
+    else
+    {
+        *(volatile uint32_t *)authRegAddr &= ~SRC_SLICE_AUTHEN_USER_MASK;
+    }
+}
+
+/*!
+ * @brief Allows/disallows non secure mode access.
+ *
+ * @param base SRC peripheral base address.
+ * @param sliceName The slice name to set, please refer to @ref src_reset_slice_name_t for details.
+ * @param enable Used to control non secure mode access.
+ *              - \b true Allow non secure mode access.
+ *              - \b false Disallow non secure mode access.
+ */
+static inline void SRC_AllowNonSecureModeAccess(SRC_Type *base, src_reset_slice_name_t sliceName, bool enable)
+{
+    uint32_t authRegAddr;
+
+    authRegAddr = SRC_GET_SLICE_REGISTER_ADDRESS(base, sliceName, SRC_SLICE_AUTHENTICATION_REGISTER_OFFSET);
+
+    if (enable)
+    {
+        *(volatile uint32_t *)authRegAddr |= SRC_SLICE_AUTHEN_NONSECURE_MASK;
+    }
+    else
+    {
+        *(volatile uint32_t *)authRegAddr &= ~SRC_SLICE_AUTHEN_NONSECURE_MASK;
+    }
+}
+
+/*!
+ * @brief Locks the setting of user mode access and non secure mode access.
+ *
+ * @note Once locked only reset can unlock related settings.
+ *
+ * @param base SRC peripheral base address.
+ * @param sliceName The slice name to set, please refer to @ref src_reset_slice_name_t for details.
+ */
+static inline void SRC_LockAccessSetting(SRC_Type *base, src_reset_slice_name_t sliceName)
+{
+    uint32_t authRegAddr;
+
+    authRegAddr = SRC_GET_SLICE_REGISTER_ADDRESS(base, sliceName, SRC_SLICE_AUTHENTICATION_REGISTER_OFFSET);
+
+    *(volatile uint32_t *)authRegAddr |= SRC_SLICE_AUTHEN_LOCK_SETTING_MASK;
+}
+
+/*!
+ * @brief Sets the domain ID white list for the selected slice.
+ *
+ * @param base SRC peripheral base address.
+ * @param sliceName The slice name to set, please refer to @ref src_reset_slice_name_t for details.
+ * @param domainId The core to access registers, should be the OR'ed value of @ref src_core_name_t.
+ */
+static inline void SRC_SetDomainIdWhiteList(SRC_Type *base, src_reset_slice_name_t sliceName, uint8_t domainId)
+{
+    uint32_t authRegAddr;
+
+    authRegAddr = SRC_GET_SLICE_REGISTER_ADDRESS(base, sliceName, SRC_SLICE_AUTHENTICATION_REGISTER_OFFSET);
+
+    *(volatile uint32_t *)authRegAddr = ((*(volatile uint32_t *)authRegAddr) & (~SRC_SLICE_AUTHEN_WHITE_LIST_MASK)) |
+                                        SRC_SLICE_AUTHEN_WHITE_LIST(domainId);
+}
+
+/*!
+ * @brief Locks the value of white list.
+ *
+ * @note Once locked only reset can unlock related settings.
+ *
+ * @param base SRC peripheral base address.
+ * @param sliceName The slice name to set, please refer to @ref src_reset_slice_name_t for details.
+ */
+static inline void SRC_LockDomainIdWhiteList(SRC_Type *base, src_reset_slice_name_t sliceName)
+{
+    uint32_t authRegAddr;
+
+    authRegAddr = SRC_GET_SLICE_REGISTER_ADDRESS(base, sliceName, SRC_SLICE_AUTHENTICATION_REGISTER_OFFSET);
+
+    *(volatile uint32_t *)authRegAddr |= SRC_SLICE_AUTHEN_LOCK_LIST_MASK;
+}
+
+/*!
+ * @brief Sets the value of assign list.
+ *
+ * @param base SRC peripheral base address.
+ * @param sliceName The slice name to set, please refer to @ref src_reset_slice_name_t for details.
+ * @param assignList Cores that subject to corresponding core status transition,
+ *                  should be the OR'ed value of @ref src_core_name_t.
+ */
+static inline void SRC_SetAssignList(SRC_Type *base, src_reset_slice_name_t sliceName, uint32_t assignList)
+{
+    uint32_t authRegAddr;
+
+    authRegAddr = SRC_GET_SLICE_REGISTER_ADDRESS(base, sliceName, SRC_SLICE_AUTHENTICATION_REGISTER_OFFSET);
+
+    *(volatile uint32_t *)authRegAddr = ((*(volatile uint32_t *)authRegAddr) & (~SRC_SLICE_AUTHEN_ASSIGN_LIST_MASK)) |
+                                        SRC_SLICE_AUTHEN_ASSIGN_LIST(assignList);
+}
+
+/*!
+ * @brief Locks the value of assign list.
+ *
+ * @note Once locked only reset can unlock related settings.
+ *
+ * @param base SRC peripheral base address.
+ * @param sliceName The slice name to set, please refer to @ref src_reset_slice_name_t for details.
+ */
+static inline void SRC_LockAssignList(SRC_Type *base, src_reset_slice_name_t sliceName)
+{
+    uint32_t authRegAddr;
+
+    authRegAddr = SRC_GET_SLICE_REGISTER_ADDRESS(base, sliceName, SRC_SLICE_AUTHENTICATION_REGISTER_OFFSET);
+
+    *(volatile uint32_t *)authRegAddr |= SRC_SLICE_AUTHEN_LOCK_ASSIGN_MASK;
+}
+
+/*!
+ * @brief Enable/disable setpoint transfer reset.
+ *
+ * @param base SRC peripheral base address.
+ * @param sliceName The slice name to set, please refer to @ref src_reset_slice_name_t for details.
+ * @param enable User to control setpoint transfer reset.
+ *              - \b true Enable setpoint transfer reset.
+ *              - \b false Disable setpoint transfer reset.
+ */
+static inline void SRC_EnableSetPointTransferReset(SRC_Type *base, src_reset_slice_name_t sliceName, bool enable)
+{
+    uint32_t authRegAddr;
+
+    authRegAddr = SRC_GET_SLICE_REGISTER_ADDRESS(base, sliceName, SRC_SLICE_AUTHENTICATION_REGISTER_OFFSET);
+
+    if (enable)
+    {
+        /* If the setpoint mode transfer reset is enabled, domain mode transfer reset should be disabled. */
+        *(volatile uint32_t *)authRegAddr =
+            ((*(volatile uint32_t *)authRegAddr) & (~SRC_SLICE_AUTHEN_DOMAIN_MODE_MASK)) |
+            SRC_SLICE_AUTHEN_SETPOINT_MODE_MASK;
+    }
+    else
+    {
+        *(volatile uint32_t *)authRegAddr &= ~SRC_SLICE_AUTHEN_SETPOINT_MODE_MASK;
+    }
+}
+
+/*!
+ * @brief Enable/disable domain mode transfer reset.
+ *
+ * @param base SRC peripheral base address.
+ * @param sliceName The slice name to set, please refer to @ref src_reset_slice_name_t for details.
+ * @param enable User to control domain mode reset.
+ *              - \b true Enable domain mode reset.
+ *              - \b false Disable domain mode reset.
+ */
+static inline void SRC_EnableDomainModeTransferReset(SRC_Type *base, src_reset_slice_name_t sliceName, bool enable)
+{
+    uint32_t authRegAddr;
+
+    authRegAddr = SRC_GET_SLICE_REGISTER_ADDRESS(base, sliceName, SRC_SLICE_AUTHENTICATION_REGISTER_OFFSET);
+
+    if (enable)
+    {
+        /* If the domain mode transfer reset is enabled, setpoint mode transfer reset should be disabled. */
+        *(volatile uint32_t *)authRegAddr =
+            ((*(volatile uint32_t *)authRegAddr) & (~SRC_SLICE_AUTHEN_SETPOINT_MODE_MASK)) |
+            SRC_SLICE_AUTHEN_DOMAIN_MODE_MASK;
+    }
+    else
+    {
+        *(volatile uint32_t *)authRegAddr &= ~SRC_SLICE_AUTHEN_DOMAIN_MODE_MASK;
+    }
+}
 
 /*!
  * @brief Sets setpoint configuration for the selected reset slice.
@@ -384,20 +638,9 @@ void SRC_SetSliceSetPointAuthentication(SRC_Type *base,
  * @param base SRC peripheral base address.
  * @param sliceName The selected reset slice. See @ref src_reset_slice_name_t for more details.
  * @param setPointConfig The logic OR'ed value of @ref _src_setpoint_selection enumeration. When the system in the
- * selected setpoint slice reset will be assert.
+ * selected setpoint slice reset will be asserted.
  */
 void SRC_SetSliceSetPointConfig(SRC_Type *base, src_reset_slice_name_t sliceName, uint32_t setpointConfig);
-
-/*!
- * @brief Sets domain mode authentication for the selected reset slice.
- *
- * @param base SRC peripheral base address.
- * @param sliceName The selected reset slice. See @ref src_reset_slice_name_t for more details.
- * @param authentication Pointer to the structure. See @ref src_domain_mode_authentication_t for more details.
- */
-void SRC_SetSliceDomainModeAuthentication(SRC_Type *base,
-                                          src_reset_slice_name_t sliceName,
-                                          src_domain_mode_authentication_t *authentication);
 
 /*!
  * @brief Sets domain mode configuration for the selected reset slice.
@@ -464,6 +707,41 @@ static inline void SRC_ClearSliceResetStatusFlags(SRC_Type *base, src_reset_slic
  * @retval kSRC_SliceResetFinished  The reset is finished.
  */
 src_slice_reset_state_t SRC_GetSliceResetState(SRC_Type *base, src_reset_slice_name_t sliceName);
+
+/*! @} */
+
+/*!
+ * @name General Purpose Registers Related Interfaces
+ * @{
+ */
+
+/*!
+ * @brief Sets value to general purpose registers.
+ *
+ * @param base SRC peripheral base address.
+ * @param index The index of GPRx register array. Please refer to @ref src_general_purpose_register_index_t.
+ * @param value Setting value for GPRx register.
+ */
+static inline void SRC_SetGeneralPurposeRegister(SRC_Type *base,
+                                                 src_general_purpose_register_index_t index,
+                                                 uint32_t value)
+{
+    base->GPR[index] = value;
+}
+
+/*!
+ * @brief Gets the value from general purpose registers.
+ *
+ * @param base SRC peripheral base address.
+ * @param index The index of GPRx register array. Please refer to @ref src_general_purpose_register_index_t.
+ * @return The setting value for GPRx register.
+ */
+static inline uint32_t SRC_GetGeneralPurposeRegister(SRC_Type *base, src_general_purpose_register_index_t index)
+{
+    assert((uint8_t)index < (uint8_t)SRC_GPR_COUNT);
+
+    return base->GPR[index];
+}
 
 /*! @} */
 
