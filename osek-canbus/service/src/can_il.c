@@ -2979,7 +2979,7 @@ for( l_i_frm_index = 0; l_i_frm_index < l_num_frames; l_i_frm_index++ )
         Supplement CAN IDs's indexs are above IL_CAN0_RXJ_MT_SYS_MOD_RXFRM_INDEX
         not need to handle timeout error
         ------------------------------------------------------*/
-        else if( l_i_frm_index <= IL_CAN0_RXJ_MT_SYS_MOD_RXFRM_INDEX )
+        else if( l_i_frm_index < IL_CAN0_RXJ_MT_SYS_MOD_RXFRM_INDEX )
             {
             /*------------------------------------------------------
             Handle the periodic frame

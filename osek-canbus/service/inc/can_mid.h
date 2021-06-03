@@ -266,6 +266,15 @@ typedef struct
 
     }mid_msg_supp_func_t;
 
+/*------------------------------------------------------
+Middle layer Supplementcan bluetooth message type
+------------------------------------------------------*/
+typedef struct
+    {
+    can_msg_id_t      id;
+    can_msg_data_t    *data;
+    }can_supp_msg_t;
+
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
@@ -285,6 +294,11 @@ void can_mid_resp_cb
     );
 
 void can_mid_task
+    (
+    void
+    );
+
+void can_mid_supplement_task
     (
     void
     );

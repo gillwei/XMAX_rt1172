@@ -19,6 +19,7 @@
 #include "can_il_par.h"
 #include "can_il_enum.h"
 #include "can_il_prv_par.h"
+#include "can_dll.h"
 
 #include "VI_pub.h"
 #include "fsl_debug_console.h"
@@ -53,6 +54,11 @@
 
 #define MID_FUEL_CONS_CALC_TIME                         200 //!< 200 * 5ms = 1000ms
 
+#define MID_MSG_UPDATE_TO_BC_1000MS                     200 // !< 200 * 5ms = 1000ms
+#define MID_MSG_UPDATE_TO_BC_100MS                      20  // !< 20 * 5ms = 100ms
+
+#define MID_MSG_UPDATE_TO_BC_PERIOD_1000MS              100 // 1000ms
+#define MID_MSG_UPDATE_TO_BC_PERIOD_100MS               10  // 100ms
 
 /*--------------------------------------------------------------------
                             TYPES
@@ -87,6 +93,31 @@ mid_msg_t mid_msg_inst[] =
     { TX2_REQ_SUPPORT_CAN0_ID,     RX2_RES_SUPPORT_CAN0_ID,     MID_MSG_SID_SUPP_FUNC_LIST,      MID_RES_SID_SUPP_FUNC_LIST },
 };
 
+il_rx_frm_index_t supplement_messages[] =
+{
+    IL_CAN0_RX0_ECU_INDCT_STAT_IDX,
+    IL_CAN0_RXH_VH_EG_SPD_IDX,
+    IL_CAN0_RXJ_MT_SYS_MOD_IDX,
+    IL_CAN0_RXK_GRIP_W_BTN_STAT_IDX,
+    IL_CAN0_RXL_MT_GEAR_POS_IDX,
+    IL_CAN0_RXM_ODO_TRIP_VAL_IDX,
+    IL_CAN0_RXN_MT_SET_INFO_IDX,
+    IL_CAN0_RXO_ECU_SYS_MOD_IDX,
+    IL_CAN0_RXP_APS_ETV_IDX,
+    IL_CAN0_RXQ_DIAG_EGMOD_IDX,
+    IL_CAN0_RXR_EG_STAT_IDX,
+    IL_CAN0_RXS_ECU_GEAR_POS_IDX,
+    IL_CAN0_RXT_ECU_STAT_TCU_IDX,
+    IL_CAN0_RXU_ECVT_STAT_TCU_IDX,
+    IL_CAN0_RXV_ABS_PRESS_IDX,
+    IL_CAN0_RXW_ABS_STAT_IDX,
+    IL_CAN0_RXX_SMT_STAT_IDX,
+    IL_CAN0_RXY_TLCU_COM_DATA_IDX,
+    IL_CAN0_RXZ0_TLCU_SIG_IDX,
+    IL_CAN0_RXZ1_TCU_STAT_ECU_IDX,
+};
+
+
 /*------------------------------------------------------
 Fuel consumption
 ------------------------------------------------------*/
@@ -95,6 +126,7 @@ static uint32 fuel_cons_curr         = 0;
 static bool   fuel_cons_read_status  = FALSE;
 static bool   fuel_cons_write_status = FALSE;
 static bool   ign_status             = PM_IGN_ON;
+
 
 /*------------------------------------------------------
 Init the message initial values in middle layer
@@ -750,6 +782,114 @@ can_mid_get_supp_func_list
 return ( &supp_func_list );
 }
 
+/*------------------------------------------------------
+Supplement CAN messages sending by Bluetooth
+------------------------------------------------------*/
+void can_mid_supplement_task
+    (
+    void
+    )
+{
+uint8 l_supp_index  = 0;
+uint8 l_frm_index   = 0;
+
+il_rxfrm_info_t         const * l_p_rxfrm_info      = NULL;
+il_rx_per_info_t        const * l_p_per_info        = NULL;
+il_rxfrm_t              const * l_p_rxfrm           = NULL;
+
+dll_rx_buf_dispatch_t   const * l_p_buf_dispatch    = NULL;
+dll_rx_filt_dispatch_t  const * l_p_filt_dispatch   = NULL;
+dll_rx_frm_dispatch_t   const * l_p_frm_dispatch    = NULL;
+uint8                           l_num_filters       = 0;
+uint8                           l_can_data_len      = 0;
+
+static can_supp_msg_t           l_supp_data         = { 0 };
+static uint8                    l_supp_1000ms_data[240]	= { 0 };
+static uint8                    l_supp_100ms_data[240]	= { 0 };
+static uint8                    l_supp_1000ms_data_index=  0;
+static uint8                    l_supp_100ms_data_index =  0;
+static uint8                    timer = 0;
+/*------------------------------------------------------
+Get pointers to the frame information
+------------------------------------------------------*/
+l_p_rxfrm_info = il_get_rxfrm_info_ptr( CAN_CONTROLLER_2 );
+
+/*------------------------------------------------------
+Check every supplement messages' timers
+------------------------------------------------------*/
+for( l_supp_index = 0; l_supp_index < ( sizeof(supplement_messages) / sizeof(il_rx_frm_index_t) ); l_supp_index++ )
+    {
+    /*------------------------------------------------------
+    Get the message's id from array
+    ------------------------------------------------------*/
+    l_frm_index = supplement_messages[l_supp_index];
+    /*------------------------------------------------------
+    Get the message's info( Status and period )
+    ------------------------------------------------------*/
+    l_p_rxfrm      = &( l_p_rxfrm_info->p_il_rxfrm[l_frm_index] );
+    l_p_per_info   = l_p_rxfrm->p_per_info;
+
+    l_num_filters = dll_get_rx_buf_dispatch_table( CAN_CONTROLLER_2, &l_p_buf_dispatch );
+
+    if( l_frm_index < l_num_filters )
+        {
+        l_p_filt_dispatch = &( l_p_buf_dispatch->p_rx_filt_dispatch[l_frm_index] );
+        l_p_frm_dispatch  = l_p_filt_dispatch->p_frame_dispatch;
+        l_supp_data.id	  = l_p_frm_dispatch->identifier;
+        l_can_data_len = l_p_rxfrm->dlc;
+        /*------------------------------------------------------
+        Send supplement messages to APP by Bluetooth
+        Maybe a Sending FIFO and another BT sending task
+        could be added here for BT's Asynchrony
+        ------------------------------------------------------*/
+        //TBD
+
+        if( MID_MSG_UPDATE_TO_BC_PERIOD_1000MS == l_p_per_info->period ) /*1000ms*/
+            {
+            memcpy( &(l_supp_1000ms_data[l_supp_1000ms_data_index]), &(l_supp_data.id), sizeof(l_supp_data.id) );
+            l_supp_1000ms_data_index+=sizeof(l_supp_data.id);
+            memcpy( &(l_supp_1000ms_data[l_supp_1000ms_data_index]), l_p_rxfrm->p_data, l_can_data_len );
+            l_supp_1000ms_data_index+=l_can_data_len;
+            }
+        else if( MID_MSG_UPDATE_TO_BC_PERIOD_100MS == l_p_per_info->period ) /*100ms*/
+            {
+            memcpy( &(l_supp_100ms_data[l_supp_1000ms_data_index]), &(l_supp_data.id), sizeof(l_supp_data.id) );
+            l_supp_100ms_data_index+=sizeof(l_supp_data.id);
+            memcpy( &(l_supp_100ms_data[l_supp_100ms_data_index]), l_p_rxfrm->p_data, l_can_data_len );
+            l_supp_100ms_data_index+=l_can_data_len;
+            }
+        else
+            {
+            //do nothing
+            }
+       }
+    }
+
+/*------------------------------------------------------
+Send supplement messages to APP by 100ms and 1000ms
+------------------------------------------------------*/
+if( ( timer%MID_MSG_UPDATE_TO_BC_100MS ) == 0 )
+{
+    if( ( timer%MID_MSG_UPDATE_TO_BC_1000MS ) == 0)
+        {
+        memcpy( &(l_supp_100ms_data[l_supp_100ms_data_index]), &(l_supp_1000ms_data[0]), l_supp_1000ms_data_index );
+        l_supp_100ms_data_index+=l_supp_1000ms_data_index;
+        timer = 0;
+        }
+    BC_motocon_send_can_response( l_supp_100ms_data_index, l_supp_100ms_data, NULL );
+    #if(DEBUG_RX_CAN_SUPPORT)
+    PRINTF( "Supplement CAN LEN:%d \r\n", l_supp_100ms_data_index );
+    #endif
+}
+
+if( timer > MID_MSG_UPDATE_TO_BC_1000MS )
+    {
+    timer = 0;
+    }
+l_supp_100ms_data_index = 0;
+l_supp_1000ms_data_index = 0;
+timer++;
+}
 /*------------------------------------------------------
 Fuel consumption set call back
 ------------------------------------------------------*/
