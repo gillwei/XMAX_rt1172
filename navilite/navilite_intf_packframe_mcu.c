@@ -53,25 +53,30 @@
     * Send start route request
     *
     * @param route_index
-    *        0 - default route
     *       >0 - route index on app side
+    * @param route_option
     * @return navilite_message return navilite_message copy to caller
     *
     *********************************************************************/
     navilite_message NAVILITE_pack_frame_app_startroute_request
         (
-        uint16_t route_index
+        uint32_t route_index,
+        navilite_route_option_type route_option
         )
     {
+    int full_data_size = sizeof( uint8_t ) * 5;
     navilite_message frame = { 0 };
     strncpy( (char*)frame.magic_code, (char*)MAGIC_CODE, MAGIC_CODE_SIZE );
     frame.version = PROTOCOL_VERSION;
     frame.frame_type = NAVILITE_FRAMETYPE_MOBILE_REQUEST;
     frame.service_type =  NAVILITE_SERVICETYPE_APP_START_ROUTE_REQUEST;
-    frame.payload_size = sizeof( uint16_t );
-    frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
-    frame.data_value = route_index; /* 0 - default planned route */
-                                   /* >0 - route Index for POI from Fav/Gas/etc.. */
+    frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_POINTER;
+    frame.data_value = 0;
+    frame.payload_size = full_data_size;
+    uint8_t* packValues = (uint8_t*)malloc( full_data_size );
+    *( (uint32_t*)packValues + 0 ) = route_index;
+    packValues[4] = route_option;
+    frame.data_pointer = (uint8_t*)packValues;
     return (navilite_message)frame;
     }
 

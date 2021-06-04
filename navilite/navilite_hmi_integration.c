@@ -562,12 +562,14 @@ static void hmi_update_callback_dialogevent
     uint8_t dialog_id,
     navilite_dialog_type dialog_type,
     uint8_t* message,
-    uint8_t message_size
+    uint8_t message_size,
+    uint8_t timeout,
+    uint8_t default_choice
     )
 {
 if( dialog_type != NAVILITE_DIALOGTYPE_DISMISS_DIALOG )
     {
-    NAVILITE_PRINTF( "[NAVILITE-CB] DIALOG_SHOW(dialog_id:%d, dialog_type:%d, dialog_size:%d, message:", dialog_id, dialog_type, message_size );
+    NAVILITE_PRINTF( "[NAVILITE-CB] DIALOG_SHOW(dialog_id:%d, dialog_type:%d, dialog_size:%d, timeout:%d, default_choice:%d, message:", dialog_id, dialog_type, message_size, timeout, default_choice );
     NAVILITE_print_utf8( message, message_size );
     }
 else

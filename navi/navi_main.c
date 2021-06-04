@@ -526,6 +526,8 @@ EW_notify_zoom_level_update();
 * @param dialog_type    Type of dialog.
 * @param message        Dialog message.
 * @param message_size   Size of dialog message.
+* @param timeout        Timeout
+* @param default_choice Default choice be     used when timeout is expired
 *
 *********************************************************************/
 static void navi_dialog_event_update
@@ -533,7 +535,9 @@ static void navi_dialog_event_update
     uint8_t dialog_id,
     navilite_dialog_type dialog_type,
     uint8_t* message,
-    uint8_t message_size
+    uint8_t message_size,
+    uint8_t timeout,
+    uint8_t default_choice
     )
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
@@ -549,6 +553,7 @@ else
     {
     navi_data_obj.current_road[MAX_DIALOG_DESCRIPTION_SIZE-1] = '\0';
     }
+// @todo: handle the timeout, and default_choice in hmi integration
 EW_notify_dialog_event_update();
 }
 

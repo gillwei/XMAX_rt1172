@@ -55,18 +55,21 @@
     * @public
     * NAVILITE_request_app_startroute
     *
-    * send start route request to app side
+    * Send start route request to app side
     *
+    * @param route_index route index to use
+    * @param route_option route option to use
     * @return true when success
     *         false when failed
     *
     *********************************************************************/
     bool NAVILITE_request_app_startroute
         (
-        uint16_t routeIndex
+        uint32_t route_index,
+        navilite_route_option_type route_option
         )
     {
-    navilite_message frame = NAVILITE_pack_frame_app_startroute_request( routeIndex );
+    navilite_message frame = NAVILITE_pack_frame_app_startroute_request( route_index, route_option );
     bool ret = NAVILITE_send( (uint8_t*)&frame, sizeof( navilite_message ) );
     return ret;
     }
@@ -76,7 +79,7 @@
     * @public
     * NAVILITE_request_app_stoproute
     *
-    * send stop route request to app side
+    * Send stop route request to app side
     *
     * @return true when success
     *         false when failed
@@ -139,7 +142,7 @@
     * @public
     * NAVILITE_request_app_zoomout
     *
-    * send zoom out request to app side
+    * Send zoom out request to app side
     *
     * @return true when success
     *         false when failed
@@ -160,7 +163,7 @@
     * @public
     * NAVILITE_request_app_gohome
     *
-    * send go home request to app side
+    * Send go home request to app side
     *
     * @return true when success
     *         false when failed
@@ -181,7 +184,7 @@
     * @public
     * NAVILITE_request_app_gooffice
     *
-    * send go office request to app side
+    * Send go office request to app side
     *
     * @return true when success
     *         false when failed
@@ -244,7 +247,7 @@
     * @public
     * NAVILITE_request_app_start_imageframe_update
     *
-    * start image frame update request to app
+    * Start image frame update request to app
     *
     * @return true when success
     *         false when failed
@@ -265,7 +268,7 @@
     * @public
     * NAVILITE_request_app_stop_imageframe_update
     *
-    * stop image frame update request to app
+    * Stop image frame update request to app
     *
     * @return true when success
     *         false when failed

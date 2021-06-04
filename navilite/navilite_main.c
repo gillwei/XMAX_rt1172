@@ -1167,11 +1167,15 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         uint8_t dialog_id;
         navilite_dialog_type dialog_type;
         uint8_t message_size;
+        uint8_t timeout; // second
+        uint8_t default_choice;
         int i = 0;
 
         dialog_id = (uint8_t)( data[idx++] );
         dialog_type = (uint8_t)( data[idx++] );
         message_size = (uint8_t)( data[idx++] );
+        timeout = (uint8_t)( data[idx++] );
+        default_choice = (uint8_t)( data[idx++] );
         // read the str size bytes for dialog text
         for ( i = 0; i < message_size; i++ )
             {
@@ -1182,7 +1186,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         if( navilite_content_update_callbacks.callback_func_dialogevent )
             {
             // Callback API for dialog prompt
-            navilite_content_update_callbacks.callback_func_dialogevent( dialog_id, dialog_type, navilite_buffer, message_size );
+            navilite_content_update_callbacks.callback_func_dialogevent( dialog_id, dialog_type, navilite_buffer, message_size, timeout, default_choice );
             }
         }
 
@@ -1661,11 +1665,16 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         uint8_t dialog_id;
         navilite_dialog_type dialog_type;
         uint8_t message_size;
+        uint8_t timeout; // second
+        uint8_t default_choice;
+
         int i = 0;
 
         dialog_id = (uint8_t)( data[idx++] );
         dialog_type = (uint8_t)( data[idx++] );
         message_size = (uint8_t)( data[idx++] );
+        timeout = (uint8_t)( data[idx++] );
+        default_choice = (uint8_t)( data[idx++] );
         // read the str size bytes for dialog text
         for ( i = 0; i < message_size; i++ )
             {
@@ -1676,7 +1685,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         if( navilite_content_update_callbacks.callback_func_dialogevent )
             {
             // Callback API for dialog prompt
-            navilite_content_update_callbacks.callback_func_dialogevent( dialog_id, dialog_type, navilite_buffer, message_size );
+            navilite_content_update_callbacks.callback_func_dialogevent( dialog_id, dialog_type, navilite_buffer, message_size, timeout, default_choice );
             }
         }
 

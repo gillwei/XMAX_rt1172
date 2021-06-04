@@ -161,7 +161,7 @@ typedef void ( *navilite_callback_func_daynightmode )( navilite_daynight_mode_ty
 typedef void ( *navilite_callback_func_speedlimit )( uint16_t speed_limit ); // speed limit
 typedef void ( *navilite_callback_func_viapointcount )( uint8_t via_point_count ); // via point count
 typedef void ( *navilite_callback_func_navigationstatus )( uint8_t navigation_status ); // navigation status
-typedef void ( *navilite_callback_func_dialogevent )( uint8_t dialog_id, navilite_dialog_type dialog_type, uint8_t* message, uint8_t message_size ); // dialog event
+typedef void ( *navilite_callback_func_dialogevent )( uint8_t dialog_id, navilite_dialog_type dialog_type, uint8_t* message, uint8_t message_size, uint8_t timeout, uint8_t default_choice ); // dialog event
 
 /* Helper Utitilty (indirect callback API) */
 typedef void ( *navilite_callback_func_tbtmodestatus )( uint8_t is_tbt ); // when TBT/image is updated, this callback will fire
@@ -276,7 +276,7 @@ bool NAVILITE_send( uint8_t*, uint32_t );
 bool NAVILITE_receive( uint8_t*, uint32_t );
 
 /* NaviLite App Request API (Request Mobile App to do something) */
-bool NAVILITE_request_app_startroute( uint16_t route_index ); //! request navilite mobile app to start routing
+bool NAVILITE_request_app_startroute( uint32_t route_index, navilite_route_option_type route_option ); //! request navilite mobile app to start routing
 bool NAVILITE_request_app_stoproute();        //! request navilite mobile app to stop routing
 bool NAVILITE_request_app_skip_nextwaypoint(); //! request navilite mobile app to skip next way point
 bool NAVILITE_request_app_zoomin();           //! request navilite mobile app to zoom in map and report status

@@ -54,7 +54,8 @@ extern "C" {
 #if( NAVILITE_BUILD_ROLE == NAVILITE_TARGET_MCU )
     navilite_message NAVILITE_pack_frame_app_startroute_request
         (
-        uint16_t route_index
+        uint32_t route_index,
+        uint8_t route_option
         );
 
     navilite_message NAVILITE_pack_frame_app_stoproute_request

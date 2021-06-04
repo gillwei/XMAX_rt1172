@@ -107,6 +107,14 @@ typedef enum tagNAVILITE_BUTTON_TYPE
     NAVILITE_BUTTON_NO = 0x4
     } navilite_button_type;
 
+typedef enum tagNAVILITE_ROUTE_OPTION_TYPE
+    {
+    NAVILITE_ROUTE_NEW_ROUTE = 1,
+    NAVILITE_ROUTE_NEXT_STOP = 2,
+    NAVILITE_ROUTE_LAST_STOP = 3,
+    NAVILITE_ROUTE_UNKNOWN = 0
+    } navilite_route_option_type;
+
 typedef enum tagNAVILITE_FRAME_TYPE
     {
     NAVILITE_FRAMETYPE_MOBILE_REQUEST = 0x01,
