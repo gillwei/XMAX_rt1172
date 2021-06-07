@@ -107,14 +107,6 @@ DeviceInterfaceNotificationContext DeviceInterfaceNotificationDeviceClass_GetNot
 /* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.OnGetNotificationNum()' */
 XUInt32 DeviceInterfaceNotificationDeviceClass_OnGetNotificationNum( DeviceInterfaceNotificationDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.DeleteNotificationOfUid()' */
-void DeviceInterfaceNotificationDeviceClass_DeleteNotificationOfUid( DeviceInterfaceNotificationDeviceClass _this, 
-  XUInt32 Uid );
-
-/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetBufferIdxOfNotificationUID()' */
-XInt32 DeviceInterfaceNotificationDeviceClass_GetBufferIdxOfNotificationUID( DeviceInterfaceNotificationDeviceClass _this, 
-  XUInt32 Uid );
-
 /* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetIncomingCallCaller()' */
 XString DeviceInterfaceNotificationDeviceClass_GetIncomingCallCaller( DeviceInterfaceNotificationDeviceClass _this );
 
@@ -163,6 +155,10 @@ XInt32 DeviceInterfaceNotificationDeviceClass_GetNotificationNumOfCategory( Devi
 
 /* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetActiveCallCaller()' */
 XString DeviceInterfaceNotificationDeviceClass_GetActiveCallCaller( DeviceInterfaceNotificationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.CallNative()' */
+XInt32 DeviceInterfaceNotificationDeviceClass_CallNative( DeviceInterfaceNotificationDeviceClass _this, 
+  XEnum aCmd, XUInt32 aData );
 
 #ifdef __cplusplus
   }

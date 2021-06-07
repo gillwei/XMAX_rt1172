@@ -75,6 +75,8 @@ void NTF_get_active_call_caller( uint8_t** phone_caller );
 bool NTF_is_phonecall_volume_controllable( void );
 void NTF_phonecall_volume_control( const EnumVolumeControl control );
 
+int32_t NTF_call_native( const EnumNotificationNativeCall native_call, const uint32_t data );
+
 #ifdef __cplusplus
 }
 #endif

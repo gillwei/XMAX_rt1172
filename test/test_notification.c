@@ -24,7 +24,8 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define TEST_NOTIFICATION_PERIOD_MS              ( 120*1000 )
+#define TEST_NOTIFICATION_PERIOD_MS              ( 180*1000 )
+#define NOTIFICATION_TEST_NUM                    ( 90 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -80,7 +81,7 @@
         received_time.hour   = 8;
         received_time.minute = 0;
         received_time.second = 0;
-        for( int i = 1; i <= NOTIFICATION_MAX_NUM; i++ )
+        for( int i = 1; i <= NOTIFICATION_TEST_NUM; i++ )
             {
             sprintf( (char*)title, "title%03d", i );
             sprintf( (char*)subtitle, "subtitle%03d", i );

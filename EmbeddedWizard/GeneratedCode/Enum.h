@@ -809,6 +809,15 @@ typedef enum
   EnumSystemStatusTOTAL                 = 2
 } EnumSystemStatus;
 
+/* User defined enumeration: 'Enum::NotificationNativeCall' */
+typedef enum
+{
+  EnumNotificationNativeCallMOVE_SELECTED_IDX = 0,
+  EnumNotificationNativeCallGET_SELECTED_IDX = 1,
+  EnumNotificationNativeCallDELETE_SELECTED_NOTIFICATION = 2,
+  EnumNotificationNativeCallTOTAL       = 3
+} EnumNotificationNativeCall;
+
 #ifdef __cplusplus
   }
 #endif

@@ -3788,6 +3788,23 @@ class NotificationDeviceClass : Templates::DeviceClass
 
     return Caller;
   }
+
+  $rect <30,480,220,520>
+  method int32 CallNative( arg Enum::NotificationNativeCall aCmd, arg uint32 aData )
+  {
+    var int32 result;
+    $if !$prototyper
+      native( aCmd, aData, result )
+      {
+        result = NTF_call_native( aCmd, aData );
+      }
+    $else
+      //suppress warming
+      aCmd;
+      aData;
+    $endif
+    return result;
+  }
 }
 
 $rect <530,340,730,380>

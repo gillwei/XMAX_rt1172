@@ -690,6 +690,46 @@ if( notification_protocol == protocol ||
 /*********************************************************************
 *
 * @public
+* NTF_call_native
+*
+* Call native
+*
+* @param native call Native call of EnumNotificationNativeCall index
+* @param data Data of the native call
+*
+*********************************************************************/
+int32_t NTF_call_native
+    (
+    const EnumNotificationNativeCall native_call,
+    const uint32_t data
+    )
+{
+int32_t result;
+
+switch( native_call )
+    {
+    case EnumNotificationNativeCallMOVE_SELECTED_IDX:
+        ntf_move_selected_idx( data );
+        break;
+    case EnumNotificationNativeCallGET_SELECTED_IDX:
+        result = ntf_get_selected_idx();
+        break;
+    case EnumNotificationNativeCallDELETE_SELECTED_NOTIFICATION:
+        if( ERR_NONE == ntf_buffer_delete_selected() )
+            {
+            EW_notify_notification_list_updated();
+            }
+        break;
+    default:
+        break;
+    }
+
+return result;
+}
+
+/*********************************************************************
+*
+* @public
 * NTF_init
 *
 * Init notification

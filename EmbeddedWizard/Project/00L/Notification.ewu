@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <10,20,230,60>
 $output false
@@ -8,6 +8,7 @@ class NTF01_NotificationList : Menu::BaseMenuView
   inherited method Init()
   {
     trace "Init NTF01";
+
     postsignal OnNotificationListUpdatedSlot;
   }
 
@@ -93,13 +94,14 @@ class NTF01_NotificationList : Menu::BaseMenuView
   $rect <520,270,730,310>
   inherited method LoadItemUid()
   {
+    // suppress warning
+    aItemNo;
+
     var uint32 Uid = 0;
 
-    if( 0 < DeviceInterface::NotificationDevice.NotificationNum &&
-        aItemNo < NotificationUID.size )
+    if( 0 < DeviceInterface::NotificationDevice.NotificationNum )
     {
       Uid = NotificationData.Uid;
-      NotificationUID[aItemNo] = NotificationData.Uid;
     }
 
     return Uid;
@@ -118,6 +120,7 @@ class NTF01_NotificationList : Menu::BaseMenuView
       Dialog.NotificationData = DeviceInterface::NotificationDevice.GetNotificationAtItem( NotificationIdx );
       Dialog.OnDismiss = OnNotificationDetailDismissSlot;
       SlideInDialog( Dialog );
+      DeviceInterface::NotificationDevice.CallNative( Enum::NotificationNativeCall.DELETE_SELECTED_NOTIFICATION, 0 );
     }
   }
 
@@ -127,6 +130,7 @@ class NTF01_NotificationList : Menu::BaseMenuView
     preset ScrollbarVisible = true;
     preset FocusFrameBounds = <10,0,444,76>;
     preset SelectedItem = 0;
+    preset OnSelectedItemChanged = OnSelectedItemChangedSlot;
   }
 
   $rect <520,120,720,160>
@@ -168,19 +172,27 @@ class NTF01_NotificationList : Menu::BaseMenuView
     {
       NoDataTimeoutTimer.Enabled = false;
       NoDataText.Visible = false;
-      Menu.NoOfItems = ( int32 )NotificationNum;
       Menu.Focusable = true;
+
+      Menu.NoOfItems = (int32)NotificationNum;
       Menu.InvalidateItems( 0, ( int32 )NotificationNum - 1 );
 
-      // keep the highlight focus on the selected notification after adding new notification or deleting existed notification
-      if( 0 < Menu.NoOfItems )
+      if( !IsInitialized )
       {
-        var uint32 SelectedNotificationUID = NotificationUID[Menu.MenuList.SelectedItem];
-        var int32 BufferIdx = DeviceInterface::NotificationDevice.GetBufferIdxOfNotificationUID( SelectedNotificationUID );
-        trace "Selected NTF UID ", SelectedNotificationUID, " bufIdx: ", BufferIdx;
-        if( 0 <= BufferIdx && BufferIdx < Menu.NoOfItems )
+        IsInitialized = true;
+        Menu.SelectedItem = 0;
+        signal OnSelectedItemChangedSlot;
+      }
+      else
+      {
+        // keep the highlight focus on the selected notification after adding new notification or deleting existed notification
+        if( 0 < Menu.NoOfItems )
         {
-          Menu.SelectedItem = Menu.NoOfItems - BufferIdx  - 1;
+          var int32 BufferSelectedIdx = DeviceInterface::NotificationDevice.CallNative( Enum::NotificationNativeCall.GET_SELECTED_IDX, 0 );
+          if( 0 <= BufferSelectedIdx && BufferSelectedIdx < Menu.NoOfItems )
+          {
+            Menu.SelectedItem = Menu.NoOfItems - BufferSelectedIdx - 1;
+          }
         }
       }
     }
@@ -232,9 +244,6 @@ class NTF01_NotificationList : Menu::BaseMenuView
     }
   }
 
-  $rect <750,120,950,160>
-  array uint32 NotificationUID[ 100 ];
-
   $rect <0,540,260,580>
   slot OnNotificationDetailDismissSlot
   {
@@ -244,6 +253,17 @@ class NTF01_NotificationList : Menu::BaseMenuView
       NoDataTimeoutTimer.Enabled = true;
     }
   }
+
+  $rect <750,270,990,310>
+  slot OnSelectedItemChangedSlot
+  {
+    var uint32 SelectedIdx = DeviceInterface::NotificationDevice.NotificationNum - Menu.SelectedItem - 1;
+    trace "OnSelectedItemChangedSlot ", SelectedIdx;
+    DeviceInterface::NotificationDevice.CallNative( Enum::NotificationNativeCall.MOVE_SELECTED_IDX, SelectedIdx );
+  }
+
+  $rect <190,290,390,330>
+  var bool IsInitialized = false;
 
   $reorder LoadItemReceivedTime 7
   $reorder LoadItemCategory 7
@@ -317,7 +337,6 @@ class NTF02_NotificationDetail : Components::BaseMainBG
     {
       pure NotificationData = value;
       NotificationText.NotificationData = value;
-      DeviceInterface::NotificationDevice.DeleteNotificationOfUid( NotificationData.Uid );
     }
   }
 

@@ -3940,30 +3940,6 @@ XUInt32 DeviceInterfaceNotificationDeviceClass_OnGetNotificationNum( DeviceInter
   return _this->NotificationNum;
 }
 
-/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.DeleteNotificationOfUid()' */
-void DeviceInterfaceNotificationDeviceClass_DeleteNotificationOfUid( DeviceInterfaceNotificationDeviceClass _this, 
-  XUInt32 Uid )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  NTF_delete_notification( Uid );
-}
-
-/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetBufferIdxOfNotificationUID()' */
-XInt32 DeviceInterfaceNotificationDeviceClass_GetBufferIdxOfNotificationUID( DeviceInterfaceNotificationDeviceClass _this, 
-  XUInt32 Uid )
-{
-  XInt32 Index;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  Index = -1;
-  Index = NTF_get_idx_of_notification_uid( Uid );
-  return Index;
-}
-
 /* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.GetIncomingCallCaller()' */
 XString DeviceInterfaceNotificationDeviceClass_GetIncomingCallCaller( DeviceInterfaceNotificationDeviceClass _this )
 {
@@ -4126,6 +4102,20 @@ XString DeviceInterfaceNotificationDeviceClass_GetActiveCallCaller( DeviceInterf
     }
   }
   return Caller;
+}
+
+/* 'C' function for method : 'DeviceInterface::NotificationDeviceClass.CallNative()' */
+XInt32 DeviceInterfaceNotificationDeviceClass_CallNative( DeviceInterfaceNotificationDeviceClass _this, 
+  XEnum aCmd, XUInt32 aData )
+{
+  XInt32 result;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  result = 0;
+  result = NTF_call_native( aCmd, aData );
+  return result;
 }
 
 /* Variants derived from the class : 'DeviceInterface::NotificationDeviceClass' */

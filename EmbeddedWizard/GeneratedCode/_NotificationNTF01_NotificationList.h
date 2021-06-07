@@ -125,7 +125,7 @@ EW_DEFINE_FIELDS( NotificationNTF01_NotificationList, MenuBaseMenuView )
   EW_OBJECT  ( NotificationListUpdatedSystemEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NoDataText,      ViewsText )
   EW_OBJECT  ( NoDataTimeoutTimer, CoreTimer )
-  EW_ARRAY   ( NotificationUID, XUInt32, [100])
+  EW_VARIABLE( IsInitialized,   XBool )
 EW_END_OF_FIELDS( NotificationNTF01_NotificationList )
 
 /* Virtual Method Table (VMT) for the class : 'Notification::NTF01_NotificationList' */
@@ -253,6 +253,10 @@ void NotificationNTF01_NotificationList_OnNoDataTimeoutSlot( NotificationNTF01_N
 
 /* 'C' function for method : 'Notification::NTF01_NotificationList.OnNotificationDetailDismissSlot()' */
 void NotificationNTF01_NotificationList_OnNotificationDetailDismissSlot( NotificationNTF01_NotificationList _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Notification::NTF01_NotificationList.OnSelectedItemChangedSlot()' */
+void NotificationNTF01_NotificationList_OnSelectedItemChangedSlot( NotificationNTF01_NotificationList _this, 
   XObject sender );
 
 #ifdef __cplusplus

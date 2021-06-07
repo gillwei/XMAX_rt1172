@@ -1764,3 +1764,19 @@ enum SystemStatus
   $rect <10,110,230,150>
   item TOTAL;
 }
+
+$rect <730,270,930,310>
+enum NotificationNativeCall
+{
+  $rect <10,10,210,50>
+  item MOVE_SELECTED_IDX;
+
+  $rect <10,60,210,100>
+  item GET_SELECTED_IDX;
+
+  $rect <10,110,210,150>
+  item DELETE_SELECTED_NOTIFICATION;
+
+  $rect <10,160,210,200>
+  item TOTAL;
+}

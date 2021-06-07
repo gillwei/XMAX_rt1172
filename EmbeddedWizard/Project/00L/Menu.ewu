@@ -328,18 +328,7 @@ class VerticalMenu : Components::BaseComponent
   {
     if( Owner.IsCurrentDialog() )
     {
-      var int32 NextItemIdx = MenuList.SelectedItem + 1;
-      if( NextItemIdx < MenuList.NoOfItems )
-      {
-        var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )Owner;
-        if( null != OwnerMenu )
-        {
-          MenuList.SelectedItem = NextItemIdx;
-          SwitchToPageOfSelectedItem();
-          Scrollbar.ViewIdx = MenuList.SelectedItem;
-          MoveFocusFrame();
-        }
-      }
+      SelectedItem = MenuList.SelectedItem + 1;
     }
   }
 
@@ -348,14 +337,7 @@ class VerticalMenu : Components::BaseComponent
   {
     if( Owner.IsCurrentDialog() )
     {
-      var int32 PrevItemIdx = MenuList.SelectedItem - 1;
-      if( PrevItemIdx >= 0 )
-      {
-        MenuList.SelectedItem = PrevItemIdx;
-        SwitchToPageOfSelectedItem();
-        Scrollbar.ViewIdx = MenuList.SelectedItem;
-        MoveFocusFrame();
-      }
+      SelectedItem = MenuList.SelectedItem - 1;
     }
   }
 
@@ -682,7 +664,6 @@ class VerticalMenu : Components::BaseComponent
   $rect <240,510,440,550>
   onset SelectedItem
   {
-    trace "OnSetSelectedItem: ", value;
     if( pure SelectedItem != value )
     {
       pure SelectedItem = value;
@@ -690,6 +671,8 @@ class VerticalMenu : Components::BaseComponent
           MenuList.NoOfItems > value )
       {
         MenuList.SelectedItem = value;
+        postsignal OnSelectedItemChanged;
+
         Scrollbar.ViewIdx = value;
         SwitchToPageOfSelectedItem();
         MoveFocusFrame();
@@ -741,6 +724,9 @@ class VerticalMenu : Components::BaseComponent
       OwnerMenu.OnItemLongEnterKeyActivate( MenuList.SelectedItem, MenuItem );
     }
   }
+
+  $rect <480,510,700,550>
+  property slot OnSelectedItemChanged;
 }
 
 $rect <230,60,430,100>

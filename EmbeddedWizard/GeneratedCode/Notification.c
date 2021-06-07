@@ -28,7 +28,6 @@
 #include "_ComponentsBaseMainBG.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_CoreVerticalList.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceDateTime.h"
 #include "_DeviceInterfaceNotificationContext.h"
@@ -59,15 +58,15 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000168, /* ratio 62.22 % */
+  0x00000162, /* ratio 62.15 % */
   0xB8001500, 0x8009C452, 0x00400037, 0x0C200320, 0x010D3A00, 0xB0306C48, 0x6E001248,
   0x9879A400, 0x2A418010, 0x80008C00, 0x44862001, 0x2A2A0400, 0x20929894, 0x8B2D938A,
   0x515980A4, 0x151149C7, 0x78F4609F, 0x3346E390, 0x898C011A, 0xC2237108, 0xCE824C8C,
-  0x000558E1, 0x0144859C, 0x053A8194, 0x109E9B00, 0x4004AE6D, 0xA9D562A1, 0x850EA757,
-  0xC2A19538, 0x363B218F, 0xA3A448BD, 0x012A0644, 0x07500188, 0x0C8BD000, 0x7AD000F1,
-  0x834EE733, 0x0DDA8B08, 0xE0A1D43A, 0x4EDA00A3, 0xE370E885, 0x971BB6D5, 0x600A51B6,
-  0x81ABD569, 0x7824524F, 0x8846E331, 0x14800167, 0x49C65249, 0x02855E07, 0xEAF3D390,
-  0x76779EE3, 0xB04B856E, 0x08D650EA, 0xFA68035D, 0x0049EB74, 0x00000101, 0x00000000
+  0x000558E1, 0x0144859C, 0x053A8194, 0x109E9B00, 0x8004AE6D, 0x8CCEA093, 0x05161106,
+  0x50E37400, 0x028F6387, 0xA3952220, 0xD9578DC3, 0x46DA5C6E, 0x55A58029, 0xD93D8AAF,
+  0xAACEE721, 0x1D4EAF53, 0xC32A710A, 0xD401858B, 0x4D00021D, 0xDA678CC4, 0xB58BCC32,
+  0x178AC4E3, 0xA8846E33, 0x91C863F0, 0x749C6400, 0x50EAB150, 0xC6AF3D39, 0xE76779ED,
+  0x85A50656, 0x508D4002, 0x4FA68035, 0x10049EB7, 0x00000010, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -81,43 +80,21 @@ static const XStringRes _Const0006 = { _StringsDefault0, 0x0021 };
 static const XStringRes _Const0007 = { _StringsDefault0, 0x0025 };
 static const XStringRes _Const0008 = { _StringsDefault0, 0x0029 };
 static const XStringRes _Const0009 = { _StringsDefault0, 0x004B };
-static const XStringRes _Const000A = { _StringsDefault0, 0x005F };
-static const XStringRes _Const000B = { _StringsDefault0, 0x006B };
-static const XRect _Const000C = {{ 11, 44 }, { 444, 265 }};
-static const XColor _Const000D = { 0xCC, 0xCC, 0xCC, 0xFF };
-static const XRect _Const000E = {{ 453, 44 }, { 461, 252 }};
-static const XRect _Const000F = {{ 33, 48 }, { 439, 258 }};
-static const XRect _Const0010 = {{ 0, 36 }, { 480, 38 }};
-static const XStringRes _Const0011 = { _StringsDefault0, 0x008D };
-static const XRect _Const0012 = {{ 0, 0 }, { 406, 210 }};
-static const XRect _Const0013 = {{ 0, 0 }, { 332, 30 }};
-static const XColor _Const0014 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0015 = {{ 343, 0 }, { 406, 30 }};
-static const XRect _Const0016 = {{ 0, 30 }, { 406, 1260 }};
-static const XPoint _Const0017 = { 0, 0 };
-static const XStringRes _Const0018 = { _StringsDefault0, 0x009A };
-static const XStringRes _Const0019 = { _StringsDefault0, 0x00A8 };
-
-#ifndef EW_DONT_CHECK_INDEX
-  /* This function is used to check the indices when accessing an array.
-     If you don't want this verification add the define EW_DONT_CHECK_INDEX
-     to your Makefile or project settings. */
-  static int EwCheckIndex( int aIndex, int aRange, const char* aFile, int aLine )
-  {
-    if (( aIndex < 0 ) || ( aIndex >= aRange ))
-    {
-      EwPrint( "[FATAL ERROR in %s:%d] Array index %d out of bounds %d",
-                aFile, aLine, aIndex, aRange );
-      EwPanic();
-    }
-    return aIndex;
-  }
-
-  #define EwCheckIndex( aIndex, aRange ) \
-    EwCheckIndex( aIndex, aRange, __FILE__, __LINE__ )
-#else
-  #define EwCheckIndex( aIndex, aRange ) aIndex
-#endif
+static const XStringRes _Const000A = { _StringsDefault0, 0x006D };
+static const XRect _Const000B = {{ 11, 44 }, { 444, 265 }};
+static const XColor _Const000C = { 0xCC, 0xCC, 0xCC, 0xFF };
+static const XRect _Const000D = {{ 453, 44 }, { 461, 252 }};
+static const XRect _Const000E = {{ 33, 48 }, { 439, 258 }};
+static const XRect _Const000F = {{ 0, 36 }, { 480, 38 }};
+static const XStringRes _Const0010 = { _StringsDefault0, 0x008A };
+static const XRect _Const0011 = {{ 0, 0 }, { 406, 210 }};
+static const XRect _Const0012 = {{ 0, 0 }, { 332, 30 }};
+static const XColor _Const0013 = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0014 = {{ 343, 0 }, { 406, 30 }};
+static const XRect _Const0015 = {{ 0, 30 }, { 406, 1260 }};
+static const XPoint _Const0016 = { 0, 0 };
+static const XStringRes _Const0017 = { _StringsDefault0, 0x0097 };
+static const XStringRes _Const0018 = { _StringsDefault0, 0x00A5 };
 
 /* Initializer for the class 'Notification::NTF01_NotificationList' */
 void NotificationNTF01_NotificationList__Init( NotificationNTF01_NotificationList _this, XObject aLink, XHandle aArg )
@@ -146,6 +123,7 @@ void NotificationNTF01_NotificationList__Init( NotificationNTF01_NotificationLis
   CoreTimer_OnSetBegin( &_this->NoDataTimeoutTimer, 2000 );
   CoreTimer_OnSetEnabled( &_this->NoDataTimeoutTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), 0 );
+  _this->Super1.Menu.OnSelectedItemChanged = EwNewSlot( _this, NotificationNTF01_NotificationList_OnSelectedItemChangedSlot );
   _this->NotificationListUpdatedSystemEventHandler.OnEvent = EwNewSlot( _this, NotificationNTF01_NotificationList_OnNotificationListUpdatedSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->NotificationListUpdatedSystemEventHandler, 
   &EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )->NotificationListUpdatedSystemEvent );
@@ -293,15 +271,16 @@ XEnum NotificationNTF01_NotificationList_LoadItemCategory( NotificationNTF01_Not
 XUInt32 NotificationNTF01_NotificationList_LoadItemUid( NotificationNTF01_NotificationList _this, 
   XInt32 aItemNo )
 {
-  XUInt32 Uid = 0;
+  XUInt32 Uid;
 
-  if (( 0 < DeviceInterfaceNotificationDeviceClass_OnGetNotificationNum( EwGetAutoObject( 
-      &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ))) 
-      && ( aItemNo < 100 ))
-  {
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aItemNo );
+
+  Uid = 0;
+
+  if ( 0 < DeviceInterfaceNotificationDeviceClass_OnGetNotificationNum( EwGetAutoObject( 
+      &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )))
     Uid = _this->NotificationData->Uid;
-    _this->NotificationUID[ EwCheckIndex( aItemNo, 100 )] = _this->NotificationData->Uid;
-  }
 
   return Uid;
 }
@@ -326,6 +305,9 @@ void NotificationNTF01_NotificationList_OnItemActivate( NotificationNTF01_Notifi
     NotificationIdx ));
     Dialog->OnDismiss = EwNewSlot( _this, NotificationNTF01_NotificationList_OnNotificationDetailDismissSlot );
     ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)Dialog ));
+    DeviceInterfaceNotificationDeviceClass_CallNative( EwGetAutoObject( &DeviceInterfaceNotificationDevice, 
+    DeviceInterfaceNotificationDeviceClass ), EnumNotificationNativeCallDELETE_SELECTED_NOTIFICATION, 
+    0 );
   }
 }
 
@@ -372,25 +354,29 @@ void NotificationNTF01_NotificationList_OnNotificationListUpdatedSlot( Notificat
   {
     CoreTimer_OnSetEnabled( &_this->NoDataTimeoutTimer, 0 );
     ViewsText_OnSetVisible( &_this->NoDataText, 0 );
-    MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, (XInt32)NotificationNum );
     _this->Super1.Menu.Focusable = 1;
+    MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, (XInt32)NotificationNum );
     MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, (XInt32)NotificationNum 
     - 1 );
 
-    if ( 0 < _this->Super1.Menu.NoOfItems )
+    if ( !_this->IsInitialized )
     {
-      XUInt32 SelectedNotificationUID = _this->NotificationUID[ EwCheckIndex( _this->Super1.Menu.MenuList.SelectedItem, 
-        100 )];
-      XInt32 BufferIdx = DeviceInterfaceNotificationDeviceClass_GetBufferIdxOfNotificationUID( 
-        EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ), 
-        SelectedNotificationUID );
-      EwTrace( "%s%u%s%i", EwLoadString( &_Const0009 ), SelectedNotificationUID, 
-        EwLoadString( &_Const000A ), BufferIdx );
-
-      if (( 0 <= BufferIdx ) && ( BufferIdx < _this->Super1.Menu.NoOfItems ))
-        MenuVerticalMenu_OnSetSelectedItem( &_this->Super1.Menu, ( _this->Super1.Menu.NoOfItems 
-        - BufferIdx ) - 1 );
+      _this->IsInitialized = 1;
+      MenuVerticalMenu_OnSetSelectedItem( &_this->Super1.Menu, 0 );
+      EwSignal( EwNewSlot( _this, NotificationNTF01_NotificationList_OnSelectedItemChangedSlot ), 
+        ((XObject)_this ));
     }
+    else
+      if ( 0 < _this->Super1.Menu.NoOfItems )
+      {
+        XInt32 BufferSelectedIdx = DeviceInterfaceNotificationDeviceClass_CallNative( 
+          EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ), 
+          EnumNotificationNativeCallGET_SELECTED_IDX, 0 );
+
+        if (( 0 <= BufferSelectedIdx ) && ( BufferSelectedIdx < _this->Super1.Menu.NoOfItems ))
+          MenuVerticalMenu_OnSetSelectedItem( &_this->Super1.Menu, ( _this->Super1.Menu.NoOfItems 
+          - BufferSelectedIdx ) - 1 );
+      }
   }
   else
   {
@@ -421,10 +407,28 @@ void NotificationNTF01_NotificationList_OnNotificationDetailDismissSlot( Notific
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s", EwLoadString( &_Const000B ));
+  EwTrace( "%s", EwLoadString( &_Const0009 ));
 
   if ( 0 == _this->Super1.Menu.NoOfItems )
     CoreTimer_OnSetEnabled( &_this->NoDataTimeoutTimer, 1 );
+}
+
+/* 'C' function for method : 'Notification::NTF01_NotificationList.OnSelectedItemChangedSlot()' */
+void NotificationNTF01_NotificationList_OnSelectedItemChangedSlot( NotificationNTF01_NotificationList _this, 
+  XObject sender )
+{
+  XUInt32 SelectedIdx;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  SelectedIdx = ( DeviceInterfaceNotificationDeviceClass_OnGetNotificationNum( EwGetAutoObject( 
+  &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )) 
+  - _this->Super1.Menu.SelectedItem ) - 1;
+  EwTrace( "%s%u", EwLoadString( &_Const000A ), SelectedIdx );
+  DeviceInterfaceNotificationDeviceClass_CallNative( EwGetAutoObject( &DeviceInterfaceNotificationDevice, 
+  DeviceInterfaceNotificationDeviceClass ), EnumNotificationNativeCallMOVE_SELECTED_IDX, 
+  SelectedIdx );
 }
 
 /* Variants derived from the class : 'Notification::NTF01_NotificationList' */
@@ -434,7 +438,7 @@ EW_END_OF_CLASS_VARIANTS( NotificationNTF01_NotificationList )
 /* Virtual Method Table (VMT) for the class : 'Notification::NTF01_NotificationList' */
 EW_DEFINE_CLASS( NotificationNTF01_NotificationList, MenuBaseMenuView, NotificationData, 
                  NotificationListUpdatedSystemEventHandler, NotificationListUpdatedSystemEventHandler, 
-                 NotificationListUpdatedSystemEventHandler, NotificationUID, NotificationUID, 
+                 NotificationListUpdatedSystemEventHandler, IsInitialized, IsInitialized, 
                  "Notification::NTF01_NotificationList" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
@@ -517,14 +521,14 @@ void NotificationNTF02_NotificationDetail__Init( NotificationNTF02_NotificationD
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super1.SlideOutEffectEnabled = 1;
-  CoreRectView__OnSetBounds( &_this->GrayBG, _Const000C );
-  ViewsRectangle_OnSetColor( &_this->GrayBG, _Const000D );
-  CoreRectView__OnSetBounds( &_this->Scrollbar, _Const000E );
+  CoreRectView__OnSetBounds( &_this->GrayBG, _Const000B );
+  ViewsRectangle_OnSetColor( &_this->GrayBG, _Const000C );
+  CoreRectView__OnSetBounds( &_this->Scrollbar, _Const000D );
   MenuScrollbar_OnSetViewIdx( &_this->Scrollbar, 0 );
   MenuScrollbar_OnSetPageItems( &_this->Scrollbar, 7 );
   MenuScrollbar_OnSetListItems( &_this->Scrollbar, 1 );
-  CoreRectView__OnSetBounds( &_this->NotificationText, _Const000F );
-  CoreRectView__OnSetBounds( &_this->Divider, _Const0010 );
+  CoreRectView__OnSetBounds( &_this->NotificationText, _Const000E );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const000F );
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
   CoreGroup__Add( _this, ((CoreView)&_this->GrayBG ), 0 );
@@ -578,7 +582,7 @@ void NotificationNTF02_NotificationDetail_Init( NotificationNTF02_NotificationDe
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0011 ));
+  EwTrace( "%s", EwLoadString( &_Const0010 ));
 }
 
 /* 'C' function for method : 'Notification::NTF02_NotificationDetail.OnShortDownKeyActivated()' */
@@ -617,9 +621,6 @@ void NotificationNTF02_NotificationDetail_OnSetNotificationData( NotificationNTF
     _this->NotificationData = value;
     NotificationNotificationDetailText_OnSetNotificationData( &_this->NotificationText, 
     value );
-    DeviceInterfaceNotificationDeviceClass_DeleteNotificationOfUid( EwGetAutoObject( 
-    &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass ), 
-    _this->NotificationData->Uid );
   }
 }
 
@@ -703,31 +704,31 @@ void NotificationNotificationDetailText__Init( NotificationNotificationDetailTex
   _this->_.VMT = EW_CLASS( NotificationNotificationDetailText );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0012 );
+  CoreRectView__OnSetBounds( _this, _Const0011 );
   CoreView_OnSetLayout((CoreView)&_this->TitleText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->TitleText, _Const0013 );
+  CoreRectView__OnSetBounds( &_this->TitleText, _Const0012 );
   ViewsText_OnSetEllipsis( &_this->TitleText, 1 );
   ViewsText_OnSetAlignment( &_this->TitleText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->TitleText, 0 );
-  ViewsText_OnSetColor( &_this->TitleText, _Const0014 );
+  ViewsText_OnSetColor( &_this->TitleText, _Const0013 );
   CoreView_OnSetLayout((CoreView)&_this->ReceivedTimeText, CoreLayoutAlignToLeft 
   | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->ReceivedTimeText, _Const0015 );
+  CoreRectView__OnSetBounds( &_this->ReceivedTimeText, _Const0014 );
   ViewsText_OnSetAlignment( &_this->ReceivedTimeText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ReceivedTimeText, 0 );
-  ViewsText_OnSetColor( &_this->ReceivedTimeText, _Const0014 );
+  ViewsText_OnSetColor( &_this->ReceivedTimeText, _Const0013 );
   CoreView_OnSetLayout((CoreView)&_this->MessageText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->MessageText, _Const0016 );
+  CoreRectView__OnSetBounds( &_this->MessageText, _Const0015 );
   ViewsText_OnSetRowDistance( &_this->MessageText, 30 );
   ViewsText_OnSetEllipsis( &_this->MessageText, 1 );
   ViewsText_OnSetWrapText( &_this->MessageText, 1 );
-  ViewsText_OnSetScrollOffset( &_this->MessageText, _Const0017 );
+  ViewsText_OnSetScrollOffset( &_this->MessageText, _Const0016 );
   ViewsText_OnSetAlignment( &_this->MessageText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString( &_this->MessageText, 0 );
-  ViewsText_OnSetColor( &_this->MessageText, _Const0014 );
+  ViewsText_OnSetColor( &_this->MessageText, _Const0013 );
   EffectsEffect_OnSetExponent((EffectsEffect)&_this->ScrollEffect, 4.190000f );
   EffectsEffect_OnSetTiming((EffectsEffect)&_this->ScrollEffect, EffectsTimingExp_Out );
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->ScrollEffect, 1 );
@@ -785,15 +786,15 @@ void NotificationNotificationDetailText_OnSetScrollOffsetY( NotificationNotifica
   {
     XRect NewBounds;
     _this->ScrollOffsetY = value;
-    NewBounds = _Const0013;
+    NewBounds = _Const0012;
     NewBounds.Point1.Y = value;
     NewBounds.Point2.Y = ( NewBounds.Point1.Y + 30 );
     CoreRectView__OnSetBounds( &_this->TitleText, NewBounds );
-    NewBounds = _Const0015;
+    NewBounds = _Const0014;
     NewBounds.Point1.Y = value;
     NewBounds.Point2.Y = ( NewBounds.Point1.Y + 30 );
     CoreRectView__OnSetBounds( &_this->ReceivedTimeText, NewBounds );
-    NewBounds = _Const0016;
+    NewBounds = _Const0015;
     NewBounds.Point1.Y = ( 30 + value );
     NewBounds.Point2.Y = ( NewBounds.Point1.Y + 1230 );
     CoreRectView__OnSetBounds( &_this->MessageText, NewBounds );
@@ -820,7 +821,7 @@ XInt32 NotificationNotificationDetailText_ScrollDownPage( NotificationNotificati
     EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ScrollEffect, 1 );
     _this->LineToScroll = (( EwGetInt32Abs( NextScrollOffsetY ) / _this->MessageText.RowDistance ) 
     + 7 ) - 1;
-    EwTrace( "%s%i", EwLoadString( &_Const0018 ), _this->LineToScroll );
+    EwTrace( "%s%i", EwLoadString( &_Const0017 ), _this->LineToScroll );
   }
 
   return _this->LineToScroll;
@@ -848,7 +849,7 @@ XInt32 NotificationNotificationDetailText_ScrollUpPage( NotificationNotification
     EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ScrollEffect, 1 );
     _this->LineToScroll = (( EwGetInt32Abs( NextScrollOffsetY ) / _this->MessageText.RowDistance ) 
     + 7 ) - 1;
-    EwTrace( "%s%i", EwLoadString( &_Const0019 ), _this->LineToScroll );
+    EwTrace( "%s%i", EwLoadString( &_Const0018 ), _this->LineToScroll );
   }
 
   return _this->LineToScroll;

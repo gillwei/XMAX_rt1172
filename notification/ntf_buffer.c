@@ -40,6 +40,7 @@
                                VARIABLES
 --------------------------------------------------------------------*/
 static notification_buffer_s notification_buffer[NOTIFICATION_MAX_NUM];
+static int32_t selected_idx;
 
 typedef struct
     {
@@ -148,11 +149,16 @@ int      i = 0;
 if( used_buffer_lookup_table_idx < used_buffer_lookup_table.num )
     {
 	uint32_t notification_buffer_idx = used_buffer_lookup_table.idx[used_buffer_lookup_table_idx];
-    for( i = used_buffer_lookup_table_idx ; i < used_buffer_lookup_table.num - 1; i++ )
+    for( i = used_buffer_lookup_table_idx; i < used_buffer_lookup_table.num - 1; i++ )
         {
         used_buffer_lookup_table.idx[i] = used_buffer_lookup_table.idx[i+1];
         }
-    used_buffer_lookup_table.idx[used_buffer_lookup_table.num-1] = notification_buffer_idx;
+    used_buffer_lookup_table.idx[used_buffer_lookup_table.num - 1] = notification_buffer_idx;
+
+    if( used_buffer_lookup_table_idx == selected_idx )
+        {
+        selected_idx = used_buffer_lookup_table.num - 1;
+        }
     }
 else
     {
@@ -362,6 +368,71 @@ if( found_idx >= 0 )
             }
         used_buffer_lookup_table.num--;
 
+        if( notification_buf_idx == selected_idx &&
+            0 < selected_idx )
+            {
+            selected_idx--;
+            }
+
+        xSemaphoreGive( buffer_semaphore_handle );
+        }
+    }
+else
+    {
+    result = ERR_BUF_OPERATION;
+    }
+return result;
+}
+
+/*********************************************************************
+*
+* @private
+* ntf_buffer_delete_selected
+*
+* Delete notification of the selected index
+*
+* @return Result of deleting the notification of selected index
+*
+*********************************************************************/
+int ntf_buffer_delete_selected
+    (
+    void
+    )
+{
+int result = ERR_NONE;
+int i = 0;
+int notification_buf_idx = 0;
+
+NTF_PRINTF( "%s %d\r\n", __FUNCTION__, selected_idx );
+
+if( 0 <= selected_idx &&
+    used_buffer_lookup_table.num > selected_idx )
+    {
+    if( pdTRUE == xSemaphoreTake( buffer_semaphore_handle, ticks_to_wait ) )
+        {
+        notification_buf_idx = used_buffer_lookup_table.idx[selected_idx];
+        if( EnumNotificationCategoryMISSED_CALL == notification_buffer[notification_buf_idx].category )
+            {
+            missed_call_notification_num--;
+            }
+        else
+            {
+            message_notification_num--;
+            }
+
+        free_buffer_lookup_table.idx[free_buffer_lookup_table.num] = notification_buf_idx;
+        free_buffer_lookup_table.num++;
+        for( i = selected_idx + 1; i < used_buffer_lookup_table.num; i++ )
+            {
+            used_buffer_lookup_table.idx[i-1] = used_buffer_lookup_table.idx[i];
+            }
+        used_buffer_lookup_table.num--;
+
+        if( 0 < selected_idx )
+            {
+            selected_idx--;
+            }
+
         xSemaphoreGive( buffer_semaphore_handle );
         }
     }
@@ -504,7 +575,7 @@ int NTF_get_idx_of_notification_uid
     const uint32_t uid
     )
 {
-int used_buffer_idx = -1;
+int used_buffer_idx = INVALID_BUFFER_IDX;
 for( int i = 0; i < used_buffer_lookup_table.num; i++ )
     {
     if( notification_buffer[used_buffer_lookup_table.idx[i]].uid == uid )
@@ -552,6 +623,44 @@ return notification_num;
 /*********************************************************************
 *
 * @private
+* ntf_move_selected_idx
+*
+* Move selected index
+*
+*********************************************************************/
+void ntf_move_selected_idx
+    (
+    const uint32_t idx
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, idx );
+if( used_buffer_lookup_table.num > idx )
+    {
+    selected_idx = idx;
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* ntf_get_selected_idx
+*
+* Get selected index
+*
+* @return Selected index
+*
+*********************************************************************/
+int32_t ntf_get_selected_idx
+    (
+    void
+    )
+{
+return selected_idx;
+}
+
+/*********************************************************************
+*
+* @private
 * ntf_buffer_reset
 *
 * Reset notification buffer
@@ -574,7 +683,7 @@ if( pdTRUE == xSemaphoreTake( buffer_semaphore_handle, ticks_to_wait ) )
     used_buffer_lookup_table.num = 0;
     missed_call_notification_num = 0;
     message_notification_num     = 0;
-
+    selected_idx                 = 0;
     xSemaphoreGive( buffer_semaphore_handle );
     }
 }

@@ -101,6 +101,7 @@
 
 /* Deklaration of class : 'Menu::VerticalMenu' */
 EW_DEFINE_FIELDS( MenuVerticalMenu, ComponentsBaseComponent )
+  EW_PROPERTY( OnSelectedItemChanged, XSlot )
   EW_OBJECT  ( MenuList,        CoreVerticalList )
   EW_OBJECT  ( Scrollbar,       MenuScrollbar )
   EW_OBJECT  ( FocusFrame,      ViewsBorder )
