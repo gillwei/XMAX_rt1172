@@ -80,12 +80,12 @@ extern "C" {
 
     navilite_message NAVILITE_pack_frame_app_gohome_request
         (
-        void
+        navilite_route_option_type route_option
         );
 
     navilite_message NAVILITE_pack_frame_app_gooffice_request
         (
-        void
+        navilite_route_option_type route_option
         );
 
     navilite_message NAVILITE_pack_frame_app_get_favoritlist_request

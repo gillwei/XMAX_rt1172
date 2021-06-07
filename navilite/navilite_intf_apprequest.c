@@ -165,16 +165,17 @@
     *
     * Send go home request to app side
     *
+    * @param route_option route option to use
     * @return true when success
     *         false when failed
     *
     *********************************************************************/
     bool NAVILITE_request_app_gohome
         (
-        void
+        navilite_route_option_type route_option
         )
     {
-    navilite_message frame = NAVILITE_pack_frame_app_gohome_request();
+    navilite_message frame = NAVILITE_pack_frame_app_gohome_request( route_option );
     bool ret = NAVILITE_send( (uint8_t*)&frame, sizeof( navilite_message ) );
     return ret;
     }
@@ -186,16 +187,17 @@
     *
     * Send go office request to app side
     *
+    * @param route_option route option to use
     * @return true when success
     *         false when failed
     *
     *********************************************************************/
     bool NAVILITE_request_app_gooffice
         (
-        void
+        navilite_route_option_type route_option
         )
     {
-    navilite_message frame = NAVILITE_pack_frame_app_gooffice_request();
+    navilite_message frame = NAVILITE_pack_frame_app_gooffice_request( route_option );
     bool ret = NAVILITE_send( (uint8_t*)&frame, sizeof( navilite_message ) );
     return ret;
     }

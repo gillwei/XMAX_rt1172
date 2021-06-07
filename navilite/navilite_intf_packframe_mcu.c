@@ -191,12 +191,13 @@
     *
     * Send go home request (route home if available)
     *
+    * @param route_option route option to use
     * @return navilite_message return navilite_message copy to caller
     *
     *********************************************************************/
     navilite_message NAVILITE_pack_frame_app_gohome_request
         (
-        void
+        navilite_route_option_type route_option
         )
     {
     navilite_message frame = { 0 };
@@ -204,9 +205,9 @@
     frame.version = PROTOCOL_VERSION;
     frame.frame_type = NAVILITE_FRAMETYPE_MOBILE_REQUEST;
     frame.service_type =  NAVILITE_SERVICETYPE_APP_GO_HOME_REQUEST;
-    frame.payload_size = 0;
+    frame.payload_size = sizeof( uint16_t );
     frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
-    frame.data_value = 0;
+    frame.data_value = route_option;
     return frame;
     }
 
@@ -217,12 +218,13 @@
     *
     * Send go to office request (route to office if available)
     *
+    * @param route_option route option to use
     * @return navilite_message return navilite_message copy to caller
     *
     *********************************************************************/
     navilite_message NAVILITE_pack_frame_app_gooffice_request
         (
-        void
+        navilite_route_option_type route_option
         )
     {
     navilite_message frame = { 0 };
@@ -230,9 +232,9 @@
     frame.version = PROTOCOL_VERSION;
     frame.frame_type = NAVILITE_FRAMETYPE_MOBILE_REQUEST;
     frame.service_type = NAVILITE_SERVICETYPE_APP_GO_OFFICE_REQUEST;
-    frame.payload_size = 0;
+    frame.payload_size = sizeof( uint16_t );
     frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
-    frame.data_value = 0;
+    frame.data_value = route_option;
     return frame;
     }
 

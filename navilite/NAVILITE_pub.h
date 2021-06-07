@@ -307,8 +307,8 @@ bool NAVILITE_request_app_stoproute();        //! request navilite mobile app to
 bool NAVILITE_request_app_skip_nextwaypoint(); //! request navilite mobile app to skip next way point
 bool NAVILITE_request_app_zoomin();           //! request navilite mobile app to zoom in map and report status
 bool NAVILITE_request_app_zoomout();          //! request navilite mobile app to zoom out map and report status
-bool NAVILITE_request_app_gohome();           //! request navilite mobile app to navigate home
-bool NAVILITE_request_app_gooffice();         //! request navilite mobile app to navigate office
+bool NAVILITE_request_app_gohome( navilite_route_option_type route_option );  //! request navilite mobile app to navigate home
+bool NAVILITE_request_app_gooffice( navilite_route_option_type route_option );  //! request navilite mobile app to navigate office
 bool NAVILITE_request_app_start_imageframe_update(); //! request navilite mobile app to start image frame update
 bool NAVILITE_request_app_stop_imageframe_update(); //! request navilite mobile app to stop image frame update
 bool NAVILITE_request_app_enable_content_update( navilite_content_type content_type, navilite_switch_type enable ); //! request navilite mobile app to enable dedicated content update
