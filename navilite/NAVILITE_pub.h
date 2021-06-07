@@ -109,6 +109,12 @@ typedef enum tagNAVILITE_TBTLIST_ACTON_TYPE
     NAVILITE_TBTLIST_ACTION_OTHER    = 0
     } navilite_tbt_list_action_type;
 
+typedef enum tagNAVILITE_POILIST_ACTON_TYPE
+    {
+    NAVILITE_POILIST_ACTION_LISTSIZE = 1,  ///< list size notify
+    NAVILITE_POILIST_ACTION_ITEMADD  = 2,  ///< list item add notify
+    NAVILITE_POILIST_ACTION_OTHER    = 0
+    } navilite_poi_list_action_type;
 /*--------------------------------------------------------------------
                         TYPES
 --------------------------------------------------------------------*/
@@ -124,6 +130,21 @@ typedef struct tagNAVILITE_TBT_LIST_TYPE
     uint8_t* distance_unit;
     uint8_t* desc;
     } navilite_tbt_list_type;
+
+typedef struct tagNAVILITE_POI_LIST_TYPE
+    {
+    uint32_t list_item_index;
+    uint8_t desc_size;
+    uint8_t dist_unit_size;
+    uint32_t distance;
+    uint8_t* distance_unit;
+    uint8_t* desc;
+    } navilite_poi_list_type;
+
+/* Fav/Gas list define based on poi list type */
+typedef navilite_poi_list_type navilite_fav_list_type;
+typedef navilite_poi_list_type navilite_gas_list_type;
+
 
 /* Navigation Events */
 typedef struct tagNAVILITE_NAVIEVENT_TEXT_TYPE
@@ -150,7 +171,8 @@ typedef void ( *navilite_callback_func_eta )( uint32_t value );
 typedef void ( *navilite_callback_func_bt_timeout )( uint8_t value );
 typedef void ( *navilite_callback_func_currentroadname )( uint8_t* str, uint8_t str_size );
 typedef void ( *navilite_callback_func_nextturndistance )( uint8_t icon_index, uint32_t distance, uint8_t* dist_unit_str, uint8_t dist_unit_str_size );
-typedef void ( *navilite_callback_func_nexttbtlist )( navilite_tbt_list_action_type action, navilite_tbt_list_type *list, uint16_t list_item_index, uint16_t list_total_items, uint16_t list_item_total_recevied, uint8_t has_more_items_on_next_request );
+typedef void ( *navilite_callback_func_nexttbtlist )( navilite_tbt_list_action_type action, navilite_tbt_list_type* list, uint16_t list_item_index, uint16_t list_total_items, uint16_t list_item_total_recevied, uint8_t has_more_items_on_next_request );
+typedef void ( *navilite_callback_func_nexttpoilist )( navilite_poi_list_action_type action, navilite_poi_list_type* list, uint16_t list_item_index, uint16_t list_total_items, uint16_t list_item_total_recevied, uint8_t has_more_items_on_next_request );
 typedef void ( *navilite_callback_func_activetbtitem )( uint16_t active_tbt_index);
 typedef void ( *navilite_callback_func_navieventtext )( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_event_type, navilite_navievent_camera_extra_subtype navi_extra_sub_type, uint8_t visibility );
 typedef void ( *navilite_callback_func_homelocationsetting )( uint8_t is_home_location );
@@ -178,6 +200,8 @@ typedef struct tagNAVILITE_CONTENT_UPDATE_CALLBACKS
     navilite_callback_func_currentroadname callback_func_currentroadname;
     navilite_callback_func_nextturndistance callback_func_nextturndistance;
     navilite_callback_func_nexttbtlist callback_func_nexttbtist;
+    navilite_callback_func_nexttpoilist callback_func_nextfavlist;
+    navilite_callback_func_nexttpoilist callback_func_nextgaslist;
     navilite_callback_func_activetbtitem callback_func_activetbtitem;
     navilite_callback_func_navieventtext callback_func_navieventtext;
     navilite_callback_func_homelocationsetting callback_func_homelocationsetting;
@@ -246,6 +270,7 @@ bool NAVILITE_register_update_callback_eta( navilite_callback_func_eta callback_
 bool NAVILITE_register_update_callback_currentroadname( navilite_callback_func_currentroadname callback_func );
 bool NAVILITE_register_update_callback_nextturndistance( navilite_callback_func_nextturndistance callback_func );
 bool NAVILITE_register_update_callback_tbtlist( navilite_callback_func_nexttbtlist callback_func );
+bool NAVILITE_register_update_callback_favlist( navilite_callback_func_nexttpoilist callback_func );
 bool NAVILITE_register_update_callback_activetbtlistitem( navilite_callback_func_activetbtitem callback_func );
 bool NAVILITE_register_update_callback_navieventtext( navilite_callback_func_navieventtext callback_func );
 bool NAVILITE_register_update_callback_homelocationsetting( navilite_callback_func_homelocationsetting callback_func );

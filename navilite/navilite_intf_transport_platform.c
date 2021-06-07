@@ -90,7 +90,7 @@ int dataoffset = 0;
 navilite_message* frame = (navilite_message*)data;
 
 #if( NAVILITE_DEBUG )
-    NAVILITE_PRINTF( "\r\n#NAVILITE-DEBUG# (NAVILITE_send MTU:%d, payload: %d, service: %d, data_type: %s) >> ", FIELD_PAYLOADDATA_OFFSET + frame->payload_size, frame->payload_size, frame->service_type, (frame->payload_data_type == 0) ? "V":"P" );
+    NAVILITE_PRINTF( "\r\n#NAVILITE-DEBUG# (NAVILITE_send MTU:%d, payload: %d, service: %d, data_type: %s) >> ", FIELD_PAYLOADDATA_OFFSET + frame->payload_size, frame->payload_size, frame->service_type, ( frame->payload_data_type == 0 ) ? "V":"P" );
 #endif
 
 // copy the frame header except the payload to temp buffer

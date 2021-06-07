@@ -295,6 +295,28 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     /*********************************************************************
     *
     * @public
+    * NAVILITE_register_update_callback_favlist
+    *
+    * register navilite favorite list content notify callback
+    *
+    * @param callback_func callback function for favorite list update
+    * @return The result of the callback registering
+    *
+    *********************************************************************/
+    bool NAVILITE_register_update_callback_favlist
+        (
+        navilite_callback_func_nexttpoilist callback_func
+        )
+    {
+    bool ret = true;
+    navilite_content_update_callbacks.callback_func_nextfavlist = callback_func;
+    PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    return ret;
+    }
+
+    /*********************************************************************
+    *
+    * @public
     * NAVILITE_register_update_callback_activetbtlistitem
     *
     * register active navilite tbt list content notify callback
