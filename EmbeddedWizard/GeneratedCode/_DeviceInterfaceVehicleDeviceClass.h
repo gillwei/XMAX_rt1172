@@ -227,6 +227,14 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetIsHeaterStatusTimeoutErr1Detected( 
 /* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetIsResReprogramInfoTimeoutErr1Detected()' */
 XBool DeviceInterfaceVehicleDeviceClass_OnGetIsResReprogramInfoTimeoutErr1Detected( DeviceInterfaceVehicleDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.SetTachoColorbaseRect()' */
+void DeviceInterfaceVehicleDeviceClass_SetTachoColorbaseRect( DeviceInterfaceVehicleDeviceClass _this, 
+  XRect aUpperColorbaseRect, XRect aLowerColorbaseRect );
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.SetTachoYMask()' */
+void DeviceInterfaceVehicleDeviceClass_SetTachoYMask( DeviceInterfaceVehicleDeviceClass _this, 
+  XInt32 aUpperMaskY1, XInt32 aUpperMaskY2, XInt32 aLowerMaskY1, XInt32 aLowerMaskY2 );
+
 #ifdef __cplusplus
   }
 #endif

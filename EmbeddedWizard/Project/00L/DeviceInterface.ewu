@@ -19,6 +19,7 @@ inline Inline
   #include "TEST_pub.h"
   #include "NAVI_pub.h"
   #include "Enum.h"
+  #include "ew_tacho.h"
 }
 
 $rect <20,70,220,110>
@@ -3365,6 +3366,39 @@ class VehicleDeviceClass : Templates::DeviceClass
       Detected = true;
     }
     return Detected;
+  }
+
+  $rect <290,800,510,840>
+  method void SetTachoColorbaseRect( arg rect aUpperColorbaseRect, arg rect aLowerColorbaseRect )
+  {
+    $if !$prototyper
+      native( aUpperColorbaseRect, aLowerColorbaseRect )
+      {
+        ew_tacho_set_colorbase_bounds( aUpperColorbaseRect.Point1.X, aUpperColorbaseRect.Point1.Y, aUpperColorbaseRect.Point2.X, aUpperColorbaseRect.Point2.Y,
+                                       aLowerColorbaseRect.Point1.X, aLowerColorbaseRect.Point1.Y, aLowerColorbaseRect.Point2.X, aLowerColorbaseRect.Point2.Y );
+      }
+    $else
+      // suppress warning
+      aUpperColorbaseRect;
+      aLowerColorbaseRect;
+    $endif
+  }
+
+  $rect <290,850,510,890>
+  method void SetTachoYMask( arg int32 aUpperMaskY1, arg int32 aUpperMaskY2, arg int32 aLowerMaskY1, arg int32 aLowerMaskY2 )
+  {
+    $if !$prototyper
+      native( aUpperMaskY1, aUpperMaskY2, aLowerMaskY1, aLowerMaskY2 )
+      {
+        ew_tacho_set_y_mask( aUpperMaskY1, aUpperMaskY2, aLowerMaskY1, aLowerMaskY2 );
+      }
+    $else
+      // suppress warning
+      aUpperMaskY1;
+      aUpperMaskY2;
+      aLowerMaskY1;
+      aLowerMaskY2;
+    $endif
   }
 }
 

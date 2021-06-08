@@ -275,7 +275,10 @@ typedef enum
   EnumVehicleRxTypeRES_REPGROGRAM_INFO_TIMEOUT_ERR1 = 58,
   EnumVehicleRxTypeFUEL_RATE_INSTANT_UNIT_CONVERTED = 59,
   EnumVehicleRxTypeFUEL_RATE_AVERAGE_UNIT_CONVERTED = 60,
-  EnumVehicleRxTypeTOTAL                = 61
+  EnumVehicleRxTypeTACHO_FULLSCALE      = 61,
+  EnumVehicleRxTypeTACHO_REDZONE_BEGIN  = 62,
+  EnumVehicleRxTypeTACHO_SETTING        = 63,
+  EnumVehicleRxTypeTOTAL                = 64
 } EnumVehicleRxType;
 
 /* User defined enumeration: 'Enum::VehicleTxType' */
@@ -816,7 +819,9 @@ typedef enum
   EnumSystemStatusIS_TFT_DERATING_ON    = 2,
   EnumSystemStatusIS_QRCODE_READY       = 3,
   EnumSystemStatusLANGUAGE              = 4,
-  EnumSystemStatusTOTAL                 = 5
+  EnumSystemStatusTACHO_FULLSCALE       = 5,
+  EnumSystemStatusTACHO_REDZONE_BEGIN   = 6,
+  EnumSystemStatusTOTAL                 = 7
 } EnumSystemStatus;
 
 /* User defined enumeration: 'Enum::NotificationNativeCall' */
@@ -853,6 +858,13 @@ typedef enum
   EnumNaviRouteOptionTriggerItemGAS_STATION = 3,
   EnumNaviRouteOptionTriggerItemTOTAL   = 4
 } EnumNaviRouteOptionTriggerItem;
+
+/* User defined enumeration: 'Enum::TachoFullScale' */
+typedef enum
+{
+  EnumTachoFullScaleRPM10000            = 0,
+  EnumTachoFullScaleRPM15000            = 1
+} EnumTachoFullScale;
 
 #ifdef __cplusplus
   }

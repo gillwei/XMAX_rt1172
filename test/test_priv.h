@@ -16,6 +16,13 @@ extern "C"{
 
 #define TEST_TICK_PERIOD_MS    ( 10 )
 
+typedef struct
+    {
+    uint16_t engine_speed;
+    uint8_t  vehicle_speed;
+    uint16_t aps_angle;
+    } meter_data_s;
+
 void test_production_int( void );
 void test_production_proc( void );
 void test_inspection_int( void );
@@ -34,6 +41,8 @@ void test_eeprom_int( void );
 void test_eeprom_proc( void );
 void test_vi_int( void );
 void test_vi_proc( void );
+void test_tacho_speed_int( void );
+void test_tacho_speed_proc( void );
 void test_notification_int( void );
 void test_notification_proc( void );
 void test_wea_int( void );

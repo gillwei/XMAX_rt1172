@@ -3995,6 +3995,34 @@ void CoreGroup__Restack( void* _this, CoreView aView, XInt32 aOrder )
   ((CoreGroup)_this)->_.VMT->Restack((CoreGroup)_this, aView, aOrder );
 }
 
+/* The method RemoveAll() removes all views from the component. After this operation 
+   the component is empty. */
+void CoreGroup_RemoveAll( CoreGroup _this )
+{
+  XRect updateArea = _Const0001;
+
+  while ( _this->first != 0 )
+  {
+    CoreView view = _this->first;
+
+    if ((( view->viewState & CoreViewStateVisible ) == CoreViewStateVisible ))
+      updateArea = EwUnionRect( updateArea, CoreView__GetExtent( view ));
+
+    _this->first = _this->first->next;
+    view->layoutContext = 0;
+    view->Owner = 0;
+    view->next = 0;
+    view->prev = 0;
+  }
+
+  _this->first = 0;
+  _this->last = 0;
+  CoreGroup__OnSetFocus( _this, 0 );
+
+  if ( !EwIsRectEmpty( updateArea ))
+    CoreGroup__InvalidateArea( _this, updateArea );
+}
+
 /* The method Remove() removes the given view aView from the component. After this 
    operation the view doesn't belong anymore to the component - the view is not 
    visible and it can't receive any events.

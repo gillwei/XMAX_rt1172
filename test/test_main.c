@@ -101,6 +101,10 @@
             test_vi_proc();
         #endif
 
+        #if( UNIT_TEST_TACHO_SPEED )
+            test_tacho_speed_proc();
+        #endif
+
         #if( UNIT_TEST_NOTIFICATION )
             test_notification_proc();
         #endif
@@ -181,6 +185,10 @@
 
     #if( UNIT_TEST_VI )
         test_vi_int();
+    #endif
+
+    #if( UNIT_TEST_TACHO_SPEED )
+        test_tacho_speed_int();
     #endif
 
     #if( UNIT_TEST_NOTIFICATION )

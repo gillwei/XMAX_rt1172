@@ -33,6 +33,7 @@
 #include "BC_motocon_pub.h"
 #include "client_dcm_appl.h"
 #include "display_support.h"
+#include "ew_tacho.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -1917,6 +1918,11 @@ switch( status_type )
         break;
     case EnumSystemStatusIS_QRCODE_READY:
         status = is_qrcode_ready;
+    case EnumSystemStatusTACHO_FULLSCALE:
+        status = ew_tacho_get_fullscale();
+        break;
+    case EnumSystemStatusTACHO_REDZONE_BEGIN:
+        status = ew_tacho_get_readzone_begin();
         break;
     default:
         break;

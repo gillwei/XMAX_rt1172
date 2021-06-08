@@ -52,6 +52,9 @@
 #include "_HomeItemVehicleInfo.h"
 #include "_HomeRecord.h"
 #include "_HomeRecordList.h"
+#include "_HomeTachoBaseline.h"
+#include "_HomeTachoColor.h"
+#include "_HomeTachoScale.h"
 #include "_HomeVehicleInfoMenu.h"
 
 #ifdef __cplusplus

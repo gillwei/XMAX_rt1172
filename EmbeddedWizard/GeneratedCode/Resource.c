@@ -31,8 +31,10 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000016, /* ratio 127.27 % */
-  0xB8001300, 0x000A2452, 0x00860029, 0x0C800378, 0x22003280, 0x1010044A, 0x00000000
+  0x00000042, /* ratio 96.97 % */
+  0xB8001300, 0x000A2452, 0x00860029, 0x0C800378, 0x22003280, 0x8458182A, 0x0030800A,
+  0xB34000C6, 0x00154010, 0x60022270, 0x4622D140, 0x12191C8D, 0x800778E9, 0x0330911B,
+  0x00000002, 0x00000000
 };
 
 /* Include a file containing the bitmap resource : 'Resource::IconMediaPlayPause' */
@@ -1451,11 +1453,36 @@ EW_RES_WITHOUT_VARIANTS( ResourceBrightness )
 /* Table with links to derived variants of the bitmap resource : 'Resource::EcoBase' */
 EW_RES_WITHOUT_VARIANTS( ResourceEcoBase )
 
+/* Include a file containing the bitmap resource : 'Resource::TachoVVA' */
+#include "_ResourceTachoVVA.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoVVA' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoVVA )
+
 /* Include a file containing the bitmap resource : 'Resource::AvgLine' */
 #include "_ResourceAvgLine.h"
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::AvgLine' */
 EW_RES_WITHOUT_VARIANTS( ResourceAvgLine )
+
+/* User defined auto object: 'Resource::ExternTachoUpColorbase' */
+EW_DEFINE_AUTOOBJECT( ResourceExternTachoUpColorbase, ResourcesExternBitmap )
+
+/* Initializer for the auto object 'Resource::ExternTachoUpColorbase' */
+void ResourceExternTachoUpColorbase__Init( ResourcesExternBitmap _this )
+{
+  EW_UNUSED_ARG( _this );
+}
+
+/* Table with links to derived variants of the auto object : 'Resource::ExternTachoUpColorbase' */
+EW_DEFINE_AUTOOBJECT_VARIANTS( ResourceExternTachoUpColorbase )
+EW_END_OF_AUTOOBJECT_VARIANTS( ResourceExternTachoUpColorbase )
+
+/* Include a file containing the bitmap resource : 'Resource::Tacho1000R' */
+#include "_ResourceTacho1000R.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::Tacho1000R' */
+EW_RES_WITHOUT_VARIANTS( ResourceTacho1000R )
 
 /* Include a file containing the bitmap resource : 'Resource::EcoWindowLine' */
 #include "_ResourceEcoWindowLine.h"
@@ -1463,11 +1490,23 @@ EW_RES_WITHOUT_VARIANTS( ResourceAvgLine )
 /* Table with links to derived variants of the bitmap resource : 'Resource::EcoWindowLine' */
 EW_RES_WITHOUT_VARIANTS( ResourceEcoWindowLine )
 
+/* Include a file containing the bitmap resource : 'Resource::TachoNumberOff' */
+#include "_ResourceTachoNumberOff.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoNumberOff' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoNumberOff )
+
 /* Include a file containing the bitmap resource : 'Resource::EcoDot' */
 #include "_ResourceEcoDot.h"
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::EcoDot' */
 EW_RES_WITHOUT_VARIANTS( ResourceEcoDot )
+
+/* Include a file containing the bitmap resource : 'Resource::TachoNumberOn' */
+#include "_ResourceTachoNumberOn.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoNumberOn' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoNumberOn )
 
 /* Include a file containing the bitmap resource : 'Resource::GradientCover' */
 #include "_ResourceGradientCover.h"
@@ -1475,11 +1514,47 @@ EW_RES_WITHOUT_VARIANTS( ResourceEcoDot )
 /* Table with links to derived variants of the bitmap resource : 'Resource::GradientCover' */
 EW_RES_WITHOUT_VARIANTS( ResourceGradientCover )
 
+/* Include a file containing the bitmap resource : 'Resource::TachoNumberOffRed' */
+#include "_ResourceTachoNumberOffRed.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoNumberOffRed' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoNumberOffRed )
+
+/* Include a file containing the bitmap resource : 'Resource::TachoNumberOnRed' */
+#include "_ResourceTachoNumberOnRed.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoNumberOnRed' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoNumberOnRed )
+
+/* Include a file containing the bitmap resource : 'Resource::TachoBaselineA' */
+#include "_ResourceTachoBaselineA.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoBaselineA' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoBaselineA )
+
+/* Include a file containing the bitmap resource : 'Resource::TachoBaselineB' */
+#include "_ResourceTachoBaselineB.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoBaselineB' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoBaselineB )
+
+/* Include a file containing the bitmap resource : 'Resource::TachoFront' */
+#include "_ResourceTachoFront.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoFront' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoFront )
+
 /* Include a file containing the bitmap resource : 'Resource::HighTemperature' */
 #include "_ResourceHighTemperature.h"
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::HighTemperature' */
 EW_RES_WITHOUT_VARIANTS( ResourceHighTemperature )
+
+/* Include a file containing the bitmap resource : 'Resource::TachoNumberBG' */
+#include "_ResourceTachoNumberBG.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoNumberBG' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoNumberBG )
 
 /* Include a file containing the bitmap resource : 'Resource::YAppIcon' */
 #include "_ResourceYAppIcon.h"
@@ -1487,10 +1562,47 @@ EW_RES_WITHOUT_VARIANTS( ResourceHighTemperature )
 /* Table with links to derived variants of the bitmap resource : 'Resource::YAppIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceYAppIcon )
 
+/* Include a file containing the bitmap resource : 'Resource::TachoNumberDotRed' */
+#include "_ResourceTachoNumberDotRed.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoNumberDotRed' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoNumberDotRed )
+
+/* Include a file containing the bitmap resource : 'Resource::TachoNumberDot' */
+#include "_ResourceTachoNumberDot.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoNumberDot' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoNumberDot )
+
 /* Include a file containing the bitmap resource : 'Resource::NaviAppIcon' */
 #include "_ResourceNaviAppIcon.h"
 
 /* Table with links to derived variants of the bitmap resource : 'Resource::NaviAppIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceNaviAppIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::TachoStatusbarShadow' */
+#include "_ResourceTachoStatusbarShadow.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::TachoStatusbarShadow' */
+EW_RES_WITHOUT_VARIANTS( ResourceTachoStatusbarShadow )
+
+/* User defined auto object: 'Resource::ExternTachoDownColorbase' */
+EW_DEFINE_AUTOOBJECT( ResourceExternTachoDownColorbase, ResourcesExternBitmap )
+
+/* Initializer for the auto object 'Resource::ExternTachoDownColorbase' */
+void ResourceExternTachoDownColorbase__Init( ResourcesExternBitmap _this )
+{
+  EW_UNUSED_ARG( _this );
+}
+
+/* Table with links to derived variants of the auto object : 'Resource::ExternTachoDownColorbase' */
+EW_DEFINE_AUTOOBJECT_VARIANTS( ResourceExternTachoDownColorbase )
+EW_END_OF_AUTOOBJECT_VARIANTS( ResourceExternTachoDownColorbase )
+
+/* User defined constant: 'Resource::TACHO_COLORBASE_UP' */
+const XStringRes ResourceTACHO_COLORBASE_UP = { _StringsDefault0, 0x000B };
+
+/* User defined constant: 'Resource::TACHO_COLORBASE_DOWN' */
+const XStringRes ResourceTACHO_COLORBASE_DOWN = { _StringsDefault0, 0x0015 };
 
 /* Embedded Wizard */

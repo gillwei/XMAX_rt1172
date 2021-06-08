@@ -99,6 +99,7 @@ static const XStringRes _Const000D = { _StringsDefault0, 0x010A };
 #include "TEST_pub.h"
 #include "NAVI_pub.h"
 #include "Enum.h"
+#include "ew_tacho.h"
 
 /* Initializer for the class 'DeviceInterface::SystemDeviceClass' */
 void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _this, XObject aLink, XHandle aArg )
@@ -3503,6 +3504,29 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetIsResReprogramInfoTimeoutErr1Detect
     Detected = 1;
 
   return Detected;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.SetTachoColorbaseRect()' */
+void DeviceInterfaceVehicleDeviceClass_SetTachoColorbaseRect( DeviceInterfaceVehicleDeviceClass _this, 
+  XRect aUpperColorbaseRect, XRect aLowerColorbaseRect )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  {
+    ew_tacho_set_colorbase_bounds( aUpperColorbaseRect.Point1.X, aUpperColorbaseRect.Point1.Y, aUpperColorbaseRect.Point2.X, aUpperColorbaseRect.Point2.Y,
+                                   aLowerColorbaseRect.Point1.X, aLowerColorbaseRect.Point1.Y, aLowerColorbaseRect.Point2.X, aLowerColorbaseRect.Point2.Y );
+  }
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.SetTachoYMask()' */
+void DeviceInterfaceVehicleDeviceClass_SetTachoYMask( DeviceInterfaceVehicleDeviceClass _this, 
+  XInt32 aUpperMaskY1, XInt32 aUpperMaskY2, XInt32 aLowerMaskY1, XInt32 aLowerMaskY2 )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ew_tacho_set_y_mask( aUpperMaskY1, aUpperMaskY2, aLowerMaskY1, aLowerMaskY2 );
 }
 
 /* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */

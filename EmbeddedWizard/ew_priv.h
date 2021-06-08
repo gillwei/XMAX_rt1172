@@ -21,6 +21,7 @@ extern "C" {
 #include "TEST_pub.h"
 #include "BC_motocon_pub_type.h"
 #include "NTF_pub.h"
+#include "ew_tacho.h"
 
 // the last page in EEPROM includes
 // home group index (1,2,3): 2 bits

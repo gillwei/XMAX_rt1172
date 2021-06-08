@@ -21,6 +21,7 @@
 #include "Application.h"
 #include "VI_pub.h"
 #include "semphr.h"
+#include "ew_tacho.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -220,6 +221,11 @@ if( is_rx_type_queued )
     EnumVehicleRxType rx_type;
     while( pdPASS == xQueueReceive( rx_type_queue, &rx_type, 0 ) )
         {
+        if( EnumVehicleRxTypeTACHO_SETTING == rx_type )
+            {
+            ew_tacho_load_colorbase();
+            }
+
         DeviceInterfaceVehicleDeviceClass_NotifyDataReceived( device_object, rx_type );
         }
 

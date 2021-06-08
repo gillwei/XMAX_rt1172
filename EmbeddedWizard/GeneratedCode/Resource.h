@@ -729,26 +729,65 @@ EW_DECLARE_BITMAP_RES( ResourceBrightness )
 /* Bitmap resource : 'Resource::EcoBase' */
 EW_DECLARE_BITMAP_RES( ResourceEcoBase )
 
+/* Bitmap resource : 'Resource::TachoVVA' */
+EW_DECLARE_BITMAP_RES( ResourceTachoVVA )
+
 /* Bitmap resource : 'Resource::AvgLine' */
 EW_DECLARE_BITMAP_RES( ResourceAvgLine )
+
+/* Bitmap resource : 'Resource::Tacho1000R' */
+EW_DECLARE_BITMAP_RES( ResourceTacho1000R )
 
 /* Bitmap resource : 'Resource::EcoWindowLine' */
 EW_DECLARE_BITMAP_RES( ResourceEcoWindowLine )
 
+/* Bitmap resource : 'Resource::TachoNumberOff' */
+EW_DECLARE_BITMAP_RES( ResourceTachoNumberOff )
+
 /* Bitmap resource : 'Resource::EcoDot' */
 EW_DECLARE_BITMAP_RES( ResourceEcoDot )
+
+/* Bitmap resource : 'Resource::TachoNumberOn' */
+EW_DECLARE_BITMAP_RES( ResourceTachoNumberOn )
 
 /* Bitmap resource : 'Resource::GradientCover' */
 EW_DECLARE_BITMAP_RES( ResourceGradientCover )
 
+/* Bitmap resource : 'Resource::TachoNumberOffRed' */
+EW_DECLARE_BITMAP_RES( ResourceTachoNumberOffRed )
+
+/* Bitmap resource : 'Resource::TachoNumberOnRed' */
+EW_DECLARE_BITMAP_RES( ResourceTachoNumberOnRed )
+
+/* Bitmap resource : 'Resource::TachoBaselineA' */
+EW_DECLARE_BITMAP_RES( ResourceTachoBaselineA )
+
+/* Bitmap resource : 'Resource::TachoBaselineB' */
+EW_DECLARE_BITMAP_RES( ResourceTachoBaselineB )
+
+/* Bitmap resource : 'Resource::TachoFront' */
+EW_DECLARE_BITMAP_RES( ResourceTachoFront )
+
 /* Bitmap resource : 'Resource::HighTemperature' */
 EW_DECLARE_BITMAP_RES( ResourceHighTemperature )
+
+/* Bitmap resource : 'Resource::TachoNumberBG' */
+EW_DECLARE_BITMAP_RES( ResourceTachoNumberBG )
 
 /* Bitmap resource : 'Resource::YAppIcon' */
 EW_DECLARE_BITMAP_RES( ResourceYAppIcon )
 
+/* Bitmap resource : 'Resource::TachoNumberDotRed' */
+EW_DECLARE_BITMAP_RES( ResourceTachoNumberDotRed )
+
+/* Bitmap resource : 'Resource::TachoNumberDot' */
+EW_DECLARE_BITMAP_RES( ResourceTachoNumberDot )
+
 /* Bitmap resource : 'Resource::NaviAppIcon' */
 EW_DECLARE_BITMAP_RES( ResourceNaviAppIcon )
+
+/* Bitmap resource : 'Resource::TachoStatusbarShadow' */
+EW_DECLARE_BITMAP_RES( ResourceTachoStatusbarShadow )
 
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
@@ -767,6 +806,18 @@ EW_DECLARE_AUTOOBJECT( ResourceExternFlickerPattern, ResourcesExternBitmap )
 
 /* User defined constant: 'Resource::EXTERN_BMP_QRCODE' */
 extern const XStringRes ResourceEXTERN_BMP_QRCODE;
+
+/* User defined auto object: 'Resource::ExternTachoUpColorbase' */
+EW_DECLARE_AUTOOBJECT( ResourceExternTachoUpColorbase, ResourcesExternBitmap )
+
+/* User defined auto object: 'Resource::ExternTachoDownColorbase' */
+EW_DECLARE_AUTOOBJECT( ResourceExternTachoDownColorbase, ResourcesExternBitmap )
+
+/* User defined constant: 'Resource::TACHO_COLORBASE_UP' */
+extern const XStringRes ResourceTACHO_COLORBASE_UP;
+
+/* User defined constant: 'Resource::TACHO_COLORBASE_DOWN' */
+extern const XStringRes ResourceTACHO_COLORBASE_DOWN;
 
 #ifdef __cplusplus
   }

@@ -885,6 +885,10 @@ void CoreGroup_Restack( CoreGroup _this, CoreView aView, XInt32 aOrder );
 /* Wrapper function for the virtual method : 'Core::Group.Restack()' */
 void CoreGroup__Restack( void* _this, CoreView aView, XInt32 aOrder );
 
+/* The method RemoveAll() removes all views from the component. After this operation 
+   the component is empty. */
+void CoreGroup_RemoveAll( CoreGroup _this );
+
 /* The method Remove() removes the given view aView from the component. After this 
    operation the view doesn't belong anymore to the component - the view is not 
    visible and it can't receive any events.

@@ -436,7 +436,6 @@ class Application : Core::Root
   method void SlideInHome( arg Enum::HomeType aHomeType )
   {
     var Core::Group HomeDialog = HomeDialogOfHomeType( aHomeType );
-    trace "SlideInHome ", classof HomeDialog;
     PresentDialog( HomeDialog, Effect::SlideInTransition, null, null, null, null, null, OnSlideInHomeFinishedSlot, null, false );
     DeviceInterface::SystemDevice.HomeType = aHomeType;
   }

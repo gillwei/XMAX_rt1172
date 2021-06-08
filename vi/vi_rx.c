@@ -153,6 +153,7 @@ switch( signal_id )
     {
     case IL_CAN0_ECU_COM_DATA_RXSIG_HANDLE: /* VVA */
         rx_ecu_info.vva_indicator = ( vva_indicator_enum )data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeVVA_INDICATOR );
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -932,7 +933,7 @@ void VI_notify_timeout1_changed
     const bool detected
     )
 {
-//PRINTF( "timeout1, 0x%x %d\r\n", handle, status );
+PRINTF( "timeout1 0x%x %d\r\n", handle, detected );
 
 switch( handle )
     {
@@ -991,7 +992,7 @@ switch( handle )
         break;
     }
 
-    EW_notify_vi_data_received( EnumVehicleRxTypeTIMEOUT_ERROR1_UPDATED );
+EW_notify_vi_data_received( EnumVehicleRxTypeTIMEOUT_ERROR1_UPDATED );
 }
 
 /*********************************************************************
@@ -1011,7 +1012,7 @@ void VI_notify_timeout2_changed
     const bool detected
     )
 {
-//PRINTF( "timeout2, 0x%x %d\r\n", handle, status );
+PRINTF( "timeout2 0x%x %d\r\n", handle, detected );
 
 uint8_t last_timeout_err2_status = timeout_err2_status;
 switch( handle )
@@ -1322,6 +1323,11 @@ switch( rx_type )
         break;
     case EnumVehicleRxTypeRES_REPGROGRAM_INFO_TIMEOUT_ERR1:
         *data = (uint32_t)is_timeout_error_detected( timeout_err1_status, TIMEOUT_ERR1_OFFSET_RES_RPRGRM_INFO );
+    case EnumVehicleRxTypeTACHO_FULLSCALE:
+        *data = rx_tacho_setting.fullscale * 100;
+        break;
+    case EnumVehicleRxTypeTACHO_REDZONE_BEGIN:
+        *data = rx_tacho_setting.redzone_begin * 100;
         break;
     default:
         PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );
@@ -1727,13 +1733,18 @@ if( pdTRUE == xSemaphoreTake( supported_function_semaphore_handle, ticks_to_wait
             rx_tacho_setting.fullscale = supported_functions[0];
             is_tacho_setting_changed = true;
             }
-        if( rx_tacho_setting.redzone != supported_functions[1] )
+        if( rx_tacho_setting.redzone_begin != supported_functions[1] )
             {
-            rx_tacho_setting.redzone = supported_functions[1];
+            rx_tacho_setting.redzone_begin = supported_functions[1];
             is_tacho_setting_changed = true;
             }
         rx_vehicle_supported_functions = ( supported_functions[5] << 24 ) | ( supported_functions[4] << 16 ) |
                                          ( supported_functions[3] << 8 ) | supported_functions[2];
+
+        if( is_tacho_setting_changed )
+            {
+            EW_notify_vi_data_received( EnumVehicleRxTypeTACHO_SETTING );
+            }
 
         // Notify UI if the supported functions are changed
         sfl_diff = last_supported_functions ^ rx_vehicle_supported_functions;
@@ -1803,7 +1814,7 @@ else
     }
 
 supported_functions[0] = rx_tacho_setting.fullscale;
-supported_functions[1] = rx_tacho_setting.redzone;
+supported_functions[1] = rx_tacho_setting.redzone_begin;
 supported_functions[2] = sfl & 0xFF;
 supported_functions[3] = ( sfl >> 8 ) & 0xFF;
 supported_functions[4] = ( sfl >> 16 ) & 0xFF;
@@ -1924,7 +1935,7 @@ if( svc_type == MID_MSG_NRES_NACK )
             break;
 
         default:
-            PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id );
+            PRINTF( "%s invalid svc data 0x%x\r\n", __FUNCTION__, svc_data_p[0] );
             break;
         }
     }
@@ -1945,7 +1956,7 @@ else
             break;
 
         default:
-            PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, svc_id );
+            PRINTF( "%s invalid svc data 0x%x\r\n", __FUNCTION__, svc_data_p[0] );
             break;
         }
 
@@ -2003,7 +2014,7 @@ set_sfl( &sfl, EnumVehicleSupportedFunctionAVG_FUEL, true );
 set_sfl( &sfl, EnumVehicleSupportedFunctionTRIP_TIME, true );
 
 init_value[0] = DEFAULT_TACHO_FULLSCALE;
-init_value[1] = DEFAULT_TACHO_REDZONE;
+init_value[1] = DEFAULT_TACHO_REDZONE_BEGIN;
 init_value[2] = sfl & 0xFF;
 init_value[3] = ( sfl >> 8 ) & 0xFF;
 init_value[4] = ( sfl >> 16 ) & 0xFF;

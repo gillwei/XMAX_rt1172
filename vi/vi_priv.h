@@ -157,7 +157,7 @@ typedef struct
 typedef struct
     {
     uint8_t fullscale;      /**< tachometer fullscale (100rpm) */
-    uint8_t redzone;        /**< tachometer red zone start (100rpm) */
+    uint8_t redzone_begin;  /**< tachometer red zone start (100rpm) */
     } rx_tacho_setting_struct;
 
 typedef struct

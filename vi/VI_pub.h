@@ -66,7 +66,7 @@ extern "C"{
 #define DEFALUT_TFT_DUTY                    ( 0x3FF )
 
 #define DEFAULT_TACHO_FULLSCALE             ( 0xFF )
-#define DEFAULT_TACHO_REDZONE               ( 0xFF )
+#define DEFAULT_TACHO_REDZONE_BEGIN         ( 0xFF )
 
 void VI_init( void );
 void VI_key_set_trigger_mode( const CoreKeyCode key_code, const EnumKeyTriggerMode trigger_mode );

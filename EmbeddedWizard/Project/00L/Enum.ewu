@@ -596,6 +596,15 @@ enum VehicleRxType
   item FUEL_RATE_AVERAGE_UNIT_CONVERTED;
 
   $rect <1360,110,1560,150>
+  item TACHO_FULLSCALE;
+
+  $rect <1360,160,1560,200>
+  item TACHO_REDZONE_BEGIN;
+
+  $rect <1360,210,1560,250>
+  item TACHO_SETTING;
+
+  $rect <1360,260,1560,300>
   item TOTAL;
 }
 
@@ -1827,6 +1836,12 @@ enum SystemStatus
   item LANGUAGE;
 
   $rect <10,260,230,300>
+  item TACHO_FULLSCALE;
+
+  $rect <10,310,230,350>
+  item TACHO_REDZONE_BEGIN;
+
+  $rect <10,360,230,400>
   item TOTAL;
 }
 
@@ -1892,4 +1907,15 @@ enum NaviRouteOptionTriggerItem
 
   $rect <870,10,1070,50>
   item TOTAL;
+}
+
+$rect <1190,20,1390,60>
+$output false
+enum TachoFullScale
+{
+  $rect <10,10,210,50>
+  item RPM10000;
+
+  $rect <10,60,210,100>
+  item RPM15000;
 }

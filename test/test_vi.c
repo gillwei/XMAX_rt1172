@@ -1,6 +1,6 @@
 /*********************************************************************
 * @file
-* test_vehicle_info.c
+* test_vi.c
 *
 * @brief
 * Test module - Vehicle info

@@ -34,6 +34,7 @@
 #include "_CoreVerticalList.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
+#include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_EffectsInt32Effect.h"
@@ -48,6 +49,9 @@
 #include "_HomeItemVehicleInfo.h"
 #include "_HomeRecord.h"
 #include "_HomeRecordList.h"
+#include "_HomeTachoBaseline.h"
+#include "_HomeTachoColor.h"
+#include "_HomeTachoScale.h"
 #include "_HomeVehicleInfoMenu.h"
 #include "_InfoINF01_MeterDisplaySettingMenu.h"
 #include "_LauncherLNC_Main.h"
@@ -55,12 +59,15 @@
 #include "_PopPOP02_ConnectionError.h"
 #include "_PopPOP16_NaviLoadingUI.h"
 #include "_ResourcesBitmap.h"
+#include "_ResourcesExternBitmap.h"
 #include "_ResourcesFont.h"
 #include "_SettingsSET46_VehicleInfoReset.h"
 #include "_ViewsFrame.h"
 #include "_ViewsImage.h"
+#include "_ViewsLine.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
+#include "_ViewsWallpaper.h"
 #include "Core.h"
 #include "DeviceInterface.h"
 #include "Effects.h"
@@ -74,58 +81,83 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x000000CA, /* ratio 71.29 % */
-  0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x9E002400, 0x20026800, 0x18004546,
-  0x122C0C17, 0x00158004, 0x30021A47, 0x800AA002, 0x60980022, 0x23608004, 0x2D148944,
-  0x902958CA, 0x0A8441A0, 0x397C3A19, 0x9A0CE2F1, 0x5C266F1B, 0x45279228, 0x627E0018,
-  0x20F41084, 0xC2003B00, 0x94336000, 0x0885488C, 0x800196AD, 0x8D866567, 0x956C0072,
-  0x1A00063A, 0x72A26D91, 0x0EB69A1D, 0xCB0EB480, 0xB6A3854A, 0x79004E6C, 0x080DEA56,
+  0x000000C0, /* ratio 75.00 % */
+  0xB8001700, 0x00082452, 0x008E002B, 0x08C00100, 0x8A002A80, 0xA0026000, 0x45818222,
+  0x02780090, 0x188009A0, 0x04546400, 0x126300D0, 0xA4006E00, 0x21674001, 0x3D1C8D00,
+  0xB2319C82, 0x2993C124, 0x0864B657, 0x180023B3, 0x84566800, 0x00251260, 0x00C2003B,
+  0x0012A360, 0x532B9719, 0x00032D3E, 0x180CC8CF, 0xAAA000E5, 0x34000C74, 0xAD24DB2E,
+  0x1D6C54DA, 0x7A196200, 0xAC670A55, 0xF2009D57, 0xB048BC8C, 0x238FCCA7, 0x000406F3,
   0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
-static const XRect _Const0000 = {{ 72, 113 }, { 403, 156 }};
-static const XStringRes _Const0001 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0002 = {{ 61, 44 }, { 417, 200 }};
-static const XRect _Const0003 = {{ 61, 44 }, { 435, 200 }};
-static const XRect _Const0004 = {{ 417, 44 }, { 435, 184 }};
-static const XColor _Const0005 = { 0x07, 0x07, 0x07, 0xFF };
-static const XRect _Const0006 = {{ 43, 44 }, { 61, 184 }};
-static const XRect _Const0007 = {{ 55, 61 }, { 412, 189 }};
-static const XRect _Const0008 = {{ 85, 212 }, { 194, 242 }};
-static const XStringRes _Const0009 = { _StringsDefault0, 0x000F };
-static const XRect _Const000A = {{ 205, 196 }, { 328, 253 }};
-static const XRect _Const000B = {{ 333, 205 }, { 393, 247 }};
-static const XRect _Const000C = {{ 52, 244 }, { 428, 259 }};
-static const XRect _Const000D = {{ 0, 102 }, { 480, 129 }};
-static const XRect _Const000E = {{ 50, 45 }, { 419, 184 }};
-static const XRect _Const000F = {{ 56, 45 }, { 425, 184 }};
-static const XStringRes _Const0010 = { _StringsDefault0, 0x001A };
-static const XStringRes _Const0011 = { _StringsDefault0, 0x0022 };
-static const XRect _Const0012 = {{ 0, 38 }, { 480, 272 }};
-static const XRect _Const0013 = {{ 17, 51 }, { 67, 101 }};
-static const XRect _Const0014 = {{ 78, 40 }, { 480, 268 }};
-static const XStringRes _Const0015 = { _StringsDefault0, 0x002F };
-static const XRect _Const0016 = {{ 0, 0 }, { 402, 228 }};
-static const XRect _Const0017 = {{ 0, 70 }, { 359, 77 }};
-static const XRect _Const0018 = {{ 0, 146 }, { 359, 153 }};
-static const XRect _Const0019 = {{ 363, 1 }, { 395, 33 }};
-static const XRect _Const001A = {{ 363, 185 }, { 395, 217 }};
-static const XRect _Const001B = {{ 0, 0 }, { 400, 76 }};
-static const XRect _Const001C = {{ 7, 19 }, { 144, 52 }};
-static const XColor _Const001D = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const001E = {{ 288, 15 }, { 346, 57 }};
-static const XRect _Const001F = {{ 149, 7 }, { 281, 64 }};
-static const XRect _Const0020 = {{ 232, 7 }, { 282, 64 }};
-static const XRect _Const0021 = {{ 147, 7 }, { 197, 64 }};
-static const XRect _Const0022 = {{ 204, 15 }, { 231, 57 }};
-static const XRect _Const0023 = {{ 0, 0 }, { 369, 156 }};
-static const XStringRes _Const0024 = { _StringsDefault0, 0x003C };
-static const XRect _Const0025 = {{ 0, 0 }, { 6, 118 }};
-static const XRect _Const0026 = {{ 0, 3 }, { 6, 118 }};
-static const XColor _Const0027 = { 0x71, 0x9E, 0x0D, 0xFF };
-static const XRect _Const0028 = {{ 0, 0 }, { 6, 6 }};
-static const XStringRes _Const0029 = { _StringsDefault0, 0x004C };
+static const XRect _Const0000 = {{ 61, 44 }, { 417, 200 }};
+static const XRect _Const0001 = {{ 61, 44 }, { 435, 200 }};
+static const XRect _Const0002 = {{ 417, 44 }, { 435, 184 }};
+static const XColor _Const0003 = { 0x07, 0x07, 0x07, 0xFF };
+static const XRect _Const0004 = {{ 43, 44 }, { 61, 184 }};
+static const XRect _Const0005 = {{ 55, 61 }, { 412, 189 }};
+static const XRect _Const0006 = {{ 85, 212 }, { 194, 242 }};
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0002 };
+static const XRect _Const0008 = {{ 205, 196 }, { 328, 253 }};
+static const XRect _Const0009 = {{ 333, 205 }, { 393, 247 }};
+static const XRect _Const000A = {{ 52, 244 }, { 428, 259 }};
+static const XRect _Const000B = {{ 0, 102 }, { 480, 129 }};
+static const XRect _Const000C = {{ 50, 45 }, { 419, 184 }};
+static const XRect _Const000D = {{ 56, 45 }, { 425, 184 }};
+static const XStringRes _Const000E = { _StringsDefault0, 0x000D };
+static const XRect _Const000F = {{ 72, 113 }, { 403, 156 }};
+static const XStringRes _Const0010 = { _StringsDefault0, 0x0015 };
+static const XRect _Const0011 = {{ 0, 38 }, { 480, 272 }};
+static const XRect _Const0012 = {{ 17, 51 }, { 67, 101 }};
+static const XRect _Const0013 = {{ 78, 40 }, { 480, 268 }};
+static const XStringRes _Const0014 = { _StringsDefault0, 0x0022 };
+static const XRect _Const0015 = {{ 0, 0 }, { 402, 228 }};
+static const XRect _Const0016 = {{ 0, 70 }, { 359, 77 }};
+static const XRect _Const0017 = {{ 0, 146 }, { 359, 153 }};
+static const XRect _Const0018 = {{ 363, 1 }, { 395, 33 }};
+static const XRect _Const0019 = {{ 363, 185 }, { 395, 217 }};
+static const XRect _Const001A = {{ 0, 0 }, { 400, 76 }};
+static const XRect _Const001B = {{ 7, 19 }, { 144, 52 }};
+static const XColor _Const001C = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const001D = {{ 288, 15 }, { 346, 57 }};
+static const XRect _Const001E = {{ 149, 7 }, { 281, 64 }};
+static const XRect _Const001F = {{ 232, 7 }, { 282, 64 }};
+static const XRect _Const0020 = {{ 147, 7 }, { 197, 64 }};
+static const XRect _Const0021 = {{ 204, 15 }, { 231, 57 }};
+static const XRect _Const0022 = {{ 0, 0 }, { 369, 156 }};
+static const XStringRes _Const0023 = { _StringsDefault0, 0x002F };
+static const XRect _Const0024 = {{ 0, 0 }, { 6, 118 }};
+static const XRect _Const0025 = {{ 0, 3 }, { 6, 118 }};
+static const XColor _Const0026 = { 0x71, 0x9E, 0x0D, 0xFF };
+static const XRect _Const0027 = {{ 0, 0 }, { 6, 6 }};
+static const XStringRes _Const0028 = { _StringsDefault0, 0x003F };
+static const XRect _Const0029 = {{ 0, 0 }, { 480, 234 }};
+static const XRect _Const002A = {{ 0, 0 }, { 223, 234 }};
+static const XRect _Const002B = {{ 0, 0 }, { 223, 91 }};
+static const XRect _Const002C = {{ 0, 133 }, { 223, 234 }};
+static const XRect _Const002D = {{ 188, 0 }, { 234, 234 }};
+static const XPoint _Const002E = { 223, 15 };
+static const XPoint _Const002F = { 3, 15 };
+static const XPoint _Const0030 = { 223, 201 };
+static const XPoint _Const0031 = { 3, 201 };
+static const XPoint _Const0032 = { 223, 93 };
+static const XPoint _Const0033 = { 3, 93 };
+static const XColor _Const0034 = { 0xFE, 0xFF, 0x64, 0xFF };
+static const XPoint _Const0035 = { 223, 56 };
+static const XPoint _Const0036 = { 3, 56 };
+static const XColor _Const0037 = { 0x46, 0xFF, 0x4B, 0xFF };
+static const XPoint _Const0038 = { 223, 156 };
+static const XPoint _Const0039 = { 3, 156 };
+static const XPoint _Const003A = { 223, 185 };
+static const XPoint _Const003B = { 3, 185 };
+static const XRect _Const003C = {{ 0, 0 }, { 480, 63 }};
+static const XRect _Const003D = {{ -189, 38 }, { 34, 272 }};
+static const XRect _Const003E = {{ 0, 119 }, { 480, 182 }};
+static const XRect _Const003F = {{ 323, 232 }, { 474, 265 }};
+static const XRect _Const0040 = {{ 0, 38 }, { 480, 51 }};
+static const XRect _Const0041 = {{ 364, 38 }, { 474, 73 }};
+static const XStringRes _Const0042 = { _StringsDefault0, 0x0058 };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -147,130 +179,6 @@ static const XStringRes _Const0029 = { _StringsDefault0, 0x004C };
 #else
   #define EwCheckIndex( aIndex, aRange ) aIndex
 #endif
-
-/* Initializer for the class 'Home::HOM11_TachoVisualizer' */
-void HomeHOM11_TachoVisualizer__Init( HomeHOM11_TachoVisualizer _this, XObject aLink, XHandle aArg )
-{
-  /* At first initialize the super class ... */
-  HomeBaseHome__Init( &_this->_.Super, aLink, aArg );
-
-  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeHOM11_TachoVisualizer );
-
-  /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
-
-  /* Setup the VMT pointer */
-  _this->_.VMT = EW_CLASS( HomeHOM11_TachoVisualizer );
-
-  /* ... and initialize objects, variables, properties, etc. */
-  _this->Super1.HomeType = EnumHomeTypeTACHO_VISUALIZER;
-  CoreRectView__OnSetBounds( &_this->Title, _Const0000 );
-  ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->Title, EwGetVariantOfString( &StringsINF01_TACHO_VISUALIZER ));
-  CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
-  ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
-  ResourcesFont ));
-
-  /* Call the user defined constructor */
-  HomeHOM11_TachoVisualizer_Init( _this, aArg );
-}
-
-/* Re-Initializer for the class 'Home::HOM11_TachoVisualizer' */
-void HomeHOM11_TachoVisualizer__ReInit( HomeHOM11_TachoVisualizer _this )
-{
-  /* At first re-initialize the super class ... */
-  HomeBaseHome__ReInit( &_this->_.Super );
-
-  /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->Title );
-}
-
-/* Finalizer method for the class 'Home::HOM11_TachoVisualizer' */
-void HomeHOM11_TachoVisualizer__Done( HomeHOM11_TachoVisualizer _this )
-{
-  /* Finalize this class */
-  _this->_.Super._.VMT = EW_CLASS( HomeBaseHome );
-
-  /* Finalize all embedded objects */
-  ViewsText__Done( &_this->Title );
-
-  /* Don't forget to deinitialize the super class ... */
-  HomeBaseHome__Done( &_this->_.Super );
-}
-
-/* The method Init() is invoked automatically after the component has been created. 
-   This method can be overridden and filled with logic containing additional initialization 
-   statements. */
-void HomeHOM11_TachoVisualizer_Init( HomeHOM11_TachoVisualizer _this, XHandle aArg )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-  EW_UNUSED_ARG( aArg );
-
-  EwTrace( "%s", EwLoadString( &_Const0001 ));
-}
-
-/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnLongEnterKeyActivated()' */
-void HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated( HomeHOM11_TachoVisualizer _this )
-{
-  if ( 1 == _this->Super3.KeyHandler.RepetitionCount )
-    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( InfoINF01_MeterDisplaySettingMenu, 
-    0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-}
-
-/* Variants derived from the class : 'Home::HOM11_TachoVisualizer' */
-EW_DEFINE_CLASS_VARIANTS( HomeHOM11_TachoVisualizer )
-EW_END_OF_CLASS_VARIANTS( HomeHOM11_TachoVisualizer )
-
-/* Virtual Method Table (VMT) for the class : 'Home::HOM11_TachoVisualizer' */
-EW_DEFINE_CLASS( HomeHOM11_TachoVisualizer, HomeBaseHome, Title, Title, Title, Title, 
-                 _.VMT, _.VMT, "Home::HOM11_TachoVisualizer" )
-  CoreRectView_initLayoutContext,
-  CoreView_GetRoot,
-  CoreGroup_Draw,
-  CoreView_HandleEvent,
-  CoreGroup_CursorHitTest,
-  CoreRectView_ArrangeView,
-  CoreRectView_MoveView,
-  CoreRectView_GetExtent,
-  CoreGroup_ChangeViewState,
-  CoreGroup_OnSetBounds,
-  CoreGroup_OnSetFocus,
-  CoreGroup_OnSetBuffered,
-  CoreGroup_OnGetEnabled,
-  CoreGroup_OnSetEnabled,
-  CoreGroup_OnSetOpacity,
-  CoreGroup_OnSetVisible,
-  CoreGroup_IsCurrentDialog,
-  CoreGroup_IsActiveDialog,
-  CoreGroup_DispatchEvent,
-  CoreGroup_BroadcastEvent,
-  CoreGroup_UpdateLayout,
-  CoreGroup_UpdateViewState,
-  CoreGroup_InvalidateArea,
-  CoreGroup_GetViewAtIndex,
-  CoreGroup_CountViews,
-  CoreGroup_FindNextView,
-  CoreGroup_FindSiblingView,
-  CoreGroup_RestackTop,
-  CoreGroup_Restack,
-  CoreGroup_Remove,
-  CoreGroup_Add,
-  ComponentsBaseComponent_OnShortDownKeyActivated,
-  ComponentsBaseComponent_OnShortUpKeyActivated,
-  HomeBaseHome_OnShortEnterKeyActivated,
-  HomeBaseHome_OnShortHomeKeyActivated,
-  ComponentsBaseComponent_OnLongDownKeyActivated,
-  ComponentsBaseComponent_OnLongUpKeyActivated,
-  HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated,
-  ComponentsBaseComponent_OnLongHomeKeyActivated,
-  ComponentsBaseComponent_OnShortMagicKeyActivated,
-  ComponentsBaseMainBG_OnSetDDModeEnabled,
-  ComponentsBaseComponent_OnDownKeyReleased,
-  ComponentsBaseComponent_OnUpKeyReleased,
-  HomeBaseHome_ReturnToHome,
-EW_END_OF_CLASS( HomeHOM11_TachoVisualizer )
 
 /* Initializer for the class 'Home::HOM12_EcoVisualizer' */
 void HomeHOM12_EcoVisualizer__Init( HomeHOM12_EcoVisualizer _this, XObject aLink, XHandle aArg )
@@ -303,32 +211,32 @@ void HomeHOM12_EcoVisualizer__Init( HomeHOM12_EcoVisualizer _this, XObject aLink
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.HomeType = EnumHomeTypeECO_VISUALIZER;
-  CoreRectView__OnSetBounds( &_this->EcoMeterBase, _Const0002 );
+  CoreRectView__OnSetBounds( &_this->EcoMeterBase, _Const0000 );
   CoreView_OnSetLayout((CoreView)&_this->EcoMeterChart, CoreLayoutAlignToRight );
-  CoreRectView__OnSetBounds( &_this->EcoMeterChart, _Const0003 );
+  CoreRectView__OnSetBounds( &_this->EcoMeterChart, _Const0001 );
   CoreGroup__OnSetEnabled( &_this->EcoMeterChart, 0 );
   HomeEcoMeterChart_OnSetBarSize( &_this->EcoMeterChart, 6 );
-  CoreRectView__OnSetBounds( &_this->RightBlackArea, _Const0004 );
-  ViewsRectangle_OnSetColor( &_this->RightBlackArea, _Const0005 );
-  CoreRectView__OnSetBounds( &_this->LeftBlackArea, _Const0006 );
-  ViewsRectangle_OnSetColor( &_this->LeftBlackArea, _Const0005 );
-  CoreRectView__OnSetBounds( &_this->GradientCover, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->RightBlackArea, _Const0002 );
+  ViewsRectangle_OnSetColor( &_this->RightBlackArea, _Const0003 );
+  CoreRectView__OnSetBounds( &_this->LeftBlackArea, _Const0004 );
+  ViewsRectangle_OnSetColor( &_this->LeftBlackArea, _Const0003 );
+  CoreRectView__OnSetBounds( &_this->GradientCover, _Const0005 );
   ViewsImage_OnSetVisible( &_this->GradientCover, 1 );
-  CoreRectView__OnSetBounds( &_this->AvgFuel, _Const0008 );
-  ViewsText_OnSetString( &_this->AvgFuel, EwLoadString( &_Const0009 ));
-  CoreRectView__OnSetBounds( &_this->Average, _Const000A );
+  CoreRectView__OnSetBounds( &_this->AvgFuel, _Const0006 );
+  ViewsText_OnSetString( &_this->AvgFuel, EwLoadString( &_Const0007 ));
+  CoreRectView__OnSetBounds( &_this->Average, _Const0008 );
   ViewsText_OnSetAlignment( &_this->Average, ViewsTextAlignmentAlignHorzRight | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Average, 0 );
-  CoreRectView__OnSetBounds( &_this->Unit, _Const000B );
-  CoreRectView__OnSetBounds( &_this->EcoWindowLine, _Const000C );
-  CoreRectView__OnSetBounds( &_this->AvgLine, _Const000D );
+  CoreRectView__OnSetBounds( &_this->Unit, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->EcoWindowLine, _Const000A );
+  CoreRectView__OnSetBounds( &_this->AvgLine, _Const000B );
   EffectsEffect_OnSetBounces((EffectsEffect)&_this->ShiftLeftEffect, 1 );
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->ShiftLeftEffect, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->ShiftLeftEffect, 200 );
   EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ShiftLeftEffect, 0 );
-  _this->ShiftLeftEffect.Value2 = _Const000E;
-  _this->ShiftLeftEffect.Value1 = _Const000F;
+  _this->ShiftLeftEffect.Value2 = _Const000C;
+  _this->ShiftLeftEffect.Value1 = _Const000D;
   CoreTimer_OnSetPeriod( &_this->Timer, 1000 );
   CoreTimer_OnSetEnabled( &_this->Timer, 0 );
   _this->ValueArray[ 1 ] = 0.100000f;
@@ -451,7 +359,7 @@ void HomeHOM12_EcoVisualizer_Init( HomeHOM12_EcoVisualizer _this, XHandle aArg )
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0010 ));
+  EwTrace( "%s", EwLoadString( &_Const000E ));
 
   if ( DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
       &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
@@ -780,7 +688,7 @@ void HomeHOM13_SpeedVisualizer__Init( HomeHOM13_SpeedVisualizer _this, XObject a
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.HomeType = EnumHomeTypeSPEED_VISUALIZER;
-  CoreRectView__OnSetBounds( &_this->Title, _Const0000 );
+  CoreRectView__OnSetBounds( &_this->Title, _Const000F );
   ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Title, EwGetVariantOfString( &StringsINF01_SPEED_VISUALIZER ));
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
@@ -823,7 +731,7 @@ void HomeHOM13_SpeedVisualizer_Init( HomeHOM13_SpeedVisualizer _this, XHandle aA
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0011 ));
+  EwTrace( "%s", EwLoadString( &_Const0010 ));
 }
 
 /* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnLongEnterKeyActivated()' */
@@ -905,7 +813,7 @@ void HomeBaseHome__Init( HomeBaseHome _this, XObject aLink, XHandle aArg )
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreTimer_OnSetPeriod( &_this->NaviConnectFailedTimer, 5000 );
-  CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0011 );
   CoreGroup__OnSetVisible( &_this->LoadingAnimation, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
   _this->NaviConnectFailedTimer.OnTrigger = EwNewSlot( _this, HomeBaseHome_OnNaviConnectFailedSlot );
@@ -1151,8 +1059,8 @@ void HomeHOM03_VehicleInfo__Init( HomeHOM03_VehicleInfo _this, XObject aLink, XH
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.HomeType = EnumHomeTypeVEHICLE_INFO;
-  CoreRectView__OnSetBounds( &_this->IconInfo, _Const0013 );
-  CoreRectView__OnSetBounds( &_this->VehicleInfoMenu, _Const0014 );
+  CoreRectView__OnSetBounds( &_this->IconInfo, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->VehicleInfoMenu, _Const0013 );
   CoreGroup__Add( _this, ((CoreView)&_this->IconInfo ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->VehicleInfoMenu ), 0 );
   ViewsImage_OnSetBitmap( &_this->IconInfo, EwLoadResource( &ResourceIconInfo, ResourcesBitmap ));
@@ -1195,7 +1103,7 @@ void HomeHOM03_VehicleInfo_Init( HomeHOM03_VehicleInfo _this, XHandle aArg )
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0015 ));
+  EwTrace( "%s", EwLoadString( &_Const0014 ));
 }
 
 /* 'C' function for method : 'Home::HOM03_VehicleInfo.OnShortDownKeyActivated()' */
@@ -1293,15 +1201,15 @@ void HomeVehicleInfoMenu__Init( HomeVehicleInfoMenu _this, XObject aLink, XHandl
   _this->_.VMT = EW_CLASS( HomeVehicleInfoMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0016 );
-  CoreRectView__OnSetBounds( &_this->VerticalList, _Const0016 );
+  CoreRectView__OnSetBounds( _this, _Const0015 );
+  CoreRectView__OnSetBounds( &_this->VerticalList, _Const0015 );
   CoreVerticalList_OnSetEndless( &_this->VerticalList, 1 );
   CoreVerticalList_OnSetItemHeight( &_this->VerticalList, 76 );
   CoreVerticalList_OnSetItemClass( &_this->VerticalList, EW_CLASS( HomeItemVehicleInfo ));
-  CoreRectView__OnSetBounds( &_this->Divider1, _Const0017 );
-  CoreRectView__OnSetBounds( &_this->Divider2, _Const0018 );
-  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const0019 );
-  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const001A );
+  CoreRectView__OnSetBounds( &_this->Divider1, _Const0016 );
+  CoreRectView__OnSetBounds( &_this->Divider2, _Const0017 );
+  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const0018 );
+  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const0019 );
   ViewsImage_OnSetFrameNumber( &_this->DownArrowIcon, 1 );
   EffectsEffect_OnSetExponent((EffectsEffect)&_this->RowScrollEffect, 4.190000f );
   EffectsEffect_OnSetTiming((EffectsEffect)&_this->RowScrollEffect, EffectsTimingExp_Out );
@@ -2111,38 +2019,38 @@ void HomeItemVehicleInfo__Init( HomeItemVehicleInfo _this, XObject aLink, XHandl
   _this->_.VMT = EW_CLASS( HomeItemVehicleInfo );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const001B );
+  CoreRectView__OnSetBounds( _this, _Const001A );
   _this->Super1.PassUpKey = 1;
   _this->Super1.PassDownKey = 1;
   CoreView_OnSetLayout((CoreView)&_this->Title, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Title, _Const001C );
+  CoreRectView__OnSetBounds( &_this->Title, _Const001B );
   ViewsText_OnSetEllipsis( &_this->Title, 1 );
   ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Title, 0 );
-  ViewsText_OnSetColor( &_this->Title, _Const001D );
-  CoreRectView__OnSetBounds( &_this->IconUnit, _Const001E );
+  ViewsText_OnSetColor( &_this->Title, _Const001C );
+  CoreRectView__OnSetBounds( &_this->IconUnit, _Const001D );
   CoreView_OnSetLayout((CoreView)&_this->ValueText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->ValueText, _Const001F );
+  CoreRectView__OnSetBounds( &_this->ValueText, _Const001E );
   ViewsText_OnSetEllipsis( &_this->ValueText, 1 );
   ViewsText_OnSetAlignment( &_this->ValueText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ValueText, 0 );
-  ViewsText_OnSetColor( &_this->ValueText, _Const001D );
+  ViewsText_OnSetColor( &_this->ValueText, _Const001C );
   CoreView_OnSetLayout((CoreView)&_this->MinuteText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->MinuteText, _Const0020 );
+  CoreRectView__OnSetBounds( &_this->MinuteText, _Const001F );
   ViewsText_OnSetEllipsis( &_this->MinuteText, 1 );
   ViewsText_OnSetAlignment( &_this->MinuteText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->MinuteText, 0 );
-  ViewsText_OnSetColor( &_this->MinuteText, _Const001D );
+  ViewsText_OnSetColor( &_this->MinuteText, _Const001C );
   CoreView_OnSetLayout((CoreView)&_this->HourText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->HourText, _Const0021 );
+  CoreRectView__OnSetBounds( &_this->HourText, _Const0020 );
   ViewsText_OnSetEllipsis( &_this->HourText, 1 );
   ViewsText_OnSetAlignment( &_this->HourText, ViewsTextAlignmentAlignHorzRight | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->HourText, 0 );
-  ViewsText_OnSetColor( &_this->HourText, _Const001D );
-  CoreRectView__OnSetBounds( &_this->HourIcon, _Const0022 );
+  ViewsText_OnSetColor( &_this->HourText, _Const001C );
+  CoreRectView__OnSetBounds( &_this->HourIcon, _Const0021 );
   ViewsImage_OnSetVisible( &_this->HourIcon, 0 );
   CoreTimer_OnSetPeriod( &_this->ValueTextBlinkTimer, 500 );
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
@@ -2286,7 +2194,7 @@ void HomeEcoMeterChart__Init( HomeEcoMeterChart _this, XObject aLink, XHandle aA
   _this->_.VMT = EW_CLASS( HomeEcoMeterChart );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0023 );
+  CoreRectView__OnSetBounds( _this, _Const0022 );
 }
 
 /* Re-Initializer for the class 'Home::EcoMeterChart' */
@@ -2392,7 +2300,7 @@ void HomeEcoMeterChart_RemoveEcoUnit( HomeEcoMeterChart _this, XInt32 aIndex )
       CoreGroup__Remove( _this, ((CoreView)EcoBar ));
   }
   else
-    EwTrace( "%s", EwLoadString( &_Const0024 ));
+    EwTrace( "%s", EwLoadString( &_Const0023 ));
 }
 
 /* 'C' function for method : 'Home::EcoMeterChart.HideEcoUnit()' */
@@ -2407,7 +2315,7 @@ void HomeEcoMeterChart_HideEcoUnit( HomeEcoMeterChart _this, XInt32 aIndex )
       CoreGroup__OnSetVisible( EcoBar, 0 );
   }
   else
-    EwTrace( "%s", EwLoadString( &_Const0024 ));
+    EwTrace( "%s", EwLoadString( &_Const0023 ));
 }
 
 /* Variants derived from the class : 'Home::EcoMeterChart' */
@@ -2467,10 +2375,10 @@ void HomeEcoMeterComponent__Init( HomeEcoMeterComponent _this, XObject aLink, XH
   _this->_.VMT = EW_CLASS( HomeEcoMeterComponent );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0025 );
-  CoreRectView__OnSetBounds( &_this->Bar, _Const0026 );
-  ViewsRectangle_OnSetColor( &_this->Bar, _Const0027 );
-  CoreRectView__OnSetBounds( &_this->Dot, _Const0028 );
+  CoreRectView__OnSetBounds( _this, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->Bar, _Const0025 );
+  ViewsRectangle_OnSetColor( &_this->Bar, _Const0026 );
+  CoreRectView__OnSetBounds( &_this->Dot, _Const0027 );
   CoreGroup__Add( _this, ((CoreView)&_this->Bar ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Dot ), 0 );
   ViewsFrame_OnSetBitmap( &_this->Dot, EwLoadResource( &ResourceEcoDot, ResourcesBitmap ));
@@ -2622,7 +2530,7 @@ void HomeRecordList_AddRecord( HomeRecordList _this, XFloat aValue )
       _this->NoOfItems = _this->NoOfItems + 1;
     }
     else
-      EwTrace( "%s", EwLoadString( &_Const0029 ));
+      EwTrace( "%s", EwLoadString( &_Const0028 ));
 }
 
 /* 'C' function for method : 'Home::RecordList.RemoveRecord()' */
@@ -2684,5 +2592,1092 @@ EW_END_OF_CLASS_VARIANTS( HomeRecord )
 /* Virtual Method Table (VMT) for the class : 'Home::Record' */
 EW_DEFINE_CLASS( HomeRecord, XObject, next, Value, Value, Value, Value, Value, "Home::Record" )
 EW_END_OF_CLASS( HomeRecord )
+
+/* Initializer for the class 'Home::TachoBaseline' */
+void HomeTachoBaseline__Init( HomeTachoBaseline _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeTachoBaseline );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( HomeTachoBaseline );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const0029 );
+}
+
+/* Re-Initializer for the class 'Home::TachoBaseline' */
+void HomeTachoBaseline__ReInit( HomeTachoBaseline _this )
+{
+  /* At first re-initialize the super class ... */
+  CoreGroup__ReInit( &_this->_.Super );
+}
+
+/* Finalizer method for the class 'Home::TachoBaseline' */
+void HomeTachoBaseline__Done( HomeTachoBaseline _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
+
+  /* Don't forget to deinitialize the super class ... */
+  CoreGroup__Done( &_this->_.Super );
+}
+
+/* The method UpdateLayout() is invoked automatically after the size of the component 
+   has been changed. This method can be overridden and filled with logic to perform 
+   a sophisticated arrangement calculation for one or more enclosed views. In this 
+   case the parameter aSize can be used. It contains the current size of the component. 
+   Usually, all enclosed views are arranged automatically accordingly to their @Layout 
+   property. UpdateLayout() gives the derived components a chance to extend this 
+   automatism by a user defined algorithm. */
+void HomeTachoBaseline_UpdateLayout( HomeTachoBaseline _this, XPoint aSize )
+{
+  XInt32 BaselineDistanceX;
+  XInt32 BaselineNum;
+
+  CoreGroup_UpdateLayout((CoreGroup)_this, aSize );
+
+  if ( EnumTachoFullScaleRPM10000 == _this->FullScaleType )
+  {
+    BaselineDistanceX = 21;
+    BaselineNum = 21;
+  }
+  else
+  {
+    BaselineDistanceX = 14;
+    BaselineNum = 31;
+  }
+
+  HomeTachoBaseline_DrawBaselines( _this, 4, BaselineDistanceX, BaselineNum );
+}
+
+/* 'C' function for method : 'Home::TachoBaseline.OnSetRedZoneBeginRPM()' */
+void HomeTachoBaseline_OnSetRedZoneBeginRPM( HomeTachoBaseline _this, XInt32 value )
+{
+  if ( _this->RedZoneBeginRPM != value )
+  {
+    _this->RedZoneBeginRPM = value;
+    CoreGroup_InvalidateLayout((CoreGroup)_this );
+  }
+}
+
+/* 'C' function for method : 'Home::TachoBaseline.OnSetFullScaleType()' */
+void HomeTachoBaseline_OnSetFullScaleType( HomeTachoBaseline _this, XEnum value )
+{
+  if ( _this->FullScaleType != value )
+  {
+    _this->FullScaleType = value;
+    CoreGroup_InvalidateLayout((CoreGroup)_this );
+  }
+}
+
+/* 'C' function for method : 'Home::TachoBaseline.DrawBaselines()' */
+void HomeTachoBaseline_DrawBaselines( HomeTachoBaseline _this, XInt32 BaselineStartX, 
+  XInt32 BaselineDistanceX, XInt32 BaselineNum )
+{
+  XInt32 BaselineIdx;
+  XInt32 RedZoneStartIdx = _this->RedZoneBeginRPM / 500;
+
+  CoreGroup_RemoveAll((CoreGroup)_this );
+
+  for ( BaselineIdx = 0; BaselineIdx < BaselineNum; BaselineIdx++ )
+  {
+    ViewsImage BaselineImg = EwNewObject( ViewsImage, 0 );
+    XInt32 StartX;
+    XRect BaselineBounds;
+
+    if ( 0 == ( BaselineIdx % 2 ))
+      ViewsImage_OnSetBitmap( BaselineImg, EwLoadResource( &ResourceTachoBaselineA, 
+      ResourcesBitmap ));
+    else
+      ViewsImage_OnSetBitmap( BaselineImg, EwLoadResource( &ResourceTachoBaselineB, 
+      ResourcesBitmap ));
+
+    if ( BaselineIdx >= RedZoneStartIdx )
+      ViewsImage_OnSetFrameNumber( BaselineImg, 1 );
+
+    StartX = BaselineStartX + ( BaselineDistanceX * BaselineIdx );
+    BaselineBounds = EwNewRect( StartX, 0, StartX + EwLoadResource( &ResourceTachoBaselineA, 
+    ResourcesBitmap )->FrameSize.X, EwLoadResource( &ResourceTachoBaselineA, ResourcesBitmap )->FrameSize.Y );
+    CoreRectView__OnSetBounds( BaselineImg, BaselineBounds );
+    CoreGroup__Add( _this, ((CoreView)BaselineImg ), 0 );
+  }
+}
+
+/* Variants derived from the class : 'Home::TachoBaseline' */
+EW_DEFINE_CLASS_VARIANTS( HomeTachoBaseline )
+EW_END_OF_CLASS_VARIANTS( HomeTachoBaseline )
+
+/* Virtual Method Table (VMT) for the class : 'Home::TachoBaseline' */
+EW_DEFINE_CLASS( HomeTachoBaseline, CoreGroup, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "Home::TachoBaseline" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  HomeTachoBaseline_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+EW_END_OF_CLASS( HomeTachoBaseline )
+
+/* Initializer for the class 'Home::TachoColor' */
+void HomeTachoColor__Init( HomeTachoColor _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeTachoColor );
+
+  /* ... then construct all embedded objects */
+  ViewsImage__Init( &_this->UpColorbaseImg, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->DownColorbaseImg, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Front, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->ColorbaseUpLine, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->ColorbaseDownLine, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->YmaskUpEndLine, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->YmaskUpStartLine, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->YmaskDownStartLine, &_this->_.XObject, 0 );
+  ViewsLine__Init( &_this->YmaskDownEndLine, &_this->_.XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( HomeTachoColor );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const002A );
+  CoreRectView__OnSetBounds( &_this->UpColorbaseImg, _Const002B );
+  ViewsImage_OnSetAlignment( &_this->UpColorbaseImg, ViewsImageAlignmentAlignHorzRight 
+  | ViewsImageAlignmentAlignVertBottom );
+  CoreRectView__OnSetBounds( &_this->DownColorbaseImg, _Const002C );
+  ViewsImage_OnSetAlignment( &_this->DownColorbaseImg, ViewsImageAlignmentAlignHorzRight 
+  | ViewsImageAlignmentAlignVertTop );
+  CoreRectView__OnSetBounds( &_this->Front, _Const002D );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->ColorbaseUpLine, _Const002E );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->ColorbaseUpLine, _Const002F );
+  ViewsLine_OnSetVisible( &_this->ColorbaseUpLine, 0 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->ColorbaseDownLine, _Const0030 );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->ColorbaseDownLine, _Const0031 );
+  ViewsLine_OnSetVisible( &_this->ColorbaseDownLine, 0 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskUpEndLine, _Const0032 );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskUpEndLine, _Const0033 );
+  ViewsLine_OnSetColor( &_this->YmaskUpEndLine, _Const0034 );
+  ViewsLine_OnSetVisible( &_this->YmaskUpEndLine, 0 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskUpStartLine, _Const0035 );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskUpStartLine, _Const0036 );
+  ViewsLine_OnSetColor( &_this->YmaskUpStartLine, _Const0037 );
+  ViewsLine_OnSetVisible( &_this->YmaskUpStartLine, 0 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskDownStartLine, _Const0038 );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskDownStartLine, _Const0039 );
+  ViewsLine_OnSetColor( &_this->YmaskDownStartLine, _Const0034 );
+  ViewsLine_OnSetVisible( &_this->YmaskDownStartLine, 0 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskDownEndLine, _Const003A );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskDownEndLine, _Const003B );
+  ViewsLine_OnSetColor( &_this->YmaskDownEndLine, _Const0037 );
+  ViewsLine_OnSetVisible( &_this->YmaskDownEndLine, 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->UpColorbaseImg ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->DownColorbaseImg ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->Front ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ColorbaseUpLine ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ColorbaseDownLine ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->YmaskUpEndLine ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->YmaskUpStartLine ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->YmaskDownStartLine ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->YmaskDownEndLine ), 0 );
+  ViewsImage_OnSetBitmap( &_this->UpColorbaseImg, ((ResourcesBitmap)EwGetAutoObject( 
+  &ResourceExternTachoUpColorbase, ResourcesExternBitmap )));
+  ViewsImage_OnSetBitmap( &_this->DownColorbaseImg, ((ResourcesBitmap)EwGetAutoObject( 
+  &ResourceExternTachoDownColorbase, ResourcesExternBitmap )));
+  ViewsImage_OnSetBitmap( &_this->Front, EwLoadResource( &ResourceTachoFront, ResourcesBitmap ));
+}
+
+/* Re-Initializer for the class 'Home::TachoColor' */
+void HomeTachoColor__ReInit( HomeTachoColor _this )
+{
+  /* At first re-initialize the super class ... */
+  CoreGroup__ReInit( &_this->_.Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsImage__ReInit( &_this->UpColorbaseImg );
+  ViewsImage__ReInit( &_this->DownColorbaseImg );
+  ViewsImage__ReInit( &_this->Front );
+  ViewsLine__ReInit( &_this->ColorbaseUpLine );
+  ViewsLine__ReInit( &_this->ColorbaseDownLine );
+  ViewsLine__ReInit( &_this->YmaskUpEndLine );
+  ViewsLine__ReInit( &_this->YmaskUpStartLine );
+  ViewsLine__ReInit( &_this->YmaskDownStartLine );
+  ViewsLine__ReInit( &_this->YmaskDownEndLine );
+}
+
+/* Finalizer method for the class 'Home::TachoColor' */
+void HomeTachoColor__Done( HomeTachoColor _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
+
+  /* Finalize all embedded objects */
+  ViewsImage__Done( &_this->UpColorbaseImg );
+  ViewsImage__Done( &_this->DownColorbaseImg );
+  ViewsImage__Done( &_this->Front );
+  ViewsLine__Done( &_this->ColorbaseUpLine );
+  ViewsLine__Done( &_this->ColorbaseDownLine );
+  ViewsLine__Done( &_this->YmaskUpEndLine );
+  ViewsLine__Done( &_this->YmaskUpStartLine );
+  ViewsLine__Done( &_this->YmaskDownStartLine );
+  ViewsLine__Done( &_this->YmaskDownEndLine );
+
+  /* Don't forget to deinitialize the super class ... */
+  CoreGroup__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Home::TachoColor.OnSetApsAngle()' */
+void HomeTachoColor_OnSetApsAngle( HomeTachoColor _this, XInt32 value )
+{
+  if ( _this->ApsAngle != value )
+  {
+    _this->ApsAngle = value;
+    HomeTachoColor_UpdateYMask( _this, value );
+  }
+}
+
+/* 'C' function for method : 'Home::TachoColor.UpdateYMask()' */
+void HomeTachoColor_UpdateYMask( HomeTachoColor _this, XInt32 aApsAngle )
+{
+  XInt32 UpperMaskY2 = (XInt32)( 88 - ( 0.987500f * aApsAngle ));
+  XInt32 UpperMaskY1 = ( UpperMaskY2 - 46 ) + 1;
+  XInt32 LowerMaskY1;
+  XInt32 LowerMaskY2;
+
+  if ( UpperMaskY1 < 0 )
+    UpperMaskY1 = 0;
+
+  LowerMaskY1 = (XInt32)( 137 + ( 0.987500f * aApsAngle ));
+  LowerMaskY2 = ( LowerMaskY1 + 46 ) - 1;
+
+  if ( EwGetRectH( _this->Super2.Bounds ) < LowerMaskY2 )
+    LowerMaskY2 = EwGetRectH( _this->Super2.Bounds );
+
+  if ( _this->ReferenceLineVisible )
+  {
+    CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskUpStartLine, EwSetPointY( 
+    _this->YmaskUpStartLine.Super1.Point1, UpperMaskY1 ));
+    CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskUpStartLine, EwSetPointY( 
+    _this->YmaskUpStartLine.Super1.Point2, UpperMaskY1 ));
+    CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskUpEndLine, EwSetPointY( 
+    _this->YmaskUpEndLine.Super1.Point1, UpperMaskY2 ));
+    CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskUpEndLine, EwSetPointY( 
+    _this->YmaskUpEndLine.Super1.Point2, UpperMaskY2 ));
+    CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskDownStartLine, EwSetPointY( 
+    _this->YmaskDownStartLine.Super1.Point1, LowerMaskY1 ));
+    CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskDownStartLine, EwSetPointY( 
+    _this->YmaskDownStartLine.Super1.Point2, LowerMaskY1 ));
+    CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskDownEndLine, EwSetPointY( 
+    _this->YmaskDownEndLine.Super1.Point1, LowerMaskY2 ));
+    CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskDownEndLine, EwSetPointY( 
+    _this->YmaskDownEndLine.Super1.Point2, LowerMaskY2 ));
+  }
+
+  DeviceInterfaceVehicleDeviceClass_SetTachoYMask( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), UpperMaskY1, UpperMaskY2, LowerMaskY1, LowerMaskY2 );
+}
+
+/* 'C' function for method : 'Home::TachoColor.UpdateColorbase()' */
+void HomeTachoColor_UpdateColorbase( HomeTachoColor _this, XInt32 aApsAngle )
+{
+  XRect ColorRect = _this->Super2.Bounds;
+  XInt32 UpHalfHeight;
+  XInt32 DownHalfHeight;
+  XRect UpperColorbase;
+  XRect LowerColorbase;
+
+  ColorRect.Point1.X = ( ColorRect.Point1.X - 8 );
+  ColorRect.Point2.X = ( ColorRect.Point2.X - 8 );
+
+  if ( ColorRect.Point1.X < 0 )
+    ColorRect.Point1.X = 0;
+
+  if ( EwGetRectH( _this->Super2.Bounds ) < EwGetRectH( ColorRect ))
+    ColorRect = EwSetRectH( ColorRect, EwGetRectH( _this->Super2.Bounds ));
+
+  UpHalfHeight = (XInt32)( 1.137500f * aApsAngle );
+  ColorRect.Point1.Y = (( 88 - UpHalfHeight ) - 46 );
+
+  if ( 0 > ColorRect.Point1.Y )
+    ColorRect.Point1.Y = 0;
+
+  DownHalfHeight = (XInt32)( 1.212500f * aApsAngle );
+  ColorRect.Point2.Y = (( 137 + DownHalfHeight ) + 46 );
+
+  if ( EwGetRectH( _this->Super2.Bounds ) < ColorRect.Point2.Y )
+    ColorRect.Point2.Y = EwGetRectH( _this->Super2.Bounds );
+
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->ColorbaseUpLine, EwSetPointY( _this->ColorbaseUpLine.Super1.Point1, 
+  ColorRect.Point1.Y ));
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->ColorbaseUpLine, EwSetPointY( _this->ColorbaseUpLine.Super1.Point2, 
+  ColorRect.Point1.Y ));
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->ColorbaseDownLine, EwSetPointY( 
+  _this->ColorbaseDownLine.Super1.Point1, ColorRect.Point2.Y ));
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->ColorbaseDownLine, EwSetPointY( 
+  _this->ColorbaseDownLine.Super1.Point2, ColorRect.Point2.Y ));
+  UpperColorbase = ColorRect;
+  LowerColorbase = ColorRect;
+  UpperColorbase.Point2.Y = _this->UpColorbaseImg.Super1.Bounds.Point2.Y;
+  LowerColorbase.Point1.Y = _this->DownColorbaseImg.Super1.Bounds.Point1.Y;
+  DeviceInterfaceVehicleDeviceClass_SetTachoColorbaseRect( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), UpperColorbase, LowerColorbase );
+}
+
+/* 'C' function for method : 'Home::TachoColor.OnSetEngineSpeed()' */
+void HomeTachoColor_OnSetEngineSpeed( HomeTachoColor _this, XInt32 value )
+{
+  if ( _this->EngineSpeed != value )
+  {
+    _this->EngineSpeed = value;
+    HomeTachoColor_UpdateBounds( _this, value );
+  }
+}
+
+/* 'C' function for method : 'Home::TachoColor.UpdateBounds()' */
+void HomeTachoColor_UpdateBounds( HomeTachoColor _this, XInt32 aEngineSpeed )
+{
+  XFloat EngineSpeedToXPositionFactor;
+  XRect CircularSectorBounds;
+  XInt32 CircularSectorBoundsWidth;
+
+  if ( EnumTachoFullScaleRPM10000 == _this->FullScaleType )
+    EngineSpeedToXPositionFactor = 0.042300f;
+  else
+    EngineSpeedToXPositionFactor = 0.028200f;
+
+  CircularSectorBounds = _this->Super2.Bounds;
+  CircularSectorBoundsWidth = EwGetRectW( _this->Super2.Bounds );
+  CircularSectorBounds.Point2.X = (XInt32)EwMathCeil( 34.000000f + ( EngineSpeedToXPositionFactor 
+  * (XFloat)aEngineSpeed ));
+
+  if ( 457 < CircularSectorBounds.Point2.X )
+    CircularSectorBounds.Point2.X = 457;
+
+  CircularSectorBounds.Point1.X = ( CircularSectorBounds.Point2.X - CircularSectorBoundsWidth );
+  CoreRectView__OnSetBounds( _this, CircularSectorBounds );
+}
+
+/* 'C' function for method : 'Home::TachoColor.OnSetReferenceLineVisible()' */
+void HomeTachoColor_OnSetReferenceLineVisible( HomeTachoColor _this, XBool value )
+{
+  if ( _this->ReferenceLineVisible != value )
+  {
+    _this->ReferenceLineVisible = value;
+    ViewsLine_OnSetVisible( &_this->ColorbaseUpLine, value );
+    ViewsLine_OnSetVisible( &_this->ColorbaseDownLine, value );
+    ViewsLine_OnSetVisible( &_this->YmaskUpStartLine, value );
+    ViewsLine_OnSetVisible( &_this->YmaskUpEndLine, value );
+    ViewsLine_OnSetVisible( &_this->YmaskDownStartLine, value );
+    ViewsLine_OnSetVisible( &_this->YmaskDownEndLine, value );
+  }
+}
+
+/* 'C' function for method : 'Home::TachoColor.SetEngineData()' */
+void HomeTachoColor_SetEngineData( HomeTachoColor _this, XInt32 aEngineSpeed, XInt32 
+  aApsAngle )
+{
+  XBool NeedReloadColorbase = 0;
+
+  if ( _this->EngineSpeed != aEngineSpeed )
+  {
+    HomeTachoColor_OnSetEngineSpeed( _this, aEngineSpeed );
+    NeedReloadColorbase = 1;
+  }
+
+  if ( _this->ApsAngle != aApsAngle )
+  {
+    HomeTachoColor_OnSetApsAngle( _this, aApsAngle );
+    NeedReloadColorbase = 1;
+  }
+
+  if ( NeedReloadColorbase )
+  {
+    HomeTachoColor_UpdateColorbase( _this, aApsAngle );
+    HomeTachoColor_ReloadColorbase( _this );
+  }
+}
+
+/* 'C' function for method : 'Home::TachoColor.ReloadColorbase()' */
+void HomeTachoColor_ReloadColorbase( HomeTachoColor _this )
+{
+  ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceExternTachoUpColorbase, 
+  ResourcesExternBitmap ), EwLoadString( &ResourceTACHO_COLORBASE_UP ));
+  ResourcesExternBitmap_Reload( EwGetAutoObject( &ResourceExternTachoUpColorbase, 
+  ResourcesExternBitmap ));
+
+  if ( _this->DownPartEnabled )
+  {
+    ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceExternTachoDownColorbase, 
+    ResourcesExternBitmap ), EwLoadString( &ResourceTACHO_COLORBASE_DOWN ));
+    ResourcesExternBitmap_Reload( EwGetAutoObject( &ResourceExternTachoDownColorbase, 
+    ResourcesExternBitmap ));
+    ViewsImage_OnSetVisible( &_this->DownColorbaseImg, 1 );
+  }
+  else
+    ViewsImage_OnSetVisible( &_this->DownColorbaseImg, 0 );
+}
+
+/* Variants derived from the class : 'Home::TachoColor' */
+EW_DEFINE_CLASS_VARIANTS( HomeTachoColor )
+EW_END_OF_CLASS_VARIANTS( HomeTachoColor )
+
+/* Virtual Method Table (VMT) for the class : 'Home::TachoColor' */
+EW_DEFINE_CLASS( HomeTachoColor, CoreGroup, UpColorbaseImg, UpColorbaseImg, UpColorbaseImg, 
+                 UpColorbaseImg, ApsAngle, ApsAngle, "Home::TachoColor" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+EW_END_OF_CLASS( HomeTachoColor )
+
+/* Initializer for the class 'Home::TachoScale' */
+void HomeTachoScale__Init( HomeTachoScale _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeTachoScale );
+
+  /* ... then construct all embedded objects */
+  ViewsImage__Init( &_this->Background, &_this->_.XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( HomeTachoScale );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const003C );
+  CoreRectView__OnSetBounds( &_this->Background, _Const003C );
+  CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
+  ViewsImage_OnSetBitmap( &_this->Background, EwLoadResource( &ResourceTachoNumberBG, 
+  ResourcesBitmap ));
+
+  /* Call the user defined constructor */
+  HomeTachoScale_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Home::TachoScale' */
+void HomeTachoScale__ReInit( HomeTachoScale _this )
+{
+  /* At first re-initialize the super class ... */
+  CoreGroup__ReInit( &_this->_.Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsImage__ReInit( &_this->Background );
+}
+
+/* Finalizer method for the class 'Home::TachoScale' */
+void HomeTachoScale__Done( HomeTachoScale _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
+
+  /* Finalize all embedded objects */
+  ViewsImage__Done( &_this->Background );
+
+  /* Don't forget to deinitialize the super class ... */
+  CoreGroup__Done( &_this->_.Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void HomeTachoScale_Init( HomeTachoScale _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aArg );
+}
+
+/* The method UpdateLayout() is invoked automatically after the size of the component 
+   has been changed. This method can be overridden and filled with logic to perform 
+   a sophisticated arrangement calculation for one or more enclosed views. In this 
+   case the parameter aSize can be used. It contains the current size of the component. 
+   Usually, all enclosed views are arranged automatically accordingly to their @Layout 
+   property. UpdateLayout() gives the derived components a chance to extend this 
+   automatism by a user defined algorithm. */
+void HomeTachoScale_UpdateLayout( HomeTachoScale _this, XPoint aSize )
+{
+  CoreGroup_UpdateLayout((CoreGroup)_this, aSize );
+  CoreGroup_RemoveAll((CoreGroup)_this );
+  CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
+
+  if ( EnumTachoFullScaleRPM10000 == _this->FullScaleType )
+    HomeTachoScale_Draw10000rpmScale( _this );
+  else
+    HomeTachoScale_Draw15000rpmScale( _this );
+}
+
+/* 'C' function for method : 'Home::TachoScale.OnSetRedZoneBeginRPM()' */
+void HomeTachoScale_OnSetRedZoneBeginRPM( HomeTachoScale _this, XInt32 value )
+{
+  if ( _this->RedZoneBeginRPM != value )
+  {
+    _this->RedZoneBeginRPM = value;
+    CoreGroup_InvalidateLayout((CoreGroup)_this );
+  }
+}
+
+/* 'C' function for method : 'Home::TachoScale.OnSetFullScaleType()' */
+void HomeTachoScale_OnSetFullScaleType( HomeTachoScale _this, XEnum value )
+{
+  if ( _this->FullScaleType != value )
+  {
+    _this->FullScaleType = value;
+    CoreGroup_InvalidateLayout((CoreGroup)_this );
+  }
+}
+
+/* 'C' function for method : 'Home::TachoScale.OnSetCurrentEngineSpeed()' */
+void HomeTachoScale_OnSetCurrentEngineSpeed( HomeTachoScale _this, XUInt32 value )
+{
+  if ( _this->CurrentEngineSpeed != value )
+  {
+    _this->CurrentEngineSpeed = value;
+
+    if ( EnumTachoFullScaleRPM10000 == _this->FullScaleType )
+      HomeTachoScale_Highlight1000rpmScale( _this );
+    else
+      HomeTachoScale_Highlight1500rpmScale( _this );
+  }
+}
+
+/* 'C' function for method : 'Home::TachoScale.Draw10000rpmScale()' */
+void HomeTachoScale_Draw10000rpmScale( HomeTachoScale _this )
+{
+  XInt32 i;
+  XInt32 RedZoneBeginIdx = _this->RedZoneBeginRPM / 500;
+  XInt32 StartX = 13;
+
+  for ( i = 0; i < 21; i++ )
+  {
+    ViewsImage ScaleImage = EwNewObject( ViewsImage, 0 );
+
+    if ( _this->HighlightImages[ EwCheckIndex( i, 21 )] == 0 )
+      _this->HighlightImages[ EwCheckIndex( i, 21 )] = EwNewObject( ViewsImage, 
+      0 );
+
+    if (( i % 2 ) == 0 )
+    {
+      XInt32 Number = i / 2;
+
+      if (( i < RedZoneBeginIdx ) || ( Number < 8 ))
+      {
+        ViewsImage_OnSetBitmap( ScaleImage, EwLoadResource( &ResourceTachoNumberOff, 
+        ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( ScaleImage, Number );
+        ViewsImage_OnSetBitmap( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        EwLoadResource( &ResourceTachoNumberOn, ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        Number );
+      }
+      else
+      {
+        ViewsImage_OnSetBitmap( ScaleImage, EwLoadResource( &ResourceTachoNumberOffRed, 
+        ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( ScaleImage, Number - 8 );
+        ViewsImage_OnSetBitmap( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        EwLoadResource( &ResourceTachoNumberOnRed, ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        Number - 8 );
+      }
+    }
+    else
+      if ( i < RedZoneBeginIdx )
+      {
+        ViewsImage_OnSetBitmap( ScaleImage, EwLoadResource( &ResourceTachoNumberDot, 
+        ResourcesBitmap ));
+        ViewsImage_OnSetBitmap( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        EwLoadResource( &ResourceTachoNumberDot, ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        1 );
+      }
+      else
+      {
+        ViewsImage_OnSetBitmap( ScaleImage, EwLoadResource( &ResourceTachoNumberDotRed, 
+        ResourcesBitmap ));
+        ViewsImage_OnSetBitmap( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        EwLoadResource( &ResourceTachoNumberDotRed, ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        1 );
+      }
+
+    CoreRectView__OnSetBounds( ScaleImage, EwNewRect( StartX, 10, StartX + ScaleImage->Bitmap->FrameSize.X, 
+    10 + ScaleImage->Bitmap->FrameSize.Y ));
+    ViewsImage_OnSetVisible( ScaleImage, 1 );
+    CoreGroup__Add( _this, ((CoreView)ScaleImage ), 0 );
+    CoreRectView__OnSetBounds( _this->HighlightImages[ EwCheckIndex( i, 21 )], ScaleImage->Super1.Bounds );
+    ViewsImage_OnSetVisible( _this->HighlightImages[ EwCheckIndex( i, 21 )], 0 );
+    CoreGroup__Add( _this, ((CoreView)_this->HighlightImages[ EwCheckIndex( i, 21 )]), 
+    0 );
+    StartX += 21;
+  }
+}
+
+/* 'C' function for method : 'Home::TachoScale.Draw15000rpmScale()' */
+void HomeTachoScale_Draw15000rpmScale( HomeTachoScale _this )
+{
+  XInt32 i;
+  XInt32 RedZoneBeginIdx = _this->RedZoneBeginRPM / 1000;
+  XInt32 StartX = 13;
+
+  for ( i = 0; i < 16; i++ )
+  {
+    ViewsImage ScaleImage = EwNewObject( ViewsImage, 0 );
+
+    if ( _this->HighlightImages[ EwCheckIndex( i, 21 )] == 0 )
+      _this->HighlightImages[ EwCheckIndex( i, 21 )] = EwNewObject( ViewsImage, 
+      0 );
+
+    if (( i == 0 ) || (( i % 2 ) == 1 ))
+    {
+      XInt32 Number = i;
+
+      if (( i < RedZoneBeginIdx ) || ( Number < 8 ))
+      {
+        ViewsImage_OnSetBitmap( ScaleImage, EwLoadResource( &ResourceTachoNumberOff, 
+        ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( ScaleImage, Number );
+        ViewsImage_OnSetBitmap( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        EwLoadResource( &ResourceTachoNumberOn, ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        Number );
+      }
+      else
+      {
+        ViewsImage_OnSetBitmap( ScaleImage, EwLoadResource( &ResourceTachoNumberOffRed, 
+        ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( ScaleImage, Number - 8 );
+        ViewsImage_OnSetBitmap( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        EwLoadResource( &ResourceTachoNumberOnRed, ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        Number - 8 );
+      }
+    }
+    else
+      if ( i < RedZoneBeginIdx )
+      {
+        ViewsImage_OnSetBitmap( ScaleImage, EwLoadResource( &ResourceTachoNumberDot, 
+        ResourcesBitmap ));
+        ViewsImage_OnSetBitmap( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        EwLoadResource( &ResourceTachoNumberDot, ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        1 );
+      }
+      else
+      {
+        ViewsImage_OnSetBitmap( ScaleImage, EwLoadResource( &ResourceTachoNumberDotRed, 
+        ResourcesBitmap ));
+        ViewsImage_OnSetBitmap( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        EwLoadResource( &ResourceTachoNumberDotRed, ResourcesBitmap ));
+        ViewsImage_OnSetFrameNumber( _this->HighlightImages[ EwCheckIndex( i, 21 )], 
+        1 );
+      }
+
+    CoreRectView__OnSetBounds( ScaleImage, EwNewRect( StartX, 10, StartX + ScaleImage->Bitmap->FrameSize.X, 
+    10 + ScaleImage->Bitmap->FrameSize.Y ));
+    ViewsImage_OnSetVisible( ScaleImage, 1 );
+    CoreGroup__Add( _this, ((CoreView)ScaleImage ), 0 );
+    CoreRectView__OnSetBounds( _this->HighlightImages[ EwCheckIndex( i, 21 )], ScaleImage->Super1.Bounds );
+    ViewsImage_OnSetVisible( _this->HighlightImages[ EwCheckIndex( i, 21 )], 0 );
+    CoreGroup__Add( _this, ((CoreView)_this->HighlightImages[ EwCheckIndex( i, 21 )]), 
+    0 );
+    StartX += 28;
+  }
+}
+
+/* 'C' function for method : 'Home::TachoScale.Highlight1000rpmScale()' */
+void HomeTachoScale_Highlight1000rpmScale( HomeTachoScale _this )
+{
+  XInt32 HighlightStartIdx = (XInt32)( _this->CurrentEngineSpeed / 500 );
+  XInt32 i;
+
+  for ( i = 0; i < 21; i++ )
+    if ( i <= HighlightStartIdx )
+      ViewsImage_OnSetVisible( _this->HighlightImages[ EwCheckIndex( i, 21 )], 1 );
+    else
+      ViewsImage_OnSetVisible( _this->HighlightImages[ EwCheckIndex( i, 21 )], 0 );
+}
+
+/* 'C' function for method : 'Home::TachoScale.Highlight1500rpmScale()' */
+void HomeTachoScale_Highlight1500rpmScale( HomeTachoScale _this )
+{
+  XInt32 HighlightStartIdx = (XInt32)( _this->CurrentEngineSpeed / 1000 );
+  XInt32 i;
+
+  for ( i = 0; i < 16; i++ )
+    if ( i <= HighlightStartIdx )
+      ViewsImage_OnSetVisible( _this->HighlightImages[ EwCheckIndex( i, 21 )], 1 );
+    else
+      ViewsImage_OnSetVisible( _this->HighlightImages[ EwCheckIndex( i, 21 )], 0 );
+}
+
+/* Variants derived from the class : 'Home::TachoScale' */
+EW_DEFINE_CLASS_VARIANTS( HomeTachoScale )
+EW_END_OF_CLASS_VARIANTS( HomeTachoScale )
+
+/* Virtual Method Table (VMT) for the class : 'Home::TachoScale' */
+EW_DEFINE_CLASS( HomeTachoScale, CoreGroup, HighlightImages, Background, Background, 
+                 Background, RedZoneBeginRPM, RedZoneBeginRPM, "Home::TachoScale" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  HomeTachoScale_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+EW_END_OF_CLASS( HomeTachoScale )
+
+/* Initializer for the class 'Home::HOM11_TachoVisualizer' */
+void HomeHOM11_TachoVisualizer__Init( HomeHOM11_TachoVisualizer _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  HomeBaseHome__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeHOM11_TachoVisualizer );
+
+  /* ... then construct all embedded objects */
+  HomeTachoBaseline__Init( &_this->TachoBaseline, &_this->_.XObject, 0 );
+  HomeTachoColor__Init( &_this->CircularSector, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->UpdateTimer, &_this->_.XObject, 0 );
+  HomeTachoScale__Init( &_this->TachoScale, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->RpmImg, &_this->_.XObject, 0 );
+  ViewsWallpaper__Init( &_this->StatusbarShadow, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->VVAIndicatorImage, &_this->_.XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( HomeHOM11_TachoVisualizer );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( &_this->Super2.BlackBG, _Const0011 );
+  CoreRectView__OnSetBounds( &_this->TachoBaseline, _Const0011 );
+  CoreRectView__OnSetBounds( &_this->CircularSector, _Const003D );
+  HomeTachoColor_OnSetReferenceLineVisible( &_this->CircularSector, 0 );
+  _this->CircularSector.DownPartEnabled = 1;
+  CoreTimer_OnSetPeriod( &_this->UpdateTimer, 40 );
+  CoreTimer_OnSetEnabled( &_this->UpdateTimer, 1 );
+  CoreRectView__OnSetBounds( &_this->TachoScale, _Const003E );
+  CoreRectView__OnSetBounds( &_this->RpmImg, _Const003F );
+  ViewsImage_OnSetFrameNumber( &_this->RpmImg, 0 );
+  ViewsImage_OnSetVisible( &_this->RpmImg, 1 );
+  CoreRectView__OnSetBounds( &_this->StatusbarShadow, _Const0040 );
+  CoreRectView__OnSetBounds( &_this->VVAIndicatorImage, _Const0041 );
+  ViewsImage_OnSetFrameNumber( &_this->VVAIndicatorImage, 1 );
+  ViewsImage_OnSetVisible( &_this->VVAIndicatorImage, 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->TachoBaseline ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->CircularSector ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->TachoScale ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->RpmImg ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->StatusbarShadow ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->VVAIndicatorImage ), 0 );
+  _this->UpdateTimer.OnTrigger = EwNewSlot( _this, HomeHOM11_TachoVisualizer_OnUpdateSlot );
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, HomeHOM11_TachoVisualizer_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
+  ViewsImage_OnSetBitmap( &_this->RpmImg, EwLoadResource( &ResourceTacho1000R, ResourcesBitmap ));
+  ViewsWallpaper_OnSetBitmap( &_this->StatusbarShadow, EwLoadResource( &ResourceTachoStatusbarShadow, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->VVAIndicatorImage, EwLoadResource( &ResourceTachoVVA, 
+  ResourcesBitmap ));
+
+  /* Call the user defined constructor */
+  HomeHOM11_TachoVisualizer_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Home::HOM11_TachoVisualizer' */
+void HomeHOM11_TachoVisualizer__ReInit( HomeHOM11_TachoVisualizer _this )
+{
+  /* At first re-initialize the super class ... */
+  HomeBaseHome__ReInit( &_this->_.Super );
+
+  /* ... then re-construct all embedded objects */
+  HomeTachoBaseline__ReInit( &_this->TachoBaseline );
+  HomeTachoColor__ReInit( &_this->CircularSector );
+  CoreTimer__ReInit( &_this->UpdateTimer );
+  HomeTachoScale__ReInit( &_this->TachoScale );
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
+  ViewsImage__ReInit( &_this->RpmImg );
+  ViewsWallpaper__ReInit( &_this->StatusbarShadow );
+  ViewsImage__ReInit( &_this->VVAIndicatorImage );
+}
+
+/* Finalizer method for the class 'Home::HOM11_TachoVisualizer' */
+void HomeHOM11_TachoVisualizer__Done( HomeHOM11_TachoVisualizer _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( HomeBaseHome );
+
+  /* Finalize all embedded objects */
+  HomeTachoBaseline__Done( &_this->TachoBaseline );
+  HomeTachoColor__Done( &_this->CircularSector );
+  CoreTimer__Done( &_this->UpdateTimer );
+  HomeTachoScale__Done( &_this->TachoScale );
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
+  ViewsImage__Done( &_this->RpmImg );
+  ViewsWallpaper__Done( &_this->StatusbarShadow );
+  ViewsImage__Done( &_this->VVAIndicatorImage );
+
+  /* Don't forget to deinitialize the super class ... */
+  HomeBaseHome__Done( &_this->_.Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void HomeHOM11_TachoVisualizer_Init( HomeHOM11_TachoVisualizer _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const0042 ));
+  HomeHOM11_TachoVisualizer_OnSetFullScaleType( _this, (XEnum)DeviceInterfaceSystemDeviceClass_GetSystemStatus( 
+  EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), 
+  EnumSystemStatusTACHO_FULLSCALE ));
+  HomeHOM11_TachoVisualizer_OnSetRedZoneBeginRPM( _this, DeviceInterfaceSystemDeviceClass_GetSystemStatus( 
+  EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), 
+  EnumSystemStatusTACHO_REDZONE_BEGIN ));
+  HomeHOM11_TachoVisualizer_UpdateVVAIndicator( _this );
+}
+
+/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnLongEnterKeyActivated()' */
+void HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated( HomeHOM11_TachoVisualizer _this )
+{
+  if ( 1 == _this->Super3.KeyHandler.RepetitionCount )
+    CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( InfoINF01_MeterDisplaySettingMenu, 
+    0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
+/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnUpdateSlot()' */
+void HomeHOM11_TachoVisualizer_OnUpdateSlot( HomeHOM11_TachoVisualizer _this, XObject 
+  sender )
+{
+  XUInt32 EngineSpeed;
+  XUInt32 ApsAngle;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( CoreGroup__IsCurrentDialog( _this ))
+  {
+    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      EnumVehicleRxTypeENGINE_SPEED );
+    EngineSpeed = VehicleData->DataUInt32;
+    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+    DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeAPS_ANGLE );
+    ApsAngle = VehicleData->DataUInt32;
+    HomeTachoColor_SetEngineData( &_this->CircularSector, (XInt32)EngineSpeed, (XInt32)ApsAngle );
+    HomeTachoScale_OnSetCurrentEngineSpeed( &_this->TachoScale, EngineSpeed );
+  }
+}
+
+/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnSetFullScaleType()' */
+void HomeHOM11_TachoVisualizer_OnSetFullScaleType( HomeHOM11_TachoVisualizer _this, 
+  XEnum value )
+{
+  if ( _this->FullScaleType != value )
+  {
+    _this->FullScaleType = value;
+    HomeTachoScale_OnSetFullScaleType( &_this->TachoScale, value );
+    HomeTachoBaseline_OnSetFullScaleType( &_this->TachoBaseline, value );
+    _this->CircularSector.FullScaleType = value;
+  }
+}
+
+/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnSetRedZoneBeginRPM()' */
+void HomeHOM11_TachoVisualizer_OnSetRedZoneBeginRPM( HomeHOM11_TachoVisualizer _this, 
+  XInt32 value )
+{
+  if ( _this->RedZoneBeginRPM != value )
+  {
+    _this->RedZoneBeginRPM = value;
+    HomeTachoScale_OnSetRedZoneBeginRPM( &_this->TachoScale, value );
+    HomeTachoBaseline_OnSetRedZoneBeginRPM( &_this->TachoBaseline, value );
+  }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void HomeHOM11_TachoVisualizer_OnVehicleDataReceivedSlot( HomeHOM11_TachoVisualizer _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if ( VehicleData != 0 )
+    switch ( VehicleData->RxType )
+    {
+      case EnumVehicleRxTypeVVA_INDICATOR :
+        HomeHOM11_TachoVisualizer_UpdateVVAIndicator( _this );
+      break;
+
+      case EnumVehicleRxTypeTACHO_SETTING :
+      {
+        HomeHOM11_TachoVisualizer_OnSetFullScaleType( _this, (XEnum)DeviceInterfaceSystemDeviceClass_GetSystemStatus( 
+        EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), 
+        EnumSystemStatusTACHO_FULLSCALE ));
+        HomeHOM11_TachoVisualizer_OnSetRedZoneBeginRPM( _this, DeviceInterfaceSystemDeviceClass_GetSystemStatus( 
+        EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), 
+        EnumSystemStatusTACHO_REDZONE_BEGIN ));
+      }
+      break;
+
+      default :; 
+    }
+}
+
+/* 'C' function for method : 'Home::HOM11_TachoVisualizer.UpdateVVAIndicator()' */
+void HomeHOM11_TachoVisualizer_UpdateVVAIndicator( HomeHOM11_TachoVisualizer _this )
+{
+  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+    EnumVehicleRxTypeVVA_INDICATOR );
+
+  if ( 1 == VehicleData->DataUInt32 )
+    ViewsImage_OnSetVisible( &_this->VVAIndicatorImage, 1 );
+  else
+    ViewsImage_OnSetVisible( &_this->VVAIndicatorImage, 0 );
+}
+
+/* Variants derived from the class : 'Home::HOM11_TachoVisualizer' */
+EW_DEFINE_CLASS_VARIANTS( HomeHOM11_TachoVisualizer )
+EW_END_OF_CLASS_VARIANTS( HomeHOM11_TachoVisualizer )
+
+/* Virtual Method Table (VMT) for the class : 'Home::HOM11_TachoVisualizer' */
+EW_DEFINE_CLASS( HomeHOM11_TachoVisualizer, HomeBaseHome, TachoBaseline, TachoBaseline, 
+                 TachoBaseline, TachoBaseline, RedZoneBeginRPM, RedZoneBeginRPM, 
+                 "Home::HOM11_TachoVisualizer" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  HomeBaseHome_OnShortEnterKeyActivated,
+  HomeBaseHome_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseMainBG_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+  HomeBaseHome_ReturnToHome,
+EW_END_OF_CLASS( HomeHOM11_TachoVisualizer )
 
 /* Embedded Wizard */

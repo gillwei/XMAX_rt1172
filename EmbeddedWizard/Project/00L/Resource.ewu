@@ -3038,11 +3038,45 @@ resource Resources::Bitmap EcoBase
   attr bitmapmode Mode = Default;
 }
 
+// Tacho Visualizer
+note group Note25
+{
+  attr Bounds = <1120,1190,2199,1490>;
+}
+
+$rect <1140,1230,1340,1270>
+$output false
+resource Resources::Bitmap TachoVVA
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\vva_offon.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <110,35>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
 $rect <1140,2330,1340,2370>
 $output false
 resource Resources::Bitmap AvgLine
 {
   attr bitmapfile FileName = .\Res\home\EcoVisualizer\avgline.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1140,1380,1390,1420>
+$output false
+autoobject Resources::ExternBitmap ExternTachoUpColorbase;
+
+$rect <1140,1280,1340,1320>
+$output false
+resource Resources::Bitmap Tacho1000R
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\x1000rpm.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -3062,6 +3096,18 @@ resource Resources::Bitmap EcoWindowLine
   attr bitmapmode Mode = Default;
 }
 
+$rect <1350,1230,1550,1270>
+$output false
+resource Resources::Bitmap TachoNumberOff
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\scale\tacho_num_off.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <42,43>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
 $rect <1360,2330,1560,2370>
 $output false
 resource Resources::Bitmap EcoDot
@@ -3069,6 +3115,18 @@ resource Resources::Bitmap EcoDot
   attr bitmapfile FileName = .\Res\home\EcoVisualizer\ev_dot.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1350,1280,1550,1320>
+$output false
+resource Resources::Bitmap TachoNumberOn
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\scale\tacho_num_on.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <42,43>;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
@@ -3086,11 +3144,83 @@ resource Resources::Bitmap GradientCover
   attr bitmapmode Mode = Default;
 }
 
+$rect <1560,1230,1760,1270>
+$output false
+resource Resources::Bitmap TachoNumberOffRed
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\scale\tacho_num_off_red.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <42,43>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1560,1280,1760,1320>
+$output false
+resource Resources::Bitmap TachoNumberOnRed
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\scale\tacho_num_on_red.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <42,43>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1980,1230,2180,1270>
+$output false
+resource Resources::Bitmap TachoBaselineA
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\baseline_odd.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <33,234>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1980,1280,2180,1320>
+$output false
+resource Resources::Bitmap TachoBaselineB
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\baseline_even.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <33,234>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1980,1330,2180,1370>
+$output false
+resource Resources::Bitmap TachoFront
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\topline.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
 $rect <30,1390,230,1430>
 $output false
 resource Resources::Bitmap HighTemperature
 {
   attr bitmapfile FileName = .\Res\brightness\icon_hightemp.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1350,1330,1550,1370>
+$output false
+resource Resources::Bitmap TachoNumberBG
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\scale\tachonum_base.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -3116,6 +3246,30 @@ resource Resources::Bitmap YAppIcon
   attr bitmapmode Mode = Default;
 }
 
+$rect <1770,1230,1970,1270>
+$output false
+resource Resources::Bitmap TachoNumberDotRed
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\scale\num_dot_red.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <42,43>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1770,1280,1970,1320>
+$output false
+resource Resources::Bitmap TachoNumberDot
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\scale\num_dot.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <42,43>;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
 $rect <770,2510,970,2550>
 $output false
 resource Resources::Bitmap NaviAppIcon
@@ -3127,3 +3281,27 @@ resource Resources::Bitmap NaviAppIcon
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
+
+$rect <1560,1330,1760,1370>
+$output false
+resource Resources::Bitmap TachoStatusbarShadow
+{
+  attr bitmapfile FileName = .\Res\home\TachoVisualizer\gradation.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1140,1430,1390,1470>
+$output false
+autoobject Resources::ExternBitmap ExternTachoDownColorbase;
+
+$rect <1410,1380,1640,1420>
+$output false
+const string TACHO_COLORBASE_UP = "TachoUp";
+
+$rect <1410,1430,1640,1470>
+$output false
+const string TACHO_COLORBASE_DOWN = "TachoDown";

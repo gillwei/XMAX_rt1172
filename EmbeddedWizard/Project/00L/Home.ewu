@@ -1,38 +1,6 @@
 ﻿$version 11.00
 
-$rect <10,60,210,100>
-$output false
-class HOM11_TachoVisualizer : Home::BaseHome
-{
-  $rect <0,280,180,320>
-  inherited method Init()
-  {
-    trace "Init HOM11";
-  }
-
-  $rect <220,280,450,320>
-  inherited method OnLongEnterKeyActivated()
-  {
-    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
-    {
-      PresentDialog( new Info::INF01_MeterDisplaySettingMenu, null, null, null, null, null, null, null, null, false );
-    }
-  }
-
-  $rect <0,330,180,370>
-  inherited var HomeType = Enum::HomeType.TACHO_VISUALIZER;
-
-  $rect <20,20,160,60>
-  object Views::Text Title
-  {
-    preset Bounds = <72,113,403,156>;
-    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
-    preset String = Strings::INF01_TACHO_VISUALIZER;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-}
-
-$rect <10,110,210,150>
+$rect <430,120,630,160>
 $output false
 class HOM12_EcoVisualizer : Home::BaseHome
 {
@@ -452,7 +420,7 @@ class HOM12_EcoVisualizer : Home::BaseHome
   }
 }
 
-$rect <10,160,210,200>
+$rect <710,120,910,160>
 $output false
 class HOM13_SpeedVisualizer : Home::BaseHome
 {
@@ -629,7 +597,7 @@ class BaseHome : Components::BaseMainBG
   }
 }
 
-$rect <290,60,490,100>
+$rect <980,120,1180,160>
 $output false
 class HOM03_VehicleInfo : Home::BaseHome
 {
@@ -677,7 +645,7 @@ class HOM03_VehicleInfo : Home::BaseHome
   }
 }
 
-$rect <290,110,490,150>
+$rect <980,170,1180,210>
 $output false
 class VehicleInfoMenu : Core::Group
 {
@@ -1217,7 +1185,7 @@ class VehicleInfoMenu : Core::Group
   }
 }
 
-$rect <290,160,490,200>
+$rect <980,220,1180,260>
 $output false
 class ItemVehicleInfo : Components::BaseComponent
 {
@@ -1392,7 +1360,7 @@ class ItemVehicleInfo : Components::BaseComponent
   $reorder Title 1
 }
 
-$rect <290,240,490,280>
+$rect <430,170,630,210>
 $output false
 class EcoMeterChart : Core::Group
 {
@@ -1544,7 +1512,7 @@ class EcoMeterChart : Core::Group
   var rect BarPos = <363,133,369,140>;
 }
 
-$rect <290,290,490,330>
+$rect <430,220,630,260>
 $output false
 class EcoMeterComponent : Core::Group
 {
@@ -1566,7 +1534,7 @@ class EcoMeterComponent : Core::Group
   }
 }
 
-$rect <500,290,700,330>
+$rect <430,320,630,360>
 $output false
 class RecordList
 {
@@ -1656,7 +1624,7 @@ class RecordList
   property int32 NoOfItems = 0;
 }
 
-$rect <500,240,700,280>
+$rect <430,270,630,310>
 $output false
 class Record
 {
@@ -1666,4 +1634,956 @@ class Record
 
   $rect <190,10,370,50>
   var Home::Record next = null;
+}
+
+$rect <30,160,230,200>
+$output false
+class TachoBaseline : Core::Group
+{
+  $rect <0,260,200,300>
+  inherited property Bounds = <0,0,480,234>;
+
+  $rect <0,310,200,350>
+  inherited method UpdateLayout()
+  {
+    super( aSize );
+
+    var int32 BaselineStartX = 4;
+    var int32 BaselineDistanceX;
+    var int32 BaselineNum;
+
+    if( Enum::TachoFullScale.RPM10000 == FullScaleType )
+    {
+      BaselineDistanceX = 21;
+      BaselineNum = 21;
+    }
+    else /* Enum::TachoFullScale.RPM15000 */
+    {
+      BaselineDistanceX = 14;
+      BaselineNum = 31;
+    }
+
+    DrawBaselines( BaselineStartX, BaselineDistanceX, BaselineNum );
+  }
+
+  $rect <430,260,630,300>
+  property int32 RedZoneBeginRPM;
+
+  $rect <430,310,630,350>
+  onset RedZoneBeginRPM
+  {
+    if( pure RedZoneBeginRPM != value )
+    {
+      pure RedZoneBeginRPM = value;
+      InvalidateLayout();
+    }
+  }
+
+  $rect <210,260,410,300>
+  property Enum::TachoFullScale FullScaleType;
+
+  $rect <210,310,410,350>
+  onset FullScaleType
+  {
+    if( pure FullScaleType != value )
+    {
+      pure FullScaleType = value;
+      InvalidateLayout();
+    }
+  }
+
+  $rect <0,360,200,400>
+  method void DrawBaselines( arg int32 BaselineStartX, arg int32 BaselineDistanceX, arg int32 BaselineNum )
+  {
+    var int32 BaselineIdx = 0;
+    var int32 RedZoneStartIdx = RedZoneBeginRPM / 500;
+
+    RemoveAll();
+
+    for( BaselineIdx = 0; BaselineIdx < BaselineNum; BaselineIdx++ )
+    {
+      var Views::Image BaselineImg = new Views::Image;
+      if( 0 == BaselineIdx % 2 )
+      {
+        BaselineImg.Bitmap = Resource::TachoBaselineA;
+      }
+      else
+      {
+        BaselineImg.Bitmap = Resource::TachoBaselineB;
+      }
+
+      if( BaselineIdx >= RedZoneStartIdx )
+      {
+        BaselineImg.FrameNumber = 1;
+      }
+
+      var int32 StartX = BaselineStartX + BaselineDistanceX * BaselineIdx;
+      var rect BaselineBounds = rect( StartX, 0, StartX + Resource::TachoBaselineA.FrameSize.x, Resource::TachoBaselineA.FrameSize.y );
+      BaselineImg.Bounds = BaselineBounds;
+      Add( BaselineImg, 0 );
+    }
+  }
+}
+
+$rect <30,210,230,250>
+$output false
+class TachoColor : Core::Group
+{
+  $rect <0,250,200,290>
+  inherited property Bounds = <0,0,223,234>;
+
+  $rect <20,20,160,60>
+  object Views::Image UpColorbaseImg
+  {
+    preset Bounds = <0,0,223,91>;
+    preset Alignment = Views::ImageAlignment[AlignHorzRight, AlignVertBottom];
+    preset Bitmap = Resource::ExternTachoUpColorbase;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image DownColorbaseImg
+  {
+    preset Bounds = <0,133,223,234>;
+    preset Alignment = Views::ImageAlignment[AlignHorzRight, AlignVertTop];
+    preset Bitmap = Resource::ExternTachoDownColorbase;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Front
+  {
+    preset Bounds = <188,0,234,234>;
+    preset Bitmap = Resource::TachoFront;
+  }
+
+  $rect <670,250,870,290>
+  property int32 ApsAngle;
+
+  $rect <670,300,870,340>
+  onset ApsAngle
+  {
+    if( pure ApsAngle != value )
+    {
+      pure ApsAngle = value;
+
+      UpdateYMask( value );
+    }
+  }
+
+  $rect <670,350,870,390>
+  method void UpdateYMask( arg int32 aApsAngle )
+  {
+    /* upper mask y1, y2:
+       for aps angle   0: y2 = 88,
+       for aps angle 80: y2 = 9
+       (88-9)/(80-0) = 1 */
+    var float ApsToYspacingScale = 0.9875;
+
+    var int32 UpperMaskY2 = (int32)( Home::TACHO_UPPER_MASK_Y_MAX - ApsToYspacingScale * aApsAngle );
+    var int32 UpperMaskY1 = UpperMaskY2 - Home::TACHO_X_MASK_HEIGHT + 1;
+    if( UpperMaskY1 < 0 )
+    {
+      UpperMaskY1 = 0;
+    }
+
+    var int32 LowerMaskY1 = (int32)( Home::TACHO_LOWER_MASK_Y_MIN + ApsToYspacingScale * aApsAngle );
+    var int32 LowerMaskY2 = LowerMaskY1 + Home::TACHO_X_MASK_HEIGHT - 1;
+    if( Bounds.h < LowerMaskY2 )
+    {
+      LowerMaskY2 = Bounds.h;
+    }
+
+    // update reference line for check
+    if( ReferenceLineVisible )
+    {
+      YmaskUpStartLine.Point1.y = UpperMaskY1;
+      YmaskUpStartLine.Point2.y = UpperMaskY1;
+      YmaskUpEndLine.Point1.y = UpperMaskY2;
+      YmaskUpEndLine.Point2.y = UpperMaskY2;
+
+      YmaskDownStartLine.Point1.y = LowerMaskY1;
+      YmaskDownStartLine.Point2.y = LowerMaskY1;
+      YmaskDownEndLine.Point1.y = LowerMaskY2;
+      YmaskDownEndLine.Point2.y = LowerMaskY2;
+    }
+
+    DeviceInterface::VehicleDevice.SetTachoYMask( UpperMaskY1, UpperMaskY2, LowerMaskY1, LowerMaskY2 );
+  }
+
+  $rect <240,300,440,340>
+  method void UpdateColorbase( arg int32 aApsAngle )
+  {
+    var int32 HorizontalOffset = 8; /* for max bounds.x2 of 457, the max colorbase width is 449 */
+    var rect ColorRect = Bounds;
+    ColorRect.x1 -= HorizontalOffset;
+    ColorRect.x2 -= HorizontalOffset;
+    if( ColorRect.x1 < 0 )
+    {
+      ColorRect.x1 = 0;
+    }
+
+    if( Bounds.h < ColorRect.h )
+    {
+      ColorRect.h = Bounds.h;
+    }
+
+    /* for up height, 0 deg: 0px, 80 deg: 91px 
+       => 91 / 80 = 1.1375 */
+    var int32 UpHalfHeight = (int32)( 1.1375 * aApsAngle );
+    ColorRect.y1 = Home::TACHO_UPPER_MASK_Y_MAX - UpHalfHeight - Home::TACHO_X_MASK_HEIGHT;
+    if( 0 > ColorRect.y1 )
+    {
+      ColorRect.y1 = 0;
+    }
+
+    /* for down height, 0 deg: 0px, 80 deg: 97px 
+       => 97 / 80 = 1.2125 */
+    var int32 DownHalfHeight = (int32)( 1.2125 * aApsAngle );
+    ColorRect.y2 = Home::TACHO_LOWER_MASK_Y_MIN + DownHalfHeight + Home::TACHO_X_MASK_HEIGHT;
+    if( Bounds.h < ColorRect.y2 )
+    {
+      ColorRect.y2 = Bounds.h;
+    }
+
+    ColorbaseUpLine.Point1.y = ColorRect.y1;
+    ColorbaseUpLine.Point2.y = ColorRect.y1;
+
+    ColorbaseDownLine.Point1.y = ColorRect.y2;
+    ColorbaseDownLine.Point2.y = ColorRect.y2;
+
+    /* divide the colorbase into upper and lower parts */
+    var rect UpperColorbase = ColorRect;
+    var rect LowerColorbase = ColorRect;
+    UpperColorbase.y2 = UpColorbaseImg.Bounds.y2;
+    LowerColorbase.y1 = DownColorbaseImg.Bounds.y1;
+    DeviceInterface::VehicleDevice.SetTachoColorbaseRect( UpperColorbase, LowerColorbase );
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line ColorbaseUpLine
+  {
+    preset Point2 = <223,15>;
+    preset Point1 = <3,15>;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line ColorbaseDownLine
+  {
+    preset Point2 = <223,201>;
+    preset Point1 = <3,201>;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line YmaskUpEndLine
+  {
+    preset Point2 = <223,93>;
+    preset Point1 = <3,93>;
+    preset Color = #FEFF64FF;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line YmaskUpStartLine
+  {
+    preset Point2 = <223,56>;
+    preset Point1 = <3,56>;
+    preset Color = #46FF4BFF;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line YmaskDownStartLine
+  {
+    preset Point2 = <223,156>;
+    preset Point1 = <3,156>;
+    preset Color = #FEFF64FF;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Line YmaskDownEndLine
+  {
+    preset Point2 = <223,185>;
+    preset Point1 = <3,185>;
+    preset Color = #46FF4BFF;
+    preset Visible = false;
+  }
+
+  $rect <460,250,660,290>
+  property int32 EngineSpeed;
+
+  $rect <460,300,660,340>
+  onset EngineSpeed
+  {
+    if( pure EngineSpeed != value )
+    {
+      pure EngineSpeed = value;
+      UpdateBounds( value );
+    }
+  }
+
+  $rect <460,350,660,390>
+  method void UpdateBounds( arg int32 aEngineSpeed )
+  {
+    var int32 CircularSectorBoundsX2Max = 457;
+
+    var float EngineSpeedToXPositionFactor;
+    if( Enum::TachoFullScale.RPM10000 == FullScaleType )
+    {
+      EngineSpeedToXPositionFactor = 0.0423; /* (457-34) / 10000 */
+    }
+    else
+    {
+      EngineSpeedToXPositionFactor = 0.0282; /* (457-34) / 15000 */
+    }
+
+    /* calculate x position */
+    var rect CircularSectorBounds = Bounds;
+    var int32 CircularSectorBoundsWidth = Bounds.w;
+    CircularSectorBounds.x2 = (int32)math_ceil( 34.0 + EngineSpeedToXPositionFactor * (float)aEngineSpeed );
+    if( CircularSectorBoundsX2Max < CircularSectorBounds.x2 )
+    {
+      CircularSectorBounds.x2 = CircularSectorBoundsX2Max;
+    }
+    CircularSectorBounds.x1 = CircularSectorBounds.x2 - CircularSectorBoundsWidth;
+
+    Bounds = CircularSectorBounds;
+  }
+
+  $rect <0,300,200,340>
+  property Enum::TachoFullScale FullScaleType;
+
+  $rect <0,350,200,390>
+  property bool ReferenceLineVisible;
+
+  $rect <0,400,230,440>
+  onset ReferenceLineVisible
+  {
+    if( pure ReferenceLineVisible != value )
+    {
+      pure ReferenceLineVisible = value;
+
+      ColorbaseUpLine.Visible = value;
+      ColorbaseDownLine.Visible = value;
+
+      YmaskUpStartLine.Visible = value;
+      YmaskUpEndLine.Visible = value;
+
+      YmaskDownStartLine.Visible = value;
+      YmaskDownEndLine.Visible = value;
+    }
+  }
+
+  $rect <0,450,200,490>
+  property bool DownPartEnabled;
+
+  $rect <240,250,440,290>
+  method void SetEngineData( arg int32 aEngineSpeed, arg int32 aApsAngle )
+  {
+    var bool NeedReloadColorbase = false;
+
+    if( EngineSpeed != aEngineSpeed )
+    {
+      EngineSpeed = aEngineSpeed;
+      NeedReloadColorbase = true;
+    }
+
+    if( ApsAngle != aApsAngle )
+    {
+      ApsAngle = aApsAngle;
+      NeedReloadColorbase = true;
+    }
+
+    if( NeedReloadColorbase )
+    {
+      UpdateColorbase( aApsAngle );
+      ReloadColorbase();
+    }
+  }
+
+  $rect <240,350,440,390>
+  method void ReloadColorbase()
+  {
+    $if !$prototyper
+      Resource::ExternTachoUpColorbase.Name = Resource::TACHO_COLORBASE_UP;
+      Resource::ExternTachoUpColorbase.Reload();
+
+      if( DownPartEnabled )
+      {
+        Resource::ExternTachoDownColorbase.Name = Resource::TACHO_COLORBASE_DOWN;
+        Resource::ExternTachoDownColorbase.Reload();
+        DownColorbaseImg.Visible = true;
+      }
+      else
+      {
+        DownColorbaseImg.Visible = false;
+      }
+    $endif
+  }
+}
+
+$rect <30,260,230,300>
+$output false
+class TachoScale : Core::Group
+{
+  $rect <0,80,180,120>
+  inherited method Init()
+  {
+  }
+
+  $rect <0,130,200,170>
+  inherited property Bounds = <0,0,480,63>;
+
+  $rect <0,180,200,220>
+  inherited method UpdateLayout()
+  {
+    super( aSize );
+
+    RemoveAll();
+    Add( Background, 0 );
+
+    if( Enum::TachoFullScale.RPM10000 == FullScaleType )
+    {
+      Draw10000rpmScale();
+    }
+    else
+    {
+      Draw15000rpmScale();
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Background
+  {
+    preset Bounds = <0,0,480,63>;
+    preset Bitmap = Resource::TachoNumberBG;
+  }
+
+  $rect <460,80,660,120>
+  property int32 RedZoneBeginRPM;
+
+  $rect <460,130,660,170>
+  onset RedZoneBeginRPM
+  {
+    if( pure RedZoneBeginRPM != value )
+    {
+      pure RedZoneBeginRPM = value;
+      InvalidateLayout();
+    }
+  }
+
+  $rect <680,80,880,120>
+  property Enum::TachoFullScale FullScaleType;
+
+  $rect <680,130,880,170>
+  onset FullScaleType
+  {
+    if( pure FullScaleType != value )
+    {
+      pure FullScaleType = value;
+      InvalidateLayout();
+    }
+  }
+
+  $rect <900,80,1100,120>
+  property uint32 CurrentEngineSpeed;
+
+  $rect <900,130,1130,170>
+  onset CurrentEngineSpeed
+  {
+    if( pure CurrentEngineSpeed != value )
+    {
+      pure CurrentEngineSpeed = value;
+      if( Enum::TachoFullScale.RPM10000 == FullScaleType )
+      {
+        Highlight1000rpmScale();
+      }
+      else
+      {
+        Highlight1500rpmScale();
+      }
+    }
+  }
+
+  $rect <230,80,430,120>
+  method void Draw10000rpmScale()
+  {
+    var int32 i;
+    var int32 RedZoneBeginIdx = RedZoneBeginRPM / Home::TACHO_BASELINE_SPACING_RPM;
+    var int32 StartX = 13;
+    var int32 StartY = 10;
+    var int32 SpacingX = 21;
+
+    for( i = 0; i < Home::TACHO_10000RPM_SCALE_NUM; i++ )
+    {
+      var Views::Image ScaleImage = new Views::Image;
+      if( null == HighlightImages[i] )
+      {
+        HighlightImages[i] = new Views::Image;
+      }
+
+      if( i % 2 == 0 ) /* draw number */
+      {
+        var int32 Number = i / 2;
+        if( i < RedZoneBeginIdx ||
+            Number < Home::TACHO_BASELINE_REDZONE_BEGIN_MIN )
+        {
+          /* normal number */
+          ScaleImage.Bitmap = Resource::TachoNumberOff;
+          ScaleImage.FrameNumber = Number;
+
+          HighlightImages[i].Bitmap = Resource::TachoNumberOn;
+          HighlightImages[i].FrameNumber = Number;
+        }
+        else
+        {
+          /* red number */
+          ScaleImage.Bitmap = Resource::TachoNumberOffRed;
+          ScaleImage.FrameNumber = Number - Home::TACHO_BASELINE_REDZONE_BEGIN_MIN; /* TachoNumberOffRed starts from 8 */
+
+          HighlightImages[i].Bitmap = Resource::TachoNumberOnRed;
+          HighlightImages[i].FrameNumber = Number - Home::TACHO_BASELINE_REDZONE_BEGIN_MIN;
+        }
+      }
+      else /* draw dot */
+      {
+        if( i < RedZoneBeginIdx )
+        {
+          /* normal dot */
+          ScaleImage.Bitmap = Resource::TachoNumberDot;
+          HighlightImages[i].Bitmap = Resource::TachoNumberDot;
+          HighlightImages[i].FrameNumber = 1;
+        }
+        else
+        {
+          /* red dot */
+          ScaleImage.Bitmap = Resource::TachoNumberDotRed;
+          HighlightImages[i].Bitmap = Resource::TachoNumberDotRed;
+          HighlightImages[i].FrameNumber = 1;
+        }
+      }
+
+      ScaleImage.Bounds = rect( StartX, StartY, StartX + ScaleImage.Bitmap.FrameSize.x, StartY + ScaleImage.Bitmap.FrameSize.y );
+      ScaleImage.Visible = true;
+      Add( ScaleImage, 0 );
+
+      HighlightImages[i].Bounds = ScaleImage.Bounds;
+      HighlightImages[i].Visible = false;
+      Add( HighlightImages[i], 0 );
+
+      StartX += SpacingX;
+    }
+  }
+
+  $rect <230,180,430,220>
+  array Views::Image HighlightImages[ 21 ];
+
+  $rect <230,130,430,170>
+  method void Draw15000rpmScale()
+  {
+    var int32 i;
+    var int32 RedZoneBeginIdx = RedZoneBeginRPM / Home::TACHO_15000RPM_SCALE;
+    var int32 StartX = 13;
+    var int32 StartY = 10;
+    var int32 SpacingX = 28;
+
+    for( i = 0; i < Home::TACHO_15000RPM_SCALE_NUM; i++ )
+    {
+      var Views::Image ScaleImage = new Views::Image;
+      if( null == HighlightImages[i] )
+      {
+        HighlightImages[i] = new Views::Image;
+      }
+
+      if( ( i == 0 ) || ( i % 2 == 1 ) ) /* draw number */
+      {
+        var int32 Number = i;
+        if( i < RedZoneBeginIdx ||
+            Number < Home::TACHO_BASELINE_REDZONE_BEGIN_MIN )
+        {
+          /* normal number */
+          ScaleImage.Bitmap = Resource::TachoNumberOff;
+          ScaleImage.FrameNumber = Number;
+
+          HighlightImages[i].Bitmap = Resource::TachoNumberOn;
+          HighlightImages[i].FrameNumber = Number;
+        }
+        else
+        {
+          /* red number */
+          ScaleImage.Bitmap = Resource::TachoNumberOffRed;
+          ScaleImage.FrameNumber = Number - Home::TACHO_BASELINE_REDZONE_BEGIN_MIN; /* TachoNumberOffRed starts from 8 */
+
+          HighlightImages[i].Bitmap = Resource::TachoNumberOnRed;
+          HighlightImages[i].FrameNumber = Number - Home::TACHO_BASELINE_REDZONE_BEGIN_MIN;
+        }
+      }
+      else /* draw dot */
+      {
+        if( i < RedZoneBeginIdx )
+        {
+          ScaleImage.Bitmap = Resource::TachoNumberDot;
+          HighlightImages[i].Bitmap = Resource::TachoNumberDot;
+          HighlightImages[i].FrameNumber = 1;
+        }
+        else
+        {
+          ScaleImage.Bitmap = Resource::TachoNumberDotRed;
+          HighlightImages[i].Bitmap = Resource::TachoNumberDotRed;
+          HighlightImages[i].FrameNumber = 1;
+        }
+      }
+
+      ScaleImage.Bounds = rect( StartX, StartY, StartX + ScaleImage.Bitmap.FrameSize.x, StartY + ScaleImage.Bitmap.FrameSize.y );
+      ScaleImage.Visible = true;
+      Add( ScaleImage, 0 );
+
+      HighlightImages[i].Bounds = ScaleImage.Bounds;
+      HighlightImages[i].Visible = false;
+      Add( HighlightImages[i], 0 );
+
+      StartX += SpacingX;
+    }
+  }
+
+  $rect <900,180,1120,220>
+  method void Highlight1000rpmScale()
+  {
+    var int32 HighlightStartIdx = (int32)( CurrentEngineSpeed / Home::TACHO_10000RPM_SCALE );
+    var int32 i;
+
+    for( i = 0; i < Home::TACHO_10000RPM_SCALE_NUM; i++ )
+    {
+      if( i <= HighlightStartIdx )
+      {
+        HighlightImages[i].Visible = true;
+      }
+      else
+      {
+        HighlightImages[i].Visible = false;
+      }
+    }
+  }
+
+  $rect <900,230,1120,270>
+  method void Highlight1500rpmScale()
+  {
+    var int32 HighlightStartIdx = (int32)( CurrentEngineSpeed / Home::TACHO_15000RPM_SCALE );
+    var int32 i;
+
+    for( i = 0; i < Home::TACHO_15000RPM_SCALE_NUM; i++ )
+    {
+      if( i <= HighlightStartIdx )
+      {
+        HighlightImages[i].Visible = true;
+      }
+      else
+      {
+        HighlightImages[i].Visible = false;
+      }
+    }
+  }
+}
+
+$rect <30,110,250,150>
+$output false
+class HOM11_TachoVisualizer : Home::BaseHome
+{
+  $rect <0,280,180,320>
+  inherited method Init()
+  {
+    trace "HOM11";
+
+    $if !$prototyper
+      FullScaleType = (Enum::TachoFullScale)DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.TACHO_FULLSCALE );
+      RedZoneBeginRPM = DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.TACHO_REDZONE_BEGIN );
+      UpdateVVAIndicator();
+    $else
+      FullScaleType = Enum::TachoFullScale.RPM15000;
+      RedZoneBeginRPM = 10000;
+    $endif
+  }
+
+  $rect <0,330,230,370>
+  inherited method OnLongEnterKeyActivated()
+  {
+    if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
+    {
+      PresentDialog( new Info::INF01_MeterDisplaySettingMenu, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
+  $rect <20,20,160,60>
+  inherited object BlackBG
+  {
+    preset Bounds = <0,38,480,272>;
+  }
+
+  $rect <20,20,160,60>
+  object Home::TachoBaseline TachoBaseline
+  {
+    preset Bounds = <0,38,480,272>;
+  }
+
+  $rect <20,20,160,60>
+  object Home::TachoColor CircularSector
+  {
+    preset Bounds = <-189,38,34,272>;
+    preset ReferenceLineVisible = false;
+    preset DownPartEnabled = true;
+  }
+
+  $rect <510,280,710,320>
+  object Core::Timer UpdateTimer
+  {
+    preset OnTrigger = OnUpdateSlot;
+    preset Period = 40;
+    preset Enabled = true;
+  }
+
+  $rect <510,330,710,370>
+  slot OnUpdateSlot
+  {
+    var uint32 EngineSpeed;
+    var uint32 ApsAngle;
+
+    if( IsCurrentDialog() )
+    {
+      $if !$prototyper
+        var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.ENGINE_SPEED );
+        EngineSpeed = VehicleData.DataUInt32; /* 0 - 25600 */
+
+        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.APS_ANGLE );
+        ApsAngle = VehicleData.DataUInt32; /* 0 - 125 */
+      $else
+        EngineSpeed = GetTestEngineSpeed();
+        ApsAngle = GetTestApsAngle();
+      $endif
+
+      CircularSector.SetEngineData( (int32)EngineSpeed, (int32)ApsAngle );
+      TachoScale.CurrentEngineSpeed = EngineSpeed;
+    }
+  }
+
+  $rect <260,280,460,320>
+  property Enum::TachoFullScale FullScaleType;
+
+  $rect <260,330,460,370>
+  onset FullScaleType
+  {
+    if( pure FullScaleType != value )
+    {
+      pure FullScaleType = value;
+      TachoScale.FullScaleType = value;
+      TachoBaseline.FullScaleType = value;
+      CircularSector.FullScaleType = value;
+    }
+  }
+
+  $rect <260,380,460,420>
+  property int32 RedZoneBeginRPM;
+
+  $rect <260,430,480,470>
+  onset RedZoneBeginRPM
+  {
+    if( pure RedZoneBeginRPM != value )
+    {
+      pure RedZoneBeginRPM = value;
+      TachoScale.RedZoneBeginRPM = value;
+      TachoBaseline.RedZoneBeginRPM = value;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Home::TachoScale TachoScale
+  {
+    preset Bounds = <0,119,480,182>;
+  }
+
+  $rect <1110,370,1310,410>
+  var uint32 TestEngineSpeed;
+
+  $rect <1110,530,1310,570>
+  var uint32 TestApsAngle;
+
+  $rect <1110,420,1310,460>
+  var uint32 TestEngineSpeedStep = 200;
+
+  $rect <1110,580,1310,620>
+  var uint32 TestApsAngleStep = 5;
+
+  // Prototyper
+  note group Note3
+  {
+    attr Bounds = <1080,270,1340,650>;
+  }
+
+  $rect <1110,320,1310,360>
+  method uint32 GetTestEngineSpeed()
+  {
+    TestEngineSpeed += TestEngineSpeedStep;
+
+    var int32 MaxScale = 17000;
+    if( Enum::TachoFullScale.RPM10000 == FullScaleType )
+    {
+      MaxScale = 11000;
+    }
+
+    if( (int32)TestEngineSpeed > MaxScale )
+    {
+      TestEngineSpeed = 0;
+    }
+
+    return TestEngineSpeed;
+  }
+
+  $rect <1110,480,1310,520>
+  method uint32 GetTestApsAngle()
+  {
+    TestApsAngle += TestApsAngleStep;
+    if( Home::TACHO_APS_ANGLE_MAX < TestApsAngle )
+    {
+      TestApsAngle = 0;
+    }
+
+    return TestApsAngle;
+  }
+
+  $rect <740,280,1020,320>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <740,330,980,370>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = (DeviceInterface::VehicleDataClass)VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData )
+    {
+      switch( VehicleData.RxType )
+      {
+        case Enum::VehicleRxType.VVA_INDICATOR: UpdateVVAIndicator();
+        case Enum::VehicleRxType.TACHO_SETTING:
+        {
+          FullScaleType = (Enum::TachoFullScale)DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.TACHO_FULLSCALE );
+          RedZoneBeginRPM = DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.TACHO_REDZONE_BEGIN );
+        }
+        default:;
+      }
+    }
+  }
+
+  $rect <740,380,940,420>
+  method void UpdateVVAIndicator()
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.VVA_INDICATOR );
+    if( Home::VVA_INDICATOR_VALUE == VehicleData.DataUInt32 )
+    {
+      VVAIndicatorImage.Visible = true;
+    }
+    else
+    {
+      VVAIndicatorImage.Visible = false;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image RpmImg
+  {
+    preset Bounds = <323,232,474,265>;
+    preset FrameNumber = 0;
+    preset Bitmap = Resource::Tacho1000R;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Wallpaper StatusbarShadow
+  {
+    preset Bounds = <0,38,480,51>;
+    preset Bitmap = Resource::TachoStatusbarShadow;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image VVAIndicatorImage
+  {
+    preset Bounds = <364,38,474,73>;
+    preset FrameNumber = 1;
+    preset Bitmap = Resource::TachoVVA;
+    preset Visible = false;
+  }
+}
+
+$rect <30,310,360,350>
+$output false
+const int32 TACHO_BASELINE_SPACING_RPM = 500;
+
+$rect <30,360,360,400>
+$output false
+const int32 TACHO_BASELINE_REDZONE_BEGIN_MIN = 8;
+
+$rect <30,410,360,450>
+$output false
+const int32 TACHO_10000RPM_SCALE = 500;
+
+$rect <30,460,360,500>
+$output false
+const int32 TACHO_15000RPM_SCALE = 1000;
+
+// Tachometer Visualizer
+note group Note3
+{
+  attr Bounds = <10,70,380,870>;
+}
+
+$rect <30,510,360,550>
+$output false
+const int32 TACHO_10000RPM_SCALE_NUM = 21;
+
+$rect <30,560,360,600>
+$output false
+const int32 TACHO_15000RPM_SCALE_NUM = 16;
+
+$rect <30,610,360,650>
+$output false
+const int32 TACHO_APS_ANGLE_MAX = 125;
+
+// 126 - 38
+$rect <30,660,360,700>
+$output false
+const int32 TACHO_UPPER_MASK_Y_MAX = 88;
+
+// 175 - 38
+$rect <30,710,360,750>
+$output false
+const int32 TACHO_LOWER_MASK_Y_MIN = 137;
+
+$rect <30,760,360,800>
+$output false
+const int32 TACHO_X_MASK_HEIGHT = 46;
+
+$rect <30,810,360,850>
+$output false
+const int32 VVA_INDICATOR_VALUE = 1;
+
+// ECO Visualizer
+note group Note4
+{
+  attr Bounds = <410,70,650,870>;
+}
+
+// Speed Visualizer
+note group Note5
+{
+  attr Bounds = <690,70,930,870>;
+}
+
+// Vehicle Info
+note group Note6
+{
+  attr Bounds = <960,70,1200,870>;
 }

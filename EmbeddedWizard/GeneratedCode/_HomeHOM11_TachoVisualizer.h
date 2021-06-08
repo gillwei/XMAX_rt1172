@@ -47,10 +47,13 @@
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_HomeBaseHome.h"
+#include "_HomeTachoBaseline.h"
+#include "_HomeTachoColor.h"
+#include "_HomeTachoScale.h"
 #include "_PopPOP16_NaviLoadingUI.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
+#include "_ViewsWallpaper.h"
 
 /* Forward declaration of the class Components::BaseMainBG */
 #ifndef _ComponentsBaseMainBG_
@@ -109,7 +112,16 @@
 
 /* Deklaration of class : 'Home::HOM11_TachoVisualizer' */
 EW_DEFINE_FIELDS( HomeHOM11_TachoVisualizer, HomeBaseHome )
-  EW_OBJECT  ( Title,           ViewsText )
+  EW_OBJECT  ( TachoBaseline,   HomeTachoBaseline )
+  EW_OBJECT  ( CircularSector,  HomeTachoColor )
+  EW_OBJECT  ( UpdateTimer,     CoreTimer )
+  EW_OBJECT  ( TachoScale,      HomeTachoScale )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( RpmImg,          ViewsImage )
+  EW_OBJECT  ( StatusbarShadow, ViewsWallpaper )
+  EW_OBJECT  ( VVAIndicatorImage, ViewsImage )
+  EW_PROPERTY( RedZoneBeginRPM, XInt32 )
+  EW_PROPERTY( FullScaleType,   XEnum )
 EW_END_OF_FIELDS( HomeHOM11_TachoVisualizer )
 
 /* Virtual Method Table (VMT) for the class : 'Home::HOM11_TachoVisualizer' */
@@ -177,6 +189,26 @@ void HomeHOM11_TachoVisualizer_Init( HomeHOM11_TachoVisualizer _this, XHandle aA
 
 /* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnLongEnterKeyActivated()' */
 void HomeHOM11_TachoVisualizer_OnLongEnterKeyActivated( HomeHOM11_TachoVisualizer _this );
+
+/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnUpdateSlot()' */
+void HomeHOM11_TachoVisualizer_OnUpdateSlot( HomeHOM11_TachoVisualizer _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnSetFullScaleType()' */
+void HomeHOM11_TachoVisualizer_OnSetFullScaleType( HomeHOM11_TachoVisualizer _this, 
+  XEnum value );
+
+/* 'C' function for method : 'Home::HOM11_TachoVisualizer.OnSetRedZoneBeginRPM()' */
+void HomeHOM11_TachoVisualizer_OnSetRedZoneBeginRPM( HomeHOM11_TachoVisualizer _this, 
+  XInt32 value );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void HomeHOM11_TachoVisualizer_OnVehicleDataReceivedSlot( HomeHOM11_TachoVisualizer _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Home::HOM11_TachoVisualizer.UpdateVVAIndicator()' */
+void HomeHOM11_TachoVisualizer_UpdateVVAIndicator( HomeHOM11_TachoVisualizer _this );
 
 #ifdef __cplusplus
   }
