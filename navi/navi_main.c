@@ -650,20 +650,10 @@ switch( action )
         navi_notify_more_tbt_item( has_more_items_on_next_request, list_total_items );
         break;
     case NAVILITE_TBTLIST_ACTION_ITEMADD:
-        // The received tbt item's index always starts from 1.
         PRINTF( "%s: Tbt list item index:%d \r\n", __FUNCTION__, list_item->list_item_index );
-        if( list_item->list_item_index >= 1 &&
-            list_item->list_item_index <= list_total_items )
-            {
-            navi_add_tbt_item( list_item );
-            }
-        else
-            {
-            PRINTF( "%s: Unexpected list item index or tbt buffer is full\r\n", __FUNCTION__ );
-            result = ERR_BUF_FULL;
-            }
+        navi_add_tbt_item( list_item );
         break;
-    default: 
+    default:
         PRINTF( "%s: Unexpected type\r\n", __FUNCTION__ );
         break;
     }

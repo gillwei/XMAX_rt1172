@@ -58,6 +58,7 @@ static navi_tbt_data_type navi_tbt_buffer[MAX_TBT_SIZE];
 static tbt_list_state_type tbt_list_state = TBT_LIST_STATE_IDLE;
 static uint16_t cur_act_tbt_idx = 0;
 static bool has_more_tbt_items = false;
+static int tbt_buff_idx = 0;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -82,55 +83,37 @@ void navi_add_tbt_item
 {
 if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
     {
-    int index = 0;
-    switch( tbt_list_state )
+    if( tbt_buff_idx < MAX_TBT_SIZE )
         {
-        case TBT_LIST_STATE_CHECK_40TH_ACTIVE_TBT_IDX:
-            if( ( ( tbt_list_item->list_item_index - 1 ) - TBT_UPDATE_IDX ) >= 0 )
-                {
-                index = ( tbt_list_item->list_item_index - 1 ) - TBT_UPDATE_IDX;
-                }
-            break;
-        case TBT_LIST_STATE_UPDATE:
-            if( ( tbt_list_item->list_item_index - 1 ) >= 0 )
-                {
-                index = ( tbt_list_item->list_item_index - 1 );
-                }
-            break;
-        default:
-            break;
-        }
-
-    if( index < MAX_TBT_SIZE )
-        {
-        memcpy( navi_tbt_buffer[index].description, tbt_list_item->desc, MAX_TBT_DESCRIPTION_SIZE );
+        memcpy( navi_tbt_buffer[tbt_buff_idx].description, tbt_list_item->desc, MAX_TBT_DESCRIPTION_SIZE );
         if( tbt_list_item->desc_size < MAX_TBT_DESCRIPTION_SIZE )
             {
-            navi_tbt_buffer[index].description[tbt_list_item->desc_size] = '\0';
+            navi_tbt_buffer[tbt_buff_idx].description[tbt_list_item->desc_size] = '\0';
             }
         else
             {
-            navi_tbt_buffer[index].description[MAX_TBT_DESCRIPTION_SIZE-1] = '\0';
+            navi_tbt_buffer[tbt_buff_idx].description[MAX_TBT_DESCRIPTION_SIZE-1] = '\0';
             }
 
-        memcpy( navi_tbt_buffer[index].dist_unit, tbt_list_item->distance_unit, MAX_TBT_DIST_UNIT_SIZE );
+        memcpy( navi_tbt_buffer[tbt_buff_idx].dist_unit, tbt_list_item->distance_unit, MAX_TBT_DIST_UNIT_SIZE );
         if( tbt_list_item->dist_unit_size < MAX_TBT_DIST_UNIT_SIZE )
             {
-            navi_tbt_buffer[index].dist_unit[tbt_list_item->dist_unit_size] = '\0';
+            navi_tbt_buffer[tbt_buff_idx].dist_unit[tbt_list_item->dist_unit_size] = '\0';
             }
         else
             {
-            navi_tbt_buffer[index].dist_unit[MAX_TBT_DIST_UNIT_SIZE-1] = '\0';
+            navi_tbt_buffer[tbt_buff_idx].dist_unit[MAX_TBT_DIST_UNIT_SIZE-1] = '\0';
             }
 
-        navi_tbt_buffer[index].distance = NAVILITE_bytes_to_float( tbt_list_item->distance );
-        navi_tbt_buffer[index].list_idx = ( tbt_list_item->list_item_index - 1 );
-        navi_tbt_buffer[index].icon_idx = tbt_list_item->icon_index;
-        if( index == ( num_of_tbt_list_item - 1 ) )
+        navi_tbt_buffer[tbt_buff_idx].distance = NAVILITE_bytes_to_float( tbt_list_item->distance );
+        navi_tbt_buffer[tbt_buff_idx].list_idx = tbt_list_item->list_item_index;
+        navi_tbt_buffer[tbt_buff_idx].icon_idx = tbt_list_item->icon_index;
+
+        if( tbt_buff_idx < num_of_tbt_list_item )
             {
-            PRINTF( "%s: Receive all tbt list items and notify UI\r\n", __FUNCTION__ );
-            EW_notify_tbt_list_update();
+            tbt_buff_idx++;
             }
+        EW_notify_tbt_list_update();
         }
     xSemaphoreGive( tbt_semphr_hndl );
     }
@@ -168,6 +151,7 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
     num_of_tbt_list_item = 0;
     cur_act_tbt_idx = 0;
     has_more_tbt_items = false;
+    tbt_buff_idx = 0;
     xSemaphoreGive( tbt_semphr_hndl );
     }
 }
@@ -309,6 +293,7 @@ return num_of_tbt_list_item;
 * Determine whether to inform user that there are more Tbt items.
 *
 *********************************************************************/
+// TODO: Wait for UX team to provide UI design.
 bool NAVI_is_tbt_message_displayed
     (
     void
@@ -316,11 +301,10 @@ bool NAVI_is_tbt_message_displayed
 {
 bool res = false;
 
-// when active tbt index is 40th index, this is the time that navi app updates more tbt items.
+// When active tbt index is 40th index, this is the time that navi app updates more tbt items.
 // In this case, inform user by showing message.
-// TODO: Wait for UX team to provide UI design.
 if( TBT_LIST_STATE_CHECK_40TH_ACTIVE_TBT_IDX == tbt_list_state &&
-    cur_act_tbt_idx > TBT_UPDATE_IDX )
+    cur_act_tbt_idx > TBT_NEXT_UPDATE_IDX )
     {
     res = true;
     }
@@ -330,12 +314,12 @@ return res;
 /*********************************************************************
 *
 * @private
-* navi_delete_tbt_item_by_one
+* navi_delete_tbt_item
 *
 * Delete a tbt item
 *
 *********************************************************************/
-static void navi_delete_tbt_item_by_one
+static void navi_delete_tbt_item
     (
     void
     )
@@ -348,32 +332,6 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
         navi_tbt_buffer[i-1] = navi_tbt_buffer[i];
         }
     num_of_tbt_list_item--;
-    xSemaphoreGive( tbt_semphr_hndl );
-    }
-}
-
-/*********************************************************************
-*
-* @private
-* navi_delete_tbt_item_by_num
-*
-* Delete several tbt items
-*
-* @param recv_act_tbt_idx The received active tbt index.
-*
-*********************************************************************/
-static void navi_delete_tbt_item_by_num
-    (
-    const int recv_act_tbt_idx
-    )
-{
-PRINTF( "%s\r\n", __FUNCTION__);
-if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
-    {
-    for( int i = recv_act_tbt_idx; i < (recv_act_tbt_idx + num_of_tbt_list_item); i++ )
-        {
-        navi_tbt_buffer[i-recv_act_tbt_idx] = navi_tbt_buffer[i];
-        }
     xSemaphoreGive( tbt_semphr_hndl );
     }
 }
@@ -394,10 +352,10 @@ void navi_update_active_tbt_item
     )
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
+// Reset tbt_idx to 0 since tbt list data has received and active tbt update starts.
+tbt_buff_idx = 0;
 
-// When navi app is reconnected, the difference of recevied active tbt index and current active tbt index may not be 1.
-// In this case, we need to delete several tbt items and make sure the index of first tbt item of tbt list matches received
-// active tbt index.
+// Theoretically, The difference is greater than 0.
 int tbt_idx_diff = ( recv_act_tbt_idx - cur_act_tbt_idx );
 
 if( tbt_idx_diff < 0 )
@@ -406,28 +364,25 @@ if( tbt_idx_diff < 0 )
     }
 else
     {
-    if( tbt_idx_diff > 1 &&
-        recv_act_tbt_idx != ( TBT_UPDATE_IDX + 1 ) )
-        {
-        navi_delete_tbt_item_by_num( recv_act_tbt_idx );
-        }
-
     switch( tbt_list_state )
         {
         case TBT_LIST_STATE_CHECK_40TH_ACTIVE_TBT_IDX:
-            if( recv_act_tbt_idx > TBT_UPDATE_IDX &&
+            // Remove previous tbt item when active tbt index is updated.
+            // The recevied active_tbt_index = 41 means it's the first tbt item of second Tbt update so that we should delete tbt item from next active tbt index.
+            if( recv_act_tbt_idx > ( TBT_NEXT_UPDATE_IDX + 1 ) &&
                 tbt_idx_diff == 1 )
                 {
-                navi_delete_tbt_item_by_one();
+                PRINTF( "%s: Receive Active tbt Index: %d\r\n", __FUNCTION__, recv_act_tbt_idx );
+                navi_delete_tbt_item();
                 }
             break;
         case TBT_LIST_STATE_UPDATE:
             // Remove previous tbt item when active tbt index is updated.
-            // active_tbt_index = 1 means it's the first tbt item ( there is no previous tbt item ) so that we don't need to delete any tbt item.
+            // The recevied active_tbt_index = 1 means it's the first tbt item of first Tbt update so that we should delete tbt item from next active tbt index.
             if( recv_act_tbt_idx > 1 &&
                 tbt_idx_diff == 1 )
                 {
-                navi_delete_tbt_item_by_one();
+                navi_delete_tbt_item();
                 }
             break;
         default:

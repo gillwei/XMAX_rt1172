@@ -26,7 +26,7 @@ extern "C"{
 #define MAX_TBT_DIST_UNIT_SIZE       ( 16 )
 #define MAX_EVENT_QUEUE_SIZE         ( 10 )
 #define MAX_TBT_SIZE                 ( 50 )
-#define TBT_UPDATE_IDX               ( 39 )     // This is the predefined index that navi app will send more tbt items if tbt list size is over 50.
+#define TBT_NEXT_UPDATE_IDX          ( 40 )     // This is the predefined index that navi app will send more tbt items if tbt list size is over 50.
 
 typedef enum
     {
