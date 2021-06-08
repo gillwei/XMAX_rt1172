@@ -87,7 +87,7 @@ typedef enum tagNAVILITE_CONTENT_TYPE
     NAVILITE_CONTENT_TYPE_NAVI_IMAGE = 1, // reserved for code refactor
     NAVILITE_CONTENT_TYPE_TBT_LIST = 2,
     NAVILITE_CONTENT_TYPE_FAVORITE_LIST = 3,
-    NAVILITE_CONTENT_TYPE_STATION_LIST = 4
+    NAVILITE_CONTENT_TYPE_GASSTATION_LIST = 4
     } navilite_content_type;
 
 typedef enum tagNAVILITE_SWITCH_TYPE
@@ -271,6 +271,7 @@ bool NAVILITE_register_update_callback_currentroadname( navilite_callback_func_c
 bool NAVILITE_register_update_callback_nextturndistance( navilite_callback_func_nextturndistance callback_func );
 bool NAVILITE_register_update_callback_tbtlist( navilite_callback_func_nexttbtlist callback_func );
 bool NAVILITE_register_update_callback_favlist( navilite_callback_func_nexttpoilist callback_func );
+bool NAVILITE_register_update_callback_gaslist( navilite_callback_func_nexttpoilist callback_func );
 bool NAVILITE_register_update_callback_activetbtlistitem( navilite_callback_func_activetbtitem callback_func );
 bool NAVILITE_register_update_callback_navieventtext( navilite_callback_func_navieventtext callback_func );
 bool NAVILITE_register_update_callback_homelocationsetting( navilite_callback_func_homelocationsetting callback_func );
@@ -310,7 +311,7 @@ bool NAVILITE_request_app_gohome();           //! request navilite mobile app to
 bool NAVILITE_request_app_gooffice();         //! request navilite mobile app to navigate office
 bool NAVILITE_request_app_start_imageframe_update(); //! request navilite mobile app to start image frame update
 bool NAVILITE_request_app_stop_imageframe_update(); //! request navilite mobile app to stop image frame update
-
+bool NAVILITE_request_app_enable_content_update( navilite_content_type content_type, navilite_switch_type enable ); //! request navilite mobile app to enable dedicated content update
 
 /* NaviLite vehicle or other info report to Mobile App */
 bool NAVILITE_report_app_service_ack( uint8_t service_ack );         //! report meter speed to navilite mobile app

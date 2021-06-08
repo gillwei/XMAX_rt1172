@@ -293,7 +293,7 @@
     * @param content_type for enable/disable the update request
     *        ex: NAVILITE_CONTENT_TYPE_TBT_LIST
     *            NAVILITE_CONTENT_TYPE_FAVORITE_LIST
-    *            NAVILITE_CONTENT_TYPE_STATION_LIST
+    *            NAVILITE_CONTENT_TYPE_GASSTATION_LIST
     *
     * @param enable enable or disable the content update request
     * @return true when success

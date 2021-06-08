@@ -1161,6 +1161,177 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
                 }
         }
 
+    // NAVILITE_SERVICETYPE_FAVPOILIST_UPDATE  // list SIZE notify
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_FAVPOILIST_UPDATE )
+        {
+        // list item count
+        uint16_t list_item_count = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+        idx += 3;
+        // has more data in next request for UI to show more data on item lists(> 50)
+        uint8_t has_more_items = data[idx];
+        session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST] = list_item_count;
+        session_list_item_counter[NAVILITE_SESSION_INDEX_FAVLIST] = 0; // reset the counter when this command is received
+        PRINTF( "[NAVILITE_BEGIN FAV LIST ITEM SIZE: %d, reset session_list_item_counter[NAVILITE_SESSION_INDEX_FAVLIST] = 0]\r\n", session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST] );
+
+        if( session_list_size_last_total[NAVILITE_SESSION_INDEX_FAVLIST] != session_list_size_counter[NAVILITE_SESSION_INDEX_FAVLIST] )
+            {
+            session_list_size_last_total[NAVILITE_SESSION_INDEX_FAVLIST] = session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST];
+            PRINTF( "#WARNING: previous fav list is not completely received! SHOULD HAVE %d lists but only %d lists received\r\n", session_list_size_last_total[NAVILITE_SESSION_INDEX_FAVLIST], session_list_size_counter[NAVILITE_SESSION_INDEX_FAVLIST] );
+            }
+        if( navilite_content_update_callbacks.callback_func_nextfavlist )
+            {
+            navilite_content_update_callbacks.callback_func_nextfavlist
+                (
+                NAVILITE_POILIST_ACTION_LISTSIZE,
+                NULL,
+                0,
+                session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST],  // total items will be updated later by NAVILITE_SERVICETYPE_TBTLIST_DATA_UPDATE
+                0,
+                has_more_items // has more item on next request?
+                );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_FAVLIST_DATA_UPDATE  // list item data notify
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_FAVPOILIST_DATA_UPDATE )
+        {
+
+        if( session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST] == 0 )
+            {
+            PRINTF( "#ERROR: session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST] = 0 ; NAVILITE_SERVICETYPE_FAVLIST_UPDATE request need to be issued first from app!\r\n" );
+            }
+
+            session_list_size_counter[NAVILITE_SESSION_INDEX_FAVLIST]++;
+            uint32_t list_item_index = 0;
+            uint8_t desc_str_size;
+            uint8_t dist_unit_str_size;
+            uint32_t distance = 0;
+            uint8_t* desc_str = NULL;
+            uint8_t* dist_unit_str = NULL;
+
+            for( ; idx < data_len; idx++ )
+                {
+                // list index
+                list_item_index = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+                idx += sizeof( list_item_index );
+                // desc_size
+                desc_str_size = (uint8_t)data[idx++];
+                // dist_unit_size;
+                dist_unit_str_size = (uint8_t)data[idx++];
+                // distance
+                distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+                idx += sizeof( distance ); // now point to distance unit string portion
+                // store the distance unit string
+                dist_unit_str = navilite_buffer;
+                // copy the unit string to buffer
+                memcpy( navilite_buffer, data + idx, dist_unit_str_size );
+                idx += dist_unit_str_size;
+                // store the desc string pointer
+                desc_str = navilite_buffer + idx;
+                // copy the desc string to buffer
+                memcpy( navilite_buffer + idx, data + idx, desc_str_size );
+                idx += data_len;
+                if( navilite_content_update_callbacks.callback_func_nextfavlist )
+                    {
+                    // prepare list item data
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].list_item_index = list_item_index;
+                    // session_list_data_ptr[NAVILITE_SESSION_INDEX_FAVLIST].icon_index = icon_index;
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc_size = desc_str_size;
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].dist_unit_size = dist_unit_str_size;
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance = distance;
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance_unit = dist_unit_str;
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc = desc_str;
+                    // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                    navilite_content_update_callbacks.callback_func_nextfavlist( NAVILITE_POILIST_ACTION_ITEMADD, &session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_FAVLIST], 0 );
+                    }
+                }
+        }
+
+    // NAVILITE_SERVICETYPE_GASPOITURNLIST_UPDATE  // list SIZE notify
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_GASPOILIST_UPDATE )
+        {
+        // list item count
+        uint16_t list_item_count = (uint16_t)( ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+        idx += 3;
+        // has more data in next request for UI to show more data on item lists(> 50)
+        uint8_t has_more_items = data[idx];
+        session_list_size_total[NAVILITE_SESSION_INDEX_GASLIST] = list_item_count;
+        session_list_item_counter[NAVILITE_SESSION_INDEX_GASLIST] = 0; // reset the counter when this command is received
+        PRINTF( "[NAVILITE_BEGIN GAS LIST ITEM SIZE: %d, reset session_list_item_counter[NAVILITE_SESSION_INDEX_GASLIST] = 0]\r\n", session_list_size_total[NAVILITE_SESSION_INDEX_GASLIST] );
+
+        if( session_list_size_last_total[NAVILITE_SESSION_INDEX_GASLIST] != session_list_size_counter[NAVILITE_SESSION_INDEX_GASLIST] )
+            {
+            session_list_size_last_total[NAVILITE_SESSION_INDEX_GASLIST] = session_list_size_total[NAVILITE_SESSION_INDEX_GASLIST];
+            PRINTF( "#WARNING: previous gas list is not completely received! SHOULD HAVE %d lists but only %d lists received\r\n", session_list_size_last_total[NAVILITE_SESSION_INDEX_GASLIST], session_list_size_counter[NAVILITE_SESSION_INDEX_GASLIST] );
+            }
+        if( navilite_content_update_callbacks.callback_func_nextgaslist )
+            {
+            navilite_content_update_callbacks.callback_func_nextgaslist
+                (
+                NAVILITE_POILIST_ACTION_LISTSIZE,
+                NULL,
+                0,
+                session_list_size_total[NAVILITE_SESSION_INDEX_GASLIST],  // total items will be updated later by NAVILITE_SERVICETYPE_GASLIST_DATA_UPDATE
+                0,
+                has_more_items // has more item on next request?
+                );
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_GASLIST_DATA_UPDATE  // list item data notify
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_GASPOILIST_DATA_UPDATE )
+        {
+
+        if( session_list_size_total[NAVILITE_SESSION_INDEX_GASLIST] == 0 )
+            {
+            PRINTF( "#ERROR: session_list_size_total[NAVILITE_SESSION_INDEX_GASLIST] = 0 ; NAVILITE_SERVICETYPE_GASLIST_UPDATE request need to be issued first from app!\r\n" );
+            }
+
+            session_list_size_counter[NAVILITE_SESSION_INDEX_GASLIST] ++;
+            uint32_t list_item_index = 0;
+            uint8_t desc_str_size;
+            uint8_t dist_unit_str_size;
+            uint32_t distance = 0;
+            uint8_t* desc_str = NULL;
+            uint8_t* dist_unit_str = NULL;
+
+            for( ; idx < data_len; idx++ )
+                {
+                // list index
+                list_item_index = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+                idx += sizeof( list_item_index );
+                // desc_size
+                desc_str_size = (uint8_t)data[idx++];
+                // dist_unit_size;
+                dist_unit_str_size = (uint8_t)data[idx++];
+                // distance
+                distance = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
+                idx += sizeof( distance ); // now point to distance unit string portion
+                // store the distance unit string
+                dist_unit_str = navilite_buffer;
+                // copy the unit string to buffer
+                memcpy( navilite_buffer, data + idx, dist_unit_str_size );
+                idx += dist_unit_str_size;
+                // store the desc string pointer
+                desc_str = navilite_buffer + idx;
+                // copy the desc string to buffer
+                memcpy( navilite_buffer + idx, data + idx , desc_str_size );
+                idx += data_len;
+                if( navilite_content_update_callbacks.callback_func_nextgaslist )
+                    {
+                    // prepare list item data
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST].list_item_index = list_item_index;
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST].desc_size = desc_str_size;
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST].dist_unit_size = dist_unit_str_size;
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST].distance= distance;
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST].distance_unit = dist_unit_str;
+                    session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST].desc = desc_str;
+                    // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                    navilite_content_update_callbacks.callback_func_nextgaslist( NAVILITE_POILIST_ACTION_ITEMADD, &session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_GASLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_GASLIST], 0 );
+                    }
+                }
+        }
+
     // NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK
     if( navilite_packet.service_type == NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK )
         {
@@ -1641,7 +1812,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
                 // store the desc string pointer
                 desc_str = navilite_buffer + idx;
                 // copy the desc string to buffer
-                memcpy( navilite_buffer + idx, data + idx , desc_str_size );
+                memcpy( navilite_buffer + idx, data + idx, desc_str_size );
                 idx += data_len;
                 if( navilite_content_update_callbacks.callback_func_nexttbtist )
                     {
@@ -1712,6 +1883,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
                 // list index
                 list_item_index = (uint32_t)( ( data[idx + 3] << 24 ) | ( data[idx + 2] << 16 ) | ( data[idx + 1] << 8 ) | ( data[idx + 0] << 0 ) );
                 idx += sizeof( list_item_index );
+                // desc size
                 desc_str_size = (uint8_t)data[idx++];
                 // dist_unit_size;
                 dist_unit_str_size = (uint8_t)data[idx++];
@@ -1728,7 +1900,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
                 // copy the desc string to buffer
                 memcpy( navilite_buffer + idx, data + idx, desc_str_size );
                 idx += data_len;
-                if( navilite_content_update_callbacks.callback_func_nexttbtist )
+                if( navilite_content_update_callbacks.callback_func_nextfavlist )
                     {
                     // prepare list item data
                     session_tbt_list_data[NAVILITE_SESSION_INDEX_FAVLIST].list_item_index = list_item_index;

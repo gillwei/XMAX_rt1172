@@ -264,7 +264,7 @@
         {
         frame.service_type = NAVILITE_SERVICETYPE_APP_STOP_IMAGE_FRAME_REQUEST ;
         }
-    frame.payload_size = 0;
+    frame.payload_size = sizeof( uint16_t );
     frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
     frame.data_value = enable;  // NOTE: navilite_switch_type enable/disable
     return frame;
@@ -300,7 +300,7 @@
         {
         frame.service_type = NAVILITE_SERVICETYPE_APP_STOP_CONTENT_UPDATE_REQUEST ;
         }
-    frame.payload_size = sizeof( content_type );
+    frame.payload_size = sizeof( uint16_t );
     frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
     frame.data_value = content_type;  // NOTE: navilite_content_type to disable/enable request
     return frame;

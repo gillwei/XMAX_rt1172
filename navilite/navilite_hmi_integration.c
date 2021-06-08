@@ -613,6 +613,72 @@ else if( action == NAVILITE_POILIST_ACTION_ITEMADD )
 /*********************************************************************
 *
 * @private
+* hmi_update_callback_gaslist
+*
+* Callback API for list item size/data update
+* NOTE: To save bt bandwidth, please call NAVILITE_request_app_enable_content_update with
+*       NAVILITE_CONTENT_TYPE_NAVI_IMAGE/NAVILITE_ENABLE_TYPE_DISABLE to disable navi image transfer.
+*
+* @param action what kind of action it is
+* @param list_item data pointer to a list item received
+*        when action is NAVILITE_POILIST_ACTION_ITEMADD
+* @param list_item_index the index number that list item data begins to
+*        when action is NAVILITE_POILIST_ACTION_ITEMADD
+* @param list_total_items the total list items will be available
+*        when action is NAVILITE_POILIST_ACTION_LISTSIZE
+*        (aka: how many items in this poi list)
+* @param list_total_items_recevied current list total items count currently received
+*        when action is NAVILITE_POILIST_ACTION_ITEMADD
+* @param has_more_items_on_next_request true if there will be more items coming on next request
+*        otherwie, false. This value only available when action is NAVILITE_POILIST_ACTION_LISTSIZE
+*
+*********************************************************************/
+static void hmi_update_callback_gaslist
+    (
+    navilite_poi_list_action_type action,
+    navilite_poi_list_type *list_item,
+    uint16_t list_item_no,
+    uint16_t list_total_items,
+    uint16_t list_total_items_recevied,
+    uint8_t has_more_items_on_next_request
+    )
+{
+if( action == NAVILITE_POILIST_ACTION_LISTSIZE )
+    {
+    PRINTF( "\r\n*[NAVILITE-CB NAVILITE_POILIST_ACTION_LISTSIZE(GAS)] GAS LIST ITEM SIZE REQUEST: %d, more data in this request?%d", list_total_items, has_more_items_on_next_request );
+    // Integration Note: allocate memory size before receiving the list items.
+    }
+else if( action == NAVILITE_POILIST_ACTION_ITEMADD )
+    {
+    PRINTF( "\r\n[NAVILITE-CB NAVILITE_POILIST_ACTION_ITEMADD(GAS)]  POI item add notify for list item no: %d\r\n", list_item_no );
+    if( list_total_items_recevied > list_total_items )
+        {
+        PRINTF( "\r\nWARNING: the list item count exceeds the item count previously request (NAVILITE_POILIST_ACTION_LISTSIZE)! should be less or equal to %d\r\n", list_total_items );
+        }
+    // Integration Note: replace the following API demo codes for HMI integration
+    PRINTF( "* GAS LIST ITEM ADD - list item index:%d progress:(%d/%d)\r\n", list_item_no, list_total_items_recevied, list_total_items );
+    PRINTF( " list item index:%d\r\n", list_item->list_item_index );
+    PRINTF( " desc size:%d\r\n", list_item->desc_size );
+    PRINTF( " dist unit size:%d\r\n", list_item->dist_unit_size );
+    PRINTF( " distance * 100:" );
+    // Float value conversion
+    // NOTE: since float number console print requires another library, so
+    // here uses float value * 100 to show integer value instead without modifying existed project's setting.
+    float float_val = 0;
+    float_val = NAVILITE_bytes_to_float( list_item->distance );
+    PRINTF( "%d\r\n ", (int)( (float)float_val * 100 ) );
+    PRINTF( " distance unit:" );
+    NAVILITE_print_utf8( list_item->distance_unit, list_item->dist_unit_size );
+    PRINTF( "\r\n" );
+    PRINTF( " desc : " );
+    NAVILITE_print_utf8( list_item->desc, list_item->desc_size );
+    PRINTF( "\r\n" );
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * hmi_update_callback_dialogevent
 *
 * Callback API for dialog event
@@ -714,4 +780,6 @@ NAVILITE_register_update_callback_nextturndistance( hmi_update_callback_nextturn
 NAVILITE_register_update_callback_activetbtlistitem( hmi_update_callback_activetbtlistitem );
 NAVILITE_register_update_callback_tbtlist( hmi_update_callback_tbtlist );
 NAVILITE_register_update_callback_favlist( hmi_update_callback_favlist );
+NAVILITE_register_update_callback_gaslist( hmi_update_callback_gaslist );
+
 }
