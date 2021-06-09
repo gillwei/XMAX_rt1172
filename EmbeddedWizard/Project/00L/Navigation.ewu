@@ -838,13 +838,13 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
       }
       case Enum::NaviSettingItem.GoHome:
       {
-        SelectedItem = Enum::NaviSettingItem.GoHome;
         DeviceInterface::NavigationDevice.GoHome();
+        UpdateHomeSetting();
       }
       case Enum::NaviSettingItem.GoToWork:
       {
-        SelectedItem = Enum::NaviSettingItem.GoToWork;
         DeviceInterface::NavigationDevice.GoOffice();
+        UpdateOfficeSetting();
       }
       case Enum::NaviSettingItem.Favorites:;
       case Enum::NaviSettingItem.NearbyGasStations:;
@@ -900,80 +900,6 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
     Default[5] = Enum::NaviSettingItem.NearbyGasStations;
     Default[6] = Enum::NaviSettingItem.ChangeView;
   );
-
-  $rect <730,130,930,170>
-  object Core::SystemEventHandler HomeSettingUpdateSystemEventHandler
-  {
-    preset OnEvent = OnHomeSettingUpdateSlot;
-    preset Event = DeviceInterface::NavigationDevice.HomeSettingUpdateEvent;
-  }
-
-  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
-  // receives an event.
-  $rect <930,130,1130,170>
-  slot OnHomeSettingUpdateSlot
-  {
-    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.HOME );
-
-    if( null != NaviData )
-    {
-      if( NaviData.IsHomeSet &&
-          SelectedItem == Enum::NaviSettingItem.GoHome )
-      {
-        SelectedItem = Enum::NaviSettingItem.TOTAL;
-        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
-        signal ReturnToNaviHome;
-      }
-      else
-      {
-        var Pop::POP03_HomeOfficeSettingError HomeSettingError = new Pop::POP03_HomeOfficeSettingError;
-        HomeSettingError.ReturnToNaviHomeSlot = ReturnToNaviHome;
-        HomeSettingError.ErrorMessage = Strings::POP03_NO_HOME_LOCATION;
-        PresentDialog( HomeSettingError, null, null, null, null, null, null, null, null, false );
-      }
-    }
-    else
-    {
-      trace "HomeSetting navi data error";
-    }
-  }
-
-  $rect <740,190,940,230>
-  object Core::SystemEventHandler OfficeSettingUpdateEventHandler
-  {
-    preset OnEvent = OnOfficeSettingUpdateSlot;
-    preset Event = DeviceInterface::NavigationDevice.OfficeSettingUpdateEvent;
-  }
-
-  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
-  // receives an event.
-  $rect <940,190,1140,230>
-  slot OnOfficeSettingUpdateSlot
-  {
-    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.OFFICE );
-
-    if( null != NaviData )
-    {
-      if( NaviData.IsOfficeSet &&
-          SelectedItem == Enum::NaviSettingItem.GoToWork )
-      {
-        SelectedItem = Enum::NaviSettingItem.TOTAL;
-        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
-        signal ReturnToNaviHome;
-      }
-      else
-      {
-        var Pop::POP03_HomeOfficeSettingError OfficeSettingError = new Pop::POP03_HomeOfficeSettingError;
-        OfficeSettingError.ReturnToNaviHomeSlot = ReturnToNaviHome;
-        OfficeSettingError.ErrorMessage = Strings::POP03_NO_OFFICE_LOCATION;
-        PresentDialog( OfficeSettingError, null, null, null, null, null, null, null, null, false );
-      }
-    }
-    else
-    {
-      trace "OfficeSetting navi data error";
-    }
-  }
 
   $rect <740,250,950,290>
   object Core::SystemEventHandler NavigatingStatusUpdateEventHandler
@@ -1083,6 +1009,60 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
     if( null != App )
     {
       App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+    }
+  }
+
+  $rect <500,340,700,380>
+  method void UpdateHomeSetting()
+  {
+    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.HOME );
+
+    if( null != NaviData )
+    {
+      if( NaviData.IsHomeSet )
+      {
+        SelectedItem = Enum::NaviSettingItem.TOTAL;
+        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+        signal ReturnToNaviHome;
+      }
+      else
+      {
+        var Pop::POP03_HomeOfficeSettingError HomeSettingError = new Pop::POP03_HomeOfficeSettingError;
+        HomeSettingError.ReturnToNaviHomeSlot = ReturnToNaviHome;
+        HomeSettingError.ErrorMessage = Strings::POP03_NO_HOME_LOCATION;
+        PresentDialog( HomeSettingError, null, null, null, null, null, null, null, null, false );
+      }
+    }
+    else
+    {
+      trace "HomeSetting navi data error";
+    }
+  }
+
+  $rect <500,390,700,430>
+  method void UpdateOfficeSetting()
+  {
+    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.OFFICE );
+
+    if( null != NaviData )
+    {
+      if( NaviData.IsOfficeSet )
+      {
+        SelectedItem = Enum::NaviSettingItem.TOTAL;
+        DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+        signal ReturnToNaviHome;
+      }
+      else
+      {
+        var Pop::POP03_HomeOfficeSettingError OfficeSettingError = new Pop::POP03_HomeOfficeSettingError;
+        OfficeSettingError.ReturnToNaviHomeSlot = ReturnToNaviHome;
+        OfficeSettingError.ErrorMessage = Strings::POP03_NO_OFFICE_LOCATION;
+        PresentDialog( OfficeSettingError, null, null, null, null, null, null, null, null, false );
+      }
+    }
+    else
+    {
+      trace "OfficeSetting navi data error";
     }
   }
 }

@@ -837,19 +837,19 @@ $output false
 class NavigationDeviceClass : Templates::DeviceClass
 {
   // This object represents an individual system event.
-  $rect <20,90,220,130>
+  $rect <240,510,440,550>
   object Core::SystemEvent MapUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,40,220,80>
+  $rect <40,510,240,550>
   $output true
   method void NotifyMapUpdate()
   {
     MapUpdateEvent.Trigger( null, true );
   }
 
-  $rect <250,40,450,80>
+  $rect <410,820,610,860>
   method bool IsMapFrameReady()
   {
     $if( !$prototyper )
@@ -864,67 +864,67 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <230,150,430,190>
+  $rect <240,230,440,270>
   object Core::SystemEvent CurRdUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,150,220,190>
+  $rect <40,230,240,270>
   $output true
   method void NotifyCurRdUpdate()
   {
     CurRdUpdateEvent.Trigger( null, false );
   }
 
-  $rect <220,190,420,230>
+  $rect <240,270,440,310>
   object Core::SystemEvent ETAUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,190,220,230>
+  $rect <40,270,240,310>
   $output true
   method void NotifyETAUpdate()
   {
     ETAUpdateEvent.Trigger( null, false );
   }
 
-  $rect <220,230,420,270>
+  $rect <240,310,440,350>
   object Core::SystemEvent DayNightModeUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,230,220,270>
+  $rect <40,310,240,350>
   $output true
   method void NotifyDayNightModeUpdate()
   {
     DayNightModeUpdateEvent.Trigger( null, false );
   }
 
-  $rect <220,270,420,310>
+  $rect <240,350,440,390>
   object Core::SystemEvent SpeedLimitUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,270,220,310>
+  $rect <40,350,240,390>
   $output true
   method void NotifySpeedLimitUpdate()
   {
     SpeedLimitUpdateEvent.Trigger( null, false );
   }
 
-  $rect <220,310,420,350>
+  $rect <240,390,440,430>
   object Core::SystemEvent NaviIncidentUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,310,220,350>
+  $rect <40,390,240,430>
   $output true
   method void NotifyNaviEventUpdate()
   {
     NaviIncidentUpdateEvent.Trigger( null, false );
   }
 
-  $rect <460,150,660,190>
+  $rect <730,690,930,730>
   method DeviceInterface::NaviDataClass GetNaviData( arg Enum::NaviDataType aDataType )
   {
     var DeviceInterface::NaviDataClass NaviData = new DeviceInterface::NaviDataClass;
@@ -996,7 +996,7 @@ class NavigationDeviceClass : Templates::DeviceClass
 
   }
 
-  $rect <250,90,450,130>
+  $rect <410,860,610,900>
   method bool IsRouteGuidanceStarted()
   {
     $if( !$prototyper )
@@ -1011,31 +1011,31 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <220,350,420,390>
+  $rect <240,430,440,470>
   object Core::SystemEvent NavigatingStatusUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,350,220,390>
+  $rect <40,430,240,470>
   $output true
   method void NotifyNavigatingStatusUpdate()
   {
     NavigatingStatusUpdateEvent.Trigger( null, false );
   }
 
-  $rect <220,400,420,440>
+  $rect <240,470,440,510>
   object Core::SystemEvent TbtListUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,400,220,440>
+  $rect <40,470,240,510>
   $output true
   method void NotifyTbtListUpdate()
   {
     TbtListUpdateEvent.Trigger( null, false );
   }
 
-  $rect <460,210,660,250>
+  $rect <730,650,930,690>
   method DeviceInterface::NaviTbtDataClass GetNaviTbtData( arg int32 aTbtItemIdx )
   {
     var DeviceInterface::NaviTbtDataClass NaviTbtData = new DeviceInterface::NaviTbtDataClass;
@@ -1060,10 +1060,10 @@ class NavigationDeviceClass : Templates::DeviceClass
     return NaviTbtData;
   }
 
-  $rect <710,40,910,80>
+  $rect <50,40,250,80>
   var Enum::HomeType CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
 
-  $rect <460,270,660,310>
+  $rect <80,820,280,860>
   method void StopMapFrameRequest()
   {
     $if !$prototyper
@@ -1074,24 +1074,24 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <220,510,420,550>
+  $rect <720,230,920,270>
   object Core::SystemEvent RouteCalProgressUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,510,220,550>
+  $rect <520,230,720,270>
   $output true
   method void NotifyRouteCalProgressUpdate()
   {
     RouteCalProgressUpdateEvent.Trigger( null, false );
   }
 
-  $rect <220,570,420,610>
+  $rect <720,270,920,310>
   object Core::SystemEvent ZoomLevelUpdateEventHandler;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,570,220,610>
+  $rect <520,270,720,310>
   $output true
   method void NotifyZoomLevelUpdate()
   {
@@ -1099,19 +1099,19 @@ class NavigationDeviceClass : Templates::DeviceClass
     ZoomLevelUpdateEventHandler.Trigger( null, false );
   }
 
-  $rect <230,620,430,660>
+  $rect <720,310,920,350>
   object Core::SystemEvent DialogEventUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,620,220,660>
+  $rect <520,310,720,350>
   $output true
   method void NotifyDialogEventUpdate()
   {
     DialogEventUpdateEvent.Trigger( null, false );
   }
 
-  $rect <460,330,660,370>
+  $rect <730,770,930,810>
   method Enum::NaviDialogType GetNaviDialogType()
   {
     $if !$prototyper
@@ -1130,7 +1130,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <460,380,660,420>
+  $rect <730,810,930,850>
   method string GetNaviDialogMessage()
   {
     $if !$prototyper
@@ -1151,7 +1151,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <460,430,660,470>
+  $rect <410,740,610,780>
   method void SendSelectedDialog( arg Enum::NaviButtonType aNewButtonType )
   {
     $if !$prototyper
@@ -1165,19 +1165,19 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <650,520,850,560>
+  $rect <720,350,920,390>
   object Core::SystemEvent ViaPointUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <450,520,650,560>
+  $rect <520,350,720,390>
   $output true
   method void NotifyViaPointUpdate()
   {
     ViaPointUpdateEvent.Trigger( null, false );
   }
 
-  $rect <690,210,890,250>
+  $rect <730,850,930,890>
   method bool GetNaviConnectStatus()
   {
     $if( !$prototyper )
@@ -1192,7 +1192,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <690,260,890,300>
+  $rect <730,890,930,930>
   method bool GetNaviAppInitSettingStatus()
   {
     $if( !$prototyper )
@@ -1207,7 +1207,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <690,310,890,350>
+  $rect <80,660,280,700>
   method void StopRoute()
   {
     $if !$prototyper
@@ -1218,7 +1218,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <690,360,890,400>
+  $rect <80,700,280,740>
   method void SkipNextStop()
   {
     $if !$prototyper
@@ -1229,7 +1229,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <690,410,890,450>
+  $rect <80,740,280,780>
   method void GoHome()
   {
     $if !$prototyper
@@ -1240,7 +1240,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <690,460,890,500>
+  $rect <80,780,280,820>
   method void GoOffice()
   {
     $if !$prototyper
@@ -1251,31 +1251,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <650,570,850,610>
-  object Core::SystemEvent HomeSettingUpdateEvent;
-
-  // This method is intended to be called by the device to notify the GUI application \
-  // about a particular system event.
-  $rect <450,570,650,610>
-  $output true
-  method void NotifyHomeSettingUpdate()
-  {
-    HomeSettingUpdateEvent.Trigger( null, false );
-  }
-
-  $rect <660,620,860,660>
-  object Core::SystemEvent OfficeSettingUpdateEvent;
-
-  // This method is intended to be called by the device to notify the GUI application \
-  // about a particular system event.
-  $rect <460,620,660,660>
-  $output true
-  method void NotifyOfficeSettingUpdate()
-  {
-    OfficeSettingUpdateEvent.Trigger( null, false );
-  }
-
-  $rect <920,210,1120,250>
+  $rect <410,660,610,700>
   method void ZoomInRequest()
   {
     $if !$prototyper
@@ -1286,7 +1262,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <920,260,1120,300>
+  $rect <410,700,610,740>
   method void ZoomOutRequest()
   {
     $if !$prototyper
@@ -1297,7 +1273,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <700,150,900,190>
+  $rect <730,970,930,1010>
   method Enum::NaviZoomInOutStatusType GetZoomInOutStatus()
   {
     $if !$prototyper
@@ -1312,22 +1288,22 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <710,90,910,130>
+  $rect <50,100,250,140>
   var bool IsZoomInOutStatusReceived = true;
 
-  $rect <230,690,430,730>
+  $rect <720,390,920,430>
   object Core::SystemEvent AlertDistanceUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,690,220,730>
+  $rect <520,390,720,430>
   $output true
   method void NotifyAlertDistanceUpdate()
   {
     AlertDistanceUpdateEvent.Trigger( null, false );
   }
 
-  $rect <460,690,660,730>
+  $rect <730,930,930,970>
   method string GetAlertDistance()
   {
     $if !$prototyper
@@ -1342,31 +1318,31 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <220,760,420,800>
+  $rect <720,430,920,470>
   object Core::SystemEvent ConnectStatusUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,760,220,800>
+  $rect <520,430,720,470>
   $output true
   method void NotifyNaviConnectUpdate()
   {
     ConnectStatusUpdateEvent.Trigger( null, false );
   }
 
-  $rect <220,810,420,850>
+  $rect <720,470,920,510>
   object Core::SystemEvent DisconnectStatusUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
-  $rect <20,810,220,850>
+  $rect <520,470,720,510>
   $output true
   method void NotifyNaviDisconnectUpdate()
   {
     DisconnectStatusUpdateEvent.Trigger( null, false );
   }
 
-  $rect <920,150,1120,190>
+  $rect <80,860,280,900>
   method void StartMapFrameRequest()
   {
     $if !$prototyper
@@ -1377,7 +1353,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <920,340,1120,380>
+  $rect <410,780,610,820>
   method bool IsTbtMessageDisplayed()
   {
     $if( !$prototyper )
@@ -1392,7 +1368,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <920,380,1120,420>
+  $rect <730,730,930,770>
   method int32 GetTbtListSize()
   {
     $if( !$prototyper )
@@ -1407,7 +1383,25 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <920,40,1120,80>
+  // System Events
+  note group Note
+  {
+    attr Bounds = <20,170,1010,560>;
+  }
+
+  // Methods
+  note group Note1
+  {
+    attr Bounds = <20,610,1010,1020>;
+  }
+
+  // Variables
+  note group Note2
+  {
+    attr Bounds = <20,10,1010,150>;
+  }
+
+  $rect <270,40,470,80>
   var bool IsNaviLoadingDialogDisplayed = false;
 }
 

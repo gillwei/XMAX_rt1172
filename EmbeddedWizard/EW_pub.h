@@ -106,8 +106,6 @@ void EW_notify_route_cal_progress_update( void );
 void EW_notify_zoom_level_update( void );
 void EW_notify_dialog_event_update( void );
 void EW_notify_via_point_update( void );
-void EW_notify_home_setting_update( void );
-void EW_notify_office_setting_update( void );
 void EW_notify_connect_status_update( void );
 void EW_notify_disconnect_status_update( void );
 

@@ -78,14 +78,6 @@
     static int ew_notify_via_point_update( void );
 #endif
 
-#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate_
-    static int ew_notify_home_setting_update( void );
-#endif
-
-#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate_
-    static int ew_notify_office_setting_update( void );
-#endif
-
 #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviConnectUpdate_
     static int ew_notify_connect_status_update( void );
 #endif
@@ -150,12 +142,6 @@
         #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate_
             ew_notify_via_point_update,
         #endif
-        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate_
-            ew_notify_home_setting_update,
-        #endif
-        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate_
-            ew_notify_office_setting_update,
-        #endif
         #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyTbtListUpdate_
             ew_notify_navi_tbt_list_update,
         #endif
@@ -182,8 +168,6 @@
     static int is_zoom_level_update = 0;
     static int is_dialog_event_update = 0;
     static int is_via_point_update = 0;
-    static int is_home_setting_update = 0;
-    static int is_office_setting_update = 0;
     static int is_navi_app_connected = 0;
     static int is_navi_app_disconnected = 0;
     static int is_alert_distance_update = 0;
@@ -609,56 +593,6 @@ bool ew_navi_is_route_guidance_started
 /*********************************************************************
 *
 * @private
-* ew_notify_home_setting_update
-*
-* Notify EW GUI that new home setting status has received.
-*
-*********************************************************************/
-#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate_
-    static int ew_notify_home_setting_update
-        (
-        void
-        )
-    {
-    int need_update = 0;
-    if( is_home_setting_update )
-        {
-        is_home_setting_update = 0;
-        need_update = 1;
-        DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate( device_object );
-        }
-    return need_update;
-    }
-#endif
-
-/*********************************************************************
-*
-* @private
-* ew_notify_office_setting_update
-*
-* Notify EW GUI that new office setting status has received.
-*
-*********************************************************************/
-#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate_
-    static int ew_notify_office_setting_update
-        (
-        void
-        )
-    {
-    int need_update = 0;
-    if( is_office_setting_update )
-        {
-        is_office_setting_update = 0;
-        need_update = 1;
-        DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate( device_object );
-        }
-    return need_update;
-    }
-#endif
-
-/*********************************************************************
-*
-* @private
 * ew_notify_navi_tbt_list_update
 *
 * Notify EW GUI that tbt list has received.
@@ -980,44 +914,6 @@ void EW_notify_via_point_update
 {
 #ifdef _DeviceInterfaceNavigationDeviceClass_
     is_via_point_update = 1;
-    EwBspEventTrigger();
-#endif
-}
-
-/*********************************************************************
-*
-* @public
-* EW_notify_home_setting_update
-*
-* Notify Embedded Wizard that home setting is updated.
-*
-*********************************************************************/
-void EW_notify_home_setting_update
-    (
-    void
-    )
-{
-#ifdef _DeviceInterfaceNavigationDeviceClass_
-    is_home_setting_update = 1;
-    EwBspEventTrigger();
-#endif
-}
-
-/*********************************************************************
-*
-* @public
-* EW_notify_office_setting_update
-*
-* Notify Embedded Wizard that office setting is updated.
-*
-*********************************************************************/
-void EW_notify_office_setting_update
-    (
-    void
-    )
-{
-#ifdef _DeviceInterfaceNavigationDeviceClass_
-    is_office_setting_update = 1;
     EwBspEventTrigger();
 #endif
 }

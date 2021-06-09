@@ -114,8 +114,6 @@
 
 /* Deklaration of class : 'Navigation::NAV06_NaviSettingMenu' */
 EW_DEFINE_FIELDS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView )
-  EW_OBJECT  ( HomeSettingUpdateSystemEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( OfficeSettingUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( ViaPointUpdateEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( SelectedItem,    XEnum )
@@ -226,16 +224,6 @@ XBool NavigationNAV06_NaviSettingMenu_LoadItemEnabled( NavigationNAV06_NaviSetti
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void NavigationNAV06_NaviSettingMenu_OnHomeSettingUpdateSlot( NavigationNAV06_NaviSettingMenu _this, 
-  XObject sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV06_NaviSettingMenu_OnOfficeSettingUpdateSlot( NavigationNAV06_NaviSettingMenu _this, 
-  XObject sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
 void NavigationNAV06_NaviSettingMenu_OnNavigatingStatusUpdateSlot( NavigationNAV06_NaviSettingMenu _this, 
   XObject sender );
 
@@ -250,6 +238,12 @@ void NavigationNAV06_NaviSettingMenu_SetNaviSettingMenuItem( NavigationNAV06_Nav
 /* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.ReturnToNaviHome()' */
 void NavigationNAV06_NaviSettingMenu_ReturnToNaviHome( NavigationNAV06_NaviSettingMenu _this, 
   XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.UpdateHomeSetting()' */
+void NavigationNAV06_NaviSettingMenu_UpdateHomeSetting( NavigationNAV06_NaviSettingMenu _this );
+
+/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.UpdateOfficeSetting()' */
+void NavigationNAV06_NaviSettingMenu_UpdateOfficeSetting( NavigationNAV06_NaviSettingMenu _this );
 
 #ifdef __cplusplus
   }

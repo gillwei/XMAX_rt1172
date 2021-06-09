@@ -78,8 +78,6 @@ EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( ZoomLevelUpdateEventHandler, CoreSystemEvent )
   EW_OBJECT  ( DialogEventUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( ViaPointUpdateEvent, CoreSystemEvent )
-  EW_OBJECT  ( HomeSettingUpdateEvent, CoreSystemEvent )
-  EW_OBJECT  ( OfficeSettingUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( AlertDistanceUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( ConnectStatusUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( DisconnectStatusUpdateEvent, CoreSystemEvent )
@@ -256,26 +254,6 @@ void DeviceInterfaceNavigationDeviceClass_GoHome( DeviceInterfaceNavigationDevic
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GoOffice()' */
 void DeviceInterfaceNavigationDeviceClass_GoOffice( DeviceInterfaceNavigationDeviceClass _this );
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyHomeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyHomeSettingUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate( void* _this );
-
-/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyHomeSettingUpdate(). */
-#define _DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate_
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyOfficeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyOfficeSettingUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate( void* _this );
-
-/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyOfficeSettingUpdate(). */
-#define _DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate_
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ZoomInRequest()' */
 void DeviceInterfaceNavigationDeviceClass_ZoomInRequest( DeviceInterfaceNavigationDeviceClass _this );

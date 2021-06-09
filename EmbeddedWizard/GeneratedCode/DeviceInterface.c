@@ -959,8 +959,6 @@ void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Init( &_this->ZoomLevelUpdateEventHandler, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->DialogEventUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->ViaPointUpdateEvent, &_this->_.XObject, 0 );
-  CoreSystemEvent__Init( &_this->HomeSettingUpdateEvent, &_this->_.XObject, 0 );
-  CoreSystemEvent__Init( &_this->OfficeSettingUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->AlertDistanceUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->ConnectStatusUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->DisconnectStatusUpdateEvent, &_this->_.XObject, 0 );
@@ -992,8 +990,6 @@ void DeviceInterfaceNavigationDeviceClass__ReInit( DeviceInterfaceNavigationDevi
   CoreSystemEvent__ReInit( &_this->ZoomLevelUpdateEventHandler );
   CoreSystemEvent__ReInit( &_this->DialogEventUpdateEvent );
   CoreSystemEvent__ReInit( &_this->ViaPointUpdateEvent );
-  CoreSystemEvent__ReInit( &_this->HomeSettingUpdateEvent );
-  CoreSystemEvent__ReInit( &_this->OfficeSettingUpdateEvent );
   CoreSystemEvent__ReInit( &_this->AlertDistanceUpdateEvent );
   CoreSystemEvent__ReInit( &_this->ConnectStatusUpdateEvent );
   CoreSystemEvent__ReInit( &_this->DisconnectStatusUpdateEvent );
@@ -1018,8 +1014,6 @@ void DeviceInterfaceNavigationDeviceClass__Done( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Done( &_this->ZoomLevelUpdateEventHandler );
   CoreSystemEvent__Done( &_this->DialogEventUpdateEvent );
   CoreSystemEvent__Done( &_this->ViaPointUpdateEvent );
-  CoreSystemEvent__Done( &_this->HomeSettingUpdateEvent );
-  CoreSystemEvent__Done( &_this->OfficeSettingUpdateEvent );
   CoreSystemEvent__Done( &_this->AlertDistanceUpdateEvent );
   CoreSystemEvent__Done( &_this->ConnectStatusUpdateEvent );
   CoreSystemEvent__Done( &_this->DisconnectStatusUpdateEvent );
@@ -1428,32 +1422,6 @@ void DeviceInterfaceNavigationDeviceClass_GoOffice( DeviceInterfaceNavigationDev
   EW_UNUSED_ARG( _this );
 
   NAVI_send_go_office_request();
-}
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyHomeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this )
-{
-  CoreSystemEvent_Trigger( &_this->HomeSettingUpdateEvent, 0, 0 );
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyHomeSettingUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyHomeSettingUpdate( void* _this )
-{
-  DeviceInterfaceNavigationDeviceClass_NotifyHomeSettingUpdate((DeviceInterfaceNavigationDeviceClass)_this );
-}
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyOfficeSettingUpdate( DeviceInterfaceNavigationDeviceClass _this )
-{
-  CoreSystemEvent_Trigger( &_this->OfficeSettingUpdateEvent, 0, 0 );
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyOfficeSettingUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyOfficeSettingUpdate( void* _this )
-{
-  DeviceInterfaceNavigationDeviceClass_NotifyOfficeSettingUpdate((DeviceInterfaceNavigationDeviceClass)_this );
 }
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ZoomInRequest()' */

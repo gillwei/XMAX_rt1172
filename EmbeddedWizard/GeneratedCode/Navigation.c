@@ -89,15 +89,15 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
   0xB8002900, 0x800B4452, 0xB4010737, 0x80049001, 0x004F001B, 0x074001D4, 0x008A14C0,
   0x389C60C2, 0x000E8007, 0xF4880020, 0xC348B030, 0x2211068E, 0x61F0D85C, 0x2F1589C4,
   0x9158D456, 0x00290023, 0x931800CA, 0x001A4013, 0xF1927A76, 0x00245208, 0x649B2503,
-  0x28C70004, 0x12488249, 0x5179D42E, 0x3F8AC567, 0xFA299E1F, 0x9FD06350, 0x5CD28721,
-  0x1CA7521A, 0x9E116700, 0x60921915, 0xE0003344, 0xB549E4FE, 0x0E9F55E7, 0xD90D6C01,
-  0xB0DE2815, 0x3516674B, 0xDAE1368B, 0xAE2F04A2, 0x49D4DBC1, 0x65183C4F, 0x91FA6C26,
-  0x45AFD2EF, 0x58D462C5, 0xC2DA70B6, 0xC4940F22, 0x50E35089, 0x2E4A0591, 0x4092285E,
-  0x4400D649, 0xE00D5C13, 0x46340005, 0xCBC6BC13, 0xDC6DA7A6, 0x6C941122, 0x47F88001,
-  0x9751C4E2, 0x353B08D4, 0x4BCDA6C1, 0xD461847E, 0x228FC135, 0x3EA41291, 0x22F3A8DD,
-  0x18468DDC, 0xC6A793DD, 0xF6273CDE, 0x6F559B1E, 0x4325ECD1, 0x5F300096, 0x54928564,
-  0x90010800, 0xBC13243F, 0x9214551D, 0x74E97815, 0xFDED5147, 0x04729154, 0x75428485,
-  0xD460A525, 0x00010184, 0x00000000
+  0x68C70004, 0xD7178248, 0xC00A64F8, 0x183C4F49, 0xFA6C2665, 0x8D43E431, 0x1C867F41,
+  0x4869734A, 0xA400729D, 0x64769845, 0x17092449, 0xB3A8BCEA, 0x0F9FC562, 0x0AFD14CF,
+  0xA5D8EA74, 0x55A28B33, 0x516DB09B, 0x00CD1182, 0xE793FC50, 0xA7769EDC, 0x34BBDDE6,
+  0x18B2516C, 0xBC259E35, 0x03C8B096, 0xD4227125, 0x81645438, 0x8A175292, 0x35525024,
+  0x5304D000, 0x00017803, 0xAD04D18D, 0x49E9B2A7, 0x0448B6DB, 0x10005B25, 0x70B851FE,
+  0xBA3525D3, 0xE9B04D3E, 0x611F92F2, 0xF04D6518, 0x04A448A3, 0xCA3747A5, 0xA37688BC,
+  0xE4F74211, 0xCF3771A9, 0xE2CBBB89, 0xE437A005, 0x4B2192F5, 0xB22F9000, 0x002A4942,
+  0x1FC00084, 0x8ED4C992, 0xC5648515, 0x51DD3A54, 0x553F7AD4, 0x21411C84, 0x495D30A1,
+  0x61251829, 0x00000040, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -125,7 +125,7 @@ static const XStringRes _Const0014 = { _StringsDefault0, 0x0034 };
 static const XRect _Const0015 = {{ 0, 0 }, { 0, 0 }};
 static const XRect _Const0016 = {{ 140, 228 }, { 470, 259 }};
 static const XStringRes _Const0017 = { _StringsDefault0, 0x003A };
-static const XStringRes _Const0018 = { _StringsDefault0, 0x0058 };
+static const XStringRes _Const0018 = { _StringsDefault0, 0x005A };
 static const XStringRes _Const0019 = { _StringsDefault0, 0x0078 };
 static const XRect _Const001A = {{ 0, 0 }, { 330, 31 }};
 static const XRect _Const001B = {{ 0, 8 }, { 20, 28 }};
@@ -1065,8 +1065,6 @@ void NavigationNAV06_NaviSettingMenu__Init( NavigationNAV06_NaviSettingMenu _thi
   _this->_.XObject._.GCT = EW_CLASS_GCT( NavigationNAV06_NaviSettingMenu );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->HomeSettingUpdateSystemEventHandler, &_this->_.XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->OfficeSettingUpdateEventHandler, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->NavigatingStatusUpdateEventHandler, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->ViaPointUpdateEventHandler, &_this->_.XObject, 0 );
 
@@ -1085,12 +1083,6 @@ void NavigationNAV06_NaviSettingMenu__Init( NavigationNAV06_NaviSettingMenu _thi
   _this->NaviSettings[ 5 ] = EnumNaviSettingItemNearbyGasStations;
   _this->NaviSettings[ 6 ] = EnumNaviSettingItemChangeView;
   _this->SelectedItem = EnumNaviSettingItemTOTAL;
-  _this->HomeSettingUpdateSystemEventHandler.OnEvent = EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_OnHomeSettingUpdateSlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->HomeSettingUpdateSystemEventHandler, 
-  &EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->HomeSettingUpdateEvent );
-  _this->OfficeSettingUpdateEventHandler.OnEvent = EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_OnOfficeSettingUpdateSlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->OfficeSettingUpdateEventHandler, &EwGetAutoObject( 
-  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->OfficeSettingUpdateEvent );
   _this->NavigatingStatusUpdateEventHandler.OnEvent = EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_OnNavigatingStatusUpdateSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->NavigatingStatusUpdateEventHandler, 
   &EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->NavigatingStatusUpdateEvent );
@@ -1109,8 +1101,6 @@ void NavigationNAV06_NaviSettingMenu__ReInit( NavigationNAV06_NaviSettingMenu _t
   MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  CoreSystemEventHandler__ReInit( &_this->HomeSettingUpdateSystemEventHandler );
-  CoreSystemEventHandler__ReInit( &_this->OfficeSettingUpdateEventHandler );
   CoreSystemEventHandler__ReInit( &_this->NavigatingStatusUpdateEventHandler );
   CoreSystemEventHandler__ReInit( &_this->ViaPointUpdateEventHandler );
 }
@@ -1122,8 +1112,6 @@ void NavigationNAV06_NaviSettingMenu__Done( NavigationNAV06_NaviSettingMenu _thi
   _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
-  CoreSystemEventHandler__Done( &_this->HomeSettingUpdateSystemEventHandler );
-  CoreSystemEventHandler__Done( &_this->OfficeSettingUpdateEventHandler );
   CoreSystemEventHandler__Done( &_this->NavigatingStatusUpdateEventHandler );
   CoreSystemEventHandler__Done( &_this->ViaPointUpdateEventHandler );
 
@@ -1246,17 +1234,17 @@ void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSetting
 
     case EnumNaviSettingItemGoHome :
     {
-      _this->SelectedItem = EnumNaviSettingItemGoHome;
       DeviceInterfaceNavigationDeviceClass_GoHome( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
       DeviceInterfaceNavigationDeviceClass ));
+      NavigationNAV06_NaviSettingMenu_UpdateHomeSetting( _this );
     }
     break;
 
     case EnumNaviSettingItemGoToWork :
     {
-      _this->SelectedItem = EnumNaviSettingItemGoToWork;
       DeviceInterfaceNavigationDeviceClass_GoOffice( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
       DeviceInterfaceNavigationDeviceClass ));
+      NavigationNAV06_NaviSettingMenu_UpdateOfficeSetting( _this );
     }
     break;
 
@@ -1314,82 +1302,6 @@ XBool NavigationNAV06_NaviSettingMenu_LoadItemEnabled( NavigationNAV06_NaviSetti
   }
 
   return ItemEnabled;
-}
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV06_NaviSettingMenu_OnHomeSettingUpdateSlot( NavigationNAV06_NaviSettingMenu _this, 
-  XObject sender )
-{
-  DeviceInterfaceNaviDataClass NaviData;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
-  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeHOME );
-
-  if ( NaviData != 0 )
-  {
-    if ( NaviData->IsHomeSet && ( _this->SelectedItem == EnumNaviSettingItemGoHome ))
-    {
-      _this->SelectedItem = EnumNaviSettingItemTOTAL;
-      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
-      = EnumHomeTypeNAVI_DEFAULT_VIEW;
-      EwSignal( EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_ReturnToNaviHome ), 
-        ((XObject)_this ));
-    }
-    else
-    {
-      PopPOP03_HomeOfficeSettingError HomeSettingError = EwNewObject( PopPOP03_HomeOfficeSettingError, 
-        0 );
-      HomeSettingError->ReturnToNaviHomeSlot = EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_ReturnToNaviHome );
-      PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( HomeSettingError, EwLoadString( 
-      &StringsPOP03_NO_HOME_LOCATION ));
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)HomeSettingError ), 
-      0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    }
-  }
-  else
-    EwTrace( "%s", EwLoadString( &_Const0017 ));
-}
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV06_NaviSettingMenu_OnOfficeSettingUpdateSlot( NavigationNAV06_NaviSettingMenu _this, 
-  XObject sender )
-{
-  DeviceInterfaceNaviDataClass NaviData;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
-  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeOFFICE );
-
-  if ( NaviData != 0 )
-  {
-    if ( NaviData->IsOfficeSet && ( _this->SelectedItem == EnumNaviSettingItemGoToWork ))
-    {
-      _this->SelectedItem = EnumNaviSettingItemTOTAL;
-      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
-      = EnumHomeTypeNAVI_DEFAULT_VIEW;
-      EwSignal( EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_ReturnToNaviHome ), 
-        ((XObject)_this ));
-    }
-    else
-    {
-      PopPOP03_HomeOfficeSettingError OfficeSettingError = EwNewObject( PopPOP03_HomeOfficeSettingError, 
-        0 );
-      OfficeSettingError->ReturnToNaviHomeSlot = EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_ReturnToNaviHome );
-      PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( OfficeSettingError, EwLoadString( 
-      &StringsPOP03_NO_OFFICE_LOCATION ));
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)OfficeSettingError ), 
-      0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    }
-  }
-  else
-    EwTrace( "%s", EwLoadString( &_Const0018 ));
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -1479,7 +1391,7 @@ void NavigationNAV06_NaviSettingMenu_SetNaviSettingMenuItem( NavigationNAV06_Nav
           }
         }
         else
-          EwTrace( "%s", EwLoadString( &_Const0019 ));
+          EwTrace( "%s", EwLoadString( &_Const0017 ));
       }
       break;
 
@@ -1510,14 +1422,78 @@ void NavigationNAV06_NaviSettingMenu_ReturnToNaviHome( NavigationNAV06_NaviSetti
     DeviceInterfaceNavigationDeviceClass )->CurrentHome );
 }
 
+/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.UpdateHomeSetting()' */
+void NavigationNAV06_NaviSettingMenu_UpdateHomeSetting( NavigationNAV06_NaviSettingMenu _this )
+{
+  DeviceInterfaceNaviDataClass NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( 
+    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), 
+    EnumNaviDataTypeHOME );
+
+  if ( NaviData != 0 )
+  {
+    if ( NaviData->IsHomeSet )
+    {
+      _this->SelectedItem = EnumNaviSettingItemTOTAL;
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+      = EnumHomeTypeNAVI_DEFAULT_VIEW;
+      EwSignal( EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_ReturnToNaviHome ), 
+        ((XObject)_this ));
+    }
+    else
+    {
+      PopPOP03_HomeOfficeSettingError HomeSettingError = EwNewObject( PopPOP03_HomeOfficeSettingError, 
+        0 );
+      HomeSettingError->ReturnToNaviHomeSlot = EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_ReturnToNaviHome );
+      PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( HomeSettingError, EwLoadString( 
+      &StringsPOP03_NO_HOME_LOCATION ));
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)HomeSettingError ), 
+      0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    }
+  }
+  else
+    EwTrace( "%s", EwLoadString( &_Const0018 ));
+}
+
+/* 'C' function for method : 'Navigation::NAV06_NaviSettingMenu.UpdateOfficeSetting()' */
+void NavigationNAV06_NaviSettingMenu_UpdateOfficeSetting( NavigationNAV06_NaviSettingMenu _this )
+{
+  DeviceInterfaceNaviDataClass NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( 
+    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), 
+    EnumNaviDataTypeOFFICE );
+
+  if ( NaviData != 0 )
+  {
+    if ( NaviData->IsOfficeSet )
+    {
+      _this->SelectedItem = EnumNaviSettingItemTOTAL;
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+      = EnumHomeTypeNAVI_DEFAULT_VIEW;
+      EwSignal( EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_ReturnToNaviHome ), 
+        ((XObject)_this ));
+    }
+    else
+    {
+      PopPOP03_HomeOfficeSettingError OfficeSettingError = EwNewObject( PopPOP03_HomeOfficeSettingError, 
+        0 );
+      OfficeSettingError->ReturnToNaviHomeSlot = EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_ReturnToNaviHome );
+      PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( OfficeSettingError, EwLoadString( 
+      &StringsPOP03_NO_OFFICE_LOCATION ));
+      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)OfficeSettingError ), 
+      0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    }
+  }
+  else
+    EwTrace( "%s", EwLoadString( &_Const0019 ));
+}
+
 /* Variants derived from the class : 'Navigation::NAV06_NaviSettingMenu' */
 EW_DEFINE_CLASS_VARIANTS( NavigationNAV06_NaviSettingMenu )
 EW_END_OF_CLASS_VARIANTS( NavigationNAV06_NaviSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV06_NaviSettingMenu' */
-EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, HomeSettingUpdateSystemEventHandler, 
-                 HomeSettingUpdateSystemEventHandler, HomeSettingUpdateSystemEventHandler, 
-                 HomeSettingUpdateSystemEventHandler, SelectedItem, SelectedItem, 
+EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, NavigatingStatusUpdateEventHandler, 
+                 NavigatingStatusUpdateEventHandler, NavigatingStatusUpdateEventHandler, 
+                 NavigatingStatusUpdateEventHandler, SelectedItem, SelectedItem, 
                  "Navigation::NAV06_NaviSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,

@@ -441,8 +441,6 @@ static void navi_home_setting_update
 {
 PRINTF( "%s: Home location : %d\r\n", __FUNCTION__, is_home_set );
 navi_data_obj.is_home_set = is_home_set;
-
-EW_notify_home_setting_update();
 }
 
 /*********************************************************************
@@ -462,8 +460,6 @@ static void navi_office_setting_update
 {
 PRINTF( "%s: Office location : %d\r\n", __FUNCTION__, is_office_set );
 navi_data_obj.is_office_set = is_office_set;
-
-EW_notify_office_setting_update();
 }
 
 /*********************************************************************
