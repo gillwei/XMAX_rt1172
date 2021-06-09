@@ -406,17 +406,16 @@ void client_diag_tx_complete
     uint8 channel_id
     )
 {
-/*
 if( TP_N_OK != result )
     {
     set_client_diag_state( CLIENT_DIAG_STATE_IDLE );
+    client_appl_response_timeout_notify();
     return;
     }
-*/
+
 if( is_client_diag_state( CLIENT_DIAG_STATE_REQUEST ) )
     {
     set_client_diag_state( CLIENT_DIAG_STATE_CONFIRM );
-
     /*when the client success send request message,we start the p2_client timer*/
     g_pclient_timer_start_falg = TRUE;
     set_pclient_timer_vlaue( P_CLIENT_TIME );

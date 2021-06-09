@@ -927,7 +927,7 @@ else
 * @public
 * Function name: client_appl_diagnostic_enable
 * Description  : this function will get whether diagnostic function is enable
-* usage        : called periodly
+* usage        : called periodic
 *********************************************************************************/
 boolean client_appl_diagnostic_enable
     (
@@ -955,7 +955,7 @@ return TRUE;
 * @public
 * Function name: client_appl_is_in_delay
 * Description  : this function will control delay function
-* usage        : called periodly
+* usage        : called periodic
 *********************************************************************************/
 boolean client_appl_is_in_delay
     (
@@ -977,8 +977,8 @@ else
 *
 * @public
 * Function name: client_appl_diagnostic_enable
-* Description  : this function will get whether a next ble command received is enable
-* usage        : called periodly
+* Description  : this function will get whether a next BLE command received is enable
+* usage        : called periodic
 *********************************************************************************/
 boolean client_appl_enable_rx_next_command
     (
@@ -1017,7 +1017,7 @@ return FALSE;
 * @public
 * Function name: client_appl_delay_ydt_online
 * Description  : this function will calculate the time of last ydt request
-* usage        : called periodly
+* usage        : called periodic
 *********************************************************************************/
 void client_appl_delay_ydt_online
     (
@@ -1130,7 +1130,10 @@ void client_appl_response_timeout_notify
     void
     )
 {
-client_process_flow_handler[client_process_flow_state].response_timeout_notify();
+if( client_process_flow_state < PROCESS_FLOW_IDLE )
+    {
+    client_process_flow_handler[client_process_flow_state].response_timeout_notify();
+    }
 }
 
 /*!******************************************************************************
@@ -2771,7 +2774,11 @@ if( PROCESS_RESULT_INIT != read_dtc_infos.process_result )
             if( TRUE == read_dtc_infos.is_cycle_transmission )
                 {
                 client_appl_set_delay_timer( read_dtc_infos.cycle_tarns_interval_time );
-                client_appl_set_current_process_flow_step( PROCESS_FLOW_INIT_RDTCBS );
+                read_dtc_infos.curr_dtc_status_frame = REQ_NO_FRAME;
+                read_dtc_infos.next_req_dtc_status_frame = REQ_ORIGINAL_FRAME;
+                read_dtc_infos.receive_SNS_timer = 0x00;
+                read_dtc_infos.resend_timer = 0x00;
+                read_dtc_infos.process_result = PROCESS_RESULT_INIT;
                 }
             else
                 {
@@ -2817,8 +2824,6 @@ switch( read_dtc_infos.curr_dtc_status_frame )
         /*04 DE: server code*/
         /*23 4E:  diagnostic trouble code*/
         /*A1: status code */
-
-
         if( FALSE == read_dtc_infos.is_storge_init_dtc )
             {
             /*Positive response format*/
@@ -3636,9 +3641,13 @@ if( PROCESS_RESULT_INIT != read_local_monitor_infos.process_result )
             set_client_app_cmd_rsp_state( CMD_RSP_IDLE );
             if( TRUE == read_local_monitor_infos.is_cycle_transmission )
                 {
-
                 client_appl_set_delay_timer( read_local_monitor_infos.cycle_tarns_interval_time );
-                client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
+                read_local_monitor_infos.current_local_data_index = 0x00;
+                read_local_monitor_infos.process_result = PROCESS_RESULT_INIT;
+                read_local_monitor_infos.curr_req_frame = REQ_NO_FRAME;
+                read_local_monitor_infos.next_req_frame = REQ_ORIGINAL_FRAME;
+                read_local_monitor_infos.receive_SNS_timer = 0x00;
+                read_local_monitor_infos.resend_timer = 0x00;
                 }
             else
                 {

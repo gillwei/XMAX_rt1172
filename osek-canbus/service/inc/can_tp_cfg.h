@@ -408,15 +408,14 @@ Transmission timeout for any frame transmitted by a
 sender, measured from request time to transmit complete
 notification, in units of milliseconds.
 ------------------------------------------------------*/
-#define TP_N_As                     (20)
+#define TP_N_As                     (1000)
 
 /*------------------------------------------------------
 Transmission timeout for any frame transmitted by a
 receiver, measured from request time to transmit complete
 notification, in units of milliseconds.
 ------------------------------------------------------*/
-//#define TP_N_Ar                     (100)
-#define TP_N_Ar                     (20)
+#define TP_N_Ar                     (1000)
 
 /*------------------------------------------------------
 Flow control reception timeout for any sender, measured
@@ -424,7 +423,7 @@ from first frame transmit complete notification until
 reception of the corresponding flow control frame, in
 units of milliseconds.
 ------------------------------------------------------*/
-#define TP_N_Bs                     (250)
+#define TP_N_Bs                     (1000)
 //#define TP_N_Bs                     (400)
 /*------------------------------------------------------
 Consecutive frame timeout for any receiver, measured
@@ -432,7 +431,7 @@ from the time that a consecutive frame is received until
 the next expected consecutive frame is received, in
 units of milliseconds.
 ------------------------------------------------------*/
-#define TP_N_Cr                     (250)
+#define TP_N_Cr                     (1000)
 
 /*------------------------------------------------------
 Wait frame transmit threshold ratio for any receiver

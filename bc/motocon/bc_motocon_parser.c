@@ -193,7 +193,7 @@ switch( command_code )
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_INFORMATION_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_INFORMATION_INTERVAL_REQUEST:
         //ret = bc_motocon_parser_protobuf_to_can( command_code, bytes, length );
-        client_ble_cmd_enter_queue( command_code, bytes, length );
+        client_ble_cmd_enter_queue( command_code, length, bytes );
         ret = BC_MOTOCON_PARSE_SUCCESS;
         break;
 
