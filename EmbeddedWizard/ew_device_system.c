@@ -69,10 +69,6 @@
     static int ew_show_burn_in_test_result( void );
 #endif
 
-#ifdef _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_
-    static int ew_qrcode_ready( void );
-#endif
-
 #ifdef _DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest_
     static int ew_notify_inspection_mode_request( void );
 #endif
@@ -88,7 +84,13 @@
 #define EW_STRING_LEN               ( 1024 )
 #define SYSTEM_EVENT_QUEUE_SIZE     ( 32 )
 
-#define UNIT_ID_LEN                 ( 24 )
+#define UNIT_ID_CCUID_IDX           ( 0 )
+#define UNIT_ID_PASSKEY_IDX         ( 16 )
+#define UNIT_ID_DUMMY_IDX           ( 20 )
+#define UNIT_ID_SEGMENT1_READ_OK    ( 1 << 0 )
+#define UNIT_ID_SEGMENT2_READ_OK    ( 1 << 1 )
+#define UNIT_ID_SEGMENT3_READ_OK    ( 1 << 2 )
+#define UNIT_ID_READ_OK             ( 0x7 )
 
 #define FACTORY_TEST_EVENT_DISP_PATTERN         ( 1 << 0 )
 #define FACTORY_TEST_EVENT_DISP_QUIT            ( 1 << 1 )
@@ -138,9 +140,6 @@ static void ew_get_info_from_eeprom( void );
         #ifdef _DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult_
             ew_show_burn_in_test_result,
         #endif
-        #ifdef _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_
-            ew_qrcode_ready,
-        #endif
         #ifdef _DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest_
             ew_notify_inspection_mode_request,
         #endif
@@ -166,18 +165,11 @@ static void ew_get_info_from_eeprom( void );
 
     static int is_esn_read = 0;
     static int is_qrcode_ready = 0;
-    static bool notify_qrcode_ready;
-    static uint8_t  ccuid_variance[CCUID_VARIANCE_LENGTH]; /* alphanumeric */
-    static uint32_t passkey;
-    static uint16_t unit_id_dummy;
     static EnumOperationMode operation_mode = EnumOperationModeNORMAL;
     static EnumOperationMode operation_mode_in_eep = EnumOperationModeNORMAL;
     static bool     is_running_production_test;
     static bool     is_tft_backlight_on;
     static bool     is_op_mode_ready;
-    static bool     is_ccuid_ready;
-    static bool     is_passkey_ready;
-    static bool     is_unit_id_dummy_ready;
     static bool     is_last_page_read;
     static bool     clk_auto_adj_status;
     static uint8_t  clk_auto_adj_status_in_eep = 0;
@@ -185,7 +177,13 @@ static void ew_get_info_from_eeprom( void );
 
 static uint32_t esn;
 
-AT_BOARDSDRAM_SECTION( uint8_t ew_string[EW_STRING_LEN] );
+static uint8_t  unit_id_plaintext[UNIT_ID_LENGTH];
+static uint8_t  unit_id_ciphertext[UNIT_ID_LENGTH];
+static uint8_t  unit_id_read_status;
+static const uint8_t unit_id_decryption_transposition_table[UNIT_ID_LENGTH] =
+    {3, 11, 8, 19, 22, 17, 6, 0, 14, 20, 10, 23, 4, 9, 1, 18, 12, 5, 21, 13, 2, 15, 7, 16};
+
+AT_BOARDSDRAM_SECTION_ALIGN( uint8_t ew_string[EW_STRING_LEN], 32 );
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -476,6 +474,32 @@ return navigation_view_setting;
 /*********************************************************************
 *
 * @private
+* decrypt_with_transposition_cipher
+*
+* Decrypt with transposition cipher.
+*
+* @param ciphertext  Pointer to the ciphertext buffer
+* @param text_length Text length of plaintext and ciphertext
+* @param plaintext   Pointer to the plaintext buffer
+*
+*********************************************************************/
+static void decrypt_with_transposition_cipher
+    (
+    const uint8_t* ciphertext,
+    const uint32_t start_idx,
+    const uint32_t end_idx,
+    uint8_t* plaintext
+    )
+{
+for( int i = start_idx; i <= end_idx; i++ )
+    {
+    plaintext[unit_id_decryption_transposition_table[i]] = ciphertext[i - start_idx];
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * generate_unit_id_qrcode
 *
 * Generate QR code of UNIT ID
@@ -486,29 +510,28 @@ static void generate_unit_id_qrcode
     void
     )
 {
-/* Text of QR code includes
-   1. CCUID:   14 alphanumeric number ( 6 fixed prefix +  8 randomn )
-   2. Passkey: 6  digits (random number from 0 to 9)
-   3. Dummy:   4  digits (random number from 0 to 9) */
-int32_t i = 0;
+bool    is_unit_id_empty = true;
 uint8_t qrcode_text[UNIT_ID_LENGTH + 1];
-uint8_t temp[8];
 
-memcpy( qrcode_text, CCUID_PREFIX, CCUID_PREFIX_LENGTH );
-i = CCUID_PREFIX_LENGTH;
+/* If the unit id is not written in EERPOM, it would be all 0xFF */
+for( int32_t i = 0; i < UNIT_ID_LENGTH; i++ )
+    {
+    if( EEPROM_INVALID_VAL_1_BYTE != unit_id_plaintext[i] )
+        {
+        is_unit_id_empty = false;
+        }
+    }
 
-memcpy( &qrcode_text[i], ccuid_variance, CCUID_VARIANCE_LENGTH );
-i += CCUID_VARIANCE_LENGTH;
-
-snprintf( (char*)temp, 8, "%06d", passkey );
-memcpy( &qrcode_text[i], temp, PASSKEY_LENGTH );
-i += PASSKEY_LENGTH;
-
-snprintf( (char*)temp, 8, "%04d", unit_id_dummy );
-memcpy( &qrcode_text[i], temp, UNIT_ID_DUMMY_LENGTH );
-qrcode_text[UNIT_ID_LENGTH] = '\0';
-
-QR_generate( qrcode_text, UNIT_ID_LENGTH );
+if( !is_unit_id_empty )
+    {
+    memcpy( qrcode_text, unit_id_ciphertext, UNIT_ID_LENGTH );
+    qrcode_text[UNIT_ID_LENGTH] = '\0';
+    QR_generate( qrcode_text, UNIT_ID_LENGTH );
+    }
+else
+    {
+    PRINTF( "empty unit id\r\n" );
+    }
 }
 
 /*********************************************************************
@@ -538,15 +561,15 @@ if( EEPROM_INVALID_VAL_4_BYTE != esn )
 /*********************************************************************
 *
 * @public
-* EW_read_qrcode_ccuid_callback
+* EW_read_unit_id_segment1_callback
 *
-* Callback of reading CCUID from EEPROM
+* Callback of reading UNIT ID from EEPROM
 *
 * @param result True if read success. False if read fail.
-* @param value The pointer to the CCUID variance of uint8_t* type
+* @param value The pointer to the 1-8 digits of unit id
 *
 *********************************************************************/
-void EW_read_qrcode_ccuid_callback
+void EW_read_unit_id_segment1_callback
     (
     bool  result,
     void* value
@@ -554,48 +577,28 @@ void EW_read_qrcode_ccuid_callback
 {
 if( result )
     {
-    memcpy( ccuid_variance, (uint8_t*)value, CCUID_VARIANCE_LENGTH );
-    PRINTF( "rd ccuid %s\r\n", ccuid_variance );
-
-    // set to all zero if ccuid is invalid
-    int  i = 0;
-    bool is_valid = false;
-    for( i = 0; i < CCUID_VARIANCE_LENGTH; i++ )
-        {
-        if( EEPROM_INVALID_VAL_1_BYTE != ccuid_variance[i] )
-            {
-            is_valid = true;
-            break;
-            }
-        }
-    if( !is_valid )
-        {
-        for( i = 0; i < CCUID_VARIANCE_LENGTH; i++ )
-            {
-            ccuid_variance[i] = '0';
-            }
-        }
-
-    is_ccuid_ready = true;
+    unit_id_read_status |= UNIT_ID_SEGMENT1_READ_OK;
+    memcpy( &unit_id_ciphertext[0], (uint8_t*)value, 8 );
+    decrypt_with_transposition_cipher( (uint8_t*)value, 0, 7, unit_id_plaintext );
     }
 else
     {
-    PRINTF( "rd ccuid fail\r\n" );
+    PRINTF( "rd unit id 1 fail\r\n" );
     }
 }
 
 /*********************************************************************
 *
 * @public
-* EW_read_passkey_callback
+* EW_read_unit_id_segment2_callback
 *
-* Callback of reading passkey from EEPROM
+* Callback of reading UNIT ID from EEPROM
 *
 * @param result True if read success. False if read fail.
-* @param value The pointer to the passkey of uint32_t* type
+* @param value The pointer to the 9-16 digits of unit id
 *
 *********************************************************************/
-void EW_read_passkey_callback
+void EW_read_unit_id_segment2_callback
     (
     bool  result,
     void* value
@@ -603,32 +606,28 @@ void EW_read_passkey_callback
 {
 if( result )
     {
-    passkey = *(uint32_t*)value;
-    PRINTF( "rd passkey %u\r\n", passkey );
-    if( EEPROM_INVALID_VAL_4_BYTE == passkey )
-        {
-        passkey = 0;
-        }
-    is_passkey_ready = true;
+    unit_id_read_status |= UNIT_ID_SEGMENT2_READ_OK;
+    memcpy( &unit_id_ciphertext[8], (uint8_t*)value, 8 );
+    decrypt_with_transposition_cipher( (uint8_t*)value, 8, 15, unit_id_plaintext );
     }
 else
     {
-    PRINTF( "rd passkey fail\r\n" );
+    PRINTF( "rd unit id 2 fail\r\n" );
     }
 }
 
 /*********************************************************************
 *
 * @public
-* EW_read_unit_id_dummy_callback
+* EW_read_unit_id_segment3_callback
 *
-* Callback of reading UNIT ID dummy from EEPROM
+* Callback of reading UNIT ID from EEPROM
 *
 * @param result True if read success. False if read fail.
-* @param value The pointer to the QR code dummy of uint16_t* type
+* @param value The pointer to the 17-24 digits of unit id
 *
 *********************************************************************/
-void EW_read_unit_id_dummy_callback
+void EW_read_unit_id_segment3_callback
     (
     bool  result,
     void* value
@@ -636,25 +635,18 @@ void EW_read_unit_id_dummy_callback
 {
 if( result )
     {
-    unit_id_dummy = *(uint16_t*)value;
-    PRINTF( "rd dummy 0x%x\r\n", unit_id_dummy );
-    if( EEPROM_INVALID_VAL_2_BYTE == unit_id_dummy )
-        {
-        unit_id_dummy = 0;
-        }
-    is_unit_id_dummy_ready = true;
+    unit_id_read_status |= UNIT_ID_SEGMENT3_READ_OK;
+    memcpy( &unit_id_ciphertext[16], (uint8_t*)value, 8 );
+    decrypt_with_transposition_cipher( (uint8_t*)value, 16, 23, unit_id_plaintext );
 
-    if( EnumOperationModeFACTORY == operation_mode &&
-        is_ccuid_ready &&
-        is_passkey_ready &&
-        !is_qrcode_ready ) /* QR code could be ready due to the generation triggered by IOP */
+    if( UNIT_ID_READ_OK == unit_id_read_status )
         {
-        generate_unit_id_qrcode();
+        EW_notify_system_event_received( EnumSystemRxEventUNIT_ID_READ_OK );
         }
     }
 else
     {
-    PRINTF( "rd qrcode dummy fail\r\n" );
+    PRINTF( "rd unit id 3 fail\r\n" );
     }
 }
 
@@ -799,12 +791,34 @@ if( pdFALSE == EEPM_get_ESN( &EW_read_esn_callback ) )
 * Get info from EEPROM
 *
 *********************************************************************/
+static void read_unit_id_from_eeprom
+    (
+    void
+    )
+{
+unit_id_read_status = 0;
+
+if( pdFALSE == EEPM_get_qrcode_fused_data_1( &EW_read_unit_id_segment1_callback ) ||
+    pdFALSE == EEPM_get_qrcode_fused_data_2( &EW_read_unit_id_segment2_callback ) ||
+    pdFALSE == EEPM_get_qrcode_fused_data_3( &EW_read_unit_id_segment3_callback ) )
+    {
+    EwPrint( "rd unit id fail\r\n" );
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* ew_get_info_from_eeprom
+*
+* Get info from EEPROM
+*
+*********************************************************************/
 static void ew_get_info_from_eeprom
     (
     void
     )
 {
-#ifdef _DeviceInterfaceSystemDeviceClass_
 if( pdFALSE == EEPM_get_operation_mode( &EW_read_operation_mode_callback ) )
     {
     EwPrint( "get op mode fail\r\n" );
@@ -813,27 +827,17 @@ if( pdFALSE == EEPM_get_ESN( &EW_read_esn_callback ) )
     {
     EwPrint( "get esn fail\r\n" );
     }
-if( pdFALSE == EEPM_get_qrcode_ccuid( &EW_read_qrcode_ccuid_callback ) )
-    {
-    EwPrint( "get ccuid_variance fail\r\n" );
-    }
-if( pdFALSE == EEPM_get_qrcode_passkey( &EW_read_passkey_callback ) )
-    {
-    EwPrint( "get passkey fail\r\n" );
-    }
-if( pdFALSE == EEPM_get_qrcode_dummy( &EW_read_unit_id_dummy_callback ) )
-    {
-    EwPrint( "get dummy fail\r\n" );
-    }
+
+read_unit_id_from_eeprom();
+
 if( pdFALSE == EEPM_get_last_page( &EW_get_last_page_callback ) )
     {
     EwPrint( "get last page err\r\n" );
     }
 if( pdFALSE == EEPM_get_clk_auto_adjustment( &EW_get_clock_auto_adj_callback ) )
     {
-    EwPrint( "get clk auto adjustment err\r\n" );
+    EwPrint( "get clk auto adj err\r\n" );
     }
-#endif
 }
 
 /*********************************************************************
@@ -1016,8 +1020,19 @@ int need_update = 0;
 EnumSystemRxEvent system_rx_event;
 while( pdPASS == xQueueReceive( system_rx_event_queue, &system_rx_event, 0 ) )
     {
-    DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived( device_object, system_rx_event );
-    need_update = 1;
+    switch( system_rx_event )
+        {
+        case EnumSystemRxEventUNIT_ID_UPDATED:
+            read_unit_id_from_eeprom();
+            break;
+        case EnumSystemRxEventUNIT_ID_READ_OK:
+            generate_unit_id_qrcode();
+            break;
+        default:
+            DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived( device_object, system_rx_event );
+            need_update = 1;
+            break;
+        }
     }
 return need_update;
 }
@@ -1199,29 +1214,6 @@ PM_system_reset();
 /*********************************************************************
 *
 * @private
-* ew_request_qrcode
-*
-* Request to generate QR code
-*
-*********************************************************************/
-void ew_request_qrcode
-    (
-    void
-    )
-{
-if( is_qrcode_ready )
-    {
-    EW_notify_qrcode_ready();
-    }
-else
-    {
-    generate_unit_id_qrcode();
-    }
-}
-
-/*********************************************************************
-*
-* @private
 * ew_set_operation_mode
 *
 * Set operation mode
@@ -1348,84 +1340,77 @@ return esn;
 /*********************************************************************
 *
 * @private
-* EW_get_ccuid
+* EW_get_unit_id_ccuid
 *
 * Get CCUID
 *
-* @return CCUID
+* @param Pointer to CCUID
+* @return CCUID valid status
 *
 *********************************************************************/
-uint8_t* EW_get_ccuid
+bool EW_get_unit_id_ccuid
     (
-    void
+    uint8_t* ccuid
     )
 {
-PRINTF( "%s %d\r\n", __FUNCTION__, ccuid_variance );
-return ccuid_variance;
-}
-
-/*********************************************************************
-*
-* @private
-* EW_get_qrcode_dummy
-*
-* Get QR code dummy
-*
-* @return QR code dummy
-*
-*********************************************************************/
-uint16_t EW_get_qrcode_dummy
-    (
-    void
-    )
-{
-PRINTF( "%s %d\r\n", __FUNCTION__, unit_id_dummy );
-return unit_id_dummy;
-}
-
-/*********************************************************************
-*
-* @private
-* EW_get_qrcode_passkey
-*
-* Get QR code passkey
-*
-* @return QR code passkey
-*
-*********************************************************************/
-uint32_t EW_get_qrcode_passkey
-    (
-    void
-    )
-{
-PRINTF( "%s %d\r\n", __FUNCTION__, passkey );
-return passkey;
-}
-
-/*********************************************************************
-*
-* @private
-* ew_qrcode_ready
-*
-* Notify EW GUI that ESN QR code is ready
-*
-*********************************************************************/
-#ifdef _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_
-    static int ew_qrcode_ready
-        (
-        void
-        )
+bool result = false;
+if( UNIT_ID_READ_OK == unit_id_read_status )
     {
-    int need_update = 0;
-    if( notify_qrcode_ready )
-        {
-        notify_qrcode_ready = false;
-        DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( device_object );
-        need_update = 1;
-        }
-    return need_update;
+    ccuid = &unit_id_plaintext[UNIT_ID_CCUID_IDX];
+    result = true;
     }
-#endif
+return result;
+}
+
+/*********************************************************************
+*
+* @private
+* EW_get_unit_id_passkey
+*
+* Get UNIT ID passkey
+*
+* @param Pointer to passkey
+* @return Passkey valid status
+*
+*********************************************************************/
+bool EW_get_unit_id_passkey
+    (
+    uint8_t* passkey
+    )
+{
+bool result = false;
+if( UNIT_ID_READ_OK == unit_id_read_status )
+    {
+    passkey = &unit_id_plaintext[UNIT_ID_PASSKEY_IDX];
+    result = true;
+    }
+return result;
+}
+
+/*********************************************************************
+*
+* @private
+* EW_get_unit_id_dummy
+*
+* Get UNIT ID dummy
+*
+* @param Pointer to dummy
+* @return dummy valid status
+*
+*********************************************************************/
+bool EW_get_unit_id_dummy
+    (
+    uint8_t* dummy
+    )
+{
+bool result = false;
+if( UNIT_ID_READ_OK == unit_id_read_status )
+    {
+    dummy = &unit_id_plaintext[UNIT_ID_DUMMY_IDX];
+    result = true;
+    }
+return result;
+}
 
 /*********************************************************************
 *
@@ -1586,71 +1571,6 @@ void EW_show_burn_in_result
 
 /*********************************************************************
 *
-* @public
-* EW_notify_qrcode_ready
-*
-* Notify Embedded Wizard QR code is ready.
-*
-*********************************************************************/
-void EW_notify_qrcode_ready
-    (
-    void
-    )
-{
-#ifdef _DeviceInterfaceSystemDeviceClass_
-    is_qrcode_ready = 1;
-    notify_qrcode_ready = true;
-    EwBspEventTrigger();
-#endif
-}
-
-/*********************************************************************
-*
-* @public
-* EW_change_unit_id
-*
-* Update UNIT ID
-*
-*********************************************************************/
-void EW_change_unit_id
-    (
-    const uint8_t* new_ccuid_variance,
-    const uint32_t new_passkey,
-    const uint16_t new_dummy
-    )
-{
-memcpy( ccuid_variance, new_ccuid_variance, CCUID_VARIANCE_LENGTH );
-is_ccuid_ready = true;
-
-passkey = new_passkey;
-is_passkey_ready = true;
-
-unit_id_dummy = new_dummy;
-is_unit_id_dummy_ready = true;
-
-generate_unit_id_qrcode();
-}
-
-/*********************************************************************
-*
-* @private
-* ew_is_qrcode_ready
-*
-* Get if QR code is ready
-*
-* @return True if the QR code is ready
-*
-*********************************************************************/
-bool ew_is_qrcode_ready
-    (
-    void
-    )
-{
-return is_qrcode_ready;
-}
-
-/*********************************************************************
-*
 * @private
 * start_opening
 *
@@ -1754,6 +1674,11 @@ void EW_notify_system_event_received
     const EnumSystemRxEvent system_rx_event
     )
 {
+if( EnumSystemRxEventQRCODE_READY == system_rx_event )
+    {
+    is_qrcode_ready = true;
+    }
+
 if( pdTRUE == xQueueSend( system_rx_event_queue, &system_rx_event, 0 ) )
     {
     EwBspEventTrigger();
@@ -1825,6 +1750,9 @@ switch( status_type )
         break;
     case EnumSystemStatusIS_TFT_DERATING_ON:
         status = DISP_is_tft_derating_on();
+        break;
+    case EnumSystemStatusIS_QRCODE_READY:
+        status = is_qrcode_ready;
         break;
     default:
         break;

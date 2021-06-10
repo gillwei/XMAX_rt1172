@@ -32,7 +32,7 @@ void QR_init
 
 void QR_generate
     (
-    const uint8_t* text,
+    uint8_t* text,
     const uint32_t text_length
     );
 

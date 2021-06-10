@@ -55,9 +55,9 @@ void EW_reset_to_factory_default( void );
 void EW_power_update_ignoff_task_status( uint32_t task );
 void EW_notify_system_event_received( const EnumSystemRxEvent system_rx_event );
 
-uint8_t* EW_get_ccuid( void );
-uint16_t EW_get_qrcode_dummy( void );
-uint32_t EW_get_qrcode_passkey( void );
+bool EW_get_unit_id_ccuid( uint8_t* ccuid );
+bool EW_get_unit_id_dummy( uint8_t* dummy );
+bool EW_get_unit_id_passkey( uint8_t* passkey );
 uint32_t EW_get_esn( void );
 
 void EW_notify_navi_map_update( void );
@@ -86,9 +86,6 @@ void EW_notify_btc_pairing_state_changed( const EnumBtcPairingState state );
 void EW_notify_bt_fw_update_status( EnumBtFwStatus status, char* version );
 void EW_notify_ble_pairing_state_changed( const EnumBlePairingState state, const uint32_t param );
 void EW_notify_motocon_event_received( const EnumMotoConRxEvent event );
-
-void EW_notify_qrcode_ready( void );
-void EW_change_unit_id( const uint8_t* new_ccuid_variance, const uint32_t new_passkey, const uint16_t new_dummy );
 
 void EW_notify_dd_mode_state_changed( void );
 void EW_notify_vi_data_received( const EnumVehicleRxType rx_type );

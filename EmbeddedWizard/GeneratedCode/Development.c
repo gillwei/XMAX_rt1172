@@ -140,13 +140,12 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault2[] =
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault3[] =
 {
-  0x000000D6, /* ratio 74.77 % */
+  0x000000BC, /* ratio 68.09 % */
   0xB8002F00, 0x000AE452, 0x00D20039, 0x0CA003A0, 0xD8001000, 0x60030800, 0x0087C2CE,
   0x70044CE0, 0x184621A6, 0x3000F000, 0xC9801232, 0x488B0308, 0x0C9148F1, 0x2D148946,
-  0x91A88432, 0x26874762, 0x88341205, 0x87432150, 0x10008710, 0x1240055A, 0xC6304400,
-  0xC0032000, 0x8634000C, 0xA4500522, 0x3C94CE64, 0x0A045E13, 0x20800A00, 0x0584A600,
-  0x802A84B0, 0x0073182C, 0x06E001C0, 0x6A001B00, 0x60093540, 0x5A83D602, 0x5974627F,
-  0xBF1B4007, 0x047CF200, 0x5B29B6A0, 0x020374BA, 0x00000000
+  0x91A88432, 0x26874762, 0x8834A42B, 0x87432150, 0xBC567F10, 0x000AB108, 0x00920027,
+  0x295182A0, 0x1E009311, 0xB0E95CA4, 0x48A34625, 0xE8853295, 0x94842A14, 0x3CB22243,
+  0xD268F578, 0x3C014DA5, 0x20350A85, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -244,8 +243,8 @@ static const XStringRes _Const005A = { _StringsDefault2, 0x01F9 };
 static const XStringRes _Const005B = { _StringsDefault3, 0x0002 };
 static const XStringRes _Const005C = { _StringsDefault3, 0x0019 };
 static const XStringRes _Const005D = { _StringsDefault3, 0x002A };
-static const XStringRes _Const005E = { _StringsDefault3, 0x0041 };
-static const XStringRes _Const005F = { _StringsDefault3, 0x0058 };
+static const XStringRes _Const005E = { _StringsDefault3, 0x003F };
+static const XStringRes _Const005F = { _StringsDefault3, 0x004E };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.

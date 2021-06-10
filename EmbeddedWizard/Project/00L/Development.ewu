@@ -834,8 +834,8 @@ class DEV_EEPROMTest : Menu::BaseMenuView
   (
     Default[0] = "Write last page 0xFF";
     Default[1] = "Read last page";
-    Default[2] = "Write CCUID 1234CDEF";
-    Default[3] = "Write PASSKEY 987654";
-    Default[4] = "Write dummy 0928";
+    Default[2] = "Write test UNIT ID";
+    Default[3] = "Read UNIT ID";
+    Default[4] = "Clear UNIT ID";
   );
 }

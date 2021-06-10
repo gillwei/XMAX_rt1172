@@ -1258,8 +1258,6 @@ switch( IOPSubId )
         EEPM_set_qrcode_fused_data_1( qrcode_fused_data_1, fused_data_1_write_cb );
         EEPM_set_qrcode_fused_data_2( qrcode_fused_data_2, fused_data_2_write_cb );
         EEPM_set_qrcode_fused_data_3( qrcode_fused_data_3, fused_data_3_write_cb );
-
-        // EW_set_qr_code( &data[0] );
         }
         break;
 
@@ -1872,6 +1870,7 @@ if( status == TRUE )
 if( qrcode_write_status == QRCODE_STATUS_SUCCESS )
     {
     rtn_arry[2] = E_OK;
+    EW_notify_system_event_received( EnumSystemRxEventUNIT_ID_UPDATED );
     }
 packageIopToCanData( &rtn_arry, sizeof( rtn_arry ) );
 }

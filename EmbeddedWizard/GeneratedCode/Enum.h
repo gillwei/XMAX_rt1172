@@ -585,9 +585,9 @@ typedef enum
 {
   EnumEEPROMTestWRITE_LAST_PAGE_FF      = 0,
   EnumEEPROMTestREAD_LAST_PAGE          = 1,
-  EnumEEPROMTestWRITE_CCUID             = 2,
-  EnumEEPROMTestWRITE_PASSKEY           = 3,
-  EnumEEPROMTestWRITE_DUMMY             = 4,
+  EnumEEPROMTestWRITE_TEST_UNIT_ID      = 2,
+  EnumEEPROMTestREAD_UNIT_ID            = 3,
+  EnumEEPROMTestCLEAR_UNIT_ID           = 4,
   EnumEEPROMTestTOTAL                   = 5
 } EnumEEPROMTest;
 
@@ -752,7 +752,9 @@ typedef enum
   EnumSystemRxEventTFT_DERATING_ON      = 7,
   EnumSystemRxEventTFT_DERATING_OFF     = 8,
   EnumSystemRxEventUNIT_ID_UPDATED      = 9,
-  EnumSystemRxEventTOTAL                = 10
+  EnumSystemRxEventUNIT_ID_READ_OK      = 10,
+  EnumSystemRxEventQRCODE_READY         = 11,
+  EnumSystemRxEventTOTAL                = 12
 } EnumSystemRxEvent;
 
 /* User defined enumeration: 'Enum::MotoConTx' */
@@ -809,7 +811,8 @@ typedef enum
   EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MAX = 0,
   EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MIN = 1,
   EnumSystemStatusIS_TFT_DERATING_ON    = 2,
-  EnumSystemStatusTOTAL                 = 3
+  EnumSystemStatusIS_QRCODE_READY       = 3,
+  EnumSystemStatusTOTAL                 = 4
 } EnumSystemStatus;
 
 /* User defined enumeration: 'Enum::NotificationNativeCall' */

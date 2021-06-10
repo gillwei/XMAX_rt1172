@@ -103,11 +103,11 @@ EW_DEFINE_FIELDS( OpenOPN02_FactoryMode, ComponentsBaseComponent )
   EW_PROPERTY( OnFactoryModeFinished, XSlot )
   EW_OBJECT  ( FullBlackBG,     ViewsRectangle )
   EW_OBJECT  ( PressEnterTwiceText, ViewsText )
-  EW_OBJECT  ( QrCodeReadyEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( FactoryModeText, ViewsText )
   EW_OBJECT  ( Divider,         ViewsImage )
   EW_OBJECT  ( WhiteMargin,     ViewsRectangle )
   EW_OBJECT  ( QrCodeImage,     ViewsImage )
+  EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( EnterButtonPressedCount, XInt32 )
 EW_END_OF_FIELDS( OpenOPN02_FactoryMode )
 
@@ -189,8 +189,11 @@ void OpenOPN02_FactoryMode_OnLongHomeKeyActivated( OpenOPN02_FactoryMode _this )
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void OpenOPN02_FactoryMode_OnQrCodeReadySlot( OpenOPN02_FactoryMode _this, XObject 
+void OpenOPN02_FactoryMode_OnSystemEventReceived( OpenOPN02_FactoryMode _this, XObject 
   sender );
+
+/* 'C' function for method : 'Open::OPN02_FactoryMode.DisplayQRCode()' */
+void OpenOPN02_FactoryMode_DisplayQRCode( OpenOPN02_FactoryMode _this );
 
 #ifdef __cplusplus
   }

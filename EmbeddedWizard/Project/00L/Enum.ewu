@@ -1260,13 +1260,13 @@ enum EEPROMTest
   item READ_LAST_PAGE;
 
   $rect <10,110,220,150>
-  item WRITE_CCUID;
+  item WRITE_TEST_UNIT_ID;
 
   $rect <10,160,220,200>
-  item WRITE_PASSKEY;
+  item READ_UNIT_ID;
 
   $rect <10,210,220,250>
-  item WRITE_DUMMY;
+  item CLEAR_UNIT_ID;
 
   $rect <10,260,220,300>
   item TOTAL;
@@ -1641,6 +1641,12 @@ enum SystemRxEvent
   item UNIT_ID_UPDATED;
 
   $rect <10,510,230,550>
+  item UNIT_ID_READ_OK;
+
+  $rect <10,560,230,600>
+  item QRCODE_READY;
+
+  $rect <10,610,230,650>
   item TOTAL;
 }
 
@@ -1770,7 +1776,10 @@ enum SystemStatus
   $rect <10,110,290,150>
   item IS_TFT_DERATING_ON;
 
-  $rect <10,160,230,200>
+  $rect <10,160,290,200>
+  item IS_QRCODE_READY;
+
+  $rect <10,210,230,250>
   item TOTAL;
 }
 

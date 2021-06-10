@@ -103,7 +103,6 @@
 
 /* Deklaration of class : 'Settings::SET30_QRCode' */
 EW_DEFINE_FIELDS( SettingsSET30_QRCode, ComponentsBaseMainBG )
-  EW_OBJECT  ( QrCodeReadyEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( WhiteMargin,     ViewsRectangle )
   EW_OBJECT  ( QrCodeImage,     ViewsImage )
   EW_OBJECT  ( PushButton,      MenuPushButton )
@@ -184,11 +183,6 @@ void SettingsSET30_QRCode_OnShortHomeKeyActivated( SettingsSET30_QRCode _this );
 
 /* 'C' function for method : 'Settings::SET30_QRCode.OnLongHomeKeyActivated()' */
 void SettingsSET30_QRCode_OnLongHomeKeyActivated( SettingsSET30_QRCode _this );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void SettingsSET30_QRCode_OnQrCodeReadySlot( SettingsSET30_QRCode _this, XObject 
-  sender );
 
 /* 'C' function for method : 'Settings::SET30_QRCode.OnOkSelectedSlot()' */
 void SettingsSET30_QRCode_OnOkSelectedSlot( SettingsSET30_QRCode _this, XObject 

@@ -362,15 +362,6 @@ void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this )
   DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady((DeviceInterfaceSystemDeviceClass)_this );
 }
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetQrCode()' */
-void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClass _this )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  ew_request_qrcode();
-}
-
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetLocalTime()' */
 DeviceInterfaceRtcTime DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this )
 {
@@ -747,19 +738,6 @@ void DeviceInterfaceSystemDeviceClass_SetMagicKeyEnabled( DeviceInterfaceSystemD
   EW_UNUSED_ARG( _this );
 
   VI_key_set_magic_key_enabled( aEnabled );
-}
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsQrCodeReady()' */
-XBool DeviceInterfaceSystemDeviceClass_IsQrCodeReady( DeviceInterfaceSystemDeviceClass _this )
-{
-  XBool IsQrCodeReady;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  IsQrCodeReady = 0;
-  IsQrCodeReady = ew_is_qrcode_ready();
-  return IsQrCodeReady;
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.NotifyTimeRequest()' */

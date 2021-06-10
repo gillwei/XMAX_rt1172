@@ -179,9 +179,6 @@ void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this );
 /* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyQrCodeReady(). */
 #define _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetQrCode()' */
-void DeviceInterfaceSystemDeviceClass_GetQrCode( DeviceInterfaceSystemDeviceClass _this );
-
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetLocalTime()' */
 DeviceInterfaceRtcTime DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this );
 
@@ -263,9 +260,6 @@ void DeviceInterfaceSystemDeviceClass_SetKeyTriggerMode( DeviceInterfaceSystemDe
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetMagicKeyEnabled()' */
 void DeviceInterfaceSystemDeviceClass_SetMagicKeyEnabled( DeviceInterfaceSystemDeviceClass _this, 
   XBool aEnabled );
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsQrCodeReady()' */
-XBool DeviceInterfaceSystemDeviceClass_IsQrCodeReady( DeviceInterfaceSystemDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.NotifyTimeRequest()' */
 void DeviceInterfaceSystemDeviceClass_NotifyTimeRequest( DeviceInterfaceSystemDeviceClass _this );

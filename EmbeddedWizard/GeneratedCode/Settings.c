@@ -3602,7 +3602,6 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
   _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET30_QRCode );
 
   /* ... then construct all embedded objects */
-  CoreSystemEventHandler__Init( &_this->QrCodeReadyEventHandler, &_this->_.XObject, 0 );
   ViewsRectangle__Init( &_this->WhiteMargin, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->QrCodeImage, &_this->_.XObject, 0 );
   MenuPushButton__Init( &_this->PushButton, &_this->_.XObject, 0 );
@@ -3631,9 +3630,6 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
   CoreGroup__Add( _this, ((CoreView)&_this->BrightnessUpButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BrightnessDownButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BrightnessIcon ), 0 );
-  _this->QrCodeReadyEventHandler.OnEvent = EwNewSlot( _this, SettingsSET30_QRCode_OnQrCodeReadySlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->QrCodeReadyEventHandler, &EwGetAutoObject( 
-  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->QrCodeSystemEvent );
   _this->PushButton.OnActivate = EwNewSlot( _this, SettingsSET30_QRCode_OnOkSelectedSlot );
   TelephoneImageButton_OnSetForegroundBmp( &_this->BrightnessUpButton, EwLoadResource( 
   &ResourcePhoneVolumeUp, ResourcesBitmap ));
@@ -3653,7 +3649,6 @@ void SettingsSET30_QRCode__ReInit( SettingsSET30_QRCode _this )
   ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  CoreSystemEventHandler__ReInit( &_this->QrCodeReadyEventHandler );
   ViewsRectangle__ReInit( &_this->WhiteMargin );
   ViewsImage__ReInit( &_this->QrCodeImage );
   MenuPushButton__ReInit( &_this->PushButton );
@@ -3669,7 +3664,6 @@ void SettingsSET30_QRCode__Done( SettingsSET30_QRCode _this )
   _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
-  CoreSystemEventHandler__Done( &_this->QrCodeReadyEventHandler );
   ViewsRectangle__Done( &_this->WhiteMargin );
   ViewsImage__Done( &_this->QrCodeImage );
   MenuPushButton__Done( &_this->PushButton );
@@ -3689,8 +3683,18 @@ void SettingsSET30_QRCode_Init( SettingsSET30_QRCode _this, XHandle aArg )
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  DeviceInterfaceSystemDeviceClass_GetQrCode( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-  DeviceInterfaceSystemDeviceClass ));
+  if ( !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+      DeviceInterfaceSystemDeviceClass ), EnumSystemStatusIS_QRCODE_READY ))
+  {
+    EwTrace( "%s", EwLoadString( &_Const0030 ));
+    ViewsImage_OnSetBitmap( &_this->QrCodeImage, ((ResourcesBitmap)EwGetAutoObject( 
+    &ResourceQrCodeExternBitmap, ResourcesExternBitmap )));
+    ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
+    ResourcesExternBitmap ), EwLoadString( &ResourceEXTERN_BMP_QRCODE ));
+    ResourcesExternBitmap_Reload( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
+    ResourcesExternBitmap ));
+  }
+
   DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdENABLE_TFT_BRIGHTNESS_MANUAL_ADJ );
   EwPostSignal( EwNewSlot( _this, SettingsSET30_QRCode_UpdateBrightnessButtonEnabled ), 
@@ -3733,22 +3737,6 @@ void SettingsSET30_QRCode_OnLongHomeKeyActivated( SettingsSET30_QRCode _this )
   ComponentsBaseComponent_OnLongHomeKeyActivated((ComponentsBaseComponent)_this );
 }
 
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void SettingsSET30_QRCode_OnQrCodeReadySlot( SettingsSET30_QRCode _this, XObject 
-  sender )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  EwTrace( "%s", EwLoadString( &_Const0030 ));
-  ViewsImage_OnSetBitmap( &_this->QrCodeImage, ((ResourcesBitmap)EwGetAutoObject( 
-  &ResourceQrCodeExternBitmap, ResourcesExternBitmap )));
-  ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
-  ResourcesExternBitmap ), EwLoadString( &ResourceEXTERN_BMP_QRCODE ));
-  ResourcesExternBitmap_Reload( EwGetAutoObject( &ResourceQrCodeExternBitmap, ResourcesExternBitmap ));
-}
-
 /* 'C' function for method : 'Settings::SET30_QRCode.OnOkSelectedSlot()' */
 void SettingsSET30_QRCode_OnOkSelectedSlot( SettingsSET30_QRCode _this, XObject 
   sender )
@@ -3786,9 +3774,8 @@ EW_DEFINE_CLASS_VARIANTS( SettingsSET30_QRCode )
 EW_END_OF_CLASS_VARIANTS( SettingsSET30_QRCode )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET30_QRCode' */
-EW_DEFINE_CLASS( SettingsSET30_QRCode, ComponentsBaseMainBG, QrCodeReadyEventHandler, 
-                 QrCodeReadyEventHandler, QrCodeReadyEventHandler, QrCodeReadyEventHandler, 
-                 _.VMT, _.VMT, "Settings::SET30_QRCode" )
+EW_DEFINE_CLASS( SettingsSET30_QRCode, ComponentsBaseMainBG, WhiteMargin, WhiteMargin, 
+                 WhiteMargin, WhiteMargin, _.VMT, _.VMT, "Settings::SET30_QRCode" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

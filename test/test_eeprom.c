@@ -98,6 +98,9 @@
 *
 * test eeprom write callback function
 *
+* @param status Write status
+* @param data Pointer to read back data
+*
 *********************************************************************/
 static void eepm_test_write_cb
     (
@@ -134,6 +137,72 @@ PRINTF( "rd %d 0x%x\r\n", status, *(uint8_t*)data );
 
 /*********************************************************************
 *
+* @private
+* write_test_unit_id
+*
+* Write test UNIT ID
+*
+*********************************************************************/
+static void write_test_unit_id
+    (
+    void
+    )
+{
+uint8_t unit_id[24] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+                       'A', 'B', 'C', 'D', 'E', 'F', '2', '0', '2', '1',
+                       '0', '6', '1', '7'};
+EEPM_set_qrcode_fused_data_1( &unit_id[0],  eepm_test_write_cb );
+EEPM_set_qrcode_fused_data_2( &unit_id[8],  eepm_test_write_cb );
+EEPM_set_qrcode_fused_data_3( &unit_id[16], eepm_test_write_cb );
+}
+
+/*********************************************************************
+*
+* @public
+* TEST_read_unit_id_callback
+*
+* Callback of read unit id
+*
+* @param result True if read success. False if read fail.
+* @param value The pointer to the 1-8 digits of unit id
+*
+*********************************************************************/
+void TEST_read_unit_id_callback
+    (
+    bool  result,
+    void* value
+    )
+{
+uint8_t* unit_id = (uint8_t*)value;
+PRINTF( "read unit id: %d\r\n0x", result );
+for( int32_t i = 0; i < QRCODE_FUSED_DATA_LENGTH; i++ )
+    {
+    PRINTF( "%02x ", unit_id[i] );
+    }
+PRINTF( "\r\n" );
+}
+
+/*********************************************************************
+*
+* @private
+* clear_unit_id
+*
+* Clear unit id by writing 0xFF
+*
+*********************************************************************/
+static void clear_unit_id
+    (
+    void
+    )
+{
+uint8_t empty_unit_id[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF,0xFF, 0xFF, 0xFF};
+EEPM_set_qrcode_fused_data_1( empty_unit_id, eepm_test_write_cb );
+EEPM_set_qrcode_fused_data_2( empty_unit_id, eepm_test_write_cb );
+EEPM_set_qrcode_fused_data_3( empty_unit_id, eepm_test_write_cb );
+}
+
+/*********************************************************************
+*
 * @public
 * TEST_eeprom
 *
@@ -155,14 +224,16 @@ switch( test_item )
     case EnumEEPROMTestREAD_LAST_PAGE:
         EEPM_get_last_page( &read_1byte_cb );
         break;
-    case EnumEEPROMTestWRITE_CCUID: /* 8 alphanumeric (0-9, A-F) */
-        EEPM_set_qrcode_ccuid( (uint8_t*)"1234CDEF", eepm_test_write_cb );
+    case EnumEEPROMTestWRITE_TEST_UNIT_ID:
+        write_test_unit_id();
         break;
-    case EnumEEPROMTestWRITE_PASSKEY: /* 6 digits */
-        EEPM_set_qrcode_passkey( 987654, eepm_test_write_cb );
+    case EnumEEPROMTestREAD_UNIT_ID:
+        EEPM_get_qrcode_fused_data_1( &TEST_read_unit_id_callback );
+        EEPM_get_qrcode_fused_data_2( &TEST_read_unit_id_callback );
+        EEPM_get_qrcode_fused_data_3( &TEST_read_unit_id_callback );
         break;
-    case EnumEEPROMTestWRITE_DUMMY: /* 4 digits */
-        EEPM_set_qrcode_dummy( 928, eepm_test_write_cb );
+    case EnumEEPROMTestCLEAR_UNIT_ID:
+        clear_unit_id();
         break;
     default:
         break;

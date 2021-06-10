@@ -28,6 +28,7 @@
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceSystemData.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_OpenOPN01_BootupAnimation.h"
 #include "_OpenOPN02_FactoryMode.h"
@@ -48,10 +49,9 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000058, /* ratio 90.91 % */
+  0x0000002E, /* ratio 104.35 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0xA0002780, 0x00027000, 0x00188006,
-  0x68240A32, 0x8642A110, 0xA44A210E, 0x46465168, 0x16061000, 0x0A308881, 0x86003900,
-  0x80037800, 0x0032800C, 0x1004DCA4, 0x3C8026A6, 0x04068327, 0x00000000
+  0x58182232, 0x8A44A204, 0x1C646516, 0x00203199, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -65,7 +65,6 @@ static const XRect _Const0006 = {{ 10, 2 }, { 470, 40 }};
 static const XRect _Const0007 = {{ 0, 44 }, { 480, 46 }};
 static const XRect _Const0008 = {{ 174, 71 }, { 306, 203 }};
 static const XStringRes _Const0009 = { _StringsDefault0, 0x000F };
-static const XStringRes _Const000A = { _StringsDefault0, 0x001C };
 
 /* Initializer for the class 'Open::OPN01_BootupAnimation' */
 void OpenOPN01_BootupAnimation__Init( OpenOPN01_BootupAnimation _this, XObject aLink, XHandle aArg )
@@ -254,11 +253,11 @@ void OpenOPN02_FactoryMode__Init( OpenOPN02_FactoryMode _this, XObject aLink, XH
   /* ... then construct all embedded objects */
   ViewsRectangle__Init( &_this->FullBlackBG, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->PressEnterTwiceText, &_this->_.XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->QrCodeReadyEventHandler, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->FactoryModeText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
   ViewsRectangle__Init( &_this->WhiteMargin, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->QrCodeImage, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ReceivedSystemEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( OpenOPN02_FactoryMode );
@@ -288,13 +287,13 @@ void OpenOPN02_FactoryMode__Init( OpenOPN02_FactoryMode _this, XObject aLink, XH
   CoreGroup__Add( _this, ((CoreView)&_this->QrCodeImage ), 0 );
   ViewsText_OnSetFont( &_this->PressEnterTwiceText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
-  _this->QrCodeReadyEventHandler.OnEvent = EwNewSlot( _this, OpenOPN02_FactoryMode_OnQrCodeReadySlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->QrCodeReadyEventHandler, &EwGetAutoObject( 
-  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->QrCodeSystemEvent );
   ViewsText_OnSetFont( &_this->FactoryModeText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
+  _this->ReceivedSystemEventHandler.OnEvent = EwNewSlot( _this, OpenOPN02_FactoryMode_OnSystemEventReceived );
+  CoreSystemEventHandler_OnSetEvent( &_this->ReceivedSystemEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->SystemDataReceivedSystemEvent );
 
   /* Call the user defined constructor */
   OpenOPN02_FactoryMode_Init( _this, aArg );
@@ -309,11 +308,11 @@ void OpenOPN02_FactoryMode__ReInit( OpenOPN02_FactoryMode _this )
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->FullBlackBG );
   ViewsText__ReInit( &_this->PressEnterTwiceText );
-  CoreSystemEventHandler__ReInit( &_this->QrCodeReadyEventHandler );
   ViewsText__ReInit( &_this->FactoryModeText );
   ViewsImage__ReInit( &_this->Divider );
   ViewsRectangle__ReInit( &_this->WhiteMargin );
   ViewsImage__ReInit( &_this->QrCodeImage );
+  CoreSystemEventHandler__ReInit( &_this->ReceivedSystemEventHandler );
 }
 
 /* Finalizer method for the class 'Open::OPN02_FactoryMode' */
@@ -325,11 +324,11 @@ void OpenOPN02_FactoryMode__Done( OpenOPN02_FactoryMode _this )
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->FullBlackBG );
   ViewsText__Done( &_this->PressEnterTwiceText );
-  CoreSystemEventHandler__Done( &_this->QrCodeReadyEventHandler );
   ViewsText__Done( &_this->FactoryModeText );
   ViewsImage__Done( &_this->Divider );
   ViewsRectangle__Done( &_this->WhiteMargin );
   ViewsImage__Done( &_this->QrCodeImage );
+  CoreSystemEventHandler__Done( &_this->ReceivedSystemEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_.Super );
@@ -345,9 +344,9 @@ void OpenOPN02_FactoryMode_Init( OpenOPN02_FactoryMode _this, XHandle aArg )
 
   EwTrace( "%s", EwLoadString( &_Const0009 ));
 
-  if ( DeviceInterfaceSystemDeviceClass_IsQrCodeReady( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-      DeviceInterfaceSystemDeviceClass )))
-    EwPostSignal( EwNewSlot( _this, OpenOPN02_FactoryMode_OnQrCodeReadySlot ), ((XObject)_this ));
+  if ( !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+      DeviceInterfaceSystemDeviceClass ), EnumSystemStatusIS_QRCODE_READY ))
+    OpenOPN02_FactoryMode_DisplayQRCode( _this );
 }
 
 /* 'C' function for method : 'Open::OPN02_FactoryMode.OnShortDownKeyActivated()' */
@@ -389,13 +388,30 @@ void OpenOPN02_FactoryMode_OnLongHomeKeyActivated( OpenOPN02_FactoryMode _this )
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void OpenOPN02_FactoryMode_OnQrCodeReadySlot( OpenOPN02_FactoryMode _this, XObject 
+void OpenOPN02_FactoryMode_OnSystemEventReceived( OpenOPN02_FactoryMode _this, XObject 
   sender )
 {
+  DeviceInterfaceSystemData SystemData;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s", EwLoadString( &_Const000A ));
+  SystemData = EwCastObject( _this->ReceivedSystemEventHandler.Context, DeviceInterfaceSystemData );
+
+  if ( SystemData != 0 )
+    switch ( SystemData->RxEvent )
+    {
+      case EnumSystemRxEventQRCODE_READY :
+        OpenOPN02_FactoryMode_DisplayQRCode( _this );
+      break;
+
+      default :; 
+    }
+}
+
+/* 'C' function for method : 'Open::OPN02_FactoryMode.DisplayQRCode()' */
+void OpenOPN02_FactoryMode_DisplayQRCode( OpenOPN02_FactoryMode _this )
+{
   ViewsImage_OnSetBitmap( &_this->QrCodeImage, ((ResourcesBitmap)EwGetAutoObject( 
   &ResourceQrCodeExternBitmap, ResourcesExternBitmap )));
   ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceQrCodeExternBitmap, 

@@ -1629,10 +1629,19 @@ $rect <600,110,800,150>
 $output false
 class SET30_QRCode : Components::BaseMainBG
 {
-  $rect <10,340,210,380>
+  $rect <10,290,210,330>
   inherited method Init()
   {
-    DeviceInterface::SystemDevice.GetQrCode();
+    $if !$prototyper
+      if( DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.IS_QRCODE_READY ) )
+      {
+        trace "OnQrCodeReady";
+        QrCodeImage.Bitmap = Resource::QrCodeExternBitmap;
+        Resource::QrCodeExternBitmap.Name = Resource::EXTERN_BMP_QRCODE;
+        Resource::QrCodeExternBitmap.Reload();
+      }
+    $endif
+
     DeviceInterface::SystemDevice.SendSystemCommand( Enum::SystemTxCmd.ENABLE_TFT_BRIGHTNESS_MANUAL_ADJ );
     postsignal UpdateBrightnessButtonEnabled;
   }
@@ -1667,28 +1676,8 @@ class SET30_QRCode : Components::BaseMainBG
     super();
   }
 
-  $rect <10,290,210,330>
+  $rect <10,340,210,380>
   inherited property DDModeEnabled = true;
-
-  $rect <550,70,790,110>
-  object Core::SystemEventHandler QrCodeReadyEventHandler
-  {
-    preset OnEvent = OnQrCodeReadySlot;
-    preset Event = DeviceInterface::SystemDevice.QrCodeSystemEvent;
-  }
-
-  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
-  // receives an event.
-  $rect <550,120,790,160>
-  slot OnQrCodeReadySlot
-  {
-    $if !$prototyper
-      trace "OnQrCodeReady";
-      QrCodeImage.Bitmap = Resource::QrCodeExternBitmap;
-      Resource::QrCodeExternBitmap.Name = Resource::EXTERN_BMP_QRCODE;
-      Resource::QrCodeExternBitmap.Reload();
-    $endif
-  }
 
   $rect <20,20,160,60>
   object Views::Rectangle WhiteMargin
