@@ -7,3 +7,5 @@ ncscope.out
 *.bak
 *.launch
 *.swp
+bat/boot_image.bin
+bat/boot_image.srec

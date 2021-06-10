@@ -53,7 +53,13 @@ cd /d %CURRENT_PATH%\bat
 echo Merge BT F/W and MCU F/W within one Merged File...
 if "%BT_ADDRESS%" NEQ "" (
     if "%BT_VERSION%" NEQ "" (
-        srec_cat.exe ..\submodule\rt1172_bootloader\Release\IXWW22_BLD.srec -M ..\Release\LinkCard-RT1172.srec -M -GEN %BT_ADDRESS% %BT_VERSION_END% -CONSTant_Big_Endian %BT_VERSION% 2 ..\submodule\cyw89820\Release_FW\BT_mdflash.bin -Binary -offset %BT_FIRMWARE_ADDRESS% SYS_A_VALIDITY.srec -M -O boot_image.srec -M -header=boot_image
+        REM Merge the APP and BT firmware firstly and fill the data gap, the merged file will be used for OTA file generation(For development ECU that no signature and encryption are used)
+        srec_cat.exe ..\Release\LinkCard-RT1172.srec -M -GEN %BT_ADDRESS% %BT_VERSION_END% -CONSTant_Big_Endian %BT_VERSION% 2 ..\submodule\cyw89820\Release_FW\BT_mdflash.bin -Binary -offset %BT_FIRMWARE_ADDRESS% -O ..\Release\LinkCard-RT1172_BT.srec -M -header=LinkCard-RT1172_BT -line_length=46 -disable=data-count
+        srec_cat.exe ..\Release\LinkCard-RT1172_BT.srec -fill 0x00 0x30202000 %BT_FIRMWARE_ADDRESS% -O ..\Release\LinkCard-RT1172_BT.srec -M -header=LinkCard-RT1172_BT -line_length=46 -disable=data-count
+        python3 IXWW22_OTA_FILE_GEN.py ..\Release\LinkCard-RT1172_BT.srec ..\Release\BKA_UPDATE_FILE.bin
+
+        REM Merge Bootloader+APP+BT firmware+VALIDITY for development ECU that no signature and encryption are used
+        srec_cat.exe ..\submodule\rt1172_bootloader\Release\IXWW22_BLD.srec -M ..\Release\LinkCard-RT1172.srec -M -GEN %BT_ADDRESS% %BT_VERSION_END% -CONSTant_Big_Endian %BT_VERSION% 2 ..\submodule\cyw89820\Release_FW\BT_mdflash.bin -Binary -offset %BT_FIRMWARE_ADDRESS% SYS_A_VALIDITY.srec -M -O boot_image.srec -M -header=boot_image -line_length=46 -disable=data-count
         srec_cat.exe boot_image.srec -M -offset - 0x30000000 -O boot_image.bin -Binary
     )
 )
