@@ -206,20 +206,20 @@ static bool is_bt_enable = false;          /* false: BT is disable.    true: BT 
 static bool is_bt_discoverable = false;    /* false: not discoverable, true: discoverable */
 static bool is_bt_autoconnectable = false; /* false: not auto-connect, true: auto-connect */
 static int  paired_device_num = 0;
-static uint8_t local_device_name[BT_DEVICE_NAME_LEN];       /* local device name */
-static uint8_t local_device_address[BT_DEVICE_ADDRESS_LEN]; /* local MAC address */
+static uint8_t local_device_name[BT_DEVICE_NAME_LEN] = { 0 };       /* local device name */
+static uint8_t local_device_address[BT_DEVICE_ADDRESS_LEN] = { 0 }; /* local MAC address */
 
-static bt_device_info paired_device_list[BT_MAX_PAIRED_DEVICE_NUM];
-static uint8_t bt_sw_version[BT_SW_VERSION_LEN];                /* BT SW Major version and Minor version  */
-static uint8_t connect_request_bd_addrress_rev[BT_DEVICE_NAME_LEN]; /* connect command device address */
+static bt_device_info paired_device_list[BT_MAX_PAIRED_DEVICE_NUM] = { 0 };
+static uint8_t bt_sw_version[BT_SW_VERSION_LEN] = { 0 };                /* BT SW Major version and Minor version  */
+static uint8_t connect_request_bd_addrress_rev[BT_DEVICE_NAME_LEN] = { 0 }; /* connect command device address */
 static uint8_t autoconnect_pair_device_index = 0;               /* Record current auto connect paired device index */
 
 static bt_connection_info_update_cb bt_conn_info_cb_array[BT_INFO_CB_MAX_NUM]; /* bt connection info callback array */
-static uint32_t                     ble_pairing_fail_count;
+static uint32_t                     ble_pairing_fail_count = 0;
 static btm_btc_connection_status_t  btm_btc_connection_status;
 static TimerHandle_t                timeout_timer_handle;
 static btm_timeout_type_t           btm_timeout_type;
-static uint16_t                     btm_timeout_count;
+static uint16_t                     btm_timeout_count = 0;
 static btm_pairing_state_t          btm_pairing_state = BTM_PAIRING_STATE_NON; /* BTC and BLE pairing event state  */
 static btm_discoverable_state_t     btm_discoverable_state = BTM_DISCOVERABLE_STATE_NON; /* BTC and BLE pairing event state  */
 static uint8_t                      connect_device_unpair_idx = 0; /* Used for the Authentication error return, the connect device is now unpaired */
@@ -2465,16 +2465,11 @@ for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
     {
     memset( &(paired_device_list[i]), 0, sizeof( bt_device_info ) );
     }
-memset( connect_request_bd_addrress_rev, 0, BT_DEVICE_NAME_LEN );
-memset( bt_sw_version, 0, BT_SW_VERSION_LEN );
-memset( local_device_name, 0, BT_DEVICE_NAME_LEN );
-btm_btc_connection_status.BTC_is_connected = false;
-btm_btc_connection_status.current_connection_handle = 0;
 
-ble_pairing_fail_count = 0;
+memset( &(btm_btc_connection_status), 0, sizeof( btm_btc_connection_status_t ) );
+
 create_btm_timeout_timer();
 
-autoconnect_pair_device_index = 0;
 create_autoconnect_timer();
 
 create_task();
