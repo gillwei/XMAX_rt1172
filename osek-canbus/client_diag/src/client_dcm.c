@@ -619,10 +619,11 @@ client_ReturnType client_dcm_req_tester_persent
     uint8 channel_id
     )
 {
+uint8 function_address_channel = TP_CAN0_NUM_CHANNELS - 1;
 uint8 tester_persent_req_message[DCM_3Eh_REQ_DATA_LEN] = {0};
 tester_persent_req_message[BYTE_NUM_0] = DCM_TESTER_PERSNET_SERVICE_ID;
 tester_persent_req_message[BYTE_NUM_1] = DCM_3Eh_NO_RESPONSE;
-tp_transmit_direct( tester_persent_req_message, DCM_3Eh_REQ_DATA_LEN, channel_id, CAN_CONTROLLER_2 );
+tp_transmit_direct( tester_persent_req_message, DCM_3Eh_REQ_DATA_LEN, function_address_channel, CAN_CONTROLLER_2 );
 return E_OK;
 }
 
