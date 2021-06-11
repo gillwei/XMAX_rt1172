@@ -123,6 +123,8 @@ typedef struct
     uint8_t   device_address[BT_DEVICE_ADDRESS_LEN];  /**< the Bluetooth device address */
     bool      is_connected;                           /**< is connected flag */
     uint16_t  connection_handle;                      /**< connection handle */
+    bool      y_app_is_connected;                     /**< Y-connect BTC is connected flag */
+    uint16_t  y_app_connection_handle;                /**< Y-connect BTC connection handle */
     bt_connection_path_type  connection_path_type;    /**< connection profile type */
     } bt_device_info;
 
@@ -130,6 +132,8 @@ typedef struct BTM_BTC_CONNECTION_STATUS
     {
     uint16_t  current_connection_handle;              /**< BTC connection handle  */
     bool      BTC_is_connected;                       /**< BTC is connected flag */
+    uint16_t  y_app_connection_handle;        /**< BTC Y-APP connection handle  */
+    bool      BTC_y_app_is_connected;                 /**< BTC Y-APP is connected flag */
     } btm_btc_connection_status_t;
 
 typedef struct
@@ -199,20 +203,20 @@ const uint8_t bd_addr_default[BT_DEVICE_ADDRESS_LEN] = { 0xff, 0xff, 0xff, 0xff,
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
-static EventGroupHandle_t event_group   = NULL;
-static QueueHandle_t      message_queue = NULL;
+static EventGroupHandle_t           event_group   = NULL;
+static QueueHandle_t                message_queue = NULL;
 
-static bool is_bt_enable = false;          /* false: BT is disable.    true: BT is enable */
-static bool is_bt_discoverable = false;    /* false: not discoverable, true: discoverable */
-static bool is_bt_autoconnectable = false; /* false: not auto-connect, true: auto-connect */
-static int  paired_device_num = 0;
-static uint8_t local_device_name[BT_DEVICE_NAME_LEN] = { 0 };       /* local device name */
-static uint8_t local_device_address[BT_DEVICE_ADDRESS_LEN] = { 0 }; /* local MAC address */
+static bool                         is_bt_enable = false;          /* false: BT is disable.    true: BT is enable */
+static bool                         is_bt_discoverable = false;    /* false: not discoverable, true: discoverable */
+static bool                         is_bt_autoconnectable = false; /* false: not auto-connect, true: auto-connect */
+static int                          paired_device_num = 0;
+static uint8_t                      local_device_name[BT_DEVICE_NAME_LEN] = { 0 };       /* local device name */
+static uint8_t                      local_device_address[BT_DEVICE_ADDRESS_LEN] = { 0 }; /* local MAC address */
 
-static bt_device_info paired_device_list[BT_MAX_PAIRED_DEVICE_NUM] = { 0 };
-static uint8_t bt_sw_version[BT_SW_VERSION_LEN] = { 0 };                /* BT SW Major version and Minor version  */
-static uint8_t connect_request_bd_addrress_rev[BT_DEVICE_NAME_LEN] = { 0 }; /* connect command device address */
-static uint8_t autoconnect_pair_device_index = 0;               /* Record current auto connect paired device index */
+static bt_device_info               paired_device_list[BT_MAX_PAIRED_DEVICE_NUM] = { 0 };
+static uint8_t                      bt_sw_version[BT_SW_VERSION_LEN] = { 0 };                /* BT SW Major version and Minor version  */
+static uint8_t                      connect_request_bd_addrress_rev[BT_DEVICE_NAME_LEN] = { 0 }; /* connect command device address */
+static uint8_t                      autoconnect_pair_device_index = 0;               /* Record current auto connect paired device index */
 
 static bt_connection_info_update_cb bt_conn_info_cb_array[BT_INFO_CB_MAX_NUM]; /* bt connection info callback array */
 static uint32_t                     ble_pairing_fail_count = 0;
@@ -718,13 +722,15 @@ connection_handle_bytes[1] = (uint8_t)( paired_device_list[paired_device_index].
 PRINTF( "%s: index:%d connect handle:%d connect type:%d\r\n", __FUNCTION__, paired_device_index, paired_device_list[paired_device_index].connection_handle, paired_device_list[paired_device_index].connection_path_type );
 
 // disconnect device through HCI command
-if( BT_CONN_TYPE_BT_IAP2 == paired_device_list[paired_device_index].connection_path_type )
+if( ( BT_CONN_TYPE_BT_IAP2 == paired_device_list[paired_device_index].connection_path_type ) || ( BT_CONN_TYPE_BT_IAP2_YAPP == paired_device_list[paired_device_index].connection_path_type ) )
     {
     /* Since we don't receive iAP2 disconnect callback after iAP2 disconnect command
      * Here we assume the disconnect always success
      */
     paired_device_list[paired_device_index].is_connected = false;
+    paired_device_list[paired_device_index].y_app_is_connected = false;
     paired_device_list[paired_device_index].connection_handle = 0;
+    paired_device_list[paired_device_index].y_app_connection_handle = 0;
     HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, connection_handle_bytes, sizeof( uint16_t ) );
     }
 else if( BT_CONN_TYPE_BT_SPP == paired_device_list[paired_device_index].connection_path_type )
@@ -1200,6 +1206,8 @@ void BTM_BTC_spp_connected
     const bt_connection_path_type connection_path
     )
 {
+uint8_t connect_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+
 PRINTF( "%s:", __FUNCTION__ );
 for( uint32_t i = 0; i < connection_info_length; i++ )
     {
@@ -1208,10 +1216,9 @@ for( uint32_t i = 0; i < connection_info_length; i++ )
 PRINTF( "\r\n" );
 
 // Received SPP or iAP2 connected event
-if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) )
+if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) && \
+      ( ( BT_CONN_TYPE_BT_IAP2 == connection_path ) || ( BT_CONN_TYPE_BT_SPP == connection_path ) ) )
     {
-    uint8_t connect_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-
     // Change for big endian transfer
     stop_autoconnect_timer();
 
@@ -1241,20 +1248,56 @@ if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_le
              break;
              }
         }
+
+    // fire connection callbacks, currently for Navillite only
+    for( int i = 0; i < BT_INFO_CB_MAX_NUM; i++ )
+        {
+        if( bt_conn_info_cb_array[i] != NULL )
+            {
+            PRINTF( "BTM user-defined callback invoked!(%d)\r\n", i );
+            ( bt_conn_info_cb_array[i] )( connection_is_up, connection_info, connection_path );
+            }
+        }
+    }
+else if(  ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) && \
+            ( BT_CONN_TYPE_BT_IAP2_YAPP == connection_path )  )
+    {
+    for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+        {
+        connect_bd_addr[i] = connection_info[BT_DEVICE_ADDRESS_LEN - 1 - i];
+        }
+
+    for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
+        {
+        if( 0 == memcmp( connect_bd_addr, paired_device_list[i].device_address, BT_DEVICE_ADDRESS_LEN ) )
+             {
+             btm_btc_connection_status.BTC_y_app_is_connected = true;
+             btm_btc_connection_status.y_app_connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
+             btm_btc_connection_status.y_app_connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
+             paired_device_list[i].y_app_is_connected = connection_is_up;
+             paired_device_list[i].y_app_connection_handle = connection_info[BT_DEVICE_ADDRESS_LEN];
+             paired_device_list[i].y_app_connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
+             paired_device_list[i].connection_path_type = connection_path;
+
+             // TODO Notify EW Y-connect connection status
+             // TODO Modify auto connect sequence and write to EEPROM ?
+
+             break;
+             }
+        }
     }
 // Received SPP disconnected event
-else if( false == connection_is_up  )
+else if( false == connection_is_up && ( ( BT_CONN_TYPE_BT_IAP2 == connection_path ) || ( BT_CONN_TYPE_BT_SPP == connection_path ) ) )
     {
-    // Action on ACL status disconnected,  BTM_receive_connection_status
-    }
-
-// fire callbacks defined by users
-for( int i = 0; i < BT_INFO_CB_MAX_NUM; i++ )
-    {
-    if( bt_conn_info_cb_array[i] != NULL )
+    // Fire connection callbacks, currently for Navillite only
+    // Handle disconnect event on BTM_receive_connection_status
+    for( int i = 0; i < BT_INFO_CB_MAX_NUM; i++ )
         {
-        PRINTF( "BTM user-defined callback invoked!(%d)\r\n", i );
-        ( bt_conn_info_cb_array[i] )( connection_is_up, connection_info, connection_path );
+        if( bt_conn_info_cb_array[i] != NULL )
+            {
+            PRINTF( "BTM user-defined callback invoked!(%d)\r\n", i );
+            ( bt_conn_info_cb_array[i] )( connection_is_up, connection_info, connection_path );
+            }
         }
     }
 
@@ -1333,11 +1376,24 @@ return ERR_NONE;
 void BTM_get_connection_info
     (
     bool*     btc_is_connected,
-    uint16_t* connection_handle
+    uint16_t* connection_handle,
+    bt_connection_path_type connection_path_type
     )
 {
-memcpy( btc_is_connected, &( btm_btc_connection_status.BTC_is_connected ), sizeof( bool ) );
-memcpy( connection_handle, &( btm_btc_connection_status.current_connection_handle ), sizeof( uint16_t ) );
+if( ( BT_CONN_TYPE_BT_IAP2 == connection_path_type ) || ( BT_CONN_TYPE_BT_SPP == connection_path_type ) )
+    {
+    memcpy( btc_is_connected, &( btm_btc_connection_status.BTC_is_connected ), sizeof( bool ) );
+    memcpy( connection_handle, &( btm_btc_connection_status.current_connection_handle ), sizeof( uint16_t ) );
+    }
+else if( BT_CONN_TYPE_BT_IAP2_YAPP == connection_path_type )
+    {
+    memcpy( btc_is_connected, &( btm_btc_connection_status.BTC_y_app_is_connected ), sizeof( bool ) );
+    memcpy( connection_handle, &( btm_btc_connection_status.y_app_connection_handle ), sizeof( uint16_t ) );
+    }
+else
+    {
+    PRINTF( "%s ERROR:bt_connection_path_type:%d\r\n", __FUNCTION__, connection_path_type );
+    }
 }
 
 /*********************************************************************

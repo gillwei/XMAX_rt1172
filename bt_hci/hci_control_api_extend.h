@@ -33,6 +33,14 @@ extern "C" {
 #define HCI_CONTROL_MISC_EVENT_USER_CONFIRM_RESULT          ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x08 )      /* Send the User Confirm Passkey and Device name to BT module */
 #define HCI_CONTROL_MISC_EVENT_ADDR_PAIR_FAIL               ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x09 )      /* SPP or iAP2 connect check the authentication error */
 
+/* Extended Events for IAP2 Y-connect APP */
+#define HCI_CONTROL_IAP2_EVENT_CONNECTED_2                   ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x10 )    /* IAP2 connection opened */
+#define HCI_CONTROL_IAP2_EVENT_SERVICE_NOT_FOUND_2           ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x11 )    /* SDP record with IAP2 service not found */
+#define HCI_CONTROL_IAP2_EVENT_CONNECTION_FAILED_2           ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x12 )    /* Connection attempt failed  */
+#define HCI_CONTROL_IAP2_EVENT_DISCONNECTED_2                ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x13 )    /* IAP2 connection closed */
+#define HCI_CONTROL_IAP2_EVENT_TX_COMPLETE_2                 ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x14 )    /* Data packet has been queued for transmission */
+#define HCI_CONTROL_IAP2_EVENT_RX_DATA_2                     ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x15 )    /* IAP2 data received */
+
 #ifdef __cplusplus
 }
 #endif

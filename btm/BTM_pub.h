@@ -202,7 +202,8 @@ int BTM_receive_connection_status
 void BTM_get_connection_info
     (
     bool*     current_connection_status,
-    uint16_t* connection_handle
+    uint16_t* connection_handle,
+    bt_connection_path_type connection_path_type
     );
 
 int BTM_get_connect_request_bd_addrress_rev

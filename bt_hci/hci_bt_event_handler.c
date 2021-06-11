@@ -53,6 +53,7 @@ typedef enum
 --------------------------------------------------------------------*/
 static bool pair_list_update_status = false;
 static spp_iap2_data_callback spp_iap2_data_cb_array[BT_INFO_CB_MAX_NUM]; /* spp iap2 data callback array */
+static spp_iap2_data_callback spp_iap2_data_cb_y_app;               /* spp iap2 data callback for Y-connect */
 
 /*--------------------------------------------------------------------
                               PROCEDURES
@@ -334,6 +335,24 @@ switch( cmd_opcode )
         hci_wait_for_resp_stop();
         receive_auth_chip_ver( auth_ver_result );
         break;
+
+    case HCI_CONTROL_IAP2_EVENT_CONNECTED_2:
+        connection_is_up = true;
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_IAP2_YAPP );
+        break;
+
+    case HCI_CONTROL_IAP2_EVENT_DISCONNECTED_2:
+        connection_is_up = false;
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_IAP2_YAPP );
+        break;
+
+    case HCI_CONTROL_IAP2_EVENT_RX_DATA_2:
+        if( spp_iap2_data_cb_y_app != NULL )
+            {
+            spp_iap2_data_cb_y_app( (uint8_t *)p_data, (uint32_t)data_len );
+            }
+        break;
+
     default:
         break;
     }
@@ -374,5 +393,31 @@ for( i = 0; i < SPP_IAP2_DATA_CB_MAX_NUM; i++ )
     }
 
 PRINTF( "not able to add spp iap2 data callback!" );
+return false;
+}
+
+/*********************************************************************
+*
+* @public
+* HCI_spp_iap2_add_data_callback_y_app
+*
+* Register the spp or iap2 receive data callback function for Y-connect
+*
+* @param callback The pointer of the callback struct of spp_iap2_data_callback
+*
+*********************************************************************/
+bool HCI_spp_iap2_add_data_callback_y_app
+    (
+    spp_iap2_data_callback data_callback
+    )
+{
+if( spp_iap2_data_cb_y_app == NULL )
+    {
+    PRINTF( "This spp iap2 data callback for Y-connect added successfuly!\r\n" );
+    spp_iap2_data_cb_y_app = data_callback;
+    return true;
+    }
+
+PRINTF( "not able to add spp iap2 data callback for Y-connect!" );
 return false;
 }
