@@ -24,6 +24,7 @@ extern "C" {
 
 #include "NAVILITE_pub.h"
 #include "TEST_pub.h"
+
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -43,33 +44,35 @@ extern "C" {
 /*--------------------------------------------------------------------
                         VARIABLES
 --------------------------------------------------------------------*/
+
 /*--------------------------------------------------------------------
                         MACROS
 --------------------------------------------------------------------*/
+
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
 #if( NAVILITE_BUILD_ROLE == NAVILITE_TARGET_MOBILE || NAVILITE_LOCAL_HMI_TEST_MODE || UNIT_TEST_NAVILITE )
 /* NaviLite Protocol framing message API for mobile*/
 
-navilite_message NAVILITE_pack_frame_update_imageframe            //! update image and type code to MCU
+navilite_message NAVILITE_pack_frame_update_imageframe
     (
     uint8_t* image,
     uint32_t image_size,
     navilite_image_type mode
     );
 
-navilite_message NAVILITE_pack_frame_update_eta               //! update ETA to MCU
+navilite_message NAVILITE_pack_frame_update_eta
     (
     uint32_t value
     );
 
-navilite_message NAVILITE_pack_frame_update_navigationstatus         //! update remain dist to MCU
+navilite_message NAVILITE_pack_frame_update_navigationstatus
     (
     uint8_t value
     );
 
-navilite_message NAVILITE_pack_frame_update_speedlimit         //! update remain dist to MCU
+navilite_message NAVILITE_pack_frame_update_speedlimit
     (
     uint16_t speed
     );
@@ -79,59 +82,59 @@ navilite_message NAVILITE_pack_frame_update_viapointcount
     uint16_t count
     );
 
-navilite_message NAVILITE_pack_frame_update_currentroadname    //! update ETA to MCU
+navilite_message NAVILITE_pack_frame_update_currentroadname
     (
     uint8_t* str,
     uint8_t str_size
     );
 
-navilite_message NAVILITE_pack_frame_update_nextturndistance  //! update next turn distance to MCU
+navilite_message NAVILITE_pack_frame_update_nextturndistance
     (
     uint8_t icon_index,
     uint8_t* str,
     uint8_t str_size
     );
 
-navilite_message NAVILITE_pack_frame_update_nexttbtlist      //! update next turn list size to MCU
+navilite_message NAVILITE_pack_frame_update_nexttbtlist
     (
     uint16_t list_size,
     uint8_t has_more_data
     );
 
-navilite_message NAVILITE_pack_frame_update_nexttbtlist_itemdata    //! update next turn list item data to MCU
+navilite_message NAVILITE_pack_frame_update_nexttbtlist_itemdata
     (
     navilite_tbt_list_type *list
     );
 
-navilite_message NAVILITE_pack_frame_update_nextfavlist      //! update next turn list size to MCU
+navilite_message NAVILITE_pack_frame_update_nextfavlist
     (
     uint16_t list_size,
     uint8_t has_more_data
     );
 
-navilite_message NAVILITE_pack_frame_update_nextfavlist_itemdata    //! update next turn list item data to MCU
+navilite_message NAVILITE_pack_frame_update_nextfavlist_itemdata
     (
     navilite_fav_list_type *list
     );
 
-navilite_message NAVILITE_pack_frame_update_nextgaslist      //! update next turn list size to MCU
+navilite_message NAVILITE_pack_frame_update_nextgaslist
     (
     uint16_t list_size,
     uint8_t has_more_data
     );
 
-navilite_message NAVILITE_pack_frame_update_nextgaslist_itemdata    //! update next turn list item data to MCU
+navilite_message NAVILITE_pack_frame_update_nextgaslist_itemdata
     (
     navilite_gas_list_type *list
     );
 
 
-navilite_message NAVILITE_pack_frame_update_activetbtitem    //! update active tbt item and inform MCU to show on HMI via peer's callback
+navilite_message NAVILITE_pack_frame_update_activetbtitem
     (
     uint16_t active_tbt_index
     );
 
-navilite_message NAVILITE_pack_frame_update_navieventtext   //! update nZand inform MCU to show on HMI via peer's callback
+navilite_message NAVILITE_pack_frame_update_navieventtext
     (
     uint8_t* event_text,
     uint8_t str_size,
@@ -155,7 +158,7 @@ navilite_message NAVILITE_pack_frame_update_zoomlevel
     uint8_t max_level
     );
 
-navilite_message NAVILITE_pack_frame_update_routecalcprogress  //timeout:10s and automatically callback to
+navilite_message NAVILITE_pack_frame_update_routecalcprogress
     (
     uint8_t progress
     );
@@ -163,24 +166,26 @@ navilite_message NAVILITE_pack_frame_update_routecalcprogress  //timeout:10s and
 navilite_message NAVILITE_pack_frame_update_daynightmode
     (
     navilite_daynight_mode_type
-    ); // daynight mode update
+    );
 
 navilite_message NAVILITE_pack_frame_update_bttimeout
     (
     uint16_t timeout
-    ); // bt timeout update
+    );
 
 navilite_message NAVILITE_pack_frame_update_serviceack
     (
     navilite_service_type ack_service_type
-    ); // used for ESN/Image Frame Update/ETC ACK
+    );
 
-navilite_message NAVILITE_pack_frame_update_dialog_prompt
+navilite_message NAVILITE_pack_frame_update_dialog_event
     (
     uint8_t dialog_id,
     navilite_dialog_type dialog_type,
     uint8_t* message,
-    uint8_t message_size
+    uint8_t message_size,
+    uint8_t timeout,
+    uint8_t default_choose
     );
 
 navilite_message NAVILITE_pack_frame_update_dialog_dismiss

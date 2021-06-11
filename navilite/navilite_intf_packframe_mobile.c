@@ -804,7 +804,7 @@
     /*********************************************************************
     *
     * @public
-    * NAVILITE_pack_frame_update_dialog_update
+    * NAVILITE_pack_frame_update_dialog_event
     *
     * dialog event update
     *
@@ -812,25 +812,30 @@
     * @param dialog_type dialog type
     * @param message pointer of message
     * @param message_size size of message
+    * @param timeout dialog timeout
+    * @param default_choice default choice if dialog timeout expires
     * @return navilite_message return navilite_message copy to caller
     *
     *********************************************************************/
-    navilite_message NAVILITE_pack_frame_update_dialog_update
+    navilite_message NAVILITE_pack_frame_update_dialog_event
         (
         uint8_t dialog_id,
         navilite_dialog_type dialog_type,
         uint8_t* message,
-        uint8_t message_size
+        uint8_t message_size,
+        uint8_t timeout,
+        uint8_t default_choice
         )
     {
     navilite_message frame = { 0 };
-    // full data size = dialog_id + dialog_type + message_size + message content
-    int full_data_size = sizeof( uint8_t ) * 3 + strlen( (char*)message );
+    int full_data_size = sizeof( uint8_t ) * 5 + strlen( (char*)message );
     uint8_t* packValues = (uint8_t*)malloc( full_data_size );
     packValues[0] = dialog_id;
     packValues[1] = dialog_type;
     packValues[2] = message_size;
-    memcpy( &packValues[3], message, message_size );
+    packValues[3] = timeout;
+    packValues[4] = default_choice;
+    memcpy( &packValues[5], message, message_size );
     memcpy( (char*)frame.magic_code, (unsigned char*)MAGIC_CODE, MAGIC_CODE_SIZE );
     frame.version = PROTOCOL_VERSION;
     frame.frame_type = NAVILITE_FRAMETYPE_MCU_UPDATE;
