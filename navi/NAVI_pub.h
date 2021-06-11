@@ -19,17 +19,18 @@ extern "C"{
 #include "NAVILITE_pub.h"
 #include "Enum.h"
 
-#define MAX_STR_SIZE                 ( 16 )
-#define MAX_ROAD_NAME_SIZE           ( 64 )
-#define MAX_DIALOG_DESCRIPTION_SIZE  ( 64 )
-#define MAX_TBT_DESCRIPTION_SIZE     ( 64 )
-#define MAX_POI_DESCRIPTION_SIZE     ( 48 )
-#define MAX_TBT_DIST_UNIT_SIZE       ( 16 )
-#define MAX_POI_DIST_UNIT_SIZE       ( 16 )
-#define MAX_EVENT_QUEUE_SIZE         ( 10 )
-#define MAX_TBT_SIZE                 ( 50 )
-#define MAX_POI_SIZE                 ( 50 )
-#define TBT_NEXT_UPDATE_IDX          ( 40 )     // This is the predefined index that navi app will send more tbt items if tbt list size is over 50.
+#define MAX_STR_SIZE                           ( 16 )
+#define MAX_ROAD_NAME_SIZE                     ( 64 )
+#define MAX_DIALOG_DESCRIPTION_SIZE            ( 64 )
+#define MAX_TBT_DESCRIPTION_SIZE               ( 64 )
+#define MAX_POI_DESCRIPTION_SIZE               ( 48 )
+#define MAX_TBT_DIST_UNIT_SIZE                 ( 16 )
+#define MAX_POI_DIST_UNIT_SIZE                 ( 16 )
+#define MAX_EVENT_QUEUE_SIZE                   ( 10 )
+#define MAX_TBT_SIZE                           ( 50 )
+#define MAX_POI_SIZE                           ( 50 )
+#define MAX_EVENT_DESCRIPTION_SIZE             ( 64 )
+#define TBT_NEXT_UPDATE_IDX                    ( 40 ) // This is the predefined index that navi app will send more tbt items if tbt list size is over 50.
 
 typedef enum
     {
@@ -70,12 +71,14 @@ typedef struct
 
 typedef struct
     {
-    navilite_navievent_type event_type;
-    navilite_navievent_extra_subtype camera_type;
+    EnumNaviAlertType event_type;
+    EnumNaviCameraType camera_type;
     char speed[MAX_STR_SIZE];
     char dist[MAX_STR_SIZE];
+    char desc[MAX_EVENT_DESCRIPTION_SIZE];
     uint8_t desc_size;
     uint8_t visibility;
+    bool is_displayed;
     } navi_event_type;
 
 typedef struct
@@ -142,6 +145,11 @@ bool NAVI_get_poi_item( const int poi_index, float* distance, char** dist_unit, 
 uint16_t NAVI_get_poi_list_size( void );
 void NAVI_poi_list_request( EnumNaviPoiListType poi_list_type, bool is_enabled );
 bool NAVI_is_Jcv_recevied( void );
+bool NAVI_is_specified_event_received( EnumNaviAlertType alert_type, EnumNaviCameraType camera_type );
+void NAVI_remove_specified_event( EnumNaviAlertType alert_type, EnumNaviCameraType camera_type );
+bool NAVI_get_alert_display_status( void );
+void NAVI_enable_alert_display_flag( void );
+void NAVI_get_reroute_alert_message( char** alert_message );
 
 #ifdef __cplusplus
 }

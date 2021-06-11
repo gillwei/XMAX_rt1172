@@ -60,6 +60,15 @@ extern const XColor ColorBLACK;
 /* User defined constant: 'Color::GRAY_FOR_DISABLED' */
 extern const XColor ColorGRAY_FOR_DISABLED;
 
+/* User defined constant: 'Color::NAVI_GRAY' */
+extern const XColor ColorNAVI_GRAY;
+
+/* User defined constant: 'Color::NAVI_ORANGE' */
+extern const XColor ColorNAVI_ORANGE;
+
+/* User defined constant: 'Color::NAVI_RED' */
+extern const XColor ColorNAVI_RED;
+
 #ifdef __cplusplus
   }
 #endif

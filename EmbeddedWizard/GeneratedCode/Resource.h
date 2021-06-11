@@ -825,6 +825,12 @@ EW_DECLARE_BITMAP_RES( ResourceZoomInNightDisableIcon )
 /* Bitmap resource : 'Resource::ZoomOutDayDisableIcon' */
 EW_DECLARE_BITMAP_RES( ResourceZoomOutDayDisableIcon )
 
+/* Bitmap resource : 'Resource::SafeBorder' */
+EW_DECLARE_BITMAP_RES( ResourceSafeBorder )
+
+/* Bitmap resource : 'Resource::AlertRouteIcon' */
+EW_DECLARE_BITMAP_RES( ResourceAlertRouteIcon )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

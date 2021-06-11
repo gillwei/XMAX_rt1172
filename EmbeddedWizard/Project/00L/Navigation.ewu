@@ -5,7 +5,7 @@ $output false
 $multilingual true
 class NAV01_DefaultView : Home::BaseHome
 {
-  $rect <520,760,720,800>
+  $rect <520,840,720,880>
   inherited method Init()
   {
     trace "NAV01";
@@ -15,7 +15,7 @@ class NAV01_DefaultView : Home::BaseHome
     signal OnETAUpdateSlot;
     signal OnDayNightModeUpdateSlot;
     signal OnSpeedLimitUpdateSlot;
-    signal OnNaviIncidentUpdateSlot;
+    signal OnNavigationAlertUpdateSlot;
 
     if( DeviceInterface::NavigationDevice.IsNaviLoadingDialogDisplayed )
     {
@@ -30,7 +30,7 @@ class NAV01_DefaultView : Home::BaseHome
     DeviceInterface::NavigationDevice.StartMapFrameRequest();
   }
 
-  $rect <950,760,1180,800>
+  $rect <960,840,1190,880>
   inherited method OnShortDownKeyActivated()
   {
     var Enum::NaviZoomInOutStatusType ZoomInOutStatus = DeviceInterface::NavigationDevice.GetZoomInOutStatus();
@@ -62,7 +62,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <720,760,950,800>
+  $rect <720,840,950,880>
   inherited method OnShortUpKeyActivated()
   {
     var Enum::NaviZoomInOutStatusType ZoomInOutStatus = DeviceInterface::NavigationDevice.GetZoomInOutStatus();
@@ -94,7 +94,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <720,800,940,840>
+  $rect <740,900,960,940>
   inherited method OnLongEnterKeyActivated()
   {
     if( !NaviConnectFailedTimer.Enabled &&
@@ -117,7 +117,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <950,910,1150,950>
+  $rect <960,900,1160,940>
   inherited method OnLongHomeKeyActivated()
   {
     // neglect long press home key.
@@ -239,6 +239,13 @@ class NAV01_DefaultView : Home::BaseHome
   }
 
   $rect <20,20,160,60>
+  object Navigation::ReRoute ReRouteObject
+  {
+    preset Bounds = <0,226,480,272>;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
   object Views::Wallpaper StatusBarShadowImage
   {
     preset Bounds = <0,38,480,49>;
@@ -253,7 +260,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Visible = false;
   }
 
-  $rect <520,990,720,1030>
+  $rect <1150,1050,1350,1090>
   inherited method ReturnToHome()
   {
     super();
@@ -273,7 +280,7 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <520,50,720,90>
   var int32 MapFrameIdx = 0;
 
-  $rect <520,240,750,280>
+  $rect <520,270,750,310>
   object Core::SystemEventHandler MapUpdateEventHandler
   {
     preset OnEvent = OnMapUpdateSlot;
@@ -282,7 +289,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,240,990,280>
+  $rect <750,270,990,310>
   slot OnMapUpdateSlot
   {
     if( DeviceInterface::NavigationDevice.IsMapFrameReady() )
@@ -325,7 +332,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <520,360,740,400>
+  $rect <520,390,740,430>
   object Core::SystemEventHandler CurRdUpdateEventHandler
   {
     preset OnEvent = OnCurRdUpdateSlot;
@@ -334,7 +341,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,360,980,400>
+  $rect <750,390,980,430>
   slot OnCurRdUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.CURRENT_ROAD );
@@ -345,7 +352,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   }
 
-  $rect <520,280,740,320>
+  $rect <520,310,740,350>
   object Core::SystemEventHandler ETAUpdateEventHandler
   {
     preset OnEvent = OnETAUpdateSlot;
@@ -354,14 +361,14 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,280,980,320>
+  $rect <750,310,980,350>
   slot OnETAUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.ETA );
     ETAComponent.ETA = NaviData.ETA;
   }
 
-  $rect <520,320,740,360>
+  $rect <520,350,740,390>
   object Core::SystemEventHandler DayNightModeUpdateEventHandler
   {
     preset OnEvent = OnDayNightModeUpdateSlot;
@@ -370,7 +377,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,320,970,360>
+  $rect <750,350,970,390>
   slot OnDayNightModeUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.DAYNIGHT );
@@ -390,7 +397,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <720,850,920,890>
+  $rect <740,950,940,990>
   method void StartHighlight()
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.DAYNIGHT );
@@ -431,7 +438,7 @@ class NAV01_DefaultView : Home::BaseHome
     HighlightTimer.Enabled = true;
   }
 
-  $rect <520,850,710,890>
+  $rect <520,1000,710,1040>
   object Core::Timer HighlightTimer
   {
     preset OnTrigger = OnHighlightEndSlot;
@@ -439,7 +446,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Enabled = false;
   }
 
-  $rect <930,850,1130,890>
+  $rect <730,1000,930,1040>
   slot OnHighlightEndSlot
   {
     HighlightTimer.Enabled = false;
@@ -480,7 +487,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <520,400,730,440>
+  $rect <520,430,730,470>
   object Core::SystemEventHandler SpeedLimitUpdateEventHandler
   {
     preset OnEvent = OnSpeedLimitUpdateSlot;
@@ -489,7 +496,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,400,980,440>
+  $rect <750,430,980,470>
   slot OnSpeedLimitUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.SPEED_LIMIT );
@@ -499,56 +506,55 @@ class NAV01_DefaultView : Home::BaseHome
       SpeedLimitIcon.Visible = true;
       SpeedLimitText.String = string( NaviData.SpeedLimit );
       SpeedLimitText.Visible = true;
-
-      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.VEHICLE_SPEED_REAL );
-
-      if( ( int32 )VehicleData.DataUInt32 > NaviData.SpeedLimit )
-      {
-        SpeedLimitFlickeringTimer.Enabled = true;
-      }
-      else
-      {
-        SpeedLimitFlickeringTimer.Enabled = false;
-      }
     }
     else
     {
       SpeedLimitIcon.Visible = false;
       SpeedLimitText.Visible = false;
-      SpeedLimitFlickeringTimer.Enabled = false;
+      SpeedingEventStatus = false;
     }
   }
 
-  $rect <520,440,730,480>
-  object Core::SystemEventHandler NaviIncidentUpdateEventHandler
+  $rect <520,470,730,510>
+  object Core::SystemEventHandler NavigationAlertUpdateEventHandler
   {
-    preset OnEvent = OnNaviIncidentUpdateSlot;
-    preset Event = DeviceInterface::NavigationDevice.NaviIncidentUpdateEvent;
+    preset OnEvent = OnNavigationAlertUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.NavigationAlertUpdateEvent;
   }
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,440,990,480>
-  slot OnNaviIncidentUpdateSlot
+  $rect <750,470,990,510>
+  slot OnNavigationAlertUpdateSlot
   {
-    if( !IsEventDisplaying )
+    // If event is not displaying and receive event update, get event.
+    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.NAVI_EVENT );
+    if( null != NaviData && NaviData.NaviEventVisibility )
     {
-      IsEventDisplaying = true;
-      // If event is not displaying and receive event update, get event.
-      var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.NAVI_EVENT );
-      if( null != NaviData && NaviData.NaviEventVisibility )
+      if( DeviceInterface::NavigationDevice.IsSpeedingAlertReceived() )
       {
-        NaviEventObject.SetAlert( NaviData.NaviEventType, NaviData.NaviCameraType, NaviData.NaviEventSpeed, NaviData.NaviEventDist );
-        NaviEventEnLargeEffect.Enabled = true;
+        SpeedingEventStatus = true;
+      }
+
+      if( DeviceInterface::NavigationDevice.IsReRouteAlertReceived() )
+      {
+        ReRouteObject.Message = DeviceInterface::NavigationDevice.GetRerouteAlertMessage();
+        ReRouteObject.Visible = true;
+        ReRouteEventStatus = true;
       }
       else
       {
-        IsEventDisplaying = false;
+        if( !DeviceInterface::NavigationDevice.GetAlertDisplayStatus() )
+        {
+          DeviceInterface::NavigationDevice.EnableAlertDisplayFlag();
+          NaviEventObject.SetAlert( NaviData.NaviEventType, NaviData.NaviCameraType, NaviData.NaviEventSpeed, NaviData.NaviEventDist );
+          NaviEventEnLargeEffect.Enabled = true;
+        }
       }
     }
   }
 
-  $rect <1050,440,1250,480>
+  $rect <1050,480,1250,520>
   object Effects::RectEffect CurrentRoadShiftEffect
   {
     preset OnFinished = OnCurrentRoadShiftEffectFinishSlot;
@@ -559,7 +565,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Outlet = ^CurrentRoadWithGuide.Bounds;
   }
 
-  $rect <1050,480,1250,520>
+  $rect <1050,520,1250,560>
   slot OnCurrentRoadShiftEffectFinishSlot
   {
     CurrentRoadWithGuide.Bounds = Navigation::CURRENT_ROAD_W_NAVI_BOUNDS;
@@ -567,7 +573,7 @@ class NAV01_DefaultView : Home::BaseHome
     CurrentRoadShiftEffect.Enabled = false;
   }
 
-  $rect <1050,280,1250,320>
+  $rect <1050,310,1250,350>
   object Effects::RectEffect NaviEventEnLargeEffect
   {
     preset OnFinished = OnNaviEventEnlargeFinishSlot;
@@ -578,7 +584,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Outlet = ^NaviEventObject.Bounds;
   }
 
-  $rect <1050,320,1250,360>
+  $rect <1050,350,1250,390>
   slot OnNaviEventEnlargeFinishSlot
   {
     NaviEventEnLargeEffect.Enabled = false;
@@ -593,7 +599,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   }
 
-  $rect <1050,360,1250,400>
+  $rect <1050,400,1250,440>
   object Effects::RectEffect NaviEventDismissEffect
   {
     preset OnFinished = OnNaviEventDismissFinishSlot;
@@ -604,16 +610,15 @@ class NAV01_DefaultView : Home::BaseHome
     preset Outlet = ^NaviEventObject.Bounds;
   }
 
-  $rect <1050,400,1250,440>
+  $rect <1050,440,1250,480>
   slot OnNaviEventDismissFinishSlot
   {
     NaviEventDismissEffect.Enabled = false;
     // Reset Alert message bounds for next alert.
     NaviEventObject.AlertMessage.Bounds = Navigation::ALERT_MESSAGE_BOUNDS;
-    IsEventDisplaying = false;
   }
 
-  $rect <1050,240,1250,280>
+  $rect <1050,270,1250,310>
   slot DismissAlert
   {
     // Need to adjust the position of CurrentRoadShiftEffect dynamically since the origin position of CurrentRoadObject content could be varied.
@@ -642,16 +647,7 @@ class NAV01_DefaultView : Home::BaseHome
     NaviEventDismissEffect.Enabled = true;
   }
 
-  // TODO:
-  // 1. Integrate with navi protocol.
-  // 2. Handle the route calculation failed case.
-  // 3. Elaborate alert animation logic if possible.
-  note group Note5
-  {
-    attr Bounds = <0,300,480,460>;
-  }
-
-  $rect <520,480,730,520>
+  $rect <520,510,730,550>
   object Core::SystemEventHandler NavigatingStatusUpdateEventHandler
   {
     preset OnEvent = OnNavigatingStatusUpdateSlot;
@@ -660,7 +656,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,480,990,520>
+  $rect <750,510,990,550>
   slot OnNavigatingStatusUpdateSlot
   {
     // TODO: Handle the route calculation failed case.
@@ -669,14 +665,14 @@ class NAV01_DefaultView : Home::BaseHome
     signal OnETAUpdateSlot;
   }
 
-  $rect <520,910,710,950>
+  $rect <520,1060,710,1100>
   object Core::Timer SpeedLimitFlickeringTimer
   {
     preset OnTrigger = OnSpeedLimitFlickeringSlot;
     preset Period = 300;
   }
 
-  $rect <720,910,920,950>
+  $rect <720,1060,920,1100>
   slot OnSpeedLimitFlickeringSlot
   {
     SpeedLimitIcon.Visible = !SpeedLimitIcon.Visible;
@@ -686,13 +682,13 @@ class NAV01_DefaultView : Home::BaseHome
   // Variable
   note group Note6
   {
-    attr Bounds = <500,0,1380,190>;
+    attr Bounds = <500,0,1580,190>;
   }
 
   // System Event
   note group Note7
   {
-    attr Bounds = <500,200,1020,690>;
+    attr Bounds = <500,200,1020,770>;
   }
 
   // Rider Alert Animation
@@ -704,30 +700,10 @@ class NAV01_DefaultView : Home::BaseHome
   // Method
   note group Note9
   {
-    attr Bounds = <500,710,1380,1160>;
+    attr Bounds = <500,800,1380,1250>;
   }
 
-  $rect <520,530,720,570>
-  object Core::SystemEventHandler VehicleDataReceivedEventHandler
-  {
-    preset OnEvent = OnVehicleSpeedUpdateSlot;
-    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
-  }
-
-  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
-  // receives an event.
-  $rect <740,530,980,570>
-  slot OnVehicleSpeedUpdateSlot
-  {
-    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
-    if( null != VehicleData &&
-        Enum::VehicleRxType.VEHICLE_SPEED_REAL == VehicleData.RxType )
-    {
-      signal OnSpeedLimitUpdateSlot;
-    }
-  }
-
-  $rect <1140,910,1340,950>
+  $rect <950,1000,1150,1040>
   method void SetItemBounds()
   {
     if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
@@ -752,10 +728,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <1150,50,1350,90>
-  var bool IsEventDisplaying = false;
-
-  $rect <520,580,720,620>
+  $rect <520,560,720,600>
   object Core::SystemEventHandler NaviDialogEventHandler
   {
     preset OnEvent = OnNaviDialogEventUpdateSlot;
@@ -764,7 +737,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,580,950,620>
+  $rect <750,570,950,610>
   slot OnNaviDialogEventUpdateSlot
   {
     if( IsCurrentDialog() )
@@ -799,14 +772,14 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <740,990,940,1030>
+  $rect <940,1050,1140,1090>
   slot OnNaviDialogDismissSlot
   {
     Mask.Visible = false;
 
   }
 
-  $rect <520,630,720,670>
+  $rect <520,610,720,650>
   object Core::SystemEventHandler NaviDisconnectEventHandler
   {
     preset OnEvent = OnNaviDisconnectUpdateSlot;
@@ -815,7 +788,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <730,630,930,670>
+  $rect <740,610,940,650>
   slot OnNaviDisconnectUpdateSlot
   {
     if( null != Owner && IsCurrentDialog() )
@@ -842,7 +815,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <520,1060,710,1100>
+  $rect <520,1110,710,1150>
   object Core::Timer ZoomToastDismissTimer
   {
     preset OnTrigger = OnZoomToastDismissSlot;
@@ -850,7 +823,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Enabled = false;
   }
 
-  $rect <720,1060,920,1100>
+  $rect <720,1110,920,1150>
   slot OnZoomToastDismissSlot
   {
     ZoomToastDismissTimer.Enabled = false;
@@ -871,7 +844,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   }
 
-  $rect <520,760,720,800>
+  $rect <520,670,720,710>
   object Core::SystemEventHandler ZoomLevelUpdateEventHandler
   {
     preset OnEvent = OnZoomLevelUpdateSlot;
@@ -880,7 +853,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <1180,760,1380,800>
+  $rect <730,670,930,710>
   slot OnZoomLevelUpdateSlot
   {
     var Enum::NaviZoomInOutStatusType ZoomInOutStatus = DeviceInterface::NavigationDevice.GetZoomInOutStatus();
@@ -933,7 +906,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   }
 
-  $rect <940,1060,1140,1100>
+  $rect <940,1110,1140,1150>
   method void ShowZoomToast()
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.ZOOM_LEVEL );
@@ -943,6 +916,76 @@ class NAV01_DefaultView : Home::BaseHome
     }
     ZoomToast.Visible = true;
     ZoomToastDismissTimer.Enabled = true;
+  }
+
+  $rect <520,1160,720,1200>
+  object Core::Timer DisableFlickeringTimer
+  {
+    preset OnTrigger = OnDisableFlickeringSlot;
+    preset Period = 0;
+    preset Begin = 5000;
+  }
+
+  $rect <720,1160,920,1200>
+  slot OnDisableFlickeringSlot
+  {
+    SpeedLimitIcon.Visible = false;
+    SpeedLimitText.Visible = false;
+    SpeedingEventStatus = false;
+
+
+  }
+
+  $rect <520,1210,720,1250>
+  object Core::Timer DisableReRouteAlertTimer
+  {
+    preset OnTrigger = OnDisableReRouteAlertSlot;
+    preset Period = 0;
+    preset Begin = 5000;
+  }
+
+  $rect <720,1210,920,1250>
+  slot OnDisableReRouteAlertSlot
+  {
+    ReRouteObject.Visible = false;
+    ReRouteEventStatus = false;
+
+
+  }
+
+  $rect <1150,50,1350,90>
+  property bool SpeedingEventStatus;
+
+  $rect <1150,90,1350,130>
+  onset SpeedingEventStatus
+  {
+    // Remember the property's new value.
+    pure SpeedingEventStatus = value;
+
+    SpeedLimitFlickeringTimer.Enabled = value;
+    DisableFlickeringTimer.Enabled = value;
+
+    if( !SpeedingEventStatus )
+    {
+      DeviceInterface::NavigationDevice.RemoveSpeedingAlert();
+    }
+  }
+
+  $rect <1370,50,1570,90>
+  property bool ReRouteEventStatus;
+
+  $rect <1370,90,1570,130>
+  onset ReRouteEventStatus
+  {
+    // Remember the property's new value.
+    pure ReRouteEventStatus = value;
+
+    DisableReRouteAlertTimer.Enabled = value;
+
+    if( !ReRouteEventStatus )
+    {
+      DeviceInterface::NavigationDevice.RemoteReRouteAlert();
+    }
   }
 
   $reorder Background 17
@@ -959,6 +1002,7 @@ class NAV01_DefaultView : Home::BaseHome
   $reorder SpeedLimitIcon 17
   $reorder SpeedLimitText 17
   $reorder NaviEventObject 17
+  $reorder ReRouteObject 17
   $reorder StatusBarShadowImage 17
   $reorder Mask 17
 }
@@ -1565,7 +1609,7 @@ class NaviAlert : Core::Group
   $rect <20,20,160,60>
   object Views::Text DistUnit
   {
-    preset Bounds = <445,9,470,31>;
+    preset Bounds = <445,12,470,34>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansMedium16pt;
@@ -1574,7 +1618,7 @@ class NaviAlert : Core::Group
   $rect <20,20,160,60>
   object Views::Text Distance
   {
-    preset Bounds = <405,3,443,33>;
+    preset Bounds = <405,6,443,36>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansMedium22pt;
@@ -1628,38 +1672,27 @@ class NaviAlert : Core::Group
   {
     switch( aNaviEventType )
     {
+      case Enum::NaviAlertType.BORDER:
+      {
+        AlertMessage.IsSpeedDisplayed = false;
+        SetCamera( aNaviCameraType );
+        AlertMessage.Color = Color::NAVI_ORANGE;
+        NaviDistBg.Color = Color::NAVI_ORANGE;
+      }
       case Enum::NaviAlertType.SCHOOL:
       {
-        if( AlertMessage.NaviSpeed.Visible )
-        {
-          AlertMessage.NaviSpeed.Visible = false;
-        }
-
-        if( AlertMessage.NaviSpeedUnit.Visible )
-        {
-          AlertMessage.NaviSpeedUnit.Visible = false;
-        }
-
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamSchoolZone;
-        AlertMessage.EventType.String = Strings::NAV01_SCHOOL_ZONE;
-        AlertMessage.NaviEventBg.Color = #E27F07FF;
-        NaviDistBg.Color = #E27F07FF;
+        AlertMessage.IsSpeedDisplayed = false;
+        AlertMessage.Icon = Resource::SafeCamSchoolZone;
+        AlertMessage.Message = Strings::NAV01_SCHOOL_ZONE;
+        AlertMessage.Color = Color::NAVI_ORANGE;
+        NaviDistBg.Color = Color::NAVI_ORANGE;
       }
       case Enum::NaviAlertType.CAMERA:
       {
-        if( !AlertMessage.NaviSpeed.Visible )
-        {
-          AlertMessage.NaviSpeed.Visible = true;
-        }
-
-        if( !AlertMessage.NaviSpeedUnit.Visible )
-        {
-          AlertMessage.NaviSpeedUnit.Visible = true;
-        }
-
+        AlertMessage.IsSpeedDisplayed = true;
         SetCamera( aNaviCameraType );
-        AlertMessage.NaviEventBg.Color = #AA1415FF;
-        NaviDistBg.Color = #AA1415FF;
+        AlertMessage.Color = Color::NAVI_RED;
+        NaviDistBg.Color = Color::NAVI_RED;
       }
       default:;
     }
@@ -1717,7 +1750,7 @@ class NaviAlert : Core::Group
     preset OnFinished = OnNaviEventShrinkFinishSlot;
     preset NoOfCycles = 1;
     preset CycleDuration = 500;
-    preset Value2 = <370,0,480,46>;
+    preset Value2 = <366,0,480,46>;
     preset Value1 = <0,0,480,46>;
     preset Outlet = ^AlertMessage.Bounds;
   }
@@ -1738,58 +1771,68 @@ class NaviAlert : Core::Group
     {
       case Enum::NaviCameraType.CHECK_FIXED:
       {
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamEU;
-        AlertMessage.EventType.String = Strings::NAV01_CHECK_FIXED;
+        AlertMessage.Icon = Resource::SafeCamEU;
+        AlertMessage.Message = Strings::NAV01_CHECK_FIXED;
       }
       case Enum::NaviCameraType.CHECK_TEMPORARY:
       {
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamTempEU;
-        AlertMessage.EventType.String = Strings::NAV01_CHECK_TEMPORARY;
+        AlertMessage.Icon = Resource::SafeCamTempEU;
+        AlertMessage.Message = Strings::NAV01_CHECK_TEMPORARY;
       }
       case Enum::NaviCameraType.MOBILE:
       {
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamMobileEU;
-        AlertMessage.EventType.String = Strings::NAV01_MOBILE;
+        AlertMessage.Icon = Resource::SafeCamMobileEU;
+        AlertMessage.Message = Strings::NAV01_MOBILE;
       }
       case Enum::NaviCameraType.AVERAGE:
       {
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeAvrgCamEU;
-        AlertMessage.EventType.String = Strings::NAV01_AVERAGE;
+        AlertMessage.Icon = Resource::SafeAvrgCamEU;
+        AlertMessage.Message = Strings::NAV01_AVERAGE;
       }
       case Enum::NaviCameraType.VARIABLE:
       {
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamVariableEU;
-        AlertMessage.EventType.String = Strings::NAV01_VARIABLE;
+        AlertMessage.Icon = Resource::SafeCamVariableEU;
+        AlertMessage.Message = Strings::NAV01_VARIABLE;
       }
       case Enum::NaviCameraType.RED_LIGHT:
       {
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamRedLight;
-        AlertMessage.EventType.String = Strings::NAV01_RED_LIGHT;
+        AlertMessage.Icon = Resource::SafeCamRedLight;
+        AlertMessage.Message = Strings::NAV01_RED_LIGHT;
       }
       case Enum::NaviCameraType.USER:
       {
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamRealTimeEU;
-        AlertMessage.EventType.String = Strings::NAV01_USER;
+        AlertMessage.Icon = Resource::SafeCamRealTimeEU;
+        AlertMessage.Message = Strings::NAV01_USER;
       }
       case Enum::NaviCameraType.MOBILE_ZONE:
       {
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamLifemobileEU;
-        AlertMessage.EventType.String = Strings::NAV01_MOBILE_ZONE;
+        AlertMessage.Icon = Resource::SafeCamLifemobileEU;
+        AlertMessage.Message = Strings::NAV01_MOBILE_ZONE;
       }
       case Enum::NaviCameraType.DANGEROUS_ZONE, Enum::NaviCameraType.DANGEROUS_POINT:
       {
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamRiskZone;
-        AlertMessage.EventType.String = Strings::NAV01_DANGEROUS_ZONE;
+        AlertMessage.Icon = Resource::SafeCamRiskZone;
+        AlertMessage.Message = Strings::NAV01_DANGEROUS_ZONE;
       }
       case Enum::NaviCameraType.RISK_ZONE:
       {
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamRiskZone;
-        AlertMessage.EventType.String = Strings::NAV01_RISK_ZONE;
+        AlertMessage.Icon = Resource::SafeCamRiskZone;
+        AlertMessage.Message = Strings::NAV01_RISK_ZONE;
       }
       case Enum::NaviCameraType.UNKNOWN:
       {
-        AlertMessage.NaviAlertIcon.Bitmap = Resource::SafeCamMobileNA;
-        AlertMessage.EventType.String = Strings::NAV01_UNKNOWN;
+        AlertMessage.Icon = Resource::SafeCamMobileNA;
+        AlertMessage.Message = Strings::NAV01_UNKNOWN;
+      }
+      case Enum::NaviCameraType.STATE_BORDER:
+      {
+        AlertMessage.Icon = Resource::SafeBorder;
+        AlertMessage.Message = Strings::NAV01_STATE_BORDER;
+      }
+      case Enum::NaviCameraType.COUNTRY_BORDER:
+      {
+        AlertMessage.Icon = Resource::SafeBorder;
+        AlertMessage.Message = Strings::NAV01_COUNTRY_BORDER;
       }
       default:;
     }
@@ -1841,14 +1884,13 @@ class NaviAlertMessage : Core::Group
   $rect <20,20,160,60>
   object Views::Image NaviAlertIcon
   {
-    preset Bounds = <10,8,30,28>;
-    preset Bitmap = Resource::SafeCamTempEU;
+    preset Bounds = <10,8,34,32>;
   }
 
   $rect <20,20,160,60>
   object Components::BaseText EventType
   {
-    preset Bounds = <34,2,315,33>;
+    preset Bounds = <38,6,308,37>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -1857,7 +1899,8 @@ class NaviAlertMessage : Core::Group
   $rect <20,20,160,60>
   object Views::Text NaviSpeed
   {
-    preset Bounds = <315,3,352,33>;
+    preset Bounds = <316,6,354,36>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansMedium22pt;
     preset Visible = false;
@@ -1866,10 +1909,60 @@ class NaviAlertMessage : Core::Group
   $rect <20,20,160,60>
   object Views::Text NaviSpeedUnit
   {
-    preset Bounds = <354,9,395,31>;
+    preset Bounds = <356,12,397,34>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansMedium16pt;
     preset Visible = false;
+  }
+
+  $rect <230,70,430,110>
+  property bool IsSpeedDisplayed;
+
+  $rect <230,110,430,150>
+  onset IsSpeedDisplayed
+  {
+    if( pure IsSpeedDisplayed != value )
+    {
+      // Remember the property's new value.
+      pure IsSpeedDisplayed = value;
+
+      NaviSpeed.Visible = value;
+      NaviSpeedUnit.Visible = value;
+    }
+  }
+
+  $rect <470,70,670,110>
+  property color Color;
+
+  $rect <470,110,670,150>
+  onset Color
+  {
+    // Remember the property's new value.
+    pure Color = value;
+    NaviEventBg.Color = value;
+  }
+
+  $rect <230,180,430,220>
+  property Resources::Bitmap Icon;
+
+  $rect <230,220,430,260>
+  onset Icon
+  {
+    // Remember the property's new value.
+    pure Icon = value;
+    NaviAlertIcon.Bitmap = value;
+  }
+
+  $rect <470,180,670,220>
+  property string Message;
+
+  $rect <470,220,670,260>
+  onset Message
+  {
+    // Remember the property's new value.
+    pure Message = value;
+    EventType.String = value;
   }
 }
 
@@ -4046,5 +4139,53 @@ class NaviZoomToast : Core::Group
     preset Bounds = <0,3,70,24>;
     preset String = "";
     preset Font = Fonts::NotoSansMedium16pt;
+  }
+}
+
+$rect <20,480,220,520>
+$output false
+class ReRoute : Core::Group
+{
+  $rect <0,80,200,120>
+  inherited property Bounds = <0,0,480,46>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle ReRouteBg
+  {
+    preset Bounds = <0,0,480,46>;
+    preset Color = Color::NAVI_GRAY;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ReRouteIcon
+  {
+    preset Bounds = <10,6,34,30>;
+    preset Bitmap = Resource::AlertRouteIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ReRouteMessage
+  {
+    preset Bounds = <38,2,470,33>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <250,90,450,130>
+  property string Message;
+
+  $rect <250,130,450,170>
+  onset Message
+  {
+    // The value doesn't change - nothing to do.
+    if( pure Message != value )
+    {
+      // Remember the property's new value.
+      pure Message = value;
+
+      ReRouteMessage.String = value;
+    }
+
   }
 }

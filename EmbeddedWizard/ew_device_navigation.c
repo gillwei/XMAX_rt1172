@@ -50,8 +50,8 @@
     static int ew_notify_speed_limit_update( void );
 #endif
 
-#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviEventUpdate_
-    static int ew_notify_navi_event_update( void );
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviAlertUpdate_
+    static int ew_notify_navi_alert_update( void );
 #endif
 
 #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate_
@@ -128,8 +128,8 @@
         #ifdef _DeviceInterfaceNavigationDeviceClass__NotifySpeedLimitUpdate_
             ew_notify_speed_limit_update,
         #endif
-        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviEventUpdate_
-            ew_notify_navi_event_update,
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviAlertUpdate_
+            ew_notify_navi_alert_update,
         #endif
         #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNavigatingStatusUpdate_
             ew_notify_navi_navigating_status_update,
@@ -168,7 +168,7 @@
     static int is_eta_update = 0;
     static int is_daynight_mode_update = 0;
     static int is_speed_limit_update = 0;
-    static int is_navi_event_update = 0;
+    static int is_navi_alert_update = 0;
     static int is_navigating_status_update = 0;
     static int is_tbt_list_update = 0;
     static int is_route_cal_progress_update = 0;
@@ -451,22 +451,22 @@ bool ew_navi_is_route_guidance_started
 /*********************************************************************
 *
 * @private
-* ew_notify_navi_event_update
+* ew_notify_navi_alert_update
 *
-* Notify EW GUI that navi event has received.
+* Notify EW GUI that navi alert has received.
 *
 *********************************************************************/
-#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviEventUpdate_
-    static int ew_notify_navi_event_update
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyNaviAlertUpdate_
+    static int ew_notify_navi_alert_update
         (
         void
         )
     {
     int need_update = 0;
-    if( is_navi_event_update )
+    if( is_navi_alert_update )
         {
-        is_navi_event_update = 0;
-        DeviceInterfaceNavigationDeviceClass__NotifyNaviEventUpdate( device_object );
+        is_navi_alert_update = 0;
+        DeviceInterfaceNavigationDeviceClass__NotifyNaviAlertUpdate( device_object );
         need_update = 1;
         }
     return need_update;
@@ -840,18 +840,18 @@ void EW_notify_speed_limit_update
 /*********************************************************************
 *
 * @public
-* EW_notify_navi_event_update
+* EW_notify_navi_alert_update
 *
-* Notify Embedded Wizard that the navigation event is updated.
+* Notify Embedded Wizard that the navigation alert is updated.
 *
 *********************************************************************/
-void EW_notify_navi_event_update
+void EW_notify_navi_alert_update
     (
     void
     )
 {
 #ifdef _DeviceInterfaceNavigationDeviceClass_
-    is_navi_event_update = 1;
+    is_navi_alert_update = 1;
     EwBspEventTrigger();
 #endif
 }

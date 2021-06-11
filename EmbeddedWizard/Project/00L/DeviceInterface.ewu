@@ -951,15 +951,15 @@ class NavigationDeviceClass : Templates::DeviceClass
   }
 
   $rect <240,390,440,430>
-  object Core::SystemEvent NaviIncidentUpdateEvent;
+  object Core::SystemEvent NavigationAlertUpdateEvent;
 
   // This method is intended to be called by the device to notify the GUI application \
   // about a particular system event.
   $rect <40,390,240,430>
   $output true
-  method void NotifyNaviEventUpdate()
+  method void NotifyNaviAlertUpdate()
   {
-    NaviIncidentUpdateEvent.Trigger( null, false );
+    NavigationAlertUpdateEvent.Trigger( null, false );
   }
 
   $rect <730,690,930,730>
@@ -1002,6 +1002,7 @@ class NavigationDeviceClass : Templates::DeviceClass
               NaviData->NaviCameraType = navi_event_obj.camera_type;
               NaviData->NaviEventDist = EwNewStringUtf8( ( const unsigned char* )navi_event_obj.dist, ( int )strlen( navi_event_obj.dist ) );
               NaviData->NaviEventSpeed = EwNewStringUtf8( ( const unsigned char* )navi_event_obj.speed, ( int )strlen( navi_event_obj.speed ) );
+              NaviData->NaviEventDesc = EwNewStringUtf8( ( const unsigned char* )navi_event_obj.desc, ( int )strlen( navi_event_obj.desc ) );
               NaviData->NaviEventVisibility = navi_event_obj.visibility;
             }
             else
@@ -1414,7 +1415,7 @@ class NavigationDeviceClass : Templates::DeviceClass
   // Methods
   note group Note1
   {
-    attr Bounds = <20,610,1010,1180>;
+    attr Bounds = <20,610,1190,1180>;
   }
 
   // Variables
@@ -1560,6 +1561,58 @@ class NavigationDeviceClass : Templates::DeviceClass
   }
 
   $rect <410,980,610,1020>
+  method bool IsSpeedingAlertReceived()
+  {
+    $if !$prototyper
+      var bool SpeedingEventStatus = false;
+      native( SpeedingEventStatus )
+      {
+        SpeedingEventStatus = NAVI_is_specified_event_received( EnumNaviAlertTypeSPEED, EnumNaviCameraTypeTYPE_UNDEFINED );
+      }
+      return SpeedingEventStatus;
+    $else
+      return false;
+    $endif
+  }
+
+  $rect <410,1020,610,1060>
+  method void RemoveSpeedingAlert()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_remove_specified_event( EnumNaviAlertTypeSPEED, EnumNaviCameraTypeTYPE_UNDEFINED );
+      }
+    $endif
+  }
+
+  $rect <80,980,280,1020>
+  method bool IsReRouteAlertReceived()
+  {
+    $if !$prototyper
+      var bool ReRouteEventStatus = false;
+      native( ReRouteEventStatus )
+      {
+        ReRouteEventStatus = NAVI_is_specified_event_received( EnumNaviAlertTypeTRAFFIC, EnumNaviCameraTypeTYPE_UNDEFINED );
+      }
+      return ReRouteEventStatus;
+    $else
+      return false;
+    $endif
+  }
+
+  $rect <80,1020,280,1060>
+  method void RemoteReRouteAlert()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_remove_specified_event( EnumNaviAlertTypeTRAFFIC, EnumNaviCameraTypeTYPE_UNDEFINED );
+      }
+    $endif
+  }
+
+  $rect <730,1050,930,1090>
   method bool IsJcvReceived()
   {
     $if !$prototyper
@@ -1571,6 +1624,47 @@ class NavigationDeviceClass : Templates::DeviceClass
       return ShowJcv;
     $else
       return false;
+    $endif
+  }
+
+  $rect <970,650,1170,690>
+  method string GetRerouteAlertMessage()
+  {
+    $if !$prototyper
+      var string Message;
+      native( Message )
+      {
+        char* reroute_message;
+        NAVI_get_reroute_alert_message( &reroute_message );
+        Message = EwNewStringUtf8( ( const unsigned char* )reroute_message, ( int )strlen( reroute_message ) );
+      }
+      return Message;
+    $endif
+  }
+
+  $rect <970,690,1170,730>
+  method bool GetAlertDisplayStatus()
+  {
+    $if !$prototyper
+      var bool AlertDisplayStatus = false;
+      native( AlertDisplayStatus )
+      {
+        AlertDisplayStatus = NAVI_get_alert_display_status();
+      }
+      return AlertDisplayStatus;
+    $else
+      return false;
+    $endif
+  }
+
+  $rect <970,730,1170,770>
+  method void EnableAlertDisplayFlag()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_enable_alert_display_flag();
+      }
     $endif
   }
 }
@@ -3819,6 +3913,10 @@ class NaviDataClass
   $rect <490,180,690,220>
   $output true
   var string ZoomLevel;
+
+  $rect <490,220,690,260>
+  $output true
+  var string NaviEventDesc;
 }
 
 $rect <811,190,1011,230>

@@ -1677,4 +1677,16 @@ EW_RES_WITHOUT_VARIANTS( ResourceZoomInNightDisableIcon )
 /* Table with links to derived variants of the bitmap resource : 'Resource::ZoomOutDayDisableIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceZoomOutDayDisableIcon )
 
+/* Include a file containing the bitmap resource : 'Resource::SafeBorder' */
+#include "_ResourceSafeBorder.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SafeBorder' */
+EW_RES_WITHOUT_VARIANTS( ResourceSafeBorder )
+
+/* Include a file containing the bitmap resource : 'Resource::AlertRouteIcon' */
+#include "_ResourceAlertRouteIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::AlertRouteIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceAlertRouteIcon )
+
 /* Embedded Wizard */

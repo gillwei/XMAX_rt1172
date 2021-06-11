@@ -274,6 +274,12 @@ extern const XStringRes StringsNAV01_RISK_ZONE;
 /* User defined constant: 'Strings::NAV01_UNKNOWN' */
 extern const XStringRes StringsNAV01_UNKNOWN;
 
+/* User defined constant: 'Strings::NAV01_STATE_BORDER' */
+extern const XStringRes StringsNAV01_STATE_BORDER;
+
+/* User defined constant: 'Strings::NAV01_COUNTRY_BORDER' */
+extern const XStringRes StringsNAV01_COUNTRY_BORDER;
+
 /* User defined constant: 'Strings::NAV01_SCHOOL_ZONE' */
 extern const XStringRes StringsNAV01_SCHOOL_ZONE;
 

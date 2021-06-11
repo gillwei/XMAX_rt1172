@@ -97,7 +97,7 @@ void EW_notify_current_road_update( void );
 void EW_notify_eta_update( void );
 void EW_notify_daynight_mode_update( void );
 void EW_notify_speed_limit_update( void );
-void EW_notify_navi_event_update( void );
+void EW_notify_navi_alert_update( void );
 void EW_notify_navigating_status_update( void );
 void EW_notify_tbt_list_update( void );
 void EW_notify_route_cal_progress_update( void );

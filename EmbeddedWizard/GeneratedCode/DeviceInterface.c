@@ -1022,7 +1022,7 @@ void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Init( &_this->ETAUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->DayNightModeUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->SpeedLimitUpdateEvent, &_this->_.XObject, 0 );
-  CoreSystemEvent__Init( &_this->NaviIncidentUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->NavigationAlertUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->NavigatingStatusUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->TbtListUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->RouteCalProgressUpdateEvent, &_this->_.XObject, 0 );
@@ -1054,7 +1054,7 @@ void DeviceInterfaceNavigationDeviceClass__ReInit( DeviceInterfaceNavigationDevi
   CoreSystemEvent__ReInit( &_this->ETAUpdateEvent );
   CoreSystemEvent__ReInit( &_this->DayNightModeUpdateEvent );
   CoreSystemEvent__ReInit( &_this->SpeedLimitUpdateEvent );
-  CoreSystemEvent__ReInit( &_this->NaviIncidentUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->NavigationAlertUpdateEvent );
   CoreSystemEvent__ReInit( &_this->NavigatingStatusUpdateEvent );
   CoreSystemEvent__ReInit( &_this->TbtListUpdateEvent );
   CoreSystemEvent__ReInit( &_this->RouteCalProgressUpdateEvent );
@@ -1079,7 +1079,7 @@ void DeviceInterfaceNavigationDeviceClass__Done( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Done( &_this->ETAUpdateEvent );
   CoreSystemEvent__Done( &_this->DayNightModeUpdateEvent );
   CoreSystemEvent__Done( &_this->SpeedLimitUpdateEvent );
-  CoreSystemEvent__Done( &_this->NaviIncidentUpdateEvent );
+  CoreSystemEvent__Done( &_this->NavigationAlertUpdateEvent );
   CoreSystemEvent__Done( &_this->NavigatingStatusUpdateEvent );
   CoreSystemEvent__Done( &_this->TbtListUpdateEvent );
   CoreSystemEvent__Done( &_this->RouteCalProgressUpdateEvent );
@@ -1175,15 +1175,15 @@ void DeviceInterfaceNavigationDeviceClass__NotifySpeedLimitUpdate( void* _this )
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyNaviEventUpdate( DeviceInterfaceNavigationDeviceClass _this )
+void DeviceInterfaceNavigationDeviceClass_NotifyNaviAlertUpdate( DeviceInterfaceNavigationDeviceClass _this )
 {
-  CoreSystemEvent_Trigger( &_this->NaviIncidentUpdateEvent, 0, 0 );
+  CoreSystemEvent_Trigger( &_this->NavigationAlertUpdateEvent, 0, 0 );
 }
 
-/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNaviEventUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyNaviEventUpdate( void* _this )
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNaviAlertUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyNaviAlertUpdate( void* _this )
 {
-  DeviceInterfaceNavigationDeviceClass_NotifyNaviEventUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+  DeviceInterfaceNavigationDeviceClass_NotifyNaviAlertUpdate((DeviceInterfaceNavigationDeviceClass)_this );
 }
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviData()' */
@@ -1230,6 +1230,7 @@ DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( D
             NaviData->NaviCameraType = navi_event_obj.camera_type;
             NaviData->NaviEventDist = EwNewStringUtf8( ( const unsigned char* )navi_event_obj.dist, ( int )strlen( navi_event_obj.dist ) );
             NaviData->NaviEventSpeed = EwNewStringUtf8( ( const unsigned char* )navi_event_obj.speed, ( int )strlen( navi_event_obj.speed ) );
+            NaviData->NaviEventDesc = EwNewStringUtf8( ( const unsigned char* )navi_event_obj.desc, ( int )strlen( navi_event_obj.desc ) );
             NaviData->NaviEventVisibility = navi_event_obj.visibility;
           }
           else
@@ -1722,6 +1723,50 @@ XBool DeviceInterfaceNavigationDeviceClass_OnGetNaviAppSppConnected( DeviceInter
   return IsNaviAppSppConnected;
 }
 
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsSpeedingAlertReceived()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsSpeedingAlertReceived( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XBool SpeedingEventStatus;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  SpeedingEventStatus = 0;
+  SpeedingEventStatus = NAVI_is_specified_event_received( EnumNaviAlertTypeSPEED, EnumNaviCameraTypeTYPE_UNDEFINED );
+  return SpeedingEventStatus;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.RemoveSpeedingAlert()' */
+void DeviceInterfaceNavigationDeviceClass_RemoveSpeedingAlert( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_remove_specified_event( EnumNaviAlertTypeSPEED, EnumNaviCameraTypeTYPE_UNDEFINED );
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsReRouteAlertReceived()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsReRouteAlertReceived( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XBool ReRouteEventStatus;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ReRouteEventStatus = 0;
+  ReRouteEventStatus = NAVI_is_specified_event_received( EnumNaviAlertTypeTRAFFIC, EnumNaviCameraTypeTYPE_UNDEFINED );
+  return ReRouteEventStatus;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.RemoteReRouteAlert()' */
+void DeviceInterfaceNavigationDeviceClass_RemoteReRouteAlert( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_remove_specified_event( EnumNaviAlertTypeTRAFFIC, EnumNaviCameraTypeTYPE_UNDEFINED );
+}
+
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsJcvReceived()' */
 XBool DeviceInterfaceNavigationDeviceClass_IsJcvReceived( DeviceInterfaceNavigationDeviceClass _this )
 {
@@ -1733,6 +1778,45 @@ XBool DeviceInterfaceNavigationDeviceClass_IsJcvReceived( DeviceInterfaceNavigat
   ShowJcv = 0;
   ShowJcv = NAVI_is_Jcv_recevied();
   return ShowJcv;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetRerouteAlertMessage()' */
+XString DeviceInterfaceNavigationDeviceClass_GetRerouteAlertMessage( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XString Message;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Message = 0;
+  {
+    char* reroute_message;
+    NAVI_get_reroute_alert_message( &reroute_message );
+    Message = EwNewStringUtf8( ( const unsigned char* )reroute_message, ( int )strlen( reroute_message ) );
+  }
+  return Message;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetAlertDisplayStatus()' */
+XBool DeviceInterfaceNavigationDeviceClass_GetAlertDisplayStatus( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XBool AlertDisplayStatus;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  AlertDisplayStatus = 0;
+  AlertDisplayStatus = NAVI_get_alert_display_status();
+  return AlertDisplayStatus;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.EnableAlertDisplayFlag()' */
+void DeviceInterfaceNavigationDeviceClass_EnableAlertDisplayFlag( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_enable_alert_display_flag();
 }
 
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */

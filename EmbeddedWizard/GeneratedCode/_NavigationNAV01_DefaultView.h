@@ -52,6 +52,7 @@
 #include "_NavigationNaviCurrentRoad.h"
 #include "_NavigationNaviETA.h"
 #include "_NavigationNaviZoomToast.h"
+#include "_NavigationReRoute.h"
 #include "_PopPOP16_NaviLoadingUI.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -129,6 +130,7 @@ EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( SpeedLimitIcon,  ViewsImage )
   EW_OBJECT  ( SpeedLimitText,  ViewsText )
   EW_OBJECT  ( NaviEventObject, NavigationNaviAlert )
+  EW_OBJECT  ( ReRouteObject,   NavigationReRoute )
   EW_OBJECT  ( StatusBarShadowImage, ViewsWallpaper )
   EW_OBJECT  ( Mask,            ViewsRectangle )
   EW_OBJECT  ( MapUpdateEventHandler, CoreSystemEventHandler )
@@ -137,21 +139,23 @@ EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( DayNightModeUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( HighlightTimer,  CoreTimer )
   EW_OBJECT  ( SpeedLimitUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( NaviIncidentUpdateEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( NavigationAlertUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( CurrentRoadShiftEffect, EffectsRectEffect )
   EW_OBJECT  ( NaviEventEnLargeEffect, EffectsRectEffect )
   EW_OBJECT  ( NaviEventDismissEffect, EffectsRectEffect )
   EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( SpeedLimitFlickeringTimer, CoreTimer )
-  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NaviDialogEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NaviDisconnectEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( ZoomToastDismissTimer, CoreTimer )
   EW_OBJECT  ( ZoomLevelUpdateEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( DisableFlickeringTimer, CoreTimer )
+  EW_OBJECT  ( DisableReRouteAlertTimer, CoreTimer )
   EW_VARIABLE( MapFrameIdx,     XInt32 )
   EW_PROPERTY( ZoomAction,      XEnum )
+  EW_PROPERTY( ReRouteEventStatus, XBool )
+  EW_PROPERTY( SpeedingEventStatus, XBool )
   EW_PROPERTY( IsJcvDisplayed,  XBool )
-  EW_VARIABLE( IsEventDisplaying, XBool )
 EW_END_OF_FIELDS( NavigationNAV01_DefaultView )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV01_DefaultView' */
@@ -267,7 +271,7 @@ void NavigationNAV01_DefaultView_OnSpeedLimitUpdateSlot( NavigationNAV01_Default
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void NavigationNAV01_DefaultView_OnNaviIncidentUpdateSlot( NavigationNAV01_DefaultView _this, 
+void NavigationNAV01_DefaultView_OnNavigationAlertUpdateSlot( NavigationNAV01_DefaultView _this, 
   XObject sender );
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnCurrentRoadShiftEffectFinishSlot()' */
@@ -293,11 +297,6 @@ void NavigationNAV01_DefaultView_OnNavigatingStatusUpdateSlot( NavigationNAV01_D
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnSpeedLimitFlickeringSlot()' */
 void NavigationNAV01_DefaultView_OnSpeedLimitFlickeringSlot( NavigationNAV01_DefaultView _this, 
-  XObject sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV01_DefaultView_OnVehicleSpeedUpdateSlot( NavigationNAV01_DefaultView _this, 
   XObject sender );
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.SetItemBounds()' */
@@ -336,6 +335,22 @@ void NavigationNAV01_DefaultView_OnZoomLevelUpdateSlot( NavigationNAV01_DefaultV
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.ShowZoomToast()' */
 void NavigationNAV01_DefaultView_ShowZoomToast( NavigationNAV01_DefaultView _this );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnDisableFlickeringSlot()' */
+void NavigationNAV01_DefaultView_OnDisableFlickeringSlot( NavigationNAV01_DefaultView _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnDisableReRouteAlertSlot()' */
+void NavigationNAV01_DefaultView_OnDisableReRouteAlertSlot( NavigationNAV01_DefaultView _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnSetSpeedingEventStatus()' */
+void NavigationNAV01_DefaultView_OnSetSpeedingEventStatus( NavigationNAV01_DefaultView _this, 
+  XBool value );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnSetReRouteEventStatus()' */
+void NavigationNAV01_DefaultView_OnSetReRouteEventStatus( NavigationNAV01_DefaultView _this, 
+  XBool value );
 
 #ifdef __cplusplus
   }

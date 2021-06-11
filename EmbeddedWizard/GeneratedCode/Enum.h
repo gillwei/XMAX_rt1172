@@ -362,7 +362,9 @@ typedef enum
   EnumNaviAlertTypeSPEED                = 1,
   EnumNaviAlertTypeCAMERA               = 2,
   EnumNaviAlertTypeBORDER               = 3,
-  EnumNaviAlertTypeSCHOOL               = 4
+  EnumNaviAlertTypeSCHOOL               = 4,
+  EnumNaviAlertTypeOTHER                = 5,
+  EnumNaviAlertTypeTOTAL                = 6
 } EnumNaviAlertType;
 
 /* User defined enumeration: 'Enum::NaviAlertAnimationType' */
@@ -634,7 +636,10 @@ typedef enum
   EnumNaviCameraTypeDANGEROUS_ZONE      = 8,
   EnumNaviCameraTypeDANGEROUS_POINT     = 9,
   EnumNaviCameraTypeRISK_ZONE           = 10,
-  EnumNaviCameraTypeUNKNOWN             = 11
+  EnumNaviCameraTypeUNKNOWN             = 11,
+  EnumNaviCameraTypeSTATE_BORDER        = 12,
+  EnumNaviCameraTypeCOUNTRY_BORDER      = 13,
+  EnumNaviCameraTypeTYPE_UNDEFINED      = 14
 } EnumNaviCameraType;
 
 /* User defined enumeration: 'Enum::TimeType' */

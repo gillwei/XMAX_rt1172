@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _NavigationNaviAlertMessage_H
-#define _NavigationNaviAlertMessage_H
+#ifndef _NavigationReRoute_H
+#define _NavigationReRoute_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,7 +42,6 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -90,34 +89,23 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Navigation::NaviAlertMessage */
-#ifndef _NavigationNaviAlertMessage_
-  EW_DECLARE_CLASS( NavigationNaviAlertMessage )
-#define _NavigationNaviAlertMessage_
-#endif
-
-/* Forward declaration of the class Resources::Bitmap */
-#ifndef _ResourcesBitmap_
-  EW_DECLARE_CLASS( ResourcesBitmap )
-#define _ResourcesBitmap_
+/* Forward declaration of the class Navigation::ReRoute */
+#ifndef _NavigationReRoute_
+  EW_DECLARE_CLASS( NavigationReRoute )
+#define _NavigationReRoute_
 #endif
 
 
-/* Deklaration of class : 'Navigation::NaviAlertMessage' */
-EW_DEFINE_FIELDS( NavigationNaviAlertMessage, CoreGroup )
-  EW_PROPERTY( Icon,            ResourcesBitmap )
-  EW_OBJECT  ( NaviEventBg,     ViewsRectangle )
-  EW_OBJECT  ( NaviAlertIcon,   ViewsImage )
-  EW_OBJECT  ( EventType,       ComponentsBaseText )
-  EW_OBJECT  ( NaviSpeed,       ViewsText )
-  EW_OBJECT  ( NaviSpeedUnit,   ViewsText )
+/* Deklaration of class : 'Navigation::ReRoute' */
+EW_DEFINE_FIELDS( NavigationReRoute, CoreGroup )
+  EW_OBJECT  ( ReRouteBg,       ViewsRectangle )
+  EW_OBJECT  ( ReRouteIcon,     ViewsImage )
+  EW_OBJECT  ( ReRouteMessage,  ViewsText )
   EW_PROPERTY( Message,         XString )
-  EW_PROPERTY( Color,           XColor )
-  EW_PROPERTY( IsSpeedDisplayed, XBool )
-EW_END_OF_FIELDS( NavigationNaviAlertMessage )
+EW_END_OF_FIELDS( NavigationReRoute )
 
-/* Virtual Method Table (VMT) for the class : 'Navigation::NaviAlertMessage' */
-EW_DEFINE_METHODS( NavigationNaviAlertMessage, CoreGroup )
+/* Virtual Method Table (VMT) for the class : 'Navigation::ReRoute' */
+EW_DEFINE_METHODS( NavigationReRoute, CoreGroup )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -159,28 +147,15 @@ EW_DEFINE_METHODS( NavigationNaviAlertMessage, CoreGroup )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-EW_END_OF_METHODS( NavigationNaviAlertMessage )
+EW_END_OF_METHODS( NavigationReRoute )
 
-/* 'C' function for method : 'Navigation::NaviAlertMessage.OnSetIsSpeedDisplayed()' */
-void NavigationNaviAlertMessage_OnSetIsSpeedDisplayed( NavigationNaviAlertMessage _this, 
-  XBool value );
-
-/* 'C' function for method : 'Navigation::NaviAlertMessage.OnSetColor()' */
-void NavigationNaviAlertMessage_OnSetColor( NavigationNaviAlertMessage _this, XColor 
-  value );
-
-/* 'C' function for method : 'Navigation::NaviAlertMessage.OnSetIcon()' */
-void NavigationNaviAlertMessage_OnSetIcon( NavigationNaviAlertMessage _this, ResourcesBitmap 
-  value );
-
-/* 'C' function for method : 'Navigation::NaviAlertMessage.OnSetMessage()' */
-void NavigationNaviAlertMessage_OnSetMessage( NavigationNaviAlertMessage _this, 
-  XString value );
+/* 'C' function for method : 'Navigation::ReRoute.OnSetMessage()' */
+void NavigationReRoute_OnSetMessage( NavigationReRoute _this, XString value );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _NavigationNaviAlertMessage_H */
+#endif /* _NavigationReRoute_H */
 
 /* Embedded Wizard */

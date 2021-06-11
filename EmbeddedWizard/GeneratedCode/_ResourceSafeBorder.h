@@ -24,34 +24,24 @@
 *
 *******************************************************************************/
 
-#include "ewlocale.h"
-#include "Color.h"
+/* Bitmap resource : 'Resource::SafeBorder' */
+EW_DEFINE_BITMAP_RES( ResourceSafeBorder )
+  EW_BITMAP_FRAMES( ResourceSafeBorder, Default, EW_DRIVER_VARIANT_RGBA8888, 24, 24, 0 )
+    EW_BITMAP_FRAME( 5, 12, 14, 4, 0x00000000, 0x00000000 )
+    EW_BITMAP_MAPPING( ResourceSafeBorder, Default )
 
-/* User defined constant: 'Color::RED' */
-const XColor ColorRED = { 0xFF, 0x00, 0x00, 0xFF };
+  EW_BITMAP_PIXEL( ResourceSafeBorder, Default )                /* ratio 6.94 % */
+    0x1C080100, 0xC1A0B048, 0x2A130883, 0xA1B0C85C, 0x231087C3, 0xB1489C4A, 0x188BC5A2,
+    0xC8DC6A33, 0x8FC7A3B1, 0x0BB642FF, 0xC9A4B249, 0xAA532893, 0xDDB2695C, 0x632C0047,
+    0xF3399CCA, 0x378E4A65, 0xB8F4E617, 0x844F6333, 0xB506373F, 0x5160B438, 0x2627478C,
+    0x62B4B815, 0x9F4D8853, 0xB549A52A, 0x569B4D2A, 0x893D6AB3, 0xACD7AB75, 0x1D7E475D,
+    0x4BE5D2CB, 0xA6A12C9D, 0xAD744B3D, 0xDB6C98C3, 0x373B54AE, 0x6292452E, 0x5BCDD25B,
+    0xBFDDACD2, 0x1E0B0380, 0xE1B0B84C, 0x020305C3, 0x00000000
 
-/* User defined constant: 'Color::GREEN' */
-const XColor ColorGREEN = { 0x00, 0xFF, 0x00, 0xFF };
+  EW_BITMAP_CLUT_EMPTY( ResourceSafeBorder, Default )
 
-/* User defined constant: 'Color::BLUE' */
-const XColor ColorBLUE = { 0x00, 0x00, 0xFF, 0xFF };
-
-/* User defined constant: 'Color::WHITE' */
-const XColor ColorWHITE = { 0xFF, 0xFF, 0xFF, 0xFF };
-
-/* User defined constant: 'Color::BLACK' */
-const XColor ColorBLACK = { 0x00, 0x00, 0x00, 0xFF };
-
-/* User defined constant: 'Color::GRAY_FOR_DISABLED' */
-const XColor ColorGRAY_FOR_DISABLED = { 0x64, 0x64, 0x64, 0xFF };
-
-/* User defined constant: 'Color::NAVI_GRAY' */
-const XColor ColorNAVI_GRAY = { 0x76, 0x78, 0x79, 0xFF };
-
-/* User defined constant: 'Color::NAVI_ORANGE' */
-const XColor ColorNAVI_ORANGE = { 0xE2, 0x7F, 0x07, 0xFF };
-
-/* User defined constant: 'Color::NAVI_RED' */
-const XColor ColorNAVI_RED = { 0xAA, 0x14, 0x15, 0xFF };
+  EW_BITMAPS_TABLE( ResourceSafeBorder )
+    EW_BITMAP( ResourceSafeBorder, Default )
+EW_END_OF_BITMAP_RES( ResourceSafeBorder )
 
 /* Embedded Wizard */

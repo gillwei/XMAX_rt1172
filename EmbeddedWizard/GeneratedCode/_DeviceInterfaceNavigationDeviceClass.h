@@ -77,7 +77,7 @@ EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( ETAUpdateEvent,  CoreSystemEvent )
   EW_OBJECT  ( DayNightModeUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( SpeedLimitUpdateEvent, CoreSystemEvent )
-  EW_OBJECT  ( NaviIncidentUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( NavigationAlertUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( NavigatingStatusUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( TbtListUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( RouteCalProgressUpdateEvent, CoreSystemEvent )
@@ -155,13 +155,13 @@ void DeviceInterfaceNavigationDeviceClass__NotifySpeedLimitUpdate( void* _this )
 
 /* This method is intended to be called by the device to notify the GUI application 
    about a particular system event. */
-void DeviceInterfaceNavigationDeviceClass_NotifyNaviEventUpdate( DeviceInterfaceNavigationDeviceClass _this );
+void DeviceInterfaceNavigationDeviceClass_NotifyNaviAlertUpdate( DeviceInterfaceNavigationDeviceClass _this );
 
-/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNaviEventUpdate()' */
-void DeviceInterfaceNavigationDeviceClass__NotifyNaviEventUpdate( void* _this );
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyNaviAlertUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyNaviAlertUpdate( void* _this );
 
-/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyNaviEventUpdate(). */
-#define _DeviceInterfaceNavigationDeviceClass__NotifyNaviEventUpdate_
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyNaviAlertUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyNaviAlertUpdate_
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviData()' */
 DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( DeviceInterfaceNavigationDeviceClass _this, 
@@ -349,8 +349,29 @@ XEnum DeviceInterfaceNavigationDeviceClass_GetNaviDialogDefaultButton( DeviceInt
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.OnGetNaviAppSppConnected()' */
 XBool DeviceInterfaceNavigationDeviceClass_OnGetNaviAppSppConnected( DeviceInterfaceNavigationDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsSpeedingAlertReceived()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsSpeedingAlertReceived( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.RemoveSpeedingAlert()' */
+void DeviceInterfaceNavigationDeviceClass_RemoveSpeedingAlert( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsReRouteAlertReceived()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsReRouteAlertReceived( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.RemoteReRouteAlert()' */
+void DeviceInterfaceNavigationDeviceClass_RemoteReRouteAlert( DeviceInterfaceNavigationDeviceClass _this );
+
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsJcvReceived()' */
 XBool DeviceInterfaceNavigationDeviceClass_IsJcvReceived( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetRerouteAlertMessage()' */
+XString DeviceInterfaceNavigationDeviceClass_GetRerouteAlertMessage( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetAlertDisplayStatus()' */
+XBool DeviceInterfaceNavigationDeviceClass_GetAlertDisplayStatus( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.EnableAlertDisplayFlag()' */
+void DeviceInterfaceNavigationDeviceClass_EnableAlertDisplayFlag( DeviceInterfaceNavigationDeviceClass _this );
 
 #ifdef __cplusplus
   }
