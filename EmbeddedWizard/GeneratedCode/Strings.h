@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/06/18 11:54:50 */
+   Generated: 2021/06/25 11:56:37 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -345,6 +345,15 @@ extern const XStringRes StringsPOP09_CONNECTION_FAILED;
 
 /* User defined constant: 'Strings::POP17_APP_INIT_SETTING_FAILED' */
 extern const XStringRes StringsPOP17_APP_INIT_SETTING_FAILED;
+
+/* User defined constant: 'Strings::POP18_POI_LOADING_FAILED' */
+extern const XStringRes StringsPOP18_POI_LOADING_FAILED;
+
+/* User defined constant: 'Strings::POP18_NO_FAVORITE_PLACE' */
+extern const XStringRes StringsPOP18_NO_FAVORITE_PLACE;
+
+/* User defined constant: 'Strings::POP18_NO_GAS_STATION' */
+extern const XStringRes StringsPOP18_NO_GAS_STATION;
 
 /* User defined constant: 'Strings::SET01_TRACTION_CONTROL' */
 extern const XStringRes StringsSET01_TRACTION_CONTROL;

@@ -183,6 +183,8 @@ EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseMainBG )
     aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemHour,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( MenuBaseMenuView )
 
 /* super( value ); */
@@ -287,6 +289,18 @@ XString MenuBaseMenuView_LoadItemMinute( MenuBaseMenuView _this, XInt32 aItemNo 
 
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemMinute()' */
 XString MenuBaseMenuView__LoadItemMinute( void* _this, XInt32 aItemNo );
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadPoiListItemValue()' */
+XString MenuBaseMenuView_LoadPoiListItemValue( MenuBaseMenuView _this, XInt32 aItemNo );
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadPoiListItemValue()' */
+XString MenuBaseMenuView__LoadPoiListItemValue( void* _this, XInt32 aItemNo );
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadPoiListItemUnit()' */
+XString MenuBaseMenuView_LoadPoiListItemUnit( MenuBaseMenuView _this, XInt32 aItemNo );
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadPoiListItemUnit()' */
+XString MenuBaseMenuView__LoadPoiListItemUnit( void* _this, XInt32 aItemNo );
 
 #ifdef __cplusplus
   }

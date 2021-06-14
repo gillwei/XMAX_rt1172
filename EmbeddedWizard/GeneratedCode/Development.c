@@ -550,6 +550,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, ItemTitleArray, ItemTitl
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( DevelopmentDEV_Main )
 
 /* Initializer for the class 'Development::DEV_RealTimeClock' */
@@ -1214,6 +1216,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_MotoCon, MenuBaseMenuView, ItemTitleArray, ItemT
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( DevelopmentDEV_MotoCon )
 
 /* Initializer for the class 'Development::DEV_VehicleSupportedFunction' */
@@ -1441,6 +1445,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView, Item
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( DevelopmentDEV_VehicleSupportedFunction )
 
 /* Initializer for the class 'Development::DEV_FontMenu' */
@@ -1639,6 +1645,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_FontMenu, MenuBaseMenuView, ItemTitleArray, Item
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( DevelopmentDEV_FontMenu )
 
 /* Initializer for the class 'Development::DEV_FontTest' */
@@ -1936,6 +1944,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView, ItemTitleArray, It
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( DevelopmentDEV_EEPROMTest )
 
 /* Embedded Wizard */

@@ -608,6 +608,8 @@ EW_DEFINE_CLASS( FactoryMain, MenuBaseMenuView, ItemTitleArray, ItemTitleArray,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( FactoryMain )
 
 /* Initializer for the class 'Factory::DisplayManual' */

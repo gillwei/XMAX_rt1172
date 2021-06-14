@@ -39,6 +39,7 @@
 #include "_MenuItemCheckMark.h"
 #include "_MenuItemCheckbox.h"
 #include "_MenuItemNotification.h"
+#include "_MenuItemPoiList.h"
 #include "_MenuItemTimeHourMinute.h"
 #include "_MenuItemValueUnit.h"
 #include "_MenuItemValueUnit2.h"
@@ -135,6 +136,9 @@ static const XRect _Const0038 = {{ 326, 0 }, { 360, 67 }};
 static const XRect _Const0039 = {{ 290, 0 }, { 321, 67 }};
 static const XRect _Const003A = {{ 362, 0 }, { 416, 67 }};
 static const XRect _Const003B = {{ 290, 0 }, { 417, 67 }};
+static const XRect _Const003C = {{ 37, 1 }, { 233, 76 }};
+static const XRect _Const003D = {{ 253, 18 }, { 351, 52 }};
+static const XRect _Const003E = {{ 357, 18 }, { 417, 52 }};
 
 /* Initializer for the class 'Menu::ItemBase' */
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
@@ -590,6 +594,14 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
             MenuItemWrapper_OnSetMinute( Item, MenuBaseMenuView__LoadItemMinute( 
             OwnerMenu, ItemNo ));
           }
+          else
+            if ( EW_CLASS( MenuItemPoiList ) == Item->ItemClass )
+            {
+              MenuItemWrapper_OnSetPoiListItemValue( Item, MenuBaseMenuView__LoadPoiListItemValue( 
+              OwnerMenu, ItemNo ));
+              MenuItemWrapper_OnSetPoiListItemUnit( Item, MenuBaseMenuView__LoadPoiListItemUnit( 
+              OwnerMenu, ItemNo ));
+            }
 
     CoreRectView__OnSetBounds( Item, EwSetRectSize( Item->Super2.Bounds, EwNewPoint( 
     EwGetRectW( _this->MenuList.Super2.Bounds ), _this->MenuList.ItemHeight )));
@@ -1409,6 +1421,38 @@ void MenuItemWrapper_OnSetMinute( MenuItemWrapper _this, XString value )
   }
 }
 
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetPoiListItemValue()' */
+void MenuItemWrapper_OnSetPoiListItemValue( MenuItemWrapper _this, XString value )
+{
+  if ( EwCompString( _this->PoiListItemValue, value ) != 0 )
+  {
+    CoreView view;
+    MenuItemPoiList PoiListItem;
+    _this->PoiListItemValue = EwShareString( value );
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    PoiListItem = EwCastObject( view, MenuItemPoiList );
+
+    if ( PoiListItem != 0 )
+      MenuItemPoiList_OnSetValue( PoiListItem, value );
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetPoiListItemUnit()' */
+void MenuItemWrapper_OnSetPoiListItemUnit( MenuItemWrapper _this, XString value )
+{
+  if ( EwCompString( _this->PoiListItemUnit, value ) != 0 )
+  {
+    CoreView view;
+    MenuItemPoiList PoiListItem;
+    _this->PoiListItemUnit = EwShareString( value );
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    PoiListItem = EwCastObject( view, MenuItemPoiList );
+
+    if ( PoiListItem != 0 )
+      MenuItemPoiList_OnSetUnit( PoiListItem, value );
+  }
+}
+
 /* Variants derived from the class : 'Menu::ItemWrapper' */
 EW_DEFINE_CLASS_VARIANTS( MenuItemWrapper )
 EW_END_OF_CLASS_VARIANTS( MenuItemWrapper )
@@ -1961,6 +2005,40 @@ XString MenuBaseMenuView__LoadItemMinute( void* _this, XInt32 aItemNo )
   , aItemNo );
 }
 
+/* 'C' function for method : 'Menu::BaseMenuView.LoadPoiListItemValue()' */
+XString MenuBaseMenuView_LoadPoiListItemValue( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadPoiListItemValue()' */
+XString MenuBaseMenuView__LoadPoiListItemValue( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadPoiListItemValue((MenuBaseMenuView)_this
+  , aItemNo );
+}
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadPoiListItemUnit()' */
+XString MenuBaseMenuView_LoadPoiListItemUnit( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadPoiListItemUnit()' */
+XString MenuBaseMenuView__LoadPoiListItemUnit( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadPoiListItemUnit((MenuBaseMenuView)_this
+  , aItemNo );
+}
+
 /* Variants derived from the class : 'Menu::BaseMenuView' */
 EW_DEFINE_CLASS_VARIANTS( MenuBaseMenuView )
 EW_END_OF_CLASS_VARIANTS( MenuBaseMenuView )
@@ -2026,6 +2104,8 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, Menu, Menu, Menu, Menu,
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( MenuBaseMenuView )
 
 /* Initializer for the class 'Menu::PushButton' */
@@ -3560,5 +3640,136 @@ EW_DEFINE_CLASS( MenuItemValueUnit2, MenuItemValueUnit, _.VMT, _.VMT, _.VMT, _.V
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuItemValueUnit2 )
+
+/* Initializer for the class 'Menu::ItemPoiList' */
+void MenuItemPoiList__Init( MenuItemPoiList _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuItemBase__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemPoiList );
+
+  /* ... then construct all embedded objects */
+  ViewsText__Init( &_this->ValueText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->UnitText, &_this->_.XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( MenuItemPoiList );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const003C );
+  ViewsText_OnSetEllipsis( &_this->Super1.Title, 1 );
+  ViewsText_OnSetWrapText( &_this->Super1.Title, 1 );
+  ViewsText_OnSetAlignment( &_this->Super1.Title, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertTop );
+  ViewsText_OnSetString( &_this->Super1.Title, 0 );
+  CoreRectView__OnSetBounds( &_this->ValueText, _Const003D );
+  ViewsText_OnSetString( &_this->ValueText, 0 );
+  CoreRectView__OnSetBounds( &_this->UnitText, _Const003E );
+  ViewsText_OnSetString( &_this->UnitText, 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ValueText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->UnitText ), 0 );
+  ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->UnitText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+}
+
+/* Re-Initializer for the class 'Menu::ItemPoiList' */
+void MenuItemPoiList__ReInit( MenuItemPoiList _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuItemBase__ReInit( &_this->_.Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsText__ReInit( &_this->ValueText );
+  ViewsText__ReInit( &_this->UnitText );
+}
+
+/* Finalizer method for the class 'Menu::ItemPoiList' */
+void MenuItemPoiList__Done( MenuItemPoiList _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( MenuItemBase );
+
+  /* Finalize all embedded objects */
+  ViewsText__Done( &_this->ValueText );
+  ViewsText__Done( &_this->UnitText );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuItemBase__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Menu::ItemPoiList.OnSetValue()' */
+void MenuItemPoiList_OnSetValue( MenuItemPoiList _this, XString value )
+{
+  if ( EwCompString( _this->Value, value ) != 0 )
+  {
+    _this->Value = EwShareString( value );
+    ViewsText_OnSetString( &_this->ValueText, _this->Value );
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemPoiList.OnSetUnit()' */
+void MenuItemPoiList_OnSetUnit( MenuItemPoiList _this, XString value )
+{
+  if ( EwCompString( _this->Unit, value ) != 0 )
+  {
+    _this->Unit = EwShareString( value );
+    ViewsText_OnSetString( &_this->UnitText, _this->Unit );
+  }
+}
+
+/* Variants derived from the class : 'Menu::ItemPoiList' */
+EW_DEFINE_CLASS_VARIANTS( MenuItemPoiList )
+EW_END_OF_CLASS_VARIANTS( MenuItemPoiList )
+
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemPoiList' */
+EW_DEFINE_CLASS( MenuItemPoiList, MenuItemBase, ValueText, ValueText, ValueText, 
+                 ValueText, Value, _.VMT, "Menu::ItemPoiList" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  MenuItemBase_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  MenuItemBase_UpdateLayout,
+  MenuItemBase_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  MenuItemBase_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  MenuItemBase_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+EW_END_OF_CLASS( MenuItemPoiList )
 
 /* Embedded Wizard */

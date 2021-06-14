@@ -51,6 +51,12 @@
 #define _DeviceInterfaceNaviDataClass_
 #endif
 
+/* Forward declaration of the class DeviceInterface::NaviPoiDataClass */
+#ifndef _DeviceInterfaceNaviPoiDataClass_
+  EW_DECLARE_CLASS( DeviceInterfaceNaviPoiDataClass )
+#define _DeviceInterfaceNaviPoiDataClass_
+#endif
+
 /* Forward declaration of the class DeviceInterface::NaviTbtDataClass */
 #ifndef _DeviceInterfaceNaviTbtDataClass_
   EW_DECLARE_CLASS( DeviceInterfaceNaviTbtDataClass )
@@ -81,6 +87,8 @@ EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( AlertDistanceUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( ConnectStatusUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( DisconnectStatusUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( PoiListUpdateEvent, CoreSystemEvent )
+  EW_VARIABLE( CurrentPoiListType, XEnum )
   EW_VARIABLE( CurrentHome,     XEnum )
   EW_VARIABLE( IsNaviLoadingDialogDisplayed, XBool )
   EW_VARIABLE( IsZoomInOutStatusReceived, XBool )
@@ -305,6 +313,31 @@ XBool DeviceInterfaceNavigationDeviceClass_IsTbtMessageDisplayed( DeviceInterfac
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetTbtListSize()' */
 XInt32 DeviceInterfaceNavigationDeviceClass_GetTbtListSize( DeviceInterfaceNavigationDeviceClass _this );
+
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyPoiListUpdate( DeviceInterfaceNavigationDeviceClass _this );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyPoiListUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyPoiListUpdate( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyPoiListUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyPoiListUpdate_
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetPoiListSize()' */
+XInt32 DeviceInterfaceNavigationDeviceClass_GetPoiListSize( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviPoiData()' */
+DeviceInterfaceNaviPoiDataClass DeviceInterfaceNavigationDeviceClass_GetNaviPoiData( DeviceInterfaceNavigationDeviceClass _this, 
+  XInt32 aPoiItemIdx );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.PoiListRequest()' */
+void DeviceInterfaceNavigationDeviceClass_PoiListRequest( DeviceInterfaceNavigationDeviceClass _this, 
+  XEnum PoiListType, XBool aEnabled );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StartRoute()' */
+void DeviceInterfaceNavigationDeviceClass_StartRoute( DeviceInterfaceNavigationDeviceClass _this, 
+  XInt32 aPoiIdx, XEnum aPoiListType );
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviDialogTimeOut()' */
 XInt32 DeviceInterfaceNavigationDeviceClass_GetNaviDialogTimeOut( DeviceInterfaceNavigationDeviceClass _this );

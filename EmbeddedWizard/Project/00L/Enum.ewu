@@ -1798,3 +1798,17 @@ enum NotificationNativeCall
   $rect <10,160,210,200>
   item TOTAL;
 }
+
+$rect <500,810,700,850>
+$output false
+enum NaviPoiListType
+{
+  $rect <10,10,210,50>
+  item FAVORITE;
+
+  $rect <220,10,420,50>
+  item GAS_STATION;
+
+  $rect <430,10,630,50>
+  item TOTAL;
+}

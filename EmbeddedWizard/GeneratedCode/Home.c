@@ -563,8 +563,7 @@ void HomeBaseHome_OnShortHomeKeyActivated( HomeBaseHome _this )
         case EnumHomeTypeNAVI_DEFAULT_VIEW :
         case EnumHomeTypeNAVI_NEXT_TURN :
         case EnumHomeTypeNAVI_TURN_BY_TURN :
-          ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-          DeviceInterfaceNavigationDeviceClass )->CurrentHome );
+          ApplicationApplication_SwitchToHome( App, NextHomeType );
         break;
 
         case EnumHomeTypeVEHICLE_INFO :

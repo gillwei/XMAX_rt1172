@@ -824,6 +824,14 @@ typedef enum
   EnumNotificationNativeCallTOTAL       = 3
 } EnumNotificationNativeCall;
 
+/* User defined enumeration: 'Enum::NaviPoiListType' */
+typedef enum
+{
+  EnumNaviPoiListTypeFAVORITE           = 0,
+  EnumNaviPoiListTypeGAS_STATION        = 1,
+  EnumNaviPoiListTypeTOTAL              = 2
+} EnumNaviPoiListType;
+
 #ifdef __cplusplus
   }
 #endif

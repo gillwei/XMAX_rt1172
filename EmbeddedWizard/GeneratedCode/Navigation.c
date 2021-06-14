@@ -34,6 +34,7 @@
 #include "_CoreVerticalList.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceNaviDataClass.h"
+#include "_DeviceInterfaceNaviPoiDataClass.h"
 #include "_DeviceInterfaceNaviTbtDataClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
@@ -45,6 +46,7 @@
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
 #include "_MenuItemCheckMark.h"
+#include "_MenuItemPoiList.h"
 #include "_MenuPushButton.h"
 #include "_MenuUpDownPushButtonSet.h"
 #include "_MenuVerticalMenu.h"
@@ -53,6 +55,7 @@
 #include "_NavigationNAV05_TBTView.h"
 #include "_NavigationNAV06_NaviSettingMenu.h"
 #include "_NavigationNAV08_NaviChageViewMenu.h"
+#include "_NavigationNAV09_NAV10_PoiList.h"
 #include "_NavigationNaviAlert.h"
 #include "_NavigationNaviAlertMessage.h"
 #include "_NavigationNaviCurrentRoad.h"
@@ -190,6 +193,7 @@ static const XRect _Const0055 = {{ 69, 200 }, { 271, 240 }};
 static const XRect _Const0056 = {{ 0, 0 }, { 480, 236 }};
 static const XRect _Const0057 = {{ 0, 2 }, { 444, 224 }};
 static const XRect _Const0058 = {{ 441, 5 }, { 473, 221 }};
+static const XRect _Const0059 = {{ 10, 50 }, { 470, 236 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -574,7 +578,6 @@ void NavigationNAV01_DefaultView_ReturnToHome( NavigationNAV01_DefaultView _this
 {
   HomeBaseHome_ReturnToHome((HomeBaseHome)_this );
   HomeBaseHome_OnSetAccessNaviView((HomeBaseHome)_this, 1 );
-  CoreGroup__OnSetVisible( &_this->Super1.LoadingAnimation, 1 );
   DeviceInterfaceNavigationDeviceClass_StartMapFrameRequest( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
   DeviceInterfaceNavigationDeviceClass ));
 }
@@ -1249,9 +1252,25 @@ void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSetting
     break;
 
     case EnumNaviSettingItemFavorites :
+    {
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentPoiListType 
+      = EnumNaviPoiListTypeFAVORITE;
+      DeviceInterfaceNavigationDeviceClass_PoiListRequest( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), EnumNaviPoiListTypeFAVORITE, 1 );
+      MenuDialog = ((MenuBaseMenuView)EwNewObject( NavigationNAV09_NAV10_PoiList, 
+      0 ));
+    }
     break;
 
     case EnumNaviSettingItemNearbyGasStations :
+    {
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentPoiListType 
+      = EnumNaviPoiListTypeGAS_STATION;
+      DeviceInterfaceNavigationDeviceClass_PoiListRequest( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), EnumNaviPoiListTypeGAS_STATION, 1 );
+      MenuDialog = ((MenuBaseMenuView)EwNewObject( NavigationNAV09_NAV10_PoiList, 
+      0 ));
+    }
     break;
 
     case EnumNaviSettingItemChangeView :
@@ -1553,6 +1572,8 @@ EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, NavigatingSt
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( NavigationNAV06_NaviSettingMenu )
 
 /* Initializer for the class 'Navigation::NAV08_NaviChageViewMenu' */
@@ -1789,6 +1810,8 @@ EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, CheckMarkU
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( NavigationNAV08_NaviChageViewMenu )
 
 /* Initializer for the class 'Navigation::NaviCurrentRoad' */
@@ -4577,10 +4600,389 @@ EW_DEFINE_CLASS( NavigationTbtListMenu, CoreGroup, VerticalList, VerticalList, V
   CoreGroup_Add,
 EW_END_OF_CLASS( NavigationTbtListMenu )
 
-/* User defined constant: 'Navigation::TURN_ICON_BOUNDS_WO_DIST' */
-const XRect NavigationTURN_ICON_BOUNDS_WO_DIST = {{ 45, 32 }, { 90, 77 }};
+/* Initializer for the class 'Navigation::NAV09_NAV10_PoiList' */
+void NavigationNAV09_NAV10_PoiList__Init( NavigationNAV09_NAV10_PoiList _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( NavigationNAV09_NAV10_PoiList );
+
+  /* ... then construct all embedded objects */
+  CoreSystemEventHandler__Init( &_this->PoiListUpdateEventHandler, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->PoiListLoadingTimer, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->DataErrorText, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->NoDataText, &_this->_.XObject, 0 );
+  PopPOP16_NaviLoadingUI__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( NavigationNAV09_NAV10_PoiList );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  _this->Super2.SlideOutEffectEnabled = 1;
+  MenuVerticalMenu_OnSetScrollbarVisible( &_this->Super1.Menu, 1 );
+  MenuVerticalMenu_OnSetSelectedItem( &_this->Super1.Menu, 0 );
+  CoreTimer_OnSetPeriod( &_this->PoiListLoadingTimer, 3000 );
+  CoreRectView__OnSetBounds( &_this->DataErrorText, _Const0059 );
+  ViewsText_OnSetWrapText( &_this->DataErrorText, 1 );
+  ViewsText_OnSetString( &_this->DataErrorText, EwLoadString( &StringsPOP18_POI_LOADING_FAILED ));
+  ViewsText_OnSetVisible( &_this->DataErrorText, 0 );
+  CoreTimer_OnSetPeriod( &_this->CountDownTimer, 2000 );
+  CoreRectView__OnSetBounds( &_this->NoDataText, _Const0059 );
+  ViewsText_OnSetWrapText( &_this->NoDataText, 1 );
+  ViewsText_OnSetString( &_this->NoDataText, 0 );
+  ViewsText_OnSetVisible( &_this->NoDataText, 0 );
+  CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0000 );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const0044 );
+  ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
+  | ViewsImageAlignmentScaleToFit );
+  CoreGroup__Add( _this, ((CoreView)&_this->DataErrorText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
+  _this->PoiListUpdateEventHandler.OnEvent = EwNewSlot( _this, NavigationNAV09_NAV10_PoiList_OnPoiListUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->PoiListUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->PoiListUpdateEvent );
+  _this->PoiListLoadingTimer.OnTrigger = EwNewSlot( _this, NavigationNAV09_NAV10_PoiList_OnPoiListLoadingFailedSlot );
+  ViewsText_OnSetFont( &_this->DataErrorText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  _this->CountDownTimer.OnTrigger = EwNewSlot( _this, NavigationNAV09_NAV10_PoiList_OnListDismissSlot );
+  ViewsText_OnSetFont( &_this->NoDataText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
+  ResourcesBitmap ));
+
+  /* Call the user defined constructor */
+  NavigationNAV09_NAV10_PoiList_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Navigation::NAV09_NAV10_PoiList' */
+void NavigationNAV09_NAV10_PoiList__ReInit( NavigationNAV09_NAV10_PoiList _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuBaseMenuView__ReInit( &_this->_.Super );
+
+  /* ... then re-construct all embedded objects */
+  CoreSystemEventHandler__ReInit( &_this->PoiListUpdateEventHandler );
+  CoreTimer__ReInit( &_this->PoiListLoadingTimer );
+  ViewsText__ReInit( &_this->DataErrorText );
+  CoreTimer__ReInit( &_this->CountDownTimer );
+  ViewsText__ReInit( &_this->NoDataText );
+  PopPOP16_NaviLoadingUI__ReInit( &_this->LoadingAnimation );
+  ViewsImage__ReInit( &_this->Divider );
+}
+
+/* Finalizer method for the class 'Navigation::NAV09_NAV10_PoiList' */
+void NavigationNAV09_NAV10_PoiList__Done( NavigationNAV09_NAV10_PoiList _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
+
+  /* Finalize all embedded objects */
+  CoreSystemEventHandler__Done( &_this->PoiListUpdateEventHandler );
+  CoreTimer__Done( &_this->PoiListLoadingTimer );
+  ViewsText__Done( &_this->DataErrorText );
+  CoreTimer__Done( &_this->CountDownTimer );
+  ViewsText__Done( &_this->NoDataText );
+  PopPOP16_NaviLoadingUI__Done( &_this->LoadingAnimation );
+  ViewsImage__Done( &_this->Divider );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuBaseMenuView__Done( &_this->_.Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void NavigationNAV09_NAV10_PoiList_Init( NavigationNAV09_NAV10_PoiList _this, XHandle 
+  aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  CoreTimer_OnSetEnabled( &_this->PoiListLoadingTimer, 1 );
+}
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.OnShortHomeKeyActivated()' */
+void NavigationNAV09_NAV10_PoiList_OnShortHomeKeyActivated( NavigationNAV09_NAV10_PoiList _this )
+{
+  switch ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentPoiListType )
+  {
+    case EnumNaviPoiListTypeFAVORITE :
+      DeviceInterfaceNavigationDeviceClass_PoiListRequest( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), EnumNaviPoiListTypeFAVORITE, 0 );
+    break;
+
+    case EnumNaviPoiListTypeGAS_STATION :
+      DeviceInterfaceNavigationDeviceClass_PoiListRequest( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), EnumNaviPoiListTypeGAS_STATION, 0 );
+    break;
+
+    default :; 
+  }
+
+  ComponentsBaseMainBG_DismissThisDialog((ComponentsBaseMainBG)_this );
+}
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.LoadItemClass()' */
+XClass NavigationNAV09_NAV10_PoiList_LoadItemClass( NavigationNAV09_NAV10_PoiList _this, 
+  XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return EW_CLASS( MenuItemPoiList );
+}
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.LoadItemTitle()' */
+XString NavigationNAV09_NAV10_PoiList_LoadItemTitle( NavigationNAV09_NAV10_PoiList _this, 
+  XInt32 aItemNo )
+{
+  XString title;
+  DeviceInterfaceNaviPoiDataClass NaviPoiData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  title = 0;
+  NaviPoiData = DeviceInterfaceNavigationDeviceClass_GetNaviPoiData( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), aItemNo );
+
+  if ( NaviPoiData != 0 )
+    title = NaviPoiData->PoiTitle;
+
+  return title;
+}
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.OnItemActivate()' */
+void NavigationNAV09_NAV10_PoiList_OnItemActivate( NavigationNAV09_NAV10_PoiList _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aMenuItem );
+
+  DeviceInterfaceNavigationDeviceClass_StartRoute( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+  DeviceInterfaceNavigationDeviceClass ), aItemNo, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+  DeviceInterfaceNavigationDeviceClass )->CurrentPoiListType );
+  DeviceInterfaceNavigationDeviceClass_PoiListRequest( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+  DeviceInterfaceNavigationDeviceClass ), EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+  DeviceInterfaceNavigationDeviceClass )->CurrentPoiListType, 0 );
+  EwPostSignal( EwNewSlot( _this, NavigationNAV09_NAV10_PoiList_ReturnToNaviMapView ), 
+    ((XObject)_this ));
+}
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.LoadPoiListItemValue()' */
+XString NavigationNAV09_NAV10_PoiList_LoadPoiListItemValue( NavigationNAV09_NAV10_PoiList _this, 
+  XInt32 aItemNo )
+{
+  XString PoiItemValue;
+  DeviceInterfaceNaviPoiDataClass NaviPoiData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  PoiItemValue = 0;
+  NaviPoiData = DeviceInterfaceNavigationDeviceClass_GetNaviPoiData( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), aItemNo );
+
+  if ( NaviPoiData != 0 )
+  {
+    if ( 0.000000f == EwMathFract( NaviPoiData->Distance ))
+      PoiItemValue = EwNewStringInt((XInt32)NaviPoiData->Distance, 0, 10 );
+    else
+      PoiItemValue = EwNewStringFloat( NaviPoiData->Distance, 0, 1 );
+  }
+
+  return PoiItemValue;
+}
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.LoadPoiListItemUnit()' */
+XString NavigationNAV09_NAV10_PoiList_LoadPoiListItemUnit( NavigationNAV09_NAV10_PoiList _this, 
+  XInt32 aItemNo )
+{
+  XString PoiItemUnit;
+  DeviceInterfaceNaviPoiDataClass NaviPoiData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  PoiItemUnit = 0;
+  NaviPoiData = DeviceInterfaceNavigationDeviceClass_GetNaviPoiData( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), aItemNo );
+
+  if ( NaviPoiData != 0 )
+    PoiItemUnit = NaviPoiData->DistUnit;
+
+  return PoiItemUnit;
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV09_NAV10_PoiList_OnPoiListUpdateSlot( NavigationNAV09_NAV10_PoiList _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( _this->PoiListLoadingTimer.Enabled )
+  {
+    CoreTimer_OnSetEnabled( &_this->PoiListLoadingTimer, 0 );
+    CoreGroup__OnSetVisible( &_this->LoadingAnimation, 0 );
+    ViewsImage_OnSetVisible( &_this->Divider, 0 );
+  }
+
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, DeviceInterfaceNavigationDeviceClass_GetPoiListSize( 
+  EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )));
+
+  if ( _this->Super1.Menu.NoOfItems == 0 )
+    switch ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentPoiListType )
+    {
+      case EnumNaviPoiListTypeFAVORITE :
+      {
+        ViewsText_OnSetString( &_this->DataErrorText, EwLoadString( &StringsPOP18_NO_FAVORITE_PLACE ));
+        ViewsText_OnSetVisible( &_this->DataErrorText, 1 );
+        CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
+      }
+      break;
+
+      case EnumNaviPoiListTypeGAS_STATION :
+      {
+        ViewsText_OnSetString( &_this->DataErrorText, EwLoadString( &StringsPOP18_NO_GAS_STATION ));
+        ViewsText_OnSetVisible( &_this->DataErrorText, 1 );
+        CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
+      }
+      break;
+
+      default :; 
+    }
+  else
+    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
+    - 1 );
+}
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.OnPoiListLoadingFailedSlot()' */
+void NavigationNAV09_NAV10_PoiList_OnPoiListLoadingFailedSlot( NavigationNAV09_NAV10_PoiList _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  CoreTimer_OnSetEnabled( &_this->PoiListLoadingTimer, 0 );
+  CoreGroup__OnSetVisible( &_this->LoadingAnimation, 0 );
+  ViewsImage_OnSetVisible( &_this->Divider, 0 );
+  ViewsText_OnSetVisible( &_this->DataErrorText, 1 );
+  CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
+}
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.OnListDismissSlot()' */
+void NavigationNAV09_NAV10_PoiList_OnListDismissSlot( NavigationNAV09_NAV10_PoiList _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  CoreTimer_OnSetEnabled( &_this->CountDownTimer, 0 );
+  ComponentsBaseComponent__OnShortHomeKeyActivated( _this );
+}
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.ReturnToNaviMapView()' */
+void NavigationNAV09_NAV10_PoiList_ReturnToNaviMapView( NavigationNAV09_NAV10_PoiList _this, 
+  XObject sender )
+{
+  ApplicationApplication App;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+
+  if ( App != 0 )
+  {
+    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+    = EnumHomeTypeNAVI_DEFAULT_VIEW;
+    ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+    DeviceInterfaceNavigationDeviceClass )->CurrentHome );
+  }
+}
+
+/* Variants derived from the class : 'Navigation::NAV09_NAV10_PoiList' */
+EW_DEFINE_CLASS_VARIANTS( NavigationNAV09_NAV10_PoiList )
+EW_END_OF_CLASS_VARIANTS( NavigationNAV09_NAV10_PoiList )
+
+/* Virtual Method Table (VMT) for the class : 'Navigation::NAV09_NAV10_PoiList' */
+EW_DEFINE_CLASS( NavigationNAV09_NAV10_PoiList, MenuBaseMenuView, PoiListUpdateEventHandler, 
+                 PoiListUpdateEventHandler, PoiListUpdateEventHandler, PoiListUpdateEventHandler, 
+                 _.VMT, _.VMT, "Navigation::NAV09_NAV10_PoiList" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  NavigationNAV09_NAV10_PoiList_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  MenuBaseMenuView_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+  NavigationNAV09_NAV10_PoiList_LoadItemClass,
+  NavigationNAV09_NAV10_PoiList_LoadItemTitle,
+  NavigationNAV09_NAV10_PoiList_OnItemActivate,
+  MenuBaseMenuView_LoadItemChecked,
+  MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
+  MenuBaseMenuView_LoadItemUnit,
+  MenuBaseMenuView_LoadItemValue,
+  MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
+  NavigationNAV09_NAV10_PoiList_LoadPoiListItemValue,
+  NavigationNAV09_NAV10_PoiList_LoadPoiListItemUnit,
+EW_END_OF_CLASS( NavigationNAV09_NAV10_PoiList )
 
 /* User defined constant: 'Navigation::TURN_ICON_BOUNDS_W_DIST' */
 const XRect NavigationTURN_ICON_BOUNDS_W_DIST = {{ 45, 14 }, { 90, 59 }};
+
+/* User defined constant: 'Navigation::TURN_ICON_BOUNDS_WO_DIST' */
+const XRect NavigationTURN_ICON_BOUNDS_WO_DIST = {{ 45, 32 }, { 90, 77 }};
 
 /* Embedded Wizard */

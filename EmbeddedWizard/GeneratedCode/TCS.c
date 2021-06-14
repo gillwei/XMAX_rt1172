@@ -271,6 +271,8 @@ EW_DEFINE_CLASS( TCSTCS01_Main, MenuBaseMenuView, VehicleDataReceivedEventHandle
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( TCSTCS01_Main )
 
 /* Embedded Wizard */

@@ -102,6 +102,8 @@ EW_DEFINE_FIELDS( MenuItemWrapper, CoreGroup )
   EW_PROPERTY( Message,         XString )
   EW_PROPERTY( ReceivedTime,    XString )
   EW_PROPERTY( Unit,            XString )
+  EW_PROPERTY( PoiListItemValue, XString )
+  EW_PROPERTY( PoiListItemUnit, XString )
   EW_PROPERTY( ItemClass,       XClass )
   EW_PROPERTY( Height,          XInt32 )
   EW_PROPERTY( Uid,             XUInt32 )
@@ -210,6 +212,12 @@ void MenuItemWrapper_OnSetHour( MenuItemWrapper _this, XString value );
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetMinute()' */
 void MenuItemWrapper_OnSetMinute( MenuItemWrapper _this, XString value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetPoiListItemValue()' */
+void MenuItemWrapper_OnSetPoiListItemValue( MenuItemWrapper _this, XString value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetPoiListItemUnit()' */
+void MenuItemWrapper_OnSetPoiListItemUnit( MenuItemWrapper _this, XString value );
 
 #ifdef __cplusplus
   }

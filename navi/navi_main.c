@@ -54,6 +54,7 @@ typedef bool ( *via_point_update )( navilite_callback_func_viapointcount cb );
 typedef bool ( *next_turn_dist_update )( navilite_callback_func_nextturndistance cb );
 typedef bool ( *active_tbt_item_update )( navilite_callback_func_activetbtitem cb );
 typedef bool ( *tbt_list_update )( navilite_callback_func_nexttbtlist cb );
+typedef bool ( *poi_list_update )( navilite_callback_func_nexttpoilist cb );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -87,7 +88,9 @@ static generic_fc_ptr navi_funtion_table[NAVILITE_FUNC_CNT] =
     (generic_fc_ptr)NAVILITE_register_update_callback_viapointcount,
     (generic_fc_ptr)NAVILITE_register_update_callback_nextturndistance,
     (generic_fc_ptr)NAVILITE_register_update_callback_activetbtlistitem,
-    (generic_fc_ptr)NAVILITE_register_update_callback_tbtlist
+    (generic_fc_ptr)NAVILITE_register_update_callback_tbtlist,
+    (generic_fc_ptr)NAVILITE_register_update_callback_favlist,
+    (generic_fc_ptr)NAVILITE_register_update_callback_gaslist
     };
 
 static navi_data_type navi_data_obj;
@@ -216,7 +219,7 @@ static void navi_cur_road_update
     uint8_t  road_name_size
     )
 {
-PRINTF( "%s: road name: %s, size: %d\r\n", __FUNCTION__, road_name, road_name_size );
+PRINTF( "%s: road name: %s, size: %d\r\n", __FUNCTION__, (char*)road_name, road_name_size );
 strncpy( navi_data_obj.current_road, ( char* )road_name, MAX_ROAD_NAME_SIZE );
 if( MAX_ROAD_NAME_SIZE > road_name_size )
     {
@@ -702,6 +705,54 @@ PRINTF( "%s: Result: %d\r\n", __FUNCTION__, result );
 
 /*********************************************************************
 *
+* @private
+* navi_poi_list_update
+*
+* Notify navigation module that Fav/Gas list is updated.
+*
+* @param action                         Poi list action type.
+* @param list_item                      Received poi list item.
+* @param list_item_no                   The number of poi list item.
+* @param list_total_items               Total poi list items for the received poi list.
+* @param list_total_items_recevied      Current index of received poi item.
+* @param has_more_items_on_next_request Indicates whether there are more poi items after the received poi list.
+*
+*********************************************************************/
+static void navi_poi_list_update
+    (
+    navilite_poi_list_action_type action,
+    navilite_poi_list_type* list_item,
+    uint16_t list_item_no,
+    uint16_t list_total_items,
+    uint16_t list_total_items_recevied,
+    uint8_t has_more_items_on_next_request
+    )
+{
+PRINTF( "%s \r\n", __FUNCTION__ );
+switch( action )
+    {
+    case NAVILITE_POILIST_ACTION_LISTSIZE:
+        PRINTF( "%s: Poi list size:%d \r\n", __FUNCTION__, list_total_items );
+        navi_notify_more_poi_item( list_total_items );
+        // If there is no favorite places/ gas stations, navi app only tells LC list size is 0 and no further data is sent.
+        // In this case, notify UI and let UI show message indicates no data.
+        if( 0 == list_total_items )
+            {
+            EW_notify_poi_list_update();
+            }
+        break;
+    case NAVILITE_POILIST_ACTION_ITEMADD:
+        PRINTF( "%s: List item size: %d \r\n", __FUNCTION__, list_item->desc_size );
+        navi_add_poi_item( list_item );
+        break;
+    default:
+        PRINTF( "%s: Unexpected type\r\n", __FUNCTION__ );
+        break;
+    }
+}
+
+/*********************************************************************
+*
 * @public
 * NAVI_get_navigation_status
 *
@@ -999,6 +1050,41 @@ switch( button_type )
 /*********************************************************************
 *
 * @public
+* NAVI_send_start_route_request
+*
+* Send request to start route guidance.
+*
+* @param list_idx The selected index of favorite list.
+*
+*********************************************************************/
+void NAVI_send_start_route_request
+    (
+    uint32_t list_idx,
+    EnumNaviPoiListType poi_list_type
+    )
+{
+PRINTF( "%s, List Index: %d\r\n", __FUNCTION__, list_idx );
+uint32_t poi_list_idx;
+switch( poi_list_type )
+    {
+    case EnumNaviPoiListTypeFAVORITE:
+    case EnumNaviPoiListTypeGAS_STATION:
+        poi_list_idx = navi_get_poi_list_index( list_idx );
+        PRINTF( "%s, Poi Index: %d\r\n", __FUNCTION__, poi_list_idx );
+        break;
+    default:
+        break;
+    }
+//TODO: Handle start new route/add as next stop/ add as last stop.
+if( !NAVILITE_request_app_startroute( poi_list_idx, NAVILITE_ROUTE_NEW_ROUTE ) )
+    {
+    PRINTF( "%s, start route request error \r\n", __FUNCTION__ );
+    }
+}
+
+/*********************************************************************
+*
+* @public
 * NAVI_init
 *
 * Initialize navigation module
@@ -1012,6 +1098,7 @@ void NAVI_init
 bool result;
 navi_event_init();
 navi_tbt_init();
+navi_poi_init();
 
 for( int i = 0; i < NAVILITE_FUNC_CNT; i++ )
     {
@@ -1076,6 +1163,12 @@ for( int i = 0; i < NAVILITE_FUNC_CNT; i++ )
             break;
         case NAVILITE_FUNC_TBT_LIST_UPDATE:
             result = ( (tbt_list_update)navi_funtion_table[i] )( navi_tbt_list_update );
+            break;
+        case NAVILITE_FUNC_FAV_LIST_UPDATE:
+            result = ( (poi_list_update)navi_funtion_table[i] )( navi_poi_list_update );
+            break;
+        case NAVILITE_FUNC_GAS_LIST_UPDATE:
+            result = ( (poi_list_update)navi_funtion_table[i] )( navi_poi_list_update );
             break;
         default:
             PRINTF( "Unexpected navilite function.\r\n" );

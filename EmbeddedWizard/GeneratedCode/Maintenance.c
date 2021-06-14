@@ -498,6 +498,8 @@ EW_DEFINE_CLASS( MaintenanceMNT01_MaintenanceReset, MenuBaseMenuView, VehicleDat
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( MaintenanceMNT01_MaintenanceReset )
 
 /* Embedded Wizard */

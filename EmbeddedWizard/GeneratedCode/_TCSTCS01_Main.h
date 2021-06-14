@@ -190,6 +190,8 @@ EW_DEFINE_METHODS( TCSTCS01_Main, MenuBaseMenuView )
     aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemHour,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( TCSTCS01_Main )
 
 /* The method Init() is invoked automatically after the component has been created. 

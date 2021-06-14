@@ -32,6 +32,7 @@
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
 #include "_DeviceInterfaceMotoConContext.h"
 #include "_DeviceInterfaceNaviDataClass.h"
+#include "_DeviceInterfaceNaviPoiDataClass.h"
 #include "_DeviceInterfaceNaviTbtDataClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceNotificationContext.h"
@@ -940,6 +941,7 @@ void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Init( &_this->AlertDistanceUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->ConnectStatusUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->DisconnectStatusUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->PoiListUpdateEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( DeviceInterfaceNavigationDeviceClass );
@@ -971,6 +973,7 @@ void DeviceInterfaceNavigationDeviceClass__ReInit( DeviceInterfaceNavigationDevi
   CoreSystemEvent__ReInit( &_this->AlertDistanceUpdateEvent );
   CoreSystemEvent__ReInit( &_this->ConnectStatusUpdateEvent );
   CoreSystemEvent__ReInit( &_this->DisconnectStatusUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->PoiListUpdateEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NavigationDeviceClass' */
@@ -995,6 +998,7 @@ void DeviceInterfaceNavigationDeviceClass__Done( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Done( &_this->AlertDistanceUpdateEvent );
   CoreSystemEvent__Done( &_this->ConnectStatusUpdateEvent );
   CoreSystemEvent__Done( &_this->DisconnectStatusUpdateEvent );
+  CoreSystemEvent__Done( &_this->PoiListUpdateEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_.Super );
@@ -1520,6 +1524,74 @@ XInt32 DeviceInterfaceNavigationDeviceClass_GetTbtListSize( DeviceInterfaceNavig
   return TbtListSize;
 }
 
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyPoiListUpdate( DeviceInterfaceNavigationDeviceClass _this )
+{
+  CoreSystemEvent_Trigger( &_this->PoiListUpdateEvent, 0, 0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyPoiListUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyPoiListUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyPoiListUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetPoiListSize()' */
+XInt32 DeviceInterfaceNavigationDeviceClass_GetPoiListSize( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XInt32 PoiListSize;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  PoiListSize = 0;
+  PoiListSize = NAVI_get_poi_list_size();
+  return PoiListSize;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviPoiData()' */
+DeviceInterfaceNaviPoiDataClass DeviceInterfaceNavigationDeviceClass_GetNaviPoiData( DeviceInterfaceNavigationDeviceClass _this, 
+  XInt32 aPoiItemIdx )
+{
+  DeviceInterfaceNaviPoiDataClass NaviPoiData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NaviPoiData = EwNewObject( DeviceInterfaceNaviPoiDataClass, 0 );
+  {
+    float distance;
+    char* dist_unit;
+    char* description;
+    NAVI_get_poi_item( aPoiItemIdx, &distance, &dist_unit, &description );
+    NaviPoiData->Distance = distance;
+    NaviPoiData->DistUnit = EwNewStringUtf8( ( const unsigned char* )dist_unit, ( int )strlen( dist_unit ) );
+    NaviPoiData->PoiTitle = EwNewStringUtf8( ( const unsigned char* )description, ( int )strlen( description ) );
+  }
+  return NaviPoiData;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.PoiListRequest()' */
+void DeviceInterfaceNavigationDeviceClass_PoiListRequest( DeviceInterfaceNavigationDeviceClass _this, 
+  XEnum PoiListType, XBool aEnabled )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_poi_list_request( PoiListType, aEnabled );
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StartRoute()' */
+void DeviceInterfaceNavigationDeviceClass_StartRoute( DeviceInterfaceNavigationDeviceClass _this, 
+  XInt32 aPoiIdx, XEnum aPoiListType )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_send_start_route_request( aPoiIdx, aPoiListType );
+}
+
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviDialogTimeOut()' */
 XInt32 DeviceInterfaceNavigationDeviceClass_GetNaviDialogTimeOut( DeviceInterfaceNavigationDeviceClass _this )
 {
@@ -1560,8 +1632,8 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::NavigationDeviceClass' */
 EW_DEFINE_CLASS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass, MapUpdateEvent, 
-                 MapUpdateEvent, MapUpdateEvent, MapUpdateEvent, CurrentHome, CurrentHome, 
-                 "DeviceInterface::NavigationDeviceClass" )
+                 MapUpdateEvent, MapUpdateEvent, MapUpdateEvent, CurrentPoiListType, 
+                 CurrentPoiListType, "DeviceInterface::NavigationDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceNavigationDeviceClass )
 
 /* User defined auto object: 'DeviceInterface::NavigationDevice' */
@@ -4278,5 +4350,44 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNaviTbtDataClass )
 EW_DEFINE_CLASS( DeviceInterfaceNaviTbtDataClass, XObject, DistUnit, DistUnit, DistUnit, 
                  DistUnit, DistUnit, IconIdx, "DeviceInterface::NaviTbtDataClass" )
 EW_END_OF_CLASS( DeviceInterfaceNaviTbtDataClass )
+
+/* Initializer for the class 'DeviceInterface::NaviPoiDataClass' */
+void DeviceInterfaceNaviPoiDataClass__Init( DeviceInterfaceNaviPoiDataClass _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceNaviPoiDataClass );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( DeviceInterfaceNaviPoiDataClass );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::NaviPoiDataClass' */
+void DeviceInterfaceNaviPoiDataClass__ReInit( DeviceInterfaceNaviPoiDataClass _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_.Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::NaviPoiDataClass' */
+void DeviceInterfaceNaviPoiDataClass__Done( DeviceInterfaceNaviPoiDataClass _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_.Super );
+}
+
+/* Variants derived from the class : 'DeviceInterface::NaviPoiDataClass' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNaviPoiDataClass )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNaviPoiDataClass )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::NaviPoiDataClass' */
+EW_DEFINE_CLASS( DeviceInterfaceNaviPoiDataClass, XObject, DistUnit, DistUnit, DistUnit, 
+                 DistUnit, DistUnit, Distance, "DeviceInterface::NaviPoiDataClass" )
+EW_END_OF_CLASS( DeviceInterfaceNaviPoiDataClass )
 
 /* Embedded Wizard */

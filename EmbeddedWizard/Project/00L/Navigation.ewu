@@ -23,6 +23,7 @@ class NAV01_DefaultView : Home::BaseHome
     {
       AccessNaviView = true;
     }
+
     DeviceInterface::NavigationDevice.StartMapFrameRequest();
   }
 
@@ -213,7 +214,6 @@ class NAV01_DefaultView : Home::BaseHome
   {
     super();
     AccessNaviView = true;
-    LoadingAnimation.Visible = true;
     DeviceInterface::NavigationDevice.StartMapFrameRequest();
   }
 
@@ -846,8 +846,18 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
         DeviceInterface::NavigationDevice.GoOffice();
         UpdateOfficeSetting();
       }
-      case Enum::NaviSettingItem.Favorites:;
-      case Enum::NaviSettingItem.NearbyGasStations:;
+      case Enum::NaviSettingItem.Favorites:
+      {
+        DeviceInterface::NavigationDevice.CurrentPoiListType = Enum::NaviPoiListType.FAVORITE;
+        DeviceInterface::NavigationDevice.PoiListRequest( Enum::NaviPoiListType.FAVORITE, true );
+        MenuDialog = new Navigation::NAV09_NAV10_PoiList;
+      }
+      case Enum::NaviSettingItem.NearbyGasStations:
+      {
+        DeviceInterface::NavigationDevice.CurrentPoiListType = Enum::NaviPoiListType.GAS_STATION;
+        DeviceInterface::NavigationDevice.PoiListRequest( Enum::NaviPoiListType.GAS_STATION, true );
+        MenuDialog = new Navigation::NAV09_NAV10_PoiList;
+      }
       case Enum::NaviSettingItem.ChangeView: MenuDialog = new Navigation::NAV08_NaviChageViewMenu;
       default:;
     }
@@ -2641,7 +2651,7 @@ class TbtInfoItem : Core::Group
   }
 }
 
-$rect <240,210,440,250>
+$rect <20,420,220,460>
 $output false
 class NaviDialog : Core::Group
 {
@@ -3131,14 +3141,302 @@ $rect <720,480,920,520>
 $output false
 const int32 NIGHT_MODE = 2;
 
-$rect <720,360,920,400>
+$rect <290,140,490,180>
+$output false
+class NAV09_NAV10_PoiList : Menu::BaseMenuView
+{
+  $rect <1010,640,1210,680>
+  inherited method Init()
+  {
+    PoiListLoadingTimer.Enabled = true;
+    $if $prototyper
+      Menu.NoOfItems = TestPoiListTitleArray.size;
+    $endif
+  }
+
+  $rect <1000,470,1200,510>
+  inherited method OnShortHomeKeyActivated()
+  {
+    switch( DeviceInterface::NavigationDevice.CurrentPoiListType )
+    {
+      case Enum::NaviPoiListType.FAVORITE: DeviceInterface::NavigationDevice.PoiListRequest( Enum::NaviPoiListType.FAVORITE, false );
+      case Enum::NaviPoiListType.GAS_STATION: DeviceInterface::NavigationDevice.PoiListRequest( Enum::NaviPoiListType.GAS_STATION, false );
+      default:;
+    }
+    DismissThisDialog();
+
+
+  }
+
+  $rect <560,160,760,200>
+  inherited var SlideOutEffectEnabled = true;
+
+  $rect <560,590,760,630>
+  inherited method LoadItemClass()
+  {
+    aItemNo; // suppress warning
+
+    return Menu::ItemPoiList;
+  }
+
+  $rect <790,590,990,630>
+  inherited method LoadItemTitle()
+  {
+    var string title = "";
+    $if !$prototyper
+    var DeviceInterface::NaviPoiDataClass NaviPoiData = DeviceInterface::NavigationDevice.GetNaviPoiData( aItemNo );
+    if( null != NaviPoiData )
+    {
+      title = NaviPoiData.PoiTitle;
+    }
+    $else
+    if( aItemNo < TestPoiListTitleArray.size )
+      {
+      title = TestPoiListTitleArray[aItemNo];
+      }
+    $endif
+    return title;
+  }
+
+  $rect <790,640,990,680>
+  inherited method OnItemActivate()
+  {
+    aMenuItem; // suppress warning.
+
+    DeviceInterface::NavigationDevice.StartRoute( aItemNo, DeviceInterface::NavigationDevice.CurrentPoiListType );
+    DeviceInterface::NavigationDevice.PoiListRequest( DeviceInterface::NavigationDevice.CurrentPoiListType, false );
+    postsignal ReturnToNaviMapView;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset ScrollbarVisible = true;
+    preset SelectedItem = 0;
+  }
+
+  $rect <1000,590,1200,630>
+  inherited method LoadPoiListItemValue()
+  {
+    var string PoiItemValue = "";
+    $if !$prototyper
+    var DeviceInterface::NaviPoiDataClass NaviPoiData = DeviceInterface::NavigationDevice.GetNaviPoiData( aItemNo );
+    if( null != NaviPoiData )
+    {
+      if( 0.0 == NaviPoiData.Distance.fract )
+      {
+        PoiItemValue = string( (int32)NaviPoiData.Distance );
+      }
+      else
+      {
+        PoiItemValue = string( NaviPoiData.Distance, 0 , 1 );
+      }
+    }
+    $else
+    if( aItemNo < TestPoiListValueArray.size )
+      {
+      PoiItemValue = TestPoiListValueArray[aItemNo];
+      }
+    $endif
+    return PoiItemValue;
+  }
+
+  $rect <560,640,760,680>
+  inherited method LoadPoiListItemUnit()
+  {
+    var string PoiItemUnit = "";
+    $if !$prototyper
+    var DeviceInterface::NaviPoiDataClass NaviPoiData = DeviceInterface::NavigationDevice.GetNaviPoiData( aItemNo );
+    if( null != NaviPoiData )
+    {
+      PoiItemUnit = NaviPoiData.DistUnit;
+    }
+    $else
+    if( aItemNo < TestPoiListUnitArray.size )
+      {
+      PoiItemUnit = TestPoiListUnitArray[aItemNo];
+      }
+    $endif
+    return PoiItemUnit;
+  }
+
+  $rect <550,280,750,320>
+  object Core::SystemEventHandler PoiListUpdateEventHandler
+  {
+    preset OnEvent = OnPoiListUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.PoiListUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <750,280,950,320>
+  slot OnPoiListUpdateSlot
+  {
+    // Update fav/gas list
+    if( PoiListLoadingTimer.Enabled )
+    {
+      PoiListLoadingTimer.Enabled = false;
+      LoadingAnimation.Visible = false;
+      Divider.Visible = false;
+    }
+
+    Menu.NoOfItems = DeviceInterface::NavigationDevice.GetPoiListSize();
+    if( Menu.NoOfItems == 0 )
+    {
+      switch( DeviceInterface::NavigationDevice.CurrentPoiListType )
+      {
+        case Enum::NaviPoiListType.FAVORITE:
+        {
+          DataErrorText.String = Strings::POP18_NO_FAVORITE_PLACE;
+          DataErrorText.Visible = true;
+          CountDownTimer.Enabled = true;
+        }
+        case Enum::NaviPoiListType.GAS_STATION:
+        {
+          DataErrorText.String = Strings::POP18_NO_GAS_STATION;
+          DataErrorText.Visible = true;
+          CountDownTimer.Enabled = true;
+        }
+        default:;
+      }
+    }
+    else
+    {
+      Menu.InvalidateItems( 0, Menu.NoOfItems-1 );
+    }
+  }
+
+  $rect <560,100,760,140>
+  array string TestPoiListTitleArray[ 4 ] =
+  (
+    Default[0] = "Parking 24h xyzfrgttyttttyyy";
+    Default[1] = "31 soft cream Iwata";
+    Default[2] = "Restaurant Iwata";
+    Default[3] = "YYYYYYYYYYYYYYYYYYYYYYYYYY";
+  );
+
+  $rect <790,100,990,140>
+  array string TestPoiListValueArray[ 4 ] =
+  (
+    Default[0] = "9999.9";
+    Default[1] = "9999.9";
+    Default[2] = "9999.9";
+    Default[3] = "9999.9";
+  );
+
+  $rect <1000,100,1200,140>
+  array string TestPoiListUnitArray[ 4 ] =
+  (
+    Default[0] = "km";
+    Default[1] = "km";
+    Default[2] = "km";
+    Default[3] = "km";
+  );
+
+  $rect <560,480,760,520>
+  object Core::Timer PoiListLoadingTimer
+  {
+    preset OnTrigger = OnPoiListLoadingFailedSlot;
+    preset Period = 3000;
+  }
+
+  $rect <560,530,760,570>
+  slot OnPoiListLoadingFailedSlot
+  {
+    PoiListLoadingTimer.Enabled = false;
+    LoadingAnimation.Visible = false;
+    Divider.Visible = false;
+    DataErrorText.Visible = true;
+    CountDownTimer.Enabled = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DataErrorText
+  {
+    preset Bounds = <10,50,470,236>;
+    preset WrapText = true;
+    preset String = Strings::POP18_POI_LOADING_FAILED;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Visible = false;
+  }
+
+  $rect <790,480,980,520>
+  object Core::Timer CountDownTimer
+  {
+    preset OnTrigger = OnListDismissSlot;
+    preset Period = 2000;
+  }
+
+  $rect <790,530,990,570>
+  slot OnListDismissSlot
+  {
+    CountDownTimer.Enabled = false;
+    OnShortHomeKeyActivated();
+
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text NoDataText
+  {
+    preset Bounds = <10,50,470,236>;
+    preset WrapText = true;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Visible = false;
+  }
+
+  $rect <1000,530,1200,570>
+  slot ReturnToNaviMapView
+  {
+    var Application::Application App = ( Application::Application )GetRoot();
+    if( null != App )
+    {
+      DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+      App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Pop::POP16_NaviLoadingUI LoadingAnimation
+  {
+    preset Bounds = <0,38,480,272>;
+  }
+
+  // Method
+  note group Note
+  {
+    attr Bounds = <530,430,1220,700>;
+  }
+
+  // Variable
+  note group Note1
+  {
+    attr Bounds = <530,50,1220,210>;
+  }
+
+  // System event
+  note group Note2
+  {
+    attr Bounds = <530,240,1220,400>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,36,480,38>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
+  }
+}
+
+$rect <720,540,920,580>
 $output false
 const int32 TBT_ITEM_HEIGHT = 111;
 
-$rect <930,360,1130,400>
-$output false
-const rect TURN_ICON_BOUNDS_WO_DIST = <45,32,90,77>;
-
-$rect <1140,360,1340,400>
+$rect <930,540,1130,580>
 $output false
 const rect TURN_ICON_BOUNDS_W_DIST = <45,14,90,59>;
+
+$rect <1140,540,1340,580>
+$output false
+const rect TURN_ICON_BOUNDS_WO_DIST = <45,32,90,77>;

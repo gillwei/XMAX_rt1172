@@ -47,6 +47,7 @@
 #include "_NavigationNAV05_TBTView.h"
 #include "_NavigationNAV06_NaviSettingMenu.h"
 #include "_NavigationNAV08_NaviChageViewMenu.h"
+#include "_NavigationNAV09_NAV10_PoiList.h"
 #include "_NavigationNaviAlert.h"
 #include "_NavigationNaviAlertMessage.h"
 #include "_NavigationNaviCurrentRoad.h"
@@ -97,11 +98,11 @@ extern const XRect NavigationCURRENT_ROAD_SHRINK_ALERT;
 /* User defined constant: 'Navigation::ALERT_MESSAGE_BOUNDS' */
 extern const XRect NavigationALERT_MESSAGE_BOUNDS;
 
-/* User defined constant: 'Navigation::TURN_ICON_BOUNDS_WO_DIST' */
-extern const XRect NavigationTURN_ICON_BOUNDS_WO_DIST;
-
 /* User defined constant: 'Navigation::TURN_ICON_BOUNDS_W_DIST' */
 extern const XRect NavigationTURN_ICON_BOUNDS_W_DIST;
+
+/* User defined constant: 'Navigation::TURN_ICON_BOUNDS_WO_DIST' */
+extern const XRect NavigationTURN_ICON_BOUNDS_WO_DIST;
 
 #ifdef __cplusplus
   }

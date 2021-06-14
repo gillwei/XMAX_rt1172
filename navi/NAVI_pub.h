@@ -23,9 +23,12 @@ extern "C"{
 #define MAX_ROAD_NAME_SIZE           ( 64 )
 #define MAX_DIALOG_DESCRIPTION_SIZE  ( 64 )
 #define MAX_TBT_DESCRIPTION_SIZE     ( 64 )
+#define MAX_POI_DESCRIPTION_SIZE     ( 40 )
 #define MAX_TBT_DIST_UNIT_SIZE       ( 16 )
+#define MAX_POI_DIST_UNIT_SIZE       ( 16 )
 #define MAX_EVENT_QUEUE_SIZE         ( 10 )
 #define MAX_TBT_SIZE                 ( 50 )
+#define MAX_POI_SIZE                 ( 50 )
 #define TBT_NEXT_UPDATE_IDX          ( 40 )     // This is the predefined index that navi app will send more tbt items if tbt list size is over 50.
 
 typedef enum
@@ -50,6 +53,8 @@ typedef enum
     NAVILITE_FUNC_NEXT_TURN_DIST_UPDATE,
     NAVILITE_FUNC_ACTIVE_TBT_UPDATE,
     NAVILITE_FUNC_TBT_LIST_UPDATE,
+    NAVILITE_FUNC_FAV_LIST_UPDATE,
+    NAVILITE_FUNC_GAS_LIST_UPDATE,
     NAVILITE_FUNC_CNT
     } navilite_func;
 
@@ -96,6 +101,14 @@ typedef struct
     char     description[MAX_TBT_DESCRIPTION_SIZE];
     }navi_tbt_data_type;
 
+typedef struct
+    {
+    uint32_t  list_idx;
+    float    distance;
+    char     dist_unit[MAX_POI_DIST_UNIT_SIZE];
+    char     description[MAX_POI_DESCRIPTION_SIZE];
+    }navi_poi_data_type;
+
 void NAVI_init( void );
 void NAVI_jpeg_data_received( uint32_t jpeg_size, uint8_t* buffer_addr );
 navi_data_type* NAVI_get_navi_obj( void );
@@ -122,6 +135,11 @@ bool NAVI_is_tbt_message_displayed( void );
 uint16_t NAVI_get_tbt_list_size( void );
 void NAVI_reset_tbt_buffer( void );
 bool NAVI_get_tbt_item( const int tbt_index, uint32_t* icon_index, float* distance, char** dist_unit, char** description );
+void NAVI_send_start_route_request( uint32_t list_idx, EnumNaviPoiListType poi_list_type );
+void NAVI_reset_poi_buffer( void );
+bool NAVI_get_poi_item( const int poi_index, float* distance, char** dist_unit, char** description );
+uint16_t NAVI_get_poi_list_size( void );
+void NAVI_poi_list_request( EnumNaviPoiListType poi_list_type, bool is_enabled );
 
 #ifdef __cplusplus
 }

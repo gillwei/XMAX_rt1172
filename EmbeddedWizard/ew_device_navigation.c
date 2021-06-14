@@ -90,6 +90,10 @@
     static int ew_notify_navi_alert_dist_update( void );
 #endif
 
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyPoiListUpdate_
+    static int ew_notify_navi_poi_list_update( void );
+#endif
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -152,7 +156,10 @@
             ew_notify_disconnect_status_update,
         #endif
         #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyAlertDistanceUpdate_
-            ew_notify_navi_alert_dist_update
+            ew_notify_navi_alert_dist_update,
+        #endif
+        #ifdef _DeviceInterfaceNavigationDeviceClass__NotifyPoiListUpdate_
+            ew_notify_navi_poi_list_update
         #endif
         };
     const int num_of_navi_func = sizeof( navi_function_lookup_table )/sizeof( device_function* );
@@ -171,6 +178,7 @@
     static int is_navi_app_connected = 0;
     static int is_navi_app_disconnected = 0;
     static int is_alert_distance_update = 0;
+    static int is_poi_list_update = 0;
 
 #endif
 /*--------------------------------------------------------------------
@@ -692,6 +700,31 @@ bool ew_navi_is_route_guidance_started
 
 /*********************************************************************
 *
+* @private
+* ew_notify_navi_poi_list_update
+*
+* Notify EW GUI that poi list has received.
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceNavigationDeviceClass__NotifyPoiListUpdate_
+    static int ew_notify_navi_poi_list_update
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_poi_list_update )
+        {
+        is_poi_list_update = 0;
+        need_update = 1;
+        DeviceInterfaceNavigationDeviceClass__NotifyPoiListUpdate( device_object );
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
 * @public
 * EW_notify_navi_map_update
 *
@@ -971,6 +1004,25 @@ void EW_notify_alert_distance_update
 {
 #ifdef _DeviceInterfaceNavigationDeviceClass_
     is_alert_distance_update = 1;
+    EwBspEventTrigger();
+#endif
+}
+
+/*********************************************************************
+*
+* @public
+* EW_notify_poi_list_update
+*
+* Notify Embedded Wizard that poi list is updated.
+*
+*********************************************************************/
+void EW_notify_poi_list_update
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceNavigationDeviceClass_
+    is_poi_list_update = 1;
     EwBspEventTrigger();
 #endif
 }

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef Menu_H
-#define Menu_H
+#ifndef _DeviceInterfaceNaviPoiDataClass_H
+#define _DeviceInterfaceNaviPoiDataClass_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,28 +42,28 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_MenuArrowScrollBar.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuItemBase.h"
-#include "_MenuItemBaseValue.h"
-#include "_MenuItemCheckMark.h"
-#include "_MenuItemCheckbox.h"
-#include "_MenuItemNotification.h"
-#include "_MenuItemPoiList.h"
-#include "_MenuItemTimeHourMinute.h"
-#include "_MenuItemValueUnit.h"
-#include "_MenuItemValueUnit2.h"
-#include "_MenuItemValueUnitCheckmark.h"
-#include "_MenuItemWrapper.h"
-#include "_MenuPushButton.h"
-#include "_MenuScrollbar.h"
-#include "_MenuUpDownPushButtonSet.h"
-#include "_MenuVerticalMenu.h"
+/* Forward declaration of the class DeviceInterface::NaviPoiDataClass */
+#ifndef _DeviceInterfaceNaviPoiDataClass_
+  EW_DECLARE_CLASS( DeviceInterfaceNaviPoiDataClass )
+#define _DeviceInterfaceNaviPoiDataClass_
+#endif
+
+
+/* Deklaration of class : 'DeviceInterface::NaviPoiDataClass' */
+EW_DEFINE_FIELDS( DeviceInterfaceNaviPoiDataClass, XObject )
+  EW_VARIABLE( DistUnit,        XString )
+  EW_VARIABLE( PoiTitle,        XString )
+  EW_VARIABLE( Distance,        XFloat )
+EW_END_OF_FIELDS( DeviceInterfaceNaviPoiDataClass )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::NaviPoiDataClass' */
+EW_DEFINE_METHODS( DeviceInterfaceNaviPoiDataClass, XObject )
+EW_END_OF_METHODS( DeviceInterfaceNaviPoiDataClass )
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* Menu_H */
+#endif /* _DeviceInterfaceNaviPoiDataClass_H */
 
 /* Embedded Wizard */

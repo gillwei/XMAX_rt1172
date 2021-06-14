@@ -409,6 +409,11 @@ class VerticalMenu : Components::BaseComponent
         Item.Hour = OwnerMenu.LoadItemHour( ItemNo );
         Item.Minute = OwnerMenu.LoadItemMinute( ItemNo );
       }
+      else if( Menu::ItemPoiList == Item.ItemClass )
+      {
+        Item.PoiListItemValue = OwnerMenu.LoadPoiListItemValue( ItemNo );
+        Item.PoiListItemUnit = OwnerMenu.LoadPoiListItemUnit( ItemNo );
+      }
       else
       {
         //empty
@@ -1254,6 +1259,50 @@ class ItemWrapper : Core::Group
       }
     }
   }
+
+  // For Poi List item
+  note group Note11
+  {
+    attr Bounds = <20,1010,560,1150>;
+  }
+
+  $rect <50,1050,250,1090>
+  property string PoiListItemValue;
+
+  $rect <50,1090,250,1130>
+  onset PoiListItemValue
+  {
+    if( pure PoiListItemValue != value )
+    {
+      // Remember the property's new value.
+      pure PoiListItemValue = value;
+      var Core::View view = FindNextView( null, Core::ViewState[] );
+      var Menu::ItemPoiList PoiListItem = ( Menu::ItemPoiList )view;
+      if( PoiListItem != null )
+      {
+        PoiListItem.Value = value;
+      }
+    }
+  }
+
+  $rect <290,1050,490,1090>
+  property string PoiListItemUnit;
+
+  $rect <290,1090,490,1130>
+  onset PoiListItemUnit
+  {
+    if( pure PoiListItemUnit != value )
+    {
+      // Remember the property's new value.
+      pure PoiListItemUnit = value;
+      var Core::View view = FindNextView( null, Core::ViewState[] );
+      var Menu::ItemPoiList PoiListItem = ( Menu::ItemPoiList )view;
+      if( PoiListItem != null )
+      {
+        PoiListItem.Unit = value;
+      }
+    }
+  }
 }
 
 $rect <460,160,660,200>
@@ -1562,6 +1611,26 @@ class BaseMenuView : Components::BaseMainBG
 
   $rect <540,770,740,810>
   method string LoadItemMinute( arg int32 aItemNo )
+  {
+    aItemNo; // suppress warning
+    return "";
+  }
+
+  // For PoiList item
+  note group Note12
+  {
+    attr Bounds = <830,270,1080,420>;
+  }
+
+  $rect <850,320,1050,360>
+  method string LoadPoiListItemValue( arg int32 aItemNo )
+  {
+    aItemNo; // suppress warning
+    return "";
+  }
+
+  $rect <850,370,1050,410>
+  method string LoadPoiListItemUnit( arg int32 aItemNo )
   {
     aItemNo; // suppress warning
     return "";
@@ -2470,3 +2539,68 @@ class ItemValueUnit2 : Menu::ItemValueUnit
     preset Bounds = <290,0,417,67>;
   }
 }
+
+$rect <230,460,430,500>
+$output false
+class ItemPoiList : Menu::ItemBase
+{
+  $rect <20,20,160,60>
+  inherited object Title
+  {
+    preset Bounds = <37,1,233,76>;
+    preset Ellipsis = true;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
+    preset String = "";
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text ValueText
+  {
+    preset Bounds = <253,18,351,52>;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text UnitText
+  {
+    preset Bounds = <357,18,417,52>;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <50,120,250,160>
+  property string Value;
+
+  $rect <50,160,250,200>
+  onset Value
+  {
+    if( pure Value != value )
+    {
+      // Remember the property's new value.
+      pure Value = value;
+
+      ValueText.String = Value;
+    }
+  }
+
+  $rect <280,120,480,160>
+  property string Unit;
+
+  $rect <280,160,480,200>
+  onset Unit
+  {
+    if( pure Unit != value )
+    {
+      // Remember the property's new value.
+      pure Unit = value;
+
+      UnitText.String = Unit;
+    }
+  }
+}
+
+$rect <10,220,210,260>
+$output false
+const int32 PoiListItemFirstRowMaxLen = 12;

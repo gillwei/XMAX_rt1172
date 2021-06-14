@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _UnitUNT04_PressureSettingMenu_H
-#define _UnitUNT04_PressureSettingMenu_H
+#ifndef _NavigationNAV09_NAV10_PoiList_H
+#define _NavigationNAV09_NAV10_PoiList_H
 
 #ifdef __cplusplus
   extern "C"
@@ -48,8 +48,10 @@
 #include "_CoreTimer.h"
 #include "_MenuBaseMenuView.h"
 #include "_MenuVerticalMenu.h"
+#include "_PopPOP16_NaviLoadingUI.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Components::BaseMainBG */
 #ifndef _ComponentsBaseMainBG_
@@ -105,23 +107,26 @@
 #define _MenuItemBase_
 #endif
 
-/* Forward declaration of the class Unit::UNT04_PressureSettingMenu */
-#ifndef _UnitUNT04_PressureSettingMenu_
-  EW_DECLARE_CLASS( UnitUNT04_PressureSettingMenu )
-#define _UnitUNT04_PressureSettingMenu_
+/* Forward declaration of the class Navigation::NAV09_NAV10_PoiList */
+#ifndef _NavigationNAV09_NAV10_PoiList_
+  EW_DECLARE_CLASS( NavigationNAV09_NAV10_PoiList )
+#define _NavigationNAV09_NAV10_PoiList_
 #endif
 
 
-/* Deklaration of class : 'Unit::UNT04_PressureSettingMenu' */
-EW_DEFINE_FIELDS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView )
-  EW_PROPERTY( PressureUpdateSignal, XSlot )
-  EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
-  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
-  EW_ARRAY   ( ItemTitleArray,  XString, [3])
-EW_END_OF_FIELDS( UnitUNT04_PressureSettingMenu )
+/* Deklaration of class : 'Navigation::NAV09_NAV10_PoiList' */
+EW_DEFINE_FIELDS( NavigationNAV09_NAV10_PoiList, MenuBaseMenuView )
+  EW_OBJECT  ( PoiListUpdateEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( PoiListLoadingTimer, CoreTimer )
+  EW_OBJECT  ( DataErrorText,   ViewsText )
+  EW_OBJECT  ( CountDownTimer,  CoreTimer )
+  EW_OBJECT  ( NoDataText,      ViewsText )
+  EW_OBJECT  ( LoadingAnimation, PopPOP16_NaviLoadingUI )
+  EW_OBJECT  ( Divider,         ViewsImage )
+EW_END_OF_FIELDS( NavigationNAV09_NAV10_PoiList )
 
-/* Virtual Method Table (VMT) for the class : 'Unit::UNT04_PressureSettingMenu' */
-EW_DEFINE_METHODS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Navigation::NAV09_NAV10_PoiList' */
+EW_DEFINE_METHODS( NavigationNAV09_NAV10_PoiList, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -165,7 +170,7 @@ EW_DEFINE_METHODS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( NavigationNAV09_NAV10_PoiList _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
@@ -174,14 +179,13 @@ EW_DEFINE_METHODS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnSetDDModeEnabled, void )( MenuBaseMenuView _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( UnitUNT04_PressureSettingMenu _this, XInt32 
+  EW_METHOD( LoadItemClass,     XClass )( NavigationNAV09_NAV10_PoiList _this, XInt32 
     aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( UnitUNT04_PressureSettingMenu _this, 
+  EW_METHOD( LoadItemTitle,     XString )( NavigationNAV09_NAV10_PoiList _this, 
     XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( UnitUNT04_PressureSettingMenu _this, XInt32 
+  EW_METHOD( OnItemActivate,    void )( NavigationNAV09_NAV10_PoiList _this, XInt32 
     aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( UnitUNT04_PressureSettingMenu _this, XInt32 
-    aItemNo )
+  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -195,42 +199,62 @@ EW_DEFINE_METHODS( UnitUNT04_PressureSettingMenu, MenuBaseMenuView )
     aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemHour,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( UnitUNT04_PressureSettingMenu )
+  EW_METHOD( LoadPoiListItemValue, XString )( NavigationNAV09_NAV10_PoiList _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemUnit, XString )( NavigationNAV09_NAV10_PoiList _this, 
+    XInt32 aItemNo )
+EW_END_OF_METHODS( NavigationNAV09_NAV10_PoiList )
 
-/* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.LoadItemClass()' */
-XClass UnitUNT04_PressureSettingMenu_LoadItemClass( UnitUNT04_PressureSettingMenu _this, 
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void NavigationNAV09_NAV10_PoiList_Init( NavigationNAV09_NAV10_PoiList _this, XHandle 
+  aArg );
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.OnShortHomeKeyActivated()' */
+void NavigationNAV09_NAV10_PoiList_OnShortHomeKeyActivated( NavigationNAV09_NAV10_PoiList _this );
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.LoadItemClass()' */
+XClass NavigationNAV09_NAV10_PoiList_LoadItemClass( NavigationNAV09_NAV10_PoiList _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.LoadItemTitle()' */
-XString UnitUNT04_PressureSettingMenu_LoadItemTitle( UnitUNT04_PressureSettingMenu _this, 
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.LoadItemTitle()' */
+XString NavigationNAV09_NAV10_PoiList_LoadItemTitle( NavigationNAV09_NAV10_PoiList _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.OnItemActivate()' */
-void UnitUNT04_PressureSettingMenu_OnItemActivate( UnitUNT04_PressureSettingMenu _this, 
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.OnItemActivate()' */
+void NavigationNAV09_NAV10_PoiList_OnItemActivate( NavigationNAV09_NAV10_PoiList _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.LoadItemChecked()' */
-XBool UnitUNT04_PressureSettingMenu_LoadItemChecked( UnitUNT04_PressureSettingMenu _this, 
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.LoadPoiListItemValue()' */
+XString NavigationNAV09_NAV10_PoiList_LoadPoiListItemValue( NavigationNAV09_NAV10_PoiList _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.OnCheckMarkUpdateSlot()' */
-void UnitUNT04_PressureSettingMenu_OnCheckMarkUpdateSlot( UnitUNT04_PressureSettingMenu _this, 
-  XObject sender );
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.LoadPoiListItemUnit()' */
+XString NavigationNAV09_NAV10_PoiList_LoadPoiListItemUnit( NavigationNAV09_NAV10_PoiList _this, 
+  XInt32 aItemNo );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void UnitUNT04_PressureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT04_PressureSettingMenu _this, 
+void NavigationNAV09_NAV10_PoiList_OnPoiListUpdateSlot( NavigationNAV09_NAV10_PoiList _this, 
   XObject sender );
 
-/* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.ResetHighlightPosition()' */
-void UnitUNT04_PressureSettingMenu_ResetHighlightPosition( UnitUNT04_PressureSettingMenu _this );
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.OnPoiListLoadingFailedSlot()' */
+void NavigationNAV09_NAV10_PoiList_OnPoiListLoadingFailedSlot( NavigationNAV09_NAV10_PoiList _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.OnListDismissSlot()' */
+void NavigationNAV09_NAV10_PoiList_OnListDismissSlot( NavigationNAV09_NAV10_PoiList _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.ReturnToNaviMapView()' */
+void NavigationNAV09_NAV10_PoiList_ReturnToNaviMapView( NavigationNAV09_NAV10_PoiList _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _UnitUNT04_PressureSettingMenu_H */
+#endif /* _NavigationNAV09_NAV10_PoiList_H */
 
 /* Embedded Wizard */

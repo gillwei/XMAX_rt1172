@@ -199,6 +199,8 @@ EW_DEFINE_METHODS( SettingsSET46_VehicleInfoReset, MenuBaseMenuView )
     XInt32 aItemNo )
   EW_METHOD( LoadItemMinute,    XString )( SettingsSET46_VehicleInfoReset _this, 
     XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET46_VehicleInfoReset )
 
 /* The method Init() is invoked automatically after the component has been created. 

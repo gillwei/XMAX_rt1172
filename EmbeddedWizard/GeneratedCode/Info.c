@@ -355,6 +355,8 @@ EW_DEFINE_CLASS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView, CheckMarkU
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( InfoINF01_MeterDisplaySettingMenu )
 
 /* Initializer for the class 'Info::INF26_ODO_TRIP_SettingMenu' */
@@ -870,6 +872,8 @@ EW_DEFINE_CLASS( InfoINF26_ODO_TRIP_SettingMenu, MenuBaseMenuView, CheckMarkUpda
   InfoINF26_ODO_TRIP_SettingMenu_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( InfoINF26_ODO_TRIP_SettingMenu )
 
 /* Embedded Wizard */

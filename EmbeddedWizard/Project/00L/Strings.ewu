@@ -1,7 +1,7 @@
 $version 10.00
 
 // This file is generated automatically.
-// Generated: 2021/06/18 11:54:50
+// Generated: 2021/06/25 11:56:37
 
 $output false
 const string ARGUMENT_STR =
@@ -732,6 +732,24 @@ $output false
 const string POP17_APP_INIT_SETTING_FAILED =
 (
   Default = "Initial settings incomplete.\nFollow the instructions of LC Navi on your phone to complete the initial settings.";
+);
+
+$output false
+const string POP18_POI_LOADING_FAILED =
+(
+  Default = "Cannot retrieve data from your phone. Try again later.";
+);
+
+$output false
+const string POP18_NO_FAVORITE_PLACE =
+(
+  Default = "No favorites.\nPinned favorites in LC Navi will be shown here.";
+);
+
+$output false
+const string POP18_NO_GAS_STATION =
+(
+  Default = "No nearby gas stations.";
 );
 
 $output false

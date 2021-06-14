@@ -132,7 +132,7 @@ class BaseHome : Components::BaseMainBG
                Enum::HomeType.NAVI_NEXT_TURN,
                Enum::HomeType.NAVI_TURN_BY_TURN:
           {
-            App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+            App.SwitchToHome( NextHomeType );
           }
           case Enum::HomeType.VEHICLE_INFO:
           {

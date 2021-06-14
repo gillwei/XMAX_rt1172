@@ -120,6 +120,10 @@ Check Bluetooth connection settings.
 Check smartphone reception.",,,,,,,
 POP17_APP_INIT_SETTING_FAILED,"Initial settings incomplete.
 Follow the instructions of LC Navi on your phone to complete the initial settings.",,,,,,,
+POP18_POI_LOADING_FAILED,Cannot retrieve data from your phone. Try again later.,,,,,,,
+POP18_NO_FAVORITE_PLACE,"No favorites.
+Pinned favorites in LC Navi will be shown here.",,,,,,,
+POP18_NO_GAS_STATION,No nearby gas stations.,,,,,,,
 SET01_TRACTION_CONTROL,Traction Control,,,,,,,
 SET01_CONNECTION,Connection,,,,,,,
 SET01_CLOCK,Clock,,,,,,,

@@ -1073,6 +1073,8 @@ EW_DEFINE_CLASS( ClockCLK01_ClockSettingMenu, MenuBaseMenuView, ClockManualAdjCo
   MenuBaseMenuView_OnItemLongEnterKeyActivate,
   MenuBaseMenuView_LoadItemHour,
   MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
 EW_END_OF_CLASS( ClockCLK01_ClockSettingMenu )
 
 /* Initializer for the class 'Clock::CLK03_SetClock' */
