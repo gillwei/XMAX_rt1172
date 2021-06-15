@@ -71,14 +71,14 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 10, 156 }, { 470, 187 }};
 static const XRect _Const0001 = {{ 193, 54 }, { 287, 148 }};
-static const XRect _Const0002 = {{ 10, 50 }, { 470, 236 }};
+static const XRect _Const0002 = {{ 10, 49 }, { 470, 235 }};
 static const XRect _Const0003 = {{ 0, 0 }, { 480, 272 }};
 static const XColor _Const0004 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0005 = {{ 10, 57 }, { 470, 91 }};
+static const XRect _Const0005 = {{ 10, 55 }, { 470, 89 }};
 static const XRect _Const0006 = {{ 0, 0 }, { 480, 43 }};
 static const XColor _Const0007 = { 0xFF, 0xF5, 0x00, 0xFF };
 static const XRect _Const0008 = {{ 155, 5 }, { 191, 41 }};
-static const XRect _Const0009 = {{ 191, 1 }, { 327, 42 }};
+static const XRect _Const0009 = {{ 144, 2 }, { 375, 43 }};
 static const XRect _Const000A = {{ 215, 105 }, { 265, 155 }};
 static const XRect _Const000B = {{ 296, 105 }, { 346, 155 }};
 static const XRect _Const000C = {{ 134, 105 }, { 184, 155 }};
@@ -90,20 +90,21 @@ static const XRect _Const0011 = {{ 10, 127 }, { 60, 177 }};
 static const XRect _Const0012 = {{ 10, 198 }, { 60, 248 }};
 static const XRect _Const0013 = {{ 10, 4 }, { 470, 41 }};
 static const XColor _Const0014 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const0015 = {{ 68, 50 }, { 440, 112 }};
-static const XRect _Const0016 = {{ 68, 121 }, { 440, 183 }};
-static const XRect _Const0017 = {{ 68, 192 }, { 440, 254 }};
+static const XRect _Const0015 = {{ 68, 49 }, { 440, 111 }};
+static const XRect _Const0016 = {{ 68, 120 }, { 440, 182 }};
+static const XRect _Const0017 = {{ 68, 191 }, { 440, 253 }};
 static const XRect _Const0018 = {{ 0, 115 }, { 480, 119 }};
 static const XRect _Const0019 = {{ 0, 186 }, { 480, 190 }};
 static const XRect _Const001A = {{ 0, 257 }, { 480, 261 }};
 static const XStringRes _Const001B = { _StringsDefault0, 0x000F };
 static const XRect _Const001C = {{ 10, 46 }, { 470, 170 }};
 static const XRect _Const001D = {{ 0, 36 }, { 480, 38 }};
-static const XRect _Const001E = {{ 0, 0 }, { 480, 234 }};
-static const XRect _Const001F = {{ 0, 144 }, { 480, 234 }};
-static const XRect _Const0020 = {{ 0, 0 }, { 480, 144 }};
-static const XRect _Const0021 = {{ 10, 118 }, { 470, 149 }};
-static const XRect _Const0022 = {{ 193, 18 }, { 287, 110 }};
+static const XRect _Const001E = {{ 10, 50 }, { 470, 236 }};
+static const XRect _Const001F = {{ 0, 0 }, { 480, 234 }};
+static const XRect _Const0020 = {{ 0, 144 }, { 480, 234 }};
+static const XRect _Const0021 = {{ 0, 0 }, { 480, 144 }};
+static const XRect _Const0022 = {{ 10, 118 }, { 470, 149 }};
+static const XRect _Const0023 = {{ 193, 18 }, { 287, 110 }};
 
 /* Initializer for the class 'Pop::POP08_WeatherLoadingUI' */
 void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject aLink, XHandle aArg )
@@ -1242,7 +1243,7 @@ void PopPOP17_AppInitSettingError__Init( PopPOP17_AppInitSettingError _this, XOb
   _this->_.VMT = EW_CLASS( PopPOP17_AppInitSettingError );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->AppInitSettingFailedMessage, _Const0002 );
+  CoreRectView__OnSetBounds( &_this->AppInitSettingFailedMessage, _Const001E );
   ViewsText_OnSetWrapText( &_this->AppInitSettingFailedMessage, 1 );
   ViewsText_OnSetString( &_this->AppInitSettingFailedMessage, EwLoadString( &StringsPOP17_APP_INIT_SETTING_FAILED ));
   CoreTimer_OnSetPeriod( &_this->CountDownTimer, 2000 );
@@ -1364,7 +1365,7 @@ void PopPOP03_HomeOfficeSettingError__Init( PopPOP03_HomeOfficeSettingError _thi
   _this->_.VMT = EW_CLASS( PopPOP03_HomeOfficeSettingError );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->HomeOfficeSettingFailedMessage, _Const0002 );
+  CoreRectView__OnSetBounds( &_this->HomeOfficeSettingFailedMessage, _Const001E );
   ViewsText_OnSetWrapText( &_this->HomeOfficeSettingFailedMessage, 1 );
   ViewsText_OnSetString( &_this->HomeOfficeSettingFailedMessage, 0 );
   CoreTimer_OnSetPeriod( &_this->CountDownTimer, 2000 );
@@ -1501,13 +1502,13 @@ void PopPOP16_NaviLoadingUI__Init( PopPOP16_NaviLoadingUI _this, XObject aLink, 
   _this->_.VMT = EW_CLASS( PopPOP16_NaviLoadingUI );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const001E );
-  CoreRectView__OnSetBounds( &_this->NaviLoadingMainBottom, _Const001F );
-  CoreRectView__OnSetBounds( &_this->NaviLoadingBlackBG, _Const0020 );
+  CoreRectView__OnSetBounds( _this, _Const001F );
+  CoreRectView__OnSetBounds( &_this->NaviLoadingMainBottom, _Const0020 );
+  CoreRectView__OnSetBounds( &_this->NaviLoadingBlackBG, _Const0021 );
   ViewsRectangle_OnSetColor( &_this->NaviLoadingBlackBG, _Const0004 );
-  CoreRectView__OnSetBounds( &_this->NaviLoadingText, _Const0021 );
+  CoreRectView__OnSetBounds( &_this->NaviLoadingText, _Const0022 );
   ViewsText_OnSetString( &_this->NaviLoadingText, EwLoadString( &StringsGEN_PLEASE_WAIT ));
-  CoreRectView__OnSetBounds( &_this->NaviLoadingAnimation, _Const0022 );
+  CoreRectView__OnSetBounds( &_this->NaviLoadingAnimation, _Const0023 );
   ViewsImage_OnSetAnimated( &_this->NaviLoadingAnimation, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingMainBottom ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingBlackBG ), 0 );

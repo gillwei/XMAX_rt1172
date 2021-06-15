@@ -278,7 +278,7 @@ class HOM03_VehicleInfo : Home::BaseHome
   $rect <20,20,160,60>
   object Home::VehicleInfoMenu VehicleInfoMenu
   {
-    preset Bounds = <80,40,480,268>;
+    preset Bounds = <78,40,480,268>;
   }
 }
 
@@ -295,7 +295,7 @@ class VehicleInfoMenu : Core::Group
 
     if( VerticalList.NoOfItems < 3 )
     {
-      VerticalList.Bounds.h = VerticalList.ItemHeight * VerticalList.NoOfItems; 
+      VerticalList.Bounds.h = VerticalList.ItemHeight * VerticalList.NoOfItems;
     }
     else
     {
@@ -304,12 +304,12 @@ class VehicleInfoMenu : Core::Group
   }
 
   $rect <0,240,180,280>
-  inherited property Bounds = <0,0,400,228>;
+  inherited property Bounds = <0,0,402,228>;
 
   $rect <20,20,160,60>
   object Core::VerticalList VerticalList
   {
-    preset Bounds = <0,0,400,228>;
+    preset Bounds = <0,0,402,228>;
     preset OnLoadItem = OnLoadItem;
     preset Endless = true;
     preset ItemHeight = 76;
@@ -355,14 +355,14 @@ class VehicleInfoMenu : Core::Group
   $rect <20,20,160,60>
   object Views::Image Divider1
   {
-    preset Bounds = <1,70,360,77>;
+    preset Bounds = <0,70,359,77>;
     preset Bitmap = Resource::InfoDivider;
   }
 
   $rect <20,20,160,60>
   object Views::Image Divider2
   {
-    preset Bounds = <1,148,360,155>;
+    preset Bounds = <0,146,359,153>;
     preset Bitmap = Resource::InfoDivider;
   }
 
@@ -677,14 +677,14 @@ class VehicleInfoMenu : Core::Group
   $rect <20,20,160,60>
   object Views::Image UpArrowIcon
   {
-    preset Bounds = <361,1,393,33>;
+    preset Bounds = <363,1,395,33>;
     preset Bitmap = Resource::PageUpDown;
   }
 
   $rect <20,20,160,60>
   object Views::Image DownArrowIcon
   {
-    preset Bounds = <361,185,393,217>;
+    preset Bounds = <363,185,395,217>;
     preset FrameNumber = 1;
     preset Bitmap = Resource::PageUpDown;
   }
@@ -818,7 +818,7 @@ class ItemVehicleInfo : Components::BaseComponent
   object Views::Text Title
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
-    preset Bounds = <5,19,142,52>;
+    preset Bounds = <7,19,144,52>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
@@ -829,7 +829,7 @@ class ItemVehicleInfo : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Image IconUnit
   {
-    preset Bounds = <286,14,344,56>;
+    preset Bounds = <288,15,346,57>;
     preset Bitmap = Resource::IconUnitKM_L;
   }
 
@@ -837,7 +837,7 @@ class ItemVehicleInfo : Components::BaseComponent
   object Views::Text Value
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
-    preset Bounds = <149,8,281,65>;
+    preset Bounds = <149,7,281,64>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
@@ -849,7 +849,7 @@ class ItemVehicleInfo : Components::BaseComponent
   object Views::Text MinuteText
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
-    preset Bounds = <231,8,281,65>;
+    preset Bounds = <232,7,282,64>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
@@ -861,7 +861,7 @@ class ItemVehicleInfo : Components::BaseComponent
   object Views::Text HourText
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
-    preset Bounds = <146,8,196,65>;
+    preset Bounds = <147,7,197,64>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
@@ -872,7 +872,7 @@ class ItemVehicleInfo : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Image HourIcon
   {
-    preset Bounds = <200,14,227,56>;
+    preset Bounds = <204,15,231,57>;
     preset Bitmap = Resource::IconUnitHour;
     preset Visible = false;
   }

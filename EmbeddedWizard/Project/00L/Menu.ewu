@@ -164,7 +164,7 @@ class ItemBase : Components::BaseComponent
   object Views::Text Title
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
-    preset Bounds = <37,1,417,69>;
+    preset Bounds = <37,1,417,66>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
@@ -757,7 +757,7 @@ class ItemCheckbox : Menu::ItemBase
     {
       case Menu::ItemHeightSmall:
       {
-        Title.Bounds = <37,9,367,43>;
+        Title.Bounds = <37,7,367,41>;
         CheckboxIcon.Bounds = <371,2,421,52>;
       }
       default:;
@@ -777,7 +777,7 @@ class ItemCheckbox : Menu::ItemBase
   $rect <20,20,160,60>
   inherited object Title
   {
-    preset Bounds = <37,1,366,69>;
+    preset Bounds = <37,1,366,66>;
   }
 
   $rect <0,80,200,120>
@@ -1927,7 +1927,7 @@ class ItemCheckMark : Menu::ItemBase
     {
       case Menu::ItemHeightSmall:
       {
-        Title.Bounds = <37,9,367,43>;
+        Title.Bounds = <37,7,367,41>;
         CheckMark.Bounds = <371,2,421,52>;
       }
       default:;
@@ -1937,7 +1937,7 @@ class ItemCheckMark : Menu::ItemBase
   $rect <20,20,160,60>
   inherited object Title
   {
-    preset Bounds = <37,1,364,69>;
+    preset Bounds = <37,1,364,66>;
   }
 
   $rect <0,80,200,120>
@@ -2069,26 +2069,6 @@ $rect <230,160,430,200>
 $output false
 class ItemBaseValue : Menu::ItemBase
 {
-  $rect <0,110,200,150>
-  inherited method UpdateLayout()
-  {
-    super( aSize );
-
-    switch( Height )
-    {
-      case Menu::ItemHeightSmall:
-      {
-        ValueText.Bounds = <290,7,417,43>;
-      }
-      case Menu::ItemHeightTall:
-      {
-        Title.Bounds = <37,1,193,69>;
-        ValueText.Bounds = <385,1,418,69>;
-      }
-      default:;
-    }
-  }
-
   $rect <220,210,420,250>
   inherited onset Enabled
   {
@@ -2107,10 +2087,36 @@ class ItemBaseValue : Menu::ItemBase
     }
   }
 
+  $rect <0,110,200,150>
+  inherited method UpdateLayout()
+  {
+    super( aSize );
+
+    switch( Height )
+    {
+      case Menu::ItemHeightSmall:
+      {
+        ValueText.Bounds = <290,7,417,43>;
+      }
+      case Menu::ItemHeightTall:
+      {
+        Title.Bounds = <37,0,193,67>;
+        ValueText.Bounds = <384,0,417,67>;
+      }
+      default:;
+    }
+  }
+
+  $rect <20,20,160,60>
+  inherited object Title
+  {
+    preset Bounds = <37,0,193,67>;
+  }
+
   $rect <20,20,160,60>
   object Views::Text ValueText
   {
-    preset Bounds = <290,9,417,43>;
+    preset Bounds = <384,0,417,51>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -2149,7 +2155,7 @@ class ItemNotification : Menu::ItemBase
   $rect <20,20,160,60>
   inherited object Title
   {
-    preset Bounds = <68,6,367,36>;
+    preset Bounds = <68,5,367,35>;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
@@ -2157,7 +2163,7 @@ class ItemNotification : Menu::ItemBase
   object Views::Text MessageText
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
-    preset Bounds = <68,36,439,66>;
+    preset Bounds = <68,32,439,62>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
     preset String = "";
@@ -2169,8 +2175,8 @@ class ItemNotification : Menu::ItemBase
   object Views::Text ReceivedTimeText
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
-    preset Bounds = <376,8,439,38>;
-    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset Bounds = <377,5,440,35>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "00:00";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Color = #FFFFFFFF;
@@ -2267,7 +2273,7 @@ class ItemValueUnitCheckmark : Menu::ItemCheckMark
   $rect <20,20,160,60>
   object Views::Text ValueText
   {
-    preset Bounds = <145,9,300,43>;
+    preset Bounds = <145,7,300,41>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -2276,7 +2282,7 @@ class ItemValueUnitCheckmark : Menu::ItemCheckMark
   $rect <20,20,160,60>
   object Views::Text UnitText
   {
-    preset Bounds = <306,9,366,43>;
+    preset Bounds = <306,7,366,41>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -2333,7 +2339,7 @@ class ItemValueUnit : Menu::ItemBase
   $rect <20,20,160,60>
   object Views::Text ValueText
   {
-    preset Bounds = <200,1,351,69>;
+    preset Bounds = <200,0,351,67>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -2342,7 +2348,7 @@ class ItemValueUnit : Menu::ItemBase
   $rect <20,20,160,60>
   object Views::Text UnitText
   {
-    preset Bounds = <357,1,417,69>;
+    preset Bounds = <357,0,417,67>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -2382,7 +2388,7 @@ class ItemTimeHourMinute : Menu::ItemBase
   $rect <20,20,160,60>
   object Views::Text HourValueText
   {
-    preset Bounds = <212,0,286,70>;
+    preset Bounds = <212,0,286,67>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -2391,7 +2397,7 @@ class ItemTimeHourMinute : Menu::ItemBase
   $rect <20,20,160,60>
   object Views::Text MinuteValueText
   {
-    preset Bounds = <325,0,359,70>;
+    preset Bounds = <326,0,360,67>;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -2400,7 +2406,7 @@ class ItemTimeHourMinute : Menu::ItemBase
   $rect <20,20,160,60>
   object Views::Text HourText
   {
-    preset Bounds = <290,0,321,70>;
+    preset Bounds = <290,0,321,67>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = Strings::GEN_HOUR_ABBREVIATION;
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -2409,7 +2415,7 @@ class ItemTimeHourMinute : Menu::ItemBase
   $rect <20,20,160,60>
   object Views::Text MinuteText
   {
-    preset Bounds = <363,0,417,70>;
+    preset Bounds = <362,0,416,67>;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
     preset String = Strings::GEN_MINUTE_ABBREVIATION;
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -2455,12 +2461,12 @@ class ItemValueUnit2 : Menu::ItemValueUnit
   $rect <20,20,160,60>
   inherited object ValueText
   {
-    preset Bounds = <212,1,286,69>;
+    preset Bounds = <212,0,286,67>;
   }
 
   $rect <20,20,160,60>
   inherited object UnitText
   {
-    preset Bounds = <290,1,417,69>;
+    preset Bounds = <290,0,417,67>;
   }
 }

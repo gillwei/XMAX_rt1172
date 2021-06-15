@@ -84,17 +84,20 @@ static const XStringRes _Const000A = { _StringsDefault0, 0x006D };
 static const XRect _Const000B = {{ 11, 44 }, { 444, 265 }};
 static const XColor _Const000C = { 0xCC, 0xCC, 0xCC, 0xFF };
 static const XRect _Const000D = {{ 453, 44 }, { 461, 252 }};
-static const XRect _Const000E = {{ 33, 48 }, { 439, 258 }};
+static const XRect _Const000E = {{ 33, 48 }, { 439, 260 }};
 static const XRect _Const000F = {{ 0, 36 }, { 480, 38 }};
 static const XStringRes _Const0010 = { _StringsDefault0, 0x008A };
-static const XRect _Const0011 = {{ 0, 0 }, { 406, 210 }};
-static const XRect _Const0012 = {{ 0, 0 }, { 332, 30 }};
+static const XRect _Const0011 = {{ 0, 0 }, { 406, 212 }};
+static const XRect _Const0012 = {{ 0, 0 }, { 332, 29 }};
 static const XColor _Const0013 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0014 = {{ 343, 0 }, { 406, 30 }};
-static const XRect _Const0015 = {{ 0, 30 }, { 406, 1260 }};
+static const XRect _Const0014 = {{ 343, 0 }, { 406, 29 }};
+static const XRect _Const0015 = {{ 0, 26 }, { 406, 1256 }};
 static const XPoint _Const0016 = { 0, 0 };
-static const XStringRes _Const0017 = { _StringsDefault0, 0x0097 };
-static const XStringRes _Const0018 = { _StringsDefault0, 0x00A5 };
+static const XRect _Const0017 = {{ 0, 0 }, { 332, 30 }};
+static const XRect _Const0018 = {{ 343, 0 }, { 406, 30 }};
+static const XRect _Const0019 = {{ 0, 30 }, { 406, 1260 }};
+static const XStringRes _Const001A = { _StringsDefault0, 0x0097 };
+static const XStringRes _Const001B = { _StringsDefault0, 0x00A5 };
 
 /* Initializer for the class 'Notification::NTF01_NotificationList' */
 void NotificationNTF01_NotificationList__Init( NotificationNTF01_NotificationList _this, XObject aLink, XHandle aArg )
@@ -786,15 +789,15 @@ void NotificationNotificationDetailText_OnSetScrollOffsetY( NotificationNotifica
   {
     XRect NewBounds;
     _this->ScrollOffsetY = value;
-    NewBounds = _Const0012;
+    NewBounds = _Const0017;
     NewBounds.Point1.Y = value;
     NewBounds.Point2.Y = ( NewBounds.Point1.Y + 30 );
     CoreRectView__OnSetBounds( &_this->TitleText, NewBounds );
-    NewBounds = _Const0014;
+    NewBounds = _Const0018;
     NewBounds.Point1.Y = value;
     NewBounds.Point2.Y = ( NewBounds.Point1.Y + 30 );
     CoreRectView__OnSetBounds( &_this->ReceivedTimeText, NewBounds );
-    NewBounds = _Const0015;
+    NewBounds = _Const0019;
     NewBounds.Point1.Y = ( 30 + value );
     NewBounds.Point2.Y = ( NewBounds.Point1.Y + 1230 );
     CoreRectView__OnSetBounds( &_this->MessageText, NewBounds );
@@ -821,7 +824,7 @@ XInt32 NotificationNotificationDetailText_ScrollDownPage( NotificationNotificati
     EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ScrollEffect, 1 );
     _this->LineToScroll = (( EwGetInt32Abs( NextScrollOffsetY ) / _this->MessageText.RowDistance ) 
     + 7 ) - 1;
-    EwTrace( "%s%i", EwLoadString( &_Const0017 ), _this->LineToScroll );
+    EwTrace( "%s%i", EwLoadString( &_Const001A ), _this->LineToScroll );
   }
 
   return _this->LineToScroll;
@@ -849,7 +852,7 @@ XInt32 NotificationNotificationDetailText_ScrollUpPage( NotificationNotification
     EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ScrollEffect, 1 );
     _this->LineToScroll = (( EwGetInt32Abs( NextScrollOffsetY ) / _this->MessageText.RowDistance ) 
     + 7 ) - 1;
-    EwTrace( "%s%i", EwLoadString( &_Const0018 ), _this->LineToScroll );
+    EwTrace( "%s%i", EwLoadString( &_Const001B ), _this->LineToScroll );
   }
 
   return _this->LineToScroll;

@@ -316,6 +316,9 @@ class SystemDeviceClass : Templates::DeviceClass
       CurrentLocalTime.Second = RtcSecond;
     $else
       // for screenshot
+      CurrentLocalTime.Year = 2020;
+      CurrentLocalTime.Month = 10;
+      CurrentLocalTime.Day = 20;
       CurrentLocalTime.Hour = 12;
       CurrentLocalTime.Minute = 40;
     $endif
@@ -783,6 +786,8 @@ class SystemDeviceClass : Templates::DeviceClass
         IsEnabled = ota_update_info->enable;
       }
       pure IsSoftwareUpdateEnabled = IsEnabled;
+    $else
+      pure IsSoftwareUpdateEnabled = true;
     $endif
     return pure IsSoftwareUpdateEnabled;
   }
@@ -1831,8 +1836,11 @@ class BluetoothDeviceClass : Templates::DeviceClass
   $rect <30,150,240,190>
   onget BluetoothEnable
   {
-    return pure BluetoothEnable;
-
+    $if !$prototyper
+      return pure BluetoothEnable;
+    $else
+      return true;
+    $endif
   }
 
   $rect <460,50,660,90>
@@ -1926,7 +1934,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
         LocalDevName = EwNewStringUtf8( (const unsigned char*)device_name, (int)strlen( (char*)device_name ) );
       }
     $else
-      LocalDevName = "Prototyper";
+      LocalDevName = "(Device name)";
     $endif
     return LocalDevName;
   }
@@ -2114,6 +2122,8 @@ class BluetoothDeviceClass : Templates::DeviceClass
       {
         BtConnected = BTM_is_bt_connected();
       }
+    $else
+      BtConnected = true;
     $endif
 
     return BtConnected;
@@ -2145,7 +2155,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
       }
       return MotoconConnected;
     $else
-      return false;
+      return true;
     $endif
   }
 
@@ -2371,9 +2381,17 @@ class VehicleDeviceClass : Templates::DeviceClass
         IsSupported = VI_is_function_supported( FeatureId );
       }
     $else
-      // enable pressure in the unit setting for screenshot
+      // for screenshot
       if( Enum::VehicleSupportedFunction.TIRE_FRONT == aVehicleFeature ||
-          Enum::VehicleSupportedFunction.CLOCK == aVehicleFeature )
+          Enum::VehicleSupportedFunction.CLOCK == aVehicleFeature ||
+          Enum::VehicleSupportedFunction.GRIP_WARMER == aVehicleFeature ||
+          Enum::VehicleSupportedFunction.SEAT_HEATER == aVehicleFeature ||
+          Enum::VehicleSupportedFunction.AIR_TEMPERATURE == aVehicleFeature ||
+          Enum::VehicleSupportedFunction.AVG_FUEL == aVehicleFeature ||
+          Enum::VehicleSupportedFunction.AVG_SPEED == aVehicleFeature ||
+          Enum::VehicleSupportedFunction.TRIP1 == aVehicleFeature ||
+          Enum::VehicleSupportedFunction.TRIP2 == aVehicleFeature ||
+          Enum::VehicleSupportedFunction.F_TRIP == aVehicleFeature )
       {
         IsSupported = true;
       }
@@ -2454,8 +2472,81 @@ class VehicleDeviceClass : Templates::DeviceClass
 
       VehicleData.Valid = Valid;
     $else
-      // suppress warning
-      aVehicleRxType;
+      if( Enum::VehicleRxType.GRIP_WARMER_STATUS == aVehicleRxType ||
+          Enum::VehicleRxType.SEAT_HEATER_STATUS == aVehicleRxType )
+      {
+        VehicleData.DataUInt32 = SeatHeater_GripWarmer::HIGHEST_STATUS;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.AIR_TEMPERATURE == aVehicleRxType )
+      {
+        VehicleData.DataFloat = 25.0;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.SEAT_HEATER_STATUS == aVehicleRxType )
+      {
+        VehicleData.DataUInt32 = SeatHeater_GripWarmer::HIGHEST_STATUS;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.FUEL_RATE_AVERAGE == aVehicleRxType )
+      {
+        VehicleData.DataFloat = 22.8;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT == aVehicleRxType )
+      {
+        VehicleData.DataUInt32 = Enum::MeterFuelConsumptionUnit.L_PER_100KM;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.AVERAGE_SPEED == aVehicleRxType )
+      {
+        VehicleData.DataUInt32 = 120;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.TRIP_TIME == aVehicleRxType )
+      {
+        VehicleData.DataUInt32 = 85500; /* 23h 45m */
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.ODOMETER_VALUE == aVehicleRxType )
+      {
+        VehicleData.DataFloat = 997126;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.TRIP1_VALUE == aVehicleRxType )
+      {
+        VehicleData.DataFloat = 862.7;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.TRIP2_VALUE == aVehicleRxType )
+      {
+        VehicleData.DataFloat = 68.0;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.TRIP_F_VALUE == aVehicleRxType )
+      {
+        VehicleData.DataFloat = 4.7;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.SEAT_HEATER_VALUE_LOW == aVehicleRxType )
+      {
+        VehicleData.DataUInt32 = 1;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.SEAT_HEATER_VALUE_MIDDLE == aVehicleRxType )
+      {
+        VehicleData.DataUInt32 = 2;
+        VehicleData.Valid = true;
+      }
+      else if( Enum::VehicleRxType.SEAT_HEATER_VALUE_HIGH == aVehicleRxType )
+      {
+        VehicleData.DataUInt32 = 3;
+        VehicleData.Valid = true;
+      }
+      else
+      {
+        VehicleData.Valid = false;
+      }
     $endif
 
     return VehicleData;
@@ -3016,13 +3107,18 @@ class VehicleDeviceClass : Templates::DeviceClass
   $rect <270,610,480,650>
   onget LowFuelWarning
   {
-    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.LOW_FUEL_WARNING );
-    if( VehicleData.Valid )
-    {
-      pure LowFuelWarning = (bool)VehicleData.DataUInt32;
-    }
+    $if !$prototyper
+      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.LOW_FUEL_WARNING );
+      if( VehicleData.Valid )
+      {
+        pure LowFuelWarning = (bool)VehicleData.DataUInt32;
+      }
 
-    return pure LowFuelWarning;
+      return pure LowFuelWarning;
+    $else
+      // for screenshot
+      return true;
+    $endif
   }
 
   $rect <1130,560,1360,600>
@@ -3237,6 +3333,71 @@ class WeatherDeviceClass : Templates::DeviceClass
       RainProbability = RainProb;
     $else
       aWeaItemIdx;
+      switch( aWeaItemIdx )
+      {
+        case 0:
+        {
+          MinTemperature = 59;
+          MaxTemperature = 108;
+          RainProbability = 10;
+        }
+        case 1: /* 1 day */
+        {
+          RainProbability = 62;
+          MinTemperature = 57;
+          MaxTemperature = 100;
+        }
+        case 2: /* 2 day */
+        {
+          RainProbability = 100;
+          MinTemperature = 52;
+          MaxTemperature = 63;
+        }
+        case 3: /* 3 day */
+        {
+          RainProbability = 82;
+          MinTemperature = 50;
+          MaxTemperature = 102;
+        }
+        case 4: /* 4 day */
+        {
+          RainProbability = 62;
+          MinTemperature = 62;
+          MaxTemperature = 82;
+        }
+        case 5: /* 5 day */
+        {
+          RainProbability = 100;
+          MinTemperature = 53;
+          MaxTemperature = 87;
+        }
+        case 6: /* 1h */
+        {
+          RainProbability = 62;
+          Temperature = 67;
+        }
+        case 7: /* 2h */
+        {
+          RainProbability = 100;
+          Temperature = 82;
+        }
+        case 8: /* 3h */
+        {
+          RainProbability = 82;
+          Temperature = 108;
+        }
+        case 9: /* 6 day */
+        {
+          RainProbability = 82;
+          MinTemperature = 52;
+          MaxTemperature = 78;
+        }
+        default:;
+      }
+
+      WeatherLocation = "Current location";
+      WeatherTime = aWeaItemIdx;
+      WeatherType = Enum::WeatherIconType.SUNNY;
     $endif
   }
 
@@ -3332,6 +3493,8 @@ class WeatherDeviceClass : Templates::DeviceClass
         NewWeekDay = week_day;
       }
     WeekDay = NewWeekDay;
+    $else
+      WeekDay = 1;
     $endif
   }
 
@@ -3345,7 +3508,6 @@ class WeatherDeviceClass : Templates::DeviceClass
     pure IsWeatherInfoReceived = value;
 
     notifyobservers ^IsWeatherInfoReceived;
-
   }
 
   $rect <110,360,310,400>
@@ -3757,6 +3919,11 @@ class NotificationDeviceClass : Templates::DeviceClass
       {
         Num = NTF_get_notification_num_of_category( aCategory );
       }
+    $else
+      // suppress warning
+      aCategory;
+
+      Num = 1;
     $endif
     return Num;
   }

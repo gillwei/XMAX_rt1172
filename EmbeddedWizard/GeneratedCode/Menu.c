@@ -79,7 +79,7 @@ static const XRect _Const0000 = {{ 0, 0 }, { 480, 74 }};
 static const XRect _Const0001 = {{ 18, 0 }, { 435, 74 }};
 static const XColor _Const0002 = { 0xFF, 0xFF, 0xFF, 0xFF };
 static const XRect _Const0003 = {{ 0, 72 }, { 480, 74 }};
-static const XRect _Const0004 = {{ 37, 1 }, { 417, 69 }};
+static const XRect _Const0004 = {{ 37, 1 }, { 417, 66 }};
 static const XRect _Const0005 = {{ 37, 3 }, { 417, 45 }};
 static const XRect _Const0006 = {{ 18, 0 }, { 435, 54 }};
 static const XRect _Const0007 = {{ 0, 54 }, { 480, 56 }};
@@ -89,9 +89,9 @@ static const XRect _Const000A = {{ 453, 6 }, { 463, 214 }};
 static const XRect _Const000B = {{ 18, 0 }, { 435, 76 }};
 static const XColor _Const000C = { 0x00, 0x72, 0xFF, 0xFF };
 static const XRect _Const000D = {{ 441, 5 }, { 473, 221 }};
-static const XRect _Const000E = {{ 37, 1 }, { 366, 69 }};
+static const XRect _Const000E = {{ 37, 1 }, { 366, 66 }};
 static const XRect _Const000F = {{ 371, 11 }, { 421, 61 }};
-static const XRect _Const0010 = {{ 37, 9 }, { 367, 43 }};
+static const XRect _Const0010 = {{ 37, 7 }, { 367, 41 }};
 static const XRect _Const0011 = {{ 371, 2 }, { 421, 52 }};
 static const XStringRes _Const0012 = { _StringsDefault0, 0x0002 };
 static const XRect _Const0013 = {{ 0, 0 }, { 8, 208 }};
@@ -111,31 +111,30 @@ static const XRect _Const0020 = {{ 0, 0 }, { 150, 83 }};
 static const XStringRes _Const0021 = { _StringsDefault0, 0x000A };
 static const XRect _Const0022 = {{ 0, 43 }, { 150, 83 }};
 static const XStringRes _Const0023 = { _StringsDefault0, 0x0013 };
-static const XRect _Const0024 = {{ 37, 1 }, { 364, 69 }};
+static const XRect _Const0024 = {{ 37, 1 }, { 364, 66 }};
 static const XRect _Const0025 = {{ 371, 9 }, { 421, 59 }};
 static const XRect _Const0026 = {{ 0, 0 }, { 32, 216 }};
 static const XRect _Const0027 = {{ 0, 0 }, { 32, 32 }};
 static const XRect _Const0028 = {{ 0, 184 }, { 32, 216 }};
-static const XRect _Const0029 = {{ 290, 9 }, { 417, 43 }};
-static const XRect _Const002A = {{ 290, 7 }, { 417, 43 }};
-static const XRect _Const002B = {{ 37, 1 }, { 193, 69 }};
-static const XRect _Const002C = {{ 385, 1 }, { 418, 69 }};
+static const XRect _Const0029 = {{ 37, 0 }, { 193, 67 }};
+static const XRect _Const002A = {{ 384, 0 }, { 417, 51 }};
+static const XRect _Const002B = {{ 290, 7 }, { 417, 43 }};
+static const XRect _Const002C = {{ 384, 0 }, { 417, 67 }};
 static const XRect _Const002D = {{ 10, 0 }, { 444, 74 }};
-static const XRect _Const002E = {{ 68, 6 }, { 367, 36 }};
-static const XRect _Const002F = {{ 68, 36 }, { 439, 66 }};
-static const XRect _Const0030 = {{ 376, 8 }, { 439, 38 }};
+static const XRect _Const002E = {{ 68, 5 }, { 367, 35 }};
+static const XRect _Const002F = {{ 68, 32 }, { 439, 62 }};
+static const XRect _Const0030 = {{ 377, 5 }, { 440, 35 }};
 static const XStringRes _Const0031 = { _StringsDefault0, 0x0018 };
 static const XRect _Const0032 = {{ 13, 11 }, { 63, 61 }};
-static const XRect _Const0033 = {{ 145, 9 }, { 300, 43 }};
-static const XRect _Const0034 = {{ 306, 9 }, { 366, 43 }};
-static const XRect _Const0035 = {{ 200, 1 }, { 351, 69 }};
-static const XRect _Const0036 = {{ 357, 1 }, { 417, 69 }};
-static const XRect _Const0037 = {{ 212, 0 }, { 286, 70 }};
-static const XRect _Const0038 = {{ 325, 0 }, { 359, 70 }};
-static const XRect _Const0039 = {{ 290, 0 }, { 321, 70 }};
-static const XRect _Const003A = {{ 363, 0 }, { 417, 70 }};
-static const XRect _Const003B = {{ 212, 1 }, { 286, 69 }};
-static const XRect _Const003C = {{ 290, 1 }, { 417, 69 }};
+static const XRect _Const0033 = {{ 145, 7 }, { 300, 41 }};
+static const XRect _Const0034 = {{ 306, 7 }, { 366, 41 }};
+static const XRect _Const0035 = {{ 200, 0 }, { 351, 67 }};
+static const XRect _Const0036 = {{ 357, 0 }, { 417, 67 }};
+static const XRect _Const0037 = {{ 212, 0 }, { 286, 67 }};
+static const XRect _Const0038 = {{ 326, 0 }, { 360, 67 }};
+static const XRect _Const0039 = {{ 290, 0 }, { 321, 67 }};
+static const XRect _Const003A = {{ 362, 0 }, { 416, 67 }};
+static const XRect _Const003B = {{ 290, 0 }, { 417, 67 }};
 
 /* Initializer for the class 'Menu::ItemBase' */
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
@@ -2722,7 +2721,8 @@ void MenuItemBaseValue__Init( MenuItemBaseValue _this, XObject aLink, XHandle aA
   _this->_.VMT = EW_CLASS( MenuItemBaseValue );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->ValueText, _Const0029 );
+  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0029 );
+  CoreRectView__OnSetBounds( &_this->ValueText, _Const002A );
   ViewsText_OnSetAlignment( &_this->ValueText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ValueText, 0 );
@@ -2754,6 +2754,20 @@ void MenuItemBaseValue__Done( MenuItemBaseValue _this )
   MenuItemBase__Done( &_this->_.Super );
 }
 
+/* 'C' function for method : 'Menu::ItemBaseValue.OnSetEnabled()' */
+void MenuItemBaseValue_OnSetEnabled( MenuItemBaseValue _this, XBool value )
+{
+  if ( _this->Super3.Enabled != value )
+  {
+    MenuItemBase_OnSetEnabled((MenuItemBase)_this, value );
+
+    if ( value )
+      ViewsText_OnSetColor( &_this->ValueText, _Const0002 );
+    else
+      ViewsText_OnSetColor( &_this->ValueText, _Const001F );
+  }
+}
+
 /* The method UpdateLayout() is invoked automatically after the size of the component 
    has been changed. This method can be overridden and filled with logic to perform 
    a sophisticated arrangement calculation for one or more enclosed views. In this 
@@ -2768,31 +2782,17 @@ void MenuItemBaseValue_UpdateLayout( MenuItemBaseValue _this, XPoint aSize )
   switch ( _this->Super1.Height )
   {
     case 56 :
-      CoreRectView__OnSetBounds( &_this->ValueText, _Const002A );
+      CoreRectView__OnSetBounds( &_this->ValueText, _Const002B );
     break;
 
     case 74 :
     {
-      CoreRectView__OnSetBounds( &_this->Super1.Title, _Const002B );
+      CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0029 );
       CoreRectView__OnSetBounds( &_this->ValueText, _Const002C );
     }
     break;
 
     default :; 
-  }
-}
-
-/* 'C' function for method : 'Menu::ItemBaseValue.OnSetEnabled()' */
-void MenuItemBaseValue_OnSetEnabled( MenuItemBaseValue _this, XBool value )
-{
-  if ( _this->Super3.Enabled != value )
-  {
-    MenuItemBase_OnSetEnabled((MenuItemBase)_this, value );
-
-    if ( value )
-      ViewsText_OnSetColor( &_this->ValueText, _Const0002 );
-    else
-      ViewsText_OnSetColor( &_this->ValueText, _Const001F );
   }
 }
 
@@ -2888,7 +2888,7 @@ void MenuItemNotification__Init( MenuItemNotification _this, XObject aLink, XHan
   CoreView_OnSetLayout((CoreView)&_this->ReceivedTimeText, CoreLayoutAlignToLeft 
   | CoreLayoutAlignToTop );
   CoreRectView__OnSetBounds( &_this->ReceivedTimeText, _Const0030 );
-  ViewsText_OnSetAlignment( &_this->ReceivedTimeText, ViewsTextAlignmentAlignHorzLeft 
+  ViewsText_OnSetAlignment( &_this->ReceivedTimeText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ReceivedTimeText, EwLoadString( &_Const0031 ));
   ViewsText_OnSetColor( &_this->ReceivedTimeText, _Const0002 );
@@ -3489,8 +3489,8 @@ void MenuItemValueUnit2__Init( MenuItemValueUnit2 _this, XObject aLink, XHandle 
   _this->_.VMT = EW_CLASS( MenuItemValueUnit2 );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super1.ValueText, _Const003B );
-  CoreRectView__OnSetBounds( &_this->Super1.UnitText, _Const003C );
+  CoreRectView__OnSetBounds( &_this->Super1.ValueText, _Const0037 );
+  CoreRectView__OnSetBounds( &_this->Super1.UnitText, _Const003B );
 }
 
 /* Re-Initializer for the class 'Menu::ItemValueUnit2' */

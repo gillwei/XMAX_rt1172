@@ -160,6 +160,9 @@ EW_DEFINE_METHODS( MenuItemBaseValue, MenuItemBase )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MenuItemBaseValue )
 
+/* 'C' function for method : 'Menu::ItemBaseValue.OnSetEnabled()' */
+void MenuItemBaseValue_OnSetEnabled( MenuItemBaseValue _this, XBool value );
+
 /* The method UpdateLayout() is invoked automatically after the size of the component 
    has been changed. This method can be overridden and filled with logic to perform 
    a sophisticated arrangement calculation for one or more enclosed views. In this 
@@ -168,9 +171,6 @@ EW_END_OF_METHODS( MenuItemBaseValue )
    property. UpdateLayout() gives the derived components a chance to extend this 
    automatism by a user defined algorithm. */
 void MenuItemBaseValue_UpdateLayout( MenuItemBaseValue _this, XPoint aSize );
-
-/* 'C' function for method : 'Menu::ItemBaseValue.OnSetEnabled()' */
-void MenuItemBaseValue_OnSetEnabled( MenuItemBaseValue _this, XBool value );
 
 /* 'C' function for method : 'Menu::ItemBaseValue.OnSetValue()' */
 void MenuItemBaseValue_OnSetValue( MenuItemBaseValue _this, XString value );

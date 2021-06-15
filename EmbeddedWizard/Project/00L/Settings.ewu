@@ -719,7 +719,6 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
   {
     trace "init SET06";
     DeviceInterface::BluetoothDevice.Discoverable = true;
-    CountDownTimer.Enabled = true;
 
     var string ProcessString = Strings::SET06_NAME;
     var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
@@ -747,7 +746,7 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text DiscoverableText
   {
-    preset Bounds = <10,46,470,108>;
+    preset Bounds = <10,42,470,104>;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
     preset String = Strings::SET06_DISCOVERABLE;
@@ -765,7 +764,7 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text TimeLeftText
   {
-    preset Bounds = <10,170,470,201>;
+    preset Bounds = <10,169,470,200>;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
     preset String = Strings::SET06_TIME_LEFT + "3:00";
@@ -775,7 +774,7 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text NameText
   {
-    preset Bounds = <10,108,470,170>;
+    preset Bounds = <10,104,470,166>;
     preset Ellipsis = true;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
@@ -788,7 +787,7 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
   {
     preset OnTrigger = UpdateCountDownTimeSlot;
     preset Period = 1000;
-    preset Enabled = false;
+    preset Enabled = true;
   }
 
   $rect <500,100,740,140>
@@ -1018,7 +1017,7 @@ class SET05_BtcMaxPairedDevice : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text Text
   {
-    preset Bounds = <10,45,470,169>;
+    preset Bounds = <10,44,470,168>;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
     preset String = Strings::SET05_MAX_DEVICES;
@@ -1473,7 +1472,11 @@ class SET18_DeleteBleDevice : Components::BaseMainBG
     var string ProcessString = Strings::SET18_DELETE_PAIRING_RECORD;
     var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
     var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
-    Text.String = ProcessString.left( LeftIdx ) + DeviceName + ProcessString.right( RightIdx );
+    $if !$prototyper
+      Text.String = ProcessString.left( LeftIdx ) + DeviceName + ProcessString.right( RightIdx );
+    $else
+      Text.String = ProcessString.left( LeftIdx ) + "Smartphone" + ProcessString.right( RightIdx );
+    $endif
   }
 
   $rect <10,340,190,380>
@@ -1482,7 +1485,7 @@ class SET18_DeleteBleDevice : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text Text
   {
-    preset Bounds = <10,50,470,236>;
+    preset Bounds = <25,48,455,234>;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
     preset String = Strings::SET18_DELETE_PAIRING_RECORD;
@@ -1791,7 +1794,7 @@ class SET22_BleAdvertising : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text DeviceNameText
   {
-    preset Bounds = <10,132,470,163>;
+    preset Bounds = <10,131,470,162>;
     preset String = Strings::SET22_DEVICE_NAME;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
@@ -1799,7 +1802,7 @@ class SET22_BleAdvertising : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text WaitText
   {
-    preset Bounds = <10,194,470,256>;
+    preset Bounds = <10,193,470,255>;
     preset WrapText = true;
     preset String = Strings::SET22_WAIT_APP_CONNECTION;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -1808,7 +1811,7 @@ class SET22_BleAdvertising : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text LocalDeviceNameText
   {
-    preset Bounds = <10,163,470,194>;
+    preset Bounds = <10,162,470,193>;
     preset Ellipsis = true;
     preset String = DeviceInterface::BluetoothDevice.LocalDeviceName;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -1819,6 +1822,7 @@ class SET22_BleAdvertising : Components::BaseMainBG
   {
     preset Bounds = <193,36,287,130>;
     preset Animated = true;
+    preset FrameNumber = 0;
     preset Bitmap = Resource::LoadingAnimation;
   }
 
@@ -3122,7 +3126,7 @@ class SET27_ConfirmUpdate : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text Text
   {
-    preset Bounds = <10,46,470,170>;
+    preset Bounds = <10,40,470,168>;
     preset String = Strings::SET27_UPDATE_SYSTEM;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }

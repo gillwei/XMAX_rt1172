@@ -80,21 +80,21 @@ static const XStringRes _Const0002 = { _StringsDefault0, 0x000F };
 static const XStringRes _Const0003 = { _StringsDefault0, 0x001C };
 static const XRect _Const0004 = {{ 0, 38 }, { 480, 272 }};
 static const XRect _Const0005 = {{ 17, 51 }, { 67, 101 }};
-static const XRect _Const0006 = {{ 80, 40 }, { 480, 268 }};
+static const XRect _Const0006 = {{ 78, 40 }, { 480, 268 }};
 static const XStringRes _Const0007 = { _StringsDefault0, 0x0029 };
-static const XRect _Const0008 = {{ 0, 0 }, { 400, 228 }};
-static const XRect _Const0009 = {{ 1, 70 }, { 360, 77 }};
-static const XRect _Const000A = {{ 1, 148 }, { 360, 155 }};
-static const XRect _Const000B = {{ 361, 1 }, { 393, 33 }};
-static const XRect _Const000C = {{ 361, 185 }, { 393, 217 }};
+static const XRect _Const0008 = {{ 0, 0 }, { 402, 228 }};
+static const XRect _Const0009 = {{ 0, 70 }, { 359, 77 }};
+static const XRect _Const000A = {{ 0, 146 }, { 359, 153 }};
+static const XRect _Const000B = {{ 363, 1 }, { 395, 33 }};
+static const XRect _Const000C = {{ 363, 185 }, { 395, 217 }};
 static const XRect _Const000D = {{ 0, 0 }, { 400, 76 }};
-static const XRect _Const000E = {{ 5, 19 }, { 142, 52 }};
+static const XRect _Const000E = {{ 7, 19 }, { 144, 52 }};
 static const XColor _Const000F = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const0010 = {{ 286, 14 }, { 344, 56 }};
-static const XRect _Const0011 = {{ 149, 8 }, { 281, 65 }};
-static const XRect _Const0012 = {{ 231, 8 }, { 281, 65 }};
-static const XRect _Const0013 = {{ 146, 8 }, { 196, 65 }};
-static const XRect _Const0014 = {{ 200, 14 }, { 227, 56 }};
+static const XRect _Const0010 = {{ 288, 15 }, { 346, 57 }};
+static const XRect _Const0011 = {{ 149, 7 }, { 281, 64 }};
+static const XRect _Const0012 = {{ 232, 7 }, { 282, 64 }};
+static const XRect _Const0013 = {{ 147, 7 }, { 197, 64 }};
+static const XRect _Const0014 = {{ 204, 15 }, { 231, 57 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.

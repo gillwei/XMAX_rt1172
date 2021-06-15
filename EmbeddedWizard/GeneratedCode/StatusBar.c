@@ -287,6 +287,14 @@ void StatusBarMain_Init( StatusBarMain _this, XHandle aArg )
   StatusBarMain_UpdateAirTemperature( _this );
   StatusBarMain_UpdateGripWarmerIcon( _this );
   StatusBarMain_UpdateSeatHeaterIcon( _this );
+  StatusBarMain_UpdateMotoConConnectionStatus( _this );
+  StatusBarMain_UpdateBatteryIcon( _this );
+  StatusBarMain_UpdatePhoneCellSignalLevelIcon( _this );
+  EwPostSignal( EwNewSlot( _this, StatusBarMain_OnUpdatePhoneIconSlot ), ((XObject)_this ));
+  EwPostSignal( EwNewSlot( _this, StatusBarMain_OnNotificationListUpdatedSlot ), 
+    ((XObject)_this ));
+  EwPostSignal( EwNewSlot( _this, StatusBarMain_OnBtcConnectionStatusChangedSlot ), 
+    ((XObject)_this ));
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 

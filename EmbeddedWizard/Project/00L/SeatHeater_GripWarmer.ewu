@@ -26,10 +26,10 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
         trace "Unexpected vehicle function";
       }
     $else
-      // For testing in prototype.
-      ItemValueArray[0] = 1;
-      ItemValueArray[1] = 5;
-      ItemValueArray[2] = 10;
+      // For testing in prototype and screenshot
+      UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_LOW );
+      UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_MIDDLE );
+      UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_HIGH );
 
       ScaleIndicator.LevelUpUpdateSignal = OnLevelUpUpdateSlot;
       ScaleIndicator.LevelDownUpdateSignal = OnLevelDownUpdateSlot;
@@ -46,10 +46,8 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
   inherited method LoadItemClass()
   {
     // suppress warning
-    if( aItemNo )
-    {
-      // empty body
-    }
+    aItemNo;
+
     return Menu::ItemBaseValue;
   }
 
@@ -67,10 +65,8 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
   $rect <520,210,720,250>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
+    // suppress warning
+    aMenuItem;
 
     ScaleIndicator.LevelValue = (int32)ItemValueArray[aItemNo];
     ItemIdx = aItemNo;
@@ -683,6 +679,10 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
       {
         trace "Unexpected vehicle function";
       }
+    $else
+      // for screenshort
+      CurrentItemTitleText.String = Strings::LNC_SEAT_HEATER;
+      UpdateHeaterLevel( Enum::VehicleRxType.SEAT_HEATER_STATUS );
     $endif
 
   }
@@ -879,7 +879,7 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text CurrentItemTitleText
   {
-    preset Bounds = <138,132,469,175>;
+    preset Bounds = <138,130,469,173>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;

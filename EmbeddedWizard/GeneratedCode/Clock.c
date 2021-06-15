@@ -68,34 +68,36 @@ static const XRect _Const0000 = {{ 0, 0 }, { 92, 100 }};
 static const XRect _Const0001 = {{ 17, 0 }, { 75, 100 }};
 static const XRect _Const0002 = {{ 0, 22 }, { 92, 78 }};
 static const XColor _Const0003 = { 0x33, 0x33, 0x33, 0xFF };
-static const XRect _Const0004 = {{ 9, 22 }, { 47, 78 }};
-static const XRect _Const0005 = {{ 0, 22 }, { 56, 78 }};
-static const XRect _Const0006 = {{ 0, 0 }, { 58, 100 }};
-static const XRect _Const0007 = {{ 22, 67 }, { 458, 99 }};
-static const XRect _Const0008 = {{ 23, 100 }, { 115, 200 }};
-static const XRect _Const0009 = {{ 126, 100 }, { 182, 200 }};
-static const XRect _Const000A = {{ 193, 100 }, { 249, 200 }};
-static const XRect _Const000B = {{ 267, 100 }, { 323, 200 }};
-static const XRect _Const000C = {{ 334, 100 }, { 390, 200 }};
-static const XRect _Const000D = {{ 401, 100 }, { 457, 200 }};
-static const XRect _Const000E = {{ 390, 135 }, { 401, 163 }};
-static const XRect _Const000F = {{ 23, 122 }, { 115, 178 }};
-static const XColor _Const0010 = { 0x00, 0x72, 0xFF, 0xFF };
-static const XRect _Const0011 = {{ 126, 122 }, { 182, 178 }};
-static const XStringRes _Const0012 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0013 = {{ 16, 60 }, { 465, 91 }};
-static const XRect _Const0014 = {{ 69, 111 }, { 107, 145 }};
-static const XRect _Const0015 = {{ 120, 111 }, { 158, 145 }};
-static const XRect _Const0016 = {{ 109, 114 }, { 120, 142 }};
-static const XStringRes _Const0017 = { _StringsDefault0, 0x000F };
-static const XRect _Const0018 = {{ 160, 114 }, { 171, 142 }};
-static const XRect _Const0019 = {{ 171, 111 }, { 245, 145 }};
-static const XRect _Const001A = {{ 267, 111 }, { 318, 145 }};
-static const XRect _Const001B = {{ 321, 111 }, { 359, 145 }};
-static const XRect _Const001C = {{ 372, 111 }, { 410, 145 }};
-static const XRect _Const001D = {{ 360, 112 }, { 371, 140 }};
-static const XStringRes _Const001E = { _StringsDefault0, 0x0013 };
-static const XRect _Const001F = {{ 165, 176 }, { 315, 259 }};
+static const XRect _Const0004 = {{ 0, 22 }, { 88, 76 }};
+static const XRect _Const0005 = {{ 9, 22 }, { 43, 76 }};
+static const XRect _Const0006 = {{ 0, 22 }, { 52, 76 }};
+static const XRect _Const0007 = {{ 0, 22 }, { 56, 78 }};
+static const XRect _Const0008 = {{ 0, 0 }, { 58, 100 }};
+static const XRect _Const0009 = {{ 22, 67 }, { 458, 99 }};
+static const XRect _Const000A = {{ 23, 100 }, { 115, 200 }};
+static const XRect _Const000B = {{ 126, 100 }, { 182, 200 }};
+static const XRect _Const000C = {{ 193, 100 }, { 249, 200 }};
+static const XRect _Const000D = {{ 267, 100 }, { 323, 200 }};
+static const XRect _Const000E = {{ 334, 100 }, { 390, 200 }};
+static const XRect _Const000F = {{ 401, 100 }, { 457, 200 }};
+static const XRect _Const0010 = {{ 390, 135 }, { 401, 163 }};
+static const XRect _Const0011 = {{ 23, 122 }, { 115, 178 }};
+static const XColor _Const0012 = { 0x00, 0x72, 0xFF, 0xFF };
+static const XRect _Const0013 = {{ 126, 122 }, { 182, 178 }};
+static const XStringRes _Const0014 = { _StringsDefault0, 0x0002 };
+static const XRect _Const0015 = {{ 16, 60 }, { 465, 91 }};
+static const XRect _Const0016 = {{ 69, 111 }, { 107, 145 }};
+static const XRect _Const0017 = {{ 120, 111 }, { 158, 145 }};
+static const XRect _Const0018 = {{ 109, 114 }, { 120, 142 }};
+static const XStringRes _Const0019 = { _StringsDefault0, 0x000F };
+static const XRect _Const001A = {{ 160, 114 }, { 171, 142 }};
+static const XRect _Const001B = {{ 171, 111 }, { 245, 145 }};
+static const XRect _Const001C = {{ 267, 111 }, { 318, 145 }};
+static const XRect _Const001D = {{ 321, 111 }, { 359, 145 }};
+static const XRect _Const001E = {{ 372, 111 }, { 410, 145 }};
+static const XRect _Const001F = {{ 360, 112 }, { 371, 140 }};
+static const XStringRes _Const0020 = { _StringsDefault0, 0x0013 };
+static const XRect _Const0021 = {{ 165, 176 }, { 315, 259 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -196,7 +198,7 @@ void ClockTimePicker_UpdateLayout( ClockTimePicker _this, XPoint aSize )
   {
     case 92 :
     {
-      CoreRectView__OnSetBounds( &_this->TimeText, _Const0002 );
+      CoreRectView__OnSetBounds( &_this->TimeText, _Const0004 );
       CoreRectView__OnSetBounds( &_this->BackgroundFrame, _Const0002 );
     }
     break;
@@ -209,18 +211,18 @@ void ClockTimePicker_UpdateLayout( ClockTimePicker _this, XPoint aSize )
         case EnumTimeTypeDAY :
         case EnumTimeTypeHOUR :
         case EnumTimeTypeMINUTE :
-          CoreRectView__OnSetBounds( &_this->TimeText, _Const0004 );
+          CoreRectView__OnSetBounds( &_this->TimeText, _Const0005 );
         break;
 
         case EnumTimeTypeFORMAT :
-          CoreRectView__OnSetBounds( &_this->TimeText, _Const0005 );
+          CoreRectView__OnSetBounds( &_this->TimeText, _Const0006 );
         break;
 
         default :; 
       }
 
-      CoreRectView__OnSetBounds( &_this->BackgroundFrame, _Const0005 );
-      CoreRectView__OnSetBounds( &_this->TimePickerButtons, _Const0006 );
+      CoreRectView__OnSetBounds( &_this->BackgroundFrame, _Const0007 );
+      CoreRectView__OnSetBounds( &_this->TimePickerButtons, _Const0008 );
     }
     break;
 
@@ -310,29 +312,29 @@ void ClockCLK02_ClockManualAdjustment__Init( ClockCLK02_ClockManualAdjustment _t
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super1.SlideOutEffectEnabled = 1;
-  CoreRectView__OnSetBounds( &_this->DayTimeText, _Const0007 );
-  CoreRectView__OnSetBounds( &_this->YearTimePicker, _Const0008 );
+  CoreRectView__OnSetBounds( &_this->DayTimeText, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->YearTimePicker, _Const000A );
   _this->YearTimePicker.Width = 92;
   _this->YearTimePicker.TimePickerType = EnumTimeTypeYEAR;
-  CoreRectView__OnSetBounds( &_this->MonthTimePicker, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->MonthTimePicker, _Const000B );
   _this->MonthTimePicker.Width = 56;
   _this->MonthTimePicker.TimePickerType = EnumTimeTypeMONTH;
-  CoreRectView__OnSetBounds( &_this->DayTimePicker, _Const000A );
+  CoreRectView__OnSetBounds( &_this->DayTimePicker, _Const000C );
   _this->DayTimePicker.Width = 56;
   _this->DayTimePicker.TimePickerType = EnumTimeTypeDAY;
-  CoreRectView__OnSetBounds( &_this->TimeFormatPicker, _Const000B );
+  CoreRectView__OnSetBounds( &_this->TimeFormatPicker, _Const000D );
   _this->TimeFormatPicker.Width = 56;
   _this->TimeFormatPicker.TimePickerType = EnumTimeTypeFORMAT;
-  CoreRectView__OnSetBounds( &_this->HourPicker, _Const000C );
+  CoreRectView__OnSetBounds( &_this->HourPicker, _Const000E );
   _this->HourPicker.Width = 56;
   _this->HourPicker.TimePickerType = EnumTimeTypeHOUR;
-  CoreRectView__OnSetBounds( &_this->MinutePicker, _Const000D );
+  CoreRectView__OnSetBounds( &_this->MinutePicker, _Const000F );
   _this->MinutePicker.Width = 56;
   _this->MinutePicker.TimePickerType = EnumTimeTypeMINUTE;
-  CoreRectView__OnSetBounds( &_this->ColonMark, _Const000E );
-  CoreRectView__OnSetBounds( &_this->FocusFrame, _Const000F );
+  CoreRectView__OnSetBounds( &_this->ColonMark, _Const0010 );
+  CoreRectView__OnSetBounds( &_this->FocusFrame, _Const0011 );
   ViewsBorder_OnSetWidth( &_this->FocusFrame, 3 );
-  ViewsBorder_OnSetColor( &_this->FocusFrame, _Const0010 );
+  ViewsBorder_OnSetColor( &_this->FocusFrame, _Const0012 );
   _this->ValidDayArray[ 1 ] = 31;
   _this->ValidDayArray[ 2 ] = 28;
   _this->ValidDayArray[ 3 ] = 31;
@@ -521,7 +523,7 @@ void ClockCLK02_ClockManualAdjustment_MoveFocusFrame( ClockCLK02_ClockManualAdju
   {
     case EnumTimeTypeYEAR :
     {
-      CoreRectView__OnSetBounds( &_this->FocusFrame, _Const0011 );
+      CoreRectView__OnSetBounds( &_this->FocusFrame, _Const0013 );
       ClockTimePicker_OnSetArrowVisibility( &_this->YearTimePicker, 0 );
       ClockTimePicker_OnSetArrowVisibility( &_this->MonthTimePicker, 1 );
     }
@@ -885,7 +887,7 @@ void ClockCLK01_ClockSettingMenu_Init( ClockCLK01_ClockSettingMenu _this, XHandl
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0012 ));
+  EwTrace( "%s", EwLoadString( &_Const0014 ));
 }
 
 /* 'C' function for method : 'Clock::CLK01_ClockSettingMenu.LoadItemClass()' */
@@ -1100,37 +1102,37 @@ void ClockCLK03_SetClock__Init( ClockCLK03_SetClock _this, XObject aLink, XHandl
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->Title, _Const0013 );
+  CoreRectView__OnSetBounds( &_this->Title, _Const0015 );
   ViewsText_OnSetString( &_this->Title, EwLoadString( &StringsCLK03_SET_CLOCK ));
-  CoreRectView__OnSetBounds( &_this->DayText, _Const0014 );
+  CoreRectView__OnSetBounds( &_this->DayText, _Const0016 );
   ViewsText_OnSetAlignment( &_this->DayText, ViewsTextAlignmentAlignHorzRight | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayText, 0 );
-  CoreRectView__OnSetBounds( &_this->MonthText, _Const0015 );
+  CoreRectView__OnSetBounds( &_this->MonthText, _Const0017 );
   ViewsText_OnSetAlignment( &_this->MonthText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->MonthText, 0 );
-  CoreRectView__OnSetBounds( &_this->SlashDay, _Const0016 );
+  CoreRectView__OnSetBounds( &_this->SlashDay, _Const0018 );
   ViewsText_OnSetAlignment( &_this->SlashDay, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->SlashDay, EwLoadString( &_Const0017 ));
-  CoreRectView__OnSetBounds( &_this->SlashMonth, _Const0018 );
+  ViewsText_OnSetString( &_this->SlashDay, EwLoadString( &_Const0019 ));
+  CoreRectView__OnSetBounds( &_this->SlashMonth, _Const001A );
   ViewsText_OnSetAlignment( &_this->SlashMonth, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->SlashMonth, EwLoadString( &_Const0017 ));
-  CoreRectView__OnSetBounds( &_this->YearText, _Const0019 );
+  ViewsText_OnSetString( &_this->SlashMonth, EwLoadString( &_Const0019 ));
+  CoreRectView__OnSetBounds( &_this->YearText, _Const001B );
   ViewsText_OnSetString( &_this->YearText, 0 );
-  CoreRectView__OnSetBounds( &_this->TimeFormat, _Const001A );
+  CoreRectView__OnSetBounds( &_this->TimeFormat, _Const001C );
   ViewsText_OnSetString( &_this->TimeFormat, 0 );
-  CoreRectView__OnSetBounds( &_this->HourText, _Const001B );
+  CoreRectView__OnSetBounds( &_this->HourText, _Const001D );
   ViewsText_OnSetAlignment( &_this->HourText, ViewsTextAlignmentAlignHorzRight | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->HourText, 0 );
-  CoreRectView__OnSetBounds( &_this->MinuteText, _Const001C );
+  CoreRectView__OnSetBounds( &_this->MinuteText, _Const001E );
   ViewsText_OnSetString( &_this->MinuteText, 0 );
-  CoreRectView__OnSetBounds( &_this->Colon, _Const001D );
-  ViewsText_OnSetString( &_this->Colon, EwLoadString( &_Const001E ));
-  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const001F );
+  CoreRectView__OnSetBounds( &_this->Colon, _Const001F );
+  ViewsText_OnSetString( &_this->Colon, EwLoadString( &_Const0020 ));
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0021 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->UpDownPushButtonSet, 1 );

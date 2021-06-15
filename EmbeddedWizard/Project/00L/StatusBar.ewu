@@ -18,6 +18,14 @@ class Main : Core::Group
     UpdateAirTemperature();
     UpdateGripWarmerIcon();
     UpdateSeatHeaterIcon();
+
+    UpdateMotoConConnectionStatus();
+    UpdateBatteryIcon();
+    UpdatePhoneCellSignalLevelIcon();
+
+    postsignal OnUpdatePhoneIconSlot;
+    postsignal OnNotificationListUpdatedSlot;
+    postsignal OnBtcConnectionStatusChangedSlot;
   }
 
   $rect <0,50,200,90>
@@ -112,6 +120,8 @@ class Main : Core::Group
         }
         PhoneBatteryPercentage = BC_motocon_get_battery_percentage();
       }
+    $else
+      PhoneBatteryPercentage = StatusBar::BATTERY_PERCENTAGE_LEVEL5;
     $endif
 
     if( IsMotoConConnected )
@@ -298,6 +308,8 @@ class Main : Core::Group
         {
           PhoneCellSignalLevel = BC_motocon_get_phone_cell_signal_level();
         }
+      $else
+        PhoneCellSignalLevel = StatusBar::MAX_PHONE_CELL_SIGNAL_LEVEL;
       $endif
 
       if( 0 == PhoneCellSignalLevel )

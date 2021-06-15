@@ -343,7 +343,7 @@ class NTF02_NotificationDetail : Components::BaseMainBG
   $rect <20,20,160,60>
   object Notification::NotificationDetailText NotificationText
   {
-    preset Bounds = <33,48,439,258>;
+    preset Bounds = <33,48,439,260>;
     preset OnLineNumUpdated = OnLineNumUpdatedSlot;
   }
 
@@ -370,13 +370,13 @@ $output false
 class NotificationDetailText : Core::Group
 {
   $rect <430,10,610,50>
-  inherited property Bounds = <0,0,406,210>;
+  inherited property Bounds = <0,0,406,212>;
 
   $rect <20,20,160,60>
   object Views::Text TitleText
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
-    preset Bounds = <0,0,332,30>;
+    preset Bounds = <0,0,332,29>;
     preset Ellipsis = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
@@ -388,7 +388,7 @@ class NotificationDetailText : Core::Group
   object Views::Text ReceivedTimeText
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
-    preset Bounds = <343,0,406,30>;
+    preset Bounds = <343,0,406,29>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -399,7 +399,7 @@ class NotificationDetailText : Core::Group
   object Views::Text MessageText
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
-    preset Bounds = <0,30,406,1260>;
+    preset Bounds = <0,26,406,1256>;
     preset RowDistance = 30;
     preset Ellipsis = true;
     preset WrapText = true;

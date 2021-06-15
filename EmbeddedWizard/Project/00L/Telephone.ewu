@@ -330,7 +330,7 @@ class TEL02_ActiveCall : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text CallerText
   {
-    preset Bounds = <100,114,451,190>;
+    preset Bounds = <101,112,452,188>;
     preset Ellipsis = true;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
@@ -342,7 +342,7 @@ class TEL02_ActiveCall : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text DurationText
   {
-    preset Bounds = <100,205,451,239>;
+    preset Bounds = <100,203,451,237>;
     preset Ellipsis = true;
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;

@@ -91,7 +91,7 @@ class POP09_POP14_BleConnectionErrorUI : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text ConnectionFailedMessage
   {
-    preset Bounds = <10,50,470,236>;
+    preset Bounds = <10,49,470,235>;
     preset String = Strings::POP09_CONNECTION_FAILED;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
@@ -176,7 +176,7 @@ class POP02_ConnectionError : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Text CheckText
   {
-    preset Bounds = <10,57,470,91>;
+    preset Bounds = <10,55,470,89>;
     preset WrapText = false;
     preset String = Strings::POP02_PLEASE_CHECK;
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -201,7 +201,7 @@ class POP02_ConnectionError : Components::BaseComponent
   $rect <20,20,160,60>
   object Views::Text ConnectionErrText
   {
-    preset Bounds = <191,1,327,42>;
+    preset Bounds = <144,2,375,43>;
     preset AutoSize = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = Strings::POP02_CONNECTION_ERR;
@@ -348,7 +348,7 @@ class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text TroubleShootingText1
   {
-    preset Bounds = <68,50,440,112>;
+    preset Bounds = <68,49,440,111>;
     preset AutoSize = false;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = Strings::POP07_UNLOCK_PHONE;
@@ -360,7 +360,7 @@ class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text TroubleShootingText2
   {
-    preset Bounds = <68,121,440,183>;
+    preset Bounds = <68,120,440,182>;
     preset AutoSize = false;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = Strings::POP07_TURN_ON_BT;
@@ -372,7 +372,7 @@ class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
   $rect <20,20,160,60>
   object Views::Text TroubleShootingText3
   {
-    preset Bounds = <68,192,440,254>;
+    preset Bounds = <68,191,440,253>;
     preset AutoSize = false;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = Strings::POP07_LAUNCH_APP;

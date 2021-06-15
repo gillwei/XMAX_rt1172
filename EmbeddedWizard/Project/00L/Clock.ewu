@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <30,210,230,250>
 $output false
@@ -24,15 +24,15 @@ class TimePicker : Core::Group
     {
       case Clock::ITEM_WIDTH_LARGE:
       {
-        TimeText.Bounds = <0,22,92,78>;
+        TimeText.Bounds = <0,22,88,76>;
         BackgroundFrame.Bounds = <0,22,92,78>;
       }
       case Clock::ITEM_WIDTH_SMALL:
       {
         switch( TimePickerType )
         {
-          case Enum::TimeType.MONTH, Enum::TimeType.DAY, Enum::TimeType.HOUR, Enum::TimeType.MINUTE: TimeText.Bounds = <9,22,47,78>;
-          case Enum::TimeType.FORMAT: TimeText.Bounds = <0,22,56,78>;
+          case Enum::TimeType.MONTH, Enum::TimeType.DAY, Enum::TimeType.HOUR, Enum::TimeType.MINUTE: TimeText.Bounds = <9,22,43,76>;
+          case Enum::TimeType.FORMAT: TimeText.Bounds = <0,22,52,76>;
           default:;
         }
         BackgroundFrame.Bounds = <0,22,56,78>;

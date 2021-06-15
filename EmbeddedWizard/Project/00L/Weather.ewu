@@ -26,7 +26,7 @@ class WeatherDayViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text CurrentLocationText
   {
-    preset Bounds = <129,15,353,49>;
+    preset Bounds = <127,15,351,49>;
     preset Ellipsis = true;
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
@@ -58,7 +58,7 @@ class WeatherDayViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text WeekDayText
   {
-    preset Bounds = <363,15,431,49>;
+    preset Bounds = <360,15,428,49>;
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
     preset Color = #A0A0A0FF;
@@ -100,7 +100,7 @@ class WeatherDayViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text TimeInterval3h
   {
-    preset Bounds = <382,123,434,154>;
+    preset Bounds = <381,122,433,153>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "3h";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -109,7 +109,7 @@ class WeatherDayViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text TimeInterval2h
   {
-    preset Bounds = <237,123,289,154>;
+    preset Bounds = <237,122,289,153>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "2h";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -118,7 +118,7 @@ class WeatherDayViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text TimeInterval1h
   {
-    preset Bounds = <93,123,145,154>;
+    preset Bounds = <93,122,145,153>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "1h";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -148,7 +148,7 @@ class WeatherDayViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text ChanceOfRain1h
   {
-    preset Bounds = <85,165,127,196>;
+    preset Bounds = <84,164,126,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -157,7 +157,7 @@ class WeatherDayViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text ChanceOfRain2h
   {
-    preset Bounds = <229,165,271,196>;
+    preset Bounds = <228,164,270,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -166,7 +166,7 @@ class WeatherDayViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text ChanceOfRain3h
   {
-    preset Bounds = <373,165,415,196>;
+    preset Bounds = <372,164,414,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -196,7 +196,7 @@ class WeatherDayViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text Temp1h
   {
-    preset Bounds = <85,191,127,222>;
+    preset Bounds = <84,190,126,221>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -205,7 +205,7 @@ class WeatherDayViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text Temp2h
   {
-    preset Bounds = <229,191,271,222>;
+    preset Bounds = <228,190,270,221>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -214,7 +214,7 @@ class WeatherDayViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text Temp3h
   {
-    preset Bounds = <373,191,415,222>;
+    preset Bounds = <372,190,414,221>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -243,7 +243,7 @@ class WeatherDayViewUI : Core::Group
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <210,300,410,340>
+  $rect <210,300,450,340>
   slot OnWeatherLocUpdateSlot
   {
     if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
@@ -252,7 +252,7 @@ class WeatherDayViewUI : Core::Group
     }
   }
 
-  $rect <210,250,410,290>
+  $rect <210,250,450,290>
   slot OnWeatherInfoUpdateSlot
   {
     if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
@@ -377,7 +377,7 @@ class WeatherDayViewUI : Core::Group
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <210,360,410,400>
+  $rect <210,350,450,390>
   slot OnWeekDayUpdateSlot
   {
     if( WeekDayTextArray.size > DeviceInterface::WeatherDevice.WeekDay )
@@ -444,7 +444,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DayOneText
   {
-    preset Bounds = <85,8,146,39>;
+    preset Bounds = <85,7,146,38>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -453,7 +453,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DayOneChanceOfRain
   {
-    preset Bounds = <85,50,127,81>;
+    preset Bounds = <85,49,127,80>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -504,7 +504,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DayTwoText
   {
-    preset Bounds = <229,8,290,39>;
+    preset Bounds = <229,7,290,38>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -513,7 +513,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DayTwoChanceOfRain
   {
-    preset Bounds = <229,50,271,81>;
+    preset Bounds = <229,49,271,80>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -546,7 +546,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DayThreeText
   {
-    preset Bounds = <373,8,434,39>;
+    preset Bounds = <373,7,434,38>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -555,7 +555,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DayThreeChanceOfRain
   {
-    preset Bounds = <373,50,415,81>;
+    preset Bounds = <373,49,415,80>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -595,28 +595,28 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Image DayFourWeather
   {
-    preset Bounds = <20,122,84,176>;
+    preset Bounds = <20,127,84,181>;
     preset Bitmap = Resource::ForecastWeatherIcon;
   }
 
   $rect <20,20,160,60>
   object Views::Image DayFiveWeather
   {
-    preset Bounds = <164,122,228,176>;
+    preset Bounds = <164,127,228,181>;
     preset Bitmap = Resource::ForecastWeatherIcon;
   }
 
   $rect <20,20,160,60>
   object Views::Image DaySixWeather
   {
-    preset Bounds = <308,122,372,176>;
+    preset Bounds = <308,127,372,181>;
     preset Bitmap = Resource::ForecastWeatherIcon;
   }
 
   $rect <20,20,160,60>
   object Views::Text DayFourText
   {
-    preset Bounds = <85,123,146,154>;
+    preset Bounds = <85,122,146,153>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -625,7 +625,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DayFiveText
   {
-    preset Bounds = <229,123,290,154>;
+    preset Bounds = <229,122,290,153>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -634,7 +634,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DaySixText
   {
-    preset Bounds = <373,123,434,154>;
+    preset Bounds = <373,122,434,153>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -661,7 +661,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DayFourChanceOfRain
   {
-    preset Bounds = <85,165,127,196>;
+    preset Bounds = <85,164,127,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -670,7 +670,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DayFiveChanceOfRain
   {
-    preset Bounds = <229,165,271,196>;
+    preset Bounds = <229,164,271,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -679,7 +679,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DaySixChanceOfRain
   {
-    preset Bounds = <373,165,415,196>;
+    preset Bounds = <373,164,415,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -946,7 +946,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DayOneTempSlash
   {
-    preset Bounds = <75,76,85,107>;
+    preset Bounds = <74,76,84,107>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "/";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -986,7 +986,7 @@ class WeatherWeekViewUI : Core::Group
   $rect <20,20,160,60>
   object Views::Text DayThreeTempSlash
   {
-    preset Bounds = <363,76,373,107>;
+    preset Bounds = <362,76,372,107>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "/";
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -1159,7 +1159,7 @@ class WeatherList : Components::BaseComponent
   $rect <20,20,160,60>
   object Core::VerticalList VerticalList
   {
-    preset Bounds = <0,2,435,226>;
+    preset Bounds = <0,0,435,224>;
     preset OnLoadItem = OnLoadItem;
     preset SelectedItem = 0;
     preset ItemHeight = 224;
@@ -1242,12 +1242,12 @@ class WeatherItemWrapper : Core::Group
       {
         case 0:
         {
-          var Weather::WeatherDayViewUI Item = ( Weather::WeatherDayViewUI )new value;
+          var Weather::WeatherDayViewUI Item = (Weather::WeatherDayViewUI)new value;
           Add( Item, 0 );
         }
         case 1:
         {
-          var Weather::WeatherWeekViewUI Item = ( Weather::WeatherWeekViewUI )new value;
+          var Weather::WeatherWeekViewUI Item = (Weather::WeatherWeekViewUI)new value;
           Add( Item, 0 );
         }
         default:;
