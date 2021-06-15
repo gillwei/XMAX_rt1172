@@ -26,6 +26,7 @@
 
 #include "ewlocale.h"
 #include "_GraphicsCanvas.h"
+#include "_GraphicsWarpMatrix.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "Graphics.h"
@@ -35,22 +36,24 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x0000031E, /* ratio 49.62 % */
+  0x000003F4, /* ratio 46.64 % */
   0xB8007B00, 0x80086452, 0x00DC0030, 0xC0109100, 0x1674001B, 0xA0039002, 0x0039800C,
   0x53D000D2, 0x3C45A251, 0x6000E000, 0x98C01193, 0xE6491192, 0x62308891, 0xD1278444,
   0xF1232474, 0x2183C4CC, 0x78D4C801, 0x8B432312, 0x546A6D0A, 0x18A19168, 0xE0DA0094,
   0x00118914, 0x8B031A00, 0xF3587138, 0x3B914226, 0xD8F45E4D, 0xA2C36850, 0x8C6A8E00,
   0x4B2AF4A8, 0xEA616888, 0xE231299C, 0xB3118643, 0x508AD4FA, 0x4D9C1DA1, 0x4A890801,
   0x93D82D65, 0x45DC0175, 0x5CE35738, 0x5A292484, 0x25734844, 0x3548A1C3, 0xD1C92E22,
-  0x77864D22, 0x8864CA90, 0x8A4DA190, 0xE4F6B366, 0x5124B41A, 0x96D16289, 0x2494E9CD,
-  0x477429C1, 0x363BDC76, 0x280052E9, 0xF890A400, 0xD045A450, 0x543E3568, 0x612650C8,
+  0x77864D22, 0x8864CA90, 0x8A4DA190, 0xE4F6B366, 0x5124B41A, 0x96D16289, 0x4D74E9CD,
+  0x29382BD4, 0x363BDC8A, 0x280052E9, 0xF890A400, 0xD045A450, 0x543E3568, 0x612650C8,
   0xF2811DD4, 0xA23B5DB6, 0xEB348965, 0x954B8474, 0x8AB04CBA, 0x19274AB7, 0xCE4DB211,
   0xB7231737, 0x66625DE8, 0x2F7F348D, 0xA4BC58A7, 0xAD37EBCD, 0x14FE24E3, 0x36000C00,
-  0x2890E400, 0x8B482352, 0x54E0B924, 0x61110443, 0xF5990015, 0x6B001A25, 0x6984C000,
-  0x1BB6E51D, 0x0475BD43, 0xD154775C, 0x4656DC67, 0x8510D725, 0x1CE5A1CC, 0x08919700,
-  0xB9607480, 0x125F96D5, 0x76D18765, 0x567575C1, 0xD5859D76, 0x95987951, 0x547C5E94,
-  0x4696B7B1, 0xE2B859EF, 0x7541F486, 0x31FB7E5F, 0xFF001FD4, 0x80E026C9, 0x00040603,
-  0x00000000
+  0x2890E400, 0x8B482352, 0xD4E0B924, 0x414D5148, 0xD1168117, 0xB96DDAA6, 0x6F50C6ED,
+  0x1DD7011D, 0xB719F455, 0x35C95195, 0x687320F4, 0x65C00739, 0x1D20021F, 0xE5B56E58,
+  0x61D94497, 0x5D705DB4, 0x675D959D, 0x1E547561, 0x17A52566, 0xADEC551F, 0x117BD1A5,
+  0x7D21689A, 0xDF97DD50, 0x07F50C7E, 0x0A047FC0, 0x044294E8, 0x00156111, 0x1A25F599,
+  0x6131AE00, 0x2E0D475A, 0x1393DBE7, 0x8591270E, 0x91651D73, 0xD52A1B72, 0x450C5B1C,
+  0x6F5A1D37, 0x431F05A1, 0xE0488A29, 0xF781A584, 0x7E5778E2, 0x3D8D6507, 0x5663986E,
+  0x5F27AA3C, 0x89050C60, 0x95FC7E9F, 0x03806484, 0x00101A36, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -61,9 +64,10 @@ static const XRect _Const0003 = {{ 0, 0 }, { 0, 0 }};
 static const XStringRes _Const0004 = { _StringsDefault0, 0x003F };
 static const XStringRes _Const0005 = { _StringsDefault0, 0x0073 };
 static const XStringRes _Const0006 = { _StringsDefault0, 0x00B5 };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x0121 };
-static const XPoint _Const0008 = { 1, 1 };
-static const XPoint _Const0009 = { 2, 2 };
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0120 };
+static const XStringRes _Const0008 = { _StringsDefault0, 0x018C };
+static const XPoint _Const0009 = { 1, 1 };
+static const XPoint _Const000A = { 2, 2 };
 
 /* Initializer for the class 'Graphics::Canvas' */
 void GraphicsCanvas__Init( GraphicsCanvas _this, XObject aLink, XHandle aArg )
@@ -392,6 +396,105 @@ void GraphicsCanvas_DrawBitmapFrame( GraphicsCanvas _this, XRect aClip, Resource
   }
 }
 
+/* The method WarpBitmap() performs the projection of a rectangular source bitmap 
+   area onto a four corner polygon within the destination canvas. The bitmap is 
+   specified in the parameter aBitmap and the desired area to copy in aSrcRect. 
+   In case of a multi-frame bitmap the desired frame can be selected in the parameter 
+   aFrameNr.
+   The destination polygon is determined by the coordinates aX1,aY1 .. aX4,aY4. 
+   The coefficients aW1 .. aW4 are responsible for the perspective distortion. The 
+   parameters aColor1, aColor2, aColor3, aColor4 determine the colors or opacities 
+   at the corresponding corners of the polygon area. The parameter aClip limits 
+   the drawing operation. Pixel lying outside this area remain unchanged. The aBlend 
+   parameter controls the mode how drawn pixel are combined with the pixel already 
+   existing in the destination bitmap. If aBlend is 'true', the drawn pixel are 
+   alpha-blended with the background, otherwise the drawn pixel will overwrite the 
+   old content. The last parameter aFilter controls the bi-linear filter. If aFilter 
+   is 'true', the source bitmap pixel will be bi-linear filtered in order to get 
+   better output. */
+void GraphicsCanvas_WarpBitmap( GraphicsCanvas _this, XRect aClip, ResourcesBitmap 
+  aBitmap, XInt32 aFrameNr, XFloat aDstX1, XFloat aDstY1, XFloat aDstW1, XFloat 
+  aDstX2, XFloat aDstY2, XFloat aDstW2, XFloat aDstX3, XFloat aDstY3, XFloat aDstW3, 
+  XFloat aDstX4, XFloat aDstY4, XFloat aDstW4, XRect aSrcRect, XColor aColor1, XColor 
+  aColor2, XColor aColor3, XColor aColor4, XBool aBlend, XBool aFilter )
+{
+  XFloat x1;
+  XFloat x2;
+  XFloat y1;
+  XFloat y2;
+  XHandle dstBitmap;
+  XHandle srcBitmap;
+  XInt32 dstFrameNr;
+
+  if ( _this->Super1.bitmap == 0 )
+    ResourcesBitmap__Update( _this );
+
+  if ( _this->Super1.bitmap == 0 )
+    return;
+
+  if (((( aBitmap == 0 ) || ( aBitmap->bitmap == 0 )) || ( aFrameNr < 0 )) || ( 
+      aFrameNr >= aBitmap->NoOfFrames ))
+    return;
+
+  x1 = aDstX1;
+  x2 = aDstX2;
+  y1 = aDstY1;
+  y2 = aDstY2;
+
+  if ( aDstX2 < x1 )
+    x1 = aDstX2;
+
+  if ( aDstX3 < x1 )
+    x1 = aDstX3;
+
+  if ( aDstX4 < x1 )
+    x1 = aDstX4;
+
+  if ( aDstX2 > x2 )
+    x2 = aDstX2;
+
+  if ( aDstX3 > x2 )
+    x2 = aDstX3;
+
+  if ( aDstX4 > x2 )
+    x2 = aDstX4;
+
+  if ( aDstY2 < y1 )
+    y1 = aDstY2;
+
+  if ( aDstY3 < y1 )
+    y1 = aDstY3;
+
+  if ( aDstY4 < y1 )
+    y1 = aDstY4;
+
+  if ( aDstY2 > y2 )
+    y2 = aDstY2;
+
+  if ( aDstY3 > y2 )
+    y2 = aDstY3;
+
+  if ( aDstY4 > y2 )
+    y2 = aDstY4;
+
+  if ((((( x2 - x1 ) > 4096.000000f ) || (( x2 - x1 ) < -4096.000000f )) || (( y2 
+      - y1 ) > 4096.000000f )) || (( y2 - y1 ) < -4096.000000f ))
+  {
+    EwTrace( "%s", EwLoadString( &_Const0006 ));
+    return;
+  }
+
+  dstBitmap = _this->Super1.bitmap;
+  srcBitmap = aBitmap->bitmap;
+  dstFrameNr = _this->DstFrameNr;
+  {
+    EwWarpBitmap((XBitmap*)dstBitmap, (XBitmap*)srcBitmap, dstFrameNr, aFrameNr,
+                  aClip, aDstX1, aDstY1, aDstW1, aDstX2, aDstY2, aDstW2, 
+                  aDstX3, aDstY3, aDstW3, aDstX4, aDstY4, aDstW4, aSrcRect, aColor1,
+                  aColor2, aColor3, aColor4, aBlend, aFilter );
+  }
+}
+
 /* The method ScaleBitmap() copies and scales an area of a aBitmap into the canvas. 
    The bitmap is specified in the parameter aBitmap and the desired area to copy 
    in aSrcRect. In case of a multi-frame bitmap the desired frame can be selected 
@@ -436,7 +539,7 @@ void GraphicsCanvas_ScaleBitmap( GraphicsCanvas _this, XRect aClip, ResourcesBit
   if ((((( right - left ) > 4096.000000f ) || (( right - left ) < -4096.000000f )) 
       || (( bottom - top ) > 4096.000000f )) || (( bottom - top ) < -4096.000000f ))
   {
-    EwTrace( "%s", EwLoadString( &_Const0006 ));
+    EwTrace( "%s", EwLoadString( &_Const0007 ));
     return;
   }
 
@@ -654,7 +757,7 @@ void GraphicsCanvas_DrawThickLine( GraphicsCanvas _this, XRect aClip, XPoint aDs
 
   if ((( w1 > 4096 ) || ( w2 > 4096 )) || ( len > 4096.000000f ))
   {
-    EwTrace( "%s", EwLoadString( &_Const0007 ));
+    EwTrace( "%s", EwLoadString( &_Const0008 ));
     return;
   }
 
@@ -669,8 +772,8 @@ void GraphicsCanvas_DrawThickLine( GraphicsCanvas _this, XRect aClip, XPoint aDs
   x4 = fp1X - ( dirY * fw1 );
   y4 = fp1Y + ( dirX * fw1 );
   opaqueBitmap = EwLoadResource( &ResourcesWhiteBitmapStripe, ResourcesBitmap );
-  srcRect = EwNewRect2Point( _Const0008, EwMovePointNeg( opaqueBitmap->FrameSize, 
-  _Const0009 ));
+  srcRect = EwNewRect2Point( _Const0009, EwMovePointNeg( opaqueBitmap->FrameSize, 
+  _Const000A ));
   dstBitmap = _this->Super1.bitmap;
   dstFrameNo = _this->DstFrameNr;
   srcBitmap = opaqueBitmap->bitmap;
@@ -718,5 +821,90 @@ EW_DEFINE_CLASS( GraphicsCanvas, ResourcesBitmap, OnDraw, OnDraw, InvalidArea, I
   GraphicsCanvas_OnSetFrameSize,
   GraphicsCanvas_Update,
 EW_END_OF_CLASS( GraphicsCanvas )
+
+/* Initializer for the class 'Graphics::WarpMatrix' */
+void GraphicsWarpMatrix__Init( GraphicsWarpMatrix _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( GraphicsWarpMatrix );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( GraphicsWarpMatrix );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  _this->isIdentity = 1;
+  _this->M11 = 1.000000f;
+  _this->M22 = 1.000000f;
+  _this->M33 = 1.000000f;
+}
+
+/* Re-Initializer for the class 'Graphics::WarpMatrix' */
+void GraphicsWarpMatrix__ReInit( GraphicsWarpMatrix _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_.Super );
+}
+
+/* Finalizer method for the class 'Graphics::WarpMatrix' */
+void GraphicsWarpMatrix__Done( GraphicsWarpMatrix _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Graphics::WarpMatrix.CalculateZ()' */
+XBool GraphicsWarpMatrix_CalculateZ( GraphicsWarpMatrix _this, XFloat aX, XFloat 
+  aY )
+{
+  XFloat z = (( aX * _this->M31 ) + ( aY * _this->M32 )) + _this->M34;
+
+  _this->Z = z;
+  return 1;
+}
+
+/* 'C' function for method : 'Graphics::WarpMatrix.DeriveFromQuad()' */
+GraphicsWarpMatrix GraphicsWarpMatrix_DeriveFromQuad( GraphicsWarpMatrix _this, 
+  XFloat aX1, XFloat aY1, XFloat aX2, XFloat aY2, XFloat aX3, XFloat aY3, XFloat 
+  aX4, XFloat aY4 )
+{
+  XFloat deltaX1 = aX2 - aX3;
+  XFloat deltaY1 = aY2 - aY3;
+  XFloat deltaX2 = aX4 - aX3;
+  XFloat deltaY2 = aY4 - aY3;
+  XFloat sumX = (( aX1 - aX2 ) + aX3 ) - aX4;
+  XFloat sumY = (( aY1 - aY2 ) + aY3 ) - aY4;
+  XFloat det = ( deltaX1 * deltaY2 ) - ( deltaY1 * deltaX2 );
+
+  if ( det == 0.000000f )
+    return 0;
+
+  _this->M31 = (( sumX * deltaY2 ) - ( sumY * deltaX2 )) / det;
+  _this->M32 = (( deltaX1 * sumY ) - ( deltaY1 * sumX )) / det;
+  _this->M33 = 0.000000f;
+  _this->M34 = 1.000000f;
+  _this->M11 = ( aX2 - aX1 ) + ( _this->M31 * aX2 );
+  _this->M12 = ( aX4 - aX1 ) + ( _this->M32 * aX4 );
+  _this->M14 = aX1;
+  _this->M21 = ( aY2 - aY1 ) + ( _this->M31 * aY2 );
+  _this->M22 = ( aY4 - aY1 ) + ( _this->M32 * aY4 );
+  _this->M24 = aY1;
+  _this->isIdentity = 0;
+  return _this;
+}
+
+/* Variants derived from the class : 'Graphics::WarpMatrix' */
+EW_DEFINE_CLASS_VARIANTS( GraphicsWarpMatrix )
+EW_END_OF_CLASS_VARIANTS( GraphicsWarpMatrix )
+
+/* Virtual Method Table (VMT) for the class : 'Graphics::WarpMatrix' */
+EW_DEFINE_CLASS( GraphicsWarpMatrix, XObject, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "Graphics::WarpMatrix" )
+EW_END_OF_CLASS( GraphicsWarpMatrix )
 
 /* Embedded Wizard */

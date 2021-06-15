@@ -1605,4 +1605,46 @@ const XStringRes ResourceTACHO_COLORBASE_UP = { _StringsDefault0, 0x000B };
 /* User defined constant: 'Resource::TACHO_COLORBASE_DOWN' */
 const XStringRes ResourceTACHO_COLORBASE_DOWN = { _StringsDefault0, 0x0015 };
 
+/* Include a file containing the bitmap resource : 'Resource::GradientCircleWhite' */
+#include "_ResourceGradientCircleWhite.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::GradientCircleWhite' */
+EW_RES_WITHOUT_VARIANTS( ResourceGradientCircleWhite )
+
+/* Include a file containing the bitmap resource : 'Resource::SpeedLimitCircle' */
+#include "_ResourceSpeedLimitCircle.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SpeedLimitCircle' */
+EW_RES_WITHOUT_VARIANTS( ResourceSpeedLimitCircle )
+
+/* Include a file containing the bitmap resource : 'Resource::StatusShadow' */
+#include "_ResourceStatusShadow.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::StatusShadow' */
+EW_RES_WITHOUT_VARIANTS( ResourceStatusShadow )
+
+/* Include a file containing the bitmap resource : 'Resource::SVKmH' */
+#include "_ResourceSVKmH.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SVKmH' */
+EW_RES_WITHOUT_VARIANTS( ResourceSVKmH )
+
+/* Include a file containing the bitmap resource : 'Resource::SVMPH' */
+#include "_ResourceSVMPH.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SVMPH' */
+EW_RES_WITHOUT_VARIANTS( ResourceSVMPH )
+
+/* Include a file containing the bitmap resource : 'Resource::SVSpeedUnLimit' */
+#include "_ResourceSVSpeedUnLimit.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SVSpeedUnLimit' */
+EW_RES_WITHOUT_VARIANTS( ResourceSVSpeedUnLimit )
+
+/* Include a file containing the bitmap resource : 'Resource::SVSpeedLimit' */
+#include "_ResourceSVSpeedLimit.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::SVSpeedLimit' */
+EW_RES_WITHOUT_VARIANTS( ResourceSVSpeedLimit )
+
 /* Embedded Wizard */

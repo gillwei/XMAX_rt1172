@@ -162,6 +162,10 @@ EW_DEFINE_METHODS( CoreSimpleTouchHandler, CoreQuadView )
     aFastMove )
   EW_METHOD( GetExtent,         XRect )( CoreQuadView _this )
   EW_METHOD( ChangeViewState,   void )( CoreView _this, XSet aSetState, XSet aClearState )
+  EW_METHOD( OnSetPoint4,       void )( CoreQuadView _this, XPoint value )
+  EW_METHOD( OnSetPoint3,       void )( CoreQuadView _this, XPoint value )
+  EW_METHOD( OnSetPoint2,       void )( CoreQuadView _this, XPoint value )
+  EW_METHOD( OnSetPoint1,       void )( CoreQuadView _this, XPoint value )
 EW_END_OF_METHODS( CoreSimpleTouchHandler )
 
 /* The method Draw() is invoked automatically if parts of the view should be redrawn 

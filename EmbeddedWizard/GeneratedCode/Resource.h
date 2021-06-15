@@ -789,6 +789,27 @@ EW_DECLARE_BITMAP_RES( ResourceNaviAppIcon )
 /* Bitmap resource : 'Resource::TachoStatusbarShadow' */
 EW_DECLARE_BITMAP_RES( ResourceTachoStatusbarShadow )
 
+/* Bitmap resource : 'Resource::GradientCircleWhite' */
+EW_DECLARE_BITMAP_RES( ResourceGradientCircleWhite )
+
+/* Bitmap resource : 'Resource::SpeedLimitCircle' */
+EW_DECLARE_BITMAP_RES( ResourceSpeedLimitCircle )
+
+/* Bitmap resource : 'Resource::StatusShadow' */
+EW_DECLARE_BITMAP_RES( ResourceStatusShadow )
+
+/* Bitmap resource : 'Resource::SVKmH' */
+EW_DECLARE_BITMAP_RES( ResourceSVKmH )
+
+/* Bitmap resource : 'Resource::SVMPH' */
+EW_DECLARE_BITMAP_RES( ResourceSVMPH )
+
+/* Bitmap resource : 'Resource::SVSpeedUnLimit' */
+EW_DECLARE_BITMAP_RES( ResourceSVSpeedUnLimit )
+
+/* Bitmap resource : 'Resource::SVSpeedLimit' */
+EW_DECLARE_BITMAP_RES( ResourceSVSpeedLimit )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _HomeHOM13_SpeedVisualizer_H
-#define _HomeHOM13_SpeedVisualizer_H
+#ifndef _HomeSpeedCircle_H
+#define _HomeSpeedCircle_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,23 +42,10 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsDDModeMask.h"
-#include "_CoreKeyPressHandler.h"
-#include "_CoreSystemEventHandler.h"
-#include "_CoreTimer.h"
-#include "_HomeBaseHome.h"
-#include "_HomeSpeedCircle.h"
-#include "_PopPOP16_NaviLoadingUI.h"
+#include "_CoreGroup.h"
+#include "_EffectsInt32Effect.h"
 #include "_ViewsImage.h"
-#include "_ViewsRectangle.h"
-#include "_ViewsText.h"
-#include "_ViewsWallpaper.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
+#include "_ViewsWarpImage.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -66,10 +53,10 @@
 #define _CoreDialogContext_
 #endif
 
-/* Forward declaration of the class Core::Group */
-#ifndef _CoreGroup_
-  EW_DECLARE_CLASS( CoreGroup )
-#define _CoreGroup_
+/* Forward declaration of the class Core::KeyPressHandler */
+#ifndef _CoreKeyPressHandler_
+  EW_DECLARE_CLASS( CoreKeyPressHandler )
+#define _CoreKeyPressHandler_
 #endif
 
 /* Forward declaration of the class Core::LayoutContext */
@@ -102,32 +89,25 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Home::HOM13_SpeedVisualizer */
-#ifndef _HomeHOM13_SpeedVisualizer_
-  EW_DECLARE_CLASS( HomeHOM13_SpeedVisualizer )
-#define _HomeHOM13_SpeedVisualizer_
+/* Forward declaration of the class Home::SpeedCircle */
+#ifndef _HomeSpeedCircle_
+  EW_DECLARE_CLASS( HomeSpeedCircle )
+#define _HomeSpeedCircle_
 #endif
 
 
-/* Deklaration of class : 'Home::HOM13_SpeedVisualizer' */
-EW_DEFINE_FIELDS( HomeHOM13_SpeedVisualizer, HomeBaseHome )
-  EW_OBJECT  ( SpeedCircle,     HomeSpeedCircle )
-  EW_OBJECT  ( SpeedVisualizerTitle, ViewsImage )
-  EW_OBJECT  ( SpeedLimitUnit,  ViewsImage )
-  EW_OBJECT  ( SpeedLimitText,  ViewsText )
-  EW_OBJECT  ( SpeedLimitTitle, ViewsImage )
-  EW_OBJECT  ( StatusShadow,    ViewsWallpaper )
-  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( SpeedLimitUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( Timer,           CoreTimer )
-  EW_OBJECT  ( SpeedUpdateTimer, CoreTimer )
-  EW_PROPERTY( SpeedLimit,      XInt32 )
-  EW_PROPERTY( SpeedUnit,       XEnum )
-  EW_VARIABLE( Ascending,       XBool )
-EW_END_OF_FIELDS( HomeHOM13_SpeedVisualizer )
+/* Deklaration of class : 'Home::SpeedCircle' */
+EW_DEFINE_FIELDS( HomeSpeedCircle, CoreGroup )
+  EW_OBJECT  ( SpeedCircleResizeEffect, EffectsInt32Effect )
+  EW_OBJECT  ( GradientLine,    ViewsImage )
+  EW_OBJECT  ( SpeedCircleImage, ViewsWarpImage )
+  EW_PROPERTY( SpeedValue,      XInt32 )
+  EW_PROPERTY( Color,           XColor )
+  EW_VARIABLE( SpeedLimit,      XInt32 )
+EW_END_OF_FIELDS( HomeSpeedCircle )
 
-/* Virtual Method Table (VMT) for the class : 'Home::HOM13_SpeedVisualizer' */
-EW_DEFINE_METHODS( HomeHOM13_SpeedVisualizer, HomeBaseHome )
+/* Virtual Method Table (VMT) for the class : 'Home::SpeedCircle' */
+EW_DEFINE_METHODS( HomeSpeedCircle, CoreGroup )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -169,59 +149,25 @@ EW_DEFINE_METHODS( HomeHOM13_SpeedVisualizer, HomeBaseHome )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( HomeBaseHome _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
-  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongEnterKeyActivated, void )( HomeHOM13_SpeedVisualizer _this )
-  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( ReturnToHome,      void )( HomeBaseHome _this )
-EW_END_OF_METHODS( HomeHOM13_SpeedVisualizer )
+EW_END_OF_METHODS( HomeSpeedCircle )
 
-/* The method Init() is invoked automatically after the component has been created. 
-   This method can be overridden and filled with logic containing additional initialization 
-   statements. */
-void HomeHOM13_SpeedVisualizer_Init( HomeHOM13_SpeedVisualizer _this, XHandle aArg );
+/* 'C' function for method : 'Home::SpeedCircle.OnValueChangeSlot()' */
+void HomeSpeedCircle_OnValueChangeSlot( HomeSpeedCircle _this, XObject sender );
 
-/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnLongEnterKeyActivated()' */
-void HomeHOM13_SpeedVisualizer_OnLongEnterKeyActivated( HomeHOM13_SpeedVisualizer _this );
+/* 'C' function for method : 'Home::SpeedCircle.OnSetSpeedValue()' */
+void HomeSpeedCircle_OnSetSpeedValue( HomeSpeedCircle _this, XInt32 value );
 
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void HomeHOM13_SpeedVisualizer_OnVehicleDataReceivedSlot( HomeHOM13_SpeedVisualizer _this, 
-  XObject sender );
+/* 'C' function for method : 'Home::SpeedCircle.StartAnimation()' */
+void HomeSpeedCircle_StartAnimation( HomeSpeedCircle _this, XInt32 aCurrentValue, 
+  XInt32 aNextValue );
 
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void HomeHOM13_SpeedVisualizer_OnSpeedLimitUpdateSlot( HomeHOM13_SpeedVisualizer _this, 
-  XObject sender );
-
-/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnSetSpeedUnit()' */
-void HomeHOM13_SpeedVisualizer_OnSetSpeedUnit( HomeHOM13_SpeedVisualizer _this, 
-  XEnum value );
-
-/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnSetSpeedLimit()' */
-void HomeHOM13_SpeedVisualizer_OnSetSpeedLimit( HomeHOM13_SpeedVisualizer _this, 
-  XInt32 value );
-
-/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnTimerSlot()' */
-void HomeHOM13_SpeedVisualizer_OnTimerSlot( HomeHOM13_SpeedVisualizer _this, XObject 
-  sender );
-
-/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnSpeedUpdateSlot()' */
-void HomeHOM13_SpeedVisualizer_OnSpeedUpdateSlot( HomeHOM13_SpeedVisualizer _this, 
-  XObject sender );
+/* 'C' function for method : 'Home::SpeedCircle.OnSetColor()' */
+void HomeSpeedCircle_OnSetColor( HomeSpeedCircle _this, XColor value );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _HomeHOM13_SpeedVisualizer_H */
+#endif /* _HomeSpeedCircle_H */
 
 /* Embedded Wizard */

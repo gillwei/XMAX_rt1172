@@ -98,6 +98,10 @@ EW_DEFINE_METHODS( CoreQuadView, CoreView )
     aFastMove )
   EW_METHOD( GetExtent,         XRect )( CoreQuadView _this )
   EW_METHOD( ChangeViewState,   void )( CoreView _this, XSet aSetState, XSet aClearState )
+  EW_METHOD( OnSetPoint4,       void )( CoreQuadView _this, XPoint value )
+  EW_METHOD( OnSetPoint3,       void )( CoreQuadView _this, XPoint value )
+  EW_METHOD( OnSetPoint2,       void )( CoreQuadView _this, XPoint value )
+  EW_METHOD( OnSetPoint1,       void )( CoreQuadView _this, XPoint value )
 EW_END_OF_METHODS( CoreQuadView )
 
 /* 'C' function for method : 'Core::QuadView.initLayoutContext()' */
@@ -143,14 +147,26 @@ XRect CoreQuadView_GetExtent( CoreQuadView _this );
 /* 'C' function for method : 'Core::QuadView.OnSetPoint4()' */
 void CoreQuadView_OnSetPoint4( CoreQuadView _this, XPoint value );
 
+/* Wrapper function for the virtual method : 'Core::QuadView.OnSetPoint4()' */
+void CoreQuadView__OnSetPoint4( void* _this, XPoint value );
+
 /* 'C' function for method : 'Core::QuadView.OnSetPoint3()' */
 void CoreQuadView_OnSetPoint3( CoreQuadView _this, XPoint value );
+
+/* Wrapper function for the virtual method : 'Core::QuadView.OnSetPoint3()' */
+void CoreQuadView__OnSetPoint3( void* _this, XPoint value );
 
 /* 'C' function for method : 'Core::QuadView.OnSetPoint2()' */
 void CoreQuadView_OnSetPoint2( CoreQuadView _this, XPoint value );
 
+/* Wrapper function for the virtual method : 'Core::QuadView.OnSetPoint2()' */
+void CoreQuadView__OnSetPoint2( void* _this, XPoint value );
+
 /* 'C' function for method : 'Core::QuadView.OnSetPoint1()' */
 void CoreQuadView_OnSetPoint1( CoreQuadView _this, XPoint value );
+
+/* Wrapper function for the virtual method : 'Core::QuadView.OnSetPoint1()' */
+void CoreQuadView__OnSetPoint1( void* _this, XPoint value );
 
 /* The method IsPointInside() verifies whether the specified position aPoint lies 
    within the quad and returns 'true' if this is the case. If aPoint lies outside 

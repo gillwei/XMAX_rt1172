@@ -52,10 +52,23 @@
 #include "_HomeItemVehicleInfo.h"
 #include "_HomeRecord.h"
 #include "_HomeRecordList.h"
+#include "_HomeSpeedCircle.h"
 #include "_HomeTachoBaseline.h"
 #include "_HomeTachoColor.h"
 #include "_HomeTachoScale.h"
 #include "_HomeVehicleInfoMenu.h"
+
+/* User defined constant: 'Home::SV_WITHOUT_SPEED_LIMIT' */
+extern const XColor HomeSV_WITHOUT_SPEED_LIMIT;
+
+/* User defined constant: 'Home::SV_WITH_SPEED_LIMIT' */
+extern const XColor HomeSV_WITH_SPEED_LIMIT;
+
+/* User defined constant: 'Home::SV_OVER_SPEED_LIMIT' */
+extern const XColor HomeSV_OVER_SPEED_LIMIT;
+
+/* User defined constant: 'Home::CIRCLE_CENTER_POS' */
+extern const XPoint HomeCIRCLE_CENTER_POS;
 
 #ifdef __cplusplus
   }

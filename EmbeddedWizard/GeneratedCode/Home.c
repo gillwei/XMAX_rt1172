@@ -33,6 +33,7 @@
 #include "_CoreTimer.h"
 #include "_CoreVerticalList.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceNaviDataClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
@@ -49,6 +50,7 @@
 #include "_HomeItemVehicleInfo.h"
 #include "_HomeRecord.h"
 #include "_HomeRecordList.h"
+#include "_HomeSpeedCircle.h"
 #include "_HomeTachoBaseline.h"
 #include "_HomeTachoColor.h"
 #include "_HomeTachoScale.h"
@@ -68,6 +70,8 @@
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
 #include "_ViewsWallpaper.h"
+#include "_ViewsWarpImage.h"
+#include "Color.h"
 #include "Core.h"
 #include "DeviceInterface.h"
 #include "Effects.h"
@@ -81,13 +85,13 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x000000C0, /* ratio 75.00 % */
+  0x000000CC, /* ratio 74.51 % */
   0xB8001700, 0x00082452, 0x008E002B, 0x08C00100, 0x8A002A80, 0xA0026000, 0x45818222,
   0x02780090, 0x188009A0, 0x04546400, 0x126300D0, 0xA4006E00, 0x21674001, 0x3D1C8D00,
-  0xB2319C82, 0x2993C124, 0x0864B657, 0x180023B3, 0x84566800, 0x00251260, 0x00C2003B,
-  0x0012A360, 0x532B9719, 0x00032D3E, 0x180CC8CF, 0xAAA000E5, 0x34000C74, 0xAD24DB2E,
-  0x1D6C54DA, 0x7A196200, 0xAC670A55, 0xF2009D57, 0xB048BC8C, 0x238FCCA7, 0x000406F3,
-  0x00000000
+  0xD2319C82, 0x2E16C600, 0x492C5671, 0x95CA64F0, 0xECC2192D, 0x00060008, 0x9821159A,
+  0x0EC00944, 0xD8003080, 0xC64004A8, 0x5594CAE5, 0x33C000CB, 0x39460332, 0x1D42B400,
+  0xCB8D0003, 0x4EB74F36, 0x00075B45, 0xA164865A, 0x164B49C2, 0x233C8028, 0x2A1C122F,
+  0xBFC8E3F3, 0x00000101, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -106,58 +110,70 @@ static const XRect _Const000B = {{ 0, 102 }, { 480, 129 }};
 static const XRect _Const000C = {{ 50, 45 }, { 419, 184 }};
 static const XRect _Const000D = {{ 56, 45 }, { 425, 184 }};
 static const XStringRes _Const000E = { _StringsDefault0, 0x000D };
-static const XRect _Const000F = {{ 72, 113 }, { 403, 156 }};
-static const XStringRes _Const0010 = { _StringsDefault0, 0x0015 };
-static const XRect _Const0011 = {{ 0, 38 }, { 480, 272 }};
-static const XRect _Const0012 = {{ 17, 51 }, { 67, 101 }};
-static const XRect _Const0013 = {{ 78, 40 }, { 480, 268 }};
-static const XStringRes _Const0014 = { _StringsDefault0, 0x0022 };
-static const XRect _Const0015 = {{ 0, 0 }, { 402, 228 }};
-static const XRect _Const0016 = {{ 0, 70 }, { 359, 77 }};
-static const XRect _Const0017 = {{ 0, 146 }, { 359, 153 }};
-static const XRect _Const0018 = {{ 363, 1 }, { 395, 33 }};
-static const XRect _Const0019 = {{ 363, 185 }, { 395, 217 }};
-static const XRect _Const001A = {{ 0, 0 }, { 400, 76 }};
-static const XRect _Const001B = {{ 7, 19 }, { 144, 52 }};
-static const XColor _Const001C = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const001D = {{ 288, 15 }, { 346, 57 }};
-static const XRect _Const001E = {{ 149, 7 }, { 281, 64 }};
-static const XRect _Const001F = {{ 232, 7 }, { 282, 64 }};
-static const XRect _Const0020 = {{ 147, 7 }, { 197, 64 }};
-static const XRect _Const0021 = {{ 204, 15 }, { 231, 57 }};
-static const XRect _Const0022 = {{ 0, 0 }, { 369, 156 }};
-static const XStringRes _Const0023 = { _StringsDefault0, 0x002F };
-static const XRect _Const0024 = {{ 0, 0 }, { 6, 118 }};
-static const XRect _Const0025 = {{ 0, 3 }, { 6, 118 }};
-static const XColor _Const0026 = { 0x71, 0x9E, 0x0D, 0xFF };
-static const XRect _Const0027 = {{ 0, 0 }, { 6, 6 }};
-static const XStringRes _Const0028 = { _StringsDefault0, 0x003F };
-static const XRect _Const0029 = {{ 0, 0 }, { 480, 234 }};
-static const XRect _Const002A = {{ 0, 0 }, { 223, 234 }};
-static const XRect _Const002B = {{ 0, 0 }, { 223, 91 }};
-static const XRect _Const002C = {{ 0, 133 }, { 223, 234 }};
-static const XRect _Const002D = {{ 188, 0 }, { 234, 234 }};
-static const XPoint _Const002E = { 223, 15 };
-static const XPoint _Const002F = { 3, 15 };
-static const XPoint _Const0030 = { 223, 201 };
-static const XPoint _Const0031 = { 3, 201 };
-static const XPoint _Const0032 = { 223, 93 };
-static const XPoint _Const0033 = { 3, 93 };
-static const XColor _Const0034 = { 0xFE, 0xFF, 0x64, 0xFF };
-static const XPoint _Const0035 = { 223, 56 };
-static const XPoint _Const0036 = { 3, 56 };
-static const XColor _Const0037 = { 0x46, 0xFF, 0x4B, 0xFF };
-static const XPoint _Const0038 = { 223, 156 };
-static const XPoint _Const0039 = { 3, 156 };
-static const XPoint _Const003A = { 223, 185 };
-static const XPoint _Const003B = { 3, 185 };
-static const XRect _Const003C = {{ 0, 0 }, { 480, 63 }};
-static const XRect _Const003D = {{ -189, 38 }, { 34, 272 }};
-static const XRect _Const003E = {{ 0, 119 }, { 480, 182 }};
-static const XRect _Const003F = {{ 323, 232 }, { 474, 265 }};
-static const XRect _Const0040 = {{ 0, 38 }, { 480, 51 }};
-static const XRect _Const0041 = {{ 364, 38 }, { 474, 73 }};
-static const XStringRes _Const0042 = { _StringsDefault0, 0x0058 };
+static const XRect _Const000F = {{ 0, 38 }, { 480, 272 }};
+static const XRect _Const0010 = {{ 93, 91 }, { 387, 225 }};
+static const XRect _Const0011 = {{ 211, 191 }, { 271, 211 }};
+static const XRect _Const0012 = {{ 183, 136 }, { 297, 193 }};
+static const XRect _Const0013 = {{ 142, 105 }, { 338, 148 }};
+static const XRect _Const0014 = {{ 0, 38 }, { 480, 52 }};
+static const XStringRes _Const0015 = { _StringsDefault0, 0x0015 };
+static const XStringRes _Const0016 = { _StringsDefault0, 0x0022 };
+static const XRect _Const0017 = {{ 17, 51 }, { 67, 101 }};
+static const XRect _Const0018 = {{ 78, 40 }, { 480, 268 }};
+static const XStringRes _Const0019 = { _StringsDefault0, 0x0028 };
+static const XRect _Const001A = {{ 0, 0 }, { 402, 228 }};
+static const XRect _Const001B = {{ 0, 70 }, { 359, 77 }};
+static const XRect _Const001C = {{ 0, 146 }, { 359, 153 }};
+static const XRect _Const001D = {{ 363, 1 }, { 395, 33 }};
+static const XRect _Const001E = {{ 363, 185 }, { 395, 217 }};
+static const XRect _Const001F = {{ 0, 0 }, { 400, 76 }};
+static const XRect _Const0020 = {{ 7, 19 }, { 144, 52 }};
+static const XColor _Const0021 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const0022 = {{ 288, 15 }, { 346, 57 }};
+static const XRect _Const0023 = {{ 149, 7 }, { 281, 64 }};
+static const XRect _Const0024 = {{ 232, 7 }, { 282, 64 }};
+static const XRect _Const0025 = {{ 147, 7 }, { 197, 64 }};
+static const XRect _Const0026 = {{ 204, 15 }, { 231, 57 }};
+static const XRect _Const0027 = {{ 0, 0 }, { 369, 156 }};
+static const XStringRes _Const0028 = { _StringsDefault0, 0x0035 };
+static const XRect _Const0029 = {{ 0, 0 }, { 6, 118 }};
+static const XRect _Const002A = {{ 0, 3 }, { 6, 118 }};
+static const XColor _Const002B = { 0x71, 0x9E, 0x0D, 0xFF };
+static const XRect _Const002C = {{ 0, 0 }, { 6, 6 }};
+static const XStringRes _Const002D = { _StringsDefault0, 0x0045 };
+static const XRect _Const002E = {{ 0, 0 }, { 480, 234 }};
+static const XRect _Const002F = {{ 0, 0 }, { 223, 234 }};
+static const XRect _Const0030 = {{ 0, 0 }, { 223, 91 }};
+static const XRect _Const0031 = {{ 0, 133 }, { 223, 234 }};
+static const XRect _Const0032 = {{ 188, 0 }, { 234, 234 }};
+static const XPoint _Const0033 = { 223, 15 };
+static const XPoint _Const0034 = { 3, 15 };
+static const XPoint _Const0035 = { 223, 201 };
+static const XPoint _Const0036 = { 3, 201 };
+static const XPoint _Const0037 = { 223, 93 };
+static const XPoint _Const0038 = { 3, 93 };
+static const XColor _Const0039 = { 0xFE, 0xFF, 0x64, 0xFF };
+static const XPoint _Const003A = { 223, 56 };
+static const XPoint _Const003B = { 3, 56 };
+static const XColor _Const003C = { 0x46, 0xFF, 0x4B, 0xFF };
+static const XPoint _Const003D = { 223, 156 };
+static const XPoint _Const003E = { 3, 156 };
+static const XPoint _Const003F = { 223, 185 };
+static const XPoint _Const0040 = { 3, 185 };
+static const XRect _Const0041 = {{ 0, 0 }, { 480, 63 }};
+static const XRect _Const0042 = {{ -189, 38 }, { 34, 272 }};
+static const XRect _Const0043 = {{ 0, 119 }, { 480, 182 }};
+static const XRect _Const0044 = {{ 323, 232 }, { 474, 265 }};
+static const XRect _Const0045 = {{ 0, 38 }, { 480, 51 }};
+static const XRect _Const0046 = {{ 364, 38 }, { 474, 73 }};
+static const XStringRes _Const0047 = { _StringsDefault0, 0x005E };
+static const XRect _Const0048 = {{ 50, 0 }, { 430, 234 }};
+static const XPoint _Const0049 = { 235, 132 };
+static const XPoint _Const004A = { 252, 132 };
+static const XPoint _Const004B = { 252, 114 };
+static const XPoint _Const004C = { 235, 114 };
+static const XPoint _Const004D = { 113, 113 };
+static const XColor _Const004E = { 0x7B, 0xA6, 0x5B, 0xFF };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -681,19 +697,61 @@ void HomeHOM13_SpeedVisualizer__Init( HomeHOM13_SpeedVisualizer _this, XObject a
   _this->_.XObject._.GCT = EW_CLASS_GCT( HomeHOM13_SpeedVisualizer );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
+  HomeSpeedCircle__Init( &_this->SpeedCircle, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->SpeedVisualizerTitle, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->SpeedLimitUnit, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->SpeedLimitText, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->SpeedLimitTitle, &_this->_.XObject, 0 );
+  ViewsWallpaper__Init( &_this->StatusShadow, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->SpeedLimitUpdateEventHandler, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->Timer, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->SpeedUpdateTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( HomeHOM13_SpeedVisualizer );
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.HomeType = EnumHomeTypeSPEED_VISUALIZER;
-  CoreRectView__OnSetBounds( &_this->Title, _Const000F );
-  ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->Title, EwGetVariantOfString( &StringsINF01_SPEED_VISUALIZER ));
-  CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
-  ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  CoreRectView__OnSetBounds( &_this->SpeedCircle, _Const000F );
+  CoreRectView__OnSetBounds( &_this->SpeedVisualizerTitle, _Const0010 );
+  ViewsImage_OnSetVisible( &_this->SpeedVisualizerTitle, 1 );
+  CoreRectView__OnSetBounds( &_this->SpeedLimitUnit, _Const0011 );
+  ViewsImage_OnSetVisible( &_this->SpeedLimitUnit, 0 );
+  CoreRectView__OnSetBounds( &_this->SpeedLimitText, _Const0012 );
+  ViewsText_OnSetString( &_this->SpeedLimitText, 0 );
+  CoreRectView__OnSetBounds( &_this->SpeedLimitTitle, _Const0013 );
+  ViewsImage_OnSetVisible( &_this->SpeedLimitTitle, 0 );
+  CoreRectView__OnSetBounds( &_this->StatusShadow, _Const0014 );
+  CoreTimer_OnSetPeriod( &_this->Timer, 100 );
+  CoreTimer_OnSetEnabled( &_this->Timer, 0 );
+  _this->Ascending = 1;
+  CoreTimer_OnSetPeriod( &_this->SpeedUpdateTimer, 100 );
+  CoreTimer_OnSetEnabled( &_this->SpeedUpdateTimer, 1 );
+  CoreGroup__Add( _this, ((CoreView)&_this->SpeedCircle ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->SpeedVisualizerTitle ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->SpeedLimitUnit ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->SpeedLimitText ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->SpeedLimitTitle ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->StatusShadow ), 0 );
+  ViewsImage_OnSetBitmap( &_this->SpeedVisualizerTitle, EwLoadResource( &ResourceSVSpeedUnLimit, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->SpeedLimitUnit, EwLoadResource( &ResourceSVKmH, 
+  ResourcesBitmap ));
+  ViewsText_OnSetFont( &_this->SpeedLimitText, EwLoadResource( &FontsNotoSansMedium42pt, 
   ResourcesFont ));
+  ViewsImage_OnSetBitmap( &_this->SpeedLimitTitle, EwLoadResource( &ResourceSVSpeedLimit, 
+  ResourcesBitmap ));
+  ViewsWallpaper_OnSetBitmap( &_this->StatusShadow, EwLoadResource( &ResourceStatusShadow, 
+  ResourcesBitmap ));
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, HomeHOM13_SpeedVisualizer_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
+  _this->SpeedLimitUpdateEventHandler.OnEvent = EwNewSlot( _this, HomeHOM13_SpeedVisualizer_OnSpeedLimitUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->SpeedLimitUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->SpeedLimitUpdateEvent );
+  _this->Timer.OnTrigger = EwNewSlot( _this, HomeHOM13_SpeedVisualizer_OnTimerSlot );
+  _this->SpeedUpdateTimer.OnTrigger = EwNewSlot( _this, HomeHOM13_SpeedVisualizer_OnSpeedUpdateSlot );
 
   /* Call the user defined constructor */
   HomeHOM13_SpeedVisualizer_Init( _this, aArg );
@@ -706,7 +764,16 @@ void HomeHOM13_SpeedVisualizer__ReInit( HomeHOM13_SpeedVisualizer _this )
   HomeBaseHome__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->Title );
+  HomeSpeedCircle__ReInit( &_this->SpeedCircle );
+  ViewsImage__ReInit( &_this->SpeedVisualizerTitle );
+  ViewsImage__ReInit( &_this->SpeedLimitUnit );
+  ViewsText__ReInit( &_this->SpeedLimitText );
+  ViewsImage__ReInit( &_this->SpeedLimitTitle );
+  ViewsWallpaper__ReInit( &_this->StatusShadow );
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->SpeedLimitUpdateEventHandler );
+  CoreTimer__ReInit( &_this->Timer );
+  CoreTimer__ReInit( &_this->SpeedUpdateTimer );
 }
 
 /* Finalizer method for the class 'Home::HOM13_SpeedVisualizer' */
@@ -716,7 +783,16 @@ void HomeHOM13_SpeedVisualizer__Done( HomeHOM13_SpeedVisualizer _this )
   _this->_.Super._.VMT = EW_CLASS( HomeBaseHome );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->Title );
+  HomeSpeedCircle__Done( &_this->SpeedCircle );
+  ViewsImage__Done( &_this->SpeedVisualizerTitle );
+  ViewsImage__Done( &_this->SpeedLimitUnit );
+  ViewsText__Done( &_this->SpeedLimitText );
+  ViewsImage__Done( &_this->SpeedLimitTitle );
+  ViewsWallpaper__Done( &_this->StatusShadow );
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
+  CoreSystemEventHandler__Done( &_this->SpeedLimitUpdateEventHandler );
+  CoreTimer__Done( &_this->Timer );
+  CoreTimer__Done( &_this->SpeedUpdateTimer );
 
   /* Don't forget to deinitialize the super class ... */
   HomeBaseHome__Done( &_this->_.Super );
@@ -727,11 +803,20 @@ void HomeHOM13_SpeedVisualizer__Done( HomeHOM13_SpeedVisualizer _this )
    statements. */
 void HomeHOM13_SpeedVisualizer_Init( HomeHOM13_SpeedVisualizer _this, XHandle aArg )
 {
+  DeviceInterfaceVehicleDataClass VehicleData;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0010 ));
+  EwTrace( "%s", EwLoadString( &_Const0015 ));
+  VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMILEAGE_UNIT );
+
+  if ( VehicleData != 0 )
+    HomeHOM13_SpeedVisualizer_OnSetSpeedUnit( _this, (XEnum)VehicleData->DataUInt32 );
+
+  EwSignal( EwNewSlot( _this, HomeHOM13_SpeedVisualizer_OnSpeedLimitUpdateSlot ), 
+    ((XObject)_this ));
 }
 
 /* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnLongEnterKeyActivated()' */
@@ -742,13 +827,180 @@ void HomeHOM13_SpeedVisualizer_OnLongEnterKeyActivated( HomeHOM13_SpeedVisualize
     0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
 
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void HomeHOM13_SpeedVisualizer_OnVehicleDataReceivedSlot( HomeHOM13_SpeedVisualizer _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if ( VehicleData != 0 )
+    switch ( VehicleData->RxType )
+    {
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED :
+        if ( DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+        {
+          ViewsText_OnSetString( &_this->SpeedLimitText, EwLoadString( &_Const0016 ));
+          ViewsText_OnSetColor( &_this->SpeedLimitText, ColorGRAY_FOR_DISABLED );
+        }
+        else
+        {
+          ViewsText_OnSetColor( &_this->SpeedLimitText, ColorWHITE );
+          EwSignal( EwNewSlot( _this, HomeHOM13_SpeedVisualizer_OnSpeedLimitUpdateSlot ), 
+            ((XObject)_this ));
+        }
+      break;
+
+      case EnumVehicleRxTypeMILEAGE_UNIT :
+      {
+        VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMILEAGE_UNIT );
+        HomeHOM13_SpeedVisualizer_OnSetSpeedUnit( _this, (XEnum)VehicleData->DataUInt32 );
+        EwSignal( EwNewSlot( _this, HomeHOM13_SpeedVisualizer_OnSpeedLimitUpdateSlot ), 
+          ((XObject)_this ));
+      }
+      break;
+
+      default :; 
+    }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void HomeHOM13_SpeedVisualizer_OnSpeedLimitUpdateSlot( HomeHOM13_SpeedVisualizer _this, 
+  XObject sender )
+{
+  DeviceInterfaceNaviDataClass NaviData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeSPEED_LIMIT );
+
+  if ( NaviData != 0 )
+  {
+    HomeHOM13_SpeedVisualizer_OnSetSpeedLimit( _this, NaviData->SpeedLimit );
+    EwSignal( EwNewSlot( _this, HomeHOM13_SpeedVisualizer_OnSpeedUpdateSlot ), ((XObject)_this ));
+  }
+}
+
+/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnSetSpeedUnit()' */
+void HomeHOM13_SpeedVisualizer_OnSetSpeedUnit( HomeHOM13_SpeedVisualizer _this, 
+  XEnum value )
+{
+  if ( _this->SpeedUnit != value )
+  {
+    _this->SpeedUnit = value;
+
+    switch ( _this->SpeedUnit )
+    {
+      case EnumMileageSettingItemKM :
+        ViewsImage_OnSetBitmap( &_this->SpeedLimitUnit, EwLoadResource( &ResourceSVKmH, 
+        ResourcesBitmap ));
+      break;
+
+      case EnumMileageSettingItemMILE :
+        ViewsImage_OnSetBitmap( &_this->SpeedLimitUnit, EwLoadResource( &ResourceSVMPH, 
+        ResourcesBitmap ));
+      break;
+
+      default :; 
+    }
+  }
+}
+
+/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnSetSpeedLimit()' */
+void HomeHOM13_SpeedVisualizer_OnSetSpeedLimit( HomeHOM13_SpeedVisualizer _this, 
+  XInt32 value )
+{
+  if ( _this->SpeedLimit != value )
+  {
+    _this->SpeedLimit = value;
+    _this->SpeedCircle.SpeedLimit = value;
+    ViewsText_OnSetString( &_this->SpeedLimitText, EwNewStringInt( value, 0, 10 ));
+
+    if ( value > 0 )
+    {
+      HomeSpeedCircle_OnSetColor( &_this->SpeedCircle, HomeSV_WITH_SPEED_LIMIT );
+      ViewsImage_OnSetVisible( &_this->SpeedCircle.GradientLine, 1 );
+      ViewsImage_OnSetVisible( &_this->SpeedVisualizerTitle, 0 );
+      ViewsImage_OnSetVisible( &_this->SpeedLimitTitle, 1 );
+      ViewsImage_OnSetVisible( &_this->SpeedLimitUnit, 1 );
+      ViewsText_OnSetVisible( &_this->SpeedLimitText, 1 );
+    }
+    else
+    {
+      HomeSpeedCircle_OnSetColor( &_this->SpeedCircle, HomeSV_WITHOUT_SPEED_LIMIT );
+      ViewsImage_OnSetVisible( &_this->SpeedCircle.GradientLine, 0 );
+      ViewsImage_OnSetVisible( &_this->SpeedVisualizerTitle, 1 );
+      ViewsImage_OnSetVisible( &_this->SpeedLimitTitle, 0 );
+      ViewsImage_OnSetVisible( &_this->SpeedLimitUnit, 0 );
+      ViewsText_OnSetVisible( &_this->SpeedLimitText, 0 );
+    }
+  }
+}
+
+/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnTimerSlot()' */
+void HomeHOM13_SpeedVisualizer_OnTimerSlot( HomeHOM13_SpeedVisualizer _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( _this->Ascending )
+  {
+    HomeSpeedCircle_OnSetSpeedValue( &_this->SpeedCircle, _this->SpeedCircle.SpeedValue 
+    + 10 );
+
+    if ( _this->SpeedCircle.SpeedValue == 70 )
+      HomeHOM13_SpeedVisualizer_OnSetSpeedLimit( _this, 50 );
+
+    if ( _this->SpeedCircle.SpeedValue >= 140 )
+      _this->Ascending = 0;
+  }
+  else
+  {
+    HomeSpeedCircle_OnSetSpeedValue( &_this->SpeedCircle, _this->SpeedCircle.SpeedValue 
+    - 10 );
+
+    if ( _this->SpeedCircle.SpeedValue == 70 )
+      HomeHOM13_SpeedVisualizer_OnSetSpeedLimit( _this, 40 );
+
+    if ( _this->SpeedCircle.SpeedValue == 0 )
+      _this->Ascending = 1;
+  }
+}
+
+/* 'C' function for method : 'Home::HOM13_SpeedVisualizer.OnSpeedUpdateSlot()' */
+void HomeHOM13_SpeedVisualizer_OnSpeedUpdateSlot( HomeHOM13_SpeedVisualizer _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeVEHICLE_SPEED_METER );
+
+  if ( VehicleData != 0 )
+    HomeSpeedCircle_OnSetSpeedValue( &_this->SpeedCircle, (XInt32)VehicleData->DataUInt32 );
+}
+
 /* Variants derived from the class : 'Home::HOM13_SpeedVisualizer' */
 EW_DEFINE_CLASS_VARIANTS( HomeHOM13_SpeedVisualizer )
 EW_END_OF_CLASS_VARIANTS( HomeHOM13_SpeedVisualizer )
 
 /* Virtual Method Table (VMT) for the class : 'Home::HOM13_SpeedVisualizer' */
-EW_DEFINE_CLASS( HomeHOM13_SpeedVisualizer, HomeBaseHome, Title, Title, Title, Title, 
-                 _.VMT, _.VMT, "Home::HOM13_SpeedVisualizer" )
+EW_DEFINE_CLASS( HomeHOM13_SpeedVisualizer, HomeBaseHome, SpeedCircle, SpeedCircle, 
+                 SpeedCircle, SpeedCircle, SpeedLimit, SpeedLimit, "Home::HOM13_SpeedVisualizer" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -813,7 +1065,7 @@ void HomeBaseHome__Init( HomeBaseHome _this, XObject aLink, XHandle aArg )
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreTimer_OnSetPeriod( &_this->NaviConnectFailedTimer, 5000 );
-  CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0011 );
+  CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const000F );
   CoreGroup__OnSetVisible( &_this->LoadingAnimation, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
   _this->NaviConnectFailedTimer.OnTrigger = EwNewSlot( _this, HomeBaseHome_OnNaviConnectFailedSlot );
@@ -1059,8 +1311,8 @@ void HomeHOM03_VehicleInfo__Init( HomeHOM03_VehicleInfo _this, XObject aLink, XH
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.HomeType = EnumHomeTypeVEHICLE_INFO;
-  CoreRectView__OnSetBounds( &_this->IconInfo, _Const0012 );
-  CoreRectView__OnSetBounds( &_this->VehicleInfoMenu, _Const0013 );
+  CoreRectView__OnSetBounds( &_this->IconInfo, _Const0017 );
+  CoreRectView__OnSetBounds( &_this->VehicleInfoMenu, _Const0018 );
   CoreGroup__Add( _this, ((CoreView)&_this->IconInfo ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->VehicleInfoMenu ), 0 );
   ViewsImage_OnSetBitmap( &_this->IconInfo, EwLoadResource( &ResourceIconInfo, ResourcesBitmap ));
@@ -1103,7 +1355,7 @@ void HomeHOM03_VehicleInfo_Init( HomeHOM03_VehicleInfo _this, XHandle aArg )
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0014 ));
+  EwTrace( "%s", EwLoadString( &_Const0019 ));
 }
 
 /* 'C' function for method : 'Home::HOM03_VehicleInfo.OnShortDownKeyActivated()' */
@@ -1201,15 +1453,15 @@ void HomeVehicleInfoMenu__Init( HomeVehicleInfoMenu _this, XObject aLink, XHandl
   _this->_.VMT = EW_CLASS( HomeVehicleInfoMenu );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0015 );
-  CoreRectView__OnSetBounds( &_this->VerticalList, _Const0015 );
+  CoreRectView__OnSetBounds( _this, _Const001A );
+  CoreRectView__OnSetBounds( &_this->VerticalList, _Const001A );
   CoreVerticalList_OnSetEndless( &_this->VerticalList, 1 );
   CoreVerticalList_OnSetItemHeight( &_this->VerticalList, 76 );
   CoreVerticalList_OnSetItemClass( &_this->VerticalList, EW_CLASS( HomeItemVehicleInfo ));
-  CoreRectView__OnSetBounds( &_this->Divider1, _Const0016 );
-  CoreRectView__OnSetBounds( &_this->Divider2, _Const0017 );
-  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const0018 );
-  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const0019 );
+  CoreRectView__OnSetBounds( &_this->Divider1, _Const001B );
+  CoreRectView__OnSetBounds( &_this->Divider2, _Const001C );
+  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const001D );
+  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const001E );
   ViewsImage_OnSetFrameNumber( &_this->DownArrowIcon, 1 );
   EffectsEffect_OnSetExponent((EffectsEffect)&_this->RowScrollEffect, 4.190000f );
   EffectsEffect_OnSetTiming((EffectsEffect)&_this->RowScrollEffect, EffectsTimingExp_Out );
@@ -2019,38 +2271,38 @@ void HomeItemVehicleInfo__Init( HomeItemVehicleInfo _this, XObject aLink, XHandl
   _this->_.VMT = EW_CLASS( HomeItemVehicleInfo );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const001A );
+  CoreRectView__OnSetBounds( _this, _Const001F );
   _this->Super1.PassUpKey = 1;
   _this->Super1.PassDownKey = 1;
   CoreView_OnSetLayout((CoreView)&_this->Title, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Title, _Const001B );
+  CoreRectView__OnSetBounds( &_this->Title, _Const0020 );
   ViewsText_OnSetEllipsis( &_this->Title, 1 );
   ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Title, 0 );
-  ViewsText_OnSetColor( &_this->Title, _Const001C );
-  CoreRectView__OnSetBounds( &_this->IconUnit, _Const001D );
+  ViewsText_OnSetColor( &_this->Title, _Const0021 );
+  CoreRectView__OnSetBounds( &_this->IconUnit, _Const0022 );
   CoreView_OnSetLayout((CoreView)&_this->ValueText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->ValueText, _Const001E );
+  CoreRectView__OnSetBounds( &_this->ValueText, _Const0023 );
   ViewsText_OnSetEllipsis( &_this->ValueText, 1 );
   ViewsText_OnSetAlignment( &_this->ValueText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ValueText, 0 );
-  ViewsText_OnSetColor( &_this->ValueText, _Const001C );
+  ViewsText_OnSetColor( &_this->ValueText, _Const0021 );
   CoreView_OnSetLayout((CoreView)&_this->MinuteText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->MinuteText, _Const001F );
+  CoreRectView__OnSetBounds( &_this->MinuteText, _Const0024 );
   ViewsText_OnSetEllipsis( &_this->MinuteText, 1 );
   ViewsText_OnSetAlignment( &_this->MinuteText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->MinuteText, 0 );
-  ViewsText_OnSetColor( &_this->MinuteText, _Const001C );
+  ViewsText_OnSetColor( &_this->MinuteText, _Const0021 );
   CoreView_OnSetLayout((CoreView)&_this->HourText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->HourText, _Const0020 );
+  CoreRectView__OnSetBounds( &_this->HourText, _Const0025 );
   ViewsText_OnSetEllipsis( &_this->HourText, 1 );
   ViewsText_OnSetAlignment( &_this->HourText, ViewsTextAlignmentAlignHorzRight | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->HourText, 0 );
-  ViewsText_OnSetColor( &_this->HourText, _Const001C );
-  CoreRectView__OnSetBounds( &_this->HourIcon, _Const0021 );
+  ViewsText_OnSetColor( &_this->HourText, _Const0021 );
+  CoreRectView__OnSetBounds( &_this->HourIcon, _Const0026 );
   ViewsImage_OnSetVisible( &_this->HourIcon, 0 );
   CoreTimer_OnSetPeriod( &_this->ValueTextBlinkTimer, 500 );
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
@@ -2194,7 +2446,7 @@ void HomeEcoMeterChart__Init( HomeEcoMeterChart _this, XObject aLink, XHandle aA
   _this->_.VMT = EW_CLASS( HomeEcoMeterChart );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0022 );
+  CoreRectView__OnSetBounds( _this, _Const0027 );
 }
 
 /* Re-Initializer for the class 'Home::EcoMeterChart' */
@@ -2300,7 +2552,7 @@ void HomeEcoMeterChart_RemoveEcoUnit( HomeEcoMeterChart _this, XInt32 aIndex )
       CoreGroup__Remove( _this, ((CoreView)EcoBar ));
   }
   else
-    EwTrace( "%s", EwLoadString( &_Const0023 ));
+    EwTrace( "%s", EwLoadString( &_Const0028 ));
 }
 
 /* 'C' function for method : 'Home::EcoMeterChart.HideEcoUnit()' */
@@ -2315,7 +2567,7 @@ void HomeEcoMeterChart_HideEcoUnit( HomeEcoMeterChart _this, XInt32 aIndex )
       CoreGroup__OnSetVisible( EcoBar, 0 );
   }
   else
-    EwTrace( "%s", EwLoadString( &_Const0023 ));
+    EwTrace( "%s", EwLoadString( &_Const0028 ));
 }
 
 /* Variants derived from the class : 'Home::EcoMeterChart' */
@@ -2375,10 +2627,10 @@ void HomeEcoMeterComponent__Init( HomeEcoMeterComponent _this, XObject aLink, XH
   _this->_.VMT = EW_CLASS( HomeEcoMeterComponent );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0024 );
-  CoreRectView__OnSetBounds( &_this->Bar, _Const0025 );
-  ViewsRectangle_OnSetColor( &_this->Bar, _Const0026 );
-  CoreRectView__OnSetBounds( &_this->Dot, _Const0027 );
+  CoreRectView__OnSetBounds( _this, _Const0029 );
+  CoreRectView__OnSetBounds( &_this->Bar, _Const002A );
+  ViewsRectangle_OnSetColor( &_this->Bar, _Const002B );
+  CoreRectView__OnSetBounds( &_this->Dot, _Const002C );
   CoreGroup__Add( _this, ((CoreView)&_this->Bar ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Dot ), 0 );
   ViewsFrame_OnSetBitmap( &_this->Dot, EwLoadResource( &ResourceEcoDot, ResourcesBitmap ));
@@ -2530,7 +2782,7 @@ void HomeRecordList_AddRecord( HomeRecordList _this, XFloat aValue )
       _this->NoOfItems = _this->NoOfItems + 1;
     }
     else
-      EwTrace( "%s", EwLoadString( &_Const0028 ));
+      EwTrace( "%s", EwLoadString( &_Const002D ));
 }
 
 /* 'C' function for method : 'Home::RecordList.RemoveRecord()' */
@@ -2606,7 +2858,7 @@ void HomeTachoBaseline__Init( HomeTachoBaseline _this, XObject aLink, XHandle aA
   _this->_.VMT = EW_CLASS( HomeTachoBaseline );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0029 );
+  CoreRectView__OnSetBounds( _this, _Const002E );
 }
 
 /* Re-Initializer for the class 'Home::TachoBaseline' */
@@ -2771,35 +3023,35 @@ void HomeTachoColor__Init( HomeTachoColor _this, XObject aLink, XHandle aArg )
   _this->_.VMT = EW_CLASS( HomeTachoColor );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const002A );
-  CoreRectView__OnSetBounds( &_this->UpColorbaseImg, _Const002B );
+  CoreRectView__OnSetBounds( _this, _Const002F );
+  CoreRectView__OnSetBounds( &_this->UpColorbaseImg, _Const0030 );
   ViewsImage_OnSetAlignment( &_this->UpColorbaseImg, ViewsImageAlignmentAlignHorzRight 
   | ViewsImageAlignmentAlignVertBottom );
-  CoreRectView__OnSetBounds( &_this->DownColorbaseImg, _Const002C );
+  CoreRectView__OnSetBounds( &_this->DownColorbaseImg, _Const0031 );
   ViewsImage_OnSetAlignment( &_this->DownColorbaseImg, ViewsImageAlignmentAlignHorzRight 
   | ViewsImageAlignmentAlignVertTop );
-  CoreRectView__OnSetBounds( &_this->Front, _Const002D );
-  CoreLineView_OnSetPoint2((CoreLineView)&_this->ColorbaseUpLine, _Const002E );
-  CoreLineView_OnSetPoint1((CoreLineView)&_this->ColorbaseUpLine, _Const002F );
+  CoreRectView__OnSetBounds( &_this->Front, _Const0032 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->ColorbaseUpLine, _Const0033 );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->ColorbaseUpLine, _Const0034 );
   ViewsLine_OnSetVisible( &_this->ColorbaseUpLine, 0 );
-  CoreLineView_OnSetPoint2((CoreLineView)&_this->ColorbaseDownLine, _Const0030 );
-  CoreLineView_OnSetPoint1((CoreLineView)&_this->ColorbaseDownLine, _Const0031 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->ColorbaseDownLine, _Const0035 );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->ColorbaseDownLine, _Const0036 );
   ViewsLine_OnSetVisible( &_this->ColorbaseDownLine, 0 );
-  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskUpEndLine, _Const0032 );
-  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskUpEndLine, _Const0033 );
-  ViewsLine_OnSetColor( &_this->YmaskUpEndLine, _Const0034 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskUpEndLine, _Const0037 );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskUpEndLine, _Const0038 );
+  ViewsLine_OnSetColor( &_this->YmaskUpEndLine, _Const0039 );
   ViewsLine_OnSetVisible( &_this->YmaskUpEndLine, 0 );
-  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskUpStartLine, _Const0035 );
-  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskUpStartLine, _Const0036 );
-  ViewsLine_OnSetColor( &_this->YmaskUpStartLine, _Const0037 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskUpStartLine, _Const003A );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskUpStartLine, _Const003B );
+  ViewsLine_OnSetColor( &_this->YmaskUpStartLine, _Const003C );
   ViewsLine_OnSetVisible( &_this->YmaskUpStartLine, 0 );
-  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskDownStartLine, _Const0038 );
-  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskDownStartLine, _Const0039 );
-  ViewsLine_OnSetColor( &_this->YmaskDownStartLine, _Const0034 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskDownStartLine, _Const003D );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskDownStartLine, _Const003E );
+  ViewsLine_OnSetColor( &_this->YmaskDownStartLine, _Const0039 );
   ViewsLine_OnSetVisible( &_this->YmaskDownStartLine, 0 );
-  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskDownEndLine, _Const003A );
-  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskDownEndLine, _Const003B );
-  ViewsLine_OnSetColor( &_this->YmaskDownEndLine, _Const0037 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->YmaskDownEndLine, _Const003F );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->YmaskDownEndLine, _Const0040 );
+  ViewsLine_OnSetColor( &_this->YmaskDownEndLine, _Const003C );
   ViewsLine_OnSetVisible( &_this->YmaskDownEndLine, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpColorbaseImg ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DownColorbaseImg ), 0 );
@@ -3103,8 +3355,8 @@ void HomeTachoScale__Init( HomeTachoScale _this, XObject aLink, XHandle aArg )
   _this->_.VMT = EW_CLASS( HomeTachoScale );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const003C );
-  CoreRectView__OnSetBounds( &_this->Background, _Const003C );
+  CoreRectView__OnSetBounds( _this, _Const0041 );
+  CoreRectView__OnSetBounds( &_this->Background, _Const0041 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   ViewsImage_OnSetBitmap( &_this->Background, EwLoadResource( &ResourceTachoNumberBG, 
   ResourcesBitmap ));
@@ -3432,19 +3684,19 @@ void HomeHOM11_TachoVisualizer__Init( HomeHOM11_TachoVisualizer _this, XObject a
   _this->_.VMT = EW_CLASS( HomeHOM11_TachoVisualizer );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super2.BlackBG, _Const0011 );
-  CoreRectView__OnSetBounds( &_this->TachoBaseline, _Const0011 );
-  CoreRectView__OnSetBounds( &_this->CircularSector, _Const003D );
+  CoreRectView__OnSetBounds( &_this->Super2.BlackBG, _Const000F );
+  CoreRectView__OnSetBounds( &_this->TachoBaseline, _Const000F );
+  CoreRectView__OnSetBounds( &_this->CircularSector, _Const0042 );
   HomeTachoColor_OnSetReferenceLineVisible( &_this->CircularSector, 0 );
   _this->CircularSector.DownPartEnabled = 1;
   CoreTimer_OnSetPeriod( &_this->UpdateTimer, 40 );
   CoreTimer_OnSetEnabled( &_this->UpdateTimer, 1 );
-  CoreRectView__OnSetBounds( &_this->TachoScale, _Const003E );
-  CoreRectView__OnSetBounds( &_this->RpmImg, _Const003F );
+  CoreRectView__OnSetBounds( &_this->TachoScale, _Const0043 );
+  CoreRectView__OnSetBounds( &_this->RpmImg, _Const0044 );
   ViewsImage_OnSetFrameNumber( &_this->RpmImg, 0 );
   ViewsImage_OnSetVisible( &_this->RpmImg, 1 );
-  CoreRectView__OnSetBounds( &_this->StatusbarShadow, _Const0040 );
-  CoreRectView__OnSetBounds( &_this->VVAIndicatorImage, _Const0041 );
+  CoreRectView__OnSetBounds( &_this->StatusbarShadow, _Const0045 );
+  CoreRectView__OnSetBounds( &_this->VVAIndicatorImage, _Const0046 );
   ViewsImage_OnSetFrameNumber( &_this->VVAIndicatorImage, 1 );
   ViewsImage_OnSetVisible( &_this->VVAIndicatorImage, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->TachoBaseline ), 0 );
@@ -3512,7 +3764,7 @@ void HomeHOM11_TachoVisualizer_Init( HomeHOM11_TachoVisualizer _this, XHandle aA
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0042 ));
+  EwTrace( "%s", EwLoadString( &_Const0047 ));
   HomeHOM11_TachoVisualizer_OnSetFullScaleType( _this, (XEnum)DeviceInterfaceSystemDeviceClass_GetSystemStatus( 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), 
   EnumSystemStatusTACHO_FULLSCALE ));
@@ -3679,5 +3931,215 @@ EW_DEFINE_CLASS( HomeHOM11_TachoVisualizer, HomeBaseHome, TachoBaseline, TachoBa
   ComponentsBaseComponent_OnUpKeyReleased,
   HomeBaseHome_ReturnToHome,
 EW_END_OF_CLASS( HomeHOM11_TachoVisualizer )
+
+/* User defined constant: 'Home::SV_WITHOUT_SPEED_LIMIT' */
+const XColor HomeSV_WITHOUT_SPEED_LIMIT = { 0x44, 0x4A, 0xFF, 0xFF };
+
+/* User defined constant: 'Home::SV_WITH_SPEED_LIMIT' */
+const XColor HomeSV_WITH_SPEED_LIMIT = { 0x31, 0xA6, 0x8F, 0xFF };
+
+/* User defined constant: 'Home::SV_OVER_SPEED_LIMIT' */
+const XColor HomeSV_OVER_SPEED_LIMIT = { 0xEA, 0x73, 0x0A, 0xFF };
+
+/* User defined constant: 'Home::CIRCLE_CENTER_POS' */
+const XPoint HomeCIRCLE_CENTER_POS = { 243, 123 };
+
+/* Initializer for the class 'Home::SpeedCircle' */
+void HomeSpeedCircle__Init( HomeSpeedCircle _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  CoreGroup__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( HomeSpeedCircle );
+
+  /* ... then construct all embedded objects */
+  EffectsInt32Effect__Init( &_this->SpeedCircleResizeEffect, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->GradientLine, &_this->_.XObject, 0 );
+  ViewsWarpImage__Init( &_this->SpeedCircleImage, &_this->_.XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( HomeSpeedCircle );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( _this, _Const002E );
+  EffectsEffect_OnSetElasticity((EffectsEffect)&_this->SpeedCircleResizeEffect, 
+  0.000000f );
+  EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->SpeedCircleResizeEffect, 
+  1 );
+  EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->SpeedCircleResizeEffect, 
+  50 );
+  _this->SpeedCircleResizeEffect.Value2 = 0;
+  CoreRectView__OnSetBounds( &_this->GradientLine, _Const0048 );
+  ViewsImage_OnSetVisible( &_this->GradientLine, 0 );
+  CoreView_OnSetStackingPriority((CoreView)&_this->SpeedCircleImage, 0 );
+  CoreQuadView__OnSetPoint4( &_this->SpeedCircleImage, _Const0049 );
+  CoreQuadView__OnSetPoint3( &_this->SpeedCircleImage, _Const004A );
+  CoreQuadView__OnSetPoint2( &_this->SpeedCircleImage, _Const004B );
+  CoreQuadView__OnSetPoint1( &_this->SpeedCircleImage, _Const004C );
+  ViewsWarpView_OnSetSourceAnchor((ViewsWarpView)&_this->SpeedCircleImage, _Const004D );
+  ViewsWarpView_OnSetVisible((ViewsWarpView)&_this->SpeedCircleImage, 0 );
+  ViewsWarpImage_OnSetColor( &_this->SpeedCircleImage, _Const004E );
+  CoreGroup__Add( _this, ((CoreView)&_this->GradientLine ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->SpeedCircleImage ), 0 );
+  _this->SpeedCircleResizeEffect.Super1.OnFinished = EwNullSlot;
+  _this->SpeedCircleResizeEffect.Super1.OnAnimate = EwNewSlot( _this, HomeSpeedCircle_OnValueChangeSlot );
+  ViewsImage_OnSetBitmap( &_this->GradientLine, EwLoadResource( &ResourceGradientCircleWhite, 
+  ResourcesBitmap ));
+  ViewsWarpImage_OnSetBitmap( &_this->SpeedCircleImage, EwLoadResource( &ResourceSpeedLimitCircle, 
+  ResourcesBitmap ));
+}
+
+/* Re-Initializer for the class 'Home::SpeedCircle' */
+void HomeSpeedCircle__ReInit( HomeSpeedCircle _this )
+{
+  /* At first re-initialize the super class ... */
+  CoreGroup__ReInit( &_this->_.Super );
+
+  /* ... then re-construct all embedded objects */
+  EffectsInt32Effect__ReInit( &_this->SpeedCircleResizeEffect );
+  ViewsImage__ReInit( &_this->GradientLine );
+  ViewsWarpImage__ReInit( &_this->SpeedCircleImage );
+}
+
+/* Finalizer method for the class 'Home::SpeedCircle' */
+void HomeSpeedCircle__Done( HomeSpeedCircle _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( CoreGroup );
+
+  /* Finalize all embedded objects */
+  EffectsInt32Effect__Done( &_this->SpeedCircleResizeEffect );
+  ViewsImage__Done( &_this->GradientLine );
+  ViewsWarpImage__Done( &_this->SpeedCircleImage );
+
+  /* Don't forget to deinitialize the super class ... */
+  CoreGroup__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Home::SpeedCircle.OnValueChangeSlot()' */
+void HomeSpeedCircle_OnValueChangeSlot( HomeSpeedCircle _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( _this->SpeedCircleResizeEffect.Value == 0 )
+    ViewsWarpView_OnSetVisible((ViewsWarpView)&_this->SpeedCircleImage, 0 );
+  else
+  {
+    XFloat RelativeValue;
+    XFloat Scale;
+    ViewsWarpView_OnSetVisible((ViewsWarpView)&_this->SpeedCircleImage, 1 );
+
+    if ( _this->SpeedLimit > 0 )
+    {
+      RelativeValue = (XFloat)_this->SpeedCircleResizeEffect.Value / (XFloat)_this->SpeedLimit;
+      ViewsImage_OnSetVisible( &_this->GradientLine, 1 );
+    }
+    else
+    {
+      RelativeValue = (XFloat)_this->SpeedCircleResizeEffect.Value / 100.000000f;
+      ViewsImage_OnSetVisible( &_this->GradientLine, 0 );
+    }
+
+    if ( RelativeValue > 1.286000f )
+      RelativeValue = 1.286000f;
+
+    Scale = RelativeValue * 280;
+    Scale = EwMathRound( Scale );
+    Scale = Scale * 0.005500f;
+
+    if ( ViewsImage_OnGetVisible( &_this->GradientLine ))
+    {
+      if ( _this->SpeedCircleResizeEffect.Value > _this->SpeedLimit )
+        ViewsWarpImage_OnSetColor( &_this->SpeedCircleImage, HomeSV_OVER_SPEED_LIMIT );
+      else
+        ViewsWarpImage_OnSetColor( &_this->SpeedCircleImage, HomeSV_WITH_SPEED_LIMIT );
+    }
+    else
+      ViewsWarpImage_OnSetColor( &_this->SpeedCircleImage, HomeSV_WITHOUT_SPEED_LIMIT );
+
+    ViewsWarpView_OnSetVisible((ViewsWarpView)&_this->SpeedCircleImage, 1 );
+    ViewsWarpView_RotateAndScale((ViewsWarpView)&_this->SpeedCircleImage, HomeCIRCLE_CENTER_POS, 
+    0.000000f, Scale, Scale );
+  }
+}
+
+/* 'C' function for method : 'Home::SpeedCircle.OnSetSpeedValue()' */
+void HomeSpeedCircle_OnSetSpeedValue( HomeSpeedCircle _this, XInt32 value )
+{
+  HomeSpeedCircle_StartAnimation( _this, _this->SpeedValue, value );
+  _this->SpeedValue = value;
+}
+
+/* 'C' function for method : 'Home::SpeedCircle.StartAnimation()' */
+void HomeSpeedCircle_StartAnimation( HomeSpeedCircle _this, XInt32 aCurrentValue, 
+  XInt32 aNextValue )
+{
+  if ( _this->SpeedCircleResizeEffect.Super1.Enabled )
+  {
+    EffectsEffect_OnSetEnabled((EffectsEffect)&_this->SpeedCircleResizeEffect, 0 );
+    _this->SpeedCircleResizeEffect.Value1 = _this->SpeedCircleResizeEffect.Value;
+    _this->SpeedCircleResizeEffect.Value2 = aNextValue;
+    EffectsEffect_OnSetEnabled((EffectsEffect)&_this->SpeedCircleResizeEffect, 1 );
+  }
+  else
+  {
+    _this->SpeedCircleResizeEffect.Value1 = aCurrentValue;
+    _this->SpeedCircleResizeEffect.Value2 = aNextValue;
+    EffectsEffect_OnSetEnabled((EffectsEffect)&_this->SpeedCircleResizeEffect, 1 );
+  }
+}
+
+/* 'C' function for method : 'Home::SpeedCircle.OnSetColor()' */
+void HomeSpeedCircle_OnSetColor( HomeSpeedCircle _this, XColor value )
+{
+  if ( EwCompColor( _this->Color, value ))
+  {
+    _this->Color = value;
+    ViewsWarpImage_OnSetColor( &_this->SpeedCircleImage, value );
+  }
+}
+
+/* Variants derived from the class : 'Home::SpeedCircle' */
+EW_DEFINE_CLASS_VARIANTS( HomeSpeedCircle )
+EW_END_OF_CLASS_VARIANTS( HomeSpeedCircle )
+
+/* Virtual Method Table (VMT) for the class : 'Home::SpeedCircle' */
+EW_DEFINE_CLASS( HomeSpeedCircle, CoreGroup, SpeedCircleResizeEffect, SpeedCircleResizeEffect, 
+                 SpeedCircleResizeEffect, SpeedCircleResizeEffect, SpeedValue, SpeedValue, 
+                 "Home::SpeedCircle" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+EW_END_OF_CLASS( HomeSpeedCircle )
 
 /* Embedded Wizard */

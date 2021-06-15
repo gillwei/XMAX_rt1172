@@ -73,7 +73,7 @@
         test_vi_tick = TEST_VI_TICK_COUNT;
 
         // toggle dd mode
-        VI_notify_vehicle_data_changed( IL_CAN0_RXA_VEHICLE_INFO_2_IDX, IL_CAN0_VEHICLE_INFO_2_SPD_REAL_RXSIG_HANDLE, vehicle_speed );
+        VI_notify_vehicle_cyc_frm_changed( IL_CAN0_RXA_VEHICLE_INFO_2_IDX, IL_CAN0_VEHICLE_INFO_2_SPD_REAL_RXSIG_HANDLE, vehicle_speed );
         if( vehicle_speed == 0 )
             {
             vehicle_speed = VEHICLE_SPEED_DRIVER_DISTRACTION;

@@ -165,6 +165,28 @@ void GraphicsCanvas_DrawBitmapFrame( GraphicsCanvas _this, XRect aClip, Resource
   aBitmap, XInt32 aFrameNr, XRect aDstRect, XSet aEdges, XColor aColorTL, XColor 
   aColorTR, XColor aColorBR, XColor aColorBL, XBool aBlend );
 
+/* The method WarpBitmap() performs the projection of a rectangular source bitmap 
+   area onto a four corner polygon within the destination canvas. The bitmap is 
+   specified in the parameter aBitmap and the desired area to copy in aSrcRect. 
+   In case of a multi-frame bitmap the desired frame can be selected in the parameter 
+   aFrameNr.
+   The destination polygon is determined by the coordinates aX1,aY1 .. aX4,aY4. 
+   The coefficients aW1 .. aW4 are responsible for the perspective distortion. The 
+   parameters aColor1, aColor2, aColor3, aColor4 determine the colors or opacities 
+   at the corresponding corners of the polygon area. The parameter aClip limits 
+   the drawing operation. Pixel lying outside this area remain unchanged. The aBlend 
+   parameter controls the mode how drawn pixel are combined with the pixel already 
+   existing in the destination bitmap. If aBlend is 'true', the drawn pixel are 
+   alpha-blended with the background, otherwise the drawn pixel will overwrite the 
+   old content. The last parameter aFilter controls the bi-linear filter. If aFilter 
+   is 'true', the source bitmap pixel will be bi-linear filtered in order to get 
+   better output. */
+void GraphicsCanvas_WarpBitmap( GraphicsCanvas _this, XRect aClip, ResourcesBitmap 
+  aBitmap, XInt32 aFrameNr, XFloat aDstX1, XFloat aDstY1, XFloat aDstW1, XFloat 
+  aDstX2, XFloat aDstY2, XFloat aDstW2, XFloat aDstX3, XFloat aDstY3, XFloat aDstW3, 
+  XFloat aDstX4, XFloat aDstY4, XFloat aDstW4, XRect aSrcRect, XColor aColor1, XColor 
+  aColor2, XColor aColor3, XColor aColor4, XBool aBlend, XBool aFilter );
+
 /* The method ScaleBitmap() copies and scales an area of a aBitmap into the canvas. 
    The bitmap is specified in the parameter aBitmap and the desired area to copy 
    in aSrcRect. In case of a multi-frame bitmap the desired frame can be selected 

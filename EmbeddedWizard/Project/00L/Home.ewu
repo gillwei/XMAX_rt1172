@@ -424,13 +424,26 @@ $rect <710,120,910,160>
 $output false
 class HOM13_SpeedVisualizer : Home::BaseHome
 {
-  $rect <0,280,180,320>
+  $rect <560,480,740,520>
   inherited method Init()
   {
     trace "Init HOM13";
+
+    $if !$prototyper
+      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MILEAGE_UNIT );
+      if( null != VehicleData )
+      {
+        SpeedUnit = (Enum::MileageSettingItem)VehicleData.DataUInt32;
+      }
+
+      signal OnSpeedLimitUpdateSlot;
+    $else
+      SpeedUnit = Enum::MileageSettingItem.KM;
+      SpeedLimit = 100;
+    $endif
   }
 
-  $rect <210,280,440,320>
+  $rect <880,480,1110,520>
   inherited method OnLongEnterKeyActivated()
   {
     if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
@@ -439,16 +452,259 @@ class HOM13_SpeedVisualizer : Home::BaseHome
     }
   }
 
-  $rect <0,330,180,370>
+  $rect <540,160,720,200>
   inherited var HomeType = Enum::HomeType.SPEED_VISUALIZER;
 
   $rect <20,20,160,60>
-  object Views::Text Title
+  object Home::SpeedCircle SpeedCircle
   {
-    preset Bounds = <72,113,403,156>;
-    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
-    preset String = Strings::INF01_SPEED_VISUALIZER;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Bounds = <0,38,480,272>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image SpeedVisualizerTitle
+  {
+    preset Bounds = <93,91,387,225>;
+    preset Bitmap = Resource::SVSpeedUnLimit;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image SpeedLimitUnit
+  {
+    preset Bounds = <211,191,271,211>;
+    preset Bitmap = Resource::SVKmH;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text SpeedLimitText
+  {
+    preset Bounds = <183,136,297,193>;
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium42pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image SpeedLimitTitle
+  {
+    preset Bounds = <142,105,338,148>;
+    preset Bitmap = Resource::SVSpeedLimit;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Wallpaper StatusShadow
+  {
+    preset Bounds = <0,38,480,52>;
+    preset Bitmap = Resource::StatusShadow;
+  }
+
+  $rect <550,290,830,330>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <550,330,830,370>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData )
+    {
+      switch( VehicleData.RxType )
+      {
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED:
+        {
+          if( DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+          {
+            SpeedLimitText.String = "- -";
+            SpeedLimitText.Color = Color::GRAY_FOR_DISABLED;
+          }
+          else
+          {
+            SpeedLimitText.Color = Color::WHITE;
+            signal OnSpeedLimitUpdateSlot;
+          }
+        }
+        case Enum::VehicleRxType.MILEAGE_UNIT:
+        {
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MILEAGE_UNIT );
+          SpeedUnit = (Enum::MileageSettingItem)VehicleData.DataUInt32;
+          signal OnSpeedLimitUpdateSlot;
+        }
+        default:;
+      }
+    }
+  }
+
+  $rect <910,290,1120,330>
+  object Core::SystemEventHandler SpeedLimitUpdateEventHandler
+  {
+    preset OnEvent = OnSpeedLimitUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.SpeedLimitUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <910,330,1140,370>
+  slot OnSpeedLimitUpdateSlot
+  {
+    var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.SPEED_LIMIT );
+
+    if( null != NaviData )
+    {
+      SpeedLimit = NaviData.SpeedLimit;
+      signal OnSpeedUpdateSlot;
+    }
+  }
+
+  $rect <760,70,960,110>
+  property Enum::MileageSettingItem SpeedUnit;
+
+  $rect <760,110,960,150>
+  onset SpeedUnit
+  {
+    if( pure SpeedUnit != value )
+    {
+      // Remember the property's new value.
+      pure SpeedUnit = value;
+
+      switch( SpeedUnit )
+      {
+        case Enum::MileageSettingItem.KM: SpeedLimitUnit.Bitmap = Resource::SVKmH;
+        case Enum::MileageSettingItem.MILE: SpeedLimitUnit.Bitmap = Resource::SVMPH;
+        default:;
+      }
+    }
+  }
+
+  $rect <760,150,960,190>
+  onget SpeedUnit
+  {
+    return pure SpeedUnit;
+  }
+
+  $rect <540,70,740,110>
+  property int32 SpeedLimit;
+
+  $rect <540,110,740,150>
+  onset SpeedLimit
+  {
+    if( pure SpeedLimit != value )
+    {
+      // Remember the property's new value.
+      pure SpeedLimit = value;
+
+      SpeedCircle.SpeedLimit = value;
+      SpeedLimitText.String = string( value );
+
+      // If speed limit is zero, that means there is no speed limit. In this case, white circle shouldn't be displayed.
+      if( value > 0 )
+      {
+        SpeedCircle.Color = Home::SV_WITH_SPEED_LIMIT;
+        SpeedCircle.GradientLine.Visible = true;
+        SpeedVisualizerTitle.Visible = false;
+        SpeedLimitTitle.Visible = true;
+        SpeedLimitUnit.Visible = true;
+        SpeedLimitText.Visible = true;
+      }
+      else
+      {
+        SpeedCircle.Color  = Home::SV_WITHOUT_SPEED_LIMIT;
+        SpeedCircle.GradientLine.Visible = false;
+        SpeedVisualizerTitle.Visible = true;
+        SpeedLimitTitle.Visible = false;
+        SpeedLimitUnit.Visible = false;
+        SpeedLimitText.Visible = false;
+      }
+    }
+  }
+
+  $rect <130,450,330,490>
+  object Core::Timer Timer
+  {
+    preset OnTrigger = OnTimerSlot;
+    preset Period = 100;
+    preset Enabled = false;
+  }
+
+  $rect <130,490,330,530>
+  slot OnTimerSlot
+  {
+    if( Ascending )
+    {
+      SpeedCircle.SpeedValue += 10;
+      if( SpeedCircle.SpeedValue == 70 )
+      {
+        SpeedLimit = 50;
+      }
+      if( SpeedCircle.SpeedValue >= 140 )
+      {
+        Ascending = false;
+      }
+    }
+    else
+    {
+      SpeedCircle.SpeedValue -= 10;
+      if( SpeedCircle.SpeedValue == 70 )
+      {
+        SpeedLimit = 40;
+      }
+      if( SpeedCircle.SpeedValue == 0 )
+      {
+        Ascending = true;
+      }
+    }
+
+  }
+
+  $rect <130,530,330,570>
+  var bool Ascending = true;
+
+  // Test
+  note group Note3
+  {
+    attr Bounds = <110,390,360,580>;
+  }
+
+  // Variable
+  note group Note1
+  {
+    attr Bounds = <520,30,1210,220>;
+  }
+
+  // System event
+  note group Note2
+  {
+    attr Bounds = <520,240,1210,400>;
+  }
+
+  // Method
+  note group Note
+  {
+    attr Bounds = <520,430,1210,630>;
+  }
+
+  $rect <560,530,750,570>
+  object Core::Timer SpeedUpdateTimer
+  {
+    preset OnTrigger = OnSpeedUpdateSlot;
+    preset Period = 100;
+    preset Enabled = true;
+  }
+
+  $rect <560,580,760,620>
+  slot OnSpeedUpdateSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.VEHICLE_SPEED_METER );
+    if( null != VehicleData )
+    {
+      SpeedCircle.SpeedValue = (int32)VehicleData.DataUInt32;
+    }
   }
 }
 
@@ -2586,4 +2842,176 @@ note group Note5
 note group Note6
 {
   attr Bounds = <960,70,1200,870>;
+}
+
+$rect <710,240,910,280>
+$output false
+const color SV_WITHOUT_SPEED_LIMIT = #444AFFFF;
+
+$rect <710,280,910,320>
+$output false
+const color SV_WITH_SPEED_LIMIT = #31A68FFF;
+
+$rect <710,320,910,360>
+$output false
+const color SV_OVER_SPEED_LIMIT = #EA730AFF;
+
+$rect <710,360,910,400>
+$output false
+const point CIRCLE_CENTER_POS = <243,123>;
+
+$rect <710,400,910,440>
+$output false
+const int32 SCALE_FACTOR = 280;
+
+$rect <710,440,910,480>
+$output false
+const float ADJ_FACTOR = 0.0055;
+
+$rect <710,480,910,520>
+$output false
+const float RELATIVE_VALUE_MAX = 1.286;
+
+$rect <710,180,910,220>
+$output false
+class SpeedCircle : Core::Group
+{
+  $rect <0,280,200,320>
+  inherited property Bounds = <0,0,480,234>;
+
+  $rect <550,210,750,250>
+  slot OnValueChangeSlot
+  {
+    if( SpeedCircleResizeEffect.Value == 0 )
+    {
+      SpeedCircleImage.Visible = false;
+    }
+    else
+    {
+      SpeedCircleImage.Visible = true;
+      var float RelativeValue;
+      if( SpeedLimit > 0 )
+      {
+        RelativeValue = (float)SpeedCircleResizeEffect.Value/(float)SpeedLimit;
+        GradientLine.Visible = true;
+      }
+      else
+      {
+        RelativeValue = (float)SpeedCircleResizeEffect.Value/100.0;
+        GradientLine.Visible = false;
+      }
+
+      if( RelativeValue > Home::RELATIVE_VALUE_MAX )
+      {
+        RelativeValue = Home::RELATIVE_VALUE_MAX;
+      }
+
+      var float Scale = RelativeValue*Home::SCALE_FACTOR;
+      Scale = Scale.round;
+      Scale = Scale*Home::ADJ_FACTOR; // if follow what spec described to multiple 0.01, the circle size will never match the images displayed on the spec. This 0.0055 is a factor to make sure the image shows the same as spec.
+
+      if( GradientLine.Visible )
+      {
+        if( SpeedCircleResizeEffect.Value > SpeedLimit )
+        {
+          SpeedCircleImage.Color = Home::SV_OVER_SPEED_LIMIT;
+        }
+        else
+        {
+          SpeedCircleImage.Color = Home::SV_WITH_SPEED_LIMIT;
+        }
+      }
+      else
+      {
+        SpeedCircleImage.Color  = Home::SV_WITHOUT_SPEED_LIMIT;
+      }
+
+      SpeedCircleImage.Visible = true;
+      SpeedCircleImage.RotateAndScale( Home::CIRCLE_CENTER_POS, 0, Scale, Scale );
+    }
+  }
+
+  $rect <550,30,750,70>
+  property int32 SpeedValue = 0;
+
+  $rect <550,170,750,210>
+  object Effects::Int32Effect SpeedCircleResizeEffect
+  {
+    preset OnFinished = null;
+    preset OnAnimate = OnValueChangeSlot;
+    preset Elasticity = 0;
+    preset NoOfCycles = 1;
+    preset CycleDuration = 50;
+    preset Value2 = 0;
+  }
+
+  $rect <550,70,750,110>
+  onset SpeedValue
+  {
+    // It's possible that speed limit is changed during route guidance and vehicle meter speed is not changed.
+    // In this case, new relative value needs to be calculated to adjust the size of circle. Therefore, same speed
+    // has to be updated again when speed limit is updated.
+    StartAnimation( pure SpeedValue, value );
+    pure SpeedValue = value;
+
+
+  }
+
+  $rect <550,110,750,150>
+  method void StartAnimation( arg int32 aCurrentValue, arg int32 aNextValue )
+  {
+    if( SpeedCircleResizeEffect.Enabled )
+    {
+      SpeedCircleResizeEffect.Enabled = false;
+      SpeedCircleResizeEffect.Value1 = SpeedCircleResizeEffect.Value;
+      SpeedCircleResizeEffect.Value2 = aNextValue;
+      SpeedCircleResizeEffect.Enabled = true;
+    }
+    else
+    {
+      SpeedCircleResizeEffect.Value1 = aCurrentValue;
+      SpeedCircleResizeEffect.Value2 = aNextValue;
+      SpeedCircleResizeEffect.Enabled = true;
+    }
+
+  }
+
+  $rect <780,30,980,70>
+  property color Color;
+
+  $rect <780,70,980,110>
+  onset Color
+  {
+    if( pure Color != value )
+    {
+      // Remember the property's new value.
+      pure Color = value;
+      SpeedCircleImage.Color = value;
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image GradientLine
+  {
+    preset Bounds = <50,0,430,234>;
+    preset Bitmap = Resource::GradientCircleWhite;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::WarpImage SpeedCircleImage
+  {
+    preset StackingPriority = 0;
+    preset Point4 = <235,132>;
+    preset Point3 = <252,132>;
+    preset Point2 = <252,114>;
+    preset Point1 = <235,114>;
+    preset SourceAnchor = <113,113>;
+    preset Visible = false;
+    preset Color = #7BA65BFF;
+    preset Bitmap = Resource::SpeedLimitCircle;
+  }
+
+  $rect <780,160,980,200>
+  var int32 SpeedLimit;
 }

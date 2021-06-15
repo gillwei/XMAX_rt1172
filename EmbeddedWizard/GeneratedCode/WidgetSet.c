@@ -280,10 +280,10 @@ void WidgetSetHorizontalSlider__Init( WidgetSetHorizontalSlider _this, XObject a
   CoreView_OnSetLayout((CoreView)&_this->TouchHandler, CoreLayoutAlignToBottom | 
   CoreLayoutAlignToLeft | CoreLayoutAlignToRight | CoreLayoutAlignToTop | CoreLayoutResizeHorz 
   | CoreLayoutResizeVert );
-  CoreQuadView_OnSetPoint4((CoreQuadView)&_this->TouchHandler, _Const0001 );
-  CoreQuadView_OnSetPoint3((CoreQuadView)&_this->TouchHandler, _Const0002 );
-  CoreQuadView_OnSetPoint2((CoreQuadView)&_this->TouchHandler, _Const0003 );
-  CoreQuadView_OnSetPoint1((CoreQuadView)&_this->TouchHandler, _Const0004 );
+  CoreQuadView__OnSetPoint4( &_this->TouchHandler, _Const0001 );
+  CoreQuadView__OnSetPoint3( &_this->TouchHandler, _Const0002 );
+  CoreQuadView__OnSetPoint2( &_this->TouchHandler, _Const0003 );
+  CoreQuadView__OnSetPoint1( &_this->TouchHandler, _Const0004 );
   CoreSimpleTouchHandler_OnSetRetargetOffset( &_this->TouchHandler, 16 );
   CoreSimpleTouchHandler_OnSetMaxStrikeCount( &_this->TouchHandler, 100 );
   _this->CurrentValue = 50;
