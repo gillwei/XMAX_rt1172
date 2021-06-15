@@ -74,7 +74,7 @@ static const XRect _Const000C = {{ 360, 3 }, { 392, 35 }};
 static const XRect _Const000D = {{ 397, 1 }, { 452, 38 }};
 static const XRect _Const000E = {{ 454, 2 }, { 471, 36 }};
 static const XRect _Const000F = {{ 0, 0 }, { 82, 38 }};
-static const XRect _Const0010 = {{ 1, 0 }, { 38, 37 }};
+static const XRect _Const0010 = {{ 1, 0 }, { 37, 37 }};
 static const XColor _Const0011 = { 0xFF, 0xFF, 0xFF, 0xFF };
 static const XRect _Const0012 = {{ 48, 0 }, { 82, 37 }};
 static const XRect _Const0013 = {{ 37, 0 }, { 48, 37 }};
@@ -209,6 +209,9 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->UnitImage, EwLoadResource( &ResourceTempUnit, 
   ResourcesBitmap ));
+
+  /* Call the user defined constructor */
+  StatusBarMain_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'StatusBar::Main' */
@@ -270,6 +273,20 @@ void StatusBarMain__Done( StatusBarMain _this )
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void StatusBarMain_Init( StatusBarMain _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  StatusBarMain_UpdateClockVisible( _this );
+  StatusBarMain_UpdateAirTemperature( _this );
+  StatusBarMain_UpdateGripWarmerIcon( _this );
+  StatusBarMain_UpdateSeatHeaterIcon( _this );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -472,9 +489,7 @@ void StatusBarMain_OnVehicleDataReceivedSlot( StatusBarMain _this, XObject sende
     switch ( VehicleData->RxType )
     {
       case EnumVehicleRxTypeSUPPORT_FUNC_CLOCK :
-        CoreGroup__OnSetVisible( &_this->Clock, DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( 
-        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-        EnumVehicleSupportedFunctionCLOCK ));
+        StatusBarMain_UpdateClockVisible( _this );
       break;
 
       case EnumVehicleRxTypeSUPPORT_FUNC_GRIP_WARMER :
@@ -608,6 +623,16 @@ void StatusBarMain_UpdateAirTemperature( StatusBarMain _this )
   }
 }
 
+/* 'C' function for method : 'StatusBar::Main.UpdateClockVisible()' */
+void StatusBarMain_UpdateClockVisible( StatusBarMain _this )
+{
+  if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleSupportedFunctionCLOCK ))
+    CoreGroup__OnSetVisible( &_this->Clock, 1 );
+  else
+    CoreGroup__OnSetVisible( &_this->Clock, 0 );
+}
+
 /* Variants derived from the class : 'StatusBar::Main' */
 EW_DEFINE_CLASS_VARIANTS( StatusBarMain )
 EW_END_OF_CLASS_VARIANTS( StatusBarMain )
@@ -739,8 +764,11 @@ void StatusBarClock_OnUpdateLocalTimeSlot( StatusBarClock _this, XObject sender 
   CurrentTime = DeviceInterfaceSystemDeviceClass_GetLocalTime( EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ));
 
-  if ( CurrentTime->Hour > 12 )
-    CurrentTime->Hour = (XUInt8)( CurrentTime->Hour - 12 );
+  if ( 0 == CurrentTime->Hour )
+    CurrentTime->Hour = 12;
+  else
+    if ( 12 < CurrentTime->Hour )
+      CurrentTime->Hour = (XUInt8)( CurrentTime->Hour - 12 );
 
   ViewsText_OnSetString( &_this->ClockHourText, EwNewStringInt( CurrentTime->Hour, 
   0, 10 ));

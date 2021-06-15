@@ -2378,7 +2378,8 @@ class VehicleDeviceClass : Templates::DeviceClass
       }
     $else
       // enable pressure in the unit setting for screenshot
-      if( Enum::VehicleSupportedFunction.TIRE_FRONT == aVehicleFeature )
+      if( Enum::VehicleSupportedFunction.TIRE_FRONT == aVehicleFeature ||
+          Enum::VehicleSupportedFunction.CLOCK == aVehicleFeature )
       {
         IsSupported = true;
       }

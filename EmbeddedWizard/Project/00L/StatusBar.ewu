@@ -11,6 +11,15 @@ $rect <20,10,220,50>
 $output false
 class Main : Core::Group
 {
+  $rect <0,100,180,140>
+  inherited method Init()
+  {
+    UpdateClockVisible();
+    UpdateAirTemperature();
+    UpdateGripWarmerIcon();
+    UpdateSeatHeaterIcon();
+  }
+
   $rect <0,50,200,90>
   inherited property Bounds = <0,0,480,38>;
 
@@ -320,7 +329,7 @@ class Main : Core::Group
   // Vehicle supported function
   note group Note2
   {
-    attr Bounds = <920,50,1250,360>;
+    attr Bounds = <920,50,1250,400>;
   }
 
   $rect <950,100,1230,140>
@@ -340,7 +349,10 @@ class Main : Core::Group
     {
       switch( VehicleData.RxType )
       {
-        case Enum::VehicleRxType.SUPPORT_FUNC_CLOCK: Clock.Visible = DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.CLOCK );
+        case Enum::VehicleRxType.SUPPORT_FUNC_CLOCK:
+        {
+          UpdateClockVisible();
+        }
         case Enum::VehicleRxType.SUPPORT_FUNC_GRIP_WARMER,
              Enum::VehicleRxType.GRIP_WARMER_STATUS:
         {
@@ -536,6 +548,19 @@ class Main : Core::Group
     preset Bitmap = Resource::TempUnit;
     preset Visible = false;
   }
+
+  $rect <950,350,1160,390>
+  method void UpdateClockVisible()
+  {
+    if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.CLOCK ) )
+    {
+      Clock.Visible = true;
+    }
+    else
+    {
+      Clock.Visible = false;
+    }
+  }
 }
 
 $rect <20,60,220,100>
@@ -548,7 +573,7 @@ class Clock : Core::Group
   $rect <20,20,160,60>
   object Views::Text ClockHourText
   {
-    preset Bounds = <1,0,38,37>;
+    preset Bounds = <1,0,37,37>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansMedium32pt;
@@ -561,10 +586,19 @@ class Clock : Core::Group
   {
     var DeviceInterface::RtcTime CurrentTime = DeviceInterface::SystemDevice.GetLocalTime();
 
-    if( CurrentTime.Hour > 12 )
+    if( 0 == CurrentTime.Hour )
+    {
+      CurrentTime.Hour = 12;
+    }
+    else if( 12 < CurrentTime.Hour )
     {
       CurrentTime.Hour -= 12;
     }
+    else
+    {
+      // empty
+    }
+
     ClockHourText.String = string( CurrentTime.Hour );
     ClockMinuteText.String = string( CurrentTime.Minute, 2 );
     ClockColonText.Visible = !ClockColonText.Visible;

@@ -168,6 +168,11 @@ EW_DEFINE_METHODS( StatusBarMain, CoreGroup )
     aOrder )
 EW_END_OF_METHODS( StatusBarMain )
 
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void StatusBarMain_Init( StatusBarMain _this, XHandle aArg );
+
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
 void StatusBarMain_OnMotoConEventReceived( StatusBarMain _this, XObject sender );
@@ -211,6 +216,9 @@ void StatusBarMain_UpdateSeatHeaterIcon( StatusBarMain _this );
 
 /* 'C' function for method : 'StatusBar::Main.UpdateAirTemperature()' */
 void StatusBarMain_UpdateAirTemperature( StatusBarMain _this );
+
+/* 'C' function for method : 'StatusBar::Main.UpdateClockVisible()' */
+void StatusBarMain_UpdateClockVisible( StatusBarMain _this );
 
 #ifdef __cplusplus
   }
