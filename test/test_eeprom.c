@@ -36,6 +36,7 @@
 #define TEST_EEPM_DATA_SUP_FUNC            ( 6 )
 #define TEST_EEPM_DATA_CLK_AUTO_ADJUSTMENT ( 7 )
 #define TEST_EEPM_DATA_FUEL_CONSUMPTION    ( 8 )
+#define TEST_EEPM_DATA_QRCODE_FUSED_DATA   ( 9 )
 
 #define TEST_EEPM_DATA_ID                  ( TEST_EEPM_DATA_NONE )
 
@@ -74,6 +75,10 @@
         uint8_t auto_adj = 10;
     #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_FUEL_CONSUMPTION )
         uint32_t fuel_consumption = 0x12345678;
+    #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_QRCODE_FUSED_DATA )
+        uint8_t qrcode_fused1[QRCODE_FUSED_DATA_LENGTH] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08 };
+        uint8_t qrcode_fused2[QRCODE_FUSED_DATA_LENGTH] = { 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18 };
+        uint8_t qrcode_fused3[QRCODE_FUSED_DATA_LENGTH] = { 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28 };
     #else
         //Do nothing
     #endif
@@ -202,6 +207,12 @@ switch( test_item )
             EEPM_set_clk_auto_adjustment( auto_adj, eepm_test_write_cb );
         #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_FUEL_CONSUMPTION )
             EEPM_set_fuel_consumption( fuel_consumption, eepm_test_write_cb );
+        #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_QRCODE_FUSED_DATA )
+            EEPM_set_qrcode_fused_data_1( qrcode_fused1, eepm_test_write_cb );
+            vTaskDelay( 100 );
+            EEPM_set_qrcode_fused_data_2( qrcode_fused2, eepm_test_write_cb );
+            vTaskDelay( 100 );
+            EEPM_set_qrcode_fused_data_3( qrcode_fused3, eepm_test_write_cb );
         #else
             //Do nothing
         #endif
@@ -225,6 +236,12 @@ switch( test_item )
             EEPM_get_clk_auto_adjustment( eepm_test_read_cb );
         #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_FUEL_CONSUMPTION )
             EEPM_get_fuel_consumption( eepm_test_read_cb );
+        #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_QRCODE_FUSED_DATA )
+            EEPM_get_qrcode_fused_data_1( eepm_test_read_cb );
+            vTaskDelay( 100 );
+            EEPM_get_qrcode_fused_data_2( eepm_test_read_cb );
+            vTaskDelay( 100 );
+            EEPM_get_qrcode_fused_data_3( eepm_test_read_cb );
         #else
             //Do nothing
         #endif
@@ -299,6 +316,8 @@ switch( test_item )
         uint8_t eepm_data[CLOCK_AUTO_ADJUSTMENT_LENGTH] = { 0 };
     #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_FUEL_CONSUMPTION )
         uint8_t eepm_data[FUEL_CONSUMPTION_LENGTH] = { 0 };
+    #elif( TEST_EEPM_DATA_ID == TEST_EEPM_DATA_QRCODE_FUSED_DATA )
+        uint8_t eepm_data[QRCODE_FUSED_DATA_LENGTH] = { 0 };
     #else
         uint8_t eepm_data[4] = { 0 };
     #endif

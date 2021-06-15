@@ -48,10 +48,14 @@ extern "C"{
 #define SUPPORTED_FUNCTION_START_SUB_ADDR    ( OPERATION_MODE_START_SUB_ADDR        + OPERATION_MODE_LENGTH         )
 #define CLOCK_AUTO_ADJUSTMENT_START_SUB_ADDR ( SUPPORTED_FUNCTION_START_SUB_ADDR    + SUPPORTED_FUNCTION_LENGTH     )
 #define FUEL_CONSUMPTION_START_SUB_ADDR      ( CLOCK_AUTO_ADJUSTMENT_START_SUB_ADDR + CLOCK_AUTO_ADJUSTMENT_LENGTH  )
-#define AUTO_CONNECT_SEQUENCE_SUB_ADDR       ( FUEL_CONSUMPTION_START_SUB_ADDR + FUEL_CONSUMPTION_LENGTH  )
+#define AUTO_CONNECT_SEQUENCE_SUB_ADDR       ( FUEL_CONSUMPTION_START_SUB_ADDR      + FUEL_CONSUMPTION_LENGTH       )
+#define EEPM_OFFSETT_SUB_ADDR                ( AUTO_CONNECT_SEQUENCE_SUB_ADDR       + AUTO_CONNECT_SEQUENCE_LENGTH  )
+#define QRCODE_FUSED_1_START_SUB_ADDR        ( EEPM_OFFSETT_SUB_ADDR                + EEPM_OFFSET_LENGTH            )
+#define QRCODE_FUSED_2_START_SUB_ADDR        ( QRCODE_FUSED_1_START_SUB_ADDR        + QRCODE_FUSED_DATA_LENGTH      )
+#define QRCODE_FUSED_3_START_SUB_ADDR        ( QRCODE_FUSED_2_START_SUB_ADDR        + QRCODE_FUSED_DATA_LENGTH      )
 
 // reserved for future newly add data..
-#define NEXT_START_SUB_ADDR                  ( FUEL_CONSUMPTION_START_SUB_ADDR      + FUEL_CONSUMPTION_LENGTH       )
+#define NEXT_START_SUB_ADDR                  ( QRCODE_FUSED_3_START_SUB_ADDR        + QRCODE_FUSED_DATA_LENGTH      )
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
@@ -99,6 +103,10 @@ eeprom_block_config_type block_config_list[EEPM_BLOCK_CONFIG_CNT] = \
     { CLOCK_AUTO_ADJUSTMENT_START_SUB_ADDR, CLOCK_AUTO_ADJUSTMENT_LENGTH       }, //EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT
     { FUEL_CONSUMPTION_START_SUB_ADDR,      FUEL_CONSUMPTION_LENGTH            }, //EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION
     { AUTO_CONNECT_SEQUENCE_SUB_ADDR,       AUTO_CONNECT_SEQUENCE_LENGTH       }, //EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE
+    { EEPM_OFFSETT_SUB_ADDR,                EEPM_OFFSET_LENGTH                 }, //EEPM_BLOCK_CONFIG_OFFSET
+    { QRCODE_FUSED_1_START_SUB_ADDR,        QRCODE_FUSED_DATA_LENGTH           }, //EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1
+    { QRCODE_FUSED_2_START_SUB_ADDR,        QRCODE_FUSED_DATA_LENGTH           }, //EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2
+    { QRCODE_FUSED_3_START_SUB_ADDR,        QRCODE_FUSED_DATA_LENGTH           }, //EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3
 };
 
 
@@ -1009,6 +1017,146 @@ return PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
                                  EEPROM_SUB_ADDR_SIZE,
                                  callback_func_ptr );
 }
+
+/*================================================================================================*/
+/**
+@brief   eep_set_qrcode_fused_1
+@details eep_set_qrcode_fused_1
+
+@return Result of enqueue i2c write operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t eep_set_qrcode_fused_1
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+return PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                                  fused_ptr,
+                                  block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].length,
+                                  block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].start_addr,
+                                  EEPROM_SUB_ADDR_SIZE,
+                                  callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_qrcode_fused_1
+@details eep_get_qrcode_fused_1
+
+@return Result of enqueue i2c read operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t eep_get_qrcode_fused_1
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+return PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                                 fused_ptr,
+                                 block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].length,
+                                 block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].start_addr,
+                                 EEPROM_SUB_ADDR_SIZE,
+                                 callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_qrcode_fused_2
+@details eep_set_qrcode_fused_2
+
+@return Result of enqueue i2c write operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t eep_set_qrcode_fused_2
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+return PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                                  fused_ptr,
+                                  block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].length,
+                                  block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].start_addr,
+                                  EEPROM_SUB_ADDR_SIZE,
+                                  callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_qrcode_fused_2
+@details eep_get_qrcode_fused_2
+
+@return Result of enqueue i2c read operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t eep_get_qrcode_fused_2
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+return PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                                 fused_ptr,
+                                 block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].length,
+                                 block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].start_addr,
+                                 EEPROM_SUB_ADDR_SIZE,
+                                 callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_set_qrcode_fused_3
+@details eep_set_qrcode_fused_3
+
+@return Result of enqueue i2c write operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t eep_set_qrcode_fused_3
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+return PERIPHERAL_i2c_write_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                                  fused_ptr,
+                                  block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].length,
+                                  block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].start_addr,
+                                  EEPROM_SUB_ADDR_SIZE,
+                                  callback_func_ptr );
+}
+
+/*================================================================================================*/
+/**
+@brief   eep_get_qrcode_fused_3
+@details eep_get_qrcode_fused_3
+
+@return Result of enqueue i2c read operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t eep_get_qrcode_fused_3
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    )
+{
+return PERIPHERAL_i2c_read_data( EEPROM_MEM_PAGE_I2C_DEV_ADDR,
+                                 fused_ptr,
+                                 block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].length,
+                                 block_config_list[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].start_addr,
+                                 EEPROM_SUB_ADDR_SIZE,
+                                 callback_func_ptr );
+}
+
+
 
 #ifdef __cplusplus
 }

@@ -280,6 +280,42 @@ BaseType_t eep_get_fuel_consumption
     void ( *callback_func_ptr ) ( status_t )
     );
 
+BaseType_t eep_set_qrcode_fused_1
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_qrcode_fused_1
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_qrcode_fused_2
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_qrcode_fused_2
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_qrcode_fused_3
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_qrcode_fused_3
+    (
+    uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
 #ifdef __cplusplus
 }
 #endif

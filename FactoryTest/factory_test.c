@@ -105,10 +105,10 @@ extern "C"{
 
 // For QRcode IOP
 #define QRCODE_STATUS_INVALID       ( 0x00 )
-#define QRCODE_STATUS_CCUID_OK      ( 0x01 )
-#define QRCODE_STATUS_PASSKEY_OK    ( 0x02 )
-#define QRCODE_STATUS_DUMMY_OK      ( 0x04 )
-#define QRCODE_STATUS_SUCCESS       ( QRCODE_STATUS_CCUID_OK | QRCODE_STATUS_PASSKEY_OK | QRCODE_STATUS_DUMMY_OK )
+#define QRCODE_STATUS_FUSED1_OK     ( 0x01 )
+#define QRCODE_STATUS_FUSED2_OK     ( 0x02 )
+#define QRCODE_STATUS_FUSED3_OK     ( 0x04 )
+#define QRCODE_STATUS_SUCCESS       ( QRCODE_STATUS_FUSED1_OK | QRCODE_STATUS_FUSED2_OK | QRCODE_STATUS_FUSED3_OK )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -347,19 +347,19 @@ static void operation_mode_read_cb
     void*   data
     );
 
-static void ccuid_write_cb
+static void fused_data_1_write_cb
     (
     bool    status,
     void*   data
     );
 
-static void passkey_write_cb
+static void fused_data_2_write_cb
     (
     bool    status,
     void*   data
     );
 
-static void dummy_write_cb
+static void fused_data_3_write_cb
     (
     bool    status,
     void*   data
@@ -1245,20 +1245,21 @@ switch( IOPSubId )
 
     case IOP_VIM_PKT_QRCODE_CMD:
         {
-        uint8_t ccuid[QRCODE_CCUID_LENGTH] = { 0 };
-        uint32_t passkey = 0;
-        uint16_t dummy = 0;
-        memcpy( ccuid, &data[0], QRCODE_CCUID_LENGTH );
-        memcpy( &passkey, &data[8], QRCODE_PASSKEY_LENGTH );
-        memcpy( &dummy, &data[12], QRCODE_DUMMY_LENGTH );
+        uint8_t qrcode_fused_data_1[QRCODE_FUSED_DATA_LENGTH] = { 0 };
+        uint8_t qrcode_fused_data_2[QRCODE_FUSED_DATA_LENGTH] = { 0 };
+        uint8_t qrcode_fused_data_3[QRCODE_FUSED_DATA_LENGTH] = { 0 };
+
+        memcpy( qrcode_fused_data_1, &data[0], QRCODE_FUSED_DATA_LENGTH );
+        memcpy( qrcode_fused_data_2, &data[8], QRCODE_FUSED_DATA_LENGTH );
+        memcpy( qrcode_fused_data_3, &data[16], QRCODE_FUSED_DATA_LENGTH );
 
         qrcode_write_status = QRCODE_STATUS_INVALID;
 
-        EEPM_set_qrcode_ccuid( ccuid, ccuid_write_cb );
-        EEPM_set_qrcode_passkey( passkey, passkey_write_cb );
-        EEPM_set_qrcode_dummy( dummy, dummy_write_cb );
+        EEPM_set_qrcode_fused_data_1( qrcode_fused_data_1, fused_data_1_write_cb );
+        EEPM_set_qrcode_fused_data_2( qrcode_fused_data_2, fused_data_2_write_cb );
+        EEPM_set_qrcode_fused_data_3( qrcode_fused_data_3, fused_data_3_write_cb );
 
-        EW_change_unit_id( ccuid, passkey, dummy );
+        // EW_set_qr_code( &data[0] );
         }
         break;
 
@@ -1808,12 +1809,12 @@ if( status == TRUE )
 /*********************************************************************
 *
 * @private
-* ccuid_write_cb
+* fused_data_1_write_cb
 *
-* @brief callback function for ccudid write operation.
+* @brief callback function for qrcode fused data 1 write operation.
 *
 *********************************************************************/
-static void ccuid_write_cb
+static void fused_data_1_write_cb
     (
     bool    status,
     void*   data
@@ -1821,19 +1822,19 @@ static void ccuid_write_cb
 {
 if( status == TRUE )
     {
-    qrcode_write_status |= QRCODE_STATUS_CCUID_OK;
+    qrcode_write_status |= QRCODE_STATUS_FUSED1_OK;
     }
 }
 
 /*********************************************************************
 *
 * @private
-* passkey_write_cb
+* fused_data_2_write_cb
 *
-* @brief callback function for pass key write operation.
+* @brief callback function for qrcode fused data 2 write operation.
 *
 *********************************************************************/
-static void passkey_write_cb
+static void fused_data_2_write_cb
     (
     bool    status,
     void*   data
@@ -1841,34 +1842,38 @@ static void passkey_write_cb
 {
 if( status == TRUE )
     {
-    qrcode_write_status |= QRCODE_STATUS_PASSKEY_OK;
+    qrcode_write_status |= QRCODE_STATUS_FUSED2_OK;
     }
 }
 
 /*********************************************************************
 *
 * @private
-* dummy_write_cb
+* fused_data_3_write_cb
 *
-* @brief callback function for dummy write operation.
+* @brief callback function for qrcode fused data 3 write operation.
 *
 *********************************************************************/
-static void dummy_write_cb
+static void fused_data_3_write_cb
     (
     bool    status,
     void*   data
     )
 {
-uint8_t ret = E_NOT_OK;
+uint8 rtn_arry[3];
+rtn_arry[0] = IOP_VIM_PKT_QRCODE_CMD >> SHIFT_ONE_BYTE;
+rtn_arry[1] = IOP_VIM_PKT_QRCODE_CMD & LOW_BYTE_MASK;
+rtn_arry[2] = E_NOT_OK;
+
 if( status == TRUE )
     {
-    qrcode_write_status |= QRCODE_STATUS_DUMMY_OK;
+    qrcode_write_status |= QRCODE_STATUS_FUSED3_OK;
     }
 if( qrcode_write_status == QRCODE_STATUS_SUCCESS )
     {
-    ret = E_OK;
+    rtn_arry[2] = E_OK;
     }
-packageIopToCanData( &ret, sizeof( ret ) );
+packageIopToCanData( &rtn_arry, sizeof( rtn_arry ) );
 }
 /*********************************************************************
 *

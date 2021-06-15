@@ -58,8 +58,15 @@ static uint8_t write_sup_func[SUPPORTED_FUNCTION_LENGTH];
 static uint8_t read_sup_func[SUPPORTED_FUNCTION_LENGTH];
 static uint8_t write_ccuid[QRCODE_CCUID_LENGTH];
 static uint8_t read_ccuid[QRCODE_CCUID_LENGTH];
-static uint8_t write_auto_connect_sequence[AUTO_CONNECT_SEQUENCE_LENGTH]; // Use for store compare bd address value
-static uint8_t read_auto_connect_sequence[AUTO_CONNECT_SEQUENCE_LENGTH]; // Use for store compare bd address value
+static uint8_t write_auto_connect_sequence[AUTO_CONNECT_SEQUENCE_LENGTH]; // Use for store auto connect sequence
+static uint8_t read_auto_connect_sequence[AUTO_CONNECT_SEQUENCE_LENGTH]; // Use for store auto connect sequence
+
+static uint8_t write_qrcode_fused_1[QRCODE_FUSED_DATA_LENGTH];
+static uint8_t read_qrcode_fused_1[QRCODE_FUSED_DATA_LENGTH];
+static uint8_t write_qrcode_fused_2[QRCODE_FUSED_DATA_LENGTH];
+static uint8_t read_qrcode_fused_2[QRCODE_FUSED_DATA_LENGTH];
+static uint8_t write_qrcode_fused_3[QRCODE_FUSED_DATA_LENGTH];
+static uint8_t read_qrcode_fused_3[QRCODE_FUSED_DATA_LENGTH];
 
 /*--------------------------------------------------------------------
                         PROTOTYPES
@@ -1008,6 +1015,183 @@ if( kStatus_Success == status )
 if( NULL != eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr )
     {
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr( rtn, read_auto_connect_sequence );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_qrcode_fused_1_w_callback
+@details eepm_qrcode_fused_1_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_qrcode_fused_1_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_qrcode_fused_1_r_callback
+@details eepm_qrcode_fused_1_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_qrcode_fused_1_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].cb_write )
+            {
+            if( 0 == memcmp( write_qrcode_fused_1, read_qrcode_fused_1, QRCODE_FUSED_DATA_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].callback_ptr( rtn, read_qrcode_fused_1 );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_qrcode_fused_2_w_callback
+@details eepm_qrcode_fused_2_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_qrcode_fused_2_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_qrcode_fused_2_r_callback
+@details eepm_qrcode_fused_2_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_qrcode_fused_2_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].cb_write )
+            {
+            if( 0 == memcmp( write_qrcode_fused_2, read_qrcode_fused_2, QRCODE_FUSED_DATA_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].callback_ptr( rtn, read_qrcode_fused_2 );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_qrcode_fused_3_w_callback
+@details eepm_qrcode_fused_3_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_qrcode_fused_3_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_qrcode_fused_3_r_callback
+@details eepm_qrcode_fused_3_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_qrcode_fused_3_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].cb_write )
+            {
+            if( 0 == memcmp( write_qrcode_fused_3, read_qrcode_fused_3, QRCODE_FUSED_DATA_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].callback_ptr( rtn, read_qrcode_fused_3 );
     }
 }
 
@@ -2224,6 +2408,192 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].semaphore
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr = callback_ptr;
     rtn = eep_get_auto_connect_sequence( read_auto_connect_sequence, eepm_auto_con_seq_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_qrcode_fused_data_1
+@details EEPM_set_qrcode_fused_data_1
+
+@return Result of enqueue set QR code fused data 1 operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_qrcode_fused_data_1
+    (
+    uint8_t * qrcode_fused,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].callback_ptr = callback_ptr;
+    memcpy( write_qrcode_fused_1, qrcode_fused, QRCODE_FUSED_DATA_LENGTH );
+    rtn = eep_set_qrcode_fused_1( write_qrcode_fused_1, eepm_qrcode_fused_1_w_callback );
+    eep_get_qrcode_fused_1( read_qrcode_fused_1, eepm_qrcode_fused_1_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_qrcode_fused_data_1
+@details EEPM_get_qrcode_fused_data_1
+
+@return Result of enqueue get QR code fused data 1 operation
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_qrcode_fused_data_1
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1].callback_ptr = callback_ptr;
+    eep_get_qrcode_fused_1( read_qrcode_fused_1, eepm_qrcode_fused_1_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_qrcode_fused_data_2
+@details EEPM_set_qrcode_fused_data_2
+
+@return Result of enqueue set QR code fused data 1 operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_qrcode_fused_data_2
+    (
+    uint8_t * qrcode_fused,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].callback_ptr = callback_ptr;
+    memcpy( write_qrcode_fused_2, qrcode_fused, QRCODE_FUSED_DATA_LENGTH );
+    rtn = eep_set_qrcode_fused_2( write_qrcode_fused_2, eepm_qrcode_fused_2_w_callback );
+    eep_get_qrcode_fused_2( read_qrcode_fused_2, eepm_qrcode_fused_2_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_qrcode_fused_data_2
+@details EEPM_get_qrcode_fused_data_2
+
+@return Result of enqueue get QR code fused data 22 operation
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_qrcode_fused_data_2
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2].callback_ptr = callback_ptr;
+    eep_get_qrcode_fused_2( read_qrcode_fused_2, eepm_qrcode_fused_2_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_qrcode_fused_data_3
+@details EEPM_set_qrcode_fused_data_3
+
+@return Result of enqueue set QR code fused data 3 operation
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_qrcode_fused_data_3
+    (
+    uint8_t * qrcode_fused,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].callback_ptr = callback_ptr;
+    memcpy( write_qrcode_fused_3, qrcode_fused, QRCODE_FUSED_DATA_LENGTH );
+    rtn = eep_set_qrcode_fused_3( write_qrcode_fused_3, eepm_qrcode_fused_3_w_callback );
+    eep_get_qrcode_fused_3( read_qrcode_fused_3, eepm_qrcode_fused_3_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_qrcode_fused_data_3
+@details EEPM_get_qrcode_fused_data_3
+
+@return Result of enqueue get QR code fused data 1 operation
+@retval None
+*/
+/*================================================================================================*/
+
+BaseType_t EEPM_get_qrcode_fused_data_3
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].callback_ptr = callback_ptr;
+    eep_get_qrcode_fused_3( read_qrcode_fused_3, eepm_qrcode_fused_3_r_callback );
     }
 else
     {

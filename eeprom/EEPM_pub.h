@@ -43,6 +43,8 @@ extern "C" {
 #define CLOCK_AUTO_ADJUSTMENT_LENGTH         ( 1 )
 #define FUEL_CONSUMPTION_LENGTH              ( 4 )
 #define AUTO_CONNECT_SEQUENCE_LENGTH         ( 8 )
+#define EEPM_OFFSET_LENGTH                   ( 2 )
+#define QRCODE_FUSED_DATA_LENGTH             ( 8 )
 
 #define EEPROM_INVALID_VAL_1_BYTE            ( 0xFF )
 #define EEPROM_INVALID_VAL_2_BYTE            ( 0xFFFF )
@@ -70,6 +72,10 @@ typedef uint8_t EEPM_block_config_type; enum
     EEPM_BLOCK_CONFIG_CLK_AUTO_ADJUSTMENT,
     EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION,
     EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE,
+    EEPM_BLOCK_CONFIG_OFFSET,
+    EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1,
+    EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2,
+    EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3,
 
     EEPM_BLOCK_CONFIG_CNT
     };
@@ -312,6 +318,39 @@ BaseType_t EEPM_set_auto_connect_sequence
     );
 
 BaseType_t EEPM_get_auto_connect_sequence
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_qrcode_fused_data_1
+    (
+    uint8_t * qrcode_fused,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_qrcode_fused_data_1
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_qrcode_fused_data_2
+    (
+    uint8_t * qrcode_fused,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_qrcode_fused_data_2
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_qrcode_fused_data_3
+    (
+    uint8_t * qrcode_fused,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_qrcode_fused_data_3
     (
     void (*callback_ptr)(bool, void*)
     );
