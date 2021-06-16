@@ -66,6 +66,21 @@ enum BtDeviceConnectionResult
 
   $rect <10,110,220,150>
   item AUTHENTICATION_ERR;
+
+  $rect <10,160,300,200>
+  item ONLY_NAVI_APP_CONNECTED;
+
+  $rect <10,210,300,250>
+  item ONLY_YAMAHA_APP_CONNECTED;
+
+  $rect <10,260,300,300>
+  item BOTH_APP_CONNECTED;
+
+  $rect <10,310,300,350>
+  item YAMAHA_APP_BLE_NOT_CONNECTED;
+
+  $rect <10,360,310,400>
+  item YAMAHA_APP_CONNECTION_FAILED;
 }
 
 $rect <30,220,230,260>
@@ -942,6 +957,12 @@ enum BtcPairingState
 
   $rect <10,260,250,300>
   item PASSKEY_GENERATED;
+
+  $rect <10,310,250,350>
+  item NAVI_APP_CONNECTED;
+
+  $rect <10,360,250,400>
+  item YAMAHA_APP_CONNECTED;
 }
 
 $rect <30,520,230,560>

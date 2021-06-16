@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSET18_DeleteBleDevice_H
-#define _SettingsSET18_DeleteBleDevice_H
+#ifndef _SettingsSET49_OnlyNaviAppConnected_H
+#define _SettingsSET49_OnlyNaviAppConnected_H
 
 #ifdef __cplusplus
   extern "C"
@@ -47,6 +47,7 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
+#include "_MenuPushButton.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
@@ -93,21 +94,22 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::SET18_DeleteBleDevice */
-#ifndef _SettingsSET18_DeleteBleDevice_
-  EW_DECLARE_CLASS( SettingsSET18_DeleteBleDevice )
-#define _SettingsSET18_DeleteBleDevice_
+/* Forward declaration of the class Settings::SET49_OnlyNaviAppConnected */
+#ifndef _SettingsSET49_OnlyNaviAppConnected_
+  EW_DECLARE_CLASS( SettingsSET49_OnlyNaviAppConnected )
+#define _SettingsSET49_OnlyNaviAppConnected_
 #endif
 
 
-/* Deklaration of class : 'Settings::SET18_DeleteBleDevice' */
-EW_DEFINE_FIELDS( SettingsSET18_DeleteBleDevice, ComponentsBaseMainBG )
-  EW_OBJECT  ( Text,            ViewsText )
-  EW_PROPERTY( DeviceName,      XString )
-EW_END_OF_FIELDS( SettingsSET18_DeleteBleDevice )
+/* Deklaration of class : 'Settings::SET49_OnlyNaviAppConnected' */
+EW_DEFINE_FIELDS( SettingsSET49_OnlyNaviAppConnected, ComponentsBaseMainBG )
+  EW_OBJECT  ( MessageText,     ViewsText )
+  EW_OBJECT  ( PushButton,      MenuPushButton )
+  EW_OBJECT  ( Divider,         ViewsImage )
+EW_END_OF_FIELDS( SettingsSET49_OnlyNaviAppConnected )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SET18_DeleteBleDevice' */
-EW_DEFINE_METHODS( SettingsSET18_DeleteBleDevice, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET49_OnlyNaviAppConnected' */
+EW_DEFINE_METHODS( SettingsSET49_OnlyNaviAppConnected, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -161,18 +163,28 @@ EW_DEFINE_METHODS( SettingsSET18_DeleteBleDevice, ComponentsBaseMainBG )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( SettingsSET18_DeleteBleDevice )
+EW_END_OF_METHODS( SettingsSET49_OnlyNaviAppConnected )
+
+/* 'C' function for method : 'Settings::SET49_OnlyNaviAppConnected.ReInit()' */
+void SettingsSET49_OnlyNaviAppConnected_ReInit( SettingsSET49_OnlyNaviAppConnected _this );
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void SettingsSET18_DeleteBleDevice_Init( SettingsSET18_DeleteBleDevice _this, XHandle 
-  aArg );
+void SettingsSET49_OnlyNaviAppConnected_Init( SettingsSET49_OnlyNaviAppConnected _this, 
+  XHandle aArg );
+
+/* 'C' function for method : 'Settings::SET49_OnlyNaviAppConnected.OnLaterSlot()' */
+void SettingsSET49_OnlyNaviAppConnected_OnLaterSlot( SettingsSET49_OnlyNaviAppConnected _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Settings::SET49_OnlyNaviAppConnected.DisplayString()' */
+void SettingsSET49_OnlyNaviAppConnected_DisplayString( SettingsSET49_OnlyNaviAppConnected _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSET18_DeleteBleDevice_H */
+#endif /* _SettingsSET49_OnlyNaviAppConnected_H */
 
 /* Embedded Wizard */

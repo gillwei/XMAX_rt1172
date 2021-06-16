@@ -52,7 +52,8 @@
 /* Deklaration of class : 'DeviceInterface::BluetoothPairedDeviceInfo' */
 EW_DEFINE_FIELDS( DeviceInterfaceBluetoothPairedDeviceInfo, XObject )
   EW_VARIABLE( DeviceName,      XString )
-  EW_VARIABLE( IsConnected,     XBool )
+  EW_VARIABLE( IsYamahaAppConnected, XBool )
+  EW_VARIABLE( IsNaviAppConnected, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceBluetoothPairedDeviceInfo )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::BluetoothPairedDeviceInfo' */

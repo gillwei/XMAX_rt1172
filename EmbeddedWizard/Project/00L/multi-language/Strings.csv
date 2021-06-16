@@ -5,6 +5,7 @@ GEN_OK,OK,OK,OK,Aceptar,OK,OK,確定,确定,ΟΚ,OK,ठीक,OK,OK,OK,ตกล
 GEN_CANCEL,Cancel,キャンセル,Annuler,Cancelar,Annulla,Abbrechen,取消,取消,Άκυρο,Peruuta,रद्द करें,Batal,Anuluj,Cancelar,ยกเลิก,Hủy,취소,Batal
 GEN_YES,Yes,Yes,Oui,Sí,Sì,Ja,是,是,Ναι,Kyllä,हाँ,Ya,Tak,Sim,ใช่,Có,예,Ya
 GEN_NO,No,No,Non,No,No,Nein,否,否,Όχι,Ei,नहीं,Tidak,Nie,Não,ไม่ใช่,Không,아니오,Tidak
+GEN_LATER,Later,,,,,,,,,,,,,,,,,
 GEN_LOW,Low,低,Bas,Bajo,Basso,Niedrig,低,低,Χαμηλό,Matala,कम,Rendah,Niskie,Baixo,ต่ำ,Thấp,낮음,Rendah
 GEN_LOW_ABBREVIATION,Lo,,,,,,,,,,,,,,,,,
 GEN_MIDDLE,Mid,中,Moyen,Medio,Medio,Mittel,中,中,Μεσαίο,Keski,मध्यम,Menengah,Średnie,Médio,กลาง,Giữa,중간,Pertengahan
@@ -405,19 +406,15 @@ Bluetooth
 connection failed.",,,,,,,,,,,,,,,,,
 SET11_NO_LONGER_PAIRED,"""%s"" is no longer paired with the vehicle.
 Please pair it again.",,,,,,,,,,,,,,,,,
-SET18_DELETE_PAIRING_RECORD,"Please delete the pairing record on ""%s"", otherwise, you may not be able to reconnect with LinkCard in the future.",,,,,,,,,,,,,,,,,
 SET19_DELETE_PAIRING,Delete pairing,,,,,,,,,,,,,,,,,
 SET19_CONNECT,Connect,接続,Connecter,Conectar,Connetti,Verbinden,連線,连接,Σύνδεση,Yhdistä,कनेक्ट करें,Hubungkan,Połącz,Conectar,เชื่อมต่อ,Kết nối,연결,Sambung
 SET19_DISCONNECT,Disconnect,切断,Déconnecter,Desconectar,Disconnetti,Trennen,中斷連線,断开连接,Αποσύνδεση,Katkaise,डिसकनेक्ट करें,Putuskan sambungan,Rozłącz,Desconectar,ตัดเชื่อมต่อ,Ngắt kết nối,연결 해제,Putuskan sambungan
-SET20_COMPLETE_BT_PAIRING_FIRST,You must complete Bluetooth pairing before pairing with the Y-connect app.,,,,,,,,,,,,,,,,,
-SET21_BLE_ALREADY_CONNECTED,"""%s"" is now connected. To pair another smartphone with the Y-connect app, connect it via Bluetooth first.",,,,,,,,,,,,,,,,,
 SET22_WAIT_APP_CONNECTION,"%s is connecting.
 Check the Yamaha Motorcycle connect app for instructions.","%sを接続しています。
 Yamaha Motorccycle connect appを
 確認してください",,,,,,,,,,,,,,,,
 SET23_PAIRING_FAILED,Pairing failed.,ペアリングに失敗しました。,Échec de l'appairage.,Emparejamiento fallido.,Accoppiamento fallito.,Kopplung fehlgeschlagen.,配對失敗。,配对失败。,Η ζεύξη απέτυχε.,Parinmuodostus epäonnistui.,पेयरिंग असफल।,Pemasangan gagal.,Parowanie nieudane.,Falha no pareamento.,การจับคู่ล้มเหลว,Ghép nối không thành công.,페어링을 실패했습니다.,Pasangan gagal.
 SET24_CHECK_BT_PAIRING_RECORD,Please check the bluetooth pairing record on your previously paired Smartphone. You may need to delete the unused pairing record.,,,,,,,,,,,,,,,,,
-SET25_PIN,PIN,,,,,,,,,,,,,,,,,
 SET26_PAIRING_SUCCESSFUL,Pairing successful.,ペアリング完了,Association réussie.,Vinculación completada.,Accoppiamento riuscito.,Kopplung erfolgreich.,配對成功。,配对成功。,Η ζεύξη ήταν επιτυχής.,Parinmuodostus onnistui.,पेयरिंग सफल।,Pemasangan berhasil.,Parowanie udane.,Pareamento bem-sucedido.,จับคู่สำเร็จ,Ghép nối thành công.,페어링을 성공했습니다.,Pasangan berjaya.
 SET27_UPDATE_SYSTEM,Update system ?,ソフトウェアを更新しますか？,Mettre le système à jour ?,¿Actualizar sistema?,Aggiornare sistema?,System updaten?,是否要更新系統？,要更新系统吗?,Ενημέρωση συστήματος;,Päivitetäänkö järjestelmä?,सिस्टम अपडेट करें?,Perbarui sistem?,Zaktualizować system?,Atualizar sistema?,อัปเดตระบบหรือไม่,Cập nhật hệ thống?,시스템을 업데이트할까요?,Kemaskini sistem?
 SET28_ESN,Electronic Serial Number,Electronic Serial Number,Numéro de série électronique,Número de serie electrónico,Numero di serie elettronico,Elektronische Seriennummer,電子序號,电子序列号,Ηλεκτρονικός σειριακός αριθμός,Elektroninen sarjanumero,इलेक्ट्रॉनिक क्रम संख्या,Nomor Seri Elektronik,Elektroniczny numer seryjny,Número de série eletrônico,หมายเลขซีเรียลอิเล็กทรอนิกส์,Số sê-ri điện tử,전자 일련 번호,Nombor Siri Elektronik
@@ -512,6 +509,7 @@ SET43_MAINTENANCE_RESET,Maintenance reset,メンテナンスリセット,Réinit
 SET43_VEHICLE_INFO,Vehicle info.,車両情報,Info. du véhicule,Información del vehículo,Info. veicolo,Fahrzeuginformationen,車輛資訊,车辆信息,Πληροφ. οχήματος,Ajoneuvon tiedot,गाड़ी की जानकारी,Info kendaraan.,Informacje o pojeździe.,Informações do veículo.,ข้อมูลยานพาหนะ,Thông tin xe,바이크 정보,Maklumat Kenderaan
 SET43_ALL_RESET,All reset,リセット,Tout réinitialiser,Reinicio global,Reimposta tutto,Alles zurücksetzen,全部重設,全部重置,Μηδενισμός όλων,Kaikki nollattu,सभी को दोबारा सेट किया गया,Setel ulang semua,Reset całkowity,Tudo redefinido,ทั้งหมดรีเซ็ต,Tất cả đặt lại,모두 초기화,Tetapkan Semula Semua
 SET47_WAIT_APPROVAL,"Waiting for request approval from ""%s"".",スマートフォン 側の操作を待っています。,,,,,,,,,,,,,,,,
+SET48_RECONNECT_YCONNECT,"Go to YAMAHA MOTORCYCLE CONNECT on ""%s"" to reconnect.",,,,,,,,,,,,,,,,,
 SET49_LAUNCH_YAMAHA_APP,(Navi app name) connected. Launch YAMAHA MOTORCYCLE CONNECT on “%s” to complete the connection.,"(Navi app name)を接続しました。
 接続を完了させるため、YAMAHA　
 MOTORCYCLE CONNECTアプリを起動
@@ -520,6 +518,7 @@ SET50_LAUNCH_NAVI_APP,YAMAHA MOTORCYCLE CONNECT connected. Launch (Navi app name
 接続しました。
 接続を完了させるため、(Navi app name)
 アプリを起動してください。",,,,,,,,,,,,,,,,
+SET51_BOTH_APP_CONNECTED,Connected to YAMAHA MOTORCYCLE CONNECT and (Navi app name) on “%s”.,,,,,,,,,,,,,,,,,
 TCS01_TCS,Traction Control,トラクションコントロール,Antipatinage,Control de tracción,Controllo trazione,Traktionskontrolle,循跡控制,牵引力控制,Έλεγχος πρόσφυσης,Luistonesto,ट्रैक्शन कंट्रोल,Kontrol Traksi,Kontrola trakcji,Controle de tração,การควบคุมแรงฉุด,Kiểm soát lực kéo,정지 마찰력 제어,Kawalan Cengkaman
 UNT01_UNIT_MILEAGE,Mileage,距離,Kilométrage,Kilometraje,Chilometraggio,Kilometerstand,里程數,里程,Χιλιόμετρα,Ajokilometrit,माइलेज,Jarak tempuh,Dystans,Quilometragem,ไมล์สะสม,Dặm đi,거리,Perbatuan
 UNT01_UNIT_FUEL,Fuel,燃料,Essence,Combustible,Carburante,Treibstoff,燃油,燃油,Καύσιμο,Polttoaine,ईंधन,Bahan bakar,Paliwo,Combustível,เชื้อเพลิง,Nhiên liệu,연료,Minyak

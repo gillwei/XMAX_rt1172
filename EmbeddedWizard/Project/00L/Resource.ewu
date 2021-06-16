@@ -3097,3 +3097,33 @@ resource Resources::Bitmap HighTemperature
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
+
+// BT
+note group Note24
+{
+  attr Bounds = <750,2420,990,2570>;
+}
+
+$rect <770,2460,970,2500>
+$output false
+resource Resources::Bitmap YAppIcon
+{
+  attr bitmapfile FileName = .\Res\bt\icon_application.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <770,2510,970,2550>
+$output false
+resource Resources::Bitmap NaviAppIcon
+{
+  attr bitmapfile FileName = .\Res\bt\icon_navi_1.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}

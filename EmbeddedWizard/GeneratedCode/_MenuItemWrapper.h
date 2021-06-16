@@ -108,6 +108,8 @@ EW_DEFINE_FIELDS( MenuItemWrapper, CoreGroup )
   EW_PROPERTY( Height,          XInt32 )
   EW_PROPERTY( Uid,             XUInt32 )
   EW_PROPERTY( Category,        XEnum )
+  EW_PROPERTY( Icon2Visible,    XBool )
+  EW_PROPERTY( Icon1Visible,    XBool )
   EW_PROPERTY( ToggleEnabled,   XBool )
   EW_PROPERTY( DDModeEnabled,   XBool )
   EW_PROPERTY( Focusable,       XBool )
@@ -217,8 +219,14 @@ void MenuItemWrapper_OnSetMinute( MenuItemWrapper _this, XString value );
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetPoiListItemValue()' */
 void MenuItemWrapper_OnSetPoiListItemValue( MenuItemWrapper _this, XString value );
 
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetIcon1Visible()' */
+void MenuItemWrapper_OnSetIcon1Visible( MenuItemWrapper _this, XBool value );
+
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetPoiListItemUnit()' */
 void MenuItemWrapper_OnSetPoiListItemUnit( MenuItemWrapper _this, XString value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetIcon2Visible()' */
+void MenuItemWrapper_OnSetIcon2Visible( MenuItemWrapper _this, XBool value );
 
 #ifdef __cplusplus
   }

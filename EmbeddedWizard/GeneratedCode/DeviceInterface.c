@@ -2120,7 +2120,6 @@ void DeviceInterfaceBluetoothDeviceClass__Init( DeviceInterfaceBluetoothDeviceCl
   /* ... then construct all embedded objects */
   CoreSystemEvent__Init( &_this->BtcPairingChangedSystemEvent, &_this->_.XObject, 0 );
   DeviceInterfaceBluetoothPairedDeviceInfo__Init( &_this->PairedDeviceObj, &_this->_.XObject, 0 );
-  CoreSystemEvent__Init( &_this->BlePairingStateChangedEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->MotoConSystemEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->PairedDeviceUpdatedSystemEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->BtcConnectionResultSystemEvent, &_this->_.XObject, 0 );
@@ -2138,7 +2137,6 @@ void DeviceInterfaceBluetoothDeviceClass__ReInit( DeviceInterfaceBluetoothDevice
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->BtcPairingChangedSystemEvent );
   DeviceInterfaceBluetoothPairedDeviceInfo__ReInit( &_this->PairedDeviceObj );
-  CoreSystemEvent__ReInit( &_this->BlePairingStateChangedEvent );
   CoreSystemEvent__ReInit( &_this->MotoConSystemEvent );
   CoreSystemEvent__ReInit( &_this->PairedDeviceUpdatedSystemEvent );
   CoreSystemEvent__ReInit( &_this->BtcConnectionResultSystemEvent );
@@ -2153,7 +2151,6 @@ void DeviceInterfaceBluetoothDeviceClass__Done( DeviceInterfaceBluetoothDeviceCl
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->BtcPairingChangedSystemEvent );
   DeviceInterfaceBluetoothPairedDeviceInfo__Done( &_this->PairedDeviceObj );
-  CoreSystemEvent__Done( &_this->BlePairingStateChangedEvent );
   CoreSystemEvent__Done( &_this->MotoConSystemEvent );
   CoreSystemEvent__Done( &_this->PairedDeviceUpdatedSystemEvent );
   CoreSystemEvent__Done( &_this->BtcConnectionResultSystemEvent );
@@ -2167,17 +2164,29 @@ void DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceAtItem( DeviceInterfaceB
   XInt32 aItemNo )
 {
   XString DevName = 0;
-  XBool IsConnected = 0;
+  XBool IsNaviAppConnected = 0;
+  XBool IsYamahaAppConnected = 0;
 
   {
     uint8_t* device_name;
-    bool     is_connected;
-    ew_bt_get_paired_device_at_index( aItemNo, &device_name, &is_connected );
-    DevName = EwNewStringUtf8( (const unsigned char*)device_name, (int)strlen( (char*)device_name ) );
-    IsConnected = is_connected;
+    bool     is_navi_app_connected = false;
+    bool     is_yamaha_app_connected = false;
+
+    ew_bt_get_paired_device_at_index( aItemNo, &device_name, &is_navi_app_connected, &is_yamaha_app_connected );
+
+    uint8_t *stuffed_str = NULL;
+    int32_t stuffed_str_len = ew_handle_special_characters( device_name, &stuffed_str );
+    if( stuffed_str_len > 0 && stuffed_str != NULL )
+    {
+      DevName = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+    }
+
+    IsNaviAppConnected = is_navi_app_connected;
+    IsYamahaAppConnected = is_yamaha_app_connected;
   }
   _this->PairedDeviceObj.DeviceName = EwShareString( DevName );
-  _this->PairedDeviceObj.IsConnected = IsConnected;
+  _this->PairedDeviceObj.IsNaviAppConnected = IsNaviAppConnected;
+  _this->PairedDeviceObj.IsYamahaAppConnected = IsYamahaAppConnected;
 }
 
 /* This method is intended to be called by the device to notify the GUI application 
@@ -2310,20 +2319,6 @@ void DeviceInterfaceBluetoothDeviceClass_ConnectPairedDevice( DeviceInterfaceBlu
   ew_bt_connect_paired_device( aPairedDeviceIndex );
 }
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.IsBlePairedDevice()' */
-XBool DeviceInterfaceBluetoothDeviceClass_IsBlePairedDevice( DeviceInterfaceBluetoothDeviceClass _this, 
-  XInt32 aPairedDeviceIndex )
-{
-  XBool IsBlePairedDevice;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  IsBlePairedDevice = 0;
-  IsBlePairedDevice = ew_bt_is_ble_paired_device( aPairedDeviceIndex );
-  return IsBlePairedDevice;
-}
-
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.DisconnectPairedDevice()' */
 void DeviceInterfaceBluetoothDeviceClass_DisconnectPairedDevice( DeviceInterfaceBluetoothDeviceClass _this, 
   XInt32 aPairedDeviceIndex )
@@ -2399,44 +2394,8 @@ void DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpda
   DeviceInterfaceBluetoothDeviceClass_NotifyPairedDeviceConnectionStatusUpdated((DeviceInterfaceBluetoothDeviceClass)_this );
 }
 
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceBluetoothDeviceClass_NotifyBlePairingStateChanged( DeviceInterfaceBluetoothDeviceClass _this )
-{
-  CoreSystemEvent_Trigger( &_this->BlePairingStateChangedEvent, 0, 0 );
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBlePairingStateChanged()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyBlePairingStateChanged( void* _this )
-{
-  DeviceInterfaceBluetoothDeviceClass_NotifyBlePairingStateChanged((DeviceInterfaceBluetoothDeviceClass)_this );
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.SetBleAdvertisement()' */
-void DeviceInterfaceBluetoothDeviceClass_SetBleAdvertisement( DeviceInterfaceBluetoothDeviceClass _this, 
-  XBool aEnable )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  BTM_set_ble_advertisement( aEnable );
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.IsBtConnected()' */
-XBool DeviceInterfaceBluetoothDeviceClass_IsBtConnected( DeviceInterfaceBluetoothDeviceClass _this )
-{
-  XBool BtConnected;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  BtConnected = 0;
-  BtConnected = BTM_is_bt_connected();
-  return BtConnected;
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBlePairingFailCount()' */
-XInt32 DeviceInterfaceBluetoothDeviceClass_GetBlePairingFailCount( DeviceInterfaceBluetoothDeviceClass _this )
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetPairingFailCount()' */
+XInt32 DeviceInterfaceBluetoothDeviceClass_GetPairingFailCount( DeviceInterfaceBluetoothDeviceClass _this )
 {
   XInt32 FailCount;
 
@@ -2459,52 +2418,6 @@ XBool DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( DeviceInterfaceBlu
   MotoconConnected = 0;
   MotoconConnected = BC_motocon_is_connected();
   return MotoconConnected;
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBleConnectedDeviceName()' */
-XString DeviceInterfaceBluetoothDeviceClass_GetBleConnectedDeviceName( DeviceInterfaceBluetoothDeviceClass _this )
-{
-  XString BleConnectedDeviceName;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  BleConnectedDeviceName = 0;
-  {
-    uint8_t* ble_connected_device_name;
-    bool has_ble_connected_device = BTM_get_ble_connected_device_name( &ble_connected_device_name );
-    if( has_ble_connected_device )
-    {
-      BleConnectedDeviceName = EwNewStringUtf8( (const unsigned char*)ble_connected_device_name, (int)strlen( (char*)ble_connected_device_name ) );
-    }
-  }
-  return BleConnectedDeviceName;
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBlePairingState()' */
-XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBlePairingState( DeviceInterfaceBluetoothDeviceClass _this )
-{
-  XEnum State;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  State = EnumBlePairingStateIDLE;
-  State = ew_get_ble_pairing_state();
-  return State;
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBlePincode()' */
-XUInt32 DeviceInterfaceBluetoothDeviceClass_OnGetBlePincode( DeviceInterfaceBluetoothDeviceClass _this )
-{
-  XUInt32 Pincode;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  Pincode = 0;
-  Pincode = ew_get_ble_pincode();
-  return Pincode;
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyMotoConEventReceived()' */
@@ -2569,7 +2482,13 @@ XString DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( DeviceInter
   {
     uint8_t* btc_pairing_device_name;
     ew_bt_get_btc_connecting_device_name( &btc_pairing_device_name );
-    PairingDeviceName = EwNewStringUtf8( (const unsigned char*)btc_pairing_device_name, (int)strlen( (char*)btc_pairing_device_name ) );
+
+    uint8_t *stuffed_str = NULL;
+    int32_t stuffed_str_len = ew_handle_special_characters( btc_pairing_device_name, &stuffed_str );
+    if( stuffed_str_len > 0 && stuffed_str != NULL )
+    {
+      PairingDeviceName = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+    }
   }
   return PairingDeviceName;
 }
@@ -2590,6 +2509,28 @@ void DeviceInterfaceBluetoothDeviceClass__SendMotoConCommand( void* _this, XEnum
 {
   DeviceInterfaceBluetoothDeviceClass_SendMotoConCommand((DeviceInterfaceBluetoothDeviceClass)_this
   , aTxCmd );
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.IsPairingDeviceYamahaAppSPPConnected()' */
+XBool DeviceInterfaceBluetoothDeviceClass_IsPairingDeviceYamahaAppSPPConnected( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  XBool IsConnected;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsConnected = 0;
+  IsConnected = BTM_is_pairing_device_yapp_spp_connected();
+  return IsConnected;
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.TriggerConnectionTimeoutTimer()' */
+void DeviceInterfaceBluetoothDeviceClass_TriggerConnectionTimeoutTimer( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  BTM_start_btm_timeout_timer( BTM_BLE_PAIR_TIMEOUT );
 }
 
 /* Default onget method for the property 'BtFwStatus' */
@@ -2663,7 +2604,8 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceBluetoothPairedDeviceInfo )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::BluetoothPairedDeviceInfo' */
 EW_DEFINE_CLASS( DeviceInterfaceBluetoothPairedDeviceInfo, XObject, DeviceName, 
-                 DeviceName, DeviceName, DeviceName, DeviceName, IsConnected, "DeviceInterface::BluetoothPairedDeviceInfo" )
+                 DeviceName, DeviceName, DeviceName, DeviceName, IsYamahaAppConnected, 
+                 "DeviceInterface::BluetoothPairedDeviceInfo" )
 EW_END_OF_CLASS( DeviceInterfaceBluetoothPairedDeviceInfo )
 
 /* Initializer for the class 'DeviceInterface::RtcTime' */

@@ -156,7 +156,7 @@ EW_DEFINE_METHODS( SettingsSET06_BtcDiscovarable, ComponentsBaseMainBG )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( SettingsSET06_BtcDiscovarable _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET06_BtcDiscovarable _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
@@ -177,6 +177,9 @@ void SettingsSET06_BtcDiscovarable_ReInit( SettingsSET06_BtcDiscovarable _this )
    statements. */
 void SettingsSET06_BtcDiscovarable_Init( SettingsSET06_BtcDiscovarable _this, XHandle 
   aArg );
+
+/* 'C' function for method : 'Settings::SET06_BtcDiscovarable.OnShortUpKeyActivated()' */
+void SettingsSET06_BtcDiscovarable_OnShortUpKeyActivated( SettingsSET06_BtcDiscovarable _this );
 
 /* 'C' function for method : 'Settings::SET06_BtcDiscovarable.OnShortHomeKeyActivated()' */
 void SettingsSET06_BtcDiscovarable_OnShortHomeKeyActivated( SettingsSET06_BtcDiscovarable _this );

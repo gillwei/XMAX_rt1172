@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/06/28 14:19:22 */
+   Generated: 2021/06/29 08:04:00 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -57,6 +57,9 @@ EW_DECLARE_CONST( StringsGEN_YES )
 
 /* User defined constant: 'Strings::GEN_NO' */
 EW_DECLARE_CONST( StringsGEN_NO )
+
+/* User defined constant: 'Strings::GEN_LATER' */
+extern const XStringRes StringsGEN_LATER;
 
 /* User defined constant: 'Strings::GEN_LOW' */
 EW_DECLARE_CONST( StringsGEN_LOW )
@@ -427,17 +430,11 @@ EW_DECLARE_CONST( StringsSET08_PAIR_WITH )
 /* User defined constant: 'Strings::SET08_PASSKEY' */
 EW_DECLARE_CONST( StringsSET08_PASSKEY )
 
-/* User defined constant: 'Strings::SET09_BT_CONNECTED' */
-extern const XStringRes StringsSET09_BT_CONNECTED;
-
 /* User defined constant: 'Strings::SET10_CONNECTION_FAILED' */
 extern const XStringRes StringsSET10_CONNECTION_FAILED;
 
 /* User defined constant: 'Strings::SET11_NO_LONGER_PAIRED' */
 extern const XStringRes StringsSET11_NO_LONGER_PAIRED;
-
-/* User defined constant: 'Strings::SET18_DELETE_PAIRING_RECORD' */
-extern const XStringRes StringsSET18_DELETE_PAIRING_RECORD;
 
 /* User defined constant: 'Strings::SET19_DELETE_PAIRING' */
 extern const XStringRes StringsSET19_DELETE_PAIRING;
@@ -448,12 +445,6 @@ EW_DECLARE_CONST( StringsSET19_CONNECT )
 /* User defined constant: 'Strings::SET19_DISCONNECT' */
 EW_DECLARE_CONST( StringsSET19_DISCONNECT )
 
-/* User defined constant: 'Strings::SET20_COMPLETE_BT_PAIRING_FIRST' */
-extern const XStringRes StringsSET20_COMPLETE_BT_PAIRING_FIRST;
-
-/* User defined constant: 'Strings::SET21_BLE_ALREADY_CONNECTED' */
-extern const XStringRes StringsSET21_BLE_ALREADY_CONNECTED;
-
 /* User defined constant: 'Strings::SET22_WAIT_APP_CONNECTION' */
 EW_DECLARE_CONST( StringsSET22_WAIT_APP_CONNECTION )
 
@@ -462,9 +453,6 @@ EW_DECLARE_CONST( StringsSET23_PAIRING_FAILED )
 
 /* User defined constant: 'Strings::SET24_CHECK_BT_PAIRING_RECORD' */
 extern const XStringRes StringsSET24_CHECK_BT_PAIRING_RECORD;
-
-/* User defined constant: 'Strings::SET25_PIN' */
-extern const XStringRes StringsSET25_PIN;
 
 /* User defined constant: 'Strings::SET26_PAIRING_SUCCESSFUL' */
 EW_DECLARE_CONST( StringsSET26_PAIRING_SUCCESSFUL )
@@ -513,6 +501,21 @@ EW_DECLARE_CONST( StringsSET43_VEHICLE_INFO )
 
 /* User defined constant: 'Strings::SET43_ALL_RESET' */
 EW_DECLARE_CONST( StringsSET43_ALL_RESET )
+
+/* User defined constant: 'Strings::SET47_WAIT_APPROVAL' */
+EW_DECLARE_CONST( StringsSET47_WAIT_APPROVAL )
+
+/* User defined constant: 'Strings::SET48_RECONNECT_YCONNECT' */
+extern const XStringRes StringsSET48_RECONNECT_YCONNECT;
+
+/* User defined constant: 'Strings::SET49_LAUNCH_YAMAHA_APP' */
+EW_DECLARE_CONST( StringsSET49_LAUNCH_YAMAHA_APP )
+
+/* User defined constant: 'Strings::SET50_LAUNCH_NAVI_APP' */
+EW_DECLARE_CONST( StringsSET50_LAUNCH_NAVI_APP )
+
+/* User defined constant: 'Strings::SET51_BOTH_APP_CONNECTED' */
+extern const XStringRes StringsSET51_BOTH_APP_CONNECTED;
 
 /* User defined constant: 'Strings::TCS01_TCS' */
 EW_DECLARE_CONST( StringsTCS01_TCS )

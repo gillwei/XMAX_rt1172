@@ -504,6 +504,8 @@ EW_DEFINE_CLASS( NotificationNTF01_NotificationList, MenuBaseMenuView, Notificat
   MenuBaseMenuView_LoadItemMinute,
   MenuBaseMenuView_LoadPoiListItemValue,
   MenuBaseMenuView_LoadPoiListItemUnit,
+  MenuBaseMenuView_LoadItemIcon1Visible,
+  MenuBaseMenuView_LoadItemIcon2Visible,
 EW_END_OF_CLASS( NotificationNTF01_NotificationList )
 
 /* Initializer for the class 'Notification::NTF02_NotificationDetail' */

@@ -164,6 +164,9 @@ EW_DEFINE_METHODS( SettingsSET24_CheckPairingRecord, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsSET24_CheckPairingRecord )
 
+/* 'C' function for method : 'Settings::SET24_CheckPairingRecord.ReInit()' */
+void SettingsSET24_CheckPairingRecord_ReInit( SettingsSET24_CheckPairingRecord _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */

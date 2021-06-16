@@ -15,10 +15,10 @@ EMWIFILES := \
 	Settings.c \
 	Navigation.c \
 	Menu.c \
+	Enum.c \
 	Media.c \
 	Fonts.c \
 	Effect.c \
-	Enum.c \
 	DeviceInterface.c \
 	Factory.c \
 	Development.c \

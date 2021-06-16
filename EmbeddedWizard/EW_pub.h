@@ -24,6 +24,7 @@ extern "C" {
 #define CCUID_PREFIX                    "000603" /* product id: 00, device type id: 06, supplier id: 03 */
 #define CCUID_PREFIX_LENGTH             ( 6 )
 #define CCUID_VARIANCE_LENGTH           ( 8 )
+#define CCUID_LENGTH                    ( CCUID_PREFIX_LENGTH + CCUID_VARIANCE_LENGTH )
 #define PASSKEY_LENGTH                  ( 6 )
 #define UNIT_ID_DUMMY_LENGTH            ( 4 )
 #define UNIT_ID_LENGTH                  ( 24 )
@@ -56,9 +57,9 @@ void EW_reset_to_factory_default( void );
 void EW_power_update_ignoff_task_status( uint32_t task );
 void EW_notify_system_event_received( const EnumSystemRxEvent system_rx_event );
 
-bool EW_get_unit_id_ccuid( uint8_t* ccuid );
-bool EW_get_unit_id_dummy( uint8_t* dummy );
-bool EW_get_unit_id_passkey( uint8_t* passkey );
+bool EW_get_unit_id_ccuid( uint8_t** ccuid );
+bool EW_get_unit_id_dummy( uint8_t** dummy );
+bool EW_get_unit_id_passkey( uint8_t** passkey );
 uint32_t EW_get_esn( void );
 
 void EW_notify_navi_map_update( void );
@@ -81,11 +82,10 @@ void EW_show_burn_in_result( const bool result );
 void EW_notify_inspection_request( EnumInspectionMode mode, EnumInspectionDisplay display_pattern );
 
 void EW_notify_bt_paired_device_status_changed( void );
-void EW_notify_bt_connection_result( const bt_connection_result_type result );
+void EW_notify_bt_connection_result( const EnumBtDeviceConnectionResult result );
 void EW_notify_bt_passkey_generated( const uint8_t* device_name, const uint32_t passkey );
 void EW_notify_btc_pairing_state_changed( const EnumBtcPairingState state );
 void EW_notify_bt_fw_update_status( EnumBtFwStatus status, char* version );
-void EW_notify_ble_pairing_state_changed( const EnumBlePairingState state, const uint32_t param );
 void EW_notify_motocon_event_received( const EnumMotoConRxEvent event );
 
 void EW_notify_dd_mode_state_changed( void );

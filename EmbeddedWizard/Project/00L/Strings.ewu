@@ -1,7 +1,7 @@
 $version 11.00
 
 // This file is generated automatically.
-// Generated: 2021/06/28 14:19:22
+// Generated: 2021/06/29 08:04:00
 
 $output false
 const string ARGUMENT_STR =
@@ -105,6 +105,12 @@ const string GEN_NO =
   Vietnamese = "Kh\u00f4ng";
   Korean = "\uc544\ub2c8\uc624";
   Malay = "Tidak";
+);
+
+$output false
+const string GEN_LATER =
+(
+  Default = "Later";
 );
 
 $output false
@@ -2121,12 +2127,6 @@ const string SET11_NO_LONGER_PAIRED =
 );
 
 $output false
-const string SET18_DELETE_PAIRING_RECORD =
-(
-  Default = "Please delete the pairing record on \"%s\", otherwise, you may not be able to reconnect with LinkCard in the future.";
-);
-
-$output false
 const string SET19_DELETE_PAIRING =
 (
   Default = "Delete pairing";
@@ -2179,18 +2179,6 @@ const string SET19_DISCONNECT =
 );
 
 $output false
-const string SET20_COMPLETE_BT_PAIRING_FIRST =
-(
-  Default = "You must complete Bluetooth pairing before pairing with the Y-connect app.";
-);
-
-$output false
-const string SET21_BLE_ALREADY_CONNECTED =
-(
-  Default = "\"%s\" is now connected. To pair another smartphone with the Y-connect app, connect it via Bluetooth first.";
-);
-
-$output false
 const string SET22_WAIT_APP_CONNECTION =
 (
   Default = "%s is connecting.\nCheck the Yamaha Motorcycle connect app for instructions.";
@@ -2224,12 +2212,6 @@ $output false
 const string SET24_CHECK_BT_PAIRING_RECORD =
 (
   Default = "Please check the bluetooth pairing record on your previously paired Smartphone. You may need to delete the unused pairing record.";
-);
-
-$output false
-const string SET25_PIN =
-(
-  Default = "PIN";
 );
 
 $output false
@@ -2608,6 +2590,12 @@ const string SET47_WAIT_APPROVAL =
 );
 
 $output false
+const string SET48_RECONNECT_YCONNECT =
+(
+  Default = "Go to YAMAHA MOTORCYCLE CONNECT on \"%s\" to reconnect.";
+);
+
+$output false
 const string SET49_LAUNCH_YAMAHA_APP =
 (
   Default = "(Navi app name) connected. Launch YAMAHA MOTORCYCLE CONNECT on \u201c%s\u201d to complete the connection.";
@@ -2619,6 +2607,12 @@ const string SET50_LAUNCH_NAVI_APP =
 (
   Default = "YAMAHA MOTORCYCLE CONNECT connected. Launch (Navi app name) on \u201c%s\u201d to complete the connection.";
   Japanese = "YAMAHA MOTORCYCLE CONNECT\u30a2\u30d7\u30ea\u3092\n\u63a5\u7d9a\u3057\u307e\u3057\u305f\u3002\n\u63a5\u7d9a\u3092\u5b8c\u4e86\u3055\u305b\u308b\u305f\u3081\u3001(Navi app name)\n\u30a2\u30d7\u30ea\u3092\u8d77\u52d5\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+);
+
+$output false
+const string SET51_BOTH_APP_CONNECTED =
+(
+  Default = "Connected to YAMAHA MOTORCYCLE CONNECT and (Navi app name) on \u201c%s\u201d.";
 );
 
 $output false

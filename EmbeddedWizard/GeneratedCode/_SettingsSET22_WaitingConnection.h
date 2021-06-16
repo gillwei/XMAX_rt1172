@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSET22_BleAdvertising_H
-#define _SettingsSET22_BleAdvertising_H
+#ifndef _SettingsSET22_WaitingConnection_H
+#define _SettingsSET22_WaitingConnection_H
 
 #ifdef __cplusplus
   extern "C"
@@ -93,22 +93,22 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::SET22_BleAdvertising */
-#ifndef _SettingsSET22_BleAdvertising_
-  EW_DECLARE_CLASS( SettingsSET22_BleAdvertising )
-#define _SettingsSET22_BleAdvertising_
+/* Forward declaration of the class Settings::SET22_WaitingConnection */
+#ifndef _SettingsSET22_WaitingConnection_
+  EW_DECLARE_CLASS( SettingsSET22_WaitingConnection )
+#define _SettingsSET22_WaitingConnection_
 #endif
 
 
-/* Deklaration of class : 'Settings::SET22_BleAdvertising' */
-EW_DEFINE_FIELDS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG )
+/* Deklaration of class : 'Settings::SET22_WaitingConnection' */
+EW_DEFINE_FIELDS( SettingsSET22_WaitingConnection, ComponentsBaseMainBG )
   EW_OBJECT  ( WaitText,        ViewsText )
   EW_OBJECT  ( Image,           ViewsImage )
-  EW_OBJECT  ( BlePairingStateChangedEventHandler, CoreSystemEventHandler )
-EW_END_OF_FIELDS( SettingsSET22_BleAdvertising )
+  EW_OBJECT  ( ConnectPairedDeviceResultHandler, CoreSystemEventHandler )
+EW_END_OF_FIELDS( SettingsSET22_WaitingConnection )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SET22_BleAdvertising' */
-EW_DEFINE_METHODS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET22_WaitingConnection' */
+EW_DEFINE_METHODS( SettingsSET22_WaitingConnection, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -151,46 +151,43 @@ EW_DEFINE_METHODS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( SettingsSET22_WaitingConnection _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET22_BleAdvertising _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongHomeKeyActivated, void )( SettingsSET22_BleAdvertising _this )
+  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( SettingsSET22_BleAdvertising )
+EW_END_OF_METHODS( SettingsSET22_WaitingConnection )
 
-/* 'C' function for method : 'Settings::SET22_BleAdvertising.ReInit()' */
-void SettingsSET22_BleAdvertising_ReInit( SettingsSET22_BleAdvertising _this );
+/* 'C' function for method : 'Settings::SET22_WaitingConnection.ReInit()' */
+void SettingsSET22_WaitingConnection_ReInit( SettingsSET22_WaitingConnection _this );
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void SettingsSET22_BleAdvertising_Init( SettingsSET22_BleAdvertising _this, XHandle 
-  aArg );
+void SettingsSET22_WaitingConnection_Init( SettingsSET22_WaitingConnection _this, 
+  XHandle aArg );
 
-/* 'C' function for method : 'Settings::SET22_BleAdvertising.OnShortHomeKeyActivated()' */
-void SettingsSET22_BleAdvertising_OnShortHomeKeyActivated( SettingsSET22_BleAdvertising _this );
-
-/* 'C' function for method : 'Settings::SET22_BleAdvertising.OnLongHomeKeyActivated()' */
-void SettingsSET22_BleAdvertising_OnLongHomeKeyActivated( SettingsSET22_BleAdvertising _this );
+/* 'C' function for method : 'Settings::SET22_WaitingConnection.OnShortUpKeyActivated()' */
+void SettingsSET22_WaitingConnection_OnShortUpKeyActivated( SettingsSET22_WaitingConnection _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsSET22_BleAdvertising_OnBlePairingStateChangedSlot( SettingsSET22_BleAdvertising _this, 
+void SettingsSET22_WaitingConnection_OnConnectPairedDeviceResultSlot( SettingsSET22_WaitingConnection _this, 
   XObject sender );
 
-/* 'C' function for method : 'Settings::SET22_BleAdvertising.DisplayString()' */
-void SettingsSET22_BleAdvertising_DisplayString( SettingsSET22_BleAdvertising _this );
+/* 'C' function for method : 'Settings::SET22_WaitingConnection.DisplayString()' */
+void SettingsSET22_WaitingConnection_DisplayString( SettingsSET22_WaitingConnection _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSET22_BleAdvertising_H */
+#endif /* _SettingsSET22_WaitingConnection_H */
 
 /* Embedded Wizard */

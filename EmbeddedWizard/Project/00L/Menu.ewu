@@ -414,6 +414,11 @@ class VerticalMenu : Components::BaseComponent
         Item.PoiListItemValue = OwnerMenu.LoadPoiListItemValue( ItemNo );
         Item.PoiListItemUnit = OwnerMenu.LoadPoiListItemUnit( ItemNo );
       }
+      else if( Menu::ItemBtPairedDevice == Item.ItemClass )
+      {
+        Item.Icon1Visible = OwnerMenu.LoadItemIcon1Visible( ItemNo );
+        Item.Icon2Visible = OwnerMenu.LoadItemIcon2Visible( ItemNo );
+      }
       else
       {
         //empty
@@ -1285,6 +1290,30 @@ class ItemWrapper : Core::Group
     }
   }
 
+  // For BT paired device item
+  note group Note12
+  {
+    attr Bounds = <20,1010,490,1170>;
+  }
+
+  $rect <40,1050,240,1090>
+  property bool Icon1Visible;
+
+  $rect <40,1100,240,1140>
+  onset Icon1Visible
+  {
+    if( pure Icon1Visible != value )
+    {
+      pure Icon1Visible = value;
+      var Core::View view = FindNextView( null, Core::ViewState[] );
+      var Menu::ItemBtPairedDevice MenuItem = ( Menu::ItemBtPairedDevice )view;
+      if( MenuItem != null )
+      {
+        MenuItem.Icon1Visible = value;
+      }
+    }
+  }
+
   $rect <290,1050,490,1090>
   property string PoiListItemUnit;
 
@@ -1300,6 +1329,24 @@ class ItemWrapper : Core::Group
       if( PoiListItem != null )
       {
         PoiListItem.Unit = value;
+      }
+    }
+  }
+
+  $rect <250,1050,450,1090>
+  property bool Icon2Visible;
+
+  $rect <250,1100,450,1140>
+  onset Icon2Visible
+  {
+    if( pure Icon2Visible != value )
+    {
+      pure Icon2Visible = value;
+      var Core::View view = FindNextView( null, Core::ViewState[] );
+      var Menu::ItemBtPairedDevice MenuItem = ( Menu::ItemBtPairedDevice )view;
+      if( MenuItem != null )
+      {
+        MenuItem.Icon2Visible = value;
       }
     }
   }
@@ -1482,7 +1529,7 @@ class BaseMenuView : Components::BaseMainBG
   // For checkbox menu item
   note group Note7
   {
-    attr Bounds = <520,245,780,400>;
+    attr Bounds = <520,240,780,400>;
   }
 
   $rect <550,295,750,335>
@@ -1511,7 +1558,7 @@ class BaseMenuView : Components::BaseMainBG
   // For menu item which has value
   note group Note8
   {
-    attr Bounds = <520,410,810,510>;
+    attr Bounds = <520,410,860,510>;
   }
 
   $rect <540,450,740,490>
@@ -1524,10 +1571,10 @@ class BaseMenuView : Components::BaseMainBG
   // For notification item
   note group Note9
   {
-    attr Bounds = <800,0,1060,250>;
+    attr Bounds = <810,0,1070,250>;
   }
 
-  $rect <830,40,1030,80>
+  $rect <840,40,1040,80>
   method string LoadItemMessage( arg int32 aItemNo )
   {
     if( aItemNo >= 0 )
@@ -1537,7 +1584,7 @@ class BaseMenuView : Components::BaseMainBG
     return "";
   }
 
-  $rect <830,90,1050,130>
+  $rect <840,90,1060,130>
   method string LoadItemReceivedTime( arg int32 aItemNo )
   {
     if( aItemNo >= 0 )
@@ -1547,7 +1594,7 @@ class BaseMenuView : Components::BaseMainBG
     return "";
   }
 
-  $rect <830,140,1050,180>
+  $rect <840,140,1060,180>
   method Enum::NotificationCategory LoadItemCategory( arg int32 aItemNo )
   {
     if( aItemNo >= 0 )
@@ -1557,7 +1604,7 @@ class BaseMenuView : Components::BaseMainBG
     return Enum::NotificationCategory.MESSAGE;
   }
 
-  $rect <830,190,1050,230>
+  $rect <840,190,1060,230>
   method uint32 LoadItemUid( arg int32 aItemNo )
   {
     if( aItemNo >= 0 )
@@ -1640,6 +1687,26 @@ class BaseMenuView : Components::BaseMainBG
   {
     aItemNo; // suppress warning
     return "";
+  }
+
+  // For BT paired device item
+  note group Note13
+  {
+    attr Bounds = <880,410,1140,570>;
+  }
+
+  $rect <910,450,1110,490>
+  method bool LoadItemIcon1Visible( arg int32 aItemNo )
+  {
+    aItemNo; //suppress warning
+    return false;
+  }
+
+  $rect <910,500,1110,540>
+  method bool LoadItemIcon2Visible( arg int32 aItemNo )
+  {
+    aItemNo; //suppress warning
+    return false;
   }
 
   $reorder BlackBG 1
@@ -2610,3 +2677,63 @@ class ItemPoiList : Menu::ItemBase
 $rect <10,220,210,260>
 $output false
 const int32 PoiListItemFirstRowMaxLen = 12;
+
+$rect <230,510,430,550>
+class ItemBtPairedDevice : Menu::ItemBase
+{
+  $rect <20,20,160,60>
+  inherited object HighlightRect
+  {
+    preset Bounds = <10,0,444,74>;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Title
+  {
+    preset Bounds = <37,7,343,43>;
+    preset Font = Fonts::NotoSansCjkJpMedium28pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image NaviAppIcon
+  {
+    preset Bounds = <354,10,388,44>;
+    preset Bitmap = Resource::NaviAppIcon;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image YAppIcon
+  {
+    preset Bounds = <387,10,421,44>;
+    preset Bitmap = Resource::YAppIcon;
+    preset Visible = false;
+  }
+
+  $rect <10,100,210,140>
+  property bool Icon1Visible;
+
+  $rect <10,140,210,180>
+  onset Icon1Visible
+  {
+    if( pure Icon1Visible != value )
+    {
+      pure Icon1Visible = value;
+      NaviAppIcon.Visible = value;
+    }
+  }
+
+  $rect <221,100,421,140>
+  property bool Icon2Visible;
+
+  $rect <221,140,421,180>
+  onset Icon2Visible
+  {
+    if( pure Icon2Visible != value )
+    {
+      pure Icon2Visible = value;
+      YAppIcon.Visible = value;
+    }
+  }
+}

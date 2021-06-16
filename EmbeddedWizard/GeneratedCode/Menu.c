@@ -36,6 +36,7 @@
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
 #include "_MenuItemBaseValue.h"
+#include "_MenuItemBtPairedDevice.h"
 #include "_MenuItemCheckMark.h"
 #include "_MenuItemCheckbox.h"
 #include "_MenuItemNotification.h"
@@ -139,6 +140,9 @@ static const XRect _Const003B = {{ 290, 0 }, { 417, 67 }};
 static const XRect _Const003C = {{ 37, 1 }, { 233, 78 }};
 static const XRect _Const003D = {{ 253, 18 }, { 351, 52 }};
 static const XRect _Const003E = {{ 357, 18 }, { 417, 52 }};
+static const XRect _Const003F = {{ 37, 7 }, { 343, 43 }};
+static const XRect _Const0040 = {{ 354, 10 }, { 388, 44 }};
+static const XRect _Const0041 = {{ 387, 10 }, { 421, 44 }};
 
 /* Initializer for the class 'Menu::ItemBase' */
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
@@ -603,6 +607,14 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
               MenuItemWrapper_OnSetPoiListItemUnit( Item, MenuBaseMenuView__LoadPoiListItemUnit( 
               OwnerMenu, ItemNo ));
             }
+            else
+              if ( EW_CLASS( MenuItemBtPairedDevice ) == Item->ItemClass )
+              {
+                MenuItemWrapper_OnSetIcon1Visible( Item, MenuBaseMenuView__LoadItemIcon1Visible( 
+                OwnerMenu, ItemNo ));
+                MenuItemWrapper_OnSetIcon2Visible( Item, MenuBaseMenuView__LoadItemIcon2Visible( 
+                OwnerMenu, ItemNo ));
+              }
 
     CoreRectView__OnSetBounds( Item, EwSetRectSize( Item->Super2.Bounds, EwNewPoint( 
     EwGetRectW( _this->MenuList.Super2.Bounds ), _this->MenuList.ItemHeight )));
@@ -1440,6 +1452,22 @@ void MenuItemWrapper_OnSetPoiListItemValue( MenuItemWrapper _this, XString value
   }
 }
 
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetIcon1Visible()' */
+void MenuItemWrapper_OnSetIcon1Visible( MenuItemWrapper _this, XBool value )
+{
+  if ( _this->Icon1Visible != value )
+  {
+    CoreView view;
+    MenuItemBtPairedDevice MenuItem;
+    _this->Icon1Visible = value;
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    MenuItem = EwCastObject( view, MenuItemBtPairedDevice );
+
+    if ( MenuItem != 0 )
+      MenuItemBtPairedDevice_OnSetIcon1Visible( MenuItem, value );
+  }
+}
+
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetPoiListItemUnit()' */
 void MenuItemWrapper_OnSetPoiListItemUnit( MenuItemWrapper _this, XString value )
 {
@@ -1453,6 +1481,22 @@ void MenuItemWrapper_OnSetPoiListItemUnit( MenuItemWrapper _this, XString value 
 
     if ( PoiListItem != 0 )
       MenuItemPoiList_OnSetUnit( PoiListItem, value );
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetIcon2Visible()' */
+void MenuItemWrapper_OnSetIcon2Visible( MenuItemWrapper _this, XBool value )
+{
+  if ( _this->Icon2Visible != value )
+  {
+    CoreView view;
+    MenuItemBtPairedDevice MenuItem;
+    _this->Icon2Visible = value;
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    MenuItem = EwCastObject( view, MenuItemBtPairedDevice );
+
+    if ( MenuItem != 0 )
+      MenuItemBtPairedDevice_OnSetIcon2Visible( MenuItem, value );
   }
 }
 
@@ -2053,6 +2097,40 @@ XString MenuBaseMenuView__LoadPoiListItemUnit( void* _this, XInt32 aItemNo )
   , aItemNo );
 }
 
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemIcon1Visible()' */
+XBool MenuBaseMenuView_LoadItemIcon1Visible( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemIcon1Visible()' */
+XBool MenuBaseMenuView__LoadItemIcon1Visible( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemIcon1Visible((MenuBaseMenuView)_this
+  , aItemNo );
+}
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemIcon2Visible()' */
+XBool MenuBaseMenuView_LoadItemIcon2Visible( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemIcon2Visible()' */
+XBool MenuBaseMenuView__LoadItemIcon2Visible( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemIcon2Visible((MenuBaseMenuView)_this
+  , aItemNo );
+}
+
 /* Variants derived from the class : 'Menu::BaseMenuView' */
 EW_DEFINE_CLASS_VARIANTS( MenuBaseMenuView )
 EW_END_OF_CLASS_VARIANTS( MenuBaseMenuView )
@@ -2121,6 +2199,8 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, Menu, Menu, Menu, Menu,
   MenuBaseMenuView_LoadItemMinute,
   MenuBaseMenuView_LoadPoiListItemValue,
   MenuBaseMenuView_LoadPoiListItemUnit,
+  MenuBaseMenuView_LoadItemIcon1Visible,
+  MenuBaseMenuView_LoadItemIcon2Visible,
 EW_END_OF_CLASS( MenuBaseMenuView )
 
 /* Initializer for the class 'Menu::PushButton' */
@@ -3797,5 +3877,137 @@ EW_DEFINE_CLASS( MenuItemPoiList, MenuItemBase, ValueText, ValueText, ValueText,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
 EW_END_OF_CLASS( MenuItemPoiList )
+
+/* Initializer for the class 'Menu::ItemBtPairedDevice' */
+void MenuItemBtPairedDevice__Init( MenuItemBtPairedDevice _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuItemBase__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemBtPairedDevice );
+
+  /* ... then construct all embedded objects */
+  ViewsImage__Init( &_this->NaviAppIcon, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->YAppIcon, &_this->_.XObject, 0 );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( MenuItemBtPairedDevice );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  CoreRectView__OnSetBounds( &_this->Super1.HighlightRect, _Const002D );
+  ViewsRectangle_OnSetVisible( &_this->Super1.HighlightRect, 1 );
+  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const003F );
+  CoreRectView__OnSetBounds( &_this->NaviAppIcon, _Const0040 );
+  ViewsImage_OnSetVisible( &_this->NaviAppIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->YAppIcon, _Const0041 );
+  ViewsImage_OnSetVisible( &_this->YAppIcon, 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NaviAppIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->YAppIcon ), 0 );
+  ViewsText_OnSetFont( &_this->Super1.Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsImage_OnSetBitmap( &_this->NaviAppIcon, EwLoadResource( &ResourceNaviAppIcon, 
+  ResourcesBitmap ));
+  ViewsImage_OnSetBitmap( &_this->YAppIcon, EwLoadResource( &ResourceYAppIcon, ResourcesBitmap ));
+}
+
+/* Re-Initializer for the class 'Menu::ItemBtPairedDevice' */
+void MenuItemBtPairedDevice__ReInit( MenuItemBtPairedDevice _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuItemBase__ReInit( &_this->_.Super );
+
+  /* ... then re-construct all embedded objects */
+  ViewsImage__ReInit( &_this->NaviAppIcon );
+  ViewsImage__ReInit( &_this->YAppIcon );
+}
+
+/* Finalizer method for the class 'Menu::ItemBtPairedDevice' */
+void MenuItemBtPairedDevice__Done( MenuItemBtPairedDevice _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( MenuItemBase );
+
+  /* Finalize all embedded objects */
+  ViewsImage__Done( &_this->NaviAppIcon );
+  ViewsImage__Done( &_this->YAppIcon );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuItemBase__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Menu::ItemBtPairedDevice.OnSetIcon1Visible()' */
+void MenuItemBtPairedDevice_OnSetIcon1Visible( MenuItemBtPairedDevice _this, XBool 
+  value )
+{
+  if ( _this->Icon1Visible != value )
+  {
+    _this->Icon1Visible = value;
+    ViewsImage_OnSetVisible( &_this->NaviAppIcon, value );
+  }
+}
+
+/* 'C' function for method : 'Menu::ItemBtPairedDevice.OnSetIcon2Visible()' */
+void MenuItemBtPairedDevice_OnSetIcon2Visible( MenuItemBtPairedDevice _this, XBool 
+  value )
+{
+  if ( _this->Icon2Visible != value )
+  {
+    _this->Icon2Visible = value;
+    ViewsImage_OnSetVisible( &_this->YAppIcon, value );
+  }
+}
+
+/* Variants derived from the class : 'Menu::ItemBtPairedDevice' */
+EW_DEFINE_CLASS_VARIANTS( MenuItemBtPairedDevice )
+EW_END_OF_CLASS_VARIANTS( MenuItemBtPairedDevice )
+
+/* Virtual Method Table (VMT) for the class : 'Menu::ItemBtPairedDevice' */
+EW_DEFINE_CLASS( MenuItemBtPairedDevice, MenuItemBase, NaviAppIcon, NaviAppIcon, 
+                 NaviAppIcon, NaviAppIcon, Icon2Visible, Icon2Visible, "Menu::ItemBtPairedDevice" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  MenuItemBase_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  MenuItemBase_UpdateLayout,
+  MenuItemBase_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  MenuItemBase_OnShortEnterKeyActivated,
+  ComponentsBaseComponent_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  MenuItemBase_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  ComponentsBaseComponent_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+EW_END_OF_CLASS( MenuItemBtPairedDevice )
 
 /* Embedded Wizard */

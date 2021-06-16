@@ -85,8 +85,8 @@
 #define SYSTEM_EVENT_QUEUE_SIZE     ( 32 )
 
 #define UNIT_ID_CCUID_IDX           ( 0 )
-#define UNIT_ID_PASSKEY_IDX         ( 16 )
-#define UNIT_ID_DUMMY_IDX           ( 20 )
+#define UNIT_ID_PASSKEY_IDX         ( UNIT_ID_CCUID_IDX + CCUID_LENGTH )
+#define UNIT_ID_DUMMY_IDX           ( UNIT_ID_PASSKEY_IDX + PASSKEY_LENGTH )
 #define UNIT_ID_SEGMENT1_READ_OK    ( 1 << 0 )
 #define UNIT_ID_SEGMENT2_READ_OK    ( 1 << 1 )
 #define UNIT_ID_SEGMENT3_READ_OK    ( 1 << 2 )
@@ -1510,13 +1510,13 @@ return esn;
 *********************************************************************/
 bool EW_get_unit_id_ccuid
     (
-    uint8_t* ccuid
+    uint8_t** ccuid
     )
 {
 bool result = false;
 if( UNIT_ID_READ_OK == unit_id_read_status )
     {
-    ccuid = &unit_id_plaintext[UNIT_ID_CCUID_IDX];
+    *ccuid = &unit_id_plaintext[UNIT_ID_CCUID_IDX];
     result = true;
     }
 return result;
@@ -1535,13 +1535,13 @@ return result;
 *********************************************************************/
 bool EW_get_unit_id_passkey
     (
-    uint8_t* passkey
+    uint8_t** passkey
     )
 {
 bool result = false;
 if( UNIT_ID_READ_OK == unit_id_read_status )
     {
-    passkey = &unit_id_plaintext[UNIT_ID_PASSKEY_IDX];
+    *passkey = &unit_id_plaintext[UNIT_ID_PASSKEY_IDX];
     result = true;
     }
 return result;
@@ -1560,13 +1560,13 @@ return result;
 *********************************************************************/
 bool EW_get_unit_id_dummy
     (
-    uint8_t* dummy
+    uint8_t** dummy
     )
 {
 bool result = false;
 if( UNIT_ID_READ_OK == unit_id_read_status )
     {
-    dummy = &unit_id_plaintext[UNIT_ID_DUMMY_IDX];
+    *dummy = &unit_id_plaintext[UNIT_ID_DUMMY_IDX];
     result = true;
     }
 return result;

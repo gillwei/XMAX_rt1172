@@ -376,7 +376,6 @@ switch( btm_timeout_type )
             BTM_set_ble_advertisement( false );
             ble_pairing_fail_count += 1;
             PRINTF( "BTM_BLE_ADV_TIMEOUT Fail Count:%d\r\n", ble_pairing_fail_count );
-            EW_notify_ble_pairing_state_changed( EnumBlePairingStateTIMEOUT, 0 );
             }
         break;
 
@@ -386,7 +385,6 @@ switch( btm_timeout_type )
             {
             stop_btm_timeout_timer();
             ble_pairing_fail_count += 1;
-            EW_notify_ble_pairing_state_changed( EnumBlePairingStateTIMEOUT, 0 );
             PRINTF( "BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT Fail Count:%d\r\n", ble_pairing_fail_count );
             }
         break;
@@ -2228,7 +2226,6 @@ else if( BTM_DISCOVERABLE_STATE_BLE == btm_discoverable_state )
     numeric_code += (uint32_t)( p_data[2] << 16 );
     numeric_code += (uint32_t)( p_data[3] << 24 );
     PRINTF( "%s BLE_USR_CONFIRM numeric_code:%d\r\n", __FUNCTION__, numeric_code );
-    EW_notify_ble_pairing_state_changed( EnumBlePairingStatePINCODE_GENERATED, numeric_code );
     start_btm_timeout_timer( BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT );
     }
 else
@@ -2281,7 +2278,6 @@ else if( BTM_PAIRING_STATE_BLE == btm_pairing_state )
         {
         stop_btm_timeout_timer();
         ble_pairing_fail_count = 0;
-        EW_notify_ble_pairing_state_changed( EnumBlePairingStateSUCCESSFUL, 0 );
         }
     else
         {
@@ -2293,7 +2289,6 @@ else if( BTM_PAIRING_STATE_BLE == btm_pairing_state )
             PRINTF( "%02x", p_data[1 + i] );
             }
         PRINTF( "\r\n" );
-        EW_notify_ble_pairing_state_changed( EnumBlePairingStateFAIL, 0 );
         }
     }
 }

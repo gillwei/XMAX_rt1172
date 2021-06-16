@@ -200,6 +200,8 @@ EW_DEFINE_METHODS( SettingsSET45_TripMileageReset, MenuBaseMenuView )
   EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET45_TripMileageReset )
 
 /* The method Init() is invoked automatically after the component has been created. 

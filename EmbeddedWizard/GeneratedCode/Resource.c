@@ -1481,4 +1481,16 @@ EW_RES_WITHOUT_VARIANTS( ResourceGradientCover )
 /* Table with links to derived variants of the bitmap resource : 'Resource::HighTemperature' */
 EW_RES_WITHOUT_VARIANTS( ResourceHighTemperature )
 
+/* Include a file containing the bitmap resource : 'Resource::YAppIcon' */
+#include "_ResourceYAppIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::YAppIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceYAppIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::NaviAppIcon' */
+#include "_ResourceNaviAppIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviAppIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviAppIcon )
+
 /* Embedded Wizard */

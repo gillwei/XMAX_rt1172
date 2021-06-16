@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSET25_BlePincode_H
-#define _SettingsSET25_BlePincode_H
+#ifndef _SettingsSET47_WaitingApproval_H
+#define _SettingsSET47_WaitingApproval_H
 
 #ifdef __cplusplus
   extern "C"
@@ -93,21 +93,24 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::SET25_BlePincode */
-#ifndef _SettingsSET25_BlePincode_
-  EW_DECLARE_CLASS( SettingsSET25_BlePincode )
-#define _SettingsSET25_BlePincode_
+/* Forward declaration of the class Settings::SET47_WaitingApproval */
+#ifndef _SettingsSET47_WaitingApproval_
+  EW_DECLARE_CLASS( SettingsSET47_WaitingApproval )
+#define _SettingsSET47_WaitingApproval_
 #endif
 
 
-/* Deklaration of class : 'Settings::SET25_BlePincode' */
-EW_DEFINE_FIELDS( SettingsSET25_BlePincode, ComponentsBaseMainBG )
-  EW_OBJECT  ( BleStateChangedEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( PincodeText,     ViewsText )
-EW_END_OF_FIELDS( SettingsSET25_BlePincode )
+/* Deklaration of class : 'Settings::SET47_WaitingApproval' */
+EW_DEFINE_FIELDS( SettingsSET47_WaitingApproval, ComponentsBaseMainBG )
+  EW_OBJECT  ( LoadingAnimation, ViewsImage )
+  EW_OBJECT  ( WaitingText,     ViewsText )
+  EW_OBJECT  ( BtcPairingStateChangeEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( CountDownTimer,  CoreTimer )
+  EW_VARIABLE( CountDownTimeSec, XInt32 )
+EW_END_OF_FIELDS( SettingsSET47_WaitingApproval )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SET25_BlePincode' */
-EW_DEFINE_METHODS( SettingsSET25_BlePincode, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET47_WaitingApproval' */
+EW_DEFINE_METHODS( SettingsSET47_WaitingApproval, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -135,7 +138,7 @@ EW_DEFINE_METHODS( SettingsSET25_BlePincode, ComponentsBaseMainBG )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
   EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
-  EW_METHOD( UpdateViewState,   void )( SettingsSET25_BlePincode _this, XSet aState )
+  EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( GetViewAtIndex,    CoreView )( CoreGroup _this, XInt32 aIndex )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
@@ -150,53 +153,56 @@ EW_DEFINE_METHODS( SettingsSET25_BlePincode, ComponentsBaseMainBG )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( SettingsSET47_WaitingApproval _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET25_BlePincode _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( SettingsSET47_WaitingApproval _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnLongHomeKeyActivated, void )( SettingsSET47_WaitingApproval _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( SettingsSET25_BlePincode )
+EW_END_OF_METHODS( SettingsSET47_WaitingApproval )
+
+/* 'C' function for method : 'Settings::SET47_WaitingApproval.ReInit()' */
+void SettingsSET47_WaitingApproval_ReInit( SettingsSET47_WaitingApproval _this );
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void SettingsSET25_BlePincode_Init( SettingsSET25_BlePincode _this, XHandle aArg );
+void SettingsSET47_WaitingApproval_Init( SettingsSET47_WaitingApproval _this, XHandle 
+  aArg );
 
-/* The method UpdateViewState() is invoked automatically after the state of the 
-   component has been changed. This method can be overridden and filled with logic 
-   to ensure the visual aspect of the component does reflect its current state. 
-   For example, the 'enabled' state of the component can affect its colors (disabled 
-   components may appear pale). In this case the logic of the method should modify 
-   the respective color properties accordingly to the current 'enabled' state. 
-   The current state of the component is passed as a set in the parameter aState. 
-   It reflects the very basic component state like its visibility or the ability 
-   to react to user inputs. Beside this common state, the method can also involve 
-   any other variables used in the component as long as they reflect its current 
-   state. For example, the toggle switch component can take in account its toggle 
-   state 'on' or 'off' and change accordingly the location of the slider, etc.
-   Usually, this method will be invoked automatically by the framework. Optionally 
-   you can request its invocation by using the method @InvalidateViewState(). */
-void SettingsSET25_BlePincode_UpdateViewState( SettingsSET25_BlePincode _this, XSet 
-  aState );
+/* 'C' function for method : 'Settings::SET47_WaitingApproval.OnShortUpKeyActivated()' */
+void SettingsSET47_WaitingApproval_OnShortUpKeyActivated( SettingsSET47_WaitingApproval _this );
 
-/* 'C' function for method : 'Settings::SET25_BlePincode.OnShortHomeKeyActivated()' */
-void SettingsSET25_BlePincode_OnShortHomeKeyActivated( SettingsSET25_BlePincode _this );
+/* 'C' function for method : 'Settings::SET47_WaitingApproval.OnShortHomeKeyActivated()' */
+void SettingsSET47_WaitingApproval_OnShortHomeKeyActivated( SettingsSET47_WaitingApproval _this );
+
+/* 'C' function for method : 'Settings::SET47_WaitingApproval.OnLongHomeKeyActivated()' */
+void SettingsSET47_WaitingApproval_OnLongHomeKeyActivated( SettingsSET47_WaitingApproval _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsSET25_BlePincode_OnBlePairingStateChangedSlot( SettingsSET25_BlePincode _this, 
+void SettingsSET47_WaitingApproval_OnBtcPairingStateChangeSlot( SettingsSET47_WaitingApproval _this, 
   XObject sender );
+
+/* 'C' function for method : 'Settings::SET47_WaitingApproval.DisplayPairingFailed()' */
+void SettingsSET47_WaitingApproval_DisplayPairingFailed( SettingsSET47_WaitingApproval _this );
+
+/* 'C' function for method : 'Settings::SET47_WaitingApproval.UpdateCountDownTimeSlot()' */
+void SettingsSET47_WaitingApproval_UpdateCountDownTimeSlot( SettingsSET47_WaitingApproval _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Settings::SET47_WaitingApproval.DisplayString()' */
+void SettingsSET47_WaitingApproval_DisplayString( SettingsSET47_WaitingApproval _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSET25_BlePincode_H */
+#endif /* _SettingsSET47_WaitingApproval_H */
 
 /* Embedded Wizard */

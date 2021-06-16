@@ -1,13 +1,13 @@
 ﻿$version 11.00
 
-$rect <320,380,520,420>
+$rect <20,10,220,50>
 inline Inline
 {
   #include "BTM_pub.h"
   #include "ew_priv.h"
 }
 
-$rect <20,10,260,50>
+$rect <20,60,260,100>
 $output false
 class SET01_MainSettingMenu : Menu::BaseMenuView
 {
@@ -163,7 +163,7 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
   $reorder LoadItemEnabled 2
 }
 
-$rect <20,60,260,100>
+$rect <20,110,260,150>
 $output false
 class SET03_ConnectionSettingMenu : Menu::BaseMenuView
 {
@@ -202,15 +202,12 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
   $rect <510,120,710,160>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
+    // suppress warning
+    aMenuItem;
 
     switch( aItemNo )
     {
       case 0: SlideInDialog( new Settings::SET04_BtSettingMenu );
-      case 1: HandleYConnectAppPairing();
       default :;
     }
   }
@@ -219,46 +216,11 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
   inherited object Menu
   {
     preset DDModeEnabled = true;
-    preset NoOfItems = 2;
-  }
-
-  $rect <230,290,470,330>
-  method void HandleYConnectAppPairing()
-  {
-    if( DeviceInterface::BluetoothDevice.IsBtConnected() )
-    {
-      if( DeviceInterface::BluetoothDevice.IsMotoconConnected() )
-      {
-        // replase %s with the connected BLE deivce name
-        var string ProcessString = Strings::SET21_BLE_ALREADY_CONNECTED;
-        var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
-        var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
-        var string Message = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBleConnectedDeviceName() + ProcessString.right( RightIdx );
-
-        PresentDialogWithTimeout( Message );
-      }
-      else
-      {
-        PresentDialog( new Settings::SET22_BleAdvertising, null, null, null, null, null, null, null, null, false );
-      }
-    }
-    else
-    {
-      PresentDialogWithTimeout( Strings::SET20_COMPLETE_BT_PAIRING_FIRST );
-    }
-  }
-
-  $rect <230,340,470,380>
-  method void PresentDialogWithTimeout( arg string aMessage )
-  {
-    var Settings::TimeoutDialog Dialog = new Settings::TimeoutDialog;
-    Dialog.Message = aMessage;
-    Dialog.DismissAfterTimeout = true;
-    PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
+    preset NoOfItems = 1;
   }
 }
 
-$rect <20,110,260,150>
+$rect <20,160,260,200>
 $output false
 class SET04_BtSettingMenu : Menu::BaseMenuView
 {
@@ -713,7 +675,7 @@ class SET37_3rdPartyLicenses : Components::BaseMainBG
   }
 }
 
-$rect <20,210,260,250>
+$rect <20,260,260,300>
 $output false
 class SET06_BtcDiscovarable : Components::BaseMainBG
 {
@@ -731,6 +693,15 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
     trace "SET06";
     DeviceInterface::BluetoothDevice.Discoverable = true;
     DisplayLocalDeviceName();
+  }
+
+  $rect <250,440,480,480>
+  inherited method OnShortUpKeyActivated()
+  {
+    /* debug UI flow in prototyper */
+    $if $prototyper
+      Owner.SwitchToDialog( new Settings::SET08_BtcPairDevice, null, null, null, null, null, null, null, null, null, false );
+    $endif
   }
 
   $rect <250,340,480,380>
@@ -916,14 +887,21 @@ class SET9_10_11_BtConnectionResult : Components::BaseMainBG
     var Enum::BtDeviceConnectionResult ConnectionResult = DeviceInterface::BluetoothDevice.ConnectPairedDeviceResult;
     switch( ConnectionResult )
     {
-      case Enum::BtDeviceConnectionResult.SUCCESS:
+      case Enum::BtDeviceConnectionResult.ONLY_NAVI_APP_CONNECTED:
       {
-        // replase %s with the connected BLE deivce name
-        var string ProcessString = Strings::SET09_BT_CONNECTED;
-        var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
-        var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
-        HideLoadingUI();
-        Message.String = ProcessString.left( LeftIdx ) + DeviceName + ProcessString.right( RightIdx );
+        Owner.SwitchToDialog( new Settings::SET49_OnlyNaviAppConnected, null, null, null, null, null, null, null, null, null, false );
+      }
+      case Enum::BtDeviceConnectionResult.ONLY_YAMAHA_APP_CONNECTED:
+      {
+        Owner.SwitchToDialog( new Settings::SET50_OnlyYahamaAppConnected, null, null, null, null, null, null, null, null, null, false );
+      }
+      case Enum::BtDeviceConnectionResult.YAMAHA_APP_BLE_NOT_CONNECTED:
+      {
+        Owner.SwitchToDialog( new Settings::SET22_WaitingConnection, null, null, null, null, null, null, null, null, null, false );
+      }
+      case Enum::BtDeviceConnectionResult.BOTH_APP_CONNECTED:
+      {
+        Owner.SwitchToDialog( new Settings::SET51_BothAppConnected, null, null, null, null, null, null, null, null, null, false );
       }
       case Enum::BtDeviceConnectionResult.FAIL:
       {
@@ -1017,7 +995,7 @@ class SET9_10_11_BtConnectionResult : Components::BaseMainBG
   $reorder Divider 1
 }
 
-$rect <20,160,260,200>
+$rect <20,210,260,250>
 $output false
 class SET05_BtcMaxPairedDevice : Components::BaseMainBG
 {
@@ -1078,7 +1056,7 @@ class SET05_BtcMaxPairedDevice : Components::BaseMainBG
   }
 }
 
-$rect <20,260,260,300>
+$rect <20,310,260,350>
 $output false
 class SET08_BtcPairDevice : Components::BaseMainBG
 {
@@ -1155,45 +1133,15 @@ class SET08_BtcPairDevice : Components::BaseMainBG
   slot OnYesActivatedSlot
   {
     trace "SET08 yes";
+
     $if !$prototyper
       native
       {
         BTM_btc_confirm_passkey( true );
       }
     $endif
-  }
 
-  $rect <430,290,720,330>
-  object Core::SystemEventHandler BtcPairingStateChangeEventHandler
-  {
-    preset OnEvent = OnBtcPairingStateChangeSlot;
-    preset Event = DeviceInterface::BluetoothDevice.BtcPairingChangedSystemEvent;
-  }
-
-  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
-  // receives an event.
-  $rect <430,340,690,380>
-  slot OnBtcPairingStateChangeSlot
-  {
-    if( null != Owner )
-    {
-      switch( DeviceInterface::BluetoothDevice.BtcPairingState )
-      {
-        case Enum::BtcPairingState.FAIL:
-        {
-          var Settings::TimeoutDialog PairingFailDialog = new Settings::TimeoutDialog;
-          PairingFailDialog.Message = Strings::SET07_PAIRING_FAILED;
-          PairingFailDialog.DismissAfterTimeout = true;
-          Owner.SwitchToDialog( PairingFailDialog, null, null, null, null, null, null, null, null, null, false );
-        }
-        case Enum::BtcPairingState.SUCCESSFUL:
-        {
-          Owner.SwitchToDialog( new Settings::SET17_BtcPairedDeviceList, null, null, null, null, null, null, null, null, null, false );
-          DeviceInterface::BluetoothDevice.RefreshPairedDeviceList = true;
-        }
-        default:;
-      }
-    }
+    Owner.SwitchToDialog( new Settings::SET47_WaitingApproval, null, null, null, null, null, null, null, null, null, false );
   }
 
   $rect <0,390,200,430>
@@ -1208,14 +1156,14 @@ class SET08_BtcPairDevice : Components::BaseMainBG
   }
 }
 
-$rect <20,310,260,350>
+$rect <20,360,260,400>
 $output false
 class SET17_BtcPairedDeviceList : Menu::BaseMenuView
 {
   $rect <0,290,180,330>
   inherited method Init()
   {
-    trace "Init SET17";
+    trace "SET17";
     UpdatePairedDeviceNum();
   }
 
@@ -1229,17 +1177,14 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
   inherited method LoadItemClass()
   {
     aItemNo; //to suppress warning
-    return Menu::ItemCheckMark;
+    return Menu::ItemBtPairedDevice;
   }
 
   $rect <520,70,720,110>
   inherited method LoadItemTitle()
   {
     // suppress warning
-    if( aItemNo > 0 )
-    {
-      // empty body
-    }
+    aItemNo;
 
     var string Title;
     if( PairedDeviceNum > 0 )
@@ -1251,41 +1196,22 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
     return Title;
   }
 
-  $rect <520,170,720,210>
+  $rect <520,220,720,260>
   inherited method OnItemActivate()
   {
     // suppress warning
-    if( aItemNo >= 0 )
-    {
-      // empty body
-    }
+    aItemNo;
 
-    var Menu::ItemCheckMark BtDeviceItem = ( Menu::ItemCheckMark )aMenuItem;
+    var Menu::ItemBtPairedDevice BtDeviceItem = ( Menu::ItemBtPairedDevice )aMenuItem;
     if( null != BtDeviceItem )
     {
       var Settings::SET19_BtcPairedDeviceOperation Dialog = new Settings::SET19_BtcPairedDeviceOperation;
       Dialog.PairedDeviceIndex = aItemNo;
       Dialog.DeviceName = BtDeviceItem.Title.String;
-      Dialog.IsConnected = BtDeviceItem.Checked;
+      Dialog.ConnectEnabled = !BtDeviceItem.Icon1Visible || !BtDeviceItem.Icon2Visible;
+      Dialog.DisconnectEnabled = BtDeviceItem.Icon1Visible || BtDeviceItem.Icon2Visible;
       SlideInDialog( Dialog );
     }
-  }
-
-  $rect <517,118,717,158>
-  inherited method LoadItemChecked()
-  {
-    // suppress warning
-    if( aItemNo > 0 )
-    {
-      // empty body
-    }
-
-    var bool result = false;
-    if( PairedDeviceNum > 0 )
-    {
-      result = DeviceInterface::BluetoothDevice.PairedDeviceObj.IsConnected;
-    }
-    return result;
   }
 
   $rect <20,20,160,60>
@@ -1296,6 +1222,22 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
     preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
     preset ArrowScrollBarVisible = true;
+  }
+
+  $rect <522,123,722,163>
+  inherited method LoadItemIcon1Visible()
+  {
+    // suppress warning
+    aItemNo;
+
+    var bool result;
+    $if !$prototyper
+      if( 0 < PairedDeviceNum )
+      {
+        result = DeviceInterface::BluetoothDevice.PairedDeviceObj.IsNaviAppConnected;
+      }
+    $endif
+    return result;
   }
 
   $rect <220,290,440,330>
@@ -1365,6 +1307,22 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
     }
   }
 
+  $rect <520,170,720,210>
+  inherited method LoadItemIcon2Visible()
+  {
+    // suppress warning
+    aItemNo;
+
+    var bool result;
+    $if !$prototyper
+      if( 0 < PairedDeviceNum )
+      {
+        result = DeviceInterface::BluetoothDevice.PairedDeviceObj.IsYamahaAppConnected;
+      }
+    $endif
+    return result;
+  }
+
   $reorder PairedDeviceNum 1
   $reorder UpdatePairedDeviceNum 1
   $reorder RefreshListObserver 1
@@ -1381,7 +1339,7 @@ class SET19_BtcPairedDeviceOperation : Menu::BaseMenuView
   $rect <10,300,190,340>
   inherited method Init()
   {
-    trace "Init SET19";
+    trace "SET19";
   }
 
   $rect <230,350,430,390>
@@ -1405,49 +1363,38 @@ class SET19_BtcPairedDeviceOperation : Menu::BaseMenuView
   $rect <510,70,710,110>
   inherited method LoadItemTitle()
   {
-    var string title = "";
+    var string Title = "";
 
     switch( aItemNo )
     {
-      case 0: title = Strings::SET19_DELETE_PAIRING;
-      case 1: title = Strings::SET19_CONNECT;
-      case 2: title = Strings::SET19_DISCONNECT;
+      case 0: Title = Strings::SET19_DELETE_PAIRING;
+      case 1: Title = Strings::SET19_CONNECT;
+      case 2: Title = Strings::SET19_DISCONNECT;
       default:;
     }
 
-    return title;
+    return Title;
   }
 
   $rect <510,170,710,210>
   inherited method OnItemActivate()
   {
+    // suppress warning
+    aMenuItem;
+
     switch( aItemNo )
     {
       case 0:
       {
         DeviceInterface::BluetoothDevice.UnpairDevice( PairedDeviceIndex );
-        if( DeviceInterface::BluetoothDevice.IsBlePairedDevice( PairedDeviceIndex ) )
-        {
-          var Settings::SET18_DeleteBleDevice Dialog = new Settings::SET18_DeleteBleDevice;
-          Dialog.DeviceName = DeviceName;
-          var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )Owner;
-          if( null != OwnerMenu )
-          {
-            OwnerMenu.Menu.FocusFrame.Visible = true;
-          }
-          Owner.SwitchToDialog( Dialog, null, null, null, null, null, null, null, null, null, false );
-        }
-        else
-        {
-          DeviceInterface::BluetoothDevice.RefreshPairedDeviceList = true;
-          SlideOutDialog();
-        }
+        DeviceInterface::BluetoothDevice.RefreshPairedDeviceList = true;
+        SlideOutDialog();
       }
       case 1:
       {
         var Settings::SET9_10_11_BtConnectionResult Dialog = new Settings::SET9_10_11_BtConnectionResult;
         Dialog.DeviceName = DeviceName;
-        var Menu::BaseMenuView OwnerMenu = ( Menu::BaseMenuView )Owner;
+        var Menu::BaseMenuView OwnerMenu = (Menu::BaseMenuView)Owner;
         if( null != OwnerMenu )
         {
           OwnerMenu.Menu.FocusFrame.Visible = true;
@@ -1461,7 +1408,7 @@ class SET19_BtcPairedDeviceOperation : Menu::BaseMenuView
         SlideOutDialog();
         DeviceInterface::BluetoothDevice.RefreshPairedDeviceList = true;
       }
-      default: trace "", aMenuItem; // suppress warning;
+      default:;
     }
   }
 
@@ -1473,8 +1420,8 @@ class SET19_BtcPairedDeviceOperation : Menu::BaseMenuView
     switch( aItemNo )
     {
       case 0: OptionEnabled = true;
-      case 1: OptionEnabled = !IsConnected;
-      case 2: OptionEnabled = IsConnected;
+      case 1: OptionEnabled = ConnectEnabled;
+      case 2: OptionEnabled = DisconnectEnabled;
       default:;
     }
 
@@ -1495,46 +1442,13 @@ class SET19_BtcPairedDeviceOperation : Menu::BaseMenuView
   property string DeviceName;
 
   $rect <10,450,210,490>
-  property bool IsConnected = false;
+  property bool ConnectEnabled = false;
+
+  $rect <10,500,210,540>
+  property bool DisconnectEnabled = false;
 }
 
-$rect <20,360,260,400>
-$output false
-class SET18_DeleteBleDevice : Components::BaseMainBG
-{
-  $rect <10,290,190,330>
-  inherited method Init()
-  {
-    trace "Init SET18";
-
-    var string ProcessString = Strings::SET18_DELETE_PAIRING_RECORD;
-    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
-    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
-    $if !$prototyper
-      Text.String = ProcessString.left( LeftIdx ) + DeviceName + ProcessString.right( RightIdx );
-    $else
-      Text.String = ProcessString.left( LeftIdx ) + "Smartphone" + ProcessString.right( RightIdx );
-    $endif
-  }
-
-  $rect <10,340,190,380>
-  inherited property DDModeEnabled = true;
-
-  $rect <20,20,160,60>
-  object Views::Text Text
-  {
-    preset Bounds = <25,48,455,234>;
-    preset WrapText = true;
-    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
-    preset String = Strings::SET18_DELETE_PAIRING_RECORD;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <210,290,410,330>
-  property string DeviceName;
-}
-
-$rect <310,310,510,350>
+$rect <280,510,520,550>
 $output false
 class BtFwUpdateDialog : Core::Group
 {
@@ -1601,7 +1515,7 @@ class BtFwUpdateDialog : Core::Group
   }
 }
 
-$rect <310,10,550,50>
+$rect <280,10,520,50>
 $output false
 class TimeoutDialog : Components::BaseMainBG
 {
@@ -1796,9 +1710,9 @@ class SET30_QRCode : Components::BaseMainBG
   }
 }
 
-$rect <310,60,550,100>
+$rect <280,60,520,100>
 $output false
-class SET22_BleAdvertising : Components::BaseMainBG
+class SET22_WaitingConnection : Components::BaseMainBG
 {
   $rect <0,340,200,380>
   inherited method ReInit()
@@ -1809,23 +1723,21 @@ class SET22_BleAdvertising : Components::BaseMainBG
   $rect <0,290,180,330>
   inherited method Init()
   {
-    trace "Init SET22";
-    DisplayString();
-    DeviceInterface::BluetoothDevice.SetBleAdvertisement( true );
+    trace "SET22";
+
+    var string ProcessString = Strings::SET22_WAIT_APP_CONNECTION;
+    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
+    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+    WaitText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
   }
 
-  $rect <530,290,760,330>
-  inherited method OnShortHomeKeyActivated()
+  $rect <560,290,790,330>
+  inherited method OnShortUpKeyActivated()
   {
-    DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
-    super();
-  }
-
-  $rect <530,340,760,380>
-  inherited method OnLongHomeKeyActivated()
-  {
-    DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
-    super();
+    /* for debug UI flow in prototyper */
+    $if $prototyper
+      Owner.SwitchToDialog( new Settings::SET23_PairingFail, null, null, null, null, null, null, null, null, null, false );
+    $endif
   }
 
   $rect <0,440,180,480>
@@ -1849,47 +1761,35 @@ class SET22_BleAdvertising : Components::BaseMainBG
     preset Bitmap = Resource::LoadingAnimation;
   }
 
-  $rect <230,290,490,330>
-  object Core::SystemEventHandler BlePairingStateChangedEventHandler
+  $rect <240,290,520,330>
+  object Core::SystemEventHandler ConnectPairedDeviceResultHandler
   {
-    preset OnEvent = OnBlePairingStateChangedSlot;
-    preset Event = DeviceInterface::BluetoothDevice.BlePairingStateChangedEvent;
+    preset OnEvent = OnConnectPairedDeviceResultSlot;
+    preset Event = DeviceInterface::BluetoothDevice.BtcConnectionResultSystemEvent;
   }
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <230,340,490,380>
-  slot OnBlePairingStateChangedSlot
+  $rect <240,340,520,380>
+  slot OnConnectPairedDeviceResultSlot
   {
-    if( null != Owner )
+    var Enum::BtDeviceConnectionResult ConnectionResult = DeviceInterface::BluetoothDevice.ConnectPairedDeviceResult;
+    switch( ConnectionResult )
     {
-      switch( DeviceInterface::BluetoothDevice.BlePairingState )
+      case Enum::BtDeviceConnectionResult.ONLY_NAVI_APP_CONNECTED:
       {
-        case Enum::BlePairingState.TIMEOUT,
-             Enum::BlePairingState.FAIL:
-        {
-          DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
-          Owner.SwitchToDialog( new Settings::SET23_BlePairingFail, null, null, null, null, null, null, null, null, null, false );
-        }
-        case Enum::BlePairingState.SUCCESSFUL:
-        {
-          var Settings::TimeoutDialog MessageDialog = new Settings::TimeoutDialog;
-          var Settings::SET03_ConnectionSettingMenu ConnectionSettingDialog = ( Settings::SET03_ConnectionSettingMenu )Owner;
-          if( null != ConnectionSettingDialog )
-          {
-            MessageDialog.Message = Strings::SET26_PAIRING_SUCCESSFUL;
-            MessageDialog.DismissAfterTimeout = true;
-            DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
-            ConnectionSettingDialog.SwitchToDialog( MessageDialog, null, null, null, null, null, null, null, null, null, false );
-          }
-        }
-        case Enum::BlePairingState.PINCODE_GENERATED:
-        {
-          DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
-          Owner.SwitchToDialog( new Settings::SET25_BlePincode, null, null, null, null, null, null, null, null, null, false );
-        }
-        default:;
+        Owner.SwitchToDialog( new Settings::SET49_OnlyNaviAppConnected, null, null, null, null, null, null, null, null, null, false );
       }
+      case Enum::BtDeviceConnectionResult.YAMAHA_APP_CONNECTION_FAILED:
+      {
+        Owner.SwitchToDialog( new Settings::SET23_PairingFail, null, null, null, null, null, null, null, null, null, false );
+      }
+      case Enum::BtDeviceConnectionResult.ONLY_YAMAHA_APP_CONNECTED,
+           Enum::BtDeviceConnectionResult.BOTH_APP_CONNECTED:
+      {
+        Owner.SwitchToDialog( new Settings::SET26_PairingSuccessful, null, null, null, null, null, null, null, null, null, false );
+      }
+      default:;
     }
   }
 
@@ -1903,26 +1803,43 @@ class SET22_BleAdvertising : Components::BaseMainBG
   }
 }
 
-$rect <310,110,550,150>
+$rect <280,110,520,150>
 $output false
-class SET23_BlePairingFail : Settings::TimeoutDialog
+class SET23_PairingFail : Settings::TimeoutDialog
 {
+  $rect <10,290,190,330>
+  inherited method Init()
+  {
+    trace "SET23";
+  }
+
   $rect <20,20,160,60>
   inherited object MessageText
   {
     preset String = Strings::SET23_PAIRING_FAILED;
   }
 
-  $rect <10,290,210,330>
+  $rect <10,340,190,380>
   inherited slot OnTimeoutSlot
   {
-    if( DeviceInterface::BluetoothDevice.GetBlePairingFailCount() > 1 )
+    if( DeviceInterface::BluetoothDevice.GetPairingFailCount() > 1 )
     {
       Owner.SwitchToDialog( new Settings::SET24_CheckPairingRecord, null, null, null, null, null, null, null, null, null, false );
     }
     else
     {
-      Owner.DismissDialog( this, null, null, null, null, null, false );
+      if( DeviceInterface::BluetoothDevice.IsPairingDeviceYamahaAppSPPConnected() )
+      {
+        Owner.SwitchToDialog( new Settings::SET48_ReconnectYamahaApp, null, null, null, null, null, null, null, null, null, false );
+      }
+      else
+      {
+        var Settings::SET04_BtSettingMenu BtSettingMenu = (Settings::SET04_BtSettingMenu)Owner;
+        if( null != BtSettingMenu )
+        {
+          BtSettingMenu.SwitchToDialog( new Settings::SET17_BtcPairedDeviceList, null, null, null, null, null, null, null, null, null, false );
+        }
+      }
     }
   }
 
@@ -1931,17 +1848,24 @@ class SET23_BlePairingFail : Settings::TimeoutDialog
   $reorder OnTimeout 3
 }
 
-$rect <310,160,550,200>
+$rect <280,160,520,200>
 $output false
 class SET24_CheckPairingRecord : Components::BaseMainBG
 {
+  $rect <0,340,180,380>
+  inherited method ReInit()
+  {
+    MessageText.String = Strings::SET24_CHECK_BT_PAIRING_RECORD;
+    PushButton.Title = Strings::GEN_OK;
+  }
+
   $rect <0,290,180,330>
   inherited method Init()
   {
-    trace "Init SET24";
+    trace "SET24";
   }
 
-  $rect <0,340,200,380>
+  $rect <0,390,180,430>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
@@ -1964,83 +1888,11 @@ class SET24_CheckPairingRecord : Components::BaseMainBG
   $rect <210,290,410,330>
   slot OnOkActivatedSlot
   {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
-  }
-}
-
-$rect <310,210,550,250>
-$output false
-class SET25_BlePincode : Components::BaseMainBG
-{
-  $rect <0,290,180,330>
-  inherited method Init()
-  {
-    var string PincodeString = string( DeviceInterface::BluetoothDevice.BlePincode, Settings::BT_PASSKEY_LEN );
-    PincodeText.String = Strings::SET25_PIN + "\n" + PincodeString;
-    trace "Init SET25 ", PincodeString;
-  }
-
-  $rect <0,340,180,380>
-  inherited method UpdateViewState()
-  {
-    super( aState );
-
-    // check if BLE pairing state changed
-    if( aState.contains( Core::ViewState[ Dialog ] ) && null != Owner )
+    var Settings::SET04_BtSettingMenu BtSettingMenu = (Settings::SET04_BtSettingMenu)Owner;
+    if( null != BtSettingMenu )
     {
-      postsignal OnBlePairingStateChangedSlot;
+      BtSettingMenu.SwitchToDialog( new Settings::SET17_BtcPairedDeviceList, null, null, null, null, null, null, null, null, null, false );
     }
-  }
-
-  $rect <0,440,230,480>
-  inherited method OnShortHomeKeyActivated()
-  {
-    DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
-    super();
-  }
-
-  $rect <0,390,180,430>
-  inherited property DDModeEnabled = true;
-
-  $rect <240,290,500,330>
-  object Core::SystemEventHandler BleStateChangedEventHandler
-  {
-    preset OnEvent = OnBlePairingStateChangedSlot;
-    preset Event = DeviceInterface::BluetoothDevice.BlePairingStateChangedEvent;
-  }
-
-  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
-  // receives an event.
-  $rect <240,340,500,380>
-  slot OnBlePairingStateChangedSlot
-  {
-    if( null != Owner )
-    {
-      switch( DeviceInterface::BluetoothDevice.BlePairingState )
-      {
-        case Enum::BlePairingState.FAIL,
-             Enum::BlePairingState.TIMEOUT:
-        {
-          Owner.SwitchToDialog( new Settings::SET23_BlePairingFail, null, null, null, null, null, null, null, null, null, false );
-        }
-        case Enum::BlePairingState.SUCCESSFUL:
-        {
-          var Settings::TimeoutDialog MessageDialog = new Settings::TimeoutDialog;
-          MessageDialog.Message = Strings::SET26_PAIRING_SUCCESSFUL;
-          MessageDialog.DismissAfterTimeout = true;
-          Owner.SwitchToDialog( MessageDialog, null, null, null, null, null, null, null, null, null, false );
-        }
-        default:;
-      }
-    }
-  }
-
-  $rect <20,20,160,60>
-  object Views::Text PincodeText
-  {
-    preset Bounds = <10,50,470,236>;
-    preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }
 
@@ -2192,7 +2044,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   }
 }
 
-$rect <20,510,220,550>
+$rect <20,560,250,600>
 $output false
 const int32 BT_PASSKEY_LEN = 6;
 
@@ -2340,7 +2192,7 @@ class LicenseDetail : Core::Group
 }
 
 // Max line number per page on the license UI.
-$rect <20,560,250,600>
+$rect <20,610,250,650>
 $output false
 const int32 DETAIL_TOTAL_LINE_NUM = 7;
 
@@ -3260,3 +3112,379 @@ class SET27_ConfirmUpdate : Components::BaseMainBG
 $rect <1120,710,1390,750>
 $output false
 const float COOLANT_HIGH_TEMPERATURE = 128.75;
+
+$rect <280,260,520,300>
+$output false
+class SET47_WaitingApproval : Components::BaseMainBG
+{
+  $rect <10,350,190,390>
+  inherited method ReInit()
+  {
+    DisplayString();
+  }
+
+  $rect <10,300,190,340>
+  inherited method Init()
+  {
+    trace "SET47";
+    DisplayString();
+  }
+
+  $rect <1150,300,1380,340>
+  inherited method OnShortUpKeyActivated()
+  {
+    $if $prototyper
+      Owner.SwitchToDialog( new Settings::SET22_WaitingConnection, null, null, null, null, null, null, null, null, null, false );
+    $endif
+  }
+
+  $rect <210,300,440,340>
+  inherited method OnShortHomeKeyActivated()
+  {
+    // neglect home key event
+  }
+
+  $rect <210,350,440,390>
+  inherited method OnLongHomeKeyActivated()
+  {
+    // neglect home key event
+  }
+
+  $rect <10,450,190,490>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Image LoadingAnimation
+  {
+    preset Bounds = <193,54,287,148>;
+    preset Animated = true;
+    preset Bitmap = Resource::LoadingAnimation;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text WaitingText
+  {
+    preset Bounds = <10,156,470,227>;
+    preset WrapText = true;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertTop];
+    preset String = Strings::SET47_WAIT_APPROVAL;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <460,300,750,340>
+  object Core::SystemEventHandler BtcPairingStateChangeEventHandler
+  {
+    preset OnEvent = OnBtcPairingStateChangeSlot;
+    preset Event = DeviceInterface::BluetoothDevice.BtcPairingChangedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <460,350,720,390>
+  slot OnBtcPairingStateChangeSlot
+  {
+    if( null != Owner )
+    {
+      switch( DeviceInterface::BluetoothDevice.BtcPairingState )
+      {
+        case Enum::BtcPairingState.FAIL: DisplayPairingFailed();
+        case Enum::BtcPairingState.NAVI_APP_CONNECTED: Owner.SwitchToDialog( new Settings::SET49_OnlyNaviAppConnected, null, null, null, null, null, null, null, null, null, false );
+        case Enum::BtcPairingState.YAMAHA_APP_CONNECTED: Owner.SwitchToDialog( new Settings::SET22_WaitingConnection, null, null, null, null, null, null, null, null, null, false );
+        default:;
+      }
+    }
+  }
+
+  $rect <460,400,660,440>
+  method void DisplayPairingFailed()
+  {
+    var Settings::TimeoutDialog PairingFailedDialog = new Settings::TimeoutDialog;
+    PairingFailedDialog.Message = Strings::SET07_PAIRING_FAILED;
+    PairingFailedDialog.DismissAfterTimeout = true;
+    Owner.SwitchToDialog( PairingFailedDialog, null, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <780,350,1000,390>
+  object Core::Timer CountDownTimer
+  {
+    preset OnTrigger = UpdateCountDownTimeSlot;
+    preset Period = 1000;
+    preset Enabled = true;
+  }
+
+  $rect <780,400,1020,440>
+  slot UpdateCountDownTimeSlot
+  {
+    if( CountDownTimeSec > 0)
+    {
+      CountDownTimeSec--;
+    }
+    else
+    {
+      DisplayPairingFailed();
+    }
+  }
+
+  $rect <780,300,1000,340>
+  var int32 CountDownTimeSec = 30;
+
+  $rect <10,400,190,440>
+  method void DisplayString()
+  {
+    var string ProcessString = Strings::SET47_WAIT_APPROVAL;
+    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
+    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+    WaitingText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
+  }
+}
+
+$rect <280,360,520,400>
+$output false
+class SET49_OnlyNaviAppConnected : Components::BaseMainBG
+{
+  $rect <3,340,180,380>
+  inherited method ReInit()
+  {
+    DisplayString();
+  }
+
+  $rect <0,290,180,330>
+  inherited method Init()
+  {
+    trace "SET49";
+    DisplayString();
+  }
+
+  $rect <0,440,180,480>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Text MessageText
+  {
+    preset Bounds = <10,46,470,201>;
+    preset WrapText = true;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::PushButton PushButton
+  {
+    preset Bounds = <165,219,315,259>;
+    preset Title = Strings::GEN_LATER;
+    preset OnActivate = OnLaterSlot;
+  }
+
+  $rect <210,290,410,330>
+  slot OnLaterSlot
+  {
+    var Settings::SET17_BtcPairedDeviceList PairedDeviceListDialog = (Settings::SET17_BtcPairedDeviceList)Owner;
+    if( null != PairedDeviceListDialog )
+    {
+      Owner.DismissDialog( this, null, null, null, null, null, false );
+    }
+    else
+    {
+      var Settings::SET04_BtSettingMenu BtSettingDialog = (Settings::SET04_BtSettingMenu)Owner;
+      if( null != BtSettingDialog )
+      {
+        Owner.SwitchToDialog( new Settings::SET17_BtcPairedDeviceList, null, null, null, null, null, null, null, null, null, false );
+      }
+    }
+  }
+
+  $rect <0,390,180,430>
+  method void DisplayString()
+  {
+    var string ProcessString = Strings::SET49_LAUNCH_YAMAHA_APP;
+    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
+    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+    MessageText.String += ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
+
+    PushButton.Title = Strings::GEN_LATER;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,36,480,38>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
+  }
+}
+
+$rect <280,410,520,450>
+$output false
+class SET50_OnlyYahamaAppConnected : Components::BaseMainBG
+{
+  $rect <0,290,180,330>
+  inherited method Init()
+  {
+    trace "SET50";
+
+    var string ProcessString = Strings::SET50_LAUNCH_NAVI_APP;
+    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
+    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+    MessageText.String += ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
+  }
+
+  $rect <0,340,200,380>
+  inherited property DDModeEnabled = true;
+
+  $rect <20,20,160,60>
+  object Views::Text MessageText
+  {
+    preset Bounds = <10,46,470,201>;
+    preset WrapText = true;
+    preset String = "";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::PushButton PushButton
+  {
+    preset Bounds = <165,219,315,259>;
+    preset Title = Strings::GEN_LATER;
+    preset OnActivate = OnLaterSlot;
+  }
+
+  $rect <210,290,410,330>
+  slot OnLaterSlot
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,36,480,38>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
+  }
+}
+
+$rect <280,310,520,350>
+$output false
+class SET48_ReconnectYamahaApp : Settings::TimeoutDialog
+{
+  $rect <10,340,190,380>
+  inherited method ReInit()
+  {
+    DisplayString();
+  }
+
+  $rect <10,290,190,330>
+  inherited method Init()
+  {
+    trace "SET48";
+    DisplayString();
+  }
+
+  $rect <20,20,160,60>
+  inherited object MessageText
+  {
+    preset String = Strings::SET48_RECONNECT_YCONNECT;
+  }
+
+  $rect <210,290,410,330>
+  inherited slot OnTimeoutSlot
+  {
+    DeviceInterface::BluetoothDevice.TriggerConnectionTimeoutTimer();
+    Owner.SwitchToDialog( new Settings::SET22_WaitingConnection, null, null, null, null, null, null, null, null, null, false );
+  }
+
+  $rect <10,390,190,430>
+  method void DisplayString()
+  {
+    var string ProcessString = Strings::SET48_RECONNECT_YCONNECT;
+    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
+    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+    MessageText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
+  }
+
+  $reorder Message 1
+  $reorder OnSetMessage 1
+  $reorder OnTimeout 3
+}
+
+$rect <280,460,520,500>
+$output false
+class SET51_BothAppConnected : Settings::TimeoutDialog
+{
+  $rect <0,335,200,375>
+  inherited method ReInit()
+  {
+    DisplayString();
+  }
+
+  $rect <0,290,180,330>
+  inherited method Init()
+  {
+    trace "SET51";
+    DisplayString();
+  }
+
+  $rect <0,430,200,470>
+  inherited property DDModeEnabled = true;
+
+  $rect <240,290,440,330>
+  inherited slot OnTimeoutSlot
+  {
+    DismissThisDialog();
+  }
+
+  $rect <0,380,200,420>
+  method void DisplayString()
+  {
+    var string ProcessString = Strings::SET51_BOTH_APP_CONNECTED;
+    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
+    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+    MessageText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Divider
+  {
+    preset Bounds = <0,36,480,38>;
+    preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
+    preset Bitmap = Resource::StatusBarDivider;
+  }
+
+  $reorder Message 1
+  $reorder OnSetMessage 1
+  $reorder TimeoutTimer 1
+  $reorder OnTimeoutSlot 1
+  $reorder OnTimeout 1
+  $reorder DismissAfterTimeout 1
+}
+
+$rect <280,210,520,250>
+$output false
+class SET26_PairingSuccessful : Settings::TimeoutDialog
+{
+  $rect <10,290,190,330>
+  inherited method Init()
+  {
+    trace "SET26";
+  }
+
+  $rect <20,20,160,60>
+  inherited object MessageText
+  {
+    preset String = Strings::SET26_PAIRING_SUCCESSFUL;
+  }
+
+  $rect <10,340,210,380>
+  inherited slot OnTimeoutSlot
+  {
+    var Settings::SET04_BtSettingMenu BtSettingMenu = (Settings::SET04_BtSettingMenu)Owner;
+    if( null != BtSettingMenu )
+    {
+      BtSettingMenu.SwitchToDialog( new Settings::SET17_BtcPairedDeviceList, null, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
+  $reorder Message 1
+  $reorder OnSetMessage 1
+  $reorder OnTimeout 3
+}

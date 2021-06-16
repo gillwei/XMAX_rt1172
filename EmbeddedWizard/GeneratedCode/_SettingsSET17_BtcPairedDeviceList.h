@@ -183,8 +183,7 @@ EW_DEFINE_METHODS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView )
     XInt32 aItemNo )
   EW_METHOD( OnItemActivate,    void )( SettingsSET17_BtcPairedDeviceList _this, 
     XInt32 aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( SettingsSET17_BtcPairedDeviceList _this, 
-    XInt32 aItemNo )
+  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -200,6 +199,10 @@ EW_DEFINE_METHODS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView )
   EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon1Visible, XBool )( SettingsSET17_BtcPairedDeviceList _this, 
+    XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon2Visible, XBool )( SettingsSET17_BtcPairedDeviceList _this, 
+    XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET17_BtcPairedDeviceList )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -220,8 +223,8 @@ XString SettingsSET17_BtcPairedDeviceList_LoadItemTitle( SettingsSET17_BtcPaired
 void SettingsSET17_BtcPairedDeviceList_OnItemActivate( SettingsSET17_BtcPairedDeviceList _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemChecked()' */
-XBool SettingsSET17_BtcPairedDeviceList_LoadItemChecked( SettingsSET17_BtcPairedDeviceList _this, 
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemIcon1Visible()' */
+XBool SettingsSET17_BtcPairedDeviceList_LoadItemIcon1Visible( SettingsSET17_BtcPairedDeviceList _this, 
   XInt32 aItemNo );
 
 /* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.UpdatePairedDeviceNum()' */
@@ -235,6 +238,10 @@ void SettingsSET17_BtcPairedDeviceList_OnRefreshListSlot( SettingsSET17_BtcPaire
 /* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.OnNoDataTimeoutSlot()' */
 void SettingsSET17_BtcPairedDeviceList_OnNoDataTimeoutSlot( SettingsSET17_BtcPairedDeviceList _this, 
   XObject sender );
+
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemIcon2Visible()' */
+XBool SettingsSET17_BtcPairedDeviceList_LoadItemIcon2Visible( SettingsSET17_BtcPairedDeviceList _this, 
+  XInt32 aItemNo );
 
 #ifdef __cplusplus
   }

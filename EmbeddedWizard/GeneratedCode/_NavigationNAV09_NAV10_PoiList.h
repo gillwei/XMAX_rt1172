@@ -204,6 +204,8 @@ EW_DEFINE_METHODS( NavigationNAV09_NAV10_PoiList, MenuBaseMenuView )
     XInt32 aItemNo )
   EW_METHOD( LoadPoiListItemUnit, XString )( NavigationNAV09_NAV10_PoiList _this, 
     XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( NavigationNAV09_NAV10_PoiList )
 
 /* The method Init() is invoked automatically after the component has been created. 

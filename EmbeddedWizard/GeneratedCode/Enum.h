@@ -68,7 +68,12 @@ typedef enum
 {
   EnumBtDeviceConnectionResultSUCCESS   = 0,
   EnumBtDeviceConnectionResultFAIL      = 1,
-  EnumBtDeviceConnectionResultAUTHENTICATION_ERR = 2
+  EnumBtDeviceConnectionResultAUTHENTICATION_ERR = 2,
+  EnumBtDeviceConnectionResultONLY_NAVI_APP_CONNECTED = 3,
+  EnumBtDeviceConnectionResultONLY_YAMAHA_APP_CONNECTED = 4,
+  EnumBtDeviceConnectionResultBOTH_APP_CONNECTED = 5,
+  EnumBtDeviceConnectionResultYAMAHA_APP_BLE_NOT_CONNECTED = 6,
+  EnumBtDeviceConnectionResultYAMAHA_APP_CONNECTION_FAILED = 7
 } EnumBtDeviceConnectionResult;
 
 /* User defined enumeration: 'Enum::BtFwStatus' */
@@ -326,17 +331,6 @@ typedef enum
   EnumHomeTypeTOTAL                     = 7
 } EnumHomeType;
 
-/* User defined enumeration: 'Enum::BlePairingState' */
-typedef enum
-{
-  EnumBlePairingStateIDLE               = 0,
-  EnumBlePairingStateADVERTISING        = 1,
-  EnumBlePairingStateSUCCESSFUL         = 2,
-  EnumBlePairingStateTIMEOUT            = 3,
-  EnumBlePairingStateFAIL               = 4,
-  EnumBlePairingStatePINCODE_GENERATED  = 5
-} EnumBlePairingState;
-
 /* User defined enumeration: 'Enum::NaviDataType' */
 typedef enum
 {
@@ -435,7 +429,9 @@ typedef enum
   EnumBtcPairingStateSUCCESSFUL         = 2,
   EnumBtcPairingStateTIMEOUT            = 3,
   EnumBtcPairingStateFAIL               = 4,
-  EnumBtcPairingStatePASSKEY_GENERATED  = 5
+  EnumBtcPairingStatePASSKEY_GENERATED  = 5,
+  EnumBtcPairingStateNAVI_APP_CONNECTED = 6,
+  EnumBtcPairingStateYAMAHA_APP_CONNECTED = 7
 } EnumBtcPairingState;
 
 /* User defined enumeration: 'Enum::ReceptionStatus' */

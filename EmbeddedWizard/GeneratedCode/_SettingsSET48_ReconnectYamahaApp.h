@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSET23_BlePairingFail_H
-#define _SettingsSET23_BlePairingFail_H
+#ifndef _SettingsSET48_ReconnectYamahaApp_H
+#define _SettingsSET48_ReconnectYamahaApp_H
 
 #ifdef __cplusplus
   extern "C"
@@ -99,19 +99,19 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::SET23_BlePairingFail */
-#ifndef _SettingsSET23_BlePairingFail_
-  EW_DECLARE_CLASS( SettingsSET23_BlePairingFail )
-#define _SettingsSET23_BlePairingFail_
+/* Forward declaration of the class Settings::SET48_ReconnectYamahaApp */
+#ifndef _SettingsSET48_ReconnectYamahaApp_
+  EW_DECLARE_CLASS( SettingsSET48_ReconnectYamahaApp )
+#define _SettingsSET48_ReconnectYamahaApp_
 #endif
 
 
-/* Deklaration of class : 'Settings::SET23_BlePairingFail' */
-EW_DEFINE_FIELDS( SettingsSET23_BlePairingFail, SettingsTimeoutDialog )
-EW_END_OF_FIELDS( SettingsSET23_BlePairingFail )
+/* Deklaration of class : 'Settings::SET48_ReconnectYamahaApp' */
+EW_DEFINE_FIELDS( SettingsSET48_ReconnectYamahaApp, SettingsTimeoutDialog )
+EW_END_OF_FIELDS( SettingsSET48_ReconnectYamahaApp )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SET23_BlePairingFail' */
-EW_DEFINE_METHODS( SettingsSET23_BlePairingFail, SettingsTimeoutDialog )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET48_ReconnectYamahaApp' */
+EW_DEFINE_METHODS( SettingsSET48_ReconnectYamahaApp, SettingsTimeoutDialog )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -165,18 +165,30 @@ EW_DEFINE_METHODS( SettingsSET23_BlePairingFail, SettingsTimeoutDialog )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnTimeoutSlot,     void )( SettingsSET23_BlePairingFail _this, XObject 
-    sender )
-EW_END_OF_METHODS( SettingsSET23_BlePairingFail )
+  EW_METHOD( OnTimeoutSlot,     void )( SettingsSET48_ReconnectYamahaApp _this, 
+    XObject sender )
+EW_END_OF_METHODS( SettingsSET48_ReconnectYamahaApp )
 
-/* 'C' function for method : 'Settings::SET23_BlePairingFail.OnTimeoutSlot()' */
-void SettingsSET23_BlePairingFail_OnTimeoutSlot( SettingsSET23_BlePairingFail _this, 
+/* 'C' function for method : 'Settings::SET48_ReconnectYamahaApp.ReInit()' */
+void SettingsSET48_ReconnectYamahaApp_ReInit( SettingsSET48_ReconnectYamahaApp _this );
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET48_ReconnectYamahaApp_Init( SettingsSET48_ReconnectYamahaApp _this, 
+  XHandle aArg );
+
+/* 'C' function for method : 'Settings::SET48_ReconnectYamahaApp.OnTimeoutSlot()' */
+void SettingsSET48_ReconnectYamahaApp_OnTimeoutSlot( SettingsSET48_ReconnectYamahaApp _this, 
   XObject sender );
+
+/* 'C' function for method : 'Settings::SET48_ReconnectYamahaApp.DisplayString()' */
+void SettingsSET48_ReconnectYamahaApp_DisplayString( SettingsSET48_ReconnectYamahaApp _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSET23_BlePairingFail_H */
+#endif /* _SettingsSET48_ReconnectYamahaApp_H */
 
 /* Embedded Wizard */

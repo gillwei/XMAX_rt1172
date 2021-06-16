@@ -744,6 +744,12 @@ EW_DECLARE_BITMAP_RES( ResourceGradientCover )
 /* Bitmap resource : 'Resource::HighTemperature' */
 EW_DECLARE_BITMAP_RES( ResourceHighTemperature )
 
+/* Bitmap resource : 'Resource::YAppIcon' */
+EW_DECLARE_BITMAP_RES( ResourceYAppIcon )
+
+/* Bitmap resource : 'Resource::NaviAppIcon' */
+EW_DECLARE_BITMAP_RES( ResourceNaviAppIcon )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

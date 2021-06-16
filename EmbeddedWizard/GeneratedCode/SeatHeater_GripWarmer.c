@@ -480,6 +480,8 @@ EW_DEFINE_CLASS( SeatHeater_GripWarmerSHT02_GPW02_Main, MenuBaseMenuView, ScaleI
   MenuBaseMenuView_LoadItemMinute,
   MenuBaseMenuView_LoadPoiListItemValue,
   MenuBaseMenuView_LoadPoiListItemUnit,
+  MenuBaseMenuView_LoadItemIcon1Visible,
+  MenuBaseMenuView_LoadItemIcon2Visible,
 EW_END_OF_CLASS( SeatHeater_GripWarmerSHT02_GPW02_Main )
 
 /* Initializer for the class 'SeatHeater_GripWarmer::ScaleIndicator' */

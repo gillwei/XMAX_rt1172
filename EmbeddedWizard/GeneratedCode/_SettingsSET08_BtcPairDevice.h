@@ -106,7 +106,6 @@ EW_DEFINE_FIELDS( SettingsSET08_BtcPairDevice, ComponentsBaseMainBG )
   EW_OBJECT  ( PairText,        ViewsText )
   EW_OBJECT  ( PasskeyText,     ViewsText )
   EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
-  EW_OBJECT  ( BtcPairingStateChangeEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( SettingsSET08_BtcPairDevice )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET08_BtcPairDevice' */
@@ -181,11 +180,6 @@ void SettingsSET08_BtcPairDevice_OnNoActivatedSlot( SettingsSET08_BtcPairDevice 
 
 /* 'C' function for method : 'Settings::SET08_BtcPairDevice.OnYesActivatedSlot()' */
 void SettingsSET08_BtcPairDevice_OnYesActivatedSlot( SettingsSET08_BtcPairDevice _this, 
-  XObject sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void SettingsSET08_BtcPairDevice_OnBtcPairingStateChangeSlot( SettingsSET08_BtcPairDevice _this, 
   XObject sender );
 
 /* 'C' function for method : 'Settings::SET08_BtcPairDevice.DisplayString()' */

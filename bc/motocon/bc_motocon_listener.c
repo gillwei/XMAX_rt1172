@@ -20,6 +20,7 @@
 #include "VI_pub.h"
 #include "OTA_pub.h"
 #include "PM_pub.h"
+#include "bc_ancs_priv.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS

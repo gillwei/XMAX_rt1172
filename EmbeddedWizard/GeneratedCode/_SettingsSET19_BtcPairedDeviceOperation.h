@@ -116,7 +116,8 @@
 EW_DEFINE_FIELDS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView )
   EW_PROPERTY( DeviceName,      XString )
   EW_PROPERTY( PairedDeviceIndex, XInt32 )
-  EW_PROPERTY( IsConnected,     XBool )
+  EW_PROPERTY( DisconnectEnabled, XBool )
+  EW_PROPERTY( ConnectEnabled,  XBool )
 EW_END_OF_FIELDS( SettingsSET19_BtcPairedDeviceOperation )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET19_BtcPairedDeviceOperation' */
@@ -197,6 +198,8 @@ EW_DEFINE_METHODS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView )
   EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET19_BtcPairedDeviceOperation )
 
 /* The method Init() is invoked automatically after the component has been created. 

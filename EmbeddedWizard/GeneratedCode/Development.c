@@ -592,6 +592,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_Main, MenuBaseMenuView, ItemTitleArray, ItemTitl
   MenuBaseMenuView_LoadItemMinute,
   MenuBaseMenuView_LoadPoiListItemValue,
   MenuBaseMenuView_LoadPoiListItemUnit,
+  MenuBaseMenuView_LoadItemIcon1Visible,
+  MenuBaseMenuView_LoadItemIcon2Visible,
 EW_END_OF_CLASS( DevelopmentDEV_Main )
 
 /* Initializer for the class 'Development::DEV_RealTimeClock' */
@@ -1262,6 +1264,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_MotoCon, MenuBaseMenuView, ItemTitleArray, ItemT
   MenuBaseMenuView_LoadItemMinute,
   MenuBaseMenuView_LoadPoiListItemValue,
   MenuBaseMenuView_LoadPoiListItemUnit,
+  MenuBaseMenuView_LoadItemIcon1Visible,
+  MenuBaseMenuView_LoadItemIcon2Visible,
 EW_END_OF_CLASS( DevelopmentDEV_MotoCon )
 
 /* Initializer for the class 'Development::DEV_VehicleSupportedFunction' */
@@ -1492,6 +1496,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_VehicleSupportedFunction, MenuBaseMenuView, Item
   MenuBaseMenuView_LoadItemMinute,
   MenuBaseMenuView_LoadPoiListItemValue,
   MenuBaseMenuView_LoadPoiListItemUnit,
+  MenuBaseMenuView_LoadItemIcon1Visible,
+  MenuBaseMenuView_LoadItemIcon2Visible,
 EW_END_OF_CLASS( DevelopmentDEV_VehicleSupportedFunction )
 
 /* Initializer for the class 'Development::DEV_FontMenu' */
@@ -1693,6 +1699,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_FontMenu, MenuBaseMenuView, ItemTitleArray, Item
   MenuBaseMenuView_LoadItemMinute,
   MenuBaseMenuView_LoadPoiListItemValue,
   MenuBaseMenuView_LoadPoiListItemUnit,
+  MenuBaseMenuView_LoadItemIcon1Visible,
+  MenuBaseMenuView_LoadItemIcon2Visible,
 EW_END_OF_CLASS( DevelopmentDEV_FontMenu )
 
 /* Initializer for the class 'Development::DEV_FontTest' */
@@ -1994,6 +2002,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_EEPROMTest, MenuBaseMenuView, ItemTitleArray, It
   MenuBaseMenuView_LoadItemMinute,
   MenuBaseMenuView_LoadPoiListItemValue,
   MenuBaseMenuView_LoadPoiListItemUnit,
+  MenuBaseMenuView_LoadItemIcon1Visible,
+  MenuBaseMenuView_LoadItemIcon2Visible,
 EW_END_OF_CLASS( DevelopmentDEV_EEPROMTest )
 
 /* Initializer for the class 'Development::DEV_LanguageTest' */
@@ -2299,6 +2309,8 @@ EW_DEFINE_CLASS( DevelopmentDEV_LanguageTest, MenuBaseMenuView, ReceivedSystemEv
   MenuBaseMenuView_LoadItemMinute,
   MenuBaseMenuView_LoadPoiListItemValue,
   MenuBaseMenuView_LoadPoiListItemUnit,
+  MenuBaseMenuView_LoadItemIcon1Visible,
+  MenuBaseMenuView_LoadItemIcon2Visible,
 EW_END_OF_CLASS( DevelopmentDEV_LanguageTest )
 
 /* Embedded Wizard */

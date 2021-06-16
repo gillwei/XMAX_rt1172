@@ -148,12 +148,14 @@ static void write_test_unit_id
     void
     )
 {
-uint8_t unit_id[24] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-                       'A', 'B', 'C', 'D', 'E', 'F', '2', '0', '2', '1',
-                       '0', '6', '1', '7'};
-EEPM_set_qrcode_fused_data_1( &unit_id[0],  eepm_test_write_cb );
-EEPM_set_qrcode_fused_data_2( &unit_id[8],  eepm_test_write_cb );
-EEPM_set_qrcode_fused_data_3( &unit_id[16], eepm_test_write_cb );
+/* unit id plaintext: 0006031234CDEF 987654 0000 */
+uint8_t unit_id_ciphertext[24] = {'6', 'D', '3', '4', '0', '6', '1', '0', '9', '0',
+                                  'C', '0', '0', '4', '0', '5', 'E', '3', '0', 'F',
+                                  '0', '8', '2', '7'};
+
+EEPM_set_qrcode_fused_data_1( &unit_id_ciphertext[0],  eepm_test_write_cb );
+EEPM_set_qrcode_fused_data_2( &unit_id_ciphertext[8],  eepm_test_write_cb );
+EEPM_set_qrcode_fused_data_3( &unit_id_ciphertext[16], eepm_test_write_cb );
 }
 
 /*********************************************************************

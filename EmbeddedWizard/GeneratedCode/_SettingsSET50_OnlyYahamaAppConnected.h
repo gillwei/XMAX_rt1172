@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentDEV_FontMenu_H
-#define _DevelopmentDEV_FontMenu_H
+#ifndef _SettingsSET50_OnlyYahamaAppConnected_H
+#define _SettingsSET50_OnlyYahamaAppConnected_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,20 +42,15 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuVerticalMenu.h"
+#include "_MenuPushButton.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -87,12 +82,6 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::DEV_FontMenu */
-#ifndef _DevelopmentDEV_FontMenu_
-  EW_DECLARE_CLASS( DevelopmentDEV_FontMenu )
-#define _DevelopmentDEV_FontMenu_
-#endif
-
 /* Forward declaration of the class Effects::Fader */
 #ifndef _EffectsFader_
   EW_DECLARE_CLASS( EffectsFader )
@@ -105,20 +94,22 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBase */
-#ifndef _MenuItemBase_
-  EW_DECLARE_CLASS( MenuItemBase )
-#define _MenuItemBase_
+/* Forward declaration of the class Settings::SET50_OnlyYahamaAppConnected */
+#ifndef _SettingsSET50_OnlyYahamaAppConnected_
+  EW_DECLARE_CLASS( SettingsSET50_OnlyYahamaAppConnected )
+#define _SettingsSET50_OnlyYahamaAppConnected_
 #endif
 
 
-/* Deklaration of class : 'Development::DEV_FontMenu' */
-EW_DEFINE_FIELDS( DevelopmentDEV_FontMenu, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [6])
-EW_END_OF_FIELDS( DevelopmentDEV_FontMenu )
+/* Deklaration of class : 'Settings::SET50_OnlyYahamaAppConnected' */
+EW_DEFINE_FIELDS( SettingsSET50_OnlyYahamaAppConnected, ComponentsBaseMainBG )
+  EW_OBJECT  ( MessageText,     ViewsText )
+  EW_OBJECT  ( PushButton,      MenuPushButton )
+  EW_OBJECT  ( Divider,         ViewsImage )
+EW_END_OF_FIELDS( SettingsSET50_OnlyYahamaAppConnected )
 
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_FontMenu' */
-EW_DEFINE_METHODS( DevelopmentDEV_FontMenu, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET50_OnlyYahamaAppConnected' */
+EW_DEFINE_METHODS( SettingsSET50_OnlyYahamaAppConnected, ComponentsBaseMainBG )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -169,51 +160,25 @@ EW_DEFINE_METHODS( DevelopmentDEV_FontMenu, MenuBaseMenuView )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( MenuBaseMenuView _this, XBool value )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_FontMenu _this, XInt32 
-    aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_FontMenu _this, XInt32 
-    aItemNo )
-  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_FontMenu _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUnit,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
-    aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemHour,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( DevelopmentDEV_FontMenu )
+EW_END_OF_METHODS( SettingsSET50_OnlyYahamaAppConnected )
 
-/* 'C' function for method : 'Development::DEV_FontMenu.LoadItemClass()' */
-XClass DevelopmentDEV_FontMenu_LoadItemClass( DevelopmentDEV_FontMenu _this, XInt32 
-  aItemNo );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET50_OnlyYahamaAppConnected_Init( SettingsSET50_OnlyYahamaAppConnected _this, 
+  XHandle aArg );
 
-/* 'C' function for method : 'Development::DEV_FontMenu.LoadItemTitle()' */
-XString DevelopmentDEV_FontMenu_LoadItemTitle( DevelopmentDEV_FontMenu _this, XInt32 
-  aItemNo );
-
-/* 'C' function for method : 'Development::DEV_FontMenu.OnItemActivate()' */
-void DevelopmentDEV_FontMenu_OnItemActivate( DevelopmentDEV_FontMenu _this, XInt32 
-  aItemNo, MenuItemBase aMenuItem );
+/* 'C' function for method : 'Settings::SET50_OnlyYahamaAppConnected.OnLaterSlot()' */
+void SettingsSET50_OnlyYahamaAppConnected_OnLaterSlot( SettingsSET50_OnlyYahamaAppConnected _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentDEV_FontMenu_H */
+#endif /* _SettingsSET50_OnlyYahamaAppConnected_H */
 
 /* Embedded Wizard */

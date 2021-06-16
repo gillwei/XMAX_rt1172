@@ -46,6 +46,7 @@
 #include "_MenuBaseMenuView.h"
 #include "_MenuItemBase.h"
 #include "_MenuItemBaseValue.h"
+#include "_MenuItemBtPairedDevice.h"
 #include "_MenuItemCheckMark.h"
 #include "_MenuItemCheckbox.h"
 #include "_MenuItemNotification.h"

@@ -1878,7 +1878,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
   // Interfaces to react to BT system events
   note group Note2
   {
-    attr Bounds = <9,280,1690,450>;
+    attr Bounds = <9,280,1730,450>;
   }
 
   // Interfaces to perform BT operations on device
@@ -1892,23 +1892,33 @@ class BluetoothDeviceClass : Templates::DeviceClass
   {
     $if !$prototyper
       var string DevName;
-      var bool   IsConnected;
+      var bool   IsNaviAppConnected;
+      var bool   IsYamahaAppConnected;
 
-      native( aItemNo, DevName, IsConnected )
+      native( aItemNo, DevName, IsNaviAppConnected, IsYamahaAppConnected )
       {
         uint8_t* device_name;
-        bool     is_connected;
-        ew_bt_get_paired_device_at_index( aItemNo, &device_name, &is_connected );
-        DevName = EwNewStringUtf8( (const unsigned char*)device_name, (int)strlen( (char*)device_name ) );
-        IsConnected = is_connected;
+        bool     is_navi_app_connected = false;
+        bool     is_yamaha_app_connected = false;
+
+        ew_bt_get_paired_device_at_index( aItemNo, &device_name, &is_navi_app_connected, &is_yamaha_app_connected );
+
+        uint8_t *stuffed_str = NULL;
+        int32_t stuffed_str_len = ew_handle_special_characters( device_name, &stuffed_str );
+        if( stuffed_str_len > 0 && stuffed_str != NULL )
+        {
+          DevName = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+        }
+
+        IsNaviAppConnected = is_navi_app_connected;
+        IsYamahaAppConnected = is_yamaha_app_connected;
       }
       PairedDeviceObj.DeviceName = DevName;
-      PairedDeviceObj.IsConnected = IsConnected;
+      PairedDeviceObj.IsNaviAppConnected = IsNaviAppConnected;
+      PairedDeviceObj.IsYamahaAppConnected = IsYamahaAppConnected;
     $else
-      if( aItemNo > 0 )
-      {
-        // empty body to suppress warning
-      }
+      // suppress warning
+      aItemNo;
     $endif
   }
 
@@ -2039,7 +2049,6 @@ class BluetoothDeviceClass : Templates::DeviceClass
     $else
       return pure PairedDeviceNum;
     $endif
-
   }
 
   $rect <40,630,260,670>
@@ -2120,30 +2129,8 @@ class BluetoothDeviceClass : Templates::DeviceClass
       }
     $else
       // suppress warning
-      if( aPairedDeviceIndex > 0 )
-      {
-        // empty body
-      }
+      aPairedDeviceIndex;
     $endif
-  }
-
-  $rect <290,630,490,670>
-  method bool IsBlePairedDevice( arg int32 aPairedDeviceIndex )
-  {
-    var bool IsBlePairedDevice = false;
-    $if !$prototyper
-      native ( aPairedDeviceIndex, IsBlePairedDevice )
-      {
-        IsBlePairedDevice = ew_bt_is_ble_paired_device( aPairedDeviceIndex );
-      }
-    $else
-      // suppress warning
-      if( "" == aPairedDeviceIndex )
-      {
-        // empty body
-      }
-    $endif
-    return IsBlePairedDevice;
   }
 
   $rect <40,570,260,610>
@@ -2225,10 +2212,10 @@ class BluetoothDeviceClass : Templates::DeviceClass
     PairedDeviceUpdatedSystemEvent.Trigger( null, false );
   }
 
-  // Interfaces of BLE
+  // Connection Status
   note group Note5
   {
-    attr Bounds = <860,470,1640,730>;
+    attr Bounds = <860,470,1640,690>;
   }
 
   // MotoCon connection status
@@ -2237,64 +2224,22 @@ class BluetoothDeviceClass : Templates::DeviceClass
     attr Bounds = <350,710,660,920>;
   }
 
-  // This method is intended to be called by the device to notify the GUI application \
-  // about a particular system event.
-  $rect <881,520,1130,560>
-  $output true
-  method void NotifyBlePairingStateChanged()
-  {
-    BlePairingStateChangedEvent.Trigger( null, false );
-  }
-
-  $rect <880,570,1130,610>
-  object Core::SystemEvent BlePairingStateChangedEvent;
-
-  $rect <1150,620,1360,660>
-  method void SetBleAdvertisement( arg bool aEnable )
-  {
-    $if !$prototyper
-      native( aEnable )
-      {
-        BTM_set_ble_advertisement( aEnable );
-      }
-    $else
-      trace "SetBleAdvertisement ", aEnable;
-    $endif
-  }
-
-  $rect <670,150,870,190>
-  method bool IsBtConnected()
-  {
-    var bool BtConnected = false;
-
-    $if !$prototyper
-      native( BtConnected )
-      {
-        BtConnected = BTM_is_bt_connected();
-      }
-    $else
-      BtConnected = true;
-    $endif
-
-    return BtConnected;
-  }
-
-  $rect <1150,670,1360,710>
-  method int32 GetBlePairingFailCount()
+  $rect <880,620,1090,660>
+  method int32 GetPairingFailCount()
   {
     var int32 FailCount = 0;
 
     $if !$prototyper
-    native( FailCount )
-    {
-      FailCount = BTM_get_ble_pairing_fail_count();
-    }
+      native( FailCount )
+      {
+        FailCount = BTM_get_ble_pairing_fail_count();
+      }
     $endif
 
     return FailCount;
   }
 
-  $rect <1370,520,1620,560>
+  $rect <1200,520,1450,560>
   method bool IsMotoconConnected()
   {
     $if !$prototyper
@@ -2306,62 +2251,6 @@ class BluetoothDeviceClass : Templates::DeviceClass
       return MotoconConnected;
     $else
       return true;
-    $endif
-  }
-
-  $rect <1370,570,1620,610>
-  method string GetBleConnectedDeviceName()
-  {
-    var string BleConnectedDeviceName = "";
-
-    $if !$prototyper
-      native( BleConnectedDeviceName )
-      {
-        uint8_t* ble_connected_device_name;
-        bool has_ble_connected_device = BTM_get_ble_connected_device_name( &ble_connected_device_name );
-        if( has_ble_connected_device )
-        {
-          BleConnectedDeviceName = EwNewStringUtf8( (const unsigned char*)ble_connected_device_name, (int)strlen( (char*)ble_connected_device_name ) );
-        }
-      }
-    $endif
-
-    return BleConnectedDeviceName;
-  }
-
-  $rect <880,620,1080,660>
-  property Enum::BlePairingState BlePairingState;
-
-  $rect <880,670,1080,710>
-  onget BlePairingState
-  {
-    var Enum::BlePairingState State;
-
-    $if !$prototyper
-      native( State )
-      {
-        State = ew_get_ble_pairing_state();
-      }
-    $endif
-
-    return State;
-  }
-
-  $rect <1150,520,1350,560>
-  property uint32 BlePincode;
-
-  $rect <1150,570,1350,610>
-  onget BlePincode
-  {
-    $if !$prototyper
-      var uint32 Pincode = 0;
-      native( Pincode )
-      {
-        Pincode = ew_get_ble_pincode();
-      }
-      return Pincode;
-    $else
-      return pure BlePincode;
     $endif
   }
 
@@ -2418,7 +2307,13 @@ class BluetoothDeviceClass : Templates::DeviceClass
       {
         uint8_t* btc_pairing_device_name;
         ew_bt_get_btc_connecting_device_name( &btc_pairing_device_name );
-        PairingDeviceName = EwNewStringUtf8( (const unsigned char*)btc_pairing_device_name, (int)strlen( (char*)btc_pairing_device_name ) );
+
+        uint8_t *stuffed_str = NULL;
+        int32_t stuffed_str_len = ew_handle_special_characters( btc_pairing_device_name, &stuffed_str );
+        if( stuffed_str_len > 0 && stuffed_str != NULL )
+        {
+          PairingDeviceName = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+        }
       }
     $else
       PairingDeviceName = "(Device name)";
@@ -2437,6 +2332,48 @@ class BluetoothDeviceClass : Templates::DeviceClass
       }
     $endif
   }
+
+  $rect <1380,330,1710,370>
+  method bool IsPairingDeviceYamahaAppSPPConnected()
+  {
+    var bool IsConnected = false;
+    $if !$prototyper
+      native( IsConnected )
+      {
+        IsConnected = BTM_is_pairing_device_yapp_spp_connected();
+      }
+    $endif
+    return IsConnected;
+  }
+
+  $rect <880,520,1170,560>
+  property bool IsYamahaAppSppConnected;
+
+  $rect <880,570,1170,610>
+  onget IsYamahaAppSppConnected
+  {
+    $if !$prototyper
+      var bool IsConnected = false;
+      native( IsConnected )
+      {
+        IsConnected = BTM_is_pairing_device_yapp_spp_connected();
+      }
+      pure IsYamahaAppSppConnected = IsConnected;
+      trace "IsYAppSppConnected: ", IsConnected;
+    $endif
+    return pure IsYamahaAppSppConnected;
+  }
+
+  $rect <1200,570,1480,610>
+  method void TriggerConnectionTimeoutTimer()
+  {
+    $if !$prototyper
+      native
+      {
+        BTM_start_btm_timeout_timer( BTM_BLE_PAIR_TIMEOUT );
+      }
+    $endif
+  }
 }
 
 $rect <810,110,1010,150>
@@ -2450,7 +2387,10 @@ class BluetoothPairedDeviceInfo
   var string DeviceName;
 
   $rect <20,60,220,100>
-  var bool IsConnected;
+  var bool IsNaviAppConnected;
+
+  $rect <20,110,250,150>
+  var bool IsYamahaAppConnected;
 }
 
 $rect <20,150,220,190>

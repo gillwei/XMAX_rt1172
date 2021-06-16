@@ -193,6 +193,8 @@ EW_DEFINE_METHODS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET03_ConnectionSettingMenu )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -212,13 +214,6 @@ XString SettingsSET03_ConnectionSettingMenu_LoadItemTitle( SettingsSET03_Connect
 /* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.OnItemActivate()' */
 void SettingsSET03_ConnectionSettingMenu_OnItemActivate( SettingsSET03_ConnectionSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
-
-/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.HandleYConnectAppPairing()' */
-void SettingsSET03_ConnectionSettingMenu_HandleYConnectAppPairing( SettingsSET03_ConnectionSettingMenu _this );
-
-/* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.PresentDialogWithTimeout()' */
-void SettingsSET03_ConnectionSettingMenu_PresentDialogWithTimeout( SettingsSET03_ConnectionSettingMenu _this, 
-  XString aMessage );
 
 #ifdef __cplusplus
   }

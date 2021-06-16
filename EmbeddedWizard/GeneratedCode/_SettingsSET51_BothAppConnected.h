@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentDEV_FontMenu_H
-#define _DevelopmentDEV_FontMenu_H
+#ifndef _SettingsSET51_BothAppConnected_H
+#define _SettingsSET51_BothAppConnected_H
 
 #ifdef __cplusplus
   extern "C"
@@ -46,10 +46,10 @@
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuBaseMenuView.h"
-#include "_MenuVerticalMenu.h"
+#include "_SettingsTimeoutDialog.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Components::BaseMainBG */
 #ifndef _ComponentsBaseMainBG_
@@ -87,12 +87,6 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::DEV_FontMenu */
-#ifndef _DevelopmentDEV_FontMenu_
-  EW_DECLARE_CLASS( DevelopmentDEV_FontMenu )
-#define _DevelopmentDEV_FontMenu_
-#endif
-
 /* Forward declaration of the class Effects::Fader */
 #ifndef _EffectsFader_
   EW_DECLARE_CLASS( EffectsFader )
@@ -105,20 +99,20 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Menu::ItemBase */
-#ifndef _MenuItemBase_
-  EW_DECLARE_CLASS( MenuItemBase )
-#define _MenuItemBase_
+/* Forward declaration of the class Settings::SET51_BothAppConnected */
+#ifndef _SettingsSET51_BothAppConnected_
+  EW_DECLARE_CLASS( SettingsSET51_BothAppConnected )
+#define _SettingsSET51_BothAppConnected_
 #endif
 
 
-/* Deklaration of class : 'Development::DEV_FontMenu' */
-EW_DEFINE_FIELDS( DevelopmentDEV_FontMenu, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [6])
-EW_END_OF_FIELDS( DevelopmentDEV_FontMenu )
+/* Deklaration of class : 'Settings::SET51_BothAppConnected' */
+EW_DEFINE_FIELDS( SettingsSET51_BothAppConnected, SettingsTimeoutDialog )
+  EW_OBJECT  ( Divider,         ViewsImage )
+EW_END_OF_FIELDS( SettingsSET51_BothAppConnected )
 
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_FontMenu' */
-EW_DEFINE_METHODS( DevelopmentDEV_FontMenu, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Settings::SET51_BothAppConnected' */
+EW_DEFINE_METHODS( SettingsSET51_BothAppConnected, SettingsTimeoutDialog )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -169,51 +163,33 @@ EW_DEFINE_METHODS( DevelopmentDEV_FontMenu, MenuBaseMenuView )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( MenuBaseMenuView _this, XBool value )
+  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_FontMenu _this, XInt32 
-    aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_FontMenu _this, XInt32 
-    aItemNo )
-  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_FontMenu _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemUnit,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
-    aItemNo, MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemHour,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( DevelopmentDEV_FontMenu )
+  EW_METHOD( OnTimeoutSlot,     void )( SettingsSET51_BothAppConnected _this, XObject 
+    sender )
+EW_END_OF_METHODS( SettingsSET51_BothAppConnected )
 
-/* 'C' function for method : 'Development::DEV_FontMenu.LoadItemClass()' */
-XClass DevelopmentDEV_FontMenu_LoadItemClass( DevelopmentDEV_FontMenu _this, XInt32 
-  aItemNo );
+/* 'C' function for method : 'Settings::SET51_BothAppConnected.ReInit()' */
+void SettingsSET51_BothAppConnected_ReInit( SettingsSET51_BothAppConnected _this );
 
-/* 'C' function for method : 'Development::DEV_FontMenu.LoadItemTitle()' */
-XString DevelopmentDEV_FontMenu_LoadItemTitle( DevelopmentDEV_FontMenu _this, XInt32 
-  aItemNo );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET51_BothAppConnected_Init( SettingsSET51_BothAppConnected _this, 
+  XHandle aArg );
 
-/* 'C' function for method : 'Development::DEV_FontMenu.OnItemActivate()' */
-void DevelopmentDEV_FontMenu_OnItemActivate( DevelopmentDEV_FontMenu _this, XInt32 
-  aItemNo, MenuItemBase aMenuItem );
+/* 'C' function for method : 'Settings::SET51_BothAppConnected.OnTimeoutSlot()' */
+void SettingsSET51_BothAppConnected_OnTimeoutSlot( SettingsSET51_BothAppConnected _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Settings::SET51_BothAppConnected.DisplayString()' */
+void SettingsSET51_BothAppConnected_DisplayString( SettingsSET51_BothAppConnected _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentDEV_FontMenu_H */
+#endif /* _SettingsSET51_BothAppConnected_H */
 
 /* Embedded Wizard */
