@@ -691,9 +691,9 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <750,530,950,570>
   slot OnNaviDialogEventUpdateSlot
   {
-    var Enum::NaviDialogType NaviDialog = DeviceInterface::NavigationDevice.GetNaviDialogType();
+    var Enum::NaviDialogType NaviDialogType = DeviceInterface::NavigationDevice.GetNaviDialogType();
     var string NaviDialogMessage = DeviceInterface::NavigationDevice.GetNaviDialogMessage();
-    switch( NaviDialog )
+    switch( NaviDialogType )
     {
       case Enum::NaviDialogType.DIALOG_YES_NO:
       {
@@ -2674,6 +2674,21 @@ class NaviDialog : Core::Group
           ButtonSet.OnUpButtonActivated = OnOkActivatedSlot;
           ButtonSet.OnDownButtonActivated = OnNoActivatedSlot;
 
+          var Enum::NaviButtonType ButtonType = DeviceInterface::NavigationDevice.GetNaviDialogDefaultButton();
+          if( Enum::NaviButtonType.YES == ButtonType )
+          {
+            ButtonSet.Focus = ButtonSet.UpButton;
+          }
+          else if( Enum::NaviButtonType.NO == ButtonType )
+          {
+            ButtonSet.Focus = ButtonSet.DownButton;
+          }
+          else
+          {
+            // empty.
+          }
+
+          CountDownTime = DeviceInterface::NavigationDevice.GetNaviDialogTimeOut();
           ButtonSet.UpButtonTitle = Strings::GEN_YES;
           ButtonSet.DownButtonTitle = Strings::GEN_NO + " (" + string( CountDownTime ) + ")";
           ButtonSet.Bounds = <69,154,271,240>;
@@ -2786,7 +2801,6 @@ class NaviDialog : Core::Group
     else
     {
       CountDownTimer.Enabled = false;
-      CountDownTime = 10;
       signal OnNoActivatedSlot;
     }
   }
@@ -2795,7 +2809,7 @@ class NaviDialog : Core::Group
   var Menu::UpDownPushButtonSet ButtonSet;
 
   $rect <10,430,210,470>
-  var int32 CountDownTime = 10;
+  var int32 CountDownTime;
 
   $rect <340,330,550,370>
   slot OnNoActivatedSlot
@@ -2803,6 +2817,26 @@ class NaviDialog : Core::Group
     DeviceInterface::NavigationDevice.SendSelectedDialog( Enum::NaviButtonType.NO );
     Owner.DismissDialog( this, null, null, null, null, null, false );
     signal OnDialogDismiss;
+  }
+
+  $rect <570,320,770,360>
+  object Core::SystemEventHandler NaviDialogEventHandler
+  {
+    preset OnEvent = OnNaviDialogEventUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.DialogEventUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <770,320,970,360>
+  slot OnNaviDialogEventUpdateSlot
+  {
+    var Enum::NaviDialogType NaviDialogType = DeviceInterface::NavigationDevice.GetNaviDialogType();
+    if( Enum::NaviDialogType.DIALOG_DISMISS == NaviDialogType )
+    {
+      Owner.DismissDialog( this, null, null, null, null, null, false );
+      signal OnDialogDismiss;
+    }
   }
 }
 

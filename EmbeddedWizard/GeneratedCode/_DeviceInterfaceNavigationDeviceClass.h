@@ -306,6 +306,12 @@ XBool DeviceInterfaceNavigationDeviceClass_IsTbtMessageDisplayed( DeviceInterfac
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetTbtListSize()' */
 XInt32 DeviceInterfaceNavigationDeviceClass_GetTbtListSize( DeviceInterfaceNavigationDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviDialogTimeOut()' */
+XInt32 DeviceInterfaceNavigationDeviceClass_GetNaviDialogTimeOut( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviDialogDefaultButton()' */
+XEnum DeviceInterfaceNavigationDeviceClass_GetNaviDialogDefaultButton( DeviceInterfaceNavigationDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif

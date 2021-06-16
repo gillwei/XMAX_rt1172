@@ -43,6 +43,7 @@
 #endif
 
 #include "_CoreGroup.h"
+#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsFrame.h"
 #include "_ViewsText.h"
@@ -109,6 +110,7 @@ EW_DEFINE_FIELDS( NavigationNaviDialog, CoreGroup )
   EW_OBJECT  ( DialogBackground, ViewsFrame )
   EW_OBJECT  ( DialogContent,   ViewsText )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
+  EW_OBJECT  ( NaviDialogEventHandler, CoreSystemEventHandler )
   EW_PROPERTY( DialogMessage,   XString )
   EW_PROPERTY( DialogButton,    XClass )
   EW_VARIABLE( CountDownTime,   XInt32 )
@@ -181,6 +183,11 @@ void NavigationNaviDialog_UpdateCountDownTimeSlot( NavigationNaviDialog _this, X
 /* 'C' function for method : 'Navigation::NaviDialog.OnNoActivatedSlot()' */
 void NavigationNaviDialog_OnNoActivatedSlot( NavigationNaviDialog _this, XObject 
   sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNaviDialog_OnNaviDialogEventUpdateSlot( NavigationNaviDialog _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }

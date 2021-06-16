@@ -145,6 +145,22 @@ return &navi_data_obj;
 
 /*********************************************************************
 *
+* @public
+* NAVI_get_navi_dialog_obj
+*
+* Get navi dialog object.
+*
+*********************************************************************/
+navi_dialog_type* NAVI_get_navi_dialog_obj
+    (
+    void
+    )
+{
+return &navi_dialog_obj;
+}
+
+/*********************************************************************
+*
 * @private
 * navi_image_frame_update
 *
@@ -526,8 +542,8 @@ EW_notify_zoom_level_update();
 * @param dialog_type    Type of dialog.
 * @param message        Dialog message.
 * @param message_size   Size of dialog message.
-* @param timeout        Timeout
-* @param default_choice Default choice be     used when timeout is expired
+* @param timeout        Timeout.
+* @param default_choice Default selected button.
 *
 *********************************************************************/
 static void navi_dialog_event_update
@@ -540,20 +556,39 @@ static void navi_dialog_event_update
     uint8_t default_choice
     )
 {
-PRINTF( "%s\r\n", __FUNCTION__ );
+PRINTF( "%s: Message: %s\r\n", __FUNCTION__, ( char* )message );
 
 navi_dialog_obj.dialog_id = dialog_id;
 navi_dialog_obj.dialog_type = dialog_type;
 strncpy( navi_dialog_obj.dialog_message, ( char* )message, MAX_DIALOG_DESCRIPTION_SIZE );
 if( MAX_DIALOG_DESCRIPTION_SIZE > message_size )
     {
-    navi_data_obj.current_road[message_size] = '\0';
+    navi_dialog_obj.dialog_message[message_size] = '\0';
     }
 else
     {
-    navi_data_obj.current_road[MAX_DIALOG_DESCRIPTION_SIZE-1] = '\0';
+    navi_dialog_obj.dialog_message[MAX_DIALOG_DESCRIPTION_SIZE-1] = '\0';
     }
-// @todo: handle the timeout, and default_choice in hmi integration
+
+navi_dialog_obj.timeout = timeout;
+switch( default_choice )
+    {
+    case NAVILITE_BUTTON_OK:
+        navi_dialog_obj.default_selected_button = EnumNaviButtonTypeOK;
+        break;
+    case NAVILITE_BUTTON_CANCEL:
+        navi_dialog_obj.default_selected_button = EnumNaviButtonTypeCANCEL;
+        break;
+    case NAVILITE_BUTTON_YES:
+        navi_dialog_obj.default_selected_button = EnumNaviButtonTypeYES;
+        break;
+    case NAVILITE_BUTTON_NO:
+        navi_dialog_obj.default_selected_button = EnumNaviButtonTypeNO;
+        break;
+    default:
+        PRINTF( "%s: Unknown button type\r\n", __FUNCTION__ );
+        break;
+    }
 EW_notify_dialog_event_update();
 }
 
@@ -696,7 +731,7 @@ EnumNaviDialogType NAVI_get_dialog_type
     )
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
-EnumNaviDialogType navi_dialog_type;
+EnumNaviDialogType navi_dialog_type = EnumNaviDialogTypeDIALOG_TOTAL;
 switch( navi_dialog_obj.dialog_type )
     {
     case NAVILITE_DIALOGTYPE_OK:
@@ -930,7 +965,7 @@ NAVILITE_request_app_zoomout();
 * @public
 * NAVI_send_selected_dialog
 *
-* Send selected dialog id and its type
+* Send selected dialog id and its button type
 *
 * @param button_type Type of button on the selected dialog.
 *
@@ -941,7 +976,24 @@ void NAVI_send_selected_dialog
     )
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
-NAVILITE_report_app_dialog_select( navi_dialog_obj.dialog_id, (navilite_button_type)button_type );
+switch( button_type )
+    {
+    case EnumNaviButtonTypeOK:
+        NAVILITE_report_app_dialog_select( navi_dialog_obj.dialog_id, NAVILITE_BUTTON_OK );
+        break;
+    case EnumNaviButtonTypeCANCEL:
+        NAVILITE_report_app_dialog_select( navi_dialog_obj.dialog_id, NAVILITE_BUTTON_CANCEL );
+        break;
+    case EnumNaviButtonTypeYES:
+        NAVILITE_report_app_dialog_select( navi_dialog_obj.dialog_id, NAVILITE_BUTTON_YES );
+        break;
+    case EnumNaviButtonTypeNO:
+        NAVILITE_report_app_dialog_select( navi_dialog_obj.dialog_id, NAVILITE_BUTTON_NO );
+        break;
+    default:
+        PRINTF( "%s: Unknown button type\r\n", __FUNCTION__ );
+        break;
+    }
 }
 
 /*********************************************************************

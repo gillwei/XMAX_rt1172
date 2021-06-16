@@ -1303,13 +1303,9 @@ XString DeviceInterfaceNavigationDeviceClass_GetNaviDialogMessage( DeviceInterfa
 
   NaviDialogMessage = 0;
   {
-    char* dialog_message;
-     #if( !UNIT_TEST_NAVI )
-      NAVI_get_dialog_message( &dialog_message );
-    #else
-      TEST_navi_get_dialog_message( &dialog_message );
-    #endif
-    NaviDialogMessage  = EwNewStringUtf8( ( const unsigned char* )dialog_message, ( int )strlen( dialog_message ) );
+    navi_dialog_type* navi_dialog_obj = NULL;
+    navi_dialog_obj = NAVI_get_navi_dialog_obj();
+    NaviDialogMessage  = EwNewStringUtf8( ( const unsigned char* )navi_dialog_obj->dialog_message, ( int )strlen( navi_dialog_obj->dialog_message ) );
   }
   return NaviDialogMessage;
 }
@@ -1522,6 +1518,40 @@ XInt32 DeviceInterfaceNavigationDeviceClass_GetTbtListSize( DeviceInterfaceNavig
   TbtListSize = 0;
   TbtListSize = NAVI_get_tbt_list_size();
   return TbtListSize;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviDialogTimeOut()' */
+XInt32 DeviceInterfaceNavigationDeviceClass_GetNaviDialogTimeOut( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XInt32 NaviDialogTimeOut;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NaviDialogTimeOut = 0;
+  {
+    navi_dialog_type* navi_dialog_obj = NULL;
+    navi_dialog_obj = NAVI_get_navi_dialog_obj();
+    NaviDialogTimeOut = navi_dialog_obj->timeout;
+  }
+  return NaviDialogTimeOut;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviDialogDefaultButton()' */
+XEnum DeviceInterfaceNavigationDeviceClass_GetNaviDialogDefaultButton( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XEnum DefaultButton;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  DefaultButton = EnumNaviButtonTypeOK;
+  {
+    navi_dialog_type* navi_dialog_obj = NULL;
+    navi_dialog_obj = NAVI_get_navi_dialog_obj();
+    DefaultButton = navi_dialog_obj->default_selected_button;
+  }
+  return DefaultButton;
 }
 
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */

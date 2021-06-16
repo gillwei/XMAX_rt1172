@@ -1145,13 +1145,9 @@ class NavigationDeviceClass : Templates::DeviceClass
       var string NaviDialogMessage;
       native( NaviDialogMessage )
       {
-        char* dialog_message;
-         #if( !UNIT_TEST_NAVI )
-          NAVI_get_dialog_message( &dialog_message );
-        #else
-          TEST_navi_get_dialog_message( &dialog_message );
-        #endif
-        NaviDialogMessage  = EwNewStringUtf8( ( const unsigned char* )dialog_message, ( int )strlen( dialog_message ) );
+        navi_dialog_type* navi_dialog_obj = NULL;
+        navi_dialog_obj = NAVI_get_navi_dialog_obj();
+        NaviDialogMessage  = EwNewStringUtf8( ( const unsigned char* )navi_dialog_obj->dialog_message, ( int )strlen( navi_dialog_obj->dialog_message ) );
       }
       return NaviDialogMessage;
     $else
@@ -1400,7 +1396,7 @@ class NavigationDeviceClass : Templates::DeviceClass
   // Methods
   note group Note1
   {
-    attr Bounds = <20,610,1010,1020>;
+    attr Bounds = <20,610,1010,1100>;
   }
 
   // Variables
@@ -1411,6 +1407,40 @@ class NavigationDeviceClass : Templates::DeviceClass
 
   $rect <270,40,470,80>
   var bool IsNaviLoadingDialogDisplayed = false;
+
+  $rect <730,1010,930,1050>
+  method int32 GetNaviDialogTimeOut()
+  {
+    $if !$prototyper
+      var int32 NaviDialogTimeOut;
+      native( NaviDialogTimeOut )
+      {
+        navi_dialog_type* navi_dialog_obj = NULL;
+        navi_dialog_obj = NAVI_get_navi_dialog_obj();
+        NaviDialogTimeOut = navi_dialog_obj->timeout;
+      }
+      return NaviDialogTimeOut;
+    $else
+      return 0;
+    $endif
+  }
+
+  $rect <730,1050,930,1090>
+  method Enum::NaviButtonType GetNaviDialogDefaultButton()
+  {
+    $if !$prototyper
+      var Enum::NaviButtonType DefaultButton;
+      native( DefaultButton )
+      {
+        navi_dialog_type* navi_dialog_obj = NULL;
+        navi_dialog_obj = NAVI_get_navi_dialog_obj();
+        DefaultButton = navi_dialog_obj->default_selected_button;
+      }
+      return DefaultButton;
+    $else
+      return Enum::NaviButtonType.TOTAL;
+    $endif
+  }
 }
 
 $rect <20,340,230,380>

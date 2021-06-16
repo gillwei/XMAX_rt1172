@@ -59,6 +59,8 @@ typedef struct
     navilite_dialog_type dialog_type;
     char dialog_message[MAX_DIALOG_DESCRIPTION_SIZE];
     uint8_t dialog_message_size;
+    uint8_t timeout;
+    EnumNaviButtonType default_selected_button;
     } navi_dialog_type;
 
 typedef struct
@@ -97,6 +99,7 @@ typedef struct
 void NAVI_init( void );
 void NAVI_jpeg_data_received( uint32_t jpeg_size, uint8_t* buffer_addr );
 navi_data_type* NAVI_get_navi_obj( void );
+navi_dialog_type* NAVI_get_navi_dialog_obj( void );
 bool NAVI_get_navigation_status( void );
 void NAVI_start_map_update( void );
 void NAVI_stop_map_update( void );

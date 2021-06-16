@@ -936,18 +936,18 @@ void NavigationNAV01_DefaultView_SetItemBounds( NavigationNAV01_DefaultView _thi
 void NavigationNAV01_DefaultView_OnNaviDialogEventUpdateSlot( NavigationNAV01_DefaultView _this, 
   XObject sender )
 {
-  XEnum NaviDialog;
+  XEnum NaviDialogType;
   XString NaviDialogMessage;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  NaviDialog = DeviceInterfaceNavigationDeviceClass_GetNaviDialogType( EwGetAutoObject( 
+  NaviDialogType = DeviceInterfaceNavigationDeviceClass_GetNaviDialogType( EwGetAutoObject( 
   &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
   NaviDialogMessage = DeviceInterfaceNavigationDeviceClass_GetNaviDialogMessage( 
   EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
 
-  switch ( NaviDialog )
+  switch ( NaviDialogType )
   {
     case EnumNaviDialogTypeDIALOG_YES_NO :
     {
@@ -3824,6 +3824,7 @@ void NavigationNaviDialog__Init( NavigationNaviDialog _this, XObject aLink, XHan
   ViewsFrame__Init( &_this->DialogBackground, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->DialogContent, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->NaviDialogEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( NavigationNaviDialog );
@@ -3834,7 +3835,6 @@ void NavigationNaviDialog__Init( NavigationNaviDialog _this, XObject aLink, XHan
   CoreRectView__OnSetBounds( &_this->DialogContent, _Const0050 );
   ViewsText_OnSetWrapText( &_this->DialogContent, 1 );
   ViewsText_OnSetString( &_this->DialogContent, 0 );
-  _this->CountDownTime = 10;
   CoreGroup__Add( _this, ((CoreView)&_this->DialogBackground ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DialogContent ), 0 );
   ViewsFrame_OnSetBitmap( &_this->DialogBackground, EwLoadResource( &ResourceDialogBackground, 
@@ -3842,6 +3842,9 @@ void NavigationNaviDialog__Init( NavigationNaviDialog _this, XObject aLink, XHan
   ViewsText_OnSetFont( &_this->DialogContent, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->CountDownTimer.OnTrigger = EwNewSlot( _this, NavigationNaviDialog_UpdateCountDownTimeSlot );
+  _this->NaviDialogEventHandler.OnEvent = EwNewSlot( _this, NavigationNaviDialog_OnNaviDialogEventUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->NaviDialogEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->DialogEventUpdateEvent );
 }
 
 /* Re-Initializer for the class 'Navigation::NaviDialog' */
@@ -3854,6 +3857,7 @@ void NavigationNaviDialog__ReInit( NavigationNaviDialog _this )
   ViewsFrame__ReInit( &_this->DialogBackground );
   ViewsText__ReInit( &_this->DialogContent );
   CoreTimer__ReInit( &_this->CountDownTimer );
+  CoreSystemEventHandler__ReInit( &_this->NaviDialogEventHandler );
 }
 
 /* Finalizer method for the class 'Navigation::NaviDialog' */
@@ -3866,6 +3870,7 @@ void NavigationNaviDialog__Done( NavigationNaviDialog _this )
   ViewsFrame__Done( &_this->DialogBackground );
   ViewsText__Done( &_this->DialogContent );
   CoreTimer__Done( &_this->CountDownTimer );
+  CoreSystemEventHandler__Done( &_this->NaviDialogEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );
@@ -3883,9 +3888,21 @@ void NavigationNaviDialog_OnSetDialogButton( NavigationNaviDialog _this, XClass
     {
       case EnumNaviDialogTypeDIALOG_YES_NO :
       {
+        XEnum ButtonType;
         _this->ButtonSet = EwCastObject( EwNewObjectIndirect( value, 0 ), MenuUpDownPushButtonSet );
         _this->ButtonSet->OnUpButtonActivated = EwNewSlot( _this, NavigationNaviDialog_OnOkActivatedSlot );
         _this->ButtonSet->OnDownButtonActivated = EwNewSlot( _this, NavigationNaviDialog_OnNoActivatedSlot );
+        ButtonType = DeviceInterfaceNavigationDeviceClass_GetNaviDialogDefaultButton( 
+        EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
+
+        if ( EnumNaviButtonTypeYES == ButtonType )
+          CoreGroup__OnSetFocus( _this->ButtonSet, ((CoreView)&_this->ButtonSet->UpButton ));
+        else
+          if ( EnumNaviButtonTypeNO == ButtonType )
+            CoreGroup__OnSetFocus( _this->ButtonSet, ((CoreView)&_this->ButtonSet->DownButton ));
+
+        _this->CountDownTime = DeviceInterfaceNavigationDeviceClass_GetNaviDialogTimeOut( 
+        EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
         MenuUpDownPushButtonSet_OnSetUpButtonTitle( _this->ButtonSet, EwLoadString( 
         &StringsGEN_YES ));
         MenuUpDownPushButtonSet_OnSetDownButtonTitle( _this->ButtonSet, EwConcatString( 
@@ -3972,7 +3989,6 @@ void NavigationNaviDialog_UpdateCountDownTimeSlot( NavigationNaviDialog _this, X
   else
   {
     CoreTimer_OnSetEnabled( &_this->CountDownTimer, 0 );
-    _this->CountDownTime = 10;
     EwSignal( EwNewSlot( _this, NavigationNaviDialog_OnNoActivatedSlot ), ((XObject)_this ));
   }
 }
@@ -3989,6 +4005,27 @@ void NavigationNaviDialog_OnNoActivatedSlot( NavigationNaviDialog _this, XObject
   CoreGroup_DismissDialog( _this->Super3.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
   EwSignal( _this->OnDialogDismiss, ((XObject)_this ));
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNaviDialog_OnNaviDialogEventUpdateSlot( NavigationNaviDialog _this, 
+  XObject sender )
+{
+  XEnum NaviDialogType;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  NaviDialogType = DeviceInterfaceNavigationDeviceClass_GetNaviDialogType( EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
+
+  if ( EnumNaviDialogTypeDIALOG_DISMISS == NaviDialogType )
+  {
+    CoreGroup_DismissDialog( _this->Super3.Owner, ((CoreGroup)_this ), 0, 0, 0, 
+    EwNullSlot, EwNullSlot, 0 );
+    EwSignal( _this->OnDialogDismiss, ((XObject)_this ));
+  }
 }
 
 /* Variants derived from the class : 'Navigation::NaviDialog' */
