@@ -583,6 +583,25 @@ return PERIPHERAL_uart_tx_data( totalLength, data );
 
 /*********************************************************************
 *
+* @public
+* HCI_LE_send_advertising_cmd
+*
+* Send BLE advertising command, including BLE advertising type and device name
+*
+*********************************************************************/
+BaseType_t HCI_LE_send_advertising_cmd
+    (
+    ble_advertising_type_t ble_advertising_type
+    )
+{
+uint8_t ble_adv_data[CCUID_LENGTH+1];
+ble_adv_data[0] = ble_advertising_type;
+memcpy( &(ble_adv_data[1]), TEST_CCUID, CCUID_LENGTH );
+return HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_MISC_LE_ADV, ble_adv_data, CCUID_LENGTH+1 );
+}
+
+/*********************************************************************
+*
 * parse received HCI packet bytes
 *
 * This function parses the bytes retrieved from an HCI UART's

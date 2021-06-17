@@ -37,6 +37,9 @@ extern "C" {
 #define BLE_GATT_CLIENT_CONFIG_INDICATION   ( 0x0002 )
 #define BLE_GATT_WRITE_REQUEST_DATA_MAX_LEN ( 28 )
 
+#define CCUID_LENGTH                        ( 14 )
+#define TEST_CCUID    (const char [])       { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e'  }
+
 /*--------------------------------------------------------------------
                         TYPES
 --------------------------------------------------------------------*/
@@ -66,6 +69,13 @@ typedef enum
     BLE_SERVER_MOTOCONSDK,
     BLE_SERVER_TOTAL
     } ble_server_type;
+
+typedef enum BLE_ADVERTISING_TYPE
+    {
+    BLE_ADV_OFF,
+    BLE_ADV_NON_CONNECTABLE,
+    BLE_ADV_CONNECTABLE
+    } ble_advertising_type_t;
 
 typedef struct
     {
@@ -226,6 +236,11 @@ void HCI_wait_for_resp_start
 void HCI_le_disconnect_ble
     (
     void
+    );
+
+BaseType_t HCI_LE_send_advertising_cmd
+    (
+    ble_advertising_type_t ble_advertising_type
     );
 
 #ifdef __cplusplus

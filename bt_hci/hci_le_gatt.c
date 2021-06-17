@@ -281,6 +281,10 @@ switch( opcode )
         notify_ble_disconnected();
         break;
 
+    case HCI_CONTROL_LE_EVENT_ADVERTISEMENT_STATE:
+        BTM_receive_ble_advertising_state( (const uint8_t)data[0] );
+        break;
+
     default:
         BLE_PRINTF( "other le opcode 0x%x\r\n", opcode );
         break;

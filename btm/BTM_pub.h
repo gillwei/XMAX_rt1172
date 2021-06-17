@@ -259,6 +259,11 @@ void BTM_receive_btc_paired_fail
     const uint32_t data_len
     );
 
+void BTM_receive_ble_advertising_state
+    (
+    const uint8_t advertising_state
+    );
+
 int BTM_init_autoconnect
     (
     void

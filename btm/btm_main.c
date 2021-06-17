@@ -84,16 +84,6 @@ typedef enum
     MSG_USER_CONFIRM_PASSKEY
     } message_type;
 
-typedef struct
-    {
-    message_type  type;
-    uint8_t       device_address[BT_DEVICE_ADDRESS_LEN];
-    uint16_t      connection_handle;
-    uint8_t       pair_dev_index;
-    bool          ble_adv_enable;
-    bool          user_confirm_result;
-    } message_object;
-
 /** BR/EDR Discoverable modes */
 typedef enum
     {
@@ -116,6 +106,47 @@ typedef enum
     AUTO_CONNECT_SEQUENCE_DEVICE_CONNECT,
     AUTO_CONNECT_SEQUENCE_DEVICE_UNPAIRED
     } bt_auto_connect_seq_evt_t;
+
+typedef enum BTM_TIMEOUT_TYPE
+    {
+    BTM_TIMEOUT_IDLE,
+    BTM_CONNECT_TIMEOUT,
+    BTM_BLE_ADV_TIMEOUT,
+    BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT
+    } btm_timeout_type_t;
+
+typedef enum BTM_BLE_PAIRING_RESULT
+    {
+    BTM_BTC_BLE_PAIRING_SUCCESS
+    } btm_ble_pairing_result_t;
+
+typedef enum BTM_PAIRING_STATE
+    {
+    BTM_PAIRING_STATE_NON,
+    BTM_PAIRING_STATE_BTC,
+    BTM_PAIRING_STATE_BLE
+    } btm_pairing_state_t;
+
+typedef enum BTM_DISCOVERABLE_STATE
+    {
+    BTM_DISCOVERABLE_STATE_NON,
+    BTM_DISCOVERABLE_STATE_BTC,
+    BTM_DISCOVERABLE_STATE_BLE
+    } btm_discoverable_state_t;
+
+/** BR/EDR ACL connection status */
+typedef enum BTM_ACL_CONNECTION_STATUS_TYPE
+    {
+    CONNECTION_STATUS_DISCONNECTED,
+    CONNECTION_STATUS_CONNECTED
+    } btm_acl_connection_status_t;
+
+/* BT module WICED_BT_TRANSPORT_TYPE transport type */
+typedef enum WICED_BT_TRANSPORT_TYPE
+    {
+    BT_TRANSPORT_BR_EDR = 1,
+    BT_TRANSPORT_LE = 2
+    } wiced_bt_transport_t;
 
 typedef struct
     {
@@ -150,46 +181,15 @@ typedef struct
     void         ( *factory_reset_callback_func_ptr )( int );
     } reset_status_type;
 
-typedef enum BTM_TIMEOUT_TYPE
+typedef struct
     {
-    BTM_TIMEOUT_IDLE,
-    BTM_CONNECT_TIMEOUT,
-    BTM_BLE_ADV_TIMEOUT,
-    BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT
-    } btm_timeout_type_t;
-
-typedef enum BTM_BLE_PAIRING_RESULT
-    {
-    BTM_BTC_BLE_PAIRING_SUCCESS
-    } btm_ble_pairing_result_t;
-
-typedef enum BTM_PAIRING_STATE
-    {
-    BTM_PAIRING_STATE_NON,
-    BTM_PAIRING_STATE_BTC,
-    BTM_PAIRING_STATE_BLE
-    } btm_pairing_state_t;
-
-typedef enum BTM_DISCOVERABLE_STATE
-    {
-    BTM_DISCOVERABLE_STATE_NON,
-    BTM_DISCOVERABLE_STATE_BTC,
-    BTM_DISCOVERABLE_STATE_BLE
-    } btm_discoverable_state_t;
-
-/** BR/EDR ACL connection status */
-typedef enum
-    {
-    CONNECTION_STATUS_DISCONNECTED,
-    CONNECTION_STATUS_CONNECTED
-    } btm_acl_connection_status_t;
-
-/* BT module WICED_BT_TRANSPORT_TYPE tra */
-typedef enum
-    {
-    BT_TRANSPORT_BR_EDR = 1,
-    BT_TRANSPORT_LE = 2
-    } wiced_bt_transport_t;
+    message_type  type;
+    uint8_t       device_address[BT_DEVICE_ADDRESS_LEN];
+    uint16_t      connection_handle;
+    uint8_t       pair_dev_index;
+    bool          ble_adv_enable;
+    bool          user_confirm_result;
+    } message_object;
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -203,6 +203,8 @@ const uint8_t bd_addr_default[BT_DEVICE_ADDRESS_LEN] = { 0xff, 0xff, 0xff, 0xff,
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
+reset_status_type reset_status;
+
 static EventGroupHandle_t           event_group   = NULL;
 static QueueHandle_t                message_queue = NULL;
 
@@ -232,7 +234,8 @@ static uint8_t                      auto_connect_sequence[AUTO_CONNECT_SEQUENCE_
 static bt_auto_connect_seq_evt_t    bt_auto_connect_seq_evt = AUTO_CONNECT_IDLE;  /* Read auto connect sequence event */
 static uint8_t                      connect_dev_index = 0;
 static uint8_t                      unpair_dev_index = 0;
-reset_status_type reset_status;
+static ble_advertising_type_t       btm_ble_advertising_state = BLE_ADV_OFF;  // Initial state is no BLE advertising
+static bool                         btm_ble_connect_status = false;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -834,15 +837,13 @@ static void set_ble_adv
     bool enable_ble_adv
     )
 {
-uint8_t ble_adv_param[1];
-ble_adv_param[0] = enable_ble_adv;
 BaseType_t  send_cmd_result;
 
 if( true == enable_ble_adv )
     {
     /* Request BT module start ble advertising */
     btm_discoverable_state = BTM_DISCOVERABLE_STATE_BLE;
-    send_cmd_result = HCI_wiced_send_command( HCI_CONTROL_LE_COMMAND_ADVERTISE, ble_adv_param, sizeof( uint8_t ) );
+    send_cmd_result = HCI_LE_send_advertising_cmd( BLE_ADV_CONNECTABLE );;
     start_btm_timeout_timer( BTM_BLE_ADV_TIMEOUT );
     }
 else
@@ -850,7 +851,7 @@ else
     /* Request BT module stop ble advertising */
     stop_btm_timeout_timer();
     btm_discoverable_state = BTM_DISCOVERABLE_STATE_NON;
-    send_cmd_result = HCI_wiced_send_command( HCI_CONTROL_LE_COMMAND_ADVERTISE, ble_adv_param, sizeof( uint8_t ) );
+    send_cmd_result = HCI_LE_send_advertising_cmd( BLE_ADV_OFF );
     }
 
 PRINTF( "%s:%d send result:%d\r\n", __FUNCTION__, enable_ble_adv, send_cmd_result );
@@ -1279,6 +1280,10 @@ else if(  ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_i
              paired_device_list[i].y_app_connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
              paired_device_list[i].connection_path_type = connection_path;
 
+             // Stop BLE non-connectable advertising, start BLE connectable advertising
+              BTM_set_ble_advertisement( false );
+              BTM_set_ble_advertisement( true );
+
              // TODO Notify EW Y-connect connection status
              // TODO Modify auto connect sequence and write to EEPROM ?
 
@@ -1286,7 +1291,7 @@ else if(  ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_i
              }
         }
     }
-// Received SPP disconnected event
+// Received Navi SPP disconnected event
 else if( false == connection_is_up && ( ( BT_CONN_TYPE_BT_IAP2 == connection_path ) || ( BT_CONN_TYPE_BT_SPP == connection_path ) ) )
     {
     // Fire connection callbacks, currently for Navillite only
@@ -1300,7 +1305,15 @@ else if( false == connection_is_up && ( ( BT_CONN_TYPE_BT_IAP2 == connection_pat
             }
         }
     }
-
+// Receive Y-connect SPP disconnected event
+else if( ( false == connection_is_up ) && ( BT_CONN_TYPE_BT_IAP2_YAPP == connection_path )  )
+    {
+    if( BLE_ADV_OFF == btm_ble_advertising_state )
+        {
+        // Start BLE non-connectable advertising
+        HCI_LE_send_advertising_cmd( BLE_ADV_NON_CONNECTABLE );
+        }
+    }
 }
 
 /*********************************************************************
@@ -1333,29 +1346,54 @@ connection_handle += (uint16_t)( p_data[4] << 8 );
 memcpy( bd_address, &(p_data[5]), BT_DEVICE_ADDRESS_LEN );
 
 /* For previous connected device, set to disconnect and call UI */
-if( ( CONNECTION_STATUS_DISCONNECTED == is_connected ) && ( BT_TRANSPORT_BR_EDR == transport ) )
+if( BT_TRANSPORT_BR_EDR == transport )
     {
-    for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
+    if( CONNECTION_STATUS_DISCONNECTED == is_connected )
         {
-        if( 0 == memcmp( paired_device_list[i].device_address, bd_address, BT_DEVICE_ADDRESS_LEN ) )
+        for( uint8_t i = 0; i < BT_MAX_PAIRED_DEVICE_NUM; i++ )
             {
-            /* Set BTC connect status false */
-            btm_btc_connection_status.BTC_is_connected = false;
-            btm_btc_connection_status.current_connection_handle = 0;
-            /* Set paired device connect status false */
-            paired_device_list[i].is_connected = false;
-            paired_device_list[i].connection_handle = 0;
-            EW_notify_bt_paired_device_status_changed();
-            if( ( reason == HCI_ERR_CONN_CAUSE_LOCAL_HOST ) || ( reason == HCI_ERR_PEER_USER ) )
+            if( 0 == memcmp( paired_device_list[i].device_address, bd_address, BT_DEVICE_ADDRESS_LEN ) )
                 {
-                // User disconnect, do nothing
+                /* Set BTC connect status false */
+                btm_btc_connection_status.BTC_is_connected = false;
+                btm_btc_connection_status.current_connection_handle = 0;
+                /* Set paired device connect status false */
+                paired_device_list[i].is_connected = false;
+                paired_device_list[i].connection_handle = 0;
+                EW_notify_bt_paired_device_status_changed();
+                if( ( reason == HCI_ERR_CONN_CAUSE_LOCAL_HOST ) || ( reason == HCI_ERR_PEER_USER ) )
+                    {
+                    // User disconnect, do nothing
+                    }
+                else
+                    {
+                    BTM_init_autoconnect();
+                    }
+                break;
                 }
-            else
-                {
-                BTM_init_autoconnect();
-                }
-            break;
             }
+        }
+    }
+
+if( BT_TRANSPORT_LE == transport )
+    {
+    if( CONNECTION_STATUS_DISCONNECTED == is_connected )
+        {
+        btm_ble_connect_status = true;
+
+        if( true == btm_btc_connection_status.BTC_y_app_is_connected )
+            {
+            BTM_set_ble_advertisement( true );
+            }
+        else
+            {
+            // Start BLE non-connectable advertising
+            HCI_LE_send_advertising_cmd( BLE_ADV_NON_CONNECTABLE );
+            }
+        }
+    else
+        {
+        btm_ble_connect_status = true;
         }
     }
 
@@ -2354,6 +2392,24 @@ PRINTF( "\n\r" );
 
 BTM_unpair_paired_device( connect_device_unpair_idx );
 BTM_notify_EW_connection_status( BT_CONNECTION_AUTHENTICATION_ERR );
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_receive_ble_advertising_state
+*
+* BT module feedback the BLE advertising state when changed
+*
+**@param uint8_t  Check LE advertisement states on hci_control_api.h
+**
+*********************************************************************/
+void BTM_receive_ble_advertising_state
+    (
+    const uint8_t advertising_state
+    )
+{
+// Reserved function
 }
 
 /*********************************************************************

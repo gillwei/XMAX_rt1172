@@ -23,6 +23,7 @@ extern "C" {
 #define HCI_CONTROL_MISC_COMMAND_READ_PAIR_DEV_NUM          ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x06 )    /* Request BT send paired device number */
 #define HCI_CONTROL_MISC_COMMAND_UNPAIR_ALL_DEV             ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x07 )    /* Unpair all paired devices */
 #define HCI_CONTROL_MISC_COMMAND_USER_CONFIRM_RESULT        ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x08 )    /* Send the Host MCU User Confirm Result to BT module */
+#define HCI_CONTROL_MISC_COMMAND_MISC_LE_ADV                ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x09 )    /* Send BLE initial non-connectable advertising */
 
 /* Garmin add Miscellaneous events */
 #define HCI_CONTROL_MISC_EVENT_SW_VERSION                   ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x03 )      /* Garmin SW version */

@@ -28,6 +28,7 @@
 #include "BTM_pub.h"
 #include "hci_control_api.h"
 #include "pin_mux.h"
+#include "hci_control_api_extend.h"
 
 #define INIT_BYTE_1                0x04
 #define INIT_BYTE_2                0x0E
@@ -440,7 +441,9 @@ void BT_UPDATE_download_finish_after_reset
 char    sw_ver[SW_VERSION_LENGTH];
 uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = {0};
 bool    bd_addr_set = false;
+EnumOperationMode operation_mode = EnumOperationModeTOTAL;
 
+EW_get_operation_mode( &operation_mode );
 sprintf( sw_ver, "%c.%c", Read_BT_version[BT_SW_MAJOR_VER_BYTE], Read_BT_version[BT_SW_MINOR_VER_BYTE] );
 
 // Read BT chip address, if not all 0xFF(means already commit address), do factory commit BD address
@@ -467,6 +470,13 @@ BTM_update_sw_version( Read_BT_version );
 
 BT_update_status = false;
 update_state = UPDATE_STATE_SUSPEND;
+
+// TODO Should get CCUID for advertising device name
+// Start BLE non-connectable advertising
+if( EnumOperationModeNORMAL == operation_mode )
+    {
+    HCI_LE_send_advertising_cmd( BLE_ADV_NON_CONNECTABLE );
+    }
 }
 
 

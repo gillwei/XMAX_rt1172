@@ -80,10 +80,12 @@ void hci_misc_event_handler
 {
 uint8_t    Return_bt_sw_ver[2];
 uint8_t    pair_dev_index[1] = { 0 };
-
 uint8_t    Read_BT_version[2] = { 0 };
 
 bt_update_get_BT_SW_ver( Read_BT_version );
+EnumOperationMode operation_mode = EnumOperationModeTOTAL;
+
+EW_get_operation_mode( &operation_mode );
 
 switch( opcode )
     {
@@ -98,6 +100,14 @@ switch( opcode )
             if( ( ( 0xff == Read_BT_version[BT_SW_MAJOR_VER_BYTE] ) && ( 0xff == Read_BT_version[BT_SW_MINOR_VER_BYTE] ) ) || ( ( 0 == Read_BT_version[BT_SW_MAJOR_VER_BYTE] ) && ( 0 == Read_BT_version[BT_SW_MINOR_VER_BYTE] ) ) )
                 {
                 PRINTF( "Read BT version ERROR: %02x.%02x\r\n", Read_BT_version[BT_SW_MAJOR_VER_BYTE], Read_BT_version[BT_SW_MINOR_VER_BYTE] );
+
+                // TODO Should get CCUID for advertising device name
+                // Start BLE non-connectable advertising
+                if( EnumOperationModeNORMAL == operation_mode )
+                    {
+                    HCI_LE_send_advertising_cmd( BLE_ADV_NON_CONNECTABLE );
+                    }
+
                 HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_READ_PAIR_DEV_LIST, pair_dev_index, sizeof( pair_dev_index ) );
                 }
             /* BT module return version is lower than BT FW version on MCU flash, do BT update */
@@ -110,6 +120,13 @@ switch( opcode )
             else
                 {
                 PRINTF( "BT FW version is equal or higher:%d.%d.\n\r", Return_bt_sw_ver[BT_SW_MAJOR_VER_BYTE], Return_bt_sw_ver[BT_SW_MINOR_VER_BYTE] );
+
+                // TODO Should get CCUID for advertising device name
+                // Start BLE non-connectable advertising
+                if( EnumOperationModeNORMAL == operation_mode )
+                    {
+                    HCI_LE_send_advertising_cmd( BLE_ADV_NON_CONNECTABLE );
+                    }
                 HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_READ_PAIR_DEV_LIST, pair_dev_index, sizeof( pair_dev_index ) );
                 }
             }
