@@ -719,7 +719,7 @@ static void navilite_ack_reply
     void
     )
 {
-#if( NAVILITE_SESSION_ACK_SUPPORT )
+#if( NAVILITE_SESSION_ACK_SUPPORT && !UNIT_TEST_NAVILITE )
     bool ret = false;
     int try_count = 3;
 

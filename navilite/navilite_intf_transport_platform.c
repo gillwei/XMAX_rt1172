@@ -163,7 +163,23 @@ return ret;
     * @param data data pointer
     * @param data_size data size to send
     * @return true if success
-    *         flase if failed
+    *         false if failed
+    *
+    *********************************************************************/
+
+#if( UNIT_TEST_NAVILITE )
+    // only compile when test unit is enabled
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_send_as_mobile
+    *
+    * Send data as mobile for testing purpose
+    *
+    * @param data data pointer
+    * @param data_size data size to send
+    * @return true if success
+    *         false if failed
     *
     *********************************************************************/
     bool NAVILITE_send_as_mobile
@@ -189,7 +205,7 @@ return ret;
     if ( frame->payload_data_type == NAVILITE_PAYLOAD_DATA_TYPE_AS_POINTER )
         {
         memcpy( (char*)navilite_send_buffer + FIELD_PAYLOADDATA_OFFSET, (char*)frame->data_pointer, frame->payload_size );
-    #if( NAVILTE_DEBUG )
+    #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
         PRINTF( "\r\n++ Data as follows:\r\n++ " );
         // print the payload frame content
         for( i = 0; i < frame->payload_size; i++ )
@@ -201,7 +217,7 @@ return ret;
         }
     else
         {
-    #if( NAVILTE_DEBUG )
+    #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
         PRINTF( "\r\n++ Value is: 0x%x", navilite_send_buffer[FIELD_PAYLOADDATA_OFFSET] );
     #endif
         }
@@ -209,7 +225,7 @@ return ret;
     #if( NAVILITE_SERIAL_SEND_SUPPORT == 1 )
         if( NAVILITE_get_connect_mode() == NAVILITE_CONN_TBD )
             {
-            #if( NAVILITE_DEBUG )
+            #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
             PRINTF( "sent: frame header:%d + payload:%d\r\n", sizeof( navilite_message ) - sizeof( uint16_t ) - sizeof( uint8_t* ) , frame->payload_size );
             #endif
             int frame_head_size = sizeof( navilite_message ) - sizeof( uint16_t ) - sizeof( uint8_t* );
@@ -251,6 +267,95 @@ return ret;
     #endif
     return ret;
     }
+
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_send_as_mobile_raw
+    *
+    * Send raw data as mobile for testing purpose
+    *
+    * @param data data pointer
+    * @param data_size data size to send
+    * @return true if success
+    *         false if failed
+    *
+    *********************************************************************/
+    bool NAVILITE_send_as_mobile_raw
+        (
+        uint8_t* data,
+        uint32_t data_size
+        )
+    {
+    bool ret = false;
+    static uint8_t uart_buffer[NAVILITE_QUEUE_BUFFER_SIZE];
+
+    navilite_message* frame = (navilite_message*)data;
+
+    if( NAVILITE_get_connect_mode() != NAVILITE_CONN_TBD )
+        {
+        PRINTF( "\r\nWARNING! Please turn off BT connection on phone during test case mode and restart LC again\r\n" );
+        while( 1 ) ;
+        }
+
+    #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
+        PRINTF( "\r\n#NAVILITE-DEBUG-RAW# (NAVILITE_send MTU:%d, payload: %d, service: %d, data_type: %s) >> ", FIELD_PAYLOADDATA_OFFSET + frame->payload_size, frame->payload_size, frame->service_type, (frame->payload_data_type == 0) ? "V":"P" );
+    #endif
+
+    memcpy( (char*)navilite_send_buffer, (char*)frame, data_size );
+
+    #if( NAVILITE_SERIAL_SEND_SUPPORT == 1 )
+        if( NAVILITE_get_connect_mode() == NAVILITE_CONN_TBD )
+            {
+            int frame_head_size = sizeof( navilite_message ) - sizeof( uint16_t ) - sizeof( uint8_t* );
+            int left_data_size = data_size; // frame_head_size + frame->payload_size;
+            int sent_index = 0;
+            bool process_frame = true;
+            int frame_no = 0;
+            int total_sent = 0;
+
+            // Send every NAVILITE_QUEUE_BUFFER_SIZE bytes
+            while( process_frame )
+                {
+                if ( left_data_size >= NAVILITE_QUEUE_BUFFER_SIZE )
+                    {
+                    #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
+                        PRINTF("\r\n%d) Sending frame(%d) left PKT:%d\r\n", NAVILITE_QUEUE_BUFFER_SIZE, frame_no++, left_data_size );
+                    #endif
+                    memcpy( uart_buffer, navilite_send_buffer + sent_index, NAVILITE_QUEUE_BUFFER_SIZE );
+                    left_data_size -= NAVILITE_QUEUE_BUFFER_SIZE;
+                    sent_index += NAVILITE_QUEUE_BUFFER_SIZE;
+                    NAVILITE_queue_hci_buffer( (uint8_t*)uart_buffer, NAVILITE_QUEUE_BUFFER_SIZE );
+                    total_sent += NAVILITE_QUEUE_BUFFER_SIZE;
+                    if ( frame_no == 1 )
+                        {
+                        #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
+                            PRINTF( "NOTE: This is FIRST HEADER!\r\n" );
+                            NAVILITE_print_frame( (navilite_message*)uart_buffer );
+                        #endif
+                        }
+                    }
+                else
+                    {
+                    // Send the non-NAVILITE_QUEUE_BUFFER_SIZE bytes
+                    #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
+                        PRINTF("# final send left PKT:%d\r\n", left_data_size );
+                    #endif
+                    memcpy( uart_buffer, navilite_send_buffer + sent_index, left_data_size );
+                    NAVILITE_queue_hci_buffer( (uint8_t*)uart_buffer, left_data_size );
+                    total_sent += left_data_size;
+                    process_frame = false;
+                    }
+                #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
+                    PRINTF( "\r\n### %s: Summary total sent! = %d\r\n", __FUNCTION__, total_sent );
+                #endif
+                }
+            }
+    #endif
+    return ret;
+    }
+    #endif
+
 #endif
 
 /*********************************************************************

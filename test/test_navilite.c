@@ -41,6 +41,10 @@
 // Turn this on to see free memory status
 #define TEST_NAVILITE_PRINT_FREEMEM 0
 
+// Run forever or once
+#define TEST_NAVILITE_RUN_FOREVER 1
+
+
 // NOTE: Turn specific test function on for testing purpose
 // aka: Simulate App requests -> LC
 // TEST_SEND_FROM_MOBILE test units group
@@ -66,7 +70,6 @@
 #define TEST_NAVILITE_SERVICETYPE_BT_THROUGHTPUT_TIMEOUT_UPDATE 0
 #define TEST_NAVILITE_SERVICETYPE_SPEED_LIMIT_UPDATE 0
 #define TEST_NAVILITE_SERVICETYPE_VIA_POINT_COUNT_UPDATE 0
-#define TEST_NAVILITE_SERVICETYPE_RECENTLIST_UPDATE 0
 #define TEST_NAVILITE_SERVICETYPE_DIALOG_PROMPT_UPDATE 0
 #define TEST_NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE_ACK 0
 #define TEST_NAVILITE_SERVICETYPE_MCU_ESN_UPDATE_ACK 0
@@ -162,7 +165,6 @@
     PRINTF( "\r\n ---- NAVILITE UNIT TESTS (%d) ----\r\n", i++ );
     vTaskDelay(  1500 / portTICK_PERIOD_MS );
 
-
     #if( TEST_NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
         PRINTF( "[NAVILITE-TESTUNIT] - NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE\r\n" );
         frame = NAVILITE_pack_frame_update_imageframe( (uint8_t*)&navilite_jpeg_test_data[0], NAVILITE_JPG_DATA_SIZE, NAVILITE_IMAGE_NAVIGATION );
@@ -173,7 +175,6 @@
         PRINTF( "[NAVILITE-TESTUNIT] - NAVILITE_SERVICETYPE_ETA_UPDATE\r\n" );
         frame = NAVILITE_pack_frame_update_eta( 965530 );
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
-
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_NAVIGATION_STATUS_UPDATE )
@@ -183,7 +184,7 @@
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_CURROADNAME_UPDATE )
-        frame = NAVILITE_pack_frame_update_currentroadname( "ChungHua ROAD", strlen( "ChungHua ROAD" ) );
+        frame = NAVILITE_pack_frame_update_currentroadname( (uint8_t*)"ChungHua ROAD", strlen( "ChungHua ROAD" ) );
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
     #endif
 
@@ -196,9 +197,15 @@
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
     #endif
 
+    #if( TEST_NAVILITE_SERVICETYPE_RAW_SEND_IMAGEFRAME_TEST_CASE )
+         PRINTF( "[NAVILITE-TESTUNIT] - TEST_NAVILITE_SERVICETYPE_RAW_SEND_IMAGEFRAME_TEST_CASE\r\n" );
+         NAVILITE_send_as_mobile_raw( (uint8_t*)navilite_jpeg_cmd_data, NAVILITE_JPG_CMD_SIZE );
+         NAVILITE_send_as_mobile_raw( (uint8_t*)navilite_jpeg_test_data, NAVILITE_JPG_DATA_SIZE );
+    #endif
+
     #if( TEST_NAVILITE_SERVICETYPE_RAW_SEND_TBT_TEST_CASE )
 
-        PRINTF( "Performing TBT test cases\r\n" );
+        PRINTF( "\r\nPerforming TBT test cases\r\n" );
         uint8_t raw_msg_list_size[] =
             {
             0x6e ,0x41 ,0x6c ,0x40 ,0x01 ,0x06 ,0x05 ,0x03 ,0x00 ,0x00 ,0x00 ,0x01 ,0x11 ,0x00 ,0x00
@@ -229,8 +236,8 @@
             0x6e ,0x41 ,0x6c ,0x40 ,0x01 ,0x06 ,0x61 ,0x17 ,0x00 ,0x00 ,0x00 ,0x01 ,0x14 ,0x00 ,0x00 ,0x0c ,0x02 ,0x00 ,0x00 ,0x40 ,0x41 ,0x6b ,0x6d ,0xe6 ,0x8a ,0xb5 ,0xe9 ,0x81 ,0x94 ,0xe6 ,0xb2 ,0xb3 ,0xe6 ,0xb5 ,0x81
             };
 
-        NAVILITE_send_as_mobile( raw_msg_list_size, sizeof( raw_msg_list_size ) / sizeof(uint8_t) );
-        NAVILITE_send_as_mobile( raw_msg_list_data, sizeof( raw_msg_list_data ) / sizeof(uint8_t) );
+        NAVILITE_send_as_mobile_raw( raw_msg_list_size, sizeof( raw_msg_list_size ) / sizeof(uint8_t) );
+        NAVILITE_send_as_mobile_raw( raw_msg_list_data, sizeof( raw_msg_list_data ) / sizeof(uint8_t) );
         vTaskDelay(  1000 / portTICK_PERIOD_MS );
 
     #endif
@@ -304,15 +311,15 @@
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_FAVPOILIST_UPDATE_ITEM_DATA )
-        navilite_fav_list_type favlist_item;
+        navilite_fav_list_type fav_list_item;
 
-        uint8_t* favitem_desc_demo[3] =
+        uint8_t* fav_item_desc_demo[3] =
         {
             (uint8_t*)"That is item 1",
             (uint8_t*)"This is item 2",
             (uint8_t*)"This is item 3"
         };
-        uint8_t* favitem_unit_demo[3] =
+        uint8_t* fav_item_unit_demo[3] =
         {
              (uint8_t*)"km1",
              (uint8_t*)"km2",
@@ -320,40 +327,40 @@
         };
 
         // demo 1st data item
-        favlist_item.list_item_index = 0;
+        fav_list_item.list_item_index = 0;
         // list_item.icon_index = 11;
-        favlist_item.desc_size = (uint8_t)strlen( (char*)favitem_desc_demo[0] );
-        favlist_item.dist_unit_size = (uint8_t)strlen( (char*)favitem_unit_demo[0] );
-        favlist_item.distance = NAVILITE_float_to_bytes( 123.4 );
-        favlist_item.distance_unit = favitem_unit_demo[0];
-        favlist_item.desc = favitem_desc_demo[0];
-        frame = NAVILITE_pack_frame_update_nextfavlist_itemdata( &favlist_item );
+        fav_list_item.desc_size = (uint8_t)strlen( (char*)fav_item_desc_demo[0] );
+        fav_list_item.dist_unit_size = (uint8_t)strlen( (char*)fav_item_unit_demo[0] );
+        fav_list_item.distance = NAVILITE_float_to_bytes( 123.4 );
+        fav_list_item.distance_unit = fav_item_unit_demo[0];
+        fav_list_item.desc = fav_item_desc_demo[0];
+        frame = NAVILITE_pack_frame_update_nextfavlist_itemdata( &fav_list_item );
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
 
         // demo 2nd data item
-        favlist_item.list_item_index = 1;
+        fav_list_item.list_item_index = 1;
         // list_item.icon_index = 33;
-        favlist_item.desc_size = (uint8_t)strlen( (char*)favitem_desc_demo[1] );
-        favlist_item.dist_unit_size = (uint8_t)strlen( (char*)favitem_unit_demo[1] );
-        favlist_item.distance = NAVILITE_float_to_bytes( 123.4 );
-        favlist_item.distance_unit = favitem_unit_demo[1];
-        favlist_item.desc = favitem_desc_demo[1];
-        frame = NAVILITE_pack_frame_update_nextfavlist_itemdata( &favlist_item );
+        fav_list_item.desc_size = (uint8_t)strlen( (char*)fav_item_desc_demo[1] );
+        fav_list_item.dist_unit_size = (uint8_t)strlen( (char*)fav_item_unit_demo[1] );
+        fav_list_item.distance = NAVILITE_float_to_bytes( 123.4 );
+        fav_list_item.distance_unit = fav_item_unit_demo[1];
+        fav_list_item.desc = fav_item_desc_demo[1];
+        frame = NAVILITE_pack_frame_update_nextfavlist_itemdata( &fav_list_item );
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
 
         // demo 3rd data item
-        favlist_item.list_item_index = 2;
+        fav_list_item.list_item_index = 2;
         // list_item.icon_index = (uint32_t)44;
-        favlist_item.desc_size = (uint8_t)strlen( (char*)favitem_desc_demo[2] );
-        favlist_item.dist_unit_size = (uint8_t)strlen( (char*)favitem_unit_demo[2] );
-        favlist_item.distance = NAVILITE_float_to_bytes( 123.4 );
-        favlist_item.distance_unit = favitem_unit_demo[2];
-        favlist_item.desc = favitem_desc_demo[2];
-        frame = NAVILITE_pack_frame_update_nextfavlist_itemdata( &favlist_item );
+        fav_list_item.desc_size = (uint8_t)strlen( (char*)fav_item_desc_demo[2] );
+        fav_list_item.dist_unit_size = (uint8_t)strlen( (char*)fav_item_unit_demo[2] );
+        fav_list_item.distance = NAVILITE_float_to_bytes( 123.4 );
+        fav_list_item.distance_unit = fav_item_unit_demo[2];
+        fav_list_item.desc = fav_item_desc_demo[2];
+        frame = NAVILITE_pack_frame_update_nextfavlist_itemdata( &fav_list_item );
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
     #endif
 
-    #if( TEST_NAVILITE_SERVICETYPE_NEARBYGASSTATIONLIST_UPDATE )
+    #if( TEST_NAVILITE_SERVICETYPE_GASPOITURNLIST_UPDATE )
         PRINTF( "\r\n[NAVILITE-TESTUNIT] - TEST_NAVILITE_SERVICETYPE_GASPOILIST_UPDATE(SIZE NOTIFY)\r\n" );
 
         frame = NAVILITE_pack_frame_update_nextgaslist( 3, 0 ); // prepare a list of 3 item
@@ -361,15 +368,15 @@
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_GASPOITURNLIST_UPDATE_ITEM_DATA )
-        navilite_gas_list_type list_item;// = (navilite_tbt_list_type*)malloc( sizeof( navilite_tbt_list_type ) );
+        navilite_gas_list_type gas_list_item;
 
-        uint8_t* item_desc_demo[3] =
+        uint8_t* gas_item_desc_demo[3] =
         {
             (uint8_t*)"That is gas item 1",
             (uint8_t*)"This is gas item 2",
             (uint8_t*)"This is gas item 3"
         };
-        uint8_t* item_unit_demo[3] =
+        uint8_t* gas_item_unit_demo[3] =
         {
             (uint8_t*)"km1",
             (uint8_t*)"km2",
@@ -377,33 +384,34 @@
         };
 
         // demo 1st data item
-        list_item.list_item_index = 0;
+        gas_list_item.list_item_index = 0;
         // list_item.icon_index = 11;
-        list_item.desc_size = (uint8_t)strlen( (char*)item_desc_demo[0] );
-        list_item.dist_unit_size = (uint8_t)strlen( (char*)item_unit_demo[0] );
-        list_item.distance = NAVILITE_float_to_bytes( 123.4 );         list_item.distance_unit = item_unit_demo[0];
-        list_item.desc = item_desc_demo[0];
-        frame = NAVILITE_pack_frame_update_nextgaslist_itemdata( &list_item );
+        gas_list_item.desc_size = (uint8_t)strlen( (char*)gas_item_desc_demo[0] );
+        gas_list_item.dist_unit_size = (uint8_t)strlen( (char*)gas_item_unit_demo[0] );
+        gas_list_item.distance = NAVILITE_float_to_bytes( 123.4 );
+        gas_list_item.distance_unit = gas_item_unit_demo[0];
+        gas_list_item.desc = gas_item_desc_demo[0];
+        frame = NAVILITE_pack_frame_update_nextgaslist_itemdata( &gas_list_item );
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
         // demo 2nd data item
-        list_item.list_item_index = 1;
+        gas_list_item.list_item_index = 1;
         // list_item.icon_index = 33;
-        list_item.desc_size = (uint8_t)strlen( (char*)item_desc_demo[1] );
-        list_item.dist_unit_size = (uint8_t)strlen( (char*)item_unit_demo[1] );
-        list_item.distance = NAVILITE_float_to_bytes( 123.4 );
-        list_item.distance_unit = item_unit_demo[1];
-        list_item.desc = item_desc_demo[1];
-        frame = NAVILITE_pack_frame_update_nextgaslist_itemdata( &list_item );
+        gas_list_item.desc_size = (uint8_t)strlen( (char*)gas_item_desc_demo[1] );
+        gas_list_item.dist_unit_size = (uint8_t)strlen( (char*)gas_item_unit_demo[1] );
+        gas_list_item.distance = NAVILITE_float_to_bytes( 123.4 );
+        gas_list_item.distance_unit = gas_item_unit_demo[1];
+        gas_list_item.desc = gas_item_desc_demo[1];
+        frame = NAVILITE_pack_frame_update_nextgaslist_itemdata( &gas_list_item );
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
         // demo 3rd data item
-        list_item.list_item_index = 2;
+        gas_list_item.list_item_index = 2;
         // list_item.icon_index = (uint32_t)44;
-        list_item.desc_size = (uint8_t)strlen( (char*)item_desc_demo[2] );
-        list_item.dist_unit_size = (uint8_t)strlen( (char*)item_unit_demo[2] );
-        list_item.distance = NAVILITE_float_to_bytes( 123.4 );
-        list_item.distance_unit = item_unit_demo[2];
-        list_item.desc = item_desc_demo[2];
-        frame = NAVILITE_pack_frame_update_nextgaslist_itemdata( &list_item );
+        gas_list_item.desc_size = (uint8_t)strlen( (char*)gas_item_desc_demo[2] );
+        gas_list_item.dist_unit_size = (uint8_t)strlen( (char*)gas_item_unit_demo[2] );
+        gas_list_item.distance = NAVILITE_float_to_bytes( 123.4 );
+        gas_list_item.distance_unit = gas_item_unit_demo[2];
+        gas_list_item.desc = gas_item_desc_demo[2];
+        frame = NAVILITE_pack_frame_update_nextgaslist_itemdata( &gas_list_item );
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
     #endif
 
@@ -458,9 +466,6 @@
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
     #endif
 
-    #if( TEST_NAVILITE_SERVICETYPE_RECENTLIST_UPDATE )
-    #endif
-
     #if( TEST_NAVILITE_SERVICETYPE_DIALOG_PROMPT_UPDATE )
         PRINTF( "[NAVILITE-TESTUNIT] - NAVILITE_SERVICETYPE_DIALOG_PROMPT_UPDATE\r\n" );
         frame = NAVILITE_pack_frame_update_dialog_prompt( 123, NAVILITE_DIALOGTYPE_OK, (uint8_t*)"Choose a route", 14 );
@@ -488,7 +493,12 @@
         PRINTF( "[MEMORY FREE]:%d KB\r\n", freeHeap );
     #endif
 
+    #if( !TEST_NAVILITE_RUN_FOREVER )
+        PRINTF( "\r\n== End of TEST ==\r\n" );
+	    while( 1 ) ;
+    #endif
     }
+
 #endif
 
 #if( UNIT_TEST_NAVILITE && TEST_SEND_FROM_MCU )
@@ -560,14 +570,24 @@
 
     #if( TEST_NAVILITE_SERVICETYPE_APP_GO_HOME_REQUEST )
         PRINTF( "[NAVILITE_SERVICETYPE_APP_GO_HOME_REQUEST]\r\n" );
-        NAVILITE_request_app_gohome();
+        PRINTF( "send with with NAVILITE_ROUTE_NEW_ROUTE\r\n" );
+        NAVILITE_request_app_gohome( NAVILITE_ROUTE_NEW_ROUTE );
+        PRINTF( "send with with NAVILITE_ROUTE_NEXT_STOP\r\n" );
+        NAVILITE_request_app_gohome( NAVILITE_ROUTE_NEXT_STOP );
+        PRINTF( "send with with NAVILITE_ROUTE_LAST_STOP\r\n" );
+        NAVILITE_request_app_gohome( NAVILITE_ROUTE_LAST_STOP );
         PRINTF( "wait 15s ...\r\n");
         vTaskDelay(  15000 / portTICK_PERIOD_MS );
     #endif
 
     #if( TEST_NAVILITE_SERVICETYPE_APP_GO_OFFICE_REQUEST )
         PRINTF( "[NAVILITE_SERVICETYPE_APP_GO_OFFICE_REQUEST]\r\n" );
-        NAVILITE_request_app_gooffice();
+        PRINTF( "send with with NAVILITE_ROUTE_NEW_ROUTE\r\n" );
+        NAVILITE_request_app_gooffice( NAVILITE_ROUTE_NEW_ROUTE );
+        PRINTF( "send with with NAVILITE_ROUTE_NEXT_STOP\r\n" );
+        NAVILITE_request_app_gooffice( NAVILITE_ROUTE_NEXT_STOP );
+        PRINTF( "send with with NAVILITE_ROUTE_LAST_STOP\r\n" );
+        NAVILITE_request_app_gooffice( NAVILITE_ROUTE_LAST_STOP );
         PRINTF( "wait 15s ...\r\n");
         vTaskDelay(  15000 / portTICK_PERIOD_MS );
     #endif
