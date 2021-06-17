@@ -45,6 +45,7 @@
 #include "_CoreGroup.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
 #include "_StatusBarClock.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -121,6 +122,9 @@ EW_DEFINE_FIELDS( StatusBarMain, CoreGroup )
   EW_OBJECT  ( SeatHeaterIcon,  ViewsImage )
   EW_OBJECT  ( AirTemperatureText, ViewsText )
   EW_OBJECT  ( UnitImage,       ViewsImage )
+  EW_OBJECT  ( BlinkTimer,      CoreTimer )
+  EW_VARIABLE( BlinkVisible,    XBool )
+  EW_VARIABLE( IsTimeoutError2Detected, XBool )
   EW_VARIABLE( IsMotoConConnected, XBool )
 EW_END_OF_FIELDS( StatusBarMain )
 
@@ -219,6 +223,9 @@ void StatusBarMain_UpdateAirTemperature( StatusBarMain _this );
 
 /* 'C' function for method : 'StatusBar::Main.UpdateClockVisible()' */
 void StatusBarMain_UpdateClockVisible( StatusBarMain _this );
+
+/* 'C' function for method : 'StatusBar::Main.OnBlinkTimerTriggeredSlot()' */
+void StatusBarMain_OnBlinkTimerTriggeredSlot( StatusBarMain _this, XObject sender );
 
 #ifdef __cplusplus
   }

@@ -557,7 +557,13 @@ enum VehicleRxType
   $rect <1070,160,1270,200>
   item TFT_DUTY;
 
-  $rect <1070,210,1270,250>
+  $rect <1070,210,1340,250>
+  item TIMEOUT_ERROR2_DETECTED;
+
+  $rect <1070,260,1340,300>
+  item TIMEOUT_ERROR2_RECOVERED;
+
+  $rect <1070,310,1270,350>
   item TOTAL;
 }
 

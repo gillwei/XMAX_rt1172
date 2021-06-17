@@ -263,7 +263,9 @@ typedef enum
   EnumVehicleRxTypeTIRE_FRONT_LEFT      = 51,
   EnumVehicleRxTypeTIRE_SENSOR_EQUIPPED = 52,
   EnumVehicleRxTypeTFT_DUTY             = 53,
-  EnumVehicleRxTypeTOTAL                = 54
+  EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED = 54,
+  EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED = 55,
+  EnumVehicleRxTypeTOTAL                = 56
 } EnumVehicleRxType;
 
 /* User defined enumeration: 'Enum::VehicleTxType' */

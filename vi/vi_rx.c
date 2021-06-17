@@ -32,6 +32,10 @@
 #define POSITIVE_RESPONSE   ( 0x0 )
 #define NEGATIVE_RESPONSE   ( 0xFF )
 
+#define TIMEOUT_ERR2_OFFSET_FUNC_SW_STATUS          ( 0 )
+#define TIMEOUT_ERR2_OFFSET_ECU_INDICATE_STATUS     ( 1 )
+#define TIMEOUT_ERR2_OFFSET_VH_EG_SPD               ( 2 )
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -64,6 +68,8 @@ static bool     is_dd_mode_activated = false;
 static SemaphoreHandle_t supported_function_semaphore_handle;
 static supported_func_data_src_enum supported_func_data_source;
 static const int32_t ticks_to_wait = pdMS_TO_TICKS( 500 );
+
+static uint8_t  timeout_err2_status;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -817,11 +823,144 @@ switch( msg_idx )
         break;
 
     default:
-
 #if( DEBUG_RX_CAN_SUPPORT )
         PRINTF( "%s drop message frame id: 0x%x\r\n", __FUNCTION__, msg_idx );
 #endif
         break;
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* VI_notify_timeout1_changed
+*
+* Notify timeout error 1 status changed
+*
+* @param handle CAN signal handle
+* @param status Timeout error 1 trigger status
+*
+*********************************************************************/
+void VI_notify_timeout1_changed
+    (
+    const dll_frm_handle_t handle,
+    const bool status
+    )
+{
+PRINTF( "timeout1, 0x%x %d\r\n", handle, status );
+switch( handle )
+    {
+    case IL_CAN0_RX2_RES_SUPPORT_RXFRM_HANDLE:     /* H'582 */
+        break;
+    case IL_CAN0_RX3_BRGTHNSS_CTRL_RXFRM_HANDLE:   /* H'583 */
+        break;
+    case IL_CAN0_RX4_RES_MT_FUNC_CNT_RXFRM_HANDLE: /* H'585 */
+        break;
+    case IL_CAN0_RX5_VEHICLE_INFO_RXFRM_HANDLE:    /* H'5A0 */
+        break;
+    case IL_CAN0_RX6_FUNCSW_STAT_RXFRM_HANDLE:     /* H'5A1 */
+        break;
+    case IL_CAN0_RX7_FUEL_RATE_RXFRM_HANDLE:       /* H'5A6 */
+        break;
+    case IL_CAN0_RX8_ODO_TRIP_RXFRM_HANDLE:        /* H'5A7 */
+        break;
+    case IL_CAN0_RX9_RES_RPRGRM_INFO_RXFRM_HANDLE: /* H'5AF */
+        break;
+    case IL_CAN0_RXA_VEHICLE_INFO_2_RXFRM_HANDLE:  /* H'5BA */
+        break;
+    case IL_CAN0_RXB_VEHICLE_INFO_3_RXFRM_HANDLE:  /* H'5BB */
+        break;
+    case IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_HANDLE:  /* H'5BC */
+        break;
+    case IL_CAN0_RXD_MAINT_TRIP_RXFRM_HANDLE:      /* H'5BD */
+        break;
+    case IL_CAN0_RXE_HEATER_STAT_RXFRM_HANDLE:     /* H'5BE */
+        break;
+    case IL_CAN0_RXF_FACT_INSP_NS_RXFRM_HANDLE:    /* H'5D5 */
+        break;
+    case IL_CAN0_RXI_TPMS_STAT_RXFRM_HANDLE:       /* H'550 */
+        break;
+    case IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_HANDLE:  /* H'209 */
+        break;
+    case IL_CAN0_RX1_ECU_COM_DATA_RXFRM_HANDLE:    /* H'350 */
+        break;
+    default:
+        break;
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* VI_notify_timeout2_changed
+*
+* Notify timeout error 2 status changed
+*
+* @param handle CAN signal handle
+* @param status Timeout error 2 trigger status
+*
+*********************************************************************/
+void VI_notify_timeout2_changed
+    (
+    const dll_frm_handle_t handle,
+    const bool status
+    )
+{
+PRINTF( "timeout2, 0x%x %d\r\n", handle, status );
+uint8_t last_timeout_err2_status = timeout_err2_status;
+switch( handle )
+    {
+    case IL_CAN0_RX6_FUNCSW_STAT_RXFRM_HANDLE: /* H'5A1 */
+        if( status )
+            {
+            set_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_FUNC_SW_STATUS );
+            }
+        else
+            {
+            clear_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_FUNC_SW_STATUS );
+            }
+        break;
+
+    case IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_HANDLE: /* H'209 */
+        if( status )
+            {
+            set_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_ECU_INDICATE_STATUS );
+            }
+        else
+            {
+            clear_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_ECU_INDICATE_STATUS );
+            }
+        break;
+
+    case IL_CAN0_RXH_VH_EG_SPD_RXFRM_HANDLE: /* H'20A */
+        if( status )
+            {
+            set_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_VH_EG_SPD );
+            }
+        else
+            {
+            clear_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_VH_EG_SPD );
+            }
+        break;
+
+    default:
+        break;
+    }
+
+// notify UI if the stauts of timeout error2 changed
+if( 0 == last_timeout_err2_status &&
+    0 != timeout_err2_status )
+    {
+    EW_notify_vi_data_received( EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED );
+    }
+else if( 0 != last_timeout_err2_status &&
+         0 == timeout_err2_status )
+    {
+    EW_notify_vi_data_received( EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED );
+    }
+else
+    {
+    // empty
     }
 }
 
@@ -1089,6 +1228,9 @@ switch( rx_type )
         break;
     case EnumVehicleRxTypeTFT_DUTY:
         *data = (uint32_t)rx_brightness_control.tft_duty;
+        break;
+    case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED:
+        *data = (uint32_t)timeout_err2_status;
         break;
     default:
         PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );

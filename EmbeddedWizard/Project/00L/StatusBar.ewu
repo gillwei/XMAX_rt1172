@@ -26,6 +26,9 @@ class Main : Core::Group
     postsignal OnUpdatePhoneIconSlot;
     postsignal OnNotificationListUpdatedSlot;
     postsignal OnBtcConnectionStatusChangedSlot;
+
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED );
+    IsTimeoutError2Detected = (bool)VehicleData.DataUInt32;
   }
 
   $rect <0,50,200,90>
@@ -56,10 +59,10 @@ class Main : Core::Group
   // App/Headset/Battery Icon
   note group Note
   {
-    attr Bounds = <210,50,530,500>;
+    attr Bounds = <230,50,550,500>;
   }
 
-  $rect <230,90,470,130>
+  $rect <250,90,490,130>
   object Core::SystemEventHandler MotoConEventHandler
   {
     preset OnEvent = OnMotoConEventReceived;
@@ -68,7 +71,7 @@ class Main : Core::Group
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <230,140,470,180>
+  $rect <250,140,490,180>
   slot OnMotoConEventReceived
   {
     var DeviceInterface::MotoConContext MotoConContext = ( DeviceInterface::MotoConContext )MotoConEventHandler.Context;
@@ -83,7 +86,7 @@ class Main : Core::Group
     }
   }
 
-  $rect <230,240,510,280>
+  $rect <250,240,530,280>
   method void UpdateMotoConConnectionStatus()
   {
     IsMotoConConnected = DeviceInterface::BluetoothDevice.IsMotoconConnected();
@@ -101,10 +104,10 @@ class Main : Core::Group
     }
   }
 
-  $rect <230,190,470,230>
+  $rect <250,190,490,230>
   var bool IsMotoConConnected;
 
-  $rect <230,340,510,380>
+  $rect <250,340,530,380>
   method void UpdateBatteryIcon()
   {
     var bool IsBatteryCharging = false;
@@ -164,7 +167,7 @@ class Main : Core::Group
     }
   }
 
-  $rect <230,290,510,330>
+  $rect <250,290,530,330>
   method void UpdateHeadsetIcon()
   {
     var bool IsHeadsetConnected = false;
@@ -222,7 +225,7 @@ class Main : Core::Group
     preset Visible = false;
   }
 
-  $rect <570,100,860,140>
+  $rect <590,100,880,140>
   object Core::PropertyObserver BTEnabledObserver
   {
     preset OnEvent = OnBtcConnectionStatusChangedSlot;
@@ -231,7 +234,7 @@ class Main : Core::Group
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <570,200,860,240>
+  $rect <590,200,880,240>
   slot OnBtcConnectionStatusChangedSlot
   {
     if( DeviceInterface::BluetoothDevice.BluetoothEnable )
@@ -252,7 +255,7 @@ class Main : Core::Group
     }
   }
 
-  $rect <570,150,860,190>
+  $rect <590,150,880,190>
   object Core::PropertyObserver PairdDeviceChangedObserver
   {
     preset OnEvent = OnBtcConnectionStatusChangedSlot;
@@ -262,10 +265,10 @@ class Main : Core::Group
   // BT Icon
   note group Note1
   {
-    attr Bounds = <550,50,880,260>;
+    attr Bounds = <570,50,930,260>;
   }
 
-  $rect <230,390,510,430>
+  $rect <250,390,530,430>
   method void UpdateAppIcon()
   {
     if( IsMotoConConnected )
@@ -292,11 +295,9 @@ class Main : Core::Group
         AppIcon.FrameNumber = 0;
       }
     }
-
-    AppIcon.Visible = IsMotoConConnected;
   }
 
-  $rect <230,440,510,480>
+  $rect <250,440,530,480>
   method void UpdatePhoneCellSignalLevelIcon()
   {
     if( IsMotoConConnected )
@@ -338,13 +339,13 @@ class Main : Core::Group
     preset Visible = false;
   }
 
-  // Vehicle supported function
+  // Vehicle Info
   note group Note2
   {
-    attr Bounds = <920,50,1250,400>;
+    attr Bounds = <950,50,1280,530>;
   }
 
-  $rect <950,100,1230,140>
+  $rect <980,100,1260,140>
   object Core::SystemEventHandler VehicleDataReceivedEventHandler
   {
     preset OnEvent = OnVehicleDataReceivedSlot;
@@ -353,7 +354,7 @@ class Main : Core::Group
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <950,150,1230,190>
+  $rect <980,150,1260,190>
   slot OnVehicleDataReceivedSlot
   {
     var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
@@ -381,6 +382,8 @@ class Main : Core::Group
         {
           UpdateAirTemperature();
         }
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED: IsTimeoutError2Detected = true;
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED: IsTimeoutError2Detected = false;
         default:;
       }
     }
@@ -389,7 +392,7 @@ class Main : Core::Group
   // Notification Icon
   note group Note3
   {
-    attr Bounds = <550,270,910,530>;
+    attr Bounds = <570,270,930,530>;
   }
 
   $rect <20,20,160,60>
@@ -400,14 +403,14 @@ class Main : Core::Group
     preset Visible = false;
   }
 
-  $rect <560,320,860,360>
+  $rect <580,320,880,360>
   object Core::SystemEventHandler PhoneCallStateChangedEventHandler
   {
     preset OnEvent = OnUpdatePhoneIconSlot;
     preset Event = DeviceInterface::NotificationDevice.PhoneCallStateChangedSystemEvent;
   }
 
-  $rect <560,370,860,410>
+  $rect <580,370,880,410>
   slot OnUpdatePhoneIconSlot
   {
     if( DeviceInterface::NotificationDevice.IsPhoneCallStateActive() )
@@ -428,7 +431,7 @@ class Main : Core::Group
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <560,470,820,510>
+  $rect <580,470,840,510>
   slot OnNotificationListUpdatedSlot
   {
     if( 0 < DeviceInterface::NotificationDevice.GetNotificationNumOfCategory( Enum::NotificationCategory.MESSAGE ) )
@@ -443,7 +446,7 @@ class Main : Core::Group
     signal OnUpdatePhoneIconSlot;
   }
 
-  $rect <560,420,900,460>
+  $rect <580,420,920,460>
   object Core::SystemEventHandler NotificationListUpdatedSystemEventHandler
   {
     preset OnEvent = OnNotificationListUpdatedSlot;
@@ -474,7 +477,7 @@ class Main : Core::Group
     preset Visible = false;
   }
 
-  $rect <950,200,1160,240>
+  $rect <980,200,1190,240>
   method void UpdateGripWarmerIcon()
   {
     if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.GRIP_WARMER ) )
@@ -494,7 +497,7 @@ class Main : Core::Group
     }
   }
 
-  $rect <950,250,1160,290>
+  $rect <980,250,1190,290>
   method void UpdateSeatHeaterIcon()
   {
     if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.SEAT_HEATER ) )
@@ -514,7 +517,7 @@ class Main : Core::Group
     }
   }
 
-  $rect <950,300,1160,340>
+  $rect <980,300,1190,340>
   method void UpdateAirTemperature()
   {
     if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.AIR_TEMPERATURE ) )
@@ -561,7 +564,7 @@ class Main : Core::Group
     preset Visible = false;
   }
 
-  $rect <950,350,1160,390>
+  $rect <980,350,1190,390>
   method void UpdateClockVisible()
   {
     if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.CLOCK ) )
@@ -573,6 +576,47 @@ class Main : Core::Group
       Clock.Visible = false;
     }
   }
+
+  $rect <0,200,230,240>
+  slot OnBlinkTimerTriggeredSlot
+  {
+    BlinkVisible = !BlinkVisible;
+
+    if( Clock.Visible )
+    {
+      Clock.UpdateTime( BlinkVisible );
+    }
+
+    if( IsMotoConConnected )
+    {
+      if( IsTimeoutError2Detected )
+      {
+        AppIcon.Visible = BlinkVisible;
+      }
+      else
+      {
+        AppIcon.Visible = true;
+      }
+    }
+    else
+    {
+      AppIcon.Visible = false;
+    }
+  }
+
+  $rect <0,150,200,190>
+  object Core::Timer BlinkTimer
+  {
+    preset OnTrigger = OnBlinkTimerTriggeredSlot;
+    preset Period = 500;
+    preset Enabled = true;
+  }
+
+  $rect <980,400,1200,440>
+  var bool IsTimeoutError2Detected;
+
+  $rect <0,250,200,290>
+  var bool BlinkVisible;
 }
 
 $rect <20,60,220,100>
@@ -591,29 +635,6 @@ class Clock : Core::Group
     preset Font = Fonts::NotoSansMedium32pt;
     preset Color = #FFFFFFFF;
     preset Visible = true;
-  }
-
-  $rect <210,100,480,140>
-  slot OnUpdateLocalTimeSlot
-  {
-    var DeviceInterface::RtcTime CurrentTime = DeviceInterface::SystemDevice.GetLocalTime();
-
-    if( 0 == CurrentTime.Hour )
-    {
-      CurrentTime.Hour = 12;
-    }
-    else if( 12 < CurrentTime.Hour )
-    {
-      CurrentTime.Hour -= 12;
-    }
-    else
-    {
-      // empty
-    }
-
-    ClockHourText.String = string( CurrentTime.Hour );
-    ClockMinuteText.String = string( CurrentTime.Minute, 2 );
-    ClockColonText.Visible = !ClockColonText.Visible;
   }
 
   $rect <20,20,160,60>
@@ -638,12 +659,27 @@ class Clock : Core::Group
     preset Visible = false;
   }
 
-  $rect <220,50,420,90>
-  object Core::Timer UpdateClockTimer
+  $rect <0,100,200,140>
+  method void UpdateTime( arg bool aBlinkVisible )
   {
-    preset OnTrigger = OnUpdateLocalTimeSlot;
-    preset Period = 500;
-    preset Enabled = true;
+    var DeviceInterface::RtcTime CurrentTime = DeviceInterface::SystemDevice.GetLocalTime();
+
+    if( 0 == CurrentTime.Hour )
+    {
+      CurrentTime.Hour = 12;
+    }
+    else if( 12 < CurrentTime.Hour )
+    {
+      CurrentTime.Hour -= 12;
+    }
+    else
+    {
+      // empty
+    }
+
+    ClockHourText.String = string( CurrentTime.Hour );
+    ClockMinuteText.String = string( CurrentTime.Minute, 2 );
+    ClockColonText.Visible = aBlinkVisible;
   }
 }
 

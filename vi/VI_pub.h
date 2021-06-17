@@ -68,6 +68,8 @@ void VI_key_set_magic_key_enabled( const bool enabled );
 bool VI_is_key_state_valid( void );
 void VI_notify_vehicle_cyc_frm_changed( const il_rx_frm_index_t msg_idx, const uint16_t sig_hnd, const uint32_t data );
 void VI_notify_vehicle_event_frm_changed( const il_rx_frm_index_t msg_idx, const can_msg_t* msg_data_p );
+void VI_notify_timeout1_changed( const dll_frm_handle_t handle, const bool status );
+void VI_notify_timeout2_changed( const dll_frm_handle_t handle, const bool status );
 bool VI_is_dd_mode_activated( void );
 bool VI_is_function_supported( const EnumVehicleSupportedFunction feature );
 void VI_set_supported_function( const EnumVehicleSupportedFunction feature, const bool supported );

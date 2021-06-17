@@ -829,6 +829,9 @@ class SystemDeviceClass : Templates::DeviceClass
       {
         Status = ew_system_get_status( aStatusType );
       }
+    $else
+      // suppress warning
+      aStatusType;
     $endif
     return Status;
   }

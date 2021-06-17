@@ -43,7 +43,6 @@
 #endif
 
 #include "_CoreGroup.h"
-#include "_CoreTimer.h"
 #include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
@@ -100,7 +99,6 @@ EW_DEFINE_FIELDS( StatusBarClock, CoreGroup )
   EW_OBJECT  ( ClockHourText,   ViewsText )
   EW_OBJECT  ( ClockMinuteText, ViewsText )
   EW_OBJECT  ( ClockColonText,  ViewsText )
-  EW_OBJECT  ( UpdateClockTimer, CoreTimer )
 EW_END_OF_FIELDS( StatusBarClock )
 
 /* Virtual Method Table (VMT) for the class : 'StatusBar::Clock' */
@@ -147,8 +145,8 @@ EW_DEFINE_METHODS( StatusBarClock, CoreGroup )
     aOrder )
 EW_END_OF_METHODS( StatusBarClock )
 
-/* 'C' function for method : 'StatusBar::Clock.OnUpdateLocalTimeSlot()' */
-void StatusBarClock_OnUpdateLocalTimeSlot( StatusBarClock _this, XObject sender );
+/* 'C' function for method : 'StatusBar::Clock.UpdateTime()' */
+void StatusBarClock_UpdateTime( StatusBarClock _this, XBool aBlinkVisible );
 
 #ifdef __cplusplus
   }

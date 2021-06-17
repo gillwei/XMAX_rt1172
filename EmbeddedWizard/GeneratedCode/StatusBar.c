@@ -114,6 +114,7 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage__Init( &_this->SeatHeaterIcon, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->AirTemperatureText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->UnitImage, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->BlinkTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( StatusBarMain );
@@ -152,6 +153,8 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsText_OnSetVisible( &_this->AirTemperatureText, 0 );
   CoreRectView__OnSetBounds( &_this->UnitImage, _Const000E );
   ViewsImage_OnSetVisible( &_this->UnitImage, 0 );
+  CoreTimer_OnSetPeriod( &_this->BlinkTimer, 500 );
+  CoreTimer_OnSetEnabled( &_this->BlinkTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Clock ), 0 );
@@ -209,6 +212,7 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->UnitImage, EwLoadResource( &ResourceTempUnit, 
   ResourcesBitmap ));
+  _this->BlinkTimer.OnTrigger = EwNewSlot( _this, StatusBarMain_OnBlinkTimerTriggeredSlot );
 
   /* Call the user defined constructor */
   StatusBarMain_Init( _this, aArg );
@@ -241,6 +245,7 @@ void StatusBarMain__ReInit( StatusBarMain _this )
   ViewsImage__ReInit( &_this->SeatHeaterIcon );
   ViewsText__ReInit( &_this->AirTemperatureText );
   ViewsImage__ReInit( &_this->UnitImage );
+  CoreTimer__ReInit( &_this->BlinkTimer );
 }
 
 /* Finalizer method for the class 'StatusBar::Main' */
@@ -270,6 +275,7 @@ void StatusBarMain__Done( StatusBarMain _this )
   ViewsImage__Done( &_this->SeatHeaterIcon );
   ViewsText__Done( &_this->AirTemperatureText );
   ViewsImage__Done( &_this->UnitImage );
+  CoreTimer__Done( &_this->BlinkTimer );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );
@@ -280,6 +286,8 @@ void StatusBarMain__Done( StatusBarMain _this )
    statements. */
 void StatusBarMain_Init( StatusBarMain _this, XHandle aArg )
 {
+  DeviceInterfaceVehicleDataClass VehicleData;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
@@ -295,6 +303,9 @@ void StatusBarMain_Init( StatusBarMain _this, XHandle aArg )
     ((XObject)_this ));
   EwPostSignal( EwNewSlot( _this, StatusBarMain_OnBtcConnectionStatusChangedSlot ), 
     ((XObject)_this ));
+  VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED );
+  _this->IsTimeoutError2Detected = !!VehicleData->DataUInt32;
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -456,8 +467,6 @@ void StatusBarMain_UpdateAppIcon( StatusBarMain _this )
     else
       ViewsImage_OnSetFrameNumber( &_this->AppIcon, 0 );
   }
-
-  ViewsImage_OnSetVisible( &_this->AppIcon, _this->IsMotoConConnected );
 }
 
 /* 'C' function for method : 'StatusBar::Main.UpdatePhoneCellSignalLevelIcon()' */
@@ -514,6 +523,14 @@ void StatusBarMain_OnVehicleDataReceivedSlot( StatusBarMain _this, XObject sende
       case EnumVehicleRxTypeAIR_TEMPERATURE :
       case EnumVehicleRxTypeSUPPORT_FUNC_AIR_TEMPERATURE :
         StatusBarMain_UpdateAirTemperature( _this );
+      break;
+
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED :
+        _this->IsTimeoutError2Detected = 1;
+      break;
+
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED :
+        _this->IsTimeoutError2Detected = 0;
       break;
 
       default :; 
@@ -641,13 +658,35 @@ void StatusBarMain_UpdateClockVisible( StatusBarMain _this )
     CoreGroup__OnSetVisible( &_this->Clock, 0 );
 }
 
+/* 'C' function for method : 'StatusBar::Main.OnBlinkTimerTriggeredSlot()' */
+void StatusBarMain_OnBlinkTimerTriggeredSlot( StatusBarMain _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  _this->BlinkVisible = (XBool)!_this->BlinkVisible;
+
+  if ( CoreGroup_OnGetVisible((CoreGroup)&_this->Clock ))
+    StatusBarClock_UpdateTime( &_this->Clock, _this->BlinkVisible );
+
+  if ( _this->IsMotoConConnected )
+  {
+    if ( _this->IsTimeoutError2Detected )
+      ViewsImage_OnSetVisible( &_this->AppIcon, _this->BlinkVisible );
+    else
+      ViewsImage_OnSetVisible( &_this->AppIcon, 1 );
+  }
+  else
+    ViewsImage_OnSetVisible( &_this->AppIcon, 0 );
+}
+
 /* Variants derived from the class : 'StatusBar::Main' */
 EW_DEFINE_CLASS_VARIANTS( StatusBarMain )
 EW_END_OF_CLASS_VARIANTS( StatusBarMain )
 
 /* Virtual Method Table (VMT) for the class : 'StatusBar::Main' */
 EW_DEFINE_CLASS( StatusBarMain, CoreGroup, Background, Background, Background, Background, 
-                 IsMotoConConnected, IsMotoConConnected, "StatusBar::Main" )
+                 BlinkVisible, BlinkVisible, "StatusBar::Main" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -693,7 +732,6 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
   ViewsText__Init( &_this->ClockHourText, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->ClockMinuteText, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->ClockColonText, &_this->_.XObject, 0 );
-  CoreTimer__Init( &_this->UpdateClockTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( StatusBarClock );
@@ -718,8 +756,6 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
   ViewsText_OnSetString( &_this->ClockColonText, EwLoadString( &_Const0014 ));
   ViewsText_OnSetColor( &_this->ClockColonText, _Const0011 );
   ViewsText_OnSetVisible( &_this->ClockColonText, 0 );
-  CoreTimer_OnSetPeriod( &_this->UpdateClockTimer, 500 );
-  CoreTimer_OnSetEnabled( &_this->UpdateClockTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockHourText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockMinuteText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ClockColonText ), 0 );
@@ -729,7 +765,6 @@ void StatusBarClock__Init( StatusBarClock _this, XObject aLink, XHandle aArg )
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->ClockColonText, EwLoadResource( &FontsNotoSansMedium32pt, 
   ResourcesFont ));
-  _this->UpdateClockTimer.OnTrigger = EwNewSlot( _this, StatusBarClock_OnUpdateLocalTimeSlot );
 }
 
 /* Re-Initializer for the class 'StatusBar::Clock' */
@@ -742,7 +777,6 @@ void StatusBarClock__ReInit( StatusBarClock _this )
   ViewsText__ReInit( &_this->ClockHourText );
   ViewsText__ReInit( &_this->ClockMinuteText );
   ViewsText__ReInit( &_this->ClockColonText );
-  CoreTimer__ReInit( &_this->UpdateClockTimer );
 }
 
 /* Finalizer method for the class 'StatusBar::Clock' */
@@ -755,22 +789,16 @@ void StatusBarClock__Done( StatusBarClock _this )
   ViewsText__Done( &_this->ClockHourText );
   ViewsText__Done( &_this->ClockMinuteText );
   ViewsText__Done( &_this->ClockColonText );
-  CoreTimer__Done( &_this->UpdateClockTimer );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );
 }
 
-/* 'C' function for method : 'StatusBar::Clock.OnUpdateLocalTimeSlot()' */
-void StatusBarClock_OnUpdateLocalTimeSlot( StatusBarClock _this, XObject sender )
+/* 'C' function for method : 'StatusBar::Clock.UpdateTime()' */
+void StatusBarClock_UpdateTime( StatusBarClock _this, XBool aBlinkVisible )
 {
-  DeviceInterfaceRtcTime CurrentTime;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  CurrentTime = DeviceInterfaceSystemDeviceClass_GetLocalTime( EwGetAutoObject( 
-  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ));
+  DeviceInterfaceRtcTime CurrentTime = DeviceInterfaceSystemDeviceClass_GetLocalTime( 
+    EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ));
 
   if ( 0 == CurrentTime->Hour )
     CurrentTime->Hour = 12;
@@ -782,8 +810,7 @@ void StatusBarClock_OnUpdateLocalTimeSlot( StatusBarClock _this, XObject sender 
   0, 10 ));
   ViewsText_OnSetString( &_this->ClockMinuteText, EwNewStringInt( CurrentTime->Minute, 
   2, 10 ));
-  ViewsText_OnSetVisible( &_this->ClockColonText, (XBool)!ViewsText_OnGetVisible( 
-  &_this->ClockColonText ));
+  ViewsText_OnSetVisible( &_this->ClockColonText, aBlinkVisible );
 }
 
 /* Variants derived from the class : 'StatusBar::Clock' */

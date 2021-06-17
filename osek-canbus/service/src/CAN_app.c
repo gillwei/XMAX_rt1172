@@ -415,14 +415,7 @@ For debugging
 /*------------------------------------------------------
 Notify Timeout error1 status
 ------------------------------------------------------*/
-if( timeout_trig == TRUE )
-    {
-    //TBD TOE1 happens handler
-    }
-else
-    {
-    //TBD TOE1 clears  handler
-    }
+VI_notify_timeout1_changed( rmh, timeout_trig );
 }
 
 /*!*******************************************************************
