@@ -540,6 +540,44 @@ switch( signal_id )
 /*********************************************************************
 *
 * @private
+* process_vh_eg_speed
+*
+* @param signal_id CAN signal id
+* @param data Received CAN data
+*
+*********************************************************************/
+static void process_vh_eg_speed
+    (
+    const uint16_t signal_id,
+    const uint32_t data
+    )
+{
+switch( signal_id )
+    {
+    case IL_CAN0_VH_EG_SPD_EG_SPD_RXSIG_HANDLE:
+        rx_ecu_info.engine_speed = data;
+        break;
+    case IL_CAN0_VH_EG_SPD_TC_STAT_RXSIG_HANDLE:
+        rx_ecu_info.tc_mode = (uint8_t)data;
+        EW_notify_vi_data_received( EnumVehicleRxTypeTC_MODE );
+        break;
+    case IL_CAN0_VH_EG_SPD_CC_OPER_STAT_RXSIG_HANDLE:
+    case IL_CAN0_VH_EG_SPD_DON_FLG_RXSIG_HANDLE:
+    case IL_CAN0_VH_EG_SPD_E_LAMP_RXSIG_HANDLE:
+    case IL_CAN0_VH_EG_SPD_ECU_RPLG_STAT_RXSIG_HANDLE:
+    case IL_CAN0_VH_EG_SPD_EG_MODE_RXSIG_HANDLE:
+    case IL_CAN0_VH_EG_SPD_START_SW_STAT_RXSIG_HANDLE:
+        /* not handle */
+        break;
+    default:
+        PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
+        break;
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * process_tpms_status
 *
 * @param signal_id CAN signal id
@@ -722,6 +760,9 @@ switch( msg_idx )
         break;
     case IL_CAN0_RXE_HEATER_STAT_IDX:
         process_heater_status( sig_hnd, data );
+        break;
+    case IL_CAN0_RXH_VH_EG_SPD_IDX: /* H'20A */
+        process_vh_eg_speed( sig_hnd, data );
         break;
     case IL_CAN0_RXI_TPMS_STAT_IDX:
         process_tpms_status( sig_hnd, data );
