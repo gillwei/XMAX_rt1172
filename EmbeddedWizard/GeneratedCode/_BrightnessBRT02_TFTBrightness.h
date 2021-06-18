@@ -104,8 +104,11 @@ EW_DEFINE_FIELDS( BrightnessBRT02_TFTBrightness, ComponentsBaseMainBG )
   EW_OBJECT  ( Base,            ViewsImage )
   EW_OBJECT  ( LevelBar,        ViewsImage )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( HighTempImage,   ViewsImage )
+  EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
   EW_ARRAY   ( LevelBarBounds,  XRect, [3])
   EW_VARIABLE( BrightnessLevel, XUInt32 )
+  EW_PROPERTY( IsDeratingOn,    XBool )
 EW_END_OF_FIELDS( BrightnessBRT02_TFTBrightness )
 
 /* Virtual Method Table (VMT) for the class : 'Brightness::BRT02_TFTBrightness' */
@@ -210,6 +213,15 @@ void BrightnessBRT02_TFTBrightness_OnVehicleDataReceivedSlot( BrightnessBRT02_TF
 
 /* 'C' function for method : 'Brightness::BRT02_TFTBrightness.UpdateBrightnessLevel()' */
 void BrightnessBRT02_TFTBrightness_UpdateBrightnessLevel( BrightnessBRT02_TFTBrightness _this );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void BrightnessBRT02_TFTBrightness_OnSystemEventReceived( BrightnessBRT02_TFTBrightness _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Brightness::BRT02_TFTBrightness.OnSetIsDeratingOn()' */
+void BrightnessBRT02_TFTBrightness_OnSetIsDeratingOn( BrightnessBRT02_TFTBrightness _this, 
+  XBool value );
 
 #ifdef __cplusplus
   }

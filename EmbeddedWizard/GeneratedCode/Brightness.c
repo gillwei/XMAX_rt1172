@@ -31,6 +31,8 @@
 #include "_ComponentsBaseMainBG.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreView.h"
+#include "_DeviceInterfaceSystemData.h"
+#include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_MenuItemBase.h"
@@ -49,10 +51,11 @@ static const XRect _Const0001 = {{ 45, 60 }, { 435, 231 }};
 static const XRect _Const0002 = {{ 173, 205 }, { 307, 224 }};
 static const XRect _Const0003 = {{ 173, 135 }, { 307, 154 }};
 static const XRect _Const0004 = {{ 173, 65 }, { 307, 84 }};
-static const XRect _Const0005 = {{ 173, 177 }, { 307, 193 }};
-static const XRect _Const0006 = {{ 173, 149 }, { 307, 168 }};
-static const XRect _Const0007 = {{ 173, 121 }, { 307, 141 }};
-static const XRect _Const0008 = {{ 173, 93 }, { 307, 112 }};
+static const XRect _Const0005 = {{ 179, 83 }, { 301, 205 }};
+static const XRect _Const0006 = {{ 173, 177 }, { 307, 193 }};
+static const XRect _Const0007 = {{ 173, 149 }, { 307, 168 }};
+static const XRect _Const0008 = {{ 173, 121 }, { 307, 141 }};
+static const XRect _Const0009 = {{ 173, 93 }, { 307, 112 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -283,6 +286,8 @@ void BrightnessBRT02_TFTBrightness__Init( BrightnessBRT02_TFTBrightness _this, X
   ViewsImage__Init( &_this->Base, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->LevelBar, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->HighTempImage, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ReceivedSystemEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( BrightnessBRT02_TFTBrightness );
@@ -298,8 +303,11 @@ void BrightnessBRT02_TFTBrightness__Init( BrightnessBRT02_TFTBrightness _this, X
   CoreRectView__OnSetBounds( &_this->LevelBar, _Const0004 );
   ViewsImage_OnSetFrameNumber( &_this->LevelBar, 1 );
   ViewsImage_OnSetVisible( &_this->LevelBar, 0 );
+  CoreRectView__OnSetBounds( &_this->HighTempImage, _Const0005 );
+  ViewsImage_OnSetVisible( &_this->HighTempImage, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Base ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LevelBar ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->HighTempImage ), 0 );
   ViewsImage_OnSetBitmap( &_this->Base, EwLoadResource( &ResourceTFTBrightnessBase, 
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->LevelBar, EwLoadResource( &ResourceBrightnessBar, 
@@ -307,6 +315,11 @@ void BrightnessBRT02_TFTBrightness__Init( BrightnessBRT02_TFTBrightness _this, X
   _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, BrightnessBRT02_TFTBrightness_OnVehicleDataReceivedSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
+  ViewsImage_OnSetBitmap( &_this->HighTempImage, EwLoadResource( &ResourceHighTemperature, 
+  ResourcesBitmap ));
+  _this->ReceivedSystemEventHandler.OnEvent = EwNewSlot( _this, BrightnessBRT02_TFTBrightness_OnSystemEventReceived );
+  CoreSystemEventHandler_OnSetEvent( &_this->ReceivedSystemEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->SystemDataReceivedSystemEvent );
 
   /* Call the user defined constructor */
   BrightnessBRT02_TFTBrightness_Init( _this, aArg );
@@ -322,6 +335,8 @@ void BrightnessBRT02_TFTBrightness__ReInit( BrightnessBRT02_TFTBrightness _this 
   ViewsImage__ReInit( &_this->Base );
   ViewsImage__ReInit( &_this->LevelBar );
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
+  ViewsImage__ReInit( &_this->HighTempImage );
+  CoreSystemEventHandler__ReInit( &_this->ReceivedSystemEventHandler );
 }
 
 /* Finalizer method for the class 'Brightness::BRT02_TFTBrightness' */
@@ -334,6 +349,8 @@ void BrightnessBRT02_TFTBrightness__Done( BrightnessBRT02_TFTBrightness _this )
   ViewsImage__Done( &_this->Base );
   ViewsImage__Done( &_this->LevelBar );
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
+  ViewsImage__Done( &_this->HighTempImage );
+  CoreSystemEventHandler__Done( &_this->ReceivedSystemEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
@@ -349,6 +366,9 @@ void BrightnessBRT02_TFTBrightness_Init( BrightnessBRT02_TFTBrightness _this, XH
   EW_UNUSED_ARG( aArg );
 
   BrightnessBRT02_TFTBrightness_UpdateBrightnessLevel( _this );
+  BrightnessBRT02_TFTBrightness_OnSetIsDeratingOn( _this, !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( 
+  EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), 
+  EnumSystemStatusIS_TFT_DERATING_ON ));
 }
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -381,7 +401,7 @@ void BrightnessBRT02_TFTBrightness_UpdateViewState( BrightnessBRT02_TFTBrightnes
 /* 'C' function for method : 'Brightness::BRT02_TFTBrightness.OnShortDownKeyActivated()' */
 void BrightnessBRT02_TFTBrightness_OnShortDownKeyActivated( BrightnessBRT02_TFTBrightness _this )
 {
-  if ( 1 < _this->BrightnessLevel )
+  if ( !_this->IsDeratingOn && ( 1 < _this->BrightnessLevel ))
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION, 
     1 );
@@ -390,7 +410,7 @@ void BrightnessBRT02_TFTBrightness_OnShortDownKeyActivated( BrightnessBRT02_TFTB
 /* 'C' function for method : 'Brightness::BRT02_TFTBrightness.OnShortUpKeyActivated()' */
 void BrightnessBRT02_TFTBrightness_OnShortUpKeyActivated( BrightnessBRT02_TFTBrightness _this )
 {
-  if ( 3 > _this->BrightnessLevel )
+  if ( !_this->IsDeratingOn && ( 3 > _this->BrightnessLevel ))
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeTFT_BRIGHTNESS_OPERATION, 
     2 );
@@ -451,6 +471,50 @@ void BrightnessBRT02_TFTBrightness_UpdateBrightnessLevel( BrightnessBRT02_TFTBri
   {
     _this->BrightnessLevel = VehicleData->DataUInt32;
     CoreGroup_InvalidateViewState((CoreGroup)_this );
+  }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void BrightnessBRT02_TFTBrightness_OnSystemEventReceived( BrightnessBRT02_TFTBrightness _this, 
+  XObject sender )
+{
+  DeviceInterfaceSystemData SystemData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  SystemData = EwCastObject( _this->ReceivedSystemEventHandler.Context, DeviceInterfaceSystemData );
+
+  if ( SystemData != 0 )
+    switch ( SystemData->RxEvent )
+    {
+      case EnumSystemRxEventTFT_DERATING_OFF :
+        BrightnessBRT02_TFTBrightness_OnSetIsDeratingOn( _this, 0 );
+      break;
+
+      case EnumSystemRxEventTFT_DERATING_ON :
+        BrightnessBRT02_TFTBrightness_OnSetIsDeratingOn( _this, 1 );
+      break;
+
+      default :; 
+    }
+}
+
+/* 'C' function for method : 'Brightness::BRT02_TFTBrightness.OnSetIsDeratingOn()' */
+void BrightnessBRT02_TFTBrightness_OnSetIsDeratingOn( BrightnessBRT02_TFTBrightness _this, 
+  XBool value )
+{
+  if ( _this->IsDeratingOn != value )
+  {
+    _this->IsDeratingOn = value;
+
+    if ( value )
+      ViewsImage_OnSetFrameNumber( &_this->LevelBar, 0 );
+    else
+      ViewsImage_OnSetFrameNumber( &_this->LevelBar, 1 );
+
+    ViewsImage_OnSetVisible( &_this->HighTempImage, value );
   }
 }
 
@@ -531,10 +595,10 @@ void BrightnessBRT03_MeterBrightness__Init( BrightnessBRT03_MeterBrightness _thi
   ViewsImage_OnSetFrameNumber( &_this->LevelBar, 1 );
   ViewsImage_OnSetVisible( &_this->LevelBar, 0 );
   _this->LevelBarBounds[ 0 ] = _Const0002;
-  _this->LevelBarBounds[ 1 ] = _Const0005;
-  _this->LevelBarBounds[ 2 ] = _Const0006;
-  _this->LevelBarBounds[ 3 ] = _Const0007;
-  _this->LevelBarBounds[ 4 ] = _Const0008;
+  _this->LevelBarBounds[ 1 ] = _Const0006;
+  _this->LevelBarBounds[ 2 ] = _Const0007;
+  _this->LevelBarBounds[ 3 ] = _Const0008;
+  _this->LevelBarBounds[ 4 ] = _Const0009;
   _this->LevelBarBounds[ 5 ] = _Const0004;
   CoreGroup__Add( _this, ((CoreView)&_this->Base ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LevelBar ), 0 );

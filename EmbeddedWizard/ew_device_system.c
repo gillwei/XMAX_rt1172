@@ -1823,6 +1823,9 @@ switch( status_type )
     case EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MIN:
         status = DISP_is_current_tft_brighness_level_min();
         break;
+    case EnumSystemStatusIS_TFT_DERATING_ON:
+        status = DISP_is_tft_derating_on();
+        break;
     default:
         break;
     }

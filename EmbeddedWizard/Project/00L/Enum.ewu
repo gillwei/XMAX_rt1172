@@ -1761,11 +1761,14 @@ enum SystemStatus
   $rect <10,60,290,100>
   item IS_TFT_BRIGHTNESS_LEVEL_MIN;
 
-  $rect <10,110,230,150>
+  $rect <10,110,290,150>
+  item IS_TFT_DERATING_ON;
+
+  $rect <10,160,230,200>
   item TOTAL;
 }
 
-$rect <730,270,930,310>
+$rect <730,320,930,360>
 enum NotificationNativeCall
 {
   $rect <10,10,210,50>

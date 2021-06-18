@@ -1445,4 +1445,10 @@ EW_RES_WITHOUT_VARIANTS( ResourceIconUnitVolt )
 /* Table with links to derived variants of the bitmap resource : 'Resource::Brightness' */
 EW_RES_WITHOUT_VARIANTS( ResourceBrightness )
 
+/* Include a file containing the bitmap resource : 'Resource::HighTemperature' */
+#include "_ResourceHighTemperature.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::HighTemperature' */
+EW_RES_WITHOUT_VARIANTS( ResourceHighTemperature )
+
 /* Embedded Wizard */

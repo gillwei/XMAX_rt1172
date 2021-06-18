@@ -726,6 +726,9 @@ EW_DECLARE_BITMAP_RES( ResourceIconUnitVolt )
 /* Bitmap resource : 'Resource::Brightness' */
 EW_DECLARE_BITMAP_RES( ResourceBrightness )
 
+/* Bitmap resource : 'Resource::HighTemperature' */
+EW_DECLARE_BITMAP_RES( ResourceHighTemperature )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

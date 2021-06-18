@@ -84,7 +84,7 @@ resource Resources::Bitmap CheckboxDisable
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,1490,280,1530>
+$rect <30,1500,280,1540>
 $output false
 resource Resources::Bitmap DisplayTest
 {
@@ -96,14 +96,14 @@ resource Resources::Bitmap DisplayTest
   attr bitmapmode Mode = Default;
 }
 
-$rect <30,1540,280,1580>
+$rect <30,1550,280,1590>
 $output false
 autoobject Resources::ExternBitmap ExternBitmap;
 
 // Factory Test - Display
 note group Note5
 {
-  attr Bounds = <10,1440,300,1600>;
+  attr Bounds = <10,1450,300,1610>;
 }
 
 // Navigation
@@ -205,10 +205,10 @@ resource Resources::Bitmap CheckMark
 // QR Code
 note group Note6
 {
-  attr Bounds = <350,1440,640,1600>;
+  attr Bounds = <350,1450,640,1610>;
 }
 
-$rect <390,1490,590,1530>
+$rect <390,1500,590,1540>
 $output false
 autoobject Resources::ExternBitmap QrCodeExternBitmap;
 
@@ -825,7 +825,7 @@ resource Resources::Bitmap IconWeatherPercentage
 // Brightness Settings
 note group Note12
 {
-  attr Bounds = <10,1150,250,1420>;
+  attr Bounds = <10,1150,250,1440>;
 }
 
 $rect <31,1190,231,1230>
@@ -1371,7 +1371,7 @@ note group Note14
   attr Bounds = <260,1150,500,1251>;
 }
 
-$rect <30,1540,280,1580>
+$rect <30,1550,280,1590>
 $output false
 autoobject Resources::ExternBitmap ExternFlickerPattern
 {
@@ -2290,7 +2290,7 @@ resource Resources::Bitmap NaviTurnArrwViaflgIrgTbtList
   attr bitmapmode Mode = Default;
 }
 
-$rect <390,1540,600,1580>
+$rect <390,1550,600,1590>
 $output false
 const string EXTERN_BMP_QRCODE = "QRCode";
 
@@ -2687,10 +2687,10 @@ resource Resources::Bitmap TempUnit
 // Clock
 note group Note21
 {
-  attr Bounds = <670,1440,1080,1600>;
+  attr Bounds = <670,1450,1080,1610>;
 }
 
-$rect <680,1490,840,1530>
+$rect <680,1500,840,1540>
 $output false
 resource Resources::Bitmap ClockArrow
 {
@@ -2702,7 +2702,7 @@ resource Resources::Bitmap ClockArrow
   attr bitmapmode Mode = Default;
 }
 
-$rect <680,1540,840,1580>
+$rect <680,1550,840,1590>
 $output false
 resource Resources::Bitmap ClockColon
 {
@@ -2714,7 +2714,7 @@ resource Resources::Bitmap ClockColon
   attr bitmapmode Mode = Default;
 }
 
-$rect <880,1490,1040,1530>
+$rect <880,1500,1040,1540>
 $output false
 resource Resources::Bitmap ClockDayTimeText
 {
@@ -3013,6 +3013,18 @@ $output false
 resource Resources::Bitmap Brightness
 {
   attr bitmapfile FileName = .\Res\brightness\brightness_icon.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <30,1390,230,1430>
+$output false
+resource Resources::Bitmap HighTemperature
+{
+  attr bitmapfile FileName = .\Res\brightness\icon_hightemp.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;

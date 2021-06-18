@@ -806,7 +806,8 @@ typedef enum
 {
   EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MAX = 0,
   EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MIN = 1,
-  EnumSystemStatusTOTAL                 = 2
+  EnumSystemStatusIS_TFT_DERATING_ON    = 2,
+  EnumSystemStatusTOTAL                 = 3
 } EnumSystemStatus;
 
 /* User defined enumeration: 'Enum::NotificationNativeCall' */

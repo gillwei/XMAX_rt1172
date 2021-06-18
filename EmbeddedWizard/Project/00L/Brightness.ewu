@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <310,10,570,50>
 $output false
@@ -102,6 +102,7 @@ class BRT02_TFTBrightness : Components::BaseMainBG
   inherited method Init()
   {
     UpdateBrightnessLevel();
+    IsDeratingOn = DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.IS_TFT_DERATING_ON );
   }
 
   $rect <0,290,180,330>
@@ -123,35 +124,41 @@ class BRT02_TFTBrightness : Components::BaseMainBG
   $rect <210,440,440,480>
   inherited method OnShortDownKeyActivated()
   {
-    if( Brightness::TFT_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
+    if( !IsDeratingOn )
     {
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::OPERATION_DOWN_CODE );
-    }
-
-    $if $prototyper
       if( Brightness::TFT_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
       {
-        BrightnessLevel--;
-        InvalidateViewState();
+        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::OPERATION_DOWN_CODE );
       }
-    $endif
+
+      $if $prototyper
+        if( Brightness::TFT_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
+        {
+          BrightnessLevel--;
+          InvalidateViewState();
+        }
+      $endif
+    }
   }
 
   $rect <210,540,440,580>
   inherited method OnShortUpKeyActivated()
   {
-    if( Brightness::TFT_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
+    if( !IsDeratingOn )
     {
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::OPERAION_UP_CODE );
-    }
-
-    $if $prototyper
       if( Brightness::TFT_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
       {
-        BrightnessLevel++;
-        InvalidateViewState();
+        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.TFT_BRIGHTNESS_OPERATION, Brightness::OPERAION_UP_CODE );
       }
-    $endif
+
+      $if $prototyper
+        if( Brightness::TFT_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
+        {
+          BrightnessLevel++;
+          InvalidateViewState();
+        }
+      $endif
+    }
   }
 
   $rect <210,390,440,430>
@@ -242,6 +249,59 @@ class BRT02_TFTBrightness : Components::BaseMainBG
     {
       BrightnessLevel = VehicleData.DataUInt32;
       InvalidateViewState();
+    }
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image HighTempImage
+  {
+    preset Bounds = <179,83,301,205>;
+    preset Bitmap = Resource::HighTemperature;
+    preset Visible = false;
+  }
+
+  $rect <810,290,1070,330>
+  object Core::SystemEventHandler ReceivedSystemEventHandler
+  {
+    preset OnEvent = OnSystemEventReceived;
+    preset Event = DeviceInterface::SystemDevice.SystemDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <810,340,1070,380>
+  slot OnSystemEventReceived
+  {
+    var DeviceInterface::SystemData SystemData = ( DeviceInterface::SystemData )ReceivedSystemEventHandler.Context;
+    if( null != SystemData )
+    {
+      switch( SystemData.RxEvent )
+      {
+        case Enum::SystemRxEvent.TFT_DERATING_OFF: IsDeratingOn = false;
+        case Enum::SystemRxEvent.TFT_DERATING_ON: IsDeratingOn = true;
+        default:;
+      }
+    }
+  }
+
+  $rect <810,390,1030,430>
+  property bool IsDeratingOn;
+
+  $rect <810,440,1030,480>
+  onset IsDeratingOn
+  {
+    if( pure IsDeratingOn != value )
+    {
+      pure IsDeratingOn = value;
+      if( value )
+      {
+        LevelBar.FrameNumber = 0;
+      }
+      else
+      {
+        LevelBar.FrameNumber = 1;
+      }
+      HighTempImage.Visible = value;
     }
   }
 }
