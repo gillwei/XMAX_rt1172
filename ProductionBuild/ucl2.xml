@@ -1,0 +1,71 @@
+<UCL>
+
+<CFG>
+    <STATE name="Blhost" dev="KBL-HID" vid="1FC9" pid="013D"/> 	 <!--KIBBLE USB-HID-->
+    <STATE name="Blhost" dev="KBL-HID" vid="15A2" pid="0073"/>   <!--KIBBLE USB-HID-->
+</CFG>
+
+<LIST name="MXRT117x_Manufacture" desc="Manufacturing with Flashloader">
+<!-- Stage 1, load and execute Flashloader -->
+    <CMD state="Blhost" type="blhost" timeout="5000" body="load-image \"Profiles\\MXRT117x\\OS Firmware\\IXWW22_FLD_M_signed.bin\""> Loading and running Flashloader. </CMD>
+	<CMD state="Blhost" type="blhost" timeout="5000" body="get-property 1" > Get Property 1. </CMD>
+	
+<!-- Stage 2, Program boot image into external memory using Flashloader -->
+	<CMD state="Blhost" type="blhost" body="fill-memory 0x20000000 4 0xcf900001"> Select Instance : 1</CMD> 
+	<CMD state="Blhost" type="blhost" body="configure-memory 0x9 0x20000000"> Enable the FLEXSPI 1 support </CMD>
+    <CMD state="Blhost" type="blhost" body="fill-memory 0x20000000 4 0xc0000007"> Prepare Flash Configuration option </CMD>
+    <CMD state="Blhost" type="blhost" body="configure-memory 0x9 0x20000000"> Configure QuadSPI NOR Flash </CMD>
+	<CMD state="Blhost" type="blhost" timeout="100000" body="flash-erase-all 0x09"> Erase All </CMD>
+	<CMD state="Blhost" type="blhost" timeout="660000" body="write-memory 0x30000000 \"Profiles\\MXRT117x\\OS Firmware\\LinkCard-RT1172_BT_signed_enc_all.bin\"" > Program All Image </CMD>
+<!-- Stage 3, Burn fuse -->
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 48 f93df8a8" > Write SRK_HASH </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 49 e914c7cd" > Write SRK_HASH </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 50 1f5dfd13" > Write SRK_HASH </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 51 fec92ab4" > Write SRK_HASH </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 52 9dc17495" > Write SRK_HASH </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 53 a201f176" > Write SRK_HASH </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 54 fd82ba16" > Write SRK_HASH </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 55 6c32056b" > Write SRK_HASH </CMD>
+	
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 128 ffeeddcc" > Write USER_KEY5 </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 129 bbaa9988" > Write USER_KEY5 </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 130 77665544" > Write USER_KEY5 </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 131 33221100" > Write USER_KEY5 </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 132 00112233" > Write key_scramble </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 133 0000001f" > Write key_scramble_align </CMD>
+	
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 71 00000003" > Write OTFAD1_SCRAMBLE_EN OTFAD1_KEY_BLOB_EN </CMD>
+	<!--CMD state="Blhost" type="blhost" body="efuse-program-once 14 00000000" > Write XXX_KEY_SEL </CMD-->
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 20 00000002" > Write BOOT_CFG1 </CMD>
+	
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 75 11111111" > Write JTAG_RESP </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 76 22222222" > Write JTAG_RESP </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 77 33333333" > Write JTAG_RESP </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 78 44444444" > Write JTAG_RESP </CMD>
+	
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 8 00007800" > Write JTAG_RESP_RLOCK </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 9 00000040" > Write USER_KEY5_RLOCK </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 14 00000020" > Write OTFAD1_KEY_SEL_LOCK </CMD>
+	
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 22 00000040" > Write JTAG_SMODE </CMD>
+	<CMD state="Blhost" type="blhost" body="efuse-program-once 22 00000012" > Write SEC_CONFIG[1] BT_FUSE_SEL </CMD>
+    <CMD state="Blhost" type="blhost" body="Update Completed!">Done</CMD>
+</LIST>
+
+<LIST name="MXRT117x_Rework" desc="Rework with Flashloader">
+<!-- Stage 1, load and execute Flashloader -->
+    <CMD state="Blhost" type="blhost" timeout="5000" body="load-image \"Profiles\\MXRT117x\\OS Firmware\\IXWW22_FLD_M_signed.bin\""> Loading and running Flashloader. </CMD>
+	<CMD state="Blhost" type="blhost" timeout="5000" body="get-property 1" > Get Property 1. </CMD>
+	
+<!-- Stage 2, Program boot image into external memory using Flashloader -->
+	<CMD state="Blhost" type="blhost" body="fill-memory 0x20000000 4 0xcf900001"> Select Instance : 1</CMD> 
+	<CMD state="Blhost" type="blhost" body="configure-memory 0x9 0x20000000"> Enable the FLEXSPI 1 support </CMD>
+    <CMD state="Blhost" type="blhost" body="fill-memory 0x20000000 4 0xc0000007"> Prepare Flash Configuration option </CMD>
+    <CMD state="Blhost" type="blhost" body="configure-memory 0x9 0x20000000"> Configure QuadSPI NOR Flash </CMD>
+	<CMD state="Blhost" type="blhost" timeout="100000" body="flash-erase-all 0x09"> Erase All </CMD>
+	<CMD state="Blhost" type="blhost" timeout="660000" body="write-memory 0x30000000 \"Profiles\\MXRT117x\\OS Firmware\\LinkCard-RT1172_BT_signed_enc_all.bin\"" > Program All Image </CMD>
+
+    <CMD state="Blhost" type="blhost" body="Update Completed!">Done</CMD>
+</LIST>
+
+</UCL>
