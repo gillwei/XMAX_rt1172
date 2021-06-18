@@ -2851,19 +2851,26 @@ class VehicleDeviceClass : Templates::DeviceClass
     var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.COOLANT_TEMPERATURE );
     if( VehicleData.Valid )
     {
-      var float CoolantTemperature;
-      if( Enum::TemperatureSettingItem.TEMP_F == TemperatureUnit )
+      if( Settings::COOLANT_HIGH_TEMPERATURE == VehicleData.DataFloat )
       {
-        CoolantTemperature = VehicleData.DataFloat * 1.8 + 32;
-        CoolantTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( CoolantTemperature, Settings::MIN_TEMPERATURE_DEG_F, Settings::MAX_TEMPERATURE_DEG_F );
+        pure CoolantTemperatureStr = Strings::GEN_HIGH_ABBREVIATION;
       }
       else
       {
-        CoolantTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, Settings::MIN_TEMPERATURE_DEG_C, Settings::MAX_TEMPERATURE_DEG_C );
-      }
+        var float CoolantTemperature;
+        if( Enum::TemperatureSettingItem.TEMP_F == TemperatureUnit )
+        {
+          CoolantTemperature = VehicleData.DataFloat * 1.8 + 32;
+          CoolantTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( CoolantTemperature, Settings::MIN_TEMPERATURE_DEG_F, Settings::MAX_TEMPERATURE_DEG_F );
+        }
+        else
+        {
+          CoolantTemperature = DeviceInterface::VehicleDevice.ClampDataFloat( VehicleData.DataFloat, Settings::MIN_TEMPERATURE_DEG_C, Settings::MAX_TEMPERATURE_DEG_C );
+        }
 
-      CoolantTemperature = math_floor( CoolantTemperature );
-      pure CoolantTemperatureStr = string( CoolantTemperature, 0, 0 );
+        CoolantTemperature = math_floor( CoolantTemperature );
+        pure CoolantTemperatureStr = string( CoolantTemperature, 0, 0 );
+      }
     }
     else
     {

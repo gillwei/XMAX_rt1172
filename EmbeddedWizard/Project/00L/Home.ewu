@@ -338,12 +338,13 @@ class VehicleInfoMenu : Core::Group
         MenuItem.MinuteText.Visible = true;
 
         MenuItem.HourIcon.Visible = true;
-        MenuItem.Value.Visible = false;
+        MenuItem.ValueText.Visible = false;
       }
       else
       {
-        MenuItem.Value.String = LoadItemValue( ItemNo );
-        MenuItem.Value.Visible = true;
+        MenuItem.ValueText.String = LoadItemValue( ItemNo );
+        MenuItem.ValueText.Visible = true;
+        MenuItem.ValueTextBlink = LoadItemValueBlink( ItemNo );
 
         MenuItem.HourText.Visible = false;
         MenuItem.MinuteText.Visible = false;
@@ -799,6 +800,26 @@ class VehicleInfoMenu : Core::Group
       }
     }
   }
+
+  $rect <210,440,410,480>
+  method bool LoadItemValueBlink( arg int32 aItemNo )
+  {
+    var bool blink = false;
+    switch( Items[aItemNo] )
+    {
+      case Enum::VehicleInfoMenuItem.COOLANT_TEMPERATURE:
+      {
+        var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.COOLANT_TEMPERATURE );
+        if( VehicleData.Valid &&
+            Settings::COOLANT_HIGH_TEMPERATURE == VehicleData.DataFloat )
+        {
+          blink = true;
+        }
+      }
+      default:;
+    }
+    return blink;
+  }
 }
 
 $rect <290,160,490,200>
@@ -834,7 +855,7 @@ class ItemVehicleInfo : Components::BaseComponent
   }
 
   $rect <20,20,160,60>
-  object Views::Text Value
+  object Views::Text ValueText
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
     preset Bounds = <149,7,281,64>;
@@ -875,6 +896,32 @@ class ItemVehicleInfo : Components::BaseComponent
     preset Bounds = <204,15,231,57>;
     preset Bitmap = Resource::IconUnitHour;
     preset Visible = false;
+  }
+
+  $rect <240,210,440,250>
+  object Core::Timer ValueTextBlinkTimer
+  {
+    preset OnTrigger = OnValueTextBlinkText;
+    preset Period = 500;
+  }
+
+  $rect <240,260,440,300>
+  slot OnValueTextBlinkText
+  {
+    ValueText.Visible = !ValueText.Visible;
+  }
+
+  $rect <240,100,440,140>
+  property bool ValueTextBlink;
+
+  $rect <240,150,440,190>
+  onset ValueTextBlink
+  {
+    if( pure ValueTextBlink != value )
+    {
+      pure ValueTextBlink = value;
+      ValueTextBlinkTimer.Enabled = value;
+    }
   }
 
   $reorder Init 1

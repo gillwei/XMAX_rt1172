@@ -207,6 +207,10 @@ void HomeVehicleInfoMenu_OnVehicleDataReceivedSlot( HomeVehicleInfoMenu _this, X
 /* 'C' function for method : 'Home::VehicleInfoMenu.ReloadItem()' */
 void HomeVehicleInfoMenu_ReloadItem( HomeVehicleInfoMenu _this, XEnum aVehicleInfoItem );
 
+/* 'C' function for method : 'Home::VehicleInfoMenu.LoadItemValueBlink()' */
+XBool HomeVehicleInfoMenu_LoadItemValueBlink( HomeVehicleInfoMenu _this, XInt32 
+  aItemNo );
+
 #ifdef __cplusplus
   }
 #endif

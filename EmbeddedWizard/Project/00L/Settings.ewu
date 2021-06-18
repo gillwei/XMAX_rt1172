@@ -3026,7 +3026,7 @@ const float MIN_FUEL_RATE_LITER_PER_100KM = 1.0;
 // Range of the Vehicle Info
 note group Note1
 {
-  attr Bounds = <1090,10,1750,730>;
+  attr Bounds = <1090,10,1750,770>;
 }
 
 $rect <1120,460,1390,500>
@@ -3206,3 +3206,7 @@ class SET27_ConfirmUpdate : Components::BaseMainBG
     DeviceInterface::SystemDevice.StartOTA();
   }
 }
+
+$rect <1120,710,1390,750>
+$output false
+const float COOLANT_HIGH_TEMPERATURE = 128.75;

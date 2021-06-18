@@ -2939,24 +2939,29 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetCoolantTemperatureStr( DeviceInte
 
   if ( VehicleData->Valid )
   {
-    XFloat CoolantTemperature;
-
-    if ( EnumTemperatureSettingItemTEMP_F == DeviceInterfaceVehicleDeviceClass_OnGetTemperatureUnit( 
-        _this ))
-    {
-      CoolantTemperature = ( VehicleData->DataFloat * 1.800000f ) + 32;
-      CoolantTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), CoolantTemperature, 
-      -22.000000f, 263.000000f );
-    }
+    if ( 128.750000f == VehicleData->DataFloat )
+      _this->CoolantTemperatureStr = EwShareString( EwLoadString( &StringsGEN_HIGH_ABBREVIATION ));
     else
-      CoolantTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
-      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), VehicleData->DataFloat, 
-      -30.000000f, 128.000000f );
+    {
+      XFloat CoolantTemperature;
 
-    CoolantTemperature = EwMathFloor( CoolantTemperature );
-    _this->CoolantTemperatureStr = EwShareString( EwNewStringFloat( CoolantTemperature, 
-    0, 0 ));
+      if ( EnumTemperatureSettingItemTEMP_F == DeviceInterfaceVehicleDeviceClass_OnGetTemperatureUnit( 
+          _this ))
+      {
+        CoolantTemperature = ( VehicleData->DataFloat * 1.800000f ) + 32;
+        CoolantTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), CoolantTemperature, 
+        -22.000000f, 263.000000f );
+      }
+      else
+        CoolantTemperature = DeviceInterfaceVehicleDeviceClass_ClampDataFloat( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), VehicleData->DataFloat, 
+        -30.000000f, 128.000000f );
+
+      CoolantTemperature = EwMathFloor( CoolantTemperature );
+      _this->CoolantTemperatureStr = EwShareString( EwNewStringFloat( CoolantTemperature, 
+      0, 0 ));
+    }
   }
   else
     _this->CoolantTemperatureStr = EwShareString( EwLoadString( &StringsGEN_THREE_HYPHENS ));

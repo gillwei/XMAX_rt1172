@@ -44,6 +44,7 @@
 
 #include "_ComponentsBaseComponent.h"
 #include "_CoreKeyPressHandler.h"
+#include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsText.h"
 
@@ -100,10 +101,12 @@
 EW_DEFINE_FIELDS( HomeItemVehicleInfo, ComponentsBaseComponent )
   EW_OBJECT  ( Title,           ViewsText )
   EW_OBJECT  ( IconUnit,        ViewsImage )
-  EW_OBJECT  ( Value,           ViewsText )
+  EW_OBJECT  ( ValueText,       ViewsText )
   EW_OBJECT  ( MinuteText,      ViewsText )
   EW_OBJECT  ( HourText,        ViewsText )
   EW_OBJECT  ( HourIcon,        ViewsImage )
+  EW_OBJECT  ( ValueTextBlinkTimer, CoreTimer )
+  EW_PROPERTY( ValueTextBlink,  XBool )
 EW_END_OF_FIELDS( HomeItemVehicleInfo )
 
 /* Virtual Method Table (VMT) for the class : 'Home::ItemVehicleInfo' */
@@ -161,6 +164,13 @@ EW_DEFINE_METHODS( HomeItemVehicleInfo, ComponentsBaseComponent )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( HomeItemVehicleInfo )
+
+/* 'C' function for method : 'Home::ItemVehicleInfo.OnValueTextBlinkText()' */
+void HomeItemVehicleInfo_OnValueTextBlinkText( HomeItemVehicleInfo _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Home::ItemVehicleInfo.OnSetValueTextBlink()' */
+void HomeItemVehicleInfo_OnSetValueTextBlink( HomeItemVehicleInfo _this, XBool value );
 
 #ifdef __cplusplus
   }

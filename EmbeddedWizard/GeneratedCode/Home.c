@@ -1009,13 +1009,15 @@ void HomeVehicleInfoMenu_OnLoadItem( HomeVehicleInfoMenu _this, XObject sender )
       _this, ItemNo ));
       ViewsText_OnSetVisible( &MenuItem->MinuteText, 1 );
       ViewsImage_OnSetVisible( &MenuItem->HourIcon, 1 );
-      ViewsText_OnSetVisible( &MenuItem->Value, 0 );
+      ViewsText_OnSetVisible( &MenuItem->ValueText, 0 );
     }
     else
     {
-      ViewsText_OnSetString( &MenuItem->Value, HomeVehicleInfoMenu_LoadItemValue( 
+      ViewsText_OnSetString( &MenuItem->ValueText, HomeVehicleInfoMenu_LoadItemValue( 
       _this, ItemNo ));
-      ViewsText_OnSetVisible( &MenuItem->Value, 1 );
+      ViewsText_OnSetVisible( &MenuItem->ValueText, 1 );
+      HomeItemVehicleInfo_OnSetValueTextBlink( MenuItem, HomeVehicleInfoMenu_LoadItemValueBlink( 
+      _this, ItemNo ));
       ViewsText_OnSetVisible( &MenuItem->HourText, 0 );
       ViewsText_OnSetVisible( &MenuItem->MinuteText, 0 );
       ViewsImage_OnSetVisible( &MenuItem->HourIcon, 0 );
@@ -1614,6 +1616,31 @@ void HomeVehicleInfoMenu_ReloadItem( HomeVehicleInfoMenu _this, XEnum aVehicleIn
     }
 }
 
+/* 'C' function for method : 'Home::VehicleInfoMenu.LoadItemValueBlink()' */
+XBool HomeVehicleInfoMenu_LoadItemValueBlink( HomeVehicleInfoMenu _this, XInt32 
+  aItemNo )
+{
+  XBool blink = 0;
+
+  switch ( _this->Items[ EwCheckIndex( aItemNo, 14 )])
+  {
+    case EnumVehicleInfoMenuItemCOOLANT_TEMPERATURE :
+    {
+      DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        EnumVehicleRxTypeCOOLANT_TEMPERATURE );
+
+      if ( VehicleData->Valid && ( 128.750000f == VehicleData->DataFloat ))
+        blink = 1;
+    }
+    break;
+
+    default :; 
+  }
+
+  return blink;
+}
+
 /* Variants derived from the class : 'Home::VehicleInfoMenu' */
 EW_DEFINE_CLASS_VARIANTS( HomeVehicleInfoMenu )
 EW_END_OF_CLASS_VARIANTS( HomeVehicleInfoMenu )
@@ -1665,10 +1692,11 @@ void HomeItemVehicleInfo__Init( HomeItemVehicleInfo _this, XObject aLink, XHandl
   /* ... then construct all embedded objects */
   ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->IconUnit, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->Value, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->ValueText, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->MinuteText, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->HourText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->HourIcon, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->ValueTextBlinkTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( HomeItemVehicleInfo );
@@ -1684,12 +1712,13 @@ void HomeItemVehicleInfo__Init( HomeItemVehicleInfo _this, XObject aLink, XHandl
   ViewsText_OnSetString( &_this->Title, 0 );
   ViewsText_OnSetColor( &_this->Title, _Const000F );
   CoreRectView__OnSetBounds( &_this->IconUnit, _Const0010 );
-  CoreView_OnSetLayout((CoreView)&_this->Value, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Value, _Const0011 );
-  ViewsText_OnSetEllipsis( &_this->Value, 1 );
-  ViewsText_OnSetAlignment( &_this->Value, ViewsTextAlignmentAlignHorzRight | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->Value, 0 );
-  ViewsText_OnSetColor( &_this->Value, _Const000F );
+  CoreView_OnSetLayout((CoreView)&_this->ValueText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
+  CoreRectView__OnSetBounds( &_this->ValueText, _Const0011 );
+  ViewsText_OnSetEllipsis( &_this->ValueText, 1 );
+  ViewsText_OnSetAlignment( &_this->ValueText, ViewsTextAlignmentAlignHorzRight 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->ValueText, 0 );
+  ViewsText_OnSetColor( &_this->ValueText, _Const000F );
   CoreView_OnSetLayout((CoreView)&_this->MinuteText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
   CoreRectView__OnSetBounds( &_this->MinuteText, _Const0012 );
   ViewsText_OnSetEllipsis( &_this->MinuteText, 1 );
@@ -1706,9 +1735,10 @@ void HomeItemVehicleInfo__Init( HomeItemVehicleInfo _this, XObject aLink, XHandl
   ViewsText_OnSetColor( &_this->HourText, _Const000F );
   CoreRectView__OnSetBounds( &_this->HourIcon, _Const0014 );
   ViewsImage_OnSetVisible( &_this->HourIcon, 0 );
+  CoreTimer_OnSetPeriod( &_this->ValueTextBlinkTimer, 500 );
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->IconUnit ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->Value ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->ValueText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->MinuteText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->HourText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->HourIcon ), 0 );
@@ -1716,7 +1746,7 @@ void HomeItemVehicleInfo__Init( HomeItemVehicleInfo _this, XObject aLink, XHandl
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->IconUnit, EwLoadResource( &ResourceIconUnitKM_L, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->Value, EwLoadResource( &FontsNotoSansMedium40pt, 
+  ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansMedium40pt, 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->MinuteText, EwLoadResource( &FontsNotoSansMedium40pt, 
   ResourcesFont ));
@@ -1724,6 +1754,7 @@ void HomeItemVehicleInfo__Init( HomeItemVehicleInfo _this, XObject aLink, XHandl
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->HourIcon, EwLoadResource( &ResourceIconUnitHour, 
   ResourcesBitmap ));
+  _this->ValueTextBlinkTimer.OnTrigger = EwNewSlot( _this, HomeItemVehicleInfo_OnValueTextBlinkText );
 }
 
 /* Re-Initializer for the class 'Home::ItemVehicleInfo' */
@@ -1735,10 +1766,11 @@ void HomeItemVehicleInfo__ReInit( HomeItemVehicleInfo _this )
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Title );
   ViewsImage__ReInit( &_this->IconUnit );
-  ViewsText__ReInit( &_this->Value );
+  ViewsText__ReInit( &_this->ValueText );
   ViewsText__ReInit( &_this->MinuteText );
   ViewsText__ReInit( &_this->HourText );
   ViewsImage__ReInit( &_this->HourIcon );
+  CoreTimer__ReInit( &_this->ValueTextBlinkTimer );
 }
 
 /* Finalizer method for the class 'Home::ItemVehicleInfo' */
@@ -1750,13 +1782,34 @@ void HomeItemVehicleInfo__Done( HomeItemVehicleInfo _this )
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->Title );
   ViewsImage__Done( &_this->IconUnit );
-  ViewsText__Done( &_this->Value );
+  ViewsText__Done( &_this->ValueText );
   ViewsText__Done( &_this->MinuteText );
   ViewsText__Done( &_this->HourText );
   ViewsImage__Done( &_this->HourIcon );
+  CoreTimer__Done( &_this->ValueTextBlinkTimer );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Home::ItemVehicleInfo.OnValueTextBlinkText()' */
+void HomeItemVehicleInfo_OnValueTextBlinkText( HomeItemVehicleInfo _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ViewsText_OnSetVisible( &_this->ValueText, (XBool)!ViewsText_OnGetVisible( &_this->ValueText ));
+}
+
+/* 'C' function for method : 'Home::ItemVehicleInfo.OnSetValueTextBlink()' */
+void HomeItemVehicleInfo_OnSetValueTextBlink( HomeItemVehicleInfo _this, XBool value )
+{
+  if ( _this->ValueTextBlink != value )
+  {
+    _this->ValueTextBlink = value;
+    CoreTimer_OnSetEnabled( &_this->ValueTextBlinkTimer, value );
+  }
 }
 
 /* Variants derived from the class : 'Home::ItemVehicleInfo' */
@@ -1765,7 +1818,7 @@ EW_END_OF_CLASS_VARIANTS( HomeItemVehicleInfo )
 
 /* Virtual Method Table (VMT) for the class : 'Home::ItemVehicleInfo' */
 EW_DEFINE_CLASS( HomeItemVehicleInfo, ComponentsBaseComponent, Title, Title, Title, 
-                 Title, _.VMT, _.VMT, "Home::ItemVehicleInfo" )
+                 Title, ValueTextBlink, ValueTextBlink, "Home::ItemVehicleInfo" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
