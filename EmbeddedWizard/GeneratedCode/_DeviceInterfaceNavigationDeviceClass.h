@@ -88,6 +88,8 @@ EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( ConnectStatusUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( DisconnectStatusUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( PoiListUpdateEvent, CoreSystemEvent )
+  EW_VARIABLE( CurrentSelectPoiIdx, XInt32 )
+  EW_VARIABLE( RouteOptionTriggerItem, XEnum )
   EW_VARIABLE( CurrentPoiListType, XEnum )
   EW_VARIABLE( CurrentHome,     XEnum )
   EW_VARIABLE( IsNaviLoadingDialogDisplayed, XBool )
@@ -258,10 +260,12 @@ void DeviceInterfaceNavigationDeviceClass_StopRoute( DeviceInterfaceNavigationDe
 void DeviceInterfaceNavigationDeviceClass_SkipNextStop( DeviceInterfaceNavigationDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GoHome()' */
-void DeviceInterfaceNavigationDeviceClass_GoHome( DeviceInterfaceNavigationDeviceClass _this );
+void DeviceInterfaceNavigationDeviceClass_GoHome( DeviceInterfaceNavigationDeviceClass _this, 
+  XEnum aRouteOption );
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GoOffice()' */
-void DeviceInterfaceNavigationDeviceClass_GoOffice( DeviceInterfaceNavigationDeviceClass _this );
+void DeviceInterfaceNavigationDeviceClass_GoOffice( DeviceInterfaceNavigationDeviceClass _this, 
+  XEnum aRouteOption );
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ZoomInRequest()' */
 void DeviceInterfaceNavigationDeviceClass_ZoomInRequest( DeviceInterfaceNavigationDeviceClass _this );
@@ -337,7 +341,7 @@ void DeviceInterfaceNavigationDeviceClass_PoiListRequest( DeviceInterfaceNavigat
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StartRoute()' */
 void DeviceInterfaceNavigationDeviceClass_StartRoute( DeviceInterfaceNavigationDeviceClass _this, 
-  XInt32 aPoiIdx, XEnum aPoiListType );
+  XInt32 aPoiIdx, XEnum aRouteOptionType );
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviDialogTimeOut()' */
 XInt32 DeviceInterfaceNavigationDeviceClass_GetNaviDialogTimeOut( DeviceInterfaceNavigationDeviceClass _this );

@@ -48,6 +48,7 @@
 #include "_NavigationNAV06_NaviSettingMenu.h"
 #include "_NavigationNAV08_NaviChageViewMenu.h"
 #include "_NavigationNAV09_NAV10_PoiList.h"
+#include "_NavigationNAV11_RouteOptionMenu.h"
 #include "_NavigationNaviAlert.h"
 #include "_NavigationNaviAlertMessage.h"
 #include "_NavigationNaviCurrentRoad.h"

@@ -657,6 +657,24 @@ const string NAV08_TURN_LIST =
 );
 
 $output false
+const string NAV11_NEW_ROUTE =
+(
+  Default = "Start a new route";
+);
+
+$output false
+const string NAV11_NEXT_STOP =
+(
+  Default = "Add as next stop";
+);
+
+$output false
+const string NAV11_LAST_STOP =
+(
+  Default = "Add as last stop";
+);
+
+$output false
 const string OPN02_FACTORY_MODE =
 (
   Default = "Factory mode";

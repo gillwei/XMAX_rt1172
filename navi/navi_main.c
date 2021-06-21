@@ -953,11 +953,25 @@ return zoom_inout_status;
 *********************************************************************/
 void NAVI_send_go_home_request
     (
-    void
+    EnumNaviRouteOptionType route_option_type
     )
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
-NAVILITE_request_app_gohome();
+switch( route_option_type )
+    {
+    case EnumNaviRouteOptionTypeNEW_ROUTE:
+        NAVILITE_request_app_gohome( NAVILITE_ROUTE_NEW_ROUTE );
+        break;
+    case EnumNaviRouteOptionTypeNEXT_STOP:
+        NAVILITE_request_app_gohome( NAVILITE_ROUTE_NEXT_STOP );
+        break;
+    case EnumNaviRouteOptionTypeLAST_STOP:
+        NAVILITE_request_app_gohome( NAVILITE_ROUTE_LAST_STOP );
+        break;
+    default:
+        PRINTF( "%s: Unknown route option type\r\n", __FUNCTION__ );
+        break;
+    }
 }
 
 /*********************************************************************
@@ -970,11 +984,25 @@ NAVILITE_request_app_gohome();
 *********************************************************************/
 void NAVI_send_go_office_request
     (
-    void
+    EnumNaviRouteOptionType route_option_type
     )
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
-NAVILITE_request_app_gooffice();
+switch( route_option_type )
+    {
+    case EnumNaviRouteOptionTypeNEW_ROUTE:
+        NAVILITE_request_app_gooffice( NAVILITE_ROUTE_NEW_ROUTE );
+        break;
+    case EnumNaviRouteOptionTypeNEXT_STOP:
+        NAVILITE_request_app_gooffice( NAVILITE_ROUTE_NEXT_STOP );
+        break;
+    case EnumNaviRouteOptionTypeLAST_STOP:
+        NAVILITE_request_app_gooffice( NAVILITE_ROUTE_LAST_STOP );
+        break;
+    default:
+        PRINTF( "%s: Unknown route option type\r\n", __FUNCTION__ );
+        break;
+    }
 }
 
 /*********************************************************************
@@ -1060,25 +1088,28 @@ switch( button_type )
 void NAVI_send_start_route_request
     (
     uint32_t list_idx,
-    EnumNaviPoiListType poi_list_type
+    EnumNaviRouteOptionType route_option_type
     )
 {
 PRINTF( "%s, List Index: %d\r\n", __FUNCTION__, list_idx );
-uint32_t poi_list_idx;
-switch( poi_list_type )
+
+uint32_t poi_list_idx = navi_get_poi_list_index( list_idx );
+PRINTF( "%s, Poi Index: %d\r\n", __FUNCTION__, poi_list_idx );
+
+switch( route_option_type )
     {
-    case EnumNaviPoiListTypeFAVORITE:
-    case EnumNaviPoiListTypeGAS_STATION:
-        poi_list_idx = navi_get_poi_list_index( list_idx );
-        PRINTF( "%s, Poi Index: %d\r\n", __FUNCTION__, poi_list_idx );
+    case EnumNaviRouteOptionTypeNEW_ROUTE:
+        NAVILITE_request_app_startroute( poi_list_idx, NAVILITE_ROUTE_NEW_ROUTE );
+        break;
+    case EnumNaviRouteOptionTypeNEXT_STOP:
+        NAVILITE_request_app_startroute( poi_list_idx, NAVILITE_ROUTE_NEXT_STOP );
+        break;
+    case EnumNaviRouteOptionTypeLAST_STOP:
+        NAVILITE_request_app_startroute( poi_list_idx, NAVILITE_ROUTE_LAST_STOP );
         break;
     default:
+        PRINTF( "%s: Unknown route option type\r\n", __FUNCTION__ );
         break;
-    }
-//TODO: Handle start new route/add as next stop/ add as last stop.
-if( !NAVILITE_request_app_startroute( poi_list_idx, NAVILITE_ROUTE_NEW_ROUTE ) )
-    {
-    PRINTF( "%s, start route request error \r\n", __FUNCTION__ );
     }
 }
 

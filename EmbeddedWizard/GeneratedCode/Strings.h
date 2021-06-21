@@ -307,6 +307,15 @@ extern const XStringRes StringsNAV08_TURN_BY_TURN;
 /* User defined constant: 'Strings::NAV08_TURN_LIST' */
 extern const XStringRes StringsNAV08_TURN_LIST;
 
+/* User defined constant: 'Strings::NAV11_NEW_ROUTE' */
+extern const XStringRes StringsNAV11_NEW_ROUTE;
+
+/* User defined constant: 'Strings::NAV11_NEXT_STOP' */
+extern const XStringRes StringsNAV11_NEXT_STOP;
+
+/* User defined constant: 'Strings::NAV11_LAST_STOP' */
+extern const XStringRes StringsNAV11_LAST_STOP;
+
 /* User defined constant: 'Strings::OPN02_FACTORY_MODE' */
 extern const XStringRes StringsOPN02_FACTORY_MODE;
 

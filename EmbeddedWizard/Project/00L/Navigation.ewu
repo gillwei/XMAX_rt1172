@@ -838,13 +838,29 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
       }
       case Enum::NaviSettingItem.GoHome:
       {
-        DeviceInterface::NavigationDevice.GoHome();
-        UpdateHomeSetting();
+        if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+        {
+          DeviceInterface::NavigationDevice.RouteOptionTriggerItem = Enum::NaviRouteOptionTriggerItem.HOME;
+          MenuDialog = new Navigation::NAV11_RouteOptionMenu;
+        }
+        else
+        {
+          DeviceInterface::NavigationDevice.GoHome( Enum::NaviRouteOptionType.NEW_ROUTE );
+          UpdateHomeSetting();
+        }
       }
       case Enum::NaviSettingItem.GoToWork:
       {
-        DeviceInterface::NavigationDevice.GoOffice();
-        UpdateOfficeSetting();
+        if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+        {
+          DeviceInterface::NavigationDevice.RouteOptionTriggerItem = Enum::NaviRouteOptionTriggerItem.OFFICE;
+          MenuDialog = new Navigation::NAV11_RouteOptionMenu;
+        }
+        else
+        {
+          DeviceInterface::NavigationDevice.GoOffice( Enum::NaviRouteOptionType.NEW_ROUTE );
+          UpdateOfficeSetting();
+        }
       }
       case Enum::NaviSettingItem.Favorites:
       {
@@ -3198,14 +3214,51 @@ class NAV09_NAV10_PoiList : Menu::BaseMenuView
     return title;
   }
 
-  $rect <790,640,990,680>
+  $rect <780,640,980,680>
   inherited method OnItemActivate()
   {
     aMenuItem; // suppress warning.
+    var Menu::BaseMenuView MenuDialog = null;
 
-    DeviceInterface::NavigationDevice.StartRoute( aItemNo, DeviceInterface::NavigationDevice.CurrentPoiListType );
-    DeviceInterface::NavigationDevice.PoiListRequest( DeviceInterface::NavigationDevice.CurrentPoiListType, false );
-    postsignal ReturnToNaviMapView;
+    if( Enum::NaviPoiListType.FAVORITE == DeviceInterface::NavigationDevice.CurrentPoiListType )
+    {
+      if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+      {
+        DeviceInterface::NavigationDevice.RouteOptionTriggerItem = Enum::NaviRouteOptionTriggerItem.FAVORITE_PLACE;
+        DeviceInterface::NavigationDevice.CurrentSelectPoiIdx = aItemNo;
+        MenuDialog = new Navigation::NAV11_RouteOptionMenu;
+      }
+      else
+      {
+        DeviceInterface::NavigationDevice.StartRoute( aItemNo, Enum::NaviRouteOptionType.NEW_ROUTE );
+        DeviceInterface::NavigationDevice.PoiListRequest( Enum::NaviPoiListType.FAVORITE, false );
+        postsignal ReturnToNaviMapView;
+      }
+    }
+    else if( Enum::NaviPoiListType.GAS_STATION == DeviceInterface::NavigationDevice.CurrentPoiListType )
+    {
+      if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+      {
+        DeviceInterface::NavigationDevice.RouteOptionTriggerItem = Enum::NaviRouteOptionTriggerItem.GAS_STATION;
+        DeviceInterface::NavigationDevice.CurrentSelectPoiIdx = aItemNo;
+        MenuDialog = new Navigation::NAV11_RouteOptionMenu;
+      }
+      else
+      {
+        DeviceInterface::NavigationDevice.StartRoute( aItemNo, Enum::NaviRouteOptionType.NEW_ROUTE );
+        DeviceInterface::NavigationDevice.PoiListRequest( Enum::NaviPoiListType.GAS_STATION, false );
+        postsignal ReturnToNaviMapView;
+      }
+    }
+    else
+    {
+      // empty.
+    }
+
+    if( null != MenuDialog )
+    {
+      SlideInDialog( MenuDialog );
+    }
   }
 
   $rect <20,20,160,60>
@@ -3429,14 +3482,97 @@ class NAV09_NAV10_PoiList : Menu::BaseMenuView
   }
 }
 
-$rect <720,540,920,580>
+$rect <290,200,490,240>
+$output false
+class NAV11_RouteOptionMenu : Menu::BaseMenuView
+{
+  $rect <510,50,710,90>
+  inherited method LoadItemClass()
+  {
+    var class ItemClass = null;
+    if( aItemNo >= 0 )
+    {
+      ItemClass = Menu::ItemBase;
+    }
+    return ItemClass;
+  }
+
+  $rect <510,110,710,150>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    switch( NaviRouteOptions[aItemNo] )
+    {
+      case Enum::NaviRouteOptionType.NEW_ROUTE: Title = Strings::NAV11_NEW_ROUTE;
+      case Enum::NaviRouteOptionType.NEXT_STOP: Title = Strings::NAV11_NEXT_STOP;
+      case Enum::NaviRouteOptionType.LAST_STOP: Title = Strings::NAV11_LAST_STOP;
+      default:;
+    }
+    return Title;
+  }
+
+  $rect <510,180,710,220>
+  inherited method OnItemActivate()
+  {
+    aMenuItem;
+
+    switch( DeviceInterface::NavigationDevice.RouteOptionTriggerItem )
+    {
+      case Enum::NaviRouteOptionTriggerItem.HOME: DeviceInterface::NavigationDevice.GoHome( NaviRouteOptions[aItemNo] );
+      case Enum::NaviRouteOptionTriggerItem.OFFICE: DeviceInterface::NavigationDevice.GoOffice( NaviRouteOptions[aItemNo] );
+      case Enum::NaviRouteOptionTriggerItem.FAVORITE_PLACE:
+      {
+        DeviceInterface::NavigationDevice.StartRoute( DeviceInterface::NavigationDevice.CurrentSelectPoiIdx, NaviRouteOptions[aItemNo] );
+        DeviceInterface::NavigationDevice.PoiListRequest( Enum::NaviPoiListType.FAVORITE, false );
+      }
+      case Enum::NaviRouteOptionTriggerItem.GAS_STATION:
+      {
+        DeviceInterface::NavigationDevice.StartRoute( DeviceInterface::NavigationDevice.CurrentSelectPoiIdx, NaviRouteOptions[aItemNo] );
+        DeviceInterface::NavigationDevice.PoiListRequest( Enum::NaviPoiListType.GAS_STATION, false );
+      }
+      default:;
+    }
+
+    postsignal ReturnToNaviMapView;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = 3;
+  }
+
+  $rect <750,50,950,90>
+  array Enum::NaviRouteOptionType NaviRouteOptions[ 3 ] =
+  (
+    Default[0] = Enum::NaviRouteOptionType.NEW_ROUTE;
+    Default[1] = Enum::NaviRouteOptionType.NEXT_STOP;
+    Default[2] = Enum::NaviRouteOptionType.LAST_STOP;
+  );
+
+  $rect <510,290,710,330>
+  slot ReturnToNaviMapView
+  {
+    var Application::Application App = ( Application::Application )GetRoot();
+    if( null != App )
+    {
+      DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+      App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+    }
+  }
+
+  $rect <118,340,318,380>
+  property slot GetPoiIndexSlot;
+}
+
+$rect <730,530,930,570>
 $output false
 const int32 TBT_ITEM_HEIGHT = 111;
 
-$rect <930,540,1130,580>
+$rect <930,530,1130,570>
 $output false
 const rect TURN_ICON_BOUNDS_W_DIST = <45,14,90,59>;
 
-$rect <1140,540,1340,580>
+$rect <1140,530,1340,570>
 $output false
 const rect TURN_ICON_BOUNDS_WO_DIST = <45,32,90,77>;

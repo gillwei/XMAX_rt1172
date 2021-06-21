@@ -56,6 +56,7 @@
 #include "_NavigationNAV06_NaviSettingMenu.h"
 #include "_NavigationNAV08_NaviChageViewMenu.h"
 #include "_NavigationNAV09_NAV10_PoiList.h"
+#include "_NavigationNAV11_RouteOptionMenu.h"
 #include "_NavigationNaviAlert.h"
 #include "_NavigationNaviAlertMessage.h"
 #include "_NavigationNaviCurrentRoad.h"
@@ -1236,19 +1237,37 @@ void NavigationNAV06_NaviSettingMenu_OnItemActivate( NavigationNAV06_NaviSetting
     break;
 
     case EnumNaviSettingItemGoHome :
-    {
-      DeviceInterfaceNavigationDeviceClass_GoHome( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-      DeviceInterfaceNavigationDeviceClass ));
-      NavigationNAV06_NaviSettingMenu_UpdateHomeSetting( _this );
-    }
+      if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
+          &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+      {
+        EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->RouteOptionTriggerItem 
+        = EnumNaviRouteOptionTriggerItemHOME;
+        MenuDialog = ((MenuBaseMenuView)EwNewObject( NavigationNAV11_RouteOptionMenu, 
+        0 ));
+      }
+      else
+      {
+        DeviceInterfaceNavigationDeviceClass_GoHome( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+        DeviceInterfaceNavigationDeviceClass ), EnumNaviRouteOptionTypeNEW_ROUTE );
+        NavigationNAV06_NaviSettingMenu_UpdateHomeSetting( _this );
+      }
     break;
 
     case EnumNaviSettingItemGoToWork :
-    {
-      DeviceInterfaceNavigationDeviceClass_GoOffice( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-      DeviceInterfaceNavigationDeviceClass ));
-      NavigationNAV06_NaviSettingMenu_UpdateOfficeSetting( _this );
-    }
+      if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
+          &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+      {
+        EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->RouteOptionTriggerItem 
+        = EnumNaviRouteOptionTriggerItemOFFICE;
+        MenuDialog = ((MenuBaseMenuView)EwNewObject( NavigationNAV11_RouteOptionMenu, 
+        0 ));
+      }
+      else
+      {
+        DeviceInterfaceNavigationDeviceClass_GoOffice( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+        DeviceInterfaceNavigationDeviceClass ), EnumNaviRouteOptionTypeNEW_ROUTE );
+        NavigationNAV06_NaviSettingMenu_UpdateOfficeSetting( _this );
+      }
     break;
 
     case EnumNaviSettingItemFavorites :
@@ -4762,17 +4781,64 @@ XString NavigationNAV09_NAV10_PoiList_LoadItemTitle( NavigationNAV09_NAV10_PoiLi
 void NavigationNAV09_NAV10_PoiList_OnItemActivate( NavigationNAV09_NAV10_PoiList _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
+  MenuBaseMenuView MenuDialog;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aMenuItem );
 
-  DeviceInterfaceNavigationDeviceClass_StartRoute( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-  DeviceInterfaceNavigationDeviceClass ), aItemNo, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-  DeviceInterfaceNavigationDeviceClass )->CurrentPoiListType );
-  DeviceInterfaceNavigationDeviceClass_PoiListRequest( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-  DeviceInterfaceNavigationDeviceClass ), EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
-  DeviceInterfaceNavigationDeviceClass )->CurrentPoiListType, 0 );
-  EwPostSignal( EwNewSlot( _this, NavigationNAV09_NAV10_PoiList_ReturnToNaviMapView ), 
-    ((XObject)_this ));
+  MenuDialog = 0;
+
+  if ( EnumNaviPoiListTypeFAVORITE == EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass )->CurrentPoiListType )
+  {
+    if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
+        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+    {
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->RouteOptionTriggerItem 
+      = EnumNaviRouteOptionTriggerItemFAVORITE_PLACE;
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentSelectPoiIdx 
+      = aItemNo;
+      MenuDialog = ((MenuBaseMenuView)EwNewObject( NavigationNAV11_RouteOptionMenu, 
+      0 ));
+    }
+    else
+    {
+      DeviceInterfaceNavigationDeviceClass_StartRoute( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), aItemNo, EnumNaviRouteOptionTypeNEW_ROUTE );
+      DeviceInterfaceNavigationDeviceClass_PoiListRequest( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), EnumNaviPoiListTypeFAVORITE, 0 );
+      EwPostSignal( EwNewSlot( _this, NavigationNAV09_NAV10_PoiList_ReturnToNaviMapView ), 
+        ((XObject)_this ));
+    }
+  }
+  else
+    if ( EnumNaviPoiListTypeGAS_STATION == EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+        DeviceInterfaceNavigationDeviceClass )->CurrentPoiListType )
+    {
+      if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
+          &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+      {
+        EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->RouteOptionTriggerItem 
+        = EnumNaviRouteOptionTriggerItemGAS_STATION;
+        EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentSelectPoiIdx 
+        = aItemNo;
+        MenuDialog = ((MenuBaseMenuView)EwNewObject( NavigationNAV11_RouteOptionMenu, 
+        0 ));
+      }
+      else
+      {
+        DeviceInterfaceNavigationDeviceClass_StartRoute( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+        DeviceInterfaceNavigationDeviceClass ), aItemNo, EnumNaviRouteOptionTypeNEW_ROUTE );
+        DeviceInterfaceNavigationDeviceClass_PoiListRequest( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+        DeviceInterfaceNavigationDeviceClass ), EnumNaviPoiListTypeGAS_STATION, 
+        0 );
+        EwPostSignal( EwNewSlot( _this, NavigationNAV09_NAV10_PoiList_ReturnToNaviMapView ), 
+          ((XObject)_this ));
+      }
+    }
+
+  if ( MenuDialog != 0 )
+    ComponentsBaseMainBG_SlideInDialog((ComponentsBaseMainBG)_this, ((ComponentsBaseMainBG)MenuDialog ));
 }
 
 /* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.LoadPoiListItemValue()' */
@@ -4978,6 +5044,224 @@ EW_DEFINE_CLASS( NavigationNAV09_NAV10_PoiList, MenuBaseMenuView, PoiListUpdateE
   NavigationNAV09_NAV10_PoiList_LoadPoiListItemValue,
   NavigationNAV09_NAV10_PoiList_LoadPoiListItemUnit,
 EW_END_OF_CLASS( NavigationNAV09_NAV10_PoiList )
+
+/* Initializer for the class 'Navigation::NAV11_RouteOptionMenu' */
+void NavigationNAV11_RouteOptionMenu__Init( NavigationNAV11_RouteOptionMenu _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  MenuBaseMenuView__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( NavigationNAV11_RouteOptionMenu );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( NavigationNAV11_RouteOptionMenu );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
+  _this->NaviRouteOptions[ 0 ] = EnumNaviRouteOptionTypeNEW_ROUTE;
+  _this->NaviRouteOptions[ 1 ] = EnumNaviRouteOptionTypeNEXT_STOP;
+  _this->NaviRouteOptions[ 2 ] = EnumNaviRouteOptionTypeLAST_STOP;
+}
+
+/* Re-Initializer for the class 'Navigation::NAV11_RouteOptionMenu' */
+void NavigationNAV11_RouteOptionMenu__ReInit( NavigationNAV11_RouteOptionMenu _this )
+{
+  /* At first re-initialize the super class ... */
+  MenuBaseMenuView__ReInit( &_this->_.Super );
+}
+
+/* Finalizer method for the class 'Navigation::NAV11_RouteOptionMenu' */
+void NavigationNAV11_RouteOptionMenu__Done( NavigationNAV11_RouteOptionMenu _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
+
+  /* Don't forget to deinitialize the super class ... */
+  MenuBaseMenuView__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Navigation::NAV11_RouteOptionMenu.LoadItemClass()' */
+XClass NavigationNAV11_RouteOptionMenu_LoadItemClass( NavigationNAV11_RouteOptionMenu _this, 
+  XInt32 aItemNo )
+{
+  XClass ItemClass;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ItemClass = 0;
+
+  if ( aItemNo >= 0 )
+    ItemClass = EW_CLASS( MenuItemBase );
+
+  return ItemClass;
+}
+
+/* 'C' function for method : 'Navigation::NAV11_RouteOptionMenu.LoadItemTitle()' */
+XString NavigationNAV11_RouteOptionMenu_LoadItemTitle( NavigationNAV11_RouteOptionMenu _this, 
+  XInt32 aItemNo )
+{
+  XString Title = 0;
+
+  switch ( _this->NaviRouteOptions[ EwCheckIndex( aItemNo, 3 )])
+  {
+    case EnumNaviRouteOptionTypeNEW_ROUTE :
+      Title = EwLoadString( &StringsNAV11_NEW_ROUTE );
+    break;
+
+    case EnumNaviRouteOptionTypeNEXT_STOP :
+      Title = EwLoadString( &StringsNAV11_NEXT_STOP );
+    break;
+
+    case EnumNaviRouteOptionTypeLAST_STOP :
+      Title = EwLoadString( &StringsNAV11_LAST_STOP );
+    break;
+
+    default :; 
+  }
+
+  return Title;
+}
+
+/* 'C' function for method : 'Navigation::NAV11_RouteOptionMenu.OnItemActivate()' */
+void NavigationNAV11_RouteOptionMenu_OnItemActivate( NavigationNAV11_RouteOptionMenu _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aMenuItem );
+
+  switch ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->RouteOptionTriggerItem )
+  {
+    case EnumNaviRouteOptionTriggerItemHOME :
+      DeviceInterfaceNavigationDeviceClass_GoHome( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), _this->NaviRouteOptions[ EwCheckIndex( 
+      aItemNo, 3 )]);
+    break;
+
+    case EnumNaviRouteOptionTriggerItemOFFICE :
+      DeviceInterfaceNavigationDeviceClass_GoOffice( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), _this->NaviRouteOptions[ EwCheckIndex( 
+      aItemNo, 3 )]);
+    break;
+
+    case EnumNaviRouteOptionTriggerItemFAVORITE_PLACE :
+    {
+      DeviceInterfaceNavigationDeviceClass_StartRoute( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass )->CurrentSelectPoiIdx, _this->NaviRouteOptions[ 
+      EwCheckIndex( aItemNo, 3 )]);
+      DeviceInterfaceNavigationDeviceClass_PoiListRequest( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), EnumNaviPoiListTypeFAVORITE, 0 );
+    }
+    break;
+
+    case EnumNaviRouteOptionTriggerItemGAS_STATION :
+    {
+      DeviceInterfaceNavigationDeviceClass_StartRoute( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass )->CurrentSelectPoiIdx, _this->NaviRouteOptions[ 
+      EwCheckIndex( aItemNo, 3 )]);
+      DeviceInterfaceNavigationDeviceClass_PoiListRequest( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass ), EnumNaviPoiListTypeGAS_STATION, 0 );
+    }
+    break;
+
+    default :; 
+  }
+
+  EwPostSignal( EwNewSlot( _this, NavigationNAV11_RouteOptionMenu_ReturnToNaviMapView ), 
+    ((XObject)_this ));
+}
+
+/* 'C' function for method : 'Navigation::NAV11_RouteOptionMenu.ReturnToNaviMapView()' */
+void NavigationNAV11_RouteOptionMenu_ReturnToNaviMapView( NavigationNAV11_RouteOptionMenu _this, 
+  XObject sender )
+{
+  ApplicationApplication App;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
+
+  if ( App != 0 )
+  {
+    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentHome 
+    = EnumHomeTypeNAVI_DEFAULT_VIEW;
+    ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+    DeviceInterfaceNavigationDeviceClass )->CurrentHome );
+  }
+}
+
+/* Variants derived from the class : 'Navigation::NAV11_RouteOptionMenu' */
+EW_DEFINE_CLASS_VARIANTS( NavigationNAV11_RouteOptionMenu )
+EW_END_OF_CLASS_VARIANTS( NavigationNAV11_RouteOptionMenu )
+
+/* Virtual Method Table (VMT) for the class : 'Navigation::NAV11_RouteOptionMenu' */
+EW_DEFINE_CLASS( NavigationNAV11_RouteOptionMenu, MenuBaseMenuView, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, _.VMT, "Navigation::NAV11_RouteOptionMenu" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  CoreGroup_Draw,
+  CoreView_HandleEvent,
+  CoreGroup_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreGroup_ChangeViewState,
+  CoreGroup_OnSetBounds,
+  CoreGroup_OnSetFocus,
+  CoreGroup_OnSetBuffered,
+  CoreGroup_OnGetEnabled,
+  CoreGroup_OnSetEnabled,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_OnSetVisible,
+  CoreGroup_IsCurrentDialog,
+  CoreGroup_IsActiveDialog,
+  CoreGroup_DispatchEvent,
+  CoreGroup_BroadcastEvent,
+  CoreGroup_UpdateLayout,
+  CoreGroup_UpdateViewState,
+  CoreGroup_InvalidateArea,
+  CoreGroup_CountViews,
+  CoreGroup_FindNextView,
+  CoreGroup_FindSiblingView,
+  CoreGroup_RestackTop,
+  CoreGroup_Restack,
+  CoreGroup_Remove,
+  CoreGroup_Add,
+  ComponentsBaseComponent_OnShortDownKeyActivated,
+  ComponentsBaseComponent_OnShortUpKeyActivated,
+  ComponentsBaseComponent_OnShortEnterKeyActivated,
+  ComponentsBaseMainBG_OnShortHomeKeyActivated,
+  ComponentsBaseComponent_OnLongDownKeyActivated,
+  ComponentsBaseComponent_OnLongUpKeyActivated,
+  ComponentsBaseComponent_OnLongEnterKeyActivated,
+  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  ComponentsBaseComponent_OnShortMagicKeyActivated,
+  MenuBaseMenuView_OnSetDDModeEnabled,
+  ComponentsBaseComponent_OnDownKeyReleased,
+  ComponentsBaseComponent_OnUpKeyReleased,
+  NavigationNAV11_RouteOptionMenu_LoadItemClass,
+  NavigationNAV11_RouteOptionMenu_LoadItemTitle,
+  NavigationNAV11_RouteOptionMenu_OnItemActivate,
+  MenuBaseMenuView_LoadItemChecked,
+  MenuBaseMenuView_LoadItemEnabled,
+  MenuBaseMenuView_LoadItemBaseValue,
+  MenuBaseMenuView_LoadItemMessage,
+  MenuBaseMenuView_LoadItemReceivedTime,
+  MenuBaseMenuView_LoadItemCategory,
+  MenuBaseMenuView_LoadItemUid,
+  MenuBaseMenuView_LoadItemToggle,
+  MenuBaseMenuView_LoadItemUnit,
+  MenuBaseMenuView_LoadItemValue,
+  MenuBaseMenuView_OnItemLongEnterKeyActivate,
+  MenuBaseMenuView_LoadItemHour,
+  MenuBaseMenuView_LoadItemMinute,
+  MenuBaseMenuView_LoadPoiListItemValue,
+  MenuBaseMenuView_LoadPoiListItemUnit,
+EW_END_OF_CLASS( NavigationNAV11_RouteOptionMenu )
 
 /* User defined constant: 'Navigation::TURN_ICON_BOUNDS_W_DIST' */
 const XRect NavigationTURN_ICON_BOUNDS_W_DIST = {{ 45, 14 }, { 90, 59 }};

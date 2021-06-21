@@ -1812,3 +1812,37 @@ enum NaviPoiListType
   $rect <430,10,630,50>
   item TOTAL;
 }
+
+$rect <500,870,700,910>
+$output false
+enum NaviRouteOptionType
+{
+  $rect <10,10,210,50>
+  item NEW_ROUTE;
+
+  $rect <220,10,420,50>
+  item NEXT_STOP;
+
+  $rect <430,10,630,50>
+  item LAST_STOP;
+}
+
+$rect <500,930,700,970>
+$output false
+enum NaviRouteOptionTriggerItem
+{
+  $rect <10,10,210,50>
+  item HOME;
+
+  $rect <220,10,420,50>
+  item OFFICE;
+
+  $rect <430,10,630,50>
+  item FAVORITE_PLACE;
+
+  $rect <650,10,850,50>
+  item GAS_STATION;
+
+  $rect <870,10,1070,50>
+  item TOTAL;
+}

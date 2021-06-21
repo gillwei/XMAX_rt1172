@@ -1234,23 +1234,23 @@ class NavigationDeviceClass : Templates::DeviceClass
   }
 
   $rect <80,740,280,780>
-  method void GoHome()
+  method void GoHome( arg Enum::NaviRouteOptionType aRouteOption )
   {
     $if !$prototyper
-      native
+      native( aRouteOption )
       {
-        NAVI_send_go_home_request();
+        NAVI_send_go_home_request( aRouteOption );
       }
     $endif
   }
 
   $rect <80,780,280,820>
-  method void GoOffice()
+  method void GoOffice( arg Enum::NaviRouteOptionType aRouteOption )
   {
     $if !$prototyper
-      native
+      native( aRouteOption )
       {
-        NAVI_send_go_office_request();
+        NAVI_send_go_office_request( aRouteOption );
       }
     $endif
   }
@@ -1470,18 +1470,24 @@ class NavigationDeviceClass : Templates::DeviceClass
   }
 
   $rect <410,940,610,980>
-  method void StartRoute( arg int32 aPoiIdx, arg Enum::NaviPoiListType aPoiListType )
+  method void StartRoute( arg int32 aPoiIdx, arg Enum::NaviRouteOptionType aRouteOptionType )
   {
     $if !$prototyper
-      native( aPoiIdx, aPoiListType )
+      native( aPoiIdx, aRouteOptionType )
       {
-        NAVI_send_start_route_request( aPoiIdx, aPoiListType );
+        NAVI_send_start_route_request( aPoiIdx, aRouteOptionType );
       }
     $endif
   }
 
   $rect <270,100,470,140>
   var Enum::NaviPoiListType CurrentPoiListType;
+
+  $rect <560,40,760,80>
+  var Enum::NaviRouteOptionTriggerItem RouteOptionTriggerItem;
+
+  $rect <560,100,760,140>
+  var int32 CurrentSelectPoiIdx;
 
   $rect <730,1010,930,1050>
   method int32 GetNaviDialogTimeOut()

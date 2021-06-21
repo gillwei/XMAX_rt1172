@@ -1385,21 +1385,23 @@ void DeviceInterfaceNavigationDeviceClass_SkipNextStop( DeviceInterfaceNavigatio
 }
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GoHome()' */
-void DeviceInterfaceNavigationDeviceClass_GoHome( DeviceInterfaceNavigationDeviceClass _this )
+void DeviceInterfaceNavigationDeviceClass_GoHome( DeviceInterfaceNavigationDeviceClass _this, 
+  XEnum aRouteOption )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  NAVI_send_go_home_request();
+  NAVI_send_go_home_request( aRouteOption );
 }
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GoOffice()' */
-void DeviceInterfaceNavigationDeviceClass_GoOffice( DeviceInterfaceNavigationDeviceClass _this )
+void DeviceInterfaceNavigationDeviceClass_GoOffice( DeviceInterfaceNavigationDeviceClass _this, 
+  XEnum aRouteOption )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  NAVI_send_go_office_request();
+  NAVI_send_go_office_request( aRouteOption );
 }
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ZoomInRequest()' */
@@ -1584,12 +1586,12 @@ void DeviceInterfaceNavigationDeviceClass_PoiListRequest( DeviceInterfaceNavigat
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StartRoute()' */
 void DeviceInterfaceNavigationDeviceClass_StartRoute( DeviceInterfaceNavigationDeviceClass _this, 
-  XInt32 aPoiIdx, XEnum aPoiListType )
+  XInt32 aPoiIdx, XEnum aRouteOptionType )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  NAVI_send_start_route_request( aPoiIdx, aPoiListType );
+  NAVI_send_start_route_request( aPoiIdx, aRouteOptionType );
 }
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviDialogTimeOut()' */
@@ -1632,8 +1634,8 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::NavigationDeviceClass' */
 EW_DEFINE_CLASS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass, MapUpdateEvent, 
-                 MapUpdateEvent, MapUpdateEvent, MapUpdateEvent, CurrentPoiListType, 
-                 CurrentPoiListType, "DeviceInterface::NavigationDeviceClass" )
+                 MapUpdateEvent, MapUpdateEvent, MapUpdateEvent, CurrentSelectPoiIdx, 
+                 CurrentSelectPoiIdx, "DeviceInterface::NavigationDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceNavigationDeviceClass )
 
 /* User defined auto object: 'DeviceInterface::NavigationDevice' */

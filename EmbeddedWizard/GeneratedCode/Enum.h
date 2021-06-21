@@ -832,6 +832,24 @@ typedef enum
   EnumNaviPoiListTypeTOTAL              = 2
 } EnumNaviPoiListType;
 
+/* User defined enumeration: 'Enum::NaviRouteOptionType' */
+typedef enum
+{
+  EnumNaviRouteOptionTypeNEW_ROUTE      = 0,
+  EnumNaviRouteOptionTypeNEXT_STOP      = 1,
+  EnumNaviRouteOptionTypeLAST_STOP      = 2
+} EnumNaviRouteOptionType;
+
+/* User defined enumeration: 'Enum::NaviRouteOptionTriggerItem' */
+typedef enum
+{
+  EnumNaviRouteOptionTriggerItemHOME    = 0,
+  EnumNaviRouteOptionTriggerItemOFFICE  = 1,
+  EnumNaviRouteOptionTriggerItemFAVORITE_PLACE = 2,
+  EnumNaviRouteOptionTriggerItemGAS_STATION = 3,
+  EnumNaviRouteOptionTriggerItemTOTAL   = 4
+} EnumNaviRouteOptionTriggerItem;
+
 #ifdef __cplusplus
   }
 #endif
