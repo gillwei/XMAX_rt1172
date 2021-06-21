@@ -896,221 +896,221 @@ EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwUturnRIrgTbt )
 /* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwViaFlgIrgTbt' */
 EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwViaFlgIrgTbt )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwArvngLIrg28' */
-#include "_ResourceNaviTurnArrwArvngLIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwArvngLIrgTbtList' */
+#include "_ResourceNaviTurnArrwArvngLIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwArvngLIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwArvngLIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwArvngLIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwArvngLIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwArvngRIrg28' */
-#include "_ResourceNaviTurnArrwArvngRIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwArvngRIrgTbtList' */
+#include "_ResourceNaviTurnArrwArvngRIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwArvngRIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwArvngRIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwArvngRIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwArvngRIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwArvngViaLIrg28' */
-#include "_ResourceNaviTurnArrwArvngViaLIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwArvngViaLIrgTbtList' */
+#include "_ResourceNaviTurnArrwArvngViaLIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwArvngViaLIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwArvngViaLIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwArvngViaLIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwArvngViaLIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwArvngViaRIrg28' */
-#include "_ResourceNaviTurnArrwArvngViaRIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwArvngViaRIrgTbtList' */
+#include "_ResourceNaviTurnArrwArvngViaRIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwArvngViaRIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwArvngViaRIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwArvngViaRIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwArvngViaRIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwContinuelrg28' */
-#include "_ResourceNaviTurnArrwContinuelrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwContinuelrgTbtList' */
+#include "_ResourceNaviTurnArrwContinuelrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwContinuelrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwContinuelrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwContinuelrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwContinuelrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwDriveTolrg28' */
-#include "_ResourceNaviTurnArrwDriveTolrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwDriveTolrgTbtList' */
+#include "_ResourceNaviTurnArrwDriveTolrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwDriveTolrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwDriveTolrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwDriveTolrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwDriveTolrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwExitLIrg28' */
-#include "_ResourceNaviTurnArrwExitLIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwExitLIrgTbtList' */
+#include "_ResourceNaviTurnArrwExitLIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwExitLIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwExitLIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwExitLIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwExitLIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwExitRIrg28' */
-#include "_ResourceNaviTurnArrwExitRIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwExitRIrgTbtList' */
+#include "_ResourceNaviTurnArrwExitRIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwExitRIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwExitRIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwExitRIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwExitRIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwFerryIrg28' */
-#include "_ResourceNaviTurnArrwFerryIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwFerryIrgTbtList' */
+#include "_ResourceNaviTurnArrwFerryIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwFerryIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwFerryIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwFerryIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwFerryIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwKeepLIrg28' */
-#include "_ResourceNaviTurnArrwKeepLIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwKeepLIrgTbtList' */
+#include "_ResourceNaviTurnArrwKeepLIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwKeepLIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwKeepLIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwKeepLIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwKeepLIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwKeepRIrg28' */
-#include "_ResourceNaviTurnArrwKeepRIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwKeepRIrgTbtList' */
+#include "_ResourceNaviTurnArrwKeepRIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwKeepRIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwKeepRIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwKeepRIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwKeepRIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout45Irg28' */
-#include "_ResourceNaviTurnArrwRoundabout45Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout45IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundabout45IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout45Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout45Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout45IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout45IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout90Irg28' */
-#include "_ResourceNaviTurnArrwRoundabout90Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout90IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundabout90IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout90Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout90Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout90IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout90IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout135Irg28' */
-#include "_ResourceNaviTurnArrwRoundabout135Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout135IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundabout135IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout135Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout135Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout135IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout135IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout180Irg28' */
-#include "_ResourceNaviTurnArrwRoundabout180Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout180IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundabout180IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout180Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout180Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout180IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout180IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout225Irg28' */
-#include "_ResourceNaviTurnArrwRoundabout225Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout225IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundabout225IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout225Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout225Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout225IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout225IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout270Irg28' */
-#include "_ResourceNaviTurnArrwRoundabout270Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout270IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundabout270IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout270Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout270Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout270IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout270IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout315Irg28' */
-#include "_ResourceNaviTurnArrwRoundabout315Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout315IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundabout315IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout315Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout315Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout315IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout315IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout360Irg28' */
-#include "_ResourceNaviTurnArrwRoundabout360Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundabout360IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundabout360IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout360Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout360Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundabout360IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundabout360IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro45Irg28' */
-#include "_ResourceNaviTurnArrwRoundaboutEuro45Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro45IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundaboutEuro45IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro45Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro45Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro45IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro45IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro90Irg28' */
-#include "_ResourceNaviTurnArrwRoundaboutEuro90Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro90IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundaboutEuro90IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro90Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro90Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro90IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro90IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro135Irg28' */
-#include "_ResourceNaviTurnArrwRoundaboutEuro135Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro135IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundaboutEuro135IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro135Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro135Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro135IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro135IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro180Irg28' */
-#include "_ResourceNaviTurnArrwRoundaboutEuro180Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro180IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundaboutEuro180IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro180Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro180Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro180IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro180IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro225Irg28' */
-#include "_ResourceNaviTurnArrwRoundaboutEuro225Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro225IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundaboutEuro225IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro225Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro225Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro225IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro225IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro270Irg28' */
-#include "_ResourceNaviTurnArrwRoundaboutEuro270Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro270IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundaboutEuro270IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro270Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro270Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro270IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro270IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro315Irg28' */
-#include "_ResourceNaviTurnArrwRoundaboutEuro315Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro315IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundaboutEuro315IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro315Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro315Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro315IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro315IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro360Irg28' */
-#include "_ResourceNaviTurnArrwRoundaboutEuro360Irg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro360IrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundaboutEuro360IrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro360Irg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro360Irg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuro360IrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuro360IrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuroGenericIrg28' */
-#include "_ResourceNaviTurnArrwRoundaboutEuroGenericIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuroGenericIrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundaboutEuroGenericIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuroGenericIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuroGenericIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutEuroGenericIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutEuroGenericIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutGenericIrg28' */
-#include "_ResourceNaviTurnArrwRoundaboutGenericIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwRoundaboutGenericIrgTbtList' */
+#include "_ResourceNaviTurnArrwRoundaboutGenericIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutGenericIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutGenericIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwRoundaboutGenericIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwRoundaboutGenericIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwShrpturnLIrg28' */
-#include "_ResourceNaviTurnArrwShrpturnLIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwShrpturnLIrgTbtList' */
+#include "_ResourceNaviTurnArrwShrpturnLIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwShrpturnLIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwShrpturnLIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwShrpturnLIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwShrpturnLIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwShrpturnRIrg28' */
-#include "_ResourceNaviTurnArrwShrpturnRIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwShrpturnRIrgTbtList' */
+#include "_ResourceNaviTurnArrwShrpturnRIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwShrpturnRIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwShrpturnRIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwShrpturnRIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwShrpturnRIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwTurnLIrg28' */
-#include "_ResourceNaviTurnArrwTurnLIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwTurnLIrgTbtList' */
+#include "_ResourceNaviTurnArrwTurnLIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwTurnLIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwTurnLIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwTurnLIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwTurnLIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwTurnRIrg28' */
-#include "_ResourceNaviTurnArrwTurnRIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwTurnRIrgTbtList' */
+#include "_ResourceNaviTurnArrwTurnRIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwTurnRIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwTurnRIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwTurnRIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwTurnRIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwUturnLIrg28' */
-#include "_ResourceNaviTurnArrwUturnLIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwUturnLIrgTbtList' */
+#include "_ResourceNaviTurnArrwUturnLIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwUturnLIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwUturnLIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwUturnLIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwUturnLIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwUturnRIrg28' */
-#include "_ResourceNaviTurnArrwUturnRIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwUturnRIrgTbtList' */
+#include "_ResourceNaviTurnArrwUturnRIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwUturnRIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwUturnRIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwUturnRIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwUturnRIrgTbtList )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwViaflgIrg28' */
-#include "_ResourceNaviTurnArrwViaflgIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwViaflgIrgTbtList' */
+#include "_ResourceNaviTurnArrwViaflgIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwViaflgIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwViaflgIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwViaflgIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwViaflgIrgTbtList )
 
 /* User defined constant: 'Resource::EXTERN_BMP_QRCODE' */
 const XStringRes ResourceEXTERN_BMP_QRCODE = { _StringsDefault0, 0x0002 };
@@ -1409,11 +1409,11 @@ EW_RES_WITHOUT_VARIANTS( ResourceIconUnitMinute )
 /* Table with links to derived variants of the bitmap resource : 'Resource::IconUnitMPG' */
 EW_RES_WITHOUT_VARIANTS( ResourceIconUnitMPG )
 
-/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwDstntnFlgIrg28' */
-#include "_ResourceNaviTurnArrwDstntnFlgIrg28.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwDstntnFlgIrgTbtList' */
+#include "_ResourceNaviTurnArrwDstntnFlgIrgTbtList.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwDstntnFlgIrg28' */
-EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwDstntnFlgIrg28 )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviTurnArrwDstntnFlgIrgTbtList' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviTurnArrwDstntnFlgIrgTbtList )
 
 /* Include a file containing the bitmap resource : 'Resource::NaviTurnArrwDstntnFlgIrgTbt' */
 #include "_ResourceNaviTurnArrwDstntnFlgIrgTbt.h"

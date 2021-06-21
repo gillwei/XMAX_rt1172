@@ -1860,9 +1860,9 @@ note group Note16
 
 $rect <1160,620,1360,660>
 $output false
-resource Resources::Bitmap NaviTurnArrwArvngLIrg28
+resource Resources::Bitmap NaviTurnArrwArvngLIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_L_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_L_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1872,9 +1872,9 @@ resource Resources::Bitmap NaviTurnArrwArvngLIrg28
 
 $rect <1370,620,1570,660>
 $output false
-resource Resources::Bitmap NaviTurnArrwArvngRIrg28
+resource Resources::Bitmap NaviTurnArrwArvngRIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_R_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_R_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1884,9 +1884,9 @@ resource Resources::Bitmap NaviTurnArrwArvngRIrg28
 
 $rect <1580,620,1780,660>
 $output false
-resource Resources::Bitmap NaviTurnArrwArvngViaLIrg28
+resource Resources::Bitmap NaviTurnArrwArvngViaLIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_via_L_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_via_L_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1896,9 +1896,9 @@ resource Resources::Bitmap NaviTurnArrwArvngViaLIrg28
 
 $rect <1790,620,1990,660>
 $output false
-resource Resources::Bitmap NaviTurnArrwArvngViaRIrg28
+resource Resources::Bitmap NaviTurnArrwArvngViaRIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_via_R_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_arvng_via_R_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1908,9 +1908,9 @@ resource Resources::Bitmap NaviTurnArrwArvngViaRIrg28
 
 $rect <1990,620,2190,660>
 $output false
-resource Resources::Bitmap NaviTurnArrwContinuelrg28
+resource Resources::Bitmap NaviTurnArrwContinuelrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_continue_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_continue_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1920,9 +1920,9 @@ resource Resources::Bitmap NaviTurnArrwContinuelrg28
 
 $rect <1160,680,1360,720>
 $output false
-resource Resources::Bitmap NaviTurnArrwDriveTolrg28
+resource Resources::Bitmap NaviTurnArrwDriveTolrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_driveto_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_driveto_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1932,9 +1932,9 @@ resource Resources::Bitmap NaviTurnArrwDriveTolrg28
 
 $rect <1580,680,1780,720>
 $output false
-resource Resources::Bitmap NaviTurnArrwExitLIrg28
+resource Resources::Bitmap NaviTurnArrwExitLIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_exit_L_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_exit_L_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1944,9 +1944,9 @@ resource Resources::Bitmap NaviTurnArrwExitLIrg28
 
 $rect <1790,680,1990,720>
 $output false
-resource Resources::Bitmap NaviTurnArrwExitRIrg28
+resource Resources::Bitmap NaviTurnArrwExitRIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_exit_R_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_exit_R_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1956,9 +1956,9 @@ resource Resources::Bitmap NaviTurnArrwExitRIrg28
 
 $rect <1990,680,2190,720>
 $output false
-resource Resources::Bitmap NaviTurnArrwFerryIrg28
+resource Resources::Bitmap NaviTurnArrwFerryIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_ferry_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_ferry_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1968,9 +1968,9 @@ resource Resources::Bitmap NaviTurnArrwFerryIrg28
 
 $rect <1160,740,1360,780>
 $output false
-resource Resources::Bitmap NaviTurnArrwKeepLIrg28
+resource Resources::Bitmap NaviTurnArrwKeepLIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_keep_L_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_keep_L_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1980,9 +1980,9 @@ resource Resources::Bitmap NaviTurnArrwKeepLIrg28
 
 $rect <1370,740,1570,780>
 $output false
-resource Resources::Bitmap NaviTurnArrwKeepRIrg28
+resource Resources::Bitmap NaviTurnArrwKeepRIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_keep_R_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_keep_R_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1992,9 +1992,9 @@ resource Resources::Bitmap NaviTurnArrwKeepRIrg28
 
 $rect <1580,740,1780,780>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundabout45Irg28
+resource Resources::Bitmap NaviTurnArrwRoundabout45IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_45_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_45_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2004,9 +2004,9 @@ resource Resources::Bitmap NaviTurnArrwRoundabout45Irg28
 
 $rect <1790,740,1990,780>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundabout90Irg28
+resource Resources::Bitmap NaviTurnArrwRoundabout90IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_90_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_90_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2016,9 +2016,9 @@ resource Resources::Bitmap NaviTurnArrwRoundabout90Irg28
 
 $rect <1990,740,2190,780>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundabout135Irg28
+resource Resources::Bitmap NaviTurnArrwRoundabout135IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_135_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_135_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2028,9 +2028,9 @@ resource Resources::Bitmap NaviTurnArrwRoundabout135Irg28
 
 $rect <1160,800,1360,840>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundabout180Irg28
+resource Resources::Bitmap NaviTurnArrwRoundabout180IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_180_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_180_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2040,9 +2040,9 @@ resource Resources::Bitmap NaviTurnArrwRoundabout180Irg28
 
 $rect <1370,800,1570,840>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundabout225Irg28
+resource Resources::Bitmap NaviTurnArrwRoundabout225IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_225_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_225_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2052,9 +2052,9 @@ resource Resources::Bitmap NaviTurnArrwRoundabout225Irg28
 
 $rect <1580,800,1780,840>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundabout270Irg28
+resource Resources::Bitmap NaviTurnArrwRoundabout270IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_270_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_270_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2064,9 +2064,9 @@ resource Resources::Bitmap NaviTurnArrwRoundabout270Irg28
 
 $rect <1790,800,1990,840>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundabout315Irg28
+resource Resources::Bitmap NaviTurnArrwRoundabout315IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_315_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_315_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2076,9 +2076,9 @@ resource Resources::Bitmap NaviTurnArrwRoundabout315Irg28
 
 $rect <1990,800,2190,840>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundabout360Irg28
+resource Resources::Bitmap NaviTurnArrwRoundabout360IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_360_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_360_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2088,9 +2088,9 @@ resource Resources::Bitmap NaviTurnArrwRoundabout360Irg28
 
 $rect <1150,860,1350,900>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundaboutEuro45Irg28
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro45IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_45_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_45_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2100,9 +2100,9 @@ resource Resources::Bitmap NaviTurnArrwRoundaboutEuro45Irg28
 
 $rect <1360,860,1560,900>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundaboutEuro90Irg28
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro90IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_90_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_90_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2112,9 +2112,9 @@ resource Resources::Bitmap NaviTurnArrwRoundaboutEuro90Irg28
 
 $rect <1580,860,1780,900>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundaboutEuro135Irg28
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro135IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_135_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_135_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2124,9 +2124,9 @@ resource Resources::Bitmap NaviTurnArrwRoundaboutEuro135Irg28
 
 $rect <1790,860,1990,900>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundaboutEuro180Irg28
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro180IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_180_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_180_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2136,9 +2136,9 @@ resource Resources::Bitmap NaviTurnArrwRoundaboutEuro180Irg28
 
 $rect <1990,860,2190,900>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundaboutEuro225Irg28
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro225IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_225_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_225_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2148,9 +2148,9 @@ resource Resources::Bitmap NaviTurnArrwRoundaboutEuro225Irg28
 
 $rect <1150,920,1350,960>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundaboutEuro270Irg28
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro270IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_270_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_270_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2160,9 +2160,9 @@ resource Resources::Bitmap NaviTurnArrwRoundaboutEuro270Irg28
 
 $rect <1360,920,1560,960>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundaboutEuro315Irg28
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro315IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_315_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_315_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2172,9 +2172,9 @@ resource Resources::Bitmap NaviTurnArrwRoundaboutEuro315Irg28
 
 $rect <1580,920,1780,960>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundaboutEuro360Irg28
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuro360IrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_360_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_360_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2184,9 +2184,9 @@ resource Resources::Bitmap NaviTurnArrwRoundaboutEuro360Irg28
 
 $rect <1790,920,1990,960>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundaboutEuroGenericIrg28
+resource Resources::Bitmap NaviTurnArrwRoundaboutEuroGenericIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_generic_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_euro_generic_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2196,9 +2196,9 @@ resource Resources::Bitmap NaviTurnArrwRoundaboutEuroGenericIrg28
 
 $rect <1990,920,2190,960>
 $output false
-resource Resources::Bitmap NaviTurnArrwRoundaboutGenericIrg28
+resource Resources::Bitmap NaviTurnArrwRoundaboutGenericIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_generic_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_roundabout_generic_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2208,9 +2208,9 @@ resource Resources::Bitmap NaviTurnArrwRoundaboutGenericIrg28
 
 $rect <1140,980,1340,1020>
 $output false
-resource Resources::Bitmap NaviTurnArrwShrpturnLIrg28
+resource Resources::Bitmap NaviTurnArrwShrpturnLIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_shrpturn_L_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_shrpturn_L_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2220,9 +2220,9 @@ resource Resources::Bitmap NaviTurnArrwShrpturnLIrg28
 
 $rect <1360,980,1560,1020>
 $output false
-resource Resources::Bitmap NaviTurnArrwShrpturnRIrg28
+resource Resources::Bitmap NaviTurnArrwShrpturnRIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_shrpturn_R_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_shrpturn_R_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2232,9 +2232,9 @@ resource Resources::Bitmap NaviTurnArrwShrpturnRIrg28
 
 $rect <1580,980,1780,1020>
 $output false
-resource Resources::Bitmap NaviTurnArrwTurnLIrg28
+resource Resources::Bitmap NaviTurnArrwTurnLIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_turn_L_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_turn_L_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2244,9 +2244,9 @@ resource Resources::Bitmap NaviTurnArrwTurnLIrg28
 
 $rect <1790,980,1990,1020>
 $output false
-resource Resources::Bitmap NaviTurnArrwTurnRIrg28
+resource Resources::Bitmap NaviTurnArrwTurnRIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_turn_R_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_turn_R_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2256,9 +2256,9 @@ resource Resources::Bitmap NaviTurnArrwTurnRIrg28
 
 $rect <1990,980,2190,1020>
 $output false
-resource Resources::Bitmap NaviTurnArrwUturnLIrg28
+resource Resources::Bitmap NaviTurnArrwUturnLIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_uturn_L_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_uturn_L_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2268,9 +2268,9 @@ resource Resources::Bitmap NaviTurnArrwUturnLIrg28
 
 $rect <1140,1050,1340,1090>
 $output false
-resource Resources::Bitmap NaviTurnArrwUturnRIrg28
+resource Resources::Bitmap NaviTurnArrwUturnRIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_uturn_R_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_uturn_R_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2280,9 +2280,9 @@ resource Resources::Bitmap NaviTurnArrwUturnRIrg28
 
 $rect <1350,1050,1550,1090>
 $output false
-resource Resources::Bitmap NaviTurnArrwViaflgIrg28
+resource Resources::Bitmap NaviTurnArrwViaflgIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_via_flg_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_via_flg_Irg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2938,9 +2938,9 @@ resource Resources::Bitmap IconUnitMPG
 
 $rect <1370,680,1570,720>
 $output false
-resource Resources::Bitmap NaviTurnArrwDstntnFlgIrg28
+resource Resources::Bitmap NaviTurnArrwDstntnFlgIrgTbtList
 {
-  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_dstntn_flg_Irg_28.png;
+  attr bitmapfile FileName = .\Res\navi\tbtlistimage\d_turnarrw_dstntn_flg_tbt_2.3x.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;

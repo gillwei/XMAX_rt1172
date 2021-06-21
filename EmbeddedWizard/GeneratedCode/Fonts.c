@@ -81,4 +81,10 @@ EW_RES_WITHOUT_VARIANTS( FontsNotoSansBold38pt )
 /* Table with links to derived variants of the font resource : 'Fonts::NotoSansMedium40pt' */
 EW_RES_WITHOUT_VARIANTS( FontsNotoSansMedium40pt )
 
+/* Include a file containing the font resource : 'Fonts::NotoSansBold20pt' */
+#include "_FontsNotoSansBold20pt.h"
+
+/* Table with links to derived variants of the font resource : 'Fonts::NotoSansBold20pt' */
+EW_RES_WITHOUT_VARIANTS( FontsNotoSansBold20pt )
+
 /* Embedded Wizard */

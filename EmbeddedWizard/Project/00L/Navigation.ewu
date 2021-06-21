@@ -2515,12 +2515,12 @@ $output false
 class TbtInfoItem : Core::Group
 {
   $rect <10,140,210,180>
-  inherited property Bounds = <0,0,480,74>;
+  inherited property Bounds = <0,0,480,111>;
 
   $rect <20,20,160,60>
   object Views::Rectangle TbtItemBg
   {
-    preset Bounds = <20,0,440,72>;
+    preset Bounds = <20,0,440,109>;
     preset Color = #1E478CFF;
     preset Visible = false;
   }
@@ -2528,29 +2528,32 @@ class TbtInfoItem : Core::Group
   $rect <20,20,160,60>
   object Views::Image NextTurnIcon
   {
-    preset Bounds = <30,22,58,50>;
+    preset Bounds = <45,14,90,59>;
+    preset Alignment = Views::ImageAlignment[AlignHorzCenter, AlignVertCenter, ScaleToFit];
   }
 
   $rect <20,20,160,60>
   object Views::Text NextTurnDist
   {
-    preset Bounds = <58,19,117,53>;
-    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
-    preset Font = Fonts::NotoSansBold24pt;
+    preset Bounds = <27,61,74,95>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansBold20pt;
   }
 
   $rect <20,20,160,60>
   object Views::Text NextTurnDistUnit
   {
-    preset Bounds = <117,19,154,53>;
-    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Bounds = <76,61,108,95>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansBold20pt;
   }
 
   $rect <20,20,160,60>
   object Views::Text NextTurnDescription
   {
-    preset Bounds = <155,5,430,72>;
+    preset Bounds = <114,8,417,101>;
     preset Ellipsis = true;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
@@ -2562,9 +2565,79 @@ class TbtInfoItem : Core::Group
   $rect <20,20,160,60>
   object Views::Image ListDivider
   {
-    preset Bounds = <0,72,480,74>;
+    preset Bounds = <0,109,480,111>;
     preset Alignment = Views::ImageAlignment[ScaleToFit];
     preset Bitmap = Resource::ListDivider3;
+  }
+
+  $rect <230,140,430,180>
+  property string Distance;
+
+  $rect <230,180,430,220>
+  onset Distance
+  {
+    // Remember the property's new value.
+    pure Distance = value;
+
+    NextTurnDist.String = value;
+    if( NextTurnDist.GetContentArea().w > NextTurnDist.Bounds.w )
+    {
+      // 47 is the maximum width of NextTurnDist text view.
+      if( NextTurnDist.GetContentArea().w > 47 )
+      {
+        NextTurnDist.Bounds.w = 47;
+      }
+      else
+      {
+        NextTurnDist.Bounds.w = NextTurnDist.GetContentArea().w;
+      }
+    }
+  }
+
+  $rect <460,140,660,180>
+  property string DistanceUnit;
+
+  $rect <460,180,660,220>
+  onset DistanceUnit
+  {
+    // Remember the property's new value.
+    pure DistanceUnit = value;
+
+    NextTurnDistUnit.String = value;
+    if( NextTurnDistUnit.GetContentArea().w > NextTurnDistUnit.Bounds.w )
+    {
+      // 32 is the maximum width of NextTurnDistUnit text view.
+      if( NextTurnDistUnit.GetContentArea().w > 32 )
+      {
+        NextTurnDistUnit.Bounds.w = 32;
+      }
+      else
+      {
+        NextTurnDistUnit.Bounds.w = NextTurnDistUnit.GetContentArea().w;
+      }
+    }
+  }
+
+  $rect <700,140,900,180>
+  property Resources::Bitmap TurnIconBitmap;
+
+  $rect <700,180,900,220>
+  onset TurnIconBitmap
+  {
+    // Remember the property's new value.
+    pure TurnIconBitmap = value;
+
+    NextTurnIcon.Bitmap = TurnIconBitmap;
+
+    if( "" == Distance &&
+        "" == DistanceUnit )
+    {
+      NextTurnIcon.Bounds = Navigation::TURN_ICON_BOUNDS_WO_DIST;
+    }
+    else
+    {
+      NextTurnIcon.Bounds = Navigation::TURN_ICON_BOUNDS_W_DIST;
+    }
   }
 }
 
@@ -2803,8 +2876,8 @@ class TbtListMenu : Core::Group
     // set arrow scroll bar
     if( ArrowScrollBarVisible )
     {
-      var int32 NoOfPages = NoOfItems / 3;
-      if( NoOfItems > ( NoOfPages * 3 ) )
+      var int32 NoOfPages = NoOfItems / 2;
+      if( NoOfItems > ( NoOfPages * 2 ) )
       {
         NoOfPages++;
       }
@@ -2818,7 +2891,7 @@ class TbtListMenu : Core::Group
     preset Bounds = <0,2,444,224>;
     preset OnLoadItem = OnLoadItem;
     preset SelectedItem = 0;
-    preset ItemHeight = Menu::ItemHeightTall;
+    preset ItemHeight = Navigation::TBT_ITEM_HEIGHT;
     preset ItemClass = Navigation::TbtInfoItem;
   }
 
@@ -2834,15 +2907,15 @@ class TbtListMenu : Core::Group
 
       ShowTbtListItemIcon( NaviTbtData.IconIdx );
 
-      item.NextTurnDistUnit.String = NaviTbtData.DistUnit;
+      item.DistanceUnit = NaviTbtData.DistUnit;
 
       if( 0.0 == NaviTbtData.Distance.fract )
       {
-        item.NextTurnDist.String = string( (int32)NaviTbtData.Distance );
+        item.Distance = string( (int32)NaviTbtData.Distance );
       }
       else
       {
-        item.NextTurnDist.String = string( NaviTbtData.Distance, 0 , 1 );
+        item.Distance = string( NaviTbtData.Distance, 0 , 1 );
       }
       item.NextTurnDescription.String = NaviTbtData.TbtDescription;
 
@@ -2859,7 +2932,7 @@ class TbtListMenu : Core::Group
   $rect <560,130,760,170>
   method void ScrollUp()
   {
-    var int32 PrevItemIdx = VerticalList.SelectedItem - 3;
+    var int32 PrevItemIdx = VerticalList.SelectedItem - 2;
     if( PrevItemIdx >= 0 )
     {
       VerticalList.SelectedItem = PrevItemIdx;
@@ -2870,7 +2943,7 @@ class TbtListMenu : Core::Group
   $rect <560,180,760,220>
   method void ScrollDown()
   {
-    var int32 NextItemIdx = VerticalList.SelectedItem + 3;
+    var int32 NextItemIdx = VerticalList.SelectedItem + 2;
     if( NextItemIdx < VerticalList.NoOfItems )
     {
       VerticalList.SelectedItem = NextItemIdx;
@@ -2887,44 +2960,44 @@ class TbtListMenu : Core::Group
       var Enum::NaviTurnStatusType NaviTurnStatus = ( Enum::NaviTurnStatusType ) index;
       switch( NaviTurnStatus )
       {
-        case Enum::NaviTurnStatusType.ARRVIAL_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngLIrg28;
-        case Enum::NaviTurnStatusType.ARRIVAL_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngRIrg28;
-        case Enum::NaviTurnStatusType.ARRIVAL_VIA_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngViaLIrg28;
-        case Enum::NaviTurnStatusType.ARRIVAL_VIA_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwArvngViaRIrg28;
-        case Enum::NaviTurnStatusType.CONTINUE: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwContinuelrg28;
-        case Enum::NaviTurnStatusType.DRIVETO: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwDriveTolrg28;
-        case Enum::NaviTurnStatusType.DEST_FLAG: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwDstntnFlgIrg28;
-        case Enum::NaviTurnStatusType.DEST_VIA_FLAG: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwViaflgIrg28;
-        case Enum::NaviTurnStatusType.EXIT_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwExitLIrg28;
-        case Enum::NaviTurnStatusType.EXIT_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwExitRIrg28;
-        case Enum::NaviTurnStatusType.FERRY: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwFerryIrg28;
-        case Enum::NaviTurnStatusType.KEEP_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwKeepLIrg28;
-        case Enum::NaviTurnStatusType.KEEP_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwKeepRIrg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_45: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout45Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_90: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout90Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_135: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout135Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_180: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout180Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_225: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout225Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_270: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout270Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_315: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout315Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_360: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundabout360Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_45: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro45Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_90: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro90Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_135: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro135Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_180: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro180Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_225: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro225Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_270: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro270Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_315: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro315Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_360: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuro360Irg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_GEN: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutEuroGenericIrg28;
-        case Enum::NaviTurnStatusType.ROUNDABOUT_GEN: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwRoundaboutGenericIrg28;
-        case Enum::NaviTurnStatusType.SHARP_TURN_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwShrpturnLIrg28;
-        case Enum::NaviTurnStatusType.SHARP_TURN_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwShrpturnRIrg28;
-        case Enum::NaviTurnStatusType.TURN_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwTurnLIrg28;
-        case Enum::NaviTurnStatusType.TURN_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwTurnRIrg28;
-        case Enum::NaviTurnStatusType.UTURN_LEFT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwUturnLIrg28;
-        case Enum::NaviTurnStatusType.UTURN_RIGHT: item.NextTurnIcon.Bitmap = Resource::NaviTurnArrwUturnRIrg28;
-        case Enum::NaviTurnStatusType.EXIT_UNSPEC: item.NextTurnIcon.Bitmap = null;
+        case Enum::NaviTurnStatusType.ARRVIAL_LEFT: item.TurnIconBitmap = Resource::NaviTurnArrwArvngLIrgTbtList;
+        case Enum::NaviTurnStatusType.ARRIVAL_RIGHT: item.TurnIconBitmap = Resource::NaviTurnArrwArvngRIrgTbtList;
+        case Enum::NaviTurnStatusType.ARRIVAL_VIA_LEFT: item.TurnIconBitmap = Resource::NaviTurnArrwArvngViaLIrgTbtList;
+        case Enum::NaviTurnStatusType.ARRIVAL_VIA_RIGHT: item.TurnIconBitmap = Resource::NaviTurnArrwArvngViaRIrgTbtList;
+        case Enum::NaviTurnStatusType.CONTINUE: item.TurnIconBitmap = Resource::NaviTurnArrwContinuelrgTbtList;
+        case Enum::NaviTurnStatusType.DRIVETO: item.TurnIconBitmap = Resource::NaviTurnArrwDriveTolrgTbtList;
+        case Enum::NaviTurnStatusType.DEST_FLAG: item.TurnIconBitmap = Resource::NaviTurnArrwDstntnFlgIrgTbtList;
+        case Enum::NaviTurnStatusType.DEST_VIA_FLAG: item.TurnIconBitmap = Resource::NaviTurnArrwViaflgIrgTbtList;
+        case Enum::NaviTurnStatusType.EXIT_LEFT: item.TurnIconBitmap = Resource::NaviTurnArrwExitLIrgTbtList;
+        case Enum::NaviTurnStatusType.EXIT_RIGHT: item.TurnIconBitmap = Resource::NaviTurnArrwExitRIrgTbtList;
+        case Enum::NaviTurnStatusType.FERRY: item.TurnIconBitmap = Resource::NaviTurnArrwFerryIrgTbtList;
+        case Enum::NaviTurnStatusType.KEEP_LEFT: item.TurnIconBitmap = Resource::NaviTurnArrwKeepLIrgTbtList;
+        case Enum::NaviTurnStatusType.KEEP_RIGHT: item.TurnIconBitmap = Resource::NaviTurnArrwKeepRIrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_45: item.TurnIconBitmap = Resource::NaviTurnArrwRoundabout45IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_90: item.TurnIconBitmap = Resource::NaviTurnArrwRoundabout90IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_135: item.TurnIconBitmap = Resource::NaviTurnArrwRoundabout135IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_180: item.TurnIconBitmap = Resource::NaviTurnArrwRoundabout180IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_225: item.TurnIconBitmap = Resource::NaviTurnArrwRoundabout225IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_270: item.TurnIconBitmap = Resource::NaviTurnArrwRoundabout270IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_315: item.TurnIconBitmap = Resource::NaviTurnArrwRoundabout315IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_360: item.TurnIconBitmap = Resource::NaviTurnArrwRoundabout360IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_45: item.TurnIconBitmap = Resource::NaviTurnArrwRoundaboutEuro45IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_90: item.TurnIconBitmap = Resource::NaviTurnArrwRoundaboutEuro90IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_135: item.TurnIconBitmap = Resource::NaviTurnArrwRoundaboutEuro135IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_180: item.TurnIconBitmap = Resource::NaviTurnArrwRoundaboutEuro180IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_225: item.TurnIconBitmap = Resource::NaviTurnArrwRoundaboutEuro225IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_270: item.TurnIconBitmap = Resource::NaviTurnArrwRoundaboutEuro270IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_315: item.TurnIconBitmap = Resource::NaviTurnArrwRoundaboutEuro315IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_360: item.TurnIconBitmap = Resource::NaviTurnArrwRoundaboutEuro360IrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_EU_GEN: item.TurnIconBitmap = Resource::NaviTurnArrwRoundaboutEuroGenericIrgTbtList;
+        case Enum::NaviTurnStatusType.ROUNDABOUT_GEN: item.TurnIconBitmap = Resource::NaviTurnArrwRoundaboutGenericIrgTbtList;
+        case Enum::NaviTurnStatusType.SHARP_TURN_LEFT: item.TurnIconBitmap = Resource::NaviTurnArrwShrpturnLIrgTbtList;
+        case Enum::NaviTurnStatusType.SHARP_TURN_RIGHT: item.TurnIconBitmap = Resource::NaviTurnArrwShrpturnRIrgTbtList;
+        case Enum::NaviTurnStatusType.TURN_LEFT: item.TurnIconBitmap = Resource::NaviTurnArrwTurnLIrgTbtList;
+        case Enum::NaviTurnStatusType.TURN_RIGHT: item.TurnIconBitmap = Resource::NaviTurnArrwTurnRIrgTbtList;
+        case Enum::NaviTurnStatusType.UTURN_LEFT: item.TurnIconBitmap = Resource::NaviTurnArrwUturnLIrgTbtList;
+        case Enum::NaviTurnStatusType.UTURN_RIGHT: item.TurnIconBitmap = Resource::NaviTurnArrwUturnRIrgTbtList;
+        case Enum::NaviTurnStatusType.EXIT_UNSPEC: item.TurnIconBitmap = null;
         default:;
       }
     }
@@ -2984,7 +3057,7 @@ class TbtListMenu : Core::Group
   {
     if( ArrowScrollBarVisible )
     {
-      var int32 PageIdxOfSelectedItem = VerticalList.SelectedItem / 3;
+      var int32 PageIdxOfSelectedItem = VerticalList.SelectedItem / 2;
       ArrowScrollBar.CurrentPageIdx = PageIdxOfSelectedItem;
     }
   }
@@ -3005,7 +3078,7 @@ class TbtListMenu : Core::Group
   method void SwitchToPageOfSelectedItem()
   {
     var int32 CurrentPageIdx = ( -1 ) * VerticalList.ScrollOffset / VerticalList.Bounds.h;
-    var int32 PageIdxOfSelectedItem = VerticalList.SelectedItem / 3;
+    var int32 PageIdxOfSelectedItem = VerticalList.SelectedItem / 2;
 
     if( CurrentPageIdx != PageIdxOfSelectedItem )
     {
@@ -3023,3 +3096,15 @@ const int32 DAY_MODE = 1;
 $rect <720,480,920,520>
 $output false
 const int32 NIGHT_MODE = 2;
+
+$rect <720,360,920,400>
+$output false
+const int32 TBT_ITEM_HEIGHT = 111;
+
+$rect <930,360,1130,400>
+$output false
+const rect TURN_ICON_BOUNDS_WO_DIST = <45,32,90,77>;
+
+$rect <1140,360,1340,400>
+$output false
+const rect TURN_ICON_BOUNDS_W_DIST = <45,14,90,59>;

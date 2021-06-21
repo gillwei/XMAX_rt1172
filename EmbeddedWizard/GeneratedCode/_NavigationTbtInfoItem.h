@@ -95,15 +95,24 @@
 #define _NavigationTbtInfoItem_
 #endif
 
+/* Forward declaration of the class Resources::Bitmap */
+#ifndef _ResourcesBitmap_
+  EW_DECLARE_CLASS( ResourcesBitmap )
+#define _ResourcesBitmap_
+#endif
+
 
 /* Deklaration of class : 'Navigation::TbtInfoItem' */
 EW_DEFINE_FIELDS( NavigationTbtInfoItem, CoreGroup )
+  EW_PROPERTY( TurnIconBitmap,  ResourcesBitmap )
   EW_OBJECT  ( TbtItemBg,       ViewsRectangle )
   EW_OBJECT  ( NextTurnIcon,    ViewsImage )
   EW_OBJECT  ( NextTurnDist,    ViewsText )
   EW_OBJECT  ( NextTurnDistUnit, ViewsText )
   EW_OBJECT  ( NextTurnDescription, ViewsText )
   EW_OBJECT  ( ListDivider,     ViewsImage )
+  EW_PROPERTY( Distance,        XString )
+  EW_PROPERTY( DistanceUnit,    XString )
 EW_END_OF_FIELDS( NavigationTbtInfoItem )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::TbtInfoItem' */
@@ -149,6 +158,17 @@ EW_DEFINE_METHODS( NavigationTbtInfoItem, CoreGroup )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
 EW_END_OF_METHODS( NavigationTbtInfoItem )
+
+/* 'C' function for method : 'Navigation::TbtInfoItem.OnSetDistance()' */
+void NavigationTbtInfoItem_OnSetDistance( NavigationTbtInfoItem _this, XString value );
+
+/* 'C' function for method : 'Navigation::TbtInfoItem.OnSetDistanceUnit()' */
+void NavigationTbtInfoItem_OnSetDistanceUnit( NavigationTbtInfoItem _this, XString 
+  value );
+
+/* 'C' function for method : 'Navigation::TbtInfoItem.OnSetTurnIconBitmap()' */
+void NavigationTbtInfoItem_OnSetTurnIconBitmap( NavigationTbtInfoItem _this, ResourcesBitmap 
+  value );
 
 #ifdef __cplusplus
   }

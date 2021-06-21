@@ -171,15 +171,15 @@ static const XStringRes _Const0042 = { _StringsDefault0, 0x00EF };
 static const XRect _Const0043 = {{ 0, 36 }, { 480, 272 }};
 static const XRect _Const0044 = {{ 0, 36 }, { 480, 38 }};
 static const XStringRes _Const0045 = { _StringsDefault0, 0x00F5 };
-static const XRect _Const0046 = {{ 0, 0 }, { 480, 74 }};
-static const XRect _Const0047 = {{ 20, 0 }, { 440, 72 }};
+static const XRect _Const0046 = {{ 0, 0 }, { 480, 111 }};
+static const XRect _Const0047 = {{ 20, 0 }, { 440, 109 }};
 static const XColor _Const0048 = { 0x1E, 0x47, 0x8C, 0xFF };
-static const XRect _Const0049 = {{ 30, 22 }, { 58, 50 }};
-static const XRect _Const004A = {{ 58, 19 }, { 117, 53 }};
-static const XRect _Const004B = {{ 117, 19 }, { 154, 53 }};
-static const XRect _Const004C = {{ 155, 5 }, { 430, 72 }};
+static const XRect _Const0049 = {{ 45, 14 }, { 90, 59 }};
+static const XRect _Const004A = {{ 27, 61 }, { 74, 95 }};
+static const XRect _Const004B = {{ 76, 61 }, { 108, 95 }};
+static const XRect _Const004C = {{ 114, 8 }, { 417, 101 }};
 static const XColor _Const004D = { 0xC8, 0xC8, 0xC8, 0xFF };
-static const XRect _Const004E = {{ 0, 72 }, { 480, 74 }};
+static const XRect _Const004E = {{ 0, 109 }, { 480, 111 }};
 static const XRect _Const004F = {{ 0, 0 }, { 340, 252 }};
 static const XRect _Const0050 = {{ 15, 13 }, { 325, 190 }};
 static const XStringRes _Const0051 = { _StringsDefault0, 0x010A };
@@ -3654,12 +3654,16 @@ void NavigationTbtInfoItem__Init( NavigationTbtInfoItem _this, XObject aLink, XH
   ViewsRectangle_OnSetColor( &_this->TbtItemBg, _Const0048 );
   ViewsRectangle_OnSetVisible( &_this->TbtItemBg, 0 );
   CoreRectView__OnSetBounds( &_this->NextTurnIcon, _Const0049 );
+  ViewsImage_OnSetAlignment( &_this->NextTurnIcon, ViewsImageAlignmentAlignHorzCenter 
+  | ViewsImageAlignmentAlignVertCenter | ViewsImageAlignmentScaleToFit );
   CoreRectView__OnSetBounds( &_this->NextTurnDist, _Const004A );
-  ViewsText_OnSetAlignment( &_this->NextTurnDist, ViewsTextAlignmentAlignHorzCenter 
+  ViewsText_OnSetAlignment( &_this->NextTurnDist, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->NextTurnDist, 0 );
   CoreRectView__OnSetBounds( &_this->NextTurnDistUnit, _Const004B );
-  ViewsText_OnSetAlignment( &_this->NextTurnDistUnit, ViewsTextAlignmentAlignHorzCenter 
+  ViewsText_OnSetAlignment( &_this->NextTurnDistUnit, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->NextTurnDistUnit, 0 );
   CoreRectView__OnSetBounds( &_this->NextTurnDescription, _Const004C );
   ViewsText_OnSetEllipsis( &_this->NextTurnDescription, 1 );
   ViewsText_OnSetWrapText( &_this->NextTurnDescription, 1 );
@@ -3675,9 +3679,9 @@ void NavigationTbtInfoItem__Init( NavigationTbtInfoItem _this, XObject aLink, XH
   CoreGroup__Add( _this, ((CoreView)&_this->NextTurnDistUnit ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NextTurnDescription ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ListDivider ), 0 );
-  ViewsText_OnSetFont( &_this->NextTurnDist, EwLoadResource( &FontsNotoSansBold24pt, 
+  ViewsText_OnSetFont( &_this->NextTurnDist, EwLoadResource( &FontsNotoSansBold20pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->NextTurnDistUnit, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont( &_this->NextTurnDistUnit, EwLoadResource( &FontsNotoSansBold20pt, 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->NextTurnDescription, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
@@ -3718,13 +3722,63 @@ void NavigationTbtInfoItem__Done( NavigationTbtInfoItem _this )
   CoreGroup__Done( &_this->_.Super );
 }
 
+/* 'C' function for method : 'Navigation::TbtInfoItem.OnSetDistance()' */
+void NavigationTbtInfoItem_OnSetDistance( NavigationTbtInfoItem _this, XString value )
+{
+  _this->Distance = EwShareString( value );
+  ViewsText_OnSetString( &_this->NextTurnDist, value );
+
+  if ( EwGetRectW( ViewsText_GetContentArea( &_this->NextTurnDist )) > EwGetRectW( 
+      _this->NextTurnDist.Super1.Bounds ))
+  {
+    if ( EwGetRectW( ViewsText_GetContentArea( &_this->NextTurnDist )) > 47 )
+      CoreRectView__OnSetBounds( &_this->NextTurnDist, EwSetRectW( _this->NextTurnDist.Super1.Bounds, 
+      47 ));
+    else
+      CoreRectView__OnSetBounds( &_this->NextTurnDist, EwSetRectW( _this->NextTurnDist.Super1.Bounds, 
+      EwGetRectW( ViewsText_GetContentArea( &_this->NextTurnDist ))));
+  }
+}
+
+/* 'C' function for method : 'Navigation::TbtInfoItem.OnSetDistanceUnit()' */
+void NavigationTbtInfoItem_OnSetDistanceUnit( NavigationTbtInfoItem _this, XString 
+  value )
+{
+  _this->DistanceUnit = EwShareString( value );
+  ViewsText_OnSetString( &_this->NextTurnDistUnit, value );
+
+  if ( EwGetRectW( ViewsText_GetContentArea( &_this->NextTurnDistUnit )) > EwGetRectW( 
+      _this->NextTurnDistUnit.Super1.Bounds ))
+  {
+    if ( EwGetRectW( ViewsText_GetContentArea( &_this->NextTurnDistUnit )) > 32 )
+      CoreRectView__OnSetBounds( &_this->NextTurnDistUnit, EwSetRectW( _this->NextTurnDistUnit.Super1.Bounds, 
+      32 ));
+    else
+      CoreRectView__OnSetBounds( &_this->NextTurnDistUnit, EwSetRectW( _this->NextTurnDistUnit.Super1.Bounds, 
+      EwGetRectW( ViewsText_GetContentArea( &_this->NextTurnDistUnit ))));
+  }
+}
+
+/* 'C' function for method : 'Navigation::TbtInfoItem.OnSetTurnIconBitmap()' */
+void NavigationTbtInfoItem_OnSetTurnIconBitmap( NavigationTbtInfoItem _this, ResourcesBitmap 
+  value )
+{
+  _this->TurnIconBitmap = value;
+  ViewsImage_OnSetBitmap( &_this->NextTurnIcon, _this->TurnIconBitmap );
+
+  if ( !EwCompString( 0, _this->Distance ) && !EwCompString( 0, _this->DistanceUnit ))
+    CoreRectView__OnSetBounds( &_this->NextTurnIcon, NavigationTURN_ICON_BOUNDS_WO_DIST );
+  else
+    CoreRectView__OnSetBounds( &_this->NextTurnIcon, NavigationTURN_ICON_BOUNDS_W_DIST );
+}
+
 /* Variants derived from the class : 'Navigation::TbtInfoItem' */
 EW_DEFINE_CLASS_VARIANTS( NavigationTbtInfoItem )
 EW_END_OF_CLASS_VARIANTS( NavigationTbtInfoItem )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::TbtInfoItem' */
-EW_DEFINE_CLASS( NavigationTbtInfoItem, CoreGroup, TbtItemBg, TbtItemBg, TbtItemBg, 
-                 TbtItemBg, _.VMT, _.VMT, "Navigation::TbtInfoItem" )
+EW_DEFINE_CLASS( NavigationTbtInfoItem, CoreGroup, TurnIconBitmap, TbtItemBg, TbtItemBg, 
+                 TbtItemBg, Distance, _.VMT, "Navigation::TbtInfoItem" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -4039,7 +4093,7 @@ void NavigationTbtListMenu__Init( NavigationTbtListMenu _this, XObject aLink, XH
   CoreRectView__OnSetBounds( _this, _Const0056 );
   CoreRectView__OnSetBounds( &_this->VerticalList, _Const0057 );
   CoreVerticalList_OnSetSelectedItem( &_this->VerticalList, 0 );
-  CoreVerticalList_OnSetItemHeight( &_this->VerticalList, 74 );
+  CoreVerticalList_OnSetItemHeight( &_this->VerticalList, 111 );
   CoreVerticalList_OnSetItemClass( &_this->VerticalList, EW_CLASS( NavigationTbtInfoItem ));
   CoreRectView__OnSetBounds( &_this->ArrowScrollBar, _Const0058 );
   CoreGroup__OnSetVisible( &_this->ArrowScrollBar, 0 );
@@ -4103,9 +4157,9 @@ void NavigationTbtListMenu_UpdateViewState( NavigationTbtListMenu _this, XSet aS
 
   if ( _this->ArrowScrollBarVisible )
   {
-    XInt32 NoOfPages = _this->NoOfItems / 3;
+    XInt32 NoOfPages = _this->NoOfItems / 2;
 
-    if ( _this->NoOfItems > ( NoOfPages * 3 ))
+    if ( _this->NoOfItems > ( NoOfPages * 2 ))
       NoOfPages++;
 
     MenuArrowScrollBar_OnSetNoOfPages( &_this->ArrowScrollBar, NoOfPages );
@@ -4129,13 +4183,13 @@ void NavigationTbtListMenu_OnLoadItem( NavigationTbtListMenu _this, XObject send
       EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), 
       _this->VerticalList.Item );
     NavigationTbtListMenu_ShowTbtListItemIcon( _this, NaviTbtData->IconIdx );
-    ViewsText_OnSetString( &item->NextTurnDistUnit, NaviTbtData->DistUnit );
+    NavigationTbtInfoItem_OnSetDistanceUnit( item, NaviTbtData->DistUnit );
 
     if ( 0.000000f == EwMathFract( NaviTbtData->Distance ))
-      ViewsText_OnSetString( &item->NextTurnDist, EwNewStringInt((XInt32)NaviTbtData->Distance, 
+      NavigationTbtInfoItem_OnSetDistance( item, EwNewStringInt((XInt32)NaviTbtData->Distance, 
       0, 10 ));
     else
-      ViewsText_OnSetString( &item->NextTurnDist, EwNewStringFloat( NaviTbtData->Distance, 
+      NavigationTbtInfoItem_OnSetDistance( item, EwNewStringFloat( NaviTbtData->Distance, 
       0, 1 ));
 
     ViewsText_OnSetString( &item->NextTurnDescription, NaviTbtData->TbtDescription );
@@ -4152,7 +4206,7 @@ void NavigationTbtListMenu_OnLoadItem( NavigationTbtListMenu _this, XObject send
 /* 'C' function for method : 'Navigation::TbtListMenu.ScrollUp()' */
 void NavigationTbtListMenu_ScrollUp( NavigationTbtListMenu _this )
 {
-  XInt32 PrevItemIdx = _this->VerticalList.SelectedItem - 3;
+  XInt32 PrevItemIdx = _this->VerticalList.SelectedItem - 2;
 
   if ( PrevItemIdx >= 0 )
   {
@@ -4164,7 +4218,7 @@ void NavigationTbtListMenu_ScrollUp( NavigationTbtListMenu _this )
 /* 'C' function for method : 'Navigation::TbtListMenu.ScrollDown()' */
 void NavigationTbtListMenu_ScrollDown( NavigationTbtListMenu _this )
 {
-  XInt32 NextItemIdx = _this->VerticalList.SelectedItem + 3;
+  XInt32 NextItemIdx = _this->VerticalList.SelectedItem + 2;
 
   if ( NextItemIdx < _this->VerticalList.NoOfItems )
   {
@@ -4186,192 +4240,192 @@ void NavigationTbtListMenu_ShowTbtListItemIcon( NavigationTbtListMenu _this, XIn
     switch ( NaviTurnStatus )
     {
       case EnumNaviTurnStatusTypeARRVIAL_LEFT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwArvngLIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwArvngLIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeARRIVAL_RIGHT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwArvngRIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwArvngRIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeARRIVAL_VIA_LEFT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwArvngViaLIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwArvngViaLIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeARRIVAL_VIA_RIGHT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwArvngViaRIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwArvngViaRIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeCONTINUE :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwContinuelrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwContinuelrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeDRIVETO :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwDriveTolrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwDriveTolrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeDEST_FLAG :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwDstntnFlgIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwDstntnFlgIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeDEST_VIA_FLAG :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwViaflgIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwViaflgIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeEXIT_LEFT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwExitLIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwExitLIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeEXIT_RIGHT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwExitRIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwExitRIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeFERRY :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwFerryIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwFerryIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeKEEP_LEFT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwKeepLIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwKeepLIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeKEEP_RIGHT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwKeepRIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwKeepRIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_45 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundabout45Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundabout45IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_90 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundabout90Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundabout90IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_135 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundabout135Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundabout135IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_180 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundabout180Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundabout180IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_225 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundabout225Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundabout225IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_270 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundabout270Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundabout270IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_315 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundabout315Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundabout315IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_360 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundabout360Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundabout360IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_EU_45 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro45Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro45IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_EU_90 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro90Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro90IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_EU_135 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro135Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro135IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_EU_180 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro180Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro180IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_EU_225 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro225Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro225IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_EU_270 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro270Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro270IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_EU_315 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro315Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro315IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_EU_360 :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro360Irg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuro360IrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_EU_GEN :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuroGenericIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundaboutEuroGenericIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeROUNDABOUT_GEN :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwRoundaboutGenericIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwRoundaboutGenericIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeSHARP_TURN_LEFT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwShrpturnLIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwShrpturnLIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeSHARP_TURN_RIGHT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwShrpturnRIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwShrpturnRIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeTURN_LEFT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwTurnLIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwTurnLIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeTURN_RIGHT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwTurnRIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwTurnRIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeUTURN_LEFT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwUturnLIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwUturnLIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeUTURN_RIGHT :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, EwLoadResource( &ResourceNaviTurnArrwUturnRIrg28, 
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, EwLoadResource( &ResourceNaviTurnArrwUturnRIrgTbtList, 
         ResourcesBitmap ));
       break;
 
       case EnumNaviTurnStatusTypeEXIT_UNSPEC :
-        ViewsImage_OnSetBitmap( &item->NextTurnIcon, 0 );
+        NavigationTbtInfoItem_OnSetTurnIconBitmap( item, 0 );
       break;
 
       default :; 
@@ -4426,7 +4480,7 @@ void NavigationTbtListMenu_OnPageScrolledSlot( NavigationTbtListMenu _this, XObj
 
   if ( _this->ArrowScrollBarVisible )
   {
-    XInt32 PageIdxOfSelectedItem = _this->VerticalList.SelectedItem / 3;
+    XInt32 PageIdxOfSelectedItem = _this->VerticalList.SelectedItem / 2;
     MenuArrowScrollBar_OnSetCurrentPageIdx( &_this->ArrowScrollBar, PageIdxOfSelectedItem );
   }
 }
@@ -4436,7 +4490,7 @@ void NavigationTbtListMenu_SwitchToPageOfSelectedItem( NavigationTbtListMenu _th
 {
   XInt32 CurrentPageIdx = ( -1 * _this->VerticalList.ScrollOffset ) / EwGetRectH( 
     _this->VerticalList.Super2.Bounds );
-  XInt32 PageIdxOfSelectedItem = _this->VerticalList.SelectedItem / 3;
+  XInt32 PageIdxOfSelectedItem = _this->VerticalList.SelectedItem / 2;
 
   if ( CurrentPageIdx != PageIdxOfSelectedItem )
   {
@@ -4485,5 +4539,11 @@ EW_DEFINE_CLASS( NavigationTbtListMenu, CoreGroup, VerticalList, VerticalList, V
   CoreGroup_Remove,
   CoreGroup_Add,
 EW_END_OF_CLASS( NavigationTbtListMenu )
+
+/* User defined constant: 'Navigation::TURN_ICON_BOUNDS_WO_DIST' */
+const XRect NavigationTURN_ICON_BOUNDS_WO_DIST = {{ 45, 32 }, { 90, 77 }};
+
+/* User defined constant: 'Navigation::TURN_ICON_BOUNDS_W_DIST' */
+const XRect NavigationTURN_ICON_BOUNDS_W_DIST = {{ 45, 14 }, { 90, 59 }};
 
 /* Embedded Wizard */

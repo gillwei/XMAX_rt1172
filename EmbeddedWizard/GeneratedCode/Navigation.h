@@ -97,6 +97,12 @@ extern const XRect NavigationCURRENT_ROAD_SHRINK_ALERT;
 /* User defined constant: 'Navigation::ALERT_MESSAGE_BOUNDS' */
 extern const XRect NavigationALERT_MESSAGE_BOUNDS;
 
+/* User defined constant: 'Navigation::TURN_ICON_BOUNDS_WO_DIST' */
+extern const XRect NavigationTURN_ICON_BOUNDS_WO_DIST;
+
+/* User defined constant: 'Navigation::TURN_ICON_BOUNDS_W_DIST' */
+extern const XRect NavigationTURN_ICON_BOUNDS_W_DIST;
+
 #ifdef __cplusplus
   }
 #endif
