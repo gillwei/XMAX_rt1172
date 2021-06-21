@@ -185,6 +185,28 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     /*********************************************************************
     *
     * @public
+    * NAVILITE_register_update_callback_content_mode_switch
+    *
+    * register navilite bt throughput notify callback
+    *
+    * @param callback_func callback function for content mode to switch and bt timeout update
+    * @return The result of the callback registering
+    *
+    *********************************************************************/
+    bool NAVILITE_register_update_callback_content_mode_switch
+        (
+        navilite_callback_func_content_mode_switch callback_func
+        )
+    {
+    bool ret = true;
+    navilite_content_update_callbacks.callback_func_content_mode_switch = callback_func;
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    return ret;
+    }
+
+    /*********************************************************************
+    *
+    * @public
     * NAVILITE_register_update_callback_viapointcount
     *
     * register navilite via point content notify callback

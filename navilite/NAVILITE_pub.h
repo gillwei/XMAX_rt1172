@@ -50,8 +50,7 @@ typedef enum tagNAVILITE_IMAGE_TYPE
     {
     NAVILITE_IMAGE_NAVIGATION,
     NAVILITE_IMAGE_JCV,
-    NAVILITE_IMAGE_POILIST_FAV,
-    NAVILITE_IMAGE_POILIST_GAS,
+    NAVILITE_IMAGE_THROUGHPUT_TEST_DATA,
     NAVILITE_IMAGE_OTHER
     } navilite_image_type;
 
@@ -99,7 +98,8 @@ typedef enum tagNAVILITE_CONTENT_TYPE
     NAVILITE_CONTENT_TYPE_NAVI_IMAGE = 1, // reserved for code refactor
     NAVILITE_CONTENT_TYPE_TBT_LIST = 2,
     NAVILITE_CONTENT_TYPE_FAVORITE_LIST = 3,
-    NAVILITE_CONTENT_TYPE_GASSTATION_LIST = 4
+    NAVILITE_CONTENT_TYPE_GASSTATION_LIST = 4,
+    NAVILITE_CONTENT_TYPE_NAVI_IMAGE_FOR_LOW_THROUGHPUT_MODE = 11, // reserved for code refactor
     } navilite_content_type;
 
 typedef enum tagNAVILITE_SWITCH_TYPE
@@ -248,6 +248,8 @@ typedef struct tagNAVILTE_SESSION_STATE
     uint8_t auth_request_sent;
     uint32_t last_received_content_tick; // tick timestamp for last received content target (image/tbt)
     uint8_t bt_throughput_skip_request; // skip request when bt throughput is met
+    navilite_content_mode_type current_content_mode;  // what mode current is (map or tbt for bt throughput measure)
+    navilite_content_mode_type previous_content_mode;
     } navilite_session_status_type;
 /*--------------------------------------------------------------------
                         PROJECT INCLUDES
@@ -306,6 +308,7 @@ bool NAVILITE_register_update_callback_routecalcprogress( navilite_callback_func
 bool NAVILITE_register_update_callback_bt_timeout( navilite_callback_func_bt_timeout callback_func );
 bool NAVILITE_register_update_callback_dialogevent( navilite_callback_func_dialogevent callback_func );
 bool NAVILITE_register_update_callback_runloopevent( navilite_callback_func_runloopevent callback_func );
+bool NAVILITE_register_update_callback_content_mode_switch( navilite_callback_func_content_mode_switch callback_func );
 
 /* NaviLight Connection Event API */
 bool NAVILITE_register_update_callback_preconnected();

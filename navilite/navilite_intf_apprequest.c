@@ -40,6 +40,7 @@
 /*--------------------------------------------------------------------
                                VARIABLES
 --------------------------------------------------------------------*/
+extern navilite_session_status_type navilite_session_status;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -260,6 +261,13 @@
         void
         )
     {
+    // IXWW22-6047: skip the stop request if bt throughtput is met
+    if( navilite_session_status.auth_request_sent )
+        {
+        PRINTF( "content_type:old_image to start, SKIP the request due to the bt throughput is met!\r\n" );
+        navilite_session_status.auth_request_sent = 0;
+        return true;
+        }
     navilite_message frame = NAVILITE_pack_frame_app_enable_imageframe_update( NAVILITE_ENABLE_TYPE_ENABLE );
     bool ret = NAVILITE_send( (uint8_t*)&frame, sizeof( navilite_message ) );
     return ret;
@@ -281,6 +289,13 @@
         void
         )
     {
+    // IXWW22-6047: skip the stop request if bt throughtput is met
+    if( navilite_session_status.bt_throughput_skip_request )
+        {
+        PRINTF( "content_type:old_image to stop, SKIP the request due to the bt throughput is met!\r\n" );
+        navilite_session_status.bt_throughput_skip_request = 0;
+        return true;
+        }
     navilite_message frame = NAVILITE_pack_frame_app_enable_imageframe_update( NAVILITE_ENABLE_TYPE_DISABLE );
     bool ret = NAVILITE_send( (uint8_t*)&frame, sizeof( navilite_message ) );
     return ret;
@@ -308,6 +323,13 @@
         navilite_switch_type enable
         )
     {
+    if( navilite_session_status.bt_throughput_skip_request )
+        {
+        PRINTF( "content_type:%d to enable(%d), SKIP the request due to the bt throughput is met!\r\n", content_type, enable );
+        navilite_session_status.bt_throughput_skip_request = 0;
+        return true;
+        }
+
     // Back API compatibility for navigation image type
     if( NAVILITE_CONTENT_TYPE_NAVI_IMAGE == content_type )
         {

@@ -306,6 +306,7 @@
     * @param str navi event text update
     * @param str_size navi event text size
     * @param navi_event_type event type of the navi event
+    * @param navi_event_extra_subtype event extra sub type of the navi event
     * @param visibility visibility of the event info on UI
     *
     *********************************************************************/
@@ -314,7 +315,7 @@
         uint8_t* str,
         uint8_t str_size,
         navilite_navievent_type navi_event_type,
-        navilite_navievent_camera_extra_subtype navi_event_extra_subtype,
+        navilite_navievent_extra_subtype navi_event_extra_subtype,
         uint8_t visibility
         )
     {
@@ -411,6 +412,26 @@
         )
     {
     NAVILITE_PRINTF( "\r\n[NAVILITE-CB] daynight mode: %d", mode );
+    }
+
+    /*********************************************************************
+    *
+    * @private
+    * hmi_update_callback_content_mode_switch
+    *
+    * Callback API for content mode status
+    *
+    * @param mode status of content mode
+    * @param throughput_timeout timeout value
+    *
+    *********************************************************************/
+    static void hmi_update_callback_content_mode_switch
+        (
+        navilite_content_mode_type mode,
+        uint8_t throughput_timeout
+        )
+    {
+    NAVILITE_PRINTF( "\r\n[NAVILITE-CB] content switch mode: %d", mode );
     }
 
     /*********************************************************************
@@ -742,6 +763,29 @@
 
     /*********************************************************************
     *
+    * @private
+    * hmi_update_callback_appsetting
+    *
+    * Callback API for via app setting status
+    *
+    * @param app_setting_status_bits status bits of app setting
+    *
+    *********************************************************************/
+    static void hmi_update_callback_appsetting
+        (
+        uint16_t app_setting_status_bits
+        )
+    {
+    NAVILITE_PRINTF( "\r\n[NAVILITE-CB] app setting:%d", app_setting_status_bits );
+
+    if( app_setting_status_bits & NAVILITE_APP_SETTING_INIT_DONE_BIT )
+        {
+        PRINTF( "\r\nApp Initial Done Status done!\r\n" );
+        }
+    }
+
+    /*********************************************************************
+    *
     * @public
     * NAVILITE_hmi_integration_setup
     *
@@ -764,6 +808,7 @@
     NAVILITE_register_update_callback_currentroadname( hmi_update_callback_currentroadname );
     NAVILITE_register_update_callback_eta( hmi_update_callback_eta );
     NAVILITE_register_update_callback_bt_timeout( hmi_update_callback_bt_timeout );
+    NAVILITE_register_update_callback_content_mode_switch( hmi_update_callback_content_mode_switch );
     NAVILITE_register_update_callback_speedlimit( hmi_update_callback_speedlimit );
     NAVILITE_register_update_callback_navieventtext( hmi_update_callback_navieventtext );
     NAVILITE_register_update_callback_homelocationsetting( hmi_update_callback_homelocationsetting );
@@ -779,5 +824,6 @@
     NAVILITE_register_update_callback_tbtlist( hmi_update_callback_tbtlist );
     NAVILITE_register_update_callback_favlist( hmi_update_callback_favlist );
     NAVILITE_register_update_callback_gaslist( hmi_update_callback_gaslist );
+    NAVILITE_register_update_callback_appsetting( hmi_update_callback_appsetting );
     }
 #endif

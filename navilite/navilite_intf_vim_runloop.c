@@ -76,6 +76,7 @@ bool navilite_vim_runloop
 {
 uint32_t speed_value = 0;
 uint32_t speed_unit = 0;
+uint32_t last_speed_value = 0;
 #if( NAVILITE_TEST_VIM_SPEED )
     static uint32_t test_speed = 0;
 #endif
@@ -98,6 +99,11 @@ nim_app_sig_get( IL_CAN0_VEHICLE_INFO_2_SPD_REAL_RXSIG_HANDLE, IL_CAN0_VEHICLE_I
 #if( NAVILITE_DEBUG )
     PRINTF( "[NAVILITE-runloop] VIM-CAN speed unit: %s, value : %d\r\n", ( speed_unit == 0 ) ? "kph" : "mph", speed_value );
 #endif
-NAVILITE_report_app_vehicle_speed( (navilite_speed_unit_type)speed_unit, (uint16_t)speed_value );
+
+if( speed_value != last_speed_value )
+    {
+    last_speed_value = speed_value;
+    NAVILITE_report_app_vehicle_speed( (navilite_speed_unit_type)speed_unit, (uint16_t)speed_value );
+    }
 return true;
 }

@@ -75,7 +75,8 @@ static TaskHandle_t xTaskNaviLite;
 static StreamBufferHandle_t xQueueBuffer = NULL;
 static navilite_conn_mode_type conn_mode = 0;
 static bool navilite_is_connected = false;
-static navilite_session_status_type navilite_session_status;
+
+navilite_session_status_type navilite_session_status;
 
 // generic poi list (tbt/fav/gas)
 static uint32_t session_list_size_total[NAVILITE_SESSION_INDEX_SIZE] = { 0 };
@@ -117,6 +118,9 @@ navilite_session_status.inited = 0; // reset inited status
 navilite_session_status.navigation_status = 0; // reset navigating status
 navilite_session_status.home_status = 0; // home setting
 navilite_session_status.office_status = 0; // office setting
+navilite_session_status.auth_request_sent = 0; // auth request status
+navilite_session_status.last_received_content_tick = 0; // tick of last recevied cotent target (image/tbt/or else)
+navilite_session_status.bt_throughput_skip_request = 0; // used to skip requests if some status is met
 }
 
 /*********************************************************************
@@ -208,6 +212,54 @@ else
 /*********************************************************************
 *
 * @private
+* navilite_bt_througput_runloop
+*
+* Check LC image received throuhput status
+*
+*********************************************************************/
+void navilite_bt_througput_runloop
+    (
+    void
+    )
+{
+uint32_t tick_diff = 0;
+navilite_content_mode_type mode_to_switch = 0;
+
+// IXWW22-6047 bt througput check on LC side
+// When LC’s delay time exceeds the map delay time > 3s, trigger event to HMI to show progress mask page
+// When LC’s delay time exceeds the tbt delay time > 3s, trigger event to HMI to show progress mask page
+
+if( NAVILITE_is_app_navigating() && navilite_session_status.current_content_mode == NAVILITE_CONTENT_MODE_TBT )
+    {
+    // when switch to TBT, that means it is in slow throughput mode, and begin to send jpeg test data every 10s from app
+    // measure the tick diff by 10 for LC to use
+    tick_diff = (int)( xTaskGetTickCount() - navilite_session_status.last_received_content_tick ) / 1000 * 10;
+    }
+
+PRINTF( "LC:BT_TIMEOUT = %d\r\n", tick_diff );
+
+if( tick_diff > 3 && mode_to_switch != NAVILITE_CONTENT_MODE_BUSY )
+    {
+    // LC side: if tick diff is > 3s (image/TBT), show the busy page in LC side until TBTLIST/MAP/TESTDATA is updated
+    navilite_session_status.previous_content_mode = navilite_session_status.current_content_mode;
+    mode_to_switch = NAVILITE_CONTENT_MODE_BUSY;
+    navilite_session_status.current_content_mode = mode_to_switch;
+    PRINTF( "LC:BT_TIMEOUT>%d, @TODO: HMI to show the busy page\r\n", tick_diff );
+    navilite_session_status.bt_throughput_skip_request = 0;
+    tick_diff = 0;
+
+    // fire callback for such condition
+    if( navilite_content_update_callbacks.callback_func_content_mode_switch )
+        {
+        // Callback API for content mode switch notification update when bt throughput changes
+        navilite_content_update_callbacks.callback_func_content_mode_switch( mode_to_switch, tick_diff );
+        }
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * task_main
 *
 * Main loop of the navilite service task
@@ -219,7 +271,7 @@ static void task_main
     )
 {
 uint32_t notifiy_events;
-TickType_t tick_start ;
+TickType_t tick_start = 0;
 
 #if( TEST_NAVILITE )
     navilite_hmi_init_setup();
@@ -237,6 +289,7 @@ for( ;; )
         {
         PRINTF( "BT is connected, NAVILITE TASK switch to ready mode\r\n" );
         init_session_status();
+        navilite_session_status.last_received_content_tick = xTaskGetTickCount();
         navilite_content_update_callbacks.callback_func_preconnected( 0 );
         }
     if( ( notifiy_events & EVENT_NAVILITE_DISCONNECT ) != 0 )
@@ -256,6 +309,9 @@ for( ;; )
         {
         navilite_content_update_callbacks.callback_func_runloopevent();
         tick_start = xTaskGetTickCount();
+        // Run bt throughput runloop for image/tbt
+        // Issue: IXWW22-6047
+        navilite_bt_througput_runloop();
         }
     }
 vTaskDelete( NULL );
@@ -341,6 +397,7 @@ navilite_content_update_callbacks.callback_func_speedlimit = NULL;
 navilite_content_update_callbacks.callback_func_viapointcount = NULL;
 navilite_content_update_callbacks.callback_func_navigationstatus = NULL;
 navilite_content_update_callbacks.callback_func_runloopevent = NULL;
+navilite_content_update_callbacks.callback_func_bt_timeout = NULL;
 
 // Session variables init (TBT/FAV/GAS)
 for( int i = 0; i < NAVILITE_SESSION_INDEX_SIZE; i++ )
@@ -1091,6 +1148,7 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
         if( navilite_content_update_callbacks.callback_func_eta )
             {
             // Callback API for ETA notification update
+            navilite_session_status.last_received_content_tick = xTaskGetTickCount();
             navilite_content_update_callbacks.callback_func_eta( value );
             }
         }
@@ -1098,12 +1156,80 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
     // NAVILITE_SERVICETYPE_BT_THROUGHPUT_TIMEOUT_UPDATE
     if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_BT_THROUGHPUT_TIMEOUT_UPDATE )
         {
-        uint8_t value = navilite_packet.data_value; // this value will be calculated in HMI for proper absolute time
+        uint8_t timeout_value = navilite_packet.data_value; // this value will be calculated in HMI for proper absolute time
+        navilite_content_mode_type mode_to_switch = NAVILITE_CONTENT_MODE_MAP;
+        static int low_throughput_count  = 0;
+        static int hi_throughput_count = 0;
+        bool trigger_callback = false;
 
-        if( navilite_content_update_callbacks.callback_func_bt_timeout )
+        PRINTF( "\r\nAPP:BT_TIMEOUT:%d\r\n", timeout_value );
+
+        if( timeout_value >= 1 && timeout_value < 3 ) //[ >= 1, < 3 )
             {
-            // Callback API for BT timeout notification update
-            navilite_content_update_callbacks.callback_func_bt_timeout( value );
+            low_throughput_count++;
+            hi_throughput_count = 0;
+            }
+        else if( timeout_value < 1 ) // < 1
+            {
+            low_throughput_count = 0;
+            hi_throughput_count++;
+            }
+        else if( timeout_value > 3 ) // > 3
+            {
+            low_throughput_count = 4; // turn to TBT mode directly if timeout > 3
+            hi_throughput_count = 0;
+            }
+
+        // internal logic for mode switch API callback
+        if( low_throughput_count >= 3 )
+            {
+            // if timeout value >= 3s, switch to TBT page mode
+            mode_to_switch = NAVILITE_CONTENT_MODE_TBT;
+            // reset the tick for new content target when switching to new content mode
+            navilite_session_status.last_received_content_tick = xTaskGetTickCount();
+            PRINTF( "BT_TIMEOUT> switch to TBT\r\n" );
+            trigger_callback = true;
+            low_throughput_count = 0;
+            }
+        else if( hi_throughput_count >= 3 )
+            // if timeout value < 3s, switch to MAP page mode
+            {
+            mode_to_switch = NAVILITE_CONTENT_MODE_MAP;
+            // reset the tick for new content target when switching to new content mode
+            navilite_session_status.last_received_content_tick = xTaskGetTickCount();
+            PRINTF( "BT_TIMEOUT> switch to MAP\r\n" );
+            trigger_callback = true;
+            hi_throughput_count = 0;
+            }
+
+#if( _DISABLE )
+        if( NAVILITE_CONTENT_MODE_MAP == mode_to_switch &&  timeout_value > 3 )
+            {
+            PRINTF( "MAP MODE: show busy indicator!!\r\n" );
+            mode_to_switch = NAVILITE_CONTENT_MODE_TBT;
+            navilite_session_status.previous_content_mode = NAVILITE_CONTENT_MODE_MAP;
+            trigger_callback = true;
+            }
+        else if( NAVILITE_CONTENT_MODE_TBT == mode_to_switch &&  timeout_value > 3 )
+            {
+            PRINTF( "TBT MODE: show busy indicator!!\r\n" );
+            mode_to_switch = NAVILITE_CONTENT_MODE_BUSY;
+            navilite_session_status.previous_content_mode = NAVILITE_CONTENT_MODE_TBT;
+            trigger_callback = true;
+            }
+        else if( NAVILITE_CONTENT_MODE_BUSY == mode_to_switch && timeout_value <= 1 )
+            {
+            mode_to_switch = navilite_session_status.previous_content_mode;
+            PRINTF( "SWITCH BACK to (%d) mode when signal is available\r\n", mode_to_switch );
+            trigger_callback = true;
+            }
+#endif
+
+        if( navilite_content_update_callbacks.callback_func_content_mode_switch && trigger_callback )
+            {
+            // Callback API for content mode switch notification update when bt throughput changes
+            navilite_content_update_callbacks.callback_func_content_mode_switch( mode_to_switch, timeout_value );
+            navilite_session_status.current_content_mode = mode_to_switch;
             }
         }
 
@@ -1313,6 +1439,8 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
                 0,
                 has_more_items // has more item on next request?
                 );
+            // update the latest received content update tick for measuring the BT throughput status which will be checked in runloop
+            navilite_session_status.last_received_content_tick = xTaskGetTickCount();
             }
         }
 
@@ -1372,6 +1500,7 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
                     PRINTF( "\r\n" );
                 #endif
                 navilite_content_update_callbacks.callback_func_nexttbtist( NAVILITE_TBTLIST_ACTION_ITEMADD, &session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_TBTLIST], 0 );
+                navilite_session_status.last_received_content_tick = xTaskGetTickCount();
                 }
         }
 
@@ -1629,7 +1758,15 @@ else if( is_jpeg_mode )
             jpg_current_size <= NAVILITE_JPEG_BUFFER_MAX_SIZE )
             {
             navilite_ack_reply();
-            navilite_content_update_callbacks.callback_func_imageframe( navilite_jpg_buffer, image_frame_update_payload_size, image_type );
+            if( NAVILITE_IMAGE_THROUGHPUT_TEST_DATA != image_type )
+                {
+                navilite_content_update_callbacks.callback_func_imageframe( navilite_jpg_buffer, image_frame_update_payload_size, image_type );
+                }
+            else
+                {
+                PRINTF( "JPEG TEST DATA received mode:%d\r\n", image_type );
+                }
+            navilite_session_status.last_received_content_tick = xTaskGetTickCount();
             is_jpeg_mode = 0;
             jpg_current_size = 0;
             image_type = 0;
@@ -1784,6 +1921,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         if( navilite_content_update_callbacks.callback_func_eta )
             {
             // Callback API for ETA notification update
+            navilite_session_status.last_received_content_tick = xTaskGetTickCount();
             navilite_content_update_callbacks.callback_func_eta( value );
             }
         }
@@ -1791,12 +1929,80 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
     // NAVILITE_SERVICETYPE_BT_THROUGHPUT_TIMEOUT_UPDATE
     if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_BT_THROUGHPUT_TIMEOUT_UPDATE )
         {
-        uint8_t value = navilite_packet.data_value; // this value will be calculated in HMI for proper absolute time
+        uint8_t timeout_value = navilite_packet.data_value; // this value will be calculated in HMI for proper absolute time
+        navilite_content_mode_type mode_to_switch = NAVILITE_CONTENT_MODE_MAP;
+        static int low_throughput_count  = 0;
+        static int hi_throughput_count = 0;
+        bool trigger_callback = false;
 
-        if( navilite_content_update_callbacks.callback_func_bt_timeout )
+        PRINTF( "\r\nAPP:BT_TIMEOUT:%d\r\n", timeout_value );
+
+        if( timeout_value >= 1 && timeout_value < 3 ) //[ >= 1, < 3 )
             {
-            // Callback API for BT timeout notification update
-            navilite_content_update_callbacks.callback_func_bt_timeout( value );
+            low_throughput_count++;
+            hi_throughput_count = 0;
+            }
+        else if( timeout_value < 1 ) // < 1
+            {
+            low_throughput_count = 0;
+            hi_throughput_count++;
+            }
+        else if( timeout_value > 3 ) // > 3
+            {
+            low_throughput_count = 4; // turn to TBT mode directly if timeout > 3
+            hi_throughput_count = 0;
+            }
+
+        // internal logic for mode switch API callback
+        if( low_throughput_count >= 3 )
+            {
+            // if timeout value >= 3s, switch to TBT page mode
+            mode_to_switch = NAVILITE_CONTENT_MODE_TBT;
+            // reset the tick for new content target when switching to new content mode
+            navilite_session_status.last_received_content_tick = xTaskGetTickCount();
+            PRINTF( "BT_TIMEOUT> switch to TBT\r\n" );
+            trigger_callback = true;
+            low_throughput_count = 0;
+            }
+        else if( hi_throughput_count >= 3 )
+            // if timeout value < 3s, switch to MAP page mode
+            {
+            mode_to_switch = NAVILITE_CONTENT_MODE_MAP;
+            // reset the tick for new content target when switching to new content mode
+            navilite_session_status.last_received_content_tick = xTaskGetTickCount();
+            PRINTF( "BT_TIMEOUT> switch to MAP\r\n" );
+            trigger_callback = true;
+            hi_throughput_count = 0;
+            }
+
+#if( _DISABLE )
+        if( NAVILITE_CONTENT_MODE_MAP == mode_to_switch &&  timeout_value > 3 )
+            {
+            PRINTF( "MAP MODE: show busy indicator!!\r\n" );
+            mode_to_switch = NAVILITE_CONTENT_MODE_TBT;
+            navilite_session_status.previous_content_mode = NAVILITE_CONTENT_MODE_MAP;
+            trigger_callback = true;
+            }
+        else if( NAVILITE_CONTENT_MODE_TBT == mode_to_switch &&  timeout_value > 3 )
+            {
+            PRINTF( "TBT MODE: show busy indicator!!\r\n" );
+            mode_to_switch = NAVILITE_CONTENT_MODE_BUSY;
+            navilite_session_status.previous_content_mode = NAVILITE_CONTENT_MODE_TBT;
+            trigger_callback = true;
+            }
+        else if( NAVILITE_CONTENT_MODE_BUSY == mode_to_switch && timeout_value <= 1 )
+            {
+            mode_to_switch = navilite_session_status.previous_content_mode;
+            PRINTF( "SWITCH BACK to (%d) mode when signal is available\r\n", mode_to_switch );
+            trigger_callback = true;
+            }
+#endif
+
+        if( navilite_content_update_callbacks.callback_func_content_mode_switch && trigger_callback )
+            {
+            // Callback API for content mode switch notification update when bt throughput changes
+            navilite_content_update_callbacks.callback_func_content_mode_switch( mode_to_switch, timeout_value );
+            navilite_session_status.current_content_mode = mode_to_switch;
             }
         }
 
@@ -2322,10 +2528,20 @@ else if( is_jpeg_mode )
             jpg_current_size <= NAVILITE_JPEG_BUFFER_MAX_SIZE )
             {
             navilite_ack_reply();
-            navilite_content_update_callbacks.callback_func_imageframe( navilite_jpg_buffer, image_frame_update_payload_size, image_type );
+            if( NAVILITE_IMAGE_THROUGHPUT_TEST_DATA != image_type )
+                {
+                navilite_content_update_callbacks.callback_func_imageframe( navilite_jpg_buffer, image_frame_update_payload_size, image_type );
+                }
+            else
+               {
+               PRINTF( "JPEG TEST DATA received mode:%d\r\n", image_type );
+               }
+            navilite_session_status.last_received_content_tick = xTaskGetTickCount();
             is_jpeg_mode = 0;
             jpg_current_size = 0;
             image_type = 0;
+            // update the last received image tick
+            navilite_session_status.last_received_content_tick = xTaskGetTickCount();
             break; // check if any left bytes in the MTU for non-jpeg data
             }
 
