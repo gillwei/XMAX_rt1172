@@ -1242,6 +1242,24 @@ return is_valid;
 
 /*********************************************************************
 *
+* @private
+* vi_is_timeout_error2_detected
+*
+* Get the timeout error2 detected status
+*
+* @return Timeout error2 detected status
+*
+*********************************************************************/
+bool vi_is_timeout_error2_detected
+    (
+    void
+    )
+{
+return ( 0 != timeout_err2_status );
+}
+
+/*********************************************************************
+*
 * @public
 * VI_get_rx_data_float
 *

@@ -123,28 +123,37 @@ static void clock_timer_callback
 snvs_lp_srtc_datetime_t srtc_datetime;
 uint32_t clk_adj_status;
 
-switch( clk_update_state )
+if( !vi_is_timeout_error2_detected() )
     {
-    case CLK_UPDATE_STATE_WAITING_10_SEC:
-        RTC_get_datetime( &srtc_datetime );
-        VI_clock_notify_meter_time_updated( srtc_datetime );
-        break;
-    case CLK_UPDATE_STATE_CHECK_AFTER_500_MS:
-        VI_get_rx_data_uint( EnumVehicleRxTypeCLOCK_ADJUSTMENT_STATUS, &clk_adj_status );
-        if( METER_CLOCK_STATE_IDLE == clk_adj_status )
-            {
-            /* meter has received the clock successfully */
-            clk_update_state = CLK_UPDATE_STATE_IDLE;
-            }
-        else
-            {
-            /* meter does not receive the clock successfully, retry */
+    switch( clk_update_state )
+        {
+        case CLK_UPDATE_STATE_WAITING_10_SEC:
             RTC_get_datetime( &srtc_datetime );
             VI_clock_notify_meter_time_updated( srtc_datetime );
-            }
-        break;
-    default:
-        break;
+            break;
+        case CLK_UPDATE_STATE_CHECK_AFTER_500_MS:
+            VI_get_rx_data_uint( EnumVehicleRxTypeCLOCK_ADJUSTMENT_STATUS, &clk_adj_status );
+            if( METER_CLOCK_STATE_IDLE == clk_adj_status )
+                {
+                /* meter has received the clock successfully */
+                clk_update_state = CLK_UPDATE_STATE_IDLE;
+                }
+            else
+                {
+                /* meter does not receive the clock successfully, retry */
+                RTC_get_datetime( &srtc_datetime );
+                VI_clock_notify_meter_time_updated( srtc_datetime );
+                }
+            break;
+        default:
+            break;
+        }
+    }
+else
+    {
+    // abort sending the clock to meter due to the timeout error 2 detected
+    clk_update_state = CLK_UPDATE_STATE_IDLE;
+    PRINTF("abort clk sync\r\n");
     }
 }
 
@@ -194,9 +203,16 @@ void VI_clock_send_rtc_time_to_meter
     void
     )
 {
-snvs_lp_srtc_datetime_t datetime;
-RTC_get_datetime( &datetime );
-VI_clock_notify_meter_time_updated( datetime );
+if( !vi_is_timeout_error2_detected() )
+    {
+    snvs_lp_srtc_datetime_t datetime;
+    RTC_get_datetime( &datetime );
+    VI_clock_notify_meter_time_updated( datetime );
+    }
+else
+    {
+    PRINTF("abort clk sync\r\n");
+    }
 }
 
 /*********************************************************************
