@@ -243,35 +243,45 @@ XString MaintenanceMNT01_MaintenanceReset_LoadItemValue( MaintenanceMNT01_Mainte
 {
   XString Value;
   DeviceInterfaceVehicleDataClass VehicleData = 0;
+  XBool IsDataValid;
 
   if ( 0 < _this->NoOfSupportedItem )
-    switch ( aItemNo )
-    {
-      case 0 :
-        VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP1 );
-      break;
-
-      case 1 :
-        VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP2 );
-      break;
-
-      case 2 :
-        VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
-        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP3 );
-      break;
-
-      default : 
-        VehicleData->Valid = 0;
-    }
-  else
   {
-    VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 0 );
-    VehicleData->Valid = 0;
-  }
+    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+    DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED );
 
-  if ( VehicleData->Valid )
+    if ( 0 == VehicleData->DataUInt32 )
+    {
+      switch ( aItemNo )
+      {
+        case 0 :
+          VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP1 );
+        break;
+
+        case 1 :
+          VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP2 );
+        break;
+
+        case 2 :
+          VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeMAINTENANCE_TRIP3 );
+        break;
+
+        default : 
+          VehicleData->Valid = 0;
+      }
+
+      IsDataValid = VehicleData->Valid;
+    }
+    else
+      IsDataValid = 0;
+  }
+  else
+    IsDataValid = 0;
+
+  if ( IsDataValid )
   {
     if ( EnumMileageSettingItemMILE == _this->MileageSetting )
       VehicleData->DataUInt32 = (XInt32)( VehicleData->DataUInt32 * 0.625000f );
@@ -401,6 +411,12 @@ void MaintenanceMNT01_MaintenanceReset_OnVehicleDataReceivedSlot( MaintenanceMNT
 
       case EnumVehicleRxTypeMAINTENANCE_TRIP3 :
         MaintenanceMNT01_MaintenanceReset_ReloadItem( _this, 2 );
+      break;
+
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED :
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED :
+        MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
+        - 1 );
       break;
 
       default :; 

@@ -93,25 +93,35 @@ class MNT01_MaintenanceReset : Menu::BaseMenuView
   {
     var string Value;
     var DeviceInterface::VehicleDataClass VehicleData;
+    var bool IsDataValid = true;
 
     if( 0 < NoOfSupportedItem )
     {
-      switch( aItemNo )
+      VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED );
+      if( 0 == VehicleData.DataUInt32 )
       {
-        case 0: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP1 );
-        case 1: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP2 );
-        case 2: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP3 );
-        default: VehicleData.Valid = false;
+        switch( aItemNo )
+        {
+          case 0: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP1 );
+          case 1: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP2 );
+          case 2: VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.MAINTENANCE_TRIP3 );
+          default: VehicleData.Valid = false;
+        }
+
+        IsDataValid = VehicleData.Valid;
+      }
+      else
+      {
+        IsDataValid = false;
       }
     }
     else
     {
       // when no maintenance item, display OIL "---"
-      VehicleData = new DeviceInterface::VehicleDataClass;
-      VehicleData.Valid = false;
+      IsDataValid = false;
     }
 
-    if( VehicleData.Valid )
+    if( IsDataValid )
     {
       if( Enum::MileageSettingItem.MILE == MileageSetting )
       {
@@ -233,6 +243,11 @@ class MNT01_MaintenanceReset : Menu::BaseMenuView
         case Enum::VehicleRxType.MAINTENANCE_TRIP1: ReloadItem( 0 );
         case Enum::VehicleRxType.MAINTENANCE_TRIP2: ReloadItem( 1 );
         case Enum::VehicleRxType.MAINTENANCE_TRIP3: ReloadItem( 2 );
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED,
+             Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED:
+        {
+          Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );
+        }
         default:;
       }
     }
